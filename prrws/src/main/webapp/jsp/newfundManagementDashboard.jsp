@@ -325,7 +325,7 @@
 										</ul>-->
 										
 										<div class="col-sm-6 panalActiveCls">
-											<ul class="switch-btn-New distLevelActive selectboxsShowHide" tab-switch="distLevel" attr_switch = "distLevel">
+											<ul class="switch-btn-New distLevelActive selectboxsShowHide" role="tablevelValue" tab-switch="distLevel" attr_switch = "distLevel">
 												<li class="active districtActiveCls" attr_type="districtType" attr_result_type="district">District</li>
 												<li attr_type="parliamentType" class="parliamentCls" attr_result_type="parliament">Parliament</li>
 											</ul>
@@ -469,7 +469,7 @@
 										</ul>-->
 										<div class="row">
 											<div class="col-sm-6 panalActiveCls">
-												<ul class="switch-btn-New consLevelActive selectboxsShowHide" tab-switch="consLevel" attr_switch = "consLevel">
+												<ul class="switch-btn-New consLevelActive selectboxsShowHide" role="tablevelValue" tab-switch="consLevel" attr_switch = "consLevel">
 													<li  class="active constituencyActiveCls" attr_type="districtType" attr_result_type="district">District</li>
 													<li   class="parliamentCls" attr_type="parliamentType" attr_result_type="parliament">Parliament</li>
 												</ul>
@@ -620,7 +620,7 @@
 										</ul>-->
 										<div class="row">
 											<div class="col-sm-6 panalActiveCls">
-												<ul class="switch-btn-New mandalLevelActive selectboxsShowHide" tab-switch="mandalLevel" attr_switch = "mandalLevel">
+												<ul class="switch-btn-New mandalLevelActive selectboxsShowHide" role="tablevelValue" tab-switch="mandalLevel" attr_switch = "mandalLevel">
 													<li  class="active mandalActiveCls" attr_type="districtType" attr_result_type="district">District</li>
 													<li  attr_type="parliamentType"  class="parliamentCls" attr_result_type="parliament">Parliament</li>
 												</ul>
@@ -778,7 +778,7 @@
 										</ul>-->
 										<div class="row">
 											<div class="col-sm-6 panalActiveCls">
-												<ul class="switch-btn-New villageLevelActive selectboxsShowHide" tab-switch="villageLevel" attr_switch = "villageLevel">
+												<ul class="switch-btn-New villageLevelActive selectboxsShowHide" role="tablevelValue" tab-switch="villageLevel" attr_switch = "villageLevel">
 													<li class="active villageActiveCls" attr_type="districtType" attr_result_type="district">District</li>
 													<li attr_type="parliamentType" class="parliamentCls" attr_result_type="parliament">Parliament</li>
 												</ul>
@@ -1017,7 +1017,33 @@
 		</div><!--  /.modal-content -->  
 	</div><!--  /.modal-dialog -->  
 </div><!--  /.modal -->
-
+</div><!--  /.modal -->
+<div class="modal fade" id="fundCategoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
+	<div class="modal-dialog" role="document" style="width:80%;margin:auto">
+		<div class="modal-content">
+			<div class="modal-header bg_EE">
+				<div class="row">
+					<div class="col-md-8">
+						<h4 class="modal-title text-capitalize" id="diptCatNameId">Location Wise Fund Overview</h4>
+					</div>
+					<div class="col-sm-3 pull-right">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				   
+					</div>
+				</div>
+			</div>
+			<div class="modal-body">        
+				<div class="row">
+		 
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div id="fundSanctionCategoryModal"></div>
+					</div>  
+		  
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <form id="menuselectionFormId" name="menuselectionFormId">
 	<input type="hidden" value="2" id="searchLevelId" name="searchLevelId" />

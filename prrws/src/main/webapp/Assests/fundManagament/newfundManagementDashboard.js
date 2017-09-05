@@ -1046,14 +1046,15 @@ getAllDepartments();
 			if(divId == "overviewSelect"){
 				overviewSelectBoxData = result;
 			}
-			
+			var str='';
 			if(result !=null && result.length>0){
-				   $("#"+divId).append('<option value="0">ALL</option>');
+				  str+='<option value="0">ALL</option>';
 					for(var i in result){
-						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+						 str+='<option value="'+result[i].id+'">'+result[i].name+' </option>';
 					}
 					
 				}
+				$("#"+divId).html(str);
 				$("#"+divId).trigger('chosen:updated');
 			
 			
@@ -1210,14 +1211,14 @@ getAllDepartments();
 				  xhr.setRequestHeader("Content-Type", "application/json");
 		}  
 		}).done(function(result){
-
+		var str='';
 		  if(result !=null && result.length>0){
-				 $("#"+divId).append('<option value="0">ALL</option>');
+				 str+='<option value="0">ALL</option>';
 				for(var i in result){
-					$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					str+='<option value="'+result[i].id+'">'+result[i].name+' </option>';
 				}
 			}
-		
+			$("#"+divId).html(str);
 			$("#"+divId).trigger('chosen:updated');
 		});
 	  }
@@ -1973,7 +1974,7 @@ getAllDepartments();
 							{
 								lvlVal =result[i].addressVO.districtId;
 								locatioName =result[i].addressVO.districtName;
-								levelName = "DISTRICT";
+								levelName = "district";
 								var blockType = getblockType();
 								table+='<td>'+result[i].addressVO.districtName+' </td>';
 								if(departmentId != 1 && departmentId != 3){
@@ -1995,7 +1996,7 @@ getAllDepartments();
 							{
 								lvlVal =result[i].addressVO.parliamentId;
 								locatioName =result[i].addressVO.parliamentName;
-								levelName = "PARLIAMENT";
+								levelName = "parliament";
 								var blockType = getblockType();
 								table+='<td>'+result[i].addressVO.parliamentName+'</td>';
 									if(viewType == "cumulative"){
@@ -2012,7 +2013,7 @@ getAllDepartments();
 								var blockType = getblockTypeCons();
 								lvlVal =result[i].addressVO.assemblyId;
 								var districtId =result[i].addressVO.districtId;
-								levelName = "CONTITUENCY";
+								levelName = "constituency";
 								locatioName =result[i].addressVO.assemblyName;
 								table+='<td>'+result[i].addressVO.districtName+' </td>';
 								if(departmentId != 1 && departmentId != 3){
@@ -2042,7 +2043,7 @@ getAllDepartments();
 								var blockType = getblockTypeMandal();
 								lvlVal =result[i].addressVO.id;
 								locatioName =result[i].addressVO.tehsilName;
-								levelName = "MANDAL";
+								levelName = "mandal";
 								var districtId =result[i].addressVO.districtId;
 								var constituencyId =result[i].addressVO.assemblyId;
 								table+='<td>'+result[i].addressVO.districtName+' </td>';
@@ -2077,7 +2078,7 @@ getAllDepartments();
 								var blockType = getblockTypeVillage();
 								lvlVal =result[i].addressVO.id;
 								locatioName =result[i].addressVO.panchayatName;
-								levelName = "VILLAGE";
+								levelName = "village";
 								
 								var districtId =result[i].addressVO.districtId;
 								var constituencyId =result[i].addressVO.assemblyId;
@@ -2104,11 +2105,12 @@ getAllDepartments();
 							table+='<td class="text-center">'+result[i].subList[j].year+'</td>';
 							for(var k in result[i].subList[j].subList)
 							{
-								if(result[i].subList[j].yearId != 0){
+								newYearId = $("#financialYearId").val();
+								/* if(result[i].subList[j].yearId != 0 || typeof(result[i].subList[j].yearId) === 'undefined' || typeof(result[i].subList[j].yearId) === undefined){
 									newYearId = result[i].subList[j].yearId;
 								}else{
 									newYearId = $("#financialYearId").val();
-								} 
+								}  */
 								 //location block
 									if(levelId != '2'){
 										if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count == 0){//in the case of MGNREGS count will come zero
@@ -2116,7 +2118,7 @@ getAllDepartments();
 											table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</small></td>';
 											
 										}else{
-											table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" attr_location_name="'+locatioName+'" attr_level_name="'+levelName+'">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls">&nbsp;&nbsp;(<u><span style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</span> </u>)</small></td>';
+											table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" attr_location_name="'+locatioName+'" attr_level_name="'+levelName+'" attr_location_strids="'+result[i].locationIdStr+'" attr_mgnregs_name="'+result[i].subList[j].subList[k].name+'" attr_view_type="'+viewType+'">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls">&nbsp;&nbsp;(<u><span style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</span> </u>)</small></td>';
 										}
 									}else{
 										if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count == 0){
@@ -3722,7 +3724,15 @@ function compareFundsBetweenFinancialYears(levelId,divId,globalLocationId,global
 	  var deptId = $(this).attr("attr_dept_id");
 	  var locationName=$(this).attr("attr_location_name");
 	  var levelName=$(this).attr("attr_level_name");
-	  getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,deptId,locationName,levelName);
+	  var locationStrIdsForMgnregs=$(this).attr("attr_location_strids");
+	  var type = $(this).attr("attr_mgnregs_name");
+	  var viewType = $(this).attr("attr_view_type");
+	  if(type == "MGNREGS"){
+		  getMgnregsFMSWorksDetails(locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName);
+	  }else{
+		  getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,deptId,locationName,levelName);
+	  }
+	  
 	});
 	
 	function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,deptId,locationName,levelName){ 
@@ -3735,12 +3745,13 @@ function compareFundsBetweenFinancialYears(levelId,divId,globalLocationId,global
 	$("#fundSanctionModal").html(spinner);
     var searchLvlVals = [];
 	searchLvlVals.push(levlValue);
-    var financialYrIdList =[];
-	var financialyr = financialYrId.split(',');
+    //var financialYrIdList =[];
+	var financialYrIdList = $('#financialYearId').val();
+	/* var financialyr = financialYrId.split(',');
 	for(var i = 0; i < financialyr.length; i++)
        {  
 			 financialYrIdList.push(financialyr[i]);
-       }
+       } */
 
     var schemeIdsList = [];
 	schemeIdsList.push(schemeId);
@@ -4981,14 +4992,14 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
 				  xhr.setRequestHeader("Content-Type", "application/json");
 		}  
 		}).done(function(result){  
-
+			var str='';	
 		  if(result !=null && result.length>0){
-				 $("#"+divId).append('<option value="0" selected="selected">ALL</option>');
+				 str+='<option value="0" selected="selected">ALL</option>';
 				for(var i in result){
-					$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					str+='<option value="'+result[i].id+'">'+result[i].name+' </option>';
 				}
 			}
-		
+			$("#"+divId).html(str);
 			$("#"+divId).trigger('chosen:updated');
 		});
 	
@@ -5025,3 +5036,331 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
 	  dateStr = dateArr[2]+"-"+dateArr[1]+"-"+dateArr[0];
 	  return dateStr;
  }
+ function getMgnregsFMSWorksDetails(locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName){ 
+	
+	$("#fundModal").modal('show');
+	$("#diptNameId").html('<h4 class="text-capital"><b>'+locationName+'&nbsp;&nbsp; '+levelName+' &nbsp;&nbsp; - Category Wise Fund Overview</b></h4>');
+	$("#fundSanctionModal").html(spinner);
+	var financialYrIdList = [];
+	var financialyr = $('#financialYearId').val();
+	if(financialyr == 0){
+		financialYrIdList=[];
+	}else{
+		financialYrIdList = financialyr;
+	}
+	
+	var ReportType="";
+	if(viewType == "cumulative"){
+		ReportType = "cumulative";
+	}else{
+		ReportType = "yearwise";
+	}
+	var parliamentTypeval="";
+	var blockVill = getblockTypeVillage();
+	var blockMan = getblockTypeMandal();
+	var blockCons = getblockTypeCons();
+	var blockDis = getblockType();
+	
+	if(blockLvlId == 3){
+		if(blockDis == "districtType"){
+		parliamentTypeval ="district"
+		}else{
+			parliamentTypeval ="parliament"
+		}
+	}else if(blockLvlId == 4){
+		if(blockCons == "districtType"){
+			parliamentTypeval ="district"
+		}else{
+			parliamentTypeval ="parliament"
+		}
+	}else if(blockLvlId == 5){
+		if(blockMan == "districtType"){
+			parliamentTypeval ="district"
+		}else{
+			parliamentTypeval ="parliament"
+		}
+	}else if(blockLvlId == 6){
+		if(blockVill == "districtType"){
+			parliamentTypeval ="district"
+		}else{
+			parliamentTypeval ="parliament"
+		}
+	}
+	
+	
+	
+	
+    var json = {
+          locationType : levelName, 
+          locationIdStr : locationStrIdsForMgnregs,
+          financialYrIdList : financialYrIdList,
+          reportType : ReportType 
+        }
+    $.ajax({ 
+      url: 'getMgnregsFMSWorksDetails', 
+      type:'POST',  
+      data : JSON.stringify(json),
+      dataTypa : 'json',   
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+      },
+            
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildMgnregsFMSWorksDetails(result,locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName,parliamentTypeval);
+		}else{
+			$("#fundSanctionModal").html("NO DATA AVAILABLE");
+		}
+    });
+  }
+ function buildMgnregsFMSWorksDetails(result,locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName,parliamentTypeval){
+	
+  var str = '';
+	if($windowWidth < 768)
+	{
+		str+='<div class="table-responsive">';
+	}
+	str+='<table class="table table-condensed table-bordered table-striped" id="tableMgrnesId">';
+		str+='<thead>';
+		/*if(blockLvlId == 3){
+			str+='<th class="text-capital">District</th>';
+		}else if(blockLvlId == 4){
+			str+='<th class="text-capital">Constituency</th>';
+		}else if(blockLvlId == 5){
+			str+='<th class="text-capital">Mandal</th>';
+		}else if(blockLvlId == 6){
+			str+='<th class="text-capital">Panchayat</th>';
+		}*/
+			
+			str+='<th class="text-capital">Category</th>';
+			str+='<th class="text-capital">Works</th>'; 
+			str+='<th class="text-capital">Wage</th>';
+			str+='<th class="text-capital">Material</th>';
+			str+='<th class="text-capital">Total</th>';
+		str+='</thead>';
+		str+='<tbody>';
+	for(var i in result){
+		str+='<tr>'; 
+		/*if(blockLvlId == 3){
+			if(result[i].district != null){
+				 str+='<td>'+result[i].district+'</td>';
+			}else{
+				 str+='<td>-</td>';
+			}
+		}else if(blockLvlId == 4){
+			if(result[i].constituency != null){
+				 str+='<td>'+result[i].constituency+'</td>';
+			}else{
+				 str+='<td>-</td>';
+			}
+		}else if(blockLvlId == 5){
+			if(result[i].mandal != null){
+				 str+='<td>'+result[i].mandal+'</td>';
+			}else{
+				 str+='<td>-</td>';
+			}
+		}else if(blockLvlId == 6){
+			if(result[i].panchayat != null){
+				 str+='<td>'+result[i].panchayat+'</td>';
+			}else{
+				 str+='<td>-</td>';
+			}
+		}*/
+		 
+		if(result[i].category != null){
+			if(parliamentTypeval == "district"){
+				str+='<td><span class="categoryClickCls" style="cursor:pointer;color:green;" attr_name="'+result[i].category+'" attr_location_strids="'+	locationStrIdsForMgnregs+'" attr_level_name="'+levelName+'" attr_financial_yr_id="'+financialYrId+'" attr_view_type="'+viewType+'" attr_levelid="'+blockLvlId+'" attr_location_name="'+locationName+'">'+result[i].category+'</span></td>';
+			}else{
+				str+='<td>'+result[i].category+'</td>';
+			}
+			
+			
+		}else{
+			 str+='<td>-</td>';
+		}
+		if(result[i].works != null && result[i].works>0){
+			 str+='<td>'+result[i].works+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}    
+		if(result[i].wage != null && result[i].wage>0){
+			 str+='<td>'+result[i].wage+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}  
+		
+		if(result[i].material != null && result[i].material>0){
+			 str+='<td>'+result[i].material+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		if(result[i].total != null && result[i].total>0){
+			 str+='<td>'+result[i].total+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		str+='</tr>';     
+	}
+	str+='</tbody>';  
+	str+='</table>';  
+	if($windowWidth < 768)
+	{
+		str+='</div>';
+	}
+	$("#fundSanctionModal").html(str);   
+	$("#tableMgrnesId").dataTable({
+		"iDisplayLength": 15,
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	});  
+}
+$(document).on("click",".categoryClickCls",function(){
+	var categoryName = $(this).attr("attr_name");
+	var locationStrIdsForMgnregs = $(this).attr("attr_location_strids");
+	var levelName = $(this).attr("attr_level_name");
+	var financialYrId = $(this).attr("attr_financial_yr_id");
+	var viewType = $(this).attr("attr_view_type");
+	var blockLvlId = $(this).attr("attr_levelid");
+	var locationName = $(this).attr("attr_location_name");
+	
+	getMgnregsFMSWorksDetailsByCategory(locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName,categoryName)
+	
+});	
+
+function getMgnregsFMSWorksDetailsByCategory(locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName,categoryName){ 
+	
+	$("#fundCategoryModal").modal('show');
+	$("#diptCatNameId").html('<h4 class="text-capital"><b>'+categoryName+'&nbsp;&nbsp; - Category Wise Details</b></h4>');
+	$("#fundSanctionCategoryModal").html(spinner);
+	
+	var financialYrIdList = [];
+	var financialyr = $('#financialYearId').val();
+	if(financialyr == 0){
+		financialYrIdList=[];
+	}else{
+		financialYrIdList = financialyr;
+	}
+	
+	var ReportType="";
+	if(viewType == "cumulative"){
+		ReportType = "cumulative";
+	}else{
+		ReportType = "yearwise";
+	}
+	if (levelName != null && levelName=="village") {
+		levelName == "panchayat";
+	}
+	var json = {
+          locationType : levelName, 
+          locationIdStr : locationStrIdsForMgnregs,
+          financialYrIdList : financialYrIdList,
+		  category:categoryName,
+          reportType : ReportType 
+        }
+    $.ajax({ 
+      url: 'getMgnregsFMSWorksDetailsByCategory', 
+      type:'POST',  
+      data : JSON.stringify(json),
+      dataTypa : 'json',   
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+      },
+            
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildMgnregsFMSWorksDetailsByCategory(result,blockLvlId);
+		}else{
+			$("#fundSanctionCategoryModal").html("NO DATA AVAILABLE");
+		}
+    });
+  }
+  
+  function buildMgnregsFMSWorksDetailsByCategory(result,blockLvlId){
+	  var str = '';
+	if($windowWidth < 768)
+	{
+		str+='<div class="table-responsive">';
+	}
+	str+='<table class="table table-condensed table-bordered table-striped" id="tableCategoryMgrnesId">';
+		str+='<thead>';
+			str+='<th class="text-capital">PROGRAM</th>';
+			str+='<th class="text-capital">HABITATION_NAME</th>'; 
+			str+='<th class="text-capital">WORK_NAME</th>';
+			str+='<th class="text-capital">DESCRIPTION</th>';
+			str+='<th class="text-capital">AMOUNT_UNSKILLED</th>';
+			str+='<th class="text-capital">AMOUNT_MATERIAL</th>';
+			str+='<th class="text-capital">TOTAL_COST</th>';
+			str+='<th class="text-capital">TOTAL_MANDAYS</th>';
+			str+='<th class="text-capital">WAGE</th>';
+			str+='<th class="text-capital">MATERIAL</th>';
+			str+='<th class="text-capital">TOTAL</th>';
+			str+='<th class="text-capital">DAYS</th>';
+		str+='</thead>';
+		str+='<tbody>';
+	for(var i in result){
+		str+='<tr>'; 
+		if(result[i].program != null){
+			str+='<td>'+result[i].program+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		if(result[i].habitationName != null){
+			str+='<td>'+result[i].habitationName+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		if(result[i].workName != null){
+			str+='<td>'+result[i].workName+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		if(result[i].description != null){
+			str+='<td>'+result[i].description+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		if(result[i].amountUnSkilled != null && result[i].amountUnSkilled>0){
+			 str+='<td>'+result[i].amountUnSkilled+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}    
+		if(result[i].amountMaterial != null && result[i].amountMaterial>0){
+			 str+='<td>'+result[i].amountMaterial+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}  
+		if(result[i].wage != null && result[i].wage>0){
+			 str+='<td>'+result[i].wage+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		if(result[i].material != null && result[i].material>0){
+			 str+='<td>'+result[i].material+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		if(result[i].total != null && result[i].total>0){
+			 str+='<td>'+result[i].total+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		if(result[i].days != null && result[i].days>0){
+			 str+='<td>'+result[i].days+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		str+='</tr>';     
+	}
+	str+='</tbody>';  
+	str+='</table>';  
+	if($windowWidth < 768)
+	{
+		str+='</div>';
+	}
+	$("#fundSanctionCategoryModal").html(str);   
+	$("#tableCategoryMgrnesId").dataTable({
+		"iDisplayLength": 15,
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	}); 
+  }
