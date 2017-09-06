@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
@@ -548,6 +549,24 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 	  query.setParameter("stateId", 1l);
 	  
 	  return query.list();
+  }
+  
+  public List<Object[]> getVotersCastGroupWiseCount(List<Long> constituencyIds, Long PublicationDateId){
+	  
+	  StringBuilder sb = new StringBuilder();
+	  sb.append("select cc.caste_category_id as castCategoryId,cc.category_name as castName,sum(vci.caste_voters) as totalVoters from voter_cast_info vci join caste_state " +
+	  		" cs on vci.caste_state_id=cs.caste_state_id join caste_category_group ccg on " +
+	  		" cs.caste_category_group_id =ccg.caste_category_group_id join caste_category cc on " +
+	  		" cc.caste_category_id=ccg.caste_category_id where " +
+	  		" vci.report_level_id = 1 and vci.report_level_value in (:constituencyIds)  and publication_date_id =:publicationDateId" +
+	  		" group by cc.caste_category_id ");
+	  Query query = getSession().createSQLQuery(sb.toString())
+			  .addScalar("castCategoryId",Hibernate.LONG).addScalar("castName",Hibernate.STRING).addScalar("totalVoters",Hibernate.LONG);
+	  
+	  query.setParameterList("constituencyIds", constituencyIds);
+	  query.setParameter("publicationDateId", PublicationDateId);
+	  return query.list();
+	  
   }
   
 }
