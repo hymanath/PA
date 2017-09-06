@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
@@ -67,6 +68,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<BasicVO> publicationsData;
 	private BoothInchargesVO boothInchargesVO;
 	private List<BoothInchargesVO> boothInchargesVOList;
+	private List<NominatedPostDetailsVO> nominatedPostDetailsVOList = new ArrayList<NominatedPostDetailsVO>();
+
+	
+	public List<NominatedPostDetailsVO> getNominatedPostDetailsVOList() {
+		return nominatedPostDetailsVOList;
+	}
+	public void setNominatedPostDetailsVOList(
+			List<NominatedPostDetailsVO> nominatedPostDetailsVOList) {
+		this.nominatedPostDetailsVOList = nominatedPostDetailsVOList;
+	}
 
 	public List<LocationWiseBoothDetailsVO> getLocationVOList() {
 		return locationVOList;
@@ -654,4 +665,27 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getLocationWiseNominatedPostAnalysisDetails(){
+	    try{
+	      jObj = new JSONObject(getTask());
+	      
+	      Long boardLevelId = jObj.getLong("boardLevelId");
+	      List<Long> locationValuesList = new ArrayList<Long>(0); 
+	      JSONArray levelValues = jObj.getJSONArray("levelValues");
+	      
+	        if(levelValues != null && levelValues.length()> 0){
+	          for(int i = 0;i<levelValues.length();i++){
+	            locationValuesList.add(new Long(levelValues.getInt(i)));
+	          }
+	        }      
+	      Long levelId = jObj.getLong("levelId");
+	      String type = jObj.getString("dataType");
+	      nominatedPostDetailsVOList = locationDashboardService.getLocationWiseNominatedPostAnalysisDetails(locationValuesList,boardLevelId,levelId,type);  
+	      
+	    }catch(Exception e){
+	      LOG.error("Entered into getAllNominatedStatusData method of NominatedPostProfileAction Action",e);
+	    }
+	    return Action.SUCCESS;
+	  }
 }
