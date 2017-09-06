@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
+import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.opensymphony.xwork2.Action;
@@ -302,16 +303,6 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			locationVotersVOList = locationDashboardService.getVotersAndcadreAgeWiseCount(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getVotersAndcadreAgeWiseCount", e);
-		}
-		 return Action.SUCCESS;
-	 }
-	 
-	 public String getVotersAndCadreCasteWiseCount(){
-		 try {
-			jObj = new JSONObject(getTask());
-			locationVotersVOList = locationDashboardService.getVotersAndCadreCasteWiseCount(jObj.getString("type"),jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"));
-		} catch (Exception e) {
-			LOG.error("Exception raised at getVotersAndCadreCasteWiseCount", e);
 		}
 		 return Action.SUCCESS;
 	 }
@@ -665,6 +656,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 	}
+	
+	 public String getVotersCastGroupWiseCount(){
+		 try {
+			 jObj = new JSONObject(getTask());
+			 locationVotersVOList = locationDashboardService.getVotersCastGroupWiseCount(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("publicationDateId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEnrollmentYearAgeGroupWiseCadres", e);
+		}
+		 return Action.SUCCESS;
+	 }
 	
 	public String getLocationWiseNominatedPostAnalysisDetails(){
 	    try{
