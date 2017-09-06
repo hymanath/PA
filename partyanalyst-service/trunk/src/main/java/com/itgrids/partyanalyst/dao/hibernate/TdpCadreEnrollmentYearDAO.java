@@ -1139,4 +1139,21 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			
 			return query.list();
 	 }
+		
+	public List<Object[]> getCasteGroupWiseCadreCounts(List<Long> constituencyId) {
+		Query query = getSession().createQuery(
+						" select model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, "
+								+ " count(model.tdpCadre.tdpCadreId) "
+								+ " from TdpCadreEnrollmentYear model "
+								+ " where model.isDeleted = 'N'"
+								+ " and model.tdpCadre.isDeleted = 'N'"
+								+ " and model.tdpCadre.userAddress.constituency.constituencyId in (:constituencyId) "
+								+ " and model.tdpCadre.enrollmentYear = 2014 "
+								+ " and model.enrollmentYearId = :enrollmentYearId "
+								+ " group by model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+		query.setParameterList("constituencyId", constituencyId);
+		query.setParameter("enrollmentYearId",
+				IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		return query.list();
+	}
 }
