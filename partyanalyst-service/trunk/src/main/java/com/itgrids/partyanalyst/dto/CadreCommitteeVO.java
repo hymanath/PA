@@ -69,6 +69,9 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private Long femaleCount =0l;
 	private Long addedCount=0L;
 	private Long convenerAddedCount=0L;
+	private List<CadreCommitteeVO> subList = new ArrayList<CadreCommitteeVO>(0);
+	private Long finalizedCount = 0l;
+	private Long remainingCount = 0l;
 	
 	public Long getConvenerAddedCount() {
 		return convenerAddedCount;
@@ -663,5 +666,23 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	}
 	public void setFemaleCount(Long femaleCount) {
 		this.femaleCount = femaleCount;
+	}
+	public List<CadreCommitteeVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<CadreCommitteeVO> subList) {
+		this.subList = subList;
+	}
+	public Long getFinalizedCount() {
+		return finalizedCount;
+	}
+	public void setFinalizedCount(Long finalizedCount) {
+		this.finalizedCount = finalizedCount;
+	}
+	public Long getRemainingCount() {
+		return remainingCount;
+	}
+	public void setRemainingCount(Long remainingCount) {
+		this.remainingCount = remainingCount;
 	}	
 }

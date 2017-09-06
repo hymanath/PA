@@ -221,4 +221,5 @@ public interface ICadreCommitteeService {
 	 public List<LocationWiseBoothDetailsVO> getTdpCommitteeMunicipalityByWards(String mandalId,Long constituencyId,Long enrollmentId);
 	 public CadreCommitteeVO getCadreVoterBthSerilNo(Long locationId,String houseNo,String gender);
 	 public CadreCommitteeVO getSerialNoAvailbleCadreRangeWise(Long mandalId, Long boothId,String range,String gender);
+	 public CadreCommitteeVO getCommitteeCountDetailsByLevelId(Long constituencyId,List<Long> levelIds,List<Long> levelValues,List<Long> basicCommitteeIds,List<Long> cmiteEnrlmntYearIds);
 }
