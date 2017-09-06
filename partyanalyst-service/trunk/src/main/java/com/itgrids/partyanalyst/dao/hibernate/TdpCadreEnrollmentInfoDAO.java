@@ -68,7 +68,7 @@ public class TdpCadreEnrollmentInfoDAO extends GenericDaoHibernate<TdpCadreEnrol
 		 if(year != null && !year.trim().isEmpty()){
 	 	    queryStr.append(" and year(model.surveyTime) =:year ");   
 	 	 }
-		 queryStr.append(" group by model.enrollmentYear.enrollmentYearId order by model.enrollmentYear.orderNo");
+		 queryStr.append(" group by model.enrollmentYear.enrollmentYearId order by model.enrollmentYear.orderNo desc ");
 		 Query query = getSession().createQuery(queryStr.toString());
 		 if(locationScopeId != null && locationValues!= null && locationValues.size() >0){
 			 query.setParameter("locationScopeId", locationScopeId); 
