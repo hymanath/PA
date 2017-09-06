@@ -2514,4 +2514,38 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		 }
 		 return query.list();
 	 }
+	public List<Object[]> getTotalReceivedApplicationsForLocation(List<Long> boardLevelId,Long levelId,List<Long> levelValues){
+	    
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(" select count(model.nominatedPostApplicationId),model.nominatedPostMember.boardLevelId from NominatedPostApplication model where  model.isDeleted ='N' and  model.isExpired ='N' and " +
+	        " model.applicationStatus.applicationStatusId not in(2,4,8) ");
+	    
+	    if(levelId != null && levelId.longValue() > 0l && levelValues != null && levelValues.size() > 0){  
+	            if(levelId == 4l){
+	              sb.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:levelValues) ");
+	            }else if(levelId == 3l){
+	              sb.append(" and model.nominatedPostMember.address.district.districtId in(:levelValues) ");
+	            }else if(levelId == 5l){
+	              sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId in(:levelValues) ");
+	            }else if(levelId == 7l){
+	              sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId in(:levelValues) ");
+	            }
+	        }
+	       if(boardLevelId != null && boardLevelId.size() > 0L){
+	           
+	             sb.append(" and model.nominatedPostMember.boardLevelId in (:boardLevelId) ");
+	           
+	       }
+	       sb.append("group by model.nominatedPostMember.boardLevelId");
+	       Query query = getSession().createQuery(sb.toString());
+	       
+	       if(boardLevelId != null && boardLevelId.size() > 0L){
+	         query.setParameterList("boardLevelId",boardLevelId );
+	       }
+	       if(levelId != null && levelId.longValue() > 0l && levelValues != null && levelValues.size() > 0){
+	         query.setParameterList("levelValues",levelValues );
+	       }
+	       
+	       return query.list();
+	  }
 }
