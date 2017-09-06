@@ -66,11 +66,18 @@
 	   if(id == 1){
 			$("#constituencyDivIdImg").hide();
 			for(var i in result){
-			   if(result[i].id == 0){
+			   /*if(result[i].id == 0){
 				  $("#constituencyId").append('<option value='+result[i].id+'>Select Constituency</option>');
 			   }else if(result[i].id == 262){
 				  $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }*/
+			   
+			   if(result[i].id == 0){
+				  $("#constituencyId").append('<option value='+result[i].id+'>Select Constituency</option>');
+			   }else{
+				  $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
+			   
 			}
 			$("#constituencyId").trigger("chosen:updated");
 	   }
@@ -489,7 +496,7 @@ $("#boothsList").trigger("chosen:updated");
 			 for(var i in result){
 			   if(result[i].id == 0){
 				  $("#districtId").append('<option value='+result[i].id+'>Select District</option>');
-			   }else if(result[i].id == 21){
+			   }else{
 				  $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
 			 }
