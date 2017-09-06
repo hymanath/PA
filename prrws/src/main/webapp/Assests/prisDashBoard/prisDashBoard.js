@@ -585,7 +585,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 			tableView+='</div>';
 			$("#"+blockName+'_'+blockId).html(tableView);
 			//$("#chosen"+blockName)
-			if(blockId == '3' || blockId == '4' || blockId == '5'){
+			if(blockId == '4' || blockId == '5'){
 				$(".dataTable"+blockId).dataTable({
 					"iDisplayLength": 10,
 					"aaSorting": [],
