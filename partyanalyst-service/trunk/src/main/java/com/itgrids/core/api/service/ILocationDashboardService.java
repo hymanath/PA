@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 
 public interface ILocationDashboardService {
@@ -57,4 +58,5 @@ public interface ILocationDashboardService {
 	public List<LocationWiseBoothDetailsVO> getAllParlimentsForLocationDashBoard();
 	public List<LocationWiseBoothDetailsVO> getAllConstituencyByParlimentId(Long parliamentIds);
 	public List<NominatedPostDetailsVO> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues,Long boardLevelId,Long searchLvlId,String type);
+	public NominatedPostDashboardVO getAllNominatedStatusListLevelWiseData(Long boardLevelId, List<Long> levelValues, Long levelId);
 }
