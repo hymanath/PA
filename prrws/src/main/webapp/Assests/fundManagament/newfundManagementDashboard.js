@@ -5181,7 +5181,12 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
 			}
 		}*/
 		if(result[i].category != null){
-			str+='<td><span class="categoryClickCls" style="cursor:pointer;color:green;" attr_name="'+result[i].category+'" attr_location_strids="'+	locationStrIdsForMgnregs+'" attr_level_name="'+levelName+'" attr_financial_yr_id="'+financialYrId+'" attr_view_type="'+viewType+'" attr_levelid="'+blockLvlId+'" attr_location_name="'+locationName+'">'+result[i].category+'</span></td>';
+			if(blockLvlId == 3 || blockLvlId == 4 || blockLvlId == 5 || blockLvlId == 6 && blockDis == "districtType"){
+				str+='<td><span class="categoryClickCls" style="cursor:pointer;color:green;" attr_name="'+result[i].category+'" attr_location_strids="'+	locationStrIdsForMgnregs+'" attr_level_name="'+levelName+'" attr_financial_yr_id="'+financialYrId+'" attr_view_type="'+viewType+'" attr_levelid="'+blockLvlId+'" attr_location_name="'+locationName+'">'+result[i].category+'</span></td>';
+			}else{
+				str+='<td>'+result[i].category+'</td>';
+			}
+			
 		}else{
 			 str+='<td>-</td>';
 		}
