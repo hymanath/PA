@@ -37,7 +37,11 @@ public class NominatedPostDashboardVO {
 	private Long openPostCnt=0l;
 	private Long finalizedAndGoPassedCnt=0l;
 	private Map<Long,NominatedPostDashboardVO> casteMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
-	
+	private Long applicatnsReceived=0l;
+	private Long totalPosts=0l;
+	private Long openPost=0l;
+	private Long finalizedAndGoIssued=0l;	
+	private Long nominatedId=0l;
 	
 	
 	public Map<Long, NominatedPostDashboardVO> getCasteMap() {
@@ -197,5 +201,37 @@ public class NominatedPostDashboardVO {
 	}
 	public void setFinalizedAndGoPassedCnt(Long finalizedAndGoPassedCnt) {
 		this.finalizedAndGoPassedCnt = finalizedAndGoPassedCnt;
+	}
+	public Long getApplicatnsReceived() {
+		return applicatnsReceived;
+	}
+	public void setApplicatnsReceived(Long applicatnsReceived) {
+	    this.applicatnsReceived = applicatnsReceived;
+	}
+	public Long getTotalPosts() {
+		return totalPosts;
+	}
+	public void setTotalPosts(Long totalPosts) {
+		this.totalPosts = totalPosts;
+	}
+	public Long getOpenPost() {
+		return openPost;
+	}
+	public void setOpenPost(Long openPost) {
+		this.openPost = openPost;
+	}
+	public Long getFinalizedAndGoIssued() {
+		return finalizedAndGoIssued;
+	}
+	public void setFinalizedAndGoIssued(Long finalizedAndGoIssued) {
+		this.finalizedAndGoIssued = finalizedAndGoIssued;
+	}
+	public Long getNominatedId() {
+		return nominatedId;
+	}
+	public void setNominatedId(Long nominatedId) {
+		this.nominatedId = nominatedId;
 	}	
+	
 }
+	
