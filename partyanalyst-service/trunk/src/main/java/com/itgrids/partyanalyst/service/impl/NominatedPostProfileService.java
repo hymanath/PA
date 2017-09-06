@@ -6164,7 +6164,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							IdNameVO vo = new IdNameVO();
 							vo.setId(applicationId);
 							vo.setStatus("NP-Profile");
-							vo.setMobileNo(filePath);
+							vo.setMobileNo(IConstants.NOMINATED_POST_DOCUMENTS+'/'+filePath);
 							voList.add(vo);
 						}
 						else{
@@ -6172,7 +6172,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							IdNameVO vo = new IdNameVO();
 							vo.setId(applicationId);
 							vo.setStatus("NP-Profile");
-							vo.setMobileNo(filePath);
+							vo.setMobileNo(IConstants.NOMINATED_POST_DOCUMENTS+'/'+filePath);
 							voList.add(vo);
 							nomDocsMap.put(applicationId, voList);
 						}
