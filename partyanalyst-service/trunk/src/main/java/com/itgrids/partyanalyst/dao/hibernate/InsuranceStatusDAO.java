@@ -1129,7 +1129,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			sbg.append(" C.constituency_id");
 		}
 		if(fromDate !=null && toDate !=null){
-	   		sb.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate )");
+	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate )");
 	   	}
 		if(year != null && !year.trim().isEmpty()){
 			sb.append(" and year(CM.Raised_Date) =:year ");   
