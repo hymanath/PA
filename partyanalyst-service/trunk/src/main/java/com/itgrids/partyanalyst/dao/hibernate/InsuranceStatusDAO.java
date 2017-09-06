@@ -1127,6 +1127,10 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			sb.append(" C.constituency_id as typeId,C.name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count ");
 			sbe.append(" AND CM.assembly_id in(:locationValues)");
 			sbg.append(" C.constituency_id");
+		}else if(locationTypeId!=null && locationTypeId==10l && locationValues!=null && locationValues.size() > 0){
+			sb.append(" C.constituency_id as typeId,C.name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count ");
+			sbe.append(" AND CM.parliament_id in(:locationValues)");
+			sbg.append(" C.constituency_id");
 		}
 		if(fromDate !=null && toDate !=null){
 	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate )");
@@ -1173,6 +1177,10 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		}else if(locationTypeId!=null && locationTypeId==4l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
 			sb.append( " C.constituency_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
 			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.assembly_id in(:locationValues)");
+			sbg.append(" C.constituency_id ");
+		}else if(locationTypeId!=null && locationTypeId==10l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " C.constituency_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.parliament_id in(:locationValues)");
 			sbg.append(" C.constituency_id ");
 		}
 		if(fromDate !=null && toDate !=null){
