@@ -3557,3 +3557,22 @@ function getEnrollmentIds(){
 function setDefaultImage(img){
 	img.src = "images/User.png";
 }
+//getCommitteeCount();
+function getCommitteeCount(){
+	
+	var jsObj={
+			constituencyId 	  	:232,
+			levelIds		  	:[5,7,9],
+			levelValues 	:[835],
+			basicCommittesIds 	:[1],
+			cmiteEnrlmntYearIds : [1]
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getCommitteeCountDetailsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		
+	});	
+}
