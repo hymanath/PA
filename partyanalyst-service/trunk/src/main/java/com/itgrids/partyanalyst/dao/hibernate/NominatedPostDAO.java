@@ -2290,4 +2290,71 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		Query query = getSession().createQuery("select model.nominatedPostStatusId,model.status from NominatedPostStatus model ");
 		return query.list();
 	}
+	
+	public List<Object[]> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues, Long boardLevelId,Long searchLevelId,String type){
+		
+			StringBuilder builder =new StringBuilder();
+			builder.append(" select count(model.nominatedPostId),model.nominatedPostMember.nominatedPostPosition.position.positionId," +
+					"model.nominatedPostMember.nominatedPostPosition.position.positionName," );
+		
+		if(type != null && type.equalsIgnoreCase("casteGroup")){
+			builder.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+					"model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName ,");
+		}else if(type != null && type.equalsIgnoreCase("subCaste")){
+			builder.append(" model.nominationPostCandidate.casteState.caste.casteId," +
+						" model.nominationPostCandidate.casteState.caste.casteName, ");
+		}else if(type != null && type.equalsIgnoreCase("ageGroup")){
+			builder.append("model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
+					" model.nominationPostCandidate.nominatedPostAgeRange.ageRange, ");
+		}else if(type != null && type.equalsIgnoreCase("mandal")){
+			builder.append(" tehsil.tehsilId,tehsil.tehsilName, ");
+		}else if(type != null && type.equalsIgnoreCase("townDiv")){
+			builder.append(" localElectionBody.localElectionBodyId,localElectionBody.name, ");
+		}
+		builder.append(" model.nominationPostCandidate.gender ");
+				builder.append(" from NominatedPost model  ");
+				
+				if(type != null && type.equalsIgnoreCase("mandal")){
+					builder.append("  left join model.nominatedPostMember.address.tehsil tehsil " );
+				}else if(type != null && type.equalsIgnoreCase("townDiv")){
+					builder.append(" left join model.nominatedPostMember.address.localElectionBody localElectionBody ");
+				}
+				builder.append(" where model.isDeleted = 'N' and model.isExpired = 'N' and model.nominatedPostMember.isDeleted = 'N' " );
+				if(searchLevelId != null && searchLevelId.longValue()>0L){
+					if((searchLevelId.longValue() == 1L))
+						builder.append(" and model.nominatedPostMember.address.country.countryId  = 1 ");
+					else if((searchLevelId.longValue() == 2L) && locationValues != null && locationValues.size()>0)
+						builder.append(" and model.nominatedPostMember.address.state.stateId  in (:locationValue) ");
+					else if(searchLevelId.longValue() ==3L && locationValues != null && locationValues.size()>0)
+						builder.append(" and model.nominatedPostMember.address.district.districtId in (:locationValue) ");
+					else if(searchLevelId.longValue() ==4L  && locationValues != null && locationValues.size()>0)
+						builder.append(" and model.nominatedPostMember.address.constituency.constituencyId in (:locationValue) ");
+					else if(searchLevelId.longValue() ==5L  && locationValues != null && locationValues.size()>0)
+						builder.append(" and model.nominatedPostMember.address.tehsil.tehsilId in (:locationValue) ");
+					else if(searchLevelId.longValue() ==6L  && locationValues != null && locationValues.size()>0)
+						builder.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId in (:locationValue) ");
+					else if(searchLevelId.longValue() ==7L  && locationValues != null && locationValues.size()>0)
+						builder.append(" and model.nominatedPostMember.address.panchayatId in (:locationValue) ");
+				}
+				
+				builder.append(" group by model.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominationPostCandidate.gender ");
+				if(type != null && type.equalsIgnoreCase("casteGroup")){
+					builder.append(" ,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId");
+				}else if(type != null && type.equalsIgnoreCase("subCaste")){
+					builder.append(" ,model.nominationPostCandidate.casteState.caste.casteId ");
+				}else if(type != null && type.equalsIgnoreCase("ageGroup")){
+					builder.append(" ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+				}else if(type != null && type.equalsIgnoreCase("mandal")){
+					builder.append(" ,tehsil.tehsilId ");
+				}else if(type != null && type.equalsIgnoreCase("townDiv")){
+					builder.append(" ,localElectionBody.localElectionBodyId ");
+				}
+				Query query = getSession().createQuery(builder.toString());
+				if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
+					query.setParameterList("locationValue", locationValues);
+				}
+		
+		return query.list();
+		
+	}
 }

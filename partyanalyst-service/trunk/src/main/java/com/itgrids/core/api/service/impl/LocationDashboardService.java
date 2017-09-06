@@ -68,6 +68,7 @@ import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.model.CasteCategory;
 import com.itgrids.partyanalyst.model.ElectionType;
@@ -2968,4 +2969,81 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		
 	}
+	
+	public List<NominatedPostDetailsVO> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues,Long boardLevelId,Long searchLvlId,String type){
+		 
+		 List<NominatedPostDetailsVO> returnList = new ArrayList<NominatedPostDetailsVO>();
+		 try{
+			 if(type != null && !type.equalsIgnoreCase("mandalTownDiv")){
+				 List<Object[]> analysisReport = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,type);
+				 setLocationWiseNominatedPostAnalysisData(returnList,analysisReport);
+			}else{
+				 List<Object[]> analysisReport = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,"mandal");
+				 setLocationWiseNominatedPostAnalysisData(returnList,analysisReport);
+				 List<Object[]> analysisReport1 = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,"townDiv");
+				 setLocationWiseNominatedPostAnalysisData(returnList,analysisReport1);
+			}
+				
+		}catch (Exception e) {
+			 e.printStackTrace();
+				LOG.error("Exception Occured in getLocationWiseNominatedPostAnalysisDetails()", e);
+		}
+		 
+		 return returnList;
+	 }
+	 
+	 public void setLocationWiseNominatedPostAnalysisData(List<NominatedPostDetailsVO> returnList,List<Object[]> analysisReport){
+		 
+		 try{
+			 Map<Long,Map<Long,NominatedPostDetailsVO>> mainMap = new HashMap<Long, Map<Long,NominatedPostDetailsVO>>(); 
+			 if(commonMethodsUtilService.isListOrSetValid(analysisReport)){
+				 for (Object[] objects : analysisReport) {
+					 Map<Long,NominatedPostDetailsVO> positionMap = mainMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
+					 NominatedPostDetailsVO mainVO = null;
+					 if(positionMap == null){
+						 positionMap = new HashMap<Long,NominatedPostDetailsVO>();
+						 mainVO = new NominatedPostDetailsVO();
+						 mainVO.setId(commonMethodsUtilService.getLongValueForObject(objects[3]));
+						 mainVO.setName(commonMethodsUtilService.getStringValueForObject(objects[4]));
+						 returnList.add(mainVO);
+						 mainMap.put(commonMethodsUtilService.getLongValueForObject(objects[3]), positionMap);
+					 }
+					 NominatedPostDetailsVO positionVO = positionMap.get(commonMethodsUtilService.getLongValueForObject(objects[1])) ;
+					 if(positionVO == null){
+						 positionVO = new NominatedPostDetailsVO();
+						 positionVO.setId(commonMethodsUtilService.getLongValueForObject(objects[1]));
+						 positionVO.setName(commonMethodsUtilService.getStringValueForObject(objects[2]));
+						 positionMap.put(commonMethodsUtilService.getLongValueForObject(objects[1]), positionVO);
+					}
+					 if(commonMethodsUtilService.getStringValueForObject(objects[5]).toString().equalsIgnoreCase("M")){
+						 positionVO.setMaleCount(positionVO.getMaleCount()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+					}else if(commonMethodsUtilService.getStringValueForObject(objects[5]).toString().equalsIgnoreCase("F")){
+						 positionVO.setFemaleCount(positionVO.getFemaleCount()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+					}
+					 positionVO.setTotalCount(positionVO.getMaleCount()+positionVO.getFemaleCount());
+				}
+			 }
+			 
+			 
+			 if(commonMethodsUtilService.isListOrSetValid(returnList)){
+				 for (NominatedPostDetailsVO mainVO : returnList) {
+					 Map<Long,NominatedPostDetailsVO> positionMap = mainMap.get(mainVO.getId());
+					 if(commonMethodsUtilService.isMapValid(positionMap)){
+						for (Entry<Long, NominatedPostDetailsVO> entry : positionMap.entrySet()) {
+							NominatedPostDetailsVO positionVO = entry.getValue();
+							 mainVO.setMaleCount(mainVO.getMaleCount()+positionVO.getMaleCount());
+							 mainVO.setFemaleCount(mainVO.getFemaleCount()+positionVO.getFemaleCount());
+							 mainVO.setTotalCount(mainVO.getTotalCount()+positionVO.getTotalCount());
+							 mainVO.getSubList().add(positionVO);
+						}
+					}
+				}
+			 }
+			
+			 
+		 }catch (Exception e) {
+			 e.printStackTrace();
+				LOG.error("Exception Occured in setLocationWiseNominatedPostAnalysisData()", e);
+		 }
+	 }
 }

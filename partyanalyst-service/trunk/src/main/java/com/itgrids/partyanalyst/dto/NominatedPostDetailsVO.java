@@ -8,12 +8,34 @@ public class NominatedPostDetailsVO {
 	private Long id;
 	private String name;
 	
+	private Long totalCount = 0l;
+	private Long maleCount = 0l;
+	private Long femaleCount = 0l;
 	private List<NominatedPostCandidateDtlsVO> subList1 = new ArrayList<NominatedPostCandidateDtlsVO>();
 	private List<NominatedPostCandidateDtlsVO> subList2 = new ArrayList<NominatedPostCandidateDtlsVO>();
 	
 	private List<NominatedPostDetailsVO> subList = new ArrayList<NominatedPostDetailsVO>();
 	
 	
+	
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Long getMaleCount() {
+		return maleCount;
+	}
+	public void setMaleCount(Long maleCount) {
+		this.maleCount = maleCount;
+	}
+	public Long getFemaleCount() {
+		return femaleCount;
+	}
+	public void setFemaleCount(Long femaleCount) {
+		this.femaleCount = femaleCount;
+	}
 	public Long getId() {
 		return id;
 	}
