@@ -2290,7 +2290,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		Query query = getSession().createQuery("select model.nominatedPostStatusId,model.status from NominatedPostStatus model ");
 		return query.list();
 	}
-	
+
 	public List<Object[]> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues, Long boardLevelId,Long searchLevelId,String type){
 		
 			StringBuilder builder =new StringBuilder();
@@ -2357,4 +2357,48 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		return query.list();
 		
 	}
+	@Override
+	public List<Object[]> getAllNominatedStatusListLevelWise(List<Long> boardLevelIds,	List<Long> levelValues,Long levelId) {
+		
+		 
+		   StringBuilder sb = new StringBuilder();
+		   
+		    sb.append("select count(model.nominatedPostId),model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId from  NominatedPost model  where model.isDeleted ='N' and model.nominatedPostMember.isDeleted='N'"); 		        
+
+			 if(levelId != null && levelId.longValue() > 0l && levelValues != null && levelValues.size() > 0){	
+			        if(levelId.longValue() == 4l){
+			        	sb.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:levelValues) ");
+			        }else if(levelId.longValue() == 3l){
+			        	sb.append(" and model.nominatedPostMember.address.district.districtId in(:levelValues) ");
+			        }else if(levelId.longValue() == 5l){
+			        	sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId in(:levelValues) ");
+			        }else if(levelId.longValue() == 7l){
+			        	sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId in(:levelValues) ");
+			        }
+			    }
+		    // if(boardLevelId != null && boardLevelId.size() > 0L){
+        	 //  if(boardLevelId.size()!=5L)
+			 if(boardLevelIds !=  null && boardLevelIds.size() > 0){
+        		   sb.append(" and model.nominatedPostMember.boardLevelId  in (:boardLevelIds) ");
+			 }
+        	 //  else
+        		//   sb.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+		    // }
+		     
+		     sb.append(" group by model.nominatedPostStatusId, model.nominatedPostMember.boardLevelId");
+		     
+		     Query query = getSession().createQuery(sb.toString());
+		     
+		     if(levelId != null && levelId.longValue() > 0l && levelValues != null && levelValues.size() > 0){
+			           	query.setParameterList("levelValues", levelValues);
+			       
+			    } 
+		     if(boardLevelIds !=  null && boardLevelIds.size() > 0){
+		    	 query.setParameterList("boardLevelIds", boardLevelIds);
+		     }
+		     
+		       return query.list();
+	       }
+	
+	
 }
