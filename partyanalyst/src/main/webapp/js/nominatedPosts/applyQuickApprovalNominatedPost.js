@@ -2135,7 +2135,8 @@ $(document).on("change","#filterDistrictId",function(){
 	var districtId = $(this).val();
 	var stateId = $("#filterStateId").val();
 	//getConstituenciesForDistrictsOfAddChnge(districtId,stateId);
-	getConstituenciesForDistricts(districtId,stateId)
+	getConstituenciesForDistricts(districtId);
+	//	getConstituenciesForDistricts(districtId,stateId);
 });
 
 function getConstituenciesForDistrictsOfAddChnge(district,stateId){
@@ -2162,7 +2163,7 @@ function getConstituenciesForDistrictsOfAddChnge(district,stateId){
 		 select.refresh();
 	});
 }
-function getConstituenciesForDistricts(district,stateId){
+/*function getConstituenciesForDistricts(district,stateId){
 	var distArrTemp = [];
 	    distArrTemp.push(district);
 		var jsObj={				
@@ -2184,6 +2185,32 @@ function getConstituenciesForDistricts(district,stateId){
 	 if(result !=null && result.length>0){
 		 for(var i in result){			  
 			$("#filterConstituencyId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+		   }
+		}	
+		$("#filterConstituencyId").dropkick();
+		 var select = new Dropkick("#filterConstituencyId");
+		 select.refresh();
+		});
+	}*/
+function getConstituenciesForDistricts(district){
+	var distArrTemp = [];
+	    distArrTemp.push(district);
+		var jsObj={				
+			districtId:district		
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getConstituenciesByDistrictAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   $("#filterManTowDivId  option").remove();
+	 $("#filterConstituencyId  option").remove();
+	 $("#filterManTowDivId").append('<option value="0">Select Mandal/Muncipality/Corporation</option>');
+	 $("#filterConstituencyId").append('<option value="0">Select Constituency</option>');
+	 if(result !=null && result.length>0){
+		 for(var i in result){			  
+			$("#filterConstituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 		   }
 		}	
 		$("#filterConstituencyId").dropkick();
