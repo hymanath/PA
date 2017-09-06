@@ -1,6 +1,7 @@
 var positionNames = ['CHAIRMAN','VICECHAIRMAN'];
 var positionDetails = ['Nominated Post Level','Department','Corporation/Board Name','Position Name'];
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var enrollmentYears = [2010,2012,2014,2016];
 onLoadCalls();
 var globalObjArr = [];
 function onLoadCalls(){
@@ -92,6 +93,10 @@ function searchResultBlock(myresult){
 	block+='<h5 style="font-weight:600">SEARCH RESULTS  <span style="font-size:12px;font-weight:normal">   -Found '+result.length+' Results</span></h5>';
 	block+='<ul class="nav navbar-nav col-sm-12"  style="margin-top:15px !important">';
 	for(var i in result){
+		var array = JSON.parse("[" + result[i].enrollmentYears + "]");
+		enrollmentYears = enrollmentYears.filter(function(val) {
+		  return array.indexOf(val) == -1;
+		});
 	block+='<li class="">';
         block+='<div class="panel panel-default">';
             block+='<div class="panel-heading">';
@@ -105,7 +110,20 @@ function searchResultBlock(myresult){
                 block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="MemberShip Number"><span style="padding:4px 6px">M</span>'+result[i].memberShipCardId+'</p>';
                 block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Mobile Number"><span style="padding:4px 6px">M</span>'+result[i].mobileNo+'</p>';
                 block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Constituency Name"><span>A</span>'+result[i].addressVO.constituencyName+'</p>';
-                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Enrollment Years"><span>C</span>'+result[i].enrollmentYears+'</p>';
+                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Enrollment Years"><span>C</span>';
+				for(var l in array)
+				{
+					block+='<span style="margin-right:2px;">'+array[l]+'</span>';
+				}
+				if(enrollmentYears != null && enrollmentYears.length >= 1)
+				{
+					for(var k in enrollmentYears)
+					{
+						block+='<span style="border:1px solid red;margin-right:2px;text-decoration:line-through">'+enrollmentYears[k]+'</span>';
+					}
+				}
+				
+				block+='</p>';
 			block+='</div>';
             block+='<div class="panel-footer">';
 			
@@ -1687,6 +1705,10 @@ function voterSearchResultBlock(result){
 	block+='<h5 style="font-weight:600">SEARCH RESULTS  <span style="font-size:12px;font-weight:normal">   -Found '+result.length+' Results</span></h5>';
 	block+='<ul class="nav navbar-nav col-sm-12"  style="margin-top:15px !important">';
 	for(var i in result){
+		var array = JSON.parse("[" + result[i].enrollmentYears + "]");
+		enrollmentYears = enrollmentYears.filter(function(val) {
+		  return array.indexOf(val) == -1;
+		});
 	block+='<li class="">';
         block+='<div class="panel panel-default">';
             block+='<div class="panel-heading">';
@@ -1700,7 +1722,20 @@ function voterSearchResultBlock(result){
                 block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="MemberShip Number"><span style="padding:4px 6px">M</span>'+result[i].memberShipId+'</p>';
                 block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Mobile Number"><span style="padding:4px 6px">M</span>'+result[i].mobileNo+'</p>';
                 block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Constituency Name"><span>A</span>'+result[i].constituency+'</p>';
-                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Enrollment Years"><span>C</span>'+result[i].enrollmentYears+'</p>';
+                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Enrollment Years"><span>C</span>';
+				for(var l in array)
+				{
+					block+='<span style="margin-right:2px;">'+array[l]+'</span>';
+				}
+				if(enrollmentYears != null && enrollmentYears.length >= 1)
+				{
+					for(var k in enrollmentYears)
+					{
+						block+='<span style="border:1px solid red;margin-right:2px;text-decoration:line-through">'+enrollmentYears[k]+'</span>';
+					}
+				}
+				
+				block+='</p>';
 			block+='</div>';
             block+='<div class="panel-footer">';
 			
