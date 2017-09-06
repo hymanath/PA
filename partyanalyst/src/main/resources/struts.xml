@@ -17986,6 +17986,16 @@
 			<param name="root">locationVOList</param>       
 		</result>
   	</action>
-	
+	<action name="getLocationWiseNominatedPostAnalysisDetailsAction" class="locationDashboardAction" method="getLocationWiseNominatedPostAnalysisDetails">
+			<result type="json" name="success">
+				<param name="root">nominatedPostDetailsVOList</param>				
+			</result>			
+		</action>
+		
+		<action name="areaWiseDashboardDetailedViewAction" class="locationDashboardAction" method="locationDashboard">
+			<result name="success">/jsp/areaWiseDashboardDetailedView.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src="areaWiseDashboardDetailedViewAction"</result>	
+	</action> 
  </package>
 </struts>
