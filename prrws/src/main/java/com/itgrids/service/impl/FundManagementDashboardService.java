@@ -3143,7 +3143,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 							locationVO.setAmount(cnvrtLakhIntoCrores(jObj.getString("TOT")));
 							locationVO.setTotalCount(Long.valueOf(f.format(Double.valueOf(jObj.getString("TOT")))));
 							locationVO.setYear(year);
-							locationVO.setYearId(yearIdMap.get(year));
+							locationVO.setYearId((yearIdMap.get(year)) != null ? yearIdMap.get(year):0l);
 							AddressVO addressVO = new AddressVO();
 
 					
@@ -3201,7 +3201,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 
 							FundSchemeVO mgneregsTemplateVO = new FundSchemeVO();
 							mgneregsTemplateVO.setYear(year);
-							mgneregsTemplateVO.setYearId(yearIdMap.get(year));
+							mgneregsTemplateVO.setYearId((yearIdMap.get(year)) != null ? yearIdMap.get(year):0l);
 							mgneregsTemplateVO.setName("MGNREGS");
 							mgneregsTemplateVO.setAmount(cnvrtLakhIntoCrores(jObj.getString("TOT")));
 							mgneregsTemplateVO.setTotalCount(Long.valueOf(f.format(Double.valueOf(jObj.getString("TOT")))));
@@ -3322,7 +3322,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     			  if (paCnsttncyIdAndNrgCnsttuncyCodeMap.get(constituencyId) != null ){
     				   FundSchemeVO constituencyVO = getMatchVO(locationDtlsList,paCnsttncyIdAndNrgCnsttuncyCodeMap.get(constituencyId));
 	       			   if (constituencyVO != null ){
+	       				   parliamentVO.setYear(constituencyVO.getYear());
+	       				   parliamentVO.setYearId(0l);
 	       				   parliamentVO.getSubList().get(0).setYear(constituencyVO.getYear());
+	       				   parliamentVO.getSubList().get(0).setYearId(0l);
 	       				   setRequiredValueToVO(parliamentVO,constituencyVO);//setting parliamentwise value
 	       				   locationDtlsList.remove(constituencyVO);//once data is push we are removing object from list to reduce loop in the case of match vo
 	       			   }
@@ -3909,13 +3912,14 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     	 String financialYear="";
     	 InputVO finanCialYearVO = new InputVO();
     	  try {
-    		  List<Object[]> finalYearObjLst = financialYearDAO.getAllFiniancialYearsByIds(inputVO.getFinancialYrIdList());
+    		  List<Long> financialYearIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList());
+    		  List<Object[]> finalYearObjLst = financialYearDAO.getAllFiniancialYearsByIds(financialYearIdsList);
   	    	  Map<Long,String> financialYearMap = new HashMap<Long, String>();
   	    	  Map<String,Long> yearIdMap = new HashMap<String, Long>();
   	    	 if (finalYearObjLst != null && finalYearObjLst.size() > 0 ) {
   	    		 for (Object[] param : finalYearObjLst) {
   	    			 financialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-   	    			yearIdMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[0]));
+   	    			 yearIdMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[0]));
   				}
   	    	 }
   	    	
