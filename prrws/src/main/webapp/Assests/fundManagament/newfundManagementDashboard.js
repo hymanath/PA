@@ -2105,12 +2105,12 @@ getAllDepartments();
 							table+='<td class="text-center">'+result[i].subList[j].year+'</td>';
 							for(var k in result[i].subList[j].subList)
 							{
-								newYearId = $("#financialYearId").val();
-								/* if(result[i].subList[j].yearId != 0 || typeof(result[i].subList[j].yearId) === 'undefined' || typeof(result[i].subList[j].yearId) === undefined){
+								//newYearId = $("#financialYearId").val();
+								if(result[i].subList[j].yearId != 0 || typeof(result[i].subList[j].yearId) === 'undefined' || typeof(result[i].subList[j].yearId) === undefined){
 									newYearId = result[i].subList[j].yearId;
 								}else{
 									newYearId = $("#financialYearId").val();
-								}  */
+								}  
 								 //location block
 									if(levelId != '2'){
 										if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count == 0){//in the case of MGNREGS count will come zero
@@ -3745,13 +3745,13 @@ function compareFundsBetweenFinancialYears(levelId,divId,globalLocationId,global
 	$("#fundSanctionModal").html(spinner);
     var searchLvlVals = [];
 	searchLvlVals.push(levlValue);
-    //var financialYrIdList =[];
-	var financialYrIdList = $('#financialYearId').val();
-	/* var financialyr = financialYrId.split(',');
+    var financialYrIdList =[];
+	//var financialYrIdList = $('#financialYearId').val();
+	 var financialyr = financialYrId.split(',');
 	for(var i = 0; i < financialyr.length; i++)
        {  
 			 financialYrIdList.push(financialyr[i]);
-       } */
+       } 
 
     var schemeIdsList = [];
 	schemeIdsList.push(schemeId);
@@ -5041,29 +5041,37 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
     $("#fundModal").modal('show');
 	$("#diptNameId").html('<h4 class="text-capital"><b>'+locationName+'&nbsp;&nbsp; '+levelName+' &nbsp;&nbsp; - Category Wise Fund Overview</b></h4>');
 	$("#fundSanctionModal").html(spinner);
-	var financialYrIdList = [];
+	var financialYrIdList =[];
+	var financialyr = financialYrId.split(',');
+	for(var i = 0; i < financialyr.length; i++)
+       {  
+			if(financialyr[i] !=0)
+			 financialYrIdList.push(financialyr[i]);
+       } 
+	   
+	/* var financialYrIdList = [];
 	var financialyr = $('#financialYearId').val();
 	if(financialyr == 0){
 		financialYrIdList=[];
 	}else{
 		financialYrIdList = financialyr;
 	}
-	
+	 */
 	var ReportType="";
 	if(viewType == "cumulative"){
 		ReportType = "cumulative";
 	}else{
 		ReportType = "yearwise";
 	}
-	var parliamentTypeval="";
+	/* var parliamentTypeval="";
 	var blockVill = getblockTypeVillage();
 	var blockMan = getblockTypeMandal();
-	var blockCons = getblockTypeCons();
-	var blockDis = getblockType();
+	var blockCons = getblockTypeCons(); */
 	
-	if(blockLvlId == 3){
+	
+	/* if(blockLvlId == 3){
 		if(blockDis == "districtType"){
-		parliamentTypeval ="district"
+			parliamentTypeval ="district"
 		}else{
 			parliamentTypeval ="parliament"
 		}
@@ -5085,7 +5093,7 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
 		}else{
 			parliamentTypeval ="parliament"
 		}
-	}
+	} */
 	
 	if (levelName != null && levelName=="village") {
 		levelName = "panchayat";
@@ -5109,15 +5117,19 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
             
     }).done(function(result){
 		if(result !=null && result.length>0){
-			buildMgnregsFMSWorksDetails(result,locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName,parliamentTypeval);
+			buildMgnregsFMSWorksDetails(result,locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName);
 		}else{
 			$("#fundSanctionModal").html("NO DATA AVAILABLE");
 		}
     });
   }
- function buildMgnregsFMSWorksDetails(result,locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName,parliamentTypeval){
+ function buildMgnregsFMSWorksDetails(result,locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName){
 	
   var str = '';
+	var blockDis = getblockType();
+	var blockVill = getblockTypeVillage();
+	var blockMan = getblockTypeMandal();
+	var blockCons = getblockTypeCons();
 	if($windowWidth < 768)
 	{
 		str+='<div class="table-responsive">';
@@ -5168,15 +5180,8 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
 				 str+='<td>-</td>';
 			}
 		}*/
-		 
 		if(result[i].category != null){
-			if(parliamentTypeval == "district"){
-				str+='<td><span class="categoryClickCls" style="cursor:pointer;color:green;" attr_name="'+result[i].category+'" attr_location_strids="'+	locationStrIdsForMgnregs+'" attr_level_name="'+levelName+'" attr_financial_yr_id="'+financialYrId+'" attr_view_type="'+viewType+'" attr_levelid="'+blockLvlId+'" attr_location_name="'+locationName+'">'+result[i].category+'</span></td>';
-			}else{
-				str+='<td>'+result[i].category+'</td>';
-			}
-			
-			
+			str+='<td><span class="categoryClickCls" style="cursor:pointer;color:green;" attr_name="'+result[i].category+'" attr_location_strids="'+	locationStrIdsForMgnregs+'" attr_level_name="'+levelName+'" attr_financial_yr_id="'+financialYrId+'" attr_view_type="'+viewType+'" attr_levelid="'+blockLvlId+'" attr_location_name="'+locationName+'">'+result[i].category+'</span></td>';
 		}else{
 			 str+='<td>-</td>';
 		}
@@ -5233,15 +5238,22 @@ function getMgnregsFMSWorksDetailsByCategory(locationStrIdsForMgnregs,levelName,
 	$("#fundCategoryModal").modal('show');
 	$("#diptCatNameId").html('<h5 class="text-capital"><b>'+categoryName+'&nbsp;&nbsp; - Category Wise Details</b></h5>');
 	$("#fundSanctionCategoryModal").html(spinner);
-	
-	var financialYrIdList = [];
+	var financialYrIdList =[];
+	var financialyr = financialYrId.split(',');
+	for(var i = 0; i < financialyr.length; i++)
+       {  
+			if(financialyr[i] !=0)
+			 financialYrIdList.push(financialyr[i]);
+       } 
+	   
+	/* var financialYrIdList = [];
 	var financialyr = $('#financialYearId').val();
 	if(financialyr == 0){
 		financialYrIdList=[];
 	}else{
 		financialYrIdList = financialyr;
 	}
-	
+	 */
 	var ReportType="";
 	if(viewType == "cumulative"){
 		ReportType = "cumulative";
