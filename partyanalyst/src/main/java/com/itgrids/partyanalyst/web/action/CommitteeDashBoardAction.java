@@ -88,8 +88,15 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private List<GenericVO>						genericVOList;
 	private List<CadreCommitteeVO> 				committeeVoList;
 	private CommitteeResultVO committeeResultVO;
+	private CadreCommitteeVO cadreCommitteeVO;
 	
 	
+	public CadreCommitteeVO getCadreCommitteeVO() {
+		return cadreCommitteeVO;
+	}
+	public void setCadreCommitteeVO(CadreCommitteeVO cadreCommitteeVO) {
+		this.cadreCommitteeVO = cadreCommitteeVO;
+	}
 	public List<CadreCommitteeVO> getCommitteeVoList() {
 		return committeeVoList;
 	}
@@ -1761,6 +1768,49 @@ public String getAllConstituencysForADistrict(){
 			idNameVOList = cadreCommitteeService.getDistrictsByActivityId(activityId);
 		}catch(Exception e){
 			LOG.error("Exception occured in getDistrictsListByActivity ",e);
+		}
+	   return Action.SUCCESS;
+	}
+	public String getCommitteeCountDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			Long constituencyId =jObj.getLong("constituencyId");
+			
+			List<Long> levelIdsList = new ArrayList<Long>();
+			JSONArray levelIds = jObj.getJSONArray("levelIds");
+			if(levelIds!=null &&  levelIds.length()>0){
+				for( int i=0;i<levelIds.length();i++){
+					levelIdsList.add(Long.valueOf(levelIds.getString(i))); 
+				}
+			}
+			
+			List<Long> levelValuesList = new ArrayList<Long>();
+			JSONArray levelValues = jObj.getJSONArray("levelValues");
+			if(levelValues!=null &&  levelValues.length()>0){
+				for( int i=0;i<levelValues.length();i++){
+					levelValuesList.add(Long.valueOf(levelValues.getString(i))); 
+				}
+			}
+			
+			List<Long> basicCommittesList = new ArrayList<Long>();
+			JSONArray basicCommittes = jObj.getJSONArray("basicCommittesIds");
+			if(basicCommittes!=null &&  basicCommittes.length()>0){
+				for( int i=0;i<basicCommittes.length();i++){
+					basicCommittesList.add(Long.valueOf(basicCommittes.getString(i))); 
+				}
+			}
+			List<Long> cmiteEnrlmntYearIdsList = new ArrayList<Long>();
+			JSONArray cmiteEnrlmntYears = jObj.getJSONArray("cmiteEnrlmntYearIds");
+			if(cmiteEnrlmntYears!=null &&  cmiteEnrlmntYears.length()>0){
+				for( int i=0;i<cmiteEnrlmntYears.length();i++){
+					cmiteEnrlmntYearIdsList.add(Long.valueOf(cmiteEnrlmntYears.getString(i))); 
+				}
+			}
+			
+			cadreCommitteeVO = cadreCommitteeService.getCommitteeCountDetailsByLevelId(constituencyId,levelIdsList,levelValuesList,basicCommittesList,cmiteEnrlmntYearIdsList);
+		}catch(Exception e){
+			LOG.error("Exception occured in getCommitteeCountDetails ",e);
 		}
 	   return Action.SUCCESS;
 	}
