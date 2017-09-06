@@ -179,11 +179,11 @@ function buildPartyWiseTotalDebateDetails(result,debateLocationIdArry)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">total debates</p>';
-							str+='<h4><span href="#" class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_state_id ="'+debateLocationIdArry+'" attr_type="debate">'+result[i].debateCount+'</span></h4>';
+							str+='<h4><span style="cursor:pointer;color:#337ab7" class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_state_id ="'+debateLocationIdArry+'" attr_type="debate">'+result[i].debateCount+'</span></h4>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">total spokes persons</p>';
-							str+='<h4><span href="#" class="partyWiseDebateCls" attr_partyId='+result[i].id+'  attr_state_id ="'+debateLocationIdArry+'" attr_type="candidate">'+result[i].candidateCount+'</span></h4>';
+							str+='<h4><span style="cursor:pointer;color:#337ab7" class="partyWiseDebateCls" attr_partyId='+result[i].id+'  attr_state_id ="'+debateLocationIdArry+'" attr_type="candidate">'+result[i].candidateCount+'</span></h4>';
 						str+='</td>';
 						str+='<td>';
 						if(result[i].scalePerc !=null){
