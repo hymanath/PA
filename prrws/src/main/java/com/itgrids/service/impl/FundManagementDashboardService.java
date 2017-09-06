@@ -4021,6 +4021,18 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		return returnList;
 	}
 	
+	private String convertLakhsIntoCrores(String value){
+		String returnVal = null;
+		try {
+			if(value != null){
+				returnVal = new BigDecimal(Double.valueOf(value)/100.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception occured at convertLakhsIntoCrores() in FundManagementDashboardService class ",e);
+		}
+		return returnVal;
+	}
+	
 	private List<NregsFmsWorksVO> getMgnregsParliamentWiseCombinedDetails(List<ClientResponse> responseList){
 		List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>();
 		try {
@@ -4067,6 +4079,14 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			if(workMap.size() > 0)
 				returnList = new ArrayList<NregsFmsWorksVO>(workMap.values());
 			
+			if(returnList != null && !returnList.isEmpty()){
+				for (NregsFmsWorksVO vo : returnList){
+					vo.setWage(convertLakhsIntoCrores(vo.getWage()));
+					vo.setMaterial(convertLakhsIntoCrores(vo.getMaterial()));
+					vo.setTotal(convertLakhsIntoCrores(vo.getTotal()));
+				}
+			}
+			
 		} catch (Exception e) {
 			LOG.error(" Exception occured at getMgnregsParliamentWiseCombinedDetails() in FundManagementDashboardService class ",e);
 		}
@@ -4100,9 +4120,9 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 								}
 								vo.setCategory(jObj.getString("CAT_NAME"));
 								vo.setWorks(jObj.getString("WORKS"));
-								vo.setWage(jObj.getString("WAGE"));
-								vo.setMaterial(jObj.getString("MATERIAL"));
-								vo.setTotal(jObj.getString("TOTAL"));
+								vo.setWage(convertLakhsIntoCrores(jObj.getString("WAGE")));
+								vo.setMaterial(convertLakhsIntoCrores(jObj.getString("MATERIAL")));
+								vo.setTotal(convertLakhsIntoCrores(jObj.getString("TOTAL")));
 
 								returnList.add(vo);
 							}

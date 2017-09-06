@@ -2153,6 +2153,7 @@ getAllDepartments();
 			});
 			
 		}else if(levelId == 3 || levelId == 9){
+			if(viewType == "cumulative"){
 				$("#dataTable"+divId).dataTable({
 					"paging":   false,
 					"info":     false,
@@ -2161,6 +2162,14 @@ getAllDepartments();
 					"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 					"order": [ 0, 'desc' ]
 				});
+			}else{
+				$("#dataTable"+divId).dataTable({
+					"iDisplayLength": 15,
+					"aaSorting": [],
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				});
+			}
+				
 			}
 			if(levelId == 2){
 				if(result !=null && result.length>0){
