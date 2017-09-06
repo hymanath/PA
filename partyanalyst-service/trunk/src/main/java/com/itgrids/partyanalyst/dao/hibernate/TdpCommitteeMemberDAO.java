@@ -3177,4 +3177,42 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 		return query.list();
 		
 	}
+	public List<Object[]> getFinilizedCommittesByRole(Long constituencyId,List<Long> levelIds,List<Long> levelValues,List<Long> basicCommitteeIds,List<Long> cmiteEnrlmntYearIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.tdpCommitteeRole.tdpRoles.tdpRolesId," +
+				" count(model.tdpCommitteeMemberId)" +
+				" from TdpCommitteeMember model" +
+				" where model.isActive = 'Y' and model.status = 'F'");
+		if(constituencyId != null && constituencyId.longValue() > 0l){
+			sb.append(" and model.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId =:constituencyId");
+		}
+		if(levelValues != null  && !levelValues.isEmpty() && levelValues.size() > 0){
+			sb.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:levelValues)");
+		} 
+		if(levelIds != null && !levelIds.isEmpty() && levelIds.size() > 0){
+			sb.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:levelIds)");
+		}
+		if(basicCommitteeIds != null && !basicCommitteeIds.isEmpty() && basicCommitteeIds.size() >0){
+			sb.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId in (:basicCommitteeIds)");
+		}
+		if(cmiteEnrlmntYearIds != null && !cmiteEnrlmntYearIds.isEmpty() &&  cmiteEnrlmntYearIds.size() >0){
+			sb.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId in (:cmiteEnrlmntYearIds)");
+		}
+		
+		sb.append("group by model.tdpCommitteeRole.tdpRoles.tdpRolesId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(constituencyId != null && constituencyId.longValue() > 0l)
+			query.setParameter("constituencyId", constituencyId);
+		if(levelValues != null && !levelValues.isEmpty() && levelValues.size() > 0)
+			query.setParameterList("levelValues", levelValues);
+		if(levelIds != null  && !levelIds.isEmpty() && levelIds.size() > 0)
+			query.setParameterList("levelIds", levelIds);
+		if(basicCommitteeIds != null && !basicCommitteeIds.isEmpty() && basicCommitteeIds.size() >0)
+			query.setParameterList("basicCommitteeIds", basicCommitteeIds);
+		if(cmiteEnrlmntYearIds != null && !cmiteEnrlmntYearIds.isEmpty() &&  cmiteEnrlmntYearIds.size() >0)
+			query.setParameterList("cmiteEnrlmntYearIds", cmiteEnrlmntYearIds);
+		
+		return query.list();
+	}
 }

@@ -148,4 +148,41 @@ public class TdpCommitteeRoleDAO extends GenericDaoHibernate<TdpCommitteeRole, L
 		return query.list();
 		
 	}
+	public List<Object[]> getTotalCommitteesByRole(Long constituencyId,List<Long> levelIds,List<Long> lvelValues,List<Long> basicCommiteIds,List<Long> cmiteEnrlmntYearIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.tdpRoles.tdpRolesId," +
+				" sum(model.maxMembers)" +
+				" from TdpCommitteeRole model" +
+				" where ");
+		if(constituencyId != null && constituencyId.longValue() > 0l){
+			sb.append(" model.tdpCommittee.userAddress.constituency.constituencyId =:constituencyId");
+		}
+		if(lvelValues != null && !lvelValues.isEmpty() && lvelValues.size() > 0){
+			sb.append(" and model.tdpCommittee.tdpCommitteeLevelValue in (:lvelValues)");
+		} 
+		if(levelIds != null && !levelIds.isEmpty() && levelIds.size() > 0){
+			sb.append(" and model.tdpCommittee.tdpCommitteeLevelId in (:levelIds)");
+		}
+		if(basicCommiteIds != null && !basicCommiteIds.isEmpty() &&  basicCommiteIds.size() >0){
+			sb.append(" and model.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId in (:basicCommiteIds)");
+		}
+		if(cmiteEnrlmntYearIds != null && !cmiteEnrlmntYearIds.isEmpty() &&  cmiteEnrlmntYearIds.size() >0){
+			sb.append(" and model.tdpCommittee.tdpCommitteeEnrollmentId in (:cmiteEnrlmntYearIds)");
+		}
+		
+		sb.append("group by model.tdpRoles.tdpRolesId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(constituencyId != null && constituencyId.longValue() > 0l)
+			query.setParameter("constituencyId", constituencyId);
+		if(lvelValues != null && !lvelValues.isEmpty() &&  lvelValues.size() > 0)
+			query.setParameterList("lvelValues", lvelValues);
+		if(levelIds != null && !levelIds.isEmpty() &&  levelIds.size() > 0)
+			query.setParameterList("levelIds", levelIds);
+		if(basicCommiteIds != null && !basicCommiteIds.isEmpty() &&  basicCommiteIds.size() >0)
+			query.setParameterList("basicCommiteIds", basicCommiteIds);
+		if(cmiteEnrlmntYearIds != null && !cmiteEnrlmntYearIds.isEmpty() &&  cmiteEnrlmntYearIds.size() >0)
+			query.setParameterList("cmiteEnrlmntYearIds", cmiteEnrlmntYearIds);
+		return query.list();
+	}
 }

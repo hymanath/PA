@@ -22978,5 +22978,63 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 	 return finalList;
  }
  
- 
+ public CadreCommitteeVO getCommitteeCountDetailsByLevelId(Long constituencyId,List<Long> levelIds,List<Long> levelValues,List<Long> basicCommitteeIds,List<Long> cmiteEnrlmntYearIds){
+	 CadreCommitteeVO finalVO = new CadreCommitteeVO();
+	 try {
+		 List<CadreCommitteeVO> rolesList = new ArrayList<CadreCommitteeVO>();
+		List<Object[]> roleList = tdpRolesDAO.getRoles();
+		if(commonMethodsUtilService.isListOrSetValid(roleList)){
+			for (Object[] param : roleList) {
+				CadreCommitteeVO vo = new CadreCommitteeVO();
+				vo.setRoleId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setRoleName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				rolesList.add(vo);
+			}
+		}
+		List<Object[]> rolesWiseCountLst = tdpCommitteeRoleDAO.getTotalCommitteesByRole(constituencyId,levelIds,levelValues,basicCommitteeIds,cmiteEnrlmntYearIds);
+		if(commonMethodsUtilService.isListOrSetValid(rolesWiseCountLst)){
+			for (Object[] param : rolesWiseCountLst) {
+				finalVO.setSubList(rolesList);
+				CadreCommitteeVO rolesVO = getMatchedVOByRoleId(finalVO.getSubList(), commonMethodsUtilService.getLongValueForObject(param[0]));
+				if(rolesVO != null){
+					rolesVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+		}
+		List<Object[]> finalizedCountLst = tdpCommitteeMemberDAO.getFinilizedCommittesByRole(constituencyId,levelIds,levelValues,basicCommitteeIds,cmiteEnrlmntYearIds);
+		if(commonMethodsUtilService.isListOrSetValid(finalizedCountLst)){
+			for (Object[] param : finalizedCountLst) {
+				finalVO.setSubList(rolesList);
+				CadreCommitteeVO rolesVO = getMatchedVOByRoleId(finalVO.getSubList(), commonMethodsUtilService.getLongValueForObject(param[0]));
+				if(rolesVO != null){
+					rolesVO.setFinalizedCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+					rolesVO.setRemainingCount(rolesVO.getTotalCount()-rolesVO.getFinalizedCount());
+				}
+			}
+		}
+	} catch (Exception e) {
+		LOG.error("Exception raised in CadreCommitteeService of getCommitteeCountDetailsByLevelId", e);
+	}
+	 return finalVO;
+ }
+ public CadreCommitteeVO getMatchedVOByRoleId(List<CadreCommitteeVO> rolesList,Long roleId)
+	{
+		CadreCommitteeVO returnVO = null;
+		try {
+			
+			if(rolesList != null && rolesList.size()>0)
+			{
+				for (CadreCommitteeVO rolesVO : rolesList)
+				{
+					if(rolesVO.getRoleId().longValue() == roleId.longValue())
+					{
+						return rolesVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getMatchedVOByRoleId", e);
+		}
+		return returnVO;
+	}
 }
