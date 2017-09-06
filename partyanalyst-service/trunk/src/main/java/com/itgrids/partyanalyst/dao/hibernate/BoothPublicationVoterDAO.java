@@ -8890,7 +8890,7 @@ public Long getPublicationDateIdByVoterIDCardNo(String voterCardNo){
 	StringBuilder sb = new StringBuilder();
 	sb.append("select model.booth.publicationDate.publicationDateId " +
 					" from BoothPublicationVoter model " +
-					" where model.voter.voterIDCardNo = :voterCardNo  and model.booth.publicationDate.publicationDateId >= "+IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+					" where model.voter.voterIDCardNo = :voterCardNo  and model.booth.publicationDate.publicationDateId = "+IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
 
 	Query query = getSession().createQuery(sb.toString());
 	
@@ -8904,7 +8904,7 @@ public Long getPublicationDateIdByVoterID(Long voterId){
 	StringBuilder sb = new StringBuilder();
 	sb.append("select model.booth.publicationDate.publicationDateId " +
 					" from BoothPublicationVoter model " +
-					" where model.voter.voterId = :voterId  and model.booth.publicationDate.publicationDateId >= "+IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+					" where model.voter.voterId = :voterId  and model.booth.publicationDate.publicationDateId = "+IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
 
 	Query query = getSession().createQuery(sb.toString());
 	
