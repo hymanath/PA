@@ -2291,7 +2291,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		return query.list();
 	}
 
-	public List<Object[]> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues, Long boardLevelId,Long searchLevelId,String type){
+	public List<Object[]> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues, Long boardLevelId,Long searchLevelId,String type,List<Long> statusIds){
 		
 			StringBuilder builder =new StringBuilder();
 			builder.append(" select count(model.nominatedPostId),model.nominatedPostMember.nominatedPostPosition.position.positionId," +
@@ -2336,7 +2336,9 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 					else if(searchLevelId.longValue() ==7L  && locationValues != null && locationValues.size()>0)
 						builder.append(" and model.nominatedPostMember.address.panchayatId in (:locationValue) ");
 				}
-				
+				if(statusIds != null && statusIds.size() >0){
+					builder.append(" and model.nominatedPostStatus.nominatedPostStatusId in (:statusIds) ");
+				}
 				builder.append(" group by model.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominationPostCandidate.gender ");
 				if(type != null && type.equalsIgnoreCase("casteGroup")){
 					builder.append(" ,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId");
@@ -2352,6 +2354,9 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 				Query query = getSession().createQuery(builder.toString());
 				if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
 					query.setParameterList("locationValue", locationValues);
+				}
+				if(statusIds != null && statusIds.size() >0){
+					query.setParameterList("statusIds", statusIds);
 				}
 		
 		return query.list();
@@ -2446,4 +2451,44 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	return query.list();
 
 	}
+	public List<Object[]> getAreaWiseDashboardCandidatesCountView(List<Long> locationValues,Long searchLevelId,List<Long> statusIds){
+		  
+		  StringBuilder builder =new StringBuilder();
+		  builder.append(" select count(distinct model.nominationPostCandidate.nominationPostCandidateId),model.nominatedPostMember.boardLevel.boardLevelId," +
+		  		"model.nominatedPostMember.boardLevel.level,model.nominationPostCandidate.address.tehsil.tehsilId," +
+		      " model.nominationPostCandidate.address.tehsil.tehsilName," );
+		   builder.append(" model.nominationPostCandidate.gender ");
+		    builder.append(" from NominatedPost model left join model.nominationPostCandidate.address.tehsil tehsil ");
+		    builder.append(" where model.isDeleted = 'N' and model.isExpired = 'N' and model.nominatedPostMember.isDeleted = 'N' " );
+		    if(searchLevelId != null && searchLevelId.longValue()>0L){
+		      if((searchLevelId.longValue() == 1L))
+		        builder.append(" and model.nominationPostCandidate.address.country.countryId  = 1 ");
+		      else if((searchLevelId.longValue() == 2L) && locationValues != null && locationValues.size()>0)
+		        builder.append(" and model.nominationPostCandidate.address.state.stateId  in (:locationValue) ");
+		      else if(searchLevelId.longValue() ==3L && locationValues != null && locationValues.size()>0)
+		        builder.append(" and model.nominationPostCandidate.address.district.districtId in (:locationValue) ");
+		      else if(searchLevelId.longValue() ==4L  && locationValues != null && locationValues.size()>0)
+		        builder.append(" and model.nominationPostCandidate.address.constituency.constituencyId in (:locationValue) ");
+		      else if(searchLevelId.longValue() ==5L  && locationValues != null && locationValues.size()>0)
+		        builder.append(" and model.nominationPostCandidate.address.tehsil.tehsilId in (:locationValue) ");
+		      else if(searchLevelId.longValue() ==6L  && locationValues != null && locationValues.size()>0)
+		        builder.append(" and model.nominationPostCandidate.address.localElectionBody.localElectionBodyId in (:locationValue) ");
+		      else if(searchLevelId.longValue() ==7L  && locationValues != null && locationValues.size()>0)
+		        builder.append(" and model.nominationPostCandidate.address.panchayatId in (:locationValue) ");
+		    }
+		    if(statusIds != null && statusIds.size() >0){
+				builder.append(" and model.nominatedPostStatus.nominatedPostStatusId in (:statusIds) ");
+			}
+		    builder.append(" group by model.nominationPostCandidate.address.tehsil.tehsilId," +
+		    		"model.nominatedPostMember.boardLevelId,model.nominationPostCandidate.gender ");
+		    Query query = getSession().createQuery(builder.toString());
+		    if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
+		      query.setParameterList("locationValue", locationValues);
+		    }
+		    if(statusIds != null && statusIds.size() >0){
+				query.setParameterList("statusIds", statusIds);
+			}
+		return query.list();
+
+		}
 }
