@@ -12,6 +12,7 @@
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
@@ -1063,6 +1064,12 @@
 <script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>        
 <script type="text/javascript" src="Assests/js/bootstrap.js"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/pdf.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
