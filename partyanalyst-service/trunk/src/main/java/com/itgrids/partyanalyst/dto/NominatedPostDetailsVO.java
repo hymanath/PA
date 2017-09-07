@@ -15,8 +15,8 @@ public class NominatedPostDetailsVO {
 	private List<NominatedPostCandidateDtlsVO> subList2 = new ArrayList<NominatedPostCandidateDtlsVO>();
 	
 	private List<NominatedPostDetailsVO> subList = new ArrayList<NominatedPostDetailsVO>();
-	
-	
+	private Long count = 0l;
+	public String Perc= "";
 	
 	public Long getTotalCount() {
 		return totalCount;
@@ -65,6 +65,18 @@ public class NominatedPostDetailsVO {
 	}
 	public void setSubList(List<NominatedPostDetailsVO> subList) {
 		this.subList = subList;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public String getPerc() {
+		return Perc;
+	}
+	public void setPerc(String perc) {
+		Perc = perc;
 	}
 	
 	
