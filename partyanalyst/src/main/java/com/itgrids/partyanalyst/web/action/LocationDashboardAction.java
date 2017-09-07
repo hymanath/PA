@@ -720,5 +720,33 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 
-	
+	public String getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(){
+	    try{
+	      jObj = new JSONObject(getTask());
+	      
+	      List<Long> locationValuesList = new ArrayList<Long>(0); 
+	      JSONArray levelValues = jObj.getJSONArray("levelValues");
+	      
+	        if(levelValues != null && levelValues.length()> 0){
+	          for(int i = 0;i<levelValues.length();i++){
+	            locationValuesList.add(new Long(levelValues.getInt(i)));
+	          }
+	        } 
+	        List<Long> statusIdsList =new ArrayList<Long>(0);
+	        JSONArray statusIds = jObj.getJSONArray("statusIds");
+		      
+	        if(statusIds != null && statusIds.length()> 0){
+	          for(int i = 0;i<statusIds.length();i++){
+	        	  statusIdsList.add(new Long(statusIds.getInt(i)));
+	          }
+	        } 
+	      Long levelId = jObj.getLong("levelId");
+	      String type =jObj.getString("type");
+	      nominatedPostDetailsVOList = locationDashboardService.getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(locationValuesList,levelId,statusIdsList,type);  
+	      
+	    }catch(Exception e){
+	      LOG.error("Entered into getLocationWiseNominatedPostCandidateDetails method of NominatedPostProfileAction Action",e);
+	    }
+	    return Action.SUCCESS;
+	  }
 }
