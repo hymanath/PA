@@ -160,7 +160,7 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	 	    				vo.setAmountPaidTransco(jObj.getString("AMOUNT_PAID_TRANSCO"));
 	 	    				vo.setBorewellenergisation(jObj.getString("BOREWELL_ENERGISATION"));
 	 	    				if(vo.getTarget() != null && vo.getTarget() > 0l && vo.getBorewellsDrilled() != null && vo.getBorewellsDrilled() > 0l)
-	 	    					vo.setPercentage(new BigDecimal(vo.getBorewellsDrilled()*100.00/vo.getTarget()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    					vo.setPercentage(new BigDecimal(Long.valueOf(vo.getBorewellenergisation())*100.00/vo.getTarget()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				returnList.add(vo);
 	 	    			
 	 	    			}
