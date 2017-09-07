@@ -899,6 +899,11 @@ function tableViewConsolidated(result,divId,subLocationType)
 		"aaSorting": [],
 		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 		//"dom": 'lfBrtip',
+		"scrollX":        true,
+		"scrollCollapse": true,
+		"fixedColumns":   {
+            "leftColumns": 1,
+		},
 		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 		"<'row'<'col-sm-12'tr>>" +
 		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
