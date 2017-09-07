@@ -4388,7 +4388,7 @@
   		<property name="publicationDateDAO" ref="publicationDateDAO"></property>
   		<property name="boothInchargeCommitteeDAO" ref="boothInchargeCommitteeDAO"></property>
   		<property name="applicationStatusDAO" ref="applicationStatusDAO"></property>
-  		
+  		<property name="positionDAO" ref="positionDAO"></property>
   </bean>
   <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
          <property name="districtDAO" ref="districtDAO" />

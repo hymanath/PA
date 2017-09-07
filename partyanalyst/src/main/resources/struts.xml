@@ -17996,7 +17996,7 @@
 			<result name="success">/jsp/areaWiseDashboardDetailedView.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src="areaWiseDashboardDetailedViewAction"</result>	
-	</action> 
+	</action>
 	<action name="getCommitteeCountDetailsAction" class="committeeDashBoardAction" method="getCommitteeCountDetails">
 		<result type="json" name="success">
 			<param name="root">cadreCommitteeVO</param>
@@ -18007,5 +18007,10 @@
 				<param name="root">nominatedPostDetailsVOList</param>				
 			</result>			
 		</action>
+		<action name="getAreaWiseDashboardCandidatesCountViewAction" class="locationDashboardAction" method="getAreaWiseDashboardCandidatesCountView">
+			<result type="json" name="success">
+				<param name="root">nominatedPostDetailsVO</param>				
+			</result>			
+		</action> 
  </package>
 </struts>
