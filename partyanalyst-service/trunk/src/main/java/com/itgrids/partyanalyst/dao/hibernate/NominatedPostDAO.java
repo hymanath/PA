@@ -2399,6 +2399,51 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		     
 		       return query.list();
 	       }
-	
-	
+
+	public List<Object[]> getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(List<Long> locationValues,Long searchLevelId,List<Long> statusIdsList,String type){
+		
+		StringBuilder builder =new StringBuilder();
+		if(type != null && type.equalsIgnoreCase("ageRange")){
+		 builder.append(" select count(distinct model.nominationPostCandidateId),model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
+		 		" model.nominationPostCandidate.nominatedPostAgeRange.ageRange " );
+		}else if(type != null && type.equalsIgnoreCase("casteCategory")){
+		 builder.append(" select count( distinct model.nominationPostCandidateId),model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategoryGroupId," +
+		 		" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategoryGroupName " );
+		}
+		   builder.append(" from NominatedPost model  ");
+			builder.append(" where model.isDeleted = 'N' and model.isExpired = 'N' and model.nominationPostCandidate.isDeleted = 'N' " );
+			if(searchLevelId != null && searchLevelId.longValue()>0L){
+				if((searchLevelId.longValue() == 1L))
+					builder.append(" and model.nominationPostCandidate.address.country.countryId  = 1 ");
+				else if((searchLevelId.longValue() == 2L) && locationValues != null && locationValues.size()>0)
+					builder.append(" and model.nominationPostCandidate.address.state.stateId  in (:locationValue) ");
+				else if(searchLevelId.longValue() ==3L && locationValues != null && locationValues.size()>0)
+					builder.append(" and model.nominationPostCandidate.address.district.districtId in (:locationValue) ");
+				else if(searchLevelId.longValue() ==4L  && locationValues != null && locationValues.size()>0)
+					builder.append(" and model.nominationPostCandidate.address.constituency.constituencyId in (:locationValue) ");
+				else if(searchLevelId.longValue() ==5L  && locationValues != null && locationValues.size()>0)
+					builder.append(" and model.nominationPostCandidate.address.tehsil.tehsilId in (:locationValue) ");
+				else if(searchLevelId.longValue() ==6L  && locationValues != null && locationValues.size()>0)
+					builder.append(" and model.nominationPostCandidate.address.localElectionBody.localElectionBodyId in (:locationValue) ");
+				else if(searchLevelId.longValue() ==7L  && locationValues != null && locationValues.size()>0)
+					builder.append(" and model.nominationPostCandidate.address.panchayatId in (:locationValue) ");
+			}
+			if(statusIdsList != null && statusIdsList.size()>0){
+				builder.append(" and model.nominatedPostStatusId in(:statusIdsList)");
+			}
+			if(type != null && type.equalsIgnoreCase("ageRange")){
+			  builder.append(" group by model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+			}else if(type != null && type.equalsIgnoreCase("casteCategory")){
+			 builder.append(" group by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategoryGroupId ");
+			}
+			Query query = getSession().createQuery(builder.toString());
+			if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
+				query.setParameterList("locationValue", locationValues);
+			}
+			if(statusIdsList != null && statusIdsList.size()>0){
+				query.setParameterList("statusIdsList", statusIdsList);
+			}
+	return query.list();
+
+	}
 }

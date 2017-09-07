@@ -74,4 +74,5 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	 public List<Object[]> getAllNominatedStatusList();
 	 public List<Object[]> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues, Long boardLevelId,Long searchLevelId,String type);
 	 public List<Object[]> getAllNominatedStatusListLevelWise(List<Long> boardLevelId,	List<Long> levelValues,Long levelId); 
+	 public List<Object[]> getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(List<Long> locationValues,Long searchLevelId,List<Long> statusIdsList,String type);
 }
