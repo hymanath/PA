@@ -14,3 +14,43 @@ function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(){
 			
 		});
  }
+ 
+ //getLocationWiseNominatedPostAnalysisDetails("ageGroup");
+//	getLocationWiseNominatedPostAnalysisDetails("casteGroup");
+//	getLocationWiseNominatedPostAnalysisDetails("subCaste");
+	//getLocationWiseNominatedPostAnalysisDetails("mandal");
+function getLocationWiseNominatedPostAnalysisDetails(type){
+	alert(4)
+		var jsObj={
+			boardLevelId:4,
+			levelValues:["282"],
+			levelId:4,
+			dataType:type,
+			statusIds:[3,4]
+		}
+		$.ajax({   
+			type:'GET',
+			url:'getLocationWiseNominatedPostAnalysisDetailsAction.action',  
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	}
+	//getAreaWiseDashboardCandidatesCountView();
+	function getAreaWiseDashboardCandidatesCountView(){
+	alert(5)
+		var jsObj={
+			levelValues:["282"],
+			levelId:4,
+			statusIds:[3,4]
+		}
+		$.ajax({   
+			type:'GET',
+			url:'getAreaWiseDashboardCandidatesCountViewAction.action',  
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	}
