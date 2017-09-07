@@ -2147,9 +2147,30 @@ getAllDepartments();
 		if( levelId == 4 || levelId == 5 || levelId == 6)
 		{
 			$("#dataTable"+divId).dataTable({
-					"iDisplayLength": 15,
-					"aaSorting": [],
-					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				"iDisplayLength": 15,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+				"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+				buttons: [
+					{
+						extend:    'csvHtml5',
+						text:      '<i class="fa fa-file-text-o"></i>',
+						titleAttr: 'CSV',
+						title:	   divId,
+						filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					},
+					{
+						extend:    'pdfHtml5',
+						text:      '<i class="fa fa-file-pdf-o"></i>',
+						titleAttr: 'PDF',
+						title:	   divId,
+						filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+						orientation: "landscape",
+						pageSize:'A3'
+					}
+				]
 			});
 			
 		}else if(levelId == 3 || levelId == 9){
@@ -2160,13 +2181,55 @@ getAllDepartments();
 					"searching": true,
 					"autoWidth": true,
 					"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-					"order": [ 0, 'desc' ]
+					"order": [ 0, 'desc' ],
+					"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+					"<'row'<'col-sm-12'tr>>" +
+					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+					buttons: [
+						{
+							extend:    'csvHtml5',
+							text:      '<i class="fa fa-file-text-o"></i>',
+							titleAttr: 'CSV',
+							title:	   divId,
+							filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+						},
+						{
+							extend:    'pdfHtml5',
+							text:      '<i class="fa fa-file-pdf-o"></i>',
+							titleAttr: 'PDF',
+							title:	   divId,
+							filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+							orientation: "landscape",
+							pageSize:'A3'
+						}
+					]
 				});
 			}else{
 				$("#dataTable"+divId).dataTable({
 					"iDisplayLength": 15,
 					"aaSorting": [],
-					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+					"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+					"<'row'<'col-sm-12'tr>>" +
+					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+					buttons: [
+						{
+							extend:    'csvHtml5',
+							text:      '<i class="fa fa-file-text-o"></i>',
+							titleAttr: 'CSV',
+							title:	   divId,
+							filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+						},
+						{
+							extend:    'pdfHtml5',
+							text:      '<i class="fa fa-file-pdf-o"></i>',
+							titleAttr: 'PDF',
+							title:	   divId,
+							filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+							orientation: "landscape",
+							pageSize:'A3'
+						}
+					]
 				});
 			}
 				
@@ -3879,7 +3942,31 @@ function compareFundsBetweenFinancialYears(levelId,divId,globalLocationId,global
 	$("#fundSanctionModal").html(str);   
 	$("#tableId").dataTable({
 		"iDisplayLength": 15,
-		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+				title:	   'Dashboard',
+				filename:  'dashboard'+moment().format("DD/MMMM/YYYY  HH:MM"),
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF',
+				title:	   'Dashboard',
+				filename:  'dashboard '+moment().format("DD/MMMM/YYYY  HH:MM"),
+				orientation: "landscape",
+				pageSize:'A3',
+				customize: function (doc) {
+					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+				}
+			}
+		]
 	});  
 }
 function getLocationWiseAmountAndCountDetails(levelId,divId,type,levelValueStr){
@@ -4078,7 +4165,28 @@ function getLocationWiseAmountAndCountDetails(levelId,divId,type,levelValueStr){
 		
 		$("#dataTable"+divId).dataTable({
 			"iDisplayLength": 15,
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   divId,
+					filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   divId,
+					filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3'
+				}
+			]
 		});
 		
 	}
@@ -5231,7 +5339,28 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
 	$("#fundSanctionModal").html(str);   
 	$("#tableMgrnesId").dataTable({
 		"iDisplayLength": 15,
-		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+				title:	   'Dashboard',
+				filename:  'dashboard '+moment().format("DD/MMMM/YYYY  HH:MM"),
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF',
+				title:	   'Dashboard',
+				filename:  'dashboard'+moment().format("DD/MMMM/YYYY  HH:MM"),
+				orientation: "landscape",
+				pageSize:'A3'
+			}
+		]
 	});  
 }
 $(document).on("click",".categoryClickCls",function(){
@@ -5404,6 +5533,27 @@ function getMgnregsFMSWorksDetailsByCategory(locationStrIdsForMgnregs,levelName,
 	$(".tooltipCategoryCls").tooltip();	
 	$("#tableCategoryMgrnesId").dataTable({
 		"iDisplayLength": 15,
-		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+				title:	   'Dashboard',
+				filename:  'dashboard'+moment().format("DD/MMMM/YYYY  HH:MM"),
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF',
+				title:	   'Dashboard',
+				filename:  'dashboard'+moment().format("DD/MMMM/YYYY  HH:MM"),
+				orientation: "landscape",
+				pageSize:'A3'
+			}
+		]
 	}); 
   }
