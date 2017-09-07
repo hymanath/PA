@@ -309,7 +309,7 @@ function buildBasicLedOverviewDetails(result)
 	str+='<div class="col-sm-12 white-block poles_block"  style="border-bottom: 1px solid gray;">';
 	
 	//str+='<div class="col-sm-10" >';
-	str+='<div class="col-sm-1 lightsBlock backgroundImgLED">';
+	/* str+='<div class="col-sm-1 lightsBlock backgroundImgLED">';
 		str+='<img src="Assests/icons/On_Off_light_icon.png" style="height: 39px; width: 40px;margin-left: 19px;">';
 		str+='<p style="font-weight: 800; font-size: 10px;">ON/OFF LIGHTS</p>';
 		 if (result[0].onLights ==0 && result[0].offLights == 0) {
@@ -317,13 +317,9 @@ function buildBasicLedOverviewDetails(result)
 		 } else {
 			 str+='<h4 attr_location_type="panchayat" attr_result_type="onOff" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].onLights+'/'+result[0].offLights+'</h4>';
 		 }
-	str+='</div>';
-		if($(window).width() < 500){
-			str+='<div class="col-sm-2 media m_top5">';
-		}else{
-			str+='<div class="col-sm-2 media m_top5" style="width: 15%; margin-left: 30px;">';
-		}
+	str+='</div>'; */
 		
+		str+='<div class="col-sm-3 media m_top5">';
 			str+='<div class="media-left">';
 				str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
 			str+='</div>';
@@ -332,12 +328,8 @@ function buildBasicLedOverviewDetails(result)
 				str+='<h3>'+result[0].totalPanels+'</h3>';
 			str+='</div>';
 		str+='</div>';
-		if($(window).width() < 500){
-			str+='<div class="col-sm-2 media m_top5">';
-		}else{
-			str+='<div class="col-sm-2 media m_top5" style="width: 15%;">';
-		}
 		
+		str+='<div class="col-sm-2 media m_top5">';
 			str+='<div class="media-left">';
 				str+='<img src="Assests/icons/Poles_icon.png" alt="poles_icon">';
 			str+='</div>';
@@ -346,12 +338,8 @@ function buildBasicLedOverviewDetails(result)
 				str+='<h3>'+result[0].totalPoles+'</h3>';
 			str+='</div>';
 		str+='</div>';
-		if($(window).width() < 500){
-			str+='<div class="col-sm-2 media m_top5">';
-		}else{
-			str+='<div class="col-sm-2 media m_top5" style="width: 15%;">';
-		}
 		
+		str+='<div class="col-sm-2 media m_top5">';
 			str+='<div class="media-left">';
 				str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon">';
 			str+='</div>';
@@ -578,70 +566,70 @@ function tableView(result,divId,locType)
 					
 					if(viewTypeDist == "district"){
 						tableView+='<th> </th>';	
-						tableView+='<th>DISTRICTS</th>';
+						tableView+='<th class="text-center">DISTRICTS</th>';
 					}else{
-						tableView+='<th>PARLIAMENTS</th>';
+						tableView+='<th class="text-center">PARLIAMENTS</th>';
 					}	
 					
 				}else if(divId == 'constituency')
 				{
 					if(viewTypeCons == "district"){
-						tableView+='<th>DISTRICT</th>';
-						tableView+='<th>CONSTITUENCY</th>';
+						tableView+='<th class="text-center">DISTRICT</th>';
+						tableView+='<th class="text-center">CONSTITUENCY</th>';
 					}else{
-						tableView+='<th>PARLIAMENTS</th>';
-						tableView+='<th>CONSTITUENCY</th>';
+						tableView+='<th class="text-center">PARLIAMENTS</th>';
+						tableView+='<th class="text-center">CONSTITUENCY</th>';
 					}	
 					
 				}else if(divId == 'mandal')
 				{
 					if(viewTypeman == "district"){
-						tableView+='<th>DISTRICT</th>';
-						tableView+='<th>CONSTITUENCY</th>';
-						tableView+='<th>MANDAL</th>';
+						tableView+='<th class="text-center">DISTRICT</th>';
+						tableView+='<th class="text-center">CONSTITUENCY</th>';
+						tableView+='<th class="text-center">MANDAL</th>';
 					}else{
-						tableView+='<th>PARLIAMENTS</th>';
-						tableView+='<th>CONSTITUENCY</th>';
-						tableView+='<th>MANDAL</th>';
+						tableView+='<th class="text-center">PARLIAMENTS</th>';
+						tableView+='<th class="text-center">CONSTITUENCY</th>';
+						tableView+='<th class="text-center">MANDAL</th>';
 					}						
 					
 				}else if(divId == 'panchayat')
 				{
 					if(viewTypePan == "district"){
-						tableView+='<th>DISTRICT</th>';
-						tableView+='<th>CONSTITUENCY</th>';
-						tableView+='<th>MANDAL</th>';
-						tableView+='<th>PANCHAYAT</th>';
+						tableView+='<th class="text-center">DISTRICT</th>';
+						tableView+='<th class="text-center">CONSTITUENCY</th>';
+						tableView+='<th class="text-center">MANDAL</th>';
+						tableView+='<th class="text-center">PANCHAYAT</th>';
 					}else{
-						tableView+='<th>PARLIAMENTS</th>';
-						tableView+='<th>CONSTITUENCY</th>';
-						tableView+='<th>MANDAL</th>';
-						tableView+='<th>PANCHAYAT</th>';
+						tableView+='<th class="text-center">PARLIAMENTS</th>';
+						tableView+='<th class="text-center">CONSTITUENCY</th>';
+						tableView+='<th class="text-center">MANDAL</th>';
+						tableView+='<th class="text-center">PANCHAYAT</th>';
 					}						
 					
 				}
 				if(divId != 'mandal' && divId!='panchayat'){
-				  tableView+='<th><img src="Assests/icons/mandals_icon.png" class="imageWidthLed"><br/>TOTAL MANDALS</th>';	
+				  tableView+='<th class="text-center"><img src="Assests/icons/mandals_icon.png" class="imageWidthLed"><br/>TOTAL <br/> MANDALS</th>';	
 				}
 				if (divId!='panchayat') {
-					tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>MANDALS STARTED</th>';
-				    tableView+='<th><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"><br/>TOTAL GPs</th>';
+					tableView+='<th class="text-center"><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>MANDALS<br/> STARTED</th>';
+				    tableView+='<th class="text-center"><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"><br/>TOTAL<br/> GPs</th>';
 				}
-				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>GPs STARTED</th>';
+				tableView+='<th class="text-center"><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>GPs STARTED</th>';
 				//tableView+='<th><img src="Assests/icons/Poles_icon.png" class="imageWidthLed"><br/>TOTAL POLES SURVEYED</th>';
-				tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX INSTALLED</th>';
-				tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed" style="height: 35px;"><br/>TOTAL LED LIGHTS</th>';
-				tableView+='<th style="vertical-align: middle;"><img src="Assests/icons/Non_Operational_LED_Light_Ico.png" class="" style="width: 28px; height: 35px;"><br/>NON OPERATIONAL&nbsp;</th>';
-				tableView+='<th style="vertical-align: middle;"><img src="Assests/icons/Operational_LED_Light_Icon.png" class="" style="width: 28px; height: 35px;"><br/>OPERATIONAL&nbsp;</th>';
-				tableView+='<th style="vertical-align: middle;"><img src="Assests/icons/On_light_icon.png" class="imageWidthLed" style="width: 40px; height: 40px;"><br/>ON&nbsp;</th>';
-				tableView+='<th style="vertical-align: middle;"><img src="Assests/icons/Off_Light_Icon.png" class="imageWidthLed" style="width: 33px; height: 33px;"><br/>OFF&nbsp;</th>';
-				tableView+='<th>WATTAGE<br/>&nbsp;</th>';
+				tableView+='<th class="text-center"><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX <br/> INSTALLED</th>';
+				tableView+='<th class="text-center"><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed" style="height: 35px;"><br/>TOTAL LED <br/>LIGHTS</th>';
+				tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/Non_Operational_LED_Light_Ico.png" class="" style="width: 28px; height: 35px;"><br/>NON <br/>OPERATIONAL&nbsp;</th>';
+				tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/Operational_LED_Light_Icon.png" class="" style="width: 28px; height: 35px;"><br/>OPERATIONAL&nbsp;</th>';
+				tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/On_light_icon.png" class="imageWidthLed" style="width: 40px; height: 40px;"><br/>ON&nbsp;</th>';
+				tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/Off_Light_Icon.png" class="imageWidthLed" style="width: 33px; height: 33px;"><br/>OFF&nbsp;</th>';
+				tableView+='<th class="text-center">WATTAGE<br/>&nbsp;</th>';
 			tableView+='</tr>';
 		tableView+='</thead>';
 		tableView+='<tbody>';
 			for(var i in result)
 			{
-				tableView+='<tr>';
+				tableView+='<tr style="text-align:center;">';
 					if(divId == 'district')
 					{
 						if(viewTypeDist == "district"){
@@ -783,6 +771,11 @@ function tableView(result,divId,locType)
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o"></i>',
 					titleAttr: 'CSV',
+					title:	   divId+' Level Led DashBoard',
+					filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					exportOptions: {
+						columns: [1,2,3,4,5,6,7,8,9,10,11]
+					}
 				},
 				{
 					extend:    'pdfHtml5',
@@ -790,6 +783,12 @@ function tableView(result,divId,locType)
 					titleAttr: 'PDF',
 					orientation: "landscape",
 					pageSize:'A3',
+					title:	   divId+' Level Led DashBoard',
+					filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					exportOptions: {
+						columns: [1,2,3,4,5,6,7,8,9,10,11]
+					},
+					
 					customize: function (doc) {
 						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
 					}
@@ -809,6 +808,11 @@ function tableView(result,divId,locType)
 				extend:    'csvHtml5',
 				text:      '<i class="fa fa-file-text-o"></i>',
 				titleAttr: 'CSV',
+				title:	   divId+' Level Led DashBoard',
+				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				exportOptions: {
+						columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+					}
 			},
 			{
 				extend:    'pdfHtml5',
@@ -816,9 +820,15 @@ function tableView(result,divId,locType)
 				titleAttr: 'PDF',
 				orientation: "landscape",
 				pageSize:'A3',
-				customize: function (doc) {
+				title:	   divId+' Level Led DashBoard',
+				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				exportOptions: {
+						columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+					},
+					
+				/*  customize: function (doc) {
 					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-				}
+				}  */
 			}
 		]
 	 });
