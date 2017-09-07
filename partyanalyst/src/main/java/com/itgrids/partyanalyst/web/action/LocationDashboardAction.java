@@ -71,10 +71,17 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private BoothInchargesVO boothInchargesVO;
 	private List<BoothInchargesVO> boothInchargesVOList;
 	private List<NominatedPostDetailsVO> nominatedPostDetailsVOList = new ArrayList<NominatedPostDetailsVO>();
-	private ILocationDashboardService nominatedPostProfileService;
 	private NominatedPostDashboardVO nominatedPostDashboardVO;
-
+	private NominatedPostDetailsVO nominatedPostDetailsVO;
 	
+	
+	public NominatedPostDetailsVO getNominatedPostDetailsVO() {
+		return nominatedPostDetailsVO;
+	}
+	public void setNominatedPostDetailsVO(
+			NominatedPostDetailsVO nominatedPostDetailsVO) {
+		this.nominatedPostDetailsVO = nominatedPostDetailsVO;
+	}
 	public List<NominatedPostDetailsVO> getNominatedPostDetailsVOList() {
 		return nominatedPostDetailsVOList;
 	}
@@ -689,16 +696,26 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	          for(int i = 0;i<levelValues.length();i++){
 	            locationValuesList.add(new Long(levelValues.getInt(i)));
 	          }
-	        }      
+	        }   
+	        List<Long> statusIds = new ArrayList<Long>(0); 
+		      JSONArray statusIdsArr = jObj.getJSONArray("statusIds");
+		      
+		        if(statusIdsArr != null && statusIdsArr.length()> 0){
+		          for(int i = 0;i<statusIdsArr.length();i++){
+		        	  statusIds.add(new Long(statusIdsArr.getInt(i)));
+		          }
+		        }
 	      Long levelId = jObj.getLong("levelId");
 	      String type = jObj.getString("dataType");
-	      nominatedPostDetailsVOList = locationDashboardService.getLocationWiseNominatedPostAnalysisDetails(locationValuesList,boardLevelId,levelId,type);  
+	      
+	      nominatedPostDetailsVOList = locationDashboardService.getLocationWiseNominatedPostAnalysisDetails(locationValuesList,boardLevelId,levelId,type,statusIds);  
 	      
 	    }catch(Exception e){
-	      LOG.error("Entered into getAllNominatedStatusData method of NominatedPostProfileAction Action",e);
+	      LOG.error("Entered into getAllNominatedStatusData method of LocationDashboardAction Action",e);
 	    }
 	    return Action.SUCCESS;
 	  }
+	
 	public String getAllNominatedStatusListLevelWiseData(){
 		try{
 			jObj = new JSONObject(getTask());			
@@ -746,6 +763,34 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	      
 	    }catch(Exception e){
 	      LOG.error("Entered into getLocationWiseNominatedPostCandidateDetails method of NominatedPostProfileAction Action",e);
+	    }
+	    return Action.SUCCESS;
+	  }
+	public String getAreaWiseDashboardCandidatesCountView(){
+	    try{
+	      jObj = new JSONObject(getTask());
+	      
+	      List<Long> locationValuesList = new ArrayList<Long>(0); 
+	      JSONArray levelValues = jObj.getJSONArray("levelValues");
+	      
+	        if(levelValues != null && levelValues.length()> 0){
+	          for(int i = 0;i<levelValues.length();i++){
+	            locationValuesList.add(new Long(levelValues.getInt(i)));
+	          }
+	        }   
+	        List<Long> statusIds = new ArrayList<Long>(0); 
+		      JSONArray statusIdsArr = jObj.getJSONArray("statusIds");
+		      
+		        if(statusIdsArr != null && statusIdsArr.length()> 0){
+		          for(int i = 0;i<statusIdsArr.length();i++){
+		        	  statusIds.add(new Long(statusIdsArr.getInt(i)));
+		          }
+		        }
+	      Long levelId = jObj.getLong("levelId");
+	      nominatedPostDetailsVO = locationDashboardService.getAreaWiseDashboardCandidatesCountView(levelId,locationValuesList,statusIds);  
+	      
+	    }catch(Exception e){
+	      LOG.error("Entered into getAreaWiseDashboardCandidatesCountView method of LocationDashboardAction Action",e);
 	    }
 	    return Action.SUCCESS;
 	  }
