@@ -23,6 +23,14 @@
 .bg_color{
 	background-color : #ddd;
 }
+.DTFC_LeftBodyWrapper
+{
+	top:-13px !important;
+}
+.DTFC_LeftBodyWrapper tr td
+{
+	background-color:#fff;
+}
 </style>
 <header>
 	<nav>
@@ -326,6 +334,7 @@
 <script src="Assests/Plugins/DataTable/pdf.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/NregaConsolidated.js" type="text/javascript"></script>
 <script type="text/javascript">
