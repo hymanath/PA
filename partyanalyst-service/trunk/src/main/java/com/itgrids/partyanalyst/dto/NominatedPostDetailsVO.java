@@ -17,7 +17,15 @@ public class NominatedPostDetailsVO {
 	private List<NominatedPostDetailsVO> subList = new ArrayList<NominatedPostDetailsVO>();
 	private Long count = 0l;
 	public String Perc= "";
+	private List<NominatedPostDetailsVO> list = new ArrayList<NominatedPostDetailsVO>();
 	
+	
+	public List<NominatedPostDetailsVO> getList() {
+		return list;
+	}
+	public void setList(List<NominatedPostDetailsVO> list) {
+		this.list = list;
+	}
 	public Long getTotalCount() {
 		return totalCount;
 	}

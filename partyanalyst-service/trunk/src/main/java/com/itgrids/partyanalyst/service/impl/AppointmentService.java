@@ -8368,10 +8368,20 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  				      else
  				    	  membersList =  tdpMemberDAO.searchTdpMemberByCriteria(searchType,searchValue,null);
  
+ 				     Map<Long, String> cadreEnrollmentYearsMap = new LinkedHashMap<Long, String>(0);
  				      Map<Long,AppointmentCandidateVO> uniqueCadres = new HashMap<Long,AppointmentCandidateVO>();
  				    	  if(membersList!=null && membersList.size()>0){
  				    		  finalList = new ArrayList<AppointmentCandidateVO>(); 
  				    		  for(Object[] obj: membersList){
+ 				    			 String year = obj[7]!=null?obj[7].toString():"";
+ 				    			 String existingYear=cadreEnrollmentYearsMap.get((Long)obj[0]);
+ 								if(existingYear!=null && existingYear.length()>0){
+ 									existingYear = year+", "+existingYear;  
+ 									cadreEnrollmentYearsMap.put((Long)obj[0], existingYear);
+ 									
+ 								}else{
+ 									cadreEnrollmentYearsMap.put((Long)obj[0], year);
+ 								}
  				    			 AppointmentCandidateVO vo = uniqueCadres.get((Long)obj[0]);
  				    			 if(vo == null){
  				    				vo =new AppointmentCandidateVO();
@@ -8388,7 +8398,10 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  					    		  vo.setMemberShipId(obj[4]!=null?obj[4].toString():"");
  					    		  vo.setVoterCardNo(obj[5]!=null?obj[5].toString():"");
  					    		  vo.setImageURL(obj[6]!=null?"images/cadre_images/"+obj[6].toString():null);
- 					    		  vo.setEnrollmentYears(obj[7]!=null?obj[7].toString():"");
+ 					    		 String years = cadreEnrollmentYearsMap.get(vo.getTdpCadreId());
+ 								if(years != null )
+ 									vo.setEnrollmentYears(years);
+ 					    		  
  					    		  if(!tdpCadreIds.contains(vo.getId()))
  					    			  tdpCadreIds.add(vo.getId());
  					    		  
