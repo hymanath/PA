@@ -1781,7 +1781,7 @@ getAllDepartments();
 			grantTypeIdsList.push(grantType)
 		}
 		var subFilterType = "district";
-		if(levelId == 3){
+		if(levelId == 3 || levelId == 9){
 			var blockDis = getblockType();
 			if(blockDis == "districtType"){
 				subFilterType = "district"
