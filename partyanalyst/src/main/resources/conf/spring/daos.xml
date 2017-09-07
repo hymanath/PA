@@ -4140,5 +4140,14 @@
 	 </bean>
     <bean id="kaizalaLocationAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaLocationAddressDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="healthTestDAO" class="com.itgrids.partyanalyst.dao.hibernate.HealthTestDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="tdpCadreHealthTestDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreHealthTestDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="tdpCadreHealthDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreHealthDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>	 
 </beans>		

@@ -1315,6 +1315,9 @@
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaOptions</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaActionType</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaLocationAddress</value>
+		      		   <value>com.itgrids.partyanalyst.model.HealthTest</value>
+		      		   <value>com.itgrids.partyanalyst.model.TdpCadreHealthTest</value>
+		      		   <value>com.itgrids.partyanalyst.model.TdpCadreHealthDetails</value>
 				  </list>
 			
 		</property>
