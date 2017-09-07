@@ -1780,6 +1780,36 @@ getAllDepartments();
 		}else{
 			grantTypeIdsList.push(grantType)
 		}
+		var subFilterType = "district";
+		if(levelId == 3){
+			var blockDis = getblockType();
+			if(blockDis == "districtType"){
+				subFilterType = "district"
+			}else{
+				subFilterType = "parliament"
+			}
+		}else if(levelId == 4){
+			var blockCons = getblockTypeCons();
+			if(blockCons == "districtType"){
+				subFilterType = "district"
+			}else{
+				subFilterType = "parliament"
+			}
+		}else if(levelId == 5){
+			var blockMan = getblockTypeMandal();
+			if(blockMan == "districtType"){
+				subFilterType = "district"
+			}else{
+				subFilterType = "parliament"
+			}
+		}else if(levelId == 6){
+			var blockVill = getblockTypeVillage();
+			if(blockVill == "districtType"){
+				subFilterType = "district"
+			}else{
+				subFilterType = "parliament"
+			}
+		}
 		var json = {
 			searchLevelId:locationLevelType,
 			blockLevelId : levelId,  
@@ -1798,7 +1828,7 @@ getAllDepartments();
 			glSearchLevelId :1,
 			viewType :viewType,
 			grantTypeIdsList:grantTypeIdsList,
-			subFilterType:"parliament"
+			subFilterType:subFilterType
 		}
 		$.ajax({
 			url : "getFinancialYearWiseScheameDetails",  
