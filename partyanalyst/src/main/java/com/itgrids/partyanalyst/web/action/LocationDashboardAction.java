@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -70,6 +71,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private BoothInchargesVO boothInchargesVO;
 	private List<BoothInchargesVO> boothInchargesVOList;
 	private List<NominatedPostDetailsVO> nominatedPostDetailsVOList = new ArrayList<NominatedPostDetailsVO>();
+	private ILocationDashboardService nominatedPostProfileService;
+	private NominatedPostDashboardVO nominatedPostDashboardVO;
 
 	
 	public List<NominatedPostDetailsVO> getNominatedPostDetailsVOList() {
@@ -272,7 +275,14 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setBoothInchargesVOList(List<BoothInchargesVO> boothInchargesVOList) {
 		this.boothInchargesVOList = boothInchargesVOList;
 	}
-	
+		
+	public NominatedPostDashboardVO getNominatedPostDashboardVO() {
+		return nominatedPostDashboardVO;
+	}
+	public void setNominatedPostDashboardVO(
+			NominatedPostDashboardVO nominatedPostDashboardVO) {
+		this.nominatedPostDashboardVO = nominatedPostDashboardVO;
+	}
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
 			  jObj=new JSONObject(getTask());
@@ -689,4 +699,26 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	    }
 	    return Action.SUCCESS;
 	  }
+	public String getAllNominatedStatusListLevelWiseData(){
+		try{
+			jObj = new JSONObject(getTask());			
+			Long boardLevelId = jObj.getLong("boardLevelId");
+			
+			List<Long> locationValuesList = new ArrayList<Long>(0); 
+			JSONArray levelValues = jObj.getJSONArray("levelValues");			
+		    if(levelValues != null && levelValues.length()> 0){
+		    	for(int i = 0;i<levelValues.length();i++){
+		    		locationValuesList.add(new Long(levelValues.getInt(i)));
+		    	}
+		    }			
+			Long levelId = jObj.getLong("levelId");
+			nominatedPostDashboardVO = locationDashboardService.getAllNominatedStatusListLevelWiseData(boardLevelId,locationValuesList,levelId);  
+			
+		}catch(Exception e){
+			LOG.error("Entered into getAllNominatedStatusListLevelWiseData method of NominatedPostProfileAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+
+	
 }
