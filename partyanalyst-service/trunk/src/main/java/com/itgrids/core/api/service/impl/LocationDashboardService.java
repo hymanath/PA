@@ -2645,7 +2645,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 *  @since 02-AUG-2017
 	 */
 	
-	public List<ElectionInformationVO> getElectionInformationLocationWise(String fromDateStr, String toDateStr, Long locationTypeId,Long locationValue, List<Long> electionScopeIds) {
+	public List<ElectionInformationVO> getElectionInformationLocationWise(String fromDateStr, String toDateStr, Long locationTypeId,Long locationValue, List<Long> electionScopeIds,Long partyId) {
 		List<ElectionInformationVO> electionInformationVOList= new ArrayList<ElectionInformationVO>();
 		try{
 			List<Long> yearsList=  new ArrayList<Long>();
@@ -2675,7 +2675,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					yearsList.add(i);
 				}
 			}
-			List<Object[]> resultArray= candidateDAO.getElectionInformationLocationWise(yearsList, locationTypeId, locationValue, electionScopeIds, electionBodyIds, tehsilIds);
+			List<Object[]> resultArray= candidateDAO.getElectionInformationLocationWise(yearsList, locationTypeId, locationValue, electionScopeIds, electionBodyIds, tehsilIds,partyId);
 			for (Object[] param : resultArray) {
 				if(param!=null){
 					ElectionInformationVO electionInformationVO = new ElectionInformationVO();
@@ -2697,7 +2697,6 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					electionInformationVO.setWonSeatsCount(commonMethodsUtilService.getLongValueForObject(param[15]));
 					electionInformationVOList.add(electionInformationVO);
 				}
-
 			}
 
 		}catch(Exception e){
