@@ -18012,6 +18012,11 @@
 				<param name="root">nominatedPostDetailsVO</param>				
 			</result>			
 		</action> 
+		<action name="getTdpCadreHealthDetailsByCadreAction" class="cadreDetailsAction" method="getTdpCadreHealthDetailsByCadre" >
+			<result type="json" name="success">
+				<param name="root">idAndNameVoList</param>
+			</result>
+		</action>
 	<action name="getAllNominatedStatusListLevelWiseDataDashBoardAction" class="locationDashboardAction"  method="getAllNominatedStatusListLevelWiseData">
 		<result type="json" name="success">    
 			<param name="root">nominatedPostDashboardVO</param>       

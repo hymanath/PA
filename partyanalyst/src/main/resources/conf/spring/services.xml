@@ -3018,6 +3018,8 @@
 		  <property name="cadreDetailsService" ref="cadreDetailsService" />
 		  <property name="enrollmentYearDAO" ref="enrollmentYearDAO" />
 		  <property name="kaizalaLocationAddressDAO" ref="kaizalaLocationAddressDAO" />
+		  <property name="tdpCadreHealthDetailsDAO" ref="tdpCadreHealthDetailsDAO" />
+		  <property name="tdpCadreHealthTestDAO" ref="tdpCadreHealthTestDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">

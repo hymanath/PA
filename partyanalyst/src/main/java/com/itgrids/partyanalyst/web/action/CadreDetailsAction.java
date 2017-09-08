@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceReportVO;
 import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImportantLeadersVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
@@ -128,8 +129,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<BenefitCandidateVO> benefitCandidateVOList;
 	private ToursBasicVO tourDetailsVO;
 	private Long enrollmentYearId ;
+	private List<IdAndNameVO> idAndNameVoList;
 	
 	
+	public List<IdAndNameVO> getIdAndNameVoList() {
+		return idAndNameVoList;
+	}
+	public void setIdAndNameVoList(List<IdAndNameVO> idAndNameVoList) {
+		this.idAndNameVoList = idAndNameVoList;
+	}
 	public Long getEnrollmentYearId() {
 		return enrollmentYearId;
 	}
@@ -2144,6 +2152,21 @@ public String getVolunteerCadreDetilasInformation(){
 			
 		} catch (Exception e) {
 			 LOG.error("Exception occured in getCadreTourDetails in CadreDetailsAction class  ",e);
+		}
+		return "success";
+	}
+	
+	public String getTdpCadreHealthDetailsByCadre(){
+		
+		try {
+			
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			
+			idAndNameVoList = cadreDetailsService.getTdpCadreHealthDetailsByCadre(tdpCadreId);
+			
+		} catch (Exception e) {
+			 LOG.error("Exception occured in getTdpCadreHealthDetailsByCadre in CadreDetailsAction class  ",e);
 		}
 		return "success";
 	}

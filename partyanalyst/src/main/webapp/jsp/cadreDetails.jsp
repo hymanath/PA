@@ -3675,6 +3675,22 @@ $('#toursDatePicker').val(moment().subtract(1, 'month').format('MM-YYYY'));
 	
 }); 
 
+//getHealthDetails(memberCadreId);
+
+function getHealthDetails(cadreId){
+	var jsObj={
+		tdpCadreId :10034186
+	}
+	$.ajax({
+		type:"POST",
+		url :"getTdpCadreHealthDetailsByCadreAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		
+	});
+}
+
 </script>
 </body>
 </html>
