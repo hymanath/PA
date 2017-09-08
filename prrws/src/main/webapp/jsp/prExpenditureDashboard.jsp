@@ -220,7 +220,7 @@
 	<div class="container m_top20">
 	   <div class="row">
 		  <div class="col-sm-12">
-			 <h4>STATE LEVEL OVER-VIEW</h4>
+			 <h4>STATE LEVEL OVER-VIEW</h4>               
 		  </div>
 	   </div>
 	   <div class="row">
@@ -306,87 +306,48 @@
 <section>
 	<div class="m_top20">
 				<!--<div id="projectDataOverview" class="m_top20"></div>-->
-				<div class="m_top20">
+				<div class="m_top20">   
 				<div class="row">
 			   <div class="col-sm-12">
 				  <div class="panel-group" id="accordionOverview" role="tablist" aria-multiselectable="true">
-					 <div class="panel panel-default panel-black">
-						<div class="panel-heading" role="tab" id="headingConsolidatedDistrict">
-						   <a role="button" class="panelCollapseIcon" overview-level="District" data-toggle="collapse" data-parent="#accordionOverview" href="#collapseConsolidatedDistrict" aria-expanded="true" aria-controls="collapseConsolidatedDistrict">
-							  <h4 class="panel-title text-capital">District level - overview</h4>
+					 <div class="panel panel-default panel-black" ng-repeat="block in cntrl.blockParamas">      
+						<div class="panel-heading" role="tab" id="{{cntrl.headingConsolidatedIds[$index]}}">
+						   <a role="button" class="panelCollapseIcon" overview-level="{{block}}" data-toggle="collapse" data-parent="#accordionOverview" href="{{cntrl.collapseConsolidatedLinkIds[$index]}}" aria-expanded="true" aria-controls="{{cntrl.collapseConsolidatedIds[$index]}}">
+							  <h4 class="panel-title text-capital">{{block}} level - overview</h4>
 						   </a>
-						</div>
-						<div id="collapseConsolidatedDistrict" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingConsolidatedDistrict">
+						</div>     
+						<div id="{{cntrl.collapseConsolidatedIds[$index]}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="{{cntrl.headingConsolidatedIds[$index]}}">
 						   <div class="panel-body">
-								<div ng-show="cntrl.showHideDistrictBlockDataAvailable" class="col-sm-12">
+								<div ng-show="{{cntrl.showHideBlockDataAvailable[$index]}}" class="col-sm-12">
 									<h3>No Data Available.....</h3>
-								</div>
-								<div ng-show="cntrl.showHideDistrictSearchSpinner" class="row pull-right">
+								</div> 
+								<div ng-show="{{cntrl.showHideSearchSpinner[$index]}}" class="row pull-right">
 									<div class="col-sm-12">
-										<div class="form-group">
-											<label for="search">Search</label>
-											<input type="text" ng-model="cntrl.globalSearchTermDist" ng-change="cntrl.textSearchDist('$',cntrl.globalSearchTermDist);" class="form-control" placeholder="Search"> 
-										</div>     
+										<div class="form-group">  
+											<label for="search">Search</label>    
+											<input type="text" ng-model="searchValue" class="form-control" placeholder="Search">
+										</div>                    
 								  </div>
-								</div>
-								<div class="row">
-									<div class="col-sm-12">
-										<div ng-show="cntrl.showHideDistrictSpinner">
+								</div>    
+								<div class="row">           
+									<div class="col-sm-12">  
+										<div ng-show="{{cntrl.showHideSpinner[$index]}}">     
 											<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
 										</div>
-										<div ng-show="cntrl.showHideDistrictTable" id="collapseConsolidatedViewDistrict">
-											<table ng-table="cntrl.districtParams" class="table table-condensed table-bordered table-striped" show-filter="false">
-												<tr ng-repeat="district in $data">   
-													<td title="'LocationName'" filter="{ locationName: 'text'}" sortable="'locationName'">{{district.locationName}}</td>   
-													<td title="'Grossamount'"  filter="{ grossAmount: 'number'}" sortable="'grossAmount'">{{district.grossAmount}}</td>
-													<td title="'Deductions'"   filter="{ deductions: 'number'}" sortable="'deductions'"> {{district.deductions}}</td>
-													<td title="'Netamount'"    filter="{ netAmount: 'number'}" sortable="'netAmount'"> {{district.netAmount}}</td>
+										<div ng-show="{{cntrl.ngTableHideShow[$index]}}">
+											<table ng-table="{{cntrl.ngTableArr[$index]}}" class="table table-condensed table-bordered table-striped" show-filter="false">
+												<tr ng-repeat="data in $data | filter:searchValue">   
+													<td title="'LocationName'" filter="{ locationName: 'text'}" sortable="'locationName'">{{data.locationName}}</td>   
+													<td title="'Grossamount'"  filter="{ grossAmount: 'number'}" sortable="'grossAmount'">{{data.grossAmount}}</td>
+													<td title="'Deductions'"   filter="{ deductions: 'number'}" sortable="'deductions'"> {{data.deductions}}</td>
+													<td title="'Netamount'"    filter="{ netAmount: 'number'}" sortable="'netAmount'"> {{data.netAmount}}</td>
 													</tr>
 												</table>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div class="panel panel-default panel-black">
-						   <div class="panel-heading" role="tab" id="headingConsolidatedDivision">
-							  <a role="button" class="panelCollapseIcon" overview-level="Division" data-toggle="collapse" data-parent="#accordionOverview" href="#collapseConsolidatedDivision" aria-expanded="true" aria-controls="collapseConsolidatedDivision">
-								 <h4 class="panel-title text-capital">Division level - overview</h4>
-							  </a>
-						   </div>
-						   <div id="collapseConsolidatedDivision" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingConsolidatedDivision">
-							  <div class="panel-body">
-								<div ng-show="cntrl.showHideDivisionBlockDataAvailable" class="col-sm-12">
-									<h3>No Data Available.....</h3>
-								</div>  
-								  <div ng-show="cntrl.showHideDivisionSearchSpinner" class="row pull-right">
-									  <div class="col-sm-12">
-										<div class="form-group">
-											<label for="search">Search</label>
-											<input type="text" ng-model="cntrl.globalSearchTermDivision" ng-change="cntrl.textSearchDiv('$',cntrl.globalSearchTermDivision);" class="form-control" placeholder="Search"> 
-										</div>      
-									  </div>
-								  </div>
-								 <div class="row m_top10">
-									<div class="col-sm-12">
-									   <div ng-show="cntrl.showHideDivisionSpinner">
-								       <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
-								       </div>
-									   <div ng-show="cntrl.showHideDivisionTable" id="collapseConsolidatedViewDivision">
-										   <table ng-table="cntrl.divisionParams" class="table table-condensed table-bordered table-striped" show-filter="false">
-												<tr ng-repeat="division in $data">   
-													<td title="'LocationName'" filter="{ locationName: 'text'}" sortable="'locationName'">{{division.locationName}}</td>   
-													<td title="'Grossamount'"  filter="{ grossAmount: 'number'}" sortable="'grossAmount'">{{division.grossAmount}}</td>
-													<td title="'Deductions'"   filter="{ deductions: 'number'}" sortable="'deductions'"> {{division.deductions}}</td>
-													<td title="'Netamount'"    filter="{ netAmount: 'number'}" sortable="'netAmount'"> {{division.netAmount}}</td>
-												</tr>
-											</table>
-									   </div>
-									</div>
-								 </div>
-							  </div>
-						   </div>
+							</div>                   
 						</div>
 				  </div>
 			   </div>
