@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
+
 public class NominatedPostProfileAction extends ActionSupport implements ServletRequestAware{
 	
 	private static final Logger LOG = Logger.getLogger(NominatedPostProfileAction.class);
@@ -1421,8 +1422,7 @@ public String getNominatedPostCandidatePositionWiseDetails(){
 			Long positionStatusId = jObj.getLong("positionStatusId"); 
 			Long stateId = jObj.getLong("stateId");
 			Long locationId = jObj.getLong("locationId");  
-			String locationLevelName = jObj.getString("locationLevelName");
-			
+			String locationLevelName = jObj.getString("locationLevelName");			
 			nominatedPostVOs = nominatedPostMainDashboardService.getNominatedPostCandidatePositionWiseDetails(positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,locationId,locationLevelName);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNotCadreDetailsById() method of NominatedPostProfileAction", e); 
@@ -2449,4 +2449,5 @@ public String execute()
 		}
 		return Action.SUCCESS;
 	}
+	
 }
