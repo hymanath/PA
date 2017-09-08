@@ -681,17 +681,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			// calculating totals and %'s
 			if (voList != null && voList.size() > 0) {
 				for (LocationVotersVO casteGroupVO : voList) {
-					if (casteGroupVO.getLocationVotersVOList() != null
-							&& casteGroupVO.getLocationVotersVOList().size() > 0) {
-						Long totalCadres = 0l, maleTotalCadres = 0l,
-								femaleTotalCadres = 0l;
+					if (casteGroupVO.getLocationVotersVOList() != null && casteGroupVO.getLocationVotersVOList().size() > 0) { 
+						Long maleTotalCadres = 0l, femaleTotalCadres = 0l;
 						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
 							maleTotalCadres = maleTotalCadres + casteVO.getMaleCadres();
 							femaleTotalCadres = femaleTotalCadres + casteVO.getFemaleCadres();
-							totalCadres = totalCadres + casteVO.getMaleCadres() + casteVO.getFemaleCadres();
-							casteVO.setTotalCadres(totalCadres);
 						}
-						casteGroupVO.setTotalCadres(totalCadres);
+						casteGroupVO.setTotalCadres(maleTotalCadres+femaleTotalCadres);
 						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
 							casteVO.setMaleCadrePerc(((casteVO.getMaleCadres() * 100) / maleTotalCadres) + "%");
 							casteVO.setFemaleCadrePerc(((casteVO.getFemaleCadres() * 100) / femaleTotalCadres) + "%");
@@ -771,8 +767,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			// calculating totals and %'s
 			if (voList != null && voList.size() > 0) {
 				for (LocationVotersVO casteGroupVO : voList) {
-					if (casteGroupVO.getLocationVotersVOList() != null
-							&& casteGroupVO.getLocationVotersVOList().size() > 0) {
+					if (casteGroupVO.getLocationVotersVOList() != null && casteGroupVO.getLocationVotersVOList().size() > 0) { 
 						Long maleTotalVoters = 0l, femaleTotalVoters = 0l;
 						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
 							maleTotalVoters = maleTotalVoters + casteVO.getMaleVoters();
