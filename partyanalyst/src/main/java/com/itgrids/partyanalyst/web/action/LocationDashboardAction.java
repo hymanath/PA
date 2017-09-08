@@ -608,7 +608,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIds"));
 					
 			electioninformationList=locationDashboardService.getElectionInformationLocationWise(jObj.getString("fromDate"),jObj.getString("toDate"),
-					jObj.getLong("locationId"),jObj.getLong("locationValue"),electionScopeIds);
+					jObj.getLong("locationId"),jObj.getLong("locationValue"),electionScopeIds,jObj.getLong("partyId"));
 		
 //getElectionInformationLocationWise(String fromDate, String toDate, Long locationTypeId,Long locationValue, List<Long> electionScopeIds)			
 			

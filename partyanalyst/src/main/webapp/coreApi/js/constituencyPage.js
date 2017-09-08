@@ -62,7 +62,9 @@ function onLoadAjaxCalls()
 	getPublications();
 	getVotersAndcadreAgeWiseCount(22);
 	//Assembly Block
-	getDetailedElectionInformaction()
+	getElectionTypes();
+	getElectionInformationLocationWise(0);
+	getDetailedElectionInformaction();
 	//caste information
 	getCasteGroupNAgeWiseVoterNCadreCounts("voter")
 	getActivityStatusList();
@@ -3556,6 +3558,323 @@ function getEnrollmentIds(){
 }
 function setDefaultImage(img){
 	img.src = "images/User.png";
+}
+function getElectionTypes(){
+	var jsObj={
+			
+	}
+	 $.ajax({
+      type : "GET",
+      url : "getElectionTypesAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	if(result !=null && result.length>0){
+			var str='';
+			 str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			  str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
+					str+='<input value="0" type="checkbox" checked class="electionTypeWiseCls checkUncheckCls" /><span>All</span>';
+				 str+='</label>';
+			 for(var i in result){
+				 str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
+					if(result[i].name == "Pancahat_Ward"){
+						str+='<input value ="'+result[i].id+'" type="checkbox" class="electionTypeWiseCls" /><span>Ward</span>';
+					}else{
+						str+='<input value ="'+result[i].id+'" type="checkbox" class="electionTypeWiseCls" /><span>'+result[i].name+'</span>';
+					}
+					
+				 str+='</label>';
+			 }
+			str+=' </div>';
+			$("#electionTypeValuesId").html(str);
+		}
+	});	
+}
+$(document).on("click",".electionTypeWiseCls",function(){
+	var electionVal = $(this).val();
+	if ($(this).is(':checked')){
+		 $('.electionTypeWiseCls').not(this).removeAttr('checked');
+		getElectionInformationLocationWise(electionVal);
+	}
+	
+});		
+function getElectionInformationLocationWise(electionVal){
+	$('#electionDetailsGraphWiseId').html(spinner);
+	var locationLevelVal = '';
+	if(locationLevelId == '2')
+	{
+		locationLevelVal = stateId 
+	}else if(locationLevelId == '3')
+	{
+		locationLevelVal = districtId 
+	}else if(locationLevelId == '10')
+	{
+		locationLevelVal = parliamentId 
+	}else if(locationLevelId == '4' || locationLevelId == '11' )
+	{
+		locationLevelVal = constituencyId 		
+	}else if(locationLevelId == '5' || locationLevelId == '12' )
+	{
+		locationLevelVal = mandalId 		
+	}else if(locationLevelId == '6' || locationLevelId == '13' )
+	{
+		locationLevelVal = panchayatId 		
+	}
+	var electionScopeIds=[];
+	if(electionVal == 0){
+		electionScopeIds =[];
+	}else{
+		electionScopeIds.push(electionVal);
+	}
+	
+	var jsObj={
+			fromDate 	  	:"",
+			toDate		  	:"",
+			locationId 		:locationLevelId,
+			locationValue 	:locationLevelVal,
+			electionScopeIds:electionScopeIds,
+			partyId			:0
+			
+	}
+	 $.ajax({
+      type : "GET",
+      url : "getElectionInformationLocationWiseAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	if(result !=null && result.length>0){
+			buildElectionInformationLocationWise(result);
+		}
+	});	
+}
+
+function buildElectionInformationLocationWise(result){
+	
+	if(result !=null && result.length>0){
+		/* var str='';
+			
+		str+='<div class="col-sm-12">';
+		str+='<div class="table-responsive">';
+				str+='<table class="table table-condensed table-hover table-striped m_top10">';
+					str+='<thead>';
+						str+='<tr>';
+							str+='<th>Party</th>';
+							for(var i in result){
+								str+='<th>'+result[i].electionYear+'</th>';
+							}
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+							for(var i in result){
+								str+='<tr>';
+									str+='<td>'+result[i].partyName+'</td>';
+									str+='<td>'+result[i].wonSeatsCount+'</td>';
+								str+='</tr>';
+							}
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+		$("#electionDetailsTableWiseId").html(str); */
+		var electionYearWiseArr =[];
+		var wonSeatsCountINCArr=[];var wonSeatsCountBSPArr=[];var wonSeatsCountNTRTDPArr=[];
+		var wonSeatsCountAIFBArr=[];var wonSeatsCountLSPArr=[];var wonSeatsCountPPOIArr=[];
+		var wonSeatsCountBJPArr=[];var wonSeatsCountLKDArr=[];
+		var wonSeatsCountYSRCArr=[];var wonSeatsCountJNPArr=[];var wonSeatsCountSPArr=[];
+		var wonSeatsCountJSPArr=[];var wonSeatsCountATDPArr=[];var wonSeatsCountTDPArr=[];
+		var wonSeatsCountPRPArr=[];var wonSeatsCountINCIArr=[];
+		for(var i in result){
+			electionYearWiseArr.push(result[i].electionYear+'  '+result[i].electionType);
+			if(result[i].partyName == "INC"){
+				wonSeatsCountINCArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "BSP"){
+				wonSeatsCountBSPArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "NTRTDP(LP)"){
+				wonSeatsCountNTRTDPArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "AIFB"){
+				wonSeatsCountAIFBArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "LSP"){
+				wonSeatsCountLSPArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "PPOI"){
+				wonSeatsCountPPOIArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "BJP"){
+				wonSeatsCountBJPArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "LKD"){
+				wonSeatsCountLKDArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "YSRC"){
+				wonSeatsCountYSRCArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "JNP"){
+				wonSeatsCountJNPArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "SP"){
+				wonSeatsCountSPArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "JSP"){
+				wonSeatsCountJSPArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "ATDP"){
+				wonSeatsCountATDPArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "TDP"){
+				wonSeatsCountTDPArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "PRP"){
+				wonSeatsCountPRPArr.push(result[i].wonSeatsCount)
+			}else if(result[i].partyName == "INC(I)"){
+				wonSeatsCountINCIArr.push(result[i].wonSeatsCount)
+			}
+		}
+		
+		
+		var mainINC = electionYearWiseArr.length - wonSeatsCountINCArr.length;
+			for(var i=0; i<mainINC;i++){
+				wonSeatsCountINCArr.push(0);
+			}
+		var mainBSP = electionYearWiseArr.length - wonSeatsCountBSPArr.length;
+			for(var i=0; i<mainBSP;i++){
+				wonSeatsCountBSPArr.push(0);
+			}
+		var mainNTRTDP = electionYearWiseArr.length - wonSeatsCountNTRTDPArr.length;
+			for(var i=0; i<mainNTRTDP;i++){
+				wonSeatsCountNTRTDPArr.push(0);
+			}
+		var mainAIFB = electionYearWiseArr.length - wonSeatsCountAIFBArr.length;
+			for(var i=0; i<mainAIFB;i++){
+				wonSeatsCountAIFBArr.push(0);
+			}
+		var mainLSP = electionYearWiseArr.length - wonSeatsCountLSPArr.length;
+			for(var i=0; i<mainLSP;i++){
+				wonSeatsCountLSPArr.push(0);
+			}
+		var mainPPOI = electionYearWiseArr.length - wonSeatsCountPPOIArr.length;
+			for(var i=0; i<mainPPOI;i++){
+				wonSeatsCountPPOIArr.push(0);
+			}
+		var mainBJP = electionYearWiseArr.length - wonSeatsCountBJPArr.length;
+			for(var i=0; i<mainBJP;i++){
+				wonSeatsCountBJPArr.push(0);
+			}
+		var mainLKD = electionYearWiseArr.length - wonSeatsCountLKDArr.length;
+			for(var i=0; i<mainLKD;i++){
+				wonSeatsCountLKDArr.push(0);
+			}
+		var mainYSRC = electionYearWiseArr.length - wonSeatsCountYSRCArr.length;
+			for(var i=0; i<mainYSRC;i++){
+				wonSeatsCountYSRCArr.push(0);
+			}
+		var mainJNP = electionYearWiseArr.length - wonSeatsCountJNPArr.length;
+			for(var i=0; i<mainJNP;i++){
+				wonSeatsCountJNPArr.push(0);
+			}
+		var mainSP = electionYearWiseArr.length - wonSeatsCountSPArr.length;
+			for(var i=0; i<mainSP;i++){
+				wonSeatsCountSPArr.push(0);
+			}
+		var mainJSP = electionYearWiseArr.length - wonSeatsCountJSPArr.length;
+			for(var i=0; i<mainJSP;i++){
+				wonSeatsCountJSPArr.push(0);
+			}
+		var mainATDP = electionYearWiseArr.length - wonSeatsCountATDPArr.length;
+			for(var i=0; i<mainATDP;i++){
+				wonSeatsCountATDPArr.push(0);
+			}
+		var mainTDP = electionYearWiseArr.length - wonSeatsCountTDPArr.length;
+			for(var i=0; i<mainTDP;i++){
+				wonSeatsCountTDPArr.push(0);
+			}
+		var mainPRP = electionYearWiseArr.length - wonSeatsCountPRPArr.length;
+			for(var i=0; i<mainPRP;i++){
+				wonSeatsCountPRPArr.push(0);
+			}
+		var mainINCI = electionYearWiseArr.length - wonSeatsCountINCIArr.length;
+			for(var i=0; i<mainINCI;i++){
+				wonSeatsCountINCIArr.push(0);
+			}
+		
+		$('#electionDetailsGraphWiseId').highcharts({
+			chart: {
+				type: 'area'
+			},
+			title: {
+				text: ''
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+				categories: electionYearWiseArr,
+				tickmarkPlacement: 'on',
+				title: {
+					enabled: false
+				}
+			},
+			yAxis: {
+				title: {
+					text: ''
+				}
+			},
+			tooltip: {
+				split: true,
+				valueSuffix: ' Won',
+				shared:true
+			},
+			plotOptions: {
+				area: {
+					stacking: 'normal',
+					lineColor: '#666666',
+					lineWidth: 1,
+					marker: {
+						lineWidth: 1,
+						lineColor: '#666666'
+					}
+				}
+			},
+			series: [{
+				name: 'INC',
+				data: wonSeatsCountINCArr
+			}, {
+				name: 'BSP',
+				data: wonSeatsCountBSPArr
+			}, {
+				name: 'NTRTDP(LP)',
+				data: wonSeatsCountNTRTDPArr
+			}, {
+				name: 'AIFB',
+				data: wonSeatsCountAIFBArr
+			}, {
+				name: 'LSP',
+				data: wonSeatsCountLSPArr
+			}, {
+				name: 'PPOI',
+				data: wonSeatsCountPPOIArr
+			}, {
+				name: 'BJP',
+				data: wonSeatsCountBJPArr
+			}, {
+				name: 'LKD',
+				data: wonSeatsCountLKDArr
+			}, {
+				name: 'YSRC',
+				data: wonSeatsCountYSRCArr
+			}, {
+				name: 'JNP',
+				data: wonSeatsCountJNPArr
+			}, {
+				name: 'SP',
+				data: wonSeatsCountSPArr
+			}, {
+				name: 'JSP',
+				data: wonSeatsCountJSPArr
+			}, {
+				name: 'ATDP',
+				data: wonSeatsCountATDPArr
+			}, {
+				name: 'TDP',
+				data: wonSeatsCountTDPArr
+			}, {
+				name: 'PRP',
+				data: wonSeatsCountPRPArr
+			}, {
+				name: 'INC (I)',
+				data: wonSeatsCountINCIArr
+			}]
+		});
+	}
 }
 //getCommitteeCount();
 function getCommitteeCount(){
