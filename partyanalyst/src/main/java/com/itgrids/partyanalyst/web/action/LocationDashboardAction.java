@@ -776,22 +776,9 @@ public String getElectionInformationLocationWise(){
 	    try{
 	      jObj = new JSONObject(getTask());
 	      
-	      List<Long> locationValuesList = new ArrayList<Long>(0); 
-	      JSONArray levelValues = jObj.getJSONArray("levelValues");
-	      
-	        if(levelValues != null && levelValues.length()> 0){
-	          for(int i = 0;i<levelValues.length();i++){
-	            locationValuesList.add(new Long(levelValues.getInt(i)));
-	          }
-	        }   
-	        List<Long> statusIds = new ArrayList<Long>(0); 
-		      JSONArray statusIdsArr = jObj.getJSONArray("statusIds");
+	      List<Long> locationValuesList =  convertJsonStringList(jObj.getJSONArray("levelValues"));
+	        List<Long> statusIds =convertJsonStringList(jObj.getJSONArray("statusIds"));
 		      
-		        if(statusIdsArr != null && statusIdsArr.length()> 0){
-		          for(int i = 0;i<statusIdsArr.length();i++){
-		        	  statusIds.add(new Long(statusIdsArr.getInt(i)));
-		          }
-		        }
 	      Long levelId = jObj.getLong("levelId");
 	      nominatedPostDetailsVO = locationDashboardService.getAreaWiseDashboardCandidatesCountView(levelId,locationValuesList,statusIds);  
 	      
@@ -805,15 +792,11 @@ public String getElectionInformationLocationWise(){
 		try{
 			jObj = new JSONObject(getTask());			
 					
-			List<Long> locationValuesList = new ArrayList<Long>(0); 
-			JSONArray levelValues = jObj.getJSONArray("levelValues");			
-		    if(levelValues != null && levelValues.length()> 0){
-		    	for(int i = 0;i<levelValues.length();i++){
-		    		locationValuesList.add(new Long(levelValues.getInt(i)));
-		    	}
-		    }			
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("levelValues"));			
+		  		
 			Long levelId = jObj.getLong("levelId");
-			locationVo =  locationDashboardService.getAllLocationWiseCount(locationValuesList, levelId);
+			Long publicationDateId= jObj.getLong("publicationDateId");
+			locationVo =  locationDashboardService.getAllLocationWiseCount(locationValuesList, levelId,publicationDateId);
 			
 		}catch(Exception e){
 			LOG.error("Entered into getAllLocationWiseCount method of LocationDashboardAction Action",e);
