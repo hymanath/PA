@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
@@ -71,10 +72,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private BoothInchargesVO boothInchargesVO;
 	private List<BoothInchargesVO> boothInchargesVOList;
 	private List<NominatedPostDetailsVO> nominatedPostDetailsVOList = new ArrayList<NominatedPostDetailsVO>();
-	private NominatedPostDashboardVO nominatedPostDashboardVO;
-	private NominatedPostDetailsVO nominatedPostDetailsVO;
+    private NominatedPostDashboardVO nominatedPostDashboardVO;
+    private NominatedPostDetailsVO nominatedPostDetailsVO;
+	private LocationVO locationVo;
 	
+
 	
+
 	public NominatedPostDetailsVO getNominatedPostDetailsVO() {
 		return nominatedPostDetailsVO;
 	}
@@ -289,6 +293,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setNominatedPostDashboardVO(
 			NominatedPostDashboardVO nominatedPostDashboardVO) {
 		this.nominatedPostDashboardVO = nominatedPostDashboardVO;
+	}
+	
+	public LocationVO getLocationVo() {
+		return locationVo;
+	}
+	public void setLocationVo(LocationVO locationVo) {
+		this.locationVo = locationVo;
 	}
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
@@ -601,7 +612,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 	}
-	public String getElectionInformationLocationWise(){
+public String getElectionInformationLocationWise(){
 		
 		try{
 			jObj = new JSONObject(getTask());
@@ -745,6 +756,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 
+
 	public String getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(){
 	    try{
 	      jObj = new JSONObject(getTask());
@@ -788,4 +800,25 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	    }
 	    return Action.SUCCESS;
 	  }
+
+	public String getAllLocationWiseCount(){
+		try{
+			jObj = new JSONObject(getTask());			
+					
+			List<Long> locationValuesList = new ArrayList<Long>(0); 
+			JSONArray levelValues = jObj.getJSONArray("levelValues");			
+		    if(levelValues != null && levelValues.length()> 0){
+		    	for(int i = 0;i<levelValues.length();i++){
+		    		locationValuesList.add(new Long(levelValues.getInt(i)));
+		    	}
+		    }			
+			Long levelId = jObj.getLong("levelId");
+			locationVo =  locationDashboardService.getAllLocationWiseCount(locationValuesList, levelId);
+			
+		}catch(Exception e){
+			LOG.error("Entered into getAllLocationWiseCount method of LocationDashboardAction Action",e);
+		}
+		return Action.SUCCESS;
+	}	
+	
 }
