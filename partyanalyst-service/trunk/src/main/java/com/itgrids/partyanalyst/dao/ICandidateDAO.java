@@ -90,5 +90,5 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{
 	public List<Object[]> getCandidatesByName(String candidateName);
 	public List<Object[]> getCandidatesByName();
 	public List<Object[]> getElectionInformationLocationWise(List<Long> yearsList, Long locationTypeId,
-			Long locationValue,List<Long> electionScopeIds, List<Long> electionBodyIds,List<Long> tehsilIds);
+			Long locationValue,List<Long> electionScopeIds, List<Long> electionBodyIds,List<Long> tehsilIds,Long partyId);
 }
