@@ -689,6 +689,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							maleTotalCadres = maleTotalCadres + casteVO.getMaleCadres();
 							femaleTotalCadres = femaleTotalCadres + casteVO.getFemaleCadres();
 							totalCadres = totalCadres + casteVO.getMaleCadres() + casteVO.getFemaleCadres();
+							casteVO.setTotalCadres(totalCadres);
 						}
 						casteGroupVO.setTotalCadres(totalCadres);
 						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
@@ -729,6 +730,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCasteWiseCount(constituencyIds, publicationDateId);
 
 			if (votersObjList != null && votersObjList.size() > 0) {
+
 				for (Object[] objects : votersObjList) {
 					LocationVotersVO matchedCGVO = getMatchedVO(voList, (Long) objects[0]);
 					if (matchedCGVO == null) {
@@ -748,15 +750,20 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 						voList.add(matchedCGVO);
 					} else {
-						LocationVotersVO casteVO = new LocationVotersVO();
-						casteVO.setAgeRangeId((Long) objects[2]);
-						casteVO.setAgeRange(objects[3].toString());
-						casteVO.setTotalVoters((Long) objects[4]);
-						casteVO.setTotalVotersPerc(objects[5].toString());
-						casteVO.setMaleVoters((Long) objects[6]);
-						casteVO.setFemaleVoters((Long) objects[7]);
-
-						matchedCGVO.getLocationVotersVOList().add(casteVO);
+						LocationVotersVO matchedCVO = getMatchedVO(matchedCGVO.getLocationVotersVOList(),(Long) objects[2]);
+						if (matchedCVO == null) {
+							matchedCVO = new LocationVotersVO();
+							matchedCVO.setAgeRangeId((Long) objects[2]);
+							matchedCVO.setAgeRange(objects[3].toString());
+							matchedCVO.setTotalVoters((Long) objects[4]);
+							matchedCVO.setTotalVotersPerc(objects[5].toString());
+							matchedCVO.setMaleVoters((Long) objects[6]);
+							matchedCVO.setFemaleVoters((Long) objects[7]);
+							matchedCGVO.getLocationVotersVOList().add(matchedCVO);
+						} else {
+							matchedCGVO.setMaleVoters((Long) objects[6]);
+							matchedCGVO.setFemaleVoters((Long) objects[7]);
+						}
 					}
 				}
 			}
