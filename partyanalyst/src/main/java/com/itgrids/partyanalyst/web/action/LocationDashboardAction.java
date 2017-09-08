@@ -323,8 +323,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		}
 		 return Action.SUCCESS;
 	 }
-	 
-	 public String getCasteGroupNAgeWiseVoterNCadreCounts(){
+	 public String getVotersAndCadreCasteWiseCount(){
+		 try {
+			jObj = new JSONObject(getTask());
+			locationVotersVOList = locationDashboardService.getVotersAndCadreCasteWiseCount(jObj.getString("type"),jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("publicationDateId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVotersAndCadreCasteWiseCount", e);
+		}
+		 return Action.SUCCESS;
+	 }
+	/* public String getCasteGroupNAgeWiseVoterNCadreCounts(){
 		 try {
 			jObj = new JSONObject(getTask());
 			locationVotersVOList = locationDashboardService.getCasteGroupNAgeWiseVoterNCadreCounts(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"));
@@ -332,7 +340,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			LOG.error("Exception raised at getCasteGroupNAgeWiseVoterNCadreCounts", e);
 		}
 		return Action.SUCCESS;
-	 }
+	 }*/
 	 
 	 public String getCasteNAgeWiseVoterNCadreCounts(){
 		 try {
@@ -740,23 +748,9 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public String getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(){
 	    try{
 	      jObj = new JSONObject(getTask());
-	      
-	      List<Long> locationValuesList = new ArrayList<Long>(0); 
-	      JSONArray levelValues = jObj.getJSONArray("levelValues");
-	      
-	        if(levelValues != null && levelValues.length()> 0){
-	          for(int i = 0;i<levelValues.length();i++){
-	            locationValuesList.add(new Long(levelValues.getInt(i)));
-	          }
-	        } 
-	        List<Long> statusIdsList =new ArrayList<Long>(0);
-	        JSONArray statusIds = jObj.getJSONArray("statusIds");
-		      
-	        if(statusIds != null && statusIds.length()> 0){
-	          for(int i = 0;i<statusIds.length();i++){
-	        	  statusIdsList.add(new Long(statusIds.getInt(i)));
-	          }
-	        } 
+	      List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValues"));
+	      List<Long> statusIdsList = convertJsonStringList(jObj.getJSONArray("statusIds"));
+	        
 	      Long levelId = jObj.getLong("levelId");
 	      String type =jObj.getString("type");
 	      nominatedPostDetailsVOList = locationDashboardService.getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(locationValuesList,levelId,statusIdsList,type);  
