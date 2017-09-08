@@ -8,9 +8,9 @@ public class PrExpenditureVO implements Serializable {
 
 	private Long locationId;
 	private String locationName;
-	private String grossAmount;
-	private String deductions;
-	private String netAmount;
+	private Long grossAmount;
+	private Long deductions;
+	private Long netAmount;
 	
 	private AddressVO addressVO;
 
@@ -29,28 +29,28 @@ public class PrExpenditureVO implements Serializable {
 	public void setLocationName(String locationName) {
 		this.locationName = locationName;
 	}
-
-	public String getGrossAmount() {
+	
+	public Long getGrossAmount() {
 		return grossAmount;
 	}
 
-	public void setGrossAmount(String grossAmount) {
+	public void setGrossAmount(Long grossAmount) {
 		this.grossAmount = grossAmount;
 	}
 
-	public String getDeductions() {
+	public Long getDeductions() {
 		return deductions;
 	}
 
-	public void setDeductions(String deductions) {
+	public void setDeductions(Long deductions) {
 		this.deductions = deductions;
 	}
 
-	public String getNetAmount() {
+	public Long getNetAmount() {
 		return netAmount;
 	}
 
-	public void setNetAmount(String netAmount) {
+	public void setNetAmount(Long netAmount) {
 		this.netAmount = netAmount;
 	}
 
