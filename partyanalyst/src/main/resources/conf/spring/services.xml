@@ -4389,6 +4389,11 @@
   		<property name="boothInchargeCommitteeDAO" ref="boothInchargeCommitteeDAO"></property>
   		<property name="applicationStatusDAO" ref="applicationStatusDAO"></property>
   		<property name="positionDAO" ref="positionDAO"></property>
+  		<property name="regionServiceDataImp" ref="regionServiceDataImp"></property>
+  		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"></property>
+  		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"></property>
+  		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"></property>
+  		<property name="panchayatDAO" ref="panchayatDAO"></property>  		
   </bean>
   <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
          <property name="districtDAO" ref="districtDAO" />
