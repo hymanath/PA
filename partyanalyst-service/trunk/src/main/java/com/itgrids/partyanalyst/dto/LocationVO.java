@@ -42,8 +42,19 @@ public class LocationVO implements Serializable {
 	private Long hamletId;
 	private String hamletName;
 	private String searchType;
+	private Long  constituencyCount;
+	private Long   tehsilCount;
+	private Long  villageIdCount;
+	private Long  hamletCount;	
+	private Long municipalityCount;
+	private Long boothCount;
 	
-	
+	public Long getBoothCount() {
+		return boothCount;
+	}
+	public void setBoothCount(Long boothCount) {
+		this.boothCount = boothCount;
+	}
 	public String getTask() {
 		return task;
 	}
@@ -231,5 +242,37 @@ public class LocationVO implements Serializable {
 	public void setSearchType(String searchType) {
 		this.searchType = searchType;
 	}
+	public Long getConstituencyCount() {
+		return constituencyCount;
+	}
+	public void setConstituencyCount(Long constituencyCount) {
+		this.constituencyCount = constituencyCount;
+	}
+	public Long getTehsilCount() {
+		return tehsilCount;
+	}
+	public void setTehsilCount(Long tehsilCount) {
+		this.tehsilCount = tehsilCount;
+	}
+	public Long getVillageIdCount() {
+		return villageIdCount;
+	}
+	public void setVillageIdCount(Long villageIdCount) {
+		this.villageIdCount = villageIdCount;
+	}
+	public Long getHamletCount() {
+		return hamletCount;
+	}
+	public void setHamletCount(Long hamletCount) {
+		this.hamletCount = hamletCount;
+	}
+	public Long getMunicipalityCount() {
+		return municipalityCount;
+	}
+	public void setMunicipalityCount(Long municipalityCount) {
+		this.municipalityCount = municipalityCount;
+	}
+	
+	
 	
 }
