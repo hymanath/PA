@@ -17569,13 +17569,8 @@
 		<result type="json" name="success">		   
 			<param name="root">keyValueVOList</param>
 		</result>
-   </action>
-	<action name="getCasteGroupNAgeWiseVoterNCadreCountsAction" class="locationDashboardAction"  method="getCasteGroupNAgeWiseVoterNCadreCounts">
-		<result type="json" name="success">    
-			<param name="root">locationVotersVOList</param>       
-		</result>
-  	</action>
-	<action name="getVotersAndCadreCasteWiseCountAction" class="locationDashboardAction"  method="getVotersAndCadreCasteWiseCount">
+	</action>	
+  	<action name="getCasteGroupNAgeWiseVoterNCadreCountsAction" class="locationDashboardAction"  method="getCasteGroupNAgeWiseVoterNCadreCounts">
 		<result type="json" name="success">    
 			<param name="root">locationVotersVOList</param>       
 		</result>
@@ -18001,7 +17996,7 @@
 			<result name="success">/jsp/areaWiseDashboardDetailedView.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src="areaWiseDashboardDetailedViewAction"</result>	
-	</action>
+	</action> 
 	<action name="getCommitteeCountDetailsAction" class="committeeDashBoardAction" method="getCommitteeCountDetails">
 		<result type="json" name="success">
 			<param name="root">cadreCommitteeVO</param>
@@ -18017,5 +18012,15 @@
 				<param name="root">nominatedPostDetailsVO</param>				
 			</result>			
 		</action> 
- </package>
+	<action name="getAllNominatedStatusListLevelWiseDataDashBoardAction" class="locationDashboardAction"  method="getAllNominatedStatusListLevelWiseData">
+		<result type="json" name="success">    
+			<param name="root">nominatedPostDashboardVO</param>       
+		</result>
+  	</action>
+  	<action name="getAllLocationWiseCountAction1" class="locationDashboardAction"  method="getAllLocationWiseCount">
+		<result type="json" name="success">    
+			<param name="root">locationVo</param>       
+		</result>
+  	</action>
+	 </package>
 </struts>
