@@ -596,11 +596,137 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	}
 
 	
-	public List<LocationVotersVO> getCasteGroupNAgeWiseVoterNCadreCounts(Long constituencyId, Long publicationDateId) {
+	public List<LocationVotersVO> getVotersAndCadreCasteWiseCount(String type, Long locationTypeId,Long locationValue, Long publicationDateId) {
 		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
 		try {
+			if (type.equalsIgnoreCase("voter")) {
+				voList = getCasteGroupNAgeWiseVoterNCadreCounts(locationTypeId,locationValue, publicationDateId);
+			} else if (type.equalsIgnoreCase("cadre")) {
+				voList = getCadreCasteWiseCount(locationTypeId,locationValue, publicationDateId);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVotersAndCadreCasteWiseCount", e);
+		}
+		return voList;
+	}
+	
+	
+	public List<LocationVotersVO> getCadreCasteWiseCount(Long locationTypeId,Long locationValue,Long publicationDateId) {
+		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
+		try {
+			
+			List<Long> constituencyIds = new ArrayList<Long>();
+			List<Long> locationIds = new ArrayList<Long>();
+			locationIds.add(locationValue);
+			if(locationTypeId == 3l){
+		        List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(locationIds);
+		        for (Object[] objects : locationValuesObj) {
+		          if(objects!=null){
+		        	  constituencyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+		          }
+		        }
+		        
+		      }else if(locationTypeId == 10l){
+		    	  constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+		      }else if(locationTypeId == 4l){
+		    	  constituencyIds.add(locationValue);
+		      }
+			// 0-casteCategoryId,1-casteCategory,2-casteId,3-caste,4-gender,5-cadreCount
+			List<Object[]> objList = tdpCadreEnrollmentYearDAO.getCasteNGenderWiseCadreCounts(constituencyIds);
+			//List<Object[]> objList = tdpCadreEnrollmentYearDAO.getCasteWiseCadreCounts(constituencyIds);
+
+			if (objList != null && objList.size() > 0) {
+				for (Object[] objects : objList) {
+					LocationVotersVO matchedCGVO = getMatchedVO(voList, (Long) objects[0]);
+					if (matchedCGVO == null) {
+						matchedCGVO = new LocationVotersVO();
+						matchedCGVO.setAgeRangeId((Long) objects[0]);
+						matchedCGVO.setAgeRange(objects[1].toString());
+
+						LocationVotersVO casteVO = new LocationVotersVO();
+						casteVO.setAgeRangeId((Long) objects[2]);
+						casteVO.setAgeRange(objects[3].toString());
+						if (objects[4].toString().equalsIgnoreCase("M")) {
+							casteVO.setMaleCadres((Long) objects[5]);
+						} else if (objects[4].toString().equalsIgnoreCase("F")) {
+							casteVO.setFemaleCadres((Long) objects[5]);
+						}
+
+						matchedCGVO.getLocationVotersVOList().add(casteVO);
+
+						voList.add(matchedCGVO);
+					} else {
+						LocationVotersVO matchedCVO = getMatchedVO(matchedCGVO.getLocationVotersVOList(),(Long) objects[2]);
+						if (matchedCVO == null) {
+							matchedCVO = new LocationVotersVO();
+							matchedCVO.setAgeRangeId((Long) objects[2]);
+							matchedCVO.setAgeRange(objects[3].toString());
+							if (objects[4].toString().equalsIgnoreCase("M")) {
+								matchedCVO.setMaleCadres((Long) objects[5]);
+							} else if (objects[4].toString().equalsIgnoreCase("F")) {
+								matchedCVO.setFemaleCadres((Long) objects[5]);
+							}
+							matchedCGVO.getLocationVotersVOList().add(matchedCVO);
+						} else {
+							if (objects[4].toString().equalsIgnoreCase("M")) {
+								matchedCVO.setMaleCadres((Long) objects[5]);
+							} else if (objects[4].toString().equalsIgnoreCase("F")) {
+								matchedCVO.setFemaleCadres((Long) objects[5]);
+							}
+						}
+					}
+				}
+			}
+
+			// calculating totals and %'s
+			if (voList != null && voList.size() > 0) {
+				for (LocationVotersVO casteGroupVO : voList) {
+					if (casteGroupVO.getLocationVotersVOList() != null
+							&& casteGroupVO.getLocationVotersVOList().size() > 0) {
+						Long totalCadres = 0l, maleTotalCadres = 0l,
+								femaleTotalCadres = 0l;
+						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
+							maleTotalCadres = maleTotalCadres + casteVO.getMaleCadres();
+							femaleTotalCadres = femaleTotalCadres + casteVO.getFemaleCadres();
+							totalCadres = totalCadres + casteVO.getMaleCadres() + casteVO.getFemaleCadres();
+						}
+						casteGroupVO.setTotalCadres(totalCadres);
+						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
+							casteVO.setMaleCadrePerc(((casteVO.getMaleCadres() * 100) / maleTotalCadres) + "%");
+							casteVO.setFemaleCadrePerc(((casteVO.getFemaleCadres() * 100) / femaleTotalCadres) + "%");
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCadreCasteWiseCount", e);
+		}
+		return voList;
+	}
+
+	public List<LocationVotersVO> getCasteGroupNAgeWiseVoterNCadreCounts(Long locationTypeId, Long locationValue, Long publicationDateId) {
+		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
+		try {
+			
+			List<Long> constituencyIds = new ArrayList<Long>();
+			List<Long> locationIds = new ArrayList<Long>();
+			locationIds.add(locationValue);
+			if(locationTypeId == 3l){
+		        List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(locationIds);
+		        for (Object[] objects : locationValuesObj) {
+		          if(objects!=null){
+		        	  constituencyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+		          }
+		        }
+		        
+		      }else if(locationTypeId == 10l){
+		    	  constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+		      }else if(locationTypeId == 4l){
+		    	  constituencyIds.add(locationValue);
+		      }
+			
 			// 0-castegroupId,1-castegroup,2-casteId,3-castegroup,4-voterscount,5-percentage,6-maleVotersCount,7-femaleVotersCount
-			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCasteWiseCount(constituencyId, publicationDateId);
+			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCasteWiseCount(constituencyIds, publicationDateId);
 
 			if (votersObjList != null && votersObjList.size() > 0) {
 				for (Object[] objects : votersObjList) {
@@ -635,75 +761,20 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 
-			// 0-casteCategoryId,1-casteCategory,2-casteId,3-caste,4-gender,5-cadreCount
-			List<Object[]> cadresObjList = tdpCadreEnrollmentYearDAO.getCasteNGenderWiseCadreCounts(constituencyId);
-			if (cadresObjList != null && cadresObjList.size() > 0) {
-				for (Object[] objects : cadresObjList) {
-					LocationVotersVO matchedCGVO = getMatchedVO(voList, (Long) objects[0]);
-					if (matchedCGVO == null) {
-						matchedCGVO = new LocationVotersVO();
-						matchedCGVO.setAgeRangeId((Long) objects[0]);
-						matchedCGVO.setAgeRange(objects[1].toString());
-
-						LocationVotersVO casteVO = new LocationVotersVO();
-						casteVO.setAgeRangeId((Long) objects[2]);
-						casteVO.setAgeRange(objects[3].toString());
-						if (objects[4].toString().equalsIgnoreCase("M")) {
-							casteVO.setMaleCadres((Long) objects[5]);
-						} else if (objects[4].toString().equalsIgnoreCase("F")) {
-							casteVO.setFemaleCadres((Long) objects[5]);
-						}
-
-						matchedCGVO.getLocationVotersVOList().add(casteVO);
-
-						voList.add(matchedCGVO);
-					} else {
-						LocationVotersVO matchedCVO = getMatchedVO(matchedCGVO.getLocationVotersVOList(),
-								(Long) objects[2]);
-						if (matchedCVO == null) {
-							matchedCVO = new LocationVotersVO();
-							matchedCVO.setAgeRangeId((Long) objects[2]);
-							matchedCVO.setAgeRange(objects[3].toString());
-							if (objects[4].toString().equalsIgnoreCase("M")) {
-								matchedCVO.setMaleCadres((Long) objects[5]);
-							} else if (objects[4].toString().equalsIgnoreCase("F")) {
-								matchedCVO.setFemaleCadres((Long) objects[5]);
-							}
-							matchedCGVO.getLocationVotersVOList().add(matchedCVO);
-						} else {
-							if (objects[4].toString().equalsIgnoreCase("M")) {
-								matchedCVO.setMaleCadres((Long) objects[5]);
-							} else if (objects[4].toString().equalsIgnoreCase("F")) {
-								matchedCVO.setFemaleCadres((Long) objects[5]);
-							}
-						}
-					}
-				}
-			}
-
 			// calculating totals and %'s
 			if (voList != null && voList.size() > 0) {
 				for (LocationVotersVO casteGroupVO : voList) {
 					if (casteGroupVO.getLocationVotersVOList() != null
 							&& casteGroupVO.getLocationVotersVOList().size() > 0) {
-						Long maleTotalVoters = 0l, femaleTotalVoters = 0l, totalCadres = 0l, maleTotalCadres = 0l,
-								femaleTotalCadres = 0l;
+						Long maleTotalVoters = 0l, femaleTotalVoters = 0l;
 						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
 							maleTotalVoters = maleTotalVoters + casteVO.getMaleVoters();
 							femaleTotalVoters = femaleTotalVoters + casteVO.getFemaleVoters();
-							maleTotalCadres = maleTotalCadres + casteVO.getMaleCadres();
-							femaleTotalCadres = femaleTotalCadres + casteVO.getFemaleCadres();
-							totalCadres = totalCadres + casteVO.getMaleCadres() + casteVO.getFemaleCadres();
 						}
 						casteGroupVO.setTotalVoters(maleTotalVoters+femaleTotalVoters);
-						casteGroupVO.setTotalCadres(totalCadres);
 						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
 							casteVO.setMaleVotersPerc(((casteVO.getMaleVoters() * 100) / maleTotalVoters) + "%");
 							casteVO.setFemaleVotersPerc(((casteVO.getFemaleVoters() * 100) / femaleTotalVoters) + "%");
-							casteVO.setTotalCadres(casteVO.getMaleCadres() + casteVO.getFemaleCadres());
-							casteVO.setTotalCadrePerc(((casteVO.getTotalCadres() * 100) / totalCadres) + "%");
-							casteVO.setMaleCadrePerc(((casteVO.getMaleCadres() * 100) / maleTotalCadres) + "%");
-							casteVO.setFemaleCadrePerc(((casteVO.getFemaleCadres() * 100) / femaleTotalCadres) + "%");
 						}
 					}
 				}
@@ -2857,7 +2928,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			return null;
 		}
 		
-	}
+}
 	
 	public List<LocationVotersVO> getVotersCastGroupWiseCount(Long locationTypeId,Long locationValue,Long publicationDateId){
 		
