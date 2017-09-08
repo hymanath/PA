@@ -89,7 +89,9 @@ import com.itgrids.partyanalyst.dao.ITdpCadreContestedLocationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreHealthDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHealthReportDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreHealthTestDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInsuranceInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreNotesDAO;
@@ -131,6 +133,7 @@ import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceReportVO;
 import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImportantLeadersVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
@@ -283,8 +286,24 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IEnrollmentYearDAO enrollmentYearDAO;
 	private IKaizalaLocationAddressDAO kaizalaLocationAddressDAO;
 	
+	private ITdpCadreHealthDetailsDAO tdpCadreHealthDetailsDAO;
+	private ITdpCadreHealthTestDAO tdpCadreHealthTestDAO;
 	
 	
+	public ITdpCadreHealthTestDAO getTdpCadreHealthTestDAO() {
+		return tdpCadreHealthTestDAO;
+	}
+	public void setTdpCadreHealthTestDAO(
+			ITdpCadreHealthTestDAO tdpCadreHealthTestDAO) {
+		this.tdpCadreHealthTestDAO = tdpCadreHealthTestDAO;
+	}
+	public ITdpCadreHealthDetailsDAO getTdpCadreHealthDetailsDAO() {
+		return tdpCadreHealthDetailsDAO;
+	}
+	public void setTdpCadreHealthDetailsDAO(
+			ITdpCadreHealthDetailsDAO tdpCadreHealthDetailsDAO) {
+		this.tdpCadreHealthDetailsDAO = tdpCadreHealthDetailsDAO;
+	}
 	public void setKaizalaLocationAddressDAO(
 			IKaizalaLocationAddressDAO kaizalaLocationAddressDAO) {
 		this.kaizalaLocationAddressDAO = kaizalaLocationAddressDAO;
@@ -13440,6 +13459,44 @@ public Long kaizalaCommitteeLevelAddressSaving(final Long locationScopeId, final
 		LOG.error(" Exception Occured in kaizalaCommitteeLevelAddressSaving() method, Exception - ",e);
 	}
 	return locationAddressId;
+}
+
+public List<IdAndNameVO> getTdpCadreHealthDetailsByCadre(Long tdpCadreId){
+	List<IdAndNameVO> returnlist = new ArrayList<IdAndNameVO>(0);
+	try {
+		List<Object[]> list = tdpCadreHealthDetailsDAO.getCadreHealthDetailsForCadre(tdpCadreId);
+		if(list != null && !list.isEmpty()){
+			for (Object[] obj : list) {
+				IdAndNameVO vo = new IdAndNameVO();
+				vo.setTdpcadreId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				vo.setAge(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+				vo.setGender(obj[2] != null ? obj[2].toString():"");
+				vo.setHeight(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+				vo.setWeight(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+				vo.setSpot(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+				vo.setSystolicBp(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
+				vo.setDiastolicBp(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+				vo.setHeartPulse(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+				vo.setSpiro(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
+				vo.setStartTime(obj[10] != null ? obj[10].toString():"");
+				returnlist.add(vo);
+			}
+		}
+		
+		List<Object[]> list1 = tdpCadreHealthTestDAO.getCadreHealthTestsForCadre(tdpCadreId);
+		if(list1 != null && !list1.isEmpty()){
+			for (Object[] obj : list1) {
+				IdAndNameVO vo = new IdAndNameVO();
+				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				vo.setName(obj[1] != null ? obj[1].toString():"");
+				vo.setStartTime(obj[2] != null ? obj[2].toString():"");
+				returnlist.get(0).getDistList().add(vo);
+			}
+		}
+	} catch (Exception e) {
+		LOG.error(" Exception Occured in getTdpCadreHealthDetailsByCadre() method, Exception - ",e);
+	}
+	return returnlist;
 }
 
 }

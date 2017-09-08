@@ -17,7 +17,7 @@ public class IdAndNameVO {
 	private String mobileNumber;
 	private List<IdAndNameVO> issueTypes ;
 	private String actualMobNumber;
-	private List<IdAndNameVO> distList ;
+	private List<IdAndNameVO> distList = new ArrayList<IdAndNameVO>(0);
 	private List<Long> distIdList;
 	private List<Long> constIdList;
 	private Long apTotal = 0l;
@@ -55,10 +55,71 @@ public class IdAndNameVO {
 	private List<IdAndNameVO>AttendanceList=new ArrayList<IdAndNameVO>();
 	private List<IdAndNameVO> nonInviteeAttendancList=new ArrayList<IdAndNameVO>();
 	
+	private Long age;
+	private String gender;
+	private Long height;
+	private Long weight;
+	private Long spot;
+	private Long systolicBp;
+	private Long diastolicBp;
+	private Long heartPulse;
+	private Long spiro;
 	
 	
-	
-	
+	public Long getAge() {
+		return age;
+	}
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public Long getHeight() {
+		return height;
+	}
+	public void setHeight(Long height) {
+		this.height = height;
+	}
+	public Long getWeight() {
+		return weight;
+	}
+	public void setWeight(Long weight) {
+		this.weight = weight;
+	}
+	public Long getSpot() {
+		return spot;
+	}
+	public void setSpot(Long spot) {
+		this.spot = spot;
+	}
+	public Long getSystolicBp() {
+		return systolicBp;
+	}
+	public void setSystolicBp(Long systolicBp) {
+		this.systolicBp = systolicBp;
+	}
+	public Long getDiastolicBp() {
+		return diastolicBp;
+	}
+	public void setDiastolicBp(Long diastolicBp) {
+		this.diastolicBp = diastolicBp;
+	}
+	public Long getHeartPulse() {
+		return heartPulse;
+	}
+	public void setHeartPulse(Long heartPulse) {
+		this.heartPulse = heartPulse;
+	}
+	public Long getSpiro() {
+		return spiro;
+	}
+	public void setSpiro(Long spiro) {
+		this.spiro = spiro;
+	}
 	public List<IdAndNameVO> getNotAttendanceList() {
 		return NotAttendanceList;
 	}
