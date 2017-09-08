@@ -87,23 +87,13 @@
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="election">
 				 <h3 class="text-capitalize">Election Information Assembly Constituency</h3>
 				 <h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
-				 <!--<div class="block">
+				 <div class="block">
 					 <div class="row">
-						 <div class="col-md-12 col-xs-12 col-sm-12">
-							 <label class="text-capital m_left5">
-							 	<input type="checkbox"/>ALL
-							 </label>
-							 <label class="text-capital m_left5">
-							 	<input type="checkbox"/>assembly
-							 </label>
-							 <label class="text-capital m_left5">
-							 	<input type="checkbox"/>parliament
-							 </label>
-							 
-							 <div id="test"></div>
-						 </div>
+						<div id="electionTypeValuesId"></div>
+						<div id="electionDetailsGraphWiseId"></div>
+						<div id="electionDetailsTableWiseId"></div>
 					 </div>
-				 </div>-->
+				 </div>
 				 <div class="block">
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
