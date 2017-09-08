@@ -64,6 +64,6 @@ public interface ILocationDashboardService {
 	public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(List<Long> locationValues,Long levelId,List<Long> statusIdsList,String type);
 	public NominatedPostDetailsVO getAreaWiseDashboardCandidatesCountView(Long levelId,List<Long> levelVals,List<Long> statusIds);
 	public List<NominatedPostDetailsVO> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues,Long boardLevelId,Long searchLvlId,String type,List<Long> statusIds);
-	public LocationVO getAllLocationWiseCount(List<Long> levelValues,Long levelId);
+	public LocationVO getAllLocationWiseCount(List<Long> levelValues,Long levelId,Long publicationDateId );
 	
 }

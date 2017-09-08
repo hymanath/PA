@@ -3481,13 +3481,14 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		return positionMap;
 	 }
         //* @author Swapna
-	    public LocationVO getAllLocationWiseCount(List<Long> locationValues, Long locationTypeId) {
+	    public LocationVO getAllLocationWiseCount(List<Long> locationValues, Long locationTypeId,
+	    		Long publicationDateId) {
 		LocationVO VO = new LocationVO();
 		try {
 			List<Long> constituencyIds = new ArrayList<Long>();
 			List<Long> tehsilIds = new ArrayList<Long>();
 			List<Long> panchaythIds = new ArrayList<Long>();
-			Long constituencyCount=0l, mandalCount=0l,panchaythCount=0l, municipalityCount=0l;
+			Long constituencyCount=0l, mandalCount=0l,panchaythCount=0l,boothCount=0l, municipalityCount=0l;
 			
 			if (locationTypeId == 3l) {
 				// constituency
@@ -3502,8 +3503,18 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 				constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationValues);
 				
 			}
-			
-			List<Long> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyIds);
+			List<Long> delimitationConstituency = new ArrayList<Long>();
+			List<Object[]> localBodies = new ArrayList<Object[]>();
+			if( locationTypeId != 4l){
+				delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyIds);
+				localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
+				boothCount = panchayatDAO.getBoothIdsCount(constituencyIds,publicationDateId);
+			}else{
+				delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDsForLocationDashBoard(locationValues);
+				localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(locationValues);
+				boothCount = panchayatDAO.getBoothIdsCount(locationValues,publicationDateId);
+
+			}
 			List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationsConstituencyID(delimitationConstituency);
 			if(mandals!=null){
 				for (Tehsil tehsil : mandals) {
@@ -3511,21 +3522,21 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 					mandalCount=mandalCount+1;
 				}
 			}
-			List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
+			
 			for (Object[] objects : localBodies) {
 				if (objects != null) {
 					municipalityCount = municipalityCount + 1;
 				}
 			}
-			List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInMandals(tehsilIds);
+			List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInMandalsList(tehsilIds);
 			for (Object[] objects : panchayatsList) {
 				if (objects != null) {
 					panchaythIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 					panchaythCount = panchaythCount + 1;
 				}
 			}
-			Long hamletCount = panchayatDAO.getHamletCountOnPanchayatIds(tehsilIds);
-			Long boothCount = panchayatDAO.getHamletCountOnPanchayatIds(tehsilIds);
+			Long hamletCount = panchayatDAO.getHamletCountOnPanchayatIds(panchaythIds);
+			
 			if (locationTypeId != 4l){
 				VO.setConstituencyCount(constituencyCount);
 			}

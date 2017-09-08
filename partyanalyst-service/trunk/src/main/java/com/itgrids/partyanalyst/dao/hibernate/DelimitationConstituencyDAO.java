@@ -486,4 +486,12 @@ IDelimitationConstituencyDAO {
 		 }
 			return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> findDelimitationConstituencyByConstituencyIDsForLocationDashBoard(List<Long> constituencyIDS) {
+		Query query = getSession().createQuery(" select distinct model.delimitationConstituencyID from DelimitationConstituency model where " +
+				"model.constituency.constituencyId in (:constituencyID) and model.year =(Select max(model.year) from DelimitationConstituency model) ");
+		query.setParameterList("constituencyID", constituencyIDS);
+		return query.list();
+	}
 }
