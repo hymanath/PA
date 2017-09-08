@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceReportVO;
 import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImportantLeadersVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
@@ -162,4 +163,6 @@ public interface ICadreDetailsService {
 	public Long saveUserAddressDetails(Long locationScopeId, Long locationValue);
 	public Long kaizalaLocationAddressIdSaving(final Long locationScopeId, final Long locationValue);
 	public Long kaizalaCommitteeLevelAddressSaving(final Long locationScopeId, final Long locationValue);
+	
+	public List<IdAndNameVO> getTdpCadreHealthDetailsByCadre(Long tdpCadreId);
 }

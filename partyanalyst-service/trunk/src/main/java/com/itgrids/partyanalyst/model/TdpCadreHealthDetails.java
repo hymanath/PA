@@ -21,7 +21,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name="tdp_cadre_health_test")
+@Table(name="tdp_cadre_health_details")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TdpCadreHealthDetails extends BaseModel implements Serializable{
 	
