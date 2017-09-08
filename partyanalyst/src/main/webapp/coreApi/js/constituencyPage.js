@@ -2,22 +2,9 @@
  	var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3)
-		wurl = url.substr(0,(url.indexOf(".in")+3));	
-	
-	$(function(){ //Ready function
-		//Event that trigger the 'Ctrl+C' 
-		if(url.substr(0,(url.indexOf(".com")+17)) ==  "http://localhost")
-		{
-			var e = jQuery.Event("keydown");
-			e.which = 75; // 'C' key code value
-			e.shiftKey = true;
-			e.ctrlKey = true;
-			$("body").trigger(e);
-			$(document).trigger(e);
-			$(window).trigger(e);
-		}
-	})
-var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+		wurl = url.substr(0,(url.indexOf(".in")+3));		
+var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var blockSpinner = '<div class="row"><div class="col-sm-12"><div class="block m_top10"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div></div>';
 var globalCasteColorObj = {"BC":"#867DC0","Minority":"#99CC67","SC":"#65A7E1","ST":"#7DC1C2","OC":"#E58D45"};
 var globalColorNews = {"Without Money":"#F36E8F","<10L":"#0C9516",">10L":"#8E4654","State Wide Issue":"#FE9900"};
 var globalFromDate = moment().subtract(1,'year').format("DD/MM/YYYY");
@@ -543,7 +530,7 @@ function responsiveTabs()
 }
 
 function getCandidateAndPartyInfoForConstituency(){
-	$("#parliamentMemberId,#assemblyMemberId").html(spinner);
+	$("#parliamentMemberId,#assemblyMemberId").html(blockSpinner);
 	var locationLevelVal = '';
 	if(locationLevelId == '2')
 	{
@@ -699,7 +686,7 @@ function getCandidateAndPartyInfoForConstituency(){
 
 
 function getCountsForConstituency(){
-	$("#levelWiseCountDivId").html(spinner);
+	$("#levelWiseCountDivId").html(blockSpinner);
 	var tehsilId=0;
 	var type = 'constituency';
 	var jsObj=
@@ -2233,10 +2220,10 @@ function getLocationWiseCommitteesCount(yearId){
 						distance: -20,
 						color:'#333'
 					},
-					showInLegend: false
+					showInLegend: true
 				},
 			};
-			var legend={enabled: false};
+			var legend={enabled: true};
 			var data = [{
 				name: '',
 				data: [
@@ -2253,7 +2240,7 @@ function getLocationWiseCommitteesCount(yearId){
 					{
 					  name: 'Not Started',
 					  y: notStartedCount,
-					  color:"#FF9900"
+					  color:"#CCCCCC"
 					}
 				]
 			}];
@@ -2972,7 +2959,7 @@ function getLocationWiseInsuranceStatusCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	if(result != null && result.count != null){
+    	if(result != null){
 			return buildGraph(result);
 		}else{
 			$("#insuranceDetails").html("<h4 class='text-center'>NO DATA AVAILABLE</h4>");
@@ -3878,11 +3865,31 @@ function buildElectionInformationLocationWise(result){
 }
 //getCommitteeCount();
 function getCommitteeCount(){
+	userAccessLevelValuesArray=[];
+	if(locationLevelId == '2')
+	{
+		userAccessLevelValuesArray.push(stateId)
+	}else if(locationLevelId == '3')
+	{
+		userAccessLevelValuesArray.push(districtId)
+	}else if(locationLevelId == '10')
+	{
+		userAccessLevelValuesArray.push(parliamentId)
+	}else if(locationLevelId == '4' || locationLevelId == '11')
+	{
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5' || locationLevelId == '12')
+	{
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '6' || locationLevelId == '13')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
+	}
 	
 	var jsObj={
 			constituencyId 	  	:232,
-			levelIds		  	:[5,7,9],
-			levelValues 	:[835],
+			levelIds		  	:locationLevelId,
+			levelValues		 	:userAccessLevelValuesArray,
 			basicCommittesIds 	:[1],
 			cmiteEnrlmntYearIds : [1]
 		}

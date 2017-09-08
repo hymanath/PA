@@ -46,7 +46,7 @@
 <section>
 	<div class="container">
 		<div class="row">
-		 	<div class="col-md-12 col-xs-12 col-sm-12">
+		 	<div class="col-sm-12">
 				<h2><span id="selectedMenuName" class="text-capitalize">Nellore District</span> Information</h2>
 				<ol class="breadcrumb" id="getMenuLocations" menu-location-state="1" menu-location-district="19" menu-location-constituency="232" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="3" menu-location-parliament="" menu-location-levelName="district" >
 					<!--<li>State : <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>-->
@@ -81,10 +81,10 @@
 		<div class="row m_top20">
 		 	<div id="parliamentMemberId"></div>
 			<div id="assemblyMemberId"></div>
-		 	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+		 	<div class="col-sm-12 m_top20">
 				<div id="levelWiseCountDivId"></div>
 			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="election">
+			<div class="col-sm-12 m_top20" navbar-index="election">
 				 <h3 class="text-capitalize">Election Information Assembly Constituency</h3>
 				 <h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
 				 <div class="block">
@@ -94,31 +94,30 @@
 						<div id="electionDetailsTableWiseId"></div>
 					 </div>
 				 </div>
-				 <div class="block">
+				<div class="block">
 					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12">
+						<div class="col-sm-12">
 							<h4 class="text-capitalize">Assembly Election Details</h4>
-							<div class="col-sm-6">
-								<div id="assemblyElectionGraphDetails"></div>
-							</div>
-							<div class="col-sm-6">
-								<div id="assemblyElectionDetails"></div>
-							</div>
-							
+						</div>
+						<div class="col-sm-6">
+							<div id="assemblyElectionGraphDetails"></div>
+						</div>
+						<div class="col-sm-6">
+							<div id="assemblyElectionDetails"></div>
 						</div>
 					</div>
-				 </div>
+				</div>
 			</div>
-			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="constituencyVoters">
+			<div class="col-sm-6 m_top20" navbar-index="constituencyVoters">
 				 <h3 class="text-capitalize">constituency voters information</h3>
 			</div>
-			<div class="col-md-6 col-xs-12 col-sm-6 m_top20">
+			<div class="col-sm-6 m_top20">
 				<div class="row">
 					<div class="col-sm-4 pull-right"><div id="publicationsDivId"></div></div>
 				</div>
 				
 			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12  m_top5">
+			<div class="col-sm-12  m_top5">
 				<div id="constituencyVoterInfo"></div>
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="casteInfo">
@@ -142,7 +141,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="cadreInfor">
+			<div class="col-sm-12 m_top20" navbar-index="cadreInfor">
 				<h3>Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="cadreInfor"></i></span></h3>
 				<div class="block">
 					<div id="cadreInfoGraphDivId"></div>
@@ -152,7 +151,7 @@
 				
 			</div>
 			
-			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="news">
+			<div class="col-sm-6 m_top20" navbar-index="news">
 				<h3>News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="news"></i></span></h3>		
 				<div class="block">
 					<div id="newsMainBlockDivId"></div>
@@ -160,7 +159,7 @@
 				</div>
 			</div>
 			
-			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="problems">
+			<div class="col-sm-6 m_top20" navbar-index="problems">
 				<h3>Problems <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="problems"></i></span></h3>						
 				<div class="block pad_5">
 					<div id="overAllAnalysisProbDivId"></div>
@@ -188,11 +187,11 @@
 									<div class="row m_top15">
 										<div class="col-sm-6">
 											<p class="panel-title text-capitalize">mandal / town / division level</p>
-											<div id="mandalLevelGraph" style="height:200px;"></div>
+											<div id="mandalLevelGraph" style="height:250px;"></div>
 										</div>
 										<div class="col-sm-6">
 											<p class="panel-title text-capitalize">village / ward level</p>
-											<div id="villageLevelGraph" style="height:200px;"></div>
+											<div id="villageLevelGraph" style="height:250px;"></div>
 										</div>
 									</div>
 								</div>
@@ -201,11 +200,11 @@
 									<div class="row m_top15">
 										<div class="col-sm-6">
 											<p class="panel-title text-capitalize">mandal / town / division level</p>
-											<div id="affMandalLevelGraph" style="height:200px;"></div>
+											<div id="affMandalLevelGraph" style="height:250px;"></div>
 										</div>
 										<div class="col-sm-6">
 											<p class="panel-title text-capitalize">village / ward level</p>
-											<div id="affVillageLevelGraph" style="height:200px;"></div>
+											<div id="affVillageLevelGraph" style="height:250px;"></div>
 										</div>
 									</div>
 								</div>
@@ -218,7 +217,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-8 col-xs-12 col-sm-8 m_top20" navbar-index="meetings">
+			<div class="col-sm-8 m_top20" navbar-index="meetings">
 				<h3>Meetings <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="meetings"></i></span></h3>
 				<p class="f-12 text-muted">Evertymonth: 9th/10th/11th</p>
 				<div class="block pad_0">
@@ -226,7 +225,7 @@
 				</div>
 			</div>
 			
-			<div class="col-md-4 col-xs-12 col-sm-4 m_top20" navbar-index="tours">
+			<div class="col-sm-4 m_top20" navbar-index="tours">
 				<h3>Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="tours"></i></span></h3>
 				<p class="f-12 text-muted">Last Month Jan 2017</p>
 				<div class="block pad_0">
@@ -235,7 +234,7 @@
 			</div>
 			
 			
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="benefits">
+			<div class="col-sm-12 m_top20" navbar-index="benefits">
 				<h3>Benefits<span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="benefits"></i></span></h3>
 				<div class="block pad_0">
 					<div class="row">
@@ -243,56 +242,56 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="activities">
+			<div class="col-sm-12 m_top20" navbar-index="activities">
 				<h3 >Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="activities"></i></span></h3>
 				<div class="block pad_0" id ="activitesId">
 				</div>
 			</div>
-			<div class="col-md-12 col-xs-12 col-ms-12 m_top20" navbar-index="alerts">
+			<div class="col-ms-12 m_top20" navbar-index="alerts">
 				<h3>Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="alerts"></i></span></h3>
 				<div id="alertsBlockDivId"></div>
 			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="nominatedPosts">
+			<div class="col-sm-12 m_top20" navbar-index="nominatedPosts">
 				<h3>Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="nominatedPosts"></i></span></h3>
 				<div class="block">
 					<div class="row">
-						<div class="col-md-6 col-xs-12 col-sm-6">
+						<div class="col-sm-6">
 							<h5 class="m_left10">Posts</h5>
 							<div id="nominatedPostStatusWiseCount"></div>
 						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6">
+						<div class="col-sm-6">
 							<h5 class="m_left10">Applications</h5>
 							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="col-sm-12">
 									<div id="nominatedPostApplicationDetails"></div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+						<div class="col-sm-12 m_top20">
 							<hr class="m_0"/>
 							<h4 class="text-capital text-center m_top-10"><span class="bg-fff pad_10">position level</span></h4>
 						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+						<div class="col-sm-12 m_top10">
 							<div id="positionsWiseMemberCount"></div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20"  navbar-index="grievance">
+			<div class="col-sm-12 m_top20"  navbar-index="grievance">
 				<h3>Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h3>
 				<div class="block">
 					<div class="row">
-						<div class="col-md-4 col-xs-12 col-sm-4">
+						<div class="col-sm-4">
 							<h4 class="panel-title text-capital text-center">Grivance</h4>
 							<div id="grivanceId0" style="height:300px;"></div>
 						</div>
-						<div class="col-md-4 col-xs-12 col-sm-4">
+						<div class="col-sm-4">
 							<h4 class="panel-title text-capital text-center">Insurance</h4>
 							<div id="insuranceDetails" style="height:300px;"></div>
 						</div>
-						<div class="col-md-4 col-xs-12 col-sm-4">
+						<div class="col-sm-4">
 						<h4 class="panel-title text-capital text-center">NTR TRUST</h4>
 							<div id="grivanceId1" style="height:300px;"></div>
 						</div>
