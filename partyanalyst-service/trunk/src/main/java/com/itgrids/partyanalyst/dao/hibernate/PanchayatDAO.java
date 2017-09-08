@@ -303,5 +303,22 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 		query.setParameter("tehsilId", tehsilId);
 		return query.list();
 	}
+	public Long getHamletCountOnPanchayatIds(List<Long> panchIds)
+	{
+		String queryString = "select count(distinct model.panchayatHamletId) from PanchayatHamlet model where model.panchayat.panchayatId in (:ids)";
+		
+		Query query = getSession().createQuery(queryString);
+		query.setParameterList("ids", panchIds);
+		return (Long) query.uniqueResult();
+	}
+
+	public Long getBoothIdsCount(List<Long> constituencyIds,Long publicationDateId){
+	String queryString = "select count(distinct model.boothId) from Booth model where model.publicationDate.publicationDateId =:publicationDateId and model.constituency.constituencyId in (:constituencyId)";
 	
+	Query query = getSession().createQuery(queryString);
+	query.setParameterList("constituencyId", constituencyIds);
+	query.setParameter("publicationDateId", publicationDateId);
+	return (Long) query.uniqueResult();
+	
+	}
 }
