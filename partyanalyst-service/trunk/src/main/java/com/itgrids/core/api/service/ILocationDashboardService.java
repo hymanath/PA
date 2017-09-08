@@ -52,7 +52,7 @@ public interface ILocationDashboardService {
     public List<BasicVO> getLocationWiseActivitysStatus(String fromDateStr,String toDateStr,String year,List<Long> locationValues,Long locationTypeId);
     public List<LocationWiseBoothDetailsVO> getAllDistricts(Long stateId);
 	public List<LocationWiseBoothDetailsVO> getAllConstituenciesByDistrict(Long districtId);
-	public List<ElectionInformationVO> getElectionInformationLocationWise(String fromDate, String toDate, Long locationTypeId,Long locationValue, List<Long> electionScopeIds);
+	public List<ElectionInformationVO> getElectionInformationLocationWise(String fromDate, String toDate, Long locationTypeId,Long locationValue, List<Long> electionScopeIds,Long partyId);
 	public BoothInchargesVO getBoothAssignInchargeCount(String fromDateStr, String toDateStr, Long locationTypeId,Long locationValue,
 			List<Long> committeeEnrollmentYearsIdsLst);
 	public List<BoothInchargesVO> getBoothCommitteeInchargesCount(Long locationId,Long locationValue,List<Long> boothCommitteeEnrollmentYearsIdsLst,String fromDateStr,String toDateStr);
