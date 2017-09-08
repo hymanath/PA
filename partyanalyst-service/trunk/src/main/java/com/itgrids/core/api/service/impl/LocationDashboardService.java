@@ -23,7 +23,9 @@ import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dao.IActivityDAO;
+import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
@@ -33,6 +35,8 @@ import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
@@ -42,6 +46,7 @@ import com.itgrids.partyanalyst.dao.IInsuranceStatusDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.IPositionDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
@@ -66,6 +71,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
@@ -79,8 +85,10 @@ import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.model.Position;
 import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -124,16 +132,54 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO;
 	private IBoothInchargeDAO boothInchargeDAO;
 	private IPositionDAO positionDAO;
-	 
+	private IActivityLocationInfoDAO activityLocationInfoDAO;
+	
+	private IApplicationStatusDAO applicationStatusDAO;
+	private IRegionServiceData regionServiceDataImp;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private IPanchayatDAO panchayatDAO;
 	
 	public IPositionDAO getPositionDAO() {
-		return positionDAO;
+			return positionDAO;
 	}
 	public void setPositionDAO(IPositionDAO positionDAO) {
-		this.positionDAO = positionDAO;
+			this.positionDAO = positionDAO;
 	}
-	private IApplicationStatusDAO applicationStatusDAO;
-	
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
 	public IApplicationStatusDAO getApplicationStatusDAO() {
 		return applicationStatusDAO;
 	}
@@ -379,6 +425,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		this.boothInchargeDAO = boothInchargeDAO;
 	}
 	
+	
+	public IActivityLocationInfoDAO getActivityLocationInfoDAO() {
+		return activityLocationInfoDAO;
+	}
+	public void setActivityLocationInfoDAO(
+			IActivityLocationInfoDAO activityLocationInfoDAO) {
+		this.activityLocationInfoDAO = activityLocationInfoDAO;
+	}
 	public List<CandidateDetailsForConstituencyTypesVO> getCandidateAndPartyInfoForConstituency(Long locationValue,Long locationTypeId) {
 		List<CandidateDetailsForConstituencyTypesVO> finalList= new ArrayList<CandidateDetailsForConstituencyTypesVO>();
 		List<CandidateDetailsForConstituencyTypesVO> parliementfinalList= new ArrayList<CandidateDetailsForConstituencyTypesVO>();
@@ -700,6 +754,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return voList;
 	}
+
 
 	public List<LocationVotersVO> getCasteGroupNAgeWiseVoterNCadreCounts(Long locationTypeId, Long locationValue, Long publicationDateId) {
 		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
@@ -3097,92 +3152,101 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				LOG.error("Exception Occured in setLocationWiseNominatedPostAnalysisData()", e);
 		 }
 	 }
-	 /**
-		 * @param  Long boardLevelId
-		 * @param List<Long> levelValues
-		 * @param Long levelId
-		 * @return NominatedPostDashboardVO
-		 * @author Swapna
-		 * @Description :This Service Method is for getting openPost,finalizedAndGoIssued,applicatnsReceived,totalPosts group by nominatedPostStatusId,  boardLevelId. 
-		 *  @since 06-SEPTEMBER-2017
-		 */
-		@Override
-		public NominatedPostDashboardVO getAllNominatedStatusListLevelWiseData(Long boardLevelId, List<Long> levelValues, Long levelId) {
-		NominatedPostDashboardVO vo = new NominatedPostDashboardVO();
-		   
-		    try {
-		    	 List<Long>list=new ArrayList<Long>();
-				    Map<Long,NominatedPostDashboardVO> locationDtlsMap =new HashMap<Long, NominatedPostDashboardVO>();
-				    /*if(boardLevelId==3l){  
-				    	list.add(3l);
-				    	list.add(4l);
-				    	list.add(5l);
-				    	list.add(6l);
-				    	list.add(7l);
-				    	list.add(8l);
-				    }	
-				    else*/ if(boardLevelId==4l || boardLevelId==3l){
-				    	list.add(4l);
-				    	list.add(5l);
-				    	list.add(6l);
-				    	list.add(7l);
-				    	list.add(8l);
-				    }
-				    else if(boardLevelId==5l){
-				    	list.add(5l);
-				    	list.add(6l);
-				    	list.add(7l);
-				    	list.add(8l);
-				    }	
-				    else if(boardLevelId==6l){
-				    	list.add(6l);
-				    	list.add(7l);
-				    	list.add(8l);
-				    }	
-				    else if(boardLevelId==7l){
-				    	list.add(7l);
-				    	list.add(8l);		  
-				    }	
-				    else if(boardLevelId==8l){
-				    	list.add(8l);	
-				    }
-				    
-				   if(levelId == 3l){
-			    	        List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(levelValues);
-			    	        levelValues.clear();
-			    	      for (Object[] objects2 : locationValuesObj) {
-							    if(objects2!=null){
-							    	levelValues.add(commonMethodsUtilService.getLongValueForObject(objects2[0]));
-			    	          }
-			    	        }
-			    	      levelId=4l;
-			      }else if(levelId == 10l){
-			    		   levelValues = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(levelValues);
-			    	    }
-			    	   
-				  List<Object[]> receivedapp =nominatedPostApplicationDAO.getTotalReceivedApplicationsForLocation(list, levelId, levelValues);
-			      List<Object[]> nominatedList=nominatedPostDAO.getAllNominatedStatusListLevelWise(list, levelValues, levelId);
-				     	if (nominatedList!=null && nominatedList.size()>0){
-					      for (Object[] objects : nominatedList) {					    	 
-					    	  NominatedPostDashboardVO boardLvlVO = null;
-					    	   if((Long)objects[2] == 3l  ){
-					    		   boardLvlVO = locationDtlsMap.get((Long)objects[2]);
-					    		  if( boardLvlVO == null){
-					    			  boardLvlVO=new NominatedPostDashboardVO();
-					    			  boardLvlVO.setId((Long)objects[2]);
-					    			  boardLvlVO.setName("District Level");
-					    			  locationDtlsMap.put((Long)objects[2], boardLvlVO);
-					    		  }
-					    	   }else if((Long)objects[2] == 4l  ){
-					    		   boardLvlVO = locationDtlsMap.get((Long)objects[2]);
-					    		  if( boardLvlVO == null){
-					    			  boardLvlVO=new NominatedPostDashboardVO();
-					    			  boardLvlVO.setId((Long)objects[2]);
-					    			  boardLvlVO.setName("Constituency Level");
-					    			  locationDtlsMap.put((Long)objects[2], boardLvlVO);
-					    		  }
-					    	   }else if((Long)objects[2] == 5l || (Long)objects[2] == 6l ){
-					    		   boardLvlVO = locationDtlsMap.get(5l);
+	
+	/**
+	 * @param  Long boardLevelId
+	 * @param List<Long> levelValues
+	 * @param Long levelId
+	 * @return NominatedPostDashboardVO
+	 * @author Swapna
+	 * @Description :This Service Method is for getting openPost,finalizedAndGoIssued,applicatnsReceived,totalPosts group by nominatedPostStatusId,  boardLevelId. 
+	 *  @since 06-SEPTEMBER-2017
+	 */
+	@Override
+	public NominatedPostDashboardVO getAllNominatedStatusListLevelWiseData(Long boardLevelId, List<Long> levelValues, Long levelId) {
+	NominatedPostDashboardVO vo = new NominatedPostDashboardVO();
+	   
+	    try {
+	    	 List<Long>list=new ArrayList<Long>();
+			    Map<Long,NominatedPostDashboardVO> locationDtlsMap =new HashMap<Long, NominatedPostDashboardVO>();
+			    /*if(boardLevelId==3l){  
+			    	list.add(3l);
+			    	list.add(4l);
+			    	list.add(5l);
+			    	list.add(6l);
+			    	list.add(7l);
+			    	list.add(8l);
+			    }	
+			    else*/ if(boardLevelId==4l || boardLevelId==3l){
+			    	list.add(4l);
+			    	list.add(5l);
+			    	list.add(6l);
+			    	list.add(7l);
+			    	list.add(8l);
+			    }
+			    else if(boardLevelId==5l){
+			    	list.add(5l);
+			    	list.add(6l);
+			    	list.add(7l);
+			    	list.add(8l);
+			    }	
+			    else if(boardLevelId==6l){
+			    	list.add(6l);
+			    	list.add(7l);
+			    	list.add(8l);
+			    }	
+			    else if(boardLevelId==7l){
+			    	list.add(7l);
+			    	list.add(8l);		  
+			    }	
+			    else if(boardLevelId==8l){
+			    	list.add(8l);	
+			    }
+			    
+			   if(levelId == 3l){
+		    	        List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(levelValues);
+		    	        levelValues.clear();
+		    	      for (Object[] objects2 : locationValuesObj) {
+						    if(objects2!=null){
+						    	levelValues.add(commonMethodsUtilService.getLongValueForObject(objects2[0]));
+		    	          }
+		    	        }
+		    	      levelId=4l;
+		      }else if(levelId == 10l){
+		    		   levelValues = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(levelValues);
+		    	    }
+		    	   
+			  List<Object[]> receivedapp =nominatedPostApplicationDAO.getTotalReceivedApplicationsForLocation(list, levelId, levelValues);
+		      List<Object[]> nominatedList=nominatedPostDAO.getAllNominatedStatusListLevelWise(list, levelValues, levelId);
+			     	if (nominatedList!=null && nominatedList.size()>0){
+				      for (Object[] objects : nominatedList) {					    	 
+				    	  NominatedPostDashboardVO boardLvlVO = null;
+				    	   if((Long)objects[2] == 3l  ){
+				    		   boardLvlVO = locationDtlsMap.get((Long)objects[2]);
+				    		  if( boardLvlVO == null){
+				    			  boardLvlVO=new NominatedPostDashboardVO();
+				    			  boardLvlVO.setId((Long)objects[2]);
+				    			  boardLvlVO.setName("District Level");
+				    			  locationDtlsMap.put((Long)objects[2], boardLvlVO);
+				    		  }
+				    	   }else if((Long)objects[2] == 4l  ){
+				    		   boardLvlVO = locationDtlsMap.get((Long)objects[2]);
+				    		  if( boardLvlVO == null){
+				    			  boardLvlVO=new NominatedPostDashboardVO();
+				    			  boardLvlVO.setId((Long)objects[2]);
+				    			  boardLvlVO.setName("Constituency Level");
+				    			  locationDtlsMap.put((Long)objects[2], boardLvlVO);
+				    		  }
+				    	   }else if((Long)objects[2] == 5l || (Long)objects[2] == 6l ){
+				    		   boardLvlVO = locationDtlsMap.get(5l);
+				    		  if( boardLvlVO == null){
+				    			  boardLvlVO=new NominatedPostDashboardVO();
+				    			  boardLvlVO.setId((Long)objects[2]);
+				    			  boardLvlVO.setName("Mandal Level");
+				    			  locationDtlsMap.put(5l, boardLvlVO);
+				    		  }
+				    	   }else if((Long)objects[2] == 7l || (Long)objects[2] == 8l ){
+					    		   boardLvlVO = locationDtlsMap.get(7l);
 					    		  if( boardLvlVO == null){
 					    			  boardLvlVO=new NominatedPostDashboardVO();
 					    			  boardLvlVO.setId((Long)objects[2]);
@@ -3254,166 +3318,226 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			return vo ;
 			
 		 }
-		
-		/**
-		 *
-		 * @param locationValues,levelId,statusIdsList,type
-		 * @return List<NominatedPostDetailsVO>
-		 * @author Srujana 
-		 * @Description :This Service Method is used to get the Location wise nominatedPost candidate AgeRange and CasteCategory Groups details
-		 * @since 09-SEP-2017
-		 * 
-		 */
-	public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(List<Long> locationValues,Long levelId,List<Long> statusIdsList,String type){
-			 
-			 List<NominatedPostDetailsVO> returnList = new ArrayList<NominatedPostDetailsVO>();
-			 try{
-				 Long totalCount =0l;
-				 NominatedPostDetailsVO vo = null;
-				 List<Object[]> candidateDetails = nominatedPostDAO.getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(locationValues,levelId,statusIdsList,type);
-				 if(candidateDetails != null && candidateDetails.size()>0){
-					 for(Object[] param : candidateDetails){
-						    vo = new NominatedPostDetailsVO();
-						 vo.setCount(commonMethodsUtilService.getLongValueForObject(param[0]));
-						 vo.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
-						 vo.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
-						 totalCount = totalCount+vo.getCount();
-						
-						 returnList.add(vo);
-					 }
-				 }
-				 if(returnList != null && returnList.size()>0){
-					 for(NominatedPostDetailsVO detailsVo :returnList){
-						 detailsVo.setTotalCount(totalCount);
-						 Double complaincePer = calculatePercantage(detailsVo.getCount(),detailsVo.getTotalCount());
-						 if(complaincePer != null)
-						     detailsVo.setPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(complaincePer));
-						// param.setPerc(String.valueOf( (count* 100) / totalCount));
-					 }
-				 }
-					
-			}catch (Exception e) {
-				 e.printStackTrace();
-					LOG.error("Exception Occured in getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails()", e);
-			}
-			 
-			 return returnList;
-		 }
-	 /**
-		 * @param Long levelId
-		 * @param List<Long> levelVals
-		 * @param List<Long> statusIds
-		 * @author Hymavathi 
-		 * @Description :This service to show boardlevel wise  Nominated post candidate details for mandal/muncipality/corporation . 
-		 *  @since 6-SEP-2017
-		 */
-	 public NominatedPostDetailsVO getAreaWiseDashboardCandidatesCountView(Long levelId,List<Long> levelVals,List<Long> statusIds){
-		 NominatedPostDetailsVO returnVO = new NominatedPostDetailsVO();
+
+	/**
+	 *
+	 * @param locationValues,levelId,statusIdsList,type
+	 * @return List<NominatedPostDetailsVO>
+	 * @author Srujana 
+	 * @Description :This Service Method is used to get the Location wise nominatedPost candidate AgeRange and CasteCategory Groups details
+	 * @since 09-SEP-2017
+	 * 
+	 */
+public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(List<Long> locationValues,Long levelId,List<Long> statusIdsList,String type){
+		 
+		 List<NominatedPostDetailsVO> returnList = new ArrayList<NominatedPostDetailsVO>();
 		 try{
-			  List<Object[]> candidateList = nominatedPostDAO.getAreaWiseDashboardCandidatesCountView(levelVals,levelId,statusIds);
-			  List<NominatedPostDetailsVO>  subList = new ArrayList<NominatedPostDetailsVO>();
-			   setLocationWiseNominatedPostAnalysisData(subList,candidateList,"boardLevelWise");
-			   if(subList != null && subList.size() > 0){
-				   returnVO.getSubList().addAll(subList);
-			   }
-			  
-			   Map<Long,NominatedPostDetailsVO> boardLvelMap = new HashMap<Long,NominatedPostDetailsVO>();
-			   getBoardLevels(boardLvelMap);
-			   
-			   if(commonMethodsUtilService.isListOrSetValid(candidateList)){
-				   for (Object[] obj : candidateList) {
-					   Long boardLvlId = 0l;
-					   if(obj[1] != null && (Long)obj[1] == 5l || (Long)obj[1] == 6l){
-						    boardLvlId=5l;
-					   }if(obj[1] != null && (Long)obj[1] == 7l || (Long)obj[1] == 8l){
-						    boardLvlId=7l;
-					   }else if(obj[1] != null){
-						    boardLvlId=(Long)obj[1] ;
-					   }
-					   NominatedPostDetailsVO vo = boardLvelMap.get(boardLvlId);
-					   if(vo != null){
-						   if(commonMethodsUtilService.getStringValueForObject(obj[5]).toString().equalsIgnoreCase("M")){
-							   vo.setMaleCount(vo.getMaleCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
-							   returnVO.setMaleCount(returnVO.getMaleCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
-							}else if(commonMethodsUtilService.getStringValueForObject(obj[5]).toString().equalsIgnoreCase("F")){
-								vo.setFemaleCount(vo.getFemaleCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
-								returnVO.setFemaleCount(returnVO.getFemaleCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
-							}
-						   vo.setTotalCount(vo.getTotalCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
-						   returnVO.setTotalCount(returnVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
-					   }
+			 Long totalCount =0l;
+			 NominatedPostDetailsVO vo = null;
+			 List<Object[]> candidateDetails = nominatedPostDAO.getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(locationValues,levelId,statusIdsList,type);
+			 if(candidateDetails != null && candidateDetails.size()>0){
+				 for(Object[] param : candidateDetails){
+					    vo = new NominatedPostDetailsVO();
+					 vo.setCount(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 vo.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+					 vo.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					 totalCount = totalCount+vo.getCount();
+					
+					 returnList.add(vo);
+				 }
+			 }
+			 if(returnList != null && returnList.size()>0){
+				 for(NominatedPostDetailsVO detailsVo :returnList){
+					 detailsVo.setTotalCount(totalCount);
+					 Double complaincePer = calculatePercantage(detailsVo.getCount(),detailsVo.getTotalCount());
+					 if(complaincePer != null)
+					     detailsVo.setPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(complaincePer));
+					// param.setPerc(String.valueOf( (count* 100) / totalCount));
+				 }
+			 }
+				
+		}catch (Exception e) {
+			 e.printStackTrace();
+				LOG.error("Exception Occured in getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails()", e);
+		}
+		 
+		 return returnList;
+	 }
+ /**
+	 * @param Long levelId
+	 * @param List<Long> levelVals
+	 * @param List<Long> statusIds
+	 * @author Hymavathi 
+	 * @Description :This service to show boardlevel wise  Nominated post candidate details for mandal/muncipality/corporation . 
+	 *  @since 6-SEP-2017
+	 */
+ public NominatedPostDetailsVO getAreaWiseDashboardCandidatesCountView(Long levelId,List<Long> levelVals,List<Long> statusIds){
+	 NominatedPostDetailsVO returnVO = new NominatedPostDetailsVO();
+	 try{
+		  List<Object[]> candidateList = nominatedPostDAO.getAreaWiseDashboardCandidatesCountView(levelVals,levelId,statusIds);
+		  List<NominatedPostDetailsVO>  subList = new ArrayList<NominatedPostDetailsVO>();
+		   setLocationWiseNominatedPostAnalysisData(subList,candidateList,"boardLevelWise");
+		   if(subList != null && subList.size() > 0){
+			   returnVO.getSubList().addAll(subList);
+		   }
+		  
+		   Map<Long,NominatedPostDetailsVO> boardLvelMap = new HashMap<Long,NominatedPostDetailsVO>();
+		   getBoardLevels(boardLvelMap);
+		   
+		   if(commonMethodsUtilService.isListOrSetValid(candidateList)){
+			   for (Object[] obj : candidateList) {
+				   Long boardLvlId = 0l;
+				   if(obj[1] != null && (Long)obj[1] == 5l || (Long)obj[1] == 6l){
+					    boardLvlId=5l;
+				   }if(obj[1] != null && (Long)obj[1] == 7l || (Long)obj[1] == 8l){
+					    boardLvlId=7l;
+				   }else if(obj[1] != null){
+					    boardLvlId=(Long)obj[1] ;
+				   }
+				   NominatedPostDetailsVO vo = boardLvelMap.get(boardLvlId);
+				   if(vo != null){
+					   if(commonMethodsUtilService.getStringValueForObject(obj[5]).toString().equalsIgnoreCase("M")){
+						   vo.setMaleCount(vo.getMaleCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
+						   returnVO.setMaleCount(returnVO.getMaleCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
+						}else if(commonMethodsUtilService.getStringValueForObject(obj[5]).toString().equalsIgnoreCase("F")){
+							vo.setFemaleCount(vo.getFemaleCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
+							returnVO.setFemaleCount(returnVO.getFemaleCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
+						}
+					   vo.setTotalCount(vo.getTotalCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
+					   returnVO.setTotalCount(returnVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(obj[0]));
 				   }
 			   }
-			   if(commonMethodsUtilService.isMapValid(boardLvelMap)){
-					for (Entry<Long, NominatedPostDetailsVO> entry : boardLvelMap.entrySet()) {
-						returnVO.getList().add(entry.getValue());
-					}
+		   }
+		   if(commonMethodsUtilService.isMapValid(boardLvelMap)){
+				for (Entry<Long, NominatedPostDetailsVO> entry : boardLvelMap.entrySet()) {
+					returnVO.getList().add(entry.getValue());
 				}
-			  
-		 }catch (Exception e) {
-			 e.printStackTrace();
-				LOG.error("Exception Occured in getAreaWiseDashboardCandidatesCountView()", e);
-		}
-		 return returnVO;
-	 }
-	 
-	 public Map<Long,NominatedPostDetailsVO> getBoardLevels(Map<Long,NominatedPostDetailsVO> boardLvelMap){
+			}
+		  
+	 }catch (Exception e) {
+		 e.printStackTrace();
+			LOG.error("Exception Occured in getAreaWiseDashboardCandidatesCountView()", e);
+	}
+	 return returnVO;
+ }
+ 
+ public Map<Long,NominatedPostDetailsVO> getBoardLevels(Map<Long,NominatedPostDetailsVO> boardLvelMap){
+	try{
+		List<BoardLevel> boardLvls = boardLevelDAO.getAll();
+		   if(commonMethodsUtilService.isListOrSetValid(boardLvls)){
+			   for (BoardLevel boardLevel : boardLvls) {
+				   NominatedPostDetailsVO vo =null;
+				   Long boardLvlId =0l;
+				   String name = "";
+				   if(boardLevel.getBoardLevelId() != null 
+						   && boardLevel.getBoardLevelId().longValue() == 5l || boardLevel.getBoardLevelId().longValue() == 6l){
+					    vo = boardLvelMap.get(5l);
+					    boardLvlId=5l;
+					    name= "Mandal/Muncipality/Corporation";
+				   }else if(boardLevel.getBoardLevelId() != null 
+						   && boardLevel.getBoardLevelId().longValue() == 7l || boardLevel.getBoardLevelId().longValue() == 8l){
+					    vo = boardLvelMap.get(7l);
+					    boardLvlId=7l;
+					    name= "Panchayat/Ward/Division";
+				   }else {
+					    vo = boardLvelMap.get(boardLevel.getBoardLevelId());
+					    boardLvlId=boardLevel.getBoardLevelId();
+					    name= boardLevel.getLevel();
+				   }
+				   
+				   if(vo == null){
+					   vo = new NominatedPostDetailsVO();
+					   vo.setId(boardLvlId) ;
+					   vo.setName(name);
+					   boardLvelMap.put(boardLvlId, vo);
+				   }
+			}
+		   }
+	}catch (Exception e) {
+		e.printStackTrace();
+		LOG.error("Exception Occured in getBoardLevels()", e);
+	}
+	return boardLvelMap;
+ }
+ public Map<Long,NominatedPostDetailsVO> getPositions(Map<Long,NominatedPostDetailsVO> positionMap){
 		try{
-			List<BoardLevel> boardLvls = boardLevelDAO.getAll();
-			   if(commonMethodsUtilService.isListOrSetValid(boardLvls)){
-				   for (BoardLevel boardLevel : boardLvls) {
+			List<Position> positions = positionDAO.getAll();
+			   if(commonMethodsUtilService.isListOrSetValid(positions)){
+				   for (Position position : positions) {
 					   NominatedPostDetailsVO vo =null;
-					   Long boardLvlId =0l;
-					   String name = "";
-					   if(boardLevel.getBoardLevelId() != null 
-							   && boardLevel.getBoardLevelId().longValue() == 5l || boardLevel.getBoardLevelId().longValue() == 6l){
-						    vo = boardLvelMap.get(5l);
-						    boardLvlId=5l;
-						    name= "Mandal/Muncipality/Corporation";
-					   }else if(boardLevel.getBoardLevelId() != null 
-							   && boardLevel.getBoardLevelId().longValue() == 7l || boardLevel.getBoardLevelId().longValue() == 8l){
-						    vo = boardLvelMap.get(7l);
-						    boardLvlId=7l;
-						    name= "Panchayat/Ward/Division";
-					   }else {
-						    vo = boardLvelMap.get(boardLevel.getBoardLevelId());
-						    boardLvlId=boardLevel.getBoardLevelId();
-						    name= boardLevel.getLevel();
-					   }
 					   
 					   if(vo == null){
 						   vo = new NominatedPostDetailsVO();
-						   vo.setId(boardLvlId) ;
-						   vo.setName(name);
-						   boardLvelMap.put(boardLvlId, vo);
+						   vo.setId(position.getPositionId()) ;
+						   vo.setName(position.getPositionName());
+						   positionMap.put(vo.getId(), vo);
 					   }
 				}
 			   }
 		}catch (Exception e) {
 			e.printStackTrace();
-			LOG.error("Exception Occured in getBoardLevels()", e);
+			LOG.error("Exception Occured in getPositions()", e);
 		}
-		return boardLvelMap;
+		return positionMap;
 	 }
-	 public Map<Long,NominatedPostDetailsVO> getPositions(Map<Long,NominatedPostDetailsVO> positionMap){
-			try{
-				List<Position> positions = positionDAO.getAll();
-				   if(commonMethodsUtilService.isListOrSetValid(positions)){
-					   for (Position position : positions) {
-						   NominatedPostDetailsVO vo =null;
-						   
-						   if(vo == null){
-							   vo = new NominatedPostDetailsVO();
-							   vo.setId(position.getPositionId()) ;
-							   vo.setName(position.getPositionName());
-							   positionMap.put(vo.getId(), vo);
-						   }
+        //* @author Swapna
+	    public LocationVO getAllLocationWiseCount(List<Long> locationValues, Long locationTypeId) {
+		LocationVO VO = new LocationVO();
+		try {
+			List<Long> constituencyIds = new ArrayList<Long>();
+			List<Long> tehsilIds = new ArrayList<Long>();
+			List<Long> panchaythIds = new ArrayList<Long>();
+			Long constituencyCount=0l, mandalCount=0l,panchaythCount=0l, municipalityCount=0l;
+			
+			if (locationTypeId == 3l) {
+				// constituency
+				List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(locationValues);
+				for (Object[] objects : locationValuesObj) {
+					if (objects != null) {
+						constituencyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						constituencyCount = constituencyCount + 1;
 					}
-				   }
-			}catch (Exception e) {
-				e.printStackTrace();
-				LOG.error("Exception Occured in getPositions()", e);
+				}
+			}else if(locationTypeId==10l){
+				constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationValues);
+				
 			}
-			return positionMap;
-		 }
-}
+			
+			List<Long> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyIds);
+			List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationsConstituencyID(delimitationConstituency);
+			if(mandals!=null){
+				for (Tehsil tehsil : mandals) {
+					tehsilIds.add(tehsil.getTehsilId());
+					mandalCount=mandalCount+1;
+				}
+			}
+			List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
+			for (Object[] objects : localBodies) {
+				if (objects != null) {
+					municipalityCount = municipalityCount + 1;
+				}
+			}
+			List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInMandals(tehsilIds);
+			for (Object[] objects : panchayatsList) {
+				if (objects != null) {
+					panchaythIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					panchaythCount = panchaythCount + 1;
+				}
+			}
+			Long hamletCount = panchayatDAO.getHamletCountOnPanchayatIds(tehsilIds);
+			Long boothCount = panchayatDAO.getHamletCountOnPanchayatIds(tehsilIds);
+			if (locationTypeId != 4l){
+				VO.setConstituencyCount(constituencyCount);
+			}
+			VO.setTehsilCount(mandalCount);
+			VO.setMunicipalityCount(municipalityCount);
+			VO.setVillageIdCount(panchaythCount);
+			VO.setHamletCount(hamletCount);
+		    VO.setBoothCount(boothCount);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllLocationWiseCount ", e);
+		}
+		return VO;
+	}
+	
+}	
