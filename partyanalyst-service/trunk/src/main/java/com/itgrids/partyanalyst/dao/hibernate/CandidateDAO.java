@@ -354,7 +354,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	
 	
 	public List<Object[]> getElectionInformationLocationWise(List<Long> yearsList, Long locationTypeId,
-			Long locationValue,List<Long> electionScopeIds, List<Long> electionBodyIds,List<Long> tehsilIds) {
+			Long locationValue,List<Long> electionScopeIds, List<Long> electionBodyIds,List<Long> tehsilIds,Long partyId) {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("select p.party_id as partyId,p.short_name as partyName ,e.election_id as electionId ,e.election_year as electionYear,"
@@ -376,6 +376,9 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 				+ " ce.constituency_id = c1.constituency_id and"
 				+ " cr.nomination_id = n.nomination_id and "
 				+ " cr.rank = 1 and ");
+		if(partyId != null && partyId.longValue()>0L)
+			sb.append(" p.party_id = :partyId and ");
+		
 		if (yearsList != null && yearsList.size() > 0) {
 			sb.append(" e.election_year in(:years) and");
 		}
@@ -431,6 +434,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	      if(electionScopeIds != null && electionScopeIds.size()>0){
 	    	  query.setParameterList("electionScopeIds",electionScopeIds);
 	      }
+	      if(partyId != null && partyId.longValue()>0L)
+	    	  query.setParameter("partyId", partyId);
 		return query.list();
 
 	}
