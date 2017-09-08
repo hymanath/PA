@@ -18022,7 +18022,7 @@
 			<param name="root">nominatedPostDashboardVO</param>       
 		</result>
   	</action>
-  	<action name="getAllLocationWiseCountAction1" class="locationDashboardAction"  method="getAllLocationWiseCount">
+  	<action name="getAllLocationWiseCountAction" class="locationDashboardAction"  method="getAllLocationWiseCount">
 		<result type="json" name="success">    
 			<param name="root">locationVo</param>       
 		</result>
