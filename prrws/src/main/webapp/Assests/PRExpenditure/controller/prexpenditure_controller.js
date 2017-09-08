@@ -79,7 +79,7 @@
 		    if (locationType == "district") {
 				if(responceData != null && responceData.length > 0){
 					 cntrl.districtData = responceData;
-					 cntrl.districtParams = new NgTableParams({}, {dataset: cntrl.districtData});
+					 
 					 cntrl.districtParams = createUsingFullOptions(cntrl.districtData,"district");
 					 cntrl.showHideDistrictSpinner=false;
 					 cntrl.showHideDistrictSearchSpinner = true;
@@ -91,7 +91,7 @@
 			} else if (locationType == "division") {
 				if(responceData != null && responceData.length > 0){
 					cntrl.divisionData = responceData;		
-					cntrl.divisionParams = new NgTableParams({}, {dataset: cntrl.divisionData});
+					
 					cntrl.divisionParams = createUsingFullOptions(cntrl.divisionData,"division");
 					cntrl.showHideDivisionSpinner=false;  
 					cntrl.showHideDivisionSearchSpinner = true;
@@ -104,15 +104,20 @@
 			
 			function createUsingFullOptions(dataList,blockLevel) {
 				if(blockLevel == 'district'){
-					var initialParams = {};
+					var initialParams = {
+						  // initial sort order
+						  sorting: { grossAmount: "desc" }
+					};
 					var initialSettings = {
 							counts: [],
 							dataset: dataList
-						};
+					};
 					return new NgTableParams(initialParams, initialSettings);
 				}else{
-					var initialParams = {
-					count: 10 // initial page size
+					var initialParams = {      
+						// initial sort order
+						sorting: { grossAmount: "desc" },      
+						count: 10 // initial page size
 					};
 					var initialSettings = {
 					// page size buttons (right set of buttons in demo)
