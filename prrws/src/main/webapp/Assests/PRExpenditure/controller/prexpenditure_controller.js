@@ -1,10 +1,23 @@
 'use strict';
- angular.module('prexpenditureApp').controller('PrexpenditureController', ['$scope','PrexpenditureService','NgTableParams', function($scope,PrexpenditureService,NgTableParams) {  
-    var cntrl = this;
-	cntrl.showHideDistrictSpinner=true;
+ angular.module('prexpenditureApp').controller('PrexpenditureController', ['$scope','PrexpenditureService','NgTableParams', function($scope,PrexpenditureService,NgTableParams,$log) {  
+    var cntrl = this;  
+	cntrl.blockParamas=['District','Division'];
+	cntrl.headingConsolidatedIds=['headingConsolidatedDistrict','headingConsolidatedDivision'];
+	cntrl.collapseConsolidatedIds=['collapseConsolidatedDistrict','collapseConsolidatedDivision'];
+	cntrl.collapseConsolidatedLinkIds=['#collapseConsolidatedDistrict','#collapseConsolidatedDivision'];
+	cntrl.ngTableArr=['cntrl.districtParams','cntrl.divisionParams'];
+	cntrl.ngTableHideShow=['cntrl.showHideDistrictTable','cntrl.showHideDivisionTable'];
+	cntrl.showHideSpinner=['cntrl.showHideDistrictSpinner','cntrl.showHideDivisionSpinner'];
+	cntrl.showHideSearchSpinner=['cntrl.showHideDistrictSearchSpinner','cntrl.showHideDivisionSearchSpinner'];
+	cntrl.showHideBlockDataAvailable=['cntrl.showHideDistrictBlockDataAvailable','cntrl.showHideDivisionBlockDataAvailable'];
+	   
+	cntrl.locationIdArr = ['districtId','DivisionId'];
+	cntrl.showHideDistrictSpinner=true;          
 	cntrl.showHideDivisionSpinner=true;
+	
 	cntrl.showHideDistrictSearchSpinner = false;
 	cntrl.showHideDivisionSearchSpinner = false;
+	
 	cntrl.showHideDivisionTable=false;  
 	cntrl.showHideDistrictTable=false;
 	
@@ -37,6 +50,7 @@
 		    cntrl.grossAmount=responceData.grossAmount;
 			cntrl.deductions=responceData.deductions;
 			cntrl.netAmount=responceData.netAmount;
+			
 		},
 		function(errResponse){
 			console.error("Error While fetching data from server.");
@@ -45,6 +59,7 @@
 	
 	  getLocationWisePrExpenditureData("",0,"district");
 	  getLocationWisePrExpenditureData("",0,"division");
+	  
 	function getLocationWisePrExpenditureData(filterType,locationId,locationType) {
 	   var locationIds = [];
 		if (locationId != null && locationId > 0 ){
@@ -97,12 +112,12 @@
 					return new NgTableParams(initialParams, initialSettings);
 				}else{
 					var initialParams = {
-					count: 5 // initial page size
+					count: 10 // initial page size
 					};
 					var initialSettings = {
 					// page size buttons (right set of buttons in demo)
 
-					counts: [5,10,25,50,100],
+					counts: [10,25,50,100],
 					// determines the pager buttons (left set of buttons in demo)
 					paginationMaxBlocks: 3,
 					paginationMinBlocks: 2,
@@ -119,19 +134,7 @@
 		});
 	}
 	
-	cntrl.textSearchDiv = textSearchDiv;
-	function textSearchDiv(field, value) {
-		var filter = {};
-		filter[field] = value;
-		angular.extend(cntrl.divisionParams.filter(), filter);
-	}
 	
-	cntrl.textSearchDist = textSearchDist;
-	function textSearchDist(field, value) {
-		var filter = {};
-		filter[field] = value;
-		angular.extend(cntrl.districtParams.filter(), filter);
-	}
 }]);
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
