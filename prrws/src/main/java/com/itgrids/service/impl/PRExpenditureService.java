@@ -32,9 +32,9 @@ public class PRExpenditureService implements IPRExpenditureService {
 			PrExpenditureVO expenditureVO = new PrExpenditureVO();
 			Object[] totalVal = predExpenditureLocationDAO.getTotalAmountForOverview(inputVO.getFilterType(),inputVO.getLocationIds());
 			if(null != totalVal){
-				expenditureVO.setGrossAmount(commonMethodsUtilService.getLongValueForObject(totalVal[0]).toString());
-				expenditureVO.setDeductions(commonMethodsUtilService.getLongValueForObject(totalVal[1]).toString());
-				expenditureVO.setNetAmount(commonMethodsUtilService.getLongValueForObject(totalVal[2]).toString());
+				expenditureVO.setGrossAmount(commonMethodsUtilService.getLongValueForObject(totalVal[0]));
+				expenditureVO.setDeductions(commonMethodsUtilService.getLongValueForObject(totalVal[1]));
+				expenditureVO.setNetAmount(commonMethodsUtilService.getLongValueForObject(totalVal[2]));
 			}
 			return expenditureVO;
 		}catch(Exception e){
@@ -61,10 +61,10 @@ public class PRExpenditureService implements IPRExpenditureService {
 					PrExpenditureVO expenditureVO = getAddress(param);
 					expenditureVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[3]));
 					expenditureVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[4]));
-					expenditureVO.setGrossAmount(commonMethodsUtilService.getStringValueForObject(param[0]));
-					expenditureVO.setDeductions(commonMethodsUtilService.getStringValueForObject(param[1]));
-					expenditureVO.setNetAmount(commonMethodsUtilService.getStringValueForObject(param[2]));
-					resultList.add(expenditureVO);
+					expenditureVO.setGrossAmount(commonMethodsUtilService.getLongValueForObject(param[0]));
+					expenditureVO.setDeductions(commonMethodsUtilService.getLongValueForObject(param[1]));
+					expenditureVO.setNetAmount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					resultList.add(expenditureVO);   
 				}
 			}
 		} catch (Exception e) {
