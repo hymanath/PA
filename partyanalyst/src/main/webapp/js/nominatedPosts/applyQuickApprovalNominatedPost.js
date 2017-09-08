@@ -191,8 +191,6 @@ $(document).on('click','.selectMember',function(){
 				if(globalCadreIds.indexOf(cadreId) > -1){
 					$("#errMessageId").html('Duplicate person adding.');
 				}else{
-					
-					
 					if(globalPositionsArr == null || globalPositionsArr == ""){
 						globalCadreIds.push(cadreId);
 						globalMemAddedCunt = globalMemAddedCunt+1;
@@ -201,8 +199,12 @@ $(document).on('click','.selectMember',function(){
 						$("#addmember"+uniqueId).find("li div.panel-footer").remove();
 					}else{
 						var posiMemCnt = $("#posiMemCnt"+uniqueId).text();
-						if((globalPositionsArr.indexOf(uniqueId) > -1 || $("[attr_selected_position="+uniqueId+"]").length != 0 )
-						&& (posiMemCnt < positionCount)){
+						//if((globalPositionsArr.indexOf(uniqueId) > -1  || $("[attr_selected_position="+uniqueId+"]").length != 0 )
+						//&& positionCount > posiMemCnt)
+						var divCheck = (globalPositionsArr.indexOf(uniqueId) > -1);
+						//var isExistDiv=$("[attr_selected_position="+uniqueId+"]").length != 0;
+						var countChk =(parseInt(positionCount) > parseInt(posiMemCnt));
+						if(countChk && divCheck  ){
 							globalCadreIds.push(cadreId);
 							globalMemAddedCunt = globalMemAddedCunt+1;
 							//globalMembersCount++;
@@ -599,7 +601,8 @@ function getDepartments(){
 	$("#errdeptBoardPostnId").html("");
 	$("#searchResultsBlock").html("");
 	$("#searchBy").val("");
-	
+	$("#deptBoardPostnId").html('');
+     $("#deptBoardPostnId").trigger("chosen:updated");
 	var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId").val();
 
@@ -1121,7 +1124,7 @@ function getNominatedPostApplication()
 function hideDetails(){
 	$('.ramakrishnaCls').hide();
 	//$('#searchDivId').hide();
-	$("#uploadFlDivId").hide();
+	//$("#uploadFlDivId").hide();
 	$("#submitBtnId").hide();
 	//$("#addedRefferalsDiv").hide();
 }
@@ -1535,7 +1538,7 @@ function setDefaultImage(img){
 			str+='<div id="involveBlockParent'+attrId+'" class="col-md-12 col-xs-12 col-sm-6 m_top10">';
             str+='<div class="involveBlock" attr_cadreId="'+attrId+'">';
 			str+='<div class="media"><div class="media-left">';
-			str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
+			str+='<img src="http://www.mytdp.com/'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
 			str+='</div>';
 			str+='<div class="media-body">';
 			str+='<input type="hidden" class="form-control memberDatacls" name="nominatedPostDetailsVO.subList2['+cloneCount+'].tdpCadreId" value="'+attrId+'"/>';
