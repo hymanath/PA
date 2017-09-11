@@ -4094,7 +4094,8 @@ public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,Str
 		}
 		}
 	 if(scaleCountObjList != null && scaleCountObjList.size()>0){
-		if(commonMethodsUtilService.isListOrSetValid(scaleCountObjList)){			
+		if(commonMethodsUtilService.isListOrSetValid(scaleCountObjList)){
+			CoreDebateVO VO =null;
 			for (Object[] obj : scaleCountObjList) {					
 				CoreDebateVO partyVO = countMap.get(obj[0]);					
 				if(partyVO != null){							
@@ -4103,10 +4104,14 @@ public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,Str
 						list = new LinkedList<CoreDebateVO>();
 						partyVO.setCoreDebateVOList(list);
 						partyVO.setOverAllPerc(0.00);
-					}						
-					CoreDebateVO VO = new CoreDebateVO();
-					VO.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
-					VO.setName(commonMethodsUtilService.getStringValueForObject(obj[3]));						
+					}
+					VO = getMatchedScaleId(list,commonMethodsUtilService.getLongValueForObject(obj[2]));
+					if(VO == null){
+					 VO = new CoreDebateVO();
+					 VO.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					 VO.setName(commonMethodsUtilService.getStringValueForObject(obj[3]));
+					 list.add(VO);	
+					}
 					if(obj[4] !=null && (Double)obj[4]>0.0 && partyVO.getDebateCount() >0){
 						
 						if(partyVO.getCandidateCount() !=null && partyVO.getDebateCount() !=null && partyVO.getCandidateCount() > partyVO.getDebateCount()){
@@ -4122,21 +4127,35 @@ public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,Str
 						//partyVO.setOverAllPerc(Double.parseDouble(new BigDecimal(partyVO.getOverAllPerc()+/*VO.getScalePerc()*/ 
 								//Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString())   ).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 						
-						if(partyVO.getCandidateCount() !=null && partyVO.getDebateCount() !=null && partyVO.getCandidateCount() > partyVO.getDebateCount()){
+						/*if(partyVO.getCandidateCount() !=null && partyVO.getDebateCount() !=null && partyVO.getCandidateCount() > partyVO.getDebateCount()){
 							partyVO.setOverAllPerc(Double.parseDouble(new BigDecimal(partyVO.getOverAllPerc()+/*VO.getScalePerc()*/ 
-									Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getCandidateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()) ).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
-						}									
-						else if(partyVO.getCandidateCount() !=null && partyVO.getDebateCount() !=null && partyVO.getDebateCount() > partyVO.getCandidateCount() ){
-							partyVO.setOverAllPerc(Double.parseDouble(new BigDecimal(partyVO.getOverAllPerc()+/*VO.getScalePerc()*/ 
-									Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString())   ).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
-						}else if(partyVO.getDebateCount() !=null && partyVO.getDebateCount()>0l){
-							partyVO.setOverAllPerc(Double.parseDouble(new BigDecimal(partyVO.getOverAllPerc()+/*VO.getScalePerc()*/ 
-									Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString())   ).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
-						}
+									//Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getCandidateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()) ).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+						//}									
+						//else if(partyVO.getCandidateCount() !=null && partyVO.getDebateCount() !=null && partyVO.getDebateCount() > partyVO.getCandidateCount() ){
+							//partyVO.setOverAllPerc(Double.parseDouble(new BigDecimal(partyVO.getOverAllPerc()+/*VO.getScalePerc()*/ 
+									//Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString())   ).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+						//}else if(partyVO.getDebateCount() !=null && partyVO.getDebateCount()>0l){
+							//partyVO.setOverAllPerc(Double.parseDouble(new BigDecimal(partyVO.getOverAllPerc()+/*VO.getScalePerc()*/ 
+									//Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString())   ).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+						//}*/
 						
 					}						
-					list.add(VO);						
-				}	
+					//list.add(VO);	
+					if(list != null && list.size()>0){
+						if(partyVO.getCandidateCount() !=null && partyVO.getDebateCount() !=null && partyVO.getCandidateCount() > partyVO.getDebateCount()){
+						partyVO.setOverAllPerc(Double.parseDouble(new BigDecimal(partyVO.getOverAllPerc()+/*VO.getScalePerc()*/ 
+								Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getCandidateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()) ).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+					 }									
+					else if(partyVO.getCandidateCount() !=null && partyVO.getDebateCount() !=null && partyVO.getDebateCount() > partyVO.getCandidateCount() ){
+						partyVO.setOverAllPerc(Double.parseDouble(new BigDecimal(partyVO.getOverAllPerc()+/*VO.getScalePerc()*/ 
+								Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString())   ).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+					}else if(partyVO.getDebateCount() !=null && partyVO.getDebateCount()>0l){
+						partyVO.setOverAllPerc(Double.parseDouble(new BigDecimal(partyVO.getOverAllPerc()+/*VO.getScalePerc()*/ 
+								Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString())   ).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+					 }
+					}
+				}
+				
 			}
 		}
 		}
@@ -7337,6 +7356,15 @@ public void setInviteeAndNonInviteeCount(TrainingCampProgramVO programVO){
 		LOG.error("Error occured at setInviteeAndNonInviteeCount() in CoreDashboardMainService {}",e);
 	}
 }
-
+public CoreDebateVO getMatchedScaleId(List<CoreDebateVO> returnList,Long scopeId){
+	if(returnList == null )
+		return null;
+	for(CoreDebateVO dayVO:returnList){
+		 if(dayVO.getId().equals(scopeId)){
+			 return dayVO;
+		 }
+	}
+	return null;
+}
 }  
 
