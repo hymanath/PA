@@ -3850,13 +3850,21 @@ public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,Str
 public Map<Long,CoreDebateVO> setDebateValuesToMap(List<Object[]> ObjList,Map<Long,CoreDebateVO> countMap){
 	try{			
 		if(commonMethodsUtilService.isListOrSetValid(ObjList)){			
-			for (Object[] obj : ObjList) {					
-				CoreDebateVO coreDebateVO = new CoreDebateVO();
-					coreDebateVO.setId((Long)obj[0]);
-					coreDebateVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
-					coreDebateVO.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
-					coreDebateVO.setCandidateCount(commonMethodsUtilService.getLongValueForObject(obj[3]));						
-					countMap.put((Long)obj[0], coreDebateVO);										
+			for (Object[] obj : ObjList) {
+				
+				CoreDebateVO coreDebateVO  = countMap.get((Long)obj[0]);
+				
+				if(coreDebateVO == null){
+					 coreDebateVO = new CoreDebateVO();
+					 coreDebateVO.setId((Long)obj[0]);
+					 coreDebateVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					 
+					 countMap.put((Long)obj[0], coreDebateVO);	
+				}			
+					
+				coreDebateVO.setDebateCount(coreDebateVO.getDebateCount() + commonMethodsUtilService.getLongValueForObject(obj[2]));
+				coreDebateVO.setCandidateCount(coreDebateVO.getCandidateCount() + commonMethodsUtilService.getLongValueForObject(obj[3]));						
+													
 			}
 		}
 		
@@ -3870,7 +3878,7 @@ public Map<Long,CoreDebateVO> setScaleVauesToParty(List<Object[]> ObjList,Map<Lo
 	try{
 		if(commonMethodsUtilService.isListOrSetValid(ObjList)){			
 			for (Object[] obj : ObjList) {
-				CoreDebateVO coreDebateVO = countMap.get((Long)obj[0]);
+				CoreDebateVO coreDebateVO = countMap.get((Long)obj[0]);	
 				if(coreDebateVO == null){
 					coreDebateVO = new CoreDebateVO();
 					coreDebateVO.setId((Long)obj[0]);
