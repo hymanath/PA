@@ -58,6 +58,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeEnrollmentDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
@@ -219,7 +220,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		this.censusDAO = censusDAO;
 	}
 	private ICensusDAO censusDAO;
+	private ITehsilDAO tehsilDAO;
 
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
 	public IConstituencyCensusDetailsDAO getConstituencyCensusDetailsDAO(){
 		return constituencyCensusDetailsDAO;
 
@@ -2813,7 +2821,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * 
 	 */
 	@Override
-	public List<BoothInchargesVO>getBoothCommitteeInchargesCount(Long locationId,Long locationValue,List<Long> boothCommitteeEnrollmentYearsIdsLst,String fromDateStr,String toDateStr){
+	public List<BoothInchargesVO> getBoothCommitteeInchargesCount(Long locationId,Long locationValue,List<Long> boothCommitteeEnrollmentYearsIdsLst,String fromDateStr,String toDateStr){
 		List<BoothInchargesVO> returnList = new ArrayList<BoothInchargesVO>(0);
 		try{
 			Date startDate = null;
@@ -3488,10 +3496,13 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			List<Long> constituencyIds = new ArrayList<Long>();
 			List<Long> tehsilIds = new ArrayList<Long>();
 			List<Long> panchaythIds = new ArrayList<Long>();
-			Long constituencyCount=0l, mandalCount=0l,panchaythCount=0l,boothCount=0l, municipalityCount=0l;
+			List<Long> localBodyIds = new ArrayList<Long>();
+			Long constituencyCount=0l, mandalCount=0l,panchaythCount=0l,boothCount=0l,totalNoOfWards=0l, municipalityCount=0l;
+			List<Tehsil> mandals = new ArrayList<Tehsil>();
+			List<Long> delimitationConstituency = new ArrayList<Long>();
+			List<Object[]> localBodies = new ArrayList<Object[]>();
 			
 			if (locationTypeId == 3l) {
-				// constituency
 				List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(locationValues);
 				for (Object[] objects : locationValuesObj) {
 					if (objects != null) {
@@ -3499,23 +3510,26 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 						constituencyCount = constituencyCount + 1;
 					}
 				}
-			}else if(locationTypeId==10l){
-				constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationValues);
-				
-			}
-			List<Long> delimitationConstituency = new ArrayList<Long>();
-			List<Object[]> localBodies = new ArrayList<Object[]>();
-			if( locationTypeId != 4l){
-				delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyIds);
+				mandals = tehsilDAO.findByDistrictIds(locationValues);
 				localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
 				boothCount = panchayatDAO.getBoothIdsCount(constituencyIds,publicationDateId);
-			}else{
+				VO.setConstituencyCount(constituencyCount);
+			}else if(locationTypeId==10l){
+				constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationValues);
+				delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDsForLocationDashBoard(constituencyIds);
+				localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
+				boothCount = panchayatDAO.getBoothIdsCount(constituencyIds,publicationDateId);
+				mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationsConstituencyID(delimitationConstituency);
+				VO.setConstituencyCount(Long.valueOf(constituencyIds.size()));
+			}
+		
+			if( locationTypeId == 4l){
 				delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDsForLocationDashBoard(locationValues);
 				localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(locationValues);
 				boothCount = panchayatDAO.getBoothIdsCount(locationValues,publicationDateId);
-
+				mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationsConstituencyID(delimitationConstituency);
 			}
-			List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationsConstituencyID(delimitationConstituency);
+			
 			if(mandals!=null){
 				for (Tehsil tehsil : mandals) {
 					tehsilIds.add(tehsil.getTehsilId());
@@ -3523,28 +3537,40 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 				}
 			}
 			
-			for (Object[] objects : localBodies) {
-				if (objects != null) {
+			List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInMandalsList(tehsilIds);
+			
+			if (localBodies != null) {
+				for (Object[] objects : localBodies) {
 					municipalityCount = municipalityCount + 1;
+					localBodyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 				}
 			}
-			List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInMandalsList(tehsilIds);
-			for (Object[] objects : panchayatsList) {
-				if (objects != null) {
+			
+			if (panchayatsList != null) {
+				for (Object[] objects : panchayatsList) {
 					panchaythIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 					panchaythCount = panchaythCount + 1;
 				}
 			}
 			Long hamletCount = panchayatDAO.getHamletCountOnPanchayatIds(panchaythIds);
-			
-			if (locationTypeId != 4l){
-				VO.setConstituencyCount(constituencyCount);
+			if(localBodyIds != null && localBodyIds.size() >0){
+			List<Object[]> localBodyList = constituencyDAO.getWardsInLocalElectionBody(localBodyIds);
+				if (localBodyList != null) {
+					for (Object[] objects : localBodyList) {
+						if(objects != null){
+							totalNoOfWards = totalNoOfWards + 1;
+						}
+					}
+				}
 			}
+			
+			
 			VO.setTehsilCount(mandalCount);
 			VO.setMunicipalityCount(municipalityCount);
 			VO.setVillageIdCount(panchaythCount);
 			VO.setHamletCount(hamletCount);
 		    VO.setBoothCount(boothCount);
+		    VO.setTotalNoOfWards(totalNoOfWards);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAllLocationWiseCount ", e);
 		}

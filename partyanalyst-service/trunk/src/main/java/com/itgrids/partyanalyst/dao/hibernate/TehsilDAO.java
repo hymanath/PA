@@ -274,4 +274,8 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 										" order by model.tehsilName");
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Tehsil> findByDistrictIds(List<Long> districtIds){
+		return getHibernateTemplate().findByNamedParam("from Tehsil model where model.district.districtId in(:districtIds)","districtIds", districtIds);
+	}
 }

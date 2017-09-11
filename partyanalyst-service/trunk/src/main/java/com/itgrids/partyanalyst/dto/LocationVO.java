@@ -48,6 +48,7 @@ public class LocationVO implements Serializable {
 	private Long  hamletCount;	
 	private Long municipalityCount;
 	private Long boothCount;
+	private Long totalNoOfWards;
 	
 	public Long getBoothCount() {
 		return boothCount;
@@ -271,6 +272,12 @@ public class LocationVO implements Serializable {
 	}
 	public void setMunicipalityCount(Long municipalityCount) {
 		this.municipalityCount = municipalityCount;
+	}
+	public Long getTotalNoOfWards() {
+		return totalNoOfWards;
+	}
+	public void setTotalNoOfWards(Long totalNoOfWards) {
+		this.totalNoOfWards = totalNoOfWards;
 	}
 	
 	
