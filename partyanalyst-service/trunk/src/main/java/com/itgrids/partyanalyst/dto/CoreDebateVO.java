@@ -10,7 +10,7 @@ public class CoreDebateVO implements Serializable {
 	private String name;	
 	private Long count=0l;
 	private Long debateCount=0l;
-	private Long candidateCount;	
+	private Long candidateCount=0l;	
 	private Double scale=0.00;
 	private Double scalePerc=0.00;	
 	private Long candidateId;
