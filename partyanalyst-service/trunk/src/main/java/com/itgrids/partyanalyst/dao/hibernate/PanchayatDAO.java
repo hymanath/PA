@@ -324,8 +324,8 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 	
 	public List<Object[]> getAllPanchayatsInMandalsList(List<Long> ids)
 	{
-		String queryString = "select distinct model.panchayatId, model.panchayatName,model.tehsil.tehsilName from Panchayat model where model.tehsil.tehsilId in (:ids) order by model.tehsil.tehsilName,model.panchayatName" +
-				" model.isDeleted='N'";
+		String queryString = "select distinct model.panchayatId, model.panchayatName,model.tehsil.tehsilName from Panchayat model where model.tehsil.tehsilId in (:ids) and model.isDeleted='N' " +
+				" order by model.tehsil.tehsilName,model.panchayatName" ;
 		
 		Query query = getSession().createQuery(queryString);
 		query.setParameterList("ids", ids);

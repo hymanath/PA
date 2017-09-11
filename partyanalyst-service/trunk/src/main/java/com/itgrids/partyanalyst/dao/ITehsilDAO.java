@@ -90,4 +90,5 @@ public List<Object[]> getAllTehsilInfoDetails();
 	public List<Object[]> getMandalsForConstituencyId( Long constituencyId);
 	public List<Object[]> getAllTehsilList( Long stateId);
 	public List<Object[]> getAllTehsilListByState();
+	public List<Tehsil> findByDistrictIds(List<Long> districtIds);
 }
