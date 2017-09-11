@@ -687,27 +687,45 @@ function getCandidateAndPartyInfoForConstituency(){
 
 function getCountsForConstituency(){
 	$("#levelWiseCountDivId").html(blockSpinner);
-	var tehsilId=0;
-	var type = 'constituency';
-	var jsObj=
+	userAccessLevelValuesArray=[];
+	if(locationLevelId == '2')
 	{
-		tehsilId:tehsilId,
-		type:locationLevelName,	
-		id:constituencyId,
-		publicationDateId:publicationId,
-		constituencyId:constituencyId,
-		task:"getCountForLevel"
+		userAccessLevelValuesArray.push(stateId)
+	}else if(locationLevelId == '3')
+	{
+		userAccessLevelValuesArray.push(districtId)
+	}else if(locationLevelId == '10')
+	{
+		userAccessLevelValuesArray.push(parliamentId)
+	}else if(locationLevelId == '4' || locationLevelId == '11')
+	{
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5' || locationLevelId == '12')
+	{
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '6' || locationLevelId == '13')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
 	}
-	$.ajax({
-		type:'GET',
-		url: 'getCountForLevelAction.action',
-		data: {task :JSON.stringify(jsObj)}
-	}).done(function(results){
-		if(results !=null){
-			buildCountsForConstituency(results);
+
+	var userAccessLevelId=locationLevelId;
+	
+	var jsObj={
+			levelId		  		:userAccessLevelId,
+			levelValues		 	:userAccessLevelValuesArray,
+			publicationDateId 	:24	
+			
 		}
-		
-	});		
+	 $.ajax({
+      type : "POST",
+      url : "getAllLocationWiseCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null){
+			buildCountsForConstituency(result);
+		}
+	});	
 		 			
 }
 function buildCountsForConstituency(results){
@@ -715,11 +733,21 @@ function buildCountsForConstituency(results){
 	
 	str+='<table class="table table-bordered block">';
 		str+='<tr>';
-		for(var i in results){
+			if(results.constituencyCount != null && results.constituencyCount >0){
+				str+='<td>';
+				str+='<h4 class="text-capitalize text-muted">Constituencies</h4>';
+				if(results.constituencyCount !=null && results.constituencyCount>0){
+					str+='<h2>'+results.constituencyCount+'</h2>';
+				}else{
+					str+='<h2> - </h2>';
+				}
+				str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+			str+='</td>';
+			}
 			str+='<td>';
 				str+='<h4 class="text-capitalize text-muted">Mandals</h4>';
-				if(results[i].totalmandals !=null && results[i].totalmandals>0){
-					str+='<h2>'+results[i].totalmandals+'</h2>';
+				if(results.tehsilCount !=null && results.tehsilCount>0){
+					str+='<h2>'+results.tehsilCount+'</h2>';
 				}else{
 					str+='<h2> - </h2>';
 				}
@@ -727,8 +755,8 @@ function buildCountsForConstituency(results){
 			str+='</td>';
 			str+='<td>';
 				str+='<h4 class="text-capitalize text-muted">Municipalities</h4>';
-				if(results[i].noOfLocalBodies !=null && results[i].noOfLocalBodies>0){
-					str+='<h2>'+results[i].noOfLocalBodies+'</h2>';
+				if(results.municipalityCount !=null && results.municipalityCount>0){
+					str+='<h2>'+results.municipalityCount+'</h2>';
 				}else{
 					str+='<h2> - </h2>';
 				}
@@ -736,8 +764,8 @@ function buildCountsForConstituency(results){
 			str+='</td>';
 			str+='<td>';
 				str+='<h4 class="text-capitalize text-muted">Panchayats</h4>';
-				if(results[i].totalPanchayats !=null && results[i].totalPanchayats>0){
-					str+='<h2>'+results[i].totalPanchayats+'</h2>';
+				if(results.villageIdCount !=null && results.villageIdCount>0){
+					str+='<h2>'+results.villageIdCount+'</h2>';
 				}else{
 					str+='<h2> - </h2>';
 				}
@@ -745,8 +773,8 @@ function buildCountsForConstituency(results){
 			str+='</td>';
 			str+='<td>';
 				str+='<h4 class="text-capitalize text-muted">Wards</h4>';
-				if(results[i].totalNoOfWards !=null && results[i].totalNoOfWards>0){
-					str+='<h2>'+results[i].totalNoOfWards+'</h2>';
+				if(results.totalNoOfWards !=null && results.totalNoOfWards>0){
+					str+='<h2>'+results.totalNoOfWards+'</h2>';
 				}else{
 					str+='<h2> - </h2>';
 				}
@@ -754,8 +782,8 @@ function buildCountsForConstituency(results){
 			str+='</td>';
 			str+='<td>';
 				str+='<h4 class="text-capitalize text-muted">Booths</h4>';
-				if(results[i].totalBooths !=null && results[i].totalBooths>0){
-					str+='<h2>'+results[i].totalBooths+'</h2>';
+				if(results.boothCount !=null && results.boothCount>0){
+					str+='<h2>'+results.boothCount+'</h2>';
 				}else{
 					str+='<h2> - </h2>';
 				}
@@ -763,14 +791,13 @@ function buildCountsForConstituency(results){
 			str+='</td>';
 			str+='<td>';
 				str+='<h4 class="text-capitalize text-muted">Hamlets</h4>';
-				if(results[i].totalNoOfHamlets !=null && results[i].totalNoOfHamlets>0){
-					str+='<h2>'+results[i].totalNoOfHamlets+'</h2>';
+				if(results.hamletCount !=null && results.hamletCount>0){
+					str+='<h2>'+results.hamletCount+'</h2>';
 				}else{
 					str+='<h2> - </h2>';
 				}
 				str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 			str+='</td>';
-		}
 		str+='</tr>';
 	str+='</table>';
 	
