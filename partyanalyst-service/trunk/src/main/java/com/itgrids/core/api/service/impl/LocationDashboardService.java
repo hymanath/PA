@@ -2714,22 +2714,39 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Long> yearsList=  new ArrayList<Long>();
 			List<Long> tehsilIds = new ArrayList<Long>();
 			List<Long> electionBodyIds =new ArrayList<Long>();
-			List<LocationWiseBoothDetailsVO> mandalsAndElecBdy= cadreCommitteeService.getMandalsByConstituency(locationValue);
-			for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : mandalsAndElecBdy) {
-				if(locationWiseBoothDetailsVO != null){
-					if(locationWiseBoothDetailsVO.getLocationId().compareTo(0l)!=0){
-						char c= locationWiseBoothDetailsVO.getLocationId().toString().charAt(0);
-						if(c=='2'){
-							Long tehsilId=Long.valueOf(locationWiseBoothDetailsVO.getLocationId().toString().substring(1));
-							tehsilIds.add(tehsilId);
-						}else if(c=='1'){
-							electionBodyIds.add(Long.valueOf(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
-						}
+			List<Long> locationValues = new ArrayList<Long>();
+			List<Long> constituencyIds = new ArrayList<Long>();
+			locationValues.add(locationValue);
+			if(locationTypeId ==4l){
+				constituencyIds.add(locationValue);
+			}else if(locationTypeId == 3l){
+				List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(locationValues);
+				for (Object[] objects : locationValuesObj) {
+					if (objects != null) {
+						constituencyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 					}
+				}
 
+			}else if(locationTypeId == 10l){
+				constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationValues);
+			}
+			for (Long constituencyId : constituencyIds) {
+				List<LocationWiseBoothDetailsVO> mandalsAndElecBdy= cadreCommitteeService.getMandalsByConstituency(constituencyId);
+				for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : mandalsAndElecBdy) {
+					if(locationWiseBoothDetailsVO != null){
+						if(locationWiseBoothDetailsVO.getLocationId().compareTo(0l)!=0){
+							char c= locationWiseBoothDetailsVO.getLocationId().toString().charAt(0);
+							if(c=='2'){
+								Long tehsilId=Long.valueOf(locationWiseBoothDetailsVO.getLocationId().toString().substring(1));
+								tehsilIds.add(tehsilId);
+							}else if(c=='1'){
+								electionBodyIds.add(Long.valueOf(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
+							}
+						}
+	
+					}
 				}
 			}
-
 			if(fromDateStr != null && !fromDateStr.trim().isEmpty() && toDateStr != null && !toDateStr.trim().isEmpty()){
 				Long fromYear = Long.parseLong(fromDateStr.split("-")[2]);
 				Long toYear = Long.parseLong(toDateStr.split("-")[2]);
