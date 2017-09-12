@@ -4115,12 +4115,12 @@ public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,Str
 					if(obj[4] !=null && (Double)obj[4]>0.0 && partyVO.getDebateCount() >0){
 						
 						if(partyVO.getCandidateCount() !=null && partyVO.getDebateCount() !=null && partyVO.getCandidateCount() > partyVO.getDebateCount()){
-							VO.setScalePerc(Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getCandidateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+							VO.setScalePerc(Double.parseDouble(new BigDecimal(VO.getScalePerc()+Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getCandidateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString())).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 						}									
 						else if(partyVO.getCandidateCount() !=null && partyVO.getDebateCount() !=null && partyVO.getDebateCount() > partyVO.getCandidateCount() ){
-							VO.setScalePerc(Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+							VO.setScalePerc(Double.parseDouble(new BigDecimal(VO.getScalePerc()+Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString())).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 						}else if(partyVO.getDebateCount() !=null && partyVO.getDebateCount()>0l){
-							VO.setScalePerc(Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+							VO.setScalePerc(Double.parseDouble(new BigDecimal(VO.getScalePerc()+Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString())).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 						}
 						
 						//VO.setScalePerc(Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
