@@ -271,19 +271,27 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 			return query.list();
 		}
 		
-		public List<Object[]> getVotersAgeWiseCount(Long constituencyId,Long publicationDateId){
-			Query query = getSession().createQuery(" select model.voterAgeRange.voterAgeRangeId,model.voterAgeRange.ageRange," +
+		public List<Object[]> getVotersAgeWiseCount(List<Long> constituencyIds,Long publicationDateId){
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("select model.voterAgeRange.voterAgeRangeId,model.voterAgeRange.ageRange," +
 					" model.totalVoters,model.totalVotersPercentage, " +
 					" model.maleVoters,model.maleVotersPercentage, " +
 					" model.femaleVoters,model.femaleVotersPercentage " +
 					" from VoterAgeInfo model " +
 					" where model.publicationDate.publicationDateId=:publicationDateId " +
-					" and model.voterReportLevel.voterReportLevelId = :levelValue " +
-					" and model.reportLevelValue = :constituencyId " +
-					" and model.voterAgeRange.voterAgeRangeId between 1 and 6 " +
+					" and model.voterReportLevel.voterReportLevelId = :levelValue ");
+			if(constituencyIds !=null && constituencyIds.size()>0){
+				sb.append("and model.reportLevelValue in (:constituencyId)");
+			}
+			sb.append(" and model.voterAgeRange.voterAgeRangeId between 1 and 6 " +
 					" order by model.voterAgeRange.voterAgeRangeId ");
+			Query query = getSession().createQuery(sb.toString());
+					
 			query.setParameter("publicationDateId", publicationDateId);
-			query.setParameter("constituencyId", constituencyId);
+			if(constituencyIds !=null && constituencyIds.size()>0){
+				query.setParameterList("constituencyId", constituencyIds);
+			}
 			query.setParameter("levelValue", 1l);//constituency
 			return query.list();
 		}

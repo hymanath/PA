@@ -577,11 +577,27 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return candidateInfoList;
 	}
 
-	public List<LocationVotersVO> getVotersAndcadreAgeWiseCount(Long constituencyId, Long publicationDateId) {
+	public List<LocationVotersVO> getVotersAndcadreAgeWiseCount(Long locationTypeId,Long locationValue, Long publicationDateId) {
 		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
 		try {
+			List<Long> constituencyIds = new ArrayList<Long>();
+			List<Long> locationIds = new ArrayList<Long>();
+			locationIds.add(locationValue);
+			if(locationTypeId == 3l){
+		        List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(locationIds);
+		        for (Object[] objects : locationValuesObj) {
+		          if(objects!=null){
+		        	  constituencyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+		          }
+		        }
+		        
+		      }else if(locationTypeId == 10l){
+		    	  constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+		      }else if(locationTypeId == 4l){
+		    	  constituencyIds.add(locationValue);
+		      }
 			Map<String, LocationVotersVO> map = new LinkedHashMap<String, LocationVotersVO>();
-			List<Object[]> votersObjList = voterAgeInfoDAO.getVotersAgeWiseCount(constituencyId, publicationDateId);
+			List<Object[]> votersObjList = voterAgeInfoDAO.getVotersAgeWiseCount(constituencyIds, publicationDateId);
 			if (votersObjList != null && votersObjList.size() > 0) {
 				for (Object[] objects : votersObjList) {
 					LocationVotersVO vo = new LocationVotersVO();
@@ -597,7 +613,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 
-			List<Object[]> cadreObjList = tdpCadreEnrollmentYearDAO.getGenderAndAgeGroupWiseCadreCount(constituencyId);
+			List<Object[]> cadreObjList = tdpCadreEnrollmentYearDAO.getGenderAndAgeGroupWiseCadreCount(constituencyIds);
 			if (cadreObjList != null && cadreObjList.size() > 0) {
 				for (Object[] objects : cadreObjList) {
 					if (map.get(objects[1].toString()) == null) {
