@@ -2738,30 +2738,63 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					yearsList.add(i);
 				}
 			}
+			
+			Map<String,Map<Long,ElectionInformationVO>> yearMap = new HashMap<String,Map<Long,ElectionInformationVO>>();
 			List<Object[]> resultArray= candidateDAO.getElectionInformationLocationWise(yearsList, locationTypeId, locationValue, electionScopeIds, electionBodyIds, tehsilIds,partyId);
+			if(commonMethodsUtilService.isListOrSetValid(resultArray)){
+				
 			for (Object[] param : resultArray) {
 				if(param!=null){
-					ElectionInformationVO electionInformationVO = new ElectionInformationVO();
-					electionInformationVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					electionInformationVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					electionInformationVO.setElectionId(commonMethodsUtilService.getLongValueForObject(param[2]));
-					electionInformationVO.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[3]));
-					electionInformationVO.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[4]));
-					electionInformationVO.setElectionType(commonMethodsUtilService.getStringValueForObject(param[5]));
-					electionInformationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[6]));
-					electionInformationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[7]));
-					electionInformationVO.setTotalVoters(commonMethodsUtilService.getLongValueForObject(param[8]));
-					electionInformationVO.setValidVoters(commonMethodsUtilService.getLongValueForObject(param[9]));
-					electionInformationVO.setMissedVotes(commonMethodsUtilService.getLongValueForObject(param[10]));
-					electionInformationVO.setRejectedVotes(commonMethodsUtilService.getLongValueForObject(param[11]));
-					electionInformationVO.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[12]));
-					electionInformationVO.setEarnedVotesPerc(commonMethodsUtilService.getLongValueForObject(param[13]));
-					electionInformationVO.setMarginVotes(commonMethodsUtilService.getLongValueForObject(param[14]));
-					electionInformationVO.setWonSeatsCount(commonMethodsUtilService.getLongValueForObject(param[15]));
-					electionInformationVOList.add(electionInformationVO);
+					Map<Long,ElectionInformationVO> partyMap = yearMap.get(commonMethodsUtilService.getStringValueForObject(param[3])+"-"+commonMethodsUtilService.getStringValueForObject(param[5]));
+					if(partyMap == null){
+						partyMap = new HashMap<Long,ElectionInformationVO>();
+						ElectionInformationVO electionInformationVO = new ElectionInformationVO();
+						electionInformationVO.setElectionId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						electionInformationVO.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[3]));
+						electionInformationVO.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						electionInformationVO.setElectionType(commonMethodsUtilService.getStringValueForObject(param[5]));
+						electionInformationVOList.add(electionInformationVO);
+						yearMap.put(commonMethodsUtilService.getStringValueForObject(param[3])+"-"+commonMethodsUtilService.getStringValueForObject(param[5]),buildDistinctParties(resultArray,partyMap));
+					}
+					
+					ElectionInformationVO partyVO = partyMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(partyVO != null){
+						//electionInformationVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						//electionInformationVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						//electionInformationVO.setElectionId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						//electionInformationVO.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[3]));
+						//electionInformationVO.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						//electionInformationVO.setElectionType(commonMethodsUtilService.getStringValueForObject(param[5]));
+						partyVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						partyVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[7]));
+						partyVO.setTotalVoters(commonMethodsUtilService.getLongValueForObject(param[8]));
+						partyVO.setValidVoters(commonMethodsUtilService.getLongValueForObject(param[9]));
+						partyVO.setMissedVotes(commonMethodsUtilService.getLongValueForObject(param[10]));
+						partyVO.setRejectedVotes(commonMethodsUtilService.getLongValueForObject(param[11]));
+						partyVO.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[12]));
+						partyVO.setEarnedVotesPerc(commonMethodsUtilService.getLongValueForObject(param[13]));
+						partyVO.setMarginVotes(commonMethodsUtilService.getLongValueForObject(param[14]));
+						partyVO.setWonSeatsCount(commonMethodsUtilService.getLongValueForObject(param[15]));
+						
+					}
 				}
 			}
+			}
 
+			if(commonMethodsUtilService.isMapValid(yearMap)){
+				for (Entry<String,Map<Long,ElectionInformationVO>> entry : yearMap.entrySet()) {
+					Map<Long,ElectionInformationVO> partymap = entry.getValue();
+					
+				}
+			}
+			if(commonMethodsUtilService.isListOrSetValid(electionInformationVOList) && commonMethodsUtilService.isMapValid(yearMap)){
+				for (ElectionInformationVO yearVO : electionInformationVOList) {
+					Map<Long,ElectionInformationVO> partymap = yearMap.get(yearVO.getElectionYear()+"-"+yearVO.getElectionType());
+					if(commonMethodsUtilService.isMapValid(partymap)){
+						yearVO.getList().addAll(partymap.values());
+					}
+				}
+			}
 		}catch(Exception e){
 			LOG.error("Exception raised in getElectionInformationLocationWise", e);
 
@@ -2769,6 +2802,28 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 		return electionInformationVOList;
 	}
+	 public Map<Long,ElectionInformationVO> buildDistinctParties(List<Object[]> objectlist, Map<Long,ElectionInformationVO> returnMap){
+		
+		 try{
+			if(commonMethodsUtilService.isListOrSetValid(objectlist)){
+				for (Object[] param : objectlist) {
+					ElectionInformationVO vo =  returnMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(vo == null){
+						vo = new ElectionInformationVO();
+						vo.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						vo.setPartyName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						vo.setWonSeatsCount(0l);
+						returnMap.put(vo.getPartyId(), vo);
+					}
+				}
+			}
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception raised in buildDistinctParties", e);
+		}
+		 return returnMap;
+		 
+	 }
 
 	/**
 	 *
