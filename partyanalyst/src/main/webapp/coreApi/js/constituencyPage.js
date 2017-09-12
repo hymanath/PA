@@ -84,8 +84,8 @@ function onLoadAjaxCalls()
 	getGovtSchemeWiseBenefitMembersCount();
 	
 	//Grievance And Insurance
-	getLocationWiseGrivanceTrustStatusCounts(1);
-	getLocationWiseInsuranceStatusCount(1);
+	getLocationWiseGrivanceTrustStatusCounts("");
+	getLocationWiseInsuranceStatusCount("");
 	 // Nominated Posts
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
@@ -428,9 +428,9 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 		$("#"+divId+"Menu").html(menu);
 		if(levelId == '3' || levelId == '10')
 		{
-			$(".scroller"+divId).mCustomScrollbar({setHeight:'240px'})
+			$(".scroller"+divId).mCustomScrollbar({setHeight:'140px'})
 		}else if(result.length > 14){
-			$(".scroller"+divId).mCustomScrollbar({setHeight:'500px'})
+			$(".scroller"+divId).mCustomScrollbar({setHeight:'300px'})
 		}		
 	}
 	
