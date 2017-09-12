@@ -84,8 +84,8 @@ function onLoadAjaxCalls()
 	getGovtSchemeWiseBenefitMembersCount();
 	
 	//Grievance And Insurance
-	getLocationWiseGrivanceTrustStatusCounts();
-	getLocationWiseInsuranceStatusCount();
+	getLocationWiseGrivanceTrustStatusCounts(1);
+	getLocationWiseInsuranceStatusCount(1);
 	 // Nominated Posts
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
@@ -167,6 +167,10 @@ function onLoadClicks()
 	$(document).on("change","#enrolmentYears",function(){
 		getLocationWiseCommitteesCount($(this).val());
 	});
+	$(document).on("change","#enrolmentYearsGrievance",function(){
+		getLocationWiseGrivanceTrustStatusCounts($(this).val());
+		getLocationWiseInsuranceStatusCount($(this).val());
+	});
 	$(document).on("click","[menu-name]",function(e){
 		e.stopPropagation();
 		$(".menu-dropdown").show();
@@ -228,8 +232,8 @@ function onLoadClicks()
 			}
 		}else if(blockName == 'grievance')
 		{
-			getLocationWiseGrivanceTrustStatusCounts();
-			getLocationWiseInsuranceStatusCount();
+			getLocationWiseGrivanceTrustStatusCounts($("#enrolmentYearsGrievance").val());
+			getLocationWiseInsuranceStatusCount($("#enrolmentYearsGrievance").val());
 		}else if(blockName == 'meetings')
 		{
 			getLocationWiseMeetingsCount();
@@ -1752,8 +1756,8 @@ function getPrintMediaCountsForConstituencyPage(){
     var isDept="N";
 	
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
+		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
 	}).then(function(result){
 		if(result !=null){
 			return buildPrintMediaCountsForConstituencyPage(result);
@@ -1871,8 +1875,8 @@ function getLeadersInNewsForConstituencyPage(){
 	var startDate = date1[0]+'-'+date1[1]+'-'+date1[2]
 	var endDate = date2[0]+'-'+date2[1]+'-'+date2[2]
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+stateId
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+stateId
+		//url: wurl+"/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+stateId
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+stateId
 		
 	}).then(function(result){
 		if(result !=null && result.length>0){
@@ -1961,8 +1965,8 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 	var orgIdsStr="";
 	var isDept="N";
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
+		//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
 		
 	}).then(function(result){
 		if(result !=null && result.length>0){
@@ -2970,7 +2974,7 @@ function getNominatedPostStatusWiseCount(){
 		
 	}
 }
-function getLocationWiseInsuranceStatusCount(){
+function getLocationWiseInsuranceStatusCount(yearId){
 	$("#insuranceDetails").html(spinner);
 	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
@@ -2999,8 +3003,7 @@ function getLocationWiseInsuranceStatusCount(){
 			"toDate":globalToDate,
 			"locationTypeId" : userAccessLevelId,
 			"locationValuesArr" :userAccessLevelValuesArray,
-			"year":""
-			
+			"year":yearId
 		}
 	 $.ajax({
       type : "POST",
@@ -3079,7 +3082,7 @@ function getLocationWiseInsuranceStatusCount(){
 		}
 	}
 }
-function getLocationWiseGrivanceTrustStatusCounts(){
+function getLocationWiseGrivanceTrustStatusCounts(yearId){
 	$("#grivanceId0,#grivanceId1,#trustId").html(spinner);
 	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
@@ -3108,7 +3111,7 @@ function getLocationWiseGrivanceTrustStatusCounts(){
 			"toDate":globalToDate,
 			"locationTypeId" : userAccessLevelId,
 			"locationValuesArr" :userAccessLevelValuesArray,
-			"year":""
+			"year": yearId
 		}
 	$.ajax({
 		type : "POST",
@@ -3588,8 +3591,8 @@ function getEnrollmentIds(){
 		{
 			selectBox+='<option value="'+result[i].id+'">'+result[i].description+'</option>';
 		}
-		$("#enrolmentYears").html(selectBox);
-		$("#enrolmentYears").chosen();
+		$("#enrolmentYears,#enrolmentYearsGrievance").html(selectBox);
+		$("#enrolmentYears,#enrolmentYearsGrievance").chosen();
 	});	
 }
 function setDefaultImage(img){
