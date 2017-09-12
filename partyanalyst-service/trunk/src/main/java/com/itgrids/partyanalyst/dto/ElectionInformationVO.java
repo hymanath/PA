@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ElectionInformationVO implements Serializable, Cloneable {
 	
@@ -24,7 +26,15 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private Long earnedVotesPerc;
 	private Long marginVotes;
 	private Long wonSeatsCount;
+	private List<ElectionInformationVO> list = new ArrayList<ElectionInformationVO>();
 	
+	
+	public List<ElectionInformationVO> getList() {
+		return list;
+	}
+	public void setList(List<ElectionInformationVO> list) {
+		this.list = list;
+	}
 	public Long getPartyId() {
 		return partyId;
 	}
