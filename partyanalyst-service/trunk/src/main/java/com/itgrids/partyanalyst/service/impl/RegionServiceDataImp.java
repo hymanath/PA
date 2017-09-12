@@ -1847,16 +1847,23 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	
 	public List<SelectOptionVO> getAllMandalsByConstituencyID(Long constituencyID){
 		List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
-		Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
-		List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
+		Long delimitationConstituencyID = null;
+		if(commonMethodsUtilService.isListOrSetValid(delimitationConstituency)){
+			 delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+		}
+		List<Tehsil> mandals = null;
+		if(delimitationConstituencyID != null && delimitationConstituencyID.longValue() >0l)
+		 mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
 		
 		List<SelectOptionVO> mandalNames=new ArrayList<SelectOptionVO>();
 		
+		if(commonMethodsUtilService.isListOrSetValid(mandals)){
 		for(Tehsil tehsil : mandals){
 			SelectOptionVO objVO = new SelectOptionVO();
 			objVO.setId(tehsil.getTehsilId());
 			objVO.setName(tehsil.getTehsilName());
 			mandalNames.add(objVO);
+		}
 		}
 		return mandalNames;
 	}

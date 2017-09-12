@@ -2793,12 +2793,6 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					
 					ElectionInformationVO partyVO = partyMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(partyVO != null){
-						//electionInformationVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
-						//electionInformationVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[1]));
-						//electionInformationVO.setElectionId(commonMethodsUtilService.getLongValueForObject(param[2]));
-						//electionInformationVO.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[3]));
-						//electionInformationVO.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[4]));
-						//electionInformationVO.setElectionType(commonMethodsUtilService.getStringValueForObject(param[5]));
 						partyVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						partyVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						partyVO.setTotalVoters(commonMethodsUtilService.getLongValueForObject(param[8]));
@@ -2815,12 +2809,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			}
 			}
 
-			if(commonMethodsUtilService.isMapValid(yearMap)){
-				for (Entry<String,Map<Long,ElectionInformationVO>> entry : yearMap.entrySet()) {
-					Map<Long,ElectionInformationVO> partymap = entry.getValue();
-					
-				}
-			}
+			
 			if(commonMethodsUtilService.isListOrSetValid(electionInformationVOList) && commonMethodsUtilService.isMapValid(yearMap)){
 				for (ElectionInformationVO yearVO : electionInformationVOList) {
 					Map<Long,ElectionInformationVO> partymap = yearMap.get(yearVO.getElectionYear()+"-"+yearVO.getElectionType());
@@ -2836,6 +2825,16 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 		return electionInformationVOList;
 	}
+	
+	public ElectionInformationVO getMatchedVOForElectionYear(List<ElectionInformationVO> voList, Long id,Long id1) {
+		if (voList != null && voList.size() > 0 && id != null && id > 0l) {
+			for (ElectionInformationVO locationVotersVO : voList) {
+				if (locationVotersVO.getElectionId().equals(id) && locationVotersVO.getElectionTypeId().equals(id1))
+					return locationVotersVO;
+			}
+		}
+		return null;
+	}
 	 public Map<Long,ElectionInformationVO> buildDistinctParties(List<Object[]> objectlist, Map<Long,ElectionInformationVO> returnMap){
 		
 		 try{
@@ -2847,6 +2846,25 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						vo.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
 						vo.setPartyName(commonMethodsUtilService.getStringValueForObject(param[1]));
 						vo.setWonSeatsCount(0l);
+						Map<String,ElectionInformationVO> yearsMap = new HashMap<String,ElectionInformationVO>();
+						yearsMap =buildDistinctElectionYears(objectlist,yearsMap);
+						if(commonMethodsUtilService.isMapValid(yearsMap)){
+							vo.getList().addAll(yearsMap.values());
+							ElectionInformationVO matchedYrVO = getMatchedVOForElectionYear(vo.getList(),commonMethodsUtilService.getLongValueForObject(param[2]),commonMethodsUtilService.getLongValueForObject(param[4]));
+							if(matchedYrVO != null){
+								matchedYrVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[6]));
+								matchedYrVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[7]));
+								matchedYrVO.setTotalVoters(commonMethodsUtilService.getLongValueForObject(param[8]));
+								matchedYrVO.setValidVoters(commonMethodsUtilService.getLongValueForObject(param[9]));
+								matchedYrVO.setMissedVotes(commonMethodsUtilService.getLongValueForObject(param[10]));
+								matchedYrVO.setRejectedVotes(commonMethodsUtilService.getLongValueForObject(param[11]));
+								matchedYrVO.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[12]));
+								matchedYrVO.setEarnedVotesPerc(commonMethodsUtilService.getLongValueForObject(param[13]));
+								matchedYrVO.setMarginVotes(commonMethodsUtilService.getLongValueForObject(param[14]));
+								matchedYrVO.setWonSeatsCount(commonMethodsUtilService.getLongValueForObject(param[15]));
+							}
+							
+						}
 						returnMap.put(vo.getPartyId(), vo);
 					}
 				}
@@ -2857,6 +2875,30 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		 return returnMap;
 		 
+	 }
+
+	 public Map<String,ElectionInformationVO> buildDistinctElectionYears(List<Object[]> objectlist, Map<String,ElectionInformationVO> returnMap){
+			
+		 try{
+			if(commonMethodsUtilService.isListOrSetValid(objectlist)){
+				for (Object[] param : objectlist) {
+					ElectionInformationVO vo =  returnMap.get(commonMethodsUtilService.getLongValueForObject(param[3])+'-'+commonMethodsUtilService.getStringValueForObject(param[5]));
+					if(vo == null){
+						vo = new ElectionInformationVO();
+						vo.setElectionId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						vo.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[3]));
+						vo.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						vo.setElectionType(commonMethodsUtilService.getStringValueForObject(param[5]));
+						vo.setWonSeatsCount(0l);
+						returnMap.put(vo.getElectionYear()+'-'+vo.getElectionType(), vo);
+					}
+				}
+			}
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception raised in buildDistinctElectionYears", e);
+		}
+		 return returnMap;
 	 }
 
 	/**
