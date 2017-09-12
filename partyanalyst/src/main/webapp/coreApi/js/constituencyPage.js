@@ -955,15 +955,37 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 var globalCasteWiseResult="";
 function getCasteGroupNAgeWiseVoterNCadreCounts(groupType){
 	$("#leftSideCasteGroupWiseDivId,#casteGroupVoters,#rightSideCasreGroupDtsDivId").html(spinner);
+	var locationLevelVal = '';
+	if(locationLevelId == '2')
+	{
+		locationLevelVal = stateId 
+	}else if(locationLevelId == '3')
+	{
+		locationLevelVal = districtId 
+	}else if(locationLevelId == '10')
+	{
+		locationLevelVal = parliamentId 
+	}else if(locationLevelId == '4' || locationLevelId == '11' )
+	{
+		locationLevelVal = constituencyId 		
+	}else if(locationLevelId == '5' || locationLevelId == '12' )
+	{
+		locationLevelVal = mandalId 		
+	}else if(locationLevelId == '6' || locationLevelId == '13' )
+	{
+		locationLevelVal = panchayatId 		
+	}
 	jsObj={
-		constituencyId:constituencyId,
-    	publicationDateId:publicationId
+		type			:groupType,
+		locationTypeId	:locationLevelId,
+		locationValue	:locationLevelVal,
+		publicationDateId:publicationId
     }
-	 $.ajax({
-      type : "GET",
-      url : "getCasteGroupNAgeWiseVoterNCadreCountsAction.action",
-      dataType : 'json',
-      data : {task :JSON.stringify(jsObj)}
+	$.ajax({
+		type : "GET",
+		url : "getVotersAndCadreCasteWiseCountAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
     }).done(function(result){ 
 		if(result !=null && result.length>0){
 			buildCasteGroupNAgeWiseVoterNCadreCounts(result,groupType);
