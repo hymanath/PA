@@ -247,7 +247,7 @@
 				<div class="block pad_0" id ="activitesId">
 				</div>
 			</div>
-			<div class="col-ms-12 m_top20" navbar-index="alerts">
+			<div class="col-sm-12 m_top20" navbar-index="alerts">
 				<h3>Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="alerts"></i></span></h3>
 				<div id="alertsBlockDivId"></div>
 			</div>
@@ -280,7 +280,17 @@
 				</div>
 			</div>
 			<div class="col-sm-12 m_top20"  navbar-index="grievance">
-				<h3>Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h3>
+				<div class="row">
+					<div class="col-sm-10">
+						<h3>Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h3>
+					</div>
+					<div class="col-sm-2">
+						<select id="enrolmentYearsGrievance">
+							<option>2015-2016</option>
+							<option>2015-2016</option>
+						</select>
+					</div>
+				</div>
 				<div class="block">
 					<div class="row">
 						<div class="col-sm-4">
