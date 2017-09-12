@@ -2220,13 +2220,13 @@ function getLocationWiseCommitteesCount(yearId){
 				str+='<tr>';
 					str+='<td>mandal/town/division</td>';
 					str+='<td>'+result.mainMandalTotal+'</td>';
-					str+='<td>'+result.mainCommStartedCount+'</td>';
-					str+='<td>'+result.mainCommCompletedCount+'</td>';
-					str+='<td>'+result.mainCommNotYetStarted+'</td>';
+					str+='<td>'+result.mainMandalStartedCount+'</td>';
+					str+='<td>'+result.mainMandalCompletedCount+'</td>';
+					str+='<td>'+result.mainMandalNotYetStartedCount+'</td>';
 					
 					str+='<td>'+result.affMandalTotal+'</td>';
-					str+='<td>'+result.affiCommStartedCount+'</td>';
-					str+='<td>'+result.affiCommCompletedCount+'</td>';
+					str+='<td>'+result.affliatedMandalStartedCount+'</td>';
+					str+='<td>'+result.affliatedMandalCompletedCount+'</td>';
 					str+='<td>'+result.affiCommMandalNotStarted+'</td>';
 				str+='</tr>';
 				str+='<tr>';
