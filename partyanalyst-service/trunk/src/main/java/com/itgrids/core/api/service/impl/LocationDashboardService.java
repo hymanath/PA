@@ -764,6 +764,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
 							maleTotalCadres = maleTotalCadres + casteVO.getMaleCadres();
 							femaleTotalCadres = femaleTotalCadres + casteVO.getFemaleCadres();
+							casteVO.setTotalCadres(casteVO.getMaleCadres()+casteVO.getFemaleCadres());
 						}
 						casteGroupVO.setTotalCadres(maleTotalCadres+femaleTotalCadres);
 						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
