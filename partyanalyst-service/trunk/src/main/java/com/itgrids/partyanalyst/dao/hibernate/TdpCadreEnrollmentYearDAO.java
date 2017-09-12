@@ -1000,18 +1000,23 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			return  query.list();
 		}
 		
-		public List<Object[]> getGenderAndAgeGroupWiseCadreCount(Long constituencyId){
-			Query query = getSession().createQuery(" select model.tdpCadre.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange,model.tdpCadre.gender, " +
+		public List<Object[]> getGenderAndAgeGroupWiseCadreCount(List<Long> constituencyIds){
+			StringBuilder sb = new StringBuilder();
+			sb.append( "select model.tdpCadre.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange,model.tdpCadre.gender, " +
 					" count(model.tdpCadre.tdpCadreId) " +
 					" from TdpCadreEnrollmentYear model " +
 					" where model.isDeleted='N' and model.tdpCadre.isDeleted = 'N' " +
-					" and model.tdpCadre.enrollmentYear=2014 and model.enrollmentYearId = :enrollmentYearId " +
-					" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId " +
-					" group by model.tdpCadre.gender,model.tdpCadre.voterAgeRangeId " +
+					" and model.tdpCadre.enrollmentYear=2014 and model.enrollmentYearId = :enrollmentYearId " );
+			if(constituencyIds!= null && constituencyIds.size()>0){
+				sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId in(:constituencyId) ");
+			}
+			sb.append("group by model.tdpCadre.gender,model.tdpCadre.voterAgeRangeId " +
 					" order by model.tdpCadre.voterAgeRangeId ");
-			
+			Query query = getSession().createQuery(sb.toString());
 			query.setParameter("enrollmentYearId",  IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
-			query.setParameter("constituencyId", constituencyId);
+			if(constituencyIds!= null && constituencyIds.size()>0){
+			query.setParameterList("constituencyId", constituencyIds);
+			}
 			
 			return query.list();
 		}

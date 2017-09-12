@@ -41,7 +41,6 @@ public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmen
 	public List<Object[]> getOverAllCadreRegistrationCounts(Long districtId,Long constituencyId);
 	 public Long getTdpCadreIdByMembership(String membershipNo);
 	 public List<Object[]> getTdpCadreDetailsByTdpCadreId(Long tdpCadreId);
-	 public List<Object[]> getGenderAndAgeGroupWiseCadreCount(Long constituencyId);
 	 public List<Object[]> getCasteWiseCadreCounts(List<Long> constituencyIds);
 	 public List<Object[]> getCasteNGenderWiseCadreCounts(List<Long> constituencyIds);
 	 public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long casteGroupId,Long casteId,Long constituencyId);
@@ -49,4 +48,5 @@ public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmen
 	 public List<Object[]> getEnrollmentYearAgeGroupWiseCadres(Long constituencyId,Long enrollmentYearId);
 	 public List<Object[]> getAgeGenerAndCasteGroupWiseCadresCount(Long locationTypeId,Long locationValue,Long enrollmentYearId);
 	 public List<Object[]> getCasteGroupWiseCadreCounts(List<Long> constituencyId);
+	 public List<Object[]> getGenderAndAgeGroupWiseCadreCount(List<Long> constituencyIds);
 }
