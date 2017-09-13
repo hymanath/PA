@@ -2496,6 +2496,8 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 					sb.append(" and nominatedPostApplication.address.constituency.constituencyId in(:locationValue) ");
 				} else if (locationType == 5) {
 					sb.append(" and nominatedPostApplication.address.tehsil.tehsilId in(:locationValue) ");
+				}else if (locationType == 6) {
+					sb.append(" and nominatedPostApplication.address.panchayat.panchayatId in(:locationValue) ");
 				}
 		}
 		if(startDate != null && endDate != null){

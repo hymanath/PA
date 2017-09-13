@@ -2082,7 +2082,10 @@ return (Long) query.uniqueResult();
 					sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValue) ");
 				} else if (locationType == 5) {
 					sb.append(" and nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValue) ");
-				} 
+				}else if (locationType == 6) {
+					sb.append(" and nominatedPost.nominatedPostMember.address.panchayat.panchayatId in(:locationValue) ");
+				}  
+				
 	 }
 	 if(startDate != null && endDate != null){
 		 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
