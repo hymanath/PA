@@ -533,38 +533,68 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 		return query.list();
 	}
   
-  public List<Object[]> getVotersCasteWiseCount(List<Long> constituencyIds,Long publicationDateId){
-	  Query query = getSession().createQuery(" select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName, " +
-	  		" model.casteState.caste.casteId,model.casteState.caste.casteName,model.casteVoters,model.castePercentage,model.casteMaleVoters,model.casteFemaleVoters " +
-	  		" from VoterCastInfo model " +
-	  		" where model.voterReportLevel.voterReportLevelId = :levelValue " +
-	  		" and model.reportLevelValue in (:constituencyId) " +
-	  		" and model.publicationDateId = :publicationDateId " +
-	  		" and model.casteState.state.stateId = :stateId " +
-	  		" order by model.casteState.caste.casteId ");
-	  
-	  query.setParameterList("constituencyId", constituencyIds);
-	  query.setParameter("publicationDateId", publicationDateId);
-	  query.setParameter("levelValue", 1l);
-	  query.setParameter("stateId", 1l);
-	  
-	  return query.list();
-  }
+	public List<Object[]> getVotersCasteWiseCount(List<Long> constituencyIds,Long publicationDateId, Long reportLevelId) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName, "
+				+ " model.casteState.caste.casteId,model.casteState.caste.casteName,model.casteVoters,model.castePercentage,model.casteMaleVoters,model.casteFemaleVoters "
+				+ " from VoterCastInfo model  where  model.casteState.state.stateId = 1 ");
+		if (constituencyIds != null && constituencyIds.size() > 0) {
+			sb.append(" and model.reportLevelValue in (:constituencyId) ");
+		}
+		if(publicationDateId != null && publicationDateId.longValue() > 0l){
+			sb.append(" and model.publicationDateId = :publicationDateId ");
+		}
+		if (reportLevelId != null) {
+			sb.append(" and model.voterReportLevel.voterReportLevelId = :levelValue");
+		}
+		sb.append(" order by model.casteState.caste.casteId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if (constituencyIds != null && constituencyIds.size() > 0) {
+			query.setParameterList("constituencyId", constituencyIds);
+		}
+		if(publicationDateId != null && publicationDateId.longValue() > 0l){
+			query.setParameter("publicationDateId", publicationDateId);
+		}
+		if (reportLevelId != null) {
+			query.setParameter("levelValue", reportLevelId);
+		}
+		return query.list();
+	}
   
-  public List<Object[]> getVotersCastGroupWiseCount(List<Long> constituencyIds, Long PublicationDateId){
+  public List<Object[]> getVotersCastGroupWiseCount(List<Long> constituencyIds, Long PublicationDateId, Long reportLevelId) {
 	  
 	  StringBuilder sb = new StringBuilder();
 	  sb.append("select cc.caste_category_id as castCategoryId,cc.category_name as castName,sum(vci.caste_voters) as totalVoters from voter_cast_info vci join caste_state " +
 	  		" cs on vci.caste_state_id=cs.caste_state_id join caste_category_group ccg on " +
 	  		" cs.caste_category_group_id =ccg.caste_category_group_id join caste_category cc on " +
 	  		" cc.caste_category_id=ccg.caste_category_id where " +
-	  		" vci.report_level_id = 1 and vci.report_level_value in (:constituencyIds)  and publication_date_id =:publicationDateId" +
 	  		" group by cc.caste_category_id ");
+	  
+	  
+	  if (constituencyIds != null && constituencyIds.size() > 0) {
+			sb.append(" and vci.report_level_value in (:constituencyIds) ");
+		}
+		if(PublicationDateId != null && PublicationDateId.longValue() > 0l){
+			sb.append(" and vci.publication_date_id =:publicationDateId ");
+		}
+		if (reportLevelId != null) {
+			sb.append(" and vci.report_level_id = :reportLevelId");
+		}
+	  
 	  Query query = getSession().createSQLQuery(sb.toString())
 			  .addScalar("castCategoryId",Hibernate.LONG).addScalar("castName",Hibernate.STRING).addScalar("totalVoters",Hibernate.LONG);
 	  
-	  query.setParameterList("constituencyIds", constituencyIds);
-	  query.setParameter("publicationDateId", PublicationDateId);
+	  if (constituencyIds != null && constituencyIds.size() > 0) {
+			query.setParameterList("constituencyId", constituencyIds);
+		}
+		if(PublicationDateId != null && PublicationDateId.longValue() > 0l){
+			query.setParameter("publicationDateId", PublicationDateId);
+		}
+		if (reportLevelId != null) {
+			query.setParameter("levelValue", reportLevelId);
+		}
 	  return query.list();
 	  
   }

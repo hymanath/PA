@@ -42,11 +42,11 @@ public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmen
 	 public Long getTdpCadreIdByMembership(String membershipNo);
 	 public List<Object[]> getTdpCadreDetailsByTdpCadreId(Long tdpCadreId);
 	 public List<Object[]> getCasteWiseCadreCounts(List<Long> constituencyIds);
-	 public List<Object[]> getCasteNGenderWiseCadreCounts(List<Long> constituencyIds);
-	 public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long casteGroupId,Long casteId,List<Long> constituencyIds);
+	 public List<Object[]> getCasteNGenderWiseCadreCounts(Long locationTypeId,Long locationValue);
+	 public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long locationTypeId,Long locationValue,Long casteGroupId, Long casteId);
 	 public List<Object[]> getEnrollmentYearWiseCadres();
-	 public List<Object[]> getEnrollmentYearAgeGroupWiseCadres(Long constituencyId,Long enrollmentYearId);
+	 public List<Object[]> getEnrollmentYearAgeGroupWiseCadres(Long locationTypeId,Long locationValue,Long enrollmentYearId);
 	 public List<Object[]> getAgeGenerAndCasteGroupWiseCadresCount(Long locationTypeId,Long locationValue,Long enrollmentYearId);
-	 public List<Object[]> getCasteGroupWiseCadreCounts(List<Long> constituencyId);
-	 public List<Object[]> getGenderAndAgeGroupWiseCadreCount(List<Long> constituencyIds);
-}
+	 public List<Object[]> getCasteGroupWiseCadreCounts(Long locationTypeId,Long locationValue);
+	 public List<Object[]> getGenderAndAgeGroupWiseCadreCount(Long locationTypeId,Long locationValue);
+}		
