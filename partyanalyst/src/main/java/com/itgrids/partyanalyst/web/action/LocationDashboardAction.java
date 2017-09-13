@@ -356,7 +356,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getCasteNAgeWiseVoterNCadreCounts(){
 		 try {
 			 jObj = new JSONObject(getTask());
-			 locationVotersVOList = locationDashboardService.getCasteNAgeWiseVoterNCadreCounts(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),jObj.getLong("casteGroupId"),jObj.getLong("casteId"));
+			 locationVotersVOList = locationDashboardService.getCasteNAgeWiseVoterNCadreCounts(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("publicationDateId"),jObj.getLong("casteGroupId"),jObj.getLong("casteId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteNAgeWiseVoterNCadreCounts", e);
 		}
