@@ -559,11 +559,11 @@ function getCandidateAndPartyInfoForConstituency(){
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
 		locationLevelId = '5'
-		locationLevelVal = mandalId 		
+		locationLevelVal = mandalId.substring(1,mandalId.length); 		
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
 		locationLevelId = '6'
-		locationLevelVal = panchayatId 		
+		locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
 	}
 	var jsObj={
     	locationTypeId	: locationLevelId,
@@ -719,11 +719,11 @@ function getCountsForConstituency(){
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '5';
-		userAccessLevelValuesArray.push(mandalId)
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
 		locationLevelId = '6';
-		userAccessLevelValuesArray.push(panchayatId)
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 
 	var userAccessLevelId=locationLevelId;
@@ -841,14 +841,14 @@ function getVotersAndcadreAgeWiseCount(pubId){
 	{
 		locationLevelId = '4';
 		locationLevelVal = constituencyId 		
-	}else if(locationLevelId == '5' || locationLevelId == '12')
+	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
-		locationLevelId = '5';
-		locationLevelVal = mandalId 		
-	}else if(locationLevelId == '6' || locationLevelId == '13')
+		locationLevelId = '5'
+		locationLevelVal = mandalId.substring(1,mandalId.length); 		
+	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
-		locationLevelId = '6';
-		locationLevelVal = panchayatId 		
+		locationLevelId = '6'
+		locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
 	}
 	jsObj={
 		locationTypeId		: locationLevelId,
@@ -1018,11 +1018,11 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(groupType){
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
 		locationLevelId = '5'
-		locationLevelVal = mandalId 		
+		locationLevelVal = mandalId.substring(1,mandalId.length); 		
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
 		locationLevelId = '6'
-		locationLevelVal = panchayatId 		
+		locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
 	}
 	jsObj={
 		type			:groupType,
@@ -1061,12 +1061,12 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName,groupT
 		locationLevelVal = constituencyId 		
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
-		locationLevelId = '5';
-		locationLevelVal = mandalId 		
+		locationLevelId = '5'
+		locationLevelVal = mandalId.substring(1,mandalId.length); 		
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
-		locationLevelId = '6';
-		locationLevelVal = panchayatId 		
+		locationLevelId = '6'
+		locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
 	}
 	
 	jsObj={
@@ -1425,11 +1425,11 @@ function getActivityStatusList(){
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '5';
-		userAccessLevelValuesArray.push(mandalId)
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
 		locationLevelId = '6';
-		userAccessLevelValuesArray.push(panchayatId)
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 
 	
@@ -1499,11 +1499,11 @@ function getLocationTypeWiseCadreCount(yearId){
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '5';
-		userAccessLevelValuesArray.push(mandalId)
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
 		locationLevelId = '6';
-		userAccessLevelValuesArray.push(panchayatId)
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	jsObj={
 		locationTypeId:		locationLevelId,
@@ -1643,14 +1643,14 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(yearId){
 	{
 		locationLevelId = '4';
 		locationLevelVal = constituencyId 		
-	}else if(locationLevelId == '5' || locationLevelId == '12')
+	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
-		locationLevelId = '5';
-		locationLevelVal = mandalId 		
-	}else if(locationLevelId == '6' || locationLevelId == '13')
+		locationLevelId = '5'
+		locationLevelVal = mandalId.substring(1,mandalId.length); 		
+	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
-		locationLevelId = '6';
-		locationLevelVal = panchayatId 		
+		locationLevelId = '6'
+		locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
 	}
 	jsObj={
 		locationTypeId	 :locationLevelId,
@@ -2456,11 +2456,11 @@ function getLocationWiseMeetingsCount(){
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '5';
-		userAccessLevelValuesArray.push(mandalId)
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
 		locationLevelId = '6';
-		userAccessLevelValuesArray.push(panchayatId)
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	jsObj={
 		locationTypeId:	locationLevelId,
@@ -2525,11 +2525,11 @@ function getLocationWiseTourMembersComplainceDtls(){
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '5';
-		userAccessLevelValuesArray.push(mandalId)
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
 		locationLevelId = '6';
-		userAccessLevelValuesArray.push(panchayatId)
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var userAccessLevelId=locationLevelId;
@@ -2593,14 +2593,14 @@ function getGovtSchemeWiseBenefitMembersCount(){
 	{
 		locationLevelId = '4';
 		locationLevelVal = constituencyId 		
-	}else if(locationLevelId == '5' || locationLevelId == '12' )
+	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '5';
-		locationLevelVal = mandalId 		
-	}else if(locationLevelId == '6' || locationLevelId == '13' )
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
+	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
 		locationLevelId = '6';
-		locationLevelVal = panchayatId 		
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	jsObj={
@@ -2680,12 +2680,12 @@ function getMandalWiseBenefitMembersCount(id){
 		locationLevelVal = constituencyId 		
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
-		locationLevelId = '5';
-		locationLevelVal = mandalId 		
+		locationLevelId = '5'
+		locationLevelVal = mandalId.substring(1,mandalId.length); 		
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
-		locationLevelId = '6';
-		locationLevelVal = panchayatId 		
+		locationLevelId = '6'
+		locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
 	}
 	jsObj={
 		locationTypeId:locationLevelId,
@@ -2836,11 +2836,11 @@ function getPositionWiseMemberCount(){
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '5';
-		userAccessLevelValuesArray.push(mandalId)
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
 		locationLevelId = '6';
-		userAccessLevelValuesArray.push(panchayatId)
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var userAccessLevelId=locationLevelId;
@@ -2895,10 +2895,12 @@ function getNominatedPostApplicationDetails(){
 		userAccessLevelValuesArray.push(constituencyId)
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
-		userAccessLevelValuesArray.push(mandalId)
+		locationLevelId = '5';
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
-		userAccessLevelValuesArray.push(panchayatId)
+		locationLevelId = '6';
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var userAccessLevelId=locationLevelId;
@@ -3000,10 +3002,12 @@ function getNominatedPostStatusWiseCount(){
 		userAccessLevelValuesArray.push(constituencyId)
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
-		userAccessLevelValuesArray.push(mandalId)
+		locationLevelId = '5';
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
-		userAccessLevelValuesArray.push(panchayatId)
+		locationLevelId = '6';
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var userAccessLevelId=locationLevelId;
@@ -3142,11 +3146,11 @@ function getLocationWiseInsuranceStatusCount(yearId){
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '5';
-		userAccessLevelValuesArray.push(mandalId)
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
 		locationLevelId = '6';
-		userAccessLevelValuesArray.push(panchayatId)
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var userAccessLevelId=locationLevelId;
@@ -3253,11 +3257,11 @@ function getLocationWiseGrivanceTrustStatusCounts(yearId){
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '5';
-		userAccessLevelValuesArray.push(mandalId)
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
 		locationLevelId = '6';
-		userAccessLevelValuesArray.push(panchayatId)
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var userAccessLevelId=locationLevelId;
@@ -3529,11 +3533,11 @@ function getTotalAlertDetailsForConstituencyInfo(){
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '5';
-		userAccessLevelValuesArray.push(mandalId)
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
 		locationLevelId = '6';
-		userAccessLevelValuesArray.push(panchayatId)
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	var userAccessLevelId=locationLevelId;
 	var jsObj={
@@ -3810,12 +3814,12 @@ function getElectionInformationLocationWise(electionVal){
 		locationLevelVal = constituencyId 		
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
-		locationLevelId = '5';
-		locationLevelVal = mandalId 		
+		locationLevelId = '5'
+		locationLevelVal = mandalId.substring(1,mandalId.length); 		
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
-		locationLevelId = '6';
-		locationLevelVal = panchayatId 		
+		locationLevelId = '6'
+		locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
 	}
 	var electionScopeIds=[];
 	if(electionVal == 0){
@@ -3850,72 +3854,53 @@ function getElectionInformationLocationWise(electionVal){
 function buildElectionInformationLocationWise(result){
 	
 	if(result !=null && result.length>0){
-		/* var str='';
-			
+		 var str='';
+		str+='<h5 style="color:#2B908F;" class="pull-right"><b>Vote Share %</b></h5>';	
 		str+='<div class="col-sm-12">';
 		str+='<div class="table-responsive">';
-				str+='<table class="table table-condensed table-hover table-striped m_top10">';
+				str+='<table class="table table-condensed table-hover m_top10 table-noborder block table_styled table-striped">';
 					str+='<thead>';
 						str+='<tr>';
 							str+='<th>Party</th>';
-							for(var i in result){
-								str+='<th>'+result[i].electionYear+'</th>';
-							}
+								for(var j in result[0].list){
+									str+='<th>'+result[0].list[j].electionYear+'   '+result[0].list[j].electionType+'</th>';
+								}
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
 							for(var i in result){
 								str+='<tr>';
 									str+='<td>'+result[i].partyName+'</td>';
-									str+='<td>'+result[i].wonSeatsCount+'</td>';
+									for(var j in result[i].list){
+										if(result[i].list[j].earnedVotesPerc !=null && result[i].list[j].earnedVotesPerc>0){
+											str+='<td>'+result[i].list[j].wonSeatsCount+'  <small style="color:#2B908F;"><b>'+result[i].list[j].earnedVotesPerc+' %</b></small></td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										
+									}
 								str+='</tr>';
 							}
 					str+='</tbody>';
 				str+='</table>';
 			str+='</div>';
 		str+='</div>';
-		$("#electionDetailsTableWiseId").html(str); */
+		$("#electionDetailsTableWiseId").html(str);
 		var mainDataArr=[];
 		var electionYearArr = [];
-		
 			for(var i in result){
-				electionYearArr.push(result[i].electionYear);
-			}
-			for(var j in result[0].list){
 				var wonSeatsCountArr=[];
-				
-				if(result[0].list[j].list !=null && result[0].list[j].list.length>0){
-					for(var k in result[0].list[j].list){
-						wonSeatsCountArr.push(parseFloat(result[0].list[j].list[k].wonSeatsCount));
-					}
+				for(var j in result[i].list){
+					electionYearArr.push(result[i].list[j].electionYear+'  '+result[i].list[j].electionType);
+					wonSeatsCountArr.push(parseFloat(result[i].list[j].wonSeatsCount));
 				}
 				var obj ={
-						name: result[0].list[j].partyName,
+						name: result[i].partyName,
 						data: wonSeatsCountArr
 					}
 					mainDataArr.push(obj)
+					
 			}
-			/* for(var i in result){
-				electionYearArr.push(result[i].electionYear);
-				//if(result[0].list !=null && result[i].list.length>0){
-					//for(var j in result[0].list){
-						
-						if(result[i].list[0].list !=null && result[i].list[0].list.length>0){
-							for(var k in result[i].list[0].list){
-								wonSeatsCountArr.push(parseFloat(result[i].list[0].list[k].wonSeatsCount));
-							}
-						}
-						var obj ={
-							name: result[i].list[0].partyName,
-							data: wonSeatsCountArr
-						}
-						console.log(wonSeatsCountArr)
-						mainDataArr.push(obj)
-					//}
-				//}
-			} */
-			console.log(mainDataArr)
-		
 		$('#electionDetailsGraphWiseId').highcharts({
 			chart: {
 				type: 'area'
@@ -3977,11 +3962,11 @@ function getCommitteeCount(){
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '5';
-		userAccessLevelValuesArray.push(mandalId)
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
 		locationLevelId = '6';
-		userAccessLevelValuesArray.push(panchayatId)
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var jsObj={
