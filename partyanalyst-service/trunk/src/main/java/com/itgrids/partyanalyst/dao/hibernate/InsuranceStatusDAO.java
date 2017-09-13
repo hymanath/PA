@@ -1105,13 +1105,13 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	 }
 
 	
-	public List<Object[]> getConstituencyWiseInsuranceStatusCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year) {
+	public List<Object[]> getConstituencyWiseInsuranceStatusCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbm = new StringBuilder();
 		StringBuilder sbe = new StringBuilder();
 		StringBuilder sbg = new StringBuilder();
 		sb.append(" SELECT ");
-		sbm.append(" FROM complaint_master CM,grievance_insurance_status GIS,district D,constituency C ");
+		sbm.append(" FROM complaint_master CM,grievance_insurance_status GIS,district D,constituency C ,tehsil T,tdp_cadre_enrollment_year tcey ");
 		sbe.append("WHERE CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND "
 				+ " CM.district_id = D.district_id AND "
 				+ " CM.assembly_id = C.constituency_id AND "
@@ -1131,13 +1131,21 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			sb.append(" C.constituency_id as typeId,C.name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count ");
 			sbe.append(" AND CM.parliament_id in(:locationValues)");
 			sbg.append(" C.constituency_id");
+		}else if(locationTypeId!=null && locationTypeId==10l && locationValues!=null && locationValues.size() > 0){
+			sb.append(" T.tehsil_id as typeId,C.tehsil_name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count ");
+			sbe.append(" AND CM.tehsil_id in(:locationValues)");
+			sbg.append(" T.tehsil_id ");
 		}
 		if(fromDate !=null && toDate !=null){
 	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate )");
 	   	}
-		if(year != null && !year.trim().isEmpty()){
+		if(yearId != null && yearId.longValue() > 0l){
+			sbe.append(" AND tcey.enrollment_year_id = :yearId ");
+		}
+		sbe.append(" AND CM.user_id=tcey.tdp_cadre_id " );
+		/*if(year != null && !year.trim().isEmpty()){
 			sb.append(" and year(CM.Raised_Date) =:year ");   
- 	    }
+ 	    }*/
 		sbg.append("  ,GIS.grievance_insurance_status_id; ");
 		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
 		Query query = getSession().createSQLQuery(sb.toString())
@@ -1149,24 +1157,27 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		if(locationTypeId!=null && locationTypeId.longValue()>0){
 			query.setParameterList("locationValues",locationValues);
 		}
-		if(year !=null && !year.trim().isEmpty()){
+		/*if(year !=null && !year.trim().isEmpty()){
  			query.setParameter("year", year);
-		}
+		}*/
 		if(fromDate !=null && toDate !=null){
    		query.setDate("startDate", fromDate);
    		query.setDate("endDate", toDate);
    	}
+		if(yearId != null && yearId.longValue() > 0l){
+			query.setParameter("yearId", yearId);
+		}
 		return query.list();
 	}
 
 	
-	public List<Object[]> getGrivenceTrustStatusCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year) {
+	public List<Object[]> getGrivenceTrustStatusCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbm = new StringBuilder();
 		StringBuilder sbe = new StringBuilder();
 		StringBuilder sbg = new StringBuilder();
 		sb.append(" SELECT");
-		sbm.append(" FROM complaint_master CM,district D,constituency C ");
+		sbm.append(" FROM complaint_master CM,district D,constituency C,tehsil T,tdp_cadre_enrollment_year tcey ");
 		sbe.append(" WHERE  CM.type_of_issue IN('Govt','Party','Welfare','Trust Education Support') and "
 				+ " CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') ");
 		sbg.append(" GROUP BY ");
@@ -1182,13 +1193,22 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			sb.append( " C.constituency_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
 			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.parliament_id in(:locationValues)");
 			sbg.append(" C.constituency_id ");
+		}else if(locationTypeId!=null && locationTypeId==5l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " C.constituency_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbe.append(" AND CM.district_id = D.district_id AND CM.tehsil_id = C.constituency_id AND CM.tehsil_id = T.tehsil_id AND CM.tehsil_id in(:locationValues)");
+			sbg.append(" T.tehsil_id ");
 		}
 		if(fromDate !=null && toDate !=null){
 	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate ) ");
 	   	}
-		if(year != null && !year.trim().isEmpty()){
+		
+		if(yearId != null && yearId.longValue() > 0l){
+			sbe.append(" AND tcey.enrollment_year_id = :yearId ");
+		}
+		sbe.append(" AND CM.user_id=tcey.tdp_cadre_id " );
+		/*if(year != null && !year.trim().isEmpty()){
 			sbe.append(" and year(CM.Raised_Date) =:year ");   
- 	    }
+ 	    }*/
 		sbg.append("  ,CM.type_of_issue,CM.Completed_Status; ");
 		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
 		Query query = getSession().createSQLQuery(sb.toString())
@@ -1199,13 +1219,16 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		if(locationTypeId!=null && locationTypeId.longValue()>0){
 			query.setParameterList("locationValues", locationValues);
 		}
-		if(year !=null && !year.trim().isEmpty()){
+		/*if(year !=null && !year.trim().isEmpty()){
  			query.setParameter("year", Integer.parseInt(year));
-		}
+		}*/
 		if(fromDate !=null && toDate !=null){
    		query.setDate("startDate", fromDate);
    		query.setDate("endDate", toDate);
    	}
+		if(yearId != null && yearId.longValue() > 0l){
+			query.setParameter("yearId", yearId);
+		}
 		return query.list();
 	}
 

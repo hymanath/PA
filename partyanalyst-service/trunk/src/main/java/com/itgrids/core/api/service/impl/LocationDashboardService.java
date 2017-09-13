@@ -2334,7 +2334,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				toDate = sdf.parse(toDateStr);
 			}
 			//0-locationValue(DIstrict or ConstituencyId),1-locationName,2-Status,3-StatusId,4-Count
-			List<Object[]> insuranceStatus = insuranceStatusDAO.getConstituencyWiseInsuranceStatusCounts(fromDate, toDate,locationTypeId,locationValues,year);
+			List<Object[]> insuranceStatus = insuranceStatusDAO.getConstituencyWiseInsuranceStatusCounts(fromDate, toDate,locationTypeId,locationValues,year,Long.valueOf(year));
 			List<Object[]> statusList = insuranceStatusDAO.grievanceInsuranceStatusId();
 			Map<Long,GrivenceStatusVO> InsuranceStatusMap = new LinkedHashMap<Long, GrivenceStatusVO>(0);
 			if(insuranceStatus!=null){
@@ -2391,7 +2391,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				toDate = sdf.parse(toDateStr);
 			}
 			//0-consId,1-Status,2-typeOfIssue,3-count
-			List<Object[]> grivenceTrustList = insuranceStatusDAO.getGrivenceTrustStatusCounts(fromDate, toDate,locationTypeId,locationValues,year);
+			List<Object[]> grivenceTrustList = insuranceStatusDAO.getGrivenceTrustStatusCounts(fromDate, toDate,locationTypeId,locationValues,year,Long.valueOf(year));
 			List<String> statusList = insuranceStatusDAO.getGrivenceStatus();
 			if(grivenceTrustList!=null){
 				//  Here set the Grivence values for object
