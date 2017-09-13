@@ -16,7 +16,7 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
-
+<link href="Assests/css/print.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <style>
