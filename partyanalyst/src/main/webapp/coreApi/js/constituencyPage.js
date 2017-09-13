@@ -83,8 +83,8 @@ function onLoadAjaxCalls()
 	getGovtSchemeWiseBenefitMembersCount();
 	
 	//Grievance And Insurance
-	getLocationWiseGrivanceTrustStatusCounts("");
-	getLocationWiseInsuranceStatusCount("");
+	getLocationWiseGrivanceTrustStatusCounts("3");
+	getLocationWiseInsuranceStatusCount("3");
 	 // Nominated Posts
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
@@ -3707,8 +3707,8 @@ function getEnrollmentIds(){
 		{
 			selectBox+='<option value="'+result[i].id+'">'+result[i].description+'</option>';
 		}
-		$("#enrolmentYears,#enrolmentYearsGrievance").html(selectBox);
-		$("#enrolmentYears,#enrolmentYearsGrievance").chosen();
+		$("#enrolmentYears").html(selectBox);
+		$("#enrolmentYears").chosen();
 	});	
 }
 function setDefaultImage(img){
