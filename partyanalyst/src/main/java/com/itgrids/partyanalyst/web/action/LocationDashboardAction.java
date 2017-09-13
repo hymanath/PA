@@ -375,7 +375,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getEnrollmentYearAgeGroupWiseCadres(){
 		 try {
 			 jObj = new JSONObject(getTask());
-			 locationVotersVOList = locationDashboardService.getEnrollmentYearAgeGroupWiseCadres(jObj.getLong("constituencyId"),jObj.getLong("enrollmentYearId"));
+			 locationVotersVOList = locationDashboardService.getEnrollmentYearAgeGroupWiseCadres(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("enrollmentYearId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getEnrollmentYearAgeGroupWiseCadres", e);
 		}
