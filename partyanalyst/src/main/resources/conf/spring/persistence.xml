@@ -1318,6 +1318,7 @@
 		      		   <value>com.itgrids.partyanalyst.model.HealthTest</value>
 		      		   <value>com.itgrids.partyanalyst.model.TdpCadreHealthTest</value>
 		      		   <value>com.itgrids.partyanalyst.model.TdpCadreHealthDetails</value>
+		      		   <value>com.itgrids.partyanalyst.model.GovtSchemeBenefitsInfo</value>
 				  </list>
 			
 		</property>
