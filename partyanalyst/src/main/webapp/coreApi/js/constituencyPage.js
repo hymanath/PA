@@ -264,8 +264,9 @@ function onLoadClicks()
 		var groupType = $(this).attr("attr_type");
 		$(".casteGroupTypeDiv li").removeClass("active")
 		$(".casteGroupTypeDiv li:nth-child(1)").addClass("active");
-		buildCasteGroupNAgeWiseVoterNCadreCounts(globalCasteWiseResult,groupType);
-		buildCasteGroupNAgeWiseGraphView(globalCasteWiseResult,groupType,"BC")
+		getCasteGroupNAgeWiseVoterNCadreCounts(groupType);
+		//buildCasteGroupNAgeWiseVoterNCadreCounts(globalCasteWiseResult,groupType);
+		//buildCasteGroupNAgeWiseGraphView(globalCasteWiseResult,groupType,"BC")
 	});
 
 	$(document).on("click",".casteGroupTypeDiv li",function(){
@@ -292,7 +293,8 @@ function onLoadClicks()
 		var casteGroupId = $(this).attr("attr_caste_group_id");
 		var casteId = $(this).attr("attr_caste_id");
 		var casteName = $(this).attr("attr_caste_name");
-		getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName);
+		var groupType = $(this).attr("attr_group_type");
+		getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName,groupType);
 	});
 
 	$(document).on("click",".yearCadreDetails",function(){
@@ -556,11 +558,11 @@ function getCandidateAndPartyInfoForConstituency(){
 		locationLevelVal = constituencyId 		
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
-		locationLevelId = '5';
+		locationLevelId = '5'
 		locationLevelVal = mandalId 		
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
-		locationLevelId = '6';
+		locationLevelId = '6'
 		locationLevelVal = panchayatId 		
 	}
 	var jsObj={
@@ -1011,15 +1013,15 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(groupType){
 		locationLevelVal = parliamentId 
 	}else if(locationLevelId == '4' || locationLevelId == '11' )
 	{
-		locationLevelId = '4';
+		locationLevelId = '4'
 		locationLevelVal = constituencyId 		
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
-		locationLevelId = '5';
+		locationLevelId = '5'
 		locationLevelVal = mandalId 		
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
-		locationLevelId = '6';
+		locationLevelId = '6'
 		locationLevelVal = panchayatId 		
 	}
 	jsObj={
@@ -1036,12 +1038,12 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(groupType){
     }).done(function(result){ 
 		if(result !=null && result.length>0){
 			buildCasteGroupNAgeWiseVoterNCadreCounts(result,groupType);
-			buildCasteGroupDetailsViewBlock(result);
+			buildCasteGroupDetailsViewBlock(result,groupType);
 			globalCasteWiseResult = result; 
 		}
 	});	
 }
-function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName){
+function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName,groupType){
 	$("#expandCaste"+casteId).html(spinner);
 	var locationLevelVal = '';
 	if(locationLevelId == '2')
@@ -1089,23 +1091,29 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName){
 			str+='<table class="table table-noborder m_top10">';
 				str+='<thead class="text-capitalize">';
 					str+='<th></th>';
-					str+='<th>Voters</th>';
-					str+='<th>cadres </th>';
-					str+='<th>Male(V) </th>';
-					str+='<th>Male(C) </th>';
-					str+='<th>FeMale(V)</th>';
-					str+='<th>FeMale(C)</th>';
+					if(groupType == "voter"){
+						str+='<th>Voters</th>';
+						str+='<th>Male(V) </th>';
+						str+='<th>FeMale(V)</th>';
+					}else{
+						str+='<th>cadres </th>';
+						str+='<th>Male(C) </th>';
+						str+='<th>FeMale(C)</th>';
+					}
 				str+='</thead>';
 			str+='<tbody>';
 			for(var i in result){
 				str+='<tr>';
 					str+='<td>'+result[i].ageRange+'</td>';
-					str+='<td>'+result[i].totalVoters+' <small class="text-success">'+result[i].totalVotersPerc+'%</small></td>';
-					str+='<td>'+result[i].totalCadres+' <small class="text-success">'+result[i].totalCadrePerc+'</small></td>';
-					str+='<td>'+result[i].maleVoters+' <small class="text-success">'+result[i].maleVotersPerc+'</small></td>';
-					str+='<td>'+result[i].maleCadres+' <small class="text-success">'+result[i].maleCadrePerc+'</small></td>';
-					str+='<td>'+result[i].femaleVoters+' <small class="text-success">'+result[i].femaleVotersPerc+'</small></td>';
-					str+='<td>'+result[i].femaleCadres+' <small class="text-success">'+result[i].femaleCadrePerc+'</small></td>';
+					if(groupType == "voter"){
+						str+='<td>'+result[i].totalVoters+' <small class="text-success">'+result[i].totalVotersPerc+'%</small></td>';
+						str+='<td>'+result[i].maleVoters+' <small class="text-success">'+result[i].maleVotersPerc+'</small></td>';
+						str+='<td>'+result[i].femaleVoters+' <small class="text-success">'+result[i].femaleVotersPerc+'</small></td>';
+					}else{
+						str+='<td>'+result[i].totalCadres+' <small class="text-success">'+result[i].totalCadrePerc+'</small></td>';
+						str+='<td>'+result[i].maleCadres+' <small class="text-success">'+result[i].maleCadrePerc+'</small></td>';
+						str+='<td>'+result[i].femaleCadres+' <small class="text-success">'+result[i].femaleCadrePerc+'</small></td>';
+					}
 				str+='</tr>';
 			}
 			str+='</tbody>';
@@ -1317,7 +1325,7 @@ function buildCasteGroupNAgeWiseGraphView(result,groupType,casteType){
 	});	
 }
 
-function buildCasteGroupDetailsViewBlock(result){
+function buildCasteGroupDetailsViewBlock(result,groupType){
 	if(result !=null && result.length>0){
 		var str='';
 		str+='<select class="form-control" role="tabListMobile">';
@@ -1349,26 +1357,35 @@ function buildCasteGroupDetailsViewBlock(result){
 					str+='<table class="table table-noborder">';
 						str+='<thead class="text-capitalize">';
 							str+='<th>Caste Name</th>';
-							str+='<th>voters</th>';
-							str+='<th>cadres </th>';
-							str+='<th>Male(V) </th>';
-							str+='<th>Male(C) </th>';
-							str+='<th>FeMale(V) </th>';
-							str+='<th>FeMale(C) </th>';
+							if(groupType == "voter"){
+								str+='<th>voters</th>';
+								str+='<th>Male(V) </th>';
+								str+='<th>FeMale(V) </th>';
+							}else{
+								str+='<th>cadres </th>';
+								str+='<th>Male(C) </th>';
+								str+='<th>FeMale(C) </th>';
+							}
+							
 						str+='</thead>';
 						str+='<tbody>';
 						for(var j in result[i].locationVotersVOList){
 							str+='<tr>';
-								str+='<td><i class="glyphicon glyphicon-plus td-expand-icon expandCasteIconCls" collapseid="td-expand-'+result[i].locationVotersVOList[j].ageRangeId+'" attr_caste_name="'+result[i].locationVotersVOList[j].ageRange+'" attr_caste_group_id="'+result[i].ageRangeId+'" attr_caste_id="'+result[i].locationVotersVOList[j].ageRangeId+'"></i> '+result[i].locationVotersVOList[j].ageRange+'</td>';
-								str+='<td>'+result[i].locationVotersVOList[j].totalVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].totalVotersPerc+'%</small></td>';
-								str+='<td>'+result[i].locationVotersVOList[j].totalCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].totalCadrePerc+'</small></td>';
-								str+='<td>'+result[i].locationVotersVOList[j].maleVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].maleVotersPerc+'</small></td>';
-								str+='<td>'+result[i].locationVotersVOList[j].maleCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].maleCadrePerc+'</small></td>';
-								str+='<td>'+result[i].locationVotersVOList[j].femaleVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].femaleVoters+'</small></td>';
-								str+='<td>'+result[i].locationVotersVOList[j].femaleCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].femaleCadrePerc+'</small></td>';
+								str+='<td><i class="glyphicon glyphicon-plus td-expand-icon expandCasteIconCls" collapseid="td-expand-'+result[i].locationVotersVOList[j].ageRangeId+'" attr_caste_name="'+result[i].locationVotersVOList[j].ageRange+'" attr_caste_group_id="'+result[i].ageRangeId+'" attr_caste_id="'+result[i].locationVotersVOList[j].ageRangeId+'" attr_group_type="'+groupType+'"></i> '+result[i].locationVotersVOList[j].ageRange+'</td>';
+								if(groupType == "voter"){
+									str+='<td>'+result[i].locationVotersVOList[j].totalVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].totalVotersPerc+'%</small></td>';
+									str+='<td>'+result[i].locationVotersVOList[j].maleVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].maleVotersPerc+'</small></td>';
+									str+='<td>'+result[i].locationVotersVOList[j].femaleVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].femaleVoters+'</small></td>';
+								}else{
+									str+='<td>'+result[i].locationVotersVOList[j].totalCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].totalCadrePerc+'</small></td>';
+									str+='<td>'+result[i].locationVotersVOList[j].maleCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].maleCadrePerc+'</small></td>';
+									str+='<td>'+result[i].locationVotersVOList[j].femaleCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].femaleCadrePerc+'</small></td>';
+								}
+								
+								
 							str+='</tr>';
 							str+='<tr class="td-expand-body" collapseBodyId="td-expand-'+result[i].locationVotersVOList[j].ageRangeId+'">';
-							str+='<td colspan="7" class="top-arrow" id="expandCaste'+result[i].locationVotersVOList[j].ageRangeId+'"></td></tr>';
+							str+='<td colspan="4" class="top-arrow" id="expandCaste'+result[i].locationVotersVOList[j].ageRangeId+'"></td></tr>';
 						}
 						str+='</tbody>';
 					str+='</table>';
@@ -3379,7 +3396,7 @@ function getPublications(){
 function getDetailedElectionInformaction(){
 	$("#assemblyElectionGraphDetails,#assemblyElectionDetails").html(spinner);
 	jsObj={
-    	constituencyId:constituencyId
+    	constituencyId:232
     }
     $.ajax({
       type : "GET",
@@ -3503,12 +3520,15 @@ function getTotalAlertDetailsForConstituencyInfo(){
 		userAccessLevelValuesArray.push(parliamentId)
 	}else if(locationLevelId == '4' || locationLevelId == '11')
 	{
+		locationLevelId = '4'
 		userAccessLevelValuesArray.push(constituencyId)
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
+		locationLevelId = '5';
 		userAccessLevelValuesArray.push(mandalId)
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
+		locationLevelId = '6';
 		userAccessLevelValuesArray.push(panchayatId)
 	}
 	var userAccessLevelId=locationLevelId;
@@ -3782,12 +3802,15 @@ function getElectionInformationLocationWise(electionVal){
 		locationLevelVal = parliamentId 
 	}else if(locationLevelId == '4' || locationLevelId == '11' )
 	{
+		locationLevelId = '4';
 		locationLevelVal = constituencyId 		
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
+		locationLevelId = '5';
 		locationLevelVal = mandalId 		
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
+		locationLevelId = '6';
 		locationLevelVal = panchayatId 		
 	}
 	var electionScopeIds=[];
@@ -3848,115 +3871,46 @@ function buildElectionInformationLocationWise(result){
 			str+='</div>';
 		str+='</div>';
 		$("#electionDetailsTableWiseId").html(str); */
-		var electionYearWiseArr =[];
-		var wonSeatsCountINCArr=[];var wonSeatsCountBSPArr=[];var wonSeatsCountNTRTDPArr=[];
-		var wonSeatsCountAIFBArr=[];var wonSeatsCountLSPArr=[];var wonSeatsCountPPOIArr=[];
-		var wonSeatsCountBJPArr=[];var wonSeatsCountLKDArr=[];
-		var wonSeatsCountYSRCArr=[];var wonSeatsCountJNPArr=[];var wonSeatsCountSPArr=[];
-		var wonSeatsCountJSPArr=[];var wonSeatsCountATDPArr=[];var wonSeatsCountTDPArr=[];
-		var wonSeatsCountPRPArr=[];var wonSeatsCountINCIArr=[];
-		for(var i in result){
-			electionYearWiseArr.push(result[i].electionYear+'  '+result[i].electionType);
-			if(result[i].partyName == "INC"){
-				wonSeatsCountINCArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "BSP"){
-				wonSeatsCountBSPArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "NTRTDP(LP)"){
-				wonSeatsCountNTRTDPArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "AIFB"){
-				wonSeatsCountAIFBArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "LSP"){
-				wonSeatsCountLSPArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "PPOI"){
-				wonSeatsCountPPOIArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "BJP"){
-				wonSeatsCountBJPArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "LKD"){
-				wonSeatsCountLKDArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "YSRC"){
-				wonSeatsCountYSRCArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "JNP"){
-				wonSeatsCountJNPArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "SP"){
-				wonSeatsCountSPArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "JSP"){
-				wonSeatsCountJSPArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "ATDP"){
-				wonSeatsCountATDPArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "TDP"){
-				wonSeatsCountTDPArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "PRP"){
-				wonSeatsCountPRPArr.push(result[i].wonSeatsCount)
-			}else if(result[i].partyName == "INC(I)"){
-				wonSeatsCountINCIArr.push(result[i].wonSeatsCount)
-			}
-		}
+		var mainDataArr=[];
+		var electionYearArr = [];
 		
-		
-		var mainINC = electionYearWiseArr.length - wonSeatsCountINCArr.length;
-			for(var i=0; i<mainINC;i++){
-				wonSeatsCountINCArr.push(0);
+			for(var i in result){
+				electionYearArr.push(result[i].electionYear);
 			}
-		var mainBSP = electionYearWiseArr.length - wonSeatsCountBSPArr.length;
-			for(var i=0; i<mainBSP;i++){
-				wonSeatsCountBSPArr.push(0);
+			for(var j in result[0].list){
+				var wonSeatsCountArr=[];
+				
+				if(result[0].list[j].list !=null && result[0].list[j].list.length>0){
+					for(var k in result[0].list[j].list){
+						wonSeatsCountArr.push(parseFloat(result[0].list[j].list[k].wonSeatsCount));
+					}
+				}
+				var obj ={
+						name: result[0].list[j].partyName,
+						data: wonSeatsCountArr
+					}
+					mainDataArr.push(obj)
 			}
-		var mainNTRTDP = electionYearWiseArr.length - wonSeatsCountNTRTDPArr.length;
-			for(var i=0; i<mainNTRTDP;i++){
-				wonSeatsCountNTRTDPArr.push(0);
-			}
-		var mainAIFB = electionYearWiseArr.length - wonSeatsCountAIFBArr.length;
-			for(var i=0; i<mainAIFB;i++){
-				wonSeatsCountAIFBArr.push(0);
-			}
-		var mainLSP = electionYearWiseArr.length - wonSeatsCountLSPArr.length;
-			for(var i=0; i<mainLSP;i++){
-				wonSeatsCountLSPArr.push(0);
-			}
-		var mainPPOI = electionYearWiseArr.length - wonSeatsCountPPOIArr.length;
-			for(var i=0; i<mainPPOI;i++){
-				wonSeatsCountPPOIArr.push(0);
-			}
-		var mainBJP = electionYearWiseArr.length - wonSeatsCountBJPArr.length;
-			for(var i=0; i<mainBJP;i++){
-				wonSeatsCountBJPArr.push(0);
-			}
-		var mainLKD = electionYearWiseArr.length - wonSeatsCountLKDArr.length;
-			for(var i=0; i<mainLKD;i++){
-				wonSeatsCountLKDArr.push(0);
-			}
-		var mainYSRC = electionYearWiseArr.length - wonSeatsCountYSRCArr.length;
-			for(var i=0; i<mainYSRC;i++){
-				wonSeatsCountYSRCArr.push(0);
-			}
-		var mainJNP = electionYearWiseArr.length - wonSeatsCountJNPArr.length;
-			for(var i=0; i<mainJNP;i++){
-				wonSeatsCountJNPArr.push(0);
-			}
-		var mainSP = electionYearWiseArr.length - wonSeatsCountSPArr.length;
-			for(var i=0; i<mainSP;i++){
-				wonSeatsCountSPArr.push(0);
-			}
-		var mainJSP = electionYearWiseArr.length - wonSeatsCountJSPArr.length;
-			for(var i=0; i<mainJSP;i++){
-				wonSeatsCountJSPArr.push(0);
-			}
-		var mainATDP = electionYearWiseArr.length - wonSeatsCountATDPArr.length;
-			for(var i=0; i<mainATDP;i++){
-				wonSeatsCountATDPArr.push(0);
-			}
-		var mainTDP = electionYearWiseArr.length - wonSeatsCountTDPArr.length;
-			for(var i=0; i<mainTDP;i++){
-				wonSeatsCountTDPArr.push(0);
-			}
-		var mainPRP = electionYearWiseArr.length - wonSeatsCountPRPArr.length;
-			for(var i=0; i<mainPRP;i++){
-				wonSeatsCountPRPArr.push(0);
-			}
-		var mainINCI = electionYearWiseArr.length - wonSeatsCountINCIArr.length;
-			for(var i=0; i<mainINCI;i++){
-				wonSeatsCountINCIArr.push(0);
-			}
+			/* for(var i in result){
+				electionYearArr.push(result[i].electionYear);
+				//if(result[0].list !=null && result[i].list.length>0){
+					//for(var j in result[0].list){
+						
+						if(result[i].list[0].list !=null && result[i].list[0].list.length>0){
+							for(var k in result[i].list[0].list){
+								wonSeatsCountArr.push(parseFloat(result[i].list[0].list[k].wonSeatsCount));
+							}
+						}
+						var obj ={
+							name: result[i].list[0].partyName,
+							data: wonSeatsCountArr
+						}
+						console.log(wonSeatsCountArr)
+						mainDataArr.push(obj)
+					//}
+				//}
+			} */
+			console.log(mainDataArr)
 		
 		$('#electionDetailsGraphWiseId').highcharts({
 			chart: {
@@ -3969,7 +3923,7 @@ function buildElectionInformationLocationWise(result){
 				text: ''
 			},
 			xAxis: {
-				categories: electionYearWiseArr,
+				categories: electionYearArr,
 				tickmarkPlacement: 'on',
 				title: {
 					enabled: false
@@ -3996,55 +3950,7 @@ function buildElectionInformationLocationWise(result){
 					}
 				}
 			},
-			series: [{
-				name: 'INC',
-				data: wonSeatsCountINCArr
-			}, {
-				name: 'BSP',
-				data: wonSeatsCountBSPArr
-			}, {
-				name: 'NTRTDP(LP)',
-				data: wonSeatsCountNTRTDPArr
-			}, {
-				name: 'AIFB',
-				data: wonSeatsCountAIFBArr
-			}, {
-				name: 'LSP',
-				data: wonSeatsCountLSPArr
-			}, {
-				name: 'PPOI',
-				data: wonSeatsCountPPOIArr
-			}, {
-				name: 'BJP',
-				data: wonSeatsCountBJPArr
-			}, {
-				name: 'LKD',
-				data: wonSeatsCountLKDArr
-			}, {
-				name: 'YSRC',
-				data: wonSeatsCountYSRCArr
-			}, {
-				name: 'JNP',
-				data: wonSeatsCountJNPArr
-			}, {
-				name: 'SP',
-				data: wonSeatsCountSPArr
-			}, {
-				name: 'JSP',
-				data: wonSeatsCountJSPArr
-			}, {
-				name: 'ATDP',
-				data: wonSeatsCountATDPArr
-			}, {
-				name: 'TDP',
-				data: wonSeatsCountTDPArr
-			}, {
-				name: 'PRP',
-				data: wonSeatsCountPRPArr
-			}, {
-				name: 'INC (I)',
-				data: wonSeatsCountINCIArr
-			}]
+			series: mainDataArr
 		});
 	}
 }
@@ -4062,12 +3968,15 @@ function getCommitteeCount(){
 		userAccessLevelValuesArray.push(parliamentId)
 	}else if(locationLevelId == '4' || locationLevelId == '11')
 	{
+		locationLevelId = '4';
 		userAccessLevelValuesArray.push(constituencyId)
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
+		locationLevelId = '5';
 		userAccessLevelValuesArray.push(mandalId)
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
+		locationLevelId = '6';
 		userAccessLevelValuesArray.push(panchayatId)
 	}
 	
