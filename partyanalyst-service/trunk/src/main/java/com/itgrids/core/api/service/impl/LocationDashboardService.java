@@ -767,9 +767,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							casteVO.setTotalCadres(casteVO.getMaleCadres()+casteVO.getFemaleCadres());
 						}
 						casteGroupVO.setTotalCadres(maleTotalCadres+femaleTotalCadres);
-						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
-							casteVO.setMaleCadrePerc(((casteVO.getMaleCadres() * 100) / maleTotalCadres) + "%");
-							casteVO.setFemaleCadrePerc(((casteVO.getFemaleCadres() * 100) / femaleTotalCadres) + "%");
+						if(femaleTotalCadres != null && maleTotalCadres != null && femaleTotalCadres > 0  && maleTotalCadres > 0){
+
+							for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
+								casteVO.setMaleCadrePerc(((casteVO.getMaleCadres() * 100) / maleTotalCadres) + "%");
+								casteVO.setFemaleCadrePerc(((casteVO.getFemaleCadres() * 100) / femaleTotalCadres) + "%");
+							}
 						}
 					}
 				}
@@ -854,9 +857,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							femaleTotalVoters = femaleTotalVoters + casteVO.getFemaleVoters();
 						}
 						casteGroupVO.setTotalVoters(maleTotalVoters+femaleTotalVoters);
-						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
-							casteVO.setMaleVotersPerc(((casteVO.getMaleVoters() * 100) / maleTotalVoters) + "%");
-							casteVO.setFemaleVotersPerc(((casteVO.getFemaleVoters() * 100) / femaleTotalVoters) + "%");
+						if(femaleTotalVoters != null && maleTotalVoters != null && femaleTotalVoters > 0  && maleTotalVoters > 0){
+							for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
+								casteVO.setMaleVotersPerc(((casteVO.getMaleVoters() * 100) / maleTotalVoters) + "%");
+								casteVO.setFemaleVotersPerc(((casteVO.getFemaleVoters() * 100) / femaleTotalVoters) + "%");
+							}
 						}
 					}
 				}
