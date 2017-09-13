@@ -436,7 +436,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 		if(levelId == '3' || levelId == '10')
 		{
 			$(".scroller"+divId).mCustomScrollbar({setHeight:'140px'})
-		}else if(result.length > 14){
+		}else if(result.length > 9){
 			$(".scroller"+divId).mCustomScrollbar({setHeight:'300px'})
 		}		
 	}
@@ -2255,14 +2255,13 @@ function getLocationWiseCommitteesCount(yearId){
 		locationLevelVal = parliamentId 
 	}else if(locationLevelId == '4' || locationLevelId == '11' )
 	{
-		//locationLevelId = '4';
 		locationLevelVal = constituencyId 		
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
 	    //locationLevelId = '5';
 		var locationMandalVal = mandalId;
         locationLevelVal = locationMandalVal.substring(1,mandalId.length);	
-		
+
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
 	    //locationLevelId = '6';
@@ -3404,7 +3403,7 @@ function getPublications(){
 function getDetailedElectionInformaction(){
 	$("#assemblyElectionGraphDetails,#assemblyElectionDetails").html(spinner);
 	jsObj={
-    	constituencyId:232
+	  	constituencyId:232
     }
     $.ajax({
       type : "GET",
