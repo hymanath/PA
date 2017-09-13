@@ -1132,7 +1132,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			sbe.append(" AND CM.parliament_id in(:locationValues)");
 			sbg.append(" C.constituency_id");
 		}else if(locationTypeId!=null && locationTypeId==5l && locationValues!=null && locationValues.size() > 0){
-			sb.append(" T.tehsil_id as typeId,C.tehsil_name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count ");
+			sb.append(" T.tehsil_id as typeId,T.tehsil_name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count ");
 			sbe.append(" AND CM.tehsil_id in(:locationValues)");
 			sbg.append(" T.tehsil_id ");
 		}
