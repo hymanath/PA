@@ -1,0 +1,295 @@
+@media print {
+	
+	body
+	{
+		background-color:#E6E6E6 !important;
+	}
+	header {
+		box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.3) !important;
+	}
+	nav {
+		background-color: #333 !important;
+		color: #FFBA00 !important;
+		font-family: 'Roboto', sans-serif !important;
+	}
+	.logo {
+	  background-color: #FFBA00 !important;
+	  height: 70px !important;
+	  padding: 5px 12px !important;
+	}
+	.menu-block {
+	  padding: 4px 10px !important;
+	  text-align: center !important;
+	}
+	.menu-block h3 {
+	  color: #fff !important;
+	  font-size: 20px !important;
+	}
+	.menu-block p {
+	  color: #fff !important;
+	  font-size: 10px !important;
+	}
+	.menu-heading-block {
+	  background-color: #E6E6E6 !important;
+	  padding: 7px !important;
+	  color: #333 !important;
+	  text-align: center !important;
+	  position: relative !important;
+	}
+	.panel-body
+	{
+		background-color:#fff !important;
+	}
+	.table thead th {
+		background-color: #f3f3f3 !important;
+		-webkit-print-color-adjust:exact;
+	}
+	.table tr td {
+		-webkit-print-color-adjust:exact;
+	}
+	.color_low
+	{
+		background-color:#FF0000 !important;
+		color:#333 !important;
+		-webkit-print-color-adjust:exact;
+	}
+	.color_medium
+	{
+		background-color:#FFBA00 !important;
+		color:#333 !important;
+		-webkit-print-color-adjust:exact;
+	}
+	.color_high
+	{
+		background-color:#00AF50 !important;
+		color:#333 !important;
+		-webkit-print-color-adjust:exact;
+	}
+	.bg_color {
+		background-color: #ddd !important;
+	}
+	.panel-block-white {
+	  -webkit-border-radius: 4px !important;
+	  -moz-border-radius: 4px !important;
+	  border-radius: 4px !important;
+	  background-color: #fff !important;
+	  padding: 15px 10px !important;
+	  margin-bottom: 0px !important;
+	  cursor: pointer !important;
+	}
+	.panel-block-white h1 {
+	  position: relative !important;
+	}
+	.panel-block-white h4 {
+	  font-size: 14px !important;
+	}
+	.panel-block-white small .fa {
+	  position: absolute !important;
+	  top: 24px !important;
+	  left: -9px !important;
+	}
+	.panel-block-white-low {
+	  -webkit-border-radius: 4px !important;
+	  -moz-border-radius: 4px !important;
+	  border-radius: 4px !important;
+	  background-color: #fff !important;
+	  padding: 15px 10px !important;
+	  margin-bottom: 0px !important;
+	  cursor: pointer !important;
+	  color: #333 !important;
+	}
+	.panel-block-white-low h1 {
+	  position: relative !important;
+	}
+	.panel-block-white-low h4 {
+	  font-size: 14px !important;
+	}
+	.panel-block-white-low small .fa {
+	  position: absolute !important;
+	  top: 24px !important;
+	  left: -9px !important;
+	}
+	.panel-block-white-low h1 {
+	  color: #FF0000 !important;
+	  font-size: 45px !important;
+	}
+	.panel-block-white-low h2 {
+	  color: #FF0000 !important;
+	  font-size: 25px !important;
+	}
+	.panel-block-white-low small {
+	  color: #FF0000 !important;
+	  font-size: 13px !important;
+	  vertical-align: top !important;
+	  position: relative !important;
+	  top: 5px !important;
+	}
+	.panel-block-white-low.active {
+	  color: #fff !important;
+	  background: red !important;
+	  /* For browsers that do not support gradients */
+	  background: -webkit-linear-gradient(35deg, #ff1c5e, #ffc012) !important;
+	  /* For Safari 5.1 to 6.0 */
+	  background: -o-linear-gradient(35deg, #ff1c5e, #ffc012) !important;
+	  /* For Opera 11.1 to 12.0 */
+	  background: -moz-linear-gradient(35deg, #ff1c5e, #ffc012) !important;
+	  /* For Firefox 3.6 to 15 */
+	  background: linear-gradient(35deg, #ff1c5e, #ffc012) !important;
+	  /* Standard syntax (must be last) */
+	}
+	.panel-block-white-low.active h1 {
+	  color: #fff !important;
+	  font-size: 45px !important;
+	}
+	.panel-block-white-low.active h2 {
+	  color: #fff !important;
+	  font-size: 25px !important;
+	}
+	.panel-block-white-low.active small {
+	  color: #fff !important;
+	  font-size: 13px !important;
+	  vertical-align: top !important;
+	  position: relative !important;
+	  top: 5px !important;
+	}
+	.panel-block-white-high {
+	  -webkit-border-radius: 4px !important;
+	  -moz-border-radius: 4px !important;
+	  border-radius: 4px !important;
+	  background-color: #fff !important;
+	  padding: 15px 10px !important;
+	  margin-bottom: 0px !important;
+	  cursor: pointer !important;
+	  color: #333 !important;
+	}
+	.panel-block-white-high h1 {
+	  position: relative !important;
+	}
+	.panel-block-white-high h4 {
+	  font-size: 14px !important;
+	}
+	.panel-block-white-high small .fa {
+	  position: absolute !important;
+	  top: 24px !important;
+	  left: -9px !important;
+	}
+	.panel-block-white-high h1 {
+	  color: #00AF50 !important;
+	  font-size: 45px !important;
+	}
+	.panel-block-white-high h2 {
+	  color: #00AF50 !important;
+	  font-size: 25px !important;
+	}
+	.panel-block-white-high small {
+	  color: #00AF50 !important;
+	  font-size: 13px !important;
+	  vertical-align: top !important;
+	  position: relative !important;
+	  top: 5px !important;
+	}
+	.panel-block-white-medium {
+	  -webkit-border-radius: 4px !important;
+	  -moz-border-radius: 4px !important;
+	  border-radius: 4px !important;
+	  background-color: #fff !important;
+	  padding: 15px 10px !important;
+	  margin-bottom: 0px !important;
+	  cursor: pointer !important;
+	  color: #333 !important;
+	}
+	.panel-block-white-medium h1 {
+	  position: relative !important;
+	}
+	.panel-block-white-medium h4 {
+	  font-size: 14px !important;
+	}
+	.panel-block-white-medium small .fa {
+	  position: absolute !important;
+	  top: 24px !important;
+	  left: -9px !important;
+	}
+	.panel-block-white-medium h1 {
+	  color: #FFBA00 !important;
+	  font-size: 45px !important;
+	}
+	.panel-block-white-medium h2 {
+	  color: #FFBA00 !important;
+	  font-size: 25px !important;
+	}
+	.panel-block-white-medium small {
+	  color: #FFBA00 !important;
+	  font-size: 13px !important;
+	  vertical-align: top !important;
+	  position: relative !important;
+	  top: 5px !important;
+	}
+	.panel-block-white-high.active {
+	  color: #fff !important;
+	  background: red !important;
+	  /* For browsers that do not support gradients */
+	  background: -webkit-linear-gradient(35deg, #009344, #00e303) !important;
+	  /* For Safari 5.1 to 6.0 */
+	  background: -o-linear-gradient(35deg, #009344, #00e303) !important;
+	  /* For Opera 11.1 to 12.0 */
+	  background: -moz-linear-gradient(35deg, #009344, #00e303) !important;
+	  /* For Firefox 3.6 to 15 */
+	  background: linear-gradient(35deg, #009344, #00e303) !important;
+	  /* Standard syntax (must be last) */
+	}
+	.panel-block-white-high.active h1 {
+	  color: #fff !important;
+	  font-size: 45px !important;
+	}
+	.panel-block-white-high.active h2 {
+	  color: #fff !important;
+	  font-size: 25px !important;
+	}
+	.panel-block-white-high.active small {
+	  color: #fff !important;
+	  font-size: 13px !important;
+	  vertical-align: top !important;
+	  position: relative !important;
+	  top: 5px !important;
+	}
+	.panel-block-white-medium.active {
+	  color: #fff !important;
+	  background: red !important;
+	  /* For browsers that do not support gradients */
+	  background: -webkit-linear-gradient(180deg, #ffc012, #ff0905) !important;
+	  /* For Safari 5.1 to 6.0 */
+	  background: -o-linear-gradient(180deg, #ffc012, #ff0905) !important;
+	  /* For Opera 11.1 to 12.0 */
+	  background: -moz-linear-gradient(180deg, #ffc012, #ff0905) !important;
+	  /* For Firefox 3.6 to 15 */
+	  background: linear-gradient(180deg, #ffc012, #ff0905) !important;
+	  /* Standard syntax (must be last) */
+	}
+	.panel-block-white-medium.active h1 {
+	  color: #fff !important;
+	  font-size: 45px !important;
+	}
+	.panel-block-white-medium.active h2 {
+	  color: #fff !important;
+	  font-size: 25px !important;
+	}
+	.panel-block-white-medium.active small {
+	  color: #fff !important;
+	  font-size: 13px !important;
+	  vertical-align: top !important;
+	  position: relative !important;
+	  top: 5px !important;
+	}
+	.panel-black {
+	  border-radius: 0px !important;
+	}
+	.panel-black .panel-heading {
+	  background-color: #333 !important;
+	  color: #fff !important;
+	  border-radius: 0px !important;
+	}
+	.panel-black .panel-heading .panel-title {
+	  color: #fff !important;
+	  font-weight: 600 !important;
+	}
+}
