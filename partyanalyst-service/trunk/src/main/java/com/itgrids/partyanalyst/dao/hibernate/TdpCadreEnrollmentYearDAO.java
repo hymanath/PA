@@ -1055,13 +1055,13 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			return query.list();
 		}
 		
-		public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long casteGroupId,Long casteId,Long constituencyId){
+		public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long casteGroupId,Long casteId,List<Long> constituencyIds){
 			Query query = getSession().createQuery(" select model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange," +
 					" model.tdpCadre.gender,count(model.tdpCadreId) " +
 					" from TdpCadreEnrollmentYear model " +
 					" where model.isDeleted = 'N' " +
 					" and model.tdpCadre.isDeleted = 'N' " +
-					" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId " +
+					" and model.tdpCadre.userAddress.constituency.constituencyId in (:constituencyId) " +
 					" and model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId " +
 					" and model.tdpCadre.casteState.caste.casteId = :casteId " +
 					" and model.tdpCadre.enrollmentYear = 2014 " +
@@ -1072,7 +1072,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			query.setParameter("casteGroupId", casteGroupId);
 			query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
 			query.setParameter("casteId", casteId);
-			query.setParameter("constituencyId", constituencyId);
+			query.setParameterList("constituencyId", constituencyIds);
 			
 			return query.list();
 		}

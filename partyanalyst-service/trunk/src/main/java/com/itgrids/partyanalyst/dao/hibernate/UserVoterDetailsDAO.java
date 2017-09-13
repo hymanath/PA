@@ -3445,21 +3445,31 @@ IUserVoterDetailsDAO{
 			return query.list();
 		}
 	 
-	 public List<Object[]> getVotersCasteNAgeGroupWiseCount(Long casteGroupId,Long casteId,Long constituencyId,Long publicationDateId){
+	 public List<Object[]> getVotersCasteNAgeGroupWiseCount(Long casteGroupId,Long casteId,List<Long> constituencyIds,Long publicationDateId){
 		//0-ageRangeId,1-ageRange,2-gender,3-votersCount
-		 Query query = getSession().createQuery(" select model.voter.voterAgeRange.voterAgeRangeId,model.voter.voterAgeRange.ageRange, " +
-		 		" model.voter.gender,count(model.voter.voterId) " +
-		 		" from UserVoterDetails model,BoothPublicationVoter model1 " +
-		 		" where model.voter.voterId = model1.voter.voterId " +
-		 		" and model1.booth.constituency.constituencyId = :constituencyId " +
-		 		" and model1.booth.publicationDate.publicationDateId = :publicationDateId " +
-		 		" and model.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId " +
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select model.voter.voterAgeRange.voterAgeRangeId,model.voter.voterAgeRange.ageRange, " +
+			 		" model.voter.gender,count(model.voter.voterId) " +
+			 		" from UserVoterDetails model,BoothPublicationVoter model1 " +
+			 		" where model.voter.voterId = model1.voter.voterId " );
+		 if(constituencyIds!= null && constituencyIds.size()>0){
+			 sb.append("and model1.booth.constituency.constituencyId in (:constituencyId)");
+		 }
+		 if(publicationDateId!= null && publicationDateId >0){
+			 sb.append(" and model1.booth.publicationDate.publicationDateId = :publicationDateId ");
+		 }
+		 sb.append("and model.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId " +
 		 		" and model.casteState.caste.casteId = :casteId " +
 		 		" group by model.voter.voterAgeRange.voterAgeRangeId,model.voter.gender " +
 		 		" order by model.voter.voterAgeRange.voterAgeRangeId ");
 		 
-		 query.setParameter("constituencyId", constituencyId);
-		 query.setParameter("publicationDateId", publicationDateId);
+		 Query query = getSession().createQuery(sb.toString());
+		 if(constituencyIds!= null && constituencyIds.size()>0){		
+		 query.setParameterList("constituencyId", constituencyIds);
+		 }
+		 if(publicationDateId!= null && publicationDateId >0){
+			 query.setParameter("publicationDateId", publicationDateId);
+		 }
 		 query.setParameter("casteGroupId", casteGroupId);
 		 query.setParameter("casteId", casteId);
 		 
