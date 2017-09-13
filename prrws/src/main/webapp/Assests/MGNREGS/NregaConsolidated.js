@@ -876,13 +876,13 @@ function tableViewConsolidated(result,divId,subLocationType)
 							{
 								if(result[i].subList[j].percentage < 50)
 								{
-									tableView+='<td style="background-color:#FF0000;color:#fff">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_low">'+result[i].subList[j].percentage+'</td>';
 								}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
 								{
-									tableView+='<td style="background-color:#FFBA00;color:#fff">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_medium">'+result[i].subList[j].percentage+'</td>';
 								}else if(result[i].subList[j].percentage >= 80)
 								{
-									tableView+='<td style="background-color:#00AF50;color:#fff">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_high">'+result[i].subList[j].percentage+'</td>';
 								}
 							}else{
 								tableView+='<td>-</td>';
