@@ -1245,7 +1245,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				for (Object[] objects : objList) {
 					if (commonMethodsUtilService.getLongValueForObject(objects[0]) == 1l) {
 						if (commonMethodsUtilService.getLongValueForObject(objects[1]) == 5l || commonMethodsUtilService.getLongValueForObject(objects[1]) == 7l ||commonMethodsUtilService.getLongValueForObject(objects[1]) == 9l) {
-							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y")) {
+							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y") && objects[4]!=null && objects[5]!=null) {
 								mainMandalCompletedCount++;
 							} else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null  ) {
 								mainMandalStartCount++;
@@ -1254,7 +1254,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							}
 
 						} else if (commonMethodsUtilService.getLongValueForObject(objects[1]) == 6l || commonMethodsUtilService.getLongValueForObject(objects[1]) == 8l) {
-							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y")) {
+							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y") && objects[4]!=null && objects[5]!=null) {
 								mainVillageCompletedCount++;
 							} else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null ) {
 								mainVillageStartCount++;
@@ -1264,7 +1264,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						}
 					} else {
 						if (commonMethodsUtilService.getLongValueForObject(objects[1]) == 5l || commonMethodsUtilService.getLongValueForObject(objects[1]) == 7l || commonMethodsUtilService.getLongValueForObject(objects[1]) == 9l) {
-							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y")) {
+							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y") && objects[4]!=null && objects[5]!=null) {
 								affliatedMandalCompletedCount++;
 							} else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null  ) {
 								affliatedMandalStartCount++;
@@ -1273,7 +1273,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							}
 
 						} else if (commonMethodsUtilService.getLongValueForObject(objects[1]) == 6l || commonMethodsUtilService.getLongValueForObject(objects[1]) == 8l) {
-							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y")) {
+							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y") && objects[4]!=null && objects[5]!=null) {
 								affliatedVillageCompletedCount++;
 							} else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null  )  {
 								affliatedVillageStartCount++;
@@ -1301,12 +1301,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 				committeeCounts.setAffliatedMandalCompletedCount(affliatedMandalCompletedCount);
 				committeeCounts.setAffliatedMandalStartedCount(affliatedMandalStartCount);
-				committeeCounts.setAffMandalTotal(affliatedMandalCompletedCount+affliatedMandalStartCount);
+				committeeCounts.setAffiCommMandalNotStarted(affliatedMandalNotStarted);
+				committeeCounts.setAffMandalTotal(affliatedMandalCompletedCount+affliatedMandalStartCount+affliatedMandalNotStarted);
 				committeeCounts.setAffliatedVillageCompletedCount(affliatedVillageCompletedCount);//affliated committee village/ward count
 				committeeCounts.setAffliatedVillageStartedCount(affliatedVillageStartCount);//affliated committee village/ward count
-				committeeCounts.setAffVillageTotal(affliatedVillageCompletedCount+affliatedVillageStartCount);
-				committeeCounts.setAffiCommMandalNotStarted(affliatedMandalNotStarted);
 				committeeCounts.setAffiCommVillageNotStarted(affliatedVillageNotStarted);
+				committeeCounts.setAffVillageTotal(affliatedVillageCompletedCount+affliatedVillageStartCount+affliatedVillageNotStarted);
+				//committeeCounts.setAffiCommMandalNotStarted(affliatedMandalNotStarted);
+				//committeeCounts.setAffiCommVillageNotStarted(affliatedVillageNotStarted);
 				committeeCounts.setAffMandalCompletePer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffMandalTotal(), affliatedMandalCompletedCount))));
 				committeeCounts.setAffMandalStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffMandalTotal(), affliatedMandalStartCount))));
 				committeeCounts.setAffVillageCompletePer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffVillageTotal(), affliatedVillageCompletedCount))));
