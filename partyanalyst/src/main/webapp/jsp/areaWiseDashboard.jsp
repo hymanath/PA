@@ -89,9 +89,15 @@
 				 <h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
 				 <div class="block">
 					 <div class="row">
-						<div id="electionTypeValuesId"></div>
-						<div id="electionDetailsGraphWiseId"></div>
-						<div id="electionDetailsTableWiseId"></div>
+						 <div class="col-sm-12">
+							<div id="electionTypeValuesId"></div>
+						</div>
+						 <div class="col-sm-12">
+							<div id="electionDetailsGraphWiseId"></div>
+						</div>
+						 <div class="col-sm-12">
+							<div id="electionDetailsTableWiseId"></div>
+						</div>
 					 </div>
 				 </div>
 				<div class="block">
