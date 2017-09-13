@@ -878,15 +878,31 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return null;
 	}
 
-	public List<LocationVotersVO> getCasteNAgeWiseVoterNCadreCounts(Long constituencyId, Long publicationDateId,
+	public List<LocationVotersVO> getCasteNAgeWiseVoterNCadreCounts(Long locationTypeId,Long locationValue, Long publicationDateId,
 			Long casteGroupId, Long casteId) {
 		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
 		try {
+			List<Long> constituencyIds = new ArrayList<Long>();
+			List<Long> locationIds = new ArrayList<Long>();
+			locationIds.add(locationValue);
+			if(locationTypeId == 3l){
+		        List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(locationIds);
+		        for (Object[] objects : locationValuesObj) {
+		          if(objects!=null){
+		        	  constituencyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+		          }
+		        }
+		        
+		      }else if(locationTypeId == 10l){
+		    	  constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+		      }else if(locationTypeId == 4l){
+		    	  constituencyIds.add(locationValue);
+		      }
 			Map<Long, LocationVotersVO> map = new LinkedHashMap<Long, LocationVotersVO>();
 
 			// 0-ageRangeId,1-ageRange,2-gender,3-votersCount
 			List<Object[]> votersObjList = userVoterDetailsDAO.getVotersCasteNAgeGroupWiseCount(casteGroupId, casteId,
-					constituencyId, publicationDateId);
+					constituencyIds, publicationDateId);
 
 			if (votersObjList != null && votersObjList.size() > 0) {
 				for (Object[] objects : votersObjList) {
@@ -907,7 +923,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			}
 
 			List<Object[]> cadresObjList = tdpCadreEnrollmentYearDAO.getCadresCasteNAgeGroupWiseCounts(casteGroupId,
-					casteId, constituencyId);
+					casteId, constituencyIds);
 
 			if (cadresObjList != null && cadresObjList.size() > 0) {
 				for (Object[] objects : cadresObjList) {
