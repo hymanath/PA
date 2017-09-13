@@ -2255,16 +2255,19 @@ function getLocationWiseCommitteesCount(yearId){
 		locationLevelVal = parliamentId 
 	}else if(locationLevelId == '4' || locationLevelId == '11' )
 	{
-		locationLevelId = '4';
+		//locationLevelId = '4';
 		locationLevelVal = constituencyId 		
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
-		locationLevelId = '5';
-		locationLevelVal = mandalId 		
+	    //locationLevelId = '5';
+		var locationMandalVal = mandalId;
+        locationLevelVal = locationMandalVal.substring(1,mandalId.length);	
+		
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
-		locationLevelId = '6';
-		locationLevelVal = panchayatId 		
+	    //locationLevelId = '6';
+		var locationPanchayatVal = panchayatId;
+ 		locationLevelVal = locationPanchayatVal.substring(1,panchayatId.length);
 	}
 	var jsObj={
 			locationType : locationLevelName,
@@ -2313,13 +2316,13 @@ function getLocationWiseCommitteesCount(yearId){
 				str+='<tr>';
 					str+='<td>mandal/town/division</td>';
 					str+='<td>'+result.mainMandalTotal+'</td>';
-					str+='<td>'+result.mainCommStartedCount+'</td>';
-					str+='<td>'+result.mainCommCompletedCount+'</td>';
-					str+='<td>'+result.mainCommNotYetStarted+'</td>';
+					str+='<td>'+result.mainMandalStartedCount+'</td>';
+					str+='<td>'+result.mainMandalCompletedCount+'</td>';
+					str+='<td>'+result.mainMandalNotYetStartedCount+'</td>';
 					
 					str+='<td>'+result.affMandalTotal+'</td>';
-					str+='<td>'+result.affiCommStartedCount+'</td>';
-					str+='<td>'+result.affiCommCompletedCount+'</td>';
+					str+='<td>'+result.affliatedMandalStartedCount+'</td>';
+					str+='<td>'+result.affliatedMandalCompletedCount+'</td>';
 					str+='<td>'+result.affiCommMandalNotStarted+'</td>';
 				str+='</tr>';
 				str+='<tr>';
@@ -2415,19 +2418,20 @@ function getLocationWiseCommitteesCount(yearId){
 					}
 				]
 			}];
-			if(result.mainMandalCompletePer != null)
-			{
+			highcharts(id,type,data,plotOptions,title,tooltip,legend);
+			 /*if(result.mainMandalCompletePer != 0 || result.mainMandalStartPer != 0 || result.mainMandalNotPer != 0)
+			  {
 				highcharts(id,type,data,plotOptions,title,tooltip,legend);
-			}else if(result.mainVillageCompletePer != null)
-			{
+			  }else if(result.mainVillageCompletePer != 0 || result.mainVillageStartPer != 0 || result.mainVillageNotPer != 0)
+			  {
 				highcharts(id,type,data,plotOptions,title,tooltip,legend);
-			}else if(result.affMandalCompletePer != null)
-			{
+			  }else if(result.affMandalCompletePer != 0 || result.affMandalStartPer != 0 || result.affMandalNotPer != 0)
+			  {
 				highcharts(id,type,data,plotOptions,title,tooltip,legend);
-			}else if(result.affVillageCompletePer != null)
-			{
+			  }else if(result.affVillageCompletePer != 0 || result.affVillageStartPer != 0 || result.affVillageNotPer != 0)
+			  {
 				highcharts(id,type,data,plotOptions,title,tooltip,legend);
-			}
+			  }*/
 		}	
 	}
 }
