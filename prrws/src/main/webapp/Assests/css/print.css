@@ -3,9 +3,11 @@
 	body
 	{
 		background-color:#E6E6E6 !important;
+		-webkit-print-color-adjust:exact;
 	}
 	header {
 		box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.3) !important;
+		-webkit-print-color-adjust:exact;
 	}
 	nav {
 		background-color: #333 !important;
@@ -44,28 +46,27 @@
 		background-color: #f3f3f3 !important;
 		-webkit-print-color-adjust:exact;
 	}
-	.table tr td {
-		-webkit-print-color-adjust:exact;
-	}
 	.color_low
 	{
-		background-color:#FF0000 !important;
-		color:#333 !important;
-		-webkit-print-color-adjust:exact;
+		background: -moz-linear-gradient(35deg, #FF0000, #FF0000) !important;
+		background:linear-gradient(35deg, #FF0000, #FF0000) !important;
+		color:#fff !important;
 	}
 	.color_medium
 	{
-		background-color:#FFBA00 !important;
-		color:#333 !important;
-		-webkit-print-color-adjust:exact;
+		background: -moz-linear-gradient(35deg, #FFBA00, #FFBA00) !important;
+		background: linear-gradient(35deg, #FFBA00, #FFBA00) !important;
+		color:#fff !important;
 	}
 	.color_high
 	{
-		background-color:#00AF50 !important;
-		color:#333 !important;
-		-webkit-print-color-adjust:exact;
+		background: -moz-linear-gradient(35deg, #00AF50, #00AF50) !important;
+		background: linear-gradient(35deg, #00AF50, #00AF50) !important;
+		color:#fff !important;
 	}
-	.bg_color {
+	
+	.bg_color
+	{
 		background-color: #ddd !important;
 	}
 	.panel-block-white {
