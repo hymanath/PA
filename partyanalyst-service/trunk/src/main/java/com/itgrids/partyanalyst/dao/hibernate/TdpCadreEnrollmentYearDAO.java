@@ -1000,22 +1000,32 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			return  query.list();
 		}
 		
-		public List<Object[]> getGenderAndAgeGroupWiseCadreCount(List<Long> constituencyIds){
+		public List<Object[]> getGenderAndAgeGroupWiseCadreCount(Long locationTypeId,Long locationValue ){
 			StringBuilder sb = new StringBuilder();
 			sb.append( "select model.tdpCadre.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange,model.tdpCadre.gender, " +
 					" count(model.tdpCadre.tdpCadreId) " +
 					" from TdpCadreEnrollmentYear model " +
 					" where model.isDeleted='N' and model.tdpCadre.isDeleted = 'N' " +
 					" and model.tdpCadre.enrollmentYear=2014 and model.enrollmentYearId = :enrollmentYearId " );
-			if(constituencyIds!= null && constituencyIds.size()>0){
-				sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId in(:constituencyId) ");
+			if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l){
+	        	if(locationTypeId==3l){
+	        		sb.append(" and model.tdpCadre.userAddress.district.districtId = :locationValue ");
+	        	}else if(locationTypeId==10l){
+	        		sb.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId = :locationValue ");
+	        	}else if(locationTypeId == 4l){
+	        		sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationValue ");	
+	        	}else if(locationTypeId ==5l){
+	        		sb.append(" and model.tdpCadre.userAddress.tehsil.tehsilId = :locationValue ");
+	        	}else if(locationTypeId ==6l){
+	        		sb.append(" and model.tdpCadre.userAddress.panchayat.panchayatId = :locationValue ");
+	        	}
 			}
-			sb.append("group by model.tdpCadre.gender,model.tdpCadre.voterAgeRangeId " +
+			sb.append(" group by model.tdpCadre.gender,model.tdpCadre.voterAgeRangeId " +
 					" order by model.tdpCadre.voterAgeRangeId ");
 			Query query = getSession().createQuery(sb.toString());
 			query.setParameter("enrollmentYearId",  IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
-			if(constituencyIds!= null && constituencyIds.size()>0){
-			query.setParameterList("constituencyId", constituencyIds);
+			if(locationValue!= null && locationValue.longValue()>0l){
+			query.setParameter("locationValue", locationValue);
 			}
 			
 			return query.list();
@@ -1039,40 +1049,69 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			return query.list();
 		}
 		
-		public List<Object[]> getCasteNGenderWiseCadreCounts(List<Long> constituencyIds){
-			Query query = getSession().createQuery(" select model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, " +
+		public List<Object[]> getCasteNGenderWiseCadreCounts(Long locationTypeId,Long locationValue){
+			
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("select model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, " +
 					" model.tdpCadre.casteState.caste.casteId,model.tdpCadre.casteState.caste.casteName,model.tdpCadre.gender,count(model.tdpCadre.tdpCadreId) " +
-					" from TdpCadreEnrollmentYear model " +
-					" where model.isDeleted = 'N'" +
-					" and model.tdpCadre.isDeleted = 'N'" +
-					" and model.tdpCadre.userAddress.constituency.constituencyId in (:constituencyId) " +
-					" and model.tdpCadre.enrollmentYear = 2014 " +
-					" and model.enrollmentYearId = :enrollmentYearId " +
-					" group by model.tdpCadre.casteState.caste.casteId,model.tdpCadre.gender " +
+					" from TdpCadreEnrollmentYear model where model.isDeleted = 'N' and model.enrollmentYearId = :enrollmentYearId "  +
+					" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
+			if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l){
+	        	if(locationTypeId==3l){
+	        		sb.append(" and model.tdpCadre.userAddress.district.districtId = :locationValue ");
+	        	}else if(locationTypeId==10l){
+	        		sb.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId = :locationValue ");
+	        	}else if(locationTypeId == 4l){
+	        		sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationValue ");	
+	        	}else if(locationTypeId ==5l){
+	        		sb.append(" and model.tdpCadre.userAddress.tehsil.tehsilId = :locationValue");
+	        	}else if(locationTypeId ==6l){
+	        		sb.append(" and model.tdpCadre.userAddress.panchayat.panchayatId = :locationValue");
+	        	}
+			}
+			sb.append(" group by model.tdpCadre.casteState.caste.casteId,model.tdpCadre.gender " +
 					" order by model.tdpCadre.casteState.caste.casteId ");
-			query.setParameterList("constituencyId", constituencyIds);
+			Query query = getSession().createQuery(sb.toString());
+			if(locationValue != null && locationValue.longValue() > 0){
+				query.setParameter("locationValue", locationValue);	
+			}
 			query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
 			return query.list();
 		}
 		
-		public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long casteGroupId,Long casteId,List<Long> constituencyIds){
-			Query query = getSession().createQuery(" select model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange," +
+		public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long locationTypeId,Long locationValue,Long casteGroupId, Long casteId){
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append(" select model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange," +
 					" model.tdpCadre.gender,count(model.tdpCadreId) " +
 					" from TdpCadreEnrollmentYear model " +
-					" where model.isDeleted = 'N' " +
-					" and model.tdpCadre.isDeleted = 'N' " +
-					" and model.tdpCadre.userAddress.constituency.constituencyId in (:constituencyId) " +
-					" and model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId " +
+					" where model.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 " +
+					" and model.enrollmentYearId = :enrollmentYearId and model.tdpCadre.isDeleted = 'N' ");
+			if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l){
+	        	if(locationTypeId==3l){
+	        		sb.append(" and model.tdpCadre.userAddress.district.districtId = :locationValue ");
+	        	}else if(locationTypeId==10l){
+	        		sb.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId = :locationValue ");
+	        	}else if(locationTypeId == 4l){
+	        		sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationValue ");	
+	        	}else if(locationTypeId ==5l){
+	        		sb.append(" and model.tdpCadre.userAddress.tehsil.tehsilId = :locationValue");
+	        	}else if(locationTypeId ==6l){
+	        		sb.append(" and model.tdpCadre.userAddress.panchayat.panchayatId = :locationValue");
+	        	}
+			}
+			sb.append("and model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId " +
 					" and model.tdpCadre.casteState.caste.casteId = :casteId " +
-					" and model.tdpCadre.enrollmentYear = 2014 " +
-					" and model.enrollmentYearId = :enrollmentYearId " +
 					" group by model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.gender " +
 					" order by model.tdpCadre.voterAgeRange.voterAgeRangeId ");
-			
+			Query query = getSession().createQuery(sb.toString());
 			query.setParameter("casteGroupId", casteGroupId);
 			query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
 			query.setParameter("casteId", casteId);
-			query.setParameterList("constituencyId", constituencyIds);
+			if(locationValue != null && locationValue.longValue() > 0){
+				query.setParameter("locationValue", locationValue);	
+			}
 			
 			return query.list();
 		}
@@ -1085,21 +1124,37 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			return query.list();
 		}
 		
-		public List<Object[]> getEnrollmentYearAgeGroupWiseCadres(Long constituencyId,Long enrollmentYearId){
+		public List<Object[]> getEnrollmentYearAgeGroupWiseCadres(Long locationTypeId,Long locationValue,Long enrollmentYearId){
 			//0-voterAgeRangeId,1-ageRange,2-gender,3-casteCategoryId,4-categoryName,5-count
-			Query query = getSession().createQuery(" select model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange," +
+			StringBuilder sb = new StringBuilder();
+			sb.append(" select model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange," +
 					" model.tdpCadre.gender,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName," +
-					" count(model.tdpCadreId) " +
-					" from TdpCadreEnrollmentYear model " +
-					" where model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' " +
-					" and model.tdpCadre.enrollmentYear = 2014 " +
-					" and model.enrollmentYearId = :enrollmentYearId " +
-					" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId " +
-					" group by model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.gender,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId " +
-					" order by model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+					" count(model.tdpCadreId)  from TdpCadreEnrollmentYear model where model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' " +
+					" and model.tdpCadre.enrollmentYear = 2014 ");
+			if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l){
+	        	if(locationTypeId==3l){
+	        		sb.append(" and model.tdpCadre.userAddress.district.districtId = :locationValue ");
+	        	}else if(locationTypeId==10l){
+	        		sb.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId = :locationValue ");
+	        	}else if(locationTypeId == 4l){
+	        		sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationValue ");	
+	        	}else if(locationTypeId ==5l){
+	        		sb.append(" and model.tdpCadre.userAddress.tehsil.tehsilId = :locationValue");
+	        	}else if(locationTypeId ==6l){
+	        		sb.append(" and model.tdpCadre.userAddress.panchayat.panchayatId = :locationValue");
+	        	}
+			}
+			sb.append(" and model.enrollmentYearId = :enrollmentYearId and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId " +
+					" group by model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.gender," +
+					" model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId " +
+					" order by model.tdpCadre.voterAgeRange.voterAgeRangeId," +
+					"model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+			Query query = getSession().createQuery(sb.toString());
 			
 			query.setParameter("enrollmentYearId", enrollmentYearId);
-			query.setParameter("constituencyId", constituencyId);
+			if(locationValue != null && locationValue.longValue() > 0){
+				query.setParameter("locationValue", locationValue);	
+			}
 			
 			return query.list();
 		}
@@ -1126,6 +1181,8 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			        		queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationValue ");	
 			        	}else if(locationTypeId ==5l)
 			        		queryStr.append(" and model.tdpCadre.userAddress.tehsil.tehsilId = :locationValue");
+			        	}else if(locationTypeId ==6l){
+			        		queryStr.append(" and model.tdpCadre.userAddress.panchayat.panchayatId = :locationValue");
 			        	}
 					
 			        queryStr.append(" group by " +
@@ -1145,20 +1202,33 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			return query.list();
 	 }
 		
-	public List<Object[]> getCasteGroupWiseCadreCounts(List<Long> constituencyId) {
-		Query query = getSession().createQuery(
-						" select model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, "
-								+ " count(model.tdpCadre.tdpCadreId) "
-								+ " from TdpCadreEnrollmentYear model "
-								+ " where model.isDeleted = 'N'"
-								+ " and model.tdpCadre.isDeleted = 'N'"
-								+ " and model.tdpCadre.userAddress.constituency.constituencyId in (:constituencyId) "
-								+ " and model.tdpCadre.enrollmentYear = 2014 "
-								+ " and model.enrollmentYearId = :enrollmentYearId "
-								+ " group by model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
-		query.setParameterList("constituencyId", constituencyId);
-		query.setParameter("enrollmentYearId",
-				IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+	public List<Object[]> getCasteGroupWiseCadreCounts(Long locationTypeId,Long locationValue) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, "
+					+ " count(model.tdpCadre.tdpCadreId)  from TdpCadreEnrollmentYear model "
+					+ " where model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N'");
+		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l){
+        	if(locationTypeId==3l){
+        		sb.append(" and model.tdpCadre.userAddress.district.districtId = :locationValue ");
+        	}else if(locationTypeId==10l){
+        		sb.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId = :locationValue ");
+        	}else if(locationTypeId == 4l){
+        		sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationValue ");	
+        	}else if(locationTypeId ==5l){
+        		sb.append(" and model.tdpCadre.userAddress.tehsil.tehsilId = :locationValue");
+        	}else if(locationTypeId ==6l){
+        		sb.append(" and model.tdpCadre.userAddress.panchayat.panchayatId = :locationValue");
+        	}
+		}
+		sb.append(" and model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId "
+					+ " group by model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+		Query query = getSession().createQuery(sb.toString());
+						
+		if(locationValue != null && locationValue.longValue() > 0){
+			query.setParameter("locationValue", locationValue);	
+		}
+		query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
 		return query.list();
 	}
 }

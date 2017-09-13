@@ -580,6 +580,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public List<LocationVotersVO> getVotersAndcadreAgeWiseCount(Long locationTypeId,Long locationValue, Long publicationDateId) {
 		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
 		try {
+			Long reportLevelId= 0l;
 			List<Long> constituencyIds = new ArrayList<Long>();
 			List<Long> locationIds = new ArrayList<Long>();
 			locationIds.add(locationValue);
@@ -590,14 +591,22 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		        	  constituencyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 		          }
 		        }
-		        
+		        reportLevelId= 1l;
 		      }else if(locationTypeId == 10l){
 		    	  constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+		    	  reportLevelId=1l;
 		      }else if(locationTypeId == 4l){
+		    	  constituencyIds.add(locationValue);
+		    	  reportLevelId=1l;
+		      }else if(locationTypeId == 5l){
+		    	  reportLevelId=2l;
+		    	  constituencyIds.add(locationValue);
+		      }else if(locationTypeId == 6l){
+		    	  reportLevelId=4l;
 		    	  constituencyIds.add(locationValue);
 		      }
 			Map<String, LocationVotersVO> map = new LinkedHashMap<String, LocationVotersVO>();
-			List<Object[]> votersObjList = voterAgeInfoDAO.getVotersAgeWiseCount(constituencyIds, publicationDateId);
+			List<Object[]> votersObjList = voterAgeInfoDAO.getVotersAgeWiseCount(constituencyIds, publicationDateId,reportLevelId);
 			if (votersObjList != null && votersObjList.size() > 0) {
 				for (Object[] objects : votersObjList) {
 					LocationVotersVO vo = new LocationVotersVO();
@@ -613,7 +622,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 
-			List<Object[]> cadreObjList = tdpCadreEnrollmentYearDAO.getGenderAndAgeGroupWiseCadreCount(constituencyIds);
+			List<Object[]> cadreObjList = tdpCadreEnrollmentYearDAO.getGenderAndAgeGroupWiseCadreCount(locationTypeId,locationValue);
 			if (cadreObjList != null && cadreObjList.size() > 0) {
 				for (Object[] objects : cadreObjList) {
 					if (map.get(objects[1].toString()) == null) {
@@ -710,7 +719,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		    	  constituencyIds.add(locationValue);
 		      }
 			// 0-casteCategoryId,1-casteCategory,2-casteId,3-caste,4-gender,5-cadreCount
-			List<Object[]> objList = tdpCadreEnrollmentYearDAO.getCasteNGenderWiseCadreCounts(constituencyIds);
+			List<Object[]> objList = tdpCadreEnrollmentYearDAO.getCasteNGenderWiseCadreCounts(locationTypeId,locationValue);
 			//List<Object[]> objList = tdpCadreEnrollmentYearDAO.getCasteWiseCadreCounts(constituencyIds);
 
 			if (objList != null && objList.size() > 0) {
@@ -787,7 +796,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public List<LocationVotersVO> getCasteGroupNAgeWiseVoterNCadreCounts(Long locationTypeId, Long locationValue, Long publicationDateId) {
 		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
 		try {
-			
+			Long reportLevelId= 0l;
 			List<Long> constituencyIds = new ArrayList<Long>();
 			List<Long> locationIds = new ArrayList<Long>();
 			locationIds.add(locationValue);
@@ -798,15 +807,23 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		        	  constituencyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 		          }
 		        }
-		        
+		        reportLevelId= 1l;
 		      }else if(locationTypeId == 10l){
 		    	  constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+		    	  reportLevelId=1l;
 		      }else if(locationTypeId == 4l){
+		    	  constituencyIds.add(locationValue);
+		    	  reportLevelId=1l;
+		      }else if(locationTypeId == 5l){
+		    	  reportLevelId=2l;
+		    	  constituencyIds.add(locationValue);
+		      }else if(locationTypeId == 6l){
+		    	  reportLevelId=4l;
 		    	  constituencyIds.add(locationValue);
 		      }
 			
 			// 0-castegroupId,1-castegroup,2-casteId,3-castegroup,4-voterscount,5-percentage,6-maleVotersCount,7-femaleVotersCount
-			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCasteWiseCount(constituencyIds, publicationDateId);
+			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCasteWiseCount(constituencyIds, publicationDateId, reportLevelId);
 
 			if (votersObjList != null && votersObjList.size() > 0) {
 
@@ -927,9 +944,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 
-			List<Object[]> cadresObjList = tdpCadreEnrollmentYearDAO.getCadresCasteNAgeGroupWiseCounts(casteGroupId,
-					casteId, constituencyIds);
-
+			List<Object[]> cadresObjList = tdpCadreEnrollmentYearDAO.getCadresCasteNAgeGroupWiseCounts(locationTypeId,locationValue,
+					casteGroupId, casteId);
 			if (cadresObjList != null && cadresObjList.size() > 0) {
 				for (Object[] objects : cadresObjList) {
 					if (map.get((Long) objects[0]) == null) {
@@ -1050,12 +1066,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return voList;
 	}
 
-	public List<LocationVotersVO> getEnrollmentYearAgeGroupWiseCadres(Long constituencyId, Long enrollmentYearId) {
+	public List<LocationVotersVO> getEnrollmentYearAgeGroupWiseCadres(Long locationTypeId,Long locationValue,Long enrollmentYearId) {
 		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
 		try {
 			// 0-voterAgeRangeId,1-ageRange,2-gender,3-casteCategoryId,4-categoryName,5-count
-			List<Object[]> objList = tdpCadreEnrollmentYearDAO.getEnrollmentYearAgeGroupWiseCadres(constituencyId,
-					enrollmentYearId);
+			List<Object[]> objList = tdpCadreEnrollmentYearDAO.getEnrollmentYearAgeGroupWiseCadres(locationTypeId,locationValue,enrollmentYearId);
 
 			Map<Long, LocationVotersVO> ageRangeMap = new LinkedHashMap<Long, LocationVotersVO>();
 			if (objList != null && objList.size() > 0) {
@@ -3134,6 +3149,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		
 		try{
 			List<LocationVotersVO>  listVo = new ArrayList<LocationVotersVO>();
+			Long reportLevelId= 0l;
 			List<Long> constituencyIds = new ArrayList<Long>();
 			List<Long> locationIds = new ArrayList<Long>();
 			locationIds.add(locationValue);
@@ -3144,14 +3160,21 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		        	  constituencyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 		          }
 		        }
-		        
+		        reportLevelId= 1l;
 		      }else if(locationTypeId == 10l){
 		    	  constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+		    	  reportLevelId=1l;
 		      }else if(locationTypeId == 4l){
 		    	  constituencyIds.add(locationValue);
+		    	  reportLevelId=1l;
+		      }else if(locationTypeId == 5l){
+		    	  reportLevelId=2l;
+		    	  constituencyIds.add(locationValue);
+		      }else if(locationTypeId == 6l){
+		    	  reportLevelId=4l;
+		    	  constituencyIds.add(locationValue);
 		      }
-			
-			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCastGroupWiseCount(constituencyIds, publicationDateId);
+			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCastGroupWiseCount(constituencyIds, publicationDateId, reportLevelId);
 			if(votersObjList!=null){
 				for (Object[] objects : votersObjList) {
 					LocationVotersVO vo = new LocationVotersVO();
@@ -3163,7 +3186,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 			// 0-castegroupId,1-castegroup,2-casteId,3-castegroup,4-voterscount,5-percentage,6-maleVotersCount,7-femaleVotersCount
-			List<Object[]> cadresObjList = tdpCadreEnrollmentYearDAO.getCasteGroupWiseCadreCounts(constituencyIds);
+			List<Object[]> cadresObjList = tdpCadreEnrollmentYearDAO.getCasteGroupWiseCadreCounts(locationValue,locationTypeId);
 			
 			if (cadresObjList != null && cadresObjList.size() > 0) {
 				for (Object[] objects : cadresObjList) {
