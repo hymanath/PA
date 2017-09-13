@@ -4150,4 +4150,7 @@
 	 <bean id="tdpCadreHealthDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreHealthDetailsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>	 
+	 <bean id="govtSchemeBenefitsInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtSchemeBenefitsInfoDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
