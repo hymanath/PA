@@ -44,11 +44,8 @@ function onLoadAjaxCalls()
 	//Enrolment Years
 	getEnrollmentIds();
 	
-	//Grievance And Insurance
-	getLocationWiseGrivanceTrustStatusCounts("3");
-	getLocationWiseInsuranceStatusCount("3");
 	//candidate Profiles 1st block
-	/*getCandidateAndPartyInfoForConstituency();
+	getCandidateAndPartyInfoForConstituency();
 	 //Second Block
 	getCountsForConstituency();
 	//Constituency Voter Information
@@ -57,7 +54,13 @@ function onLoadAjaxCalls()
 	//Assembly Block
 	getElectionTypes();
 	getElectionInformationLocationWise(0);
-	getDetailedElectionInformaction();
+	if(locationLevelId == '4'){
+		$(".assemblyElectionBlockCls").show();
+		getDetailedElectionInformaction();
+	}else{
+		$(".assemblyElectionBlockCls").hide();
+	}
+	
 	//caste information
 	getCasteGroupNAgeWiseVoterNCadreCounts("voter")
 	getActivityStatusList();
@@ -97,7 +100,7 @@ function onLoadAjaxCalls()
 	getNominatedPostStatusWiseCount();
 	
 	//Alerts
-	getTotalAlertDetailsForConstituencyInfo(); */
+	getTotalAlertDetailsForConstituencyInfo();
 }
 function onLoadClicks()
 {
@@ -790,7 +793,7 @@ function getCountsForConstituency(){
 				str+='<h4 class="panel-title theme-title-color">'+$(".parliamentMenuName").text()+' Parliament level Wise Details</h4>';
 			}
 		
-			str+='<table class="table table-bordered">';
+			str+='<table class="table table-bordered m_top15">';
 				str+='<tr>';
 					if(results.constituencyCount != null && results.constituencyCount >0){
 						str+='<td>';
@@ -3441,7 +3444,7 @@ function getPublications(){
 function getDetailedElectionInformaction(){
 	$("#assemblyElectionGraphDetails,#assemblyElectionDetails").html(spinner);
 	jsObj={
-	  	constituencyId:232
+	  	constituencyId: constituencyId
     }
     $.ajax({
       type : "GET",
