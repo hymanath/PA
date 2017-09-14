@@ -3456,17 +3456,17 @@ function getDetailedElectionInformaction(){
 				str+='<tr>';
 					str+='<td>'+result[i].electionYear+'</td>';
 					if(result[i].candidateResultsVO.partyShortName == "TDP" || result[i].candidateResultsVO.partyShortName == "YSRC"){
-						str+='<td><img src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="party"/></td>';
+						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="party"/></td>';
 					}else{
-						str+='<td><img src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="party"/></td>';
+						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="party"/></td>';
 					}
 					
 					str+='<td>'+result[i].candidateResultsVO.candidateName+'</td>';
 					str+='<td>'+result[i].candidateResultsVO.votesEarned+'</td>';
 					if(result[i].candidateOppositionList[0].partyShortName == "TDP" || result[i].candidateOppositionList[0].partyShortName == "YSRC"){
-						str+='<td><img src="images/party_flags/'+result[i].candidateOppositionList[0].partyShortName+'.PNG" alt="party"/></td>';
+						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateOppositionList[0].partyShortName+'.PNG" alt="party"/></td>';
 					}else{
-						str+='<td><img src="images/party_flags/'+result[i].candidateOppositionList[0].partyShortName+'.png" alt="party"/></td>';
+						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateOppositionList[0].partyShortName+'.png" alt="party"/></td>';
 					}
 					str+='<td>'+result[i].candidateOppositionList[0].candidateName+'</td>';
 					
