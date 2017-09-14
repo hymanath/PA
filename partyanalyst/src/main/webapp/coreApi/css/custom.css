@@ -1,7 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,500i,600,600i');
+
 body
 {
 	font-size: 14px;
-	background-color: #ECF1F5 !important;
+	background-color: #fff !important;
+	font-family: 'Montserrat', sans-serif;
+	font-weight:400;
+}
+.eventsheader
+{
+	display:none;
+}
+header
+{
+	background-color:#FFCC00;
+	border-bottom:8px solid red;
+}
+.background-head {
+    background-color: #fed501;
+    height: 300px;
+    content: ' ';
+    position: absolute;
+    width: 100%;
+    z-index: -1;
 }
 h1,h2,h3,h4,h5,h6,ul,p,.table
 {
@@ -10,7 +31,7 @@ h1,h2,h3,h4,h5,h6,ul,p,.table
 }
 .text-capital
 {
-	text-transform: uppercase;
+	text-transform: uppercase !important;
 }
 input[type="radio"], input[type="checkbox"]
 {
@@ -48,6 +69,18 @@ label
 .panel
 {
 	border-radius: 0px !important;
+	box-shadow:0px 3px 6px rgba(0,0,0,0.16);
+}
+.panel-default > .panel-heading
+{
+	background-color:#fff !important;
+	border-bottom:0px !important;
+}
+.theme-title-color
+{
+	text-transform:uppercase !important;
+	font-weight:600;
+	color:#a94442 !important;
 }
 .bottom-arrow:after, .bottom-arrow:before {
 	top: 100%;
@@ -132,9 +165,9 @@ label
 .block
 {
 	padding: 10px;
-	border:1px solid #ddd;
 	background-color: #fff;
 	position: relative;
+	box-shadow:0px 3px 6px rgba(0,0,0,0.16);
 }
 .tableVoters thead th
 {
@@ -503,7 +536,7 @@ label
     display: inline-block;
     position: absolute;
     top: 0;
-    background-color: #1ABC9C;
+    background-color: #ee935d;
     border-radius: 100%;
     -webkit-animation: sk-chasingDotsBounce 2s infinite ease-in-out;
     animation: sk-chasingDotsBounce 2s infinite ease-in-out; 
@@ -584,7 +617,7 @@ label
 }
 .breadcrumb
 {
-	background-color:#ECF1F5;
+	background-color:#FED501;
 	padding:0px;
 	margin-bottom:6px;
 }
@@ -615,7 +648,7 @@ label
 	position:relative;
 	cursor:pointer;
 }
-.menu-dropdown ul li[menu-levelname="panchayat"].active:after
+ul li[menu-levelname="panchayat"].active:after
 {
 	content:' ';
 }
@@ -662,15 +695,30 @@ span[menu-name].active
 	overflow: hidden;
 	box-shadow:inset 0px -13px 17px -8px;
 }
-.assembly-members-view:hover
+.assembly-members-view.active
 {
 	max-height: 1500px;
     transition: max-height 0.5s ease-in;
 	box-shadow: none;
+	padding:0px;
+}
+.assembly-view
+{
+	text-decoration:underline;
+	cursor:pointer;
 }
 .ColorView{
   width:10px;
   height:10px;
   display:inline-block;
   margin-right:5px;
+}
+ul li[menu-levelname='panchayat']:after .active
+{
+	content: '' !important;
+	border-right:1px solid #ddd;
+}
+.fa.fa-align-justify
+{
+	cursor:pointer;
 }
