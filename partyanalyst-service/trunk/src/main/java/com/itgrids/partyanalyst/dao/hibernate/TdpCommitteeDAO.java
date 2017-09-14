@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -2868,10 +2867,14 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			sb.append(" and model.userAddress.state.stateId=:locationId");
 		}else if(locationType.equalsIgnoreCase("mandal")){
 			sb.append(" and model.userAddress.tehsil.tehsilId=:locationId");
-		}else if(locationType.equalsIgnoreCase("village")){
+		}else if(locationType.equalsIgnoreCase("panchayat")){
 			sb.append(" and model.userAddress.panchayat.panchayatId=:locationId");
 		}else if(locationType.equalsIgnoreCase("Parliament")){
 			sb.append(" and model.userAddress.parliamentConstituency.constituencyId=:locationId");
+		}else if(locationType.equalsIgnoreCase("municipality")){
+			sb.append(" and model.userAddress.localElectionBody.localElectionBodyId=:locationId");
+		}else if(locationType.equalsIgnoreCase("wards")){
+			sb.append(" and model.userAddress.ward.constituencyId=:locationId");
 		}
 		sb.append(" order by model.tdpCommitteeId ");
 		Query query = getSession().createQuery(sb.toString());
