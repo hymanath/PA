@@ -13,7 +13,7 @@ var globalToDate = moment().format("DD/MM/YYYY");
 var propertyIdGlobalStr=[26,28,29,32];
 var stateId = $("#getMenuLocations").attr("menu-location-state");
 var districtId = $("#getMenuLocations").attr("menu-location-district");
-var parliamentId = $("#getMenuLocations").attr("menu-location-parliament");;
+var parliamentId = $("#getMenuLocations").attr("menu-location-parliament");
 var constituencyId = $("#getMenuLocations").attr("menu-location-constituency");
 var mandalId = $("#getMenuLocations").attr("menu-location-mandal");
 var panchayatId = $("#getMenuLocations").attr("menu-location-panchayat");
@@ -40,13 +40,16 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {
+	
 	//Enrolment Years
 	getEnrollmentIds();
-	 //Committee
-	getLocationWiseCommitteesCount(1); 
+	getPublications();
+	
+	getLocationTypeWiseCadreCount("");
+	getAgeRangeGenerAndCasteGroupByCadreCount(1);
 	//candidate Profiles 1st block
-	getCandidateAndPartyInfoForConstituency();
-	//Second Block
+	/*getCandidateAndPartyInfoForConstituency();
+	 //Second Block
 	getCountsForConstituency();
 	//Constituency Voter Information
 	getPublications();
@@ -73,6 +76,9 @@ function onLoadAjaxCalls()
 	for(var i in propertyIdGlobalStr){
 		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 	}
+	
+	//Committee
+	getLocationWiseCommitteesCount(1);
 	//Meetings
 	getLocationWiseMeetingsCount();
 	
@@ -91,7 +97,7 @@ function onLoadAjaxCalls()
 	getNominatedPostStatusWiseCount();
 	
 	//Alerts
-	getTotalAlertDetailsForConstituencyInfo();
+	getTotalAlertDetailsForConstituencyInfo(); */
 }
 function onLoadClicks()
 {
@@ -110,18 +116,23 @@ function onLoadClicks()
 		}
 		$("[menu-name="+levelName+"]").html($(this).html());
 		//$("[menu-name="+levelName+"]").width(((length)*(10)));
-		$("[levelId="+levelId+"],[menu-name]").removeClass("active");
+		$("[levelId="+levelId+"]").removeClass("active");
 		$(this).addClass("active");
 		$("[menu-name="+levelName+"]").closest("li").show();
-		$("[menu-name="+levelName+"]").addClass("active");
+		//$("[menu-name="+levelName+"]").addClass("active");
 		$("#getMenuLocations").attr("menu-location-"+levelName+"",locationId);
 		$("#getMenuLocations").attr("menu-location-levelId",((levelId)));
 		$("#getMenuLocations").attr("menu-location-levelName",levelName);
 		locationLevelId = ((levelId)-(1));
 		locationLevelName = levelName;
+		if(levelId == 10)
+		{
+			$("#getMenuLocations").attr("menu-location-district","");
+		}
 		if(levelId == 3 || levelId == 10)
 		{
 			districtId = locationId;
+			
 			$("#getMenuLocations").attr("menu-location-constituency","");
 			$("#getMenuLocations").attr("menu-location-mandal","");
 			$("#getMenuLocations").attr("menu-location-panchayat","");
@@ -172,8 +183,8 @@ function onLoadClicks()
 	$(document).on("click","[menu-name]",function(e){
 		e.stopPropagation();
 		$(".menu-dropdown").show();
-		$("[menu-name]").removeClass("active");
-		$(this).addClass("active");
+		//$("[menu-name]").removeClass("active");
+		//$(this).addClass("active");
 	});
 	$(document).on("click",".menu-dropdown",function(e){
 		e.stopPropagation();
@@ -309,6 +320,17 @@ function onLoadClicks()
 	$(document).on("change","#publicationChangeId",function(){
 		var pubId = $("#publicationChangeId").val();
 		getVotersAndcadreAgeWiseCount(pubId);
+	});
+	$(document).on("click",".assembly-view",function(){
+		if($(this).text() == 'Click to more')
+		{
+			$(this).text("Click for less");
+			$(".assembly-members-view").addClass("active");
+		}else{
+			$(this).text("Click to more");
+			$(".assembly-members-view").removeClass("active");
+		}
+		
 	});
 }
 function menuCalls(levelId,levelValue,higherLevelVal)
@@ -590,63 +612,69 @@ function getCandidateAndPartyInfoForConstituency(){
 		var parliament = '';
 		var assembly = '';
 		parliament+='<div class="col-sm-12 m_top20">';
-			parliament+='<h3>Member Of Parliament</h3>';
-			parliament+='<div class="block">';
-				parliament+='<div class="row">';
-					for(var i in result[0].subList)
-					{
-						parliament+='<div class="col-sm-6 m_top10">';
-							parliament+='<div class="media media-profile">';
-								parliament+='<span id="mlaSpinnerId"></span>';
-								parliament+='<div class="media-left">';
-									parliament+='<img src="images/candidates/'+result[0].subList[i].parliamentCandidateInfo.candidateName+'.jpg" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
-									parliament+='<span class="border-image img-border">';
-										parliament+='<img src="images/party_flags/'+result[0].subList[i].parliamentCandidateInfo.partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
-									parliament+='</span>';
-								parliament+='</div>';
-								parliament+='<div class="media-body">';
-									parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList[i].parliamentCandidateInfo.candidateName+'</h4>';
-									parliament+='<p class="text-muted">Constituency : '+result[0].subList[i].parliamentCandidateInfo.constituencyName+'</p>';
+			parliament+='<div class="panel panel-default">';
+				parliament+='<div class="panel-body">';
+					parliament+='<h4 class="panel-title theme-title-color">Member Of Parliament</h4>';
+					parliament+='<div class="row">';
+						for(var i in result[0].subList)
+						{
+							parliament+='<div class="col-sm-6 m_top10">';
+								parliament+='<div class="media media-profile">';
+									parliament+='<span id="mlaSpinnerId"></span>';
+									parliament+='<div class="media-left">';
+										parliament+='<img src="images/candidates/'+result[0].subList[i].parliamentCandidateInfo.candidateName+'.jpg" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
+										parliament+='<span class="border-image img-border">';
+											parliament+='<img src="images/party_flags/'+result[0].subList[i].parliamentCandidateInfo.partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
+										parliament+='</span>';
+									parliament+='</div>';
+									parliament+='<div class="media-body">';
+										parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList[i].parliamentCandidateInfo.candidateName+'</h4>';
+										parliament+='<p class="text-muted">Constituency : '+result[0].subList[i].parliamentCandidateInfo.constituencyName+'</p>';
+									parliament+='</div>';
 								parliament+='</div>';
 							parliament+='</div>';
-						parliament+='</div>';
-					}
+						}
+					parliament+='</div>';
 				parliament+='</div>';
 			parliament+='</div>';
 		parliament+='</div>';
 		$("#parliamentMemberId").html(parliament);
 		assembly+='<div class="col-sm-12 m_top20">';
-			assembly+='<h3>Member Of Legislative Assembly (MLA)</h3>';
-			if(result.length > 4)
-			{
-				assembly+='<div class="block  assembly-members-view">';
-			}else{
-				assembly+='<div class="block">';
-			}
-			
-				assembly+='<div class="row">';
-					for(var i in result)
+			assembly+='<div class="panel panel-default">';
+				assembly+='<div class="panel-body">';
+					assembly+='<h4 class="panel-title theme-title-color">Member Of Legislative Assembly (MLA)</h4>';
+					if(result.length > 4)
 					{
-						assembly+='<div class="col-sm-6 m_top10">';
-							assembly+='<div class="media media-profile">';
-								assembly+='<span id="mlaSpinnerId"></span>';
-								assembly+='<div class="media-left">';
-									assembly+='<img  onerror="setDefaultImage(this);" src="images/candidates/'+result[i].assemblyCandidateInfo[0].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
-									assembly+='<span class="border-image img-border">';
-										assembly+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
-									assembly+='</span>';
-								assembly+='</div>';
-								assembly+='<div class="media-body">';
-									assembly+='<h4 class="m_top20 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'</h4>';
-									assembly+='<p class="text-muted">Constituency : '+result[i].assemblyCandidateInfo[0].constituencyName+'</p>';
-								assembly+='</div>';
-							assembly+='</div>';
-						assembly+='</div>';
+						assembly+='<div class="block  assembly-members-view">';
+					}else{
+						assembly+='<div class="block">';
 					}
+					
+						assembly+='<div class="row">';
+							for(var i in result)
+							{
+								assembly+='<div class="col-sm-6 m_top10">';
+									assembly+='<div class="media media-profile">';
+										assembly+='<span id="mlaSpinnerId"></span>';
+										assembly+='<div class="media-left">';
+											assembly+='<img  onerror="setDefaultImage(this);" src="images/candidates/'+result[i].assemblyCandidateInfo[0].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
+											assembly+='<span class="border-image img-border">';
+												assembly+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
+											assembly+='</span>';
+										assembly+='</div>';
+										assembly+='<div class="media-body">';
+											assembly+='<h4 class="m_top20 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'</h4>';
+											assembly+='<p class="text-muted">Constituency : '+result[i].assemblyCandidateInfo[0].constituencyName+'</p>';
+										assembly+='</div>';
+									assembly+='</div>';
+								assembly+='</div>';
+							}
+						assembly+='</div>';
+					assembly+='</div>';
+					assembly+='<p class="text-center assembly-view" style="text-decoration:underline">Click to more</p>';
 				assembly+='</div>';
 			assembly+='</div>';
 		assembly+='</div>';
-		
 		$("#assemblyMemberId").html(assembly);
 		
 	}
@@ -654,43 +682,47 @@ function getCandidateAndPartyInfoForConstituency(){
 	{
 		var parliament = '';
 		parliament+='<div class="col-sm-12 m_top20">';
-			parliament+='<div class="block">';
-				parliament+='<div class="row">';
-					parliament+='<div class="col-sm-6 m_top10">';
-						parliament+='<div class="media media-profile">';
-							parliament+='<span id="mlaSpinnerId"></span>';
-							parliament+='<div class="media-left">';
-								parliament+='<img src="images/candidates/'+result[0].subList[0].parliamentCandidateInfo.candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
-								parliament+='<span class="border-image img-border">';
-									parliament+='<img src="images/party_flags/'+result[0].subList[0].parliamentCandidateInfo.partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
-								parliament+='</span>';
-							parliament+='</div>';
-							parliament+='<div class="media-body">';
-								parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList[0].parliamentCandidateInfo.candidateName+'</h4>';
-								parliament+='<p class="text-muted">Member Of Parliament ('+result[0].subList[0].parliamentCandidateInfo.constituencyName+')</p>';
-							parliament+='</div>';
-						parliament+='</div>';
-					parliament+='</div>';			
-					for(var i in result)
-					{
+			parliament+='<div class="panel panel-default">';
+				parliament+='<div class="panel-body">';
+					parliament+='<h4 class="panel-title theme-title-color">Members</h4>';
+					parliament+='<div class="row">';
 						parliament+='<div class="col-sm-6 m_top10">';
 							parliament+='<div class="media media-profile">';
 								parliament+='<span id="mlaSpinnerId"></span>';
 								parliament+='<div class="media-left">';
-									parliament+='<img  onerror="setDefaultImage(this);" src="images/candidates/'+result[i].assemblyCandidateInfo[0].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
+									parliament+='<img src="images/candidates/'+result[0].subList[0].parliamentCandidateInfo.candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
 									parliament+='<span class="border-image img-border">';
-										parliament+='<img  onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
+										parliament+='<img src="images/party_flags/'+result[0].subList[0].parliamentCandidateInfo.partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
 									parliament+='</span>';
 								parliament+='</div>';
 								parliament+='<div class="media-body">';
-									parliament+='<h4 class="m_top20 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'</h4>';
-									parliament+='<p class="text-muted">Member Of Legislative Assembly ('+result[i].assemblyCandidateInfo[0].constituencyName+')</p>';
+									parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList[0].parliamentCandidateInfo.candidateName+'</h4>';
+									parliament+='<p class="text-muted">Member Of Parliament ('+result[0].subList[0].parliamentCandidateInfo.constituencyName+')</p>';
 								parliament+='</div>';
 							parliament+='</div>';
-						parliament+='</div>';
-					}	
+						parliament+='</div>';			
+						for(var i in result)
+						{
+							parliament+='<div class="col-sm-6 m_top10">';
+								parliament+='<div class="media media-profile">';
+									parliament+='<span id="mlaSpinnerId"></span>';
+									parliament+='<div class="media-left">';
+										parliament+='<img  onerror="setDefaultImage(this);" src="images/candidates/'+result[i].assemblyCandidateInfo[0].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
+										parliament+='<span class="border-image img-border">';
+											parliament+='<img  onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
+										parliament+='</span>';
+									parliament+='</div>';
+									parliament+='<div class="media-body">';
+										parliament+='<h4 class="m_top20 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'</h4>';
+										parliament+='<p class="text-muted">Member Of Legislative Assembly ('+result[i].assemblyCandidateInfo[0].constituencyName+')</p>';
+									parliament+='</div>';
+								parliament+='</div>';
+							parliament+='</div>';
+						}	
+					parliament+='</div>';
 				parliament+='</div>';
 			parliament+='</div>';
+			
 		parliament+='</div>';
 		$("#parliamentMemberId").html(parliament);
 		$("#assemblyMemberId").html("");
@@ -725,12 +757,10 @@ function getCountsForConstituency(){
 		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 
-	var userAccessLevelId=locationLevelId;
-	
 	var jsObj={
-			levelId		  		:userAccessLevelId,
+			levelId		  		:locationLevelId,
 			levelValues		 	:userAccessLevelValuesArray,
-			publicationDateId 	:24	
+			publicationDateId 	:publicationId	
 			
 		}
 	 $.ajax({
@@ -747,76 +777,92 @@ function getCountsForConstituency(){
 	});	
 	function buildCountsForConstituency(results){
 		var str='';
-		
-		str+='<table class="table table-bordered block">';
-			str+='<tr>';
-				if(results.constituencyCount != null && results.constituencyCount >0){
-					str+='<td>';
-					str+='<h4 class="text-capitalize text-muted">Constituencies</h4>';
-					if(results.constituencyCount !=null && results.constituencyCount>0){
-						str+='<h2>'+results.constituencyCount+'</h2>';
-					}else{
-						str+='<h2> - </h2>';
-					}
-					str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-				str+='</td>';
+		str+='<div class="panel panel-default">';
+			str+='<div class="panel-heading">';
+				if(locationLevelId == 3)
+				{
+					str+='<h4 class="panel-title">'+$(".districtMenuName").text()+' DISTRICT level Wise Details</h4>';
+				}else if(locationLevelId == 4 || locationLevelId == 11)
+				{
+					str+='<h4 class="panel-title">'+$(".constituencyMenuName").text()+' Constituency level Wise Details</h4>';
+				}else if(locationLevelId == 10)
+				{
+					str+='<h4 class="panel-title">'+$(".parliamentMenuName").text()+' Parliament level Wise Details</h4>';
 				}
-				str+='<td>';
-					str+='<h4 class="text-capitalize text-muted">Mandals</h4>';
-					if(results.tehsilCount !=null && results.tehsilCount>0){
-						str+='<h2>'+results.tehsilCount+'</h2>';
-					}else{
-						str+='<h2> - </h2>';
-					}
-					str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-				str+='</td>';
-				str+='<td>';
-					str+='<h4 class="text-capitalize text-muted">Municipalities</h4>';
-					if(results.municipalityCount !=null && results.municipalityCount>0){
-						str+='<h2>'+results.municipalityCount+'</h2>';
-					}else{
-						str+='<h2> - </h2>';
-					}
-					str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-				str+='</td>';
-				str+='<td>';
-					str+='<h4 class="text-capitalize text-muted">Panchayats</h4>';
-					if(results.villageIdCount !=null && results.villageIdCount>0){
-						str+='<h2>'+results.villageIdCount+'</h2>';
-					}else{
-						str+='<h2> - </h2>';
-					}
-					str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-				str+='</td>';
-				str+='<td>';
-					str+='<h4 class="text-capitalize text-muted">Wards</h4>';
-					if(results.totalNoOfWards !=null && results.totalNoOfWards>0){
-						str+='<h2>'+results.totalNoOfWards+'</h2>';
-					}else{
-						str+='<h2> - </h2>';
-					}
-					str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-				str+='</td>';
-				str+='<td>';
-					str+='<h4 class="text-capitalize text-muted">Booths</h4>';
-					if(results.boothCount !=null && results.boothCount>0){
-						str+='<h2>'+results.boothCount+'</h2>';
-					}else{
-						str+='<h2> - </h2>';
-					}
-					str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-				str+='</td>';
-				str+='<td>';
-					str+='<h4 class="text-capitalize text-muted">Hamlets</h4>';
-					if(results.hamletCount !=null && results.hamletCount>0){
-						str+='<h2>'+results.hamletCount+'</h2>';
-					}else{
-						str+='<h2> - </h2>';
-					}
-					str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-				str+='</td>';
-			str+='</tr>';
-		str+='</table>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+				str+='<table class="table table-bordered">';
+					str+='<tr>';
+						if(results.constituencyCount != null && results.constituencyCount >0){
+							str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Constituencies</h4>';
+							if(results.constituencyCount !=null && results.constituencyCount>0){
+								str+='<h2>'+results.constituencyCount+'</h2>';
+							}else{
+								str+='<h2> - </h2>';
+							}
+							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						}
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Mandals</h4>';
+							if(results.tehsilCount !=null && results.tehsilCount>0){
+								str+='<h2>'+results.tehsilCount+'</h2>';
+							}else{
+								str+='<h2> - </h2>';
+							}
+							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Municipalities</h4>';
+							if(results.municipalityCount !=null && results.municipalityCount>0){
+								str+='<h2>'+results.municipalityCount+'</h2>';
+							}else{
+								str+='<h2> - </h2>';
+							}
+							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Panchayats</h4>';
+							if(results.villageIdCount !=null && results.villageIdCount>0){
+								str+='<h2>'+results.villageIdCount+'</h2>';
+							}else{
+								str+='<h2> - </h2>';
+							}
+							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Wards</h4>';
+							if(results.totalNoOfWards !=null && results.totalNoOfWards>0){
+								str+='<h2>'+results.totalNoOfWards+'</h2>';
+							}else{
+								str+='<h2> - </h2>';
+							}
+							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Booths</h4>';
+							if(results.boothCount !=null && results.boothCount>0){
+								str+='<h2>'+results.boothCount+'</h2>';
+							}else{
+								str+='<h2> - </h2>';
+							}
+							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Hamlets</h4>';
+							if(results.hamletCount !=null && results.hamletCount>0){
+								str+='<h2>'+results.hamletCount+'</h2>';
+							}else{
+								str+='<h2> - </h2>';
+							}
+							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+					str+='</tr>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+		
 		
 		$("#levelWiseCountDivId").html(str);
 	}
@@ -892,7 +938,7 @@ function buildVotersAndcadreAgeWiseCount(result){
 						break;
 					}
 			}
-			str+='<div class="block">';
+			str+='<div>';
 				str+='<table class="table tableVoters">';
 					str+='<thead>';
 					for(var i in theadArr){
@@ -1509,11 +1555,11 @@ function getLocationTypeWiseCadreCount(yearId){
 		locationValuesArr:	userAccessLevelValuesArray,
 		year:yearId
 	}
-	 $.ajax({
-      type : "POST",
-      url : "getLocationTypeWiseCadreCountAction.action",
-      dataType : 'json',
-      data : {task :JSON.stringify(jsObj)}
+	$.ajax({
+		type : "POST",
+		url : "getLocationTypeWiseCadreCountAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
 		if(result !=null){
 			return buildLocationTypeWiseCadreCount(result);
@@ -3772,20 +3818,23 @@ function getElectionTypes(){
     }).done(function(result){  
     	if(result !=null && result.length>0){
 			var str='';
-			 str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			  str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
-					str+='<input value="0" type="checkbox" checked class="electionTypeWiseCls checkUncheckCls" /><span>All</span>';
-				 str+='</label>';
-			 for(var i in result){
-				 str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
-					if(result[i].name == "Pancahat_Ward"){
-						str+='<input value ="'+result[i].id+'" type="checkbox" class="electionTypeWiseCls" /><span>Ward</span>';
-					}else{
-						str+='<input value ="'+result[i].id+'" type="checkbox" class="electionTypeWiseCls" /><span>'+result[i].name+'</span>';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<h4 class="panel-title theme-title-color">Election Information Assembly Constituency</h4>';
+				str+='<h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>';
+				str+='<div class="m_top20">';
+					str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
+						str+='<input value="0" type="checkbox" checked class="electionTypeWiseCls checkUncheckCls" /><span>All</span>';
+					str+='</label>';
+					for(var i in result){
+						str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
+						if(result[i].name == "Pancahat_Ward"){
+							str+='<input value ="'+result[i].id+'" type="checkbox" class="electionTypeWiseCls" /><span>Ward</span>';
+						}else{
+							str+='<input value ="'+result[i].id+'" type="checkbox" class="electionTypeWiseCls" /><span>'+result[i].name+'</span>';
+						}					
+						str+='</label>';
 					}
-					
-				 str+='</label>';
-			 }
+				str+=' </div>';
 			str+=' </div>';
 			$("#electionTypeValuesId").html(str);
 		}else{
