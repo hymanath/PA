@@ -43,6 +43,7 @@ function onLoadAjaxCalls()
 	
 	//Enrolment Years
 	getEnrollmentIds();
+	
 	//Committee
 	getLocationWiseCommitteesCount(1);
 	
@@ -76,7 +77,7 @@ function onLoadAjaxCalls()
 		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 	}
 	
-
+	
 	//Meetings
 	getLocationWiseMeetingsCount();
 	
@@ -1172,7 +1173,7 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName,groupT
 function buildCasteGroupNAgeWiseVoterNCadreCounts(result,groupType){
 	
 	var str='';
-	str+='<table class="table table-bordered bg-E9">';
+	str+='<table class="table table-bordered bg-DD">';
 		str+='<thead>';
 			str+='<tr>';
 			for(var i in result){
@@ -1504,7 +1505,7 @@ function getActivityStatusList(){
 		var per='%';
 		str+='<div class="pad_10">'
 			str+='<table class="table table-striped">';
-				str+='<thead class="text-capitalize bg-E9">';
+				str+='<thead class="text-capitalize bg-DD">';
 					str+='<th>Activity Name</th>';
 					str+='<th>level</th>';
 					str+='<th>status</th>';
@@ -1719,7 +1720,7 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(yearId){
 			var totalCount=0;
 			var totalPerc=0;
 			str+='<table class="table table-noborder table-noborder-hover m_top10">';
-				str+='<thead class="bg-E9">';
+				str+='<thead class="bg-DD">';
 					str+='<th ></th>';
 					str+='<th class="text-center">Total</th>';
 					//str+='<th><span class="text-success">%</span></th>';
@@ -1873,19 +1874,20 @@ function getPrintMediaCountsForConstituencyPage(){
 		userAccessLevelValuesArray.push(districtId)
 	}else if(locationLevelId == '10')
 	{
+		locationLevelId = '4';
 		userAccessLevelValuesArray.push(parliamentId)
 	}else if(locationLevelId == '4' || locationLevelId == '11')
 	{
-		locationLevelId = '4';
-		userAccessLevelValuesArray.push("5")
+		locationLevelId = '5';
+		userAccessLevelValuesArray.push(constituencyId)
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
-		locationLevelId = '5';
-		userAccessLevelValuesArray.push("6")
+		locationLevelId = '6';
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
-		locationLevelId = '6';
-		userAccessLevelValuesArray.push("8")
+		locationLevelId = '8';
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var userAccessLevelId=locationLevelId;
@@ -1916,10 +1918,10 @@ function getPrintMediaCountsForConstituencyPage(){
 			var str='';
 			str+='<div class="row">';
 				str+='<div class="col-sm-6 pad_right0">';
-					str+='<div class="block pad_5 blockHeights">';
+					str+='<div class="pad_5 blockHeights">';
 						str+='<h4 class="text-capitalize"><img src="coreApi/img/news.png" style="width:30px;"/>&nbsp;&nbsp;&nbsp; print media</h4>';
 						str+='<table class="table table-noborder m_top10">';
-							str+='<thead class="text-capitalize f-12 bg-E9">';
+							str+='<thead class="text-capitalize f-12 bg-DD">';
 								str+='<tr>';
 									str+='<th>total articles</th>';
 									str+='<th>positive</th>';
@@ -1949,10 +1951,10 @@ function getPrintMediaCountsForConstituencyPage(){
 					str+='</div>';
 				str+='</div>';
 				str+='<div class="col-sm-6 pad_left0">';
-					str+='<div class="block pad_5 blockHeights">';
+					str+='<div class="pad_5 blockHeights">';
 						str+='<h4 class="text-capitalize"><img src="coreApi/img/electronic.png" style="width:30px;"/>&nbsp;&nbsp;&nbsp; electronic media</h4>';
 						str+='<table class="table table-noborder m_top10">';
-							str+='<thead class="text-capitalize f-12 bg-E9">';
+							str+='<thead class="text-capitalize f-12 bg-DD">';
 								str+='<tr>';
 									str+='<th>total articles</th>';
 									str+='<th>positive</th>';
@@ -1999,25 +2001,26 @@ function getLeadersInNewsForConstituencyPage(){
 	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
 	{
-		userAccessLevelValuesArray.push("2")
-	}else if(locationLevelId == '3' || locationLevelId == '10')
+		userAccessLevelValuesArray.push(stateId)
+	}else if(locationLevelId == '3')
 	{
-		userAccessLevelValuesArray.push("3")
-	}else if(locationLevelId == '4')
-	{
-		userAccessLevelValuesArray.push("5")
-	}else if(locationLevelId == '11')
+		userAccessLevelValuesArray.push(districtId)
+	}else if(locationLevelId == '10')
 	{
 		locationLevelId = '4';
-		userAccessLevelValuesArray.push("4")
-	}else if(locationLevelId == '5' || locationLevelId == '12')
+		userAccessLevelValuesArray.push(parliamentId)
+	}else if(locationLevelId == '4' || locationLevelId == '11')
 	{
 		locationLevelId = '5';
-		userAccessLevelValuesArray.push("6")
-	}else if(locationLevelId == '6' || locationLevelId == '13')
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
 		locationLevelId = '6';
-		userAccessLevelValuesArray.push("8")
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
+	}else if(locationLevelId == '6' || locationLevelId == '13')
+	{
+		locationLevelId = '8';
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var userAccessLevelId=locationLevelId;
@@ -2039,38 +2042,31 @@ function getLeadersInNewsForConstituencyPage(){
 	});
 	function buildLeadersInNewsForConstituencyPage(result){
 		var str='';
-		
-		str+='<div class="panel panel-default">';
-			str+='<div class="panel-heading bg-fff">';
-				str+='<h4 class="panel-title">leaders in news</h4>';
-			str+='</div>';
+			str+='<h4 class="panel-title">leaders in news</h4>';
 			str+='<div class="scrollerNewsDiv">';
-			str+='<div class="panel-body pad_0">';
-				str+='<table class="table table-noborder f-12">';
-					str+='<thead class="bg-E9 text-capitalize">';
-						str+='<th>leader name</th>';
-						str+='<th>designation</th>';
-						str+='<th>positive</th>';
-						str+='<th>negative</th>';
-					str+='</thead>';
-					str+='<tbody>';
-					for(var i in result){
-						
-						str+='<tr>';
-							str+='<td>';
-								str+='<img onerror="setDefaultImage(this);" src="images/candidates/'+result[i].name+'.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/>'+result[i].name+'';
-							str+='</td>';
-							str+='<td>'+result[i].isNewsBulletin+'</td>';
-							str+='<td class="text-center">'+result[i].positiveCount+'</td>';
-							str+='<td class="text-center">'+result[i].negativeCount+'</td>';
-						str+='</tr>';
-					}
-			
-					str+='</tbody>';
-				str+='</table>';
+				str+='<div class="panel-body pad_0">';
+					str+='<table class="table table-noborder f-12">';
+						str+='<thead class="bg-DD text-capitalize">';
+							str+='<th>leader name</th>';
+							str+='<th>designation</th>';
+							str+='<th>positive</th>';
+							str+='<th>negative</th>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var i in result){
+							str+='<tr>';
+								str+='<td>';
+									str+='<img onerror="setDefaultImage(this);" src="images/candidates/'+result[i].name+'.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/>'+result[i].name+'';
+								str+='</td>';
+								str+='<td>'+result[i].isNewsBulletin+'</td>';
+								str+='<td class="text-center">'+result[i].positiveCount+'</td>';
+								str+='<td class="text-center">'+result[i].negativeCount+'</td>';
+							str+='</tr>';
+						}
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
 			str+='</div>';
-			str+='</div>';
-		str+='</div>';
 		$("#leadersMainBlockDivId").html(str);
 		if(result.length > 20)
 			{
@@ -2083,27 +2079,26 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
 	{
-		userAccessLevelValuesArray.push("2")
-	}else if(locationLevelId == '3' || locationLevelId == '10')
+		userAccessLevelValuesArray.push(stateId)
+	}else if(locationLevelId == '3')
 	{
-		locationLevelId = '3';
-		userAccessLevelValuesArray.push("3")
-	}else if(locationLevelId == '4')
+		userAccessLevelValuesArray.push(districtId)
+	}else if(locationLevelId == '10')
 	{
-		locationLevelId = '4'
-		userAccessLevelValuesArray.push("5")
-	}else if(locationLevelId == '11')
+		locationLevelId = '4';
+		userAccessLevelValuesArray.push(parliamentId)
+	}else if(locationLevelId == '4' || locationLevelId == '11')
 	{
-		locationLevelId = '4'
-		userAccessLevelValuesArray.push("4")
+		locationLevelId = '5';
+		userAccessLevelValuesArray.push(constituencyId)
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
-		locationLevelId = '5'
-		userAccessLevelValuesArray.push("6")
+		locationLevelId = '6';
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
-		locationLevelId = '6'
-		userAccessLevelValuesArray.push("8")
+		locationLevelId = '8';
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var userAccessLevelId=locationLevelId;
@@ -2118,12 +2113,12 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 	if(typeValue != "overAll"){
 		propertyIdStr=typeValue;
 	}
-	var impactScopeIdsStr=[1,2];
+	var impactScopeIdsStr=[1,2,3,4,5,6,7,8]
 	var orgIdsStr="";
 	var isDept="N";
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+locationLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
+		//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+locationLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildDetailedGovtOverAllAnalysisProblemsForView(result,typeValue);
@@ -2138,7 +2133,7 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 				str+='<div class="row">';
 					str+='<div class="col-md-6 col-xs-12 col-sm-12">';
 						str+='<table class="table table-noborder f-12">';
-							str+='<thead class="bg-E9 text-capitalize">';
+							str+='<thead class="bg-DD text-capitalize">';
 								str+='<th>status</th>';
 								str+='<th>total</th>';
 								str+='<th>%</th>';
@@ -2261,7 +2256,7 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 				collapse+='<table class="table table-noborder f-12">';
 					for(var i in result){
 						collapse+='<tr>';
-							collapse+='<td><p><span class="overAllProbClr" style="background-color:'+globalColorNews[result[i].name]+'"></span>&nbsp;&nbsp;&nbsp; <span style="margin-left: 10px;">'+result[i].name+'</span></p></td>';
+							collapse+='<td>'+result[i].name+'</td>';
 							collapse+='<td>'+result[i].count+'</td>';
 						collapse+='</tr>';
 					}
@@ -2342,7 +2337,7 @@ function getLocationWiseCommitteesCount(yearId){
 					str+='<th colspan="4">main committee</th>';
 					str+='<th colspan="4"> affliated committee</th>';
 				str+='</tr>';
-				str+='<tr class="text-capitalize bg-E9">';
+				str+='<tr class="text-capitalize bg-DD">';
 					str+='<th>total</th>';
 					str+='<th>started</th>';
 					str+='<th>completed</th>';
@@ -2528,7 +2523,7 @@ function getLocationWiseMeetingsCount(){
 				tableView+='<th></th>';
 				for(var i in result[0].locationVotersVOList)
 				{
-						tableView+='<th class="bg-E9">'+result[0].locationVotersVOList[i].ageRange+'</th>';
+						tableView+='<th class="bg-DD">'+result[0].locationVotersVOList[i].ageRange+'</th>';
 					
 				}
 			tableView+='</thead>';
@@ -2598,7 +2593,7 @@ function getLocationWiseTourMembersComplainceDtls(){
 	{
 		var tableView = '';
 		tableView+='<table class="table table-hover">';
-			tableView+='<thead class="text-capitalize bg-E9">';
+			tableView+='<thead class="text-capitalize bg-DD">';
 				tableView+='<th>Designation</th>';
 				tableView+='<th>status</th>';
 			tableView+='</thead>';
@@ -2764,7 +2759,7 @@ function getMandalWiseBenefitMembersCount(id){
 			navTabBody+='</div>';
 			navTabBody+='<div class="col-md-6 col-xs-12 col-sm-6">';
 				navTabBody+='<table class="table table-noborder">';
-					navTabBody+='<thead class="text-capitalize bg-E9">';
+					navTabBody+='<thead class="text-capitalize bg-DD">';
 						navTabBody+='<th></th>';
 						navTabBody+='<th>Total</th>';
 						navTabBody+='<th>%</th>';
@@ -2783,7 +2778,7 @@ function getMandalWiseBenefitMembersCount(id){
 			navTabBody+='</div>';
 			navTabBody+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 				navTabBody+='<table class="table table-noborder">';
-					navTabBody+='<thead class="text-capitalize bg-E9">';
+					navTabBody+='<thead class="text-capitalize bg-DD">';
 						navTabBody+='<th>Mandal Name</th>';
 						navTabBody+='<th>Population</th>';
 						navTabBody+='<th>Benefited</th>';
@@ -3486,7 +3481,7 @@ function getDetailedElectionInformaction(){
 		}
 		
 		str+='<table class="table table-noborder">';
-			str+='<thead class="bg-E9 text-capitalize">';
+			str+='<thead class="bg-DD text-capitalize">';
 				str+='<th style="vertical-align: middle;">Year</th>';
 				str+='<th style="vertical-align: middle;"> <img src="images/constituencyPage/green-hand.png" alt="green-hand"/></th>';
 				str+='<th style="vertical-align: middle;">Won Candidate</th>';
@@ -3608,110 +3603,110 @@ function getTotalAlertDetailsForConstituencyInfo(){
 		var totalCount=0;
 		if(result !=null){
 			var locationNamesArr={'DISTRICT':'#FE6603','CONSTITUENCY':'#FFA522','Mandal/Municipality':'#8E4552','Village/Ward':'#F16283'};
-			str+='<div class="block">';
-				str+='<div class="row">';
-					str+='<div class="col-md-6 col-xs-12 col-sm-6">';
-						str+='<div class="block">';
-							str+='<ul class="list-inline list-border">';
-								str+='<li>';
-									str+='<h4>'+result.totalAlertCount+'</h4>';
-									str+='<p>Total Alerts</p>';
-								str+='</li>';
-								str+='<li>';
-									str+='<h4>'+result.involveMemberCount+'</h4>';
-									str+='<p>Involved Memberes</p>';
-								str+='</li>';
-								str+='<li>';
-									str+='<h4>'+result.assignedMemberCount+'</h4>';
-									str+='<p>Assigned Memberes</p>';
-								str+='</li>';
-							str+='</ul>';
-						str+='</div>';
-						str+='<div class="row m_top15">';
-							str+='<div class="col-md-5 col-xs-12 col-sm-5">';
-								str+='<div id="overallAlerts" style="height:200px"></div>';
-							str+='</div>';
-							str+='<div class="col-md-7 col-xs-12 col-sm-7">';
-							  str+='<select class="form-control" role="tabListMobile">';
-							  if(result !=null && result.subList !=null && result.subList.length>0){
-								for(var i in result.subList){
-									str+='<option tab_id="alerts'+i+'">'+result.subList[i].locationName+'</option>';
-								}
-							  }
-							  str+='</select>';
-							  str+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
-							  if(result !=null && result.subList !=null && result.subList.length>0){
-								for(var i in result.subList){
-									totalCount = totalCount+result.subList[i].count;
-									var constituencyPercCount=0;var mandalPercCount=0;var panchayatPercCount=0;
-									if(result.subList[i].locationName == "CONSTITUENCY"){
-										var Count = result.subList[i].count;
-										constituencyPercCount = (Count/totalCount*100).toFixed(2);
-									}else if(result.subList[i].locationName == "Mandal/Municipality"){
-										var Count  = result.subList[i].count;
-										mandalPercCount = (Count/totalCount*100).toFixed(2);
-									}else if(result.subList[i].locationName == "Village/Ward"){
-										var Count  = result.subList[i].count;
-										panchayatPercCount = (Count/totalCount*100).toFixed(2);
-									}
-									var locationNamesPerc={'CONSTITUENCY':constituencyPercCount,'Mandal/Municipality':mandalPercCount,'Village/Ward':panchayatPercCount};
-									if(i==0){
-										str+='<li role="presentation" class="active"><a class="alertsColorCls text-capital"  href="#alerts'+i+'" aria-controls="alerts1" role="tab" data-toggle="tab"><span class = "ColorView" style="background-color:'+locationNamesArr[result.subList[i].locationName]+'"></span>'+result.subList[i].locationName+' <p class="pull-right"><span>'+result.subList[i].count+'</span>';
-										//str+='<span>'+locationNamesPerc[result.subList[i].locationName]+' %</span>';
-										str+='<p></a></li>';
-									}else{
-										str+='<li role="presentation"><a class="alertsColorCls text-capital" href="#alerts'+i+'" aria-controls="alerts1" role="tab" data-toggle="tab" ><span class = "ColorView" style="background-color:'+locationNamesArr[result.subList[i].locationName]+'"></span>'+result.subList[i].locationName+'<p class="pull-right"><span>'+result.subList[i].count+'</span>';
-										//str+='<span>'+locationNamesPerc[result.subList[i].locationName]+' %</span>';
-										str+='<p></a></li>';
-									}
-									
-								}
-							  }
-							 str+='</ul>';
-							str+='</div>';
-						str+='</div>';
+		
+			str+='<div class="row">';
+				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+					str+='<div class="block">';
+						str+='<ul class="list-inline list-border">';
+							str+='<li>';
+								str+='<h4>'+result.totalAlertCount+'</h4>';
+								str+='<p>Total Alerts</p>';
+							str+='</li>';
+							str+='<li>';
+								str+='<h4>'+result.involveMemberCount+'</h4>';
+								str+='<p>Involved Memberes</p>';
+							str+='</li>';
+							str+='<li>';
+								str+='<h4>'+result.assignedMemberCount+'</h4>';
+								str+='<p>Assigned Memberes</p>';
+							str+='</li>';
+						str+='</ul>';
 					str+='</div>';
-					str+='<div class="col-md-6 col-xs-12 col-sm-6 pad_left0">';
-						  str+='<div class="tab-content">';
-						   if(result !=null && result.subList !=null && result.subList.length>0){
-								for(var i in result.subList){
-									if(i == 0){
-										str+='<div role="tabpanel" class="tab-pane active pad_10" id="alerts'+i+'">';
-									}else{
-										str+='<div role="tabpanel" class="tab-pane pad_10" id="alerts'+i+'">';
-									}
-									
-										str+='<table class="table table-noborder">';
-											str+='<thead class="text-capitalize bg-E9">';
-												str+='<th>alert status</th>';
-												str+='<th>total</th>';
-												for(var k in result.subList[0].subList[0].subList){
-													str+='<th>'+result.subList[0].subList[0].subList[k].alertType+'</th>';
-												}
-												
-											str+='</thead>';
-											str+='<tbody>';
-											for(var j in result.subList[i].subList){
-												str+='<tr>';
-												str+='<td>'+result.subList[i].subList[j].status+'</td>';
-												str+='<td>'+result.subList[i].subList[j].count+'</td>';
-												for(var k in result.subList[i].subList[j].subList){
-													str+='<td>'+result.subList[i].subList[j].subList[k].count+'</td>';
-												}	
-												str+='</tr>';
-											}
-												
-													
-												
-											str+='</tbody>';
-										str+='</table>';
-									str+='</div>';
+					str+='<div class="row m_top15">';
+						str+='<div class="col-md-5 col-xs-12 col-sm-5">';
+							str+='<div id="overallAlerts" style="height:200px"></div>';
+						str+='</div>';
+						str+='<div class="col-md-7 col-xs-12 col-sm-7">';
+						  str+='<select class="form-control" role="tabListMobile">';
+						  if(result !=null && result.subList !=null && result.subList.length>0){
+							for(var i in result.subList){
+								str+='<option tab_id="alerts'+i+'">'+result.subList[i].locationName+'</option>';
+							}
+						  }
+						  str+='</select>';
+						  str+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
+						  if(result !=null && result.subList !=null && result.subList.length>0){
+							for(var i in result.subList){
+								totalCount = totalCount+result.subList[i].count;
+								var constituencyPercCount=0;var mandalPercCount=0;var panchayatPercCount=0;
+								if(result.subList[i].locationName == "CONSTITUENCY"){
+									var Count = result.subList[i].count;
+									constituencyPercCount = (Count/totalCount*100).toFixed(2);
+								}else if(result.subList[i].locationName == "Mandal/Municipality"){
+									var Count  = result.subList[i].count;
+									mandalPercCount = (Count/totalCount*100).toFixed(2);
+								}else if(result.subList[i].locationName == "Village/Ward"){
+									var Count  = result.subList[i].count;
+									panchayatPercCount = (Count/totalCount*100).toFixed(2);
 								}
-						   }
-						 str+='</div>';
+								var locationNamesPerc={'CONSTITUENCY':constituencyPercCount,'Mandal/Municipality':mandalPercCount,'Village/Ward':panchayatPercCount};
+								if(i==0){
+									str+='<li role="presentation" class="active"><a class="alertsColorCls text-capital"  href="#alerts'+i+'" aria-controls="alerts1" role="tab" data-toggle="tab"><span class = "ColorView" style="background-color:'+locationNamesArr[result.subList[i].locationName]+'"></span>'+result.subList[i].locationName+' <p class="pull-right"><span>'+result.subList[i].count+'</span>';
+									//str+='<span>'+locationNamesPerc[result.subList[i].locationName]+' %</span>';
+									str+='<p></a></li>';
+								}else{
+									str+='<li role="presentation"><a class="alertsColorCls text-capital" href="#alerts'+i+'" aria-controls="alerts1" role="tab" data-toggle="tab" ><span class = "ColorView" style="background-color:'+locationNamesArr[result.subList[i].locationName]+'"></span>'+result.subList[i].locationName+'<p class="pull-right"><span>'+result.subList[i].count+'</span>';
+									//str+='<span>'+locationNamesPerc[result.subList[i].locationName]+' %</span>';
+									str+='<p></a></li>';
+								}
+								
+							}
+						  }
+						 str+='</ul>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
+				str+='<div class="col-md-6 col-xs-12 col-sm-6 pad_left0">';
+					  str+='<div class="tab-content">';
+					   if(result !=null && result.subList !=null && result.subList.length>0){
+							for(var i in result.subList){
+								if(i == 0){
+									str+='<div role="tabpanel" class="tab-pane active pad_10" id="alerts'+i+'">';
+								}else{
+									str+='<div role="tabpanel" class="tab-pane pad_10" id="alerts'+i+'">';
+								}
+								
+									str+='<table class="table table-noborder">';
+										str+='<thead class="text-capitalize bg-DD">';
+											str+='<th>alert status</th>';
+											str+='<th>total</th>';
+											for(var k in result.subList[0].subList[0].subList){
+												str+='<th>'+result.subList[0].subList[0].subList[k].alertType+'</th>';
+											}
+											
+										str+='</thead>';
+										str+='<tbody>';
+										for(var j in result.subList[i].subList){
+											str+='<tr>';
+											str+='<td>'+result.subList[i].subList[j].status+'</td>';
+											str+='<td>'+result.subList[i].subList[j].count+'</td>';
+											for(var k in result.subList[i].subList[j].subList){
+												str+='<td>'+result.subList[i].subList[j].subList[k].count+'</td>';
+											}	
+											str+='</tr>';
+										}
+											
+												
+											
+										str+='</tbody>';
+									str+='</table>';
+								str+='</div>';
+							}
+					   }
+					 str+='</div>';
+				str+='</div>';
 			str+='</div>';
+		
 		
 		
 		$("#alertsBlockDivId").html(str);
