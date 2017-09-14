@@ -43,10 +43,7 @@ function onLoadAjaxCalls()
 	
 	//Enrolment Years
 	getEnrollmentIds();
-	getPublications();
 	
-	getLocationTypeWiseCadreCount("");
-	getAgeRangeGenerAndCasteGroupByCadreCount(1);
 	//candidate Profiles 1st block
 	/*getCandidateAndPartyInfoForConstituency();
 	 //Second Block
