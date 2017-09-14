@@ -21,6 +21,22 @@
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <body>
+<div class="background-head"></div>
+<header>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<img src="coreApi/img/logo.png" class="img-responsive"/>
+			</div>
+			<div class="col-sm-6">
+				<img src="coreApi/img/right_side_head.png" class="img-responsive pull-right"/>
+			</div>
+		</div>
+	</div>
+</header>
+<section>
+	
+</section>
 <section>
 	<div class="right-nav">
 		<ul class="right-nav-list">
@@ -47,14 +63,13 @@
 	<div class="container">
 		<div class="row">
 		 	<div class="col-sm-12">
-				<h2><span id="selectedMenuName" class="text-capitalize">Nellore District</span> Information</h2>
-				<ol class="breadcrumb" id="getMenuLocations" menu-location-state="1" menu-location-district="19" menu-location-constituency="" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="3" menu-location-parliament="" menu-location-levelName="district" >
-					<!--<li>State : <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>-->
-					<li>District : <span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capital">Nellore</span></li>
-					<li style="display:none">Parliament : <span menu-name="parliament" levelId="10" locationId="01" class="parliamentMenuName text-capital">Nellore</span></li>
-					<li style="display:none">Constituency :<span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName text-capital"> Andhra Pradesh</span></li>
-					<li style="display:none">Mandal :<span menu-name="mandal" levelId="5" locationId="01" class="mandalsMenuName text-capital"> Andhra Pradesh</span></li>
-					<li style="display:none">Panchayat :<span menu-name="panchayat" levelId="6" locationId="01" class="panchayatMenuName text-capital"> Andhra Pradesh</span></li>
+				<ol class="breadcrumb m_top10" id="getMenuLocations" menu-location-state="1" menu-location-district="19" menu-location-constituency="" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="3" menu-location-parliament="" menu-location-levelName="district" >
+					<li><i menu-name="state" class="fa fa-align-justify fa-1x"></i> <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>
+					<li><span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capital">Nellore</span></li>
+					<li style="display:none"> <span menu-name="parliament" levelId="10" locationId="01" class="parliamentMenuName text-capital">Nellore</span></li>
+					<li style="display:none"><span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName text-capital"> Andhra Pradesh</span></li>
+					<li style="display:none"><span menu-name="mandal" levelId="5" locationId="01" class="mandalsMenuName text-capital"> Andhra Pradesh</span></li>
+					<li style="display:none"><span menu-name="panchayat" levelId="6" locationId="01" class="panchayatMenuName text-capital"> Andhra Pradesh</span></li>
 				</ol>
 				<div class="menu-dropdown" style="display:none;">
 					<div class="row">
@@ -76,6 +91,9 @@
 						</div>
 					</div>
 				</div>
+				<h2 class="text-center text-capital"><span id="selectedMenuName" class="text-capital">Nellore District</span> Information</h2>
+				
+				
 			</div>
 		</div>
 		<div class="row m_top20">
@@ -85,8 +103,7 @@
 				<div id="levelWiseCountDivId"></div>
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="election">
-				 <h3 class="text-capitalize">Election Information Assembly Constituency</h3>
-				 <h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
+				 
 				 <div class="block">
 					 <div class="row">
 						 <div class="col-sm-12">
@@ -100,11 +117,13 @@
 						</div>
 					 </div>
 				 </div>
-				<div class="block">
+				<div class="block m_top20">
 					<div class="row">
 						<div class="col-sm-12">
-							<h4 class="text-capitalize">Assembly Election Details</h4>
+							<h4 class="panel-title theme-title-color">Assembly Election Details</h4>
 						</div>
+					</div>
+					<div class="row m_top20">
 						<div class="col-sm-6">
 							<div id="assemblyElectionGraphDetails"></div>
 						</div>
@@ -114,29 +133,38 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6 m_top20" navbar-index="constituencyVoters">
-				 <h3 class="text-capitalize">constituency voters information</h3>
-			</div>
-			<div class="col-sm-6 m_top20">
-				<div class="row">
-					<div class="col-sm-4 pull-right"><div id="publicationsDivId"></div></div>
+			
+			
+			<div class="col-sm-12 m_top20">
+				<div class="block">
+					<div class="row">
+						<div class="col-sm-6  m_top5" navbar-index="constituencyVoters">
+							 <h4 class="panel-title theme-title-color">constituency voters information</h4>
+						</div>
+						<div class="col-sm-3 col-sm-offset-3">
+							<div id="publicationsDivId"></div>
+						</div>
+					</div>
+					<div id="constituencyVoterInfo"></div>
 				</div>
 				
 			</div>
-			<div class="col-sm-12  m_top5">
-				<div id="constituencyVoterInfo"></div>
-			</div>
 			<div class="col-sm-12 m_top20" navbar-index="casteInfo">
-				<h3>Caste Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="casteInfo"></i></span></h3>
+				
 				<div class="block">
 					<div class="row">
-						<div class="col-md-4 col-xs-12 col-sm-4" style="border-right:1px solid #d3d3d3">
-							<h4 class="panel-title"><b>Caste Group Wise Voters</b>
-								<ul class="switch-btn" role="casteGrouplist">
-									<li class="active" attr_type="voter">Voter</li>
-									<li attr_type="cadre">Cadre</li>
-								</ul>
-							</h4>
+						<div class="col-sm-12">
+							<h4 class="panel-title theme-title-color">Caste Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="casteInfo"></i></span></h4>
+						</div>
+					</div>
+					<div class="row m_top10">
+						<div class="col-sm-4" style="border-right:1px solid #d3d3d3">
+							<h5 class="panel-title" style="display:inline-block;margin-right:8px;"><b>Caste Group Wise Voters</b></h5>
+							<ul class="switch-btn list-inline" role="casteGrouplist">
+								<li class="active" attr_type="voter">Voter</li>
+								<li attr_type="cadre">Cadre</li>
+							</ul>
+							
 							<div class="m_top20" id="casteGroupVoters" style="width:330px;height:260px"></div>
 							<div id="leftSideCasteGroupWiseDivId"></div>
 							<div id="leftSideCasteGroupWiseGraphId"></div>
@@ -148,9 +176,9 @@
 				</div>
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="cadreInfor">
-				<h3>Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="cadreInfor"></i></span></h3>
 				<div class="block">
-					<div id="cadreInfoGraphDivId"></div>
+					<h4 class="panel-title theme-title-color"">Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="cadreInfor"></i></span></h4>
+					<div id="cadreInfoGraphDivId" class="m_top15"></div>
 					<div id="cadreInfoGraphBar" style="height:200px;"></div>
 					<div id="cadreInfoTableView"></div>
 				</div>
