@@ -186,109 +186,106 @@
 			</div>
 			
 			<div class="col-sm-6 m_top20" navbar-index="news">
-				<h3>News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="news"></i></span></h3>		
+				
 				<div class="block">
-					<div id="newsMainBlockDivId"></div>
-					<div id="leadersMainBlockDivId"></div>
+					<h4 class="panel-title theme-title-color">News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="news"></i></span></h4>
+					<div id="newsMainBlockDivId" class="m_top15"></div>
+					<div id="leadersMainBlockDivId" class="m_top15"></div>
 				</div>
 			</div>
 			
 			<div class="col-sm-6 m_top20" navbar-index="problems">
-				<h3>Problems <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="problems"></i></span></h3>						
-				<div class="block pad_5">
-					<div id="overAllAnalysisProbDivId"></div>
-					
+				<div class="block">
+					<h4 class="panel-title theme-title-color">Problems <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="problems"></i></span></h4>
+					<div id="overAllAnalysisProbDivId" class="m_top15"></div>
 				</div>
 			</div>
 			
 			<div class="col-sm-12 m_top20" navbar-index="committees">
-				<div class="row">
-					<div class="col-sm-10">
-						<h3>Committees <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="committees"></i></span></h3>						
+				<div class="block">
+					<div class="row">
+						<div class="col-sm-10">
+							<h4 class="panel-title theme-title-color m_top10">Committees <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="committees"></i></span></h4>
+						</div>
+						<div class="col-sm-2">
+							<select id="enrolmentYears">
+								<option>2015-2016</option>
+								<option>2015-2016</option>
+							</select>
+						</div>
 					</div>
-					<div class="col-sm-2">
-						<select id="enrolmentYears">
-							<option>2015-2016</option>
-							<option>2015-2016</option>
-						</select>
-					</div>
-					<div class="col-sm-12">
-						<div class="block">
-						
-							<div class="row">
+					<div class="row m_top15">
+						<div class="col-sm-6">
+							<p class="text-capitalize"><b>main committee formation</b></p>
+							<div class="row m_top15">
 								<div class="col-sm-6">
-									<h4 class="panel-title text-capital"><b>main committee formation</b></h4>
-									<div class="row m_top15">
-										<div class="col-sm-6">
-											<p class="panel-title text-capitalize">mandal / town / division level</p>
-											<div id="mandalLevelGraph" style="height:250px;"></div>
-										</div>
-										<div class="col-sm-6">
-											<p class="panel-title text-capitalize">village / ward level</p>
-											<div id="villageLevelGraph" style="height:250px;"></div>
-										</div>
-									</div>
+									<p class="panel-title text-capitalize">mandal / town / division level</p>
+									<div id="mandalLevelGraph" style="height:250px;"></div>
 								</div>
-								<div class="col-sm-6" style="border-left:1px solid #ddd">
-									<h4 class="panel-title text-capital"><b>affliated committee formation</b></h4>
-									<div class="row m_top15">
-										<div class="col-sm-6">
-											<p class="panel-title text-capitalize">mandal / town / division level</p>
-											<div id="affMandalLevelGraph" style="height:250px;"></div>
-										</div>
-										<div class="col-sm-6">
-											<p class="panel-title text-capitalize">village / ward level</p>
-											<div id="affVillageLevelGraph" style="height:250px;"></div>
-										</div>
-									</div>
+								<div class="col-sm-6">
+									<p class="panel-title text-capitalize">village / ward level</p>
+									<div id="villageLevelGraph" style="height:250px;"></div>
 								</div>
 							</div>
 						</div>
-						<div class="block pad_0">
-							<div id="committesTableDivId"></div>
+						<div class="col-sm-6" style="border-left:1px solid #ddd">
+							<p class="text-capitalize"><b>affliated committee formation</b></p>
+							<div class="row m_top15">
+								<div class="col-sm-6">
+									<p class="panel-title text-capitalize">mandal / town / division level</p>
+									<div id="affMandalLevelGraph" style="height:250px;"></div>
+								</div>
+								<div class="col-sm-6">
+									<p class="panel-title text-capitalize">village / ward level</p>
+									<div id="affVillageLevelGraph" style="height:250px;"></div>
+								</div>
+							</div>
 						</div>
-						
 					</div>
+					<div id="committesTableDivId" class="m_top10"></div>
 				</div>
 			</div>
 			<div class="col-sm-8 m_top20" navbar-index="meetings">
-				<h3>Meetings <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="meetings"></i></span></h3>
-				<p class="f-12 text-muted">Evertymonth: 9th/10th/11th</p>
-				<div class="block pad_0">
-					<div id="locationWiseMeetingsCount"></div>
+				<div class="block">
+					<h4 class="panel-title theme-title-color">Meetings <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="meetings"></i></span></h4>
+					<p class="f-12 text-muted">Evertymonth: 9th/10th/11th</p>
+					<div id="locationWiseMeetingsCount" class="m_top15"></div>
 				</div>
 			</div>
 			
 			<div class="col-sm-4 m_top20" navbar-index="tours">
-				<h3>Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="tours"></i></span></h3>
-				<p class="f-12 text-muted">Last Month Jan 2017</p>
-				<div class="block pad_0">
-					<div id="locationWiseTourMembersComplainceDtls"></div>
+				<div class="block">
+					<h4 class="panel-title theme-title-color">Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="tours"></i></span></h4>
+					<p class="f-12 text-muted">Last Month Jan 2017</p>
+					<div id="locationWiseTourMembersComplainceDtls" class="m_top15"></div>
 				</div>
 			</div>
 			
 			
 			<div class="col-sm-12 m_top20" navbar-index="benefits">
-				<h3>Benefits<span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="benefits"></i></span></h3>
-				<div class="block pad_0">
+				<div class="block">
+					<h4 class="panel-title theme-title-color">Benefits<span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="benefits"></i></span></h4>
 					<div class="row">
 						<div id="benefitsBlockId"></div>
 					</div>
 				</div>
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="activities">
-				<h3 >Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="activities"></i></span></h3>
-				<div class="block pad_0" id ="activitesId">
+				<div class="block">
+					<h4 class="panel-title theme-title-color">Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="activities"></i></span></h4>
+					<div id ="activitesId"></div>
 				</div>
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="alerts">
-				<h3>Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="alerts"></i></span></h3>
-				<div id="alertsBlockDivId"></div>
+				<div class="block">
+					<h4 class="panel-title theme-title-color">Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="alerts"></i></span></h4>
+					<div id="alertsBlockDivId"></div>
+				</div>
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="nominatedPosts">
-				<h3>Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="nominatedPosts"></i></span></h3>
 				<div class="block">
-					<div class="row">
+					<h4 class="panel-title theme-title-color">Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="nominatedPosts"></i></span></h4>
+					<div class="row m_top15">
 						<div class="col-sm-6">
 							<h5 class="m_left10">Posts</h5>
 							<div id="nominatedPostStatusWiseCount"></div>
@@ -314,18 +311,18 @@
 				</div>
 			</div>
 			<div class="col-sm-12 m_top20"  navbar-index="grievance">
-				<div class="row">
-					<div class="col-sm-10">
-						<h3>Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h3>
-					</div>
-					<div class="col-sm-2">
-						<select id="enrolmentYearsGrievance">
-							<option value="3">2014-2016</option>
-							<option value="4">2016-2018</option>
-						</select>
-					</div>
-				</div>
 				<div class="block">
+					<div class="row">
+						<div class="col-sm-10">
+							<h4 class="panel-title theme-title-color">Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h4>
+						</div>
+						<div class="col-sm-2">
+							<select id="enrolmentYearsGrievance">
+								<option value="3">2014-2016</option>
+								<option value="4">2016-2018</option>
+							</select>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-sm-4">
 							<h4 class="panel-title text-capital text-center">Grivance</h4>
