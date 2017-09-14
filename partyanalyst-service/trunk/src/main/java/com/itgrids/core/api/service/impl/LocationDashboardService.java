@@ -1770,7 +1770,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			if(finalList != null && finalList.size() > 0){
 				keyValueVO = new KeyValueVO();
 				keyValueVO.setId(7L);
-				keyValueVO.setName("Mandal/Muncipality/Corporation");
+				keyValueVO.setName("Panchayat/Ward/Division");
 				for(KeyValueVO param : finalList){
 					if(param.getId().longValue() == 7L || param.getId().longValue() == 8L){
 						finalList.remove(param);
