@@ -1171,6 +1171,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 
 				if (finalMap != null && finalMap.size() > 0) {
+					finalMap.values().removeAll(Collections.singleton(null)); //remove null values in map
 					voList.addAll(finalMap.values());
 				}
 			}
