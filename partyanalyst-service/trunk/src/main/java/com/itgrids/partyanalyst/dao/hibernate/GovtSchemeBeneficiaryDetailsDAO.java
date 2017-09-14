@@ -171,14 +171,16 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 				        " model.isDeleted='N' ");
 		
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
-			if (locationType == 3) {
+			if (locationType == 3l) {
 				queryStr.append(" and model.userAddress.district.districtId=:locationValue ");
-			} else if (locationType == 10) {
+			} else if (locationType == 10l) {
 				queryStr.append(" and model.userAddress.parliamentConstituency.constituencyId=:locationValue ");
-			} else if (locationType == 4) {
+			} else if (locationType == 4l) {
 				queryStr.append(" and model.userAddress.constituency.constituencyId=:locationValue ");
-			} else if (locationType == 5) {
+			} else if (locationType == 5l) {
 				queryStr.append(" and model.userAddress.tehsil.tehsilId=:locationValue ");
+			}else if (locationType == 6l) {
+				queryStr.append(" and model.userAddress.panchayat.panchayatId=:locationValue ");
 			}
 		}
 		queryStr.append(" group by model.govtSchemesId");
@@ -209,6 +211,8 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 				queryStr.append(" and model.userAddress.constituency.constituencyId=:locationValue ");
 			} else if (locationType == 5) {
 				queryStr.append(" and model.userAddress.tehsil.tehsilId=:locationValue ");
+			}else if (locationType == 6l) {
+				queryStr.append(" and model.userAddress.panchayat.panchayatId=:locationValue ");
 			}
 		}
 		if (govtSchemeId != null && govtSchemeId.longValue() > 0){

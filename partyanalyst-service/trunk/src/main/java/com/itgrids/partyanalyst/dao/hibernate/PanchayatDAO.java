@@ -312,10 +312,23 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 		return (Long) query.uniqueResult();
 	}
 
-	public Long getBoothIdsCount(List<Long> constituencyIds,Long publicationDateId){
-	String queryString = "select count(distinct model.boothId) from Booth model where model.publicationDate.publicationDateId =:publicationDateId and model.constituency.constituencyId in (:constituencyId)";
+	public Long getBoothIdsCount(Long locationTypeId,List<Long> constituencyIds,Long publicationDateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select count(distinct model.boothId) from Booth model where model.publicationDate.publicationDateId =:publicationDateId and ");
+		if(locationTypeId != null && locationTypeId.longValue()>0){
+			if(locationTypeId == 3l || locationTypeId == 4l || locationTypeId == 10l){
+				sb.append("	model.constituency.constituencyId in (:constituencyId)");
+			}else if(locationTypeId == 5l){
+				sb.append("	model.tehsil.tehsilId in (:constituencyId)");
+			}else if(locationTypeId == 6l){
+				sb.append("	model.panchayat.panchayatId in (:constituencyId)");
+			}else if(locationTypeId == 7l){
+				sb.append("	model.localBody.localBodyId in (:constituencyId)");
+			}
+		}
+
 	
-	Query query = getSession().createQuery(queryString);
+	Query query = getSession().createQuery(sb.toString());
 	query.setParameterList("constituencyId", constituencyIds);
 	query.setParameter("publicationDateId", publicationDateId);
 	return (Long) query.uniqueResult();
