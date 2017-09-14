@@ -43,9 +43,11 @@ function onLoadAjaxCalls()
 	
 	//Enrolment Years
 	getEnrollmentIds();
+	//Committee
+	getLocationWiseCommitteesCount(1);
 	
 	//candidate Profiles 1st block
-	/*getCandidateAndPartyInfoForConstituency();
+	getCandidateAndPartyInfoForConstituency();
 	 //Second Block
 	getCountsForConstituency();
 	//Constituency Voter Information
@@ -74,8 +76,7 @@ function onLoadAjaxCalls()
 		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 	}
 	
-	//Committee
-	getLocationWiseCommitteesCount(1);
+
 	//Meetings
 	getLocationWiseMeetingsCount();
 	
@@ -94,7 +95,7 @@ function onLoadAjaxCalls()
 	getNominatedPostStatusWiseCount();
 	
 	//Alerts
-	getTotalAlertDetailsForConstituencyInfo(); */
+	getTotalAlertDetailsForConstituencyInfo();
 }
 function onLoadClicks()
 {
