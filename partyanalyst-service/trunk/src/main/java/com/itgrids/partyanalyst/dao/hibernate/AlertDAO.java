@@ -10529,6 +10529,10 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	        	queryStr.append(" and model.userAddress.tehsil.tehsilId in(:locationValues) ");
 	 	        }else if(locationTypeId == 6l){
 	 	        	queryStr.append(" and model.userAddress.panchayat.panchayatId in(:locationValues) ");
+	 	        }else if(locationTypeId == 7l){
+	 	        	queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 8l){
+	 	        	queryStr.append(" and model.userAddress.ward.constituencyId in(:locationValues) ");
 	 	        }
 	 	    }
 	 		if(year != null && !year.trim().isEmpty()){
@@ -10543,13 +10547,15 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 			query.setParameter("toDate", toDate);
 			 }
 			 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
-		 	        if(locationTypeId == 4l){
+		 	        if(locationTypeId == 4l || locationTypeId == 8l){
 		 	        	query.setParameterList("locationValues", locationValues);
 		 	        }else if(locationTypeId == 3l){
 		 	        	query.setParameterList("locationValues", locationValues);
 		 	        }else if(locationTypeId == 5l){
 		 	        	query.setParameterList("locationValues", locationValues);
 		 	        }else if(locationTypeId == 6l){
+		 	        	query.setParameterList("locationValues", locationValues);
+		 	        }else if(locationTypeId == 7l){
 		 	        	query.setParameterList("locationValues", locationValues);
 		 	        }
 		 	    }
@@ -10581,6 +10587,10 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	        	queryStr.append(" and model.userAddress.tehsil.tehsilId in(:locationValues) ");
 	 	        }else if(locationTypeId == 6l){
 	 	        	queryStr.append(" and model.userAddress.panchayat.panchayatId in(:locationValues) ");
+	 	        }else if(locationTypeId == 7l){
+	 	        	queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 8l){
+	 	        	queryStr.append(" and model.userAddress.ward.constituencyId in(:locationValues) ");
 	 	        }
 	 	    }
 	 	    if(year != null && !year.trim().isEmpty()){
@@ -10601,13 +10611,15 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		 			query.setParameter("year", Integer.parseInt(year));
 		 	 }
 			 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
-			 	if(locationTypeId == 4l){
+				 if(locationTypeId == 4l || locationTypeId == 8l){
 				 query.setParameterList("locationValues",locationValues);
 	 	        }else if(locationTypeId == 3l){
 	 	        	query.setParameterList("locationValues",locationValues);
 	 	        }else if(locationTypeId == 5l){
 	 	        	query.setParameterList("locationValues",locationValues);
 	 	        }else if(locationTypeId == 6l){
+	 	        	query.setParameterList("locationValues",locationValues);
+	 	        }else if(locationTypeId == 7l){
 	 	        	query.setParameterList("locationValues",locationValues);
 	 	        }
 			 }
@@ -10635,7 +10647,11 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		        	queryStr.append(" and model.userAddress.tehsil.tehsilId in(:locationValues) ");
 		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 6l){
 		        	queryStr.append(" and model.userAddress.panchayat.panchayatId in(:locationValues) ");
-		        }
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 7l){
+	 	        	queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 8l){
+	 	        	queryStr.append(" and model.userAddress.ward.constituencyId in(:locationValues) ");
+	 	        }
 	 	    }
 	 	    if(year != null && !year.trim().isEmpty()){
 	 	    	queryStr.append(" and year(model.createdTime) =:year ");   
@@ -10655,13 +10671,15 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 				query.setParameter("year", Integer.parseInt(year));
 	 			}
 	 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	 
-	 			if(locationTypeId == 4l){
+	 			if(locationTypeId == 4l || locationTypeId == 8l){
 	 				query.setParameterList("locationValues", locationValues);
 		        }else if(locationTypeId == 3l){
 		        	query.setParameterList("locationValues", locationValues);
 		        }else if(locationTypeId == 5l){
 		        	query.setParameterList("locationValues", locationValues);
 		        }else if(locationTypeId == 6l){
+		        	query.setParameterList("locationValues", locationValues);
+		        }else if(locationTypeId == 7l){
 		        	query.setParameterList("locationValues", locationValues);
 		        }
 	 		}
