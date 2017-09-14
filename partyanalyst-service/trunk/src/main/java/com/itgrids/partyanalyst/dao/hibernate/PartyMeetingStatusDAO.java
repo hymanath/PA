@@ -867,6 +867,12 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 	        }else if(locationTypeId==10l){
 	        	sb.append(" where model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in(:locationValues) " +
 	        			"and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (1,2,3,4,5,7,8,6,9)");
+	        }else if(locationTypeId == 7l){
+	        	sb.append(" where model.partyMeeting.meetingAddress.localElectionBody.localElectionBodyId in(:locationValues) " +
+	        			"and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (7,8,4,5,6)");
+	        }else if(locationTypeId == 8l){
+	        	sb.append(" where model.partyMeeting.meetingAddress.ward.constituencyId in(:locationValues) " +
+	        			"and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (7,8)");
 	        }
 	    }
 	   
