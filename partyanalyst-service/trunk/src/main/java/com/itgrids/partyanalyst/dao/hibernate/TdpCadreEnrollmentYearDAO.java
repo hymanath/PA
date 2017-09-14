@@ -1164,7 +1164,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			queryStr.append(" select " +
 					" model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange," +
 					" model.tdpCadre.gender,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
-					" model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName," +
+					/*" model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName," +*/
 					" count(distinct model.tdpCadreId) " +
 					" from TdpCadreEnrollmentYear model " +
 					" where " +
