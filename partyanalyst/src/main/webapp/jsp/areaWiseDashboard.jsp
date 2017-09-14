@@ -106,18 +106,12 @@
 				 
 				 <div class="block">
 					 <div class="row">
-						 <div class="col-sm-12">
-							<div id="electionTypeValuesId"></div>
-						</div>
-						 <div class="col-sm-12">
-							<div id="electionDetailsGraphWiseId"></div>
-						</div>
-						 <div class="col-sm-12">
-							<div id="electionDetailsTableWiseId"></div>
-						</div>
+						<div id="electionTypeValuesId"></div>
+						<div id="electionDetailsGraphWiseId"></div>
+						<div id="electionDetailsTableWiseId"></div>						
 					 </div>
 				 </div>
-				<div class="block m_top20">
+				<div class="block m_top20 assemblyElectionBlockCls" style="display:none">
 					<div class="row">
 						<div class="col-sm-12">
 							<h4 class="panel-title theme-title-color">Assembly Election Details</h4>
@@ -279,7 +273,7 @@
 			<div class="col-sm-12 m_top20" navbar-index="alerts">
 				<div class="block">
 					<h4 class="panel-title theme-title-color">Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="alerts"></i></span></h4>
-					<div id="alertsBlockDivId"></div>
+					<div id="alertsBlockDivId" class="m_top20"></div>
 				</div>
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="nominatedPosts">
@@ -323,7 +317,7 @@
 							</select>
 						</div>
 					</div>
-					<div class="row">
+					<div class="row m_top15">
 						<div class="col-sm-4">
 							<h4 class="panel-title text-capital text-center">Grivance</h4>
 							<div id="grivanceId0" style="height:300px;"></div>
