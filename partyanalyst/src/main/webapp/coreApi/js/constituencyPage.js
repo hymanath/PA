@@ -44,11 +44,11 @@ function onLoadAjaxCalls()
 	//Enrolment Years
 	getEnrollmentIds();
 	
-	//Committee
-	getLocationWiseCommitteesCount(1);
-	
+	//Grievance And Insurance
+	getLocationWiseGrivanceTrustStatusCounts("3");
+	getLocationWiseInsuranceStatusCount("3");
 	//candidate Profiles 1st block
-	getCandidateAndPartyInfoForConstituency();
+	/*getCandidateAndPartyInfoForConstituency();
 	 //Second Block
 	getCountsForConstituency();
 	//Constituency Voter Information
@@ -77,7 +77,8 @@ function onLoadAjaxCalls()
 		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 	}
 	
-	
+	//Committee
+	getLocationWiseCommitteesCount(1);
 	//Meetings
 	getLocationWiseMeetingsCount();
 	
@@ -96,7 +97,7 @@ function onLoadAjaxCalls()
 	getNominatedPostStatusWiseCount();
 	
 	//Alerts
-	getTotalAlertDetailsForConstituencyInfo();
+	getTotalAlertDetailsForConstituencyInfo(); */
 }
 function onLoadClicks()
 {
@@ -776,90 +777,89 @@ function getCountsForConstituency(){
 	});	
 	function buildCountsForConstituency(results){
 		var str='';
-		str+='<div class="panel panel-default">';
-			str+='<div class="panel-heading">';
-				if(locationLevelId == 3)
-				{
-					str+='<h4 class="panel-title">'+$(".districtMenuName").text()+' DISTRICT level Wise Details</h4>';
-				}else if(locationLevelId == 4 || locationLevelId == 11)
-				{
-					str+='<h4 class="panel-title">'+$(".constituencyMenuName").text()+' Constituency level Wise Details</h4>';
-				}else if(locationLevelId == 10)
-				{
-					str+='<h4 class="panel-title">'+$(".parliamentMenuName").text()+' Parliament level Wise Details</h4>';
-				}
-			str+='</div>';
-			str+='<div class="panel-body">';
-				str+='<table class="table table-bordered">';
-					str+='<tr>';
-						if(results.constituencyCount != null && results.constituencyCount >0){
-							str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Constituencies</h4>';
-							if(results.constituencyCount !=null && results.constituencyCount>0){
-								str+='<h2>'+results.constituencyCount+'</h2>';
-							}else{
-								str+='<h2> - </h2>';
-							}
-							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
+		str+='<div class="block">';
+		
+			if(locationLevelId == 3)
+			{
+				str+='<h4 class="panel-title theme-title-color">'+$(".districtMenuName").text()+' DISTRICT level Wise Details</h4>';
+			}else if(locationLevelId == 4 || locationLevelId == 11)
+			{
+				str+='<h4 class="panel-title theme-title-color">'+$(".constituencyMenuName").text()+' Constituency level Wise Details</h4>';
+			}else if(locationLevelId == 10)
+			{
+				str+='<h4 class="panel-title theme-title-color">'+$(".parliamentMenuName").text()+' Parliament level Wise Details</h4>';
+			}
+		
+			str+='<table class="table table-bordered">';
+				str+='<tr>';
+					if(results.constituencyCount != null && results.constituencyCount >0){
+						str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Constituencies</h4>';
+						if(results.constituencyCount !=null && results.constituencyCount>0){
+							str+='<h2>'+results.constituencyCount+'</h2>';
+						}else{
+							str+='<h2> - </h2>';
 						}
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Mandals</h4>';
-							if(results.tehsilCount !=null && results.tehsilCount>0){
-								str+='<h2>'+results.tehsilCount+'</h2>';
-							}else{
-								str+='<h2> - </h2>';
-							}
-							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Municipalities</h4>';
-							if(results.municipalityCount !=null && results.municipalityCount>0){
-								str+='<h2>'+results.municipalityCount+'</h2>';
-							}else{
-								str+='<h2> - </h2>';
-							}
-							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Panchayats</h4>';
-							if(results.villageIdCount !=null && results.villageIdCount>0){
-								str+='<h2>'+results.villageIdCount+'</h2>';
-							}else{
-								str+='<h2> - </h2>';
-							}
-							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Wards</h4>';
-							if(results.totalNoOfWards !=null && results.totalNoOfWards>0){
-								str+='<h2>'+results.totalNoOfWards+'</h2>';
-							}else{
-								str+='<h2> - </h2>';
-							}
-							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Booths</h4>';
-							if(results.boothCount !=null && results.boothCount>0){
-								str+='<h2>'+results.boothCount+'</h2>';
-							}else{
-								str+='<h2> - </h2>';
-							}
-							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Hamlets</h4>';
-							if(results.hamletCount !=null && results.hamletCount>0){
-								str+='<h2>'+results.hamletCount+'</h2>';
-							}else{
-								str+='<h2> - </h2>';
-							}
-							str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-					str+='</tr>';
-				str+='</table>';
-			str+='</div>';
+						str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					}
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Mandals</h4>';
+						if(results.tehsilCount !=null && results.tehsilCount>0){
+							str+='<h2>'+results.tehsilCount+'</h2>';
+						}else{
+							str+='<h2> - </h2>';
+						}
+						str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Municipalities</h4>';
+						if(results.municipalityCount !=null && results.municipalityCount>0){
+							str+='<h2>'+results.municipalityCount+'</h2>';
+						}else{
+							str+='<h2> - </h2>';
+						}
+						str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Panchayats</h4>';
+						if(results.villageIdCount !=null && results.villageIdCount>0){
+							str+='<h2>'+results.villageIdCount+'</h2>';
+						}else{
+							str+='<h2> - </h2>';
+						}
+						str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Wards</h4>';
+						if(results.totalNoOfWards !=null && results.totalNoOfWards>0){
+							str+='<h2>'+results.totalNoOfWards+'</h2>';
+						}else{
+							str+='<h2> - </h2>';
+						}
+						str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Booths</h4>';
+						if(results.boothCount !=null && results.boothCount>0){
+							str+='<h2>'+results.boothCount+'</h2>';
+						}else{
+							str+='<h2> - </h2>';
+						}
+						str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Hamlets</h4>';
+						if(results.hamletCount !=null && results.hamletCount>0){
+							str+='<h2>'+results.hamletCount+'</h2>';
+						}else{
+							str+='<h2> - </h2>';
+						}
+						str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+				str+='</tr>';
+			str+='</table>';
+			
 		str+='</div>';
 		
 		
