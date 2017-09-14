@@ -1111,7 +1111,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		StringBuilder sbe = new StringBuilder();
 		StringBuilder sbg = new StringBuilder();
 		sb.append(" SELECT ");
-		sbm.append(" FROM complaint_master CM,grievance_insurance_status GIS,district D,constituency C ,tehsil T,tdp_cadre_enrollment_year tcey ");
+		sbm.append(" FROM complaint_master CM,grievance_insurance_status GIS,district D,constituency C ,tdp_cadre_enrollment_year tcey ");
 		sbe.append("WHERE CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND "
 				+ " CM.district_id = D.district_id AND "
 				+ " CM.assembly_id = C.constituency_id AND "
@@ -1132,9 +1132,15 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			sbe.append(" AND CM.parliament_id in(:locationValues)");
 			sbg.append(" C.constituency_id");
 		}else if(locationTypeId!=null && locationTypeId==5l && locationValues!=null && locationValues.size() > 0){
+			sbm.append(" ,tehsil T " );
 			sb.append(" T.tehsil_id as typeId,T.tehsil_name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count ");
-			sbe.append(" AND CM.tehsil_id in(:locationValues)");
+			sbe.append(" AND  CM.tehsil_id =  T.tehsil_id AND CM.tehsil_id in(:locationValues)");
 			sbg.append(" T.tehsil_id ");
+		}else if(locationTypeId!=null && locationTypeId==7l && locationValues!=null && locationValues.size() > 0){
+			sbm.append(" ,local_election_body leb " );
+			sb.append(" leb.local_election_body_id as typeId,leb.name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count ");
+			sbe.append(" AND leb.local_election_body_id =CM.local_election_body_id  AND CM.local_election_body_id in(:locationValues) ");
+			sbg.append(" leb.local_election_body_id ");
 		}
 		if(fromDate !=null && toDate !=null){
 	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate )");
@@ -1177,26 +1183,32 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		StringBuilder sbe = new StringBuilder();
 		StringBuilder sbg = new StringBuilder();
 		sb.append(" SELECT");
-		sbm.append(" FROM complaint_master CM,district D,constituency C,tehsil T,tdp_cadre_enrollment_year tcey ");
+		sbm.append(" FROM complaint_master CM,district D,constituency C,tdp_cadre_enrollment_year tcey ");
 		sbe.append(" WHERE  CM.type_of_issue IN('Govt','Party','Welfare','Trust Education Support') and "
 				+ " CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') ");
 		sbg.append(" GROUP BY ");
 		if(locationTypeId!=null && locationTypeId==3l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
 			sb.append(" D.district_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count ");
-			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.district_id in(:locationValues)");
+			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.district_id in(:locationValues)");
 			sbg.append(" D.district_id ");
 		}else if(locationTypeId!=null && locationTypeId==4l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
 			sb.append( " C.constituency_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
-			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.assembly_id in(:locationValues)");
+			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.assembly_id in(:locationValues)");
 			sbg.append(" C.constituency_id ");
 		}else if(locationTypeId!=null && locationTypeId==10l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
 			sb.append( " C.constituency_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
-			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.parliament_id in(:locationValues)");
+			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id  AND CM.parliament_id in(:locationValues)");
 			sbg.append(" C.constituency_id ");
 		}else if(locationTypeId!=null && locationTypeId==5l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
-			sb.append( " C.constituency_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
-			sbe.append(" AND CM.district_id = D.district_id AND CM.tehsil_id = C.constituency_id AND CM.tehsil_id = T.tehsil_id AND CM.tehsil_id in(:locationValues)");
+			sbm.append(" ,tehsil T ");
+			sb.append( " T.tehsil_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.tehsil_id = T.tehsil_id  AND CM.tehsil_id in(:locationValues)");
 			sbg.append(" T.tehsil_id ");
+		}else if(locationTypeId!=null && locationTypeId==7l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sbm.append(" ,local_election_body leb ");
+			sb.append( " leb.local_election_body_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.local_election_body_id = leb.local_election_body_id AND CM.local_election_body_id in(:locationValues)");
+			sbg.append(" leb.local_election_body_id ");
 		}
 		if(fromDate !=null && toDate !=null){
 	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate ) ");
