@@ -42,6 +42,8 @@ function onLoadAjaxCalls()
 {
 	//Enrolment Years
 	getEnrollmentIds();
+	 //Committee
+	getLocationWiseCommitteesCount(1); 
 	//candidate Profiles 1st block
 	getCandidateAndPartyInfoForConstituency();
 	//Second Block
@@ -71,9 +73,6 @@ function onLoadAjaxCalls()
 	for(var i in propertyIdGlobalStr){
 		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 	}
-	
-	//Committee
-	getLocationWiseCommitteesCount(1);
 	//Meetings
 	getLocationWiseMeetingsCount();
 	
@@ -2471,7 +2470,7 @@ function getLocationWiseMeetingsCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-		if(result!=null){
+		if(result!=null && result.length>0){
 			return buildTable(result);
 		}else{
 			$("#locationWiseMeetingsCount").html(noData);
