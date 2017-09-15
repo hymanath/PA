@@ -1854,9 +1854,11 @@
 									
 								</div>
 								<div id="customMeetingsDiv"></div>
-								<div class="col-md-5 col-xs-12 col-sm-5 pull-right" style="margin-top: 15px;">
+								<div class ="row">
+								<div class="col-md-5 col-xs-12 col-sm-5 pull-right" style="cursor:pointer; margin-top: 15px; ">
 									<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew  defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">this month</button>
-									<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="">last month</button>
+									<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="" >last month</button>
+								</div>
 								</div>
 								<div class="panelBlock m_top20">
 									<div class="row">
