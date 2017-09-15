@@ -660,6 +660,7 @@ function buildMeetingBasicCountDetails(result){
 	  str+='</div>';  
 	  }
 	 if(levelWiseResult != null && levelWiseResult.length > 0){
+		
 	   for(var i in levelWiseResult){
 		 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 			if(levelWiseResult[i].name == "Village/Ward")
@@ -710,9 +711,9 @@ function buildMeetingBasicCountDetails(result){
 						str+='<td>';
 					   if(levelWiseResult[i].notConductedCommentCnt > 0 && levelWiseResult[i].notConductedCount > 0){
 						str+='<p class="text-muted text-capital">no &nbsp&nbsp<a attr_meeting_status="N" attr_comment="yes" attr_level_type="'+levelWiseResult[i].name+'" style="color: rgb(173, 173, 173);cursor: pointer;text-decoration: none;" class="glyphicon glyphicon-comment overAllMeetingCls" id="partyMeetingsIdB'+i+'"  onclick="overAllMeetings(this.id);" data-toggle="tooltip" data-placement="top" title="Not Counducted Meeting Comment '+levelWiseResult[i].notConductedCommentCnt+'('+levelWiseResult[i].notConductedCommentCntPer+'%)" data-original-title=""></a></p>'; 
-						str+='<h4>'+levelWiseResult[i].notConductedCount+' <span class="font-10 text-danger"> '+levelWiseResult[i].notConductedCountPer+'%</span></h4>';	
+						str+='<h4 id="partyMeetingsIdB'+i+'" onclick="overAllMeetings(this.id);" style="cursor: pointer;">'+levelWiseResult[i].notConductedCount+' <span class="font-10 text-danger"> '+levelWiseResult[i].notConductedCountPer+'%</span></h4>';	
 						  if(levelWiseResult[i].noCount != null && levelWiseResult[i].noCount > 0){
-							  str+=' <span class="glyphicon glyphicon-info-sign updationDetailsCls" style="cursor: pointer;margin-left: 4px;font-size:14px;" attr_level_type="'+levelWiseResult[i].name+'" attr_status="No" title=" Click here to get Not Conducted Meetings details (from Maybe)"> </span>';
+							  str+=' <span class="glyphicon glyphicon-info-sign updationDetailsCls overAllMeetingCls" style="cursor: pointer;margin-left: 4px;font-size:14px;" attr_level_type="'+levelWiseResult[i].name+'" attr_status="No" title=" Click here to get Not Conducted Meetings details (from Maybe)"> </span>';
 						  }
 						   //str+='</h4>';		
 						}else if(levelWiseResult[i].notConductedCount > 0){
@@ -4736,3 +4737,141 @@ function buildDayWisImagesForPopup1ForMultiLocation(result,jObj,locationValue){
 	
 	}
 }
+
+ function getPartyMeetingComulativeCommentDetails(meetingStatus,meetingLevel,isComment,customStartDateMeetings,customEndDateMeetings,reportType,locationId,locationType){
+	   $("#meetingSummaryDtlsTblId").html('');
+	 var partyMeetingTypeArr=[];
+	   $("#meetingCommentDtlsTblId").html(' ');
+	   $("#meetingCommentModalId").modal("show");
+	   $("#meetingCommentProcessingImgId").show();
+	   
+	  $("#committeeTypeId li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
+		  }
+	   });
+	 	var jsObj ={ 
+		             activityMemberId : globalActivityMemberId,
+					 stateId : globalStateId,
+					 fromDate : customStartDateMeetings,
+					 toDate : customEndDateMeetings,
+					 partyMeetingTypeArr:partyMeetingTypeArr,
+					 meetingStatus : meetingStatus,
+					 meetingLevel : meetingLevel,
+					 isComment : isComment,
+					 reportType : reportType,
+					 locationId : locationId,
+					 locationType : locationType
+					 
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getPartyMeetingComulativeCommentDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			 $("#meetingCommentProcessingImgId").hide();
+			if(result != null && result.length > 0){
+			   buildComulativeCommentResult(result,reportType,meetingStatus,meetingLevel);	
+			}else{
+			 $("#meetingCommentDtlsTblId").html('NO DATA AVAILABLE.');	
+			}
+		});  
+  }
+  
+  function buildComulativeCommentResult(result,reportType,meetingStatus,meetingLevel){
+	 var str='';
+	 var levelId = 1;
+	   str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered" id="comulativeCommentTblId">';
+		 str+='<thead>';
+		    if(reportType=="District"){
+				 str+='<th>District Name</th>';
+			}else if(reportType=="Constituency"){
+				 str+='<th>Constituency Name</th>';
+			}
+            str+='<th style="text-align:center;">Meeting Count</th>';
+			if(reportType=="District"){
+				levelId = 2;
+				  str+='<th style="text-align:center;"> Total Invitees </th>';
+				  str+='<th style="text-align:center;"> Invitee Attended </th>';
+				  str+='<th style="text-align:center;"> Absent </th>';
+				  str+='<th style="text-align:center;"> Non-Invitee Attended </th>';
+			}
+			 str+='<th style="text-align:center;">Images</th>';
+			 str+='<th style="text-align:center;">Comment Count</th>';
+		 str+='</thead>';
+		 str+='<tbody>';
+		  for(var i in result){
+			str+='<tr>';
+			 if(result[i].name != null && result[i].name.length > 0){
+				str+='<td>'+result[i].name+'</td>';      
+			  }else{
+				str+='<td> - </td>';  
+			  }
+			  if(result[i].meetingCount != null && result[i].meetingCount > 0){
+				str+='<td attr_comment="No" attr_location_id="'+result[i].id+'" attr_meeting_status='+meetingStatus+' attr_level_type='+meetingLevel+' attr_location_type='+reportType+' style="cursor: pointer;text-align:center;color:green;font-weight:bold;" class="commentDetailsCls"> '+result[i].meetingCount+'</td>';  
+			  }else{
+			  str+='<td> - </td>';  
+			  }
+			  if(reportType=="District"){
+				  str+='<td>'+result[i].invitedCount+'</td>';  
+				  str+='<td>'+((result[i].invitedCount) - (result[i].absentCount))+'</td>';  
+				  str+='<td>'+result[i].absentCount+'</td>';  
+				  str+='<td>'+result[i].nonInviteesCount+'</td>';  
+			  }
+			  
+			  str+='<td>';
+				if(result[i].imagesCount > 0){  
+						str+='<ul class="list-inline modalImagesUl">';
+				if(result[i].imagesCount > 1){
+					var remaingImagePath = result[i].imagesCount-2;
+					var time = result[i].imagesList[0].uploadedTime;
+						str+='<li>';
+							str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].imagesList[0].imagePath+'" alt=""/>';
+							str+='<p style="font-size:10px">'+time+'</p>';
+							str+='<p style="font-size:10px">'+result[i].imagesList[0].upLoadedDate+'</p>';
+						str+='</li>';
+						var time1 = result[i].imagesList[1].uploadedTime;
+						str+='<li>';
+						   str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].imagesList[1].imagePath+'" alt=""/>';
+							str+='<p style="font-size:10px">'+time1+'</p>';
+							str+='<p style="font-size:10px">'+result[i].imagesList[1].upLoadedDate+'</p>';
+						str+='</li>';
+						str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="0" attr_location_value="'+result[i].id+'" attr_count="1" style="cursor:pointer;" >';
+						if(remaingImagePath>result[i].imagesCount)
+							str+='<p style="font-size:10px">'+remaingImagePath+'+'+'</p>';
+						 str+='<p style="font-size:10px">View All</p>';
+						str+='</li>';
+					}else{
+						str+='<li>';
+							str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].imagesList[0].imagePath+'" alt=""/>';
+							str+='<p>'+result[i].imagesList[0].uploadedTime+'</p>';
+							str+='<p>'+result[i].imagesList[0].upLoadedDate+'</p>';
+						str+='</li>';
+						str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="0"  attr_location_value="'+result[i].id+'" attr_count="1" style="cursor:pointer;">';
+						//str+='<p  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].subList[j].id+'" style="cursor:pointer;"> 1 </p>';
+						 str+='<p >View All</p>';
+						str+='</li>';
+					}
+						str+='</ul>';
+					}
+				else{
+						str+='-';
+				}
+				str+='</td>'; 
+			  
+			  if(result[i].commentCount != null && result[i].commentCount > 0){
+				  str+='<td attr_comment="Yes" attr_location_id="'+result[i].id+'" attr_meeting_status='+meetingStatus+' attr_level_type='+meetingLevel+' attr_location_type='+reportType+' style="cursor: pointer;text-align:center;" class="commentDetailsCls">'+result[i].commentCount+'</td>';      
+			  }else{
+				str+='<td> - </td>';  
+			  }
+			str+='</tr>';
+			}
+			 str+='</tbody>';
+			 str+='</table>';
+	      $("#meetingCommentDtlsTblId").html(str);
+		  $("#comulativeCommentTblId").dataTable({
+			"aaSorting": [],
+			"iDisplayLength" : 10	
+		   });   
+  }
