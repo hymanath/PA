@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
@@ -2693,7 +2694,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				for (Object[] objects : districtList) {
 					LocationWiseBoothDetailsVO idNameVO = new LocationWiseBoothDetailsVO();
 					idNameVO.setLocationId((Long) objects[0]);
-					idNameVO.setLocationName(objects[1].toString());
+					idNameVO.setLocationName(WordUtils.capitalizeFully(objects[1].toString()));
+					idNameVO.setName("District");
 					idNameVOList.add(idNameVO);
 				}
 			}
@@ -2720,7 +2722,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					for (Object[] objects : constituencyList) {
 						LocationWiseBoothDetailsVO idNameVO = new LocationWiseBoothDetailsVO();
 						idNameVO.setLocationId((Long) objects[0]);
-						idNameVO.setLocationName(objects[1].toString());
+						idNameVO.setLocationName(WordUtils.capitalizeFully(objects[1].toString()));
+						idNameVO.setName("Constituency");
 						idNameVOList.add(idNameVO);
 					}
 				}
@@ -2741,7 +2744,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						for (Object[] objects : constituencyDistrictList) {
 							LocationWiseBoothDetailsVO idNameVO = new LocationWiseBoothDetailsVO();
 							idNameVO.setLocationId((Long) objects[0]);
-							idNameVO.setLocationName(objects[1].toString());
+							idNameVO.setLocationName(WordUtils.capitalizeFully(objects[1].toString()));
+							idNameVO.setName("Constituency");
 							idNameVOList.add(idNameVO);
 						}
 					}
@@ -3107,7 +3111,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				if(objects!=null){
 					LocationWiseBoothDetailsVO locationVo= new LocationWiseBoothDetailsVO();
 					locationVo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-					locationVo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					locationVo.setLocationName(WordUtils.capitalizeFully(commonMethodsUtilService.getStringValueForObject(objects[1])));
+					locationVo.setName("Parliment");
 					idNameVOList.add(locationVo);
 				}
 				
@@ -3133,7 +3138,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				if(objects!=null){
 					LocationWiseBoothDetailsVO locationVo= new LocationWiseBoothDetailsVO();
 					locationVo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-					locationVo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					locationVo.setLocationName(WordUtils.capitalizeFully(commonMethodsUtilService.getStringValueForObject(objects[1])));
+					locationVo.setName("Constituency");
 					idNameVOList.add(locationVo);
 				}
 				
