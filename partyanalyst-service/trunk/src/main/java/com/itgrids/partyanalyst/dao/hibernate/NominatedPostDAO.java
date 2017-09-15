@@ -2084,9 +2084,13 @@ return (Long) query.uniqueResult();
 					sb.append(" and nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValue) ");
 				}else if (locationType == 6) {
 					sb.append(" and nominatedPost.nominatedPostMember.address.panchayat.panchayatId in(:locationValue) ");
-				}  
+				}else if (locationType == 7) {
+					sb.append(" and nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValue) ");
+				}else if (locationType == 8) {
+					sb.append(" and nominatedPost.nominatedPostMember.address.ward.constituencyId in(:locationValue) ");
+				}		
 				
-	 }
+	   }
 	 if(startDate != null && endDate != null){
 		 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
 	 }
@@ -2122,8 +2126,13 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	        	sb.append(" and nominatedPost.nominationPostCandidate.address.tehsil.tehsilId in(:locationValues) ");
 	        }else if(locationTypeId == 6l){
 	        	sb.append(" and nominatedPost.nominationPostCandidate.address.panchayat.panchayatId in(:locationValues) ");
-	        }
-	    }
+	        }else if(locationTypeId == 7l){
+	        	sb.append(" and nominatedPost.nominationPostCandidate.address.localElectionBody.localElectionBodyId in(:locationValues) ");	        
+	    }else if(locationTypeId == 8l){
+        	sb.append(" and nominatedPost.nominationPostCandidate.address.ward.constituencyId in(:locationValues) ");	        
+      }
+	        
+	 }
 	 if(startDate != null && endDate != null){
 		 sb.append(" and (date(nominatedPost.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
 	 }
@@ -2144,7 +2153,12 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	        	query.setParameterList("locationValues", locationValues);
 	        }else if(locationTypeId == 6l){
 	        	query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 7l){
+	        	query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 8l){
+	        	query.setParameterList("locationValues", locationValues);
 	        }
+	        
 	    }
 	 if(year !=null && !year.trim().isEmpty()){
 		query.setParameter("year", Integer.parseInt(year));
