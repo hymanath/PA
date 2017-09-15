@@ -42,14 +42,14 @@
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
 							<div class="row">
-								<div class="col-sm-12">
+								<!--<div class="col-sm-12">
 									<div class="menu-block" style="background-color:#FFBA00">
 										<a href="newfundManagementDashboard">
 											<h3>FMS</h3>
 											<p>Fund Management System</p>
 										</a>
 									</div>
-								</div>
+								</div>  -->
 								<div class="col-sm-12">
 									<div class="menu-block" style="background-color:#56A3C5">
 										<a href="ruralWaterSupplyDashBoard">
