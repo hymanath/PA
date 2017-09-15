@@ -42,9 +42,13 @@ function onLoadAjaxCalls()
 {
 	
 	//Enrolment Years
-	getEnrollmentIds();
+	getEnrollmentIds(); 
 	
-	//candidate Profiles 1st block
+	//Committee
+	getLocationWiseCommitteesCount(1);
+	//Meetings
+	getLocationWiseMeetingsCount();
+	  //candidate Profiles 1st block
 	getCandidateAndPartyInfoForConstituency();
 	 //Second Block
 	getCountsForConstituency();
@@ -78,14 +82,9 @@ function onLoadAjaxCalls()
 	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage("overAll")
 	for(var i in propertyIdGlobalStr){
 		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
-	}
+	} 
 	
-	//Committee
-	getLocationWiseCommitteesCount(1);
-	//Meetings
-	getLocationWiseMeetingsCount();
-	
-	//Tours 
+	 //Tours 
 	getLocationWiseTourMembersComplainceDtls();
 	
 	// Benefits
@@ -100,7 +99,7 @@ function onLoadAjaxCalls()
 	getNominatedPostStatusWiseCount();
 	
 	//Alerts
-	getTotalAlertDetailsForConstituencyInfo();
+	getTotalAlertDetailsForConstituencyInfo(); 
 }
 function onLoadClicks()
 {
@@ -2299,14 +2298,24 @@ function getLocationWiseCommitteesCount(yearId){
 		locationLevelVal = constituencyId 		
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
-	    //locationLevelId = '5';
 		var locationMandalVal = mandalId;
+		var priorVal = mandalId.substring(0,1);
+      if(priorVal == 2){
+        locationLevelId = '5';
+       }else if(priorVal == 1){
+		 locationLevelName = "municipality";
+      }
         locationLevelVal = locationMandalVal.substring(1,mandalId.length);	
 
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
-	    //locationLevelId = '6';
 		var locationPanchayatVal = panchayatId;
+		var priorVal = panchayatId.substring(0,1);
+      if(priorVal == 2){
+		locationLevelName = "wards"
+       }else if(priorVal == 1){
+         locationLevelId = '6';
+       }
  		locationLevelVal = locationPanchayatVal.substring(1,panchayatId.length);
 	}
 	var jsObj={
@@ -2316,7 +2325,7 @@ function getLocationWiseCommitteesCount(yearId){
 		}
 	 $.ajax({
       type : "POST",
-      url : "getLocationWiseCommitteesCountAction.action",
+      url : "getLocationWiseCommitteesCountAction1.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
@@ -2495,13 +2504,29 @@ function getLocationWiseMeetingsCount(){
 		userAccessLevelValuesArray.push(constituencyId)
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
-		locationLevelId = '5';
+		 /*var priorVal = mandalId.substring(0,1);
+			if(priorVal == 2){
+			  locationLevelId = '5';
+			}else if(priorVal == 1){
+			  locationLevelId = '7';
+			}*/  
+		  locationLevelId = '5';	
 		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
-		locationLevelId = '6';
+		/* var priorVal = panchayatId.substring(0,1);
+			if(priorVal == 2){
+			  locationLevelId = '8';
+			}else if(priorVal == 1){
+			  locationLevelId = '6';
+			} */ 
+		 locationLevelId = '6';
 		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
-	}
+	}/*else if(locationLevelId == '7'){
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
+	}else if(locationLevelId == '8' ){
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
+	}*/
 	jsObj={
 		locationTypeId:	locationLevelId,
 		locationValues:	userAccessLevelValuesArray
