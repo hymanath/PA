@@ -18027,5 +18027,8 @@
 			<param name="root">locationVo</param>       
 		</result>
   	</action>
+  	<action name="govtPartyCoreDashboardAction" class="coreDashboardAction" method="govtPartyCoreDashboardAction">
+		<result name="success">/jsp/newCoreDashboard.jsp</result>
+	</action>
 	 </package>
 </struts>
