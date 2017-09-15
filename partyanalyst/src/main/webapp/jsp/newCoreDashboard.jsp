@@ -3125,7 +3125,7 @@
 			<!-- Training End-->
 			
 			<!-- Cadre Insurance Start-->
-			<div class="col-md-6 col-xs-12 col-sm-6" expand-block="cadreInsurance">
+			<div class="col-md-6 col-xs-12 col-sm-6 cadreInsuranceBlock" expand-block="cadreInsurance">
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
@@ -5269,7 +5269,7 @@ var globalImages;
 	  var loggedInUserActivityMemberId = '${requestScope.userDataVO.activityMemberId}';
 	  var loggedInUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
 	  var loggedInUserAccessLevelId  = '${requestScope.userDataVO.userAccessLevelId}';
-	  var globalDeptIdsArr = ${requestScope.userDataVO.deptIdList};         
+	  var globalDeptIdsArr = '${requestScope.userDataVO.deptIdList}';
 	  var loggedInUserAccessLevelValues = getLoggedInUserAccessLevelValues();
 	  
 	  var globalActivityMemberId = loggedInUserActivityMemberId;
@@ -5367,7 +5367,7 @@ var globalImages;
 	  else  if(finalURL =="partyAndLeaderActivitiesAndPerformanceTracking")
 	  {
 	    $("#mainHeadinId").html("KALA VENKATA RAO");
-		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock").remove();
+		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.rightNavigationMenu").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
@@ -5386,7 +5386,7 @@ var globalImages;
 		getPartySpecialMeetingsMainTypeOverview(0);
 	  }else  if(finalURL =="partyLeadersDashboardAction")//finalURL =="coreDashboardAction1"
 	  {
-		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock").remove();
+		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.rightNavigationMenu").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
@@ -5403,6 +5403,17 @@ var globalImages;
 		getAllNewsPapers();
 		//getAlertOverviewDetails();
 		//getAlertDtlsBasedOnSelection('default');
+	  }else if(finalURL == "govtPartyCoreDashboardAction")
+	  {
+		  $(".debatesBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.boothCommitteesBlock,.NewToursBlock,.meetingsBlock,.committeesBlock,.cadreInsuranceBlock,.rightNavigationMenu,.navbarProfile").remove();
+		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
+		globalUserAccessLevelId = 2;
+		globalUserAccessLevelValues.push(1);
+		commonNewsBasicCalls();
+		getAllNewsPapers();
+		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
+		getAllTvChannels();
+		getRescentNewsBulletinTime();
 	  }
 	  else{
 		   $("#mainHeadinId").html("KALA VENKATA RAO");
