@@ -4722,4 +4722,12 @@ public String getInsuraceStatusWiseComplaintsDetails()
 	    }
 	    return Action.SUCCESS;
 	  }
+	public String govtPartyCoreDashboardAction(){
+		try {
+		
+		}catch(Exception e) {
+			LOG.error("Exception raised at govtPartyCoreDashboardAction() in CoreDashBoard Action class", e);
+		}
+		return Action.SUCCESS;
+	}
 }
