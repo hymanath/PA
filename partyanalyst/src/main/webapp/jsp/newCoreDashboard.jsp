@@ -75,7 +75,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse hidden-xs" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-          	<li><a href="birthDayAction.action"><i class="glyphicon glyphicon-gift" data-toggle="tooltip" data-placement="bottom" title="Click here Birthday Page"></i><span class="birthdayCount" style="top:3px;left:31px"> <b> ${sessionScope.birthDayCount} </b></span></a></li>
+          	<li class="birthdayHideShowCls"><a href="birthDayAction.action"><i class="glyphicon glyphicon-gift" data-toggle="tooltip" data-placement="bottom" title="Click here Birthday Page"></i><span class="birthdayCount" style="top:3px;left:31px"> <b> ${sessionScope.birthDayCount} </b></span></a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
@@ -5407,10 +5407,12 @@ var globalImages;
 		//getAlertDtlsBasedOnSelection('default');
 	  }else if(finalURL == "govtPartyCoreDashboardAction")
 	  {
-		  $(".debatesBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.boothCommitteesBlock,.NewToursBlock,.meetingsBlock,.committeesBlock,.cadreInsuranceBlock,.rightNavigationMenu,.navbarProfile").remove();
+		  $(".debatesBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.boothCommitteesBlock,.NewToursBlock,.meetingsBlock,.committeesBlock,.cadreInsuranceBlock,.rightNavigationMenu,.navbarProfile,.birthdayHideShowCls").remove();
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		globalUserAccessLevelId = 2;
 		globalUserAccessLevelValues.push(1);
+		globalActivityMemberId=44;
+		globalUserTypeId="2";//ara
 		commonNewsBasicCalls();
 		getAllNewsPapers();
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
