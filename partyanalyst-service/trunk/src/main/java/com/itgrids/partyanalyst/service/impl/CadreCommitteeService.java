@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -1278,7 +1279,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        for(SelectOptionVO location:locations){
 	        	vo = new LocationWiseBoothDetailsVO();
 	        	vo.setLocationId(Long.valueOf("2"+location.getId()));
-	        	vo.setLocationName(location.getName()+" Mandal");
+	        	vo.setLocationName(WordUtils.capitalizeFully(location.getName()+" Mandal"));
+	        	vo.setName("Mandal");
 	        	locationsList.add(vo);
 	        }
 	        int count =0;
@@ -1287,7 +1289,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        	if(((Long)localBodi[0]).longValue() != 20l &&  ((Long)localBodi[0]).longValue() != 124l && ((Long)localBodi[0]).longValue() != 119l){
 		        	vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("1"+localBodi[0].toString()));
-		        	vo.setLocationName(localBodi[1].toString());
+		        	vo.setLocationName(WordUtils.capitalizeFully(localBodi[1].toString()));
+		        	vo.setName("Municipality");
 		        	locationsList.add(vo);
 	        	}
 	        	else
@@ -1297,7 +1300,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        		
 	        		vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("1"+localBodi[0].toString()));
-		        	vo.setLocationName(localBodi[1].toString());
+		        	vo.setLocationName(WordUtils.capitalizeFully(localBodi[1].toString()));
+		        	vo.setName("Municipality");
 		        	locationsList.add(vo);
 	        	}
 	        }
@@ -9139,7 +9143,8 @@ return constiLst;
         	for(Object[] panchayat:panchayatsList){
         		vo = new LocationWiseBoothDetailsVO();
 	        	vo.setLocationId(Long.valueOf("1"+(Long)panchayat[0]));
-	        	vo.setLocationName(panchayat[1].toString()+"("+panchayat[2].toString()+")");
+	        	vo.setLocationName(WordUtils.capitalizeFully(panchayat[1].toString()+"("+panchayat[2].toString()+")"));
+	        	vo.setName("Village");
 	        	locationsList.add(vo);
         	}
         }
@@ -9154,7 +9159,8 @@ return constiLst;
 	        	for(Object[] localBody:localBodyList){
 	        		vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("2"+(Long)localBody[0]));
-		        	vo.setLocationName(localBody[1].toString()+"("+localBody[2].toString()+")");
+		        	vo.setLocationName(WordUtils.capitalizeFully(localBody[1].toString()+"("+localBody[2].toString()+")"));
+		        	vo.setName("Ward");
 		        	locationsList.add(vo);
 	        	}
 	        }
