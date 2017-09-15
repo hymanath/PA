@@ -2473,7 +2473,7 @@
 			var startedPerc='0.00';
 			var completedPerc='0.00';
 			var notstartedPerc='0.00';
-			str+='<h4 class="text-capital bg_49 pad_custom">basic committee Incharges</h4>';
+			str+='<h4 class="text-capital bg_49 pad_custom">booth committee Incharges</h4>';
 				
 			str+='<table class="table table-condensed">';
 			   str+='<tr>';
