@@ -17798,7 +17798,7 @@
 		</result> 
 	</action>
 	
-	<action name="getLocationWiseCommitteesCountAction" class="locationDashboardAction" method="getLocationWiseCommitteesCount">
+	<action name="getLocationWiseCommitteesCountAction1" class="locationDashboardAction" method="getLocationWiseCommitteesCount">
 	    <result type="json" name="success">
 	    <param name="root">committeeBasicVO</param>
 	    </result> 
@@ -18030,5 +18030,5 @@
   	<action name="govtPartyCoreDashboardAction" class="coreDashboardAction" method="govtPartyCoreDashboardAction">
 		<result name="success">/jsp/newCoreDashboard.jsp</result>
 	</action>
-	 </package>
+      </package>
 </struts>
