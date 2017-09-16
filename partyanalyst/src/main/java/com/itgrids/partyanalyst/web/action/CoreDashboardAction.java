@@ -1961,14 +1961,17 @@ public String getRoleBasedPerformanceCohort(){
 	
 	public String getUserTypeWiseNewsCounts(){
 		try {
-			Long userId = null;
-			HttpSession session = request.getSession();
-			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			Long userId = 1L;
+			
+			//HttpSession session = request.getSession();
+			
+			/* RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			 if(user == null || user.getRegistrationID() == null){
 				//return ERROR;
 				 userId = 1L;
 			 }else
-				 userId = user.getRegistrationID();
+				 userId = user.getRegistrationID();*/
+			
 			
 			jObj = new JSONObject(getTask());
 			
