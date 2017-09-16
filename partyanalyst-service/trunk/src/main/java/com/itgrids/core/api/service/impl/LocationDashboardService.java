@@ -2234,7 +2234,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
 			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getGovtSchemeWiseBenefitMemberCount(locationTypeId,locationValue);
-			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,locationValue,locationTypeId);
+			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,locationValue,locationTypeId,"constituency");
 			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst,censusPopList,"constituency");
 		} catch (Exception e) {
 			Log.error("Exception Occured at getGovtSchemeWiseBenefitMembersCount() in LocationDashboardService class",e);
@@ -2242,7 +2242,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return resultList;
 	}
 
-	private List<Object[]> getCensusPopulation(List<Object[]> benefitMemberObjLst, Long locationValue, Long locationTypeId) {
+	private List<Object[]> getCensusPopulation(List<Object[]> benefitMemberObjLst, Long locationValue, Long locationTypeId, String type) {
 
 		Set<Long> locationIdSet = new HashSet<Long>();
 		List<Object[]> censusPopList = new ArrayList<Object[]>();
@@ -2270,13 +2270,24 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			locationIdSet.add(locationValue);
 			censusPopList= constituencyCensusDetailsDAO.getTotalCensusPopulation(locationIdSet, 2011l);
 		}else if(locationTypeId == 5l){
-			if (benefitMemberObjLst != null && benefitMemberObjLst.size() > 0) {
-				censusPopList.clear();
-				for (Object[] param : benefitMemberObjLst) {
-					locationIdSet.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+			if(type != null && type.equalsIgnoreCase("constituency")){
+				locationIdSet.add(locationValue);
+			} else {
+				if (benefitMemberObjLst != null && benefitMemberObjLst.size() > 0) {
+					censusPopList.clear();
+					for (Object[] param : benefitMemberObjLst) {
+						locationIdSet.add(commonMethodsUtilService
+								.getLongValueForObject(param[0]));
+					}
 				}
 			}
-			censusPopList= censusDAO.getTotalCensusPopulation(locationIdSet, 2011l);
+			List<Object[]> list1= censusDAO.getTotalCensusPopulation(locationIdSet, 2011l);
+			Long count =0l;
+			for (Object[] objects : list1) {
+				count=commonMethodsUtilService.getLongValueForObject(objects[0])+count;
+			}
+			Object[] obj = new Object[] {count,locationValue};
+			censusPopList.add(obj);
 		}
 		return censusPopList;
 
@@ -2293,7 +2304,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
 			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getMandalWiseBenefitMemberCountByGovtScheme(locationTypeId,locationValue, govtSchemeId);
-			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,locationValue,5l);
+			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,locationValue,locationTypeId,"tehsil");
 			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst,censusPopList,"tehsil");
 		} catch (Exception e) {
 			Log.error("Exception Occured at getMandalWiseBenefitMembersCount() in LocationDashboardService class",e);
