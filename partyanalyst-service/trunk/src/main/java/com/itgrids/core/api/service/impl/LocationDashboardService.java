@@ -2247,48 +2247,49 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		Set<Long> locationIdSet = new HashSet<Long>();
 		List<Object[]> censusPopList = new ArrayList<Object[]>();
 		List<Long> yearList = new ArrayList<Long>();
-		if(locationTypeId == 3l){
-			censusPopList.clear();
-			yearList.add(2011l);
-			censusPopList=censusDAO.getDistrictPopulationForDifferentYears(locationValue, yearList);
-			
-		}else if(locationTypeId == 10l){
-			censusPopList.clear();
-			yearList.add(locationValue);
-			List<Long> list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(yearList);
-			locationIdSet.addAll(list);
-			List<Object[]> list1= constituencyCensusDetailsDAO.getTotalCensusPopulation(locationIdSet, 2011l);
-			Long count=0l;
-			for (Object[] objects : list1) {
-				count=commonMethodsUtilService.getLongValueForObject(objects[0])+count;
+		if(type.equalsIgnoreCase("constituency")){
+			if(locationTypeId == 3l){
+				censusPopList.clear();
+				yearList.add(2011l);
+				censusPopList=censusDAO.getDistrictPopulationForDifferentYears(locationValue, yearList);
+				
+			}else if(locationTypeId == 10l){
+				censusPopList.clear();
+				yearList.add(locationValue);
+				List<Long> list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(yearList);
+				locationIdSet.addAll(list);
+				List<Object[]> list1= constituencyCensusDetailsDAO.getTotalCensusPopulation(locationIdSet, 2011l);
+				Long count=0l;
+				for (Object[] objects : list1) {
+					count=commonMethodsUtilService.getLongValueForObject(objects[0])+count;
+				}
+				Object[] obj = new Object[] {count,locationValue};
+				censusPopList.add(obj);
 			}
-			Object[] obj = new Object[] {count,locationValue};
-			censusPopList.add(obj);
-		}
-		if(locationTypeId == 4l){	
-			censusPopList.clear();
-			locationIdSet.add(locationValue);
-			censusPopList= constituencyCensusDetailsDAO.getTotalCensusPopulation(locationIdSet, 2011l);
-		}else if(locationTypeId == 5l){
-			if(type != null && type.equalsIgnoreCase("constituency")){
+			if(locationTypeId == 4l){	
+				censusPopList.clear();
 				locationIdSet.add(locationValue);
-			} else {
-				if (benefitMemberObjLst != null && benefitMemberObjLst.size() > 0) {
-					censusPopList.clear();
-					for (Object[] param : benefitMemberObjLst) {
-						locationIdSet.add(commonMethodsUtilService
-								.getLongValueForObject(param[0]));
-					}
+				censusPopList= constituencyCensusDetailsDAO.getTotalCensusPopulation(locationIdSet, 2011l);
+			}else if(locationTypeId == 5l){
+					locationIdSet.add(locationValue);
+				List<Object[]> list1= censusDAO.getTotalCensusPopulation(locationIdSet, 2011l);
+				Long count =0l;
+				for (Object[] objects : list1) {
+					count=commonMethodsUtilService.getLongValueForObject(objects[0])+count;
+				}
+				Object[] obj = new Object[] {count,locationValue};
+				censusPopList.add(obj);
+			}
+		}else{
+			if (benefitMemberObjLst != null && benefitMemberObjLst.size() > 0) {
+				censusPopList.clear();
+				for (Object[] param : benefitMemberObjLst) {
+					locationIdSet.add(commonMethodsUtilService.getLongValueForObject(param[0]));
 				}
 			}
-			List<Object[]> list1= censusDAO.getTotalCensusPopulation(locationIdSet, 2011l);
-			Long count =0l;
-			for (Object[] objects : list1) {
-				count=commonMethodsUtilService.getLongValueForObject(objects[0])+count;
-			}
-			Object[] obj = new Object[] {count,locationValue};
-			censusPopList.add(obj);
+			censusPopList= censusDAO.getTotalCensusPopulation(locationIdSet, 2011l);
 		}
+		
 		return censusPopList;
 
 	}
