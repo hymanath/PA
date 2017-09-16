@@ -3434,10 +3434,10 @@ function openPdf(aravind){
 	window.open(aravind);
 }
 
-$(document).on('click','.showPdfCls',function(){        
+$(document).on('click','.showPdfCls',function(){
+		$("#pdfReportDetailsId").html('');
 	var str = '';
-	var filePath = $("#showPdfId").attr("filePath");
-
+	var filePath = $(this).attr("filePath");
 	if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
 		$("#pdfModelId").modal("hide");
 		window.open(wurl+'/'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
