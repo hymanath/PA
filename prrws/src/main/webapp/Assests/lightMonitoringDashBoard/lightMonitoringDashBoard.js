@@ -634,11 +634,11 @@ function tableView(result,divId,locType)
 					{
 						if(viewTypeDist == "district"){
 							tableView+='<td>';
-							if(result[i].locationId == 17 || result[i].locationId == 18 || result[i].locationId == 19 || result[i].locationId == 20 || result[i].locationId == 22 || result[i].locationId == 23){
+							/*if(result[i].locationId == 17 || result[i].locationId == 18 || result[i].locationId == 19 || result[i].locationId == 20 || result[i].locationId == 22 || result[i].locationId == 23){
 								tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
-							}else if(result[i].locationId == 16 || result[i].locationId == 11 || result[i].locationId == 14 || result[i].locationId == 15 || 	result[i].locationId == 12 || result[i].locationId == 13 || result[i].locationId == 21){
+							}else if(result[i].locationId == 16 || result[i].locationId == 11 || result[i].locationId == 14 || result[i].locationId == 15 || 	result[i].locationId == 12 || result[i].locationId == 13 || result[i].locationId == 21){ */
 								tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';	
-							}
+							//}
 							tableView+='</td>';
 							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
 						}else{
@@ -1006,17 +1006,18 @@ function getCompanyWiseLightMonitoringDtls(){
 		locationType = "mandal";
 		locationValue=globallocId;
 	}
-	
+	var array=[];
+	array.push(locationValue);
 	
 	var json = {
 		fromDate:glStartDate,
 		toDate:glEndDate,
 		locationType:locationType,
-		locationValue:locationValue
+		locationValues:array
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getCompanyWiseLightMonitoringDtls',
+		url: 'getNredCapLightMonitoringLocationWise',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -1035,7 +1036,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 	var str='';
 	if(result !=null){
 			str+='<div class="col-sm-6">';
-			str+='<div class="white-block block_Led_styles blockHeights">';
+			str+='<div class="white-block block_Led_styles blockHeights" style="height: 314px;">';
 			if(result.eeslVO !=null && result.eeslVO != 'undefined' && result.eeslVO.surveyStartedtotalDistricts !=0){
 				str+='<div class="row" style="padding: 10px;border-bottom:1px solid grey;">';
 					str+='<h3 style="margin-top:-15px;">EESL</h3>';
@@ -1174,7 +1175,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 			
 		str+='</div>';
 		str+='<div class="col-sm-6">';
-			str+='<div class="white-block block_Led_styles blockHeights">';
+			str+='<div class="white-block block_Led_styles blockHeights" style="height: 314px;">';
 			if(result.nredcapVO !=null && result.nredcapVO != 'undefined' && result.nredcapVO.surveyStartedtotalDistricts !=0){
 				str+='<div class="row" style="padding: 10px;border-bottom:1px solid grey;">';
 					str+='<h3 style="margin-top:-15px;">NREDCAP</h3>';
@@ -1321,7 +1322,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 }
 function getRequiredTemplate(type){
 		var str='';
-			str+='<div class="row" style="padding: 10px; border-bottom: 1px dashed gray;">';
+			str+='<div class="row" style="padding: 14px;border-bottom:1px solid grey">'; //border-bottom: 1px dashed gray;padding: 10px
 			if(type=="NREDCAP") {
 				str+='<h3>NREDCAP</h3>';
 				str+='<p>New & Renewable Energy Development Corporation of Andhra Pradesh Ltd.</p>';
@@ -1389,11 +1390,11 @@ function getRequiredTemplate(type){
 			  str+='</div>';
 		str+='</div>';
 		str+='</div>';
-		str+='<div class="row poles_block" style="padding:10px;border-bottom:1px solid grey">';
+		/*str+='<div class="row poles_block" style="padding:10px;border-bottom:1px solid grey">';
 			str+='<ul class="nav navbar-nav" style="float:none;">';
 					str+='<li><b>0W = 0</b></li>';
 			str+='</ul>';
-		str+='</div>';
+		str+='</div>'; */
 		str+='<div class="row m_top10" style="padding:10px;">';
 			str+='<div class="col-sm-3">';
 				str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY SATRTED</b></h6>';
@@ -1478,7 +1479,8 @@ $(document).on("click",".companyTypeCls",function (){
 	var resultType = $(this).attr("attr_result_type");
 	var companyType = $(this).attr("attr_company_type");
 	$("#surveryStartedLocHeadingId").html(''+companyType+' Survey Started Location Details');
-	 var nredcapArr = [11,12,13,14,15,16,21];
+	// var nredcapArr = [11,12,13,14,15,16,21];
+	 var nredcapArr=[];
      var eeslArr = [17,18,19,20,22,23];
      var locationIdArr = [];
 	 var filterType='district';
@@ -1572,11 +1574,11 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 					tableView+='<tr>';
 					if(divId == 'district'){
 							tableView+='<td>';
-							if(result[i].locationId == 17 || result[i].locationId == 18 || result[i].locationId == 19 || result[i].locationId == 20 || result[i].locationId == 22 || result[i].locationId == 23){
+							/*if(result[i].locationId == 17 || result[i].locationId == 18 || result[i].locationId == 19 || result[i].locationId == 20 || result[i].locationId == 22 || result[i].locationId == 23){
 								tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
-							}else if(result[i].locationId == 16 || result[i].locationId == 11 || result[i].locationId == 14 || result[i].locationId == 15 || 	result[i].locationId == 12 || result[i].locationId == 13 || result[i].locationId == 21){
+							}else if(result[i].locationId == 16 || result[i].locationId == 11 || result[i].locationId == 14 || result[i].locationId == 15 || 	result[i].locationId == 12 || result[i].locationId == 13 || result[i].locationId == 21){*/
 								tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';	
-							}
+							//}
 							tableView+='</td>';
 							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
 					}else if(divId == 'constituency'){

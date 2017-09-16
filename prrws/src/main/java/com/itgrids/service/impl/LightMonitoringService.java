@@ -584,6 +584,30 @@ public class LightMonitoringService  implements ILightMonitoring{
     	 }
     	 return statusVO;
     }
+    public LightMonitoringVO getNredCapLightMonitoringLocationWise(String startDate,String endDate,String locationType,List<Long> locationValues){
+    	 LightMonitoringVO finalVO = new LightMonitoringVO();
+		 try{	
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+				fromDate = sdf.parse(startDate);
+				toDate = sdf.parse(endDate);
+			}		
+				     List<Object[]>  nredcaplightMonitoringObjLst  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,locationValues);
+				     List<Object[]> nredcapwattegeObjList = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,locationValues);
+				     List<Object[]> nredcapSurveryStaredLocObjLst = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType, locationValues); 
+				    
+				     LightMonitoringVO nredDltsVO = getSurveyStartedLocation(nredcapSurveryStaredLocObjLst);
+				     nredDltsVO.setWattageList(getLightWattageList(nredcapwattegeObjList));
+				     setRequiredData(nredcaplightMonitoringObjLst,nredDltsVO);
+				     finalVO.setNredcapVO(nredDltsVO);
+		      
+	   } catch (Exception e) {
+    	   LOG.error("Exception raised at getIndividualCompanyDetails - LightMonitoringService service", e);
+       }
+    	return finalVO;
+    }
 }
 	
 	        	

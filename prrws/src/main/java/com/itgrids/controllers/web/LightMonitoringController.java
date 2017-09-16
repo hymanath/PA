@@ -83,10 +83,10 @@ public class LightMonitoringController {
    return statusVO;
  }	
    
+   @RequestMapping(value = "/getNredCapLightMonitoringLocationWise", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+   public @ResponseBody  LightMonitoringVO  getNredCapLightMonitoringLocationWise(@RequestBody InputVO inputVO){
+	   LightMonitoringVO  reusltVO=lightMonitoring.getNredCapLightMonitoringLocationWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValues());
+   return reusltVO;
+ }	
 }
-		
-	
-	
-	
-
 
