@@ -850,7 +850,7 @@ function getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,su
 function tableViewConsolidated(result,divId,subLocationType)
 {
 	var tableView='';
-	
+	//tableView+='<button class="exportToPdf btn btn-success" attr_id="dataTable'+divId+'">Export To PDF</button>';
 	tableView+='<div class="table-responsive">';
 		tableView+='<table class="table table-bordered dataTable'+divId+'">';
 			tableView+='<thead class="text-capital">';
@@ -859,10 +859,6 @@ function tableViewConsolidated(result,divId,subLocationType)
 				{
 					tableView+='<th>'+result[0].subList[i].component+'</th>';
 				}
-				/* for(var i in overViewArrConsolidated)
-				{
-					tableView+='<th>'+overViewArrConsolidated[i].name+'</th>';
-				} */
 			tableView+='</thead>';
 			
  			tableView+='<tbody>';
@@ -876,13 +872,13 @@ function tableViewConsolidated(result,divId,subLocationType)
 							{
 								if(result[i].subList[j].percentage < 50)
 								{
-									tableView+='<td class="color_low">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000">'+result[i].subList[j].percentage+'</td>';
 								}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
 								{
-									tableView+='<td class="color_medium">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00">'+result[i].subList[j].percentage+'</td>';
 								}else if(result[i].subList[j].percentage >= 80)
 								{
-									tableView+='<td class="color_high">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50">'+result[i].subList[j].percentage+'</td>';
 								}
 							}else{
 								tableView+='<td>-</td>';
@@ -893,6 +889,42 @@ function tableViewConsolidated(result,divId,subLocationType)
 			tableView+='</tbody>';
 		tableView+='</table>';
 	tableView+='</div>';
+	tableView+='<table class="table table-bordered" id="dataTable'+divId+'" style="display:none;">';
+			tableView+='<thead class="text-capital">';
+				tableView+='<th>'+subLocationType+'</th>';
+				for(var i in result[0].subList)
+				{
+					tableView+='<th style="font-size:8px">'+result[0].subList[i].component+'</th>';
+				}				
+			tableView+='</thead>';
+			
+ 			tableView+='<tbody>';
+				for(var i in result)
+				{
+					tableView+='<tr>';
+						tableView+='<td style="font-size:12px" class="text-capital">'+result[i].subList[0].name+'</td>';
+						for(var j in result[i].subList)
+						{
+							if(result[i].subList[j].percentage != null)
+							{
+								if(result[i].subList[j].percentage < 50)
+								{
+									tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000;font-size:12px">'+result[i].subList[j].percentage+'</td>';
+								}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
+								{
+									tableView+='<td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00;font-size:12px">'+result[i].subList[j].percentage+'</td>';
+								}else if(result[i].subList[j].percentage >= 80)
+								{
+									tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;font-size:12px">'+result[i].subList[j].percentage+'</td>';
+								}
+							}else{
+								tableView+='<td>-</td>';
+							}
+						}
+					tableView+='</tr>';
+				}
+			tableView+='</tbody>';
+		tableView+='</table>';
 	$("#collapse"+divId).html(tableView);	
 	$(".dataTable"+divId).dataTable({
 		"iDisplayLength": 20,
@@ -916,71 +948,57 @@ function tableViewConsolidated(result,divId,subLocationType)
 				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 			},
 			{
-				extend:    'pdfHtml5',
-				text:      '<i class="fa fa-file-pdf-o"></i>',
-				titleAttr: 'PDF',
-				title:	   divId,
-				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-				orientation: "landscape",
-				pageSize:'A3',
-				customize: function (doc) {
-					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-				}
+				//extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o exportToPdf" attr_id="dataTable'+divId+'"></i>',
+				//titleAttr: 'PDF',
+				//title:	   divId,
+				//filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				//orientation: "landscape",
+				//pageSize:'A3',
+				//customize: function (doc) {
+				//	doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+				//}
 			}
 		]
 	});
 }
 
-/* function getNREGSProjectsAbstractNewFrConstituency(type,locType,locId,districtId,blockName,levelId)
+$(document).on("click",".exportToPdf",function(){
+	var id = $(this).attr("attr_id");
+	getPdf(id);
+});
+function getPdf(id)
 {
-	var districtId = $("#selectedName").attr("attr_distId");
-	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-		toDate : glEndDate,
-		type : type,
-		locationType: locType,
-		locationId : locId,
-		districtId : districtId
-	}
-	$.ajax({
-		url: 'getNREGSProjectsAbstractNewFrConstituency',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-		  xhr.setRequestHeader("Accept", "application/json");
-		  xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			buildNREGSAbstractDataByTypeNewConsolidated(type,ajaxresp,blockName,locId,locType,levelId)
-		}
-	});
-} */
-/* function getNREGSAbstractDataByTypeFrConstituency(type,locType,locId,districtId,blockName,levelId)
-{
-	var districtId = $("#selectedName").attr("attr_distId");
-	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-		toDate : glEndDate,
-		type : type,
-		locationType: locType,
-		locationId : locId,
-		districtId : districtId
-	}
+	var 
+		form = $("#"+id),
+		cache_width = form.width(),
+		a1  = [ 70160  , 89933];  // for a4 size paper width and height
+	createPDF()
 	
-	$.ajax({
-		url: 'getNREGSAbstractDataByTypeFrConstituency',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			buildNREGSAbstractDataByTypeNewConsolidated(type,ajaxresp,blockName,locId,locType,levelId)
-		}
-	});
-} */
+	//create pdf
+	function createPDF(){
+		getCanvas().then(function(canvas){
+			var 
+			img = canvas.toDataURL("image/png"),
+			doc = new jsPDF({
+				unit:'px', 
+				format:'a1'
+			});     
+			doc.addImage(img, 'JPEG', 05, 05);
+			doc.save(''+id+'.pdf');
+			form.width(cache_width);
+		});
+		$("#"+id).hide();
+	}
+
+	// create canvas object
+	function getCanvas(){
+		//form.width((a1[0]*1.33333) -80).css('max-width','none');
+		$("#"+id).show();
+		form.width(a1).css('max-width','none');
+		return html2canvas(form,{
+			imageTimeout:1000,
+			removeContainer:true
+		});	
+	}	
+}
