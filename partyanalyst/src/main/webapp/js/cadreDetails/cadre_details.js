@@ -7034,7 +7034,8 @@ function getDebateDetailsOfCadre(){
 	$("#dataLoadingsImgForDebateModelId").show();
 	
 	var jsobj={
-		tdpCadreId : globalCadreId
+		tdpCadreId : globalCadreId,
+		stateId:1
 	}
 	$.ajax({
 		 type:'POST',
