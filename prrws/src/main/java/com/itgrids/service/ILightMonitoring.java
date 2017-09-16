@@ -18,4 +18,5 @@ public interface ILightMonitoring {
 	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, List<Long> filterValues,String subLocationType);
 	public LightMonitoringVO getCompanyWiseLightMonitoringDtls(String startDate,String endDate, String locationType,Long locationValue);
 	public InputVO checkIdDataExist(String startDate,String endDate);
+	public LightMonitoringVO getNredCapLightMonitoringLocationWise(String fromDate,String toDate,String locationType,List<Long> locationValues);
 }
