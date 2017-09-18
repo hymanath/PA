@@ -916,26 +916,6 @@ function buildNREGSProjectsOverview(result,blockName)
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Check Dams and Check Walls">Check Dam..</h4>';
 								str+='</div>';
-							}else if(result[i] == 'CC Roads1')
-							{
-								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
-									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="CC Roads">CC Roads</h4>';
-								str+='</div>';
-							}else if(result[i] == 'Anganwadi')
-							{
-								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
-									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Anganwadi Buildings">Anganwadi B..</h4>';
-								str+='</div>';
-							}else if(result[i] == 'GP Buildings1')
-							{
-								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
-									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="GP Buildings">GP Build..</h4>';
-								str+='</div>';
-							}else if(result[i] == 'Mandal buildings1')
-							{
-								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
-									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mandal buildings">Mandal b..</h4>';
-								str+='</div>';
 							}else if(result[i] == 'GH')
 							{
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
@@ -977,9 +957,18 @@ function buildNREGSProjectsOverview(result,blockName)
 						if(result[i] == "CC Roads1" || result[i] == "Anganwadi" || result[i] == "GP Buildings1" || result[i] == "Mandal buildings1" || result[i] == "UGDrainage"){
 							str+='<div class="col-sm-2 m_top10">';
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
-									if(result[i].length > 12)
+									if(result[i] == 'CC Roads1')
 									{
-										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="CC Roads">CC Roads</h4>';
+									}else if(result[i] == 'Anganwadi')
+									{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Anganwadi Buildings">Anganwadi B..</h4>';
+									}else if(result[i] == 'GP Buildings1')
+									{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="GP Buildings">GP Build..</h4>';
+									}else if(result[i] == 'Mandal buildings1')
+									{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mandal buildings">Mandal b..</h4>';
 									}else{
 										str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
 									}
@@ -1644,13 +1633,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 			}else if(globalDivName == "CC Roads1"){
-				theadArr = [dataArr,'TARGET Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achv perc based on Sanc length','Achivement Percentage'];
+				theadArr = [dataArr,'TARGET Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achivement Percentage'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Expenditure','Completed Length[IN KMS]','Achv perc based on Sanc length','Achivement Percentage'];
+					theadArr = ["district",dataArr,'Expenditure','Completed Length[IN KMS]','Achivement Percentage'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Expenditure','Completed Length[IN KMS]','Achv perc based on Sanc length','Achivement Percentage'];
+					theadArr = ["district","constituency",dataArr,'Expenditure','Completed Length[IN KMS]','Achivement Percentage'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Expenditure','Completed Length[IN KMS]','Achv perc based on Sanc length','Achivement Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr,'Expenditure','Completed Length[IN KMS]','Achivement Percentage'];
 			}else if(globalDivName == "Horticulture"){
 				theadArr = [dataArr,'TARGET','Sanctioned Area[IN ACRES]','Sanctioned Percentage','Pitting Area[In ACRES]','Planting Area[In ACRES]','Achivement Percentage'];
 				if(dataArr == "constituency")
@@ -3486,13 +3475,13 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 {
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'Target Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+	var theadArr = [locationType,'Target Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+		theadArr = ["district",locationType,'Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+		theadArr = ["district","constituency",locationType,'Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+		theadArr = ["district","constituency","mandal",locationType,'Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
 	
 	var json = {
 		year : "2017",
@@ -3549,14 +3538,6 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percSant+'</td>';
 						}else if(ajaxresp[i].percSant >= 80){
 							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
-						}
-						if(ajaxresp[i].percentage < 50){
-							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
-						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
-						}else if(ajaxresp[i].percentage >= 80)
-						{
-							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
 						}
 					str+='</tr>';
 				}
