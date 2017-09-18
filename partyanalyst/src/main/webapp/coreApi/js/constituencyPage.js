@@ -24,47 +24,50 @@ var userAccessLevelValuesArray=[];
 var commitessArr=["mandalLevelGraph","villageLevelGraph","affMandalLevelGraph","affVillageLevelGraph"];
 var grivanceIdsArr=["grivanceId","trustId"];
 var grivanceColorObj={"APPROVED":"#2DCC70","COMPLETED":"#449C43","IN PROGRESS":"#FFB84F","NOT ELIGIBLE":"#C0392B","NOT POSSIBLE":"#EF8379","NOT VERIFIED":"#31708F"}
-var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In Party":"#449C43","Forwarded to Insurance":"#FFB84F","Closed at Insurance":"#8F43AF","Closed at Party":"#9B88B3","Approved - Compensated":"#2BCD72","Closed Letters":"#32708F","Account Rejected":"#65CBCC"}	
+var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In Party":"#449C43","Forwarded to Insurance":"#FFB84F","Closed at Insurance":"#8F43AF","Closed at Party":"#9B88B3","Approved - Compensated":"#2BCD72","Closed Letters":"#32708F","Account Rejected":"#65CBCC"}
+
 /* location Values Start*/
-if(locationLevelId == '2')
+function onLoadLocValue()
 {
-	locationLevelVal = stateId ;
-	userAccessLevelValuesArray.push(stateId)
-}else if(locationLevelId == '3')
-{
-	locationLevelVal = districtId;
-	userAccessLevelValuesArray.push(districtId)
-}else if(locationLevelId == '10')
-{
-	locationLevelVal = parliamentId 
-}else if(locationLevelId == '4' || locationLevelId == '11' )
-{
-	locationLevelId = '4';
-	locationLevelVal = constituencyId;
-	userAccessLevelValuesArray.push(constituencyId)
-}else if(locationLevelId == '5' || locationLevelId == '12' )
-{
-	locationLevelId = '5'
-	locationLevelVal = mandalId.substring(1,mandalId.length); 		
-	userAccessLevelValuesArray.push(mandalId);
-}else if(locationLevelId == '6' || locationLevelId == '13' )
-{
-	locationLevelId = '6'
-	locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
-	userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
-}else if(locationLevelId == '7')
-{
-	locationLevelVal = mandalId.substring(1,mandalId.length); 	
-	userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
-}else if(locationLevelId == '8')
-{
-	locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
-	userAccessLevelValuesArray.push(panchayatId)
+	userAccessLevelValuesArray = [];
+	if(locationLevelId == '2')
+	{
+		locationLevelVal = stateId ;
+		userAccessLevelValuesArray.push(stateId)
+	}else if(locationLevelId == '3')
+	{
+		locationLevelVal = districtId;
+		userAccessLevelValuesArray.push(districtId)
+	}else if(locationLevelId == '10')
+	{
+		locationLevelVal = parliamentId 
+	}else if(locationLevelId == '4' || locationLevelId == '11' )
+	{
+		locationLevelId = '4';
+		locationLevelVal = constituencyId;
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5' || locationLevelId == '12' )
+	{
+		locationLevelId = '5'
+		locationLevelVal = mandalId.substring(1,mandalId.length); 		
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length));
+	}else if(locationLevelId == '6' || locationLevelId == '13' )
+	{
+		locationLevelId = '6'
+		locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
+	}else if(locationLevelId == '7')
+	{
+		locationLevelVal = mandalId.substring(1,mandalId.length); 	
+		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
+	}else if(locationLevelId == '8')
+	{
+		locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
+		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
+	}
 }
 /* location Values End*/
-
-
-
+onLoadLocValue()
 onLoadClicks();
 onLoadInitialisations();
 onLoadAjaxCalls();
@@ -272,7 +275,8 @@ function onLoadClicks()
 		panchayatId = $("#getMenuLocations").attr("menu-location-panchayat");
 		locationLevelName = $("#getMenuLocations").attr("menu-location-levelName");
 		locationLevelId = $("#getMenuLocations").attr("menu-location-levelId");
-		onLoadAjaxCalls();
+		onLoadLocValue();
+		onLoadAjaxCalls();		
 	});
 	$(document).on("click","[refresh]",function(){	
 		var blockName = $(this).attr("refresh");
@@ -3464,6 +3468,7 @@ function getElectionTypes(){
 
 function getElectionInformationLocationWise(electionVal){
 	$('#electionDetailsGraphWiseId').html(spinner);
+	$('#electionDetailsTableWiseId').html(spinner);
 	
 	var electionScopeIds=[];
 	if(electionVal == 0){
@@ -3499,10 +3504,11 @@ function buildElectionInformationLocationWise(result){
 	
 	if(result !=null && result.length>0){
 		 var str='';
-		str+='<h5 style="color:#2B908F;" class="pull-right"><b>Vote Share %</b></h5>';	
-		str+='<div class="col-sm-12">';
+		
+		//str+='<div class="col-sm-12">';
 		str+='<div class="table-responsive">';
-				str+='<table class="table table-condensed table-hover m_top10 table-noborder block table_styled table-striped">';
+		str+='<h5 style="color:#2B908F;" class="pull-right"><b>Vote Share %</b></h5>';	
+				str+='<table class="table table-condensed table-hover m_top10 table-noborder table-bordered">';
 					str+='<thead>';
 						str+='<tr>';
 							str+='<th>Party</th>';
@@ -3527,7 +3533,7 @@ function buildElectionInformationLocationWise(result){
 							}
 					str+='</tbody>';
 				str+='</table>';
-			str+='</div>';
+			//str+='</div>';
 		str+='</div>';
 		$("#electionDetailsTableWiseId").html(str);
 		var mainDataArr=[];
@@ -3545,6 +3551,7 @@ function buildElectionInformationLocationWise(result){
 					mainDataArr.push(obj)
 					
 			}
+		$(".electionDetailsGraphHeight").css("height","550px;");
 		$('#electionDetailsGraphWiseId').highcharts({
 			chart: {
 				type: 'area'
