@@ -486,6 +486,18 @@ function projectData(divId,levelId,locationId)
 									}else if(divId == 'CD_CW')
 									{
 										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Check Dams and Check Walls</h4>';
+									}else if(divId == 'CC Roads1')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - CC Roads</h4>';
+									}else if(divId == 'Anganwadi')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Anganwadi Buildings</h4>';
+									}else if(divId == 'GP Buildings1')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - GP Buildings</h4>';
+									}else if(divId == 'Mandal buildings1')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Mandal buildings</h4>';
 									}else if(divId == 'GH')
 									{
 										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Greening Of Hillocks</h4>';
@@ -629,6 +641,18 @@ function overviewData(divId,levelId,locationId)
 							}else if(divId == 'CD_CW')
 							{
 								collapse+='<h4 class="panel-title text-capital">Check Dams and Check Walls overview</h4>';
+							}else if(divId == 'CC Roads1')
+							{
+								collapse+='<h4 class="panel-title text-capital">CC Roads overview</h4>';
+							}else if(divId == 'Anganwadi')
+							{
+								collapse+='<h4 class="panel-title text-capital">Anganwadi Buildings overview</h4>';
+							}else if(divId == 'GP Buildings1')
+							{
+								collapse+='<h4 class="panel-title text-capital">GP Buildings overview</h4>';
+							}else if(divId == 'Mandal buildings1')
+							{
+								collapse+='<h4 class="panel-title text-capital">Mandal buildings overview</h4>';
 							}else if(divId == 'GH')
 							{
 								collapse+='<h4 class="panel-title text-capital">Greening Of Hillocks overview</h4>';
@@ -864,6 +888,26 @@ function buildNREGSProjectsOverview(result,blockName)
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Check Dams and Check Walls">Check Dam..</h4>';
 								str+='</div>';
+							}else if(result[i] == 'CC Roads1')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="CC Roads">CC Roads</h4>';
+								str+='</div>';
+							}else if(result[i] == 'Anganwadi')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Anganwadi Buildings">Anganwadi B..</h4>';
+								str+='</div>';
+							}else if(result[i] == 'GP Buildings1')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="GP Buildings">GP Build..</h4>';
+								str+='</div>';
+							}else if(result[i] == 'Mandal buildings1')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mandal buildings">Mandal b..</h4>';
+								str+='</div>';
 							}else if(result[i] == 'GH')
 							{
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
@@ -898,7 +942,7 @@ function buildNREGSProjectsOverview(result,blockName)
 		
 		str+='<div class="col-sm-12">';
 			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
-				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-PR DEPTS (Targets Year Wise)</b></h4>';
+				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-PR DEPTS</b></h4>';
 				str+='<div class="row">';
 					for(var i in result)
 					{
@@ -921,7 +965,7 @@ function buildNREGSProjectsOverview(result,blockName)
 		
 		str+='<div class="col-sm-12">';
 			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
-				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-OTHER DEPTS</b></h4>';
+				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-OTHER DEPTS (Targets Year Wise)</b></h4>';
 				str+='<div class="row m_top20">';
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
@@ -3772,6 +3816,18 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else if(type == 'GH')
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Greening O..</h4>';
+					}else if(type == 'CC Roads1')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="CC Roads">CC Roads</h4>';
+					}else if(type == 'Anganwadi')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Anganwadi Buildings">Anganwadi B..</h4>';
+					}else if(type == 'GP Buildings1')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="GP Buildings">GP Build..</h4>';
+					}else if(type == 'Mandal Buildings1')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mandal Buildings">Mandal Bui..</h4>';
 					}else if(type.length > 12)
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
