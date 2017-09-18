@@ -21,7 +21,7 @@
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <body>
-<div class="background-head"></div>
+<!--<div class="background-head"></div>
 <header>
 	<div class="container">
 		<div class="row">
@@ -33,7 +33,7 @@
 			</div>
 		</div>
 	</div>
-</header>
+</header>-->
 <section>
 	
 </section>
@@ -106,9 +106,17 @@
 				 
 				 <div class="block">
 					 <div class="row">
-						<div id="electionTypeValuesId"></div>
-						<div id="electionDetailsGraphWiseId"></div>
-						<div id="electionDetailsTableWiseId"></div>						
+						<div class="col-sm-12">
+							<div id="electionTypeValuesId"></div>
+							<div class="electionDetailsGraphHeight">
+								<div id="electionDetailsGraphWiseId"></div>
+							</div>
+						</div>
+					 </div>
+					 <div class="row m_top10">
+						 <div class="col-sm-12">
+							<div id="electionDetailsTableWiseId" class=""></div>
+						 </div>
 					 </div>
 				 </div>
 				<div class="block m_top20 assemblyElectionBlockCls" style="display:none">
