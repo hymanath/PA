@@ -2993,6 +2993,7 @@ function getLocationWiseInsuranceStatusCount(yearId){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	if(result != null){
+    		$("#insuranceDetails").css("height","300px");
 			return buildGraph(result);
 		}else{
 			$("#insuranceDetails").html("<h4 class='text-center'>NO DATA AVAILABLE</h4>");
@@ -3081,6 +3082,7 @@ function getLocationWiseGrivanceTrustStatusCounts(yearId){
 		data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
+			$("#grivanceId0,#grivanceId1").css("height","300px");
 			return buildGraph(result);
 		}else{
 			if(result !=null && result.length>0){
