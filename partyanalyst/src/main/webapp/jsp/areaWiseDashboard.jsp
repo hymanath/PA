@@ -66,7 +66,7 @@
 				<ol class="breadcrumb m_top10" id="getMenuLocations" menu-location-state="1" menu-location-district="19" menu-location-constituency="" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="3" menu-location-parliament="" menu-location-levelName="district" >
 					<li><i menu-name="state" class="fa fa-align-justify fa-1x"></i> <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>
 					<li><span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capital">Nellore</span></li>
-					<li style="display:none"> <span menu-name="parliament" levelId="10" locationId="01" class="parliamentMenuName text-capital">Nellore</span></li>
+					<li style="display:none"> <span menu-name="parliament" levelId="10" locationId="01" class="parliamentMenuName text-capital">Nellore(PC)</span></li>
 					<li style="display:none"><span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName text-capital"> Andhra Pradesh</span></li>
 					<li style="display:none"><span menu-name="mandal" levelId="5" locationId="01" class="mandalsMenuName text-capital"> Andhra Pradesh</span></li>
 					<li style="display:none"><span menu-name="panchayat" levelId="6" locationId="01" class="panchayatMenuName text-capital"> Andhra Pradesh</span></li>
@@ -91,7 +91,7 @@
 						</div>
 					</div>
 				</div>
-				<h2 class="text-center text-capital"><span id="selectedMenuName" class="text-capital">Nellore District</span> Information</h2>
+				<h3 class="text-center text-capital"><span id="selectedMenuName" class="text-capital">Nellore District</span> Information</h3>
 				
 				
 			</div>
