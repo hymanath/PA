@@ -2879,19 +2879,22 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								//str+='<td>'+ajaxresp[i].percentage+'</td>';
 						}else{
 							if(globalDivName == 'Mulbery')
+							{
 								str+='<td>'+ajaxresp[i].mulbTarget+'</td>';
+							}
 							else if(globalDivName == 'OPGK-Perinnials' || globalDivName == 'OPGK-Annuals')
+							{
 								str+='<td>'+ajaxresp[i].opgkTarget+'</td>';
-							else
+							}else
+							{
 								str+='<td>'+ajaxresp[i].target+'</td>';
-							
+							}
 							if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms' || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 								//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 							}
-							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName != 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							if((globalDivName != 'Mandal buildings1' && globalDivName != 'GP Buildings1') && (globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName != 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
-								//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 							}
 							
 							str+='<td>'+ajaxresp[i].grounded+'</td>';
