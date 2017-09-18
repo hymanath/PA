@@ -785,7 +785,9 @@ function projectDataConsolidated(levelId,locId,districtId)
 							}
 							
 								collapse+='<div class="panel-body">';
-									collapse+='<div id="collapseConsolidatedView'+dataArr[i]+'"></div>';
+									collapse+='<label class="radio-inline"><input type="radio" divId="ConsolidatedView'+dataArr[i]+'" level-id="'+levelId+'" name="collapseConsolidatedViewRadio'+dataArr[i]+'" overview-level="'+dataArr[i]+'"  checked consolidated-view="grounded"/> Grounded</label>';
+									collapse+='<label class="radio-inline"><input type="radio" overview-level="'+dataArr[i]+'"  divId="ConsolidatedView'+dataArr[i]+'" level-id="'+levelId+'" name="collapseConsolidatedViewRadio'+dataArr[i]+'" consolidated-view="completed"/> Completed</label>';
+									collapse+='<div class="m_top20" id="collapseConsolidatedView'+dataArr[i]+'"></div>';
 								collapse+='</div>';
 							collapse+='</div>';
 						collapse+='</div>';
@@ -815,10 +817,52 @@ function projectDataConsolidated(levelId,locId,districtId)
 		divId = 'ConsolidatedViewconstituency';
 		districtId = $("#selectedName").attr("attr_distId");
 	}
-	getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,divId,districtId);
+	getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,divId,districtId,'grounded');
 	
 }
-function getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocationType,locationId,divId,districtId)
+$(document).on("click","[consolidated-view]",function(){
+	var searchType = $(this).attr("consolidated-view");
+	var levelId = $(this).attr("level-id");
+	var tableId = $(this).attr("divId");
+	var divId = $(this).attr("overview-level");
+	var locId = $("#selectedName").attr("attr_id");
+	var locationType = '';
+	var districtId = $("#selectedName").attr("attr_distId");
+	if(levelId == 2)
+	{
+		locationType = 'state';
+		subLocType = 'state';
+		districtId = '';
+	}else if(levelId == 3)
+	{
+		locationType = 'district';
+		subLocType = 'district';
+		districtId = '';
+	}else if(levelId == 4)
+	{
+		locationType = 'constituency';
+		subLocType = 'constituency';
+		districtId = '';
+	}
+	if(divId == 'state')
+	{
+		subLocType = 'state';
+	}else if(divId == 'district')
+	{
+		subLocType = 'district';
+	}else if(divId == 'constituency')
+	{
+		subLocType = 'constituency';
+	}else if(divId == 'mandal')
+	{
+		subLocType = 'mandal';
+	}else if(divId == 'panchayat')
+	{
+		subLocType = 'panchayat';
+	}
+	getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,tableId,districtId);
+});
+function getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocationType,locationId,divId,districtId,searchType)
 {
 	var districtId = $("#selectedName").attr("attr_distId");
 	$("#collapse"+divId).html(spinnerConsolidated);
@@ -831,7 +875,7 @@ function getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,su
 		subLocationType : subLocationType,
 		districtId : districtId,
 		componentIds : overViewIdsArr,
-		
+		searchType : searchType
 	}
 	$.ajax({
 		url: 'getNREGSLevelWiseConsolidatedReport',
@@ -950,7 +994,7 @@ function tableViewConsolidated(result,divId,subLocationType)
 			{
 				//extend:    'pdfHtml5',
 				text:      '<i class="fa fa-file-pdf-o exportToPdf" attr_id="dataTable'+divId+'"></i>',
-				//titleAttr: 'PDF',
+				titleAttr: 'PDF',
 				//title:	   divId,
 				//filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				//orientation: "landscape",
@@ -961,6 +1005,8 @@ function tableViewConsolidated(result,divId,subLocationType)
 			}
 		]
 	});
+	
+	$("a.dt-button").tooltip({placement:'right'});
 }
 
 $(document).on("click",".exportToPdf",function(){
@@ -989,12 +1035,15 @@ function getPdf(id)
 			form.width(cache_width);
 		});
 		$("#"+id).hide();
+		var table = $("#"+id).dataTable({"destroy": true});
+			
 	}
 
 	// create canvas object
 	function getCanvas(){
 		//form.width((a1[0]*1.33333) -80).css('max-width','none');
 		$("#"+id).show();
+		$("#"+id).dataTable();
 		form.width(a1).css('max-width','none');
 		return html2canvas(form,{
 			imageTimeout:1000,
