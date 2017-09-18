@@ -159,6 +159,9 @@ function onLoadClicks()
 		var locationId = $(this).attr("menu-click");
 		var levelName = $(this).attr("menu-levelname");
 		var levelType = $(this).attr("menu-type");
+		$(".casteGroupTypeDiv li").removeClass("active")
+		$(".casteGroupTypeDiv li:nth-child(1)").addClass("active");
+		
 		if(levelName == 'parliament')
 		{
 			$("[menu-name="+levelName+"]").closest("li").show();
@@ -274,6 +277,10 @@ function onLoadClicks()
 			name = $("#constituencyMenu").find("li.active").html();
 			$("#selectedMenuName").html(name+' '+locationLevelName);
 		}
+		
+		$(".casteGroupTypeDiv li").removeClass("active")
+		$(".casteGroupTypeDiv li:nth-child(1)").addClass("active");
+		
 		stateId = $("#getMenuLocations").attr("menu-location-state");
 		districtId = $("#getMenuLocations").attr("menu-location-district");
 		parliamentId = $("#getMenuLocations").attr("menu-location-parliament");
@@ -288,6 +295,8 @@ function onLoadClicks()
 	});
 	$(document).on("click","[refresh]",function(){	
 		var blockName = $(this).attr("refresh");
+		$(".casteGroupTypeDiv li").removeClass("active")
+		$(".casteGroupTypeDiv li:nth-child(1)").addClass("active");
 		if(blockName == 'casteInfo')
 		{
 			getCasteGroupNAgeWiseVoterNCadreCounts("voter")
@@ -3009,10 +3018,19 @@ function getLocationWiseGrivanceTrustStatusCounts(yearId){
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
-		if(result !=null){
+		if(result !=null && result.length>0){
 			return buildGraph(result);
 		}else{
-			$("#grivanceId0,#grivanceId1").html(noData);
+			if(result !=null && result.length>0){
+				for(var i in result){
+					if(typeof result[i].grivenceType == "undefined" || typeof result[i].grivenceType === undefined){
+						$("#grivanceId0,#grivanceId1").html(noData);
+					}
+				}
+			}else{
+				$("#grivanceId0,#grivanceId1").html(noData);
+			}
+			
 		}
 	});
 
