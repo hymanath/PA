@@ -955,6 +955,9 @@ function tableViewConsolidated(result,divId,subLocationType)
  			tableView+='<tbody>';
 				for(var i in result)
 				{
+					var redColor = 0;
+					var GreenColor = 0;
+					var OrangeColor = 0;
 					tableView+='<tr>';
 						tableView+='<td style="font-size:12px" class="text-capital">'+result[i].subList[0].name+'</td>';
 						for(var j in result[i].subList)
@@ -975,6 +978,7 @@ function tableViewConsolidated(result,divId,subLocationType)
 								tableView+='<td>-</td>';
 							}
 						}
+						tableView+='<td>'+redColor+'</td><td>'+GreenColor+'</td><td>'+OrangeColor+'</td>';
 					tableView+='</tr>';
 				}
 			tableView+='</tbody>';
