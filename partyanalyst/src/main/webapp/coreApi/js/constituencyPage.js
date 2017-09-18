@@ -86,7 +86,7 @@ function onLoadAjaxCalls()
 {
 	
 	
-	 $("#enrolmentYears").chosen();
+	  $("#enrolmentYears").chosen();
 	 //Enrolment Years
 	getEnrollmentIds(); 
 	
@@ -170,7 +170,12 @@ function onLoadClicks()
 			$("[menu-name="+levelName+"]").closest("li").show();
 			$("[menu-name='parliament']").closest("li").hide();
 		}
-		$("[menu-name="+levelName+"]").html($(this).html());
+		if(levelName == 'parliament'){
+			$("[menu-name="+levelName+"]").html($(this).html()+" "+("(PC)"));
+		}else{
+			$("[menu-name="+levelName+"]").html($(this).html());
+		}
+		
 		//$("[menu-name="+levelName+"]").width(((length)*(10)));
 		$("[levelId="+levelId+"]").removeClass("active");
 		$(this).addClass("active");
@@ -268,13 +273,32 @@ function onLoadClicks()
 	$(document).on("click","#getLocationDetails",function(){	
 		$(".menu-dropdown").hide();
 		var name = '';
+		alert(locationLevelId)
 		if(locationLevelId == 2)
 		{
 			name = $("#districtMenu").find("li.active").html();
 			$("#selectedMenuName").html(name+' '+locationLevelName);
-		}else if(locationLevelId == 3)
+		}else if(locationLevelId == 3 || locationLevelId == 10)
 		{
 			name = $("#constituencyMenu").find("li.active").html();
+			$("#selectedMenuName").html(name+' '+locationLevelName);
+		}else if(locationLevelId == 4 || locationLevelId == 7 || locationLevelId == 11)
+		{
+			name = $("#mandalMenu").find("li.active").html();
+			$("#selectedMenuName").html(name);
+		}else if(locationLevelId == 5 || locationLevelId == 8 || locationLevelId == 12)
+		{
+			name = $("#panchayatMenu").find("li.active").html();
+			if(locationLevelId ==5){
+				$("#selectedMenuName").html(name+' '+locationLevelName);
+			}else if(locationLevelId == 8){
+				$("#selectedMenuName").html(name);
+			}else if(locationLevelId == 12){
+				$("#selectedMenuName").html(name+' '+locationLevelName);
+			}
+			
+		}else if(locationLevelId == 9){
+			name = $("#parliamentMenu").find("li.active").html();
 			$("#selectedMenuName").html(name+' '+locationLevelName);
 		}
 		
@@ -1810,8 +1834,8 @@ function getPrintMediaCountsForConstituencyPage(){
     var isDept="N";
 	
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
+		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
 	}).then(function(result){
 		if(result !=null){
 			return buildPrintMediaCountsForConstituencyPage(result);
@@ -1946,8 +1970,8 @@ function getLeadersInNewsForConstituencyPage(){
 	var startDate = date1[0]+'-'+date1[1]+'-'+date1[2]
 	var endDate = date2[0]+'-'+date2[1]+'-'+date2[2]
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+startDate+"/"+endDate+"/"+stateId
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+startDate+"/"+endDate+"/"+stateId
+		url: wurl+"/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+startDate+"/"+endDate+"/"+stateId
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+startDate+"/"+endDate+"/"+stateId
 		
 	}).then(function(result){
 		if(result !=null && result.length>0){
@@ -2043,8 +2067,8 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 	var orgIdsStr="";
 	var isDept="N";
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
+		url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildDetailedGovtOverAllAnalysisProblemsForView(result,typeValue);
