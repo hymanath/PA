@@ -63,6 +63,7 @@
 	<div class="container">
 		<div class="row">
 		 	<div class="col-sm-12">
+				<h3 class="text-center text-capital"><span id="selectedMenuName" class="text-capital">Nellore District</span> Information</h3>
 				<ol class="breadcrumb m_top10" id="getMenuLocations" menu-location-state="1" menu-location-district="19" menu-location-constituency="" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="3" menu-location-parliament="" menu-location-levelName="district" >
 					<li><i menu-name="state" class="fa fa-align-justify fa-1x"></i> <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>
 					<li><span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capital">Nellore</span></li>
@@ -91,7 +92,7 @@
 						</div>
 					</div>
 				</div>
-				<h3 class="text-center text-capital"><span id="selectedMenuName" class="text-capital">Nellore District</span> Information</h3>
+				
 				
 				
 			</div>
@@ -161,8 +162,8 @@
 					</div>
 					<div class="row m_top10">
 						<div class="col-sm-4" style="border-right:1px solid #d3d3d3">
-							<h5 class="panel-title" style="display:inline-block;margin-right:8px;"><b>Caste Group Wise Voters</b></h5>
-							<ul class="switch-btn list-inline" role="casteGrouplist">
+							<h5 class="panel-title casteInfoDivCls" style="display:inline-block;margin-right:8px;"><b>Caste Group Wise Voters</b></h5>
+							<ul class="switch-btn list-inline casteInfoDivCls" role="casteGrouplist">
 								<li class="active" attr_type="voter">Voter</li>
 								<li attr_type="cadre">Cadre</li>
 							</ul>
@@ -180,9 +181,11 @@
 			<div class="col-sm-12 m_top20" navbar-index="cadreInfor">
 				<div class="block">
 					<h4 class="panel-title theme-title-color"">Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="cadreInfor"></i></span></h4>
-					<div id="cadreInfoGraphDivId" class="m_top15"></div>
-					<div id="cadreInfoGraphBar" style="height:200px;"></div>
-					<div id="cadreInfoTableView"></div>
+					<div class="cadreInfoDivCls">
+						<div id="cadreInfoGraphDivId" class="m_top15"></div>
+						<div id="cadreInfoGraphBar" style="height:200px;"></div>
+						<div id="cadreInfoTableView"></div>
+					</div>
 				</div>
 				
 			</div>
@@ -251,14 +254,13 @@
 				<div class="block">
 					<h4 class="panel-title theme-title-color">Meetings <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="meetings"></i></span></h4>
 					<p class="f-12 text-muted">Evertymonth: 9th/10th/11th</p>
-					<div id="locationWiseMeetingsCount" class="m_top15"></div>
+					<div id="locationWiseMeetingsCount" class="m_top30"></div>
 				</div>
 			</div>
 			
 			<div class="col-sm-4 m_top20" navbar-index="tours">
 				<div class="block">
-					<h4 class="panel-title theme-title-color">Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="tours"></i></span></h4>
-					<p class="f-12 text-muted">Last Month Jan 2017</p>
+					<h4 class="panel-title theme-title-color">Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="tours"></i></span><small class="f-12" style="color:#777 !important;">Last Month Jan 2017</small></h4>
 					<div id="locationWiseTourMembersComplainceDtls" class="m_top15"></div>
 				</div>
 			</div>
