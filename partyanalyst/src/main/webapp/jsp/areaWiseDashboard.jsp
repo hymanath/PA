@@ -141,7 +141,7 @@
 				<div class="block">
 					<div class="row">
 						<div class="col-sm-6  m_top5" navbar-index="constituencyVoters">
-							 <h4 class="panel-title theme-title-color">constituency voters information</h4>
+							 <h4 class="panel-title theme-title-color">voters information</h4>
 						</div>
 						<div class="col-sm-3 col-sm-offset-3">
 							<div id="publicationsDivId"></div>
@@ -318,12 +318,12 @@
 						<div class="col-sm-10">
 							<h4 class="panel-title theme-title-color">Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h4>
 						</div>
-						<div class="col-sm-2">
+						<!--<div class="col-sm-2">
 							<select id="enrolmentYearsGrievance">
 								<option value="3">2014-2016</option>
 								<option value="4">2016-2018</option>
 							</select>
-						</div>
+						</div>-->
 					</div>
 					<div class="row m_top15">
 						<div class="col-sm-4">
