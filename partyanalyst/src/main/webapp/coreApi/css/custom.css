@@ -52,6 +52,7 @@ label
 .m_left10{margin-left: 10px !important}
 .m_left15{margin-left: 15px !important}
 .m_left20{margin-left: 20px !important}
+.m_top30{margin-top: 30px !important}
 .m_left25{margin-left: 25px !important}
 .f-10{font-size: 10px;}
 .f-11{font-size: 11px;}
@@ -726,4 +727,7 @@ ul li[menu-levelname='panchayat']:after .active
 .fa.fa-align-justify
 {
 	cursor:pointer;
+}
+.tooltipBeneCls  a{
+	padding:7px 14px !important;
 }
