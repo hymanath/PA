@@ -30,6 +30,7 @@ var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In
 function onLoadLocValue()
 {
 	userAccessLevelValuesArray = [];
+	locationLevelVal = '';
 	if(locationLevelId == '2')
 	{
 		locationLevelVal = stateId ;
@@ -294,16 +295,6 @@ function onLoadClicks()
 		{
 			getLocationTypeWiseCadreCount("");
 			getAgeRangeGenerAndCasteGroupByCadreCount(1);
-		}else if(blockName == 'news')
-		{
-			getPrintMediaCountsForConstituencyPage()
-			getLeadersInNewsForConstituencyPage();
-		}else if(blockName == 'problems')
-		{
-			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage("overAll")
-			for(var i in propertyIdGlobalStr){
-				getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i])
-			}
 		}else if(blockName == 'grievance')
 		{
 			getLocationWiseGrivanceTrustStatusCounts($("#enrolmentYearsGrievance").val());
@@ -331,6 +322,16 @@ function onLoadClicks()
 		}else if(blockName == 'benefits')
 		{
 			getGovtSchemeWiseBenefitMembersCount();
+		}else if(blockName == 'news')
+		{
+			getPrintMediaCountsForConstituencyPage()
+			getLeadersInNewsForConstituencyPage();
+		}else if(blockName == 'problems')
+		{
+			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage("overAll")
+			for(var i in propertyIdGlobalStr){
+				getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i])
+			}
 		}
 	});
 	$(document).on("click","[role='casteGrouplist'] li",function(){	
@@ -1751,29 +1752,40 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(yearId){
 
 function getPrintMediaCountsForConstituencyPage(){
 	$("#newsMainBlockDivId").html(spinner);
-	userAccessLevelValuesArray=[];
+	var userAccessLevelValuesNewsArray=[];
+	var locationLevelNewsVal='';
 	if(locationLevelId == '2')
 	{
-		userAccessLevelValuesArray.push(stateId)
+		locationLevelNewsVal ='2';
+		userAccessLevelValuesNewsArray.push(stateId)
 	}else if(locationLevelId == '3')
 	{
-		userAccessLevelValuesArray.push(districtId)
+		locationLevelNewsVal ='3';
+		userAccessLevelValuesNewsArray.push(districtId)
 	}else if(locationLevelId == '10')
 	{
-		locationLevelId = '4';
-		userAccessLevelValuesArray.push(parliamentId)
+		locationLevelNewsVal = '4';
+		userAccessLevelValuesNewsArray.push(parliamentId)
 	}else if(locationLevelId == '4' || locationLevelId == '11')
 	{
-		locationLevelId = '5';
-		userAccessLevelValuesArray.push(constituencyId)
+		locationLevelNewsVal = '5';
+		userAccessLevelValuesNewsArray.push(constituencyId)
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
-		locationLevelId = '6';
-		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
+		locationLevelNewsVal = '6';
+		userAccessLevelValuesNewsArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
-		locationLevelId = '8';
-		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
+		locationLevelNewsVal = '8';
+		userAccessLevelValuesNewsArray.push(panchayatId.substring(1,panchayatId.length))
+	}else if(locationLevelId == '7')
+	{
+		locationLevelNewsVal = '7';	
+		userAccessLevelValuesNewsArray.push(mandalId.substring(1,mandalId.length))
+	}else if(locationLevelId == '8')
+	{
+		locationLevelNewsVal = '9';		
+		userAccessLevelValuesNewsArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var state="ap";
@@ -1789,8 +1801,8 @@ function getPrintMediaCountsForConstituencyPage(){
     var isDept="N";
 	
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+locationLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+locationLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
+		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
 	}).then(function(result){
 		if(result !=null){
 			return buildPrintMediaCountsForConstituencyPage(result);
@@ -1883,29 +1895,40 @@ function getPrintMediaCountsForConstituencyPage(){
 
 function getLeadersInNewsForConstituencyPage(){
 	$("#leadersMainBlockDivId").html(spinner);
-	userAccessLevelValuesArray=[];
+	var userAccessLevelValuesNewsArray=[];
+	var locationLevelNewsVal='';
 	if(locationLevelId == '2')
 	{
-		userAccessLevelValuesArray.push(stateId)
+		locationLevelNewsVal ='2';
+		userAccessLevelValuesNewsArray.push(stateId)
 	}else if(locationLevelId == '3')
 	{
-		userAccessLevelValuesArray.push(districtId)
+		locationLevelNewsVal ='3';
+		userAccessLevelValuesNewsArray.push(districtId)
 	}else if(locationLevelId == '10')
 	{
-		locationLevelId = '4';
-		userAccessLevelValuesArray.push(parliamentId)
+		locationLevelNewsVal = '4';
+		userAccessLevelValuesNewsArray.push(parliamentId)
 	}else if(locationLevelId == '4' || locationLevelId == '11')
 	{
-		locationLevelId = '5';
-		userAccessLevelValuesArray.push(constituencyId)
+		locationLevelNewsVal = '5';
+		userAccessLevelValuesNewsArray.push(constituencyId)
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
-		locationLevelId = '6';
-		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
+		locationLevelNewsVal = '6';
+		userAccessLevelValuesNewsArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
-		locationLevelId = '8';
-		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
+		locationLevelNewsVal = '8';
+		userAccessLevelValuesNewsArray.push(panchayatId.substring(1,panchayatId.length))
+	}else if(locationLevelId == '7')
+	{
+		locationLevelNewsVal = '7';	
+		userAccessLevelValuesNewsArray.push(mandalId.substring(1,mandalId.length))
+	}else if(locationLevelId == '8')
+	{
+		locationLevelNewsVal = '9';		
+		userAccessLevelValuesNewsArray.push(panchayatId.substring(1,panchayatId.length))
 	}
 	
 	var stateId=1;
@@ -1914,8 +1937,8 @@ function getLeadersInNewsForConstituencyPage(){
 	var startDate = date1[0]+'-'+date1[1]+'-'+date1[2]
 	var endDate = date2[0]+'-'+date2[1]+'-'+date2[2]
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+locationLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+stateId
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+locationLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+stateId
+		//url: wurl+"/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+startDate+"/"+endDate+"/"+stateId
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+startDate+"/"+endDate+"/"+stateId
 		
 	}).then(function(result){
 		if(result !=null && result.length>0){
@@ -1960,31 +1983,42 @@ function getLeadersInNewsForConstituencyPage(){
 }	
 function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 	$("#overAllAnalysisProbDivId").html(spinner);
-	userAccessLevelValuesArray=[];
+	var userAccessLevelValuesNewsArray=[];
+	var locationLevelNewsVal='';
 	if(locationLevelId == '2')
 	{
-		userAccessLevelValuesArray.push(stateId)
+		locationLevelNewsVal ='2';
+		userAccessLevelValuesNewsArray.push(stateId)
 	}else if(locationLevelId == '3')
 	{
-		userAccessLevelValuesArray.push(districtId)
+		locationLevelNewsVal ='3';
+		userAccessLevelValuesNewsArray.push(districtId)
 	}else if(locationLevelId == '10')
 	{
-		locationLevelId = '4';
-		userAccessLevelValuesArray.push(parliamentId)
+		locationLevelNewsVal = '4';
+		userAccessLevelValuesNewsArray.push(parliamentId)
 	}else if(locationLevelId == '4' || locationLevelId == '11')
 	{
-		locationLevelId = '5';
-		userAccessLevelValuesArray.push(constituencyId)
+		locationLevelNewsVal = '5';
+		userAccessLevelValuesNewsArray.push(constituencyId)
 	}else if(locationLevelId == '5' || locationLevelId == '12')
 	{
-		locationLevelId = '6';
-		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
+		locationLevelNewsVal = '6';
+		userAccessLevelValuesNewsArray.push(mandalId.substring(1,mandalId.length))
 	}else if(locationLevelId == '6' || locationLevelId == '13')
 	{
-		locationLevelId = '8';
-		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
+		locationLevelNewsVal = '8';
+		userAccessLevelValuesNewsArray.push(panchayatId.substring(1,panchayatId.length))
+	}else if(locationLevelId == '7')
+	{
+		locationLevelNewsVal = '7';	
+		userAccessLevelValuesNewsArray.push(mandalId.substring(1,mandalId.length))
+	}else if(locationLevelId == '8')
+	{
+		locationLevelNewsVal = '9';		
+		userAccessLevelValuesNewsArray.push(panchayatId.substring(1,panchayatId.length))
 	}
-	var userAccessLevelId=locationLevelId;
+	
 	var state="ap";
 	var date1 = globalFromDate.split('/');
 	var date2 = globalToDate.split('/');
@@ -2000,8 +2034,8 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 	var orgIdsStr="";
 	var isDept="N";
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+locationLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
+		//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+locationLevelNewsVal+"/"+userAccessLevelValuesNewsArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildDetailedGovtOverAllAnalysisProblemsForView(result,typeValue);
