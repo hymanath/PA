@@ -19,8 +19,15 @@ public class NregaConsolidatedInputVO implements Serializable{
 	private String locationType;
 	private String subLocationType;
 	private List<Long> componentIds = new ArrayList<Long>();
+	private String searchType;
 	
 	
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
 	public String getUrl() {
 		return url;
 	}
