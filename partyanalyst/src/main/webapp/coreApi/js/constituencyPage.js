@@ -2392,9 +2392,8 @@ function getLocationWiseTourMembersComplainceDtls(){
 	$("#locationWiseTourMembersComplainceDtls").html(spinner);
 	
 	
-	var userAccessLevelId=locationLevelId;
 	jsObj={
-		locationTypeId:userAccessLevelId,
+		locationTypeId:locationLevelId,
 		locationValuesArr:userAccessLevelValuesArray,
 		fromDate:globalFromDate,
 		toDate:globalToDate,
@@ -2637,12 +2636,11 @@ function getPositionWiseMemberCount(){
 	$("#positionsWiseMemberCount").html(spinner);
 	
 	
-	var userAccessLevelId=locationLevelId;
 	var jsObj={
 			"fromDateStr" : globalFromDate,
 			"toDateStr":globalToDate,
 			"locationValuesArr":userAccessLevelValuesArray,
-			"locationTypeId":userAccessLevelId,
+			"locationTypeId":locationLevelId,
 			"year":""
 		}
 	$.ajax({
@@ -2674,12 +2672,11 @@ function getPositionWiseMemberCount(){
 function getNominatedPostApplicationDetails(){
 	$("#nominatedPostApplicationDetails").html(spinner);
 	
-	var userAccessLevelId=locationLevelId;
 	var jsObj={
 			"year":"",
 			"fromDateStr" :globalFromDate,
 			"toDateStr":globalToDate,
-			"locationTypeId":userAccessLevelId,
+			"locationTypeId":locationLevelId,
 			"locationValues":userAccessLevelValuesArray
 		}
 	$.ajax({
@@ -2760,12 +2757,11 @@ function getNominatedPostApplicationDetails(){
 function getNominatedPostStatusWiseCount(){
 	$("#nominatedPostStatusWiseCount").html(spinner);
 	
-	var userAccessLevelId=locationLevelId;
 	var jsObj={
 			"year":"",
 			"fromDateStr" : globalFromDate,
 			"toDateStr":globalToDate,
-			"locationTypeId":userAccessLevelId,
+			"locationTypeId":locationLevelId,
 			"locationValues":userAccessLevelValuesArray
 		}
 	 $.ajax({
@@ -2879,11 +2875,10 @@ function getNominatedPostStatusWiseCount(){
 function getLocationWiseInsuranceStatusCount(yearId){
 	$("#insuranceDetails").html(spinner);
 	
-	var userAccessLevelId=locationLevelId;
 	var jsObj={
 			"fromDate" 			: globalFromDate,
 			"toDate"			: globalToDate,
-			"locationTypeId" 	: userAccessLevelId,
+			"locationTypeId" 	: locationLevelId,
 			"locationValuesArr" : userAccessLevelValuesArray,
 			"year"				: yearId
 		}
@@ -2967,11 +2962,10 @@ function getLocationWiseInsuranceStatusCount(yearId){
 function getLocationWiseGrivanceTrustStatusCounts(yearId){
 	$("#grivanceId0,#grivanceId1").html(spinner);
 	
-	var userAccessLevelId=locationLevelId;
 	var jsObj={
 			"fromDate" : globalFromDate,
 			"toDate":globalToDate,
-			"locationTypeId" : userAccessLevelId,
+			"locationTypeId" : locationLevelId,
 			"locationValuesArr" :userAccessLevelValuesArray,
 			"year": yearId
 		}
