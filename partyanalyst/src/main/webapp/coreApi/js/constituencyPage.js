@@ -84,7 +84,9 @@ function onLoadInitialisations()
 function onLoadAjaxCalls()
 {
 	
-	//Enrolment Years
+	
+	 $("#enrolmentYears").chosen();
+	 //Enrolment Years
 	getEnrollmentIds(); 
 	
 	//Committee
@@ -117,15 +119,6 @@ function onLoadAjaxCalls()
 	getAgeRangeGenerAndCasteGroupByCadreCount(1);
 	
 	
-	//News Block
-	getPrintMediaCountsForConstituencyPage()
-	getLeadersInNewsForConstituencyPage();
-	
-	//Problems
-	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage("overAll")
-	for(var i in propertyIdGlobalStr){
-		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
-	} 
 	
 	 //Tours 
 	getLocationWiseTourMembersComplainceDtls();
@@ -143,6 +136,19 @@ function onLoadAjaxCalls()
 	
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo();
+	
+	setTimeout(function(){ 
+		//News Block
+		getPrintMediaCountsForConstituencyPage()
+		getLeadersInNewsForConstituencyPage();
+		
+		//Problems
+		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage("overAll")
+		for(var i in propertyIdGlobalStr){
+			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
+		}
+	}, 2000);
+	
 }
 function onLoadClicks()
 {
@@ -276,7 +282,8 @@ function onLoadClicks()
 		locationLevelName = $("#getMenuLocations").attr("menu-location-levelName");
 		locationLevelId = $("#getMenuLocations").attr("menu-location-levelId");
 		onLoadLocValue();
-		onLoadAjaxCalls();		
+		onLoadAjaxCalls();
+			
 	});
 	$(document).on("click","[refresh]",function(){	
 		var blockName = $(this).attr("refresh");
@@ -936,11 +943,12 @@ function buildVotersAndcadreAgeWiseCount(result){
 							}else{
 								str+='<img src="coreApi/img/tableHead.png" alt="voters"/>';
 							}
-							if(theadArr[i] != "total population"){
-								str+='<h4 class="text-capitalize">'+theadArr[i]+'</h4>';
-							}
+							/* if(theadArr[i] != "total population"){
+								
+							} */
+							str+='<h4 class="text-capitalize">'+theadArr[i]+'</h4>';
 							if(theadArr[i] == "total population"){
-								//str+='<h3>12000</h3>';
+								//str+='<h3></h3>';
 							}else if(theadArr[i] == "total Voters"){
 								str+='<h3>'+totalVotersCount+'</h3>';
 							}else if(theadArr[i] == "total Cadre"){
@@ -1191,8 +1199,8 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result,groupType){
 	var tooltip={};
 	var plotOptions ={ 
 		pie: {
-			innerSize: 115,
-			depth: 225,
+			innerSize: 90,
+			depth: 80,
 			dataLabels:{
 				useHTML: true,
 				enabled: true,
@@ -1812,7 +1820,7 @@ function getPrintMediaCountsForConstituencyPage(){
 									if(result.coreDashBoardVOList[i].organization == "TDP" || result.coreDashBoardVOList[i].organization == "YSRC"){
 										str+='<td><p><img  onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList[i].organization+'.PNG" alt="party"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList[i].count+'</span></p></td>';
 									}else if(result.coreDashBoardVOList[i].organization == "JANASENA"){
-										str+='<td><p><img  onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList[i].organization.trim()+'.PNG" alt="party" style="width: 30px; height: 30px;"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList[i].count+'</span></p></td>';
+										str+='<td><p><img  onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList[i].organization.trim()+'.PNG" alt="party" />&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList[i].count+'</span></p></td>';
 									}else{
 										str+='<td><p><img onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList[i].organization+'.png" alt="party"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList[i].count+'</span></p></td>';
 									}
@@ -2690,9 +2698,10 @@ function getNominatedPostApplicationDetails(){
 			var mainArr = [];
 			for(var i in result){
 				var subArr = [];
-				var name = "",
+				var name = "";
+				var colorsArr = ['#FED501','#E58D45','#DD675D','#7CB4E5'];
 				name = result[i].name;
-				subArr={name:result[i].name,y:parseInt(result[i].count)};
+				subArr={name:result[i].name,y:parseInt(result[i].count),extra:colorsArr[i]};
 				mainArr.push(subArr);			
 			}
 			$('#nominatedPostApplicationDetails').highcharts({
@@ -2735,7 +2744,7 @@ function getNominatedPostApplicationDetails(){
 					useHTML: true,
 					symbolHeight:'0',
 					labelFormatter: function() {
-						return '<ul class="graph-legend" style="width:240px"><li style="background-color:'+this.color+';color:#fff"><span class="statusBox" style="background-color:'+this.color+';box-shadow:0px 0px 1px 1px rgba(0,0,0,0.4)"></span>'+this.name + '<span style="margin-left:8px;position: absolute;right: 10px;">' + this.y + '</span></li></ul>';
+						return '<ul class="graph-legend" style="width:240px"><li style="background-color:'+this.color+';"><span class="statusBox" style="background-color:'+this.extra+';"></span>'+this.name + '<span style="margin-left:8px;position: absolute;right: 10px;">' + this.y + '</span></li></ul>';
 						//return '<div style="padding:5px;background-color:'+this.color+'"><span style="color:#fff">'+this.name + '-' + this.y + '</span></div>';
 					}
 				},
@@ -3422,7 +3431,6 @@ function getEnrollmentIds(){
 			selectBox+='<option value="'+result[i].id+'">'+result[i].description+'</option>';
 		}
 		$("#enrolmentYears").html(selectBox);
-		$("#enrolmentYears").chosen();
 	});	
 }
 function setDefaultImage(img){
