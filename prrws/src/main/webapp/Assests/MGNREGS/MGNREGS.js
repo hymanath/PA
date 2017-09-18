@@ -241,8 +241,19 @@ function onLoadCalls()
 				if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms' || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && levelType == "state")
 					theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 				
-				if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
+				if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
 					theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+				if(globalDivName == 'Anganwadi')
+				{
+					if(levelType == "constituency")
+						theadArr = ["district",levelType,'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					else if(levelType == "mandal")
+						theadArr = ["district","constituency",levelType,'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					else if(levelType == "panchayat")
+						theadArr = ["district","constituency","mandal",levelType,'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					else
+						theadArr = [levelType,'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				}
 			}
 			
 			
@@ -587,8 +598,25 @@ function projectData(divId,levelId,locationId)
 			if((divId == 'Mulbery' || divId == 'Silk Worms' || divId == 'Cattle Drinking Water Troughs' || divId == 'Raising of Perinnial Fodders') && dataArr[i] == "state")
 				theadArr = [dataArr[i],'TARGET','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 			
-			if((divId == 'Fish Ponds' || divId == 'Fish Drying Platforms' || divId == 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (dataArr[i] == "state" || dataArr[i] == "district"))
+			if((divId == 'Fish Ponds' || divId == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (dataArr[i] == "state" || dataArr[i] == "district"))
 				theadArr = [dataArr[i],'TARGET','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+			else if(divId == 'Anganwadi')
+			{
+				if(dataArr[i] == "state" || dataArr[i] == "district")
+				{
+					theadArr = [dataArr[i],'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				}else if(dataArr[i] == "constituency")
+				{
+					theadArr =["district",dataArr[i],'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				}else if(dataArr[i] == "mandal")
+				{
+					theadArr =["district","constituency",dataArr[i],'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				}else if(dataArr[i] == "panchayat")
+				{
+					theadArr =["district","constituency","panchayat",dataArr[i],'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				}
+			}
+				
 		}
 		var tableId = divId.replace(/\s+/g, '')+''+dataArr[i];
 		$("#"+tableId).html(spinner);
@@ -1599,8 +1627,16 @@ function buildDistrictsPopupDetails(result,dataArr){
 					theadArr = ["district","constituency",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
-			}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds" || globalDivName == "Anganwadi" || globalDivName == "SMC Trench" || globalDivName == "Imp to CD" || globalDivName == "MPT_PT" || globalDivName == "GC Works" || globalDivName == "CD_CW"){
+			}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds" || globalDivName == "SMC Trench" || globalDivName == "Imp to CD" || globalDivName == "MPT_PT" || globalDivName == "GC Works" || globalDivName == "CD_CW"){
 				theadArr = [dataArr,'TARGET','Sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Sanctioned Percentage'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(dataArr == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			}else if(globalDivName == "Anganwadi"){
+				theadArr = [dataArr,'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				if(dataArr == "constituency")
 					theadArr = ["district",dataArr,'TARGET','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				else if(dataArr == "mandal")
@@ -1761,7 +1797,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
 										}
 										str+='<td>'+result.distList[i].target+'</td>';
-										if(dataArr == "district"){
+										if(dataArr == "district" && globalDivName != "Anganwadi"){
 											str+='<td>'+result.distList[i].sanctionedTarget+'</td>';
 										}
 										str+='<td>'+result.distList[i].grounded+'</td>';
@@ -2864,7 +2900,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 								//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 							}
-							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName != 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 								//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 							}
@@ -2882,7 +2918,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								}else{
 									str+='<td style="background-color:#FF0000;color:#fff">-</td>';
 								}
-							}else if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							}else if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 								var groundedPerc = (ajaxresp[i].grounded/ajaxresp[i].sanctionedTarget*100).toFixed(2);
 								if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
@@ -2975,7 +3011,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}
 							
-							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName != 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 								if(ajaxresp[i].percSant < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
