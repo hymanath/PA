@@ -903,11 +903,17 @@ function tableViewConsolidated(result,divId,subLocationType)
 				{
 					tableView+='<th>'+result[0].subList[i].component+'</th>';
 				}
+				tableView+='<th>Red </th>';
+				tableView+='<th>Orange</th>';
+				tableView+='<th>Green</th>';
 			tableView+='</thead>';
 			
  			tableView+='<tbody>';
 				for(var i in result)
 				{
+					var redColor = 0;
+					var GreenColor = 0;
+					var OrangeColor = 0;
 					tableView+='<tr>';
 						tableView+='<td class="text-capital">'+result[i].subList[0].name+'</td>';
 						for(var j in result[i].subList)
@@ -916,18 +922,22 @@ function tableViewConsolidated(result,divId,subLocationType)
 							{
 								if(result[i].subList[j].percentage < 50)
 								{
-									tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000;color#fff">'+result[i].subList[j].percentage+'</td>';
+									redColor = redColor + 1;
 								}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
 								{
-									tableView+='<td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00;color#fff">'+result[i].subList[j].percentage+'</td>';
+									OrangeColor = OrangeColor + 1;
 								}else if(result[i].subList[j].percentage >= 80)
 								{
-									tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;color#fff">'+result[i].subList[j].percentage+'</td>';
+									GreenColor = GreenColor + 1;
 								}
 							}else{
 								tableView+='<td>-</td>';
 							}
 						}
+						tableView+='<td>'+redColor+'</td><td>'+GreenColor+'</td><td>'+OrangeColor+'</td>';
 					tableView+='</tr>';
 				}
 			tableView+='</tbody>';
@@ -953,13 +963,13 @@ function tableViewConsolidated(result,divId,subLocationType)
 							{
 								if(result[i].subList[j].percentage < 50)
 								{
-									tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000;font-size:12px">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000;font-size:12px;color#fff">'+result[i].subList[j].percentage+'</td>';
 								}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
 								{
-									tableView+='<td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00;font-size:12px">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00;font-size:12px;color#fff">'+result[i].subList[j].percentage+'</td>';
 								}else if(result[i].subList[j].percentage >= 80)
 								{
-									tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;font-size:12px">'+result[i].subList[j].percentage+'</td>';
+									tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;font-size:12px;color#fff">'+result[i].subList[j].percentage+'</td>';
 								}
 							}else{
 								tableView+='<td>-</td>';
