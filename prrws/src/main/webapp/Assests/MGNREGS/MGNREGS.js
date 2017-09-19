@@ -2893,13 +2893,16 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 								//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 							}
-							if((globalDivName != 'Mandal buildings1' && globalDivName != 'GP Buildings1') && (globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName != 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 							}
 							
 							str+='<td>'+ajaxresp[i].grounded+'</td>';
+							
 							if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms' || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
-								var groundedPerc = (ajaxresp[i].grounded/ajaxresp[i].sanctionedTarget*100).toFixed(2);
+								var groundedPerc = "0.00";
+								if(ajaxresp[i].sanctionedTarget > 0 && ajaxresp[i].grounded > 0)
+									groundedPerc = ((ajaxresp[i].grounded*100)/ajaxresp[i].sanctionedTarget).toFixed(2);
 								if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 50 && groundedPerc < 80){
@@ -2911,7 +2914,9 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 									str+='<td style="background-color:#FF0000;color:#fff">-</td>';
 								}
 							}else if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
-								var groundedPerc = (ajaxresp[i].grounded/ajaxresp[i].sanctionedTarget*100).toFixed(2);
+								var groundedPerc = "0.00";
+								if(ajaxresp[i].sanctionedTarget > 0 && ajaxresp[i].grounded > 0)
+									groundedPerc = ((ajaxresp[i].grounded*100)/ajaxresp[i].sanctionedTarget).toFixed(2);
 								if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 50 && groundedPerc < 80){
@@ -2925,7 +2930,9 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							}else if(globalDivName == 'OPGK-Perinnials' || globalDivName == 'OPGK-Annuals'){
 								var groundValue = ajaxresp[i].grounded;
 								var targetValue = ajaxresp[i].opgkTarget;
-								var groundedPerc = (groundValue/targetValue*100).toFixed(2);
+								var groundedPerc = "0.00";
+								if(targetValue > 0 && groundValue > 0)
+									groundedPerc = ((groundValue*100)/targetValue).toFixed(2);
 								if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 50 && groundedPerc < 80){
@@ -2939,7 +2946,9 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							}else if(globalDivName == 'Mulbery'){
 								var groundValue = ajaxresp[i].grounded;
 								var targetValue = ajaxresp[i].mulbTarget;
-								var groundedPerc = (groundValue/targetValue*100).toFixed(2);
+								var groundedPerc = "0.00";
+								if(targetValue > 0 && groundValue > 0)
+									groundedPerc = ((groundValue*100)/targetValue).toFixed(2);
 								if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 50 && groundedPerc < 80){
@@ -2953,7 +2962,9 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							}else{
 								var groundValue = ajaxresp[i].grounded;
 								var targetValue = ajaxresp[i].target;
-								var groundedPerc = (groundValue/targetValue*100).toFixed(2);
+								var groundedPerc = "0.00";
+								if(targetValue > 0 && groundValue > 0)
+									groundedPerc = ((groundValue*100)/targetValue).toFixed(2);
 								if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 50 && groundedPerc < 80){
@@ -3003,7 +3014,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}
 							
-							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName != 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 								if(ajaxresp[i].percSant < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
@@ -3478,13 +3489,25 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 {
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'Target Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
-	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
-	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
-	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+	var theadArr = [];
+	if(blockName == "UGDrainage"){
+			theadArr = [locationType,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+		if(locationType == "constituency")
+			theadArr = ["district",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+		else if(locationType == "mandal")
+			theadArr = ["district","constituency",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+		else if(locationType == "panchayat")
+			theadArr = ["district","constituency","mandal",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+	}
+	else if(blockName == "CC Roads1"){
+		theadArr = [locationType,'Target Length (in KMS)','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+		if(locationType == "constituency")
+			theadArr = ["district",locationType,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+		else if(locationType == "mandal")
+			theadArr = ["district","constituency",locationType,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+		else if(locationType == "panchayat")
+			theadArr = ["district","constituency","mandal",locationType,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+	}
 	
 	var json = {
 		year : "2017",
@@ -3531,17 +3554,46 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
-						if(locationType == "state" || locationType == "district")
-							str+='<td>'+ajaxresp[i].targetKMS+'</td>';
-						str+='<td>'+ajaxresp[i].expenditureAmount+'</td>';
-						str+='<td>'+ajaxresp[i].completedKMS+'</td>';
-						if(ajaxresp[i].percSant < 50){
-							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
-						}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
-							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percSant+'</td>';
-						}else if(ajaxresp[i].percSant >= 80){
-							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
+						if(blockName == "UGDrainage"){
+							if(locationType == "state" || locationType == "district")
+								str+='<td>'+ajaxresp[i].targetKMS+'</td>';
+							str+='<td>'+ajaxresp[i].sanctionedAmount+'</td>';
+							str+='<td>'+ajaxresp[i].sanctionedKMS+'</td>';
+							if(locationType == "state" || locationType == "district")
+								str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+							str+='<td>'+ajaxresp[i].expenditureAmount+'</td>';
+							str+='<td>'+ajaxresp[i].completedKMS+'</td>';
+							if(ajaxresp[i].percSant < 50){
+								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
+								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 80){
+								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
+							}
+							if(ajaxresp[i].percentage < 50){
+								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 80)
+							{
+								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
+							}
 						}
+						else if(blockName == "CC Roads1"){
+							if(locationType == "state" || locationType == "district")
+								str+='<td>'+ajaxresp[i].targetKMS+'</td>';
+							str+='<td>'+ajaxresp[i].sanctionedKMS+'</td>';
+							str+='<td>'+ajaxresp[i].expenditureAmount+'</td>';
+							str+='<td>'+ajaxresp[i].completedKMS+'</td>';
+							if(ajaxresp[i].percSant < 50){
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
+								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 80){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}
+						}
+						
 					str+='</tr>';
 				}
 			}
@@ -3886,7 +3938,10 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 								}else if(result[0].parameter == 'Timely Payments'){
 									str+='<h4>'+result[0].target+'%</h4>';
 								}else{
-									str+='<h4>'+result[0].target+'</h4>';
+									if(result[i].parameter == 'CC Roads' || result[i].parameter == 'UGDrainage')
+										str+='<h4>'+result[0].target+'</h4>';
+									else
+										str+='<h4>'+parseInt(result[0].target)+'</h4>';
 								}
 							}else{
 								str+='<h4>0</h4>';

@@ -903,9 +903,9 @@ function tableViewConsolidated(result,divId,subLocationType)
 				{
 					tableView+='<th>'+result[0].subList[i].component+'</th>';
 				}
-				tableView+='<th>Red </th>';
+				tableView+='<th>Green </th>';
 				tableView+='<th>Orange</th>';
-				tableView+='<th>Green</th>';
+				tableView+='<th>Red</th>';
 			tableView+='</thead>';
 			
  			tableView+='<tbody>';
@@ -937,7 +937,7 @@ function tableViewConsolidated(result,divId,subLocationType)
 								tableView+='<td>-</td>';
 							}
 						}
-						tableView+='<td>'+redColor+'</td><td>'+GreenColor+'</td><td>'+OrangeColor+'</td>';
+						tableView+='<td>'+GreenColor+'</td><td>'+OrangeColor+'</td><td>'+redColor+'</td>';
 					tableView+='</tr>';
 				}
 			tableView+='</tbody>';
@@ -978,7 +978,7 @@ function tableViewConsolidated(result,divId,subLocationType)
 								tableView+='<td>-</td>';
 							}
 						}
-						tableView+='<td>'+redColor+'</td><td>'+GreenColor+'</td><td>'+OrangeColor+'</td>';
+						tableView+='<td>'+GreenColor+'</td><td>'+OrangeColor+'</td><td>'+redColor+'</td>';
 					tableView+='</tr>';
 				}
 			tableView+='</tbody>';

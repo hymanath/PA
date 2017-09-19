@@ -2234,8 +2234,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setExpenditureAmount(jObj.getString("EXPENDITUREAMOUNT"));
 	 	    				vo.setCompletedKMS(jObj.getString("COMPLETEDKMS"));
 	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
-	 	    				if(vo.getCompletedKMS() != null && Double.valueOf(vo.getCompletedKMS()) > 0 && vo.getSanctionedKMS() != null && Long.valueOf(vo.getSanctionedKMS()) > 0l)
- 	    						vo.setPercSant(new BigDecimal(Double.valueOf(vo.getCompletedKMS())*100.00/Long.valueOf(vo.getSanctionedKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				if(vo.getCompletedKMS() != null && Double.valueOf(vo.getCompletedKMS()) > 0 && vo.getSanctionedKMS() != null && Double.valueOf(vo.getSanctionedKMS()) > 0)
+ 	    						vo.setPercSant(new BigDecimal(Double.valueOf(vo.getCompletedKMS())*100.00/Double.valueOf(vo.getSanctionedKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
  	    					else
  	    						vo.setPercSant("0.00");
 	 	    				
