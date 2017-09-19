@@ -91,4 +91,8 @@ public List<Object[]> getAllTehsilInfoDetails();
 	public List<Object[]> getAllTehsilList( Long stateId);
 	public List<Object[]> getAllTehsilListByState();
 	public List<Tehsil> findByDistrictIds(List<Long> districtIds);
+	public List<Long>  getAllConstituenciesByTehilId(Long tehsilId);
+	public List<Long> getAllConstituenciesByPanchayatId(Long panchayatId);
+	public List<Long> getAllConstituenciesByLocalElectionBodyId(Long localElectionBodyId);
+	//public Long getAllConstituenciesByLocalElectionBodyWardId(Long localElectionBodyWardId) ;
 }

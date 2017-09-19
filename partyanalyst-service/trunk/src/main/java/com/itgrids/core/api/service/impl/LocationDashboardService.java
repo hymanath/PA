@@ -145,6 +145,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IPanchayatDAO panchayatDAO;
+ 
 	private IGovtSchemeBenefitsInfoDAO govtSchemeBenefitsInfoDAO;
 	public IPositionDAO getPositionDAO() {
 			return positionDAO;
@@ -469,6 +470,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			String electionType = "Assembly";
 			String isnew = "false";
 			List<Long> consistuencyIds = new ArrayList<Long>();
+			
 			if (locationTypeId != null && locationTypeId == 3l) {
 				List<Object[]> constituencyList = constituencyDAO.getAllConstituenciesInADistrict(locationValue);
 				for (Object[] objects : constituencyList) {
@@ -486,9 +488,19 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					if (objects != null) {
 						consistuencyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 					}
-
 				}
-			}
+				
+			   }else if(locationTypeId != null && locationTypeId == 5l) {
+				   List<Long>  constituencyIdMan=tehsilDAO.getAllConstituenciesByTehilId(locationValue);	
+				consistuencyIds.add(constituencyIdMan.get(0));
+				
+			  }else if(locationTypeId != null && locationTypeId == 6l) {
+				  List<Long>   constituencyIdPan=tehsilDAO.getAllConstituenciesByPanchayatId(locationValue);	
+					consistuencyIds.add(constituencyIdPan.get(0));
+			  }	else if(locationTypeId != null && locationTypeId == 7l) {
+				  List<Long>   constituencyIdMun=tehsilDAO.getAllConstituenciesByLocalElectionBodyId(locationValue);	
+					consistuencyIds.add(constituencyIdMun.get(0));
+			  }		
 			@SuppressWarnings("unchecked")
 			List<Object[]> parlimentlist = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssemblyIds(consistuencyIds);
 			for (Long constituencyId : consistuencyIds) {
