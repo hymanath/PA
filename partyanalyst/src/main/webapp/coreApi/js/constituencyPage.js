@@ -85,7 +85,6 @@ function onLoadInitialisations()
 function onLoadAjaxCalls()
 {
 	
-	
 	 $("#enrolmentYears").chosen();
 	 //Enrolment Years
 	getEnrollmentIds(); 
@@ -3237,27 +3236,31 @@ function getDetailedElectionInformaction(){
 	function buildAssemblyResultsTable(result)
 	{
 		var str='';
-		var electionYearArr = [];
+		
 		var mainArr=[];
-		for(var i in result){
-			electionYearArr.push(result[i].electionYear);
-			if(result[i].subList !=null && result[i].subList.length>0){
-				for(var j in result[i].subList){
+		var electionYearArr = [];
+		if(result[0].subList[0].subList !=null && result[0].subList[0].subList.length>0){
+			for(var i in result[0].subList[0].subList){
+				electionYearArr.push(result[0].subList[0].subList[i].id+" "+result[0].subList[0].subList[i].name)
+			}
+		}
+		if(result[0].subList !=null && result[0].subList.length>0){
+			for(var j in result[0].subList){
+				if(result[0].subList[j].subList !=null && result[0].subList[j].subList.length>0){
 					var partyWiseCounts=[];
-					if(result[i].subList[j].subList !=null && result[i].subList[j].subList.length>0){
-						for(var k in result[i].subList[j].subList){
-							partyWiseCounts.push(parseFloat(result[i].subList[j].subList[k].votingPercentage));
-						}
+					for(var k in result[0].subList[j].subList){
+						partyWiseCounts.push(parseFloat(result[0].subList[j].subList[k].votingPercentage));
 					}
-					var obj ={
-						name: result[i].subList[j].name,
+				}
+				var obj ={
+						name: result[0].subList[j].name,
 						data: partyWiseCounts
 					}
 					mainArr.push(obj)
-				}
+					
 			}
-		}
-		
+			
+		}	
 		str+='<table class="table table-noborder">';
 			str+='<thead class="bg-DD text-capitalize">';
 				str+='<th style="vertical-align: middle;">Year</th>';
@@ -3315,6 +3318,9 @@ function getDetailedElectionInformaction(){
 				layout: 'vertical',
 				align: 'right',
 				verticalAlign: 'middle'
+			},
+			tooltip: {
+				shared:true
 			},
 			plotOptions: {
 				series: {
