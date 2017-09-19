@@ -278,4 +278,65 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 	public List<Tehsil> findByDistrictIds(List<Long> districtIds){
 		return getHibernateTemplate().findByNamedParam("from Tehsil model where model.district.districtId in(:districtIds)","districtIds", districtIds);
 	}
-}
+	
+	@Override
+	public List<Long> getAllConstituenciesByTehilId(Long tehsilId) {
+		Query query = getSession().createQuery(" select distinct model.constituencyId  from TehsilConstituency model where " +
+				" model.tehsilId =:tehsilId ");
+		if(tehsilId != null && tehsilId.longValue()>0){
+		query.setParameter("tehsilId", tehsilId);
+		}
+		return  query.list();
+		
+	}
+		
+	
+	@Override
+	public List<Long> getAllConstituenciesByPanchayatId(Long panchayatId) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.constituencyId  from TehsilConstituency model,Panchayat model1  where  model1.tehsilId=model.tehsilId ");
+		if(panchayatId != null && panchayatId.longValue()>0){
+			sb.append(" and model1.panchayatId =:panchayatId ");
+		}	
+	    Query query = getSession().createQuery(sb.toString());
+	    if(panchayatId != null && panchayatId.longValue()>0){
+	    query.setParameter("panchayatId", panchayatId);
+	    }
+	
+	   return  query.list();
+	
+	}
+
+	/*@Override
+	public Long getAllConstituenciesByLocalElectionBodyId(Long localElectionBodyWardId) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.constituencyId.localElectionBodyWardId  from Constituency model where ");
+		if(localElectionBodyWardId != null && localElectionBodyWardId.longValue()>0){
+			sb.append("  model.localElectionBodyWard.localElectionBodyWardId =:localElectionBodyWardId ");
+		}	
+	    Query query = getSession().createQuery(sb.toString());
+	    query.setParameter("localElectionBodyId", localElectionBodyWardId);
+	
+	   return (Long) query.uniqueResult();
+	
+	}
+*/
+	@Override
+	public List<Long> getAllConstituenciesByLocalElectionBodyId(Long localElectionBodyId) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.constituency.constituencyId  from AssemblyLocalElectionBody model where ");
+		if(localElectionBodyId != null && localElectionBodyId.longValue()>0){
+			sb.append("  model.localElectionBody.localElectionBodyId =:localElectionBodyId ");
+		}	
+	    Query query = getSession().createQuery(sb.toString());
+	    if(localElectionBodyId != null && localElectionBodyId.longValue()>0){
+	    query.setParameter("localElectionBodyId", localElectionBodyId);
+	    }
+	
+	   return  query.list();
+	
+	}
+	}
+	
+	
+	
