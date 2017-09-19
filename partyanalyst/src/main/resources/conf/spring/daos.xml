@@ -4153,4 +4153,7 @@
 	 <bean id="govtSchemeBenefitsInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtSchemeBenefitsInfoDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="tehsilConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.TehsilConstituencyDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
