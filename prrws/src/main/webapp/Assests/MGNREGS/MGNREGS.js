@@ -944,6 +944,12 @@ function buildNREGSProjectsOverview(result,blockName)
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Greening O..</h4>';
 								str+='</div>';
+							}
+							else if(result[i] == 'Agriculture Activities')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Agriculture Allied Activities">Agriculture A..</h4>';
+								str+='</div>';
 							}else{
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 									if(result[i].length > 12)
@@ -1623,13 +1629,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 			str+='<div class="panel-body">';
 			
 			if(globalDivName == "Average Wage" || globalDivName == "Average Days of Employment" || globalDivName == "HH Completed 100 Days"){
-				theadArr = [dataArr,'TARGET','Achivement','Percentage'];
+				theadArr = [dataArr,'TARGET','Achivement','Achieved Percentage'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'TARGET','Achivement','Percentage'];
+					theadArr = ["district",dataArr,'TARGET','Achivement','Achieved Percentage'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'TARGET','Achivement','Percentage'];
+					theadArr = ["district","constituency",dataArr,'TARGET','Achivement','Achieved Percentage'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Achivement','Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Achivement','Achieved Percentage'];
 			}else if(globalDivName == "Timely Payment"){
 				theadArr = [dataArr,'TARGET Percentage','Achivement Percentage','Achieved Percentage'];
 				if(dataArr == "constituency")
@@ -1637,7 +1643,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 				else if(dataArr == "mandal")
 					theadArr = ["district","constituency",dataArr,'TARGET Percentage','Achivement Percentage','Achieved Percentage'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Achivement','Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Achivement','Achieved Percentage'];
 			}else if(globalDivName == "Agriculture Activities"){
 				theadArr = [dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
 				if(dataArr == "constituency")
@@ -1687,13 +1693,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Area[IN KMS]','Pitting Area[In KMS]','Planting Area[In KMS]','Achivement Percentage'];
 			}else if(globalDivName == "Nurseries"){
-				theadArr = [dataArr,'TARGET','Completed','Percentage'];
+				theadArr = [dataArr,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'TARGET','Completed','Percentage'];
+					theadArr = ["district",dataArr,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'TARGET','Completed','Percentage'];
+					theadArr = ["district","constituency",dataArr,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Completed','Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 			}else if(globalDivName == "FAperformance"){
 				theadArr = [dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achivement(5)','Total Average(100)'];
 				if(dataArr == "constituency")
@@ -2923,8 +2929,8 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 								//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 							}
-							//if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
-							if((globalDivName != 'Mandal buildings1' && globalDivName != 'GP Buildings1' && globalDivName != 'Farm Ponds' && globalDivName != 'IHHL' && globalDivName != 'Vermi Compost' && globalDivName != 'Solid Waste Management') && (globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName != 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							//if((globalDivName != 'Mandal buildings1' && globalDivName != 'GP Buildings1' && globalDivName != 'Farm Ponds' && globalDivName != 'IHHL' && globalDivName != 'Vermi Compost' && globalDivName != 'Solid Waste Management') && (globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName != 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 							}
 							
@@ -3151,7 +3157,7 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 {
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'Target','Achivement','Percentage'];
+	var theadArr = [locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 	if(divId == 'Timely Payment')
 	{
 		theadArr = [locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
@@ -3163,11 +3169,11 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 			theadArr = ["district","constituency","mandal",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
 	}else{
 		if(locationType == "constituency")
-			theadArr = ["district",locationType,'Target','Achivement','Percentage'];
+			theadArr = ["district",locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 		else if(locationType == "mandal")
-			theadArr = ["district","constituency",locationType,'Target','Achivement','Percentage'];
+			theadArr = ["district","constituency",locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 		else if(locationType == "panchayat")
-			theadArr = ["district","constituency","mandal",locationType,'Target','Achivement','Percentage'];
+			theadArr = ["district","constituency","mandal",locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 	}
 	
 	
@@ -3296,11 +3302,9 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 						}
 						str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
 						str+='<td>'+ajaxresp[i].argicultureExpenditure+'</td>';
-						if(ajaxresp[i].achivement < 50){
+						if(ajaxresp[i].achivement < 60){
 							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].achivement+'</td>';
-						}else if(ajaxresp[i].achivement >= 50 && ajaxresp[i].achivement < 80){
-							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].achivement+'</td>';
-						}else if(ajaxresp[i].achivement >= 80)
+						}else if(ajaxresp[i].achivement >= 60)
 						{
 							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].achivement+'</td>';
 						}
@@ -3935,21 +3939,35 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 		for(var i in result)
 		{
 			if(levelId == 2 || levelId == "2" || levelId == 4 || levelId == "4"){
-				
-				if(result[i].percentage < 50)
+				if(type == 'Agriculture Activities')
 				{
-					str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-				}else if(result[i].percentage >= 50 && result[i].percentage < 80)
-				{
-					str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
-					
-				}else if(result[i].percentage >= 80)
-				{
-					str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
-				}else
-				{
-					str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+					if(result[i].percentage < 60)
+					{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+					}else if(result[i].percentage >= 60)
+					{
+						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+					}else
+					{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+					}
+				}else{
+					if(result[i].percentage < 50)
+					{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+					}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+					{
+						str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+						
+					}else if(result[i].percentage >= 80)
+					{
+						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+					}else
+					{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+					}
 				}
+				
 					if(type == 'FAperformance')
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
@@ -3992,6 +4010,10 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else if(type == 'OPGK-Annuals')
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Annuals">Oorura Pasu..</h4>';
+					}
+					else if(type == 'Agriculture Activities')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Agriculture Allied Activities">Agriculture A..</h4>';
 					}else if(type.length > 12)
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
@@ -4005,20 +4027,34 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else{
 						str+='<h1 class="text-center">0<small>%</small>';
 					}
-						
-					if(result[i].percentage < 50)
+					if(type == 'Agriculture Activities')
 					{
-						str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
-					}else if(result[i].percentage >= 50 && result[i].percentage < 80)
-					{
-						str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
-					}else if(result[i].percentage >= 80)
-					{
-						str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
-					}else
-					{
-						str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+						if(result[i].percentage < 60)
+						{
+							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+						}else if(result[i].percentage >= 60)
+						{
+							str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+						}else
+						{
+							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+						}
+					}else{
+						if(result[i].percentage < 50)
+						{
+							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+						{
+							str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+						}else if(result[i].percentage >= 80)
+						{
+							str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+						}else
+						{
+							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+						}
 					}
+					
 					str+='<div class="row">';
 						str+='<div class="col-sm-6 text-center">';
 							str+='<label>Target</label>';
