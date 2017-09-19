@@ -63,6 +63,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dao.hibernate.VoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.BoothInchargesVO;
@@ -88,6 +89,7 @@ import com.itgrids.partyanalyst.model.Position;
 import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -222,7 +224,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	}
 	private ICensusDAO censusDAO;
 	private ITehsilDAO tehsilDAO;
+	private VoterAgeRangeDAO voterAgeRangeDAO;
 
+	
+	public VoterAgeRangeDAO getVoterAgeRangeDAO() {
+		return voterAgeRangeDAO;
+	}
+	public void setVoterAgeRangeDAO(VoterAgeRangeDAO voterAgeRangeDAO) {
+		this.voterAgeRangeDAO = voterAgeRangeDAO;
+	}
 	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
@@ -606,35 +616,51 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		    	  reportLevelId=4l;
 		    	  constituencyIds.add(locationValue);
 		      }
-			Map<String, LocationVotersVO> map = new LinkedHashMap<String, LocationVotersVO>();
+			Map<Long, LocationVotersVO> map = new LinkedHashMap<Long, LocationVotersVO>();
+			 List<VoterAgeRange> voterAgeRangeList = voterAgeRangeDAO.getVoterAgeRangeList();
+		
+			 if(voterAgeRangeList != null && voterAgeRangeList.size() > 0 ){
+				for (VoterAgeRange voterAgeRange : voterAgeRangeList) {
+					if (voterAgeRange.getVoterAgeRangeId() != 7) {
+						LocationVotersVO ageRangeVo = new LocationVotersVO();
+						ageRangeVo.setAgeRangeId(voterAgeRange.getVoterAgeRangeId());
+						ageRangeVo.setAgeRange(voterAgeRange.getAgeRange());
+						map.put(voterAgeRange.getVoterAgeRangeId(), ageRangeVo);
+					}
+				}
+			 }
 			List<Object[]> votersObjList = voterAgeInfoDAO.getVotersAgeWiseCount(constituencyIds, publicationDateId,reportLevelId);
 			if (votersObjList != null && votersObjList.size() > 0) {
 				for (Object[] objects : votersObjList) {
-					LocationVotersVO vo = new LocationVotersVO();
-					vo.setAgeRangeId((Long) objects[0]);
-					vo.setAgeRange(objects[1].toString());
-					vo.setTotalVoters(objects[2] != null ? (Long) objects[2] : 0l);
-					vo.setTotalVotersPerc(objects[3] != null ? objects[3].toString() + " %" : "");
-					vo.setMaleVoters(objects[4] != null ? (Long) objects[4] : 0l);
-					vo.setMaleVotersPerc(objects[5] != null ? objects[5].toString() + " %" : "");
-					vo.setFemaleVoters(objects[6] != null ? (Long) objects[6] : 0l);
-					vo.setFemaleVotersPerc(objects[7] != null ? objects[7].toString() + " %" : "");
-					map.put(objects[1].toString(), vo);
+					if (map.get(commonMethodsUtilService.getLongValueForObject(objects[0])) == null) {
+						LocationVotersVO inVO = new LocationVotersVO();
+						map.put(commonMethodsUtilService.getLongValueForObject(objects[0]), inVO);
+					}else{
+					LocationVotersVO vo = map.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					if(vo != null){
+						vo.setTotalVoters(objects[1] != null ? (Long) objects[1] : 0l);
+						vo.setTotalVotersPerc(objects[2] != null ? objects[2].toString() + " %" : "");
+						vo.setMaleVoters(objects[3] != null ? (Long) objects[3] : 0l);
+						vo.setMaleVotersPerc(objects[4] != null ? objects[4].toString() + " %" : "");
+						vo.setFemaleVoters(objects[5] != null ? (Long) objects[5] : 0l);
+						vo.setFemaleVotersPerc(objects[6] != null ? objects[6].toString() + " %" : "");
+					}
+					}
 				}
 			}
 
 			List<Object[]> cadreObjList = tdpCadreEnrollmentYearDAO.getGenderAndAgeGroupWiseCadreCount(locationTypeId,locationValue);
 			if (cadreObjList != null && cadreObjList.size() > 0) {
 				for (Object[] objects : cadreObjList) {
-					if (map.get(objects[1].toString()) == null) {
+					if (map.get(commonMethodsUtilService.getLongValueForObject(objects[0])) == null) {
 						LocationVotersVO inVO = new LocationVotersVO();
-						map.put(objects[1].toString(), inVO);
+						map.put(commonMethodsUtilService.getLongValueForObject(objects[0]), inVO);
 					}
 
-					if (objects[2].toString().trim().equalsIgnoreCase("M")) {
-						map.get(objects[1].toString()).setMaleCadres((Long) objects[3]);
-					} else if (objects[2].toString().trim().equalsIgnoreCase("F")) {
-						map.get(objects[1].toString()).setFemaleCadres((Long) objects[3]);
+					if ((objects[1].toString().trim()).equalsIgnoreCase("M")) {
+						map.get(commonMethodsUtilService.getLongValueForObject(objects[0])).setMaleCadres((Long) objects[2]);
+					} else if ((objects[1].toString().trim()).equalsIgnoreCase("F")) {
+						map.get(commonMethodsUtilService.getLongValueForObject(objects[0])).setFemaleCadres((Long) objects[2]);
 					}
 				}
 			}
@@ -642,7 +668,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			if (map != null && map.size() > 0) {
 				LocationVotersVO voForTotalCounts = new LocationVotersVO();
 				Long totalCadres = 0l, maleTotalCadres = 0l, femaleTotalCadres = 0l;
-				for (Entry<String, LocationVotersVO> entry : map.entrySet()) {
+				for (Entry<Long, LocationVotersVO> entry : map.entrySet()) {
 					entry.getValue()
 					.setTotalCadres(entry.getValue().getMaleCadres() + entry.getValue().getFemaleCadres());
 					totalCadres = totalCadres + entry.getValue().getMaleCadres() + entry.getValue().getFemaleCadres();
@@ -650,7 +676,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					femaleTotalCadres = femaleTotalCadres + entry.getValue().getFemaleCadres();
 				}
 
-				for (Entry<String, LocationVotersVO> entry : map.entrySet()) {
+				for (Entry<Long, LocationVotersVO> entry : map.entrySet()) {
 					if (totalCadres > 0l)
 						entry.getValue()
 						.setTotalCadrePerc(((entry.getValue().getTotalCadres() * 100) / totalCadres) + "");

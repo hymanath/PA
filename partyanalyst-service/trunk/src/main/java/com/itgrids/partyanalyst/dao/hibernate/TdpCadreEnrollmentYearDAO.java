@@ -1002,7 +1002,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		
 		public List<Object[]> getGenderAndAgeGroupWiseCadreCount(Long locationTypeId,Long locationValue ){
 			StringBuilder sb = new StringBuilder();
-			sb.append( "select model.tdpCadre.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange,model.tdpCadre.gender, " +
+			sb.append( "select model.tdpCadre.voterAgeRangeId,model.tdpCadre.gender, " +
 					" count(model.tdpCadre.tdpCadreId) " +
 					" from TdpCadreEnrollmentYear model " +
 					" where model.isDeleted='N' and model.tdpCadre.isDeleted = 'N' " +

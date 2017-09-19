@@ -274,7 +274,7 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 		public List<Object[]> getVotersAgeWiseCount(List<Long> constituencyIds,Long publicationDateId,Long reportLevelId){
 			StringBuilder sb = new StringBuilder();
 			
-			sb.append("select model.voterAgeRange.voterAgeRangeId,model.voterAgeRange.ageRange," +
+			sb.append("select model.voterAgeRange.voterAgeRangeId," +
 					" model.totalVoters,model.totalVotersPercentage, " +
 					" model.maleVoters,model.maleVotersPercentage, " +
 					" model.femaleVoters,model.femaleVotersPercentage " +
