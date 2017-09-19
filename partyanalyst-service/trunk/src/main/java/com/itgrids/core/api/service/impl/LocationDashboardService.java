@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.IGovtSchemeBeneficiaryDetailsDAO;
+import com.itgrids.partyanalyst.dao.IGovtSchemeBenefitsInfoDAO;
 import com.itgrids.partyanalyst.dao.IInsuranceStatusDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
@@ -144,7 +145,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IPanchayatDAO panchayatDAO;
-	
+	private IGovtSchemeBenefitsInfoDAO govtSchemeBenefitsInfoDAO;
 	public IPositionDAO getPositionDAO() {
 			return positionDAO;
 	}
@@ -451,6 +452,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public void setActivityLocationInfoDAO(
 			IActivityLocationInfoDAO activityLocationInfoDAO) {
 		this.activityLocationInfoDAO = activityLocationInfoDAO;
+	}
+	
+	public IGovtSchemeBenefitsInfoDAO getGovtSchemeBenefitsInfoDAO() {
+		return govtSchemeBenefitsInfoDAO;
+	}
+	public void setGovtSchemeBenefitsInfoDAO(
+			IGovtSchemeBenefitsInfoDAO govtSchemeBenefitsInfoDAO) {
+		this.govtSchemeBenefitsInfoDAO = govtSchemeBenefitsInfoDAO;
 	}
 	public List<CandidateDetailsForConstituencyTypesVO> getCandidateAndPartyInfoForConstituency(Long locationValue,Long locationTypeId) {
 		List<CandidateDetailsForConstituencyTypesVO> finalList= new ArrayList<CandidateDetailsForConstituencyTypesVO>();
@@ -2259,7 +2268,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public List<BenefitCandidateVO> getGovtSchemeWiseBenefitMembersCount(final Long locationTypeId, final Long locationValue) {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
-			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getGovtSchemeWiseBenefitMemberCount(locationTypeId,locationValue);
+			//List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getGovtSchemeWiseBenefitMemberCount(locationTypeId,locationValue);
+			List<Object[]> benefitMemberObjLst = govtSchemeBenefitsInfoDAO.getGovtSchemeWiseBenefitMemberCount(locationTypeId,locationValue);
 			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,locationValue,locationTypeId,"constituency");
 			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst,censusPopList,"constituency");
 		} catch (Exception e) {

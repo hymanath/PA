@@ -2,15 +2,22 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "govt_scheme_benefits_info")
@@ -22,6 +29,7 @@ public class GovtSchemeBenefitsInfo  extends BaseModel implements Serializable{
 	private Long locationValue;
 	private Long  govtSchemeId;
 	private Long grivenaceCount;
+	private GovtSchemes govtSchemes;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -59,6 +67,16 @@ public class GovtSchemeBenefitsInfo  extends BaseModel implements Serializable{
 	}
 	public void setGrivenaceCount(Long grivenaceCount) {
 		this.grivenaceCount = grivenaceCount;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="govt_scheme_id",insertable=false, updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtSchemes getGovtSchemes() {
+		return govtSchemes;
+	}
+	public void setGovtSchemes(GovtSchemes govtSchemes) {
+		this.govtSchemes = govtSchemes;
 	}
 	
 	
