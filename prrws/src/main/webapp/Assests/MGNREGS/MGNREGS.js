@@ -512,6 +512,15 @@ function projectData(divId,levelId,locationId)
 									}else if(divId == 'GH')
 									{
 										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Greening Of Hillocks</h4>';
+									}else if(divId == 'IHHL')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - INDIVIDUAL HOUSEHOLD LATRINE</h4>';
+									}else if(divId == 'OPGK-Perinnials')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Oorura Pasu Graasa Kshetralu - Perinnials</h4>';
+									}else if(divId == 'OPGK-Annuals')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Oorura Pasu Graasa Kshetralu - Annuals</h4>';
 									}else{
 										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
 									}
@@ -669,6 +678,12 @@ function overviewData(divId,levelId,locationId)
 							}else if(divId == 'CD_CW')
 							{
 								collapse+='<h4 class="panel-title text-capital">Check Dams and Check Walls overview</h4>';
+							}else if(divId == 'OPGK-Perinnials')
+							{
+								collapse+='<h4 class="panel-title text-capital">Oorura Pasu Graasa Kshetralu - Perinnials overview</h4>';
+							}else if(divId == 'OPGK-Annuals')
+							{
+								collapse+='<h4 class="panel-title text-capital">Oorura Pasu Graasa Kshetralu - Annuals overview</h4>';
 							}else if(divId == 'CC Roads1')
 							{
 								collapse+='<h4 class="panel-title text-capital">CC Roads overview</h4>';
@@ -678,6 +693,9 @@ function overviewData(divId,levelId,locationId)
 							}else if(divId == 'GP Buildings1')
 							{
 								collapse+='<h4 class="panel-title text-capital">GP Buildings overview</h4>';
+							}else if(divId == 'IHHL')
+							{
+								collapse+='<h4 class="panel-title text-capital">Individual Household Latrine</h4>';
 							}else if(divId == 'Mandal buildings1')
 							{
 								collapse+='<h4 class="panel-title text-capital">Mandal buildings overview</h4>';
@@ -872,7 +890,7 @@ function buildNREGSProjectsOverview(result,blockName)
 													{
 														str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
 													}else{
-														str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+														str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i]+'</h4>';
 													}
 												str+='</div>';
 											str+='</div>';
@@ -901,6 +919,11 @@ function buildNREGSProjectsOverview(result,blockName)
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Improvements to Check Dams and Percolation Tanks">Improvements..</h4>';
 								str+='</div>';
+							}else if(result[i] == 'IHHL')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Individual Household Latrine">Individual H..</h4>';
+								str+='</div>';
 							}else if(result[i] == 'MPT_PT')
 							{
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
@@ -927,7 +950,7 @@ function buildNREGSProjectsOverview(result,blockName)
 									{
 										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
 									}else{
-										str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i]+'</h4>';
 									}
 								str+='</div>';
 							}
@@ -970,7 +993,7 @@ function buildNREGSProjectsOverview(result,blockName)
 									{
 										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mandal buildings">Mandal b..</h4>';
 									}else{
-										str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i]+'</h4>';
 									}
 								str+='</div>';
 							str+='</div>';
@@ -993,11 +1016,18 @@ function buildNREGSProjectsOverview(result,blockName)
 									if(result[i] == "OPGK-Perinnials" || result[i] == "OPGK-Annuals"){
 										str+='<div class="col-sm-6 m_top10">';
 											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
-												if(result[i].length > 12)
+											
+												if(result[i] == 'OPGK-Perinnials')
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Perinnials">Oorura Pas..</h4>';
+												}else if(result[i] == 'OPGK-Annuals')
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Annuals">Oorura Pas..</h4>';
+												}else if(result[i].length > 12)
 												{
 													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
 												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i]+'</h4>';
 												}
 											str+='</div>';
 										str+='</div>';
@@ -1020,7 +1050,7 @@ function buildNREGSProjectsOverview(result,blockName)
 												{
 													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
 												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i]+'</h4>';
 												}
 											str+='</div>';
 										str+='</div>';
@@ -1044,7 +1074,7 @@ function buildNREGSProjectsOverview(result,blockName)
 												{
 													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
 												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i]+'</h4>';
 												}
 											str+='</div>';
 										str+='</div>';
@@ -1069,7 +1099,7 @@ function buildNREGSProjectsOverview(result,blockName)
 												{
 													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
 												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i]+'</h4>';
 												}
 											str+='</div>';
 										str+='</div>';
@@ -1093,7 +1123,7 @@ function buildNREGSProjectsOverview(result,blockName)
 												{
 													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
 												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i]+'</h4>';
 												}
 											str+='</div>';
 										str+='</div>';
@@ -1117,7 +1147,7 @@ function buildNREGSProjectsOverview(result,blockName)
 												{
 													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
 												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i]+'</h4>';
 												}
 											str+='</div>';
 										str+='</div>';
@@ -2893,7 +2923,8 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 								//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 							}
-							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							//if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							if((globalDivName != 'Mandal buildings1' && globalDivName != 'GP Buildings1' && globalDivName != 'Farm Ponds' && globalDivName != 'IHHL' && globalDivName != 'Vermi Compost' && globalDivName != 'Solid Waste Management') && (globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName != 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 							}
 							
@@ -3815,7 +3846,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			{
 				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 			}else{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
 			}
 			str+='<small class="text-center">Total Pending</small>';
 			if(result[0].totalPendinAmount != null && result[0].totalPendinAmount.length > 0)
@@ -3885,6 +3916,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else if(type == 'CD_CW')
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Check Dams and Check Walls">Check Dam..</h4>';
+					}else if(type == 'IHHL')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Individual Household Latrine">Individual Ho..</h4>';
 					}else if(type == 'GH')
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Greening O..</h4>';
@@ -3900,11 +3934,17 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else if(type == 'Mandal Buildings1')
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mandal Buildings">Mandal Bui..</h4>';
+					}else if(type == 'OPGK-Perinnials')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Perinnials">Oorura Pasu..</h4>';
+					}else if(type == 'OPGK-Annuals')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Annuals">Oorura Pasu..</h4>';
 					}else if(type.length > 12)
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 					}else{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
 					}
 					str+='<small class="text-center">Achieved</small>';
 					if(result[i].percentage != null && result[i].percentage.length > 0)
@@ -4018,11 +4058,53 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						{
 							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
 						}
-							if(type.length > 12)
+							if(type == 'FAperformance')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
+							}else if(type == 'SMC Trench')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="SMC Trenches">SMC Trench..</h4>';
+							}else if(type == 'Imp to CD')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Improvements to Check Dams and Percolation Tanks">Improvements..</h4>';
+							}else if(type == 'MPT_PT')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mini Percolation Tanks and Percolation Tanks">Mini Perco..</h4>';
+							}else if(type == 'GC Works')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Gully Control Works">Gully Contr..</h4>';
+							}else if(type == 'CD_CW')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Check Dams and Check Walls">Check Dam..</h4>';
+							}else if(type == 'IHHL')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Individual Household Latrine">Individual Ho..</h4>';
+							}else if(type == 'GH')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Greening O..</h4>';
+							}else if(type == 'CC Roads1')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="CC Roads">CC Roads</h4>';
+							}else if(type == 'Anganwadi')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Anganwadi Buildings">Anganwadi B..</h4>';
+							}else if(type == 'GP Buildings1')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="GP Buildings">GP Build..</h4>';
+							}else if(type == 'Mandal Buildings1')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mandal Buildings">Mandal Bui..</h4>';
+							}else if(type == 'OPGK-Perinnials')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Perinnials">Oorura Pasu..</h4>';
+							}else if(type == 'OPGK-Annuals')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Annuals">Oorura Pasu..</h4>';
+							}else if(type.length > 12)
 							{
 								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 							}else{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
 							}
 							str+='<small class="text-center">Achieved</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
