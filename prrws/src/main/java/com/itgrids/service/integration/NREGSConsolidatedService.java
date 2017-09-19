@@ -233,7 +233,7 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 													}
 													else if(componentName != null && 
 															(componentName.trim().equalsIgnoreCase("Horticulture") || componentName.trim().equalsIgnoreCase("Avenue"))){
-														componentvo.setPercentage(jObj.getString("PERCENTAGEOFPLANTING"));
+														componentvo.setPercentage(new BigDecimal(Double.valueOf(jObj.getString("PITTINGAREA"))*100.00/Double.valueOf(jObj.getString("TARGETACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 													}
 													else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance")){
 														componentvo.setPercentage(jObj.getString("AVG_TOT_MARKS"));
@@ -293,7 +293,7 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 													}
 													else if(componentName != null && 
 															(componentName.trim().equalsIgnoreCase("Horticulture") || componentName.trim().equalsIgnoreCase("Avenue"))){
-														componentvo.setPercentage(jObj.getString("PERCENTAGEOFPLANTING"));
+														componentvo.setPercentage(new BigDecimal(Double.valueOf(jObj.getString("PITTINGAREA"))*100.00/Double.valueOf(jObj.getString("TARGETACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 													}
 													else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance")){
 														componentvo.setPercentage(jObj.getString("AVG_TOT_MARKS"));
@@ -399,7 +399,10 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														}
 														else if(componentName != null && 
 																(componentName.trim().equalsIgnoreCase("Horticulture") || componentName.trim().equalsIgnoreCase("Avenue"))){
-															componentvo.setPercentage(jObj.getString("PERCENTAGEOFPLANTING"));
+															if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+																componentvo.setPercentage(new BigDecimal(Double.valueOf(jObj.getString("PLANTINGAREA"))*100.00/Double.valueOf(jObj.getString("TARGETACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+															else
+																componentvo.setPercentage(new BigDecimal(Double.valueOf(jObj.getString("PLANTINGAREA"))*100.00/Double.valueOf(jObj.getString("SANCTIONEDACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 														}
 														else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance")){
 															componentvo.setPercentage(jObj.getString("AVG_TOT_MARKS"));
