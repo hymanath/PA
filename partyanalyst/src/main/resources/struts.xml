@@ -18030,5 +18030,10 @@
   	<action name="govtPartyCoreDashboardAction" class="coreDashboardAction" method="govtPartyCoreDashboardAction">
 		<result name="success">/jsp/newCoreDashboard.jsp</result>
 	</action>
+	<action name="getTrainingSurveyDetailAction" class="trainingCampAction"  method="getTrainingSurveyDetail">
+		<result type="json" name="success">    
+			<param name="root">verifyVOLst</param>       
+		</result>
+  	</action>
       </package>
 </struts>

@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -133,7 +134,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Long updateFinalyzeMeetingId;
 	private List<PartyMeetingWSVO> partyMeetingWSVOList;
 	private List<KeyValueVO> keyValueVOlist;
-	
+	private List<VerifierVO> verifyVOLst;
 	
 	public List<KeyValueVO> getKeyValueVOlist() {
 		return keyValueVOlist;
@@ -693,7 +694,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		this.updateStatusId = updateStatusId;
 	}
 
-	
+	public List<VerifierVO> getVerifyVOLst() {
+		return verifyVOLst;
+	}
+
+	public void setVerifyVOLst(List<VerifierVO> verifyVOLst) {
+		this.verifyVOLst = verifyVOLst;
+	}
+
 	public String callCenterTrainingAdmin()
 	{
 		try
@@ -3361,6 +3369,19 @@ public String getCommentsMeetingDetails(){
 		
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAllMomAtrClickDetails Action", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getTrainingSurveyDetail(){
+		try {
+			LOG.info("Entered into trainingCampAction of getTrainingSurveyDetail()");
+			jObj = new JSONObject(getTask());
+			Long trainingProgramId  =jObj.getLong("trainingProgramId");
+			Long trainingCampId  =jObj.getLong("trainingCampId");
+			Long trainignBatchId  =jObj.getLong("trainignBatchId");
+			verifyVOLst = trainingCampService.getTrainingSurveyDetails(trainingProgramId,trainingCampId,trainignBatchId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTrainingSurveyDetail Action", e);
 		}
 		return Action.SUCCESS;
 	}
