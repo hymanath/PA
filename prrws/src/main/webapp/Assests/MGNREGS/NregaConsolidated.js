@@ -491,24 +491,38 @@ function tableViewConsolidated(result,divId,subLocationType)
 						{
 							if(result[i].subList[j].percentage != null)
 							{
-								if(result[i].subList[j].percentage < 50)
+								if(result[i].subList[j].component == 'Agriculture Activities')
 								{
-									tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000;color#fff">'+result[i].subList[j].percentage+'</td>';
-									redColor = redColor + 1;
-								}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
-								{
-									tableView+='<td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00;color#fff">'+result[i].subList[j].percentage+'</td>';
-									OrangeColor = OrangeColor + 1;
-								}else if(result[i].subList[j].percentage >= 80)
-								{
-									tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;color#fff">'+result[i].subList[j].percentage+'</td>';
-									GreenColor = GreenColor + 1;
+									if(result[i].subList[j].percentage < 60)
+									{
+										tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000;color#fff">'+result[i].subList[j].percentage+'</td>';
+										redColor = redColor + 1;
+									}else if(result[i].subList[j].percentage >= 60)
+									{
+										tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;color#fff">'+result[i].subList[j].percentage+'</td>';
+										GreenColor = GreenColor + 1;
+									}
+								}else{
+									if(result[i].subList[j].percentage < 50)
+									{
+										tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000;color#fff">'+result[i].subList[j].percentage+'</td>';
+										redColor = redColor + 1;
+									}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
+									{
+										tableView+='<td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00;color#fff">'+result[i].subList[j].percentage+'</td>';
+										OrangeColor = OrangeColor + 1;
+									}else if(result[i].subList[j].percentage >= 80)
+									{
+										tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;color#fff">'+result[i].subList[j].percentage+'</td>';
+										GreenColor = GreenColor + 1;
+									}
 								}
+								
 							}else{
 								tableView+='<td>-</td>';
 							}
 						}
-						tableView+='<td>'+GreenColor+'</td><td>'+OrangeColor+'</td><td>'+redColor+'</td>';
+						tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;color#fff">'+GreenColor+'</td><td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00;color#fff">'+OrangeColor+'</td><td class="color_low" my_color="#FF0000" style="background-color:#FF0000;color#fff">'+redColor+'</td>';
 					tableView+='</tr>';
 				}
 			tableView+='</tbody>';
@@ -538,24 +552,37 @@ function tableViewConsolidated(result,divId,subLocationType)
 						{
 							if(result[i].subList[j].percentage != null)
 							{
-								if(result[i].subList[j].percentage < 50)
+								if(result[i].subList[j].component == 'Agriculture Activities')
 								{
-									tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000;font-size:12px;color#fff">'+result[i].subList[j].percentage+'</td>';
-									redColor = redColor + 1;
-								}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
-								{
-									tableView+='<td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00;font-size:12px;color#fff">'+result[i].subList[j].percentage+'</td>';
-									OrangeColor = OrangeColor + 1;
-								}else if(result[i].subList[j].percentage >= 80)
-								{
-									tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;font-size:12px;color#fff">'+result[i].subList[j].percentage+'</td>';
-									GreenColor = GreenColor + 1;
+									if(result[i].subList[j].percentage < 60)
+									{
+										tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000;color#fff">'+result[i].subList[j].percentage+'</td>';
+										redColor = redColor + 1;
+									}else if(result[i].subList[j].percentage >= 60)
+									{
+										tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;color#fff">'+result[i].subList[j].percentage+'</td>';
+										GreenColor = GreenColor + 1;
+									}
+								}else{
+									if(result[i].subList[j].percentage < 50)
+									{
+										tableView+='<td class="color_low" my_color="#FF0000" style="background-color:#FF0000;color#fff">'+result[i].subList[j].percentage+'</td>';
+										redColor = redColor + 1;
+									}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
+									{
+										tableView+='<td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00;color#fff">'+result[i].subList[j].percentage+'</td>';
+										OrangeColor = OrangeColor + 1;
+									}else if(result[i].subList[j].percentage >= 80)
+									{
+										tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;color#fff">'+result[i].subList[j].percentage+'</td>';
+										GreenColor = GreenColor + 1;
+									}
 								}
 							}else{
 								tableView+='<td>-</td>';
 							}
 						}
-						tableView+='<td style="font-size:12px">'+GreenColor+'</td><td style="font-size:12px">'+OrangeColor+'</td><td style="font-size:12px">'+redColor+'</td>';
+						tableView+='<td class="color_high" my_color="#00AF50" style="background-color:#00AF50;color#fff">'+GreenColor+'</td><td class="color_medium" my_color="#FFBA00" style="background-color:#FFBA00;color#fff">'+OrangeColor+'</td><td class="color_low" my_color="#FF0000" style="background-color:#FF0000;color#fff">'+redColor+'</td>';
 					tableView+='</tr>';
 				}
 			tableView+='</tbody>';
