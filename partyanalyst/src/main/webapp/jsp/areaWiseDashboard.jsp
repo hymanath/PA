@@ -318,7 +318,7 @@
 				<div class="block">
 					<div class="row">
 						<div class="col-sm-10">
-							<h4 class="panel-title theme-title-color">Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h4>
+							<h4 class="panel-title theme-title-color">Grievance Details <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h4>
 						</div>
 						<!--<div class="col-sm-2">
 							<select id="enrolmentYearsGrievance">
@@ -329,7 +329,7 @@
 					</div>
 					<div class="row m_top15">
 						<div class="col-sm-4">
-							<h4 class="panel-title text-capital text-center">Grivance</h4>
+							<h4 class="panel-title text-capital text-center">Grievance</h4>
 							<div id="grivanceId0" style="height:300px;"></div>
 						</div>
 						<div class="col-sm-4">
