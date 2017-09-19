@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.dto.VerifierVO;
 
 public interface ITrainingCampService {
 
@@ -142,4 +143,6 @@ public interface ITrainingCampService {
 	public Map<String,TrainingCampVO> getAllTrainingProgWiseCompletedRunningUpcomingBatchIds(String endDateString,String startDateString,Long stateId,String type,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public List<PartyMeetingWSVO> getattendedcountByFeedBacksCounts(List<Long> programIds,Long campId,Long batchId,String fromdate,String todate,String callFrom,List<Long> enrollmentYrIds,String skillType,Long statusId);
 	public List<KeyValueVO> getAllMomAtrClickDetails(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString,String type,String accessType,String accessValue);
+	public List<VerifierVO> getTrainingSurveyDetails(Long trainingProgramId,Long trainignBatchId,Long trainingCampId);
+	
 }

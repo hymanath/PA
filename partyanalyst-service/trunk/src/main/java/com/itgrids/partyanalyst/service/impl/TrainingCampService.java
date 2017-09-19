@@ -20,6 +20,9 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
+import org.quartz.xml.JobSchedulingDataProcessor;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -119,6 +122,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyMeeting;
@@ -151,6 +155,8 @@ import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 class TrainingCampService implements ITrainingCampService{
 
 	public static Logger LOG = Logger.getLogger(TrainingCampService.class);
@@ -12628,4 +12634,59 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 		}
 		return voList;
 	}
+	
+	public List<VerifierVO> getTrainingSurveyDetails(Long trainingProgramId,Long trainingCampId,Long trainignBatchId){
+			List<VerifierVO> finalVerifierVOList =new ArrayList<VerifierVO>();
+		    try{
+			     WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/Survey/WebService/getTrainingSurveyDetails/"+trainingProgramId +"/"+trainingCampId+"/"+trainignBatchId);
+			     WebResource.Builder builder = webResource.getRequestBuilder();
+			         builder.accept("application/json");
+			         ClientResponse response = builder.get(ClientResponse.class);
+			         if(response.getStatus() != 200){
+			             throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			         }else{
+				           String output = response.getEntity(String.class);
+				           if(output !=null && output.length() >0){
+					           JSONArray jsonArry=new  JSONArray(output);
+					            for(int i=0; i<jsonArry.length(); i++){ 
+						            VerifierVO verifierVO=new VerifierVO();
+						            JSONObject jObj=(JSONObject)jsonArry.get(i);
+						            verifierVO.setId(jObj.getLong("id"));		// programm survey id 
+						            verifierVO.setName(jObj.getString("name"));		// programm survey name 
+						            JSONArray jsonArry2=jObj.getJSONArray("verifierVOList");
+						            List<VerifierVO> questionsList = new ArrayList<VerifierVO>(0);
+							            for(int j=0; j<jsonArry2.length(); j++){		
+								              VerifierVO quesationVo= new VerifierVO();
+								              //JSONObject jsobj2=(JSONObject)jsonArry2.get(j);
+								              JSONObject jsobj2= jsonArry2.getJSONObject(j);
+								              quesationVo.setId(jsobj2.getLong("id"));		//  quesationId
+								              quesationVo.setName(jsobj2.getString("name"));		// quesation name
+									          List<VerifierVO> optionsList = new ArrayList<VerifierVO>(0);
+									              JSONArray jsonArry3=jsobj2.getJSONArray("verifierVOList");
+									                for(int k=0; k<jsonArry3.length() ; k++){
+									                    VerifierVO optionVo= new VerifierVO();
+									                     // JSONObject jObj3=(JSONObject)jsonArry3.get(k);
+									                      JSONObject jObj3 = jsonArry3.getJSONObject(k);
+									                        optionVo.setOptionId(jObj3.getLong("optionId")); //optionId
+									                        optionVo.setOption(jObj3.getString("option"));   //option
+									                        optionVo.setCount(jObj3.getLong("count"));		//count
+									                        optionVo.setPercentage(jObj3.getString("percentage"));		//percentage
+									                        optionsList.add(optionVo);	
+									                }
+									                quesationVo.setVerifierVOList(optionsList);		//option deatils set to quesationVo 
+									                questionsList.add(quesationVo);		// quesationVo add to questions List
+					            }
+					            verifierVO.setVerifierVOList(questionsList); // questionsList  set to vo
+					            finalVerifierVOList.add(verifierVO); //vo add to final list
+					          }
+				         }
+				         }
+		 }catch(Exception e){
+			 LOG.error(" Error Occured in getTrainingSurveyDetails method in TraininingCampService class" ,e);
+		}
+	 return finalVerifierVOList;
+				
+  }
 }
+	
+	 
