@@ -900,7 +900,7 @@ function getSurveyDetails()
 	
 	$.ajax({
 		//url: "http://localhost:8080/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
-		  url: "https://mytdp.com/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
+		  //url: "https://mytdp.com/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
 	}).then(function(result) {
 		if(result != null && result.length > 0){
 			buildSurveyDetails(result);
@@ -1045,6 +1045,7 @@ function buildSurveyDetails(result)
 		getAttendedCountSummaryByBatch(enrollmentYrId);
 		getProgCampBatchNames();
 		getSurveyDetails();
+		getTrainingSurveyDetail();
 	}
 	
 	$(document).on("click",".skillCountsCls",function(){
@@ -1105,6 +1106,26 @@ function buildSurveyDetails(result)
 		});
 		
 	});
+	
+	function getTrainingSurveyDetail(){	
+		var jsObj = {
+			trainingCampId:campId,
+			trainignBatchId:batchId,
+			trainingProgramId:programId
+		}
+			$.ajax({
+				type:'POST',
+				 url: 'getTrainingSurveyDetailAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result != null && result.length > 0){
+				    buildSurveyDetails(result);
+			   }else{
+					$("#surveyDataLoadoing").hide();
+					$("#surveyDetailsId").html("NO DATA AVAILABLE...");
+			  }
+		  });	
+	}
 </script>
 </body>
 </html>	
