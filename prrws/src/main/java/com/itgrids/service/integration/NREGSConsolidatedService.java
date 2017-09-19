@@ -420,7 +420,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 															componentvo.setPercentage(jObj.getString("PERCENTAGE"));
 														}
 														else{
-															componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+															if(jObj.getLong("GROUNDED") > 0 && jObj.getString("TARGET") != null && jObj.getLong("TARGET") > 0)
+																componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 														}
 														
 														if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Anganwadi Buildings") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
@@ -505,7 +506,10 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														componentvo.setPercentage(jObj.getString("PERCENTAGE"));
 													}
 													else{
-														componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+														if(jObj.getLong("GROUNDED") > 0 && jObj.getString("TARGET") != null && jObj.getLong("TARGET") > 0)
+														{
+															componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+														}
 													}
 													
 													if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Anganwadi Buildings") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
