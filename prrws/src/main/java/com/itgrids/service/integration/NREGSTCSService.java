@@ -2108,6 +2108,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					vo.setSancTrgtPittingPerc(new BigDecimal((Double.valueOf(jObj.getString("PITTINGAREA"))*100.00)/Double.valueOf(jObj.getString("SANCTIONEDACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				else
 	 	    					vo.setSancTrgtPittingPerc("0.00");
+	 	    				
+	 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
+	 	    					vo.setTargetPalnting(new BigDecimal((Double.valueOf(jObj.getString("PLANTINGAREA"))*100.00)/Double.valueOf(jObj.getString("TARGETACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				}
+	 	    				
 	 	    				voList.add(vo);
 	 	    			}
 	 	    		}
@@ -2160,6 +2165,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
 	 	    					vo.setTargetKMS(jObj.getString("TARGETACRES"));//TARGETKMS
 		 	    				vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));//SANCTIONEDPERCENTAGE
+		 	    				vo.setTargetPittingPerc(new BigDecimal(Double.valueOf(jObj.getString("PITTINGAREA"))*100.00/Double.valueOf(vo.getTargetKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    			}
 	 	    				vo.setSanctionedKMS(jObj.getString("SANCTIONEDACRES"));//SANCTIONEDKMS
 	 	    				vo.setPittingKMS(jObj.getString("PITTINGAREA"));//PITTINGKMS
@@ -2171,6 +2177,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    						vo.setSanctionedPerc("0.00");
 		 	    			}
 	 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));//PERCENTAGEOFPLANTING
+	 	    				vo.setSancTrgtPittingPerc(new BigDecimal(Double.valueOf(jObj.getString("PITTINGAREA"))*100.00/Double.valueOf(vo.getSanctionedKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				voList.add(vo);
 	 	    			}
 	 	    		}

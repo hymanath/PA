@@ -125,8 +125,22 @@ public class NregsDataVO implements Serializable{
 	private String opgkInProgress;
 	private String opgkTarget;
 	
+	private String targetPalnting;
+	private String targetPitting;
 	
 	
+	public String getTargetPalnting() {
+		return targetPalnting;
+	}
+	public void setTargetPalnting(String targetPalnting) {
+		this.targetPalnting = targetPalnting;
+	}
+	public String getTargetPitting() {
+		return targetPitting;
+	}
+	public void setTargetPitting(String targetPitting) {
+		this.targetPitting = targetPitting;
+	}
 	public String getTargetPittingPerc() {
 		return targetPittingPerc;
 	}
