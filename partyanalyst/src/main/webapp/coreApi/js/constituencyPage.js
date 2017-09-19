@@ -660,7 +660,7 @@ function responsiveTabs()
 
 function getCandidateAndPartyInfoForConstituency(){
 	$("#parliamentMemberId,#assemblyMemberId").html(blockSpinner);
-	if(locationLevelId == '5' || locationLevelId == '6' || locationLevelId == '7' || locationLevelId == '8' || locationLevelId == '11' || locationLevelId == '12' || locationLevelId == '13'){
+	if(locationLevelId == '6' || locationLevelId == '8'){
 		$("#parliamentMemberId,#assemblyMemberId").hide();
 		return;
 	}else{
@@ -709,7 +709,7 @@ function getCandidateAndPartyInfoForConstituency(){
 									parliament+='</div>';
 									parliament+='<div class="media-body">';
 										parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList[i].parliamentCandidateInfo.candidateName+'</h4>';
-										parliament+='<p class="text-muted">Constituency : '+result[0].subList[i].parliamentCandidateInfo.constituencyName+'</p>';
+										parliament+='<p class="text-muted">Parliament : '+result[0].subList[i].parliamentCandidateInfo.constituencyName+'</p>';
 									parliament+='</div>';
 								parliament+='</div>';
 							parliament+='</div>';
@@ -777,7 +777,7 @@ function getCandidateAndPartyInfoForConstituency(){
 								parliament+='</div>';
 								parliament+='<div class="media-body">';
 									parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList[0].parliamentCandidateInfo.candidateName+'</h4>';
-									parliament+='<p class="text-muted">Member Of Parliament ('+result[0].subList[0].parliamentCandidateInfo.constituencyName+')</p>';
+									parliament+='<p class="text-muted">MP ('+result[0].subList[0].parliamentCandidateInfo.constituencyName+')</p>';
 								parliament+='</div>';
 							parliament+='</div>';
 						parliament+='</div>';			
@@ -794,7 +794,7 @@ function getCandidateAndPartyInfoForConstituency(){
 									parliament+='</div>';
 									parliament+='<div class="media-body">';
 										parliament+='<h4 class="m_top20 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'</h4>';
-										parliament+='<p class="text-muted">Member Of Legislative Assembly ('+result[i].assemblyCandidateInfo[0].constituencyName+')</p>';
+										parliament+='<p class="text-muted">MLA ('+result[i].assemblyCandidateInfo[0].constituencyName+')</p>';
 									parliament+='</div>';
 								parliament+='</div>';
 							parliament+='</div>';
