@@ -2241,7 +2241,7 @@ function getLocationWiseCommitteesCount(yearId){
 	{
 		$("#"+commitessArr[i]).html(spinner);
 	}
-	if(locationLevelId == '5' || locationLevelId == '12' )
+	if(locationLevelId == '5' || locationLevelId == '7' || locationLevelId == '12' )
 	{
 		var locationMandalVal = mandalId;
 		var priorVal = mandalId.substring(0,1);
@@ -2252,7 +2252,7 @@ function getLocationWiseCommitteesCount(yearId){
 		}
         locationLevelVal = locationMandalVal.substring(1,mandalId.length);	
 
-	}else if(locationLevelId == '6' || locationLevelId == '13' )
+	}else if(locationLevelId == '6' || locationLevelId == '8' || locationLevelId == '13' )
 	{
 		var locationPanchayatVal = panchayatId;
 		var priorVal = panchayatId.substring(0,1);
