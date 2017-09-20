@@ -3360,7 +3360,7 @@ function getTotalAlertDetailsForConstituencyInfo(){
 		var str='';
 		var totalCount=0;
 		if(result !=null){
-			var locationNamesArr={'DISTRICT':'#FE6603','CONSTITUENCY':'#FFA522','Mandal/Municipality':'#8E4552','Village/Ward':'#F16283'};
+			var locationNamesArr={'DISTRICT':'#FE6603','CONSTITUENCY':'#FFA522','Mandal/Municipality':'#8E4552','Village/Ward':'#F16283','HAMLET':' #ea3414'};
 		
 			str+='<div class="row">';
 				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
