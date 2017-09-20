@@ -4397,8 +4397,9 @@
   		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"></property>
   		<property name="panchayatDAO" ref="panchayatDAO"></property>  
   		<property name="tehsilDAO" ref="tehsilDAO"></property>
-  		<property name="govtSchemeBenefitsInfoDAO" ref="govtSchemeBenefitsInfoDAO"></property>  		
-    	<property name="voterAgeRangeDAO" ref="voterAgeRangeDAO"></property>  		
+  		<property name="govtSchemeBenefitsInfoDAO" ref="govtSchemeBenefitsInfoDAO"></property>
+    	<property name="voterAgeRangeDAO" ref="voterAgeRangeDAO"></property>  
+  		<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>  				
   </bean>
   <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
          <property name="districtDAO" ref="districtDAO" />
