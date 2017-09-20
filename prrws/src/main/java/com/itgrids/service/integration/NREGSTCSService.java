@@ -2187,7 +2187,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    						vo.setSanctionedPerc("0.00");
 		 	    			}
 	 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));//PERCENTAGEOFPLANTING
-	 	    				vo.setSancTrgtPittingPerc(new BigDecimal(Double.valueOf(jObj.getString("PITTINGAREA"))*100.00/Double.valueOf(vo.getSanctionedKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				if(jObj.getString("PITTINGAREA") != null && Double.valueOf(jObj.getString("PITTINGAREA")) > 0l && vo.getSanctionedKMS() != null && Double.valueOf(vo.getSanctionedKMS()) > 0l)
+	 	    					vo.setSancTrgtPittingPerc(new BigDecimal(Double.valueOf(jObj.getString("PITTINGAREA"))*100.00/Double.valueOf(vo.getSanctionedKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				else
+ 	    						vo.setSancTrgtPittingPerc("0.00");
 	 	    				voList.add(vo);
 	 	    			}
 	 	    		}
