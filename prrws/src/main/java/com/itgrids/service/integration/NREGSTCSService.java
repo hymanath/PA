@@ -571,6 +571,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    						vo.setMulbTarget(jObj.getString("TARGET"));
 	 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") || inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals")))
 	 	    						vo.setOpgkTarget(jObj.getString("TARGET"));
+	 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Mandal buildings1") && inputVO.getSublocationType().trim().equalsIgnoreCase("mandal")))
+	 	    						vo.setTarget(jObj.getLong("TARGETNEW"));
+	 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("GP buildings1") && (inputVO.getSublocationType().trim().equalsIgnoreCase("mandal") 
+	 	    							|| inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat"))))
+	 	    						vo.setTarget(jObj.getLong("TARGETNEW"));
 	 	    					else
 	 	    						vo.setTarget(jObj.getLong("TARGET"));
 		 	    				vo.setGrounded(jObj.getString("GROUNDED"));
@@ -801,15 +806,15 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService_new/IHHLData_new";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Vermi Compost"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/VermiService_new/VermiData_new";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GP Buildings"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GP Buildings1"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GpBuildingServiceNew/GpBuildingDataNew";
 			/*else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Jala Siri"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrsService/NtrsData";*/
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CC Roads"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CC Roads1"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CCRoadsServicesNew/CCRoadsDataNew";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Anganwadi Buildings"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Anganwadi"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnganawadiServiceNew/AnganawadiDataNew";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mandal Buildings"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mandal Buildings1"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MandalBuildingServiceNew/MandalBuildingDataNew";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR 90 Days"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/HousingServiceNew/HousingDataNew";
@@ -1131,6 +1136,11 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    					nregsDataVO.setMulbTarget(jObj.getString("TARGET"));
 		 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") || inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals")))
 		 	    						nregsDataVO.setOpgkTarget(jObj.getString("TARGET"));
+		 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Mandal buildings1") && inputVO.getSublocationType().trim().equalsIgnoreCase("mandal")))
+		 	    						nregsDataVO.setTarget(jObj.getLong("TARGETNEW"));
+		 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("GP buildings1") && (inputVO.getSublocationType().trim().equalsIgnoreCase("mandal") 
+		 	    							|| inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat"))))
+		 	    						nregsDataVO.setTarget(jObj.getLong("TARGETNEW"));
 		 	    					else
 		 	    						nregsDataVO.setTarget(jObj.getLong("TARGET"));
 			 	    				
@@ -2714,7 +2724,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		  inputVO.setType("Burial Ground");
 	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi Buildings"))
 	 	    		  inputVO.setType("Anganwadi");
-	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GP Buildings"))
+	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GP Buildings1"))
 	 	    		  inputVO.setType("Gram Panchayat Buildings");
 	 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Silk Worms"))
 	 	    		  inputVO.setType("Silk worm");
@@ -3565,7 +3575,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		  inputVO.setType("Burial Ground");
 	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi Buildings"))
 	 	    		  inputVO.setType("Anganwadi");
-	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GP Buildings"))
+	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GP Buildings1"))
 	 	    		  inputVO.setType("Gram Panchayat Buildings");
 	 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Silk Worms"))
 	 	    		  inputVO.setType("Silk worm");
@@ -3605,7 +3615,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi"))
 	    		  inputVO.setType("Anganwadi Buildings");
 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Gram Panchayat Buildings"))
-	    		  inputVO.setType("GP Buildings");
+	    		  inputVO.setType("GP Buildings1");
 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Silk worm"))
 	    		  inputVO.setType("Silk Worms");
 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Cattle drinking water trough"))
@@ -3623,7 +3633,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		  inputVO.setType("Burial Ground");
 	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi Buildings"))
 	 	    		  inputVO.setType("Anganwadi");
-	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GP Buildings"))
+	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GP Buildings1"))
 	 	    		  inputVO.setType("Gram Panchayat Buildings");
 	 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Silk Worms"))
 	 	    		  inputVO.setType("Silk worm");
