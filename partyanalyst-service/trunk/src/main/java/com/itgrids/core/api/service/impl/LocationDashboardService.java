@@ -700,13 +700,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				for (Entry<Long, LocationVotersVO> entry : map.entrySet()) {
 					if (totalCadres > 0l)
 						entry.getValue()
-						.setTotalCadrePerc(((entry.getValue().getTotalCadres() * 100) / totalCadres) + "");
+						.setTotalCadrePerc(((entry.getValue().getTotalCadres() * 100) / totalCadres) + "%");
 					if (maleTotalCadres > 0l)
 						entry.getValue()
-						.setMaleCadrePerc(((entry.getValue().getMaleCadres() * 100) / maleTotalCadres) + "");
+						.setMaleCadrePerc(((entry.getValue().getMaleCadres() * 100) / maleTotalCadres) + "%");
 					if (femaleTotalCadres > 0l)
 						entry.getValue().setFemaleCadrePerc(
-								((entry.getValue().getFemaleCadres() * 100) / femaleTotalCadres) + "");
+								((entry.getValue().getFemaleCadres() * 100) / femaleTotalCadres) + "%");
 
 					voForTotalCounts
 					.setTotalVoters(voForTotalCounts.getTotalVoters() + entry.getValue().getTotalVoters());
