@@ -745,6 +745,7 @@ function getCandidateAndPartyInfoForConstituency(){
 										assembly+='<div class="media-body">';
 											assembly+='<h4 class="m_top20 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'</h4>';
 											assembly+='<p class="text-muted">Constituency : '+result[i].assemblyCandidateInfo[0].constituencyName+'</p>';
+											assembly+='<p class="text-muted">Parliament : '+result[i].assemblyCandidateInfo[0].parliamnerName+'</p>';
 										assembly+='</div>';
 									assembly+='</div>';
 								assembly+='</div>';
