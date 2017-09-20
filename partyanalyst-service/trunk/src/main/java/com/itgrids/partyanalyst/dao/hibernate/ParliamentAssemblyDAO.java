@@ -38,4 +38,13 @@ public class ParliamentAssemblyDAO extends GenericDaoHibernate<ParliamentAssembl
 		query.setParameter("stateId", stateId);
 		return query.list();  
 	}
+	
+	public List<Object[]> getParliamentByAssemblyId(Long assemblyId){
+		Query query = getSession().createQuery(" SELECT model.parliamentAssembly.constituencyId,model.parliamentAssembly.name " +
+				" FROM ParliamentAssembly model " +
+				" WHERE model.assembly.constituencyId = :assemblyId ");
+		
+		query.setParameter("assemblyId", assemblyId);
+		return query.list();
+	}
 }

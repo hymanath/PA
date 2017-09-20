@@ -18,10 +18,25 @@ public class CandidateInfoForConstituencyVO {
 	private String education;
 	private BigDecimal assets;
 	private BigDecimal liabilities;
+	private Long parliamentId;
+	private String parliamnerName;
 	
 		
 	private CandidateElectionVO candidateElectionVO;
 	
+	
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	public String getParliamnerName() {
+		return parliamnerName;
+	}
+	public void setParliamnerName(String parliamnerName) {
+		this.parliamnerName = parliamnerName;
+	}
 	public String getLatestElecYear() {
 		return latestElecYear;
 	}
