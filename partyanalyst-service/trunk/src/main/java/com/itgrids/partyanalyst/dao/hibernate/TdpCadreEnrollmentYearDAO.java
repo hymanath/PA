@@ -1179,12 +1179,13 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			        		queryStr.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId = :locationValue ");
 			        	}else if(locationTypeId == 4l){
 			        		queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationValue ");	
-			        	}else if(locationTypeId ==5l)
+			        	}else if(locationTypeId ==5l){
 			        		queryStr.append(" and model.tdpCadre.userAddress.tehsil.tehsilId = :locationValue");
 			        	}else if(locationTypeId ==6l){
 			        		queryStr.append(" and model.tdpCadre.userAddress.panchayat.panchayatId = :locationValue");
 			        	}
-					
+			        }
+			        
 			        queryStr.append(" group by " +
 					" model.tdpCadre.voterAgeRange.voterAgeRangeId," +
 					" model.tdpCadre.gender," +
