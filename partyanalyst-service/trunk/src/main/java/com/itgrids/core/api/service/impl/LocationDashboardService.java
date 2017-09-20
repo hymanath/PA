@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.IPositionDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
@@ -147,6 +148,16 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IPanchayatDAO panchayatDAO;
  
 	private IGovtSchemeBenefitsInfoDAO govtSchemeBenefitsInfoDAO;
+	private IParliamentAssemblyDAO parliamentAssemblyDAO;
+	
+	
+	public IParliamentAssemblyDAO getParliamentAssemblyDAO() {
+		return parliamentAssemblyDAO;
+	}
+	public void setParliamentAssemblyDAO(
+			IParliamentAssemblyDAO parliamentAssemblyDAO) {
+		this.parliamentAssemblyDAO = parliamentAssemblyDAO;
+	}
 	public IPositionDAO getPositionDAO() {
 			return positionDAO;
 	}
@@ -583,6 +594,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			candidateInfo1.setConstituencyId((Long) values[0]);
 			candidateInfo1.setConstituencyName(values[1].toString());
 			candidateInfo1.setCandidateId((Long) values[2]);
+			
+			List<Object[]> parliaments = parliamentAssemblyDAO.getParliamentByAssemblyId((Long) values[0]);
+			if(commonMethodsUtilService.isListOrSetValid(parliaments)){
+				Object[] obj = parliaments.get(0);
+				candidateInfo1.setParliamentId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				candidateInfo1.setParliamnerName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+			}
 
 			if (!StringUtils.isBlank((String) values[3]))
 				candidateFullName = candidateFullName + ((String) values[3]) + " ";

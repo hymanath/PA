@@ -10,4 +10,5 @@ public interface IParliamentAssemblyDAO extends GenericDao<ParliamentAssembly, L
 	public List<Long> getAssemblyConstituencyforParliament(List<Long> userAccessLevelValues);
 	public List<Object[]> getAssemblyConstituencyforByPaliament(List<Long> userAccessLevelValues);
 	public List<Object[]> getParliamentDetailsOfAssembly(Long stateId);
+	public List<Object[]> getParliamentByAssemblyId(Long assemblyId);
 }
