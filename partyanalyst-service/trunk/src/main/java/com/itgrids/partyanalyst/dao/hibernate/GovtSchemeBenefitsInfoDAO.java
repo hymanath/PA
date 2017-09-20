@@ -15,7 +15,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 		
 	}
 
-	public List<Object[]> getGovtSchemeWiseBenefitMemberCount(Long locationType, Long locationValue) {
+	public List<Object[]> getGovtSchemeWiseBenefitMemberCount(Long locationType, Long locationValue,List<Long> constituencyIds) {
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.govtSchemes.govtSchemesId," +
 						" model.govtSchemes.schemeName," +
@@ -23,20 +23,24 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 				        " from " +
 				        " GovtSchemeBenefitsInfo model " +
 				        " where ");
-		if(locationType != null && locationType.longValue()>0l){
+		if(locationType != null && locationType.longValue()>0l && locationType.longValue() != 10l){
 			queryStr.append(" model.locationScopeId =:locationType and ");
 		}
-		if(locationValue != null && locationValue.longValue()>0l){
-			queryStr.append(" model.locationValue =:locationValue ");
+		if(locationValue != null && locationValue.longValue()>0l && locationType.longValue() != 10l){
+			queryStr.append("  model.locationValue =:locationValue  ");
+		}else if(locationType != null && locationType.longValue() == 10l && constituencyIds != null && constituencyIds.size()>0){
+			queryStr.append("  model.locationValue in(:constituencyIds) and  model.locationScopeId =4 ");
 		}
 		queryStr.append(" group by model.govtSchemes.govtSchemesId");
 		
 		Query query = getSession().createQuery(queryStr.toString());
-		if(locationType != null && locationType.longValue()>0l){
+		if(locationType != null && locationType.longValue()>0l && locationType.longValue() != 10l){
 			query.setParameter("locationType", locationType);
 		}
-		if(locationValue != null && locationValue.longValue()>0l){
+		if(locationValue != null && locationValue.longValue()>0l && locationType.longValue() != 10l){
 			query.setParameter("locationValue", locationValue);
+		}else if(locationType != null && locationType.longValue() == 10l && constituencyIds != null && constituencyIds.size()>0){
+			query.setParameterList("constituencyIds", constituencyIds);
 		}
 		return query.list();
 	}
