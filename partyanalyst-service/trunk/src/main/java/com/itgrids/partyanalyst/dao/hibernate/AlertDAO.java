@@ -10577,7 +10577,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	    if(fromDate != null && toDate != null){
 				queryStr.append(" and date(model.createdTime) between :fromDate and :toDate ");  
 			}
-	 	        queryStr.append(" and model.alertImpactScope.alertImpactScopeId in(:impactScopeIds) ");
+	 	       
 	 	     if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
 	 	        if(locationTypeId == 4l){
 	 	        	queryStr.append(" and model.userAddress.constituency.constituencyId in(:locationValues) ");
@@ -10596,7 +10596,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	    if(year != null && !year.trim().isEmpty()){
 	 	    	queryStr.append(" and year(model.createdTime) =:year ");   
 	 	    }
-	 	    queryStr.append(" GROUP BY model.alertStatus.alertStatusId,model.alertImpactScope.alertImpactScopeId," +
+	 	    queryStr.append(" GROUP BY model.alertStatus.alertStatusId," +
 	 	    			" model.alertType.alertTypeId ");
 	 	    	
 	 	    queryStr.append(" order by model.alertStatus.statusOrder  ");
@@ -10623,7 +10623,6 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	        	query.setParameterList("locationValues",locationValues);
 	 	        }
 			 }
-			 query.setParameterList("impactScopeIds", IConstants.IMPACT_IDS);
 	 		return query.list();
 	 	}
       public List<Object[]> getAlertImpactLevelWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
