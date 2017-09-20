@@ -75,9 +75,10 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	 JSONObject responseJsonObj = new JSONObject(output);
 	 	    	 JSONObject dataObj = responseJsonObj.getJSONObject("responseData");
-	 	    	 JSONObject statusObj = dataObj.getJSONObject("requestStatus");
-	 	    	 Long statusCode = statusObj.getLong("StatusCode");
-	 	    	 String statusMessage = statusObj.getString("Message");
+	 	    	 JSONObject statusObj = (dataObj != null && dataObj.has("requestStatus")) ? dataObj.getJSONObject("requestStatus"):null;
+	 	    	 Long statusCode = (statusObj != null && statusObj.has("StatusCode")) ? statusObj.getLong("StatusCode"):null;
+	 	    	 String statusMessage = (statusObj != null && statusObj.has("Message")) ? statusObj.getString("Message"):null;
+	 	    	 
 	 	    	 if(output != null && !output.isEmpty() && statusCode!= null && statusCode.longValue() ==0l && statusMessage != null && statusMessage.equalsIgnoreCase("Success"))
 	 	    	 {
 	 	    		List<LightMonitoringVO> resultData = processLightData(output);
@@ -95,14 +96,6 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    			 for(LightMonitoringVO lightMonitoringVO : resultData)
 	 	    			 {
 	 	    				 try{
-	 	    					/*List<LightMonitoring> LM = lightMonitoringDAO.getLiveDateForCurrentDateSelection(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
-	 	    					if(LM != null && LM.size() >0){
-	 	    						for (LightMonitoring lightMonitoring : LM) {
-	 	    							lightMonitoring.setIsDeleted("Y");
-	 	    							
-	 	    							lightMonitoringDAO.save(lightMonitoring);
-									}
-	 	    					}*/
 	 	    					
 	 	    					LightMonitoring lightMonitoring = new LightMonitoring();
 		 	    				
@@ -168,7 +161,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	    			 JSONObject dataObj = responseJsonObj.getJSONObject("responseData");
 	    			 JSONArray finalArray = null;
 	    			 if (dataObj != null && dataObj.length() > 0 ){
-	    				  finalArray = dataObj.getJSONArray("VillageInfo");
+	    				  finalArray = (dataObj.has("VillageInfo")) ? dataObj.getJSONArray("VillageInfo"):null;
 	    			 }
 	    			 if (finalArray != null && finalArray.length() > 0 ){
 	    				 for(int i=0;i<finalArray.length();i++)
@@ -176,22 +169,22 @@ public class LightMonitoringService  implements ILightMonitoring{
 		    				 try{
 		    					 
 		    					 JSONObject jObj = (JSONObject) finalArray.get(i);
-		    					 Long panchayatId = jObj.getLong("VillageId");
+		    					 Long panchayatId = (jObj != null && jObj.has("VillageId")) ? jObj.getLong("VillageId"):0l;
 		    					 
 		    					 if(panchayatId != null && panchayatId.longValue() > 0l)
 		    					 {
 		    						   LightMonitoringVO lightMonitoringVO = new LightMonitoringVO();
 		    						   lightMonitoringVO.setPanchayatId(panchayatId);
-		    						   lightMonitoringVO.setTotalPanels(jObj.getLong("TotalPanels"));
+		    						   lightMonitoringVO.setTotalPanels(jObj.has("TotalPanels") ? jObj.getLong("TotalPanels") :0l);
 		    						   //lightMonitoringVO.setTotalPoles(jObj.getLong("TotalPoles"));
-		    						   lightMonitoringVO.setTotalPoles(jObj.getLong("TotalLights"));//total light is nothing but total poles
-		    						   lightMonitoringVO.setTotalLights(jObj.getLong("TotalLights"));
-			    					   lightMonitoringVO.setNotWorkingLights(jObj.getLong("NonOperationalLights"));
-			    					   lightMonitoringVO.setWorkingLights(jObj.getLong("OperationalLights"));
-			    					   lightMonitoringVO.setOnLights(jObj.getLong("ONLights"));
-			    					   lightMonitoringVO.setOffLights(jObj.getLong("OFFLights"));
+		    						   lightMonitoringVO.setTotalPoles(jObj.has("TotalLights") ? jObj.getLong("TotalLights"):0l);//total light is nothing but total poles
+		    						   lightMonitoringVO.setTotalLights(jObj.has("TotalLights") ? jObj.getLong("TotalLights"):0l);
+			    					   lightMonitoringVO.setNotWorkingLights(jObj.has("NonOperationalLights") ? jObj.getLong("NonOperationalLights"):0l);
+			    					   lightMonitoringVO.setWorkingLights(jObj.has("OperationalLights") ? jObj.getLong("OperationalLights"):0l);
+			    					   lightMonitoringVO.setOnLights(jObj.has("ONLights") ? jObj.getLong("ONLights"):0l);
+			    					   lightMonitoringVO.setOffLights(jObj.has("OFFLights") ? jObj.getLong("OFFLights"):0l);
 			    					 
-			    					 JSONArray arr =  jObj.getJSONArray("Wattages");
+			    					 JSONArray arr =  jObj.has("Wattages") ? jObj.getJSONArray("Wattages"):null;
 				 		 	    		
 			 		 	    		if(arr != null && arr.length() > 0)
 			 		 	    		{
@@ -206,14 +199,14 @@ public class LightMonitoringService  implements ILightMonitoring{
 			 		 	    				if(jsonob != null)
 			 		 	    				{
 												lightWattageVO = new LightWattageVO();
-												lightWattageVO.setWattage(jsonob.getLong("Wattage"));
-												lightWattageVO.setLightCount(jsonob.getLong("LightCount"));
+												lightWattageVO.setWattage(jsonob.has("Wattage") ? jsonob.getLong("Wattage"):0l);
+												lightWattageVO.setLightCount(jsonob.has("LightCount") ? jsonob.getLong("LightCount"):0l);
 												wattageList.add(lightWattageVO);
 			 		 	    				}
 			 		 	    			}catch (Exception e) {
 			 		 	    				LOG.error(e);
 			 		 	    			}
-			 		 		 	    	}
+			 		 		 	     }
 			 		 	    			lightMonitoringVO.setWattageList(wattageList);
 			 		 		 	    }
 			 		 	    		resultData.add(lightMonitoringVO);
