@@ -492,14 +492,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				
 			   }else if(locationTypeId != null && locationTypeId == 5l) {
 				   List<Long>  constituencyIdMan=tehsilDAO.getAllConstituenciesByTehilId(locationValue);	
-				consistuencyIds.add(constituencyIdMan.get(0));
+				consistuencyIds.addAll(constituencyIdMan);
 				
 			  }else if(locationTypeId != null && locationTypeId == 6l) {
 				  List<Long>   constituencyIdPan=tehsilDAO.getAllConstituenciesByPanchayatId(locationValue);	
-					consistuencyIds.add(constituencyIdPan.get(0));
+					consistuencyIds.addAll(constituencyIdPan);
 			  }	else if(locationTypeId != null && locationTypeId == 7l) {
 				  List<Long>   constituencyIdMun=tehsilDAO.getAllConstituenciesByLocalElectionBodyId(locationValue);	
-					consistuencyIds.add(constituencyIdMun.get(0));
+					consistuencyIds.addAll(constituencyIdMun);
 			  }		
 			@SuppressWarnings("unchecked")
 			List<Object[]> parlimentlist = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssemblyIds(consistuencyIds);
