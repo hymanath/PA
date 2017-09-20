@@ -2299,7 +2299,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
 			//List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getGovtSchemeWiseBenefitMemberCount(locationTypeId,locationValue);
-			List<Object[]> benefitMemberObjLst = govtSchemeBenefitsInfoDAO.getGovtSchemeWiseBenefitMemberCount(locationTypeId,locationValue);
+			List<Long> constituencyIds = new ArrayList<Long>();
+			if(locationTypeId == 10l){
+		    	  constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency1(locationValue);
+			}
+			List<Object[]> benefitMemberObjLst = govtSchemeBenefitsInfoDAO.getGovtSchemeWiseBenefitMemberCount(locationTypeId,locationValue,constituencyIds);
 			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,locationValue,locationTypeId,"constituency");
 			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst,censusPopList,"constituency");
 		} catch (Exception e) {
@@ -2370,7 +2374,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public List<BenefitCandidateVO> getMandalWiseBenefitMembersCount(final Long locationTypeId, final Long locationValue,final Long govtSchemeId) {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
+			//List<Long> constituencyIds = new ArrayList<Long>();
+			if(locationTypeId == 10l){
+		    	 // constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency1(locationValue);
+			}
 			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getMandalWiseBenefitMemberCountByGovtScheme(locationTypeId,locationValue, govtSchemeId);
+			//List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getMandalWiseBenefitMemberCountByGovtScheme1(locationTypeId,locationValue, govtSchemeId,constituencyIds);
 			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,locationValue,locationTypeId,"tehsil");
 			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst,censusPopList,"tehsil");
 		} catch (Exception e) {
