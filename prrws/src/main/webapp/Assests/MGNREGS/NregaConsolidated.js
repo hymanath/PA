@@ -131,7 +131,7 @@ $(document).on("click",".menu-top-selection",function(e){
 $(document).on("click",".selectionMenuSubmitIdNewCls",function(){
 	overViewIdsArr = [] ;
 	overViewArrConsolidated = [];
-	
+	$(this).closest(".arrow_box_top").hide();
 	$(".menuSelectionCheckBox").each(function(){
 		var checkboxId = $(this).attr("checkboxId");
 		if($(this).prop('checked')==true)
@@ -147,7 +147,7 @@ $(document).on("click",".selectionMenuSubmitIdNewCls",function(){
 	$("#consolidatedView").show();
 	$("#projectData,#projectOverviewBlock").hide();
 	$('html,body').animate({
-		scrollTop: $("#projectDataConsolidated").offset().top},
+		scrollTop: $("#consolidatedView").offset().top},
 	'slow');
 	setTimeout(function(){
 	//	buildNREGSProjectsOverviewConsolidated(overViewArrConsolidated,'',locId,levelId);
