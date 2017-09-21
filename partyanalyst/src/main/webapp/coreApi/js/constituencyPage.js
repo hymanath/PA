@@ -41,6 +41,7 @@ function onLoadLocValue()
 		userAccessLevelValuesArray.push(districtId)
 	}else if(locationLevelId == '10')
 	{
+		userAccessLevelValuesArray.push(parliamentId)
 		locationLevelVal = parliamentId 
 	}else if(locationLevelId == '4' || locationLevelId == '11' )
 	{
@@ -796,6 +797,7 @@ function getCandidateAndPartyInfoForConstituency(){
 									parliament+='<div class="media-body">';
 										parliament+='<h4 class="m_top20 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'</h4>';
 										parliament+='<p class="text-muted">MLA ('+result[i].assemblyCandidateInfo[0].constituencyName+')</p>';
+										parliament+='<p class="text-muted">Parliament: '+result[i].assemblyCandidateInfo[0].parliamnerName+'</p>';
 									parliament+='</div>';
 								parliament+='</div>';
 							parliament+='</div>';
