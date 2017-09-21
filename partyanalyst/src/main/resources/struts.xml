@@ -18030,9 +18030,69 @@
   	<action name="govtPartyCoreDashboardAction" class="coreDashboardAction" method="govtPartyCoreDashboardAction">
 		<result name="success">/jsp/newCoreDashboard.jsp</result>
 	</action>
-	<action name="getTrainingSurveyDetailAction" class="trainingCampAction"  method="getTrainingSurveyDetail">
+	<action name="doorToDoorCampaignDashboardAction" class="doorToDoorCampaignDashboardAction">
+			<result name="success">/jsp/doorToDoorCampaignDashboard.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src="doorToDoorCampaignDashboard"</result>	
+	</action>
+	<action name="getUsersCountsByLocationAction" class="doorToDoorCampaignDashboardAction"  method="getUsersCountsByLocation">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVO</param>       
+	</result>
+  	</action> 
+  	<action name="getHouseHoldsCountsAction" class="doorToDoorCampaignDashboardAction"  method="getHouseHoldsCounts">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVO</param>       
+	</result>
+  	</action> 
+  	<action name="getGrievancesCountsAction" class="doorToDoorCampaignDashboardAction"  method="getGrievancesCounts">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVO</param>       
+	</result>
+  	</action>
+  	<action name="getRecentImagesListAction" class="doorToDoorCampaignDashboardAction"  method="getRecentImagesList">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVO</param>       
+	</result>
+  	</action>
+  	<action name="getLocationWiseCountDetailsAction" class="doorToDoorCampaignDashboardAction"  method="getLocationWiseCountDetails">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVOList</param>       
+	</result>
+  	</action>
+  	<action name="getDepartmentWiseGrievanceCountsAction" class="doorToDoorCampaignDashboardAction"  method="getDepartmentWiseGrievanceCounts">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVOList</param>       
+	</result>
+  	</action>
+  	<action name="getDepartmentIssueWiseGrievanceCountsAction" class="doorToDoorCampaignDashboardAction"  method="getDepartmentIssueWiseGrievanceCounts">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVOList</param>       
+	</result>
+  	</action>
+  	<action name="getDepartmentSubIssueWiseGrievanceCountsAction" class="doorToDoorCampaignDashboardAction"  method="getDepartmentSubIssueWiseGrievanceCounts">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVOList</param>       
+	</result>
+  	</action>
+  	<action name="getLevelWiseCountAction" class="doorToDoorCampaignDashboardAction"  method="getLevelWiseCount">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVO</param>       
+	</result>
+  	</action>
+  	<action name="getCampaignCountFrMandalPancMuncipAction" class="doorToDoorCampaignDashboardAction"  method="getCampaignCountFrMandalPancMuncip">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVO</param>       
+	</result>
+  	</action>
+  	<action name="getTrainingSurveyDetailAction" class="trainingCampAction"  method="getTrainingSurveyDetail">
 		<result type="json" name="success">    
 			<param name="root">verifyVOLst</param>       
+		</result>
+  	</action>
+  	<action name="getUserAccessLevelIdsAndValuesAction" class="doorToDoorCampaignDashboardAction"  method="getUserAccessLevelIdsAndValues">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVO</param>       
 		</result>
   	</action>
       </package>

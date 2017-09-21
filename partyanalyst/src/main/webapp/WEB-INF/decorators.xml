@@ -750,6 +750,7 @@
 		<pattern>/getBoothInchargeDashboardAction*</pattern>
 		<pattern>/areaWiseDashboardAction*</pattern>
 		<pattern>/govtPartyCoreDashboardAction*</pattern>
+		<pattern>/doorToDoorCampaignDashboardAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">

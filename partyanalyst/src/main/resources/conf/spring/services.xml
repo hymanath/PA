@@ -4440,5 +4440,7 @@
     	 <property name="kaizalaOptionsDAO" ref="kaizalaOptionsDAO" />
     	 <property name="kaizalaActionTypeDAO" ref="kaizalaActionTypeDAO" />
     </bean> 
+    <bean name="doorToDoorCampaignDashboardService" class="com.itgrids.partyanalyst.service.impl.DoorToDoorCampaignDashboardService" >
+    </bean> 
 </beans>			
 	
