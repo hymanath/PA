@@ -2129,9 +2129,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				else
 	 	    					vo.setSancTrgtPittingPerc("0.00");*/
 	 	    				
-	 	    				//if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
+	 	    				if(jObj.getString("PLANTINGAREA") != null && Double.valueOf(jObj.getString("PLANTINGAREA")) > 0l && jObj.getString("TARGETACRES") != null && Double.valueOf(jObj.getString("TARGETACRES")) > 0l)
 	 	    					vo.setTargetPalnting(new BigDecimal((Double.valueOf(jObj.getString("PLANTINGAREA"))*100.00)/Double.valueOf(jObj.getString("TARGETACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				//}
+	 	    				else
+	 	    					vo.setTargetPalnting("0.00");
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
