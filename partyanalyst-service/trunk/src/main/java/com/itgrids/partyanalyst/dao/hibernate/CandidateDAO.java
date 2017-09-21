@@ -396,6 +396,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 						+ "(c1.local_election_body_id in(:electionBodys))) ");
 			} else if (locationTypeId == 5l) {
 				sb.append(" c1.tehsil_id  =:locationValue ");
+			} else if (locationTypeId == 7l) {
+				sb.append(" c1.local_election_body_id  =:locationValue ");
 			}
 
 		}
