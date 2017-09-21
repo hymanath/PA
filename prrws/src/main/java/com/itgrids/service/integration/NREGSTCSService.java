@@ -639,6 +639,13 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    					else
 		 	    						vo.setPercSant("0.00");
 		 	    				}
+		 	    				
+		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worms")){
+		 	    					if(vo.getCompleted() != null && vo.getCompleted().longValue() > 0l && vo.getTarget() != null && Double.valueOf(vo.getTarget()) > 0)
+		 	    						vo.setPercentage(new BigDecimal(vo.getCompleted()*100.00/Double.valueOf(vo.getTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    					else
+		 	    						vo.setPercentage("0.00");
+		 	    				}
 		 	    			}
 	 	    				
 	 	    				voList.add(vo);
@@ -2105,23 +2112,26 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-	 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
+	 	    				//if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
 	 	    					vo.setTargetACRES(jObj.getString("TARGETACRES"));
 		 	    				vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
-		 	    				vo.setTargetPittingPerc(new BigDecimal((Double.valueOf(jObj.getString("PITTINGAREA"))*100.00)/Double.valueOf(jObj.getString("TARGETACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				}
+		 	    				if(jObj.getString("PITTINGAREA") != null && Double.valueOf(jObj.getString("PITTINGAREA")) > 0l && jObj.getString("TARGETACRES") != null && Double.valueOf(jObj.getString("TARGETACRES")) > 0l)
+		 	    					vo.setTargetPittingPerc(new BigDecimal((Double.valueOf(jObj.getString("PITTINGAREA"))*100.00)/Double.valueOf(jObj.getString("TARGETACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				else
+		 	    					vo.setTargetPittingPerc("0.00");
+		 	    				//}
 	 	    				vo.setSanctionedACRES(jObj.getString("SANCTIONEDACRES"));
 	 	    				vo.setPittingArea(jObj.getString("PITTINGAREA"));
 	 	    				vo.setPlantingArea(jObj.getString("PLANTINGAREA"));
 	 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));
-	 	    				if(jObj.getString("PITTINGAREA") != null && Double.valueOf(jObj.getString("PITTINGAREA")) >0 && jObj.getString("SANCTIONEDACRES") != null && Double.valueOf(jObj.getString("SANCTIONEDACRES")) > 0)
+	 	    				/*if(jObj.getString("PITTINGAREA") != null && Double.valueOf(jObj.getString("PITTINGAREA")) >0 && jObj.getString("SANCTIONEDACRES") != null && Double.valueOf(jObj.getString("SANCTIONEDACRES")) > 0)
 	 	    					vo.setSancTrgtPittingPerc(new BigDecimal((Double.valueOf(jObj.getString("PITTINGAREA"))*100.00)/Double.valueOf(jObj.getString("SANCTIONEDACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				else
-	 	    					vo.setSancTrgtPittingPerc("0.00");
+	 	    					vo.setSancTrgtPittingPerc("0.00");*/
 	 	    				
-	 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
+	 	    				//if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
 	 	    					vo.setTargetPalnting(new BigDecimal((Double.valueOf(jObj.getString("PLANTINGAREA"))*100.00)/Double.valueOf(jObj.getString("TARGETACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				}
+	 	    				//}
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
@@ -2172,25 +2182,28 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-	 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
+	 	    				//if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
 	 	    					vo.setTargetKMS(jObj.getString("TARGETACRES"));//TARGETKMS
 		 	    				vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));//SANCTIONEDPERCENTAGE
-		 	    				vo.setTargetPittingPerc(new BigDecimal(Double.valueOf(jObj.getString("PITTINGAREA"))*100.00/Double.valueOf(vo.getTargetKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		 	    			}
+		 	    				if(jObj.getString("PITTINGAREA") != null && Double.valueOf(jObj.getString("PITTINGAREA")) > 0l && vo.getTargetKMS() != null && Double.valueOf(vo.getTargetKMS()) > 0l)
+		 	    					vo.setTargetPittingPerc(new BigDecimal(Double.valueOf(jObj.getString("PITTINGAREA"))*100.00/Double.valueOf(vo.getTargetKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				else
+		 	    					vo.setTargetPittingPerc("0.00");
+		 	    				//}
 	 	    				vo.setSanctionedKMS(jObj.getString("SANCTIONEDACRES"));//SANCTIONEDKMS
 	 	    				vo.setPittingKMS(jObj.getString("PITTINGAREA"));//PITTINGKMS
 	 	    				vo.setPlantingKMS(jObj.getString("PLANTINGAREA"));//PLANTINGKMS
-	 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
+	 	    				//if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
 	 	    					if(vo.getPlantingKMS() != null && Double.valueOf(vo.getPlantingKMS()) > 0l && vo.getTargetKMS() != null && Double.valueOf(vo.getTargetKMS()) > 0l)
 	 	    						vo.setSanctionedPerc(new BigDecimal(Double.valueOf(vo.getPlantingKMS())*100.00/Double.valueOf(vo.getTargetKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    					else
 	 	    						vo.setSanctionedPerc("0.00");
-		 	    			}
+		 	    			//}
 	 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));//PERCENTAGEOFPLANTING
-	 	    				if(jObj.getString("PITTINGAREA") != null && Double.valueOf(jObj.getString("PITTINGAREA")) > 0l && vo.getSanctionedKMS() != null && Double.valueOf(vo.getSanctionedKMS()) > 0l)
+	 	    				/*if(jObj.getString("PITTINGAREA") != null && Double.valueOf(jObj.getString("PITTINGAREA")) > 0l && vo.getSanctionedKMS() != null && Double.valueOf(vo.getSanctionedKMS()) > 0l)
 	 	    					vo.setSancTrgtPittingPerc(new BigDecimal(Double.valueOf(jObj.getString("PITTINGAREA"))*100.00/Double.valueOf(vo.getSanctionedKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				else
- 	    						vo.setSancTrgtPittingPerc("0.00");
+ 	    						vo.setSancTrgtPittingPerc("0.00");*/
 	 	    				voList.add(vo);
 	 	    			}
 	 	    		}
