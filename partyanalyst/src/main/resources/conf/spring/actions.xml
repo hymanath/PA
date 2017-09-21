@@ -1798,6 +1798,9 @@
 			 <property name="cadreCommitteeService" ref="cadreCommitteeService" /> 
 			 
 																	
-	</bean>		
+	</bean>
+	<bean id="doorToDoorCampaignDashboardAction" class="com.itgrids.partyanalyst.web.action.DoorToDoorCampaignDashboardAction" singleton="false">
+			<property name="doorToDoorCampaignDashboardService" ref="doorToDoorCampaignDashboardService"/>
+	</bean>			
 </beans>	
 	
