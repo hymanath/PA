@@ -17,6 +17,9 @@ public class SimpleVO implements java.io.Serializable{
    private String imageStr;
    private String mobileNo;
    
+   private String startDateStr;
+   private String endDateStr;
+   
    private Long count;
    private Long total =0l;
    private Long totalCount =0l;
@@ -30,6 +33,7 @@ public class SimpleVO implements java.io.Serializable{
    private String progName="";
    private String campName="";
    private String batchName="";
+   private String scheduleName="";
    private Long batchId=0l;
    private Long locValue;
    private String remarks;
@@ -93,13 +97,13 @@ public class SimpleVO implements java.io.Serializable{
    private List<Long> centralIdsList = new ArrayList<Long>(0);
    private Map<Long,String> centralMap = new HashMap<Long, String>(0);
    
-   private Long oneDayInvitedAttendedCount;
-   private Long twoDaysInvitedAttendedCount;
-   private Long threeDaysInvitedAttendedCount;
+   private Long oneDayInvitedAttendedCount=0l;
+   private Long twoDaysInvitedAttendedCount=0l;
+   private Long threeDaysInvitedAttendedCount=0l;
    
-   private Long oneDayNonInvitedAttendedCount;
-   private Long twoDaysNonInvitedAttendedCount;
-   private Long threeDaysNonInvitedAttendedCount;
+   private Long oneDayNonInvitedAttendedCount=0l;
+   private Long twoDaysNonInvitedAttendedCount=0l;
+   private Long threeDaysNonInvitedAttendedCount=0l;
    
    private Long notAttendedCount=0l;
    private Long age=0l;
@@ -109,7 +113,50 @@ public class SimpleVO implements java.io.Serializable{
    private Long totl=0l;
    private Long nonInviteeAtendedCount =0l;
    
+   private Long day1IACount=0l;
+   private Long day2IACount=0l;
+   private Long day3IACount=0l;
    
+   private Long day1NIACount=0l;
+   private Long day2NIACount=0l;
+   private Long day3NIACount=0l;
+   
+public Long getDay1IACount() {
+	return day1IACount;
+}
+public void setDay1IACount(Long day1iaCount) {
+	day1IACount = day1iaCount;
+}
+public Long getDay2IACount() {
+	return day2IACount;
+}
+public void setDay2IACount(Long day2iaCount) {
+	day2IACount = day2iaCount;
+}
+public Long getDay3IACount() {
+	return day3IACount;
+}
+public void setDay3IACount(Long day3iaCount) {
+	day3IACount = day3iaCount;
+}
+public Long getDay1NIACount() {
+	return day1NIACount;
+}
+public void setDay1NIACount(Long day1niaCount) {
+	day1NIACount = day1niaCount;
+}
+public Long getDay2NIACount() {
+	return day2NIACount;
+}
+public void setDay2NIACount(Long day2niaCount) {
+	day2NIACount = day2niaCount;
+}
+public Long getDay3NIACount() {
+	return day3NIACount;
+}
+public void setDay3NIACount(Long day3niaCount) {
+	day3NIACount = day3niaCount;
+}
 public Long getConfirmedCount() {
 	return confirmedCount;
 }
@@ -613,6 +660,22 @@ public void setNonInvitee(boolean nonInvitee) {
 	public void setNonInviteeAtendedCount(Long nonInviteeAtendedCount) {
 		this.nonInviteeAtendedCount = nonInviteeAtendedCount;
 	}
-	
-	
+	public String getScheduleName() {
+		return scheduleName;
+	}
+	public void setScheduleName(String scheduleName) {
+		this.scheduleName = scheduleName;
+	}
+	public String getStartDateStr() {
+		return startDateStr;
+	}
+	public void setStartDateStr(String startDateStr) {
+		this.startDateStr = startDateStr;
+	}
+	public String getEndDateStr() {
+		return endDateStr;
+	}
+	public void setEndDateStr(String endDateStr) {
+		this.endDateStr = endDateStr;
+	}
    }

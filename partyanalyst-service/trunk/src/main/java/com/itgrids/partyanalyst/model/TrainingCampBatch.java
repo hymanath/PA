@@ -38,7 +38,9 @@ private String isFeedbackUpdatable;
 private String isCancelled;
 private AttendeeType attendeeType;
 private Long attendeeTypeId;
+private Long trainingCampBatchTypeId;
 
+private TrainingCampBatchType trainingCampBatchType;
 
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -150,4 +152,25 @@ public Long getAttendeeTypeId() {
 public void setAttendeeTypeId(Long attendeeTypeId) {
 	this.attendeeTypeId = attendeeTypeId;
 }
+
+@Column(name="training_camp_batch_type_id")
+public Long getTrainingCampBatchTypeId() {
+	return trainingCampBatchTypeId;
+}
+public void setTrainingCampBatchTypeId(Long trainingCampBatchTypeId) {
+	this.trainingCampBatchTypeId = trainingCampBatchTypeId;
+}
+
+@ManyToOne(fetch = FetchType.LAZY )
+@JoinColumn(name = "training_camp_batch_type_id" , insertable = false, updatable = false)
+@LazyToOne(LazyToOneOption.NO_PROXY)
+@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+public TrainingCampBatchType getTrainingCampBatchType() {
+	return trainingCampBatchType;
+}
+public void setTrainingCampBatchType(TrainingCampBatchType trainingCampBatchType) {
+	this.trainingCampBatchType = trainingCampBatchType;
+}
+
+
 }

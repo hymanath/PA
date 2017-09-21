@@ -942,26 +942,27 @@ public class SchedulerService implements ISchedulerService{
 	            List<Object[]> speakersList = trainingCampAttendanceDAO.getTodaySpeakersAttendedDetails(todayDate,null,null);
 	            List<Long> speakersListInAttendee = trainingCampBatchAttendeeDAO.getTodaySpeakersDetails(todayDate,null,null);
 	            
-	           List<String> existingIdslist = new ArrayList<String>(0);
-	           if(speakersListInAttendee!=null && speakersListInAttendee.size()>0){
-	        	   for(Long long1 : speakersListInAttendee){
-	        		   existingIdslist.add(long1.toString());
-		           }
-	           }
-	           
-	           //staff cadreIds
-	           List<String> excludeTdpCadreIdsList = trainingCampBatchDAO.getExcudingTdpCadreIdsList(null,null);
-	           List<String> staffCadreIdsList = new ArrayList<String>(0);
-	               
-	           if(excludeTdpCadreIdsList != null && excludeTdpCadreIdsList.size()>0)
-	           {
-	             for (String cadreId : excludeTdpCadreIdsList) {
-	            	 staffCadreIdsList.add(cadreId);
-	             }
-	           }
-	            
 	            if(speakersList != null && speakersList.size()>0)
 	            {
+	            	
+	               List<String> existingIdslist = new ArrayList<String>(0);
+	  	           if(speakersListInAttendee!=null && speakersListInAttendee.size()>0){
+	  	        	   for(Long long1 : speakersListInAttendee){
+	  	        		   existingIdslist.add(long1.toString());
+	  		           }
+	  	           }
+	  	           
+	  	           //staff cadreIds
+	  	           List<String> excludeTdpCadreIdsList = trainingCampBatchDAO.getExcudingTdpCadreIdsList(null,null);
+	  	           List<String> staffCadreIdsList = new ArrayList<String>(0);
+	  	               
+	  	           if(excludeTdpCadreIdsList != null && excludeTdpCadreIdsList.size()>0)
+	  	           {
+	  	             for (String cadreId : excludeTdpCadreIdsList) {
+	  	            	 staffCadreIdsList.add(cadreId);
+	  	             }
+	  	           }
+		  	           
 	              for (Object[] speaker : speakersList) {
 	            	  if(!existingIdslist.contains(speaker[0].toString()) && !staffCadreIdsList.contains(speaker[0].toString())){
 	            		  	Long tdpCadreId =speaker[0] != null ? Long.valueOf(speaker[0].toString()):0L; 

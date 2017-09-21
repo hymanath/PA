@@ -585,6 +585,45 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(Date fromDate,Date toDate,List<Long> enrollmentYearIds,List<Long> programYearIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.trainingCampBatchId,model.trainingCampBatchCode,");// 0  bastch Id, 1 batch cod
+		sb.append("model.trainingCampBatchName," ); // 2 batch name
+		sb.append("date(model.fromDate),date(model.toDate),");// 3  from date   4  todate
+		sb.append("model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,");			//  5 programm id
+		sb.append("model.trainingCampSchedule.trainingCampProgram.programName,"); 	//6  programm name
+		sb.append("model.trainingCampSchedule.trainingCamp.trainingCampId,");     		// 7   campId
+		sb.append("model.trainingCampSchedule.trainingCamp.campName ");				//		8     camp name
+		sb.append("from TrainingCampBatch model where model.isCancelled = 'false' ");
+		if(fromDate != null && toDate !=null ){
+			sb.append(" and ( (model.fromDate between :fromDate and  :toDate) OR (model.toDate between :fromDate and  :toDate)) ");
+		}
+		
+		if(enrollmentYearIds != null && enrollmentYearIds.size() >0){
+			sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+		}
+		if(programYearIds != null && programYearIds.size() >0){
+			sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)   ");
+		}
+		sb.append(" OR (model.trainingCampBatchTypeId = 2 ) ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(fromDate != null && toDate !=null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(enrollmentYearIds != null && enrollmentYearIds.size() >0){
+			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		}
+		if(programYearIds != null && programYearIds.size() >0){
+			query.setParameterList("programYearIds", programYearIds);
+		}	
+		return query.list();
+		
+	}
+	
 	public List<Object[]> getMinAndMaxDatesOfTraingCamp(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select date(min(model.fromDate)),date(max(model.toDate))" +

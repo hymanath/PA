@@ -865,16 +865,15 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 			 StringBuilder stringBuilder = new StringBuilder();
 			  stringBuilder.append("select model.boothId,model.partNo,model.location,model.villagesCovered from Booth model where  model.panchayat.panchayatId =:panchayatId and model.publicationDate.publicationDateId = :publicationDateId");
-			  if(type.equalsIgnoreCase("Constituency"))
-				  stringBuilder.append(" and model.tehsil.tehsilId = :tehsilId and model.constituency.constituencyId = :constituencyId");
-			  if(type.equalsIgnoreCase("Mandal"))
+			  if(type.equalsIgnoreCase("Constituency") || type.equalsIgnoreCase("Mandal"))
 				  stringBuilder.append(" and model.tehsil.tehsilId = :tehsilId and model.constituency.constituencyId = :constituencyId");
 			 /* else if(type.equalsIgnoreCase("panchayat"))
 				  stringBuilder.append(" and model.panchayat.panchayatId = :panchayatId and model.constituency.constituencyId = :constituencyId and model.tehsil.tehsilId = :tehsilId  ");*/
 			 Query queryobj = getSession().createQuery(stringBuilder.toString());	    		
 			 queryobj.setParameter("panchayatId", panchayatId);
 	    	queryobj.setParameter("publicationDateId", publicationDateId);
-	    	queryobj.setParameter("constituencyId", constituencyId);
+	    	  if(type.equalsIgnoreCase("Constituency") || type.equalsIgnoreCase("Mandal"))
+	    		  queryobj.setParameter("constituencyId", constituencyId);
 	    	//if(type.equalsIgnoreCase("Mandal"))
 	    	  queryobj.setParameter("tehsilId", tehsilId);
 			return queryobj.list();
