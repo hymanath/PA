@@ -661,7 +661,7 @@ function responsiveTabs()
 
 function getCandidateAndPartyInfoForConstituency(){
 	$("#parliamentMemberId,#assemblyMemberId").html(blockSpinner);
-	if(locationLevelId == '6' || locationLevelId == '8'){
+	if(locationLevelId == '8'){
 		$("#parliamentMemberId,#assemblyMemberId").hide();
 		return;
 	}else{
@@ -3625,6 +3625,7 @@ function getElectionInformationLocationWise(electionVal){
 			buildElectionInformationLocationWise(result);
 		}else{
 			$('#electionDetailsGraphWiseId').html(noData);
+			$('#electionDetailsTableWiseId').html(noData);
 		}
 	});	
 }
