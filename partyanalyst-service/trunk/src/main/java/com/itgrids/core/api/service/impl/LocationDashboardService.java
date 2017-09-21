@@ -595,7 +595,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			candidateInfo1.setConstituencyName(values[1].toString());
 			candidateInfo1.setCandidateId((Long) values[2]);
 			
-			List<Object[]> parliaments = parliamentAssemblyDAO.getParliamentByAssemblyId((Long) values[0]);
+			List<Object[]> parliaments = parliamentAssemblyDAO.getParliamentByAssemblyId(commonMethodsUtilService.getLongValueForObject(values[0]));
 			if(commonMethodsUtilService.isListOrSetValid(parliaments)){
 				Object[] obj = parliaments.get(0);
 				candidateInfo1.setParliamentId(commonMethodsUtilService.getLongValueForObject(obj[0]));
@@ -652,7 +652,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		    	  reportLevelId=2l;
 		    	  constituencyIds.add(locationValue);
 		      }else if(locationTypeId == 6l){
-		    	  reportLevelId=4l;
+		    	  reportLevelId=3l;
+		    	  constituencyIds.add(locationValue);
+		      }else if(locationTypeId == 7l){
+		    	  reportLevelId=5l;
+		    	  constituencyIds.add(locationValue);
+		      }
+		      else if(locationTypeId == 8l){
+		    	  reportLevelId=6l;
 		    	  constituencyIds.add(locationValue);
 		      }
 			Map<Long, LocationVotersVO> map = new LinkedHashMap<Long, LocationVotersVO>();
@@ -884,7 +891,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		    	  reportLevelId=2l;
 		    	  constituencyIds.add(locationValue);
 		      }else if(locationTypeId == 6l){
-		    	  reportLevelId=4l;
+		    	  reportLevelId=3l;
+		    	  constituencyIds.add(locationValue);
+		      }else if(locationTypeId == 7l){
+		    	  reportLevelId=5l;
+		    	  constituencyIds.add(locationValue);
+		      }
+		      else if(locationTypeId == 8l){
+		    	  reportLevelId=6l;
 		    	  constituencyIds.add(locationValue);
 		      }
 			
@@ -3265,7 +3279,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		    	  reportLevelId=2l;
 		    	  constituencyIds.add(locationValue);
 		      }else if(locationTypeId == 6l){
-		    	  reportLevelId=4l;
+		    	  reportLevelId=3l;
+		    	  constituencyIds.add(locationValue);
+		      }else if(locationTypeId == 7l){
+		    	  reportLevelId=5l;
+		    	  constituencyIds.add(locationValue);
+		      }
+		      else if(locationTypeId == 8l){
+		    	  reportLevelId=6l;
 		    	  constituencyIds.add(locationValue);
 		      }
 			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCastGroupWiseCount(constituencyIds, publicationDateId, reportLevelId);
