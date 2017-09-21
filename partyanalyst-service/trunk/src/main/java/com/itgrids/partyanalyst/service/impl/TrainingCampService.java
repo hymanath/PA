@@ -12687,6 +12687,29 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 	 return finalVerifierVOList;
 				
   }
-}
+	/**
+	 * author: Babu kurakula <hef:kondababu.kurakula@itgrids.com
+	 * Date: 20th sep,2017
+	 * discription : to get camp minimum and Maxmum dates
+	 */
+	public String getMinAndMaxDatesOfTraingCamp(){
+		String minAndMaxDatesStr=null;
+		try{
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
+			List<Object[]> maxAnMinObj=trainingCampBatchDAO.getMinAndMaxDatesOfTraingCamp();
+			if(maxAnMinObj !=null && maxAnMinObj.size() >0){
+				for(Object[] param:maxAnMinObj){
+					Date minDate=sdf.parse(commonMethodsUtilService.getStringValueForObject(param[0]));
+					Date maxDate=sdf.parse(commonMethodsUtilService.getStringValueForObject(param[1]));
+					String minDateStr=commonMethodsUtilService.dateTOStringConvertion(minDate,"mm/dd/yyyy",null);
+					String maxDateStr=commonMethodsUtilService.dateTOStringConvertion(maxDate,"mm/dd/yyyy",null);
+					minAndMaxDatesStr=minDateStr+" - "+maxDateStr;
+				}		
+			}
+		}catch(Exception e){
+			 LOG.error(" Error Occured in getMinAndMaxDatesOfTraingCamp method in TraininingCampService class" ,e);
+		}
+		return minAndMaxDatesStr;
+	}
 	
-	 
+}
