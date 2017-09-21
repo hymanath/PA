@@ -489,6 +489,7 @@ function getpartyWiseChannelCounts(result){
 		str+='<h4 class="panel-title m_top10">NO DATA AVAILABLE</h4>';
 	}
 	$("#electronicMediaChannelCountId").html(str);
+	$("#electronicMediaChannelCountId").mCustomScrollbar({setHeight:'345spx'});
 }
 function getEMMDetailedPartyDistrictWiseProgramsOverview(channelArr,type)
 {

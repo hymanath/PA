@@ -500,7 +500,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			$(".overAllTourCls").attr("attr_dsgntn_ids",tursDesgntnIdsString);  
 			if(designationWiseList.length > 3)
 			{
-				$(".toursScroll").mCustomScrollbar({setHeight:'1200px'});
+				$(".toursScroll").mCustomScrollbar({setHeight:'670px'});
 			}
 		}
 	
