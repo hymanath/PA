@@ -3598,7 +3598,12 @@ function getElectionTypes(){
 function getElectionInformationLocationWise(electionVal){
 	$('#electionDetailsGraphWiseId').html(spinner);
 	$('#electionDetailsTableWiseId').html(spinner);
-	
+	if(locationLevelId == '8' || locationLevelId == '6'){
+		$("#electionDetailsGraphWiseId,#electionDetailsTableWiseId").html(noData);
+		return;
+	}else{
+		$("#electionDetailsGraphWiseId,#electionDetailsTableWiseId").show();
+	}
 	var electionScopeIds=[];
 	if(electionVal == 0){
 		electionScopeIds =[];
