@@ -585,4 +585,11 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		return query.list();
 		
 	}
+	public List<Object[]> getMinAndMaxDatesOfTraingCamp(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select date(min(model.fromDate)),date(max(model.toDate))" +
+				" from TrainingCampBatch model where model.isCancelled = 'false' ");
+		Query query = getSession().createQuery(sb.toString());
+		return query.list();
+	}
 }
