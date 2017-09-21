@@ -135,6 +135,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<PartyMeetingWSVO> partyMeetingWSVOList;
 	private List<KeyValueVO> keyValueVOlist;
 	private List<VerifierVO> verifyVOLst;
+	private String minAndMaxDatesStr;
 	
 	public List<KeyValueVO> getKeyValueVOlist() {
 		return keyValueVOlist;
@@ -700,6 +701,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	public void setVerifyVOLst(List<VerifierVO> verifyVOLst) {
 		this.verifyVOLst = verifyVOLst;
+	}
+
+	public String getMinAndMaxDatesStr() {
+		return minAndMaxDatesStr;
+	}
+
+	public void setMinAndMaxDatesStr(String minAndMaxDatesStr) {
+		this.minAndMaxDatesStr = minAndMaxDatesStr;
 	}
 
 	public String callCenterTrainingAdmin()
@@ -2257,7 +2266,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	         //copy image to folder.
 	         
 	}
-    public String openTrainingCenterDashBoard(){  
+    public String openTrainingCenterDashBoard(){ 
+    	minAndMaxDatesStr=trainingCampService.getMinAndMaxDatesOfTraingCamp();
     	RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
 		if(regVO!=null){
 			Long userId = regVO.getRegistrationID();
@@ -3385,4 +3395,5 @@ public String getCommentsMeetingDetails(){
 		}
 		return Action.SUCCESS;
 	}
+
 }
