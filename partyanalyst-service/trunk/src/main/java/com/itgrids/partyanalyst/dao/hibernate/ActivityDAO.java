@@ -76,7 +76,15 @@ public class ActivityDAO extends GenericDaoHibernate<Activity, Long> implements 
 		           if(locationValues !=null && locationValues.size()>0){
 		        	   sbe.append( "  and ua.panchayat_id in  (:locationValues)  " );
 		           }	           
-		         }
+			} else if (locationTypeId == 7l) {
+				if (locationValues != null && locationValues.size() > 0) {
+					sbe.append("  and ua.local_election_body in  (:locationValues)  ");
+				}
+			} else if (locationTypeId == 8l) {
+				if (locationValues != null && locationValues.size() > 0) {
+					sbe.append("  and ua.ward in  (:locationValues)  ");
+				}
+			}
 		         
 		       }
 		       sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());  
@@ -154,7 +162,15 @@ public class ActivityDAO extends GenericDaoHibernate<Activity, Long> implements 
 			           if(locationValues !=null && locationValues.size()>0){
 			        	   sbe.append(" and ua.parliament_constituency_id  in (:locationValues) ");
 			           }
-		         }
+		         }else if (locationTypeId == 7l) {
+						if (locationValues != null && locationValues.size() > 0) {
+							sbe.append("  and ua.local_election_body in  (:locationValues)  ");
+						}
+					} else if (locationTypeId == 8l) {
+						if (locationValues != null && locationValues.size() > 0) {
+							sbe.append("  and ua.ward in  (:locationValues)  ");
+						}
+					}
 		         
 		       }
 		       sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());  
@@ -230,7 +246,15 @@ public class ActivityDAO extends GenericDaoHibernate<Activity, Long> implements 
 			           if(locationValues !=null && locationValues.size()>0){
 			        	   sbe.append(" and ua.parliament_constituency_id  in (:locationValues) ");
 			           }
-		         }
+		         }else if (locationTypeId == 7l) {
+						if (locationValues != null && locationValues.size() > 0) {
+							sbe.append("  and ua.local_election_body in  (:locationValues)  ");
+						}
+					} else if (locationTypeId == 8l) {
+						if (locationValues != null && locationValues.size() > 0) {
+							sbe.append("  and ua.ward in  (:locationValues)  ");
+						}
+					}
 		         
 		       }
 		       sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());  
@@ -306,7 +330,15 @@ public class ActivityDAO extends GenericDaoHibernate<Activity, Long> implements 
 			           if(locationValues !=null && locationValues.size()>0){
 			        	   sbe.append(" and ua.parliament_constituency_id  in (:locationValues) ");
 			           }
-		         }
+		         }else if (locationTypeId == 7l) {
+						if (locationValues != null && locationValues.size() > 0) {
+							sbe.append("  and ua.local_election_body in  (:locationValues)  ");
+						}
+					} else if (locationTypeId == 8l) {
+						if (locationValues != null && locationValues.size() > 0) {
+							sbe.append("  and ua.ward in  (:locationValues)  ");
+						}
+					}
 		         
 		       }
 		       sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());  
