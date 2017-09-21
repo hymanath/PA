@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -294,11 +295,13 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 	@Override
 	public List<Long> getAllConstituenciesByPanchayatId(Long panchayatId) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct model.constituencyId  from TehsilConstituency model,Panchayat model1  where  model1.tehsilId=model.tehsilId ");
+		sb.append("select distinct model.constituency_id  as constituency from tehsil_constituency model,panchayat model1  where  model1.tehsil_id=model.tehsil_id ");
 		if(panchayatId != null && panchayatId.longValue()>0){
-			sb.append(" and model1.panchayatId =:panchayatId ");
+			sb.append(" and model1.panchayat_id =:panchayatId ");
 		}	
-	    Query query = getSession().createQuery(sb.toString());
+	    Query query = getSession().createSQLQuery(sb.toString()).
+	    		addScalar("constituency",Hibernate.LONG);
+	    
 	    if(panchayatId != null && panchayatId.longValue()>0){
 	    query.setParameter("panchayatId", panchayatId);
 	    }
