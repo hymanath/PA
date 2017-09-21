@@ -1324,4 +1324,6 @@ public interface IConstants {
 	public static final Long DEBATE_AP_STATE_ID = 1L;
 	public static final Long DEBATE_TS_STATE_ID = 36L;
 	public static final Long DEBATE_OTHERS_ID = 2L;
+	public static final String ITDP_LIVE_URL = "http://mytdp.com/ITDP/WebService/";
+	
 }
