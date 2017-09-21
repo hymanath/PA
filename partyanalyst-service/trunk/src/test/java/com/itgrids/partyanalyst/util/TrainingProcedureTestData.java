@@ -5,11 +5,11 @@ import java.util.List;
 
 public class TrainingProcedureTestData {
 	
-	public static void main(String[] args){
+	/*public static void main(String[] args){
 		List<Object[]> resultList  = getTestProcedureCallData();
 		System.out.println(resultList);
 	}
-	
+	*/
 	public static List<Object[]> getTestProcedureCallData(){
 		 List<Object[]>  list = new ArrayList<Object[]>();
 			Object[] objArr929855_2017_09_19={9298552L,"2017_09_19",553L,"","","","","NON INVITEE"};list.add(objArr929855_2017_09_19);                                         
