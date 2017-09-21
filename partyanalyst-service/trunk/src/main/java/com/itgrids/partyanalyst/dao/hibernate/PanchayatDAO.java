@@ -323,7 +323,7 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 			}else if(locationTypeId == 6l){
 				sb.append("	model.panchayat.panchayatId in (:constituencyId)");
 			}else if(locationTypeId == 7l){
-				sb.append("	model.localBody.localBodyId in (:constituencyId)");
+				sb.append("	model.localBody.localElectionBodyId in (:constituencyId)");
 			}
 		}
 
