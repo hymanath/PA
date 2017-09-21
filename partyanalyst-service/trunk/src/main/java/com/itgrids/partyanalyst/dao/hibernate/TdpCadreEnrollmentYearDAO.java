@@ -1018,6 +1018,10 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 	        		sb.append(" and model.tdpCadre.userAddress.tehsil.tehsilId = :locationValue ");
 	        	}else if(locationTypeId ==6l){
 	        		sb.append(" and model.tdpCadre.userAddress.panchayat.panchayatId = :locationValue ");
+	        	}else if(locationTypeId ==7l){
+	        		sb.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId = :locationValue");
+	        	}else if(locationTypeId ==8l){
+	        		sb.append(" and model.tdpCadre.userAddress.ward.constituencyId = :locationValue");
 	        	}
 			}
 			sb.append(" group by model.tdpCadre.gender,model.tdpCadre.voterAgeRangeId " +
@@ -1183,6 +1187,10 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			        		queryStr.append(" and model.tdpCadre.userAddress.tehsil.tehsilId = :locationValue");
 			        	}else if(locationTypeId ==6l){
 			        		queryStr.append(" and model.tdpCadre.userAddress.panchayat.panchayatId = :locationValue");
+			        	}else if(locationTypeId ==7l){
+			        		queryStr.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId = :locationValue");
+			        	}else if(locationTypeId ==8l){
+			        		queryStr.append(" and model.tdpCadre.userAddress.ward.constituencyId = :locationValue");
 			        	}
 			        }
 			        
