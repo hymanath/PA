@@ -2936,10 +2936,11 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							
 							str+='<td>'+ajaxresp[i].grounded+'</td>';
 							
-							if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms' || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
+							if((globalDivName == 'Silk Worms' || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
 								var groundedPerc = "0.00";
-								if(ajaxresp[i].target > 0 && ajaxresp[i].grounded > 0)
+								if(ajaxresp[i].target > 0 && ajaxresp[i].grounded > 0){
 									groundedPerc = ((ajaxresp[i].grounded*100)/ajaxresp[i].target).toFixed(2);
+								}
 								if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 50 && groundedPerc < 80){
@@ -3033,6 +3034,15 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
 								}
 							}
+							
+							if(ajaxresp[i].percentage < 50){
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 80){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}
+							
 							if((globalDivName == 'Silk Worms') && locationTypeNew == "state"){
 								if(ajaxresp[i].percSant < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
@@ -3041,14 +3051,6 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								}else if(ajaxresp[i].percSant >= 80){
 									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}
-							}
-							
-							if(ajaxresp[i].percentage < 50){
-								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
-							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
-							}else if(ajaxresp[i].percentage >= 80){
-								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}
 							
 							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
@@ -3320,13 +3322,13 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 {
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
-	 var theadArr = [locationType,'Target(in Acres)','Sanctioned Area (in Acres)','Sanctioned Percentage','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc','Achievement Percentage'];
+	 var theadArr = [locationType,'Target(in Acres)','Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc','Achievement Percentage'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc','Achievement Percentage'];
+		theadArr = ["district",locationType,'Target(in Acres)','Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc','Achievement Percentage'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc','Achievement Percentage'];
+		theadArr = ["district","constituency",locationType,'Target(in Acres)','Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc','Achievement Percentage'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc','Achievement Percentage'];
+		theadArr = ["district","constituency","mandal",locationType,'Target(in Acres)','Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc','Achievement Percentage'];
 	
 	var json = {
 		year : "2017",
@@ -3373,11 +3375,11 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
-						if(locationType == "state" || locationType == "district")
+						//if(locationType == "state" || locationType == "district")
 							str+='<td>'+ajaxresp[i].targetACRES+'</td>';
 						str+='<td>'+ajaxresp[i].sanctionedACRES+'</td>';
-						if(locationType == "state" || locationType == "district")
-							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+						/* if(locationType == "state" || locationType == "district")
+							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>'; */
 						str+='<td>'+ajaxresp[i].pittingArea+'</td>';
 						str+='<td>'+ajaxresp[i].plantingArea+'</td>';
 						/*if(locationType == "state" || locationType == "district"){
@@ -3388,14 +3390,15 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 							else if(ajaxresp[i].targetPittingPerc >= 80)
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
 						}*/
-						if(locationType == "state" || locationType == "district"){
+						//if(locationType == "state" || locationType == "district"){
 							if(ajaxresp[i].targetPittingPerc < 50)
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
 							else if(ajaxresp[i].targetPittingPerc >= 50 && ajaxresp[i].targetPittingPerc < 80)
 								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
 							else if(ajaxresp[i].targetPittingPerc >= 80)
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
-						}else{
+						//}
+							/* else{
 							if(ajaxresp[i].sancTrgtPittingPerc < 50)
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].sancTrgtPittingPerc+'</td>';
 							else if(ajaxresp[i].sancTrgtPittingPerc >= 50 && ajaxresp[i].sancTrgtPittingPerc < 80)
@@ -3403,9 +3406,9 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 							else if(ajaxresp[i].sancTrgtPittingPerc >= 80)
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].sancTrgtPittingPerc+'</td>';
 						}
+						 */
 						
-						
-						if(locationType == "state" || locationType == "district"){
+						//if(locationType == "state" || locationType == "district"){
 							if(ajaxresp[i].targetPalnting < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].targetPalnting+'</td>';
 							}else if(ajaxresp[i].targetPalnting >= 50 && ajaxresp[i].targetPalnting < 80){
@@ -3414,8 +3417,8 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 							{
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].targetPalnting+'</td>';
 							}
-						}
-						else{
+						//}
+						/* else{
 							if(ajaxresp[i].pencentageOfPlanting < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
 							}else if(ajaxresp[i].pencentageOfPlanting >= 50 && ajaxresp[i].pencentageOfPlanting < 80){
@@ -3424,7 +3427,7 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 							{
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
 							}
-						}
+						} */
 						
 						//str+='<td>'+ajaxresp[i].pencentageOfPlanting+'</td>';
 					str+='</tr>';
@@ -3439,13 +3442,13 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 {
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
-	 var theadArr = [locationType,'Target','Sanctioned Area (in Kms)','Sanctioned Percentage','Pitting  Area (in Kms)','Planting  Area (in Kms)','Pitting Percentage','Achievement Percentage'];
+	 var theadArr = [locationType,'Target','Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Pitting Percentage','Achievement Percentage'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Pitting Percentage','Achievement Percentage'];
+		theadArr = ["district",locationType,'Target','Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Pitting Percentage','Achievement Percentage'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Pitting Percentage','Achievement Percentage'];
+		theadArr = ["district","constituency",locationType,'Target','Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Pitting Percentage','Achievement Percentage'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Pitting Percentage','Achievement Percentage'];
+		theadArr = ["district","constituency","mandal",locationType,'Target','Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Pitting Percentage','Achievement Percentage'];
 	
 	var json = {
 		year : "2017",
@@ -3492,14 +3495,14 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
-						if(locationType == "state" || locationType == "district")
+						//if(locationType == "state" || locationType == "district")
 							str+='<td>'+ajaxresp[i].targetKMS+'</td>';
 						str+='<td>'+ajaxresp[i].sanctionedKMS+'</td>';
-						if(locationType == "state" || locationType == "district")
-							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+						/* if(locationType == "state" || locationType == "district")
+							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>'; */
 						str+='<td>'+ajaxresp[i].pittingKMS+'</td>';
 						str+='<td>'+ajaxresp[i].plantingKMS+'</td>';
-						if(locationType == "state" || locationType == "district"){
+						//if(locationType == "state" || locationType == "district"){
 							if(ajaxresp[i].targetPittingPerc < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
 							}else if(ajaxresp[i].targetPittingPerc >= 50 && ajaxresp[i].targetPittingPerc < 80){
@@ -3507,7 +3510,8 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 							}else if(ajaxresp[i].targetPittingPerc >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
 							}
-						}else{
+						//}
+							/* else{
 							if(ajaxresp[i].sancTrgtPittingPerc < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].sancTrgtPittingPerc+'</td>';
 							}else if(ajaxresp[i].sancTrgtPittingPerc >= 50 && ajaxresp[i].sancTrgtPittingPerc < 80){
@@ -3515,8 +3519,8 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 							}else if(ajaxresp[i].sancTrgtPittingPerc >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].sancTrgtPittingPerc+'</td>';
 							}
-						}
-						if(locationType == "state" || locationType == "district"){
+						} */
+						//if(locationType == "state" || locationType == "district"){
 							if(ajaxresp[i].sanctionedPerc < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
 							}else if(ajaxresp[i].sanctionedPerc >= 50 && ajaxresp[i].sanctionedPerc < 80){
@@ -3524,8 +3528,8 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 							}else if(ajaxresp[i].sanctionedPerc >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
 							}
-						}
-						else{
+						//}
+						/* else{
 							if(ajaxresp[i].pencentageOfPlanting < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
 							}else if(ajaxresp[i].pencentageOfPlanting >= 50 && ajaxresp[i].pencentageOfPlanting < 80){
@@ -3533,7 +3537,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 							}else if(ajaxresp[i].pencentageOfPlanting >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
 							}
-						}
+						} */
 					str+='</tr>';
 				}
 			}
