@@ -2373,7 +2373,7 @@
   function buildBasicCommitteesCountDetails(result){
 	var str="";
 	var totalBooths =$("#totalBoothsCount").text();
-	str+='<table class="table table-condensed table-bordered m_top20">';
+	str+='<table class="table table-condensed table-bordered">';
 		str+='<thead class="bg_CC">';
 			str+='<th>Booth Incharge Assigned</th>';
 			str+='<th>Booths</th>';
