@@ -16,8 +16,7 @@
 <link href="dist/slick/slick.css" type="text/less" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
-
+<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <body>
@@ -252,8 +251,19 @@
 			</div>
 			<div class="col-sm-8 m_top20" navbar-index="meetings">
 				<div class="block">
-					<h4 class="panel-title theme-title-color">Meetings <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="meetings"></i></span></h4>
-					<p class="f-12 text-muted">Evertymonth: 9th/10th/11th</p>
+					<h4 class="panel-title theme-title-color">Meetings
+					<span class="">
+						<span class="pull-right" style="margin-top: 10px;">
+							<i class="glyphicon glyphicon-refresh f-14" refresh="meetings"></i>
+						</span>
+						<div class="input-group pull-right dateRangePickerClsForMeetings" expand-block-date="meetings" style="width:200px;margin-right:12px;">
+							<input type="text" id="dateRangeIdForMeetings" style="width:180px" class="form-control"/>
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</div>
+					</span></h4>
+					<!--<p class="f-12 text-muted">Evertymonth: 9th/10th/11th</p>-->
 					<div id="locationWiseMeetingsCount" class="m_top30"></div>
 				</div>
 			</div>
