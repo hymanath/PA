@@ -2590,7 +2590,8 @@ function getGovtSchemeWiseBenefitMembersCount(){
 	
 	jsObj={
 		locationTypeId	:locationLevelId,
-		locationValue	:locationLevelVal
+		locationValue	:locationLevelVal,
+		publicationDateId:22
 	}
 	 $.ajax({
       type : "POST",
@@ -2665,7 +2666,8 @@ function getMandalWiseBenefitMembersCount(id){
 	jsObj={
 		locationTypeId:locationLevelId,
 		locationValue:locationLevelVal,
-		govtSchemeId:id
+		govtSchemeId:id,
+		publicationDateId:22
 	}
 	$.ajax({
 	  type : "POST",
@@ -2674,13 +2676,13 @@ function getMandalWiseBenefitMembersCount(id){
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
 		if(result!=null && result.length>0){
-			return buildTabsBody(result,id);
+			return buildTabsBody(result,id,locationLevelId);
 		}else{
 			$("#benefits"+id).html(noData);
 		}
 	});
 	
-	function buildTabsBody(result,id)
+	function buildTabsBody(result,id,locationLevelId)
 	{
 		var totalPopulation = 0;
 		var totalBenefited = 0;
@@ -2717,7 +2719,17 @@ function getMandalWiseBenefitMembersCount(id){
 			navTabBody+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 				navTabBody+='<table class="table table-noborder">';
 					navTabBody+='<thead class="text-capitalize bg-DD">';
+					if(locationLevelId == 3 || locationLevelId == 10){
+						navTabBody+='<th>Constituency Name</th>';
+					}else if(locationLevelId == 4){
 						navTabBody+='<th>Mandal Name</th>';
+					}else if(locationLevelId == 5 || locationLevelId == 6){
+						navTabBody+='<th>Panchayat Name</th>';
+					}else if(locationLevelId == 7){
+						navTabBody+='<th>Muncipality/Corporation Name</th>';
+					}else if(locationLevelId == 8){
+						navTabBody+='<th>Ward Name</th>';
+					}
 						navTabBody+='<th>Population</th>';
 						navTabBody+='<th>Benefited</th>';
 						navTabBody+='<th>%</th>';
@@ -2726,10 +2738,19 @@ function getMandalWiseBenefitMembersCount(id){
 						for(var i in result)
 						{
 							navTabBody+='<tr>';
-								navTabBody+='<td>'+result[i].name+'</td>';
-								navTabBody+='<td>'+result[i].totalPopulation+'</td>';
+								if(result[i].name != null && result[i].name != "")
+									navTabBody+='<td>'+result[i].name+'</td>';
+								else
+									navTabBody+='<td>Others</td>';
+								if(result[i].totalPopulation != null)
+									navTabBody+='<td>'+result[i].totalPopulation+'</td>';
+								else
+									navTabBody+='<td>-</td>';
 								navTabBody+='<td>'+result[i].totalCount+'</td>';
-								navTabBody+='<td>'+(((result[i].totalCount)/(result[i].totalPopulation))*100).toFixed(2)+'%</td>';
+								if(result[i].totalPopulation != null)
+									navTabBody+='<td>'+(((result[i].totalCount)/(result[i].totalPopulation))*100).toFixed(2)+'%</td>';
+								else
+									navTabBody+='<td>-</td>';
 							navTabBody+='</tr>';
 						}
 					navTabBody+='</tbody>';
