@@ -4156,4 +4156,7 @@
 	 <bean id="tehsilConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.TehsilConstituencyDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="trainingCampBatchTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampBatchTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
