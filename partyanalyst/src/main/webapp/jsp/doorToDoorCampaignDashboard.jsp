@@ -4,17 +4,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Door To Door Campaign</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="ITDP_Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
-<link href="ITDP_Assests/css/custom.less" rel="stylesheet" type="text/less"/>
-<link href="ITDP_Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
-<link href="ITDP_Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
-<link href="ITDP_Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
-<link href="ITDP_Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
-<script src="ITDP_Assests/Plugins/Less/less.js"></script>
-<link href="ITDP_Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
-<link href="ITDP_Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
-<link href="ITDP_Assests/Plugins/slick/slick.css" type="text/css" rel="stylesheet"/>
-<link href="ITDP_Assests/Plugins/slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<link href="D2D_Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
+<link href="D2D_Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+<link href=D2D_Assestss/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
+<link href="D2D_Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
+<link href="D2D_Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="D2D_Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
+<script src="D2D_Assests/Plugins/Less/less.js"></script>
+<link href="D2D_Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
+<link href="D2D_Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<link href="D2D_Assests/Plugins/slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="D2D_Assests/Plugins/slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style type="text/css">
@@ -31,10 +31,10 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-6">
-				<img src="ITDP_Assests/images/itdplogo.png" class="img-responsive"/>
+				<img src="D2D_Assests/images/itdplogo.png" class="img-responsive"/>
 			</div>
 			<div class="col-sm-6">
-				<img src="ITDP_Assests/images/itdplogoright.png" class="img-responsive pull-right m_top10"/>
+				<img src="D2D_Assests/images/itdplogoright.png" class="img-responsive pull-right m_top10"/>
 			</div>
 		</div>
 	</div>
@@ -89,7 +89,7 @@
 					<div class="block_styles">
 						<div class="media">
 							<div class="media-left">
-								<img src="ITDP_Assests/icons/Location_Level_Campign_icon.png"></img>
+								<img src="D2D_Assests/icons/Location_Level_Campign_icon.png"></img>
 							</div>
 							<div class="media-body">
 								<h4 class="text-capital" style="line-height: 25px;"><b>Location Level Wise<br/> Campaign Started</b></h4>
@@ -145,18 +145,18 @@
 	
 </section>
 
-<script src="ITDP_Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="ITDP_Assests/js/bootstrap.js" type="text/javascript"></script>
-<script src="ITDP_Assests/Plugins/Date/moment.js" type="text/javascript"></script>
-<script src="ITDP_Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
-<script src="ITDP_Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="ITDP_Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
-<script src="ITDP_Assests/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
-<script src="ITDP_Assests/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
-<script src="ITDP_Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
-<script src="ITDP_Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
-<script src="ITDP_Assests/Plugins/slick/slick.js" type="text/javascript"></script>
-<script src="ITDP_Assests/js/doorToDoorCampaign.js" type="text/javascript"></script>
+<script src="D2D_Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="D2D_Assests/js/bootstrap.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/slick/slick.js" type="text/javascript"></script>
+<script src="D2D_Assests/js/doorToDoorCampaign.js" type="text/javascript"></script>
 <script>
   var tableToExcel = (function() {
   var uri = 'data:application/vnd.ms-excel;base64,'
