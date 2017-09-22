@@ -1218,18 +1218,24 @@ public class LocationDashboardService  implements ILocationDashboardService  {
  * Inputs locationid and type,
  * 
  */
-	public List<LocationVotersVO> getLocationWiseMeetingsCount(Long locationTypeId, List<Long> locationValues) {
+	public List<LocationVotersVO> getLocationWiseMeetingsCount(Long locationTypeId, List<Long> locationValues,String fromDateStr,String toDateStr) {
 		List<LocationVotersVO> voList = new ArrayList<LocationVotersVO>(0);
 		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Map<String, LocationVotersVO> finalMap = new LinkedHashMap<String, LocationVotersVO>();
 
 			finalMap.put("Y", null);
 			finalMap.put("N", null);
 			finalMap.put("M", null);
 			finalMap.put("NU", null);
-
+			Date startDate = null;
+			Date endDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
 			// 0-meetingStatus,1-levelId,2-level,3-count
-			List<Object[]> objList = partyMeetingStatusDAO.getLocationWiseMeetings(locationValues, locationTypeId);
+			List<Object[]> objList = partyMeetingStatusDAO.getLocationWiseMeetings(locationValues, locationTypeId,startDate,endDate);
 			if (objList != null && objList.size() > 0) {
 				for (Object[] objects : objList) {
 					if (finalMap.get(objects[0].toString()) == null) {
