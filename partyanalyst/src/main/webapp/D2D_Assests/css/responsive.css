@@ -1,0 +1,308 @@
+@media (min-width: 100px) and (max-width:500px) 
+{
+	.table-overview tr td
+	{
+		display:block;
+	}
+	.navbar-header-custom li
+	{
+		display:block;
+		width:100% !important;
+		border-right:0px !important;
+		border-bottom:1px solid #333 !important;
+	}
+	.menu-cls 
+	{
+		top:0px;
+		right:0px;
+	}
+	.menu-data-cls
+	{
+		top: 120px;
+		right: 0;
+	}
+	.block_styles .border_right
+	{
+		border-right:0px;
+		border-bottom:1px solid #ccc;
+		padding-bottom:15px;
+		margin-bottom:15px;
+	}
+	.block_styles
+	{
+		margin-top:10px;
+	}
+	.background-head
+	{
+		height:350px;
+	}
+	.switch-btn
+	{
+		margin-top:10px !important;
+		margin-bottom:10px !important;
+	}
+	.form-control
+	{
+		margin-top:10px;
+	}
+	.input-group .form-control
+	{
+		margin-top:0px;
+	}
+	.panel-block-white-high h1,
+	.panel-block-white-low h1,
+	.panel-block-white-medium h1,
+	.panel-block-white-high.active h1,
+	.panel-block-white-low.active h1,
+	.panel-block-white-medium.active h1
+	{
+		font-size:25px;
+	}
+	.panel-black-white label
+	{
+		font-size:12px;
+	}
+	.panel-block-white-high small,
+	.panel-block-white-low small,
+	.panel-block-white-medium small,
+	.panel-block-white-high.active small,
+	.panel-block-white-low.active small,
+	.panel-block-white-medium.active small
+	{
+		font-size:12px;
+		top:0px;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
+	.pad_left0
+	{
+		padding-left:15px;
+	}
+	.menu-top-selection .arrow_box_top
+	{
+		width:250px;
+		position:absolute;
+		right:5px;
+		top:30px;
+		z-index:99;
+	}
+}
+@media (min-width: 500px) and (max-width:767px) 
+{
+	.table-overview tr td
+	{
+		display:block;
+	}
+	.navbar-header-custom li
+	{
+		display:block;
+		width:100% !important;
+		border-right:0px !important;
+		border-bottom:1px solid #333 !important;
+	}
+	.menu-cls 
+	{
+		top:0px;
+		right:0px;
+	}
+	.menu-data-cls
+	{
+		top: 120px;
+		right: 0;
+	}
+	.switch-btn
+	{
+		margin-top:10px !important;
+		margin-bottom:10px !important;
+	}
+	.form-control
+	{
+		margin-top:10px;
+	}
+	.input-group .form-control
+	{
+		margin-top:0px;
+	}
+	.panel-block-white-high h1,
+	.panel-block-white-low h1,
+	.panel-block-white-medium h1,
+	.panel-block-white-high.active h1,
+	.panel-block-white-low.active h1,
+	.panel-block-white-medium.active h1
+	{
+		font-size:25px;
+	}
+	.panel-black-white label
+	{
+		font-size:12px;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
+	.pad_left0
+	{
+		padding-left:15px;
+	}
+	.menu-top-selection .arrow_box_top
+	{
+		width:350px;
+		position:absolute;
+		right:5px;
+		top:30px;
+		z-index:99;
+	}
+}
+@media (min-width:769px) and  (max-width:991px){
+	.table-overview tr td
+	{
+		display:block;
+	}
+	.navbar-header-custom li
+	{
+		display:block;
+		width:100% !important;
+	}
+}
+@media (min-width:992px) and  (max-width:1199px){
+}
+@media (min-width:1200px){
+}
+@media (min-width:767px) and  (max-width:768px){
+	
+}
+/* Ipad Only STYLES START*/
+@media only screen and (device-width: 768px) 
+{
+	
+	#projectsOverview .col-sm-2
+	{
+		width:33.3%
+	}
+	#projectsOverview .col-sm-4
+	{
+		width:100%;
+	}
+}
+@media only screen and (device-width: 1024px) 
+{
+	.panel-block-white-high h1,
+	.panel-block-white-low h1,
+	.panel-block-white-medium h1,
+	.panel-block-white-high.active h1,
+	.panel-block-white-low.active h1,
+	.panel-block-white-medium.active h1
+	{
+		font-size:25px;
+	}
+	.panel-block-white-low.active small,
+	.panel-block-white-medium.active small,
+	.panel-block-white-high.active small,
+	.panel-block-white-low small,
+	.panel-block-white-medium small,
+	.panel-block-white-high small
+	{
+		font-size:8px;
+	}
+	.panel-block-white-low.active small .fa,
+	.panel-block-white-medium.active small .fa,
+	.panel-block-white-high.active small .fa,
+	.panel-block-white-low small .fa,
+	.panel-block-white-medium small .fa,
+	.panel-block-white-high small .fa
+	{
+		position: absolute;
+		top: 12px;
+		left: -5px;
+	}
+	.panel-black-white label
+	{
+		font-size:10px;
+	}
+	.panel-black-white .col-sm-6
+	{
+		width:100%;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
+	.pad_left0
+	{
+		padding-left:15px;
+	}
+}
+
+/* Ipad Only STYLES END */
+/*css for PRIS and Drains dashboard responsive*/
+
+@media(min-width:320px) and (max-width: 767px){
+	
+	header .logo{
+		height: 50px;
+	}
+	header .headingBlock{
+		margin-top: 5px !important;
+	}
+	header .glyphicon-th{
+		font-size: 20px;
+		top: 13px;
+	}
+}
+@media(min-width:320px) and (max-width: 570px){
+	.headingBlock{
+		padding-left: 38px;
+		margin-top: 5px !important;
+		}
+		.calendar_active_cls li img{
+			height: 25px;
+			padding: 2px;
+		}
+		.calendar_active_cls li span{
+			font-weight: initial;
+		}
+		.menu-data-cls{
+				top: 50px !important;
+				width: 300px;
+		}
+		.multi-level-selection-menu {
+			width: 280px;
+		}
+	
+}
+@media(min-width: 768px) and (max-width: 991px){
+		.subBlock:first-child{
+			padding-left: 0px;
+		}
+		.subBlock:nth-child(2){
+			padding-left: 10px;
+		}
+		.block h4{
+			font-size: 17px;
+		}
+		.subBlock h5{
+			font-size: 13px;
+		}
+		.subBlock h4{
+			font-size: 16px;
+		}
+		.mainBlock{
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		.mainBlock  .block_styles{
+			padding: 20px 12px;
+		}
+		.block_styles {
+			padding: 20px 12px;
+		}
+		.mainBlock  .block_styles img{
+			height: 45px;
+		}
+		.mainBlock .block_styles  h4{
+			font-size: 15px;
+		}
+	
+}
