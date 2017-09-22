@@ -2738,34 +2738,34 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Object[]> conductedCount = activityDAO.getConductedInfoCount(fromDate, toDate, year, locationValues, locationTypeId);
 
 			for (Object[] object1 : activityTotal) {
+				BasicVO vo = new BasicVO();
+				vo.setName(object1[1].toString());
+				vo.setDescription(object1[2].toString());
+				vo.setTotalVoters((Long)object1[3]);
+				vo.setPerc(Double.valueOf("0.00"));
+				
 				for (Object[] object2 : activityConductedCount) {
-					BasicVO vo = new BasicVO();
 					if(((Long)object2[0]).equals((Long)object1[0])){
 						vo.setPerc(calculatePercantage((Long)object2[3], (Long)object1[3]));
-						vo.setName(object1[1].toString());
-						vo.setDescription(object1[2].toString());
-						vo.setTotalVoters((Long)object1[3]);
 						vo.setTotalResult((Long)object2[3]);
 					}
-					if(vo.getPerc()!=null){
-						finalList.add(vo);
-					}
 				}
+				
+				finalList.add(vo);
 			}
 			for (Object[] object3 : conductedInfoTotal) {
+				BasicVO vo = new BasicVO();
+				vo.setName(object3[1].toString());
+				vo.setDescription(object3[2].toString());
+				vo.setTotalVoters((Long)object3[3]);
+				vo.setTotalResult((Long)object3[3]);
+				vo.setPerc(0.0d);
 				for (Object[] object4 : conductedCount) {
-					BasicVO vo = new BasicVO();
 					if(((Long)object3[0]).equals((Long)object4[0])){
 						vo.setPerc(calculatePercantage((Long)object4[3], (Long)object3[3]));
-						vo.setName(object3[1].toString());
-						vo.setDescription(object3[2].toString());
-						vo.setTotalVoters((Long)object3[3]);
-						vo.setTotalResult((Long)object3[3]);
-					}
-					if(vo.getPerc()!=null){
-						finalList.add(vo);
 					}
 				}
+				finalList.add(vo);
 			}
 
 		}catch(Exception e){
