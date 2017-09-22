@@ -353,6 +353,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 													levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 													levelvo = locationMap.get(jObj.getString("CONSTITUENCY").trim());
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities") && inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") && jObj.getString("MANDAL").trim().equalsIgnoreCase("Rentachintala"))
+													levelvo = locationMap.get("Rentacrintala");
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
 													levelvo = locationMap.get(jObj.getString("MANDAL").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
@@ -371,6 +373,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 														levelvo.setConstituency(jObj.getString("CONSTITUENCY").trim());
+													else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities") && inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") && jObj.getString("MANDAL").trim().equalsIgnoreCase("Rentachintala"))
+														levelvo = locationMap.get("Rentacrintala");
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
 														levelvo.setMandal(jObj.getString("MANDAL").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
@@ -389,6 +393,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 															levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 														else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 															componentvo.setName(jObj.getString("CONSTITUENCY").trim());
+														else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities") && inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") && jObj.getString("MANDAL").trim().equalsIgnoreCase("Rentachintala"))
+															componentvo.setName("Rentacrintala");
 														else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
 															componentvo.setName(jObj.getString("MANDAL").trim());
 														else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
@@ -429,8 +435,19 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 															componentvo.setPercentage(jObj.getString("PERCENTAGE"));
 														}
 														else{
-															if(jObj.getLong("GROUNDED") > 0 && jObj.getString("TARGET") != null && jObj.getLong("TARGET") > 0)
-																componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+															if(componentName != null && (componentName.trim().equalsIgnoreCase("GP Buildings") || componentName.trim().equalsIgnoreCase("Mandal buildings"))
+																	&& (inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") || inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))){
+																if(jObj.getLong("GROUNDED") > 0 && jObj.getString("TARGETNEW") != null && jObj.getLong("TARGETNEW") > 0)
+																	componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGETNEW"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+																else
+																	componentvo.setPercentage("0.00");
+															}else {
+																if(jObj.getLong("GROUNDED") > 0 && jObj.getString("TARGET") != null && jObj.getLong("TARGET") > 0)
+																	componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+																else
+																	componentvo.setPercentage("0.00");
+															}
+																
 														}
 														
 														/*if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Anganwadi Buildings") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
@@ -466,6 +483,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 														locationMap.put(jObj.getString("CONSTITUENCY").trim(), levelvo);
+													else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities") && inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") && jObj.getString("MANDAL").trim().equalsIgnoreCase("Rentachintala"))
+														locationMap.put("Rentacrintala", levelvo);
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
 														locationMap.put(jObj.getString("MANDAL").trim(), levelvo);
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
@@ -484,6 +503,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 														componentvo.setName(jObj.getString("CONSTITUENCY").trim());
+													else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities") && inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") && jObj.getString("MANDAL").trim().equalsIgnoreCase("Rentachintala"))
+														componentvo.setName("Rentacrintala");
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
 														componentvo.setName(jObj.getString("MANDAL").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
@@ -522,10 +543,19 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														componentvo.setPercentage(jObj.getString("PERCENTAGE"));
 													}
 													else{
-														if(jObj.getLong("GROUNDED") > 0 && jObj.getString("TARGET") != null && jObj.getLong("TARGET") > 0)
-														{
-															componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+														if(componentName != null && (componentName.trim().equalsIgnoreCase("GP Buildings") || componentName.trim().equalsIgnoreCase("Mandal buildings"))
+																&& (inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") || inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))){
+															if(jObj.getLong("GROUNDED") > 0 && jObj.getString("TARGETNEW") != null && jObj.getLong("TARGETNEW") > 0)
+																componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGETNEW"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+															else
+																componentvo.setPercentage("0.00");
+														}else {
+															if(jObj.getLong("GROUNDED") > 0 && jObj.getString("TARGET") != null && jObj.getLong("TARGET") > 0)
+																componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+															else
+																componentvo.setPercentage("0.00");
 														}
+														
 													}
 													
 													/*if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Anganwadi Buildings") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
@@ -683,6 +713,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 													levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 													levelvo = locationMap.get(jObj.getString("CONSTITUENCY").trim());
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities") && inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") && jObj.getString("MANDAL").trim().equalsIgnoreCase("Rentachintala"))
+													levelvo = locationMap.get("Rentacrintala");
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
 													levelvo = locationMap.get(jObj.getString("MANDAL").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
@@ -701,6 +733,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 														levelvo.setConstituency(jObj.getString("CONSTITUENCY").trim());
+													else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities") && inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") && jObj.getString("MANDAL").trim().equalsIgnoreCase("Rentachintala"))
+														levelvo = locationMap.get("Rentacrintala");
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
 														levelvo.setMandal(jObj.getString("MANDAL").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
@@ -716,9 +750,11 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 															componentvo.setName(jObj.getString("DISTRICT").trim());
 														else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
-															levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
+															componentvo.setName(jObj.getString("ASSEMBLY").trim());
 														else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 															componentvo.setName(jObj.getString("CONSTITUENCY").trim());
+														else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities") && inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") && jObj.getString("MANDAL").trim().equalsIgnoreCase("Rentachintala"))
+															componentvo.setName("Rentacrintala");
 														else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
 															componentvo.setName(jObj.getString("MANDAL").trim());
 														else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
@@ -782,6 +818,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 														locationMap.put(jObj.getString("CONSTITUENCY").trim(), levelvo);
+													else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities") && inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") && jObj.getString("MANDAL").trim().equalsIgnoreCase("Rentachintala"))
+														locationMap.put("Rentacrintala",levelvo);
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
 														locationMap.put(jObj.getString("MANDAL").trim(), levelvo);
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
@@ -800,6 +838,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 														componentvo.setName(jObj.getString("CONSTITUENCY").trim());
+													else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities") && inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal") && jObj.getString("MANDAL").trim().equalsIgnoreCase("Rentachintala"))
+														componentvo.setName("Rentacrintala");
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
 														componentvo.setName(jObj.getString("MANDAL").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
