@@ -477,7 +477,34 @@ header.eventsheader {
 	<script type="text/javascript" src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 	<script type="text/javascript" src="dist/scroll/jquery.mousewheel.js"></script>
 <script type="text/javascript">
-var fromTypeGlob;
+var fromTypeGlob = "onLoad" ;
+onLoadCalls(fromTypeGlob);
+function onLoadCalls(fromTypeGlob){
+
+	getTrainingCenterDetailsBasedOnDates(fromTypeGlob);
+	getAttendedCountForBatchesByLocation(fromTypeGlob);
+	getInvitedAttendedCadreCountByBatchIds(fromTypeGlob);
+	getDayWiseCountsForRunningBatches(fromTypeGlob);
+	getAttendenceForTrainers("today");
+	getFeedBackCountsOfTraining(fromTypeGlob);
+	getAllTrainingCampDetails(fromTypeGlob);
+}
+
+$(document).on('click', '.applyBtn', function(){
+	fromTypeGlob="onClick";
+	onLoadCalls(fromTypeGlob);
+});
+
+$(document).on("click",".ranges li",function(){
+	fromTypeGlob="onClick";
+	onLoadCalls(fromTypeGlob);
+});
+
+$(document).on('change', '#trainingEnrlmntYrId', function(){
+	fromTypeGlob="change";
+	onLoadCalls(fromTypeGlob);
+});
+
 $(function () {
 	var cb = function(start, end, label) {
 	//console.log(start.toISOString(), end.toISOString(), label);
@@ -534,16 +561,6 @@ $(function () {
 	);  
   });*/
   $('#selectDate').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
-	fromTypeGlob="onLoad";
-	getTrainingCenterDetailsBasedOnDates("onLoad");
-	getAttendedCountForBatchesByLocation("onLoad");
-	getInvitedAttendedCadreCountByBatchIds("onLoad");
-	getDayWiseCountsForRunningBatches("onLoad");
-	getAttendenceForTrainers("today");
-	//$(".ranges ul li:nth-child(5)").trigger("click");
-	getFeedBackCountsOfTraining("onLoad");
-	getAllTrainingCampDetails("onLoad");
-	
 });
 
  $("#mainheading").html(" TRAINING CENTER DASHBOARD ");
@@ -1512,23 +1529,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		$("#constTable").removeClass("dataTable");
 	}
 	
-	$(document).on('click', '.applyBtn', function(){
-		fromTypeGlob="onClick";
-		getTrainingCenterDetailsBasedOnDates("onClick");
-		getAttendedCountForBatchesByLocation("onClick");
-		getInvitedAttendedCadreCountByBatchIds("onClick");
-		getDayWiseCountsForRunningBatches("onClick");
-		getFeedBackCountsOfTraining("onClick");
-	});
 	
-	$(document).on("click",".ranges li",function(){
-		fromTypeGlob="onClick";
-		getTrainingCenterDetailsBasedOnDates("onClick");
-		getAttendedCountForBatchesByLocation("onClick");
-		getInvitedAttendedCadreCountByBatchIds("onClick");
-		getDayWiseCountsForRunningBatches("onClick");
-		getFeedBackCountsOfTraining("onClick");
-	});
+	
+
 	
 	$(document).on("click",".summaryCls",function(){
 		var progId = $(this).attr("attr_prog_id");
@@ -1873,16 +1876,7 @@ $(document).on("click","#refrshButtonId",function(){
 		});
 	}
 
-$(document).on('change', '#trainingEnrlmntYrId', function(){
-		fromTypeGlob="change";
-		getTrainingCenterDetailsBasedOnDates("change");
-		getAttendedCountForBatchesByLocation("change");
-		getInvitedAttendedCadreCountByBatchIds("change");
-		getDayWiseCountsForRunningBatches("change");
-		getFeedBackCountsOfTraining("change");
-		getAllTrainingCampDetails("change");
-		getAttendenceForTrainers("change");
-	});
+
 $("#trainingEnrlmntYrId").tooltip();		
 </script>
 </body>
