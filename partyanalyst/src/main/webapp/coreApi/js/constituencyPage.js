@@ -25,7 +25,8 @@ var commitessArr=["mandalLevelGraph","villageLevelGraph","affMandalLevelGraph","
 var grivanceIdsArr=["grivanceId","trustId"];
 var grivanceColorObj={"APPROVED":"#2DCC70","COMPLETED":"#449C43","IN PROGRESS":"#FFB84F","NOT ELIGIBLE":"#C0392B","NOT POSSIBLE":"#EF8379","NOT VERIFIED":"#31708F"}
 var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In Party":"#449C43","Forwarded to Insurance":"#FFB84F","Closed at Insurance":"#8F43AF","Closed at Party":"#9B88B3","Approved - Compensated":"#2BCD72","Closed Letters":"#32708F","Account Rejected":"#65CBCC"}
-
+var customStartDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');;
+var customEndDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');;
 /* location Values Start*/
 function onLoadLocValue()
 {
@@ -82,6 +83,25 @@ function onLoadInitialisations()
 	//Menu Calls
 	menuCalls(2,'1','');	
 	menuCalls(9,'1','');	
+	$("#dateRangeIdForMeetings").daterangepicker({
+		opens: 'left',
+		startDate: moment().subtract(1, 'month').startOf('month'),
+        endDate: moment().subtract(1, 'month').endOf('month'),
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+        }
+	});
+	
 }
 function onLoadAjaxCalls()
 {
@@ -230,6 +250,11 @@ function onLoadClicks()
 		}else{ */
 			menuCalls(levelId,locationId,$("#constituencyMenu li.active").attr("menu-click"))
 		//}	
+	});
+	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
+		customStartDate = picker.startDate.format('DD/MM/YYYY');
+		customEndDate = picker.endDate.format('DD/MM/YYYY');
+		getLocationWiseMeetingsCount();
 	});
 	$(document).keydown(function(event){
 		if(event.keyCode==123){
@@ -710,7 +735,7 @@ function getCandidateAndPartyInfoForConstituency(){
 									parliament+='</div>';
 									parliament+='<div class="media-body">';
 										parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList[i].parliamentCandidateInfo.candidateName+'</h4>';
-										parliament+='<p class="text-muted">Parliament : '+result[0].subList[i].parliamentCandidateInfo.constituencyName+'</p>';
+										parliament+='<p class="text-muted text-capital">Parliament : '+result[0].subList[i].parliamentCandidateInfo.constituencyName+'</p>';
 									parliament+='</div>';
 								parliament+='</div>';
 							parliament+='</div>';
@@ -745,8 +770,8 @@ function getCandidateAndPartyInfoForConstituency(){
 										assembly+='</div>';
 										assembly+='<div class="media-body">';
 											assembly+='<h4 class="m_top20 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'</h4>';
-											assembly+='<p class="text-muted">Constituency : '+result[i].assemblyCandidateInfo[0].constituencyName+'</p>';
-											assembly+='<p class="text-muted">Parliament : '+result[i].assemblyCandidateInfo[0].parliamnerName+'</p>';
+											assembly+='<p class="text-muted text-capital">Assembly : '+result[i].assemblyCandidateInfo[0].constituencyName+'</p>';
+											assembly+='<p class="text-muted text-capital">Parliament : '+result[i].assemblyCandidateInfo[0].parliamnerName+'</p>';
 										assembly+='</div>';
 									assembly+='</div>';
 								assembly+='</div>';
@@ -779,7 +804,7 @@ function getCandidateAndPartyInfoForConstituency(){
 								parliament+='</div>';
 								parliament+='<div class="media-body">';
 									parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList[0].parliamentCandidateInfo.candidateName+'</h4>';
-									parliament+='<p class="text-muted">MP ('+result[0].subList[0].parliamentCandidateInfo.constituencyName+')</p>';
+									parliament+='<p class="text-muted text-capital">MP ('+result[0].subList[0].parliamentCandidateInfo.constituencyName+')</p>';
 								parliament+='</div>';
 							parliament+='</div>';
 						parliament+='</div>';			
@@ -796,8 +821,8 @@ function getCandidateAndPartyInfoForConstituency(){
 									parliament+='</div>';
 									parliament+='<div class="media-body">';
 										parliament+='<h4 class="m_top20 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'</h4>';
-										parliament+='<p class="text-muted">MLA ('+result[i].assemblyCandidateInfo[0].constituencyName+')</p>';
-										parliament+='<p class="text-muted">Parliament: '+result[i].assemblyCandidateInfo[0].parliamnerName+'</p>';
+										parliament+='<p class="text-muted text-capital">MLA ('+result[i].assemblyCandidateInfo[0].constituencyName+')</p>';
+										parliament+='<p class="text-muted text-capital">Parliament: '+result[i].assemblyCandidateInfo[0].parliamnerName+'</p>';
 									parliament+='</div>';
 								parliament+='</div>';
 							parliament+='</div>';
@@ -839,7 +864,7 @@ function getCountsForConstituency(){
 		var str='';
 		str+='<div class="block">';
 		
-			if(locationLevelId == 3)
+			 if(locationLevelId == 3)
 			{
 				str+='<h4 class="panel-title theme-title-color">'+$(".districtMenuName").text()+' DISTRICT level Wise Details</h4>';
 			}else if(locationLevelId == 4 || locationLevelId == 11)
@@ -848,7 +873,19 @@ function getCountsForConstituency(){
 			}else if(locationLevelId == 10)
 			{
 				str+='<h4 class="panel-title theme-title-color">'+$(".parliamentMenuName").text()+' Parliament level Wise Details</h4>';
-			}
+			}else if(locationLevelId == 5)
+			{
+				str+='<h4 class="panel-title theme-title-color">'+$(".mandalsMenuName").text()+' level Wise Details</h4>';
+			}else if(locationLevelId == 7)
+			{
+				str+='<h4 class="panel-title theme-title-color">'+$(".mandalsMenuName").text()+' level Wise Details</h4>';
+			}else if(locationLevelId == 6)
+			{
+				str+='<h4 class="panel-title theme-title-color">'+$(".panchayatMenuName").text()+' Panchayat level Wise Details</h4>';
+			}else if(locationLevelId == 8)
+			{
+				str+='<h4 class="panel-title theme-title-color">'+$(".panchayatMenuName").text()+' level Wise Details</h4>';
+			} 
 		
 			str+='<table class="table table-bordered m_top15">';
 				str+='<tr>';
@@ -2425,7 +2462,9 @@ function getLocationWiseMeetingsCount(){
 	
 	jsObj={
 		locationTypeId:	locationLevelId,
-		locationValues:	userAccessLevelValuesArray
+		locationValues:	userAccessLevelValuesArray,
+		fromDate :customStartDate,
+		toDate :customEndDate
 	}
 	 $.ajax({
       type : "GET",
@@ -2447,7 +2486,19 @@ function getLocationWiseMeetingsCount(){
 				tableView+='<th></th>';
 				for(var i in result[0].locationVotersVOList)
 				{
-						tableView+='<th class="bg-DD">'+result[0].locationVotersVOList[i].ageRange+'</th>';
+						//tableView+='<th class="bg-DD">'+result[0].locationVotersVOList[i].ageRange+'</th>';
+						if(result[0].locationVotersVOList[i].ageRange == "Village/Ward"){
+							tableView+='<th class="bg-DD "><p class="tooltipDesgtCls" data-toogle="tooltip" title="every month" style="cursor:pointer;" >'+result[0].locationVotersVOList[i].ageRange+'<br/><small class="f-12" style="color:#777 !important;">(9th/10th/11th)</small></p></th>';
+						}else if(result[0].locationVotersVOList[i].ageRange == "Mandal/Town/Division"){
+							tableView+='<th class="bg-DD" ><p class="tooltipDesgtCls" data-toogle="tooltip" title="every month" style="cursor:pointer;">'+result[0].locationVotersVOList[i].ageRange+'<br/><small class="f-12" style="color:#777 !important;">(14th/15th/16th)</small></p></th>';
+						}else if(result[0].locationVotersVOList[i].ageRange == "Constituency"){
+							tableView+='<th class="bg-DD" ><p class="tooltipDesgtCls" data-toogle="tooltip" title="every month" style="cursor:pointer;">'+result[0].locationVotersVOList[i].ageRange+'<br/><small class="f-12" style="color:#777 !important;">(18th/19th/20th)</small></p></th>';
+						}else if(result[0].locationVotersVOList[i].ageRange == "District"){
+							tableView+='<th class="bg-DD"><p class="tooltipDesgtCls" data-toogle="tooltip" title="every month" style="cursor:pointer;">'+result[0].locationVotersVOList[i].ageRange+'<br/><small class="f-12" style="color:#777 !important;">(22nd/23rd/24th)</small></p></th>';
+						}/*else if(result[0].locationVotersVOList[i].ageRange == "State"){
+							tableView+='<th class="bg-DD" data-toogle="tooltip" title="every month" style="cursor:pointer;"><p class="tooltipDesgtCls">'+result[0].locationVotersVOList[i].ageRange+'</th>';
+							//tableView+='<span>(22nd/23rd/24th)</p></span>';
+						}*/
 					
 				}
 			tableView+='</thead>';
@@ -2455,16 +2506,19 @@ function getLocationWiseMeetingsCount(){
 				for(var i in result)
 				{
 					tableView+='<tr>';
-						tableView+='<td>'+result[i].ageRange+'</td>';
+						tableView+='<td>'+result[i].ageRange+'</td>';	
 						for(var j in result[i].locationVotersVOList)
 						{
+						if(result[i].locationVotersVOList[j].ageRange != null && result[i].locationVotersVOList[j].ageRange != "State"){
 							tableView+='<td>'+result[i].locationVotersVOList[j].totalVoters+'</td>';
 						}
+					}
 					tableView+='</tr>';
 				}
 			tableView+='</tbody>';
 		tableView+='</table>';
 		$("#locationWiseMeetingsCount").html(tableView);
+		$(".tooltipDesgtCls").tooltip();
 	}
 }
 function getLocationWiseTourMembersComplainceDtls(){
