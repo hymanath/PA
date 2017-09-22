@@ -413,7 +413,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			 jObj = new JSONObject(getTask());
 			 Long locationTypeId = jObj.getLong("locationTypeId");
 			 Long locationValue = jObj.getLong("locationValue");
-			 govtSchemeMemberBenefitList = locationDashboardService.getGovtSchemeWiseBenefitMembersCount(locationTypeId,locationValue);
+			 Long publicationDateId = jObj.getLong("publicationDateId");
+			 govtSchemeMemberBenefitList = locationDashboardService.getGovtSchemeWiseBenefitMembersCount(locationTypeId,locationValue,publicationDateId);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getGovtSchemeWiseBenefitMembersCount in LocationDashboardAction class", e);
 		}
@@ -425,7 +426,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			 Long locationTypeId = jObj.getLong("locationTypeId");
 			 Long locationValue = jObj.getLong("locationValue");
 			 Long govtSchemeId = jObj.getLong("govtSchemeId");
-			 govtSchemeMemberBenefitList = locationDashboardService.getMandalWiseBenefitMembersCount(locationTypeId,locationValue,govtSchemeId);
+			 Long publicationDateId = jObj.getLong("publicationDateId");
+			 govtSchemeMemberBenefitList = locationDashboardService.getMandalWiseBenefitMembersCount(locationTypeId,locationValue,govtSchemeId,publicationDateId);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getMandalWiseBenefitMembersCount in LocationDashboardAction class", e);
 		}
