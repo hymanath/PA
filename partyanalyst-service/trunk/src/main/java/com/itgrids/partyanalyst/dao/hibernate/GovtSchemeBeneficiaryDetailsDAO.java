@@ -198,35 +198,70 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 	}
 	public List<Object[]> getMandalWiseBenefitMemberCountByGovtScheme(Long locationType, Long locationValue,Long govtSchemeId) {
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.userAddress.tehsil.tehsilId," +
-						" model.userAddress.tehsil.tehsilName," +
-				        " count(model.govtSchemeBeneficiaryDetailsId) " +
+		
+		queryStr.append(" select " );
+		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
+			if (locationType == 3 || locationType == 10) {
+				queryStr.append(" constituency.constituencyId,constituency.name, ");
+			}else if (locationType == 4) {
+				queryStr.append(" tehsil.tehsilId,tehsil.tehsilName, ");
+			} else if (locationType == 5 || locationType == 6l) {
+				queryStr.append(" panchayat.panchayatId,panchayat.panchayatName, ");
+			}else if (locationType == 7l) {
+				queryStr.append("  localElectionBody.localElectionBodyId,localElectionBody.name, ");
+			}else if (locationType == 8l) {
+				queryStr.append("  ward.constituencyId,ward.name, ");
+			}
+		}
+		queryStr.append("  count(model.govtSchemeBeneficiaryDetailsId) " +
 				        " from " +
 				        " GovtSchemeBeneficiaryDetails model " +
+				        " left join model.userAddress userAddress " +
+				        " left join  userAddress.district district" +
+				        " left join  userAddress.parliamentConstituency parliamentConstituency" +
+				        " left join  userAddress.constituency constituency " +
+				        " left join  userAddress.tehsil tehsil" +
+				        " left join  userAddress.panchayat panchayat" +
+				        " left join  userAddress.localElectionBody localElectionBody  " +
+				        " left join  userAddress.ward ward " +
 				        " where " +
 				        " model.isDeleted='N' ");
 		
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
 			if (locationType == 3) {
-				queryStr.append(" and model.userAddress.district.districtId=:locationValue ");
+				queryStr.append(" and district.districtId=:locationValue ");
 			} else if (locationType == 10) {
-				queryStr.append(" and model.userAddress.parliamentConstituency.constituencyId=:locationValue ");
+				queryStr.append(" and parliamentConstituency.constituencyId=:locationValue ");
 			} else if (locationType == 4) {
-				queryStr.append(" and model.userAddress.constituency.constituencyId=:locationValue ");
+				queryStr.append(" and constituency.constituencyId=:locationValue ");
 			} else if (locationType == 5) {
-				queryStr.append(" and model.userAddress.tehsil.tehsilId=:locationValue ");
+				queryStr.append(" and tehsil.tehsilId=:locationValue ");
 			}else if (locationType == 6l) {
-				queryStr.append(" and model.userAddress.panchayat.panchayatId=:locationValue ");
+				queryStr.append(" and panchayat.panchayatId=:locationValue ");
 			}else if (locationType == 7l) {
-				queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId=:locationValue ");
+				queryStr.append(" and localElectionBody.localElectionBodyId=:locationValue ");
 			}else if (locationType == 8l) {
-				queryStr.append(" and model.userAddress.ward.constituencyId=:locationValue ");
+				queryStr.append(" and ward.constituencyId=:locationValue ");
 			}
 		}
 		if (govtSchemeId != null && govtSchemeId.longValue() > 0){
 			queryStr.append(" and model.govtSchemes.govtSchemesId=:govtSchemeId");
 		}
-		queryStr.append(" group by model.userAddress.tehsil.tehsilId");
+		
+		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
+			if (locationType == 3 || locationType == 10 ) {
+				queryStr.append(" group by constituency.constituencyId ");
+			} else if (locationType == 4) {
+				queryStr.append(" group by tehsil.tehsilId ");
+			} else if (locationType == 5 || locationType == 6l) {
+				queryStr.append(" group by panchayat.panchayatId ");
+			}else if (locationType == 7l) {
+				queryStr.append("  group by localElectionBody.localElectionBodyId ");
+			}else if (locationType == 8l) {
+				queryStr.append(" group by ward.constituencyId ");
+			}
+		}
+		
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		

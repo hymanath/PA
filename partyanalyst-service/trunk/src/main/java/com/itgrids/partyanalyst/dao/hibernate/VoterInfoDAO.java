@@ -743,4 +743,30 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		
 		return (Long)query.uniqueResult();
     }
+	
+	public List<Object[]> getTotalVotersForLocations(Set<Long> locationIdSet,Long locationTypeId,Long publicationDateId,Long locationValue){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select sum(model.totalVoters) ,model.reportLevelValue,model.voterReportLevel from VoterInfo model where ");
+		
+		if(locationTypeId != null && (locationTypeId == 3l || locationTypeId == 10l)){
+			sb.append(" model.reportLevelValue in (:locationIdSet) and model.voterReportLevel = 1 ");
+		}else if(locationTypeId != null && locationTypeId == 4l){
+			sb.append(" model.reportLevelValue in (:locationIdSet) and model.voterReportLevel = 2 ");
+		}else if(locationTypeId != null && (locationTypeId == 5l || locationTypeId == 6l)){
+			sb.append(" model.reportLevelValue in (:locationIdSet) and model.voterReportLevel = 3 ");
+		}else if(locationTypeId != null && locationTypeId == 7l){
+			sb.append(" model.reportLevelValue in (:locationIdSet) and model.voterReportLevel = 5 ");
+		}else if(locationTypeId != null && locationTypeId == 8l){
+			sb.append(" model.reportLevelValue in (:locationIdSet) and model.voterReportLevel = 6 ");
+		}
+		
+		sb.append(" group by model.reportLevelValue " );
+		Query query = getSession().createQuery(sb.toString());
+		if (locationValue != null && locationValue.longValue() > 0l) {
+			query.setParameterList("locationIdSet", locationIdSet);
+		}
+		return query.list();
+		
+	}
 }
