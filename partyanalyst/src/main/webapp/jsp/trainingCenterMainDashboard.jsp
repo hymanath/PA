@@ -209,13 +209,27 @@ header.eventsheader {
                                     </table>
                                 </div>
                             </div>
-                        </section>
+                        </section>						
 						<section>
                             <div class="row">
                             	<div class="col-md-12">
                                 	<div class="panel panel-default">
                                     	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold">CURRENTLY RUNNING BATCHES ATTENDENCE &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:bold;"> IA-Invitee Attended, NIA-Non Invitee Attended</span></h4>
+                                        	<h4 class="panel-title text-bold"> <span style="color:green;font-weight:bold;"> SPECIAL TRAININGS </span>- BATCHES ATTENDENCE &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:bold;"> IA-Invitee Attended, NIA-Non Invitee Attended</span></h4>
+                                        </div>
+                                        <div class="panel-body pad_0" id="runningSpecialTrainingProgramsDayWiseAttendence">
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+						
+						<section>
+                            <div class="row">
+                            	<div class="col-md-12">
+                                	<div class="panel panel-default">
+                                    	<div class="panel-heading bg_d">
+                                        	<h4 class="panel-title text-bold">REGULAR TRAININGS - CURRENTLY RUNNING BATCHES ATTENDENCE &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:bold;"> IA-Invitee Attended, NIA-Non Invitee Attended</span></h4>
                                         </div>
                                         <div class="panel-body pad_0" id="runningTrainingProgramsDayWiseAttendence">
 										</div>
@@ -223,6 +237,36 @@ header.eventsheader {
                                 </div>
                             </div>
                         </section>
+						
+						 <section>
+                            <div class="row">
+                            	<div class="col-md-12">
+                                	<div class="panel panel-default">
+                                    	<div class="panel-heading bg_d">
+                                        	<h4 class="panel-title text-bold">CURRENTLY RUNNING TRAINING PROGRAMS</h4>
+                                        </div>
+                                        <div class="panel-body pad_0" id="runningTrainingPrograms">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+						
+						<section>
+                            <div class="row">
+                            	<div class="col-md-12">
+                                	<div class="panel panel-default">
+                                    	<div class="panel-heading bg_d">
+                                        	<h4 class="panel-title text-bold">ALL TRAINING PROGRAM WISE DETAILS</h4>
+                                        </div>
+                                        <div class="panel-body pad_0">
+                                        	<div class="table-responsive table-scroll" id="allProgramWiseDetailsDIv"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+						
 						<section>
                             <div class="row">
 							
@@ -275,20 +319,7 @@ header.eventsheader {
 						<div class="pull-right font-13"><span style="color:red">*</span>
 							<span style="font-weight:bold;">C-Confirmed, IA-Invitee Attended, NIA-Non Invitee Attended</span>
 						</div>
-                    	<section>
-                            <div class="row">
-                            	<div class="col-md-12">
-                                	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold">ALL TRAINING PROGRAM WISE DETAILS</h4>
-                                        </div>
-                                        <div class="panel-body pad_0">
-                                        	<div class="table-responsive table-scroll" id="allProgramWiseDetailsDIv">0</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+                    	
 						<div class="pull-right font-13"><span style="color:red">*</span>
 							<span style="font-weight:bold;">C-Confirmed, IA-Invitee Attended, NIA-Non Invitee Attended</span>
 						</div>
@@ -308,19 +339,7 @@ header.eventsheader {
 						<div class="pull-right font-13"><span style="color:red">*</span>
 							<span style="font-weight:bold;">C-Confirmed, IA-Invitee Attended, NIA-Non Invitee Attended</span>
 						</div>
-                        <section>
-                            <div class="row">
-                            	<div class="col-md-12">
-                                	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold">CURRENTLY RUNNING TRAINING PROGRAMS</h4>
-                                        </div>
-                                        <div class="panel-body pad_0" id="runningTrainingPrograms">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+                       
 						<div class="pull-right font-13"><span style="color:red">*</span>
 							<span style="font-weight:bold;">C-Confirmed, IA-Invitee Attended, NIA-Non Invitee Attended</span>
 						</div>
@@ -561,12 +580,22 @@ $(function () {
 	);  
   });*/
   $('#selectDate').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+	/*fromTypeGlob="onLoad";
+	getTrainingCenterDetailsBasedOnDates("onLoad");
+	getAttendedCountForBatchesByLocation("onLoad");
+	getInvitedAttendedCadreCountByBatchIds("onLoad");
+	getDayWiseCountsForRunningBatches("onLoad");
+	getAttendenceForTrainers("today");
+	//$(".ranges ul li:nth-child(5)").trigger("click");
+	getFeedBackCountsOfTraining("onLoad");
+	getAllTrainingCampDetails("onLoad");*/	
 });
 
  $("#mainheading").html(" TRAINING CENTER DASHBOARD ");
  
 function getTrainingCenterDetailsBasedOnDates(fromType){
-
+	$("#allProgramWiseDetailsDIv").html('<img id="" style="width: 45px; height: 45px; margin-left: 45%;" src="images/ajaxImg2.gif">');
+	$("#donutchart").html('<img id="" style="width: 45px; height: 45px; margin-left: 45%;" src="images/ajaxImg2.gif">');
 	var dates;
 	if(fromType=="onLoad" || fromType=="change"){
 		dates="";
@@ -581,7 +610,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	}
 	var programIds =[];
 	if(enrollmentYrIds == 4){
-		programIds.push(8);
+		programIds.push(8,9);
 	}else{
 		programIds.push(1,6,7,5);
 	}
@@ -1069,9 +1098,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	     }
 		 var programIds =[];
 	    if(enrollmentYrIds == 4){
-		   programIds.push(8);
+		  programIds.push(8,9);
 	     }else{
-		 programIds.push(1,6,7,5);
+			programIds.push(1,6,7,5);
 			}
 		var jObj={
 			selectedDate : dates,
@@ -1103,6 +1132,8 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	}
 	
 	function getDayWiseCountsForRunningBatches(fromType){
+		$("#runningSpecialTrainingProgramsDayWiseAttendence").html('<img id="" style="width: 45px; height: 45px; margin-left: 45%;" src="images/ajaxImg2.gif">');
+		$("#runningTrainingProgramsDayWiseAttendence").html('<img id="" style="width: 45px; height: 45px; margin-left: 45%;" src="images/ajaxImg2.gif">');
 		var dates;
 		if(fromType=="onLoad" || fromType=="change"){
 			dates="";
@@ -1117,7 +1148,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	     }
 		 var programIds =[];
 		if(enrollmentYrIds == 4){
-			programIds.push(8);
+			programIds.push(8,9);
 		}else{
 			programIds.push(1,6,7,5);
 		}
@@ -1134,6 +1165,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		}).done(function(result){
 			//day wise attendence for currently running batches
 			if(result!=null && result.length>0){
+				buildSpecialTrainings(result);
 				var str='';
 				str+='<table class="table table-bordered m_0 text-center">';
 				str+='<thead class="bg_d">';
@@ -1142,76 +1174,195 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				str+='<th>Batch</th>';
 				str+='<th>Total</th>';
 				str+='<th>Day 1 Count</th>';
-				str+='<th>Day 2 Count</th>';
-				
-				var flag=false;
-				for(var i in result){
-					if(result[i].simpleVOList1 !=null && result[i].simpleVOList1.length>0 && 
-					 result[i].simpleVOList1.length>2){						
-						flag = true;
-					}					
-				}
-				if(flag){
-					str+='<th>Day 3 Count</th>';
-				}
+				str+='<th>Day 2 Count</th>';				
+				str+='<th>Day 3 Count</th>';
 				
 				str+='<th>1 Day Attended Members</th>';
 				str+='<th>2 Days Attended Members</th>';
-				if(flag){
-					str+='<th>3 Days Attended Members</th>';
-				}
+				str+='<th>3 Days Attended Members</th>';
 				
 				str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
-					str+='<tr>';
-					str+='<td>'+result[i].centerName+'</td>';
-					str+='<td>'+result[i].batchName+'</td>';
-					var totalIACount =0;
-				    var totalNIACount =0;
-					for(var j in result[i].simpleVOList1){						
-						 totalIACount = totalIACount+result[i].simpleVOList1[j].total;
-				         totalNIACount = totalNIACount+result[i].simpleVOList1[j].nonInviteeAttendedCount;
-					}
-					if(result[i].simpleVOList1[j].total!=null){
-					 str+='<td>'+totalIACount+'- IA <br/>'+totalNIACount+'- NIA</td>';
-					}else{
-						str+='<td>0</td>';
-					}
-					var innternalFlag=false;
-					if(result[i].simpleVOList1 !=null && result[i].simpleVOList1.length<=2){
-						if(flag){
-							innternalFlag = true;
-						}
-					}
-					for(var j in result[i].simpleVOList1){						
-						if(result[i].simpleVOList1[j].total!=null){
-							str+='<td>'+result[i].simpleVOList1[j].total+' - IA <br/>'+result[i].simpleVOList1[j].nonInviteeAttendedCount+' - NIA</td>'
-						}else{
-							str+='<td>0</td>';
-						}
-					}
-					if(innternalFlag){
-						str+='<td>0</td>';
-					}
-					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls" title="To click on invitee Details">'+result[i].day1Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls" title="To click on nonInvitee Details">'+result[i].oneDayNIACount+'</a> - NIA</td>';
-					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day2Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].twoDaysNIACount+'</a> - NIA</td>';
-					
-					if(flag){
-						str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day3Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].threeDaysNIACount+'</a> - NIA</td>';
-					}					
-					str+='</tr>';
+					if(result[i].campId != 7){
+							str+='<tr>';
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td>'+result[i].batchName+'</td>';
+							var totalCount =0;
+							var totalIACount =0;
+							var totalNIACount =0;
+							totalIACount = parseInt(result[i].oneDayInvitedAttendedCount)+parseInt(result[i].twoDaysInvitedAttendedCount)+parseInt(result[i].threeDaysInvitedAttendedCount);
+							totalNIACount = parseInt(result[i].oneDayNonInvitedAttendedCount)+parseInt(result[i].twoDaysNonInvitedAttendedCount)+parseInt(result[i].threeDaysNonInvitedAttendedCount);
+							totalCount = parseInt(totalIACount)+parseInt(totalNIACount);
+							
+							
+							str+='<td>' +totalIACount+'- IA <br/>'+totalNIACount+'- NIA</td>';
+							if(result[i].day1IACount!=null){
+							 str+='<td>'+result[i].day1IACount+'- IA <br/>'+result[i].day1NIACount+'- NIA</td>';
+							}else{
+								str+='<td>0</td>';
+							}					
+							if(result[i].day2IACount!=null){
+							 str+='<td>'+result[i].day2IACount+'- IA <br/>'+result[i].day2NIACount+'- NIA</td>';
+							}else{
+								str+='<td>0</td>';
+							}
+							
+							if(result[i].day3IACount!=null){
+							 str+='<td>'+result[i].day3IACount+'- IA <br/>'+result[i].day3NIACount+'- NIA</td>';
+							}else{
+								str+='<td>0</td>';
+							}
+							
+							
+							str+='<td>';
+							if(parseInt(result[i].oneDayInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer;font-weight:bold;" class="cadreDetailsCls" title="To click on invitee Details"> <u>'+result[i].oneDayInvitedAttendedCount+'</u></a> - IA<br/>';
+							else 
+								str+='0 - IA <br/> ';
+							
+							if(parseInt(result[i].oneDayNonInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls" title="To click on nonInvitee Details"><u>'+result[i].oneDayNonInvitedAttendedCount+'</u></a> - NIA';
+							else 
+								str+='0 - NIA';							
+							str+='</td>';
+							
+							
+							str+='<td>';
+							if(parseInt(result[i].twoDaysInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].twoDaysInvitedAttendedCount+'</u></a> - IA<br/>';
+							else 
+								str+='0 - IA <br/>';
+							
+							if(parseInt(result[i].twoDaysNonInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].twoDaysNonInvitedAttendedCount+'</u></a> - NIA';
+							else 
+								str+='0 - NIA';							
+							str+='</td>';
+							
+							
+							str+='<td>';
+							if(parseInt(result[i].threeDaysInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].threeDaysInvitedAttendedCount+'</u></a> - IA<br/>';
+							else 
+								str+='0 - IA <br/> ';
+							
+							if(parseInt(result[i].threeDaysNonInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].threeDaysNonInvitedAttendedCount+'</u></a> - NIA';
+							else 
+								str+='0 - NIA';							
+							str+='</td>';
+							
+							str+='</tr>';
+					}				
 				}
 				str+='</tbody>';
 				str+='</table>';
-				$("#runningTrainingProgramsDayWiseAttendence").html(str);
+				$("#runningTrainingProgramsDayWiseAttendence").html(str);				
 			}else{
 				$("#runningTrainingProgramsDayWiseAttendence").html("<h4 style='font-weight:bold;margin-left:10px;'>No Data Available</h4>");
 			}
 		});
 	}
 	
+	function buildSpecialTrainings(result){
+		if(result!=null && result.length>0){				
+				var str='';
+				str+='<table class="table table-bordered m_0 text-center">';
+				str+='<thead class="bg_d">';
+				str+='<tr>';
+				str+='<th>Center</th>';
+				str+='<th>Batch</th>';
+				str+='<th>Total</th>';
+				str+='<th>Day 1 Count</th>';
+				str+='<th>Day 2 Count</th>';				
+				str+='<th>Day 3 Count</th>';
+				
+				str+='<th>1 Day Attended Members</th>';
+				str+='<th>2 Days Attended Members</th>';
+				str+='<th>3 Days Attended Members</th>';
+				
+				str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					if(parseInt(result[i].campId) == 7){
+							str+='<tr>';
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td>'+result[i].batchName+'</td>';
+							var totalCount =0;
+							var totalIACount =0;
+							var totalNIACount =0;
+							totalIACount = parseInt(result[i].oneDayInvitedAttendedCount)+parseInt(result[i].twoDaysInvitedAttendedCount)+parseInt(result[i].threeDaysInvitedAttendedCount);
+							totalNIACount = parseInt(result[i].oneDayNonInvitedAttendedCount)+parseInt(result[i].twoDaysNonInvitedAttendedCount)+parseInt(result[i].threeDaysNonInvitedAttendedCount);
+							totalCount = parseInt(totalIACount)+parseInt(totalNIACount);
+							
+							str+='<td>' +totalIACount+'- IA <br/>'+totalNIACount+'- NIA</td>';
+							if(result[i].day1IACount!=null){
+							 str+='<td>'+result[i].day1IACount+'- IA <br/>'+result[i].day1NIACount+'- NIA</td>';
+							}else{
+								str+='<td>0</td>';
+							}					
+							if(result[i].day2IACount!=null){
+							 str+='<td>'+result[i].day2IACount+'- IA <br/>'+result[i].day2NIACount+'- NIA</td>';
+							}else{
+								str+='<td>0</td>';
+							}
+							
+							if(result[i].day3IACount!=null){
+							 str+='<td>'+result[i].day3IACount+'- IA <br/>'+result[i].day3NIACount+'- NIA</td>';
+							}else{
+								str+='<td>0</td>';
+							}
+							
+							
+							str+='<td>';
+							if(parseInt(result[i].oneDayInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer;font-weight:bold;" class="cadreDetailsCls" title="To click on invitee Details"> <u>'+result[i].oneDayInvitedAttendedCount+'</u></a> - IA<br/>';
+							else 
+								str+='0 - IA <br/> ';
+							
+							if(parseInt(result[i].oneDayNonInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls" title="To click on nonInvitee Details"><u>'+result[i].oneDayNonInvitedAttendedCount+'</u></a> - NIA';
+							else 
+								str+='0 - NIA';							
+							str+='</td>';
+							
+							
+							str+='<td>';
+							if(parseInt(result[i].twoDaysInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].twoDaysInvitedAttendedCount+'</u></a> - IA<br/>';
+							else 
+								str+='0 - IA <br/>';
+							
+							if(parseInt(result[i].twoDaysNonInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].twoDaysNonInvitedAttendedCount+'</u></a> - NIA';
+							else 
+								str+='0 - NIA';							
+							str+='</td>';
+							
+							
+							str+='<td>';
+							if(parseInt(result[i].threeDaysInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].threeDaysInvitedAttendedCount+'</u></a> - IA<br/>';
+							else 
+								str+='0 - IA <br/> ';
+							
+							if(parseInt(result[i].threeDaysNonInvitedAttendedCount)>0)
+								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].threeDaysNonInvitedAttendedCount+'</u></a> - NIA';
+							else 
+								str+='0 - NIA';							
+							str+='</td>';
+							
+							str+='</tr>';
+					}				
+				}
+				str+='</tbody>';
+				str+='</table>';
+				$("#runningSpecialTrainingProgramsDayWiseAttendence").html(str);
+		}
+	}
 	function getAttendenceForTrainers(type){
 		var typeStr = $("input[name='filterRadio']:checked").val();
 		var searchType = $("input[name='filtersRadio']:checked").val();	
@@ -1223,7 +1374,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	     }
         var programIds =[];
 		if(enrollmentYrIds == 4){
-			programIds.push(8,5);
+			programIds.push(8,5,9);
 		}else{
 			programIds.push(1,6,7,5);
 		}		
@@ -1391,7 +1542,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	     }
 		 var programIds =[];
 		if(enrollmentYrIds == 4){
-			programIds.push(8);
+			programIds.push(8,9);
 		}else{
 			programIds.push(1,6,7,5);
 		}
@@ -1528,11 +1679,25 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		   "aLengthMenu": [[10, 20, 40,90,-1], [10, 20, 40,90,"All"]]});
 		$("#constTable").removeClass("dataTable");
 	}
+	/*
+	$(document).on('click', '.applyBtn', function(){
+		fromTypeGlob="onClick";
+		getTrainingCenterDetailsBasedOnDates("onClick");
+		getAttendedCountForBatchesByLocation("onClick");
+		getInvitedAttendedCadreCountByBatchIds("onClick");
+		getDayWiseCountsForRunningBatches("onClick");
+		getFeedBackCountsOfTraining("onClick");
+	});
 	
-	
-	
-
-	
+	$(document).on("click",".ranges li",function(){
+		fromTypeGlob="onClick";
+		getTrainingCenterDetailsBasedOnDates("onClick");
+		getAttendedCountForBatchesByLocation("onClick");
+		getInvitedAttendedCadreCountByBatchIds("onClick");
+		getDayWiseCountsForRunningBatches("onClick");
+		getFeedBackCountsOfTraining("onClick");
+	});
+	*/
 	$(document).on("click",".summaryCls",function(){
 		var progId = $(this).attr("attr_prog_id");
 		var campId = $(this).attr("attr_camp_id");
@@ -1642,7 +1807,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	     }
 		 var programIds =[];
 			if(enrollmentYrIds==4){
-				programIds.push(8);
+				programIds.push(8,9);
 			}else{
 				programIds.push(1,6,7,5);
 			}
@@ -1744,7 +1909,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 		 var programIds =[];
 			if(enrollmentYrIds==4){
-				programIds.push(8);
+				programIds.push(8,9);
 			}else{
 				programIds.push(1,6,7,5);
 			}
@@ -1810,7 +1975,8 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 
 	
 	function getAllTrainingCampDetails(fromType){
-		
+			$("#runningMembers").html('<img id="" style="width: 45px; height: 45px; margin-left: 45%;" src="images/ajaxImg2.gif">');
+			
 		  var enrollmentYrIds =[];
 		  enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 		  if(fromType == "change"){
@@ -1819,7 +1985,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	     }
 		  var programIds =[];
 			if(enrollmentYrIds == 4){
-				programIds.push(8);
+				programIds.push(8,9);
 			}else{
 				programIds.push(1,6,7,5);
 			}
@@ -1875,8 +2041,18 @@ $(document).on("click","#refrshButtonId",function(){
 		}).done(function(result){	
 		});
 	}
-
-
+/*
+$(document).on('change', '#trainingEnrlmntYrId', function(){
+		fromTypeGlob="change";
+		getTrainingCenterDetailsBasedOnDates("change");
+		getAttendedCountForBatchesByLocation("change");
+		getInvitedAttendedCadreCountByBatchIds("change");
+		getDayWiseCountsForRunningBatches("change");
+		getFeedBackCountsOfTraining("change");
+		getAllTrainingCampDetails("change");
+		getAttendenceForTrainers("change");
+	});
+	*/
 $("#trainingEnrlmntYrId").tooltip();		
 </script>
 </body>
