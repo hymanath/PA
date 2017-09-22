@@ -386,7 +386,9 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		 try {
 			jObj = new JSONObject(getTask());
 			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValues"));
-			locationVotersVOList = locationDashboardService.getLocationWiseMeetingsCount(jObj.getLong("locationTypeId"),locationValues);
+			String fromDateStr =jObj.getString("fromDate");
+			String toDateStr =jObj.getString("toDate");
+			locationVotersVOList = locationDashboardService.getLocationWiseMeetingsCount(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseMeetingsCount", e);
 		}
