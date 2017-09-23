@@ -26,7 +26,8 @@ var grivanceIdsArr=["grivanceId","trustId"];
 var grivanceColorObj={"APPROVED":"#2DCC70","COMPLETED":"#449C43","IN PROGRESS":"#FFB84F","NOT ELIGIBLE":"#C0392B","NOT POSSIBLE":"#EF8379","NOT VERIFIED":"#31708F"}
 var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In Party":"#449C43","Forwarded to Insurance":"#FFB84F","Closed at Insurance":"#8F43AF","Closed at Party":"#9B88B3","Approved - Compensated":"#2BCD72","Closed Letters":"#32708F","Account Rejected":"#65CBCC"}
 var customStartDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');;
-var customEndDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');;
+var customEndDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
+var electionTypeVal = [0];
 /* location Values Start*/
 function onLoadLocValue()
 {
@@ -123,7 +124,7 @@ function onLoadAjaxCalls()
 	getVotersAndcadreAgeWiseCount(22);
 	//Assembly Block
 	getElectionTypes();
-	getElectionInformationLocationWise(0);
+	getElectionInformationLocationWise(electionTypeVal,"wonSeat");
 	if(locationLevelId == '4'){
 		$(".assemblyElectionBlockCls").show();
 		getDetailedElectionInformaction();
@@ -414,13 +415,38 @@ function onLoadClicks()
 		});
 		buildCasteGroupNAgeWiseGraphView(globalCasteWiseResult,groupType,casteType);
 	});
-	$(document).on("click",".electionTypeWiseCls",function(){
-		var electionVal = $(this).val();
-		if ($(this).is(':checked')){
-			 $('.electionTypeWiseCls').not(this).removeAttr('checked');
-			getElectionInformationLocationWise(electionVal);
-		}
+	$(document).on("click",".electionDetailsCls",function(){
+		var checkedTypeVal="";
+			 $(".checkedType").each(function(){
+				if ($(this).is(':checked')){
+					checkedTypeVal =$(this).val();
+				}
+			});
+			
+		var i = 0;	
+		 electionTypeVal = [];
+		 $(".electionTypeWiseCls").each(function(){
+			if ($(this).is(':checked')){
+				 electionTypeVal[i++] = $(this).val();
+			}
+		});
 		
+		getElectionInformationLocationWise(electionTypeVal,checkedTypeVal);
+	});	
+	$(document).on("click",".electionTypeWiseCls",function(){
+			var value = $(this).val();
+			if(value != 0){
+				$(".checkUncheckCls").prop("checked",false);
+			}else if(value == 0){
+				if ($(this).is(':checked')){
+					$(".checkUncheckCls").prop("checked",true);
+					$(".electionTypeWiseCls").prop("checked",true);
+				}else{
+					$(".checkUncheckCls").prop("checked",false);
+					$(".electionTypeWiseCls").prop("checked",false);
+				}
+				
+			}
 	});		
 	$(document).on("click",".expandCasteIconCls",function(){
 		var casteGroupId = $(this).attr("attr_caste_group_id");
@@ -3655,13 +3681,22 @@ function getElectionTypes(){
 					for(var i in result){
 						str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
 						if(result[i].name == "Pancahat_Ward"){
-							str+='<input value ="'+result[i].id+'" type="checkbox" class="electionTypeWiseCls" /><span>Ward</span>';
+							str+='<input value ="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span>Ward</span>';
 						}else{
-							str+='<input value ="'+result[i].id+'" type="checkbox" class="electionTypeWiseCls" /><span>'+result[i].name+'</span>';
+							str+='<input value ="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span>'+result[i].name+'</span>';
 						}					
 						str+='</label>';
 					}
 				str+=' </div>';
+				str+='<div class="col-sm-11">';
+						str+='<label class="pull-right">';
+							str+='<input value ="wonSeat" type="radio" name="optionsRadios" class="checkedType" checked />Won Seats';
+							str+='<input value ="voteShare" type="radio" name="optionsRadios"  class="checkedType" style="margin-left: 10px;" />Vote Share %';
+						str+='</label>';
+					str+='</div>';
+					str+='<div class="col-sm-1">';
+						str+='<button class="btn btn-primary btn-xs electionDetailsCls pull-right" >Submit</button>';
+					str+='</div>';
 			str+=' </div>';
 			$("#electionTypeValuesId").html(str);
 		}else{
@@ -3670,7 +3705,7 @@ function getElectionTypes(){
 	});	
 }
 
-function getElectionInformationLocationWise(electionVal){
+function getElectionInformationLocationWise(electionVal,type){
 	$('#electionDetailsGraphWiseId').html(spinner);
 	$('#electionDetailsTableWiseId').html(spinner);
 	if(locationLevelId == '8' || locationLevelId == '6'){
@@ -3679,19 +3714,19 @@ function getElectionInformationLocationWise(electionVal){
 	}else{
 		$("#electionDetailsGraphWiseId,#electionDetailsTableWiseId").show();
 	}
-	var electionScopeIds=[];
-	if(electionVal == 0){
-		electionScopeIds =[];
-	}else{
-		electionScopeIds.push(electionVal);
+	for(var i in electionVal){
+		if(electionVal[i] == 0){
+			electionVal=[];
+		}
 	}
+	
 	
 	var jsObj={
 			fromDate 	  	:"",
 			toDate		  	:"",
 			locationId 		:locationLevelId,
 			locationValue 	:locationLevelVal,
-			electionScopeIds:electionScopeIds,
+			electionScopeIds:electionVal,
 			partyId			:0
 			
 	}
@@ -3702,7 +3737,7 @@ function getElectionInformationLocationWise(electionVal){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	if(result !=null && result.length>0){
-			buildElectionInformationLocationWise(result);
+			buildElectionInformationLocationWise(result,type);
 		}else{
 			$('#electionDetailsGraphWiseId').html(noData);
 			$('#electionDetailsTableWiseId').html(noData);
@@ -3710,7 +3745,7 @@ function getElectionInformationLocationWise(electionVal){
 	});	
 }
 
-function buildElectionInformationLocationWise(result){
+function buildElectionInformationLocationWise(result,type){
 	
 	if(result !=null && result.length>0){
 		 var str='';
@@ -3753,19 +3788,26 @@ function buildElectionInformationLocationWise(result){
 		$("#electionDetailsTableWiseId").html(str);
 		var mainDataArr=[];
 		var electionYearArr = [];
+		
 			for(var i in result){
 				var wonSeatsCountArr=[];
 				for(var j in result[i].list){
 					electionYearArr.push(result[i].list[j].electionYear+'  '+result[i].list[j].electionType);
-					wonSeatsCountArr.push(parseFloat(result[i].list[j].wonSeatsCount));
+					if(type == "wonSeat"){
+						wonSeatsCountArr.push(parseFloat(result[i].list[j].wonSeatsCount));
+					}else{
+						wonSeatsCountArr.push(parseFloat(result[i].list[j].earnedVotesPerc));
+					}
+					
 				}
 				var obj ={
 						name: result[i].partyName,
 						data: wonSeatsCountArr
 					}
 					mainDataArr.push(obj)
-					
+					console.log(wonSeatsCountArr)
 			}
+			
 		$(".electionDetailsGraphHeight").css("height","500px !important;");
 		$('#electionDetailsGraphWiseId').highcharts({
 			chart: {
@@ -3790,9 +3832,29 @@ function buildElectionInformationLocationWise(result){
 				}
 			},
 			tooltip: {
-				split: true,
-				valueSuffix: ' Won',
-				shared:true
+				formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+						if(type == "wonSeat"){
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							this.y+" Won"
+						}else{
+							if(this.y == "undefined" || this.y == 0 || this.y === undefined){
+								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								0+" %"
+							}else{
+								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y+" %"
+							}
+							
+						}  
+						
+					});
+
+					return s;
+				},
+				shared: true
 			},
 			plotOptions: {
 				area: {
@@ -3809,7 +3871,7 @@ function buildElectionInformationLocationWise(result){
 		});
 	}
 }
-//getCommitteeCount();
+
 function getCommitteeCount(){
 	
 	var jsObj={
