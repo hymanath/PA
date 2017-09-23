@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -66,6 +67,7 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
@@ -150,15 +152,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
  
 	private IGovtSchemeBenefitsInfoDAO govtSchemeBenefitsInfoDAO;
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
-	private IVoterInfoDAO voterInfoDAO;
+	private IBoothDAO boothDAO;
 	
 	
-	
-	public IVoterInfoDAO getVoterInfoDAO() {
-		return voterInfoDAO;
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
 	}
-	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
-		this.voterInfoDAO = voterInfoDAO;
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
 	}
 	public IParliamentAssemblyDAO getParliamentAssemblyDAO() {
 		return parliamentAssemblyDAO;
@@ -2351,13 +2352,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				censusPopList.clear();
 				yearList.add(2011l);
 				censusPopList=censusDAO.getDistrictPopulationForDifferentYears(locationValue, yearList);
-				
+				//censusPopList = boothDAO.getTotalVotersForLocations(locationIdSet,locationTypeId,publicationDateId);
 			}else if(locationTypeId == 10l){
 				censusPopList.clear();
 				yearList.add(locationValue);
 				List<Long> list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(yearList);
 				locationIdSet.addAll(list);
 				List<Object[]> list1= constituencyCensusDetailsDAO.getTotalCensusPopulation(locationIdSet, 2011l);
+				//List<Object[]> list1 = boothDAO.getTotalVotersForLocations(locationIdSet,locationTypeId,publicationDateId);
 				Long count=0l;
 				for (Object[] objects : list1) {
 					count=commonMethodsUtilService.getLongValueForObject(objects[0])+count;
@@ -2369,10 +2371,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				censusPopList.clear();
 				locationIdSet.add(locationValue);
 				censusPopList= constituencyCensusDetailsDAO.getTotalCensusPopulation(locationIdSet, 2011l);
+				//censusPopList = boothDAO.getTotalVotersForLocations(locationIdSet,locationTypeId,publicationDateId);
 			}else if(locationTypeId == 5l){
 					locationIdSet.add(locationValue);
-					List<Object[]> list1 = voterInfoDAO.getTotalVotersForLocations(locationIdSet,locationTypeId,publicationDateId,locationValue);
-				//List<Object[]> list1= censusDAO.getTotalCensusPopulation(locationIdSet, 2011l,null);
+					//List<Object[]> list1 = boothDAO.getTotalVotersForLocations(locationIdSet,locationTypeId,publicationDateId);
+				List<Object[]> list1= censusDAO.getTotalCensusPopulation(locationIdSet, 2011l);
 				Long count =0l;
 				for (Object[] objects : list1) {
 					count=commonMethodsUtilService.getLongValueForObject(objects[0])+count;
@@ -2387,7 +2390,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					locationIdSet.add(commonMethodsUtilService.getLongValueForObject(param[0]));
 				}
 			}
-			censusPopList = voterInfoDAO.getTotalVotersForLocations(locationIdSet,locationTypeId,publicationDateId,locationValue);
+			
+			censusPopList = boothDAO.getTotalVotersForLocations(locationIdSet,locationTypeId,publicationDateId);
+			//censusPopList = voterInfoDAO.getTotalVotersForLocations(locationIdSet,locationTypeId,publicationDateId,locationValue);
 			//censusPopList= censusDAO.getTotalCensusPopulation(locationIdSet, 2011l,locationTypeId);
 		}
 		
