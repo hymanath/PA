@@ -2379,10 +2379,6 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 				Object[] obj = new Object[] {count,locationValue};
 				censusPopList.add(obj);
-			}else{
-				Long count =0l;
-				Object[] obj = new Object[] {count,locationValue};
-				censusPopList.add(obj);
 			}
 		}else{
 			if (benefitMemberObjLst != null && benefitMemberObjLst.size() > 0) {
