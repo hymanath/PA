@@ -3200,4 +3200,60 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 	
+	public List<Object[]> getTotalVotersForLocations(Set<Long> locationIdSet,Long locationTypeId,Long publicationDateId){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select sum(model.totalVoters)  " );
+				if(locationTypeId != null && (locationTypeId == 3l || locationTypeId == 10l)){
+					sb.append(" ,model.constituency.constituencyId  ");
+				}else if(locationTypeId != null && locationTypeId == 4l){
+					sb.append(" ,model.tehsil.tehsilId ");
+				}else if(locationTypeId != null && (locationTypeId == 5l || locationTypeId == 6l)){
+					sb.append(" ,model.panchayat.panchayatId ");
+				}else if(locationTypeId != null && locationTypeId == 7l){
+					sb.append(" ,model.localBody.localElectionBodyId ");
+				}else if(locationTypeId != null && locationTypeId == 8l){
+					sb.append(", model.localBodyWard.constituencyId ");
+				}
+				sb.append(" from Booth model where  ");
+				
+				if(publicationDateId != null && publicationDateId.longValue() > 0l){
+					sb.append("  model.publicationDate.publicationDateId = :publicationDateId ");
+				}
+		
+				if(locationTypeId != null && (locationTypeId == 3l || locationTypeId == 10l)){
+					sb.append("  and model.constituency.constituencyId in (:locationIdSet) ");
+				}else if(locationTypeId != null && locationTypeId == 4l){
+					sb.append(" and model.tehsil.tehsilId in (:locationIdSet) ");
+				}else if(locationTypeId != null && (locationTypeId == 5l || locationTypeId == 6l)){
+					sb.append(" and model.panchayat.panchayatId in (:locationIdSet) ");
+				}else if(locationTypeId != null && locationTypeId == 7l){
+					sb.append(" and model.localBody.localElectionBodyId in (:locationIdSet) ");
+				}else if(locationTypeId != null && locationTypeId == 8l){
+					sb.append(" and model.localBodyWard.constituencyId in (:locationIdSet) ");
+				}
+		
+		if(locationTypeId != null && (locationTypeId == 3l || locationTypeId == 10l)){
+			sb.append(" group by model.constituency.constituencyId  ");
+		}else if(locationTypeId != null && locationTypeId == 4l){
+			sb.append(" group by model.tehsil.tehsilId ");
+		}else if(locationTypeId != null && (locationTypeId == 5l || locationTypeId == 6l)){
+			sb.append(" group by model.panchayat.panchayatId ");
+		}else if(locationTypeId != null && locationTypeId == 7l){
+			sb.append(" group by model.localBody.localElectionBodyId ");
+		}else if(locationTypeId != null && locationTypeId == 8l){
+			sb.append(" group by  model.localBodyWard.constituencyId ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(publicationDateId != null && publicationDateId.longValue() > 0l){
+			query.setParameter("publicationDateId", publicationDateId);
+		}
+		if (locationIdSet != null && locationIdSet.size() > 0l) {
+			query.setParameterList("locationIdSet", locationIdSet);
+		}
+		return query.list();
+		
+	}
+	
 }
