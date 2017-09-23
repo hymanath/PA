@@ -763,7 +763,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		
 		sb.append(" group by model.reportLevelValue " );
 		Query query = getSession().createQuery(sb.toString());
-		if (locationValue != null && locationValue.longValue() > 0l) {
+		if (locationIdSet != null && locationIdSet.size() > 0l) {
 			query.setParameterList("locationIdSet", locationIdSet);
 		}
 		return query.list();
