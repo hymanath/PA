@@ -205,11 +205,14 @@ public class DoorToDoorCampaignDashboardAction extends ActionSupport implements 
 			
 			String fromDate = jObj.getString("startDateStr");
 			String toDate = jObj.getString("endDateStr");
+			String imageType = jObj.getString("imageType");
+			
 			DoorToDoorInputVO inputvo = new DoorToDoorInputVO();
 			inputvo.setLevelIds(levelIdList);
 			inputvo.setLevelValues(levelValuesList);
 			inputvo.setStartDateStr(fromDate);
 			inputvo.setEndDateStr(toDate);
+			inputvo.setImageType(imageType);
 			
 			doorCampaignDashboardVO = doorToDoorCampaignDashboardService.getRecentImagesList(inputvo);
 		}catch (Exception e) {

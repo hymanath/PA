@@ -79,6 +79,14 @@
 		<div class="row m_top10">
 			<div class="col-sm-12 m_top10">
 					<div class="block_styles_nav">
+						<div class="m_top5">
+							<label class="radio-inline">
+							 <input type="radio" id="surveyId" name = "optionsRadios" value="survey" class="imagesTypeCls" checked>Survey Images
+							</label>
+							<label class="radio-inline">
+							 <input type="radio" id="hoistingId" value="hoisting" name = "optionsRadios"  class="imagesTypeCls">Flag Hoisting Images
+							</label>
+						</div>
 						<div id="imagesSliderDivId"></div>
 					</div>
 			</div>
@@ -99,9 +107,9 @@
 							<div id="campignLeveldistrict"></div>
 							<div id="campignLevelparliament"></div>
 							<div id="campignLevelconstituency"></div>
-							<!--<div id="campignLevelmandal"></div>-->
+							<div id="campignLevelmandal"></div>
 							<div id="campignLevelpanchayat"></div>
-							<!--<div id="campignLevelmuncipality"></div>-->
+							<div id="campignLevelmuncipality"></div>
 						</div>
 					</div>
 				</div>
