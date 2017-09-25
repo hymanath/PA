@@ -3449,7 +3449,7 @@ function getTotalAlertDetailsForConstituencyInfo(){
 		}
 	 $.ajax({
       type : "POST",
-      url : "getTotalAlertDetailsForConstituencyInfoAction.action",
+      url : "getTotalAlertDetailsForConstituencyInfoAction1.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
