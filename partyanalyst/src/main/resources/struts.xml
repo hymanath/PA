@@ -17771,6 +17771,11 @@
 		<param name="root">locationAlertVO</param>
 		</result>        
 	</action>
+	<action name="getTotalAlertDetailsForConstituencyInfoAction" class="locationDashboardAction" method="getTotalAlertDetailsForConstituencyInfo">
+		<result type="json" name="success">    
+		<param name="root">locationAlertVO</param>
+		</result>        
+	</action>
 	<action name="getLocationWiseTourMembersComplainceDtlsAction" class="locationDashboardAction"  method="getLocationWiseTourMembersComplainceDtls">
 		<result type="json" name="success">    
 			<param name="root">tourDesignationList</param>       
