@@ -4400,7 +4400,6 @@
   		<property name="govtSchemeBenefitsInfoDAO" ref="govtSchemeBenefitsInfoDAO"></property>
     	<property name="voterAgeRangeDAO" ref="voterAgeRangeDAO"></property>  
   		<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>  
-  		<property name="voterInfoDAO" ref="voterInfoDAO"></property>  			
   		<property name="tdpCadreCasteInfoDAO" ref="tdpCadreCasteInfoDAO"></property>  			
   		<property name="boothDAO" ref="boothDAO"></property>  				
   </bean>
