@@ -4400,6 +4400,8 @@
   		<property name="govtSchemeBenefitsInfoDAO" ref="govtSchemeBenefitsInfoDAO"></property>
     	<property name="voterAgeRangeDAO" ref="voterAgeRangeDAO"></property>  
   		<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>  
+  		<property name="voterInfoDAO" ref="voterInfoDAO"></property>  			
+  		<property name="tdpCadreCasteInfoDAO" ref="tdpCadreCasteInfoDAO"></property>  			
   		<property name="boothDAO" ref="boothDAO"></property>  				
   </bean>
   <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
@@ -4450,5 +4452,13 @@
     	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	<property name="alertCategoryDAO" ref="alertCategoryDAO" />
     </bean> 
+    <bean name="locationWiseCasteInfoService" class="com.itgrids.core.api.service.impl.LocationWiseCasteInfoService">
+    	<property name="voterCastInfoDAO" ref="voterCastInfoDAO"/>
+    	<property name="constituencyDAO" ref="constituencyDAO"/>
+    	<property name="commonMethodsUtilService" ref="commonMethodsUtilService"/>
+    	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
+    	<property name="tdpCadreCasteInfoDAO" ref="tdpCadreCasteInfoDAO"/>
+    	<property name="casteDAO" ref="casteDAO"/>
+    </bean>
 </beans>			
 	
