@@ -2709,7 +2709,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
   		ResultStatus rs = new ResultStatus();
   		try {
   			
-  			int count = tdpCadreCasteStateInfoDAO.pushCadreCountsLocationWiseByCasteState();
+  			//int count = tdpCadreCasteStateInfoDAO.pushCadreCountsLocationWiseByCasteState();
   			rs.setMessage("Success");
   		} catch (Exception e) {
   			LOG.error("Exception raised at pushCadreCountsLocationWiseByCasteState() in CadreRegistrationServiceNew Class", e);
