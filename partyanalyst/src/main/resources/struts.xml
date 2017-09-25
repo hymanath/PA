@@ -17771,7 +17771,7 @@
 		<param name="root">locationAlertVO</param>
 		</result>        
 	</action>
-	<action name="getTotalAlertDetailsForConstituencyInfoAction" class="locationDashboardAction" method="getTotalAlertDetailsForConstituencyInfo">
+	<action name="getTotalAlertDetailsForConstituencyInfoAction1" class="locationDashboardAction" method="getTotalAlertDetailsForConstituencyInfo">
 		<result type="json" name="success">    
 		<param name="root">locationAlertVO</param>
 		</result>        
