@@ -61,8 +61,8 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 	}
 	
 	/*
-	   * Date : 23/06/2017
-	   * Author :Teja
+	   * Date : 25/09/2017
+	   * Author :Hymavathi
 	   * @description : getTotalAlertDetailsForConstituencyInfo(Getting Alert details for constituency page)
 	   */
 	public  LocationAlertVO getTotalAlertDetailsForConstituencyInfo(String fromDateStr ,String toDateStr,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
@@ -79,16 +79,14 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 			if(alertTypeIds != null && alertTypeIds.size() >0){
 				for(Long alertTypeId :alertTypeIds){
 					LocationAlertVO vo =null;
-					//if(alertTypeId == 1l){
-						vo = new LocationAlertVO();
+					vo = new LocationAlertVO();
 						vo.setId(alertTypeId);
-						//vo.setStatus("Party");
-					//}
-						alertTypeList.add(vo);
+						if(alertTypeId == 3l)
+							vo.setStatus("Others");
+					alertTypeList.add(vo);
 				}
 			}
-			//List<Object[]> alertStatusLst = alertDAO.getAlertStatusWiseDetailsForConstituencyInfo(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
-			//finalVO.setSubList(getStatusWiseData(alertStatusLst));
+			
 			finalVO.setAlertTypeList(alertTypeList);
 			List<Object[]> totalAlertCntObjList = alertDAO.getTotalAlertDetailsCount(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
 			finalVO.setTotalAlertCount(getRequirdTotalCount(totalAlertCntObjList,alertTypeList));
@@ -99,13 +97,6 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 			List<Object[]> alertCategoryList  = alertDAO.getAlertImpactLevelWiseDetailsForConstituencyInfo(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year,"alertCategory");
 			finalVO.setSubList(getImpactLevelData(alertCategoryList,"alertCategory",finalVO.getTotalAlertCount()));
 			
-			
-			//List<Object[]> involvedMembersObjList = alertCandidateDAO.getInvolvedMemberAlertDetails(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
-			//List<Object[]> assignMembersObjList = alertAssignedOfficerNewDAO.getAssignedMemberAlertDetails(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
-			
-			
-			//finalVO.setInvolveMemberCount(getRequirdTotalCount(involvedMembersObjList));
-			//finalVO.setAssignedMemberCount(getRequirdTotalCount(assignMembersObjList));
 			
 		} catch (Exception e) {
 			LOG.error("Error occured getTotalAlertDetailsForConstituencyInfo() method of AlertLocationDashboardService",e);
@@ -131,34 +122,20 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							if(type != null && type.equalsIgnoreCase("impactScope")){
 								if(impactLvlId == 5l || impactLvlId == 12l){
 									vo = getImpactScopeMatchVO(impactScopeList,5l);
-									/*vo.setId(5l);
-									vo.setStatus("Mandal/Muncipality Level");*/
 								}else if(impactLvlId == 7l || impactLvlId == 9l || impactLvlId == 6l) {
 									vo = getImpactScopeMatchVO(impactScopeList,6l);
-									/*vo.setId(6l);
-									vo.setStatus("Village/Ward/Panchayat Level");*/
 								}else if(impactLvlId == 3l || impactLvlId == 4l ) {
 									vo = getImpactScopeMatchVO(impactScopeList,3l);
-									/*vo.setId(3l);
-									vo.setStatus("Constiyuency Level");*/
 								}else if(impactLvlId == 13l || impactLvlId == 14l) {
 									vo = getImpactScopeMatchVO(impactScopeList,13l);
-									/*vo.setId(13l);
-									vo.setStatus("Other Level");*/
 								}else{
 									vo = getImpactScopeMatchVO(impactScopeList,impactLvlId);
-									/*vo.setId(impactLvlId);
-									vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));*/
 								}
 							}else if(type != null && type.equalsIgnoreCase("alertCategory")){
 								if(impactLvlId == 6l || impactLvlId == 7l || impactLvlId == 8l || impactLvlId == 9l) {
 									vo = getImpactScopeMatchVO(impactScopeList,6l);
-									/*vo.setId(6l);
-									vo.setStatus("Others");*/
 								}else  {
 									vo = getImpactScopeMatchVO(impactScopeList,impactLvlId);
-									/*vo.setId(impactLvlId);
-									vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));*/
 								}
 							}
 							
