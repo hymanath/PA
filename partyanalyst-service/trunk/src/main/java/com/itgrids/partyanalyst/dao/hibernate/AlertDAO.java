@@ -10625,10 +10625,15 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			 }
 	 		return query.list();
 	 	}
-      public List<Object[]> getAlertImpactLevelWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
+      public List<Object[]> getAlertImpactLevelWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year,String type){
 	 		StringBuilder queryStr = new StringBuilder();
-	 			queryStr.append(" SELECT model.alertImpactScope.alertImpactScopeId,model.alertImpactScope.impactScope," +
-	 					" model.alertType.alertTypeId,model.alertType.alertType, " +
+	 		
+	 		if(type != null && type.equalsIgnoreCase("impactScope")){
+	 			queryStr.append(" SELECT model.alertImpactScope.alertImpactScopeId,model.alertImpactScope.impactScope ");
+	 		}else if(type != null && type.equalsIgnoreCase("alertCategory")){
+	 			queryStr.append(" SELECT model.alertCategory.alertCategoryId,model.alertCategory.category ");
+	 		}
+	 			queryStr.append(" , model.alertType.alertTypeId,model.alertType.alertType, " +
 	 				    " count(distinct model.alertId) " +
 	 				    " FROM Alert model " +
 	 				    " WHERE model.isDeleted ='N' " +
@@ -10656,9 +10661,18 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	    	queryStr.append(" and year(model.createdTime) =:year ");   
 	 	    }
 	 		
-	 	    queryStr.append(" GROUP BY model.alertImpactScope.alertImpactScopeId," +
-	 	    			" model.alertType.alertTypeId " +
-	 	    			" order by model.alertImpactScope.orderNo  ");
+	 	   if(type != null && type.equalsIgnoreCase("impactScope")){
+	 			queryStr.append(" GROUP BY model.alertImpactScope.alertImpactScopeId ");
+	 		}else if(type != null && type.equalsIgnoreCase("alertCategory")){
+	 			queryStr.append(" GROUP BY model.alertCategory.alertCategoryId ");
+	 		}
+	 	    queryStr.append(",model.alertType.alertTypeId " );
+	 	    
+	 	   if(type != null && type.equalsIgnoreCase("impactScope")){
+	 		  queryStr.append(" order by model.alertImpactScope.orderNo  ");
+	 	   }else if(type != null && type.equalsIgnoreCase("alertCategory")){
+	 		  queryStr.append(" order by model.alertCategory.alertCategoryId ");
+	 	   }
 	 	    	
 	 		Query query = getSession().createQuery(queryStr.toString());
 	 			query.setParameterList("alertTypeIds", alertTypeIds);

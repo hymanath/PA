@@ -16,6 +16,7 @@ public class LocationAlertVO {
 	private String alertType;
 	private List<LocationAlertVO> subList = new ArrayList<LocationAlertVO>(0);
 	private List<LocationAlertVO> impactScopeList;
+	private List<LocationAlertVO> alertTypeList;
 	private Long alertCount=0l;
 	private Long id;
 	private String status;
@@ -23,6 +24,21 @@ public class LocationAlertVO {
 	private Long totalAlertCount=0l;
 	private Long involveMemberCount=0l;
 	private Long assignedMemberCount =0l;
+	private Double percentage;
+	
+	
+	public List<LocationAlertVO> getAlertTypeList() {
+		return alertTypeList;
+	}
+	public void setAlertTypeList(List<LocationAlertVO> alertTypeList) {
+		this.alertTypeList = alertTypeList;
+	}
+	public Double getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(Double percentage) {
+		this.percentage = percentage;
+	}
 	
 	public String getColour() {
 		return colour;
