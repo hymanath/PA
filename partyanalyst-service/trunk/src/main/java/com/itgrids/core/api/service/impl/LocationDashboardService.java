@@ -58,6 +58,7 @@ import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationTargetDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalToursMonthDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCasteInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
@@ -248,8 +249,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private ICensusDAO censusDAO;
 	private ITehsilDAO tehsilDAO;
 	private VoterAgeRangeDAO voterAgeRangeDAO;
-
+	private ITdpCadreCasteInfoDAO tdpCadreCasteInfoDAO;
 	
+	
+	public ITdpCadreCasteInfoDAO getTdpCadreCasteInfoDAO() {
+		return tdpCadreCasteInfoDAO;
+	}
+	public void setTdpCadreCasteInfoDAO(ITdpCadreCasteInfoDAO tdpCadreCasteInfoDAO) {
+		this.tdpCadreCasteInfoDAO = tdpCadreCasteInfoDAO;
+	}
 	public VoterAgeRangeDAO getVoterAgeRangeDAO() {
 		return voterAgeRangeDAO;
 	}
@@ -770,7 +778,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
 		try {
 			if (type.equalsIgnoreCase("voter")) {
-				voList = getCasteGroupNAgeWiseVoterNCadreCounts(locationTypeId,locationValue, publicationDateId);
+				voList = getCasteGroupNAgeWiseVoterNCadreCounts(locationTypeId,locationValue, publicationDateId,null);
 			} else if (type.equalsIgnoreCase("cadre")) {
 				voList = getCadreCasteWiseCount(locationTypeId,locationValue, publicationDateId);
 			}
@@ -876,7 +884,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	}
 
 
-	public List<LocationVotersVO> getCasteGroupNAgeWiseVoterNCadreCounts(Long locationTypeId, Long locationValue, Long publicationDateId) {
+	public List<LocationVotersVO> getCasteGroupNAgeWiseVoterNCadreCounts(Long locationTypeId, Long locationValue, Long publicationDateId, Long castegroupId) {
 		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
 		try {
 			Long reportLevelId= 0l;
@@ -911,9 +919,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		    	  reportLevelId=6l;
 		    	  constituencyIds.add(locationValue);
 		      }
-			
+				
 			// 0-castegroupId,1-castegroup,2-casteId,3-castegroup,4-voterscount,5-percentage,6-maleVotersCount,7-femaleVotersCount
-			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCasteWiseCount(constituencyIds, publicationDateId, reportLevelId);
+			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCasteWiseCount(constituencyIds, publicationDateId, reportLevelId, castegroupId);
 
 			if (votersObjList != null && votersObjList.size() > 0) {
 
@@ -1011,18 +1019,29 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		    	  constituencyIds.add(locationValue);
 		      }
 			Map<Long, LocationVotersVO> map = new LinkedHashMap<Long, LocationVotersVO>();
-
+			
+			List<Object[]> ageRange = voterAgeRangeDAO.getSpecificAgeRangeList();
+			// template building
+			if (ageRange != null && ageRange.size() > 0) {
+				for (Object[] objects : ageRange) {
+					if (map.get(commonMethodsUtilService.getLongValueForObject(objects[0])) == null) {
+						LocationVotersVO inVO = new LocationVotersVO();
+						inVO.setAgeRangeId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						inVO.setAgeRange(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						map.put(commonMethodsUtilService.getLongValueForObject(objects[0]), inVO);
+					}
+				}
+			}
 			// 0-ageRangeId,1-ageRange,2-gender,3-votersCount
-			List<Object[]> votersObjList = userVoterDetailsDAO.getVotersCasteNAgeGroupWiseCount(casteGroupId, casteId,
-					constituencyIds, publicationDateId);
+			List<Object[]> votersObjList = userVoterDetailsDAO.getVotersCasteNAgeGroupWiseCount(casteGroupId, casteId,constituencyIds, publicationDateId);
 
 			if (votersObjList != null && votersObjList.size() > 0) {
 				for (Object[] objects : votersObjList) {
-					if (map.get((Long) objects[0]) == null) {
+					if (map.get(commonMethodsUtilService.getLongValueForObject(objects[0])) == null) {
 						LocationVotersVO inVO = new LocationVotersVO();
-						inVO.setAgeRangeId((Long) objects[0]);
-						inVO.setAgeRange(objects[1].toString());
-						map.put((Long) objects[0], inVO);
+						inVO.setAgeRangeId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						//inVO.setAgeRange(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						map.put(commonMethodsUtilService.getLongValueForObject(objects[0]), inVO);
 					}
 
 					if (objects[2].toString().equalsIgnoreCase("M")) {
@@ -2665,29 +2684,40 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public List<ConstituencyCadreVO> getAgeRangeGenerAndCasteGroupByCadreCount(final Long locationTypeId, final Long locationValue,final Long enrollmentYearId) {
 		List<ConstituencyCadreVO> resultList = new ArrayList<ConstituencyCadreVO>(0);
 		try {
-			List<Object[]> rtrnCaderObjLst = tdpCadreEnrollmentYearDAO.getAgeGenerAndCasteGroupWiseCadresCount(locationTypeId,locationValue, enrollmentYearId);
-
 			Map<Long, ConstituencyCadreVO> ageRangeMap = new LinkedHashMap<Long, ConstituencyCadreVO>(0);
-
-			if (rtrnCaderObjLst != null && rtrnCaderObjLst.size() > 0) {
-				List<Object[]> casteCategoryObjLst = casteCategoryDAO.getAllCasteCategoryDetails();
-				// 0-ageRangeId,1-ageRange,2-gener,3-casteCategoryId,4-casteCategory,5-totalCount
-				for (Object[] param : rtrnCaderObjLst) {
-					Long totalCadreCount = commonMethodsUtilService.getLongValueForObject(param[4]);
-					if (!ageRangeMap.containsKey(commonMethodsUtilService.getLongValueForObject(param[0]))) {
-						ConstituencyCadreVO ageRangeVO = new ConstituencyCadreVO();
-						ageRangeVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-						ageRangeVO.setName(commonMethodsUtilService.getStringValueForObject(param[1])+ " "+"Years");
-						ageRangeVO.setCasteGroupList(getCasteCategoryList(casteCategoryObjLst));
-						ageRangeMap.put(ageRangeVO.getId(), ageRangeVO);
+			
+			//0-ageRangeId, 1- gender 2-castecatId, 3-copunt
+			List<Object[]> rtrnCaderObjLst = tdpCadreCasteInfoDAO.getAgeGenerAndCasteGroupWiseCadresCount(locationTypeId,locationValue, enrollmentYearId);
+			List<Object[]> ageRange = voterAgeRangeDAO.getSpecificAgeRangeList();
+			
+			//template Building
+			if (ageRange != null && ageRange.size() > 0) {
+				for (Object[] objects : ageRange) {
+					List<Object[]> casteCategoryObjLst = casteCategoryDAO.getAllCasteCategoryDetails();
+					if (ageRangeMap.get(commonMethodsUtilService.getLongValueForObject(objects[0])) == null) {
+						ConstituencyCadreVO inVO = new ConstituencyCadreVO();
+						inVO.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						inVO.setName(commonMethodsUtilService.getStringValueForObject(objects[1])+ " "+"Years");
+						inVO.setCasteGroupList(getCasteCategoryList(casteCategoryObjLst));
+						ageRangeMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), inVO);
 					}
-
-					ConstituencyCadreVO ageRangeVO = ageRangeMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				}
+			}
+			
+			if (rtrnCaderObjLst != null && rtrnCaderObjLst.size() > 0) {
+				for (Object[] param : rtrnCaderObjLst) {
+					Long totalCadreCount = commonMethodsUtilService.getLongValueForObject(param[3]);
+					Long ageRangeId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					if(commonMethodsUtilService.getLongValueForObject(param[0]) == 1)
+						ageRangeId = 2l;
+					
+					ConstituencyCadreVO ageRangeVO = ageRangeMap.get(ageRangeId);
 					if (ageRangeVO != null) {
+						
 						ageRangeVO.setToalCadreCount(ageRangeVO.getToalCadreCount() + totalCadreCount);
-						if (commonMethodsUtilService.getStringValueForObject(param[2]).equalsIgnoreCase("M")) {
+						if (commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("M")) {
 							ageRangeVO.setMaleCount(ageRangeVO.getMaleCount()+ totalCadreCount);
-						} else if (commonMethodsUtilService.getStringValueForObject(param[2]).equalsIgnoreCase("F")) {
+						} else if (commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("F")) {
 							ageRangeVO.setFemaleCount(ageRangeVO.getFemaleCount() + totalCadreCount);
 						}
 						ConstituencyCadreVO casteCategoryVO = getCasteCategoryMatchVO(ageRangeVO.getCasteGroupList(), commonMethodsUtilService.getLongValueForObject(param[3]));
@@ -3341,7 +3371,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 			// 0-castegroupId,1-castegroup,2-casteId,3-castegroup,4-voterscount,5-percentage,6-maleVotersCount,7-femaleVotersCount
-			List<Object[]> cadresObjList = tdpCadreEnrollmentYearDAO.getCasteGroupWiseCadreCounts(locationValue,locationTypeId);
+			List<Object[]> cadresObjList = tdpCadreEnrollmentYearDAO.getCasteGroupWiseCadreCounts(locationValue,locationTypeId,4l);
 			
 			if (cadresObjList != null && cadresObjList.size() > 0) {
 				for (Object[] objects : cadresObjList) {
