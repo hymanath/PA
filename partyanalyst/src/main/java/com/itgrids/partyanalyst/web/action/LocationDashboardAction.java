@@ -23,16 +23,18 @@ import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.dto.LocationAlertVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
-import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
-import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
+import com.itgrids.partyanalyst.service.impl.AlertLocationDashboardService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -75,10 +77,29 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
     private NominatedPostDashboardVO nominatedPostDashboardVO;
     private NominatedPostDetailsVO nominatedPostDetailsVO;
 	private LocationVO locationVo;
-	
+	private LocationAlertVO locationAlertVO;
+	private AlertLocationDashboardService alertLocationDashboardService;
+	private String successMsg;
 
-	
-
+	public String getSuccessMsg() {
+		return successMsg;
+	}
+	public void setSuccessMsg(String successMsg) {
+		this.successMsg = successMsg;
+	}
+	public LocationAlertVO getLocationAlertVO() {
+		return locationAlertVO;
+	}
+	public void setLocationAlertVO(LocationAlertVO locationAlertVO) {
+		this.locationAlertVO = locationAlertVO;
+	}
+	public AlertLocationDashboardService getAlertLocationDashboardService() {
+		return alertLocationDashboardService;
+	}
+	public void setAlertLocationDashboardService(
+			AlertLocationDashboardService alertLocationDashboardService) {
+		this.alertLocationDashboardService = alertLocationDashboardService;
+	}
 	public NominatedPostDetailsVO getNominatedPostDetailsVO() {
 		return nominatedPostDetailsVO;
 	}
@@ -807,5 +828,37 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}	
-	
+	public String getTotalAlertDetailsForConstituencyInfo(){
+		 try{
+			  RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+				if(regVo!=null && regVo.getRegistrationID()!=null){
+					Long userId = regVo.getRegistrationID();
+				}
+				jObj = new JSONObject(getTask());
+				String fromDateStr = jObj.getString("fromDateStr");
+				String year = jObj.getString("year");
+				String toDateStr = jObj.getString("toDateStr");
+				Long locationTypeId = jObj.getLong("locationTypeId");
+				JSONArray alertTypeIdsStr = jObj.getJSONArray("alertTypeIdsStr");  
+				List<Long> alertTypeIds = new ArrayList<Long>();
+				if(alertTypeIdsStr != null && alertTypeIdsStr.length() > 0){
+					for (int i = 0; i < alertTypeIdsStr.length(); i++){
+						alertTypeIds.add(Long.parseLong(alertTypeIdsStr.getString(i)));        
+					} 
+				}
+				JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
+				List<Long> locationValues = new ArrayList<Long>();
+				if(locationValuesArr != null && locationValuesArr.length() > 0){
+					for (int i = 0; i < locationValuesArr.length(); i++){
+						locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
+					} 
+				}
+				locationAlertVO = alertLocationDashboardService.getTotalAlertDetailsForConstituencyInfo(fromDateStr,toDateStr,locationValues,alertTypeIds,locationTypeId,year);
+				
+		 }catch(Exception e){
+			 successMsg = "failure";
+			 LOG.error("Exception Occured in getTotalAlertDetailsForConstituencyInfo() method, Exception - ",e);
+		 }
+		 return Action.SUCCESS;
+	 }
 }
