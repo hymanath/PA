@@ -42,13 +42,15 @@ public class LocationVO implements Serializable {
 	private Long hamletId;
 	private String hamletName;
 	private String searchType;
-	private Long  constituencyCount;
-	private Long   tehsilCount;
-	private Long  villageIdCount;
-	private Long  hamletCount;	
+	private Long  constituencyCount=0l;
+	private Long   tehsilCount=0l;
+	private Long  villageIdCount=0l;
+	private Long  hamletCount=0l;	
 	private Long municipalityCount;
-	private Long boothCount;
-	private Long totalNoOfWards;
+	private Long boothCount=0l;
+	private Long totalNoOfWards=0l;
+	private Long districtCount=0l;
+    private Long parlimentsCount=0l;
 	
 	public Long getBoothCount() {
 		return boothCount;
@@ -278,6 +280,18 @@ public class LocationVO implements Serializable {
 	}
 	public void setTotalNoOfWards(Long totalNoOfWards) {
 		this.totalNoOfWards = totalNoOfWards;
+	}
+	public Long getDistrictCount() {
+		return districtCount;
+	}
+	public void setDistrictCount(Long districtCount) {
+		this.districtCount = districtCount;
+	}
+	public Long getParlimentsCount() {
+		return parlimentsCount;
+	}
+	public void setParlimentsCount(Long parlimentsCount) {
+		this.parlimentsCount = parlimentsCount;
 	}
 	
 	
