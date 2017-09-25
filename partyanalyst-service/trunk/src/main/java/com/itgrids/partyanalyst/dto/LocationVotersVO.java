@@ -20,6 +20,9 @@ public class LocationVotersVO {
 	public String femaleCadrePerc="";
 	public List<LocationVotersVO> locationVotersVOList = new ArrayList<LocationVotersVO>(0);
 	public List<LocationVotersVO> locationVotersVOList1 = new ArrayList<LocationVotersVO>(0);
+	public Long casteGroupId;
+	public String castgroup;
+	public Double voterPercentage=0.0d;
 
 	public Long getAgeRangeId() {
 		return ageRangeId;
@@ -119,5 +122,24 @@ public class LocationVotersVO {
 			List<LocationVotersVO> locationVotersVOList1) {
 		this.locationVotersVOList1 = locationVotersVOList1;
 	}
+	public Long getCasteGroupId() {
+		return casteGroupId;
+	}
+	public void setCasteGroupId(Long casteGroupId) {
+		this.casteGroupId = casteGroupId;
+	}
+	public String getCastgroup() {
+		return castgroup;
+	}
+	public void setCastgroup(String castgroup) {
+		this.castgroup = castgroup;
+	}
+	public Double getVoterPercentage() {
+		return voterPercentage;
+	}
+	public void setVoterPercentage(Double voterPercentage) {
+		this.voterPercentage = voterPercentage;
+	}
+	
 	
 }
