@@ -316,7 +316,7 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 		StringBuilder sb = new StringBuilder();
 		sb.append("select count(distinct model.boothId) from Booth model where model.publicationDate.publicationDateId =:publicationDateId and ");
 		if(locationTypeId != null && locationTypeId.longValue()>0){
-			if(locationTypeId == 3l || locationTypeId == 4l || locationTypeId == 10l){
+			if(locationTypeId  == 2l ||locationTypeId == 3l || locationTypeId == 4l || locationTypeId == 10l){
 				sb.append("	model.constituency.constituencyId in (:constituencyId)");
 			}else if(locationTypeId == 5l){
 				sb.append("	model.tehsil.tehsilId in (:constituencyId)");
@@ -326,7 +326,6 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 				sb.append("	model.localBody.localElectionBodyId in (:constituencyId)");
 			}
 		}
-
 	
 	Query query = getSession().createQuery(sb.toString());
 	query.setParameterList("constituencyId", constituencyIds);
