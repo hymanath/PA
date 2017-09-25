@@ -3837,17 +3837,58 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 	    		Long publicationDateId) {
 		LocationVO VO = new LocationVO();
 		try {
-			List<Long> constituencyIds = new ArrayList<Long>();
+			List<Long> districtIds = new ArrayList<Long>();
+	       			List<Long> constituencyIds = new ArrayList<Long>();
 			List<Long> tehsilIds = new ArrayList<Long>();
 			List<Long> panchaythIds = new ArrayList<Long>();
 			List<Long> localBodyIds = new ArrayList<Long>();
+			 List<Long> parliamentIds = new ArrayList<Long>();
 			Long constituencyCount=0l, mandalCount=0l,panchaythCount=0l,boothCount=0l,totalNoOfWards=0l, municipalityCount=0l,
-					 hamletCount =0l;;
+					 hamletCount =0l,districtCount=0l, parlimentCount=0l;;
 			List<Tehsil> mandals = new ArrayList<Tehsil>();
 			List<Long> delimitationConstituency = new ArrayList<Long>();
 			List<Object[]> localBodies = new ArrayList<Object[]>();
 			List<Object[]> panchayatsList =null;
-			
+			 List<Object[]> parlimentsList =null;
+			 List<Object[]> constituencyList =null;
+		       List<Long> newDistrictArr = new ArrayList<Long>();
+		      Long[] ids = IConstants.AP_NEW_DISTRICTS_IDS;
+		      for (Long param : ids) {
+		        newDistrictArr.add(param);
+		      }
+		      if (locationTypeId == 2l) {
+		        List<Object[]> districtList = districtDAO.getAllNewDistrictDetailsForAState(1l, newDistrictArr);
+		        for (Object[] objects : districtList) {
+		          if (objects != null) {
+		            districtIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+		            districtCount= districtCount+1;  
+		          }
+		        }
+		        constituencyList = constituencyDAO.getDistrictConstituenciesList(districtIds);
+		        for (Object[] obj : constituencyList) {
+		          if (obj != null) {
+		            constituencyIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+		            constituencyCount = constituencyCount + 1;
+		          }
+		        }
+		        parlimentsList =  delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByStateId(constituencyIds);
+		        for (Object[] object : districtList) {
+		          if (object != null) {
+		            parliamentIds.add(commonMethodsUtilService.getLongValueForObject(object[0]));
+		            parlimentCount=parlimentCount+1;
+		            }  
+		        }
+		        mandals = tehsilDAO.findByDistrictIds(locationValues);
+		        localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
+		        boothCount = panchayatDAO.getBoothIdsCount(locationTypeId,constituencyIds,publicationDateId);
+		    
+		        VO.setConstituencyCount(constituencyCount);
+		        VO.setDistrictCount(districtCount);
+		        VO.setParlimentsCount(parlimentCount);
+		       // if(commonMethodsUtilService.isListOrSetValid(parliamentIds))
+		        //	VO.setParlimentsCount(Long.valueOf(String.valueOf(parliamentIds.size())));
+		        
+		      }
 			if (locationTypeId == 3l) {
 				List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(locationValues);
 				for (Object[] objects : locationValuesObj) {
