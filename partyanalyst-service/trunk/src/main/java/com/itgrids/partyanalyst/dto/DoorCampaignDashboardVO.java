@@ -55,6 +55,9 @@ public class DoorCampaignDashboardVO implements Serializable{
 	private List<Long> accessLevelIds= new ArrayList<Long>();
 	private List<Long>   accessLevelValuesList = new ArrayList<Long>();
 	
+	private Long callsCunt = 0l;
+	private Long smsCount = 0l;
+	private Long flagHoistingImgCunt = 0l;
 	
 	
 	public List<Long> getAccessLevelIds() {
@@ -320,6 +323,23 @@ public class DoorCampaignDashboardVO implements Serializable{
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}public Long getCallsCunt() {
+		return callsCunt;
+	}
+	public void setCallsCunt(Long callsCunt) {
+		this.callsCunt = callsCunt;
+	}
+	public Long getSmsCount() {
+		return smsCount;
+	}
+	public void setSmsCount(Long smsCount) {
+		this.smsCount = smsCount;
+	}
+	public Long getFlagHoistingImgCunt() {
+		return flagHoistingImgCunt;
+	}
+	public void setFlagHoistingImgCunt(Long flagHoistingImgCunt) {
+		this.flagHoistingImgCunt = flagHoistingImgCunt;
 	}
 	
 }
