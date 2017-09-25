@@ -13,6 +13,9 @@ public class DoorToDoorInputVO implements Serializable{
     private List<Long> notStartedList;
 	private Long departmentId;
 	private Long issueTypeId;
+	
+	private String imageType;
+	
 	public Long getId() {
 		return id;
 	}
@@ -66,6 +69,12 @@ public class DoorToDoorInputVO implements Serializable{
 	}
 	public void setIssueTypeId(Long issueTypeId) {
 		this.issueTypeId = issueTypeId;
+	}
+	public String getImageType() {
+		return imageType;
+	}
+	public void setImageType(String imageType) {
+		this.imageType = imageType;
 	}
 	
 	
