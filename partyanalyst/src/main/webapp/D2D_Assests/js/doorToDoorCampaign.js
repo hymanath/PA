@@ -8,6 +8,8 @@ var campaignLevelArr1=["mandal","panchayat","muncipality"]
 $(".tooltipCls").tooltip();
 var globallevelIds='';
 var globallevelValues='';
+var globallevelChangeIds='';
+var globallevelValuesChange ='';
 getUserAccessLevelIdsAndValues();
 function getUserAccessLevelIdsAndValues()
 {
@@ -33,7 +35,7 @@ function onLoadCalls(){
 	 getUsersCountsByLocation();
 	 getHouseHoldsCounts();
 	 getGrievancesCounts();
-	 getRecentImagesList();
+	 getRecentImagesList("survey");
 	 getDistrictsForStateAction("consWiseDistritsId");
 	 getDepartmentWiseGrievanceCounts(1);
 	 
@@ -42,7 +44,7 @@ function onLoadCalls(){
 			
 			 levelWiseArr=[{name:'district',id:'3'},{name:'parliament',id:'10'},{name:'constituency',id:'4'}];
 			 levelWiseData();
-			 $("#consWiseDistritsId_chosen").show();
+			 //$("#consWiseDistritsId").show();
 			for(var i in campaignLevelArr){
 				 getLevelWiseCount(campaignLevelArr[i]);
 			 }
@@ -65,6 +67,8 @@ function onLoadCalls(){
 			 levelWiseData();
 			 getLevelWiseCount("constituency");
 			 getCampaignCountFrMandalPancMuncip("panchayat");
+			 getCampaignCountFrMandalPancMuncip("mandal");
+			 getCampaignCountFrMandalPancMuncip("muncipality");
 			 $("#consWiseDistritsId_chosen").hide();
 			
 		}else if(globallevelIds[i] == 10){
@@ -73,14 +77,28 @@ function onLoadCalls(){
 			getLevelWiseCount("parliament");
 			getLevelWiseCount("constituency");
 			getCampaignCountFrMandalPancMuncip("panchayat");
+			getCampaignCountFrMandalPancMuncip("mandal");
 			$("#consWiseDistritsId_chosen").hide();
 		}
 	}
 	 
 }
 
+var $inputs = $(".imagesTypeCls");
 setInterval(function() {
-	getRecentImagesList();
+	
+	var random = Math.floor(Math.random() * $inputs.length);
+	  $inputs.each(function(i, node) {
+		node.checked = (i === random);
+	  });
+	  
+	 var imageType="";
+	 $(".imagesTypeCls").each(function(){
+		if($(this).is(':checked')){
+			imageType =$(this).val();
+		}
+	});
+	getRecentImagesList(imageType);
 }, 480 * 1000);
 
 $(document).on("click",".iconRefresh",function(){
@@ -166,7 +184,7 @@ $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 
 			str+=' </div>';
 		str+='</div>';
-		str+='<div class="row m_top10">';
+		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-12">';
 				str+='<hr class="m_0" style="border-color: #000;margin-top:0px;"/>';
 				str+='<p class="text-center m_top-10"><span class="bg-fff" style="padding:0px 8px;">Active Users</span></p>';
@@ -250,7 +268,7 @@ function getHouseHoldsCounts(){
 		var str='';
 		str+='<div class="media">';
 			str+='<div class="media-left">';
-				str+='<img src="D2D_Assests/icons/Total Househols_icon.png" class="main_block_logo" style="height: 71px;"></img>';
+				str+='<img src="D2D_Assests/icons/Total Househols_icon.png" class="main_block_logo" style="height: 50px;"></img>';
 			str+='</div>';
 			str+='<div class="media-body">';
 				str+='<h4>Total Households</h4>';
@@ -292,6 +310,43 @@ function getHouseHoldsCounts(){
 				
 			str+='</div>';
 		str+='</div>';
+		
+		//str+='<div class="row m_top10">';
+		/* 	str+='<div class="col-sm-12">';
+				str+='<hr class="m_0" style="border-color: #000;margin-top:0px;"/>';
+				str+='<p class="text-center m_top-10"><span class="bg-fff" style="padding:0px 8px;">Visited</span></p>';
+				
+			str+='</div>'; */
+			str+='<div class="row m_top5">';
+			str+='<div class="col-sm-4 text-center border_right">';
+				str+='<h6>Calls Dialed</h6>';
+				if(result.callsCunt !=null && result.callsCunt>0){
+					str+='<h5>'+result.callsCunt+'</h5>';
+				}else{
+					str+='<h5> - </h5>';
+				}
+				
+				
+			str+='</div>';
+			str+='<div class="col-sm-4 text-center border_right">';
+				str+='<h6>SMS Sent</h6>';
+				if(result.smsCount !=null && result.smsCount>0){
+					str+='<h5>'+result.smsCount+'</h5>';
+				}else{
+					str+='<h5> - </h5>';
+				}
+			str+='</div>';
+			str+='<div class="col-sm-4 text-center">';
+				str+='<h6>Images Received</h6>';
+				if(ajaxresp[i].flagHoistingImgCunt !=null && ajaxresp[i].flagHoistingImgCunt>0){
+					str+='<td class="text-capital flagHoistingImagesCls" attr_level_value="'+ajaxresp[i].id+'" attr_level_id="'+locationType+'">'+ajaxresp[i].flagHoistingImgCunt+'</td>';		
+				}else{
+					str+='<td class="text-capital"> - </td>';	
+				}
+			str+='</div>';
+			str+='</div>';
+		//str+='</div>';
+		
 		$("#houseHoldsWiseCountsId").html(str);
 	}
 }
@@ -322,7 +377,7 @@ function getGrievancesCounts(){
 		var str='';
 		str+='<div class="media">';
 			str+='<div class="media-left">';
-				str+='<img src="D2D_Assests/icons/Total_Grievance_icon.png" class="main_block_logo"></img>';
+				str+='<img src="D2D_Assests/icons/Total_Grievance_icon.png" class="main_block_logo" style="height: 85px;"></img>';
 			str+=' </div>';
 			str+='<div class="media-body">';
 				str+='<h4>Total Grievances</h4>';
@@ -334,7 +389,7 @@ function getGrievancesCounts(){
 				
 			str+='</div>';
 		str+='</div>';
-		str+='<div class="row m_top20">';
+		str+='<div class="row" style="margin-top: 30px !important;">';
 			str+='<div class="col-sm-6 text-center border_right">';
 				str+='<h4>Individual</h4>';
 				if(result.individual !=null && result.individual>0){
@@ -357,12 +412,13 @@ function getGrievancesCounts(){
 		$("#grievanceWiseCountsId").html(str);
 	}
 }
-function getRecentImagesList(){
+function getRecentImagesList(imageType){
 	$("#imagesSliderDivId").html(spinner);
 	
 	var jsObj={
     	levelIds		:globallevelIds,
 		levelValues		:globallevelValues,
+		imageType		:imageType,
 		startDateStr	:glStartDate,
 		endDateStr  	:glEndDate
     }
@@ -373,18 +429,22 @@ function getRecentImagesList(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null){
-			return buildRecentImagesList(result);
+			return buildRecentImagesList(result,imageType);
 		}else{
 			$("#imagesSliderDivId").html("NO DATA AVAILABLE");
 		}
 		
 	});
-	function buildRecentImagesList(result){
+	function buildRecentImagesList(result,imageType){
 		var str='';
 		//str+='<div class="col-sm-12">';
 		str+='<ul class="list-inline slider-nav">';
 		for(var i in result.subList){
-			str+='<li style="background-color:#F75C5D;color:#fff !important;margin:0px 8px;border:1px solid #F75C5D;">';
+			if(imageType == "survey"){
+				str+='<li style="background-color:#F75C5D;color:#fff !important;margin:0px 8px;border:1px solid #F75C5D;">';
+			}else{
+				str+='<li style="background-color:#009688;color:#fff !important;margin:0px 8px;border:1px solid #009688;">';
+			}
 				str+='<img onerror="setDefaultImage(this);" src="'+result.subList[i].name+'" alt="" class="img-responsive" style="width: 240px; height: 185px;margin-bottom:5px;"/>';
 				str+='<div style="margin-top:-10px;padding:4px 8px;">';
 					if(typeof result.subList[i].districtName == "undefined" || typeof result.subList[i].districtName === undefined)
@@ -522,7 +582,7 @@ function levelWiseData()
 	$("#levelWiseDetailsDivId").html(collapse);
 	$("#consWiseDistritsId").chosen();
 	 
-	getLocationWiseCountDetails(levelWiseArr[0].name);	
+	getLocationWiseCountDetails(levelWiseArr[0].name,"onLoad");	
 }
 $(document).on("click",".panelCollapseClick",function(){
 	var blockName = $(this).attr("level_name");
@@ -537,17 +597,27 @@ $(document).on("click",".panelCollapseClick",function(){
 			$("#consWiseDistritsId").hide();
 		}
 	}
-	getLocationWiseCountDetails(blockName);
+	getLocationWiseCountDetails(blockName,"onLoad");
 });
-function getLocationWiseCountDetails(locationType)
+function getLocationWiseCountDetails(locationType,type)
 {
 	$("#campaign"+locationType).html(spinner);
+	var levelIds=[];
+	var levelValues=[];
+	
+	if(type == "onLoad"){
+		levelIds = globallevelIds;
+		levelValues = globallevelValues;
+	}else if(type == "onChange"){
+		levelIds = globallevelChangeIds
+		levelValues = globallevelValuesChange
+	}
 	
 	
 	var jsObj={
     	locationType    : locationType,
-		levelIds		:globallevelIds,
-		levelValues		:globallevelValues,
+		levelIds		:levelIds,
+		levelValues		:levelValues,
 		startDateStr	: glStartDate,
 		endDateStr 		:  glEndDate
     }
@@ -953,9 +1023,9 @@ function buildDepartmentWiseGrievanceCounts(result,value){
 		$("#departmentWiseGrievanceDivId").html(str);
 		$(".tooltipDeptCls").tooltip();
 		$(".dataTableDepartmentWise").dataTable({
-			"iDisplayLength": 10,
+			"iDisplayLength": 16,
 			"aaSorting": [],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"aLengthMenu": [[16, 20, -1], [16, 20, "All"]],
 			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 			"<'row'<'col-sm-12'tr>>" +
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -1015,7 +1085,7 @@ function buildLevelWiseCount(ajaxresp,locationType){
 		}else if(locationType == "panchayat"){
 			str+='<h4 style="color:#640095;font-size: 21px;">Panchayat Level</h4>';
 		}else if(locationType == "muncipality"){
-			str+='<h4 style="color:#F45CB5;font-size: 21px;">Muncipality Level</h4>';
+			str+='<h4 style="color:#F45CB5;font-size: 21px;">Muncipality/Corporation Level</h4>';
 		}
 		str+='</div>';
 			str+='<div class="col-sm-4 text-center">';
@@ -1081,7 +1151,10 @@ function getDistrictsForStateAction(divId)
 		if(result !=null && result.length>0){
 			var str='';
 			for(var i in result){
-				 str+='<option value="'+result[i].id+'">'+result[i].name+' </option>';
+				if(result[i].id !=517){
+					 str+='<option value="'+result[i].id+'">'+result[i].name+' </option>';
+				}
+				
 			}
 			$("#"+divId).html(str);
 			$("#"+divId).trigger('chosen:updated');
@@ -1089,17 +1162,22 @@ function getDistrictsForStateAction(divId)
 		
 	});
 }	
+
 $(document).on("change","#consWiseDistritsId",function(){
 	var districtId = $(this).val();
-	globallevelIds=[];
-	globallevelValues=[];
+	
 	if(districtId == 0){
-		globallevelIds=[2];
-		globallevelValues=[1];
+		globallevelChangeIds=[2];
+		globallevelValuesChange=[1];
 	}else{
 		globallevelIds=[3];
 		globallevelValues.push(parseInt(districtId))
 	}	
-	getLocationWiseCountDetails("constituency");
+	getLocationWiseCountDetails("constituency","onChange");
 });
+
+$(document).on("click",".imagesTypeCls",function(){
 	
+	var imageType = $(this).val();
+	getRecentImagesList(imageType);
+});
