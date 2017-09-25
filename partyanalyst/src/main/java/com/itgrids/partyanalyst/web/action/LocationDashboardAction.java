@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
+import com.itgrids.core.api.service.ILocationWiseCasteInfoService;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.BoothInchargesVO;
@@ -77,10 +78,11 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
     private NominatedPostDashboardVO nominatedPostDashboardVO;
     private NominatedPostDetailsVO nominatedPostDetailsVO;
 	private LocationVO locationVo;
+	private ILocationWiseCasteInfoService locationWiseCasteInfoService;
 	private LocationAlertVO locationAlertVO;
 	private AlertLocationDashboardService alertLocationDashboardService;
 	private String successMsg;
-
+	
 	public String getSuccessMsg() {
 		return successMsg;
 	}
@@ -99,6 +101,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setAlertLocationDashboardService(
 			AlertLocationDashboardService alertLocationDashboardService) {
 		this.alertLocationDashboardService = alertLocationDashboardService;
+	}
+	public ILocationWiseCasteInfoService getLocationWiseCasteInfoService() {
+		return locationWiseCasteInfoService;
+	}
+	public void setLocationWiseCasteInfoService(
+			ILocationWiseCasteInfoService locationWiseCasteInfoService) {
+		this.locationWiseCasteInfoService = locationWiseCasteInfoService;
 	}
 	public NominatedPostDetailsVO getNominatedPostDetailsVO() {
 		return nominatedPostDetailsVO;
@@ -358,7 +367,9 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getVotersAndCadreCasteWiseCount(){
 		 try {
 			jObj = new JSONObject(getTask());
-			locationVotersVOList = locationDashboardService.getVotersAndCadreCasteWiseCount(jObj.getString("type"),jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("publicationDateId"));
+			
+			locationVotersVOList = locationWiseCasteInfoService.getVotersAndCadreCasteWiseCount(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),
+					jObj.getLong("publicationDateId"),jObj.getLong("enrollmentYearId"),jObj.getLong("casteGroupId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getVotersAndCadreCasteWiseCount", e);
 		}
@@ -721,7 +732,7 @@ public String getElectionInformationLocationWise(){
 	 public String getVotersCastGroupWiseCount(){
 		 try {
 			 jObj = new JSONObject(getTask());
-			 locationVotersVOList = locationDashboardService.getVotersCastGroupWiseCount(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("publicationDateId"));
+			 locationVotersVOList = locationWiseCasteInfoService.getVotersCastGroupWiseCount(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("publicationDateId"),jObj.getLong("enrollmentyearId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getEnrollmentYearAgeGroupWiseCadres", e);
 		}
