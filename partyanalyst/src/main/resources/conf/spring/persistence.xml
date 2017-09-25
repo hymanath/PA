@@ -1321,7 +1321,7 @@
 		      		   <value>com.itgrids.partyanalyst.model.GovtSchemeBenefitsInfo</value>
 		      		   <value>com.itgrids.partyanalyst.model.TrainingCampBatchType</value>
 		      		   <value>com.itgrids.partyanalyst.model.TehsilConstituency</value>
-		      		   <value>com.itgrids.partyanalyst.model.TrainingCampBatchType</value>
+		      		   
 				  </list>
 			
 		</property>
