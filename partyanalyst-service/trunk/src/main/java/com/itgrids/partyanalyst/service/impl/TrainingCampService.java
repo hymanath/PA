@@ -6346,8 +6346,7 @@ class TrainingCampService implements ITrainingCampService{
     	try {
     		//TrainingProcedureTestData trainingProcedureTestData=new TrainingProcedureTestData();
 			//List<Object[]>  resultList =  trainingProcedureTestData.getTestProcedureCallData();
-    		List<Object[]> resultList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programmIds);//Procedure Call
-    		List<Object[]> detailsList = new ArrayList<Object[]>(0);
+    		//List<Object[]> resultList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programmIds);//Procedure Call
 			
     		List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(startDate,endDate,enrollmentYearIds,programmIds);
 			List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
@@ -6357,12 +6356,7 @@ class TrainingCampService implements ITrainingCampService{
 		  	        batchIdsList.add(batchId);
 				}
 			}
-			if(commonMethodsUtilService.isListOrSetValid(resultList)){
-				for (Object[] param : resultList) {
-					if(batchIdsList.contains(commonMethodsUtilService.getLongValueForObject(param[2])))
-						detailsList.add(param);
-				}
-			}
+			List<Object[]> detailsList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programmIds,batchIdsList);//Procedure Call
 			
 			List<Map<Long,Map<Long,Set<String>>>> attendanceDetailsMapList = getTdpCardreIdsPresentByDays(detailsList,batchIdsList);
 			List<Map<Long,Map<String,Set<Long>>>> daywiseAttendedDetailsListMap = getDatesWiseTdpCadreIds(detailsList,batchIdsList);
@@ -9720,10 +9714,10 @@ public List<SimpleVO> getDayWiseCountsForRunningBatches_Test(List<Object[]> runn
 								}
 							}
 						}
-						else
-						{
+						//else
+						//{
 							inviteesMap = inviteisMap;
-						}
+						//}
 						
 						//if(searchType.trim().equals("consolidated"))
 						//{
@@ -11165,18 +11159,10 @@ public List<SimpleVO> getDayWiseCountsForRunningBatches_Test(List<Object[]> runn
 			
 			List<SimpleVO> fnlList = new ArrayList<SimpleVO>();
 			try{	
-				
-				List<Object[]> resultList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYrIds,programmIds);//Procedure Call
-	    		List<Object[]> detailsList = new ArrayList<Object[]>(0);
 				List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
-				 batchIdsList.add(batchId);
+				batchIdsList.add(batchId);
 				 
-				if(commonMethodsUtilService.isListOrSetValid(resultList)){
-					for (Object[] param : resultList) {
-						if(batchIdsList.contains(commonMethodsUtilService.getLongValueForObject(param[2])))
-							detailsList.add(param);
-					}
-				}
+				List<Object[]> detailsList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYrIds,programmIds,batchIdsList);//Procedure Call
 				
 				List<Map<Long,Map<Long,Set<String>>>> attendanceDetailsMapList = getTdpCardreIdsPresentByDays(detailsList,batchIdsList);
 				Map<Long,Map<Long,Set<String>>> inviteeMap = new HashMap<Long, Map<Long,Set<String>>>(0);
@@ -11263,9 +11249,35 @@ public List<SimpleVO> getDayWiseCountsForRunningBatches_Test(List<Object[]> runn
 		List<SimpleVO> trainingCampDetlsVOList = new ArrayList<SimpleVO>(0);
 		try {
 			
+			List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(null,null,enrollmentYearIds,programYearIds);
+			List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
 			// TrainingCamp Batch batch Details
-			List<Object[]> campDetailsList = null;
-			campDetailsList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds);//Procedure Call
+				List<Object[]> campDetailsList = new ArrayList<Object[]>(0);
+			if(trainingCampObj != null && trainingCampObj.size() >0){
+			 	for(Object[] param:trainingCampObj){
+			 		Long batchId=commonMethodsUtilService.getLongValueForObject(param[0]);
+		  	        batchIdsList.add(batchId);
+				}
+			 	
+			 	//List<Object[]>  resultList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds,batchIdsList);//Procedure Call
+	            if(batchIdsList != null && batchIdsList.size()>0){
+	                 int filterCount = 50;
+	                 int i = 0; 
+	                 int j = filterCount;
+	                 int maxcount = batchIdsList.size();
+	                 while (maxcount >0){  
+	                     if(maxcount<filterCount)
+	                         j = i+maxcount;
+	                     List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds,batchIdsList.subList(i, j));//Procedure Call
+	                        if(commonMethodsUtilService.isListOrSetValid(tempList)){
+	                        	campDetailsList.addAll(tempList);
+	                        }
+	                     i=j;
+	                     maxcount = maxcount-filterCount;
+	                     j=j+filterCount;
+	                 }
+	            }
+			}
 			
 			Long upComingConfirmedCount=  0L;//trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(null, currentDate, currentDate,"upcoming",staffcadreIdsLsit,null,enrollmentYearIds);
 			Long runningConfirmedCount=  0L;//trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(null, currentDate, currentDate,"running",staffcadreIdsLsit,null,enrollmentYearIds);
