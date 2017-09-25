@@ -2429,12 +2429,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public List<BenefitCandidateVO> getMandalWiseBenefitMembersCount(final Long locationTypeId, final Long locationValue,final Long govtSchemeId,final Long publicationDateId) {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
-			//List<Long> constituencyIds = new ArrayList<Long>();
-			if(locationTypeId == 10l){
-		    	 // constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency1(locationValue);
+			List<Long> constituencyIds = new ArrayList<Long>();
+			if(locationTypeId != null && locationTypeId == 10l){
+		    	  constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency1(locationValue);
 			}
-			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getMandalWiseBenefitMemberCountByGovtScheme(locationTypeId,locationValue, govtSchemeId);
-			//List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getMandalWiseBenefitMemberCountByGovtScheme1(locationTypeId,locationValue, govtSchemeId,constituencyIds);
+			//List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getMandalWiseBenefitMemberCountByGovtScheme(locationTypeId,locationValue, govtSchemeId);
+			List<Object[]> benefitMemberObjLst = govtSchemeBenefitsInfoDAO.getMandalWiseBenefitMemberCountByGovtScheme(locationTypeId,locationValue, govtSchemeId,constituencyIds);
 			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,locationValue,locationTypeId,"tehsil",publicationDateId);
 			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst,censusPopList,"tehsil");
 		} catch (Exception e) {
