@@ -1165,6 +1165,8 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		public List<Object[]> getAgeGenerAndCasteGroupWiseCadresCount(Long locationTypeId,Long locationValue,Long enrollmentYearId){
 			StringBuilder  queryStr = new StringBuilder();
 			
+			
+			//0-ageRangeId,1- agerRange, 2- gender 3-castecatId, 4-copunt
 			queryStr.append(" select " +
 					" model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange," +
 					" model.tdpCadre.gender,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
@@ -1211,7 +1213,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			return query.list();
 	 }
 		
-	public List<Object[]> getCasteGroupWiseCadreCounts(Long locationTypeId,Long locationValue) {
+	public List<Object[]> getCasteGroupWiseCadreCounts(Long locationTypeId,Long locationValue,Long enrollmentId) {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, "
@@ -1237,7 +1239,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		if(locationValue != null && locationValue.longValue() > 0){
 			query.setParameter("locationValue", locationValue);	
 		}
-		query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		query.setParameter("enrollmentYearId",enrollmentId);
 		return query.list();
 	}
 }
