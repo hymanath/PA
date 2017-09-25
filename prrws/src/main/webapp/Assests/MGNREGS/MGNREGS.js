@@ -481,48 +481,48 @@ function projectData(divId,levelId,locationId)
 								}
 									if(divId == 'FAperformance')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - FA Performance</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - FA Performance</h4>';
 									}else if(divId == 'SMC Trench')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - SMC Trenches</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - SMC Trenches</h4>';
 									}else if(divId == 'Imp to CD')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Improvements to Check Dams and Percolation Tanks</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Improvements to Check Dams and Percolation Tanks</h4>';
 									}else if(divId == 'MPT_PT')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Mini Percolation Tanks and Percolation Tanks</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Mini Percolation Tanks and Percolation Tanks</h4>';
 									}else if(divId == 'GC Works')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Gully Control Works</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Gully Control Works</h4>';
 									}else if(divId == 'CD_CW')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Check Dams and Check Walls</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Check Dams and Check Walls</h4>';
 									}else if(divId == 'CC Roads1')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - CC Roads</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - CC Roads</h4>';
 									}else if(divId == 'Anganwadi')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Anganwadi Buildings</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Anganwadi Buildings</h4>';
 									}else if(divId == 'GP Buildings1')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - GP Buildings</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - GP Buildings</h4>';
 									}else if(divId == 'Mandal buildings1')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Mandal buildings</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Mandal buildings</h4>';
 									}else if(divId == 'GH')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Greening Of Hillocks</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Greening Of Hillocks</h4>';
 									}else if(divId == 'IHHL')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - INDIVIDUAL HOUSEHOLD LATRINE</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Individual HouseHold Latrine</h4>';
 									}else if(divId == 'OPGK-Perinnials')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Oorura Pasu Graasa Kshetralu - Perinnials</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Oorura Pasu Graasa Kshetralu - Perinnials</h4>';
 									}else if(divId == 'OPGK-Annuals')
 									{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Oorura Pasu Graasa Kshetralu - Annuals</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Oorura Pasu Graasa Kshetralu - Annuals</h4>';
 									}else{
-										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - '+divId+'</h4>';
 									}
 								collapse+='</a>';
 							collapse+='</div>';
@@ -662,48 +662,48 @@ function overviewData(divId,levelId,locationId)
 							collapse+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+'" href="#collapse'+divId.replace(/\s+/g, '')+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+'">';
 							if(divId == 'FAperformance')
 							{
-								collapse+='<h4 class="panel-title text-capital">FA Performance overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">FA Performance overview</h4>';
 							}else if(divId == 'SMC Trench')
 							{
-								collapse+='<h4 class="panel-title text-capital">SMC Trenches overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">SMC Trenches overview</h4>';
 							}else if(divId == 'Imp to CD')
 							{
-								collapse+='<h4 class="panel-title text-capital">Improvements to Check Dams and Percolation Tanks overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">Improvements to Check Dams and Percolation Tanks overview</h4>';
 							}else if(divId == 'MPT_PT')
 							{
-								collapse+='<h4 class="panel-title text-capital">Mini Percolation Tanks and Percolation Tanks overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">Mini Percolation Tanks and Percolation Tanks overview</h4>';
 							}else if(divId == 'GC Works')
 							{
-								collapse+='<h4 class="panel-title text-capital">Gully Control Works overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">Gully Control Works overview</h4>';
 							}else if(divId == 'CD_CW')
 							{
-								collapse+='<h4 class="panel-title text-capital">Check Dams and Check Walls overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">Check Dams and Check Walls overview</h4>';
 							}else if(divId == 'OPGK-Perinnials')
 							{
-								collapse+='<h4 class="panel-title text-capital">Oorura Pasu Graasa Kshetralu - Perinnials overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">Oorura Pasu Graasa Kshetralu - Perinnials overview</h4>';
 							}else if(divId == 'OPGK-Annuals')
 							{
-								collapse+='<h4 class="panel-title text-capital">Oorura Pasu Graasa Kshetralu - Annuals overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">Oorura Pasu Graasa Kshetralu - Annuals overview</h4>';
 							}else if(divId == 'CC Roads1')
 							{
-								collapse+='<h4 class="panel-title text-capital">CC Roads overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">CC Roads overview</h4>';
 							}else if(divId == 'Anganwadi')
 							{
-								collapse+='<h4 class="panel-title text-capital">Anganwadi Buildings overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">Anganwadi Buildings overview</h4>';
 							}else if(divId == 'GP Buildings1')
 							{
-								collapse+='<h4 class="panel-title text-capital">GP Buildings overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">GP Buildings overview</h4>';
 							}else if(divId == 'IHHL')
 							{
-								collapse+='<h4 class="panel-title text-capital">Individual Household Latrine</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">Individual Household Latrine</h4>';
 							}else if(divId == 'Mandal buildings1')
 							{
-								collapse+='<h4 class="panel-title text-capital">Mandal buildings overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">Mandal buildings overview</h4>';
 							}else if(divId == 'GH')
 							{
-								collapse+='<h4 class="panel-title text-capital">Greening Of Hillocks overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">Greening Of Hillocks overview</h4>';
 							}else{
-								collapse+='<h4 class="panel-title text-capital">'+divId+' overview</h4>';
+								collapse+='<h4 class="panel-title text-capitalize">'+divId+' overview</h4>';
 							}
 								
 							collapse+='</a>';
@@ -752,7 +752,7 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 	
 	tableView+='<div class="table-responsive">';
 		tableView+='<table class="table table-bordered dataTable'+blockId+'">';
-			tableView+='<thead class="text-capital">';
+			tableView+='<thead class="text-capitalize">';
 				if(theadArr == 'Payments')
 				{
 					tableView+='<tr>';
@@ -790,7 +790,7 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 				}else{
 					for(var i in theadArr)
 					{
-						tableView+='<th>'+theadArr[i]+'</th>';
+						tableView+='<th class="text-capitalize">'+theadArr[i]+'</th>';
 					}					
 				}
 				
@@ -1274,25 +1274,25 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 				for(var i in ajaxresp){
 					str+='<tr>';
 						if(locationType == "state"){
-							str+='<td class="text-capital">'+locationType+'</td>';
+							str+='<td class="text-capitalize">'+locationType+'</td>';
 						}
 						else if(locationType == "district"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
 						}
 						else if(locationType == "constituency"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
 						}
 						else if(locationType == "mandal"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
 						}
 						else if(locationType == "panchayat"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
 						}	
 						if(locationType == "state"){
 							str+='<td>'+ajaxresp[i].targetPersonDays+'L</td>';
@@ -2804,25 +2804,25 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 				for(var i in ajaxresp){
 					str+='<tr>';
 						if(locationTypeNew == "state"){
-							str+='<td class="text-capital">'+ajaxresp[i].state+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].state+'</td>';
 						}
 						else if(locationTypeNew == "district"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
 						}
 						else if(locationTypeNew == "constituency"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
 						}
 						else if(locationTypeNew == "mandal"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
 						}
 						else if(locationTypeNew == "panchayat"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
 						}
 						str+='<td>'+ajaxresp[i].avgDmdMarks+'</td>';
 						str+='<td>'+ajaxresp[i].avgDMusterMarks+'</td>';
@@ -2875,25 +2875,25 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 				for(var i in ajaxresp){
 					str+='<tr>';
 						if(locationTypeNew == "state"){
-							str+='<td class="text-capital">'+locationTypeNew+'</td>';
+							str+='<td class="text-capitalize">'+locationTypeNew+'</td>';
 						}
 						else if(locationTypeNew == "district"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
 						}
 						else if(locationTypeNew == "constituency"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
 						}
 						else if(locationTypeNew == "mandal"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
 						}
 						else if(locationTypeNew == "panchayat"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
 						}
 						if(globalDivName == 'GH'){
 							if(locationTypeNew == 'state' || locationTypeNew == 'district')
@@ -3160,22 +3160,45 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
-	if(divId == 'Timely Payment')
-	{
-		theadArr = [locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
-		if(locationType == "constituency")
-			theadArr = ["district",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
-		else if(locationType == "mandal")
-			theadArr = ["district","constituency",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
-		else if(locationType == "panchayat")
-			theadArr = ["district","constituency","mandal",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+	if( divId == 'Average Wage'){
+			theadArr = [locationType,'Target Average Wage(Rs)','Expenditure Average Wage(Rs)','Achieved Percentage'];
+			if(locationType == "constituency")
+				theadArr = ["district",locationType,'Target Average Wage(Rs)','Expenditure Average Wage(Rs)','Achieved Percentage'];
+			else if(locationType == "mandal")
+				theadArr = ["district","constituency",locationType,'Target Average Wage(Rs)','Expenditure Average Wage(Rs)','Achieved Percentage'];
+			else if(locationType == "panchayat")
+				theadArr = ["district","constituency","mandal",locationType,'Target Average Wage(Rs)','Expenditure Average Wage(Rs)','Achieved Percentage'];
+	}else if( divId == 'Average Days of Employment'){
+			theadArr = [locationType,'Target Average Days of Employment(Rs)','Expenditure Average Days of Employment(Rs)','Achieved Percentage'];
+			if(locationType == "constituency")
+				theadArr = ["district",locationType,'Target Average Days of Employment(Rs)','Expenditure Average Days of Employment(Rs)','Achieved Percentage'];
+			else if(locationType == "mandal")
+				theadArr = ["district","constituency",locationType,'Target Average Days of Employment(Rs)','Expenditure Average Days of Employment(Rs)','Achieved Percentage'];
+			else if(locationType == "panchayat")
+				theadArr = ["district","constituency","mandal",locationType,'Target Average Days of Employment(Rs)','Expenditure Average Days of Employment(Rs)','Achieved Percentage'];
+	}else if( divId == 'HH Completed 100 Days'){
+			theadArr = [locationType,'Target HH Completed 100 Days(Rs)','Expenditure HH Completed 100 Days(Rs)','Achieved Percentage'];
+			if(locationType == "constituency")
+				theadArr = ["district",locationType,'Target HH Completed 100 Days(Rs)','Expenditure HH Completed 100 Days(Rs)','Achieved Percentage'];
+			else if(locationType == "mandal")
+				theadArr = ["district","constituency",locationType,'Target HH Completed 100 Days(Rs)','Expenditure HH Completed 100 Days(Rs)','Achieved Percentage'];
+			else if(locationType == "panchayat")
+				theadArr = ["district","constituency","mandal",locationType,'Target HH Completed 100 Days(Rs)','Expenditure HH Completed 100 Days(Rs)','Achieved Percentage'];
+	 }else if(divId == 'Timely Payment'){
+			theadArr = [locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+			if(locationType == "constituency")
+				theadArr = ["district",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+			else if(locationType == "mandal")
+				theadArr = ["district","constituency",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+			else if(locationType == "panchayat")
+				theadArr = ["district","constituency","mandal",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
 	}else{
-		if(locationType == "constituency")
-			theadArr = ["district",locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
-		else if(locationType == "mandal")
-			theadArr = ["district","constituency",locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
-		else if(locationType == "panchayat")
-			theadArr = ["district","constituency","mandal",locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
+			if(locationType == "constituency")
+				theadArr = ["district",locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
+			else if(locationType == "mandal")
+				theadArr = ["district","constituency",locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
+			else if(locationType == "panchayat")
+				theadArr = ["district","constituency","mandal",locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 	}
 	
 	
@@ -3204,25 +3227,25 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 				for(var i in ajaxresp){
 					str+='<tr>';
 						if(locationType == "state"){
-							str+='<td class="text-capital">'+locationType+'</td>';
+							str+='<td class="text-capitalize">'+locationType+'</td>';
 						}
 						else if(locationType == "district"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
 						}
 						else if(locationType == "constituency"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
 						}
 						else if(locationType == "mandal"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
 						}
 						else if(locationType == "panchayat"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
 						}
 						if(globalDivName == "Nurseries")
 							str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
@@ -3282,25 +3305,25 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 				for(var i in ajaxresp){
 					str+='<tr>';
 						if(locationType == "state"){
-							str+='<td class="text-capital">'+locationType+'</td>';
+							str+='<td class="text-capitalize">'+locationType+'</td>';
 						}
 						else if(locationType == "district"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
 						}
 						else if(locationType == "constituency"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
 						}
 						else if(locationType == "mandal"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
 						}
 						else if(locationType == "panchayat"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
 						}
 						str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
 						str+='<td>'+ajaxresp[i].argicultureExpenditure+'</td>';
@@ -3355,25 +3378,25 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 				for(var i in ajaxresp){
 					str+='<tr>';
 						if(locationType == "state"){
-							str+='<td class="text-capital">'+locationType+'</td>';
+							str+='<td class="text-capitalize">'+locationType+'</td>';
 						}
 						else if(locationType == "district"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
 						}
 						else if(locationType == "constituency"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
 						}
 						else if(locationType == "mandal"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
 						}
 						else if(locationType == "panchayat"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
 						}
 						//if(locationType == "state" || locationType == "district")
 							str+='<td>'+ajaxresp[i].targetACRES+'</td>';
@@ -3475,25 +3498,25 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 				for(var i in ajaxresp){
 					str+='<tr>';
 						if(locationType == "state"){
-							str+='<td class="text-capital">'+locationType+'</td>';
+							str+='<td class="text-capitalize">'+locationType+'</td>';
 						}
 						else if(locationType == "district"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
 						}
 						else if(locationType == "constituency"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
 						}
 						else if(locationType == "mandal"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
 						}
 						else if(locationType == "panchayat"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
 						}
 						//if(locationType == "state" || locationType == "district")
 							str+='<td>'+ajaxresp[i].targetKMS+'</td>';
@@ -3614,25 +3637,25 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 				for(var i in ajaxresp){
 					str+='<tr>';
 						if(locationType == "state"){
-							str+='<td class="text-capital">'+locationType+'</td>';
+							str+='<td class="text-capitalize">'+locationType+'</td>';
 						}
 						else if(locationType == "district"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
 						}
 						else if(locationType == "constituency"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
 						}
 						else if(locationType == "mandal"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
 						}
 						else if(locationType == "panchayat"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
 						}
 						if(blockName == "UGDrainage"){
 							if(locationType == "state" || locationType == "district")
@@ -5038,28 +5061,28 @@ function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,m
 				for(var i in ajaxresp){
 					str+='<tr>';
 						if(locationType == "state"){
-							str+='<td class="text-capital">'+locationType+'</td>';
+							str+='<td class="text-capitalize">'+locationType+'</td>';
 						}
 						else if(locationType == "district" && menuLocationType == "district"){
-							str+='<td class="text-capital">'+menuSelName+'</td>';
+							str+='<td class="text-capitalize">'+menuSelName+'</td>';
 						}
 						else if(locationType == "district"){
-							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].districtName+'</td>';
 						}
 						else if(locationType == "constituency"){
-							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].districtName+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constName+'</td>';
 						}
 						else if(locationType == "mandal"){
-							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandalName+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].districtName+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constName+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandalName+'</td>';
 						}
 						else if(locationType == "panchayat"){
-							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandalName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].panchayatName+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].districtName+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constName+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandalName+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].panchayatName+'</td>';
 						}
 						//var pending = 
 						str+='<td>'+ajaxresp[i].type+'</td>';
