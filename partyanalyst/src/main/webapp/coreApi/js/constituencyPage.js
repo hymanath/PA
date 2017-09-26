@@ -761,20 +761,20 @@ function getCandidateAndPartyInfoForConstituency(){
 				parliament+='<div class="panel-body">';
 					parliament+='<h4 class="panel-title theme-title-color">Member Of Parliament</h4>';
 					parliament+='<div class="row">';
-						for(var i in result[0].subList)
+						for(var i in result[0].subList1) 
 						{
 							parliament+='<div class="col-sm-6 m_top10">';
 								parliament+='<div class="media media-profile">';
 									parliament+='<span id="mlaSpinnerId"></span>';
 									parliament+='<div class="media-left">';
-										parliament+='<img src="images/candidates/'+result[0].subList[i].parliamentCandidateInfo.candidateName+'.jpg" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
+										parliament+='<img src="images/candidates/'+result[0].subList1[i].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
 										parliament+='<span class="border-image img-border">';
-											parliament+='<img src="images/party_flags/'+result[0].subList[i].parliamentCandidateInfo.partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
+											parliament+='<img src="images/party_flags/'+result[0].subList1[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
 										parliament+='</span>';
 									parliament+='</div>';
 									parliament+='<div class="media-body">';
-										parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList[i].parliamentCandidateInfo.candidateName+'</h4>';
-										parliament+='<p class="text-muted text-capital">Parliament : '+result[0].subList[i].parliamentCandidateInfo.constituencyName+'</p>';
+										parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList1[i].candidateName+'</h4>';
+										parliament+='<p class="text-muted text-capital">Parliament : '+result[0].subList1[i].constituencyName+'</p>';
 									parliament+='</div>';
 								parliament+='</div>';
 							parliament+='</div>';
@@ -836,14 +836,14 @@ function getCandidateAndPartyInfoForConstituency(){
 							parliament+='<div class="media media-profile">';
 								parliament+='<span id="mlaSpinnerId"></span>';
 								parliament+='<div class="media-left">';
-									parliament+='<img src="images/candidates/'+result[0].subList[0].parliamentCandidateInfo.candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
+									parliament+='<img src="images/candidates/'+result[0].subList1[0].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
 									parliament+='<span class="border-image img-border">';
-										parliament+='<img src="images/party_flags/'+result[0].subList[0].parliamentCandidateInfo.partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
+										parliament+='<img src="images/party_flags/'+result[0].subList1[0].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
 									parliament+='</span>';
 								parliament+='</div>';
 								parliament+='<div class="media-body">';
-									parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList[0].parliamentCandidateInfo.candidateName+'</h4>';
-									parliament+='<p class="text-muted text-capital">MP ('+result[0].subList[0].parliamentCandidateInfo.constituencyName+')</p>';
+									parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList1[0].candidateName+'</h4>';
+									parliament+='<p class="text-muted text-capital">MP ('+result[0].subList1[0].constituencyName+')</p>';
 								parliament+='</div>';
 							parliament+='</div>';
 						parliament+='</div>';			
