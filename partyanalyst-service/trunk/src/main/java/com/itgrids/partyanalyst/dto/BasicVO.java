@@ -45,7 +45,7 @@ public class BasicVO implements Serializable{
 	private Long parlimentId;
 	private String parliament;
 	private List<BasicVO> daysList;
-	private List<BasicVO> locationsList;
+	private List<BasicVO> locationsList=new ArrayList<BasicVO>(0);
 	private List<BasicVO> constituencyList = new ArrayList<BasicVO>(0);
 	private List<BasicVO> districtList = new ArrayList<BasicVO>(0);
 	private Long		  locationInfoId;
