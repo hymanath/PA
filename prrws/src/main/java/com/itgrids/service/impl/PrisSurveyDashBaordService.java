@@ -3,6 +3,7 @@ package com.itgrids.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -61,10 +62,15 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			Date date = new Date();
 			String toDate = sdf.format(date);
+			ClientResponse response;
 			ClientResponse response1 = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());	
-			//ClientResponse response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+fromDate+"&toDate="+toDate);
-			ClientResponse response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+fromDate+"&toDate="+toDate);
-	        if(response.getStatus() != 200){
+			if(inputVO.getType().equalsIgnoreCase("Overall")){
+				response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+			}else{
+				 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType());
+			}
+			
+			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
 	 	    	 String output = response.getEntity(String.class);
