@@ -294,4 +294,8 @@ public class FundManagementDashboardController {
 			List<NregsFmsWorksVO> fmsWorksVOList = fundManagementDashboardService.getMgnregsFMSWorksDetailsByCategory(inputVO);
 			return fmsWorksVOList;
 		}
+		@RequestMapping(value ="/landingPage", method = RequestMethod.GET)
+	    public String landingPage(ModelMap model) {
+			return "landingPage";
+	    }
 }
