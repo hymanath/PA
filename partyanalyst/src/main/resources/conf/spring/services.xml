@@ -4459,6 +4459,8 @@
     	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
     	<property name="tdpCadreCasteInfoDAO" ref="tdpCadreCasteInfoDAO"/>
     	<property name="casteDAO" ref="casteDAO"/>
+    	<property name="voterAgeInfoDAO" ref="voterAgeInfoDAO"/>
+    	<property name="voterAgeRangeDAO" ref="voterAgeRangeDAO"/>    	
     </bean>
 </beans>			
 	
