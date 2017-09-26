@@ -118,155 +118,158 @@ public class ItcDashboardService implements IItcDashboardService {
 	 */
 	public List<MeesevaDtlsVO> getMeesevaSLAOverviewDtls(InputVO inputVO) {
 		List<MeesevaDtlsVO> resultList = new ArrayList<MeesevaDtlsVO>(0);
-		 try {
-			 List<MeesevaDtlsVO> returnDeptList = getMeesevaSLAMonitoringDtlsDepartmentWise(inputVO);
-			 
-			 if (returnDeptList != null && returnDeptList.size() > 0) {
-				 
-				 MeesevaDtlsVO overviewDtlsVO = getOverAllTransactionDtls(returnDeptList);
-				 MeesevaDtlsVO totalTransactionsDtlsVO = getTotalTransactionDetails(returnDeptList,overviewDtlsVO);
-				 MeesevaDtlsVO withInSlaDtlsVO = getWithInSlaDetails(returnDeptList,overviewDtlsVO);
-				 MeesevaDtlsVO beyondSlaDtlsVO = getBeyondSlaDetails(returnDeptList,overviewDtlsVO);
-				 resultList.add(totalTransactionsDtlsVO);
-				 resultList.add(withInSlaDtlsVO);
-				 resultList.add(beyondSlaDtlsVO);
-				 
-			 }
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getMeesevaSLAOverviewDtls() in  ItcDashboardService class",e);
-		 }
-		 return resultList;
+		try {
+			List<MeesevaDtlsVO> returnDeptList = getMeesevaSLAMonitoringDtlsDepartmentWise(inputVO);
+
+			if (returnDeptList != null && returnDeptList.size() > 0) {
+
+				MeesevaDtlsVO overviewDtlsVO = getOverAllTransactionDtls(returnDeptList);
+				MeesevaDtlsVO totalTransactionsDtlsVO = getTotalTransactionDetails(returnDeptList, overviewDtlsVO);
+				MeesevaDtlsVO withInSlaDtlsVO = getWithInSlaDetails(returnDeptList, overviewDtlsVO);
+				MeesevaDtlsVO beyondSlaDtlsVO = getBeyondSlaDetails(returnDeptList, overviewDtlsVO);
+				resultList.add(totalTransactionsDtlsVO);
+				resultList.add(withInSlaDtlsVO);
+				resultList.add(beyondSlaDtlsVO);
+
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getMeesevaSLAOverviewDtls() in  ItcDashboardService class",e);
+		}
+		return resultList;
 	}
 	
 	private MeesevaDtlsVO getOverAllTransactionDtls(List<MeesevaDtlsVO> deptList) {
 		MeesevaDtlsVO overviewDtlsVO = new MeesevaDtlsVO();
-		 try {
-			    //setting default value
-			    overviewDtlsVO.setGrandTotalCount(0l);
-				overviewDtlsVO.setTotalWithInSlaCount(0l);
-				overviewDtlsVO.setTotalBeyondSlaCount(0l);
-			  for (MeesevaDtlsVO deptVO:deptList) {
-				  overviewDtlsVO.setGrandTotalCount(overviewDtlsVO.getGrandTotalCount()+deptVO.getTotalTransactionCount());
-				  overviewDtlsVO.setTotalWithInSlaCount(overviewDtlsVO.getTotalWithInSlaCount()+deptVO.getPendingWithinSla());
-				  overviewDtlsVO.setTotalBeyondSlaCount(overviewDtlsVO.getTotalBeyondSlaCount()+deptVO.getPendingBeyondSla());
-			  }
-		 } catch (Exception e) {
-			 LOG.error("Exception occured at getOverAllTransactionDtls() in  ItcDashboardService class",e);
-		 }
+		try {
+			// setting default value
+			overviewDtlsVO.setGrandTotalCount(0l);
+			overviewDtlsVO.setTotalWithInSlaCount(0l);
+			overviewDtlsVO.setTotalBeyondSlaCount(0l);
+			for (MeesevaDtlsVO deptVO : deptList) {
+				overviewDtlsVO.setGrandTotalCount(overviewDtlsVO.getGrandTotalCount() + deptVO.getTotalTransactionCount());
+				overviewDtlsVO.setTotalWithInSlaCount(overviewDtlsVO.getTotalWithInSlaCount() + deptVO.getPendingWithinSla());
+				overviewDtlsVO.setTotalBeyondSlaCount(overviewDtlsVO.getTotalBeyondSlaCount() + deptVO.getPendingBeyondSla());
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getOverAllTransactionDtls() in  ItcDashboardService class",e);
+		}
 		return overviewDtlsVO;
 	}
 	
-	private MeesevaDtlsVO getTotalTransactionDetails(List<MeesevaDtlsVO> deptList,MeesevaDtlsVO overviewDtlsVO) {
+	private MeesevaDtlsVO getTotalTransactionDetails(List<MeesevaDtlsVO> deptList, MeesevaDtlsVO overviewDtlsVO) {
 		MeesevaDtlsVO totalTransactionsDtlsVO = new MeesevaDtlsVO();
-		 try {
-			 totalTransactionsDtlsVO.setName("TOTAL TRANSACTIONS");
-			 totalTransactionsDtlsVO.setDepartmentCount(Long.valueOf(deptList.size()));
-			 totalTransactionsDtlsVO.setTotalCount(overviewDtlsVO.getGrandTotalCount());
-			 
-			 Collections.sort(deptList,amountWiseDescendingOrder);//get sorted list
-			 
-			 MeesevaDtlsVO topTransactionDeptVO = (MeesevaDtlsVO)deptList.get(0).clone();
-			 topTransactionDeptVO.setName("TOP TRANSACTIONS DEPARTMENT ("+topTransactionDeptVO.getName()+")");
-			 topTransactionDeptVO.setTotalCount(topTransactionDeptVO.getTotalTransactionCount());
-			 MeesevaDtlsVO lowTransactionDeptVO = (MeesevaDtlsVO)deptList.get(deptList.size()-1).clone();
-			 lowTransactionDeptVO.setName("LOW TRANSACTIONS DEPARTMENT ("+lowTransactionDeptVO.getName()+")");
-			 lowTransactionDeptVO.setTotalCount(lowTransactionDeptVO.getTotalTransactionCount());
-			 
-			 totalTransactionsDtlsVO.setSubList(new ArrayList<MeesevaDtlsVO>());
-			 totalTransactionsDtlsVO.getSubList().add(topTransactionDeptVO);
-			 totalTransactionsDtlsVO.getSubList().add(lowTransactionDeptVO);
-			 
-		 } catch (Exception e) {
-			 LOG.error("Exception occured at getTotalTransactionDetails() in  ItcDashboardService class",e);
-		 }
-		 return totalTransactionsDtlsVO;
+		try {
+			totalTransactionsDtlsVO.setName("TOTAL TRANSACTIONS");
+			totalTransactionsDtlsVO.setDepartmentCount(Long.valueOf(deptList.size()));
+			totalTransactionsDtlsVO.setTotalCount(overviewDtlsVO.getGrandTotalCount());
+
+			Collections.sort(deptList, amountWiseDescendingOrder);// get sorted list
+
+			MeesevaDtlsVO topTransactionDeptVO = (MeesevaDtlsVO) deptList.get(0).clone();
+			topTransactionDeptVO.setName("TOP TRANSACTIONS DEPARTMENT ("+ topTransactionDeptVO.getName() + ")");
+			topTransactionDeptVO.setTotalCount(topTransactionDeptVO.getTotalTransactionCount());
+			MeesevaDtlsVO lowTransactionDeptVO = (MeesevaDtlsVO) deptList.get(deptList.size() - 1).clone();
+			lowTransactionDeptVO.setName("LOW TRANSACTIONS DEPARTMENT ("+ lowTransactionDeptVO.getName() + ")");
+			lowTransactionDeptVO.setTotalCount(lowTransactionDeptVO.getTotalTransactionCount());
+
+			totalTransactionsDtlsVO.setSubList(new ArrayList<MeesevaDtlsVO>());
+			totalTransactionsDtlsVO.getSubList().add(topTransactionDeptVO);
+			totalTransactionsDtlsVO.getSubList().add(lowTransactionDeptVO);
+
+		} catch (Exception e) {
+			LOG.error("Exception occured at getTotalTransactionDetails() in  ItcDashboardService class",e);
+		}
+		return totalTransactionsDtlsVO;
 	}
+
 	private MeesevaDtlsVO getWithInSlaDetails(List<MeesevaDtlsVO> deptList,MeesevaDtlsVO overviewDtlsVO) {
 		MeesevaDtlsVO pendingWithInSlaDtlsVO = new MeesevaDtlsVO();
-		 try {
-			 pendingWithInSlaDtlsVO.setName("With in SLA");
-			 pendingWithInSlaDtlsVO.setDepartmentCount(Long.valueOf(deptList.size()));
-			 pendingWithInSlaDtlsVO.setTotalCount(overviewDtlsVO.getTotalWithInSlaCount());
-			 
-			 Collections.sort(deptList,pendingWithinSlaamountWiseDescendingOrder);//get sorted list
-			 
-			 MeesevaDtlsVO topDeptWithInSlaVO = (MeesevaDtlsVO)deptList.get(0).clone();
-			 topDeptWithInSlaVO.setName("TOP With in SLA ("+topDeptWithInSlaVO.getName()+")");
-			 topDeptWithInSlaVO.setTotalCount(topDeptWithInSlaVO.getPendingWithinSla());
-			 MeesevaDtlsVO lowDeptWithInSlaVO = (MeesevaDtlsVO)deptList.get(deptList.size()-1).clone();
-			 lowDeptWithInSlaVO.setName("LOW With in SLA ("+lowDeptWithInSlaVO.getName()+")");
-			 lowDeptWithInSlaVO.setTotalCount(lowDeptWithInSlaVO.getPendingWithinSla());
-			 
-			 pendingWithInSlaDtlsVO.setSubList(new ArrayList<MeesevaDtlsVO>());
-			 pendingWithInSlaDtlsVO.getSubList().add(topDeptWithInSlaVO);
-			 pendingWithInSlaDtlsVO.getSubList().add(lowDeptWithInSlaVO);
-			 
-		 } catch (Exception e) {
-			 LOG.error("Exception occured at getWithInSlaDetails() in  ItcDashboardService class",e);
-		 }
-		 return pendingWithInSlaDtlsVO;
+		try {
+			pendingWithInSlaDtlsVO.setName("With in SLA");
+			pendingWithInSlaDtlsVO.setDepartmentCount(Long.valueOf(deptList.size()));
+			pendingWithInSlaDtlsVO.setTotalCount(overviewDtlsVO.getTotalWithInSlaCount());
+
+			Collections.sort(deptList,pendingWithinSlaamountWiseDescendingOrder);// get sorted list
+
+			MeesevaDtlsVO topDeptWithInSlaVO = (MeesevaDtlsVO) deptList.get(0).clone();
+			topDeptWithInSlaVO.setName("TOP With in SLA ("+ topDeptWithInSlaVO.getName() + ")");
+			topDeptWithInSlaVO.setTotalCount(topDeptWithInSlaVO.getPendingWithinSla());
+			MeesevaDtlsVO lowDeptWithInSlaVO = (MeesevaDtlsVO) deptList.get(deptList.size() - 1).clone();
+			lowDeptWithInSlaVO.setName("LOW With in SLA ("+ lowDeptWithInSlaVO.getName() + ")");
+			lowDeptWithInSlaVO.setTotalCount(lowDeptWithInSlaVO.getPendingWithinSla());
+
+			pendingWithInSlaDtlsVO.setSubList(new ArrayList<MeesevaDtlsVO>());
+			pendingWithInSlaDtlsVO.getSubList().add(topDeptWithInSlaVO);
+			pendingWithInSlaDtlsVO.getSubList().add(lowDeptWithInSlaVO);
+
+		} catch (Exception e) {
+			LOG.error("Exception occured at getWithInSlaDetails() in  ItcDashboardService class",e);
+		}
+		return pendingWithInSlaDtlsVO;
 	}
+
 	private MeesevaDtlsVO getBeyondSlaDetails(List<MeesevaDtlsVO> deptList,MeesevaDtlsVO overviewDtlsVO) {
 		MeesevaDtlsVO pendingBeyondSlaDtlsVO = new MeesevaDtlsVO();
-		 try {
-			 pendingBeyondSlaDtlsVO.setName("Beyond SLA");
-			 pendingBeyondSlaDtlsVO.setDepartmentCount(Long.valueOf(deptList.size()));
-			 pendingBeyondSlaDtlsVO.setTotalCount(overviewDtlsVO.getTotalBeyondSlaCount());
-			 
-			 Collections.sort(deptList,pendingBeyondSlaamountWiseDescendingOrder);//get sorted list
-			 
-			 MeesevaDtlsVO topDeptBeyondSlaVO = (MeesevaDtlsVO)deptList.get(0).clone();
-			 topDeptBeyondSlaVO.setName("TOP Beyond SLA ("+topDeptBeyondSlaVO.getName()+")");
-			 topDeptBeyondSlaVO.setTotalCount(topDeptBeyondSlaVO.getPendingBeyondSla());
-			 MeesevaDtlsVO lowDeptBeyondSlaVO = (MeesevaDtlsVO)deptList.get(deptList.size()-1).clone();
-			 lowDeptBeyondSlaVO.setName("LOW Beyond SLA ("+lowDeptBeyondSlaVO.getName()+")");
-			 lowDeptBeyondSlaVO.setTotalCount(lowDeptBeyondSlaVO.getPendingBeyondSla());
-			 
-			 pendingBeyondSlaDtlsVO.setSubList(new ArrayList<MeesevaDtlsVO>());
-			 pendingBeyondSlaDtlsVO.getSubList().add(topDeptBeyondSlaVO);
-			 pendingBeyondSlaDtlsVO.getSubList().add(lowDeptBeyondSlaVO);
-			 
-		 } catch (Exception e) {
-			 LOG.error("Exception occured at getBeyondSlaDetails() in  ItcDashboardService class",e);
-		 }
-		 return pendingBeyondSlaDtlsVO;
+		try {
+			pendingBeyondSlaDtlsVO.setName("Beyond SLA");
+			pendingBeyondSlaDtlsVO.setDepartmentCount(Long.valueOf(deptList.size()));
+			pendingBeyondSlaDtlsVO.setTotalCount(overviewDtlsVO.getTotalBeyondSlaCount());
+
+			Collections.sort(deptList,pendingBeyondSlaamountWiseDescendingOrder);// get sorted// list
+
+			MeesevaDtlsVO topDeptBeyondSlaVO = (MeesevaDtlsVO) deptList.get(0).clone();
+			topDeptBeyondSlaVO.setName("TOP Beyond SLA ("+ topDeptBeyondSlaVO.getName() + ")");
+			topDeptBeyondSlaVO.setTotalCount(topDeptBeyondSlaVO.getPendingBeyondSla());
+			MeesevaDtlsVO lowDeptBeyondSlaVO = (MeesevaDtlsVO) deptList.get(deptList.size() - 1).clone();
+			lowDeptBeyondSlaVO.setName("LOW Beyond SLA ("+ lowDeptBeyondSlaVO.getName() + ")");
+			lowDeptBeyondSlaVO.setTotalCount(lowDeptBeyondSlaVO.getPendingBeyondSla());
+
+			pendingBeyondSlaDtlsVO.setSubList(new ArrayList<MeesevaDtlsVO>());
+			pendingBeyondSlaDtlsVO.getSubList().add(topDeptBeyondSlaVO);
+			pendingBeyondSlaDtlsVO.getSubList().add(lowDeptBeyondSlaVO);
+
+		} catch (Exception e) {
+			LOG.error("Exception occured at getBeyondSlaDetails() in  ItcDashboardService class",e);
+		}
+		return pendingBeyondSlaDtlsVO;
 	}
-	 private static Comparator<MeesevaDtlsVO> amountWiseDescendingOrder = new Comparator<MeesevaDtlsVO>() {
-	    public int compare(MeesevaDtlsVO o1, MeesevaDtlsVO o2) {
-	     try{
-	      if(o2.getTotalTransactionCount() != null && o1.getTotalTransactionCount() != null){
-	        return o2.getTotalTransactionCount().compareTo(o1.getTotalTransactionCount());
-	      }
-	      }catch(Exception e){
-	        LOG.error(" Exception occured in amountWiseDescendingOrder ",e);
-	      }
-	      return 0;
-	    }
-	  };
-	  private static Comparator<MeesevaDtlsVO> pendingWithinSlaamountWiseDescendingOrder = new Comparator<MeesevaDtlsVO>() {
-		    public int compare(MeesevaDtlsVO o1, MeesevaDtlsVO o2) {
-		     try{
-		      if(o2.getPendingWithinSla() != null && o1.getPendingWithinSla() != null){
-		        return o2.getPendingWithinSla().compareTo(o1.getPendingWithinSla());
-		      }
-		      }catch(Exception e){
-		        LOG.error(" Exception occured in pendingWithinSlaamountWiseDescendingOrder ",e);
-		      }
-		      return 0;
-		    }
-	 };
-	 private static Comparator<MeesevaDtlsVO> pendingBeyondSlaamountWiseDescendingOrder = new Comparator<MeesevaDtlsVO>() {
-		    public int compare(MeesevaDtlsVO o1, MeesevaDtlsVO o2) {
-		     try{
-		      if(o2.getPendingBeyondSla() != null && o1.getPendingBeyondSla() != null){
-		        return o2.getPendingBeyondSla().compareTo(o1.getPendingBeyondSla());
-		      }
-		      }catch(Exception e){
-		        LOG.error(" Exception occured in pendingBeyondSlaamountWiseDescendingOrder ",e);
-		      }
-		      return 0;
-		    }
-	 };
+
+	private static Comparator<MeesevaDtlsVO> amountWiseDescendingOrder = new Comparator<MeesevaDtlsVO>() {
+		public int compare(MeesevaDtlsVO o1, MeesevaDtlsVO o2) {
+			try {
+				if (o2.getTotalTransactionCount() != null && o1.getTotalTransactionCount() != null) {
+					return o2.getTotalTransactionCount().compareTo(o1.getTotalTransactionCount());
+				}
+			} catch (Exception e) {
+				LOG.error(" Exception occured in amountWiseDescendingOrder ", e);
+			}
+			return 0;
+		}
+	};
+	private static Comparator<MeesevaDtlsVO> pendingWithinSlaamountWiseDescendingOrder = new Comparator<MeesevaDtlsVO>() {
+		public int compare(MeesevaDtlsVO o1, MeesevaDtlsVO o2) {
+			try {
+				if (o2.getPendingWithinSla() != null && o1.getPendingWithinSla() != null) {
+					return o2.getPendingWithinSla().compareTo(o1.getPendingWithinSla());
+				}
+			} catch (Exception e) {
+				LOG.error(" Exception occured in pendingWithinSlaamountWiseDescendingOrder ",e);
+			}
+			return 0;
+		}
+	};
+	private static Comparator<MeesevaDtlsVO> pendingBeyondSlaamountWiseDescendingOrder = new Comparator<MeesevaDtlsVO>() {
+		public int compare(MeesevaDtlsVO o1, MeesevaDtlsVO o2) {
+			try {
+				if (o2.getPendingBeyondSla() != null && o1.getPendingBeyondSla() != null) {
+					return o2.getPendingBeyondSla().compareTo(o1.getPendingBeyondSla());
+				}
+			} catch (Exception e) {
+				LOG.error(" Exception occured in pendingBeyondSlaamountWiseDescendingOrder ",e);
+			}
+			return 0;
+		}
+	};
 	/**
 	 * @author Santosh
 	 * @param InputVO inputVO
