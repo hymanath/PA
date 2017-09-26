@@ -2732,7 +2732,8 @@ function getMandalWiseBenefitMembersCount(id){
 					navTabBody+='</thead>';
 					navTabBody+='<tbody class="text-capitalize">';
 						navTabBody+='<tr>';
-							navTabBody+='<td><span class="chart-legend-color" style="background-color:#fc8db7"></span>Population</td>';
+							//navTabBody+='<td><span class="chart-legend-color" style="background-color:#fc8db7"></span>Population</td>';
+							navTabBody+='<td><span class="chart-legend-color" style="background-color:#fc8db7"></span>Total voters</td>';
 							navTabBody+='<td>'+totalPopulation+'</td>';
 						navTabBody+='</tr>';
 						navTabBody+='<tr>';
@@ -2756,7 +2757,8 @@ function getMandalWiseBenefitMembersCount(id){
 					}else if(locationLevelId == 8){
 						navTabBody+='<th>Ward Name</th>';
 					}
-						navTabBody+='<th>Population</th>';
+						//navTabBody+='<th>Population</th>';
+						navTabBody+='<th>Total voters</th>';
 						navTabBody+='<th>Benefited</th>';
 						navTabBody+='<th>%</th>';
 					navTabBody+='</thead>';
