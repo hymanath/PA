@@ -23,7 +23,8 @@ public class CandidateInfoForConstituencyVO {
 	private Long parliamentId;
 	private String parliamnerName;
 	private List<CandidateInfoForConstituencyVO> list = new ArrayList<CandidateInfoForConstituencyVO>();
-	
+	private Long tdpCadreId;
+	private String migrateCandidate;
 		
 	private CandidateElectionVO candidateElectionVO;
 	
@@ -136,6 +137,18 @@ public class CandidateInfoForConstituencyVO {
 	}
 	public void setLiabilities(BigDecimal liabilities) {
 		this.liabilities = liabilities;
+	}
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	public String getMigrateCandidate() {
+		return migrateCandidate;
+	}
+	public void setMigrateCandidate(String migrateCandidate) {
+		this.migrateCandidate = migrateCandidate;
 	}
 	
 }
