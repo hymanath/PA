@@ -1144,11 +1144,12 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(groupType){
 	$("#leftSideCasteGroupWiseDivId,#casteGroupVoters,#rightSideCasreGroupDtsDivId").html(spinner);
 	
 	jsObj={
-		type			:groupType,
-		locationTypeId	:locationLevelId,
-		locationValue	:locationLevelVal,
-		publicationDateId:publicationId
-    }
+			locationTypeId	:locationLevelId,
+			locationValue	:locationLevelVal,
+			publicationDateId:publicationId,
+			casteGroupId:0,
+			enrollmentYearId,4
+	    }
 	$.ajax({
 		type : "GET",
 		url : "getVotersAndCadreCasteWiseCountAction.action",
