@@ -9,7 +9,7 @@ $("#selectedName").attr("attr_id","0");
 $("#selectedName").attr("attr_levelidvalue","2");
 
 	onLoadCalls()
-	$(".thisMonthOverview").html("This Month - "+moment().format("MMMM"));
+	$(".thisMonthOverview").html("OVERALL");
 	
 	$(".chosen-select").chosen();
 	
@@ -820,6 +820,14 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 		$("#subTargetPercentage").html(spinner);
 		$("#subAchieved").html(spinner);
 		$("#subAchievedPercentage").html(spinner);
+		
+		var dateType = 'OVERALL';
+		 $(".calendar_active_cls li").each(function(){
+			if($(this).hasClass("active")){
+				dateType = $(this).attr("attr_val")
+			}
+		}); 
+		
 		var locationType='';
 		var locationId=0;
 		
@@ -841,7 +849,8 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 			fromDate:globalFromDate,
 			toDate:globalToDate,
 			locationId:locationId,
-			locationType:locationType
+			locationType:locationType,
+			type:dateType
 			}
 		$.ajax({                
 			type:'POST',    
