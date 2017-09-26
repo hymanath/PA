@@ -167,6 +167,7 @@ content:"\002b";
                                             	<ul class="list-inline m_0">
                                                 	<li>Total</li>
                                                     <li><h1 class="m_0" id="totalTariningPrograms">0</h1></li>
+													
                                                 </ul>
                                                 <p class="m_0">Training Programs</p>
                                             </td>
@@ -174,6 +175,7 @@ content:"\002b";
                                             	<ul class="list-inline m_0">
                                                 	<li>Total</li>
                                                     <li><h1 class="m_0" id="totalTrainingCenters">0</h1></li>
+													<li id="totalTraingCentersIconId"  data-toggle="tooltip" title="Training Center Informtion" style="display:none;cursor:pointer;"><span class="glyphicon glyphicon-info-sign"></span></li>
                                                 </ul>
                                                 <p class="m_0">Training Center</p>
                                             </td>
@@ -567,6 +569,44 @@ content:"\002b";
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div class="modal fade" id="totalCampDetailsModalId" role="dialog">
+    <div class="modal-dialog" style="width:90%;">
+		<div class="modal-content">
+			<div class="modal-header">
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+			  <h3 class="modal-title">Training  Center Details</h3>
+			</div>
+			<div class="modal-body">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="table" id="taingingCampsDivId"></div>
+					</div>
+				 </div>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+        </div>
+      
+    </div>
+  </div>
+<div class="modal fade" id="totalprogramDetailsModalId" role="dialog">
+	<div class="modal-dialog" style="width:80%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 class="modal-title">Training  Programs</h3>
+			</div>
+			<div class="modal-body">
+				<div class="table text-center" id="taingingProgrmsDivId"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <script src="training/dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="training/dist/js/bootstrap.js" type="text/javascript"></script>
@@ -2239,7 +2279,94 @@ $(document).on('change', '#trainingEnrlmntYrId', function(){
 		getAttendenceForTrainers("change");
 	});
 	*/
-$("#trainingEnrlmntYrId").tooltip();		
+$("#trainingEnrlmntYrId").tooltip();
+
+$(document).on("click","#totalTraingCentersIconId",function(){
+	$("#totalCampDetailsModalId").modal("show");
+	$("#taingingCampsDivId").html('');
+	getTrainingCampDetailsByCampIds();
+});
+$(document).on("click","#totalTraingProgramsIconId",function(){
+	$("#totalprogramDetailsModalId").modal("show");
+	 getTrainingProgramDetailsByProgramIds();
+});
+
+
+function getTrainingCampDetailsByCampIds(){
+	
+	var traingCampIds=[1,2,3,4,7];
+	var jsObj={
+		traingCampIds:traingCampIds
+    }
+    $.ajax({
+       type:'POST',
+       url :'getTrainingCampDetailsByCampIdsAction.action',
+       data: {task:JSON.stringify(jsObj)},
+    }).done(function(result){
+		buildtrainCampDetails(result);   
+    });
+
+}	
+
+function getTrainingProgramDetailsByProgramIds(){
+	$("#taingingProgrmsDivId").html('');
+var traingProgramIds=[8,9];
+  var jsObj={
+  traingProgramIds:traingProgramIds
+    }
+    $.ajax({
+       type:'POST',
+       url :'getTrainingProgramDetailsByProgramIdsAction.action',
+       data: {task:JSON.stringify(jsObj)},
+    }).done(function(result){
+		buildProgramDeatails(result);
+		
+    });
+
+}	
+function buildProgramDeatails(result){
+	var str='';
+		str+='<table id="trainingProgramTableId" class="table table-responsive text-center">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th class="text-center"> PROGRAM NAME</th>';
+				str+='</tr>';
+		str+='</thead>';
+		 str+='<tbody>';
+			 for(var i in result){
+				 str+='<tr>';
+				str+="<td id="+result[i].id+">"+result[i].name+"</td>";	
+				str+='</tr>';
+			}
+		str+='</tbody>';
+	 str+='</table>';
+	 $("#taingingProgrmsDivId").html(str);
+}
+
+function buildtrainCampDetails(result){
+	var str='';
+	 str+='<table id="trainingCenterTableId" class="table table-bordered table-responsive text-center">';
+		 str+='<thead>';
+			str+='<tr style="background-color:#CCCCCC;">';
+				str+='<th class="text-center"> CAMP NAME</th>';
+				str+='<th class="text-center" > LOCATION</th>';
+				str+='<th class="text-center" > COVERED DISTRICTS</th>';
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for( var i in result){
+			str+='<tr>';
+				str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
+				str+='<td>'+result[i].locationName+'</td>';
+				str+='<td>'+result[i].districtName+'</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	 str+='</table>';
+	$("#taingingCampsDivId").html(str);
+	
+}	
+
 </script>
 </body>
 </html>	
