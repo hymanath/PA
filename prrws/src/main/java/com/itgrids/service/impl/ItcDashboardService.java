@@ -167,8 +167,10 @@ public class ItcDashboardService implements IItcDashboardService {
 			 
 			 MeesevaDtlsVO topTransactionDeptVO = (MeesevaDtlsVO)deptList.get(0).clone();
 			 topTransactionDeptVO.setName("TOP TRANSACTIONS DEPARTMENT ("+topTransactionDeptVO.getName()+")");
+			 topTransactionDeptVO.setTotalCount(topTransactionDeptVO.getTotalTransactionCount());
 			 MeesevaDtlsVO lowTransactionDeptVO = (MeesevaDtlsVO)deptList.get(deptList.size()-1).clone();
 			 lowTransactionDeptVO.setName("LOW TRANSACTIONS DEPARTMENT ("+lowTransactionDeptVO.getName()+")");
+			 lowTransactionDeptVO.setTotalCount(lowTransactionDeptVO.getTotalTransactionCount());
 			 
 			 totalTransactionsDtlsVO.setSubList(new ArrayList<MeesevaDtlsVO>());
 			 totalTransactionsDtlsVO.getSubList().add(topTransactionDeptVO);
@@ -190,8 +192,10 @@ public class ItcDashboardService implements IItcDashboardService {
 			 
 			 MeesevaDtlsVO topDeptWithInSlaVO = (MeesevaDtlsVO)deptList.get(0).clone();
 			 topDeptWithInSlaVO.setName("TOP With in SLA ("+topDeptWithInSlaVO.getName()+")");
+			 topDeptWithInSlaVO.setTotalCount(topDeptWithInSlaVO.getPendingWithinSla());
 			 MeesevaDtlsVO lowDeptWithInSlaVO = (MeesevaDtlsVO)deptList.get(deptList.size()-1).clone();
 			 lowDeptWithInSlaVO.setName("LOW With in SLA ("+lowDeptWithInSlaVO.getName()+")");
+			 lowDeptWithInSlaVO.setTotalCount(lowDeptWithInSlaVO.getPendingWithinSla());
 			 
 			 pendingWithInSlaDtlsVO.setSubList(new ArrayList<MeesevaDtlsVO>());
 			 pendingWithInSlaDtlsVO.getSubList().add(topDeptWithInSlaVO);
@@ -213,8 +217,10 @@ public class ItcDashboardService implements IItcDashboardService {
 			 
 			 MeesevaDtlsVO topDeptBeyondSlaVO = (MeesevaDtlsVO)deptList.get(0).clone();
 			 topDeptBeyondSlaVO.setName("TOP Beyond SLA ("+topDeptBeyondSlaVO.getName()+")");
+			 topDeptBeyondSlaVO.setTotalCount(topDeptBeyondSlaVO.getPendingBeyondSla());
 			 MeesevaDtlsVO lowDeptBeyondSlaVO = (MeesevaDtlsVO)deptList.get(deptList.size()-1).clone();
 			 lowDeptBeyondSlaVO.setName("LOW Beyond SLA ("+lowDeptBeyondSlaVO.getName()+")");
+			 lowDeptBeyondSlaVO.setTotalCount(lowDeptBeyondSlaVO.getPendingBeyondSla());
 			 
 			 pendingBeyondSlaDtlsVO.setSubList(new ArrayList<MeesevaDtlsVO>());
 			 pendingBeyondSlaDtlsVO.getSubList().add(topDeptBeyondSlaVO);
