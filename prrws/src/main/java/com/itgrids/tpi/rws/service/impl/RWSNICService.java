@@ -2314,7 +2314,7 @@ public class RWSNICService implements IRWSNICService{
 			
 			String str = cvertingIpVOToStringFrSBPayments(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverviewMonthWise/GetPayOverviewMonthWiseDetails", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails", str);
 			
 		    if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2322,7 +2322,7 @@ public class RWSNICService implements IRWSNICService{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jsonObject = new JSONObject(output);
-	 	    		JSONArray abstArr = jsonObject.getJSONArray("PayOverviewDetailsMonthWiseData");
+	 	    		JSONArray abstArr = jsonObject.getJSONArray("PayOverviewDetailsData");
 	 	    		//JSONArray overViewArr = jsonObject.getJSONArray("MinisterDashBoardLocOverView");
 	 	    		//Abstarct
 	 	    		if(abstArr != null && abstArr.length() > 0){
@@ -2414,7 +2414,7 @@ public class RWSNICService implements IRWSNICService{
 			
 			String str = cvertingIpVOToStringFrSBPayments(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverviewMonthWise/GetPayOverviewMonthWiseDetails", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails", str);
 			
 		    if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2422,7 +2422,7 @@ public class RWSNICService implements IRWSNICService{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jsonObject = new JSONObject(output);
-	 	    		JSONArray dataArr = jsonObject.getJSONArray("PayOverviewDetailsMonthWiseData");
+	 	    		JSONArray dataArr = jsonObject.getJSONArray("PayOverviewDetailsData");
 	 	    		if(dataArr != null && dataArr.length() > 0){
 	 	    			for(int i=0;i<dataArr.length();i++){
 	 	    				JSONObject jObj = (JSONObject) dataArr.get(i);
