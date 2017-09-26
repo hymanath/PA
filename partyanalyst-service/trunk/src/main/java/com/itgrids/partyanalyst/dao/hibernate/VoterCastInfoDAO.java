@@ -533,14 +533,34 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 		return query.list();
 	}
   
-	public List<Object[]> getVotersCasteWiseCount(List<Long> constituencyIds,Long publicationDateId, Long reportLevelId,Long casteGroupid) {
+	public List<Object[]> getVotersCasteWiseCount(List<Long> locationValues,Long publicationDateId,Long locationTypeId, Long reportLevelId,Long casteGroupid) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName, "
 				+ " model.casteState.caste.casteId,model.casteState.caste.casteName,model.casteVoters,model.castePercentage,model.casteMaleVoters,model.casteFemaleVoters "
 				+ " from VoterCastInfo model  where  model.casteState.state.stateId = 1 ");
-		if (constituencyIds != null && constituencyIds.size() > 0) {
-			sb.append(" and model.reportLevelValue in (:constituencyId) ");
-		}
+		
+		if(reportLevelId != null && reportLevelId.longValue() == 1l && locationValues !=null && locationValues.size()>0){
+				
+			 if(locationTypeId == 2l){
+				 sb.append(" and model.constituency.state.stateId in (:locationValues)");
+			 }else if(locationTypeId == 3l){
+				 sb.append(" and model.constituency.district.districtId in (:locationValues)");
+			 }else if(locationTypeId == 4l || locationTypeId == 10l){
+				 sb.append(" model.constituency.constituencyId in (:locationValues)");
+			 }
+		 }else{
+			
+			 if(locationTypeId == 5l){
+				 sb.append(" and model.reportLevelValue in (:locationValues) ");
+			 }if(locationTypeId == 6l){
+				 sb.append(" and model.reportLevelValue in (:locationValues) ");
+			 }if(locationTypeId == 7l){
+				 sb.append(" and model.reportLevelValue in (:locationValues) ");
+			 }if(locationTypeId == 8l){
+				 sb.append(" and model.reportLevelValue in (:locationValues) ");
+			 }
+			 
+		 }
 		if(publicationDateId != null && publicationDateId.longValue() > 0l){
 			sb.append(" and model.publicationDateId = :publicationDateId ");
 		}
@@ -556,8 +576,8 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 		
 		Query query = getSession().createQuery(sb.toString());
 		
-		if (constituencyIds != null && constituencyIds.size() > 0) {
-			query.setParameterList("constituencyId", constituencyIds);
+		if (locationValues != null && locationValues.size() > 0) {
+			query.setParameterList("locationValues", locationValues);
 		}
 		if(publicationDateId != null && publicationDateId.longValue() > 0l){
 			query.setParameter("publicationDateId", publicationDateId);
