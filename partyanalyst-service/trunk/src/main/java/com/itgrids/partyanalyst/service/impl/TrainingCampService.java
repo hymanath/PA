@@ -6356,8 +6356,27 @@ class TrainingCampService implements ITrainingCampService{
 		  	        batchIdsList.add(batchId);
 				}
 			}
-			List<Object[]> detailsList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programmIds,batchIdsList);//Procedure Call
 			
+			//List<Object[]> detailsList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programmIds,batchIdsList);//Procedure Call
+			List<Object[]> detailsList = new ArrayList<Object[]>(0);
+			 if(batchIdsList != null && batchIdsList.size()>0){
+                 int filterCount = 50;
+                 int i = 0; 
+                 int j = filterCount;
+                 int maxcount = batchIdsList.size();
+                 while (maxcount >0){  
+                     if(maxcount<filterCount)
+                         j = i+maxcount;
+                     List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programmIds,batchIdsList.subList(i, j));//Procedure Call
+                        if(commonMethodsUtilService.isListOrSetValid(tempList)){
+                        	detailsList.addAll(tempList);
+                        }
+                     i=j;
+                     maxcount = maxcount-filterCount;
+                     j=j+filterCount;
+                 }
+            }
+			 
 			List<Map<Long,Map<Long,Set<String>>>> attendanceDetailsMapList = getTdpCardreIdsPresentByDays(detailsList,batchIdsList);
 			List<Map<Long,Map<String,Set<Long>>>> daywiseAttendedDetailsListMap = getDatesWiseTdpCadreIds(detailsList,batchIdsList);
         	List<SimpleVO> attendanceList = getInviteeAndNonInviteeTrainingDetails(enrollmentYearIds,programmIds,detailsList,batchIdsList,trainingCampObj);
@@ -11176,33 +11195,47 @@ public List<SimpleVO> getDayWiseCountsForRunningBatches_Test(List<Object[]> runn
 				List<Long> threeDaysInviteeCadreIds = new ArrayList<Long>();
 				Map<Long,Set<String>> cadreMap = new HashMap<Long, Set<String>>(0);
 				
-				if((type !=null && type.equalsIgnoreCase("Invitee")))
-					cadreMap = inviteeMap.get(batchId);
-				else if((type !=null && type.equalsIgnoreCase("nonInvitee")))
-					cadreMap = nonInviteeMap.get(batchId);
+				TrainingCampBatch batch = trainingCampBatchDAO.get(batchId);
+				Long batchTypeId = 1L;
+				if(batch != null)
+					batchTypeId = batch.getTrainingCampBatchTypeId();
 				
-	    			if(commonMethodsUtilService.isMapValid(cadreMap)){
-	    				for (Long cadreId : cadreMap.keySet()) {
-	    					Set<String> datesSet = cadreMap.get(cadreId);
-	    					if(commonMethodsUtilService.isListOrSetValid(datesSet)){
-	    						Long daysCount = Long.valueOf(String.valueOf(datesSet.size()));
-	    						if(daysCount != null && daysCount.longValue()==1L)
-	    							oneDayInviteeCadreIds.add(cadreId);
-	    						else if(daysCount != null && daysCount.longValue()==2L)
-	    							twoDaysInviteeCadreIds.add(cadreId);
-	    						else if(daysCount != null && daysCount.longValue()==3L)
-	    							threeDaysInviteeCadreIds.add(cadreId);
-	    					}
-						}
-	    			}
+				if(batchTypeId != null && batchTypeId.longValue() == 1L){
+					if((type !=null && type.equalsIgnoreCase("Invitee")))
+						cadreMap = inviteeMap.get(batchId);
+					else if((type !=null && type.equalsIgnoreCase("nonInvitee")))
+						cadreMap = nonInviteeMap.get(batchId);
+				}
+				else if(batchTypeId != null && batchTypeId.longValue() == 2L){
+					cadreMap = inviteeMap.get(batchId);
+					if(!commonMethodsUtilService.isMapValid(cadreMap))
+						cadreMap = new HashMap<Long, Set<String>>(0);
+					if(commonMethodsUtilService.isMapValid(nonInviteeMap.get(batchId)))
+						cadreMap.putAll(nonInviteeMap.get(batchId));
+				}
+				
+    			if(commonMethodsUtilService.isMapValid(cadreMap)){
+    				for (Long cadreId : cadreMap.keySet()) {
+    					Set<String> datesSet = cadreMap.get(cadreId);
+    					if(commonMethodsUtilService.isListOrSetValid(datesSet)){
+    						Long daysCount = Long.valueOf(String.valueOf(datesSet.size()));
+    						if(daysCount != null && daysCount.longValue()==1L)
+    							oneDayInviteeCadreIds.add(cadreId);
+    						else if(daysCount != null && daysCount.longValue()==2L)
+    							twoDaysInviteeCadreIds.add(cadreId);
+    						else if(daysCount != null && daysCount.longValue()==3L)
+    							threeDaysInviteeCadreIds.add(cadreId);
+    					}
+					}
+    			}
 	    			
 				List<Object[]> cadreList=null;
-				if(dayType !=null && dayType.equalsIgnoreCase("oneDay")){
+				if(dayType !=null && dayType.equalsIgnoreCase("oneDay") && commonMethodsUtilService.isListOrSetValid(oneDayInviteeCadreIds)){
 					//0.cadreId,1.firstname,2.memberShipNo,3.mobileNo,4.image,5.dateOfBirth,6.constName
 					cadreList=tdpCadreDAO.getAllCadreDetailsByCadreIds(oneDayInviteeCadreIds);
-				}else if(dayType !=null && dayType.equalsIgnoreCase("twoDay")){
+				}else if(dayType !=null && dayType.equalsIgnoreCase("twoDay")  && commonMethodsUtilService.isListOrSetValid(twoDaysInviteeCadreIds) ){
 					cadreList=tdpCadreDAO.getAllCadreDetailsByCadreIds(twoDaysInviteeCadreIds);
-				}else if(dayType !=null && dayType.equalsIgnoreCase("threeDay")){
+				}else if(dayType !=null && dayType.equalsIgnoreCase("threeDay")  && commonMethodsUtilService.isListOrSetValid(threeDaysInviteeCadreIds) ){
 					cadreList=tdpCadreDAO.getAllCadreDetailsByCadreIds(threeDaysInviteeCadreIds);
 				}
 					
