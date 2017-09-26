@@ -81,4 +81,16 @@ public class TrainingCampProgramDAO extends GenericDaoHibernate<TrainingCampProg
 		return query.list();
 
 	}
+	public List<Object[]> getTrainingProgramDetailsByProgramIds(List<Long> programIds){
+        StringBuilder sb =new StringBuilder();
+        sb.append("select distinct model.trainingCampProgramId,model.programName "); 
+        sb.append(" from TrainingCampProgram model  where model.isDeleted='N' "); 
+        sb.append(" and model.trainingCampProgramId in (:programIds)");
+      
+        Query query =getSession().createQuery(sb.toString());
+  	  query.setParameterList("programIds",programIds);
+
+		return query.list();
+
+	}
 }
