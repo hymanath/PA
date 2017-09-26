@@ -18100,5 +18100,15 @@
 			<param name="root">doorCampaignDashboardVO</param>       
 		</result>
   	</action>
+  	<action name="getTrainingCampDetailsByCampIdsAction" class="trainingCampAction"  method="getTrainingCampDetailsByCampIds">
+		<result type="json" name="success">    
+			<param name="root">keyValueVOlist</param>       
+		</result>
+  	</action>
+  	<action name="getTrainingProgramDetailsByProgramIdsAction" class="trainingCampAction"  method="getTrainingProgramDetailsByProgramIds">
+		<result type="json" name="success">    
+			<param name="root">keyValueVOlist</param>       
+		</result>
+  	</action>
       </package>
 </struts>
