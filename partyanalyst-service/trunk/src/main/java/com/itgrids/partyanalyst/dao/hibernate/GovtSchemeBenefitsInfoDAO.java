@@ -58,7 +58,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 			}else if (locationType == 4l) {
 				queryStr.append(" tehsil.tehsil.tehsilId,tehsil.tehsil.tehsilName, ");
 			} else if (locationType == 5l) {
-				queryStr.append(" tehsil.tehsil.tehsilId,tehsil.tehsil.tehsilName, ");
+				queryStr.append(" panchayat.panchayatId,panchayat.panchayatName, ");
 			}else if (locationType == 6l) {
 				queryStr.append(" panchayat.panchayatId,panchayat.panchayatName, ");
 			}else if (locationType == 7l) {
@@ -83,13 +83,13 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 			}else if (locationType == 4l) {
 				queryStr.append(" ,TehsilConstituency tehsil where  model.locationValue =tehsil.constituency.constituencyId and model.locationValue=:locationValue ");
 			} else if (locationType == 5l) {
-				queryStr.append(" ,TehsilConstituency tehsil where  model.locationValue =tehsil.tehsil.tehsilId and model.locationValue=:locationValue ");
+				queryStr.append(" ,Panchayat panchayat where model.locationValue =panchayat.tehsil.tehsilId and model.locationValue=:locationValue ");
 			}else if (locationType == 6l) {
 				queryStr.append(" ,Panchayat panchayat where model.locationValue =panchayat.panchayatId and model.locationValue=:locationValue ");
 			}else if (locationType == 7l) {
 				queryStr.append(" ,LocalElectionBody  localElectionBody where model.locationValue =localElectionBody.localElectionBodyId and model.locationValue=:locationValue ");
 			}else if (locationType == 8l) {
-				queryStr.append(" ,Constituency ward where ward.localElectionBody is not null  and model.locationValue=:locationValue  ");
+				queryStr.append(" ,Constituency ward where ward.localElectionBody is not null and ward.constituencyId=model.locationValue and model.locationValue=:locationValue  ");
 			}
 		}
 				        
@@ -105,7 +105,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 			}else if (locationType == 4l) {
 				queryStr.append(" group by tehsil.constituency.constituencyId ");
 			}else if (locationType == 5l) {
-				queryStr.append(" group by tehsil.tehsil.tehsilId ");
+				queryStr.append(" group by panchayat.tehsil.tehsilId ");
 			}else if (locationType == 6l) {
 				queryStr.append(" group by panchayat.panchayatId ");
 			}else if (locationType == 7l) {
