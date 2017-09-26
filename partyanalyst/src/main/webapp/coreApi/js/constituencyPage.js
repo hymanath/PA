@@ -1148,7 +1148,7 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(groupType){
 			locationValue	:locationLevelVal,
 			publicationDateId:publicationId,
 			casteGroupId:0,
-			enrollmentYearId,4
+			enrollmentYearId:4
 	    }
 	$.ajax({
 		type : "GET",
