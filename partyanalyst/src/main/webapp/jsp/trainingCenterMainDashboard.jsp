@@ -224,7 +224,7 @@ header.eventsheader {
                             </div>
                         </section>
 						
-						<section>
+						<section id="sectorRunningTrainingProgramsDayWiseAtendence" >
                             <div class="row">
                             	<div class="col-md-12">
                                 	<div class="panel panel-default">
@@ -460,7 +460,7 @@ header.eventsheader {
 
  <!-- model -->
 <div class="modal fade" id="myModalForCadreId">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="width:60%">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -1132,6 +1132,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	}
 	
 	function getDayWiseCountsForRunningBatches(fromType){
+		$("#sectorRunningTrainingProgramsDayWiseAtendence").show();
 		$("#runningSpecialTrainingProgramsDayWiseAttendence").html('<img id="" style="width: 45px; height: 45px; margin-left: 45%;" src="images/ajaxImg2.gif">');
 		$("#runningTrainingProgramsDayWiseAttendence").html('<img id="" style="width: 45px; height: 45px; margin-left: 45%;" src="images/ajaxImg2.gif">');
 		var dates;
@@ -1166,112 +1167,143 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			//day wise attendence for currently running batches
 			if(result!=null && result.length>0){
 				buildSpecialTrainings(result);
-				var str='';
-				str+='<table class="table table-bordered m_0 text-center">';
-				str+='<thead class="bg_d">';
-				str+='<tr>';
-				str+='<th>Center</th>';
-				str+='<th>Batch</th>';
-				str+='<th>Total</th>';
-				str+='<th>Day 1 Count</th>';
-				str+='<th>Day 2 Count</th>';				
-				str+='<th>Day 3 Count</th>';
-				
-				str+='<th>1 Day Attended Members</th>';
-				str+='<th>2 Days Attended Members</th>';
-				str+='<th>3 Days Attended Members</th>';
-				
-				str+='</tr>';
-				str+='</thead>';
-				str+='<tbody>';
+				var campId = 0;
+				var lenght =0;
 				for(var i in result){
 					if(result[i].campId != 7){
-							str+='<tr>';
-							str+='<td>'+result[i].name+'</td>';
-							str+='<td>'+result[i].batchName+'</td>';
-							var totalCount =0;
-							var totalIACount =0;
-							var totalNIACount =0;
-							totalIACount = parseInt(result[i].oneDayInvitedAttendedCount)+parseInt(result[i].twoDaysInvitedAttendedCount)+parseInt(result[i].threeDaysInvitedAttendedCount);
-							totalNIACount = parseInt(result[i].oneDayNonInvitedAttendedCount)+parseInt(result[i].twoDaysNonInvitedAttendedCount)+parseInt(result[i].threeDaysNonInvitedAttendedCount);
-							totalCount = parseInt(totalIACount)+parseInt(totalNIACount);
-							
-							
-							str+='<td>' +totalIACount+'- IA <br/>'+totalNIACount+'- NIA</td>';
-							if(result[i].day1IACount!=null){
-							 str+='<td>'+result[i].day1IACount+'- IA <br/>'+result[i].day1NIACount+'- NIA</td>';
-							}else{
-								str+='<td>0</td>';
-							}					
-							if(result[i].day2IACount!=null){
-							 str+='<td>'+result[i].day2IACount+'- IA <br/>'+result[i].day2NIACount+'- NIA</td>';
-							}else{
-								str+='<td>0</td>';
-							}
-							
-							if(result[i].day3IACount!=null){
-							 str+='<td>'+result[i].day3IACount+'- IA <br/>'+result[i].day3NIACount+'- NIA</td>';
-							}else{
-								str+='<td>0</td>';
-							}
-							
-							
-							str+='<td>';
-							if(parseInt(result[i].oneDayInvitedAttendedCount)>0)
-								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer;font-weight:bold;" class="cadreDetailsCls" title="To click on invitee Details"> <u>'+result[i].oneDayInvitedAttendedCount+'</u></a> - IA<br/>';
-							else 
-								str+='0 - IA <br/> ';
-							
-							if(parseInt(result[i].oneDayNonInvitedAttendedCount)>0)
-								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls" title="To click on nonInvitee Details"><u>'+result[i].oneDayNonInvitedAttendedCount+'</u></a> - NIA';
-							else 
-								str+='0 - NIA';							
-							str+='</td>';
-							
-							
-							str+='<td>';
-							if(parseInt(result[i].twoDaysInvitedAttendedCount)>0)
-								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].twoDaysInvitedAttendedCount+'</u></a> - IA<br/>';
-							else 
-								str+='0 - IA <br/>';
-							
-							if(parseInt(result[i].twoDaysNonInvitedAttendedCount)>0)
-								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].twoDaysNonInvitedAttendedCount+'</u></a> - NIA';
-							else 
-								str+='0 - NIA';							
-							str+='</td>';
-							
-							
-							str+='<td>';
-							if(parseInt(result[i].threeDaysInvitedAttendedCount)>0)
-								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].threeDaysInvitedAttendedCount+'</u></a> - IA<br/>';
-							else 
-								str+='0 - IA <br/> ';
-							
-							if(parseInt(result[i].threeDaysNonInvitedAttendedCount)>0)
-								str+='<a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].threeDaysNonInvitedAttendedCount+'</u></a> - NIA';
-							else 
-								str+='0 - NIA';							
-							str+='</td>';
-							
-							str+='</tr>';
-					}				
-				}
-				str+='</tbody>';
-				str+='</table>';
-				$("#runningTrainingProgramsDayWiseAttendence").html(str);				
+						campId = result[i].campId;
+						lenght=parseInt(lenght)+1;
+					}
+				}				
+				
+				if(campId != null && parseInt(campId)>0){
+						var str='';
+						str+='<table class="table table-bordered m_0 text-center">';
+						str+='<thead class="bg_d">';
+						str+='<tr>';
+						str+='<th rowspan="'+lenght+'">Program</th>';
+						str+='<th>Center</th>';
+						str+='<th>Batch</th>';
+						str+='<th>Total</th>';
+						str+='<th>Day 1 Count</th>';
+						str+='<th>Day 2 Count</th>';				
+						str+='<th>Day 3 Count</th>';
+						
+						str+='<th>1 Day Attended Members</th>';
+						str+='<th>2 Days Attended Members</th>';
+						str+='<th>3 Days Attended Members</th>';
+						
+						str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						var isBuild=false;
+						for(var i in result){
+							if(result[i].campId != 7){
+									str+='<tr>';
+									if(!isBuild){
+										isBuild=true;
+										str+='<td  rowspan="'+lenght+'" > Leadership Skills - 2016 - 18 </td>';
+									}
+									str+='<td>'+result[i].name+'</td>';
+									str+='<td>'+result[i].batchName+'</td>';
+									var totalCount =0;
+									var totalIACount =0;
+									var totalNIACount =0;
+									totalIACount = parseInt(result[i].oneDayInvitedAttendedCount)+parseInt(result[i].twoDaysInvitedAttendedCount)+parseInt(result[i].threeDaysInvitedAttendedCount);
+									totalNIACount = parseInt(result[i].oneDayNonInvitedAttendedCount)+parseInt(result[i].twoDaysNonInvitedAttendedCount)+parseInt(result[i].threeDaysNonInvitedAttendedCount);
+									totalCount = parseInt(totalIACount)+parseInt(totalNIACount);
+									
+									
+									str+='<td>' +totalIACount+'- IA <br/>'+totalNIACount+'- NIA</td>';
+									if(result[i].day1IACount!=null){
+									 str+='<td>'+result[i].day1IACount+'- IA <br/>'+result[i].day1NIACount+'- NIA</td>';
+									}else{
+										str+='<td>0</td>';
+									}					
+									if(result[i].day2IACount!=null){
+									 str+='<td>'+result[i].day2IACount+'- IA <br/>'+result[i].day2NIACount+'- NIA</td>';
+									}else{
+										str+='<td>0</td>';
+									}
+									
+									if(result[i].day3IACount!=null){
+									 str+='<td>'+result[i].day3IACount+'- IA <br/>'+result[i].day3NIACount+'- NIA</td>';
+									}else{
+										str+='<td>0</td>';
+									}
+									
+									
+									str+='<td>';
+									if(parseInt(result[i].oneDayInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer;font-weight:bold;" class="cadreDetailsCls" title="To click on invitee Details"> <u>'+result[i].oneDayInvitedAttendedCount+'</u></a> - IA<br/>';
+									else 
+										str+='0 - IA <br/> ';
+									
+									if(parseInt(result[i].oneDayNonInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls" title="To click on nonInvitee Details"><u>'+result[i].oneDayNonInvitedAttendedCount+'</u></a> - NIA';
+									else 
+										str+='0 - NIA';							
+									str+='</td>';
+									
+									
+									str+='<td>';
+									if(parseInt(result[i].twoDaysInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].twoDaysInvitedAttendedCount+'</u></a> - IA<br/>';
+									else 
+										str+='0 - IA <br/>';
+									
+									
+									if(parseInt(result[i].twoDaysNonInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].twoDaysNonInvitedAttendedCount+'</u></a> - NIA';
+									else 
+										str+='0 - NIA';							
+									str+='</td>';
+									
+									
+									str+='<td>';
+									if(parseInt(result[i].threeDaysInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].threeDaysInvitedAttendedCount+'</u></a> - IA<br/>';
+									else 
+										str+='0 - IA <br/> ';
+								
+									
+									if(parseInt(result[i].threeDaysNonInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+result[i].threeDaysNonInvitedAttendedCount+'</u></a> - NIA';
+									else 
+										str+='0 - NIA';							
+									str+='</td>';
+									
+									str+='</tr>';
+							}				
+						}
+						
+						str+='</tbody>';
+						str+='</table>';
+						$("#runningTrainingProgramsDayWiseAttendence").html(str);
+				}else{
+					$("#sectorRunningTrainingProgramsDayWiseAtendence").hide();
+				}		
 			}else{
+				$("#sectorRunningTrainingProgramsDayWiseAtendence").hide();
 				$("#runningTrainingProgramsDayWiseAttendence").html("<h4 style='font-weight:bold;margin-left:10px;'>No Data Available</h4>");
 			}
 		});
 	}
 	
 	function buildSpecialTrainings(result){
-		if(result!=null && result.length>0){				
+		if(result!=null && result.length>0){
+				var lenght =0;
+				for(var i in result){
+					if(result[i].campId == 7){
+						lenght=parseInt(lenght)+1;
+					}
+				}		
+				
 				var str='';
 				str+='<table class="table table-bordered m_0 text-center">';
 				str+='<thead class="bg_d">';
 				str+='<tr>';
+				str+='<th>Training Program </th>';
 				str+='<th>Center</th>';
 				str+='<th>Batch</th>';
 				str+='<th>Total</th>';
@@ -1286,18 +1318,77 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
+				var isBuild = false;
 				for(var i in result){
 					if(parseInt(result[i].campId) == 7){
 							str+='<tr>';
-							str+='<td>'+result[i].name+'</td>';
+							if(!isBuild){
+								isBuild=true;
+								str+='<td  rowspan="'+lenght+'" > TNSF Leadership Excellence Program  </td>';
+								str+='<td   rowspan="'+lenght+'"  >'+result[i].name+'</td>';
+							}
+							
+							
 							str+='<td>'+result[i].batchName+'</td>';
 							var totalCount =0;
 							var totalIACount =0;
 							var totalNIACount =0;
+							
+							
 							totalIACount = parseInt(result[i].oneDayInvitedAttendedCount)+parseInt(result[i].twoDaysInvitedAttendedCount)+parseInt(result[i].threeDaysInvitedAttendedCount);
 							totalNIACount = parseInt(result[i].oneDayNonInvitedAttendedCount)+parseInt(result[i].twoDaysNonInvitedAttendedCount)+parseInt(result[i].threeDaysNonInvitedAttendedCount);
 							totalCount = parseInt(totalIACount)+parseInt(totalNIACount);
 							
+							var day1Count = parseInt(result[i].day1IACount)+parseInt(result[i].day1NIACount);
+							var day2Count = parseInt(result[i].day2IACount)+parseInt(result[i].day2NIACount);
+							var day3Count = parseInt(result[i].day3IACount)+parseInt(result[i].day3NIACount);
+							
+							
+							var oneDayAttendedCount = parseInt(result[i].oneDayInvitedAttendedCount)+parseInt(result[i].oneDayNonInvitedAttendedCount);
+							var twoDaysAttendedCount = parseInt(result[i].twoDaysInvitedAttendedCount)+parseInt(result[i].twoDaysNonInvitedAttendedCount);
+							var threeDaysAttendedCount = parseInt(result[i].threeDaysInvitedAttendedCount)+parseInt(result[i].threeDaysNonInvitedAttendedCount);
+							
+							
+							
+							str+='<td>' +totalCount+'- IA <br/></td>';
+							if(day1Count!=null){
+							 str+='<td>'+day1Count+'- IA <br/></td>';
+							}else{
+								str+='<td>0</td>';
+							}					
+							if(day2Count!=null){
+							 str+='<td>'+day2Count+'- IA <br/></td>';
+							}else{
+								str+='<td>0</td>';
+							}	
+							
+							if(day3Count!=null){
+							 str+='<td>'+day3Count+'- IA <br/></td>';
+							}else{
+								str+='<td>0</td>';
+							}	
+							
+							
+							if(oneDayAttendedCount!=null && oneDayAttendedCount >0 ){
+							 str+='<td> <a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+oneDayAttendedCount+'- IA </u><br/></td>';
+							}else{
+								str+='<td>0 - IA </td>';
+							}	
+							
+							if(twoDaysAttendedCount!=null && twoDaysAttendedCount >0 ){
+							 str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+twoDaysAttendedCount+'- IA </u><br/></td>';
+							}else{
+								str+='<td>0 - IA </td>';
+							}	
+							
+							if(threeDaysAttendedCount!=null && threeDaysAttendedCount >0 ){
+							 str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+threeDaysAttendedCount+'- IA </u><br/></td>';
+							}else{
+								str+='<td>0 - IA </td>';
+							}	
+							
+							
+							/*
 							str+='<td>' +totalIACount+'- IA <br/>'+totalNIACount+'- NIA</td>';
 							if(result[i].day1IACount!=null){
 							 str+='<td>'+result[i].day1IACount+'- IA <br/>'+result[i].day1NIACount+'- NIA</td>';
@@ -1354,7 +1445,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 							else 
 								str+='0 - NIA';							
 							str+='</td>';
-							
+							*/
 							str+='</tr>';
 					}				
 				}
@@ -1393,15 +1484,15 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		}).done(function(result){
 			if(result!=null && result.length>0){
 				var str='';
-				str+='<table class="table table-bordered" id="speakersTab" >';
+				str+='<table class="table table-bordered" id="speakerTab" >';
 				if(searchType == 'count')
 				{					
 					str+='<thead>';
-					str+='<th class="text-center">Program</th>';
-					str+='<th class="text-center">Camp</th>';
-					str+='<th class="text-center">Invitees Count</th>';
-					str+='<th class="text-center">Invitees Attended Count</th>';
-					str+='<th class="text-center">Non-Invitees Attended Count</th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" >Program</th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" >Camp</th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" >Invitees Count</th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" >Invitees Attended Count</th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" >Non-Invitees Attended Count</th>';
 					str+='</thead>';				
 					str+='<tbody>';
 					for(var i in result){
@@ -1422,15 +1513,15 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				else if(searchType =='individual')
 				{	
 					str+='<thead>';
-					str+='<th class="text-center">  </th>';
-					str+='<th class="text-center"> SPEAKER </th>';
-					str+='<th class="text-center"> DESIGNATION </th>';
-					str+='<th class="text-center">PROGRAM</th>';
-					str+='<th class="text-center">TRAINING CAMP</th>';
-					if(type == 'today')
-						str+='<th class="text-center">BATCH NAME</th>';
-					
-					str+='<th class="text-center">  DATE </th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" >  </th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" > SPEAKER </th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" > DESIGNATION </th>';
+					if(type == 'today'){
+						str+='<th class="text-center" style="background-color:#dddddd;" >PROGRAM</th>';
+						str+='<th class="text-center" style="background-color:#dddddd;" >TRAINING CAMP</th>';					
+						str+='<th class="text-center" style="background-color:#dddddd;" >BATCH NAME</th>';
+						str+='<th class="text-center" style="background-color:#dddddd;" >  DATE </th>';
+					}
 					//str+='<th class="text-center"> STATUS </th>';
 					str+='</thead>';				
 					str+='<tbody>';
@@ -1446,15 +1537,16 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 							str+='<td style="text-align:center;">'+result[i].partyBenefitStr+'</td>';
 						else
 							str+='<td style="text-align:center;"> - </td>';
-						str+='<td>'+result[i].progName+'</td>';
-						str+='<td>'+result[i].campName+'</td>';
-						if(type == 'today')
-							str+='<td>'+result[i].batchName+'</td>';
-						if(result[i].dateString != null)
-							str+='<td style="text-align:center;"> '+result[i].dateString+' </td>';
-						else
-							str+='<td style="text-align:center;"> - </td>';
-						 
+						if(type == 'today'){
+							str+='<td>'+result[i].progName+'</td>';
+							str+='<td>'+result[i].campName+'</td>';
+							if(type == 'today')
+								str+='<td>'+result[i].batchName+'</td>';
+							if(result[i].dateString != null)
+								str+='<td style="text-align:center;"> '+result[i].dateString+' </td>';
+							else
+								str+='<td style="text-align:center;"> - </td>';
+						}
 						//if(result[i].inviteeAttendedCount != null && result[i].inviteeAttendedCount>0)
 						//	str+='<td style="text-align:center;"> ATTENDED </td>';
 						//else
@@ -1466,21 +1558,16 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					str+='</table>';
 					$("#speakersAttendenceImg").hide();
 					$("#speakersAttendence").html(str);
-					$('#speakersTab').dataTable({
-						"aaSorting": [[ 5, "desc" ]],
-						"iDisplayLength": 10,
-						//"sDom": '<"top">rt<"bottom"><"clear"flp>i',
-						"aLengthMenu": [[15, 30, 60,100, -1], [15, 30, 60,100, "All"]]
-					});
-					$('#speakersTab').removeClass('dataTable');
+					$('#speakerTab').dataTable();
+					//$('#speakersTab').removeClass('dataTable');
 				}
 				else if(searchType =='consolidated')
 				{	
 					str+='<thead>';
-					str+='<th class="text-center">  </th>';
-					str+='<th class="text-center"> SPEAKER </th>';
-					str+='<th class="text-center"> DESIGNATION </th>';
-					str+='<th class="text-center"> ATTENDED COUNT </th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" >  </th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" > SPEAKER </th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" > DESIGNATION </th>';
+					str+='<th class="text-center" style="background-color:#dddddd;" > ATTENDED COUNT </th>';
 					str+='</thead>';				
 					str+='<tbody>';
 					for(var i in result){
@@ -1506,14 +1593,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					str+='</table>';
 					$("#speakersAttendenceImg").hide();
 					$("#speakersAttendence").html(str);
-					$('#speakersTab').dataTable({
-						"aaSorting": [[ 5, "desc" ]],
-						//"sDom": '<"top"i>rt<"bottom"><"clear"flp>',
-						"iDisplayLength": 10,
-						"aLengthMenu": [[15, 30, 60,100, -1], [15, 30, 60,100, "All"]]
-					});
+					$('#speakerTab').dataTable();
 					
-					$('#speakersTab').removeClass('dataTable');
+					//$('#speakersTab').removeClass('dataTable');
 				}
 			}else{
 				$("#speakersAttendenceImg").hide();
