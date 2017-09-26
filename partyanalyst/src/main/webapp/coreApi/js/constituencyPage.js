@@ -1144,11 +1144,11 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(groupType){
 	$("#leftSideCasteGroupWiseDivId,#casteGroupVoters,#rightSideCasreGroupDtsDivId").html(spinner);
 	
 	jsObj={
-			locationTypeId	:locationLevelId,
-			locationValue	:locationLevelVal,
-			publicationDateId:publicationId,
-			casteGroupId:0,
-			enrollmentYearId:4
+		locationTypeId	:locationLevelId,
+		locationValue	:locationLevelVal,
+		publicationDateId:publicationId,
+		casteGroupId:0,
+		enrollmentYearId:4
 	    }
 	$.ajax({
 		type : "GET",
@@ -2851,7 +2851,8 @@ function getPositionWiseMemberCount(){
 			"toDateStr":globalToDate,
 			"locationValuesArr":userAccessLevelValuesArray,
 			"locationTypeId":locationLevelId,
-			"year":""
+			"year":"",
+			"tdpCommitteeEnrollmentYearId":1
 		}
 	$.ajax({
 		type : "POST",
