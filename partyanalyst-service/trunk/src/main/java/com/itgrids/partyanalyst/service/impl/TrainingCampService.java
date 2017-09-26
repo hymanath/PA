@@ -13031,4 +13031,74 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 		return minAndMaxDatesStr;
 	}
 	
+	/**
+	 * author: Babu kurakula <hef:kondababu.kurakula@itgrids.com>
+	 * Date: 26th sep,2017
+	 * discription : to get camp detetails
+	 * param: list of camp ids
+	 */
+	public List<KeyValueVO> getTrainingCampDetailsByCampIds(List<Long> trainingCampIdsList){
+		List<KeyValueVO> finalList=new ArrayList<KeyValueVO>(0);
+		try{
+			Map<Long,String> camIdAndDistrctMap=new HashMap<Long,String>(0);
+			Map<Long,String> camidAndlocationMap=new HashMap<Long,String>(0);
+			Map<Long,String> campIdAndNamMap=new HashMap<Long,String>(0);
+			List<Object[]> campObjs=trainingCampDistrictDAO.getTrainingCampDetailsByCampIds(trainingCampIdsList);
+			if(campObjs !=null && campObjs.size() >0){
+				for(Object[] param:campObjs){
+					// campId and location map
+					camidAndlocationMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+					//camp id and name map
+					campIdAndNamMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					//camp id and district names map
+					String districtName=camIdAndDistrctMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(districtName !=null){
+						districtName=districtName+" , "+commonMethodsUtilService.getStringValueForObject(param[3]);
+						camIdAndDistrctMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), districtName);
+					}else{
+						camIdAndDistrctMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[3]));
+					}
+				}
+			}
+			if(campIdAndNamMap !=null && campIdAndNamMap.size() >0){
+				for(Entry <Long,String> map:campIdAndNamMap.entrySet()){
+					Long id=map.getKey();
+					KeyValueVO vo =new KeyValueVO();
+					vo.setId(id);			// camp id
+					vo.setName(campIdAndNamMap.get(id));	//camp name
+					vo.setLocationName(camidAndlocationMap.get(id));	//camp location
+					vo.setDistrictName(camIdAndDistrctMap.get(id));	// camp coverd district name in from of string
+					finalList.add(vo); // vo set to list
+				}
+			}
+		}catch(Exception e){
+			 LOG.error(" Error Occured in getTrainingCampDetailsByCampIds method in TraininingCampService class" ,e);
+
+		}
+		return finalList;
+	}
+	/**
+	 * author: Babu kurakula <hef:kondababu.kurakula@itgrids.com>
+	 * Date: 26th sep,2017
+	 * discription : to get program detetails
+	 * param: list of program ids
+	 */
+	public List<KeyValueVO> getTrainingProgramDetailsByProgramIds(List<Long> triningProgramIdsList){
+		List<KeyValueVO> finalList=new ArrayList<KeyValueVO>(0);
+		try{
+		List<Object[]> programObjs=trainingCampProgramDAO.getTrainingProgramDetailsByProgramIds(triningProgramIdsList);	
+		if(programObjs !=null && programObjs.size() >0){
+			for(Object[] param:programObjs){
+				KeyValueVO vo =new KeyValueVO();
+				vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				finalList.add(vo);
+		}
+		}
+		}catch(Exception e){
+			 LOG.error(" Error Occured in getTrainingProgramDetailsByProgramIds method in TraininingCampService class" ,e);
+
+		}
+		return finalList;
+	}
 }
