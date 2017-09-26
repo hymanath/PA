@@ -293,6 +293,16 @@
 			<div class="col-sm-12 m_top20" navbar-index="alerts">
 				<div class="block">
 					<h4 class="panel-title theme-title-color">Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="alerts"></i></span></h4>
+					<div class="row">
+							<div class="col-sm-12">
+								<ul class="list-inline switch-btn alertCategoryWiseCls pull-right m_top5">
+									<li attr_type= "1,2" class="active">Both</li>
+									<li attr_type= "1">Party</li>
+									<li attr_type= "2">Govt</li>
+									<li attr_type= "3">Others</li>
+								</ul>
+							</div>
+					</div>
 					<div id="alertsBlockDivId" class="m_top20"></div>
 				</div>
 			</div>
