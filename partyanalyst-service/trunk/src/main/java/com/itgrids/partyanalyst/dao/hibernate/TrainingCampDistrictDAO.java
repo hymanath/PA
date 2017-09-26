@@ -26,4 +26,16 @@ public class TrainingCampDistrictDAO extends GenericDaoHibernate<TrainingCampDis
 			query.setParameterList("districtIdsList", districtIdsList);
 		return query.list();
 	}
+	public List<Object[]> getTrainingCampDetailsByCampIds(List<Long> trainingCampIdsList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select distinct model.trainingCamp.trainingCampId,model.trainingCamp.campName,");
+		queryStr.append("model.trainingCamp.location,model.district.districtName ");
+		queryStr.append(" from TrainingCampDistrict model "); 
+		queryStr.append(" left join model.trainingCamp trainingCamp ");
+		queryStr.append(" where trainingCamp.trainingCampId in(:trainingCampIdsList) " +
+				"order by model.trainingCamp.trainingCampId asc ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("trainingCampIdsList", trainingCampIdsList);
+		return query.list();
+	}
 }
