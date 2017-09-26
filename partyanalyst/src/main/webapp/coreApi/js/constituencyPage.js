@@ -2,7 +2,8 @@
  	var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3)
-		wurl = url.substr(0,(url.indexOf(".in")+3));		
+		wurl = url.substr(0,(url.indexOf(".in")+3));	
+// please do not try to edit these options which may cause the entire page to stop working.	
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var blockSpinner = '<div class="row"><div class="col-sm-12"><div class="block m_top10"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div></div>';
 var noData = "<div class='col-sm-12'><h5>NO DATA AVAILABLE</h5></div>";
@@ -28,6 +29,8 @@ var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In
 var customStartDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');;
 var customEndDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 var electionTypeVal = [0];
+var defaultAlertCategoryIds=[1,2];
+// please do not try to edit these options which may cause the entire page to stop working. //end
 /* location Values Start*/
 function onLoadLocValue()
 {
@@ -157,7 +160,7 @@ function onLoadAjaxCalls()
 	getNominatedPostStatusWiseCount();
 	
 	//Alerts
-	getTotalAlertDetailsForConstituencyInfo();
+	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
 	
 	setTimeout(function(){ 
 		//News Block
@@ -373,7 +376,7 @@ function onLoadClicks()
 			getNominatedPostStatusWiseCount();
 		}else if(blockName == 'alerts')
 		{
-			getTotalAlertDetailsForConstituencyInfo();
+			getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
 		}else if(blockName == 'activities')
 		{
 			getActivityStatusList();
@@ -3454,14 +3457,13 @@ function getDetailedElectionInformaction(){
 		});
 	}
 }
-function getTotalAlertDetailsForConstituencyInfo(){
+function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 	$("#alertsBlockDivId").html(spinner);
-	
 	var jsObj={
 			fromDateStr 	  	:globalFromDate,
 			toDateStr		  	:globalToDate,
 			locationValuesArr 	:userAccessLevelValuesArray,
-			alertTypeIdsStr 	:[1,2,3],
+			alertTypeIdsStr 	:defaultAlertCategoryIds,
 			locationTypeId		:locationLevelId,
 			year  				:""
 
@@ -3480,182 +3482,140 @@ function getTotalAlertDetailsForConstituencyInfo(){
 	});	
 	function buildAlertsTable(result){
 		var str='';
-		var totalCount=0;
-		if(result !=null){
-			var locationNamesArr={'DISTRICT':'#FE6603','CONSTITUENCY':'#FFA522','Mandal/Municipality':'#8E4552','Village/Ward':'#F16283','HAMLET':' #ea3414'};
 		
 			str+='<div class="row">';
-				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
-					str+='<div class="block">';
-						str+='<ul class="list-inline list-border">';
-							str+='<li>';
-								str+='<h4>'+result.totalAlertCount+'</h4>';
-								str+='<p>Total Alerts</p>';
-							str+='</li>';
-							str+='<li>';
-								str+='<h4>'+result.involveMemberCount+'</h4>';
-								str+='<p>Involved Memberes</p>';
-							str+='</li>';
-							str+='<li>';
-								str+='<h4>'+result.assignedMemberCount+'</h4>';
-								str+='<p>Assigned Memberes</p>';
-							str+='</li>';
-						str+='</ul>';
-					str+='</div>';
-					str+='<div class="row m_top15">';
-						str+='<div class="col-md-5 col-xs-12 col-sm-5">';
-							str+='<div id="overallAlerts" style="height:200px"></div>';
-						str+='</div>';
-						str+='<div class="col-md-7 col-xs-12 col-sm-7">';
-						  str+='<select class="form-control" role="tabListMobile">';
-						  if(result !=null && result.subList !=null && result.subList.length>0){
-							for(var i in result.subList){
-								str+='<option tab_id="alerts'+i+'">'+result.subList[i].locationName+'</option>';
-							}
-						  }
-						  str+='</select>';
-						  str+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
-						  if(result !=null && result.subList !=null && result.subList.length>0){
-							for(var i in result.subList){
-								totalCount = totalCount+result.subList[i].count;
-								var constituencyPercCount=0;var mandalPercCount=0;var panchayatPercCount=0;
-								if(result.subList[i].locationName == "CONSTITUENCY"){
-									var Count = result.subList[i].count;
-									constituencyPercCount = (Count/totalCount*100).toFixed(2);
-								}else if(result.subList[i].locationName == "Mandal/Municipality"){
-									var Count  = result.subList[i].count;
-									mandalPercCount = (Count/totalCount*100).toFixed(2);
-								}else if(result.subList[i].locationName == "Village/Ward"){
-									var Count  = result.subList[i].count;
-									panchayatPercCount = (Count/totalCount*100).toFixed(2);
-								}
-								var locationNamesPerc={'CONSTITUENCY':constituencyPercCount,'Mandal/Municipality':mandalPercCount,'Village/Ward':panchayatPercCount};
-								if(i==0){
-									str+='<li role="presentation" class="active"><a class="alertsColorCls text-capital"  href="#alerts'+i+'" aria-controls="alerts1" role="tab" data-toggle="tab"><span class = "ColorView" style="background-color:'+locationNamesArr[result.subList[i].locationName]+'"></span>'+result.subList[i].locationName+' <p class="pull-right"><span>'+result.subList[i].count+'</span>';
-									//str+='<span>'+locationNamesPerc[result.subList[i].locationName]+' %</span>';
-									str+='<p></a></li>';
-								}else{
-									str+='<li role="presentation"><a class="alertsColorCls text-capital" href="#alerts'+i+'" aria-controls="alerts1" role="tab" data-toggle="tab" ><span class = "ColorView" style="background-color:'+locationNamesArr[result.subList[i].locationName]+'"></span>'+result.subList[i].locationName+'<p class="pull-right"><span>'+result.subList[i].count+'</span>';
-									//str+='<span>'+locationNamesPerc[result.subList[i].locationName]+' %</span>';
-									str+='<p></a></li>';
-								}
-								
-							}
-						  }
-						 str+='</ul>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-md-6 col-xs-12 col-sm-6 pad_left0">';
-					  str+='<div class="tab-content">';
-					   if(result !=null && result.subList !=null && result.subList.length>0){
-							for(var i in result.subList){
-								if(i == 0){
-									str+='<div role="tabpanel" class="tab-pane active pad_10" id="alerts'+i+'">';
-								}else{
-									str+='<div role="tabpanel" class="tab-pane pad_10" id="alerts'+i+'">';
-								}
-								
-									str+='<table class="table table-noborder">';
-										str+='<thead class="text-capitalize bg-DD">';
-											str+='<th>alert status</th>';
-											str+='<th>total</th>';
-											for(var k in result.subList[0].subList[0].subList){
-												str+='<th>'+result.subList[0].subList[0].subList[k].alertType+'</th>';
+				var totalAlertsCount=0;
+				if(result.alertTypeList !=null && result.alertTypeList.length>0){
+					for(var i in result.alertTypeList){
+						totalAlertsCount = totalAlertsCount+result.alertTypeList[i].count;
+					}
+				}
+						str+='<div class="col-sm-4">';
+							str+='<div class="block_Alert_styled">';
+								str+='<div class="row">';
+										str+='<div class="col-sm-6">';
+											str+='<img src="coreApi/img/total_alerts.png" />';
+										str+='</div>';
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<h4>Total <span style="color:#D47063">Alerts</span></h4>';
+											if(totalAlertsCount !=null && totalAlertsCount>0){
+												str+='<h3>'+totalAlertsCount+'</h3>';
+											}else{
+												str+='<h3> - </h3>';
 											}
 											
-										str+='</thead>';
-										str+='<tbody>';
-										for(var j in result.subList[i].subList){
-											str+='<tr>';
-											str+='<td>'+result.subList[i].subList[j].status+'</td>';
-											str+='<td>'+result.subList[i].subList[j].count+'</td>';
-											for(var k in result.subList[i].subList[j].subList){
-												str+='<td>'+result.subList[i].subList[j].subList[k].count+'</td>';
-											}	
-											str+='</tr>';
-										}
-											
-												
-											
-										str+='</tbody>';
-									str+='</table>';
+										str+='</div>';
+									str+='</div>';
 								str+='</div>';
+								
+								str+='<div class="block_AlertC_styled">';
+								str+='<div class="row">';
+								if(result.alertTypeList !=null && result.alertTypeList.length>0){
+									for(var i in result.alertTypeList){
+										str+='<div class="col-sm-6">';
+											str+='<div class="media">';
+												str+='<div class="media-left">';
+												if(result.alertTypeList[i].status == "Party"){
+													str+='<img class="media-object" src="coreApi/img/TDP_icon.png" alt="group">';
+												}else if(result.alertTypeList[i].status == "Govt"){
+													str+='<img class="media-object" src="coreApi/img/aplogo_icon.png" alt="group">';
+												}
+													
+												str+='</div>';
+												str+='<div class="media-body">';
+													str+='<h5>'+result.alertTypeList[i].status+' Alerts</h5>';
+													if(result.alertTypeList[i].count !=null && result.alertTypeList[i].count>0){
+														str+='<h4 class="m_top5">'+result.alertTypeList[i].count+' <br/><small style="color:green">15.00%</small></h4>';
+													}else{
+														str+='<h4 class="m_top5"> - </h4>';
+													}
+													
+													
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									}
+								}		
+									str+='</div>';
+								str+='</div>';
+						str+='</div>';
+					str+='<div class="col-sm-8">';
+						str+='<ul class="list-inline">';
+						if(result.subList !=null && result.subList.length>0){
+							for(var i in result.subList){
+								if(result.subList[i].status !="Others"){
+									if(result.subList[i].status == "Electronic Media"){
+										str+='<li class="col-sm-3">';
+									}else{
+										str+='<li class="col-sm-2">';
+									}
+										str+='<img class="media-object" src="coreApi/img/'+result.subList[i].status+'.png" alt="group">';
+										str+='<h5 class="m_top20">'+result.subList[i].status+' <br/>Alerts</h5>';
+										
+										if(result.subList[i].count !=null && result.subList[i].count>0){
+											str+='<h4 class="m_top20">'+result.subList[i].count+'%</h4>';
+										}else{
+											str+='<h4 class="m_top20"> - </h4>';
+										}
+										if(result.subList[i].percentage !=null && result.subList[i].percentage>0.0){
+											str+='<h6 style="color:green" >'+result.subList[i].percentage+'%</h6>';
+										}else{
+											str+='<h6> - </h6>';
+										}
+									str+='</li>';
+								}
+								
 							}
-					   }
-					 str+='</div>';
+						}
+						str+='</ul>';
 				str+='</div>';
 			str+='</div>';
-		
-		
-		
-		$("#alertsBlockDivId").html(str);
-		responsiveTabs();
-		
-			var overAllAlertsMainArr=[];
-				for(var i in result.subList){
-					var name = result.subList[i].locationName;
-					var Perc=result.subList[i].count;
-					
-					var colorsId = locationNamesArr[result.subList[i].locationName.trim()];
-					
-					var obj = {
-						name: name,
-						y:Perc,
-						color:colorsId
-					}
-					overAllAlertsMainArr.push(obj);
-				}
-			
-			
-			var id = 'overallAlerts';
-			var type = {
-				type: 'pie',
-				backgroundColor:'transparent',
-				options3d: {
-					enabled: true,
-					alpha: 25
-				}
-			};
-			var title = {
-				text: ''
-			};
-			var tooltip = {
-				useHTML: true,
-				backgroundColor: '#FCFFC5', 
-				formatter: function() {
-					var cnt = this.point.count;
-					return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
-				}  
-			}; 
-			var plotOptions ={ 
-				pie: {
-					innerSize: 110,
-					depth: 80,
-					dataLabels:{
-						useHTML: true,
-						enabled: false,
-						  formatter: function() {
-								if (this.y === 0) {
-									return null;
-								} else {
-									return "<b style='color:"+this.point.color+"'>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
-								}
-							} 
-					},
-					showInLegend: false
-				},
-			};
-			var legend={enabled: false};
-			var data = [{
-				name: '',
-				data: overAllAlertsMainArr
-			}];
-				
-			highcharts(id,type,data,plotOptions,title,tooltip,legend);
-		}
+			str+='<div class="row">';
+				str+='<div class="col-sm-12 m_top20">';
+					str+='<hr class="m_0"/>';
+				str+='</div>';
+				str+='<div class="col-sm-12 m_top10">';
+					str+='<ul class="list-border">';
+						if(result.impactScopeList !=null && result.impactScopeList.length>0){
+							for(var i in result.impactScopeList){
+								str+='<li style="padding: 10px 0;">';
+									if(result.impactScopeList[i].status !=null && result.impactScopeList[i].status.length>10){
+										str+='<p class="text-capitalize tooltipAlertCls"  style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.impactScopeList[i].status+'" >'+result.impactScopeList[i].status.substring(0,10)+'...</p>';
+									}else{
+										str+='<p class="text-capitalize">'+result.impactScopeList[i].status+'</p>';
+									}
+									
+									if(result.impactScopeList[i].count !=null && result.impactScopeList[i].count>0){
+										str+='<h3 class="m_top10">'+result.impactScopeList[i].count+'</h3>';
+									}else{
+										str+='<h3 class="m_top10"> - </h3>';
+									}
+									
+									if(result.impactScopeList[i].percentage !=null && result.impactScopeList[i].percentage>0.0){
+										str+='<h6 style="color:green">'+result.impactScopeList[i].percentage+'%</h6>';
+									}else{
+										str+='<h6> - </h6>';
+									}
+									
+								str+='</li>';
+							}
+						}
+							
+						str+='</ul>';
+				str+='</div>';
+			str+='</div>';
+		$("#alertsBlockDivId").html(str);	
+		$(".tooltipAlertCls").tooltip();	
 	}
 }
+$(document).on("click",".alertCategoryWiseCls li",function(){
+	$(this).parent("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	defaultAlertCategoryIds=[];
+	var ids=$(this).attr("attr_type").split(',');
+	defaultAlertCategoryIds = ids.map(Number);
+	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
+});		
 function getEnrollmentIds(){
 	var jsObj={
 			
