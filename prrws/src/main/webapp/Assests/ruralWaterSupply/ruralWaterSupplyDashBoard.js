@@ -5484,8 +5484,8 @@ function getSBPaymentsAbstract(){
 		
 		$("#swatchBharatPaymentsDivId").html(spinner);
 		var json = {
-			fromDate:"201704",
-			toDate:"201708",
+			//fromDate:"201704",
+			//toDate:"201708",
 			location:"state",
 			locationId:"01",
 			subLocation :"state"
@@ -5592,8 +5592,8 @@ function getSBPaymentsAbstract(){
 		$("#Payments"+locationType).html(spinner);
 		
 		var json = {
-			fromDate:"201704",
-			toDate:"201708",
+			//fromDate:"201704",
+			//toDate:"201708",
 			location:"state",
 			locationId:"01",
 			subLocation :locationType
@@ -5673,7 +5673,7 @@ function getSBPaymentsAbstract(){
 											str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 											str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 											str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-											str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].panchayt+'</td>';
 										}
 										str+='<td class="text-capital">'+ajaxresp[i].totalFTO+'</td>';										
 										str+='<td class="text-capital">'+ajaxresp[i].totalAmount+'</td>';										
