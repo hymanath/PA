@@ -18,6 +18,8 @@ public class KeyValueVO implements Serializable {
 	private List<String> imageList = new ArrayList<String>(0);
 	private String path;
 	private Long percent;
+	private String locationName;
+	private String districtName;
 	
 	public Long getId() {
 		return id;
@@ -90,6 +92,18 @@ public class KeyValueVO implements Serializable {
 	}
 	public void setPercent(Long percent) {
 		this.percent = percent;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
 	}
 	
 	
