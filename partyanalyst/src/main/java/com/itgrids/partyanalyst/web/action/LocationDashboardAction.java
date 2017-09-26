@@ -336,7 +336,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			  jObj=new JSONObject(getTask());
 			  Long locationTypeId = jObj.getLong("locationTypeId");
 			  Long locationValue = jObj.getLong("locationValue");
-			  candidateDetailsForConstituencyTypesVO = locationDashboardService.getCandidateAndPartyInfoForConstituency(locationValue,locationTypeId);
+			  List<Long> representativeTypeIds = convertJsonStringList(jObj.getJSONArray("representativeTypeIds"));  
+			  candidateDetailsForConstituencyTypesVO = locationDashboardService.getCandidateAndPartyInfoForConstituency(locationValue,locationTypeId,representativeTypeIds);
 			  
 		  }catch(Exception e){
 			  LOG.error("Entered into getCandidateAndPartyInfoForConstituency method in locationDashboardAction....");
