@@ -3395,5 +3395,34 @@ public String getCommentsMeetingDetails(){
 		}
 		return Action.SUCCESS;
 	}
-
+	public String getTrainingCampDetailsByCampIds(){
+		try {
+			LOG.info("Entered into getTrainingCampDetailsByCampIds of getTrainingSurveyDetail()");
+			List<Long> triningCampIdsList=new ArrayList<Long>();
+			jObj = new JSONObject(getTask());
+			JSONArray jsonArry=jObj.getJSONArray("traingCampIds");
+			for(int i=0;i <jsonArry.length(); i++){
+				triningCampIdsList.add(Long.valueOf(jsonArry.get(i).toString()));
+			}
+			keyValueVOlist=trainingCampService.getTrainingCampDetailsByCampIds(triningCampIdsList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTrainingCampDetailsByCampIds method", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getTrainingProgramDetailsByProgramIds(){
+		try {
+			LOG.info("Entered into getTrainingProgramDetailsByProgramIds of getTrainingSurveyDetail()");
+			List<Long> triningProgramIdsList=new ArrayList<Long>();
+			jObj = new JSONObject(getTask());
+			JSONArray jsonArry=jObj.getJSONArray("traingProgramIds");
+			for(int i=0;i <jsonArry.length(); i++){
+				triningProgramIdsList.add(Long.valueOf(jsonArry.get(i).toString()));
+			}
+			keyValueVOlist=trainingCampService.getTrainingProgramDetailsByProgramIds(triningProgramIdsList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTrainingProgramDetailsByProgramIds method", e);
+		}
+		return Action.SUCCESS;
+	}
 }
