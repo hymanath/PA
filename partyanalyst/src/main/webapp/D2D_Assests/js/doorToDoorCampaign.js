@@ -84,9 +84,8 @@ function onLoadCalls(){
 	 
 }
 
-var $inputs = $(".imagesTypeCls");
 setInterval(function() {
-	
+	var $inputs = $(".imagesTypeCls");
 	var random = Math.floor(Math.random() * $inputs.length);
 	  $inputs.each(function(i, node) {
 		node.checked = (i === random);
@@ -99,9 +98,11 @@ setInterval(function() {
 		}
 	});
 	getRecentImagesList(imageType);
-}, 480 * 1000);
+}, 60 * 1000);
 
 $(document).on("click",".iconRefresh",function(){
+	$("#surveyId").prop("checked",true);
+	$("#hoistingId").prop("checked",false);
 	onLoadCalls();
 });
 
@@ -138,6 +139,9 @@ $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 	{
 		$("#dateRangePickerAUM").val('All');
 	}
+	
+	$("#surveyId").prop("checked",true);
+	$("#hoistingId").prop("checked",false);
 	onLoadCalls();
 	
 });
@@ -321,9 +325,9 @@ function getHouseHoldsCounts(){
 			str+='<div class="col-sm-4 text-center border_right">';
 				str+='<h6>Calls Dialed</h6>';
 				if(result.callsCunt !=null && result.callsCunt>0){
-					str+='<h5>'+result.callsCunt+'</h5>';
+					str+='<h5 class="m_top5"><span><img src="D2D_Assests/icons/Calls_dialed_icon.png" class="imageWidthHeigth" /></span>  <b>'+result.callsCunt+'</b></h5>';
 				}else{
-					str+='<h5> - </h5>';
+					str+='<h5 class="m_top5"><span><img src="D2D_Assests/icons/Calls_dialed_icon.png" class="imageWidthHeigth" /></span>   - </h5>';
 				}
 				
 				
@@ -331,23 +335,24 @@ function getHouseHoldsCounts(){
 			str+='<div class="col-sm-4 text-center border_right">';
 				str+='<h6>SMS Sent</h6>';
 				if(result.smsCount !=null && result.smsCount>0){
-					str+='<h5>'+result.smsCount+'</h5>';
+					str+='<h5 class="m_top5"><span><img src="D2D_Assests/icons/SMS_sent_icon.png" class="imageWidthHeigth" /></span>  <b>'+result.smsCount+'</b></h5>';
 				}else{
-					str+='<h5> - </h5>';
+					str+='<h5 class="m_top5"><span><img src="D2D_Assests/icons/SMS_sent_icon.png" class="imageWidthHeigth" /></span>   - </h5>';
 				}
 			str+='</div>';
 			str+='<div class="col-sm-4 text-center">';
-				str+='<h6>Images Received</h6>';
-				if(ajaxresp[i].flagHoistingImgCunt !=null && ajaxresp[i].flagHoistingImgCunt>0){
-					str+='<td class="text-capital flagHoistingImagesCls" attr_level_value="'+ajaxresp[i].id+'" attr_level_id="'+locationType+'">'+ajaxresp[i].flagHoistingImgCunt+'</td>';		
+				str+='<h6 class="tooltipImages" data-toggle="tooltip" title="Flag Hoisting Images" style="cursor:pointer;text-align:left;">Flag Hoisting Im..</h6>';
+				if(result.flagHoistingImgCunt !=null && result.flagHoistingImgCunt>0){
+					str+='<h5 class="m_top5"><span><img src="D2D_Assests/icons/Images_recived_icon.png" class="imageWidthHeigth" /></span>  <b>'+result.flagHoistingImgCunt+'</b></h5>';
 				}else{
-					str+='<td class="text-capital"> - </td>';	
+					str+='<h5 class="m_top5"><span><img src="D2D_Assests/icons/Images_recived_icon.png" class="imageWidthHeigth" /></span>   - </h5>';
 				}
 			str+='</div>';
 			str+='</div>';
 		//str+='</div>';
 		
 		$("#houseHoldsWiseCountsId").html(str);
+		$(".tooltipImages").tooltip();
 	}
 }
 function getGrievancesCounts(){	  
@@ -482,14 +487,28 @@ function getRecentImagesList(imageType){
 							}
 							
 							
-							str+='<h5 class="m_top5">'+result.subList[i].boothNo+'</h5>';
+							//str+='<h5 class="m_top5">'+result.subList[i].boothNo+'</h5>';
+							if(imageType == "survey"){
+								str+='<h5 class="m_top5">'+result.subList[i].boothNo+'</h5>';
+							}
 						}else{
 							if(result.subList[i].lebName !=null && result.subList[i].lebName.length>15){
 								str+='<h5 class="m_top5">Municipality: <span class="tooltipImgCls" data-toogle="tooltip" title="'+result.subList[i].lebName+'" style="cursor:pointer;">'+result.subList[i].lebName.substring(0,15)+'...</span></h5>';
 							}else{
 								str+='<h5 class="m_top5">Municipality: '+result.subList[i].lebName+'</h5>';
 							}
-							str+='<h5 class="m_top5">'+result.subList[i].boothNo+'</h5>';
+							//str+='<h5 class="m_top5">'+result.subList[i].boothNo+'</h5>';
+							if(imageType != "survey"){
+								if(result.subList[i].wardName !=null && result.subList[i].wardName.length>15){
+									str+='<h5 class="m_top5"><span class="tooltipImgCls" data-toogle="tooltip" title="'+result.subList[i].wardName+'" style="cursor:pointer;">'+result.subList[i].wardName.substring(0,15)+'...</span></h5>';
+								}else{
+									str+='<h5 class="m_top5">'+result.subList[i].wardName+'</h5>';
+								}
+							}
+							
+							if(imageType == "survey"){
+								str+='<h5 class="m_top5">'+result.subList[i].boothNo+'</h5>';
+							}
 						}
 					}
 				str+='</div>';
