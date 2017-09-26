@@ -359,7 +359,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getVotersAndcadreAgeWiseCount(){
 		 try {
 			jObj = new JSONObject(getTask());
-			locationVotersVOList = locationDashboardService.getVotersAndcadreAgeWiseCount(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("publicationDateId"));
+			locationVotersVOList = locationWiseCasteInfoService.getVotersAndcadreAgeWiseCount(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("publicationDateId"),
+					jObj.getLong("enrollmentYearId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getVotersAndcadreAgeWiseCount", e);
 		}
@@ -376,20 +377,12 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		}
 		 return Action.SUCCESS;
 	 }
-	/* public String getCasteGroupNAgeWiseVoterNCadreCounts(){
-		 try {
-			jObj = new JSONObject(getTask());
-			locationVotersVOList = locationDashboardService.getCasteGroupNAgeWiseVoterNCadreCounts(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"));
-		} catch (Exception e) {
-			LOG.error("Exception raised at getCasteGroupNAgeWiseVoterNCadreCounts", e);
-		}
-		return Action.SUCCESS;
-	 }*/
 	 
 	 public String getCasteNAgeWiseVoterNCadreCounts(){
 		 try {
 			 jObj = new JSONObject(getTask());
-			 locationVotersVOList = locationDashboardService.getCasteNAgeWiseVoterNCadreCounts(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("publicationDateId"),jObj.getLong("casteGroupId"),jObj.getLong("casteId"));
+			 locationVotersVOList = locationWiseCasteInfoService.getCasteNAgeWiseVoterNCadreCounts(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("publicationDateId"),jObj.getLong("casteGroupId"),jObj.getLong("casteId")
+					 ,jObj.getLong("enrollmentYearId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteNAgeWiseVoterNCadreCounts", e);
 		}
