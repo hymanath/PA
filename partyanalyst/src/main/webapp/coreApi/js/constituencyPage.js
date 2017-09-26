@@ -1005,7 +1005,9 @@ function getVotersAndcadreAgeWiseCount(pubId){
 		locationTypeId		: locationLevelId,
 		locationValue		: locationLevelVal,
 		publicationDateId	: pubId
-    }
+		enrollmentYearId	: 4
+	}
+	
     $.ajax({
       type : "GET",
       url : "getVotersAndcadreAgeWiseCountAction.action",
