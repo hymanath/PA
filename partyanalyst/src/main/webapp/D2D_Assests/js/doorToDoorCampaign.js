@@ -98,7 +98,7 @@ setInterval(function() {
 		}
 	});
 	getRecentImagesList(imageType);
-}, 60 * 1000);
+}, 480 * 1000);
 
 $(document).on("click",".iconRefresh",function(){
 	$("#surveyId").prop("checked",true);
