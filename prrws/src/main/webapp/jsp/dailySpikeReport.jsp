@@ -118,14 +118,6 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-12 m_top10">
-												<div class="menu-block" style="background-color:#ff1c5e">
-													<a href="RuralDevelopmentDashboard">
-														<h3>RD</h3>
-														<p>Rural Development Dashboard</p>
-													</a>
-												</div>
-											</div>
 										</div>
 									</div>
 								</div>
