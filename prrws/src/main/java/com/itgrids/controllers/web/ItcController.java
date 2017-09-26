@@ -33,7 +33,7 @@ public class ItcController {
 		@Autowired
 		private IItcDashboardService itcDashboardService;
 		
-		@RequestMapping(value ="/itcDashboard",method = RequestMethod.GET)
+		@RequestMapping(value ="/itecDashboard",method = RequestMethod.GET)
 	    public String drainsDashboard(ModelMap model) {
 			return "ItcDashboard";
 	    }
