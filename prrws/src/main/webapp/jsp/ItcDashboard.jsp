@@ -26,7 +26,7 @@
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
-					<p>IT & E - Dashboard</p>
+					<p>IT E & C - Dashboard</p>
 				</div>
 				
 				<div class="col-sm-3 col-xs-12 pull-right">
