@@ -2842,8 +2842,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	}
 	@Override
 	public List<BasicVO> getLocationWiseActivitysStatus(String fromDateStr, String toDateStr, String year,List<Long> locationValues, Long locationTypeId) {
-		List<BasicVO> finalList = new ArrayList<BasicVO>();
+		List<BasicVO> returnList = new ArrayList<BasicVO>();
 		try{
+			List<BasicVO> finalList = new ArrayList<BasicVO>();
 			Date fromDate = null;
 			Date toDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -2859,7 +2860,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Object[]> conductedInfoTotal = activityDAO.getConductedInfoTotal(fromDate, toDate, year, locationValues, locationTypeId);
 			//0-activity_scope_id 1-activity_name 2-level 3-conductedCount
 			List<Object[]> conductedCount = activityDAO.getConductedInfoCount(fromDate, toDate, year, locationValues, locationTypeId);
-
+			
 			for (Object[] object1 : activityTotal) {
 				BasicVO vo = new BasicVO();
 				vo.setName(object1[1].toString());
@@ -2876,6 +2877,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				
 				finalList.add(vo);
 			}
+			
 			for (Object[] object3 : conductedInfoTotal) {
 				BasicVO vo = new BasicVO();
 				vo.setName(object3[1].toString());
@@ -2891,10 +2893,31 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				finalList.add(vo);
 			}
 
+			Map<String,List<BasicVO>> actMap = new HashMap<String,List<BasicVO>>();
+			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				for (BasicVO vo : finalList) {
+					List<BasicVO> voList = new ArrayList<BasicVO>(0);
+					if(actMap.get(vo.getDescription().trim()) != null){
+						voList = actMap.get(vo.getDescription().trim());
+					}
+					voList.add(vo);
+					actMap.put(vo.getDescription().trim(),voList);
+				}
+			}
+			
+			BasicVO returnVo = new BasicVO();
+			
+			if(commonMethodsUtilService.isMapValid(actMap)){
+				for (String level : actMap.keySet()) {
+					returnVo.getLocationsList().addAll(actMap.get(level.trim()));
+				}
+				returnList.add(returnVo);
+			}
+			
 		}catch(Exception e){
 			LOG.error("Exception raised at getActivityStatusList() in LocationDashBoardService class",e);
 		}
-		return finalList;
+		return returnList;
 	}
 
 	/**
