@@ -146,4 +146,7 @@ public interface ITrainingCampService {
 	public List<VerifierVO> getTrainingSurveyDetails(Long trainingProgramId,Long trainignBatchId,Long trainingCampId);
 	public String getMinAndMaxDatesOfTraingCamp();
 	
+	public List<KeyValueVO> getTrainingCampDetailsByCampIds(List<Long> trainingCampIdsList);
+	public List<KeyValueVO> getTrainingProgramDetailsByProgramIds(List<Long> triningProgramIdsList);
+	
 }
