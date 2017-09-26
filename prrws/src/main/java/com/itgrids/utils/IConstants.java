@@ -51,4 +51,7 @@ public interface IConstants {
     public static final String CONSTITUENCY = "constituency";
     public static final String SERVER = "server";
     public static final String DEFAULT_SCHEDULER_SEVER = "localhost";
+    public static final String ITC_WEB_SERVICE_USER_NAME = "MEESEVA";
+    public static final String ITC__WEB_SERVICE_PASSWORD = "MEESEVA";
+    public static final String ITC_WEB_SERVICE_NAME_SPACE = "http://AP.org/";
 }
