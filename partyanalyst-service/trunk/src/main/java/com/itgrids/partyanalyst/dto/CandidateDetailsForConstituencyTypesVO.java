@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CandidateDetailsForConstituencyTypesVO {
@@ -8,7 +9,17 @@ public class CandidateDetailsForConstituencyTypesVO {
 	private List<CandidateInfoForConstituencyVO> assemblyCandidateInfo;
 	private String ispartial;
 	private List<CandidateDetailsForConstituencyTypesVO> subList;
+	private List<CandidateInfoForConstituencyVO> list = new ArrayList<CandidateInfoForConstituencyVO>();
 
+	
+	
+	
+	public List<CandidateInfoForConstituencyVO> getList() {
+		return list;
+	}
+	public void setList(List<CandidateInfoForConstituencyVO> list) {
+		this.list = list;
+	}
 	public CandidateInfoForConstituencyVO getParliamentCandidateInfo() {
 		return parliamentCandidateInfo;
 	}

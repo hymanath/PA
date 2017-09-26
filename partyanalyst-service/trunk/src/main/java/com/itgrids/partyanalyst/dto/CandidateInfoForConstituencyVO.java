@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CandidateInfoForConstituencyVO {
 	
@@ -20,11 +22,19 @@ public class CandidateInfoForConstituencyVO {
 	private BigDecimal liabilities;
 	private Long parliamentId;
 	private String parliamnerName;
+	private List<CandidateInfoForConstituencyVO> list = new ArrayList<CandidateInfoForConstituencyVO>();
 	
 		
 	private CandidateElectionVO candidateElectionVO;
 	
 	
+	
+	public List<CandidateInfoForConstituencyVO> getList() {
+		return list;
+	}
+	public void setList(List<CandidateInfoForConstituencyVO> list) {
+		this.list = list;
+	}
 	public Long getParliamentId() {
 		return parliamentId;
 	}

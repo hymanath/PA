@@ -186,4 +186,42 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 		  return query.list();
 	}
 	
+	public List<Object[]> getPublicRepresetativesInLocation(Long locationValue,Long locationTypeId,List<Long> representativTypeIds){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select distinct tcc.tdpCadreId,tcc.tdpCadre.firstname,prt.publicRepresentativeTypeId,prt.type,pr.levelId,pr.levelValue,tcc.tdpCadre.image " +
+				" ,pr.userAddress from TdpCadreCandidate tcc,PublicRepresentative pr,PublicRepresentativeType prt " +
+				"  where " +
+				"  tcc.candidateId=pr.candidateId " +
+				" and pr.publicRepresentativeTypeId=prt.publicRepresentativeTypeId " +
+				" and tcc.tdpCadre.isDeleted = 'N' and tcc.tdpCadre.enrollmentYear = 2014");
+		if (locationTypeId != null && locationTypeId == 3l){
+			sb.append(" and tcc.tdpCadre.userAddress.district.districtId = :locationValue " );
+		}else if (locationTypeId != null && locationTypeId == 10l){
+			sb.append(" and tcc.tdpCadre.userAddress.parliamentConstituency.constituencyId = :locationValue " );
+		}else if (locationTypeId != null && locationTypeId == 4l){
+			sb.append(" and tcc.tdpCadre.userAddress.constituency.constituencyId = :locationValue " );
+		}else if (locationTypeId != null && locationTypeId == 5l){
+			sb.append(" and tcc.tdpCadre.userAddress.tehsil.tehsilId = :locationValue " );
+		}else if (locationTypeId != null && locationTypeId == 6l){
+			sb.append(" and tcc.tdpCadre.userAddress.panchayat.panchayatId = :locationValue " );
+		}else if (locationTypeId != null && locationTypeId == 7l){
+			sb.append(" and tcc.tdpCadre.userAddress.localElectionBody.localElectionBodyId = :locationValue " );
+		}else if (locationTypeId != null && locationTypeId == 8l){
+			sb.append(" and tcc.tdpCadre.userAddress.ward.constituencyId = :locationValue " );
+		}
+		
+		if(representativTypeIds != null && representativTypeIds.size() > 0){
+			sb.append(" and prt.publicRepresentativeTypeId in (:representativTypeIds) ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValue != null && locationValue.longValue() >0l)
+		query.setParameter("locationValue", locationValue);
+		
+		if(representativTypeIds != null && representativTypeIds.size() > 0){
+			query.setParameterList("representativTypeIds", representativTypeIds);
+		}
+		return query.list();
+	}
+	
 }

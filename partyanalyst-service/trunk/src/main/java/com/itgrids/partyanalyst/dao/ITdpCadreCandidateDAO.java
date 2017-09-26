@@ -24,4 +24,5 @@ public interface ITdpCadreCandidateDAO extends GenericDao<TdpCadreCandidate, Lon
 	public List<Object[]> geTdpCadreCandidateDetailsByMemberShipIds(List<String> memberShipNos);
 	
 	public List<Object[]> geTdpCadreCandidateDesiganationsByCadreaIds(Set<Long> tdpCadreIds);
+	public List<Object[]> getPublicRepresetativesInLocation(Long locationValue,Long locationTypeId,List<Long> representativTypeIds);
 }
