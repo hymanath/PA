@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IT E_Dashboard</title>
+<title>IT E & C Dashboard</title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
@@ -138,9 +138,19 @@
 	<section class="navbar-section">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-2 border_right m_top5">
+				<!--<div class="col-sm-2 border_right m_top5">
 					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_distId="" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
 					<div class="multi-level-selection-menu arrow_box_top"></div>
+				</div>-->
+				<div class="col-sm-12">
+					    <ul class="list-inline pull-right sub-menu">
+							  <div class="input-group">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+						         <input type="text" class="form-control" id="itcDateRangePickerId" style="width: 200px;"/>
+					         </div>
+                        </ul>
 				</div>
 			</div>
 		</div>

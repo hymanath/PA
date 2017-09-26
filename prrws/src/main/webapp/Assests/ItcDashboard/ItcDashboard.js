@@ -2,16 +2,44 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 
 //var departmentWiseArr=[{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'eProcurement',id:'5',color:'#F06C1F',image:'eProcurement',blockName:'eProcurement'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
-var departmentWiseArr=[{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'}];
+var departmentWiseArr=[{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'}];
+var globalFromDate = moment().subtract(2, 'Year').format("DD/MM/YYYY");
+var globalToDate = moment().format("DD/MM/YYYY");
+$("#itcDateRangePickerId").daterangepicker({
+      opens: 'left',
+      startDate: globalFromDate,
+      endDate: globalToDate,
+    locale: {
+      format: 'DD/MM/YYYY'
+    },
+    ranges: {
+        'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+        'Today' : [moment(), moment()],
+		'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+        'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
+        'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
+        'This Month': [moment().startOf('month'), moment()],
+        'This Year': [moment().startOf('Year'), moment()]
+    }
+  });
+$('#itcDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+	globalFromDate = picker.startDate.format('DD/MM/YYYY');
+	globalToDate = picker.endDate.format('DD/MM/YYYY'); 
+    onloadCalls();
+	
+});
 onloadCalls();
 function onloadCalls(){
+	
 	departmentBlockWiseDetails("meesevaSla");
 	departmentWiseOverView();
 	/*getPromotionsOverviewByDepartmentType();
 	getPromotionsDetailedDepartmentWise();
 	getEOfficePendencyDtlsByDepartmentType();
-	getEOfficePendencyByDepartmentAndDayWise();*/
-	/*getMeesevaKPIIndicatorsProgressDtls();
+	getEOfficePendencyByDepartmentAndDayWise();
+    getMeesevaKPIIndicatorsProgressDtls();
 	getMeesevaKPIIndicatorsPeriodWise();
 	getCMEDOBOverview();
 	getCMEDOBReportStatusWise();
@@ -32,7 +60,7 @@ function departmentWiseOverView(){
 					  block+='<div class="media-body">';
 						block+='<h5><b>'+departmentWiseArr[i].name+'</b></h5>';
 						if(departmentWiseArr[i].id ==3){
-							block+='<h6 style="font-size:8px;color:#d3d3d3;">Department & District Wise SLA Monitoring</h6>';
+							//block+='<h6 style="font-size:8px;color:#d3d3d3;">Department & District Wise SLA Monitoring</h6>';
 						}else if(departmentWiseArr[i].id ==4){
 							block+='<h6 style="font-size:8px;color:#d3d3d3;">Highest Performance</h6>';
 						}
@@ -51,7 +79,7 @@ function departmentWiseOverView(){
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==3){
 						block+='<div class="m_top40">';
-							block+='<h2>11,25.Cr</h2>';
+							block+='<h2 id="meesevaHeadingId"></h2>';
 							block+='<h6 class="m_top5">Beyond SLA</h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==4){
@@ -143,7 +171,7 @@ function departmentBlockWiseDetails(divId)
 			for(var i in levelWiseBlockArr){
 				if(divId == "meesevaSla"){
 					getMeesevaSLAOverviewDtls(divId,levelWiseBlockArr[i].id);
-					getMeesevaSLAMonitoringDtlsDepartmentWise();
+					
 				}
 			}
 }
@@ -175,13 +203,13 @@ function departmentBlockWiseDetails(divId)
 	} 
 	$("#"+divId+"Block"+blockId).html(str);
 } */
-
 function getMeesevaSLAOverviewDtls(divId,blockId){
+	$("#meesevaHeadingId").html(spinner);
+	$("#"+divId+"Block"+blockId).html(spinner);
 	var json = {
-	    fromDate:"01/04/2016",
-		toDate:"01/09/2017",
-		year:"",
-		filterId:"2",
+	    fromDate:globalFromDate,
+		toDate:globalToDate,
+		filterId:"2",//sending type in web service 2 means getting department wise data
 		year:""
 	}
 	$.ajax({                
@@ -194,9 +222,12 @@ function getMeesevaSLAOverviewDtls(divId,blockId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$("#meesevaHeadingId").html('');
+	    $("#"+divId+"Block"+blockId).html('');
 		if(result !=null && result.length>0){
 			buildMeesevaSLAOverviewDtls(result,divId,blockId);
 		}
+		getMeesevaSLAMonitoringDtlsDepartmentWise(divId,blockId);
 	});		
 }
 
@@ -212,6 +243,7 @@ function buildMeesevaSLAOverviewDtls(result,divId,blockId){
 							}else if(result[i].name == "With in SLA"){
 								str+='<div style="border-left:5px solid #009587;">';
 							}else if(result[i].name == "Beyond SLA"){
+								$("#meesevaHeadingId").html(result[i].totalCount);
 								str+='<div style="border-left:5px solid #F75C5D;">';
 							}
 							
@@ -232,19 +264,24 @@ function buildMeesevaSLAOverviewDtls(result,divId,blockId){
 						str+='</div>';
 						str+='</div>';
 				}
-				
-						
-				
-				
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="m_top20">';
+			str+='<div class="col-sm-12">';
+				str+='<div class="white_block_ITC">';
+					str+='<h3>MEESEVA SLA MONITORING</h3>';
+					str+='<div id="meesevaSalTable'+divId+''+blockId+'"></div>';
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	$("#"+divId+"Block"+blockId).html(str);
 }
 
-function getMeesevaSLAMonitoringDtlsDepartmentWise(){
+function getMeesevaSLAMonitoringDtlsDepartmentWise(divId,blockId){
+	$("#meesevaSalTable"+divId+blockId).html(spinner);
 	var json = {
-		fromDate:"01/04/2016",
-		toDate:"01/09/2017",
+		fromDate:globalFromDate,
+		toDate:globalToDate,
 		year:"",
 		filterId:"2"
 	}
@@ -258,8 +295,52 @@ function getMeesevaSLAMonitoringDtlsDepartmentWise(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
+		 if (result != null && result.length > 0) {
+			 buildMeesevaSlaMonitoringDtls(result,divId,blockId);
+		 } 
 	});		
+}
+function buildMeesevaSlaMonitoringDtls(result,divId,blockId) {
+	var str = '';
+	str+='<div class="table-responsive m_top20">';	
+	str+='<table class="table table-bordered" id="">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th rowspan="2">Departments</th>';
+					str+='<th colspan="2" style="text-align:center;">Category - A</th>';
+					str+='<th colspan="6" style="text-align:center;">Category - B</th>';
+				str+='</tr>';
+				
+				str+='<tr>';
+					str+='<th>Grand Total</th>';
+					str+='<th>Total</th>';
+					str+='<th>Total</th>';
+					str+='<th>Approved</th>';
+					str+='<th>Rejected</th>';
+					str+='<th>Pending with in SLA</th>';
+					str+='<th>Pending Beyond SLA</th>';
+					str+='<th>Revoked</th>';
+			str+='</tr>';
+			
+		str+='</thead>';
+		str+='<tbody>';
+			for(var i in result){
+					str+='<tr>';
+					 str+='<td>'+result[i].name+'</td>';
+					 str+='<td>'+result[i].totalTransactionCount+'</td>';
+					 str+='<td>'+result[i].cateoryA+'</td>';
+					 str+='<td>'+result[i].categoryB+'</td>';
+					 str+='<td>'+result[i].bApproved+'</td>';
+					 str+='<td>'+result[i].bRejected+'</td>';
+					 str+='<td>'+result[i].pendingWithinSla+'</td>';
+					 str+='<td>'+result[i].pendingBeyondSla+'</td>';
+					 str+='<td>'+result[i].revoked+'</td>';
+				 str+='</tr>';
+			}
+		str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	$("#meesevaSalTable"+divId+blockId).html(str);
 }
 
 function getPromotionsOverviewByDepartmentType(){
