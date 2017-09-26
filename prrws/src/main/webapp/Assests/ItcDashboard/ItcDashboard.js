@@ -107,7 +107,7 @@ function departmentWiseOverView(){
 }
 $(document).on('click','.blockWiseDetails',function(){
 	var blockName = $(this).attr("attr_block_name");
-	departmentBlockWiseDetails(blockName);
+	//departmentBlockWiseDetails(blockName);
 })
 function departmentBlockWiseDetails(divId)
 {
@@ -226,6 +226,8 @@ function getMeesevaSLAOverviewDtls(divId,blockId){
 	    $("#"+divId+"Block"+blockId).html('');
 		if(result !=null && result.length>0){
 			buildMeesevaSLAOverviewDtls(result,divId,blockId);
+		}else {
+			$("#"+divId+"Block"+blockId).html('NO DATA AVAILABLE.');
 		}
 		getMeesevaSLAMonitoringDtlsDepartmentWise(divId,blockId);
 	});		
