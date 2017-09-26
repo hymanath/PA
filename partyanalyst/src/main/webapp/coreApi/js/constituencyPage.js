@@ -718,9 +718,22 @@ function getCandidateAndPartyInfoForConstituency(){
 	}else{
 		$("#parliamentMemberId,#assemblyMemberId").show();
 	}
+	var representativeTypeIds = [];
+	if(locationLevelId == 3){
+		representativeTypeIds =[2,1,20,31];
+	}else if(locationLevelId == 4){
+		representativeTypeIds =[2,1,20,31,21];
+	} else if(locationLevelId == 10){
+		representativeTypeIds =[20,31];
+	}else if(locationLevelId == 5){
+		representativeTypeIds =[2,1,20,31,3,4];
+	}else if(locationLevelId == 6){
+		representativeTypeIds =[2,1,20,31,3,4];
+	}  
 	var jsObj={
     	locationTypeId	: locationLevelId,
-		locationValue	: locationLevelVal
+		locationValue	: locationLevelVal,
+		representativeTypeIds:representativeTypeIds
     }
     $.ajax({
       type : "GET",
