@@ -1020,7 +1020,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		      }
 				
 			// 0-castegroupId,1-castegroup,2-casteId,3-castegroup,4-voterscount,5-percentage,6-maleVotersCount,7-femaleVotersCount
-			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCasteWiseCount(constituencyIds, publicationDateId, reportLevelId, castegroupId);
+			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCasteWiseCount(constituencyIds, publicationDateId, null,reportLevelId, castegroupId);
 
 			if (votersObjList != null && votersObjList.size() > 0) {
 

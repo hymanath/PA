@@ -277,7 +277,9 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		// o-castegrpId,1-castgrpname,2-casteId,4-castName, 5-gender,6-count
 		// o-castegrpId,1-casteId,3-gender,4-count
 
-		sb.append("select caste_category_id as casteCategoryId, caste_state_id as casteId,gender as gender, count as count from tdp_cadre_caste_info where ");
+		sb.append("select tcf.caste_category_id as casteCategoryId, cc.category_name as casteCategoryName,tcf.caste_state_id as casteId,c.caste_name as castname," +
+				" tcf.gender as gender, tcf.count as count from tdp_cadre_caste_info  tcf join caste c on c.caste_id=caste_state_id join " +
+				" caste_category cc on cc.caste_category_id= tcf.caste_category_id where ");
 		
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
@@ -298,11 +300,13 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			sb.append(" and tdp_cadre_enrollment_id=:enrollmentYearId");
 		}
 		if(casteGroupId!=null && casteGroupId.longValue() > 0l){
-			sb.append(" and caste_category_id =:casteGroupId");
+			sb.append(" and tcf.caste_category_id =:casteGroupId");
 		}
 		Query query = getSession().createSQLQuery(sb.toString())
 				.addScalar("casteCategoryId", Hibernate.LONG)
+				.addScalar("casteCategoryName",Hibernate.STRING)
 				.addScalar("casteId",Hibernate.LONG)
+				.addScalar("castname",Hibernate.STRING)
 				.addScalar("gender", Hibernate.STRING)
 				.addScalar("count", Hibernate.LONG);
 		if (enrollmentYearId != null && enrollmentYearId.longValue() > 0l) {
@@ -358,4 +362,94 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		}
 		return query.list();
 	}
+
+	@Override
+	public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long locationTypeId, Long locationValue, Long casteGroupId,	Long casteId, Long enrollmentYearId) {
+
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("select tcf.voter_age_range_id as voterAgeRangeid,var.age_range as ageRangename, tcf.gender as gender,tcf.count as count from tdp_cadre_caste_info tcf " +
+				" join voter_age_range var  on var.voter_age_range_id = tcf.voter_age_range_id  where ");
+		
+		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
+			if (locationTypeId == 3l) {
+				sb.append(" location_id=:locationValue");
+			} else if (locationTypeId == 4l) {
+				sb.append(" location_id=:locationValue");
+			} else if (locationTypeId == 5l) {
+				sb.append(" location_id=:locationValue");
+			} else if (locationTypeId == 6l) {
+				sb.append(" location_id=:locationValue");
+			} else if (locationTypeId == 7l) {
+				sb.append(" location_id=:locationValue");
+			} else if (locationTypeId == 2l) {
+				sb.append(" location_id=:locationValue");
+			}
+
+		}
+		if(casteId != null && casteId.longValue()>0l){
+			sb.append(" and tcf.caste_state_id=:casteId");
+		}
+		if(casteGroupId != null && casteGroupId.longValue()>0l){
+			sb.append(" and tcf.caste_category_id=:casteGroupId");
+		}
+		if (enrollmentYearId != null && enrollmentYearId.longValue() > 0l) {
+			sb.append(" and tcf.tdp_cadre_enrollment_id=:enrollmentYearId");
+		}
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("voterAgeRangeid", Hibernate.LONG)
+				.addScalar("ageRangename",Hibernate.STRING)
+				.addScalar("gender", Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG);
+		
+		if (enrollmentYearId != null && enrollmentYearId.longValue() > 0l) {
+			query.setParameter("enrollmentYearId", enrollmentYearId);
+		}
+
+		if (locationValue != null && locationValue.longValue() > 0) {
+			query.setParameter("locationValue", locationValue);
+		}
+		if(casteId != null && casteId.longValue()>0l){
+			query.setParameter("casteId",casteId);
+		}
+		if(casteGroupId != null && casteGroupId.longValue()>0l){
+			query.setParameter("casteGroupId",casteGroupId);
+		}
+		return query.list();
+	}
+	
+	public List<Object[]> getGenderAndAgeGroupWiseCadreCount(Long locationTypeId,Long locationValue,Long enrollmentYearId ){
+		StringBuilder sb = new StringBuilder();
+		sb.append( "select model.voterAgeRangeId,model.gender, model.count " +
+				" from TdpCadreCasteInfo model where model.tdpCadreEnrollmentId = :enrollmentYearId and " );
+		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
+			if (locationTypeId == 3l) {
+				sb.append(" location_id=:locationValue");
+			} else if (locationTypeId == 4l) {
+				sb.append(" location_id=:locationValue");
+			} else if (locationTypeId == 5l) {
+				sb.append(" location_id=:locationValue");
+			} else if (locationTypeId == 6l) {
+				sb.append(" location_id=:locationValue");
+			} else if (locationTypeId == 7l) {
+				sb.append(" location_id=:locationValue");
+			} else if (locationTypeId == 2l) {
+				sb.append(" location_id=:locationValue");
+			}
+
+		}
+		sb.append(" group by model.gender,model.voterAgeRangeId " +
+				" order by model.voterAgeRangeId ");
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("enrollmentYearId", enrollmentYearId);
+		
+		if(locationValue!= null && locationValue.longValue()>0l){
+		query.setParameter("locationValue", locationValue);
+		}
+		
+		return query.list();
+	}
+
+
 }

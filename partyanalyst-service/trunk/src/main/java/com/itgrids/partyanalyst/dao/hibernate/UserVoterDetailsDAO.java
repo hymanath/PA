@@ -3475,5 +3475,39 @@ IUserVoterDetailsDAO{
 		 
 		 return query.list();
 	 }
+
+	@Override
+	public List<Object[]> getVotersCasteNAgeGroupWiseCounts(Long casteGroupId,Long casteId, Long reportLevelId,Long locationTypeId, List<Long> locationValues,Long publicationDateId) {
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" vai.age_range_id, vai.male_voters,vai.female_voters from voter_age_info vai ");
+		 
+		 if(reportLevelId != null && reportLevelId.longValue() == 1l && locationValues !=null && locationValues.size()>0){
+			 sb.append(" join  constituency c on c.constituency_id=vai.report_level_value ");
+		
+			 if(locationTypeId == 2l){
+				 sb.append(" where vai.report_level_id =:reportLevelId and c.state_id in (:locationValues)");
+			 }else if(locationTypeId == 3l){
+				 sb.append(" where vai.report_level_id =:reportLevelId and c.state_id in (:locationValues)");
+			 }if(locationTypeId == 4l){
+				 sb.append(" where vai.report_level_id =:reportLevelId and c.constituency_id in (:locationValues)");
+			 }
+		 }
+		 
+		 if(reportLevelId != null && reportLevelId.longValue() !=1l && locationValues !=null && locationValues.size()>0){
+			
+			 if(locationTypeId == 5l){
+				 sb.append(" where vai.report_level_id =:reportLevelId and vai.report_level_value in (:locationValues)");
+			 }if(locationTypeId == 6l){
+				 sb.append(" where vai.report_level_id =:reportLevelId and vai.report_level_value in (:locationValues)");
+			 }if(locationTypeId == 7l){
+				 sb.append(" where vai.report_level_id =:reportLevelId and vai.report_level_value in (:locationValues)");
+			 }if(locationTypeId == 8l){
+				 sb.append(" where vai.report_level_id =:reportLevelId and vai.report_level_value in (:locationValues)");
+			 }
+			 
+		 }
+			 
+			 return null;
+	}
 }
 

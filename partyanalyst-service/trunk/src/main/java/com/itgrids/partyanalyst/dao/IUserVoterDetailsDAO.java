@@ -355,4 +355,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	 public List<Object[]> getCasteVotersDetailsBylocationTypeInConstituency(Long publicationDateId,Long userId,Long constituencyId,String locationType,Long casteId,String gender,Long locationId,String queryStr);
 	 public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,List<Long> locationIdsList,Long casteStateId);
 	 public List<Object[]> getVotersCasteNAgeGroupWiseCount(Long casteGroupId,Long casteId,List<Long> constituencyIds,Long publicationDateId);
+
+	public List<Object[]> getVotersCasteNAgeGroupWiseCounts(Long casteGroupId, Long casteId, Long reportLevelId,Long locationTypeId, List<Long> constituencyIds,Long publicationDateId);
 }
