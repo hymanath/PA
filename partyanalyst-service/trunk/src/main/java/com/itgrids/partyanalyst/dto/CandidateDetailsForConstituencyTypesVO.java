@@ -10,7 +10,8 @@ public class CandidateDetailsForConstituencyTypesVO {
 	private String ispartial;
 	private List<CandidateDetailsForConstituencyTypesVO> subList;
 	private List<CandidateInfoForConstituencyVO> list = new ArrayList<CandidateInfoForConstituencyVO>();
-
+	private List<CandidateInfoForConstituencyVO> subList1; 
+	private String migrateCandidate;
 	
 	
 	
@@ -48,5 +49,17 @@ public class CandidateDetailsForConstituencyTypesVO {
 	public void setSubList(List<CandidateDetailsForConstituencyTypesVO> subList) {
 		this.subList = subList;
 	}
-
+	public List<CandidateInfoForConstituencyVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<CandidateInfoForConstituencyVO> subList1) {
+		this.subList1 = subList1;
+	}
+	public String getMigrateCandidate() {
+		return migrateCandidate;
+	}
+	public void setMigrateCandidate(String migrateCandidate) {
+		this.migrateCandidate = migrateCandidate;
+	}
+	
 }
