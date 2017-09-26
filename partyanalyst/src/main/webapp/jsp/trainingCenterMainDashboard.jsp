@@ -58,6 +58,30 @@ header.eventsheader {
 	color:#666666;
 }
 .table-scroll-1{max-height:400px;overflow-y:auto;z-index:999999}
+.panelCollapseIcon.collapsed::before
+{  
+content:"\002b";
+}
+.panelCollapseIcon::before
+{
+	
+		font-family:'Glyphicons Halflings';
+		content:"\2212";
+		float: right;
+		font-size:10px;
+		font-weight:400 !important;
+		margin-left:-4px;
+		color:@white_color;
+		border:1px solid @white_color;
+		padding:2px 4px;
+		border:1px solid #000;
+		
+	
+}
+.panelCollapseIcon.collapsed::before
+{
+	content:"\002b";
+}
 </style>
 </head>
 <body>
@@ -255,15 +279,24 @@ header.eventsheader {
 						<section>
                             <div class="row">
                             	<div class="col-md-12">
-                                	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold">ALL TRAINING PROGRAM WISE DETAILS</h4>
-                                        </div>
-                                        <div class="panel-body pad_0">
-                                        	<div class="table-responsive table-scroll" id="allProgramWiseDetailsDIv"> </div>
-                                        </div>
-                                    </div>
-                                </div>
+									<div class="panel panel-default panel-black" id="heading7">
+										<div class="panel-heading">
+											
+											<div class="row">
+												<div class="col-sm-12">
+													<a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse7" aria-expanded="true" aria-controls="collapse7">
+														<h4 class="panel-title text-capital">ALL TRAINING PROGRAM WISE DETAILS</h4>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div id="collapse7" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading7">
+											<div class="panel-body">
+												<div class="table-responsive table-scroll" id="allProgramWiseDetailsDIv"> </div>
+											</div>
+										</div>
+									</div>
+				                </div>
                             </div>
                         </section>
 						
@@ -271,24 +304,44 @@ header.eventsheader {
                             <div class="row">
 							
                             	<div class="col-md-12">
-								<div class="panel panel-default" id="feedBackCountMainDivId" style="">
-										<div class="panel-heading bg_d">
-											<h4 class="panel-title"><b>TRAINED CADRE AND FEEDBACK DETAILS</b><span class="pull-right">
-											<!--<button class="btn btn-success btn-xs" id="viewDetailsBtnId" style="display:none">VIEW FULL DETAILS</button>-->
-											</span></h4>	
-										</div>
-										<div class="panel-body pad_0">
-											<img id="feefbackLoadingImgId" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif">
-											<div style="" id="feedBackCountId"></div>
-										</div>
-								</div>
 								
-									
-                                	<div class="panel panel-default">
-                                    	<div class="panel-body pad_0">
-											<div class="panel-heading bg_d">
-												<span class="panel-title text-bold">SPEAKERS ATTENDANCE <span class="col-md-offset-3" id="spekrsTotalDiv"></span><img id="refrshButtonId" alt="refresh icon" class="tiled-icon" style="margin-left:-265px;max-width: 128px; max-height: 22px;" title="Click Here To get Updated Speaker Details" src="images/refresh.png"></span>
-														<div class="pull-right">
+								<div class="panel panel-default panel-black" id="heading8">
+									<div id="feedBackCountMainDivId">
+										<div class="panel-heading">
+											
+											<div class="row">
+												<div class="col-sm-12">
+													<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse8" aria-expanded="true" aria-controls="collapse8">
+														<h4 class="panel-title text-capital">TRAINED CADRE AND FEEDBACK DETAILS</h4>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div id="collapse7" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading8">
+											<div class="panel-body pad_0">
+												<img id="feefbackLoadingImgId" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif">
+												<div style="" id="feedBackCountId"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+									<!-- ara-->
+									<div class="panel panel-default" id="headingTwo">
+											<div class="panel-heading">
+												
+												<div class="row">
+													<div class="col-sm-12">
+														<a class="panelCollapseIcon collapseActiveDistCls collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+															
+															<h4 class="panel-title text-capital">SPEAKERS ATTENDANCE <span class="col-md-offset-3" id="spekrsTotalDiv"></span><img id="refrshButtonId" alt="refresh icon" class="tiled-icon" style="margin-left:-265px;max-width: 128px; max-height: 22px;" title="Click Here To get Updated Speaker Details" src="images/refresh.png"></h4>
+														</a>
+													</div>
+												</div>
+											</div>
+											<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+												<div class="panel-body">
+													<div class="row">
+														<div class="col-sm-6 col-">
 															<input type="radio" checked name="filterRadio" value="today" class="filterRadio"/>
 															<label>&nbsp;Today</label>
 															<input type="radio" name="filterRadio" value="fifteen" class="filterRadio"/>
@@ -297,22 +350,18 @@ header.eventsheader {
 															<label>&nbsp;30 Days</label>
 															<input type="radio" name="filterRadio" value="all" class="filterRadio"/><label>&nbsp;All</label>
 														</div>
-
-									<div class="row">
-													<div class="col-md-4 col-md-offset-8">
-												<div class="pull-right">
-													<input type="radio" checked name="filtersRadio" value="individual" class="filtersRadio"/><label>&nbsp;Individual</label>
-													<input type="radio" name="filtersRadio" value="count" class="filtersRadio"/><label>&nbsp;Count </label>
-													<input type="radio" name="filtersRadio" value="consolidated" class="filtersRadio"/><label>&nbsp;Consolidated</label>												
+														<div class="col-sm-6">
+															<input type="radio" checked name="filtersRadio" value="individual" class="filtersRadio"/><label>&nbsp;Individual</label>
+															<input type="radio" name="filtersRadio" value="count" class="filtersRadio"/><label>&nbsp;Count </label>
+															<input type="radio" name="filtersRadio" value="consolidated" class="filtersRadio"/><label>&nbsp;Consolidated</label>
+														</div>
+													</div>
+													
+													<div><img id="speakersAttendenceImg" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif"></div>
+													<div id="speakersAttendence" class="table-responsive"></div>
 												</div>
 											</div>
-											</div>
-											</div>
-											<div><img id="speakersAttendenceImg" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif"></div>
-											
-											<div id="speakersAttendence" class="table-responsive"></div>
 										</div>
-                                    </div>
                                 </div>
                             </div>
                         </section>
@@ -326,14 +375,25 @@ header.eventsheader {
                         <section>
                             <div class="row">
                             	<div class="col-md-12">
-                                	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold">UPCOMING TRAINING PROGRAM DETAILS</h4>
-                                        </div>
-                                        <div class="panel-body pad_0" id="upComingTrainingPrograms">
-                                        </div>
-                                    </div>
-                                </div>
+									<div class="panel panel-default panel-black" id="headingThree">
+										<div class="panel-heading">
+											
+											<div class="row">
+												<div class="col-sm-12">
+													<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+														<h4 class="panel-title text-capital">UPCOMING TRAINING PROGRAM DETAILS</h4>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div id="collapseThree" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingThree">
+											<div class="panel-body">
+												<div class="" id="upComingTrainingPrograms">
+											</div>
+											</div>
+										</div>
+									</div>
+					            </div>
                             </div>
                         </section>
 						<div class="pull-right font-13"><span style="color:red">*</span>
@@ -346,13 +406,24 @@ header.eventsheader {
                         <section>
                             <div class="row">
                             	<div class="col-md-12">
-                                	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold">COMPLETED TRAINING PROGRAMS</h4>
-                                        </div>
-                                        <div class="panel-body pad_0" id="completedTrainingPrograms">
-                                        </div>
-                                    </div>
+									<div class="panel panel-default" id="headingFour">
+										<div class="panel-heading">
+											
+											<div class="row">
+												<div class="col-sm-12">
+													<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+														<h4 class="panel-title text-capital">COMPLETED TRAINING PROGRAMS</h4>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div id="collapseFour" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingFour">
+											<div class="panel-body">
+												 <div class="" id="completedTrainingPrograms"></div>
+                                        	</div>
+										</div>
+									</div>
+                                	
                                 </div>
                             </div>
                         </section>
@@ -360,38 +431,50 @@ header.eventsheader {
                         <section>
                         	<div class="row">
                             	<div class="col-md-12">
-                                	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title" style="font-weight:bold;">
-                                            	PARTY DESIGNATION WISE MEMBERS PARTICIPATED - COMPLETED TRAINING PROGRAMS
-                                            </h4>
-                                        </div>
-										
-                                        <div class="panel-body pad_0">
-										  <img id="partyDesgWiseImg" src="images/ajaxImg2.gif" style="width:45px;height:45px;margin-left:45%">
-										  <div id="partyDesgWisedivId"></div>
+									<div class="panel panel-default" id="headingFive">
+										<div class="panel-heading">
+											<div class="row">
+												<div class="col-sm-12">
+													<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+														<h4 class="panel-title text-capital">PARTY DESIGNATION WISE MEMBERS PARTICIPATED - COMPLETED TRAINING PROGRAMS</h4>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div id="collapseFive" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingFive">
+											<div class="panel-body">
+												<img id="partyDesgWiseImg" src="images/ajaxImg2.gif" style="width:45px;height:45px;margin-left:45%">
+												<div id="partyDesgWisedivId"></div>
 											
-                                        </div>
-                                    </div>
-                                </div>
+											</div>
+										</div>
+									</div>
+								</div>
                             </div>
                         </section>
 						
                         <section>
                         	<div class="row">
 								<div class="col-md-12">
-									<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-											<h4 class="panel-title">
-												<b><span id="headingDiv">DISTRICT </span>WISE TOTAL MEMBERS PARTICIPATED</b>
-												<div class="pull-right">
-													<input type="radio" name="distConst" class="constDistRadio" checked value="dist"><label>District</label>
-													<input type="radio" name="distConst" class="constDistRadio" value="const"><label>Constituency</label>
-												</div>
-											</h4>
-										</div>
-										<div class="panel-body pad_0">
+								<div class="panel panel-default" id="heading6">
+										<div class="panel-heading">
 											<div class="row">
+												<div class="col-sm-12">
+													<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse6" aria-expanded="true" aria-controls="collapse6">
+														<h4 class="panel-title">
+															<b><span id="headingDiv">DISTRICT </span>WISE TOTAL MEMBERS PARTICIPATED</b>
+															<div class="pull-right">
+																<input type="radio" name="distConst" class="constDistRadio" checked value="dist"><label>District</label>
+																<input type="radio" name="distConst" class="constDistRadio" value="const"><label>Constituency</label>
+															</div>
+														</h4>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div id="collapse6" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading6">
+											<div class="panel-body">
+												<div class="row">
 												<div class="col-md-12" id="distDivId">
 													<div class="panel panel-default">
 														<!--<div class="panel-heading bg_d">
@@ -418,6 +501,8 @@ header.eventsheader {
 														
 													</div>
 												</div>
+											</div>
+											
 											</div>
 										</div>
 									</div>
@@ -684,7 +769,14 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 									for(var m in schedule.batchDetails){
 										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_from='c' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
-										str+='<td><b>'+schedule.batchDetails[m].completedMemberAttendeeCount+'</b> C - <b>'+schedule.batchDetails[m].completedMemberCount+'</b> IA - <b>'+schedule.batchDetails[m].completedAttendenceNonIn+'</b> NIA</td>';
+										
+										if(myResult[i].campDetails[j].campId != null && parseInt(myResult[i].campDetails[j].campId)==7){
+											var count = parseInt(schedule.batchDetails[m].completedMemberCount)+parseInt(schedule.batchDetails[m].completedAttendenceNonIn)
+											str+='<td><b>'+count+'</b> IA</td>';
+										}
+										else{
+											str+='<td><b>'+schedule.batchDetails[m].completedMemberAttendeeCount+'</b> C - <b>'+schedule.batchDetails[m].completedMemberCount+'</b> IA - <b>'+schedule.batchDetails[m].completedAttendenceNonIn+'</b> NIA</td>';
+										}
 										
 										str+="</tr>";
 									}
@@ -750,7 +842,13 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_from='r' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
 										if(schedule.batchDetails[m].runningMemberCount!=null){
-											str+='<td><b>'+schedule.batchDetails[m].runningMemberCount+'</b> C - <b>'+schedule.batchDetails[m].runningAttendenceMemberCount+'</b> IA - <b>'+schedule.batchDetails[m].runningAttendenceNonIn+'</b> NIA</td>';
+											
+											if(myResult[i].campDetails[j].campId == 7){
+												var totalCount = parseInt(schedule.batchDetails[m].runningAttendenceMemberCount)+parseInt(schedule.batchDetails[m].runningAttendenceNonIn);
+												str+='<td><b>'+totalCount+'</b> IA</td>';
+											}else{
+												str+='<td><b>'+schedule.batchDetails[m].runningMemberCount+'</b> C - <b>'+schedule.batchDetails[m].runningAttendenceMemberCount+'</b> IA - <b>'+schedule.batchDetails[m].runningAttendenceNonIn+'</b> NIA</td>';
+											}
 										}else{
 											str+='<td>0</td>';
 										}
@@ -992,7 +1090,13 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 							str+='<td class="text-danger"><b>'+upcomingDetails+'</b><br>(<b>'+upcomingMem+'</b> C - <b>'+upcomingMem1+'</b> IA - <b>'+upcomingMem2+'</b> NIA)</td>';
 							str+='<td class="text-warning"><b>'+runningDetails+'</b><br>(<b>'+runningMem+'</b> C - <b>'+runningMem1+'</b> IA - <b>'+runningMem2+'</b> NIA)</td>';
 							str+='<td class="text-success"><b>'+completedDetails+'</b><br>(<b>'+completedMem1+'</b> C - <b>'+completedMem+'</b> IA - <b>'+completedMem2+'</b> NIA)</td>';
-							str+='<td class="text-muted"><b>'+TotalMembers+'</b> C - <b>'+TotalMembers1+'</b> IA - <b>'+TotalMembers2+'</b> NIA</td>';
+							
+							if(result.completed.programWiseDetails[i].campDetails[j].campId == 7 ){
+								var count = parseInt(TotalMembers1)+parseInt(TotalMembers2);
+								str+='<td class="text-muted"><b>'+count+'</b> IA</td>';
+							}else {
+								str+='<td class="text-muted"><b>'+TotalMembers+'</b> C - <b>'+TotalMembers1+'</b> IA - <b>'+TotalMembers2+'</b> NIA</td>';
+							}
 						}	
 						str+='</tr>';
 					}
@@ -1324,7 +1428,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 							str+='<tr>';
 							if(!isBuild){
 								isBuild=true;
-								str+='<td  rowspan="'+lenght+'" > TNSF Leadership Excellence Program  </td>';
+								str+='<td  rowspan="'+lenght+'" > TNSF Leadership Skills  </td>';
 								str+='<td   rowspan="'+lenght+'"  >'+result[i].name+'</td>';
 							}
 							
@@ -1516,7 +1620,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					str+='<th class="text-center" style="background-color:#dddddd;" >  </th>';
 					str+='<th class="text-center" style="background-color:#dddddd;" > SPEAKER </th>';
 					str+='<th class="text-center" style="background-color:#dddddd;" > DESIGNATION </th>';
-					if(type == 'today'){
+					if(type == 'today1'){
 						str+='<th class="text-center" style="background-color:#dddddd;" >PROGRAM</th>';
 						str+='<th class="text-center" style="background-color:#dddddd;" >TRAINING CAMP</th>';					
 						str+='<th class="text-center" style="background-color:#dddddd;" >BATCH NAME</th>';
@@ -1537,7 +1641,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 							str+='<td style="text-align:center;">'+result[i].partyBenefitStr+'</td>';
 						else
 							str+='<td style="text-align:center;"> - </td>';
-						if(type == 'today'){
+						if(type == 'today1'){
 							str+='<td>'+result[i].progName+'</td>';
 							str+='<td>'+result[i].campName+'</td>';
 							if(type == 'today')
