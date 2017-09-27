@@ -558,7 +558,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					String isMigrate ="false";
 					List<CandidateInfoForConstituencyVO> candidateInfoList = extractCandidateNPartyDataFromList(candidateList,candidateIds);
 					LOG.info("Candidate Info :" + candidateInfoList.size());
-					List<Object[]> cadreCandidateDeatils = tdpCadreCandidateDAO.nomiantionCandidateDetails(candidateIds);//srujana
+					List<Object[]> cadreCandidateDeatils = tdpCadreCandidateDAO.nomiantionCandidateDetails(candidateIds);
 					if(cadreCandidateDeatils != null && cadreCandidateDeatils.size()>0){
 						for(Object[] param :cadreCandidateDeatils){
 					       matchedVo = getMatchedVOForCadreId(candidateInfoList,commonMethodsUtilService.getLongValueForObject(param[1]));
@@ -618,7 +618,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					}
 				}
 				//parliementfinalList.add(candidateInfo1);
-				List<Object[]> parliamentCandidateDeatils = tdpCadreCandidateDAO.nomiantionCandidateDetails(parliamentCandidateIds);//srujana
+				List<Object[]> parliamentCandidateDeatils = tdpCadreCandidateDAO.nomiantionCandidateDetails(parliamentCandidateIds);
 				CandidateInfoForConstituencyVO matchedVo1 = null;
 				if(parliamentCandidateDeatils != null && parliamentCandidateDeatils.size()>0){
 					for(Object[] param : parliamentCandidateDeatils){

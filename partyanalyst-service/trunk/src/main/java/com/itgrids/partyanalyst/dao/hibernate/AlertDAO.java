@@ -10533,6 +10533,8 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	        	queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
 	 	        }else if(locationTypeId == 8l){
 	 	        	queryStr.append(" and model.userAddress.ward.constituencyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 1l){
+	 	        	queryStr.append(" and model.userAddress.state.stateId in(:locationValues) ");
 	 	        }
 	 	    }
 	 		if(year != null && !year.trim().isEmpty()){
@@ -10556,6 +10558,8 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		 	        }else if(locationTypeId == 6l){
 		 	        	query.setParameterList("locationValues", locationValues);
 		 	        }else if(locationTypeId == 7l){
+		 	        	query.setParameterList("locationValues", locationValues);
+		 	        }else if(locationTypeId == 1l){
 		 	        	query.setParameterList("locationValues", locationValues);
 		 	        }
 		 	    }
@@ -10655,6 +10659,8 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	        	queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
 	 	        }else if(locationTypeId == 8l){
 	 	        	queryStr.append(" and model.userAddress.ward.constituencyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 1l){
+	 	        	queryStr.append(" and model.userAddress.state.stateId in(:locationValues) ");
 	 	        }
 	 	    }
 	 	    if(year != null && !year.trim().isEmpty()){
@@ -10694,7 +10700,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		        	query.setParameterList("locationValues", locationValues);
 		        }else if(locationTypeId == 7l){
 		        	query.setParameterList("locationValues", locationValues);
-		        }
+		        }else if(locationTypeId == 1l){
+		        	query.setParameterList("locationValues", locationValues);
+	 	        }
 	 		}
 	 		return query.list();
       }
