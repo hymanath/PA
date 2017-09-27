@@ -222,6 +222,8 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 			sb.append(" and tcc.tdpCadre.userAddress.localElectionBody.localElectionBodyId = :locationValue " );
 		}else if (locationTypeId != null && locationTypeId == 8l){
 			sb.append(" and tcc.tdpCadre.userAddress.ward.constituencyId = :locationValue " );
+		}else if (locationTypeId != null && locationTypeId == 1l){
+			sb.append(" and tcc.tdpCadre.userAddress.state.stateId = :locationValue " );
 		}
 		
 		if(representativTypeIds != null && representativTypeIds.size() > 0){
