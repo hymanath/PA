@@ -135,6 +135,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 			List<Long> constituencyIds = new ArrayList<Long>();
 			List<Long> locationIds = new ArrayList<Long>();
 			locationIds.add(locationValue);
+			Long totalCadreCount=0l,totalVoterCount=0l;
 			if(locationTypeId == 3l || locationTypeId == 4l || locationTypeId == 2l){
 				 constituencyIds.add(locationValue);
 		        reportLevelId= 1l;
@@ -177,6 +178,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 					casteVO.setVoterPercentage(casteVO.getVoterPercentage()+(Double) objects[5]);
 					casteVO.setMaleVoters(casteVO.getMaleVoters()+(Long) objects[6]);
 					casteVO.setFemaleVoters(casteVO.getFemaleVoters()+(Long) objects[7]);
+					totalVoterCount=totalVoterCount+commonMethodsUtilService.getLongValueForObject(objects[4]);
 				}
 			}
 			
@@ -195,12 +197,13 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 				}	
 				if(casteVO!=null){
 					if (param[4].toString().equalsIgnoreCase("M")) {
-						casteVO.setMaleCadres(casteVO.getMaleCadres()+(Long) param[5]);
+						casteVO.setMaleCadres(casteVO.getMaleCadres()+commonMethodsUtilService.getLongValueForObject(param[5]));
 					} else if (param[4].toString().equalsIgnoreCase("F")) {
-						casteVO.setFemaleCadres(casteVO.getFemaleCadres()+(Long) param[5]);
+						casteVO.setFemaleCadres(casteVO.getFemaleCadres()+commonMethodsUtilService.getLongValueForObject(param[5]));
 					}
-					casteVO.setTotalCadres(casteVO.getTotalCadres()+(Long) param[5]);
+					casteVO.setTotalCadres(casteVO.getTotalCadres()+commonMethodsUtilService.getLongValueForObject(param[5]));
 				}
+				totalCadreCount=totalCadreCount+commonMethodsUtilService.getLongValueForObject(param[5]);
 			}
 			voList.addAll(casteMap.values());
 			
@@ -210,14 +213,19 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 			    }
 			}); 
 			
+			
 			// calculating totals and %'s
 			if (voList != null && voList.size() > 0) {
 				for (LocationVotersVO casteVO : voList) {
 					if(casteVO.getTotalVoters() !=0l ){
 						casteVO.setMaleVotersPerc(((casteVO.getMaleVoters() * 100) / casteVO.getTotalVoters()) + "%");
 						casteVO.setFemaleVotersPerc(((casteVO.getFemaleVoters() * 100) / casteVO.getTotalVoters()) + "%");
-						casteVO.setMaleCadrePerc(((casteVO.getMaleVoters() * 100) / casteVO.getTotalVoters()) + "%");
-						casteVO.setFemaleVotersPerc(((casteVO.getFemaleVoters() * 100) / casteVO.getTotalVoters()) + "%");
+						casteVO.setTotalVotersPerc((casteVO.getTotalVoters() * 100/totalVoterCount) +"%");
+					}
+					if(casteVO.getTotalCadres()!=0l){
+						casteVO.setMaleCadrePerc(((casteVO.getMaleCadres() * 100) / casteVO.getTotalCadres()) + "%");
+						casteVO.setFemaleCadrePerc(((casteVO.getFemaleCadres() * 100) / casteVO.getTotalCadres()) + "%");
+						casteVO.setTotalCadrePerc((casteVO.getTotalCadres() * 100/totalCadreCount) +"%");
 					}
 				}
 			}
@@ -256,14 +264,10 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 			Long reportLevelId= 0l;
 			List<Long> constituencyIds = new ArrayList<Long>();
 			List<Long> locationIds = new ArrayList<Long>();
+			Long totalVoterCount=0l,totalCadreCount=0l;
 			locationIds.add(locationValue);
-			if(locationTypeId == 3l){
-		        List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(locationIds);
-		        for (Object[] objects : locationValuesObj) {
-		          if(objects!=null){
-		        	  constituencyIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
-		          }
-		        }
+			if(locationTypeId == 3l || locationTypeId == 4l || locationTypeId == 2l){
+				 constituencyIds.add(locationValue);
 		        reportLevelId= 1l;
 		      }else if(locationTypeId == 10l){
 		    	  constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
@@ -285,14 +289,14 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 		    	  reportLevelId=6l;
 		    	  constituencyIds.add(locationValue);
 		      }
-			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCastGroupWiseCount(constituencyIds, publicationDateId, reportLevelId);
+			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCastGroupWiseCount(constituencyIds,locationTypeId, publicationDateId, reportLevelId);
 			if(votersObjList!=null){
 				for (Object[] objects : votersObjList) {
 					LocationVotersVO vo = new LocationVotersVO();
 					vo.setAgeRangeId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 					vo.setAgeRange(commonMethodsUtilService.getStringValueForObject(objects[1]));
 					vo.setTotalVoters(commonMethodsUtilService.getLongValueForObject(objects[2]));
-				//	vo.setTotalCadres(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					totalVoterCount=totalVoterCount+commonMethodsUtilService.getLongValueForObject(objects[2]);
 					listVo.add(vo);
 				}
 			}
@@ -310,6 +314,17 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 					} else {
 						matchedCGVO.setTotalCadres(commonMethodsUtilService.getLongValueForObject(objects[1]));
 					}
+					totalCadreCount=totalCadreCount+commonMethodsUtilService.getLongValueForObject(objects[1]);
+				}
+			}
+			if (listVo != null && listVo.size() > 0) {
+				for (LocationVotersVO casteVO : listVo) {
+					if(totalVoterCount !=0l ){
+						casteVO.setTotalVotersPerc((casteVO.getTotalVoters() * 100/totalVoterCount) +"%");
+					}
+					if(totalCadreCount!=0l){
+						casteVO.setTotalCadrePerc((casteVO.getTotalCadres() * 100/totalCadreCount) +"%");
+					}
 				}
 			}
 			return listVo;
@@ -320,6 +335,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 		
 		
 	}
+	
 	// for expand block
 	/**
 	 * 
@@ -376,7 +392,9 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 				}
 			}
 			// 0-ageRangeId,1-ageRange,2-gender,3-votersCount
-			List<Object[]> votersObjList = userVoterDetailsDAO.getVotersCasteNAgeGroupWiseCounts(casteGroupId,casteId, reportLevelId,locationTypeId, constituencyIds,publicationDateId);
+			List<Object[]> votersObjList= null;
+		//	List<Object[]> votersObjList = userVoterDetailsDAO.getVotersCasteNAgeGroupWiseCounts(casteGroupId,casteId, reportLevelId,locationTypeId, constituencyIds,publicationDateId);
+			//votersObjList = userVoterDetailsDAO.getVotersCasteNAgeGroupWiseCount(casteGroupId,casteId, constituencyIds,publicationDateId);
 
 			if (votersObjList != null && votersObjList.size() > 0) {
 				for (Object[] objects : votersObjList) {
@@ -458,6 +476,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 		return (double) tmp / factor;
 	}
 
+	//for voter And cadre
 	/**
 	 * 
 	 * @param locationTypeId
