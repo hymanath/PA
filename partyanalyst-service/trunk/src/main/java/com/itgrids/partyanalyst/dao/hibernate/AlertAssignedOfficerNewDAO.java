@@ -7445,7 +7445,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	       		+ " and ISET.is_deleted ='false'"
 	       		+ " and UA.hamlet_id is not null"
 	       		+ " and IOP.is_deleted ='false' " +
-	       		" and ISV.is_deleted ='false' ");       
+	       		" and ISV.is_deleted ='false' " +
+	       		" and IOP.satisfied_status is not null ");       
 	       if(year!=null && !year.trim().isEmpty()){
 	         sbe.append(" and year(ISV.start_date) =:year  ");
 	       }
