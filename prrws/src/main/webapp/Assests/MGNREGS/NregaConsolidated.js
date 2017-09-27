@@ -103,7 +103,8 @@ $(document).on("click",".selectAllCheckbox",function(){
 $(".menu-top-selection .arrow_box_top").hide();
 $(document).on("click",".menu-top-selection-icon",function(e){
 	e.stopPropagation();
-	$(".menu-top-selection .arrow_box_top").show();
+	//$(".menu-top-selection .arrow_box_top").show();
+	$(".menu-top-selection .arrow_box_top").toggle();
 });
 $(document).on("click",".menu-top-selection",function(e){
 	e.stopPropagation();
