@@ -889,7 +889,7 @@ function getCountsForConstituency(){
 	var jsObj={
 			levelId		  		:locationLevelId,
 			levelValues		 	:userAccessLevelValuesArray,
-			publicationDateId 	:publicationId	
+			publicationDateId 	:22	
 			
 		}
 	 $.ajax({
@@ -1378,9 +1378,9 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
 				str+='<tr>';
 				str+='<td><span>'+k+'</span><span style="margin-left: 10px;">'+result[i].ageRange+'</span></td>';
 				str+='<td>'+result[i].totalVoters+'</td>';
-				str+='<td>20%</td>';
+				str+='<td>'+result[i].totalVotersPerc+'</td>';
 				str+='<td>'+result[i].totalCadres+'</td>';
-				str+='<td>20%</td>';
+				str+='<td>'+result[i].totalCadrePerc+'</td>';
 				str+='</tr>';
 				countVar =countVar+1;
 				if (countVar === 15) {
@@ -1513,7 +1513,7 @@ function buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName){
 		str+='<tbody>';
 		for(var i in result){
 			str+='<tr>';
-				str+='<td>'+result[i].ageRange+'</td>';
+					str+='<td>'+result[i].ageRange+'</td>';
 				str+='<td>'+result[i].totalVoters+'</td>';
 				str+='<td class="text-success">'+result[i].totalVotersPerc+' %</td>';
 				
@@ -1551,7 +1551,8 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName,groupT
 		locationValue		:locationLevelVal,
 		casteGroupId		:casteGroupId,
 		casteId				:casteId,
-		publicationDateId	:publicationId
+		publicationDateId	:publicationId,
+		enrollmentYearId	: 4
     }
 	$.ajax({
 		type : "GET",
