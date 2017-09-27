@@ -13,6 +13,8 @@ import org.json.JSONObject;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.core.api.service.ILocationWiseCasteInfoService;
+import com.itgrids.core.api.service.impl.AlertLocationDashboardService;
+import com.itgrids.core.api.service.impl.MeetingLocationDashboardService;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.BoothInchargesVO;
@@ -35,7 +37,6 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
-import com.itgrids.partyanalyst.service.impl.AlertLocationDashboardService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -82,7 +83,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private LocationAlertVO locationAlertVO;
 	private AlertLocationDashboardService alertLocationDashboardService;
 	private String successMsg;
+	private MeetingLocationDashboardService meetingLocationDashboardService;
 	
+	
+	public MeetingLocationDashboardService getMeetingLocationDashboardService() {
+		return meetingLocationDashboardService;
+	}
+	public void setMeetingLocationDashboardService(
+			MeetingLocationDashboardService meetingLocationDashboardService) {
+		this.meetingLocationDashboardService = meetingLocationDashboardService;
+	}
 	public String getSuccessMsg() {
 		return successMsg;
 	}
@@ -414,7 +424,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValues"));
 			String fromDateStr =jObj.getString("fromDate");
 			String toDateStr =jObj.getString("toDate");
-			locationVotersVOList = locationDashboardService.getLocationWiseMeetingsCount(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr);
+			//locationVotersVOList = locationDashboardService.getLocationWiseMeetingsCount(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr);
+			locationVotersVOList = meetingLocationDashboardService.getLocationWiseMeetingsCount(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseMeetingsCount", e);
 		}

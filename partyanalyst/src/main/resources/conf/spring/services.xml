@@ -4445,7 +4445,7 @@
     </bean> 
     <bean name="doorToDoorCampaignDashboardService" class="com.itgrids.partyanalyst.service.impl.DoorToDoorCampaignDashboardService" >
     </bean>
-    <bean name="alertLocationDashboardService" class="com.itgrids.partyanalyst.service.impl.AlertLocationDashboardService" >
+    <bean name="alertLocationDashboardService" class="com.itgrids.core.api.service.impl.AlertLocationDashboardService" >
     	<property name="alertDAO" ref="alertDAO" />
     	<property name="alertAssignedOfficerNewDAO" ref="alertAssignedOfficerNewDAO" />
     	<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO" />
@@ -4461,6 +4461,11 @@
     	<property name="casteDAO" ref="casteDAO"/>
     	<property name="voterAgeInfoDAO" ref="voterAgeInfoDAO"/>
     	<property name="voterAgeRangeDAO" ref="voterAgeRangeDAO"/>    	
+    </bean>
+    
+    <bean name="meetingLocationDashboardService" class="com.itgrids.core.api.service.impl.MeetingLocationDashboardService" >
+    	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+    	<property name="partyMeetingStatusDAO" ref="partyMeetingStatusDAO" />
     </bean>
 </beans>			
 	
