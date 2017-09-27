@@ -1,4 +1,4 @@
-package com.itgrids.partyanalyst.service;
+package com.itgrids.core.api.service;
 
 import java.util.List;
 

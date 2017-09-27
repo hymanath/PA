@@ -1,4 +1,4 @@
-package com.itgrids.partyanalyst.service.impl;
+package com.itgrids.core.api.service.impl;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -8,12 +8,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.core.api.service.IAlertLocationDashboardService;
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dto.LocationAlertVO;
-import com.itgrids.partyanalyst.service.IAlertLocationDashboardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
 public class AlertLocationDashboardService implements IAlertLocationDashboardService{
@@ -91,6 +91,11 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 			List<Object[]> totalAlertCntObjList = alertDAO.getTotalAlertDetailsCount(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
 			finalVO.setTotalAlertCount(getRequirdTotalCount(totalAlertCntObjList,alertTypeList));
 			
+			if(commonMethodsUtilService.isListOrSetValid(finalVO.getAlertTypeList())){
+				for (LocationAlertVO alertTypeVO : finalVO.getAlertTypeList()) {
+					alertTypeVO.setPercentage(calculatePercantage(alertTypeVO.getCount(),finalVO.getTotalAlertCount()));
+				}
+			}
 			List<Object[]> alertImpactLevelLst  = alertDAO.getAlertImpactLevelWiseDetailsForConstituencyInfo(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year,"impactScope");
 			finalVO.setImpactScopeList(getImpactLevelData(alertImpactLevelLst,"impactScope",finalVO.getTotalAlertCount()));
 			
