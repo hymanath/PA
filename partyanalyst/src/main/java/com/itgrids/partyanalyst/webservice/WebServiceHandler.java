@@ -3361,5 +3361,19 @@ public class WebServiceHandler {
 		}
 		return null;
 	}
+	@GET
+    @Path("/getMemberDetailsByMembershipId/{membershipId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object getMemberDetailsByMembershipId(@PathParam("membershipId") String membershipId){
+		try{ 
+			Object cadreInfo = webServiceHandlerService1.getMemberDetailsByMembershipId(membershipId);
+			return cadreInfo;
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+			return "Error Occured";
+		}
+	}
 	
 }
