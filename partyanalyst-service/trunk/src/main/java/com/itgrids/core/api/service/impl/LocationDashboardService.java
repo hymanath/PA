@@ -3507,7 +3507,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		    	  reportLevelId=6l;
 		    	  constituencyIds.add(locationValue);
 		      }
-			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCastGroupWiseCount(constituencyIds, publicationDateId, reportLevelId);
+			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCastGroupWiseCount(constituencyIds,null, publicationDateId, reportLevelId);
 			if(votersObjList!=null){
 				for (Object[] objects : votersObjList) {
 					LocationVotersVO vo = new LocationVotersVO();
