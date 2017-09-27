@@ -3161,29 +3161,29 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 	if( divId == 'Average Wage'){
-			theadArr = [locationType,'Target Average Wage(Rs)','Expenditure Average Wage(Rs)','Achieved Percentage'];
+			theadArr = [locationType,'Target Average Wage(Rs/-)','Expenditure(Rs/-)','Achieved Average Wage'];
 			if(locationType == "constituency")
-				theadArr = ["district",locationType,'Target Average Wage(Rs)','Expenditure Average Wage(Rs)','Achieved Percentage'];
+				theadArr = ["district",locationType,'Target Average Wage(Rs/-)','Expenditure(Rs/-)','Achieved Average Wage'];
 			else if(locationType == "mandal")
-				theadArr = ["district","constituency",locationType,'Target Average Wage(Rs)','Expenditure Average Wage(Rs)','Achieved Percentage'];
+				theadArr = ["district","constituency",locationType,'Target Average Wage(Rs/-)','Expenditure(Rs/-)','Achieved Average Wage'];
 			else if(locationType == "panchayat")
-				theadArr = ["district","constituency","mandal",locationType,'Target Average Wage(Rs)','Expenditure Average Wage(Rs)','Achieved Percentage'];
+				theadArr = ["district","constituency","mandal",locationType,'Target Average Wage(Rs/-)','Expenditure(Rs/-)','Achieved Average Wage'];
 	}else if( divId == 'Average Days of Employment'){
-			theadArr = [locationType,'Target Average Days of Employment(Rs)','Expenditure Average Days of Employment(Rs)','Achieved Percentage'];
+			theadArr = [locationType,'Target Average Days of Employment','Achieved','Achieved Percentage'];
 			if(locationType == "constituency")
-				theadArr = ["district",locationType,'Target Average Days of Employment(Rs)','Expenditure Average Days of Employment(Rs)','Achieved Percentage'];
+				theadArr = ["district",locationType,'Target Average Days of Employment','Achieved','Achieved Percentage'];
 			else if(locationType == "mandal")
-				theadArr = ["district","constituency",locationType,'Target Average Days of Employment(Rs)','Expenditure Average Days of Employment(Rs)','Achieved Percentage'];
+				theadArr = ["district","constituency",locationType,'Target Average Days of Employment','Achieved','Achieved Percentage'];
 			else if(locationType == "panchayat")
-				theadArr = ["district","constituency","mandal",locationType,'Target Average Days of Employment(Rs)','Expenditure Average Days of Employment(Rs)','Achieved Percentage'];
+				theadArr = ["district","constituency","mandal",locationType,'Target Average Days of Employment','Achieved','Achieved Percentage'];
 	}else if( divId == 'HH Completed 100 Days'){
-			theadArr = [locationType,'Target HH Completed 100 Days(Rs)','Expenditure HH Completed 100 Days(Rs)','Achieved Percentage'];
+			theadArr = [locationType,'Target HH Completed 100 Days','Achieved','Achieved Percentage'];
 			if(locationType == "constituency")
-				theadArr = ["district",locationType,'Target HH Completed 100 Days(Rs)','Expenditure HH Completed 100 Days(Rs)','Achieved Percentage'];
+				theadArr = ["district",locationType,'Target HH Completed 100 Days','Achieved','Achieved Percentage'];
 			else if(locationType == "mandal")
-				theadArr = ["district","constituency",locationType,'Target HH Completed 100 Days(Rs)','Expenditure HH Completed 100 Days(Rs)','Achieved Percentage'];
+				theadArr = ["district","constituency",locationType,'Target HH Completed 100 Days','Achieved','Achieved Percentage'];
 			else if(locationType == "panchayat")
-				theadArr = ["district","constituency","mandal",locationType,'Target HH Completed 100 Days(Rs)','Expenditure HH Completed 100 Days(Rs)','Achieved Percentage'];
+				theadArr = ["district","constituency","mandal",locationType,'Target HH Completed 100 Days','Achieved','Achieved Percentage'];
 	 }else if(divId == 'Timely Payment'){
 			theadArr = [locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
 			if(locationType == "constituency")
