@@ -591,32 +591,49 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 		return query.list();
 	}
   
-  public List<Object[]> getVotersCastGroupWiseCount(List<Long> constituencyIds, Long PublicationDateId, Long reportLevelId) {
+  public List<Object[]> getVotersCastGroupWiseCount(List<Long> locationValues,Long locationTypeId, Long PublicationDateId, Long reportLevelId) {
 	  
 	  StringBuilder sb = new StringBuilder();
 	  sb.append("select cc.caste_category_id as castCategoryId,cc.category_name as castName,sum(vci.caste_voters) as totalVoters from voter_cast_info vci join caste_state " +
 	  		" cs on vci.caste_state_id=cs.caste_state_id join caste_category_group ccg on " +
 	  		" cs.caste_category_group_id =ccg.caste_category_group_id join caste_category cc on " +
-	  		" cc.caste_category_id=ccg.caste_category_id ");
-	  if ((constituencyIds != null && constituencyIds.size() > 0) || (PublicationDateId != null && PublicationDateId.longValue() > 0l) ||
-			  reportLevelId != null) {
-	  	sb.append("where");
+	  		" cc.caste_category_id=ccg.caste_category_id  " );
+	  if((reportLevelId != null && reportLevelId.longValue() == 1l) && (locationTypeId == 2l || locationTypeId == 3l ||locationTypeId == 4l) ){
+		  sb.append("join constituency c on c.constituency_id= vci.report_level_value");
 	  }
-	  if (constituencyIds != null && constituencyIds.size() > 0) {
-			sb.append("  vci.report_level_value in (:constituencyIds) and");
-		}
+	  sb.append(" where vci.report_level_id = :reportLevelId and");
+
+	  if(reportLevelId != null && reportLevelId.longValue() == 1l && locationValues !=null && locationValues.size()>0){
+			
+			 if(locationTypeId == 2l){
+				 sb.append(" c.state_id in (:locationValues)");
+			 }else if(locationTypeId == 3l){
+				 sb.append(" c.district_id in (:locationValues)");
+			 }else if(locationTypeId == 4l || locationTypeId == 10l){
+				 sb.append(" c_constituency_id in (:locationValues)");
+			 }
+		 }else{
+			
+			 if(locationTypeId == 5l){
+				 sb.append("  vci.report_level_value in (:locationValues) ");
+			 }if(locationTypeId == 6l){
+				 sb.append(" vci.report_level_value in (:locationValues) ");
+			 }if(locationTypeId == 7l){
+				 sb.append(" vci.report_level_value in (:locationValues) ");
+			 }if(locationTypeId == 8l){
+				 sb.append(" vci.report_level_value in (:locationValues) ");
+			 }
+			 
+		 }
 		if(PublicationDateId != null && PublicationDateId.longValue() > 0l){
-			sb.append("  vci.publication_date_id =:publicationDateId and");
-		}
-		if (reportLevelId != null) {
-			sb.append(" vci.report_level_id = :reportLevelId ");
+			sb.append("  and vci.publication_date_id =:publicationDateId ");
 		}
 	  sb.append(" group by cc.caste_category_id ");
 	  Query query = getSession().createSQLQuery(sb.toString())
 			  .addScalar("castCategoryId",Hibernate.LONG).addScalar("castName",Hibernate.STRING).addScalar("totalVoters",Hibernate.LONG);
 	  
-	  if (constituencyIds != null && constituencyIds.size() > 0) {
-			query.setParameterList("constituencyIds", constituencyIds);
+	  if (locationValues != null && locationValues.size() > 0) {
+			query.setParameterList("locationValues", locationValues);
 		}
 		if(PublicationDateId != null && PublicationDateId.longValue() > 0l){
 			query.setParameter("publicationDateId", PublicationDateId);

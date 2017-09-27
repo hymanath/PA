@@ -420,11 +420,11 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 	
 	public List<Object[]> getGenderAndAgeGroupWiseCadreCount(Long locationTypeId,Long locationValue,Long enrollmentYearId ){
 		StringBuilder sb = new StringBuilder();
-		sb.append( "select model.voterAgeRangeId,model.gender, model.count " +
+		sb.append( "select model.voterAgeRangeId,model.gender, sum(model.count) " +
 				" from TdpCadreCasteInfo model where model.tdpCadreEnrollmentId = :enrollmentYearId and " );
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id =:locationValue");
 			} else if (locationTypeId == 4l) {
 				sb.append(" location_id=:locationValue");
 			} else if (locationTypeId == 5l) {
