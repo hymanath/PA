@@ -9840,4 +9840,52 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		    return query.list();
 		   
 	   }
+	   public List<Object[]> getMemberDetailsByMembershipId(String membershipId){
+		   StringBuilder sb = new StringBuilder();
+		   sb.append(" SELECT ");
+		   sb.append(" TC.tdp_cadre_id as id, " +//0
+		   			 " TC.membership_id as membershipId, " +//1
+		   			 " TC.first_name as name, " +//2
+		   			 " PRT.position as desig, " +//3
+		   			 " TC.mobile_no as mobile, " +//4
+		   			 " TC.image as image, " +//5
+		   			 " D.district_name as district, " +//6
+		   			 " CON.name as constituency, " +//7
+		   			 " T.tehsil_name as tehsil, " +//8
+		   			 " P.panchayat_name as panchayat, " +//9
+		   			 " LEB.name as leb, " +//10
+		   			 " WARD.name as ward, " +//11
+		   			 " TCEY.enrollment_year_id as yearId ");//12
+		   sb.append(" FROM tdp_cadre TC ");
+		   sb.append(" LEFT OUTER JOIN tdp_cadre_candidate TCC ON TC.tdp_cadre_id = TCC.tdp_cadre_id ");
+		   sb.append(" LEFT OUTER JOIN public_representative  PR ON TCC.candidate_id = PR.candidate_id ");
+		   sb.append(" LEFT OUTER JOIN public_representative_type PRT ON PR.public_representative_type_id = PRT.public_representative_type_id ");
+		   sb.append(" LEFT OUTER JOIN user_address UA ON TC.address_id = UA.user_address_id ");
+		   sb.append(" LEFT OUTER JOIN district D ON UA.district_id = D.district_id ");
+		   sb.append(" LEFT OUTER JOIN constituency CON ON UA.constituency_id = CON.constituency_id ");
+		   sb.append(" LEFT OUTER JOIN tehsil T ON UA.tehsil_id = T.tehsil_id ");
+		   sb.append(" LEFT OUTER JOIN panchayat P ON UA.panchayat_id = P.panchayat_id ");
+		   sb.append(" LEFT OUTER JOIN local_election_body LEB ON UA.local_election_body = LEB.local_election_body_id ");
+		   sb.append(" LEFT OUTER JOIN constituency WARD ON UA.ward = WARD.constituency_id ");
+		   sb.append(" LEFT OUTER JOIN tdp_cadre_enrollment_year TCEY ON TCEY.tdp_cadre_id = TC.tdp_cadre_id ");
+		   sb.append(" WHERE ");
+		   sb.append(" TC.enrollment_year = 2014 AND ");
+		   sb.append(" TC.is_deleted = 'N' AND ");
+		   sb.append(" TC.membership_id ='"+membershipId.trim()+"' ");
+		   Query query = getSession().createSQLQuery(sb.toString())
+				   .addScalar("id", Hibernate.LONG)
+				   .addScalar("membershipId", Hibernate.STRING)
+				   .addScalar("name", Hibernate.STRING)
+				   .addScalar("desig", Hibernate.STRING)
+				   .addScalar("mobile", Hibernate.STRING)
+				   .addScalar("image", Hibernate.STRING)
+				   .addScalar("district", Hibernate.STRING)
+				   .addScalar("constituency", Hibernate.STRING)
+				   .addScalar("tehsil", Hibernate.STRING)
+				   .addScalar("panchayat", Hibernate.STRING)
+				   .addScalar("leb", Hibernate.STRING)
+				   .addScalar("ward", Hibernate.STRING)
+				   .addScalar("yearId", Hibernate.LONG);
+		   return query.list();
+	   }
 }

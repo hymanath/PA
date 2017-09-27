@@ -541,4 +541,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> isVoterDeleted(Set<Long> tdpCadreIds);
 	  public List<Object[]> getCadreBasicDetailsByVoterIds(Long constituencyId,Long publicationDateId,Long  boothId,String type);
 	  public List<Object[]> getRangeWiseTdpCadreDtlsObjs(Set<Long> voterIds,String searchType);
+	  public List<Object[]> getMemberDetailsByMembershipId(String membershipId);
 } 

@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreImageVO;
+import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -73,6 +74,7 @@ import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -170,8 +172,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	@Autowired ITdpCadreImageSinkDataDAO tdpCadreImageSinkDataDAO;
 	@Autowired
 	private ICadreDetailsService cadreDetailsService;
-	
-	
+	@Autowired 
+	CommonMethodsUtilService commonMethodsUtilService;
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
 	}
@@ -1383,5 +1385,51 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		return surveyCadreResponceVO;
 		
 	}
+    public Object getMemberDetailsByMembershipId(String membershipId){
+    	try{
+    		List<Object[]> memberDate = null;
+    		if(membershipId != null && membershipId.trim().length() > 0){
+    			if(membershipId.trim().length() > 7){
+    				memberDate = tdpCadreDAO.getMemberDetailsByMembershipId(membershipId);
+    			}else{
+    				membershipId = "0"+membershipId;
+    				memberDate = tdpCadreDAO.getMemberDetailsByMembershipId(membershipId);
+    			}
+    		}
+    		CadreInfo cadreInfo = new CadreInfo();
+    		Set<Long> yearIdSet = new HashSet<Long>();
+    		Set<String> desigSet = new HashSet<String>();
+    		if(memberDate != null && memberDate.size() > 0){
+    			cadreInfo.setCadreID(commonMethodsUtilService.getLongValueForObject(memberDate.get(0)[0]));
+    			cadreInfo.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(memberDate.get(0)[1]));
+    			cadreInfo.setFirstName(commonMethodsUtilService.getStringValueForObject(memberDate.get(0)[2]));
+    			cadreInfo.setMobile(commonMethodsUtilService.getStringValueForObject(memberDate.get(0)[4]));
+    			cadreInfo.setImage(commonMethodsUtilService.getStringValueForObject(memberDate.get(0)[5]));
+    			cadreInfo.setDistrictName(commonMethodsUtilService.getStringValueForObject(memberDate.get(0)[6]));
+    			cadreInfo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(memberDate.get(0)[7]));
+    			cadreInfo.setMandalName(commonMethodsUtilService.getStringValueForObject(memberDate.get(0)[8]));
+    			cadreInfo.setVillage(commonMethodsUtilService.getStringValueForObject(memberDate.get(0)[9]));
+    			cadreInfo.setLocalElectionBody(commonMethodsUtilService.getStringValueForObject(memberDate.get(0)[10]));
+    			cadreInfo.setWard(commonMethodsUtilService.getStringValueForObject(memberDate.get(0)[11]));
+    			for(Object[] param : memberDate){
+    				yearIdSet.add(commonMethodsUtilService.getLongValueForObject(param[12]));
+    				desigSet.add(commonMethodsUtilService.getStringValueForObject(param[3]).trim());
+    			}
+    		}
+    		if(yearIdSet.contains(4L)){
+    			cadreInfo.setIsValid("valid");
+    		}else{
+    			cadreInfo.setIsValid("inValid");
+    		}
+    		if(desigSet != null && desigSet.size() > 0){
+    			cadreInfo.setDesignationSet(desigSet);
+    		}
+    		return cadreInfo;
+    	}catch(Exception e){
+    		LOG.error("Exception raised in saveMissedCallDetails  method in WebServiceHandlerService1",e);
+   			
+   			return "failure";
+    	}
+    }
 }
 
