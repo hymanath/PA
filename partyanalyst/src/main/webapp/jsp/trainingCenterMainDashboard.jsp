@@ -236,44 +236,70 @@ content:"\002b";
                                 </div>
                             </div>
                         </section>						
-						<section>
+						<section id="sectorRunningSpecialTrainingProgramsDayWiseAtendence">
                             <div class="row">
                             	<div class="col-md-12">
-                                	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold"> <span style="color:green;font-weight:bold;"> SPECIAL TRAININGS </span>- BATCHES ATTENDENCE &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:bold;"> IA-Invitee Attended, NIA-Non Invitee Attended</span></h4>
-                                        </div>
-                                        <div class="panel-body pad_0" id="runningSpecialTrainingProgramsDayWiseAttendence">
+									<div class="panel panel-default panel-black" id="heading8">
+										<div class="panel-heading bg_d">
+											
+											<div class="row">
+												<div class="col-sm-12">
+													<a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse8" aria-expanded="true" aria-controls="collapse8">
+														<h4 class="panel-title text-bold"> <span style="color:green;font-weight:bold;"> SPECIAL TRAININGS </span>- BATCHES ATTENDENCE &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:bold;"> IA-Invitee Attended, NIA-Non Invitee Attended</span></h4>
+													</a>
+												</div>
+											</div>
 										</div>
-                                    </div>
-                                </div>
+										<div id="collapse8" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading8">
+											<div class="panel-body pad_0" id="runningSpecialTrainingProgramsDayWiseAttendence">
+										</div>
+										</div>
+									</div>
+								</div>
                             </div>
                         </section>
 						
 						<section id="sectorRunningTrainingProgramsDayWiseAtendence" >
                             <div class="row">
                             	<div class="col-md-12">
-                                	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold">REGULAR TRAININGS - CURRENTLY RUNNING BATCHES ATTENDENCE &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:bold;"> IA-Invitee Attended, NIA-Non Invitee Attended</span></h4>
-                                        </div>
-                                        <div class="panel-body pad_0" id="runningTrainingProgramsDayWiseAttendence">
+								<div class="panel panel-default panel-black" id="heading9">
+									<div class="panel-heading bg_d">
+										
+										<div class="row">
+											<div class="col-sm-12">
+												<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse9" aria-expanded="true" aria-controls="collapse9">
+													<h4 class="panel-title text-bold">REGULAR TRAININGS - CURRENTLY RUNNING BATCHES ATTENDENCE &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:bold;"> IA-Invitee Attended, NIA-Non Invitee Attended</span></h4>
+												</a>
+											</div>
 										</div>
-                                    </div>
-                                </div>
+									</div>
+									<div id="collapse9" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading9">
+										<div class="panel-body pad_0" id="runningTrainingProgramsDayWiseAttendence">
+										</div>
+									</div>
+								</div>
+					            </div>
                             </div>
                         </section>
 						
 						 <section>
                             <div class="row">
                             	<div class="col-md-12">
-                                	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold">CURRENTLY RUNNING TRAINING PROGRAMS</h4>
+								<div class="panel panel-default panel-black" id="heading10">
+									<div class="panel-heading bg_d">
+										<div class="row">
+											<div class="col-sm-12">
+												<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse10" aria-expanded="true" aria-controls="collapse10">
+													<h4 class="panel-title text-bold">CURRENTLY RUNNING TRAINING PROGRAMS</h4>
+												</a>
+											</div>
+										</div>
+									</div>
+									<div id="collapse10" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading10">
+										<div class="panel-body pad_0" id="runningTrainingPrograms">
                                         </div>
-                                        <div class="panel-body pad_0" id="runningTrainingPrograms">
-                                        </div>
-                                    </div>
+									</div>
+								</div>
                                 </div>
                             </div>
                         </section>
@@ -282,17 +308,17 @@ content:"\002b";
                             <div class="row">
                             	<div class="col-md-12">
 									<div class="panel panel-default panel-black" id="heading7">
-										<div class="panel-heading">
+										<div class="panel-heading bg_d">
 											
 											<div class="row">
 												<div class="col-sm-12">
-													<a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse7" aria-expanded="true" aria-controls="collapse7">
+													<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse7" aria-expanded="true" aria-controls="collapse7">
 														<h4 class="panel-title text-capital">ALL TRAINING PROGRAM WISE DETAILS</h4>
 													</a>
 												</div>
 											</div>
 										</div>
-										<div id="collapse7" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading7">
+										<div id="collapse7" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading7">
 											<div class="panel-body">
 												<div class="table-responsive table-scroll" id="allProgramWiseDetailsDIv"> </div>
 											</div>
@@ -309,7 +335,7 @@ content:"\002b";
 								
 								<div class="panel panel-default panel-black" id="heading8">
 									<div id="feedBackCountMainDivId">
-										<div class="panel-heading">
+										<div class="panel-heading bg_d">
 											
 											<div class="row">
 												<div class="col-sm-12">
@@ -319,7 +345,7 @@ content:"\002b";
 												</div>
 											</div>
 										</div>
-										<div id="collapse7" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading8">
+										<div id="collapse7" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading8">
 											<div class="panel-body pad_0">
 												<img id="feefbackLoadingImgId" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif">
 												<div style="" id="feedBackCountId"></div>
@@ -329,7 +355,7 @@ content:"\002b";
 								</div>
 									<!-- ara-->
 									<div class="panel panel-default" id="headingTwo">
-											<div class="panel-heading">
+											<div class="panel-heading bg_d">
 												
 												<div class="row">
 													<div class="col-sm-12">
@@ -378,7 +404,7 @@ content:"\002b";
                             <div class="row">
                             	<div class="col-md-12">
 									<div class="panel panel-default panel-black" id="headingThree">
-										<div class="panel-heading">
+										<div class="panel-heading bg_d">
 											
 											<div class="row">
 												<div class="col-sm-12">
@@ -409,7 +435,7 @@ content:"\002b";
                             <div class="row">
                             	<div class="col-md-12">
 									<div class="panel panel-default" id="headingFour">
-										<div class="panel-heading">
+										<div class="panel-heading bg_d">
 											
 											<div class="row">
 												<div class="col-sm-12">
@@ -434,7 +460,7 @@ content:"\002b";
                         	<div class="row">
                             	<div class="col-md-12">
 									<div class="panel panel-default" id="headingFive">
-										<div class="panel-heading">
+										<div class="panel-heading bg_d">
 											<div class="row">
 												<div class="col-sm-12">
 													<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
@@ -459,7 +485,7 @@ content:"\002b";
                         	<div class="row">
 								<div class="col-md-12">
 								<div class="panel panel-default" id="heading6">
-										<div class="panel-heading">
+										<div class="panel-heading bg_d">
 											<div class="row">
 												<div class="col-sm-12">
 													<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse6" aria-expanded="true" aria-controls="collapse6">
@@ -1309,6 +1335,271 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		   data: {task:JSON.stringify(jObj)},
 		}).done(function(result){
 			//day wise attendence for currently running batches
+			buildSpecialTrainings(result);
+			if(result!=null && result.length>0 && result[0].simpleVOList1 != null && result[0].simpleVOList1.length>0){				
+						var str='';
+						str+='<table class="table table-bordered m_0 text-center">';
+						str+='<thead class="bg_d">';
+						str+='<tr>';
+						str+='<th>Program</th>';
+						str+='<th>Center</th>';
+						str+='<th>Batch</th>';
+						str+='<th>Total</th>';
+						str+='<th>Day 1 Count</th>';
+						str+='<th>Day 2 Count</th>';				
+						str+='<th>Day 3 Count</th>';
+						
+						str+='<th>1 Day Attended Members</th>';
+						str+='<th>2 Days Attended Members</th>';
+						str+='<th>3 Days Attended Members</th>';
+						
+						str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						
+						var myResult = result[0].simpleVOList1;
+						for(var i in myResult){
+							str+='<tr>';
+							str+='<td  rowspan="'+myResult[i].totalBatchesCount+'" > '+myResult[i].progName+' </td>';							
+							for(var j in myResult[i].campDetails){
+								str+='<td  rowspan="'+myResult[i].campDetails[j].totalBatchesCount+'" > '+myResult[i].campDetails[j].campName+' </td>';
+								for(var k in myResult[i].campDetails[j].batchDetails){
+									str+='<td>'+myResult[i].campDetails[j].batchDetails[k].batchName+'</td>';
+									
+									var totalCount =0;
+									var totalIACount =0;
+									var totalNIACount =0;
+									totalIACount = parseInt(myResult[i].campDetails[j].batchDetails[k].oneDayInvitedAttendedCount)+parseInt(myResult[i].campDetails[j].batchDetails[k].twoDaysInvitedAttendedCount)+parseInt(myResult[i].campDetails[j].batchDetails[k].threeDaysInvitedAttendedCount);
+									totalNIACount = parseInt(myResult[i].campDetails[j].batchDetails[k].oneDayNonInvitedAttendedCount)+parseInt(myResult[i].campDetails[j].batchDetails[k].twoDaysNonInvitedAttendedCount)+parseInt(myResult[i].campDetails[j].batchDetails[k].threeDaysNonInvitedAttendedCount);
+									totalCount = parseInt(totalIACount)+parseInt(totalNIACount);
+									
+									
+									str+='<td>' +totalIACount+'- IA <br/>'+totalNIACount+'- NIA</td>';
+									if(myResult[i].campDetails[j].batchDetails[k].day1IACount!=null){
+									 str+='<td>'+myResult[i].campDetails[j].batchDetails[k].day1IACount+'- IA <br/>'+myResult[i].campDetails[j].batchDetails[k].day1NIACount+'- NIA</td>';
+									}else{
+										str+='<td>0</td>';
+									}					
+									if(myResult[i].campDetails[j].batchDetails[k].day2IACount!=null){
+									 str+='<td>'+myResult[i].campDetails[j].batchDetails[k].day2IACount+'- IA <br/>'+myResult[i].campDetails[j].batchDetails[k].day2NIACount+'- NIA</td>';
+									}else{
+										str+='<td>0</td>';
+									}
+									
+									if(myResult[i].campDetails[j].batchDetails[k].day3IACount!=null){
+									 str+='<td>'+myResult[i].campDetails[j].batchDetails[k].day3IACount+'- IA <br/>'+myResult[i].campDetails[j].batchDetails[k].day3NIACount+'- NIA</td>';
+									}else{
+										str+='<td>0</td>';
+									}
+									
+									
+									str+='<td>';
+									if(parseInt(myResult[i].campDetails[j].batchDetails[k].oneDayInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+myResult[i].campDetails[j].batchDetails[k].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer;font-weight:bold;" class="cadreDetailsCls" title="To click on invitee Details"> <u>'+myResult[i].campDetails[j].batchDetails[k].oneDayInvitedAttendedCount+'</u></a> - IA<br/>';
+									else 
+										str+='0 - IA <br/> ';
+									
+									if(parseInt(myResult[i].campDetails[j].batchDetails[k].oneDayNonInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+myResult[i].campDetails[j].batchDetails[k].batchId+' attr_dataType="oneDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls" title="To click on nonInvitee Details"><u>'+myResult[i].campDetails[j].batchDetails[k].oneDayNonInvitedAttendedCount+'</u></a> - NIA';
+									else 
+										str+='0 - NIA';							
+									str+='</td>';
+									
+									
+									str+='<td>';
+									if(parseInt(myResult[i].campDetails[j].batchDetails[k].twoDaysInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+myResult[i].campDetails[j].batchDetails[k].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+myResult[i].campDetails[j].batchDetails[k].twoDaysInvitedAttendedCount+'</u></a> - IA<br/>';
+									else 
+										str+='0 - IA <br/>';
+									
+									
+									if(parseInt(myResult[i].campDetails[j].batchDetails[k].twoDaysNonInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+myResult[i].campDetails[j].batchDetails[k].batchId+' attr_dataType="twoDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+myResult[i].campDetails[j].batchDetails[k].twoDaysNonInvitedAttendedCount+'</u></a> - NIA';
+									else 
+										str+='0 - NIA';	
+									str+='</td>';
+									
+									str+='<td>';
+									if(parseInt(myResult[i].campDetails[j].batchDetails[k].threeDaysInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+myResult[i].campDetails[j].batchDetails[k].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+myResult[i].campDetails[j].batchDetails[k].threeDaysInvitedAttendedCount+'</u></a> - IA<br/>';
+									else 
+										str+='0 - IA <br/>';
+									
+									
+									if(parseInt(myResult[i].campDetails[j].batchDetails[k].threeDaysNonInvitedAttendedCount)>0)
+										str+='<a attr_batchId='+myResult[i].campDetails[j].batchDetails[k].batchId+' attr_dataType="twoDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+myResult[i].campDetails[j].batchDetails[k].threeDaysNonInvitedAttendedCount+'</u></a> - NIA';
+									else 
+										str+='0 - NIA';	
+									str+='</td>';
+									
+									//if(k<myResult[i].campDetails[j].batchDetails.lenght-1){
+										str+='</tr>';
+										str+='<tr>';
+									//}
+								}
+								if(j<myResult[i].campDetails.lenght-1){
+									str+='</tr>';
+									str+='<tr>';
+								}
+							}
+							str+='</tr>';
+						}
+						
+						str+='</tbody>';
+						str+='</table>';
+						$("#runningTrainingProgramsDayWiseAttendence").html(str);
+			}else{
+				$("#sectorRunningTrainingProgramsDayWiseAtendence").hide();
+				$("#runningTrainingProgramsDayWiseAttendence").html("<h4 style='font-weight:bold;margin-left:10px;'>No Data Available</h4>");
+			}
+		});
+	}
+	
+	function buildSpecialTrainings(result){
+			//day wise attendence for currently running batches
+			if(result!=null && result.length>0 && result[0].simpleVOList2 != null && result[0].simpleVOList2.length>0 ){
+			
+						var str='';
+						str+='<table class="table table-bordered m_0 text-center">';
+						str+='<thead class="bg_d">';
+						str+='<tr>';
+						str+='<th>Program</th>';
+						str+='<th>Center</th>';
+						str+='<th>Batch</th>';
+						str+='<th>Total</th>';
+						str+='<th>Day 1 Count</th>';
+						str+='<th>Day 2 Count</th>';				
+						str+='<th>Day 3 Count</th>';
+						
+						str+='<th>1 Day Attended Members</th>';
+						str+='<th>2 Days Attended Members</th>';
+						str+='<th>3 Days Attended Members</th>';
+						
+						str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						
+						var myResult = result[0].simpleVOList2;
+						for(var i in myResult){
+								str+='<tr>';
+								str+='<td  rowspan="'+myResult[i].totalBatchesCount+'" > '+myResult[i].progName+' </td>';							
+								for(var j in myResult[i].campDetails){
+									str+='<td  rowspan="'+myResult[i].campDetails[j].totalBatchesCount+'" > '+myResult[i].campDetails[j].campName+' </td>';
+									for(var k in myResult[i].campDetails[j].batchDetails){
+										str+='<td>'+myResult[i].campDetails[j].batchDetails[k].batchName+'</td>';
+										
+										var totalCount =0;
+										var totalIACount =0;
+										var totalNIACount =0;
+										
+										
+										totalIACount = parseInt(myResult[i].campDetails[j].batchDetails[k].oneDayInvitedAttendedCount)+parseInt(myResult[i].campDetails[j].batchDetails[k].twoDaysInvitedAttendedCount)+parseInt(myResult[i].campDetails[j].batchDetails[k].threeDaysInvitedAttendedCount);
+										totalNIACount = parseInt(myResult[i].campDetails[j].batchDetails[k].oneDayNonInvitedAttendedCount)+parseInt(myResult[i].campDetails[j].batchDetails[k].twoDaysNonInvitedAttendedCount)+parseInt(myResult[i].campDetails[j].batchDetails[k].threeDaysNonInvitedAttendedCount);
+										totalCount = parseInt(totalIACount)+parseInt(totalNIACount);
+										
+										var day1Count = parseInt(myResult[i].campDetails[j].batchDetails[k].day1IACount)+parseInt(myResult[i].campDetails[j].batchDetails[k].day1NIACount);
+										var day2Count = parseInt(myResult[i].campDetails[j].batchDetails[k].day2IACount)+parseInt(myResult[i].campDetails[j].batchDetails[k].day2NIACount);
+										var day3Count = parseInt(myResult[i].campDetails[j].batchDetails[k].day3IACount)+parseInt(myResult[i].campDetails[j].batchDetails[k].day3NIACount);
+										
+										
+										var oneDayAttendedCount = parseInt(myResult[i].campDetails[j].batchDetails[k].oneDayInvitedAttendedCount)+parseInt(myResult[i].campDetails[j].batchDetails[k].oneDayNonInvitedAttendedCount);
+										var twoDaysAttendedCount = parseInt(myResult[i].campDetails[j].batchDetails[k].twoDaysInvitedAttendedCount)+parseInt(myResult[i].campDetails[j].batchDetails[k].twoDaysNonInvitedAttendedCount);
+										var threeDaysAttendedCount = parseInt(myResult[i].campDetails[j].batchDetails[k].threeDaysInvitedAttendedCount)+parseInt(myResult[i].campDetails[j].batchDetails[k].threeDaysNonInvitedAttendedCount);
+										
+										
+										
+										str+='<td>' +totalCount+'- IA <br/></td>';
+										if(day1Count!=null){
+										 str+='<td>'+day1Count+'- IA <br/></td>';
+										}else{
+											str+='<td>0</td>';
+										}					
+										if(day2Count!=null){
+										 str+='<td>'+day2Count+'- IA <br/></td>';
+										}else{
+											str+='<td>0</td>';
+										}	
+										
+										if(day3Count!=null){
+										 str+='<td>'+day3Count+'- IA <br/></td>';
+										}else{
+											str+='<td>0</td>';
+										}	
+										
+										
+										if(oneDayAttendedCount!=null && oneDayAttendedCount >0 ){
+										 str+='<td> <a attr_batchId='+myResult[i].campDetails[j].batchDetails[k].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+oneDayAttendedCount+'- IA </u><br/></td>';
+										}else{
+											str+='<td>0 - IA </td>';
+										}	
+										
+										if(twoDaysAttendedCount!=null && twoDaysAttendedCount >0 ){
+										 str+='<td><a attr_batchId='+myResult[i].campDetails[j].batchDetails[k].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+twoDaysAttendedCount+'- IA </u><br/></td>';
+										}else{
+											str+='<td>0 - IA </td>';
+										}	
+										
+										if(threeDaysAttendedCount!=null && threeDaysAttendedCount >0 ){
+										 str+='<td><a attr_batchId='+myResult[i].campDetails[j].batchDetails[k].batchId+' attr_dataType="threeDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls"><u>'+threeDaysAttendedCount+'- IA </u><br/></td>';
+										}else{
+											str+='<td>0 - IA </td>';
+										}	
+										
+										//if(k<myResult[i].campDetails[j].batchDetails.lenght-1){
+											str+='</tr>';
+											str+='<tr>';
+										//}
+									}
+									if(j<myResult[i].campDetails.lenght-1){
+										str+='</tr>';
+										str+='<tr>';
+									}
+								}
+								str+='</tr>';
+							
+							str+='</tbody>';
+							str+='</table>';
+							$("#runningSpecialTrainingProgramsDayWiseAttendence").html(str);
+						}
+			}else{
+				$("#sectorRunningSpecialTrainingProgramsDayWiseAtendence").hide();
+				$("#runningSpecialTrainingProgramsDayWiseAttendence").html("<h4 style='font-weight:bold;margin-left:10px;'>No Data Available</h4>");
+			}
+	}
+	function getRunningDayWiseCountsForRunningBatches(fromType){
+		$("#sectorRunningTrainingProgramsDayWiseAtendence").show();
+		$("#runningSpecialTrainingProgramsDayWiseAttendence").html('<img id="" style="width: 45px; height: 45px; margin-left: 45%;" src="images/ajaxImg2.gif">');
+		$("#runningTrainingProgramsDayWiseAttendence").html('<img id="" style="width: 45px; height: 45px; margin-left: 45%;" src="images/ajaxImg2.gif">');
+		var dates;
+		if(fromType=="onLoad" || fromType=="change"){
+			dates="";
+		}else{
+			dates=$("#selectDate").val();
+		}
+		var enrollmentYrIds =[];
+		enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	    if(fromType == "change"){
+			enrollmentYrIds.length = 0;
+		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	     }
+		 var programIds =[];
+		if(enrollmentYrIds == 4){
+			programIds.push(8,9);
+		}else{
+			programIds.push(1,6,7,5);
+		}
+		var jObj={
+			selectedDate : dates,
+			enrollmentYearIdsList :enrollmentYrIds,
+			programIdsList : programIds
+	     }
+		
+		$.ajax({
+		   type:'POST',
+		   url :'getDayWiseCountsForRunningBatchesAction.action',
+		   data: {task:JSON.stringify(jObj)},
+		}).done(function(result){
+			//day wise attendence for currently running batches
 			if(result!=null && result.length>0){
 				buildSpecialTrainings(result);
 				var campId = 0;
@@ -1434,7 +1725,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		});
 	}
 	
-	function buildSpecialTrainings(result){
+	function buildRunningSpecialTrainings(result){
 		if(result!=null && result.length>0){
 				var lenght =0;
 				for(var i in result){
