@@ -16,6 +16,7 @@
 <link href="dist/slick/slick.css" type="text/less" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<link href="D2D_Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
@@ -158,23 +159,21 @@
 						<div class="col-sm-12">
 							<h4 class="panel-title theme-title-color">Caste Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="casteInfo"></i></span></h4>
 						</div>
-					</div>
-					<div class="row m_top10">
-						<div class="col-sm-4" style="border-right:1px solid #d3d3d3">
-							<h5 class="panel-title casteInfoDivCls" style="display:inline-block;margin-right:8px;"><b>Caste Group Wise Voters</b></h5>
-							<ul class="switch-btn list-inline casteInfoDivCls" role="casteGrouplist">
-								<li class="active" attr_type="voter">Voter</li>
-								<li attr_type="cadre">Cadre</li>
-							</ul>
-							
-							<div class="m_top20" id="casteGroupVoters" style="width:330px;height:260px"></div>
-							<div id="leftSideCasteGroupWiseDivId"></div>
-							<div id="leftSideCasteGroupWiseGraphId"></div>
-						</div>
-						<div class="col-sm-8">
-							<div id="rightSideCasreGroupDtsDivId"></div>
+						<div class="col-sm-12">
+							<div class="col-sm-3 pull-right">
+								<label>Publication</label>
+								<select id="publicationCasteId" class="form-control chosen-select"></select>
+							</div>
+							<div class="col-sm-3 pull-right">
+								<label>Enrollment Year</label>
+								<select id="enrollmentCasteId" class="form-control chosen-select"></select>
+							</div>
 						</div>
 					</div>
+					<div class="row m_top20">
+						<div id="casteOverViewDivId"></div>
+					</div>
+					
 				</div>
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="cadreInfor">
@@ -373,6 +372,7 @@
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
