@@ -6341,13 +6341,10 @@ class TrainingCampService implements ITrainingCampService{
 	
     public List<SimpleVO> getDayWiseCountsForRunningBatches(Date startDate,Date endDate,Long stateId, List<Long> enrollmentYearIds,List<Long> programmIds){
     	
-    	List<SimpleVO> voList = new ArrayList<SimpleVO>(0);
-    	
+    	List<SimpleVO> returnList = new ArrayList<SimpleVO>(0);
+    	List<SimpleVO> finalResultList=new ArrayList<SimpleVO>(0);
     	try {
-    		//TrainingProcedureTestData trainingProcedureTestData=new TrainingProcedureTestData();
-			//List<Object[]>  resultList =  trainingProcedureTestData.getTestProcedureCallData();
-    		//List<Object[]> resultList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programmIds);//Procedure Call
-			
+    		List<SimpleVO> voList = new ArrayList<SimpleVO>(0);
     		List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(startDate,endDate,enrollmentYearIds,programmIds);
 			List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
 			if(trainingCampObj != null && trainingCampObj.size() >0){
@@ -6356,7 +6353,12 @@ class TrainingCampService implements ITrainingCampService{
 		  	        batchIdsList.add(batchId);
 				}
 			}
-			
+			 /*   batchIdsList.add(546L);
+			    batchIdsList.add(553L);
+				batchIdsList.add(548L);
+				batchIdsList.add(550L);
+				batchIdsList.add(552L);
+				batchIdsList.add(549L);*/
 			//List<Object[]> detailsList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programmIds,batchIdsList);//Procedure Call
 			List<Object[]> detailsList = new ArrayList<Object[]>(0);
 			 if(batchIdsList != null && batchIdsList.size()>0){
@@ -6460,18 +6462,126 @@ class TrainingCampService implements ITrainingCampService{
 	        	}
         	}
         	
+        	 //get program ids and program name based on batchid'slist from data base
+			List<Object[]>  programIdsList = trainingCampBatchDAO.getProgramIdsAndNameBasedOnBatchList(batchIdsList);
+			// store all program ids,program name,batchid,batch code in to SimpleVO object as value for batch key
+		   Map<Long,SimpleVO> programDetailsByBatchId=new HashMap<Long,SimpleVO>();
+		   
+		   if(programIdsList != null && programIdsList.size() >0){
+			 	for(Object[] param:programIdsList){
+			 		Long batchId=commonMethodsUtilService.getLongValueForObject(param[0]);
+			 		  if(programDetailsByBatchId.containsKey(batchId)){
+			 			 SimpleVO existingVo=programDetailsByBatchId.get(batchId);
+			 			 //set program details by calling getProgramVo which returns program vo
+			 		 	getProgramVo(existingVo,param);
+			 		   }else{
+			 			  SimpleVO newVo=new SimpleVO();
+			 			  programDetailsByBatchId.put(batchId, getProgramVo(newVo,param));
+			 		   }
+				 }
+			}
+		   
+		          // this is final map which contains actual data for every program
+					Map<Long,SimpleVO> finalResultMap=new HashMap<Long,SimpleVO>();
+					
+					for(SimpleVO mainVo:voList){
+						Long batchId=mainVo.getBatchId();
+						
+						if(programDetailsByBatchId.containsKey(batchId)){
+							SimpleVO matchedBatchVo=programDetailsByBatchId.get(batchId);
+							Long programId=matchedBatchVo.getProgramId();
+							
+							if(finalResultMap.containsKey(programId)){
+								SimpleVO existingProgramVo=finalResultMap.get(programId);
+								 List<SimpleVO> existingCampvoList=existingProgramVo.getCampDetails();
+								 
+								 SimpleVO tempCampVo=new SimpleVO();
+								 tempCampVo.setCampId(mainVo.getCampId());
+								 tempCampVo.setCampName(mainVo.getName());
+								 
+								 boolean foundCamp=false;
+								 if(existingCampvoList.contains(tempCampVo)){
+										int campFromFinalResultMapPosition=existingCampvoList.indexOf(tempCampVo);
+										SimpleVO existingCampVoFromMap=existingCampvoList.get(campFromFinalResultMapPosition);
+										//set complete batch details by calling setBatchDetailsToSimpleVO method
+										SimpleVO newBatchDetails=setBatchDetailsToSimpleVO(mainVo);
+										newBatchDetails.setBatchTypeId(matchedBatchVo.getBatchTypeId());
+										List<SimpleVO> existingBatchList=existingCampVoFromMap.getBatchDetails();
+										existingBatchList.add(newBatchDetails);
+										foundCamp=true;
+							        }else if(foundCamp == false){
+							        	SimpleVO newCampVo=new SimpleVO();
+							        	newCampVo.setCampId(mainVo.getCampId());
+							        	newCampVo.setCampName(mainVo.getName());
+							        	
+							        	List<SimpleVO> batchList=new ArrayList<SimpleVO>();
+							        	SimpleVO batchDetails=setBatchDetailsToSimpleVO(mainVo);
+							        	batchDetails.setBatchTypeId(matchedBatchVo.getBatchTypeId());
+										 batchList.add(batchDetails);
+										 newCampVo.setBatchDetails(batchList);
+										 existingCampvoList.add(newCampVo);
+										 
+							        }
+							}else{
+								 SimpleVO programVo=new  SimpleVO();
+								 programVo.setProgramId(matchedBatchVo.getProgramId());
+								 programVo.setProgName(matchedBatchVo.getProgName());
+								 
+								 List<SimpleVO> campvoList=new ArrayList<SimpleVO>();
+								 SimpleVO campVo=new SimpleVO();
+								 campVo.setCampId(mainVo.getCampId());
+								 campVo.setCampName(mainVo.getName());
+								 
+								 List<SimpleVO> batchList=new ArrayList<SimpleVO>();
+								 SimpleVO batchDetails=setBatchDetailsToSimpleVO(mainVo);
+								 batchDetails.setBatchTypeId(matchedBatchVo.getBatchTypeId());
+								 batchList.add(batchDetails);
+								 campVo.setBatchDetails(batchList);
+								 
+								 campvoList.add(campVo);
+								 programVo.setCampDetails(campvoList);	
+								 finalResultMap.put(matchedBatchVo.getProgramId(), programVo);
+							}
+							
+						}
+					}
+					//put all program vos in to list and return to ui
+					finalResultList.addAll(finalResultMap.values());
+					//System.out.println(finalResultList);
+					
         	if(commonMethodsUtilService.isListOrSetValid(voList)){
         		Collections.sort(voList, new Comparator<SimpleVO>() {
 					public int compare(SimpleVO o1, SimpleVO o2) {
 						return o2.getBatchId().compareTo(o1.getBatchId());
 					}
 				});
+        		
+        		SimpleVO firstVO = voList.get(0);
+        		if(firstVO != null && commonMethodsUtilService.isListOrSetValid(finalResultList)){
+        			for (SimpleVO programVO : finalResultList){
+        				Long batchTypeId = 1L;
+        				if(commonMethodsUtilService.isListOrSetValid(programVO.getCampDetails())){
+        					for (SimpleVO campVO : programVO.getCampDetails()) {								
+        						if(commonMethodsUtilService.isListOrSetValid(campVO.getBatchDetails())){
+        							programVO.setTotalBatchesCount(programVO.getTotalBatchesCount()+Long.valueOf(String.valueOf(campVO.getBatchDetails().size())));
+        							campVO.setTotalBatchesCount(campVO.getTotalBatchesCount()+Long.valueOf(String.valueOf(campVO.getBatchDetails().size())));
+        							if(batchTypeId != null && batchTypeId.longValue()!=2L)// not special batch
+        								batchTypeId = campVO.getBatchDetails().get(0).getBatchTypeId();
+                				}
+							}
+        				}
+        				if(batchTypeId != null && batchTypeId.longValue()==1L)
+        					firstVO.getSimpleVOList1().add(programVO);
+        				else
+        					firstVO.getSimpleVOList2().add(programVO);
+					}
+        			returnList.add(firstVO);
+        		}
         	}
-        	
 		} catch (Exception e) {
 			LOG.error("Exception occured in TrainingCampService of getDayWiseCountsForRunningBatches()",e);
 		}
-    	return voList;
+    	return returnList;
     }
     
     
@@ -13100,5 +13210,40 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 
 		}
 		return finalList;
+	}
+	
+	public SimpleVO getProgramVo(SimpleVO vo,Object[] param){
+			vo.setProgramId(commonMethodsUtilService.getLongValueForObject(param[2]));
+			vo.setProgName(commonMethodsUtilService.getStringValueForObject(param[3]));
+			vo.setBatchId(commonMethodsUtilService.getLongValueForObject(param[0]));
+			vo.setBatchName(commonMethodsUtilService.getStringValueForObject(param[1]));
+			vo.setBatchTypeId(commonMethodsUtilService.getLongValueForObject(param[4]));
+			return vo;
+		}
+	public SimpleVO  setBatchDetailsToSimpleVO(SimpleVO vo){
+		SimpleVO batchVo=new SimpleVO();
+		batchVo.setBatchId(vo.getBatchId());
+		batchVo.setBatchName(vo.getBatchName());
+		batchVo.setDay1Count(vo.getDay1Count());
+		batchVo.setDay2Count(vo.getDay2Count());
+		batchVo.setDay3Count(vo.getDay3Count());
+		
+		batchVo.setDay1IACount(vo.getDay1IACount());
+		batchVo.setDay2IACount(vo.getDay2IACount());
+		batchVo.setDay3IACount(vo.getDay3IACount());
+		batchVo.setDay1NIACount(vo.getDay1NIACount());
+		batchVo.setDay2NIACount(vo.getDay2NIACount());
+		batchVo.setDay3NIACount(vo.getDay3NIACount());
+		batchVo.setOneDayInvitedAttendedCount(vo.getOneDayInvitedAttendedCount());
+		batchVo.setTwoDaysInvitedAttendedCount(vo.getTwoDaysInvitedAttendedCount());
+		batchVo.setThreeDaysInvitedAttendedCount(vo.getThreeDaysInvitedAttendedCount());
+		
+		batchVo.setOneDayNonInvitedAttendedCount(vo.getOneDayNonInvitedAttendedCount());
+		batchVo.setTwoDaysNonInvitedAttendedCount(vo.getTwoDaysNonInvitedAttendedCount());
+		batchVo.setThreeDaysNonInvitedAttendedCount(vo.getThreeDaysNonInvitedAttendedCount());
+		
+		batchVo.setStartDateStr(vo.getStartDateStr());
+		batchVo.setEndDateStr(vo.getEndDateStr());
+		return batchVo;
 	}
 }

@@ -403,12 +403,17 @@ public class CadreDetailsUtils implements ICadreDetailsUtils{
 				{
 					location = tehsilDAO.get(locationValue).getTehsilName()+" Mandal ";
 				}
-				else if(committeeLevelId.longValue() == IConstants.TOWN_COMMITTEE_LEVEL_ID || committeeLevelId.longValue() == IConstants.DIVISION_COMMITTEE_LEVEL_ID)
+				else if(committeeLevelId.longValue() == IConstants.TOWN_COMMITTEE_LEVEL_ID )
 				{
 					LocalElectionBody localbody = localElectionBodyDAO.get(locationValue);
 		    		if(localbody.getElectionType().getElectionTypeId() != 7L)
 		    			location = localbody.getName()+" "+localbody.getElectionType().getElectionType();
-				}				
+				}	
+				else if( committeeLevelId.longValue() == IConstants.DIVISION_COMMITTEE_LEVEL_ID)
+				{
+					Constituency ward = constituencyDAO.get(locationValue);
+		    			location = ward.getName()+" ";
+				}
 				else if(committeeLevelId.longValue() == IConstants.DISTRICT_COMMITTEE_LEVEL_ID)
 				{
 					location = districtDAO.get(locationValue).getDistrictName();

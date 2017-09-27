@@ -631,4 +631,20 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		Query query = getSession().createQuery(sb.toString());
 		return query.list();
 	}
+	
+	public List<Object[]> getProgramIdsAndNameBasedOnBatchList(List<Long> batchIdsList){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.trainingCampBatchId, model.trainingCampBatchCode,");// 0  batch Id, 1 batch code
+		sb.append("model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,");			//  2 program id
+		sb.append("model.trainingCampSchedule.trainingCampProgram.programName, model.trainingCampBatchTypeId "); 	//3  program name,4 batchtypeId
+		sb.append("from TrainingCampBatch model where model.isCancelled = 'false' ");
+		if(batchIdsList != null && batchIdsList.size() >0){
+			sb.append(" and model.trainingCampBatchId in(:batchIdsList) ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(batchIdsList != null && batchIdsList.size() >0){
+			query.setParameterList("batchIdsList", batchIdsList);
+		}	
+		return query.list();
+	}
 }

@@ -298,23 +298,27 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 		//Swadhin Lenka[ItGrids]
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getspecificOfficeTotalNonAttendedEmployeeDetailsFilter(List<Long> deptList, List<Long> presentedCaderIdList, Long officeId){
-			Query query = getSession().createQuery(" select distinct EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, EWL.employee.tdpCadre.firstname, EWL.employee.tdpCadre.mobileNo, ED.department.departmentName, EWL.employee.tdpCadre.tdpCadreId  " +
-												   " from EmployeeWorkLocation EWL, EmployeeDepartment ED " +    
-												   " where " +
-												   " EWL.employee.tdpCadre.tdpCadreId not in (:presentedCaderIdList) and " +
-												   " ED.employee.employeeId = EWL.employee.employeeId and" +
-												   " EWL.employee.isDeleted = 'N' and " +
-												   " EWL.employee.isActive = 'Y' and " +
-												   " EWL.partyOffice.isDeleted = 'N' and " +
-												   " ED.department.departmentId in (:deptList) and " +
-												   " EWL.partyOffice.partyOfficeId = :officeId " +  
-												   " order by " + 
-												   " EWL.partyOffice.partyOfficeId, ED.department.departmentId ");
-			query.setParameterList("presentedCaderIdList", presentedCaderIdList);
-			query.setParameterList("deptList", deptList);
-			query.setParameter("officeId", officeId);
-			return query.list();
+			if(presentedCaderIdList != null && presentedCaderIdList.size()>0 && presentedCaderIdList != null && deptList.size()>0 && officeId != null && officeId.longValue()>0L){
+				Query query = getSession().createQuery(" select distinct EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, EWL.employee.tdpCadre.firstname, EWL.employee.tdpCadre.mobileNo, ED.department.departmentName, EWL.employee.tdpCadre.tdpCadreId  " +
+						   " from EmployeeWorkLocation EWL, EmployeeDepartment ED " +    
+						   " where " +
+						   " EWL.employee.tdpCadre.tdpCadreId not in (:presentedCaderIdList) and " +
+						   " ED.employee.employeeId = EWL.employee.employeeId and" +
+						   " EWL.employee.isDeleted = 'N' and " +
+						   " EWL.employee.isActive = 'Y' and " +
+						   " EWL.partyOffice.isDeleted = 'N' and " +
+						   " ED.department.departmentId in (:deptList) and " +
+						   " EWL.partyOffice.partyOfficeId = :officeId " +  
+						   " order by " + 
+						   " EWL.partyOffice.partyOfficeId, ED.department.departmentId ");
+				query.setParameterList("presentedCaderIdList", presentedCaderIdList);
+				query.setParameterList("deptList", deptList);
+				query.setParameter("officeId", officeId);
+				return query.list();
+			}
+			return null;
 		}
+		
 		//Swadhin Lenka[ItGrids]
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getSpecificOfficeTotalAttendedEmployeeDetailsFilter(Date fromDate, Date toDate, List<Long> deptList, List<Long> presentedCaderIdList, Long officeId){
