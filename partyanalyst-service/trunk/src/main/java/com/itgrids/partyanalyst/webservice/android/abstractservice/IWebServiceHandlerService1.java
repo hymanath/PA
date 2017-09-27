@@ -64,4 +64,5 @@ public interface IWebServiceHandlerService1 {
 	 public String saveMissedCallDetails(MissedCallCampaignVO input);
 	 
 	 public Object saveSurveyFieldUsersForAffliatedCadre(List<CadreRegistrationVO> inputResponseList);
+	 public Object getMemberDetailsByMembershipId(String membershipId);
 }

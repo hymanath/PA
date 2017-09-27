@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CadreInfo implements Serializable{
 	/**
@@ -46,7 +48,10 @@ public class CadreInfo implements Serializable{
 	private String userType;
 	private String accessType;
 	private String userPartyName;
-	
+	private String localElectionBody;
+	private String ward;
+	private Long yearId;
+	private String isValid;
 	// new fields
 	private String fatherOrSpouseName;
 	private String dateOfBirth;
@@ -130,7 +135,7 @@ public class CadreInfo implements Serializable{
 	private Long localElectionBodyId;
 	private String uniqueId;
 	private Long casteStateId;
-	
+	private Set<String> designationSet = new HashSet<String>();
 	
 	
 	public String getUniqueId() {
@@ -858,6 +863,36 @@ public class CadreInfo implements Serializable{
 	}
 	public void setCadreOnlineRegId(Long cadreOnlineRegId) {
 		this.cadreOnlineRegId = cadreOnlineRegId;
+	}
+	public String getLocalElectionBody() {
+		return localElectionBody;
+	}
+	public void setLocalElectionBody(String localElectionBody) {
+		this.localElectionBody = localElectionBody;
+	}
+	public String getWard() {
+		return ward;
+	}
+	public void setWard(String ward) {
+		this.ward = ward;
+	}
+	public Long getYearId() {
+		return yearId;
+	}
+	public void setYearId(Long yearId) {
+		this.yearId = yearId;
+	}
+	public String getIsValid() {
+		return isValid;
+	}
+	public void setIsValid(String isValid) {
+		this.isValid = isValid;
+	}
+	public Set<String> getDesignationSet() {
+		return designationSet;
+	}
+	public void setDesignationSet(Set<String> designationSet) {
+		this.designationSet = designationSet;
 	}
 	
 	
