@@ -25,6 +25,7 @@ public class CandidateInfoForConstituencyVO {
 	private List<CandidateInfoForConstituencyVO> list = new ArrayList<CandidateInfoForConstituencyVO>();
 	private Long tdpCadreId;
 	private String migrateCandidate;
+	private String candDesignation;
 		
 	private CandidateElectionVO candidateElectionVO;
 	
@@ -149,6 +150,12 @@ public class CandidateInfoForConstituencyVO {
 	}
 	public void setMigrateCandidate(String migrateCandidate) {
 		this.migrateCandidate = migrateCandidate;
+	}
+	public String getCandDesignation() {
+		return candDesignation;
+	}
+	public void setCandDesignation(String candDesignation) {
+		this.candDesignation = candDesignation;
 	}
 	
 }
