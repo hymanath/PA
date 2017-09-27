@@ -462,5 +462,17 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		
 		return query.list();
 	}
-	
+	public List<Object[]> getLocationWiseCandidateDesignations(List<Long> condidateIds){
+		StringBuilder queryStr=new StringBuilder();
+		  queryStr.append("select PR.candidateId,PR.publicRepresentativeType.publicRepresentativeTypeId," +
+				" PR.publicRepresentativeType.type from PublicRepresentative PR ");
+		if(condidateIds != null && condidateIds.size()>0){
+			queryStr.append("where PR.candidateId in(:condidateIds)");
+		 }		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(condidateIds != null && condidateIds.size()>0){
+			query.setParameterList("condidateIds", condidateIds);
+		}
+		return query.list();
+	}
  }
