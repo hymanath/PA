@@ -2401,6 +2401,19 @@ public class RWSNICService implements IRWSNICService{
 		return returnVal;
 	}
 	
+	public String convertRupeesIntoLakhesStr(String value){
+		String returnVal = null;
+		try {
+			if(value != null){
+				returnVal = new BigDecimal(Long.valueOf(value)/100000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				//returnVal = returnVal;
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertRupeesIntoLakhes - NREGSTCSService service", e);
+		}
+		return returnVal;
+	}
+	
 	/**
 	  * @param  InputVO inputVO which contain fromDate,toDate,location,locationId and subLocationType
 	  * @return List<NregaLocationOverviewVO>
@@ -2444,22 +2457,35 @@ public class RWSNICService implements IRWSNICService{
 	 	    					vo.setPanchayt(jObj.getString("GRAMPANCHAYATNAMEENG"));
 	 	    				}
 	 	    				
+	 	    				if(inputVO.getSubLocation() != null && (inputVO.getSubLocation().trim().equalsIgnoreCase("state") || inputVO.getSubLocation().trim().equalsIgnoreCase("district") || inputVO.getSubLocation().trim().equalsIgnoreCase("constituency"))){
+	 	    					vo.setTotalAmount(convertRupeesIntoLakhesStr(jObj.getString("TOTAL_AMOUNT")));
+	 	    					vo.setPaidAmount(convertRupeesIntoLakhesStr(jObj.getString("PAID_AMOUNT")));
+	 	    					vo.setPendingAmount(convertRupeesIntoLakhesStr(jObj.getString("YETTOBE_PAID_AMOUNT")));
+	 	    				}
+	 	    				else{
+	 	    					vo.setTotalAmount(jObj.getString("TOTAL_AMOUNT"));
+	 	    					vo.setPaidAmount(jObj.getString("PAID_AMOUNT"));
+	 	    					vo.setPendingAmount(jObj.getString("YETTOBE_PAID_AMOUNT"));
+	 	    				}
 	 	    				vo.setTotalFTO(jObj.getString("TOTAL_FTOS"));
+	 	    				vo.setPaidFTO(jObj.getString("PAID_FTOS"));
+	 	    				vo.setPendingFTO(jObj.getString("YETTOBE_PAID_FTOS"));
+	 	    				/*
 	 	    				if(jObj.getString("TOTAL_AMOUNT") != null && jObj.getString("TOTAL_AMOUNT").length() >= 6)
-	 	    					vo.setTotalAmount(convertRupeesIntoLakhes(jObj.getString("TOTAL_AMOUNT")));
+	 	    					vo.setTotalAmount(convertRupeesIntoLakhesStr(jObj.getString("TOTAL_AMOUNT")));
 	 	    				else
 	 	    					vo.setTotalAmount(jObj.getString("TOTAL_AMOUNT"));
 	 	    				vo.setPaidFTO(jObj.getString("PAID_FTOS"));
 	 	    				if(jObj.getString("PAID_AMOUNT") != null && jObj.getString("PAID_AMOUNT").length() >= 6)
-	 	    					vo.setPaidAmount(convertRupeesIntoLakhes(jObj.getString("PAID_AMOUNT")));
+	 	    					vo.setPaidAmount(convertRupeesIntoLakhesStr(jObj.getString("PAID_AMOUNT")));
 	 	    				else
 	 	    					vo.setPaidAmount(jObj.getString("PAID_AMOUNT"));
 	 	    				vo.setPendingFTO(jObj.getString("YETTOBE_PAID_FTOS"));
 	 	    				if(jObj.getString("YETTOBE_PAID_AMOUNT") != null && jObj.getString("YETTOBE_PAID_AMOUNT").length() >= 6)
-	 	    					vo.setPendingAmount(convertRupeesIntoLakhes(jObj.getString("YETTOBE_PAID_AMOUNT")));
+	 	    					vo.setPendingAmount(convertRupeesIntoLakhesStr(jObj.getString("YETTOBE_PAID_AMOUNT")));
 	 	    				else
 	 	    					vo.setPendingAmount(jObj.getString("YETTOBE_PAID_AMOUNT"));
-	 	    				
+	 	    				*/
 	 	    				returnList.add(vo);
 	 	    			}	
 	 	    		}
