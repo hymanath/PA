@@ -312,7 +312,7 @@ function getMeesevaSLAMonitoringDtlsDepartmentWise(divId,blockId){
 function buildMeesevaSlaMonitoringDtls(result,divId,blockId) {
 	var str = '';
 	str+='<div class="table-responsive m_top20">';	
-	str+='<table class="table table-bordered" id="">';
+	str+='<table class="table table-bordered" id="meesevaSlaMonitoringDataTblId">';
 		str+='<thead>';
 			str+='<tr>';
 				str+='<th rowspan="2">Departments</th>';
@@ -350,6 +350,7 @@ function buildMeesevaSlaMonitoringDtls(result,divId,blockId) {
 	str+='</table>';
 	str+='</div>';
 	$("#meesevaSalTable"+divId+blockId).html(str);
+	$("#meesevaSlaMonitoringDataTblId").dataTable();
 }
 
 function getPromotionsOverviewByDepartmentType(){
