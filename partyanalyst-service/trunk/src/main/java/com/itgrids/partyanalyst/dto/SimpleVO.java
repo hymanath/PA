@@ -25,8 +25,10 @@ public class SimpleVO implements java.io.Serializable{
    private Long totalCount =0l;
    private String isAttended = "-";
    
-   private List<SimpleVO> simpleVOList1;
-   private List<SimpleVO> simpleVOList2;
+   private List<SimpleVO> simpleVOList1 = new ArrayList<SimpleVO>(0);
+   private List<SimpleVO> simpleVOList2 = new ArrayList<SimpleVO>(0);
+   private Long totalBatchesCount=0L;
+   private Long batchTypeId =0L;
    
    private Map<Long,SimpleVO> map;
    
@@ -121,6 +123,23 @@ public class SimpleVO implements java.io.Serializable{
    private Long day2NIACount=0l;
    private Long day3NIACount=0l;
    
+   private List<SimpleVO> CampDetails=new ArrayList<SimpleVO>(0);
+   private List<SimpleVO> batchDetails=new ArrayList<SimpleVO>(0);
+   
+   
+   
+public List<SimpleVO> getCampDetails() {
+	return CampDetails;
+}
+public void setCampDetails(List<SimpleVO> campDetails) {
+	CampDetails = campDetails;
+}
+public List<SimpleVO> getBatchDetails() {
+	return batchDetails;
+}
+public void setBatchDetails(List<SimpleVO> batchDetails) {
+	this.batchDetails = batchDetails;
+}
 public Long getDay1IACount() {
 	return day1IACount;
 }
@@ -678,4 +697,106 @@ public void setNonInvitee(boolean nonInvitee) {
 	public void setEndDateStr(String endDateStr) {
 		this.endDateStr = endDateStr;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SimpleVO other = (SimpleVO) obj;
+		if (batchId == null) {
+			if (other.batchId != null)
+				return false;
+		} else if (!batchId.equals(other.batchId))
+			return false;
+		if (campId == null) {
+			if (other.campId != null)
+				return false;
+		} else if (!campId.equals(other.campId))
+			return false;
+		return true;
+	}
+	@Override
+	public String toString() {
+		return "SimpleVO [id=" + id + ", name=" + name + ", membershipNo="
+				+ membershipNo + ", dateString=" + dateString + ", date="
+				+ date + ", imageStr=" + imageStr + ", mobileNo=" + mobileNo
+				+ ", startDateStr=" + startDateStr + ", endDateStr="
+				+ endDateStr + ", count=" + count + ", total=" + total
+				+ ", totalCount=" + totalCount + ", isAttended=" + isAttended
+				+ ", simpleVOList1=" + simpleVOList1 + ", simpleVOList2="
+				+ simpleVOList2 + ", map=" + map + ", progName=" + progName
+				+ ", campName=" + campName + ", batchName=" + batchName
+				+ ", scheduleName=" + scheduleName + ", batchId=" + batchId
+				+ ", locValue=" + locValue + ", remarks=" + remarks
+				+ ", nonInvitee=" + nonInvitee + ", totalInviteeCount="
+				+ totalInviteeCount + ", totalAttendedCount="
+				+ totalAttendedCount + ", totalAbsentCount=" + totalAbsentCount
+				+ ", cadreIds=" + cadreIds + ", simpleVO1=" + simpleVO1
+				+ ", day1Count=" + day1Count + ", day2Count=" + day2Count
+				+ ", day3Count=" + day3Count + ", centerId=" + centerId
+				+ ", centerName=" + centerName + ", percentage=" + percentage
+				+ ", inviteeList=" + inviteeList + ", inviteeAttendedList="
+				+ inviteeAttendedList + ", nonInviteeAttendedlist="
+				+ nonInviteeAttendedlist + ", inviteeCount=" + inviteeCount
+				+ ", inviteeAttendedCount=" + inviteeAttendedCount
+				+ ", nonInviteeAttendedCount=" + nonInviteeAttendedCount
+				+ ", partyBenefitStr=" + partyBenefitStr + ", cadreId="
+				+ cadreId + ", campId=" + campId + ", programId=" + programId
+				+ ", status=" + status + ", categoryId=" + categoryId
+				+ ", category=" + category + ", oneDayNIACount="
+				+ oneDayNIACount + ", twoDaysNIACount=" + twoDaysNIACount
+				+ ", threeDaysNIACount=" + threeDaysNIACount
+				+ ", constituencyId=" + constituencyId + ", constituencyName="
+				+ constituencyName + ", designationLevel=" + designationLevel
+				+ ", designation=" + designation + ", designationLevelId="
+				+ designationLevelId + ", designationLevelValue="
+				+ designationLevelValue + ", designationLevelName="
+				+ designationLevelName + ", mandalIdsList=" + mandalIdsList
+				+ ", mandalMap=" + mandalMap + ", villageIdsList="
+				+ villageIdsList + ", villageMap=" + villageMap
+				+ ", townIdsList=" + townIdsList + ", townMap=" + townMap
+				+ ", wardIdsList=" + wardIdsList + ", wardMap=" + wardMap
+				+ ", divisionIdsList=" + divisionIdsList + ", divisionMap="
+				+ divisionMap + ", stateIdsList=" + stateIdsList
+				+ ", stateMap=" + stateMap + ", districtIdsList="
+				+ districtIdsList + ", districtMap=" + districtMap
+				+ ", centralIdsList=" + centralIdsList + ", centralMap="
+				+ centralMap + ", oneDayInvitedAttendedCount="
+				+ oneDayInvitedAttendedCount + ", twoDaysInvitedAttendedCount="
+				+ twoDaysInvitedAttendedCount
+				+ ", threeDaysInvitedAttendedCount="
+				+ threeDaysInvitedAttendedCount
+				+ ", oneDayNonInvitedAttendedCount="
+				+ oneDayNonInvitedAttendedCount
+				+ ", twoDaysNonInvitedAttendedCount="
+				+ twoDaysNonInvitedAttendedCount
+				+ ", threeDaysNonInvitedAttendedCount="
+				+ threeDaysNonInvitedAttendedCount + ", notAttendedCount="
+				+ notAttendedCount + ", age=" + age + ", caste=" + caste
+				+ ", confirmedCount=" + confirmedCount + ", totl=" + totl
+				+ ", nonInviteeAtendedCount=" + nonInviteeAtendedCount
+				+ ", day1IACount=" + day1IACount + ", day2IACount="
+				+ day2IACount + ", day3IACount=" + day3IACount
+				+ ", day1NIACount=" + day1NIACount + ", day2NIACount="
+				+ day2NIACount + ", day3NIACount=" + day3NIACount
+				+ ", CampDetails=" + CampDetails + ", batchDetails="
+				+ batchDetails + "]";
+	}
+	public Long getTotalBatchesCount() {
+		return totalBatchesCount;
+	}
+	public void setTotalBatchesCount(Long totalBatchesCount) {
+		this.totalBatchesCount = totalBatchesCount;
+	}
+	public Long getBatchTypeId() {
+		return batchTypeId;
+	}
+	public void setBatchTypeId(Long batchTypeId) {
+		this.batchTypeId = batchTypeId;
+	}
+	
    }
