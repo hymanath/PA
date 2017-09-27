@@ -281,7 +281,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		List<MeesevaDtlsVO> resultList = new ArrayList<MeesevaDtlsVO>(0);
 		try {
 			String input = prepareInputParameter(inputVO);
-			ClientResponse response = itcWebServiceUtilService.callWebService("http://uat.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/TRANSACTIONDETAILS",input);
+			ClientResponse response = itcWebServiceUtilService.callWebService("http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/TRANSACTIONDETAILS",input);
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			} else {
