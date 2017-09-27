@@ -92,7 +92,7 @@ import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.model.Position;
 import com.itgrids.partyanalyst.model.PublicationDate;
-import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
+import com.itgrids.partyanalyst.model.TdpCadreEnrollmentYear;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
@@ -1567,10 +1567,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 	public List<BasicVO> getEnrollmentIds() {
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
-		List<TdpCommitteeEnrollment> tdpCommitteeEnrollment = tdpCommitteeEnrollmentDAO.getAll();
-		for (TdpCommitteeEnrollment tdpCommitteeEnrollment2 : tdpCommitteeEnrollment) {
+		List<EnrollmentYear> tdpCommitteeEnrollment = enrollmentYearDAO.getAll();
+		for (EnrollmentYear tdpCommitteeEnrollment2 : tdpCommitteeEnrollment) {
 			BasicVO enrollmentList = new BasicVO();
-			enrollmentList.setId(tdpCommitteeEnrollment2.getTdpCommitteeEnrollmentId());
+			enrollmentList.setId(tdpCommitteeEnrollment2.getEnrollmentYearId());
 			enrollmentList.setDescription(tdpCommitteeEnrollment2.getDescription());
 			finalList.add(enrollmentList);
 		}
