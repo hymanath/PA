@@ -3599,7 +3599,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 												str+='<div class="media-body">';
 													str+='<h5>'+result.alertTypeList[i].status+' Alerts</h5>';
 													if(result.alertTypeList[i].count !=null && result.alertTypeList[i].count>0){
-														str+='<h4 class="m_top5">'+result.alertTypeList[i].count+' <br/><small style="color:green">15.00%</small></h4>';
+														str+='<h4 class="m_top5">'+result.alertTypeList[i].count+' <br/><small style="color:green">'+result.alertTypeList[i].percentage+'%</small></h4>';
 													}else{
 														str+='<h4 class="m_top5"> - </h4>';
 													}
