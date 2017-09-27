@@ -686,6 +686,9 @@ function buildLocationWiseCountDetails(ajaxresp,locationType){
 						//str+='<th class="text-capital">Individual</th>';
 						//str+='<th class="text-capital">Community</th>';
 						str+='<th class="text-capital">Images Received</th>';
+						str+='<th class="text-capital">Calls Dialed</th>';
+						str+='<th class="text-capital">SMS Sent</th>';
+						str+='<th class="text-capital">Flag Hoisting Images</th>';
 						
 					str+='</thead>';
 					str+='<tbody>';
@@ -786,6 +789,21 @@ function buildLocationWiseCountDetails(ajaxresp,locationType){
 								} */
 								if(ajaxresp[i].totalImagesReceived !=null && ajaxresp[i].totalImagesReceived>0){
 									str+='<td class="text-capital">'+ajaxresp[i].totalImagesReceived+'</td>';		
+								}else{
+									str+='<td class="text-capital"> - </td>';	
+								}
+								if(ajaxresp[i].callsCunt !=null && ajaxresp[i].callsCunt>0){
+									str+='<td class="text-capital">'+ajaxresp[i].callsCunt+'</td>';		
+								}else{
+									str+='<td class="text-capital"> - </td>';	
+								}
+								if(ajaxresp[i].smsCount !=null && ajaxresp[i].smsCount>0){
+									str+='<td class="text-capital">'+ajaxresp[i].smsCount+'</td>';		
+								}else{
+									str+='<td class="text-capital"> - </td>';	
+								}
+								if(ajaxresp[i].flagHoistingImgCunt !=null && ajaxresp[i].flagHoistingImgCunt>0){
+									str+='<td class="text-capital flagHoistingImagesCls" attr_level_value="'+ajaxresp[i].id+'" attr_level_id="'+locationType+'">'+ajaxresp[i].flagHoistingImgCunt+'</td>';		
 								}else{
 									str+='<td class="text-capital"> - </td>';	
 								}
