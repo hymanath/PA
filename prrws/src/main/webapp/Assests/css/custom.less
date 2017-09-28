@@ -22,6 +22,7 @@
 @linear_light_dark_green:#FFBA00;
 @roboto_font:'Roboto', sans-serif;
 @lato_font:'Lato', sans-serif;
+@montserrat_font: 'Montserrat', sans-serif;
 @transparent_color:transparent;
 @background_color_8: rgb(74, 88, 99);
 @orange_color:#E37A1F;
@@ -52,7 +53,7 @@ body
 {
 	color:@black_color;
 	background-color:@light_ash_color;
-	font-family: @lato_font;
+	font-family: @lato_font; 
 	-webkit-print-color-adjust:exact;
 }
 
@@ -2041,4 +2042,83 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 }
 .white_block_Dep{
 	background-color: #F2F2F2;
+}
+/*landing page css*/
+.logoCls
+	{
+		height:70px;
+		padding:5px 12px;
+	}
+.landingmenu-block{
+	background-color: #212121;
+	padding: 20px 15px;
+	.landing-menu{
+		width: 100%;
+		padding: 0px 15px;
+		height: 100%;
+		li{
+			background-color: #383838;
+			padding: 15px 0px;
+			text-overflow: ellipsis;
+			margin: 0px 10px;
+			border-radius: 5px;
+			width: 16%;
+			h5{
+				padding: 5px 0px;
+			}
+		}
+		li.active{
+			background-color: #FF9100;
+		}
+	
+}
+}
+.whiteBlock{
+	background-color: @white_color;
+	padding: 15px;
+	box-shadow:0px 0px 10px rgba(0,0,0,0.4);
+	margin-top: 45px;
+	img{
+		 height: 80px;
+		 width: 90px;
+		margin-left: -21px;
+		margin-top: -53px;
+	}
+	
+	.block-footer{
+		border-top: 1px solid lightgrey;
+		padding: 10px 0px;
+		.fa-star{
+			//color: #EC2027;
+			color: gray;
+		}
+		a{
+			color: #9C2DB2;
+			text-decoration: none;
+			cursor: pointer;
+			.fa-external-link-square{
+				padding-right: 5px;
+			}
+		}
+	}
+}
+.footerCls{
+	background-color: @white_color;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	.footer-block{
+		p:first-child{
+			margin-top: 18px;
+		}
+		p{
+			font-size: 11px;
+			display: inline-block;
+			//padding-top: 10px;
+		}
+	}
+}
+.starcolorChange{
+	cursor:pointer;
 }

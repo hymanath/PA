@@ -1,10 +1,7 @@
 package com.itgrids.service.impl;
+import java.util.ArrayList;
 import java.util.List;
 
-/*
- * @Author R Nagarjuna Gowd
- * Date 06/06/2017
- */
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,16 +9,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
+import com.itgrids.dao.IFavouriteComponentDAO;
 import com.itgrids.dao.IHamletDAO;
 import com.itgrids.dao.IPanchayatDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dao.IUserDAO;
 import com.itgrids.dto.AddressVO;
+import com.itgrids.dto.IdNameVO;
+import com.itgrids.dto.ResultVO;
 import com.itgrids.dto.UserVO;
+import com.itgrids.model.FavouriteComponent;
 import com.itgrids.model.User;
 import com.itgrids.service.IUserService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
 
 @Service
@@ -44,6 +46,8 @@ public class UserServiceImpl implements IUserService {
 	private IPanchayatDAO panchayatDAO;
 	@Autowired
 	private IHamletDAO hamletDAO;
+	@Autowired
+	private IFavouriteComponentDAO favouriteComponentDAO;
 	
 	@Override
 	public UserVO userAuthentication(String userName, String password) {
@@ -813,5 +817,79 @@ public class UserServiceImpl implements IUserService {
 
 		return null;
 	}
-
+	/**
+	 * @Author : Santosh Kumar Verma
+	 * @Date : 27-09-2017
+	 * @param InputVO inputVO
+	 * @return String  
+	 */
+	public ResultVO saveFavouriteComponentDtls(IdNameVO inputVO) {
+		ResultVO statusVO = new ResultVO();
+		statusVO.setMessage("success");
+		statusVO.setStatusCode(0);
+		try {
+			if (inputVO.getName() != null && inputVO.getName().trim().length() > 0) {
+				List<Long> componentsIdList = favouriteComponentDAO.getFavouriteComponentId(inputVO.getName());
+				if (componentsIdList == null || componentsIdList.size() == 0) {
+					DateUtilService dateUtil = new DateUtilService();
+					FavouriteComponent model = new FavouriteComponent();
+					model.setName(inputVO.getName());
+					model.setUrl(inputVO.getUrl());
+					model.setInsertedTime(dateUtil.getCurrentDateAndTime());
+					model.setUpdatedTime(dateUtil.getCurrentDateAndTime());
+					model.setIsDeleted("N");
+					favouriteComponentDAO.save(model);
+					statusVO.setMessage("success");
+					statusVO.setStatusCode(0);
+				}
+			}
+		} catch (Exception e) {
+			log.error("Exception occured in saveFavouriteComponentDtls from UserServiceImpl ",e);
+			statusVO.setMessage("fail");
+			statusVO.setStatusCode(1);
+		}
+		return statusVO;
+	}
+	/**
+	 * @Author : Santosh Kumar Verma
+	 * @Date : 27-09-2017
+	 * @return List<IdNameVO  
+	 */
+	public List<IdNameVO> getFavouriteComponents() {
+		List<IdNameVO> resultList = new ArrayList<>(0);
+		try {
+			List<Object[]> favouriteComponentObjList = favouriteComponentDAO.getFavouriteComponencts();
+			if (favouriteComponentObjList != null && favouriteComponentObjList.size() > 0) {
+				for (Object[] param : favouriteComponentObjList) {
+					IdNameVO componentVO = new IdNameVO();
+					componentVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					componentVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					componentVO.setUrl(commonMethodsUtilService.getStringValueForObject(param[2]));
+					resultList.add(componentVO);
+				}
+			}
+		} catch (Exception e) {
+			log.error("Exception occured in getFavouriteComponents from UserServiceImpl ",e);
+		}
+		return resultList;
+	}
+	/**
+	 * @Author : Santosh Kumar Verma
+	 * @Date : 27-09-2017
+	 * @param InputVO inputVO
+	 * @return String  
+	 */
+	public ResultVO deleteFavouriteComponent(IdNameVO inputVO) {
+		ResultVO statusVO = new ResultVO();
+		try {
+			int updatedCount = favouriteComponentDAO.updateFavouriteComponentDtls(inputVO.getId(),"Y");
+			statusVO.setMessage("success");
+			statusVO.setStatusCode(0);
+		} catch (Exception e) {
+			statusVO.setMessage("fail");
+			statusVO.setStatusCode(1);
+			log.error("Exception occured in deleteFavouriteComponent from UserServiceImpl ",e);
+		}
+		return statusVO;
+	}
 }
