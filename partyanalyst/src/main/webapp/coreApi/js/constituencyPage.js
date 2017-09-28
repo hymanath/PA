@@ -109,7 +109,7 @@ function onLoadInitialisations()
 function onLoadAjaxCalls()
 {
 	
-	$("#enrolmentYears").chosen();
+	 $("#enrolmentYears").chosen();
 	 //Enrolment Years
 	getEnrollmentIds(); 
 	getPublications();
@@ -463,6 +463,17 @@ function onLoadClicks()
 		}
 		
 	});
+	$(document).on("click",".assembly-viewRes",function(){
+		if($(this).text() == 'Click to more')
+		{
+			$(this).text("Click for less");
+			$(".assembly-members-viewRes").addClass("active");
+		}else{
+			$(this).text("Click to more");
+			$(".assembly-members-viewRes").removeClass("active");
+		}
+		
+	});
 	
 	$(document).on("click",".casteGroupWiseClickCls",function(){
 		var casteGroupId =  $(this).attr("attr_id");
@@ -716,7 +727,7 @@ function responsiveTabs()
 }
 
 function getCandidateAndPartyInfoForConstituency(){
-	$("#parliamentMemberId,#assemblyMemberId").html(blockSpinner);
+	$("#parliamentMemberId,#assemblyMemberId, #representativeMembersId").html(blockSpinner);
 	if(locationLevelId == '8'){
 		$("#parliamentMemberId,#assemblyMemberId").hide();
 		return;
@@ -747,12 +758,16 @@ function getCandidateAndPartyInfoForConstituency(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null){
+			buildRepresentativeCandidates(result);
 			if(locationLevelId == '3' || locationLevelId == '10')
 			{
 				return buildCandidateAndPartyInfoForDistrict(result);	
 			}else{
-				return buildCandidateAndPartyInfoForConstituency(result);	
+				return buildCandidateAndPartyInfoForConstituency(result);
+				 
+					
 			}
+			
 		}else{
 			$("#parliamentMemberId,#assemblyMemberId").html(noData);
 		}
@@ -778,8 +793,22 @@ function getCandidateAndPartyInfoForConstituency(){
 										parliament+='</span>';
 									parliament+='</div>';
 									parliament+='<div class="media-body">';
-										parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList1[i].candidateName+'</h4>';
-										parliament+='<p class="text-muted text-capital">Parliament : '+result[0].subList1[i].constituencyName+'</p>';
+										parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList1[i].candidateName+'';
+										if(result[0].subList1[i].migrateCandidate == "true"){
+											parliament+='<span class="" style="font-size: 12px; top: 15px; position: absolute;">';
+												  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
+												  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
+												 parliament+=' <i class="fa fa-star" aria-hidden="true" ></i>';
+											parliament+='</span>';
+										}
+										parliament+='</h4>';
+										parliament+='<p class="text-muted text-capital" style="margin-bottom: 5px;">Parliament : '+result[0].subList1[i].constituencyName+'</p>';
+										if(result[0].subList1[i].tdpCadreId !=null && result[0].subList1[i].tdpCadreId>0){
+											parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].subList1[i].tdpCadreId+'">View Candidate Profile</span>';
+										}else{
+											parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].subList1[i].candidateId+'">View Candidate Profile</span>';
+										}
+										
 									parliament+='</div>';
 								parliament+='</div>';
 							parliament+='</div>';
@@ -813,9 +842,22 @@ function getCandidateAndPartyInfoForConstituency(){
 											assembly+='</span>';
 										assembly+='</div>';
 										assembly+='<div class="media-body">';
-											assembly+='<h4 class="m_top20 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'</h4>';
+											assembly+='<h4 class="m_top10 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'';
+												if(result[i].migrateCandidate == "true"){
+													assembly+='<span class="" style="font-size: 12px; top: 15px; position: absolute;">';
+														  assembly+='<i class="fa fa-star" aria-hidden="true" ></i>';
+														  assembly+='<i class="fa fa-star" aria-hidden="true" ></i>';
+														 assembly+=' <i class="fa fa-star" aria-hidden="true" ></i>';
+													assembly+='</span>';
+												}
+											assembly+='</h4>';
 											assembly+='<p class="text-muted text-capital">Assembly : '+result[i].assemblyCandidateInfo[0].constituencyName+'</p>';
-											assembly+='<p class="text-muted text-capital">Parliament : '+result[i].assemblyCandidateInfo[0].parliamnerName+'</p>';
+											assembly+='<p class="text-muted text-capital" style="margin-bottom: 5px;">Parliament : '+result[i].assemblyCandidateInfo[0].parliamnerName+'</p>';
+											if(result[i].assemblyCandidateInfo[0].tdpCadreId !=null && result[i].assemblyCandidateInfo[0].tdpCadreId>0){
+												assembly+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].assemblyCandidateInfo[0].tdpCadreId+'">View Candidate Profile</span>';
+											}else{
+												assembly+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].assemblyCandidateInfo[0].candidateId+'">View Candidate Profile</span>';
+											}
 										assembly+='</div>';
 									assembly+='</div>';
 								assembly+='</div>';
@@ -847,8 +889,21 @@ function getCandidateAndPartyInfoForConstituency(){
 									parliament+='</span>';
 								parliament+='</div>';
 								parliament+='<div class="media-body">';
-									parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList1[0].candidateName+'</h4>';
-									parliament+='<p class="text-muted text-capital">MP ('+result[0].subList1[0].constituencyName+')</p>';
+									parliament+='<h4 class="m_top20 text-success text-capital">'+result[0].subList1[0].candidateName+'';
+										if(result[0].subList1[0].migrateCandidate == "true"){
+											parliament+='<span class="" style="font-size: 12px; top: 15px; position: absolute;">';
+												  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
+												  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
+												 parliament+=' <i class="fa fa-star" aria-hidden="true" ></i>';
+											parliament+='</span>';
+										}
+									parliament+='</h4>';
+									parliament+='<p class="text-muted text-capital" style="margin-bottom:5px;">MP ('+result[0].subList1[0].constituencyName+')</p>';
+									if(result[0].subList1[0].tdpCadreId !=null && result[0].subList1[0].tdpCadreId>0){
+										parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].subList1[0].tdpCadreId+'">View Candidate Profile</span>';
+									}else{
+										parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].subList1[0].candidateId+'">View Candidate Profile</span>';
+									}
 								parliament+='</div>';
 							parliament+='</div>';
 						parliament+='</div>';			
@@ -864,9 +919,22 @@ function getCandidateAndPartyInfoForConstituency(){
 										parliament+='</span>';
 									parliament+='</div>';
 									parliament+='<div class="media-body">';
-										parliament+='<h4 class="m_top20 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'</h4>';
+										parliament+='<h4 class="m_top10 text-success text-capital">'+result[i].assemblyCandidateInfo[0].candidateName+'';
+											if(result[i].migrateCandidate == "true"){
+												parliament+='<span class="" style="font-size: 12px; top: 15px; position: absolute;">';
+													  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
+													  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
+													 parliament+=' <i class="fa fa-star" aria-hidden="true" ></i>';
+												parliament+='</span>';
+											}
+										parliament+='</h4>';
 										parliament+='<p class="text-muted text-capital">MLA ('+result[i].assemblyCandidateInfo[0].constituencyName+')</p>';
-										parliament+='<p class="text-muted text-capital">Parliament: '+result[i].assemblyCandidateInfo[0].parliamnerName+'</p>';
+										parliament+='<p class="text-muted text-capital" style="margin-bottom:5px;">Parliament: '+result[i].assemblyCandidateInfo[0].parliamnerName+'</p>';
+										if(result[i].assemblyCandidateInfo[0].tdpCadreId !=null && result[i].assemblyCandidateInfo[0].tdpCadreId>0){
+											parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].assemblyCandidateInfo[0].tdpCadreId+'">View Candidate Profile</span>';
+										}else{
+											parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].assemblyCandidateInfo[0].candidateId+'">View Candidate Profile</span>';
+										}
 									parliament+='</div>';
 								parliament+='</div>';
 							parliament+='</div>';
@@ -879,10 +947,81 @@ function getCandidateAndPartyInfoForConstituency(){
 		$("#parliamentMemberId").html(parliament);
 		$("#assemblyMemberId").html("");
 	}
+	
+	
 
 }
 
-
+function buildRepresentativeCandidates(result){
+		var assembly='';
+		
+		assembly+='<div class="col-sm-12 m_top20">';
+			assembly+='<div class="panel panel-default">';
+				assembly+='<div class="panel-body">';
+					assembly+='<h4 class="panel-title theme-title-color">Public Representative in Other Location for Nellore District</h4>';
+					if(result.length > 4)
+					{
+						assembly+='<div class="block  assembly-members-viewRes">';
+					}else{
+						assembly+='<div class="block">';
+					}
+					
+						assembly+='<div class="row m_top10">';
+							for(var i in result[0].list)
+							{
+								assembly+='<div class="col-sm-12 m_top10">';
+									assembly+='<h4 class="panel-title">'+result[0].list[i].party+'</h4>';
+								assembly+='</div>';
+								for(var j in result[0].list[i].list){
+									assembly+='<div class="col-sm-6 m_top10">';
+										assembly+='<div class="media media-profile">';
+											assembly+='<span id="mlaSpinnerId"></span>';
+											assembly+='<div class="media-left">';
+												assembly+='<img  onerror="setDefaultImage(this);" src="images/candidates/'+result[0].list[i].list[j].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
+												assembly+='<span class="border-image img-border">';
+												if(result[0].list[i].list[j].partyFlag !=null){
+													
+													assembly+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[0].list[i].list[j].partyFlag+'" alt="party"/>';
+												}else{
+													assembly+='<img  src="images/User.png" alt="party" style="width:20px;"/>';
+												}
+													
+												assembly+='</span>';
+											assembly+='</div>';
+											assembly+='<div class="media-body">';
+												assembly+='<h4 class="m_top10 text-success text-capital">'+result[0].list[i].list[j].candidateName+'';
+													if(result[0].list[i].list[j].migrateCandidate == "true"){
+														assembly+='<span class="" style="font-size: 12px; top: 15px; position: absolute;">';
+															  assembly+='<i class="fa fa-star" aria-hidden="true" ></i>';
+															  assembly+='<i class="fa fa-star" aria-hidden="true" ></i>';
+															 assembly+=' <i class="fa fa-star" aria-hidden="true" ></i>';
+														assembly+='</span>';
+													}
+												assembly+='</h4>';
+												assembly+='<p class="text-muted text-capital">Assembly : '+result[0].list[i].list[j].constituencyName+'</p>';
+												
+												if(result[0].list[i].list[j].tdpCadreId !=null && result[0].list[i].list[j].tdpCadreId>0){
+													assembly+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].list[i].list[j].tdpCadreId+'">View Candidate Profile</span>';
+												}else{
+													assembly+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].list[i].list[j].candidateId+'">View Candidate Profile</span>';
+												}
+											assembly+='</div>';
+										assembly+='</div>';
+									assembly+='</div>';
+								}
+								
+							}
+						assembly+='</div>';
+					assembly+='</div>';
+					assembly+='<p class="text-center assembly-viewRes" style="text-decoration:underline">Click to more</p>';
+				assembly+='</div>';
+			assembly+='</div>';
+		assembly+='</div>';
+		
+	
+	$("#representativeMembersId").html(assembly);
+			
+}
 function getCountsForConstituency(){
 	$("#levelWiseCountDivId").html(blockSpinner);
 	
@@ -3950,3 +4089,11 @@ function getCommitteeCount(){
 		
 	});	
 }
+$(document).on('click','.cadreRedirectPage',function(){ 
+	var cadreId = $(this).attr("attr_cadre_id")
+	var redirectWindow = window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');  
+});
+$(document).on('click','.candidateRedirectPage',function(){ 
+	var candidateId = $(this).attr("attr_candidate_id")
+	var redirectWindow = window.open('candidateElectionResultsAction.action?candidateId='+candidateId+'','_blank');  
+});

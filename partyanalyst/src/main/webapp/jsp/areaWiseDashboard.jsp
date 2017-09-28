@@ -100,6 +100,7 @@
 		<div class="row m_top20">
 		 	<div id="parliamentMemberId"></div>
 			<div id="assemblyMemberId"></div>
+			<div id="representativeMembersId"></div>
 		 	<div class="col-sm-12 m_top20">
 				<div id="levelWiseCountDivId"></div>
 			</div>
