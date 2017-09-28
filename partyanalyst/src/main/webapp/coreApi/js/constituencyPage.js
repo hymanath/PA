@@ -109,7 +109,7 @@ function onLoadInitialisations()
 function onLoadAjaxCalls()
 {
 	
-	 $("#enrolmentYears").chosen();
+	  $("#enrolmentYears").chosen();
 	 //Enrolment Years
 	getEnrollmentIds(); 
 	getPublications();
@@ -430,13 +430,7 @@ function onLoadClicks()
 				
 			}
 	});		
-	$(document).on("click",".expandCasteIconCls",function(){
-		var casteGroupId = $(this).attr("attr_caste_group_id");
-		var casteId = $(this).attr("attr_caste_id");
-		var casteName = $(this).attr("attr_caste_name");
-		var groupType = $(this).attr("attr_group_type");
-		getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName,groupType);
-	});
+	
 
 	$(document).on("click",".yearCadreDetails",function(){
 		$(".yearCadreDetails").removeClass("cadreBorderStyle");
@@ -497,6 +491,19 @@ function onLoadClicks()
 		getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",publicationId,enrollmentId);
 		getVotersCastGroupWiseCount(publicationId,enrollmentId);
 	});
+	$(document).on("click",".casteCategoryGroupWiseClickCls",function(){
+		$("#casteCategoryModal").modal("show");
+		
+		var casteGroupId =  $(this).attr("attr_caste_group_id");
+		var casteId =  $(this).attr("attr_caste_id");
+		var casteName =  $(this).attr("attr_caste_name");
+		
+		var enrollmentId =  $("#enrollmentCasteId").val();
+		var publicationId = $("#publicationCasteId").val();
+		getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,enrollmentId,publicationId,casteName)
+		
+	});
+	
 }
 function menuCalls(levelId,levelValue,higherLevelVal)
 {
@@ -1652,7 +1659,7 @@ function buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName){
 		str+='<tbody>';
 		for(var i in result){
 			str+='<tr>';
-					str+='<td>'+result[i].ageRange+'</td>';
+				str+='<td class="casteCategoryGroupWiseClickCls" attr_caste_id="'+result[i].ageRangeId+'" attr_caste_group_id="'+casteGroupId+'" attr_caste_name="'+result[i].ageRange+'" style="color:#337ab7;cursor:pointer;">'+result[i].ageRange+'</td>';
 				str+='<td>'+result[i].totalVoters+'</td>';
 				str+='<td class="text-success">'+result[i].totalVotersPerc+' %</td>';
 				
@@ -1682,8 +1689,8 @@ function buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName){
 		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 	});
 }
-function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName,groupType){
-	$("#expandCaste"+casteId).html(spinner);
+function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,enrollmentId,publicationId,casteName){
+	$("#casteCategoryModalDivId").html(spinner);
 	
 	jsObj={
 		locationTypeId		:locationLevelId,
@@ -1691,7 +1698,7 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName,groupT
 		casteGroupId		:casteGroupId,
 		casteId				:casteId,
 		publicationDateId	:publicationId,
-		enrollmentYearId	: 4
+		enrollmentYearId	:enrollmentId
     }
 	$.ajax({
 		type : "GET",
@@ -1701,43 +1708,59 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName,groupT
     }).done(function(result){ 
 		if(result != null && result.length > 0){
 			var str='';
-			str+='<h4 class="panel-title" style="padding: 5px; font-weight: 600;"><span class="text-capital">'+casteName+'</span> - <span class="text-capitalize">voter and cadre information b/w age group</span></h4>';
+			$("#headingTitle").html('<h4 class="panel-title" style="padding: 5px; font-weight: 600;"><span class="text-capital">'+casteName+' Caste</span> - <span class="text-capitalize">voter and cadre information b/w age group</span></h4>')
 			str+='<p class="text-muted text-right">';
 				str+='<span class="f-11"><i class="glyphicon glyphicon-info-sign"></i> _(C) = Cadres ; _(V) = Voter</span>';
 			str+='</p>';
-			str+='<table class="table table-noborder m_top10">';
+			str+='<table class="table table-bordered table-condensed table-striped table-hover m_top10" id="dataTablecasteCategoryModal">';
 				str+='<thead class="text-capitalize">';
-					str+='<th></th>';
-					if(groupType == "voter"){
-						str+='<th>Voters</th>';
-						str+='<th>Male(V) </th>';
-						str+='<th>FeMale(V)</th>';
-					}else{
-						str+='<th>cadres </th>';
-						str+='<th>Male(C) </th>';
-						str+='<th>FeMale(C)</th>';
-					}
+					str+='<th>Age Range</th>';
+					str+='<th>Voters</th>';
+					str+='<th>%</th>';
+					str+='<th>cadres </th>';
+					str+='<th>%</th>';
+					str+='<th>Male(V) </th>';
+					str+='<th>%</th>';
+					str+='<th>Male(C) </th>';
+					str+='<th>%</th>';
+					str+='<th>FeMale(V)</th>';
+					str+='<th>%</th>';
+					str+='<th>FeMale(C)</th>';
+					str+='<th>%</th>';
 				str+='</thead>';
 			str+='<tbody>';
 			for(var i in result){
 				str+='<tr>';
 					str+='<td>'+result[i].ageRange+'</td>';
-					if(groupType == "voter"){
-						str+='<td>'+result[i].totalVoters+' <small class="text-success">'+result[i].totalVotersPerc+'%</small></td>';
-						str+='<td>'+result[i].maleVoters+' <small class="text-success">'+result[i].maleVotersPerc+'</small></td>';
-						str+='<td>'+result[i].femaleVoters+' <small class="text-success">'+result[i].femaleVotersPerc+'</small></td>';
-					}else{
-						str+='<td>'+result[i].totalCadres+' <small class="text-success">'+result[i].totalCadrePerc+'</small></td>';
-						str+='<td>'+result[i].maleCadres+' <small class="text-success">'+result[i].maleCadrePerc+'</small></td>';
-						str+='<td>'+result[i].femaleCadres+' <small class="text-success">'+result[i].femaleCadrePerc+'</small></td>';
-					}
-				str+='</tr>';
+					str+='<td>'+result[i].totalVoters+'</td>';
+					str+='<td class="text-success">'+result[i].totalVotersPerc+' </td>';
+					
+					str+='<td>'+result[i].totalCadres+'</td>';
+					str+='<td class="text-success">'+result[i].totalCadrePerc+' </td>';
+					
+					str+='<td>'+result[i].maleVoters+'</td>';
+					str+='<td class="text-success">'+result[i].maleVotersPerc+' </td>';
+					
+					str+='<td>'+result[i].maleCadres+'</td>';
+					str+='<td class="text-success">'+result[i].maleCadrePerc+' </td>';
+					
+					str+='<td>'+result[i].femaleVoters+'</td>';
+					str+='<td class="text-success">'+result[i].femaleVotersPerc+' </td>';
+					
+					str+='<td>'+result[i].femaleCadres+'</td>';
+					str+='<td class="text-success">'+result[i].femaleCadrePerc+' </td>';
+					str+='</tr>';
 			}
 			str+='</tbody>';
 			str+='</table>';
-			$("#expandCaste"+casteId).html(str);
+			$("#casteCategoryModalDivId").html(str);
+			$("#dataTablecasteCategoryModal").dataTable({
+				"iDisplayLength": 15,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			});
 		}else{
-			$("#expandCaste"+casteId).html("No Data Available.");
+			$("#casteCategoryModalDivId").html("No Data Available.");
 		}
 	});	
 }
