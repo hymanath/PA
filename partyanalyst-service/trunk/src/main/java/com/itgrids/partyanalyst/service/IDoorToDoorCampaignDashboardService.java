@@ -19,4 +19,5 @@ public interface IDoorToDoorCampaignDashboardService {
 	public DoorCampaignDashboardVO getCampaignCountFrMandalPancMuncip(DoorToDoorInputVO inputVO);
 	
 	public DoorCampaignDashboardVO getUserAccessLevelIdsAndValues(DoorToDoorInputVO inputVO);
+	public List<DoorCampaignDashboardVO> getUserWiseCountsFrLoginUser(DoorToDoorInputVO inputVO);
 }

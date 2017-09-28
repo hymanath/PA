@@ -60,7 +60,8 @@ public class DoorCampaignDashboardVO implements Serializable{
 	private Long flagHoistingImgCunt = 0l;
 	private Long wardId;
 	private String wardName;
-	
+	private String mobilNo;
+	private Long surveyImagesCount = 0l;
 	
 	public List<Long> getAccessLevelIds() {
 		return accessLevelIds;
@@ -354,6 +355,18 @@ public class DoorCampaignDashboardVO implements Serializable{
 	}
 	public void setWardName(String wardName) {
 		this.wardName = wardName;
+	}
+	public String getMobilNo() {
+		return mobilNo;
+	}
+	public void setMobilNo(String mobilNo) {
+		this.mobilNo = mobilNo;
+	}
+	public Long getSurveyImagesCount() {
+		return surveyImagesCount;
+	}
+	public void setSurveyImagesCount(Long surveyImagesCount) {
+		this.surveyImagesCount = surveyImagesCount;
 	}
 	
 }
