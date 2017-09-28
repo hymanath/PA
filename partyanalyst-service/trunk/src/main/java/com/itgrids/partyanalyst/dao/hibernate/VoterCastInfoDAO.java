@@ -546,7 +546,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			 }else if(locationTypeId == 3l){
 				 sb.append(" and model.constituency.district.districtId in (:locationValues)");
 			 }else if(locationTypeId == 4l || locationTypeId == 10l){
-				 sb.append(" model.constituency.constituencyId in (:locationValues)");
+				 sb.append(" and model.constituency.constituencyId in (:locationValues)");
 			 }
 		 }else{
 			
