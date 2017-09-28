@@ -4367,7 +4367,7 @@
   		<property name="partyMeetingStatusDAO" ref="partyMeetingStatusDAO" ></property>
   		<property name="tdpCommitteeDAO" ref="tdpCommitteeDAO" ></property>
   		<property name="cadreDetailsService" ref="cadreDetailsService" ></property>
-  		<property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO" ></property>
+  		<!-- <property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO" ></property> -->
   		<property name="nominatedPostDAO" ref="nominatedPostDAO" ></property>
   		<property name="nominatedPostApplicationDAO" ref="nominatedPostApplicationDAO" ></property>
   		<property name="boardLevelDAO" ref="boardLevelDAO" ></property>
