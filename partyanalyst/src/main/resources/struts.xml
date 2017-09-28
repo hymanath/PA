@@ -18110,7 +18110,7 @@
 			<param name="root">keyValueVOlist</param>       
 		</result>
   	</action>
-  	<action name="getUserWiseCountFrLoginUserAction" class="doorToDoorCampaignDashboardAction"  method="getUserWiseCountFrLoginUser">
+  	<action name="getUserWiseCountFrLoginUserAction" class="doorToDoorCampaignDashboardAction"  method="getUserWiseCountsFrLoginUser">
 		<result type="json" name="success">    
 			<param name="root">doorCampaignDashboardVOList</param>       
 		</result>
