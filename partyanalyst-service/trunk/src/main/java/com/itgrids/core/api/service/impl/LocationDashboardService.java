@@ -64,7 +64,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCasteInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
-import com.itgrids.partyanalyst.dao.ITdpCommitteeEnrollmentDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
@@ -93,6 +93,7 @@ import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.model.Position;
 import com.itgrids.partyanalyst.model.PublicationDate;
+import com.itgrids.partyanalyst.model.TdpCommitteeLevel;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
@@ -116,7 +117,6 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IPartyMeetingStatusDAO partyMeetingStatusDAO;
 	private ITdpCommitteeDAO tdpCommitteeDAO;
 	private ICadreDetailsService cadreDetailsService;
-	private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
 	//tour daos
 	private ISelfAppraisalCandidateLocationNewDAO selfAppraisalCandidateLocationNewDAO;
@@ -156,7 +156,36 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IBoothDAO boothDAO;
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private IPublicRepresentativeDAO publicRepresentativeDAO;
+	private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
 	
+	public ITdpCommitteeLevelDAO getTdpCommitteeLevelDAO() {
+		return tdpCommitteeLevelDAO;
+	}
+	public void setTdpCommitteeLevelDAO(ITdpCommitteeLevelDAO tdpCommitteeLevelDAO) {
+		this.tdpCommitteeLevelDAO = tdpCommitteeLevelDAO;
+	}
+	
+	public ISelfAppraisalCandidateLocationNewDAO getSelfAppraisalCandidateLocationNewDAO() {
+		return selfAppraisalCandidateLocationNewDAO;
+	}
+	public ISelfAppraisalDesignationTargetDAO getSelfAppraisalDesignationTargetDAO() {
+		return selfAppraisalDesignationTargetDAO;
+	}
+	public ISelfAppraisalCandidateDetailsNewDAO getSelfAppraisalCandidateDetailsNewDAO() {
+		return selfAppraisalCandidateDetailsNewDAO;
+	}
+	public ISelfAppraisalToursMonthDAO getSelfAppraisalToursMonthDAO() {
+		return selfAppraisalToursMonthDAO;
+	}
+	public IGovtSchemeBeneficiaryDetailsDAO getGovtSchemeBeneficiaryDetailsDAO() {
+		return govtSchemeBeneficiaryDetailsDAO;
+	}
+	public ITdpCadreEnrollmentInfoDAO getTdpCadreEnrollmentInfoDAO() {
+		return tdpCadreEnrollmentInfoDAO;
+	}
+	public IInsuranceStatusDAO getInsuranceStatusDAO() {
+		return insuranceStatusDAO;
+	}
 	public ITdpCadreCandidateDAO getTdpCadreCandidateDAO() {
 		return tdpCadreCandidateDAO;
 	}
@@ -293,9 +322,6 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	}
 	public void setInsuranceStatusDAO(IInsuranceStatusDAO insuranceStatusDAO) {
 		this.insuranceStatusDAO = insuranceStatusDAO;
-	}
-	public void setTdpCommitteeEnrollmentDAO(ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
-		this.tdpCommitteeEnrollmentDAO = tdpCommitteeEnrollmentDAO;
 	}
 
 	public ICadreDetailsService getCadreDetailsService() {
@@ -1487,6 +1513,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		try {
 			// 0-tdp_base_comitteeId,1-levelId,2-levelName,3-committeeConfrimed,4-start
 			// Date,5-completed Date
+			//List<Object[]> listCmt=tdpCommitteeDAO.getLocationWiseCommitteesCnt( locationType,  locationId, tdpCommitteeEnrollmentYearId);
+			//List<TdpCommitteeLevel> committee = tdpCommitteeLevelDAO.getAll();
 			List<Object[]> objList = tdpCommitteeDAO.getLocationWiseCommittees(locationType, locationId, tdpCommitteeEnrollmentYearId);
 			Long mainMandalCompletedCount = 0l;
 			Long mainMandalStartCount = 0l;
@@ -1576,8 +1604,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				committeeCounts.setAffVillageStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffVillageTotal(), affliatedVillageStartCount))));
 				committeeCounts.setAffVillageNotPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffVillageTotal(), affliatedVillageNotStarted))));
 				committeeCounts.setAffMandalNotPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffMandalTotal(), affliatedMandalNotStarted))));
-
+				
 			}
+			
+			List<CommitteeBasicVO>  comitteeList=getAllLocationWiseCommitteesCount(locationType,locationId,tdpCommitteeEnrollmentYearId);
+			committeeCounts.setSubList(comitteeList);
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseCommitteesCount", e);
 		}
@@ -2965,8 +2997,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 			
-			BasicVO returnVo = new BasicVO();
-			
+			BasicVO returnVo = new BasicVO();			
 			if(commonMethodsUtilService.isMapValid(actMap)){
 				for (String level : actMap.keySet()) {
 					returnVo.getLocationsList().addAll(actMap.get(level.trim()));
@@ -4019,14 +4050,14 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		            constituencyCount = constituencyCount + 1;
 		          }
 		        }
-		        parlimentsList =  delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByStateId(constituencyIds);
+		        parlimentsList =  delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByStateId(districtIds);
 		        for (Object[] object : districtList) {
 		          if (object != null) {
 		            parliamentIds.add(commonMethodsUtilService.getLongValueForObject(object[0]));
 		            parlimentCount=parlimentCount+1;
 		            }  
 		        }
-		        mandals = tehsilDAO.findByDistrictIds(locationValues);
+		        mandals = tehsilDAO.findByDistrictIds(districtIds);
 		        localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
 		        boothCount = panchayatDAO.getBoothIdsCount(locationTypeId,constituencyIds,publicationDateId);
 		    
@@ -4136,4 +4167,47 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			}
 			return null;
 		}
-}	
+	@SuppressWarnings("null")
+	public List<CommitteeBasicVO>  getAllLocationWiseCommitteesCount(String  locationType, Long locationId,Long tdpCommitteeEnrollmentYearId){
+		List<CommitteeBasicVO>  comitteeList=new ArrayList<CommitteeBasicVO>();
+		 
+		try{
+				Map<String, Long> cntMap = new HashMap<String, Long>(0);
+				
+			 List<Object[]> listCmt=tdpCommitteeDAO.getLocationWiseCommitteesCnt( locationType,  locationId, tdpCommitteeEnrollmentYearId);
+			  for (Object[] objects : listCmt) {
+				  Long count=cntMap.get(commonMethodsUtilService.getStringValueForObject(objects[0]));
+				  if(count == null ){
+					  cntMap.put(commonMethodsUtilService.getStringValueForObject(objects[0]), 1l);
+				  }else{
+					 count=count+1;
+					 cntMap.put(commonMethodsUtilService.getStringValueForObject(objects[0]), count);
+				  }
+			  }
+		
+			 List<TdpCommitteeLevel> committee = tdpCommitteeLevelDAO.getAll();
+			 for (TdpCommitteeLevel tdpCommitteeLevel : committee) {
+				 Long count=cntMap.get(tdpCommitteeLevel.getTdpCommitteeLevel());
+				 CommitteeBasicVO vo = new CommitteeBasicVO();
+				 if(count == null ){
+					 vo.setAffiCommTotalCount(tdpCommitteeLevel.getTdpCommitteeLevelId());
+					 vo.setCommiteeName(tdpCommitteeLevel.getTdpCommitteeLevel());
+					 vo.setAffiCommCompletedCount(0l);
+					 comitteeList.add(vo);
+					 
+				 }	else{
+					 vo.setAffiCommTotalCount(tdpCommitteeLevel.getTdpCommitteeLevelId());
+					 vo.setCommiteeName(tdpCommitteeLevel.getTdpCommitteeLevel());
+					 vo.setAffiCommCompletedCount(count);
+					 comitteeList.add(vo);
+				 }
+			}
+		 		
+		}catch(Exception e){
+			Log.error("Exception raised in getAllLocationWiseCommitteesCount method of LocationDashboardService"+e);
+		}
+		return  comitteeList  ;
+		 
+	}		
+
+}

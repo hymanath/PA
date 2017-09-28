@@ -2385,6 +2385,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getTehsilIds());
 		}*/
 		
+		
 		if(committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
 			if(!committeeBO.getStatus().equalsIgnoreCase("notStarted")){
 				if(committeeBO.getDate()!=null){
@@ -2882,4 +2883,51 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		query.setParameter("locationId", locationId);
 		return query.list();
 	}
+	public List<Object[]> getLocationWiseCommitteesCnt(String locationType,Long locationId, Long tdpCommitteeEnrollmentYearId){
+		
+		StringBuilder sb = new StringBuilder();		
+		
+		sb.append(" select tcl.tdp_committee_level,tc.tdp_basic_committee_id,tr.role,tcm.tdp_cadre_id,t.first_name,t.membership_id,t.mobile_no," +
+				" tc.tdp_committee_enrollment_id,tcm.inserted_time from tdp_committee_member tcm,tdp_committee tc,tdp_committee_role tcr,tdp_committee_level tcl ," +
+				" user_address ua ,tdp_cadre_enrollment_year y,tdp_cadre t,tdp_roles tr where y.enrollment_year_id =:tdpCommitteeEnrollmentYearId and  y.is_deleted='N' and y.tdp_cadre_id = t.tdp_cadre_id and t.is_deleted='N' " +
+				" and " +
+				" t.enrollment_year=:enrollmentYear and t.address_id = ua.user_address_id and t.tdp_cadre_id = tcm.tdp_cadre_id and tcm.tdp_committee_role_id = tcr.tdp_committee_role_id and " +
+				" tcr.tdp_committee_id = tc.tdp_committee_id and tc.tdp_committee_level_id = tcl.tdp_committee_level_id and tcl.tdp_committee_level_id >:levelId and " +
+				" tc.tdp_committee_enrollment_id = :committeeEnrollId and tcm.status='F' and tcm.is_active='Y' and  tc.tdp_basic_committee_id =:tdpBasicCommitteeId and " +
+				" tcr.tdp_roles_id = tr.tdp_roles_id ");
+
+		if(locationType.equalsIgnoreCase("constituency")){
+			sb.append(" and ua.constituency_id =:locationId");
+		}else if(locationType.equalsIgnoreCase("district")){
+			sb.append(" and ua.district_id  =:locationId ");
+		}else if(locationType.equalsIgnoreCase("state")){
+			sb.append(" and ua.state_id =:locationId ");
+		}else if(locationType.equalsIgnoreCase("mandal")){
+			sb.append(" and ua.tehsil_id =:locationId ");
+		}else if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" and ua.panchayat_id =:locationId ");
+		}/*else if(locationType.equalsIgnoreCase("Parliament")){
+			sb.append(" and ua.parliament_constituency_id =:locationId ");
+		}*/else if(locationType.equalsIgnoreCase("municipality")){
+			sb.append(" and ua.local_election_body =:locationId ");
+		}else if(locationType.equalsIgnoreCase("wards")){
+			sb.append(" and ua.constituency_id =:locationId ");
+		}
+		
+		   Query query = getSession().createSQLQuery((sb.toString()));
+		    query.setParameter("locationId", locationId);
+		    query.setParameter("tdpCommitteeEnrollmentYearId", tdpCommitteeEnrollmentYearId);
+		    query.setParameter("enrollmentYear", "2014");
+		    query.setParameter("committeeEnrollId", 2);
+		    query.setParameter("tdpBasicCommitteeId", 1);
+		    query.setParameter("levelId", 9);
+		    
+		   
+		        return query.list();
+			
+		
+	}
+
+	
+	
 }
