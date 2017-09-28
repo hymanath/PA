@@ -11,10 +11,10 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.core.api.service.IAlertLocationDashboardService;
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.core.api.service.ILocationWiseCasteInfoService;
-import com.itgrids.core.api.service.impl.AlertLocationDashboardService;
-import com.itgrids.core.api.service.impl.MeetingLocationDashboardService;
+import com.itgrids.core.api.service.IMeetingLocationDashboardService;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.BoothInchargesVO;
@@ -81,16 +81,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private LocationVO locationVo;
 	private ILocationWiseCasteInfoService locationWiseCasteInfoService;
 	private LocationAlertVO locationAlertVO;
-	private AlertLocationDashboardService alertLocationDashboardService;
+	private IAlertLocationDashboardService alertLocationDashboardService;
 	private String successMsg;
-	private MeetingLocationDashboardService meetingLocationDashboardService;
+	private IMeetingLocationDashboardService meetingLocationDashboardService;
 	
 	
-	public MeetingLocationDashboardService getMeetingLocationDashboardService() {
+	public IMeetingLocationDashboardService getMeetingLocationDashboardService() {
 		return meetingLocationDashboardService;
 	}
 	public void setMeetingLocationDashboardService(
-			MeetingLocationDashboardService meetingLocationDashboardService) {
+			IMeetingLocationDashboardService meetingLocationDashboardService) {
 		this.meetingLocationDashboardService = meetingLocationDashboardService;
 	}
 	public String getSuccessMsg() {
@@ -105,11 +105,11 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setLocationAlertVO(LocationAlertVO locationAlertVO) {
 		this.locationAlertVO = locationAlertVO;
 	}
-	public AlertLocationDashboardService getAlertLocationDashboardService() {
+	public IAlertLocationDashboardService getAlertLocationDashboardService() {
 		return alertLocationDashboardService;
 	}
 	public void setAlertLocationDashboardService(
-			AlertLocationDashboardService alertLocationDashboardService) {
+			IAlertLocationDashboardService alertLocationDashboardService) {
 		this.alertLocationDashboardService = alertLocationDashboardService;
 	}
 	public ILocationWiseCasteInfoService getLocationWiseCasteInfoService() {
