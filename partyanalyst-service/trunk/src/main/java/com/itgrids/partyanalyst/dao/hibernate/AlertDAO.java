@@ -10533,7 +10533,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	        	queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
 	 	        }else if(locationTypeId == 8l){
 	 	        	queryStr.append(" and model.userAddress.ward.constituencyId in(:locationValues) ");
-	 	        }else if(locationTypeId == 1l){
+	 	        }else if(locationTypeId == 2l){
 	 	        	queryStr.append(" and model.userAddress.state.stateId in(:locationValues) ");
 	 	        }
 	 	    }
@@ -10559,7 +10559,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		 	        	query.setParameterList("locationValues", locationValues);
 		 	        }else if(locationTypeId == 7l){
 		 	        	query.setParameterList("locationValues", locationValues);
-		 	        }else if(locationTypeId == 1l){
+		 	        }else if(locationTypeId == 2l){
 		 	        	query.setParameterList("locationValues", locationValues);
 		 	        }
 		 	    }
@@ -10659,7 +10659,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	        	queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
 	 	        }else if(locationTypeId == 8l){
 	 	        	queryStr.append(" and model.userAddress.ward.constituencyId in(:locationValues) ");
-	 	        }else if(locationTypeId == 1l){
+	 	        }else if(locationTypeId == 2l){
 	 	        	queryStr.append(" and model.userAddress.state.stateId in(:locationValues) ");
 	 	        }
 	 	    }
@@ -10700,7 +10700,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		        	query.setParameterList("locationValues", locationValues);
 		        }else if(locationTypeId == 7l){
 		        	query.setParameterList("locationValues", locationValues);
-		        }else if(locationTypeId == 1l){
+		        }else if(locationTypeId == 2l){
 		        	query.setParameterList("locationValues", locationValues);
 	 	        }
 	 		}
