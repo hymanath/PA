@@ -16,6 +16,8 @@ public class IdNameVO implements Serializable{
 	private String minDate;
 	private String maxDate;
 	
+	private String url;
+	
 	public IdNameVO() {
 		super();
 	}
@@ -84,5 +86,10 @@ public class IdNameVO implements Serializable{
 	public void setTotl(String totl) {
 		this.totl = totl;
 	}
-	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 }

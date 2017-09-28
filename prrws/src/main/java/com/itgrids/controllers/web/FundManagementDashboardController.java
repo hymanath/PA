@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.NregsFmsWorksVO;
+import com.itgrids.dto.ResultVO;
 import com.itgrids.service.IFundManagementDashboardService;
 import com.itgrids.service.IFundSanctionMatrixReportService;
 import com.itgrids.service.IUserService;
@@ -294,8 +296,24 @@ public class FundManagementDashboardController {
 			List<NregsFmsWorksVO> fmsWorksVOList = fundManagementDashboardService.getMgnregsFMSWorksDetailsByCategory(inputVO);
 			return fmsWorksVOList;
 		}
-		@RequestMapping(value ="/landingPage", method = RequestMethod.GET)
+		@RequestMapping(value ="/ministerHomePage", method = RequestMethod.GET)
 	    public String landingPage(ModelMap model) {
 			return "landingPage";
+	    }
+	
+		@GetMapping(value ="/getFavouriteComponents")
+	    public @ResponseBody List<IdNameVO> getFavouriteComponents() {
+			List<IdNameVO> componentsList = userServiceImpl.getFavouriteComponents();
+			return componentsList;
+	    }
+		@PostMapping(value ="/saveFavouriteComponentDtls")
+	    public @ResponseBody ResultVO saveFavouriteComponentDtls(@RequestBody IdNameVO inputVO) {
+			ResultVO status = userServiceImpl.saveFavouriteComponentDtls(inputVO);
+			return status;
+	    }
+		@PostMapping(value ="/deleteFavouriteComponent")
+	    public @ResponseBody ResultVO deleteFavouriteComponent(@RequestBody IdNameVO inputVO) {
+			ResultVO status = userServiceImpl.deleteFavouriteComponent(inputVO);
+			return status;
 	    }
 }
