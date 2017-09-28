@@ -18110,5 +18110,10 @@
 			<param name="root">keyValueVOlist</param>       
 		</result>
   	</action>
+  	<action name="getUserWiseCountFrLoginUserAction" class="doorToDoorCampaignDashboardAction"  method="getUserWiseCountFrLoginUser">
+		<result type="json" name="success">    
+			<param name="root">doorCampaignDashboardVOList</param>       
+		</result>
+  	</action>
       </package>
 </struts>
