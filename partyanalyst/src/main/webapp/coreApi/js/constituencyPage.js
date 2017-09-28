@@ -108,7 +108,7 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {
-	
+
 	  $("#enrolmentYears").chosen();
 	 //Enrolment Years
 	getEnrollmentIds(); 
@@ -2761,45 +2761,149 @@ function getLocationWiseMeetingsCount(){
 	});	
 	function buildTable(result)
 	{
-		var tableView = '';
-		tableView+='<table class="table table-bordered">';
-			tableView+='<thead class="text-capitalize">';
-				tableView+='<th></th>';
-				for(var i in result[0].locationVotersVOList)
-				{
-						//tableView+='<th class="bg-DD">'+result[0].locationVotersVOList[i].ageRange+'</th>';
-						if(result[0].locationVotersVOList[i].ageRange == "Village/Ward"){
-							tableView+='<th class="bg-DD "><p class="tooltipDesgtCls" data-toogle="tooltip" title="every month" style="cursor:pointer;" >'+result[0].locationVotersVOList[i].ageRange+'<br/><small class="f-12" style="color:#777 !important;">(9th/10th/11th)</small></p></th>';
-						}else if(result[0].locationVotersVOList[i].ageRange == "Mandal/Town/Division"){
-							tableView+='<th class="bg-DD" ><p class="tooltipDesgtCls" data-toogle="tooltip" title="every month" style="cursor:pointer;">'+result[0].locationVotersVOList[i].ageRange+'<br/><small class="f-12" style="color:#777 !important;">(14th/15th/16th)</small></p></th>';
-						}else if(result[0].locationVotersVOList[i].ageRange == "Constituency"){
-							tableView+='<th class="bg-DD" ><p class="tooltipDesgtCls" data-toogle="tooltip" title="every month" style="cursor:pointer;">'+result[0].locationVotersVOList[i].ageRange+'<br/><small class="f-12" style="color:#777 !important;">(18th/19th/20th)</small></p></th>';
-						}else if(result[0].locationVotersVOList[i].ageRange == "District"){
-							tableView+='<th class="bg-DD"><p class="tooltipDesgtCls" data-toogle="tooltip" title="every month" style="cursor:pointer;">'+result[0].locationVotersVOList[i].ageRange+'<br/><small class="f-12" style="color:#777 !important;">(22nd/23rd/24th)</small></p></th>';
-						}/*else if(result[0].locationVotersVOList[i].ageRange == "State"){
-							tableView+='<th class="bg-DD" data-toogle="tooltip" title="every month" style="cursor:pointer;"><p class="tooltipDesgtCls">'+result[0].locationVotersVOList[i].ageRange+'</th>';
-							//tableView+='<span>(22nd/23rd/24th)</p></span>';
-						}*/
-					
-				}
-			tableView+='</thead>';
-			tableView+='<tbody>';
-				for(var i in result)
-				{
-					tableView+='<tr>';
-						tableView+='<td>'+result[i].ageRange+'</td>';	
-						for(var j in result[i].locationVotersVOList)
-						{
-						if(result[i].locationVotersVOList[j].ageRange != null && result[i].locationVotersVOList[j].ageRange != "State"){
-							tableView+='<td>'+result[i].locationVotersVOList[j].totalVoters+'</td>';
+		var str='';
+		for(var i in result){
+			str+='<h3>'+result[i].ageRange+'</h3>';
+			str+='<div class="media">';
+			str+='<div class="media-left">';
+				str+='<div id="meetingsGraphId'+i+'" style="width:300px;height:150px;"></div>';
+			str+='</div>';
+			str+='<div class="media-body">';
+				str+='<h4>'+result[i].ageRange+'</h4>';
+				str+='<h4>'+result[i].totalCadres+'</h4>';
+					str+='<table class="table table-bordered">';
+						str+='<thead>';
+							str+='<th>Level</th>';
+							str+='<th>Total</th>';
+							str+='<th>Done</th>';
+						str+='</thead>';
+						str+='<tbody>';
+							for(var j in result[i].locationVotersVOList){
+								str+='<tr>';
+									str+='<td>'+result[i].locationVotersVOList[j].castgroup+'</td>';
+									str+='<td>'+result[i].locationVotersVOList[j].totalCadres+'</td>';
+									str+='<td>'+result[i].locationVotersVOList[j].maleCadres+'</td>';
+								str+='</tr>';
+							}
+						str+='</tbody>';
+					str+='</table>';
+				
+			str+='</div>';
+		str+='</div>';
+		}
+		$("#locationWiseMeetingsCount").html(str);
+		
+		for(var i in result){
+		var statusNameArr =[];
+		var alertCnt = [];
+		var count = [];	
+		for(var j in result[i].locationVotersVOList){
+				
+			statusNameArr.push(result[i].locationVotersVOList[j].castgroup);
+			 alertCnt.push(result[i].locationVotersVOList[j].maleCadres);
+			 var uniqCnt = {"y":parseInt(result[i].locationVotersVOList[j].totalCadres)-parseInt(result[i].locationVotersVOList[j].maleCadres),color:"#D3D3D3"};
+			count.push(uniqCnt);
+			 
+		}
+		$('#meetingsGraphId'+i+'').highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: ''
+			},
+			xAxis: {
+				 min: 0,
+					 gridLineWidth: 0,
+					 minorGridLineWidth: 0,
+					 categories: statusNameArr,
+				labels: {
+						//rotation: -45,
+						style: {
+							fontSize: '11px',
+							fontFamily: 'Verdana, sans-serif'
+						},
+						formatter: function() {
+							if(this.value.toString() >=8){
+								return this.value.toString().substring(0, 8)+'...';
+							}else{
+								return this.value;
+							}
+							
+						},
+						style: {
+							fontSize: '11px',
+							fontFamily: '"Lucida Grande","Lucida Sans Unicode",Arial,Helvetica,sans-serif',
+							textTransform: "uppercase"
 						}
 					}
-					tableView+='</tr>';
+			},
+			yAxis: {
+				min: 0,
+					   gridLineWidth: 0,
+						minorGridLineWidth: 0,
+				title: {
+					text: ''
+				},
+				stackLabels: {
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+					},
+					formatter: function() {
+					return  (this.total);
+				},
 				}
-			tableView+='</tbody>';
-		tableView+='</table>';
-		$("#locationWiseMeetingsCount").html(tableView);
-		$(".tooltipDesgtCls").tooltip();
+				
+			},
+			tooltip: {
+				formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+						if(this.series.name != "Series 1")  
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							this.y/* +' - ' +
+							(Highcharts.numberFormat(this.percentage,1)+'%'); */
+					});
+
+					return s;
+				},
+				shared: true
+			},
+			
+			legend: {   
+									
+					enabled: false,				
+									
+				},				
+				plotOptions: {
+					column: {
+						stacking: 'percent',  
+						dataLabels:{
+							enabled: false,
+							formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.percentage,1) + '%';
+								}
+							}
+						},
+						
+					},
+					
+				},
+			series: [{
+				data: count    
+			}, {
+				name: "Total No of Meetings",
+				data: alertCnt,
+				colorByPoint: true
+			}]
+		});
+		}	
 	}
 }
 function getLocationWiseTourMembersComplainceDtls(){
