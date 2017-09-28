@@ -236,7 +236,7 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		//0-ageRangeId,1- agerRange, 2- gender 3-castecatId, 4-copunt
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("select voter_age_range_id as voterAgeRangeid, gender as gender,caste_state_id as caste, count as count from tdp_cadre_caste_info where ");
+		sb.append("select voter_age_range_id as voterAgeRangeid, gender as gender,caste_category_id as caste, sum(count) as count from tdp_cadre_caste_info where ");
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
 				sb.append(" location_id=:locationValue");
@@ -250,12 +250,15 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 				sb.append(" location_id=:locationValue");
 			} else if (locationTypeId == 2l) {
 				sb.append(" location_id=:locationValue");
+			}else if (locationTypeId == 10l) {
+				sb.append(" location_id=:locationValue");
 			}
 
 		}
 		if (enrollmentYearId != null && enrollmentYearId.longValue() > 0l) {
-			sb.append(" and tdp_cadre_enrollment_id=:enrollmentYearId");
+			sb.append(" and tdp_cadre_enrollment_id=:enrollmentYearId ");
 		}
+		sb.append(" group by  voter_age_range_id, caste_category_id, gender ");
 		Query query = getSession().createSQLQuery(sb.toString())
 				.addScalar("voterAgeRangeid", Hibernate.LONG)
 				.addScalar("gender", Hibernate.STRING)
@@ -293,6 +296,10 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			} else if (locationTypeId == 7l) {
 				sb.append(" location_id=:locationValue");
 			} else if (locationTypeId == 2l) {
+				sb.append(" location_id=:locationValue");
+			}else if (locationTypeId == 10l) {
+				sb.append(" location_id=:locationValue");
+			}else if (locationTypeId == 10l) {
 				sb.append(" location_id=:locationValue");
 			}
 		}
@@ -342,6 +349,8 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 				sb.append(" and location_id=:locationValue");
 			} else if (locationTypeId == 2l) {
 				sb.append(" and location_id=:locationValue");
+			}else if (locationTypeId == 10l) {
+				sb.append(" location_id=:locationValue");
 			}
 		}
 		if (enrollmentYearId != null && enrollmentYearId.longValue() > 0l) {
@@ -383,6 +392,8 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			} else if (locationTypeId == 7l) {
 				sb.append(" location_id=:locationValue");
 			} else if (locationTypeId == 2l) {
+				sb.append(" location_id=:locationValue");
+			}else if (locationTypeId == 10l) {
 				sb.append(" location_id=:locationValue");
 			}
 
@@ -434,6 +445,8 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			} else if (locationTypeId == 7l) {
 				sb.append(" location_id=:locationValue");
 			} else if (locationTypeId == 2l) {
+				sb.append(" location_id=:locationValue");
+			}else if (locationTypeId == 10l) {
 				sb.append(" location_id=:locationValue");
 			}
 
