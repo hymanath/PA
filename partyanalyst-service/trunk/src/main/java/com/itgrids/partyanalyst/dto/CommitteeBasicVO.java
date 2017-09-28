@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CommitteeBasicVO {
 	
 	private Long mainCommTotalCount = 0l;
@@ -49,6 +52,7 @@ public class CommitteeBasicVO {
 	private long affliatedMandalStartedCount = 0l;
 	private long affliatedVillageCompletedCount = 0l;
 	private long affliatedVillageStartedCount = 0l;
+	private List<CommitteeBasicVO> subList = new ArrayList<CommitteeBasicVO>();
 	
 	
 	public long getMainMandalCompletedCount() {
@@ -296,6 +300,12 @@ public class CommitteeBasicVO {
 	}
 	public void setAffVillageTotal(Long affVillageTotal) {
 		this.affVillageTotal = affVillageTotal;
+	}
+	public List<CommitteeBasicVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<CommitteeBasicVO> subList) {
+		this.subList = subList;
 	}
 	
 	
