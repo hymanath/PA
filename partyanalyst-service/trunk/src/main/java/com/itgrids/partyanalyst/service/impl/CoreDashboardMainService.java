@@ -3175,12 +3175,21 @@ String committeType){
 			}
 		   }
 		  
+		   List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(null,null,enrollmentYearIds,programIdList);
+			List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
+			if(trainingCampObj != null && trainingCampObj.size() >0){
+			 	for(Object[] param:trainingCampObj){
+			 		Long batchId=commonMethodsUtilService.getLongValueForObject(param[0]);
+		  	        batchIdsList.add(batchId);
+				}
+			}
 	   if(userTypeId != null && userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 		   if(locationMap != null && locationMap.size() > 0){
 			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
 				   String levelVals = getListToString(new ArrayList<Long>(entry.getValue()));
 				  // List<Object[]> rtrnDistAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"District",stateId,toDate,enrollmentYearIds,programIdList); // userAccessLevelId & values   
-				   List<Object[]> rtrnDistAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				  // List<Object[]> rtrnDistAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				   List<Object[]> rtrnDistAttendedObj = getCampDetailsListByFiltering(enrollmentYearIds,programIdList,batchIdsList);
 				   List<Object[]> rtrnDistEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "District",stateId);// userAccessLevelId & values 	 
 				  // setAttendedMembersCntToMap(rtrnDistAttendedObj,attendedMembersMap);
 				   Map<Long, Map<Long, Long>> batchMemdaysMap = getBatchWiseAttendedCountMap( rtrnDistAttendedObj);
@@ -3200,7 +3209,8 @@ String committeType){
 			for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
 				String levelVals = getListToString(new ArrayList<Long>(entry.getValue()));
 				 // List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(), new ArrayList<Long>(entry.getValue()),"Constituency",stateId,toDate,enrollmentYearIds,programIdList);   
-				List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				//List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				List<Object[]> rtrnConsAttendedObj = getCampDetailsListByFiltering(enrollmentYearIds,programIdList,batchIdsList);
 				List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(), new ArrayList<Long>(entry.getValue()), "Constituency",stateId); 	 
 				 Map<Long, Map<Long, Long>> batchMemdaysMap = getBatchWiseAttendedCountMap( rtrnConsAttendedObj);
 				 Map<Long, Long> memMaxDayCnt = getCountOfMaxDaysAttendedInBatch(batchMemdaysMap, rtrnConsAttendedObj);// Tdp CAdre max days Vo getting 
@@ -3221,7 +3231,8 @@ String committeType){
 			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
 				  // List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"Mandal",stateId,toDate,enrollmentYearIds,programIdList);   
 				   String levelVals = getListToString(new ArrayList<Long>(entry.getValue()));
-				   List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				  // List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				   List<Object[]> rtrnConsAttendedObj = getCampDetailsListByFiltering(enrollmentYearIds,programIdList,batchIdsList);
 				   List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "Mandal",stateId); 	 
 				  // setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
 				   Map<Long, Map<Long, Long>> batchMemdaysMap = getBatchWiseAttendedCountMap( rtrnConsAttendedObj);
@@ -3251,7 +3262,8 @@ String committeType){
 			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
 				  // List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"Village",stateId,toDate,enrollmentYearIds,programIdList);   
 				   String levelVals = getListToString(new ArrayList<Long>(entry.getValue()));
-				   List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				  // List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				   List<Object[]> rtrnConsAttendedObj = getCampDetailsListByFiltering(enrollmentYearIds,programIdList,batchIdsList);
 				   List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "Village",stateId); 	 
 				  // setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
 				   Map<Long, Map<Long, Long>> batchMemdaysMap = getBatchWiseAttendedCountMap( rtrnConsAttendedObj);
@@ -6653,7 +6665,18 @@ try{
 					   if(entry.getKey().longValue() == 4l)
 						   accessLevelValue = 5l;
 					 //List<Object[]> totalAttnd = trainingCampBatchAttendeeDAO.getTotalLocationWiseAttendeeCount(programIdsList,1l, toDate,enrollmentYearIds,accessLevelValue,new ArrayList<Long>(entry.getValue()));
-					   List<Object[]> totalAttnd = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount( programIds,fromDate,toDay,enrollmentYrs,1l,committeeLvlVals,accessLevelValue,levelVals);
+					  // List<Object[]> totalAttnd = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount( programIds,fromDate,toDay,enrollmentYrs,1l,committeeLvlVals,accessLevelValue,levelVals);
+					   
+					   List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(null,null,enrollmentYearIds,programIdsList);
+						List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
+						if(trainingCampObj != null && trainingCampObj.size() >0){
+						 	for(Object[] param:trainingCampObj){
+						 		Long batchId=commonMethodsUtilService.getLongValueForObject(param[0]);
+					  	        batchIdsList.add(batchId);
+							}
+						}
+					   List<Object[]> totalAttnd = getCampDetailsListByFiltering(enrollmentYearIds,programIdsList,batchIdsList);
+					   
 					   //0 locationId,1 batchId,2 tdpCadreId,3 roleId
 					   if(totalAttnd != null && totalAttnd.size() > 0){
 						   for (Object[] param : totalAttnd) {
@@ -6678,7 +6701,26 @@ try{
 					   Map<Long,Long> memMaxDayCnt = getMaxDaysAttendedInBatch( batchMemdaysMap , totalAttnd);
 					   if(totalAttnd != null && totalAttnd.size() > 0){
 						   for (Object[] param : totalAttnd) {
-							   String locationLevelAndId = entry.getKey()+"-"+param[6].toString();
+							     accessLevelValue =0l;	
+							     if(entry.getKey().longValue() == 4l){// user level 4 means parliament constituency in the case of core dashboard
+							    	 accessLevelValue = commonMethodsUtilService.getLongValueForObject(param[13]); //region scope 10  means parliament constituency in intermediate table so that we are replacing value
+							     }else if(entry.getKey().longValue()==5l){// user level 5 means constituency in the case of core dashboard
+							    	 accessLevelValue = commonMethodsUtilService.getLongValueForObject(param[15]);  //region scope 4  means constituency in intermediate table so that we are replacing value
+							     }else if(entry.getKey().longValue()==2l){// user level 5 means constituency in the case of core dashboard
+							    	 accessLevelValue = commonMethodsUtilService.getLongValueForObject(param[9]);  //region scope 4  means constituency in intermediate table so that we are replacing value
+							     }else if(entry.getKey().longValue()==3l){// user level 5 means constituency in the case of core dashboard
+							    	 accessLevelValue = commonMethodsUtilService.getLongValueForObject(param[11]);  //region scope 4  means constituency in intermediate table so that we are replacing value
+							     }else if(entry.getKey().longValue()==6l){// user level 5 means constituency in the case of core dashboard
+							    	 accessLevelValue = commonMethodsUtilService.getLongValueForObject(param[17]);  //region scope 4  means constituency in intermediate table so that we are replacing value
+							     }else if(entry.getKey().longValue()==7l){// user level 5 means constituency in the case of core dashboard
+							    	 accessLevelValue = commonMethodsUtilService.getLongValueForObject(param[19]);  //region scope 4  means constituency in intermediate table so that we are replacing value
+							     }else if(entry.getKey().longValue()==8l){// user level 5 means constituency in the case of core dashboard
+							    	 accessLevelValue = commonMethodsUtilService.getLongValueForObject(param[21]);  //region scope 4  means constituency in intermediate table so that we are replacing value
+							     }else if(entry.getKey().longValue()==9l){// user level 5 means constituency in the case of core dashboard
+							    	 accessLevelValue = commonMethodsUtilService.getLongValueForObject(param[23]);  //region scope 4  means constituency in intermediate table so that we are replacing value
+							     }
+							     
+							   String locationLevelAndId = entry.getKey()+"-"+accessLevelValue;
 							   TrainingCampProgramVO eligibleAndAttendedVO = eligibleAndAttendedCntMap.get(locationLevelAndId);
 							   if(eligibleAndAttendedVO != null){
 								  // eligibleAndAttendedVO.setTotalAttenedCount(commonMethodsUtilService.getLongValueForObject(param[1]));
@@ -6956,7 +6998,18 @@ public List<IdNameVO> getStateLevelCampAttendedDetailsDyaWise(List<Long> program
         // List<Object[]> invAttndNonInvAttnd =
 		// trainingCampBatchAttendeeDAO.getInviteeAttndAndNonInviteeAttnded(programIdList,
 		// stateId, toDate,enrollYrIds);
-		List<Object[]> invAttndNonInvAttnd = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate, today, enrollmentYrs, 1L,committeeLvlVals, locationScopeId, levelVals);
+		//List<Object[]> invAttndNonInvAttnd = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate, today, enrollmentYrs, 1L,committeeLvlVals, locationScopeId, levelVals);
+		
+		List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(null,null,enrollYrIds,programIdList);
+		List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
+		if(trainingCampObj != null && trainingCampObj.size() >0){
+		 	for(Object[] param:trainingCampObj){
+		 		Long batchId=commonMethodsUtilService.getLongValueForObject(param[0]);
+	  	        batchIdsList.add(batchId);
+			}
+		}
+	   List<Object[]> invAttndNonInvAttnd = getCampDetailsListByFiltering(enrollYrIds,programIdList,batchIdsList);
+	   
 		Map<Long, Map<Long, Long>> batchMemdaysMap = new HashMap<Long, Map<Long, Long>>();
 		if (invAttndNonInvAttnd != null && invAttndNonInvAttnd.size() > 0) {
 			for (Object[] param : invAttndNonInvAttnd) {
@@ -7205,6 +7258,28 @@ public void setTotalAttendedAndNonInviteeAttended1(List<Object[]> rtrnTtlAttende
 	}
 }
 
+public List<Object[]> getCampDetailsListByFiltering(List<Long> enrollmentYearIds,List<Long> programYearIds,List<Long> batchIdsList){
+    List<Object[]> campDetailsList = new ArrayList<Object[]>(0);
+    if(batchIdsList != null && batchIdsList.size()>0){
+               int filterCount = 50;
+               int i = 0; 
+               int j = filterCount;
+               int maxcount = batchIdsList.size();
+               while (maxcount >0){  
+                   if(maxcount<filterCount)
+                       j = i+maxcount;
+                       List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds,batchIdsList.subList(i, j));//Procedure Call
+                      if(commonMethodsUtilService.isListOrSetValid(tempList)){
+                        campDetailsList.addAll(tempList);
+                      }
+                       i=j;
+                       maxcount = maxcount-filterCount;
+                       j=j+filterCount;
+               }
+          }
+    return campDetailsList;
+}
+
 public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long userAccessLevelId, List<Long> userAccessLevelValues,Long stateId, String toDateStr, List<Long> enrollmentYearIds,List<Long> programIdList) {
 	TrainingCampProgramVO finalResultVO = new TrainingCampProgramVO();
 	Map<Long, TrainingCampProgramVO> trainingCampProgramDtlsMap = new HashMap<Long, TrainingCampProgramVO>();
@@ -7246,8 +7321,20 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 		String committeeLvlVals = "5,6,7,8,9";
 		String programIds = getListToString(programIdList);
 		String enrollmentYrIds = getListToString(enrollmentYearIds);
-		List<Object[]> attendedList = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrIds,1L,committeeLvlVals,userAccessLevelId,levelVals);
-
+		
+		
+		
+		//List<Object[]> attendedList = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrIds,1L,committeeLvlVals,userAccessLevelId,levelVals);
+		List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(null,null,enrollmentYearIds,programIdList);
+		List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
+		if(trainingCampObj != null && trainingCampObj.size() >0){
+		 	for(Object[] param:trainingCampObj){
+		 		Long batchId=commonMethodsUtilService.getLongValueForObject(param[0]);
+	  	        batchIdsList.add(batchId);
+			}
+		}
+		List<Object[]> attendedList = getCampDetailsListByFiltering(enrollmentYearIds,programIdList,batchIdsList);
+		
 		List<Object[]> rtrnCommiteeLevelEligibleAndAttendedObjLst = trainingCampDetailsInfoDAO
 				.getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(
 						accessLevelValue, userAccessLevelValues, toDate,
