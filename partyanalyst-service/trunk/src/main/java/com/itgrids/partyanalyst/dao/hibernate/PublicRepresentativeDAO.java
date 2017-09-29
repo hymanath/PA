@@ -475,4 +475,30 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		}
 		return query.list();
 	}
+	public List<Object[]> getStateWiseCandidateDesignations(Long locationValue,Long locationTypeId,List<Long> representativTypeIds){
+		StringBuilder sb=new StringBuilder();
+		sb.append(" select pr.candidate.candidateId,pr.candidate.lastname," +
+				  " pr.representativeLevel.representativeLevelId,pr.representativeLevel.representativeLevel," +
+				" pr.publicRepresentativeType.publicRepresentativeTypeId," +
+				" pr.publicRepresentativeType.type" +
+				" from PublicRepresentative pr" +
+				//",TdpCadreCandidate TCC " +
+				"  where  " );
+		 if (locationTypeId != null && locationTypeId.longValue() == 2l){
+			sb.append(" pr.representativeLevel.representativeLevelId in(6) " );
+		}
+		
+		if(representativTypeIds != null && representativTypeIds.size() > 0){
+			sb.append(" and pr.publicRepresentativeType.publicRepresentativeTypeId in (:representativTypeIds) ");
+		}	
+		//sb.append(" group by pr.publicRepresentativeType.publicRepresentativeTypeId,pr.candidate.candidateId ");
+		Query query = getSession().createQuery(sb.toString());
+	
+		if(representativTypeIds != null && representativTypeIds.size() > 0){
+			query.setParameterList("representativTypeIds", representativTypeIds);
+		}
+		
+		return query.list();
+		
+	}
  }
