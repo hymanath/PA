@@ -353,8 +353,9 @@ function onLoadCalls()
 		str+='<th>Success</th>';
 		str+='<th>Fail</th>';
 		str+='<th>No Response</th>';
-		str+='<th>Total time taken</th>';
-		str+='<th>Average time taken</th>';
+		str+='<th>Total time taken(sec)</th>';
+		str+='<th>Total time taken(min)</th>';
+		str+='<th>Average time taken(sec)</th>';
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
@@ -373,9 +374,10 @@ function onLoadCalls()
 			if(ajaxresp[i].noResponce != 0){
 				str+='<td>'+ajaxresp[i].noResponce+'</td>';
 			}else{
-				str+='<td>-</td>';
+				str+='<td>-</td>';      
 			}
 			str+='<td>'+ajaxresp[i].totalTime+'</td>';
+			str+='<td>'+ajaxresp[i].totalTimeInMin+'</td>';
 			str+='<td>'+ajaxresp[i].averageTime+'</td>';
 			str+='</tr>';
 		}
