@@ -218,7 +218,7 @@ label
 }
 .switch-btn li.active
 {
-	background-color:#3BB878;
+	background-color:  rgb(76, 174, 76);
 	color: #fff;
 	border-radius: 14px;
 }
@@ -578,6 +578,82 @@ label
   50% {
     -webkit-transform: scale(1);
             transform: scale(1); } }
+/*loading Symbol New Start*/
+.square-to-circle {
+  height: 30px;
+  width: 30px;
+  margin:auto;
+  display:block;
+  -webkit-animation: square-to-circle 2s 1s infinite cubic-bezier(1, 0.005, 0.215, 1.2) alternate;
+          animation: square-to-circle 2s 1s infinite cubic-bezier(1, 0.005, 0.215, 1.2) alternate;
+}
+
+@-webkit-keyframes square-to-circle {
+  0% {
+    border-radius: 0 0 0 0;
+    background: coral;
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  25% {
+    border-radius: 50% 0 0 0;
+    background: darksalmon;
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+  }
+  50% {
+    border-radius: 50% 50% 0 0;
+    background: indianred;
+    -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+  }
+  75% {
+    border-radius: 50% 50% 50% 0;
+    background: lightcoral;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    border-radius: 50%;
+    background: darksalmon;
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+}
+
+@keyframes square-to-circle {
+  0% {
+    border-radius: 0 0 0 0;
+    background: coral;
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  25% {
+    border-radius: 50% 0 0 0;
+    background: darksalmon;
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+  }
+  50% {
+    border-radius: 50% 50% 0 0;
+    background: indianred;
+    -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+  }
+  75% {
+    border-radius: 50% 50% 50% 0;
+    background: lightcoral;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    border-radius: 50%;
+    background: darksalmon;
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+}
+/*loading Symbol New End*/
 .textAlignDepartment
 {
 	padding:0px;
@@ -622,8 +698,8 @@ label
 }
 .breadcrumb
 {
-	/*background-color:#FED501;*/
-	background-color:#fff;
+	background-color:#FED501;
+	/*background-color:#fff;*/
 	padding:0px;
 	margin-bottom:6px;
 }
