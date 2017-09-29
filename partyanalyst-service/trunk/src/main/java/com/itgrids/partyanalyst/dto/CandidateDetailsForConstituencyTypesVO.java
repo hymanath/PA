@@ -27,7 +27,11 @@ public class CandidateDetailsForConstituencyTypesVO {
 	private String representativeLevel;
 	private String constituencyType;
 	private String cadreImage;
-	
+	private Long scopeId;
+	private Long condidateCount=0l;
+	private String others;
+	private Long othersCount=0l;
+	private List<CandidateDetailsForConstituencyTypesVO> subList2;
 	public List<CandidateInfoForConstituencyVO> getList() {
 		return list;
 	}
@@ -163,6 +167,36 @@ public class CandidateDetailsForConstituencyTypesVO {
 	}
 	public void setCadreImage(String cadreImage) {
 		this.cadreImage = cadreImage;
+	}
+	public Long getScopeId() {
+		return scopeId;
+	}
+	public void setScopeId(Long scopeId) {
+		this.scopeId = scopeId;
+	}
+	public Long getCondidateCount() {
+		return condidateCount;
+	}
+	public void setCondidateCount(Long condidateCount) {
+		this.condidateCount = condidateCount;
+	}
+	public String getOthers() {
+		return others;
+	}
+	public void setOthers(String others) {
+		this.others = others;
+	}
+	public Long getOthersCount() {
+		return othersCount;
+	}
+	public void setOthersCount(Long othersCount) {
+		this.othersCount = othersCount;
+	}
+	public List<CandidateDetailsForConstituencyTypesVO> getSubList2() {
+		return subList2;
+	}
+	public void setSubList2(List<CandidateDetailsForConstituencyTypesVO> subList2) {
+		this.subList2 = subList2;
 	}
 	
 	
