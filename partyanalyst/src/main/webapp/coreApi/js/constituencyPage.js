@@ -984,7 +984,7 @@ function buildRepresentativeCandidates(result){
 										assembly+='<div class="media media-profile">';
 											assembly+='<span id="mlaSpinnerId"></span>';
 											assembly+='<div class="media-left">';
-												assembly+='<img  onerror="setDefaultImage(this);" src="images/candidates/'+result[0].list[i].list[j].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
+												assembly+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/cadre_images/'+result[0].list[i].list[j].education+'" class="media-object profile-image img-border" alt="profile"/>';
 												assembly+='<span class="border-image img-border">';
 												if(result[0].list[i].list[j].partyFlag !=null){
 													
@@ -1005,7 +1005,7 @@ function buildRepresentativeCandidates(result){
 														assembly+='</span>';
 													}
 												assembly+='</h4>';
-												assembly+='<p class="text-muted text-capital">Assembly : '+result[0].list[i].list[j].constituencyName+'</p>';
+												assembly+='<p class="text-muted text-capital">'+result[0].list[i].list[j].party+' : '+result[0].list[i].list[j].constituencyName+'</p>';
 												
 												if(result[0].list[i].list[j].tdpCadreId !=null && result[0].list[i].list[j].tdpCadreId>0){
 													assembly+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].list[i].list[j].tdpCadreId+'">View Candidate Profile</span>';
