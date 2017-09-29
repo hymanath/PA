@@ -32,6 +32,7 @@ public class PublicRepresentative implements java.io.Serializable{
 	private Long levelValue;
 	private Long addressId;
 	private UserAddress userAddress;
+	private Nomination nomination;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -126,5 +127,18 @@ public class PublicRepresentative implements java.io.Serializable{
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "nomination_id",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Nomination getNomination() {
+		return nomination;
+	}
+	public void setNomination(Nomination nomination) {
+		this.nomination = nomination;
+	}
+	
+	
 	
 }
