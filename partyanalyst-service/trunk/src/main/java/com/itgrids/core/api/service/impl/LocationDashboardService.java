@@ -4308,4 +4308,69 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		}
 		return null;
 	}
+	public CandidateDetailsForConstituencyTypesVO getPartyWiseMPandMLACandidatesCount(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue){
+		CandidateDetailsForConstituencyTypesVO finalVO= new CandidateDetailsForConstituencyTypesVO();
+		try{
+			List<Object[]> mpPartyCountDetails = nominationDAO.partyWiseMemberOfParliments(electionIds,electionScopeIds, loactionTypeId,loctionValue);
+			List<Object[]> mlaPartyCountDetails=nominationDAO.partyWiseMemberOfAssemblyCandidateCounts(electionIds,electionScopeIds, loactionTypeId,loctionValue);
+			settingPartyWiseCandidateCount(mpPartyCountDetails,finalVO,"parlaiment");
+			settingPartyWiseCandidateCount(mlaPartyCountDetails,finalVO,"assembly");
+			
+		}catch(Exception e){
+			Log.error("Exception raised in getPartyWiseMPandMLACandidatesCount method of LocationDashboardService"+e);
+		}
+		
+		return finalVO;
+		
+	}
+	public void settingPartyWiseCandidateCount(List<Object[]> mpPartyCountDetails,CandidateDetailsForConstituencyTypesVO finalVO,String type){
+		List<CandidateDetailsForConstituencyTypesVO> mpList = new ArrayList<CandidateDetailsForConstituencyTypesVO>();
+		List<CandidateDetailsForConstituencyTypesVO> mlaList=  new ArrayList<CandidateDetailsForConstituencyTypesVO>();
+		try{
+			Map<Long,CandidateDetailsForConstituencyTypesVO> countMap = new HashMap<Long,CandidateDetailsForConstituencyTypesVO>();
+			CandidateDetailsForConstituencyTypesVO partCountVo =null;
+			if(mpPartyCountDetails != null && mpPartyCountDetails.size()>0){
+				 for(Object[] param : mpPartyCountDetails){
+					 Long partyId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					 if(partyId == 163 || partyId == 872 || partyId == 1117){
+					   partCountVo=countMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					   if(partCountVo == null){
+						   partCountVo =new CandidateDetailsForConstituencyTypesVO();
+						   partCountVo.setScopeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						   partCountVo.setPartyId(commonMethodsUtilService.getLongValueForObject(param[1]));
+						   partCountVo.setParty(commonMethodsUtilService.getStringValueForObject(param[2]));
+						   countMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),partCountVo);
+						   if(type != null && type.equalsIgnoreCase("parlaiment")){
+						    mpList.add(partCountVo);
+						    finalVO.setSubList(mpList);
+						   }else if(type != null && type.equalsIgnoreCase("assembly")){
+							  mlaList.add(partCountVo);
+							  finalVO.setSubList2(mlaList);
+						   }
+					   }
+					 }else{
+						 partCountVo=countMap.get(0);
+						   if(partCountVo == null){
+							   partCountVo =new CandidateDetailsForConstituencyTypesVO();
+							   partCountVo.setScopeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							   partCountVo.setPartyId(0l);
+							   partCountVo.setParty("Others");
+							   countMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),partCountVo);
+							   if(type != null && type.equalsIgnoreCase("parlaiment")){
+							   mpList.add(partCountVo);
+							   finalVO.setSubList(mpList);
+							   }else if(type != null && type.equalsIgnoreCase("assembly")){
+								   mlaList.add(partCountVo);
+								   finalVO.setSubList2(mlaList);  
+							   }
+						   }
+					 }
+				partCountVo.setCondidateCount(partCountVo.getCondidateCount()+commonMethodsUtilService.getLongValueForObject(param[3]));
+					   
+				 }
+			 }
+		}catch(Exception e){
+			Log.error("Exception raised in settingPartyWiseCandidateCount method of LocationDashboardService"+e);
+		}
+	}
 }

@@ -9,7 +9,6 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.HibernateException;
@@ -5390,5 +5389,115 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			}
 			return qurQuery.list();
 		}
+		/*public List<Object[]> partyWiseMemberOfParliments(List<Long> electionIds,Long electionScopeId,Long loactionTypeId,Long loctionValue,String type){
+			StringBuilder queryStr=new StringBuilder();
+			 queryStr.append("select model.constituencyElection.election.electionScope.electionScopeId," +
+					" model.party.partyId,model.party.shortName,count(model.candidate.candidateId)" +
+					" from Nomination model");
+			if(type != null && type.equalsIgnoreCase("parlaiment")){
+					queryStr.append(",ParliamentAssembly PA ");
+					}
+			queryStr.append("where " );
+			if(type != null && type.equalsIgnoreCase("parlaiment")){
+			 queryStr.append(" model.constituencyElection.constituency.constituencyId = PA.parliamentId and " );
+			}
+			 queryStr.append(" model.constituencyElection.election.electionYear=2014 " +
+					" and model.candidateResult.rank=1");
+			if(electionIds != null && electionIds.size()>0){
+				queryStr.append(" and model.constituencyElection.election.electionId in(:electionIds) ");
+			}
+			if(electionScopeId != null && electionScopeId.longValue()>0l){
+				queryStr.append("and model.constituencyElection.election.electionScope.electionScopeId =:electionScopeId");
+			}
+			if(loactionTypeId != null && loactionTypeId.longValue() == 2l){
+				queryStr.append(" and model.constituencyElection.constituency.state.stateId =:loctionValue ");
+			}
+			queryStr.append(" group by  model.party.partyId ");
+			Query qurQuery = getSession().createQuery(queryStr.toString());
+            if(electionIds != null && electionIds.size()>0){
+            	qurQuery.setParameterList("electionIds", electionIds);
+			}
+            if(electionScopeId != null && electionScopeId.longValue()>0l){
+            	qurQuery.setParameter("electionScopeId", electionScopeId);
+            }
+            if(loactionTypeId != null && loactionTypeId.longValue() == 2l){
+            	qurQuery.setParameter("loctionValue", loctionValue);
+            }
+			return qurQuery.list();
+		}*/
+		
+	public List<Object[]> partyWiseMemberOfParliments(List<Long> electionIds,
+			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("SELECT es.election_scope_id,p.party_id,p.short_name,"
+				+ " count(distinct n.candidate_id) from nomination n,constituency_election ce,"
+				+ " constituency_election_result cer,election e,election_scope es,party p,"
+				+ " constituency c ,candidate_result cr ,parliament_assembly pc "
+				+ " where n.party_id = p.party_id and n.consti_elec_id = ce.consti_elec_id "
+				+ " and ce.constituency_id = c.constituency_id and ce.consti_elec_id = cer.consti_elec_id "
+				+ " and ce.election_id = e.election_id ");
+		if (electionIds != null && electionIds.size() > 0) {
+			queryStr.append(" and ce.election_id in (:electionIds)");
+		}
+		queryStr.append(" and e.election_year = '2014'");
+		if (electionScopeIds != null && electionScopeIds.size() > 0l) {
+			queryStr.append(" and e.election_scope_id in (:electionScopeIds)");
+		}
+		queryStr.append("and n.nomination_id = cr.nomination_id "
+				+ " and  cr.rank = 1  ");
+		//if (type != null && type.equalsIgnoreCase("parlaiment")) {
+			queryStr.append(" and  c.constituency_id = pc.parliament_id ");
+		//}
+		if (loactionTypeId != null && loactionTypeId.longValue() > 0l) {
+			queryStr.append(" and pc.state_id =:loctionValue ");
+		}
+		queryStr.append(" GROUP BY p.party_id ");
+		Query qurQuery = getSession().createSQLQuery(queryStr.toString());
+		if (electionIds != null && electionIds.size() > 0) {
+			qurQuery.setParameterList("electionIds", electionIds);
+		}
+		if (electionScopeIds != null && electionScopeIds.size() > 0l) {
+			qurQuery.setParameter("electionScopeIds", electionScopeIds);
+		}
+		if (loactionTypeId != null && loactionTypeId.longValue() == 2l) {
+			qurQuery.setParameter("loctionValue", loctionValue);
+		}
+		return qurQuery.list();
+   }
+	public List<Object[]> partyWiseMemberOfAssemblyCandidateCounts(List<Long> electionIds,
+			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("SELECT es.election_scope_id,p.party_id,p.short_name," +
+				" count(distinct n.candidate_id) from nomination n," +
+				" constituency_election ce,constituency_election_result cer," +
+				" election e ,election_scope es ,party p , constituency c ,candidate_result cr " +
+				" where n.party_id = p.party_id and n.consti_elec_id = ce.consti_elec_id and " +
+				" ce.constituency_id = c.constituency_id and ce.consti_elec_id = cer.consti_elec_id " +
+				" and ce.election_id = e.election_id " );
+		if (electionIds != null && electionIds.size() > 0) {
+			queryStr.append(" and ce.election_id in (:electionIds) ");
+		}
+		queryStr.append(" and e.election_year = '2014' " );
+			if (electionScopeIds != null && electionScopeIds.size() > 0l) {
+				queryStr.append(" and e.election_scope_id in (:electionScopeIds) " );
+			}
+			queryStr.append(" and n.nomination_id = cr.nomination_id and cr.rank = 1 " );
+			if (loactionTypeId != null && loactionTypeId.longValue() == 2l) {
+			queryStr.append("and (c.district_id BETWEEN 11 and 23 )");
+			}
+		queryStr.append(" GROUP BY p.party_id ");
+		Query qurQuery = getSession().createSQLQuery(queryStr.toString());
+		if (electionIds != null && electionIds.size() > 0) {
+			qurQuery.setParameterList("electionIds", electionIds);
+		}
+		if (electionScopeIds != null && electionScopeIds.size() > 0l) {
+			qurQuery.setParameter("electionScopeIds", electionScopeIds);
+		}
+		/*if (loactionTypeId != null && loactionTypeId.longValue() == 2l) {
+			qurQuery.setParameter("loctionValue", loctionValue);
+		}*/
+		return qurQuery.list();
+		
+	}
 }
 
