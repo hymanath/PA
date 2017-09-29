@@ -5457,7 +5457,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			qurQuery.setParameterList("electionIds", electionIds);
 		}
 		if (electionScopeIds != null && electionScopeIds.size() > 0l) {
-			qurQuery.setParameter("electionScopeIds", electionScopeIds);
+			qurQuery.setParameterList("electionScopeIds", electionScopeIds);
 		}
 		if (loactionTypeId != null && loactionTypeId.longValue() == 2l) {
 			qurQuery.setParameter("loctionValue", loctionValue);
@@ -5491,7 +5491,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			qurQuery.setParameterList("electionIds", electionIds);
 		}
 		if (electionScopeIds != null && electionScopeIds.size() > 0l) {
-			qurQuery.setParameter("electionScopeIds", electionScopeIds);
+			qurQuery.setParameterList("electionScopeIds", electionScopeIds);
 		}
 		/*if (loactionTypeId != null && loactionTypeId.longValue() == 2l) {
 			qurQuery.setParameter("loctionValue", loctionValue);
