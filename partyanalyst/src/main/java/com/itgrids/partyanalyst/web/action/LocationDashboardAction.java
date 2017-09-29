@@ -84,7 +84,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private IAlertLocationDashboardService alertLocationDashboardService;
 	private String successMsg;
 	private IMeetingLocationDashboardService meetingLocationDashboardService;
-	
+	private CandidateDetailsForConstituencyTypesVO typeVo;
 	
 	public IMeetingLocationDashboardService getMeetingLocationDashboardService() {
 		return meetingLocationDashboardService;
@@ -340,6 +340,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	}
 	public void setLocationVo(LocationVO locationVo) {
 		this.locationVo = locationVo;
+	}
+	
+	public CandidateDetailsForConstituencyTypesVO getTypeVo() {
+		return typeVo;
+	}
+	public void setTypeVo(CandidateDetailsForConstituencyTypesVO typeVo) {
+		this.typeVo = typeVo;
 	}
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
@@ -877,4 +884,20 @@ public String getElectionInformationLocationWise(){
 		 }
 		 return Action.SUCCESS;
 	 }
+	public String getPartyWiseMPandMLACandidatesCounts(){
+		try{
+			jObj = new JSONObject(getTask());			
+					
+			List<Long> electionIdsList = convertJsonStringList(jObj.getJSONArray("electionIds"));				
+			Long loactionTypeId = jObj.getLong("loactionTypeId");
+			Long loctionValue= jObj.getLong("loctionValue");
+			List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIds"));
+			//String type=jObj.getString("type");
+			typeVo =  locationDashboardService.getPartyWiseMPandMLACandidatesCount(electionIdsList,electionScopeIds,loactionTypeId,loctionValue);
+			
+		}catch(Exception e){
+			LOG.error("Entered into getPartyWiseMPandMLACandidatesCount method of LocationDashboardAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
 }
