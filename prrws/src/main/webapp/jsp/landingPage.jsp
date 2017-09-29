@@ -9,6 +9,7 @@
 <link href="Assests/MaterialKit/css/landingPage.css" rel="stylesheet"/>-->
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less">
+<link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
@@ -86,14 +87,14 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2352.png" >
 					<h4 style="display: inline-block;">FUND MANAGMENT SYSTEM</h4>
-					<!--<div class=" " style="text-align: right">
-						<h2 class="" style="margin-top: 0px">Ø</h2>
-						<p class="">ACHIEVEMENT</p>
-					</div>-->
+					<div class=" " style="text-align: right">
+						<h2 class="fundMngmntSstmOverAchvmntAllCls" style="margin-top: 0px"></h2>
+						<p class="">TOTAL FUNDS</p>
+					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange FUNDMANAGMENTSYSTEMColor" title="click to add as favourite component."  attr_url="newfundManagementSystemDashBoard" attr_full_block_name="FUND MANAGMENT SYSTEM" attr_color_name="gray" attr_block_name="FUNDMANAGMENTSYSTEM" aria-hidden="true"></i>
 						<!--<span style="font-size: 9px;color:#8286FF">PANCHAYATI RAJ,RURAL DEVELOPMENT,RURAL WATER SUPPLY</span>-->
-						<a class="pull-right" href="newfundManagementSystemDashBoard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get Details</a>
+						<a class="pull-right" href="newfundManagementSystemDashBoard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -107,13 +108,13 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2344.png" >
 					<h5 style="display: inline-block;">PRIS</h5>
-					<!--<div class=" " style="text-align: right">
-						<h2 class="" style="margin-top: 0px">Ø</h2>
+					<div class=" " style="text-align: right">
+						<h2 class="prisOverAchvmntAllCls" style="margin-top: 0px"></h2>
 						<p class="">ACHIEVEMENT</p>
-					</div>-->
+					</div>
 					<div class="block-footer" style="border-top: 1px solid lightgrey;padding-top: 5px">
 						<i class="fa fa-star starcolorChange PRISColor" title="click to add as favourite component." attr_url="prisDashBoard" attr_full_block_name="PRIS" attr_color_name="gray" attr_block_name="PRIS" aria-hidden="true"></i>
-						<a class="pull-right" href="prisDashBoard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get Details</a>
+						<a class="pull-right" href="prisDashBoard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Info...</a>
 					</div>
 				</div>
 			</div>
@@ -121,13 +122,13 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2345.png" >
 					<h5 style="display: inline-block;">DRAINS</h5>
-					<!--<div class=" " style="text-align: right">
-						<h2 class="" style="margin-top: 0px">Ø</h2>
+					<div class=" " style="text-align: right">
+						<h2 class="drainsOverAchvmntAllCls" style="margin-top: 0px"></h2>
 						<p class="">ACHIEVEMENT</p>
-					</div>-->
+					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange DRAINSColor" title="click to add as favourite component." attr_url="drainDashBoard" attr_full_block_name="DRAINS" attr_color_name="gray" attr_block_name="DRAINS" aria-hidden="true"></i>
-						<a class="pull-right" href="drainDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get Details</a>
+						<a class="pull-right" href="drainDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -135,13 +136,13 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2346.png" >
 					<h5 style="display: inline-block;">ENGINEERING DEPARTMENT</h5>
-					<!--<div class=" " style="text-align: right">
-						<h2 class="" style="margin-top: 0px">Ø</h2>
+					<div class=" " style="text-align: right">
+						<h2 class="encOverAchvmntAllCls" style="margin-top: 0px">0%</h2>
 						<p class="">ACHIEVEMENT</p>
-					</div>-->
+					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange ENGINEERINGDEPARTMENTColor"  title="click to add as favourite component." attr_url="" attr_full_block_name="ENGINEERING DEPARTMENT" attr_color_name="gray" attr_block_name="ENGINEERINGDEPARTMENT" aria-hidden="true"></i>
-						<a class="pull-right"  style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get Details</a>
+						<a class="pull-right"  style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -149,13 +150,13 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2343.png" >
 					<h5 style="display: inline-block;">PANACHAYATI RAJ EXPENDITURE</h5>
-					<!--<div class=" " style="text-align: right">
-						<h2 class="" style="margin-top: 0px">Ø</h2>
-						<p class="">ACHIEVEMENT</p>
-					</div>-->
+					<div class=" " style="text-align: right">
+						<h2 class="preOverAchvmntAllCls" style="margin-top: 0px"></h2>
+						<p class="">GROSS-AMOUNT</p>
+					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange PANACHAYATIRAJEXPENDITUREColor" title="click to add as favourite component." attr_url="prExpenditureDashboard" attr_url="prExpenditureDashboard" attr_full_block_name="PANACHAYATI RAJ EXPENDITURE" attr_color_name="gray" attr_block_name="PANACHAYATIRAJEXPENDITURE" aria-hidden="true"></i>
-						<a class="pull-right" href="prExpenditureDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get Details</a>
+						<a class="pull-right" href="prExpenditureDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -163,13 +164,13 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2348.png" >
 					<h5 style="display: inline-block;">LED MONITORING</h5>
-					<!--<div class=" " style="text-align: right">
-						<h2 class="" style="margin-top: 0px">Ø</h2>
-						<p class="">ACHIEVEMENT</p>
-					</div>-->
+					<div class=" " style="text-align: right">
+						<h2 class="ledOverAchvmntAllCls" style="margin-top: 0px"></h2>
+						<p class="">TOTAL LIGHTS</p>
+					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange LEDMONITORINGColor" title="click to add as favourite component." attr_url="getlightsMonitoringDashboard" attr_color_name="gray" attr_full_block_name="LED MONITORING" attr_block_name="LEDMONITORING" aria-hidden="true"></i>
-						<a class="pull-right" target="_blank" href="getlightsMonitoringDashboard" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get Details</a>
+						<a class="pull-right" target="_blank" href="getlightsMonitoringDashboard" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -177,13 +178,13 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2347.png" >
 					<h5 style="display: inline-block;">SPIKE ANALYSIS</h5>
-					<!--<div class=" " style="text-align: right">
-						<h2 class="" style="margin-top: 0px">Ø</h2>
-						<p class="">ACHIEVEMENT</p>
-					</div>-->
+					<div class=" " style="text-align: right">
+						<h2 class="spikeOverAchvmntAllCls" style="margin-top: 0px"></h2>
+						<p class="">TOTAL CASES</p>
+					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange SPIKEANALYSISColor" title="click to add as favourite component." attr_url="getdailySpikeReport" attr_full_block_name="SPIKE ANALYSIS" attr_color_name="gray" attr_block_name="SPIKEANALYSIS" aria-hidden="true"></i>
-						<a class="pull-right"  href="getdailySpikeReport" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get Details</a>
+						<a class="pull-right"  href="getdailySpikeReport" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -197,13 +198,13 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2357.png" >
 					<h5 style="display: inline-block;">MGNREGS</h5>
-					<!--<div class=" " style="text-align: right">
-						<h2 class="" style="margin-top: 0px">Ø</h2>
+					<div class=" " style="text-align: right">
+						<h2 class="mgnregsOverAchvmntAllCls" style="margin-top: 0px">0%</h2>
 						<p class="">ACHIEVEMENT</p>
-					</div>-->
+					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange MGNREGSColor" title="click to add as favourite component." attr_url="MGNREGSDashboard" attr_full_block_name="MGNREGS" attr_color_name="gray" attr_block_name="MGNREGS" aria-hidden="true"></i>
-						<a class="pull-right" href="MGNREGSDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get Details</a>
+						<a class="pull-right" href="MGNREGSDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -211,13 +212,13 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2349.png" >
 					<h5 style="display: inline-block;">RURAL DEVELOPMENT</h5>
-					<!--<div class=" " style="text-align: right">
-						<h2 class="" style="margin-top: 0px">Ø</h2>
+					<div class=" " style="text-align: right">
+						<h2 class="rdOverAchvmntAllCls" style="margin-top: 0px">0%</h2>
 						<p class="">ACHIEVEMENT</p>
-					</div>-->
+					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange RURALDEVELOPMENTColor" title="click to add as favourite component." attr_url="RuralDevelopmentDashboard" attr_full_block_name="RURAL DEVELOPMENT" attr_color_name="gray" attr_block_name="RURALDEVELOPMENT" aria-hidden="true"></i>
-						<a class="pull-right" href="RuralDevelopmentDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get Details</a>
+						<a class="pull-right" href="RuralDevelopmentDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -231,13 +232,13 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2350.png" >
 					<h5 style="display: inline-block;">RURAL WATER SUPPLY</h5>
-					<!--<div class=" " style="text-align: right">
-						<h2 class="" style="margin-top: 0px">Ø</h2>
+					<div class=" " style="text-align: right">
+						<h2 class="rwsOverAchvmntAllCls" style="margin-top: 0px"></h2>
 						<p class="">ACHIEVEMENT</p>
-					</div>-->
+					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange RURALWATERSUPPLYColor" title="click to add as favourite component." attr_url="ruralWaterSupplyDashBoard" attr_full_block_name="RURAL WATER SUPPLY" attr_color_name="gray" attr_block_name="RURALWATERSUPPLY" aria-hidden="true"></i>
-						<a class="pull-right" href="ruralWaterSupplyDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get Details.</a>
+						<a class="pull-right" href="ruralWaterSupplyDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -251,14 +252,14 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2351.png" >
 					<h5 style="display: inline-block;">IT E & C</h5>
-					<!--<div class=" " style="text-align: right">
-						<h2 class="" style="margin-top: 0px">59%</h2>
-						<p class="">ACHIEVEMENT</p>
-					</div>-->
+					<div class=" " style="text-align: right">
+						<h2 class="itecOverAchvmntAllCls" style="margin-top: 0px"></h2>
+						<p class="">TOTAL TRANSACTIONS</p>
+					</div>
 					<div class="block-footer">
 						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
 						<span style="font-size: 9px;color:#8286FF">INFORMATION TECHNOLOGY , ELECTRONICS & FIN TECH</span>
-						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get Details</a>
+						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -292,6 +293,8 @@
 <!--<script src="Assests/MaterialKit/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/MaterialKit/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="Assests/MaterialKit/js/material.min.js"></script>-->
+<script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/fundManagament/landingPage.js"></script>
 </body>
