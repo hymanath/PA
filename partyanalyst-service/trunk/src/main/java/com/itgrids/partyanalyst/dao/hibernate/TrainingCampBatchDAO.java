@@ -594,7 +594,8 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		sb.append("model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,");			//  5 programm id
 		sb.append("model.trainingCampSchedule.trainingCampProgram.programName,"); 	//6  programm name
 		sb.append("model.trainingCampSchedule.trainingCamp.trainingCampId,");     		// 7   campId
-		sb.append("model.trainingCampSchedule.trainingCamp.campName ");				//		8     camp name
+		sb.append("model.trainingCampSchedule.trainingCamp.campName, ");	//8   camp name
+		sb.append(" model.trainingCampSchedule.trainingCampScheduleId,model.trainingCampSchedule.trainingCampScheduleCode,model.trainingCampBatchTypeId ");   // 9 scheduleid, 10 schedule code,11 batchTypeId //		
 		sb.append("from TrainingCampBatch model where model.isCancelled = 'false' ");
 		if(fromDate != null && toDate !=null ){
 			sb.append(" and ( (model.fromDate between :fromDate and  :toDate) OR (model.toDate between :fromDate and  :toDate)) ");
