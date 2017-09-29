@@ -9,8 +9,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
-
 import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;

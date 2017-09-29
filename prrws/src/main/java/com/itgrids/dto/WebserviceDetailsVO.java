@@ -13,6 +13,7 @@ public class WebserviceDetailsVO implements Serializable {
 	private Long totalSuccess = 0L;
 	private Long totalFail = 0L;
 	private Double totalTime = 0.0D;
+	private Double totalTimeInMin = 0.0D;
 	private Double averageTime = 0.0D;
 	private Long noResponce = 0L;
 	public Long getProviderId() {
@@ -86,6 +87,12 @@ public class WebserviceDetailsVO implements Serializable {
 	}
 	public void setNoResponce(Long noResponce) {
 		this.noResponce = noResponce;
+	}
+	public Double getTotalTimeInMin() {
+		return totalTimeInMin;
+	}
+	public void setTotalTimeInMin(Double totalTimeInMin) {
+		this.totalTimeInMin = totalTimeInMin;
 	}
 	
 }
