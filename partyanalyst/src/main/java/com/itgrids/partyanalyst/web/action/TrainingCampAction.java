@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SimpleVO;
+import com.itgrids.partyanalyst.dto.SimpleDetailsVO;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
@@ -44,6 +45,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
+import com.itgrids.partyanalyst.dto.TrainingCampSheduleDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -53,6 +55,7 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+
 
 public class TrainingCampAction  extends ActionSupport implements ServletRequestAware{
 
@@ -136,7 +139,16 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<KeyValueVO> keyValueVOlist;
 	private List<VerifierVO> verifyVOLst;
 	private String minAndMaxDatesStr;
-	
+	private List<TrainingCampSheduleDetailsVO> trainingCampVOList;
+	private List<SimpleDetailsVO> simpleDetailsVOList;
+
+	public List<TrainingCampSheduleDetailsVO> getTrainingCampVOList() {
+		return trainingCampVOList;
+	}
+
+	public void setTrainingCampVOList(List<TrainingCampSheduleDetailsVO> trainingCampVOList) {
+		this.trainingCampVOList = trainingCampVOList;
+	}
 	public List<KeyValueVO> getKeyValueVOlist() {
 		return keyValueVOlist;
 	}
@@ -709,6 +721,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	public void setMinAndMaxDatesStr(String minAndMaxDatesStr) {
 		this.minAndMaxDatesStr = minAndMaxDatesStr;
+	}
+
+	public List<SimpleDetailsVO> getSimpleDetailsVOList() {
+		return simpleDetailsVOList;
+	}
+
+	public void setSimpleDetailsVOList(List<SimpleDetailsVO> simpleDetailsVOList) {
+		this.simpleDetailsVOList = simpleDetailsVOList;
 	}
 
 	public String callCenterTrainingAdmin()
@@ -2502,9 +2522,9 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     				programIds.add(new Long(programIdsArr.get(i).toString()));
     		}
     		if(dates.length>1){
-    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programIds,campId,batchId,dates[0].trim(),dates[1].trim(),fromType,callFrom,enrollmentYrIds);
+    			simpleDetailsVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programIds,campId,batchId,dates[0].trim(),dates[1].trim(),fromType,callFrom,enrollmentYrIds);
     		}else{
-    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programIds,campId,batchId,null,null,fromType,callFrom,enrollmentYrIds);
+    			simpleDetailsVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programIds,campId,batchId,null,null,fromType,callFrom,enrollmentYrIds);
     		}
     		
     	}catch(Exception e){
@@ -3422,6 +3442,35 @@ public String getCommentsMeetingDetails(){
 			keyValueVOlist=trainingCampService.getTrainingProgramDetailsByProgramIds(triningProgramIdsList);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getTrainingProgramDetailsByProgramIds method", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getInviteeAndNonInviteeTrainingDetails(){
+		try {
+			LOG.info("Entered into trainingCampAction of getTrainingSurveyDetail()");
+			jObj = new JSONObject(getTask());
+			JSONArray enrollmentYrIdsArr = jObj.getJSONArray("enrollmentYrIds");
+			List<Long> enrollmentYrIds =new ArrayList<Long>();
+    		if(enrollmentYrIdsArr != null && enrollmentYrIdsArr.length() > 0){
+    			for(int i=0;i<enrollmentYrIdsArr.length();i++)
+    				enrollmentYrIds.add(new Long(enrollmentYrIdsArr.get(i).toString()));
+    		}
+    		List<Long> programIds = new ArrayList<Long>(0);
+    		JSONArray programIdsArr = jObj.getJSONArray("programIds");	
+    		if(programIdsArr != null && programIdsArr.length() > 0)
+    		{
+    			for(int i=0;i<programIdsArr.length();i++)
+    				programIds.add(new Long(programIdsArr.get(i).toString()));
+    		}
+    		
+    		String dates[] = jObj.getString("dates").split("-");
+    		if(dates.length>1){
+    			trainingCampVOList = trainingCampService.getInviteeAndNonInviteeTrainingCampWiseDetails(dates[0].trim(),dates[1].trim(),enrollmentYrIds,programIds);
+    		}else{
+    			trainingCampVOList = trainingCampService.getInviteeAndNonInviteeTrainingCampWiseDetails(null,null,enrollmentYrIds,programIds);
+    		}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getInviteeAndNonInviteeTrainingList Action", e);
 		}
 		return Action.SUCCESS;
 	}
