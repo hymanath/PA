@@ -1,5 +1,5 @@
-var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY");
-var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
+var glStartDate = moment().subtract(6, 'days').format("DD-MM-YYYY");
+var glEndDate = moment().format("DD-MM-YYYY");
 //var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var spinner = '<div class="row"><div class="col-sm-12"><div class="d2d-loader"><div class="loader"></div><img src="D2D_Assests/images/login_logo.png"/></div></div></div>'
 var levelWiseArr='';
@@ -38,6 +38,8 @@ function onLoadCalls(){
 	 getRecentImagesList("survey");
 	 getDistrictsForStateAction("consWiseDistritsId");
 	 getDepartmentWiseGrievanceCounts(1);
+	 getUserWiseCountFrLoginUserAction();
+	 
 	 
 	for(var i in globallevelIds){
 		if(globallevelIds[i] == 2){
@@ -114,14 +116,14 @@ $("#dateRangePickerAUM").daterangepicker({
 		format: 'DD-MM-YYYY'
 	},
 	ranges: {
-		'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+		'Last 7 Days':[moment().subtract(6, 'days').format("DD/MM/YYYY"), moment().format("DD/MM/YYYY")],
 		'Today' : [moment(), moment()],
 		'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-		'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		//'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		//'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
 		'This Month': [moment().startOf('month'), moment()],
-		'This Year': [moment().startOf('Year'), moment()]
+		//'This Year': [moment().startOf('Year'), moment()]
 	}
 });
 
@@ -129,15 +131,16 @@ var dates= $("#dateRangePickerAUM").val();
 var pickerDates = glStartDate+' - '+glEndDate
 if(dates == pickerDates)
 {
-	$("#dateRangePickerAUM").val('All');
+	$("#dateRangePickerAUM").val('Last 7 Days');
 }
 
 $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 	glStartDate = picker.startDate.format('DD-MM-YYYY')
 	glEndDate = picker.endDate.format('DD-MM-YYYY')
-	if(picker.chosenLabel == 'All')
+	
+	if(picker.chosenLabel == 'Last 7 Days')
 	{
-		$("#dateRangePickerAUM").val('All');
+		$("#dateRangePickerAUM").val('Last 7 Days');
 	}
 	
 	$("#surveyId").prop("checked",true);
@@ -1218,3 +1221,75 @@ $(document).on("click",".imagesTypeCls",function(){
 	var imageType = $(this).val();
 	getRecentImagesList(imageType);
 });
+function getUserWiseCountFrLoginUserAction()
+{
+		$("#userWiseDetailsDivId").html(spinner);
+	var jsObj={
+		levelIds		:globallevelIds,
+		levelValues		:globallevelValues,
+		startDateStr	:glStartDate,
+		endDateStr 		:glEndDate
+	}
+	$.ajax({
+	  type : "POST",
+	  url : "getUserWiseCountFrLoginUserAction.action",
+	  dataType : 'json',
+	  data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildUserWiseCountFrLoginUser(result)
+		}else{
+			$("#userWiseDetailsDivId").html("No Data Available");
+		}
+	});
+}
+
+function buildUserWiseCountFrLoginUser(result){
+	
+	var str='';
+	str+='<div class="table-responsive m_top10">';
+	str+='<table class="table table-bordered tableStyled" id="dataTableUserWise">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th rowspan="2">UserName</th>';
+				str+='<th rowspan="2">Mobile No</th>';
+					for(var i in result[0].subList){
+						str+='<th colspan="4">'+result[0].subList[i].date+'</th>';
+					}
+			str+='</tr>';
+			str+='<tr>';
+				for(var i in result[0].subList){
+						str+='<th>Visited Count</th>';
+						str+='<th>Grievance Request</th>';
+						str+='<th>Survey Images</th>';
+						str+='<th>Flag Hoisting Images</th>';
+					}
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			for(var i in result){
+				
+				str+='<tr>';
+					str+='<td>'+result[i].name+'</td>';
+					str+='<td>'+result[i].mobilNo+'</td>';
+				for(var j in result[i].subList){
+					str+='<td>'+result[i].subList[j].visitedHouseHolds+'</td>';
+					str+='<td>'+result[i].subList[j].totalGrievances+'</td>';
+					str+='<td>'+result[i].subList[j].surveyImagesCount+'</td>';
+					str+='<td>'+result[i].subList[j].flagHoistingImgCunt+'</td>';
+				}
+				str+='</tr>';	
+				
+			}
+		str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	$("#userWiseDetailsDivId").html(str);
+	$("#dataTableUserWise").dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10,15, 20, -1], [10,15, 20, "All"]],
+		
+	});
+	
+}

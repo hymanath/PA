@@ -92,6 +92,14 @@
 			</div>
 		</div>
 		<div class="row m_top10">
+			<div class="col-sm-12 m_top10">
+					<div class="block_styles_nav">
+						<h4 text-capital><b>User Wise Count Details</b></h4>
+						<div id="userWiseDetailsDivId"></div>
+					</div>
+			</div>
+		</div>
+		<div class="row m_top10">
 			<div class="m_top10">
 				<div class="col-sm-4">
 					<div class="block_styles">
