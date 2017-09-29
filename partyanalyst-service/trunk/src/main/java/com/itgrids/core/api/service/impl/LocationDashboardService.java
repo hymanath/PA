@@ -95,7 +95,6 @@ import com.itgrids.partyanalyst.model.Position;
 import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.TdpCommitteeLevel;
 import com.itgrids.partyanalyst.model.Tehsil;
-import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
@@ -636,6 +635,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						Object[] values = (Object[]) result.get(i);
 						candidateInfo1.setConstituencyId((Long) values[0]);
 						candidateInfo1.setConstituencyName(values[1].toString());
+						if(!candidateIds.contains((Long) values[2]))
+							candidateIds.add((Long) values[2]);
 						candidateInfo1.setCandidateId((Long) values[2]);
 						parliamentCandidateIds.add(candidateInfo1.getCandidateId());
 						if (!StringUtils.isBlank((String) values[3]))
@@ -688,6 +689,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 		}
+			
 			if(locationTypeId != null && locationTypeId != 2){
 			    finalList.get(0).setSubList1(parliementfinalList);
 			}else{
@@ -703,6 +705,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							postinsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),typeVO);
 						}
 						candateIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(!candidateIds.contains(commonMethodsUtilService.getLongValueForObject(param[0]))){
+							candidateIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						}
 						typeVO.setCondidateId(commonMethodsUtilService.getLongValueForObject(param[0]));//candidateId
 						typeVO.setCandidateName(commonMethodsUtilService.getStringValueForObject(param[1]));//candidateName
 						typeVO.setRepresentativeLevelId(commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -766,47 +771,51 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Object[]> locPosiCandts = tdpCadreCandidateDAO.getPublicRepresetativesInLocation(locationValue, locationTypeId,representativTypeIds);
 			if(commonMethodsUtilService.isListOrSetValid(locPosiCandts)){
 				for (Object[] objects : locPosiCandts) {
+					if(!candidateIds.contains(commonMethodsUtilService.getLongValueForObject(objects[23]))){
+						candidateIds.add(commonMethodsUtilService.getLongValueForObject(objects[23]));
+					
 					CandidateInfoForConstituencyVO vo = new CandidateInfoForConstituencyVO();
-					vo.setCandidateId((Long) objects[0]);//cadreId
+					vo.setTdpCadreId((Long) objects[0]);//cadreId
 					vo.setCandidateName(commonMethodsUtilService.getStringValueForObject(objects[1]));//cadreName
-					vo.setPartyId(commonMethodsUtilService.getLongValueForObject(objects[2]));
-					vo.setParty(commonMethodsUtilService.getStringValueForObject(objects[3]));
-					vo.setEducation(commonMethodsUtilService.getStringValueForObject(objects[6]));
-					UserAddress ua = (UserAddress)objects[7];
+					vo.setPartyId(commonMethodsUtilService.getLongValueForObject(objects[2]));//representativeTypeId
+					vo.setParty(commonMethodsUtilService.getStringValueForObject(objects[3]));//representativeType
+					vo.setEducation(commonMethodsUtilService.getStringValueForObject(objects[6]));//image
+					vo.setCandidateId(commonMethodsUtilService.getLongValueForObject(objects[23]));
+					//UserAddress ua = (UserAddress)objects[7];
 					Long representativeLevl = commonMethodsUtilService.getLongValueForObject(objects[4]);
 					Long representativeVal = commonMethodsUtilService.getLongValueForObject(objects[5]);
-					if(ua != null){
-						if(representativeLevl != 0l && representativeLevl.longValue() == 1l && ua.getParliamentConstituency() != null && representativeVal.longValue() == ua.getParliamentConstituency().getConstituencyId()){
-							vo.setConstituencyId(ua.getParliamentConstituency().getConstituencyId());
-							vo.setConstituencyName(ua.getParliamentConstituency().getName());
-						}else if(representativeLevl != 0l && representativeLevl.longValue() == 2l && ua.getConstituency() != null && representativeVal.longValue() == ua.getConstituency().getConstituencyId()){
-							vo.setConstituencyId(ua.getConstituency().getConstituencyId());
-							vo.setConstituencyName(ua.getConstituency().getName());
+					//if(ua != null){
+						if(representativeLevl != 0l && representativeLevl.longValue() == 1l &&  representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[11])){
+							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[11]));
+							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[12]));
+						}else if(representativeLevl != 0l && representativeLevl.longValue() == 2l && representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[13])){
+							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[13]));//13
+							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[14]));//14
 						}else if(representativeLevl != 0l &&( representativeLevl.longValue() == 3l || representativeLevl.longValue() == 4l) && representativeVal != null){
 							vo.setConstituencyId(constituencyDAO.get(representativeVal).getConstituencyId());
 							vo.setConstituencyName(constituencyDAO.get(representativeVal).getName());
-						}else if(representativeLevl != 0l && representativeLevl.longValue() == 5l && ua.getDistrict() != null && representativeVal.longValue() == ua.getDistrict().getDistrictId()){
-							vo.setConstituencyId(ua.getDistrict().getDistrictId());
-							vo.setConstituencyName(ua.getDistrict().getDistrictName());
-						}else if(representativeLevl != 0l && representativeLevl.longValue() == 6l && ua.getState() != null && representativeVal.longValue() == ua.getState().getStateId()){
-							vo.setConstituencyId(ua.getState().getStateId());
-							vo.setConstituencyName(ua.getState().getStateName());
-						}else if(representativeLevl != 0l && representativeLevl.longValue() == 7l && ua.getTehsil() != null && representativeVal.longValue() == ua.getTehsil().getTehsilId()){
-							vo.setConstituencyId(ua.getTehsil().getTehsilId());
-							vo.setConstituencyName(ua.getTehsil().getTehsilName());
-						}else if(representativeLevl != 0l && representativeLevl.longValue() == 8l && ua.getLocalElectionBody() != null && representativeVal.longValue() == ua.getLocalElectionBody().getLocalElectionBodyId()){
-							vo.setConstituencyId(ua.getLocalElectionBody().getLocalElectionBodyId());
-							vo.setConstituencyName(ua.getLocalElectionBody().getName());
+						}else if(representativeLevl != 0l && representativeLevl.longValue() == 5l && representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[9])){
+							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[9]));//9
+							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[10]));//10
+						}else if(representativeLevl != 0l && representativeLevl.longValue() == 6l && representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[7])){
+							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[7]));//7
+							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[8]));//8
+						}else if(representativeLevl != 0l && representativeLevl.longValue() == 7l  && representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[15])){
+							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[15]));//15
+							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[16]));//16
+						}else if(representativeLevl != 0l && representativeLevl.longValue() == 8l  && representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[19])){
+							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[19]));//19
+							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[20]));//20
 						}
-					}
-					
+				//}
+						vo.setPartyFlag(commonMethodsUtilService.getStringValueForObject(objects[24]));
 					List<CandidateInfoForConstituencyVO> locPosiCand = posiCandList.get(commonMethodsUtilService.getStringValueForObject(objects[3]));
 					if(locPosiCand == null || locPosiCand.size() == 0){
 						locPosiCand = new ArrayList<CandidateInfoForConstituencyVO>();
 						posiCandList.put(commonMethodsUtilService.getStringValueForObject(objects[3]), locPosiCand);
 					}
 					locPosiCand.add(vo);
-					
+					}
 				}
 			}
 			
@@ -838,6 +847,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			candidateInfo1.setConstituencyId((Long) values[0]);
 			candidateInfo1.setConstituencyName(values[1].toString());
 			candidateInfo1.setCandidateId((Long) values[2]);
+			if(!candidateIds.contains(candidateInfo1.getCandidateId()))
 			candidateIds.add(candidateInfo1.getCandidateId());
 			List<Object[]> parliaments = parliamentAssemblyDAO.getParliamentByAssemblyId(commonMethodsUtilService.getLongValueForObject(values[0]));
 			if(commonMethodsUtilService.isListOrSetValid(parliaments)){

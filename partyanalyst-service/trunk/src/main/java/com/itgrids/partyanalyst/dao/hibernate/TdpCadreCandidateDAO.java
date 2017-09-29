@@ -203,7 +203,23 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select distinct tcc.tdpCadreId,tcc.tdpCadre.firstname,prt.publicRepresentativeTypeId,prt.type,pr.levelId,pr.levelValue,tcc.tdpCadre.image " +
-				" ,pr.userAddress from TdpCadreCandidate tcc,PublicRepresentative pr,PublicRepresentativeType prt " +
+				" ,state.stateId,state.stateName,district.districtId,district.districtName,parliament.constituencyId,parliament.name," +
+				" constituency.constituencyId,constituency.name," +
+				" tehsil.tehsilId,tehsil.tehsilName," +
+				" panchayat.panchayatId,panchayat.panchayatName," +
+				" localElectionBody.localElectionBodyId,localElectionBody.name," +
+				" ward.constituencyId,ward.name ,pr.candidateId ,nomination.party.partyFlag " +//21,22,23,24
+				"from TdpCadreCandidate tcc ,PublicRepresentativeType prt ," +
+				"  PublicRepresentative pr  " +
+				" left join pr.userAddress.state state " +
+				" left join pr.userAddress.district district " +
+				" left join pr.userAddress.parliamentConstituency parliament " +
+				" left join pr.userAddress.constituency constituency " +
+				" left join pr.userAddress.tehsil tehsil " +
+				" left join pr.userAddress.panchayat panchayat " +
+				" left join pr.userAddress.localElectionBody localElectionBody " +
+				" left join pr.userAddress.ward ward " +
+				" left join pr.nomination nomination " +
 				"  where " +
 				"  tcc.candidateId=pr.candidateId " +
 				" and pr.publicRepresentativeTypeId=prt.publicRepresentativeTypeId " +
