@@ -1737,6 +1737,7 @@ public class NREGSTCSService implements INREGSTCSService{
 						}
 						detailsVO.setTotalTime(commonMethodsUtilService.roundUptoThreeDecimalPoint(webserviceIdAndTotalTimeTakenMap.get(param.getKey()).doubleValue()/1000.0D));
 						detailsVO.setAverageTime(commonMethodsUtilService.roundUptoThreeDecimalPoint((webserviceIdAndTotalTimeTakenMap.get(param.getKey()).doubleValue()/webserviceIdAneTotalCallCountMap.get(param.getKey()).doubleValue())/1000.0D));
+						detailsVO.setTotalTimeInMin(commonMethodsUtilService.roundUptoThreeDecimalPoint(detailsVO.getTotalTime()/60.0D));
 						detailsVO.setNoResponce(commonMethodsUtilService.getLongValueForObject(webserviceIdAndFailureCountMap.get(param.getKey())));
 						detailsVOs.add(detailsVO);
 					}
