@@ -11011,7 +11011,7 @@
 	
 	<action name="getAttendedCountsByProgramOrCampOrBatchAction" class="trainingCampAction" method="getAttendedCountsByProgramOrCampOrBatch">
 	    <result type="json" name="success">		   
-		    <param name="root">simpleVOList</param>
+		    <param name="root">simpleDetailsVOList</param>
 		</result>
 	</action>
 	
@@ -18113,6 +18113,11 @@
   	<action name="getUserWiseCountFrLoginUserAction" class="doorToDoorCampaignDashboardAction"  method="getUserWiseCountsFrLoginUser">
 		<result type="json" name="success">    
 			<param name="root">doorCampaignDashboardVOList</param>       
+		</result>
+  	</action>
+  	<action name="getInviteeAndNonInviteeTrainingDetailsAction" class="trainingCampAction"  method="getInviteeAndNonInviteeTrainingDetails">
+		<result type="json" name="success">    
+			<param name="root">trainingCampVOList</param>       
 		</result>
   	</action>
       </package>
