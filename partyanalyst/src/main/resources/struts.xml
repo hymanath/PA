@@ -18120,5 +18120,10 @@
 			<param name="root">trainingCampVOList</param>       
 		</result>
   	</action>
+	<action name="getPartyWiseMPandMLACandidatesCountsAction" class="locationDashboardAction" method="getPartyWiseMPandMLACandidatesCounts">
+		<result type="json" name="success">
+			<param name="root">typeVo</param>
+		</result>
+	</action>
       </package>
 </struts>
