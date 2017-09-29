@@ -97,7 +97,7 @@
 				
 			</div>
 		</div>
-		<div class="row m_top20">
+		<div class="row">
 		 	<div id="parliamentMemberId"></div>
 			<div id="assemblyMemberId"></div>
 			<div id="representativeMembersId"></div>
@@ -249,7 +249,7 @@
 					<div id="committesTableDivId" class="m_top10"></div>
 				</div>
 			</div>
-			<div class="col-sm-8 m_top20" navbar-index="meetings">
+			<div class="col-sm-12 m_top20" navbar-index="meetings">
 				<div class="block">
 					<h4 class="panel-title theme-title-color">Meetings
 					<span class="">
@@ -264,16 +264,16 @@
 						</div>
 					</span></h4>
 					<!--<p class="f-12 text-muted">Evertymonth: 9th/10th/11th</p>-->
-					<div id="locationWiseMeetingsCount" class="m_top30"></div>
+					<div id="locationWiseMeetingsCount" class="m_top10"></div>
 				</div>
 			</div>
 			
-			<div class="col-sm-4 m_top20" navbar-index="tours">
+			<!--<div class="col-sm-4 m_top20" navbar-index="tours">
 				<div class="block">
 					<h4 class="panel-title theme-title-color">Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="tours"></i></span><small class="f-12" style="color:#777 !important;">Last Month Jan 2017</small></h4>
 					<div id="locationWiseTourMembersComplainceDtls" class="m_top15"></div>
 				</div>
-			</div>
+			</div>-->
 			
 			
 			<div class="col-sm-12 m_top20" navbar-index="benefits">
