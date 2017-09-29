@@ -1018,7 +1018,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 				toDate = sdf.parse(toDateStr);
 			}
 			
-			List<Object[]> list = activityScopeDAO.getActivityDetails(fromDate, toDate,stateId);
+			List<Object[]> list = activityScopeDAO.getActivityDetails1(fromDate, toDate,stateId);
 			List<Object[]> list1 = activityConductedInfoDAO.getSpecialActivitiesDetails(fromDate, toDate,stateId);
 			if(commonMethodsUtilService.isListOrSetValid(list1))
 				if(!commonMethodsUtilService.isListOrSetValid(list1))
@@ -1030,19 +1030,19 @@ public class CoreDashboardService implements ICoreDashboardService{
 					IdAndNameVO vo = new IdAndNameVO();
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					vo.setName(obj[1] != null ? obj[1].toString():"");
-					vo.setPartyId(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					//vo.setPartyId(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					returnList.add(vo);
 				}
 			}
 			
-			Collections.sort(returnList, new Comparator<IdAndNameVO>() {
+			/*Collections.sort(returnList, new Comparator<IdAndNameVO>() {
 				public int compare(IdAndNameVO o1, IdAndNameVO o2) {
 					if(o2.getPartyId() != null && o1.getPartyId() != null )
 						return o2.getPartyId().compareTo(o1.getPartyId());
 					else
 						return 0;
 				}
-			});
+			});*/
 			
 		} catch (Exception e) {
 			LOG.error("error occurred in getActivityDetails() of CoreDashboardService class",e);
@@ -1117,7 +1117,14 @@ public class CoreDashboardService implements ICoreDashboardService{
 					}
 					if(totalList1 != null && !totalList1.isEmpty()){
 						for (Object[] param : totalList1) {
-							idAndNameVO.setApTotal(commonMethodsUtilService.getLongValueForObject(param[1]));
+							Long scopeId = Long.valueOf(param[0] != null ? param[0].toString():"0");
+							Long count = Long.valueOf(param[1] != null ? param[1].toString():"0");
+							
+							IdAndNameVO vo = getMatchedVOById(scopeId, returnList);
+							if(vo != null){
+								vo.setApTotal(count);			//PlannedCount
+							}
+							//idAndNameVO.setApTotal(commonMethodsUtilService.getLongValueForObject(param[1]));
 						}
 					}
 				}

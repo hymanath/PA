@@ -454,4 +454,28 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 			 
 		 return query.list();
 	}
+	
+	public List<Object[]> getActivityDetails1(Date fromDate,Date toDate,Long stateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.activityScope.activity.activityId," +
+						" model.activityScope.activity.activityName" +
+						" from ActivityLocationInfo model" +
+						" where model.activityScope.isDeleted = 'N'" +
+						" and model.activityScope.activity.isActive = 'Y'");
+		if(stateId != null && stateId.longValue()>0L)
+			sb.append(" and model.address.state.stateId = :stateId ");
+		
+		if(fromDate != null && toDate != null)
+			sb.append(" and ((date(model.activityScope.startDate) between :fromDate and :toDate) or (date(model.activityScope.endDate) between :fromDate and :toDate))");
+		sb.append(" order by model.activityScopeId desc");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		if(stateId != null && stateId.longValue()>0L)
+			query.setParameter("stateId", stateId);
+		return query.list();
+	}
 }
