@@ -572,8 +572,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				  List<Long>   constituencyIdMun=tehsilDAO.getAllConstituenciesByLocalElectionBodyId(locationValue);	
 					consistuencyIds.addAll(constituencyIdMun);
 			  }		
-			@SuppressWarnings("unchecked")
-			List<Object[]> parlimentlist = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssemblyIds(consistuencyIds);
+			List<Object[]> parlimentlist = null;
+			if(locationTypeId != null && locationTypeId != 2l){
+			   parlimentlist = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssemblyIds(consistuencyIds);
+			}
 			for (Long constituencyId : consistuencyIds) {
 				@SuppressWarnings("rawtypes")
 				List candidateList = null;
@@ -620,12 +622,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					finalList.add(candidateDetailsForConstituencyTypesVO);
 				}
 			}
-
+			List<Long> parliamentCandidateIds = new ArrayList<Long>();
+			if(parlimentlist != null){
 			for (Object[] object : parlimentlist) {
 				String isMigrate ="false";
 				//CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituencyTypesVO = new CandidateDetailsForConstituencyTypesVO();
 				Long asemblyId = commonMethodsUtilService.getLongValueForObject(object[0]);
-				List<Long> parliamentCandidateIds = new ArrayList<Long>();
 				List result = nominationDAO.getParliamentCandidateNPartyInfo(asemblyId, IConstants.PARLIAMENT_ELECTION_TYPE, 1L);
 				if (result.size() != 0) {
 					for (int i = 0; i < result.size(); i++) {
@@ -685,9 +687,82 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					}
 				}
 			}
+		}
+			if(locationTypeId != null && locationTypeId != 2){
+			    finalList.get(0).setSubList1(parliementfinalList);
+			}else{
+				Map<Long,CandidateDetailsForConstituencyTypesVO> postinsMap = new HashMap<Long,CandidateDetailsForConstituencyTypesVO>();
+				List<Object[]> stateCandidateDesignations = publicRepresentativeDAO.getStateWiseCandidateDesignations(locationValue,locationTypeId,representativTypeIds);
+				List<Long> candateIds = new ArrayList<Long>();
+				if(stateCandidateDesignations != null && stateCandidateDesignations.size()>0){
+					//CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituencyTypesVO =new CandidateDetailsForConstituencyTypesVO();
+					for(Object[] param :stateCandidateDesignations){
+						CandidateDetailsForConstituencyTypesVO typeVO = postinsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(typeVO == null){
+							typeVO  = new CandidateDetailsForConstituencyTypesVO();
+							postinsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),typeVO);
+						}
+						candateIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						typeVO.setCondidateId(commonMethodsUtilService.getLongValueForObject(param[0]));//candidateId
+						typeVO.setCandidateName(commonMethodsUtilService.getStringValueForObject(param[1]));//candidateName
+						typeVO.setRepresentativeLevelId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						typeVO.setRepresentativeLevel(commonMethodsUtilService.getStringValueForObject(param[3]));
+						//typeVO.setPartyFlag(commonMethodsUtilService.getStringValueForObject(param[4]));//party flag
+						typeVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						//typeVO.setCadreId(commonMethodsUtilService.getLongValueForObject(param[6]));//cadreId
+						typeVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[5]));
+						//typeVO.setCadreImage(commonMethodsUtilService.getStringValueForObject(param[7]));
+						//typeVO.setTotalDesignation(typeVO.getTotalDesignation()+","+commonMethodsUtilService.getStringValueForObject(param[5]));
+						finalList.add(typeVO);
+						String constituencyName =" ";
+						List<Object[]> candidatePartyDetails =nominationDAO.getCandidateNominationPartyDetails(candateIds);
+						if(candidatePartyDetails != null && candidatePartyDetails.size()>0){
+							for(Object[] objects :candidatePartyDetails){
+						CandidateDetailsForConstituencyTypesVO matchedVo= getMatchedVOForCadreIdForPartyId(finalList,commonMethodsUtilService.getLongValueForObject(objects[0])); 
+						  if(matchedVo != null){
+							  matchedVo.setPartyId(commonMethodsUtilService.getLongValueForObject(objects[1]));
+							  matchedVo.setParty(commonMethodsUtilService.getStringValueForObject(objects[2]));
+							  matchedVo.setPartyFlag(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							  matchedVo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+							  matchedVo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[5]));
+							    constituencyName = commonMethodsUtilService.getStringValueForObject(objects[5]);
+							  matchedVo.setConstituencyType(commonMethodsUtilService.getStringValueForObject(objects[6]));
+						  }
+						 }
+						}
+						List<Object[]> parliamentCandidateDeatils = tdpCadreCandidateDAO.nomiantionCandidateDetails(candateIds);
+						if(parliamentCandidateDeatils != null && parliamentCandidateDeatils.size()>0){
+							CandidateDetailsForConstituencyTypesVO candidateMatchedVO = null;
+							if(parliamentCandidateDeatils != null && parliamentCandidateDeatils.size()>0){
+								for(Object[] param1 : parliamentCandidateDeatils){
+									candidateMatchedVO = getMatchedVOForCadreIdForPartyId(finalList,commonMethodsUtilService.getLongValueForObject(param1[1]));
+								       if(candidateMatchedVO != null){
+								    	   candidateMatchedVO.setCadreId(commonMethodsUtilService.getLongValueForObject(param1[0]));
+								    	   candidateMatchedVO.setCadreImage(commonMethodsUtilService.getStringValueForObject(param1[2]));
+								       }
+								}
+							}
+						}
+						List<Object[]> candidateDesignations = publicRepresentativeDAO.getLocationWiseCandidateDesignations(candateIds);
+						CandidateDetailsForConstituencyTypesVO matchedCadreVo =null;
+						//String constituencyName = matchedVo.getConstituencyName()
+						if(candidateDesignations != null && candidateDesignations.size()>0){
+							for(Object[] obj:candidateDesignations){
+								   matchedCadreVo= getMatchedVOForCadreIdForPartyId(finalList,commonMethodsUtilService.getLongValueForObject(obj[0]));
+								if(matchedCadreVo != null && matchedCadreVo.getTotalDesignation().trim().length() != 0){
+									matchedCadreVo.setTotalDesignation(matchedCadreVo.getTotalDesignation()+","+commonMethodsUtilService.getStringValueForObject(obj[2]));
+								}else{
+									matchedCadreVo.setTotalDesignation(commonMethodsUtilService.getStringValueForObject(obj[2]));
+								}
+							}
+						}
+						//if(matchedCadreVo != null){
+							typeVO.setIspartial(constituencyName+" "+typeVO.getTotalDesignation());
+						//}
+					}
+				}
+			}
 			Map<String,List<CandidateInfoForConstituencyVO>> posiCandList = new HashMap<String,List<CandidateInfoForConstituencyVO>>();
-			finalList.get(0).setSubList1(parliementfinalList);
-			//List<CandidateInfoForConstituencyVO> locPosiCand = new ArrayList<CandidateInfoForConstituencyVO>();
 			List<Object[]> locPosiCandts = tdpCadreCandidateDAO.getPublicRepresetativesInLocation(locationValue, locationTypeId,representativTypeIds);
 			if(commonMethodsUtilService.isListOrSetValid(locPosiCandts)){
 				for (Object[] objects : locPosiCandts) {
@@ -4208,6 +4283,19 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		}
 		return  comitteeList  ;
 		 
-	}		
-
+	}
+	public CandidateDetailsForConstituencyTypesVO getMatchedVOForCadreIdForPartyId(List<CandidateDetailsForConstituencyTypesVO> cadreVOs,Long id){
+		try{
+			if(cadreVOs != null && cadreVOs.size() > 0){
+				for(CandidateDetailsForConstituencyTypesVO param : cadreVOs){
+					if(param.getCondidateId().longValue() == id){
+						return param;
+					}
+				}
+			}
+		}catch(Exception e){
+			Log.error("Exception raised in getMatchedVOForCadreId method of LocationDashboardService"+e);
+		}
+		return null;
+	}
 }

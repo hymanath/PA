@@ -26,9 +26,10 @@ public class CandidateInfoForConstituencyVO {
 	private Long tdpCadreId;
 	private String migrateCandidate;
 	private String candDesignation;
+	private Long designationId;
 		
 	private CandidateElectionVO candidateElectionVO;
-	
+	private List<CandidateDetailsForConstituencyTypesVO> subList;
 	
 	
 	public List<CandidateInfoForConstituencyVO> getList() {
@@ -156,6 +157,18 @@ public class CandidateInfoForConstituencyVO {
 	}
 	public void setCandDesignation(String candDesignation) {
 		this.candDesignation = candDesignation;
+	}
+	public List<CandidateDetailsForConstituencyTypesVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<CandidateDetailsForConstituencyTypesVO> subList) {
+		this.subList = subList;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
 	}
 	
 }

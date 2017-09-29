@@ -187,7 +187,7 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 	}
 	public List<Object[]> nomiantionCandidateDetails(List<Long> candidateIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select TCC.tdpCadre.tdpCadreId, TCC.candidate.candidateId " +
+		sb.append("select TCC.tdpCadre.tdpCadreId,TCC.candidate.candidateId,TCC.tdpCadre.image " +
 				"from TdpCadreCandidate TCC ");
 		if(candidateIds != null && candidateIds.size()>0){
 			 sb.append("where TCC.candidate.candidateId in (:candidateIds)");	
@@ -222,7 +222,7 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 			sb.append(" and tcc.tdpCadre.userAddress.localElectionBody.localElectionBodyId = :locationValue " );
 		}else if (locationTypeId != null && locationTypeId == 8l){
 			sb.append(" and tcc.tdpCadre.userAddress.ward.constituencyId = :locationValue " );
-		}else if (locationTypeId != null && locationTypeId == 1l){
+		}else if (locationTypeId != null && locationTypeId == 2l){
 			sb.append(" and tcc.tdpCadre.userAddress.state.stateId = :locationValue " );
 		}
 		
@@ -231,7 +231,7 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValue != null && locationValue.longValue() >0l)
-		query.setParameter("locationValue", locationValue);
+			query.setParameter("locationValue", locationValue);
 		
 		if(representativTypeIds != null && representativTypeIds.size() > 0){
 			query.setParameterList("representativTypeIds", representativTypeIds);
