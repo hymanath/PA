@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SimpleDetailsVO;
 import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
@@ -26,6 +27,7 @@ import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
 import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
+import com.itgrids.partyanalyst.dto.TrainingCampSheduleDetailsVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -100,7 +102,7 @@ public interface ITrainingCampService {
 	public Map<String,TrainingCampVO> getCompletedRunningUpcomingBatchIds(String startDateString,String endDateString,Long stateId,String type,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	
 	public CadreFeedbackVO  getattendedcountByFeedBacks(List<Long> programIds,Long campId,Long batchId,String fromdate,String todate,String callFrom,List<Long> enrollmentYrIds);
-	public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(List<Long> programIds,Long campId,Long batchId,String fromdate,String todate,String fromType,String callFrom,List<Long> enrollmentYrIds);
+	public List<SimpleDetailsVO> getAttendedCountsByProgramOrCampOrBatch(List<Long> programIds,Long campId,Long batchId,String fromdate,String todate,String fromType,String callFrom,List<Long> enrollmentYrIds);
 	public List<SimpleVO> getAttendedCountSummaryByBatch(Long campId,Long batchId,String fromdate,String todate,String callFrom,List<Long> enrollmentYrIds,List<Long> programYearIds);
 	public SimpleVO getProgramSummary(Long programId,String fromdate,String todate);
 	public SimpleVO getCampSummary(Long programId,Long campId,String fromDate,String toDate);
@@ -148,5 +150,5 @@ public interface ITrainingCampService {
 	
 	public List<KeyValueVO> getTrainingCampDetailsByCampIds(List<Long> trainingCampIdsList);
 	public List<KeyValueVO> getTrainingProgramDetailsByProgramIds(List<Long> triningProgramIdsList);
-	
+	public List<TrainingCampSheduleDetailsVO> getInviteeAndNonInviteeTrainingCampWiseDetails(String fromDateStr,String toDateStr,List<Long> enrollmentYearIds,List<Long> programmIds);
 }
