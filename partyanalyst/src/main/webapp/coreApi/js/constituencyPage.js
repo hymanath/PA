@@ -109,7 +109,6 @@ function onLoadInitialisations()
 function onLoadAjaxCalls()
 {	
 	
-	
 	$("#enrolmentYears").chosen();
 	 //Enrolment Years
 	getEnrollmentIds(); 
@@ -127,7 +126,7 @@ function onLoadAjaxCalls()
 	getCountsForConstituency();
 	//Constituency Voter Information
 	
-	getVotersAndcadreAgeWiseCount(22);
+	getVotersAndcadreAgeWiseCount(22,4);
 	//Assembly Block
 	getElectionTypes();
 	getElectionInformationLocationWise(electionTypeVal,"wonSeat");
@@ -360,7 +359,7 @@ function onLoadClicks()
 		}else if(blockName == 'cadreInfor')
 		{
 			getLocationTypeWiseCadreCount("");
-			getAgeRangeGenerAndCasteGroupByCadreCount(1);
+			getAgeRangeGenerAndCasteGroupByCadreCount($("#enrollmentCadreId").val());
 		}else if(blockName == 'grievance')
 		{
 			getLocationWiseGrivanceTrustStatusCounts($("#enrolmentYearsGrievance").val());
@@ -448,7 +447,13 @@ function onLoadClicks()
 	});
 	$(document).on("change","#publicationChangeId",function(){
 		var pubId = $("#publicationChangeId").val();
-		getVotersAndcadreAgeWiseCount(pubId);
+		var enrollmentId = $("#enrollmentvoterId").val();
+		getVotersAndcadreAgeWiseCount(pubId,enrollmentId);
+	});
+	$(document).on("change","#enrollmentvoterId",function(){
+		var pubId = $("#publicationChangeId").val();
+		var enrollmentId = $("#enrollmentvoterId").val();
+		getVotersAndcadreAgeWiseCount(pubId,enrollmentId);
 	});
 	$(document).on("click",".assembly-view",function(){
 		if($(this).text() == 'Click to more')
@@ -506,6 +511,12 @@ function onLoadClicks()
 		var publicationId = $("#publicationCasteId").val();
 		getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,enrollmentId,publicationId,casteName)
 		
+	});
+	
+	$(document).on("change","#enrollmentCadreId",function(){
+		var enrollmentId =  $(this).val();
+		getLocationTypeWiseCadreCount("");
+		getAgeRangeGenerAndCasteGroupByCadreCount(enrollmentId);
 	});
 	
 }
@@ -1146,7 +1157,7 @@ function getCountsForConstituency(){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Constituencies</h4>';
 								str+='<h2>'+results.constituencyCount+'</h2>';
-								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
 					}
@@ -1155,7 +1166,7 @@ function getCountsForConstituency(){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Mandals</h4>';
 								str+='<h2>'+results.tehsilCount+'</h2>';
-								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
 					
@@ -1163,7 +1174,7 @@ function getCountsForConstituency(){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Municipalities</h4>';
 								str+='<h2>'+results.municipalityCount+'</h2>';
-								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
 					
@@ -1171,7 +1182,7 @@ function getCountsForConstituency(){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Panchayats</h4>';	
 								str+='<h2>'+results.villageIdCount+'</h2>';
-								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
 					
@@ -1179,7 +1190,7 @@ function getCountsForConstituency(){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Wards</h4>';
 								str+='<h2>'+results.totalNoOfWards+'</h2>';
-								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
 					
@@ -1187,7 +1198,7 @@ function getCountsForConstituency(){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Booths</h4>';
 								str+='<h2>'+results.boothCount+'</h2>';
-								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
 						
@@ -1196,7 +1207,7 @@ function getCountsForConstituency(){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Hamlets</h4>';
 								str+='<h2>'+results.hamletCount+'</h2>';
-								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
 				str+='</tr>';
@@ -1211,14 +1222,14 @@ function getCountsForConstituency(){
 }
 
 
-function getVotersAndcadreAgeWiseCount(pubId){
+function getVotersAndcadreAgeWiseCount(pubId,enrollmentId){
 	$("#constituencyVoterInfo").html(spinner);
 	
 	var jsObj={
 		locationTypeId		: locationLevelId,
 		locationValue		: locationLevelVal,
 		publicationDateId	: pubId,
-		enrollmentYearId	: 4
+		enrollmentYearId	: enrollmentId
 	}
 	
     $.ajax({
@@ -1877,13 +1888,13 @@ function getActivityStatusList(){
 		$("#activitesId").html(str);
 	}
 }
-function getLocationTypeWiseCadreCount(yearId){
+function getLocationTypeWiseCadreCount(enrollmentId){
 	$("#cadreInfoGraphDivId").html(spinner);	
 	
 	jsObj={
 		locationTypeId:		locationLevelId,
 		locationValuesArr:	userAccessLevelValuesArray,
-		year:yearId
+		year:enrollmentId
 	}
 	$.ajax({
 		type : "POST",
@@ -1892,7 +1903,7 @@ function getLocationTypeWiseCadreCount(yearId){
 		data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
 		if(result !=null && result.length>0){
-			return buildLocationTypeWiseCadreCount(result);
+			return buildLocationTypeWiseCadreCount(result,enrollmentId);
 		}else{
 			$("#cadreInfoGraphDivId").html(noData);
 		}
@@ -2002,13 +2013,13 @@ function getLocationTypeWiseCadreCount(yearId){
 
 
 
-function getAgeRangeGenerAndCasteGroupByCadreCount(yearId){
+function getAgeRangeGenerAndCasteGroupByCadreCount(enrollmentId){
 	$("#cadreInfoGraphBar,#cadreInfoTableView").html(spinner);
 	
 	jsObj={
 		locationTypeId	 :locationLevelId,
 		locationValue	 :locationLevelVal,
-		enrollmentYearId :yearId
+		enrollmentYearId :enrollmentId
 	}
 	 $.ajax({
       type : "POST",
@@ -2018,7 +2029,7 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(yearId){
     }).done(function(result){
 		if(result !=null && result.length>0){
 			$("#cadreInfoGraphBar").css("height","200px");
-			return buildAgeRangeGenerAndCasteGroupByCadreCount(result,yearId);
+			return buildAgeRangeGenerAndCasteGroupByCadreCount(result,enrollmentId);
 		}else{
 			$("#cadreInfoGraphBar").html('');
 			$("#cadreInfoTableView").html('');
@@ -2026,12 +2037,12 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(yearId){
 		}
 			
 	});	
-	function buildAgeRangeGenerAndCasteGroupByCadreCount(result,yearId){
+	function buildAgeRangeGenerAndCasteGroupByCadreCount(result,enrollmentId){
 		if(result !=null && result.length>0){
 			var str='';
 			var totalCount=0;
 			var totalPerc=0;
-			str+='<table class="table table-noborder table-noborder-hover m_top10">';
+			str+='<table class="table table-noborder table-noborder-hover m_top10" id="dataTableCadreBlockId">';
 				str+='<thead class="bg-DD">';
 					str+='<th ></th>';
 					str+='<th class="text-center">Total</th>';
@@ -2067,6 +2078,11 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(yearId){
 				str+='</tbody>';
 			str+='</table>';
 			$("#cadreInfoTableView").html(str);
+			$("#dataTableCadreBlockId").dataTable({
+				"iDisplayLength": 15,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			});
 		}
 			var ageRangeNameArr =[];
 			var cadreCntArr = [];
@@ -3760,7 +3776,7 @@ function getDetailedElectionInformaction(){
 			}
 			
 		}	
-		str+='<table class="table table-noborder">';
+		str+='<table class="table table-noborder" id="dataTableAssemblyElecBlock">';
 			str+='<thead class="bg-DD text-capitalize">';
 				str+='<th style="vertical-align: middle;">Year</th>';
 				str+='<th style="vertical-align: middle;"> <img src="images/constituencyPage/green-hand.png" alt="green-hand"/></th>';
@@ -3795,6 +3811,13 @@ function getDetailedElectionInformaction(){
 			str+='</tbody>';
 		str+='</table>';
 		$("#assemblyElectionDetails").html(str);
+		$("#dataTableAssemblyElecBlock").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">'
+		});
 		$('#assemblyElectionGraphDetails').highcharts({
 			title: {
 				text: ''
@@ -4011,6 +4034,7 @@ function getEnrollmentIds(){
 		}
 		$("#enrolmentYears").html(selectBox);
 		$("#enrollmentCasteId").html(selectBox);
+		$("#enrollmentvoterId").html(selectBox);
 	});	
 }
 function setDefaultImage(img){
@@ -4111,7 +4135,7 @@ function buildElectionInformationLocationWise(result,type){
 		//str+='<div class="col-sm-12">';
 		str+='<div class="table-responsive">';
 		str+='<h5 style="color:#2B908F;" class="pull-right"><b>Vote Share %</b></h5>';	
-				str+='<table class="table table-condensed table-hover m_top10  table-bordered table-striped">';
+				str+='<table class="table table-condensed table-hover m_top10  table-bordered table-striped" id="dataTableElecBlock">';
 					str+='<thead>';
 						str+='<tr>';
 							str+='<th>Party</th>';
@@ -4144,6 +4168,11 @@ function buildElectionInformationLocationWise(result,type){
 			//str+='</div>';
 		str+='</div>';
 		$("#electionDetailsTableWiseId").html(str);
+		$("#dataTableElecBlock").dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
 		var mainDataArr=[];
 		var electionYearArr = [];
 		
