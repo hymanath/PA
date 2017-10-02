@@ -49,6 +49,7 @@ label
 .m_top20{margin-top: 20px !important}
 .m_top25{margin-top: 25px !important}
 .m_left5{margin-left: 5px !important}
+.m_left7{margin-left: 7px !important}
 .m_left10{margin-left: 10px !important}
 .m_left15{margin-left: 15px !important}
 .m_left20{margin-left: 20px !important}
@@ -56,7 +57,8 @@ label
 .m_left25{margin-left: 25px !important}
 .f-10{font-size: 10px;}
 .f-11{font-size: 11px;}
-.f-12{font-size: 12px;}
+.f-12{font-size: 12px !important;}
+.f_12{font-size: 12px !important;}
 .f-13{font-size: 13px;}
 .f-14{font-size: 14px;}
 .f-15{font-size: 15px;}
@@ -523,8 +525,8 @@ label
 }
 .media-profile .media-object
 {
-	height: 100px;
-	width: 80px;
+	height: 70px;
+	width: 70px;
 }
 .spinner {
 	margin:auto;
@@ -844,4 +846,22 @@ ul li[menu-levelname='panchayat']:after .active
     margin-left: 7px;
     padding: 0 5px 2px;
 	cursor:pointer;
+}
+.mpMlaRoundedCss{
+	border: 1px solid #777; 
+	text-align: center;
+	border-radius: 100%;
+	padding: 15px;;
+}
+.media_width{
+	width:100%;
+}
+.media_width h4{
+	font-weight:none;
+}
+.logoRoundedCss{
+	background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+	padding:2px;
 }
