@@ -130,10 +130,13 @@
 						</div>
 					</div>
 					<div class="row m_top20">
-						<div class="col-sm-6">
+						<!--<div class="col-sm-6">
 							<div id="assemblyElectionGraphDetails"></div>
 						</div>
 						<div class="col-sm-6">
+							<div id="assemblyElectionDetails"></div>
+						</div>-->
+						<div class="col-sm-12">
 							<div id="assemblyElectionDetails"></div>
 						</div>
 					</div>
@@ -144,16 +147,26 @@
 			<div class="col-sm-12 m_top20">
 				<div class="block">
 					<div class="row">
-						<div class="col-sm-6  m_top5" navbar-index="constituencyVoters">
+						<div class="col-sm-12  m_top5" navbar-index="constituencyVoters">
 							 <h4 class="panel-title theme-title-color">voters information</h4>
 						</div>
-						<div class="col-sm-3 col-sm-offset-3">
-							<div id="publicationsDivId"></div>
+						<div class="col-sm-12">
+							<div class="col-sm-3 pull-right">
+								<label>Publication</label>
+								<div id="publicationsDivId"></div>
+							</div>
+							<div class="col-sm-3 pull-right">
+								<label>Enrollment Year</label>
+								<select id="enrollmentvoterId" class="form-control chosen-select"></select>
+							</div>
 						</div>
 					</div>
-					<div id="constituencyVoterInfo"></div>
+					<div class="row m_top20">
+						<div class="col-sm-12">
+							<div id="constituencyVoterInfo"></div>
+						</div>
+					</div>
 				</div>
-				
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="casteInfo">
 				
@@ -182,10 +195,12 @@
 			<div class="col-sm-12 m_top20" navbar-index="cadreInfor">
 				<div class="block">
 					<h4 class="panel-title theme-title-color"">Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="cadreInfor"></i></span></h4>
-					<div class="cadreInfoDivCls">
-						<div id="cadreInfoGraphDivId" class="m_top15"></div>
-						<div id="cadreInfoGraphBar" style="height:200px;"></div>
-						<div id="cadreInfoTableView"></div>
+					<div class="row m_top10">
+						<div class="col-sm-12">
+							<div id="cadreInfoGraphDivId" class="m_top15"></div>
+							<div id="cadreInfoGraphBar" style="height:200px;"></div>
+							<div id="cadreInfoTableView"></div>
+						</div>
 					</div>
 				</div>
 				
