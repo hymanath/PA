@@ -833,7 +833,7 @@ function getCandidateAndPartyInfoForConstituency(){
 								parliament+='<div class="media media-profile">';
 									parliament+='<span id="mlaSpinnerId"></span>';
 									parliament+='<div class="media-left">';
-										parliament+='<img src="images/candidates/'+result[0].subList1[i].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
+										parliament+='<img src="https://mytdp.com/images/cadre_images/'+result[0].subList1[i].education+'" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
 										parliament+='<span class="border-image img-border">';
 											parliament+='<img src="images/party_flags/'+result[0].subList1[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
 										parliament+='</span>';
@@ -882,7 +882,7 @@ function getCandidateAndPartyInfoForConstituency(){
 									assembly+='<div class="media media-profile">';
 										assembly+='<span id="mlaSpinnerId"></span>';
 										assembly+='<div class="media-left">';
-											assembly+='<img  onerror="setDefaultImage(this);" src="images/candidates/'+result[i].assemblyCandidateInfo[0].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
+											assembly+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/cadre_images/'+result[i].assemblyCandidateInfo[0].education+'" class="media-object profile-image img-border" alt="profile"/>';
 											assembly+='<span class="border-image img-border">';
 												assembly+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
 											assembly+='</span>';
@@ -930,7 +930,7 @@ function getCandidateAndPartyInfoForConstituency(){
 							parliament+='<div class="media media-profile">';
 								parliament+='<span id="mlaSpinnerId"></span>';
 								parliament+='<div class="media-left">';
-									parliament+='<img src="images/candidates/'+result[0].subList1[0].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
+									parliament+='<img src="https://mytdp.com/images/cadre_images/'+result[0].subList1[0].education+'" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
 									parliament+='<span class="border-image img-border">';
 										parliament+='<img src="images/party_flags/'+result[0].subList1[0].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
 									parliament+='</span>';
@@ -960,7 +960,7 @@ function getCandidateAndPartyInfoForConstituency(){
 								parliament+='<div class="media media-profile">';
 									parliament+='<span id="mlaSpinnerId"></span>';
 									parliament+='<div class="media-left">';
-										parliament+='<img  onerror="setDefaultImage(this);" src="images/candidates/'+result[i].assemblyCandidateInfo[0].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
+										parliament+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/cadre_images/'+result[i].assemblyCandidateInfo[0].education+'" class="media-object profile-image img-border" alt="profile"/>';
 										parliament+='<span class="border-image img-border">';
 											parliament+='<img  onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
 										parliament+='</span>';
