@@ -183,7 +183,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 			}
 			
 			// o-castegrpId,1-castgrpname,2-casteId,3-castName, 4-gender,5-count
-			List<Object[]> objList = tdpCadreCasteInfoDAO.getCasteNGenderWiseCadreCounts(locationTypeId,locationValue,EnrollmentYearId,casteGroupId);
+			List<Object[]> objList = tdpCadreCasteInfoDAO.getCasteNGenderWiseCadreCounts(locationTypeId,constituencyIds,EnrollmentYearId,casteGroupId);
 			
 			for (Object[] param : objList) {
 				LocationVotersVO casteVO=casteMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -301,7 +301,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 				}
 			}
 			// 0-castegroupId,1-castegroup,2-casteId,3-castegroup,4-voterscount,5-percentage,6-maleVotersCount,7-femaleVotersCount
-			List<Object[]> cadresObjList = tdpCadreCasteInfoDAO.getCasteGroupWiseCadreCounts(locationTypeId,locationValue,enrollmentId);
+			List<Object[]> cadresObjList = tdpCadreCasteInfoDAO.getCasteGroupWiseCadreCounts(locationTypeId,constituencyIds,enrollmentId);
 			
 			if (cadresObjList != null && cadresObjList.size() > 0) {
 				for (Object[] objects : cadresObjList) {
@@ -414,7 +414,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 				}
 			}
 
-			List<Object[]> cadresObjList = tdpCadreCasteInfoDAO.getCadresCasteNAgeGroupWiseCounts(locationTypeId,locationValue,casteGroupId, casteId,enrollemntyearId);
+			List<Object[]> cadresObjList = tdpCadreCasteInfoDAO.getCadresCasteNAgeGroupWiseCounts(locationTypeId,constituencyIds,casteGroupId, casteId,enrollemntyearId);
 			if (cadresObjList != null && cadresObjList.size() > 0) {
 				for (Object[] objects : cadresObjList) {
 					if (map.get((Long) objects[0]) == null) {
@@ -555,7 +555,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 			}
 
 			//List<Object[]> cadreObjList = tdpCadreEnrollmentYearDAO.getGenderAndAgeGroupWiseCadreCount(locationTypeId,locationValue);
-			List<Object[]> cadreObjList = tdpCadreCasteInfoDAO.getGenderAndAgeGroupWiseCadreCount(locationTypeId,locationValue,enrollmentId);
+			List<Object[]> cadreObjList = tdpCadreCasteInfoDAO.getGenderAndAgeGroupWiseCadreCount(locationTypeId,constituencyIds,enrollmentId);
 			if (cadreObjList != null && cadreObjList.size() > 0) {
 				for (Object[] objects : cadreObjList) {
 					if (map.get(commonMethodsUtilService.getLongValueForObject(objects[0])) == null) {
