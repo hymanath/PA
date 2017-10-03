@@ -19,9 +19,9 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.govtSchemes.govtSchemesId," +
 						" model.govtSchemes.schemeName," );
-		if(locationType != null && locationType.longValue()>0l && locationType.longValue() != 10l){
+		if(locationType != null && locationType.longValue()>0l && locationType.longValue() != 10l && locationType.longValue() != 2l){
 			queryStr.append(" model.grivenaceCount " );
-		}else if(locationType != null && locationType.longValue()>0l && locationType.longValue() == 10l){
+		}else if(locationType != null && locationType.longValue()>0l && (locationType.longValue() == 10l || locationType.longValue() == 2l )){
 			queryStr.append(" sum(model.grivenaceCount) " );
 		}
 		queryStr.append(" from " +

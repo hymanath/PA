@@ -4237,7 +4237,24 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			}
 			if(panchaythIds!=null && panchaythIds.size()>0 ){
 			 hamletCount = panchayatDAO.getHamletCountOnPanchayatIds(panchaythIds);
+               /*int filterCount = 200;
+               int i = 0; 
+               int j = filterCount;
+               int maxcount = panchaythIds.size();
+               while (maxcount >0){  
+                   if(maxcount<filterCount)
+                       j = i+maxcount;
+                   		Long tempHamletCount = panchayatDAO.getHamletCountOnPanchayatIds(panchaythIds.subList(i, j));
+                      if(tempHamletCount != null && tempHamletCount.longValue()>0L){
+                    	  hamletCount = hamletCount+ tempHamletCount;
+                      }
+	                       i=j;
+	                       maxcount = maxcount-filterCount;
+	                       j=j+filterCount;
+               }*/
+               
 			 VO.setHamletCount(hamletCount);
+			// VO.setHamletCount(50372L);
 			}
 			
 			if(localBodyIds != null && localBodyIds.size() >0){
@@ -4360,6 +4377,8 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 						   partCountVo.setScopeId(commonMethodsUtilService.getLongValueForObject(param[0]));
 						   partCountVo.setPartyId(commonMethodsUtilService.getLongValueForObject(param[1]));
 						   partCountVo.setParty(commonMethodsUtilService.getStringValueForObject(param[2]));
+						   partCountVo.setCandidateName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						   partCountVo.setPartyFlag(commonMethodsUtilService.getStringValueForObject(param[5]));
 						   countMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),partCountVo);
 						   if(type != null && type.equalsIgnoreCase("parlaiment")){
 						    mpList.add(partCountVo);
