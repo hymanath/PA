@@ -387,7 +387,7 @@
 	</div>
 </section>
 <div class="modal fade" id="casteCategoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
-	<div class="modal-dialog" role="document" style="width:70%;margin:auto">
+	<div class="modal-dialog" role="document" style="width:90%;margin:auto">
 		<div class="modal-content">
 			<div class="modal-header">
 				<div class="row">
