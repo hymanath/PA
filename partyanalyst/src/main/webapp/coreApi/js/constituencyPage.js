@@ -188,7 +188,7 @@ function onLoadAjaxCalls()
 			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 		}
 	}, 2000);
-	 */
+	 
 }
 function onLoadClicks()
 {
