@@ -249,10 +249,7 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 				queryStr.append(" and SACL.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
 			}
 		}
-		if (locationTypeId != null && locationTypeId.longValue() > 0) {
-			queryStr.append(" and SACL.locationScopeId=:userAccessLevelId");
-		}
-
+	
 		queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId,"
 				+ " SACL.selfAppraisalCandidate.selfAppraisalCandidateId, "
 				+ " SACL.locationScopeId,SACL.locationValue");
@@ -262,9 +259,6 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 
 		if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0) {
 			query.setParameterList("locationValues", locationValues);
-		}
-		if (locationTypeId != null && locationTypeId.longValue() > 0) {
-			query.setParameter("userAccessLevelId", locationTypeId);
 		}
 		return query.list();
 	}
