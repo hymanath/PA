@@ -313,7 +313,7 @@
 									<li attr_type= "1,2" class="active">Both</li>
 									<li attr_type= "1">Party</li>
 									<li attr_type= "2">Govt</li>
-									<li attr_type= "3">Others</li>
+									<!--<li attr_type= "3">Others</li>-->
 								</ul>
 							</div>
 					</div>
@@ -364,14 +364,17 @@
 					<div class="row m_top15">
 						<div class="col-sm-4">
 							<h4 class="panel-title text-capital text-center">Grievance</h4>
+							<p class="m_top10 text-capital text-center" id="totalGrievanceCount"></p>
 							<div id="grivanceId0" style="height:300px;"></div>
 						</div>
 						<div class="col-sm-4">
 							<h4 class="panel-title text-capital text-center">Insurance</h4>
+							<p class="m_top10 text-capital text-center" id="insuranceTotalCount"></h4>
 							<div id="insuranceDetails" style="height:300px;"></div>
 						</div>
 						<div class="col-sm-4">
-						<h4 class="panel-title text-capital text-center">NTR TRUST</h4>
+							<h4 class="panel-title text-capital text-center">NTR TRUST</h4>
+							<p class="m_top10 text-capital text-center" id="NtrTrustTotalCount"></h4>
 							<div id="grivanceId1" style="height:300px;"></div>
 						</div>
 					</div>
