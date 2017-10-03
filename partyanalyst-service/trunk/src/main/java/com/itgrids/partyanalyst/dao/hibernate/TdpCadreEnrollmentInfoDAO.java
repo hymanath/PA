@@ -57,12 +57,15 @@ public class TdpCadreEnrollmentInfoDAO extends GenericDaoHibernate<TdpCadreEnrol
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getLocationTypeWiseCadreCount(final Long locationScopeId,final List<Long> locationValues,String year){
+	public List<Object[]> getLocationTypeWiseCadreCount(final Long locationScopeId,final List<Long> locationValues,String year,final Long LocationTypeid){
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append(" select model.enrollmentYear.enrollmentYearId,model.enrollmentYear.description,sum(model.totalCadre),sum(model.newCadre)," +
 		 		" sum(model.renewalCadre) " +
 		 		" from TdpCadreEnrollmentInfo model");
-		 if(locationScopeId != null && locationValues!= null && locationValues.size() >0){
+		
+		 if(locationScopeId != null && locationValues!= null && locationValues.size() >0 && LocationTypeid ==2l){
+			  queryStr.append(" where model.locationScopeId=:locationScopeId and model.stateId in(:locationValues) ");
+		}else if(locationScopeId != null && locationValues!= null && locationValues.size() >0){
 		  queryStr.append(" where model.locationScopeId=:locationScopeId and model.locationValue in(:locationValues) ");
 		 }
 		 if(year != null && !year.trim().isEmpty()){

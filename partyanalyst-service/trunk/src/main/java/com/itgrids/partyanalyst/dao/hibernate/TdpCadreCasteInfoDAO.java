@@ -184,28 +184,25 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		}
 	}
 	
-	public List<Object[]> getVoterCadreCasteDetailsByAgeRange(
-			Long locationTypeId, Long locationValue, Long casteGroupId,
-			Long casteId) {
+	public List<Object[]> getVoterCadreCasteDetailsByAgeRange(Long locationTypeId, List<Long> locationValue, Long casteGroupId,Long casteId) {
 
 		StringBuilder sb = new StringBuilder();
 		// 0-agerangeId,1-ageRange,-gender,4-cadreCount
 		sb.append("select voter_age_range_id as voterAgeRangeid, gender as gender,count as count from tdp_cadre_caste_info where ");
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append(" location_id=:locationValue");
-			} else if (locationTypeId == 4l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
+			} else if (locationTypeId == 4l || locationTypeId == 10l) {
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 5l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 6l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 7l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 2l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			}
-
 		}
 		if (casteGroupId != null && casteGroupId.longValue() > 0l) {
 			sb.append(" and caste_category_id=:casteCategoryId");
@@ -221,15 +218,15 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			query.setParameter("casteId", casteId);
 		}
 
-		if (locationValue != null && locationValue.longValue() > 0) {
-			query.setParameter("locationValue", locationValue);
+		if (locationValue != null && locationValue.size() > 0) {
+			query.setParameterList("locationValue", locationValue);
 		}
 		if (casteGroupId != null && casteGroupId.longValue() > 0l) {
 			query.setParameter("casteCategoryId", casteId);
 		}
 		return query.list();
 	}
-	public List<Object[]> getAgeGenerAndCasteGroupWiseCadresCount(Long locationTypeId,Long locationValue,Long enrollmentYearId){
+	public List<Object[]> getAgeGenerAndCasteGroupWiseCadresCount(Long locationTypeId,List<Long> locationValue,Long enrollmentYearId){
 		StringBuilder  queryStr = new StringBuilder();
 		
 		
@@ -239,19 +236,17 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		sb.append("select voter_age_range_id as voterAgeRangeid, gender as gender,caste_category_id as caste, sum(count) as count from tdp_cadre_caste_info where ");
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append(" location_id=:locationValue");
-			} else if (locationTypeId == 4l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
+			} else if (locationTypeId == 4l || locationTypeId == 10l) {
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 5l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 6l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 7l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 2l) {
-				sb.append(" location_id=:locationValue");
-			}else if (locationTypeId == 10l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			}
 
 		}
@@ -268,14 +263,14 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			query.setParameter("enrollmentYearId", enrollmentYearId);
 		}
 
-		if (locationValue != null && locationValue.longValue() > 0) {
-			query.setParameter("locationValue", locationValue);
+		if (locationValue != null && locationValue.size() > 0) {
+			query.setParameterList("locationValue", locationValue);
 		}
 		return query.list();
 	}
 
 	@Override
-	public List<Object[]> getCasteNGenderWiseCadreCounts(Long locationTypeId,Long locationValue, Long enrollmentYearId, Long casteGroupId) {
+	public List<Object[]> getCasteNGenderWiseCadreCounts(Long locationTypeId,List<Long> locationValue, Long enrollmentYearId, Long casteGroupId) {
 		StringBuilder sb = new StringBuilder();
 		// o-castegrpId,1-castgrpname,2-casteId,4-castName, 5-gender,6-count
 		// o-castegrpId,1-casteId,3-gender,4-count
@@ -286,21 +281,17 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append(" location_id=:locationValue");
-			} else if (locationTypeId == 4l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in(:locationValue)");
+			} else if (locationTypeId == 4l || locationTypeId == 10l) {
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 5l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 6l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 7l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 2l) {
-				sb.append(" location_id=:locationValue");
-			}else if (locationTypeId == 10l) {
-				sb.append(" location_id=:locationValue");
-			}else if (locationTypeId == 10l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			}
 		}
 		if (enrollmentYearId != null && enrollmentYearId.longValue() > 0l) {
@@ -320,8 +311,8 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			query.setParameter("enrollmentYearId", enrollmentYearId);
 		}
 
-		if (locationValue != null && locationValue.longValue() > 0l) {
-			query.setParameter("locationValue", locationValue);
+		if (locationValue != null && locationValue.size() > 0l) {
+			query.setParameterList("locationValue", locationValue);
 		}
 		if(casteGroupId!=null && casteGroupId.longValue()> 0l){
 			query.setParameter("casteGroupId", casteGroupId);
@@ -330,27 +321,25 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 	}
 
 	@Override
-	public List<Object[]> getCasteGroupWiseCadreCounts(Long locationTypeId,Long locationValue, Long enrollmentYearId) {
+	public List<Object[]> getCasteGroupWiseCadreCounts(Long locationTypeId,List<Long> locationValue, Long enrollmentYearId) {
 		
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("select caste_category_id as casteCategoryId,  sum(count) as totalcount from tdp_cadre_caste_info where location_type_id=:locationTypeId ");
+		sb.append("select caste_category_id as casteCategoryId,  sum(count) as totalcount from tdp_cadre_caste_info where location_type_id=:locationTypeId and ");
 		
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append(" and location_id=:locationValue");
-			} else if (locationTypeId == 4l) {
-				sb.append(" and location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
+			} else if (locationTypeId == 4l || locationTypeId == 10l) {
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 5l) {
-				sb.append(" and location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 6l) {
-				sb.append(" and location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 7l) {
-				sb.append(" and location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 2l) {
-				sb.append(" and location_id=:locationValue");
-			}else if (locationTypeId == 10l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			}
 		}
 		if (enrollmentYearId != null && enrollmentYearId.longValue() > 0l) {
@@ -366,14 +355,14 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			query.setParameter("enrollmentYearId", enrollmentYearId);
 		}
 
-		if (locationValue != null && locationValue.longValue() > 0l) {
-			query.setParameter("locationValue", locationValue);
+		if (locationValue != null && locationValue.size() > 0l) {
+			query.setParameterList("locationValue", locationValue);
 		}
 		return query.list();
 	}
 
 	@Override
-	public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long locationTypeId, Long locationValue, Long casteGroupId,	Long casteId, Long enrollmentYearId) {
+	public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long locationTypeId,List<Long> locationValue, Long casteGroupId,	Long casteId, Long enrollmentYearId) {
 
 
 		StringBuilder sb = new StringBuilder();
@@ -382,19 +371,17 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append(" location_id=:locationValue");
-			} else if (locationTypeId == 4l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in(:locationValue)");
+			} else if (locationTypeId == 4l || locationTypeId == 10l) {
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 5l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 6l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 7l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 2l) {
-				sb.append(" location_id=:locationValue");
-			}else if (locationTypeId == 10l) {
-				sb.append(" location_id=:locationValue");
+				sb.append("location_id in (:locationValue)");
 			}
 
 		}
@@ -417,8 +404,8 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			query.setParameter("enrollmentYearId", enrollmentYearId);
 		}
 
-		if (locationValue != null && locationValue.longValue() > 0) {
-			query.setParameter("locationValue", locationValue);
+		if (locationValue != null && locationValue.size() > 0) {
+			query.setParameterList("locationValue", locationValue);
 		}
 		if(casteId != null && casteId.longValue()>0l){
 			query.setParameter("casteId",casteId);
@@ -429,25 +416,23 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		return query.list();
 	}
 	
-	public List<Object[]> getGenderAndAgeGroupWiseCadreCount(Long locationTypeId,Long locationValue,Long enrollmentYearId ){
+	public List<Object[]> getGenderAndAgeGroupWiseCadreCount(Long locationTypeId,List<Long> locationValue,Long enrollmentYearId ){
 		StringBuilder sb = new StringBuilder();
 		sb.append( "select model.voterAgeRangeId,model.gender, sum(model.count) " +
 				" from TdpCadreCasteInfo model where model.tdpCadreEnrollmentId = :enrollmentYearId and " );
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append("location_id =:locationValue");
-			} else if (locationTypeId == 4l) {
-				sb.append(" location_id=:locationValue");
+				sb.append(" model.locationId in (:locationValue)");
+			} else if (locationTypeId == 4l || locationTypeId == 10l) {
+				sb.append(" model.locationId in (:locationValue)");
 			} else if (locationTypeId == 5l) {
-				sb.append(" location_id=:locationValue");
+				sb.append(" model.locationId in (:locationValue)");
 			} else if (locationTypeId == 6l) {
-				sb.append(" location_id=:locationValue");
+				sb.append(" model.locationId in (:locationValue)");
 			} else if (locationTypeId == 7l) {
-				sb.append(" location_id=:locationValue");
+				sb.append(" model.locationId in (:locationValue)");
 			} else if (locationTypeId == 2l) {
-				sb.append(" location_id=:locationValue");
-			}else if (locationTypeId == 10l) {
-				sb.append(" location_id=:locationValue");
+				sb.append(" model.locationId in (:locationValue)");
 			}
 
 		}
@@ -457,8 +442,8 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		
 		query.setParameter("enrollmentYearId", enrollmentYearId);
 		
-		if(locationValue!= null && locationValue.longValue()>0l){
-		query.setParameter("locationValue", locationValue);
+		if(locationValue!= null && locationValue.size()>0l){
+			query.setParameterList("locationValue", locationValue);
 		}
 		
 		return query.list();

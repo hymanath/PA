@@ -2897,7 +2897,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				locationValues = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationValues);
 			}
 			
-			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(4l,locationValues,year);
+			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(4l,locationValues,year,locationTypeId);
 			if(rtrnCaderCountObjLst != null && rtrnCaderCountObjLst.size() > 0){
 				for (Object[] param : rtrnCaderCountObjLst) {
 					ConstituencyCadreVO enrollmentYearVO = new ConstituencyCadreVO();
@@ -2927,9 +2927,19 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		List<ConstituencyCadreVO> resultList = new ArrayList<ConstituencyCadreVO>(0);
 		try {
 			Map<Long, ConstituencyCadreVO> ageRangeMap = new LinkedHashMap<Long, ConstituencyCadreVO>(0);
+			List<Long> constituencyIds= new ArrayList<Long>();
+			List<Long> locationIds= new ArrayList<Long>();
+			locationIds.add(locationValue);
+			
+			if(locationTypeId == 10l){
+		    	  constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+		    	  
+			}else{
+				constituencyIds.addAll(locationIds);
+			}
 			
 			//0-ageRangeId, 1- gender 2-castecatId, 3-copunt
-			List<Object[]> rtrnCaderObjLst = tdpCadreCasteInfoDAO.getAgeGenerAndCasteGroupWiseCadresCount(locationTypeId,locationValue, enrollmentYearId);
+			List<Object[]> rtrnCaderObjLst = tdpCadreCasteInfoDAO.getAgeGenerAndCasteGroupWiseCadresCount(locationTypeId,constituencyIds, enrollmentYearId);
 			List<Object[]> ageRange = voterAgeRangeDAO.getSpecificAgeRangeList();
 			
 			//template Building

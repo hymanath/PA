@@ -598,7 +598,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 	  		" cs on vci.caste_state_id=cs.caste_state_id join caste_category_group ccg on " +
 	  		" cs.caste_category_group_id =ccg.caste_category_group_id join caste_category cc on " +
 	  		" cc.caste_category_id=ccg.caste_category_id  " );
-	  if((reportLevelId != null && reportLevelId.longValue() == 1l) && (locationTypeId == 2l || locationTypeId == 3l ||locationTypeId == 4l) ){
+	  if((reportLevelId != null && reportLevelId.longValue() == 1l) && (locationTypeId != 2l || locationTypeId != 3l ||locationTypeId != 4l) ){
 		  sb.append("join constituency c on c.constituency_id= vci.report_level_value");
 	  }
 	  sb.append(" where vci.report_level_id = :reportLevelId and");
@@ -610,7 +610,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			 }else if(locationTypeId == 3l){
 				 sb.append(" c.district_id in (:locationValues)");
 			 }else if(locationTypeId == 4l || locationTypeId == 10l){
-				 sb.append(" c_constituency_id in (:locationValues)");
+				 sb.append(" c.constituency_id in (:locationValues)");
 			 }
 		 }else{
 			
