@@ -111,12 +111,13 @@ function onLoadInitialisations()
 function onLoadAjaxCalls()
 {	
 	
+	
 	$("#enrolmentYears").chosen();
 	 //Enrolment Years
 	getEnrollmentIds(); 
 	getPublications();
 	//Committee
-	getLocationWiseCommitteesCount(1);
+	getLocationWiseCommitteesCount(4);
 	//Meetings
 	getLocationWiseMeetingsCount();
 	  //candidate Profiles 1st block
@@ -901,6 +902,7 @@ function getCandidateAndPartyInfoForConstituency(){
 		assembly+='</div>';
 		$("#assemblyMemberId").html(assembly);
 		$("#statelevelMembersId").html("");
+		$("#statelevelMPMLAId").html("");
 		
 	}
 	function buildCandidateAndPartyInfoForConstituency(result)
@@ -978,6 +980,7 @@ function getCandidateAndPartyInfoForConstituency(){
 		$("#parliamentMemberId").html(parliament);
 		$("#assemblyMemberId").html("");
 		$("#statelevelMembersId").html("");
+		$("#statelevelMPMLAId").html("");
 	}
 	
 	function buildCandidateAndPartyForStateLevel(result){
@@ -1100,11 +1103,16 @@ function getCandidateAndPartyInfoForConstituency(){
 							}
 						representative+='</div>';
 					representative+='</div>';
-					representative+='<p class="text-center assembly-viewRes" style="text-decoration:underline">Click to more</p>';
+					if(length > 4)
+					{
+						representative+='<p class="text-center assembly-viewRes" style="text-decoration:underline">Click to more</p>';
+					}
+					
 				representative+='</div>';
 			representative+='</div>';
 		representative+='</div>';
 	$("#representativeMembersId").html(representative);
+	$("#statelevelMPMLAId").html("");
 	}
 function getCountsForConstituency(){
 	$("#levelWiseCountDivId,#statelevelWiseCountDivId").html(blockSpinner);
@@ -1231,7 +1239,7 @@ function getCountsForConstituency(){
 		$("#statelevelWiseCountDivId").html("");
 	}
 	
-	function buildCountsForConstituency(results){
+	function buildCountsForStateLevel(){
 		var str='';
 		str+='<div class="block">';
 			str+='<h4 class="panel-title theme-title-color">Andhra Pradesh</h4>';
