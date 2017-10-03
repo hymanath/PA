@@ -228,8 +228,7 @@
 						</div>
 						<div class="col-sm-2">
 							<select id="enrolmentYears">
-								<option>2014-2016</option>
-								<option>2016-2018</option>
+								
 							</select>
 						</div>
 					</div>
