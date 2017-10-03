@@ -505,7 +505,7 @@ label
 .media-profile
 {
 	border: 1px solid #ddd;
-	padding: 10px;
+	padding: 5px;
 }
 
 .media-profile .media-left
@@ -864,4 +864,12 @@ ul li[menu-levelname='panchayat']:after .active
     border: 1px solid #ddd;
     border-radius: 4px;
 	padding:2px;
+}
+.input-group .form-control
+{
+	border-right:0px !important;
+}
+.input-group-addon
+{
+	background-color:#fff;
 }

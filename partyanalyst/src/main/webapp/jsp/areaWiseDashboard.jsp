@@ -35,9 +35,6 @@
 	</div>
 </header>-->
 <section>
-	
-</section>
-<section>
 	<div class="right-nav">
 		<ul class="right-nav-list">
 			<li index="election" class="active">election info</li>
@@ -275,7 +272,7 @@
 							<i class="glyphicon glyphicon-refresh f-14" refresh="meetings"></i>
 						</span>
 						<div class="input-group pull-right dateRangePickerClsForMeetings" expand-block-date="meetings" style="width:200px;margin-right:12px;">
-							<input type="text" id="dateRangeIdForMeetings" style="width:180px" class="form-control"/>
+							<input type="text" id="dateRangeIdForMeetings" style="width:190px" class="form-control"/>
 							<span class="input-group-addon">
 								<i class="glyphicon glyphicon-calendar"></i>
 							</span>
