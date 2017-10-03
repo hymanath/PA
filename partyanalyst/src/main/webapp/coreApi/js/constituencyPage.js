@@ -112,7 +112,7 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {	
-	
+
 	$("#enrolmentYears").chosen();
 	 //Enrolment Years
 	getEnrollmentIds(); 
@@ -188,7 +188,7 @@ function onLoadAjaxCalls()
 			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 		}
 	}, 2000);
-	
+	 */
 }
 function onLoadClicks()
 {
@@ -3152,14 +3152,12 @@ function getLocationWiseMeetingsCount(){
 }
 function getLocationWiseTourMembersComplainceDtls(){
 	$("#locationWiseTourMembersComplainceDtls").html(spinner);
-	
-	
 	jsObj={
-		locationTypeId:locationLevelId,
-		locationValuesArr:userAccessLevelValuesArray,
-		fromDate:globalFromDate,
-		toDate:globalToDate,
-		year:""
+		locationTypeId		:locationLevelId,
+		locationValuesArr	:userAccessLevelValuesArray,
+		fromDate			:globalFromDate,
+		toDate				:globalToDate,
+		year				:""
 	}
 	 $.ajax({
       type : "POST",
@@ -3176,41 +3174,39 @@ function getLocationWiseTourMembersComplainceDtls(){
 	function buildTable(result)
 	{
 		var tableView = '';
-		tableView+='<div class="scrollerTours">';
-		tableView+='<table class="table table-hover">';
+		tableView+='<table class="table table-hover" id="toursTableId">';
 			tableView+='<thead class="text-capitalize bg-DD">';
-				tableView+='<th>Designation</th>';
-				tableView+='<th>status</th>';
+				tableView+='<th>Leader Name</th>';
+				tableView+='<th>Leader Designation</th>';
+				tableView+='<th>Target</th>';
+				tableView+='<th>Total Tours</th>';
+				tableView+='<th>Complaince</th>';
+				tableView+='<th>Non Complaince</th>';
 			tableView+='</thead>';
 			tableView+='<tbody>';
 				for(var i in result)
 				{
-					tableView+='<tr>';
-						if(result[i].designation !=null && result[i].designation.length>17){
-							tableView+='<td><span class="tooltipDesgtCls" data-toogle="tooltip" title="'+result[i].designation+'" style="cursor:pointer;" data-placement="right">'+result[i].designation.substr(0,17)+'...</span></td>';
-						}else{
-							tableView+='<td>'+result[i].designation+'</td>';
-						}
-						
-						if(result[i].isComplaince=="False"){
-							tableView+='<td><span class="text-danger">Non-Complaince</span></td>';	
-						}else{
-							tableView+='<td><span class="text-success">Complaince</span></td>';	
-						}
-					tableView+='</tr>';
+					for(var j in result[i].subList)
+					{
+						tableView+='<tr>';
+							tableView+='<td>'+result[i].subList[j].name+'</td>';
+							tableView+='<td>'+result[i].subList[j].designation+'</td>';
+							tableView+='<td>'+result[i].subList[j].targetDays+'</td>';
+							tableView+='<td>'+result[i].subList[j].complainceDays+'</td>';
+							if(result[i].subList[j].complaincePer == "100" || result[i].subList[j].complaincePer == 100){
+								tableView+='<td>1</td>';	
+								tableView+='<td>-</td>';	
+							}else{
+								tableView+='<td>-</td>';	
+								tableView+='<td>1</td>';	
+							}
+						tableView+='</tr>';
+					}					
 				}
 			tableView+='</tbody>';
 		tableView+='</table>';
-		tableView+='</div>';
 		$("#locationWiseTourMembersComplainceDtls").html(tableView);
-		$(".tooltipDesgtCls").tooltip();
-		for(var i in result){
-			var desigLen = result[i].designation.length;
-			if(desigLen >5){
-				$(".scrollerTours").mCustomScrollbar({setHeight:'222px'})
-			}
-		}
-		
+		$("#toursTableId").dataTable();
 	}
 }
 function getGovtSchemeWiseBenefitMembersCount(){
