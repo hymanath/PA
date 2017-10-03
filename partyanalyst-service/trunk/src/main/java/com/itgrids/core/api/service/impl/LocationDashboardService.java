@@ -1716,7 +1716,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			enrollmentList.setId(tdpCommitteeEnrollment2.getEnrollmentYearId());
 			enrollmentList.setDescription(tdpCommitteeEnrollment2.getDescription());
 			finalList.add(enrollmentList);
+			
 		}
+		Collections.sort(finalList, new Comparator<BasicVO>() {
+		    public int compare(BasicVO one, BasicVO other) {
+		        return other.getId().compareTo(one.getId());
+		    }
+		}); 
 		return finalList;
 	}
 
@@ -1738,6 +1744,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			electionTypesData.setDescription(electionType.getScope());
 			finalList.add(electionTypesData);
 		}
+		Collections.sort(finalList, new Comparator<BasicVO>() {
+		    public int compare(BasicVO one, BasicVO other) {
+		        return other.getId().compareTo(one.getId());
+		    }
+		}); 
 		return finalList;
 	}
 
@@ -1762,6 +1773,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			publicationData.setTotalResult(publication.getYear().longValue());//year
 			finalList.add(publicationData);
 		}
+		Collections.sort(finalList, new Comparator<BasicVO>() {
+		    public int compare(BasicVO one, BasicVO other) {
+		        return other.getId().compareTo(one.getId());
+		    }
+		}); 
 		return finalList;
 	}
 
