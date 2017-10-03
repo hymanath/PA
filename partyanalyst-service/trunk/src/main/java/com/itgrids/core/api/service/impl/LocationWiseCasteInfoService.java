@@ -602,9 +602,9 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 
 					if (totalVoters > 0l)
 						entry.getValue().setTotalVotersPerc(((entry.getValue().getTotalVoters() * 100) / totalVoters) + "%");
-					if (maleTotalCadres > 0l)
+					if (maleTotalVoters > 0l)
 						entry.getValue().setMaleVotersPerc(((entry.getValue().getMaleVoters() * 100) / maleTotalVoters) + "%");
-					if (femaleTotalCadres > 0l)
+					if (femaleTotalVoters > 0l)
 						entry.getValue().setFemaleVotersPerc(((entry.getValue().getFemaleVoters() * 100) / femaleTotalVoters) + "%");
 
 					voForTotalCounts.setTotalVoters(voForTotalCounts.getTotalVoters() + entry.getValue().getTotalVoters());
