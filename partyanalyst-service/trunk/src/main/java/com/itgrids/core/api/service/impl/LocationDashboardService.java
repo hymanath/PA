@@ -2202,7 +2202,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			//Get month year ids based on month year 
 			List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
 
-			List<Object[]> rtrnCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getLocationWiseTourMemberDetails(getUserAccessLevel(locationTypeId), locationTypeId, locationValues,year);
+			List<Object[]> rtrnCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getLocationWiseTourMemberDetails(locationTypeId, locationValues);
 			//getting designation wise target
 			ToursBasicVO basicDtlsVO = getRequiredData(rtrnCandiateObjLst);
 			if(monthyearIds != null && monthyearIds.size() > 0 && basicDtlsVO.getComplaincandidateIdsSet() != null && basicDtlsVO.getNoNComplaincandidateIdsSet() != null){
@@ -2240,6 +2240,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							if(candiateEntry.getValue().getComplaincePer()>=100d){
 								designationVO.setComplainceCnt(designationVO.getComplainceCnt()+1);
 								designationVO.setIsComplaince("True");
+								candiateEntry.getValue().setIsComplaince("True");
+							} else {
+								candiateEntry.getValue().setIsComplaince("False");	
 							}
 							designationVO.getSubList().add(candiateEntry.getValue());
 						}
@@ -2561,21 +2564,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
 		}
 		return d;
-	}
-	public Long getUserAccessLevel(Long locationTypeId){
-		Long userAccessLevelId=0l;
-		/*if(locationTypeId != null){
-			if(locationType.equalsIgnoreCase("District")){
-				userAccessLevelId = 3l;
-			}else if(locationType.equalsIgnoreCase("ParliamentConstituency")){
-				userAccessLevelId = 10l;
-			}else if(locationType.equalsIgnoreCase("Constituency")){
-				userAccessLevelId = 4l;
-			}
-		}*/
-		userAccessLevelId = locationTypeId;
-		return userAccessLevelId;
-	}
+	}	
 	public ToursBasicVO getRequiredData(List<Object[]> objList){
 		ToursBasicVO vo = new ToursBasicVO();
 		try{
