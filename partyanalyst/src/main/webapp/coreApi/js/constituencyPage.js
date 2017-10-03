@@ -296,6 +296,19 @@ function onLoadClicks()
 	$(document).on("click",".menu-dropdown",function(e){
 		e.stopPropagation();
 	});
+	$("#resetMenuOptions").click(function(){
+		$(".districtMenuName,.parliamentMenuName,.constituencyMenuName,.mandalsMenuName,.panchayatMenuName").closest("li").hide();
+		$("#constituencyMenu,#mandalMenu,#panchayatMenu").html(" ");
+		$("[menu-type]").removeClass("active");
+		$("#getMenuLocations").attr("menu-location-state","1")
+							.attr("menu-location-district","")
+							.attr("menu-location-constituency","")
+							.attr("menu-location-mandal","")
+							.attr("menu-location-panchayat","")
+							.attr("menu-location-levelid","2")
+							.attr("menu-location-parliament","")
+							.attr("menu-location-levelname","state");
+	});
 	$(document).on("click",function(e){
 		$(".menu-dropdown").hide();
 		$("[menu-name]").removeClass("active");
