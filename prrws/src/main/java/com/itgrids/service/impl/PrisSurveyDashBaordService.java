@@ -91,8 +91,8 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    	}
 	 	     }
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(response1.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response1.getStatus());
 	 	      }else{
 	 	    	 String output1 = response1.getEntity(String.class);
 	 	    	if(output1 != null && !output1.isEmpty()){
