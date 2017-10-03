@@ -33,6 +33,7 @@ import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -888,5 +889,82 @@ public class CommonMethodsUtilService {
 	        WebResource webResource = client.resource(url);
 	        
 	        return webResource;
+		}
+		
+		/**
+		  * @param  List<BasicVO> list 
+		  * @return  List<BasicVO> returnList 
+		  * @author babu kurakula <href:kondababu.kurakula@itgrids.com> 
+		  * @Description :This Service Method id used for  sort level  wise vos
+		  * @since 03-10-2017
+		  */
+		public List<BasicVO> sortLevelsVoList(List<BasicVO> list){
+			List<BasicVO> returnList = new ArrayList<BasicVO>(0);
+			try {
+				Map<String,BasicVO> levelMap=new HashMap<String,BasicVO>(0);
+				for(BasicVO vo : list){
+					levelMap.put(vo.getName().trim().toUpperCase(), vo);
+				}
+				if(levelMap.containsKey("STATE".equalsIgnoreCase("state")) ){
+					returnList.add(levelMap.get("STATE"));
+				}
+				if(levelMap.containsKey("DISTRICT")){
+					returnList.add(levelMap.get("DISTRICT"));
+				}
+				if(levelMap.containsKey("CONSTITUENCY")){
+					returnList.add(levelMap.get("CONSTITUENCY"));
+				}
+				if(levelMap.containsKey("MANDAL/TOWN/DIVISION")){
+					returnList.add(levelMap.get("MANDAL/TOWN/DIVISION"));
+				}
+				if(levelMap.containsKey("VILLAGE/WARD")){
+					returnList.add(levelMap.get("VILLAGE/WARD"));
+				}
+			} catch (Exception e) {
+				LOG.error("Exception Occured in sortLevelsVoList() Method");
+
+			}
+			return returnList;
+		}
+		
+		/**
+		  * @param  List<BasicVO> listOfPartyVos 
+		  * @return  List<BasicVO> returnList 
+		  * @author babu kurakula <href:kondababu.kurakula@itgrids.com> 
+		  * @Description :This Service Method id used for  sort party wise vos
+		  * @since 03-10-2017
+		  */
+		public static List<BasicVO> sortPartyVoList(List<BasicVO> list){
+			List<BasicVO> returnList = new ArrayList<BasicVO>(0);
+			try {
+				Map<String,BasicVO> levelMap=new HashMap<String,BasicVO>(0);
+				for(BasicVO vo : list){
+					levelMap.put(vo.getName().trim().toUpperCase(), vo);
+				}
+				if(levelMap.containsKey("TDP")){
+					returnList.add(levelMap.get("TDP"));
+				}else if(levelMap.containsKey("TDP/BJP")){
+						returnList.add(levelMap.get("TDP/BJP"));
+				}
+				
+				if(levelMap.containsKey("BJP")){
+					returnList.add(levelMap.get("BJP"));
+				}
+				if(levelMap.containsKey("YCP")){
+					returnList.add(levelMap.get("YCP"));
+				}else if(levelMap.containsKey("YSRC")){
+						returnList.add(levelMap.get("YSRC"));
+					}
+				if(levelMap.containsKey("INC")){
+					returnList.add(levelMap.get("INC"));
+				}
+				if(levelMap.containsKey("OTHERS")){
+					returnList.add(levelMap.get("OTHERS"));
+				}
+			} catch (Exception e) {
+				LOG.error("Exception Occured in sortPartyVoList() Method");
+
+			}
+			return returnList;
 		}
 }
