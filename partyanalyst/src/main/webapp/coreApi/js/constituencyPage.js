@@ -31,6 +31,7 @@ var customStartDate = moment().subtract(1, 'month').startOf('month').format('DD/
 var customEndDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 var electionTypeVal = [0];
 var defaultAlertCategoryIds=[1,2];
+//var globalPartyNamesPushForElectionBlock=[];
 // please do not try to edit these options which may cause the entire page to stop working. //end
 /* location Values Start*/
 function onLoadLocValue()
@@ -79,6 +80,7 @@ onLoadLocValue()
 onLoadClicks();
 onLoadInitialisations();
 onLoadAjaxCalls();
+
 function onLoadInitialisations()
 {
 	minimise('.right-nav-list li',8);
@@ -111,7 +113,6 @@ function onLoadInitialisations()
 function onLoadAjaxCalls()
 {	
 	
-	
 	$("#enrolmentYears").chosen();
 	 //Enrolment Years
 	getEnrollmentIds(); 
@@ -123,16 +124,24 @@ function onLoadAjaxCalls()
 	  //candidate Profiles 1st block
 	if(locationLevelId == "2"){
 		getPartyWiseMPandMLACandidatesCounts();
+	}else{
+		 $("#statelevelMPMLAId").html(" ");
 	}
 	getCandidateAndPartyInfoForConstituency();
 	 //Second Block
-	getCountsForConstituency();
+	if(locationLevelId == "2"){
+		getCountsForStateLevel();
+	}else{
+		 $("#statelevelWiseCountDivId").html(" ");
+		 getCountsForConstituency();
+	}
+	
 	//Constituency Voter Information
 	
 	getVotersAndcadreAgeWiseCount(22,4);
 	//Assembly Block
 	getElectionTypes();
-	getElectionInformationLocationWise(electionTypeVal,"wonSeat");
+	getElectionInformationLocationWise(electionTypeVal,"wonSeat",0);
 	if(locationLevelId == '4'){
 		$(".assemblyElectionBlockCls").show();
 		getDetailedElectionInformaction();
@@ -308,6 +317,7 @@ function onLoadClicks()
 							.attr("menu-location-levelid","2")
 							.attr("menu-location-parliament","")
 							.attr("menu-location-levelname","state");
+		onLoadLocValue();
 	});
 	$(document).on("click",function(e){
 		$(".menu-dropdown").hide();
@@ -431,8 +441,7 @@ function onLoadClicks()
 				 electionTypeVal[i++] = $(this).val();
 			}
 		});
-		
-		getElectionInformationLocationWise(electionTypeVal,checkedTypeVal);
+		getElectionInformationLocationWise(electionTypeVal,checkedTypeVal,0);
 	});	
 	$(document).on("click",".electionTypeWiseCls",function(){
 			var value = $(this).val();
@@ -833,7 +842,7 @@ function getCandidateAndPartyInfoForConstituency(){
 								parliament+='<div class="media media-profile">';
 									parliament+='<span id="mlaSpinnerId"></span>';
 									parliament+='<div class="media-left">';
-										parliament+='<img src="https://mytdp.com/images/cadre_images/'+result[0].subList1[i].education+'" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
+										parliament+='<img src="images/candidates/'+result[0].subList1[i].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
 										parliament+='<span class="border-image img-border">';
 											parliament+='<img src="images/party_flags/'+result[0].subList1[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
 										parliament+='</span>';
@@ -882,7 +891,7 @@ function getCandidateAndPartyInfoForConstituency(){
 									assembly+='<div class="media media-profile">';
 										assembly+='<span id="mlaSpinnerId"></span>';
 										assembly+='<div class="media-left">';
-											assembly+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/cadre_images/'+result[i].assemblyCandidateInfo[0].education+'" class="media-object profile-image img-border" alt="profile"/>';
+											assembly+='<img  onerror="setDefaultImage(this);" src="images/candidates/'+result[i].assemblyCandidateInfo[0].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
 											assembly+='<span class="border-image img-border">';
 												assembly+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
 											assembly+='</span>';
@@ -915,7 +924,6 @@ function getCandidateAndPartyInfoForConstituency(){
 		assembly+='</div>';
 		$("#assemblyMemberId").html(assembly);
 		$("#statelevelMembersId").html("");
-		$("#statelevelMPMLAId").html("");
 		
 	}
 	function buildCandidateAndPartyInfoForConstituency(result)
@@ -930,7 +938,7 @@ function getCandidateAndPartyInfoForConstituency(){
 							parliament+='<div class="media media-profile">';
 								parliament+='<span id="mlaSpinnerId"></span>';
 								parliament+='<div class="media-left">';
-									parliament+='<img src="https://mytdp.com/images/cadre_images/'+result[0].subList1[0].education+'" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
+									parliament+='<img src="images/candidates/'+result[0].subList1[0].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
 									parliament+='<span class="border-image img-border">';
 										parliament+='<img src="images/party_flags/'+result[0].subList1[0].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
 									parliament+='</span>';
@@ -960,7 +968,7 @@ function getCandidateAndPartyInfoForConstituency(){
 								parliament+='<div class="media media-profile">';
 									parliament+='<span id="mlaSpinnerId"></span>';
 									parliament+='<div class="media-left">';
-										parliament+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/cadre_images/'+result[i].assemblyCandidateInfo[0].education+'" class="media-object profile-image img-border" alt="profile"/>';
+										parliament+='<img  onerror="setDefaultImage(this);" src="images/candidates/'+result[i].assemblyCandidateInfo[0].candidateName+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
 										parliament+='<span class="border-image img-border">';
 											parliament+='<img  onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
 										parliament+='</span>';
@@ -993,7 +1001,6 @@ function getCandidateAndPartyInfoForConstituency(){
 		$("#parliamentMemberId").html(parliament);
 		$("#assemblyMemberId").html("");
 		$("#statelevelMembersId").html("");
-		$("#statelevelMPMLAId").html("");
 	}
 	
 	function buildCandidateAndPartyForStateLevel(result){
@@ -1125,10 +1132,9 @@ function getCandidateAndPartyInfoForConstituency(){
 			representative+='</div>';
 		representative+='</div>';
 	$("#representativeMembersId").html(representative);
-	$("#statelevelMPMLAId").html("");
 	}
 function getCountsForConstituency(){
-	$("#levelWiseCountDivId,#statelevelWiseCountDivId").html(blockSpinner);
+	$("#levelWiseCountDivId").html(blockSpinner);
 	var jsObj={
 			levelId		  		:locationLevelId,
 			levelValues		 	:userAccessLevelValuesArray,
@@ -1142,12 +1148,7 @@ function getCountsForConstituency(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null){
-			if(locationLevelId == 2){
-				return buildCountsForStateLevel();
-			}else{
-				return buildCountsForConstituency(result);
-			}
-			
+			return buildCountsForConstituency(result);
 		}else{
 			$("#levelWiseCountDivId").html(noData);
 		}
@@ -1249,10 +1250,10 @@ function getCountsForConstituency(){
 		
 		
 		$("#levelWiseCountDivId").html(str);
-		$("#statelevelWiseCountDivId").html("");
 	}
-	
-	function buildCountsForStateLevel(){
+}
+
+function getCountsForStateLevel(){
 		var str='';
 		str+='<div class="block">';
 			str+='<h4 class="panel-title theme-title-color">Andhra Pradesh</h4>';
@@ -1298,12 +1299,8 @@ function getCountsForConstituency(){
 			
 		str+='</div>';
 		$("#statelevelWiseCountDivId").html(str);
-		$("#levelWiseCountDivId").html("");
-	}
-		 			
 }
-
-
+	
 function getVotersAndcadreAgeWiseCount(pubId,enrollmentId){
 	$("#constituencyVoterInfo").html(spinner);
 	
@@ -4159,7 +4156,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 										str+='<h5 class="m_top20">'+result.subList[i].status+' <br/>Alerts</h5>';
 										
 										if(result.subList[i].count !=null && result.subList[i].count>0){
-											str+='<h4 class="m_top20">'+result.subList[i].count+'</h4>';
+											str+='<h4 class="m_top20">'+result.subList[i].count+'%</h4>';
 										}else{
 											str+='<h4 class="m_top20"> - </h4>';
 										}
@@ -4289,6 +4286,14 @@ function getElectionTypes(){
 							str+='<input value ="voteShare" type="radio" name="optionsRadios"  class="checkedType" style="margin-left: 10px;" />Vote Share %';
 						str+='</label>';
 					str+='</div>';
+					/* str+='<div class="col-sm-2">';
+						str+='<select class="form-control chosen-select" id="elctionBlockPartysId">';
+							str+='<option value="0">All</option>';
+							for(var i in globalPartyNamesPushForElectionBlock){
+								str+='<option value="'+globalPartyNamesPushForElectionBlock[i].id+'">'+globalPartyNamesPushForElectionBlock[i].name+'</option>';
+							}
+						str+='</select>';
+					str+='</div>'; */
 					str+='<div class="col-sm-1">';
 						str+='<button class="btn btn-primary btn-xs electionDetailsCls pull-right" >Submit</button>';
 					str+='</div>';
@@ -4297,10 +4302,12 @@ function getElectionTypes(){
 		}else{
 			$("#electionTypeValuesId").html(noData);
 		}
+		$("#elctionBlockPartysId").chosen();
+		$("#elctionBlockPartysId").trigger("chosen:updated");
 	});	
 }
 
-function getElectionInformationLocationWise(electionVal,type){
+function getElectionInformationLocationWise(electionVal,type,partyId){
 	$('#electionDetailsGraphWiseId').html(spinner);
 	$('#electionDetailsTableWiseId').html(spinner);
 	if(locationLevelId == '8' || locationLevelId == '6'){
@@ -4314,7 +4321,6 @@ function getElectionInformationLocationWise(electionVal,type){
 			electionVal=[];
 		}
 	}
-	
 	
 	var jsObj={
 			fromDate 	  	:"",
@@ -4366,6 +4372,8 @@ function buildElectionInformationLocationWise(result,type){
 					str+='</thead>';
 					str+='<tbody>';
 							for(var i in result){
+								/* var partyNameId={id:result[i].partyId,name:result[i].partyName}
+								globalPartyNamesPushForElectionBlock.push(partyNameId) */
 								str+='<tr>';
 									str+='<td>'+result[i].partyName+'</td>';
 									for(var j in result[i].list){
@@ -4513,7 +4521,6 @@ function getPartyWiseMPandMLACandidatesCounts(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
-		$("#statelevelMPMLAId").html('');
 		if(result !=null){
 			return buildCandidateAndPartyForStateLevel(result);
 		}else{
@@ -4548,7 +4555,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 								str+='<div class="media-body media_width">';
 									if(result.subList[i].party == "BJP"){
 										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
-									}else if(result.subList[i].party == "OTHERS"){
+									}else if(result.subList[i].party == "Others"){
 										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p>';
 									}else{
 										str+='<p class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
@@ -4585,7 +4592,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 								str+='<div class="media-body media_width">';
 								if(result.subList2[i].party == "BJP"){
 									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
-								}else if(result.subList2[i].party == "OTHERS"){
+								}else if(result.subList2[i].party == "Others"){
 									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList2[i].party+'</p>';
 								}else{
 									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" /> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
