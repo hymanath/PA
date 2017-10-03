@@ -85,6 +85,7 @@
 							<div id="panchayatMenu"></div>
 						</div>
 						<div class="col-sm-12 text-right" style="border-top:1px solid #ddd;padding-top:10px;margin-top:10px;">
+							<span class="text-capital pull-left" style="cursor:pointer;margin-top:10px" id="resetMenuOptions">reset options</span>
 							<button class="btn btn-success" id="getLocationDetails">GET DETAILS</button>
 						</div>
 					</div>
