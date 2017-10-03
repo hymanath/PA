@@ -285,12 +285,12 @@
 				</div>
 			</div>
 			
-			<!--<div class="col-sm-4 m_top20" navbar-index="tours">
+			<div class="col-sm-12 m_top20" navbar-index="tours">
 				<div class="block">
 					<h4 class="panel-title theme-title-color">Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="tours"></i></span><small class="f-12" style="color:#777 !important;">Last Month Jan 2017</small></h4>
 					<div id="locationWiseTourMembersComplainceDtls" class="m_top15"></div>
 				</div>
-			</div>-->
+			</div>
 			
 			
 			<div class="col-sm-12 m_top20" navbar-index="benefits">
