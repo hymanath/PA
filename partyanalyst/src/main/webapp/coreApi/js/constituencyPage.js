@@ -144,7 +144,7 @@ function onLoadAjaxCalls()
 	
 	//cadre Information Block
 	getLocationTypeWiseCadreCount("");
-	getAgeRangeGenerAndCasteGroupByCadreCount(1);
+	getAgeRangeGenerAndCasteGroupByCadreCount(4);
 	
 	
 	
@@ -359,7 +359,7 @@ function onLoadClicks()
 		}else if(blockName == 'cadreInfor')
 		{
 			getLocationTypeWiseCadreCount("");
-			getAgeRangeGenerAndCasteGroupByCadreCount($("#enrollmentCadreId").val());
+			getAgeRangeGenerAndCasteGroupByCadreCount(4);
 		}else if(blockName == 'grievance')
 		{
 			getLocationWiseGrivanceTrustStatusCounts($("#enrolmentYearsGrievance").val());
@@ -898,6 +898,7 @@ function getCandidateAndPartyInfoForConstituency(){
 			assembly+='</div>';
 		assembly+='</div>';
 		$("#assemblyMemberId").html(assembly);
+		$("#statelevelMembersId").html("");
 		
 	}
 	function buildCandidateAndPartyInfoForConstituency(result)
@@ -974,6 +975,7 @@ function getCandidateAndPartyInfoForConstituency(){
 		parliament+='</div>';
 		$("#parliamentMemberId").html(parliament);
 		$("#assemblyMemberId").html("");
+		$("#statelevelMembersId").html("");
 	}
 	
 	function buildCandidateAndPartyForStateLevel(result){
@@ -1248,7 +1250,7 @@ function getVotersAndcadreAgeWiseCount(pubId,enrollmentId){
 function buildVotersAndcadreAgeWiseCount(result){
 	
 	if(result !=null && result.length>0){
-		var theadArr=['total population','total Voters','total Cadre','Male Voter','Male Cadre','Female Voter','Female Cadre'];
+		var theadArr=['','total Voters','total Cadre','Male Voter','Male Cadre','Female Voter','Female Cadre'];
 		var totalVotersCount =0;
 		var totalCadresCount =0;
 		var totalMaleVoterCount=0;
@@ -1284,7 +1286,7 @@ function buildVotersAndcadreAgeWiseCount(result){
 								
 							} */
 							str+='<h4 class="text-capitalize">'+theadArr[i]+'</h4>';
-							if(theadArr[i] == "total population"){
+							if(theadArr[i] == ""){
 								//str+='<h3></h3>';
 							}else if(theadArr[i] == "total Voters"){
 								str+='<h3>'+totalVotersCount+'</h3>';
@@ -1304,54 +1306,57 @@ function buildVotersAndcadreAgeWiseCount(result){
 					str+='</thead>';
 					str+='<tbody>';
 					for(var i in result){
-						str+='<tr>';
-							str+='<td>';
-								str+='<b>'+result[i].ageRange+'</b>';
-								/* str+='2000';
-								str+='<span class="pull-right text-success">';
-									str+='2%';
-								str+='</span>'; */
-							str+='</td>';
-							str+='<td>';
-								str+=''+result[i].totalVoters+'';
-								str+='<span class="pull-right text-success">';
-									str+=''+result[i].totalVotersPerc+'';
-								str+='</span>';
-							str+='</td>';
-							str+='<td>';
-								str+=''+result[i].totalCadres+'';
-								str+='<span class="pull-right text-success">';
-									str+=''+result[i].totalCadrePerc+'';
-								str+='</span>';
-							str+='</td>';
-							str+='<td>';
-								str+=''+result[i].maleVoters+'';
-								str+='<span class="pull-right text-success">';
-									str+=''+result[i].maleVotersPerc+'';
-								str+='</span>';
-							str+='</td>';
-							str+='<td>';
-								str+=''+result[i].maleCadres+'';
-								str+='<span class="pull-right text-success">';
-									str+=''+result[i].maleCadrePerc+'';
-								str+='</span>';
-							str+='</td>';
-							str+='<td>';
-								str+=''+result[i].femaleVoters+'';
-								str+='<span class="pull-right text-success">';
-									str+=''+result[i].femaleVotersPerc+'';
-								str+='</span>';
-							str+='</td>';
-							str+='<td>';
-								str+=''+result[i].femaleCadres+'';
-								str+='<span class="pull-right text-success">';
-									str+=''+result[i].femaleCadrePerc+'';
-								str+='</span>';
-							str+='</td>';
-						str+='</tr>';
-						countVar =countVar+1;
-						if (countVar === 6) {
-							break;
+						if(i>0 && i<6){
+							
+							str+='<tr>';
+								str+='<td>';
+									str+='<b>'+result[i].ageRange+'</b>';
+									/* str+='2000';
+									str+='<span class="pull-right text-success">';
+										str+='2%';
+									str+='</span>'; */
+								str+='</td>';
+								str+='<td>';
+									str+=''+result[i].totalVoters+'';
+									str+='<span class="pull-right text-success">';
+										str+=''+result[i].totalVotersPerc+'';
+									str+='</span>';
+								str+='</td>';
+								str+='<td>';
+									str+=''+result[i].totalCadres+'';
+									str+='<span class="pull-right text-success">';
+										str+=''+result[i].totalCadrePerc+'';
+									str+='</span>';
+								str+='</td>';
+								str+='<td>';
+									str+=''+result[i].maleVoters+'';
+									str+='<span class="pull-right text-success">';
+										str+=''+result[i].maleVotersPerc+'';
+									str+='</span>';
+								str+='</td>';
+								str+='<td>';
+									str+=''+result[i].maleCadres+'';
+									str+='<span class="pull-right text-success">';
+										str+=''+result[i].maleCadrePerc+'';
+									str+='</span>';
+								str+='</td>';
+								str+='<td>';
+									str+=''+result[i].femaleVoters+'';
+									str+='<span class="pull-right text-success">';
+										str+=''+result[i].femaleVotersPerc+'';
+									str+='</span>';
+								str+='</td>';
+								str+='<td>';
+									str+=''+result[i].femaleCadres+'';
+									str+='<span class="pull-right text-success">';
+										str+=''+result[i].femaleCadrePerc+'';
+									str+='</span>';
+								str+='</td>';
+							str+='</tr>';
+							countVar =countVar+1;
+							if (countVar === 6) {
+								break;
+							}
 						}
 					}
 						
@@ -1866,25 +1871,42 @@ function getActivityStatusList(){
 	function buildTable(result)
 	{
 		var str = '';
-		var per='%';
-		str+='<div class="pad_10">'
-			str+='<table class="table table-striped">';
-				str+='<thead class="text-capitalize bg-DD">';
-					str+='<th>Activity Name</th>';
-					str+='<th>level</th>';
-					str+='<th>status</th>';
-				str+='</thead>';
-				str+='<tbody>';
-					for(var i in result){
-						str+='<tr>';
-							str+='<td>'+result[i].name+'</td>';
-							str+='<td>'+result[i].description+'</td>';
-							str+='<td>'+result[i].perc+''+per+'</td>';
-						str+='</tr>';
-					}
-				str+='</tbody>';
-			str+='</table>';
-		str+='</div>'
+		str+='<div class="row">';
+			str+='<div class="col-sm-12">';
+			for(var i in result){
+				str+='<div class="col-sm-4">';
+					str+='<h4>'+result[i].locationsList[0].description+'</h4>';
+						str+='<table class="table table-noborder f-12 m_top5">';
+							str+='<thead class="text-capitalize bg-DD">';
+								str+='<th>Activity</th>';
+								str+='<th>Total</th>';
+								str+='<th>Done</th>';
+							str+='</thead>';
+							str+='<tbody>';
+								for(var j in result[i].locationsList){
+									str+='<tr>';
+										str+='<td>'+result[i].locationsList[j].name+'</td>';
+										if(result[i].locationsList[j].totalVoters !=null && result[i].locationsList[j].totalVoters>0){
+											str+='<td>'+result[i].locationsList[j].totalVoters+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										if(result[i].locationsList[j].totalResult !=null && result[i].locationsList[j].totalResult>0){
+											str+='<td>'+result[i].locationsList[j].totalResult+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										
+									str+='</tr>';
+								}
+							str+='</tbody>';
+						str+='</table>';
+					
+				str+='</div>';
+			}
+				
+			str+='</div>';
+		str+='</div>';
 		$("#activitesId").html(str);
 	}
 }
