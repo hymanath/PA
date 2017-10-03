@@ -2488,7 +2488,9 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 				   " nominatedPostApplication.isDeleted = 'N' " +
 				   " and nominatedPostApplication.isExpired = 'N' ");
 		if (locationType != null && locationValue != null && locationValue.size()>0) {
-				if (locationType == 3) {
+				if (locationType == 2) {
+				sb.append(" and nominatedPostApplication.address.state.stateId in(:locationValue) ");
+				} else if (locationType == 3) {
 					sb.append(" and nominatedPostApplication.address.district.districtId in(:locationValue) ");
 				} else if (locationType == 10) {
 					sb.append(" and nominatedPostApplication.address.parliamentConstituency.constituencyId in(:locationValue) ");

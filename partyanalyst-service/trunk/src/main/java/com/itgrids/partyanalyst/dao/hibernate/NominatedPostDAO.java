@@ -2074,7 +2074,9 @@ return (Long) query.uniqueResult();
 			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
 	 
 	 	if (locationType != null && locationValuesList != null && locationValuesList.size()>0) {
-				if (locationType == 3) {
+	 			if (locationType == 2) {
+	 				sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValue) ");
+	 			} else if (locationType == 3) {
 					sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValue) ");
 				} else if (locationType == 10) {
 					sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValue) ");
@@ -2118,7 +2120,9 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
 	 
 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
-	        if(locationTypeId == 4l){
+		 	if(locationTypeId == 2l){
+	        	sb.append(" and nominatedPost.nominationPostCandidate.address.state.stateId in(:locationValues) ");
+	        }else if(locationTypeId == 4l){
 	        	sb.append(" and nominatedPost.nominationPostCandidate.address.constituency.constituencyId in(:locationValues) ");
 	        }else if(locationTypeId == 3l){
 	        	sb.append(" and nominatedPost.nominationPostCandidate.address.district.districtId in(:locationValues) ");
@@ -2145,7 +2149,9 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 Query query = getSession().createQuery(sb.toString());
 	 
 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
-	        if(locationTypeId == 4l){
+		 	if(locationTypeId == 2l){
+	        	query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 4l){
 	        	query.setParameterList("locationValues", locationValues);
 	        }else if(locationTypeId == 3l){
 	        	query.setParameterList("locationValues", locationValues);
