@@ -1,5 +1,9 @@
 package com.itgrids.core.api.service;
 
-public interface ILoactionDetailsDashBoardService {
+import java.util.List;
 
+import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
+
+public interface ILoactionDetailsDashBoardService {
+	public List<PartyMeetingsVO> getMeetingTypeWiseTotalMeetings(Long locationLevel, Long locationId, String fromDateStr,String toDateStr);
 }
