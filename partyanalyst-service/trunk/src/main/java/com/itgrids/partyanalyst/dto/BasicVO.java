@@ -27,7 +27,7 @@ public class BasicVO implements Serializable{
 	private List<VoterCastInfoVO> casteList = new ArrayList<VoterCastInfoVO>();
 	private Long hamletId;
 	private String hamletName;
-	private Long voterCount;
+	private Long voterCount=0L;
 	private List casteNames;
 	private String persent;
 	private Long expCount;
@@ -35,7 +35,7 @@ public class BasicVO implements Serializable{
 	private Long levelId;
 	private BasicVO afterDelimationDetails;
 	private BasicVO beforeDelimationDetails;
-	private Long totalVoters;
+	private Long totalVoters=0L;
 	private String aliancedWith;
 	private List<String> ageRanges = new ArrayList<String>();
 	private Long electionTypeId;
@@ -53,7 +53,7 @@ public class BasicVO implements Serializable{
 	private Map<String,Long> dayWiseMap = new LinkedHashMap<String, Long>();
 	private Long coveredCount;
 	private Long day;
-	private Long totalResult = 0l;
+	private Long totalResult=0L;
 	private String date;
 	private List<EventDocumentVO> documentsVOList = new ArrayList<EventDocumentVO>(0);
 	

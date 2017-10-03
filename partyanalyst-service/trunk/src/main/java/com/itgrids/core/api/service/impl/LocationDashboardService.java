@@ -3122,6 +3122,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							countVO = new BasicVO();
 						if(commonMethodsUtilService.isListOrSetValid(vo.getLocationsList())){
 							for (BasicVO activityVO : vo.getLocationsList()){
+								countVO.setName(vo.getDescription().trim());
 								countVO.setTotalResult(countVO.getTotalResult()+activityVO.getTotalResult());
 								countVO.setTotalVoters(countVO.getTotalVoters()+activityVO.getTotalVoters());
 							}
