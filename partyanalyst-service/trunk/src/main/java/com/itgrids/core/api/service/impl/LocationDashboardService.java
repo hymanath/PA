@@ -601,6 +601,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					       matchedVo = getMatchedVOForCadreId(candidateInfoList,commonMethodsUtilService.getLongValueForObject(param[1]));
 					       if(matchedVo != null){
 					    	   matchedVo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					    	   matchedVo.setEducation(commonMethodsUtilService.getStringValueForObject(param[2]));//cadreImage
 					    	   if(matchedVo.getPartyId() !=872 && matchedVo.getTdpCadreId()!= null){
 						    	   isMigrate ="true";
 						       }
@@ -673,6 +674,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						 matchedVo1 = getMatchedVOForCadreId(parliementfinalList,commonMethodsUtilService.getLongValueForObject(param[1]));
 					       if(matchedVo1 != null){
 					    	   matchedVo1.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					    	   matchedVo1.setEducation(commonMethodsUtilService.getStringValueForObject(param[2]));//cadreImage
 					    	   if(matchedVo1.getPartyId() !=872 && matchedVo1.getTdpCadreId()!= null){
 						    	   isMigrate ="true";
 						       }
@@ -785,25 +787,25 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					Long representativeLevl = commonMethodsUtilService.getLongValueForObject(objects[4]);
 					Long representativeVal = commonMethodsUtilService.getLongValueForObject(objects[5]);
 					//if(ua != null){
-						if(representativeLevl != 0l && representativeLevl.longValue() == 1l &&  representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[11])){
+						if(representativeLevl != 0l && representativeLevl.longValue() == 1l ){
 							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[11]));
 							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[12]));
-						}else if(representativeLevl != 0l && representativeLevl.longValue() == 2l && representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[13])){
+						}else if(representativeLevl != 0l && representativeLevl.longValue() == 2l){
 							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[13]));//13
 							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[14]));//14
 						}else if(representativeLevl != 0l &&( representativeLevl.longValue() == 3l || representativeLevl.longValue() == 4l) && representativeVal != null){
 							vo.setConstituencyId(constituencyDAO.get(representativeVal).getConstituencyId());
 							vo.setConstituencyName(constituencyDAO.get(representativeVal).getName());
-						}else if(representativeLevl != 0l && representativeLevl.longValue() == 5l && representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[9])){
+						}else if(representativeLevl != 0l && representativeLevl.longValue() == 5l){
 							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[9]));//9
 							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[10]));//10
-						}else if(representativeLevl != 0l && representativeLevl.longValue() == 6l && representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[7])){
+						}else if(representativeLevl != 0l && representativeLevl.longValue() == 6l ){
 							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[7]));//7
 							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[8]));//8
-						}else if(representativeLevl != 0l && representativeLevl.longValue() == 7l  && representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[15])){
+						}else if(representativeLevl != 0l && representativeLevl.longValue() == 7l  ){
 							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[15]));//15
 							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[16]));//16
-						}else if(representativeLevl != 0l && representativeLevl.longValue() == 8l  && representativeVal.longValue() == commonMethodsUtilService.getLongValueForObject(objects[19])){
+						}else if(representativeLevl != 0l && representativeLevl.longValue() == 8l  ){
 							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[19]));//19
 							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[20]));//20
 						}
