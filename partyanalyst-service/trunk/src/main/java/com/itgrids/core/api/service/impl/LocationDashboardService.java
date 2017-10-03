@@ -2492,9 +2492,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 								Double totalPer =0.0d;
 								Long complainceDays=0l;
+								Long targetDays = 0l;
 								for(ToursBasicVO VO:categoryList){
 									totalPer = totalPer+VO.getComplaincePer(); 
 									complainceDays = complainceDays +VO.getComplainceDays();
+									targetDays = targetDays + VO.getTargetDays();
 								}
 								Integer totalCount =0;
 								if(categoryList != null && categoryList.size() > 0){
@@ -2503,6 +2505,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 								Double percentage = calculatePercantageBasedOnDouble(totalPer,totalCount.doubleValue());
 								candiateEntry.getValue().setComplainceDays(complainceDays);
+								candiateEntry.getValue().setTargetDays(targetDays);
 								if(percentage > 100d){
 									candiateEntry.getValue().setComplaincePer(100d);
 								}else{
