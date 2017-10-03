@@ -4469,5 +4469,9 @@
     	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	<property name="partyMeetingStatusDAO" ref="partyMeetingStatusDAO" />
     </bean>
+    <bean name="loactionDetailsDashBoardService" class="com.itgrids.core.api.service.impl.LoactionDetailsDashBoardService" >
+    	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+    	<property name="partyMeetingDAO" ref="partyMeetingDAO" />
+    </bean>
 </beans>			
 	

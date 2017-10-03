@@ -1804,6 +1804,9 @@
 	</bean>
 	<bean id="doorToDoorCampaignDashboardAction" class="com.itgrids.partyanalyst.web.action.DoorToDoorCampaignDashboardAction" singleton="false">
 			<property name="doorToDoorCampaignDashboardService" ref="doorToDoorCampaignDashboardService"/>
-	</bean>			
+	</bean>	
+	<bean id="loactionDetailsDashBoardAction" class="com.itgrids.partyanalyst.web.action.LoactionDetailsDashBoardAction" singleton="false">
+			<property name="loactionDetailsDashBoardService" ref="loactionDetailsDashBoardService"/>
+	</bean>		
 </beans>	
 	
