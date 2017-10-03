@@ -105,6 +105,7 @@
 			<div id="statelevelMPMLAId"></div>
 		 	<div class="col-sm-12 m_top20">
 				<div id="levelWiseCountDivId"></div>
+				<div id="statelevelWiseCountDivId"></div>
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="election">
 				 
