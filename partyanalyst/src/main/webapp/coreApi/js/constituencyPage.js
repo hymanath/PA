@@ -4,7 +4,8 @@
 	if(wurl.length == 3)
 		wurl = url.substr(0,(url.indexOf(".in")+3));	
 // please do not try to edit these options which may cause the entire page to stop working.	
-var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+//var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="square-to-circle"></div></div></div></div>';
 var blockSpinner = '<div class="row"><div class="col-sm-12"><div class="block m_top10"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div></div>';
 var noData = "<div class='col-sm-12'><h5>NO DATA AVAILABLE</h5></div>";
 var globalCasteColorObj = {"BC":"#867DC0","Minority":"#99CC67","SC":"#65A7E1","ST":"#7DC1C2","OC":"#E58D45"};
@@ -983,7 +984,7 @@ function getCandidateAndPartyInfoForConstituency(){
 			stateLevel+='<div class="col-sm-12">';
 				stateLevel+='<div class="panel panel-default">';
 					stateLevel+='<div class="panel-body">';
-							stateLevel+='<div class="row m_top10">';
+							stateLevel+='<div class="row">';
 							var length=0;
 								for(var i in result)
 								{
@@ -3000,19 +3001,24 @@ function getLocationWiseMeetingsCount(){
 	function buildTable(result)
 	{
 		var str='';
-		str+='<div class="row">';
 		
+		var xindex = 0;
 		for(var i in result){
-				str+='<div class="col-sm-6">';
-					str+='<p class="text-capitalize"><b>'+result[i].ageRange+'</b></p>';
-					str+='<div class="media">';
-						str+='<div class="media-left">';
-							str+='<div id="meetingsGraphId'+i+'" style="width:250px;height:250px;"></div>';
-						str+='</div>';
-						str+='<div class="media-body">';
-							str+='<h6>'+result[i].ageRange+'</h6>';
-							str+='<h4 class="m_top5">'+result[i].totalCadres+'</h4>';
-							str+='<table class="table table-noborder f-12 m_top20">';
+			if( xindex == 0)
+			{
+				str+='<div class="row">';
+			}
+			str+='<div class="col-sm-6">';
+				str+='<p class="text-capitalize"><b>'+result[i].ageRange+'</b></p>';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+						str+='<div id="meetingsGraphId'+i+'" style="width:250px;height:170px;"></div>';
+					str+='</div>';
+					str+='<div class="media-body">';
+						str+='<h6>'+result[i].ageRange+'</h6>';
+						str+='<h4 class="m_top5">'+result[i].totalCadres+'</h4>';
+						str+='<div class="meetingLevelScroll'+i+'">';
+							str+='<table class="table table-noborder f-12 m_top10">';
 								str+='<thead class="bg-DD">';
 									str+='<tr>';
 										str+='<th>Level</th>';
@@ -3032,12 +3038,27 @@ function getLocationWiseMeetingsCount(){
 							str+='</table>';
 						str+='</div>';
 					str+='</div>';
-					
 				str+='</div>';
+			str+='</div>';
+			xindex++;
+			if(result.length-1 == i){
+				if(xindex % 2 == 1){
+					str+='</div>';
+				}
 			}
+			if( xindex == 2){
+				str+='</div>';
+				xindex = 0;
+			} 
+		}
 		str+='</div>';
 			
 		$("#locationWiseMeetingsCount").html(str);
+		for(var i in result)
+		{
+			$(".meetingLevelScroll"+i).mCustomScrollbar({setHeight:'130px'});
+		}
+		
 		var alertCnt = [];
 		var count = [];	
 		var levelNamesArr=[];
