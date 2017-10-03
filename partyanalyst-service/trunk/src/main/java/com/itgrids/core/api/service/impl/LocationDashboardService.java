@@ -2972,7 +2972,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						} else if (commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("F")) {
 							ageRangeVO.setFemaleCount(ageRangeVO.getFemaleCount() + totalCadreCount);
 						}
-						ConstituencyCadreVO casteCategoryVO = getCasteCategoryMatchVO(ageRangeVO.getCasteGroupList(), commonMethodsUtilService.getLongValueForObject(param[3]));
+						ConstituencyCadreVO casteCategoryVO = getCasteCategoryMatchVO(ageRangeVO.getCasteGroupList(), commonMethodsUtilService.getLongValueForObject(param[2]));
 						if (casteCategoryVO != null) {
 							casteCategoryVO.setToalCadreCount(casteCategoryVO.getToalCadreCount()+totalCadreCount);
 						}
