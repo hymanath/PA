@@ -4373,7 +4373,10 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			List<Object[]> mlaPartyCountDetails=nominationDAO.partyWiseMemberOfAssemblyCandidateCounts(electionIds,electionScopeIds, loactionTypeId,loctionValue);
 			settingPartyWiseCandidateCount(mpPartyCountDetails,finalVO,"parlaiment");
 			settingPartyWiseCandidateCount(mlaPartyCountDetails,finalVO,"assembly");
-			
+			if(commonMethodsUtilService.isListOrSetValid(finalVO.getSubList()) && commonMethodsUtilService.isListOrSetValid(finalVO.getSubList2())){
+				commonMethodsUtilService.sortPartyVoList(finalVO.getSubList());
+				commonMethodsUtilService.sortPartyVoList(finalVO.getSubList2());
+			}
 		}catch(Exception e){
 			Log.error("Exception raised in getPartyWiseMPandMLACandidatesCount method of LocationDashboardService"+e);
 		}
@@ -4414,7 +4417,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 							   partCountVo =new CandidateDetailsForConstituencyTypesVO();
 							   partCountVo.setScopeId(commonMethodsUtilService.getLongValueForObject(param[0]));
 							   partCountVo.setPartyId(0l);
-							   partCountVo.setParty("Others");
+							   partCountVo.setParty("OTHERS");
 							   countMap.put(0L,partCountVo);
 							   if(type != null && type.equalsIgnoreCase("parlaiment")){
 							   mpList.add(partCountVo);

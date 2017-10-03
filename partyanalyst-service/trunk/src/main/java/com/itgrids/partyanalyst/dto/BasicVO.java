@@ -53,7 +53,7 @@ public class BasicVO implements Serializable{
 	private Map<String,Long> dayWiseMap = new LinkedHashMap<String, Long>();
 	private Long coveredCount;
 	private Long day;
-	private Long totalResult;
+	private Long totalResult = 0l;
 	private String date;
 	private List<EventDocumentVO> documentsVOList = new ArrayList<EventDocumentVO>(0);
 	
