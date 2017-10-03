@@ -27,10 +27,12 @@ var commitessArr=["mandalLevelGraph","villageLevelGraph","affMandalLevelGraph","
 var grivanceIdsArr=["grivanceId","trustId"];
 var grivanceColorObj={"APPROVED":"#2DCC70","COMPLETED":"#449C43","IN PROGRESS":"#FFB84F","NOT ELIGIBLE":"#C0392B","NOT POSSIBLE":"#EF8379","NOT VERIFIED":"#31708F"}
 var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In Party":"#449C43","Forwarded to Insurance":"#FFB84F","Closed at Insurance":"#8F43AF","Closed at Party":"#9B88B3","Approved - Compensated":"#2BCD72","Closed Letters":"#32708F","Account Rejected":"#65CBCC"}
-var customStartDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');;
-var customEndDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 var electionTypeVal = [0];
 var defaultAlertCategoryIds=[1,2];
+//Tours And Meetings And Alerts Dates Start 
+var customStartATMDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
+var customEndATMDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
+//Tours And Meetings And Alerts Dates End 
 //var globalPartyNamesPushForElectionBlock=[];
 // please do not try to edit these options which may cause the entire page to stop working. //end
 /* location Values Start*/
@@ -89,11 +91,12 @@ function onLoadInitialisations()
 	responsiveTabs();
 	//Menu Calls
 	menuCalls(2,'1','');	
-	menuCalls(9,'1','');	
+	menuCalls(9,'1','');
+	//Meetings	Start
 	$("#dateRangeIdForMeetings").daterangepicker({
 		opens: 'left',
-		startDate: moment().subtract(1, 'month').startOf('month'),
-        endDate: moment().subtract(1, 'month').endOf('month'),
+		startDate: customStartATMDate,
+        endDate: customEndATMDate,
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
@@ -108,26 +111,72 @@ function onLoadInitialisations()
 		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
 	});
+	//Meetings End
+	
+	//Tours Start
+	$("#tourNewDateRangePickerId").daterangepicker({
+		opens: 'left',
+	     startDate: customStartATMDate,
+         endDate:customEndATMDate,
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: { ////moment().endOf('Year')
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment()],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
+        }
+	});
+	//Tours End
+	
+	//Alert Start
+	$("#alertNewDateRangePickerId").daterangepicker({
+		opens: 'left',
+	     startDate: customStartATMDate,
+         endDate:customEndATMDate,
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: { ////moment().endOf('Year')
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment()],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
+        }
+	});
+	//Alert End
 	
 }
 function onLoadAjaxCalls()
 {	
-
 	$("#enrolmentYears").chosen();
-	 //Enrolment Years
-	getEnrollmentIds(); 
+	//Enrolment Years
+	getEnrollmentIds();
+	//Publications	
 	getPublications();
+	
 	//Committee
 	getLocationWiseCommitteesCount(2);
 	//Meetings
 	getLocationWiseMeetingsCount();
-	  //candidate Profiles 1st block
+	
+	 //candidate Profiles 1st block
 	if(locationLevelId == "2"){
 		getPartyWiseMPandMLACandidatesCounts();
 	}else{
 		 $("#statelevelMPMLAId").html(" ");
 	}
 	getCandidateAndPartyInfoForConstituency();
+	
 	 //Second Block
 	if(locationLevelId == "2"){
 		getCountsForStateLevel();
@@ -136,9 +185,6 @@ function onLoadAjaxCalls()
 		 getCountsForConstituency();
 	}
 	
-	//Constituency Voter Information
-	
-	getVotersAndcadreAgeWiseCount(22,4);
 	//Assembly Block
 	getElectionTypes();
 	getElectionInformationLocationWise(electionTypeVal,"wonSeat",0);
@@ -149,6 +195,9 @@ function onLoadAjaxCalls()
 		$(".assemblyElectionBlockCls").hide();
 	}
 	
+	//Constituency Voter Information
+	getVotersAndcadreAgeWiseCount(22,4);
+	
 	//caste information
 	getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",22,4)
 	getVotersCastGroupWiseCount(22,4)
@@ -158,9 +207,7 @@ function onLoadAjaxCalls()
 	getLocationTypeWiseCadreCount("");
 	getAgeRangeGenerAndCasteGroupByCadreCount(4);
 	
-	
-	
-	 //Tours 
+	//Tours 
 	getLocationWiseTourMembersComplainceDtls();
 	
 	// Benefits
@@ -169,7 +216,8 @@ function onLoadAjaxCalls()
 	//Grievance And Insurance
 	getLocationWiseGrivanceTrustStatusCounts("3");
 	getLocationWiseInsuranceStatusCount("3");
-	 // Nominated Posts
+	
+	// Nominated Posts
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
@@ -270,10 +318,25 @@ function onLoadClicks()
 			menuCalls(levelId,locationId,$("#constituencyMenu li.active").attr("menu-click"))
 		//}	
 	});
+	//Meetings
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
-		customStartDate = picker.startDate.format('DD/MM/YYYY');
-		customEndDate = picker.endDate.format('DD/MM/YYYY');
+		customStartATMDate = picker.startDate.format('DD/MM/YYYY');
+		customEndATMDate = picker.endDate.format('DD/MM/YYYY');
 		getLocationWiseMeetingsCount();
+	});
+	//Tours
+	$('#tourNewDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+		customStartATMDate = picker.startDate.format('DD/MM/YYYY');
+		customEndATMDate = picker.endDate.format('DD/MM/YYYY');
+		getLocationWiseTourMembersComplainceDtls();
+	});
+	//Alert
+	$('#alertNewDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+		customStartATMDate = picker.startDate.format('DD/MM/YYYY');
+		customEndATMDate = picker.endDate.format('DD/MM/YYYY');
+		$(".alertCategoryWiseCls li").removeClass("active");
+		$(".alertCategoryWiseCls li:nth-child(1)").addClass("active");
+		getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
 	});
 	$(document).keydown(function(event){
 		if(event.keyCode==123){
@@ -2998,8 +3061,8 @@ function getLocationWiseMeetingsCount(){
 	jsObj={
 		locationTypeId:	locationLevelId,
 		locationValues:	userAccessLevelValuesArray,
-		fromDate :customStartDate,
-		toDate :customEndDate
+		fromDate :customStartATMDate,
+		toDate :customEndATMDate
 	}
 	 $.ajax({
       type : "GET",
@@ -3155,8 +3218,8 @@ function getLocationWiseTourMembersComplainceDtls(){
 	jsObj={
 		locationTypeId		:locationLevelId,
 		locationValuesArr	:userAccessLevelValuesArray,
-		fromDate			:globalFromDate,
-		toDate				:globalToDate,
+		fromDate			:customStartATMDate,
+		toDate				:customEndATMDate,
 		year				:""
 	}
 	 $.ajax({
@@ -3174,39 +3237,128 @@ function getLocationWiseTourMembersComplainceDtls(){
 	function buildTable(result)
 	{
 		var tableView = '';
-		tableView+='<table class="table table-hover" id="toursTableId">';
-			tableView+='<thead class="text-capitalize bg-DD">';
-				tableView+='<th>Leader Name</th>';
-				tableView+='<th>Leader Designation</th>';
-				tableView+='<th>Target</th>';
-				tableView+='<th>Total Tours</th>';
-				tableView+='<th>Complaince</th>';
-				tableView+='<th>Non Complaince</th>';
-			tableView+='</thead>';
-			tableView+='<tbody>';
-				for(var i in result)
+		var totalCamplains=0;
+		var totalNonCamplains=0;
+		var tottalCount=0;
+		for(var i in result){
+				for(var j in result[i].subList)
 				{
-					for(var j in result[i].subList)
-					{
-						tableView+='<tr>';
-							tableView+='<td>'+result[i].subList[j].name+'</td>';
-							tableView+='<td>'+result[i].subList[j].designation+'</td>';
-							tableView+='<td>'+result[i].subList[j].targetDays+'</td>';
-							tableView+='<td>'+result[i].subList[j].complainceDays+'</td>';
-							if(result[i].subList[j].complaincePer == "100" || result[i].subList[j].complaincePer == 100){
-								tableView+='<td>1</td>';	
-								tableView+='<td>-</td>';	
-							}else{
-								tableView+='<td>-</td>';	
-								tableView+='<td>1</td>';	
-							}
-						tableView+='</tr>';
-					}					
-				}
-			tableView+='</tbody>';
-		tableView+='</table>';
+					if(result[i].subList[j].isComplaince == "False"){
+						totalNonCamplains = totalNonCamplains+1;
+					}else if(result[i].subList[j].isComplaince == "True"){
+						totalCamplains =totalCamplains+1;
+					}
+				}	
+			}
+		tottalCount =totalCamplains+totalNonCamplains;	
+		tableView+='<div class="row">';
+			tableView+='<div class="col-sm-3">';
+				tableView+='<h4 style="text-align:center;">TOTAL : '+tottalCount+'</h4>';
+				tableView+='<div id="toursGraphDivId" style="height:300px;"></div>';
+			tableView+='</div>';
+			tableView+='<div class="col-sm-9">';
+				tableView+='<table class="table table-hover tableStyledTour" id="toursTableId">';
+					tableView+='<thead class="text-capitalize bg-DD">';
+						tableView+='<th>Leader Name</th>';
+						tableView+='<th>Leader Designation</th>';
+						tableView+='<th>Target</th>';
+						tableView+='<th>Total Tours</th>';
+						tableView+='<th>Complaince</th>';
+						tableView+='<th>Non Complaince</th>';
+					tableView+='</thead>';
+					tableView+='<tbody>';
+						for(var i in result)
+						{
+							
+							for(var j in result[i].subList)
+							{
+								tableView+='<tr>';
+									tableView+='<td>'+result[i].subList[j].name+'</td>';
+									tableView+='<td>'+result[i].subList[j].designation+'</td>';
+									tableView+='<td>'+result[i].subList[j].targetDays+'</td>';
+									tableView+='<td>'+result[i].subList[j].complainceDays+'</td>';
+									if(result[i].subList[j].complaincePer >= 100){
+										tableView+='<td>1</td>';	
+										tableView+='<td>-</td>';	
+									}else{
+										tableView+='<td>-</td>';	
+										tableView+='<td>1</td>';	
+									}
+								tableView+='</tr>';
+							}	
+						}
+					tableView+='</tbody>';
+				tableView+='</table>';
+			tableView+='</div>';
+		tableView+='</div>';
 		$("#locationWiseTourMembersComplainceDtls").html(tableView);
-		$("#toursTableId").dataTable();
+		$("#toursTableId").dataTable({
+			"iDisplayLength": 5,
+			"aaSorting": [],
+			"aLengthMenu": [[5,10, 15, 20, -1], [5,10, 15, 20, "All"]]
+		});
+		var id = "toursGraphDivId";
+		var type = {
+			type: 'pie',
+			backgroundColor:'transparent',
+			options3d: {
+				enabled: true,
+				alpha: 25
+			}
+		};
+		var title = {
+			text: ''
+		};
+		var tooltip = {
+			useHTML: true,
+			backgroundColor: '#FCFFC5', 
+			formatter: function() {
+				var cnt = this.point.count;
+				return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>("+this.y+")</b>";
+			}  
+		}; 
+		var plotOptions ={
+			pie: {
+				innerSize: 140,
+				depth: 110,
+				dataLabels: {
+					enabled: false,
+					formatter: function() {
+						return (Highcharts.numberFormat(this.percentage,1)) + ' %';
+					},
+					distance: -20,
+					color:'#333'
+				},
+				showInLegend: true
+			},
+		};
+		var legend = {
+			enabled: true,
+			layout: 'vertical',
+			align: 'center',
+			verticalAlign: 'bottom',
+			useHTML: true,
+			
+			labelFormatter: function() {
+				return '<div><span style="color:'+this.color+'">'+this.name + '- <b>' + this.y + '</b></span></div>';
+			}
+		};
+		var data = [{
+			name: '',
+			data: [
+				{
+				  name: 'Total Complaince',
+				  y: totalCamplains,
+				  color:"#FF3A00"
+				},
+				{
+				  name: 'Total Non Complaince',
+				  y: totalNonCamplains,
+				  color:"#3BB878"
+				}
+			]
+		}];
+		highcharts(id,type,data,plotOptions,title,tooltip,legend);
 	}
 }
 function getGovtSchemeWiseBenefitMembersCount(){
@@ -3993,17 +4145,17 @@ function getDetailedElectionInformaction(){
 				str+='<tr>';
 					str+='<td>'+result[i].electionYear+'</td>';
 					if(result[i].candidateResultsVO.partyShortName == "TDP" || result[i].candidateResultsVO.partyShortName == "YSRC"){
-						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="party"/></td>';
+						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="'+result[i].candidateResultsVO.partyShortName+'"/></td>';
 					}else{
-						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="party"/></td>';
+						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="'+result[i].candidateResultsVO.partyShortName+'"/></td>';
 					}
 					
 					str+='<td>'+result[i].candidateResultsVO.candidateName+'</td>';
 					str+='<td>'+result[i].candidateResultsVO.votesEarned+'</td>';
 					if(result[i].candidateOppositionList[0].partyShortName == "TDP" || result[i].candidateOppositionList[0].partyShortName == "YSRC"){
-						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateOppositionList[0].partyShortName+'.PNG" alt="party"/></td>';
+						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateOppositionList[0].partyShortName+'.PNG" alt="'+result[i].candidateOppositionList[0].partyShortName+'"/></td>';
 					}else{
-						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateOppositionList[0].partyShortName+'.png" alt="party"/></td>';
+						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateOppositionList[0].partyShortName+'.png" alt="'+result[i].candidateOppositionList[0].partyShortName+'"/></td>';
 					}
 					str+='<td>'+result[i].candidateOppositionList[0].candidateName+'</td>';
 					
