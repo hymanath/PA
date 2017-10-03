@@ -255,55 +255,55 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
     		query.setParameterList("monthYearStrList", monthYearStrList);
     	return query.list();
     }
-    //This Dao used multiple place in (tour application,cadre profile,constituency page)
-    public List<Object[]> getCategoryWiseTargetCnt(List<Long> monthYearsIds,String type,List<Long> desinationIds){
-        StringBuilder queryStr = new StringBuilder();
-        queryStr.append(" select model.selfAppraisalDesignation.selfAppraisalDesignationId," +
-		 " model.selfAppraisalDesignation.designation," );
-        if(type.equalsIgnoreCase("tourCategory")){
-        	 queryStr.append(" model.selfAppraisalTourCategory.selfAppraisalTourCategoryId," +
-        			        " model.selfAppraisalTourCategory.tourCategory," );
-        }else{
-        	 queryStr.append(" model.tourType.tourTypeId," +
-        			         " model.tourType.tourType," );
-        }
-         queryStr.append(" model.selfAppraisalToursMonth.selfAppraisalToursMonthId," +
-         				" model.selfAppraisalToursMonth.monthName," +
-         				" sum(model.targetDays)," +
-         				" model.selfAppraisalToursMonth.year " +
-		 " from SelfAppraisalDesignationTarget model where model.isActive='Y' " +
-		 " and model.selfAppraisalDesignation.isActive='Y' ");
-       if(type.equalsIgnoreCase("tourCategory")){
-    	  queryStr.append(" and model.tourTypeId is null and model.selfAppraisalTourCategory.isDeleted='N' "); 
-       }else{
-    	   queryStr.append(" and model.selfAppraisalTourCategoryId is null "); 
-       }
-       if(monthYearsIds != null && monthYearsIds.size() > 0){
-    	   queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthYearids)");
-       }
-       if(desinationIds != null && desinationIds.size() > 0){
-           queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds)");	
-        }
-	    queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId,");  	 
-       if(type.equalsIgnoreCase("tourCategory")){
-    	 queryStr.append("model.selfAppraisalTourCategory.selfAppraisalTourCategoryId ");   
-       }else{
-    	   queryStr.append("model.tourType.tourTypeId");   
-       }
-       queryStr.append(",model.selfAppraisalToursMonth.selfAppraisalToursMonthId");
-       queryStr.append(" order by model.selfAppraisalDesignation.selfAppraisalDesignationId");
-       if(type.equalsIgnoreCase("tourCategory")){
-      	 queryStr.append(",model.selfAppraisalTourCategory.selfAppraisalTourCategoryId ");   
-         }else{
-      	   queryStr.append(",model.tourType.tourTypeId");   
-         }
-	    Query query = getSession().createQuery(queryStr.toString());
-	    if(monthYearsIds != null && monthYearsIds.size() > 0){
-     	   query.setParameterList("monthYearids", monthYearsIds);
-        }
-	    if(desinationIds != null && desinationIds.size() > 0){
-	    	  query.setParameterList("designationIds", desinationIds); 
-	    }
-       return query.list();
-}    
+    //This DAO used multiple place in (tour application,cadre profile,constituency page)
+	public List<Object[]> getCategoryWiseTargetCnt(List<Long> monthYearsIds,String type, List<Long> desinationIds) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.selfAppraisalDesignation.selfAppraisalDesignationId,"
+				+ " model.selfAppraisalDesignation.designation,");
+		if (type.equalsIgnoreCase("tourCategory")) {
+			queryStr.append(" model.selfAppraisalTourCategory.selfAppraisalTourCategoryId,"
+					+ " model.selfAppraisalTourCategory.tourCategory,");
+		} else {
+			queryStr.append(" model.tourType.tourTypeId,"
+					+ " model.tourType.tourType,");
+		}
+		queryStr.append(" model.selfAppraisalToursMonth.selfAppraisalToursMonthId,"
+				+ " model.selfAppraisalToursMonth.monthName,"
+				+ " sum(model.targetDays),"
+				+ " model.selfAppraisalToursMonth.year "
+				+ " from SelfAppraisalDesignationTarget model where model.isActive='Y' "
+				+ " and model.selfAppraisalDesignation.isActive='Y' ");
+		if (type.equalsIgnoreCase("tourCategory")) {
+			queryStr.append(" and model.tourTypeId is null and model.selfAppraisalTourCategory.isDeleted='N' ");
+		} else {
+			queryStr.append(" and model.selfAppraisalTourCategoryId is null ");
+		}
+		if (monthYearsIds != null && monthYearsIds.size() > 0) {
+			queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthYearids)");
+		}
+		if (desinationIds != null && desinationIds.size() > 0) {
+			queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds)");
+		}
+		queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId,");
+		if (type.equalsIgnoreCase("tourCategory")) {
+			queryStr.append("model.selfAppraisalTourCategory.selfAppraisalTourCategoryId ");
+		} else {
+			queryStr.append("model.tourType.tourTypeId");
+		}
+		queryStr.append(",model.selfAppraisalToursMonth.selfAppraisalToursMonthId");
+		queryStr.append(" order by model.selfAppraisalDesignation.selfAppraisalDesignationId");
+		if (type.equalsIgnoreCase("tourCategory")) {
+			queryStr.append(",model.selfAppraisalTourCategory.selfAppraisalTourCategoryId ");
+		} else {
+			queryStr.append(",model.tourType.tourTypeId");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		if (monthYearsIds != null && monthYearsIds.size() > 0) {
+			query.setParameterList("monthYearids", monthYearsIds);
+		}
+		if (desinationIds != null && desinationIds.size() > 0) {
+			query.setParameterList("designationIds", desinationIds);
+		}
+		return query.list();
+	}
 }

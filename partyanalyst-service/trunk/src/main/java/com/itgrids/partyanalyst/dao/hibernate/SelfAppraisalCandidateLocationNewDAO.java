@@ -113,7 +113,7 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		   }
 		   queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
 		   				  " SACL.selfAppraisalCandidate.selfAppraisalCandidateId, " +
-		   				  " SACL.locationScopeId");   
+		   				  " SACL.locationScopeId,SACL.locationValue ");   
 		   queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
 		   Query query = getSession().createQuery(queryStr.toString());	
 		   
@@ -219,67 +219,53 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
   			return query.list();    	       	  
        }
 	//Constituency Page Query
-	public List<Object[]> getLocationWiseTourMemberDetails(Long userAccessLevelId,Long locationTypeId,List<Long> locationValues,String year){
-		   StringBuilder queryStr = new StringBuilder();
-		   queryStr.append(" select  " +
-		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
-		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.designation," +//1
-		   				" SACL.selfAppraisalCandidate.selfAppraisalCandidateId," +//2
-		   				" SACL.selfAppraisalCandidate.tdpCadre.firstname," +//3 
-		   				" SACL.locationScopeId," +//4
-		   				" SACL.locationValue " +//5
-		   		   		" from " +
-				   		" SelfAppraisalCandidateLocationNew SACL " +
-				   		" where " +
-				   		" SACL.selfAppraisalCandidate.isActive = 'Y' and SACL.isDeleted='N' and " +  
-				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y'");
-		   
-		   if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
-	 	        if(locationTypeId == 4l){
-	 	        	queryStr.append(" and SACL.userAddress.constituency.constituencyId in(:locationValues) ");
-	 	        }else if(locationTypeId == 3l){
-	 	        	queryStr.append(" and SACL.userAddress.district.districtId in(:locationValues) ");
-	 	        }else if(locationTypeId == 5l){
-	 	        	queryStr.append(" and SACL.userAddress.tehsil.tehsilId in(:locationValues) ");
-	 	        }else if(locationTypeId == 6l){
-	 	        	queryStr.append(" and SACL.userAddress.panchayat.panchayatId in(:locationValues) ");
-	 	        }else if(locationTypeId == 10l){
-	 	        	queryStr.append(" and SACL.userAddress.parliamentConstituency.constituencyId in(:locationValues) ");
-	 	        }
-	 	    }
-		   if(year != null && !year.trim().isEmpty()){
-	 	    	queryStr.append(" and year(model.createdTime) =:year ");   
-	 	   }
-		   if(userAccessLevelId != null && userAccessLevelId.longValue()  > 0){
-			   queryStr.append(" and SACL.locationScopeId=:userAccessLevelId");
-		   }
-		   
-		   queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
-		   				  " SACL.selfAppraisalCandidate.selfAppraisalCandidateId, " +
-		   				  " SACL.locationScopeId");   
-		   queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
-		   
-		   Query query = getSession().createQuery(queryStr.toString());	
-		   
-		   if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
-	 	        if(locationTypeId == 4l){
-	 	        	query.setParameterList("locationValues", locationValues);
-	 	        }else if(locationTypeId == 3l){
-	 	        	query.setParameterList("locationValues", locationValues);
-	 	        }else if(locationTypeId == 5l){
-	 	        	query.setParameterList("locationValues", locationValues);
-	 	        }else if(locationTypeId == 6l){
-	 	        	query.setParameterList("locationValues", locationValues);
-	 	        }else if(locationTypeId == 10l){
-	 	        	query.setParameterList("locationValues", locationValues);
-	 	        }
-	 	    }
-		   if(year !=null && !year.trim().isEmpty()){
-	 			query.setParameter("year", Integer.parseInt(year));
-		   }
-		   if(userAccessLevelId != null && userAccessLevelId.longValue()  > 0){
-			   query.setParameter("userAccessLevelId", userAccessLevelId);
-		   }
-		   return query.list();  
-	   }
+	public List<Object[]> getLocationWiseTourMemberDetails(Long locationTypeId,
+			List<Long> locationValues) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select  "
+						+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId,"+// 0
+						" SACL.selfAppraisalCandidate.selfAppraisalDesignation.designation,"+ // 1
+						" SACL.selfAppraisalCandidate.selfAppraisalCandidateId,"+ // 2
+						" SACL.selfAppraisalCandidate.tdpCadre.firstname,"+ // 3
+						" SACL.locationScopeId,"+ // 4
+						" SACL.locationValue "+ // 5
+						" from "
+						+ " SelfAppraisalCandidateLocationNew SACL "
+						+ " where "
+						+ " SACL.selfAppraisalCandidate.isActive = 'Y' and SACL.isDeleted='N' and "
+						+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y'");
+
+		if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0) {
+
+			if (locationTypeId == 2l) { // STATE
+				queryStr.append(" and SACL.userAddress.state.stateId in(:locationValues) ");
+			} else if (locationTypeId == IConstants.DISTRICT_SCOPE_ID) {
+				queryStr.append(" and SACL.userAddress.district.districtId in(:locationValues) ");
+			} else if (locationTypeId == IConstants.CONSTITUENCY_SCOPE_ID) {
+				queryStr.append(" and SACL.userAddress.constituency.constituencyId in(:locationValues) ");
+			} else if (locationTypeId == IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID) {
+				queryStr.append(" and SACL.userAddress.parliamentConstituency.constituencyId in(:locationValues) ");
+			} else if (locationTypeId == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID) {
+				queryStr.append(" and SACL.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
+			}
+		}
+		if (locationTypeId != null && locationTypeId.longValue() > 0) {
+			queryStr.append(" and SACL.locationScopeId=:userAccessLevelId");
+		}
+
+		queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId,"
+				+ " SACL.selfAppraisalCandidate.selfAppraisalCandidateId, "
+				+ " SACL.locationScopeId,SACL.locationValue");
+		queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
+
+		Query query = getSession().createQuery(queryStr.toString());
+
+		if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0) {
+			query.setParameterList("locationValues", locationValues);
+		}
+		if (locationTypeId != null && locationTypeId.longValue() > 0) {
+			query.setParameter("userAccessLevelId", locationTypeId);
+		}
+		return query.list();
+	}
 }
