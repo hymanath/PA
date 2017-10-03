@@ -208,7 +208,7 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 				" tehsil.tehsilId,tehsil.tehsilName," +
 				" panchayat.panchayatId,panchayat.panchayatName," +
 				" localElectionBody.localElectionBodyId,localElectionBody.name," +
-				" ward.constituencyId,ward.name ,pr.candidateId  " +//21,22,23
+				" ward.constituencyId,ward.name ,pr.candidateId,party.partyFlag   " +//21,22,23,24
 				"from TdpCadreCandidate tcc ,PublicRepresentativeType prt ," +
 				"  PublicRepresentative pr  " +
 				" left join pr.userAddress.state state " +
@@ -219,6 +219,8 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 				" left join pr.userAddress.panchayat panchayat " +
 				" left join pr.userAddress.localElectionBody localElectionBody " +
 				" left join pr.userAddress.ward ward " +
+				" left join pr.nomination nomination " +
+				" left join nomination.party party " +
 				"  where " +
 				"  tcc.candidateId=pr.candidateId " +
 				" and pr.publicRepresentativeTypeId=prt.publicRepresentativeTypeId " +

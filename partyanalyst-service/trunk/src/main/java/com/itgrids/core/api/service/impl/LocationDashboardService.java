@@ -808,7 +808,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[20]));//20
 						}
 				//}
-						//vo.setPartyFlag(commonMethodsUtilService.getStringValueForObject(objects[24]));
+						vo.setPartyFlag(commonMethodsUtilService.getStringValueForObject(objects[24]));
 					List<CandidateInfoForConstituencyVO> locPosiCand = posiCandList.get(commonMethodsUtilService.getStringValueForObject(objects[3]));
 					if(locPosiCand == null || locPosiCand.size() == 0){
 						locPosiCand = new ArrayList<CandidateInfoForConstituencyVO>();
