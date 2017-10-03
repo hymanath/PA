@@ -1105,8 +1105,7 @@ function getCandidateAndPartyInfoForConstituency(){
 	$("#representativeMembersId").html(representative);
 	}
 function getCountsForConstituency(){
-	$("#levelWiseCountDivId").html(blockSpinner);
-	
+	$("#levelWiseCountDivId,#statelevelWiseCountDivId").html(blockSpinner);
 	var jsObj={
 			levelId		  		:locationLevelId,
 			levelValues		 	:userAccessLevelValuesArray,
@@ -1120,7 +1119,12 @@ function getCountsForConstituency(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null){
-			return buildCountsForConstituency(result);
+			if(locationLevelId == 2){
+				return buildCountsForStateLevel();
+			}else{
+				return buildCountsForConstituency(result);
+			}
+			
 		}else{
 			$("#levelWiseCountDivId").html(noData);
 		}
@@ -1128,8 +1132,11 @@ function getCountsForConstituency(){
 	function buildCountsForConstituency(results){
 		var str='';
 		str+='<div class="block">';
-		
-			 if(locationLevelId == 3)
+			
+			if(locationLevelId == 2){
+				str+='<h4 class="panel-title theme-title-color">Andhra Pradesh</h4>';
+			}
+			 else if(locationLevelId == 3)
 			{
 				str+='<h4 class="panel-title theme-title-color">'+$(".districtMenuName").text()+' DISTRICT level Wise Details</h4>';
 			}else if(locationLevelId == 4 || locationLevelId == 11)
@@ -1151,7 +1158,7 @@ function getCountsForConstituency(){
 			{
 				str+='<h4 class="panel-title theme-title-color">'+$(".panchayatMenuName").text()+' level Wise Details</h4>';
 			} 
-		
+			
 			str+='<table class="table table-bordered m_top15">';
 				str+='<tr>';
 					if(results.constituencyCount != null && results.constituencyCount >0){
@@ -1219,6 +1226,56 @@ function getCountsForConstituency(){
 		
 		
 		$("#levelWiseCountDivId").html(str);
+		$("#statelevelWiseCountDivId").html("");
+	}
+	
+	function buildCountsForConstituency(results){
+		var str='';
+		str+='<div class="block">';
+			str+='<h4 class="panel-title theme-title-color">Andhra Pradesh</h4>';
+			str+='<table class="table table-bordered m_top15">';
+				str+='<tr>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Constituencies</h4>';
+							str+='<h2>175</h2>';
+							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Mandals</h4>';
+							str+='<h2>673</h2>';
+							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Municipalities</h4>';
+							str+='<h2>131</h2>';
+							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Panchayats</h4>';	
+							str+='<h2>12975</h2>';
+							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Wards</h4>';
+							str+='<h2>3494</h2>';
+							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Booths</h4>';
+							str+='<h2>42399</h2>';
+							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h4 class="text-capitalize text-muted">Hamlets</h4>';
+							str+='<h2>50372</h2>';
+							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+						str+='</td>';
+				str+='</tr>';
+			str+='</table>';
+			
+		str+='</div>';
+		$("#statelevelWiseCountDivId").html(str);
+		$("#levelWiseCountDivId").html("");
 	}
 		 			
 }
@@ -1873,6 +1930,9 @@ function getActivityStatusList(){
 		var str = '';
 		str+='<div class="row">';
 			str+='<div class="col-sm-12">';
+				str+='<div class="col-sm-4">';
+					str+='<div id="activitiesBarGraphDivId" style="height:200px;"></div>';
+				str+='</div>';
 			for(var i in result){
 				str+='<div class="col-sm-4">';
 					str+='<h4>'+result[i].locationsList[0].description+'</h4>';
@@ -1908,6 +1968,84 @@ function getActivityStatusList(){
 			str+='</div>';
 		str+='</div>';
 		$("#activitesId").html(str);
+		/* var levelNamesArr=[];
+		if(result[0].constituencyList !=null && result[0].constituencyList.length>0){
+			for(var i in result[0].constituencyList){
+				levelNamesArr.push(result[0].constituencyList[i])
+			}
+		} */
+		/* var alertCnt = [];
+		var count = [];	
+		var levelNamesArr=[];
+			alertCnt = [];
+			count = [];
+			
+		for(var j in result[i].locationVotersVOList){
+			levelNamesArr.push(result[i].locationVotersVOList[j].castgroup);
+			 alertCnt.push({"y":result[i].locationVotersVOList[j].maleCadres});
+			 var uniqCnt = {"y":result[i].locationVotersVOList[j].totalCadres,color:"#D3D3D3"};
+			count.push(uniqCnt);
+		}
+		
+		$('#activitiesBarGraphDivId').highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: ''
+			},
+			xAxis: {
+				 min: 0,
+				 gridLineWidth: 0,
+				 minorGridLineWidth: 0,
+				 categories:levelNamesArr,
+				labels: {
+					enabled: false
+				}
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: ''
+				},
+			},
+			tooltip: {
+				formatter: function () {
+					var s = '<b>' + this.x + '</b><br/><b>Total:'+this.y+'</b>';
+							
+						$.each(this.points, function () {
+						if(this.series.name != "Series 1")  
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							this.y
+					});
+
+					return s;
+				},
+				shared: true
+			},
+			legend:{   
+				enabled: false,				
+				},				
+			plotOptions: {
+				column: {
+					stacking: 'percent',  
+					dataLabels:{
+						enabled: false
+					},
+					
+				},
+				
+			},
+			series: [{
+				data: count
+			}, {
+				name: "Completed Meetings",
+				data: alertCnt,
+				colorByPoint: true
+			}]
+		}); */
 	}
 }
 function getLocationTypeWiseCadreCount(enrollmentId){
@@ -4166,6 +4304,8 @@ function buildElectionInformationLocationWise(result,type){
 								for(var j in result[0].list){
 									if(result[0].list[j].electionType == "Assembly"){
 										str+='<th>'+result[0].list[j].electionYear+'   AC</th>';
+									}else if(result[0].list[j].electionType == "Parliament"){
+										str+='<th>'+result[0].list[j].electionYear+'   PC</th>';
 									}else{
 										str+='<th>'+result[0].list[j].electionYear+'   '+result[0].list[j].electionType+'</th>';
 									}
@@ -4193,7 +4333,7 @@ function buildElectionInformationLocationWise(result,type){
 		str+='</div>';
 		$("#electionDetailsTableWiseId").html(str);
 		$("#dataTableElecBlock").dataTable({
-			"iDisplayLength": 15,
+			"iDisplayLength": 10,
 			"aaSorting": [],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		});
