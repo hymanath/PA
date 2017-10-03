@@ -117,7 +117,7 @@ function onLoadAjaxCalls()
 	getEnrollmentIds(); 
 	getPublications();
 	//Committee
-	getLocationWiseCommitteesCount(4);
+	getLocationWiseCommitteesCount(2);
 	//Meetings
 	getLocationWiseMeetingsCount();
 	  //candidate Profiles 1st block
@@ -1979,25 +1979,16 @@ function getActivityStatusList(){
 		str+='</div>';
 		$("#activitesId").html(str);
 		var levelNamesArr=[];
+		var levelWiseCountArr = [];
+		var countArr = [];	
 		if(result[0].constituencyList !=null && result[0].constituencyList.length>0){
 			for(var i in result[0].constituencyList){
-				levelNamesArr.push(result[0].constituencyList[i])
+				levelNamesArr.push(result[0].constituencyList[i].name);
+				var uniqCnt = {"y":result[0].constituencyList[i].totalVoters,color:"#D3D3D3"};
+				levelWiseCountArr.push({"y":result[0].constituencyList[i].totalResult});
+				countArr.push(uniqCnt);
 			}
 		}
-		
-		/* var alertCnt = [];
-		var count = [];	
-		var levelNamesArr=[];
-			alertCnt = [];
-			count = [];
-			
-		for(var j in result[i].locationVotersVOList){
-			levelNamesArr.push(result[i].locationVotersVOList[j].castgroup);
-			 alertCnt.push({"y":result[i].locationVotersVOList[j].maleCadres});
-			 var uniqCnt = {"y":result[i].locationVotersVOList[j].totalCadres,color:"#D3D3D3"};
-			count.push(uniqCnt);
-		}
-		
 		$('#activitiesBarGraphDivId').highcharts({
 			chart: {
 				type: 'column'
@@ -2010,9 +2001,13 @@ function getActivityStatusList(){
 				 gridLineWidth: 0,
 				 minorGridLineWidth: 0,
 				 categories:levelNamesArr,
-				labels: {
-					enabled: false
-				}
+					labels: {
+						formatter: function() {
+							return this.value.toString().substring(0, 20)+'...';
+							
+						},
+						
+					}
 			},
 			yAxis: {
 				min: 0,
@@ -2050,13 +2045,13 @@ function getActivityStatusList(){
 				
 			},
 			series: [{
-				data: count
+				data: countArr
 			}, {
-				name: "Completed Meetings",
-				data: alertCnt,
+				name: "Completed",
+				data: levelWiseCountArr,
 				colorByPoint: true
 			}]
-		}); */
+		}); 
 	}
 }
 function getLocationTypeWiseCadreCount(enrollmentId){
@@ -2833,8 +2828,8 @@ function getLocationWiseCommitteesCount(yearId){
  		locationLevelVal = locationPanchayatVal.substring(1,panchayatId.length);
 	}
 	var jsObj={
-			locationType : locationLevelName,
-			locationId 	   : locationLevelVal,
+			locationType   : locationLevelName,
+			locationId 	   :locationLevelVal,
 			enrollmentId   : yearId
 		}
 	 $.ajax({
@@ -4234,9 +4229,12 @@ function getEnrollmentIds(){
 			}
 			
 		}
-		$("#enrolmentYears").html(selectBox);
+		//$("#enrolmentYears").html(selectBox);
 		$("#enrollmentCasteId").html(selectBox);
 		$("#enrollmentvoterId").html(selectBox);
+		//$("#enrolmentYears").trigger("chosen:updated");
+		$("#enrollmentCasteId").trigger("chosen:updated");
+		$("#enrollmentvoterId").trigger("chosen:updated");
 	});	
 }
 function setDefaultImage(img){
