@@ -887,3 +887,11 @@ ul li[menu-levelname='panchayat']:after .active
 {
 	background-color:#fff;
 }
+.tableStyledTour thead  th{
+	font-size:13px !important;
+	padding:5px !important;
+}
+.tableStyledTour tbody  tr td{
+	font-size:14px !important;
+	padding:5px !important;
+}

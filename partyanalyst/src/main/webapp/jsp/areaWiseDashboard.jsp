@@ -41,8 +41,8 @@
 			<li index="constituencyVoters">constituency voters</li>
 			<li index="casteInfo">caste information</li>
 			<li index="cadreInfor">cadre information</li>
-			<li index="ruralLocal">rural local body elections</li>
-			<li index="urbanLocal">urban local body elections</li>
+			<!--<li index="ruralLocal">rural local body elections</li>-->
+			<!--<li index="urbanLocal">urban local body elections</li>-->
 			<li index="news">news</li>
 			<li index="problems">problems</li>
 			<li index="committees">committees</li>
@@ -60,7 +60,7 @@
 	<div class="container">
 		<div class="row">
 		 	<div class="col-sm-12">
-				<h3 class="text-center text-capital"><span id="selectedMenuName" class="text-capital">Nellore District</span> Information</h3>
+				<h3 class="text-center text-capital"><span id="selectedMenuName" class="text-capital">Andhra Pradesh</span> Information</h3>
 				<ol class="breadcrumb m_top10" id="getMenuLocations" menu-location-state="1" menu-location-district="" menu-location-constituency="" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="2" menu-location-parliament="" menu-location-levelName="state" >
 					<li><i menu-name="state" class="fa fa-align-justify fa-1x"></i> <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>
 					<li style="display:none"><span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capital">Nellore</span></li>
@@ -287,12 +287,20 @@
 			
 			<div class="col-sm-12 m_top20" navbar-index="tours">
 				<div class="block">
-					<h4 class="panel-title theme-title-color">Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="tours"></i></span><small class="f-12" style="color:#777 !important;">Last Month Jan 2017</small></h4>
+					<h4 class="panel-title theme-title-color">Tours
+						<span class="pull-right" style="margin-top: 10px;">
+							<i class="glyphicon glyphicon-refresh f-14" refresh="tours"></i>
+						</span>
+						<div class="input-group pull-right dateRangePickerClsForMeetings" expand-block-date="tours" style="width:200px;margin-right:12px;">
+							<input type="text" id="tourNewDateRangePickerId" style="width:190px" class="form-control"/>
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</div>
+					</h4>
 					<div id="locationWiseTourMembersComplainceDtls" class="m_top15"></div>
 				</div>
 			</div>
-			
-			
 			<div class="col-sm-12 m_top20" navbar-index="benefits">
 				<div class="block">
 					<h4 class="panel-title theme-title-color">Benefits<span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="benefits"></i></span></h4>
@@ -309,7 +317,17 @@
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="alerts">
 				<div class="block">
-					<h4 class="panel-title theme-title-color">Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="alerts"></i></span></h4>
+					<h4 class="panel-title theme-title-color">Alerts
+						<span class="pull-right" style="margin-top: 10px;">
+							<i class="glyphicon glyphicon-refresh f-14" refresh="alerts"></i>
+						</span>
+						<div class="input-group pull-right dateRangePickerClsForMeetings" expand-block-date="alerts" style="width:200px;margin-right:12px;">
+							<input type="text" id="alertNewDateRangePickerId" style="width:190px" class="form-control"/>
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</div>
+					</h4>
 					<div class="row">
 							<div class="col-sm-12">
 								<ul class="list-inline switch-btn alertCategoryWiseCls pull-right m_top5">
