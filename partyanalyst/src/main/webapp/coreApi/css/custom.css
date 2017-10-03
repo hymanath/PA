@@ -518,6 +518,11 @@ label
 	right: 0px;
 	bottom: 10px;
 }
+.media-profile .border-image img
+{
+	height:20px;
+	width:20px;
+}
 .img-border
 {
 	border: 2px solid #333;
@@ -848,10 +853,12 @@ ul li[menu-levelname='panchayat']:after .active
 	cursor:pointer;
 }
 .mpMlaRoundedCss{
-	border: 1px solid #777; 
+	border: 1px solid #777;
 	text-align: center;
 	border-radius: 100%;
-	padding: 15px;;
+	height: 50px;
+	width: 50px;
+	padding: 13px 0px;
 }
 .media_width{
 	width:100%;
@@ -864,6 +871,8 @@ ul li[menu-levelname='panchayat']:after .active
     border: 1px solid #ddd;
     border-radius: 4px;
 	padding:2px;
+	height: 20px;
+	width: 20px;
 }
 .input-group .form-control
 {

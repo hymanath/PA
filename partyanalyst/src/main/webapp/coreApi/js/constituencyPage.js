@@ -5,8 +5,9 @@
 		wurl = url.substr(0,(url.indexOf(".in")+3));	
 // please do not try to edit these options which may cause the entire page to stop working.	
 //var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="square-to-circle"></div></div></div></div>';
-var blockSpinner = '<div class="row"><div class="col-sm-12"><div class="block m_top10"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div></div>';
+var spinner = '<div class="row"><div class="col-sm-12"><div class="square-to-circle"></div></div></div>';
+//var blockSpinner = '<div class="row"><div class="col-sm-12"><div class="block m_top10"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div></div>';
+var blockSpinner = '<div class="row"><div class="col-sm-12"><div class="block m_top10"><div class="square-to-circle"></div></div></div></div>';
 var noData = "<div class='col-sm-12'><h5>NO DATA AVAILABLE</h5></div>";
 var globalCasteColorObj = {"BC":"#867DC0","Minority":"#99CC67","SC":"#65A7E1","ST":"#7DC1C2","OC":"#E58D45"};
 var globalColorNews = {"Without Money":"#F36E8F","<10L":"#0C9516",">10L":"#8E4654","State Wide Issue":"#FE9900"};
@@ -1931,7 +1932,7 @@ function getActivityStatusList(){
 		var str = '';
 		str+='<div class="row">';
 			str+='<div class="col-sm-12">';
-				str+='<div class="col-sm-4">';
+				str+='<div class="col-sm-8">';
 					str+='<div id="activitiesBarGraphDivId" style="height:200px;"></div>';
 				str+='</div>';
 			for(var i in result){
@@ -1969,12 +1970,13 @@ function getActivityStatusList(){
 			str+='</div>';
 		str+='</div>';
 		$("#activitesId").html(str);
-		/* var levelNamesArr=[];
+		var levelNamesArr=[];
 		if(result[0].constituencyList !=null && result[0].constituencyList.length>0){
 			for(var i in result[0].constituencyList){
 				levelNamesArr.push(result[0].constituencyList[i])
 			}
-		} */
+		}
+		
 		/* var alertCnt = [];
 		var count = [];	
 		var levelNamesArr=[];
@@ -4472,7 +4474,7 @@ $(document).on('click','.candidateRedirectPage',function(){
 });
 function getPartyWiseMPandMLACandidatesCounts(){
 	$("#statelevelMPMLAId").html(spinner);
-  var jsObj={
+	var jsObj={
        electionIds    		:[258,260],
        loctionValue   		:1,
        loactionTypeId   	:2,
@@ -4497,78 +4499,80 @@ function getPartyWiseMPandMLACandidatesCounts(){
 	  
 	  var str='';
 	  str+='<div class="col-sm-12">';
-		str+='<ul class="list-inline" style="margin-bottom:10px;">';
-			str+='<li class="m_top10">';
-			str+='<div class="media">';
-				str+='<div class="media-left">';
-					str+='<h4 class="mpMlaRoundedCss">MP</h4>';
-				str+='</div>';
-					str+='<div class="media-body media_width">';
-						str+='<h4 class="m_top10 f-16">Member Of Parliament</h4>';
+		str+='<div class="block">';
+			str+='<ul class="list-inline" style="margin-bottom:10px;">';
+				str+='<li class="m_top10">';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+						str+='<h4 class="mpMlaRoundedCss">MP</h4>';
 					str+='</div>';
-				str+='</div>';
-			str+='</li>';
-			if(result.subList !=null && result.subList.length>0){
-				for(var i in result.subList){
-					str+='<li class="m_top10">';
-						str+='<div class="media">';
-						str+='<div class="media-left">';
-							str+='<h4 class="mpMlaRoundedCss">'+result.subList[i].condidateCount+'</h4>';
+						str+='<div class="media-body media_width">';
+							str+='<p class="m_top10 f-14">Member Of Parliament</p>';
 						str+='</div>';
-							str+='<div class="media-body media_width">';
-								if(result.subList[i].party == "BJP"){
-									str+='<h4 class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</h4>';
-								}else if(result.subList[i].party == "Others"){
-									str+='<h4 class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" style="width:30px;"/> '+result.subList[i].party+'</h4>';
-								}else{
-									str+='<h4 class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</h4>';
-								}
-								//str+='<p class="f-10">Telugu Desam Party</p>';
+					str+='</div>';
+				str+='</li>';
+				if(result.subList !=null && result.subList.length>0){
+					for(var i in result.subList){
+						str+='<li class="m_top10">';
+							str+='<div class="media">';
+							str+='<div class="media-left">';
+								str+='<h4 class="mpMlaRoundedCss">'+result.subList[i].condidateCount+'</h4>';
 							str+='</div>';
-						str+='</div>';
-					str+='</li>';
+								str+='<div class="media-body media_width">';
+									if(result.subList[i].party == "BJP"){
+										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
+									}else if(result.subList[i].party == "Others"){
+										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p>';
+									}else{
+										str+='<p class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
+									}
+									//str+='<p class="f-10">Telugu Desam Party</p>';
+								str+='</div>';
+							str+='</div>';
+						str+='</li>';
+					}
+					
 				}
-				
-			}
-		str+='</ul>';
-		
-		str+='<hr class="m_0"/>';
-		str+='<ul class="list-inline">';
-			str+='<li class="m_top10">';
-			str+='<div class="media">';
-				str+='<div class="media-left">';
-					str+='<h4 class="mpMlaRoundedCss">MLA</h4>';
-				str+='</div>';
-					str+='<div class="media-body media_width">';
-						str+='<h4 class="m_top10 f-16">Member Of <br/>Legislative Assembly</h4>';
-					str+='</div>';
-				str+='</div>';
-			str+='</li>';
+			str+='</ul>';
 			
-			if(result.subList2 !=null && result.subList2.length>0){
-				for(var i in result.subList2){
-					str+='<li class="m_top10">';
-						str+='<div class="media">';
-						str+='<div class="media-left">';
-							str+='<h4 class="mpMlaRoundedCss">'+result.subList2[i].condidateCount+'</h4>';
+			str+='<hr class="m_0"/>';
+			str+='<ul class="list-inline">';
+				str+='<li class="m_top10">';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+						str+='<h4 class="mpMlaRoundedCss">MLA</h4>';
+					str+='</div>';
+						str+='<div class="media-body media_width">';
+							str+='<p class="m_top10 f-14">Member Of <br/>Legislative Assembly</p>';
 						str+='</div>';
-							str+='<div class="media-body media_width">';
-							if(result.subList2[i].party == "BJP"){
-								str+='<h4 class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList2[i].party+'</h4>';
-							}else if(result.subList2[i].party == "Others"){
-								str+='<h4 class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" style="width:30px;"/> '+result.subList2[i].party+'</h4>';
-							}else{
-								str+='<h4 class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" /> '+result.subList2[i].party+'</h4>';
-							}
-								
-								//str+='<p class="f-10">Telugu Desam Party</p>';
-							str+='</div>';
-						str+='</div>';
-					str+='</li>';
-				}
+					str+='</div>';
+				str+='</li>';
 				
-			}
-		str+='</ul>';
+				if(result.subList2 !=null && result.subList2.length>0){
+					for(var i in result.subList2){
+						str+='<li class="m_top10">';
+							str+='<div class="media">';
+							str+='<div class="media-left">';
+								str+='<h4 class="mpMlaRoundedCss">'+result.subList2[i].condidateCount+'</h4>';
+							str+='</div>';
+								str+='<div class="media-body media_width">';
+								if(result.subList2[i].party == "BJP"){
+									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
+								}else if(result.subList2[i].party == "Others"){
+									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList2[i].party+'</p>';
+								}else{
+									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" /> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
+								}
+									
+									//str+='<p class="f-10">Telugu Desam Party</p>';
+								str+='</div>';
+							str+='</div>';
+						str+='</li>';
+					}
+					
+				}
+			str+='</ul>';
+		str+='</div>';
 	  str+='</div>';
 	  $("#statelevelMPMLAId").html(str);
   }
