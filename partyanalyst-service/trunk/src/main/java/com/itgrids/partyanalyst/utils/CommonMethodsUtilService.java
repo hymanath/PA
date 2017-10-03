@@ -34,6 +34,7 @@ import org.jfree.util.Log;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -934,37 +935,37 @@ public class CommonMethodsUtilService {
 		  * @Description :This Service Method id used for  sort party wise vos
 		  * @since 03-10-2017
 		  */
-		public static List<BasicVO> sortPartyVoList(List<BasicVO> list){
-			List<BasicVO> returnList = new ArrayList<BasicVO>(0);
+		public static void sortPartyVoList(List<CandidateDetailsForConstituencyTypesVO> list){
+			
 			try {
-				Map<String,BasicVO> levelMap=new HashMap<String,BasicVO>(0);
-				for(BasicVO vo : list){
-					levelMap.put(vo.getName().trim().toUpperCase(), vo);
+				Map<String,CandidateDetailsForConstituencyTypesVO> levelMap=new HashMap<String,CandidateDetailsForConstituencyTypesVO>(0);
+				for(CandidateDetailsForConstituencyTypesVO vo : list){
+					levelMap.put(vo.getParty().trim().toUpperCase(), vo);
 				}
+				list.clear();
 				if(levelMap.containsKey("TDP")){
-					returnList.add(levelMap.get("TDP"));
+					list.add(0,levelMap.get("TDP"));
 				}else if(levelMap.containsKey("TDP/BJP")){
-						returnList.add(levelMap.get("TDP/BJP"));
+					list.add(0,levelMap.get("TDP/BJP"));
 				}
 				
 				if(levelMap.containsKey("BJP")){
-					returnList.add(levelMap.get("BJP"));
+					list.add(1,levelMap.get("BJP"));
 				}
 				if(levelMap.containsKey("YCP")){
-					returnList.add(levelMap.get("YCP"));
+					list.add(2,levelMap.get("YCP"));
 				}else if(levelMap.containsKey("YSRC")){
-						returnList.add(levelMap.get("YSRC"));
+					list.add(2,levelMap.get("YSRC"));
 					}
 				if(levelMap.containsKey("INC")){
-					returnList.add(levelMap.get("INC"));
-				}
-				if(levelMap.containsKey("OTHERS")){
-					returnList.add(levelMap.get("OTHERS"));
+					list.add(3,levelMap.get("INC"));
+				}else if(levelMap.containsKey("OTHERS")){
+					list.add(3,levelMap.get("OTHERS"));
 				}
 			} catch (Exception e) {
 				LOG.error("Exception Occured in sortPartyVoList() Method");
 
 			}
-			return returnList;
+			
 		}
 }
