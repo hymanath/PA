@@ -4159,7 +4159,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 										str+='<h5 class="m_top20">'+result.subList[i].status+' <br/>Alerts</h5>';
 										
 										if(result.subList[i].count !=null && result.subList[i].count>0){
-											str+='<h4 class="m_top20">'+result.subList[i].count+'%</h4>';
+											str+='<h4 class="m_top20">'+result.subList[i].count+'</h4>';
 										}else{
 											str+='<h4 class="m_top20"> - </h4>';
 										}
