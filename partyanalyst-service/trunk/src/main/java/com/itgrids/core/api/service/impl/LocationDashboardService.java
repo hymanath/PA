@@ -3092,12 +3092,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 			
-			BasicVO returnVo = new BasicVO();			
+						
 			if(commonMethodsUtilService.isMapValid(actMap)){
 				for (String level : actMap.keySet()) {
+					BasicVO returnVo = new BasicVO();
 					returnVo.getLocationsList().addAll(actMap.get(level.trim()));
+					returnList.add(returnVo);
 				}
-				returnList.add(returnVo);
 			}
 			
 		}catch(Exception e){
