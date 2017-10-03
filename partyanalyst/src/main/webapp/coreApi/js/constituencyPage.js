@@ -9,7 +9,7 @@ var blockSpinner = '<div class="row"><div class="col-sm-12"><div class="block m_
 var noData = "<div class='col-sm-12'><h5>NO DATA AVAILABLE</h5></div>";
 var globalCasteColorObj = {"BC":"#867DC0","Minority":"#99CC67","SC":"#65A7E1","ST":"#7DC1C2","OC":"#E58D45"};
 var globalColorNews = {"Without Money":"#F36E8F","<10L":"#0C9516",">10L":"#8E4654","State Wide Issue":"#FE9900"};
-var globalFromDate = moment().subtract(1,'year').format("DD/MM/YYYY");
+var globalFromDate = moment().subtract(3,'year').format("DD/MM/YYYY");
 var globalToDate = moment().format("DD/MM/YYYY");
 var propertyIdGlobalStr=[26,28,29,32];
 var stateId = $("#getMenuLocations").attr("menu-location-state");
@@ -1014,10 +1014,10 @@ function getCandidateAndPartyInfoForConstituency(){
 													stateLevel+='</h4>';
 													stateLevel+='<p class="text-muted text-capital m_left7 f_12" style="margin-bottom:5px">'+result[i].designation+' of AP</p>';
 													
-													if(result[i].tdpCadreId !=null && result[i].tdpCadreId>0){
-														stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].tdpCadreId+'">View Candidate Profile</span>';
+													if(result[i].cadreId !=null && result[i].cadreId>0){
+														stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>';
 													}else{
-														stateLevel+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].candidateId+'">View Candidate Profile</span>';
+														stateLevel+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].condidateId+'">View Candidate Profile</span>';
 													}
 												stateLevel+='</div>';
 											stateLevel+='</div>';
@@ -1739,22 +1739,22 @@ function buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName){
 			str+='<tr>';
 				str+='<td class="casteCategoryGroupWiseClickCls" attr_caste_id="'+result[i].ageRangeId+'" attr_caste_group_id="'+casteGroupId+'" attr_caste_name="'+result[i].ageRange+'" style="color:#337ab7;cursor:pointer;">'+result[i].ageRange+'</td>';
 				str+='<td>'+result[i].totalVoters+'</td>';
-				str+='<td class="text-success">'+result[i].totalVotersPerc+' %</td>';
+				str+='<td class="text-success">'+result[i].totalVotersPerc+'</td>';
 				
 				str+='<td>'+result[i].totalCadres+'</td>';
-				str+='<td class="text-success">'+result[i].totalCadrePerc+' %</td>';
+				str+='<td class="text-success">'+result[i].totalCadrePerc+'</td>';
 				
 				str+='<td>'+result[i].maleVoters+'</td>';
-				str+='<td class="text-success">'+result[i].maleVotersPerc+' %</td>';
+				str+='<td class="text-success">'+result[i].maleVotersPerc+'</td>';
 				
 				str+='<td>'+result[i].maleCadres+'</td>';
-				str+='<td class="text-success">'+result[i].maleCadrePerc+' %</td>';
+				str+='<td class="text-success">'+result[i].maleCadrePerc+'</td>';
 				
 				str+='<td>'+result[i].femaleVoters+'</td>';
-				str+='<td class="text-success">'+result[i].femaleVotersPerc+' %</td>';
+				str+='<td class="text-success">'+result[i].femaleVotersPerc+'</td>';
 				
 				str+='<td>'+result[i].femaleCadres+'</td>';
-				str+='<td class="text-success">'+result[i].femaleCadrePerc+' %</td>';
+				str+='<td class="text-success">'+result[i].femaleCadrePerc+'</td>';
 				
 			str+='</tr>';
 		}
