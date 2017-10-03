@@ -4548,7 +4548,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 								str+='<div class="media-body media_width">';
 									if(result.subList[i].party == "BJP"){
 										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
-									}else if(result.subList[i].party == "Others"){
+									}else if(result.subList[i].party == "OTHERS"){
 										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p>';
 									}else{
 										str+='<p class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
@@ -4585,7 +4585,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 								str+='<div class="media-body media_width">';
 								if(result.subList2[i].party == "BJP"){
 									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
-								}else if(result.subList2[i].party == "Others"){
+								}else if(result.subList2[i].party == "OTHERS"){
 									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList2[i].party+'</p>';
 								}else{
 									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" /> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
