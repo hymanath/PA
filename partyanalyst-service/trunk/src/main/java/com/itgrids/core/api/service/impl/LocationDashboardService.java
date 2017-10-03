@@ -2609,7 +2609,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		List<Object[]> censusPopList = new ArrayList<Object[]>();
 		List<Long> yearList = new ArrayList<Long>();
 		if(type.equalsIgnoreCase("constituency")){
-			if(locationTypeId == 3l){
+			if(locationTypeId == 2l){
+				censusPopList.clear();
+				yearList.add(2011l);
+				censusPopList=censusDAO.getDistrictPopulationForDifferentYears(locationValue, yearList);
+				//censusPopList = boothDAO.getTotalVotersForLocations(locationIdSet,locationTypeId,publicationDateId);
+			}else if(locationTypeId == 3l){
 				censusPopList.clear();
 				yearList.add(2011l);
 				censusPopList=censusDAO.getDistrictPopulationForDifferentYears(locationValue, yearList);
@@ -4343,7 +4348,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			if(mpPartyCountDetails != null && mpPartyCountDetails.size()>0){
 				 for(Object[] param : mpPartyCountDetails){
 					 Long partyId = commonMethodsUtilService.getLongValueForObject(param[1]);
-					 if(partyId == 163 || partyId == 872 || partyId == 1117){
+					 if(partyId.longValue() == 163L || partyId.longValue() == 872L || partyId.longValue() == 1117L){
 					   partCountVo=countMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
 					   if(partCountVo == null){
 						   partCountVo =new CandidateDetailsForConstituencyTypesVO();
@@ -4360,13 +4365,13 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 						   }
 					   }
 					 }else{
-						 partCountVo=countMap.get(0);
+						 partCountVo=countMap.get(0L);
 						   if(partCountVo == null){
 							   partCountVo =new CandidateDetailsForConstituencyTypesVO();
 							   partCountVo.setScopeId(commonMethodsUtilService.getLongValueForObject(param[0]));
 							   partCountVo.setPartyId(0l);
 							   partCountVo.setParty("Others");
-							   countMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),partCountVo);
+							   countMap.put(0L,partCountVo);
 							   if(type != null && type.equalsIgnoreCase("parlaiment")){
 							   mpList.add(partCountVo);
 							   finalVO.setSubList(mpList);

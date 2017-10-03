@@ -28,20 +28,28 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 				        " GovtSchemeBenefitsInfo model " +
 				        " where ");
 		if(locationType != null && locationType.longValue()>0l && locationType.longValue() != 10l){
-			queryStr.append(" model.locationScopeId =:locationType and ");
+			if(locationType.longValue() == 2l){
+				queryStr.append(" model.locationScopeId =3 and ");
+			}else{
+				queryStr.append(" model.locationScopeId =:locationType and ");
+			}
 		}
 		if(locationValue != null && locationValue.longValue()>0l && locationType.longValue() != 10l){
-			queryStr.append("  model.locationValue =:locationValue  ");
+			if(locationType.longValue() == 2l){
+				queryStr.append("  model.locationValue between 11 and 23  ");
+			}else{
+				queryStr.append("  model.locationValue =:locationValue  ");
+			}
 		}else if(locationType != null && locationType.longValue() == 10l && constituencyIds != null && constituencyIds.size()>0){
 			queryStr.append("  model.locationValue in(:constituencyIds)  ");
 		}
 		queryStr.append(" group by model.govtSchemes.govtSchemesId");
 		
 		Query query = getSession().createQuery(queryStr.toString());
-		if(locationType != null && locationType.longValue()>0l && locationType.longValue() != 10l){
+		if(locationType != null && locationType.longValue()>0l && locationType.longValue() != 10l && locationType.longValue() != 2l){
 			query.setParameter("locationType", locationType);
 		}
-		if(locationValue != null && locationValue.longValue()>0l && locationType.longValue() != 10l){
+		if(locationValue != null && locationValue.longValue()>0l && locationType.longValue() != 10l && locationType.longValue() != 2l){
 			query.setParameter("locationValue", locationValue);
 		}else if(locationType != null && locationType.longValue() == 10l && constituencyIds != null && constituencyIds.size()>0){
 			query.setParameterList("constituencyIds", constituencyIds);
@@ -53,7 +61,9 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 		
 		queryStr.append(" select " );
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
-			if (locationType == 3l || locationType == 10l) {
+			if (locationType == 2l ) {
+				queryStr.append(" constituency.district.districtId,constituency.district.districtName, ");
+			}else if (locationType == 3l || locationType == 10l) {
 				queryStr.append(" constituency.constituencyId,constituency.name, ");
 			}else if (locationType == 4l) {
 				queryStr.append(" tehsil.tehsil.tehsilId,tehsil.tehsil.tehsilName, ");
@@ -76,7 +86,9 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 				        " GovtSchemeBenefitsInfo model " );
 				       // " where " );
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
-			if (locationType == 3l) {
+			if (locationType == 2l) {
+				queryStr.append(" ,Constituency constituency where  model.locationValue=constituency.district.districtId and model.locationValue between 11 and 23  ");
+			}else if (locationType == 3l) {
 				queryStr.append(" ,Constituency constituency where  model.locationValue=constituency.district.districtId and model.locationValue=:locationValue ");
 			}else if (locationType == 10l && constituencyIds != null && constituencyIds.size()>0) {
 				queryStr.append(" ,Constituency constituency where  model.locationValue=constituency.constituencyId and model.locationValue in(:constituencyIds) ");
@@ -98,7 +110,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 		}
 		
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
-			if (locationType == 3l) {
+			if (locationType == 3l || locationType == 2l) {
 				queryStr.append(" group by constituency.district.districtId ");
 			}else if (locationType == 10l && constituencyIds != null && constituencyIds.size()>0) {
 				queryStr.append(" group by constituency.constituencyId ");
@@ -118,7 +130,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
-		if (locationValue != null && locationValue.longValue() > 0l && locationType != 10l) {
+		if (locationValue != null && locationValue.longValue() > 0l && locationType != 10l && locationType != 2l) {
 			query.setParameter("locationValue", locationValue);
 		}else if (locationValue != null && locationValue.longValue() > 0l && locationType != null && locationType == 10l && constituencyIds != null && constituencyIds.size()>0) {
 			query.setParameterList("constituencyIds", constituencyIds);

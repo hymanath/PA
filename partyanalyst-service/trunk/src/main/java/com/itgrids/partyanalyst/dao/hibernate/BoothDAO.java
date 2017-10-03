@@ -3204,7 +3204,9 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select sum(model.totalVoters)  " );
-				if(locationTypeId != null && (locationTypeId == 3l || locationTypeId == 10l)){
+				if(locationTypeId != null && locationTypeId == 2l){
+					sb.append(" ,model.constituency.district.districtId  ");
+				}else if(locationTypeId != null && (locationTypeId == 3l || locationTypeId == 10l)){
 					sb.append(" ,model.constituency.constituencyId  ");
 				}else if(locationTypeId != null && locationTypeId == 4l){
 					sb.append(" ,model.tehsil.tehsilId ");
@@ -3221,7 +3223,9 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 					sb.append("  model.publicationDate.publicationDateId = :publicationDateId ");
 				}
 		
-				if(locationTypeId != null && (locationTypeId == 3l || locationTypeId == 10l)){
+				if(locationTypeId != null && locationTypeId == 2l){
+					sb.append(" and model.constituency.district.districtId in (:locationIdSet) ");
+				}else if(locationTypeId != null && (locationTypeId == 3l || locationTypeId == 10l)){
 					sb.append("  and model.constituency.constituencyId in (:locationIdSet) ");
 				}else if(locationTypeId != null && locationTypeId == 4l){
 					sb.append(" and model.tehsil.tehsilId in (:locationIdSet) ");
@@ -3233,7 +3237,9 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 					sb.append(" and model.localBodyWard.constituencyId in (:locationIdSet) ");
 				}
 		
-		if(locationTypeId != null && (locationTypeId == 3l || locationTypeId == 10l)){
+		if(locationTypeId != null && locationTypeId == 2l){
+			sb.append(" group by model.constituency.district.districtId  ");
+		}else  if(locationTypeId != null && (locationTypeId == 3l || locationTypeId == 10l)){
 			sb.append(" group by model.constituency.constituencyId  ");
 		}else if(locationTypeId != null && locationTypeId == 4l){
 			sb.append(" group by model.tehsil.tehsilId ");
