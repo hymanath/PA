@@ -3175,7 +3175,9 @@ function getMandalWiseBenefitMembersCount(id){
 			navTabBody+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 				navTabBody+='<table class="table table-noborder">';
 					navTabBody+='<thead class="text-capitalize bg-DD">';
-					if(locationLevelId == 3 || locationLevelId == 10){
+					if(locationLevelId == 2 ){
+						navTabBody+='<th>State Name</th>';
+					}else if(locationLevelId == 3 || locationLevelId == 10){
 						navTabBody+='<th>Constituency Name</th>';
 					}else if(locationLevelId == 4){
 						navTabBody+='<th>Mandal Name</th>';
