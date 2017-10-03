@@ -3684,7 +3684,7 @@ function getNominatedPostStatusWiseCount(){
 }
 function getLocationWiseInsuranceStatusCount(yearId){
 	$("#insuranceDetails").html(spinner);
-	
+	$("#insuranceTotalCount").html("Total Count - ");
 	var jsObj={
 			"fromDate" 			: globalFromDate,
 			"toDate"			: globalToDate,
@@ -3709,6 +3709,7 @@ function getLocationWiseInsuranceStatusCount(yearId){
 	function buildGraph(result){
 		if(result !=null){
 				var mainArr=[];
+				var insuranceTotalCount = 0;
 				for(var j in result.subList){
 					var colorsId = insuranceColorObj[result.subList[j].name.trim()];
 					var obj1 = {
@@ -3717,7 +3718,9 @@ function getLocationWiseInsuranceStatusCount(yearId){
 						color:colorsId
 					}
 					mainArr.push(obj1);
+					insuranceTotalCount = insuranceTotalCount + result.subList[j].count;
 				}
+				$("#insuranceTotalCount").html("Total Count - "+insuranceTotalCount);
 				var id = 'insuranceDetails';
 				var type = {
 					type: 'pie',
@@ -3773,7 +3776,7 @@ function getLocationWiseInsuranceStatusCount(yearId){
 }
 function getLocationWiseGrivanceTrustStatusCounts(yearId){
 	$("#grivanceId0,#grivanceId1").html(spinner);
-	
+	$("#totalGrievanceCount,#NtrTrustTotalCount").html('Total Count - ');
 	var jsObj={
 			"fromDate" : globalFromDate,
 			"toDate":globalToDate,
@@ -3811,6 +3814,7 @@ function getLocationWiseGrivanceTrustStatusCounts(yearId){
 			for(var i in result){
 				var mainArr=[];
 				if(result[i].grivenceType == "Grivence"){
+					var totalGrievanceCount = 0;
 					for(var j in result[i].subList){
 						var colorsId = grivanceColorObj[result[i].subList[j].name.trim()];
 						var obj = {
@@ -3819,8 +3823,11 @@ function getLocationWiseGrivanceTrustStatusCounts(yearId){
 							color:colorsId
 						}
 						mainArr.push(obj);
+						totalGrievanceCount = totalGrievanceCount + result[i].subList[j].count;
 					}
+					$("#totalGrievanceCount").html('Total Count - '+totalGrievanceCount);
 				}else if(result[i].grivenceType == "NTR Trust"){
+					var NtrTrustTotalCount = 0;
 					for(var j in result[i].subList){
 						var colorsId = grivanceColorObj[result[i].subList[j].name.trim()];
 						var obj1 = {
@@ -3829,7 +3836,9 @@ function getLocationWiseGrivanceTrustStatusCounts(yearId){
 							color:colorsId
 						}
 						mainArr.push(obj1);
+						NtrTrustTotalCount = NtrTrustTotalCount + result[i].subList[j].count;
 					}
+					$("#NtrTrustTotalCount").html('Total Count - '+NtrTrustTotalCount);
 				}
 				
 				var id = 'grivanceId'+i;
@@ -4387,7 +4396,6 @@ function buildElectionInformationLocationWise(result,type){
 						data: wonSeatsCountArr
 					}
 					mainDataArr.push(obj)
-					console.log(wonSeatsCountArr)
 			}
 			
 		$(".electionDetailsGraphHeight").css("height","500px !important;");

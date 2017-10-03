@@ -454,6 +454,10 @@ label
 }
 .list-border
 {
+	padding-left:0px;
+}
+.list-border
+{
 	table-layout: fixed;
 	width: 100%;
 	display: table;
@@ -465,6 +469,7 @@ label
 	text-align: center;
 	display: table-cell;
 	width: auto;
+	word-wrap: break-word;
 }
 .list-border li:last-child
 {
