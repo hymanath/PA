@@ -61,7 +61,7 @@
 		<div class="row">
 		 	<div class="col-sm-12">
 				<h3 class="text-center text-capital"><span id="selectedMenuName" class="text-capital">Nellore District</span> Information</h3>
-				<ol class="breadcrumb m_top10" id="getMenuLocations" menu-location-state="1" menu-location-district="" menu-location-constituency="" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="2" menu-location-parliament="" menu-location-levelName="district" >
+				<ol class="breadcrumb m_top10" id="getMenuLocations" menu-location-state="1" menu-location-district="" menu-location-constituency="" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="2" menu-location-parliament="" menu-location-levelName="state" >
 					<li><i menu-name="state" class="fa fa-align-justify fa-1x"></i> <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>
 					<li style="display:none"><span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capital">Nellore</span></li>
 					<li style="display:none"> <span menu-name="parliament" levelId="10" locationId="01" class="parliamentMenuName text-capital">Nellore(PC)</span></li>
@@ -228,8 +228,10 @@
 							<h4 class="panel-title theme-title-color m_top10">Committees <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="committees"></i></span></h4>
 						</div>
 						<div class="col-sm-2">
-							<select id="enrolmentYears">
-								
+							<label>Enrollment Year</label>
+							<select id="enrolmentYears" class="form-control chosen-select">
+								<option value="2">2016-2018</option>
+								<option value="1">2014-2016</option>
 							</select>
 						</div>
 					</div>
