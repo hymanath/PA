@@ -3105,13 +3105,30 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 			
-						
+			
 			if(commonMethodsUtilService.isMapValid(actMap)){
 				for (String level : actMap.keySet()) {
 					BasicVO returnVo = new BasicVO();
+					returnVo.setDescription(level.trim());
 					returnVo.getLocationsList().addAll(actMap.get(level.trim()));
 					returnList.add(returnVo);
 				}
+				
+				Map<String,BasicVO> totalCountMap = new HashMap<String, BasicVO>(0);
+				if(commonMethodsUtilService.isListOrSetValid(returnList)){
+					for (BasicVO vo : returnList) {
+						 BasicVO countVO = totalCountMap.get(vo.getDescription().trim());
+						if( countVO == null)
+							countVO = new BasicVO();
+						if(commonMethodsUtilService.isListOrSetValid(vo.getLocationsList())){
+							for (BasicVO activityVO : vo.getLocationsList()){
+								countVO.setTotalResult(countVO.getTotalResult()+activityVO.getTotalResult());
+								countVO.setTotalVoters(countVO.getTotalVoters()+activityVO.getTotalVoters());
+							}
+						}
+						totalCountMap.put(vo.getDescription().trim(),countVO);
+					}
+					returnList.get(0).getConstituencyList().addAll(totalCountMap.values());				}
 			}
 			
 		}catch(Exception e){
