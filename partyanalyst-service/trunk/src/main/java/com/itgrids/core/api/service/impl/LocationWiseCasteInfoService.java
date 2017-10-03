@@ -520,7 +520,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 		      else if(locationTypeId == 8l){
 		    	  reportLevelId=6l;
 		    	  constituencyIds.add(locationValue);
-		      }
+		      } 
 			Map<Long, LocationVotersVO> map = new LinkedHashMap<Long, LocationVotersVO>();
 			 List<VoterAgeRange> voterAgeRangeList = voterAgeRangeDAO.getVoterAgeRangeList();
 		
@@ -540,20 +540,22 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 					if (map.get(commonMethodsUtilService.getLongValueForObject(objects[0])) == null) {
 						LocationVotersVO inVO = new LocationVotersVO();
 						map.put(commonMethodsUtilService.getLongValueForObject(objects[0]), inVO);
-					}else{
-					LocationVotersVO vo = map.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
-					if(vo != null){
-						vo.setTotalVoters(objects[1] != null ? (Long) objects[1] : 0l);
-						vo.setTotalVotersPerc(objects[2] != null ? objects[2].toString() + " %" : "");
-						vo.setMaleVoters(objects[3] != null ? (Long) objects[3] : 0l);
-						vo.setMaleVotersPerc(objects[4] != null ? objects[4].toString() + " %" : "");
-						vo.setFemaleVoters(objects[5] != null ? (Long) objects[5] : 0l);
-						vo.setFemaleVotersPerc(objects[6] != null ? objects[6].toString() + " %" : "");
-					}
+					} else {
+						LocationVotersVO vo = map.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						if (vo != null) {
+							vo.setTotalVoters(objects[1] != null ? (Long) objects[1] : 0l);
+							//vo.setTotalVotersPerc(objects[2] != null ? objects[2].toString() + " %" : "");
+							vo.setMaleVoters(objects[3] != null ? (Long) objects[3] : 0l);
+							//vo.setMaleVotersPerc(objects[4] != null ? objects[4].toString() + " %" : "");
+							vo.setFemaleVoters(objects[5] != null ? (Long) objects[5] : 0l);
+							//vo.setFemaleVotersPerc(objects[6] != null ? objects[6].toString() + " %" : "");
+						}
 					}
 				}
 			}
-
+			if(locationTypeId == 2l){
+		    	  constituencyIds.add(locationValue);
+		      }
 			//List<Object[]> cadreObjList = tdpCadreEnrollmentYearDAO.getGenderAndAgeGroupWiseCadreCount(locationTypeId,locationValue);
 			List<Object[]> cadreObjList = tdpCadreCasteInfoDAO.getGenderAndAgeGroupWiseCadreCount(locationTypeId,constituencyIds,enrollmentId);
 			if (cadreObjList != null && cadreObjList.size() > 0) {
@@ -569,40 +571,48 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 						map.get(commonMethodsUtilService.getLongValueForObject(objects[0])).setFemaleCadres((Long) objects[2]);
 					}
 				}
+				
 			}
 
 			if (map != null && map.size() > 0) {
 				LocationVotersVO voForTotalCounts = new LocationVotersVO();
 				Long totalCadres = 0l, maleTotalCadres = 0l, femaleTotalCadres = 0l;
+				Long totalVoters= 0l, maleTotalVoters=0l,femaleTotalVoters=0l;
+				
 				for (Entry<Long, LocationVotersVO> entry : map.entrySet()) {
-					entry.getValue()
-					.setTotalCadres(entry.getValue().getMaleCadres() + entry.getValue().getFemaleCadres());
+					entry.getValue().setTotalCadres(entry.getValue().getMaleCadres() + entry.getValue().getFemaleCadres());
 					totalCadres = totalCadres + entry.getValue().getMaleCadres() + entry.getValue().getFemaleCadres();
 					maleTotalCadres = maleTotalCadres + entry.getValue().getMaleCadres();
 					femaleTotalCadres = femaleTotalCadres + entry.getValue().getFemaleCadres();
+					
+					//voters
+					entry.getValue().setTotalVoters(entry.getValue().getMaleVoters() + entry.getValue().getFemaleVoters());
+					totalVoters = totalVoters + entry.getValue().getMaleVoters() + entry.getValue().getFemaleVoters();
+					maleTotalVoters = maleTotalVoters + entry.getValue().getMaleVoters();
+					femaleTotalVoters = femaleTotalVoters + entry.getValue().getFemaleVoters();
 				}
 
 				for (Entry<Long, LocationVotersVO> entry : map.entrySet()) {
 					if (totalCadres > 0l)
-						entry.getValue()
-						.setTotalCadrePerc(((entry.getValue().getTotalCadres() * 100) / totalCadres) + "%");
+						entry.getValue().setTotalCadrePerc(((entry.getValue().getTotalCadres() * 100) / totalCadres) + "%");
 					if (maleTotalCadres > 0l)
-						entry.getValue()
-						.setMaleCadrePerc(((entry.getValue().getMaleCadres() * 100) / maleTotalCadres) + "%");
+						entry.getValue().setMaleCadrePerc(((entry.getValue().getMaleCadres() * 100) / maleTotalCadres) + "%");
 					if (femaleTotalCadres > 0l)
-						entry.getValue().setFemaleCadrePerc(
-								((entry.getValue().getFemaleCadres() * 100) / femaleTotalCadres) + "%");
+						entry.getValue().setFemaleCadrePerc(((entry.getValue().getFemaleCadres() * 100) / femaleTotalCadres) + "%");
 
-					voForTotalCounts
-					.setTotalVoters(voForTotalCounts.getTotalVoters() + entry.getValue().getTotalVoters());
-					voForTotalCounts
-					.setTotalCadres(voForTotalCounts.getTotalCadres() + entry.getValue().getTotalCadres());
+					if (totalVoters > 0l)
+						entry.getValue().setTotalVotersPerc(((entry.getValue().getTotalVoters() * 100) / totalVoters) + "%");
+					if (maleTotalCadres > 0l)
+						entry.getValue().setMaleVotersPerc(((entry.getValue().getMaleVoters() * 100) / maleTotalVoters) + "%");
+					if (femaleTotalCadres > 0l)
+						entry.getValue().setFemaleVotersPerc(((entry.getValue().getFemaleVoters() * 100) / femaleTotalVoters) + "%");
+
+					voForTotalCounts.setTotalVoters(voForTotalCounts.getTotalVoters() + entry.getValue().getTotalVoters());
+					voForTotalCounts.setTotalCadres(voForTotalCounts.getTotalCadres() + entry.getValue().getTotalCadres());
 					voForTotalCounts.setMaleVoters(voForTotalCounts.getMaleVoters() + entry.getValue().getMaleVoters());
 					voForTotalCounts.setMaleCadres(voForTotalCounts.getMaleCadres() + entry.getValue().getMaleCadres());
-					voForTotalCounts
-					.setFemaleVoters(voForTotalCounts.getFemaleVoters() + entry.getValue().getFemaleVoters());
-					voForTotalCounts
-					.setFemaleCadres(voForTotalCounts.getFemaleCadres() + entry.getValue().getFemaleCadres());
+					voForTotalCounts.setFemaleVoters(voForTotalCounts.getFemaleVoters() + entry.getValue().getFemaleVoters());
+					voForTotalCounts.setFemaleCadres(voForTotalCounts.getFemaleCadres() + entry.getValue().getFemaleCadres());
 				}
 
 				voList.addAll(map.values());
