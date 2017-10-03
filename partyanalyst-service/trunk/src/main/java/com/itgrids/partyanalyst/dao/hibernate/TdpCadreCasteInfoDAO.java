@@ -247,6 +247,8 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 2l) {
 				sb.append("location_id in (:locationValue)");
+			}else if (locationTypeId == 8l) {
+				sb.append("location_id in (:locationValue)");
 			}
 
 		}
@@ -291,6 +293,8 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			} else if (locationTypeId == 7l) {
 				sb.append("location_id in (:locationValue)");
 			} else if (locationTypeId == 2l) {
+				sb.append("location_id in (:locationValue)");
+			} else if (locationTypeId == 8l) {
 				sb.append("location_id in (:locationValue)");
 			}
 		}
@@ -419,21 +423,23 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 	public List<Object[]> getGenderAndAgeGroupWiseCadreCount(Long locationTypeId,List<Long> locationValue,Long enrollmentYearId ){
 		StringBuilder sb = new StringBuilder();
 		sb.append( "select model.voterAgeRangeId,model.gender, sum(model.count) " +
-				" from TdpCadreCasteInfo model where model.tdpCadreEnrollmentId = :enrollmentYearId and " );
+				" from TdpCadreCasteInfo model where model.tdpCadreEnrollmentId = :enrollmentYearId " );
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append(" model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue)");
 			} else if (locationTypeId == 4l || locationTypeId == 10l) {
-				sb.append(" model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue)");
 			} else if (locationTypeId == 5l) {
-				sb.append(" model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue)");
 			} else if (locationTypeId == 6l) {
-				sb.append(" model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue)");
 			} else if (locationTypeId == 7l) {
-				sb.append(" model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue)");
 			} else if (locationTypeId == 2l) {
-				sb.append(" model.locationId in (:locationValue)");
-			}
+				sb.append(" and model.locationId in (:locationValue)");
+			}else if (locationTypeId == 8l) {
+				sb.append(" and model.locationId in (:locationValue)");
+			} 
 
 		}
 		sb.append(" group by model.gender,model.voterAgeRangeId " +

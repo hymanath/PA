@@ -275,9 +275,9 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 			StringBuilder sb = new StringBuilder();
 			
 			sb.append("select model.voterAgeRange.voterAgeRangeId," +
-					" model.totalVoters,model.totalVotersPercentage, " +
-					" model.maleVoters,model.maleVotersPercentage, " +
-					" model.femaleVoters,model.femaleVotersPercentage " +
+					" sum(model.totalVoters),sum(model.totalVotersPercentage), " +
+					" sum(model.maleVoters),sum(model.maleVotersPercentage), " +
+					" sum(model.femaleVoters),sum(model.femaleVotersPercentage) " +
 					" from VoterAgeInfo model " +
 					" where model.publicationDate.publicationDateId=:publicationDateId " );
 			if(reportLevelId != null && reportLevelId.longValue()>0l){
@@ -287,8 +287,7 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 			if(constituencyIds !=null && constituencyIds.size()>0){
 				sb.append("and model.reportLevelValue in (:constituencyId)");
 			}
-			sb.append(" and model.voterAgeRange.voterAgeRangeId between 1 and 6 " +
-					" order by model.voterAgeRange.voterAgeRangeId ");
+			sb.append(" and model.voterAgeRange.voterAgeRangeId between 1 and 6 group by  model.voterAgeRange.voterAgeRangeId order by model.voterAgeRange.voterAgeRangeId ");
 			Query query = getSession().createQuery(sb.toString());
 					
 			query.setParameter("publicationDateId", publicationDateId);
