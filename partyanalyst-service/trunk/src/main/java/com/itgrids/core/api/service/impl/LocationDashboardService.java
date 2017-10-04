@@ -1763,24 +1763,23 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			electionTypesData.setDescription(electionType.getScope());
 			finalList.add(electionTypesData);
 		}
-		Collections.sort(finalList, new Comparator<BasicVO>() {
-		    public int compare(BasicVO one, BasicVO other) {
-		        return other.getId().compareTo(one.getId());
-		    }
-		}); 
+		
 		List<Object[]> parties = partyDAO.getPartiesList();
 		for (Object[] party : parties) {
 			BasicVO partyVO = new BasicVO();
 			partyVO.setId(commonMethodsUtilService.getLongValueForObject(party[0]));
 			partyVO.setName(commonMethodsUtilService.getStringValueForObject(party[1]));
-			
 			finalList.get(0).getSelectedCasteDetails().add(partyVO);
 		}
 		List<String> electionYears = electionDAO.getElectionYears();
-		for (String electionYr : electionYears) {
-			
-			finalList.get(0).getAgeRanges().add(electionYr.toString());
-		}
+	
+		finalList.get(0).getAgeRanges().addAll(electionYears);
+		
+		Collections.sort(finalList, new Comparator<BasicVO>() {
+		    public int compare(BasicVO one, BasicVO other) {
+		        return one.getId().compareTo(other.getId());
+		    }
+		}); 
 		
 		return finalList;
 	}
