@@ -1009,8 +1009,6 @@ function getCandidateAndPartyInfoForConstituency(){
 										if(result[0].subList1[i].migrateCandidate == "true"){
 											parliament+='<span class="m_left5" style="font-size: 12px; top: 15px; position: absolute;">';
 												  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
-												  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
-												 parliament+=' <i class="fa fa-star" aria-hidden="true" ></i>';
 											parliament+='</span>';
 										}
 										parliament+='</h4>';
@@ -1058,8 +1056,6 @@ function getCandidateAndPartyInfoForConstituency(){
 												if(result[i].migrateCandidate == "true"){
 													assembly+='<span class="m_left5" style="font-size: 12px; top: 15px; position: absolute;">';
 														  assembly+='<i class="fa fa-star" aria-hidden="true" ></i>';
-														  assembly+='<i class="fa fa-star" aria-hidden="true" ></i>';
-														 assembly+=' <i class="fa fa-star" aria-hidden="true" ></i>';
 													assembly+='</span>';
 												}
 											assembly+='</h4>';
@@ -1105,8 +1101,6 @@ function getCandidateAndPartyInfoForConstituency(){
 										if(result[0].subList1[0].migrateCandidate == "true"){
 											parliament+='<span class="m_left5" style="font-size: 12px; top: 15px; position: absolute;">';
 												  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
-												  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
-												 parliament+=' <i class="fa fa-star" aria-hidden="true" ></i>';
 											parliament+='</span>';
 										}
 									parliament+='</h4>';
@@ -1135,8 +1129,6 @@ function getCandidateAndPartyInfoForConstituency(){
 											if(result[i].migrateCandidate == "true"){
 												parliament+='<span class="m_left5" style="font-size: 12px; top: 15px; position: absolute;">';
 													  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
-													  parliament+='<i class="fa fa-star" aria-hidden="true" ></i>';
-													 parliament+=' <i class="fa fa-star" aria-hidden="true" ></i>';
 												parliament+='</span>';
 											}
 										parliament+='</h4>';
@@ -3213,52 +3205,55 @@ function getLocationWiseMeetingsCount(){
 		
 		var xindex = 0;
 		for(var i in result){
-			if( xindex == 0)
+			if(i > 0)
 			{
-				str+='<div class="row">';
-			}
-			str+='<div class="col-sm-6">';
-				str+='<p class="text-capitalize"><b>'+result[i].ageRange+'</b></p>';
-				str+='<div class="media">';
-					str+='<div class="media-left">';
-						str+='<div id="meetingsGraphId'+i+'" style="width:250px;height:170px;"></div>';
-					str+='</div>';
-					str+='<div class="media-body">';
-						str+='<h6>'+result[i].ageRange+'</h6>';
-						str+='<h4 class="m_top5">'+result[i].totalCadres+'</h4>';
-						str+='<div class="meetingLevelScroll'+i+'">';
-							str+='<table class="table table-noborder f-12 m_top10">';
-								str+='<thead class="bg-DD">';
-									str+='<tr>';
-										str+='<th>Level</th>';
-										str+='<th>Total</th>';
-										str+='<th>Done</th>';
-									str+='</tr>';
-								str+='</thead>';
-								str+='<tbody>';
-									for(var j in result[i].locationVotersVOList){
+				if( xindex == 0)
+				{
+					str+='<div class="row">';
+				}
+				str+='<div class="col-sm-6">';
+					str+='<p class="text-capitalize"><b>'+result[i].ageRange+'</b></p>';
+					str+='<div class="media">';
+						str+='<div class="media-left">';
+							str+='<div id="meetingsGraphId'+i+'" style="width:250px;height:170px;"></div>';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h6>'+result[i].ageRange+'</h6>';
+							str+='<h4 class="m_top5">'+result[i].totalCadres+'</h4>';
+							str+='<div class="meetingLevelScroll'+i+'">';
+								str+='<table class="table table-noborder f-12 m_top10">';
+									str+='<thead class="bg-DD">';
 										str+='<tr>';
-											str+='<td>'+result[i].locationVotersVOList[j].castgroup+'</td>';
-											str+='<td>'+result[i].locationVotersVOList[j].totalCadres+'</td>';
-											str+='<td>'+result[i].locationVotersVOList[j].maleCadres+'</td>';
+											str+='<th>Level</th>';
+											str+='<th>Total</th>';
+											str+='<th>Done</th>';
 										str+='</tr>';
-									}
-								str+='</tbody>';
-							str+='</table>';
+									str+='</thead>';
+									str+='<tbody>';
+										for(var j in result[i].locationVotersVOList){
+											str+='<tr>';
+												str+='<td>'+result[i].locationVotersVOList[j].castgroup+'</td>';
+												str+='<td>'+result[i].locationVotersVOList[j].totalCadres+'</td>';
+												str+='<td>'+result[i].locationVotersVOList[j].maleCadres+'</td>';
+											str+='</tr>';
+										}
+									str+='</tbody>';
+								str+='</table>';
+							str+='</div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-			str+='</div>';
-			xindex++;
-			if(result.length-1 == i){
-				if(xindex % 2 == 1){
-					str+='</div>';
+				xindex++;
+				if(result.length-1 == i){
+					if(xindex % 2 == 1){
+						str+='</div>';
+					}
 				}
+				if( xindex == 2){
+					str+='</div>';
+					xindex = 0;
+				} 
 			}
-			if( xindex == 2){
-				str+='</div>';
-				xindex = 0;
-			} 
 		}
 		str+='</div>';
 			
@@ -4864,78 +4859,78 @@ function getPartyWiseMPandMLACandidatesCounts(){
 	  var str='';
 	  str+='<div class="col-sm-12">';
 		str+='<div class="block">';
-			str+='<ul class="list-inline" style="margin-bottom:10px;display:inline-table">';
-				str+='<li class="m_top10">';
-				str+='<div class="media">';
-					str+='<div class="media-left">';
-						str+='<h4 class="mpMlaRoundedCss">MP</h4>';
-					str+='</div>';
-						str+='<div class="media-body media_width">';
-							str+='<p class="m_top10 f-14">Member Of Parliament</p>';
-						str+='</div>';
-					str+='</div>';
-				str+='</li>';
-				if(result.subList !=null && result.subList.length>0){
-					for(var i in result.subList){
-						str+='<li class="m_top10">';
-							str+='<div class="media">';
+			str+='<table class="table">';
+				str+='<tr>';
+					str+='<td>';
+					str+='<div class="media">';
 							str+='<div class="media-left">';
-								str+='<h4 class="mpMlaRoundedCss">'+result.subList[i].condidateCount+'</h4>';
+								str+='<h4 class="mpMlaRoundedCss">MP</h4>';
 							str+='</div>';
-								str+='<div class="media-body media_width">';
-									if(result.subList[i].party == "BJP"){
-										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
-									}else if(result.subList[i].party == "OTHERS"){
-										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p>';
+							str+='<div class="media-body media_width">';
+								str+='<p class="m_top10 f-12">Member Of<br/> Parliament</p>';
+							str+='</div>';
+						str+='</div>';
+					str+='</td>';
+					if(result.subList !=null && result.subList.length>0){
+						for(var i in result.subList){
+							str+='<td>';
+								str+='<div class="media">';
+								str+='<div class="media-left">';
+									str+='<h4 class="mpMlaRoundedCss">'+result.subList[i].condidateCount+'</h4>';
+								str+='</div>';
+									str+='<div class="media-body media_width">';
+										if(result.subList[i].party == "BJP"){
+											str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
+										}else if(result.subList[i].party == "OTHERS"){
+											str+='<p class="m_top10">'+result.subList[i].party+'</p>';
+										}else{
+											str+='<p class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
+										}
+										//str+='<p class="f-10">Telugu Desam Party</p>';
+									str+='</div>';
+								str+='</div>';
+							str+='</td>';
+						}
+						
+					}
+				str+='</tr>';
+				str+='<tr>';
+					str+='<td>';
+						str+='<div class="media">';
+							str+='<div class="media-left">';
+								str+='<h4 class="mpMlaRoundedCss">MLA</h4>';
+							str+='</div>';
+							str+='<div class="media-body media_width">';
+								str+='<p class="m_top10 f-12">Member Of <br/>Legislative Assembly</p>';
+							str+='</div>';
+						str+='</div>';
+					str+='</td>';
+					
+					if(result.subList2 !=null && result.subList2.length>0){
+						for(var i in result.subList2){
+							str+='<td>';
+								str+='<div class="media">';
+								str+='<div class="media-left">';
+									str+='<h4 class="mpMlaRoundedCss">'+result.subList2[i].condidateCount+'</h4>';
+								str+='</div>';
+									str+='<div class="media-body media_width">';
+									if(result.subList2[i].party == "BJP"){
+										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
+									}else if(result.subList2[i].party == "OTHERS"){
+										str+='<p class="m_top10">'+result.subList2[i].party+'</p>';
 									}else{
-										str+='<p class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
+										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" /> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
 									}
-									//str+='<p class="f-10">Telugu Desam Party</p>';
+										
+										//str+='<p class="f-10">Telugu Desam Party</p>';
+									str+='</div>';
 								str+='</div>';
-							str+='</div>';
-						str+='</li>';
+							str+='</td>';
+						}
+						
 					}
-					
-				}
-			str+='</ul>';
-			
-			str+='<hr class="m_0"/>';
-			str+='<ul class="list-inline" style="display:inline-table">';
-				str+='<li class="m_top10">';
-				str+='<div class="media">';
-					str+='<div class="media-left">';
-						str+='<h4 class="mpMlaRoundedCss">MLA</h4>';
-					str+='</div>';
-						str+='<div class="media-body media_width">';
-							str+='<p class="m_top10 f-14">Member Of <br/>Legislative Assembly</p>';
-						str+='</div>';
-					str+='</div>';
-				str+='</li>';
-				
-				if(result.subList2 !=null && result.subList2.length>0){
-					for(var i in result.subList2){
-						str+='<li class="m_top10">';
-							str+='<div class="media">';
-							str+='<div class="media-left">';
-								str+='<h4 class="mpMlaRoundedCss">'+result.subList2[i].condidateCount+'</h4>';
-							str+='</div>';
-								str+='<div class="media-body media_width">';
-								if(result.subList2[i].party == "BJP"){
-									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
-								}else if(result.subList2[i].party == "OTHERS"){
-									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList2[i].party+'</p>';
-								}else{
-									str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" /> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
-								}
-									
-									//str+='<p class="f-10">Telugu Desam Party</p>';
-								str+='</div>';
-							str+='</div>';
-						str+='</li>';
-					}
-					
-				}
-			str+='</ul>';
+				str+='</tr>';
+			str+='</table>';
 		str+='</div>';
 	  str+='</div>';
 	  $("#statelevelMPMLAId").html(str);

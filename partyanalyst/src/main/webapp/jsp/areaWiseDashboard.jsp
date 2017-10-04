@@ -90,7 +90,7 @@
 			<li index="activities">activities</li>
 			<li index="alerts">alerts</li>
 			<li index="nominatedPosts">nominated posts</li>
-			<li index="grievance">grievance & insurance</li>
+			<li index="grievance">grievance</li>
 		</ul>
 	</div>
 </section>
