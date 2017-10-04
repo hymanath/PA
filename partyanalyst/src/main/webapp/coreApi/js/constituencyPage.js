@@ -1651,9 +1651,9 @@ function buildVotersCastGroupWiseCount(result){
 						str+='<tr>';
 							str+='<td>'+result[i].ageRange+'</td>';
 							str+='<td>'+result[i].totalVoters+'</td>';
-							str+='<td>'+result[i].totalVotersPerc+'</td>';
+							str+='<td>'+parseFloat(result[i].totalVotersPerc).toFixed(2);+'</td>';
 							str+='<td>'+result[i].totalCadres+'</td>';
-							str+='<td>'+result[i].totalCadrePerc+'</td>';
+							str+='<td>'+parseFloat(result[i].totalCadrePerc).toFixed(2);+'</td>';
 						str+='</tr>';	
 					}
 				str+='</tbody>';
