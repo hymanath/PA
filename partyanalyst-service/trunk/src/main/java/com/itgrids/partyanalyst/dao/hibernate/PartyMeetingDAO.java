@@ -4383,7 +4383,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	}
 	public List<Object[]> getMeetingTypeWiseTotalMeetings(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId, count(distinct model.partyMeetingId) " +
+		queryStr.append(" select model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId, model.partyMeetingType.partyMeetingMainType.meetingType, count(distinct model.partyMeetingId) " +
 						" from " +
 						" PartyMeeting model " +
 						" where " +
@@ -4409,7 +4409,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and (date(model.startDate) between :fromDate and :toDate) ");
 		}
-		
+		queryStr.append(" group by model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(locationIds != null && locationIds.size() > 0){
 			query.setParameterList("locationIds", locationIds);
@@ -4421,6 +4421,44 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		}
 		return query.list();
 	}
-
+	public List<Object[]> getMeetingLevelWiseTotalMeetings(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.partyMeetingLevel.partyMeetingLevelId, model.partyMeetingLevel.level, count(distinct model.partyMeetingId) " +
+						" from " +
+						" PartyMeeting model " +
+						" where " +
+						" model.isActive = 'Y' ");
+		if(locationIds != null && locationIds.size() > 0){
+			if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_STATE_LEVEL_ID){
+				queryStr.append(" and model.meetingAddress.state.stateId in (:locationIds)");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_DISTRICT_LEVEL_ID){
+				queryStr.append(" and model.meetingAddress.district.districtId in (:locationIds)");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_PARLIAMENT_LEVEL_ID){
+				queryStr.append(" and model.meetingAddress.parliamentConstituency.constituencyId in (:locationIds) ");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_CONSTITUENCY_LEVEL_ID){
+				queryStr.append(" and model.meetingAddress.constituency.constituencyId in (:locationIds) ");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_MANDAL_LEVEL_ID){
+				queryStr.append(" and model.meetingAddress.tehsil.tehsilId in (:locationIds)");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_MUNICIPALITY_LEVEL_ID){ //  town/division
+				queryStr.append(" and model.meetingAddress.userAddress.localElectionBody.localElectionBodyId in (:locationIds)"); 
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_PANCHAYAT_LEVEL_ID){ 
+				queryStr.append(" and model.meetingAddress.panchayat.panchayatId in (:locationIds)"); 
+			}
+		}
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and (date(model.startDate) between :fromDate and :toDate) ");
+		}
+		queryStr.append(" group by model.partyMeetingLevel.partyMeetingLevelId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(locationIds != null && locationIds.size() > 0){
+			query.setParameterList("locationIds", locationIds);
+		}
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate",fromDate);
+			query.setDate("toDate",toDate);
+			
+		}
+		return query.list();
+	}
 	 
  }
