@@ -92,6 +92,31 @@ function onLoadInitialisations()
 	//Menu Calls
 	menuCalls(2,'1','');	
 	menuCalls(9,'1','');
+	$(window).scroll(function(){
+		var windowScrollTop = $(window).scrollTop();
+		var header = $('.black-border')
+		if (windowScrollTop>50) {
+			header.addClass("header-fixed");
+		} else {
+			header.removeClass("header-fixed");
+		}
+
+		scrollAnimation();
+	});
+	function scrollAnimation(){
+		var winScroll = $(window).scrollTop(),
+            winHeight = $(window).outerHeight();
+        $('.scroll-animation.scroll-animate').each(function(){
+            if (winScroll > $(this).offset().top - winHeight + 200) {
+                $(this).removeClass("scroll-animate");
+            }
+        });
+        $('.dotted-path').each(function(){
+        	if (winScroll > $(this).offset().top - winHeight + 200) {
+        		$(this).removeClass("hidden-path");
+        	}
+        });
+	}
 	//Meetings	Start
 	$("#dateRangeIdForMeetings").daterangepicker({
 		opens: 'left',
@@ -1321,7 +1346,7 @@ function getCountsForStateLevel(){
 		var str='';
 		str+='<h4 class="panel-title theme-title-color">Andhra Pradesh</h4>';
 		str+='<div class="block m_top10">';
-			str+='<table class="table table-bordered m_top15">';
+			str+='<table class="table table-bordered">';
 				str+='<tr>';
 						str+='<td>';
 							str+='<h4 class="text-capitalize text-muted">Constituencies</h4>';
@@ -1526,7 +1551,6 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 }
 function getVotersCastGroupWiseCount(publicationId,enrollmentId){
   
-  $("#casteOverViewDivId").html(spinner);
   var jsObj={
       locationTypeId    :locationLevelId,
       locationValue    	:locationLevelVal,
@@ -1703,8 +1727,6 @@ function buildVotersCastGroupWiseCount(result){
 function getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,type,casteName,publicationId,enrollmentId){
 	
 	$("#"+casteName+"CasteDivId").html(spinner);
-	$("#topTenCastesDivId").html(spinner);
-	
 	jsObj={
 		locationTypeId	:locationLevelId,
 		locationValue	:locationLevelVal,
