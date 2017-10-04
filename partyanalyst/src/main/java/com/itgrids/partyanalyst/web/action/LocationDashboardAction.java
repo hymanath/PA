@@ -89,10 +89,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private CandidateDetailsForConstituencyTypesVO typeVo;
 	private INominatedPostLocationDashboardService nominatedPostLocationDashboardService;
 	private List<NominatedPostCandidateDtlsVO> nominatedPostCandList;
+	private KeyValueVO keyValueVO;
 	
 	
 	
-	
+	public KeyValueVO getKeyValueVO() {
+		return keyValueVO;
+	}
+	public void setKeyValueVO(KeyValueVO keyValueVO) {
+		this.keyValueVO = keyValueVO;
+	}
 	public List<NominatedPostCandidateDtlsVO> getNominatedPostCandList() {
 		return nominatedPostCandList;
 	}
@@ -931,6 +937,23 @@ public String getElectionInformationLocationWise(){
 	        		jObj.getLong("startIndex"),jObj.getLong("endIndex"));
 	     }catch(Exception e){
 	       LOG.error("Exception raised at getNominatedPositionWiseCandidates() of LocationDashboardAction{}", e);
+	     }
+	     return Action.SUCCESS;
+	   }
+	
+	public String getElectionYears(){
+	     try{
+	       jObj = new JSONObject(getTask());
+	      List<String> subTypes = new ArrayList<String>();
+	       JSONArray jsonArray = jObj.getJSONArray("electionSubTypeArr");
+	       if(jsonArray!=null && jsonArray.length()>0){
+	         for(int i =0; i< jsonArray.length();i++){
+	           subTypes.add(jsonArray.getString(i).toString());        
+	         }
+	       } 
+	       keyValueVO = locationDashboardService.getElectionYears(subTypes);
+	     }catch(Exception e){
+	       LOG.error("Exception raised at getElectionYears() of LocationDashboardAction{}", e);
 	     }
 	     return Action.SUCCESS;
 	   }
