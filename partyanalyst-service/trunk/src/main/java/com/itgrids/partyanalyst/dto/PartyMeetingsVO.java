@@ -91,7 +91,7 @@ public class PartyMeetingsVO implements Serializable{
 	private Time endTime;
 	private Time lateTime;
 	private String wardName;
-	
+	private Long inviteeAttendedCount = 0L;
 	
 	
 	
@@ -539,6 +539,12 @@ public class PartyMeetingsVO implements Serializable{
 	}
 	public void setNotUpdatedCount(Long notUpdatedCount) {
 		this.notUpdatedCount = notUpdatedCount;
+	}
+	public Long getInviteeAttendedCount() {
+		return inviteeAttendedCount;
+	}
+	public void setInviteeAttendedCount(Long inviteeAttendedCount) {
+		this.inviteeAttendedCount = inviteeAttendedCount;
 	}
 	
 	

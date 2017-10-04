@@ -4,9 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -124,18 +126,7 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 		}
 		return null;
 	}
-	/*
-	 * 1	aaa		y	10
-	 * 1	aaa		n	20
-	 * 1	aaa		nu	30
-	 * 1	aaa		m	40
-	 * 
-	 * 2	aaa		y	10
-	 * 2	aaa		n	20
-	 * 2	aaa		nu	30
-	 * 2	aaa		m	40
-	 * 
-	 */
+	
 	/*
 	 * Swadhin K Lenka
 	 * Date: 04/10/2017
@@ -256,12 +247,171 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 			List<Long> locationIds = new ArrayList<Long>();
 			
 			List<Object[]> inviteeList = partyMeetingInviteeDAO.getInviteeList(locationLevel,locationIds,fromDate,toDate);
-			List<Object[]> attendedList = partyMeetingAttendanceDAO.getAttendedList(locationLevel,locationIds,fromDate,toDate);
+			//create a map for meetingTypeId and meetingId and cadreIdSet for invitee
+			Map<Long,Map<Long,Set<Long>>> meetingTypeIdAndMeetingIdAndCadreIdSetMapForInvitee = new HashMap<Long,Map<Long,Set<Long>>>();
+			if(inviteeList != null && inviteeList.size() > 0){
+				createMapForObjectArr(meetingTypeIdAndMeetingIdAndCadreIdSetMapForInvitee,inviteeList);
+			}
 			
+			List<Object[]> attendedList = partyMeetingAttendanceDAO.getAttendedList(locationLevel,locationIds,fromDate,toDate);
+			//create a map for meetingTypeId and meetingId and cadreIdSet for attended
+			Map<Long,Map<Long,Set<Long>>> meetingTypeIdAndMeetingIdAndCadreIdSetMapForAttended = new HashMap<Long,Map<Long,Set<Long>>>();
+			if(attendedList != null && attendedList.size() > 0){
+				createMapForObjectArr(meetingTypeIdAndMeetingIdAndCadreIdSetMapForAttended,attendedList);
+			}
+			
+			//now create a map for invitee attended from above two map
+			
+			//create a map for meetingTypeId and meetingId and cadreIdSet for invitee attended
+			Map<Long,Map<Long,Set<Long>>> meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended = new HashMap<Long,Map<Long,Set<Long>>>();
+			
+			createMapForInviteeAttended(meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended,meetingTypeIdAndMeetingIdAndCadreIdSetMapForInvitee,meetingTypeIdAndMeetingIdAndCadreIdSetMapForAttended);
+			
+			//create a template for ui
+			Map<Long,String> meetingTypeIdAndNameMap = new HashMap<Long,String>();
+			if(inviteeList != null && inviteeList.size() > 0){
+				for(Object[] param : inviteeList){
+					meetingTypeIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			
+			List<PartyMeetingsVO> finalResult = new ArrayList<PartyMeetingsVO>();
+			PartyMeetingsVO partyMeetingsVO = null;
+			
+			if(meetingTypeIdAndNameMap != null && meetingTypeIdAndNameMap.size() > 0){
+				for(Entry<Long,String> param : meetingTypeIdAndNameMap.entrySet()){
+					partyMeetingsVO = new PartyMeetingsVO();
+					partyMeetingsVO.setId(param.getKey());
+					partyMeetingsVO.setName(param.getValue());
+					finalResult.add(partyMeetingsVO);
+				}
+			}
+			
+			//push no of meetings and invitees
+			if(finalResult != null && finalResult.size() > 0){
+				for(PartyMeetingsVO param : finalResult){
+					pushNoOfMeetingsAndInvitees( param,meetingTypeIdAndMeetingIdAndCadreIdSetMapForInvitee);
+				}
+			}
+			//push no of invitee attended
+			if(finalResult != null && finalResult.size() > 0){
+				for(PartyMeetingsVO param : finalResult){
+					pushInviteeAttended(param,meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended);
+				}
+			}
+			//push no of absent count
+			if(finalResult != null && finalResult.size() > 0){
+				for(PartyMeetingsVO param : finalResult){
+					param.setAbsentCount(param.getInvitedCount() - param.getInviteeAttendedCount());
+				}
+			}
+			return finalResult;
 		}catch(Exception e){
 			LOG.error("Exception raised at getCommitteeMeetingStatistics() method of LoactionDetailsDashBoardService", e);
 		}
 		return null;
+	}
+	public void pushInviteeAttended(PartyMeetingsVO param,Map<Long,Map<Long,Set<Long>>> meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended){
+		try{
+			int totalMember = 0;
+			if(meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended.get(param.getId()) != null){
+				for(Entry<Long,Set<Long>> innerParam : meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended.get(param.getId()).entrySet()){
+					totalMember = totalMember + innerParam.getValue().size();
+				}
+			}
+			param.setInviteeAttendedCount(Long.valueOf(totalMember));
+		}catch(Exception e){
+			LOG.error("Exception raised at pushInviteeAttended() method of LoactionDetailsDashBoardService", e);
+		}
+	}
+	public void pushNoOfMeetingsAndInvitees(PartyMeetingsVO param, Map<Long,Map<Long,Set<Long>>> meetingTypeIdAndMeetingIdAndCadreIdSetMapForInvitee){
+		try{
+			Long count = 0L;
+			int totalMember = 0;
+			if(meetingTypeIdAndMeetingIdAndCadreIdSetMapForInvitee.get(param.getId()) != null){
+				for(Entry<Long,Set<Long>> innerParam : meetingTypeIdAndMeetingIdAndCadreIdSetMapForInvitee.get(param.getId()).entrySet()){
+					count = count + 1;
+					totalMember = totalMember + innerParam.getValue().size();
+				}
+			}
+			param.setTotalCount(count);
+			param.setInvitedCount(Long.valueOf(totalMember));
+		}catch(Exception e){
+			LOG.error("Exception raised at pushNoOfMeetingsAndInvitees() method of LoactionDetailsDashBoardService", e);
+		}
+	}
+	public void createMapForObjectArr(Map<Long,Map<Long,Set<Long>>> meetingTypeIdAndMeetingIdAndCadreIdSetMap,List<Object[]> inviteeList){
+		try{
+			Map<Long,Set<Long>> meetingIdAndCadreIdSetMap = null;
+			Set<Long> cadreIdSet = null;
+			for(Object[] param : inviteeList){
+				meetingIdAndCadreIdSetMap = meetingTypeIdAndMeetingIdAndCadreIdSetMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				if(meetingIdAndCadreIdSetMap == null){
+					cadreIdSet = new HashSet<Long>();
+					cadreIdSet.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+					meetingIdAndCadreIdSetMap = new HashMap<Long,Set<Long>>();
+					meetingIdAndCadreIdSetMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), cadreIdSet);
+					meetingTypeIdAndMeetingIdAndCadreIdSetMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), meetingIdAndCadreIdSetMap);
+				}else{
+					cadreIdSet = meetingIdAndCadreIdSetMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+					if(cadreIdSet == null){
+						cadreIdSet = new HashSet<Long>();
+						meetingIdAndCadreIdSetMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), cadreIdSet);
+					}
+					cadreIdSet.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at createMapForObjectArr() method of LoactionDetailsDashBoardService", e);
+		}
+	}
+	public void createMapForInviteeAttended(Map<Long,Map<Long,Set<Long>>> meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended,Map<Long,Map<Long,Set<Long>>> meetingTypeIdAndMeetingIdAndCadreIdSetMapForInvitee,Map<Long,Map<Long,Set<Long>>> meetingTypeIdAndMeetingIdAndCadreIdSetMapForAttended){
+		try{
+			Long meetingTypeId = 0L;
+			Long meetingId = 0L;
+			Set<Long> invitedCadreIdSet = null;
+			Set<Long> attendedCadreIdSet = null;
+			if(meetingTypeIdAndMeetingIdAndCadreIdSetMapForInvitee != null && meetingTypeIdAndMeetingIdAndCadreIdSetMapForInvitee.size() > 0){
+				for(Entry<Long,Map<Long,Set<Long>>> outerParam : meetingTypeIdAndMeetingIdAndCadreIdSetMapForInvitee.entrySet()){
+					meetingTypeId = outerParam.getKey();
+					for(Entry<Long,Set<Long>> innerParam : outerParam.getValue().entrySet()){
+						meetingId = innerParam.getKey();
+						invitedCadreIdSet = innerParam.getValue();
+						if(meetingTypeIdAndMeetingIdAndCadreIdSetMapForAttended.get(outerParam.getKey()) != null && meetingTypeIdAndMeetingIdAndCadreIdSetMapForAttended.get(outerParam.getKey()).get(innerParam.getKey()) != null){
+							attendedCadreIdSet = meetingTypeIdAndMeetingIdAndCadreIdSetMapForAttended.get(outerParam.getKey()).get(innerParam.getKey());
+						}
+						initializeInviteeAttendedMap(meetingTypeId,meetingId,invitedCadreIdSet,attendedCadreIdSet,meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended);
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at createMapForInviteeAttended() method of LoactionDetailsDashBoardService", e);
+		}
+	}
+	public void initializeInviteeAttendedMap(Long meetingTypeId,Long meetingId,Set<Long> invitedCadreIdSet,Set<Long> attendedCadreIdSet,Map<Long,Map<Long,Set<Long>>> meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended){
+		try{
+			Map<Long,Set<Long>> meetingIdAndCadreIdSetMap = null;
+			Set<Long> cadreIdSet = null;
+			if(invitedCadreIdSet != null && attendedCadreIdSet != null){
+				invitedCadreIdSet.retainAll(attendedCadreIdSet);
+				if(invitedCadreIdSet != null){
+					meetingIdAndCadreIdSetMap = meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended.get(meetingTypeId);
+					if(meetingIdAndCadreIdSetMap == null){
+						meetingIdAndCadreIdSetMap = new HashMap<Long,Set<Long>>();
+						meetingIdAndCadreIdSetMap.put(meetingId, invitedCadreIdSet);
+						meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended.put(meetingTypeId, meetingIdAndCadreIdSetMap);
+					}else{
+						cadreIdSet = meetingIdAndCadreIdSetMap.get(meetingId);
+						if(cadreIdSet == null){
+							meetingIdAndCadreIdSetMap.put(meetingId, invitedCadreIdSet);
+						}
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at initializeInviteeAttendedMap() method of LoactionDetailsDashBoardService", e);
+		}
 	}
 	
 }

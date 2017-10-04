@@ -2504,7 +2504,11 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 	}
 	public List<Object[]> getInviteeList(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.partyMeeting.partyMeetingType.partyMeetingTypeId, model.partyMeeting.partyMeetingType.type, model.partyMeeting.partyMeetingId, model.tdpCadre.tdpCadreId " +
+		queryStr.append(" select distinct " +
+						" model.partyMeeting.partyMeetingType.partyMeetingTypeId, " +
+						" model.partyMeeting.partyMeetingType.type, " +
+						" model.partyMeeting.partyMeetingId, " +
+						" model.tdpCadre.tdpCadreId " +
 						" from " +
 						" PartyMeetingInvitee model " +
 						" where " +
