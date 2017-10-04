@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.IGovtSchemeBeneficiaryDetailsDAO;
@@ -51,6 +52,7 @@ import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.IPositionDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
@@ -156,7 +158,22 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private IPublicRepresentativeDAO publicRepresentativeDAO;
 	private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
+	private IPartyDAO partyDAO;
+	private IElectionDAO electionDAO;
 	
+	
+	public IElectionDAO getElectionDAO() {
+		return electionDAO;
+	}
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
+	}
+	public IPartyDAO getPartyDAO() {
+		return partyDAO;
+	}
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
+	}
 	public ITdpCommitteeLevelDAO getTdpCommitteeLevelDAO() {
 		return tdpCommitteeLevelDAO;
 	}
@@ -1751,6 +1768,20 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		        return other.getId().compareTo(one.getId());
 		    }
 		}); 
+		List<Object[]> parties = partyDAO.getPartiesList();
+		for (Object[] party : parties) {
+			BasicVO partyVO = new BasicVO();
+			partyVO.setId(commonMethodsUtilService.getLongValueForObject(party[0]));
+			partyVO.setName(commonMethodsUtilService.getStringValueForObject(party[1]));
+			
+			finalList.get(0).getSelectedCasteDetails().add(partyVO);
+		}
+		List<String> electionYears = electionDAO.getElectionYears();
+		for (String electionYr : electionYears) {
+			
+			finalList.get(0).getAgeRanges().add(electionYr.toString());
+		}
+		
 		return finalList;
 	}
 
