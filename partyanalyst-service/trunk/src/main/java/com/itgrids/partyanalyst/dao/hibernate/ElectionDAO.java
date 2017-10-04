@@ -958,6 +958,9 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		query.setParameter("electionId", electionId);
 		return query.list();
 	}
-	
+	public List<String> getElectionYears(){
+		Query query = getSession().createSQLQuery(" select distinct election_year from election where election_year >= 1992 order by election_year asc ");
+		return query.list();
+	}
   
 }
