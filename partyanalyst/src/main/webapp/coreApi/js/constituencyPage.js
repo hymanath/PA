@@ -27,8 +27,11 @@ var commitessArr=["mandalLevelGraph","villageLevelGraph","affMandalLevelGraph","
 var grivanceIdsArr=["grivanceId","trustId"];
 var grivanceColorObj={"APPROVED":"#2DCC70","COMPLETED":"#449C43","IN PROGRESS":"#FFB84F","NOT ELIGIBLE":"#C0392B","NOT POSSIBLE":"#EF8379","NOT VERIFIED":"#31708F"}
 var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In Party":"#449C43","Forwarded to Insurance":"#FFB84F","Closed at Insurance":"#8F43AF","Closed at Party":"#9B88B3","Approved - Compensated":"#2BCD72","Closed Letters":"#32708F","Account Rejected":"#65CBCC"}
-var electionTypeVal = [0];
+var electionTypeVal = [2,3,4];
 var defaultAlertCategoryIds=[1];
+var electionYrVal = [];
+var electionSubTypeArr=["MAIN"];
+var electionYearsSubTypeArr=["MAIN","BYE"];
 //Tours And Meetings And Alerts Dates Start 
 var customStartATMDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
 var customEndATMDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
@@ -183,6 +186,7 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {	
+	
 	$("#enrolmentYears").chosen();
 	//Enrolment Years
 	getEnrollmentIds();
@@ -211,9 +215,10 @@ function onLoadAjaxCalls()
 	}
 	
 	//Assembly Block
+	getElectionYears();
 	getElectionTypes();
-	var partyIds = [163,265,269,662,872,886,1117,1887,1892,514,362];
-	getElectionInformationLocationWise(electionTypeVal,"wonSeat",partyIds);
+	var partyIds = [872,362,1117,886,72,269,265,163,1887];
+	getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal);
 	if(locationLevelId == '4'){
 		$(".assemblyElectionBlockCls").show();
 		getDetailedElectionInformaction();
@@ -556,8 +561,45 @@ function onLoadClicks()
 				 electionTypeVal[i++] = $(this).val();
 			}
 		});
-		getElectionInformationLocationWise(electionTypeVal,checkedTypeVal,0);
-	});	
+		
+		var j = 0;	
+		 electionSubTypeArr = [];
+		 $(".checkedMainByeType").each(function(){
+			if ($(this).is(':checked')){
+				 electionSubTypeArr[j++] = $(this).val();
+			}
+		});
+		
+			
+		var partyIds = $("#elctionBlockPartysId").val();
+		electionYrVal=[];
+		electionYrVal = $("#elctionYearsBlockId").val();
+		
+		 
+		getElectionInformationLocationWise(electionTypeVal,checkedTypeVal,partyIds,electionSubTypeArr,electionYrVal);
+	});
+	$(document).on("click",".checkedMainByeType",function(){
+		
+			var j = 0;	
+			 electionYearsSubTypeArr = [];
+			 $(".checkedMainByeType").each(function(){
+				if ($(this).is(':checked')){
+					 electionYearsSubTypeArr[j++] = $(this).val();
+				}
+			});
+			getElectionYears();
+		/* if($(this).is(':checked')){
+			var j = 0;	
+			 electionYearsSubTypeArr = [];
+			 $(".checkedMainByeType").each(function(){
+				if ($(this).is(':checked')){
+					 electionYearsSubTypeArr[j++] = $(this).val();
+				}
+			});
+			getElectionYears();
+		} */
+		
+});		
 	$(document).on("click",".electionTypeWiseCls",function(){
 			var value = $(this).val();
 			if(value != 0){
@@ -4497,49 +4539,92 @@ function getElectionTypes(){
     }).done(function(result){  
     	if(result !=null && result.length>0){
 			var str='';
-			str+='<div class="col-sm-12">';
-				str+='<div class="m_top20">';
+			str+='<div class="row m_top10">';
+				str+='<div class="col-sm-12">';
 					str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
-						str+='<input value="0" type="checkbox" checked class="electionTypeWiseCls checkUncheckCls" /><span>All</span>';
+						str+='<input value="0" type="checkbox" class="electionTypeWiseCls checkUncheckCls" /><span class="f-12">All</span>';
 					str+='</label>';
 					for(var i in result){
 						str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
-						if(result[i].name == "Pancahat_Ward"){
-							str+='<input value ="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span>Ward</span>';
+						if(result[i].id == "1" || result[i].id == "2" || result[i].id == "3" ||result[i].id == "4"){
+							if(result[i].name == "Pancahat_Ward"){
+								str+='<input value ="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span class="f-12">Ward</span>';
+							}else{
+								str+='<input value ="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
+							}	
 						}else{
-							str+='<input value ="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span>'+result[i].name+'</span>';
-						}					
+							if(result[i].name == "Pancahat_Ward"){
+								str+='<input value ="'+result[i].id+'" type="checkbox"  class="electionTypeWiseCls" /><span class="f-12">Ward</span>';
+							}else{
+								str+='<input value ="'+result[i].id+'" type="checkbox"  class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
+							}	
+						}
+										
 						str+='</label>';
 					}
-				str+=' </div>';
-				str+='<div class="col-sm-11">';
-						str+='<label class="pull-right">';
-							str+='<input value ="wonSeat" type="radio" name="optionsRadios" class="checkedType" checked />Won Seats';
-							str+='<input value ="voteShare" type="radio" name="optionsRadios"  class="checkedType" style="margin-left: 10px;" />Vote Share %';
-						str+='</label>';
+				str+='</div>';
+				str+='</div>';
+				str+='<div class="row m_top10">';
+					str+='<div class="col-sm-12">';
+							str+='<div class="col-sm-2">';
+								str+='<select class="form-control chosen-select" id="elctionBlockPartysId" multiple data-placeholder="All Parties">';
+									//str+='<option value="0" selected>All Parties</option>';
+									for(var i in result[0].selectedCasteDetails){
+										if(result[0].selectedCasteDetails[i].id == 163 || result[0].selectedCasteDetails[i].id == 265 || result[0].selectedCasteDetails[i].id == 269 || result[0].selectedCasteDetails[i].id == 662 || result[0].selectedCasteDetails[i].id == 872 || result[0].selectedCasteDetails[i].id == 886 || result[0].selectedCasteDetails[i].id == 1117  || result[0].selectedCasteDetails[i].id == 362 || result[0].selectedCasteDetails[i].id == 72 || result[0].selectedCasteDetails[i].id == 1887){
+											str+='<option value="'+result[0].selectedCasteDetails[i].id+'" selected>'+result[0].selectedCasteDetails[i].name+'</option>';
+										}
+										
+									}
+								str+='</select>';
+							str+='</div>';
+							str+='<div class="col-sm-3" style="margin-left: 20px;">';
+								str+='<select class="form-control chosen-select" id="elctionYearsBlockId" multiple data-placeholder="All Election Years">';
+									/* //str+='<option value="0" selected>All Election Years</option>';
+									for(var i in result[0].ageRanges){
+										str+='<option value="'+result[0].ageRanges[i]+'" selected>'+result[0].ageRanges[i]+'</option>';
+										
+									} */
+								str+='</select>';
+							str+='</div>';
+							str+='<div class="col-sm-3">';
+								str+='<label class="">';
+									str+='<input value ="MAIN" type="checkbox" name="optionsRadios1" class="checkedMainByeType" checked/><span class="f-12">Main Election</span>';
+									str+='<input value ="BYE" type="checkbox" name="optionsRadios1"  class="checkedMainByeType f-12" style="margin-left: 10px;"  /><span class="f-12">By Election</span>';
+								str+='</label>';
+							str+='</div>';
+							
+							str+='<div class="col-sm-3">';
+								str+='<label class="">';
+									str+='<input value ="wonSeat" type="radio" name="optionsRadios" class="checkedType" /><span class="f-12">Won Seats</span>';
+									str+='<input value ="voteShare" type="radio" name="optionsRadios"  class="checkedType" style="margin-left: 10px;" checked /><span class="f-12">Vote Share %</span>';
+								str+='</label>';
+							str+='</div>';
 					str+='</div>';
-					/* str+='<div class="col-sm-2">';
-						str+='<select class="form-control chosen-select" id="elctionBlockPartysId">';
-							str+='<option value="0">All</option>';
-							for(var i in globalPartyNamesPushForElectionBlock){
-								str+='<option value="'+globalPartyNamesPushForElectionBlock[i].id+'">'+globalPartyNamesPushForElectionBlock[i].name+'</option>';
-							}
-						str+='</select>';
-					str+='</div>'; */
-					str+='<div class="col-sm-1">';
+					str+='<div class="col-sm-12">';
 						str+='<button class="btn btn-primary btn-xs electionDetailsCls pull-right" >Submit</button>';
 					str+='</div>';
-			str+=' </div>';
 			$("#electionTypeValuesId").html(str);
 		}else{
 			$("#electionTypeValuesId").html(noData);
 		}
-		$("#elctionBlockPartysId").chosen();
-		$("#elctionBlockPartysId").trigger("chosen:updated");
+		//$("#elctionBlockPartysId").chosen();
+		//$("#elctionYearsBlockId").chosen();
+		//$("#elctionBlockPartysId").trigger("chosen:updated");
+		//$("#elctionYearsBlockId").trigger("chosen:updated");
+		$('#elctionBlockPartysId').multiselect({
+			enableFiltering: true,
+			includeSelectAllOption: true,
+			selectAllText: 'All Parties',
+			maxHeight: 300,
+			maxWidth: 300,
+			dropDown: true,
+			selectAllName: false,
+			allSelectedText: 'All Parties selected'
+		});
 	});	
 }
 
-function getElectionInformationLocationWise(electionVal,type,partyIds){
+function getElectionInformationLocationWise(electionVal,type,partyIds,electionSubTypeArr,electionYrVal){
 	$('#electionDetailsGraphWiseId').html(spinner);
 	$('#electionDetailsTableWiseId').html(spinner);
 	if(locationLevelId == '8' || locationLevelId == '6'){
@@ -4554,15 +4639,26 @@ function getElectionInformationLocationWise(electionVal,type,partyIds){
 		}
 	}
 	
+	for(var i in electionYrVal){
+		if(electionYrVal[i] == 0){
+			electionYrVal=[];
+		}
+	}
+	for(var i in partyIds){
+		if(partyIds[i] == 0){
+			partyIds=[];
+		}
+	}
+	
 	var jsObj={
 			fromDate 	  	:"",
 			toDate		  	:"",
 			locationId 		:locationLevelId,
 			locationValue 	:locationLevelVal,
 			electionScopeIds:electionVal,
-			partyIds			:partyIds,
-			electionYrs     :[2014,2000,2004],
-			electionSubType    :"MAIN"
+			partyIds		:partyIds,
+			electionYrs     :electionYrVal,
+			electionSubTypeArr :electionSubTypeArr
 			
 	}
 	 $.ajax({
@@ -4867,10 +4963,10 @@ function getPartyWiseMPandMLACandidatesCounts(){
       
     });
   }
-  //getElectionYears()
   function getElectionYears(){
+	 $('#elctionYearsBlockId').html('');
   var jsObj={
-      electionSubTypes:[]
+      electionSubTypeArr:electionYearsSubTypeArr
     }
     $.ajax({   
       type:'GET',
@@ -4878,6 +4974,28 @@ function getPartyWiseMPandMLACandidatesCounts(){
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
-      
+		
+		if(result !=null && result.imageList !=null && result.imageList.length>0){
+			var str='';
+			for(var i in result.imageList){
+				str+='<option value="'+result.imageList[i]+'" selected>'+result.imageList[i]+'</option>';
+					
+			} 
+			setTimeout(function(){ 
+				$('#elctionYearsBlockId').html(str);
+				$('#elctionYearsBlockId').multiselect({
+					enableFiltering: true,
+					includeSelectAllOption: true,
+					selectAllText: 'All Election Years',
+					maxHeight: 300,
+					maxWidth: 300,
+					dropDown: true,
+					selectAllNumber: true,
+					allSelectedText: 'All Election Years selected'
+				});
+				$("#elctionYearsBlockId").multiselect("refresh");
+			}, 1000);
+			
+		}
     });
   }
