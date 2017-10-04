@@ -80,8 +80,8 @@
 			<li index="cadreInfor">cadre information</li>
 			<!--<li index="ruralLocal">rural local body elections</li>-->
 			<!--<li index="urbanLocal">urban local body elections</li>-->
-			<li index="news">news</li>
-			<li index="problems">problems</li>
+			<!--<li index="news">news</li>
+			<li index="problems">problems</li>-->
 			<li index="committees">committees</li>
 			<li index="meetings">meetings</li>
 			<li index="tours">tours</li>
@@ -198,7 +198,7 @@
 				
 			</div>
 			
-			<div class="col-sm-6 m_top30" navbar-index="news">
+			<!--<div class="col-sm-6 m_top30" navbar-index="news">
 				<h4 class="panel-title theme-title-color">News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="news"></i></span></h4>
 				<div class="block m_top10">
 					<div id="newsMainBlockDivId" class="m_top15"></div>
@@ -211,7 +211,7 @@
 				<div class="block m_top10">
 					<div id="overAllAnalysisProbDivId" class="m_top15"></div>
 				</div>
-			</div>
+			</div>-->
 			
 			<div class="col-sm-12 m_top30" navbar-index="committees">
 				<div class="row">
@@ -336,9 +336,9 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<ul class="list-inline switch-btn alertCategoryWiseCls pull-right m_top5">
-								<li attr_type= "1,2" class="active">Both</li>
-								<li attr_type= "1">Party</li>
-								<li attr_type= "2">Govt</li>
+								<li attr_type="1,2">Both</li>
+								<li attr_type="1" class="active">Party</li>
+								<li attr_type="2">Govt</li>
 								<!--<li attr_type= "3">Others</li>-->
 							</ul>
 						</div>
