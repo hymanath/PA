@@ -127,8 +127,8 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 	 * @return
 	 */
 	@Override
-	public List<LocationVotersVO> getVotersAndCadreCasteWiseCount(Long locationTypeId, Long locationValue, Long publicationDateId,
-			Long EnrollmentYearId,Long casteGroupId) {
+	public List<LocationVotersVO> getVotersAndCadreCasteWiseCount(Long locationTypeId, Long locationValue, Long publicationDateId,Long EnrollmentYearId,Long casteGroupId,
+			String assendingType) {
 		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
 		try {
 			Long reportLevelId= 0l;
@@ -207,13 +207,6 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 			}
 			voList.addAll(casteMap.values());
 			
-			Collections.sort(voList, new Comparator<LocationVotersVO>() {
-			    public int compare(LocationVotersVO one, LocationVotersVO other) {
-			        return other.getTotalVoters().compareTo(one.getTotalVoters());
-			    }
-			}); 
-			
-			
 			// calculating totals and %'s
 			if (voList != null && voList.size() > 0) {
 				for (LocationVotersVO casteVO : voList) {
@@ -233,6 +226,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteGroupNAgeWiseVoterNCadreCounts", e);
 		}
+		voList = compareList(voList,assendingType);
 		return voList;
 	}
 	
@@ -246,6 +240,34 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 		return null;
 	}
 	
+	public List<LocationVotersVO> compareList(List<LocationVotersVO> voList,String assendingType) {
+		if (assendingType.equalsIgnoreCase("desending")) {
+			Collections.sort(voList, new Comparator<LocationVotersVO>() {
+				public int compare(LocationVotersVO one, LocationVotersVO two) {
+					return two.getTotalVoters().compareTo(one.getTotalVoters());
+				}
+			});
+		} else if (assendingType.equalsIgnoreCase("assending")) {
+			Collections.sort(voList, new Comparator<LocationVotersVO>() {
+				public int compare(LocationVotersVO one, LocationVotersVO two) {
+					return one.getTotalVoters().compareTo(two.getTotalVoters());
+				}
+			});
+		} else if (assendingType.equalsIgnoreCase("atozSorting")) {
+			Collections.sort(voList, new Comparator<LocationVotersVO>() {
+				public int compare(LocationVotersVO one, LocationVotersVO two) {
+					return one.getAgeRange().toUpperCase().compareTo(two.getAgeRange().toUpperCase());
+				}
+			});
+		} else if (assendingType.equalsIgnoreCase("ztoaSorting")) {
+			Collections.sort(voList, new Comparator<LocationVotersVO>() {
+				public int compare(LocationVotersVO one, LocationVotersVO two) {
+					return two.getAgeRange().toUpperCase().compareTo(one.getAgeRange().toUpperCase());
+				}
+			});
+		}
+		return voList;
+	}
 	//For Graph
 	
 	/**
