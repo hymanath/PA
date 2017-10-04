@@ -70,12 +70,22 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 						
 						meetingMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), levelMap);
 					}
-					LocationVotersVO levelVO =levelMap.get(commonMethodsUtilService.getLongValueForObject(objects[2]));
-					LocationVotersVO totalLvlVO = totalLevelMap.get(commonMethodsUtilService.getLongValueForObject(objects[2]));
+					Long locationId=commonMethodsUtilService.getLongValueForObject(objects[2]);
+					String locationName= commonMethodsUtilService.getStringValueForObject(objects[3]);
+					if(commonMethodsUtilService.getLongValueForObject(objects[2]) == 5l || commonMethodsUtilService.getLongValueForObject(objects[2]) ==4l
+							|| commonMethodsUtilService.getLongValueForObject(objects[2]) == 6l){
+						locationId=4l;
+						locationName="MANDAL/DIVISION/TOWN";
+					}else if(commonMethodsUtilService.getLongValueForObject(objects[2]) == 7l || commonMethodsUtilService.getLongValueForObject(objects[2]) == 8l){
+						locationId=7l;
+						locationName="VILLAGE/WARD";
+					}
+					LocationVotersVO levelVO =levelMap.get(locationId);
+					LocationVotersVO totalLvlVO = totalLevelMap.get(locationId);
 					if(totalLvlVO == null){
 						totalLvlVO = new LocationVotersVO();
-						totalLvlVO.setCasteGroupId(commonMethodsUtilService.getLongValueForObject(objects[2]));
-						totalLvlVO.setCastgroup(commonMethodsUtilService.getStringValueForObject(objects[3]));
+						totalLvlVO.setCasteGroupId(locationId);
+						totalLvlVO.setCastgroup(locationName);
 						totalLevelMap.put(totalLvlVO.getCasteGroupId(), totalLvlVO);
 					}
 					
@@ -83,15 +93,15 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 						levelVO =   new LocationVotersVO();
 						levelVO.setAgeRangeId(commonMethodsUtilService.getLongValueForObject(objects[0]));//partyMeetingMainTypeId
 						levelVO.setAgeRange(commonMethodsUtilService.getStringValueForObject(objects[1]));//partyMeetingMainType
-						levelVO.setCasteGroupId(commonMethodsUtilService.getLongValueForObject(objects[2]));//partyMeetingLevelId
-						levelVO.setCastgroup(commonMethodsUtilService.getStringValueForObject(objects[3]));//partyMeetingLevel
-						levelMap.put(commonMethodsUtilService.getLongValueForObject(objects[2]), levelVO);
+						levelVO.setCasteGroupId(locationId);//partyMeetingLevelId
+						levelVO.setCastgroup(locationName);//partyMeetingLevel
+						levelMap.put(locationId, levelVO);
 					}
 					
 					String status = commonMethodsUtilService.getStringValueForObject(objects[4]);
 					if(status != null && status.equalsIgnoreCase("Y")){
-						levelVO.setMaleCadres(commonMethodsUtilService.getLongValueForObject(objects[5]));
-						totalLvlVO.setMaleCadres(commonMethodsUtilService.getLongValueForObject(objects[5]));
+						levelVO.setMaleCadres(totalLvlVO.getMaleCadres()+commonMethodsUtilService.getLongValueForObject(objects[5])); // done count
+						totalLvlVO.setMaleCadres(totalLvlVO.getMaleCadres()+commonMethodsUtilService.getLongValueForObject(objects[5]));
 					}
 					totalLvlVO.setTotalCadres(totalLvlVO.getTotalCadres()+commonMethodsUtilService.getLongValueForObject(objects[5]));
 					levelVO.setTotalCadres(levelVO.getTotalCadres()+commonMethodsUtilService.getLongValueForObject(objects[5]));
