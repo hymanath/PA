@@ -3356,6 +3356,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						partyVO.getList().addAll(yearMap.values());
 					}
 				}
+			for(ElectionInformationVO yearVO : electionInformationVOList){
+				Collections.sort(yearVO.getList(), new Comparator<ElectionInformationVO>(){
+					public int compare(ElectionInformationVO obj1,ElectionInformationVO obj2) {
+						return obj1.getElectionYear().compareTo(obj2.getElectionYear());
+					}
+
+				});
+			  }
 			}
 			
 			/*ArrayList<KeyValueVO> tempArray = null;
