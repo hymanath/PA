@@ -427,8 +427,8 @@ function getRecentImagesList(imageType){
     	levelIds		:globallevelIds,
 		levelValues		:globallevelValues,
 		imageType		:imageType,
-		startDateStr	:glStartDate,
-		endDateStr  	:glEndDate
+		startDateStr	:moment().format("DD-MM-YYYY"),
+		endDateStr  	:moment().format("DD-MM-YYYY")
     }
     $.ajax({
       type : "POST",
@@ -1249,20 +1249,20 @@ function buildUserWiseCountFrLoginUser(result){
 	var str='';
 	str+='<div class="table-responsive m_top10">';
 	str+='<table class="table table-bordered tableStyled" id="dataTableUserWise">';
-		str+='<thead>';
+		str+='<thead style="background-color:#E6E6E6">';
 			str+='<tr>';
-				str+='<th rowspan="2">UserName</th>';
-				str+='<th rowspan="2">Mobile No</th>';
+				str+='<th rowspan="2"><b>UserName</b></th>';
+				//str+='<th rowspan="2">Mobile No</th>';
 					for(var i in result[0].subList){
-						str+='<th colspan="4">'+result[0].subList[i].date+'</th>';
+						str+='<th colspan="4" ><b>'+result[0].subList[i].date+'</b></th>';
 					}
 			str+='</tr>';
 			str+='<tr>';
 				for(var i in result[0].subList){
-						str+='<th>Visited Count</th>';
-						str+='<th>Grievance Request</th>';
+						str+='<th>Visited</th>';
+						str+='<th>Total Grievances</th>';
 						str+='<th>Survey Images</th>';
-						str+='<th>Flag Hoisting Images</th>';
+						str+='<th>Hoisting Images</th>';
 					}
 			str+='</tr>';
 		str+='</thead>';
@@ -1271,12 +1271,28 @@ function buildUserWiseCountFrLoginUser(result){
 				
 				str+='<tr>';
 					str+='<td>'+result[i].name+'</td>';
-					str+='<td>'+result[i].mobilNo+'</td>';
+					//str+='<td>'+result[i].mobilNo+'</td>';
 				for(var j in result[i].subList){
-					str+='<td>'+result[i].subList[j].visitedHouseHolds+'</td>';
-					str+='<td>'+result[i].subList[j].totalGrievances+'</td>';
-					str+='<td>'+result[i].subList[j].surveyImagesCount+'</td>';
-					str+='<td>'+result[i].subList[j].flagHoistingImgCunt+'</td>';
+					if(result[i].subList[j].visitedHouseHolds !=null && result[i].subList[j].visitedHouseHolds>0){
+						str+='<td>'+result[i].subList[j].visitedHouseHolds+'</td>';
+					}else{
+						str+='<td> - </td>';
+					}
+					if(result[i].subList[j].totalGrievances !=null && result[i].subList[j].totalGrievances>0){
+						str+='<td>'+result[i].subList[j].totalGrievances+'</td>';
+					}else{
+						str+='<td> - </td>';
+					}
+					if(result[i].subList[j].surveyImagesCount !=null && result[i].subList[j].surveyImagesCount>0){
+						str+='<td>'+result[i].subList[j].surveyImagesCount+'</td>';
+					}else{
+						str+='<td> - </td>';
+					}
+					if(result[i].subList[j].flagHoistingImgCunt !=null && result[i].subList[j].flagHoistingImgCunt>0){
+						str+='<td>'+result[i].subList[j].flagHoistingImgCunt+'</td>';
+					}else{
+						str+='<td> - </td>';
+					}
 				}
 				str+='</tr>';	
 				

@@ -93,10 +93,21 @@
 		</div>
 		<div class="row m_top10">
 			<div class="col-sm-12 m_top10">
-					<div class="block_styles_nav">
-						<h4 text-capital><b>User Wise Count Details</b></h4>
-						<div id="userWiseDetailsDivId"></div>
-					</div>
+				<div class="panel-group"  role="tablist" aria-multiselectable="true">
+						<div class="panel panel-default panel-black">
+							<div class="panel-heading" role="tab">
+								<h4><span class="panel-title text-capital">User Wise Count Details</span>
+								</h4>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+								<div class="col-sm-12 m_top10">	
+									<div id="userWiseDetailsDivId"></div>
+								</div>
+								</div>
+							</div>
+						</div>
+				</div>
 			</div>
 		</div>
 		<div class="row m_top10">
