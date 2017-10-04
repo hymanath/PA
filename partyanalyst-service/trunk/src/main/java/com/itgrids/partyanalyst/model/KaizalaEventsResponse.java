@@ -62,7 +62,7 @@ public class KaizalaEventsResponse extends BaseModel implements Serializable{
 	public void setKaizalaGroupsId(Long kaizalaGroupsId) {
 		this.kaizalaGroupsId = kaizalaGroupsId;
 	}
-	@Column(name="group_id")
+	@Column(name="groupId")
 	public String getGroupId() {
 		return groupId;
 	}
@@ -76,14 +76,14 @@ public class KaizalaEventsResponse extends BaseModel implements Serializable{
 	public void setKaizalaActionsId(Long kaizalaActionsId) {
 		this.kaizalaActionsId = kaizalaActionsId;
 	}
-	@Column(name="action_id")
+	@Column(name="actionId")
 	public String getActionId() {
 		return actionId;
 	}
 	public void setActionId(String actionId) {
 		this.actionId = actionId;
 	}
-	@Column(name="event_id")
+	@Column(name="eventId")
 	public String getEventId() {
 		return eventId;
 	}

@@ -368,7 +368,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							KER.setUpdatedTime(dateService.getCurrentDateAndTime());
 							KER.setIsDeleted("Y");
 							
-							kaizalaEventsResponseDAO.save(KER);
+						    KER = kaizalaEventsResponseDAO.save(KER);
 						}
 				} catch (Exception e) {
 					LOG.error("Exception raised at saveTextMsgCreated", e);
