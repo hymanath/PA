@@ -207,6 +207,15 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 			}
 			voList.addAll(casteMap.values());
 			
+			//for top 15 castes
+			voList = compareList(voList,"desending");
+			List<LocationVotersVO> topCastesList = new ArrayList<LocationVotersVO>(0);
+			for(int i=0; i<=15; i++){
+				LocationVotersVO topCastesVo = voList.get(i);
+				topCastesList.add(topCastesVo);
+			}
+			voList.get(0).setLocationVotersVOList1(topCastesList);
+
 			// calculating totals and %'s
 			if (voList != null && voList.size() > 0) {
 				for (LocationVotersVO casteVO : voList) {
