@@ -1525,6 +1525,7 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 }
 function getVotersCastGroupWiseCount(publicationId,enrollmentId){
   
+  $("#casteOverViewDivId").html(spinner);
   var jsObj={
       locationTypeId    :locationLevelId,
       locationValue    	:locationLevelVal,
@@ -1701,6 +1702,8 @@ function buildVotersCastGroupWiseCount(result){
 function getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,type,casteName,publicationId,enrollmentId){
 	
 	$("#"+casteName+"CasteDivId").html(spinner);
+	$("#topTenCastesDivId").html(spinner);
+	
 	jsObj={
 		locationTypeId	:locationLevelId,
 		locationValue	:locationLevelVal,
@@ -1736,11 +1739,11 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
 			str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
-			var k=0;
+			//var k=0;
 			for(var i in result){
-				k=k+1;
+				//k=k+1;
 				str+='<tr>';
-				str+='<td><span>'+k+'</span><span style="margin-left: 10px;">'+result[i].ageRange+'</span></td>';
+				str+='<td>'+result[i].ageRange+'</td>';
 				str+='<td>'+result[i].totalVoters+'</td>';
 				str+='<td>'+result[i].totalVotersPerc+'</td>';
 				str+='<td>'+result[i].totalCadres+'</td>';
@@ -2165,12 +2168,13 @@ function getLocationTypeWiseCadreCount(enrollmentId){
 							str+='<div id="cadreInfoGraph'+i+'" style = "height:130px;"></div>';
 						str+='</div>';
 						str+='<div class="col-sm-7">';
-							str+='<table class="table table-noborder">';
+							str+='<table class="table table-noborder tableStyledCadre">';
 								str+='<tr>';
 									str+='<td>'+result[i].newCaderCount+' New <span class="colorNew"></span></td>';
 									str+='<td>+</td>';
 									str+='<td>'+result[i].renewalCadreCount+' Renewal <span class="colorRenewal"></span></td>';
-									str+='<td>=</td>';
+								str+='</tr>';
+								str+='<tr style="text-align:center;" class="totalCountCadre">';
 									str+='<td>'+result[i].toalCadreCount+' Total <span class=""></span></td>';
 								str+='</tr>';
 							str+='</table>';
