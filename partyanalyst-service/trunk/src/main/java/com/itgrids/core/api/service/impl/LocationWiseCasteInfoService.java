@@ -351,10 +351,10 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 			if (listVo != null && listVo.size() > 0) {
 				for (LocationVotersVO casteVO : listVo) {
 					if(totalVoterCount !=0l ){
-						casteVO.setTotalVotersPerc((casteVO.getTotalVoters() * 100/totalVoterCount) +"%");
+						casteVO.setTotalVotersPerc((casteVO.getTotalVoters() * 100.0/totalVoterCount) +"%");
 					}
 					if(totalCadreCount!=0l){
-						casteVO.setTotalCadrePerc((casteVO.getTotalCadres() * 100/totalCadreCount) +"%");
+						casteVO.setTotalCadrePerc((casteVO.getTotalCadres() * 100.0/totalCadreCount) +"%");
 					}
 				}
 			}
