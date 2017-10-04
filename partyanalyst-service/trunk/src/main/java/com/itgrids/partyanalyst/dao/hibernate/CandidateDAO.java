@@ -375,7 +375,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 				+ " n.candidate_id = c.candidate_id and "
 				+ " ce.constituency_id = c1.constituency_id and"
 				+ " cr.nomination_id = n.nomination_id and "
-				+ " cr.rank = 1 and ");
+				+ " cr.rank = 1 and p.is_news_portal = 'Y' and ");
 		if(partyId != null && partyId.longValue()>0L)
 			sb.append(" p.party_id = :partyId and ");
 		
