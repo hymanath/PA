@@ -5420,7 +5420,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	
 	public void saveKaizalAnswerInfo(String anserObjStr){
 		try {
-			kaizalaInfoService.saveKaizalAnswerInfo(anserObjStr);
+			//kaizalaInfoService.saveKaizalAnswerInfo(anserObjStr);
+			kaizalaInfoService.saveEventResponses(anserObjStr);
 		} catch (Exception e) {
 			 log.error("Exception raised at saveKaizalAnswerInfo", e);
 		}

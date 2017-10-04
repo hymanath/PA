@@ -1,12 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -16,17 +13,14 @@ import com.itgrids.partyanalyst.dao.IKaizalaActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaActionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswerInfoDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswersDAO;
+import com.itgrids.partyanalyst.dao.IKaizalaEventsResponseDAO;
+import com.itgrids.partyanalyst.dao.IKaizalaGroupTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaOptionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
-import com.itgrids.partyanalyst.dto.KeyValueVO;
-import com.itgrids.partyanalyst.model.KaizalaActions;
-import com.itgrids.partyanalyst.model.KaizalaAnswerInfo;
-import com.itgrids.partyanalyst.model.KaizalaAnswers;
+import com.itgrids.partyanalyst.model.KaizalaEventsResponse;
 import com.itgrids.partyanalyst.model.KaizalaGroups;
-import com.itgrids.partyanalyst.model.KaizalaOptions;
-import com.itgrids.partyanalyst.model.KaizalaQuestions;
 import com.itgrids.partyanalyst.model.KaizalaResponderInfo;
 import com.itgrids.partyanalyst.service.IKaizalaInfoService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -46,8 +40,22 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private CommonMethodsUtilService commonMethodsUtilService;
 	private IKaizalaOptionsDAO kaizalaOptionsDAO;
 	private IKaizalaActionTypeDAO kaizalaActionTypeDAO; 
+	private IKaizalaEventsResponseDAO kaizalaEventsResponseDAO;
+	private IKaizalaGroupTypeDAO kaizalaGroupTypeDAO;
 	
-	
+	public IKaizalaEventsResponseDAO getKaizalaEventsResponseDAO() {
+		return kaizalaEventsResponseDAO;
+	}
+	public void setKaizalaEventsResponseDAO(
+			IKaizalaEventsResponseDAO kaizalaEventsResponseDAO) {
+		this.kaizalaEventsResponseDAO = kaizalaEventsResponseDAO;
+	}
+	public IKaizalaGroupTypeDAO getKaizalaGroupTypeDAO() {
+		return kaizalaGroupTypeDAO;
+	}
+	public void setKaizalaGroupTypeDAO(IKaizalaGroupTypeDAO kaizalaGroupTypeDAO) {
+		this.kaizalaGroupTypeDAO = kaizalaGroupTypeDAO;
+	}
 	public IKaizalaActionTypeDAO getKaizalaActionTypeDAO() {
 		return kaizalaActionTypeDAO;
 	}
@@ -134,7 +142,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	}
 
 
-	public void saveKaizalAnswerInfo(final String output){
+	/*public void saveKaizalAnswerInfo(final String output){
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				try {
@@ -304,6 +312,69 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			}
 		});
 		
+	}*/
+	public void saveEventResponses(final String output){
+		try {
+			if(output != null && !output.isEmpty()){
+				JSONObject jsonObj = new JSONObject(output);
+				if(jsonObj.getString("eventType").equalsIgnoreCase("TextMessageCreated")){
+					saveTextMsgCreated(output);
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("Exception raised at saveEventResponses", e);
+		}
+	}
+	
+	public void saveTextMsgCreated(final String output){
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+				try {
+					if(output != null && !output.isEmpty()){
+						KaizalaEventsResponse KER = new KaizalaEventsResponse(); 
+						DateUtilService dateService = new DateUtilService();
+						JSONObject jsonObj = new JSONObject(output);
+						JSONObject dataObj = jsonObj.getJSONObject("data");
+						
+							Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+							Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
+							if(id == null || id == 0l){
+								KaizalaGroups kg = new KaizalaGroups();
+								kg.setGroupId(jsonObj.getString("objectId"));
+								kg.setIsDeleted("N");
+								kg.setInsertedTime(dateService.getCurrentDateAndTime());
+								kg.setKaizalaGroupTypeId(groupTypeId);
+								id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+							}else{
+								KER.setGroupId(jsonObj.getString("objectId"));
+							}
+							KER.setKaizalaGroupsId(id);
+							List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));
+							
+							if(resIds != null && resIds.size() > 0){
+								KER.setInsertedBy(resIds.get(resIds.size()-1));
+								KER.setUpdatedBy(resIds.get(resIds.size()-1));
+							}else{
+								KaizalaResponderInfo kri = new KaizalaResponderInfo();
+								kri.setMobileNumber(jsonObj.getString("fromUser"));
+								kri.setIsDeleted("N");
+								kri = kaizalaResponderInfoDAO.save(kri);
+								KER.setInsertedBy(kri.getKaizalaResponderInfoId());
+								KER.setUpdatedBy(kri.getKaizalaResponderInfoId());
+							}
+							KER.setEventId(jsonObj.getString("eventId"));
+							KER.setResponseText(dataObj.getString("text"));
+							KER.setInsertedTime(dateService.getCurrentDateAndTime());
+							KER.setUpdatedTime(dateService.getCurrentDateAndTime());
+							KER.setIsDeleted("Y");
+							
+							kaizalaEventsResponseDAO.save(KER);
+						}
+				} catch (Exception e) {
+					LOG.error("Exception raised at saveTextMsgCreated", e);
+				}		
+			}
+		});
 	}
 	
 	public List<String> getActionDetails(String groupId,String actionId){
