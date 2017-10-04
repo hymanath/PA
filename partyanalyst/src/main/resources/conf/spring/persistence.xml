@@ -1322,6 +1322,10 @@
 		      		   <value>com.itgrids.partyanalyst.model.TrainingCampBatchType</value>
 		      		   <value>com.itgrids.partyanalyst.model.TehsilConstituency</value>
 		      		   
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaEventsResponse</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaAttachementType</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaEvents</value>
+		      		   
 				  </list>
 			
 		</property>
