@@ -28,7 +28,7 @@ var grivanceIdsArr=["grivanceId","trustId"];
 var grivanceColorObj={"APPROVED":"#2DCC70","COMPLETED":"#449C43","IN PROGRESS":"#FFB84F","NOT ELIGIBLE":"#C0392B","NOT POSSIBLE":"#EF8379","NOT VERIFIED":"#31708F"}
 var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In Party":"#449C43","Forwarded to Insurance":"#FFB84F","Closed at Insurance":"#8F43AF","Closed at Party":"#9B88B3","Approved - Compensated":"#2BCD72","Closed Letters":"#32708F","Account Rejected":"#65CBCC"}
 var electionTypeVal = [0];
-var defaultAlertCategoryIds=[1,2];
+var defaultAlertCategoryIds=[1];
 //Tours And Meetings And Alerts Dates Start 
 var customStartATMDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
 var customEndATMDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
@@ -252,7 +252,7 @@ function onLoadAjaxCalls()
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
 	
-	setTimeout(function(){ 
+	/* setTimeout(function(){ 
 		//News Block
 		getPrintMediaCountsForConstituencyPage()
 		getLeadersInNewsForConstituencyPage();
@@ -262,7 +262,7 @@ function onLoadAjaxCalls()
 		for(var i in propertyIdGlobalStr){
 			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 		}
-	}, 2000);
+	}, 2000); */
 	 
 }
 function onLoadClicks()
@@ -374,8 +374,18 @@ function onLoadClicks()
 		var enrollmentId = $("#enrollmentCasteId").val();
 		if(name == "casteSorting")
 		{
+			$("#totalCastesAndCadrePercBarGraph").html(spinner);
+			$("#totalCastesAndCadrePercBarGraph").closest(".scollerDiv").mCustomScrollbar("destroy");
 			getCasteGroupNAgeWiseVoterNCadreCounts(0,"sortingType","All",publicationId,enrollmentId,assendingType)			
 		}
+	});
+	$(document).on("click",".alertCategoryWiseCls li",function(){
+		$(this).parent("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		defaultAlertCategoryIds=[];
+		var ids=$(this).attr("attr_type").split(',');
+		defaultAlertCategoryIds = ids.map(Number);
+		getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
 	});
 	$(document).keydown(function(event){
 		if(event.keyCode==123){
@@ -4442,14 +4452,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 		$(".tooltipAlertCls").tooltip();	
 	}
 }
-$(document).on("click",".alertCategoryWiseCls li",function(){
-	$(this).parent("ul").find("li").removeClass("active");
-	$(this).addClass("active");
-	defaultAlertCategoryIds=[];
-	var ids=$(this).attr("attr_type").split(',');
-	defaultAlertCategoryIds = ids.map(Number);
-	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
-});		
+
 function getEnrollmentIds(){
 	var jsObj={
 			
