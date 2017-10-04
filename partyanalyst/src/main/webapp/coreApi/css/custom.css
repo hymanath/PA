@@ -3,11 +3,11 @@
 body
 {
 	font-size: 14px;
-	background-color: #fff !important;
+	background-color: #ECF1F5 !important;
 	font-family: 'Montserrat', sans-serif;
 	font-weight:400;
 }
-/*.eventsheader
+.eventsheader
 {
 	display:none;
 }
@@ -23,7 +23,13 @@ header
     position: absolute;
     width: 100%;
     z-index: -1;
-}*/
+}
+.black-border
+{
+	background-color:#333;
+	padding:10px;
+	margin-bottom:20px;
+}
 h1,h2,h3,h4,h5,h6,ul,p,.table
 {
 	margin-top: 0px;
@@ -81,9 +87,10 @@ label
 }
 .theme-title-color
 {
-	text-transform:uppercase !important;
+	text-transform:capitalize !important;
 	font-weight:600;
-	color:#a94442 !important;
+	color:#333 !important;
+	font-size:22px;
 }
 .bottom-arrow:after, .bottom-arrow:before {
 	top: 100%;

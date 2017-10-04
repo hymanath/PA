@@ -4,10 +4,10 @@
 	if(wurl.length == 3)
 		wurl = url.substr(0,(url.indexOf(".in")+3));	
 // please do not try to edit these options which may cause the entire page to stop working.	
-//var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var spinner = '<div class="row"><div class="col-sm-12"><div class="square-to-circle"></div></div></div>';
-//var blockSpinner = '<div class="row"><div class="col-sm-12"><div class="block m_top10"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div></div>';
-var blockSpinner = '<div class="row"><div class="col-sm-12"><div class="block m_top10"><div class="square-to-circle"></div></div></div></div>';
+var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+//var spinner = '<div class="row"><div class="col-sm-12"><div class="square-to-circle"></div></div></div>';
+var blockSpinner = '<div class="row"><div class="col-sm-12"><div class="block m_top10"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div></div>';
+//var blockSpinner = '<div class="row"><div class="col-sm-12"><div class="block m_top10"><div class="square-to-circle"></div></div></div></div>';
 var noData = "<div class='col-sm-12'><h5>NO DATA AVAILABLE</h5></div>";
 var globalCasteColorObj = {"BC":"#867DC0","Minority":"#99CC67","SC":"#65A7E1","ST":"#7DC1C2","OC":"#E58D45"};
 var globalColorNews = {"Without Money":"#F36E8F","<10L":"#0C9516",">10L":"#8E4654","State Wide Issue":"#FE9900"};
@@ -85,7 +85,7 @@ onLoadAjaxCalls();
 
 function onLoadInitialisations()
 {
-	minimise('.right-nav-list li',8);
+	minimise('.right-nav-list li',6);
 	rightNav();
 	collapseClick();
 	responsiveTabs();
@@ -1318,8 +1318,8 @@ function getCountsForConstituency(){
 
 function getCountsForStateLevel(){
 		var str='';
-		str+='<div class="block">';
-			str+='<h4 class="panel-title theme-title-color">Andhra Pradesh</h4>';
+		str+='<h4 class="panel-title theme-title-color">Andhra Pradesh</h4>';
+		str+='<div class="block m_top10">';
 			str+='<table class="table table-bordered m_top15">';
 				str+='<tr>';
 						str+='<td>';
@@ -1412,7 +1412,7 @@ function buildVotersAndcadreAgeWiseCount(result){
 						break;
 					}
 			}
-			str+='<div>';
+			str+='<div class="table-responsive">';
 				str+='<table class="table tableVoters">';
 					str+='<thead>';
 					for(var i in theadArr){
@@ -1604,9 +1604,9 @@ function buildVotersCastGroupWiseCount(result){
 					str+='<div id="AllCasteDivId"></div>';
 				str+='</div>';
 				for(var i in result){
-						str+='<div role="tabpanel" class="tab-pane  pad_10" id="'+result[i].ageRange+'">';
-							str+='<div id="'+result[i].ageRange+'CasteDivId"></div>';
-						str+='</div>';
+					str+='<div role="tabpanel" class="tab-pane  pad_10" id="'+result[i].ageRange+'">';
+						str+='<div id="'+result[i].ageRange+'CasteDivId"></div>';
+					str+='</div>';
 				}
 			str+='</div>';
 	str+='</div>';
@@ -1856,53 +1856,55 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
 
 function buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName){
 	var str='';
-	str+='<table class="table table-noborder" id="dataTable'+casteName+'">';
-		str+='<thead class="text-capitalize">';
-			str+='<th>Caste Name</th>';
-				str+='<th>voters</th>';
-				str+='<th>%</th>';
-				
-				str+='<th>cadres </th>';
-				str+='<th>%</th>';
-				
-				str+='<th>Male(V) </th>';
-				str+='<th>%</th>';
-				
-				str+='<th>Male(C) </th>';
-				str+='<th>%</th>';
-				
-				str+='<th>FeMale(V) </th>';
-				str+='<th>%</th>';
-				
-				str+='<th>FeMale(C) </th>';
-				str+='<th>%</th>';
-		str+='</thead>';
-		str+='<tbody>';
-		for(var i in result){
-			str+='<tr>';
-				str+='<td class="casteCategoryGroupWiseClickCls" attr_caste_id="'+result[i].ageRangeId+'" attr_caste_group_id="'+casteGroupId+'" attr_caste_name="'+result[i].ageRange+'" style="color:#337ab7;cursor:pointer;">'+result[i].ageRange+'</td>';
-				str+='<td>'+result[i].totalVoters+'</td>';
-				str+='<td class="text-success">'+result[i].totalVotersPerc+'</td>';
-				
-				str+='<td>'+result[i].totalCadres+'</td>';
-				str+='<td class="text-success">'+result[i].totalCadrePerc+'</td>';
-				
-				str+='<td>'+result[i].maleVoters+'</td>';
-				str+='<td class="text-success">'+result[i].maleVotersPerc+'</td>';
-				
-				str+='<td>'+result[i].maleCadres+'</td>';
-				str+='<td class="text-success">'+result[i].maleCadrePerc+'</td>';
-				
-				str+='<td>'+result[i].femaleVoters+'</td>';
-				str+='<td class="text-success">'+result[i].femaleVotersPerc+'</td>';
-				
-				str+='<td>'+result[i].femaleCadres+'</td>';
-				str+='<td class="text-success">'+result[i].femaleCadrePerc+'</td>';
-				
-			str+='</tr>';
-		}
-		str+='</tbody>';
-	str+='</table>';
+	str+='<div class="table-responsive">';
+		str+='<table class="table table-noborder" id="dataTable'+casteName+'">';
+			str+='<thead class="text-capitalize">';
+				str+='<th>Caste Name</th>';
+					str+='<th>voters</th>';
+					str+='<th>%</th>';
+					
+					str+='<th>cadres </th>';
+					str+='<th>%</th>';
+					
+					str+='<th>Male(V) </th>';
+					str+='<th>%</th>';
+					
+					str+='<th>Male(C) </th>';
+					str+='<th>%</th>';
+					
+					str+='<th>FeMale(V) </th>';
+					str+='<th>%</th>';
+					
+					str+='<th>FeMale(C) </th>';
+					str+='<th>%</th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td class="casteCategoryGroupWiseClickCls" attr_caste_id="'+result[i].ageRangeId+'" attr_caste_group_id="'+casteGroupId+'" attr_caste_name="'+result[i].ageRange+'" style="color:#337ab7;cursor:pointer;">'+result[i].ageRange+'</td>';
+					str+='<td>'+result[i].totalVoters+'</td>';
+					str+='<td class="text-success">'+result[i].totalVotersPerc+'</td>';
+					
+					str+='<td>'+result[i].totalCadres+'</td>';
+					str+='<td class="text-success">'+result[i].totalCadrePerc+'</td>';
+					
+					str+='<td>'+result[i].maleVoters+'</td>';
+					str+='<td class="text-success">'+result[i].maleVotersPerc+'</td>';
+					
+					str+='<td>'+result[i].maleCadres+'</td>';
+					str+='<td class="text-success">'+result[i].maleCadrePerc+'</td>';
+					
+					str+='<td>'+result[i].femaleVoters+'</td>';
+					str+='<td class="text-success">'+result[i].femaleVotersPerc+'</td>';
+					
+					str+='<td>'+result[i].femaleCadres+'</td>';
+					str+='<td class="text-success">'+result[i].femaleCadrePerc+'</td>';
+					
+				str+='</tr>';
+			}
+			str+='</tbody>';
+		str+='</table>';
+	str+='</div>';
 	$("#"+casteName+"CasteDivId").html(str);
 	$("#dataTable"+casteName).dataTable({
 		"iDisplayLength": 15,
@@ -2285,41 +2287,43 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(enrollmentId){
 			var str='';
 			var totalCount=0;
 			var totalPerc=0;
-			str+='<table class="table table-noborder table-noborder-hover m_top10" id="dataTableCadreBlockId">';
-				str+='<thead class="bg-DD">';
-					str+='<th ></th>';
-					str+='<th class="text-center">Total</th>';
-					//str+='<th><span class="text-success">%</span></th>';
-					if(result[0].casteGroupList !=null && result[0].casteGroupList.length>0){
-						str+='<th class="text-center">Male</th>';
-						str+='<th class="text-center"><span class="text-success">%</span></th>';
-						str+='<th class="text-center">Female</th>';
-						str+='<th class="text-center"><span class="text-success">%</span></th>';
-						for(var i in result[0].casteGroupList){
-							str+='<th class="text-center">'+result[0].casteGroupList[i].name+'</th>';
+			str+='<div class="table-responsive">';
+				str+='<table class="table table-noborder table-noborder-hover m_top10" id="dataTableCadreBlockId">';
+					str+='<thead class="bg-DD">';
+						str+='<th ></th>';
+						str+='<th class="text-center">Total</th>';
+						//str+='<th><span class="text-success">%</span></th>';
+						if(result[0].casteGroupList !=null && result[0].casteGroupList.length>0){
+							str+='<th class="text-center">Male</th>';
 							str+='<th class="text-center"><span class="text-success">%</span></th>';
+							str+='<th class="text-center">Female</th>';
+							str+='<th class="text-center"><span class="text-success">%</span></th>';
+							for(var i in result[0].casteGroupList){
+								str+='<th class="text-center">'+result[0].casteGroupList[i].name+'</th>';
+								str+='<th class="text-center"><span class="text-success">%</span></th>';
+							}
 						}
+					str+='</thead>';
+					str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';
+							str+='<td class="text-center">'+result[i].name+'</td>';
+							str+='<td class="text-center">'+result[i].toalCadreCount+'</td>';
+							str+='<td class="text-center">'+result[i].maleCount+'</td>';
+							str+='<td class="text-center">'+result[i].malePercentage+'</td>';
+							str+='<td class="text-center">'+result[i].femaleCount+'</td>';
+							str+='<td class="text-center">'+result[i].femalePercentage+'</td>';
+							if(result[i].casteGroupList !=null && result[i].casteGroupList.length>0){
+								for(var j in result[i].casteGroupList){
+									str+='<td class="text-center">'+result[i].casteGroupList[j].toalCadreCount+'</td>';
+									str+='<td class="text-center">'+result[i].casteGroupList[j].percentage+'</td>';
+								}		
+							}
+						str+='</tr>';
 					}
-				str+='</thead>';
-				str+='<tbody>';
-				for(var i in result){
-					str+='<tr>';
-						str+='<td class="text-center">'+result[i].name+'</td>';
-						str+='<td class="text-center">'+result[i].toalCadreCount+'</td>';
-						str+='<td class="text-center">'+result[i].maleCount+'</td>';
-						str+='<td class="text-center">'+result[i].malePercentage+'</td>';
-						str+='<td class="text-center">'+result[i].femaleCount+'</td>';
-						str+='<td class="text-center">'+result[i].femalePercentage+'</td>';
-						if(result[i].casteGroupList !=null && result[i].casteGroupList.length>0){
-							for(var j in result[i].casteGroupList){
-								str+='<td class="text-center">'+result[i].casteGroupList[j].toalCadreCount+'</td>';
-								str+='<td class="text-center">'+result[i].casteGroupList[j].percentage+'</td>';
-							}		
-						}
-					str+='</tr>';
-				}
-				str+='</tbody>';
-			str+='</table>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
 			$("#cadreInfoTableView").html(str);
 			$("#dataTableCadreBlockId").dataTable({
 				"iDisplayLength": 15,
@@ -2732,7 +2736,7 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 			if(result !=null && result.length>0){
 				var str='';
 				str+='<div class="row">';
-					str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+					str+='<div class="col-sm-12">';
 						str+='<table class="table table-noborder f-12">';
 							str+='<thead class="bg-DD text-capitalize">';
 								str+='<th>status</th>';
@@ -2753,7 +2757,7 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 						str+='</table>';
 					
 					str+='</div>';
-					str+='<div class="col-md-6 col-xs-12 col-sm-12 text-center">';
+					str+='<div class="col-sm-6 text-center">';
 						str+='<div id="problemsDetailedGraph" style="height:200px;"></div>';
 					str+='</div>';
 				str+='</div>';
@@ -2831,7 +2835,7 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 						innerSize: 90,
 						depth: 70,
 						dataLabels: {
-							enabled: true,
+							enabled: false,
 							formatter: function() {
 								return (this.y) + ' %';
 							},
@@ -3261,38 +3265,40 @@ function getLocationWiseTourMembersComplainceDtls(){
 				tableView+='<div id="toursGraphDivId" style="height:300px;"></div>';
 			tableView+='</div>';
 			tableView+='<div class="col-sm-9">';
-				tableView+='<table class="table table-hover tableStyledTour" id="toursTableId">';
-					tableView+='<thead class="text-capitalize bg-DD">';
-						tableView+='<th>Leader Name</th>';
-						tableView+='<th>Leader Designation</th>';
-						tableView+='<th>Target</th>';
-						tableView+='<th>Total Tours</th>';
-						tableView+='<th>Complaince</th>';
-						tableView+='<th>Non Complaince</th>';
-					tableView+='</thead>';
-					tableView+='<tbody>';
-						for(var i in result)
-						{
-							
-							for(var j in result[i].subList)
+				tableView+='<div class="table-responsive">';
+					tableView+='<table class="table table-hover tableStyledTour" id="toursTableId">';
+						tableView+='<thead class="text-capitalize bg-DD">';
+							tableView+='<th>Leader Name</th>';
+							tableView+='<th>Leader Designation</th>';
+							tableView+='<th>Target</th>';
+							tableView+='<th>Total Tours</th>';
+							tableView+='<th>Complaince</th>';
+							tableView+='<th>Non Complaince</th>';
+						tableView+='</thead>';
+						tableView+='<tbody>';
+							for(var i in result)
 							{
-								tableView+='<tr>';
-									tableView+='<td>'+result[i].subList[j].name+'</td>';
-									tableView+='<td>'+result[i].subList[j].designation+'</td>';
-									tableView+='<td>'+result[i].subList[j].targetDays+'</td>';
-									tableView+='<td>'+result[i].subList[j].complainceDays+'</td>';
-									if(result[i].subList[j].complaincePer >= 100){
-										tableView+='<td>1</td>';	
-										tableView+='<td>-</td>';	
-									}else{
-										tableView+='<td>-</td>';	
-										tableView+='<td>1</td>';	
-									}
-								tableView+='</tr>';
-							}	
-						}
-					tableView+='</tbody>';
-				tableView+='</table>';
+								
+								for(var j in result[i].subList)
+								{
+									tableView+='<tr>';
+										tableView+='<td>'+result[i].subList[j].name+'</td>';
+										tableView+='<td>'+result[i].subList[j].designation+'</td>';
+										tableView+='<td>'+result[i].subList[j].targetDays+'</td>';
+										tableView+='<td>'+result[i].subList[j].complainceDays+'</td>';
+										if(result[i].subList[j].complaincePer >= 100){
+											tableView+='<td>1</td>';	
+											tableView+='<td>-</td>';	
+										}else{
+											tableView+='<td>-</td>';	
+											tableView+='<td>1</td>';	
+										}
+									tableView+='</tr>';
+								}	
+							}
+						tableView+='</tbody>';
+					tableView+='</table>';
+				tableView+='</div>';
 			tableView+='</div>';
 		tableView+='</div>';
 		$("#locationWiseTourMembersComplainceDtls").html(tableView);
@@ -3390,7 +3396,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 	{
 		var navTabs = '';
 		navTabs+='';
-		navTabs+='<div class="col-md-3 col-xs-12 col-sm-3 pad_right0">';
+		navTabs+='<div class="col-sm-3 pad_right0">';
 			navTabs+='<select class="form-control" role="tabListMobile">';
 				for(var i in result)
 				{
@@ -3421,7 +3427,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 				}
 			navTabs+='</ul>';
 		navTabs+='</div>';
-		navTabs+='<div class="col-md-9 col-xs-12 col-sm-9 pad_left0">';
+		navTabs+='<div class="col-sm-9 pad_left0">';
 			navTabs+='<div class="tab-content">';
 				for(var i in result)
 				{
@@ -3475,10 +3481,10 @@ function getMandalWiseBenefitMembersCount(id){
 		}
 		var navTabBody = '';
 		navTabBody+='<div class="row">';
-			navTabBody+='<div class="col-md-6 col-xs-12 col-sm-6">';
+			navTabBody+='<div class="col-sm-6">';
 				navTabBody+='<div id="benefitsGraph'+id+'" style="height:200px"></div>';
 			navTabBody+='</div>';
-			navTabBody+='<div class="col-md-6 col-xs-12 col-sm-6">';
+			navTabBody+='<div class="col-sm-6">';
 				navTabBody+='<table class="table table-noborder">';
 					navTabBody+='<thead class="text-capitalize bg-DD">';
 						navTabBody+='<th></th>';
@@ -3498,48 +3504,50 @@ function getMandalWiseBenefitMembersCount(id){
 					navTabBody+='</tbody>';
 				navTabBody+='</table>';
 			navTabBody+='</div>';
-			navTabBody+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-				navTabBody+='<table class="table table-noborder">';
-					navTabBody+='<thead class="text-capitalize bg-DD">';
-					if(locationLevelId == 2 ){
-						navTabBody+='<th>State Name</th>';
-					}else if(locationLevelId == 3 || locationLevelId == 10){
-						navTabBody+='<th>Constituency Name</th>';
-					}else if(locationLevelId == 4){
-						navTabBody+='<th>Mandal Name</th>';
-					}else if(locationLevelId == 5 || locationLevelId == 6){
-						navTabBody+='<th>Panchayat Name</th>';
-					}else if(locationLevelId == 7){
-						navTabBody+='<th>Muncipality/Corporation Name</th>';
-					}else if(locationLevelId == 8){
-						navTabBody+='<th>Ward Name</th>';
-					}
-						//navTabBody+='<th>Population</th>';
-						navTabBody+='<th>Total voters</th>';
-						navTabBody+='<th>Benefited</th>';
-						navTabBody+='<th>%</th>';
-					navTabBody+='</thead>';
-					navTabBody+='<tbody class="text-capitalize">';
-						for(var i in result)
-						{
-							navTabBody+='<tr>';
-								if(result[i].name != null && result[i].name != "")
-									navTabBody+='<td>'+result[i].name+'</td>';
-								else
-									navTabBody+='<td>Others</td>';
-								if(result[i].totalPopulation != null)
-									navTabBody+='<td>'+result[i].totalPopulation+'</td>';
-								else
-									navTabBody+='<td>-</td>';
-								navTabBody+='<td>'+result[i].totalCount+'</td>';
-								if(result[i].totalPopulation != null)
-									navTabBody+='<td>'+(((result[i].totalCount)/(result[i].totalPopulation))*100).toFixed(2)+'%</td>';
-								else
-									navTabBody+='<td>-</td>';
-							navTabBody+='</tr>';
+			navTabBody+='<div class="col-sm-12 m_top20">';
+				navTabBody+='<div class="table-responsive">';
+					navTabBody+='<table class="table table-noborder">';
+						navTabBody+='<thead class="text-capitalize bg-DD">';
+						if(locationLevelId == 2 ){
+							navTabBody+='<th>District Name</th>';
+						}else if(locationLevelId == 3 || locationLevelId == 10){
+							navTabBody+='<th>Constituency Name</th>';
+						}else if(locationLevelId == 4){
+							navTabBody+='<th>Mandal Name</th>';
+						}else if(locationLevelId == 5 || locationLevelId == 6){
+							navTabBody+='<th>Panchayat Name</th>';
+						}else if(locationLevelId == 7){
+							navTabBody+='<th>Muncipality/Corporation Name</th>';
+						}else if(locationLevelId == 8){
+							navTabBody+='<th>Ward Name</th>';
 						}
-					navTabBody+='</tbody>';
-				navTabBody+='</table>';
+							//navTabBody+='<th>Population</th>';
+							navTabBody+='<th>Total voters</th>';
+							navTabBody+='<th>Benefited</th>';
+							navTabBody+='<th>%</th>';
+						navTabBody+='</thead>';
+						navTabBody+='<tbody class="text-capitalize">';
+							for(var i in result)
+							{
+								navTabBody+='<tr>';
+									if(result[i].name != null && result[i].name != "")
+										navTabBody+='<td>'+result[i].name+'</td>';
+									else
+										navTabBody+='<td>Others</td>';
+									if(result[i].totalPopulation != null)
+										navTabBody+='<td>'+result[i].totalPopulation+'</td>';
+									else
+										navTabBody+='<td>-</td>';
+									navTabBody+='<td>'+result[i].totalCount+'</td>';
+									if(result[i].totalPopulation != null)
+										navTabBody+='<td>'+(((result[i].totalCount)/(result[i].totalPopulation))*100).toFixed(2)+'%</td>';
+									else
+										navTabBody+='<td>-</td>';
+								navTabBody+='</tr>';
+							}
+						navTabBody+='</tbody>';
+					navTabBody+='</table>';
+				navTabBody+='</div>';
 			navTabBody+='</div>';
 		navTabBody+='</div>';
 		$("#benefits"+id).html(navTabBody);
@@ -3756,10 +3764,10 @@ function getNominatedPostStatusWiseCount(){
 			totalCount=totalCount+result[i].count;
 		}
 		str+='<div class="row">';
-			str+='<div class="col-md-6 col-xs-12 col-sm-6 ">';
+			str+='<div class="col-sm-6 ">';
 				str+='<div id="nominatedPostStatusWiseCountGraph"></div>';
 			str+='</div>';
-			str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top40">';
+			str+='<div class="col-sm-6 m_top40">';
 				str+='<ul class="graph-legend">';
 				str+='<li style="background-color:#FEEE99"><span class="statusBox" style="background-color:#FED501"></span>TOTAL POSTS<span class="count">'+totalCount+'</span></li>';
 				for(var i in result){
@@ -4415,9 +4423,7 @@ function getElectionTypes(){
     }).done(function(result){  
     	if(result !=null && result.length>0){
 			var str='';
-			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<h4 class="panel-title theme-title-color">Election Information Assembly Constituency</h4>';
-				str+='<h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>';
+			str+='<div class="col-sm-12">';
 				str+='<div class="m_top20">';
 					str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
 						str+='<input value="0" type="checkbox" checked class="electionTypeWiseCls checkUncheckCls" /><span>All</span>';
@@ -4686,7 +4692,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 	  var str='';
 	  str+='<div class="col-sm-12">';
 		str+='<div class="block">';
-			str+='<ul class="list-inline" style="margin-bottom:10px;">';
+			str+='<ul class="list-inline" style="margin-bottom:10px;display:inline-table">';
 				str+='<li class="m_top10">';
 				str+='<div class="media">';
 					str+='<div class="media-left">';
@@ -4722,7 +4728,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 			str+='</ul>';
 			
 			str+='<hr class="m_0"/>';
-			str+='<ul class="list-inline">';
+			str+='<ul class="list-inline" style="display:inline-table">';
 				str+='<li class="m_top10">';
 				str+='<div class="media">';
 					str+='<div class="media-left">';
