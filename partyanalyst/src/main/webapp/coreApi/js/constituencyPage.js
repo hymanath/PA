@@ -1710,7 +1710,8 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,type,casteName,publ
 		locationValue	:locationLevelVal,
 		publicationDateId:publicationId,
 		casteGroupId:casteGroupId,
-		enrollmentYearId:enrollmentId
+		enrollmentYearId:enrollmentId,
+		assendingType:""
 	    }
 	$.ajax({
 		type : "GET",
