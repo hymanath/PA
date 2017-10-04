@@ -6,7 +6,14 @@ public class NominatedPostCandidateDtlsVO {
 	private Long boardId;
 	private Long departmentId;
 	private Long positionId;
-	
+	private String board;
+	private String department;
+	private String position;
+	private String memberShipId;
+	private String candidateName;
+	private String image;
+	private String status;
+	private String locationName;
 	private Long boardLevelId;
 	private Long nominatedPostMemberId;
 	private Long nominatedPostApplicationId;
@@ -16,6 +23,55 @@ public class NominatedPostCandidateDtlsVO {
 	private Long nominatedPostId;
 	
 	
+	
+	public String getBoard() {
+		return board;
+	}
+	public void setBoard(String board) {
+		this.board = board;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
+	public String getMemberShipId() {
+		return memberShipId;
+	}
+	public void setMemberShipId(String memberShipId) {
+		this.memberShipId = memberShipId;
+	}
+	public String getCandidateName() {
+		return candidateName;
+	}
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
