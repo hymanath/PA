@@ -4446,6 +4446,8 @@
     	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	 <property name="kaizalaOptionsDAO" ref="kaizalaOptionsDAO" />
     	 <property name="kaizalaActionTypeDAO" ref="kaizalaActionTypeDAO" />
+		  <property name="kaizalaEventsResponseDAO" ref="kaizalaEventsResponseDAO" />
+		   <property name="kaizalaGroupTypeDAO" ref="kaizalaGroupTypeDAO" />
     </bean> 
     <bean name="doorToDoorCampaignDashboardService" class="com.itgrids.partyanalyst.service.impl.DoorToDoorCampaignDashboardService" >
     </bean>
