@@ -34,36 +34,12 @@
 		</div>
 	</div>
 </header>
-<div class="black-border"></div>
-<section>
-	<div class="right-nav">
-		<ul class="right-nav-list">
-			<li index="election" class="active">election info</li>
-			<li index="constituencyVoters">constituency voters</li>
-			<li index="casteInfo">caste information</li>
-			<li index="cadreInfor">cadre information</li>
-			<!--<li index="ruralLocal">rural local body elections</li>-->
-			<!--<li index="urbanLocal">urban local body elections</li>-->
-			<li index="news">news</li>
-			<li index="problems">problems</li>
-			<li index="committees">committees</li>
-			<li index="meetings">meetings</li>
-			<li index="tours">tours</li>
-			<li index="benefits">benefits</li>
-			<li index="activities">activities</li>
-			<li index="alerts">alerts</li>
-			<li index="nominatedPosts">nominated posts</li>
-			<li index="grievance">grievance & insurance</li>
-		</ul>
-	</div>
-</section>
-<section>
+<div class="black-border">
 	<div class="container">
 		<div class="row">
-		 	<div class="col-sm-12">
-				<h3 class="text-center text-capital"><span id="selectedMenuName" class="text-capital">Andhra Pradesh</span> Information</h3>
+			<div class="col-sm-12">
 				<ol class="breadcrumb m_top10" id="getMenuLocations" menu-location-state="1" menu-location-district="" menu-location-constituency="" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="2" menu-location-parliament="" menu-location-levelName="state" >
-					<li><i menu-name="state" class="fa fa-align-justify fa-1x"></i> <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>
+					<li><i menu-name="state" class="fa fa-align-left fa-1x"></i> <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>
 					<li style="display:none"><span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capital">Nellore</span></li>
 					<li style="display:none"> <span menu-name="parliament" levelId="10" locationId="01" class="parliamentMenuName text-capital">Nellore(PC)</span></li>
 					<li style="display:none"><span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName text-capital"> Andhra Pradesh</span></li>
@@ -91,12 +67,36 @@
 						</div>
 					</div>
 				</div>
-				
-				
-				
 			</div>
 		</div>
-		<div class="row">
+	</div>
+</div>
+<section>
+	<div class="right-nav">
+		<ul class="right-nav-list">
+			<li index="election" class="active">election info</li>
+			<li index="constituencyVoters">constituency voters</li>
+			<li index="casteInfo">caste information</li>
+			<li index="cadreInfor">cadre information</li>
+			<!--<li index="ruralLocal">rural local body elections</li>-->
+			<!--<li index="urbanLocal">urban local body elections</li>-->
+			<li index="news">news</li>
+			<li index="problems">problems</li>
+			<li index="committees">committees</li>
+			<li index="meetings">meetings</li>
+			<li index="tours">tours</li>
+			<li index="benefits">benefits</li>
+			<li index="activities">activities</li>
+			<li index="alerts">alerts</li>
+			<li index="nominatedPosts">nominated posts</li>
+			<li index="grievance">grievance & insurance</li>
+		</ul>
+	</div>
+</section>
+<section>
+	<div class="container">
+		<h3 class="text-left text-capital"><span id="selectedMenuName" class="text-capital">Andhra Pradesh</span> Information</h3>
+		<div class="row m_top15">
 		 	<div id="parliamentMemberId"></div>
 			<div id="assemblyMemberId"></div>
 			<div id="representativeMembersId"></div>
@@ -149,15 +149,13 @@
 				<h4 class="panel-title theme-title-color">voters information</h4>
 				<div class="block m_top10">
 					<div class="row">
-						<div class="col-sm-12">
-							<div class="col-sm-3 pull-right">
-								<label>Publication</label>
-								<div id="publicationsDivId"></div>
-							</div>
-							<div class="col-sm-3 pull-right">
-								<label>Enrollment Year</label>
-								<select id="enrollmentvoterId" class="form-control chosen-select"></select>
-							</div>
+						<div class="col-sm-3">
+							<label>Publication</label>
+							<div id="publicationsDivId"></div>
+						</div>
+						<div class="col-sm-3">
+							<label>Enrollment Year</label>
+							<select id="enrollmentvoterId" class="form-control chosen-select"></select>
 						</div>
 					</div>
 					<div class="row m_top20">

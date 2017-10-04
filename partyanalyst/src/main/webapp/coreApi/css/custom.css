@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,500i,600,600i');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,600,600i');
 
 body
 {
@@ -18,7 +19,7 @@ header
 }
 .background-head {
     background-color: #fed501;
-    height: 300px;
+    height: 270px;
     content: ' ';
     position: absolute;
     width: 100%;
@@ -27,10 +28,19 @@ header
 .black-border
 {
 	background-color:#333;
-	padding:10px;
 	margin-bottom:20px;
 }
-h1,h2,h3,h4,h5,h6,ul,p,.table
+.black-border.header-fixed
+{
+	position:fixed;
+	top:0px;
+	left:0px;
+	right:0px;
+	z-index:9999;
+	box-shadow:0px 5px 16px rgba(0,0,0,0.4);
+	padding:10px;
+}
+h1,h2,h3,h4,h5,h6,ul,p,.table , .panel.panel-default
 {
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -88,9 +98,10 @@ label
 .theme-title-color
 {
 	text-transform:capitalize !important;
-	font-weight:600;
+	font-weight:400;
 	color:#333 !important;
-	font-size:22px;
+	font-size:24px;
+	font-family: 'Roboto', sans-serif;
 }
 .bottom-arrow:after, .bottom-arrow:before {
 	top: 100%;
@@ -717,16 +728,19 @@ label
 }
 .breadcrumb
 {
-	background-color:#FED501;
+	background-color:#333;
 	/*background-color:#fff;*/
 	padding:0px;
 	margin-bottom:6px;
+}
+.breadcrumb > li
+{
+	color:#fff;
 }
 .breadcrumb > li + li::before
 {
 	content:'\e127' !important;
 	font-family:'Glyphicons Halflings';
-	color:#333;
 }
 .menu-dropdown
 {
@@ -838,7 +852,7 @@ ul li[menu-levelname='panchayat']:after .active
 	content: '' !important;
 	border-right:1px solid #ddd;
 }
-.fa.fa-align-justify
+.fa.fa-align-left
 {
 	cursor:pointer;
 }
