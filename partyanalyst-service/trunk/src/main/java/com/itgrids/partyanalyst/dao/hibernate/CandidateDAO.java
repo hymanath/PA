@@ -354,7 +354,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	
 	
 	public List<Object[]> getElectionInformationLocationWise(List<Long> yearsList, Long locationTypeId,
-			Long locationValue,List<Long> electionScopeIds, List<Long> electionBodyIds,List<Long> tehsilIds,List<Long> partyIds,String electionSubType) {
+			Long locationValue,List<Long> electionScopeIds, List<Long> electionBodyIds,List<Long> tehsilIds,List<Long> partyIds,List<String> subTypes) {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("select p.party_id as partyId,p.short_name as partyName ,e.election_id as electionId ,e.election_year as electionYear,"
@@ -406,8 +406,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			}
 
 		}
-		if(electionSubType != null && !electionSubType.isEmpty()){
-			sb.append(" and e.sub_type= :electionSubType ");
+		if(subTypes != null && subTypes.size() >0){
+			sb.append(" and e.sub_type in  (:subTypes) ");
 		}
 		sb.append(" group by et.election_type,e.election_year,p.party_id ORDER BY e.election_year,et.election_type");
 
@@ -448,8 +448,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	      }
 	      if(partyIds != null && partyIds.size()>0L)
 	    	  query.setParameterList("partyIds", partyIds);
-	      if(electionSubType != null && !electionSubType.isEmpty()){
-	    	  query.setParameter("electionSubType", electionSubType);
+	      if(subTypes != null && subTypes.size()>0){
+	    	  query.setParameterList("subTypes", subTypes);
 	      }
 		return query.list();
 
