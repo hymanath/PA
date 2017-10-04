@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -19,6 +21,7 @@ import com.itgrids.partyanalyst.dao.IKaizalaGroupsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaOptionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
+import com.itgrids.partyanalyst.model.KaizalaActions;
 import com.itgrids.partyanalyst.model.KaizalaEventsResponse;
 import com.itgrids.partyanalyst.model.KaizalaGroups;
 import com.itgrids.partyanalyst.model.KaizalaResponderInfo;
@@ -319,6 +322,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 				JSONObject jsonObj = new JSONObject(output);
 				if(jsonObj.getString("eventType").equalsIgnoreCase("TextMessageCreated")){
 					saveTextMsgCreated(output);
+				}else if(jsonObj.getString("eventType").equalsIgnoreCase("JobCreated")){
+					saveJobCreated(output);
 				}
 			}
 		}catch (Exception e) {
@@ -368,10 +373,74 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							KER.setUpdatedTime(dateService.getCurrentDateAndTime());
 							KER.setIsDeleted("Y");
 							
-						    KER = kaizalaEventsResponseDAO.save(KER);
+						 KER = kaizalaEventsResponseDAO.save(KER);
 						}
 				} catch (Exception e) {
 					LOG.error("Exception raised at saveTextMsgCreated", e);
+				}		
+			}
+		});
+	}
+	public void saveJobCreated(final String output){
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+				try {
+					if(output != null && !output.isEmpty()){
+						KaizalaEventsResponse KER = new KaizalaEventsResponse(); 
+						DateUtilService dateService = new DateUtilService();
+						JSONObject jsonObj = new JSONObject(output);
+						JSONObject dataObj = jsonObj.getJSONObject("data");
+						
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+						Date dueDate = sdf.parse(dataObj.getString("dueDate"));
+						
+						Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+							Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
+							if(id == null || id == 0l){
+								KaizalaGroups kg = new KaizalaGroups();
+								kg.setGroupId(jsonObj.getString("objectId"));
+								kg.setIsDeleted("N");
+								kg.setInsertedTime(dateService.getCurrentDateAndTime());
+								kg.setKaizalaGroupTypeId(groupTypeId);
+								id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+							}else{
+								KER.setGroupId(jsonObj.getString("objectId"));
+							}
+							KER.setKaizalaGroupsId(id);
+							List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));
+							
+							if(resIds != null && resIds.size() > 0){
+								KER.setInsertedBy(resIds.get(resIds.size()-1));
+								KER.setUpdatedBy(resIds.get(resIds.size()-1));
+							}else{
+								KaizalaResponderInfo kri = new KaizalaResponderInfo();
+								kri.setMobileNumber(jsonObj.getString("fromUser"));
+								kri.setIsDeleted("N");
+								kri = kaizalaResponderInfoDAO.save(kri);
+								KER.setInsertedBy(kri.getKaizalaResponderInfoId());
+								KER.setUpdatedBy(kri.getKaizalaResponderInfoId());
+							}
+							Long actionId = kaizalaActionsDAO.checkexistenceOrNot(dataObj.getString("actionId"));
+							if(actionId == null || actionId == 0l){
+								KaizalaActions ka = new KaizalaActions();
+								ka.setActionId(jsonObj.getString("actionId"));
+								ka.setIsDeleted("N");
+								ka.setInsertedTime(dateService.getCurrentDateAndTime());
+								actionId = kaizalaActionsDAO.save(ka).getKaizalaActionsId();
+							}else{
+								KER.setActionId(dataObj.getString("actionId"));
+							}
+							KER.setEventId(jsonObj.getString("eventId"));
+							KER.setResponseText(dataObj.getString("assignedTo"));
+							KER.setInsertedTime(dateService.getCurrentDateAndTime());
+							KER.setUpdatedTime(dateService.getCurrentDateAndTime());
+							KER.setDueDate(dueDate);
+							KER.setIsDeleted("Y");
+							
+						    KER = kaizalaEventsResponseDAO.save(KER);
+						}
+				} catch (Exception e) {
+					LOG.error("Exception raised at saveJobCreated", e);
 				}		
 			}
 		});

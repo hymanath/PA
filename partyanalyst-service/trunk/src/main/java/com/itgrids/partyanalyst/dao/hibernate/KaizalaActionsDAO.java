@@ -29,4 +29,14 @@ public class KaizalaActionsDAO extends GenericDaoHibernate<KaizalaActions, Long>
 		return (String) query.uniqueResult();
 		
 	}
+	
+	public Long checkexistenceOrNot(String actionId){
+		Query query = getSession().createQuery(" select model.kaizalaActionsId " +
+				" from KaizalaActions model " +
+				" where model.actionId =:actionId and model.isDeleted='N' ");
+		
+		query.setParameter("actionId", actionId);
+		return (Long) query.uniqueResult();
+		
+	}
 }
