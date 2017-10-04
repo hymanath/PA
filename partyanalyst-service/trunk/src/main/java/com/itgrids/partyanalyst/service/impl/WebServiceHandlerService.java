@@ -100,11 +100,9 @@ import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
-import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
-import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -5418,9 +5416,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return null;
 	}
 	
-	public void saveKaizalAnswerInfo(String anserObjStr){
+	public void saveEventResponses(String anserObjStr){
 		try {
-			//kaizalaInfoService.saveKaizalAnswerInfo(anserObjStr);
 			kaizalaInfoService.saveEventResponses(anserObjStr);
 		} catch (Exception e) {
 			 log.error("Exception raised at saveKaizalAnswerInfo", e);

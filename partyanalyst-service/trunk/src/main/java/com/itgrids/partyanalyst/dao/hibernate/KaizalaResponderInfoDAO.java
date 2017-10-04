@@ -14,9 +14,9 @@ public class KaizalaResponderInfoDAO extends GenericDaoHibernate<KaizalaResponde
 	}
 		
 	public List<Long> getRespondentId(String modileNum){
-		Query query = getSession().createQuery(" select  model.kaizalaResponderInfoId " +
+		Query query = getSession().createQuery(" select model.kaizalaResponderInfoId " +
 				" from KaizalaResponderInfo model " +
-				" where model.mobileNumber=:modileNum and model.isDeleted='N' ");
+				" where model.mobileNumber=:modileNum and model.isDeleted='N' order by model.kaizalaResponderInfoId desc ");
 		query.setParameter("modileNum", modileNum);
 		return query.list();
 	}

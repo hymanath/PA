@@ -273,8 +273,9 @@ public interface IWebServiceHandlerService {
     public List<IdNameVO> getIvrSurveyDates(String fromDateStr,String toDateStr,Long entityType);
     public List<IdNameVO> getIvrSurveyQuestions(String fromDateStr,String toDateStr,Long entityType);
     public List<BasicVO> getElectionTypes();
-    public void saveKaizalAnswerInfo(String anserObj);
+   // public void saveKaizalAnswerInfo(String anserObj);
     //public Long getAddressId(Long locationScopeId, Long locationValue);
     public Long getKaizalaAddressId(Long locationScopeId, Long locationValue);
     public Long kaizalaCommitteeLevelAddressSaving(Long locationScopeId, Long locationValue);
+    public void saveEventResponses(String anserObjStr);
 }
