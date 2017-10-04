@@ -4159,4 +4159,14 @@
 	 <bean id="trainingCampBatchTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampBatchTypeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 
+	 <bean id="kaizalaEventsDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaEventsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="kaizalaEventsResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaEventsResponseDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="kaizalaAttachementTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaAttachementTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
