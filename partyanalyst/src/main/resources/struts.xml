@@ -18125,5 +18125,10 @@
 			<param name="root">typeVo</param>
 		</result>
 	</action>
+	<action name="getNominatedPositionWiseCandidatesAction" class="locationDashboardAction"  method="getNominatedPositionWiseCandidates">
+    <result type="json" name="success">    
+      <param name="root">nominatedPostCandList</param>       
+    </result> 
+  </action>
       </package>
 </struts>

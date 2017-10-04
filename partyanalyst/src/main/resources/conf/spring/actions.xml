@@ -1795,6 +1795,7 @@
 		<property name="alertLocationDashboardService" ref="alertLocationDashboardService"/>
 		<property name="locationWiseCasteInfoService" ref="locationWiseCasteInfoService"/>
 		<property name="meetingLocationDashboardService" ref="meetingLocationDashboardService"/>
+		<property name="nominatedPostLocationDashboardService" ref="nominatedPostLocationDashboardService"/>
 	</bean>	
 	<bean id="cadrePartyMeetingManagementAction" class="com.itgrids.partyanalyst.web.action.CadrePartyMeetingManagementAction" singleton="false">
 			<property name="cadrePartyMeetingManagementService" ref="cadrePartyMeetingManagementService"/>
