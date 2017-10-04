@@ -1326,4 +1326,12 @@ public interface IConstants {
 	public static final Long DEBATE_OTHERS_ID = 2L;
 	public static final String ITDP_LIVE_URL = "http://mytdp.com/ITDP/WebService/";
 	
+	
+	public static final Long PARTY_MEETING_STATE_LEVEL_ID = 1L;
+	public static final Long PARTY_MEETING_DISTRICT_LEVEL_ID = 2L;
+	public static final Long PARTY_MEETING_CONSTITUENCY_LEVEL_ID = 3L;
+	public static final Long PARTY_MEETING_PARLIAMENT_LEVEL_ID = 9L;
+	public static final Long PARTY_MEETING_MANDAL_LEVEL_ID = 4L;
+	public static final Long PARTY_MEETING_MUNICIPALITY_LEVEL_ID = 5L;
+	public static final Long PARTY_MEETING_PANCHAYAT_LEVEL_ID = 7L;
 }

@@ -1,5 +1,8 @@
 package com.itgrids.core.api.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -27,7 +30,19 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 	 */
 	public List<PartyMeetingsVO> getMeetingTypeWiseTotalMeetings(Long locationLevel, Long locationId, String fromDateStr,String toDateStr){
 		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    Date fromDate=null;
+			Date toDate=null;
 			
+			if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Long> locationIds = new ArrayList<Long>();
+			if(locationId != null && locationId.longValue() > 0L){
+				locationIds.add(locationId);
+			}
+			List<Object[]> meetingList =  partyMeetingDAO.getMeetingTypeWiseTotalMeetings(locationLevel,locationIds,fromDate,toDate);
 		}catch(Exception e){
 			LOG.error("Exception raised at getMeetingTypeWiseTotalMeetings() method of LoactionDetailsDashBoardService", e);
 		}
