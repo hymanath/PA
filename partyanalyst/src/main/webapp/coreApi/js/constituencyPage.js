@@ -187,7 +187,8 @@ function onLoadAjaxCalls()
 	
 	//Assembly Block
 	getElectionTypes();
-	getElectionInformationLocationWise(electionTypeVal,"wonSeat",0);
+	var partyIds = [163,265,269,662,872,886,1117,];
+	getElectionInformationLocationWise(electionTypeVal,"wonSeat",partyIds);
 	if(locationLevelId == '4'){
 		$(".assemblyElectionBlockCls").show();
 		getDetailedElectionInformaction();
@@ -4465,7 +4466,7 @@ function getElectionTypes(){
 	});	
 }
 
-function getElectionInformationLocationWise(electionVal,type,partyId){
+function getElectionInformationLocationWise(electionVal,type,partyIds){
 	$('#electionDetailsGraphWiseId').html(spinner);
 	$('#electionDetailsTableWiseId').html(spinner);
 	if(locationLevelId == '8' || locationLevelId == '6'){
@@ -4486,7 +4487,9 @@ function getElectionInformationLocationWise(electionVal,type,partyId){
 			locationId 		:locationLevelId,
 			locationValue 	:locationLevelVal,
 			electionScopeIds:electionVal,
-			partyId			:0
+			partyIds			:partyIds,
+			electionYrs     :[2014,2000,2004],
+			electionSubType    :"MAIN"
 			
 	}
 	 $.ajax({
