@@ -2589,7 +2589,7 @@ function getLeadersInNewsForConstituencyPage(){
 	if(locationLevelId == '2')
 	{
 		locationLevelNewsVal ='2';
-		userAccessLevelValuesNewsArray.push(stateId)
+		userAccessLevelValuesNewsArray.push(1)
 	}else if(locationLevelId == '3')
 	{
 		locationLevelNewsVal ='3';
