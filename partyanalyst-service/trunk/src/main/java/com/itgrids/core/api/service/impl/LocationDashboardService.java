@@ -2115,7 +2115,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			if(keyValueVOs != null && keyValueVOs.size() > 0){
 				keyValueVO = new KeyValueVO();
 				keyValueVO.setId(7L);
-				keyValueVO.setName("Panchayat/Ward/Division");
+				keyValueVO.setName("Village/Ward");
 				for(KeyValueVO param : keyValueVOs){
 					if(param.getId().longValue() == 7L || param.getId().longValue() == 8L){
 						keyValueVO.setCount(keyValueVO.getCount()+param.getCount());
