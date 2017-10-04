@@ -143,7 +143,7 @@ public class KaizalaEventsResponse extends BaseModel implements Serializable{
 	public Date getUpdatedTime() {
 		return updatedTime;
 	}
-	void setUpdatedTime(Date updatedTime) {
+	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
 	@Column(name="inserted_by")
