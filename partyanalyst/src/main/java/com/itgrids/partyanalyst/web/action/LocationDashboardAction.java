@@ -694,9 +694,16 @@ public String getElectionInformationLocationWise(){
 			List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIds"));
 			List<Long> partyIds = convertJsonStringList(jObj.getJSONArray("partyIds"));
 			List<Long> electionYrs = convertJsonStringList(jObj.getJSONArray("electionYrs"));
-			String electionType =jObj.getString("electionSubType");
+			//String electionType =jObj.getString("electionSubType");
+			List<String> subTypes=  new ArrayList<String>();
+			JSONArray jsonArray = jObj.getJSONArray("electionSubTypeArr");
+			if(jsonArray!=null && jsonArray.length()>0){
+				for(int i =0; i< jsonArray.length();i++){
+					subTypes.add(jsonArray.getString(i).toString());        
+				}
+			}
 			electioninformationList=locationDashboardService.getElectionInformationLocationWise(jObj.getString("fromDate"),jObj.getString("toDate"),
-					jObj.getLong("locationId"),jObj.getLong("locationValue"),electionScopeIds,partyIds,electionYrs,electionType);
+					jObj.getLong("locationId"),jObj.getLong("locationValue"),electionScopeIds,partyIds,electionYrs,subTypes);
 		
 //getElectionInformationLocationWise(String fromDate, String toDate, Long locationTypeId,Long locationValue, List<Long> electionScopeIds)			
 			

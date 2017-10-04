@@ -18,6 +18,7 @@
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="D2D_Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" href="coreApi/css/bootstrap-multiselect.css" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <body>
@@ -440,6 +441,7 @@
 <script src="D2D_Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
+<script type="text/javascript" src="coreApi/js/bootstrap-multiselect.js"></script>
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
 </body>
 </html>
