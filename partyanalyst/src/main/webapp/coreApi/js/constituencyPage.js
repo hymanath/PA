@@ -225,7 +225,7 @@ function onLoadAjaxCalls()
 	getVotersAndcadreAgeWiseCount(22,4);
 	
 	//caste information
-	getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",22,4)
+	getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",22,4,"desending")
 	getVotersCastGroupWiseCount(22,4)
 	getActivityStatusList();
 	
@@ -365,6 +365,18 @@ function onLoadClicks()
 		$(".alertCategoryWiseCls li:nth-child(1)").addClass("active");
 		getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
 	});
+	$(document).on("click","[active-type] li",function(){
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		var name = $(this).closest("ul").attr("active-type");
+		var assendingType = $(this).attr("type")
+		var publicationId = $("#publicationCasteId").val();
+		var enrollmentId = $("#enrollmentCasteId").val();
+		if(name == "casteSorting")
+		{
+			getCasteGroupNAgeWiseVoterNCadreCounts(0,"sortingType","All",publicationId,enrollmentId,assendingType)			
+		}
+	});
 	$(document).keydown(function(event){
 		if(event.keyCode==123){
 			alert("Hoo no! don't try to expose me");
@@ -470,7 +482,7 @@ function onLoadClicks()
 		$(".casteGroupTypeDiv li:nth-child(1)").addClass("active");
 		if(blockName == 'casteInfo')
 		{
-			getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",22,4)
+			getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",22,4,"desending")
 			getVotersCastGroupWiseCount(22,4)
 		}else if(blockName == 'cadreInfor')
 		{
@@ -513,6 +525,9 @@ function onLoadClicks()
 			for(var i in propertyIdGlobalStr){
 				getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i])
 			}
+		}else if(blockName == 'constituencyVoters')
+		{
+			getVotersAndcadreAgeWiseCount(22,4);
 		}
 	});
 	
@@ -599,20 +614,20 @@ function onLoadClicks()
 		var publicationId = $("#publicationCasteId").val();
 		var enrollmentId = $("#enrollmentCasteId").val();
 		
-		getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,"tabClick",casteName,publicationId,enrollmentId);
+		getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,"tabClick",casteName,publicationId,enrollmentId,"desending");
 	});
 	$(document).on("change","#publicationCasteId",function(){
 		var publicationId =  $(this).val();
 		var enrollmentId = $("#enrollmentCasteId").val();
 		
-		getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",publicationId,enrollmentId);
+		getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",publicationId,enrollmentId,"desending");
 		getVotersCastGroupWiseCount(publicationId,enrollmentId);
 	});
 	$(document).on("change","#enrollmentCasteId",function(){
 		var enrollmentId =  $(this).val();
 		var publicationId = $("#publicationCasteId").val();
 		
-		getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",publicationId,enrollmentId);
+		getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",publicationId,enrollmentId,"desending");
 		getVotersCastGroupWiseCount(publicationId,enrollmentId);
 	});
 	$(document).on("click",".casteCategoryGroupWiseClickCls",function(){
@@ -1571,41 +1586,49 @@ function getVotersCastGroupWiseCount(publicationId,enrollmentId){
 }
 function buildVotersCastGroupWiseCount(result){
 	var str='';
-	str+='<div class="col-sm-12">';
-		str+='<div class="col-sm-4">';
-			str+='<div id="casteInfoGraphBar" style="height:200px;"></div>';
-			str+='<div class="m_top10">';
-				str+='<table class="table table-bordered" id="dataTableOverViewCastGroupId">';
-					str+='<thead class="bg-DD">';
+	str+='<div class="col-sm-6">';
+		str+='<div id="casteInfoGraphBar" style="height:270px;"></div>';
+		str+='<div class="m_top10">';
+			str+='<table class="table table-bordered table-condensed" id="dataTableOverViewCastGroupId">';
+				str+='<thead class="bg-DD">';
+					str+='<tr>';
+					str+='<th>Caste Group</th>';
+					str+='<th>Total Voter</th>';
+					str+='<th>Total Cadre</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					
+					for(var i in result){
 						str+='<tr>';
-						str+='<th>Caste Group</th>';
-						str+='<th>Total Voter</th>';
-						str+='<th>Total Cadre</th>';
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-						
-						for(var i in result){
-							str+='<tr>';
-							str+='<td>'+result[i].ageRange+'</td>';
-							str+='<td>'+result[i].totalVoters+'</td>';
-							str+='<td>'+result[i].totalCadres+'</td>';
-							str+='</tr>';	
-						}
-						
-					str+='</tbody>';
-				str+='</table>';
-			str+='</div>';
+						str+='<td>'+result[i].ageRange+'</td>';
+						str+='<td>'+result[i].totalVoters+'</td>';
+						str+='<td>'+result[i].totalCadres+'</td>';
+						str+='</tr>';	
+					}
+					
+				str+='</tbody>';
+			str+='</table>';
 		str+='</div>';
-		str+='<div class="col-sm-4">';
-			str+='<h5 class="text-capital" style="color:#777">Top 15 Castes</h5>';
-			str+='<div id="topTenCastesDivId" class="m_top10"></div>';
-		str+='</div>';
-		str+='<div class="col-sm-4">';
-			str+='<h5 class="text-capital" style="color:#777">Total Castes Wise Voters% & Cadres%</h5>';
-			str+='<div class="scollerDiv">';
+	str+='</div>';
+	str+='<div class="col-sm-6">';
+		str+='<h5 class="text-capital" style="color:#777">Top 15 Castes</h5>';
+		str+='<div id="topTenCastesDivId" class="m_top10"></div>';
+	str+='</div>';
+	str+='<div class="col-sm-12 m_top20">';
+		str+='<h5 class="text-capital" style="color:#777">Total Castes Wise Voters% & Cadres%</h5>';
+		str+='<ul class="list-inline active-type-sorting m_top10" active-type="casteSorting">';
+			str+='<li class="active" type="desending"><i class="glyphicon glyphicon-sort-by-attributes"></i></li>';
+			str+='<li type="assending"><i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i></li>';
+			str+='<li type="atozSorting">A-Z</li>';
+			str+='<li type="ztoaSorting">Z-A</li>';
+		str+='</ul>';
+		str+='<ul class="list-inline m_top10">';
+			str+='<li><span style="background-color:#95CEFF;height:15px;width:15px;display:inline-block;margin-right:3px;"></span>Voter</li>';
+			str+='<li><span style="background-color:#434348;height:15px;width:15px;display:inline-block;margin-right:3px;"></span>Cadre </li>';
+		str+='</ul>';
+		str+='<div class="scollerDiv">';
 			str+='<div id="totalCastesAndCadrePercBarGraph" class="m_top10"></div>';
-			str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	str+='<div class="col-sm-12 m_top10">';
@@ -1638,6 +1661,7 @@ function buildVotersCastGroupWiseCount(result){
 	str+='</div>';
 	
 	$("#casteOverViewDivId").html(str);
+	$("#topTenCastesDivId,#totalCastesAndCadrePercBarGraph").html(spinner);
 	$("#dataTableOverViewCastGroupId").dataTable({
 		"paging":   false,
 		"info":     false,
@@ -1656,86 +1680,88 @@ function buildVotersCastGroupWiseCount(result){
 			casteCadreCountArr.push(result[i].totalCadres)
 		}
 	}
-		$("#casteInfoGraphBar").highcharts({
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: ''
-			},
-			xAxis: {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: casteNameCategoryArr,
-				type: 'category',
-				labels: {
-					formatter: function() {
-						if(this.value == "Minority"){
-							return this.value.toString().substring(0, 6)+'..';
-						}else{
-							return this.value.toString().substring(0, 5)+'';
+	var mainArr=[];
+	if(result !=null && result.length>0){
+		for(var i in result){
+			var casteName = result[i].ageRange;
+			var count=0;
+				count = result[i].totalVoters
+			var colorsId = globalCasteColorObj[result[i].ageRange.trim()];
+			var obj = {
+				name: casteName,
+				y:count,
+				color:colorsId
+			}
+			mainArr.push(obj);
+		}
+	}
+	var id = 'casteInfoGraphBar';
+	var type = {
+		type: 'pie',
+		backgroundColor:'transparent',
+		options3d: {
+			enabled: true,
+			alpha: 25
+		}
+	};
+	var title = {
+		text: ''
+	};
+	var tooltip = {
+		useHTML: true,
+		backgroundColor: '#FCFFC5', 
+		formatter: function() {
+			var cnt = this.point.count;
+			return "<b style='color:"+this.point.color+"'>"+this.point.name+" - "+Highcharts.numberFormat(this.percentage,1)+"%</b>";
+		}  
+	}; 
+	var plotOptions ={ 
+		pie: {
+			innerSize: 90,
+			depth: 80,
+			dataLabels:{
+				useHTML: true,
+				enabled: false,
+				formatter: function() {
+						if (this.y === 0) {
+							return null;
+						} else {
+							return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
 						}
-						
-					},
-					
-				}
+					} 
 			},
-			yAxis: {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				title: {
-					text: ''
-				},
-			},
-			tooltip: {
-				formatter: function () {
-					var s = '<b>' + this.x + '</b>';
-						$.each(this.points, function () {
-						if(this.series.name != "Series 1")  
-						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-							this.y
-					});
-
-					return s;
-				},
-				shared: true
-			},
-			plotOptions: {
-				column: {
-					dataLabels: {
-						enabled: false
-					}
-				}
-			},
-			legend: {
-				enabled: false
-			},
-			credits: {
-				enabled: false
-			},
-			series: [{
-				name: 'Voter',
-				data: casteVoterCountArr
-			}, {
-				name: 'Cadre',
-				data: casteCadreCountArr
-			}]
-		});
-
+			showInLegend: true
+		},
+	};
+	var legend = {
+		enabled: true,
+		layout: 'horizontal',
+		align: 'left',
+		verticalAlign: 'bottom',
+		useHTML: true,
+		
+		labelFormatter: function() {
+			return '<div><span style="color:'+this.color+'">'+this.name + '-'+Highcharts.numberFormat(this.percentage,1)+'%</span></div>';
+		}
+	};
+	var data = [{
+		name: '',
+		data: mainArr
+	}];
+	highcharts(id,type,data,plotOptions,title,tooltip,legend);
 }
-function getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,type,casteName,publicationId,enrollmentId){
-	
-	$("#"+casteName+"CasteDivId").html(spinner);
-	jsObj={
-		locationTypeId	:locationLevelId,
-		locationValue	:locationLevelVal,
-		publicationDateId:publicationId,
-		casteGroupId:casteGroupId,
-		enrollmentYearId:enrollmentId,
-		assendingType:""
-	    }
+function getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,type,casteName,publicationId,enrollmentId,assendingType){
+	if(type != "sortingType"){
+		$("#"+casteName+"CasteDivId").html(spinner);
+	}
+	var jsObj={
+		locationTypeId		:locationLevelId,
+		locationValue		:locationLevelVal,
+		publicationDateId	:publicationId,
+		casteGroupId		:casteGroupId,
+		enrollmentYearId	:enrollmentId,
+		assendingType		:assendingType
+	}
 	$.ajax({
 		type : "GET",
 		url : "getVotersAndCadreCasteWiseCountAction.action",
@@ -1745,12 +1771,18 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,type,casteName,publ
 		if(result !=null && result.length>0){
 			if(type == "onload"){
 				buildCasteGroupNAgeWiseVoterNCadreCounts(result);
+				buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName);
+			}else if(type == "sortingType"){
+				buildGraphForCaste(result);
+			}else{
+				buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName);
 			}
-			buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName);
+			
 		}
 	});	
 }
 function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
+	buildGraphForCaste(result);
 	var str='';
 	var countVar =0;
 	str+='<table class="table table-noborder" id="dataTableTopTenCastGroupId">';
@@ -1790,6 +1822,10 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
 		"autoWidth": true,
 		"sDom": '<"top"iflp>rt<"bottom"><"clear">'
 	});
+	
+}
+function buildGraphForCaste(result)
+{
 	var totalCasteNameCategoryArr=[];
 	var totalCasteVoterCountArr=[];
 	var totalCasteCadreCountArr=[];
@@ -1802,7 +1838,7 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
 	}
 		var heightOfDiv = totalCasteNameCategoryArr.length;
 		if(heightOfDiv >20){
-			heightOfDiv = heightOfDiv * 30;
+			heightOfDiv = heightOfDiv * 60;
 			$("#totalCastesAndCadrePercBarGraph").css("height",heightOfDiv);
 			$(".scollerDiv").mCustomScrollbar({setHeight:'460px'})
 		}else{
@@ -1825,11 +1861,7 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
 				type: 'category',
 				labels: {
 					formatter: function() {
-						if(this.value == "Minority"){
-							return this.value.toString().substring(0, 6)+'..';
-						}else{
-							return this.value.toString().substring(0, 5)+'';
-						}
+						return this.value.toString().substring(0, 15)+'';
 						
 					},
 					
@@ -1858,8 +1890,17 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
 			},
 			plotOptions: {
 				bar: {
+					pointWidth: 17,
+					gridLineWidth: 12,
 					dataLabels: {
-						enabled: false
+						enabled: true,
+						formatter: function() {
+							if (this.y === 0) {
+								return null;
+							} else {
+								return this.y;
+							}
+						}
 					}
 				}
 			},
@@ -1878,7 +1919,6 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
 			}]
 		});
 }
-
 function buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName){
 	var str='';
 	str+='<div class="table-responsive">';
