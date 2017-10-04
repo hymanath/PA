@@ -1334,4 +1334,6 @@ public interface IConstants {
 	public static final Long PARTY_MEETING_MANDAL_LEVEL_ID = 4L;
 	public static final Long PARTY_MEETING_MUNICIPALITY_LEVEL_ID = 5L;
 	public static final Long PARTY_MEETING_PANCHAYAT_LEVEL_ID = 7L;
+	public static final Long COMMITTEE_MEETINGS = 1L;
+	public static final Long SPECIAL_MEETINGS = 3L;
 }

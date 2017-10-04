@@ -38,6 +38,7 @@ public class PartyMeetingsVO implements Serializable{
 	private Long plannedCount = 0l;
 	private Long conductedCount = 0l;
 	private Long notConductedCount = 0l;
+	private Long notUpdatedCount = 0L;
 	private Date startDate;
 	private Date endDate;
 	/*For Core DashBoard  */
@@ -533,7 +534,13 @@ public class PartyMeetingsVO implements Serializable{
 	public void setInvetteList(List<IdAndNameVO> invetteList) {
 		this.invetteList = invetteList;
 	}
-
+	public Long getNotUpdatedCount() {
+		return notUpdatedCount;
+	}
+	public void setNotUpdatedCount(Long notUpdatedCount) {
+		this.notUpdatedCount = notUpdatedCount;
+	}
+	
 	
 	
 }
