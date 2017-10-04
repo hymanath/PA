@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.KaizalaActions;
 public interface IKaizalaActionsDAO extends GenericDao<KaizalaActions, Long> {
 	public List<Long> getKaizalaActionId(String actionId);
 	public String getAccessToken();
+	public Long checkexistenceOrNot(String actionId);
 }
