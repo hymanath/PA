@@ -1433,7 +1433,28 @@ h3
 				font-size:13px !important;
 				padding:5px !important;
 				text-align:center;
+				border-bottom-width:1px !important;
+				
 			}
+		}
+		tr:nth-child(1){
+			th
+			{
+				border-right-color:#333 !important;
+			}
+		}
+		tr:nth-child(2){
+			th:nth-child(4n)
+			{
+				border-right-color:#333 !important;
+			}
+		}
+	}
+	tr
+	{
+		td:nth-child(1), td:nth-child(4n+1)
+		{
+			border-right-color:#333 !important;
 		}
 	}
 	
