@@ -3266,7 +3266,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 *  @since 02-AUG-2017
 	 */
 	
-	public List<ElectionInformationVO> getElectionInformationLocationWise(String fromDateStr, String toDateStr, Long locationTypeId,Long locationValue, List<Long> electionScopeIds,Long partyId) {
+	public List<ElectionInformationVO> getElectionInformationLocationWise(String fromDateStr, String toDateStr, Long locationTypeId,Long locationValue, List<Long> electionScopeIds,List<Long> partyIds,List<Long> electionYrs,String electionSubType) {
 		List<ElectionInformationVO> electionInformationVOList= new ArrayList<ElectionInformationVO>();
 		try{
 			List<Long> yearsList=  new ArrayList<Long>();
@@ -3315,7 +3315,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			}
 			
 			Map<Long,Map<String,ElectionInformationVO>> partyMap = new HashMap<Long,Map<String,ElectionInformationVO>>();
-			List<Object[]> resultArray= candidateDAO.getElectionInformationLocationWise(yearsList, locationTypeId, locationValue, electionScopeIds, electionBodyIds, tehsilIds,partyId);
+			List<Object[]> resultArray= candidateDAO.getElectionInformationLocationWise(electionYrs, locationTypeId, locationValue, electionScopeIds, electionBodyIds, tehsilIds,partyIds,electionSubType);
 			if(commonMethodsUtilService.isListOrSetValid(resultArray)){
 				
 			for (Object[] param : resultArray) {
