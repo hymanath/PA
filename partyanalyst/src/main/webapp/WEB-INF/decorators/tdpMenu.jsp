@@ -88,79 +88,10 @@
 	{
 		line-height:50px;
 	}
-	.eventsheader
-	{
-		display:none;
-	}
-	header
-	{
-		background-color:#FFCC00;
-		border-bottom:8px solid red;
-	}
-	.background-head {
-		background-color: #fed501;
-		height: 300px;
-		content: ' ';
-		position: absolute;
-		width: 100%;
-		z-index: -1;
-	}
-	.black-border
-	{
-		padding:6px;
-		background-color:#333;
-		margin-bottom:20px;
-	}
 </style>
 <decorator:head/>
 	</head>
-<body>
-<div class="background-head"></div>
-<header>
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-6 span6">
-				<img src="coreApi/img/logo.png" class="img-responsive"/>
-			</div>
-			<div class="col-sm-6 span6">
-				<img src="coreApi/img/right_side_head.png" class="img-responsive pull-right"/>
-			</div>
-		</div>
-	</div>
-</header>
-<div class="black-border">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-6 span6">
-				<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
-            	<p style="margin-top:0px;margin-bottom:0px;font-size:12px;color:#fff;padding:0px;">Welcome, ${sessionScope.UserName} |</p> </c:if>
-				<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">
-				<p style="padding:0px;font-size:12px;color:#fff;margin-top:1px;margin-bottom:0px;" class="adminCls">Welcome, ${sessionScope.UserName}</p> </c:if>
-				<c:if test="${sessionScope.USER.isAdmin == 'true' && fn:contains(sessionScope.USER.entitlements, 'APPLICATION_ADMIN_ENTITLEMENT' )}">
-					<a style="color:#fff !important;" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
-				</c:if>
-				<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-				<a id="loginId" href="javascript:{}" onClick="openDialogForLoginWindow()" class="btn btn-mini"><i class="icon-user"></i><b> Login</b></a>
-					<!--<span>|</span>
-					<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>-->
-					
-				</c:if>
-			</div>
-			<div class="col-sm-6 span6">
-				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'LEADER_OCCASIONS_ENTITLEMENT' )}">
-					<a href="birthDayAction.action" style="position:relative;float:right">
-						<span class="birthdayCount" > <b> ${sessionScope.birthDayCount} </b></span>
-						<img src="img/birthdayIcon.png" class="birthdaysIcon" title="Today BirthDay Count"/>
-						<!--<i class="fa fa-birthday-cake text-danger" style="font-size: 18px; margin-top: 10px;margin-left:10px;" title="Today Birthdays"></i>-->
-					</a>
-				</c:if>
-				<a id="trigger" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle fullcollapse" href="#" style="color:#fff;float:right;font-size:14px !important;text-decoration:none;margin-top:10px;">
-					 <i class="glyphicon glyphicon-align-left icon-align-left"></i>&nbsp;&nbsp;Menu
-                </a>
-			</div>
-		</div>
-	</div>
-</div>
+    	<body>
     <header class="eventsheader">
 	<div class="container">
         <div class="row">
