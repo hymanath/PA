@@ -4858,3 +4858,17 @@ function getPartyWiseMPandMLACandidatesCounts(){
       
     });
   }
+  //getElectionYears()
+  function getElectionYears(){
+  var jsObj={
+      electionSubTypes:[]
+    }
+    $.ajax({   
+      type:'GET',
+      url:'getElectionYearsAction.action',  
+      dataType: 'json',
+      data: {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+      
+    });
+  }
