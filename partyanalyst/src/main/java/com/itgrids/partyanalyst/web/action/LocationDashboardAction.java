@@ -15,6 +15,7 @@ import com.itgrids.core.api.service.IAlertLocationDashboardService;
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.core.api.service.ILocationWiseCasteInfoService;
 import com.itgrids.core.api.service.IMeetingLocationDashboardService;
+import com.itgrids.core.api.service.INominatedPostLocationDashboardService;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.BoothInchargesVO;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostCandidateDtlsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -85,7 +87,26 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private String successMsg;
 	private IMeetingLocationDashboardService meetingLocationDashboardService;
 	private CandidateDetailsForConstituencyTypesVO typeVo;
+	private INominatedPostLocationDashboardService nominatedPostLocationDashboardService;
+	private List<NominatedPostCandidateDtlsVO> nominatedPostCandList;
 	
+	
+	
+	
+	public List<NominatedPostCandidateDtlsVO> getNominatedPostCandList() {
+		return nominatedPostCandList;
+	}
+	public void setNominatedPostCandList(
+			List<NominatedPostCandidateDtlsVO> nominatedPostCandList) {
+		this.nominatedPostCandList = nominatedPostCandList;
+	}
+	public INominatedPostLocationDashboardService getNominatedPostLocationDashboardService() {
+		return nominatedPostLocationDashboardService;
+	}
+	public void setNominatedPostLocationDashboardService(
+			INominatedPostLocationDashboardService nominatedPostLocationDashboardService) {
+		this.nominatedPostLocationDashboardService = nominatedPostLocationDashboardService;
+	}
 	public IMeetingLocationDashboardService getMeetingLocationDashboardService() {
 		return meetingLocationDashboardService;
 	}
@@ -902,4 +923,15 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getNominatedPositionWiseCandidates(){
+	     try{
+	       jObj = new JSONObject(getTask());
+	        List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+	        nominatedPostCandList = nominatedPostLocationDashboardService.getNominatedPositionWiseCandidates(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"),jObj.getLong("boardLevelId"),
+	        		jObj.getLong("startIndex"),jObj.getLong("endIndex"));
+	     }catch(Exception e){
+	       LOG.error("Exception raised at getNominatedPositionWiseCandidates() of LocationDashboardAction{}", e);
+	     }
+	     return Action.SUCCESS;
+	   }
 }

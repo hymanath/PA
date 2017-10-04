@@ -212,7 +212,7 @@ function onLoadAjaxCalls()
 	
 	//Assembly Block
 	getElectionTypes();
-	var partyIds = [163,265,269,662,872,886,1117,];
+	var partyIds = [163,265,269,662,872,886,1117,1887,1892,514,362];
 	getElectionInformationLocationWise(electionTypeVal,"wonSeat",partyIds);
 	if(locationLevelId == '4'){
 		$(".assemblyElectionBlockCls").show();
@@ -247,6 +247,7 @@ function onLoadAjaxCalls()
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
+	//getNominatedPositionWiseCandidates()//click function
 	
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
@@ -4795,3 +4796,25 @@ function getPartyWiseMPandMLACandidatesCounts(){
 	  $("#statelevelMPMLAId").html(str);
   }
 }
+
+  function getNominatedPositionWiseCandidates(){
+	var jsObj={
+      "fromDateStr" : globalFromDate,
+      "toDateStr":globalToDate,
+      "locationValuesArr":userAccessLevelValuesArray,
+      "locationTypeId":locationLevelId,
+      "year":"",
+      "tdpCommitteeEnrollmentYearId":1,
+      "boardLevelId":5,
+	  startIndex:0,
+	  endIndex:10
+    }
+    $.ajax({   
+      type:'GET',
+      url:'getNominatedPositionWiseCandidatesAction.action',  
+      dataType: 'json',
+      data: {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+      
+    });
+  }
