@@ -388,7 +388,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			jObj = new JSONObject(getTask());
 			
 			locationVotersVOList = locationWiseCasteInfoService.getVotersAndCadreCasteWiseCount(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),
-					jObj.getLong("publicationDateId"),jObj.getLong("enrollmentYearId"),jObj.getLong("casteGroupId"));
+					jObj.getLong("publicationDateId"),jObj.getLong("enrollmentYearId"),jObj.getLong("casteGroupId"),jObj.getString("assendingType"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getVotersAndCadreCasteWiseCount", e);
 		}
