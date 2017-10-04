@@ -1771,7 +1771,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			partyVO.setName(commonMethodsUtilService.getStringValueForObject(party[1]));
 			finalList.get(0).getSelectedCasteDetails().add(partyVO);
 		}
-		List<String> electionYears = electionDAO.getElectionYears();
+		List<String> electionYears = electionDAO.getElectionYears(null);
 	
 		finalList.get(0).getAgeRanges().addAll(electionYears);
 		
@@ -4476,5 +4476,17 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		}catch(Exception e){
 			Log.error("Exception raised in settingPartyWiseCandidateCount method of LocationDashboardService"+e);
 		}
+	}
+	
+	public KeyValueVO getElectionYears(List<String> subTypes) {
+		KeyValueVO retrunVO = new KeyValueVO();
+		try{
+			List<String> electionYears = electionDAO.getElectionYears(subTypes);
+			retrunVO.setImageList(electionYears);
+			
+		}catch (Exception e) {
+			Log.error("Exception raised in getElectionYears method of LocationDashboardService"+e);
+		}
+		return retrunVO;
 	}
 }
