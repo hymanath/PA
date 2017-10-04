@@ -67,5 +67,5 @@ public interface ILocationDashboardService {
 	public List<NominatedPostDetailsVO> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues,Long boardLevelId,Long searchLvlId,String type,List<Long> statusIds);
 	public LocationVO getAllLocationWiseCount(List<Long> levelValues,Long levelId,Long publicationDateId );
 	public CandidateDetailsForConstituencyTypesVO getPartyWiseMPandMLACandidatesCount(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue);
-	
+	public KeyValueVO getElectionYears(List<String> subTypes);
 }

@@ -958,8 +958,18 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		query.setParameter("electionId", electionId);
 		return query.list();
 	}
-	public List<String> getElectionYears(){
-		Query query = getSession().createSQLQuery(" select distinct election_year from election where election_year >= 1992 order by election_year asc ");
+	public List<String> getElectionYears(List<String> electionSubTypes){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct election_year from election ");
+		 if(electionSubTypes != null && electionSubTypes.size() >0){
+			 sb.append(" where  sub_type in (:electionSubTypes) ");
+		 }
+		 
+		 sb.append(" order by election_year asc ");
+		Query query = getSession().createSQLQuery(sb.toString());
+		if(electionSubTypes != null && electionSubTypes.size() >0){
+			query.setParameterList("electionSubTypes", electionSubTypes);
+		}
 		return query.list();
 	}
   
