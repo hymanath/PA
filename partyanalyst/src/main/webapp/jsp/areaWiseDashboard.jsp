@@ -21,7 +21,7 @@
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <body>
-<!--<div class="background-head"></div>
+<div class="background-head"></div>
 <header>
 	<div class="container">
 		<div class="row">
@@ -33,7 +33,8 @@
 			</div>
 		</div>
 	</div>
-</header>-->
+</header>
+<div class="black-border"></div>
 <section>
 	<div class="right-nav">
 		<ul class="right-nav-list">
@@ -106,8 +107,9 @@
 				<div id="statelevelWiseCountDivId"></div>
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="election">
-				 
-				 <div class="block">
+				 <h4 class="panel-title theme-title-color">Election Information Assembly Constituency</h4>
+				 <h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
+				 <div class="block m_top10">
 					 <div class="row">
 						<div class="col-sm-12">
 							<div id="electionTypeValuesId"></div>
@@ -143,12 +145,10 @@
 			</div>
 			
 			
-			<div class="col-sm-12 m_top20">
-				<div class="block">
+			<div class="col-sm-12 m_top30">
+				<h4 class="panel-title theme-title-color">voters information</h4>
+				<div class="block m_top10">
 					<div class="row">
-						<div class="col-sm-12  m_top5" navbar-index="constituencyVoters">
-							 <h4 class="panel-title theme-title-color">voters information</h4>
-						</div>
 						<div class="col-sm-12">
 							<div class="col-sm-3 pull-right">
 								<label>Publication</label>
@@ -167,13 +167,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12 m_top20" navbar-index="casteInfo">
-				
-				<div class="block">
+			<div class="col-sm-12 m_top30" navbar-index="casteInfo">
+				<h4 class="panel-title theme-title-color">Caste Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="casteInfo"></i></span></h4>
+				<div class="block m_top10">
 					<div class="row">
-						<div class="col-sm-12">
-							<h4 class="panel-title theme-title-color">Caste Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="casteInfo"></i></span></h4>
-						</div>
 						<div class="col-sm-12">
 							<div class="col-sm-3 pull-right">
 								<label>Publication</label>
@@ -191,10 +188,10 @@
 					
 				</div>
 			</div>
-			<div class="col-sm-12 m_top20" navbar-index="cadreInfor">
-				<div class="block">
-					<h4 class="panel-title theme-title-color"">Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="cadreInfor"></i></span></h4>
-					<div class="row m_top10">
+			<div class="col-sm-12 m_top30" navbar-index="cadreInfor">
+				<h4 class="panel-title theme-title-color">Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="cadreInfor"></i></span></h4>
+				<div class="block m_top10">
+					<div class="row">
 						<div class="col-sm-12">
 							<div id="cadreInfoGraphDivId" class="m_top15"></div>
 							<div id="cadreInfoGraphBar" style="height:200px;"></div>
@@ -205,36 +202,35 @@
 				
 			</div>
 			
-			<div class="col-sm-6 m_top20" navbar-index="news">
-				
-				<div class="block">
-					<h4 class="panel-title theme-title-color">News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="news"></i></span></h4>
+			<div class="col-sm-6 m_top30" navbar-index="news">
+				<h4 class="panel-title theme-title-color">News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="news"></i></span></h4>
+				<div class="block m_top10">
 					<div id="newsMainBlockDivId" class="m_top15"></div>
 					<div id="leadersMainBlockDivId" class="m_top15"></div>
 				</div>
 			</div>
 			
-			<div class="col-sm-6 m_top20" navbar-index="problems">
-				<div class="block">
-					<h4 class="panel-title theme-title-color">Problems <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="problems"></i></span></h4>
+			<div class="col-sm-6 m_top30" navbar-index="problems">
+				<h4 class="panel-title theme-title-color">Problems <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="problems"></i></span></h4>
+				<div class="block m_top10">
 					<div id="overAllAnalysisProbDivId" class="m_top15"></div>
 				</div>
 			</div>
 			
-			<div class="col-sm-12 m_top20" navbar-index="committees">
-				<div class="block">
-					<div class="row">
-						<div class="col-sm-10">
-							<h4 class="panel-title theme-title-color m_top10">Committees <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="committees"></i></span></h4>
-						</div>
-						<div class="col-sm-2">
-							<label>Enrollment Year</label>
-							<select id="enrolmentYears" class="form-control chosen-select">
-								<option value="2">2016-2018</option>
-								<option value="1">2014-2016</option>
-							</select>
-						</div>
+			<div class="col-sm-12 m_top30" navbar-index="committees">
+				<div class="row">
+					<div class="col-sm-10">
+						<h4 class="panel-title theme-title-color m_top30">Committees <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="committees"></i></span></h4>
 					</div>
+					<div class="col-sm-2">
+						<label>Enrollment Year</label>
+						<select id="enrolmentYears" class="form-control chosen-select">
+							<option value="2">2016-2018</option>
+							<option value="1">2014-2016</option>
+						</select>
+					</div>
+				</div>
+				<div class="block m_top10">
 					<div class="row m_top15">
 						<div class="col-sm-6">
 							<p class="text-capitalize"><b>main committee formation</b></p>
@@ -266,10 +262,12 @@
 					<div id="committesTableDivId" class="m_top10"></div>
 				</div>
 			</div>
-			<div class="col-sm-12 m_top20" navbar-index="meetings">
-				<div class="block">
-					<h4 class="panel-title theme-title-color">Meetings
-					<span class="">
+			<div class="col-sm-12 m_top30" navbar-index="meetings">
+				<div class="row">
+					<div class="col-sm-6">
+						<h4 class="panel-title theme-title-color m_top10">Meetings</h4>
+					</div>
+					<div class="col-sm-6">
 						<span class="pull-right" style="margin-top: 10px;">
 							<i class="glyphicon glyphicon-refresh f-14" refresh="meetings"></i>
 						</span>
@@ -279,15 +277,19 @@
 								<i class="glyphicon glyphicon-calendar"></i>
 							</span>
 						</div>
-					</span></h4>
-					<!--<p class="f-12 text-muted">Evertymonth: 9th/10th/11th</p>-->
+					</div>
+				</div>
+				<div class="block m_top10">
 					<div id="locationWiseMeetingsCount" class="m_top10"></div>
 				</div>
 			</div>
 			
-			<div class="col-sm-12 m_top20" navbar-index="tours">
-				<div class="block">
-					<h4 class="panel-title theme-title-color">Tours
+			<div class="col-sm-12 m_top30" navbar-index="tours">
+				<div class="row">
+					<div class="col-sm-6">
+						<h4 class="panel-title theme-title-color m_top10">Tours</h4>
+					</div>
+					<div class="col-sm-6">
 						<span class="pull-right" style="margin-top: 10px;">
 							<i class="glyphicon glyphicon-refresh f-14" refresh="tours"></i>
 						</span>
@@ -297,28 +299,33 @@
 								<i class="glyphicon glyphicon-calendar"></i>
 							</span>
 						</div>
-					</h4>
+					</div>
+				</div>
+				<div class="block m_top10">
 					<div id="locationWiseTourMembersComplainceDtls" class="m_top15"></div>
 				</div>
 			</div>
-			<div class="col-sm-12 m_top20" navbar-index="benefits">
-				<div class="block">
-					<h4 class="panel-title theme-title-color">Benefits<span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="benefits"></i></span></h4>
+			<div class="col-sm-12 m_top30" navbar-index="benefits">
+				<h4 class="panel-title theme-title-color">Benefits<span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="benefits"></i></span></h4>
+				<div class="block m_top10">
 					<div class="row">
 						<div id="benefitsBlockId"></div>
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12 m_top20" navbar-index="activities">
-				<div class="block">
-					<h4 class="panel-title theme-title-color">Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="activities"></i></span></h4>
+			<div class="col-sm-12 m_top30" navbar-index="activities">
+				<h4 class="panel-title theme-title-color">Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="activities"></i></span></h4>
+				<div class="block m_top10">
 					<div id ="activitesId"></div>
 				</div>
 			</div>
-			<div class="col-sm-12 m_top20" navbar-index="alerts">
-				<div class="block">
-					<h4 class="panel-title theme-title-color">Alerts
-						<span class="pull-right" style="margin-top: 10px;">
+			<div class="col-sm-12 m_top30" navbar-index="alerts">
+				<div class="row">
+					<div class="col-sm-6">
+						<h4 class="panel-title theme-title-color m_top10">Alerts</h4>
+					</div>
+					<div class="col-sm-6">
+						<span class="pull-right" style="margin-top: 7px;">
 							<i class="glyphicon glyphicon-refresh f-14" refresh="alerts"></i>
 						</span>
 						<div class="input-group pull-right dateRangePickerClsForMeetings" expand-block-date="alerts" style="width:200px;margin-right:12px;">
@@ -327,23 +334,25 @@
 								<i class="glyphicon glyphicon-calendar"></i>
 							</span>
 						</div>
-					</h4>
+					</div>
+				</div>
+				<div class="block m_top10">
 					<div class="row">
-							<div class="col-sm-12">
-								<ul class="list-inline switch-btn alertCategoryWiseCls pull-right m_top5">
-									<li attr_type= "1,2" class="active">Both</li>
-									<li attr_type= "1">Party</li>
-									<li attr_type= "2">Govt</li>
-									<!--<li attr_type= "3">Others</li>-->
-								</ul>
-							</div>
+						<div class="col-sm-12">
+							<ul class="list-inline switch-btn alertCategoryWiseCls pull-right m_top5">
+								<li attr_type= "1,2" class="active">Both</li>
+								<li attr_type= "1">Party</li>
+								<li attr_type= "2">Govt</li>
+								<!--<li attr_type= "3">Others</li>-->
+							</ul>
+						</div>
 					</div>
 					<div id="alertsBlockDivId" class="m_top20"></div>
 				</div>
 			</div>
-			<div class="col-sm-12 m_top20" navbar-index="nominatedPosts">
-				<div class="block">
-					<h4 class="panel-title theme-title-color">Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="nominatedPosts"></i></span></h4>
+			<div class="col-sm-12 m_top30" navbar-index="nominatedPosts">
+				<h4 class="panel-title theme-title-color">Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="nominatedPosts"></i></span></h4>
+				<div class="block m_top10">
 					<div class="row m_top15">
 						<div class="col-sm-6">
 							<h5 class="m_left10">Posts</h5>
@@ -369,12 +378,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12 m_top20"  navbar-index="grievance">
-				<div class="block">
+			<div class="col-sm-12 m_top30"  navbar-index="grievance">
+				<h4 class="panel-title theme-title-color">Grievance Details <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h4>
+				<div class="block m_top10">
 					<div class="row">
-						<div class="col-sm-10">
-							<h4 class="panel-title theme-title-color">Grievance Details <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h4>
-						</div>
 						<!--<div class="col-sm-2">
 							<select id="enrolmentYearsGrievance">
 								<option value="3">2014-2016</option>
@@ -414,17 +421,14 @@
 					</div>
 					<div class="col-sm-3 pull-right">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				   
 					</div>
 				</div>
 			</div>
 			<div class="modal-body">        
 				<div class="row">
-		 
-					<div class="col-md-12 col-xs-12 col-sm-12">
+					<div class="col-sm-12">
 						<div id="casteCategoryModalDivId"></div>
 					</div>  
-		  
 				</div>
 			</div>
 		</div>
