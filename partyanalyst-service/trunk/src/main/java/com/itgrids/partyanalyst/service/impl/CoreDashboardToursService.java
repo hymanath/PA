@@ -3016,7 +3016,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
   * @Description :This Service Method is used to get designation wise member details based on click and selection. 
   *  @since 6-AUGUST-2016
   */
- public List<ToursBasicVO> getTourLeaderDtlsBasedOnSelectionType(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId,List<Long> designationIds,String filterType){
+ public List<ToursBasicVO> getTourLeaderDtlsBasedOnSelectionType(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId,List<Long> designationIds,String filterType,Long locationScopeId,Set<Long> locationValueSet,String type){
 	 List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
 	 Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap = new LinkedHashMap<Long, Map<Long,ToursBasicVO>>(0);
 	 Map<Long,String> designationIdAndNameMap = new HashMap<Long, String>(0);
@@ -3030,13 +3030,22 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   List<Date>  datesList = getDates(fromDateStr, toDateStr, new SimpleDateFormat("dd/MM/yyyy"));
 		  fromDate=datesList.get(0);
 		  toDate=datesList.get(1);
-		   List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
-			if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
-				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
-				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
-					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-				 }
-		    }
+		  /* This service is used from coreDashbaord and constituency page.So that we are preparing
+		   * parameter based on our requirement,To reuse same service we are using these parameter. */
+		  if(type != null && !type.equalsIgnoreCase("constituencyPage")) { 
+			  List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+				if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+					 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+					 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+						 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					 }
+			    }  
+		  } else {
+			 Long userAccessLevelId = getParameterDtls(locationScopeId);
+			 locationAccessLevelId = userAccessLevelId;
+			 locationValues = locationValueSet;
+		  }
+		  
 			  //Get month year in string format based on fromDate and toDate
 			   List<String> monthYear = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
 			   //Get month year ids based on month year 
@@ -3214,6 +3223,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	 Date fromDate=null;
 	 Date toDate = null;
 	 try{
+		   //NOTE:This service is used from multiple place like coreDashbaord,CadreProfile,TourApplication,ConstituencyPage
 		   List<Date>  datesList =getDates(fromDateStr, toDateStr, new SimpleDateFormat("dd/MM/yyyy"));
 		   fromDate=datesList.get(0);
 		   toDate=datesList.get(1); 
@@ -3720,4 +3730,23 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	 }
  }
 
+ private Long getParameterDtls(Long locationScopeId) {
+	  Long userAccessLevelId = 0l;
+	  try {
+		  if (locationScopeId == 2l) { // STATE
+			   userAccessLevelId = IConstants.STATE_LEVEl_ACCESS_ID;
+			} else if (locationScopeId == IConstants.DISTRICT_SCOPE_ID) {
+				userAccessLevelId = IConstants.DISTRICT_LEVEl_ACCESS_ID;
+			} else if (locationScopeId == IConstants.CONSTITUENCY_SCOPE_ID) {
+				userAccessLevelId = IConstants.ASSEMBLY_LEVEl_ACCESS_ID;
+			} else if (locationScopeId == IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID) {
+				userAccessLevelId = IConstants.PARLIAMENT_LEVEl_ACCESS_ID;
+			} else if (locationScopeId == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID) {
+				userAccessLevelId = IConstants.MUNCIPALITY_LEVEl_ID;
+			}
+	  } catch (Exception e) {
+		  LOG.error("Exception Occured in getParameterDtls() in CoreDashboardToursService  : ",e); 
+	  }
+	  return userAccessLevelId;
+ }
 }
