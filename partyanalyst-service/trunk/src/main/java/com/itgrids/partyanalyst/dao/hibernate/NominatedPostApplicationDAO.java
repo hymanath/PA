@@ -2605,4 +2605,92 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 				 }
 		       return query.list();
 	}
+	
+	 @SuppressWarnings("unchecked")
+	 public List<Object[]> getDepartmentWiseApplicationDetails(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,Long deptId){
+	 	 StringBuilder sb = new StringBuilder();
+	 	 sb.append(" select ");
+	 	 
+	 	if(deptId != null && deptId.longValue() >0l){
+	 		sb.append("   nominatedPostApplication.nominatedPostMember.nominatedPostPosition.board.boardId," +
+	 	 		   " nominatedPostApplication.nominatedPostMember.nominatedPostPosition.board.boardName," );
+	 	}else {
+	 		sb.append("  nominatedPostApplication.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
+	 	 		   " nominatedPostApplication.nominatedPostMember.nominatedPostPosition.departments.deptName," );
+	 	}
+	 	 		   
+	 	sb.append("  nominatedPostApplication.applicationStatus.applicationStatusId,nominatedPostApplication.applicationStatus.status ," +
+	 	 		   " count(nominatedPostApplication.nominatedPostApplicationId) " +
+	 	 		   " from NominatedPostApplication nominatedPostApplication " +
+	 	 		   " where  nominatedPostApplication.isDeleted = 'N' " +
+	 			   " and nominatedPostApplication.isExpired = 'N' " +
+	 			   " and nominatedPostApplication.nominatedPostMember.isDeleted = 'N' ");
+	 	 
+	 	if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
+ 			if (locationTypeId == 2) {
+ 				sb.append(" and nominatedPostApplication.nominatedPostMember.address.state.stateId in(:locationValues) ");
+ 				//sb.append(" and nominatedPostApplication.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+ 			} else if (locationTypeId == 3) {
+				sb.append(" and nominatedPostApplication.nominatedPostMember.address.district.districtId in(:locationValues) ");
+			} else if (locationTypeId == 10) {
+				sb.append(" and nominatedPostApplication.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValues) ");
+			} else if (locationTypeId == 4) {
+				sb.append(" and nominatedPostApplication.nominatedPostMember.address.constituency.constituencyId in(:locationValues) ");
+			} else if (locationTypeId == 5) {
+				sb.append(" and nominatedPostApplication.nominatedPostMember.address.tehsil.tehsilId in(:locationValues) ");
+			}else if (locationTypeId == 6) {
+				sb.append(" and nominatedPostApplication.nominatedPostMember.address.panchayat.panchayatId in(:locationValues) ");
+			}else if (locationTypeId == 7) {
+				sb.append(" and nominatedPostApplication.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValues) ");
+			}else if (locationTypeId == 8) {
+				sb.append(" and nominatedPostApplication.nominatedPostMember.address.ward.constituencyId in(:locationValues) ");
+			}		
+		}
+	 	 
+	 	 sb.append(" and nominatedPostApplication.applicationStatus.applicationStatusId not in  (2,4,8,9) ");
+	 	if(deptId != null && deptId.longValue() >0l){
+	 		 sb.append(" and nominatedPostApplication.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId  ");
+	 	 }
+	 	 if(startDate != null && endDate != null){
+	 		 sb.append(" and (date(nominatedPostApplication.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+	 	 }
+	 	 if(year != null && !year.trim().isEmpty()){
+	 		 sb.append(" and year(nominatedPostApplication.nominatedPostMember.updatedTime) = :year ");   
+	 	 }
+	 	if(boardLevelId != null && boardLevelId.longValue() > 0L){
+     	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
+     		  sb.append(" and nominatedPostApplication.nominatedPostMember.boardLevelId =:boardLevelId ");
+     	   else if(boardLevelId.longValue() ==5L)
+     		  sb.append(" and nominatedPostApplication.nominatedPostMember.boardLevelId in (5,6) ");
+     	  else if(boardLevelId.longValue() ==7L)
+     		  sb.append(" and nominatedPostApplication.nominatedPostMember.boardLevelId in (7,8) ");
+	      }
+	 	sb.append(" group by ");
+	 	if(deptId != null && deptId.longValue() >0l){
+	 		sb.append(" nominatedPostApplication.nominatedPostMember.nominatedPostPosition.board.boardId ,");
+	 	}else{
+	 		sb.append(" nominatedPostApplication.nominatedPostMember.nominatedPostPosition.departments.departmentId ,");
+	 	}
+	 	 sb.append(" nominatedPostApplication.applicationStatus.applicationStatusId ");
+	 	 sb.append(" order by nominatedPostApplication.nominatedPostMember.nominatedPostPosition.departments.deptName ");
+	 	 
+	 	 Query query = getSession().createQuery(sb.toString());
+	 	 
+	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	 		  query.setParameterList("locationValues", locationValues);
+	 	  }
+	 	
+	 	 if(year !=null && !year.trim().isEmpty()){
+	 		query.setParameter("year", Integer.parseInt(year));
+	 	 }
+	 	 if(startDate != null && endDate != null){
+	 		 query.setDate("startDate",startDate);
+	 		 query.setDate("endDate",endDate);
+	 	 }
+	 	if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L && boardLevelId.longValue() > 0l)
+	 		query.setParameter("boardLevelId", boardLevelId);
+	 	if(deptId != null && deptId.longValue() >0l)
+	 		query.setParameter("deptId", deptId);
+	 	 return query.list();
+	  }
 }

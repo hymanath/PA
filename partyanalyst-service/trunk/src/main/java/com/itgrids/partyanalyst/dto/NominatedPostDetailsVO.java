@@ -18,8 +18,44 @@ public class NominatedPostDetailsVO {
 	private Long count = 0l;
 	public String Perc= "";
 	private List<NominatedPostDetailsVO> list = new ArrayList<NominatedPostDetailsVO>();
+	private Long openCnt = 0l;
+	private Long finalOrGOCnt = 0l;
+	private Long receivedCnt = 0l;
+	private Long shorlistedCnt = 0l;
+	private Long readyToFinalCnt = 0l;
 	
 	
+	
+	public Long getOpenCnt() {
+		return openCnt;
+	}
+	public void setOpenCnt(Long openCnt) {
+		this.openCnt = openCnt;
+	}
+	public Long getFinalOrGOCnt() {
+		return finalOrGOCnt;
+	}
+	public void setFinalOrGOCnt(Long finalOrGOCnt) {
+		this.finalOrGOCnt = finalOrGOCnt;
+	}
+	public Long getReceivedCnt() {
+		return receivedCnt;
+	}
+	public void setReceivedCnt(Long receivedCnt) {
+		this.receivedCnt = receivedCnt;
+	}
+	public Long getShorlistedCnt() {
+		return shorlistedCnt;
+	}
+	public void setShorlistedCnt(Long shorlistedCnt) {
+		this.shorlistedCnt = shorlistedCnt;
+	}
+	public Long getReadyToFinalCnt() {
+		return readyToFinalCnt;
+	}
+	public void setReadyToFinalCnt(Long readyToFinalCnt) {
+		this.readyToFinalCnt = readyToFinalCnt;
+	}
 	public List<NominatedPostDetailsVO> getList() {
 		return list;
 	}

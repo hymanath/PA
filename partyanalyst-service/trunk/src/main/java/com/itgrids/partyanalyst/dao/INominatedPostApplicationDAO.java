@@ -59,4 +59,5 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 	public List<Object[]> getNominatedPostApplicationStatusWiseCount(Long locationTypeId,List<Long> locationValue, Date startDate, Date endDate);
 	public List<Object[]> getTotalReceivedApplicationsForLocation(List<Long> boardLevelId,Long levelId,List<Long> levelValues);
 	public List<Object[]> getLocationWiseApplicationCount(List<Long> locationValues,Date startDate,Date endDate,Long locationTypeId,Long boardLevelId);
+	public List<Object[]> getDepartmentWiseApplicationDetails(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,Long deptId);
 }

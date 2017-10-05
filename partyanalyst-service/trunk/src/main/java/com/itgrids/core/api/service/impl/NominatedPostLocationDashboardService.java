@@ -16,6 +16,7 @@ import com.itgrids.core.api.service.INominatedPostLocationDashboardService;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dto.NominatedPostCandidateDtlsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
 public class NominatedPostLocationDashboardService implements INominatedPostLocationDashboardService{
@@ -26,6 +27,13 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
 	
 	
+	public INominatedPostApplicationDAO getNominatedPostApplicationDAO() {
+		return nominatedPostApplicationDAO;
+	}
+	public void setNominatedPostApplicationDAO(
+			INominatedPostApplicationDAO nominatedPostApplicationDAO) {
+		this.nominatedPostApplicationDAO = nominatedPostApplicationDAO;
+	}
 	public INominatedPostDAO getNominatedPostDAO() {
 		return nominatedPostDAO;
 	}
@@ -39,13 +47,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-	public INominatedPostApplicationDAO getNominatedPostApplicationDAO() {
-		return nominatedPostApplicationDAO;
-	}
-	public void setNominatedPostApplicationDAO(
-			INominatedPostApplicationDAO nominatedPostApplicationDAO) {
-		this.nominatedPostApplicationDAO = nominatedPostApplicationDAO;
-	}
+
 	public List<NominatedPostCandidateDtlsVO> getNominatedPositionWiseCandidates(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLvlId
 			,Long startIndex,Long endIndex){
 		List<NominatedPostCandidateDtlsVO> finalList = new CopyOnWriteArrayList<NominatedPostCandidateDtlsVO>();
@@ -82,10 +84,11 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
-			Log.error("Exception raised in getNominatedPositionWiseCandidates method of LocationDashboardService"+e);
+			Log.error("Exception raised in getNominatedPositionWiseCandidates method of NominatedPostLocationDashboardService"+e);
 		}
 		return finalList;
 	}
+	
 	public List<NominatedPostCandidateDtlsVO> getLevelWisePostsOverView(List<Long> locationValues,String fromDateStr,String toDateStr,Long locationTypeId,Long boardLevelId){
 		List<NominatedPostCandidateDtlsVO> finalList =new ArrayList<NominatedPostCandidateDtlsVO>();
 		try{
@@ -158,4 +161,71 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 		
 		return finalList;
 	}
+	
+	public List<NominatedPostDetailsVO> getDepartmentWisePostAndApplicationDetails(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLevelId,Long deptId){
+		List<NominatedPostDetailsVO> returnsList = new ArrayList<NominatedPostDetailsVO>();
+		try{
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+			Date startDate = null;
+			Date endDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			Map<Long,NominatedPostDetailsVO> deptMap = new HashMap<Long,NominatedPostDetailsVO>();
+			List<Object[]> postsList = nominatedPostDAO.getDepartmentWisePostDetails(locationValues, startDate, endDate, locationTypeId, year, boardLevelId, deptId);
+			List<Object[]> applicationList = nominatedPostApplicationDAO.getDepartmentWiseApplicationDetails(locationValues, startDate, endDate, locationTypeId, year, boardLevelId, deptId);
+			if(commonMethodsUtilService.isListOrSetValid(postsList)){
+				for (Object[] param : postsList) {
+					NominatedPostDetailsVO deptVO = deptMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(deptVO == null){
+						deptVO =new NominatedPostDetailsVO();
+						deptVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						deptVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						deptMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), deptVO);
+					}
+					
+					if(commonMethodsUtilService.getLongValueForObject(param[2]) == 3l || commonMethodsUtilService.getLongValueForObject(param[2]) == 4l){
+						deptVO.setFinalOrGOCnt(deptVO.getFinalOrGOCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+					}
+					if(commonMethodsUtilService.getLongValueForObject(param[2]) == 1l){
+						deptVO.setOpenCnt(deptVO.getOpenCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+					}
+					deptVO.setTotalCount(deptVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(applicationList)){
+				for (Object[] param : applicationList) {
+					NominatedPostDetailsVO deptVO = deptMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(deptVO == null){
+						deptVO =new NominatedPostDetailsVO();
+						deptVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						deptVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						deptMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), deptVO);
+					}
+					
+					if(commonMethodsUtilService.getLongValueForObject(param[2]) == 3l ){
+						deptVO.setShorlistedCnt(deptVO.getShorlistedCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+					}
+					if(commonMethodsUtilService.getLongValueForObject(param[2]) == 6l){
+						deptVO.setReadyToFinalCnt(deptVO.getReadyToFinalCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+					}
+					deptVO.setReceivedCnt(deptVO.getReceivedCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			
+			if(commonMethodsUtilService.isMapValid(deptMap)){
+				returnsList.addAll(deptMap.values());
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception raised in getDepartmentWisePostAndApplicationDetails method of NominatedPostLocationDashboardService"+e);
+		}
+		return returnsList;
+	}
+	
+	
 }
