@@ -1328,7 +1328,8 @@
 		      		    <value>com.itgrids.partyanalyst.model.KaizalaGroupResponderRelation</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaTextMessage</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaJobResponse</value>
-		      		   
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaGroupDocumentType</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaGroupDocument</value>
 				  </list>
 			
 		</property>

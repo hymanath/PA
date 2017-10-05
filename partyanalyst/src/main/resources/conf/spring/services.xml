@@ -4453,6 +4453,8 @@
 		 <property name="kaizalaGroupResponderRelationDAO" ref="kaizalaGroupResponderRelationDAO" />
 		 <property name="kaizalaTextMessageDAO" ref="kaizalaTextMessageDAO" />
 		 <property name="kaizalaJobResponseDAO" ref="kaizalaJobResponseDAO" />
+		 <property name="kaizalaGroupDocumentDAO" ref="kaizalaGroupDocumentDAO" />
+		 <property name="kaizalaGroupDocumentTypeDAO" ref="kaizalaGroupDocumentTypeDAO" />
     </bean> 
     <bean name="doorToDoorCampaignDashboardService" class="com.itgrids.partyanalyst.service.impl.DoorToDoorCampaignDashboardService" >
     </bean>
