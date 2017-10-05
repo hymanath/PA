@@ -429,6 +429,10 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 					saveKaizalAnswerInfo(output);
 				}else if(jsonObj.getString("eventType").equalsIgnoreCase("JobResponse")){
 					saveJobResponseInfo(output);
+				}else if(jsonObj.getString("eventType").equalsIgnoreCase("GroupAdded")){
+					saveSubGroupAddedEvent(output);
+				}else if(jsonObj.getString("eventType").equalsIgnoreCase("GroupRemoved")){
+					saveSubGroupRemovedEvent(output);
 				}
 			}
 		}catch (Exception e) {
@@ -811,8 +815,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						JSONObject responseObj = responseDetailsObj.getJSONObject("response");
 						
 						Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-						Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 						if(id == null || id == 0l){
+							Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 							KaizalaGroups kg = new KaizalaGroups();
 							kg.setGroupId(jsonObj.getString("objectId"));
 							kg.setIsDeleted("N");
@@ -867,5 +871,110 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		}
 	});
 }
+	
+	public void saveSubGroupAddedEvent(final String output){
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+				try {
+					 if(output != null && !output.isEmpty()){
+						KaizalaEventsResponse KER = new KaizalaEventsResponse(); 
+						DateUtilService dateService = new DateUtilService();
+						JSONObject jsonObj = new JSONObject(output);
+						
+						Long parentGroupId = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+						
+						JSONObject dataObj = jsonObj.getJSONObject("data");
+						KaizalaGroups subGroup = new KaizalaGroups();
+						subGroup.setGroupId(dataObj.getString("groupId"));
+						subGroup.setGroupName(dataObj.getString("groupName"));
+						subGroup.setKaizalaGroupTypeId(kaizalaGroupTypeDAO.checkGroupTypeExistence(dataObj.getString("groupType")));
+						subGroup.setParentKaizalaGroupsId(parentGroupId);
+						subGroup.setInsertedTime(dateService.getCurrentDateAndTime());
+						subGroup.setIsDeleted("N");
+						subGroup = kaizalaGroupsDAO.save(subGroup);
+						
+						
+						KER.setKaizalaGroupsId(parentGroupId);
+						KER.setGroupId(jsonObj.getString("objectId"));
+						KER.setEventId(jsonObj.getString("eventId"));
+						KER.setKaizalaEventsId(11l);
+						KER.setAddedKaizalaGroupsId(subGroup.getKaizalaGroupsId());
+						KER.setInsertedTime(dateService.getCurrentDateAndTime());
+						KER.setUpdatedTime(dateService.getCurrentDateAndTime());
+						
+						List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));
+						if(resIds != null && resIds.size() > 0){
+							KER.setInsertedBy(resIds.get(0));
+							KER.setUpdatedBy(resIds.get(0));
+						}else{
+							KaizalaResponderInfo kri = new KaizalaResponderInfo();
+							kri.setMobileNumber(jsonObj.getString("fromUser"));
+							kri.setName(jsonObj.getString("fromUserName"));
+							kri.setIsDeleted("N");
+							kri = kaizalaResponderInfoDAO.save(kri);
+							KER.setInsertedBy(kri.getKaizalaResponderInfoId());
+							KER.setUpdatedBy(kri.getKaizalaResponderInfoId());
+						}
+						
+						KER.setIsDeleted("N");
+						
+						kaizalaEventsResponseDAO.save(KER);
+						
+						
+					 }
+				} catch (Exception e) {
+					LOG.error("Exception raised at saveSubGroupAddedEvent", e);
+				}
+			}
+		});
+	}
+	
+	public void saveSubGroupRemovedEvent(final String output){
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+				try {
+					 if(output != null && !output.isEmpty()){
+						KaizalaEventsResponse KER = new KaizalaEventsResponse(); 
+						DateUtilService dateService = new DateUtilService();
+						JSONObject jsonObj = new JSONObject(output);
+						
+						Long parentGroupId = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+						Long childGroupId = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getJSONObject("data").getString("groupId"));
+						
+						KER.setKaizalaGroupsId(parentGroupId);
+						KER.setGroupId(jsonObj.getString("objectId"));
+						KER.setEventId(jsonObj.getString("eventId"));
+						KER.setKaizalaEventsId(12l);
+						KER.setAddedKaizalaGroupsId(childGroupId);
+						KER.setInsertedTime(dateService.getCurrentDateAndTime());
+						KER.setUpdatedTime(dateService.getCurrentDateAndTime());
+						
+						List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));
+						if(resIds != null && resIds.size() > 0){
+							KER.setInsertedBy(resIds.get(0));
+							KER.setUpdatedBy(resIds.get(0));
+						}else{
+							KaizalaResponderInfo kri = new KaizalaResponderInfo();
+							kri.setMobileNumber(jsonObj.getString("fromUser"));
+							kri.setName(jsonObj.getString("fromUserName"));
+							kri.setIsDeleted("N");
+							kri = kaizalaResponderInfoDAO.save(kri);
+							KER.setInsertedBy(kri.getKaizalaResponderInfoId());
+							KER.setUpdatedBy(kri.getKaizalaResponderInfoId());
+						}
+						
+						KER.setIsDeleted("N");
+						
+						kaizalaEventsResponseDAO.save(KER);
+						
+						kaizalaGroupsDAO.removeParentGroup(childGroupId);
+					 }
+					
+				} catch (Exception e) {
+					LOG.error("Exception raised at saveSubGroupRemovedEvent", e);
+				}
+			}
+		});
+	}
 
 }
