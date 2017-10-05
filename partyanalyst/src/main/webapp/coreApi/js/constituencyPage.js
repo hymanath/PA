@@ -5026,3 +5026,50 @@ function getPartyWiseMPandMLACandidatesCounts(){
 		}
     });
   }
+
+  getTourLeaderDtlsBasedOnSelectionType ([8],"All");
+  getIndividualRslBasedOnDateSelection(8);
+  function getTourLeaderDtlsBasedOnSelectionType(designationIds,filterType)
+	{    
+	 	var jsObj ={ 
+					 activityMemberId : 0,
+					 stateId : 1,
+					 fromDate :customStartATMDate ,
+					 toDate : customEndATMDate,
+					 userTypeId:0,
+					 designationIds : designationIds,
+					 filterType :filterType,
+					 locationTypeId		:locationLevelId,
+		             locationValuesArr	:userAccessLevelValuesArray,
+					 type:"constituencyPage"
+					 
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getTourLeaderDtlsBasedOnSelectionTypeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildTourMemberDetails(result);
+			}else{
+			 $("#tourDetailsDivId").html("NO DATA AVAILABLE.");	
+			}
+		});
+	}
+	
+	function getIndividualRslBasedOnDateSelection(candiateId){
+	var jsObj ={ 
+					 candiateId : candiateId,
+					 fromDate :customStartATMDate ,
+					 toDate : customEndATMDate
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getIndividualPersonTourDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   console.log(result);
+		});
+}
