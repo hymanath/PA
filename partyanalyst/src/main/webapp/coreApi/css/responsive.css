@@ -29,9 +29,13 @@
 		bottom:0px;
 		z-index:9;
 	}
-	.table-block-responsive tr td , .list-border-responsive li , .breadcrumb li
+	.table-block-responsive tr td , .list-border-responsive li 
 	{
 		display:block !important;
+		width:100% !important;
+	}
+	.breadcrumb li
+	{
 		width:100% !important;
 	}
 	.list-border-responsive li
@@ -43,6 +47,12 @@
 	.pad_right0
 	{
 		padding-right:15px;
+	}
+	.black-border.header-fixed
+	{
+		position:relative;
+		box-shadow:none;
+		padding:0px;
 	}
 }
 @media (min-width: 500px) and (max-width:767px) {
