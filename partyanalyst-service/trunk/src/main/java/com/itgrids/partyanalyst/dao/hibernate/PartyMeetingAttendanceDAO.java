@@ -1730,7 +1730,11 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	}
 	public List<Object[]> getAttendedList(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.partyMeeting.partyMeetingType.partyMeetingTypeId, model.partyMeeting.partyMeetingType.type, model.partyMeeting.partyMeetingId, model.attendance.tdpCadre.tdpCadreId " +
+		queryStr.append(" select distinct " +
+						" model.partyMeeting.partyMeetingType.partyMeetingTypeId, " +
+						" model.partyMeeting.partyMeetingType.type, " +
+						" model.partyMeeting.partyMeetingId, " +
+						" model.attendance.tdpCadre.tdpCadreId " +
 						" from " +
 						" PartyMeetingAttendance model " +
 						" where " +
