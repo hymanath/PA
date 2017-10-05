@@ -973,4 +973,15 @@ public String getElectionInformationLocationWise(){
 	     }
 	     return Action.SUCCESS;
 	   }
+	public String getDepartmentWisePostAndApplicationDetails(){
+	     try{
+	       jObj = new JSONObject(getTask());
+	        List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+	        nominatedPostDetailsVOList = nominatedPostLocationDashboardService.getDepartmentWisePostAndApplicationDetails(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"),jObj.getLong("boardLevelId"),
+	        		jObj.getLong("deptId"));
+	     }catch(Exception e){
+	       LOG.error("Exception raised at getDepartmentWisePostAndApplicationDetails() of LocationDashboardAction{}", e);
+	     }
+	     return Action.SUCCESS;
+	   }
 }
