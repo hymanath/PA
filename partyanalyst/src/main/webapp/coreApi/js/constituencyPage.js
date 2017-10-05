@@ -5027,8 +5027,8 @@ function getPartyWiseMPandMLACandidatesCounts(){
     });
   }
 
-  getTourLeaderDtlsBasedOnSelectionType ([8],"All");
-  getIndividualRslBasedOnDateSelection(8);
+  getTourLeaderDtlsBasedOnSelectionType ([14],"all");
+  getIndividualRslBasedOnDateSelection(33);
   function getTourLeaderDtlsBasedOnSelectionType(designationIds,filterType)
 	{    
 	 	var jsObj ={ 
