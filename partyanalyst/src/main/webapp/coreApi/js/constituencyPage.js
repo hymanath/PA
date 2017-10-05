@@ -253,6 +253,7 @@ function onLoadAjaxCalls()
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
 	//getNominatedPositionWiseCandidates()//click function
+	  //getLevelWisePostsOverView(); //level wise post overView
 	
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
@@ -5069,3 +5070,23 @@ function getPartyWiseMPandMLACandidatesCounts(){
 		   console.log(result);
 		});
 }
+  function getLevelWisePostsOverView(){
+	var jsObj={
+			"fromDateStr" : globalFromDate,
+			"toDateStr":globalToDate,
+			"locationTypeId":2,
+			"locationValuesArr":[1],
+			"boardLevelId":1
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getLevelWisePostsOverViewAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result!=null && result.length>0){
+			//alert(10);
+		}
+			
+	});	
+  }
