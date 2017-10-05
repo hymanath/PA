@@ -988,3 +988,22 @@ ul li[menu-levelname='panchayat']:after .active
 .toursCompNonCompClickCls{
 	cursor:pointer;
 }
+.progressCustom {
+    background-color: rgb(211, 211, 211);
+    height: 5px;
+    margin-bottom: 0;
+    margin-top: 8px;
+    width: 150px;
+	display:inline-block;
+	margin-left:10px;
+}
+.progressCustom span{
+    margin-left:20px;
+}
+.progressCustom .progress-bar {
+    background-color: rgb(100, 113, 122);
+}
+.levelWiseNominatedCss{
+	background-color:#EAEAEB;
+	padding:10px;
+}

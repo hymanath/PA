@@ -355,12 +355,12 @@
 				<h4 class="panel-title theme-title-color">Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="nominatedPosts"></i></span></h4>
 				<div class="block m_top10">
 					<div class="row m_top15">
-						<div class="col-sm-6">
-							<h5 class="m_left10">Posts</h5>
+						<div class="col-sm-6" style="border-right:2px dashed #777">
+							<h5 class="m_left10">Posts Status</h5>
 							<div id="nominatedPostStatusWiseCount"></div>
 						</div>
 						<div class="col-sm-6">
-							<h5 class="m_left10">Applications</h5>
+							<h5 class="m_left10">Applications Status</h5>
 							<div class="row">
 								<div class="col-sm-12">
 									<div id="nominatedPostApplicationDetails"></div>
@@ -369,9 +369,14 @@
 						</div>
 					</div>
 					<div class="row">
+						<div class="col-sm-12 m_top10">
+							<div id="levelWiseNominatedPosts"></div>
+						</div>
+					</div>
+					<div class="row">
 						<div class="col-sm-12 m_top20">
 							<hr class="m_0"/>
-							<h4 class="text-capital text-center m_top-10"><span class="bg-fff pad_10">position level</span></h4>
+							<h4 class="text-capital text-center m_top-10"><span class="bg-fff pad_10">G.O ISSUED POSITIONS LEVEL WISE</span></h4>
 						</div>
 						<div class="col-sm-12 m_top10">
 							<div id="positionsWiseMemberCount"></div>
@@ -545,5 +550,6 @@
 <script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
+<script src="coreApi/js/tourConstituencyPage.js" type="text/javascript"></script>
 </body>
 </html>
