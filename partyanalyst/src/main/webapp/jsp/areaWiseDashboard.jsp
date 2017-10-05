@@ -19,6 +19,8 @@
 <link href="D2D_Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" href="coreApi/css/bootstrap-multiselect.css" type="text/css">
+<link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <body>
@@ -433,6 +435,102 @@
 		</div>
 	</div>
 </div>
+<!----- Tours Modal Start ---->
+<div class="modal" tabindex="-1" role="dialog" id="tourDetailsModalId" style="top: 45px;">
+		  <div class="modal-dialog modal-lg" style="width:90%;">       
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<!--<h4 class="modal-title" id="tourDetailsHeadingId"></h4>--> 
+				<div class="row">
+					<div class="col-md-9 col-xs-12 col-sm-9">
+						<h4 class="modal-title text-capital" id="tourLeadrDtlsHeadingId">Leaders Detailed Report</h4>
+					</div>
+					
+				</div>
+			  </div>
+			  <div class="modal-body">
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+                       <div id="tourDetailsDivId"></div>
+					</div>
+				</div>
+			  </div>
+			  <div class="modal-footer">     
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal" tabindex="-1" role="dialog" id="tourIndividualPerformanceDivId" style="z-index:9999;">
+  <div class="modal-dialog modal-lg" style="width:85%">       
+	<div class="modal-content" style="border-radius:0px">
+	  <div class="modal-header" style="background-color:#CCC">
+		<button type="button" class="close tourIndividualCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<span id="nameOfMemberHeadingId"></span>
+	  </div>
+	  <div class="modal-body"> 
+		<div class="row" style="background: rgb(204, 204, 204) none repeat scroll 0% 0%; padding: 0px 0px 20px; border-radius: 6px; margin: 10px 0px 0px;">
+			<div class="col-md-2 col-xs-12 col-sm-4"> 
+				<select class="pull-right form-control" id="dateRangeSliderYear" style="margin-top: 46px;">
+					<option value="0">Select Year</option>
+					<option value="2016">2016</option>
+					<option value="2017">2017</option>
+					<option value="2018">2018</option>
+					<option value="2019">2019</option>
+					<option value="2020">2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+					<option value="2023">2023</option>
+					<option value="2024">2024</option>
+					<option value="2025">2025</option>
+				</select>
+			</div>
+			<div class="col-md-9 col-xs-12 col-sm-12" style="margin-left: -20px;"> 
+				<div id="tourSlider" style="margin-top:7px"></div>
+			</div>
+			<div class="col-md-1 col-xs-12 col-sm-4 pull-right">
+				<button class="btn btn-success pull-right" id="subMitBtn" type="button" style="margin-top: 46px;">SUBMIT</button>
+			</div>
+		
+		</div>
+		<!---<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12"> 
+				<div id="tourSlider" style="margin-top:7px"></div>
+			</div>
+		</div>--->
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12"> 
+				<div id="tourIndividualDetailsBlock" class="m_top20"></div>
+				<div id="monthWiseComplainceDivId" class="row m_top20"></div>
+				<div id="tourIndividualDetailsTableBlock" class="m_top20"></div>
+			</div>
+		</div>
+	  </div>
+	  <div class="modal-footer">     
+		<button type="button" class="btn btn-default tourIndividualCls" class="close" data-dismiss="modal">Close</button>
+	  </div>
+	</div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" id="tourNewDocumentId" role="dialog" style="z-index:99999;">
+	<div class="modal-dialog" style="width:70%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Tour Document</h4>  
+			</div>
+			<div class="modal-body" id="tourNewDocumentBodyId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
+			</div>
+		</div><!--  /.modal-content -->  
+	</div><!--  /.modal-dialog -->
+</div><!--  /.modal -->
+<!----- Tours Modal End ---->
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
@@ -444,6 +542,8 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript" src="coreApi/js/bootstrap-multiselect.js"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
 </body>
 </html>
