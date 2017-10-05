@@ -215,8 +215,8 @@ function onLoadAjaxCalls()
 	}
 	
 	//Assembly Block
-	getElectionYears();
 	getElectionTypes();
+	getElectionYears();
 	var partyIds = [872,362,1117,886,72,269,265,163,1887];
 	getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal);
 	if(locationLevelId == '4'){
@@ -4599,7 +4599,7 @@ function getElectionTypes(){
 				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-12">';
 							str+='<div class="col-sm-2">';
-								str+='<select class="form-control chosen-select" id="elctionBlockPartysId" multiple data-placeholder="All Parties">';
+								str+='<select class="" id="elctionBlockPartysId" multiple>';
 									//str+='<option value="0" selected>All Parties</option>';
 									for(var i in result[0].selectedCasteDetails){
 										if(result[0].selectedCasteDetails[i].id == 163 || result[0].selectedCasteDetails[i].id == 265 || result[0].selectedCasteDetails[i].id == 269 || result[0].selectedCasteDetails[i].id == 662 || result[0].selectedCasteDetails[i].id == 872 || result[0].selectedCasteDetails[i].id == 886 || result[0].selectedCasteDetails[i].id == 1117  || result[0].selectedCasteDetails[i].id == 362 || result[0].selectedCasteDetails[i].id == 72 || result[0].selectedCasteDetails[i].id == 1887){
@@ -4610,18 +4610,14 @@ function getElectionTypes(){
 								str+='</select>';
 							str+='</div>';
 							str+='<div class="col-sm-3" style="margin-left: 20px;">';
-								str+='<select class="form-control chosen-select" id="elctionYearsBlockId" multiple data-placeholder="All Election Years">';
-									/* //str+='<option value="0" selected>All Election Years</option>';
-									for(var i in result[0].ageRanges){
-										str+='<option value="'+result[0].ageRanges[i]+'" selected>'+result[0].ageRanges[i]+'</option>';
-										
-									} */
+								str+='<select class="" id="elctionYearsBlockId" multiple>';
 								str+='</select>';
 							str+='</div>';
 							str+='<div class="col-sm-3">';
-								str+='<label class="">';
+								str+='<span id="electionTypeSpinnerId" style="margin-left:-22px;display:none;"><img  src="coreApi/img/search.gif" alt="search"  class="m_top10" /></span>';
+								str+='<label class="pull-right">';
 									str+='<input value ="MAIN" type="checkbox" name="optionsRadios1" class="checkedMainByeType" checked/><span class="f-12">Main Election</span>';
-									str+='<input value ="BYE" type="checkbox" name="optionsRadios1"  class="checkedMainByeType f-12" style="margin-left: 10px;"  /><span class="f-12">By Election</span>';
+									str+='<input value ="BYE" type="checkbox" name="optionsRadios1"  class="checkedMainByeType f-12" style="margin-left: 10px;"  /><span class="f-12">Bye Election</span>';
 								str+='</label>';
 							str+='</div>';
 							
@@ -4639,10 +4635,7 @@ function getElectionTypes(){
 		}else{
 			$("#electionTypeValuesId").html(noData);
 		}
-		//$("#elctionBlockPartysId").chosen();
-		//$("#elctionYearsBlockId").chosen();
-		//$("#elctionBlockPartysId").trigger("chosen:updated");
-		//$("#elctionYearsBlockId").trigger("chosen:updated");
+		
 		$('#elctionBlockPartysId').multiselect({
 			enableFiltering: true,
 			includeSelectAllOption: true,
@@ -4997,6 +4990,8 @@ function getPartyWiseMPandMLACandidatesCounts(){
   }
   function getElectionYears(){
 	 $('#elctionYearsBlockId').html('');
+	 $('#electionTypeSpinnerId').show();
+	 
   var jsObj={
       electionSubTypeArr:electionYearsSubTypeArr
     }
@@ -5006,7 +5001,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
-		
+		 $('#electionTypeSpinnerId').hide();
 		if(result !=null && result.imageList !=null && result.imageList.length>0){
 			var str='';
 			for(var i in result.imageList){
@@ -5026,7 +5021,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 					allSelectedText: 'All Election Years selected'
 				});
 				$("#elctionYearsBlockId").multiselect("refresh");
-			}, 1000);
+			}, 500);
 			
 		}
     });
