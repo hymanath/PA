@@ -425,7 +425,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 					saveAttachmentInfo(output);
 				}else if(jsonObj.getString("eventType").equalsIgnoreCase("SurveyCreated")||jsonObj.getString("eventType").equalsIgnoreCase("ActionCreated")){
 					saveSurveyCreatedInfo(output);
-				}else if(jsonObj.getString("eventType").equalsIgnoreCase("SurveyResponse")){
+				}else if(jsonObj.getString("eventType").equalsIgnoreCase("SurveyResponse")||jsonObj.getString("eventType").equalsIgnoreCase("ActionResponse")){
 					saveKaizalAnswerInfo(output);
 				}else if(jsonObj.getString("eventType").equalsIgnoreCase("JobResponse")){
 					saveJobResponseInfo(output);
