@@ -30,10 +30,8 @@ public class KaizalaEventsResponse extends BaseModel implements Serializable{
 	private String eventId;
 	private Long kaizalaEventsId;
 	private Long kaizalaAttachementTypeId;
-	private String responseText;
 	private Long addedKaizalaResponderInfoId;
 	private Long addedKaizalaGroupsId;
-	private Date dueDate;
 	private Date insertedTime;
 	private Date updatedTime;
 	private Long insertedBy;
@@ -104,13 +102,6 @@ public class KaizalaEventsResponse extends BaseModel implements Serializable{
 	public void setKaizalaAttachementTypeId(Long kaizalaAttachementTypeId) {
 		this.kaizalaAttachementTypeId = kaizalaAttachementTypeId;
 	}
-	@Column(name="response_text")
-	public String getResponseText() {
-		return responseText;
-	}
-	public void setResponseText(String responseText) {
-		this.responseText = responseText;
-	}
 	@Column(name="added_kaizala_responder_info_id")
 	public Long getAddedKaizalaResponderInfoId() {
 		return addedKaizalaResponderInfoId;
@@ -124,13 +115,6 @@ public class KaizalaEventsResponse extends BaseModel implements Serializable{
 	}
 	public void setAddedKaizalaGroupsId(Long addedKaizalaGroupsId) {
 		this.addedKaizalaGroupsId = addedKaizalaGroupsId;
-	}
-	@Column(name="due_date")
-	public Date getDueDate() {
-		return dueDate;
-	}
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
 	}
 	@Column(name="inserted_time")
 	public Date getInsertedTime() {

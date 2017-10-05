@@ -19,20 +19,23 @@ import com.itgrids.partyanalyst.dao.IKaizalaAnswersDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAttachementTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaEventsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaEventsResponseDAO;
+import com.itgrids.partyanalyst.dao.IKaizalaGroupResponderRelationDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaOptionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaPropertiesDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
-import com.itgrids.partyanalyst.dao.hibernate.KaizalaPropertiesDAO;
+import com.itgrids.partyanalyst.dao.IKaizalaTextMessageDAO;
 import com.itgrids.partyanalyst.model.KaizalaActions;
 import com.itgrids.partyanalyst.model.KaizalaEventsResponse;
+import com.itgrids.partyanalyst.model.KaizalaGroupResponderRelation;
 import com.itgrids.partyanalyst.model.KaizalaGroups;
 import com.itgrids.partyanalyst.model.KaizalaOptions;
 import com.itgrids.partyanalyst.model.KaizalaProperties;
 import com.itgrids.partyanalyst.model.KaizalaQuestions;
 import com.itgrids.partyanalyst.model.KaizalaResponderInfo;
+import com.itgrids.partyanalyst.model.KaizalaTextMessage;
 import com.itgrids.partyanalyst.service.IKaizalaInfoService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -56,8 +59,24 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private IKaizalaAttachementTypeDAO kaizalaAttachementTypeDAO;
 	private IKaizalaEventsDAO kaizalaEventsDAO;
 	private IKaizalaPropertiesDAO kaizalaPropertiesDAO;
+	private IKaizalaGroupResponderRelationDAO kaizalaGroupResponderRelationDAO ;
+	private IKaizalaTextMessageDAO kaizalaTextMessageDAO;
 	
 	
+	public IKaizalaTextMessageDAO getKaizalaTextMessageDAO() {
+		return kaizalaTextMessageDAO;
+	}
+	public void setKaizalaTextMessageDAO(
+			IKaizalaTextMessageDAO kaizalaTextMessageDAO) {
+		this.kaizalaTextMessageDAO = kaizalaTextMessageDAO;
+	}
+	public IKaizalaGroupResponderRelationDAO getKaizalaGroupResponderRelationDAO() {
+		return kaizalaGroupResponderRelationDAO;
+	}
+	public void setKaizalaGroupResponderRelationDAO(
+			IKaizalaGroupResponderRelationDAO kaizalaGroupResponderRelationDAO) {
+		this.kaizalaGroupResponderRelationDAO = kaizalaGroupResponderRelationDAO;
+	}
 	public IKaizalaPropertiesDAO getKaizalaPropertiesDAO() {
 		return kaizalaPropertiesDAO;
 	}
@@ -373,10 +392,9 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						DateUtilService dateService = new DateUtilService();
 						JSONObject jsonObj = new JSONObject(output);
 						JSONObject dataObj = jsonObj.getJSONObject("data");
-						
 							Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-							Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 							if(id == null || id == 0l){
+								Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 								KaizalaGroups kg = new KaizalaGroups();
 								kg.setGroupId(jsonObj.getString("objectId"));
 								kg.setIsDeleted("N");
@@ -386,8 +404,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							}
 							KER.setGroupId(jsonObj.getString("objectId"));
 							KER.setKaizalaGroupsId(id);
-							List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));
 							
+							List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));
 							if(resIds != null && resIds.size() > 0){
 								KER.setInsertedBy(resIds.get(0));
 								KER.setUpdatedBy(resIds.get(0));
@@ -396,16 +414,28 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 								kri.setMobileNumber(jsonObj.getString("fromUser"));
 								kri.setIsDeleted("N");
 								kri = kaizalaResponderInfoDAO.save(kri);
+								
+								KaizalaGroupResponderRelation kgrr = new KaizalaGroupResponderRelation();
+								kgrr.setGroupId(jsonObj.getString("objectId"));
+								kgrr.setKaizalaGroupsId(id);
+								kgrr.setKaizalaResponderInfoId(kri.getKaizalaResponderInfoId());
+								kgrr.setIsDeleted("N");
+								kaizalaGroupResponderRelationDAO.save(kgrr);
+								
 								KER.setInsertedBy(kri.getKaizalaResponderInfoId());
 								KER.setUpdatedBy(kri.getKaizalaResponderInfoId());
 							}
+							KER.setKaizalaEventsId(7l);
 							KER.setEventId(jsonObj.getString("eventId"));
-							KER.setResponseText(dataObj.getString("text"));
 							KER.setInsertedTime(dateService.getCurrentDateAndTime());
 							KER.setUpdatedTime(dateService.getCurrentDateAndTime());
 							KER.setIsDeleted("N");
+							KER = kaizalaEventsResponseDAO.save(KER);
 							
-						 KER = kaizalaEventsResponseDAO.save(KER);
+							KaizalaTextMessage ktm = new KaizalaTextMessage();
+							ktm.setKaizalaEventsResponseId(KER.getKaizalaEventsResponseId());
+							ktm.setTextMessage(dataObj.getString("text"));
+							kaizalaTextMessageDAO.save(ktm);
 						}
 				} catch (Exception e) {
 					LOG.error("Exception raised at saveTextMsgCreated", e);
@@ -427,8 +457,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						Date dueDate = sdf.parse(dataObj.getString("dueDate"));
 						
 						Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-							Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 							if(id == null || id == 0l){
+								Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 								KaizalaGroups kg = new KaizalaGroups();
 								kg.setGroupId(jsonObj.getString("objectId"));
 								kg.setIsDeleted("N");
@@ -438,8 +468,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							}
 							KER.setGroupId(jsonObj.getString("objectId"));
 							KER.setKaizalaGroupsId(id);
-							List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));
 							
+							List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));
 							if(resIds != null && resIds.size() > 0){
 								KER.setInsertedBy(resIds.get(resIds.size()-1));
 								KER.setUpdatedBy(resIds.get(resIds.size()-1));
@@ -448,27 +478,37 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 								kri.setMobileNumber(jsonObj.getString("fromUser"));
 								kri.setIsDeleted("N");
 								kri = kaizalaResponderInfoDAO.save(kri);
+								
+								KaizalaGroupResponderRelation kgrr = new KaizalaGroupResponderRelation();
+								kgrr.setGroupId(jsonObj.getString("objectId"));
+								kgrr.setKaizalaGroupsId(id);
+								kgrr.setKaizalaResponderInfoId(kri.getKaizalaResponderInfoId());
+								kgrr.setIsDeleted("N");
+								
 								KER.setInsertedBy(kri.getKaizalaResponderInfoId());
 								KER.setUpdatedBy(kri.getKaizalaResponderInfoId());
 							}
+							
 							Long actionId = kaizalaActionsDAO.checkexistenceOrNot(dataObj.getString("actionId"));
 							if(actionId == null || actionId == 0l){
 								KaizalaActions ka = new KaizalaActions();
 								ka.setActionId(dataObj.getString("actionId"));
-								ka.setIsDeleted("N");
 								ka.setKaizalaGroupsId(id);
+								ka.setTitle(jsonObj.getString("title"));
+								ka.setIsDeleted("N");
 								ka.setInsertedTime(dateService.getCurrentDateAndTime());
+								ka.setExpiryDate(dueDate);
 								actionId = kaizalaActionsDAO.save(ka).getKaizalaActionsId();
 							}
 							KER.setActionId(dataObj.getString("actionId"));
+							KER.setKaizalaActionsId(actionId);
 							KER.setEventId(jsonObj.getString("eventId"));
-							KER.setResponseText(dataObj.getString("assignedTo"));
+							KER.setKaizalaEventsId(5l);
 							KER.setInsertedTime(dateService.getCurrentDateAndTime());
 							KER.setUpdatedTime(dateService.getCurrentDateAndTime());
-							KER.setDueDate(dueDate);
 							KER.setIsDeleted("N");
 							
-							  KER = kaizalaEventsResponseDAO.save(KER);
+							KER = kaizalaEventsResponseDAO.save(KER);
 					}
 			} catch (Exception e) {
 				LOG.error("Exception raised at saveJobCreated", e);
@@ -559,7 +599,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							if(inObjArr != null && inObjArr.length() > 0){
 								for (int i = 0; i < inObjArr.length(); i++) {
 									JSONObject obj = (JSONObject)inObjArr.get(i);
-									eventRes.setResponseText(obj.getString("mediaUrl"));
+									//eventRes.setResponseText(obj.getString("mediaUrl"));sandeep check
 								}
 							}
 							Long actionTypeId = kaizalaAttachementTypeDAO.checkAttachementTypeExistence(innerJsonObj.getString("actionType"));
