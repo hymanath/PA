@@ -16,7 +16,6 @@ import com.itgrids.partyanalyst.dao.IKaizalaActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaActionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswerInfoDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswersDAO;
-import com.itgrids.partyanalyst.dao.IKaizalaAttachementTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaEventsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaEventsResponseDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupResponderRelationDAO;
@@ -56,7 +55,6 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private IKaizalaActionTypeDAO kaizalaActionTypeDAO;
 	private IKaizalaEventsResponseDAO kaizalaEventsResponseDAO;
 	private IKaizalaGroupTypeDAO kaizalaGroupTypeDAO;
-	private IKaizalaAttachementTypeDAO kaizalaAttachementTypeDAO;
 	private IKaizalaEventsDAO kaizalaEventsDAO;
 	private IKaizalaPropertiesDAO kaizalaPropertiesDAO;
 	private IKaizalaGroupResponderRelationDAO kaizalaGroupResponderRelationDAO ;
@@ -181,12 +179,6 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		this.transactionTemplate = transactionTemplate;
 	}
 
-	public IKaizalaAttachementTypeDAO getKaizalaAttachementTypeDAO() {
-		return kaizalaAttachementTypeDAO;
-	}
-	public void setKaizalaAttachementTypeDAO(IKaizalaAttachementTypeDAO kaizalaAttachementTypeDAO) {
-		this.kaizalaAttachementTypeDAO = kaizalaAttachementTypeDAO;
-	}
 	public IKaizalaEventsDAO getKaizalaEventsDAO() {
 		return kaizalaEventsDAO;
 	}
@@ -595,17 +587,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							}
 							eventRes.setEventId(jsonObj.getString("eventId"));
 							JSONObject innerJsonObj = jsonObj.getJSONObject("data");
-							JSONArray inObjArr = innerJsonObj.getJSONArray("media");
-							if(inObjArr != null && inObjArr.length() > 0){
-								for (int i = 0; i < inObjArr.length(); i++) {
-									JSONObject obj = (JSONObject)inObjArr.get(i);
-									//eventRes.setResponseText(obj.getString("mediaUrl"));sandeep check
-								}
-							}
-							Long actionTypeId = kaizalaAttachementTypeDAO.checkAttachementTypeExistence(innerJsonObj.getString("actionType"));
-							if(actionTypeId!=null && actionTypeId!=0l){
-							eventRes.setKaizalaAttachementTypeId(actionTypeId);
-						    } 
+							
 							String mobileNo = jsonObj.getString("fromUser");
 							if(mobileNo!=null){
 								List<Long> responderId = kaizalaResponderInfoDAO.getRespondentId(mobileNo);
@@ -618,7 +600,15 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							eventRes.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							eventRes.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							eventRes.setIsDeleted("N");
-							kaizalaEventsResponseDAO.save(eventRes);
+							eventRes = kaizalaEventsResponseDAO.save(eventRes);
+							
+							JSONArray inObjArr = innerJsonObj.getJSONArray("media");
+							if(inObjArr != null && inObjArr.length() > 0){
+								for (int i = 0; i < inObjArr.length(); i++) {
+									JSONObject obj = (JSONObject)inObjArr.get(i);
+									//eventRes.setResponseText(obj.getString("mediaUrl"));sandeep check
+								}
+							}
 						}
 					}
 				}catch (Exception e) {

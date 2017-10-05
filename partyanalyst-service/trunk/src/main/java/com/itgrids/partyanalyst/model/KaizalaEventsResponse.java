@@ -29,7 +29,6 @@ public class KaizalaEventsResponse extends BaseModel implements Serializable{
 	private String actionId;
 	private String eventId;
 	private Long kaizalaEventsId;
-	private Long kaizalaAttachementTypeId;
 	private Long addedKaizalaResponderInfoId;
 	private Long addedKaizalaGroupsId;
 	private Date insertedTime;
@@ -42,7 +41,6 @@ public class KaizalaEventsResponse extends BaseModel implements Serializable{
 	private KaizalaGroups kaizalaGroups;
 	private KaizalaActions kaizalaActions;
 	private KaizalaEvents kaizalaEvents;
-	private KaizalaAttachementType kaizalaAttachementType;
 	
 	@Id
 	@Column(name="kaizala_events_response_id")
@@ -95,13 +93,7 @@ public class KaizalaEventsResponse extends BaseModel implements Serializable{
 	public void setKaizalaEventsId(Long kaizalaEventsId) {
 		this.kaizalaEventsId = kaizalaEventsId;
 	}
-	@Column(name="kaizala_attachement_type_id")
-	public Long getKaizalaAttachementTypeId() {
-		return kaizalaAttachementTypeId;
-	}
-	public void setKaizalaAttachementTypeId(Long kaizalaAttachementTypeId) {
-		this.kaizalaAttachementTypeId = kaizalaAttachementTypeId;
-	}
+	
 	@Column(name="added_kaizala_responder_info_id")
 	public Long getAddedKaizalaResponderInfoId() {
 		return addedKaizalaResponderInfoId;
@@ -175,12 +167,5 @@ public class KaizalaEventsResponse extends BaseModel implements Serializable{
 	public void setKaizalaEvents(KaizalaEvents kaizalaEvents) {
 		this.kaizalaEvents = kaizalaEvents;
 	}
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "kaizala_attachement_type_id", insertable = false, updatable = false)
-	public KaizalaAttachementType getKaizalaAttachementType() {
-		return kaizalaAttachementType;
-	}
-	public void setKaizalaAttachementType(KaizalaAttachementType kaizalaAttachementType) {
-		this.kaizalaAttachementType = kaizalaAttachementType;
-	}
+	
 }
