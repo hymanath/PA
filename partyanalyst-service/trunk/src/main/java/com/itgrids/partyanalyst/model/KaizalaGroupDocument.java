@@ -18,7 +18,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "kaizala_events_response")
+@Table(name = "kaizala_group_document")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class KaizalaGroupDocument extends BaseModel implements Serializable{
 	
