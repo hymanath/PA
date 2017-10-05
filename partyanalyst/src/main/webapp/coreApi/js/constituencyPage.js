@@ -5027,7 +5027,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
     });
   }
 
-  getTourLeaderDtlsBasedOnSelectionType ([14],"all");
+  getTourLeaderDtlsBasedOnSelectionType ([3],"all");
   getIndividualRslBasedOnDateSelection(33);
   function getTourLeaderDtlsBasedOnSelectionType(designationIds,filterType)
 	{    
@@ -5050,11 +5050,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result != null && result.length > 0){
-				buildTourMemberDetails(result);
-			}else{
-			 $("#tourDetailsDivId").html("NO DATA AVAILABLE.");	
-			}
+		
 		});
 	}
 	
