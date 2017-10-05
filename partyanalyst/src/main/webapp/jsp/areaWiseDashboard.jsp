@@ -108,23 +108,25 @@
 				<div id="statelevelWiseCountDivId"></div>
 			</div>
 			<div class="col-sm-12 m_top20" navbar-index="election">
-				 <h4 class="panel-title theme-title-color">Election Information Assembly Constituency</h4>
-				 <h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
-				 <div class="block m_top10">
-					 <div class="row">
+				<h4 class="panel-title theme-title-color">Election Information Assembly Constituency
+					<span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="election"></i></span>
+				</h4>
+				<h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
+				<div class="block m_top10">
+					<div class="row">
 						<div class="col-sm-12">
 							<div id="electionTypeValuesId"></div>
 							<div class="electionDetailsGraphHeight">
 								<div id="electionDetailsGraphWiseId"></div>
 							</div>
 						</div>
-					 </div>
-					 <div class="row m_top10">
+					</div>
+					<div class="row m_top10">
 						 <div class="col-sm-12">
 							<div id="electionDetailsTableWiseId" class=""></div>
 						 </div>
-					 </div>
-				 </div>
+					</div>
+				</div>
 				<div class="block m_top20 assemblyElectionBlockCls" style="display:none">
 					<div class="row">
 						<div class="col-sm-12">

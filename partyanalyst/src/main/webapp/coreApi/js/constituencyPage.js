@@ -543,6 +543,18 @@ function onLoadClicks()
 		}else if(blockName == 'constituencyVoters')
 		{
 			getVotersAndcadreAgeWiseCount(22,4);
+		}else if(blockName == 'election')
+		{
+			getElectionYears();
+			getElectionTypes();
+			var partyIds = [872,362,1117,886,72,269,265,163,1887];
+			getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal);
+			if(locationLevelId == '4'){
+				$(".assemblyElectionBlockCls").show();
+				getDetailedElectionInformaction();
+			}else{
+				$(".assemblyElectionBlockCls").hide();
+			}
 		}
 	});
 	
@@ -1403,51 +1415,51 @@ function getCountsForConstituency(){
 }
 
 function getCountsForStateLevel(){
-		var str='';
-		str+='<h4 class="panel-title theme-title-color">Andhra Pradesh</h4>';
-		str+='<div class="block m_top10">';
-			str+='<table class="table table-bordered">';
-				str+='<tr>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Constituencies</h4>';
-							str+='<h2>175</h2>';
-							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Mandals</h4>';
-							str+='<h2>673</h2>';
-							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Municipalities</h4>';
-							str+='<h2>131</h2>';
-							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Panchayats</h4>';	
-							str+='<h2>12975</h2>';
-							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Wards</h4>';
-							str+='<h2>3494</h2>';
-							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Booths</h4>';
-							str+='<h2>42399</h2>';
-							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-						str+='<td>';
-							str+='<h4 class="text-capitalize text-muted">Hamlets</h4>';
-							str+='<h2>50372</h2>';
-							//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-						str+='</td>';
-				str+='</tr>';
-			str+='</table>';
-			
-		str+='</div>';
-		$("#statelevelWiseCountDivId").html(str);
+	var str='';
+	str+='<h4 class="panel-title theme-title-color">Andhra Pradesh</h4>';
+	str+='<div class="block m_top10">';
+		str+='<table class="table table-bordered table-block-responsive">';
+			str+='<tr>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Constituencies</h4>';
+						str+='<h2>175</h2>';
+						//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Mandals</h4>';
+						str+='<h2>673</h2>';
+						//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Municipalities</h4>';
+						str+='<h2>131</h2>';
+						//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Panchayats</h4>';	
+						str+='<h2>12975</h2>';
+						//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Wards</h4>';
+						str+='<h2>3494</h2>';
+						//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Booths</h4>';
+						str+='<h2>42399</h2>';
+						//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4 class="text-capitalize text-muted">Hamlets</h4>';
+						str+='<h2>50372</h2>';
+						//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
+					str+='</td>';
+			str+='</tr>';
+		str+='</table>';
+		
+	str+='</div>';
+	$("#statelevelWiseCountDivId").html(str);
 }
 	
 function getVotersAndcadreAgeWiseCount(pubId,enrollmentId){
@@ -1662,7 +1674,7 @@ function buildVotersCastGroupWiseCount(result){
 	str+='</div>';
 	str+='<div class="col-sm-6">';
 		str+='<h5 class="text-capital" style="color:#777">Top 15 Castes</h5>';
-		str+='<div id="topTenCastesDivId" class="m_top10"></div>';
+		str+='<div id="topTenCastesDivId" class="m_top10 table-responsive"></div>';
 	str+='</div>';
 	str+='<div class="col-sm-12 m_top20">';
 		str+='<h5 class="text-capital" style="color:#777">Total Castes Wise Voters % & Cadres %</h5>';
@@ -2302,13 +2314,36 @@ function getLocationTypeWiseCadreCount(enrollmentId){
 			str+='</ul>';
 			$("#cadreInfoGraphDivId").html(str);	
 			$('.cadre-info-list').slick({
-			   slide: 'li',
-			  slidesToShow: 3,
-			  slidesToScroll: 1,
-			  infinite: false,
-			  swipe:false,
-			  touchMove:false,
-			  variableWidth: false
+				slide: 'li',
+				slidesToShow: 3,
+				slidesToScroll: 1,
+				infinite: false,
+				swipe:false,
+				touchMove:false,
+				variableWidth: false,
+				responsive: [
+					{
+						breakpoint: 1024,
+						settings: {
+							slidesToShow: 3,
+							slidesToScroll: 3,
+						}
+					},
+					{
+						breakpoint: 600,
+						settings: {
+							slidesToShow: 2,
+							slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
+						}
+					}
+				]
 			});
 			for(var i in result){
 				var newCount = result[i].newCaderCount;
@@ -3047,52 +3082,54 @@ function getLocationWiseCommitteesCount(yearId){
 	function buildLocationWiseCommitteesCount(result){
 		
 		var str='';
-		str+='<table class="table table-bordered">';
-			str+='<thead>';
-				str+='<tr class="text-capital">';
-					str+='<th rowspan="2"></th>';
-					str+='<th colspan="4">main committee</th>';
-					str+='<th colspan="4"> affliated committee</th>';
-				str+='</tr>';
-				str+='<tr class="text-capitalize bg-DD">';
-					str+='<th>total</th>';
-					str+='<th>started</th>';
-					str+='<th>completed</th>';
-					str+='<th>Not Started</th>';
-					
-					str+='<th>total</th>';
-					str+='<th>started</th>';
-					str+='<th>completed</th>';
-					str+='<th>Not Started</th>';
-				str+='</tr>';
-			str+='</thead>';
-			str+='<tbody class="text-capitalize">';
-				str+='<tr>';
-					str+='<td>mandal/town/division</td>';
-					str+='<td>'+result.mainMandalTotal+'</td>';
-					str+='<td>'+result.mainMandalStartedCount+'</td>';
-					str+='<td>'+result.mainMandalCompletedCount+'</td>';
-					str+='<td>'+result.mainMandalNotYetStartedCount+'</td>';
-					
-					str+='<td>'+result.affMandalTotal+'</td>';
-					str+='<td>'+result.affliatedMandalStartedCount+'</td>';
-					str+='<td>'+result.affliatedMandalCompletedCount+'</td>';
-					str+='<td>'+result.affiCommMandalNotStarted+'</td>';
-				str+='</tr>';
-				str+='<tr>';
-					str+='<td>village/ward</td>';
-					str+='<td>'+result.mainVillageTotal+'</td>';
-					str+='<td>'+result.mainVillageStartedCount+'</td>';
-					str+='<td>'+result.mainvillageCompletedCount+'</td>';
-					str+='<td>'+result.mainVillageNotYetStartedCount+'</td>';
-					
-					str+='<td>'+result.affVillageTotal+'</td>';
-					str+='<td>'+result.affliatedVillageStartedCount+'</td>';
-					str+='<td>'+result.affliatedVillageCompletedCount+'</td>';
-					str+='<td>'+result.affiCommVillageNotStarted+'</td>';
-				str+='</tr>';
-			str+='</tbody>';
-		str+='</table>';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered">';
+				str+='<thead>';
+					str+='<tr class="text-capital">';
+						str+='<th rowspan="2"></th>';
+						str+='<th colspan="4">main committee</th>';
+						str+='<th colspan="4"> affliated committee</th>';
+					str+='</tr>';
+					str+='<tr class="text-capitalize bg-DD">';
+						str+='<th>total</th>';
+						str+='<th>started</th>';
+						str+='<th>completed</th>';
+						str+='<th>Not Started</th>';
+						
+						str+='<th>total</th>';
+						str+='<th>started</th>';
+						str+='<th>completed</th>';
+						str+='<th>Not Started</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody class="text-capitalize">';
+					str+='<tr>';
+						str+='<td>mandal/town/division</td>';
+						str+='<td>'+result.mainMandalTotal+'</td>';
+						str+='<td>'+result.mainMandalStartedCount+'</td>';
+						str+='<td>'+result.mainMandalCompletedCount+'</td>';
+						str+='<td>'+result.mainMandalNotYetStartedCount+'</td>';
+						
+						str+='<td>'+result.affMandalTotal+'</td>';
+						str+='<td>'+result.affliatedMandalStartedCount+'</td>';
+						str+='<td>'+result.affliatedMandalCompletedCount+'</td>';
+						str+='<td>'+result.affiCommMandalNotStarted+'</td>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<td>village/ward</td>';
+						str+='<td>'+result.mainVillageTotal+'</td>';
+						str+='<td>'+result.mainVillageStartedCount+'</td>';
+						str+='<td>'+result.mainvillageCompletedCount+'</td>';
+						str+='<td>'+result.mainVillageNotYetStartedCount+'</td>';
+						
+						str+='<td>'+result.affVillageTotal+'</td>';
+						str+='<td>'+result.affliatedVillageStartedCount+'</td>';
+						str+='<td>'+result.affliatedVillageCompletedCount+'</td>';
+						str+='<td>'+result.affiCommVillageNotStarted+'</td>';
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
 			
 		$("#committesTableDivId").html(str);		
 		var completedCount=0;
@@ -3213,11 +3250,11 @@ function getLocationWiseMeetingsCount(){
 				}
 				str+='<div class="col-sm-6">';
 					str+='<p class="text-capitalize"><b>'+result[i].ageRange+'</b></p>';
-					str+='<div class="media">';
-						str+='<div class="media-left">';
+					str+='<div class="row">';
+						str+='<div class="col-sm-6">';
 							str+='<div id="meetingsGraphId'+i+'" style="width:250px;height:170px;"></div>';
 						str+='</div>';
-						str+='<div class="media-body">';
+						str+='<div class="col-sm-6">';
 							str+='<h6>'+result[i].ageRange+'</h6>';
 							str+='<h4 class="m_top5">'+result[i].totalCadres+'</h4>';
 							str+='<div class="meetingLevelScroll'+i+'">';
@@ -3750,7 +3787,7 @@ function getPositionWiseMemberCount(){
 		function build(result)
 		{
 			var str='';
-			str+='<ul class="list-border">';
+			str+='<ul class="list-border list-border-responsive">';
 			for(var i in result){
 				str+='<li>';
 					str+='<h3>'+result[i].count+'</h3>';
@@ -4372,7 +4409,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 					}
 				}
 						str+='<div class="col-sm-4">';
-							str+='<div class="block_Alert_styled">';
+							str+='<div class="block_Alert_styled text-center">';
 								str+='<div class="row">';
 										str+='<div class="col-sm-6">';
 											str+='<img src="coreApi/img/total_alerts.png" />';
@@ -4421,7 +4458,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 								str+='</div>';
 						str+='</div>';
 					str+='<div class="col-sm-8">';
-						str+='<ul class="list-inline">';
+						str+='<ul class="list-inline text-center">';
 						if(result.subList !=null && result.subList.length>0){
 							for(var i in result.subList){
 								if(result.subList[i].status !="Others"){
@@ -4430,7 +4467,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 									}else{
 										str+='<li class="col-sm-2">';
 									}
-										str+='<img class="media-object" src="coreApi/img/'+result.subList[i].status+'.png" alt="group">';
+										str+='<img class="img-responsive" src="coreApi/img/'+result.subList[i].status+'.png" alt="group">';
 										str+='<h5 class="m_top20">'+result.subList[i].status+' <br/>Alerts</h5>';
 										
 										if(result.subList[i].count !=null && result.subList[i].count>0){
@@ -4456,7 +4493,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 					str+='<hr class="m_0"/>';
 				str+='</div>';
 				str+='<div class="col-sm-12 m_top10">';
-					str+='<ul class="list-border">';
+					str+='<ul class="list-border list-border-responsive">';
 						if(result.impactScopeList !=null && result.impactScopeList.length>0){
 							for(var i in result.impactScopeList){
 								str+='<li style="padding: 10px 0;">';
@@ -4859,7 +4896,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 	  var str='';
 	  str+='<div class="col-sm-12">';
 		str+='<div class="block">';
-			str+='<table class="table">';
+			str+='<table class="table table-block-responsive">';
 				str+='<tr>';
 					str+='<td>';
 					str+='<div class="media">';

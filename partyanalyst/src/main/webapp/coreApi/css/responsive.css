@@ -29,7 +29,21 @@
 		bottom:0px;
 		z-index:9;
 	}
-
+	.table-block-responsive tr td , .list-border-responsive li , .breadcrumb li
+	{
+		display:block !important;
+		width:100% !important;
+	}
+	.list-border-responsive li
+	{
+		border-right:0px;
+		border-left:0px;
+		border-bottom:1px solid #ddd;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
 }
 @media (min-width: 500px) and (max-width:767px) {
 	.right-nav
@@ -47,6 +61,11 @@
 	.right-nav-responsive
 	{
 		display:block;
+	}
+	.table-block-responsive tr td , .list-border-responsive li
+	{
+		display:block !important;
+		width:100% !important;
 	}
 }
 @media (min-width:769px) and  (max-width:991px){
