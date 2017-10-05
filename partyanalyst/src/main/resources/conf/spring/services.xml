@@ -4447,7 +4447,6 @@
     	 <property name="kaizalaOptionsDAO" ref="kaizalaOptionsDAO" />
     	 <property name="kaizalaActionTypeDAO" ref="kaizalaActionTypeDAO" />
 		 <property name="kaizalaEventsResponseDAO" ref="kaizalaEventsResponseDAO" />
-		 <property name="kaizalaAttachementTypeDAO" ref="kaizalaAttachementTypeDAO" />
 		 <property name="kaizalaEventsDAO" ref="kaizalaEventsDAO" />
 		 <property name="kaizalaPropertiesDAO" ref="kaizalaPropertiesDAO" />
 		 <property name="kaizalaGroupTypeDAO" ref="kaizalaGroupTypeDAO" />
