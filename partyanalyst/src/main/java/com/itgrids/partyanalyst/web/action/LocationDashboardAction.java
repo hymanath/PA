@@ -92,7 +92,6 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private KeyValueVO keyValueVO;
 	
 	
-	
 	public KeyValueVO getKeyValueVO() {
 		return keyValueVO;
 	}
@@ -961,6 +960,16 @@ public String getElectionInformationLocationWise(){
 	       keyValueVO = locationDashboardService.getElectionYears(subTypes);
 	     }catch(Exception e){
 	       LOG.error("Exception raised at getElectionYears() of LocationDashboardAction{}", e);
+	     }
+	     return Action.SUCCESS;
+	   }
+	public String getLevelWisePostsOverView(){
+	     try{
+	       jObj = new JSONObject(getTask());
+	        List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+	        nominatedPostCandList = nominatedPostLocationDashboardService.getLevelWisePostsOverView(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"));
+	     }catch(Exception e){
+	       LOG.error("Exception raised at getLevelWisePostsOverView() of LocationDashboardAction{}", e);
 	     }
 	     return Action.SUCCESS;
 	   }
