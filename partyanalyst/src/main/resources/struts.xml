@@ -18135,5 +18135,25 @@
       <param name="root">keyValueVO</param>       
     </result> 
   </action>
-      </package>
+  <action name="getMeetingTypeWiseTotalMeetingsAction" class="loactionDetailsDashBoardAction"  method="getMeetingTypeWiseTotalMeetings">
+		<result type="json" name="success">    
+			<param name="root">partyMeetingsVOs</param>       
+		</result>
+  	</action>
+  	<action name="getMeetingLevelWiseTotalMeetingsAction" class="loactionDetailsDashBoardAction"  method="getMeetingLevelWiseTotalMeetings">
+		<result type="json" name="success">    
+			<param name="root">partyMeetingsVOs</param>       
+		</result>
+  	</action>
+  	<action name="getCommitteeMeetingStatisticsAction" class="loactionDetailsDashBoardAction"  method="getCommitteeMeetingStatistics">
+		<result type="json" name="success">    
+			<param name="root">partyMeetingsVOs</param>       
+		</result>
+  	</action>
+  	<action name="getSpecialMeetingStatisticsAction" class="loactionDetailsDashBoardAction"  method="getSpecialMeetingStatistics">
+		<result type="json" name="success">    
+			<param name="root">partyMeetingsVOs</param>       
+		</result>
+  	</action>
+ </package>
 </struts>
