@@ -2767,6 +2767,19 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 
 			}
+			BenefitCandidateVO	benefitsVo  =null;
+			if(returnList != null && returnList.size()>0){
+			  if(locationType!= null && locationType.equalsIgnoreCase("constituency")){
+				benefitsVo =new BenefitCandidateVO();
+				for(BenefitCandidateVO vo: returnList){
+					benefitsVo.setId(0l);
+					benefitsVo.setName("All");
+					benefitsVo.setTotalCount(benefitsVo.getTotalCount()+vo.getTotalCount());
+					}
+				}
+			if(benefitsVo != null)
+				returnList.add(0, benefitsVo);
+			}
 		} catch (Exception e) {
 			Log.error("Exception Occured at getGovtSchemeBenefitMemberDlstList() in LocationDashboardService class",e);
 		}
