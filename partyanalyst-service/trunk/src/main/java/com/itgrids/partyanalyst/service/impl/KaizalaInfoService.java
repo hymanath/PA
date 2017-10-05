@@ -22,10 +22,12 @@ import com.itgrids.partyanalyst.dao.IKaizalaEventsResponseDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupResponderRelationDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupsDAO;
+import com.itgrids.partyanalyst.dao.IKaizalaJobResponseDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaOptionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaPropertiesDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
+
 import com.itgrids.partyanalyst.dao.IKaizalaTextMessageDAO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.model.KaizalaActions;
@@ -34,6 +36,7 @@ import com.itgrids.partyanalyst.model.KaizalaAnswers;
 import com.itgrids.partyanalyst.model.KaizalaEventsResponse;
 import com.itgrids.partyanalyst.model.KaizalaGroupResponderRelation;
 import com.itgrids.partyanalyst.model.KaizalaGroups;
+import com.itgrids.partyanalyst.model.KaizalaJobResponse;
 import com.itgrids.partyanalyst.model.KaizalaOptions;
 import com.itgrids.partyanalyst.model.KaizalaProperties;
 import com.itgrids.partyanalyst.model.KaizalaQuestions;
@@ -63,8 +66,15 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private IKaizalaPropertiesDAO kaizalaPropertiesDAO;
 	private IKaizalaGroupResponderRelationDAO kaizalaGroupResponderRelationDAO ;
 	private IKaizalaTextMessageDAO kaizalaTextMessageDAO;
+	private IKaizalaJobResponseDAO kaizalaJobResponseDAO;
 	
-	
+	public IKaizalaJobResponseDAO getKaizalaJobResponseDAO() {
+		return kaizalaJobResponseDAO;
+	}
+	public void setKaizalaJobResponseDAO(
+			IKaizalaJobResponseDAO kaizalaJobResponseDAO) {
+		this.kaizalaJobResponseDAO = kaizalaJobResponseDAO;
+	}
 	public IKaizalaTextMessageDAO getKaizalaTextMessageDAO() {
 		return kaizalaTextMessageDAO;
 	}
@@ -396,6 +406,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 					saveSurveyCreatedInfo(output);
 				}else if(jsonObj.getString("eventType").equalsIgnoreCase("SurveyResponse")){
 					saveKaizalAnswerInfo(output);
+				}else if(jsonObj.getString("eventType").equalsIgnoreCase("JobResponse")){
+					saveJobResponseInfo(output);
 				}
 			}
 		}catch (Exception e) {
@@ -692,6 +704,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							KER.setUpdatedBy(kri.getKaizalaResponderInfoId());
 						}
 						KER.setKaizalaGroupsId(id);
+						KER.setKaizalaEventsId(3l);
 						KER.setKaizalaActionsId(actionId);
 						KER.setGroupId(jsonObj.getString("objectId"));
 						KER.setActionId(dataObj.getString("actionId"));
@@ -725,6 +738,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						}
 					}
 					if(propArray != null && propArray.length() >0){
+						
 						for(int k=0; k < propArray.length(); k++){
 							KaizalaProperties kp = new KaizalaProperties();
 							
@@ -742,4 +756,74 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		}
 	});
 }  
+	public void saveJobResponseInfo(final String output){
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+				try {
+				 if(output != null && !output.isEmpty()){
+						KaizalaEventsResponse KER = new KaizalaEventsResponse(); 
+						DateUtilService dateService = new DateUtilService();
+						JSONObject jsonObj = new JSONObject(output);
+						JSONObject dataObj = jsonObj.getJSONObject("data");
+						JSONObject responseDetailsObj = dataObj.getJSONObject("responseDetails");
+						JSONObject responseObj = responseDetailsObj.getJSONObject("response");
+						
+						Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+						Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
+						if(id == null || id == 0l){
+							KaizalaGroups kg = new KaizalaGroups();
+							kg.setGroupId(jsonObj.getString("objectId"));
+							kg.setIsDeleted("N");
+							kg.setInsertedTime(dateService.getCurrentDateAndTime());
+							kg.setKaizalaGroupTypeId(groupTypeId);
+							id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+						}
+						
+						Long actionId = kaizalaActionsDAO.checkexistenceOrNot(dataObj.getString("actionId"));
+						if(actionId == null || actionId == 0l){
+							KaizalaActions ka = new KaizalaActions();
+							ka.setActionId(dataObj.getString("actionId"));
+							ka.setTitle(dataObj.getString("title"));
+							ka.setIsDeleted("N");
+							ka.setKaizalaGroupsId(id);
+							ka.setInsertedTime(dateService.getCurrentDateAndTime());
+							actionId = kaizalaActionsDAO.save(ka).getKaizalaActionsId();
+						}
+						List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));
+						if(resIds != null && resIds.size() > 0){
+							KER.setInsertedBy(resIds.get(0));
+							KER.setUpdatedBy(resIds.get(0));
+						}else{
+							KaizalaResponderInfo kri = new KaizalaResponderInfo();
+							kri.setMobileNumber(jsonObj.getString("fromUser"));
+							kri.setIsDeleted("N");
+							kri = kaizalaResponderInfoDAO.save(kri);
+							KER.setInsertedBy(kri.getKaizalaResponderInfoId());
+							KER.setUpdatedBy(kri.getKaizalaResponderInfoId());
+						}
+						KER.setGroupId(jsonObj.getString("objectId"));
+						KER.setKaizalaGroupsId(id);
+						KER.setActionId(dataObj.getString("actionId"));
+						KER.setKaizalaActionsId(actionId);
+						KER.setInsertedTime(dateService.getCurrentDateAndTime());
+						KER.setUpdatedTime(dateService.getCurrentDateAndTime());
+						KER.setIsDeleted("N");
+						KER.setEventId(jsonObj.getString("eventId"));
+						KER.setKaizalaEventsId(6l);
+						
+						KER = kaizalaEventsResponseDAO.save(KER);
+						
+						KaizalaJobResponse kjb = new KaizalaJobResponse();
+						kjb.setKaizalaEventsResponseId(KER.getKaizalaEventsResponseId());
+						kjb.setJobResponse(responseObj.getString("isCompleted"));
+						
+						kaizalaJobResponseDAO.save(kjb);
+				}
+			}catch(Exception e){
+			   LOG.error("Exception raised at saveJobResponseInfo", e);
+			}		
+		}
+	});
+}
+
 }
