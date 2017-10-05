@@ -40,7 +40,7 @@ public class KaizalaTextMessage {
 		this.kaizalaTextMessageId = kaizalaTextMessageId;
 	}
 	
-	@Column(name="kaizala_events_response_id")
+	@Column(name="text_message")
 	public String getTextMessage() {
 		return textMessage;
 	}

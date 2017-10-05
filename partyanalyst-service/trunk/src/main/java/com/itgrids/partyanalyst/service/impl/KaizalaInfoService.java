@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -26,7 +27,10 @@ import com.itgrids.partyanalyst.dao.IKaizalaPropertiesDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaTextMessageDAO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.model.KaizalaActions;
+import com.itgrids.partyanalyst.model.KaizalaAnswerInfo;
+import com.itgrids.partyanalyst.model.KaizalaAnswers;
 import com.itgrids.partyanalyst.model.KaizalaEventsResponse;
 import com.itgrids.partyanalyst.model.KaizalaGroupResponderRelation;
 import com.itgrids.partyanalyst.model.KaizalaGroups;
@@ -185,26 +189,45 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	public void setKaizalaEventsDAO(IKaizalaEventsDAO kaizalaEventsDAO) {
 		this.kaizalaEventsDAO = kaizalaEventsDAO;
 	}
-	/*public void saveKaizalAnswerInfo(final String output){
+	
+	public void saveKaizalAnswerInfo(final String output){
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				try {
 					
 					if(output != null && !output.isEmpty()){
+						KaizalaEventsResponse eventRes = new KaizalaEventsResponse();
+						Long eventResId=0l;
 						DateUtilService dateUtilService = new DateUtilService();
 						JSONObject jsonObj = new JSONObject(output);
 						
+						
+						List<Long> resId=kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));
+						if(resId!=null && resId.size()>0){
+							eventRes.setInsertedBy(resId.get(0));
+							eventRes.setUpdatedBy(resId.get(0));
+							eventRes.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							eventRes.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							eventRes.setIsDeleted("N");
+						}
+						eventRes.setEventId(jsonObj.getString("eventId"));
+						Long eventId = kaizalaEventsDAO.getEventId(jsonObj.getString("eventType"));
+						if(eventId!=null){
+							eventRes.setKaizalaEventsId(eventId);
+						}
 						JSONObject dataObj = jsonObj.getJSONObject("data");
 						
 						Long id = kaizalaGroupsDAO.checkGroupExistence(dataObj.getString("groupId"));
 						if(id == null || id == 0l){
 							KaizalaGroups kg = new KaizalaGroups();
+							
 							kg.setGroupId(dataObj.getString("groupId"));
 							kg.setIsDeleted("N");
 							kg.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 							id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
 						}
-						
+						eventRes.setGroupId(dataObj.getString("groupId"));
+						eventRes.setKaizalaGroupsId(id);
 						boolean newAction = false;
 						List<Long>  kaizalaActionsIds = kaizalaActionsDAO.getKaizalaActionId(dataObj.getString("actionId"));
 						if(kaizalaActionsIds == null || kaizalaActionsIds.size() == 0){
@@ -226,7 +249,6 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							ka.setIsDeleted("N");
 							ka.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							kaizalaActionsIds.add(kaizalaActionsDAO.save(ka).getKaizalaActionsId());
-							
 						}
 						if(kaizalaActionsIds != null && kaizalaActionsIds.size() > 0){
 							KaizalaAnswerInfo kaiAnsInfo = new KaizalaAnswerInfo();
@@ -238,7 +260,9 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							kaiAnsInfo.setResponseId(dataObj.getString("responseId"));
 							
 							List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(dataObj.getString("responder"));
-							
+							eventRes.setActionId(dataObj.getString("actionId"));
+							eventRes.setKaizalaActionsId(kaizalaActionsIds.get(0));
+							eventResId = kaizalaEventsResponseDAO.save(eventRes).getKaizalaEventsResponseId();
 							if(resIds != null && resIds.size() > 0){
 								kaiAnsInfo.setKaizalaResponderInfoId(resIds.get(resIds.size()-1));
 							}else{
@@ -323,6 +347,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 											answer.setEventId(kaiAnsInfo.getEventId());
 											answer.setKaizalaAnswerInfoId(kaiAnsInfo.getKaizalaAnswerInfoId());
 											answer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+											answer.setKaizalaEventsResponseId(eventResId);
 											kaizalaAnswersDAO.save(answer);
 										}else if(obj.getString("type").equalsIgnoreCase("SingleOption") || obj.getString("type").equalsIgnoreCase("MultiOption")){
 											if(obj.getJSONArray("answer") != null && obj.getJSONArray("answer").length() > 0){
@@ -339,6 +364,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 													answer.setEventId(kaiAnsInfo.getEventId());
 													answer.setKaizalaAnswerInfoId(kaiAnsInfo.getKaizalaAnswerInfoId());
 													answer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+													answer.setKaizalaEventsResponseId(eventResId);
 													kaizalaAnswersDAO.save(answer);
 												}
 											}
@@ -355,7 +381,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			}
 		});
 		
-	}*/
+	}
 	public void saveEventResponses(final String output){
 		try {
 			if(output != null && !output.isEmpty()){
@@ -368,6 +394,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 					saveAttachmentInfo(output);
 				}else if(jsonObj.getString("eventType").equalsIgnoreCase("SurveyCreated")){
 					saveSurveyCreatedInfo(output);
+				}else if(jsonObj.getString("eventType").equalsIgnoreCase("SurveyResponse")){
+					saveKaizalAnswerInfo(output);
 				}
 			}
 		}catch (Exception e) {

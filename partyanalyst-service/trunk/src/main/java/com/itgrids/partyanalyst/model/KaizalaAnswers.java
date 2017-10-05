@@ -34,10 +34,12 @@ public class KaizalaAnswers extends BaseModel implements Serializable {
 	private Long kaizalaAnswerInfoId;
 	private Date insertedTime;
 	private Long kaizalaOptionsId;
+	private Long kaizalaEventsResponseId;
 	
 	private KaizalaQuestions kaizalaQuestions;
 	private KaizalaAnswerInfo kaizalaAnswerInfo;
 	private KaizalaOptions kaizalaOptions;
+	private KaizalaEventsResponse kaizalaEventsResponse; 
 	
 	
 	@Id
@@ -73,7 +75,13 @@ public class KaizalaAnswers extends BaseModel implements Serializable {
 	public void setEventId(String eventId) {
 		this.eventId = eventId;
 	}
-	
+	@Column(name="kaizala_events_response_id")
+	public Long getKaizalaEventsResponseId() {
+		return kaizalaEventsResponseId;
+	}
+	public void setKaizalaEventsResponseId(Long kaizalaEventsResponseId) {
+		this.kaizalaEventsResponseId = kaizalaEventsResponseId;
+	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "kaizala_questions_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -130,6 +138,16 @@ public class KaizalaAnswers extends BaseModel implements Serializable {
 	}
 	public void setKaizalaOptions(KaizalaOptions kaizalaOptions) {
 		this.kaizalaOptions = kaizalaOptions;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "kaizala_events_response_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public KaizalaEventsResponse getKaizalaEventsResponse() {
+		return kaizalaEventsResponse;
+	}
+	public void setKaizalaEventsResponse(KaizalaEventsResponse kaizalaEventsResponse) {
+		this.kaizalaEventsResponse = kaizalaEventsResponse;
 	}	
 	
 	
