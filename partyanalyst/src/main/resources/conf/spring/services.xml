@@ -4478,10 +4478,13 @@
     <bean name="loactionDetailsDashBoardService" class="com.itgrids.core.api.service.impl.LoactionDetailsDashBoardService" >
     	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	<property name="partyMeetingDAO" ref="partyMeetingDAO" />
+    	<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />
+    	<property name="partyMeetingStatusDAO" ref="partyMeetingStatusDAO" />
+    	<property name="partyMeetingInviteeDAO" ref="partyMeetingInviteeDAO" />
+    	<property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
     </bean>
     <bean name="nominatedPostLocationDashboardService" class="com.itgrids.core.api.service.impl.NominatedPostLocationDashboardService" >
     	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	<property name="nominatedPostDAO" ref="nominatedPostDAO" />
     </bean>
 </beans>			
-	
