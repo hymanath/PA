@@ -1690,7 +1690,12 @@ getAllDepartments();
 						str+='<table class="table table-bordered table-striped tableClr'+i+'">';
 							str+='<thead>';
 								str+='<tr>';
-									str+='<th class="text-center" colspan="3"><h4>'+result[i].name+' <span class="pull-right rankingColor">'+orderNo+'</span></h4><h3><b>'+result[i].ttlAmt+'</b></h3></th>';
+									if(result[i].name == "MGNREGS"){
+										str+='<th class="text-center" colspan="3"><h4>MGNREGS <span class="pull-right rankingColor">'+orderNo+'</span></h4></b></h3></th>';
+									}else{
+										str+='<th class="text-center" colspan="3"><h4>'+result[i].name+' <span class="pull-right rankingColor">'+orderNo+'</span></h4><h3><b>'+result[i].ttlAmt+'</b></h3></th>';
+									}
+									
 									//str+='<th class="text-center" colspan="3"><h4>'+result[i].name+'</h4><h3><b>'+result[i].ttlAmt+'</b></h3></th>';
 								str+='</tr>';
 							str+='</thead>';
@@ -1702,7 +1707,12 @@ getAllDepartments();
 										{
 											if(result[i].subList[j].totl != null && result[i].subList[j].totl > 0)
 											{
-												str+='<td class="text-center"><h4>'+result[i].subList[j].name+'</h4><h4><b><i class="fa fa-inr"></i>'+result[i].subList[j].totl+'</b></h4></td>';
+												if(result[i].name == "MGNREGS" && result[i].subList[j].name == "MATERIAL EXP"){
+													str+='<td class="text-center"><h4 class="m_top10">'+result[i].subList[j].name+'</h4><h4 class="m_top10"><b><i class="fa fa-inr"></i>'+result[i].subList[j].totl+'</b></h4></td>';
+												}else if(result[i].name != "MGNREGS"){
+													str+='<td class="text-center"><h4>'+result[i].subList[j].name+'</h4><h4><b><i class="fa fa-inr"></i>'+result[i].subList[j].totl+'</b></h4></td>';
+												}
+												
 											}else{
 												str+='<td class="text-center"><h4>'+result[i].subList[j].name+'</h4><h4><b>-</b></h4></td>';
 											}
@@ -2872,16 +2882,36 @@ getAllDepartments();
 		var constituency = '';
 		var mandal = '';
 		if(result.ttlAmt !=null && result.ttlAmt>0){
-			total+='<h3>'+result.totalAmt+'</h3>';
-			total+='<ul class="list-inline">';
+			var totalMGNMaterialCount = 0;
+			for(var i in result.subList)
+			{
+				if(result.subList[i].name == "MATERIAL EXP"){
+					totalMGNMaterialCount = result.subList[i].totl;
+				}
+			}	
+			if(schemes == "-1"){
+				total+='<h3>'+totalMGNMaterialCount+'</h3>';
+				total+='<ul class="list-inline">';
+					total+='<li>';
+						total+='<p>MATERIAL EXP</p>';
+						total+='<p>'+totalMGNMaterialCount+'</p>';
+						
+					total+='</li>';
+				total+='</ul>';
+			}else{
+				total+='<h3>'+result.totalAmt+'</h3>';
+				total+='<ul class="list-inline">';
 				for(var i in result.subList)
 				{
 					total+='<li>';
 						total+='<p>'+result.subList[i].name+'</p>';
 						total+='<p>'+result.subList[i].totl+'</p>';
+						
 					total+='</li>';
+					
 				}
-			total+='</ul>';
+				total+='</ul>';
+			}
 			if(result.fundList.length > 0)
 			{
 				district+='<p class="text-primary"><i class="rounded-circle fa fa-inr"></i>'+result.fundList[0].highLocName+'-'+result.fundList[0].highCroreAmt+'</p>';
@@ -5295,9 +5325,9 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
 			
 			str+='<th class="text-capital">Category</th>';
 			str+='<th class="text-capital">Works</th>'; 
-			str+='<th class="text-capital">Wage</th>';
+			//str+='<th class="text-capital">Wage</th>';
 			str+='<th class="text-capital">Material</th>';
-			str+='<th class="text-capital">Total</th>';
+			//str+='<th class="text-capital">Total</th>';
 		str+='</thead>';
 		str+='<tbody>';
 	for(var i in result){
@@ -5342,22 +5372,22 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
 		}else{
 			 str+='<td>-</td>';
 		}    
-		if(result[i].wage != null && result[i].wage>0){
+		/* if(result[i].wage != null && result[i].wage>0){
 			 str+='<td>'+result[i].wage+'</td>';
 		}else{
 			 str+='<td>-</td>';
-		}  
+		}   */
 		
 		if(result[i].material != null && result[i].material>0){
 			 str+='<td>'+result[i].material+'</td>';
 		}else{
 			 str+='<td>-</td>';
 		}
-		if(result[i].total != null && result[i].total>0){
+		/* if(result[i].total != null && result[i].total>0){
 			 str+='<td>'+result[i].total+'</td>';
 		}else{
 			 str+='<td>-</td>';
-		}
+		} */
 		str+='</tr>';     
 	}
 	str+='</tbody>';  
@@ -5477,9 +5507,9 @@ function getMgnregsFMSWorksDetailsByCategory(locationStrIdsForMgnregs,levelName,
 			str+='<th class="text-capital">AMOUNT_MATERIAL</th>';
 			str+='<th class="text-capital">TOTAL_COST</th>';
 			str+='<th class="text-capital">TOTAL_MANDAYS</th>';
-			str+='<th class="text-capital">WAGE</th>';
+			//str+='<th class="text-capital">WAGE</th>';
 			str+='<th class="text-capital">MATERIAL</th>';
-			str+='<th class="text-capital">TOTAL</th>';
+			//str+='<th class="text-capital">TOTAL</th>';
 			str+='<th class="text-capital">DAYS</th>';
 			str+='</tr>'; 
 		str+='</thead>';
@@ -5531,21 +5561,21 @@ function getMgnregsFMSWorksDetailsByCategory(locationStrIdsForMgnregs,levelName,
 		}else{
 			 str+='<td>-</td>';
 		} 		
-		if(result[i].wage != null && result[i].wage>0 && typeof(result[i].wage) != "undefined"){
+		/* if(result[i].wage != null && result[i].wage>0 && typeof(result[i].wage) != "undefined"){
 			 str+='<td>'+result[i].wage+'</td>';
 		}else{
 			 str+='<td>-</td>';
-		}
+		} */
 		if(result[i].material != null && result[i].material>0 && typeof(result[i].material) != "undefined"){
 			 str+='<td>'+result[i].material+'</td>';
 		}else{
 			 str+='<td>-</td>';
 		}
-		if(result[i].total != null && result[i].total>0 && typeof(result[i].total) != "undefined"){
+		/* if(result[i].total != null && result[i].total>0 && typeof(result[i].total) != "undefined"){
 			 str+='<td>'+result[i].total+'</td>';
 		}else{
 			 str+='<td>-</td>';
-		}
+		} */
 		if(result[i].days != null && result[i].days>0 && typeof(result[i].days) != "undefined"){
 			 str+='<td>'+result[i].days+'</td>';
 		}else{
