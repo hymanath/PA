@@ -252,6 +252,7 @@ function onLoadAjaxCalls()
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
+	//getDepartmentWisePostAndApplicationDetails();
 	//getNominatedPositionWiseCandidates()//click function
 	  //getLevelWisePostsOverView(); //level wise post overView
 	
@@ -4603,7 +4604,7 @@ function getElectionTypes(){
 								str+='<select class="" id="elctionBlockPartysId" multiple>';
 									//str+='<option value="0" selected>All Parties</option>';
 									for(var i in result[0].selectedCasteDetails){
-										if(result[0].selectedCasteDetails[i].id == 163 || result[0].selectedCasteDetails[i].id == 265 || result[0].selectedCasteDetails[i].id == 269 || result[0].selectedCasteDetails[i].id == 662 || result[0].selectedCasteDetails[i].id == 872 || result[0].selectedCasteDetails[i].id == 886 || result[0].selectedCasteDetails[i].id == 1117  || result[0].selectedCasteDetails[i].id == 362 || result[0].selectedCasteDetails[i].id == 72 || result[0].selectedCasteDetails[i].id == 1887){
+										if(result[0].selectedCasteDetails[i].id == 163 || result[0].selectedCasteDetails[i].id == 265 || result[0].selectedCasteDetails[i].id == 269 || result[0].selectedCasteDetails[i].id == 662 || result[0].selectedCasteDetails[i].id == 872 || result[0].selectedCasteDetails[i].id == 886 || result[0].selectedCasteDetails[i].id == 1117  || result[0].selectedCasteDetails[i].id == 362 || result[0].selectedCasteDetails[i].id == 72 ){
 											str+='<option value="'+result[0].selectedCasteDetails[i].id+'" selected>'+result[0].selectedCasteDetails[i].name+'</option>';
 										}
 										
@@ -4975,7 +4976,6 @@ function getPartyWiseMPandMLACandidatesCounts(){
       "locationValuesArr":userAccessLevelValuesArray,
       "locationTypeId":locationLevelId,
       "year":"",
-      "tdpCommitteeEnrollmentYearId":1,
       "boardLevelId":5,
 	  startIndex:0,
 	  endIndex:10
@@ -5051,7 +5051,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		
+			
 		});
 	}
 	
@@ -5070,7 +5070,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 		   console.log(result);
 		});
 }
-  function getLevelWisePostsOverView(){
+function getLevelWisePostsOverView(){
 	var jsObj={
 			"fromDateStr" : globalFromDate,
 			"toDateStr":globalToDate,
@@ -5089,4 +5089,23 @@ function getPartyWiseMPandMLACandidatesCounts(){
 		}
 			
 	});	
+  }
+function getDepartmentWisePostAndApplicationDetails(){
+	var jsObj={
+      "fromDateStr" : globalFromDate,
+      "toDateStr":globalToDate,
+      "locationValuesArr":userAccessLevelValuesArray,
+      "locationTypeId":locationLevelId,
+      "year":"",
+      "boardLevelId":5,
+	  deptId:0
+	  }
+    $.ajax({   
+      type:'GET',
+      url:'getDepartmentWisePostAndApplicationDetailsAction.action',  
+      dataType: 'json',
+      data: {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+      
+    });
   }
