@@ -50,7 +50,21 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 			IPartyMeetingStatusDAO partyMeetingStatusDAO) {
 		this.partyMeetingStatusDAO = partyMeetingStatusDAO;
 	}
-	
+	public void setSetterAndGetterUtilService(
+			SetterAndGetterUtilService setterAndGetterUtilService) {
+		this.setterAndGetterUtilService = setterAndGetterUtilService;
+	}
+
+	public void setPartyMeetingInviteeDAO(
+			IPartyMeetingInviteeDAO partyMeetingInviteeDAO) {
+		this.partyMeetingInviteeDAO = partyMeetingInviteeDAO;
+	}
+
+	public void setPartyMeetingAttendanceDAO(
+			IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO) {
+		this.partyMeetingAttendanceDAO = partyMeetingAttendanceDAO;
+	}
+
 	/*
 	 * Swadhin K Lenka
 	 * Date: 03/10/2017
@@ -393,18 +407,20 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 		try{
 			Map<Long,Set<Long>> meetingIdAndCadreIdSetMap = null;
 			Set<Long> cadreIdSet = null;
+			Set<Long> tempCadreIdSet = new HashSet<Long>();
 			if(invitedCadreIdSet != null && attendedCadreIdSet != null){
-				invitedCadreIdSet.retainAll(attendedCadreIdSet);
-				if(invitedCadreIdSet != null){
+				tempCadreIdSet.addAll(invitedCadreIdSet);
+				tempCadreIdSet.retainAll(attendedCadreIdSet);
+				if(tempCadreIdSet != null){
 					meetingIdAndCadreIdSetMap = meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended.get(meetingTypeId);
 					if(meetingIdAndCadreIdSetMap == null){
 						meetingIdAndCadreIdSetMap = new HashMap<Long,Set<Long>>();
-						meetingIdAndCadreIdSetMap.put(meetingId, invitedCadreIdSet);
+						meetingIdAndCadreIdSetMap.put(meetingId, tempCadreIdSet);
 						meetingTypeIdAndMeetingIdAndCadreIdSetMapForInviteeAttended.put(meetingTypeId, meetingIdAndCadreIdSetMap);
 					}else{
 						cadreIdSet = meetingIdAndCadreIdSetMap.get(meetingId);
 						if(cadreIdSet == null){
-							meetingIdAndCadreIdSetMap.put(meetingId, invitedCadreIdSet);
+							meetingIdAndCadreIdSetMap.put(meetingId, tempCadreIdSet);
 						}
 					}
 				}
