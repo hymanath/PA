@@ -429,5 +429,18 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 			LOG.error("Exception raised at initializeInviteeAttendedMap() method of LoactionDetailsDashBoardService", e);
 		}
 	}
+	/*
+	 * Swadhin K Lenka
+	 * Date: 04/10/2017
+	 * @see com.itgrids.core.api.service.ILoactionDetailsDashBoardService#getBelowLevelMeetingConductedCount(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
+	 */
+	public List<PartyMeetingsVO> getBelowLevelMeetingConductedCount(Long locationLevel, Long locationId, String fromDateStr,String toDateStr){
+		try{
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getBelowLevelMeetingConductedCount() method of LoactionDetailsDashBoardService", e);
+		}
+		return null;
+	}
 	
 }
