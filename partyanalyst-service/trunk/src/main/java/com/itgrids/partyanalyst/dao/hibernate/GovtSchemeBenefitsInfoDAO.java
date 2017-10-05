@@ -62,13 +62,15 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 		queryStr.append(" select " );
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
 			if (locationType == 2l ) {
-				queryStr.append(" constituency.district.districtId,constituency.district.districtName, ");
+				queryStr.append(" district.districtId,district.districtName, ");
 			}else if (locationType == 3l || locationType == 10l) {
 				queryStr.append(" constituency.constituencyId,constituency.name, ");
 			}else if (locationType == 4l) {
-				queryStr.append(" tehsil.tehsil.tehsilId,tehsil.tehsil.tehsilName, ");
+				//queryStr.append(" tehsil.tehsil.tehsilId,tehsil.tehsil.tehsilName, ");
+				queryStr.append(" tehsil.tehsilId,tehsil.tehsilName, ");
 			} else if (locationType == 5l) {
-				queryStr.append(" panchayat.panchayatId,panchayat.panchayatName, ");
+				//queryStr.append(" panchayat.panchayatId,panchayat.panchayatName, ");
+				queryStr.append(" tehsil.tehsilId,tehsil.tehsilName, ");
 			}else if (locationType == 6l) {
 				queryStr.append(" panchayat.panchayatId,panchayat.panchayatName, ");
 			}else if (locationType == 7l) {
@@ -77,9 +79,9 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 				queryStr.append("  ward.constituencyId,ward.name, ");
 			}
 		}
-		if(locationType != null && locationType != 10l){
-		queryStr.append(" model.grivenaceCount " );
-		}else if(locationType != null && locationType == 10l){
+		if(locationType != null && locationType != 10l && locationType != 2l && govtSchemeId.longValue()>0l){
+		   queryStr.append(" model.grivenaceCount " );
+		}else if(locationType != null && (locationType == 10l || locationType == 2l || govtSchemeId.longValue() == 0l)){
 			queryStr.append(" sum(model.grivenaceCount) " );
 		}
 		queryStr.append(" from " +
@@ -87,37 +89,45 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 				       // " where " );
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
 			if (locationType == 2l) {
-				queryStr.append(" ,Constituency constituency where  model.locationValue=constituency.district.districtId and model.locationValue between 11 and 23  ");
+				//queryStr.append(" ,Constituency constituency where  model.locationValue=constituency.district.districtId and model.locationValue between 11 and 23 and model.locationScopeId =3 ");
+				queryStr.append(" ,District district where  model.locationValue=district.districtId and model.locationValue between 11 and 23 and model.locationScopeId =3 ");
 			}else if (locationType == 3l) {
-				queryStr.append(" ,Constituency constituency where  model.locationValue=constituency.district.districtId and model.locationValue=:locationValue ");
-			}else if (locationType == 10l && constituencyIds != null && constituencyIds.size()>0) {
+				queryStr.append(" ,Constituency constituency where  model.locationValue=constituency.constituencyId and model.locationValue=:locationValue and model.locationScopeId=3");
+			}else if (locationType == 10l && constituencyIds != null && constituencyIds.size()>0l) {
 				queryStr.append(" ,Constituency constituency where  model.locationValue=constituency.constituencyId and model.locationValue in(:constituencyIds) ");
 			}else if (locationType == 4l) {
-				queryStr.append(" ,TehsilConstituency tehsil where  model.locationValue =tehsil.constituency.constituencyId and model.locationValue=:locationValue ");
+				//queryStr.append(" ,TehsilConstituency tehsil where  model.locationValue =tehsil.constituency.constituencyId and model.locationValue=:locationValue and model.locationScopeId=4 ");
+				queryStr.append(" ,Tehsil tehsil where  model.locationValue =tehsil.tehsilId and model.locationValue=:locationValue and model.locationScopeId=4 ");
 			} else if (locationType == 5l) {
-				queryStr.append(" ,Panchayat panchayat where model.locationValue =panchayat.tehsil.tehsilId and model.locationValue=:locationValue ");
+				//queryStr.append(" ,Panchayat panchayat where model.locationValue =panchayat.tehsil.tehsilId and model.locationValue=:locationValue ");
+				queryStr.append(" ,Tehsil tehsil where model.locationValue =tehsil.tehsilId and model.locationValue=:locationValue  and model.locationScopeId=5 ");
 			}else if (locationType == 6l) {
 				queryStr.append(" ,Panchayat panchayat where model.locationValue =panchayat.panchayatId and model.locationValue=:locationValue ");
 			}else if (locationType == 7l) {
-				queryStr.append(" ,LocalElectionBody  localElectionBody where model.locationValue =localElectionBody.localElectionBodyId and model.locationValue=:locationValue ");
+				queryStr.append(" ,LocalElectionBody  localElectionBody where model.locationValue =localElectionBody.localElectionBodyId and model.locationValue=:locationValue and model.locationScopeId=7 ");
 			}else if (locationType == 8l) {
 				queryStr.append(" ,Constituency ward where ward.localElectionBody is not null and ward.constituencyId=model.locationValue and model.locationValue=:locationValue  ");
 			}
 		}
 				        
-		if (govtSchemeId != null && govtSchemeId.longValue() > 0){
+		if (govtSchemeId != null && govtSchemeId.longValue() > 0l){
 			queryStr.append(" and model.govtSchemes.govtSchemesId=:govtSchemeId ");
 		}
 		
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
-			if (locationType == 3l || locationType == 2l) {
+			if(locationType == 2l){
+				queryStr.append(" group by district.districtId ");
+			}else if (locationType == 3l ) {
 				queryStr.append(" group by constituency.district.districtId ");
-			}else if (locationType == 10l && constituencyIds != null && constituencyIds.size()>0) {
+				//queryStr.append(" group by constituency.constituencyId  ");
+			}else if (locationType == 10l && constituencyIds != null && constituencyIds.size()>0l) {
 				queryStr.append(" group by constituency.constituencyId ");
 			}else if (locationType == 4l) {
-				queryStr.append(" group by tehsil.constituency.constituencyId ");
+				//queryStr.append(" group by tehsil.constituency.constituencyId ");
+				queryStr.append(" group by tehsil.tehsilId ");
 			}else if (locationType == 5l) {
-				queryStr.append(" group by panchayat.tehsil.tehsilId ");
+				//queryStr.append(" group by panchayat.tehsil.tehsilId ");
+				queryStr.append(" group by tehsil.tehsilId ");
 			}else if (locationType == 6l) {
 				queryStr.append(" group by panchayat.panchayatId ");
 			}else if (locationType == 7l) {
@@ -135,7 +145,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 		}else if (locationValue != null && locationValue.longValue() > 0l && locationType != null && locationType == 10l && constituencyIds != null && constituencyIds.size()>0) {
 			query.setParameterList("constituencyIds", constituencyIds);
 		}
-		if (govtSchemeId != null && govtSchemeId.longValue() > 0){
+		if (govtSchemeId != null && govtSchemeId.longValue() > 0l){
 			query.setParameter("govtSchemeId", govtSchemeId);
 		}
 		return query.list();
