@@ -6356,12 +6356,7 @@ class TrainingCampService implements ITrainingCampService{
 		  	        batchIdsList.add(batchId);
 				}
 			}
-			 /*   batchIdsList.add(546L);
-			    batchIdsList.add(553L);
-				batchIdsList.add(548L);
-				batchIdsList.add(550L);
-				batchIdsList.add(552L);
-				batchIdsList.add(549L);*/
+
 			List<Object[]> detailsList = getCampDetailsListByFiltering(enrollmentYearIds, programmIds,batchIdsList);
 			List<Map<Long,Map<Long,Set<String>>>> attendanceDetailsMapList = getTdpCardreIdsPresentByDays(detailsList,batchIdsList);
 			List<Map<Long,Map<String,Set<Long>>>> daywiseAttendedDetailsListMap = getDatesWiseTdpCadreIds(detailsList,batchIdsList);
@@ -13406,9 +13401,9 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 		                   while (maxcount >0){  
 		                       if(maxcount<filterCount)
 		                           j = i+maxcount;
-		                       	  //List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds,batchIdsList.subList(i, j));//Procedure Call
-		                       TrainingProcedureTestData trainingProcedureTestData=new TrainingProcedureTestData();
-		           			   List<Object[]>  tempList = trainingProcedureTestData.getTestProcedureCallData();
+		                       List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds,batchIdsList.subList(i, j));//Procedure Call
+		                       //TrainingProcedureTestData trainingProcedureTestData=new TrainingProcedureTestData();
+		           			   //List<Object[]>  tempList = trainingProcedureTestData.getTestProcedureCallData();
 		                          if(commonMethodsUtilService.isListOrSetValid(tempList)){
 		                            campDetailsList.addAll(tempList);
 		                          }
