@@ -1660,7 +1660,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 					 toDate : glovalToTourDate,
 					 userTypeId:globalUserTypeId,
 					 designationIds : designationIds,
-					 filterType :filterType
+					 filterType :filterType,
+					 locationTypeId		:0,
+		             locationValuesArr	:[],
+					 type:"coreDashbaord"
 				  }
 		$.ajax({
 			type : 'POST',

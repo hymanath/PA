@@ -6,8 +6,10 @@ import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -4016,8 +4018,17 @@ public String getTourLeaderDtlsBasedOnSelectionType(){
 				desgnatnIdsLst.add(Long.valueOf(designationIdsArr.getString(i))); 
 			}
 		}
+		Long locationScopeId = jObj.getLong("locationTypeId");
+		Set<Long> locationValues = new HashSet<Long>(0);
+		JSONArray locationValuesArr=jObj.getJSONArray("locationValuesArr");
+		if(locationValuesArr!=null &&  locationValuesArr.length()>0){
+			for( int i=0;i<locationValuesArr.length();i++){
+				locationValues.add(Long.valueOf(locationValuesArr.getString(i))); 
+			}
+		}
+		String type = jObj.getString("type");
 		String filterType = jObj.getString("filterType");
-		toursDtlsList = coreDashboardToursService.getTourLeaderDtlsBasedOnSelectionType(stateId,fromDate,toDate,activityMemberId,userTypeId,desgnatnIdsLst,filterType);
+		toursDtlsList = coreDashboardToursService.getTourLeaderDtlsBasedOnSelectionType(stateId,fromDate,toDate,activityMemberId,userTypeId,desgnatnIdsLst,filterType,locationScopeId,locationValues,type);
 																							
 	} catch (Exception e) {
 		LOG.error("Exception raised at getTourLeaderDtlsBasedOnSelectionType() method of CoreDashBoard", e);
