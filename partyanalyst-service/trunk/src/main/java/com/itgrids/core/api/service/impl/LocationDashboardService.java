@@ -2270,13 +2270,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					if(entry.getValue() != null && entry.getValue().size() > 0){
 						for(Entry<Long,ToursBasicVO> candiateEntry:entry.getValue().entrySet()){
 							if(candiateEntry.getValue().getComplaincePer()>=100d){
-								designationVO.setComplainceCnt(designationVO.getComplainceCnt()+1);
+								designationVO.setComplainceCnt(designationVO.getComplainceCnt()+1);//total complaince member designation wise
 								designationVO.setIsComplaince("True");
 								candiateEntry.getValue().setIsComplaince("True");
 							} else {
+								designationVO.setNonComplainceCnt(designationVO.getNonComplainceCnt()+1);//total non complaince member designation wise
 								candiateEntry.getValue().setIsComplaince("False");	
 							}
 							designationVO.getSubList().add(candiateEntry.getValue());
+							designationVO.setCount(designationVO.getCount()+1);//total member designation wise
 						}
 					}
 					resultList.add(designationVO);
