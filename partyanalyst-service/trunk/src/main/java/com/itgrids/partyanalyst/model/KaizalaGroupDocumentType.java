@@ -1,24 +1,19 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "kaizala_events_response")
+@Table(name = "kaizala_group_document_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class KaizalaGroupDocumentType extends BaseModel implements Serializable{
 	

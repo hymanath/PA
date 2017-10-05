@@ -638,7 +638,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						DateUtilService dateUtilService = new DateUtilService();
 						JSONObject jsonObj = new JSONObject(output);
 						Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-						if(id!=null && id!=0l){
+						if(id==null || id==0l){
 							Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 							KaizalaGroups kg = new KaizalaGroups();
 							kg.setGroupId(jsonObj.getString("objectId"));
