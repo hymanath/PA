@@ -2556,4 +2556,53 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	       
 	       return query.list();
 	  }
+	public List<Object[]> getLocationWiseApplicationCount(List<Long> locationValues,Date startDate,Date endDate,Long locationTypeId,Long boardLevelId){
+		
+		 StringBuilder sb = new StringBuilder();
+		    sb.append(" select count(model.nominatedPostApplicationId),model.boardLevelId,model.boardLevel.level " +
+		    		" from NominatedPostApplication model " +
+		    		" where  model.isDeleted ='N' and  model.isExpired ='N' ");
+		    
+		    if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
+	 			if (locationTypeId == 2) {
+	 				sb.append(" and model.nominatedPostMember.address.state.stateId in(:locationValue) ");
+	 				//sb.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+	 			} else if (locationTypeId == 3) {
+					sb.append(" and model.nominatedPostMember.address.district.districtId in(:locationValue) ");
+				} else if (locationTypeId == 10) {
+					sb.append(" and model.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValue) ");
+				} else if (locationTypeId == 4) {
+					sb.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:locationValue) ");
+				} else if (locationTypeId == 5) {
+					sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId in(:locationValue) ");
+				}else if (locationTypeId == 6) {
+					sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId in(:locationValue) ");
+				}else if (locationTypeId == 7) {
+					sb.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValue) ");
+				}else if (locationTypeId == 8) {
+					sb.append(" and model.nominatedPostMember.address.ward.constituencyId in(:locationValue) ");
+				}		
+				
+	        }
+		     if(startDate != null && endDate != null){
+		    	sb.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+		     }
+		     if(boardLevelId != null && boardLevelId.longValue() > 0L){
+		             sb.append(" and model.boardLevelId >=:boardLevelId "); 
+		      }
+		       sb.append(" group by model.nominatedPostMember.boardLevelId");
+		       Query query = getSession().createQuery(sb.toString());
+		       /*if (locationTypeId != null && locationValues != null && locationValues.size()>0 && locationTypeId !=2l) {
+		          query.setParameterList("locationValue",locationValues);
+		       }*/
+		       query.setParameterList("locationValue",locationValues);
+		       if(boardLevelId != null && boardLevelId.longValue() > 0L){
+		         query.setParameter("boardLevelId",boardLevelId );
+		       }   
+		       if(startDate != null && endDate != null){
+					 query.setDate("startDate",startDate);
+					 query.setDate("endDate",endDate);
+				 }
+		       return query.list();
+	}
 }

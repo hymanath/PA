@@ -21,8 +21,12 @@ public class NominatedPostCandidateDtlsVO {
 	private Long levelValue;
 	private Long addressId;
 	private Long nominatedPostId;
-	
-	
+	private Long statusId;
+	private Long postCount=0l;
+	private Long totalPosts=0l;
+	private Long openCount=0l;
+	private Long goIsuuedCount=0l;
+	private Long recivedCount=0l;
 	
 	public String getBoard() {
 		return board;
@@ -138,8 +142,42 @@ public class NominatedPostCandidateDtlsVO {
 	public void setNominatedPostId(Long nominatedPostId) {
 		this.nominatedPostId = nominatedPostId;
 	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public Long getPostCount() {
+		return postCount;
+	}
+	public void setPostCount(Long postCount) {
+		this.postCount = postCount;
+	}
+	public Long getTotalPosts() {
+		return totalPosts;
+	}
+	public void setTotalPosts(Long totalPosts) {
+		this.totalPosts = totalPosts;
+	}
+	public Long getOpenCount() {
+		return openCount;
+	}
+	public void setOpenCount(Long openCount) {
+		this.openCount = openCount;
+	}
+	public Long getGoIsuuedCount() {
+		return goIsuuedCount;
+	}
+	public void setGoIsuuedCount(Long goIsuuedCount) {
+		this.goIsuuedCount = goIsuuedCount;
+	}
+	public Long getRecivedCount() {
+		return recivedCount;
+	}
+	public void setRecivedCount(Long recivedCount) {
+		this.recivedCount = recivedCount;
+	}
 	
-	
-	
-	
+
 }

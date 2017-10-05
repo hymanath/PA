@@ -1,14 +1,19 @@
 package com.itgrids.core.api.service.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.INominatedPostLocationDashboardService;
+import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dto.NominatedPostCandidateDtlsVO;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -18,7 +23,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 	private static Logger LOG = Logger.getLogger(NominatedPostLocationDashboardService.class);
 	private CommonMethodsUtilService commonMethodsUtilService;
 	private INominatedPostDAO nominatedPostDAO;
-	
+	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
 	
 	
 	public INominatedPostDAO getNominatedPostDAO() {
@@ -34,7 +39,13 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-	
+	public INominatedPostApplicationDAO getNominatedPostApplicationDAO() {
+		return nominatedPostApplicationDAO;
+	}
+	public void setNominatedPostApplicationDAO(
+			INominatedPostApplicationDAO nominatedPostApplicationDAO) {
+		this.nominatedPostApplicationDAO = nominatedPostApplicationDAO;
+	}
 	public List<NominatedPostCandidateDtlsVO> getNominatedPositionWiseCandidates(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLvlId
 			,Long startIndex,Long endIndex){
 		List<NominatedPostCandidateDtlsVO> finalList = new CopyOnWriteArrayList<NominatedPostCandidateDtlsVO>();
@@ -75,6 +86,76 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 		}
 		return finalList;
 	}
-	
-	
+	public List<NominatedPostCandidateDtlsVO> getLevelWisePostsOverView(List<Long> locationValues,String fromDateStr,String toDateStr,Long locationTypeId,Long boardLevelId){
+		List<NominatedPostCandidateDtlsVO> finalList =new ArrayList<NominatedPostCandidateDtlsVO>();
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+			Date startDate = null;
+			Date endDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			Map<Long,NominatedPostCandidateDtlsVO> levelMap= new HashMap<Long,NominatedPostCandidateDtlsVO>();
+			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostLocationStatusWiseCount(locationValues,startDate,endDate,locationTypeId,boardLevelId);
+			if(nominatedPostList != null && nominatedPostList.size()>0){
+				for(Object[] param :nominatedPostList){
+					Long levelId = commonMethodsUtilService.getLongValueForObject(param[3]); 
+					Long statusId =commonMethodsUtilService.getLongValueForObject(param[0]);
+					String levelName=commonMethodsUtilService.getStringValueForObject(param[4]);
+				   if(levelId.longValue() == 5l || levelId.longValue() == 6l){
+						levelId =5l;
+						levelName = "Mandal/Muncipality/Corporation";
+					}else if(levelId.longValue() == 7l || levelId.longValue() == 8l){
+						levelId =7l;
+						levelName = "Village/Ward";
+					}
+					NominatedPostCandidateDtlsVO deptVO = levelMap.get(levelId);
+			        if(deptVO == null){
+			            deptVO =new NominatedPostCandidateDtlsVO();
+			            deptVO.setBoardLevelId(levelId);
+			            deptVO.setBoard(levelName);
+			            levelMap.put(levelId, deptVO);
+			          }
+		            if(statusId.longValue() == 1l){
+		        	   deptVO.setOpenCount(commonMethodsUtilService.getLongValueForObject(param[2])); 
+		            }else if(statusId.longValue() == 4l){
+		            	deptVO.setGoIsuuedCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+		            }
+		            deptVO.setTotalPosts(deptVO.getTotalPosts()+commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+			List<Object[]> recivedApplicationsCount =nominatedPostApplicationDAO.getLocationWiseApplicationCount(locationValues,startDate,endDate,locationTypeId,boardLevelId); 
+			if(recivedApplicationsCount != null && recivedApplicationsCount.size()>0){
+				for(Object[] param : recivedApplicationsCount){
+					Long levelId = commonMethodsUtilService.getLongValueForObject(param[1]); 
+					String levelName = commonMethodsUtilService.getStringValueForObject(param[2]);
+					if(levelId.longValue() == 5l || levelId.longValue() == 6l){
+						levelId =5l;
+						levelName = "Mandal/Muncipality/Corporation";
+					}else if(levelId.longValue() == 7l || levelId.longValue() == 8l){
+						levelId =7l;
+						levelName = "Village/Ward";
+					}
+					NominatedPostCandidateDtlsVO deptVO = levelMap.get(levelId);
+					if(deptVO != null){
+						deptVO.setRecivedCount(commonMethodsUtilService.getLongValueForObject(param[0]));
+					}
+				}
+				if(commonMethodsUtilService.isMapValid(levelMap)){
+					for(Entry<Long,NominatedPostCandidateDtlsVO> entry :levelMap.entrySet()){
+						finalList.add(entry.getValue());
+					}
+				}
+				
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.error("Exception raised in getLevelWisePostsOverView method of LocationDashboardService"+e);
+		}
+		
+		return finalList;
+	}
 }
