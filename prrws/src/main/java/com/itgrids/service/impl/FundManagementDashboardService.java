@@ -3140,8 +3140,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 							}
 							
 							locationVO.setCount(jObj.getLong("WORKS"));
-							locationVO.setAmount(cnvrtLakhIntoCrores(jObj.getString("TOT")));
-							locationVO.setTotalCount(Long.valueOf(f.format(Double.valueOf(jObj.getString("TOT")))));
+							locationVO.setAmount(cnvrtLakhIntoCrores(jObj.getString("MATERIAL")));
+							locationVO.setTotalCount(Long.valueOf(f.format(Double.valueOf(jObj.getString("MATERIAL")))));
 							locationVO.setYear(year);
 							locationVO.setYearId((yearIdMap.get(year)) != null ? yearIdMap.get(year):0l);
 							AddressVO addressVO = new AddressVO();
@@ -3203,8 +3203,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 							mgneregsTemplateVO.setYear(year);
 							mgneregsTemplateVO.setYearId((yearIdMap.get(year)) != null ? yearIdMap.get(year):0l);
 							mgneregsTemplateVO.setName("MGNREGS");
-							mgneregsTemplateVO.setAmount(cnvrtLakhIntoCrores(jObj.getString("TOT")));
-							mgneregsTemplateVO.setTotalCount(Long.valueOf(f.format(Double.valueOf(jObj.getString("TOT")))));
+							mgneregsTemplateVO.setAmount(cnvrtLakhIntoCrores(jObj.getString("MATERIAL")));
+							mgneregsTemplateVO.setTotalCount(Long.valueOf(f.format(Double.valueOf(jObj.getString("MATERIAL")))));
 							mgneregsTemplateVO.setCount(jObj.getLong("WORKS"));
 							mgneregsTemplateVO.setAddressVO(addressVO);
 
@@ -3745,7 +3745,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		 	    					vo.setMandalName(jObj.getString("MANDAL"));	
 		 	    				}
 		 	    				
-		 	    				vo.setTotalExpenditure(Double.valueOf(jObj.getString("TOT")));
+		 	    				vo.setTotalExpenditure(Double.valueOf(jObj.getString("MATERIAL")));
 		 	    				vo.setTotalWorks(Double.valueOf(jObj.getString("WORKS")));
 		 	    				totalAmountExpenditur = totalAmountExpenditur + vo.getTotalExpenditure();
 		 	    				totalWageExpenditure = totalWageExpenditure + Double.valueOf(jObj.getString("WAGE"));
