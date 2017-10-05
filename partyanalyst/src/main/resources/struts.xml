@@ -18155,5 +18155,10 @@
 			<param name="root">partyMeetingsVOs</param>       
 		</result>
   	</action>
+	<action name="getLevelWisePostsOverViewAction" class="locationDashboardAction" method="getLevelWisePostsOverView">
+		<result type="json" name="success">
+			<param name="root">nominatedPostCandList</param>
+		</result>
+	</action>
  </package>
 </struts>
