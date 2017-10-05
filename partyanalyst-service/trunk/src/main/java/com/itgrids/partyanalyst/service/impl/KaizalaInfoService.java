@@ -423,7 +423,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 					saveJobCreated(output);
 				}else if(jsonObj.getString("eventType").equalsIgnoreCase("AttachmentCreated")){
 					saveAttachmentInfo(output);
-				}else if(jsonObj.getString("eventType").equalsIgnoreCase("SurveyCreated")){
+				}else if(jsonObj.getString("eventType").equalsIgnoreCase("SurveyCreated")||jsonObj.getString("eventType").equalsIgnoreCase("ActionCreated")){
 					saveSurveyCreatedInfo(output);
 				}else if(jsonObj.getString("eventType").equalsIgnoreCase("SurveyResponse")){
 					saveKaizalAnswerInfo(output);
@@ -746,7 +746,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							KER.setUpdatedBy(kri.getKaizalaResponderInfoId());
 						}
 						KER.setKaizalaGroupsId(id);
-						KER.setKaizalaEventsId(3l);
+						KER.setKaizalaEventsId(kaizalaEventsDAO.getEventId(jsonObj.getString("eventType")));
 						KER.setKaizalaActionsId(actionId);
 						KER.setGroupId(jsonObj.getString("objectId"));
 						KER.setActionId(dataObj.getString("actionId"));
