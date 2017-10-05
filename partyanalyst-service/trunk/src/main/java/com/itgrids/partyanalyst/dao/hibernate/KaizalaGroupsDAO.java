@@ -23,4 +23,10 @@ public class KaizalaGroupsDAO extends GenericDaoHibernate<KaizalaGroups, Long> i
 		return (Long) query.uniqueResult();
 	}
 
+	public Integer removeParentGroup(Long kaizalaGroupId){
+		Query query = getSession().createQuery(" update KaizalaGroups model set model.parentKaizalaGroupsId = :value " +
+				" where model.kaizalaGroupsId = :kaizalaGroupId ");
+		query.setParameter("value", null);
+		return query.executeUpdate();
+	}
 }

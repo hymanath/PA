@@ -30,6 +30,7 @@ public class KaizalaGroups {
 	private Long kaizalaGroupTypeId;
 	private String isDeleted;
 	private Date insertedTime;
+	private Long parentKaizalaGroupsId;
 	
 	private KaizalaGroupType kaizalaGroupType;
 
@@ -99,6 +100,15 @@ public class KaizalaGroups {
 
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+
+	@Column(name="parent_kaizala_groups_id")
+	public Long getParentKaizalaGroupsId() {
+		return parentKaizalaGroupsId;
+	}
+
+	public void setParentKaizalaGroupsId(Long parentKaizalaGroupsId) {
+		this.parentKaizalaGroupsId = parentKaizalaGroupsId;
 	}
 	
 

@@ -7,4 +7,5 @@ import com.itgrids.partyanalyst.model.KaizalaGroups;
 public interface IKaizalaGroupsDAO extends GenericDao<KaizalaGroups, Long>{
 
 	public Long checkGroupExistence(String groupId);
+	public Integer removeParentGroup(Long kaizalaGroupId);
 }
