@@ -1325,8 +1325,9 @@
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaEventsResponse</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaEvents</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaProperties</value>
-		      		   <value>com.itgrids.partyanalyst.model.KaizalaGroupResponderRelation</value>
+		      		    <value>com.itgrids.partyanalyst.model.KaizalaGroupResponderRelation</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaTextMessage</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaJobResponse</value>
 		      		   
 				  </list>
 			
