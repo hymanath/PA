@@ -111,9 +111,9 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 		return finalList;
 	}
 	/**
-	 * @param List<NominatedPostCandidateDtlsVO> returnList
-	 * @author Hymavathi 
-	 *  @since 4-OCT-2017
+	 * @return List<NominatedPostCandidateDtlsVO> finalList
+	 * @author Srujana 
+	 *  @since 5-OCT-2017
 	 */
 	public List<NominatedPostCandidateDtlsVO> getLevelWisePostsOverView(List<Long> locationValues,String fromDateStr,String toDateStr,Long locationTypeId,Long boardLevelId){
 		List<NominatedPostCandidateDtlsVO> finalList =new ArrayList<NominatedPostCandidateDtlsVO>();
@@ -184,6 +184,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 						vo.setTotalRecePer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getRecivedCount()))));
 						vo.setOpenPostPer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getOpenCount()))));
 						vo.setGoIssuedPer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getGoIsuuedCount()))));
+						vo.setTotalPer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getTotalPosts()))));
 					}
 				}
 				
@@ -265,6 +266,11 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 		}
 		return returnsList;
 	}
+	/**
+	 * @return List<NominatedPostCandidateDtlsVO> finalList
+	 * @author Srujana 
+	 *  @since 6-OCT-2017
+	 */
 	public List<NominatedPostCandidateDtlsVO> getLevelWiseGoIssuedPostions(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLvlId
 			,Long startIndex,Long endIndex,List<Long> statusIds){
 		List<NominatedPostCandidateDtlsVO> finalList = new CopyOnWriteArrayList<NominatedPostCandidateDtlsVO>();
