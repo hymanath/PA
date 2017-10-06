@@ -185,7 +185,6 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {	
-	
 	$("#enrolmentYears").chosen();
 	//Enrolment Years
 	getEnrollmentIds();
@@ -4228,7 +4227,12 @@ function getNominatedPostStatusWiseCount(){
 					if(result[i].name == "GO ISSUED"){
 						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>COMPLETED/G.O ISSUED<span class="count"><b>'+result[i].count+'</b></span></li>';
 					}else{
-						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count"><b>'+result[i].count+'</b></span></li>';
+						if(result[i].name == "OPEN"){
+							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count openPostClickCls" style="font-weight:bold;" attr_department_id="0" attr_boardLevelId="0" attr_type="open">'+result[i].count+'</span></li>';
+						}else{
+							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count"><b>'+result[i].count+'</b></span></li>';
+						}
+						
 					}
 					
 				}
@@ -5385,16 +5389,32 @@ function getLevelWisePostsOverView(){
 		$('.progressCustom').tooltip()
 	}
   }
-  
-function getDepartmentWisePostAndApplicationDetails(){
+ 
+ 
+	$(document).on("click",".openPostClickCls",function(){
+		
+		var deptId =  $(this).attr("attr_department_id");
+		var boardLevelId =  $(this).attr("attr_boardLevelId");
+		var type =  $(this).attr("attr_type");
+		if(type == "open"){
+			$("#openPostModal").modal("show");
+		}else{
+			$("#departmentPostModal").modal("show");
+		}
+		
+		getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type)
+		
+	});
+function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 	var jsObj={
-      "fromDateStr" : globalFromDate,
-      "toDateStr":globalToDate,
-      "locationValuesArr":userAccessLevelValuesArray,
-      "locationTypeId":locationLevelId,
-      "year":"",
-      "boardLevelId":5,
-	  deptId:0
+		
+      "fromDateStr" 		: globalFromDate,
+      "toDateStr"			:globalToDate,
+      "locationValuesArr"	:userAccessLevelValuesArray,
+      "locationTypeId"		:locationLevelId,
+      "year"				:"",
+      "boardLevelId"		:parseInt(boardLevelId),
+	  deptId				:parseInt(deptId)
 	  }
     $.ajax({   
       type:'GET',
@@ -5402,6 +5422,101 @@ function getDepartmentWisePostAndApplicationDetails(){
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
-      
+		if(result !=null && result.length>0){
+			return buildDepartmentWisePostAndApplicationDetails(result,type);
+		}
     });
+	
+	function buildDepartmentWisePostAndApplicationDetails(result,type){
+		
+		var str='';
+		
+		str+='<div class="table-responsive">';
+			if(type == "open"){
+				str+='<table class="table table-condensed tableOpenPostCss" id="dataTableOpenPostId">';
+			}else{
+				str+='<table class="table table-condensed tableOpenPostCss" id="dataTabledeptPostId">';
+			}
+			
+				str+='<thead>';
+					str+='<tr>';
+						if(type == "open"){
+							str+='<th rowspan="2" class="openPostDeptColor" style="vertical-align:middle;">Department</th>';
+						}else{
+							str+='<th rowspan="2" class="openPostDeptColor" style="vertical-align:middle;">Board/ Corporation</th>';
+						}
+						
+						str+='<th colspan="3" class="openPostColor text-center">Posts</th>';
+						str+='<th colspan="3" class="openPostAppColor text-center">Applications</th>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<th class="openPostColor text-center">Total</th>';
+						str+='<th class="openPostColor text-center">Finalized/ G.O Issueed</th>';
+						str+='<th class="openPostColor text-center">Open</th>';
+						
+						str+='<th class="openPostAppColor text-center">Recieved</th>';
+						str+='<th class="openPostAppColor text-center">Shortlisted</th>';
+						str+='<th class="openPostAppColor text-center">Ready for Final Review</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';
+							str+='<td attr_department_id="'+result[i].id+'" attr_boardLevelId="0" class="openPostClickCls" attr_type="department">'+result[i].name+'</td>';
+							
+							if(result[i].totalCount !=null && result[i].totalCount>0){
+								str+='<td class="openPostColor text-center">'+result[i].totalCount+'</td>';
+							}else{
+								str+='<td class="openPostColor text-center"> - </td>';
+							}
+							if(result[i].finalOrGOCnt !=null && result[i].finalOrGOCnt>0){
+								str+='<td class="openPostColor text-center">'+result[i].finalOrGOCnt+'</td>';
+							}else{
+								str+='<td class="openPostColor text-center"> - </td>';
+							}
+							
+							if(result[i].openCnt !=null && result[i].openCnt>0){
+								str+='<td class="openPostColor text-center">'+result[i].openCnt+'</td>';
+							}else{
+								str+='<td class="openPostColor text-center"> - </td>';
+							}
+							
+							if(result[i].receivedCnt !=null && result[i].receivedCnt>0){
+								str+='<td class="openPostAppColor text-center">'+result[i].receivedCnt+'</td>';
+							}else{
+								str+='<td class="openPostAppColor text-center"> - </td>';
+							}
+							if(result[i].shorlistedCnt !=null && result[i].shorlistedCnt>0){
+								str+='<td class="openPostAppColor text-center">'+result[i].shorlistedCnt+'</td>';
+							}else{
+								str+='<td class="openPostAppColor text-center"> - </td>';
+							}
+							
+							if(result[i].readyToFinalCnt !=null && result[i].readyToFinalCnt>0){
+								str+='<td class="openPostAppColor text-center">'+result[i].readyToFinalCnt+'</td>';
+							}else{
+								str+='<td class="openPostAppColor text-center"> - </td>';
+							}
+						str+='</tr>';
+					}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		if(type == "open"){
+			$("#openPostDetailsModalDivId").html(str);
+				$("#dataTableOpenPostId").dataTable({
+				"iDisplayLength": 15,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			});
+		}else{
+			$("#departmentDetailsModalDivId").html(str);
+			$("#dataTabledeptPostId").dataTable({
+				"iDisplayLength": 15,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			});
+		}
+		
+	}
   }
