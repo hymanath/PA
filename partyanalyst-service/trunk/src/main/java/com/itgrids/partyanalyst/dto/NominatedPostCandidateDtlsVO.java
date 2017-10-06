@@ -27,7 +27,13 @@ public class NominatedPostCandidateDtlsVO {
 	private Long openCount=0l;
 	private Long goIsuuedCount=0l;
 	private Long recivedCount=0l;
-	
+	private String gender;
+	private String casteCategory;
+	private String Date;
+	private Long totalRecevedCount=0l;
+	private double totalRecePer = 0.0;
+	private double openPostPer=0.0;
+	private double goIssuedPer=0.0;
 	public String getBoard() {
 		return board;
 	}
@@ -178,6 +184,47 @@ public class NominatedPostCandidateDtlsVO {
 	public void setRecivedCount(Long recivedCount) {
 		this.recivedCount = recivedCount;
 	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getCasteCategory() {
+		return casteCategory;
+	}
+	public void setCasteCategory(String casteCategory) {
+		this.casteCategory = casteCategory;
+	}
+	public String getDate() {
+		return Date;
+	}
+	public void setDate(String date) {
+		Date = date;
+	}
+	public Long getTotalRecevedCount() {
+		return totalRecevedCount;
+	}
+	public void setTotalRecevedCount(Long totalRecevedCount) {
+		this.totalRecevedCount = totalRecevedCount;
+	}
+	public double getTotalRecePer() {
+		return totalRecePer;
+	}
+	public void setTotalRecePer(double totalRecePer) {
+		this.totalRecePer = totalRecePer;
+	}
+	public double getOpenPostPer() {
+		return openPostPer;
+	}
+	public void setOpenPostPer(double openPostPer) {
+		this.openPostPer = openPostPer;
+	}
+	public double getGoIssuedPer() {
+		return goIssuedPer;
+	}
+	public void setGoIssuedPer(double goIssuedPer) {
+		this.goIssuedPer = goIssuedPer;
+	}
 	
-
 }

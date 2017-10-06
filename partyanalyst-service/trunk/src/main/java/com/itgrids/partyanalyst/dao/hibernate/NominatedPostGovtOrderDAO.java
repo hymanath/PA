@@ -63,6 +63,100 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 		
 		return query.list();
 	}
-	
+	public List<Object[]> getLevelWiseGoIssuedPostions(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,Long startIndex,Long endIndex,List<Long> statusIds){
+	 	 StringBuilder sb = new StringBuilder();
+	 	 sb.append(" select" +
+	 	 		   " model.nominatedPost.nominationPostCandidate.nominationPostCandidateId," +//0
+	 	 		   " model.nominatedPost.nominationPostCandidate.candidateName," +//1
+	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId," +//2
+	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.deptName," +//3
+	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId," +//4
+	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardName," +//5
+	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId," +//6
+	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionName," +//7
+	 	 		   " model.nominatedPost.nominationPostCandidate.gender, " +//8
+	 	 		   " model.nominatedPost.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +//9
+	 	 		   " model.govtOrder.toDate " +//10
+	 	 		   " from NominatedPostGovtOrder model " +
+	 			   " model.nominatedPost.isDeleted = 'N' " +
+	 			   " and model.nominatedPost.isExpired = 'N' " +
+	 			   " and model.nominatedPost.nominatedPostMember.isDeleted = 'N' " +
+	 			   " and model.isDeleted = 'N' and model.isExpired = 'N' and model.govtOrder.isExpired ='N' ");
+	 	 
+	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
+	 		 	if(locationTypeId == 2l){
+	 	        	sb.append(" and model.nominatedPost.nominatedPostMember.address.state.stateId in(:locationValues) ");
+	 	        }else if(locationTypeId == 4l){
+	 	        	sb.append(" and model.nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 3l){
+	 	        	sb.append(" and model.nominatedPost.nominatedPostMember.address.district.districtId in(:locationValues) ");
+	 	        }else if(locationTypeId == 5l){
+	 	        	sb.append(" and model.nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValues) ");
+	 	        }else if(locationTypeId == 6l){
+	 	        	sb.append(" and model.nominatedPost.nominatedPostMember.address.panchayat.panchayatId in(:locationValues) ");
+	 	        }else if(locationTypeId == 7l){
+	 	        	sb.append(" and model.nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValues) ");	        
+	 	    }else if(locationTypeId == 8l){
+	         	sb.append(" and model.nominatedPost.nominatedPostMember.address.ward.constituencyId in(:locationValues) ");	        
+	       }
+	 	        
+	 	 }
+	 	 if(startDate != null && endDate != null){
+	 		 sb.append(" and (date(model.nominatedPost.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+	 	 }
+	 	 if(year != null && !year.trim().isEmpty()){
+	 		 sb.append(" and year(model.nominatedPost.nominatedPostMember.updatedTime) = :year ");   
+	 	 }
+	 	if(boardLevelId != null && boardLevelId.longValue() > 0L){
+    	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
+    		  sb.append(" and model.nominatedPost.nominatedPostMember.boardLevelId =:boardLevelId ");
+    	   else if(boardLevelId.longValue() ==5L)
+    		  sb.append(" and model.nominatedPost.nominatedPostMember.boardLevelId in (5,6) ");
+    	  else if(boardLevelId.longValue() ==7L)
+    		  sb.append(" and model.nominatedPost.nominatedPostMember.boardLevelId in (7,8) ");
+	      } 
+	 	if(statusIds != null && statusIds.size()>0){
+	 		sb.append(" and  model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in(:statusIds) ");
+	 	}
+	 	 Query query = getSession().createQuery(sb.toString());
+	 	 
+	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	 		 	if(locationTypeId == 2l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 4l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 3l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 5l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 6l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 7l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 8l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }
+	 	        
+	 	    }
+	 	 if( startIndex != null && startIndex.longValue()>0l){
+	 		query.setFirstResult(startIndex.intValue());
+	 	 }
+	 	if( endIndex != null && endIndex.longValue()>0l){
+	 		query.setMaxResults(endIndex.intValue());
+	 	}
+	 	 if(year !=null && !year.trim().isEmpty()){
+	 		query.setParameter("year", Integer.parseInt(year));
+	 	 }
+	 	 if(startDate != null && endDate != null){
+	 		 query.setDate("startDate",startDate);
+	 		 query.setDate("endDate",endDate);
+	 	 }
+	 	if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
+	 		query.setParameter("boardLevelId", boardLevelId);
+	 	if(statusIds != null && statusIds.size()>0){
+	 		query.setParameterList("statusIds", statusIds);
+	 	}
+	 	 return query.list();
+	  }
 	
 }
