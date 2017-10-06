@@ -18165,5 +18165,10 @@
       <param name="root">nominatedPostDetailsVOList</param>       
     </result> 
   </action>
+	<action name="getLevelWiseGoIssuedPostionsAction" class="locationDashboardAction" method="getLevelWiseGoIssuedPostions">
+		<result type="json" name="success">
+			<param name="root">nominatedPostCandList</param>
+		</result>
+	</action>
  </package>
 </struts>
