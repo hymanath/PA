@@ -360,4 +360,37 @@ public class DoorToDoorCampaignDashboardService implements IDoorToDoorCampaignDa
 		return returnList;
 	}
 	
+	public List<DoorCampaignDashboardVO> getAssignedConstituenciesForUser(DoorToDoorInputVO inputVO){
+		List<DoorCampaignDashboardVO> returnList = new ArrayList<DoorCampaignDashboardVO>(0);
+		try {
+			ClientConfig clientConfig = new DefaultClientConfig();
+			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+			Client client = Client.create(clientConfig);
+			WebResource resource = client.resource(IConstants.ITDP_LIVE_URL+"getAssignedConstituenciesForUser");
+			ClientResponse response = resource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+			
+			 if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			//List<DoorCampaignDashboardVO> list = new ArrayList<DoorCampaignDashboardVO>(0);
+	 	    			Gson gson = new Gson();
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				DoorCampaignDashboardVO dashboardVO = gson.fromJson(jObj.toString(),DoorCampaignDashboardVO.class);
+	 	    				//System.out.println(dashboardVO.getConstituencyId());
+	 	    				returnList.add(dashboardVO);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getAssignedConstituenciesForUser in DoorToDoorCampaignDashboardService", e);
+		}
+		return returnList;
+	}
 }
