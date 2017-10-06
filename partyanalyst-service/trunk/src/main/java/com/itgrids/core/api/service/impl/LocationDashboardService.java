@@ -4635,4 +4635,76 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		}
 		return null;
 	}
+
+/**
+   * @author babu kurakula <href:kondababu.kurakul@itgrids.com>
+	 * @param levelId,List<Long> levelVals,fromDateStr,toDateStr,year
+	 * @Description :this service used for get the loxcation wise Insurance deatils
+	 *  @since 6-oct-2017
+	 *  @return :List<GrivenceStatusVO> 
+	 */
+public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(String fromDateStr, String toDateStr, Long locationTypeId,List<Long> locationValues,String year){
+	List<GrivenceStatusVO> finalList=new ArrayList<GrivenceStatusVO>();
+	try{
+		GrivenceStatusVO InsuranceStatusVo= getLocationWiseInsuranceStatusCounts( fromDateStr,toDateStr,locationTypeId,locationValues,year);
+		finalList.add(InsuranceStatusVo);
+		Date fromDate = null;
+		Date toDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		// Here converting stirng to date formatte 
+		if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+			fromDate = sdf.parse(fromDateStr);
+			toDate = sdf.parse(toDateStr);
+		}
+		// locationId 1-lacation name 2-issuType 3-subject 4-count
+		List<Object[]> insuranceIssueTypeCountsObj=	insuranceStatusDAO.getConstituencyWiseInsuranceWiseIssueTypeCounts(fromDate,toDate,locationTypeId,locationValues, year,Long.valueOf(year));
+	Map<String,List<GrivenceStatusVO>> isuueTypeCountVoMap=new HashMap<String,List<GrivenceStatusVO>>(0);
+		if(insuranceIssueTypeCountsObj !=null && insuranceIssueTypeCountsObj.size() >0){
+			//here prepare the map issueType is key and List<GrivenceStatusVO> as value in the vo set the subject and count
+			for(Object[] param:insuranceIssueTypeCountsObj){
+				String issueType=commonMethodsUtilService.getStringValueForObject(param[2]);
+				List<GrivenceStatusVO> listVo=isuueTypeCountVoMap.get(issueType);
+				if(listVo !=null){
+					GrivenceStatusVO newVo=new GrivenceStatusVO();
+					newVo.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					newVo.setCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+					listVo.add(newVo);
+					isuueTypeCountVoMap.put(issueType,listVo);
+				}else{
+					List<GrivenceStatusVO> newListVo=new ArrayList<GrivenceStatusVO>();
+					GrivenceStatusVO newVo1=new GrivenceStatusVO();
+					newVo1.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					newVo1.setCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+					newListVo.add(newVo1);
+					isuueTypeCountVoMap.put(issueType,newListVo);
+				}
+			}// here iterating isuueTypeCountVoMap map 
+			//to set the issueType set to VO and and add all subject and counts to that VO in subList 
+			for(Entry<String,List<GrivenceStatusVO>> map :isuueTypeCountVoMap.entrySet()){
+				Long totalOtherCount=0L;
+				GrivenceStatusVO finalVo=new GrivenceStatusVO();  
+				String isuueTpeStr=map.getKey();
+				finalVo.setGrivenceType(isuueTpeStr);// set issueType 
+				List<GrivenceStatusVO> subList=new ArrayList<GrivenceStatusVO>();
+				for(GrivenceStatusVO subjectAndCountVo:map.getValue()){//iterating List
+					 if(subjectAndCountVo.getName().trim().equalsIgnoreCase("Road Accident") ||subjectAndCountVo.getName().trim().equalsIgnoreCase("Animal Accident") ){
+						 subList.add(subjectAndCountVo);// Road and Animal Accident add to subList
+					 }else{//remaing count add to  variable
+						 totalOtherCount=totalOtherCount+ subjectAndCountVo.getCount();
+					 }
+				}
+				GrivenceStatusVO otherAccidentVo=new GrivenceStatusVO();
+				otherAccidentVo.setName("Other Accident");
+				otherAccidentVo.setCount(totalOtherCount);//set total OtherCount
+				subList.add(otherAccidentVo);
+				finalVo.setSubList(subList);// set subject List to VO list contains road,animal and other accident counts
+				finalList.add(finalVo);// finally FINALVO add to final list
+				
+			}
+		}
+	}catch(Exception e){
+		Log.error("Exception raised in getConstituencyWiseInsuranceWiseIssueTypeCounts method of LocationDashboardService"+e);
+	}
+	return finalList;
+	}
 }
