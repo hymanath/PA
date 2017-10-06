@@ -984,4 +984,16 @@ public String getElectionInformationLocationWise(){
 	     }
 	     return Action.SUCCESS;
 	   }
+	public String getLevelWiseGoIssuedPostions(){
+	     try{
+	       jObj = new JSONObject(getTask());
+	        List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+	        List<Long> statusList = convertJsonStringList(jObj.getJSONArray("statusIds")); 
+	        nominatedPostCandList = nominatedPostLocationDashboardService.getLevelWiseGoIssuedPostions(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"),jObj.getLong("boardLevelId"),
+	        		jObj.getLong("startIndex"),jObj.getLong("endIndex"),statusList);
+	     }catch(Exception e){
+	       LOG.error("Exception raised at getLevelWiseGoIssuedPostions() of LocationDashboardAction{}", e);
+	     }
+	     return Action.SUCCESS;
+	   }
 }
