@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,9 +15,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "kaizala_questions")
@@ -30,8 +26,10 @@ public class KaizalaQuestions extends BaseModel implements Serializable {
 	private String question;
 	private String type;
 	private String isDeleted;
+	private Long kaizalaEventsResponseId;
 	
 	private KaizalaActions kaizalaActions;
+	private KaizalaEventsResponse kaizalaEventsResponse;
 
 	@Id
 	@Column(name="kaizala_questions_id")
@@ -86,6 +84,20 @@ public class KaizalaQuestions extends BaseModel implements Serializable {
 	public void setKaizalaActions(KaizalaActions kaizalaActions) {
 		this.kaizalaActions = kaizalaActions;
 	}
-	
-	
+
+	public Long getKaizalaEventsResponseId() {
+		return kaizalaEventsResponseId;
+	}
+	@Column(name="kaizala_events_response_id")
+	public void setKaizalaEventsResponseId(Long kaizalaEventsResponseId) {
+		this.kaizalaEventsResponseId = kaizalaEventsResponseId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "kaizala_events_response_id", insertable = false, updatable = false)
+	public KaizalaEventsResponse getKaizalaEventsResponse() {
+		return kaizalaEventsResponse;
+	}
+	public void setKaizalaEventsResponse(KaizalaEventsResponse kaizalaEventsResponse) {
+		this.kaizalaEventsResponse = kaizalaEventsResponse;
+	}
 }

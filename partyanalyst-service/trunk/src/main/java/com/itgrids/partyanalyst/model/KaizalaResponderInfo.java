@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,9 +15,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "kaizala_responder_info")
@@ -32,8 +28,10 @@ public class KaizalaResponderInfo extends BaseModel implements Serializable {
 	private Long locationLevelValue;
 	private Long addressId;
 	private String isDeleted;
+	private Long kaizalaResponderTypeId;
 	
 	private UserAddress userAddress;
+	private KaizalaResponderType kaizalaResponderType;
 	
 	@Id
 	@Column(name="kaizala_responder_info_id")
@@ -95,7 +93,20 @@ public class KaizalaResponderInfo extends BaseModel implements Serializable {
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
 	}
-	
-	
+	@Column(name="kaizala_responder_type_id")
+	public Long getKaizalaResponderTypeId() {
+		return kaizalaResponderTypeId;
+	}
+	public void setKaizalaResponderTypeId(Long kaizalaResponderTypeId) {
+		this.kaizalaResponderTypeId = kaizalaResponderTypeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "kaizala_responder_type_id", insertable = false, updatable = false)
+	public KaizalaResponderType getKaizalaResponderType() {
+		return kaizalaResponderType;
+	}
+	public void setKaizalaResponderType(KaizalaResponderType kaizalaResponderType) {
+		this.kaizalaResponderType = kaizalaResponderType;
+	}
 	
 }
