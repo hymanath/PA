@@ -25,7 +25,9 @@
 	  var globalCorpGhmcImpactScopeSArr = [];
 	  var globalConstituencyImpactScopeArr = [];
      function getAlertDtlsBasedOnSelection(type){
-		 globalEnrollementYearIdsForAlert = globalEnrollementyearIdArr;
+		 if (globalEnrollementyearIdArr != null) {
+		    globalEnrollementYearIdsForAlert = globalEnrollementyearIdArr;	 
+		 }
 		  //Clear arrays
 		    globalAlertStatusArr = [];
 		    globalImpactScopeArr = [];
