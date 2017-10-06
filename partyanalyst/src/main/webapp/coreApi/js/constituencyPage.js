@@ -5520,6 +5520,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 		}
 		
 	}
+}
   function getLevelWiseGoIssuedPostions(){
 	var jsObj={
       "fromDateStr" : globalFromDate,
