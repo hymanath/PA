@@ -1007,3 +1007,22 @@ ul li[menu-levelname='panchayat']:after .active
 	background-color:#EAEAEB;
 	padding:10px;
 }
+.openPostDeptColor{
+	background-color:#EBF0F5;
+}
+.openPostColor{
+	background-color:#DBD2DB;
+}
+.openPostAppColor{
+	background-color:#CCDBCF;
+}
+
+.tableOpenPostCss thead tr th, .tableOpenPostCss tbody tr td{
+	padding:5px !important;
+}
+.tableOpenPostCss thead tr:nth-child(2){
+	border:none !important;
+}
+.openPostClickCls{
+	cursor:pointer;
+}
