@@ -4621,6 +4621,265 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		}
 		return retrunVO;
 	}
+	
+	/* @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationId
+	 * @param Long locationValue
+	 * @author K.Nandhini
+	 * @return List<List<GrivenceStatusVO>> we have two lists in final list 1.Grivence counts(Govt,party,welfare) 2.Trust counts
+	 * (non-Javadoc)
+	 * @see com.itgrids.core.api.service.ILocationDashboardService#getGrivenceTrustStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
+	 */
+
+	public List<GrivenceStatusVO> getGrivenceDetails(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year) {
+		List<GrivenceStatusVO> finalList = new ArrayList<GrivenceStatusVO>();
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			// Here converting stirng to date formatte
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			Map<String,GrivenceStatusVO> grievanceStatusMap = new LinkedHashMap<String, GrivenceStatusVO>(0);
+			//0-consId,1-Status,2-typeOfIssue,3-count
+			List<Object[]> grivenceTrustList = insuranceStatusDAO.getGrivenceTrustStatusCounts(fromDate, toDate,locationTypeId,locationValues,year,Long.valueOf(year));
+			List<String> statusList = insuranceStatusDAO.getGrivenceStatus();
+			if(grivenceTrustList!=null){
+				for (Object[] objects : grivenceTrustList) {
+					if(objects[2].toString().trim().equalsIgnoreCase("Govt") || objects[2].toString().trim().equalsIgnoreCase("Party")  || 
+							objects[2].toString().trim().equalsIgnoreCase("Welfare")){
+						
+						if(!commonMethodsUtilService.isMapValid(grievanceStatusMap) && commonMethodsUtilService.isListOrSetValid(statusList)){
+							for (String status : statusList) {
+								GrivenceStatusVO vo = new GrivenceStatusVO();
+								vo.setName(status.toUpperCase());
+								vo.setCount(0L);
+								grievanceStatusMap.put(status.toUpperCase(), vo);
+							}
+						}
+						GrivenceStatusVO vo = grievanceStatusMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]).toUpperCase());
+						if(vo != null){
+							vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
+						}
+					}
+				}
+				
+			}
+				//IssueType Counts Logic
+				Map<String,GrivenceStatusVO> partyIssueMap = new LinkedHashMap<String, GrivenceStatusVO>(0);
+				Map<String,GrivenceStatusVO> welfareIssueMap = new LinkedHashMap<String, GrivenceStatusVO>(0);
+				Map<String,GrivenceStatusVO> govtIssueMap = new LinkedHashMap<String, GrivenceStatusVO>(0);
+				List<Object[]> issueTypeCuntsList = insuranceStatusDAO.getGrivenceIssueTypeCounts(fromDate, toDate,locationTypeId,locationValues,year,Long.valueOf(year));
+				List<Object[]> tpeOfIssuesList = insuranceStatusDAO.getAllTypeOfIssues();
+				if(commonMethodsUtilService.isListOrSetValid(tpeOfIssuesList)){
+					for (Object[] param : tpeOfIssuesList) {
+						GrivenceStatusVO vo = new GrivenceStatusVO();
+						vo.setName(commonMethodsUtilService.getStringValueForObject(param[0]));
+						//vo.setGrivenceType(commonMethodsUtilService.getStringValueForObject(param[0]));
+						vo.setCount(0L);
+						if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("party"))
+							partyIssueMap.put(commonMethodsUtilService.getStringValueForObject(param[0]), vo);
+						else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("welfare"))
+							welfareIssueMap.put(commonMethodsUtilService.getStringValueForObject(param[0]), vo);
+						else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Govt"))
+							govtIssueMap.put(commonMethodsUtilService.getStringValueForObject(param[0]), vo);
+					}
+				}
+				
+			//  Here set the IssueType Cunt Fr Party,Welfare,Govt
+				if(commonMethodsUtilService.isListOrSetValid(issueTypeCuntsList)){
+					for (Object[] objects : issueTypeCuntsList) {
+						if(objects[2] != null && objects[2].toString().trim().equalsIgnoreCase("party")){
+							GrivenceStatusVO vo = partyIssueMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							if(vo != null){
+								vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
+							}
+						}else if(objects[2] != null && objects[2].toString().trim().equalsIgnoreCase("welfare")){
+							GrivenceStatusVO vo = welfareIssueMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							if(vo != null){
+								vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
+							}
+						}else if(objects[2] != null && objects[2].toString().trim().equalsIgnoreCase("govt")){
+							GrivenceStatusVO vo = govtIssueMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							if(vo != null){
+								vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
+							}
+						}
+					}
+				}
+				if(commonMethodsUtilService.isMapValid(grievanceStatusMap)){
+					GrivenceStatusVO grivenceStatusCount = new GrivenceStatusVO();
+					grivenceStatusCount.setGrivenceType("Grivence");
+					for (String status : grievanceStatusMap.keySet()) {
+						grivenceStatusCount.getSubList().add(grievanceStatusMap.get(status));
+					}
+					finalList.add(grivenceStatusCount);
+				}
+				if(commonMethodsUtilService.isMapValid(partyIssueMap)){
+					GrivenceStatusVO partyIssuesCount = new GrivenceStatusVO();
+					partyIssuesCount.setGrivenceType("Party");
+					for (String issueType : partyIssueMap.keySet()) {
+						partyIssuesCount.getSubList().add(partyIssueMap.get(issueType));
+					}
+					finalList.add(partyIssuesCount);
+				}
+				if(commonMethodsUtilService.isMapValid(welfareIssueMap)){
+					GrivenceStatusVO welfareIssuesCount = new GrivenceStatusVO();
+					welfareIssuesCount.setGrivenceType("Welfare");
+					for (String issueType : welfareIssueMap.keySet()) {
+						welfareIssuesCount.getSubList().add(welfareIssueMap.get(issueType));
+					}
+					finalList.add(welfareIssuesCount);
+				}
+				if(commonMethodsUtilService.isMapValid(govtIssueMap)){
+					GrivenceStatusVO govtIssuesCount = new GrivenceStatusVO();
+					govtIssuesCount.setGrivenceType("Govt");
+					for (String issueType : govtIssueMap.keySet()) {
+						govtIssuesCount.getSubList().add(govtIssueMap.get(issueType));
+					}
+					finalList.add(govtIssuesCount);
+				}
+				
+		}catch(Exception e){
+			Log.error("Exception raised at grivence and trust counts service"+e);
+		}
+		return finalList;
+	}
+	/* @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationId
+	 * @param Long locationValue
+	 * @author K.Nandhini
+	 * @return List<List<GrivenceStatusVO>> we have two lists in final list 
+	 * (non-Javadoc)
+	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLevelWiseGrievanceCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
+	 */
+	
+	public List<GrivenceStatusVO> getLevelWiseGrievanceCounts(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year){
+		List<GrivenceStatusVO> lvelCuntList = new ArrayList<GrivenceStatusVO>(0);
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			// Here converting stirng to date formatte
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			Long locationId = 0l;
+			List<Object[]> list = null;
+			//Get Below locationValues By LevelId
+			if(locationTypeId != null && locationTypeId.longValue() >0l && locationTypeId.longValue() == 2L)
+				list = districtDAO.getDistrictIdsByState(locationValues);
+			else if(locationTypeId != null && locationTypeId.longValue() >0l && locationTypeId.longValue() == 3L)
+				list = constituencyDAO.getConstituencyListByDistrictId(locationValues);
+			else if(locationTypeId != null && locationTypeId.longValue() >0l && locationTypeId.longValue() == 4L){
+				list = boothDAO.getTehsilAndLEBIdsByConstituency(locationValues,24L);
+				if(list != null && !list.isEmpty()){
+					List<Object[]> muncipList = assemblyLocalElectionBodyDAO.getMuuncipalityByConstituency(locationValues);
+					list.addAll(muncipList);
+				}
+			}else if(locationTypeId != null && locationTypeId.longValue() >0l && locationTypeId.longValue() == 10L)
+				list = parliamentAssemblyDAO.getConsIdsByParliamntsIds(locationValues);
+			
+			//List<Object[]> list = insuranceStatusDAO.getLevelValuesByLevel(locationTypeId,locationValues);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] param : list) {
+					GrivenceStatusVO locationVO = new GrivenceStatusVO();
+					//if(param[0] != null){
+						locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					//}else if(param[2] != null){
+						/*locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));*/
+					//}
+					lvelCuntList.add(locationVO);	
+				}
+			}
+			
+			
+			//Set Grievance Counts
+			List<Object[]>  grievancesCunt = insuranceStatusDAO.getGrievanceTypeCounts(fromDate, toDate,locationTypeId,locationValues,year,Long.valueOf(year));
+			if(commonMethodsUtilService.isListOrSetValid(grievancesCunt)){
+				for (Object[] param : grievancesCunt) {
+					if(param[0] != null)
+						locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					else if(param[3] != null)
+						locationId = commonMethodsUtilService.getLongValueForObject(param[3]);
+					GrivenceStatusVO vo = getMatchedLocationVO(lvelCuntList,locationId);
+					if(vo != null){
+						if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("party"))
+							vo.setPartyCount(vo.getPartyCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+						else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("govt"))
+							vo.setGovtCount(vo.getGovtCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+						else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("welfare"))
+							vo.setWelfareCount(vo.getWelfareCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+			}
+			
+			//Set Insurance Counts
+			List<Object[]>  insuranceCunt = insuranceStatusDAO.getInsuranceTypeCounts(fromDate, toDate,locationTypeId,locationValues,year,Long.valueOf(year));
+			if(commonMethodsUtilService.isListOrSetValid(insuranceCunt)){
+				for (Object[] param : insuranceCunt) {
+					if(param[0] != null)
+						locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					else if(param[3] != null)
+						locationId = commonMethodsUtilService.getLongValueForObject(param[3]);
+					GrivenceStatusVO vo = getMatchedLocationVO(lvelCuntList,locationId);
+					if(vo != null){
+						if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Death"))
+							vo.setDeathCount(vo.getDeathCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+						else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Hospitalization"))
+							vo.setHosptalCount(vo.getHosptalCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+			}
+			
+			//Set NTR Trust Counts
+			List<Object[]>  trustCunt = insuranceStatusDAO.getNTRTrustTypeCounts(fromDate, toDate,locationTypeId,locationValues,year,Long.valueOf(year));
+			if(commonMethodsUtilService.isListOrSetValid(trustCunt)){
+				for (Object[] param : trustCunt) {
+					if(param[0] != null)
+						locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					else if(param[3] != null)
+						locationId = commonMethodsUtilService.getLongValueForObject(param[3]);
+					GrivenceStatusVO vo = getMatchedLocationVO(lvelCuntList,locationId);
+					if(vo != null){
+						if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Seat"))
+							vo.setSeatCount(vo.getSeatCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+						else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Fee Concession"))
+							vo.setFeeConsCount(vo.getFeeConsCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			Log.error("Exception raised at getLevelWiseGrievanceCounts service"+e);
+		}
+		return lvelCuntList;
+	}
+	
+	public GrivenceStatusVO getMatchedLocationVO(List<GrivenceStatusVO> list,Long id){
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (GrivenceStatusVO grivenceStatusVO : list) {
+					if(grivenceStatusVO.getId().longValue() == id.longValue()){
+						return grivenceStatusVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised at getMatchedVO service"+e);
+		}
+		return null;
+	}
 	public NominatedPostDetailsVO getMatchedVO2(List<NominatedPostDetailsVO> list,Long id){
 		try{
 			if(list != null && list.size() > 0){
