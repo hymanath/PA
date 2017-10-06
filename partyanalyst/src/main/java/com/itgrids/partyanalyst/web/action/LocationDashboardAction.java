@@ -984,6 +984,7 @@ public String getElectionInformationLocationWise(){
 	     }
 	     return Action.SUCCESS;
 	   }
+	
 	public String getLevelWiseGoIssuedPostions(){
 	     try{
 	       jObj = new JSONObject(getTask());
@@ -1002,6 +1003,29 @@ public String getElectionInformationLocationWise(){
 			grivenceVO = locationDashboardService.getConstituencyWiseInsuranceWiseIssueTypeCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getConstituencyWiseInsuranceWiseIssueTypeCounts() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getGrivenceDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+
+			grivenceVO = locationDashboardService.getGrivenceDetails(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValuesList,jObj.getString("year"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getGrivenceDetails() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getLevelWiseGrievanceCounts(){
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+
+			grivenceVO = locationDashboardService.getLevelWiseGrievanceCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValuesList,jObj.getString("year"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getLevelWiseGrievanceCounts() of LocationDashboardAction{}",e);
 		}
 		return Action.SUCCESS;
 	}
