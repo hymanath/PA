@@ -18180,5 +18180,15 @@
          <param name="root">grivenceVO</param>
        </result>
    </action>
+  	<action name="getGrivenceDetailsAction" class="locationDashboardAction" method="getGrivenceDetails">
+        <result type="json" name="success">
+         <param name="root">grivenceVO</param>
+       </result>
+   </action>
+   <action name="getLevelWiseGrievanceCountsAction" class="locationDashboardAction" method="getLevelWiseGrievanceCounts">
+        <result type="json" name="success">
+         <param name="root">grivenceVO</param>
+       </result>
+   </action>
  </package>
 </struts>
