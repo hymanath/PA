@@ -34,6 +34,7 @@ public class NominatedPostCandidateDtlsVO {
 	private double totalRecePer = 0.0;
 	private double openPostPer=0.0;
 	private double goIssuedPer=0.0;
+	private double totalPer=0.0;
 	public String getBoard() {
 		return board;
 	}
@@ -225,6 +226,12 @@ public class NominatedPostCandidateDtlsVO {
 	}
 	public void setGoIssuedPer(double goIssuedPer) {
 		this.goIssuedPer = goIssuedPer;
+	}
+	public double getTotalPer() {
+		return totalPer;
+	}
+	public void setTotalPer(double totalPer) {
+		this.totalPer = totalPer;
 	}
 	
 }
