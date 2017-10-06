@@ -18,4 +18,9 @@ public class TdpCommitteeEnrollmentDAO extends GenericDaoHibernate<TdpCommitteeE
 		   
 		  return query.list();
 	 }
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTdpCadreEnrollmentYear(){
+	 Query query = getSession().createQuery(" select model.tdpCommitteeEnrollmentId,model.description from TdpCommitteeEnrollment model where model.isActive='Y' order by model.tdpCommitteeEnrollmentId desc ");
+     return query.list();
+	 }
 }

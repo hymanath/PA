@@ -78,6 +78,7 @@ public class AlertOverviewVO {
 	private List<String> list;
 	private String type;
 	private String heading;
+	private List<AlertOverviewVO> enrollementIdList;
 	
 	public Long getGovtAlertCnt() {
 		return govtAlertCnt;
@@ -446,6 +447,12 @@ public class AlertOverviewVO {
 	}
 	public void setGrandOverAllper(Double grandOverAllper) {
 		this.grandOverAllper = grandOverAllper;
+	}
+	public List<AlertOverviewVO> getEnrollementIdList() {
+		return enrollementIdList;
+	}
+	public void setEnrollementIdList(List<AlertOverviewVO> enrollementIdList) {
+		this.enrollementIdList = enrollementIdList;
 	}
 	
 	

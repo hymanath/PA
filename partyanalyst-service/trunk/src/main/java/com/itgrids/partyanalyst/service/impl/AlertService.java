@@ -108,6 +108,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLoginDetailsDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeEnrollmentDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
@@ -292,6 +293,7 @@ private IGovtDepartmentWorkLocationRelationDAO govtDepartmentWorkLocationRelatio
 private IGovtSmsActionTypeDAO govtSmsActionTypeDAO;
 private IGovtAlertDepartmentLocationNewDAO govtAlertDepartmentLocationNewDAO;
 private IGovtProposalPropertyCategoryDAO govtProposalPropertyCategoryDAO;
+private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
 
 private SmsCountrySmsService smsCountrySmsService;
 
@@ -945,6 +947,11 @@ public IGovtProposalPropertyCategoryDAO getGovtProposalPropertyCategoryDAO() {
 
 public void setGovtProposalPropertyCategoryDAO(IGovtProposalPropertyCategoryDAO govtProposalPropertyCategoryDAO) {
 	this.govtProposalPropertyCategoryDAO = govtProposalPropertyCategoryDAO;
+}
+
+public void setTdpCommitteeEnrollmentDAO(
+		ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
+	this.tdpCommitteeEnrollmentDAO = tdpCommitteeEnrollmentDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -5282,7 +5289,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  	return returnList;
  }
  //ssss  
- public List<AlertVO> getTotalAlertGroupByPubRepThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, Long publicRepresentativeTypeId,List<Long> commitLvlIdList, String groupAssignType, String position, Long designationId,Long alertTypeId,Long editionTypeId,Long districtId,List<Long> alertStatusIds){
+ public List<AlertVO> getTotalAlertGroupByPubRepThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, Long publicRepresentativeTypeId,List<Long> commitLvlIdList, String groupAssignType, String position, Long designationId,Long alertTypeId,Long editionTypeId,Long districtId,List<Long> alertStatusIds,List<Long> enrollementYearIds){
 		LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 		try{  
 			Date fromDate = null;          
@@ -5341,9 +5348,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<Object[]> alertCountList = null;//alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "one");
 			if(groupAssignType.equalsIgnoreCase("Party Committee")){
 				if(position.equalsIgnoreCase("bellow")){
-					alertCountList = alertDAO.getTdpCommitteeRolesByAlertCnt(userAccessLevelId,userAccessLevelValues,stateId,scopeIdList,fromDate,toDate,commitLvlIdList,designationId,"one",alertTypeList,editionList,districtId,alertStatusIds);
+					alertCountList = alertDAO.getTdpCommitteeRolesByAlertCnt(userAccessLevelId,userAccessLevelValues,stateId,scopeIdList,fromDate,toDate,commitLvlIdList,designationId,"one",alertTypeList,editionList,districtId,alertStatusIds,enrollementYearIds);
 				}else{  
-					alertCountList = alertDAO.getTdpBasicCommiteeTypeAndAlertStatusByAlertCnt(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate,commitLvlIdList, "one",alertTypeList,editionList,districtId,alertStatusIds);
+					alertCountList = alertDAO.getTdpBasicCommiteeTypeAndAlertStatusByAlertCnt(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate,commitLvlIdList, "one",alertTypeList,editionList,districtId,alertStatusIds,enrollementYearIds);
 				}
 			}else{  
 				if(publicRepresentativeTypeId.longValue() == 0L){
@@ -5366,9 +5373,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<Object[]> alertCountGrpByLocList = null;//alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "two");    
 			if(groupAssignType.equalsIgnoreCase("Party Committee")){
 				if(position.equalsIgnoreCase("bellow")){
-					alertCountGrpByLocList = alertDAO.getTdpCommitteeRolesByAlertCnt(userAccessLevelId,userAccessLevelValues,stateId,scopeIdList,fromDate,toDate,commitLvlIdList,designationId,"two",alertTypeList,editionList,districtId,alertStatusIds);
+					alertCountGrpByLocList = alertDAO.getTdpCommitteeRolesByAlertCnt(userAccessLevelId,userAccessLevelValues,stateId,scopeIdList,fromDate,toDate,commitLvlIdList,designationId,"two",alertTypeList,editionList,districtId,alertStatusIds,enrollementYearIds);
 				}else{
-					alertCountGrpByLocList = alertDAO.getTdpBasicCommiteeTypeAndAlertStatusByAlertCnt(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate,commitLvlIdList, "two",alertTypeList,editionList,districtId,alertStatusIds);
+					alertCountGrpByLocList = alertDAO.getTdpBasicCommiteeTypeAndAlertStatusByAlertCnt(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate,commitLvlIdList, "two",alertTypeList,editionList,districtId,alertStatusIds,enrollementYearIds);
 
 				}
 			}else{
@@ -5441,7 +5448,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 			return null;  
 		}
- 	public List<AlertVO> getMemForPartyCommitDesg(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,List<Long> commitLvlIdArr,Long commitTypeId,Long designationId,Long alertTypeId,Long editionTypeId,Long districtId,List<Long> alertStatusIds){
+ 	public List<AlertVO> getMemForPartyCommitDesg(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,List<Long> commitLvlIdArr,Long commitTypeId,Long designationId,Long alertTypeId,Long editionTypeId,Long districtId,List<Long> alertStatusIds,List<Long> enrollementYearIds){
  		try{
  			Date fromDate = null;              
 			Date toDate = null; 
@@ -5492,7 +5499,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				userAccessLevelValues.addAll(parliamentAssemlyIds);      
 			}
 			
-			List<Object[]> alertCountList = alertDAO.getMemForPartyCommitDesg(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, commitLvlIdArr, commitTypeId, designationId, "one",alertTypeList,editionList,districtId,alertStatusIds);
+			List<Object[]> alertCountList = alertDAO.getMemForPartyCommitDesg(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, commitLvlIdArr, commitTypeId, designationId, "one",alertTypeList,editionList,districtId,alertStatusIds,enrollementYearIds);
 			if(alertCountList != null && alertCountList.size() > 0){  
 				for(Object[] param : alertCountList){  
 					if(param[0] != null)
@@ -5504,7 +5511,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			Map<Long,Long> statusIdAndCountMap = null;//new HashMap<Long, Long>();  
 			Map<Long,Map<Long,Long>> locationIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
 			List<Object[]> alertCountGrpByLocList = null;
-			alertCountGrpByLocList = alertDAO.getMemForPartyCommitDesg(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, commitLvlIdArr, commitTypeId, designationId, "two",alertTypeList,editionList,districtId,alertStatusIds);
+			alertCountGrpByLocList = alertDAO.getMemForPartyCommitDesg(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, commitLvlIdArr, commitTypeId, designationId, "two",alertTypeList,editionList,districtId,alertStatusIds,enrollementYearIds);
 			if(alertCountGrpByLocList != null && alertCountGrpByLocList.size() > 0){  
 				for(Object[] param : alertCountGrpByLocList){  
 					if(param[0] != null){
@@ -5596,7 +5603,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  * santosh (non-Javadoc)
  * @see com.itgrids.partyanalyst.service.IAlertService#getAssignGroupTypeAlertDtlsByImpactLevelWise(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.util.List)
  */
- public List<AlertOverviewVO> getAssignGroupTypeAlertDtlsByImpactLevelWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId,Long editionTypeId,Long districtId,List<Long> alertStatusIds){
+ public List<AlertOverviewVO> getAssignGroupTypeAlertDtlsByImpactLevelWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId,Long editionTypeId,Long districtId,List<Long> alertStatusIds,List<Long> enrollementYearIds){
 	 List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
 	 Set<Long> locationValues = new HashSet<Long>(0);
      Long locationAccessLevelId =0l;
@@ -5652,7 +5659,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			  mergeStatusWiseAlertCnt(rtrnPblcRprsnttvTypAlrtDtlsObjLst,statusWiseAlertCntMap,allTypeTdpCadreIds,totalAletCntSt,null);
 			  setDatatoFinalList(prepareTempalate(alertStatusIds,alertTypeId),statusWiseAlertCntMap,totalAletCntSt,resultList,"Public Representative");
 			  //Calculating party committee type alert count
-			  List<Object[]> rtrnPrtyCmmttAlrtDtlsObjLst = alertDAO.getPartyCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate,alertTypeList,editionList,districtId,alertStatusIds);
+			  List<Object[]> rtrnPrtyCmmttAlrtDtlsObjLst = alertDAO.getPartyCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate,alertTypeList,editionList,districtId,alertStatusIds,enrollementYearIds);
 			  mergeStatusWiseAlertCnt(rtrnPrtyCmmttAlrtDtlsObjLst,statusWiseAlertCntMap,allTypeTdpCadreIds,totalAletCntSt,null);
 			  setDatatoFinalList(prepareTempalate(alertStatusIds,alertTypeId),statusWiseAlertCntMap,totalAletCntSt,resultList,"Party Committee");
 			  //Calculating program type alert count
@@ -5750,7 +5757,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   * santosh (non-Javadoc)
   * @see com.itgrids.partyanalyst.service.IAlertService#getOtherTypeAlertCandiateDtls(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.util.List)
   */
- public List<AlertOverviewVO> getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,String resultType,Long alertTypeId,Long editionTypeId,Long districtId,List<Long> alertStatusIds){
+ public List<AlertOverviewVO> getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,String resultType,Long alertTypeId,Long editionTypeId,Long districtId,List<Long> alertStatusIds,List<Long> enrollementYearIds){
 	 List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
 	 Set<Long> locationValues = new HashSet<Long>(0);
      Long locationAccessLevelId =0l;
@@ -5808,7 +5815,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				   
 				  List<Object[]> rtrnPblcRprsnttvTypAlrtDtlsObjLst = alertDAO.getPublicRepresentativeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate,alertTypeList,editionList,districtId,alertStatusIds);
 				  setTdpCadreId(rtrnPblcRprsnttvTypAlrtDtlsObjLst,allTypeTdpCadreIds);
-				  List<Object[]> rtrnPrtyCmmttAlrtDtlsObjLst = alertDAO.getPartyCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate,alertTypeList,editionList,districtId,alertStatusIds);
+				  List<Object[]> rtrnPrtyCmmttAlrtDtlsObjLst = alertDAO.getPartyCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate,alertTypeList,editionList,districtId,alertStatusIds,enrollementYearIds);
 				  setTdpCadreId(rtrnPrtyCmmttAlrtDtlsObjLst,allTypeTdpCadreIds);
 				  setTdpCadreId(rtrnPrgrmCmmttAlrtDtlsOblLst,allTypeTdpCadreIds);
 				  List<Object[]> rtrnAllAlertCntDls = alertDAO.getAllAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate,alertTypeList,editionList,districtId,alertStatusIds);
@@ -6111,7 +6118,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 }
 	 return null;
 	 }
- 	public List<AlertCoreDashBoardVO> getAlertDtlsAssignedByPartyCommite(String fromDateStr,String toDateStr,Long stateId,List<Long> scopeIdList,Long activityMemberId,List<Long> commitLvlIdList,Long commitTypeId,Long designationId,Long cadreId, List<Long> alertStatusIds,Long alertTypeId,Long editionTypeId,Long districtId){
+ 	public List<AlertCoreDashBoardVO> getAlertDtlsAssignedByPartyCommite(String fromDateStr,String toDateStr,Long stateId,List<Long> scopeIdList,Long activityMemberId,List<Long> commitLvlIdList,Long commitTypeId,Long designationId,Long cadreId, List<Long> alertStatusIds,Long alertTypeId,Long editionTypeId,Long districtId,List<Long> enrollementYearIds){
  		try{
  			Date fromDate = null;          
 			Date toDate = null; 
@@ -6158,7 +6165,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 			
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();//d
-			List<Object[]> alertList = alertDAO.getAlertDtlsAssignedByPartyCommite(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, commitLvlIdList, cadreId, commitTypeId,designationId,alertStatusIds,alertTypeList,editionList,districtId);
+			List<Object[]> alertList = alertDAO.getAlertDtlsAssignedByPartyCommite(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, commitLvlIdList, cadreId, commitTypeId,designationId,alertStatusIds,alertTypeList,editionList,districtId,enrollementYearIds);
 			setAlertDtls(alertCoreDashBoardVOs, alertList);    
 			return alertCoreDashBoardVOs;
  		}catch(Exception e){
@@ -15840,5 +15847,26 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			LOG.error("Error occured getSmsTdpCadreDetails() method of AlertService{}");
 		}
 		return rs;
+	}
+	/*
+	 * Santosh (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertService#getTdpCadreEnrollementYearIds()
+	 */
+	public List<AlertOverviewVO> getTdpCadreEnrollementYearIds() {
+		List<AlertOverviewVO> enrollementIdList = new ArrayList<AlertOverviewVO>(0);
+		try {
+			List<Object[]> objList = tdpCommitteeEnrollmentDAO.getTdpCadreEnrollmentYear();
+			 if (objList != null && objList.size() > 0) {
+				 for (Object[] param : objList) {
+					AlertOverviewVO enrollementYearVO = new AlertOverviewVO();
+					enrollementYearVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					enrollementYearVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					enrollementIdList.add(enrollementYearVO);
+				}
+			 }
+		} catch (Exception e) {
+			LOG.error("Error occured getTdpCadreEnrollementYearIds() method of AlertService{}");
+		}
+		return  enrollementIdList;
 	}
 }
