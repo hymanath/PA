@@ -18165,7 +18165,7 @@
       <param name="root">nominatedPostDetailsVOList</param>       
     </result> 
   </action>
-	<action name="getLevelWiseGoIssuedPostionsAction" class="locationDashboardAction" method="getLevelWiseGoIssuedPostions">
+  <action name="getLevelWiseGoIssuedPostionsAction" class="locationDashboardAction" method="getLevelWiseGoIssuedPostions">
 		<result type="json" name="success">
 			<param name="root">nominatedPostCandList</param>
 		</result>
@@ -18175,5 +18175,10 @@
 			<param name="root">doorCampaignDashboardVOList</param>       
 		</result>
   	</action>
+   <action name="getConstituencyWiseInsuranceWiseIssueTypeCountsAction" class="locationDashboardAction" method="getConstituencyWiseInsuranceWiseIssueTypeCounts">
+        <result type="json" name="success">
+         <param name="root">grivenceVO</param>
+       </result>
+   </action>
  </package>
 </struts>
