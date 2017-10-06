@@ -2600,6 +2600,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		     if(boardLevelId != null && boardLevelId.longValue() > 0L){
 		             sb.append(" and model.boardLevelId >=:boardLevelId "); 
 		      }
+		     sb.append(" and model.applicationStatus.applicationStatusId not in(8,2,4) ");
 		       sb.append(" group by model.nominatedPostMember.boardLevelId");
 		       Query query = getSession().createQuery(sb.toString());
 		       /*if (locationTypeId != null && locationValues != null && locationValues.size()>0 && locationTypeId !=2l) {

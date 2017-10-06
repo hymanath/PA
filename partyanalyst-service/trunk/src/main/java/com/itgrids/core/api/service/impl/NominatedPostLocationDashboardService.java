@@ -15,8 +15,10 @@ import org.jfree.util.Log;
 import com.itgrids.core.api.service.INominatedPostLocationDashboardService;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostGovtOrderDAO;
 import com.itgrids.partyanalyst.dto.NominatedPostCandidateDtlsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
+import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
 public class NominatedPostLocationDashboardService implements INominatedPostLocationDashboardService{
@@ -25,7 +27,8 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 	private CommonMethodsUtilService commonMethodsUtilService;
 	private INominatedPostDAO nominatedPostDAO;
 	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
-	
+	private INominatedPostGovtOrderDAO nominatedPostGovtOrderDAO;
+	private ICadreDetailsService cadreDetailsService;
 	
 	public INominatedPostApplicationDAO getNominatedPostApplicationDAO() {
 		return nominatedPostApplicationDAO;
@@ -47,7 +50,20 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-
+	public INominatedPostGovtOrderDAO getNominatedPostGovtOrderDAO() {
+		return nominatedPostGovtOrderDAO;
+	}
+	public void setNominatedPostGovtOrderDAO(
+			INominatedPostGovtOrderDAO nominatedPostGovtOrderDAO) {
+		this.nominatedPostGovtOrderDAO = nominatedPostGovtOrderDAO;
+	}
+	
+	public ICadreDetailsService getCadreDetailsService() {
+		return cadreDetailsService;
+	}
+	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
+		this.cadreDetailsService = cadreDetailsService;
+	}
 	public List<NominatedPostCandidateDtlsVO> getNominatedPositionWiseCandidates(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLvlId
 			,Long startIndex,Long endIndex){
 		List<NominatedPostCandidateDtlsVO> finalList = new CopyOnWriteArrayList<NominatedPostCandidateDtlsVO>();
@@ -100,6 +116,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
 			}
+			Long total=0l;
 			Map<Long,NominatedPostCandidateDtlsVO> levelMap= new HashMap<Long,NominatedPostCandidateDtlsVO>();
 			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostLocationStatusWiseCount(locationValues,startDate,endDate,locationTypeId,boardLevelId);
 			if(nominatedPostList != null && nominatedPostList.size()>0){
@@ -145,10 +162,18 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 					if(deptVO != null){
 						deptVO.setRecivedCount(commonMethodsUtilService.getLongValueForObject(param[0]));
 					}
+					total=total+deptVO.getRecivedCount();
 				}
 				if(commonMethodsUtilService.isMapValid(levelMap)){
 					for(Entry<Long,NominatedPostCandidateDtlsVO> entry :levelMap.entrySet()){
 						finalList.add(entry.getValue());
+					}
+				}
+				if(finalList != null){
+					for(NominatedPostCandidateDtlsVO vo:finalList){
+						vo.setTotalRecePer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getRecivedCount()))));
+						vo.setOpenPostPer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getOpenCount()))));
+						vo.setGoIssuedPer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getGoIsuuedCount()))));
 					}
 				}
 				
@@ -226,6 +251,41 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 		}
 		return returnsList;
 	}
-	
-	
+	public List<NominatedPostCandidateDtlsVO> getLevelWiseGoIssuedPostions(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLvlId
+			,Long startIndex,Long endIndex,List<Long> statusIds){
+		List<NominatedPostCandidateDtlsVO> finalList = new CopyOnWriteArrayList<NominatedPostCandidateDtlsVO>();
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+			Date startDate = null;
+			Date endDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> candList = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedPostions(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,startIndex,endIndex,statusIds);
+			if(commonMethodsUtilService.isListOrSetValid(candList)){
+				for (Object[] param : candList) {
+					NominatedPostCandidateDtlsVO vo = new NominatedPostCandidateDtlsVO();
+					vo.setNominatedPostCandiateId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setCandidateName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					vo.setDepartmentId(commonMethodsUtilService.getLongValueForObject(param[2]));
+					vo.setDepartment(commonMethodsUtilService.getStringValueForObject(param[3]));
+					vo.setBoardId(commonMethodsUtilService.getLongValueForObject(param[4]));
+					vo.setBoard(commonMethodsUtilService.getStringValueForObject(param[5]));
+					vo.setPositionId(commonMethodsUtilService.getLongValueForObject(param[6]));
+					vo.setPosition(commonMethodsUtilService.getStringValueForObject(param[7]));
+					vo.setGender(commonMethodsUtilService.getStringValueForObject(param[8]));
+					vo.setCasteCategory(commonMethodsUtilService.getStringValueForObject(param[9]));
+					vo.setDate(commonMethodsUtilService.getStringValueForObject(param[10]));
+					finalList.add(vo);
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception raised in getLevelWiseGoIssuedPostions method of NominatedPostLocationDashboardService"+e);
+		}
+		return finalList;
+	}
+
 }
