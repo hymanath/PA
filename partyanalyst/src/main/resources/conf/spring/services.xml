@@ -4492,5 +4492,7 @@
     <bean name="nominatedPostLocationDashboardService" class="com.itgrids.core.api.service.impl.NominatedPostLocationDashboardService" >
     	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	<property name="nominatedPostDAO" ref="nominatedPostDAO" />
+    	<property name="nominatedPostGovtOrderDAO" ref="nominatedPostGovtOrderDAO" />
+    	<property name="cadreDetailsService" ref="cadreDetailsService" ></property>
     </bean>
 </beans>			
