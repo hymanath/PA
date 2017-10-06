@@ -3897,7 +3897,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	    try {
 	    	 List<Long>list=new ArrayList<Long>();
 			    Map<Long,NominatedPostDashboardVO> locationDtlsMap =new HashMap<Long, NominatedPostDashboardVO>();
-			    /*if(boardLevelId==3l){  
+			    if(boardLevelId==2l){  
+			    	list.add(1l);
+			    	list.add(2l);
 			    	list.add(3l);
 			    	list.add(4l);
 			    	list.add(5l);
@@ -3905,7 +3907,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			    	list.add(7l);
 			    	list.add(8l);
 			    }	
-			    else*/ if(boardLevelId==4l || boardLevelId==3l){
+			    else if(boardLevelId==3l){
+			    	list.add(3l);
+			    	list.add(4l);
+			    	list.add(5l);
+			    	list.add(6l);
+			    	list.add(7l);
+			    	list.add(8l);
+			    }
+			    else if(boardLevelId==4l){
 			    	list.add(4l);
 			    	list.add(5l);
 			    	list.add(6l);
@@ -3939,7 +3949,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						    	levelValues.add(commonMethodsUtilService.getLongValueForObject(objects2[0]));
 		    	          }
 		    	        }
-		    	      levelId=4l;
+		    	     // levelId=4l;
 		      }else if(levelId == 10l){
 		    		   levelValues = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(levelValues);
 		    	    }
@@ -3949,6 +3959,24 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			     	if (nominatedList!=null && nominatedList.size()>0){
 				      for (Object[] objects : nominatedList) {					    	 
 				    	  NominatedPostDashboardVO boardLvlVO = null;
+				    	  if((Long)objects[2] == 1l  ){
+				    		   boardLvlVO = locationDtlsMap.get((Long)objects[2]);
+				    		  if( boardLvlVO == null){
+				    			  boardLvlVO=new NominatedPostDashboardVO();
+				    			  boardLvlVO.setId((Long)objects[2]);
+				    			  boardLvlVO.setName("Central Level");
+				    			  locationDtlsMap.put((Long)objects[2], boardLvlVO);
+				    		  }
+				    	   }
+				    	  if((Long)objects[2] == 2l  ){
+				    		   boardLvlVO = locationDtlsMap.get((Long)objects[2]);
+				    		  if( boardLvlVO == null){
+				    			  boardLvlVO=new NominatedPostDashboardVO();
+				    			  boardLvlVO.setId((Long)objects[2]);
+				    			  boardLvlVO.setName("State Level");
+				    			  locationDtlsMap.put((Long)objects[2], boardLvlVO);
+				    		  }
+				    	   }
 				    	   if((Long)objects[2] == 3l  ){
 				    		   boardLvlVO = locationDtlsMap.get((Long)objects[2]);
 				    		  if( boardLvlVO == null){
@@ -3970,23 +3998,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				    		  if( boardLvlVO == null){
 				    			  boardLvlVO=new NominatedPostDashboardVO();
 				    			  boardLvlVO.setId((Long)objects[2]);
-				    			  boardLvlVO.setName("Mandal Level");
+				    			  boardLvlVO.setName("Mandal/Muncipality/Corporation");
 				    			  locationDtlsMap.put(5l, boardLvlVO);
 				    		  }
-				    	   }else if((Long)objects[2] == 7l || (Long)objects[2] == 8l ){
-					    		   boardLvlVO = locationDtlsMap.get(7l);
-					    		  if( boardLvlVO == null){
-					    			  boardLvlVO=new NominatedPostDashboardVO();
-					    			  boardLvlVO.setId((Long)objects[2]);
-					    			  boardLvlVO.setName("Mandal Level");
-					    			  locationDtlsMap.put(5l, boardLvlVO);
-					    		  }
-					    	   }else if((Long)objects[2] == 7l || (Long)objects[2] == 8l ){
+				    	      }else if((Long)objects[2] == 7l || (Long)objects[2] == 8l ){
 						    		   boardLvlVO = locationDtlsMap.get(7l);
 						    		  if( boardLvlVO == null){
 						    			  boardLvlVO=new NominatedPostDashboardVO();
 						    			  boardLvlVO.setId((Long)objects[2]);
-						    			  boardLvlVO.setName("Village Level");
+						    			  boardLvlVO.setName("Village/Ward");
 						    			  locationDtlsMap.put(7l, boardLvlVO);
 						    		  }
 						        }   
@@ -4001,19 +4021,29 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						 }
 					      
 					      if(receivedapp!=null && receivedapp.size()>0){
-				    		  for (Object[] param : nominatedList) {
-				    			  NominatedPostDashboardVO  boardLvlVO=null;
+				    		 for (Object[] param : receivedapp) {
+								  NominatedPostDashboardVO  boardLvlVO=null;
 				    			  if((Long)param[1] == 3l){
 				    				  boardLvlVO=  locationDtlsMap.get(3l);
 				    				  if(boardLvlVO!=null){
 				    					  boardLvlVO.setApplicatnsReceived(boardLvlVO.getApplicatnsReceived()+(commonMethodsUtilService.getLongValueForObject(param[0]))) ;
 				    				    }
-				    			  }else if((Long)param[1] == 4l){
+				    			  }else if((Long)param[1] == 1l){
+			    					  boardLvlVO=locationDtlsMap.get(1l);
+			    					  if(boardLvlVO!=null){
+				    					  boardLvlVO.setApplicatnsReceived(boardLvlVO.getApplicatnsReceived()+commonMethodsUtilService.getLongValueForObject(param[0])) ;
+				    				    }
+			    				  }else if((Long)param[1] == 2l){
+			    					  boardLvlVO=locationDtlsMap.get(2l);
+			    					  if(boardLvlVO!=null){
+				    					  boardLvlVO.setApplicatnsReceived(boardLvlVO.getApplicatnsReceived()+commonMethodsUtilService.getLongValueForObject(param[0])) ;
+				    				    }
+			    				  }else if((Long)param[1] == 4l){
 				    					  boardLvlVO=locationDtlsMap.get(4l);
 				    					  if(boardLvlVO!=null){
 					    					  boardLvlVO.setApplicatnsReceived(boardLvlVO.getApplicatnsReceived()+commonMethodsUtilService.getLongValueForObject(param[0])) ;
 					    				    }
-				    				  }else if((Long)param[1] == 5l || (Long)param[1] == 6l ){
+				    			  }else if((Long)param[1] == 5l || (Long)param[1] == 6l ){
 				    					  boardLvlVO=locationDtlsMap.get(5l);
 				    					  if(boardLvlVO!=null){
 					    					  boardLvlVO.setApplicatnsReceived(boardLvlVO.getApplicatnsReceived()+commonMethodsUtilService.getLongValueForObject(param[0])) ;
@@ -4051,6 +4081,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 *
 	 * @param locationValues,levelId,statusIdsList,type
 	 * @return List<NominatedPostDetailsVO>
+	 * 
 	 * @author Srujana 
 	 * @Description :This Service Method is used to get the Location wise nominatedPost candidate AgeRange and CasteCategory Groups details
 	 * @since 09-SEP-2017
