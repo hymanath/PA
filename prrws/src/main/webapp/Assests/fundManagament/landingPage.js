@@ -215,7 +215,7 @@ function getPrisOverAllAchievd(){
 		var locationType='district';
 		var locationId=0;
 		var json = {
-			fromDate:"01-09-2017",
+			fromDate:"01-01-1997",
 			toDate:gblEndDate,
 			locationId:locationId,
 			locationType:locationType,
