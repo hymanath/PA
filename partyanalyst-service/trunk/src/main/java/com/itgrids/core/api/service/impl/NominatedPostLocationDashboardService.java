@@ -301,10 +301,12 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 						vo.setGender("Female");
 					}
 					vo.setCasteCategory(commonMethodsUtilService.getStringValueForObject(param[9]));
-					String goDateStr=commonMethodsUtilService.getStringValueForObject(param[10]);
-					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(commonMethodsUtilService.getStringValueForObject(param[10]));
+					String goDateStr = commonMethodsUtilService.getStringValueForObject(param[10]);
+					if(goDateStr != null && !goDateStr.isEmpty() ){
+					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(goDateStr);
 					String format = new SimpleDateFormat("MMM dd").format(date);
 					vo.setDate(format+","+goDateStr.substring(0,4));
+					}
 					finalList.add(vo);
 				}
 			}
