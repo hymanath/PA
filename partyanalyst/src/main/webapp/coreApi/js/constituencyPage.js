@@ -836,6 +836,23 @@ function onLoadClicks()
 		getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat);
 	});
 	//Tours Click End
+	
+	$(document).on("click",".openPostClickCls",function(){
+		var deptId =  $(this).attr("attr_department_id");
+		var boardLevelId =  $(this).attr("attr_boardLevelId");
+		var type =  $(this).attr("attr_type");
+		var departmentName =  $(this).attr("attr_department_name");
+		if(type == "open"){
+			$("#openPostModal").modal("show");
+		}else{
+			$("#departmentPostModal").modal("show");
+			$("#deptHeadingId").html(departmentName+" Details");
+		}
+		
+		getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type)
+		
+	});
+	
 }
 function menuCalls(levelId,levelValue,higherLevelVal)
 {
@@ -4228,7 +4245,7 @@ function getNominatedPostStatusWiseCount(){
 						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>COMPLETED/G.O ISSUED<span class="count"><b>'+result[i].count+'</b></span></li>';
 					}else{
 						if(result[i].name == "OPEN"){
-							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count openPostClickCls" style="font-weight:bold;" attr_department_id="0" attr_boardLevelId="0" attr_type="open">'+result[i].count+'</span></li>';
+							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count openPostClickCls" style="font-weight:bold;" attr_department_id="0" attr_boardLevelId="0" attr_type="open" attr_department_name = "">'+result[i].count+'</span></li>';
 						}else{
 							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count"><b>'+result[i].count+'</b></span></li>';
 						}
@@ -5389,26 +5406,10 @@ function getLevelWisePostsOverView(){
 		$('.progressCustom').tooltip()
 	}
   }
- 
- 
-	$(document).on("click",".openPostClickCls",function(){
-		
-		var deptId =  $(this).attr("attr_department_id");
-		var boardLevelId =  $(this).attr("attr_boardLevelId");
-		var type =  $(this).attr("attr_type");
-		if(type == "open"){
-			$("#openPostModal").modal("show");
-		}else{
-			$("#departmentPostModal").modal("show");
-		}
-		
-		getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type)
-		
-	});
 function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 	var jsObj={
 		
-      "fromDateStr" 		: globalFromDate,
+      "fromDateStr" 		:globalFromDate,
       "toDateStr"			:globalToDate,
       "locationValuesArr"	:userAccessLevelValuesArray,
       "locationTypeId"		:locationLevelId,
@@ -5462,7 +5463,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 				str+='<tbody>';
 					for(var i in result){
 						str+='<tr>';
-							str+='<td attr_department_id="'+result[i].id+'" attr_boardLevelId="0" class="openPostClickCls" attr_type="department">'+result[i].name+'</td>';
+							str+='<td attr_department_name = "'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="0" class="openPostClickCls" attr_type="department">'+result[i].name+'</td>';
 							
 							if(result[i].totalCount !=null && result[i].totalCount>0){
 								str+='<td class="openPostColor text-center">'+result[i].totalCount+'</td>';

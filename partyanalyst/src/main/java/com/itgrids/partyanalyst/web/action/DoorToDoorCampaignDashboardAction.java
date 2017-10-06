@@ -455,4 +455,37 @@ public class DoorToDoorCampaignDashboardAction extends ActionSupport implements 
 		
 		return Action.SUCCESS; 
 	}
+	
+	public String getAssignedConstituenciesForUser(){
+		try{
+			jObj = new JSONObject(getTask());
+			//String locationType = jObj.getString("locationType");
+			
+			JSONArray jArray = jObj.getJSONArray("levelIds");
+			List<Long> levelIdList = new ArrayList<Long>();    
+			for (int i = 0; i < jArray.length(); i++){
+				levelIdList.add(Long.parseLong(jArray.getString(i)));
+			} 
+			JSONArray levelValueArr = jObj.getJSONArray("levelValues");
+			List<Long> levelValuesList = new ArrayList<Long>();    
+			for (int i = 0; i < levelValueArr.length(); i++){
+				levelValuesList.add(Long.parseLong(levelValueArr.getString(i)));
+			}
+			
+			//String fromDate = jObj.getString("startDateStr");
+			//String toDate = jObj.getString("endDateStr");
+			DoorToDoorInputVO inputvo = new DoorToDoorInputVO();
+			inputvo.setLevelIds(levelIdList);
+			inputvo.setLevelValues(levelValuesList);
+			//inputvo.setStartDateStr(fromDate);
+			//inputvo.setEndDateStr(toDate);
+			//inputvo.setLocationType(locationType);
+			
+			doorCampaignDashboardVOList = doorToDoorCampaignDashboardService.getAssignedConstituenciesForUser(inputvo);
+		}catch (Exception e) {
+			LOG.error("Exception rised in getAssignedConstituenciesForUser",e);
+		}
+		
+		return Action.SUCCESS; 
+	}
 }
