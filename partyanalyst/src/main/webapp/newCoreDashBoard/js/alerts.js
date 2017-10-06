@@ -1,4 +1,4 @@
-  
+     var globalEnrollementYearIdsForAlert = 0;
     /* Setting script code start */
 	 var impactLevelObj =  {"0":"All","1":"State","2":"District","3":"Constituency","8":"CORP-GMC","5":"Mandal/MUNICIPALITY","7":"Village/ward/PANCHAYAT","2":"State","3":"District","4":"Constituency","6":"Village/ward/HAMLET"};	//2 - State ,3-District,4-Constituency and 6-Village/Ward/Hamlet for location 
 	$(document).on("click",".alertSettingBlock",function(e){
@@ -25,6 +25,7 @@
 	  var globalCorpGhmcImpactScopeSArr = [];
 	  var globalConstituencyImpactScopeArr = [];
      function getAlertDtlsBasedOnSelection(type){
+		 globalEnrollementYearIdsForAlert = globalEnrollementyearIdArr;
 		  //Clear arrays
 		    globalAlertStatusArr = [];
 		    globalImpactScopeArr = [];
@@ -1591,7 +1592,8 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(disctrictId){
 			alertTypeId : 		alertId,
 		    editionTypeId : 	editionId,
             districtId	  :     disctrictId,
-			alertStatusArr : globalAlertStatusArr
+			alertStatusArr : globalAlertStatusArr,
+			enrollementYearIds:globalEnrollementYearIdsForAlert
 			
 		}           
 	
@@ -1791,7 +1793,8 @@ function getTotalAlertGroupByPubRepThenStatus(groupAssignType,publicRepresentati
 		alertTypeId : alertId,
 		editionTypeId : editionId,
 		districtId :districtId,
-		alertStatusArr : globalAlertStatusArr
+		alertStatusArr : globalAlertStatusArr,
+		enrollementYearIds:globalEnrollementYearIdsForAlert
 		
 	  }                  
   $.ajax({
@@ -1901,7 +1904,8 @@ function getTotalAlertGroupByPubRepThenStatus(groupAssignType,publicRepresentati
 			alertTypeId : alertId,
 		    editionTypeId : editionId,
             districtId : districtId,			
-            alertStatusArr : globalAlertStatusArr			
+            alertStatusArr : globalAlertStatusArr,
+            enrollementYearIds:globalEnrollementYearIdsForAlert			
 		}                  
 		$.ajax({
 			type : 'POST',      
@@ -2063,7 +2067,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			alertTypeId : alertId,
 		    editionTypeId : editionId,
 			districtId : districtId,
-			alertStatusArr : globalAlertStatusArr
+			alertStatusArr : globalAlertStatusArr,
+			enrollementYearIds:globalEnrollementYearIdsForAlert
 	    			
 		}                  
 		$.ajax({
@@ -2189,7 +2194,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			alertStatusArr : alertStatusArr,
 			alertTypeId : alertId,
 		    editionTypeId : editionId,
-            districtId : districtId			
+            districtId : districtId,
+			enrollementYearIds:globalEnrollementYearIdsForAlert			
 		}                  
 		$.ajax({
 			type : 'POST',      
@@ -2258,7 +2264,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		    alertTypeId : alertId,
 		    editionTypeId : editionId,
 			districtId : districtId,
-			alertStatusArr : globalAlertStatusArr
+			alertStatusArr : globalAlertStatusArr,
+			enrollementYearIds:globalEnrollementYearIdsForAlert
 			
 		}                  
 		$.ajax({

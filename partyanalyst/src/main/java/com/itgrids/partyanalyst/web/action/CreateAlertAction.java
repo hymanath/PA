@@ -1069,7 +1069,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			for (int i = 0; i < statusArray.length(); i++){
 				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
 			}  
-			resultList = alertService.getAssignGroupTypeAlertDtlsByImpactLevelWise(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertTypeId,editionTypeId,districtId,alertStatusIds);   
+			List<Long> enrollementYearIds = new ArrayList<Long>();
+			JSONArray enrollementYearIdsArr = jObj.getJSONArray("enrollementYearIds"); 
+			if (enrollementYearIdsArr != null && enrollementYearIdsArr.length() > 0) {
+				for (int i = 0; i < enrollementYearIdsArr.length(); i++){
+					enrollementYearIds.add(Long.parseLong(enrollementYearIdsArr.getString(i)));
+				}	
+			}
+			resultList = alertService.getAssignGroupTypeAlertDtlsByImpactLevelWise(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertTypeId,editionTypeId,districtId,alertStatusIds,enrollementYearIds);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getAssignGroupTypeAlertDtlsByImpactLevelWise() of CreateAlertAction",e);
 		}
@@ -1105,10 +1112,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			for (int i = 0; i < statusArray.length(); i++){
 				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
 			}  
+			List<Long> enrollementYearIds = new ArrayList<Long>();
+			JSONArray enrollementYearIdsArr = jObj.getJSONArray("enrollementYearIds"); 
+			if (enrollementYearIdsArr != null && enrollementYearIdsArr.length() > 0) {
+				for (int i = 0; i < enrollementYearIdsArr.length(); i++){
+					enrollementYearIds.add(Long.parseLong(enrollementYearIdsArr.getString(i)));
+				}	
+			}
+			  
 			if(groupAssignType.equalsIgnoreCase("Party Committee")){
-				alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, publicRepresentativeTypeId,commitLvlIdList,groupAssignType,"",null,alertTypeId,editionTypeId,districtId,alertStatusIds);
+				alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, publicRepresentativeTypeId,commitLvlIdList,groupAssignType,"",null,alertTypeId,editionTypeId,districtId,alertStatusIds,enrollementYearIds);
 			}else{
-				alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, publicRepresentativeTypeId,null,groupAssignType,"",null,alertTypeId,editionTypeId,districtId,alertStatusIds);
+				alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, publicRepresentativeTypeId,null,groupAssignType,"",null,alertTypeId,editionTypeId,districtId,alertStatusIds,enrollementYearIds);
 			}
 			   
 		}catch(Exception e) {  
@@ -1146,7 +1161,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			for (int i = 0; i < statusArray.length(); i++){
 				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
 			}  
-			alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, null,commitLvlIdList,groupAssignType,position,designationId,alertTypeId,editionTypeId,districtId,alertStatusIds);
+			List<Long> enrollementYearIds = new ArrayList<Long>();
+			JSONArray enrollementYearIdsArr = jObj.getJSONArray("enrollementYearIds"); 
+			if (enrollementYearIdsArr != null && enrollementYearIdsArr.length() > 0) {
+				for (int i = 0; i < enrollementYearIdsArr.length(); i++){
+					enrollementYearIds.add(Long.parseLong(enrollementYearIdsArr.getString(i)));
+				}	
+			}
+			alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, null,commitLvlIdList,groupAssignType,position,designationId,alertTypeId,editionTypeId,districtId,alertStatusIds,enrollementYearIds);
 			
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getDesigWiseTdpCommitAlertCount() of CreateAlertAction",e);
@@ -1169,7 +1191,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;	
 	}
 	public String getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(){
-		try{//sfd
+		try{
 			session = request.getSession();
 			jObj = new JSONObject(getTask());
 			Long stateId = jObj.getLong("stateId");
@@ -1190,7 +1212,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			for (int i = 0; i < statusArray.length(); i++){
 				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
 			}  
-			resultList = alertService.getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(activityMemberId,stateId,fromDate,toDate,scopeIdList,resultType,alertTypeId,editionTypeId,districtId,alertStatusIds);   
+			List<Long> enrollementYearIds = new ArrayList<Long>();
+			JSONArray enrollementYearIdsArr = jObj.getJSONArray("enrollementYearIds"); 
+			if (enrollementYearIdsArr != null && enrollementYearIdsArr.length() > 0) {
+				for (int i = 0; i < enrollementYearIdsArr.length(); i++){
+					enrollementYearIds.add(Long.parseLong(enrollementYearIdsArr.getString(i)));
+				}	
+			}
+			resultList = alertService.getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(activityMemberId,stateId,fromDate,toDate,scopeIdList,resultType,alertTypeId,editionTypeId,districtId,alertStatusIds,enrollementYearIds);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getOtherAndPrgrmCmmtteeTypeAlertCndtDtls() of CreateAlertAction",e);
 		}
@@ -1352,7 +1381,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			for (int i = 0; i < statusArray.length(); i++){
 				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
 			}  
-			alertVOs = alertService.getMemForPartyCommitDesg(fromDate,toDate,stateId,scopeIdList,activityMemberId,commitLvlIdList,commitTypeId,designationId,alertTypeId,editionId,districtId,alertStatusIds);   
+			List<Long> enrollementYearIds = new ArrayList<Long>();
+			JSONArray enrollementYearIdsArr = jObj.getJSONArray("enrollementYearIds"); 
+			if (enrollementYearIdsArr != null && enrollementYearIdsArr.length() > 0) {
+				for (int i = 0; i < enrollementYearIdsArr.length(); i++){
+					enrollementYearIds.add(Long.parseLong(enrollementYearIdsArr.getString(i)));
+				}	
+			}
+			alertVOs = alertService.getMemForPartyCommitDesg(fromDate,toDate,stateId,scopeIdList,activityMemberId,commitLvlIdList,commitTypeId,designationId,alertTypeId,editionId,districtId,alertStatusIds,enrollementYearIds);   
 		}catch(Exception e) {      
 			LOG.error("Exception occured in getMemForPartyCommitDesg() of CreateAlertAction",e);  
 		}
@@ -1387,7 +1423,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long alertTypeId = jObj.getLong("alertTypeId");
 			Long editionId = jObj.getLong("editionTypeId");
 			Long districtId = jObj.getLong("districtId");
-			alertCoreDashBoardVOs = alertService.getAlertDtlsAssignedByPartyCommite(fromDate,toDate,stateId,scopeIdList,activityMemberId,commitLvlIdList,commitTypeId,designationId,cadreId,alertStatusIds,alertTypeId,editionId,districtId);   
+			List<Long> enrollementYearIds = new ArrayList<Long>();
+			JSONArray enrollementYearIdsArr = jObj.getJSONArray("enrollementYearIds"); 
+			if (enrollementYearIdsArr != null && enrollementYearIdsArr.length() > 0) {
+				for (int i = 0; i < enrollementYearIdsArr.length(); i++){
+					enrollementYearIds.add(Long.parseLong(enrollementYearIdsArr.getString(i)));
+				}	
+			}
+			alertCoreDashBoardVOs = alertService.getAlertDtlsAssignedByPartyCommite(fromDate,toDate,stateId,scopeIdList,activityMemberId,commitLvlIdList,commitTypeId,designationId,cadreId,alertStatusIds,alertTypeId,editionId,districtId,enrollementYearIds);   
 		}catch(Exception e) {        
 			LOG.error("Exception occured in getAlertDtlsAssignedByPartyCommite() of CreateAlertAction",e);  
 		}

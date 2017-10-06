@@ -5281,9 +5281,15 @@ var globalImages;
 	  var globalselectedUserType='STATE';
 	  var globalState = 'AP';
 	  
+	  //This enrollementYearIds is used in alert block
+	  var enrollementYearIds = getTdpCadreEnrollementYearIds();
+	  var globalEnrollementyearIdArr = enrollementYearIds;
+	  
+	  
 	   var globalBasicCommitteeIdsArray = []; //basicCommitteeIdsArray
 	  getCheckedBasicCommitteeIds();
 	  
+	 
 	$(document).ready(function(){
 		//Main header remove
 		//$(".eventsheader").hide();
@@ -5526,7 +5532,13 @@ var globalImages;
 	   </c:forEach>
 	   return loggedInUserAccessLevelValues;
 	}
-
+    function getTdpCadreEnrollementYearIds(){
+		var enrollementIdValues = [];
+		<c:forEach items="${alertOverviewVO.enrollementIdList}" var="enrollement">
+		  enrollementIdValues.push( ${enrollement.id} );        
+	   </c:forEach>
+	   return enrollementIdValues;
+	}
 $(document).on("click",".moreTrainingCampBlocksIcon",function(){
 	if($("#switchButtonId").hasClass("showCls")){ 
 		$(".trainingDetailedBlock").hide();  
