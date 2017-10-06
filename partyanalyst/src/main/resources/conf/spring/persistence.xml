@@ -1330,6 +1330,7 @@
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaJobResponse</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaGroupDocumentType</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaGroupDocument</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaResponderType</value>
 				  </list>
 			
 		</property>
