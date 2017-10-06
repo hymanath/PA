@@ -990,10 +990,10 @@ ul li[menu-levelname='panchayat']:after .active
 }
 .progressCustom {
     background-color: rgb(211, 211, 211);
-    height: 5px;
+    height: 14px;
     margin-bottom: 0;
-    margin-top: 8px;
     width: 150px;
+	border-radius:2px;
 	display:inline-block;
 	margin-left:10px;
 }
@@ -1025,4 +1025,7 @@ ul li[menu-levelname='panchayat']:after .active
 }
 .openPostClickCls{
 	cursor:pointer;
+}
+.tableborderNomiPost tbody tr td{
+	border:none !important;
 }

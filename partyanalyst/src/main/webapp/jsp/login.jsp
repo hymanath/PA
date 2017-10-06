@@ -42,7 +42,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">      
 
 	<!-- YUI Dependency files (End) -->
-	<style>
+<style>
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,500i,600,600i');
 body
 {
@@ -59,8 +59,7 @@ body
 	position:absolute;	
 	-webkit-animation: zoomIn 2s linear;
 			animation: zoomIn 2s linear;
-	animation-delay:1s;
-	transform:scale(0.3);
+	transform:scale(2.4) translate(-22%,0px);
 }
 @media (max-width: 768px) {
 	.loginblock
@@ -87,210 +86,48 @@ body
 }
 @keyframes zoomIn {
 	5% {
-		transform:scale(0.3);
-		left:-0%;
+		transform:scale(2.4) translate(-60%,0px);
 	}
 	10% {
-		transform:scale(0.4);
-		left:-0.5%;
+		transform:scale(2.4) translate(-57%,0px);
 	}
 	15% {
-		transform:scale(0.5);
-		left:-1.5%;
+		transform:scale(2.4) translate(-54%,0px);
 	}
 	20% {
-		transform:scale(0.6);
-		left:-3%;
+		transform:scale(2.4) translate(-51%,0px);
 	}	
 	25% {
-		transform:scale(0.7);
-		left:-4.5%;
+		transform:scale(2.4) translate(-48%,0px);
 	}	
 	30% {
-		transform:scale(0.8);
-		left:-6%;
+		transform:scale(2.4) translate(-45%,0px);
 	}
 	35% {
-		transform:scale(0.9);
-		left:-7.5%;
+		transform:scale(2.4) translate(-42%,0px);
 	}
 	40% {
-		transform:scale(1.1);
-		left:-9%;
+		transform:scale(2.4) translate(-39%,0px);
 	}
 	45%,50% {
-		transform:scale(1.4);
-		left:-10.5%;
+		transform:scale(2.4) translate(-36%,0px);
 	}
 	
 	55% {
-		transform:scale(1.7);
-		left:-12%;
+		transform:scale(2.4) translate(-33%,0px);
 	}
 	60% {
-		transform:scale(1.9);
-		left:-13.5%;
+		transform:scale(2.4) translate(-30%,0px);
 	}
 	65% {
-		transform:scale(2.1);
-		left:-15%;
+		transform:scale(2.4) translate(-27%,0px);
 	}
 	70%,100% {
-		transform:scale(2.4);
-		left:-16.5%;
+		transform:scale(2.4) translate(-24%,0px);
 	}
 	to
 	{
-		transform:scale(2.4);
-		left:-18%;
-	}
-}
-@-webkit-keyframes zoomIn {
-	5% {
-		-webkit-transform:scale(0.3);
-		transform:scale(0.3);
-		left:-0%;
-	}
-	10% {
-		-webkit-transform:scale(0.4);
-		transform:scale(0.4);
-		left:-1.5%;
-	}
-	15% {
-		-webkit-transform:scale(0.5);
-		transform:scale(0.5);
-		left:-3.5%;
-	}
-	20% {
-		-webkit-transform:scale(0.6);
-		transform:scale(0.6);
-		left:-6%;
-	}	
-	25% {
-		-webkit-transform:scale(0.7);
-		transform:scale(0.7);
-		left:-8.5%;
-	}	
-	30% {
-		-webkit-transform:scale(0.8);
-		transform:scale(0.8);
-		left:-12%;
-	}
-	35% {
-		-webkit-transform:scale(0.9);
-		transform:scale(0.9);
-		left:-14.5%;
-	}
-	40% {
-		-webkit-transform:scale(1.1);
-		transform:scale(1.1);
-		left:-18%;
-	}
-	45%,50% {
-		-webkit-transform:scale(1.4);
-		transform:scale(1.4);
-		left:-20.5%;
-	}
-	
-	55% {
-		-webkit-transform:scale(1.7);
-		transform:scale(1.7);
-		left:-24%;
-	}
-	60% {
-		-webkit-transform:scale(1.9);
-		transform:scale(1.9);
-		left:-26.5%;
-	}
-	65% {
-		-webkit-transform:scale(2.1);
-		transform:scale(2.1);
-		left:-30%;
-	}
-	70%,100% {
-		-webkit-transform:scale(2.4);
-		transform:scale(2.4);
-		left:-32.5%;
-	}
-	to
-	{
-		-webkit-transform:scale(2.4);
-		transform:scale(2.4);
-		left:-36%;
-	}
-}
-@-moz-keyframes zoomIn {
-	5% {
-		-moz-transform:scale(0.3);
-		transform:scale(0.3);
-		left:-0%;
-	}
-	10% {
-		-moz-transform:scale(0.4);
-		transform:scale(0.4);
-		left:-1.5%;
-	}
-	15% {
-		-moz-transform:scale(0.5);
-		transform:scale(0.5);
-		left:-3%;
-	}
-	20% {
-		-moz-transform:scale(0.6);
-		transform:scale(0.6);
-		left:-4.5%;
-	}	
-	25% {
-		-moz-transform:scale(0.7);
-		transform:scale(0.7);
-		left:-6%;
-	}	
-	30% {
-		-moz-transform:scale(0.8);
-		transform:scale(0.8);
-		left:-7.5%;
-	}
-	35% {
-		-moz-transform:scale(0.9);
-		transform:scale(0.9);
-		left:-9%;
-	}
-	40% {
-		-moz-transform:scale(1.1);
-		transform:scale(1.1);
-		left:-10.5%;
-	}
-	45%,50% {
-		-moz-transform:scale(1.4);
-		transform:scale(1.4);
-		left:-12.5%;
-	}
-	
-	55% {
-		-moz-transform:scale(1.7);
-		transform:scale(1.7);
-		left:-14%;
-	}
-	60% {
-		-moz-transform:scale(1.9);
-		transform:scale(1.9);
-		left:-16.5%;
-	}
-	65% {
-		-moz-transform:scale(2.1);
-		transform:scale(2.1);
-		left:-20%;
-	}
-	70%,100% {
-		-moz-transform:scale(2.4);
-		transform:scale(2.4);
-		left:-22.5%;
-	}
-	to
-	{
-		-moz-transform:scale(2.4);
-		transform:scale(2.4);
-		left:-24%;
+		transform:scale(2.4) translate(-22%,0px);
 	}
 }
 
@@ -373,7 +210,7 @@ body
 {
 	animation-name: leftToRight;
     animation-duration: 2s;
-	animation-delay:4.2s;
+	animation-delay:3s;
 }
 @keyframes leftToRight {
     from {
@@ -642,7 +479,7 @@ PARTY" class="cls-5" transform="translate(-2299 2069)"><tspan x="0" y="0">TELUGU
 	}
 },2000); */
 setTimeout(function(){
-	$("#circle-image").css("transform","scale(2.4) translate(-22%,0px)");
+	//$("#circle-image").css("transform","scale(2.4) translate(-22%,0px)");
 	//$("#circle-image").css("transform","translate(-40,0)");
 	$(".loginblock").addClass("show");
 	$(".loginblock").addClass(" animated fadeInUp");
