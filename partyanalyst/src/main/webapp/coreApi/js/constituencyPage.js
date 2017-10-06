@@ -254,7 +254,7 @@ function onLoadAjaxCalls()
 	
 	//getDepartmentWisePostAndApplicationDetails(); //Click open Post 
 	//getLevelWisePostsOverView(); //level wise post overView
-	
+	//getLevelWiseGoIssuedPostions();//goIssuedCLick
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
 	
@@ -5520,4 +5520,23 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 		}
 		
 	}
+  function getLevelWiseGoIssuedPostions(){
+	var jsObj={
+      "fromDateStr" : globalFromDate,
+      "toDateStr":globalToDate,
+      "locationValuesArr":[2],
+      "locationTypeId":1,
+      "year":"",
+      "boardLevelId":0,
+	  "statusIds":[4]
+	  }
+    $.ajax({   
+      type:'GET',
+      url:'getLevelWiseGoIssuedPostionsAction.action',  
+      dataType: 'json',
+      data: {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+      
+    });
   }
+  
