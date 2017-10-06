@@ -13,6 +13,11 @@
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+<style>
+	.landing-menu li:hover{
+		cursor:pointer;
+	}
+</style>
 </head>
 <body>
 <header>
@@ -88,7 +93,7 @@
 					<img src="Assests/img/Group 2352.png" >
 					<h4 style="display: inline-block;">FUND MANAGMENT SYSTEM</h4>
 					<div class=" " style="text-align: right">
-						<h2 class="fundMngmntSstmOverAchvmntAllCls" style="margin-top: 0px"></h2>
+						<h2 class="fundMngmntSstmOverAchvmntAllCls" style="margin-top: 0px"><span></span></h2>
 						<p class="">TOTAL FUNDS</p>
 					</div>
 					<div class="block-footer">
