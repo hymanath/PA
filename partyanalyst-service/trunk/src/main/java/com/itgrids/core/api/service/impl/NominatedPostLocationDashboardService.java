@@ -64,6 +64,12 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
 	}
+	
+	/**
+	 * @param List<NominatedPostCandidateDtlsVO> returnList
+	 * @author Hymavathi 
+	 *  @since 4-OCT-2017
+	 */
 	public List<NominatedPostCandidateDtlsVO> getNominatedPositionWiseCandidates(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLvlId
 			,Long startIndex,Long endIndex){
 		List<NominatedPostCandidateDtlsVO> finalList = new CopyOnWriteArrayList<NominatedPostCandidateDtlsVO>();
@@ -104,7 +110,11 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 		}
 		return finalList;
 	}
-	
+	/**
+	 * @param List<NominatedPostCandidateDtlsVO> returnList
+	 * @author Hymavathi 
+	 *  @since 4-OCT-2017
+	 */
 	public List<NominatedPostCandidateDtlsVO> getLevelWisePostsOverView(List<Long> locationValues,String fromDateStr,String toDateStr,Long locationTypeId,Long boardLevelId){
 		List<NominatedPostCandidateDtlsVO> finalList =new ArrayList<NominatedPostCandidateDtlsVO>();
 		try{
@@ -186,7 +196,11 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 		
 		return finalList;
 	}
-	
+	/**
+	 * @param List<NominatedPostCandidateDtlsVO> returnList
+	 * @author Hymavathi 
+	 *  @since 5-OCT-2017
+	 */
 	public List<NominatedPostDetailsVO> getDepartmentWisePostAndApplicationDetails(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLevelId,Long deptId){
 		List<NominatedPostDetailsVO> returnsList = new ArrayList<NominatedPostDetailsVO>();
 		try{
