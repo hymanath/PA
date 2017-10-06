@@ -52,11 +52,11 @@
 						<h5>PANCHAYATI RAJ</h5>
 					</li>
 					<li id="rwsMenu" class="m_top5">
-						<img src="Assests/img/Group 2355.png" alt="">
+						<img src="Assests/img/Path 232.png" alt="">
 						<h5>RURAL DEVELOPMENT</h5>
 					</li>
 					<li id="ruralDevelopmentMenu" class="m_top5">
-						<img src="Assests/img/Path 232.png" alt="">
+						<img src="Assests/img/Group 2355.png" alt="">
 						<h5>RURAL WATER SUPPLY</h5>
 					</li>
 					<li id="itecMenu" class="m_top5">
