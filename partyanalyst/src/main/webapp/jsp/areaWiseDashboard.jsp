@@ -545,7 +545,7 @@
 			<div class="modal-header" style="background-color:#CCCCCC">
 				<div class="row" >
 					<div class="col-md-8">
-						<h3 class="modal-title text-capitalize" id="" >Open Posts Details</h3>
+						<h4 class="modal-title text-capitalize panel-title theme-title-color" id="openPostTitleId" >Title</h4>
 					</div>
 					<div class="col-sm-3 pull-right">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

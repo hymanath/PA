@@ -1025,7 +1025,18 @@ ul li[menu-levelname='panchayat']:after .active
 }
 .openPostClickCls{
 	cursor:pointer;
+	text-decoration:underline;
+	font-weight:bold;
 }
 .tableborderNomiPost tbody tr td{
 	border:none !important;
+}
+.tableStyledGoIssued thead tr th, .tableStyledGoIssued tbody tr td{
+	font-size:12px !important;
+}
+.nominatedLevelWisePostsSlick li{
+	border-left: 1px solid #d3d3d3;
+}
+.nominatedLevelWisePostsSlick li:last-child{
+	border-left: none;
 }
