@@ -3798,7 +3798,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				 
 				 if(commonMethodsUtilService.isMapValid(locationsMap)){
 					 for (Map.Entry<Long, NominatedPostDetailsVO> entry : locationsMap.entrySet()) {
-						 NominatedPostDetailsVO vo = getMatchedVO1(returnList,entry.getValue().getId());
+						 NominatedPostDetailsVO vo = getMatchedVO2(returnList,entry.getValue().getId());
 						 if(vo == null ){
 							 returnList.add(entry.getValue());
 						 }
@@ -4238,7 +4238,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			 
 			 if(commonMethodsUtilService.isMapValid(locationsMap)){
 				 for (Map.Entry<Long, NominatedPostDetailsVO> entry : locationsMap.entrySet()) {
-					 NominatedPostDetailsVO vo = getMatchedVO1(returnVO.getSubList(),entry.getValue().getId());
+					 NominatedPostDetailsVO vo = getMatchedVO2(returnVO.getSubList(),entry.getValue().getId());
 					 if(vo == null ){
 						 returnVO.getSubList().add(entry.getValue());
 					 }
@@ -4621,7 +4621,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		}
 		return retrunVO;
 	}
-	public NominatedPostDetailsVO getMatchedVO1(List<NominatedPostDetailsVO> list,Long id){
+	public NominatedPostDetailsVO getMatchedVO2(List<NominatedPostDetailsVO> list,Long id){
 		try{
 			if(list != null && list.size() > 0){
 				for(NominatedPostDetailsVO param : list){
