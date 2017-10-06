@@ -1040,3 +1040,10 @@ ul li[menu-levelname='panchayat']:after .active
 .nominatedLevelWisePostsSlick li:last-child{
 	border-left: none;
 }
+.dt-button
+{
+	background: linear-gradient(35deg, #ff1c5e, #ffc012) !important;
+    color: #fff !important;
+    border: 0px !important;
+    padding:0.5em 1em !important;
+}
