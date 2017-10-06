@@ -437,6 +437,9 @@
 					</div>  
 				</div>
 			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -556,6 +559,9 @@
 					</div>  
 				</div>
 			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -568,7 +574,7 @@
 						<h3 class="modal-title text-capitalize" id="deptHeadingId" >Title</h3>
 					</div>
 					<div class="col-sm-3 pull-right">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</div>
 				</div>
 			</div>
@@ -578,6 +584,9 @@
 						<div id="departmentDetailsModalDivId"></div>
 					</div>  
 				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
