@@ -1809,7 +1809,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		}
 		return query.list();
 	}
-	public List<Object[]> getPartyCommitteeTypeAlertDtls(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionTypeList,Long districtId,List<Long> alertStatusIds){
+	public List<Object[]> getPartyCommitteeTypeAlertDtls(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionTypeList,Long districtId,List<Long> alertStatusIds,List<Long> enrollementYearIds){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select distinct model.alert.alertStatus.alertStatusId,model.alert.alertId,model.tdpCadre.tdpCadreId " +
 		  				  " from AlertAssigned model,TdpCommitteeMember model1 " +
@@ -1830,7 +1830,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 			 }*/
 			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		 }
-		 
+		 if (enrollementYearIds != null && enrollementYearIds.size() > 0) {
+			 queryStr.append(" and model1.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in (:enrollementYearIds)");
+		 }
 	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		  queryStr.append(" and model.alert.userAddress.state.stateId in (:userAccessLevelValues)");  
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -1879,6 +1881,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 	    }
 		if(alertStatusIds != null && alertStatusIds.size() > 0){
 			  query.setParameterList("alertStatusIds", alertStatusIds);
+		}
+		if (enrollementYearIds != null && enrollementYearIds.size() > 0) {
+			 query.setParameterList("enrollementYearIds", enrollementYearIds);
 		}
 		return query.list();
 	}
@@ -2232,7 +2237,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		return query.executeUpdate();
 	}
 
-	public List<Object[]> getTdpBasicCommiteeTypeAndAlertStatusByAlertCnt(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> tdpBasicCommiteeIds,String step,List<Long> alertTypeList,List<Long> editionTypeList,Long districtId,List<Long> alertStatusIds){
+	public List<Object[]> getTdpBasicCommiteeTypeAndAlertStatusByAlertCnt(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> tdpBasicCommiteeIds,String step,List<Long> alertTypeList,List<Long> editionTypeList,Long districtId,List<Long> alertStatusIds,List<Long> enrollementYearIds){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select  model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
 		  				  " model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,");
@@ -2260,6 +2265,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 			 }*/
 			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		 }
+		 
+		 if (enrollementYearIds != null && enrollementYearIds.size() > 0) {
+	    	 queryStr.append(" and model1.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in (:enrollementYearIds)");
+	     }
 		 if(tdpBasicCommiteeIds != null && tdpBasicCommiteeIds.size() > 0){
 			 queryStr.append(" and model1.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in(:tdpBasicCommiteeIds)");
 		 }
@@ -2321,9 +2330,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		if(alertStatusIds != null && alertStatusIds.size() > 0){
 			query.setParameterList("alertStatusIds", alertStatusIds);
  		}
+		 if (enrollementYearIds != null && enrollementYearIds.size() > 0) {
+			 query.setParameterList("enrollementYearIds", enrollementYearIds);
+	     }
 		return query.list();  
 	}
-	public List<Object[]> getTdpCommitteeRolesByAlertCnt(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> tdpCommitteeLevelIds,Long tdpBasicCommitteeId,String step,List<Long> alertTypeList,List<Long> editionTypeList,Long districtId,List<Long> alertStatusIds){
+	public List<Object[]> getTdpCommitteeRolesByAlertCnt(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> tdpCommitteeLevelIds,Long tdpBasicCommitteeId,String step,List<Long> alertTypeList,List<Long> editionTypeList,Long districtId,List<Long> alertStatusIds,List<Long> enrollementYearIds){
 	      
 	    StringBuilder queryStr = new StringBuilder();
 	      queryStr.append(" select  model1.tdpCommitteeRole.tdpRoles.tdpRolesId," +
@@ -2351,6 +2363,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 					queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
 			 }*/
 	       queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
+	     }
+	     if (enrollementYearIds != null && enrollementYearIds.size() > 0) {
+	    	 queryStr.append(" and model1.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in (:enrollementYearIds)");
 	     }
 	     if(tdpCommitteeLevelIds != null && tdpCommitteeLevelIds.size() > 0){
 	       queryStr.append(" and model1.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in(:tdpCommitteeLevelIds)");
@@ -2421,6 +2436,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		if(alertStatusIds != null && alertStatusIds.size() > 0){
 			query.setParameterList("alertStatusIds", alertStatusIds); 
  		}
+		if (enrollementYearIds != null && enrollementYearIds.size() > 0) {
+			query.setParameterList("enrollementYearIds", enrollementYearIds); 
+	     }
 	    return query.list();  
 	  }
 	
@@ -2632,7 +2650,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		 }
 		return query.list();
 	}
-	public List<Object[]> getMemForPartyCommitDesg(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, List<Long> impactLevelIds, Date fromDate, Date toDate, List<Long> tdpCommitteeLevelIds, Long tdpBasicCommitteeId, Long designationId, String step,List<Long> alertTypeList, List<Long> editionList,Long districtId,List<Long> alertStatusIds){
+	public List<Object[]> getMemForPartyCommitDesg(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, List<Long> impactLevelIds, Date fromDate, Date toDate, List<Long> tdpCommitteeLevelIds, Long tdpBasicCommitteeId, Long designationId, String step,List<Long> alertTypeList, List<Long> editionList,Long districtId,List<Long> alertStatusIds,List<Long> enrollementYearIds){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select  model.tdpCadre.tdpCadreId," +  
 	                	" model.tdpCadre.firstname,");
@@ -2661,6 +2679,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 			}*/
 			queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		}
+		 if (enrollementYearIds != null && enrollementYearIds.size() > 0) {
+			 queryStr.append(" and model1.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in (:enrollementYearIds)");
+		 }
 		if(tdpCommitteeLevelIds != null && tdpCommitteeLevelIds.size() > 0){
 			queryStr.append(" and model1.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in(:tdpCommitteeLevelIds)");
 		}
@@ -2733,9 +2754,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		if(alertStatusIds != null && alertStatusIds.size() > 0){
  			query.setParameterList("alertStatusIds", alertStatusIds);
  		}
+		if (enrollementYearIds != null && enrollementYearIds.size() > 0) {
+			 query.setParameterList("enrollementYearIds", enrollementYearIds);
+		}
 	    return query.list();    
 	}//imp
-	public List<Object[]> getAlertDtlsAssignedByPartyCommite(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, List<Long> impactLevelIds, Date fromDate, Date toDate, List<Long> tdpCommitteeLevelIds, Long cadreId, Long tdpBasicCommitteeId, Long designationId,List<Long> alertStatusIds,List<Long> alertTypeList,List<Long> editionList,Long districtId){
+	public List<Object[]> getAlertDtlsAssignedByPartyCommite(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, List<Long> impactLevelIds, Date fromDate, Date toDate, List<Long> tdpCommitteeLevelIds, Long cadreId, Long tdpBasicCommitteeId, Long designationId,List<Long> alertStatusIds,List<Long> alertTypeList,List<Long> editionList,Long districtId,List<Long> enrollementYearIds){
 		StringBuilder queryStr = new StringBuilder(); 
 		queryStr.append(" select distinct ");       
 		queryStr.append(" alert.alertId, " +//0
@@ -2795,6 +2819,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		if(alertStatusIds != null && alertStatusIds.size() > 0l){  
 			queryStr.append(" and alertStatus.alertStatusId in(:alertStatusIds) ");  
 		}
+		
 		if(stateId != null && stateId.longValue() > 0l){
 			queryStr.append(" and state.stateId=:stateId ");  
 		}
@@ -2807,6 +2832,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		    }*/
 			queryStr.append(" and alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		}
+		 if (enrollementYearIds != null && enrollementYearIds.size() > 0) {
+			 queryStr.append(" and model1.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in (:enrollementYearIds)");
+		 }
 		if(tdpCommitteeLevelIds != null && tdpCommitteeLevelIds.size() > 0){
 			queryStr.append(" and model1.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in(:tdpCommitteeLevelIds)");
 		}
@@ -2872,6 +2900,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		}
 		if(districtId != null && districtId.longValue() > 0){
 		  query.setParameter("districtId", districtId);	
+		}
+		if (enrollementYearIds != null && enrollementYearIds.size() > 0) {
+			 query.setParameterList("enrollementYearIds", enrollementYearIds);  
 		}
 	    return query.list();
 	}

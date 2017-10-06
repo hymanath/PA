@@ -20,6 +20,7 @@ public class TdpCommitteeEnrollment {
 	private String description;
 	private Date fromDate;
 	private Date toDate;
+	private String isActive;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -57,6 +58,14 @@ public class TdpCommitteeEnrollment {
 	
 	public void setToDate(Date toDate) {
 		this.toDate = toDate;
+	}
+	@Column(name = "is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
 	}
 	
 	

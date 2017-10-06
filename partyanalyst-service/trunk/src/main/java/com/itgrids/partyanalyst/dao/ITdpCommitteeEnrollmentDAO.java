@@ -8,5 +8,6 @@ import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 
 public interface ITdpCommitteeEnrollmentDAO  extends GenericDao<TdpCommitteeEnrollment, Long>{
 	public List<Object[]> getCadreCommitteYearsList();
+    public List<Object[]> getTdpCadreEnrollmentYear();
 
 }
