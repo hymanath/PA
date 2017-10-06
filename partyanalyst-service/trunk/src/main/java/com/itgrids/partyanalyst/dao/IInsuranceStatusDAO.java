@@ -37,4 +37,6 @@ public interface IInsuranceStatusDAO extends GenericDao<InsuranceStatus, Long>{
     public List<Object[]> getGrivenceTrustStatusCounts(Date fromDate,Date toDate,Long locationTypeId,List<Long> locationValues,String year,Long yearId);
 	public List<String> getGrivenceStatus();
 	public List<Object[]> grievanceInsuranceStatusId();
+	
+	public List<Object[]> getConstituencyWiseInsuranceWiseIssueTypeCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId);
 }
