@@ -975,8 +975,12 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 				userDataVO.setSubList(committeeDataVOList);
 			}
 			 List<AlertOverviewVO> resultList = alertService.getAlertStatus(0l);
+			 List<AlertOverviewVO> enrollementList = alertService.getTdpCadreEnrollementYearIds();
 			 if(resultList != null && resultList.size() > 0){
 				 alertOverviewVO.getSubList().addAll(resultList);	 
+			 }
+			 if (enrollementList != null && enrollementList.size() > 0) {
+				 alertOverviewVO.setEnrollementIdList(enrollementList);
 			 }
 		}catch(Exception e) {
 			LOG.error("Exception raised at execute() in CoreDashBoard Action class", e);
