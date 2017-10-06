@@ -2386,11 +2386,11 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 				
 				if(boardLevelId != null && boardLevelId.longValue() > 0L){
 			     	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
-			     		  builder.append(" and nominatedPost.nominatedPostMember.boardLevelId =:boardLevelId ");
+			     		  builder.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
 			     	   else if(boardLevelId.longValue() ==5L)
-			     		  builder.append(" and nominatedPost.nominatedPostMember.boardLevelId in (5,6) ");
+			     		  builder.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
 			     	  else if(boardLevelId.longValue() ==7L)
-			     		 builder.append(" and nominatedPost.nominatedPostMember.boardLevelId in (7,8) ");
+			     		 builder.append(" and model.nominatedPostMember.boardLevelId in (7,8) ");
 				      }
 				if(statusIds != null && statusIds.size() >0){
 					builder.append(" and model.nominatedPostStatus.nominatedPostStatusId in (:statusIds) ");
@@ -2425,6 +2425,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 				}
 				if(statusIds != null && statusIds.size() >0){
 					query.setParameterList("statusIds", statusIds);
+				}
+				if(boardLevelId != null && boardLevelId.longValue() > 0L){
+			     	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
+			     		  query.setParameter("boardLevelId", boardLevelId);
 				}
 		
 		return query.list();

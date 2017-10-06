@@ -3794,20 +3794,21 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				 }
 				 List<Object[]> analysisReport = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,type,statusIds);
 				 setLocationWiseNominatedPostAnalysisData(returnList,analysisReport,"positionWise");
+				 Map<Long, NominatedPostDetailsVO> locationsMap = getTemplateForLocations( locationValues, searchLvlId,"positionWise")	;
+				 
+				 if(commonMethodsUtilService.isMapValid(locationsMap)){
+					 for (Map.Entry<Long, NominatedPostDetailsVO> entry : locationsMap.entrySet()) {
+						 NominatedPostDetailsVO vo = getMatchedVO1(returnList,entry.getValue().getId());
+						 if(vo == null ){
+							 returnList.add(entry.getValue());
+						 }
+					}
+				 }
 			}else{
 				 List<Object[]> analysisReport = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,type,statusIds);
 				 setLocationWiseNominatedPostAnalysisData(returnList,analysisReport,"positionWise");
 			}
-			 Map<Long, NominatedPostDetailsVO> locationsMap = getTemplateForLocations( locationValues, searchLvlId)	;
 			 
-			 if(commonMethodsUtilService.isMapValid(locationsMap)){
-				 for (Map.Entry<Long, NominatedPostDetailsVO> entry : locationsMap.entrySet()) {
-					 NominatedPostDetailsVO vo = getMatchedVO(returnList,entry.getValue().getId());
-					 if(vo == null ){
-						 returnList.add(vo);
-					 }
-				}
-			 }
 			 
 		}catch (Exception e) {
 			 e.printStackTrace();
@@ -3817,7 +3818,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		 return returnList;
 	 }
 	 
-	public Map<Long, NominatedPostDetailsVO> getTemplateForLocations(List<Long> locationValues,Long searchLvlId){
+	public Map<Long, NominatedPostDetailsVO> getTemplateForLocations(List<Long> locationValues,Long searchLvlId,String type){
 		Map<Long, NominatedPostDetailsVO> returnMap = new HashMap<Long, NominatedPostDetailsVO>();
 		try{
 			List<LocationWiseBoothDetailsVO> locations = null;
@@ -3826,20 +3827,27 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			}else if(searchLvlId != null && searchLvlId.longValue() == 10l){
 				locations = getAllConstituencyByParlimentId(locationValues.get(0).longValue());
 			}else if(searchLvlId != null && searchLvlId.longValue() == 4l){
-				CadreCommitteeService cadreCommitteeService = new CadreCommitteeService();
+				//CadreCommitteeService cadreCommitteeService = new CadreCommitteeService();
 				locations = cadreCommitteeService.getMandalsByConstituency(locationValues.get(0).longValue());
 			}else if(searchLvlId != null && searchLvlId.longValue() == 5l){
 				List<Long>  constituencyIdMan=tehsilDAO.getAllConstituenciesByTehilId(locationValues.get(0).longValue());
-				CadreCommitteeService cadreCommitteeService = new CadreCommitteeService();
+				//CadreCommitteeService cadreCommitteeService = new CadreCommitteeService();
 				if(commonMethodsUtilService.isListOrSetValid(constituencyIdMan))
 				locations = cadreCommitteeService.getPanchayatWardByMandalId(locationValues.get(0).toString(), constituencyIdMan.get(0).longValue());
 			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(locations)){
 				for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : locations) {
+					Map<Long,NominatedPostDetailsVO> positionMap = new HashMap<Long,NominatedPostDetailsVO>();
 					NominatedPostDetailsVO locationVO = new NominatedPostDetailsVO();
 					locationVO.setId(locationWiseBoothDetailsVO.getLocationId());
 					locationVO.setName(locationWiseBoothDetailsVO.getLocationName());
+					
+					if(type.equalsIgnoreCase("boardLevelWise"))
+						 getBoardLevels(positionMap);
+					 else
+						 getPositions(positionMap);
+					locationVO.getSubList().addAll(positionMap.values());
 					returnMap.put(locationWiseBoothDetailsVO.getLocationId(), locationVO);
 				}
 			}
@@ -4181,6 +4189,10 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		 if(levelId != null && levelId.longValue() == 4l){
 			 List<Object[]> candidateList = nominatedPostDAO.getAreaWiseDashboardCandidatesCountView(levelVals,levelId,statusIds,"muncipality");
 			  List<NominatedPostDetailsVO>  subList = new ArrayList<NominatedPostDetailsVO>();
+			  setLocationWiseNominatedPostAnalysisData(subList,candidateList,"boardLevelWise");
+			  if(subList != null && subList.size() > 0){
+				   returnVO.getSubList().addAll(subList);
+			   }
 		 }
 		  List<Object[]> candidateList = nominatedPostDAO.getAreaWiseDashboardCandidatesCountView(levelVals,levelId,statusIds,"");
 		  List<NominatedPostDetailsVO>  subList = new ArrayList<NominatedPostDetailsVO>();
@@ -4221,13 +4233,13 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 					returnVO.getList().add(entry.getValue());
 				}
 			}
-		   Map<Long, NominatedPostDetailsVO> locationsMap = getTemplateForLocations( levelVals, levelId)	;
+		   Map<Long, NominatedPostDetailsVO> locationsMap = getTemplateForLocations( levelVals, levelId,"boardLevelWise")	;
 			 
 			 if(commonMethodsUtilService.isMapValid(locationsMap)){
 				 for (Map.Entry<Long, NominatedPostDetailsVO> entry : locationsMap.entrySet()) {
-					 NominatedPostDetailsVO vo = getMatchedVO(returnVO.getSubList(),entry.getValue().getId());
+					 NominatedPostDetailsVO vo = getMatchedVO1(returnVO.getSubList(),entry.getValue().getId());
 					 if(vo == null ){
-						 returnVO.getSubList().add(vo);
+						 returnVO.getSubList().add(entry.getValue());
 					 }
 				}
 			 }
@@ -4608,7 +4620,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		}
 		return retrunVO;
 	}
-	public NominatedPostDetailsVO getMatchedVO(List<NominatedPostDetailsVO> list,Long id){
+	public NominatedPostDetailsVO getMatchedVO1(List<NominatedPostDetailsVO> list,Long id){
 		try{
 			if(list != null && list.size() > 0){
 				for(NominatedPostDetailsVO param : list){
