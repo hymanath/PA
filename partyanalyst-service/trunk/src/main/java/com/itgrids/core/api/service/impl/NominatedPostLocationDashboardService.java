@@ -289,9 +289,16 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 					vo.setBoard(commonMethodsUtilService.getStringValueForObject(param[5]));
 					vo.setPositionId(commonMethodsUtilService.getLongValueForObject(param[6]));
 					vo.setPosition(commonMethodsUtilService.getStringValueForObject(param[7]));
-					vo.setGender(commonMethodsUtilService.getStringValueForObject(param[8]));
+					if(commonMethodsUtilService.getStringValueForObject(param[8]).equalsIgnoreCase("M")){
+						vo.setGender("Male");	
+					}else if(commonMethodsUtilService.getStringValueForObject(param[8]).equalsIgnoreCase("F")){
+						vo.setGender("Female");
+					}
 					vo.setCasteCategory(commonMethodsUtilService.getStringValueForObject(param[9]));
-					vo.setDate(commonMethodsUtilService.getStringValueForObject(param[10]));
+					String goDateStr=commonMethodsUtilService.getStringValueForObject(param[10]);
+					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(commonMethodsUtilService.getStringValueForObject(param[10]));
+					String format = new SimpleDateFormat("MMM dd").format(date);
+					vo.setDate(format+","+goDateStr.substring(0,4));
 					finalList.add(vo);
 				}
 			}
