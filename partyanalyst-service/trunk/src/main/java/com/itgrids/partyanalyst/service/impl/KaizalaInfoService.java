@@ -791,7 +791,6 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						    	 
 						    	 ko.setKaizalaQuestionsId(kq.getKaizalaQuestionsId());
 						    	 ko.setTitle(optionArray.getJSONObject(j).getString("title"));
-						    	 ko.setKaizalaQuestionsId(kq.getKaizalaQuestionsId());
 						    	 kaizalaOptionsDAO.save(ko);
 						    }
 						}
@@ -1117,7 +1116,6 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							KER = kaizalaEventsResponseDAO.save(KER);
 							
 							kaizalaGroupResponderRelationDAO.updateMemberRemoved(KER.getKaizalaEventsResponseId(),id,KER.getAddedKaizalaResponderInfoId());
-							
 					}
 				}catch(Exception e){
 				   LOG.error("Exception raised at updateMemberRemovedInfo", e);

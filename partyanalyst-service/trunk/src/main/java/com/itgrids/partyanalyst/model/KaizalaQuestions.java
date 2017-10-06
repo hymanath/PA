@@ -84,11 +84,10 @@ public class KaizalaQuestions extends BaseModel implements Serializable {
 	public void setKaizalaActions(KaizalaActions kaizalaActions) {
 		this.kaizalaActions = kaizalaActions;
 	}
-
+	@Column(name="kaizala_events_response_id")
 	public Long getKaizalaEventsResponseId() {
 		return kaizalaEventsResponseId;
 	}
-	@Column(name="kaizala_events_response_id")
 	public void setKaizalaEventsResponseId(Long kaizalaEventsResponseId) {
 		this.kaizalaEventsResponseId = kaizalaEventsResponseId;
 	}
