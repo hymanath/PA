@@ -76,7 +76,7 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionName," +//7
 	 	 		   " model.nominatedPost.nominationPostCandidate.gender, " +//8
 	 	 		   " model.nominatedPost.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +//9
-	 	 		   " model.govtOrder.toDate " +//10
+	 	 		   " date(model.govtOrder.toDate) " +//10
 	 	 		   " from NominatedPostGovtOrder model where " +
 	 			   " model.nominatedPost.isDeleted = 'N' " +
 	 			   " and model.nominatedPost.isExpired = 'N' " +
