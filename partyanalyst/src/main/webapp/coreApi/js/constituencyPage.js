@@ -35,6 +35,7 @@ var electionYearsSubTypeArr=["MAIN","BYE"];
 //Tours And Meetings And Alerts Dates Start 
 var customStartATMDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
 var customEndATMDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
+var globalboardLevelId='';
 //Tours And Meetings And Alerts Dates End 
 // please do not try to edit these options which may cause the entire page to stop working. //end
 /* location Values Start*/
@@ -42,41 +43,50 @@ function onLoadLocValue()
 {
 	userAccessLevelValuesArray = [];
 	locationLevelVal = '';
+	globalboardLevelId='';
 	if(locationLevelId == '2')
 	{
 		locationLevelVal = stateId ;
 		userAccessLevelValuesArray.push(stateId)
+		globalboardLevelId =0;
 	}else if(locationLevelId == '3')
 	{
 		locationLevelVal = districtId;
 		userAccessLevelValuesArray.push(districtId)
+		globalboardLevelId =3;
 	}else if(locationLevelId == '10')
 	{
 		userAccessLevelValuesArray.push(parliamentId)
 		locationLevelVal = parliamentId 
+		globalboardLevelId =4;
 	}else if(locationLevelId == '4' || locationLevelId == '11' )
 	{
 		locationLevelId = '4';
 		locationLevelVal = constituencyId;
 		userAccessLevelValuesArray.push(constituencyId)
+		globalboardLevelId =4;
 	}else if(locationLevelId == '5' || locationLevelId == '12' )
 	{
 		locationLevelId = '5'
 		locationLevelVal = mandalId.substring(1,mandalId.length); 		
 		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length));
+		globalboardLevelId =5;
 	}else if(locationLevelId == '6' || locationLevelId == '13' )
 	{
 		locationLevelId = '6'
 		locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
 		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
+		globalboardLevelId =7;
 	}else if(locationLevelId == '7')
 	{
 		locationLevelVal = mandalId.substring(1,mandalId.length); 	
 		userAccessLevelValuesArray.push(mandalId.substring(1,mandalId.length))
+		globalboardLevelId =5;
 	}else if(locationLevelId == '8')
 	{
 		locationLevelVal = panchayatId.substring(1,panchayatId.length); 	
 		userAccessLevelValuesArray.push(panchayatId.substring(1,panchayatId.length))
+		globalboardLevelId =7;
 	}
 }
 /* location Values End*/
@@ -251,7 +261,6 @@ function onLoadAjaxCalls()
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
 	getLevelWisePostsOverView();
-	getLevelWiseGoIssuedPostions()
 	//getNominatedPositionWiseCandidates()//click function
 	
 	//Alerts
@@ -523,7 +532,6 @@ function onLoadClicks()
 			getNominatedPostApplicationDetails();
 			getNominatedPostStatusWiseCount();
 			getLevelWisePostsOverView();
-			getLevelWiseGoIssuedPostions()
 			//getNominatedPositionWiseCandidates()//click function
 		}else if(blockName == 'alerts')
 		{
@@ -845,17 +853,22 @@ function onLoadClicks()
 		var boardLevelId =  $(this).attr("attr_boardLevelId");
 		var type =  $(this).attr("attr_type");
 		var departmentName =  $(this).attr("attr_department_name");
+		var statusIds =  $(this).attr("attr_board_statusIds");
 		if(type == "open"){
 			$("#openPostModal").modal("show");
-		}else{
+			$("#openPostTitleId").html(departmentName+  "  Open Posts Details");
+			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
+		}else if(type == "goIssued"){
+			$("#openPostModal").modal("show");
+			$("#openPostTitleId").html(departmentName + "  G.O Issued Positions");
+			getLevelWiseGoIssuedPostions(boardLevelId,statusIds);
+			
+		}else if(type == "department"){
 			$("#departmentPostModal").modal("show");
 			$("#departmentDetailsModalDivId").html(spinner);
 			$("#deptHeadingId").html(departmentName+" Details");
-			
-		}
-		
-		getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type)
-		
+			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
+		}	
 	});
 	
 }
@@ -4247,10 +4260,10 @@ function getNominatedPostStatusWiseCount(){
 				str+='<li style="background-color:#FEEE99" class="f-12"><span class="statusBox" style="background-color:#FED501"></span>TOTAL POSTS<span class="count"><b>'+totalCount+'</b></span></li>';
 				for(var i in result){
 					if(result[i].name == "GO ISSUED"){
-						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>COMPLETED/G.O ISSUED<span class="count"><b>'+result[i].count+'</b></span></li>';
+						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'" ></span>COMPLETED/G.O ISSUED<span class="count openPostClickCls" attr_boardLevelId="'+globalboardLevelId+'" attr_type="goIssued" attr_department_name = "overAll" attr_board_statusIds="0">'+result[i].count+'</span></li>';
 					}else{
 						if(result[i].name == "OPEN"){
-							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count openPostClickCls" style="font-weight:bold;color: #337ab7;" attr_department_id="0" attr_boardLevelId="0" attr_type="open" attr_department_name = "">'+result[i].count+'</span></li>';
+							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count openPostClickCls" attr_department_id="0" attr_boardLevelId="'+globalboardLevelId+'" attr_type="open" attr_department_name = "">'+result[i].count+'</span></li>';
 						}else{
 							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count"><b>'+result[i].count+'</b></span></li>';
 						}
@@ -5354,12 +5367,13 @@ function getPartyWiseMPandMLACandidatesCounts(){
   }
   
 function getLevelWisePostsOverView(){
+	
 	var jsObj={
 			"fromDateStr" : globalFromDate,
 			"toDateStr":globalToDate,
-			"locationTypeId":2,
-			"locationValuesArr":[1],
-			"boardLevelId":1
+			"locationTypeId":locationLevelId,
+			"locationValuesArr":userAccessLevelValuesArray,
+			"boardLevelId":globalboardLevelId
 		}
 	 $.ajax({
       type : "POST",
@@ -5375,10 +5389,11 @@ function getLevelWisePostsOverView(){
 	function buildLevelWisePostsOverView(result){
 		var str='';
 		str+='<div class="levelWiseNominatedCss">';
-			str+='<div class="row">';
+			str+='<div class="">';
 				var colorsArr = ['#63CCB9','#994100','#ACCC63','#63CCB9','#994100','#ACCC63','#63CCB9','#994100','#ACCC63']
+				str+='<ul class="list-inline m_0 nominatedLevelWisePostsSlick">';
 				for(var i in result){
-					str+='<div class="col-sm-4 m_top20">';
+					str+='<li class="col-sm-4 m_top20">';
 						str+='<h5>'+result[i].board+' Level Posts</h5>';
 						str+='<table class="table m_top10 tableborderNomiPost">';
 							str+='<tr>';
@@ -5419,7 +5434,7 @@ function getLevelWisePostsOverView(){
 									str+='</div>';
 								str+='</td>';
 								str+='<td>';
-									str+='<span>'+result[i].goIsuuedCount+'</span>';
+									str+='<span class="openPostClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="4">'+result[i].goIsuuedCount+'</span>';
 								str+='</td>';
 							str+='</tr>';
 							str+='<tr>';
@@ -5433,16 +5448,48 @@ function getLevelWisePostsOverView(){
 									str+='</div>';
 								str+='</td>';
 								str+='<td>';
-									str+='<span>'+result[i].openCount+'</span>';
+									str+='<span class="openPostClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="open" attr_department_name = "'+result[i].board+' Level" attr_department_id="0">'+result[i].openCount+'</span>';
 								str+='</td>';
 							str+='</tr>';
 						str+='</table>';
-					str+='</div>';
+					str+='</li>';
 				}
 				str+='</div>';
 			
 		str+='</div>';
 		$("#levelWiseNominatedPosts").html(str);
+		$('.nominatedLevelWisePostsSlick').slick({
+			slide: 'li',
+			slidesToShow: 3,
+			slidesToScroll: 1,
+			infinite: false,
+			swipe:false,
+			touchMove:false,
+			variableWidth: false,
+			responsive: [
+				{
+					breakpoint: 1024,
+					settings: {
+						slidesToShow: 3,
+						slidesToScroll: 3,
+					}
+				},
+				{
+					breakpoint: 600,
+					settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					}
+				}
+			]
+		});
 		$('.progressCustom').tooltip()
 	}
   }
@@ -5451,14 +5498,16 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 		$("#openPostDetailsModalDivId").html(spinner);
 	}
 	
-	
+	if(boardLevelId == 2){
+		boardLevelId =0;
+	}
 	var jsObj={
 	  "fromDateStr" 		:globalFromDate,
       "toDateStr"			:globalToDate,
       "locationValuesArr"	:userAccessLevelValuesArray,
       "locationTypeId"		:locationLevelId,
       "year"				:"",
-      "boardLevelId"		:parseInt(boardLevelId),
+      "boardLevelId"		:boardLevelId,
 	  deptId				:parseInt(deptId)
 	  }
     $.ajax({   
@@ -5508,7 +5557,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 					for(var i in result){
 						str+='<tr>';
 							if(type =="open"){
-								str+='<td attr_department_name = "'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="0" class="openPostClickCls" attr_type="department" style="color: #337ab7;">'+result[i].name+'</td>';
+								str+='<td attr_department_name = "'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="'+globalboardLevelId+'" class="openPostClickCls" attr_type="department" style="color: #337ab7;font-weight:normaltext-decoration:none;">'+result[i].name+'</td>';
 							}else{
 								str+='<td>'+result[i].name+'</td>';
 							}
@@ -5571,17 +5620,25 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 	}
   }
   
-  function getLevelWiseGoIssuedPostions(){
-  var jsObj={
+  function getLevelWiseGoIssuedPostions(boardLevelId,statusId){
+	  $("#openPostDetailsModalDivId").html(spinner)
+	  
+	  var statusIds=[];
+	  if(statusId == 0){
+		  statusIds.push(3,4)
+	  }else{
+		  statusIds.push(statusId)
+	  }
+	  
+	var jsObj={
       fromDateStr 		:globalFromDate,
       toDateStr			:globalToDate,
       locationValuesArr	:userAccessLevelValuesArray,
       locationTypeId	:locationLevelId,
       year				:"",
-      boardLevelId		:0,   //level
-	  statusIds			:["3","4"],    // 3-complered 4 go
-      startIndex		:0,
-      endIndex			:100
+      boardLevelId		:boardLevelId, 
+	  statusIds			:statusIds // 3-complered 4 goIsuued
+     
     }
     $.ajax({   
       type:'GET',
@@ -5589,6 +5646,52 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
-      
+		if(result !=null && result.length>0){
+			return LevelWiseGoIssuedPostions(result);
+		}
+		
     });
+	function LevelWiseGoIssuedPostions(result){
+		var str='';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-condensed tableStyledGoIssued" id="dataTablegoIssuedPostId">';
+				str+='<thead class="bg-E9">';
+					str+='<tr>';
+						str+='<th class="text-center">Department</th>';
+						str+='<th class="text-center">Board/ Corporation</th>';
+						str+='<th class="text-center">Position Level</th>';
+						str+='<th class="text-center">Name</th>';
+						str+='<th class="text-center">Gender</th>';
+						str+='<th class="text-center">Caste Category</th>';
+						str+='<th class="text-center">G.O Validity</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';
+							str+='<td>'+result[i].department+'</td>';
+							str+='<td>'+result[i].board+'</td>';
+							str+='<td>'+result[i].position+'</td>';
+							str+='<td>'+result[i].candidateName+'</td>';
+							str+='<td>'+result[i].gender+'</td>';
+							str+='<td>'+result[i].casteCategory+'</td>';
+							if(result[i].date !=null && result[i].date.length>0){
+								str+='<td>'+result[i].date+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							
+						str+='</tr>';
+					}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		$("#openPostDetailsModalDivId").html(str);
+			$("#dataTablegoIssuedPostId").dataTable({
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
+		
+	}
   }
