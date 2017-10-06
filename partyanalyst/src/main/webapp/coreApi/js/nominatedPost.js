@@ -1,3 +1,44 @@
+
+	getAllNominatedStatusListLevelWiseDataDashBoard(); //1st block Call
+	getAreaWiseDashboardCandidatesCountView();//second block
+	getLocationWiseNominatedPostAnalysisDetails("ageGroup");
+	getLocationWiseNominatedPostAnalysisDetails("casteGroup");
+	getLocationWiseNominatedPostAnalysisDetails("subCaste");
+	getLocationWiseNominatedPostAnalysisDetails("mandal");
+	
+	function getAllNominatedStatusListLevelWiseDataDashBoard(){
+		var jsObj={
+			boardLevelId:2,  //state level 1 //parliament -4 or constituenct -4 // mandal Or muni -5 // panchayat/ward -7 //
+			levelValues:[1],
+			levelId:2
+		}
+		$.ajax({   
+			type:'GET',
+			url:'getAllNominatedStatusListLevelWiseDataDashBoardAction.action',  
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	}
+	
+	
+	function getAreaWiseDashboardCandidatesCountView(){
+		var jsObj={
+			levelValues:["282"],
+			levelId:4,
+			statusIds:[3,4]
+		}
+		$.ajax({   
+			type:'GET',
+			url:'getAreaWiseDashboardCandidatesCountViewAction.action',  
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	}
+
 getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails();
 function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(){
 	 var jobj = {
@@ -15,12 +56,8 @@ function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(){
 		});
   } 
  
- //getLocationWiseNominatedPostAnalysisDetails("ageGroup");
- //	getLocationWiseNominatedPostAnalysisDetails("casteGroup");
- //	getLocationWiseNominatedPostAnalysisDetails("subCaste");
- //getLocationWiseNominatedPostAnalysisDetails("mandal");
+ 
  function getLocationWiseNominatedPostAnalysisDetails(type){
-	alert(4)
 		var jsObj={
 			boardLevelId:4,
 			levelValues:["282"],
@@ -37,37 +74,5 @@ function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(){
 			
 		});
 	}
-	getAreaWiseDashboardCandidatesCountView();
-	function getAreaWiseDashboardCandidatesCountView(){
-	alert(5)
-		var jsObj={
-			levelValues:["282"],
-			levelId:4,
-			statusIds:[3,4]
-		}
-		$.ajax({   
-			type:'GET',
-			url:'getAreaWiseDashboardCandidatesCountViewAction.action',  
-			dataType: 'json',
-			data: {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			
-		});
-	}
-	getAllNominatedStatusListLevelWiseDataDashBoard();
-	function getAllNominatedStatusListLevelWiseDataDashBoard(){
-	alert(6);
-		var jsObj={
-			boardLevelId:2,
-			levelValues:[1],
-			levelId:2
-		}
-		$.ajax({   
-			type:'GET',
-			url:'getAllNominatedStatusListLevelWiseDataDashBoardAction.action',  
-			dataType: 'json',
-			data: {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			
-		});
-	}
+	
+	

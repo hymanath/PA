@@ -250,11 +250,10 @@ function onLoadAjaxCalls()
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
+	getLevelWisePostsOverView();
+	getLevelWiseGoIssuedPostions()
 	//getNominatedPositionWiseCandidates()//click function
 	
-	//getDepartmentWisePostAndApplicationDetails(); //Click open Post 
-	//getLevelWisePostsOverView(); //level wise post overView
-	//getLevelWiseGoIssuedPostions();//goIssuedCLick
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
 	
@@ -519,9 +518,13 @@ function onLoadClicks()
 			getLocationWiseCommitteesCount($("#enrolmentYears").val());
 		}else if(blockName == 'nominatedPosts')
 		{
+			// Nominated Posts
 			getPositionWiseMemberCount();
 			getNominatedPostApplicationDetails();
 			getNominatedPostStatusWiseCount();
+			getLevelWisePostsOverView();
+			getLevelWiseGoIssuedPostions()
+			//getNominatedPositionWiseCandidates()//click function
 		}else if(blockName == 'alerts')
 		{
 			getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
@@ -846,7 +849,9 @@ function onLoadClicks()
 			$("#openPostModal").modal("show");
 		}else{
 			$("#departmentPostModal").modal("show");
+			$("#departmentDetailsModalDivId").html(spinner);
 			$("#deptHeadingId").html(departmentName+" Details");
+			
 		}
 		
 		getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type)
@@ -4245,7 +4250,7 @@ function getNominatedPostStatusWiseCount(){
 						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>COMPLETED/G.O ISSUED<span class="count"><b>'+result[i].count+'</b></span></li>';
 					}else{
 						if(result[i].name == "OPEN"){
-							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count openPostClickCls" style="font-weight:bold;" attr_department_id="0" attr_boardLevelId="0" attr_type="open" attr_department_name = "">'+result[i].count+'</span></li>';
+							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count openPostClickCls" style="font-weight:bold;color: #337ab7;" attr_department_id="0" attr_boardLevelId="0" attr_type="open" attr_department_name = "">'+result[i].count+'</span></li>';
 						}else{
 							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count"><b>'+result[i].count+'</b></span></li>';
 						}
@@ -5369,47 +5374,86 @@ function getLevelWisePostsOverView(){
 	
 	function buildLevelWisePostsOverView(result){
 		var str='';
-		for(var i in result){
-			str+='<div class="col-sm-4 levelWiseNominatedCss">';
-				str+='<h5>'+result[i].board+' Level Posts</h5>';
-					str+='<h5>Recived Applications';
-						str+='<span class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].recivedCount+'">';
-							  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].recivedCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result[i].recivedCount+'px;">';
-							  str+='</div>';
-							str+='</span>';
-							str+='<span>'+result[i].recivedCount+'</span>';
-					str+='</h5>';
-					str+='<h5>Total Posts';
-						str+='<span class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].totalPosts+'">';
-							  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].totalPosts+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result[i].totalPosts+'px;">';
-							  str+='</div>';
-							str+='</span>';
-							str+='<span>'+result[i].totalPosts+'</span>';
-					str+='</h5>';
-					str+='<h5>G.O Issued';
-						str+='<span class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].goIsuuedCount+'">';
-							  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].goIsuuedCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result[i].goIsuuedCount+'px;">';
-							  str+='</div>';
-							str+='</span>';
-							str+='<span>'+result[i].goIsuuedCount+'</span>';
-					str+='</h5>';
-					str+='<h5>Open Posts';
-						str+='<span class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].openCount+'">';
-							  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].openCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result[i].openCount+'px;">';
-							  str+='</div>';
-							str+='</span>';
-							str+='<span>'+result[i].openCount+'</span>';
-					str+='</h5>';
-			str+='</div>';
-		}
+		str+='<div class="levelWiseNominatedCss">';
+			str+='<div class="row">';
+				var colorsArr = ['#63CCB9','#994100','#ACCC63','#63CCB9','#994100','#ACCC63','#63CCB9','#994100','#ACCC63']
+				for(var i in result){
+					str+='<div class="col-sm-4 m_top20">';
+						str+='<h5>'+result[i].board+' Level Posts</h5>';
+						str+='<table class="table m_top10 tableborderNomiPost">';
+							str+='<tr>';
+								str+='<td class="text-right">';
+									str+='<p class="f-12">Received Applications</p>';
+								str+='</td>';
+								str+='<td>';
+									str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].totalRecePer+' %">';
+										  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].recivedCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result[i].totalRecePer+'%;background-color:'+colorsArr[i]+'">';
+										  str+='</div>';
+									str+='</div>';
+								str+='</td>';
+								str+='<td>';
+									str+='<span>'+result[i].recivedCount+'</span>';
+								str+='</td>';
+							str+='<tr>';
+								str+='<td class="text-right">';
+									str+='<p class="f-12">Total Posts</p>';
+								str+='</td>';
+								str+='<td>';
+									str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].totalPer+' %">';
+										str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].totalPosts+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result[i].totalPer+'%;background-color:'+colorsArr[i]+'">';
+										str+='</div>';
+									str+='</div>';
+								str+='</td>';
+								str+='<td>';
+									str+='<span>'+result[i].totalPosts+'</span>';
+								str+='</td>';
+							str+='</tr>';
+							str+='<tr>';
+								str+='<td class="text-right">';
+									str+='<p class="f-12">G.O Issued</p>';
+								str+='</td>';
+								str+='<td>';
+									str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].goIssuedPer+' %">';
+										  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].goIsuuedCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result[i].goIssuedPer+'%;background-color:'+colorsArr[i]+'">';
+										  str+='</div>';
+									str+='</div>';
+								str+='</td>';
+								str+='<td>';
+									str+='<span>'+result[i].goIsuuedCount+'</span>';
+								str+='</td>';
+							str+='</tr>';
+							str+='<tr>';
+								str+='<td class="text-right">';
+									str+='<p class="f-12">Open Posts</p>';
+								str+='</td>';
+								str+='<td>';
+									str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].openPostPer+' %">';
+										  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].openCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result[i].openPostPer+'%;background-color:'+colorsArr[i]+'">';
+										  str+='</div>';
+									str+='</div>';
+								str+='</td>';
+								str+='<td>';
+									str+='<span>'+result[i].openCount+'</span>';
+								str+='</td>';
+							str+='</tr>';
+						str+='</table>';
+					str+='</div>';
+				}
+				str+='</div>';
+			
+		str+='</div>';
 		$("#levelWiseNominatedPosts").html(str);
 		$('.progressCustom').tooltip()
 	}
   }
 function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
+	if(type == "open"){
+		$("#openPostDetailsModalDivId").html(spinner);
+	}
+	
+	
 	var jsObj={
-		
-      "fromDateStr" 		:globalFromDate,
+	  "fromDateStr" 		:globalFromDate,
       "toDateStr"			:globalToDate,
       "locationValuesArr"	:userAccessLevelValuesArray,
       "locationTypeId"		:locationLevelId,
@@ -5463,7 +5507,12 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 				str+='<tbody>';
 					for(var i in result){
 						str+='<tr>';
-							str+='<td attr_department_name = "'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="0" class="openPostClickCls" attr_type="department">'+result[i].name+'</td>';
+							if(type =="open"){
+								str+='<td attr_department_name = "'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="0" class="openPostClickCls" attr_type="department" style="color: #337ab7;">'+result[i].name+'</td>';
+							}else{
+								str+='<td>'+result[i].name+'</td>';
+							}
+							
 							
 							if(result[i].totalCount !=null && result[i].totalCount>0){
 								str+='<td class="openPostColor text-center">'+result[i].totalCount+'</td>';
@@ -5520,17 +5569,20 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 		}
 		
 	}
-}
+  }
+  
   function getLevelWiseGoIssuedPostions(){
-	var jsObj={
-      "fromDateStr" : globalFromDate,
-      "toDateStr":globalToDate,
-      "locationValuesArr":[2],
-      "locationTypeId":1,
-      "year":"",
-      "boardLevelId":0,
-	  "statusIds":[4]
-	  }
+  var jsObj={
+      fromDateStr 		:globalFromDate,
+      toDateStr			:globalToDate,
+      locationValuesArr	:userAccessLevelValuesArray,
+      locationTypeId	:locationLevelId,
+      year				:"",
+      boardLevelId		:0,   //level
+	  statusIds			:["3","4"],    // 3-complered 4 go
+      startIndex		:0,
+      endIndex			:100
+    }
     $.ajax({   
       type:'GET',
       url:'getLevelWiseGoIssuedPostionsAction.action',  
@@ -5540,4 +5592,3 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
       
     });
   }
-  

@@ -751,6 +751,8 @@
 		<pattern>/areaWiseDashboardAction*</pattern>
 		<pattern>/govtPartyCoreDashboardAction*</pattern>
 		<pattern>/doorToDoorCampaignDashboardAction*</pattern>
+		<pattern>/areaWiseDashboardDetailedViewAction*</pattern>
+		
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">
