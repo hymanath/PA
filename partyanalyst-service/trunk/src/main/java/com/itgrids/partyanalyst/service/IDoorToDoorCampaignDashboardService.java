@@ -20,4 +20,6 @@ public interface IDoorToDoorCampaignDashboardService {
 	
 	public DoorCampaignDashboardVO getUserAccessLevelIdsAndValues(DoorToDoorInputVO inputVO);
 	public List<DoorCampaignDashboardVO> getUserWiseCountsFrLoginUser(DoorToDoorInputVO inputVO);
+	
+	public List<DoorCampaignDashboardVO> getAssignedConstituenciesForUser(DoorToDoorInputVO inputVO);
 }
