@@ -3968,12 +3968,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			    	list.add(7l);
 			    	list.add(8l);
 			    }
-			    else if(boardLevelId==4l){
+			    else if(boardLevelId==4l|| levelId==10l){
 			    	list.add(4l);
 			    	list.add(5l);
 			    	list.add(6l);
 			    	list.add(7l);
 			    	list.add(8l);
+			    	
 			    }
 			    else if(boardLevelId==5l){
 			    	list.add(5l);
@@ -3994,7 +3995,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			    	list.add(8l);	
 			    }
 			    
-			   if(levelId == 3l){
+			   /*if(levelId == 3l){
 		    	        List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(levelValues);
 		    	        levelValues.clear();
 		    	      for (Object[] objects2 : locationValuesObj) {
@@ -4003,7 +4004,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		    	          }
 		    	        }
 		    	     // levelId=4l;
-		      }else if(levelId == 10l){
+		      }else*/ if(levelId == 10l){
 		    		   levelValues = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(levelValues);
 		    	    }
 		    	   
@@ -4326,9 +4327,9 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			List<Long> delimitationConstituency = new ArrayList<Long>();
 			List<Object[]> localBodies = new ArrayList<Object[]>();
 			List<Object[]> panchayatsList =null;
-			 List<Object[]> parlimentsList =null;
-			 List<Object[]> constituencyList =null;
-		       List<Long> newDistrictArr = new ArrayList<Long>();
+			List<Object[]> parlimentsList =null;
+			List<Object[]> constituencyList =null;
+		    List<Long> newDistrictArr = new ArrayList<Long>();
 		      Long[] ids = IConstants.AP_NEW_DISTRICTS_IDS;
 		      for (Long param : ids) {
 		        newDistrictArr.add(param);
