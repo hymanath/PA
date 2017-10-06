@@ -28,6 +28,7 @@ public class KaizalaGroupResponderRelation {
 	private Long kaizalaResponderInfoId;
 	private String groupName;
 	private String isDeleted;
+	private Long kaizalaEventsResponseId;
 	
 	private KaizalaGroups kaizalaGroups;
 	private KaizalaResponderInfo kaizalaResponderInfo;
@@ -104,6 +105,11 @@ public class KaizalaGroupResponderRelation {
 	public void setKaizalaResponderInfo(KaizalaResponderInfo kaizalaResponderInfo) {
 		this.kaizalaResponderInfo = kaizalaResponderInfo;
 	}
-	
-	
+	@Column(name="kaizala_events_response_id")
+	public Long getKaizalaEventsResponseId() {
+		return kaizalaEventsResponseId;
+	}
+	public void setKaizalaEventsResponseId(Long kaizalaEventsResponseId) {
+		this.kaizalaEventsResponseId = kaizalaEventsResponseId;
+	}
 }

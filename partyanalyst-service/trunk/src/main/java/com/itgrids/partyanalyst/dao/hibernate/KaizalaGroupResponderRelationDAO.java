@@ -14,6 +14,13 @@ public class KaizalaGroupResponderRelationDAO extends GenericDaoHibernate<Kaizal
 	public KaizalaGroupResponderRelationDAO() {
 		super(KaizalaGroupResponderRelation.class); 
 	}
-		
-
+	public int updateMemberRemoved(Long eventResponseId,Long kaizalaGroupsId,Long responderInfoId){
+	    Query query = getSession().createQuery(" update KaizalaGroupResponderRelation model set model.isDeleted='Y', model.kaizalaEventsResponseId =:eventResponseId  " +
+	        " where model.kaizalaGroupsId =:kaizalaGroupsId and model.kaizalaResponderInfoId =:responderInfoId " );
+	    
+	    query.setParameter("kaizalaGroupsId", kaizalaGroupsId);
+	    query.setParameter("eventResponseId", eventResponseId);
+	    query.setParameter("responderInfoId", responderInfoId);
+	    return query.executeUpdate();
+	  }
 }
