@@ -2393,26 +2393,31 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		   
 		    sb.append("select count(model.nominatedPostId),model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId from  NominatedPost model  where model.isDeleted ='N' and model.nominatedPostMember.isDeleted='N'"); 		        
 
-			 if(levelId != null && levelId.longValue() > 0l && levelValues != null && levelValues.size() > 0){	
-			        if(levelId.longValue() == 4l){
-			        	sb.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:levelValues) ");
-			        }else if(levelId.longValue() == 3l){
-			        	sb.append(" and model.nominatedPostMember.address.district.districtId in(:levelValues) ");
-			        }else if(levelId.longValue() == 5l){
-			        	sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId in(:levelValues) ");
-			        }else if(levelId.longValue() == 7l){
-			        	sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId in(:levelValues) ");
-			        }
-			    }
-		    // if(boardLevelId != null && boardLevelId.size() > 0L){
-        	 //  if(boardLevelId.size()!=5L)
+		    if (levelId != null && levelValues != null && levelValues.size()>0) {
+		        if (levelId == 2) {
+		          sb.append(" and model.nominatedPostMember.address.state.stateId in(:levelValues) ");
+		          sb.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		        } else if (levelId == 3) {
+		         sb.append(" and model.nominatedPostMember.address.district.districtId in(:levelValues) ");
+		       } else if (levelId == 10) {
+		         sb.append(" and model.nominatedPostMember.address.parliamentConstituency.constituencyId in(:levelValues) ");
+		       } else if (levelId == 4) {
+		         sb.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:levelValues) ");
+		       } else if (levelId == 5) {
+		         sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId in(:levelValues) ");
+		       }else if (levelId == 6) {
+		         sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId in(:levelValues) ");
+		       }else if (levelId == 7) {
+		         sb.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:levelValues) ");
+		       }else if (levelId == 8) {
+		         sb.append(" and model.nominatedPostMember.address.ward.constituencyId in(:levelValues) ");
+		     }    
+		     }
+		    
 			 if(boardLevelIds !=  null && boardLevelIds.size() > 0){
         		   sb.append(" and model.nominatedPostMember.boardLevelId  in (:boardLevelIds) ");
 			 }
-        	 //  else
-        		//   sb.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
-		    // }
-		     
+        	 	     
 		     sb.append(" group by model.nominatedPostStatusId, model.nominatedPostMember.boardLevelId");
 		     
 		     Query query = getSession().createQuery(sb.toString());
@@ -2440,22 +2445,26 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		}
 		   builder.append(" from NominatedPost model  ");
 			builder.append(" where model.isDeleted = 'N' and model.isExpired = 'N' and model.nominationPostCandidate.isDeleted = 'N' " );
-			if(searchLevelId != null && searchLevelId.longValue()>0L){
-				if((searchLevelId.longValue() == 1L))
-					builder.append(" and model.nominationPostCandidate.address.country.countryId  = 1 ");
-				else if((searchLevelId.longValue() == 2L) && locationValues != null && locationValues.size()>0)
-					builder.append(" and model.nominationPostCandidate.address.state.stateId  in (:locationValue) ");
-				else if(searchLevelId.longValue() ==3L && locationValues != null && locationValues.size()>0)
-					builder.append(" and model.nominationPostCandidate.address.district.districtId in (:locationValue) ");
-				else if(searchLevelId.longValue() ==4L  && locationValues != null && locationValues.size()>0)
-					builder.append(" and model.nominationPostCandidate.address.constituency.constituencyId in (:locationValue) ");
-				else if(searchLevelId.longValue() ==5L  && locationValues != null && locationValues.size()>0)
-					builder.append(" and model.nominationPostCandidate.address.tehsil.tehsilId in (:locationValue) ");
-				else if(searchLevelId.longValue() ==6L  && locationValues != null && locationValues.size()>0)
-					builder.append(" and model.nominationPostCandidate.address.localElectionBody.localElectionBodyId in (:locationValue) ");
-				else if(searchLevelId.longValue() ==7L  && locationValues != null && locationValues.size()>0)
-					builder.append(" and model.nominationPostCandidate.address.panchayatId in (:locationValue) ");
-			}
+			if (searchLevelId != null && locationValues != null && locationValues.size()>0) {
+		        if (searchLevelId == 2) {
+		        	builder.append(" and model.nominatedPostMember.address.state.stateId in(:locationValues) ");
+		        	builder.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		        } else if (searchLevelId == 3) {
+		        	builder.append(" and model.nominatedPostMember.address.district.districtId in(:locationValues) ");
+		       } else if (searchLevelId == 10) {
+		    	   builder.append(" and model.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValues) ");
+		       } else if (searchLevelId == 4) {
+		    	   builder.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:locationValues) ");
+		       } else if (searchLevelId == 5) {
+		    	   builder.append(" and model.nominatedPostMember.address.tehsil.tehsilId in(:locationValues) ");
+		       }else if (searchLevelId == 6) {
+		    	   builder.append(" and model.nominatedPostMember.address.panchayat.panchayatId in(:locationValues) ");
+		       }else if (searchLevelId == 7) {
+		    	   builder.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValues) ");
+		       }else if (searchLevelId == 8) {
+		    	   builder.append(" and model.nominatedPostMember.address.ward.constituencyId in(:locationValues) ");
+		     }    
+		     }
 			if(statusIdsList != null && statusIdsList.size()>0){
 				builder.append(" and model.nominatedPostStatusId in(:statusIdsList)");
 			}
@@ -2466,7 +2475,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			}
 			Query query = getSession().createQuery(builder.toString());
 			if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
-				query.setParameterList("locationValue", locationValues);
+				query.setParameterList("locationValues", locationValues);
 			}
 			if(statusIdsList != null && statusIdsList.size()>0){
 				query.setParameterList("statusIdsList", statusIdsList);
@@ -2483,22 +2492,26 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		   builder.append(" model.nominationPostCandidate.gender ");
 		    builder.append(" from NominatedPost model left join model.nominationPostCandidate.address.tehsil tehsil ");
 		    builder.append(" where model.isDeleted = 'N' and model.isExpired = 'N' and model.nominatedPostMember.isDeleted = 'N' " );
-		    if(searchLevelId != null && searchLevelId.longValue()>0L){
-		      if((searchLevelId.longValue() == 1L))
-		        builder.append(" and model.nominationPostCandidate.address.country.countryId  = 1 ");
-		      else if((searchLevelId.longValue() == 2L) && locationValues != null && locationValues.size()>0)
-		        builder.append(" and model.nominationPostCandidate.address.state.stateId  in (:locationValue) ");
-		      else if(searchLevelId.longValue() ==3L && locationValues != null && locationValues.size()>0)
-		        builder.append(" and model.nominationPostCandidate.address.district.districtId in (:locationValue) ");
-		      else if(searchLevelId.longValue() ==4L  && locationValues != null && locationValues.size()>0)
-		        builder.append(" and model.nominationPostCandidate.address.constituency.constituencyId in (:locationValue) ");
-		      else if(searchLevelId.longValue() ==5L  && locationValues != null && locationValues.size()>0)
-		        builder.append(" and model.nominationPostCandidate.address.tehsil.tehsilId in (:locationValue) ");
-		      else if(searchLevelId.longValue() ==6L  && locationValues != null && locationValues.size()>0)
-		        builder.append(" and model.nominationPostCandidate.address.localElectionBody.localElectionBodyId in (:locationValue) ");
-		      else if(searchLevelId.longValue() ==7L  && locationValues != null && locationValues.size()>0)
-		        builder.append(" and model.nominationPostCandidate.address.panchayatId in (:locationValue) ");
-		    }
+		    if (searchLevelId != null && locationValues != null && locationValues.size()>0) {
+		        if (searchLevelId == 2) {
+		        	builder.append(" and model.nominatedPostMember.address.state.stateId in(:locationValues) ");
+		        	builder.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		        } else if (searchLevelId == 3) {
+		        	builder.append(" and model.nominatedPostMember.address.district.districtId in(:locationValues) ");
+		       } else if (searchLevelId == 10) {
+		    	   builder.append(" and model.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValues) ");
+		       } else if (searchLevelId == 4) {
+		    	   builder.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:locationValues) ");
+		       } else if (searchLevelId == 5) {
+		    	   builder.append(" and model.nominatedPostMember.address.tehsil.tehsilId in(:locationValues) ");
+		       }else if (searchLevelId == 6) {
+		    	   builder.append(" and model.nominatedPostMember.address.panchayat.panchayatId in(:locationValues) ");
+		       }else if (searchLevelId == 7) {
+		    	   builder.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValues) ");
+		       }else if (searchLevelId == 8) {
+		    	   builder.append(" and model.nominatedPostMember.address.ward.constituencyId in(:locationValues) ");
+		     }    
+		     }
 		    if(statusIds != null && statusIds.size() >0){
 				builder.append(" and model.nominatedPostStatus.nominatedPostStatusId in (:statusIds) ");
 			}
@@ -2506,7 +2519,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		    		"model.nominatedPostMember.boardLevelId,model.nominationPostCandidate.gender ");
 		    Query query = getSession().createQuery(builder.toString());
 		    if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
-		      query.setParameterList("locationValue", locationValues);
+		      query.setParameterList("locationValues", locationValues);
 		    }
 		    if(statusIds != null && statusIds.size() >0){
 				query.setParameterList("statusIds", statusIds);
