@@ -77,11 +77,11 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	 		   " model.nominatedPost.nominationPostCandidate.gender, " +//8
 	 	 		   " model.nominatedPost.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +//9
 	 	 		   " model.govtOrder.toDate " +//10
-	 	 		   " from NominatedPostGovtOrder model " +
+	 	 		   " from NominatedPostGovtOrder model where " +
 	 			   " model.nominatedPost.isDeleted = 'N' " +
 	 			   " and model.nominatedPost.isExpired = 'N' " +
 	 			   " and model.nominatedPost.nominatedPostMember.isDeleted = 'N' " +
-	 			   " and model.isDeleted = 'N' and model.isExpired = 'N' and model.govtOrder.isExpired ='N' ");
+	 			   " and model.isDeleted = 'N' and model.isExpired = 'N' and model.govtOrder.isDeleted ='N' ");
 	 	 
 	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
 	 		 	if(locationTypeId == 2l){
@@ -151,7 +151,7 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 		 query.setDate("startDate",startDate);
 	 		 query.setDate("endDate",endDate);
 	 	 }
-	 	if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
+	 	if(boardLevelId.longValue() >0l && boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
 	 		query.setParameter("boardLevelId", boardLevelId);
 	 	if(statusIds != null && statusIds.size()>0){
 	 		query.setParameterList("statusIds", statusIds);
