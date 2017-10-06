@@ -1,5 +1,5 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-
+//var subSpinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="subSpinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var imagesObj = {
 "PRIS":"Group 2344.png","DRAINS":"Group 2345.png","LED MONITORING":"Group 2348.png","UGD":"Group 2359.png","RDP":"Group 2343.png","FUND MANAGMENT SYSTEM":"Group 2352.png","ENGINEERING DEPARTMENT":"Group 2346.png","PANACHAYATI RAJ EXPENDITURE":"Group 2343.png","SPIKE ANALYSIS":"Group 2347.png","MGNREGS":"Group 2357.png","RURAL DEVELOPMENT":"Group 2349.png","RURAL WATER SUPPLY":"Group 2350.png","ITEC":"Group 2351.png"
 }
@@ -211,7 +211,7 @@ function onloadCallToGetAllBlockAchievent () {
 }
 
 function getPrisOverAllAchievd(){
-		 $(".prisOverAchvmntAllCls").html("0%");
+		 $(".prisOverAchvmntAllCls").html(spinner);
 		var locationType='district';
 		var locationId=0;
 		var json = {
@@ -231,6 +231,7 @@ function getPrisOverAllAchievd(){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
+			$(".prisOverAchvmntAllCls").html("0%");
 			if( result != null){
 				if(result.achievedOverallpercent != null && result.achievedOverallpercent > 0){
 					$(".prisOverAchvmntAllCls").html(result.achievedOverallpercent+"%");
@@ -240,7 +241,7 @@ function getPrisOverAllAchievd(){
 	}
 	
   function getDrainsInfoStateWise(){
-	$(".drainsOverAchvmntAllCls").html("0%");
+	$(".drainsOverAchvmntAllCls").html(spinner);
 	var json = {
 			fromDate : "01-01-2002",
 			toDate : gblEndDate,
@@ -257,6 +258,7 @@ function getPrisOverAllAchievd(){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
+			$(".drainsOverAchvmntAllCls").html("0%");
 			if(result != null){
 				if(result.percentage != null && result.percentage > 0){
 					$(".drainsOverAchvmntAllCls").html(result.percentage+"%");
@@ -267,7 +269,7 @@ function getPrisOverAllAchievd(){
 
 var gblSpikeFmsITCEndDate = moment().format('DD/MM/YYYY');
 function getTotalSpikeCases(){
-	 $(".spikeOverAchvmntAllCls").html(0); 
+	 $(".spikeOverAchvmntAllCls").html(spinner); 
 	var diseasesIdArr=[];
 	diseasesIdArr.push(1);  
 	diseasesIdArr.push(2);
@@ -286,6 +288,7 @@ function getTotalSpikeCases(){
       xhr.setRequestHeader("Content-Type", "application/json");
       },
       success : function(ajaxresp){
+		  $(".spikeOverAchvmntAllCls").html(0);
 		  if(ajaxresp != null && ajaxresp.length > 0){
 			 $(".spikeOverAchvmntAllCls").html(ajaxresp[0].count);
 		  }
@@ -294,7 +297,7 @@ function getTotalSpikeCases(){
 }
 
 function getTotalPrExpenditure(){
-	$(".preOverAchvmntAllCls").html(0);
+	$(".preOverAchvmntAllCls").html(spinner);
 	var json = {
 	    filterType:"",
 		locationIds:[]
@@ -309,6 +312,7 @@ function getTotalPrExpenditure(){
       xhr.setRequestHeader("Content-Type", "application/json");
       },
       success : function(ajaxresp){
+		  $(".preOverAchvmntAllCls").html(0);
 		  if(ajaxresp != null){
 			 $(".preOverAchvmntAllCls").html(ajaxresp.grossAmount);
 		  }
@@ -317,7 +321,7 @@ function getTotalPrExpenditure(){
 }
 
 function getBasicLedOverviewDetails(){
-	 $(".ledOverAchvmntAllCls").html(0);	
+	 $(".ledOverAchvmntAllCls").html(spinner);	
 	var locationType="";
 	var locationValue=0;
 	var json = {
@@ -336,6 +340,7 @@ function getBasicLedOverviewDetails(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		 $(".ledOverAchvmntAllCls").html(0);
 		if (result != null ) {
 		  $(".ledOverAchvmntAllCls").html(result[0].totalLights);
 		}
@@ -344,7 +349,7 @@ function getBasicLedOverviewDetails(){
 
 function getHabitationCoverageByStatusByState()
 {
-	 $(".rwsOverAchvmntAllCls").html("0"+"%");
+	 $(".rwsOverAchvmntAllCls").html(spinner);
 	 var fullyCoveredHabitationPer=0;
 			var json = {
 				fromDateStr:"01-01-1977",
@@ -366,6 +371,7 @@ function getHabitationCoverageByStatusByState()
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(response){
+					$(".rwsOverAchvmntAllCls").html("0"+"%");
 					if(response !=null && response.length>0){
 						for(var i in response){
 						  for(var j in response[i].statusList){
@@ -381,7 +387,7 @@ function getHabitationCoverageByStatusByState()
 }
 
   function getALlProgramesAmountDetails(){
-	  $(".fundMngmntSstmOverAchvmntAllCls").html(0);
+	  $(".fundMngmntSstmOverAchvmntAllCls").html(spinner);
 		var json = {
 			financialYrIdList:[0],
 			deptIdsList : [0],
@@ -402,6 +408,7 @@ function getHabitationCoverageByStatusByState()
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success : function(result){  
+			$(".fundMngmntSstmOverAchvmntAllCls").html(0);
 				if(result !=null && result.length>0){
 					var  totalAmount = 0;
 					for(var i in result){
@@ -422,7 +429,7 @@ function getHabitationCoverageByStatusByState()
 	}
 	
  function getMeesevaSLAOverviewDtls(){
-	 $(".itecOverAchvmntAllCls").html(0);
+	 $(".itecOverAchvmntAllCls").html(spinner);
 	 var totalTransaction = 0;
 	 var json = {
 	    fromDate:"01/01/1997",
@@ -440,6 +447,7 @@ function getHabitationCoverageByStatusByState()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$(".itecOverAchvmntAllCls").html(0);
 		if (result != null && result.length>0) {
 			for(var i in result){
 				if(result[i].name == "TOTAL TRANSACTIONS"){
@@ -453,7 +461,7 @@ function getHabitationCoverageByStatusByState()
 var nregsDate = moment().format('YYYY-MM-DD');
 function getNregsLabourBudgetOverAllAchievent()
 {
-	$(".mgnregsOverAchvmntAllCls").html("0"+"%");
+	$(".mgnregsOverAchvmntAllCls").html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : "2016-04-31",
@@ -474,6 +482,7 @@ function getNregsLabourBudgetOverAllAchievent()
 		  xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
+			$(".mgnregsOverAchvmntAllCls").html("0"+"%");
 			var labourBudgetPer=0;
 			if(ajaxresp != null && ajaxresp.length > 0){
 				for(var i in ajaxresp){
@@ -489,7 +498,7 @@ function getNregsLabourBudgetOverAllAchievent()
 	
 function getRuralDevelopmentAllAchievent()
 {
-	$(".rdOverAchvmntAllCls").html("0%")
+	$(".rdOverAchvmntAllCls").html(spinner);
 	 var json = {
 		year : "2017",
 		fromDate : "2016-04-31",
@@ -509,6 +518,7 @@ function getRuralDevelopmentAllAchievent()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
+			$(".rdOverAchvmntAllCls").html("0%");
 			if(ajaxresp != null && ajaxresp.length > 0){
 				for(var i in ajaxresp){
 					if (ajaxresp[i].percSant != null && ajaxresp[i].percSant>0) {
