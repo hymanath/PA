@@ -783,7 +783,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						    kq.setKaizalaEventsResponseId(KER.getKaizalaEventsResponseId());
 						    kq.setIsDeleted("N");
 						    
-						    kaizalaQuestionsDAO.save(kq).getKaizalaQuestionsId();
+						    kq = kaizalaQuestionsDAO.save(kq);
 						    
 						    JSONArray optionArray = queArray.getJSONObject(i).getJSONArray("options");
 						    for (int j=0; j < optionArray.length(); j++) {
