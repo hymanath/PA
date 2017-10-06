@@ -1341,4 +1341,343 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		return query.list();
 	}
 	
+	public List<Object[]> getGrivenceIssueTypeCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sbm = new StringBuilder();
+		StringBuilder sbe = new StringBuilder();
+		StringBuilder sbg = new StringBuilder();
+		sb.append(" SELECT");
+		sbm.append(" FROM complaint_master CM,district D,constituency C,tdp_cadre_enrollment_year tcey,state S ");
+		sbe.append(" WHERE  CM.type_of_issue IN('Govt','Party','Welfare') and "
+				+ " CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') and CM.issue_type is not null ");
+		sbg.append(" GROUP BY ");
+		if(locationTypeId!=null && locationTypeId==2l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append(" S.state_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.state_id_cmp in(:locationValues)");
+			sbg.append(" S.state_id ");
+		}else if(locationTypeId!=null && locationTypeId==3l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append(" D.district_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.district_id in(:locationValues)");
+			sbg.append(" D.district_id ");
+		}else if(locationTypeId!=null && locationTypeId==4l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " C.constituency_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.assembly_id in(:locationValues)");
+			sbg.append(" C.constituency_id ");
+		}else if(locationTypeId!=null && locationTypeId==10l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " C.constituency_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id  AND CM.parliament_id in(:locationValues)");
+			sbg.append(" C.constituency_id ");
+		}else if(locationTypeId!=null && locationTypeId==5l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " T.tehsil_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbm.append(" ,tehsil T ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.tehsil_id = T.tehsil_id  AND CM.tehsil_id in(:locationValues)");
+			sbg.append(" T.tehsil_id ");
+		}else if(locationTypeId!=null && locationTypeId==7l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " leb.local_election_body_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbm.append(" ,local_election_body leb ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.local_election_body_id = leb.local_election_body_id AND CM.local_election_body_id in(:locationValues)");
+			sbg.append(" leb.local_election_body_id ");
+		}
+		if(fromDate !=null && toDate !=null){
+	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate ) ");
+	   	}
+		
+		if(yearId != null && yearId.longValue() > 0l){
+			sbe.append(" AND tcey.enrollment_year_id = :yearId ");
+		}
+		sbe.append(" AND CM.user_id=tcey.tdp_cadre_id " );
+		/*if(year != null && !year.trim().isEmpty()){
+			sbe.append(" and year(CM.Raised_Date) =:year ");   
+ 	    }*/
+		sbg.append("  ,CM.type_of_issue,CM.issue_type; ");
+		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("typeId",Hibernate.LONG)
+				.addScalar("status",Hibernate.STRING)
+				.addScalar("typeOfIssue",Hibernate.STRING)
+				.addScalar("count",Hibernate.LONG);
+		if(locationTypeId!=null && locationTypeId.longValue()>0){
+			query.setParameterList("locationValues", locationValues);
+		}
+		/*if(year !=null && !year.trim().isEmpty()){
+ 			query.setParameter("year", Integer.parseInt(year));
+		}*/
+		if(fromDate !=null && toDate !=null){
+   		query.setDate("startDate", fromDate);
+   		query.setDate("endDate", toDate);
+   	}
+		if(yearId != null && yearId.longValue() > 0l){
+			query.setParameter("yearId", yearId);
+		}
+		return query.list();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllTypeOfIssues() {
+		Query query = getSession().createSQLQuery("select distinct issue_type,type_of_issue from complaint_master where issue_type is not null");
+		return query.list();
+	}
+	
+	public List<Object[]> getLevelValuesByLevel(Long locationTypeId,List<Long> locationValues) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sbm = new StringBuilder();
+		
+		sb.append(" SELECT distinct");
+		sbm.append(" FROM complaint_master CM,district D,constituency C,state S,tehsil T,local_election_body leb");
+		sbm.append(" WHERE CM.district_id between 11 and 23 ");
+		if(locationTypeId!=null && locationTypeId==2l  && locationTypeId.longValue()>0){
+			sb.append(" D.district_id as typeId,D.district_name as name,'' as id,'' as name1");
+			sbm.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.state_id_cmp in(:locationValues)");
+		}else if(locationTypeId!=null && locationTypeId==3l  && locationTypeId.longValue()>0){
+			sb.append("  C.constituency_id as typeId,C.name as name,'' as id,'' as name1");
+			sbm.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.district_id in(:locationValues)");
+		}else if(locationTypeId!=null && locationTypeId==4l && locationTypeId.longValue()>0){
+			sb.append( "  T.tehsil_id as typeId,T.tehsil_name as name,leb.local_election_body_id as id,leb.name as name1");
+			sbm.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.tehsil_id = T.tehsil_id AND CM.local_election_body_id = leb.local_election_body_id AND CM.assembly_id in(:locationValues)");
+		}else if(locationTypeId!=null && locationTypeId==10l && locationTypeId.longValue()>0){
+			sb.append( " C.constituency_id as typeId,C.name as name,'' as id,'' as name1" );
+			sbm.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.parliament_id in(:locationValues)");
+		}/*else if(locationTypeId!=null && locationTypeId==5l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " T.tehsil_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbm.append(" ,tehsil T ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.tehsil_id = T.tehsil_id  AND CM.tehsil_id in(:locationValues)");
+			sbg.append(" T.tehsil_id ");
+		}else if(locationTypeId!=null && locationTypeId==7l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " leb.local_election_body_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbm.append(" ,local_election_body leb ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.local_election_body_id = leb.local_election_body_id AND CM.local_election_body_id in(:locationValues)");
+			sbg.append(" leb.local_election_body_id ");
+		}*/
+		sb.append(sbm.toString());
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("typeId",Hibernate.LONG)
+				.addScalar("name",Hibernate.STRING)
+				.addScalar("id",Hibernate.LONG)
+				.addScalar("name1",Hibernate.STRING);
+		
+		if(locationTypeId!=null && locationTypeId.longValue()>0){
+			query.setParameterList("locationValues", locationValues);
+		}
+		return query.list();
+	}
+	
+	public List<Object[]> getGrievanceTypeCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sbm = new StringBuilder();
+		StringBuilder sbe = new StringBuilder();
+		StringBuilder sbg = new StringBuilder();
+		sb.append(" SELECT distinct");
+		sbm.append(" FROM complaint_master CM,district D,constituency C,tdp_cadre_enrollment_year tcey,state S ");
+		sbe.append(" WHERE  CM.type_of_issue IN('Govt','Party','Welfare') and "
+				+ " CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') and CM.issue_type is not null" +
+				" AND CM.district_id between 11 and 23 ");
+		sbg.append(" GROUP BY ");
+		if(locationTypeId!=null && locationTypeId==2l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append("  D.district_id as typeId,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count,'' as id");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.state_id_cmp in(:locationValues)");
+			sbg.append(" D.district_id ");
+		}else if(locationTypeId!=null && locationTypeId==3l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append(" C.constituency_id as typeId,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count,'' as id ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.district_id in(:locationValues)");
+			sbg.append(" C.constituency_id ");
+		}else if(locationTypeId!=null && locationTypeId==4l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " T.tehsil_id as typeId,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count,leb.local_election_body_id as id  " );
+			sbm.append(" ,tehsil T,local_election_body leb ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id  AND CM.tehsil_id = T.tehsil_id AND CM.local_election_body_id = leb.local_election_body_id AND CM.assembly_id in(:locationValues)");
+			sbg.append(" T.tehsil_id,leb.local_election_body_id ");
+		}else if(locationTypeId!=null && locationTypeId==10l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " C.constituency_id as typeId,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count,'' as id " );
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id  AND CM.parliament_id in(:locationValues)");
+			sbg.append(" C.constituency_id ");
+		}/*else if(locationTypeId!=null && locationTypeId==5l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " T.tehsil_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbm.append(" ,tehsil T ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.tehsil_id = T.tehsil_id  AND CM.tehsil_id in(:locationValues)");
+			sbg.append(" T.tehsil_id ");
+		}else if(locationTypeId!=null && locationTypeId==7l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " leb.local_election_body_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbm.append(" ,local_election_body leb ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.local_election_body_id = leb.local_election_body_id AND CM.local_election_body_id in(:locationValues)");
+			sbg.append(" leb.local_election_body_id ");
+		}*/
+		if(fromDate !=null && toDate !=null){
+	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate ) ");
+	   	}
+		
+		if(yearId != null && yearId.longValue() > 0l){
+			sbe.append(" AND tcey.enrollment_year_id = :yearId ");
+		}
+		sbe.append(" AND CM.user_id=tcey.tdp_cadre_id " );
+		/*if(year != null && !year.trim().isEmpty()){
+			sbe.append(" and year(CM.Raised_Date) =:year ");   
+ 	    }*/
+		sbg.append("  ,CM.type_of_issue");
+		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("typeId",Hibernate.LONG)
+				.addScalar("typeOfIssue",Hibernate.STRING)
+				.addScalar("count",Hibernate.LONG)
+				.addScalar("id",Hibernate.LONG);
+		if(locationTypeId!=null && locationTypeId.longValue()>0){
+			query.setParameterList("locationValues", locationValues);
+		}
+		/*if(year !=null && !year.trim().isEmpty()){
+ 			query.setParameter("year", Integer.parseInt(year));
+		}*/
+		if(fromDate !=null && toDate !=null){
+   		query.setDate("startDate", fromDate);
+   		query.setDate("endDate", toDate);
+   	}
+		if(yearId != null && yearId.longValue() > 0l){
+			query.setParameter("yearId", yearId);
+		}
+		return query.list();
+	}
+	
+	public List<Object[]> getInsuranceTypeCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sbm = new StringBuilder();
+		StringBuilder sbe = new StringBuilder();
+		StringBuilder sbg = new StringBuilder();
+		sb.append(" SELECT");
+		sbm.append(" FROM complaint_master CM,district D,constituency C,tdp_cadre_enrollment_year tcey,state S ");
+		sbe.append(" WHERE  CM.type_of_issue IN('Insurance') and "
+				+ " CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') and CM.issue_type is not null" +
+				" AND CM.district_id between 11 and 23 ");
+		sbg.append(" GROUP BY ");
+		if(locationTypeId!=null && locationTypeId==2l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append("  D.district_id as typeId,CM.issue_type as typeOfIssue,COUNT(CM.Complaint_id) as count,'' as id");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.state_id_cmp in(:locationValues)");
+			sbg.append(" D.district_id ");
+		}else if(locationTypeId!=null && locationTypeId==3l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append(" C.constituency_id as typeId,CM.issue_type as typeOfIssue,COUNT(CM.Complaint_id) as count,'' as id ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.district_id in(:locationValues)");
+			sbg.append(" C.constituency_id ");
+		}else if(locationTypeId!=null && locationTypeId==4l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " T.tehsil_id as typeId,CM.issue_type as typeOfIssue,COUNT(CM.Complaint_id) as count,leb.local_election_body_id as id  " );
+			sbm.append(" ,tehsil T,local_election_body leb ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id  AND CM.tehsil_id = T.tehsil_id AND CM.local_election_body_id = leb.local_election_body_id AND CM.assembly_id in(:locationValues)");
+			sbg.append(" T.tehsil_id,leb.local_election_body_id ");
+		}else if(locationTypeId!=null && locationTypeId==10l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " C.constituency_id as typeId,CM.issue_type as typeOfIssue,COUNT(CM.Complaint_id) as count,'' as id " );
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id  AND CM.parliament_id in(:locationValues)");
+			sbg.append(" C.constituency_id ");
+		}/*else if(locationTypeId!=null && locationTypeId==5l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " T.tehsil_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbm.append(" ,tehsil T ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.tehsil_id = T.tehsil_id  AND CM.tehsil_id in(:locationValues)");
+			sbg.append(" T.tehsil_id ");
+		}else if(locationTypeId!=null && locationTypeId==7l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " leb.local_election_body_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbm.append(" ,local_election_body leb ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.local_election_body_id = leb.local_election_body_id AND CM.local_election_body_id in(:locationValues)");
+			sbg.append(" leb.local_election_body_id ");
+		}*/
+		if(fromDate !=null && toDate !=null){
+	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate ) ");
+	   	}
+		
+		if(yearId != null && yearId.longValue() > 0l){
+			sbe.append(" AND tcey.enrollment_year_id = :yearId ");
+		}
+		sbe.append(" AND CM.user_id=tcey.tdp_cadre_id " );
+		/*if(year != null && !year.trim().isEmpty()){
+			sbe.append(" and year(CM.Raised_Date) =:year ");   
+ 	    }*/
+		sbg.append("  ,CM.issue_type");
+		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("typeId",Hibernate.LONG)
+				.addScalar("typeOfIssue",Hibernate.STRING)
+				.addScalar("count",Hibernate.LONG)
+				.addScalar("id",Hibernate.LONG);
+		if(locationTypeId!=null && locationTypeId.longValue()>0){
+			query.setParameterList("locationValues", locationValues);
+		}
+		/*if(year !=null && !year.trim().isEmpty()){
+ 			query.setParameter("year", Integer.parseInt(year));
+		}*/
+		if(fromDate !=null && toDate !=null){
+   		query.setDate("startDate", fromDate);
+   		query.setDate("endDate", toDate);
+   	}
+		if(yearId != null && yearId.longValue() > 0l){
+			query.setParameter("yearId", yearId);
+		}
+		return query.list();
+	}
+	
+	public List<Object[]> getNTRTrustTypeCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sbm = new StringBuilder();
+		StringBuilder sbe = new StringBuilder();
+		StringBuilder sbg = new StringBuilder();
+		sb.append(" SELECT");
+		sbm.append(" FROM complaint_master CM,district D,constituency C,tdp_cadre_enrollment_year tcey,state S ");
+		sbe.append(" WHERE  CM.support_purpose IN('Fee Concession','Seat') and "
+				+ " CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') and CM.issue_type is not null" +
+				" AND CM.district_id between 11 and 23 ");
+		sbg.append(" GROUP BY ");
+		if(locationTypeId!=null && locationTypeId==2l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append("  D.district_id as typeId,CM.support_purpose as typeOfIssue,COUNT(CM.Complaint_id) as count,'' as id");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.state_id_cmp in(:locationValues)");
+			sbg.append(" D.district_id ");
+		}else if(locationTypeId!=null && locationTypeId==3l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append(" C.constituency_id as typeId,CM.support_purpose as typeOfIssue,COUNT(CM.Complaint_id) as count,'' as id ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.district_id in(:locationValues)");
+			sbg.append(" C.constituency_id ");
+		}else if(locationTypeId!=null && locationTypeId==4l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " T.tehsil_id as typeId,CM.support_purpose as typeOfIssue,COUNT(CM.Complaint_id) as count,leb.local_election_body_id as id  " );
+			sbm.append(" ,tehsil T,local_election_body leb ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id  AND CM.tehsil_id = T.tehsil_id AND CM.local_election_body_id = leb.local_election_body_id AND CM.assembly_id in(:locationValues)");
+			sbg.append(" T.tehsil_id,leb.local_election_body_id ");
+		}else if(locationTypeId!=null && locationTypeId==10l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " C.constituency_id as typeId,CM.support_purpose as typeOfIssue,COUNT(CM.Complaint_id) as count,'' as id " );
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id  AND CM.parliament_id in(:locationValues)");
+			sbg.append(" C.constituency_id ");
+		}/*else if(locationTypeId!=null && locationTypeId==5l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " T.tehsil_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbm.append(" ,tehsil T ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.tehsil_id = T.tehsil_id  AND CM.tehsil_id in(:locationValues)");
+			sbg.append(" T.tehsil_id ");
+		}else if(locationTypeId!=null && locationTypeId==7l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append( " leb.local_election_body_id as typeId,CM.issue_type as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbm.append(" ,local_election_body leb ");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.local_election_body_id = leb.local_election_body_id AND CM.local_election_body_id in(:locationValues)");
+			sbg.append(" leb.local_election_body_id ");
+		}*/
+		if(fromDate !=null && toDate !=null){
+	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate ) ");
+	   	}
+		
+		if(yearId != null && yearId.longValue() > 0l){
+			sbe.append(" AND tcey.enrollment_year_id = :yearId ");
+		}
+		sbe.append(" AND CM.user_id=tcey.tdp_cadre_id " );
+		/*if(year != null && !year.trim().isEmpty()){
+			sbe.append(" and year(CM.Raised_Date) =:year ");   
+ 	    }*/
+		sbg.append("  ,CM.support_purpose");
+		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("typeId",Hibernate.LONG)
+				.addScalar("typeOfIssue",Hibernate.STRING)
+				.addScalar("count",Hibernate.LONG)
+				.addScalar("id",Hibernate.LONG);
+		if(locationTypeId!=null && locationTypeId.longValue()>0){
+			query.setParameterList("locationValues", locationValues);
+		}
+		/*if(year !=null && !year.trim().isEmpty()){
+ 			query.setParameter("year", Integer.parseInt(year));
+		}*/
+		if(fromDate !=null && toDate !=null){
+   		query.setDate("startDate", fromDate);
+   		query.setDate("endDate", toDate);
+   	}
+		if(yearId != null && yearId.longValue() > 0l){
+			query.setParameter("yearId", yearId);
+		}
+		return query.list();
+	}
 }

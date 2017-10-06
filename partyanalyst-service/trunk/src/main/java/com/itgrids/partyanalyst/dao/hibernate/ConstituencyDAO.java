@@ -2249,6 +2249,16 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 		  
 	  }
 	
+	public List<Object[]> getConstituencyListByDistrictId(List<Long> districtId){
+		  Query query = getSession().createQuery("select distinct model.constituencyId,model.name " +
+				  " from Constituency model " +
+				  " where  model.deformDate is null and model.electionScope.electionScopeId = 2 " +
+				  " and model.district.districtId = :districtId ");
+		  query.setParameterList("districtId", districtId);
+		  return query.list();
+		  
+	  }
+	
 	}
 
 	
