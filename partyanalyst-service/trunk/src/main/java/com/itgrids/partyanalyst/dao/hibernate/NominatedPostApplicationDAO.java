@@ -2529,26 +2529,26 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	        " model.applicationStatus.applicationStatusId not in(2,4,8) ");
 	    
 	    if (levelId != null && levelValues != null && levelValues.size()>0) {
-	        if (levelId == 2) {
+	        if (levelId.longValue() == 2L) {
 	          sb.append(" and model.nominatedPostMember.address.state.stateId in(:levelValues) ");
-	          sb.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-	        } else if (levelId == 3) {
+	          //sb.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+	        } else if (levelId.longValue() == 3L) {
 	         sb.append(" and model.nominatedPostMember.address.district.districtId in(:levelValues) ");
-	       } else if (levelId == 10) {
-	         sb.append(" and model.nominatedPostMember.address.parliamentConstituency.constituencyId in(:levelValues) ");
-	       } else if (levelId == 4) {
+	       } else if (levelId.longValue() == 10L) {
 	         sb.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:levelValues) ");
-	       } else if (levelId == 5) {
+	       } else if (levelId.longValue() == 4L) {
+	         sb.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:levelValues) ");
+	       } else if (levelId.longValue() == 5L) {
 	         sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId in(:levelValues) ");
-	       }else if (levelId == 6) {
+	       }else if (levelId.longValue() == 6L) {
 	         sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId in(:levelValues) ");
-	       }else if (levelId == 7) {
+	       }else if (levelId.longValue() == 7L) {
 	         sb.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:levelValues) ");
-	       }else if (levelId == 8) {
+	       }else if (levelId.longValue() == 8L) {
 	         sb.append(" and model.nominatedPostMember.address.ward.constituencyId in(:levelValues) ");
 	       }    
-	     }
-	 	
+	       }
+	    
 	       if(boardLevelId != null && boardLevelId.size() > 0L){
 	           
 	             sb.append(" and model.nominatedPostMember.boardLevelId in (:boardLevelId) ");
