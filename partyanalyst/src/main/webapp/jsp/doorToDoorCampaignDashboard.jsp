@@ -42,8 +42,7 @@
 <section class="">
 	<div class="container-fluid m_top10">
 		<div class="row">
-			<div class="col-sm-3 col-sm-offset-9">
-				
+			<div class="col-sm-3 col-sm-offset-7 addClassWidth">
 				<div class="input-group">
 					<span class="iconRefresh pull-right">
 						<i class="glyphicon glyphicon-refresh tooltipCls" data-placement="top" data-toggle="tooltip" data-original-title="Refresh"></i>
@@ -54,10 +53,10 @@
 					<input type="text" class="form-control" id="dateRangePickerAUM"/>
 				</div>
 			</div>
-			<!--<div class="col-sm-2 pull-right">
-				<select class="form-control chosen-select" id="districtNamesId">
+			<div class="col-sm-2 pull-right constituencyBoxCls" style="display:none;">
+				<select class="form-control chosen-select" id="constituencyNamesId">
 				</select>
-			</div>-->
+			</div>
 		</div>
 		<div class="row m_top10">			
 			<div class="col-sm-4">
