@@ -11,6 +11,7 @@ var globallevelValues='';
 var globallevelChangeIds='';
 var globallevelValuesChange ='';
 getUserAccessLevelIdsAndValues();
+$("#constituencyNamesId").chosen();	
 function getUserAccessLevelIdsAndValues()
 {
 	var jsObj={
@@ -27,6 +28,7 @@ function getUserAccessLevelIdsAndValues()
 			globallevelValues = result.accessLevelValuesList
 		}
 		onLoadCalls();
+		getAssignedConstituenciesForUser();
 	});
 	
 	
@@ -71,6 +73,9 @@ function onLoadCalls(){
 			 getCampaignCountFrMandalPancMuncip("panchayat");
 			 getCampaignCountFrMandalPancMuncip("mandal");
 			 getCampaignCountFrMandalPancMuncip("muncipality");
+			 $("#campignLeveldistrict").hide();
+			 $("#campignLevelparliament").hide();
+			 
 			 $("#consWiseDistritsId_chosen").hide();
 			
 		}else if(globallevelIds[i] == 10){
@@ -78,6 +83,8 @@ function onLoadCalls(){
 			 levelWiseData();
 			getLevelWiseCount("parliament");
 			getLevelWiseCount("constituency");
+			$("#campignLevelmuncipality").hide();
+			$("#campignLeveldistrict").hide();
 			getCampaignCountFrMandalPancMuncip("panchayat");
 			getCampaignCountFrMandalPancMuncip("mandal");
 			$("#consWiseDistritsId_chosen").hide();
@@ -436,7 +443,7 @@ function getRecentImagesList(imageType){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
-		if(result !=null){
+		if(result !=null && result.subList !=null && result.subList.length>0){
 			return buildRecentImagesList(result,imageType);
 		}else{
 			$("#imagesSliderDivId").html("NO DATA AVAILABLE");
@@ -1309,3 +1316,46 @@ function buildUserWiseCountFrLoginUser(result){
 	});
 	
 }
+function getAssignedConstituenciesForUser()
+{
+	
+	var jsObj={
+		levelIds		:globallevelIds,
+		levelValues		:globallevelValues
+	}
+	$.ajax({
+	  type : "POST",
+	  url : "getAssignedConstituenciesForUserAction.action",
+	  dataType : 'json',
+	  data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			$(".constituencyBoxCls").show();
+			$(".addClassWidth").removeClass("col-sm-offset-9")
+			$(".addClassWidth").addClass("col-sm-offset-7")
+			var str='';
+			str+='<option value="0">Select Constituency</option>';
+			for(var i in result){
+				 str+='<option value="'+result[i].id+'">'+result[i].name+' </option>';
+			}
+			$("#constituencyNamesId").html(str);
+			$("#constituencyNamesId").trigger('chosen:updated');
+		}else{
+			$(".constituencyBoxCls").hide();
+			$(".addClassWidth").removeClass("col-sm-offset-7")
+			$(".addClassWidth").addClass("col-sm-offset-9")
+		}
+	});
+}
+
+$(document).on("change","#constituencyNamesId",function(){
+	var consId = $(this).val();
+	if(consId != 0){
+		globallevelIds=[];
+		globallevelValues=[];
+		
+		globallevelIds=[4];
+		globallevelValues.push(parseInt(consId))
+	}
+	onLoadCalls();
+});
