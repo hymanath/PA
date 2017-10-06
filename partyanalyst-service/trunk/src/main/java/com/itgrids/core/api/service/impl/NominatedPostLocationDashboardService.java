@@ -272,7 +272,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 	 *  @since 6-OCT-2017
 	 */
 	public List<NominatedPostCandidateDtlsVO> getLevelWiseGoIssuedPostions(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLvlId
-			,Long startIndex,Long endIndex,List<Long> statusIds){
+			,List<Long> statusIds){
 		List<NominatedPostCandidateDtlsVO> finalList = new CopyOnWriteArrayList<NominatedPostCandidateDtlsVO>();
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -283,7 +283,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
 			}
-			List<Object[]> candList = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedPostions(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,startIndex,endIndex,statusIds);
+			List<Object[]> candList = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedPostions(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,statusIds);
 			if(commonMethodsUtilService.isListOrSetValid(candList)){
 				for (Object[] param : candList) {
 					NominatedPostCandidateDtlsVO vo = new NominatedPostCandidateDtlsVO();

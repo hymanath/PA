@@ -63,7 +63,7 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 		
 		return query.list();
 	}
-	public List<Object[]> getLevelWiseGoIssuedPostions(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,Long startIndex,Long endIndex,List<Long> statusIds){
+	public List<Object[]> getLevelWiseGoIssuedPostions(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,List<Long> statusIds){
 	 	 StringBuilder sb = new StringBuilder();
 	 	 sb.append(" select" +
 	 	 		   " model.nominatedPost.nominationPostCandidate.nominationPostCandidateId," +//0
@@ -138,12 +138,6 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	        }
 	 	        
 	 	    }
-	 	 if( startIndex != null && startIndex.longValue()>0l){
-	 		query.setFirstResult(startIndex.intValue());
-	 	 }
-	 	if( endIndex != null && endIndex.longValue()>0l){
-	 		query.setMaxResults(endIndex.intValue());
-	 	}
 	 	 if(year !=null && !year.trim().isEmpty()){
 	 		query.setParameter("year", Integer.parseInt(year));
 	 	 }
