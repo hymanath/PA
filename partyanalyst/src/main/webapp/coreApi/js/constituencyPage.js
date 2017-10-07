@@ -153,10 +153,10 @@ function onLoadInitialisations()
 	//Tours Start
 	$("#tourNewDateRangePickerId").daterangepicker({
 		opens: 'left',
-	     startDate: customStartATMDate,
-         endDate:customEndATMDate,
+	    startDate: customStartATMDate,
+        endDate:customEndATMDate,
 		locale: {
-		  format: 'DD/MM/YYYY'
+			format: 'DD/MM/YYYY'
 		},
 		ranges: { ////moment().endOf('Year')
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
@@ -174,10 +174,10 @@ function onLoadInitialisations()
 	//Alert Start
 	$("#alertNewDateRangePickerId").daterangepicker({
 		opens: 'left',
-	     startDate: customStartATMDate,
-         endDate:customEndATMDate,
+	    startDate: customStartATMDate,
+        endDate:customEndATMDate,
 		locale: {
-		  format: 'DD/MM/YYYY'
+			format: 'DD/MM/YYYY'
 		},
 		ranges: { ////moment().endOf('Year')
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
@@ -289,6 +289,16 @@ function onLoadClicks()
 			window.open('areaWiseDashboardDetailedViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}
 		
+	});
+	$(document).on("click",".hideShowBtn",function(){
+		var blockType = $(this).html();
+		if(blockType == '+')
+		{
+			$(this).html("-");
+		}else{
+			$(this).html("+");
+		}
+		$(".castesWiseVoterBlock").toggle();
 	});
 	$(document).on("click","[menu-click]",function(){
 		var length = $(this).text().length;
@@ -1843,19 +1853,21 @@ function buildVotersCastGroupWiseCount(result){
 		str+='<div id="topTenCastesDivId" class="m_top10 table-responsive"></div>';
 	str+='</div>';
 	str+='<div class="col-sm-12 m_top20">';
-		str+='<h5 class="text-capital" style="color:#777">Total Castes Wise Voters % & Cadres %</h5>';
-		str+='<ul class="list-inline active-type-sorting m_top10" active-type="casteSorting">';
-			str+='<li class="active" type="desending"><i class="glyphicon glyphicon-sort-by-attributes"></i></li>';
-			str+='<li type="assending"><i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i></li>';
-			str+='<li type="atozSorting">A-Z</li>';
-			str+='<li type="ztoaSorting">Z-A</li>';
-		str+='</ul>';
-		str+='<ul class="list-inline m_top10">';
-			str+='<li><span style="background-color:#95CEFF;height:15px;width:15px;display:inline-block;margin-right:3px;"></span>Voter</li>';
-			str+='<li><span style="background-color:#434348;height:15px;width:15px;display:inline-block;margin-right:3px;"></span>Cadre </li>';
-		str+='</ul>';
-		str+='<div class="scollerDiv">';
-			str+='<div id="totalCastesAndCadrePercBarGraph" class="m_top10"></div>';
+		str+='<h5 class="text-capital" style="color:#777">Total Castes Wise Voters % & Cadres % <span class="hideShowBtn">+</span></h5>';
+		str+='<div class="castesWiseVoterBlock" style="display:none;">';
+			str+='<ul class="list-inline active-type-sorting m_top10" active-type="casteSorting">';
+				str+='<li class="active" type="desending"><i class="glyphicon glyphicon-sort-by-attributes"></i></li>';
+				str+='<li type="assending"><i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i></li>';
+				str+='<li type="atozSorting">A-Z</li>';
+				str+='<li type="ztoaSorting">Z-A</li>';
+			str+='</ul>';
+			str+='<ul class="list-inline m_top10">';
+				str+='<li><span style="background-color:#95CEFF;height:15px;width:15px;display:inline-block;margin-right:3px;"></span>Voter</li>';
+				str+='<li><span style="background-color:#434348;height:15px;width:15px;display:inline-block;margin-right:3px;"></span>Cadre </li>';
+			str+='</ul>';
+			str+='<div class="scollerDiv">';
+				str+='<div id="totalCastesAndCadrePercBarGraph" class="m_top10"></div>';
+			str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	str+='<div class="col-sm-12 m_top10">';
