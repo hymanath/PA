@@ -975,6 +975,34 @@ public String getElectionInformationLocationWise(){
 	     }
 	     return Action.SUCCESS;
 	   }
+	
+	public String getElectionInformationLocationWiseVoterShare() {
+
+		try {
+			jObj = new JSONObject(getTask());
+			List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIds"));
+			List<Long> partyIds = convertJsonStringList(jObj.getJSONArray("partyIds"));
+			List<Long> electionYrs = convertJsonStringList(jObj.getJSONArray("electionYrs"));
+			// String electionType =jObj.getString("electionSubType");
+			List<String> subTypes = new ArrayList<String>();
+			JSONArray jsonArray = jObj.getJSONArray("electionSubTypeArr");
+			if (jsonArray != null && jsonArray.length() > 0) {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					subTypes.add(jsonArray.getString(i).toString());
+				}
+			}
+			electioninformationList = locationDashboardService.getElectionInformationLocationWiseVoterShare(jObj.getString("fromDate"),
+							jObj.getString("toDate"),jObj.getLong("locationId"),jObj.getLong("locationValue"), electionScopeIds,partyIds, electionYrs, subTypes);
+
+
+		} catch (Exception e) {
+			LOG.error(
+					"Exception occured in getElectionInformationLocationWise() method ",
+					e);
+		}
+		return Action.SUCCESS;
+
+	}
 	public String getLevelWisePostsOverView(){
 	     try{
 	       jObj = new JSONObject(getTask());
