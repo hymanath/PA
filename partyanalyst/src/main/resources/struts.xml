@@ -18209,5 +18209,10 @@
          <param name="root">grivenceVO</param>
        </result>
    </action>
+   <action name="getComplaintRaisedDetailsAction" class="coreDashboardAction" method="getComplaintRaisedDetails">
+		<result type="json" name="success">
+			<param name="root">complaintMastervoList</param>     
+		</result>
+	</action>
  </package>
 </struts>

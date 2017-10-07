@@ -4748,4 +4748,36 @@ public String getInsuraceStatusWiseComplaintsDetails()
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getComplaintRaisedDetails()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			
+			String fromDateStr = jObj.getString("fromDate");	
+			String toDateStr = jObj.getString("toDate");
+			Long levelId = jObj.getLong("locationTypeId");
+			
+			List<Long> locationValues=new ArrayList<Long>();
+			JSONArray locationValuesArr=jObj.getJSONArray("locationValuesArr");
+			if(locationValuesArr!=null &&  locationValuesArr.length()>0){
+				for( int i=0;i<locationValuesArr.length();i++){
+					locationValues.add(Long.valueOf(locationValuesArr.getString(i))); 
+				}
+			}
+			String year = jObj.getString("year");
+			String type = jObj.getString("type");	
+			String grievanceType = jObj.getString("grievanceType");
+			
+			
+			complaintMastervoList = coreDashboardInsuranceService.getComplaintRaisedDetails(levelId, locationValues, fromDateStr, toDateStr, type, grievanceType, year);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getComplaintRaisedDetails ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
