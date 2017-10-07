@@ -1029,4 +1029,14 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getLocationWiseGrivenceTrustIssueTypesCounts(){
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+			grivenceVO = locationDashboardService.getLocationWiseGrivenceTrustIssueTypesCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getConstituencyWiseInsuranceWiseIssueTypeCounts() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
 }
