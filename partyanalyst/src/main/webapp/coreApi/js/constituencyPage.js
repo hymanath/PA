@@ -281,6 +281,16 @@ function onLoadAjaxCalls()
 }
 function onLoadClicks()
 {
+	$(document).on("click","[detailed-block]",function(){
+		var blockName = $(this).attr("detailed-block");
+		if(blockName == 'grievance')
+		{
+			window.open('areaWiseGrievanceDashboardAction.action','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=no');
+		}else if(blockName == 'nominatedPosts'){
+			window.open('areaWiseDashboardDetailedViewAction.action','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=no');
+		}
+		
+	});
 	$(document).on("click","[menu-click]",function(){
 		var length = $(this).text().length;
 		var levelId = $(this).attr("levelId");

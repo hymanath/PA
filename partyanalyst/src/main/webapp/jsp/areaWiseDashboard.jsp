@@ -148,8 +148,6 @@
 					</div>
 				</div>
 			</div>
-			
-			
 			<div class="col-sm-12 m_top30" navbar-index="constituencyVoters">
 				<h4 class="panel-title theme-title-color">voters information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="constituencyVoters"></i></span></h4>
 				<div class="block m_top10">
@@ -168,6 +166,7 @@
 							<div id="constituencyVoterInfo"></div>
 						</div>
 					</div>
+					
 				</div>
 			</div>
 			<div class="col-sm-12 m_top30" navbar-index="casteInfo">
@@ -382,6 +381,11 @@
 							<div id="positionsWiseMemberCount"></div>
 						</div>
 					</div>
+					<div class="row m_top10">
+						<div class="col-sm-12">
+							<button class="btn btn-success btn-success-white text-capital" detailed-block="nominatedPosts">detailed information</button>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-12 m_top30"  navbar-index="grievance">
@@ -410,6 +414,11 @@
 							<h4 class="panel-title text-capital text-center">NTR TRUST</h4>
 							<p class="m_top10 text-capital text-center" id="NtrTrustTotalCount"></h4>
 							<div id="grivanceId1" style="height:300px;"></div>
+						</div>
+					</div>
+					<div class="row m_top10">
+						<div class="col-sm-12">
+							<button class="btn btn-success btn-success-white text-capital" detailed-block="grievance">detailed information</button>
 						</div>
 					</div>
 				</div>
