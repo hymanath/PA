@@ -49,13 +49,17 @@ function onloadCalls(){
     getMeesevaKPIIndicatorsProgressDtls();
 	getMeesevaKPIIndicatorsPeriodWise();
 	getCMEDOBOverview();
-	getCMEDOBReportStatusWise();
-	getAPInnovationSocietyOverview();
-	getAPISXLR8APDetailedData();
-	getCampaignsDetailedData();
-	getCampusInnovationCentersDetailedData();
-	getSuoMotoProposalsDetailedData();
-	getInnovationAwardsDetailedData();*/
+	getCMEDOBReportStatusWise();*/
+	
+	/* AP Innovation Society Ajax Call Start
+		getAPInnovationSocietyOverview();
+		getAPISXLR8APDetailedData();
+		getCampusInnovationCentersDetailedData();
+		getCampaignsDetailedData();
+		getCohortDetailsByCohortId();
+	/* End */
+
+	  /*getInnovationAwardsDetailedData();*/
 }
 function departmentWiseOverView(){
 	var block='';
@@ -582,15 +586,16 @@ function getCampusInnovationCentersDetailedData(){
 	}).done(function(result){
 		console.log(result);
 	});		
-}function getSuoMotoProposalsDetailedData(){
+}function getCohortDetailsByCohortId(){
 	var json = {
 		fromDate:"",
 		toDate:"",
-		year:""
+		year:"",
+		searchLevelId:1
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getSuoMotoProposalsDetailedData',
+		url: 'getCohortDetailsByCohortId',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){

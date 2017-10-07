@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.ApInnovationCenterVO;
+import com.itgrids.dto.ApInnovationSocietyOverviewVO;
 import com.itgrids.dto.CmEoDBDtlsVO;
+import com.itgrids.dto.CohortDtlsVO;
 import com.itgrids.dto.EofficeDtlsVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
@@ -89,28 +92,28 @@ public class ItcController {
 		   return resultList;
 	   }
 	   @RequestMapping(value = "/getAPInnovationSocietyOverview", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  InnovationSocietyDtlsVO  getAPInnovationSocietyOverview(@RequestBody InputVO inputVO) {
-		   InnovationSocietyDtlsVO  reusltVO = itcDashboardService.getAPInnovationSocietyOverview(inputVO);
+	   public @ResponseBody  ApInnovationSocietyOverviewVO  getAPInnovationSocietyOverview(@RequestBody InputVO inputVO) {
+		   ApInnovationSocietyOverviewVO  reusltVO = itcDashboardService.getAPInnovationSocietyOverview(inputVO);
 		   return reusltVO;
 	   }
 	   @RequestMapping(value = "/getAPISXLR8APDetailedData", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<InnovationSocietyDtlsVO>  getAPISXLR8APDetailedData(@RequestBody InputVO inputVO) {
-		  List<InnovationSocietyDtlsVO>  resultList = itcDashboardService.getAPISXLR8APDetailedData(inputVO);
+	   public @ResponseBody  List<ApInnovationCenterVO>  getAPISXLR8APDetailedData(@RequestBody InputVO inputVO) {
+		   List<ApInnovationCenterVO>  resultList = itcDashboardService.getAPISXLR8APDetailedData(inputVO);
 		   return resultList;
 	   }
 	   @RequestMapping(value = "/getCampaignsDetailedData", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<InnovationSocietyDtlsVO>  getCampaignsDetailedData(@RequestBody InputVO inputVO) {
-		   List<InnovationSocietyDtlsVO>  resultList = itcDashboardService.getCampaignsDetailedData(inputVO);
+	   public @ResponseBody  List<ApInnovationCenterVO>  getCampaignsDetailedData(@RequestBody InputVO inputVO) {
+		   List<ApInnovationCenterVO>  resultList = itcDashboardService.getCampaignsDetailedData(inputVO);
 		   return resultList;
 	   }
 	   @RequestMapping(value = "/getCampusInnovationCentersDetailedData", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<InnovationSocietyDtlsVO>  getCampusInnovationCentersDetailedData(@RequestBody InputVO inputVO) {
-		   List<InnovationSocietyDtlsVO>  resultList = itcDashboardService.getCampusInnovationCentersDetailedData(inputVO);
+	   public @ResponseBody  List<ApInnovationCenterVO>  getCampusInnovationCentersDetailedData(@RequestBody InputVO inputVO) {
+		   List<ApInnovationCenterVO>  resultList = itcDashboardService.getCampusInnovationCentersDetails(inputVO);
 		   return resultList;
 	   }
-	   @RequestMapping(value = "/getSuoMotoProposalsDetailedData", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<InnovationSocietyDtlsVO>  getSuoMotoProposalsDetailedData(@RequestBody InputVO inputVO) {
-		   List<InnovationSocietyDtlsVO>  resultList = itcDashboardService.getSuoMotoProposalsDetailedData(inputVO);
+	   @RequestMapping(value = "/getCohortDetailsByCohortId", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<CohortDtlsVO>  getCohortDetailsByCohortId(@RequestBody InputVO inputVO) {
+		   List<CohortDtlsVO>  resultList = itcDashboardService.getCohortDetailsByCohortId(inputVO);
 		   return resultList;
 	   }
 	   @RequestMapping(value = "/getInnovationAwardsDetailedData", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)

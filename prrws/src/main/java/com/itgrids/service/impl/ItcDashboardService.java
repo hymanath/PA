@@ -10,6 +10,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -18,7 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.itgrids.dto.ApInnovationCenterVO;
+import com.itgrids.dto.ApInnovationSocietyOverviewVO;
 import com.itgrids.dto.CmEoDBDtlsVO;
+import com.itgrids.dto.CohortDtlsVO;
 import com.itgrids.dto.EofficeDtlsVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
@@ -30,6 +38,7 @@ import com.itgrids.service.IItcDashboardService;
 import com.itgrids.service.integration.external.ItcWebServiceUtilService;
 import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
+
 
 @Transactional
 @Service
@@ -279,7 +288,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		List<MeesevaDtlsVO> resultList = new ArrayList<MeesevaDtlsVO>(0);
 		try {
 			String input = prepareInputParameter(inputVO);
-			ClientResponse response = itcWebServiceUtilService.callWebService("http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/TRANSACTIONDETAILS",input);
+			ClientResponse response = itcWebServiceUtilService.postWebServiceCall("http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/TRANSACTIONDETAILS",input);
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			} else {
@@ -389,15 +398,47 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return InnovationSocietyDtlsVO
 	 * @Date 21-09-2017
 	 */
-	public InnovationSocietyDtlsVO getAPInnovationSocietyOverview(InputVO inputVO) {
+	public ApInnovationSocietyOverviewVO getAPInnovationSocietyOverview(InputVO inputVO) {
+		ApInnovationSocietyOverviewVO resultVO = new ApInnovationSocietyOverviewVO();
+		try {
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("http://www.apinnovationsociety.com/dashboard/api/applications.php");
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				if (output != null && output.length() > 0) {
+					Gson gson = new GsonBuilder().create();
+					resultVO = gson.fromJson(output, ApInnovationSocietyOverviewVO.class);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getAPInnovationSocietyOverview() in  ItcDashboardService class",e);
+		}
+		return resultVO;
+	}
+	/**
+	 * @author Santosh
+	 * @param InputVO inputVO
+	 * @description {This service is used to get innovation society details.}
+	 * @return InnovationSocietyDtlsVO
+	 * @Date 21-09-2017
+	 */
+	public InnovationSocietyDtlsVO getEducationalInfoDetails(InputVO inputVO) {
 		InnovationSocietyDtlsVO resultVO = new InnovationSocietyDtlsVO();
-		 try {
-			 
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getCMEDOBReportStatusWise() in  ItcDashboardService class",e);
-		 }
-		 return resultVO;
+		try {
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("http://www.apinnovationsociety.com/dashboard/get_educational_info.php");
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				Gson gson = new GsonBuilder().create();
+				resultVO = gson.fromJson(output, InnovationSocietyDtlsVO.class);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured at getEducationalInfoDetails() in  ItcDashboardService class",e);
+		}
+		return resultVO;
 	}
 	/**
 	 * @author Santosh
@@ -406,15 +447,54 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return List<InnovationSocietyDtlsVO>
 	 * @Date 21-09-2017
 	 */
-	public List<InnovationSocietyDtlsVO> getAPISXLR8APDetailedData(InputVO inputVO) {
-		List<InnovationSocietyDtlsVO> resultList = new ArrayList<InnovationSocietyDtlsVO>();
-		 try {
-			 
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getCMEDOBReportStatusWise() in  ItcDashboardService class",e);
-		 }
-		 return resultList;
+	public List<ApInnovationCenterVO> getAPISXLR8APDetailedData(InputVO inputVO) {
+		List<ApInnovationCenterVO> resultList = new ArrayList<>(0);
+		try {
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("http://www.apinnovationsociety.com/dashboard/api/cohorts.php");
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				if (output != null && !output.isEmpty()) {
+					JSONArray finalArray
+					= new JSONArray(output);
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							ApInnovationCenterVO bathDtlsVO = new ApInnovationCenterVO();
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+							bathDtlsVO.setBatch(jObj.has("batch") ? jObj.getString("batch"):" ");
+							if (bathDtlsVO.getBatch().trim().length() > 0) {
+								String[] bathArr = bathDtlsVO.getBatch().split("-");
+								bathDtlsVO.setBatchId(Long.valueOf(bathArr[bathArr.length-1]));
+							}
+							bathDtlsVO.setDuration(jObj.has("duration") ? jObj.getString("duration"):" ");
+							bathDtlsVO.setCompaniesRegisterd(jObj.has("companiesRegisterd") ? jObj.getLong("companiesRegisterd"):0l);
+							bathDtlsVO.setJobsCreated(jObj.has("jobsCreated") ? jObj.getString("jobsCreated"):"");
+							resultList.add(bathDtlsVO);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getAPISXLR8APDetailedData() in  ItcDashboardService class",e);
+		}
+		return resultList;
+	}
+	public InnovationSocietyDtlsVO getAPISXLR8APInfo(InputVO inputVO) {
+		InnovationSocietyDtlsVO resultVO = new InnovationSocietyDtlsVO();
+		try {
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("http://www.apinnovationsociety.com/dashboard/get_xlr8ap_info.php");
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				Gson gson = new GsonBuilder().create();
+				resultVO = gson.fromJson(output, InnovationSocietyDtlsVO.class);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getAPISXLR8APInfo() in  ItcDashboardService class",e);
+		}
+		return resultVO;
 	}
 	/**
 	 * @author Santosh
@@ -423,15 +503,33 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return List<InnovationSocietyDtlsVO>
 	 * @Date 21-09-2017
 	 */
-	public List<InnovationSocietyDtlsVO> getCampaignsDetailedData(InputVO inputVO) {
-		List<InnovationSocietyDtlsVO> resultList = new ArrayList<InnovationSocietyDtlsVO>();
-		 try {
-			 
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getCampaignsDetailedData() in  ItcDashboardService class",e);
-		 }
-		 return resultList;
+	public List<ApInnovationCenterVO> getCampaignsDetailedData(InputVO inputVO) {
+		List<ApInnovationCenterVO> resultList = new ArrayList<>(0);
+		try {
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("http://www.apinnovationsociety.com/dashboard/api/campaigns.php");
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				if (output != null && !output.isEmpty()) {
+					JSONArray finalArray = new JSONArray(output);
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							ApInnovationCenterVO campaignsVO = new ApInnovationCenterVO();
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+							campaignsVO.setCampaignName(jObj.has("campaignName") ? jObj.getString("campaignName"):" ");
+							campaignsVO.setCampaignType(jObj.has("campaignType") ? jObj.getString("campaignType"):" ");
+							campaignsVO.setDuration(jObj.has("date") ? jObj.getString("date"):" ");
+							campaignsVO.setLocation(jObj.has("location") ? jObj.getString("location"):"");
+							resultList.add(campaignsVO);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getCampaignsDetailedData() in  ItcDashboardService class",e);
+		}
+		return resultList;
 	}
 	/**
 	 * @author Santosh
@@ -440,32 +538,80 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return List<InnovationSocietyDtlsVO>
 	 * @Date 21-09-2017
 	 */
-	public List<InnovationSocietyDtlsVO> getCampusInnovationCentersDetailedData(InputVO inputVO) {
-		List<InnovationSocietyDtlsVO> resultList = new ArrayList<InnovationSocietyDtlsVO>();
-		 try {
-			 
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getCampusInnovationCentersDetailedData() in  ItcDashboardService class",e);
-		 }
-		 return resultList;
+	public InnovationSocietyDtlsVO getIncubationCentersDetails(InputVO inputVO) {
+		InnovationSocietyDtlsVO resultVO = new InnovationSocietyDtlsVO();
+		try {
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("http://www.apinnovationsociety.com/dashboard/get_incubators_info.php");
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				Gson gson = new GsonBuilder().create();
+				resultVO = gson.fromJson(output, InnovationSocietyDtlsVO.class);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getIncubationCentersDetails() in  ItcDashboardService class",e);
+		}
+		return resultVO;
+	}
+	/**
+	 * @author Santosh
+	 * @param InputVO inputVO
+	 * @description {This service is used to get getCampusInnovationCentersDetails.}
+	 * @return List<InnovationSocietyDtlsVO>
+	 * @Date 21-09-2017
+	 */
+	public List<ApInnovationCenterVO> getCampusInnovationCentersDetails(InputVO inputVO) {
+		List<ApInnovationCenterVO> resultList = new ArrayList<ApInnovationCenterVO>(0);
+		try {
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("http://www.apinnovationsociety.com/dashboard/api/campus_innovation_centers.php");
+			if (response.getStatus() != 200) {throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				if (output != null && !output.isEmpty()) {
+					JSONArray finalArray = new JSONArray(output);
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							ApInnovationCenterVO innovationCenterVO = new ApInnovationCenterVO();
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+							innovationCenterVO.setUniversityORCollegeName(jObj.has("universityORCollegeName") ? jObj.getString("universityORCollegeName"):" ");
+							innovationCenterVO.setInnovationCentreName(jObj.has("innovationCentreName") ? jObj.getString("innovationCentreName"):" ");
+							innovationCenterVO.setLocation(jObj.has("location") ? jObj.getString("location"):" ");
+							resultList.add(innovationCenterVO);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getIncubationCentersDetails() in  ItcDashboardService class",e);
+		}
+		return resultList;
 	}
 	/**
 	 * @author Santosh
 	 * @param InputVO inputVO
 	 * @description {This service is used to get suo Moto Proposals details.}
 	 * @return List<InnovationSocietyDtlsVO>
-	 * @Date 21-09-2017
+	 * @Date 07-10-2017
 	 */
-	public List<InnovationSocietyDtlsVO> getSuoMotoProposalsDetailedData(InputVO inputVO) {
-		List<InnovationSocietyDtlsVO> resultList = new ArrayList<InnovationSocietyDtlsVO>();
-		 try {
-			 
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getSuoMotoProposalsDetailedData() in  ItcDashboardService class",e);
-		 }
-		 return resultList;
+	public List<CohortDtlsVO> getCohortDetailsByCohortId(InputVO inputVO) {
+		List<CohortDtlsVO> resultList = new ArrayList<CohortDtlsVO>();
+		try {
+			String URL = "http://www.apinnovationsociety.com/dashboard/api/cohorts.php?id='"+inputVO.getSearchLevelId()+"'";
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				if (output != null && output.length() > 0) {
+					Gson gson = new GsonBuilder().create();
+					resultList = gson.fromJson(output,new TypeToken<List<CohortDtlsVO>>() {}.getType());
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getCohortDetailsByCohortId() in  ItcDashboardService class",e);
+		}
+		return resultList;
 	}
 	/**
 	 * @author Santosh

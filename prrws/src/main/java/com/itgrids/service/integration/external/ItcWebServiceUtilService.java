@@ -15,7 +15,7 @@ public class ItcWebServiceUtilService {
 
 	private static Logger LOG = Logger.getLogger(ItcWebServiceUtilService.class);
 
-	public ClientResponse callWebService(String url, Object input) {
+	public ClientResponse postWebServiceCall(String url, Object input) {
 		ClientResponse response = null;
 		try {
 			ClientConfig clientConfig = new DefaultClientConfig();
@@ -27,6 +27,21 @@ public class ItcWebServiceUtilService {
 			response = resource.accept(javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE).type(javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE).post(ClientResponse.class, input);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in calling Webservice, URL - " + url+ " Input - " + input + " Exception - ", e);
+		}
+		return response;
+	}
+	public ClientResponse getWebServiceCall(String url) {
+		ClientResponse response = null;
+		try {
+			ClientConfig clientConfig = new DefaultClientConfig();
+			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+			Client client = Client.create(clientConfig);
+			client.setConnectTimeout(1000 * 60 * 2);
+			client.setReadTimeout(1000 * 60 * 3);
+			WebResource resource = client.resource(url);
+			response = resource.accept(javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE).type(javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE).get(ClientResponse.class);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in calling Webservice, URL - " + url+ "Exception - ", e);
 		}
 		return response;
 	}
