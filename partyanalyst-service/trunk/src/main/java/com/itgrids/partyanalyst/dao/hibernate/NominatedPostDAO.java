@@ -2415,7 +2415,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 						builder.append(", panchayat.panchayatId ");
 					else if(searchLevelId.longValue() ==7L || searchLevelId.longValue() ==8L)
 						builder.append(" ,ward.constituencyId  ");
-				}else if(type != null && type.equalsIgnoreCase("mandal")){
+				}else if(type != null && type.equalsIgnoreCase("muncipality")){
 					 if(searchLevelId.longValue() ==4L )
 							builder.append(" ,localElectionBody.localElectionBodyId ");
 					}

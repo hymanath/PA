@@ -3792,8 +3792,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					 List<Object[]> analysisReport = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,"muncipality",statusIds);
 					 setLocationWiseNominatedPostAnalysisData(returnList,analysisReport,"positionWise");
 				 }
-				 List<Object[]> analysisReport = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,type,statusIds);
-				 setLocationWiseNominatedPostAnalysisData(returnList,analysisReport,"positionWise");
+				 List<Object[]> analysisReport1 = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,type,statusIds);
+				 setLocationWiseNominatedPostAnalysisData(returnList,analysisReport1,"positionWise");
 				 Map<Long, NominatedPostDetailsVO> locationsMap = getTemplateForLocations( locationValues, searchLvlId,"positionWise")	;
 				 
 				 if(commonMethodsUtilService.isMapValid(locationsMap)){
@@ -3829,11 +3829,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			}else if(searchLvlId != null && searchLvlId.longValue() == 4l){
 				//CadreCommitteeService cadreCommitteeService = new CadreCommitteeService();
 				locations = cadreCommitteeService.getMandalsByConstituency(locationValues.get(0).longValue());
+				locations.remove(0);
 			}else if(searchLvlId != null && searchLvlId.longValue() == 5l){
 				List<Long>  constituencyIdMan=tehsilDAO.getAllConstituenciesByTehilId(locationValues.get(0).longValue());
 				//CadreCommitteeService cadreCommitteeService = new CadreCommitteeService();
 				if(commonMethodsUtilService.isListOrSetValid(constituencyIdMan))
 				locations = cadreCommitteeService.getPanchayatWardByMandalId(locationValues.get(0).toString(), constituencyIdMan.get(0).longValue());
+				locations.remove(0);
 			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(locations)){
@@ -3883,6 +3885,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							 getBoardLevels(positionMap);
 						 else
 							 getPositions(positionMap);
+						 
+						 if(commonMethodsUtilService.isMapValid(positionMap)){
+							 mainVO.getSubList().addAll(positionMap.values());
+						 }
 						 mainMap.put(commonMethodsUtilService.getLongValueForObject(objects[3]), positionMap);
 					 }
 					 NominatedPostDetailsVO positionVO = null;
@@ -3921,7 +3927,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							 mainVO.setMaleCount(mainVO.getMaleCount()+positionVO.getMaleCount());
 							 mainVO.setFemaleCount(mainVO.getFemaleCount()+positionVO.getFemaleCount());
 							 mainVO.setTotalCount(mainVO.getTotalCount()+positionVO.getTotalCount());
-							 mainVO.getSubList().add(positionVO);
+							 //mainVO.getSubList().add(positionVO);
 						}
 					}
 				}
