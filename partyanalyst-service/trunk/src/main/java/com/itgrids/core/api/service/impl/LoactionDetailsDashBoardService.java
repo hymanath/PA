@@ -498,7 +498,7 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 			LOG.error("Exception raised at getBelowLevelMeetingConductedCount() method of LoactionDetailsDashBoardService", e);
 		}
 		return null;
-	}//{835={3=21, 4=21, 7=393}, 836={4=21, 7=320}, 843={4=21, 7=400}, 844={4=21, 7=260}}
+	}
 	public void pushLevelWiseMeetingCount(Map<Long,HashMap<Long,Long>> locationIdAndLevelIdAndCountMap,Map<Long,String> locationIdAndNameMap,Long locationLevel,List<PartyMeetingsVO> finalList){
 		try{
 			PartyMeetingsVO meetingVO = null;
@@ -603,6 +603,26 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 			return innerList;
 		}catch(Exception e){
 			LOG.error("Exception raised at buildTemplate() method of LoactionDetailsDashBoardService", e);
+		}
+		return null;
+	}
+	/*
+	 * Swadhin K Lenka
+	 * Date: 07/10/2017
+	 * @see com.itgrids.core.api.service.ILoactionDetailsDashBoardService#getMeetingsDetails(java.lang.Long, java.lang.Long, java.util.List, java.lang.String, java.lang.String)
+	 */
+	public List<PartyMeetingsVO> getMeetingsDetails(Long locationId, Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr){
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    Date fromDate=null;
+			Date toDate=null;
+			
+			if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getMeetingsDetails() method of LoactionDetailsDashBoardService", e);
 		}
 		return null;
 	}
