@@ -90,6 +90,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private INominatedPostLocationDashboardService nominatedPostLocationDashboardService;
 	private List<NominatedPostCandidateDtlsVO> nominatedPostCandList;
 	private KeyValueVO keyValueVO;
+	private List<ElectionInformationVO> informationVo;
 	
 	
 	public KeyValueVO getKeyValueVO() {
@@ -373,6 +374,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	}
 	public void setTypeVo(CandidateDetailsForConstituencyTypesVO typeVo) {
 		this.typeVo = typeVo;
+	}
+	
+	public List<ElectionInformationVO> getInformationVo() {
+		return informationVo;
+	}
+	public void setInformationVo(List<ElectionInformationVO> informationVo) {
+		this.informationVo = informationVo;
 	}
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
@@ -1076,6 +1084,19 @@ public String getElectionInformationLocationWise(){
 			grivenceVO = locationDashboardService.getLocationWiseGrivenceTrustIssueTypesCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getConstituencyWiseInsuranceWiseIssueTypeCounts() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getLocationWiseElectionResults(){
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+			List<Long> yearsList = convertJsonStringList(jObj.getJSONArray("yearsArr")); 
+			List<Long> electionScopeIdsList = convertJsonStringList(jObj.getJSONArray("electionScopeIdsArr"));
+			List<Long> yearIdsList = convertJsonStringList(jObj.getJSONArray("yearsArr"));
+			informationVo = locationDashboardService.getLocationWiseElectionResults(electionScopeIdsList,jObj.getString("subType"),jObj.getLong("lelevlId"),locationValuesList,yearIdsList);
+		}catch(Exception e){
+			LOG.error("Exception raised at getLevelWiseGrievanceCounts() of LocationDashboardAction{}",e);
 		}
 		return Action.SUCCESS;
 	}
