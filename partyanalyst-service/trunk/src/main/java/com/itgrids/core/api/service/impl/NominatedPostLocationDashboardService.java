@@ -154,7 +154,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 		            	deptVO.setGoIsuuedCount(deptVO.getGoIsuuedCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
 		            }
 		            deptVO.setTotalPosts(deptVO.getTotalPosts()+commonMethodsUtilService.getLongValueForObject(param[2]));
-		            total=total+deptVO.getTotalPosts();
+		            total=total+commonMethodsUtilService.getLongValueForObject(param[2]);
 				}
 			}
 			List<Object[]> recivedApplicationsCount =nominatedPostApplicationDAO.getLocationWiseApplicationCount(locationValues,startDate,endDate,locationTypeId,boardLevelId); 
@@ -183,8 +183,8 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 				if(finalList != null){
 					for(NominatedPostCandidateDtlsVO vo:finalList){
 						vo.setTotalRecePer(100.00);
-						vo.setOpenPostPer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getOpenCount()))));
-						vo.setGoIssuedPer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getGoIsuuedCount()))));
+						vo.setOpenPostPer((Double.parseDouble(cadreDetailsService.calculatePercentage(vo.getTotalPosts(), vo.getOpenCount()))));
+						vo.setGoIssuedPer((Double.parseDouble(cadreDetailsService.calculatePercentage(vo.getTotalPosts(), vo.getGoIsuuedCount()))));
 						vo.setTotalPer(100.00);
 					}
 				}
