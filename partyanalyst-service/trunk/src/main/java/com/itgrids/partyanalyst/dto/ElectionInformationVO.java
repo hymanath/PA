@@ -26,6 +26,10 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private Long earnedVotesPerc;
 	private Long marginVotes=0l;
 	private Long wonSeatsCount=0l;
+	private Long totalSeatsCount=0L;
+	private Long participatedSeatsCount=0L;
+	private String perc="0.0";
+	private String partyFlag;
 	private List<ElectionInformationVO> list = new ArrayList<ElectionInformationVO>();
 	
 	public ElectionInformationVO(){}
@@ -33,7 +37,30 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 		this.partyId=partyId;
 		this.partyName=name;
 	}
-	
+	public String getPartyFlag() {
+		return partyFlag;
+	}
+	public void setPartyFlag(String partyFlag) {
+		this.partyFlag = partyFlag;
+	}
+	public Long getParticipatedSeatsCount() {
+		return participatedSeatsCount;
+	}
+	public void setParticipatedSeatsCount(Long participatedSeatsCount) {
+		this.participatedSeatsCount = participatedSeatsCount;
+	}
+	public String getPerc() {
+		return perc;
+	}
+	public void setPerc(String perc) {
+		this.perc = perc;
+	}
+	public Long getTotalSeatsCount() {
+		return totalSeatsCount;
+	}
+	public void setTotalSeatsCount(Long totalSeatsCount) {
+		this.totalSeatsCount = totalSeatsCount;
+	}
 	public ElectionInformationVO(String electionYear,Long electionId,String electionType){
 		this.electionYear=electionYear;
 		this.electionId= electionId;
