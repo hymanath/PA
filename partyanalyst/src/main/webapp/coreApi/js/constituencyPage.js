@@ -195,6 +195,8 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {	
+
+	
 	$("#enrolmentYears").chosen();
 	//Enrolment Years
 	getEnrollmentIds();
@@ -223,10 +225,8 @@ function onLoadAjaxCalls()
 	}
 	
 	//Assembly Block
-	getElectionTypes();
-	getElectionYears();
-	var partyIds = [872,362,1117,886,72,269,265,163,1887];
-	getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal);
+	getElectionTypes("onload");
+	
 	if(locationLevelId == '4'){
 		$(".assemblyElectionBlockCls").show();
 		getDetailedElectionInformaction();
@@ -261,7 +261,6 @@ function onLoadAjaxCalls()
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
 	getLevelWisePostsOverView();
-	//getNominatedPositionWiseCandidates()//click function
 	
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
@@ -284,10 +283,10 @@ function onLoadClicks()
 	$(document).on("click","[detailed-block]",function(){
 		var blockName = $(this).attr("detailed-block");
 		if(blockName == 'grievance')
-		{
-			window.open('areaWiseGrievanceDashboardAction.action','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=no');
+		{ 
+			window.open('areaWiseGrievanceDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'nominatedPosts'){
-			window.open('areaWiseDashboardDetailedViewAction.action','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=no');
+			window.open('areaWiseDashboardDetailedViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}
 		
 	});
@@ -542,7 +541,6 @@ function onLoadClicks()
 			getNominatedPostApplicationDetails();
 			getNominatedPostStatusWiseCount();
 			getLevelWisePostsOverView();
-			//getNominatedPositionWiseCandidates()//click function
 		}else if(blockName == 'alerts')
 		{
 			getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
@@ -567,10 +565,10 @@ function onLoadClicks()
 			getVotersAndcadreAgeWiseCount(22,4);
 		}else if(blockName == 'election')
 		{
-			getElectionYears();
 			getElectionTypes();
-			var partyIds = [872,362,1117,886,72,269,265,163,1887];
-			getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal);
+			//getElectionYears();
+			/* var partyIds = [872,362,1117,886,72,269,265,163,1887];
+			getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal); */
 			if(locationLevelId == '4'){
 				$(".assemblyElectionBlockCls").show();
 				getDetailedElectionInformaction();
@@ -621,7 +619,7 @@ function onLoadClicks()
 					 electionYearsSubTypeArr[j++] = $(this).val();
 				}
 			});
-			getElectionYears();
+			getElectionYears("change");
 		/* if($(this).is(':checked')){
 			var j = 0;	
 			 electionYearsSubTypeArr = [];
@@ -4038,8 +4036,8 @@ function getPositionWiseMemberCount(){
 			"toDateStr":globalToDate,
 			"locationValuesArr":userAccessLevelValuesArray,
 			"locationTypeId":locationLevelId,
-			"year":"",
-			"tdpCommitteeEnrollmentYearId":1
+			"year":""
+			
 		}
 	$.ajax({
 		type : "POST",
@@ -4058,8 +4056,29 @@ function getPositionWiseMemberCount(){
 			str+='<ul class="list-border list-border-responsive">';
 			for(var i in result){
 				str+='<li>';
+				if(result[i].name =="Panchayat/Ward/Division"){
+					if(locationLevelId ==2 || locationLevelId ==3 || locationLevelId ==10){
+						str+='<h3 class="" attr_boardLevelId="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].count+'</h3>';
+					str+='<p class="text-capitalize">Village/Ward</p>';
+					}else{
+						str+='<h3 class="positionLevelModalClick" attr_boardLevelId="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].count+'</h3>';
+					str+='<p class="text-capitalize">Village/Ward</p>';
+					}
+					
+				}else if(result[i].name =="Mandal/Muncipality/Corporation"){
+					if(locationLevelId ==2 || locationLevelId ==3 || locationLevelId ==10){
+						str+='<h3 class="" attr_boardLevelId="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].count+'</h3>';
+					str+='<p class="text-capitalize">'+result[i].name+'</p>';
+					}else{
+						str+='<h3 class="positionLevelModalClick" attr_boardLevelId="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].count+'</h3>';
+					str+='<p class="text-capitalize">'+result[i].name+'</p>';
+					}
+					
+				}else{
 					str+='<h3 class="positionLevelModalClick" attr_boardLevelId="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].count+'</h3>';
 					str+='<p class="text-capitalize">'+result[i].name+'</p>';
+				}
+					
 				str+='</li>';
 			}
 			str+='</ul>';
@@ -4916,7 +4935,7 @@ function getEnrollmentIds(){
 function setDefaultImage(img){
 	img.src = "images/User.png";
 }
-function getElectionTypes(){
+function getElectionTypes(type){
 	$("#electionTypeValuesId").html(spinner);
 	var jsObj={
 			
@@ -4990,6 +5009,7 @@ function getElectionTypes(){
 						str+='<button class="btn btn-primary btn-xs electionDetailsCls pull-right" >Submit</button>';
 					str+='</div>';
 			$("#electionTypeValuesId").html(str);
+			getElectionYears(type);
 		}else{
 			$("#electionTypeValuesId").html(noData);
 		}
@@ -5046,7 +5066,7 @@ function getElectionInformationLocationWise(electionVal,type,partyIds,electionSu
 	}
 	 $.ajax({
       type : "GET",
-      url : "getElectionInformationLocationWiseAction.action",
+      url : "getElectionInformationLocationWiseVoterShareAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
@@ -5088,8 +5108,8 @@ function buildElectionInformationLocationWise(result,type){
 								str+='<tr>';
 									str+='<td>'+result[i].partyName+'</td>';
 									for(var j in result[i].list){
-										if(result[i].list[j].earnedVotesPerc !=null && result[i].list[j].earnedVotesPerc>0){
-											str+='<td>'+result[i].list[j].wonSeatsCount+'  <small style="color:#2B908F;"><b>'+result[i].list[j].earnedVotesPerc+' %</b></small></td>';
+										if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
+											str+='<td>'+result[i].list[j].wonSeatsCount+'  <small style="color:#2B908F;"><b>'+result[i].list[j].locationName+' %</b></small></td>';
 										}else{
 											str+='<td> - </td>';
 										}
@@ -5117,7 +5137,7 @@ function buildElectionInformationLocationWise(result,type){
 					if(type == "wonSeat"){
 						wonSeatsCountArr.push(parseFloat(result[i].list[j].wonSeatsCount));
 					}else{
-						wonSeatsCountArr.push(parseFloat(result[i].list[j].earnedVotesPerc));
+						wonSeatsCountArr.push(parseFloat(result[i].list[j].locationName));
 					}
 					
 				}
@@ -5297,7 +5317,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
   }
 }
 
-  function getElectionYears(){
+  function getElectionYears(type){
 	 $('#elctionYearsBlockId').html('');
 	 $('#electionTypeSpinnerId').show();
 	 
@@ -5317,22 +5337,29 @@ function getPartyWiseMPandMLACandidatesCounts(){
 				str+='<option value="'+result.imageList[i]+'" selected>'+result.imageList[i]+'</option>';
 					
 			} 
-			setTimeout(function(){ 
-				$('#elctionYearsBlockId').html(str);
-				$('#elctionYearsBlockId').multiselect({
-					enableFiltering: true,
-					includeSelectAllOption: true,
-					selectAllText: 'All Election Years',
-					maxHeight: 300,
-					maxWidth: 300,
-					dropDown: true,
-					selectAllNumber: true,
-					allSelectedText: 'All Election Years selected'
-				});
-				$("#elctionYearsBlockId").multiselect("refresh");
-			}, 1000);
+			$('#elctionYearsBlockId').html(str);
+			$('#elctionYearsBlockId').multiselect({
+				enableFiltering: true,
+				includeSelectAllOption: true,
+				selectAllText: 'All Election Years',
+				maxHeight: 300,
+				maxWidth: 300,
+				dropDown: true,
+				selectAllNumber: true,
+				allSelectedText: 'All Election Years selected'
+			});
+			$("#elctionYearsBlockId").multiselect("refresh");
 			
 		}
+		
+		if(type == "onload"){
+			electionYrVal=[];
+			electionYrVal = $("#elctionYearsBlockId").val();
+			
+			var partyIds = [872,362,1117,886,72,269,265,163,1887];
+			getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal);
+		}
+		
     });
   }
 
@@ -5374,7 +5401,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
       "year"				:"",
       "boardLevelId"		:boardLevelId,
 	  startIndex			:0,
-	  endIndex				:50
+	  endIndex				:5000
     }
     $.ajax({   
       type:'GET',
@@ -5394,11 +5421,12 @@ function getPartyWiseMPandMLACandidatesCounts(){
 			str+='<table class="table table-condensed tableStyledGoIssued" id="dataTablePositionLevelId">';
 				str+='<thead class="bg-E9">';
 					str+='<tr>';
-						str+='<th class="text-center">Department</th>';
-						str+='<th class="text-center">Board/ Corporation</th>';
-						str+='<th class="text-center">Position Level</th>';
-						str+='<th class="text-center">Name</th>';
-						str+='<th class="text-center">Status</th>';
+						str+='<th class="">Department</th>';
+						str+='<th class="">Board/ Corporation</th>';
+						str+='<th class="">Position Level</th>';
+						str+='<th>Image</th>';
+						str+='<th class="">Name</th>';
+						str+='<th class="">Status</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -5407,6 +5435,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 							str+='<td>'+result[i].department+'</td>';
 							str+='<td>'+result[i].board+'</td>';
 							str+='<td>'+result[i].position+'</td>';
+							str+='<td><img src="https://mytdp.com/images/cadre_images/'+result[i].image+'" class="img-border" alt="profile" onerror="setDefaultImage(this);" style="width:50px;height:50px;"/></td>';
 							str+='<td>'+result[i].candidateName+'</td>';
 							str+='<td>'+result[i].status+'</td>';
 						str+='</tr>';
@@ -5425,6 +5454,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
   
 function getLevelWisePostsOverView(){
 	
+	$("#levelWiseNominatedPosts").html(spinner);
 	var jsObj={
 			"fromDateStr" : globalFromDate,
 			"toDateStr":globalToDate,
@@ -5491,7 +5521,12 @@ function getLevelWisePostsOverView(){
 									str+='</div>';
 								str+='</td>';
 								str+='<td>';
+								if(result[i].goIsuuedCount !=null && result[i].goIsuuedCount>0){
 									str+='<span class="openPostClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="4">'+result[i].goIsuuedCount+'</span>';
+								}else{
+									str+='<span class="" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="4">'+result[i].goIsuuedCount+'</span>';
+								}
+									
 								str+='</td>';
 							str+='</tr>';
 							str+='<tr>';
@@ -5505,7 +5540,12 @@ function getLevelWisePostsOverView(){
 									str+='</div>';
 								str+='</td>';
 								str+='<td>';
+								if(result[i].openCount !=null && result[i].openCount>0){
 									str+='<span class="openPostClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="open" attr_department_name = "'+result[i].board+' Level" attr_department_id="0">'+result[i].openCount+'</span>';
+								}else{
+									str+='<span class="" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="open" attr_department_name = "'+result[i].board+' Level" attr_department_id="0">'+result[i].openCount+'</span>';
+								}
+									
 								str+='</td>';
 							str+='</tr>';
 						str+='</table>';
@@ -5717,6 +5757,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 						str+='<th class="text-center">Department</th>';
 						str+='<th class="text-center">Board/ Corporation</th>';
 						str+='<th class="text-center">Position Level</th>';
+						str+='<th class="text-center">Image</th>';
 						str+='<th class="text-center">Name</th>';
 						str+='<th class="text-center">Gender</th>';
 						str+='<th class="text-center">Caste Category</th>';
@@ -5729,6 +5770,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 							str+='<td>'+result[i].department+'</td>';
 							str+='<td>'+result[i].board+'</td>';
 							str+='<td>'+result[i].position+'</td>';
+							str+='<td><img src="https://mytdp.com/images/cadre_images/'+result[i].image+'" class="img-border" alt="profile" onerror="setDefaultImage(this);" style="width:50px;height:50px;"/></td>';
 							str+='<td>'+result[i].candidateName+'</td>';
 							str+='<td>'+result[i].gender+'</td>';
 							str+='<td>'+result[i].casteCategory+'</td>';

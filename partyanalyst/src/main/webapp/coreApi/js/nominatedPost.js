@@ -1,6 +1,11 @@
 // please do not try to edit these options which may cause the entire page to stop working.	
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-onLoadCalls();
+var globalFromDate = moment().subtract(3,'year').format("DD/MM/YYYY");
+var globalToDate = moment().format("DD/MM/YYYY");
+
+setTimeout(function(){
+	onLoadCalls();
+},1500)
 function onLoadCalls()
 {
 	getAllNominatedStatusListLevelWiseDataDashBoard();
@@ -39,12 +44,12 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 function getAllNominatedStatusListLevelWiseDataDashBoard(){
 	$("#overAllAnalysisBlockId").html(spinner);
 	var jsObj={
-		boardLevelId:4,  //state level 1 //parliament -4 or constituenct -4 // mandal Or muni -5 // panchayat/ward -7 //
-		levelValues:["282"],
-		levelId:4,
-		fromDateStr:"28/09/2012",
-      toDateStr:"07/10/2017",
-      year:""
+		boardLevelId	:0,  //state level 1 //parliament -4 or constituenct -4 // mandal Or muni -5 // panchayat/ward -7 //
+		levelValues		:userAccessLevelValuesArray,
+		levelId			:locationLevelId,
+		fromDateStr		:globalFromDate,
+        toDateStr		:globalToDate,
+		year			:""
 	}
 	$.ajax({   
 		type:'GET',
@@ -75,10 +80,12 @@ function getAllNominatedStatusListLevelWiseDataDashBoard(){
 						str+='<td style="text-align:center;padding:20px 0px">';
 							str+='<p><span style="margin-right:3px;display:inline-block;height:15px;width:15px;background-color:#3366CC;border:1px solid #ddd;border-radius:50%;"></span>G.O Issued/ Finalized</p>';
 							str+='<h2>'+result.finalizedAndGoIssued+'</h2>';
+							str+='<h5 style="color:#00BD06;">'+result.percentage1+' %</h5>';
 						str+='</td>';
 						str+='<td style="text-align:center;padding:20px 0px">';
 							str+='<p><span style="margin-right:3px;display:inline-block;height:15px;width:15px;background-color:#00BD06;border:1px solid #ddd;border-radius:50%;"></span>Open Posts</p>';
 							str+='<h2>'+result.openPost+'</h2>';
+							str+='<h5 style="color:#00BD06;">'+result.percentage+' %</h5>';
 						str+='</td>';
 					str+='</tr>';
 				str+='</table>';
@@ -135,8 +142,8 @@ function getAllNominatedStatusListLevelWiseDataDashBoard(){
 		}; 
 		var plotOptions ={
 			pie: {
-				innerSize: 100,
-				depth: 90,
+				innerSize: 180,
+				depth: 120,
 				dataLabels: {
 					enabled: false,
 					formatter: function() {
@@ -182,12 +189,12 @@ function getAllNominatedStatusListLevelWiseDataDashBoard(){
 function getAreaWiseDashboardCandidatesCountView(){
 	$("#LocationWiseLevelBlockId,#positionLevelBlockId,#levelWiseBlockOverviewId").html(spinner);
 	var jsObj={
-		levelValues:["282"],
-		levelId:4,
+		levelValues:userAccessLevelValuesArray,
+		levelId:locationLevelId,
 		statusIds:[3,4],
-		fromDateStr:"28/09/2012",
-      toDateStr:"07/10/2017",
-      year:""
+		fromDateStr:globalFromDate,
+		toDateStr:globalToDate,
+		year:""
 	}
 	$.ajax({   
 		type:'GET',
@@ -207,8 +214,9 @@ function getAreaWiseDashboardCandidatesCountView(){
 	{
 		var str='';
 		var overview='';
+		var table='';
 		
-		table+='<div class="table-responsive m_top10">';
+		 table+='<div class="table-responsive m_top10">';
 			table+='<table class="table table-bordered text-center" style="background-color:#f2f2f2;">';
 				table+='<thead class="text-center">';
 					for(var i in result.list)
@@ -235,10 +243,10 @@ function getAreaWiseDashboardCandidatesCountView(){
 				table+='</tr>';
 			table+='</table>';
 		table+='</div>';
-		$("#positionLevelBlockId").html(table);
+		$("#positionLevelBlockId").html(table); 
 		
 		overview+='<div class="table-responsive">';
-			overview+='<table class="table table-bordered text-center" id="LocationWiseLevelTableId">';
+			overview+='<table class="table table-bordered text-center" id="LocationWiseLevelDivTableId">';
 				overview+='<tr>';
 					overview+='<td><div class="media"><div class="media-left"><img class="media-object" src="coreApi/img/group.png" style="height:30px;width:30px;"/></div><div class="media-body">TOTAL<br/> MEMBERS</div></div><h4 class="text-center">'+result.totalCount+'</h4></td>';
 					overview+='<td><div class="media"><div class="media-left"><img class="media-object" src="coreApi/img/male.png" style="height:30px;width:30px;"/></div><div class="media-body">MALE</div></div><h4 class="text-center">'+result.maleCount+'</h4><small>'+result.perc+'</small></td>';
@@ -259,6 +267,11 @@ function getAreaWiseDashboardCandidatesCountView(){
 				str+='</thead>';
 				for(var i in result.subList)
 				{
+					var totalCountManual = 0;
+					for(var j in result.subList[i].subList)
+					{
+						totalCountManual = totalCountManual + result.subList[i].subList[j].totalCount
+					}
 					str+='<tr>';
 						if(result.subList[i].name.length > 0)
 						{
@@ -266,8 +279,7 @@ function getAreaWiseDashboardCandidatesCountView(){
 						}else{
 							str+='<td>Others</td>';
 						}
-						
-						str+='<td>'+result.subList[i].totalCount+'</td>';
+						str+='<td>'+totalCountManual+'</td>';
 						for(var j in result.subList[i].subList)
 						{
 							str+='<td>'+result.subList[i].subList[j].totalCount+'</td>';
@@ -278,7 +290,7 @@ function getAreaWiseDashboardCandidatesCountView(){
 		str+='</div>';
 		$("#LocationWiseLevelBlockId").html(str);
 		$("#LocationWiseLevelTableId").dataTable({
-			"iDisplayLength": 5,
+			"iDisplayLength": 10,
 			"aaSorting": [],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 			//"dom": 'lfBrtip',
@@ -314,13 +326,13 @@ function getAreaWiseDashboardCandidatesCountView(){
 function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(type){
 	$("#"+type+"BlockId").html(spinner);
 	var jobj = {
-		locationValues 	: [282],
+		locationValues 	:userAccessLevelValuesArray,
 		statusIds 		:[3,4],
-		levelId 		:4,
+		levelId 		:locationLevelId,
 		type 			:type,// "ageRange"//or(casteCategory)
-		fromDateStr:"28/09/2012",
-      toDateStr:"07/10/2017",
-      year:""
+		fromDateStr:globalFromDate,
+		toDateStr:globalToDate,
+		year:""
 	}	
 	$.ajax({
 		type : "POST",
@@ -362,13 +374,13 @@ function getLocationWiseNominatedPostAnalysisDetails(type){
 	$("#"+type+"BlockId").html(spinner);
 	var jsObj={
 		boardLevelId:0,
-		levelValues:["282"],
-		levelId:4,
+		levelValues:userAccessLevelValuesArray,
+		levelId:locationLevelId,
 		dataType:type,
 		statusIds:[3,4],
-		fromDateStr:"28/09/2012",
-      toDateStr:"07/10/2017",
-      year:""
+		fromDateStr:globalFromDate,
+		toDateStr:globalToDate,
+		year:""
 	}
 	$.ajax({   
 		type:'GET',
@@ -379,16 +391,16 @@ function getLocationWiseNominatedPostAnalysisDetails(type){
 		console.log(result);
 		if(result != null && result.length > 0)
 		{
-			return buildTable(result);
+			return buildTable(result,type);
 		}else{
 			$("#"+type+"BlockId").html("NO DATA AVAILABLE");
 		}
 		
 	});
-	function buildTable(result)
+	function buildTable(result,type)
 	{
 		var table='';
-		table+='<table class="table table-bordered" id="dataTable'+type+'">';
+		table+='<table class="table table-bordered" id="dataTableRange'+type+'">';
 			table+='<thead>';
 				table+='<tr>';
 					if(type == "casteGroup" || type == "subCaste")
@@ -434,43 +446,31 @@ function getLocationWiseNominatedPostAnalysisDetails(type){
 				table+='</tr>';
 			table+='</thead>';
 			table+='<tbody>';
+				
 				for(var i in result)
 				{
-					if(type == "mandal" )
-					{
-						if(i != 0)
-						{
-							table+='<tr>';
-								table+='<td>'+result[i].name+'</td>';
-								table+='<td style="background-color:#F4F4F4">'+result[i].totalCount+'</td>';
-								table+='<td style="background-color:#F4F8FF">'+result[i].maleCount+'</td>';
-								table+='<td style="background-color:#FFF3F8">'+result[i].femaleCount+'</td>';
-								for(var j in result[i].subList)
-								{
-									table+='<td>'+result[i].subList[j].totalCount+'</td>';
-								}
-							table+='</tr>';
+					table+='<tr>';
+						if(result[i].name.length>0){
+							table+='<td>'+result[i].name+'</td>';
+						}else{
+							table+='<td> - </td>';
 						}
 						
-					}else{
-						table+='<tr>';
-							table+='<td>'+result[i].name+'</td>';
-							table+='<td style="background-color:#F4F4F4">'+result[i].totalCount+'</td>';
-							table+='<td style="background-color:#F4F8FF">'+result[i].maleCount+'</td>';
-							table+='<td style="background-color:#FFF3F8">'+result[i].femaleCount+'</td>';
-							for(var j in result[i].subList)
-							{
-								table+='<td>'+result[i].subList[j].totalCount+'</td>';
-							}
-						table+='</tr>';
-					}
+						table+='<td style="background-color:#F4F4F4">'+result[i].totalCount+'</td>';
+						table+='<td style="background-color:#F4F8FF">'+result[i].maleCount+'</td>';
+						table+='<td style="background-color:#FFF3F8">'+result[i].femaleCount+'</td>';
+						for(var j in result[i].subList)
+						{
+							table+='<td>'+result[i].subList[j].totalCount+'</td>';
+						}
+					table+='</tr>';
 					
 				}
 			table+='</tbody>';
 		table+='</table>';
 		$("#"+type+"BlockId").html(table);
-		$("#dataTable"+type).dataTable({
-			"iDisplayLength": 20,
+			$("#dataTableRange"+type).dataTable({
+			"iDisplayLength": 10,
 			"aaSorting": [],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 			//"dom": 'lfBrtip',
