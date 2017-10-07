@@ -66,8 +66,8 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	public List<Object[]> getLevelWiseGoIssuedPostions(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,List<Long> statusIds){
 	 	 StringBuilder sb = new StringBuilder();
 	 	 sb.append(" select" +
-	 	 		   " model.nominatedPost.nominationPostCandidate.nominationPostCandidateId," +//0
-	 	 		   " model.nominatedPost.nominationPostCandidate.candidateName," +//1
+	 	 		   " nominationPostCandidate.nominationPostCandidateId," +//0
+	 	 		   " nominationPostCandidate.candidateName," +//1
 	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId," +//2
 	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.deptName," +//3
 	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId," +//4
@@ -75,9 +75,14 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId," +//6
 	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionName," +//7
 	 	 		   " model.nominatedPost.nominationPostCandidate.gender, " +//8
-	 	 		   " model.nominatedPost.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +//9
+	 	 		   " casteCategory.categoryName," +//9
 	 	 		   " date(model.govtOrder.toDate) " +//10
-	 	 		   " from NominatedPostGovtOrder model where " +
+	 	 		   " from NominatedPostGovtOrder model " +
+	 	 		   " left join model.nominatedPost.nominationPostCandidate nominationPostCandidate " +
+	 	 		   " left join nominationPostCandidate.casteState  casteState " +
+	 	 		   " left join casteState.casteCategoryGroup casteCategoryGroup " +
+	 	 		   " left join casteCategoryGroup.casteCategory casteCategory " +
+	 	 		   " where " +
 	 			   " model.nominatedPost.isDeleted = 'N' " +
 	 			   " and model.nominatedPost.isExpired = 'N' " +
 	 			   " and model.nominatedPost.nominatedPostMember.isDeleted = 'N' " +
