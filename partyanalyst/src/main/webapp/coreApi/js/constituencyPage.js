@@ -1400,7 +1400,7 @@ function getCandidateAndPartyInfoForConstituency(){
 		representative+='<div class="col-sm-12">';
 			representative+='<div class="panel panel-default">';
 				representative+='<div class="panel-body">';
-					representative+='<h4 class="panel-title theme-title-color">Public Representative in Other than  Location</h4>';
+					representative+='<h4 class="panel-title theme-title-color">Important Leaders </h4>';
 					var length=0;
 					for(var i in result[0].list)
 					{
@@ -5806,3 +5806,4 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 		
 	}
   }
+  
