@@ -4171,6 +4171,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					    		  vo.setTotalPosts(vo.getTotalPosts()+returnVo.getTotalPosts());
 					    		  vo.setOpenPost(vo.getOpenPost()+returnVo.getOpenPost());
 					    		  vo.setFinalizedAndGoIssued(vo.getFinalizedAndGoIssued()+returnVo.getFinalizedAndGoIssued());
+					    		  vo.setPercentage(calculatePercentage(vo.getTotalPosts(), vo.getOpenPost()));//openCount%
+					    		  vo.setPercentage1(calculatePercentage(vo.getTotalPosts(), vo.getFinalizedAndGoIssued()));//finalized%
 					    		  vo.getPositinsList().add(returnVo);    		  
 					    		  
 					    	  }			    	  
