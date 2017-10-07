@@ -18,17 +18,27 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private String electionType;
 	private Long locationId;
 	private String locationName;
-	private Long totalVoters;
-	private Long validVoters;
-	private Long missedVotes;
-	private Long rejectedVotes;
-	private Long earnedVotes;
+	private Long totalVoters=0l;
+	private Long validVoters=0l;
+	private Long missedVotes=0l;
+	private Long rejectedVotes=0l;
+	private Long earnedVotes=0l;
 	private Long earnedVotesPerc;
-	private Long marginVotes;
-	private Long wonSeatsCount;
+	private Long marginVotes=0l;
+	private Long wonSeatsCount=0l;
 	private List<ElectionInformationVO> list = new ArrayList<ElectionInformationVO>();
 	
+	public ElectionInformationVO(){}
+	public ElectionInformationVO(Long partyId,String name){
+		this.partyId=partyId;
+		this.partyName=name;
+	}
 	
+	public ElectionInformationVO(String electionYear,Long electionId,String electionType){
+		this.electionYear=electionYear;
+		this.electionId= electionId;
+		this.electionType=electionType;
+	}
 	public List<ElectionInformationVO> getList() {
 		return list;
 	}
