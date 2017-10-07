@@ -1000,8 +1000,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							JSONObject dataObj = jsonObj.getJSONObject("data");
 							
 							Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-							Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 							if(id == null || id == 0l){
+								Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 								KaizalaGroups kg = new KaizalaGroups();
 								kg.setGroupId(jsonObj.getString("objectId"));
 								kg.setIsDeleted("N");
@@ -1022,8 +1022,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 								KER.setInsertedBy(kri.getKaizalaResponderInfoId());
 								KER.setUpdatedBy(kri.getKaizalaResponderInfoId());
 							}
-							List<Long> memberResponId = kaizalaResponderInfoDAO.getRespondentId(dataObj.getString("member"));
 							
+							List<Long> memberResponId = kaizalaResponderInfoDAO.getRespondentId(dataObj.getString("member"));
 							if(memberResponId == null || memberResponId.size() == 0){
 								Long responderTypeId = kaizalaResponderTypeDAO.getResponderType(dataObj.getString("type"));
 								KaizalaResponderInfo kri = new KaizalaResponderInfo();
