@@ -18180,7 +18180,7 @@
          <param name="root">grivenceVO</param>
        </result>
    </action>
-  	<action name="getGrivenceDetailsAction" class="locationDashboardAction" method="getGrivenceDetails">
+   <action name="getGrivenceDetailsAction" class="locationDashboardAction" method="getGrivenceDetails">
         <result type="json" name="success">
          <param name="root">grivenceVO</param>
        </result>
@@ -18195,5 +18195,10 @@
 			<param name="root">partyMeetingsVOs</param>       
 		</result>
   	</action>
+   <action name="getLocationWiseGrivenceTrustIssueTypesCountsAction" class="locationDashboardAction" method="getLocationWiseGrivenceTrustIssueTypesCounts">
+        <result type="json" name="success">
+         <param name="root">grivenceVO</param>
+       </result>
+   </action>
  </package>
 </struts>
