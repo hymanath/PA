@@ -161,5 +161,11 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="coreApi/js/nominatedPost.js" type="text/javascript"></script>
+<script type ="text/javascript">
+var locationLevelId = "${param.locationLevelId}";
+var userAccessLevelValue = "${param.userAccessLevelValuesArray}";
+var userAccessLevelValuesArray =[];
+	userAccessLevelValuesArray.push(userAccessLevelValue);
+</script>
 </body>
 </html>
