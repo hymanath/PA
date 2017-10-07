@@ -39,9 +39,12 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 function getAllNominatedStatusListLevelWiseDataDashBoard(){
 	$("#overAllAnalysisBlockId").html(spinner);
 	var jsObj={
-		boardLevelId:2,  //state level 1 //parliament -4 or constituenct -4 // mandal Or muni -5 // panchayat/ward -7 //
+		boardLevelId:1,  //state level 1 //parliament -4 or constituenct -4 // mandal Or muni -5 // panchayat/ward -7 //
 		levelValues:[1],
-		levelId:2
+		levelId:2,
+		fromDateStr:"28/09/2012",
+      toDateStr:"07/10/2017",
+      year:""
 	}
 	$.ajax({   
 		type:'GET',
@@ -181,7 +184,10 @@ function getAreaWiseDashboardCandidatesCountView(){
 	var jsObj={
 		levelValues:["282"],
 		levelId:4,
-		statusIds:[3,4]
+		statusIds:[3,4],
+		fromDateStr:"28/09/2012",
+      toDateStr:"07/10/2017",
+      year:""
 	}
 	$.ajax({   
 		type:'GET',
@@ -311,7 +317,10 @@ function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(typ
 		locationValues 	: [218],
 		statusIds 		:[3,4],
 		levelId 		:4,
-		type 			:type// "ageRange"//or(casteCategory)
+		type 			:type,// "ageRange"//or(casteCategory)
+		fromDateStr:"28/09/2012",
+      toDateStr:"07/10/2017",
+      year:""
 	}	
 	$.ajax({
 		type : "POST",
@@ -339,7 +348,7 @@ function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(typ
 				table+='<tr>';
 					for(var i in result)
 					{
-						table+='<td><h4>'+result[i].totalCount+'</h4><p class="text-success"><small>'+result[i].perc+'%</small></p></td>';
+						table+='<td><h4>'+result[i].count+'</h4><p class="text-success"><small>'+result[i].perc+'%</small></p></td>';
 					}
 				table+='</tr>';
 			table+='</table>';
@@ -352,11 +361,14 @@ function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(typ
 function getLocationWiseNominatedPostAnalysisDetails(type){
 	$("#"+type+"BlockId").html(spinner);
 	var jsObj={
-		boardLevelId:4,
+		boardLevelId:0,
 		levelValues:["282"],
 		levelId:4,
 		dataType:type,
-		statusIds:[3,4]
+		statusIds:[3,4],
+		fromDateStr:"28/09/2012",
+      toDateStr:"07/10/2017",
+      year:""
 	}
 	$.ajax({   
 		type:'GET',
@@ -430,7 +442,7 @@ function getLocationWiseNominatedPostAnalysisDetails(type){
 						{
 							table+='<tr>';
 								table+='<td>'+result[i].name+'</td>';
-								table+='<td style="background-color:#F4F4F4">'+result[i].finalOrGOCnt+'</td>';
+								table+='<td style="background-color:#F4F4F4">'+result[i].totalCount+'</td>';
 								table+='<td style="background-color:#F4F8FF">'+result[i].maleCount+'</td>';
 								table+='<td style="background-color:#FFF3F8">'+result[i].femaleCount+'</td>';
 								for(var j in result[i].subList)
@@ -443,7 +455,7 @@ function getLocationWiseNominatedPostAnalysisDetails(type){
 					}else{
 						table+='<tr>';
 							table+='<td>'+result[i].name+'</td>';
-							table+='<td style="background-color:#F4F4F4">'+result[i].finalOrGOCnt+'</td>';
+							table+='<td style="background-color:#F4F4F4">'+result[i].totalCount+'</td>';
 							table+='<td style="background-color:#F4F8FF">'+result[i].maleCount+'</td>';
 							table+='<td style="background-color:#FFF3F8">'+result[i].femaleCount+'</td>';
 							for(var j in result[i].subList)
