@@ -1071,3 +1071,13 @@ ul li[menu-levelname='panchayat']:after .active
 	text-decoration:underline;
 	font-weight:bold;
 }
+.hideShowBtn
+{
+	cursor:pointer;
+	border: 1px solid #333;
+	padding: 0px 7px;
+	border-radius: 3px;
+	font-size: 20px;
+	float: right;
+	color:#333;
+}
