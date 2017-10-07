@@ -91,7 +91,9 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
 	 		 	if(locationTypeId == 2l){
 	 	        	sb.append(" and model.nominatedPost.nominatedPostMember.address.state.stateId in(:locationValues) ");
-	 	        }else if(locationTypeId == 4l){
+	 	        } else if (locationTypeId == 10) {
+					sb.append(" and model.nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValue) ");
+				}else if(locationTypeId == 4l){
 	 	        	sb.append(" and model.nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValues) ");
 	 	        }else if(locationTypeId == 3l){
 	 	        	sb.append(" and model.nominatedPost.nominatedPostMember.address.district.districtId in(:locationValues) ");
