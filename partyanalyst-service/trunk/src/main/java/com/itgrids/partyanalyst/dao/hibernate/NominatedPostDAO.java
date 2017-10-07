@@ -2707,10 +2707,14 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 	 		   " nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionName," +
 	 	 		   " nominatedPost.nominatedPostStatus.nominatedPostStatusId," +
 	 	 		   " nominatedPost.nominatedPostStatus.status," +
-	 	 		   "  nominatedPost.nominatedPostMember.address.district.districtId," +
-	 	 		   "  nominatedPost.nominatedPostMember.address.district.districtName " +
-	 	 		   " from NominatedPost nominatedPost left join nominatedPost.nominationPostCandidate nominationPostCandidate" +
-	 	 		   " left join nominationPostCandidate.tdpCadre tdpCadre where " +
+	 	 		   "  district.districtId," +
+	 	 		   "  district.districtName " +
+	 	 		   " from NominatedPost nominatedPost " +
+	 	 		   " left join nominatedPost.nominationPostCandidate nominationPostCandidate" +
+	 	 		   " left join nominationPostCandidate.tdpCadre tdpCadre  " +
+	 	 		   " left join nominatedPost.nominatedPostMember nominatedPostMember " +
+	 	 		   " left join nominatedPostMember.address address " +
+	 	 		   " left join address.district  district where " +
 	 			  // " nominatedPost.nominatedPostMember.address.constituency.constituencyId = :constituencyId " +
 	 			   " nominatedPost.isDeleted = 'N' " +
 	 			   " and nominatedPost.isExpired = 'N' " +
