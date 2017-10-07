@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Constituency Page Nominated Post</title>
 <link href="coreApi/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="coreApi/css/custom.css" rel="stylesheet" type="text/css">
 <link href="coreApi/css/responsive.css" rel="stylesheet" type="text/css">
@@ -28,10 +29,6 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 {
 	overflow-y:hidden !important;
 }
-#ageGroupBlockId .DTFC_LeftBodyWrapper
-{
-	top:-6px !important;
-}
 </style>
 </head>
 <body>
@@ -49,48 +46,60 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 	</div>
 </header>
 <main>
-	<div class="container m_top30">
-		<div class="row">
-			<section>
+	<div class="container m_top20">
+		<section>
+			<div class="row">
 				<div class="col-sm-12">
 					<div class="block">
 						<div class="row">
-							<div class="col-sm-6">
-								
-							</div>
-							<div class="col-sm-6">
-								
+							<div class="col-sm-12">
+								<h4 class="theme-title-color">Overall - <b>Overview</b></h4>
+								<div id="overAllAnalysisBlockId"></div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</section>
-			<section>
+			</div>
+		</section>
+		<section>
+			<div class="row">
 				<div class="col-sm-12 m_top30">
 					<div class="block">
 						<h4 class="theme-title-color">Position Level, Gender, Caste & Age - <b>Overview</b></h4>
 						<div class="row">
-							<div class="col-sm-12"></div>
+							<div class="col-sm-12">
+								<div id="positionLevelBlockId"></div>
+							</div>
 						</div>
 					</div>
 					<div class="block">
 						<div class="row">
-							<div class="col-sm-4"></div>
-							<div class="col-sm-4"></div>
-							<div class="col-sm-4"></div>
+							<div class="col-sm-4">
+								<div id="levelWiseBlockOverviewId"></div>
+							</div>
+							<div class="col-sm-4">
+								<div id="ageRangeBlockId"></div>
+							</div>
+							<div class="col-sm-4">
+								<div id="casteCategoryBlockId"></div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</section>
-			<section>
+			</div>
+		</section>
+		<section>
+			<div class="row">
 				<div class="col-sm-12 m_top30">
 					<div class="block">
 						<h4 class="theme-title-color">Mandal/Town/Division Level Wise Positions <b>Overview</b></h4>
 						<div id="LocationWiseLevelBlockId" class="m_top20"></div>
 					</div>
 				</div>
-			</section>
-			<section>
+			</div>
+		</section>
+		<section>
+			<div class="row">
 				<div class="col-sm-12 m_top30">
 					<div class="block">
 						<div class="row">
@@ -114,26 +123,31 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 						</div>
 					</div>
 				</div>
-			</section>
-			<section>
+			</div>
+		</section>
+		<section>
+			<div class="row">
 				<div class="col-sm-12 m_top30">
 					<div class="block">
 						<h4 class="theme-title-color">Age Wise Position <b>Overview</b></h4>
 						<div id="ageGroupBlockId" class="m_top20"></div>
 					</div>
 				</div>
-			</section>
-			<section>
+			</div>
+		</section>
+		<section>
+			<div class="row">
 				<div class="col-sm-12 m_top30">
 					<div class="block">
 						<h4 class="theme-title-color">Mandal/Town/Division Wise Positions <b>Overview</b></h4>
 						<div id="mandalBlockId"></div>
 					</div>
 				</div>
-			</section>
-		</div>
+			</div>
+		</section>
+		
 	</div>
-<main>
+</main>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>

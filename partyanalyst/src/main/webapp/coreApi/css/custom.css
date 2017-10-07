@@ -1047,3 +1047,16 @@ ul li[menu-levelname='panchayat']:after .active
     border: 0px !important;
     padding:0.5em 1em !important;
 }
+.posts-block .panel-title
+{
+	background-color:#E4E4E4;
+	padding:8px;
+	border-left:5px solid #6F6F6F;
+	font-weight:400;
+	font-family: 'Roboto', sans-serif;
+	padding-left:10px;
+}
+.posts-block .list-border li
+{
+	padding:0px 15px;
+}
