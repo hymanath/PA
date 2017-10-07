@@ -3,9 +3,10 @@ var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div
 onLoadCalls();
 function onLoadCalls()
 {
-	getAllNominatedStatusListLevelWiseDataDashBoard(); //1st block Call
-	getAreaWiseDashboardCandidatesCountView();//second block
-	getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails();
+	getAllNominatedStatusListLevelWiseDataDashBoard();
+	getAreaWiseDashboardCandidatesCountView();
+	getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails("ageRange");
+	getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails("casteCategory");
 	getLocationWiseNominatedPostAnalysisDetails("ageGroup");
 	getLocationWiseNominatedPostAnalysisDetails("casteGroup");
 	getLocationWiseNominatedPostAnalysisDetails("mandal");
@@ -20,7 +21,23 @@ $(document).on("click",".casteGroupId",function(){
 	}
 	getLocationWiseNominatedPostAnalysisDetails(type);
 });	
+function highcharts(id,type,data,plotOptions,title,tooltip,legend){
+	'use strict';
+	$('#'+id).highcharts({
+		colors:['#FF9900','#8D4553','#CCCCCC','#F25C81','#0D9615'],
+		chart: type,
+		title: title,
+		tooltip:tooltip,
+		subtitle: {
+			text: null
+		},
+		plotOptions: plotOptions,
+		legend:legend,
+		series: data
+	});
+}
 function getAllNominatedStatusListLevelWiseDataDashBoard(){
+	$("#overAllAnalysisBlockId").html(spinner);
 	var jsObj={
 		boardLevelId:2,  //state level 1 //parliament -4 or constituenct -4 // mandal Or muni -5 // panchayat/ward -7 //
 		levelValues:[1],
@@ -32,13 +49,135 @@ function getAllNominatedStatusListLevelWiseDataDashBoard(){
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		console.log(result);
+		return buildData(result)
 	});
+	function buildData(result)
+	{
+		var str='';
+		str+='<div class="row">';
+			str+='<div class="col-sm-6" style="border-right:1px solid #ddd;">';
+				str+='<div id="overAllAnalysisGraphId" style="height:270px"></div>';
+				str+='<table class="table table-bordered m_top10">';
+					str+='<tr>';
+						str+='<td style="text-align:center;padding:20px 0px">';
+							str+='<p><span style="margin-right:3px;display:inline-block;height:15px;width:15px;background-color:#FFD400;border:1px solid #ddd;border-radius:50%;"></span>Applications Received</p>';
+							str+='<h2>'+result.applicatnsReceived+'</h2>';
+						str+='</td>';
+						str+='<td style="text-align:center;padding:20px 0px">';
+							str+='<p><span style="margin-right:3px;display:inline-block;height:15px;width:15px;background-color:#DE7118;border:1px solid #ddd;border-radius:50%;"></span>Total Posts</p>';
+							str+='<h2>'+result.totalPosts+'</h2>';
+						str+='</td>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<td style="text-align:center;padding:20px 0px">';
+							str+='<p><span style="margin-right:3px;display:inline-block;height:15px;width:15px;background-color:#3366CC;border:1px solid #ddd;border-radius:50%;"></span>G.O Issued/ Finalized</p>';
+							str+='<h2>'+result.finalizedAndGoIssued+'</h2>';
+						str+='</td>';
+						str+='<td style="text-align:center;padding:20px 0px">';
+							str+='<p><span style="margin-right:3px;display:inline-block;height:15px;width:15px;background-color:#00BD06;border:1px solid #ddd;border-radius:50%;"></span>Open Posts</p>';
+							str+='<h2>'+result.openPost+'</h2>';
+						str+='</td>';
+					str+='</tr>';
+				str+='</table>';
+			str+='</div>';
+			str+='<div class="col-sm-6">';
+				for(var i in result.positinsList)
+				{
+					str+='<div class="posts-block">';
+						str+='<h4 class="panel-title">'+result.positinsList[i].name+'</h4>';
+						str+='<div class="pad_10">';
+							str+='<ul class="list-border list-border-responsive">';
+								str+='<li>';
+									str+='<p class="text-muted">Received</p>';
+									str+='<h4 class="m_top10">'+result.positinsList[i].applicatnsReceived+'</h4>';
+								str+='</li>';
+								str+='<li>';
+									str+='<p class="text-muted">Total Posts</p>';
+									str+='<h4 class="m_top10">'+result.positinsList[i].totalPosts+'</h4>';
+								str+='</li>';
+								str+='<li>';
+									str+='<p class="text-muted">G.O Issued</p>';
+									str+='<h4 class="m_top10">'+result.positinsList[i].finalizedAndGoIssued+'</h4>';
+								str+='</li>';
+								str+='<li>';
+									str+='<p class="text-muted">Open Posts</p>';
+									str+='<h4 class="m_top10">'+result.positinsList[i].openPost+'</h4>';
+								str+='</li>';
+							str+='</ul>';
+						str+='</div>';
+					str+='</div>';
+				}
+			str+='</div>';
+		str+='</div>';
+		
+		var id = "overAllAnalysisGraphId";
+		var type = {
+			type: 'pie',
+			backgroundColor:'transparent',
+			options3d: {
+				enabled: true,
+				alpha: 25
+			}
+		};
+		var title = {
+			text: ''
+		};
+		var tooltip = {
+			useHTML: true,
+			backgroundColor: '#FCFFC5', 
+			formatter: function() {
+				var cnt = this.point.count;
+				return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+			}  
+		}; 
+		var plotOptions ={
+			pie: {
+				innerSize: 100,
+				depth: 90,
+				dataLabels: {
+					enabled: false,
+					formatter: function() {
+						return (Highcharts.numberFormat(this.percentage,1)) + ' %';
+					},
+					distance: -20,
+					color:'#333'
+				},
+				showInLegend: false
+			},
+		};
+		var legend={enabled: false};
+		var data = [{
+			name: '',
+			data: [
+				{
+				  name: 'Applications Received',
+				  y: result.applicatnsReceived,
+				  color:"#FFD400"
+				},
+				{
+				  name: 'Total Posts',
+				  y: result.totalPosts,
+				  color:"#DE7118"
+				},
+				{
+				  name: 'G.O Issued / Finalized',
+				  y: result.finalizedAndGoIssued,
+				  color:"#3366CC"
+				},
+				{
+				  name: 'Open Posts',
+				  y: result.openPost,
+				  color:"#00BD06"
+				}
+			]
+		}];
+		$("#overAllAnalysisBlockId").html(str);
+		highcharts(id,type,data,plotOptions,title,tooltip,legend);
+	}
+	
 }
-
-
 function getAreaWiseDashboardCandidatesCountView(){
-	$("#LocationWiseLevelBlockId").html(spinner);
+	$("#LocationWiseLevelBlockId,#positionLevelBlockId,#levelWiseBlockOverviewId").html(spinner);
 	var jsObj={
 		levelValues:["282"],
 		levelId:4,
@@ -61,6 +200,47 @@ function getAreaWiseDashboardCandidatesCountView(){
 	function buildData(result)
 	{
 		var str='';
+		var overview='';
+		
+		table+='<div class="table-responsive m_top10">';
+			table+='<table class="table table-bordered text-center" style="background-color:#f2f2f2;">';
+				table+='<thead class="text-center">';
+					for(var i in result.list)
+					{
+						table+='<th>'+result.list[i].name+'</th>';
+					}				
+				table+='</thead>';
+				table+='<tr>';
+					for(var i in result.list)
+					{
+						table+='<td><h4>'+result.list[i].totalCount+'</h4><p class="text-success"><small>'+result.list[i].perc+'%</small></p>';
+							table+='<ul class="list-border list-border-responsive" style="margin-top:10px;border-top:1px solid #ddd;padding-top:10px;display:block">';
+								table+='<li>';
+									table+='<img src="coreApi/img/male.png" style="height:30px;width:30px"/>';
+									table+='<p>'+result.list[i].maleCount+'</p>';
+								table+='</li>';
+								table+='<li>';
+									table+='<img src="coreApi/img/female.png" style="height:30px;width:30px"/>';
+									table+='<p>'+result.list[i].femaleCount+'</p>';
+								table+='</li>';
+							table+='</ul>'
+						table+='</td>';
+					}
+				table+='</tr>';
+			table+='</table>';
+		table+='</div>';
+		$("#positionLevelBlockId").html(table);
+		
+		overview+='<div class="table-responsive">';
+			overview+='<table class="table table-bordered text-center" id="LocationWiseLevelTableId">';
+				overview+='<tr>';
+					overview+='<td><div class="media"><div class="media-left"><img class="media-object" src="coreApi/img/group.png" style="height:30px;width:30px;"/></div><div class="media-body">TOTAL<br/> MEMBERS</div></div><h4 class="text-center">'+result.totalCount+'</h4></td>';
+					overview+='<td><div class="media"><div class="media-left"><img class="media-object" src="coreApi/img/male.png" style="height:30px;width:30px;"/></div><div class="media-body">MALE</div></div><h4 class="text-center">'+result.maleCount+'</h4><small>'+result.perc+'</small></td>';
+					overview+='<td><div class="media"><div class="media-left"><img class="media-object" src="coreApi/img/female.png" style="height:30px;width:30px;"/></div><div class="media-body">FEMALE</div></div><h4 class="text-center">'+result.femaleCount+'</h4><small>'+result.perc1+'</small></td>';
+				overview+='</tr>';
+			overview+='</table>';
+		overview+='</div>';
+		$("#levelWiseBlockOverviewId").html(overview);
 		str+='<div class="table-responsive">';
 			str+='<table class="table table-bordered" id="LocationWiseLevelTableId">';
 				str+='<thead>';
@@ -125,12 +305,13 @@ function getAreaWiseDashboardCandidatesCountView(){
 }
 
 
-function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(){
+function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(type){
+	$("#"+type+"BlockId").html(spinner);
 	var jobj = {
-		locationValues : [218],
-		statusIds :[3,4],
-		levelId :4,
-		type : "ageRange"//or(casteCategory)
+		locationValues 	: [218],
+		statusIds 		:[3,4],
+		levelId 		:4,
+		type 			:type// "ageRange"//or(casteCategory)
 	}	
 	$.ajax({
 		type : "POST",
@@ -146,11 +327,24 @@ function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(){
 	});
 	function buildData(result)
 	{
-		/* <table class="table table-bordered">
-			<thead>
-				<th></th>
-			</thead>
-		</table> */
+		table='';
+		table+='<div class="table table-responsive">';
+			table+='<table class="table table-bordered">';
+				table+='<thead>';
+					for(var i in result)
+					{
+						table+='<th>'+result[i].name+'</th>';
+					}				
+				table+='</thead>';
+				table+='<tr>';
+					for(var i in result)
+					{
+						table+='<td><h4>'+result[i].totalCount+'</h4><p class="text-success"><small>'+result[i].perc+'%</small></p></td>';
+					}
+				table+='</tr>';
+			table+='</table>';
+		table+='</div>';
+		$("#"+type+"BlockId").html(table);
 	}
 } 
 
@@ -222,9 +416,9 @@ function getLocationWiseNominatedPostAnalysisDetails(type){
 					}
 				table+='</tr>';
 				table+='<tr>';
-					table+='<th style="background-color:#F4F4F4"></th>';					
-					table+='<th style="background-color:#F4F8FF"></th>';					
-					table+='<th style="background-color:#FFF3F8"></th>';					
+					table+='<th style="background-color:#F4F4F4"><img src="coreApi/img/group.png" style="height:30px;width:30px"/></th>';
+					table+='<th style="background-color:#F4F8FF"><img src="coreApi/img/male.png" style="height:30px;width:30px"/></th>';					
+					table+='<th style="background-color:#FFF3F8"><img src="coreApi/img/female.png" style="height:30px;width:30px"/></th>';					
 				table+='</tr>';
 			table+='</thead>';
 			table+='<tbody>';

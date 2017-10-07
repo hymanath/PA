@@ -48,7 +48,7 @@ function onLoadLocValue()
 	{
 		locationLevelVal = stateId ;
 		userAccessLevelValuesArray.push(stateId)
-		globalboardLevelId =0;
+		globalboardLevelId =2;
 	}else if(locationLevelId == '3')
 	{
 		locationLevelVal = districtId;
@@ -5499,7 +5499,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 	}
 	
 	if(boardLevelId == 2){
-		boardLevelId =0;
+		boardLevelId = 2;
 	}
 	var jsObj={
 	  "fromDateStr" 		:globalFromDate,
