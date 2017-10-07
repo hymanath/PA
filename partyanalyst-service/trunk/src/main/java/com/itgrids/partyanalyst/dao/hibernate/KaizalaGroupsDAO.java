@@ -27,6 +27,7 @@ public class KaizalaGroupsDAO extends GenericDaoHibernate<KaizalaGroups, Long> i
 		Query query = getSession().createQuery(" update KaizalaGroups model set model.parentKaizalaGroupsId = :value " +
 				" where model.kaizalaGroupsId = :kaizalaGroupId ");
 		query.setParameter("value", null);
+		query.setParameter("kaizalaGroupId", kaizalaGroupId);
 		return query.executeUpdate();
 	}
 }
