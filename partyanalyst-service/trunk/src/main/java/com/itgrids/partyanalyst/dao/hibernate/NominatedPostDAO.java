@@ -2112,12 +2112,13 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 sb.append(" select " +
 	 		   " nominatedPost.nominatedPostMember.boardLevel.boardLevelId, " +
 	 		   " nominatedPost.nominatedPostMember.boardLevel.level, " +
-	 		   " count(distinct nominatedPost.nominatedPostId) " +
+	 		   " count(nominatedPost.nominatedPostId) " +
 	 		   " from NominatedPost nominatedPost where " +
 			  // " nominatedPost.nominatedPostMember.address.constituency.constituencyId = :constituencyId " +
 			   " nominatedPost.isDeleted = 'N' " +
 			   " and nominatedPost.isExpired = 'N' " +
-			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
+			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' " +
+			   " and nominatedPost.nominationPostCandidate.isDeleted='N' ");
 	 
 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
 		 	if(locationTypeId == 2l){
@@ -2126,6 +2127,8 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	        	sb.append(" and nominatedPost.nominationPostCandidate.address.constituency.constituencyId in(:locationValues) ");
 	        }else if(locationTypeId == 3l){
 	        	sb.append(" and nominatedPost.nominationPostCandidate.address.district.districtId in(:locationValues) ");
+	        }else if(locationTypeId == 10l){
+	        	sb.append(" and nominatedPost.nominationPostCandidate.address.parliamentConstituency.constituencyId in(:locationValues) ");
 	        }else if(locationTypeId == 5l){
 	        	sb.append(" and nominatedPost.nominationPostCandidate.address.tehsil.tehsilId in(:locationValues) ");
 	        }else if(locationTypeId == 6l){
@@ -2137,11 +2140,12 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
       }
 	        
 	 }
+	 sb.append(" and nominatedPost.nominatedPostStatus.nominatedPostStatusId in (3,4) ");
 	 if(startDate != null && endDate != null){
-		 sb.append(" and (date(nominatedPost.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+		 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
 	 }
 	 if(year != null && !year.trim().isEmpty()){
-		 sb.append(" and year(nominatedPost.nominatedPostMember.updatedTime) = :year ");   
+		 sb.append(" and year(nominatedPost.updatedTime) = :year ");   
 	 }
 	 sb.append(" group by nominatedPost.nominatedPostMember.boardLevel.boardLevelId ");
 	 sb.append(" order by nominatedPost.nominatedPostMember.boardLevel.boardLevelId ");
@@ -2154,6 +2158,8 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	        }else if(locationTypeId == 4l){
 	        	query.setParameterList("locationValues", locationValues);
 	        }else if(locationTypeId == 3l){
+	        	query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 10l){
 	        	query.setParameterList("locationValues", locationValues);
 	        }else if(locationTypeId == 5l){
 	        	query.setParameterList("locationValues", locationValues);
