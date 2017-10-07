@@ -10,4 +10,5 @@ public interface ILoactionDetailsDashBoardService {
 	public List<PartyMeetingsVO> getCommitteeMeetingStatistics(Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr);
 	public List<PartyMeetingsVO> getSpecialMeetingStatistics(Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr);
 	public List<PartyMeetingsVO> getBelowLevelMeetingConductedCount(Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr);
+	public List<PartyMeetingsVO> getMeetingsDetails(Long locationId, Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr);
 }
