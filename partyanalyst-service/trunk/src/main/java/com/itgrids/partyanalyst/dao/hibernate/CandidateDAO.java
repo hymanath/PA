@@ -661,4 +661,219 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		return query.list();
 	}
 	
+	public List<Object[]> getAvailableSeatsforElection(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,String subTypes){
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT " +
+		          " e.election_scope_id as electionScopeId,e.election_id as electionId," +
+		          " et.election_type as electionType,e.election_year as electionYear," +
+		          " count(ce.consti_elec_id) as count from " +
+		          " constituency c,constituency_election ce,election e," +
+		          " election_scope es ,election_type et ");
+		
+		sb.append(" where e.election_scope_id  in (:electionScopeIds) and " +
+		          " et.election_type_id = es.election_type_id and " +
+				  " c.constituency_id = ce.constituency_id and " +
+		          " ce.election_id = e.election_id and " );
+		
+		
+		if (yearsList != null && yearsList.size() > 0) {
+			sb.append(" and e.election_year in(:years)");
+		}
+		if(electionScopeIds != null && electionScopeIds.size()>0){
+			sb.append(" and es.election_scope_id in (:electionScopeIds ) ");
+		}
+		if(subTypes != null ){
+			sb.append(" and e.sub_type in  (:subTypes) ");
+		}
+		if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l){
+			if (locationTypeId == 2l) {
+				sb.append(" and (c.district_id BETWEEN 11 and 23)");
+			} else if (locationTypeId == 3l) {
+				sb.append("  and c.district_id =:locationValue ");
+			} else if (locationTypeId == 4l || locationTypeId==10l) {
+				sb.append(" and c.constituency_id =:locationValue ");
+			
+			}
+			}
+		
+		sb.append("GROUP BY ce.election_id");
+		sb.append("order BY e.election_year,e.election_id,e.election_scope_id");
+		SQLQuery query = getSession().createSQLQuery(sb.toString());
+		
+		query.addScalar("electionScopeId",Hibernate.LONG);
+		query.addScalar("electionId",Hibernate.LONG);
+		query.addScalar("electionType",Hibernate.STRING);
+		query.addScalar("electionYear",Hibernate.STRING);
+		query.addScalar("count",Hibernate.LONG);
+		
+		if(yearsList!=null && yearsList.size()>0){
+	         query.setParameterList("years", yearsList);
+	       }
+	      
+		 if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && locationTypeId.longValue() !=2l){
+	    	  query.setParameter("locationValue", locationValue);
+	      }
+	      if(electionScopeIds != null && electionScopeIds.size()>0){
+	    	  query.setParameterList("electionScopeIds",electionScopeIds);
+	      }
+	      
+	      if(subTypes != null && subTypes.length()>0){
+	    	  query.setParameter("subTypes", subTypes);
+	      }
+
+		return query.list();
+	}
+	
+	
+	
+	public List<Object[]> getParticipatedPartyListforElection(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,String subTypes){
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT " +
+		          " e.election_scope_id as electionScopeId,e.election_id as electionId," +
+		          "  et.election_type as electionType," +
+		          " e.election_year as electionYear," +
+		          " n.party_id as partyId,p.short_name as partyName,count(n.party_id) as count" +
+		          " from constituency c,constituency_election ce,election e ,election_scope es ," +
+		          " election_type et ,nomination n ,party p " );
+		
+		sb.append("where e.election_scope_id  in (:electionScopeIds) and " +
+		          " n.consti_elec_id = ce.consti_elec_id and " +
+		          " n.party_id = p.party_id and " +
+		          " e.election_scope_id = es.election_scope_id and " +
+		          " et.election_type_id = es.election_type_id and " +
+		          " c.constituency_id = ce.constituency_id and " +
+		          " ce.election_id = e.election_id  " );
+		         // " e.sub_type ='MAIN' and " +
+		         // " (c.district_id BETWEEN 11 and 23) and " +
+		          //" e.election_year = 2014  ");
+		
+		if (yearsList != null && yearsList.size() > 0) {
+			sb.append(" and e.election_year in(:years) ");
+		}
+		if(electionScopeIds != null && electionScopeIds.size()>0){
+			sb.append("and es.election_scope_id in (:electionScopeIds ) ");
+		}
+		if(subTypes != null ){
+			sb.append(" and e.sub_type in  (:subTypes) ");
+		}
+		if(subTypes != null && subTypes.length() >0){
+			sb.append(" and e.sub_type in  (:subTypes) ");
+		}
+		
+		if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l){
+			if (locationTypeId == 2l) {
+				sb.append(" and (c.district_id BETWEEN 11 and 23)");
+			} else if (locationTypeId == 3l) {
+				sb.append("  and c.district_id =:locationValue ");
+			} else if (locationTypeId == 4l || locationTypeId==10l) {
+				sb.append(" and c.constituency_id =:locationValue ");
+			
+			}
+			}
+		
+		sb.append(" GROUP BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
+		sb.append(" order BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
+		
+       SQLQuery query = getSession().createSQLQuery(sb.toString());
+		
+		query.addScalar("electionScopeId",Hibernate.LONG);
+		query.addScalar("electionId",Hibernate.LONG);
+		query.addScalar("electionType",Hibernate.STRING);
+		query.addScalar("electionYear",Hibernate.STRING);
+		query.addScalar("partyId",Hibernate.LONG);
+		query.addScalar("partyName",Hibernate.STRING);
+		query.addScalar("count",Hibernate.LONG);
+		
+		if(yearsList!=null && yearsList.size()>0){
+	         query.setParameterList("years", yearsList);
+	       }
+	      
+		 if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && locationTypeId.longValue() !=2l){
+	    	  query.setParameter("locationValue", locationValue);
+	      }
+	      if(electionScopeIds != null && electionScopeIds.size()>0){
+	    	  query.setParameterList("electionScopeIds",electionScopeIds);
+	      }
+	      
+	      if(subTypes != null ){
+	    	  query.setParameter("subTypes", subTypes);
+	      }
+
+
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getParticipatedPartyListforElectionDetails(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,String subTypes){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT "+ 
+		          " e.election_scope_id as electionScopeId,e.election_id as electionId,et.election_type as electionType," +
+		          " e.election_year as electionYear,n.party_id as partyId,p.short_name as partyName,count(n.party_id) as count,sum(cr.votes_earned) as sum " +
+		          " from constituency c,constituency_election ce,election e ,election_scope es ," +
+		          " election_type et ,nomination n ,party p ,candidate_result cr " );
+		sb.append(" where cr.nomination_id = n.nomination_id  " +
+		          " and cr.rank = 1  " );
+		if(electionScopeIds != null && electionScopeIds.size()>0){
+			sb.append("	and e.election_scope_id  in (:electionScopeIds) ");
+		}
+		sb.append(" and n.consti_elec_id = ce.consti_elec_id and " +
+				  " n.party_id = p.party_id and " +
+		          " e.election_scope_id = es.election_scope_id and " +
+	              " et.election_type_id = es.election_type_id and " +
+		          " c.constituency_id = ce.constituency_id and " +
+		          " ce.election_id = e.election_id  " );
+		if(subTypes != null){
+			sb.append(" and e.sub_type =:subTypes");
+		}
+		if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l){
+		if (locationTypeId == 2l) {
+			sb.append(" and (c.district_id BETWEEN 11 and 23)");
+		} else if (locationTypeId == 3l) {
+			sb.append("  and c.district_id =:locationValue ");
+		} else if (locationTypeId == 4l || locationTypeId==10l) {
+			sb.append(" and c.constituency_id =:locationValue ");
+		
+		}
+		}
+		
+		if (yearsList != null && yearsList.size() > 0) {
+			sb.append(" and e.election_year in(:years)");
+		}
+		
+		sb.append("GROUP BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
+		sb.append("	order BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
+		
+        SQLQuery query = getSession().createSQLQuery(sb.toString());
+		
+		query.addScalar("electionScopeId",Hibernate.LONG);
+		query.addScalar("electionId",Hibernate.LONG);
+		query.addScalar("electionType",Hibernate.STRING);
+		query.addScalar("electionYear",Hibernate.STRING);
+		query.addScalar("partyId",Hibernate.LONG);
+		query.addScalar("partyName",Hibernate.STRING);
+		query.addScalar("count",Hibernate.LONG);
+		query.addScalar("sum",Hibernate.LONG);
+		
+		
+
+		if(yearsList!=null && yearsList.size()>0){
+	         query.setParameterList("years", yearsList);
+	       }
+	      
+	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && locationTypeId.longValue() !=2l){
+	    	  query.setParameter("locationValue", locationValue);
+	      }
+	      if(electionScopeIds != null && electionScopeIds.size()>0){
+	    	  query.setParameterList("electionScopeIds",electionScopeIds);
+	      }
+	      
+	      if(subTypes != null){
+	    	  query.setParameter("subTypes", subTypes);
+	      }
+
+		return query.list();
+		
+	
+	}
+	
 }
