@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -82,10 +81,16 @@ public class LoactionDetailsDashBoardAction extends ActionSupport implements Ser
 		try{
 			jObj = new JSONObject(getTask());
 			Long locationLevel = jObj.getLong("locationLevel");
-			Long locationId = jObj.getLong("locationId");
 			String fromDateStr = jObj.getString("fromDateStr");
 			String toDateStr = jObj.getString("toDateStr");
-			partyMeetingsVOs = loactionDetailsDashBoardService.getMeetingTypeWiseTotalMeetings(locationLevel,locationId,fromDateStr,toDateStr);
+			List<Long> locationIdList = new ArrayList<Long>();
+			JSONArray locationIdArr=jObj.getJSONArray("locationIds");
+			if(locationIdArr!=null &&  locationIdArr.length()>0){
+				for( int i=0;i<locationIdArr.length();i++){
+					locationIdList.add(Long.valueOf(locationIdArr.getString(i)));
+				}
+			}
+			partyMeetingsVOs = loactionDetailsDashBoardService.getMeetingTypeWiseTotalMeetings(locationLevel,locationIdList,fromDateStr,toDateStr);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getMeetingTypeWiseTotalMeetings() method of LoactionDetailsDashBoardAction", e);
@@ -98,10 +103,16 @@ public class LoactionDetailsDashBoardAction extends ActionSupport implements Ser
 		try{
 			jObj = new JSONObject(getTask());
 			Long locationLevel = jObj.getLong("locationLevel");
-			Long locationId = jObj.getLong("locationId");
 			String fromDateStr = jObj.getString("fromDateStr");
 			String toDateStr = jObj.getString("toDateStr");
-			partyMeetingsVOs = loactionDetailsDashBoardService.getMeetingLevelWiseTotalMeetings(locationLevel,locationId,fromDateStr,toDateStr);
+			List<Long> locationIdList = new ArrayList<Long>();
+			JSONArray locationIdArr=jObj.getJSONArray("locationIds");
+			if(locationIdArr!=null &&  locationIdArr.length()>0){
+				for( int i=0;i<locationIdArr.length();i++){
+					locationIdList.add(Long.valueOf(locationIdArr.getString(i)));
+				}
+			}
+			partyMeetingsVOs = loactionDetailsDashBoardService.getMeetingLevelWiseTotalMeetings(locationLevel,locationIdList,fromDateStr,toDateStr);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getMeetingLevelWiseTotalMeetings() method of LoactionDetailsDashBoardAction", e);
@@ -114,10 +125,16 @@ public class LoactionDetailsDashBoardAction extends ActionSupport implements Ser
 		try{
 			jObj = new JSONObject(getTask());
 			Long locationLevel = jObj.getLong("locationLevel");
-			Long locationId = jObj.getLong("locationId");
 			String fromDateStr = jObj.getString("fromDateStr");
 			String toDateStr = jObj.getString("toDateStr");
-			partyMeetingsVOs = loactionDetailsDashBoardService.getCommitteeMeetingStatistics(locationLevel,locationId,fromDateStr,toDateStr);
+			List<Long> locationIdList = new ArrayList<Long>();
+			JSONArray locationIdArr=jObj.getJSONArray("locationIds");
+			if(locationIdArr!=null &&  locationIdArr.length()>0){
+				for( int i=0;i<locationIdArr.length();i++){
+					locationIdList.add(Long.valueOf(locationIdArr.getString(i)));
+				}
+			}
+			partyMeetingsVOs = loactionDetailsDashBoardService.getCommitteeMeetingStatistics(locationLevel,locationIdList,fromDateStr,toDateStr);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getCommitteeMeetingStatistics() method of LoactionDetailsDashBoardAction", e);
@@ -130,10 +147,16 @@ public class LoactionDetailsDashBoardAction extends ActionSupport implements Ser
 		try{
 			jObj = new JSONObject(getTask());
 			Long locationLevel = jObj.getLong("locationLevel");
-			Long locationId = jObj.getLong("locationId");
 			String fromDateStr = jObj.getString("fromDateStr");
 			String toDateStr = jObj.getString("toDateStr");
-			partyMeetingsVOs = loactionDetailsDashBoardService.getSpecialMeetingStatistics(locationLevel,locationId,fromDateStr,toDateStr);
+			List<Long> locationIdList = new ArrayList<Long>();
+			JSONArray locationIdArr=jObj.getJSONArray("locationIds");
+			if(locationIdArr!=null &&  locationIdArr.length()>0){
+				for( int i=0;i<locationIdArr.length();i++){
+					locationIdList.add(Long.valueOf(locationIdArr.getString(i)));
+				}
+			}
+			partyMeetingsVOs = loactionDetailsDashBoardService.getSpecialMeetingStatistics(locationLevel,locationIdList,fromDateStr,toDateStr);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getSpecialMeetingStatistics() method of LoactionDetailsDashBoardAction", e);
@@ -141,4 +164,25 @@ public class LoactionDetailsDashBoardAction extends ActionSupport implements Ser
 		return Action.SUCCESS;
 	}
 	
+	public String getBelowLevelMeetingConductedCount(){
+		LOG.info("Entered into getBelowLevelMeetingConductedCount()  of LoactionDetailsDashBoardAction");
+		try{
+			jObj = new JSONObject(getTask());
+			Long locationLevel = jObj.getLong("locationLevel");
+			String fromDateStr = jObj.getString("fromDateStr");
+			String toDateStr = jObj.getString("toDateStr");
+			List<Long> locationIdList = new ArrayList<Long>();
+			JSONArray locationIdArr=jObj.getJSONArray("locationIds");
+			if(locationIdArr!=null &&  locationIdArr.length()>0){
+				for( int i=0;i<locationIdArr.length();i++){
+					locationIdList.add(Long.valueOf(locationIdArr.getString(i)));
+				}
+			}
+			partyMeetingsVOs = loactionDetailsDashBoardService.getBelowLevelMeetingConductedCount(locationLevel,locationIdList,fromDateStr,toDateStr);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getBelowLevelMeetingConductedCount() method of LoactionDetailsDashBoardAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
