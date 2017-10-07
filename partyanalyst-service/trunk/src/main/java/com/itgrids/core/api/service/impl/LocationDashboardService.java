@@ -5355,12 +5355,12 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 	return finalList;
 	}
 	/**
-	 * @author babu kurakula <href:kondababu.kurakul@itgrids.com>
-	 * @param levelId,List<Long> levelVals,fromDateStr,toDateStr,year
-	 * @Description :this service used for get the location wise issue type trust deatils
-	 *  @since 7-oct-2017
-	 *  @return :List<GrivenceStatusVO> 
-	 */
+	* @author babu kurakula <href:kondababu.kurakul@itgrids.com>
+	* @param levelId,List<Long> levelVals,fromDateStr,toDateStr,year
+	* @Description :this service used for get the location wise issue type trust deatils
+	*  @since 7-oct-2017
+	*  @return :List<GrivenceStatusVO> 
+	*/
 	public List<GrivenceStatusVO> getLocationWiseGrivenceTrustIssueTypesCounts(String fromDateStr, String toDateStr, Long locationTypeId,List<Long> locationValues,String year) {
 		List<GrivenceStatusVO> finalList=new ArrayList<GrivenceStatusVO>();
 		try{    //call the existng service getGrivenceTrustStatusCounts get trust status count deatils
@@ -5380,41 +5380,99 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}	
-			//0-locationId  1- support_for  2- support_purpose 3-counts
-		 List<Object[]> trustIssueTypeCountsObjs=insuranceStatusDAO.getLocationWiseGrivenceTrustIssueTypesCounts( fromDate,  toDate,  locationTypeId,locationValues, year,Long.valueOf(year));
-		 if(trustIssueTypeCountsObjs !=null && trustIssueTypeCountsObjs.size()>0){
-			Map<String,List<GrivenceStatusVO>> isuueTypeCountVoMap=new HashMap<String,List<GrivenceStatusVO>>(0);
-			// here prepre the map support_purpose key and  and List vos as values
-			for(Object[] param:trustIssueTypeCountsObjs){
-				String issueType=commonMethodsUtilService.getStringValueForObject(param[2]);
-				List<GrivenceStatusVO> voList= isuueTypeCountVoMap.get(issueType);
-				if(voList!=null){
-					//here support_for and count set to VO and add to existing  list
-					GrivenceStatusVO vo=new GrivenceStatusVO();
-					vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));//support_for
-					vo.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));//count
-					voList.add(vo);
-				}else{
-					List<GrivenceStatusVO> newList=new ArrayList<GrivenceStatusVO>(0);
-					//here support_for and count set to VO and add to new  list
-					GrivenceStatusVO vo1= new GrivenceStatusVO();
-					vo1.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					vo1.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
-					newList.add(vo1);
-					isuueTypeCountVoMap.put(issueType, newList);//push support_purpose and list into map
+			Map<String,List<GrivenceStatusVO>> PurposeAndSuppodrtMap=new HashMap<String,List<GrivenceStatusVO>>(0);
+			List<Object[]> objcts=insuranceStatusDAO.getAllTrustIssueTypes();
+			if(objcts !=null && objcts.size() >0){
+				for(Object[] obj:objcts){
+					String purpose=commonMethodsUtilService.getStringValueForObject(obj[0]);
+					String supportFor=commonMethodsUtilService.getStringValueForObject(obj[1]);
+					if(purpose !=null && purpose.length() >0 &&supportFor !=null && supportFor.length() > 0){
+						List<GrivenceStatusVO> voList= PurposeAndSuppodrtMap.get(purpose);
+						if(voList!=null){
+							//here support_for and count set to VO and add to existing  list
+							GrivenceStatusVO vo=new GrivenceStatusVO();
+							vo.setName(supportFor);//support_for
+							vo.setCount(0L);//count
+							voList.add(vo);
+						}else{
+							List<GrivenceStatusVO> newList=new ArrayList<GrivenceStatusVO>(0);
+							//here support_for and count set to VO and add to new  list
+							GrivenceStatusVO vo1= new GrivenceStatusVO();
+							vo1.setName(supportFor);
+							vo1.setCount(0L);
+							newList.add(vo1);
+							PurposeAndSuppodrtMap.put(purpose, newList);//push support_purpose and list into map
+						}
+					}
 				}
-			}//here iterating isuueTypeCountVoMap map set to list to sent the UI
-			for(Entry<String ,List<GrivenceStatusVO>> entry:isuueTypeCountVoMap.entrySet()){
-				String issueTypeStr=entry.getKey();
-				GrivenceStatusVO finalVo=new GrivenceStatusVO();
-				finalVo.setGrivenceType(issueTypeStr); //support_purpose
-				finalVo.setSubList(entry.getValue());//list of vos
-				finalList.add(finalVo);
 			}
-		}
+			//0-locationId  1- support_for  2- support_purpose 3-counts
+			List<Object[]> trustIssueTypeCountsObjs=insuranceStatusDAO.getLocationWiseGrivenceTrustIssueTypesCounts( fromDate,  toDate,  locationTypeId,locationValues, year,Long.valueOf(year));
+				if(trustIssueTypeCountsObjs !=null && trustIssueTypeCountsObjs.size()>0){
+				Map<String,List<GrivenceStatusVO>> isuueTypeCountVoMap=new HashMap<String,List<GrivenceStatusVO>>(0);
+				// here prepre the map support_purpose key and  and List vos as values
+					for(Object[] param:trustIssueTypeCountsObjs){
+						String issueType=commonMethodsUtilService.getStringValueForObject(param[2]);
+						List<GrivenceStatusVO> voList= isuueTypeCountVoMap.get(issueType);
+						if(voList!=null){
+							//here support_for and count set to VO and add to existing  list
+							GrivenceStatusVO vo=new GrivenceStatusVO();
+							vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));//support_for
+							vo.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));//count
+							voList.add(vo);
+						}else{
+							List<GrivenceStatusVO> newList=new ArrayList<GrivenceStatusVO>(0);
+							//here support_for and count set to VO and add to new  list
+							GrivenceStatusVO vo1= new GrivenceStatusVO();
+							vo1.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							vo1.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+							newList.add(vo1);
+							isuueTypeCountVoMap.put(issueType, newList);//push support_purpose and list into map
+						}
+					}
+				//here iterating PurposeAndSuppodrtMap map set to list to sent the UI
+				for(Entry<String ,List<GrivenceStatusVO>> entry2: PurposeAndSuppodrtMap.entrySet()){
+					String purpose=entry2.getKey();
+					GrivenceStatusVO finalVo=new GrivenceStatusVO();
+					finalVo.setGrivenceType(purpose);
+					for(GrivenceStatusVO vo:entry2.getValue()){
+						GrivenceStatusVO matchedVo=grivenceStatusVOMatchedVo(isuueTypeCountVoMap.get(purpose),vo.getName());
+						if(matchedVo !=null){
+						vo.setCount(matchedVo.getCount());
+						}
+						finalVo.getSubList().add(vo);
+					}
+					finalList.add(finalVo);
+				}
+			}
+			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+			 for (GrivenceStatusVO finalVO : finalList) {
+			   if(finalVO != null){
+			     for (GrivenceStatusVO vo : finalVO.getSubList()) {
+			       finalVO.setCount(finalVO.getCount()+vo.getCount());
+			     }
+			     for (GrivenceStatusVO vo : finalVO.getSubList()) {
+			    	 if(vo.getCount() != null && vo.getCount().longValue() >0L && finalVO.getCount() != null && finalVO.getCount().longValue() > 0l)
+			             vo.setPerc(new BigDecimal(Double.valueOf(vo.getCount())*100.00/Double.valueOf(finalVO.getCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			           else
+			             vo.setPerc("0.00");
+			     }
+			   }
+			 }
+			}
 		}catch(Exception e){
-			Log.error("Exception raised in getLocationWiseGrivenceTrustIssueTypesCounts method of LocationDashboardService"+e);
+		Log.error("Exception raised in getLocationWiseGrivenceTrustIssueTypesCounts method of LocationDashboardService"+e);
 		}
 		return finalList;
+	}
+	public GrivenceStatusVO grivenceStatusVOMatchedVo(List<GrivenceStatusVO> list,String supportFor){
+		if(list !=null && list.size() >0){
+			for(GrivenceStatusVO gVo:list){
+				if(gVo.getName().equalsIgnoreCase(supportFor)){
+					return gVo;
+				}
+			}
+		}
+		return null;
 	}
 }
