@@ -720,7 +720,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				candidateWon.setCandidateName(name);				
 				candidateWon.setPartyId(nomination.getParty().getPartyId());
 				candidateWon.setPartyName(nomination.getParty().getLongName());	
-				candidateWon.setPartyShortName(nomination.getParty().getShortName());	
+				candidateWon.setPartyShortName(nomination.getParty().getShortName());
+				candidateWon.setPartyFlag(nomination.getParty().getPartyFlag());
 				String votes = candidateResult.getVotesEarned().toString();
 				String votesEarn[] = StringUtils.split(votes, ".");
 				candidateWon.setVotesEarned(votesEarn[0]);
@@ -837,6 +838,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				candidateOpposition.setPartyId(nomination.getParty().getPartyId());
 				candidateOpposition.setPartyName(nomination.getParty().getLongName());
 				candidateOpposition.setPartyShortName(nomination.getParty().getShortName());
+				candidateOpposition.setPartyFlag(nomination.getParty().getPartyFlag());
+				candidateOpposition.setRank(candidateResult.getRank());
 				String votes = candidateResult.getVotesEarned().toString();
 				String votesEarn[] = StringUtils.split(votes, ".");
 				candidateOpposition.setVotesEarned(votesEarn[0]);
