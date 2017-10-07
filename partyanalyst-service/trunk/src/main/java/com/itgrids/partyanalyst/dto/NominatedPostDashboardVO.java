@@ -27,6 +27,7 @@ public class NominatedPostDashboardVO {
 	private Long maleCount = 0l;
 	private Long femaleCount = 0l;
 	private String percentage="0";
+	private String percentage1="0";
 	private Long twentyTo29AgeRangeCount=0l;
 	private Long thirtyTo39AgeRangeCount=0l;
 	private Long fourtyTo49AgeRangeCount=0l;
@@ -44,6 +45,12 @@ public class NominatedPostDashboardVO {
 	private Long nominatedId=0l;
 	
 	
+	public String getPercentage1() {
+		return percentage1;
+	}
+	public void setPercentage1(String percentage1) {
+		this.percentage1 = percentage1;
+	}
 	public Map<Long, NominatedPostDashboardVO> getCasteMap() {
 		return casteMap;
 	}
