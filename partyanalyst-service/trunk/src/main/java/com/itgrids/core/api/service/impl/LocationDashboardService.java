@@ -101,7 +101,6 @@ import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
-import com.itgrids.partyanalyst.service.impl.CadreCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -3783,16 +3782,25 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @Description :This service to show Nominated Post Analysis Details for AgeWise,CasteCategory,Subcaste,Mandal/Town/Divisin Wise. 
 	 *  @since 5-SEP-2017
 	 */
-	public List<NominatedPostDetailsVO> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues,Long boardLevelId,Long searchLvlId,String type,List<Long> statusIds){
+	public List<NominatedPostDetailsVO> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues,Long boardLevelId,Long searchLvlId,String type,List<Long> statusIds,String fromDateStr, String toDateStr,String year){
 		 
 		 List<NominatedPostDetailsVO> returnList = new ArrayList<NominatedPostDetailsVO>();
 		 try{
+			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+				Date startDate = null;
+				Date endDate = null;
+				if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
+					startDate = sdf.parse(fromDateStr);
+					endDate = sdf.parse(toDateStr);
+				}
+		  
 			 if(type != null && type.equalsIgnoreCase("mandal")){
 				 if(searchLvlId != null && searchLvlId.longValue() == 4l){
-					 List<Object[]> analysisReport = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,"muncipality",statusIds);
+					 List<Object[]> analysisReport = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,"muncipality",statusIds,startDate,endDate,year);
 					 setLocationWiseNominatedPostAnalysisData(returnList,analysisReport,"positionWise");
 				 }
-				 List<Object[]> analysisReport1 = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,type,statusIds);
+				 List<Object[]> analysisReport1 = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,type,statusIds,startDate,endDate,year);
 				 setLocationWiseNominatedPostAnalysisData(returnList,analysisReport1,"positionWise");
 				 Map<Long, NominatedPostDetailsVO> locationsMap = getTemplateForLocations( locationValues, searchLvlId,"positionWise")	;
 				 
@@ -3805,7 +3813,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					}
 				 }
 			}else{
-				 List<Object[]> analysisReport = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,type,statusIds);
+				 List<Object[]> analysisReport = nominatedPostDAO.getLocationWiseNominatedPostAnalysisDetails(locationValues,boardLevelId,searchLvlId,type,statusIds,startDate,endDate,year);
 				 setLocationWiseNominatedPostAnalysisData(returnList,analysisReport,"positionWise");
 			}
 			 
@@ -3950,10 +3958,18 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 *  @since 06-SEPTEMBER-2017
 	 */
 	@Override
-	public NominatedPostDashboardVO getAllNominatedStatusListLevelWiseData(Long boardLevelId, List<Long> levelValues, Long levelId) {
+	public NominatedPostDashboardVO getAllNominatedStatusListLevelWiseData(Long boardLevelId, List<Long> levelValues, Long levelId,String fromDateStr, String toDateStr,String year) {
 	NominatedPostDashboardVO vo = new NominatedPostDashboardVO();
 	   
 	    try {
+	    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+			Date startDate = null;
+			Date endDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
 	    	 List<Long>list=new ArrayList<Long>();
 			    Map<Long,NominatedPostDashboardVO> locationDtlsMap =new HashMap<Long, NominatedPostDashboardVO>();
 			    if(boardLevelId==2l){  
@@ -3987,8 +4003,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			    	list.add(6l);
 			    	list.add(7l);
 			    	list.add(8l);
-			    }	
-			    else if(boardLevelId==6l){
+			   }else if(boardLevelId==6l){
 			    	list.add(6l);
 			    	list.add(7l);
 			    	list.add(8l);
@@ -4014,8 +4029,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		    		   levelValues = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(levelValues);
 		    	    }
 		    	   
-			  List<Object[]> receivedapp =nominatedPostApplicationDAO.getTotalReceivedApplicationsForLocation(list, levelId, levelValues);
-		      List<Object[]> nominatedList=nominatedPostDAO.getAllNominatedStatusListLevelWise(list, levelValues, levelId);
+			  List<Object[]> receivedapp =nominatedPostApplicationDAO.getTotalReceivedApplicationsForLocation(list, levelId, levelValues,startDate, endDate,year);
+		      List<Object[]> nominatedList=nominatedPostDAO.getAllNominatedStatusListLevelWise(list, levelValues,  levelId,startDate,  endDate,year);
 			     	if (nominatedList!=null && nominatedList.size()>0){
 				      for (Object[] objects : nominatedList) {					    	 
 				    	  NominatedPostDashboardVO boardLvlVO = null;
@@ -4147,13 +4162,22 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @since 09-SEP-2017
 	 * 
 	 */
-public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(List<Long> locationValues,Long levelId,List<Long> statusIdsList,String type){
+public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(List<Long> locationValues,Long levelId,List<Long> statusIdsList,String type,String fromDateStr, String toDateStr,String year){
 		 
 		 List<NominatedPostDetailsVO> returnList = new ArrayList<NominatedPostDetailsVO>();
 		 try{
+			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+				Date startDate = null;
+				Date endDate = null;
+				if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
+					startDate = sdf.parse(fromDateStr);
+					endDate = sdf.parse(toDateStr);
+				}
+			 
 			 Long totalCount =0l;
 			 NominatedPostDetailsVO vo = null;
-			 List<Object[]> candidateDetails = nominatedPostDAO.getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(locationValues,levelId,statusIdsList,type);
+			 List<Object[]> candidateDetails = nominatedPostDAO.getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(locationValues,levelId,statusIdsList,type,startDate,endDate,year);
 			 if(candidateDetails != null && candidateDetails.size()>0){
 				 for(Object[] param : candidateDetails){
 					    vo = new NominatedPostDetailsVO();
@@ -4175,7 +4199,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 				 }
 			 }
 				
-		}catch (Exception e) {
+		     }catch (Exception e) {
 			 e.printStackTrace();
 				LOG.error("Exception Occured in getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails()", e);
 		}
@@ -4190,18 +4214,27 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 	 * @Description :This service to show boardlevel wise  Nominated post candidate details for mandal/muncipality/corporation . 
 	 *  @since 6-SEP-2017
 	 */
- public NominatedPostDetailsVO getAreaWiseDashboardCandidatesCountView(Long levelId,List<Long> levelVals,List<Long> statusIds){
+ public NominatedPostDetailsVO getAreaWiseDashboardCandidatesCountView(Long levelId,List<Long> levelVals,List<Long> statusIds,String fromDateStr, String toDateStr,String year){
 	 NominatedPostDetailsVO returnVO = new NominatedPostDetailsVO();
 	 try{
+		 
+		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+			Date startDate = null;
+			Date endDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
 		 if(levelId != null && levelId.longValue() == 4l){
-			 List<Object[]> candidateList = nominatedPostDAO.getAreaWiseDashboardCandidatesCountView(levelVals,levelId,statusIds,"muncipality");
+			 List<Object[]> candidateList = nominatedPostDAO.getAreaWiseDashboardCandidatesCountView(levelVals,levelId,statusIds,"muncipality",startDate,endDate,year);
 			  List<NominatedPostDetailsVO>  subList = new ArrayList<NominatedPostDetailsVO>();
 			  setLocationWiseNominatedPostAnalysisData(subList,candidateList,"boardLevelWise");
 			  if(subList != null && subList.size() > 0){
 				   returnVO.getSubList().addAll(subList);
 			   }
 		 }
-		  List<Object[]> candidateList = nominatedPostDAO.getAreaWiseDashboardCandidatesCountView(levelVals,levelId,statusIds,"");
+		  List<Object[]> candidateList = nominatedPostDAO.getAreaWiseDashboardCandidatesCountView(levelVals,levelId,statusIds,"",startDate,endDate,year);
 		  List<NominatedPostDetailsVO>  subList = new ArrayList<NominatedPostDetailsVO>();
 		   setLocationWiseNominatedPostAnalysisData(subList,candidateList,"boardLevelWise");
 		   if(subList != null && subList.size() > 0){
@@ -4900,7 +4933,6 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		}
 		return null;
 	}
-
 /**
    * @author babu kurakula <href:kondababu.kurakul@itgrids.com>
 	 * @param levelId,List<Long> levelVals,fromDateStr,toDateStr,year

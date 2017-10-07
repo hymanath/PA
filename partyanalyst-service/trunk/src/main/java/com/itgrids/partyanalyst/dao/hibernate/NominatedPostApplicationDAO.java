@@ -2522,7 +2522,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		 }
 		 return query.list();
 	 }
-	public List<Object[]> getTotalReceivedApplicationsForLocation(List<Long> boardLevelId,Long levelId,List<Long> levelValues){
+	public List<Object[]> getTotalReceivedApplicationsForLocation(List<Long> boardLevelId,Long levelId,List<Long> levelValues,Date startDate, Date endDate, String year){
 	    
 	    StringBuilder sb = new StringBuilder();
 	    sb.append(" select count(model.nominatedPostApplicationId),model.nominatedPostMember.boardLevelId from NominatedPostApplication model where  model.isDeleted ='N' and  model.isExpired ='N' and " +
@@ -2548,7 +2548,14 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	         sb.append(" and model.nominatedPostMember.address.ward.constituencyId in(:levelValues) ");
 	       }    
 	       }
+	    if(startDate != null && endDate != null){
+	 		 sb.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+	 	 }
+	 	 if(year != null && !year.trim().isEmpty()){
+	 		 sb.append(" and year(model.nominatedPostMember.updatedTime) = :year ");   
+	 	 }
 	    
+	        
 	       if(boardLevelId != null && boardLevelId.size() > 0L){
 	           
 	             sb.append(" and model.nominatedPostMember.boardLevelId in (:boardLevelId) ");
@@ -2556,6 +2563,15 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	       }
 	       sb.append("group by model.nominatedPostMember.boardLevelId");
 	       Query query = getSession().createQuery(sb.toString());
+	       
+	       if(startDate != null && endDate != null){
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);
+			}
+			
+			if(year !=null && !year.trim().isEmpty()){
+		 		query.setParameter("year", Integer.parseInt(year));
+		 	 }
 	       
 	       if(boardLevelId != null && boardLevelId.size() > 0L){
 	         query.setParameterList("boardLevelId",boardLevelId );
@@ -2704,4 +2720,6 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 		query.setParameter("deptId", deptId);
 	 	 return query.list();
 	  }
-}
+
+
+	}

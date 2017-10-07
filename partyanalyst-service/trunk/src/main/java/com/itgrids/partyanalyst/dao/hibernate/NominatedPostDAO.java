@@ -2314,7 +2314,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		return query.list();
 	}
 
-	public List<Object[]> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues, Long boardLevelId,Long searchLevelId,String type,List<Long> statusIds){
+	public List<Object[]> getLocationWiseNominatedPostAnalysisDetails(List<Long> locationValues, Long boardLevelId,Long searchLevelId,String type,List<Long> statusIds,Date startDate,Date endDate,String year){
 		
 			StringBuilder builder =new StringBuilder();
 			builder.append(" select count(model.nominatedPostId),model.nominatedPostMember.nominatedPostPosition.position.positionId," +
@@ -2383,7 +2383,14 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 					else if(searchLevelId.longValue() ==8L  && locationValues != null && locationValues.size()>0)
 						builder.append(" and ward.constituencyId in (:locationValue) ");
 				}
-				
+
+               if(startDate != null && endDate != null){
+            	   builder.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+		 	  }
+		 	  if(year != null && !year.trim().isEmpty()){
+		 		  builder.append(" and year(model.nominatedPostMember.updatedTime) = :year ");   
+		 	   } 	 
+		 	  
 				if(boardLevelId != null && boardLevelId.longValue() > 0L){
 			     	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
 			     		  builder.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
@@ -2420,6 +2427,15 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 							builder.append(" ,localElectionBody.localElectionBodyId ");
 					}
 				Query query = getSession().createQuery(builder.toString());
+				if(year !=null && !year.trim().isEmpty()){
+			 		query.setParameter("year", Integer.parseInt(year));
+			 	 }	 
+				
+				 if(startDate != null && endDate != null){
+					query.setDate("startDate", startDate);
+					query.setDate("endDate", endDate);
+				}
+				
 				if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
 					query.setParameterList("locationValue", locationValues);
 				}
@@ -2435,7 +2451,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		
 	}
 	@Override
-	public List<Object[]> getAllNominatedStatusListLevelWise(List<Long> boardLevelIds,	List<Long> levelValues,Long levelId) {
+	public List<Object[]> getAllNominatedStatusListLevelWise(List<Long> boardLevelIds,	List<Long> levelValues,Long levelId,Date startDate,Date endDate,String year) {
 		
 		 
 		   StringBuilder sb = new StringBuilder();
@@ -2462,6 +2478,12 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		         sb.append(" and model.nominatedPostMember.address.ward.constituencyId in(:levelValues) ");
 		     }    
 		     }
+		    if(startDate != null && endDate != null){
+		 		 sb.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+		 	 }
+		 	 if(year != null && !year.trim().isEmpty()){
+		 		 sb.append(" and year(model.nominatedPostMember.updatedTime) = :year ");   
+		 	 }
 		    
 			 if(boardLevelIds !=  null && boardLevelIds.size() > 0){
         		   sb.append(" and model.nominatedPostMember.boardLevelId  in (:boardLevelIds) ");
@@ -2470,6 +2492,15 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		     sb.append(" group by model.nominatedPostStatusId, model.nominatedPostMember.boardLevelId");
 		     
 		     Query query = getSession().createQuery(sb.toString());
+
+				if(startDate != null && endDate != null){
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);
+			   }
+			
+			 if(year !=null && !year.trim().isEmpty()){
+		 		query.setParameter("year", Integer.parseInt(year));
+		 	  }
 		     
 		     if(levelId != null && levelId.longValue() > 0l && levelValues != null && levelValues.size() > 0){
 			           	query.setParameterList("levelValues", levelValues);
@@ -2482,7 +2513,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		       return query.list();
 	       }
 
-	public List<Object[]> getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(List<Long> locationValues,Long searchLevelId,List<Long> statusIdsList,String type){
+	public List<Object[]> getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(List<Long> locationValues,Long searchLevelId,List<Long> statusIdsList,String type,Date startDate,Date endDate,String year){
 		
 		StringBuilder builder =new StringBuilder();
 		if(type != null && type.equalsIgnoreCase("ageRange")){
@@ -2514,6 +2545,15 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		    	   builder.append(" and model.nominatedPostMember.address.ward.constituencyId in(:locationValues) ");
 		     }    
 		     }
+
+             if(startDate != null && endDate != null){
+            	 builder.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+		 	 }
+		 	 if(year != null && !year.trim().isEmpty()){
+		 		builder.append(" and year(model.nominatedPostMember.updatedTime) = :year ");   
+		 	 }
+			 
+			
 			if(statusIdsList != null && statusIdsList.size()>0){
 				builder.append(" and model.nominatedPostStatusId in(:statusIdsList)");
 			}
@@ -2523,6 +2563,16 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			 builder.append(" group by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategoryGroupId ");
 			}
 			Query query = getSession().createQuery(builder.toString());
+
+			if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		    }
+		
+		    if(year !=null && !year.trim().isEmpty()){
+	 		query.setParameter("year", Integer.parseInt(year));
+	 	     }
+			
 			if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
 				query.setParameterList("locationValues", locationValues);
 			}
@@ -2532,7 +2582,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	return query.list();
 
 	}
-	public List<Object[]> getAreaWiseDashboardCandidatesCountView(List<Long> locationValues,Long searchLevelId,List<Long> statusIds,String type){
+	public List<Object[]> getAreaWiseDashboardCandidatesCountView(List<Long> locationValues,Long searchLevelId,List<Long> statusIds,String type,Date startDate,Date endDate,String year){
 		  
 		  StringBuilder builder =new StringBuilder();
 		  builder.append(" select count(distinct model.nominationPostCandidate.nominationPostCandidateId),model.nominatedPostMember.boardLevel.boardLevelId," +
@@ -2587,6 +2637,12 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		    	   builder.append(" and ward.constituencyId in(:locationValues) ");
 		     }    
 		     }
+		    if(startDate != null && endDate != null){
+		    	builder.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+		 	 }
+		 	 if(year != null && !year.trim().isEmpty()){
+		 		builder.append(" and year(model.nominatedPostMember.updatedTime) = :year ");   
+		 	 }
 		    if(statusIds != null && statusIds.size() >0){
 				builder.append(" and model.nominatedPostStatus.nominatedPostStatusId in (:statusIds) ");
 			}
@@ -2611,6 +2667,14 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			}
 		    builder.append(" model.nominatedPostMember.boardLevelId,model.nominationPostCandidate.gender ");
 		    Query query = getSession().createQuery(builder.toString());
+		    if(startDate != null && endDate != null){
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);
+			}
+			
+			if(year !=null && !year.trim().isEmpty()){
+		 		query.setParameter("year", Integer.parseInt(year));
+		 	 }
 		    if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
 		      query.setParameterList("locationValues", locationValues);
 		    }
