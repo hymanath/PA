@@ -5106,9 +5106,10 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 								//vo.setPerc(Double.valueOf(vo.getCount())*100/Double.valueOf(finalVO.getCount()));
 							}
 							for (GrivenceStatusVO vo : finalVO.getSubList()) {
-								//finalVO.setCount(finalVO.getCount()+vo.getCount());
-								//new BigDecimal(Double.valueOf(vo.getCompletedKMS())*100.00/Double.valueOf(vo.getSanctionedKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString()
-								vo.setPerc(new BigDecimal(Double.valueOf(vo.getCount())*100.00/Double.valueOf(finalVO.getCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								if(vo.getCount() != null && vo.getCount().longValue() >0L && finalVO.getCount() != null && finalVO.getCount().longValue() > 0l)
+									vo.setPerc(new BigDecimal(Double.valueOf(vo.getCount())*100.00/Double.valueOf(finalVO.getCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								else
+									vo.setPerc("0.00");
 							}
 						}
 						//finalVO.setCount(finalVO.getCount()+vo.getCount());
@@ -5337,9 +5338,10 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 								//vo.setPerc(Double.valueOf(vo.getCount())*100/Double.valueOf(finalVO.getCount()));
 							}
 							for (GrivenceStatusVO vo : finalVO.getSubList()) {
-								//finalVO.setCount(finalVO.getCount()+vo.getCount());
-								//vo.setPerc(Double.valueOf(vo.getCount())*100/Double.valueOf(finalVO.getCount()));
-								vo.setPerc(new BigDecimal(Double.valueOf(vo.getCount())*100.00/Double.valueOf(finalVO.getCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());;
+								if(vo.getCount() != null && vo.getCount().longValue() >0L && finalVO.getCount() != null && finalVO.getCount().longValue() > 0l)
+									vo.setPerc(new BigDecimal(Double.valueOf(vo.getCount())*100.00/Double.valueOf(finalVO.getCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								else
+									vo.setPerc("0.00");
 							}
 						}
 						//finalVO.setCount(finalVO.getCount()+vo.getCount());
