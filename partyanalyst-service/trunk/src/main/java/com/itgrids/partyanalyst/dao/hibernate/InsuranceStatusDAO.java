@@ -1680,6 +1680,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		}
 		return query.list();
 	}
+	
 	public List<Object[]> getLocationWiseGrivenceTrustIssueTypesCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbm = new StringBuilder();
@@ -1750,6 +1751,128 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		}
 		return query.list();
 	}
-
 	
+	public List<Long> getComplaintIdsByGrievanceType(Long locationId,List<Long> locationValues,Date fromDate,Date toDate,String type,String grievanceType,Long yearId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT distinct CM.Complaint_id as complaintId");
+		sb.append(" FROM complaint_master CM,district D,constituency C,tdp_cadre_enrollment_year tcey,state S,tehsil T,local_election_body leb ");
+		sb.append(" WHERE CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') and CM.issue_type is not null" +
+				" AND CM.district_id between 11 and 23 ");
+		
+		/*sb.append("select distinct cm.Complaint_id as complaintId" +
+					" from complaint_master cm,tdp_cadre_enrollment_year tcey,tdp_cadre tc,complaint_master_insurance_company cmic," +
+					" grievance_insurance_company gic,grievance_insurance_status gis" +
+				" where" +
+					" cm.membership_id = tc.membership_id" +
+					" and tc.tdp_cadre_id = tcey.tdp_cadre_id" +
+					" and cmic.complaint_master_id = cm.Complaint_id" +
+					" and gic.grievance_insurance_company_id = cmic.grievance_insurance_company_id" +
+					" and cm.grievance_insurance_status_id = gis.grievance_insurance_status_id" +
+				//	" and tcey.is_deleted = 'N' and tc.is_deleted = 'N'" +
+					" and cm.type_of_issue = 'Insurance'" +
+					" and cm.delete_status IS NULL" +
+					" and (cm.Subject IS NOT NULL OR cm.Subject != '')");*/
+		
+		/*if(stateId != null && stateId > 0l)
+			sb.append("and cm.state_id_cmp IN (:stateId)")*/;		//else
+		//	sb.append(" and cm.state_id_cmp IN (1,2)");
+		
+		/*if(locationId != null && locationValues != null && locationValues.size() > 0 && locationId.longValue() == 3L){
+    		sb.append(" and cm.district_id IN (:locationValues) ");
+		}else if(locationId != null && locationValues != null && locationValues.size() > 0 && locationId.longValue() == 4L){
+    		sb.append(" and cm.assembly_id IN (:locationValues) ");
+		}else if(locationId != null && locationValues != null && locationValues.size() > 0 && locationId.longValue() == 5L){
+    		sb.append(" and cm.tehsil_id IN (:locationValues) ");
+		}else if(locationId != null && locationValues != null && locationValues.size() > 0 && locationId.longValue() == 7L){
+    		sb.append(" and cm.local_election_body_id IN (:locationValues) ");
+		}
+		else */
+		if(locationId!=null && locationId==3l  && locationId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.district_id in(:locationValues)");
+		}else if(locationId!=null && locationId==4l && locationId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.assembly_id in(:locationValues)");
+		}else if(locationId!=null && locationId==5l && locationId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.tehsil_id = T.tehsil_id  AND CM.tehsil_id in(:locationValues)");
+		}else if(locationId!=null && locationId==7l && locationId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
+			sb.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.local_election_body_id = leb.local_election_body_id AND CM.local_election_body_id in(:locationValues)");
+		}
+		
+    	if(fromDate !=null && toDate !=null){
+    		sb.append(" AND (date(CM.Raised_Date) between :fromDate and  :toDate ) ");
+	   	}
+    	if(yearId != null && yearId.longValue() > 0l){
+    		sb.append(" AND tcey.enrollment_year_id = :yearId ");
+		}
+    	if(type != null && type.trim().equalsIgnoreCase("Grievance")){
+    		sb.append(" and CM.type_of_issue = :grievanceType");
+    	}else if(type != null && type.trim().equalsIgnoreCase("Insurance")){
+    		sb.append(" and CM.issue_type = :grievanceType");
+    	}else if(type != null && type.trim().equalsIgnoreCase("Trust")){
+    		sb.append(" and CM.support_purpose = :grievanceType");
+    	}
+    	
+    	/*if(cadreYearId != null && cadreYearId.longValue() == 2l){
+    		sb.append(" and year(cm.date_of_incident) between '2012' and '2014'"); 
+    	}else if(cadreYearId != null && cadreYearId.longValue() == 3l){
+    		sb.append(" and year(cm.date_of_incident) between '2014' and '2016'"); 
+    	}else if(cadreYearId != null && cadreYearId.longValue() == 4l){
+    		sb.append(" and year(cm.date_of_incident) between '2016' and '2018'"); 
+    	}*/
+    	
+    	Query query = getSession().createSQLQuery(sb.toString()).addScalar("complaintId", Hibernate.LONG);
+    	
+    	
+		if(locationId != null && locationValues != null && locationValues.size() > 0  && locationId.longValue() != 2L)
+			query.setParameterList("locationValues", locationValues);
+		if(fromDate != null && toDate != null){
+    		query.setDate("fromDate", fromDate);
+    		query.setDate("toDate", toDate);
+    	}
+    	if(type != null)
+    		query.setParameter("grievanceType", grievanceType);
+    	if(yearId != null && yearId.longValue() > 0l){
+			query.setParameter("yearId", yearId);
+		}
+    	
+    	return query.list();
+	}
+	
+	public List<Object[]> getComplaintIdsByGrievanceType(List<Long> complaintIds,String type){
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sbm = new StringBuilder();
+		sb.append(" SELECT distinct CM.Complaint_id as complaintId," +
+				" CM.name as name,CM.mobile_no as mobileNO,CM.Location as districtName,CM.constituency as constName,CM.mandal_name as mandalName," +
+				"CM.village_name as villName,CM.description as description,CM.Raised_Date as date,CM.Subject as subject");
+		if(type != null && type.trim().equalsIgnoreCase("Grievance")){
+			sb.append(",CM.Completed_Status as type");
+		}else if(type != null && type.trim().equalsIgnoreCase("Insurance")){
+			sb.append(",gis.status as type ");
+		}else if(type != null && type.trim().equalsIgnoreCase("Trust")){
+			sb.append(",CM.Completed_Status as type ");
+		}
+		sbm.append(" FROM complaint_master CM");
+		sb.append(" WHERE CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') AND CM.issue_type is not null");
+		if(type != null && type.trim().equalsIgnoreCase("Insurance")){
+			sbm.append(",grievance_insurance_status gis");
+			sb.append(" AND CM.grievance_insurance_status_id = gis.grievance_insurance_status_id");
+		}
+			sb.append(" AND CM.Complaint_id in (:complaintIds)");
+		sb.append(sbm.toString());
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("complaintId", Hibernate.LONG)
+				.addScalar("name", Hibernate.STRING)
+				.addScalar("mobileNO", Hibernate.STRING)
+				.addScalar("districtName", Hibernate.STRING)
+				.addScalar("constName", Hibernate.STRING)
+				.addScalar("mandalName", Hibernate.STRING)
+				.addScalar("villName", Hibernate.STRING)
+				.addScalar("description", Hibernate.STRING)
+				.addScalar("date", Hibernate.STRING)
+				.addScalar("subject", Hibernate.STRING)
+				.addScalar("type", Hibernate.STRING);
+    	
+		query.setParameterList("complaintIds", complaintIds);
+		
+    	return query.list();
+	}
 }

@@ -3236,4 +3236,79 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 			}
 		};
 		
+	public List<ComplaintMasterVO> getComplaintRaisedDetails(Long levelId,List<Long> locationValues,String startDateStr,String endDateStr,String type,String grievanceType,String year){
+		List<ComplaintMasterVO> complaintList = new ArrayList<ComplaintMasterVO>(0);
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date fromDate = null;
+			Date toDate = null;
+			if(startDateStr != null && endDateStr != null){
+				fromDate = sdf.parse(startDateStr);
+				toDate = sdf.parse(endDateStr);
+			}
+			//Get complaintIds For levelwise
+			List<Long> complaintIds = insuranceStatusDAO.getComplaintIdsByGrievanceType(levelId, locationValues, fromDate, toDate, type, grievanceType,Long.valueOf(year));
+			if(complaintIds != null && !complaintIds.isEmpty())
+				complaintList = getComplaintDetailsByComplaintIds(complaintIds,type);
+		} catch (Exception e) {
+			LOG.error("Error occured at getComplaintRaisedDetails() in CoreDashboardInsuranceService class",e);
+		}
+		return complaintList;
+	}
+	
+	
+	public List<ComplaintMasterVO> getComplaintDetailsByComplaintIds(List<Long> complaintIds,String type){
+		List<ComplaintMasterVO> returnList = new ArrayList<ComplaintMasterVO>();
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("MMM dd,yyyy hh:mm:ss a");
+			
+			List<Object[]> list = insuranceStatusDAO.getComplaintIdsByGrievanceType(complaintIds,type);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					ComplaintMasterVO vo = new ComplaintMasterVO();
+					
+					vo.setComplaintId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setMobileNo(obj[2] != null ? obj[2].toString():"");
+					vo.setDistrictName(obj[3] != null ? obj[3].toString():"");
+					vo.setConstituencyName(obj[4] != null ? obj[4].toString():"");
+					vo.setMandalName(obj[5] != null ? obj[5].toString()+" Mandal":"");
+					vo.setVillageName(obj[6] != null ? obj[6].toString():"");
+					vo.setDescription(obj[7] != null ? obj[7].toString():"");
+					vo.setSubject(obj[9] != null ? obj[9].toString():"");
+					vo.setStatus(obj[10] != null ? obj[10].toString():"");
+					vo.setPostedDate(obj[8] != null ? obj[8].toString() :null);
+					if(vo.getPostedDate() != null){
+						Date dated = sdf.parse(vo.getPostedDate());
+						vo.setPostedDate(sdf1.format(dated));
+					}
+					returnList.add(vo);
+				}
+			}
+			
+			List<Object[]> commentList = insuranceStatusDAO.getLatestComplaintResponsesForComplaintIds(complaintIds);
+			if(commentList != null && !commentList.isEmpty()){
+				for (Object[] obj : commentList) {
+					Long complaintId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					String comment = obj[1] != null ? obj[1].toString():"";
+					String updatedDate = obj[2] != null ? obj[2].toString():null;
+					
+					ComplaintMasterVO vo = getComplaintMasterMatchedVO(returnList, complaintId);
+					if(vo != null){
+						vo.setComment(comment);
+						vo.setUpdatedDate(updatedDate);
+						if(vo.getUpdatedDate() != null){
+							Date dated = sdf.parse(vo.getUpdatedDate());
+							vo.setUpdatedDate(sdf1.format(dated));
+						}
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getComplaintDetailsByComplaintIds on CoreDashboardInsuranceService", e);
+		}
+		return returnList;
+	}
 }

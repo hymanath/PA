@@ -8,7 +8,7 @@ public class GrivenceStatusVO {
 	
 	private String grivenceType;
 	private String name;
-	private Long count;
+	private Long count = 0l;
 	private List<GrivenceStatusVO> subList=new ArrayList<GrivenceStatusVO>(0);
 	private Long id;
 	private Long partyCount = 0l;
@@ -18,6 +18,7 @@ public class GrivenceStatusVO {
 	private Long hosptalCount = 0l;
 	private Long feeConsCount = 0l;
 	private Long seatCount = 0l;
+	private String perc;
 	
 	public String getGrivenceType() {
 		return grivenceType;
@@ -92,6 +93,13 @@ public class GrivenceStatusVO {
 	public void setSeatCount(Long seatCount) {
 		this.seatCount = seatCount;
 	}
+	public String getPerc() {
+		return perc;
+	}
+	public void setPerc(String perc) {
+		this.perc = perc;
+	}
+	
 	
 	
 }

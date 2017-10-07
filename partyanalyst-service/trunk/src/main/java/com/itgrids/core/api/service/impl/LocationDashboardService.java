@@ -5096,6 +5096,22 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 					}
 					finalList.add(govtIssuesCount);
 				}
+				if(commonMethodsUtilService.isListOrSetValid(finalList)){
+					for (GrivenceStatusVO finalVO : finalList) {
+						if(finalVO != null){
+							for (GrivenceStatusVO vo : finalVO.getSubList()) {
+								finalVO.setCount(finalVO.getCount()+vo.getCount());
+								//vo.setPerc(Double.valueOf(vo.getCount())*100/Double.valueOf(finalVO.getCount()));
+							}
+							for (GrivenceStatusVO vo : finalVO.getSubList()) {
+								//finalVO.setCount(finalVO.getCount()+vo.getCount());
+								//new BigDecimal(Double.valueOf(vo.getCompletedKMS())*100.00/Double.valueOf(vo.getSanctionedKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString()
+								vo.setPerc(new BigDecimal(Double.valueOf(vo.getCount())*100.00/Double.valueOf(finalVO.getCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							}
+						}
+						//finalVO.setCount(finalVO.getCount()+vo.getCount());
+					}
+				}
 				
 		}catch(Exception e){
 			Log.error("Exception raised at grivence and trust counts service"+e);
@@ -5311,6 +5327,22 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 				finalVo.setSubList(subList);// set subject List to VO list contains road,animal and other accident counts
 				finalList.add(finalVo);// finally FINALVO add to final list
 				
+				if(commonMethodsUtilService.isListOrSetValid(finalList)){
+					for (GrivenceStatusVO finalVO : finalList) {
+						if(finalVO != null){
+							for (GrivenceStatusVO vo : finalVO.getSubList()) {
+								finalVO.setCount(finalVO.getCount()+vo.getCount());
+								//vo.setPerc(Double.valueOf(vo.getCount())*100/Double.valueOf(finalVO.getCount()));
+							}
+							for (GrivenceStatusVO vo : finalVO.getSubList()) {
+								//finalVO.setCount(finalVO.getCount()+vo.getCount());
+								//vo.setPerc(Double.valueOf(vo.getCount())*100/Double.valueOf(finalVO.getCount()));
+								vo.setPerc(new BigDecimal(Double.valueOf(vo.getCount())*100.00/Double.valueOf(finalVO.getCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());;
+							}
+						}
+						//finalVO.setCount(finalVO.getCount()+vo.getCount());
+					}
+				}
 			}
 		}
 	}catch(Exception e){

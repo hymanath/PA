@@ -32,4 +32,5 @@ public interface ICoreDashboardInsuranceService {
 	public List<CoreDashboardInsuranceVO> getInsuranceCompanyWiseOverviewAndStatusDetails(Long activityMemberId,Long cadreYearId,String fromDateStr,String toDateStr);
 	public List<CoreDashboardInsuranceVO> getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType,String sortingCondition,String order);
 	public List<CoreDashboardInsuranceVO> getLocationWiseThenStatusWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType,String sortingCondition,String order);
+	public List<ComplaintMasterVO> getComplaintRaisedDetails(Long levelId,List<Long> locationValues,String startDateStr,String endDateStr,String type,String grievanceType,String year);
 }
