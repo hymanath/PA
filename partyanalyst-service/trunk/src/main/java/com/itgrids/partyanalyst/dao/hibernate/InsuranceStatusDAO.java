@@ -1850,13 +1850,13 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		}else if(type != null && type.trim().equalsIgnoreCase("Trust")){
 			sb.append(",CM.Completed_Status as type ");
 		}
-		sbm.append(" FROM complaint_master CM");
-		sb.append(" WHERE CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') AND CM.issue_type is not null");
+		sb.append(" FROM complaint_master CM");
+		sbm.append(" WHERE CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') AND CM.issue_type is not null");
 		if(type != null && type.trim().equalsIgnoreCase("Insurance")){
-			sbm.append(",grievance_insurance_status gis");
-			sb.append(" AND CM.grievance_insurance_status_id = gis.grievance_insurance_status_id");
+			sb.append(",grievance_insurance_status gis");
+			sbm.append(" AND CM.grievance_insurance_status_id = gis.grievance_insurance_status_id");
 		}
-			sb.append(" AND CM.Complaint_id in (:complaintIds)");
+			sbm.append(" AND CM.Complaint_id in (:complaintIds)");
 		sb.append(sbm.toString());
 		Query query = getSession().createSQLQuery(sb.toString())
 				.addScalar("complaintId", Hibernate.LONG)
