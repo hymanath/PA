@@ -18194,7 +18194,12 @@
          <param name="root">grivenceVO</param>
        </result>
    </action>
-  	<action name="getBelowLevelMeetingConductedCountAction" class="loactionDetailsDashBoardAction"  method="getBelowLevelMeetingConductedCount">
+   <action name="areaWiseGrievanceDashboardAction" class="locationDashboardAction" method="locationDashboard">
+			<result name="success">/jsp/areaWiseGrievanceDashboard.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src="areaWiseGrievanceDashboardAction"</result>	
+	</action> 
+	<action name="getBelowLevelMeetingConductedCountAction" class="loactionDetailsDashBoardAction"  method="getBelowLevelMeetingConductedCount">
 		<result type="json" name="success">    
 			<param name="root">partyMeetingsVOs</param>       
 		</result>

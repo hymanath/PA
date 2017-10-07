@@ -1060,3 +1060,14 @@ ul li[menu-levelname='panchayat']:after .active
 {
 	padding:0px 15px;
 }
+
+.tableborderCss tbody tr td{
+	border:none !important;
+	padding:2px !important;
+	font-weight:bold;
+}
+.positionLevelModalClick{
+	cursor:pointer;
+	text-decoration:underline;
+	font-weight:bold;
+}

@@ -4058,7 +4058,7 @@ function getPositionWiseMemberCount(){
 			str+='<ul class="list-border list-border-responsive">';
 			for(var i in result){
 				str+='<li>';
-					str+='<h3>'+result[i].count+'</h3>';
+					str+='<h3 class="positionLevelModalClick" attr_boardLevelId="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].count+'</h3>';
 					str+='<p class="text-capitalize">'+result[i].name+'</p>';
 				str+='</li>';
 			}
@@ -5355,16 +5355,26 @@ function getPartyWiseMPandMLACandidatesCounts(){
 	});	
 }
 
-  function getNominatedPositionWiseCandidates(){
+
+	$(document).on("click",".positionLevelModalClick",function(){
+		var boardLevelId =  $(this).attr("attr_boardLevelId");
+		var name =  $(this).attr("attr_name");
+		$("#positionLevelModal").modal("show");
+		$("#postionHeadingId").html(name+"  Level Details");
+		getNominatedPositionWiseCandidates(boardLevelId,name);
+	});
+	
+  function getNominatedPositionWiseCandidates(boardLevelId,name){
+	  $("#positionLevelDetailsId").html(spinner);
 	var jsObj={
-      "fromDateStr" : globalFromDate,
-      "toDateStr":globalToDate,
-      "locationValuesArr":userAccessLevelValuesArray,
-      "locationTypeId":locationLevelId,
-      "year":"",
-      "boardLevelId":5,
-	  startIndex:0,
-	  endIndex:10
+      "fromDateStr" 		:globalFromDate,
+      "toDateStr"			:globalToDate,
+      "locationValuesArr"	:userAccessLevelValuesArray,
+      "locationTypeId"		:locationLevelId,
+      "year"				:"",
+      "boardLevelId"		:boardLevelId,
+	  startIndex			:0,
+	  endIndex				:50
     }
     $.ajax({   
       type:'GET',
@@ -5372,8 +5382,45 @@ function getPartyWiseMPandMLACandidatesCounts(){
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
-      
+      if(result !=null && result.length>0){
+		  return buildNominatedPositionWiseCandidates(result);
+	  }
     });
+	
+	function buildNominatedPositionWiseCandidates(result){
+		var str='';
+		var str='';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-condensed tableStyledGoIssued" id="dataTablePositionLevelId">';
+				str+='<thead class="bg-E9">';
+					str+='<tr>';
+						str+='<th class="text-center">Department</th>';
+						str+='<th class="text-center">Board/ Corporation</th>';
+						str+='<th class="text-center">Position Level</th>';
+						str+='<th class="text-center">Name</th>';
+						str+='<th class="text-center">Status</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';
+							str+='<td>'+result[i].department+'</td>';
+							str+='<td>'+result[i].board+'</td>';
+							str+='<td>'+result[i].position+'</td>';
+							str+='<td>'+result[i].candidateName+'</td>';
+							str+='<td>'+result[i].status+'</td>';
+						str+='</tr>';
+					}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		$("#positionLevelDetailsId").html(str);
+			$("#dataTablePositionLevelId").dataTable({
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
+	}
   }
   
 function getLevelWisePostsOverView(){
