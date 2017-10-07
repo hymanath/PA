@@ -809,8 +809,11 @@ public String getElectionInformationLocationWise(){
 		        }
 	      Long levelId = jObj.getLong("levelId");
 	      String type = jObj.getString("dataType");
+		  String fromDateStr = jObj.getString("fromDateStr");
+		  String year = jObj.getString("year");
+		  String toDateStr = jObj.getString("toDateStr");
 	      
-	      nominatedPostDetailsVOList = locationDashboardService.getLocationWiseNominatedPostAnalysisDetails(locationValuesList,boardLevelId,levelId,type,statusIds);  
+	      nominatedPostDetailsVOList = locationDashboardService.getLocationWiseNominatedPostAnalysisDetails(locationValuesList,boardLevelId,levelId,type,statusIds,fromDateStr,toDateStr,year);  
 	      
 	    }catch(Exception e){
 	      LOG.error("Entered into getAllNominatedStatusData method of LocationDashboardAction Action",e);
@@ -822,6 +825,9 @@ public String getElectionInformationLocationWise(){
 		try{
 			jObj = new JSONObject(getTask());			
 			Long boardLevelId = jObj.getLong("boardLevelId");
+			 String fromDateStr = jObj.getString("fromDateStr");
+			 String year = jObj.getString("year");
+			 String toDateStr = jObj.getString("toDateStr");
 			
 			List<Long> locationValuesList = new ArrayList<Long>(0); 
 			JSONArray levelValues = jObj.getJSONArray("levelValues");			
@@ -831,12 +837,12 @@ public String getElectionInformationLocationWise(){
 		    	}
 		    }			
 			Long levelId = jObj.getLong("levelId");
-			nominatedPostDashboardVO = locationDashboardService.getAllNominatedStatusListLevelWiseData(boardLevelId,locationValuesList,levelId);  
+			nominatedPostDashboardVO = locationDashboardService.getAllNominatedStatusListLevelWiseData(boardLevelId,locationValuesList,levelId,fromDateStr,toDateStr,year);  
 			
 		}catch(Exception e){
 			LOG.error("Entered into getAllNominatedStatusListLevelWiseData method of NominatedPostProfileAction Action",e);
 		}
-		return Action.SUCCESS;
+ 		return Action.SUCCESS;
 	}
 
 
@@ -848,7 +854,10 @@ public String getElectionInformationLocationWise(){
 	        
 	      Long levelId = jObj.getLong("levelId");
 	      String type =jObj.getString("type");
-	      nominatedPostDetailsVOList = locationDashboardService.getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(locationValuesList,levelId,statusIdsList,type);  
+	      String fromDateStr = jObj.getString("fromDateStr");
+		  String year = jObj.getString("year");
+		  String toDateStr = jObj.getString("toDateStr");
+	      nominatedPostDetailsVOList = locationDashboardService.getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(locationValuesList,levelId,statusIdsList,type,fromDateStr,toDateStr,year);  
 	      
 	    }catch(Exception e){
 	      LOG.error("Entered into getLocationWiseNominatedPostCandidateDetails method of NominatedPostProfileAction Action",e);
@@ -863,7 +872,10 @@ public String getElectionInformationLocationWise(){
 	        List<Long> statusIds =convertJsonStringList(jObj.getJSONArray("statusIds"));
 		      
 	      Long levelId = jObj.getLong("levelId");
-	      nominatedPostDetailsVO = locationDashboardService.getAreaWiseDashboardCandidatesCountView(levelId,locationValuesList,statusIds);  
+	      String fromDateStr = jObj.getString("fromDateStr");
+		  String year = jObj.getString("year");
+		  String toDateStr = jObj.getString("toDateStr");
+	      nominatedPostDetailsVO = locationDashboardService.getAreaWiseDashboardCandidatesCountView(levelId,locationValuesList,statusIds,fromDateStr,toDateStr,year);  
 	      
 	    }catch(Exception e){
 	      LOG.error("Entered into getAreaWiseDashboardCandidatesCountView method of LocationDashboardAction Action",e);
