@@ -18155,7 +18155,7 @@
 			<param name="root">partyMeetingsVOs</param>       
 		</result>
   	</action>
-  	<action name="getLevelWisePostsOverViewAction" class="locationDashboardAction" method="getLevelWisePostsOverView">
+  	  	<action name="getLevelWisePostsOverViewAction" class="locationDashboardAction" method="getLevelWisePostsOverView">
 		<result type="json" name="success">
 			<param name="root">nominatedPostCandList</param>
 		</result>
@@ -18190,5 +18190,10 @@
          <param name="root">grivenceVO</param>
        </result>
    </action>
+  	<action name="getBelowLevelMeetingConductedCountAction" class="loactionDetailsDashBoardAction"  method="getBelowLevelMeetingConductedCount">
+		<result type="json" name="success">    
+			<param name="root">partyMeetingsVOs</param>       
+		</result>
+  	</action>
  </package>
 </struts>
