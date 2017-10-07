@@ -1,10 +1,20 @@
 var grivanceColorObj={"APPROVED":"#2DCC70","COMPLETED":"#449C43","IN PROGRESS":"#FFB84F","NOT ELIGIBLE":"#C0392B","NOT POSSIBLE":"#EF8379","NOT VERIFIED":"#31708F"}
 var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In Party":"#449C43","Forwarded to Insurance":"#FFB84F","Closed at Insurance":"#8F43AF","Closed at Party":"#9B88B3","Approved - Compensated":"#2BCD72","Closed Letters":"#32708F","Account Rejected":"#65CBCC"}
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-getGrivenceDetails();
-getConstituencyWiseInsurance(); //Insurance
-getLevelWiseGrievanceCounts(); 
-getLocationWiseNtrTrustDetails();
+var globalFromDate = moment().subtract(3,'year').format("DD/MM/YYYY");
+var globalToDate = moment().format("DD/MM/YYYY");
+
+setTimeout(function(){
+	onloadCalls();
+},1500)
+
+function onloadCalls(){
+	getGrivenceDetails();
+	getConstituencyWiseInsurance(); //Insurance
+	getLevelWiseGrievanceCounts(); 
+	getLocationWiseNtrTrustDetails();
+}
+
 function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 	'use strict';
 	$('#'+id).highcharts({
@@ -22,11 +32,12 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 }
 
 function getGrivenceDetails(){
+		$("#grievanceOverViewId").html(spinner);
 	var jsObj={
-			"fromDate" : "",
-			"toDate":"",
-			"locationTypeId" : 2,
-			"locationValuesArr" :[1],
+			"fromDate" 			:globalFromDate,
+			"toDate"			:globalToDate,
+			"locationTypeId" 	:locationLevelId,
+			"locationValuesArr" :userAccessLevelValuesArray,
 			"year": 3
 		}
 	$.ajax({
@@ -171,11 +182,13 @@ function getGrivenceDetails(){
 
 
 function getConstituencyWiseInsurance(){
+	$("#insuranceOverViewId").html(spinner);
+	
 	var jsObj={
-			"fromDate" : "",
-			"toDate":"",
-			"locationTypeId" : 2,
-			"locationValuesArr" :[1],
+			"fromDate" 			:globalFromDate,
+			"toDate"			:globalToDate,
+			"locationTypeId" 	:locationLevelId,
+			"locationValuesArr" :userAccessLevelValuesArray,
 			"year": 3
 		}
 	$.ajax({
@@ -319,11 +332,13 @@ function getConstituencyWiseInsurance(){
 	
 }
 function getLevelWiseGrievanceCounts(){
+	$("#mandalWiseGrievanceId").html(spinner);
+	
 	var jsObj={
-			"fromDate" : "",
-			"toDate":"",
-			"locationTypeId" : 2,
-			"locationValuesArr" :[1],
+			"fromDate" 			:globalFromDate,
+			"toDate"			:globalToDate,
+			"locationTypeId" 	:locationLevelId,
+			"locationValuesArr" :userAccessLevelValuesArray,
 			"year": 3
 		}
 	$.ajax({
@@ -443,11 +458,13 @@ function getLevelWiseGrievanceCounts(){
 	
 }
 function getLocationWiseNtrTrustDetails(){
+	$("#ntrTrustOverViewId").html(spinner);
+	
 	var jsObj={
-			"fromDate" : "",
-			"toDate":"",
-			"locationTypeId" : 2,
-			"locationValuesArr" :[1],
+			"fromDate" 			:globalFromDate,
+			"toDate"			:globalToDate,
+			"locationTypeId" 	:locationLevelId,
+			"locationValuesArr" :userAccessLevelValuesArray,
 			"year": 3
 		}
 	$.ajax({
