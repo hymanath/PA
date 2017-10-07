@@ -4885,8 +4885,8 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 				 wonResultList.addAll(tempwonResultList);
 			
 			Map<Long,Map<Long,Long>> electionWiseWonSeatsMap = new HashMap<Long, Map<Long,Long>>(0);
-			if(commonMethodsUtilService.isListOrSetValid(tempwonResultList)){
-				for (Object[] param : tempwonResultList) {
+			if(commonMethodsUtilService.isListOrSetValid(wonResultList)){
+				for (Object[] param : wonResultList) {
 					Long electonId = commonMethodsUtilService.getLongValueForObject(param[6]);
 					Long partyId = commonMethodsUtilService.getLongValueForObject(param[0]);
 					Long wonSeats = commonMethodsUtilService.getLongValueForObject(param[2]);
