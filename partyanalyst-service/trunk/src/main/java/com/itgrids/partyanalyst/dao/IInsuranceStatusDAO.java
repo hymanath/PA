@@ -45,4 +45,5 @@ public interface IInsuranceStatusDAO extends GenericDao<InsuranceStatus, Long>{
 	public List<Object[]> getGrievanceTypeCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId);
 	public List<Object[]> getInsuranceTypeCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId);
 	public List<Object[]> getNTRTrustTypeCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId);
+	public List<Object[]> getLocationWiseGrivenceTrustIssueTypesCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year,Long yearId);
 }
