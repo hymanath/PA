@@ -2391,10 +2391,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 				}
 
                if(startDate != null && endDate != null){
-            	   builder.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+            	   builder.append(" and (date(model.updatedTime) between :startDate and :endDate) ");
 		 	  }
 		 	  if(year != null && !year.trim().isEmpty()){
-		 		  builder.append(" and year(model.nominatedPostMember.updatedTime) = :year ");   
+		 		  builder.append(" and year(model.updatedTime) = :year ");   
 		 	   } 	 
 		 	  
 				if(boardLevelId != null && boardLevelId.longValue() > 0L){
@@ -2485,10 +2485,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		     }    
 		     }
 		    if(startDate != null && endDate != null){
-		 		 sb.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+		 		 sb.append(" and (date(model.updatedTime) between :startDate and :endDate) ");
 		 	 }
 		 	 if(year != null && !year.trim().isEmpty()){
-		 		 sb.append(" and year(model.nominatedPostMember.updatedTime) = :year ");   
+		 		 sb.append(" and year(model.updatedTime) = :year ");   
 		 	 }
 		    
 			 if(boardLevelIds !=  null && boardLevelIds.size() > 0){
@@ -2553,10 +2553,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		     }
 
              if(startDate != null && endDate != null){
-            	 builder.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+            	 builder.append(" and (date(model.updatedTime) between :startDate and :endDate) ");
 		 	 }
 		 	 if(year != null && !year.trim().isEmpty()){
-		 		builder.append(" and year(model.nominatedPostMember.updatedTime) = :year ");   
+		 		builder.append(" and year(model.updatedTime) = :year ");   
 		 	 }
 			 
 			
@@ -2644,10 +2644,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		     }    
 		     }
 		    if(startDate != null && endDate != null){
-		    	builder.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+		    	builder.append(" and (date(model.updatedTime) between :startDate and :endDate) ");
 		 	 }
 		 	 if(year != null && !year.trim().isEmpty()){
-		 		builder.append(" and year(model.nominatedPostMember.updatedTime) = :year ");   
+		 		builder.append(" and year(model.updatedTime) = :year ");   
 		 	 }
 		    if(statusIds != null && statusIds.size() >0){
 				builder.append(" and model.nominatedPostStatus.nominatedPostStatusId in (:statusIds) ");
@@ -2735,10 +2735,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 	        
 	 	 }
 	 	 if(startDate != null && endDate != null){
-	 		 sb.append(" and (date(nominatedPost.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+	 		 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
 	 	 }
 	 	 if(year != null && !year.trim().isEmpty()){
-	 		 sb.append(" and year(nominatedPost.nominatedPostMember.updatedTime) = :year ");   
+	 		 sb.append(" and year(nominatedPost.updatedTime) = :year ");   
 	 	 }
 	 	if(boardLevelId != null && boardLevelId.longValue() > 0L){
      	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
@@ -2822,7 +2822,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 						
 			   }
 			 if(startDate != null && endDate != null){
-				 sb.append(" and (date(nominatedPost.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+				 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
 			 }
 			 if(boardLevelId != null && boardLevelId.longValue()>0l){
 				 sb.append(" and nominatedPost.nominatedPostMember.boardLevel.boardLevelId >=:boardLevelId ");
@@ -2887,10 +2887,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 		 sb.append(" and nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId  ");
 	 	 }
 	 	 if(startDate != null && endDate != null){
-	 		 sb.append(" and (date(nominatedPost.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+	 		 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
 	 	 }
 	 	 if(year != null && !year.trim().isEmpty()){
-	 		 sb.append(" and year(nominatedPost.nominatedPostMember.updatedTime) = :year ");   
+	 		 sb.append(" and year(nominatedPost.updatedTime) = :year ");   
 	 	 }
 	 	if(boardLevelId != null && boardLevelId.longValue() > 0L){
      	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
@@ -2928,4 +2928,6 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 		query.setParameter("deptId", deptId);
 	 	 return query.list();
 	  }
+	 
+	 
 }
