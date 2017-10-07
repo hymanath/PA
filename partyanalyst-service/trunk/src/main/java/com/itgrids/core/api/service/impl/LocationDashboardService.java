@@ -4218,6 +4218,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 	 NominatedPostDetailsVO returnVO = new NominatedPostDetailsVO();
 	 try{
 		 
+		 
 		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 			Date startDate = null;
