@@ -4383,7 +4383,10 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	}
 	public List<Object[]> getMeetingTypeWiseTotalMeetings(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId, model.partyMeetingType.partyMeetingMainType.meetingType, count(distinct model.partyMeetingId) " +
+		queryStr.append(" select " +
+						" model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId, " +
+						" model.partyMeetingType.partyMeetingMainType.meetingType, " +
+						" count(distinct model.partyMeetingId) " +
 						" from " +
 						" PartyMeeting model " +
 						" where " +
@@ -4459,6 +4462,91 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			
 		}
 		return query.list();
+	}
+	public List<Object[]> getBelowLevelMeetingConductedCount(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate,String areaType){
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sg = new StringBuilder();
+		StringBuilder sc = new StringBuilder();
+		
+		sc.append(" from PartyMeeting model where model.isActive = 'Y' ");
+		if(fromDate != null && toDate != null){
+			sc.append(" and (date(model.startDate) between :fromDate and :toDate) ");
+		}
+		
+		sb.append(" select ");
+		if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_STATE_LEVEL_ID){
+			sb.append(" model.meetingAddress.district.districtId, model.meetingAddress.district.districtName ");
+			sg.append(" group by model.meetingAddress.district.districtId, model.partyMeetingLevel.partyMeetingLevelId ");
+			sc.append(" and model.meetingAddress.state.stateId in (:locationIds) ");
+		}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_DISTRICT_LEVEL_ID){
+			sb.append(" model.meetingAddress.constituency.constituencyId, model.meetingAddress.constituency.name ");
+			sg.append(" group by model.meetingAddress.constituency.constituencyId, model.partyMeetingLevel.partyMeetingLevelId ");
+			sc.append(" and model.meetingAddress.district.districtId in (:locationIds) ");
+		}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_PARLIAMENT_LEVEL_ID){
+			sb.append(" model.meetingAddress.constituency.constituencyId, model.meetingAddress.constituency.name "); 
+			sg.append(" group by model.meetingAddress.constituency.constituencyId, model.partyMeetingLevel.partyMeetingLevelId ");
+			sc.append(" and model.meetingAddress.parliamentConstituency.constituencyId in (:locationIds) ");
+		}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_CONSTITUENCY_LEVEL_ID){
+			if(areaType.equalsIgnoreCase("mandal")){
+				sb.append(" model.meetingAddress.tehsil.tehsilId, model.meetingAddress.tehsil.tehsilName ");
+				sg.append(" group by model.meetingAddress.tehsil.tehsilId, model.partyMeetingLevel.partyMeetingLevelId ");
+			}else{//localElectionBody.localElectionBodyId
+				sb.append(" model.meetingAddress.localElectionBody.localElectionBodyId, model.meetingAddress.localElectionBody.name ");
+				sg.append(" group by model.meetingAddress.localElectionBody.localElectionBodyId, model.partyMeetingLevel.partyMeetingLevelId ");
+			}
+			sc.append(" and model.meetingAddress.constituency.constituencyId in (:locationIds) ");
+		}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_MANDAL_LEVEL_ID){
+			sb.append(" model.meetingAddress.panchayat.panchayatId, model.meetingAddress.panchayat.panchayatName ");
+			sg.append(" group by model.meetingAddress.panchayat.panchayatId, model.partyMeetingLevel.partyMeetingLevelId ");
+			sc.append(" and model.meetingAddress.tehsil.tehsilId in (:locationIds) ");
+		}
+		
+		sb.append(" , model.partyMeetingLevel.partyMeetingLevelId, model.partyMeetingLevel.level, count(distinct model.partyMeetingId) ");
+		Query query = getSession().createQuery(sb.toString() + " " + sc.toString() + " " + sg.toString() );
+		query.setParameterList("locationIds", locationIds);
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate",fromDate);
+			query.setDate("toDate",toDate);
+		}
+		return query.list();
+	}
+	public Long getAccessLevelMeetingConductedCount(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select count(model.partyMeetingId) " +
+						" from " +
+						" PartyMeeting model " +
+						" where " +
+						" model.isActive = 'Y' ");
+		if(locationIds != null && locationIds.size() > 0){
+			if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_STATE_LEVEL_ID){
+				queryStr.append(" and model.meetingAddress.state.stateId in (:locationIds)");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_DISTRICT_LEVEL_ID){
+				queryStr.append(" and model.meetingAddress.district.districtId in (:locationIds)");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_PARLIAMENT_LEVEL_ID){
+				queryStr.append(" and model.meetingAddress.parliamentConstituency.constituencyId in (:locationIds) ");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_CONSTITUENCY_LEVEL_ID){
+				queryStr.append(" and model.meetingAddress.constituency.constituencyId in (:locationIds) ");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_MANDAL_LEVEL_ID){
+				queryStr.append(" and model.meetingAddress.tehsil.tehsilId in (:locationIds)");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_MUNICIPALITY_LEVEL_ID){ //  town/division
+				queryStr.append(" and model.meetingAddress.localElectionBody.localElectionBodyId in (:locationIds)"); 
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_PANCHAYAT_LEVEL_ID){ 
+				queryStr.append(" and model.meetingAddress.panchayat.panchayatId in (:locationIds)"); 
+			}
+		}
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and (date(model.startDate) between :fromDate and :toDate) ");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		if(locationIds != null && locationIds.size() > 0){
+			query.setParameterList("locationIds", locationIds);
+		}
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate",fromDate);
+			query.setDate("toDate",toDate);
+			
+		}
+		return (Long) query.uniqueResult();
 	}
 	 
  }
