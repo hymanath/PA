@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoardService {
@@ -70,7 +71,7 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 	 * Date: 03/10/2017
 	 * @see com.itgrids.core.api.service.ILoactionDetailsDashBoardService#getMeetingTypeWiseTotalMeetings(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
 	 */
-	public List<PartyMeetingsVO> getMeetingTypeWiseTotalMeetings(Long locationLevel, Long locationId, String fromDateStr,String toDateStr){
+	public List<PartyMeetingsVO> getMeetingTypeWiseTotalMeetings(Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		    Date fromDate=null;
@@ -80,10 +81,7 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			List<Long> locationIds = new ArrayList<Long>();
-			if(locationId != null && locationId.longValue() > 0L){
-				locationIds.add(locationId);
-			}
+			
 			List<Object[]> meetingList =  partyMeetingDAO.getMeetingTypeWiseTotalMeetings(locationLevel,locationIds,fromDate,toDate);
 			List<PartyMeetingsVO> finalResult = new ArrayList<PartyMeetingsVO>();
 			PartyMeetingsVO partyMeetingsVO = null;
@@ -108,7 +106,7 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 	 * Date: 04/10/2017
 	 * @see com.itgrids.core.api.service.ILoactionDetailsDashBoardService#getMeetingLevelWiseTotalMeetings(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
 	 */
-	public List<PartyMeetingsVO> getMeetingLevelWiseTotalMeetings(Long locationLevel, Long locationId, String fromDateStr,String toDateStr){
+	public List<PartyMeetingsVO> getMeetingLevelWiseTotalMeetings(Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		    Date fromDate=null;
@@ -118,10 +116,7 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			List<Long> locationIds = new ArrayList<Long>();
-			if(locationId != null && locationId.longValue() > 0L){
-				locationIds.add(locationId);
-			}
+			
 			List<Object[]> meetingList =  partyMeetingDAO.getMeetingLevelWiseTotalMeetings(locationLevel,locationIds,fromDate,toDate);
 			List<PartyMeetingsVO> finalResult = new ArrayList<PartyMeetingsVO>();
 			PartyMeetingsVO partyMeetingsVO = null;
@@ -146,7 +141,7 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 	 * Date: 04/10/2017
 	 * @see com.itgrids.core.api.service.ILoactionDetailsDashBoardService#getCommitteeMeetingStatistics(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
 	 */
-	public List<PartyMeetingsVO> getCommitteeMeetingStatistics(Long locationLevel, Long locationId, String fromDateStr,String toDateStr){
+	public List<PartyMeetingsVO> getCommitteeMeetingStatistics(Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		    Date fromDate=null;
@@ -156,10 +151,7 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			List<Long> locationIds = new ArrayList<Long>();
-			if(locationId != null && locationId.longValue() > 0L){
-				locationIds.add(locationId);
-			}
+			
 			List<Object[]> meetingList =  partyMeetingStatusDAO.getCommitteeMeetingStatistics(locationLevel,locationIds,fromDate,toDate);
 			
 			//create a map for levelId And map of status and count map
@@ -248,7 +240,7 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 	 * Date: 04/10/2017
 	 * @see com.itgrids.core.api.service.ILoactionDetailsDashBoardService#getSpecialMeetingStatistics(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
 	 */
-	public List<PartyMeetingsVO> getSpecialMeetingStatistics(Long locationLevel, Long locationId, String fromDateStr,String toDateStr){
+	public List<PartyMeetingsVO> getSpecialMeetingStatistics(Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		    Date fromDate=null;
@@ -258,7 +250,7 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			List<Long> locationIds = new ArrayList<Long>();
+			
 			
 			List<Object[]> inviteeList = partyMeetingInviteeDAO.getInviteeList(locationLevel,locationIds,fromDate,toDate);
 			//create a map for meetingTypeId and meetingId and cadreIdSet for invitee
@@ -434,11 +426,183 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 	 * Date: 04/10/2017
 	 * @see com.itgrids.core.api.service.ILoactionDetailsDashBoardService#getBelowLevelMeetingConductedCount(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
 	 */
-	public List<PartyMeetingsVO> getBelowLevelMeetingConductedCount(Long locationLevel, Long locationId, String fromDateStr,String toDateStr){
+	public List<PartyMeetingsVO> getBelowLevelMeetingConductedCount(Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr){
 		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    Date fromDate=null;
+			Date toDate=null;
 			
+			if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> meetingList = null;
+			List<Object[]> meetingListForLeb = null;
+			meetingList = partyMeetingDAO.getBelowLevelMeetingConductedCount(locationLevel,locationIds,fromDate,toDate,"mandal");
+			if(locationLevel != null && locationLevel.longValue() == IConstants.PARTY_MEETING_CONSTITUENCY_LEVEL_ID){
+				meetingListForLeb = partyMeetingDAO.getBelowLevelMeetingConductedCount(locationLevel,locationIds,fromDate,toDate,"leb");
+			}
+			Long meetingCount = partyMeetingDAO.getAccessLevelMeetingConductedCount(locationLevel,locationIds,fromDate,toDate);
+			
+			
+			//create a map for locationId And map of levelId and count map
+			Map<Long,HashMap<Long,Long>> locationIdAndLevelIdAndCountMap = new HashMap<Long,HashMap<Long,Long>>();
+			HashMap<Long,Long> levelIdAndCountMap = null;
+			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
+	
+			if(meetingList != null && meetingList.size() > 0){
+				for(Object[] param : meetingList){
+					locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1]));
+					levelIdAndCountMap = locationIdAndLevelIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(levelIdAndCountMap == null){
+						levelIdAndCountMap = new HashMap<Long,Long>();
+						locationIdAndLevelIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), levelIdAndCountMap);
+					}
+					levelIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			
+			//create a map for lebId And map of levelId and count map
+			Map<Long,HashMap<Long,Long>> lebIdAndLevelIdAndCountMapForLen = new HashMap<Long,HashMap<Long,Long>>();
+			Map<Long,String> lebIdAndNameMap = new HashMap<Long,String>();
+			if(meetingListForLeb != null && meetingListForLeb.size() > 0){
+				for(Object[] param : meetingListForLeb){
+					lebIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1]));
+					levelIdAndCountMap = lebIdAndLevelIdAndCountMapForLen.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(levelIdAndCountMap == null){
+						levelIdAndCountMap = new HashMap<Long,Long>();
+						lebIdAndLevelIdAndCountMapForLen.put(commonMethodsUtilService.getLongValueForObject(param[0]), levelIdAndCountMap);
+					}
+					levelIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+		
+			//create a template for ui
+			List<PartyMeetingsVO> finalList = new ArrayList<PartyMeetingsVO>();
+			if(locationIdAndLevelIdAndCountMap != null && locationIdAndLevelIdAndCountMap.size() > 0){
+				pushLevelWiseMeetingCount(locationIdAndLevelIdAndCountMap,locationIdAndNameMap,locationLevel,finalList);
+			}
+			if(lebIdAndLevelIdAndCountMapForLen != null && lebIdAndLevelIdAndCountMapForLen.size() > 0){
+				pushLevelWiseMeetingCount(lebIdAndLevelIdAndCountMapForLen,lebIdAndNameMap,locationLevel,finalList);
+			}
+			
+			if(finalList != null && finalList.size() > 0){
+				PartyMeetingsVO vo = finalList.get(0);
+				if(meetingCount != null){
+					vo.setTotalCount(meetingCount);//for particular level 
+				}
+			}
+			
+			return finalList;
 		}catch(Exception e){
 			LOG.error("Exception raised at getBelowLevelMeetingConductedCount() method of LoactionDetailsDashBoardService", e);
+		}
+		return null;
+	}//{835={3=21, 4=21, 7=393}, 836={4=21, 7=320}, 843={4=21, 7=400}, 844={4=21, 7=260}}
+	public void pushLevelWiseMeetingCount(Map<Long,HashMap<Long,Long>> locationIdAndLevelIdAndCountMap,Map<Long,String> locationIdAndNameMap,Long locationLevel,List<PartyMeetingsVO> finalList){
+		try{
+			PartyMeetingsVO meetingVO = null;
+			for(Entry<Long,HashMap<Long,Long>> outerParam : locationIdAndLevelIdAndCountMap.entrySet()){
+				meetingVO = new PartyMeetingsVO();
+				meetingVO.setId(outerParam.getKey());
+				meetingVO.setName(locationIdAndNameMap.get(outerParam.getKey()));
+				//build inner template.
+				List<PartyMeetingsVO> innerList = buildInnerTemplate(locationLevel);
+				//push level wise count into inner template.{3=21, 4=21, 7=393}
+				pushValueIntoInnerTemplate(innerList,outerParam.getValue(),locationLevel);
+				//add this inner list to vo of final list.
+				meetingVO.setSubList(innerList);
+				//add vo to final list.
+				finalList.add(meetingVO);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at pushLevelWiseMeetingCount() method of LoactionDetailsDashBoardService", e);
+		}
+	}
+	public void pushValueIntoInnerTemplate(List<PartyMeetingsVO> innerList,HashMap<Long,Long> levelIdAndCountMap,Long locationLevel){
+		try{
+			for(Entry<Long,Long> param : levelIdAndCountMap.entrySet()){
+				if(locationLevel.longValue() == IConstants.PARTY_MEETING_STATE_LEVEL_ID && param.getKey().longValue() == 1L){
+					continue;
+				}else if(locationLevel.longValue() == IConstants.PARTY_MEETING_DISTRICT_LEVEL_ID && param.getKey().longValue() == 2L){
+					continue;
+				}else if(locationLevel.longValue() == IConstants.PARTY_MEETING_PARLIAMENT_LEVEL_ID && param.getKey().longValue() == 9L){
+					continue;
+				}else if(locationLevel.longValue() == IConstants.PARTY_MEETING_CONSTITUENCY_LEVEL_ID && param.getKey().longValue() == 3L){
+					continue;
+				}else if(locationLevel.longValue() == IConstants.PARTY_MEETING_MANDAL_LEVEL_ID && param.getKey().longValue() == 4L){
+					continue;
+				}
+				Long level = param.getKey();
+				if(param.getKey().longValue() == 5L || param.getKey().longValue() == 6L){
+					level = 4L;
+				}else if(param.getKey().longValue() == 8L){
+					level = 7L;
+				}
+				PartyMeetingsVO partyMeetingsVO = (PartyMeetingsVO) setterAndGetterUtilService.getMatchedVOfromList(innerList, "id", level.toString());
+				partyMeetingsVO.setTotalCount(partyMeetingsVO.getTotalCount()+param.getValue());
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at pushValueIntoInnerTemplate() method of LoactionDetailsDashBoardService", e);
+		}
+	}
+	public List<PartyMeetingsVO> buildInnerTemplate(Long locationLevel){
+		try{
+			List<PartyMeetingsVO> innerList = new ArrayList<PartyMeetingsVO>();
+			if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_STATE_LEVEL_ID){
+				PartyMeetingsVO meetingVO1 = new PartyMeetingsVO();
+				meetingVO1.setId(2L);
+				meetingVO1.setName("DISTRICT");
+				innerList.add(meetingVO1);
+				
+				PartyMeetingsVO meetingVO2 = new PartyMeetingsVO();
+				meetingVO2.setId(3L);
+				meetingVO2.setName("CONSTITUENCY");
+				innerList.add(meetingVO2);
+				
+				PartyMeetingsVO meetingVO3 = new PartyMeetingsVO();
+				meetingVO3.setId(4L);
+				meetingVO3.setName("MANDAL/TOWN/DIV");
+				innerList.add(meetingVO3);
+				
+				PartyMeetingsVO meetingVO4 = new PartyMeetingsVO();
+				meetingVO4.setId(7L);
+				meetingVO4.setName("VILLAGE/WARD");
+				innerList.add(meetingVO4);
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_DISTRICT_LEVEL_ID || locationLevel.longValue()==IConstants.PARTY_MEETING_PARLIAMENT_LEVEL_ID){
+				PartyMeetingsVO meetingVO2 = new PartyMeetingsVO();
+				meetingVO2.setId(3L);
+				meetingVO2.setName("CONSTITUENCY");
+				innerList.add(meetingVO2);
+				
+				PartyMeetingsVO meetingVO3 = new PartyMeetingsVO();
+				meetingVO3.setId(4L);
+				meetingVO3.setName("MANDAL/TOWN/DIV");
+				innerList.add(meetingVO3);
+				
+				PartyMeetingsVO meetingVO4 = new PartyMeetingsVO();
+				meetingVO4.setId(7L);
+				meetingVO4.setName("VILLAGE/WARD");
+				innerList.add(meetingVO4);
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_CONSTITUENCY_LEVEL_ID){
+				PartyMeetingsVO meetingVO3 = new PartyMeetingsVO();
+				meetingVO3.setId(4L);
+				meetingVO3.setName("MANDAL/TOWN/DIV");
+				innerList.add(meetingVO3);
+				
+				PartyMeetingsVO meetingVO4 = new PartyMeetingsVO();
+				meetingVO4.setId(7L);
+				meetingVO4.setName("VILLAGE/WARD");
+				innerList.add(meetingVO4);
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_MANDAL_LEVEL_ID){
+				PartyMeetingsVO meetingVO4 = new PartyMeetingsVO();
+				meetingVO4.setId(7L);
+				meetingVO4.setName("VILLAGE/WARD");
+				innerList.add(meetingVO4);
+			}
+			return innerList;
+		}catch(Exception e){
+			LOG.error("Exception raised at buildTemplate() method of LoactionDetailsDashBoardService", e);
 		}
 		return null;
 	}
