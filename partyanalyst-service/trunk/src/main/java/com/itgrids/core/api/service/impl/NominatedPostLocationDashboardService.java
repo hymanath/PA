@@ -308,6 +308,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 					String format = new SimpleDateFormat("MMM dd").format(date);
 					vo.setDate(format+","+goDateStr.substring(0,4));
 					}
+					vo.setImage(commonMethodsUtilService.getStringValueForObject(param[11]));
 					finalList.add(vo);
 				}
 			}
