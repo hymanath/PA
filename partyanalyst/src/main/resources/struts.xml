@@ -17943,7 +17943,11 @@
 				<param name="root">electioninformationList</param>
 			</result>
 	</action>
-   
+   <action name="getElectionInformationLocationWiseVoterShareAction" class="locationDashboardAction" method="getElectionInformationLocationWiseVoterShare">
+			<result type="json" name="success">
+				<param name="root">electioninformationList</param>
+			</result>
+	</action>
    <action name="getAllMomAtrClickDetailsAction" class="trainingCampAction" method="getAllMomAtrClickDetails">
 	    <result type="json" name="success">		   
 		    <param name="root">keyValueVOlist</param>
