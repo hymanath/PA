@@ -503,7 +503,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(subTypes.size()>0l && subTypes !=null){
 			query.setParameterList("subTypes",subTypes);
 		}
-		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l){
+		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l && locationTypeId.longValue() != 10L){
 			query.setParameter("locationValue",locationValue);
 		}
 		
@@ -577,7 +577,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(subTypes.size()>0l && subTypes !=null){
 			query.setParameterList("subTypes",subTypes);
 		}
-		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l){
+		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l  && locationTypeId.longValue() != 10L){
 			query.setParameter("locationValue",locationValue);
 		}
 		if(parlimentIds != null && parlimentIds.size() > 0){
@@ -649,7 +649,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(subTypes.size()>0l && subTypes !=null){
 			query.setParameterList("subTypes",subTypes);
 		}
-		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l){
+		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l  && locationTypeId.longValue() != 10L){
 			query.setParameter("locationValue",locationValue);
 		}
 		if(parlimentIds != null && parlimentIds.size() > 0){
