@@ -1693,7 +1693,8 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		sbg.append(" GROUP BY ");
 		if(locationTypeId!=null && locationTypeId==2l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
 			sb.append(" S.state_id as typeId,CM.support_purpose as supportPurpose,CM.support_for as supportFor,COUNT(CM.Complaint_id) as count ");
-			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.state_id_cmp in(:locationValues)");
+			sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id ");
+			//sbe.append(" AND CM.state_id_cmp = S.state_id AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id   AND CM.state_id_cmp in(:locationValues)");
 			sbg.append(" S.state_id ");
 		}else if(locationTypeId!=null && locationTypeId==3l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
 			sb.append(" D.district_id as typeId,CM.support_purpose as supportPurpose,CM.support_for as supportFor,COUNT(CM.Complaint_id) as count ");
@@ -1875,4 +1876,11 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		
     	return query.list();
 	}
+	
+	 public List<Object[]> getAllTrustIssueTypes(){
+		  StringBuilder sb = new StringBuilder();
+		  sb.append("SELECT DISTINCT support_purpose ,support_for from complaint_master;");
+		  Query query = getSession().createSQLQuery(sb.toString());
+		  return query.list(); 
+	  }
 }
