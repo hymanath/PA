@@ -2549,10 +2549,10 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	       }    
 	       }
 	    if(startDate != null && endDate != null){
-	 		 sb.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+	 		 sb.append(" and (date(model.updatedTime) between :startDate and :endDate) ");
 	 	 }
 	 	 if(year != null && !year.trim().isEmpty()){
-	 		 sb.append(" and year(model.nominatedPostMember.updatedTime) = :year ");   
+	 		 sb.append(" and year(model.updatedTime) = :year ");   
 	 	 }
 	    
 	        
@@ -2611,7 +2611,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 				
 	        }
 		     if(startDate != null && endDate != null){
-		    	sb.append(" and (date(model.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+		    	sb.append(" and (date(model.updatedTime) between :startDate and :endDate) ");
 		     }
 		     if(boardLevelId != null && boardLevelId.longValue() > 0L){
 		             sb.append(" and model.boardLevelId >=:boardLevelId "); 
@@ -2679,10 +2679,10 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 		 sb.append(" and nominatedPostApplication.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId  ");
 	 	 }
 	 	 if(startDate != null && endDate != null){
-	 		 sb.append(" and (date(nominatedPostApplication.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+	 		 sb.append(" and (date(nominatedPostApplication.updatedTime) between :startDate and :endDate) ");
 	 	 }
 	 	 if(year != null && !year.trim().isEmpty()){
-	 		 sb.append(" and year(nominatedPostApplication.nominatedPostMember.updatedTime) = :year ");   
+	 		 sb.append(" and year(nominatedPostApplication.updatedTime) = :year ");   
 	 	 }
 	 	if(boardLevelId != null && boardLevelId.longValue() > 0L){
      	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
