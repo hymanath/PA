@@ -673,7 +673,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		sb.append(" where e.election_scope_id  in (:electionScopeIds) and " +
 		          " et.election_type_id = es.election_type_id and " +
 				  " c.constituency_id = ce.constituency_id and " +
-		          " ce.election_id = e.election_id and " );
+		          " ce.election_id = e.election_id " );
 		
 		
 		if (yearsList != null && yearsList.size() > 0) {
@@ -696,7 +696,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			}
 			}
 		
-		sb.append("GROUP BY ce.election_id");
+		sb.append(" group by ce.election_id ");
 		sb.append("order BY e.election_year,e.election_id,e.election_scope_id");
 		SQLQuery query = getSession().createSQLQuery(sb.toString());
 		
@@ -729,10 +729,12 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	public List<Object[]> getParticipatedPartyListforElection(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,String subTypes){
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT " +
-		          " e.election_scope_id as electionScopeId,e.election_id as electionId," +
+		          " e.election_scope_id as electionScopeId," +
+		          " e.election_id as electionId," +
 		          "  et.election_type as electionType," +
 		          " e.election_year as electionYear," +
-		          " n.party_id as partyId,p.short_name as partyName,count(n.party_id) as count" +
+		          " n.party_id as partyId,p.short_name as partyName,count(n.party_id) as count," +
+		          " p.party_flag as flag " +
 		          " from constituency c,constituency_election ce,election e ,election_scope es ," +
 		          " election_type et ,nomination n ,party p " );
 		
@@ -756,9 +758,6 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(subTypes != null ){
 			sb.append(" and e.sub_type in  (:subTypes) ");
 		}
-		if(subTypes != null && subTypes.length() >0){
-			sb.append(" and e.sub_type in  (:subTypes) ");
-		}
 		
 		if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l){
 			if (locationTypeId == 2l) {
@@ -771,8 +770,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			}
 			}
 		
-		sb.append(" GROUP BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
-		sb.append(" order BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
+		sb.append(" group by e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
+		sb.append(" order by e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
 		
        SQLQuery query = getSession().createSQLQuery(sb.toString());
 		
@@ -783,7 +782,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		query.addScalar("partyId",Hibernate.LONG);
 		query.addScalar("partyName",Hibernate.STRING);
 		query.addScalar("count",Hibernate.LONG);
-		
+		query.addScalar("flag",Hibernate.STRING);
 		if(yearsList!=null && yearsList.size()>0){
 	         query.setParameterList("years", yearsList);
 	       }
@@ -808,7 +807,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT "+ 
 		          " e.election_scope_id as electionScopeId,e.election_id as electionId,et.election_type as electionType," +
-		          " e.election_year as electionYear,n.party_id as partyId,p.short_name as partyName,count(n.party_id) as count,sum(cr.votes_earned) as sum " +
+		          " e.election_year as electionYear,n.party_id as partyId,p.short_name as partyName,count(n.party_id) as count,sum(cr.votes_earned) as sum, " +
+		          " p.party_flag as flag " +
 		          " from constituency c,constituency_election ce,election e ,election_scope es ," +
 		          " election_type et ,nomination n ,party p ,candidate_result cr " );
 		sb.append(" where cr.nomination_id = n.nomination_id  " +
@@ -840,8 +840,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			sb.append(" and e.election_year in(:years)");
 		}
 		
-		sb.append("GROUP BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
-		sb.append("	order BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
+		sb.append("group by e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
+		sb.append("	order by e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
 		
         SQLQuery query = getSession().createSQLQuery(sb.toString());
 		
@@ -853,7 +853,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		query.addScalar("partyName",Hibernate.STRING);
 		query.addScalar("count",Hibernate.LONG);
 		query.addScalar("sum",Hibernate.LONG);
-		
+		query.addScalar("flag",Hibernate.STRING);
 		
 
 		if(yearsList!=null && yearsList.size()>0){
