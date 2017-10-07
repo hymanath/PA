@@ -76,9 +76,11 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	 		   " model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionName," +//7
 	 	 		   " model.nominatedPost.nominationPostCandidate.gender, " +//8
 	 	 		   " casteCategory.categoryName," +//9
-	 	 		   " date(model.govtOrder.toDate) " +//10
+	 	 		   " date(model.govtOrder.toDate)," +//10
+	 	 		   " tdpCadre.image " +//11
 	 	 		   " from NominatedPostGovtOrder model " +
-	 	 		   " left join model.nominatedPost.nominationPostCandidate nominationPostCandidate " +
+	 	 		   " left join model.nominatedPost.nominationPostCandidate nominationPostCandidate" +
+	 	 		   " left join nominationPostCandidate.tdpCadre tdpCadre  " +
 	 	 		   " left join nominationPostCandidate.casteState  casteState " +
 	 	 		   " left join casteState.casteCategoryGroup casteCategoryGroup " +
 	 	 		   " left join casteCategoryGroup.casteCategory casteCategory " +
