@@ -111,10 +111,10 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	        
 	 	 }
 	 	 if(startDate != null && endDate != null){
-	 		 sb.append(" and (date(model.nominatedPost.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+	 		 sb.append(" and (date(model.nominatedPost.updatedTime) between :startDate and :endDate) ");
 	 	 }
 	 	 if(year != null && !year.trim().isEmpty()){
-	 		 sb.append(" and year(model.nominatedPost.nominatedPostMember.updatedTime) = :year ");   
+	 		 sb.append(" and year(model.nominatedPost.updatedTime) = :year ");   
 	 	 }
 	 	if(boardLevelId != null && boardLevelId.longValue() > 0L){
     	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
