@@ -39,9 +39,9 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 function getAllNominatedStatusListLevelWiseDataDashBoard(){
 	$("#overAllAnalysisBlockId").html(spinner);
 	var jsObj={
-		boardLevelId:1,  //state level 1 //parliament -4 or constituenct -4 // mandal Or muni -5 // panchayat/ward -7 //
-		levelValues:[1],
-		levelId:2,
+		boardLevelId:4,  //state level 1 //parliament -4 or constituenct -4 // mandal Or muni -5 // panchayat/ward -7 //
+		levelValues:["282"],
+		levelId:4,
 		fromDateStr:"28/09/2012",
       toDateStr:"07/10/2017",
       year:""
@@ -219,7 +219,7 @@ function getAreaWiseDashboardCandidatesCountView(){
 				table+='<tr>';
 					for(var i in result.list)
 					{
-						table+='<td><h4>'+result.list[i].totalCount+'</h4><p class="text-success"><small>'+result.list[i].perc+'%</small></p>';
+						table+='<td><h4>'+result.list[i].totalCount+'</h4><p class="text-success"></p>';
 							table+='<ul class="list-border list-border-responsive" style="margin-top:10px;border-top:1px solid #ddd;padding-top:10px;display:block">';
 								table+='<li>';
 									table+='<img src="coreApi/img/male.png" style="height:30px;width:30px"/>';
@@ -314,7 +314,7 @@ function getAreaWiseDashboardCandidatesCountView(){
 function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(type){
 	$("#"+type+"BlockId").html(spinner);
 	var jobj = {
-		locationValues 	: [218],
+		locationValues 	: [282],
 		statusIds 		:[3,4],
 		levelId 		:4,
 		type 			:type,// "ageRange"//or(casteCategory)
