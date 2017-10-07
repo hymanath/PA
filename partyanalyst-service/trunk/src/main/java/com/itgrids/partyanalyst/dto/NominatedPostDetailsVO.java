@@ -17,6 +17,7 @@ public class NominatedPostDetailsVO {
 	private List<NominatedPostDetailsVO> subList = new ArrayList<NominatedPostDetailsVO>();
 	private Long count = 0l;
 	public String Perc= "";
+	public String Perc1= "";
 	private List<NominatedPostDetailsVO> list = new ArrayList<NominatedPostDetailsVO>();
 	private Long openCnt = 0l;
 	private Long finalOrGOCnt = 0l;
@@ -26,6 +27,12 @@ public class NominatedPostDetailsVO {
 	
 	
 	
+	public String getPerc1() {
+		return Perc1;
+	}
+	public void setPerc1(String perc1) {
+		Perc1 = perc1;
+	}
 	public Long getOpenCnt() {
 		return openCnt;
 	}

@@ -2520,8 +2520,8 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 builder.append(" select count(distinct model.nominationPostCandidateId),model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
 		 		" model.nominationPostCandidate.nominatedPostAgeRange.ageRange " );
 		}else if(type != null && type.equalsIgnoreCase("casteCategory")){
-		 builder.append(" select count( distinct model.nominationPostCandidateId),model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategoryGroupId," +
-		 		" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategoryGroupName " );
+		 builder.append(" select count( distinct model.nominationPostCandidateId),model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+		 		" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName " );
 		}
 		   builder.append(" from NominatedPost model  ");
 			builder.append(" where model.isDeleted = 'N' and model.isExpired = 'N' and model.nominationPostCandidate.isDeleted = 'N' " );
@@ -2560,7 +2560,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			if(type != null && type.equalsIgnoreCase("ageRange")){
 			  builder.append(" group by model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
 			}else if(type != null && type.equalsIgnoreCase("casteCategory")){
-			 builder.append(" group by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategoryGroupId ");
+			 builder.append(" group by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
 			}
 			Query query = getSession().createQuery(builder.toString());
 

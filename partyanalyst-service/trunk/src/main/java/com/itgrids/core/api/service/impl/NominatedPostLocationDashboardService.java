@@ -122,7 +122,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 
 			Date startDate = null;
 			Date endDate = null;
-			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
 			}
@@ -154,6 +154,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 		            	deptVO.setGoIsuuedCount(deptVO.getGoIsuuedCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
 		            }
 		            deptVO.setTotalPosts(deptVO.getTotalPosts()+commonMethodsUtilService.getLongValueForObject(param[2]));
+		            total=total+deptVO.getTotalPosts();
 				}
 			}
 			List<Object[]> recivedApplicationsCount =nominatedPostApplicationDAO.getLocationWiseApplicationCount(locationValues,startDate,endDate,locationTypeId,boardLevelId); 
@@ -172,7 +173,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 					if(deptVO != null){
 						deptVO.setRecivedCount(commonMethodsUtilService.getLongValueForObject(param[0]));
 					}
-					total=total+deptVO.getRecivedCount();
+					//total=total+deptVO.getRecivedCount();
 				}
 				if(commonMethodsUtilService.isMapValid(levelMap)){
 					for(Entry<Long,NominatedPostCandidateDtlsVO> entry :levelMap.entrySet()){
@@ -181,10 +182,10 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 				}
 				if(finalList != null){
 					for(NominatedPostCandidateDtlsVO vo:finalList){
-						vo.setTotalRecePer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getRecivedCount()))));
+						vo.setTotalRecePer(100.00);
 						vo.setOpenPostPer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getOpenCount()))));
 						vo.setGoIssuedPer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getGoIsuuedCount()))));
-						vo.setTotalPer((Double.parseDouble(cadreDetailsService.calculatePercentage(total, vo.getTotalPosts()))));
+						vo.setTotalPer(100.00);
 					}
 				}
 				
