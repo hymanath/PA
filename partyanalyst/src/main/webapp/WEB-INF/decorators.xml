@@ -752,6 +752,7 @@
 		<pattern>/govtPartyCoreDashboardAction*</pattern>
 		<pattern>/doorToDoorCampaignDashboardAction*</pattern>
 		<pattern>/areaWiseDashboardDetailedViewAction*</pattern>
+		<pattern>/areaWiseGrievanceDashboardAction*</pattern>
 		
 		 <!-- geoDemographics End -->
 	</decorator>
