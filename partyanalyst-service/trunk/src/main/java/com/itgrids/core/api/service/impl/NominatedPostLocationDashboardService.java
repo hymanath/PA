@@ -149,9 +149,9 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 			            levelMap.put(levelId, deptVO);
 			          }
 		            if(statusId.longValue() == 1l){
-		        	   deptVO.setOpenCount(commonMethodsUtilService.getLongValueForObject(param[2])); 
+		        	   deptVO.setOpenCount(deptVO.getOpenCount()+commonMethodsUtilService.getLongValueForObject(param[2])); 
 		            }else if(statusId.longValue() == 4l){
-		            	deptVO.setGoIsuuedCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+		            	deptVO.setGoIsuuedCount(deptVO.getGoIsuuedCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
 		            }
 		            deptVO.setTotalPosts(deptVO.getTotalPosts()+commonMethodsUtilService.getLongValueForObject(param[2]));
 				}
