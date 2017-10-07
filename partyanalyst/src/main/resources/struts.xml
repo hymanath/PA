@@ -18214,5 +18214,10 @@
 			<param name="root">complaintMastervoList</param>     
 		</result>
 	</action>
+	<action name="getLocationWiseElectionResultsAction" class="locationDashboardAction" method="getLocationWiseElectionResults">
+		<result type="json" name="success">
+			<param name="root">informationVo</param>
+		</result>
+	</action>
  </package>
 </struts>
