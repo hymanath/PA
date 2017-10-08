@@ -426,19 +426,19 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 				" from TdpCadreCasteInfo model where model.tdpCadreEnrollmentId = :enrollmentYearId " );
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append(" and model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue) and model.locationType ='District' ");
 			} else if (locationTypeId == 4l || locationTypeId == 10l) {
-				sb.append(" and model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue)  and model.locationType ='Constituency'  ");
 			} else if (locationTypeId == 5l) {
-				sb.append(" and model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue)  and model.locationType ='Thesil'  ");
 			} else if (locationTypeId == 6l) {
-				sb.append(" and model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue)  and model.locationType ='Panchayat'  ");
 			} else if (locationTypeId == 7l) {
-				sb.append(" and model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue)  and model.locationType ='Localbody'  ");
 			} else if (locationTypeId == 2l) {
-				sb.append(" and model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue)  and model.locationType ='State'  ");
 			}else if (locationTypeId == 8l) {
-				sb.append(" and model.locationId in (:locationValue)");
+				sb.append(" and model.locationId in (:locationValue)  and model.locationType ='Ward'  ");
 			} 
 
 		}
