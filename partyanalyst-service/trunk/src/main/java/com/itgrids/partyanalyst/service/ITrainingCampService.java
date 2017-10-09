@@ -93,8 +93,8 @@ public interface ITrainingCampService {
 	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments,final List<String> docs,final List<SimpleVO> feedBackCategories);
 	
 	public List<CadreDetailsVO> getSchedulesListByProgramAndCenter(Long programId, Long centerId,Long batchId,Long enrollmentYearId );
-	public SimpleVO getProgramsByUser(Long userId);
-	public SimpleVO getAllProgramsAndCamps();
+	public SimpleDetailsVO getProgramsByUser(Long userId);
+	public SimpleDetailsVO getAllProgramsAndCamps();
 	public List<IdNameVO> getCampsByProgramAndUser(Long campProgramId,Long userId);
 	
 	public List<IdNameVO> getAttendedCountForBatchesByLocation(String startDateString,String endDateString,Long stateId,List<Long> enrollmentYearIds,List<Long> programYearIds);
