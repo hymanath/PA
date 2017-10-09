@@ -7,5 +7,5 @@ import com.itgrids.partyanalyst.dto.LocationAlertVO;
 
 public interface IAlertLocationDashboardService {
 	public  LocationAlertVO getTotalAlertDetailsForConstituencyInfo(String fromDateStr ,String toDateStr,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year);
-	
+	public  List<LocationAlertVO> getDesignationWiseAlertsOverview(String fromDateStr ,String toDateStr,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year);
 }

@@ -13,7 +13,9 @@ import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
+import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dto.LocationAlertVO;
+import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
 public class AlertLocationDashboardService implements IAlertLocationDashboardService{
@@ -25,8 +27,16 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 	private IAlertAssignedOfficerNewDAO alertAssignedOfficerNewDAO;
 	private IAlertImpactScopeDAO alertImpactScopeDAO;
 	private IAlertCategoryDAO alertCategoryDAO;
+	private IAlertStatusDAO alertStatusDAO;
 	
 	
+	
+	public IAlertStatusDAO getAlertStatusDAO() {
+		return alertStatusDAO;
+	}
+	public void setAlertStatusDAO(IAlertStatusDAO alertStatusDAO) {
+		this.alertStatusDAO = alertStatusDAO;
+	}
 	public IAlertCategoryDAO getAlertCategoryDAO() {
 		return alertCategoryDAO;
 	}
@@ -101,7 +111,39 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 			
 			List<Object[]> alertCategoryList  = alertDAO.getAlertImpactLevelWiseDetailsForConstituencyInfo(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year,"alertCategory");
 			finalVO.setSubList(getImpactLevelData(alertCategoryList,"alertCategory",finalVO.getTotalAlertCount()));
-			
+			finalVO.setSubList1(setAlertStatusList(""));
+			if(commonMethodsUtilService.isListOrSetValid(finalVO.getSubList())){
+				for (LocationAlertVO categoryVO : finalVO.getSubList()) {
+					categoryVO.setPercentage(calculatePercantage(categoryVO.getCount(),finalVO.getTotalAlertCount()));
+					for (LocationAlertVO statusVO : categoryVO.getSubList()) {
+						statusVO.setPercentage(calculatePercantage(statusVO.getCount(),categoryVO.getCount()));
+						LocationAlertVO finalStatusVO = getImpactScopeMatchVO(finalVO.getSubList1(),statusVO.getId());
+						if(finalStatusVO == null){
+							finalStatusVO = new  LocationAlertVO();
+							finalStatusVO.setId(0l);
+							finalStatusVO.setStatus("OTHERS");
+							finalVO.getSubList1().add(finalStatusVO);
+						 }
+						//if(finalStatusVO != null){
+							finalStatusVO.setCount(finalStatusVO.getCount()+statusVO.getCount());
+							finalStatusVO.setPercentage(calculatePercantage(finalStatusVO.getCount(),finalVO.getTotalAlertCount()));
+						//}
+					}
+				}
+			}
+			if(commonMethodsUtilService.isListOrSetValid(finalVO.getImpactScopeList())){
+				for (LocationAlertVO impactLevelVO : finalVO.getImpactScopeList()) {
+					impactLevelVO.setPercentage(calculatePercantage(impactLevelVO.getCount(),finalVO.getTotalAlertCount()));
+					for (LocationAlertVO statusVO : impactLevelVO.getSubList()) {
+						statusVO.setPercentage(calculatePercantage(statusVO.getCount(),impactLevelVO.getCount()));
+						/*LocationAlertVO finalStatusVO = getImpactScopeMatchVO(finalVO.getSubList1(),statusVO.getId());
+						if(finalStatusVO != null){
+							finalStatusVO.setCount(finalStatusVO.getCount()+statusVO.getCount());
+							statusVO.setPercentage(calculatePercantage(finalStatusVO.getCount(),finalVO.getTotalAlertCount()));
+						}*/
+					}
+				}
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Error occured getTotalAlertDetailsForConstituencyInfo() method of AlertLocationDashboardService",e);
@@ -111,6 +153,17 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 	public List<LocationAlertVO> getImpactLevelData(List<Object[]> objList,String type,Long totalCount){
 		 List<LocationAlertVO> impactScopeList = null;
 		   try {
+			   List<Long> alertIds = new ArrayList<Long>();
+			   if(type != null && (type.equalsIgnoreCase("alertCategory") || type.equalsIgnoreCase(""))){
+					alertIds.add(1l);
+					alertIds.add(3l);
+					alertIds.add(6l);
+					alertIds.add(7l);
+					alertIds.add(4l);
+				}else if(type != null && type.equalsIgnoreCase("impactScope")){
+					alertIds.add(3l);
+					alertIds.add(4l);
+				}
 			   List<Object[]> scopeList = null;
 			   if(type != null && type.equalsIgnoreCase("impactScope")){
 			      scopeList = alertImpactScopeDAO.getAlertImpactScope();
@@ -123,6 +176,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 					    for (Object[] param : objList) {
 							Long impactLvlId = commonMethodsUtilService.getLongValueForObject(param[0]);
 							Long alertCount = commonMethodsUtilService.getLongValueForObject(param[4]);
+							Long statusId = commonMethodsUtilService.getLongValueForObject(param[5]);
 							LocationAlertVO vo = null;
 							if(type != null && type.equalsIgnoreCase("impactScope")){
 								if(impactLvlId == 5l || impactLvlId == 12l){
@@ -145,8 +199,22 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							}
 							
 							 if (vo != null ){
-								 vo.setCount(alertCount);
-								 vo.setPercentage(calculatePercantage(vo.getCount(),totalCount));
+								 vo.setCount(vo.getCount()+alertCount);
+								 LocationAlertVO statusVO = null;
+								 if(alertIds.contains(statusId)){
+									 statusVO = getImpactScopeMatchVO(vo.getSubList(),statusId);
+								 }else{
+									 statusVO = getImpactScopeMatchVO(vo.getSubList(),0l);
+								 }
+								 
+								 if(statusVO == null){
+									 statusVO = new  LocationAlertVO();
+									 statusVO.setId(0l);
+									 statusVO.setStatus("OTHERS");
+									 vo.getSubList().add(statusVO);
+								 }
+								 statusVO.setCount(statusVO.getCount()+alertCount);
+								 //vo.setPercentage(calculatePercantage(vo.getCount(),totalCount));
 							 }
 						}
 				   }
@@ -184,9 +252,46 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 		 }
 		 return totalCount;
 	}
+	public  List<LocationAlertVO> setAlertStatusList(String type){
+		List<LocationAlertVO> statusVos = new ArrayList<LocationAlertVO>();
+		try{
+			List<AlertStatus> statusList = alertStatusDAO.getAll();
+			List<Long> alertIds = new ArrayList<Long>();
+			if(type != null && (type.equalsIgnoreCase("alertCategory") || type.equalsIgnoreCase(""))){
+				alertIds.add(1l);
+				alertIds.add(3l);
+				alertIds.add(6l);
+				alertIds.add(7l);
+				alertIds.add(4l);
+			}else if(type != null && type.equalsIgnoreCase("impactScope")){
+				alertIds.add(3l);
+				alertIds.add(4l);
+			}
+			
+			for (AlertStatus alertStatus : statusList) {
+				
+				if(alertIds.contains(alertStatus.getAlertStatusId())){
+					LocationAlertVO statusVO = new LocationAlertVO();
+					statusVO.setId(alertStatus.getAlertStatusId());
+					statusVO.setStatus(alertStatus.getAlertStatus());
+					statusVO.setColour(alertStatus.getColor());
+					statusVos.add(statusVO);
+				}/*else{
+					statusVO.setId(0l);
+					statusVO.setStatus("OTHERS");
+				}*/
+					
+				}
+			
+		}catch (Exception e) {
+			LOG.error("Error occured setAlertStatusList() method of AlertLocationDashboardService",e);
+		}
+		return statusVos;
+	}
 	public List<LocationAlertVO> setImpactScopeSkeletonNew(List<Object[]> scopeDetlsLst,String type){
 		List<LocationAlertVO> finalVOList = new ArrayList<LocationAlertVO>();
-			if(scopeDetlsLst != null && scopeDetlsLst.size() > 0){
+		
+		if(scopeDetlsLst != null && scopeDetlsLst.size() > 0){
 				for (Object[] objects : scopeDetlsLst){
 					LocationAlertVO vo = null;
 					Long impactLvlId = commonMethodsUtilService.getLongValueForObject(objects[0]);
@@ -195,6 +300,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							 vo = getImpactScopeMatchVO(finalVOList,commonMethodsUtilService.getLongValueForObject(5l));
 							if(vo == null){
 							 vo = new LocationAlertVO();
+							 vo.setSubList(setAlertStatusList(type));
 							 finalVOList.add(vo);
 							}
 							vo.setId(5l);
@@ -203,6 +309,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							 vo = getImpactScopeMatchVO(finalVOList,commonMethodsUtilService.getLongValueForObject(6l));
 							 if(vo == null){
 								 vo = new LocationAlertVO();
+								 vo.setSubList(setAlertStatusList(type));
 								 finalVOList.add(vo);
 								}
 							vo.setId(6l);
@@ -211,6 +318,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							 vo = getImpactScopeMatchVO(finalVOList,commonMethodsUtilService.getLongValueForObject(3l));
 							 if(vo == null){
 								 vo = new LocationAlertVO();
+								 vo.setSubList(setAlertStatusList(type));
 								 finalVOList.add(vo);
 								}
 							vo.setId(3l);
@@ -219,6 +327,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							 vo = getImpactScopeMatchVO(finalVOList,commonMethodsUtilService.getLongValueForObject(13l));
 							 if(vo == null){
 								 vo = new LocationAlertVO();
+								 vo.setSubList(setAlertStatusList(type));
 								 finalVOList.add(vo);
 								}
 							vo.setId(13l);
@@ -227,16 +336,19 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							 vo = getImpactScopeMatchVO(finalVOList,commonMethodsUtilService.getLongValueForObject(impactLvlId));
 							 if(vo == null){
 								 vo = new LocationAlertVO();
+								 vo.setSubList(setAlertStatusList(type));
 								 finalVOList.add(vo);
 								}
 							vo.setId(impactLvlId);
 							vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
 						}
 					}else if(type != null && type.equalsIgnoreCase("alertCategory")){
-						if(impactLvlId == 6l || impactLvlId == 7l || impactLvlId == 8l || impactLvlId == 9l) {
+						if(impactLvlId == 6l || impactLvlId == 7l || impactLvlId == 8l || impactLvlId == 9l
+								 || impactLvlId == 4l || impactLvlId == 5l ) {
 							vo = getImpactScopeMatchVO(finalVOList,commonMethodsUtilService.getLongValueForObject(6l));
 							if(vo == null){
 								 vo = new LocationAlertVO();
+								 vo.setSubList(setAlertStatusList(type));
 								 finalVOList.add(vo);
 								}
 							vo.setId(6l);
@@ -245,6 +357,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							vo = getImpactScopeMatchVO(finalVOList,commonMethodsUtilService.getLongValueForObject(impactLvlId));
 							if(vo == null){
 								 vo = new LocationAlertVO();
+								 vo.setSubList(setAlertStatusList(type));
 								 finalVOList.add(vo);
 								}
 							vo.setId(impactLvlId);
@@ -270,5 +383,21 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 			LOG.error("Exception occured at getImpactScopeMatchVO( )",e);
 		}
 		return null;
+	}
+	
+	/*
+	   * Date : 25/09/2017
+	   * Author :Hymavathi
+	   * @description : getDesignationWiseAlertsOverview(Showing Designation Wise Alert details for constituency page)
+	   */
+	public  List<LocationAlertVO> getDesignationWiseAlertsOverview(String fromDateStr ,String toDateStr,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
+		List<LocationAlertVO> finalVOs = new ArrayList<LocationAlertVO>();
+		try {
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception occured at getDesignationWiseAlertsOverview( )",e);
+		}
+		return finalVOs;
 	}
 }
