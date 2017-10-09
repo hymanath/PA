@@ -141,6 +141,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private String minAndMaxDatesStr;
 	private List<TrainingCampSheduleDetailsVO> trainingCampVOList;
 	private List<SimpleDetailsVO> simpleDetailsVOList;
+	private SimpleDetailsVO simpleDetailsVO;
 
 	public List<TrainingCampSheduleDetailsVO> getTrainingCampVOList() {
 		return trainingCampVOList;
@@ -729,6 +730,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	public void setSimpleDetailsVOList(List<SimpleDetailsVO> simpleDetailsVOList) {
 		this.simpleDetailsVOList = simpleDetailsVOList;
+	}
+
+	public SimpleDetailsVO getSimpleDetailsVO() {
+		return simpleDetailsVO;
+	}
+
+	public void setSimpleDetailsVO(SimpleDetailsVO simpleDetailsVO) {
+		this.simpleDetailsVO = simpleDetailsVO;
 	}
 
 	public String callCenterTrainingAdmin()
@@ -1922,7 +1931,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			
 			if(regVO.getIsAdmin().equalsIgnoreCase("true")){//Admin
 				
-				simpleVO=trainingCampService.getAllProgramsAndCamps();
+				simpleDetailsVO=trainingCampService.getAllProgramsAndCamps();
 				
 			}
 			/*else if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){//entitled user.
@@ -1932,7 +1941,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			else if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
 		        entitlements = regVO.getEntitlements();
 		        if(entitlements.contains("TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){
-		        	simpleVO=trainingCampService.getProgramsByUser(userId);
+		        	simpleDetailsVO=trainingCampService.getProgramsByUser(userId);
 		        }
 
 			}			
