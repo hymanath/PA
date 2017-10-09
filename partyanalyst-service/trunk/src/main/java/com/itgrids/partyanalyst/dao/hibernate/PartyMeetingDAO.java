@@ -4548,5 +4548,65 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		}
 		return (Long) query.uniqueResult();
 	}
+	public List<Object[]> getCommitteeMeetingsDetails(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select ");
+		sb.append(" PM.party_meeting_id as meetingId , ");
+		sb.append(" PM.meeting_name as meetingName , ");
+		sb.append(" PM.start_date as startDate , ");
+		sb.append(" PM.party_meeting_level_id as meetingLevelId , ");
+		sb.append(" PML.level as levelName , ");
+		sb.append(" PMAP.party_meeting_atr_point_id as ATR, ");
+		sb.append(" PMM.party_meeting_minute_id as MON");
+		sb.append(" from ");
+		sb.append(" party_meeting PM ");
+		sb.append(" left outer join party_meeting_atr_point PMAP on (PM.party_meeting_id = PMAP.party_meeting_id and PMAP.is_deleted = 'N') ");
+		sb.append(" left outer join party_meeting_minute PMM on (PM.party_meeting_id = PMM.party_meeting_id and PMM.is_deleted = 'N') ");
+		sb.append(" left outer join party_meeting_level PML on (PM.party_meeting_level_id = PML.party_meeting_level_id), user_address UA, party_meeting_type PMT  ");
+		sb.append(" where PM.is_active = 'Y' ");
+		sb.append(" and UA.user_address_id = PM.meeting_address_id ");
+		sb.append(" and PM.party_meeting_type_id = PMT.party_meeting_type_id ");
+		sb.append(" and PMT.is_active = 'Y' ");
+		sb.append(" and PMT.party_meeting_main_type_id ="+IConstants.COMMITTEE_MEETINGS+" ");
+		if(locationIds != null && locationIds.size() > 0){
+			if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_STATE_LEVEL_ID){
+				sb.append(" and UA.state_id in (:locationIds)");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_DISTRICT_LEVEL_ID){
+				sb.append(" and UA.district_id in (:locationIds)");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_PARLIAMENT_LEVEL_ID){
+				sb.append(" and UA.parliament_constituency_id in (:locationIds) ");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_CONSTITUENCY_LEVEL_ID){
+				sb.append(" and UA.constituency_id in (:locationIds) ");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_MANDAL_LEVEL_ID){
+				sb.append(" and UA.constituency_id in (:locationIds)");  
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_MUNICIPALITY_LEVEL_ID){ //  town/division
+				sb.append(" and UA.local_election_body in (:locationIds)"); 
+			}else if(locationLevel != null && locationLevel.longValue()==IConstants.PARTY_MEETING_PANCHAYAT_LEVEL_ID){ 
+				sb.append(" and UA.panchayat_id in (:locationIds)"); 
+			}
+		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and (date(start_date) between :fromDate and :toDate) ");
+		}
+		
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("meetingId", Hibernate.LONG)
+				.addScalar("meetingName", Hibernate.STRING)
+				.addScalar("startDate", Hibernate.STRING)
+				.addScalar("meetingLevelId", Hibernate.LONG)
+				.addScalar("levelName", Hibernate.STRING)
+				.addScalar("ATR", Hibernate.LONG)
+				.addScalar("MON", Hibernate.LONG);
+		
+		if(locationIds != null && locationIds.size() > 0){
+			query.setParameterList("locationIds", locationIds);
+		}
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate",fromDate);
+			query.setDate("toDate",toDate);
+			
+		}
+		return query.list();
+	}
 	 
  }
