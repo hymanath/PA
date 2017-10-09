@@ -138,36 +138,29 @@
 		</div>
 	</nav>
 </header>
-
 <main>
 	<section>
 		<div class="container-fluid">
 			<div class="row m_top10">
-				<div class="col-sm-6">
-					<div class="white-block">
-						<h5 style="padding:5px;text-align:center;"><span class="chartTitleAlign overViewDtlsSwatchBharatPaymentCls" style="cursor:pointer;">Swatch Bharat - PAYMENTS</span></h5>
-						<div class="chart" id="swatchBharatPaymentsDivId"></div>
+				<div class="col-sm-12">
+					<div class="panel panel-black panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">Swatch Bharat - PAYMENTS</h4>
+						</div>
+						<div class="panel-body">
+							<div class="chart" id="swatchBharatPaymentsDivId"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 m_top20">
+					<div id="sbPaymentDataDivId">
+						<div id="levelWiseSwatchBharatPaymentsId"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 </main>
-
-<div class="modal fade" id="sbPaymentModalDivId" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document" style="width: 95%;">
-    <div class="modal-content modal-custom">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
-        <h4 class="modal-title" id="">Swatch Bharat Payments</h4>
-      </div>
-      <div class="modal-body">
-        <div id="sbPaymentDataDivId"></div>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
@@ -190,6 +183,101 @@
 </html>
 
 <script>
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
+$(document).on("click",".Paymentsmandal",function(){
+		getSBPaymentsLvlWiseData("mandal")
+});
+$(document).on("click",".Paymentspanchayat",function(){
+	getSBPaymentsLvlWiseData("panchayat")
+});	
+var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var levelWiseSBArr = ['state','district','constituencies','mandal','panchayat'];
+levelWiseSBData("Payments");
+getSBPaymentsAbstract();
+function levelWiseSBData(divId)
+{
+	var collapse='';
+		collapse+='<section>';
+			collapse+='<div class="row">';
+			collapse+='<div class="col-sm-12">';
+				for(var i in levelWiseSBArr)
+				{
+					collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" role="tablist" aria-multiselectable="true">';
+						collapse+='<div class="panel panel-default panel-black">';
+							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseSBArr[i]+'">';
+								if(i == 0)
+								{
+									collapse+='<a role="button" class="panelCollapseIcon '+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+								}else{
+									collapse+='<a role="button" class="panelCollapseIcon collapsed '+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+								}
+								if(levelWiseSBArr[i] == "state" || levelWiseSBArr[i] == "district" || levelWiseSBArr[i] == "constituency")
+									collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview - (SBM- '+divId+') - All Amounts in Lakhs.</h4>';
+								else
+									collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview - (SBM- '+divId+') - All Amounts in Rupees.</h4>';
+									
+								collapse+='</a>';
+							collapse+='</div>';
+							if(i == 0)
+							{
+								collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+							}else{
+								collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+							}
+							
+								collapse+='<div class="panel-body">';
+									collapse+='<div id="'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"></div>';
+								collapse+='</div>';
+							collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+				}
+			collapse+='</div>';
+			collapse+='</div>';
+			collapse+='</section>';
+	
+	if(divId == "IHHL"){
+		$("#levelWiseSwatchBharatId").html(collapse);
+	}else if(divId == "Payments"){
+		$("#levelWiseSwatchBharatPaymentsId").html(collapse);
+	}	
+	
+	
+	setTimeout(function(){ 
+		for(var i in levelWiseSBArr){
+			if(levelWiseSBArr[i] == "state"){
+				if(divId == "IHHL"){
+					getIHHLlocationLvlWiseData("state")
+				}else if(divId == "Payments"){
+					getSBPaymentsLvlWiseData("state")
+				}
+				
+			}else if(levelWiseSBArr[i] == "district"){
+				if(divId == "IHHL"){
+					getIHHLlocationLvlWiseData("district")
+				}else if(divId == "Payments"){
+					getSBPaymentsLvlWiseData("district")
+				}
+				
+			}else if(levelWiseSBArr[i] == "constituencies"){
+				if(divId == "IHHL"){
+					getIHHLlocationLvlWiseData("constituencies")
+				}else if(divId == "Payments"){
+					getSBPaymentsLvlWiseData("constituency")
+				}
+				
+			}
+		}	
+	
+	}, 1500);
+	
+}
 function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title)
 {
 	'use strict';
