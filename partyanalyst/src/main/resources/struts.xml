@@ -18219,5 +18219,10 @@
 			<param name="root">informationVo</param>
 		</result>
 	</action>
+	<action name="getDesignationWiseAlertsOverviewAction" class="locationDashboardAction" method="getDesignationWiseAlertsOverview">
+		<result type="json" name="success">    
+		<param name="root">locationAlertVOList</param>
+		</result>        
+	</action>
  </package>
 </struts>
