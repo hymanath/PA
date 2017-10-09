@@ -92,6 +92,8 @@ public class PartyMeetingsVO implements Serializable{
 	private Time lateTime;
 	private String wardName;
 	private Long inviteeAttendedCount = 0L;
+	private Long attendedCount = 0L;
+	private String meetingLevel;
 	
 	
 	
@@ -545,6 +547,18 @@ public class PartyMeetingsVO implements Serializable{
 	}
 	public void setInviteeAttendedCount(Long inviteeAttendedCount) {
 		this.inviteeAttendedCount = inviteeAttendedCount;
+	}
+	public Long getAttendedCount() {
+		return attendedCount;
+	}
+	public void setAttendedCount(Long attendedCount) {
+		this.attendedCount = attendedCount;
+	}
+	public String getMeetingLevel() {
+		return meetingLevel;
+	}
+	public void setMeetingLevel(String meetingLevel) {
+		this.meetingLevel = meetingLevel;
 	}
 	
 	

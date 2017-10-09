@@ -21,7 +21,15 @@ public class PartyMeetingDataVO implements Serializable{
 	private List<PartyMeetingDataVO> meetingsList;
 	private List<PartyMeetingDataVO> levelList;
 	private Map<Long,PartyMeetingDataVO> subMap;
-	
+	private String meetingLevel;
+	private String conductedDate;
+	private String momStatus;
+	private String atrStatus;
+	private Long invitedCount=0L;
+	private Long attendedCount = 0L;
+	private Long inviteeAttendedCount = 0L;
+	private Long nonInviteesCount=0L;
+	private Long absentCount =0L;
 	public PartyMeetingDataVO(){}
 	
 	public PartyMeetingDataVO(Long id , String name){
@@ -107,6 +115,123 @@ public class PartyMeetingDataVO implements Serializable{
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public String getMeetingLevel() {
+		return meetingLevel;
+	}
+
+	public void setMeetingLevel(String meetingLevel) {
+		this.meetingLevel = meetingLevel;
+	}
+
+	public String getConductedDate() {
+		return conductedDate;
+	}
+
+	public void setConductedDate(String conductedDate) {
+		this.conductedDate = conductedDate;
+	}
+
+	public String getMomStatus() {
+		return momStatus;
+	}
+
+	public void setMomStatus(String momStatus) {
+		this.momStatus = momStatus;
+	}
+
+	public String getAtrStatus() {
+		return atrStatus;
+	}
+
+	public void setAtrStatus(String atrStatus) {
+		this.atrStatus = atrStatus;
+	}
+	
+	public Long getInvitedCount() {
+		return invitedCount;
+	}
+
+	public void setInvitedCount(Long invitedCount) {
+		this.invitedCount = invitedCount;
+	}
+	
+	public Long getAttendedCount() {
+		return attendedCount;
+	}
+
+	public void setAttendedCount(Long attendedCount) {
+		this.attendedCount = attendedCount;
+	}
+	
+	public Long getInviteeAttendedCount() {
+		return inviteeAttendedCount;
+	}
+
+	public void setInviteeAttendedCount(Long inviteeAttendedCount) {
+		this.inviteeAttendedCount = inviteeAttendedCount;
+	}
+	
+	public Long getNonInviteesCount() {
+		return nonInviteesCount;
+	}
+
+	public void setNonInviteesCount(Long nonInviteesCount) {
+		this.nonInviteesCount = nonInviteesCount;
+	}
+	
+	public Long getAbsentCount() {
+		return absentCount;
+	}
+
+	public void setAbsentCount(Long absentCount) {
+		this.absentCount = absentCount;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((conductedDate == null) ? 0 : conductedDate.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((meetingLevel == null) ? 0 : meetingLevel.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PartyMeetingDataVO other = (PartyMeetingDataVO) obj;
+		if (conductedDate == null) {
+			if (other.conductedDate != null)
+				return false;
+		} else if (!conductedDate.equals(other.conductedDate))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (meetingLevel == null) {
+			if (other.meetingLevel != null)
+				return false;
+		} else if (!meetingLevel.equals(other.meetingLevel))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 	
 }
