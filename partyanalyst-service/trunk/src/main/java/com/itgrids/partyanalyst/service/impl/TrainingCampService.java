@@ -5871,15 +5871,15 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		return "success";
 	}
-    public SimpleVO getProgramsByUser(Long userId){
+    public SimpleDetailsVO getProgramsByUser(Long userId){
 		
-		SimpleVO simplevo=new SimpleVO();
+    	SimpleDetailsVO simplevo=new SimpleDetailsVO();
 		try{
 			List<Object[]> programs=trainingCampUserProgramDAO.getProgramsByUser(userId);
 			if(programs!=null && programs.size()>0){
-				simplevo.setSimpleVOList1(new ArrayList<SimpleVO>());
+				simplevo.setSimpleVOList1(new ArrayList<SimpleDetailsVO>());
 				for(Object[] obj:programs){
-					SimpleVO vo=new SimpleVO();
+					SimpleDetailsVO vo=new SimpleDetailsVO();
 					vo.setId(obj[0]!=null?(Long)obj[0]:0l);
 					vo.setName(obj[1]!=null?obj[1].toString():"");
 					simplevo.getSimpleVOList1().add(vo);
@@ -5891,16 +5891,16 @@ class TrainingCampService implements ITrainingCampService{
 		return simplevo;
 	}
     
-    public SimpleVO getAllProgramsAndCamps(){
+    public SimpleDetailsVO getAllProgramsAndCamps(){
 		
-		SimpleVO simpleVO=new SimpleVO();
+    	SimpleDetailsVO simpleVO=new SimpleDetailsVO();
 		try{
 			List<Object[]> programs=trainingCampProgramDAO.getPrograms();
 			List<Object[]> camps=trainingCampDAO.getAllCamps();
 			if(programs!=null && programs.size()>0){
-				simpleVO.setSimpleVOList1(new ArrayList<SimpleVO>());
+				simpleVO.setSimpleVOList1(new ArrayList<SimpleDetailsVO>());
 				for(Object[] obj:programs){
-					SimpleVO vo=new SimpleVO();
+					SimpleDetailsVO vo=new SimpleDetailsVO();
 					vo.setId(obj[0]!=null?(Long)obj[0]:0l);
 					vo.setName(obj[1]!=null?obj[1].toString():"");
 					simpleVO.getSimpleVOList1().add(vo);
@@ -5908,9 +5908,9 @@ class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			if(camps!=null && camps.size()>0){
-				simpleVO.setSimpleVOList2(new ArrayList<SimpleVO>());
+				simpleVO.setSimpleVOList2(new ArrayList<SimpleDetailsVO>());
 				for(Object[] obj:camps){
-					SimpleVO vo=new SimpleVO();
+					SimpleDetailsVO vo=new SimpleDetailsVO();
 					vo.setId(obj[0]!=null?(Long)obj[0]:0l);
 					vo.setName(obj[1]!=null?obj[1].toString():"");
 					simpleVO.getSimpleVOList2().add(vo);
