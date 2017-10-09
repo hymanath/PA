@@ -4466,6 +4466,7 @@
     	<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO" />
     	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	<property name="alertCategoryDAO" ref="alertCategoryDAO" />
+    	<property name="alertStatusDAO" ref="alertStatusDAO" />
     </bean> 
     <bean name="locationWiseCasteInfoService" class="com.itgrids.core.api.service.impl.LocationWiseCasteInfoService">
     	<property name="voterCastInfoDAO" ref="voterCastInfoDAO"/>
