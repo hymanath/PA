@@ -27,7 +27,7 @@ var commitessArr=["mandalLevelGraph","villageLevelGraph","affMandalLevelGraph","
 var grivanceIdsArr=["grivanceId","trustId"];
 var grivanceColorObj={"APPROVED":"#2DCC70","COMPLETED":"#449C43","IN PROGRESS":"#FFB84F","NOT ELIGIBLE":"#C0392B","NOT POSSIBLE":"#EF8379","NOT VERIFIED":"#31708F"}
 var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In Party":"#449C43","Forwarded to Insurance":"#FFB84F","Closed at Insurance":"#8F43AF","Closed at Party":"#9B88B3","Approved - Compensated":"#2BCD72","Closed Letters":"#32708F","Account Rejected":"#65CBCC"}
-var electionTypeVal = [2,3,4];
+var electionTypeVal = [1,2,3,4];
 var defaultAlertCategoryIds=[1];
 var electionYrVal = [];
 var electionSubTypeArr=["MAIN"];
@@ -4949,6 +4949,8 @@ function setDefaultImage(img){
 }
 function getElectionTypes(type){
 	$("#electionTypeValuesId").html(spinner);
+	$('#electionDetailsGraphWiseId').html('');
+	$('#electionDetailsTableWiseId').html('');
 	var jsObj={
 			
 	}
@@ -5042,12 +5044,12 @@ function getElectionTypes(type){
 function getElectionInformationLocationWise(electionVal,type,partyIds,electionSubTypeArr,electionYrVal){
 	$('#electionDetailsGraphWiseId').html(spinner);
 	$('#electionDetailsTableWiseId').html(spinner);
-	if(locationLevelId == '8' || locationLevelId == '6'){
+	/* if(locationLevelId == '8' || locationLevelId == '6'){
 		$("#electionDetailsGraphWiseId,#electionDetailsTableWiseId").html(noData);
 		return;
 	}else{
 		$("#electionDetailsGraphWiseId,#electionDetailsTableWiseId").show();
-	}
+	} */
 	for(var i in electionVal){
 		if(electionVal[i] == 0){
 			electionVal=[];
