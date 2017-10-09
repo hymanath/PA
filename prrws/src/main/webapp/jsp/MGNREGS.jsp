@@ -17,8 +17,6 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <link href="Assests/css/print.css" rel="stylesheet" type="text/css"/>
-</head>
-<body>
 <style>
 .bg_color{
 	background-color : #ddd;
@@ -32,6 +30,12 @@
 	background-color:#fff;
 }
 </style>
+</head>
+<body>
+<script type="text/javascript">
+var searchParams = new URLSearchParams(window.location.search);
+	searchParams = searchParams.get("component");
+</script>
 <header>
 	<nav>
 		<div class="container-fluid">
@@ -340,6 +344,7 @@
 <script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/NregaConsolidated.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 $(".menu-top-selection-icon").tooltip();
 onLoadCallsConsolidated();
 onLoadCalls();

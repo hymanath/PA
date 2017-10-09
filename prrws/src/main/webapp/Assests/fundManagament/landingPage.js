@@ -1,14 +1,17 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 //var subSpinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="subSpinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var imagesObj = {
-"PRIS":"Group 2344.png","DRAINS":"Group 2345.png","LED MONITORING":"Group 2348.png","UGD":"Group 2359.png","RDP":"Group 2343.png","FUND MANAGMENT SYSTEM":"Group 2352.png","ENGINEERING DEPARTMENT":"Group 2346.png","PANACHAYATI RAJ EXPENDITURE":"Group 2343.png","SPIKE ANALYSIS":"Group 2347.png","MGNREGS":"Group 2357.png","RURAL DEVELOPMENT":"Group 2349.png","RURAL WATER SUPPLY":"Group 2350.png","ITEC":"Group 2351.png"
+"PRIS":"Group 2344.png","DRAINS":"Group 2345.png","LED MONITORING":"Group 2348.png","UGD":"Group 2359.png","RDP":"Group 2343.png","FUND MANAGMENT SYSTEM":"Group 2352.png","ENGINEERING DEPARTMENT":"Group 2346.png","PANACHAYATI RAJ EXPENDITURE":"Group 2343.png","SPIKE ANALYSIS":"Group 2347.png","MGNREGS":"Group 2357.png","RURAL DEVELOPMENT":"Group 2349.png","RURAL WATER SUPPLY":"Group 2350.png","ITEC":"Group 2351.png","SWATCH BHARATH IHHL":"Group 2348.png",'Labour Budget':"Group 2344.png",'Farm Ponds':"Group 2344.png",'IHHL':"Group 2344.png",'Vermi Compost':"Group 2344.png",'SMC Trench':"Group 2344.png",'Imp to CD':"Group 2344.png",'MPT_PT':"Group 2344.png",'GC Works':"Group 2344.png",'CD_CW':"Group 2344.png",'GH':"Group 2344.png",'Check Dam':"Group 2344.png",'Rock fill dams':"Group 2344.png",'Solid Waste Management':"Group 2344.png",'Burial Ground':"Group 2344.png",'Play fields':"Group 2344.png",'Agriculture Activities':"Group 2344.png",'Average Wage':"Group 2344.png",'Average Days of Employment':"Group 2344.png",'HH Completed 100 Days':"Group 2344.png",'Timely Payment':"Group 2344.png",'CC Roads1':"Group 2344.png",'Anganwadi':"Group 2344.png",'GP Buildings1':"Group 2344.png",'Mandal buildings1':"Group 2344.png",'NTR 90 Days':"Group 2344.png",'Production of Bricks':"Group 2344.png",'Mulbery':"Group 2344.png",'Silk Worms':"Group 2344.png",'Horticulture':"Group 2344.png",'Avenue':"Group 2344.png",'Fish Ponds':"Group 2344.png",'Fish Drying Platforms':"Group 2344.png",'NURSERIES':"Group 2344.png",'Payments':"Group 2344.png",'FAperformance':"Group 2344.png",'OPGK-Perinnials':"Group 2344.png",'OPGK-Annuals':"Group 2344.png",'UGDrainage':"Group 2344.png"
 }
+
 var blockClassObject = {
-"PRIS":"prisOverAchvmntAllCls","DRAINS":"drainsOverAchvmntAllCls","LED MONITORING":"ledOverAchvmntAllCls","UGD":"","RDP":"","FUND MANAGMENT SYSTEM":"fundMngmntSstmOverAchvmntAllCls","ENGINEERING DEPARTMENT":"encOverAchvmntAllCls","PANACHAYATI RAJ EXPENDITURE":"preOverAchvmntAllCls","SPIKE ANALYSIS":"spikeOverAchvmntAllCls","MGNREGS":"mgnregsOverAchvmntAllCls","RURAL DEVELOPMENT":"rdOverAchvmntAllCls","RURAL WATER SUPPLY":"rwsOverAchvmntAllCls","ITEC":"itecOverAchvmntAllCls"
+"PRIS":"prisOverAchvmntAllCls","DRAINS":"drainsOverAchvmntAllCls","LED MONITORING":"ledOverAchvmntAllCls","UGD":"","RDP":"","FUND MANAGMENT SYSTEM":"fundMngmntSstmOverAchvmntAllCls","ENGINEERING DEPARTMENT":"encOverAchvmntAllCls","PANACHAYATI RAJ EXPENDITURE":"preOverAchvmntAllCls","SPIKE ANALYSIS":"spikeOverAchvmntAllCls","MGNREGS":"mgnregsOverAchvmntAllCls","RURAL DEVELOPMENT":"rdOverAchvmntAllCls","RURAL WATER SUPPLY":"rwsOverAchvmntAllCls","ITEC":"itecOverAchvmntAllCls","SWATCH BHARATH IHHL":"swatchBharathIHHL","SWATCH BHARATH PAYMENTS":"swatchBharathPayments",'Labour Budget':'LabourBudgetAllCls','Farm Ponds':'FarmPondsAllCls','IHHL':'IHHLAllCls','Vermi Compost':'VermiCompostAllCls','SMC Trench':'SMCTrenchAllCls','Imp to CD':'ImptoCDAllCls','MPT_PT':'MPT_PTAllCls','GC Works':'GCWorksAllCls','CD_CW':'CD_CWAllCls','GH':'GHAllCls','Check Dam':'CheckDamAllCls','Rock fill dams':'RockfilldamsAllCls','Solid Waste Management':'SolidWasteManagementAllCls','Burial Ground':'BurialGroundAllCls','Play fields':'PlayfieldsAllCls','Agriculture Activities':'AgricultureActivitiesAllCls','Average Wage':'AverageWageAllCls','Average Days of Employment':'AverageDaysofEmploymentAllCls','HH Completed 100 Days':'HHCompleted100DaysAllCls','Timely Payment':'TimelyPaymentAllCls','CC Roads1':'CCRoads1AllCls','Anganwadi':'AnganwadiAllCls','GP Buildings1':'GPBuildings1AllCls','Mandal buildings1':'Mandalbuildings1AllCls','NTR 90 Days':'NTR90DaysAllCls','Production of Bricks':'ProductionofBricksAllCls','Mulbery':'MulberyAllCls','Silk Worms':'SilkWormsAllCls','Horticulture':'HorticultureAllCls','Avenue':'AvenueAllCls','Fish Ponds':'FishPondsAllCls','Fish Drying Platforms':'FishDryingPlatformsAllCls','Nurseries':'NurseriesAllCls','Payments':'PaymentsAllCls','FAperformance':'FAperformanceAllCls','OPGK-Perinnials':'OPGK-PerinnialsAllCls','OPGK-Annuals':'OPGK-AnnualsAllCls','UGDrainage':'UGDrainageAllCls'
 }
 var blockHeadingObject = {
-"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"TOTAL LIGHTS","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"TOTAL CASES","MGNREGS":"ACHIEVEMENT","RURAL DEVELOPMENT":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS"
+"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"TOTAL LIGHTS","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"TOTAL CASES","MGNREGS":"ACHIEVEMENT","RURAL DEVELOPMENT":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHEIVED",'Farm Ponds':"ACHEIVED",'IHHL':"ACHEIVED",'Vermi Compost':"ACHEIVED",'SMC Trench':"ACHEIVED",'Imp to CD':"ACHEIVED",'MPT_PT':"ACHEIVED",'GC Works':"ACHEIVED",'CD_CW':"ACHEIVED",'GH':"ACHEIVED",'Check Dam':"ACHEIVED",'Rock fill dams':"ACHEIVED",'Solid Waste Management':"ACHEIVED",'Burial Ground':"ACHEIVED",'Play fields':"ACHEIVED",'Agriculture Activities':"ACHEIVED",'Average Wage':"ACHEIVED",'Average Days of Employment':"ACHEIVED",'HH Completed 100 Days':"ACHEIVED",'Timely Payment':"ACHEIVED",'CC Roads1':"ACHEIVED",'Anganwadi':"ACHEIVED",'GP Buildings1':"ACHEIVED",'Mandal buildings1':"ACHEIVED",'NTR 90 Days':"ACHEIVED",'Production of Bricks':"ACHEIVED",'Mulbery':"ACHEIVED",'Silk Worms':"ACHEIVED",'Horticulture':"ACHEIVED",'Avenue':"ACHEIVED",'Fish Ponds':"ACHEIVED",'Fish Drying Platforms':"ACHEIVED",'Nurseries':"ACHEIVED",'Payments':"ACHEIVED",'FAperformance':"ACHEIVED",'OPGK-Perinnials':"ACHEIVED",'OPGK-Annuals':"ACHEIVED",'UGDrainage':"ACHEIVED"
 }
+var overViewArrConsolidated = [];
+var overViewIdsArr = [];
 var windowWidth =$(window).width();
 if(windowWidth <500){
 	$(".landing-menu").css("display","");
@@ -17,7 +20,9 @@ if(windowWidth <500){
 	$(".landing-menu").css("display","flex");
 	$(".landing-menu li").css("width","16%");
 }
-getFavouriteComponents();
+getAllConvergenceTypesConsolidated();//mgnrega components
+
+var favouritesArr = []
 function getFavouriteComponents(){
 	$("#favouriteComponentDivId").html(spinner);
 	var json = {}
@@ -50,7 +55,7 @@ function buildFavouriteComponentsResult(result) {
 		str +='<div class="col-sm-4">'
 				str +='<div class="whiteBlock">';
 					str +='<img src="Assests/img/'+imagesObj[compnentName]+'" >';
-					str +='<h5 style="display: inline-block;">'+result[i].name+'</h5>';
+					str +='<h5 style="display: inline-block;text-transform:uppercase;">'+result[i].name+'</h5>';
 					str +='<div class=" " style="text-align: right">';
 						str +='<h2 class="'+blockClassObject[compnentName]+'" style="margin-top: 0px"></h2>';
 						str +='<p class="">'+blockHeadingObject[compnentName]+'</p>';
@@ -80,22 +85,17 @@ function buildFavouriteComponentsResult(result) {
 }
 
 $(".showhideCls").css("display","none");
-$(document).on('click','.landingmenu-block ul li',function(){
-		$(this).closest("ul").find("li").removeClass("active");
-		$(this).addClass("active");
-		$("#showMainBlock").css("display","none")
-		var listId = $(this).attr("id");
-		var eq = $(this).index();
-		$(".showhideCls").removeClass("showBlock");
-		$(".showhideCls").eq(eq).addClass("showBlock");
-		$(".showhideCls").css("display","none");
-		$(".showBlock").css("display","block");
-		if (listId == "favourite") {
-			getFavouriteComponents();
-		}
-	})
-	
-	
+$(document).on("click","[landing-link]",function(){
+	$("[landing-link]").removeClass("active");
+	$(this).addClass("active");
+	$("#showMainBlock").css("display","none")
+	var blockName = $(this).attr("landing-link");
+	$("[landing-block]").hide();
+	$("[landing-block="+blockName+"]").show();
+	if (blockName == "favourite") {
+		getFavouriteComponents();
+	}
+});	
 	
 $(document).on('click','.starcolorChange',function(){
    var blockName = $(this).attr("attr_block_name");
@@ -196,7 +196,7 @@ function deleteFavouriteComponent(blockName,blockId){
 }
 
 var gblEndDate =  moment().format('DD-MM-YYYY');
-
+var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Check Dam','Rock fill dams','Solid Waste Management','Burial Ground','Play fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads1','Anganwadi','GP Buildings1','Mandal buildings1','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','OPGK-Perinnials','OPGK-Annuals','UGDrainage'];
 function onloadCallToGetAllBlockAchievent () {
 	getPrisOverAllAchievd(); // Pris
 	getDrainsInfoStateWise();//Drains
@@ -208,6 +208,21 @@ function onloadCallToGetAllBlockAchievent () {
 	getMeesevaSLAOverviewDtls();//ITEC 
 	getNregsLabourBudgetOverAllAchievent();//MGNREGS
 	getRuralDevelopmentAllAchievent();//Rural DEVELOPMENT
+	getIHHLOverviewData();//swatch Bharath IHHL
+	getSBPaymentsAbstract();//SWATCH BHARATH PAYMENTS
+	for(var i in overViewArr)
+	{
+		if(overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
+		{
+			getNREGSProjectsAbstractNew(overViewArr[i]);
+		}else if(overViewArr[i] == 'Payments')
+		{
+			getNregaPaymentsAbsAndOverviewDtls(overViewArr[i]);
+		}else{
+			getNREGSAbstractDataByType(overViewArr[i]);
+		}
+	}
+
 }
 
 function getPrisOverAllAchievd(){
@@ -527,5 +542,257 @@ function getRuralDevelopmentAllAchievent()
 				}
 			}
 		} 
+	});
+}
+function getIHHLOverviewData(){
+	$(".swatchBharathIHHL").html(spinner);
+	var json = {
+			fromMonth	:"201704",
+			toMonth		:"201707",
+			location	:"state",
+			locationId	:"01"
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getIHHLOverviewData',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		var totalCount = result.subList1[0].target+result.subList1[0].completed;
+			totalCount = (result.subList1[0].completed / totalCount) * 100;
+		$(".swatchBharathIHHL").html(totalCount.toFixed(2)+'%');
+	});
+}
+function getSBPaymentsAbstract(){
+	$(".swatchBharathPayments").html(spinner);
+	var json = {
+		//fromDate:"201704",
+		//toDate:"201708",
+		location:"state",
+		locationId:"01",
+		subLocation :"state"
+			
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getSBPaymentsAbstract',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		$(".swatchBharathPayments").html(result.pendingAmount);
+	});
+}
+function getAllConvergenceTypesConsolidated()
+{
+	var json = {
+	}
+	
+	$.ajax({
+		url: 'getAllConvergenceTypes',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildAllConvergenceTypes(ajaxresp);
+		}
+	});
+}
+function buildAllConvergenceTypes(result)
+{
+	var selectionMenu = '';
+	selectionMenu+='<div class="navTabsMenuSelection">';
+		selectionMenu+='<div class="col-sm-6">';
+			selectionMenu+='<ul class="nav nav-tabs" role="tablist">';
+				for(var i in result)
+				{
+					if(i == 0)
+					{
+						selectionMenu+='<li role="presentation" class="active"><a href="#selectionMenuId'+result[i].id+'" aria-controls="selectionMenuId'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+'</a></li>';
+					}else{
+						selectionMenu+='<li role="presentation"><a href="#selectionMenuId'+result[i].id+'" aria-controls="selectionMenuId'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+'</a></li>';
+					}
+				}
+			selectionMenu+='</ul>';
+		selectionMenu+='</div>';
+		selectionMenu+='<div class="col-sm-6">';
+			selectionMenu+='<div class="tab-content">';
+				for(var i in result)
+				{
+					if(i == 0)
+					{
+						selectionMenu+='<div role="tabpanel" class="tab-pane active" id="selectionMenuId'+result[i].id+'">A'+result[i].id+'</div>';
+					}else{
+						selectionMenu+='<div role="tabpanel" class="tab-pane" id="selectionMenuId'+result[i].id+'">A'+result[i].id+'</div>';
+					}
+				}
+				
+			selectionMenu+='</div>';
+		selectionMenu+='</div>';
+	selectionMenu+='</div>';
+	$("#navTabsMenuSelectionId").html(selectionMenu);
+	for(var i in result)
+	{
+		var convergenceId = result[i].id;
+		var divId = 'selectionMenuId'+result[i].id;
+		getComponentByConvergType(convergenceId,divId)
+		if(i == 2)
+		{
+			getFavouriteComponents();
+		}
+	}
+}
+$(".menu-top-selection .arrow_box_top").hide();
+$(document).on("click",".menu-top-selection-icon",function(e){
+	e.stopPropagation();
+	//$(".menu-top-selection .arrow_box_top").show();
+	$(".menu-top-selection .arrow_box_top").toggle();
+});
+$(document).on("click",".menu-top-selection",function(e){
+	e.stopPropagation();
+});
+$(document).on("click",function(){
+	$(".multi-level-selection-menu,.menu-top-selection .arrow_box_top").hide();
+});
+function getComponentByConvergType(convergenceId,divId)
+{
+	$("#"+divId).html(spinner);
+	var json = {
+		convergenceTypeId : convergenceId
+	}
+	
+	$.ajax({
+		url: 'getComponentByConvergType',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildComponentByConvergType(ajaxresp,divId,convergenceId);
+		}
+	});
+}
+function buildComponentByConvergType(result,divId,convergenceId)
+{
+	var selectionMenu = '';
+	
+	selectionMenu+='';
+	selectionMenu+='<ul class="menu-selection-body">';
+		/* selectionMenu+='<li>';
+			selectionMenu+='<label class="checkbox-inline"><input type="checkbox" class="menuSelectionCheckBox selectAllCheckbox" attr_selectAll="'+divId+'"/>Select All</label>';
+		selectionMenu+='</li>'; */
+		for(var i in result)
+		{
+			selectionMenu+='<li>';
+				selectionMenu+='<label><i class="fa fa-star starcolorChange '+result[i].name.replace(/\s+/g, '')+'Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component='+result[i].name+'" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="'+result[i].name.replace(/\s+/g, '')+'" aria-hidden="true"></i>'+result[i].name+'</label>';
+			selectionMenu+='</li>';
+			overViewArrConsolidated.push({"name":result[i].name,"id":result[i].id});
+			overViewIdsArr.push(result[i].id);
+		}		
+	selectionMenu+='</ul>';
+	$("#"+divId).html(selectionMenu);
+	
+}
+function getNREGSAbstractDataByType(type)
+{
+	$("."+type.replace(/\s+/g, '')+"AllCls").html(spinner);
+	if(type == 'FAperformance')
+	{
+		var json = {
+			year : "2017",
+			fromDate : '2017-04-01',
+			toDate : '2017-05-30',
+			type : type,
+			locationType: "state",
+			locationId : "-1"
+		}
+	}else{
+		var json = {
+			year : "2017",
+			fromDate : '2017-04-01',
+			toDate : moment().format("YYYY-MM-DD"),
+			type : type,
+			locationType: "state",
+			locationId : "-1"
+		}
+	}
+	
+	
+	$.ajax({
+		url: 'getNREGSAbstractDataByType',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			$("."+type.replace(/\s+/g, '')+"AllCls").html(ajaxresp[0].percentage+"%");
+		}
+	}); 
+}
+function getNregaPaymentsAbsAndOverviewDtls(type)
+{
+	$("."+type.replace(/\s+/g, '')+"AllCls").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : '2017-04-01',
+		toDate :  moment().format("YYYY-MM-DD"),
+		locationType: "state",
+		locationId :  "-1",
+		sublocaType :"state"
+	}
+	$.ajax({
+		url: 'getNregaPaymentsAbsAndOverviewDtls',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			$("."+type.replace(/\s+/g, '')+"AllCls").html(ajaxresp[0].percentage+"%");
+		}
+	});
+}
+function getNREGSProjectsAbstractNew(type)
+{
+	$("."+type.replace(/\s+/g, '')+"AllCls").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : '2017-04-01',
+		toDate : moment().format("YYYY-MM-DD"),
+		type : type,
+		locationType: "state",
+		locationId :  "-1"
+	}
+	$.ajax({
+		url: 'getNREGSProjectsAbstractNew',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			$("."+type.replace(/\s+/g, '')+"AllCls").html(ajaxresp[0].percentage+"%");
+		}
 	});
 }

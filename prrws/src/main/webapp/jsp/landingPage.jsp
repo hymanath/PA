@@ -17,6 +17,27 @@
 	.landing-menu li:hover{
 		cursor:pointer;
 	}
+	.block
+	{
+		background-color:#383838;
+		padding:15px;
+		height:130px;
+		cursor:pointer;
+	}
+	.block.active
+	{
+		background-color:#FF9100
+	}
+	.menu-top-selection .arrow_box_top
+	{
+		left:-13px;
+		right:none;
+	}
+	.menu-top-selection .arrow_box_top::before, .menu-top-selection .arrow_box_top::after
+	{
+		right:none;
+		left:20px;
+	}
 </style>
 </head>
 <body>
@@ -38,32 +59,54 @@
 	<div class="landingmenu-block">
 		<div class="container">
 			<div class="row" style="color:white;">
-				<ul class="list-inline text-center landing-menu" style="">
-					<li id="favourite" class="m_top5">
-						<img src="Assests/img/Path 233.png" alt="">
+				<div class="col-sm-2 text-center">
+					<div class="block" landing-link="favourite" id="favourite">
+						<div style="height:70px;width:100%;margin:auto;">
+							<img src="Assests/img/Path 233.png" alt="FAVOURITE" style="display:block;margin:auto">
+						</div>
 						<h5>FAVOURITE</h5>
-					</li>
-					<li id="fmsMenu" class="m_top5">
-						<img src="Assests/img/Group 2353.png" alt="">
+					</div>
+				</div>
+				<div class="col-sm-2 text-center">
+					<div class="block" landing-link="fms" id="fmsMenu">
+						<div style="height:70px;width:100%;margin:auto;">
+							<img src="Assests/img/Group 2353.png" alt="Fund Management" style="display:block;margin:auto">
+						</div>
 						<h5>FUND MANAGMENT SYSTEM</h5>
-					</li>
-					<li id="panchayatRajMenu" class="m_top5">
-						<img src="Assests/img/Group 2354.png" alt="">
+					</div>
+				</div>
+				<div class="col-sm-2 text-center">
+					<div class="block" landing-link="panchayat" id="panchayatRajMenu">
+						<div style="height:70px;width:100%;margin:auto;">
+							<img src="Assests/img/Group 2354.png" alt="Panchayat Raj" style="display:block;margin:auto">
+						</div>
 						<h5>PANCHAYATI RAJ</h5>
-					</li>
-					<li id="rwsMenu" class="m_top5">
-						<img src="Assests/img/Path 232.png" alt="">
+					</div>
+				</div>
+				<div class="col-sm-2 text-center">
+					<div class="block" landing-link="rd" id="rwsMenu">
+						<div style="height:70px;width:100%;margin:auto;">
+							<img src="Assests/img/Path 232.png" alt="Rural Development" style="display:block;margin:auto">
+						</div>
 						<h5>RURAL DEVELOPMENT</h5>
-					</li>
-					<li id="ruralDevelopmentMenu" class="m_top5">
-						<img src="Assests/img/Group 2355.png" alt="">
+					</div>
+				</div>
+				<div class="col-sm-2 text-center">
+					<div class="block" landing-link="rws" id="ruralDevelopmentMenu">
+						<div style="height:70px;width:100%;margin:auto;">
+							<img src="Assests/img/Group 2355.png" alt="Rural Water Supply" style="display:block;margin:auto">
+						</div>
 						<h5>RURAL WATER SUPPLY</h5>
-					</li>
-					<li id="itecMenu" class="m_top5">
-						<img src="Assests/img/Group 2356.png" alt="">
+					</div>
+				</div>
+				<div class="col-sm-2 text-center">
+					<div class="block" landing-link="itec" id="itecMenu">
+						<div style="height:70px;width:100%;margin:auto;">
+							<img src="Assests/img/Group 2356.png" alt="ITEC" style="display:block;margin:auto">
+						</div>
 						<h5>IT E & C</h5>
-					</li>
-				</ul>
+					</div>
+				</div>				
 			</div>
 		</div>
 	</div>
@@ -79,13 +122,13 @@
 		</div>
 	</div>
 </section>
-<section style="margin-bottom: 100px" id="favouriteListMenu" class="showhideCls">
+<section style="margin-bottom: 100px" id="favouriteListMenu" landing-block="favourite" class="showhideCls">
 	<div class="container">
 		<div class="row" id="favouriteComponentDivId">
 		</div>
 	</div>
 </section>
-<section style="margin-bottom: 100px; display:none" id="fundmanagementBlock" class="showhideCls">
+<section style="margin-bottom: 100px; display:none" landing-block="fms" id="fundmanagementBlock" class="showhideCls">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-4">
@@ -106,7 +149,7 @@
 		</div>
 	</div>
 </section>
-<section style="margin-bottom: 100px;display:none" id="panchayatirajBlock" class="showhideCls">
+<section style="margin-bottom: 100px;display:none" landing-block="panchayat" id="panchayatirajBlock" class="showhideCls">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-4">
@@ -196,7 +239,7 @@
 		</div>
 	</div>
 </section>
-<section style="margin-bottom: 100px;display:none" id="ruralWaterSupplyBlock" class="showhideCls">
+<section style="margin-bottom: 100px;display:none" landing-block="rd" id="ruralWaterSupplyBlock" class="showhideCls">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-4">
@@ -207,8 +250,17 @@
 						<h2 class="mgnregsOverAchvmntAllCls" style="margin-top: 0px">0%</h2>
 						<p class="">ACHIEVEMENT</p>
 					</div>
-					<div class="block-footer">
-						<i class="fa fa-star starcolorChange MGNREGSColor" title="click to add as favourite component." attr_url="MGNREGSDashboard" attr_full_block_name="MGNREGS" attr_color_name="gray" attr_block_name="MGNREGS" aria-hidden="true"></i>
+					<div class="block-footer" style="display:table;width:100%;">
+						<div class="menu-top-selection" style="float:left">
+							<i class="fa fa-star menu-top-selection-icon"></i>
+							<div class="arrow_box_top">
+								<div class="row">
+									<div id="navTabsMenuSelectionId"></div>
+								</div>
+							</div>
+						</div>
+						
+						
 						<a class="pull-right" href="MGNREGSDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -230,7 +282,7 @@
 		</div>
 	</div>
 </section>
-<section style="margin-bottom: 100px;display:none" id="ruralDevelopmentBlock" class="showhideCls">
+<section style="margin-bottom: 100px;display:none" landing-block="rws" id="ruralDevelopmentBlock" class="showhideCls">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-4">
@@ -247,10 +299,38 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/Group 2362.png" >
+					<h5 style="display: inline-block;">SWATCH BHARATH IHHL</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="swatchBharathIHHL" style="margin-top: 0px"></h2>
+						<p class="">COMPLETED</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange SWATCHBHARATHIHHLColor" title="click to add as favourite component." attr_url="swatchBharatIHHLInfo" attr_full_block_name="SWATCH BHARATH IHHL" attr_color_name="gray" attr_block_name="SWATCHBHARATHIHHL" aria-hidden="true"></i>
+						<a class="pull-right" href="swatchBharatIHHLInfo"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/Group 2352.png" >
+					<h5 style="display: inline-block;">SWATCH BHARATH PAYMENTS</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="swatchBharathPayments" style="margin-top: 0px"></h2>
+						<p class="">PENDING</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange SWATCHBHARATHPAYMENTSColor" title="click to add as favourite component." attr_url="swatchBharatIHHLInfo" attr_full_block_name="SWATCH BHARATH PAYMENTS" attr_color_name="gray" attr_block_name="SWATCHBHARATHPAYMENTS" aria-hidden="true"></i>
+						<a class="pull-right" href="swatchBharatPaymentsInfo"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
-<section style="margin-bottom: 100px;display:none" id="iteBlock" class="showhideCls">
+<section style="margin-bottom: 100px;display:none" landing-block="itec" id="iteBlock" class="showhideCls">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-4">

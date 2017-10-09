@@ -4349,6 +4349,10 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	{
 		$("[overview-block='"+blockName+"']").trigger("click");
 	}
+	if(searchParams != null && type.replace(/\s+/g, '') == searchParams.replace(/\s+/g, ''))
+	{
+		$('[overview-block="'+searchParams+'"]').trigger('click');
+	}
 	
 }
 $(document).on("click",".menuDataCollapse",function(){

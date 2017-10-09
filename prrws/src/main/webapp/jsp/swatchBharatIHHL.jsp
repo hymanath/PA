@@ -143,31 +143,30 @@
 	<section>
 		<div class="container-fluid">
 			<div class="row m_top10">
-				<div class="col-sm-3" >
-					<div class="white-block">
-						<h5 style="padding:5px;text-align:center;"><span class="chartTitleAlign overViewDtlsSwatchBharatCls" style="cursor:pointer;">Swatch Bharat - IHHL</span></h5>
-						<div class="chart" id="swatchBharatDivId"></div>
+				<div class="col-sm-12">
+					<div class="panel panel-black panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">Swatch Bharat - IHHL</h4>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="chart" id="swatchBharatDivId"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 m_top20">
+					<div id="sbDataDivId">
+						<div id="overViewBlockId"></div>
+						<div id="levelWiseSwatchBharatId"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 </main>
-
-<div class="modal fade" id="sbModalDivId" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document" style="width: 95%;">
-    <div class="modal-content modal-custom">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
-        <h4 class="modal-title" id="">Swatch Bharat - IHHL</h4>
-      </div>
-      <div class="modal-body">
-        <div id="sbDataDivId"></div>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
@@ -190,11 +189,26 @@
 </html>
 
 <script>
+var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var levelWiseSBArr = ['state','district','constituencies','mandal','panchayat'];
+var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
+		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049",
+		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","PARTIALLY SATISFIED":"#FFBA00","NOT SATISFIED":"#FF0909","TARGET":"#FC5049","COMPLETED":"#14BAAD"}
+getIHHLOverviewData("abstract");
+overviewData("IHHL");
+levelWiseSBData("IHHL");
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
 function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title)
 {
 	'use strict';
 	$('#'+id).highcharts({
-		 colors: colors,
+		colors: colors,
 		chart: type,
 		title: title,
 		subtitle: {
@@ -279,6 +293,9 @@ function buildIHHLOverviewDataAbstractOverView(result){
 			enabled: false
 		};
 		var yAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
 			title: {
 				text: null
 			},
@@ -330,7 +347,7 @@ function buildIHHLOverviewDataAbstractOverView(result){
 }
 	
 $(document).on("click",".overViewDtlsSwatchBharatCls",function(){
-	$("#sbModalDivId").modal('show');
+	//$("#sbModalDivId").modal('show');
 	var str='';
 	str+='<div id="overViewBlockId"></div>';
 	str+='<div id="levelWiseSwatchBharatId"></div>';

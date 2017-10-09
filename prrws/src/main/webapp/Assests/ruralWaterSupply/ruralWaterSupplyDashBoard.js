@@ -5101,7 +5101,8 @@
 	}
 	
 	$(document).on("click",".overViewDtlsSwatchBharatCls",function(){
-		$("#sbModalDivId").modal('show');
+		window.open('swatchBharatIHHLInfo','_blank');
+		/* $("#sbModalDivId").modal('show');
 		var str='';
 		str+='<div id="overViewBlockId"></div>';
 		str+='<div id="levelWiseSwatchBharatId"></div>';
@@ -5580,7 +5581,8 @@ function getSBPaymentsAbstract(){
 			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 	}
 	$(document).on("click",".overViewDtlsSwatchBharatPaymentCls",function(){
-		$("#sbPaymentModalDivId").modal('show');
+		window.open('swatchBharatPaymentsInfo','_blank');
+		/* $("#sbPaymentModalDivId").modal('show');
 		var str='';
 			str+='<div id="levelWiseSwatchBharatPaymentsId"></div>';
 		$("#sbPaymentDataDivId").html(str);
@@ -5588,7 +5590,7 @@ function getSBPaymentsAbstract(){
 		levelWiseSBData("Payments")
 		//$('html,body').animate({
 		//	scrollTop: $("#overViewBlockId").offset().top},
-        //'slow');
+        //'slow'); */
 	});
 	
 	function getSBPaymentsLvlWiseData(locationType){
