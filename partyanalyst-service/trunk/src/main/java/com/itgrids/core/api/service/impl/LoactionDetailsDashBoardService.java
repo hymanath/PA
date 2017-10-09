@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
+import com.itgrids.partyanalyst.dto.PartyMeetingDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -609,10 +610,11 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 	/*
 	 * Swadhin K Lenka
 	 * Date: 07/10/2017
-	 * @see com.itgrids.core.api.service.ILoactionDetailsDashBoardService#getMeetingsDetails(java.lang.Long, java.lang.Long, java.util.List, java.lang.String, java.lang.String)
+	 * @see com.itgrids.core.api.service.ILoactionDetailsDashBoardService#getMeetingsDetails(java.lang.Long,java.lang.Long, java.lang.Long, java.util.List, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public List<PartyMeetingsVO> getMeetingsDetails(Long locationId, Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr){
+	public List<PartyMeetingDataVO> getMeetingsDetails(Long belowLocationId, Long locationLevel, List<Long> locationIds, String fromDateStr,String toDateStr,String meetingType){
 		try{
+			List<PartyMeetingDataVO> finalList = new ArrayList<PartyMeetingDataVO>(); 
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		    Date fromDate=null;
 			Date toDate=null;
@@ -621,10 +623,177 @@ public class LoactionDetailsDashBoardService implements ILoactionDetailsDashBoar
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
+			if(meetingType != null && meetingType.trim().equalsIgnoreCase("COMMITTEEMEETINGS")){
+				getCommitteeMeetingsDetails(finalList, belowLocationId,  locationLevel, locationIds, fromDate, toDate );
+			}else if(meetingType != null && meetingType.trim().equalsIgnoreCase("SPECIALMEETINGS")){
+				getSpecialMeetingsDetails(finalList, belowLocationId,  locationLevel, locationIds, fromDate, toDate);
+			}
+			return finalList;
 		}catch(Exception e){
 			LOG.error("Exception raised at getMeetingsDetails() method of LoactionDetailsDashBoardService", e);
 		}
 		return null;
+	}
+	
+	public void getCommitteeMeetingsDetails(List<PartyMeetingDataVO> finalList,Long belowLocationId, Long locationLevel, List<Long> locationIds, Date fromDate, Date toDate){
+		try{
+			Set<PartyMeetingDataVO> dataVoSet = new HashSet<PartyMeetingDataVO>();
+			PartyMeetingDataVO dataVo = null;
+			List<Object[]> committeeMeetingsList = partyMeetingDAO.getCommitteeMeetingsDetails(locationLevel,locationIds,fromDate,toDate);
+			if(committeeMeetingsList != null && committeeMeetingsList.size() > 0){
+				for(Object[] param : committeeMeetingsList){
+					dataVo = new PartyMeetingDataVO();
+					dataVo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					dataVo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					dataVo.setConductedDate(commonMethodsUtilService.getStringValueForObject(param[2]));
+					dataVo.setMeetingLevel(commonMethodsUtilService.getStringValueForObject(param[4]));
+					if(param[5] != null){
+						dataVo.setAtrStatus("true");
+					}else{
+						dataVo.setAtrStatus("false");
+					}
+					if(param[6] != null){
+						dataVo.setMomStatus("true");
+					}else{
+						dataVo.setMomStatus("false");
+					}
+					dataVoSet.add(dataVo);
+				}
+			}
+			if(dataVoSet != null && dataVoSet.size() > 0){
+				finalList.addAll(dataVoSet);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getCommitteeMeetingsDetails() method of LoactionDetailsDashBoardService", e);
+		}
+	}
+	
+	public void getSpecialMeetingsDetails(List<PartyMeetingDataVO> finalList,Long belowLocationId, Long locationLevel, List<Long> locationIds, Date fromDate, Date toDate){
+		try{
+			List<Object[]> inviteeList = partyMeetingInviteeDAO.getInviteeListForMeeting(locationLevel,locationIds,fromDate,toDate);
+			
+			//create a map for meetingId and cadreIdSet for invitee
+			Map<Long,Set<Long>> meetingIdAndCadreIdSetMapForInvitee = new HashMap<Long,Set<Long>>();
+			Map<Long,String> meetingIdAndNameMap = new HashMap<Long,String>();
+			Map<Long,String> meetingIdAndStartDateMap = new HashMap<Long,String>();
+			Map<Long,String> meetingIdAndMeetinglevelMap = new HashMap<Long,String>();
+			
+			if(inviteeList != null && inviteeList.size() > 0){
+				createMapForMeetingIdAndInviteeList(meetingIdAndCadreIdSetMapForInvitee,inviteeList);
+			}
+			
+			if(inviteeList != null && inviteeList.size() > 0){
+				for(Object[] param : inviteeList){
+					meetingIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+					meetingIdAndStartDateMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[3]));
+					meetingIdAndMeetinglevelMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[4]));
+				}
+			}
+			
+			List<Object[]> attendedList = partyMeetingAttendanceDAO.getAttendedListForMeeting(locationLevel,locationIds,fromDate,toDate);
+
+			//create a map for meetingId and cadreIdSet for attended
+			Map<Long,Set<Long>> meetingIdAndCadreIdSetMapForAttended = new HashMap<Long,Set<Long>>();
+			if(attendedList != null && attendedList.size() > 0){
+				createMapForMeetingIdAndInviteeList(meetingIdAndCadreIdSetMapForAttended,attendedList);
+			}
+			
+			//now create a map for invitee attended from above two map
+			
+			//create a map for meetingId and cadreIdSet for invitee attended
+			Map<Long,Set<Long>> meetingIdAndCadreIdSetMapForInviteeAttended = new HashMap<Long,Set<Long>>();
+			
+			createMapForInviteeAttendedForMeeting(meetingIdAndCadreIdSetMapForInviteeAttended,meetingIdAndCadreIdSetMapForInvitee,meetingIdAndCadreIdSetMapForAttended);
+			//create final vo for ui
+			PartyMeetingDataVO partyMeetingDataVO = null;
+			//push total invitees
+			if(meetingIdAndCadreIdSetMapForInvitee != null && meetingIdAndCadreIdSetMapForInvitee.size() > 0){
+				for(Entry<Long,Set<Long>> param : meetingIdAndCadreIdSetMapForInvitee.entrySet()){
+					partyMeetingDataVO = new PartyMeetingDataVO();
+					partyMeetingDataVO.setId(param.getKey());
+					partyMeetingDataVO.setName(meetingIdAndNameMap.get(param.getKey()) != null ? meetingIdAndNameMap.get(param.getKey()) : "");
+					partyMeetingDataVO.setConductedDate(meetingIdAndStartDateMap.get(param.getKey()) != null ? meetingIdAndStartDateMap.get(param.getKey()) : "");
+					partyMeetingDataVO.setMeetingLevel(meetingIdAndMeetinglevelMap.get(param.getKey()) != null ? meetingIdAndMeetinglevelMap.get(param.getKey()) : "");
+					partyMeetingDataVO.setInvitedCount(Long.valueOf(param.getValue().size()));
+					finalList.add(partyMeetingDataVO);
+				}
+			}
+			
+			
+			//push total attended
+			if(meetingIdAndCadreIdSetMapForAttended != null && meetingIdAndCadreIdSetMapForAttended.size() > 0){
+				for(Entry<Long,Set<Long>> param : meetingIdAndCadreIdSetMapForAttended.entrySet()){
+					PartyMeetingDataVO vo = (PartyMeetingDataVO) setterAndGetterUtilService.getMatchedVOfromList(finalList, "id", param.getKey().toString());
+					vo.setAttendedCount(Long.valueOf(param.getValue().size()));
+				}
+			}
+			
+			//push invitee attended count
+			if(meetingIdAndCadreIdSetMapForInviteeAttended != null && meetingIdAndCadreIdSetMapForInviteeAttended.size() > 0){
+				for(Entry<Long,Set<Long>> param : meetingIdAndCadreIdSetMapForInviteeAttended.entrySet()){
+					PartyMeetingDataVO vo = (PartyMeetingDataVO) setterAndGetterUtilService.getMatchedVOfromList(finalList, "id", param.getKey().toString());
+					vo.setInviteeAttendedCount(Long.valueOf(param.getValue().size()));
+				}
+			}
+			
+			//push non invitee  attended count
+			if(finalList != null && finalList.size() > 0){
+				for(PartyMeetingDataVO param : finalList){
+					param.setNonInviteesCount(param.getAttendedCount()-param.getInviteeAttendedCount());
+				}
+			}
+			
+			//push total absent count
+			if(finalList != null && finalList.size() > 0){
+				for(PartyMeetingDataVO param : finalList){
+					param.setAbsentCount(param.getInvitedCount()-param.getInviteeAttendedCount());
+				}
+			}
+			 
+		}catch(Exception e){
+			LOG.error("Exception raised at getSpecialMeetingsDetails() method of LoactionDetailsDashBoardService", e);
+		}
+	}
+	public void createMapForMeetingIdAndInviteeList(Map<Long,Set<Long>> meetingIdAndCadreIdSetMapForInvitee, List<Object[]> inviteeList){
+		try{
+			Set<Long> cadreIdSet = null;
+			for(Object[] param : inviteeList){
+				cadreIdSet = meetingIdAndCadreIdSetMapForInvitee.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				if(cadreIdSet == null ){
+					cadreIdSet = new HashSet<Long>();
+					meetingIdAndCadreIdSetMapForInvitee.put(commonMethodsUtilService.getLongValueForObject(param[0]), cadreIdSet);
+				}
+				cadreIdSet.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at createMapForMeetingIdAndInviteeList() method of LoactionDetailsDashBoardService", e);
+		}
+	}
+	public void createMapForInviteeAttendedForMeeting(Map<Long,Set<Long>> meetingIdAndCadreIdSetMapForInviteeAttended, Map<Long,Set<Long>> meetingIdAndCadreIdSetMapForInvitee, Map<Long,Set<Long>> meetingIdAndCadreIdSetMapForAttended){
+		try{
+			Long meetingId = 0L;
+			Set<Long> invitedCadreIdSet = null;
+			Set<Long> tempCadreIdSet = null;
+			Set<Long> attendedCadreIdSet = null;
+			
+			if(meetingIdAndCadreIdSetMapForInvitee != null && meetingIdAndCadreIdSetMapForInvitee.size() > 0){
+				for(Entry<Long,Set<Long>> innerParam : meetingIdAndCadreIdSetMapForInvitee.entrySet()){
+					tempCadreIdSet = new HashSet<Long>();
+					meetingId = innerParam.getKey();
+					invitedCadreIdSet = innerParam.getValue();
+					if(meetingIdAndCadreIdSetMapForAttended.get(innerParam.getKey()) != null){
+						attendedCadreIdSet = meetingIdAndCadreIdSetMapForAttended.get(innerParam.getKey());
+						tempCadreIdSet.addAll(invitedCadreIdSet);
+						tempCadreIdSet.retainAll(attendedCadreIdSet);
+						meetingIdAndCadreIdSetMapForInviteeAttended.put(meetingId, tempCadreIdSet);
+					}else{
+						meetingIdAndCadreIdSetMapForInviteeAttended.put(meetingId, new HashSet<Long>());
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at createMapForInviteeAttended() method of LoactionDetailsDashBoardService", e);
+		}
 	}
 	
 }
