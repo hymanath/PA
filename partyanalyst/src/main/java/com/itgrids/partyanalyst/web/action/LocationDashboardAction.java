@@ -91,8 +91,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<NominatedPostCandidateDtlsVO> nominatedPostCandList;
 	private KeyValueVO keyValueVO;
 	private List<ElectionInformationVO> informationVo;
+	private List<LocationAlertVO> locationAlertVOList;
 	
 	
+	public List<LocationAlertVO> getLocationAlertVOList() {
+		return locationAlertVOList;
+	}
+	public void setLocationAlertVOList(List<LocationAlertVO> locationAlertVOList) {
+		this.locationAlertVOList = locationAlertVOList;
+	}
 	public KeyValueVO getKeyValueVO() {
 		return keyValueVO;
 	}
@@ -1100,4 +1107,38 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getDesignationWiseAlertsOverview(){
+		 try{
+			  RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+				if(regVo!=null && regVo.getRegistrationID()!=null){
+					Long userId = regVo.getRegistrationID();
+				}
+				jObj = new JSONObject(getTask());
+				String fromDateStr = jObj.getString("fromDateStr");
+				String year = jObj.getString("year");
+				String toDateStr = jObj.getString("toDateStr");
+				Long locationTypeId = jObj.getLong("locationTypeId");
+				JSONArray alertTypeIdsStr = jObj.getJSONArray("alertTypeIdsStr");  
+				List<Long> alertTypeIds = new ArrayList<Long>();
+				if(alertTypeIdsStr != null && alertTypeIdsStr.length() > 0){
+					for (int i = 0; i < alertTypeIdsStr.length(); i++){
+						alertTypeIds.add(Long.parseLong(alertTypeIdsStr.getString(i)));        
+					} 
+				}
+				JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
+				List<Long> locationValues = new ArrayList<Long>();
+				if(locationValuesArr != null && locationValuesArr.length() > 0){
+					for (int i = 0; i < locationValuesArr.length(); i++){
+						locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
+					} 
+				}
+				locationAlertVOList = alertLocationDashboardService.getDesignationWiseAlertsOverview(fromDateStr,toDateStr,locationValues,alertTypeIds,locationTypeId,year);
+				
+		 }catch(Exception e){
+			 successMsg = "failure";
+			 LOG.error("Exception Occured in getDesignationWiseAlertsOverview() method, Exception - ",e);
+		 }
+		 return Action.SUCCESS;
+	 }
 }
