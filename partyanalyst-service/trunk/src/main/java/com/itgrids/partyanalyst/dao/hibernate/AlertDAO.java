@@ -10669,7 +10669,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 			queryStr.append(" SELECT model.alertCategory.alertCategoryId,model.alertCategory.category ");
 	 		}
 	 			queryStr.append(" , model.alertType.alertTypeId,model.alertType.alertType, " +
-	 				    " count(distinct model.alertId) " +
+	 				    " count(distinct model.alertId),model.alertStatus.alertStatusId " +
 	 				    " FROM Alert model " +
 	 				    " WHERE model.isDeleted ='N' " +
 	 					" and model.alertTypeId  in (:alertTypeIds) " );
@@ -10703,7 +10703,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		}else if(type != null && type.equalsIgnoreCase("alertCategory")){
 	 			queryStr.append(" GROUP BY model.alertCategory.alertCategoryId ");
 	 		}
-	 	    queryStr.append(",model.alertType.alertTypeId " );
+	 	    queryStr.append(",model.alertType.alertTypeId,model.alertStatus.alertStatusId  " );
 	 	    
 	 	   if(type != null && type.equalsIgnoreCase("impactScope")){
 	 		  queryStr.append(" order by model.alertImpactScope.orderNo  ");

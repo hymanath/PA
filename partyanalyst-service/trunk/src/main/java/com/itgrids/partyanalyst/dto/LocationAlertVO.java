@@ -25,8 +25,15 @@ public class LocationAlertVO {
 	private Long involveMemberCount=0l;
 	private Long assignedMemberCount =0l;
 	private Double percentage;
+	private List<LocationAlertVO> subList1 = new ArrayList<LocationAlertVO>(0);
 	
 	
+	public List<LocationAlertVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<LocationAlertVO> subList1) {
+		this.subList1 = subList1;
+	}
 	public List<LocationAlertVO> getAlertTypeList() {
 		return alertTypeList;
 	}
