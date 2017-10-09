@@ -1737,7 +1737,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 				.addScalar("supportFor",Hibernate.STRING)
 				.addScalar("supportPurpose",Hibernate.STRING)
 				.addScalar("count",Hibernate.LONG);
-		if(locationTypeId!=null && locationTypeId.longValue()>0){
+		if(locationTypeId!=null && locationTypeId.longValue()>0 && locationTypeId.longValue() !=2L){
 			query.setParameterList("locationValues", locationValues);
 		}
 		/*if(year !=null && !year.trim().isEmpty()){
