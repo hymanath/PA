@@ -332,6 +332,17 @@ function getConstituencyWiseInsurance(){
 	
 }
 function getLevelWiseGrievanceCounts(){
+	if(locationLevelId != null && locationLevelId == 2){
+		$("#levelHeadingId").html("District wise Grievance Overview")
+	}else if(locationLevelId != null && (locationLevelId == 3 || locationLevelId == 10)){
+		$("#levelHeadingId").html("Constituency wise Grievance Overview")
+	}else if(locationLevelId != null && locationLevelId == 4){
+		$("#levelHeadingId").html("Mandal/Muncipality Grievance Overview")
+	}else if(locationLevelId != null && locationLevelId == 5){
+		$("#levelHeadingId").html("Vilalge Grievance Overview")
+	}else if(locationLevelId != null && locationLevelId == 7){
+		$("#levelHeadingId").html("Ward Grievance Overview")
+	}
 	$("#mandalWiseGrievanceId").html(spinner);
 	
 	var jsObj={
@@ -359,7 +370,17 @@ function getLevelWiseGrievanceCounts(){
 			str+='<table class="table tablePadding" id="mandalWiseGrievanceDataTable">';
 				str+='<thead>';
 					str+='<tr>';
-						str+='<th>Mandal Name</th>';
+					if(locationLevelId != null && locationLevelId == 2){
+						str+='<th>District Name</th>';
+					}else if(locationLevelId != null && (locationLevelId == 3 || locationLevelId == 10)){
+						str+='<th>Constituency Name</th>';
+					}else if(locationLevelId != null && locationLevelId == 4){
+						str+='<th>Mandal/Muncipality</th>';
+					}else if(locationLevelId != null && locationLevelId == 5){
+						str+='<th>Village Name</th>';
+					}else if(locationLevelId != null && locationLevelId == 5){
+						str+='<th>Ward Name</th>';
+					}
 						str+='<th>Total</th>';
 						str+='<th>Party</th>';
 						str+='<th>Govt</th>';
