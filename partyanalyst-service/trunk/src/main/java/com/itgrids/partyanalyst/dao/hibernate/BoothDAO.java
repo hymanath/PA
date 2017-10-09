@@ -3281,4 +3281,40 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 	
+	public List<Object[]> getPanchayatByMandal(List<Long> mandalIds,Long publicationDateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct p.panchayatId,p.panchayatName" +
+				" from Booth model" +
+				" left join model.panchayat p" +
+				" where model.publicationDate.publicationDateId = :publicationDateId");
+		if(mandalIds != null && mandalIds.size()>0 && !mandalIds.isEmpty()){
+			sb.append(" and model.tehsil.tehsilId in (:mandalIds)");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+			query.setParameter("publicationDateId",publicationDateId);
+		if(mandalIds != null && mandalIds.size()>0 && !mandalIds.isEmpty())
+			query.setParameterList("mandalIds", mandalIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getMunciplaitiesByLeb(List<Long> lebIds,Long publicationDateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct w.constituencyId,w.name" +
+				" from Booth model" +
+				" left join model.localBodyWard w" +
+				" where model.publicationDate.publicationDateId = :publicationDateId");
+		if(lebIds != null && lebIds.size()>0 && !lebIds.isEmpty()){
+			sb.append(" and model.localBody.localElectionBodyId in (:lebIds)");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+			query.setParameter("publicationDateId",publicationDateId);
+		if(lebIds != null && lebIds.size()>0 && !lebIds.isEmpty())
+			query.setParameterList("lebIds", lebIds);
+		
+		return query.list();
+	}
+	
 }

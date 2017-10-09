@@ -5155,8 +5155,10 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 				toDate = sdf.parse(toDateStr);
 			}
 			
+			
 			Long locationId = 0l;
 			List<Object[]> list = null;
+			Map<Long,GrivenceStatusVO> otherNameMap = new HashMap<Long, GrivenceStatusVO>(0);
 			//Get Below locationValues By LevelId
 			if(locationTypeId != null && locationTypeId.longValue() >0l && locationTypeId.longValue() == 2L)
 				list = districtDAO.getDistrictIdsByState(locationValues);
@@ -5168,8 +5170,14 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 					List<Object[]> muncipList = assemblyLocalElectionBodyDAO.getMuuncipalityByConstituency(locationValues);
 					list.addAll(muncipList);
 				}
-			}else if(locationTypeId != null && locationTypeId.longValue() >0l && locationTypeId.longValue() == 10L)
+			}else if(locationTypeId != null && locationTypeId.longValue() >0l && locationTypeId.longValue() == 10L){
 				list = parliamentAssemblyDAO.getConsIdsByParliamntsIds(locationValues);
+			}else if(locationTypeId != null && locationTypeId.longValue() >0l && locationTypeId.longValue() == 5L){
+				list = boothDAO.getPanchayatByMandal(locationValues,24L);
+			}else if(locationTypeId != null && locationTypeId.longValue() >0l && locationTypeId.longValue() == 7L){
+				list = boothDAO.getMunciplaitiesByLeb(locationValues,24L);
+			}
+				
 			
 			//List<Object[]> list = insuranceStatusDAO.getLevelValuesByLevel(locationTypeId,locationValues);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
@@ -5203,7 +5211,26 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 							vo.setGovtCount(vo.getGovtCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
 						else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("welfare"))
 							vo.setWelfareCount(vo.getWelfareCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
-					}
+					}/*else{
+						GrivenceStatusVO otherVO = otherNameMap.get(0L);
+						if(otherVO == null){
+							otherVO = new GrivenceStatusVO();
+							if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("party"))
+								otherVO.setPartyCount(otherVO.getPartyCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+							else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("govt"))
+								otherVO.setGovtCount(otherVO.getGovtCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+							else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("welfare"))
+								otherVO.setWelfareCount(otherVO.getWelfareCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+							otherNameMap.put(0L, otherVO);
+						}else{
+							if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("party"))
+								otherVO.setPartyCount(otherVO.getPartyCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+							else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("govt"))
+								otherVO.setGovtCount(otherVO.getGovtCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+							else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("welfare"))
+								otherVO.setWelfareCount(otherVO.getWelfareCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+						}
+					}*/
 				}
 			}
 			
@@ -5221,7 +5248,22 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 							vo.setDeathCount(vo.getDeathCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
 						else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Hospitalization"))
 							vo.setHosptalCount(vo.getHosptalCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
-					}
+					}/*else{
+						GrivenceStatusVO otherVO = otherNameMap.get(0L);
+						if(otherVO == null){
+							otherVO = new GrivenceStatusVO();
+							if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Death"))
+								otherVO.setDeathCount(otherVO.getDeathCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+							else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Hospitalization"))
+								otherVO.setHosptalCount(otherVO.getHosptalCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+							otherNameMap.put(0L, otherVO);
+						}else{
+							if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Death"))
+								otherVO.setDeathCount(otherVO.getDeathCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+							else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Hospitalization"))
+								otherVO.setHosptalCount(otherVO.getHosptalCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+						}
+					}*/
 				}
 			}
 			
@@ -5239,7 +5281,22 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 							vo.setSeatCount(vo.getSeatCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
 						else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Fee Concession"))
 							vo.setFeeConsCount(vo.getFeeConsCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
-					}
+					}/*else{
+						GrivenceStatusVO otherVO = otherNameMap.get(0L);
+						if(otherVO == null){
+							otherVO = new GrivenceStatusVO();
+							if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Seat"))
+								otherVO.setSeatCount(otherVO.getSeatCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+							else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Fee Concession"))
+								otherVO.setFeeConsCount(otherVO.getFeeConsCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+							otherNameMap.put(0L, otherVO);
+						}else{
+							if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Seat"))
+								otherVO.setSeatCount(otherVO.getSeatCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+							else if(param[1] != null && param[1].toString().trim().equalsIgnoreCase("Fee Concession"))
+								otherVO.setFeeConsCount(otherVO.getFeeConsCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+						}
+					}*/
 				}
 			}
 			
