@@ -78,7 +78,7 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 			<section>
 				<div class="col-sm-12 m_top20">
 					<div class="block">
-						<h4>Mandal wise Grievance overview</h4>
+						<h4 id="levelHeadingId"></h4>
 						<div id="mandalWiseGrievanceId" class="m_top10"></div>
 					</div>
 				</div>
