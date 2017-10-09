@@ -238,11 +238,18 @@ function onLoadCalls()
 				else if(levelType == "panchayat")
 					theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				
-				if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms' || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && levelType == "state")
+				if((globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && levelType == "state")
+					theadArr = [levelType,'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+
+				if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms') && levelType == "state")
+					theadArr = [levelType,'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+				
+				if((globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
 					theadArr = [levelType,'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 				
-				if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
-					theadArr = [levelType,'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+				if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (levelType == "state" || levelType == "district"))
+					theadArr = [levelType,'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+				
 				if(globalDivName == 'Anganwadi')
 				{
 					if(levelType == "constituency")
@@ -606,11 +613,18 @@ function projectData(divId,levelId,locationId)
 			else if(dataArr[i] == "panchayat")
 				theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 			
-			if((divId == 'Mulbery' || divId == 'Silk Worms' || divId == 'Cattle Drinking Water Troughs' || divId == 'Raising of Perinnial Fodders') && dataArr[i] == "state")
+			if((globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && dataArr[i] == "state")
+				theadArr = [dataArr[i],'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+
+			if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms') && dataArr[i] == "state")
+				theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+			
+			if((globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (dataArr[i] == "state" || dataArr[i] == "district"))
 				theadArr = [dataArr[i],'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 			
-			if((divId == 'Fish Ponds' || divId == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (dataArr[i] == "state" || dataArr[i] == "district"))
-				theadArr = [dataArr[i],'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+			if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (dataArr[i] == "state" || dataArr[i] == "district"))
+				theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+			
 			else if(divId == 'Anganwadi')
 			{
 				if(dataArr[i] == "state" || dataArr[i] == "district")
