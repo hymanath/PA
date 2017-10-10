@@ -404,7 +404,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			  Long locationTypeId = jObj.getLong("locationTypeId");
 			  Long locationValue = jObj.getLong("locationValue");
 			  List<Long> representativeTypeIds = convertJsonStringList(jObj.getJSONArray("representativeTypeIds"));  
-			  candidateDetailsForConstituencyTypesVO = locationDashboardService.getCandidateAndPartyInfoForConstituency(locationValue,locationTypeId,representativeTypeIds);
+			  List<Long> roleIds = convertJsonStringList(jObj.getJSONArray("roleIds"));  
+			  List<Long> committeeIds = convertJsonStringList(jObj.getJSONArray("committeeIds"));  
+			  List<Long> enrollmentYears = convertJsonStringList(jObj.getJSONArray("enrollmentYears")); 
+			  Long basicCommoteeId=jObj.getLong("basicCommoteeId");
+			  Long enrollmentId=jObj.getLong("enrollmentId");
+
+			  candidateDetailsForConstituencyTypesVO = locationDashboardService.getCandidateAndPartyInfoForConstituency(locationValue,locationTypeId,representativeTypeIds,roleIds,committeeIds,enrollmentYears,basicCommoteeId,enrollmentId);
 			  
 		  }catch(Exception e){
 			  LOG.error("Entered into getCandidateAndPartyInfoForConstituency method in locationDashboardAction....");
