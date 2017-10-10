@@ -3,7 +3,13 @@ function getTourLeaderDtlsBasedOnSelectionType(designationId,filterType){
 		  $("#tourDetailsDivId").html(spinner);
 		   
 		var designationIds=[];
-		designationIds.push(designationId);
+		 if (designationId == 4) {
+			 designationIds.push(4);
+			 designationIds.push(5);
+		 } else {
+		   designationIds.push(designationId);	 
+		 }
+		
 		
 	 	var jsObj ={ 
 					 activityMemberId 	: 0,
