@@ -1110,7 +1110,8 @@ public String getElectionInformationLocationWise(){
 			List<Long> yearsList = convertJsonStringList(jObj.getJSONArray("yearsArr")); 
 			List<Long> electionScopeIdsList = convertJsonStringList(jObj.getJSONArray("electionScopeIdsArr"));
 			List<Long> yearIdsList = convertJsonStringList(jObj.getJSONArray("yearsArr"));
-			informationVo = locationDashboardService.getLocationWiseElectionResults(electionScopeIdsList,jObj.getString("subType"),jObj.getLong("lelevlId"),locationValuesList,yearIdsList);
+			List<Long> partyIdsList = convertJsonStringList(jObj.getJSONArray("partyIdsArr"));
+			informationVo = locationDashboardService.getLocationWiseElectionResults(electionScopeIdsList,jObj.getString("subType"),jObj.getLong("lelevlId"),locationValuesList,yearIdsList,partyIdsList);
 		}catch(Exception e){
 			LOG.error("Exception raised at getLevelWiseGrievanceCounts() of LocationDashboardAction{}",e);
 		}
