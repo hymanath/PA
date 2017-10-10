@@ -33,16 +33,27 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private String partyFlag;
 	private String earnedVote;
 	private String status;
+	private String range;
 	
 	private List<ElectionInformationVO> list = new CopyOnWriteArrayList<ElectionInformationVO>();
-
 	private List<ElectionInformationVO> subList1 = new ArrayList<ElectionInformationVO>();
 	
-
 	public ElectionInformationVO(){}
 	public ElectionInformationVO(Long partyId,String name){
 		this.partyId=partyId;
 		this.partyName=name;
+	}
+	
+	public ElectionInformationVO(String status,String range){
+		this.status=status;
+		this.range=range;
+	}
+	
+	public String getRange() {
+		return range;
+	}
+	public void setRange(String range) {
+		this.range = range;
 	}
 	public String getPartyFlag() {
 		return partyFlag;

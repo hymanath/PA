@@ -2,6 +2,8 @@ package com.itgrids.core.api.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +50,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			List<ElectionInformationVO> finalPartyList = new ArrayList<ElectionInformationVO>();
 			
 			Map<Long,List<ElectionInformationVO>> yearMap = new HashMap<Long, List<ElectionInformationVO>>();
+			Map<Long,ElectionInformationVO> electionYeasrMap = new HashMap<Long, ElectionInformationVO>();
 			if(electionYrs !=null && electionYrs.size()>0l){
 				for (Long year : electionYrs) {
 					List<ElectionInformationVO> listEvo =yearMap.get(year);
@@ -126,6 +129,19 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 						}
 					}
 				}
+				
+				ElectionInformationVO tempYearVO=  electionYeasrMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
+				if(tempYearVO==null){
+					tempYearVO = new ElectionInformationVO();
+					tempYearVO.setElectionYear(commonMethodsUtilService.getStringValueForObject(objects[0]));
+					tempYearVO.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(objects[1]));
+					tempYearVO.setElectionType(commonMethodsUtilService.getStringValueForObject(objects[2]));
+					tempYearVO.setElectionId(commonMethodsUtilService.getLongValueForObject(objects[3]));
+					tempYearVO.setValidVoters(0L);
+					tempYearVO.setEarnedVotes(0L);
+					tempYearVO.setStatus("WORST");
+					electionYeasrMap.put(tempYearVO.getElectionId(), tempYearVO);
+				}
 			}
 			List<Object[]> earnedVotesList = null;
 			if(locationTypeId != null && locationTypeId.longValue() !=5L && locationTypeId.longValue() !=7L && locationTypeId.longValue() !=6L ){
@@ -181,16 +197,95 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				}
 				
 			}
-		finalPartyList = setLocationWiseStatus(statusMap,locationMap);
+			List<ElectionInformationVO> partyResultList = setLocationWiseStatus(statusMap,locationMap);
+			if(commonMethodsUtilService.isListOrSetValid(partyResultList)){
+				for (ElectionInformationVO locationVO : partyResultList) {
+					List<Long> availableElectionIdsList = new ArrayList<Long>(0);
+					if(commonMethodsUtilService.isListOrSetValid(locationVO.getList())){
+						for (ElectionInformationVO yearVO : locationVO.getList()) {
+							availableElectionIdsList.add(yearVO.getElectionId());
+						}
+					}
+					if(commonMethodsUtilService.isMapValid(electionYeasrMap)){
+						for (Long electionId : electionYeasrMap.keySet()) {
+							if(!availableElectionIdsList.contains(electionId))
+								locationVO.getList().add(electionYeasrMap.get(electionId));
+						}
+					}
+					
+					if(commonMethodsUtilService.isListOrSetValid(locationVO.getList())){
+						Collections.sort(locationVO.getList(), new Comparator<ElectionInformationVO>() {
+							public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
+								return o2.getElectionId().compareTo(o1.getElectionId());
+							}
+						});
+					}
+				}
+			}
+			if(commonMethodsUtilService.isListOrSetValid(partyResultList)){
+				finalPartyList = buildSummaryForelectionResult(partyResultList,statusMap);
+			}
+			
+		/*	List<ElectionInformationVO> partyResultList = setLocationWiseStatus(statusMap,locationMap);
+		*/
 		return finalPartyList;
 			
 		}catch(Exception e){
-			Log.error("Exception raised in getElectionInformationLocationWiseVoterShare method of LocationDashboardService"+e);
+			Log.error("Exception raised in getElectionInformationLocationWiseVoterShare method of LocationWiseElectionInformationDetalsService"+e);
 			return null;
 		}
 		
 	}
 
+	public List<ElectionInformationVO> buildSummaryForelectionResult(List<ElectionInformationVO> finalPartyList,Map<String,String> statusMap){
+		List<ElectionInformationVO> resultList = new ArrayList<ElectionInformationVO>(0);
+		try {
+			
+			if(commonMethodsUtilService.isListOrSetValid(finalPartyList)){
+				for (ElectionInformationVO locationVO : finalPartyList) {
+					if(commonMethodsUtilService.isMapValid(statusMap)){
+						Map<String,Long>  statusCountMap= new HashMap<String, Long>(0);
+						Map<String,Map<String,Long>> yearWiseStatusCountMap = new HashMap<String,Map<String, Long>>(0);
+						
+						if(!commonMethodsUtilService.isListOrSetValid(locationVO.getSubList1())){
+							for (String range : statusMap.keySet()) 
+								locationVO.getSubList1().add(new ElectionInformationVO(statusMap.get(range),range.trim()));
+						}
+						
+						if(commonMethodsUtilService.isListOrSetValid(locationVO.getList())){
+							for (ElectionInformationVO electionVO : locationVO.getList()) {
+								for (String range : statusMap.keySet()) {
+									statusCountMap = yearWiseStatusCountMap.get(electionVO.getElectionYear());
+									if(!commonMethodsUtilService.isMapValid(statusCountMap))
+										statusCountMap = new HashMap<String, Long>(0);
+									if(statusCountMap.get(electionVO.getStatus()) == null)
+										statusCountMap.put(statusMap.get(range), 0L);
+									
+									yearWiseStatusCountMap.put(electionVO.getElectionYear(), statusCountMap);
+								}
+								
+								statusCountMap = yearWiseStatusCountMap.get(electionVO.getElectionYear());
+								if(commonMethodsUtilService.isMapValid(statusCountMap)){
+									Long count = statusCountMap.get(electionVO.getStatus());
+									if(count == null)
+										count=0L;
+									count = count+1L;
+									statusCountMap.put(electionVO.getStatus(),count);
+								}
+							}
+						}
+						
+						
+					}
+					resultList.add(locationVO);
+				}
+			}
+			return resultList;
+		} catch (Exception e) {
+			Log.error("Exception raised in buildSummaryForelectionResult method of LocationWiseElectionInformationDetalsService"+e);
+			return null;
+		}
+	}
 	private List<ElectionInformationVO> setLocationWiseStatus(Map<String, String> statusMap,Map<Long, ElectionInformationVO> locationMap) {
 		List<ElectionInformationVO> finalList= new ArrayList<ElectionInformationVO>(0);
 		 for (Entry<Long, ElectionInformationVO> entry : locationMap.entrySet()) {
