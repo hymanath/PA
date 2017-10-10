@@ -347,7 +347,16 @@
 							</ul>
 						</div>
 					</div>
-					<div id="alertsBlockDivId" class="m_top20"></div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div id="alertsBlockDivId" class="m_top20"></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div id="alertsDeignBlockDivId" class="m_top20"></div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-12 m_top30" navbar-index="nominatedPosts">
