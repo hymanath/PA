@@ -5344,9 +5344,9 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 	 */
 public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(String fromDateStr, String toDateStr, Long locationTypeId,List<Long> locationValues,String year){
 	List<GrivenceStatusVO> finalList=new ArrayList<GrivenceStatusVO>();
-	try{
+	try{//cal the Existing service to get the insurance Status count 
 		GrivenceStatusVO InsuranceStatusVo= getLocationWiseInsuranceStatusCounts( fromDateStr,toDateStr,locationTypeId,locationValues,year);
-		finalList.add(InsuranceStatusVo);
+		finalList.add(InsuranceStatusVo);// add the insurance Status counts vo
 		Date fromDate = null;
 		Date toDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -5355,9 +5355,40 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 			fromDate = sdf.parse(fromDateStr);
 			toDate = sdf.parse(toDateStr);
 		}
+		List<Object[]> allGrivenceObjs=insuranceStatusDAO.getAllInsuranceGrievanceTpes();
+		//here we preparing the templet 
+		Map<String,List<GrivenceStatusVO>> templetMap=new HashMap<String,List<GrivenceStatusVO>>(0);
+		if(allGrivenceObjs !=null && allGrivenceObjs.size() >0){
+			for(Object[] param:allGrivenceObjs){
+					String subGrivenceType=commonMethodsUtilService.getStringValueForObject(param[1]);
+					if(subGrivenceType.equalsIgnoreCase("Road Accident") || subGrivenceType.equalsIgnoreCase("Animal Accident")){
+						 String grivenceType=commonMethodsUtilService.getStringValueForObject(param[0]);
+						 List<GrivenceStatusVO> listVo=templetMap.get(grivenceType);
+						 if(listVo !=null){
+							GrivenceStatusVO newVo=new GrivenceStatusVO();
+							newVo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							newVo.setCount(0L);
+							listVo.add(newVo);
+						 }else{
+							List<GrivenceStatusVO> newListVo=new ArrayList<GrivenceStatusVO>();
+							GrivenceStatusVO newVo1=new GrivenceStatusVO();
+							newVo1.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							newVo1.setCount(0L);
+							newListVo.add(newVo1);
+							templetMap.put(grivenceType,newListVo);
+						}
+				 }
+			}// add the other Accident Vo because we need set other Accident count is show lost position
+			for(Entry<String,List<GrivenceStatusVO>>  tempMap:templetMap.entrySet()){
+				GrivenceStatusVO otherVo=new GrivenceStatusVO();
+				otherVo.setName("Other Accident");
+				otherVo.setCount(0L);
+				tempMap.getValue().add(otherVo);
+			}
+		}
 		// locationId 1-lacation name 2-issuType 3-subject 4-count
 		List<Object[]> insuranceIssueTypeCountsObj=	insuranceStatusDAO.getConstituencyWiseInsuranceWiseIssueTypeCounts(fromDate,toDate,locationTypeId,locationValues, year,Long.valueOf(year));
-	Map<String,List<GrivenceStatusVO>> isuueTypeCountVoMap=new HashMap<String,List<GrivenceStatusVO>>(0);
+		Map<String,List<GrivenceStatusVO>> isuueTypeCountVoMap=new HashMap<String,List<GrivenceStatusVO>>(0);
 		if(insuranceIssueTypeCountsObj !=null && insuranceIssueTypeCountsObj.size() >0){
 			//here prepare the map issueType is key and List<GrivenceStatusVO> as value in the vo set the subject and count
 			for(Object[] param:insuranceIssueTypeCountsObj){
@@ -5379,15 +5410,14 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 				}
 			}// here iterating isuueTypeCountVoMap map 
 			//to set the issueType set to VO and and add all subject and counts to that VO in subList 
+			Map<String,List<GrivenceStatusVO>> finlResultMap=new HashMap<String,List<GrivenceStatusVO>>(0);
 			for(Entry<String,List<GrivenceStatusVO>> map :isuueTypeCountVoMap.entrySet()){
 				Long totalOtherCount=0L;
-				GrivenceStatusVO finalVo=new GrivenceStatusVO();  
 				String isuueTpeStr=map.getKey();
-				finalVo.setGrivenceType(isuueTpeStr);// set issueType 
 				List<GrivenceStatusVO> subList=new ArrayList<GrivenceStatusVO>();
 				for(GrivenceStatusVO subjectAndCountVo:map.getValue()){//iterating List
 					 if(subjectAndCountVo.getName().trim().equalsIgnoreCase("Road Accident") ||subjectAndCountVo.getName().trim().equalsIgnoreCase("Animal Accident") ){
-						 subList.add(subjectAndCountVo);// Road and Animal Accident add to subList
+						 subList.add(subjectAndCountVo);// Road and Animal Accident add to subList			
 					 }else{//remaing count add to  variable
 						 totalOtherCount=totalOtherCount+ subjectAndCountVo.getCount();
 					 }
@@ -5396,15 +5426,27 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 				otherAccidentVo.setName("Other Accident");
 				otherAccidentVo.setCount(totalOtherCount);//set total OtherCount
 				subList.add(otherAccidentVo);
-				finalVo.setSubList(subList);// set subject List to VO list contains road,animal and other accident counts
-				finalList.add(finalVo);// finally FINALVO add to final list
-				
+				finlResultMap.put(isuueTpeStr,subList);
+			}//here we prepare the List of vos to sent to UI 
+			//iterating  templetMap map set the finalResult map values set to templet map vos
+			for(Entry<String ,List<GrivenceStatusVO>> entry2: templetMap.entrySet()){
+				String subIssue=entry2.getKey();
+				GrivenceStatusVO finalVo=new GrivenceStatusVO();
+				finalVo.setGrivenceType(subIssue);
+				for(GrivenceStatusVO vo:entry2.getValue()){
+					GrivenceStatusVO matchedVo=grivenceStatusVOMatchedVo(finlResultMap.get(subIssue),vo.getName());
+					if(matchedVo !=null){
+						vo.setCount(matchedVo.getCount());
+					}
+					finalVo.getSubList().add(vo);
+				}
+				finalList.add(finalVo);
+			}//here calculate the percrntage
 				if(commonMethodsUtilService.isListOrSetValid(finalList)){
 					for (GrivenceStatusVO finalVO : finalList) {
 						if(finalVO != null){
 							for (GrivenceStatusVO vo : finalVO.getSubList()) {
 								finalVO.setCount(finalVO.getCount()+vo.getCount());
-								//vo.setPerc(Double.valueOf(vo.getCount())*100/Double.valueOf(finalVO.getCount()));
 							}
 							for (GrivenceStatusVO vo : finalVO.getSubList()) {
 								if(vo.getCount() != null && vo.getCount().longValue() >0L && finalVO.getCount() != null && finalVO.getCount().longValue() > 0l)
@@ -5413,9 +5455,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 									vo.setPerc("0.00");
 							}
 						}
-						//finalVO.setCount(finalVO.getCount()+vo.getCount());
 					}
-				}
 			}
 		}
 	}catch(Exception e){
