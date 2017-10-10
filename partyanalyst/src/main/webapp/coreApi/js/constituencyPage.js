@@ -161,14 +161,20 @@ function onLoadInitialisations()
 		ranges: { ////moment().endOf('Year')
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
            'This Month': [moment().startOf('month'), moment()],
            'This Year': [moment().startOf('Year'), moment()],
 		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
         }
 	});
+	function getDay(){
+		var date = new Date();
+		var dd = date.getDate(); 
+		return dd;
+	}
+	
 	//Tours End
 	
 	//Alert Start
@@ -258,7 +264,7 @@ function onLoadAjaxCalls()
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
-	getLevelWisePostsOverView();
+	getLevelWisePostsOverView(); 
 	
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
@@ -3579,29 +3585,68 @@ function getLocationWiseTourMembersComplainceDtls(){
 		var totalCamplains=0;
 		var totalNonCamplains=0;
 		var tottalCount=0;
+		var totalSubmitted=0;
+		var submittedCount = 0;
+		var totalNotSubmitted=0;
+		var totalSubNotSubmmitted=0;
+		
 		for(var i in result){
+				submittedCount = submittedCount+result[i].submitedLeaderCnt;
+				totalNotSubmitted = totalNotSubmitted+result[i].notSubmitedLeaserCnt;
+				totalSubmitted =totalSubmitted+result[i].totalSubmittedToursCnt;	
+					
 				for(var j in result[i].subList)
 				{
-					if(result[i].subList[j].isComplaince == "False"){
+						if(result[i].subList[j].isComplaince == "False"){
 						totalNonCamplains = totalNonCamplains+1;
 					}else if(result[i].subList[j].isComplaince == "True"){
 						totalCamplains =totalCamplains+1;
 					}
 				}	
 			}
-		tottalCount =totalCamplains+totalNonCamplains;	
+		tottalCount =totalCamplains+totalNonCamplains;
+		
 		tableView+='<div class="row">';
-			tableView+='<div class="col-sm-3">';
-				tableView+='<h4 style="text-align:center;">TOTAL LEADERS : '+tottalCount+'</h4>';
+			tableView+='<div class="col-sm-4" style="border-right:1px solid #d3d3d3;">';
+			var headingStr = "";
+			if (result != null && result[0].toursMonthId>1) {
+				headingStr = "Months";
+			} else {
+				headingStr = "Month"
+			}
+			
+				tableView+='<p>Data Showing:<span>'+result[0].toursMonthId+''+headingStr+'</span></p>';
+				tableView+='<table class="table table-bordered m_top10">';
+					tableView+='<tbody style="background-color: #F1F2F2;">';
+					tableView+='<tr>';
+						tableView+='<td style="text-align:center;padding:20px">';
+							tableView+='<h6>Total&nbsp;('+tottalCount+'*'+result[0].toursMonthId+'M)</h6>';
+							tableView+='<p class="m_top10">'+totalSubmitted+'</p>';
+						tableView+='</td>';
+						tableView+='<td style="text-align:center;padding:20px">';
+							tableView+='<h6>Submitted</h6>';
+							tableView+='<p class="m_top20">'+submittedCount+'</p>';
+						tableView+='</td>';	
+						tableView+='<td style="text-align:center;padding:20px">';
+							tableView+='<h6>Not Submitted</h6>';
+							tableView+='<p class="m_top10">'+totalNotSubmitted+'</p>';
+						tableView+='</td>';	
+					tableView+='</tr>';
+					tableView+='</tbody>';
+				tableView+='</table>';
+				tableView+='<h5 class="m_top10">TOTAL LEADERS : '+tottalCount+'</h5>';
 				tableView+='<div id="toursGraphDivId" style="height:300px;"></div>';
 			tableView+='</div>';
-			tableView+='<div class="col-sm-9">';
+			tableView+='<div class="col-sm-8">';
 				tableView+='<p class="pull-right f_12"><i class="glyphicon glyphicon-ok" style="color:#3DBC93;"></i> Complains<i class="glyphicon glyphicon-remove" style="color:#FF0000;margin-left:10px;"></i> Non Complains</p>';
 				
-				tableView+='<div class="col-sm-12 toursDesigCss toursSlickSlider">';
+				tableView+='<div class="col-sm-12">';
+					tableView+='<div class="toursDesigCss">';
 						tableView+='<ul class="toursSlickSlider list-inline m_0">';
+						
 								for(var i in result){
-									tableView+='<li class="col-sm-3" style="border-right:1px solid #d3d3d3;">';
+									var totalCnt= result[i].complainceCnt+result[i].nonComplainceCnt;
+									tableView+='<li style="border-right:1px solid #d3d3d3;">';
 										tableView+='<div class="media">';
 												tableView+='<div class="media-left">';
 												if(result[i].count !=null && result[i].count>0){
@@ -3620,7 +3665,77 @@ function getLocationWiseTourMembersComplainceDtls(){
 													
 												tableView+='</div>';
 												tableView+='<div class="m_top5">';
-													tableView+='<p class="toursCompNonComp">';
+													tableView+='<table class="table m_top10 tableborderNomiPost">';	
+														tableView+='<tbody>';
+														tableView+='<tr>';
+																tableView+='<td>';
+																	tableView+='<p class="f-12">Total('+totalCnt+' * '+result[0].toursMonthId+'M)</p>';
+																tableView+='</td>';
+																tableView+='<td class="pull-right">'; 
+																   if (result[i].totalSubmittedToursCnt != null && result[i].totalSubmittedToursCnt>0) {
+																	   tableView+='<span  class="toursCompNonCompClickCls" attr_designation_id="'+result[i].designationId+'" attr_tour_filter_type="all" style="color: #337ab7;">'+result[i].totalSubmittedToursCnt+'</span>';
+																   } else {
+																	   tableView+='<span>0</span>';
+																   }
+																	
+																tableView+='</td>';
+															tableView+='</tr>';
+															tableView+='<tr>';
+																tableView+='<td >';
+																	tableView+='<p class="f-12">Submited</p>';
+																tableView+='</td>';
+																tableView+='<td class="pull-right">';
+																  console.log("true");
+																    if (result[i].submitedLeaderCnt != null && result[i].submitedLeaderCnt > 0) {
+																		tableView+='<span class="toursCompNonCompClickCls" attr_designation_id="'+result[i].designationId+'" attr_tour_filter_type="submitted" style="color: #337ab7;">'+result[i].submitedLeaderCnt+'</span>';
+																	} else {
+																		 tableView+='<span">0</span>';
+																	}
+																	
+																tableView+='</td>';
+															tableView+='</tr>';
+															
+															tableView+='<tr>';
+																tableView+='<td>';
+																	tableView+='<p class="f-12">Not Submited</p>';
+																tableView+='</td>';
+																tableView+='<td class="pull-right">';
+																 if (result[i].notSubmitedLeaserCnt != null && result[i].notSubmitedLeaserCnt > 0) {
+																			tableView+='<span class="toursCompNonCompClickCls" attr_designation_id="'+result[i].designationId+'" attr_tour_filter_type="notSubmitteed" style="color: #337ab7;">'+result[i].notSubmitedLeaserCnt+'</span>';
+																 } else {
+																		 tableView+='<span">0</span>';
+																 }
+																tableView+='</td>';
+															tableView+='</tr>';
+															
+															tableView+='<tr>';
+																tableView+='<td>';
+																	tableView+='<p class="f-12">Complaince</p>';
+																tableView+='</td>';
+																tableView+='<td class="pull-right">';
+																  if (result[i].complainceCnt != null && result[i].complainceCnt>0) {
+																	  tableView+='<span class="toursCompNonCompClickCls" attr_designation_id="'+result[i].designationId+'" attr_tour_filter_type="Complaince" style="color: #337ab7;">'+result[i].complainceCnt+'</span>';
+																  } else {
+																	  tableView+='<span">0</span>';
+																  }
+																tableView+='</td>';
+															tableView+='</tr>';
+															
+															tableView+='<tr>';
+																tableView+='<td>';
+																	tableView+='<p class="f-12">Non-Complaince</p>';
+																tableView+='</td>';
+																tableView+='<td class="pull-right">';
+																   if (result[i].nonComplainceCnt != null && result[i].nonComplainceCnt>0) {
+																	  		tableView+='<span class="toursCompNonCompClickCls" attr_designation_id="'+result[i].designationId+'" attr_tour_filter_type="nonComplaince" style="color: #337ab7;">'+result[i].nonComplainceCnt+'</span>';
+																   } else {
+																	  		tableView+='<span">0</span>';
+																   }
+																tableView+='</td>';
+															tableView+='</tr>';
+														tableView+='</tbody>';	
+														tableView+='</table>';	
+													/* tableView+='<p class="toursCompNonComp">';
 														if(result[i].complainceCnt !=null && result[i].complainceCnt>0){
 															tableView+='<span><i class="glyphicon glyphicon-ok" style="color:#3DBC93;"></i> | <span class="toursCompNonCompClickCls" attr_designation_id="'+result[i].designationId+'" attr_tour_filter_type="Complaince" style="color: #337ab7;">'+result[i].complainceCnt+'</span></span>';
 														}else{
@@ -3633,66 +3748,94 @@ function getLocationWiseTourMembersComplainceDtls(){
 															tableView+='<span style="margin-left: 15px;"><i class="glyphicon glyphicon-remove" style="color:#FF0000;"></i> | - </span>';
 														}
 														
-													tableView+='</p>';
+													tableView+='</p>'; */
 												tableView+='</div>';
 											
 										tableView+='</li>';
 										
 								}
+							tableView+='</div>';	
 								tableView+='</ul>';
 							tableView+='</div>';
 						tableView+='<div class="col-sm-12 m_top5">';
 							tableView+='<div class="table-responsive">';
 								tableView+='<table class="table table-hover tableStyledTour table-condensed" id="toursTableId">';
+									var length = result[0].subList[0].monthList.length;
 									tableView+='<thead class="text-capitalize bg-E9">';
-										tableView+='<th>Leader Name</th>';
-										tableView+='<th>Designation</th>';
-										//tableView+='<th> </th>';
-										tableView+='<th>Target</th>';
-										tableView+='<th>Toured</th>';
-										tableView+='<th>Complaince</th>';
-									tableView+='</thead>';
+											tableView+='<tr>';
+												tableView+='<th rowspan="2">Leader Name</th>';
+												tableView+='<th rowspan="2">Designation</th>';
+												
+												tableView+='<th colspan="'+length+'" class="text-center">Submitted</th>';
+												tableView+='<th colspan="'+length+'" class="text-center">Complaince</th>';
+											tableView+='</tr>';
+											
+											tableView+='<tr>';
+												 for(var i in result[0].subList[0].monthList){
+													tableView+='<th>'+result[0].subList[0].monthList[i].name+'</th>';
+													
+												} 
+												 for(var i in result[0].subList[0].monthList){
+													tableView+='<th>'+result[0].subList[0].monthList[i].name+'</th>';
+													
+												} 
+											tableView+='</tr>';
+										tableView+='</thead>';
 									tableView+='<tbody>';
 										for(var i in result)
 										{
-											
+										
+										 if (result[i].subList != null && result[i].subList.length > 0) {
+											 
 											for(var j in result[i].subList)
 											{
-												tableView+='<tr>';
-													tableView+='<td style="cursor:pointer;color:#337ab7" attr_type="mainLevel" class="candiateCls" attr_candiate_id="'+result[i].subList[j].id+'" attr_candiate_name="'+result[i].subList[j].name+'" attr_designation_name="'+result[i].subList[j].designation+'">'+result[i].subList[j].name+'</td>';
-													tableView+='<td>'+result[i].subList[j].designation+'</td>';
-													/* tableView+='<td>';
-													tableView+='<div class="dropup findclass">';
-														tableView+='<span class="pull-right dropdown-toggle dropUpTour" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
-															tableView+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
-																tableView+='<p><i><b>Tours Days Target Per Month</b></i></p>';
-																tableView+='<table class="table">';
-																 //var monthWiseTarget = designationWiseList[i].subList; 
-																		 //if(monthWiseTarget != null && monthWiseTarget.length > 0){
-																			 //for(var k in monthWiseTarget){
-																				tableView+='<tr>';
-																				//if(monthWiseTarget[k].name != null && monthWiseTarget[k].name.length > 0){
-																				tableView+='<td style="border-top:none !important">aaaaaa</td>';	
-																				//}else{
-																				//tableView+='<td style="border-top:none !important"> - </td>';	
-																				//}
-																				tableView+='<td>205</td>';
-																			   tableView+='</tr>'; 
-																			 //}
-																		// }
-																tableView+='</table>';
-															tableView+='</div>';
-														tableView+='</div>';
-													tableView+='</td>'; */
-													tableView+='<td>'+result[i].subList[j].targetDays+'</td>';
-													tableView+='<td>'+result[i].subList[j].complainceDays+'</td>';
-													if(result[i].subList[j].isComplaince == "False"){
-														tableView+='<td><i class="glyphicon glyphicon-remove" style="color:#FF0000;"></i></td>';
-													}else{
-														tableView+='<td><i class="glyphicon glyphicon-ok" style="color:#3DBC93;"></i></td>';
-													}
-												tableView+='</tr>';
-											}	
+												 if (result[i].subList[j].monthList != null && result[i].subList[j].monthList.length > 0) {
+													 
+													  var  candidateName = result[i].subList[j].name;
+														var designationName = result[i].subList[j].designation;
+														var  candiateId = result[i].subList[j].id;
+														tableView+='<tr>';	
+														
+														if(candidateName !=null && candidateName.length>17){
+															
+															tableView+='<td ><span style="cursor:pointer;color:#337ab7" attr_type="mainLevel" class="candiateCls tooltipTourCls" attr_candiate_id="'+candiateId+'" attr_candiate_name="'+candidateName+'" attr_designation_name="'+designationName+'"  data-toggle="tooltip" data-placement="right" title="'+candidateName+'">'+candidateName.substring(0,17)+'...</span></td>';
+															
+														}else{
+															tableView+='<td style="cursor:pointer;color:#337ab7" attr_type="mainLevel" class="candiateCls" attr_candiate_id="'+candiateId+'" attr_candiate_name="'+candidateName+'" attr_designation_name="'+designationName+'">'+candidateName+'</td>';
+														}
+														
+														
+														
+														if(designationName !=null && designationName.length>17){
+															tableView+='<td><span class="tooltipTourCls" style="cursor:pointer;"  data-toggle="tooltip" data-placement="top" title="'+designationName+'">'+designationName.substring(0,17)+'...</span></td>'; 
+														}else{
+															tableView+='<td>'+designationName+'</td>'; 
+														}
+														
+														
+														
+														
+														
+														 
+														 for(var k in result[i].subList[j].monthList){
+															tableView+='<td>'+result[i].subList[j].monthList[k].isTourSubmitted+'</td>';
+														 } 
+															
+														 for(var k in result[i].subList[j].monthList){
+																if (result[i].subList[j].monthList[k].isComplaince != null && result[i].subList[j].monthList[k].isComplaince == "No Target") {
+																	tableView+='<td>-</td>';
+																} else {
+																	if(result[i].subList[j].monthList[k].complaincePer>=100){
+																	  tableView+='<td><i class="glyphicon glyphicon-ok" style="color:#3DBC93;"></i></td>';
+																	}else{
+																		tableView+='<td><i class="glyphicon glyphicon-remove" style="color:#FF0000;"></i></td>';
+																	}
+																}
+															} 
+													  tableView+='</tr>';	
+												 }
+											}	 
+										 }
 										}
 									tableView+='</tbody>';
 								tableView+='</table>';
@@ -3701,6 +3844,7 @@ function getLocationWiseTourMembersComplainceDtls(){
 					tableView+='</div>';
 				tableView+='</div>';
 		$("#locationWiseTourMembersComplainceDtls").html(tableView);
+		$(".tooltipTourCls").tooltip();
 		$('.toursSlickSlider').slick({
 				slide: 'li',
 				slidesToShow: 4,
@@ -5473,6 +5617,7 @@ function getLevelWisePostsOverView(){
 								str+='<td>';
 									str+='<span>'+result[i].recivedCount+'</span>';
 								str+='</td>';
+								str+='</tr>';
 							str+='<tr>';
 								str+='<td class="text-right">';
 									str+='<p class="f-12">Total Posts</p>';
