@@ -296,3 +296,29 @@ body
 		transform:scale(1.4) translate(-42%,0px);
 	}
 }
+@media (min-width: 500px) and (max-width:767px) {
+	.loginblock
+	{
+		width:100vw;
+		left:0px;
+		padding:20px;
+		margin-top:2vh;
+	}
+	.movingCycle
+	{
+		display:none;
+	}
+	.yellow-circle
+	{
+		background-color:#fff !important;
+	}
+	#circle-image
+	{
+		height:98vh;
+		top:-10vh;
+		position:absolute;	
+		-webkit-animation: zoomIn 2s linear;
+				animation: zoomIn 2s linear;
+		transform:scale(2.4) translate(-22%,0px);
+	}
+}
