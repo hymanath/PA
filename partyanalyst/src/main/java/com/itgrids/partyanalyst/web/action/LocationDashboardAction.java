@@ -1140,5 +1140,16 @@ public String getElectionInformationLocationWise(){
 			 LOG.error("Exception Occured in getDesignationWiseAlertsOverview() method, Exception - ",e);
 		 }
 		 return Action.SUCCESS;
-	 }
+	 }	
+	public String getElectionDetailsData(){
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> locationValue = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+			electioninformationList = locationDashboardService.getElectionDetailsData(jObj.getString("electionYear"), jObj.getLong("locationTypeId"),locationValue,jObj.getLong("electionId"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getConstituencyWiseInsuranceWiseIssueTypeCounts() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
