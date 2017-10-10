@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.core.api.service.IAlertLocationDashboardService;
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.core.api.service.ILocationWiseCasteInfoService;
+import com.itgrids.core.api.service.ILocationWiseElectionInformationDetalsService;
 import com.itgrids.core.api.service.IMeetingLocationDashboardService;
 import com.itgrids.core.api.service.INominatedPostLocationDashboardService;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -44,6 +45,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Teja Kollu
+ * @param <ILocationWiseElectionInformationDetalsService>
  *
  */
 public class LocationDashboardAction extends ActionSupport implements ServletRequestAware{
@@ -91,6 +93,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<NominatedPostCandidateDtlsVO> nominatedPostCandList;
 	private KeyValueVO keyValueVO;
 	private List<ElectionInformationVO> informationVo;
+	private ILocationWiseElectionInformationDetalsService locationWiseElectionInformationDetalsService;
 	private List<LocationAlertVO> locationAlertVOList;
 	
 	
@@ -102,6 +105,12 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	}
 	public KeyValueVO getKeyValueVO() {
 		return keyValueVO;
+	}
+	public ILocationWiseElectionInformationDetalsService getLocationWiseElectionInformationDetalsService() {
+		return locationWiseElectionInformationDetalsService;
+	}
+	public void setLocationWiseElectionInformationDetalsService(ILocationWiseElectionInformationDetalsService locationWiseElectionInformationDetalsService) {
+		this.locationWiseElectionInformationDetalsService = locationWiseElectionInformationDetalsService;
 	}
 	public void setKeyValueVO(KeyValueVO keyValueVO) {
 		this.keyValueVO = keyValueVO;
@@ -1104,6 +1113,30 @@ public String getElectionInformationLocationWise(){
 			informationVo = locationDashboardService.getLocationWiseElectionResults(electionScopeIdsList,jObj.getString("subType"),jObj.getLong("lelevlId"),locationValuesList,yearIdsList);
 		}catch(Exception e){
 			LOG.error("Exception raised at getLevelWiseGrievanceCounts() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	@SuppressWarnings("null")
+	public String getElectionInformationLocationWiseStatus(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			List<Long> partyIdList = convertJsonStringList(jObj.getJSONArray("partyIdsList"));
+			List<Long> electionYearsList = convertJsonStringList(jObj.getJSONArray("electionYears"));
+			List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIds"));
+			List<String> subTypeList = new ArrayList<String>();
+			JSONArray jsonArray = jObj.getJSONArray("electionSubTypeArr");
+			if (jsonArray != null && jsonArray.length() > 0) {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					subTypeList.add(jsonArray.getString(i).toString());
+				}
+			}
+			electioninformationList = locationWiseElectionInformationDetalsService.getElectionInformationLocationWiseStatus(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),
+					partyIdList,electionYearsList,electionScopeIds,subTypeList);
+
+		}catch(Exception e){
+			LOG.error("Exception raised at getElectionInformationLocationWiseStatus() of LocationDashboardAction{}",e);
 		}
 		return Action.SUCCESS;
 	}
