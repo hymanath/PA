@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ElectionInformationVO implements Serializable, Cloneable {
 	
@@ -31,9 +32,9 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private String perc="0.0";
 	private String partyFlag;
 	private String earnedVote;
+	private String status;
 	
-	private List<ElectionInformationVO> list = new ArrayList<ElectionInformationVO>();
-	
+	private List<ElectionInformationVO> list = new CopyOnWriteArrayList<ElectionInformationVO>();
 
 	private List<ElectionInformationVO> subList1 = new ArrayList<ElectionInformationVO>();
 	
@@ -168,6 +169,12 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	}
 	public void setWonSeatsCount(Long wonSeatsCount) {
 		this.wonSeatsCount = wonSeatsCount;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	public List<ElectionInformationVO> getSubList1() {
 		return subList1;
