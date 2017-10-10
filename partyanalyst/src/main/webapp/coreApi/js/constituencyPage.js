@@ -195,8 +195,6 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {	
-
-	
 	$("#enrolmentYears").chosen();
 	//Enrolment Years
 	getEnrollmentIds();
@@ -4790,129 +4788,94 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 	function buildAlertsTable(result){
 		var str='';
 		
-			str+='<div class="row">';
-				var totalAlertsCount=0;
-				if(result.alertTypeList !=null && result.alertTypeList.length>0){
-					for(var i in result.alertTypeList){
-						totalAlertsCount = totalAlertsCount+result.alertTypeList[i].count;
+		str+='<div class="table-responsive">';
+			str+='<table class="table-alerts">';
+				str+='<tr>';
+					str+='<td colspan="3" style="background-color:#F6F6F6;"><div class="media"><div class="media-left"><img src="coreApi/img/total_alerts.png" style="width:40px;"/></div><div class="media-body"><p>Total <span class="text-danger">Alerts</span></p><h4>'+result.totalAlertCount+'</h4></div></div></td>';
+					if(result.subList !=null && result.subList.length>0){
+						for(var i in result.subList)
+						{
+							str+='<td colspan="3"><h3>'+result.subList[i].status+'</h3></td>';
+						}
 					}
-				}
-						str+='<div class="col-sm-4">';
-							str+='<div class="block_Alert_styled">';
-								str+='<div class="row">';
-										str+='<div class="col-sm-6">';
-											str+='<img src="coreApi/img/total_alerts.png" />';
-										str+='</div>';
-										str+='<div class="col-sm-6 m_top10">';
-											str+='<h4>Total <span style="color:#D47063">Alerts</span></h4>';
-											if(totalAlertsCount !=null && totalAlertsCount>0){
-												str+='<h3>'+totalAlertsCount+'</h3>';
-											}else{
-												str+='<h3> - </h3>';
-											}
-											
+				str+='</tr>';
+				str+='<tr>';
+					str+='<td colspan="3">';
+					if(result.alertTypeList !=null && result.alertTypeList.length>0){
+						for(var i in result.alertTypeList){
+							str+='<div class="media">';
+								str+='<div class="media-left">';
+								if(result.alertTypeList[i].status == "Party"){
+									str+='<img class="media-object" src="coreApi/img/TDP_icon.png" alt="group">';
+								}else if(result.alertTypeList[i].status == "Govt"){
+									str+='<img class="media-object" src="coreApi/img/aplogo_icon.png" alt="group">';
+								}
+								str+='</div>';
+								str+='<div class="media-body">';
+									str+='<p>'+result.alertTypeList[i].status+' Alerts</p>';
+									if(result.alertTypeList[i].count !=null && result.alertTypeList[i].count>0){
+										str+='<h4 class="m_top5">'+result.alertTypeList[i].count+'&nbsp;&nbsp;<small style="font-size:10px;" class="text-success">'+result.alertTypeList[i].percentage+'%</small></h4>';
+									}else{
+										str+='<h4 class="m_top5"> - </h4>';
+									}
+									
+									
+								str+='</div>';
+							str+='</div>';
+						}
+					}	
+					str+='</td>';
+					if(result.subList !=null && result.subList.length>0){
+						for(var i in result.subList)
+						{
+							str+='<td colspan="3">'+result.subList[i].count+'<small class="pull-right text-success">'+result.subList[i].percentage+'</small></td>';
+						}
+					}
+				str+='</tr>';
+				str+='<tr>';
+					str+='<td colspan="3">';
+						str+='<div class="row" style="width:220px">';
+							str+='<div class="col-sm-12">';
+							if(result.subList1 !=null && result.subList1.length>0){
+								for(var i in result.subList1)
+								{
+									str+='<div style="padding:5px;font-size:12px;background-color:'+result.subList1[i].colour+'">';
+										str+='<div class="row">';
+											str+='<div class="col-sm-6">'+result.subList1[i].status+'</div>';
+											str+='<div class="col-sm-2">'+result.subList1[i].count+'</div>';
+											str+='<div class="col-sm-4">'+result.subList1[i].percentage+'</div>';
 										str+='</div>';
 									str+='</div>';
-								str+='</div>';
-								
-								str+='<div class="block_AlertC_styled">';
-								str+='<div class="row">';
-								if(result.alertTypeList !=null && result.alertTypeList.length>0){
-									for(var i in result.alertTypeList){
-										str+='<div class="col-sm-6">';
-											str+='<div class="media">';
-												str+='<div class="media-left">';
-												if(result.alertTypeList[i].status == "Party"){
-													str+='<img class="media-object" src="coreApi/img/TDP_icon.png" alt="group">';
-												}else if(result.alertTypeList[i].status == "Govt"){
-													str+='<img class="media-object" src="coreApi/img/aplogo_icon.png" alt="group">';
-												}
-													
-												str+='</div>';
-												str+='<div class="media-body">';
-													str+='<h5>'+result.alertTypeList[i].status+' Alerts</h5>';
-													if(result.alertTypeList[i].count !=null && result.alertTypeList[i].count>0){
-														str+='<h4 class="m_top5">'+result.alertTypeList[i].count+' <br/><small style="color:green">'+result.alertTypeList[i].percentage+'%</small></h4>';
-													}else{
-														str+='<h4 class="m_top5"> - </h4>';
-													}
-													
-													
-												str+='</div>';
+								}
+							}
+							str+='</div>';
+						str+='</div>';
+					str+='</td>';
+					if(result.subList !=null && result.subList.length>0){
+						for(var i in result.subList)
+						{
+							str+='<td colspan="3">';
+								str+='<div class="row" style="width:220px">';
+									str+='<div class="col-sm-12">';
+									for(var j in result.subList[i].subList)
+									{
+										str+='<div style="padding:5px;font-size:12px;background-color:'+result.subList[i].subList[j].colour+'">';
+											str+='<div class="row">';
+												str+='<div class="col-sm-6">'+result.subList[i].subList[j].status+'</div>';
+												str+='<div class="col-sm-2">'+result.subList[i].subList[j].count+'</div>';
+												str+='<div class="col-sm-4">'+result.subList[i].subList[j].percentage+'</div>';
 											str+='</div>';
 										str+='</div>';
 									}
-								}		
 									str+='</div>';
 								str+='</div>';
-						str+='</div>';
-					str+='<div class="col-sm-8">';
-						str+='<ul class="list-inline text-center">';
-						if(result.subList !=null && result.subList.length>0){
-							for(var i in result.subList){
-								if(result.subList[i].status !="Others"){
-									if(result.subList[i].status == "Electronic Media"){
-										str+='<li class="col-sm-3">';
-									}else{
-										str+='<li class="col-sm-2">';
-									}
-										str+='<img class="img-responsive" src="coreApi/img/'+result.subList[i].status+'.png" alt="group">';
-										str+='<h5 class="m_top20">'+result.subList[i].status+' <br/>Alerts</h5>';
-										
-										if(result.subList[i].count !=null && result.subList[i].count>0){
-											str+='<h4 class="m_top20">'+result.subList[i].count+'</h4>';
-										}else{
-											str+='<h4 class="m_top20"> - </h4>';
-										}
-										if(result.subList[i].percentage !=null && result.subList[i].percentage>0.0){
-											str+='<h6 style="color:green" >'+result.subList[i].percentage+'%</h6>';
-										}else{
-											str+='<h6> - </h6>';
-										}
-									str+='</li>';
-								}
-								
-							}
+							str+='</td>';
 						}
-						str+='</ul>';
-				str+='</div>';
-			str+='</div>';
-			str+='<div class="row">';
-				str+='<div class="col-sm-12 m_top20">';
-					str+='<hr class="m_0"/>';
-				str+='</div>';
-				str+='<div class="col-sm-12 m_top10">';
-					str+='<ul class="list-border list-border-responsive">';
-						if(result.impactScopeList !=null && result.impactScopeList.length>0){
-							for(var i in result.impactScopeList){
-								str+='<li style="padding: 10px 0;">';
-									if(result.impactScopeList[i].status !=null && result.impactScopeList[i].status.length>10){
-										str+='<p class="text-capitalize tooltipAlertCls"  style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.impactScopeList[i].status+'" >'+result.impactScopeList[i].status.substring(0,10)+'...</p>';
-									}else{
-										str+='<p class="text-capitalize">'+result.impactScopeList[i].status+'</p>';
-									}
-									
-									if(result.impactScopeList[i].count !=null && result.impactScopeList[i].count>0){
-										str+='<h3 class="m_top10">'+result.impactScopeList[i].count+'</h3>';
-									}else{
-										str+='<h3 class="m_top10"> - </h3>';
-									}
-									
-									if(result.impactScopeList[i].percentage !=null && result.impactScopeList[i].percentage>0.0){
-										str+='<h6 style="color:green">'+result.impactScopeList[i].percentage+'%</h6>';
-									}else{
-										str+='<h6> - </h6>';
-									}
-									
-								str+='</li>';
-							}
-						}
-							
-						str+='</ul>';
-				str+='</div>';
-			str+='</div>';
-		$("#alertsBlockDivId").html(str);	
-		$(".tooltipAlertCls").tooltip();	
+					}
+				str+='</tr>';
+			str+='</table>';
+		str+='</div>';
+		$("#alertsBlockDivId").html(str);
 	}
 }
 
@@ -5808,4 +5771,3 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 		
 	}
   }
-  
