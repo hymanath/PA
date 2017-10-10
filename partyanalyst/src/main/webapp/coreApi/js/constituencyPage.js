@@ -1130,8 +1130,19 @@ function getCandidateAndPartyInfoForConstituency(){
 	}else{
 		$("#parliamentMemberId,#assemblyMemberId,#representativeMembersId,#statelevelMembersId").show();
 	}
+	var roleIds=[];
+	var committeeIds=[];
+	var basicCommoteeId='0';
+	var enrollmentId='0';
+	var enrollmentYears=[];
 	var representativeTypeIds = [];
 	if(locationLevelId == 2){
+		representativeTypeIds =[36];
+		roleIds.push(1,10);
+		committeeIds.push(10,12);
+		basicCommoteeId="1";
+		enrollmentId="2";
+		enrollmentYears.push(2014);
 		representativeTypeIds =[36];
 	}	
 	else if(locationLevelId == 3){
@@ -1148,7 +1159,12 @@ function getCandidateAndPartyInfoForConstituency(){
 	var jsObj={
     	locationTypeId	:locationLevelId,
 		locationValue	:locationLevelVal,
-		representativeTypeIds:representativeTypeIds
+		representativeTypeIds:representativeTypeIds ,
+		roleIds :roleIds,
+		committeeIds:committeeIds,
+		basicCommoteeId:basicCommoteeId,
+		enrollmentId:enrollmentId,
+		enrollmentYears:enrollmentYears
     }
     $.ajax({
       type : "GET",
@@ -1379,7 +1395,7 @@ function getCandidateAndPartyInfoForConstituency(){
 												stateLevel+='<div class="media-body">';
 													stateLevel+='<h4 class="text-success text-capital m_left5">'+result[i].candidateName+'';
 													stateLevel+='</h4>';
-													stateLevel+='<p class="text-muted text-capital m_left7 f_12" style="margin-bottom:5px">'+result[i].designation+' of AP</p>';
+													stateLevel+='<p class="text-muted text-capital m_left7 f_12" style="margin-bottom:5px">'+result[i].committeLevel+' of AP</p>';
 													
 													if(result[i].cadreId !=null && result[i].cadreId>0){
 														stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>';
