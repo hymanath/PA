@@ -32,6 +32,11 @@ public class CandidateDetailsForConstituencyTypesVO {
 	private String others;
 	private Long othersCount=0l;
 	private List<CandidateDetailsForConstituencyTypesVO> subList2;
+	private String mobileNo;
+	private String memberShipNo;
+	private String committeLevel;
+	private List<CandidateDetailsForConstituencyTypesVO> candateList=new ArrayList<CandidateDetailsForConstituencyTypesVO>(0);
+	
 	public List<CandidateInfoForConstituencyVO> getList() {
 		return list;
 	}
@@ -197,6 +202,31 @@ public class CandidateDetailsForConstituencyTypesVO {
 	}
 	public void setSubList2(List<CandidateDetailsForConstituencyTypesVO> subList2) {
 		this.subList2 = subList2;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getMemberShipNo() {
+		return memberShipNo;
+	}
+	public void setMemberShipNo(String memberShipNo) {
+		this.memberShipNo = memberShipNo;
+	}
+	public List<CandidateDetailsForConstituencyTypesVO> getCandateList() {
+		return candateList;
+	}
+	public void setCandateList(
+			List<CandidateDetailsForConstituencyTypesVO> candateList) {
+		this.candateList = candateList;
+	}
+	public String getCommitteLevel() {
+		return committeLevel;
+	}
+	public void setCommitteLevel(String committeLevel) {
+		this.committeLevel = committeLevel;
 	}
 	
 	
