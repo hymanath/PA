@@ -1,6 +1,8 @@
 package com.itgrids.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IdNameVO implements Serializable{
 	
@@ -17,6 +19,8 @@ public class IdNameVO implements Serializable{
 	private String maxDate;
 	
 	private String url;
+	private List<Long> componentIds = new ArrayList<Long>(0);
+	private Long orderNo;
 	
 	public IdNameVO() {
 		super();
@@ -91,5 +95,17 @@ public class IdNameVO implements Serializable{
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public List<Long> getComponentIds() {
+		return componentIds;
+	}
+	public void setComponentIds(List<Long> componentIds) {
+		this.componentIds = componentIds;
+	}
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
 }

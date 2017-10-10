@@ -316,4 +316,9 @@ public class FundManagementDashboardController {
 			ResultVO status = userServiceImpl.deleteFavouriteComponent(inputVO);
 			return status;
 	    }
+		@PostMapping(value ="/saveFavouriteComponentOrderDtls")
+	    public @ResponseBody ResultVO saveFavouriteComponentOrderDtls(@RequestBody IdNameVO inputVO) {
+			ResultVO status = userServiceImpl.saveFavouriteComponentOrderDtls(inputVO);
+			return status;
+	    }
 }

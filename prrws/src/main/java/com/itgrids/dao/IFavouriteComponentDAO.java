@@ -11,4 +11,6 @@ public interface IFavouriteComponentDAO extends GenericDao<FavouriteComponent,Lo
 	public List<Long> getFavouriteComponentId(String name);
 	public int updateFavouriteComponentDtls(Long favouriteComponentId,String actionType);
 	public List<Object[]> getFavouriteComponencts();
+	
+	public Long getMaxOrderNo();
 }

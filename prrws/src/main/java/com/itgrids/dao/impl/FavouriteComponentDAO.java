@@ -33,6 +33,10 @@ public class FavouriteComponentDAO extends GenericDaoHibernate<FavouriteComponen
 	}
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getFavouriteComponencts() {
-		return getSession().createQuery(" select distinct model.favouriteComponentId,model.name,model.url from FavouriteComponent model where model.isDeleted='N' ").list();
+		return getSession().createQuery(" select distinct model.favouriteComponentId,model.name,model.url,model.orderNo from FavouriteComponent model where model.isDeleted='N' order by model.orderNo ").list();
+	}
+	
+	public Long getMaxOrderNo(){
+		return (Long) getSession().createQuery("select max(model.orderNo) from FavouriteComponent model where model.isDeleted='N'").uniqueResult();
 	}
 }

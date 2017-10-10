@@ -19,6 +19,7 @@ public class FavouriteComponent {
 	private Date insertedTime;
 	private Date updatedTime;
 	private String isDeleted;
+	private Long orderNo;
 	
 	@Id
 	@Column(name = "favourite_component_id")
@@ -64,7 +65,11 @@ public class FavouriteComponent {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	
-	
-	
+	@Column(name = "order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
 }
