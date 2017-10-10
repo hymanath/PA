@@ -83,6 +83,7 @@ label
 .pad_0{padding: 0px !important;}
 .pad_5{padding: 5px !important;}
 .pad_10{padding: 10px !important;}
+.pad_30{padding: 30px !important;}
 .pad_left0{padding-left: 0px;}
 .pad_right0{padding-right: 0px;}
 .panel
@@ -1081,6 +1082,91 @@ ul li[menu-levelname='panchayat']:after .active
 	float: right;
 	color:#333;
 }
+.panel-default > .winnersColor{
+	background-color:#b3f3e4 !important;
+	padding:10px !important;
+	border-bottom: 2px solid #6ac36a !important;
+	border-top-left-radius:10px !important;
+	border-top-right-radius:10px !important;
+}
+.panel-default  > .looserColor{
+	background-color:#F6ACAC !important;
+	padding:10px !important;
+	border-bottom: 2px solid #F57474 !important;
+	border-top-left-radius:10px !important;
+	border-top-right-radius:10px !important;
+}
+.panel-border{
+	border-color:#D9D7D7 !important;
+	border-radius: 10px ! important;
+}
+.media-left, .media-right, .media_body_custom{
+	display:table-cell !important;
+	vertical-align:top !important;
+}
+.media, .media_body_custom{
+overflow:hidden !important;
+}
+.panel_body_custom{
+background-color:#D9D7D7;
+}
+.nav-tabs-horizontal_Elec
+{
+	border-bottom: 0px;
+	border-right: 1px solid #ddd;
+}
+.nav-tabs-horizontal_Elec li
+{
+	width: 100%;
+	display: block;
+	margin-bottom: 0px;
+	margin-left: 3px
+}
+.nav-tabs-horizontal_Elec li a
+{
+	border-right:0px !important;
+	border-radius: 0px;
+	color:#333333 !important;
+}
+.nav-tabs-horizontal_Elec > li.active > a, .nav-tabs-horizontal_Elec > li.active > a:hover, .nav-tabs-horizontal_Elec > li.active > a:focus
+{
+	border-bottom:1px solid #ddd;
+	padding-right: 20px;
+	background-color:#d3d3d3;
+}
+.nav-tabs-horizontal_Elec > li.active > a:after
+{
+	content: '\e258';
+	font-family: 'Glyphicons Halflings';
+	position: absolute;
+	display: block;
+	right: 0;
+	font-size: 16px;
+	top: 26px;
+}
+.table_padding tbody tr td{
+	padding:13px !important;
+	font-size:12px !important;
+}
+.table_padding thead tr th{
+	font-size:12px !important;
+	text-transform:uppercase !important;
+}
+.candidate_rounded{
+	background-color: #ff0000;
+    border-radius: 50%;
+    color: #ffffff;
+    content: "";
+    display: inline-block;
+    height: 25px;
+    margin-right: 10px;
+    padding: 5px;
+    text-align: center;
+    width: 25px;
+}
+.normal_font{
+	font-weight:normal;
+}
 .table-alerts { 
 	border-collapse: separate; 
 	border-spacing: 10px 0px; 
@@ -1123,15 +1209,3 @@ ul li[menu-levelname='panchayat']:after .active
 .table-alerts tr:last-child td:last-child { border-bottom-right-radius: 10px; }
 .table-alerts tr:first-child td { border-top-style: solid; }
 .table-alerts tr td:first-child { border-left-style: solid; }
-.alerts-status-list
-{
-	padding-left:0px;
-}
-.alerts-status-list li
-{
-	display:inline-block;
-	margin:0px 5px;
-	border:1px solid #aaa;
-	border-radius:5px;
-	padding:8px;
-}

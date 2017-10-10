@@ -753,7 +753,7 @@
 		<pattern>/doorToDoorCampaignDashboardAction*</pattern>
 		<pattern>/areaWiseDashboardDetailedViewAction*</pattern>
 		<pattern>/areaWiseGrievanceDashboardAction*</pattern>
-		
+		<pattern>/areaWiseElectionDashboardAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">

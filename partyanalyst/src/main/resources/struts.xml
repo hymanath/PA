@@ -18219,6 +18219,11 @@
 			<param name="root">informationVo</param>
 		</result>
 	</action>
+	<action name="areaWiseElectionDashboardAction" class="locationDashboardAction" method="locationDashboard">
+			<result name="success">/jsp/areaWiseElectionDashboard.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src="areaWiseElectionDashboardAction"</result>	
+	</action> 
 	<action name="getElectionInformationLocationWiseStatusAction" class="locationDashboardAction" method="getElectionInformationLocationWiseStatus">
 		<result type="json" name="success">
 			<param name="root">electioninformationList</param>
