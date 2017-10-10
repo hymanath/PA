@@ -13,6 +13,7 @@ var blockHeadingObject = {
 var overViewArrConsolidated = [];
 var overViewIdsArr = [];
 var windowWidth =$(window).width();
+$("#editList,#saveList").tooltip();
 if(windowWidth <500){
 	$(".landing-menu").css("display","");
 	$(".landing-menu li").css("width","100%");
@@ -46,13 +47,14 @@ function getFavouriteComponents(){
 }
 function buildFavouriteComponentsResult(result) {
 	   var str = '';
-	   for (var i in result) {
-		var compnentName = result[i].name.trim();
-		if (result[i].name == "IT E & C") {
-			compnentName = "ITEC";
-		}
-		var componentNameWithoutSpace = compnentName.replace(/\s+/g, '');
-		str +='<div class="col-sm-4">'
+		str +='<div id="sortableList">';
+		for (var i in result) {
+			var compnentName = result[i].name.trim();
+			if (result[i].name == "IT E & C") {
+				compnentName = "ITEC";
+			}
+			var componentNameWithoutSpace = compnentName.replace(/\s+/g, '');
+			str +='<div class="col-sm-4 draggable-element" order-by="'+result[i].id+'">'
 				str +='<div class="whiteBlock">';
 					str +='<img src="Assests/img/'+imagesObj[compnentName]+'" >';
 					str +='<h5 style="display: inline-block;text-transform:uppercase;">'+result[i].name+'</h5>';
@@ -67,8 +69,10 @@ function buildFavouriteComponentsResult(result) {
 					str +='</div>';
 				str +='</div>';
 			str +='</div>';
-	}
+		}
+		str +='</div>';
 	$("#favouriteComponentDivId").html(str);
+	
 	/*adding required filed dynamically*/
 	for (var i in result) { 
 		var compnentName = result[i].name.trim();;
@@ -83,6 +87,46 @@ function buildFavouriteComponentsResult(result) {
 	}
 	onloadCallToGetAllBlockAchievent();
 }
+$(document).on("click","#saveList",function(){
+	
+	var orderList = []
+	$(".draggable-element").each(function(){
+		orderList.push($(this).attr("order-by"));
+	});
+	console.log(orderList)
+	var json = {
+		componentIds : orderList
+	}
+	$.ajax({ 
+		type:'POST',    
+		url: 'saveFavouriteComponentOrderDtls',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if (result.statusCode==0 && result.message=="success"){
+			$("#errorDivId").html("Your Priorities Saved Successfully")
+			$("#saveList").hide();
+			$("#editList").show();
+			Sortable.create(sortableList).destroy();
+			setTimeout(function(){
+				$("#errorDivId").html(" ")
+			},2000)
+		}
+		 
+		 
+	});	
+	
+	
+});
+$(document).on("click","#editList",function(){
+	$("#saveList").show();
+	$("#editList").hide();
+	Sortable.create(sortableList);
+});
 
 $(".showhideCls").css("display","none");
 $(document).on("click","[landing-link]",function(){
@@ -796,3 +840,4 @@ function getNREGSProjectsAbstractNew(type)
 		}
 	});
 }
+

@@ -124,7 +124,13 @@
 </section>
 <section style="margin-bottom: 100px" id="favouriteListMenu" landing-block="favourite" class="showhideCls">
 	<div class="container">
-		<div class="row" id="favouriteComponentDivId">
+		<div class="row">
+			<div class="col-sm-12 text-right m_top10">
+				<i class="fa fa-edit" title="edit priorities" id="editList" style="cursor:pointer;font-size:18px;"></i>
+				<i class="fa fa-save" title="save priorities" id="saveList" style="display:none;cursor:pointer;font-size:18px;"></i>
+				<span id="errorDivId"></span>
+			</div>
+			<div id="favouriteComponentDivId"></div>
 		</div>
 	</div>
 </section>
@@ -378,6 +384,7 @@
 <!--<script src="Assests/MaterialKit/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/MaterialKit/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="Assests/MaterialKit/js/material.min.js"></script>-->
+<script src="Assests/Plugins/dragAndDrop/Sortable.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>

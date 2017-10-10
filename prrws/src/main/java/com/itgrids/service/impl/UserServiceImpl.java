@@ -831,6 +831,7 @@ public class UserServiceImpl implements IUserService {
 			if (inputVO.getName() != null && inputVO.getName().trim().length() > 0) {
 				List<Long> componentsIdList = favouriteComponentDAO.getFavouriteComponentId(inputVO.getName());
 				if (componentsIdList == null || componentsIdList.size() == 0) {
+					Long maxOrder = favouriteComponentDAO.getMaxOrderNo();
 					DateUtilService dateUtil = new DateUtilService();
 					FavouriteComponent model = new FavouriteComponent();
 					model.setName(inputVO.getName());
@@ -838,6 +839,7 @@ public class UserServiceImpl implements IUserService {
 					model.setInsertedTime(dateUtil.getCurrentDateAndTime());
 					model.setUpdatedTime(dateUtil.getCurrentDateAndTime());
 					model.setIsDeleted("N");
+					model.setOrderNo(maxOrder+1L);
 					favouriteComponentDAO.save(model);
 					statusVO.setMessage("success");
 					statusVO.setStatusCode(0);
@@ -865,6 +867,7 @@ public class UserServiceImpl implements IUserService {
 					componentVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					componentVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					componentVO.setUrl(commonMethodsUtilService.getStringValueForObject(param[2]));
+					componentVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(param[3]));
 					resultList.add(componentVO);
 				}
 			}
@@ -873,6 +876,37 @@ public class UserServiceImpl implements IUserService {
 		}
 		return resultList;
 	}
+	
+	/**
+	 * @Author : Sravanth
+	 * @Date : 10-10-2017
+	 * @param InputVO inputVO
+	 * @return String  
+	 */
+	public ResultVO saveFavouriteComponentOrderDtls(IdNameVO inputVO) {
+		ResultVO statusVO = new ResultVO();
+		statusVO.setMessage("success");
+		statusVO.setStatusCode(0);
+		try {
+			if (inputVO.getComponentIds() != null && !inputVO.getComponentIds().isEmpty()) {
+				Long orderNo = 101L;
+				for (Long id : inputVO.getComponentIds()) {
+					FavouriteComponent model = favouriteComponentDAO.get(id);
+					model.setOrderNo(orderNo);
+					favouriteComponentDAO.save(model);
+					orderNo++;
+				}
+				statusVO.setMessage("success");
+				statusVO.setStatusCode(0);
+			}
+		} catch (Exception e) {
+			log.error("Exception occured in saveFavouriteComponentOrderDtls from UserServiceImpl ",e);
+			statusVO.setMessage("fail");
+			statusVO.setStatusCode(1);
+		}
+		return statusVO;
+	}
+	
 	/**
 	 * @Author : Santosh Kumar Verma
 	 * @Date : 27-09-2017

@@ -14,4 +14,6 @@ public interface IUserService {
 	public ResultVO saveFavouriteComponentDtls(IdNameVO inputVO);
 	public List<IdNameVO> getFavouriteComponents();
 	public ResultVO deleteFavouriteComponent(IdNameVO inputVO);
+	
+	public ResultVO saveFavouriteComponentOrderDtls(IdNameVO inputVO);
 }
