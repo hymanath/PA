@@ -550,8 +550,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public void setPublicRepresentativeDAO(
 			IPublicRepresentativeDAO publicRepresentativeDAO) {
 		this.publicRepresentativeDAO = publicRepresentativeDAO;
-	}
-	public List<CandidateDetailsForConstituencyTypesVO> getCandidateAndPartyInfoForConstituency(Long locationValue,Long locationTypeId,List<Long> representativTypeIds) {
+	}//roleIds,committeeIds,enrollmentYears,basicCommoteeId,enrollmentId
+	public List<CandidateDetailsForConstituencyTypesVO> getCandidateAndPartyInfoForConstituency(Long locationValue,Long locationTypeId,List<Long> representativTypeIds,List<Long> roleIds,List<Long> committeeIds,List<Long> enrollmentYears,Long basicCommoteeId,Long enrollmentId) {
 		List<CandidateDetailsForConstituencyTypesVO> finalList= new ArrayList<CandidateDetailsForConstituencyTypesVO>();
 		List<CandidateInfoForConstituencyVO> parliementfinalList= new ArrayList<CandidateInfoForConstituencyVO>();
 
@@ -717,6 +717,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			}else{
 				Map<Long,CandidateDetailsForConstituencyTypesVO> postinsMap = new HashMap<Long,CandidateDetailsForConstituencyTypesVO>();
 				List<Object[]> stateCandidateDesignations = publicRepresentativeDAO.getStateWiseCandidateDesignations(locationValue,locationTypeId,representativTypeIds);
+				List<Object[]> commiteeCandidatObjs=tdpCommitteeDAO.getCommitteeCandidatesByLevelWiseDetails( roleIds, committeeIds, basicCommoteeId, enrollmentId, enrollmentYears);
 				List<Long> candateIds = new ArrayList<Long>();
 				if(stateCandidateDesignations != null && stateCandidateDesignations.size()>0){
 					//CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituencyTypesVO =new CandidateDetailsForConstituencyTypesVO();
@@ -788,8 +789,33 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						//if(matchedCadreVo != null){
 							typeVO.setIspartial(constituencyName+" "+typeVO.getTotalDesignation());
 						//}
+					}// 0-tdpCadreId 1-name 2-image  3-mobileNo	4-memberShipNo	5-role	6-tdpCommitteeLevel	7-tdpCommitteeEnrollmentId
+					if(commiteeCandidatObjs !=null && commiteeCandidatObjs.size()  >0){
+						for(Object[] param:commiteeCandidatObjs){
+							CandidateDetailsForConstituencyTypesVO condidatVo = getMatchedVOForCadreIdForCadreId(finalList,commonMethodsUtilService.getLongValueForObject(param[0])); 
+							//CandidateDetailsForConstituencyTypesVO condidatVo=new CandidateDetailsForConstituencyTypesVO();
+							if(condidatVo != null){
+								condidatVo.setCommitteLevel(condidatVo.getDesignation()+" OF AP , "+commonMethodsUtilService.getStringValueForObject(param[5])+" OF "+commonMethodsUtilService.getStringValueForObject(param[6])+" "+"COMMITTEE");
+							}else{
+							condidatVo =new CandidateDetailsForConstituencyTypesVO();
+							condidatVo.setCadreId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							condidatVo.setCandidateName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							condidatVo.setCadreImage(commonMethodsUtilService.getStringValueForObject(param[2]));
+							condidatVo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[3]));
+							condidatVo.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(param[4]));
+							condidatVo.setDesignation(commonMethodsUtilService.getStringValueForObject(param[5]));
+							condidatVo.setRepresentativeLevel(commonMethodsUtilService.getStringValueForObject(param[6]));
+							condidatVo.setCommitteLevel(condidatVo.getDesignation()+" OF "+commonMethodsUtilService.getStringValueForObject(param[6])+" "+"COMMITTEE");
+							condidatVo.setRepresentativeLevelId(commonMethodsUtilService.getLongValueForObject(param[7]));
+							condidatVo.setParty("TDP");
+							condidatVo.setPartyFlag("TDP.PNG");
+							finalList.add(condidatVo);
+							}
+						
+						}
 					}
 				}
+				
 			}
 			Map<String,List<CandidateInfoForConstituencyVO>> posiCandList = new HashMap<String,List<CandidateInfoForConstituencyVO>>();
 			List<Object[]> locPosiCandts = tdpCadreCandidateDAO.getPublicRepresetativesInLocation(locationValue, locationTypeId,representativTypeIds);
@@ -5998,6 +6024,20 @@ public ElectionInformationVO getMatchedPartyVO(List<ElectionInformationVO> final
 		if(finalList != null && finalList.size() > 0){
 			for(ElectionInformationVO param : finalList){
 				if(param.getPartyId().longValue() == id){
+					return param;
+				}
+			}
+		}
+	}catch(Exception e){
+		Log.error("Exception raised in getMatchedVOForCadreId method of LocationDashboardService"+e);
+	}
+	return null;
+}
+public CandidateDetailsForConstituencyTypesVO getMatchedVOForCadreIdForCadreId(List<CandidateDetailsForConstituencyTypesVO> cadreVOs,Long id){
+	try{
+		if(cadreVOs != null && cadreVOs.size() > 0){
+			for(CandidateDetailsForConstituencyTypesVO param : cadreVOs){
+				if(param.getCadreId().longValue() == id){
 					return param;
 				}
 			}
