@@ -2927,7 +2927,59 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			
 		
 	}
+public List<Object[]> getCommitteeCandidatesByLevelWiseDetails(List<Long> roleIds,List<Long> committeeIds,Long basicCommoteeId,Long enrollmentId,List<Long> enrollmentYears){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select distinct tdpCommitteeMember.tdpCadre.tdpCadreId,tdpCommitteeMember.tdpCadre.firstname," +// 0-tdpCadreId 1-name
+			"tdpCommitteeMember.tdpCadre.image,tdpCommitteeMember.tdpCadre.mobileNo," +		//2-image  3-mobileNo
+			"tdpCommitteeMember.tdpCadre.memberShipNo," +		//4-memberShipNo
+			"tdpCommitteeRole.tdpRoles.role,tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +//5-role	6-tdpCommitteeLevel
+			"tdpCommittee.tdpCommitteeEnrollmentId ");		//7-tdpCommitteeEnrollmentId
+	sb.append(" from TdpCommittee tdpCommittee,TdpCommitteeRole tdpCommitteeRole," +
+			"TdpCommitteeMember tdpCommitteeMember,TdpCadre tdpCadre," +
+			"TdpCadreEnrollmentYear tdpCadreEnrollmentYear,TdpRoles tdpRoles ," +
+			"TdpCommitteeLevel tdpCommitteeLevel ");
+	sb.append(" where tdpCommittee.tdpCommitteeId=tdpCommitteeRole.tdpCommitteeId " +
+			"and tdpCommitteeMember.tdpCommitteeRoleId=tdpCommitteeRole.tdpCommitteeRoleId " +
+			"and tdpCadreEnrollmentYear.tdpCadreId=tdpCadre.tdpCadreId " +
+			"and tdpCommitteeMember.tdpCadreId=tdpCadreEnrollmentYear.tdpCadreId " +
+			"and tdpCadre.isDeleted='N' and tdpCadreEnrollmentYear.isDeleted='N' " +
+			"and tdpCommitteeMember.isActive='Y' "); 
+		if(enrollmentYears !=null && enrollmentYears.size() >0){
+			sb.append(" and tdpCadre.enrollmentYear in (:enrollmentYears)");
+		}
+		if(roleIds!=null && roleIds.size() >0){
+			sb.append("	and tdpCommitteeRole.tdpRoles.tdpRolesId in (:roleIds) ");
+		}
+		if(committeeIds !=null && committeeIds.size() >0){
+			sb.append("	and tdpCommittee.tdpCommitteeLevelId in (:committeeIds) ");
+		}
+		if(basicCommoteeId !=null && basicCommoteeId.longValue() >0L){
+			sb.append("	and tdpCommittee.tdpBasicCommitteeId=:basicCommoteeId");
 
+		}
+		if(enrollmentId !=null && enrollmentId.longValue() >0L){
+			sb.append("	and tdpCommittee.tdpCommitteeEnrollmentId=:enrollmentId");
+		}
+	Query query = getSession().createQuery(sb.toString());
+	if(enrollmentYears !=null && enrollmentYears.size() >0){
+		query.setParameterList("enrollmentYears", enrollmentYears);
+	}
+	if(roleIds!=null && roleIds.size() >0){
+		query.setParameterList("roleIds", roleIds);
+	}
+	if(committeeIds !=null && committeeIds.size() >0){
+		query.setParameterList("committeeIds", committeeIds);
+	}
+	if(basicCommoteeId !=null && basicCommoteeId.longValue() >0L){
+		query.setParameter("basicCommoteeId", basicCommoteeId);
+
+	}
+	if(enrollmentId !=null && enrollmentId.longValue() >0L){
+		query.setParameter("enrollmentId", enrollmentId);
+	}
+
+    return query.list();
+}
 	
 	
 }
