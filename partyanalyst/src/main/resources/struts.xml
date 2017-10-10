@@ -18229,5 +18229,10 @@
 			<param name="root">partyMeetingDataVOs</param>       
 		</result>
   	</action>
+  	 <action name="getElectionDetailsDataAction" class="locationDashboardAction" method="getElectionDetailsData">
+        <result type="json" name="success">
+         <param name="root">electioninformationList</param>
+       </result>
+   </action>
  </package>
 </struts>
