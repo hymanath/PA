@@ -18219,6 +18219,11 @@
 			<param name="root">informationVo</param>
 		</result>
 	</action>
+	<action name="getElectionInformationLocationWiseStatusAction" class="locationDashboardAction" method="getElectionInformationLocationWiseStatus">
+		<result type="json" name="success">
+			<param name="root">electioninformationList</param>
+		</result>
+	</action>
 	<action name="getDesignationWiseAlertsOverviewAction" class="locationDashboardAction" method="getDesignationWiseAlertsOverview">
 		<result type="json" name="success">    
 		<param name="root">locationAlertVOList</param>
