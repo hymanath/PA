@@ -1138,7 +1138,8 @@ function getCandidateAndPartyInfoForConstituency(){
 	var representativeTypeIds = [];
 	if(locationLevelId == 2){
 		representativeTypeIds =[36];
-		roleIds.push(1,10);
+		//roleIds.push(1,10);
+		roleIds.push(1);
 		committeeIds.push(10,12);
 		basicCommoteeId="1";
 		enrollmentId="2";
