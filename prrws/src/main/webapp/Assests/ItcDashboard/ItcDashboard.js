@@ -2,7 +2,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 
 //var departmentWiseArr=[{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'eProcurement',id:'5',color:'#F06C1F',image:'eProcurement',blockName:'eProcurement'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
-var departmentWiseArr=[{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'}];
+var departmentWiseArr = [{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'}];
 var globalFromDate = moment().subtract(2, 'Year').format("DD/MM/YYYY");
 var globalToDate = moment().format("DD/MM/YYYY");
 $("#itcDateRangePickerId").daterangepicker({
@@ -51,21 +51,26 @@ function onloadCalls(){
 	getCMEDOBOverview();
 	getCMEDOBReportStatusWise();*/
 	
-	/* AP Innovation Society Ajax Call Start
-		getAPInnovationSocietyOverview();
-		getAPISXLR8APDetailedData();
-		getCampusInnovationCentersDetailedData();
-		getCampaignsDetailedData();
-		getCohortDetailsByCohortId();
-	/* End */
-
+	//AP Innovation Society Ajax Call Start
+		getAPInnovationSocietyOverview('onload','apInnovationSociety');
 	  /*getInnovationAwardsDetailedData();*/
 }
+$(document).on("click",".cohortIdClick",function(){
+	$("#modalId").modal('show');
+	var id = $(this).attr("attr_id");
+	getCohortDetailsByCohortId(id);
+});
 function departmentWiseOverView(){
 	var block='';
 	for(var i in departmentWiseArr){
 		block+='<div class="col-sm-2 m_top10">';
-			block+='<div style="background-color:'+departmentWiseArr[i].color+';" class="block_style_ITC blockWiseDetails" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+			if(i == 0)
+			{
+				block+='<div style="background-color:'+departmentWiseArr[i].color+';" class="active block_style_ITC blockWiseDetails" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+			}else{
+				block+='<div style="background-color:'+departmentWiseArr[i].color+';" class="block_style_ITC blockWiseDetails" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+			}
+			
 					block+='<div class="media" style="margin-left: 25px;">';
 						block+='<img src="Assests/icons/ITC/'+departmentWiseArr[i].image+'.png" class="pull-left">';
 					  block+='<div class="media-body">';
@@ -109,6 +114,11 @@ function departmentWiseOverView(){
 							block+='<h2>11,25.Cr</h2>';
 							block+='<h6 class="m_top10">Total / Approved</h6>';
 						block+='</div>';
+					}else if(departmentWiseArr[i].id ==7){
+						block+='<div class="m_top40">';
+							block+='<h2 id="apInnovationSociety"></h2>';
+							block+='<h6 class="m_top5">Startups</h6>';
+						block+='</div>';
 					}
 			block+='</div>';
 		block+='</div>';
@@ -117,9 +127,12 @@ function departmentWiseOverView(){
 	
 }
 $(document).on('click','.blockWiseDetails',function(){
+	$(".blockWiseDetails").removeClass("active");
+	$(this).addClass("active");
+	$("#campusOverviewBlock,#APISXLr8APOverview,#campaignsOverviewBlock").html(" ");
 	var blockName = $(this).attr("attr_block_name");
-	//departmentBlockWiseDetails(blockName);
-})
+	departmentBlockWiseDetails(blockName);	
+});
 function departmentBlockWiseDetails(divId)
 {
 	var levelWiseBlockArr='';
@@ -140,11 +153,14 @@ function departmentBlockWiseDetails(divId)
 		levelWiseBlockArr=[{name:'Meeseva & KPI',id:'6'}];
 		
 	}else if(divId == "eProcurement"){
-		levelWiseBlockArr=[{name:'eProcurement',id:'7'}];
+		levelWiseBlockArr = [{name:'eProcurement',id:'7'}];
 		
 	}else if(divId == "cMeoDB"){
 		
-		levelWiseBlockArr=[{name:'CM eoDB',id:'8'}];
+		levelWiseBlockArr = [{name:'CM eoDB',id:'8'}];
+	}else if(divId == "apInnovationSociety"){
+		
+		levelWiseBlockArr = [{name:'AP Innovation Society',id:'9'}];
 	}
 	
 			var collapse='';
@@ -172,6 +188,14 @@ function departmentBlockWiseDetails(divId)
 							
 								collapse+='<div class="panel-body">';
 									collapse+='<div id="'+divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id+'"></div>';
+									if(divId == 'apInnovationSociety')
+									{
+										collapse+='<div class="row">';
+											collapse+='<div class="col-sm-4" id="APISXLr8AP"></div>';
+											collapse+='<div class="col-sm-4" id="Campaigns"></div>';
+											collapse+='<div class="col-sm-4" id="CampusInnovationCenters"></div>';
+										collapse+='</div>';
+									}
 								collapse+='</div>';
 							collapse+='</div>';
 						collapse+='</div>';
@@ -182,7 +206,12 @@ function departmentBlockWiseDetails(divId)
 			for(var i in levelWiseBlockArr){
 				if(divId == "meesevaSla"){
 					getMeesevaSLAOverviewDtls(divId,levelWiseBlockArr[i].id);
-					
+				}else if(divId == 'apInnovationSociety')
+				{
+					getAPInnovationSocietyOverview('overview',divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id);
+					getAPISXLR8APDetailedData();
+					getCampaignsDetailedData();
+					getCampusInnovationCentersDetailedData();
 				}
 			}
 }
@@ -511,7 +540,8 @@ function getCMEDOBReportStatusWise(){
 		console.log(result);
 	});		
 }
-function getAPInnovationSocietyOverview(){
+function getAPInnovationSocietyOverview(type,divId){
+	$("#"+divId).html(spinner);
 	var json = {
 		fromDate:"",
 		toDate:"",
@@ -527,10 +557,48 @@ function getAPInnovationSocietyOverview(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
+		if(type == 'onload')
+		{
+			$("#apInnovationSociety").html(result.startups);
+		}else if(type == 'overview'){
+			return buildOverview(result,divId);
+		}
 	});		
+	function buildOverview(result,divId)
+	{
+		var str='';
+		var dataArr = [{"name":'startups',"color":"#007810"},{"name":"schools","color":"#5C28AB"},{"name":"colleges","color":"#F75C5D"},{"name":"incubators","color":"#D28000"},{"name":"mentors","color":"#950038"}];
+		str+='<div class="row">';
+		for(var i in dataArr)
+		{
+			str+='<div class="col-sm-2">';
+				str+='<div class="panel panel-default">';
+					str+='<div class="panel-body"><h4 class=" text-capitalize" style="color:'+dataArr[i].color+'">'+dataArr[i].name+' &nbsp;&nbsp;<img src="Assests/icons/ITC/'+dataArr[i].name+'.png"/></h4></div>';
+					if(dataArr[i].name == 'startups')
+					{
+						str+='<div class="panel-footer"><h4>'+result.startups+'</h4></div>';
+					}else if(dataArr[i].name == 'schools')
+					{
+						str+='<div class="panel-footer"><h4>'+result.schools+'</h4></div>';
+					}else if(dataArr[i].name == 'colleges')
+					{
+						str+='<div class="panel-footer"><h4>'+result.colleges+'</h4></div>';
+					}else if(dataArr[i].name == 'incubators')
+					{
+						str+='<div class="panel-footer"><h4>'+result.incubators+'</h4></div>';
+					}else if(dataArr[i].name == 'mentors')
+					{
+						str+='<div class="panel-footer"><h3>'+result.mentors+'</h3></div>';
+					}
+				str+='</div>';
+			str+='</div>';
+		}
+		str+='</div>';
+		$("#"+divId).html(str);
+	}
 }
 function getAPISXLR8APDetailedData(){
+	$("#APISXLr8APOverview,#Campaigns").html(spinner);
 	var json = {
 		fromDate:"",
 		toDate:"",
@@ -546,10 +614,71 @@ function getAPISXLR8APDetailedData(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
-	});		
+		return buildData(result);
+	});
+	function buildData(result)
+	{
+		var overview = '';
+		var tableView ='';
+		var totalBatches = 0;
+		var totalCompanies = 0;
+		var totalJobsCreated = 0;
+		for(var i in result)
+		{
+			totalBatches = result.length;
+			totalCompanies = totalCompanies + result[i].companiesRegisterd;
+			if(result[i].jobsCreated != null && result[i].jobsCreated != '-')
+			{
+				totalJobsCreated = totalJobsCreated + parseInt(result[i].jobsCreated);
+			}
+		}
+		overview+='<div class="white_block_ITC" style="border:1px solid #F87071;border-radius:5px;">';
+			overview+='<h4 class="m_top10"><span  style="padding:5px 10px;background-color:#F87071">APIS-XLr8AP</span></h4>';
+			overview+='<div style="padding:10px;">';
+				overview+='<div class="row">';
+					overview+='<div class="col-sm-12">';
+						overview+='<h4>Batchs</h4>';
+						overview+='<h3>'+totalBatches+'</h3>';
+					overview+='</div>';
+					overview+='<div class="col-sm-6">';
+						overview+='<h4>Companies Registered</h4>';
+						overview+='<h3>'+totalCompanies+'</h3>';
+					overview+='</div>';
+					overview+='<div class="col-sm-6">';
+						overview+='<h4>Job Created</h4>';
+						overview+='<h3>'+totalJobsCreated+'</h3>';
+					overview+='</div>';
+				overview+='</div>';
+			overview+='</div>';
+		overview+='</div>';
+		
+		tableView+='<div class="white_block_ITC">';
+			tableView+='<table class="table table-bordered" id="APISXLr8APOverviewTable">';
+				tableView+='<thead>';
+					tableView+='<th>Batch</th>';
+					tableView+='<th style="background-color:#F8F8F8">Duration</th>';
+					tableView+='<th style="background-color:#FFFAF3">Companies Registered</th>';
+					tableView+='<th style="background-color:#FFFAF3">Jobs Created</th>';
+				tableView+='</thead>';
+				for(var i in result)
+				{
+					tableView+='<tr>';
+						tableView+='<td class="cohortIdClick" style="cursor:pointer" attr_id="'+result[i].batchId+'">'+result[i].batch+'</td>';
+						tableView+='<td style="background-color:#F8F8F8">'+result[i].duration+'</td>';
+						tableView+='<td style="background-color:#FFFAF3">'+result[i].companiesRegisterd+'</td>';
+						tableView+='<td style="background-color:#FFFAF3">'+result[i].jobsCreated+'</td>';
+					tableView+='</tr>';
+				}
+			tableView+='</table>';
+		tableView+='</div>';
+		
+		$("#APISXLr8AP").html(overview);
+		$("#APISXLr8APOverview").html(tableView);
+		$("#APISXLr8APOverviewTable").dataTable()
+	}
 }
 function getCampaignsDetailedData(){
+	$("#campaignsOverviewBlock,#Campaigns").html(spinner);
 	var json = {
 		fromDate:"",
 		toDate:"",
@@ -565,10 +694,51 @@ function getCampaignsDetailedData(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
-	});		
+		return buildData(result);
+	});	
+	function buildData(result)
+	{
+		var overview = '';
+		var tableView ='';
+		overview+='<div class="white_block_ITC" style="border:1px solid #D78F1F;border-radius:5px;">';
+			overview+='<h4 class="m_top10"><span  style="padding:5px 10px;background-color:#D78F1F">Campaigns</span></h4>';
+			overview+='<div style="padding:10px;">';
+				overview+='<div class="row">';
+					overview+='<div class="col-sm-12 m_top25" style="margin-bottom:30px;">';
+						overview+='<h4>Batchs</h4>';
+						overview+='<h3>'+result.length+'</h3>';
+					overview+='</div>';
+				overview+='</div>';
+			overview+='</div>';
+		overview+='</div>';
+		
+		tableView+='<div class="white_block_ITC">';
+			tableView+='<table class="table table-bordered" id="campaignsOverviewBlockTable">';
+				tableView+='<thead>';
+					tableView+='<th style="background-color:#FFFAF3">Name</th>';
+					tableView+='<th>Submited Date</th>';
+					tableView+='<th>Campaign Name</th>';
+					tableView+='<th>Campaign Type</th>';
+				tableView+='</thead>';
+				for(var i in result)
+				{
+					tableView+='<tr>';
+						tableView+='<td style="background-color:#FFFAF3">'+result[i].location+'</td>';
+						tableView+='<td>'+result[i].duration+'</td>';
+						tableView+='<td>'+result[i].campaignName+'</td>';
+						tableView+='<td>'+result[i].campaignType+'</td>';
+					tableView+='</tr>';
+				}
+			tableView+='</table>';
+		tableView+='</div>';
+		
+		$("#Campaigns").html(overview);
+		$("#campaignsOverviewBlock").html(tableView);
+		$("#campaignsOverviewBlockTable").dataTable()
+	}	
 }
 function getCampusInnovationCentersDetailedData(){
+	$("#campusOverviewBlock,#CampusInnovationCenters").html(spinner);
 	var json = {
 		fromDate:"",
 		toDate:"",
@@ -584,14 +754,54 @@ function getCampusInnovationCentersDetailedData(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
-	});		
-}function getCohortDetailsByCohortId(){
+		return buildData(result);
+	});	
+	function buildData(result)
+	{
+		var overview = '';
+		var tableView ='';
+		overview+='<div class="white_block_ITC" style="border:1px solid #4C4C4C;border-radius:5px;">';
+			overview+='<h4 class="m_top10"><span  style="padding:5px 10px;background-color:#4C4C4C;color:#fff;">Campus Innovation Centers</span></h4>';
+			overview+='<div style="padding:10px;">';
+				overview+='<div class="row">';
+					overview+='<div class="col-sm-12 m_top25" style="margin-bottom:30px;">';
+						overview+='<h4>No Of University / No Of  College</h4>';
+						overview+='<h3>'+result.length+'</h3>';
+					overview+='</div>';
+				overview+='</div>';
+			overview+='</div>';
+		overview+='</div>';
+		
+		tableView+='<div class="white_block_ITC">';
+			tableView+='<table class="table table-bordered" id="campusOverviewBlockTable">';
+				tableView+='<thead>';
+					tableView+='<th style="background-color:#F8F8F8">NAME OF THE UNIVERSITY OR COLLEGE</th>';
+					tableView+='<th>NAME OF THE INNOVATION CENTRE</th>';
+					tableView+='<th>LOCATION</th>';
+				tableView+='</thead>';
+				for(var i in result)
+				{
+					tableView+='<tr>';
+						tableView+='<td style="background-color:#F8F8F8">'+result[i].universityORCollegeName+'</td>';
+						tableView+='<td>'+result[i].innovationCentreName+'</td>';
+						tableView+='<td>'+result[i].location+'</td>';
+					tableView+='</tr>';
+				}
+			tableView+='</table>';
+		tableView+='</div>';
+		
+		$("#CampusInnovationCenters").html(overview);
+		$("#campusOverviewBlock").html(tableView);
+		$("#campusOverviewBlockTable").dataTable()
+	}	
+}
+function getCohortDetailsByCohortId(id){
+	$("#cohortId").html(spinner);
 	var json = {
 		fromDate:"",
 		toDate:"",
 		year:"",
-		searchLevelId:1
+		searchLevelId:id
 	}
 	$.ajax({                
 		type:'POST',    
@@ -603,8 +813,50 @@ function getCampusInnovationCentersDetailedData(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
+		if(result != null && result.length > 0)
+		{
+			return buildData(result);
+		}else{
+			$("#cohortId").html("NO DATA AVAILABLE");
+		}
 	});		
+	function buildData(result)
+	{
+		var str='';
+		str+='<table class="table table-bordered" id="cohortIdTable">';
+			str+='<thead class="text-capital">';
+				str+='<th>cohort</th>';
+				str+='<th>innovator name</th>';
+				str+='<th>company name</th>';
+				str+='<th>permanent</th>';
+				str+='<th>Intern</th>';
+				str+='<th>innovation</th>';
+			str+='</thead>';
+			for(var i in result)
+			{
+				str+='<tr>';
+					str+='<td>'+result[i].cohort+'</td>';
+					str+='<td>'+result[i].innovator_name+'</td>';
+					str+='<td>'+result[i].company_name+'</td>';
+					if(result[i].permanent_jobs != null && result[i].permanent_jobs.length > 0)
+					{
+						str+='<td>'+result[i].permanent_jobs+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					if(result[i].interns != null && result[i].interns.length > 0)
+					{
+						str+='<td>'+result[i].interns+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					str+='<td>'+result[i].innovation+'</td>';
+				str+='</tr>';
+			}
+		str+='</table>';
+		$("#cohortId").html(str);
+		$("#cohortIdTable").dataTable();
+	}
 }function getInnovationAwardsDetailedData(){
 	var json = {
 		fromDate:"",
