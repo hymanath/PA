@@ -1395,7 +1395,7 @@ function getCandidateAndPartyInfoForConstituency(){
 												stateLevel+='<div class="media-body">';
 													stateLevel+='<h4 class="text-success text-capital m_left5">'+result[i].candidateName+'';
 													stateLevel+='</h4>';
-													stateLevel+='<p class="text-muted text-capital m_left7 f_12" style="margin-bottom:5px">'+result[i].committeLevel+' of AP</p>';
+													stateLevel+='<p class="text-muted text-capital m_left7 f_12" style="margin-bottom:5px">'+result[i].committeLevel+'</p>';
 													
 													if(result[i].cadreId !=null && result[i].cadreId>0){
 														stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>';
