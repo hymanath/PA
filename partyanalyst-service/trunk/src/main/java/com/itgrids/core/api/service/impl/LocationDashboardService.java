@@ -1800,14 +1800,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 	public List<BasicVO> getPublications() {
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
-		List<PublicationDate> publications = publicationDateDAO.getAll();
-		for (PublicationDate publication : publications) {
+		List<Object[]> publications = publicationDateDAO.getEnrollmentPublications();
+		for (Object[] publication : publications) {
 			BasicVO publicationData = new BasicVO();
-			publicationData.setId(publication.getPublicationDateId());
-			publicationData.setName(publication.getName());
-			publicationData.setDate(publication.getDate().toString());
-			publicationData.setDay(publication.getMonth().longValue());//month
-			publicationData.setTotalResult(publication.getYear().longValue());//year
+			publicationData.setId(commonMethodsUtilService.getLongValueForObject(publication[0]));
+			publicationData.setName(commonMethodsUtilService.getStringValueForObject(publication[2]));
+			publicationData.setDate(commonMethodsUtilService.getStringValueForObject(publication[1].toString()));
 			finalList.add(publicationData);
 		}
 		Collections.sort(finalList, new Comparator<BasicVO>() {
