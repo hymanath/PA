@@ -25,9 +25,16 @@ public class LocationAlertVO {
 	private Long involveMemberCount=0l;
 	private Long assignedMemberCount =0l;
 	private Double percentage;
+	private Double percentage1;
 	private List<LocationAlertVO> subList1 = new ArrayList<LocationAlertVO>(0);
 	
 	
+	public Double getPercentage1() {
+		return percentage1;
+	}
+	public void setPercentage1(Double percentage1) {
+		this.percentage1 = percentage1;
+	}
 	public List<LocationAlertVO> getSubList1() {
 		return subList1;
 	}

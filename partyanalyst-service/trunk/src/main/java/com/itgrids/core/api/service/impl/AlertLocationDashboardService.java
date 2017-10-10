@@ -423,16 +423,20 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 			
 			if(commonMethodsUtilService.isListOrSetValid(finalVOs)){
 				for (LocationAlertVO desigVO : finalVOs) {
+					desigVO.setTotalAlertCount(desigVO.getCount()+desigVO.getAlertCount());
 					if(commonMethodsUtilService.isListOrSetValid(desigVO.getSubList())){
 						for(LocationAlertVO statusVO : desigVO.getSubList()){
 							statusVO.setPercentage(calculatePercantage(statusVO.getCount(), desigVO.getAlertCount()));
 						}
 					}
+					
 					if(commonMethodsUtilService.isListOrSetValid(desigVO.getSubList1())){
-						for(LocationAlertVO statusVO : desigVO.getSubList()){
+						for(LocationAlertVO statusVO : desigVO.getSubList1()){
 							statusVO.setPercentage(calculatePercantage(statusVO.getCount(), desigVO.getCount()));
 						}
 					}
+					desigVO.setPercentage(calculatePercantage(desigVO.getCount(), desigVO.getTotalAlertCount()));//involvedPerc
+					desigVO.setPercentage1(calculatePercantage(desigVO.getAlertCount(), desigVO.getTotalAlertCount()));//assigndPerc
 				}
 			}
 			
@@ -460,18 +464,21 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							designationVO.setId(commonMethodsUtilService.getLongValueForObject(param[3]));
 							designationVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[4]));
 							LocationAlertVO otherStatusVO = new LocationAlertVO();
-							otherStatusVO.setId(0l);
-							otherStatusVO.setStatus("OTHERS");
-							otherStatusVO.setColour("#80DFFF");
-							
-								designationVO.setSubList(setAlertStatusList("impactScope"));
+								otherStatusVO.setId(0l);
+								otherStatusVO.setStatus("OTHERS");
+								otherStatusVO.setColour("#80DFFF");
+							LocationAlertVO otherStatusVO1 = new LocationAlertVO();
+								otherStatusVO1.setId(0l);
+								otherStatusVO1.setStatus("OTHERS");
+								otherStatusVO1.setColour("#80DFFF");
+							designationVO.setSubList(setAlertStatusList("impactScope"));
 								designationVO.getSubList().add(otherStatusVO);
-								designationVO.setSubList1(setAlertStatusList("impactScope"));
-								designationVO.getSubList1().add(otherStatusVO);
+							designationVO.setSubList1(setAlertStatusList("impactScope"));
+								designationVO.getSubList1().add(otherStatusVO1);
 							finalVOs.add(designationVO);
 					}
 					
-					if(statusId != 3l || statusId != 4l){
+					if(statusId.longValue() != 3l && statusId.longValue() != 4l){
 						statusId =0l;
 					}
 					if(type != null && type.equalsIgnoreCase("assigned")){
