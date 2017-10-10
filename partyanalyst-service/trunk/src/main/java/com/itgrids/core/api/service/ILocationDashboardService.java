@@ -20,7 +20,7 @@ import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 
 public interface ILocationDashboardService {
-	public List<CandidateDetailsForConstituencyTypesVO> getCandidateAndPartyInfoForConstituency(Long locationValue,Long locationTypeId,List<Long> representativTypeIds);
+	public List<CandidateDetailsForConstituencyTypesVO> getCandidateAndPartyInfoForConstituency(Long locationValue,Long locationTypeId,List<Long> representativTypeIds,List<Long> roleIds,List<Long> committeeIds,List<Long> enrollmentYears,Long basicCommoteeId,Long enrollmentId);
 	public List<LocationVotersVO> getVotersAndcadreAgeWiseCount(Long locationTypeId,Long locationValue,Long publicationDateId);
 	public List<LocationVotersVO> getVotersAndCadreCasteWiseCount(String type, Long locationTypeId,Long locationValue,
 			Long publicationDateId);
