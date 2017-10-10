@@ -3026,13 +3026,14 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	 Long locationAccessLevelId = 0l;
 	 Date fromDate=null;
 	 Date toDate = null;
+	 String actionType = "";
 	 try{
 		   List<Date>  datesList = getDates(fromDateStr, toDateStr, new SimpleDateFormat("dd/MM/yyyy"));
 		  fromDate=datesList.get(0);
 		  toDate=datesList.get(1);
 		  /* This service is used from coreDashbaord and constituency page.So that we are preparing
 		   * parameter based on our requirement,To reuse same service we are using these parameter. */
-		  if(type != null && !type.equalsIgnoreCase("constituencyPage")) { 
+		  if(type != null && !type.equalsIgnoreCase("constituencyPage")) {
 			  List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
 				if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
 					 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
@@ -3041,6 +3042,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 }
 			    }  
 		  } else {
+			 if (filterType != null && filterType.equalsIgnoreCase("notSubmitteed")) {
+				  filterType = "all";
+				  actionType = "removeCandidate";
+			 }
 			 Long userAccessLevelId = getParameterDtls(locationScopeId);
 			 locationAccessLevelId = userAccessLevelId;
 			 locationValues = locationValueSet;
@@ -3158,12 +3163,18 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					}  
 				  } 
 			 }
+			  
+			  if(type != null && type.equalsIgnoreCase("constituencyPage") && actionType.equalsIgnoreCase("removeCandidate")) {
+				  prepareDataToFilterRequiredCandidate(memberDtlsMap);
+				  removeRquiredCandidateBasedOnRequirment(memberDtlsMap);
+			  }
+			  
 			  //Preparing final list 
 			  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
 				  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
 					  ToursBasicVO designationVO = new ToursBasicVO();
 					  designationVO.setId(entry.getKey());
-					  if(entry.getKey() == 4l){
+					  if(entry.getKey() == 4l || entry.getKey()==5l){
 						  designationVO.setName("ORGANIZING SECRETARY/SECRETARY");	  
 					  }else{
 						  designationVO.setName(designationIdAndNameMap.get(entry.getKey()));  
@@ -3174,6 +3185,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					  resultList.add(designationVO);
 				  }
 			  }
+			 
 			  memberDtlsMap.clear();
 		 }catch(Exception e){
 			 LOG.error("Exception Occured in getTourLeaderDtlsBasedOnSelectionType() in CoreDashboardToursService  : ",e);
@@ -3749,4 +3761,97 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	  }
 	  return userAccessLevelId;
  }
+
+	private void removeRquiredCandidateBasedOnRequirment(Map<Long, Map<Long, ToursBasicVO>> memberDtlsMap) {
+		try {
+			if (memberDtlsMap.size() > 0) {
+				for (Entry<Long, Map<Long, ToursBasicVO>> designationEntry : memberDtlsMap.entrySet()) {
+
+					if (designationEntry.getValue() != null && designationEntry.getValue().size() > 0) {
+
+						for (Entry<Long, ToursBasicVO> candidateEntry : designationEntry.getValue().entrySet()) {
+							boolean flag1 = Boolean.TRUE;
+							boolean flag2 = Boolean.FALSE;
+
+							if (candidateEntry.getValue().getMonthList() != null && candidateEntry.getValue().getMonthList().size() > 0) {
+
+								for (ToursBasicVO monthVO : candidateEntry.getValue().getMonthList()) {
+
+									if (monthVO.getComplainceDays() == 0) {
+										flag1 = Boolean.FALSE;
+									}
+									if (monthVO.getComplainceDays() > 0) {
+										flag2 = Boolean.TRUE;
+									}
+								}
+							}
+
+							if (flag1 == Boolean.FALSE && flag2 == Boolean.TRUE) {
+								candidateEntry.getValue().getMonthList().clear();//keeping those candidate who did not submit all month data
+							} else if (flag1 == Boolean.FALSE && flag2 == Boolean.FALSE) {
+								candidateEntry.getValue().getMonthList().clear();//keeping those candidate who did not submit tour between selected months
+							} else {
+								designationEntry.getValue().remove(candidateEntry.getKey());//removing candidate
+							}
+						}
+					}
+
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in removeRquiredCandidateBasedOnRequirment() in CoreDashboardToursService  : ",e);
+		}
+	}
+	public void prepareDataToFilterRequiredCandidate(Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap){
+		try{
+			if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
+
+				for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:candiateDtlsMap.entrySet()){
+
+					if(designationEntry.getValue() != null && designationEntry.getValue().size() > 0){
+
+						for(Entry<Long,ToursBasicVO> candiateEntry:designationEntry.getValue().entrySet()){
+
+							ToursBasicVO candiateVO = candiateEntry.getValue();
+                             
+							if(candiateVO != null){
+								
+								candiateVO.setSubMap1(new HashMap<Long, ToursBasicVO>(0));
+								
+								if(candiateVO.getSubList3() != null && candiateVO.getSubList3().size() > 0){
+
+									for(ToursBasicVO categoryVO:candiateVO.getSubList3()){
+
+										List<ToursBasicVO> monthList = categoryVO.getMonthList();
+
+										if(monthList != null && monthList.size() > 0){
+
+											for(ToursBasicVO monthVO:monthList){
+                                             
+												ToursBasicVO mnthVO = candiateVO.getSubMap1().get(monthVO.getId());
+												
+												 if (mnthVO == null ){
+													 mnthVO = new ToursBasicVO();
+													 mnthVO.setId(monthVO.getId());
+													 mnthVO.setName(monthVO.getName());
+													 mnthVO.setYear(monthVO.getYear());
+													 candiateVO.getSubMap1().put(mnthVO.getId(), mnthVO);
+												 }
+												 mnthVO.setTargetDays(mnthVO.getTargetDays()+monthVO.getTargetDays());
+												 mnthVO.setComplainceDays(mnthVO.getComplainceDays()+monthVO.getComplainceDays());
+											}
+										}
+									}	 
+								}
+								candiateVO.getMonthList().addAll(candiateVO.getSubMap1().values());
+								candiateVO.getSubMap1().clear();
+							}
+						}
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in prepareDataToFilterRequiredCandidate() in LocationDashboardService  : ",e); 
+		}
+	}
 }

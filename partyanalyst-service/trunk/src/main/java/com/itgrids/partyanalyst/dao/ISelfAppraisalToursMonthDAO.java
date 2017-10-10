@@ -15,4 +15,5 @@ public interface ISelfAppraisalToursMonthDAO extends GenericDao<SelfAppraisalTou
 	public List<String> getSelfAppraisalMonthById(Long selfAppraisalToursMonthId);
 	public List<Long> getLatestMonthYearId();
 	public List<Object[]> getMonthAndYearDtls(List<String> monthYearList);
+	public List<Object[]> getMonthDtls(List<String> monthYearList);
 }

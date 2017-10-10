@@ -58,6 +58,18 @@ public class SelfAppraisalToursMonthDAO extends GenericDaoHibernate<SelfAppraisa
 		 }
 		  return query.list();
 	}
+	public List<Object[]> getMonthDtls(List<String> monthYearList){
+		StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select model.selfAppraisalToursMonthId,model.monthName,model.year from SelfAppraisalToursMonth model");
+		 if(monthYearList != null && monthYearList.size() > 0){
+			 queryStr.append(" where model.toursMonth in(:monthYearList) ");
+		 }
+		 Query query = getSession().createQuery(queryStr.toString());
+		 if(monthYearList != null && monthYearList.size() > 0){
+			 query.setParameterList("monthYearList", monthYearList);
+		 }
+		  return query.list();
+	}
 public List<Long> getSelfAppraisalToursMonth(String toursMonth){
 		
 		Query query = getSession().createQuery(" select model.selfAppraisalToursMonthId from " +
