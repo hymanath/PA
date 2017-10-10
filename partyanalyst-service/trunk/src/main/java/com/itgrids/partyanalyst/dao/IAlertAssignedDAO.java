@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.model.ActivityInfoFile;
 import com.itgrids.partyanalyst.model.AlertAssigned;
 
 public interface IAlertAssignedDAO extends GenericDao<AlertAssigned, Long> {
@@ -24,4 +23,5 @@ public interface IAlertAssignedDAO extends GenericDao<AlertAssigned, Long> {
 	public List<Object[]> getAlertAssignedCandidateForDashBoard(Long alertId,Long stateId,Long alertTypeId,Date fromDate,Date toDate);
 	public List<Object[]> getAssignedAlertsSummary(List<Long> cadreIds);
 	public List<Object[]> getSmsTdpCadreDetails();
+	public List<Object[]> getDesignationWiseAssignedAlertys(Date fromDate ,Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year);
 }

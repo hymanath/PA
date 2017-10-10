@@ -9,7 +9,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.itgrids.core.api.service.IAlertLocationDashboardService;
+import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
+import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
@@ -28,9 +30,23 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 	private IAlertImpactScopeDAO alertImpactScopeDAO;
 	private IAlertCategoryDAO alertCategoryDAO;
 	private IAlertStatusDAO alertStatusDAO;
+	private IAlertAssignedDAO alertAssignedDAO;
+	private IAlertCandidateDAO alertCandidateDAO;
 	
 	
 	
+	public IAlertCandidateDAO getAlertCandidateDAO() {
+		return alertCandidateDAO;
+	}
+	public void setAlertCandidateDAO(IAlertCandidateDAO alertCandidateDAO) {
+		this.alertCandidateDAO = alertCandidateDAO;
+	}
+	public IAlertAssignedDAO getAlertAssignedDAO() {
+		return alertAssignedDAO;
+	}
+	public void setAlertAssignedDAO(IAlertAssignedDAO alertAssignedDAO) {
+		this.alertAssignedDAO = alertAssignedDAO;
+	}
 	public IAlertStatusDAO getAlertStatusDAO() {
 		return alertStatusDAO;
 	}
@@ -71,7 +87,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 	}
 	
 	/*
-	   * Date : 25/09/2017
+	   * Date : 09/10/2017
 	   * Author :Hymavathi
 	   * @description : getTotalAlertDetailsForConstituencyInfo(Getting Alert details for constituency page)
 	   */
@@ -91,8 +107,10 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 					LocationAlertVO vo =null;
 					vo = new LocationAlertVO();
 						vo.setId(alertTypeId);
-						if(alertTypeId == 3l)
+						if(alertTypeId == 3l){
 							vo.setStatus("Others");
+							vo.setColour("#80DFFF");
+						}
 					alertTypeList.add(vo);
 				}
 			}
@@ -122,12 +140,13 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							finalStatusVO = new  LocationAlertVO();
 							finalStatusVO.setId(0l);
 							finalStatusVO.setStatus("OTHERS");
+							finalStatusVO.setColour("#80DFFF");
 							finalVO.getSubList1().add(finalStatusVO);
 						 }
-						//if(finalStatusVO != null){
+						
 							finalStatusVO.setCount(finalStatusVO.getCount()+statusVO.getCount());
 							finalStatusVO.setPercentage(calculatePercantage(finalStatusVO.getCount(),finalVO.getTotalAlertCount()));
-						//}
+						
 					}
 				}
 			}
@@ -136,11 +155,6 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 					impactLevelVO.setPercentage(calculatePercantage(impactLevelVO.getCount(),finalVO.getTotalAlertCount()));
 					for (LocationAlertVO statusVO : impactLevelVO.getSubList()) {
 						statusVO.setPercentage(calculatePercantage(statusVO.getCount(),impactLevelVO.getCount()));
-						/*LocationAlertVO finalStatusVO = getImpactScopeMatchVO(finalVO.getSubList1(),statusVO.getId());
-						if(finalStatusVO != null){
-							finalStatusVO.setCount(finalStatusVO.getCount()+statusVO.getCount());
-							statusVO.setPercentage(calculatePercantage(finalStatusVO.getCount(),finalVO.getTotalAlertCount()));
-						}*/
 					}
 				}
 			}
@@ -211,6 +225,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 									 statusVO = new  LocationAlertVO();
 									 statusVO.setId(0l);
 									 statusVO.setStatus("OTHERS");
+									 statusVO.setColour("#80DFFF");
 									 vo.getSubList().add(statusVO);
 								 }
 								 statusVO.setCount(statusVO.getCount()+alertCount);
@@ -386,13 +401,40 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 	}
 	
 	/*
-	   * Date : 25/09/2017
+	   * Date : 09/10/2017
 	   * Author :Hymavathi
 	   * @description : getDesignationWiseAlertsOverview(Showing Designation Wise Alert details for constituency page)
 	   */
 	public  List<LocationAlertVO> getDesignationWiseAlertsOverview(String fromDateStr ,String toDateStr,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
 		List<LocationAlertVO> finalVOs = new ArrayList<LocationAlertVO>();
 		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			List<Object[]> assignedAlerts = alertAssignedDAO.getDesignationWiseAssignedAlertys(fromDate, toDate, locationValues, alertTypeIds, locationTypeId, year);
+			List<Object[]> involvedAlerts = alertCandidateDAO.getDesignationWiseInvolvedAlertys(fromDate, toDate, locationValues, alertTypeIds, locationTypeId, year);
+			setDesignationWiseAlerts(assignedAlerts,finalVOs,"assigned");
+			setDesignationWiseAlerts(involvedAlerts,finalVOs,"involved");
+			
+			if(commonMethodsUtilService.isListOrSetValid(finalVOs)){
+				for (LocationAlertVO desigVO : finalVOs) {
+					if(commonMethodsUtilService.isListOrSetValid(desigVO.getSubList())){
+						for(LocationAlertVO statusVO : desigVO.getSubList()){
+							statusVO.setPercentage(calculatePercantage(statusVO.getCount(), desigVO.getAlertCount()));
+						}
+					}
+					if(commonMethodsUtilService.isListOrSetValid(desigVO.getSubList1())){
+						for(LocationAlertVO statusVO : desigVO.getSubList()){
+							statusVO.setPercentage(calculatePercantage(statusVO.getCount(), desigVO.getCount()));
+						}
+					}
+				}
+			}
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -400,4 +442,66 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 		}
 		return finalVOs;
 	}
+	/*
+	   * Date : 10/10/2017
+	   * Author :Hymavathi
+	   * @description : setDesignationWiseAlerts(Showing Designation Wise Alert details for constituency page)
+	   */
+	public void setDesignationWiseAlerts(List<Object[]> assignedAlerts,List<LocationAlertVO> finalVOs,String type){
+		try{
+			if(commonMethodsUtilService.isListOrSetValid(assignedAlerts)){
+				for (Object[] param : assignedAlerts) {
+					
+					LocationAlertVO statusVO = null;
+					Long statusId =commonMethodsUtilService.getLongValueForObject(param[0]);
+					LocationAlertVO designationVO = getImpactScopeMatchVO(finalVOs,commonMethodsUtilService.getLongValueForObject(param[3]));
+					if(designationVO == null){
+							designationVO = new LocationAlertVO();
+							designationVO.setId(commonMethodsUtilService.getLongValueForObject(param[3]));
+							designationVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[4]));
+								if(type != null && type.equalsIgnoreCase("assigned")){
+									designationVO.setSubList(setAlertStatusList("impactScope"));
+								}else if(type != null && type.equalsIgnoreCase("involved")){
+									designationVO.setSubList1(setAlertStatusList("impactScope"));
+								}
+							finalVOs.add(designationVO);
+					}
+					if(designationVO.getSubList1() == null || designationVO.getSubList1().size() == 0 ){
+						if(type != null && type.equalsIgnoreCase("involved")){
+							designationVO.setSubList1(setAlertStatusList("impactScope"));
+						}
+					}
+					if(statusId != 3l || statusId != 4l){
+						statusId =0l;
+					}
+					if(type != null && type.equalsIgnoreCase("assigned")){
+						designationVO.setAlertCount(designationVO.getAlertCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+						statusVO = getImpactScopeMatchVO(designationVO.getSubList(),statusId);
+						if(statusVO == null){
+							statusVO = new LocationAlertVO();
+							statusVO.setId(0l);
+							statusVO.setStatus("OTHERS");
+							statusVO.setColour("#80DFFF");
+							designationVO.getSubList().add(statusVO);
+						}
+					}else if(type != null && type.equalsIgnoreCase("involved")){
+						designationVO.setCount(designationVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+						statusVO = getImpactScopeMatchVO(designationVO.getSubList1(),statusId);
+						if(statusVO == null){
+							statusVO = new LocationAlertVO();
+							statusVO.setId(0l);
+							statusVO.setStatus("OTHERS");
+							statusVO.setColour("#80DFFF");
+							designationVO.getSubList1().add(statusVO);
+						}
+					}
+					statusVO.setCount(statusVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception occured at setDesignationWiseAlerts( )",e);
+		}
+	}
+	
 }
