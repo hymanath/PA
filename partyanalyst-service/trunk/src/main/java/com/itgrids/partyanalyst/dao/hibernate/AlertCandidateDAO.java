@@ -608,6 +608,8 @@ public List<String> getCategoryListForAlertAndDepartment(Long alertId,Long cnpDe
 		        	queryStr.append(" and model.alert.userAddress.constituency.constituencyId in(:locationValues) ");
 		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 3l){
 		        	queryStr.append(" and model.alert.userAddress.district.districtId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 10l){
+		        	queryStr.append(" and model.alert.userAddress.parliamentConstituency.constituencyId in(:locationValues) ");
 		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 5l){
 		        	queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in(:locationValues) ");
 		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 6l){

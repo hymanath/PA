@@ -19,7 +19,7 @@ public class LocationAlertVO {
 	private List<LocationAlertVO> alertTypeList;
 	private Long alertCount=0l;
 	private Long id;
-	private String status;
+	private String status = "";
 	private String colour;
 	private Long totalAlertCount=0l;
 	private Long involveMemberCount=0l;
