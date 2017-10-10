@@ -4768,9 +4768,9 @@ function getPublications(){
 		str+='<option value = "0">Select Publication</option>';
 		for(var i in result){
 			if(result[i].id == "22"){
-				str+='<option value = "'+result[i].id+'" selected>'+result[i].date+'</option>';
+				str+='<option value = "'+result[i].id+'" selected>'+result[i].name+'</option>';
 			}else{
-				str+='<option value = "'+result[i].id+'">'+result[i].date+'</option>';
+				str+='<option value = "'+result[i].id+'">'+result[i].name+'</option>';
 			}
 			
 		}
