@@ -305,4 +305,79 @@ public int updateAlertSmsStatus(Long assignedId){
 		
 	}
 	
+	public List<Object[]> getDesignationWiseAssignedAlertys(Date fromDate ,Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
+		StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select  model.alert.alertStatus.alertStatusId,model.alert.alertStatus.alertStatus" +
+		  				  ",model.alert.alertStatus.color," +
+		  				  " model1.publicRepresentativeType.publicRepresentativeTypeId,model1.publicRepresentativeType.type" +
+		  				  " ,count(distinct model.alert.alertId )" +
+		  				  " from AlertAssigned model,PublicRepresentative model1,TdpCadreCandidate model2 " +
+		  				  " where  " +
+		  				  " model2.candidate.candidateId=model1.candidate.candidateId " +
+		  				  " and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
+		  				  " and model.alert.isDeleted='N' and model.isDeleted='N'  ");
+		
+		 if(fromDate !=null && toDate !=null){
+			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
+		 }
+		
+		 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	 	    	if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 4l){
+		        	queryStr.append(" and model.alert.userAddress.constituency.constituencyId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 3l){
+		        	queryStr.append(" and model.alert.userAddress.district.districtId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 5l){
+		        	queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 6l){
+		        	queryStr.append(" and model.alert.userAddress.panchayat.panchayatId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 7l){
+	 	        	queryStr.append(" and model.alert.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 8l){
+	 	        	queryStr.append(" and model.alert.userAddress.ward.constituencyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 2l){
+	 	        	queryStr.append(" and model.alert.userAddress.state.stateId in(:locationValues) ");
+	 	        }
+	 	    }
+        if(alertTypeIds != null && alertTypeIds.size() > 0){
+			queryStr.append(" and model.alert.alertType.alertTypeId in (:alertTypeIds) ");
+		}
+		/*if(editionTypeList != null && editionTypeList.size() > 0){
+			queryStr.append(" and model.alert.editionType.editionTypeId in (:editionList) ");
+		}
+		if(districtId != null && districtId.longValue() > 0){
+		  queryStr.append(" and model.alert.userAddress.district.districtId=:districtId ");	
+		}
+	   if(alertStatusIds != null && alertStatusIds.size() > 0){
+		   queryStr.append(" and model.alert.alertStatus.alertStatusId in (:alertStatusIds) "); 
+	   }*/
+        queryStr.append(" group by model1.publicRepresentativeType.publicRepresentativeTypeId,model.alert.alertStatus.alertStatusId ");
+	    Query query = getSession().createQuery(queryStr.toString());
+	    /*if(stateId != null && stateId.longValue() > 0l){
+	     query.setParameter("stateId", stateId);
+	    }*/
+	    if(fromDate !=null && toDate !=null){
+			query.setDate("startDate", fromDate);
+			query.setDate("endDate", toDate);
+		}
+		if(locationValues != null && locationValues.size() > 0){
+			query.setParameterList("locationValues", locationValues);
+		}
+		/*if(impactLevelIds != null && impactLevelIds.size() > 0){
+			query.setParameterList("impactLevelIds", impactLevelIds); 
+		}*/
+		if(alertTypeIds != null && alertTypeIds.size() > 0){
+			query.setParameterList("alertTypeIds", alertTypeIds);  
+		}
+		/*if(editionTypeList != null && editionTypeList.size() > 0){
+			query.setParameterList("editionList", editionTypeList);  
+		}*/
+		/*if(districtId != null && districtId.longValue() > 0){
+		   query.setParameter("districtId", districtId);	
+		}*/
+		/*if(alertStatusIds != null && alertStatusIds.size() > 0){
+		  query.setParameterList("alertStatusIds", alertStatusIds);
+		}*/
+		return query.list();
+	}
+	
 }

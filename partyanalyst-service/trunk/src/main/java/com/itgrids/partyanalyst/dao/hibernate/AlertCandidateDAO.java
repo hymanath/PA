@@ -7,8 +7,6 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
-import com.itgrids.partyanalyst.dao.IAlertDAO;
-import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertCandidate;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -588,4 +586,59 @@ public List<String> getCategoryListForAlertAndDepartment(Long alertId,Long cnpDe
 	 	 }
  		return  query.list();
  	}
+	
+	public List<Object[]> getDesignationWiseInvolvedAlertys(Date fromDate ,Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
+		StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select  model.alert.alertStatus.alertStatusId,model.alert.alertStatus.alertStatus" +
+		  				  ",model.alert.alertStatus.color," +
+		  				  " model1.publicRepresentativeType.publicRepresentativeTypeId,model1.publicRepresentativeType.type" +
+		  				  " ,count(distinct model.alert.alertId )" +
+		  				  " from AlertCandidate model,PublicRepresentative model1,TdpCadreCandidate model2 " +
+		  				  " where  " +
+		  				  " model2.candidate.candidateId=model1.candidate.candidateId " +
+		  				  " and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
+		  				  " and model.alert.isDeleted='N'   ");
+		
+		 if(fromDate !=null && toDate !=null){
+			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
+		 }
+		
+		 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	 	    	if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 4l){
+		        	queryStr.append(" and model.alert.userAddress.constituency.constituencyId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 3l){
+		        	queryStr.append(" and model.alert.userAddress.district.districtId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 5l){
+		        	queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 6l){
+		        	queryStr.append(" and model.alert.userAddress.panchayat.panchayatId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 7l){
+	 	        	queryStr.append(" and model.alert.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 8l){
+	 	        	queryStr.append(" and model.alert.userAddress.ward.constituencyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 2l){
+	 	        	queryStr.append(" and model.alert.userAddress.state.stateId in(:locationValues) ");
+	 	        }
+	 	    }
+        if(alertTypeIds != null && alertTypeIds.size() > 0){
+			queryStr.append(" and model.alert.alertType.alertTypeId in (:alertTypeIds) ");
+		}
+		
+        queryStr.append(" group by model1.publicRepresentativeType.publicRepresentativeTypeId,model.alert.alertStatus.alertStatusId ");
+	    Query query = getSession().createQuery(queryStr.toString());
+	    
+	    if(fromDate !=null && toDate !=null){
+			query.setDate("startDate", fromDate);
+			query.setDate("endDate", toDate);
+		}
+		if(locationValues != null && locationValues.size() > 0){
+			query.setParameterList("locationValues", locationValues);
+		}
+		
+		if(alertTypeIds != null && alertTypeIds.size() > 0){
+			query.setParameterList("alertTypeIds", alertTypeIds);  
+		}
+		
+		return query.list();
+	}
 }
