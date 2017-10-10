@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ToursBasicVO {
+public class ToursBasicVO implements Cloneable{
 
 	private Long id = 0l;
 	private String idStr;
@@ -120,6 +120,7 @@ public class ToursBasicVO {
 	private List<IdNameVO> panWardList = new ArrayList<IdNameVO>(0);
 	private Long toursMonthId;
 	private Map<Long,String> subMap=null;
+	private Map<Long,ToursBasicVO> subMap1 = null;
 	
 	public ToursBasicVO() {
 		super();
@@ -750,5 +751,13 @@ public class ToursBasicVO {
 	public void setOwnAreaPer(Double ownAreaPer) {
 		this.ownAreaPer = ownAreaPer;
 	}
-	
+	public Map<Long, ToursBasicVO> getSubMap1() {
+		return subMap1;
+	}
+	public void setSubMap1(Map<Long, ToursBasicVO> subMap1) {
+		this.subMap1 = subMap1;
+	}
+	public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
