@@ -36,10 +36,7 @@
 	<div class="container m_top30">
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="block">
-					<h4 class="theme-title-color">Assembly Election Year Wise Details</h4>
-					<div id="candidatesResultsDivId"></div>
-				</div>
+				<div id="candidatesResultsDivId"></div>
 			</div>
 		</div>
 		<div class="row">
@@ -73,5 +70,12 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="coreApi/js/electionConstituencyPage.js" type="text/javascript"></script>
+<script type="text/javascript">
+var locationLevelId = "${param.locationLevelId}";
+var constituencyId = "${param.constituencyId}";
+var userAccessLevelValue = "${param.userAccessLevelValuesArray}";
+var userAccessLevelValuesArray =[];
+	userAccessLevelValuesArray.push(userAccessLevelValue);
+</script>
 </body>
 </html>

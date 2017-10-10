@@ -128,8 +128,8 @@
 							<div id="electionDetailsTableWiseId" class=""></div>
 						 </div>
 					</div>
-				</div>
-				<div class="block m_top20 assemblyElectionBlockCls" style="display:none">
+				
+				<div class="m_top20 assemblyElectionBlockCls" style="display:none">
 					<div class="row">
 						<div class="col-sm-12">
 							<h4 class="panel-title theme-title-color">Assembly Election Details</h4>
@@ -145,6 +145,12 @@
 						<div class="col-sm-12">
 							<div id="assemblyElectionDetails"></div>
 						</div>
+					</div>
+				</div>
+					<div class="row m_top10">
+							<div class="col-sm-12">
+								<button class="btn btn-success btn-success-white text-capital" detailed-block="election">detailed information</button>
+							</div>
 					</div>
 				</div>
 			</div>
