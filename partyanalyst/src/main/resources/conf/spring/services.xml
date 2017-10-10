@@ -4467,6 +4467,8 @@
     	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	<property name="alertCategoryDAO" ref="alertCategoryDAO" />
     	<property name="alertStatusDAO" ref="alertStatusDAO" />
+    	<property name="alertAssignedDAO" ref="alertAssignedDAO" />
+    	<property name="alertCandidateDAO" ref="alertCandidateDAO" />
     </bean> 
     <bean name="locationWiseCasteInfoService" class="com.itgrids.core.api.service.impl.LocationWiseCasteInfoService">
     	<property name="voterCastInfoDAO" ref="voterCastInfoDAO"/>
