@@ -1118,8 +1118,6 @@ function responsiveTabs()
 		$('[role="tabListMobile"]').hide();
 		$('[role="tablist"]').show();
 	}
-	
-	
 }
 
 function getCandidateAndPartyInfoForConstituency(){
