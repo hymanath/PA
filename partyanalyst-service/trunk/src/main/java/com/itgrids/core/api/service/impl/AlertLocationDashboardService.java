@@ -307,15 +307,22 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 		List<LocationAlertVO> finalVOList = new ArrayList<LocationAlertVO>();
 		
 		if(scopeDetlsLst != null && scopeDetlsLst.size() > 0){
+			
 				for (Object[] objects : scopeDetlsLst){
+					LocationAlertVO otherStatusVO = new LocationAlertVO();
+					otherStatusVO.setId(0l);
+					otherStatusVO.setStatus("OTHERS");
+					otherStatusVO.setColour("#80DFFF");
 					LocationAlertVO vo = null;
 					Long impactLvlId = commonMethodsUtilService.getLongValueForObject(objects[0]);
 					if(type != null && type.equalsIgnoreCase("impactScope")){
+						
 						if(impactLvlId == 5l || impactLvlId == 12l){
 							 vo = getImpactScopeMatchVO(finalVOList,commonMethodsUtilService.getLongValueForObject(5l));
 							if(vo == null){
 							 vo = new LocationAlertVO();
 							 vo.setSubList(setAlertStatusList(type));
+							 vo.getSubList().add(otherStatusVO);
 							 finalVOList.add(vo);
 							}
 							vo.setId(5l);
@@ -325,6 +332,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							 if(vo == null){
 								 vo = new LocationAlertVO();
 								 vo.setSubList(setAlertStatusList(type));
+								 vo.getSubList().add(otherStatusVO);
 								 finalVOList.add(vo);
 								}
 							vo.setId(6l);
@@ -334,15 +342,17 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							 if(vo == null){
 								 vo = new LocationAlertVO();
 								 vo.setSubList(setAlertStatusList(type));
+								 vo.getSubList().add(otherStatusVO);
 								 finalVOList.add(vo);
 								}
 							vo.setId(3l);
-							vo.setStatus("Constiyuency Level");
+							vo.setStatus("Constituency Level");
 						}else if(impactLvlId == 13l || impactLvlId == 14l) {
 							 vo = getImpactScopeMatchVO(finalVOList,commonMethodsUtilService.getLongValueForObject(13l));
 							 if(vo == null){
 								 vo = new LocationAlertVO();
 								 vo.setSubList(setAlertStatusList(type));
+								 vo.getSubList().add(otherStatusVO);
 								 finalVOList.add(vo);
 								}
 							vo.setId(13l);
@@ -352,6 +362,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							 if(vo == null){
 								 vo = new LocationAlertVO();
 								 vo.setSubList(setAlertStatusList(type));
+								 vo.getSubList().add(otherStatusVO);
 								 finalVOList.add(vo);
 								}
 							vo.setId(impactLvlId);
@@ -364,6 +375,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							if(vo == null){
 								 vo = new LocationAlertVO();
 								 vo.setSubList(setAlertStatusList(type));
+								 vo.getSubList().add(otherStatusVO);
 								 finalVOList.add(vo);
 								}
 							vo.setId(6l);
@@ -373,6 +385,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							if(vo == null){
 								 vo = new LocationAlertVO();
 								 vo.setSubList(setAlertStatusList(type));
+								 vo.getSubList().add(otherStatusVO);
 								 finalVOList.add(vo);
 								}
 							vo.setId(impactLvlId);
