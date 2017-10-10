@@ -268,7 +268,7 @@ function onLoadAjaxCalls()
 	
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
-	//getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
+	getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
 	/* setTimeout(function(){ 
 		//News Block
 		getPrintMediaCountsForConstituencyPage()
@@ -5019,6 +5019,21 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 				str+='</tr>';
 			str+='</table>';
 		str+='</div>';
+		if(result.impactScopeList !=null && result.impactScopeList.length>0){
+			str+='<ul class="alerts-status-list">';
+				for(var i in result.impactScopeList)
+				{
+					str+='<li>';
+						str+='<h4 class="panel-title">'+result.impactScopeList[i].status+'</h4>';
+						str+='<p>'+result.impactScopeList[i].count+'&nbsp;&nbsp;<small class="f-10"> '+result.impactScopeList[i].percentage+'%</small></p>';
+						for(var j in result.impactScopeList[i].subList){
+							str+='<hr style="margin-top:8px;margin-bottom:8px"/>';
+							str+='<p style="color:'+result.impactScopeList[i].subList[j].colour+';">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;<span class="pull-right">'+result.impactScopeList[i].subList[j].count+'</span></p>';
+						}
+					str+='</li>';
+				}
+			str+='</ul>';
+		}
 		$("#alertsBlockDivId").html(str);
 	}
 }
@@ -5917,7 +5932,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 	}
   }
   function getDesignationWiseAlertsOverview(defaultAlertCategoryIds){
-	//$("#alertsBlockDivId").html(spinner);
+	$("#alertsDeignBlockDivId").html(spinner);
 	var jsObj={
 			fromDateStr 	  	:globalFromDate,
 			toDateStr		  	:globalToDate,
@@ -5933,6 +5948,73 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
-		
+		if(result != null && result.length >0){
+		return buildDesignationWiseAlertsOverview(result);
+		}else {
+			$("#alertsDeignBlockDivId").html("No Data Available");
+		}
 	});	
+	
+		function buildDesignationWiseAlertsOverview(result){
+			var str='';
+			
+			str+='<h4>Designation wise Alerts Overview</h4>';
+			str+='<div class="table-responsive">';
+				str+='<table class="table">';
+					str+='<thead>';
+					
+						str+='<tr>';
+							str+='<th rowspan="2">Designation</th>';
+							str+='<th rowspan="2">Total</th>';
+							str+='<th colspan="8" class="text-center">Involved</th>';
+							str+='<th colspan="8" class="text-center">Assigned</th>';
+						str+='</tr>';
+						str+='<tr>';
+							str+='<th>Total</th>';
+							str+='<th>Percentage</th>';
+							str+='<th>Inprogress</th>';
+							str+='<th>Percentage</th>';
+							str+='<th>Completed</th>';
+							str+='<th>Percentage</th>';
+							str+='<th>Others</th>';
+							str+='<th>Percentage</th>';
+							str+='<th>Total</th>';
+							str+='<th>Percentage</th>';
+							str+='<th>Inprogress</th>';
+							str+='<th>Percentage</th>';
+							str+='<th>Completed</th>';
+							str+='<th>Percentage</th>';
+							str+='<th>Others</th>';
+							str+='<th>Percentage</th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						
+						if(result != null && result.length >0){
+							for(var i in result){
+								str+='<tr>';
+								str+='<td id='+result[i].id+'>'+result[i].status+'</td>';
+								str+='<td>'+result[i].totalAlertCount+'</td>';
+								str+='<td>'+result[i].alertCount+'</td>';
+								str+='<td>'+result[i].percentage1+'%</td>';
+								for(var j in result[i].subList){
+									str+='<td>'+result[i].subList[j].count+'</td>';
+									str+='<td>'+result[i].subList[j].percentage+'%</td>';
+								}
+								str+='<td>'+result[i].count+'</td>';
+								str+='<td>'+result[i].percentage+'</td>';
+								for(var k in result[i].subList1){
+									str+='<td>'+result[i].subList1[k].count+'</td>';
+									str+='<td>'+result[i].subList1[k].percentage+'%</td>';
+								}
+								str+='</tr>';
+							}
+							
+						}
+						
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+			$("#alertsDeignBlockDivId").html(str);
+		}
   }
