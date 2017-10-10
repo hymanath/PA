@@ -13,6 +13,8 @@
 <link href="coreApi/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" href="coreApi/css/bootstrap-multiselect.css" type="text/css">
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <body>
@@ -36,6 +38,21 @@
 				<div id="candidatesResultsDivId"></div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-sm-12 m_top10">
+				<div class="block">
+					<div id="levelWiseCandidatesResultsDivId" class="m_top10"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 m_top10">
+				<div class="block">
+					<div id="locationWiseStrongVsPoor" class="m_top10"></div>
+				</div>
+			</div>
+		</div>
+		
 	</div>
 <main>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -50,6 +67,7 @@
 <script src="coreApi/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="coreApi/js/electionConstituencyPage.js" type="text/javascript"></script>
 <script type ="text/javascript">
 
