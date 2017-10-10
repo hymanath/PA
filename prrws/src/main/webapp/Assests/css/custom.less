@@ -2023,8 +2023,39 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 	color:@white_color;
 	padding:15px;
 }
+.block_style_ITC.active {
+	position: relative;
+	background: #333;	
+}
+.block_style_ITC.active:after, .block_style_ITC.active:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	bottom:-30px
+}
+
+.block_style_ITC.active:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: #333;
+	border-width: 30px;
+	margin-left: -30px;
+}
+.block_style_ITC.active:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-bottom-color: #333;
+	border-width: 31px;
+	margin-left: -31px;
+}
 .m_top40{
 	margin-top:40px;
+}
+.m_top30{
+	margin-top:30px;
 }
 .m_top25{
 	margin-top:25px;
@@ -2035,7 +2066,7 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 .white_block_ITC{
 	background-color: white;
 	padding: 20px;
-	box-shadow:0px 0px 3px 3px rgba(0,0,0,0.4);
+	box-shadow:0px 0px 10px  rgba(0, 0, 0, 0.4);
 }
 .m_left10{
 	margin-left:10px;

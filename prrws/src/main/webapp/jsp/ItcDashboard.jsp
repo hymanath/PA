@@ -15,6 +15,12 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+<style type="text/css">
+.panel-default
+{
+	border-color:#333
+}
+</style>
 </head>
 <body>
    <header>
@@ -151,35 +157,51 @@
 					<div class="multi-level-selection-menu arrow_box_top"></div>
 				</div>-->
 				<div class="col-sm-12">
-					    <ul class="list-inline pull-right sub-menu">
-							  <div class="input-group">
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-						         <input type="text" class="form-control" id="itcDateRangePickerId" style="width: 200px;"/>
-					         </div>
-                        </ul>
+					<ul class="list-inline pull-right sub-menu">
+						  <div class="input-group">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+							 <input type="text" class="form-control" id="itcDateRangePickerId" style="width: 200px;"/>
+						 </div>
+					</ul>
 				</div>
 			</div>
 		</div>
 	</section>
 </header>
 <main class="m_top5">
-<div class="container-fluid">
-	<section>
-		<div class="row m_top10">
-			<div class="col-sm-12">
-				<div id="departmentWiseDivId"></div>
+	<div class="container-fluid">
+		<section>
+			<div class="row m_top10">
+				<div class="col-sm-12">
+					<div id="departmentWiseDivId"></div>
+				</div>
 			</div>
-		</div>
-		<div class="m_top10">
-			<div class="col-sm-12">
-				<div id="departmentBlockWiseDetailsId"></div>
+			<div class="row  m_top25">
+				<div class="col-sm-12">
+					<div id="departmentBlockWiseDetailsId"></div>
+					<div id="APISXLr8APOverview" class="m_top10"></div>
+					<div id="campaignsOverviewBlock" class="m_top10"></div>
+					<div id="campusOverviewBlock" class="m_top10"></div>
+				</div>
 			</div>
-		</div>
-	</section>
-</div>
+		</section>
+	</div>
 </main>
+<div class="modal fade" id="modalId" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width:80%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Cohort </h4>
+			</div>
+			<div class="modal-body">
+				<div id="cohortId"></div>
+			</div>
+		</div>
+	</div>
+</div>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
