@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
@@ -51,5 +52,16 @@ public class PublicationDateDAO extends
        query.setParameter("constituencyId", constituencyId);
 		return (Long) query.uniqueResult();
 		
+	}
+	
+	public List<Object[]> getEnrollmentPublications(){
+		Query query = getSession().createSQLQuery("select distinct pd.publication_date_id as publicationDateId," +
+				"pd.date as date,pd.name as name from voter_cast_info b, publication_date pd where " +
+				"pd.publication_date_id= b.publication_date_id ")
+				.addScalar("publicationDateId",Hibernate.LONG)
+				.addScalar("date", Hibernate.DATE)
+				.addScalar("name",Hibernate.STRING);
+		
+		return query.list();
 	}
 }

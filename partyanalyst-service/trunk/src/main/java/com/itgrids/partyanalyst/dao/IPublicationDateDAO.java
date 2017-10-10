@@ -18,4 +18,5 @@ public interface IPublicationDateDAO extends GenericDao<PublicationDate, Long> {
 	public Long getLatestPublicationId();
 	
 	public Long getLatestPublicationIdByConstiId(Long constituencyId);
+	public List<Object[]> getEnrollmentPublications();
 }
