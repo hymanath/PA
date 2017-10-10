@@ -4500,4 +4500,9 @@
     	<property name="nominatedPostGovtOrderDAO" ref="nominatedPostGovtOrderDAO" />
     	<property name="cadreDetailsService" ref="cadreDetailsService" ></property>
     </bean>
+    <bean name="locationWiseElectionInformationDetalsService" class="com.itgrids.core.api.service.impl.LocationWiseElectionInformationDetalsService">
+    	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+    	<property name="candidateDAO" ref="candidateDAO" />
+    
+    </bean>
 </beans>			
