@@ -291,6 +291,8 @@ function onLoadClicks()
 			window.open('areaWiseGrievanceDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'nominatedPosts'){
 			window.open('areaWiseDashboardDetailedViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
+		}else if(blockName == 'election'){
+			window.open('areaWiseElectionDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&constituencyId='+constituencyId+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}
 		
 	});
@@ -4201,8 +4203,8 @@ function getPositionWiseMemberCount(){
 	
 	
 	var jsObj={
-			"fromDateStr" : globalFromDate,
-			"toDateStr":globalToDate,
+			"fromDateStr" : "",
+			"toDateStr":"",
 			"locationValuesArr":userAccessLevelValuesArray,
 			"locationTypeId":locationLevelId,
 			"year":""
@@ -4260,8 +4262,8 @@ function getNominatedPostApplicationDetails(){
 	
 	var jsObj={
 			"year":"",
-			"fromDateStr" :globalFromDate,
-			"toDateStr":globalToDate,
+			"fromDateStr" :"",
+			"toDateStr":"",
 			"locationTypeId":locationLevelId,
 			"locationValues":userAccessLevelValuesArray
 		}
@@ -4420,8 +4422,8 @@ function getNominatedPostStatusWiseCount(){
 	
 	var jsObj={
 			"year":"",
-			"fromDateStr" : globalFromDate,
-			"toDateStr":globalToDate,
+			"fromDateStr" : "",
+			"toDateStr":"",
 			"locationTypeId":locationLevelId,
 			"locationValues":userAccessLevelValuesArray
 		}
@@ -4552,8 +4554,8 @@ function getLocationWiseInsuranceStatusCount(yearId){
 	$("#insuranceDetails").html(spinner);
 	$("#insuranceTotalCount").html("Total Count - ");
 	var jsObj={
-			"fromDate" 			: globalFromDate,
-			"toDate"			: globalToDate,
+			"fromDate" 			: "",
+			"toDate"			: "",
 			"locationTypeId" 	: locationLevelId,
 			"locationValuesArr" : userAccessLevelValuesArray,
 			"year"				: yearId
@@ -4644,8 +4646,8 @@ function getLocationWiseGrivanceTrustStatusCounts(yearId){
 	$("#grivanceId0,#grivanceId1").html(spinner);
 	$("#totalGrievanceCount,#NtrTrustTotalCount").html('Total Count - ');
 	var jsObj={
-			"fromDate" : globalFromDate,
-			"toDate":globalToDate,
+			"fromDate" : "",
+			"toDate":"",
 			"locationTypeId" : locationLevelId,
 			"locationValuesArr" :userAccessLevelValuesArray,
 			"year": yearId
@@ -4924,8 +4926,8 @@ function getDetailedElectionInformaction(){
 function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 	$("#alertsBlockDivId").html(spinner);
 	var jsObj={
-			fromDateStr 	  	:globalFromDate,
-			toDateStr		  	:globalToDate,
+			fromDateStr 	  	:"",
+			toDateStr		  	:"",
 			locationValuesArr 	:userAccessLevelValuesArray,
 			alertTypeIdsStr 	:defaultAlertCategoryIds,
 			locationTypeId		:locationLevelId,
@@ -5545,8 +5547,8 @@ function getPartyWiseMPandMLACandidatesCounts(){
   function getNominatedPositionWiseCandidates(boardLevelId,name){
 	  $("#positionLevelDetailsId").html(spinner);
 	var jsObj={
-      "fromDateStr" 		:globalFromDate,
-      "toDateStr"			:globalToDate,
+      "fromDateStr" 		:"",
+      "toDateStr"			:"",
       "locationValuesArr"	:userAccessLevelValuesArray,
       "locationTypeId"		:locationLevelId,
       "year"				:"",
@@ -5607,8 +5609,8 @@ function getLevelWisePostsOverView(){
 	
 	$("#levelWiseNominatedPosts").html(spinner);
 	var jsObj={
-			"fromDateStr" : globalFromDate,
-			"toDateStr":globalToDate,
+			"fromDateStr" : "",
+			"toDateStr":"",
 			"locationTypeId":locationLevelId,
 			"locationValuesArr":userAccessLevelValuesArray,
 			"boardLevelId":globalboardLevelId
@@ -5751,8 +5753,8 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 		boardLevelId = 2;
 	}
 	var jsObj={
-	  "fromDateStr" 		:globalFromDate,
-      "toDateStr"			:globalToDate,
+	  "fromDateStr" 		:"",
+      "toDateStr"			:"",
       "locationValuesArr"	:userAccessLevelValuesArray,
       "locationTypeId"		:locationLevelId,
       "year"				:"",
@@ -5880,8 +5882,8 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 	  }
 	  
 	var jsObj={
-      fromDateStr 		:globalFromDate,
-      toDateStr			:globalToDate,
+      fromDateStr 		:"",
+      toDateStr			:"",
       locationValuesArr	:userAccessLevelValuesArray,
       locationTypeId	:locationLevelId,
       year				:"",
@@ -5949,8 +5951,8 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
   function getDesignationWiseAlertsOverview(defaultAlertCategoryIds){
 	$("#alertsDeignBlockDivId").html(spinner);
 	var jsObj={
-			fromDateStr 	  	:globalFromDate,
-			toDateStr		  	:globalToDate,
+			fromDateStr 	  	:"",
+			toDateStr		  	:"",
 			locationValuesArr 	:userAccessLevelValuesArray,
 			alertTypeIdsStr 	:defaultAlertCategoryIds,
 			locationTypeId		:locationLevelId,
@@ -5975,7 +5977,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 			
 			str+='<h4>Designation wise Alerts Overview</h4>';
 			str+='<div class="table-responsive">';
-				str+='<table class="table">';
+				str+='<table class="table" id="dataTableDesigAlerts">';
 					str+='<thead>';
 					
 						str+='<tr>';
@@ -6031,5 +6033,10 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 				str+='</table>';
 			str+='</div>';
 			$("#alertsDeignBlockDivId").html(str);
+			$("#dataTableDesigAlerts").dataTable({
+				"iDisplayLength": 10,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			});
 		}
   }

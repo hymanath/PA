@@ -1,9 +1,13 @@
-
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-onLoadCalls()
+setTimeout(function(){
+	onLoadCalls();
+},1500)
+
 function onLoadCalls()
 {
-	getDetailedElectionInformaction();
+	if(locationLevelId == '4'){
+		getDetailedElectionInformaction();
+	}
 	getLocationWiseElectionResults();
 	getElectionInformationLocationWiseStatus();
 	getElectionDetailsData();
@@ -12,7 +16,7 @@ function onLoadCalls()
 function getDetailedElectionInformaction(){
 	$("#candidatesResultsDivId").html(spinner);
 	jsObj={
-	  	constituencyId: 232
+	  	constituencyId: constituencyId
     }
     $.ajax({
       type : "GET",
@@ -27,6 +31,8 @@ function getDetailedElectionInformaction(){
 	
 	function buildDetailedElectionInformaction(result){
 		var navTabs = '';
+		navTabs+='<div class="block">';
+			navTabs+='<h4 class="theme-title-color">Assembly Election Year Wise Details</h4>';
 		navTabs+='<div class="row">';
 			navTabs+='<div class="col-sm-5" style="padding-right: 10px;">';
 				navTabs+='<div class="panel panel-default panel-border">';
@@ -196,7 +202,7 @@ function getDetailedElectionInformaction(){
 				navTabs+='</div>';
 			navTabs+='</div>';
 		navTabs+='</div>';
-		
+		navTabs+='</div>';
 		$("#candidatesResultsDivId").html(navTabs);
 		$(".tooltipCls").tooltip();
 		$("#candidatesResultsDT").dataTable({
@@ -217,12 +223,10 @@ function getLocationWiseElectionResults(){
 		
 		electionScopeIdsArr: [1,2,3,4,5,6,7,8,9],
 		subType:"MAIN",
-		lelevlId:2,
-		locationValuesArr:[1],
-		yearsArr:[2014],
-		partyIdsArr:[872,362,1117,886,72,269,265,163]
-
-
+		lelevlId:locationLevelId,
+		locationValuesArr:userAccessLevelValuesArray,
+		yearsArr:[2014,2009,2004],
+		partyIdsArr:[872,362,1117,886,72,269,265,163,1887]
     }
     $.ajax({
       type : "GET",
@@ -256,7 +260,7 @@ function getLocationWiseElectionResults(){
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-					if(result[i].list.length > 6)
+					if(result[i].list.length > 4)
 					{
 						str+='<div class="table-scroll">';	
 					}
@@ -297,7 +301,7 @@ function getLocationWiseElectionResults(){
 		str+='</ul>';
 		
 		$("#levelWiseCandidatesResultsDivId").html(str);
-		$(".table-scroll").mCustomScrollbar({setHeight:'346px'});
+		$(".table-scroll").mCustomScrollbar({setHeight:'254px'});
 		$("#dataTablelevelWiseBlock").dataTable({
 			"paging":   false,
 			"info":     false,
@@ -360,8 +364,8 @@ function getElectionDetailsData(){
 function getElectionInformationLocationWiseStatus(){
 	$("#locationWiseStrongVsPoor").html(spinner);
 	var jsObj={
-	  	locationTypeId 		:2,
-		locationValue 		:1,
+	  	locationTypeId 		:locationLevelId,
+		locationValue 		:userAccessLevelValue,
 		electionScopeIds	:[2],
 		partyIdsList  		:[872],
 		electionYears     	:[2014,2009,2004],
