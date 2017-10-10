@@ -1,4 +1,7 @@
 getDetailedElectionInformaction();
+getLocationWiseElectionResults();
+getElectionInformationLocationWiseStatus();
+getElectionDetailsData();
 function getDetailedElectionInformaction(){
 	
 	jsObj={
@@ -153,7 +156,13 @@ function getDetailedElectionInformaction(){
 										navTabs+='<tbody>';
 											for(var j in result[i].candidateOppositionList){
 												navTabs+='<tr>';
-													navTabs+='<td><span class="candidate_rounded">'+result[i].candidateOppositionList[j].candidateName.charAt(0)+'</span>'+result[i].candidateOppositionList[j].candidateName+'</td>';
+													if(result[i].candidateOppositionList[j].candidateName !=null && result[i].candidateOppositionList[j].candidateName.length>10){
+														navTabs+='<td><span class="candidate_rounded">'+result[i].candidateOppositionList[j].candidateName.charAt(0)+'</span><span class="tooltipCls" style="cursor:pointer; data-toggle="tooltip" data-placement="right" title="'+result[i].candidateOppositionList[j].candidateName+'">'+result[i].candidateOppositionList[j].candidateName.substring(0,10)+'...</span></td>';
+													}else{
+														navTabs+='<td><span class="candidate_rounded">'+result[i].candidateOppositionList[j].candidateName.charAt(0)+'</span>'+result[i].candidateOppositionList[j].candidateName+'</td>';
+													}
+													
+													
 													navTabs+='<td>'+result[i].candidateOppositionList[j].partyShortName+'</td>';
 													
 													if(result[i].candidateOppositionList[j].partyShortName == "TDP" || result[i].candidateOppositionList[j].partyShortName == "YSRC"){
@@ -180,16 +189,157 @@ function getDetailedElectionInformaction(){
 		navTabs+='</div>';
 		
 		$("#candidatesResultsDivId").html(navTabs);
+		$(".tooltipCls").tooltip();
 		$("#candidatesResultsDT").dataTable({
 			"paging":   true,
 			"info":     false,
 			"searching": false,
 			"autoWidth": true,
-			"iDisplayLength": 9,
+			"iDisplayLength": 10,
 			"aaSorting": [],
-			"aLengthMenu": [[9, 15, 20, -1], [9, 15, 20, "All"]]
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		});
 	}
+}
+
+function getLocationWiseElectionResults(){
+	
+	var jsObj={
+		
+		electionScopeIdsArr: [1,2,3,4,5,6,7,8,9],
+		subType:"MAIN",
+		lelevlId:2,
+		locationValuesArr:[1],
+		yearsArr:[2014],
+		partyIdsArr:[872,362,1117,886,72,269,265,163]
+
+
+    }
+    $.ajax({
+      type : "GET",
+      url : "getLocationWiseElectionResultsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			return buildLocationWiseElectionResults(result);
+		}
+	});
+	
+	function buildLocationWiseElectionResults(result){
+		
+		var str='';
+		
+		str+='<ul class="list-inline levelWiseCandiRstsCls">';
+		for(var i in result){
+			str+='<li style="margin-right:15px;margin-left:15px;">';
+				str+='<div class="block">';
+					str+='<h4>'+result[i].electionType+' Election Results</h4>';
+					str+='<p>'+result[i].electionYear+'</p>';
+					
+					str+='<div class="bg_ED" style="padding:10px;">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-5">';
+								str+='<h6>Total Seats: '+result[i].totalSeatsCount+'</h6>';
+							str+='</div>';
+							str+='<div class="col-sm-7">';
+								str+='<h6>Participated Seats: '+result[i].participatedSeatsCount+'</h6>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="table-responsive">';	
+						str+='<table class="table table-condensed table_custom" id="dataTablelevelWiseBlock">';
+							str+='<thead>';
+								str+='<tr>';
+									str+='<th>Party</th>';
+									str+='<th class="text-center">Seats(P)</th>';
+									str+='<th class="text-center">Won</th>';
+									str+='<th class="text-center">Voting%</th>';
+								str+='</tr>';
+							str+='</thead>';
+							str+='<tbody>';
+								for(var j in result[i].list){
+									str+='<tr>';
+										if(result[i].list[j].partyName == "TDP" || result[i].list[j].partyName == "YSRC"){
+											str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'.PNG" alt="'+result[i].list[j].partyName+'"></img>  '+result[i].list[j].partyName+'</p></td>';
+										}else{
+											str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'.png" alt="'+result[i].list[j].partyName+'"></img>   '+result[i].list[j].partyName+'</p></td>';
+										}
+										str+='<td class="text-center">'+result[i].list[j].totalSeatsCount+'</td>';
+										str+='<td class="text-center">'+result[i].list[j].wonSeatsCount+'</td>';
+										str+='<td class="text-center">'+result[i].list[j].perc+' %</td>';
+									str+='</tr>';
+								}
+							str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
+					
+				str+='</div>';
+			
+			str+='</li>';
+		}
+		str+='</ul>';
+		
+		$("#levelWiseCandidatesResultsDivId").html(str);
+		$("#dataTablelevelWiseBlock").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">'
+		});
+		$('.levelWiseCandiRstsCls').slick({
+				slide: 'li',
+				slidesToShow: 3,
+				slidesToScroll: 1,
+				infinite: false,
+				swipe:false,
+				touchMove:false,
+				variableWidth: false,
+				responsive: [
+					{
+						breakpoint: 1024,
+						settings: {
+							slidesToShow: 3,
+							slidesToScroll: 3,
+						}
+					},
+					{
+						breakpoint: 600,
+						settings: {
+							slidesToShow: 2,
+							slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
+						}
+					}
+				]
+			});
+		
+	}
+}
+function getElectionDetailsData(){
+	var jsObj={
+		
+		locationTypeId:2,
+		locationValuesArr:[1],
+		electionYear:"2014,2009,2004",
+		electionId:0
+    }
+    $.ajax({
+      type : "GET",
+      url : "getElectionDetailsDataAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		
+	});
 }
 function getElectionInformationLocationWiseStatus(){
 	
@@ -198,16 +348,54 @@ function getElectionInformationLocationWiseStatus(){
 		locationValue 		:1,
 		electionScopeIds	:[2],
 		partyIdsList  		:[872],
-		electionYears     	:electionYrVal,
-		electionSubTypeArr 	:electionSubTypeArr
+		electionYears     	:[2014,2009,2004],
+		electionSubTypeArr 	:["MAIN"]
 
     }
     $.ajax({
       type : "GET",
-      url : "getElectionInformationLocationWiseStatus.action",
+      url : "getElectionInformationLocationWiseStatusAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
-		
+		if(result !=null && result.length>0){
+			return buildElectionInformationLocationWiseStatus(result);
+		}
 	});
+	
+	function buildElectionInformationLocationWiseStatus(result){
+		
+		var str='';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-condensed">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>Location Name</th>';
+							if(result[0].list !=null && result[0].list.length>0){
+								for(var j in result[0].list){
+									str+='<th>'+result[0].list[j].electionYear+'</th>';
+								}
+							}
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].locationName+'</td>';
+						for(var j in result[i].list){
+								str+='<td>';
+									str+='<h5>'+result[i].list[j].status+'</h5>';
+									str+='<h6>'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+')</h6>';
+								str+='</td>';
+							
+						}
+					str+='</tr>';
+				}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		
+		$("#locationWiseStrongVsPoor").html(str);
+		
+	}
 }
