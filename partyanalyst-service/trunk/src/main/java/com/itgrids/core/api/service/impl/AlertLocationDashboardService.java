@@ -459,41 +459,27 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							designationVO = new LocationAlertVO();
 							designationVO.setId(commonMethodsUtilService.getLongValueForObject(param[3]));
 							designationVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[4]));
-								if(type != null && type.equalsIgnoreCase("assigned")){
-									designationVO.setSubList(setAlertStatusList("impactScope"));
-								}else if(type != null && type.equalsIgnoreCase("involved")){
-									designationVO.setSubList1(setAlertStatusList("impactScope"));
-								}
+							LocationAlertVO otherStatusVO = new LocationAlertVO();
+							otherStatusVO.setId(0l);
+							otherStatusVO.setStatus("OTHERS");
+							otherStatusVO.setColour("#80DFFF");
+							
+								designationVO.setSubList(setAlertStatusList("impactScope"));
+								designationVO.getSubList().add(otherStatusVO);
+								designationVO.setSubList1(setAlertStatusList("impactScope"));
+								designationVO.getSubList1().add(otherStatusVO);
 							finalVOs.add(designationVO);
 					}
-					if(designationVO.getSubList1() == null || designationVO.getSubList1().size() == 0 ){
-						if(type != null && type.equalsIgnoreCase("involved")){
-							designationVO.setSubList1(setAlertStatusList("impactScope"));
-						}
-					}
+					
 					if(statusId != 3l || statusId != 4l){
 						statusId =0l;
 					}
 					if(type != null && type.equalsIgnoreCase("assigned")){
 						designationVO.setAlertCount(designationVO.getAlertCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
 						statusVO = getImpactScopeMatchVO(designationVO.getSubList(),statusId);
-						if(statusVO == null){
-							statusVO = new LocationAlertVO();
-							statusVO.setId(0l);
-							statusVO.setStatus("OTHERS");
-							statusVO.setColour("#80DFFF");
-							designationVO.getSubList().add(statusVO);
-						}
 					}else if(type != null && type.equalsIgnoreCase("involved")){
 						designationVO.setCount(designationVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
 						statusVO = getImpactScopeMatchVO(designationVO.getSubList1(),statusId);
-						if(statusVO == null){
-							statusVO = new LocationAlertVO();
-							statusVO.setId(0l);
-							statusVO.setStatus("OTHERS");
-							statusVO.setColour("#80DFFF");
-							designationVO.getSubList1().add(statusVO);
-						}
 					}
 					statusVO.setCount(statusVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
 				}
