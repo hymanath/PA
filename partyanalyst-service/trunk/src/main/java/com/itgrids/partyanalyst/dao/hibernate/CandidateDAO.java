@@ -978,5 +978,270 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		
 	
 	}
+
+	@Override
+	public List<Object[]> getElectionInformationLocationWisedetailsForValidVotes(List<Long> electionYrs, Long locationTypeId, Long locationValue,
+			List<Long> electionScopeIds, Object object, List<String> subTypes,List<Long> parlimentIds) {
+
+		SQLQuery query = null;
+		StringBuilder sbs = new StringBuilder();
+		StringBuilder sbm = new StringBuilder();
+		StringBuilder sbe = new StringBuilder();
+		String queryStr= null;
+		
+		sbs.append( " SELECT e.election_year as year, et.election_type_id as electionTypeid,et.election_type as electionType, e.election_id as electionId ");
+		if(object !=null && object.toString().equalsIgnoreCase("lowLevels")){
+			sbs.append(" ,sum(br.valid_votes) as totalVotes");
+			sbm.append("  FROM ");
+			sbm.append( " election e ,  ");
+			sbm.append( " election_scope es , ");
+			sbm.append( " election_type et, ");
+			sbm.append( " constituency_election ce, ");
+			sbm.append( " booth_result br,  ");
+			sbm.append( " booth_constituency_election bce, ");
+			sbm.append( " booth b  ");
+			sbe.append( " where  ");
+			sbe.append( " e.election_scope_id=es.election_scope_id and  ");
+			sbe.append( " es.election_type_id = et.election_type_id and  ");
+			sbe.append( " ce.consti_elec_id = bce.consti_elec_id and  ");
+			sbe.append( " e.election_id = ce.election_id and  ");
+			sbe.append( " br.booth_constituency_election_id = bce.booth_constituency_election_id and  ");
+			sbe.append( " bce.booth_id = b.booth_id   ");
+			if(electionYrs != null && electionYrs.size() > 0l){
+				 sbe.append(" and e.election_year in(:electionYrs)");
+			}
+			if(electionScopeIds !=null && electionScopeIds.size()>0){
+				sbe.append(" AND e.election_scope_id IN (:electionScopeIds)");
+			}
+			if(subTypes.size()>0l && subTypes !=null){
+				sbe.append(" AND e.sub_type IN (:subTypes)");
+			}
+			if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l){
+				if(locationTypeId.longValue() ==5l){
+					sbs.append(" ,b.panchayat_id as locationId,p.panchayat_name as locationName ");
+					sbm.append(" ,panchayat p");
+					sbe.append(" and b.panchayat_id = p.panchayat_id and b.tehsil_id =:locationValue");
+					sbe.append( " GROUP BY e.election_year,e.election_id , et.election_type_id,b.panchayat_id  ");
+					sbe.append( " ORDER BY e.election_year,e.election_id , et.election_type_id ");
+				}else if(locationTypeId.longValue() ==6l){
+					sbs.append(" ,b.panchayat_id as locationId,p.panchayat_name as locationName ");
+					sbm.append(" ,panchayat p");
+					sbe.append(" and b.panchayat_id = p.panchayat_id and b.panchayat_id =:locationValue");
+					sbe.append( " GROUP BY e.election_year,e.election_id , et.election_type_id,b.panchayat_id  ");
+					sbe.append( " ORDER BY e.election_year,e.election_id , et.election_type_id ");
+				}else if(locationTypeId.longValue() ==7l){
+					sbs.append(" ,b.ward_id as locationid, w.ward_id as locationName  ");
+					sbm.append(" ,ward w");
+					sbm.append(" and b.ward_id = p.ward_id and b.local_election_body_id =:locationValue");
+					sbe.append( " GROUP BY e.election_year,e.election_id , et.election_type_id,b.panchayat_id  ");
+					sbe.append( " ORDER BY e.election_year,e.election_id , et.election_type_id ");
+				}
+			}
+			
+			queryStr =sbs.append(sbm).append(sbe).toString();
+			
+		}else{
+			sbs.append(" ,sum(cer.valid_votes) as totalVotes");
+			sbm.append(" FROM constituency_election_result cer " +
+					" JOIN constituency_election ce ON  ce.consti_elec_id = cer.consti_elec_id " +
+					" JOIN constituency c ON c.constituency_id = ce.constituency_id " +
+					" JOIN election_scope es ON es.election_scope_id = c.election_scope_id " +
+					" JOIN election e ON e.election_id = ce.election_id " +
+					" JOIN election_type et ON es.election_type_id = et.election_type_id ");
+			sbe.append (" WHERE e.sub_type in(:subTypes) " );
+			if(parlimentIds == null || parlimentIds.size() == 0){
+				sbe.append("and (c.district_id between 11 and 23) ");
+				if(electionScopeIds !=null && electionScopeIds.size()>0){
+					sbe.append(" AND c.election_scope_id IN (:electionScopeIds)");
+				}
+			}
+			else{
+				sbe.append("and c.constituency_id in (:parlimentIds)  AND c.election_scope_id =1 ");
+			}
+			if(electionYrs != null && electionYrs.size() > 0l){
+				 sbe.append("and e.election_year in(:electionYrs)");
+			}
+			
+			if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l){
+				if(locationTypeId ==2l){
+					sbs.append(" ,c.district_id  as locationId,d.district_name as locationName ");
+					sbm.append(" join district d on d.district_id=c.district_id ");
+					sbe.append(" and c.state_id =:locationValue GROUP BY c.district_id,");
+				}else if(locationTypeId ==3l){
+					sbs.append(" ,c.constituency_id as locationId,c.name as locationName ");
+					sbe.append(" and c.district_id =:locationValue  GROUP BY c.constituency_id,");
+				}else if(locationTypeId ==4l){
+					sbs.append(" ,tc.tehsil_id as locationId,t.tehsil_name as locationName ");
+					sbm.append(" join tehsil_constituency tc on tc.constituency_id=c.constituency_id " +
+							" join tehsil t on t.tehsil_id =tc.tehsil_id ");
+					sbe.append(" and c.constituency_id =:locationValue  GROUP BY tc.tehsil_id, ");
+				}
+			}
+			sbe.append(" e.election_year,e.election_id , et.election_type_id ORDER BY e.election_year,e.election_id , et.election_type_id");
+			queryStr =sbs.append(sbm).append(sbe).toString();
+		}
+		
+		query = getSession().createSQLQuery(queryStr)
+		.addScalar("year",Hibernate.LONG)
+		.addScalar("electionTypeId", Hibernate.LONG).addScalar("electionType",Hibernate.STRING)
+		.addScalar("electionId",Hibernate.LONG)
+		.addScalar("totalVotes",Hibernate.LONG)
+		.addScalar("locationId", Hibernate.LONG)
+		.addScalar("locationName",Hibernate.STRING);
+		
+		if(electionYrs != null && electionYrs.size() > 0l){
+			query.setParameterList("electionYrs",electionYrs);
+		}
+		if(subTypes.size()>0l && subTypes !=null){
+			query.setParameterList("subTypes",subTypes);
+		}
+		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l && locationTypeId.longValue() != 10L){
+			query.setParameter("locationValue",locationValue);
+		}
+		
+		if(parlimentIds != null && parlimentIds.size() > 0){
+			query.setParameterList("parlimentIds",parlimentIds);
+		}else if(electionScopeIds !=null && electionScopeIds.size()>0){
+			query.setParameterList("electionScopeIds",electionScopeIds);
+		}
+		return query.list();
+	}
 	
+	
+	@Override
+	public List<Object[]> getElectionInformationLocationWiseDetailEarnedVoterShare(List<Long> electionYrs, Long locationTypeId, Long locationValue,
+			List<Long> electionScopeIds, Object object, List<String> subTypes, List<Long> parlimentIds, List<Long> partIds) {
+		
+		SQLQuery query = null;
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sbe = new StringBuilder();
+		StringBuilder sbm = new StringBuilder();
+		String queryStr=null;
+		sb.append("SELECT p.party_id as partyId,p.short_name as partyName,et.election_type_id AS electionTypeId," +
+				" et.election_type AS electionType, e.election_year as electionyear,e.election_id as electionId" );
+				
+		if(object !=null && object.toString().equalsIgnoreCase("lowLevels")){
+			sb.append(",SUM(cbr.votes_earned) as earnedVotes");
+			sbm.append(" FROM election e , election_scope es , election_type et, constituency_election ce, ");
+			sbm.append(" booth_result br, booth_constituency_election bce,  booth b , nomination n , party p , candidate_booth_result cbr  ");
+			
+			sbe.append(" where  n.nomination_id = cbr.nomination_id and n.party_id = p.party_id and  ");
+			sbe.append(" cbr.booth_constituency_election_id = bce.booth_constituency_election_id and  ");
+			sbe.append(" e.election_scope_id=es.election_scope_id and es.election_type_id = et.election_type_id and  ");
+			sbe.append(" ce.consti_elec_id = bce.consti_elec_id and  e.election_id = ce.election_id and  ");
+			sbe.append(" br.booth_constituency_election_id = bce.booth_constituency_election_id and  ");
+			sbe.append(" bce.booth_id = b.booth_id");
+			if(partIds.size() != 0 && partIds !=null){
+			sbe.append(" and n.party_id in (:partIds) ");
+			}
+			if(electionYrs != null && electionYrs.size() > 0l){
+				sbe.append(" and e.election_year in(:electionYrs)");
+			}
+			if(electionScopeIds !=null && electionScopeIds.size()>0){
+				sbe.append(" AND e.election_scope_id IN (:electionScopeIds)");
+			}
+			if(subTypes.size()>0l && subTypes !=null){
+				sbe.append(" AND e.sub_type IN (:subTypes)");
+			}
+			if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l){
+				if(locationTypeId.longValue() ==5l){
+					sb.append(" ,b.panchayat_id as locationId,pn.panchayat_name as locationName");
+					sbe.append("   and b.panchayat_id=pn.panchayat_id and b.tehsil_id =:locationValue");
+					sbm.append(" ,panchayat pn");
+					sbe.append(" GROUP BY e.election_year,e.election_id, et.election_type_id ,p.party_id,b.panchayat_id  ");
+				}else if(locationTypeId.longValue() ==6l){
+					sb.append(" ,b.panchayat_id as locationId,pn.panchayat_name as locationName ");
+					sbm.append(" ,panchayat pn");
+					sbe.append("   and b.panchayat_id=pn.panchayat_id and b.panchayat_id =:locationValue");
+					sbe.append(" GROUP BY e.election_year,e.election_id, et.election_type_id ,p.party_id,b.panchayat_id  ");
+				}else if(locationTypeId.longValue() ==7l){
+					sb.append(" ,b.ward_id as locationid, w.ward_name as locationName ");
+					sbm.append(" ,ward w");
+					sbe.append("   and w.ward_id=b.ward_id and b.local_election_body_id =:locationValue");
+					sbe.append(" GROUP BY e.election_year,e.election_id, et.election_type_id ,p.party_id,b.ward_id ");
+				}
+			}
+			
+			sbe.append(" ORDER BY e.election_year,e.election_id , et.election_type_id ");
+			queryStr =sb.append(sbm).append(sbe).toString();
+
+		}else{
+			sb.append(",SUM(cr.votes_earned) as earnedVotes");
+			sbm.append(" FROM party p, candidate c, nomination n, constituency_election ce, constituency_election_result cer, election e," +
+					" election_scope es, election_type et, constituency c1, candidate_result cr ");
+			sbe.append(" where e.election_scope_id = es.election_scope_id and  es.election_type_id = et.election_type_id and  ce.election_id = e.election_id and " +
+					" ce.consti_elec_id = cer.consti_elec_id AND  n.consti_elec_id = ce.consti_elec_id AND " +
+					" n.party_id = p.party_id and n.candidate_id = c.candidate_id and  ce.constituency_id = c1.constituency_id and  cr.nomination_id = n.nomination_id ");
+			
+			if(partIds.size() != 0 && partIds !=null){
+				sbe.append(" and n.party_id in (:partIds) ");
+			}
+			if(parlimentIds == null || parlimentIds.size() == 0){
+				sbe.append("and (c1.district_id between 11 and 23) ");
+				if(electionScopeIds !=null && electionScopeIds.size()>0){
+					sbe.append(" AND c1.election_scope_id IN (:electionScopeIds)");
+				}
+			}
+			else
+				sbe.append("and c1.constituency_id in (:parlimentIds)  AND c1.election_scope_id = 1 ");
+			if(electionYrs != null && electionYrs.size() > 0l){
+				 sbe.append(" and e.election_year in(:electionYrs)");
+			}
+			
+			if(subTypes.size()>0l && subTypes !=null){
+				sbe.append(" AND e.sub_type IN (:subTypes)");
+			}
+			
+			if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l){
+				if(locationTypeId.longValue() ==2l){
+					sb.append(" ,c1.district_id  as locationId,d.district_name as locationName ");
+					sbm.append(" ,district d");
+					sbe.append(" and d.district_id=c1.district_id and c1.state_id =:locationValue");
+					sbe.append(" GROUP BY e.election_year,e.election_id, et.election_type_id ,p.party_id,c1.district_id  ");
+				}else if(locationTypeId.longValue() ==3l){
+					sb.append(" ,c1.constituency_id as locationId,c1.name as locationName ");
+					sbe.append(" and c1.district_id =:locationValue");
+					sbe.append(" GROUP BY e.election_year,e.election_id, et.election_type_id ,p.party_id,c1.constituency_id ");
+				}else if(locationTypeId.longValue() ==4l){
+					sb.append(" ,tc.tehsil_id as locationid, t.tehsil_name as locationName ");
+					sbm.append(" ,tehsil_constituency tc,tehsil t ");
+					sbe.append(" and tc.constituency_id=c1.constituency_id and t.tehsil_id =tc.tehsil_id and c1.constituency_id =:locationValue");
+					sbe.append(" GROUP BY e.election_year,e.election_id, et.election_type_id ,p.party_id,t.tehsil_id ");
+				}
+			}
+			sbe.append(" ORDER BY e.election_year,e.election_id , et.election_type_id");
+			queryStr =sb.append(sbm).append(sbe).toString();
+		}
+		
+		query = getSession().createSQLQuery(queryStr)
+				.addScalar("partyId",Hibernate.LONG)
+				.addScalar("partyName",Hibernate.STRING)
+				.addScalar("electionTypeId",Hibernate.LONG)
+				.addScalar("electionType",Hibernate.STRING)
+				.addScalar("electionyear",Hibernate.LONG)
+				.addScalar("electionId",Hibernate.LONG)
+				.addScalar("earnedVotes", Hibernate.LONG)
+				.addScalar("locationId",Hibernate.LONG)
+				.addScalar("locationName",Hibernate.STRING);
+		
+		if(electionYrs != null && electionYrs.size() > 0l){
+			query.setParameterList("electionYrs",electionYrs);
+		}
+		
+		if(subTypes.size()>0l && subTypes !=null){
+			query.setParameterList("subTypes",subTypes);
+		}
+		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l  && locationTypeId.longValue() != 10L){
+			query.setParameter("locationValue",locationValue);
+		}
+		if(parlimentIds != null && parlimentIds.size() > 0){
+			query.setParameterList("parlimentIds",parlimentIds);
+		}else if(electionScopeIds !=null && electionScopeIds.size()>0){
+			query.setParameterList("electionScopeIds",electionScopeIds);
+		}
+		if(partIds.size() != 0 && partIds !=null){
+			query.setParameterList("partIds",partIds);
+		}
+		return query.list();
+	}
 }
