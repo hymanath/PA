@@ -1157,11 +1157,12 @@ function getCandidateAndPartyInfoForConstituency(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null){
-			if(result[0].list !=null && result[0].list.length>0){
+			/*if(result[0].list !=null && result[0].list.length>0){
 				buildRepresentativeCandidates(result);
 			}else{
 				$("#representativeMembersId").html("");
-			}
+			}*/
+			$("#representativeMembersId").html("");
 			if(locationLevelId == '3' || locationLevelId == '10')
 			{
 				return buildCandidateAndPartyInfoForDistrict(result);
