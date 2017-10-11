@@ -221,8 +221,7 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
   			return query.list();    	       	  
        }
 	//Constituency Page Query
-	public List<Object[]> getLocationWiseTourMemberDetails(Long locationTypeId,
-			List<Long> locationValues) {
+	public List<Object[]> getLocationWiseTourMemberDetails(Long locationTypeId,List<Long> locationValues,Long stateId) {
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select  "
 						+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId,"+// 0
@@ -235,7 +234,8 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 						+ " SelfAppraisalCandidateLocationNew SACL "
 						+ " where "
 						+ " SACL.selfAppraisalCandidate.isActive = 'Y' and SACL.isDeleted='N' and "
-						+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y'");
+						+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and " 
+						+ " SACL.userAddress.state.stateId = :stateId ");
 
 		if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0) {
 
@@ -258,7 +258,7 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
 
 		Query query = getSession().createQuery(queryStr.toString());
-
+        query.setParameter("stateId", stateId);
 		if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0) {
 			query.setParameterList("locationValues", locationValues);
 		}

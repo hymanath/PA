@@ -2241,7 +2241,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @Description :This Service Method is used to get tour leader over all complaince details designation wise. 
 	 *  @since 7-JULY-2017
 	 */
-	public List<ToursBasicVO> getLocationWiseTourMembersComplainceDtls(final Long locationTypeId,final List<Long> locationValues,final String fromDateStr,final String toDateStr,final String year){
+	public List<ToursBasicVO> getLocationWiseTourMembersComplainceDtls(final Long locationTypeId,final List<Long> locationValues,final String fromDateStr,final String toDateStr,final String year,final Long stateId){
 		List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>(0);
 		Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
 		Map<String,String> categoryIdNameMap = new HashMap<String, String>(0);
@@ -2264,7 +2264,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
 			List<Object[]> monthObjList = selfAppraisalToursMonthDAO.getMonthDtls(monthYear);
 
-			List<Object[]> rtrnCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getLocationWiseTourMemberDetails(locationTypeId, locationValues);
+			List<Object[]> rtrnCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getLocationWiseTourMemberDetails(locationTypeId, locationValues,stateId);
 			//getting designation wise target
 			ToursBasicVO basicDtlsVO = getRequiredData(rtrnCandiateObjLst);
 			if(monthyearIds != null && monthyearIds.size() > 0 && basicDtlsVO.getComplaincandidateIdsSet() != null && basicDtlsVO.getNoNComplaincandidateIdsSet() != null){
