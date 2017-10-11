@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostCandidateDtlsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingDataVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -97,7 +98,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private ILocationWiseElectionInformationDetalsService locationWiseElectionInformationDetalsService;
 	private List<LocationAlertVO> locationAlertVOList;
 	private List<AlertCoreDashBoardVO> alertVOList;
+	private PartyMeetingDataVO partyMeetingDataVO;
 	
+	
+	public PartyMeetingDataVO getPartyMeetingDataVO() {
+		return partyMeetingDataVO;
+	}
+	public void setPartyMeetingDataVO(PartyMeetingDataVO partyMeetingDataVO) {
+		this.partyMeetingDataVO = partyMeetingDataVO;
+	}
 	public List<LocationAlertVO> getLocationAlertVOList() {
 		return locationAlertVOList;
 	}
@@ -493,9 +502,29 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			jObj = new JSONObject(getTask());
 			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValues"));
 			String fromDateStr =jObj.getString("fromDate");
-			String toDateStr =jObj.getString("toDate");
+			String toDateStr =jObj.getString("toDate"); 
 			//locationVotersVOList = locationDashboardService.getLocationWiseMeetingsCount(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr);
 			locationVotersVOList = meetingLocationDashboardService.getLocationWiseMeetingsCount(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseMeetingsCount", e);
+		}
+		 return Action.SUCCESS;
+	 }
+	 
+	 public String  getLocationWiseMeetingsCountDetails(){
+		 try {
+			jObj = new JSONObject(getTask());
+			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValues"));
+			String fromDateStr =jObj.getString("fromDate");
+			String toDateStr =jObj.getString("toDate");
+			Long partyMeetingMainTypeId =jObj.getLong("partyMeetingMainTypeId"); 
+			//locationVotersVOList = locationDashboardService.getLocationWiseMeetingsCount(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr);
+			//locationVotersVOList = meetingLocationDashboardService.getLocationWiseMeetingsCount(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr);
+			if(partyMeetingMainTypeId != null && partyMeetingMainTypeId.longValue() >0l && partyMeetingMainTypeId.longValue()==1l){
+				partyMeetingDataVO = meetingLocationDashboardService.getLocationWiseCommitteeMeetings(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr,partyMeetingMainTypeId);
+			}else if(partyMeetingMainTypeId != null && partyMeetingMainTypeId.longValue() >0l && partyMeetingMainTypeId.longValue()==2l){
+				partyMeetingDataVO = meetingLocationDashboardService.getLocationWiseStateMeetings(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr,partyMeetingMainTypeId);
+			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseMeetingsCount", e);
 		}
