@@ -17,6 +17,7 @@ import com.itgrids.core.api.service.ILocationWiseCasteInfoService;
 import com.itgrids.core.api.service.ILocationWiseElectionInformationDetalsService;
 import com.itgrids.core.api.service.IMeetingLocationDashboardService;
 import com.itgrids.core.api.service.INominatedPostLocationDashboardService;
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.BoothInchargesVO;
@@ -95,7 +96,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<ElectionInformationVO> informationVo;
 	private ILocationWiseElectionInformationDetalsService locationWiseElectionInformationDetalsService;
 	private List<LocationAlertVO> locationAlertVOList;
-	
+	private List<AlertCoreDashBoardVO> alertVOList;
 	
 	public List<LocationAlertVO> getLocationAlertVOList() {
 		return locationAlertVOList;
@@ -397,6 +398,12 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	}
 	public void setInformationVo(List<ElectionInformationVO> informationVo) {
 		this.informationVo = informationVo;
+	}
+	public List<AlertCoreDashBoardVO> getAlertVOList() {
+		return alertVOList;
+	}
+	public void setAlertVOList(List<AlertCoreDashBoardVO> alertVOList) {
+		this.alertVOList = alertVOList;
 	}
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
@@ -1199,5 +1206,61 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getAlertOverviewClick(){
+		 try{
+			  RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+				if(regVo!=null && regVo.getRegistrationID()!=null){
+					Long userId = regVo.getRegistrationID();
+				}
+				jObj = new JSONObject(getTask());
+				String fromDateStr = jObj.getString("fromDateStr");
+				String year = jObj.getString("year");
+				String toDateStr = jObj.getString("toDateStr");
+				Long locationTypeId = jObj.getLong("locationTypeId");
+				JSONArray alertTypeIdsStr = jObj.getJSONArray("alertTypeIdsStr");  
+				List<Long> alertTypeIds = new ArrayList<Long>();
+				if(alertTypeIdsStr != null && alertTypeIdsStr.length() > 0){
+					for (int i = 0; i < alertTypeIdsStr.length(); i++){
+						alertTypeIds.add(Long.parseLong(alertTypeIdsStr.getString(i)));        
+					} 
+				}
+				JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
+				List<Long> locationValues = new ArrayList<Long>();
+				if(locationValuesArr != null && locationValuesArr.length() > 0){
+					for (int i = 0; i < locationValuesArr.length(); i++){
+						locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
+					} 
+				}
+				JSONArray statusIdsArr = jObj.getJSONArray("statusIdsArr");
+				List<Long> statusIdsList = new ArrayList<Long>();
+				if(statusIdsArr != null && statusIdsArr.length() > 0){
+					for (int i = 0; i < statusIdsArr.length(); i++){
+						statusIdsList.add(Long.parseLong(statusIdsArr.getString(i)));        
+					} 
+				}
+				JSONArray impactIdsArr = jObj.getJSONArray("impactIdsArr");
+				List<Long> impactIdsList = new ArrayList<Long>();
+				if(impactIdsArr != null && impactIdsArr.length() > 0){
+					for (int i = 0; i < impactIdsArr.length(); i++){
+						impactIdsList.add(Long.parseLong(impactIdsArr.getString(i)));        
+					} 
+				}
+				String type=jObj.getString("type");
+				Long designationId=jObj.getLong("designationId");
+				JSONArray alertCategeryIdsArr = jObj.getJSONArray("alertCategeryIdsArr");
+				List<Long> alertCategeryIdsList = new ArrayList<Long>();
+				if(alertCategeryIdsArr != null && alertCategeryIdsArr.length() > 0){
+					for (int i = 0; i < alertCategeryIdsArr.length(); i++){
+						alertCategeryIdsList.add(Long.parseLong(alertCategeryIdsArr.getString(i)));        
+					} 
+				}
+				String otherCategory =jObj.getString("otherCategory");
+				alertVOList = alertLocationDashboardService.getAlertOverviewClick(fromDateStr,toDateStr,locationValues,alertTypeIds,locationTypeId,year,statusIdsList,impactIdsList,type,designationId,alertCategeryIdsList,otherCategory);
+				
+		 }catch(Exception e){
+			 successMsg = "failure";
+			 LOG.error("Exception Occured in getAlertOverviewClick() method, Exception - ",e);
+		 }
+		 return Action.SUCCESS;
+	 }
 }
