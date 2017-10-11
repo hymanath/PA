@@ -760,7 +760,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		return query.list();
 	}
 	
-	public List<Object[]> getAvailableSeatsforElection(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,String subTypes,String type){
+	public List<Object[]> getAvailableSeatsforElection(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,List<String> subTypeList,String type){
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("select e.election_scope_id,e.election_id,et.election_type,e.election_scope_id," +
@@ -775,8 +775,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		  }
 		 sb.append(" and e.election_scope_id = es.election_scope_id and et.election_type_id = es.election_type_id " +
 				" and c.constituency_id = ce.constituency_id and ce.election_id = e.election_id " );
-		if(subTypes != null ){
-				sb.append(" and e.sub_type =:subTypes " );
+		if(subTypeList != null && subTypeList.size()>0){
+			 sb.append(" and e.sub_type in(:subTypeList)" );
 			}
 		if(type != null && type.equalsIgnoreCase("parliament")){
 			sb.append("and c.constituency_id in ("+IConstants.AP_PARLIAMENT_IDS_LIST_STR+")");
@@ -797,8 +797,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(electionScopeIds != null && electionScopeIds.size()>0){
 			query.setParameterList("electionScopeIds", electionScopeIds);
 		}
-		if(subTypes != null ){
-			query.setParameter("subTypes", subTypes);
+		if(subTypeList != null && subTypeList.size()>0){
+			query.setParameterList("subTypeList", subTypeList);
 		}
 		if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && locationTypeId.longValue() !=2l){
 	    	  query.setParameterList("locationValue", locationValue);
@@ -811,7 +811,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	
 	
 	
-	public List<Object[]> getParticipatedPartyListforElection(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,String subTypes,String type){
+	public List<Object[]> getParticipatedPartyListforElection(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,List<String> subTypeList,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT " +
 		          " e.election_scope_id as temp," +
@@ -841,8 +841,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(electionScopeIds != null && electionScopeIds.size()>0){
 			sb.append("and es.election_scope_id in (:electionScopeIds ) ");
 		}
-		if(subTypes != null ){
-			sb.append(" and e.sub_type in  (:subTypes) ");
+		if(subTypeList != null && subTypeList.size()>0){
+			sb.append(" and e.sub_type in (:subTypeList) ");
 		}
 		if(type != null && type.equalsIgnoreCase("parliament")){
 			sb.append("and c.constituency_id in ("+IConstants.AP_PARLIAMENT_IDS_LIST_STR+")");
@@ -883,8 +883,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	    	  query.setParameterList("electionScopeIds",electionScopeIds);
 	      }
 	      
-	      if(subTypes != null ){
-	    	  query.setParameter("subTypes", subTypes);
+	      if(subTypeList != null && subTypeList.size()>0){
+	    	   query.setParameterList("subTypeList", subTypeList);
 	      }
 
 
@@ -892,7 +892,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	}
 	
 	
-	public List<Object[]> getParticipatedPartyListforElectionDetails(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,String subTypes,String type){
+	public List<Object[]> getParticipatedPartyListforElectionDetails(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,List<String> subTypeList,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT "+ 
 		          " e.election_scope_id as temp,e.election_id as electionId,et.election_type as electionType,e.election_scope_id as electionScopeId," +
@@ -911,8 +911,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	              " et.election_type_id = es.election_type_id and " +
 		          " c.constituency_id = ce.constituency_id and " +
 		          " ce.election_id = e.election_id  " );
-		if(subTypes != null){
-			sb.append(" and e.sub_type =:subTypes");
+		if(subTypeList != null && subTypeList.size()>0){
+			sb.append(" and e.sub_type in(:subTypeList)");
 		}
 		if(type != null && type.equalsIgnoreCase("parliament")){
 			sb.append(" and c.constituency_id in ("+IConstants.AP_PARLIAMENT_IDS_LIST_STR+")");
@@ -960,8 +960,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	    	  query.setParameterList("electionScopeIds",electionScopeIds);
 	      }
 	      
-	      if(subTypes != null){
-	    	  query.setParameter("subTypes", subTypes);
+	      if(subTypeList != null && subTypeList.size()>0){
+	    	  query.setParameterList("subTypeList", subTypeList);
 	      }
 
 		return query.list();
