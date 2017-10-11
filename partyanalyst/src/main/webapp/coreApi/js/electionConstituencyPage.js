@@ -369,8 +369,8 @@ function getElectionInformationLocationWiseStatus(){
 		electionScopeIds	:[2],
 		partyIdsList  		:[872],
 		electionYears     	:[2014,2009,2004],
-		electionSubTypeArr 	:["MAIN"]
-
+		electionSubTypeArr 	:["MAIN"],
+		searchType			:"district"
     }
     $.ajax({
       type : "GET",
