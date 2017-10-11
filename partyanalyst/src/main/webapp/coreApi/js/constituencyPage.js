@@ -269,6 +269,7 @@ function onLoadAjaxCalls()
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
 	getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
+	//getAlertOverviewClick(defaultAlertCategoryIds);
 	/* setTimeout(function(){ 
 		//News Block
 		getPrintMediaCountsForConstituencyPage()
@@ -6041,3 +6042,27 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 			});
 		}
   }
+  function getAlertOverviewClick(defaultAlertCategoryIds){
+		var jsObj={
+				fromDateStr 	  	:"",
+				toDateStr		  	:"",
+				locationValuesArr 	:[1],
+				alertTypeIdsStr 	:defaultAlertCategoryIds,
+				locationTypeId		:2,
+				year  				:"",
+				statusIdsArr :[],
+				designationId : 0,
+				alertCategeryIdsArr :[],
+				type : "",//involved,assigned,categoryOthers,impactOthers
+				otherCategory: "",//categoryOthers,impactOthers,candidateAssignedOthers,candidateInvolvedOthers,
+				impactIdsArr :[]
+			}
+		 $.ajax({
+	      type : "POST",
+	      url : "getAlertOverviewClickAction.action",
+	      dataType : 'json',
+	      data : {task :JSON.stringify(jsObj)}
+	    }).done(function(result){
+			
+		});	
+	  }
