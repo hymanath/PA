@@ -44,9 +44,10 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 		this.partyName=name;
 	}
 	
-	public ElectionInformationVO(String status,String range){
+	public ElectionInformationVO(String status,String range,Long wonSeatsCount){
 		this.status=status;
 		this.range=range;
+		this.wonSeatsCount = wonSeatsCount;
 	}
 	
 	public String getRange() {
