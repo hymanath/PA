@@ -381,5 +381,130 @@ public int updateAlertSmsStatus(Long assignedId){
 		}*/
 		return query.list();
 	}
+	//fromDate, toDate, locationValues, alertTypeIds, locationTypeId, year,type
+	public List<Object[]> getDesignationWiseAssignedAlerts(Date fromDate , Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year,String type,List<Long> statusIdsList,Long designationId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct ");     
+		queryStr.append(" model.alert.alertId, " +//0
+						" model.alert.createdTime, " +//1
+						" model.alert.updatedTime, " +//2
+						" alertStatus.alertStatusId, " +//3  
+						" alertStatus.alertStatus, " +//4
+						" alertCategory.alertCategoryId, " +//5
+						" alertCategory.category, " +//6
+						" alertImpactScope.alertImpactScopeId, " +//7
+						" alertImpactScope.impactScope, " +//8
+						" model.alert.title, " +//9
+						" constituency.name, " +//10
+						" district.districtName," +//11
+						" alertSource.alertSourceId, " +//12
+						" alertSource.source," +//13
+						" editionType.editionTypeId, " +//14
+						" editionType.editionType, " +//15
+						" edition.editionId, " +//16
+						" edition.editionAlias, " +//17
+						" tvNewsChannel.tvNewsChannelId, " +//18
+						" tvNewsChannel.channelName," +//19
+						" state.stateName, " +//20
+						" tehsil.tehsilName, " +//21
+						" panchayat.panchayatName , " +//22
+						" localElectionBody.name, " +//23
+						" alertSeverity.severityColor, " +//24
+						" alertStatus.color ");//25
+		queryStr.append(" from AlertAssigned model,PublicRepresentative model1,TdpCadreCandidate model2 " +
+						" left join model.alert.alertSource alertSource " +
+		        		" left join model.alert.editionType editionType " +
+		        		" left join model.alert.edition edition " +
+		        		" left join model.alert.alertSeverity alertSeverity " +   
+		        		" left join model.alert.tvNewsChannel tvNewsChannel "+
+						" left join model.alert.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  ");  
+		queryStr.append(" left join model.alert.alertCategory alertCategory ");
+		queryStr.append(" left join model.alert.alertStatus alertStatus ");
+		queryStr.append(" left join model.alert.alertImpactScope alertImpactScope ");  
+		queryStr.append(" left join model.alert.alertType alertType ");
+		queryStr.append(" left join userAddress.parliamentConstituency parliamentConstituency ");
+		queryStr.append(" where  model2.candidate.candidateId=model1.candidate.candidateId " +
+		  " and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId and model.alert.isDeleted ='N'  and  model.isDeleted ='N' " );
+				//"and alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
+		
+		/*from AlertAssigned model,PublicRepresentative model1,TdpCadreCandidate model2 " +
+		  " where  " +
+		  " model2.candidate.candidateId=model1.candidate.candidateId " +
+		  " and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId
+*/		if(fromDate != null && toDate != null){ 
+			queryStr.append(" and (date(model.alert.createdTime) between :fromDate and :toDate) ");
+		}     
+		if(alertTypeIds != null && alertTypeIds.size() > 0){
+			queryStr.append(" and alertType.alertTypeId in (:alertTypeIds)");
+		}
+		if(statusIdsList != null && statusIdsList.size() > 0L){
+			queryStr.append(" and alertStatus.alertStatusId in (:statusIdsList) ");
+		}
+		if(type != null && type.equalsIgnoreCase("candidateAssignedOthers")){
+			queryStr.append(" and alertStatus.alertStatusId not in (3,4) ");
+		}
+		if(designationId != null && designationId.longValue()>0l){
+			queryStr.append(" and model1.publicRepresentativeType.publicRepresentativeTypeId =:designationId ");
+		}
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+ 	    	if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 4l){
+	        	queryStr.append(" and model.alert.userAddress.constituency.constituencyId in(:locationValues) ");
+	        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 3l){
+	        	queryStr.append(" and model.alert.userAddress.district.districtId in(:locationValues) ");
+	        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 5l){
+	        	queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in(:locationValues) ");
+	        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 6l){
+	        	queryStr.append(" and model.alert.userAddress.panchayat.panchayatId in(:locationValues) ");
+	        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 7l){
+ 	        	queryStr.append(" and model.alert.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
+ 	        }else if(locationTypeId == 8l){
+ 	        	queryStr.append(" and model.alert.userAddress.ward.constituencyId in(:locationValues) ");
+ 	        }else if(locationTypeId == 2l){
+ 	        	queryStr.append(" and model.alert.userAddress.state.stateId in(:locationValues) ");
+ 	        }
+ 	    }
+		Query query = getSession().createQuery(queryStr.toString());   
+		
+		if(fromDate != null && toDate != null){  
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);    
+		} 
+		if(alertTypeIds != null && alertTypeIds.size() > 0){
+			query.setParameterList("alertTypeIds", alertTypeIds);
+		}
+		if(statusIdsList != null && statusIdsList.size() > 0L){
+			query.setParameterList("statusIdsList", statusIdsList);
+		}
+		
+		if(year !=null && !year.trim().isEmpty()){
+				query.setParameter("year", Integer.parseInt(year));
+			}
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	 
+			if(locationTypeId == 4l || locationTypeId == 8l){
+				query.setParameterList("locationValues", locationValues);
+        }else if(locationTypeId == 3l){
+        	query.setParameterList("locationValues", locationValues);
+        }else if(locationTypeId == 5l){
+        	query.setParameterList("locationValues", locationValues);
+        }else if(locationTypeId == 6l){
+        	query.setParameterList("locationValues", locationValues);
+        }else if(locationTypeId == 7l){
+        	query.setParameterList("locationValues", locationValues);
+        }else if(locationTypeId == 2l){
+        	query.setParameterList("locationValues", locationValues);
+	        }
+		}
+		if(designationId != null && designationId.longValue()>0l){
+			query.setParameter("designationId", designationId);
+		}
+		return query.list();
+	}
 	
 }

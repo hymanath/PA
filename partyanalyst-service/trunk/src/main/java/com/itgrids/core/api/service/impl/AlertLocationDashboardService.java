@@ -16,9 +16,11 @@ import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.LocationAlertVO;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class AlertLocationDashboardService implements IAlertLocationDashboardService{
 
@@ -32,6 +34,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 	private IAlertStatusDAO alertStatusDAO;
 	private IAlertAssignedDAO alertAssignedDAO;
 	private IAlertCandidateDAO alertCandidateDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
 	
 	
 	
@@ -509,5 +512,107 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 			LOG.error("Exception occured at setDesignationWiseAlerts( )",e);
 		}
 	}
-	
+	public  List<AlertCoreDashBoardVO> getAlertOverviewClick(String fromDateStr,String toDateStr,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year,
+			List<Long> statusIdsList,List<Long> impactIdsList,String type,Long designationId,List<Long> alertCategeryIdsList,String otherCategory){
+		List<AlertCoreDashBoardVO> finalVOs = new ArrayList<AlertCoreDashBoardVO>();
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			List<Object[]> alertList=null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			if(otherCategory != null && otherCategory.equalsIgnoreCase("candidateAssignedOthers") || (type != null && type.equalsIgnoreCase("assigned"))){
+			 alertList = alertAssignedDAO.getDesignationWiseAssignedAlerts(fromDate, toDate, locationValues, alertTypeIds, locationTypeId, year,otherCategory,statusIdsList,designationId);
+			}else if(otherCategory != null && otherCategory.equalsIgnoreCase("candidateInvolvedOthers") || (type != null && type.equalsIgnoreCase("involved"))){
+			 alertList = alertCandidateDAO.getDesignationWiseInvolvedAlerts(fromDate, toDate, locationValues, alertTypeIds, locationTypeId, year,otherCategory,statusIdsList,designationId);
+			}else{
+			 alertList = alertDAO.getAlertCategaryAndImpactLevelWiseDetailsOverView(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year,type,alertCategeryIdsList,statusIdsList,impactIdsList,otherCategory);
+			}
+			if(alertList != null && alertList.size()>0){
+			    setAlertDtls(finalVOs, alertList);
+			}
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception occured at getAlertOverviewClick( )",e);
+		}
+		return finalVOs;
+	}
+	public void setAlertDtls(List<AlertCoreDashBoardVO> finalVOs, List<Object[]> alertList){
+		try{
+			SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date today = dateUtilService.getCurrentDateAndTime();
+			String td = myFormat.format(today);
+			Long dist = 0l;
+			Long statusId = 0L;  
+			AlertCoreDashBoardVO alertCoreDashBoardVO = null;  
+			String alertSource = "";
+			if(alertList != null && alertList.size() > 0){  
+				for(Object[] param : alertList ){
+					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					alertCoreDashBoardVO.setCreatedDate(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10));
+					alertCoreDashBoardVO.setUpdatedDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
+					alertCoreDashBoardVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[3]));
+					alertCoreDashBoardVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[4]));
+					alertCoreDashBoardVO.setSevertyColor(commonMethodsUtilService.getStringValueForObject(param[24]));
+					alertCoreDashBoardVO.setStatusColor(commonMethodsUtilService.getStringValueForObject(param[25]));
+					if(param.length > 26){
+						alertCoreDashBoardVO.setProblem(commonMethodsUtilService.getStringValueForObject(param[26]));
+						alertCoreDashBoardVO.setRelatedTo(commonMethodsUtilService.getStringValueForObject(param[27]));
+					}
+					statusId = commonMethodsUtilService.getLongValueForObject(param[3]);
+					if(param[1] != null && param[2] != null){
+						if(statusId == 4L || statusId == 5L || statusId == 6L || statusId == 7L){
+							dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
+						}else{
+							dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),td);
+						}  
+						alertCoreDashBoardVO.setInterval(dist);
+					}
+					alertCoreDashBoardVO.setAlertLevel(commonMethodsUtilService.getStringValueForObject(param[8]));
+					alertCoreDashBoardVO.setTitle(commonMethodsUtilService.getStringValueForObject(param[9]));    
+					
+					if(param[23] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[23]));	
+					}else if(param[22] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[22]));	
+					}else if(param[10] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[10]));	
+					}else if(param[11] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[11]));	
+					}else if(param[20] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[20]));
+					}
+					//hiii
+					   if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 2L){//print
+							if(param[17] != null){
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[17]);
+							}else{
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
+							}
+							 
+						}else if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 3L){//electronic 
+							if(param[19] != null){
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[19]);
+							}else{
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
+							}
+						}else{
+							alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);//for social media,call center and other category
+						}
+						alertCoreDashBoardVO.setSource(alertSource);
+					 
+						finalVOs.add(alertCoreDashBoardVO);
+					
+				}  
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 }

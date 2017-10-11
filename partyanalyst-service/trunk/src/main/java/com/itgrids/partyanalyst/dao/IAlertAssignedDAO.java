@@ -24,4 +24,5 @@ public interface IAlertAssignedDAO extends GenericDao<AlertAssigned, Long> {
 	public List<Object[]> getAssignedAlertsSummary(List<Long> cadreIds);
 	public List<Object[]> getSmsTdpCadreDetails();
 	public List<Object[]> getDesignationWiseAssignedAlertys(Date fromDate ,Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year);
+	public List<Object[]> getDesignationWiseAssignedAlerts(Date fromDate , Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year,String type,List<Long> statusIdsList,Long designationId);
 }
