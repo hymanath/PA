@@ -17,6 +17,7 @@ public class IdNameVO implements Serializable{
 	private String totl;
 	private String minDate;
 	private String maxDate;
+	private List<String> componentNameList;
 	
 	private String url;
 	private List<Long> componentIds = new ArrayList<Long>(0);
@@ -108,4 +109,11 @@ public class IdNameVO implements Serializable{
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
 	}
+	public List<String> getComponentNameList() {
+		return componentNameList;
+	}
+	public void setComponentNameList(List<String> componentNameList) {
+		this.componentNameList = componentNameList;
+	}
+	
 }

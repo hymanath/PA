@@ -301,9 +301,9 @@ public class FundManagementDashboardController {
 			return "landingPage";
 	    }
 	
-		@GetMapping(value ="/getFavouriteComponents")
-	    public @ResponseBody List<IdNameVO> getFavouriteComponents() {
-			List<IdNameVO> componentsList = userServiceImpl.getFavouriteComponents();
+		@PostMapping(value ="/getFavouriteComponents")
+	    public @ResponseBody List<IdNameVO> getFavouriteComponents(@RequestBody IdNameVO inputVO) {
+			List<IdNameVO> componentsList = userServiceImpl.getFavouriteComponents(inputVO);
 			return componentsList;
 	    }
 		@PostMapping(value ="/saveFavouriteComponentDtls")

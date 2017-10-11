@@ -12,8 +12,9 @@ public interface IUserService {
 	public UserVO userAuthentication(String userName,String password);
 	public AddressVO getOriginalLocationIdForTempId( Long searchLevelId,String searchLevelValue,String fromPage,String toPage);
 	public ResultVO saveFavouriteComponentDtls(IdNameVO inputVO);
-	public List<IdNameVO> getFavouriteComponents();
+	public List<IdNameVO> getFavouriteComponents(IdNameVO inputVO);
 	public ResultVO deleteFavouriteComponent(IdNameVO inputVO);
 	
 	public ResultVO saveFavouriteComponentOrderDtls(IdNameVO inputVO);
+	
 }
