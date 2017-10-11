@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -21,8 +22,8 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
-		IElectionDAO {
-	
+IElectionDAO {
+
 	public ElectionDAO() {
 		super(Election.class);
 	}
@@ -31,38 +32,38 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	public List<Election> findByProperty(ElectionColumnNames propertyName, Object value) {
 		return getHibernateTemplate().find("from Election model where model." + propertyName.getValue() + "=?", value);		
 	}
-	
-	 public Object[] listOfColumn( final ElectionColumnNames propertyName) {       
 
-	        return ( Object[] ) getHibernateTemplate().execute( new HibernateCallback() {
-	            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
-	                Criteria criteria = session.createCriteria( Election.class ).add( Expression.like( propertyName.getValue() , propertyName ) ); 
-	                // u can add more expressions by using criteria.add(Expression.like(...)); in next lines
-	                return ( criteria.list() );
-	            }
-	        } );
-		}
+	public Object[] listOfColumn( final ElectionColumnNames propertyName) {       
+
+		return ( Object[] ) getHibernateTemplate().execute( new HibernateCallback() {
+			public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+				Criteria criteria = session.createCriteria( Election.class ).add( Expression.like( propertyName.getValue() , propertyName ) ); 
+				// u can add more expressions by using criteria.add(Expression.like(...)); in next lines
+				return ( criteria.list() );
+			}
+		} );
+	}
 	/*
 	public Object[] listOfColumn(ElectionColumnNames propertyName){
 		final String queryString = "select model "+propertyName.getValue()+" from Election model";
 			Query q = super.entityManager.createQuery(queryString);
 			return (Object [])q.getSingleResult();
 	}
-	*/
+	 */
 	@SuppressWarnings("unchecked")
 	public List<String> listOfYears(){
 		return getHibernateTemplate().find("select distinct election.electionYear from Election election");
-		 
+
 	}
 
 
 	public List<Election> findByEndDate(Object endDate){
-		
+
 		return findByProperty(ElectionColumnNames.END_DATE, endDate);
 	}
 
 	public List<Election> findByElectionYear(Object electionYear){
-		
+
 		return findByProperty(ElectionColumnNames.ELECTION_YEAR, electionYear);
 	}
 
@@ -72,19 +73,19 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		//Long[] params = {typeID, countryId, stateId};
 		//return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId =? and model.electionScope.state.stateId=? and model.electionScope.country.countryId=?", params);
 		return ( List<Election> ) getHibernateTemplate().execute( new HibernateCallback() {
-            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
-            		List<Election> elections = session.createCriteria(Election.class)
-            							.createAlias("electionScope", "scope")
-            							.createAlias("scope.electionType", "type")
-            							.createAlias("scope.state", "state")
-            							.createAlias("scope.country", "country")
-            							.add(Expression.eq("type.electionTypeId", typeID))
-            							.add(Expression.eq("state.stateId", stateId))
-            							.add(Expression.eq("country.countryId", countryId))
-            							.list();
-            		 return elections;
-            }
-        });
+			public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+				List<Election> elections = session.createCriteria(Election.class)
+						.createAlias("electionScope", "scope")
+						.createAlias("scope.electionType", "type")
+						.createAlias("scope.state", "state")
+						.createAlias("scope.country", "country")
+						.add(Expression.eq("type.electionTypeId", typeID))
+						.add(Expression.eq("state.stateId", stateId))
+						.add(Expression.eq("country.countryId", countryId))
+						.list();
+				return elections;
+			}
+		});
 	}
 
 	@SuppressWarnings("unchecked")
@@ -94,20 +95,20 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionScopeId = ? " +
 				"and model.elecSubtype = ? order by model.electionYear desc", params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Election> findByElectionScopeId(Long electionScopeId){
 		Object params[] = {electionScopeId};
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionScopeId = ? " +
 				"order by model.electionYear desc", params);
 	}
-		
+
 	@SuppressWarnings("unchecked")
 	public List<Election> findByElectionType(Long typeID) {
-		
+
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId =?", typeID);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Election findByElectionScopeIdElectionYear(Long electionScope,String electionYear, String elecSubtype){
 		Election electionObj=null;
@@ -120,47 +121,47 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		if(list!=null && list.size()>0){
 			return electionObj=list.get(0);
 		}
-	return electionObj;		
+		return electionObj;		
 	}
-	
+
 	public String findPreviousElectionYear(final String year, final Long typeId, final Long stateId, final Long countryId) {
 		return (String) getHibernateTemplate().execute( new HibernateCallback() {
-            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
-            		return (String) session.createCriteria(Election.class)
-            							. setProjection(Projections.property("electionYear"))
-            							.createAlias("electionScope", "scope")
-            							.createAlias("scope.electionType", "type")
-            							.createAlias("scope.state", "state")
-            							.createAlias("scope.country", "country")
-            							.add(Expression.eq("type.electionTypeId", typeId))
-            							.add(Expression.eq("state.stateId", stateId))
-            							.add(Expression.eq("country.countryId", countryId))
-            							.add(Expression.eq("elecSubtype", IConstants.ELECTION_SUBTYPE_MAIN))
-            							.add(Restrictions.lt("electionYear", year))
-            							.addOrder(Order.desc("electionYear"))
-            							.setMaxResults(1).uniqueResult();
-            }
-        });
+			public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+				return (String) session.createCriteria(Election.class)
+						. setProjection(Projections.property("electionYear"))
+						.createAlias("electionScope", "scope")
+						.createAlias("scope.electionType", "type")
+						.createAlias("scope.state", "state")
+						.createAlias("scope.country", "country")
+						.add(Expression.eq("type.electionTypeId", typeId))
+						.add(Expression.eq("state.stateId", stateId))
+						.add(Expression.eq("country.countryId", countryId))
+						.add(Expression.eq("elecSubtype", IConstants.ELECTION_SUBTYPE_MAIN))
+						.add(Restrictions.lt("electionYear", year))
+						.addOrder(Order.desc("electionYear"))
+						.setMaxResults(1).uniqueResult();
+			}
+		});
 	}
-	
+
 	public String findPreviousParliamentElectionYear(final String year, final Long typeId, final Long countryId) {
 		return (String) getHibernateTemplate().execute( new HibernateCallback() {
-            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
-            		return (String) session.createCriteria(Election.class)
-            							. setProjection(Projections.property("electionYear"))
-            							.createAlias("electionScope", "scope")
-            							.createAlias("scope.electionType", "type")
-            							.createAlias("scope.country", "country")
-            							.add(Expression.eq("type.electionTypeId", typeId))
-            							.add(Expression.eq("country.countryId", countryId))
-            							.add(Expression.eq("elecSubtype", IConstants.ELECTION_SUBTYPE_MAIN))
-            							.add(Restrictions.lt("electionYear", year))
-            							.addOrder(Order.desc("electionYear"))
-            							.setMaxResults(1).uniqueResult();
-            }
-        });
+			public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+				return (String) session.createCriteria(Election.class)
+						. setProjection(Projections.property("electionYear"))
+						.createAlias("electionScope", "scope")
+						.createAlias("scope.electionType", "type")
+						.createAlias("scope.country", "country")
+						.add(Expression.eq("type.electionTypeId", typeId))
+						.add(Expression.eq("country.countryId", countryId))
+						.add(Expression.eq("elecSubtype", IConstants.ELECTION_SUBTYPE_MAIN))
+						.add(Restrictions.lt("electionYear", year))
+						.addOrder(Order.desc("electionYear"))
+						.setMaxResults(1).uniqueResult();
+			}
+		});
 	}
-	
+
 
 	@SuppressWarnings("unchecked")
 	public Election getElectionByCountryStateTypeIDElectionYear(Long typeID, Long countryID, Long stateID,String electionYear){
@@ -172,20 +173,20 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Election> findByElectionTypeCountry(Long typeId, Long countryID){
 		Object[] params = {typeId, countryID};
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId = ? " +
 				"and model.electionScope.country.countryId=?", params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Election> findByElectionTypeYearAndState(Long typeId,String year,Long stateId,Long countryId){
 		Object[] params = {typeId,year,stateId,countryId};
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionYear = ? and model.electionScope.state.stateId = ? and model.electionScope.country.countryId = ?", params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Election> findByElectionTypeYearAndCountryForParliament(
 			Long typeId, String year, Long countryId) {
@@ -194,24 +195,24 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 
 	}
 
-	
+
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionYear(String electionType){
 		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ?", electionType);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionYearForGHMC(String electionType){
 		return getHibernateTemplate().find("select max(model.electionId),max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ?", electionType);
 	}
-	
-	
+
+
 	@SuppressWarnings("unchecked")
 	public List findElectionIdAndYear(Long electionType,Long stateId){
 		Object[] params = {electionType,stateId};
 		return getHibernateTemplate().find("select max(model.electionId),max(model.electionYear) from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ?",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findRecentElectionIdAndYearForParliament(Long electionType){
 		Object[] params = {electionType};
@@ -220,46 +221,46 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 
 	@SuppressWarnings("unchecked")
 	public List findElectionAndYearForElectionTypeAndState(Long electionType,Long stateId){
-		
+
 		String isPartial = "0";
 		Object[] params = {electionType,stateId,isPartial};
 		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ? and "+
 				"model.isPartial is null or model.isPartial = ? order by model.electionYear desc",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findElectionAndYearForParliamentElectionType(Long electionType){
-		
+
 		String isPartial = "0";
 		Object[] params = {electionType,isPartial};
 		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state is null and "+
 				"model.isPartial is null or model.isPartial = ? order by model.electionYear desc",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findElectionYearsForElectionTypeAndState(Long electionType,Long stateId){
 		Object[] params = {electionType,stateId};
 		return getHibernateTemplate().find("select distinct model.electionId,model.electionYear,model.electionScope.electionType.electionType from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ? order by model.electionYear desc ",params);
 	}
-		
+
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionIdAndYear(Long electionType){
 		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionYear = (select max(model.electionYear) from model)", electionType);
 	}
 
-	
+
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionIdAndYear(Long electionType,Long stateId){
 		Object[] params = {electionType,stateId};
 		return getHibernateTemplate().find("select max(model.electionId),max(model.electionYear) from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ?",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionIdAndYearForAnElection(String electionType,Long stateId,String elecSubType){
-		
+
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.electionId from Election model ");	
-		
+
 		query.append(" where model.electionYear = (select max(model2.electionYear) from Election model2");				
 		query.append(" where model2.electionScope.electionType.electionType = ? and model2.elecSubtype = ?  ");		
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
@@ -269,9 +270,9 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			query.append(" and model.electionScope.state.stateId = ?");
 		}
-		
+
 		query.append(" order by model.electionId ");
-		
+
 		Query queryObject = getSession().createQuery(query.toString());	
 		queryObject.setString(0,electionType);	
 		queryObject.setString(1,elecSubType);	
@@ -284,25 +285,25 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 			queryObject.setString(2,electionType);	
 			queryObject.setString(3,elecSubType);	
 		}	
-		
-			
-		
+
+
+
 		return queryObject.list();
-		
+
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findParliamentElectionIdByElectionTypeAndYear(String electionType,String year){
 		Object[] params = {electionType,year};
 		return getHibernateTemplate().find("select model.electionId from Election model where model.electionScope.electionType.electionType = ? and model.electionYear = ?",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findElectionIdByElectionTypeAndYear(String electionType,String year,Long stateId){
 		Object[] params = {electionType,year,stateId};
 		return getHibernateTemplate().find("select model.electionId from Election model where model.electionScope.electionType.electionType = ? and model.electionYear = ? and model.electionScope.state.stateId = ?",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findElectionIdByParliamentElectionTypeAndYear(String electionType,String year){
 		Object[] params = {electionType,year};
@@ -316,7 +317,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 				" model.electionScope.electionType.electionTypeId = ? and model.electionYear in ("+ year +") " +
 				" and model.electionScope.state.stateId = ? and model.elecSubtype = ? ",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findParliamentElectionIdForGivenElectionYearAndElectionYears(Long electionType,String year,String electionSubType){	
 		Object[] params = {electionType,electionSubType};
@@ -324,7 +325,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 				" model.electionScope.electionType.electionTypeId = ? and model.electionYear in ("+ year +") " +
 				" and model.elecSubtype = ? ",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List getElectionTypeAndElectionYearByElectionId(Long electionId){
 		return getHibernateTemplate().find("select model.electionScope.electionType.electionType,model.electionYear from Election model where model.electionId = ? order by model.electionYear desc",electionId);
@@ -332,33 +333,33 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 
 	@SuppressWarnings("unchecked")
 	public List findByElectionType(Long typeID, String type) {
-	
+
 		Object[] params = {typeID, type};
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId =? and model.elecSubtype = ?", params);
-	
+
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionAssemblyElectionYearForState(String electionType, Long stateId){
 		Object[] params = {electionType, stateId};
 		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ?" +
 				"and model.electionScope.state.stateId = ?", params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionAssemblyElectionYearForState(String electionType, Long stateId,String electionSubType){
 		Object[] params = {electionType, stateId,electionSubType};
 		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ?" +
 				"and model.electionScope.state.stateId = ? and model.elecSubtype = ?", params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findLatestParliamentElectionYear(String electionType,String electionSubType){
 		Object[] params = {electionType,electionSubType};
 		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ?" +
 				" and model.elecSubtype = ?", params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionAssemblyElectionIdForState(String electionType, Long stateId,String electionSubType){
 		Object[] params = {electionType, stateId,electionSubType};
@@ -369,9 +370,9 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 
 	@SuppressWarnings("unchecked")
 	public List findStatesByElectionType(Long electionTypeId) {
-		
+
 		return getHibernateTemplate().find("select distinct model.electionScope.state.stateId, model.electionScope.state.stateName from Election model where model.electionScope.electionType.electionTypeId = ?", electionTypeId);
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -389,7 +390,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 
 	@SuppressWarnings("unchecked")
 	public List findElectionsByState(Long stateId) {
-		
+
 		String isPartial = "0";
 		Object[] params = {stateId,isPartial, stateId,isPartial};
 		return getHibernateTemplate().find("select model.electionId, model.electionScope.electionType.electionTypeId, " +
@@ -397,77 +398,77 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 				"where model.electionScope.state.stateId = ? and model.isPartial is null or model.isPartial = ? or (model.electionScope.country.countryId = (select model.country.countryId " +
 				"from State model where model.stateId= ?) and model.electionScope.state is null and model.isPartial is null or model.isPartial = ?) order by electionYear desc", params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Election> findElections(Long electionType_id, Long country_id,
 			Long state_id) {
-		
+
 		Query queryObject = getSession().createQuery("from Election as model where model.electionScope.electionScopeId  in ( select electionScopeId from ElectionScope as newmodel where newmodel.electionType.electionTypeId = ? and newmodel.country.countryId = ? and newmodel.state.stateId = ?)");
-		 queryObject.setParameter(0, electionType_id);
-		 queryObject.setParameter(1, country_id);
-		 queryObject.setParameter(2, state_id);
-		 
+		queryObject.setParameter(0, electionType_id);
+		queryObject.setParameter(1, country_id);
+		queryObject.setParameter(2, state_id);
+
 		return queryObject.list(); 
 	}
 
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Election> findElections(Long electionType_id, Long country_id) {
-		
+
 		Query queryObject = getSession().createQuery("from Election as model where model.electionScope.electionScopeId  in ( select electionScopeId from ElectionScope as newmodel where newmodel.electionType.electionTypeId = ? and newmodel.country.countryId = ? and newmodel.state.stateId = ?)");
-		 queryObject.setParameter(0, electionType_id);
-		 queryObject.setParameter(1, country_id);
-		 queryObject.setParameter(2, null);
-		 
+		queryObject.setParameter(0, electionType_id);
+		queryObject.setParameter(1, country_id);
+		queryObject.setParameter(2, null);
+
 		return queryObject.list(); 
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Election> findElections(Long state_id) {
-		
+
 		Query queryObject = getSession().createQuery("from Election as model where model.electionScope.state.stateId = ?");
-		  queryObject.setParameter(0, state_id);
-		 		 
+		queryObject.setParameter(0, state_id);
+
 		return queryObject.list();
 	}	
-	
+
 	@SuppressWarnings("unchecked")
 	public List findLatestParliamentaryElectionYear(Long state_id) {
-		
+
 		Query queryObject = getSession().createQuery("select max(model.electionYear) from Election as model where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType='Parliament'");
-		  queryObject.setParameter(0, state_id);
-		 		 
+		queryObject.setParameter(0, state_id);
+
 		return queryObject.list();
 	}	
-		
+
 	public List findLatestElectionIdForElectionType(String electionType, String subType){
 		Object[] params = {electionType, subType, electionType, subType};
 		return getHibernateTemplate().find("select model.electionId, model.electionYear from Election model where model.electionScope.electionType.electionType = ? " +
 				"and model.elecSubtype = ? and model.electionYear = (select max(model1.electionYear) from Election model1 where model1.electionScope.electionType.electionType = ? " +
 				"and model1.elecSubtype = ?) ", params);
 	}
-	
+
 	public List findLatestElectionIdForElectionType(String electionType, String subType,Long stateId){
 		Object[] params = {electionType, subType, electionType, subType, stateId, stateId};
 		return getHibernateTemplate().find("select model.electionId, model.electionYear from Election model where model.electionScope.electionType.electionType = ? " +
 				"and model.elecSubtype = ? and model.electionYear = (select max(model1.electionYear) from Election model1 where model1.electionScope.electionType.electionType = ? " +
 				"and model1.elecSubtype = ? and model1.electionScope.state.stateId = ? ) and model.electionScope.state.stateId = ?", params);
 	}
-	
-	
+
+
 	public List<Long> getAllElectionYearsBasedOnElectionType(String electionType,String type,Long stateId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.electionYear from Election model ");
 		sb.append(" where model.electionScope.electionType.electionType = ? and model.electionScope.state.stateId = ?");
 		sb.append(" and model.elecSubtype = ? order by model.electionYear desc");
-		
+
 		Query queryObject = getSession().createQuery(sb.toString());
 		queryObject.setString(0,electionType);
 		queryObject.setLong(1,stateId);
 		queryObject.setString(2,type);
 		return queryObject.list();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getElectionYearsBasedOnElectionTypeAndState(Long stateId,String electionType)
 	{
@@ -475,27 +476,27 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where (model.electionScope.state.stateId = ? or model.electionScope.state.stateId is null) and " +
 				" model.electionScope.electionType.electionType = ? and model.elecSubtype = ? order by model.electionYear desc",params);
 	}
-	
+
 	public List getCountOfElectionYears(Long stateId,String electionType,String elecSubType){
 		Object[] params = {stateId, electionType,elecSubType};
 		return getHibernateTemplate().find("select count(model) from Election model " +
 				"where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? and model.elecSubtype = ? ", params);
 	}
-	
+
 	public List getCountOfElectionYearsForParliament(Long stateId,String electionType,String elecSubType){
 		Object[] params = {electionType,elecSubType};
 		return getHibernateTemplate().find("select count(model) from Election model " +
 				"where model.electionScope.electionType.electionType = ?  and model.elecSubtype = ?", params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Long> getElectionYears(Long stateId,String electionType,String elecSubType){
-		
+
 		String isPartial = "0";
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.electionYear from Election model ");
 		sb.append(" where model.electionScope.electionType.electionType = ? and model.elecSubtype = ? ");
-		
+
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			sb.append(" and model.electionScope.state.stateId = ? ");
 		}
@@ -504,23 +505,23 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		Query queryObject = getSession().createQuery(sb.toString());
 		queryObject.setString(0,electionType);
 		queryObject.setString(1,elecSubType);
-		
+
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			queryObject.setLong(2,stateId);
 			queryObject.setString(3,isPartial);
 		}
 		else
 			queryObject.setString(2,isPartial);
-		
+
 		return queryObject.list();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Long> getElectionIds(Long stateId,String electionType,String elecSubType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.electionId from Election model ");
 		sb.append(" where model.electionScope.electionType.electionType = ? and model.elecSubtype = ? ");
-		
+
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			sb.append(" and model.electionScope.state.stateId = ?");
 		}
@@ -529,26 +530,26 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		Query queryObject = getSession().createQuery(sb.toString());
 		queryObject.setString(0,electionType);
 		queryObject.setString(1,elecSubType);
-		
+
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			queryObject.setLong(2,stateId);
 			queryObject.setString(3,"0");
 		}
 		else
 			queryObject.setString(2,"0");
-		
-		
+
+
 		return queryObject.list();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List getElectionDetailsForAnElection(Long electionId){
-		
-		
+
+
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.electionYear,model.electionId,model.electionScope.electionType.electionTypeId");
 		query.append(" from Election model where model.electionId = ?");
-		
+
 		Query queryObject = getSession().createQuery(query.toString());	
 		queryObject.setLong(0,electionId);	
 		return queryObject.list();	
@@ -560,48 +561,48 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	@SuppressWarnings("unchecked")
 	public List findRecentElectionIdByElectionTypeAndState(String electionType,
 			Long stateId) {
-		
+
 		StringBuilder query = new StringBuilder();
-		
-	    query.append("select max(model.electionYear) from Election model ");
+
+		query.append("select max(model.electionYear) from Election model ");
 		query.append("where model.electionScope.electionType.electionType = ? ");
-		
+
 		if(stateId != null && !stateId.equals(0L))
 			query.append("and model.electionScope.state.stateId = ? ");
-		
+
 		query.append("order by model.electionYear desc");
-				
+
 		Query queryObject = getSession().createQuery(query.toString());	
 		queryObject.setParameter(0,electionType);
 		queryObject.setParameter(1, stateId);
-		
-	 return queryObject.list();	
+
+		return queryObject.list();	
 	}
 
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionYearHappenedInState(Long stateId,String electionType) {
-		
+
 		Object[] params = {stateId,electionType};
 		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? and "+
 				"model.isPartial is null",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionYearHappenedInState(Long stateId,String electionType,String electionSubType) {
-		
+
 		String isPartial = "0";
 		Object[] params = {stateId,electionType,electionSubType,isPartial};
 		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? and "+
 				"model.elecSubtype = ? and model.isPartial is null or model.isPartial = ?",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List getLatestElectionYearForAStateBasedOnElectionType(Long stateId, String electionType, String subType)
-    {
-        Object params[] = {electionType, stateId, subType};
-        return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ? and model.electionScope.state.stateId = ? and model.elecSubtype = ? ", params);
-    }
-	
+	{
+		Object params[] = {electionType, stateId, subType};
+		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ? and model.electionScope.state.stateId = ? and model.elecSubtype = ? ", params);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPreviousElectionIdAndYear(Long electionId)
 	{
@@ -618,78 +619,78 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.state.stateId = ? and " +
 				" model.electionScope.electionType.electionTypeId = ? and model.elecSubtype = ? order by model.electionYear desc",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getElectionYearsBasedOnElectionType(Long stateId,Long electionTypeId)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId =:electionTypeId and model.elecSubtype =:elecSubtype ");
 		if(electionTypeId != null && !electionTypeId.equals(1L))
-		 str.append(" and model.electionScope.state.stateId =:stateId ");
+			str.append(" and model.electionScope.state.stateId =:stateId ");
 		str.append(" order by model.electionYear desc ");
-		
+
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("electionTypeId", electionTypeId);
 		query.setParameter("elecSubtype", IConstants.ELECTION_SUBTYPE_MAIN);
 		if(electionTypeId != null && !electionTypeId.equals(1L))
-		 query.setParameter("stateId", stateId);
-		
+			query.setParameter("stateId", stateId);
+
 		return query.list();
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getElectionYearsBasedOnElectionTypeId(Long electionTypeId) {
-		 Query query = getSession().createQuery("Select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId =:electionTypeId" +
-		 		" and model.elecSubtype =:type ");
-		 
-		 query.setParameter("electionTypeId", electionTypeId);
-		 query.setParameter("type", IConstants.ELECTION_SUBTYPE_MAIN);
-		 
+		Query query = getSession().createQuery("Select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId =:electionTypeId" +
+				" and model.elecSubtype =:type ");
+
+		query.setParameter("electionTypeId", electionTypeId);
+		query.setParameter("type", IConstants.ELECTION_SUBTYPE_MAIN);
+
 		return query.list();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getStatesBasedOnElectionTypeId(Long electionTypeId,String electionType){
-		
+
 		StringBuilder queryStr = new StringBuilder();
 		if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
-			 queryStr.append("Select model.country.countryId ,model.country.countryName");
+			queryStr.append("Select model.country.countryId ,model.country.countryName");
 		}
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			queryStr.append("Select model.state.stateId ,model.state.stateName");
 		}
 		return getHibernateTemplate().find(queryStr.toString().concat("  from ElectionScope model where model.electionType.electionTypeId = ?"),electionTypeId);
-		
+
 	}
-	
+
 	public List<Object[]> getElectionYears(Long stateId,String electionType)
 	{
 		Object[] params = {stateId,electionType,"1",IConstants.ELECTION_SUBTYPE_MAIN};
 		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where (model.electionScope.state.stateId = ? or model.electionScope.state.stateId is null) and " +
 				" model.electionScope.electionType.electionType = ? and model.isPartial = ? and model.elecSubtype = ?  order by model.electionYear desc",params);
 	}
-           
+
 	public List getElectionIdsBasedOnStateId(Long stateId,String year) {
 		Object[] params = {stateId,year};
 		return getHibernateTemplate().find("select model.electionId from Election model where model.electionScope.state.stateId = ? and model.electionYear >=?",params);
 	}
-	
+
 	public Object getCountOfElectionsAfterDelimitation(Long electionScopeId)
 	{
 		Query query = getSession().createQuery("select count(model.electionId) from Election model where model.electionScope.electionScopeId = ? and model.electionYear >= ? and model.elecSubtype = ? ");
 		query.setParameter(0,electionScopeId);
 		query.setParameter(1,IConstants.DELIMITATION_YEAR.toString());
 		query.setParameter(2,IConstants.ELECTION_SUBTYPE_MAIN);
-		
+
 		return query.uniqueResult();
 	}
-	
+
 	public List<Object[]> getStateDetailsForPartialElec()
 	{
 		Object[] params = {2l,"1"};
 		return getHibernateTemplate().find("select distinct model.electionScope.state.stateId,model.electionScope.state.stateName from Election model where model.electionScope.electionType.electionTypeId =? and model.isPartial = ?  order by electionScope.state.stateName",params);
-	
+
 	}
 	public List<Object[]> getNextElectionIdAndYear(Long electionId)
 	{
@@ -705,17 +706,17 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	}
 
 	public List<Object[]> getPartianValue() {
-		
+
 		return getHibernateTemplate().find("select distinct model.electionScope.state.stateId,model.electionScope.state.stateName from Election model where model.isPartial = 1 and model.electionScope.electionType.electionTypeId = 2");
 	}
-	
+
 	public List<Long> getPreviousMainElectionByStateIdYear(Long stateId,String year){
 		Object params[] = {stateId,IConstants.ELECTION_SUBTYPE_MAIN,IConstants.ELECTION_SUBTYPE_MAIN,stateId};
 		return getHibernateTemplate().find(" select model.electionId from Election model where model.isPartial is null and model.electionScope.electionType.electionTypeId = 2 and model.electionScope.state.stateId = ? and model.elecSubtype = ? " +
 				"and model.electionYear = (select max(model1.electionYear) from Election model1 where model1.isPartial is null and  model1.elecSubtype = ?  " +
 				"  and model1.electionScope.electionType.electionTypeId = 2 and model1.electionScope.state.stateId = ? and model1.electionYear < "+year+" ) order by model.electionDate desc",params);
 	}
-	
+
 	public List<Object[]> getPreviousElectionsByStateIdYearAndDate(Long stateId,String year,Date date){
 
 		Query query = getSession().createQuery(" select model.electionId,model.elecSubtype from Election model where model.isPartial is null and model.electionScope.electionType.electionTypeId = 2 and model.electionScope.state.stateId = :stateId  " +
@@ -728,7 +729,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		query.setDate("date", date);
 		return query.list();
 	}
-	
+
 	public List<Election> getPreviousElections(Long stateId,String year,Date date){
 
 		Query query = getSession().createQuery(" select model from Election model where model.isPartial is null and model.electionScope.electionType.electionTypeId = 2 and model.electionScope.state.stateId = :stateId  " +
@@ -741,20 +742,20 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		query.setDate("date", date);
 		return query.list();
 	}
-	
-	
+
+
 	@SuppressWarnings("unchecked")
 	public List<Election> getElectionDetailsForElections(List<Long> electionIds){
-		
+
 		Query query = getSession().createQuery("select model from Election model where " +
 				"model.electionId in (:electionIds)");
-		
+
 		query.setParameterList("electionIds", electionIds);
-		
+
 		return query.list();
-		
+
 	}
-	
+
 	public List getCountOfElectionYearsForAssembly(Long stateId,String electionType,String elecSubType){
 		Object[] params = {stateId, electionType,elecSubType,"0"};
 		return getHibernateTemplate().find("select count(model) from Election model " +
@@ -775,15 +776,15 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	}
 	public List<Object[]> findMptcZptcElections(Long stateId)
 	{
-	return getHibernateTemplate().find("select model.electionId,model.elecSubtype,model.electionYear,model.electionScope.electionType.electionType from Election model where model.electionScope.electionType.electionTypeId in (3,4) and model.electionScope.state.stateId = ? ",stateId);
+		return getHibernateTemplate().find("select model.electionId,model.elecSubtype,model.electionYear,model.electionScope.electionType.electionType from Election model where model.electionScope.electionType.electionTypeId in (3,4) and model.electionScope.state.stateId = ? ",stateId);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Long> getElectionIdsByElectionYearsCount(Long stateId,String electionType,String elecSubType,Long electionyearsCount){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.electionId from Election model ");
 		sb.append(" where model.electionScope.electionType.electionType = ? and model.elecSubtype = ? ");
-		
+
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			sb.append(" and model.electionScope.state.stateId = ?");
 		}
@@ -792,7 +793,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		Query queryObject = getSession().createQuery(sb.toString());
 		queryObject.setString(0,electionType);
 		queryObject.setString(1,elecSubType);
-		
+
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			queryObject.setLong(2,stateId);
 			queryObject.setString(3,"0");
@@ -811,7 +812,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		query.setParameterList("electionIdsList", electionIdsList);
 		return query.list();
 	}
-	
+
 	public Long getElectionId(String electionYear,Long elecetionType ,Long stateId)
 	{
 		Query query = getSession().createQuery("select model.electionId from Election model where " +
@@ -823,120 +824,120 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		query.setParameter("elecetionType", elecetionType);
 		query.setParameter("stateId", stateId);
 		return (Long)query.uniqueResult();
-		
+
 	}
-	
+
 	public List<Long> getAllAssemblyMainElectionsIdsInAP(){
 		Query query = getSession().createQuery(" select model.electionId from Election model where model.electionScope.electionScopeId = 2 and model.elecSubtype ='MAIN' ");
-		
+
 		return query.list();
 	}
 	public List<Object[]> getCandidateDetailsForMPTC(Long publicationDateId,Long electionScopeId,Long electionId,List<Long> districtIds)
 	{
-	 
-	 Query query = getSession().createQuery(
-	 "select distinct c2.constituencyId,b.constituency.district.districtName, " +
-	 " b.constituency.name,b.tehsil.tehsilName,c2.name,ca.lastname,cd.candidateDetailsId," +
-	 " cr.nomination.party.shortName,cr.rank, " +
-	 " cd.casteState.caste.casteName,cd.educationalQualifications.qualification, " +
-	 " cd.howLongWorkingInParty,cd.mobileno " +
-	 " from Booth b,Constituency c2,Candidate ca,CandidateResult cr,CandidateDetails cd " +
-	 " where b.tehsil.tehsilId=c2.tehsil.tehsilId and " +
-	 " c2.constituencyId=cr.nomination.constituencyElection.constituency.constituencyId and " +
-	 " ca.candidateId=cr.nomination.candidate.candidateId and" +
-	 " ca.candidateId=cd.candidate.candidateId and " +
-	 " b.publicationDate.publicationDateId=:publicationDateId and c2.electionScope.electionScopeId=:electionScopeId " +
-	 " and cr.nomination.constituencyElection.election.electionId=:electionId " +
-	 " and b.constituency.district.districtId in(:districtIds) ");		
-		
-	   query.setParameter("publicationDateId",publicationDateId);
-	   query.setParameter("electionScopeId",electionScopeId);
-	   query.setParameter("electionId",electionId);
-	   query.setParameterList("districtIds", districtIds);
-	   return query.list();
-	 }
-	
+
+		Query query = getSession().createQuery(
+				"select distinct c2.constituencyId,b.constituency.district.districtName, " +
+						" b.constituency.name,b.tehsil.tehsilName,c2.name,ca.lastname,cd.candidateDetailsId," +
+						" cr.nomination.party.shortName,cr.rank, " +
+						" cd.casteState.caste.casteName,cd.educationalQualifications.qualification, " +
+						" cd.howLongWorkingInParty,cd.mobileno " +
+						" from Booth b,Constituency c2,Candidate ca,CandidateResult cr,CandidateDetails cd " +
+						" where b.tehsil.tehsilId=c2.tehsil.tehsilId and " +
+						" c2.constituencyId=cr.nomination.constituencyElection.constituency.constituencyId and " +
+						" ca.candidateId=cr.nomination.candidate.candidateId and" +
+						" ca.candidateId=cd.candidate.candidateId and " +
+						" b.publicationDate.publicationDateId=:publicationDateId and c2.electionScope.electionScopeId=:electionScopeId " +
+						" and cr.nomination.constituencyElection.election.electionId=:electionId " +
+				" and b.constituency.district.districtId in(:districtIds) ");		
+
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("electionScopeId",electionScopeId);
+		query.setParameter("electionId",electionId);
+		query.setParameterList("districtIds", districtIds);
+		return query.list();
+	}
+
 	public List<Object[]> getCandidateDetailsForZPTC(Long publicationDateId,Long electionScopeId,Long electionId,List<Long> districtIds)
 	{
-	 
-	 Query query = getSession().createQuery(
-	 "select distinct c2.constituencyId,b.constituency.district.districtName, " +
-	 " b.constituency.name,b.tehsil.tehsilName,c2.name,ca.lastname,cd.candidateDetailsId, " +
-	 " cr.nomination.party.shortName,cr.rank, " +
-	 " cd.casteState.caste.casteName,cd.educationalQualifications.qualification, " +
-	 " cd.howLongWorkingInParty,cd.mobileno " +
-	 " from Booth b,Constituency c2,Candidate ca,CandidateResult cr,CandidateDetails cd " +
-	 " where b.tehsil.tehsilId=c2.tehsil.tehsilId and " +
-	 " c2.constituencyId=cr.nomination.constituencyElection.constituency.constituencyId and " +
-	 " ca.candidateId=cr.nomination.candidate.candidateId and" +
-	 " ca.candidateId=cd.candidate.candidateId and " +
-	 " b.publicationDate.publicationDateId=:publicationDateId and c2.electionScope.electionScopeId=:electionScopeId " +
-	 " and cr.nomination.constituencyElection.election.electionId=:electionId " +
-	 " and b.constituency.district.districtId in(:districtIds) ");		
-		
-	   query.setParameter("publicationDateId",publicationDateId);
-	   query.setParameter("electionScopeId",electionScopeId);
-	   query.setParameter("electionId",electionId);
-	   query.setParameterList("districtIds", districtIds);
-	   return query.list();
-	 }
-	
-  public List<Object[]> getCandidateDetailsForMunicipality(Long electionId,List<Long> districtIds)
-  {  
-	
-	  Query query = getSession().createQuery("select " +
-		  		"cer.constituencyElection.constituency.constituencyId,cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtName, " +
-		  		"cer.constituencyElection.constituency.localElectionBody.tehsil.tehsilName," +
-		  		"cer.constituencyElection.constituency.localElectionBody.name,cer.constituencyElection.constituency.name," +
-		  		"cr.nomination.candidate.lastname,cd.candidateDetailsId,cr.nomination.party.shortName," +
-		  		" cr.votesEarned,cr.rank, cd.casteState.caste.casteName," +
-		  		" cd.educationalQualifications.qualification,cd.howLongWorkingInParty,cd.mobileno  " +
-		      		"from CandidateResult cr,ConstituencyElectionResult cer,CandidateDetails cd " +
-		  		"where cr.nomination.constituencyElection.constiElecId=cer.constituencyElection.constiElecId " +
-		  		" and cr.nomination.candidate.candidateId=cd.candidate.candidateId" +
-		  		" and cer.constituencyElection.election.electionId=:electionId " +
-		  		" and cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtId in(:districtIds)" );
-		  
-		  query.setParameter("electionId",electionId);
-		  query.setParameterList("districtIds", districtIds);
-	  return query.list();
-	  
-	  
- }
-  public List<Object[]> getCandidateDetailsForCorporation(Long electionId,List<Long> districtIds)
-  {  
-	
-	  Query query = getSession().createQuery("select " +
-		  		"cer.constituencyElection.constituency.constituencyId,cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtName, " +
-		  		"cer.constituencyElection.constituency.localElectionBody.tehsil.tehsilName," +
-		  		"cer.constituencyElection.constituency.localElectionBody.name,cer.constituencyElection.constituency.name," +
-		  		"cr.nomination.candidate.lastname,cd.candidateDetailsId,cr.nomination.party.shortName," +
-		  		" cr.votesEarned,cr.rank, cd.casteState.caste.casteName," +
-		  		" cd.educationalQualifications.qualification,cd.howLongWorkingInParty,cd.mobileno  " +
-		  		"from CandidateResult cr,ConstituencyElectionResult cer,CandidateDetails cd " +
-		  		"where cr.nomination.constituencyElection.constiElecId=cer.constituencyElection.constiElecId " +
-		  		" and cr.nomination.candidate.candidateId=cd.candidate.candidateId" +
-		  		" and cer.constituencyElection.election.electionId=:electionId " +
-		  		" and cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtId in (:districtIds) " );
-		  
-		  query.setParameter("electionId",electionId);
-		  query.setParameterList("districtIds", districtIds);
-	  return query.list();
-	  
-	  
- }
-  
-  
-  public List<Long> getElectionDetailsByYearAndElectionType(String year,Long electionTypeId,Long stateId)
-  {
+
+		Query query = getSession().createQuery(
+				"select distinct c2.constituencyId,b.constituency.district.districtName, " +
+						" b.constituency.name,b.tehsil.tehsilName,c2.name,ca.lastname,cd.candidateDetailsId, " +
+						" cr.nomination.party.shortName,cr.rank, " +
+						" cd.casteState.caste.casteName,cd.educationalQualifications.qualification, " +
+						" cd.howLongWorkingInParty,cd.mobileno " +
+						" from Booth b,Constituency c2,Candidate ca,CandidateResult cr,CandidateDetails cd " +
+						" where b.tehsil.tehsilId=c2.tehsil.tehsilId and " +
+						" c2.constituencyId=cr.nomination.constituencyElection.constituency.constituencyId and " +
+						" ca.candidateId=cr.nomination.candidate.candidateId and" +
+						" ca.candidateId=cd.candidate.candidateId and " +
+						" b.publicationDate.publicationDateId=:publicationDateId and c2.electionScope.electionScopeId=:electionScopeId " +
+						" and cr.nomination.constituencyElection.election.electionId=:electionId " +
+				" and b.constituency.district.districtId in(:districtIds) ");		
+
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("electionScopeId",electionScopeId);
+		query.setParameter("electionId",electionId);
+		query.setParameterList("districtIds", districtIds);
+		return query.list();
+	}
+
+	public List<Object[]> getCandidateDetailsForMunicipality(Long electionId,List<Long> districtIds)
+	{  
+
+		Query query = getSession().createQuery("select " +
+				"cer.constituencyElection.constituency.constituencyId,cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtName, " +
+				"cer.constituencyElection.constituency.localElectionBody.tehsil.tehsilName," +
+				"cer.constituencyElection.constituency.localElectionBody.name,cer.constituencyElection.constituency.name," +
+				"cr.nomination.candidate.lastname,cd.candidateDetailsId,cr.nomination.party.shortName," +
+				" cr.votesEarned,cr.rank, cd.casteState.caste.casteName," +
+				" cd.educationalQualifications.qualification,cd.howLongWorkingInParty,cd.mobileno  " +
+				"from CandidateResult cr,ConstituencyElectionResult cer,CandidateDetails cd " +
+				"where cr.nomination.constituencyElection.constiElecId=cer.constituencyElection.constiElecId " +
+				" and cr.nomination.candidate.candidateId=cd.candidate.candidateId" +
+				" and cer.constituencyElection.election.electionId=:electionId " +
+				" and cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtId in(:districtIds)" );
+
+		query.setParameter("electionId",electionId);
+		query.setParameterList("districtIds", districtIds);
+		return query.list();
+
+
+	}
+	public List<Object[]> getCandidateDetailsForCorporation(Long electionId,List<Long> districtIds)
+	{  
+
+		Query query = getSession().createQuery("select " +
+				"cer.constituencyElection.constituency.constituencyId,cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtName, " +
+				"cer.constituencyElection.constituency.localElectionBody.tehsil.tehsilName," +
+				"cer.constituencyElection.constituency.localElectionBody.name,cer.constituencyElection.constituency.name," +
+				"cr.nomination.candidate.lastname,cd.candidateDetailsId,cr.nomination.party.shortName," +
+				" cr.votesEarned,cr.rank, cd.casteState.caste.casteName," +
+				" cd.educationalQualifications.qualification,cd.howLongWorkingInParty,cd.mobileno  " +
+				"from CandidateResult cr,ConstituencyElectionResult cer,CandidateDetails cd " +
+				"where cr.nomination.constituencyElection.constiElecId=cer.constituencyElection.constiElecId " +
+				" and cr.nomination.candidate.candidateId=cd.candidate.candidateId" +
+				" and cer.constituencyElection.election.electionId=:electionId " +
+				" and cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtId in (:districtIds) " );
+
+		query.setParameter("electionId",electionId);
+		query.setParameterList("districtIds", districtIds);
+		return query.list();
+
+
+	}
+
+
+	public List<Long> getElectionDetailsByYearAndElectionType(String year,Long electionTypeId,Long stateId)
+	{
 		Query query = getSession().createQuery("select model.electionId from Election model where " +
 				"model.electionYear ="+year+" and model.electionScope.electionType.electionTypeId = :electionTypeId and  model.electionScope.state.stateId = :stateId ");		
-	
+
 		query.setParameter("electionTypeId", electionTypeId);
 		query.setParameter("stateId", stateId);
 		return query.list();
 	}
-  
+
 
 	public List findElectionYearsForElectionTypeAndStateId(Long electionType,Long stateId){
 		if(electionType.longValue() == 1 )
@@ -952,7 +953,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 
 		}
 	}
-	
+
 	public List<String> getElectionTypeByElectionId(Long electionId){
 		Query query = getSession().createQuery(" select model.electionScope.electionType.electionType from Election model where model.electionId = :electionId ");
 		query.setParameter("electionId", electionId);
@@ -961,86 +962,270 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	public List<String> getElectionYears(List<String> electionSubTypes){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct election_year from election ");
-		 if(electionSubTypes != null && electionSubTypes.size() >0){
-			 sb.append(" where  sub_type in (:electionSubTypes) ");
-		 }
-		 
-		 sb.append(" order by election_year asc ");
+		if(electionSubTypes != null && electionSubTypes.size() >0){
+			sb.append(" where  sub_type in (:electionSubTypes) ");
+		}
+
+		sb.append(" order by election_year asc ");
 		Query query = getSession().createSQLQuery(sb.toString());
 		if(electionSubTypes != null && electionSubTypes.size() >0){
 			query.setParameterList("electionSubTypes", electionSubTypes);
 		}
 		return query.list();
 	}
-	
-	
-	
-	public List<Object[]> getElectionDetailsConstituencyWise(String electionYear,Long locationTypeId,List<Long>locationValue,Long electionId){
-		
+
+
+
+	public List<Object[]> getElectionDetailsConstituencyWise(List<Long> electionYear,Long locationTypeId,List<Long>locationValue,Long electionId,List<String> subType,List<Long> partyIds){
+
 		StringBuilder sb = new StringBuilder();	
-		sb.append(" select e.election_scope_id,c.constituency_id,c.name,e.election_id,et.election_type,e.election_year," +
-				"n.party_id, p.short_name,sum(cr.votes_earned) from  constituency c,constituency_election ce,election e ,election_scope es ," +
+		sb.append(" select e.election_scope_id as election_scope_id ,c.constituency_id as locationId,c.name as locationName ,e.election_id as election_id ,et.election_type as election_type ,e.election_year as election_year," +
+				"n.party_id as party_id , p.short_name as short_name ,sum(cr.votes_earned) as sumCount from  constituency c,constituency_election ce,election e ,election_scope es ," +
 				"election_type et ,nomination n ,party p ,candidate_result cr where cr.nomination_id = n.nomination_id and cr.rank = 1 and " +
-				"e.election_scope_id  in (1,2,3,4,5,6,7,8,9) and n.consti_elec_id = ce.consti_elec_id and n.party_id = p.party_id and " +
+				"e.election_scope_id  in (1,2,3,4,5,6,7,8,9) and n.consti_elec_id = ce.consti_elec_id and n.party_id = p.party_id and p.party_id in (:partyIds) " +
 				"e.election_scope_id = es.election_scope_id and et.election_type_id = es.election_type_id and c.constituency_id = ce.constituency_id and " +
-				"ce.election_id = :electionId and e.sub_type ='MAIN' and (c.district_id BETWEEN 11 and 23) and e.election_year =:electionYear group by " +
-				"e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,c.constituency_id,n.party_id order BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,c.constituency_id,n.party_id");
-		  if (locationTypeId != null && locationValue != null && locationValue.size()>0) {
- 			if (locationTypeId == 4L || locationTypeId.longValue()==10L) {
- 				sb.append(" and  c.constituency_id  in (:locationValue)");
- 						
-		    }
-		  }
-		   Query query = getSession().createSQLQuery((sb.toString()));
-		   if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValue != null && locationValue.size() > 0){
-	           	query.setParameterList("locationValue", locationValue);
-	       	} 
-		  
-		   if(electionId !=  null && electionId.longValue() > 0){
-		    	 query.setParameter("electionId", electionId);
-		     }
-		   query.setParameter("electionYear", "2014");
-		   
+				"ce.election_id = :electionId and e.sub_type in (:subType) and (c.district_id BETWEEN 11 and 23) and e.election_year in (:electionYear) ");
+
+		if (locationTypeId != null && locationValue != null && locationValue.size()>0) {
+			if (locationTypeId.longValue() == 3L) 
+				sb.append(" and  c.district_id  in (:locationValue)");
+			else if (locationTypeId.longValue()==10L)
+				sb.append(" and  c.constituency_id  in (:locationValue)");
+		}
+
+		sb.append("group by e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,c.constituency_id,n.party_id order BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,c.constituency_id,n.party_id");
+		Query query = getSession().createSQLQuery((sb.toString()))
+				.addScalar("election_scope_id",Hibernate.LONG)
+				.addScalar("locationId",Hibernate.LONG)
+				.addScalar("locationName",Hibernate.STRING)
+				.addScalar("election_id",Hibernate.LONG)
+				.addScalar("election_type",Hibernate.STRING)
+				.addScalar("election_year",Hibernate.STRING)
+				.addScalar("party_id",Hibernate.LONG)
+				.addScalar("short_name",Hibernate.STRING)
+				.addScalar("sumCount",Hibernate.LONG);
+
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValue != null && locationValue.size() > 0){
+			query.setParameterList("locationValue", locationValue);
+		} 
+
+		if(electionId !=  null && electionId.longValue() > 0){
+			query.setParameter("electionId", electionId);
+		}
+		if(electionYear !=  null){
+			query.setParameterList("electionYear", electionYear);
+		}
+		if(subType !=  null){
+			query.setParameterList("subType", subType);
+		}
+		if(partyIds != null && partyIds.size() > 0){
+			query.setParameterList("partyIds", partyIds);
+		} 
+
 		return query.list();
-		    
-		  }  
-	
-	public List<Object[]> getElectionDetailsDistrictWise(String electionYear,Long locationTypeId,List<Long>locationValue,Long electionId){
+
+	}  
+
+	public List<Object[]> getElectionDetailsDistrictWise(List<Long> electionYear,Long locationTypeId,List<Long>locationValue,Long electionId,List<String> subType,List<Long> partyIds){
 		StringBuilder sb = new StringBuilder();	
-		sb.append(" select e.election_scope_id,c.district_id,d.district_name,e.election_id,et.election_type,e.election_year," +
-				"n.party_id,p.short_name,sum(cr.votes_earned) from constituency c,constituency_election ce,election e ,election_scope es ," +
+		sb.append(" select e.election_scope_id as election_scope_id , " +
+				"c.district_id as locationId, " +
+				" d.district_name as locationName, " +
+				" e.election_id as election_id, " +
+				" et.election_type as election_type, " +
+				" e.election_year as election_year ," +
+				"n.party_id as party_id, " +
+				" p.short_name as short_name ," +
+				" sum(cr.votes_earned)  as sumCount " +
+				" from constituency c,constituency_election ce,election e ,election_scope es ," +
 				"election_type et ,nomination n ,party p ,district d ,candidate_result cr where cr.nomination_id = n.nomination_id and " +
 				"cr.rank = 1 and c.district_id = d.district_id and e.election_scope_id  in (1,2,3,4,5,6,7,8,9) and n.consti_elec_id = ce.consti_elec_id" +
-				" and n.party_id = p.party_id and e.election_scope_id = es.election_scope_id and et.election_type_id = es.election_type_id and " +
-				"c.constituency_id = ce.constituency_id and ce.election_id = :electionId and e.sub_type ='MAIN' and (c.district_id BETWEEN 11 and 23)" +
-				" and e.election_year =:electionYear " +
+				" and n.party_id = p.party_id and p.party_id in (:partyIds) and  e.election_scope_id = es.election_scope_id and et.election_type_id = es.election_type_id and " +
+				"c.constituency_id = ce.constituency_id and ce.election_id = :electionId and e.sub_type in (:subType) and (c.district_id BETWEEN 11 and 23)" +
+				" and e.election_year in (:electionYear) and c.state_id = :locationValue  " +
 				" GROUP BY " +
-				" e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year," +
-				"c.district_id,n.party_id order BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,c.district_id," +
-				"n.party_id");
-		   if (locationTypeId != null && locationValue != null && locationValue.size()>0) {
- 		   if (locationTypeId == 3L) {
- 				sb.append(" and  d.district_id  in (:locationValue)");
- 							
-		    }
- 		   
-		   }
-		   Query query = getSession().createSQLQuery((sb.toString()));
-		   if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValue != null && locationValue.size() > 0){
-	           	query.setParameterList("locationValue", locationValue);
-	       	    } 
-		  
-		   if(electionId !=  null && electionId.longValue() > 0){
-		    	 query.setParameter("electionId", electionId);
-		     }
-		   
-		   
-		    	 query.setParameter("electionYear", "2014");
-		     
-		   
+				" e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,c.district_id,n.party_id " +
+				" order BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,c.district_id,n.party_id");
+
+		Query query = getSession().createSQLQuery((sb.toString()))
+				.addScalar("election_scope_id",Hibernate.LONG)
+				.addScalar("locationId",Hibernate.LONG)
+				.addScalar("locationName",Hibernate.STRING)
+				.addScalar("election_id",Hibernate.LONG)
+				.addScalar("election_type",Hibernate.STRING)
+				.addScalar("election_year",Hibernate.STRING)
+				.addScalar("party_id",Hibernate.LONG)
+				.addScalar("short_name",Hibernate.STRING)
+				.addScalar("sumCount",Hibernate.LONG);
+
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValue != null && locationValue.size() > 0){
+			query.setParameterList("locationValue", locationValue);
+		} 
+
+		if(electionId !=  null && electionId.longValue() > 0){
+			query.setParameter("electionId", electionId);
+		}
+		if(electionYear !=  null){
+			query.setParameterList("electionYear", electionYear);
+		}
+		if(subType !=  null){
+			query.setParameterList("subType", subType);
+		}
+		if(partyIds != null && partyIds.size() > 0){
+			query.setParameterList("partyIds", partyIds);
+		} 
+
 		return query.list();
-		    
-		  }  
-	}
-	
- 	
+
+	}  
+	public List<Object[]> getElectionDetailsMandalWise(List<Long> electionYear,Long locationTypeId,List<Long>locationValue,Long electionId,List<String> subType,List<Long> partyIds){
+		StringBuilder sb = new StringBuilder();	
+		sb.append(" select  e.election_scope_id as election_scope_id , t.tehsil_id as locationId ,t.tehsil_name as locationName, e.election_id as election_id ,et.election_type as election_type ," +
+				"e.election_year as election_year ,n.party_id as party_id , p.short_name as short_name ,sum(cbr.votes_earned) as sumCount from constituency c," +
+				"constituency_election ce,election e ,election_scope es ,election_type et ,nomination n ," +
+				"party p ,candidate_booth_result cbr,booth_constituency_election bce ,booth b,tehsil t" +
+				" where b.tehsil_id = t.tehsil_id and b.local_election_body_id is null AND " +
+				"c.constituency_id = ce.constituency_id and n.consti_elec_id = n.consti_elec_id and  " +
+				"ce.election_id = :electionId and e.election_scope_id = es.election_scope_id and " +
+				"es.election_type_id = et.election_type_id and n.party_id = p.party_id and" +
+				" p.party_id in (:partyIds) and e.sub_type in (:subType) and  ce.consti_elec_id = bce.consti_elec_id and n.consti_elec_id = bce.consti_elec_id AND " +
+				"bce.booth_constituency_election_id = cbr.booth_constituency_election_id and " +
+				"bce.booth_id = b.booth_id and e.election_year in (:electionYear) ");
+		if (locationTypeId != null && locationValue != null && locationValue.size()>0) {
+			if (locationTypeId == 4L) {
+				sb.append(" and  t.tehsil_id  in (:locationValue) ");
+			}
+		}
+		sb.append(" group by t.tehsil_id,e.election_scope_id,e.election_id,et.election_type," +
+				"e.election_year,c.constituency_id,n.party_id ");
+		Query query = getSession().createSQLQuery((sb.toString()))
+				.addScalar("election_scope_id",Hibernate.LONG)
+				.addScalar("locationId",Hibernate.LONG)
+				.addScalar("locationName",Hibernate.STRING)
+				.addScalar("election_id",Hibernate.LONG)
+				.addScalar("election_type",Hibernate.STRING)
+				.addScalar("election_year",Hibernate.STRING)
+				.addScalar("party_id",Hibernate.LONG)
+				.addScalar("short_name",Hibernate.STRING)
+				.addScalar("sumCount",Hibernate.LONG);
+
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValue != null && locationValue.size() > 0){
+			query.setParameterList("locationValue", locationValue);
+		} 
+		if(electionId !=  null && electionId.longValue() > 0){
+			query.setParameter("electionId", electionId);
+		}
+		if(electionYear !=  null){
+			query.setParameterList("electionYear", electionYear);
+		}
+		if(subType !=  null){
+			query.setParameterList("subType", subType);
+		}
+		if(partyIds != null && partyIds.size() > 0){
+			query.setParameterList("partyIds", partyIds);
+		} 
+
+		return query.list();
+
+	}  
+	public List<Object[]> getElectionDetailsPanchayatWise(List<Long> electionYear,Long locationTypeId,List<Long>locationValue,Long electionId,List<String> subType,List<Long> partyIds){
+		StringBuilder sb = new StringBuilder();	
+		sb.append(" select e.election_scope_id as election_scope_id ,p1.panchayat_id as locationId , p1.panchayat_name as locationName ,e.election_id as election_id, " +
+				"et.election_type as election_type ,e.election_year as election_year ,n.party_id as party_id ,p.short_name as short_name ,sum(cbr.votes_earned) as sumCount " +
+				"from " +
+				"constituency c,constituency_election ce,election e ,election_scope es ,election_type et ," +
+				"nomination n ,party p ,candidate_booth_result cbr,booth_constituency_election bce ," +
+				"booth b,panchayat p1 " +
+				"where " +
+				"b.panchayat_id  = p1.panchayat_id and " +
+				"c.constituency_id = ce.constituency_id and n.consti_elec_id = n.consti_elec_id and " +
+				"ce.election_id = :electionId  and e.election_scope_id = es.election_scope_id and " +
+				"es.election_type_id = et.election_type_id and n.party_id = p.party_id and p.party_id in (:partyIds)  and  e.sub_type in (:subType) " +
+				"ce.consti_elec_id = bce.consti_elec_id and n.consti_elec_id = bce.consti_elec_id AND " +
+				"bce.booth_constituency_election_id = cbr.booth_constituency_election_id and " +
+				"bce.booth_id = b.booth_id and e.election_yearin  (:electionYear) and " +
+				"b.local_election_body_id is null ");
+
+		if (locationTypeId != null && locationValue != null && locationValue.size()>0) {
+			if (locationTypeId == 5L) {
+				sb.append(" and  b.tehsil_id  in (:locationValue) ");
+			} 		   
+		}
+		sb.append("  group by  p1.panchayat_id,e.election_scope_id,e.election_id,et.election_type,e.election_year,c.constituency_id,n.party_id ");
+		Query query = getSession().createSQLQuery((sb.toString()))
+				.addScalar("election_scope_id",Hibernate.LONG)
+				.addScalar("locationId",Hibernate.LONG)
+				.addScalar("locationName",Hibernate.STRING)
+				.addScalar("election_id",Hibernate.LONG)
+				.addScalar("election_type",Hibernate.STRING)
+				.addScalar("election_year",Hibernate.STRING)
+				.addScalar("party_id",Hibernate.LONG)
+				.addScalar("short_name",Hibernate.STRING)
+				.addScalar("sumCount",Hibernate.LONG);
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValue != null && locationValue.size() > 0){
+			query.setParameterList("locationValue", locationValue);
+		} 
+		if(electionId !=  null && electionId.longValue() > 0){
+			query.setParameter("electionId", electionId);
+		}
+		if(electionYear !=  null){
+			query.setParameterList("electionYear", electionYear);
+		}
+		if(subType !=  null && subType.size() > 0 ){
+			query.setParameterList("subType", subType);
+		}
+		if(partyIds != null && partyIds.size() > 0){
+			query.setParameterList("partyIds", partyIds);
+		} 
+		return query.list();
+	}  
+	public List<Object[]> getElectionDetailsMuncipalityWise(List<Long> electionYear,Long locationTypeId,List<Long>locationValue,Long electionId,List<String> subType,List<Long> partyIds){
+		StringBuilder sb = new StringBuilder();	
+		sb.append(" select e.election_scope_id, leb.local_election_body_id as locationId , concat(leb.name,' ',et1.election_type) as locationName , " +
+				"e.election_id as election_id ,et.election_type as election_type ,e.election_year as election_year ,n.party_id as party_id ,p.short_name as short_name ,sum(cbr.votes_earned) as sumCount" +
+				" from" +
+				" constituency c,constituency_election ce,election e ,election_scope es ,election_type et ," +
+				"nomination n ,party p ,candidate_booth_result cbr,booth_constituency_election bce ,booth b," +
+				"local_election_body leb,election_type et1 " +
+				"where leb.election_type_id  = et1.election_type_id and " +
+				"b.local_election_body_id = leb.local_election_body_id and c.constituency_id = ce.constituency_id " +
+				"and n.consti_elec_id = n.consti_elec_id and ce.election_id = :electionId and e.election_scope_id = es.election_scope_id " +
+				"and es.election_type_id = et.election_type_id and n.party_id = p.party_id and  p.party_id in (:partyIds)  and  e.sub_type in (:subType) and ce.consti_elec_id = bce.consti_elec_id and " +
+				"n.consti_elec_id = bce.consti_elec_id AND bce.booth_constituency_election_id = cbr.booth_constituency_election_id " +
+				"and bce.booth_id = b.booth_id and e.election_year in (:electionYear) and  " +
+				"b.local_election_body_id is not null");
+
+		if (locationTypeId != null && locationValue != null && locationValue.size()>0) {
+			if (locationTypeId == 4L) {
+				sb.append(" and  leb.local_election_body_id  in (:locationValue) ");
+			} 		   
+		}
+		sb.append("  group by leb.local_election_body_id,e.election_scope_id,e.election_id,et.election_type,e.election_year,c.constituency_id,n.party_id ");
+		Query query = getSession().createSQLQuery((sb.toString()))
+				.addScalar("election_scope_id",Hibernate.LONG)
+				.addScalar("locationId",Hibernate.LONG)
+				.addScalar("locationName",Hibernate.STRING)
+				.addScalar("election_id",Hibernate.LONG)
+				.addScalar("election_type",Hibernate.STRING)
+				.addScalar("election_year",Hibernate.STRING)
+				.addScalar("party_id",Hibernate.LONG)
+				.addScalar("short_name",Hibernate.STRING)
+				.addScalar("sumCount",Hibernate.LONG);
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValue != null && locationValue.size() > 0){
+			query.setParameterList("locationValue", locationValue);
+		} 
+		if(electionId !=  null && electionId.longValue() > 0){
+			query.setParameter("electionId", electionId);
+		}
+		if(electionYear !=  null){
+			query.setParameterList("electionYear", electionYear);
+		}
+		if(subType !=  null && subType.size() > 0){
+			query.setParameterList("subType", subType);
+		}
+		if(partyIds != null && partyIds.size() > 0){
+			query.setParameterList("partyIds", partyIds);
+		} 
+		return query.list();
+	}  
+}
