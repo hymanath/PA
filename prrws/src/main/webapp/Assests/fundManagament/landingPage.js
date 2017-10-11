@@ -24,14 +24,16 @@ if(windowWidth <500){
 getAllConvergenceTypesConsolidated();//mgnrega components
 
 var favouritesArr = []
+var globalComponentNameArr =[];
 function getFavouriteComponents(){
+	globalComponentNameArr = [];
 	$("#favouriteComponentDivId").html(spinner);
-	var json = {}
+	var json = {componentNameList:[]} 
 	$.ajax({                
-		type:'GET',    
+		type:'POST',    
 		url: 'getFavouriteComponents',
 		dataType: 'json',
-		data : JSON.stringify(),
+		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
 			xhr.setRequestHeader("Accept", "application/json");
 			xhr.setRequestHeader("Content-Type", "application/json");
@@ -50,6 +52,10 @@ function buildFavouriteComponentsResult(result) {
 		str +='<div id="sortableList">';
 		for (var i in result) {
 			var compnentName = result[i].name.trim();
+			if (compnentName != null && compnentName!="PRIS" && compnentName!="DRAINS" && compnentName!="LED MONITORING" && compnentName!="FUND MANAGMENT SYSTEM" && compnentName!="ENGINEERING DEPARTMENT" && compnentName!="PANACHAYATI RAJ EXPENDITURE" &&  compnentName!="SPIKE ANALYSIS" && compnentName!="MGNREGS" && compnentName!="RURAL DEVELOPMENT" && compnentName!="RURAL WATER SUPPLY" && compnentName!="ITEC" && compnentName!="SWATCH BHARATH IHHL" && compnentName!="SWATCH BHARATH PAYMENTS") {
+			   globalComponentNameArr.push(compnentName);
+			}
+			
 			if (result[i].name == "IT E & C") {
 				compnentName = "ITEC";
 			}
@@ -116,11 +122,7 @@ $(document).on("click","#saveList",function(){
 				$("#errorDivId").html(" ")
 			},2000)
 		}
-		 
-		 
 	});	
-	
-	
 });
 $(document).on("click","#editList",function(){
 	$("#saveList").show();
@@ -147,6 +149,8 @@ $(document).on('click','.starcolorChange',function(){
    var fullBlockName = $(this).attr("attr_full_block_name");
    var blockId = $(this).attr("attr_block_id");
    var url = $(this).attr("attr_url");
+  
+  
 	if(colorName == "gray"){
 		$("."+blockName+"Color").removeClass("removeFav");
 		addRemoveComponentToFavourite('Add',blockName,fullBlockName,url,blockId);
@@ -195,11 +199,20 @@ function saveFavouriteComponentDtls(url,blockName,fullBlockName){
 		if (result.statusCode==0 && result.message=="success"){
 		     $("."+blockName+"Color").css("color","red");
 			  $("."+blockName+"Color").attr("attr_color_name","red");
-			  $("#blockOperationStatusHeadingId").html("Block Successfully added as favourite.");
 			  $("."+blockName+"Color").attr("title","click to remove from favourite list.");
 			  $("#blockModalMessageDivId").modal("show");
-			  setTimeout(function(){ $("#blockModalMessageDivId").modal("hide"); }, 2000);
-			  getFavouriteComponents();
+			  //getFavouriteComponents();
+			   // window[functionNameObject[fullBlockName]](); 
+				var compnentName = fullBlockName.trim();;
+				updateAddedFavouriteComponentId(compnentName);
+				if (fullBlockName == "IT E & C") {
+					compnentName = "ITEC";
+				}
+				var cmpnentNameWithutSpce = compnentName.replace(/\s+/g, '');
+				$("."+cmpnentNameWithutSpce+"Color").css("color","red");
+				$("."+cmpnentNameWithutSpce+"Color").attr("attr_color_name","red");
+				$("."+cmpnentNameWithutSpce+"Color").attr("title","click to remove from favourite list.");
+			  
 		 } else {
 			 alert("Something went wrong,Please try again.");
 		 }
@@ -232,7 +245,7 @@ function deleteFavouriteComponent(blockName,blockId){
 			   $("#blockModalMessageDivId").modal("show");
 			   setTimeout(function(){ $("#blockModalMessageDivId").modal("hide"); }, 2000);
 			   $("."+blockName+"Color").attr("title","click to add as favourite component");
-			 	 getFavouriteComponents();
+			 	// getFavouriteComponents();
 		 } else {
 			    alert("Something went wrong,Please try again.");
 		 }
@@ -247,25 +260,26 @@ function onloadCallToGetAllBlockAchievent () {
 	getTotalSpikeCases();//SPIKE 
 	getTotalPrExpenditure();//PR EXPENDITURE
 	getBasicLedOverviewDetails(); // LED 
-	getHabitationCoverageByStatusByState();//FMS 
+	getHabitationCoverageByStatusByState();//RWS 
 	getALlProgramesAmountDetails();//FMS 
 	getMeesevaSLAOverviewDtls();//ITEC 
 	getNregsLabourBudgetOverAllAchievent();//MGNREGS
 	getRuralDevelopmentAllAchievent();//Rural DEVELOPMENT
 	getIHHLOverviewData();//swatch Bharath IHHL
 	getSBPaymentsAbstract();//SWATCH BHARATH PAYMENTS
-	for(var i in overViewArr)
+	 console.log(globalComponentNameArr);
+	 for(var i in globalComponentNameArr)
 	{
-		if(overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
+		if(globalComponentNameArr[i] == 'NTR 90 Days' || globalComponentNameArr[i] == 'Production of Bricks' || globalComponentNameArr[i] == 'Mulbery' || globalComponentNameArr[i] == 'Silk Worms' || globalComponentNameArr[i] == 'Cattle Drinking Water Troughs' || globalComponentNameArr[i] == 'Raising of Perinnial Fodders' || globalComponentNameArr[i] == 'Fish Ponds' || globalComponentNameArr[i] == 'Fish Drying Platforms' || globalComponentNameArr[i] == 'NTR Rural House' || globalComponentNameArr[i] == 'OPGK-Perinnials' || globalComponentNameArr[i] == 'OPGK-Annuals')
 		{
-			getNREGSProjectsAbstractNew(overViewArr[i]);
-		}else if(overViewArr[i] == 'Payments')
+			getNREGSProjectsAbstractNew(globalComponentNameArr[i]);
+		}else if(globalComponentNameArr[i] == 'Payments')
 		{
-			getNregaPaymentsAbsAndOverviewDtls(overViewArr[i]);
+			getNregaPaymentsAbsAndOverviewDtls(globalComponentNameArr[i]);
 		}else{
-			getNREGSAbstractDataByType(overViewArr[i]);
+			getNREGSAbstractDataByType(globalComponentNameArr[i]);
 		}
-	}
+	} 
 
 }
 
@@ -841,3 +855,31 @@ function getNREGSProjectsAbstractNew(type)
 	});
 }
 
+function updateAddedFavouriteComponentId(componentName){
+	
+	var componentNameArr = [];
+	if (componentName != null && componentName.trim().length > 0 ) {
+		componentNameArr.push(componentName);
+	}
+	var json = {componentNameList:componentNameArr} 
+	$.ajax({                
+		type:'POST',    
+		url: 'getFavouriteComponents',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		$("#blockOperationStatusHeadingId").html("Block Successfully added as favourite.");
+		 setTimeout(function(){ $("#blockModalMessageDivId").modal("hide"); }, 2000);
+		 if (result != null && result.length > 0) {
+			 if (componentName == "IT E & C") {
+					componentName = "ITEC";
+				}
+				var cmpNameWithoutSpace = componentName.replace(/\s+/g, '');
+			   $("."+cmpNameWithoutSpace+"Color").attr("attr_block_id",result[0].id);
+		 } 
+	});		
+}

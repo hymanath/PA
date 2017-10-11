@@ -857,10 +857,10 @@ public class UserServiceImpl implements IUserService {
 	 * @Date : 27-09-2017
 	 * @return List<IdNameVO  
 	 */
-	public List<IdNameVO> getFavouriteComponents() {
+	public List<IdNameVO> getFavouriteComponents(IdNameVO inputVO) {
 		List<IdNameVO> resultList = new ArrayList<>(0);
 		try {
-			List<Object[]> favouriteComponentObjList = favouriteComponentDAO.getFavouriteComponencts();
+			List<Object[]> favouriteComponentObjList = favouriteComponentDAO.getFavouriteComponencts(inputVO);
 			if (favouriteComponentObjList != null && favouriteComponentObjList.size() > 0) {
 				for (Object[] param : favouriteComponentObjList) {
 					IdNameVO componentVO = new IdNameVO();

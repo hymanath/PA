@@ -7,6 +7,7 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IFavouriteComponentDAO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.model.FavouriteComponent;
 import com.itgrids.utils.DateUtilService;
 
@@ -32,8 +33,18 @@ public class FavouriteComponentDAO extends GenericDaoHibernate<FavouriteComponen
 		return query.executeUpdate();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getFavouriteComponencts() {
-		return getSession().createQuery(" select distinct model.favouriteComponentId,model.name,model.url,model.orderNo from FavouriteComponent model where model.isDeleted='N' order by model.orderNo ").list();
+	public List<Object[]> getFavouriteComponencts(IdNameVO inputVO) {
+		 StringBuilder quBuilder = new StringBuilder();
+		 quBuilder.append(" select distinct model.favouriteComponentId,model.name,model.url,model.orderNo from FavouriteComponent model where model.isDeleted='N' ");
+		  if (inputVO.getComponentNameList() != null && inputVO.getComponentNameList().size() > 0) {
+			  quBuilder.append(" and model.name in (:componentNames)");
+		  }
+		  quBuilder.append(" order by model.orderNo ");
+		  Query query = getSession().createQuery(quBuilder.toString());
+		  if (inputVO.getComponentNameList() != null && inputVO.getComponentNameList().size() > 0) {
+			   query.setParameterList("componentNames", inputVO.getComponentNameList());
+		  }
+		  return query.list();
 	}
 	
 	public Long getMaxOrderNo(){
