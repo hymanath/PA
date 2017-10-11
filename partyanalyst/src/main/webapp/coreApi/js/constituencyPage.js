@@ -211,7 +211,8 @@ function onLoadAjaxCalls()
 	getLocationWiseCommitteesCount(2);
 	//Meetings
 	getLocationWiseMeetingsCount();
-	
+	//getLocationWiseMeetingsCountDetails(1);
+	//getLocationWiseMeetingsCountDetails(2);
 	 //candidate Profiles 1st block
 	if(locationLevelId == "2"){
 		getPartyWiseMPandMLACandidatesCounts();
@@ -281,7 +282,6 @@ function onLoadAjaxCalls()
 			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 		}
 	}, 2000); */
-	 
 }
 function onLoadClicks()
 {
@@ -6066,3 +6066,23 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 			
 		});	
 	  }
+  function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
+	$("#locationWiseMeetingsCount").html(spinner);
+	
+	jsObj={
+		locationTypeId:	locationLevelId,
+		locationValues:	userAccessLevelValuesArray,
+		fromDate :"",
+		toDate :"",
+		partyMeetingMainTypeId:partyMeetingMainTypeId
+	}
+	 $.ajax({
+      type : "GET",
+      url : "getLocationWiseMeetingsCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+		
+	});
+  }
+  
