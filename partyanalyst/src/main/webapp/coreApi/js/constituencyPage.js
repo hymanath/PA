@@ -3583,7 +3583,8 @@ function getLocationWiseTourMembersComplainceDtls(){
 		locationValuesArr	:userAccessLevelValuesArray,
 		fromDate			:customStartATMDate,
 		toDate				:customEndATMDate,
-		year				:""
+		year				:"",
+		stateId 			: 1
 	}
 	 $.ajax({
       type : "POST",
@@ -3703,7 +3704,6 @@ function getLocationWiseTourMembersComplainceDtls(){
 																	tableView+='<p class="f-12">Submited</p>';
 																tableView+='</td>';
 																tableView+='<td class="pull-right">';
-																  console.log("true");
 																    if (result[i].submitedLeaderCnt != null && result[i].submitedLeaderCnt > 0) {
 																		tableView+='<span class="toursCompNonCompClickCls" attr_designation_id="'+result[i].designationId+'" attr_tour_filter_type="submitted" style="color: #337ab7;">'+result[i].submitedLeaderCnt+'</span>';
 																	} else {

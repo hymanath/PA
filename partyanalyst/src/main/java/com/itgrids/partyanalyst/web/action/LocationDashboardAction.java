@@ -501,8 +501,9 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			 String fromDateStr = jObj.getString("fromDate");
 			 String toDateStr = jObj.getString("toDate");
 			 String year = jObj.getString("year");
+			 Long stateId = jObj.getLong("stateId");
 			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
-			 tourDesignationList = locationDashboardService.getLocationWiseTourMembersComplainceDtls(locationTypeId,locationValuesList,fromDateStr,toDateStr,year);
+			 tourDesignationList = locationDashboardService.getLocationWiseTourMembersComplainceDtls(locationTypeId,locationValuesList,fromDateStr,toDateStr,year,stateId);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseTourMembersComplainceDtls in LocationDashboardAction class", e);
 		}
