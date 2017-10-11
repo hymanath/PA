@@ -1180,13 +1180,13 @@ background-color:#D9D7D7;
 .table-alerts td {
     border: solid 1px #E3EDF5;
     border-style: none solid solid none;
-    padding: 10px;
+    padding: 8px;
 	background-color:#E3EDF5
 }
 .table-alerts tr:first-child td 
 { 
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
 	border-spacing:10px 0px;
 	border-left:1px solid #E3EDF5 ;
 	border-right:1px solid #E3EDF5;
@@ -1260,4 +1260,17 @@ font-size:12px !important;
 	border-bottom:2px solid #008855 !important;
 	border-left:2px solid #008855;
 	border-right:2px solid #008855;
+}
+.text_bold{
+	font-weight:bold;
+}
+.stausWiseColor{
+	content: "";
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+}
+.tableAlignment thead tr th, .tableAlignment tbody tr td{
+	font-size:12px !important;
+	padding:2px !important;
 }

@@ -48,7 +48,7 @@ function onLoadLocValue()
 	{
 		locationLevelVal = stateId ;
 		userAccessLevelValuesArray.push(stateId)
-		globalboardLevelId =2;
+		globalboardLevelId =0;
 	}else if(locationLevelId == '3')
 	{
 		locationLevelVal = districtId;
@@ -201,7 +201,8 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {	
-	$("#enrolmentYears").chosen();
+	
+	 $("#enrolmentYears").chosen();
 	//Enrolment Years
 	getEnrollmentIds();
 	//Publications	
@@ -269,7 +270,7 @@ function onLoadAjaxCalls()
 	
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
-	getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
+	getDesignationWiseAlertsOverview(defaultAlertCategoryIds); 
 	//getAlertOverviewClick(defaultAlertCategoryIds);
 	/* setTimeout(function(){ 
 		//News Block
@@ -404,6 +405,7 @@ function onLoadClicks()
 		$(".alertCategoryWiseCls li").removeClass("active");
 		$(".alertCategoryWiseCls li:nth-child(1)").addClass("active");
 		getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
+		getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
 	});
 	$(document).on("click","[active-type] li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
@@ -426,6 +428,7 @@ function onLoadClicks()
 		var ids=$(this).attr("attr_type").split(',');
 		defaultAlertCategoryIds = ids.map(Number);
 		getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
+		getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
 	});
 	$(document).keydown(function(event){
 		if(event.keyCode==123){
@@ -561,6 +564,7 @@ function onLoadClicks()
 		}else if(blockName == 'alerts')
 		{
 			getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
+			getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
 		}else if(blockName == 'activities')
 		{
 			getActivityStatusList();
@@ -1210,7 +1214,13 @@ function getCandidateAndPartyInfoForConstituency(){
 								parliament+='<div class="media media-profile">';
 									parliament+='<span id="mlaSpinnerId"></span>';
 									parliament+='<div class="media-left">';
-										parliament+='<img src="https://mytdp.com/images/cadre_images/'+result[0].subList1[i].education+'" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
+										if(result[0].subList1[i].education !=null && result[0].subList1[i].education.trim().length>0){
+											parliament+='<img src="https://mytdp.com/images/cadre_images/'+result[0].subList1[i].education+'" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
+										}else{
+											parliament+='<img src="https://mytdp.com/images/candidates/'+result[0].subList1[i].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
+										}
+										
+										
 										parliament+='<span class="border-image img-border">';
 											parliament+='<img src="images/party_flags/'+result[0].subList1[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
 										parliament+='</span>';
@@ -1257,7 +1267,13 @@ function getCandidateAndPartyInfoForConstituency(){
 									assembly+='<div class="media media-profile">';
 										assembly+='<span id="mlaSpinnerId"></span>';
 										assembly+='<div class="media-left">';
-											assembly+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/cadre_images/'+result[i].assemblyCandidateInfo[0].education+'" class="media-object profile-image img-border" alt="profile"/>';
+											if(result[i].assemblyCandidateInfo[0].education !=null && result[i].assemblyCandidateInfo[0].education.trim().length>0){
+												assembly+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/cadre_images/'+result[i].assemblyCandidateInfo[0].education+'" class="media-object profile-image img-border" alt="profile"/>';
+											}else{
+												assembly+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/candidates/'+result[i].assemblyCandidateInfo[0].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
+											}
+											
+											
 											assembly+='<span class="border-image img-border">';
 												assembly+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
 											assembly+='</span>';
@@ -1302,8 +1318,12 @@ function getCandidateAndPartyInfoForConstituency(){
 							parliament+='<div class="media media-profile">';
 								parliament+='<span id="mlaSpinnerId"></span>';
 								parliament+='<div class="media-left">';
-									parliament+='<img src="https://mytdp.com/images/cadre_images/'+result[0].subList1[0].education+'" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
-									parliament+='<span class="border-image img-border">';
+									if(result[0].subList1[0].education != null && result[0].subList1[0].education.trim().length()>0){
+										parliament+='<img src="https://mytdp.com/images/cadre_images/'+result[0].subList1[0].education+'" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
+									}else{
+										  parliament+='<img src="https://mytdp.com/images/candidates/'+result[0].subList1[0].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
+									 }
+										parliament+='<span class="border-image img-border">';
 										parliament+='<img src="images/party_flags/'+result[0].subList1[0].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
 									parliament+='</span>';
 								parliament+='</div>';
@@ -1330,7 +1350,11 @@ function getCandidateAndPartyInfoForConstituency(){
 								parliament+='<div class="media media-profile">';
 									parliament+='<span id="mlaSpinnerId"></span>';
 									parliament+='<div class="media-left">';
-										parliament+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/cadre_images/'+result[i].assemblyCandidateInfo[0].education+'" class="media-object profile-image img-border" alt="profile"/>';
+										if(result[i].assemblyCandidateInfo[0].education !=null && result[i].assemblyCandidateInfo[0].education.trim().length>0){
+											parliament+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/cadre_images/'+result[i].assemblyCandidateInfo[0].education+'" class="media-object profile-image img-border" alt="profile"/>';
+										}else{
+											parliament+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/candidates/'+result[i].assemblyCandidateInfo[0].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
+										}
 										parliament+='<span class="border-image img-border">';
 											parliament+='<img  onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
 										parliament+='</span>';
@@ -1383,7 +1407,12 @@ function getCandidateAndPartyInfoForConstituency(){
 											
 												stateLevel+='<span id="mlaSpinnerId"></span>';
 												stateLevel+='<div class="media-left">';
+												if(result[i].cadreImage !=null && result[i].cadreImage.trim().length>0){
 													stateLevel+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/cadre_images/'+result[i].cadreImage+'" class="media-object profile-image img-border" alt="profile"/>';
+												}else{
+													stateLevel+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/candidates/'+result[i].condidateId+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
+												}
+													
 													stateLevel+='<span class="border-image img-border">';
 													if(result[i].partyFlag !=null){
 														
@@ -1447,7 +1476,13 @@ function getCandidateAndPartyInfoForConstituency(){
 										representative+='<div class="media media-profile">';
 											representative+='<span id="mlaSpinnerId"></span>';
 											representative+='<div class="media-left">';
+											if(result[0].list[i].list[j].education !=null && result[0].list[i].list[j].education.trim().length>0){
 												representative+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/cadre_images/'+result[0].list[i].list[j].education+'" class="media-object profile-image img-border" alt="profile"/>';
+											}else{
+												representative+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/candidates/'+result[0].list[i].list[j].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
+											}
+												
+												
 												representative+='<span class="border-image img-border">';
 												if(result[0].list[i].list[j].partyFlag !=null){
 													
@@ -4950,15 +4985,15 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 	});	
 	function buildAlertsTable(result){
 		var str='';
-		
-		str+='<div class="table-responsive">';
+		str+='<h4>Alerts Overview</h4>';
+		str+='<div class="table-responsive m_top10">';
 			str+='<table class="table-alerts">';
 				str+='<tr>';
-					str+='<td colspan="3" style="background-color:#F6F6F6;"><div class="media"><div class="media-left"><img src="coreApi/img/total_alerts.png" style="width:40px;"/></div><div class="media-body"><p>Total <span class="text-danger">Alerts</span></p><h4>'+result.totalAlertCount+'</h4></div></div></td>';
+					str+='<td colspan="3" style="background-color:#F6F6F6;"><div class="media"><div class="media-left"><img src="coreApi/img/total_alerts.png" style="width:50px;"/></div><div class="media-body"><h4>Total <span class="text-danger">Alerts</span></h4><h2 class="m_top10">'+result.totalAlertCount+'</h2></div></div></td>';
 					if(result.subList !=null && result.subList.length>0){
 						for(var i in result.subList)
 						{
-							str+='<td colspan="3"><h3>'+result.subList[i].status+'</h3></td>';
+							str+='<td colspan="3"><h4>'+result.subList[i].status+'<br/>Alerts</h4></td>';
 						}
 					}
 				str+='</tr>';
@@ -4977,9 +5012,9 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 								str+='<div class="media-body">';
 									str+='<p>'+result.alertTypeList[i].status+' Alerts</p>';
 									if(result.alertTypeList[i].count !=null && result.alertTypeList[i].count>0){
-										str+='<h4 class="m_top5">'+result.alertTypeList[i].count+'&nbsp;&nbsp;<small style="font-size:10px;" class="text-success">'+result.alertTypeList[i].percentage+'%</small></h4>';
+										str+='<h3 class="m_top5">'+result.alertTypeList[i].count+'&nbsp;&nbsp;<small style="font-size:10px;" class="text-success text_bold">'+result.alertTypeList[i].percentage+'%</small></h3>';
 									}else{
-										str+='<h4 class="m_top5"> - </h4>';
+										str+='<h3 class="m_top5"> - </h3>';
 									}
 									
 									
@@ -4991,7 +5026,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 					if(result.subList !=null && result.subList.length>0){
 						for(var i in result.subList)
 						{
-							str+='<td colspan="3">'+result.subList[i].count+'<small class="pull-right text-success">'+result.subList[i].percentage+'</small></td>';
+							str+='<td colspan="3"><h4>'+result.subList[i].count+'<small class="pull-right text-success text_bold m_top5">'+result.subList[i].percentage+' %</small></h4></td>';
 						}
 					}
 				str+='</tr>';
@@ -5000,16 +5035,28 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 						str+='<div class="row" style="width:220px">';
 							str+='<div class="col-sm-12">';
 							if(result.subList1 !=null && result.subList1.length>0){
-								for(var i in result.subList1)
-								{
-									str+='<div style="padding:5px;font-size:12px;background-color:'+result.subList1[i].colour+'">';
-										str+='<div class="row">';
-											str+='<div class="col-sm-6">'+result.subList1[i].status+'</div>';
-											str+='<div class="col-sm-2">'+result.subList1[i].count+'</div>';
-											str+='<div class="col-sm-4">'+result.subList1[i].percentage+'</div>';
+									for(var i in result.subList1)
+									{
+										str+='<div style="padding:5px;font-size:12px;background-color:'+result.subList1[i].colour+'">';
+											str+='<div class="row">';
+												str+='<div class="col-sm-5">'+result.subList1[i].status+'</div>';
+												if(result.subList1[i].count !=null && result.subList1[i].count>0){
+													str+='<div class="col-sm-2 text_bold">'+result.subList1[i].count+'</div>';
+												}else{
+													str+='<div class="col-sm-2 text_bold"> - </div>';
+												}
+												
+												
+												if(result.subList1[i].percentage !=null && result.subList1[i].percentage>0){
+													str+='<div class="col-sm-5 text_bold"><p class="pull-right">'+result.subList1[i].percentage.toFixed(1)+' %</p></div>';
+												}else{
+													str+='<div class="col-sm-5 text_bold"> - </div>';
+												}
+												
+											str+='</div>';
 										str+='</div>';
-									str+='</div>';
-								}
+									}
+									
 							}
 							str+='</div>';
 						str+='</div>';
@@ -5020,16 +5067,25 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 							str+='<td colspan="3">';
 								str+='<div class="row" style="width:220px">';
 									str+='<div class="col-sm-12">';
-									for(var j in result.subList[i].subList)
-									{
-										str+='<div style="padding:5px;font-size:12px;background-color:'+result.subList[i].subList[j].colour+'">';
-											str+='<div class="row">';
-												str+='<div class="col-sm-6">'+result.subList[i].subList[j].status+'</div>';
-												str+='<div class="col-sm-2">'+result.subList[i].subList[j].count+'</div>';
-												str+='<div class="col-sm-4">'+result.subList[i].subList[j].percentage+'</div>';
-											str+='</div>';
-										str+='</div>';
-									}
+											for(var j in result.subList[i].subList)
+											{
+												str+='<div style="padding:5px;font-size:12px;background-color:'+result.subList[i].subList[j].colour+'">';
+													str+='<div class="row">';
+														str+='<div class="col-sm-5">'+result.subList[i].subList[j].status+'</div>';
+														if(result.subList[i].subList[j].count !=null && result.subList[i].subList[j].count>0){
+															str+='<div class="col-sm-2 text_bold">'+result.subList[i].subList[j].count+'</div>';
+														}else{
+															str+='<div class="col-sm-2"> - </div>';
+														}
+														if(result.subList[i].subList[j].percentage !=null && result.subList[i].subList[j].percentage>0){
+															str+='<div class="col-sm-5 text_bold"><p class="pull-right">'+result.subList[i].subList[j].percentage.toFixed(1)+' %</p></div>';
+														}else{
+															str+='<div class="col-sm-5"> - </div>';
+														}
+														
+													str+='</div>';
+												str+='</div>';
+											}
 									str+='</div>';
 								str+='</div>';
 							str+='</td>';
@@ -5039,15 +5095,16 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 			str+='</table>';
 		str+='</div>';
 		if(result.impactScopeList !=null && result.impactScopeList.length>0){
-			str+='<ul class="alerts-status-list">';
+			str+='<h4 class="m_top20">Impact level Overview</h4>';
+			str+='<ul class="alerts-status-list m_top10">';
 				for(var i in result.impactScopeList)
 				{
 					str+='<li>';
 						str+='<h4 class="panel-title">'+result.impactScopeList[i].status+'</h4>';
-						str+='<p>'+result.impactScopeList[i].count+'&nbsp;&nbsp;<small class="f-10"> '+result.impactScopeList[i].percentage+'%</small></p>';
+						str+='<h5>'+result.impactScopeList[i].count+'&nbsp;&nbsp;<small class="f-10"> '+result.impactScopeList[i].percentage+'%</small></h5>';
 						for(var j in result.impactScopeList[i].subList){
 							str+='<hr style="margin-top:8px;margin-bottom:8px"/>';
-							str+='<p style="color:'+result.impactScopeList[i].subList[j].colour+';">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;<span class="pull-right">'+result.impactScopeList[i].subList[j].count+'</span></p>';
+							str+='<h6><span class="stausWiseColor" style="background-color:'+result.impactScopeList[i].subList[j].colour+';"></span><span style="margin-left: 5px;">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;</span><span class="pull-right">'+result.impactScopeList[i].subList[j].count+'</span></h6>';
 						}
 					str+='</li>';
 				}
@@ -5978,8 +6035,8 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 			var str='';
 			
 			str+='<h4>Designation wise Alerts Overview</h4>';
-			str+='<div class="table-responsive">';
-				str+='<table class="table" id="dataTableDesigAlerts">';
+			str+='<div class="table-responsive m_top10">';
+				str+='<table class="table table-condensed tableAlignment table-bordered" id="dataTableDesigAlerts">';
 					str+='<thead>';
 					
 						str+='<tr>';
@@ -5990,21 +6047,22 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 						str+='</tr>';
 						str+='<tr>';
 							str+='<th>Total</th>';
-							str+='<th>Percentage</th>';
+							str+='<th>%</th>';
 							str+='<th>Inprogress</th>';
-							str+='<th>Percentage</th>';
+							str+='<th>%</th>';
 							str+='<th>Completed</th>';
-							str+='<th>Percentage</th>';
+							str+='<th>%</th>';
 							str+='<th>Others</th>';
-							str+='<th>Percentage</th>';
+							str+='<th>%</th>';
+							
 							str+='<th>Total</th>';
-							str+='<th>Percentage</th>';
+							str+='<th>%</th>';
 							str+='<th>Inprogress</th>';
-							str+='<th>Percentage</th>';
+							str+='<th>%</th>';
 							str+='<th>Completed</th>';
-							str+='<th>Percentage</th>';
+							str+='<th>%</th>';
 							str+='<th>Others</th>';
-							str+='<th>Percentage</th>';
+							str+='<th>%</th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
