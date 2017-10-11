@@ -18244,5 +18244,10 @@
          <param name="root">electioninformationList</param>
        </result>
    </action>
+   <action name="getAlertOverviewClickAction" class="locationDashboardAction" method="getAlertOverviewClick">
+        <result type="json" name="success">
+         <param name="root">alertVOList</param>
+       </result>
+   </action>
  </package>
 </struts>
