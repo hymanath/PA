@@ -219,7 +219,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				}
 			}
 			if(commonMethodsUtilService.isListOrSetValid(partyResultList)){
-				finalPartyList = buildSummaryForelectionResult(partyResultList,statusMap);
+				finalPartyList = buildSummaryForElectionResult(partyResultList,statusMap);
 			}
 			
 		/*	List<ElectionInformationVO> partyResultList = setLocationWiseStatus(statusMap,locationMap);
@@ -233,7 +233,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 		
 	}
 
-	public List<ElectionInformationVO> buildSummaryForelectionResult(List<ElectionInformationVO> finalPartyList,Map<String,String> statusMap){
+	public List<ElectionInformationVO> buildSummaryForElectionResult(List<ElectionInformationVO> finalPartyList,Map<String,String> statusMap){
 		List<ElectionInformationVO> resultList = new ArrayList<ElectionInformationVO>(0);
 		try {
 			
@@ -241,7 +241,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				for (ElectionInformationVO locationVO : finalPartyList) {
 					if(commonMethodsUtilService.isMapValid(statusMap)){
 						Map<String,Long>  statusCountMap= new HashMap<String, Long>(0);
-						Map<String,Map<String,Long>> yearWiseStatusCountMap = new HashMap<String,Map<String, Long>>(0);
+						Map<Long,Map<String,Long>> yearWiseStatusCountMap = new HashMap<Long,Map<String, Long>>(0);
 						
 						if(!commonMethodsUtilService.isListOrSetValid(locationVO.getSubList1())){
 							for (String range : statusMap.keySet()) 
@@ -251,16 +251,16 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 						if(commonMethodsUtilService.isListOrSetValid(locationVO.getList())){
 							for (ElectionInformationVO electionVO : locationVO.getList()) {
 								for (String range : statusMap.keySet()) {
-									statusCountMap = yearWiseStatusCountMap.get(electionVO.getElectionYear());
+									statusCountMap = yearWiseStatusCountMap.get(electionVO.getElectionId());
 									if(!commonMethodsUtilService.isMapValid(statusCountMap))
 										statusCountMap = new HashMap<String, Long>(0);
 									if(statusCountMap.get(electionVO.getStatus()) == null)
 										statusCountMap.put(statusMap.get(range), 0L);
 									
-									yearWiseStatusCountMap.put(electionVO.getElectionYear(), statusCountMap);
+									yearWiseStatusCountMap.put(electionVO.getElectionId(), statusCountMap);
 								}
 								
-								statusCountMap = yearWiseStatusCountMap.get(electionVO.getElectionYear());
+								statusCountMap = yearWiseStatusCountMap.get(electionVO.getElectionId());
 								if(commonMethodsUtilService.isMapValid(statusCountMap)){
 									Long count = statusCountMap.get(electionVO.getStatus());
 									if(count == null)
