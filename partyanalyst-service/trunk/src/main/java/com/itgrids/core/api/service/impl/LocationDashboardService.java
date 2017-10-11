@@ -792,7 +792,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					}// 0-tdpCadreId 1-name 2-image  3-mobileNo	4-memberShipNo	5-role	6-tdpCommitteeLevel	7-tdpCommitteeEnrollmentId
 					if(commiteeCandidatObjs !=null && commiteeCandidatObjs.size()  >0){
 						for(Object[] param:commiteeCandidatObjs){
-							CandidateDetailsForConstituencyTypesVO condidatVo = getMatchedVOForCadreIdForPartyId(finalList,commonMethodsUtilService.getLongValueForObject(param[0])); 
+							CandidateDetailsForConstituencyTypesVO condidatVo = getMatchedVOForCadreIdForCadreId(finalList,commonMethodsUtilService.getLongValueForObject(param[0])); 
 							//CandidateDetailsForConstituencyTypesVO condidatVo=new CandidateDetailsForConstituencyTypesVO();
 							if(condidatVo != null){
 								condidatVo.setCommitteLevel(condidatVo.getDesignation()+" OF AP , "+commonMethodsUtilService.getStringValueForObject(param[5])+" OF "+commonMethodsUtilService.getStringValueForObject(param[6])+" "+"COMMITTEE");
@@ -6043,6 +6043,20 @@ public ElectionInformationVO getMatchedPartyVO(List<ElectionInformationVO> final
 		if(finalList != null && finalList.size() > 0){
 			for(ElectionInformationVO param : finalList){
 				if(param.getPartyId().longValue() == id){
+					return param;
+				}
+			}
+		}
+	}catch(Exception e){
+		Log.error("Exception raised in getMatchedVOForCadreId method of LocationDashboardService"+e);
+	}
+	return null;
+}
+public CandidateDetailsForConstituencyTypesVO getMatchedVOForCadreIdForCadreId(List<CandidateDetailsForConstituencyTypesVO> cadreVOs,Long id){
+	try{
+		if(cadreVOs != null && cadreVOs.size() > 0){
+			for(CandidateDetailsForConstituencyTypesVO param : cadreVOs){
+				if(param.getCadreId().longValue() == id){
 					return param;
 				}
 			}
