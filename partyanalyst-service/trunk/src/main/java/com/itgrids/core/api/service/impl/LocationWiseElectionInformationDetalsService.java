@@ -72,22 +72,28 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			statusMap.put("61-80","OK");
 			statusMap.put("81-90","STRONG");
 			statusMap.put("91-100","VERY STRONG");
-			String parliamentIdsArr = "";
+
+			List<Long> parliamentIdsList = new ArrayList<Long>(0);
 			if(locationTypeId != null && locationTypeId.longValue()==10L)
-				parliamentIdsArr.concat(locationValue.toString());
+				parliamentIdsList.add(locationValue);
 			else{
-				parliamentIdsArr = IConstants.AP_PARLIAMENT_IDS_LIST_STR;
-				
+				String[] parliamentIdsArr = IConstants.AP_PARLIAMENT_IDS_LIST;
+				if(parliamentIdsArr != null && parliamentIdsArr.length>0){
+					for (int i = 0; i < parliamentIdsArr.length; i++) {
+						parliamentIdsList.add(Long.valueOf(parliamentIdsArr[i].trim()));
+					}
+				}
 			}
 			List<Object[]> validVoterList= null;
-			if(locationTypeId != null && locationTypeId.longValue() !=5L && locationTypeId.longValue() !=7L && locationTypeId.longValue() !=6L ){
+			if(locationTypeId != null && locationTypeId.longValue() !=5L && locationTypeId.longValue() !=7L && locationTypeId.longValue() !=6L  ){
 				validVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,null);
 				if(!commonMethodsUtilService.isListOrSetValid(validVoterList)){
 					validVoterList = new ArrayList<Object[]>();
+				}if(electionScopeIds.contains(1l)){
+					List<Object[]> parliamentWiseValidVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsList);
+					if(commonMethodsUtilService.isListOrSetValid(parliamentWiseValidVoterList))
+						validVoterList.addAll(parliamentWiseValidVoterList);
 				}
-				List<Object[]> parliamentWiseValidVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsArr);
-				if(commonMethodsUtilService.isListOrSetValid(parliamentWiseValidVoterList))
-					validVoterList.addAll(parliamentWiseValidVoterList);
 			}else{
 				validVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null);
 			}
@@ -144,10 +150,11 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				earnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,null,partyIdList);
 				if(!commonMethodsUtilService.isListOrSetValid(earnedVotesList))
 					earnedVotesList = new ArrayList<Object[]>();
-					
-				List<Object[]> tempearnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsArr,partyIdList);
-				if(commonMethodsUtilService.isListOrSetValid(tempearnedVotesList))
-					earnedVotesList.addAll(tempearnedVotesList);
+				if(electionScopeIds.contains(1l)){	
+					List<Object[]> tempearnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsList,partyIdList);
+					if(commonMethodsUtilService.isListOrSetValid(tempearnedVotesList))
+						earnedVotesList.addAll(tempearnedVotesList);
+				}
 			}else{
 				earnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null,partyIdList);
 			}
