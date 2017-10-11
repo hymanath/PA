@@ -1148,7 +1148,7 @@ public String getElectionInformationLocationWise(){
 				}
 			}
 			electioninformationList = locationWiseElectionInformationDetalsService.getElectionInformationLocationWiseStatus(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),
-					partyIdList,electionYearsList,electionScopeIds,subTypeList);
+					partyIdList,electionYearsList,electionScopeIds,subTypeList,jObj.getString("searchType"));
 
 		}catch(Exception e){
 			LOG.error("Exception raised at getElectionInformationLocationWiseStatus() of LocationDashboardAction{}",e);
