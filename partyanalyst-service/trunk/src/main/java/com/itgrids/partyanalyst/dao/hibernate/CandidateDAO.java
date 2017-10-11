@@ -971,7 +971,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 
 	@Override
 	public List<Object[]> getElectionInformationLocationWisedetailsForValidVotes(List<Long> electionYrs, Long locationTypeId, Long locationValue,
-			List<Long> electionScopeIds, Object object, List<String> subTypes,List<Long> parlimentIds) {
+			List<Long> electionScopeIds, Object object, List<String> subTypes,String parlimentIds) {
 
 		SQLQuery query = null;
 		StringBuilder sbs = new StringBuilder();
@@ -1039,7 +1039,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 					" JOIN election e ON e.election_id = ce.election_id " +
 					" JOIN election_type et ON es.election_type_id = et.election_type_id ");
 			sbe.append (" WHERE e.sub_type in(:subTypes) " );
-			if(parlimentIds == null || parlimentIds.size() == 0){
+			if(parlimentIds == null || parlimentIds.length() == 0){
 				sbe.append("and (c.district_id between 11 and 23) ");
 				if(electionScopeIds !=null && electionScopeIds.size()>0){
 					sbe.append(" AND c.election_scope_id IN (:electionScopeIds)");
@@ -1089,8 +1089,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			query.setParameter("locationValue",locationValue);
 		}
 		
-		if(parlimentIds != null && parlimentIds.size() > 0){
-			query.setParameterList("parlimentIds",parlimentIds);
+		if(parlimentIds != null && parlimentIds.length() > 0){
+			query.setParameter("parlimentIds",parlimentIds);
 		}else if(electionScopeIds !=null && electionScopeIds.size()>0){
 			query.setParameterList("electionScopeIds",electionScopeIds);
 		}
@@ -1099,7 +1099,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	
 	@Override
 	public List<Object[]> getElectionInformationLocationWiseDetailEarnedVoterShare(List<Long> electionYrs, Long locationTypeId, Long locationValue,
-			List<Long> electionScopeIds, Object object, List<String> subTypes, List<Long> parlimentIds, List<Long> partIds) {
+			List<Long> electionScopeIds, Object object, List<String> subTypes, String parlimentIds, List<Long> partIds) {
 		
 		SQLQuery query = null;
 		StringBuilder sb = new StringBuilder();
@@ -1165,7 +1165,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			if(partIds.size() != 0 && partIds !=null){
 				sbe.append(" and n.party_id in (:partIds) ");
 			}
-			if(parlimentIds == null || parlimentIds.size() == 0){
+			if(parlimentIds == null || parlimentIds.length() == 0){
 				sbe.append("and (c1.district_id between 11 and 23) ");
 				if(electionScopeIds !=null && electionScopeIds.size()>0){
 					sbe.append(" AND c1.election_scope_id IN (:electionScopeIds)");
@@ -1223,8 +1223,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l  && locationTypeId.longValue() != 10L){
 			query.setParameter("locationValue",locationValue);
 		}
-		if(parlimentIds != null && parlimentIds.size() > 0){
-			query.setParameterList("parlimentIds",parlimentIds);
+		if(parlimentIds != null && parlimentIds.length() > 0){
+			query.setParameter("parlimentIds",parlimentIds);
 		}else if(electionScopeIds !=null && electionScopeIds.size()>0){
 			query.setParameterList("electionScopeIds",electionScopeIds);
 		}
