@@ -792,7 +792,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					}// 0-tdpCadreId 1-name 2-image  3-mobileNo	4-memberShipNo	5-role	6-tdpCommitteeLevel	7-tdpCommitteeEnrollmentId
 					if(commiteeCandidatObjs !=null && commiteeCandidatObjs.size()  >0){
 						for(Object[] param:commiteeCandidatObjs){
-							CandidateDetailsForConstituencyTypesVO condidatVo = getMatchedVOForCadreIdForCadreId(finalList,commonMethodsUtilService.getLongValueForObject(param[0])); 
+							CandidateDetailsForConstituencyTypesVO condidatVo = getMatchedVOForCadreIdForPartyId(finalList,commonMethodsUtilService.getLongValueForObject(param[0])); 
 							//CandidateDetailsForConstituencyTypesVO condidatVo=new CandidateDetailsForConstituencyTypesVO();
 							if(condidatVo != null){
 								condidatVo.setCommitteLevel(condidatVo.getDesignation()+" OF AP , "+commonMethodsUtilService.getStringValueForObject(param[5])+" OF "+commonMethodsUtilService.getStringValueForObject(param[6])+" "+"COMMITTEE");
@@ -2636,48 +2636,51 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			LOG.error("Exception Occured in calculateCategoryWiseComplaince() in LocationDashboardService  : ",e); 
 		}
 	}
-	public void calculatteOverAllPercentage(Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap){
+	public void calculatteOverAllCandiatePercentage(Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap){
 		try{
-			if(memberDtlsMap != null && memberDtlsMap.size() > 0){
+			if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
 
-				for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:memberDtlsMap.entrySet()){
+				for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:candiateDtlsMap.entrySet()){
 
-					if(designationEntry != null && designationEntry.getValue().size() >0){
+					if(designationEntry.getValue() != null && designationEntry.getValue().size() > 0){
 
 						for(Entry<Long,ToursBasicVO> candiateEntry:designationEntry.getValue().entrySet()){
 
-							List<ToursBasicVO> categoryList = candiateEntry.getValue().getSubList3();
+							ToursBasicVO candiateVO = candiateEntry.getValue();
+                            
+							if(candiateVO != null){
+								
+								if(candiateVO.getMonthList() != null && candiateVO.getMonthList().size() > 0){
 
-							if(categoryList != null && categoryList.size() > 0){
-
-								Double totalPer =0.0d;
-								Long complainceDays=0l;
-								Long targetDays = 0l;
-								for(ToursBasicVO VO:categoryList){
-									totalPer = totalPer+VO.getComplaincePer(); 
-									complainceDays = complainceDays +VO.getComplainceDays();
-									targetDays = targetDays + VO.getTargetDays();
-								}
-								Integer totalCount =0;
-								if(categoryList != null && categoryList.size() > 0){
-									totalCount = categoryList.size() * 100;   
-								}
-
-								Double percentage = calculatePercantageBasedOnDouble(totalPer,totalCount.doubleValue());
-								candiateEntry.getValue().setComplainceDays(complainceDays);
-								candiateEntry.getValue().setTargetDays(targetDays);
-								if(percentage > 100d){
-									candiateEntry.getValue().setComplaincePer(100d);
-								}else{
-									candiateEntry.getValue().setComplaincePer(percentage);  
-								}
-							}
+										Double totalPer =0.0d;
+										Long complainceDays=0l;
+										Long targetDays = 0l;
+										for(ToursBasicVO VO:candiateVO.getMonthList()){
+											totalPer = totalPer+VO.getComplaincePer(); 
+											complainceDays = complainceDays +VO.getComplainceDays();
+											targetDays = targetDays + VO.getTargetDays();
+										}
+										Integer totalCount =0;
+										
+										totalCount = candiateVO.getMonthList().size() * 100;   
+										
+										Double percentage = calculatePercantageBasedOnDouble(totalPer,totalCount.doubleValue());
+										candiateEntry.getValue().setComplainceDays(complainceDays);
+										candiateEntry.getValue().setTargetDays(targetDays);
+										if(percentage > 100d){
+											candiateEntry.getValue().setComplaincePer(100d);
+										}else{
+											candiateEntry.getValue().setComplaincePer(percentage);  
+										}
+									} 
+							  }
+							
 						}
 					}
 				}
-			}	 
+			}
 		}catch(Exception e){
-			LOG.error("Exception Occured in calculatteOverAllPercentage() in LocationDashboardService  : ",e);	 
+			LOG.error("Exception Occured in calculateCategoryWiseComplaince() in LocationDashboardService  : ",e); 
 		}
 	}
 	public ToursBasicVO getCategoryMatchVO(List<ToursBasicVO> categoryList,String id){
@@ -2704,10 +2707,47 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 		}catch(Exception e){
-			LOG.error("Exception Occured in getCategoryMatchVO() in LocationDashboardService  : ",e);	 
+			LOG.error("Exception Occured in getMonthMatchVO() in LocationDashboardService  : ",e);	 
 		}
 		return null;
 	}
+
+	public void sefDefulatMonthCandiateWise(List<ToursBasicVO> resultList,List<Object[]> monthObjList) {
+		try {
+			for (ToursBasicVO deignationVO : resultList) {
+				
+				if (deignationVO.getSubList() != null && deignationVO.getSubList().size() > 0) {
+					
+					for (ToursBasicVO candiateVO : deignationVO.getSubList()) {
+						candiateVO.getSubList3().clear();
+						if (monthObjList != null && monthObjList.size() > 0) {
+							
+							for (Object[] param : monthObjList) {
+								
+								ToursBasicVO monthVO = getMonthMatchVO(candiateVO.getMonthList(),commonMethodsUtilService.getLongValueForObject(param[0]));
+								
+								if (monthVO == null) {
+									monthVO = new ToursBasicVO();
+									monthVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));//monthId
+									String year = commonMethodsUtilService.getStringValueForObject(param[2]);
+									monthVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 3)+"-"+year.substring(year.length()-2));//monthName & Year
+									monthVO.setYear(commonMethodsUtilService.getLongValueForObject(param[2]));
+									monthVO.setIsTourSubmitted("-");
+									monthVO.setIsComplaince("No Target");
+									candiateVO.getMonthList().add(monthVO);
+								} else {
+									monthVO.setIsComplaince("DataSumitted");
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in sefDefulatMonthCandiateWise() in LocationDashboardService  : ",e);
+		}
+	}
+	
 	public Double calculatePercantage(Long subCount,Long totalCount){
 		Double d=0.0d;
 		if(subCount.longValue()>0l && totalCount.longValue()==0l)
@@ -5742,7 +5782,6 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 					if(!commonMethodsUtilService.isListOrSetValid(partysList)){
 						partysList = new ArrayList<ElectionInformationVO>(0);
 					}
-					
 					ElectionInformationVO vo = new ElectionInformationVO();
 					if(partyId != null && partyIdsList.contains(partyId)){
 						vo.setPartyId(partyId);
@@ -5880,7 +5919,6 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 		 
 		return finalList;
 	}
-
 	/**
 	 * @param List<Long> locationValue
 	 * @param Long locationTypeId
