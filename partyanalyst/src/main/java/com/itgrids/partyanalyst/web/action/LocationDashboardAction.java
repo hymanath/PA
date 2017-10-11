@@ -1199,8 +1199,17 @@ public String getElectionInformationLocationWise(){
 	public String getElectionDetailsData(){
 		try{
 			jObj = new JSONObject(getTask());
-			List<Long> locationValue = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
-			electioninformationList = locationDashboardService.getElectionDetailsData(jObj.getString("electionYear"), jObj.getLong("locationTypeId"),locationValue,jObj.getLong("electionId"));
+			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));
+			List<Long> partyIds =  convertJsonStringList(jObj.getJSONArray("partyIdsArr"));
+			List<Long> electionYears = convertJsonStringList(jObj.getJSONArray("electionYearArr"));
+			List<String> subTypes=  new ArrayList<String>();
+			JSONArray jsonArray = jObj.getJSONArray("electionSubTypeArr");
+			if(jsonArray!=null && jsonArray.length()>0){
+				for(int i =0; i< jsonArray.length();i++){
+					subTypes.add(jsonArray.getString(i).toString());        
+				}
+			}
+			electioninformationList = locationDashboardService.getElectionDetailsData(electionYears, jObj.getLong("locationTypeId"),locationValues,jObj.getLong("electionId"),subTypes,partyIds);
 		}catch(Exception e){
 			LOG.error("Exception raised at getConstituencyWiseInsuranceWiseIssueTypeCounts() of LocationDashboardAction{}",e);
 		}
