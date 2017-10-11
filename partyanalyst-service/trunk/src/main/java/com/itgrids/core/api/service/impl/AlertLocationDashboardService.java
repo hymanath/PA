@@ -357,7 +357,7 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 								}
 							vo.setId(13l);
 							vo.setStatus("Other Level");
-						}else{
+						}else if(impactLvlId != 11l ){
 							 vo = getImpactScopeMatchVO(finalVOList,commonMethodsUtilService.getLongValueForObject(impactLvlId));
 							 if(vo == null){
 								 vo = new LocationAlertVO();
