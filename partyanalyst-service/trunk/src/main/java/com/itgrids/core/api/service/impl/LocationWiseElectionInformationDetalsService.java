@@ -245,15 +245,10 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 		try {
 			
 			if(commonMethodsUtilService.isListOrSetValid(finalPartyList)){
+				Map<Long,Map<String,Long>> yearWiseStatusCountMap = new HashMap<Long,Map<String, Long>>(0);
 				for (ElectionInformationVO locationVO : finalPartyList) {
 					if(commonMethodsUtilService.isMapValid(statusMap)){
 						Map<String,Long>  statusCountMap= new HashMap<String, Long>(0);
-						Map<Long,Map<String,Long>> yearWiseStatusCountMap = new HashMap<Long,Map<String, Long>>(0);
-						
-						if(!commonMethodsUtilService.isListOrSetValid(locationVO.getSubList1())){
-							for (String range : statusMap.keySet()) 
-								locationVO.getSubList1().add(new ElectionInformationVO(statusMap.get(range),range.trim()));
-						}
 						
 						if(commonMethodsUtilService.isListOrSetValid(locationVO.getList())){
 							for (ElectionInformationVO electionVO : locationVO.getList()) {
@@ -277,12 +272,29 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 								}
 							}
 						}
-						
-						
 					}
 					resultList.add(locationVO);
 				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(resultList)){
+					for (ElectionInformationVO locatinVO : resultList) {
+						if(commonMethodsUtilService.isListOrSetValid(locatinVO.getList())){
+							ElectionInformationVO electionVO = locatinVO.getList().get(0);
+							if(electionVO != null){
+								Map<String,Long>  statusCountMap= yearWiseStatusCountMap.get(electionVO.getElectionId());
+								if(commonMethodsUtilService.isMapValid(statusCountMap)){
+									if(!commonMethodsUtilService.isListOrSetValid(electionVO.getSubList1())){
+										for (String range : statusMap.keySet()) {
+											electionVO.getSubList1().add(new ElectionInformationVO(statusMap.get(range),range.trim(),statusCountMap.get(statusMap.get(range))));
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			}
+			
 			return resultList;
 		} catch (Exception e) {
 			Log.error("Exception raised in buildSummaryForelectionResult method of LocationWiseElectionInformationDetalsService"+e);
