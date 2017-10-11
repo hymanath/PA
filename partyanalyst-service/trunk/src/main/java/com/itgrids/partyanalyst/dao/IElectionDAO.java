@@ -218,7 +218,9 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List findElectionYearsForElectionTypeAndStateId(Long electionType,Long stateId);
 	public List<String> getElectionTypeByElectionId(Long electionId);
 	public List<String> getElectionYears(List<String> electionSubTypes);
-	public List<Object[]> getElectionDetailsDistrictWise(String electionYear,Long locationTypeId,List<Long>locationValue,Long electionId);
-	public List<Object[]> getElectionDetailsConstituencyWise(String electionYear,Long locationTypeId,List<Long>locationValue,Long electionId);
-	
+	public List<Object[]> getElectionDetailsDistrictWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds);
+	public List<Object[]> getElectionDetailsConstituencyWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds);
+	public List<Object[]> getElectionDetailsMandalWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds);
+	public List<Object[]> getElectionDetailsMuncipalityWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds);
+	public List<Object[]> getElectionDetailsPanchayatWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds);
 }
