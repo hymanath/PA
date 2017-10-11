@@ -222,7 +222,7 @@ function getLocationWiseElectionResults(){
 	var jsObj={
 		
 		electionScopeIdsArr: [1,2,3,4,5,6,7,8,9],
-		subType:"MAIN",
+		electionSubTypeArr:["MAIN"],
 		lelevlId:locationLevelId,
 		locationValuesArr:userAccessLevelValuesArray,
 		yearsArr:[2014,2009,2004],
