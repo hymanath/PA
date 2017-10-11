@@ -948,7 +948,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		
 	}
 	
-	public List<Object[]> getLocationWiseMeetingsDeatils(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate){
+	public List<Object[]> getLocationWiseMeetingsDeatils(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid){
 	       
 	       //0-meetingStatus,1-levelId,2-level,3-count
 	       StringBuilder sb = new StringBuilder();
@@ -977,7 +977,9 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 	              sb.append("  model.partyMeeting.meetingAddress.ward.constituencyId in (:locationValues)"); 
 	            }
 	        }
-	       
+	       if(partyMeetingMainTypeid != null && partyMeetingMainTypeid.longValue() > 0l){
+	    	   sb.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeid ");
+	       }
 	       
 	       if(fromDate != null && toDate != null){
 	         sb.append(" and date(model.partyMeeting.startDate) between :fromDate and :toDate ");
@@ -992,6 +994,9 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 	       if(fromDate != null && toDate != null){
 	         query.setDate("fromDate", fromDate);
 	            query.setDate("toDate", toDate); 
+	       }
+	       if(partyMeetingMainTypeid != null && partyMeetingMainTypeid.longValue() > 0l){
+	    	   query.setParameter("partyMeetingMainTypeid", partyMeetingMainTypeid);
 	       }
 	       return query.list();
 	     }

@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 
@@ -13,13 +16,15 @@ public class PartyMeetingDataVO implements Serializable{
 	private Long totalMeetings = 0l;
 	private Long conductedMeetings = 0l;
 	private Long notConductedMeetings = 0l;
+	private Long maybeeMeetings = 0l;
+	private Long notUpdatedCount = 0l;
 	
 	private Long partyMeetingId;
 	private String partyMeetingName;
 	private String remarks;
 	
 	private List<PartyMeetingDataVO> meetingsList;
-	private List<PartyMeetingDataVO> levelList;
+	private List<PartyMeetingDataVO> levelList = new ArrayList<PartyMeetingDataVO>();
 	private Map<Long,PartyMeetingDataVO> subMap;
 	private String meetingLevel;
 	private String conductedDate;
@@ -30,8 +35,73 @@ public class PartyMeetingDataVO implements Serializable{
 	private Long inviteeAttendedCount = 0L;
 	private Long nonInviteesCount=0L;
 	private Long absentCount =0L;
+	private Set<Long> attendedIds =new HashSet<Long>();
+	private Set<Long> inviteeIds =new HashSet<Long>();
+	private Long imagesCnt = 0l;
 	public PartyMeetingDataVO(){}
 	
+	
+	
+	public Long getImagesCnt() {
+		return imagesCnt;
+	}
+
+
+
+	public void setImagesCnt(Long imagesCnt) {
+		this.imagesCnt = imagesCnt;
+	}
+
+
+
+	public Set<Long> getAttendedIds() {
+		return attendedIds;
+	}
+
+
+
+	public void setAttendedIds(Set<Long> attendedIds) {
+		this.attendedIds = attendedIds;
+	}
+
+
+
+	public Set<Long> getInviteeIds() {
+		return inviteeIds;
+	}
+
+
+
+	public void setInviteeIds(Set<Long> inviteeIds) {
+		this.inviteeIds = inviteeIds;
+	}
+
+
+
+	public Long getMaybeeMeetings() {
+		return maybeeMeetings;
+	}
+
+
+
+	public void setMaybeeMeetings(Long maybeeMeetings) {
+		this.maybeeMeetings = maybeeMeetings;
+	}
+
+
+
+	public Long getNotUpdatedCount() {
+		return notUpdatedCount;
+	}
+
+
+
+	public void setNotUpdatedCount(Long notUpdatedCount) {
+		this.notUpdatedCount = notUpdatedCount;
+	}
+
+
+
 	public PartyMeetingDataVO(Long id , String name){
 		this.id = id;
 		this.name = name;

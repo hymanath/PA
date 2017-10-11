@@ -103,4 +103,5 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	 public List<Object[]> getBelowLevelMeetingConductedCount(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate, String areaType);
 	 public Long getAccessLevelMeetingConductedCount(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate);
 	 public List<Object[]> getCommitteeMeetingsDetails(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate);
+	public List<Object[]> getLocationWiseStateMeetings(List<Long> locationValues, Long locationTypeId, Date startDate,Date endDate, Long partyMeetingMainTypeId);
 }
