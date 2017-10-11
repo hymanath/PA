@@ -10810,4 +10810,139 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		return query.list();
 	 		
 	 	}
+	 	public List<Object[]> getAlertCategaryAndImpactLevelWiseDetailsOverView(Date fromDate , Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year,String type,
+	 			List<Long> alertCategeryIdsList,List<Long> statusIdsList,List<Long> impactIdsList,String otherCategory){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select distinct ");     
+			queryStr.append(" model.alertId, " +//0
+							" model.createdTime, " +//1
+							" model.updatedTime, " +//2
+							" alertStatus.alertStatusId, " +//3  
+							" alertStatus.alertStatus, " +//4
+							" alertCategory.alertCategoryId, " +//5
+							" alertCategory.category, " +//6
+							" alertImpactScope.alertImpactScopeId, " +//7
+							" alertImpactScope.impactScope, " +//8
+							" model.title, " +//9
+							" constituency.name, " +//10
+							" district.districtName," +//11
+							" alertSource.alertSourceId, " +//12
+							" alertSource.source," +//13
+							" editionType.editionTypeId, " +//14
+							" editionType.editionType, " +//15
+							" edition.editionId, " +//16
+							" edition.editionAlias, " +//17
+							" tvNewsChannel.tvNewsChannelId, " +//18
+							" tvNewsChannel.channelName," +//19
+							" state.stateName, " +//20
+							" tehsil.tehsilName, " +//21
+							" panchayat.panchayatName , " +//22
+							" localElectionBody.name, " +//23
+							" alertSeverity.severityColor, " +//24
+							" alertStatus.color ");//25
+			queryStr.append(" from Alert model " +
+							" left join model.alertSource alertSource " +
+			        		" left join model.editionType editionType " +
+			        		" left join model.edition edition " +
+			        		" left join model.alertSeverity alertSeverity " +   
+			        		" left join model.tvNewsChannel tvNewsChannel "+
+							" left join model.userAddress userAddress " +
+							" left join userAddress.state state  " +
+							" left join userAddress.district district  " +
+							" left join userAddress.constituency constituency  " +
+							" left join userAddress.tehsil tehsil  " +
+							" left join userAddress.localElectionBody localElectionBody  " +
+							" left join userAddress.panchayat panchayat  " +
+							" left join userAddress.ward ward  ");  
+			queryStr.append(" left join model.alertCategory alertCategory ");
+			queryStr.append(" left join model.alertStatus alertStatus ");
+			queryStr.append(" left join model.alertImpactScope alertImpactScope ");  
+			queryStr.append(" left join model.alertType alertType ");
+			queryStr.append(" left join userAddress.parliamentConstituency parliamentConstituency");
+			queryStr.append(" where model.isDeleted ='N' ");
+					//" and alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
+			if(fromDate != null && toDate != null){ 
+				queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+			}     
+			
+			if(alertTypeIds != null && alertTypeIds.size() > 0){
+				queryStr.append(" and alertType.alertTypeId in (:alertTypeIds)");
+			}
+			
+			if(statusIdsList != null && statusIdsList.size() > 0L){
+				queryStr.append(" and alertStatus.alertStatusId in  (:statusIdsList) ");
+			}
+			
+			if(alertCategeryIdsList != null && alertCategeryIdsList.size() > 0L){
+				queryStr.append(" and alertCategory.alertCategoryId in (:alertCategeryIdsList) ");
+			}
+			if(type != null && type.equalsIgnoreCase("categoryOthers")){
+				queryStr.append(" and alertStatus.alertStatusId  not in (1,3,4,6,7) ");
+			}else if(type != null && type.equalsIgnoreCase("impactOthers")){
+				queryStr.append(" and alertStatus.alertStatusId  not in (3,4)");
+			}
+			if(impactIdsList != null && impactIdsList.size() > 0){
+				queryStr.append(" and alertImpactScope.alertImpactScopeId in (:impactIdsList) ");
+			}
+			if(otherCategory != null && otherCategory.equalsIgnoreCase("categoryOthers")){
+				queryStr.append(" and alertCategory.alertCategoryId not in (1,2,3) ");
+			}else if(otherCategory != null && otherCategory.equalsIgnoreCase("impactOthers")){
+				queryStr.append(" and alertImpactScope.alertImpactScopeId in (1,2,3,5,7,8,10) ");
+			}
+			if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	 	    	if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 4l){
+		        	queryStr.append(" and model.userAddress.constituency.constituencyId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 3l){
+		        	queryStr.append(" and model.userAddress.district.districtId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 5l){
+		        	queryStr.append(" and model.userAddress.tehsil.tehsilId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 6l){
+		        	queryStr.append(" and model.userAddress.panchayat.panchayatId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 7l){
+	 	        	queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 8l){
+	 	        	queryStr.append(" and model.userAddress.ward.constituencyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 2l){
+	 	        	queryStr.append(" and model.userAddress.state.stateId in(:locationValues) ");
+	 	        }
+	 	    }
+			Query query = getSession().createQuery(queryStr.toString());   
+			
+			if(fromDate != null && toDate != null){  
+				query.setDate("fromDate", fromDate);
+				query.setDate("toDate", toDate);    
+			} 
+			if(alertTypeIds != null && alertTypeIds.size()> 0){
+				query.setParameterList("alertTypeIds", alertTypeIds);
+			}
+			if(statusIdsList != null && statusIdsList.size() > 0L){
+				query.setParameterList("statusIdsList", statusIdsList);
+			}
+			if(alertCategeryIdsList != null && alertCategeryIdsList.size() > 0L){
+				query.setParameterList("alertCategeryIdsList", alertCategeryIdsList);
+			}
+			if(year !=null && !year.trim().isEmpty()){
+ 				query.setParameter("year", Integer.parseInt(year));
+ 			}
+ 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	 
+ 			if(locationTypeId == 4l || locationTypeId == 8l){
+ 				query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 3l){
+	        	query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 5l){
+	        	query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 6l){
+	        	query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 7l){
+	        	query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 2l){
+	        	query.setParameterList("locationValues", locationValues);
+ 	        }
+ 		}
+ 		if(impactIdsList != null && impactIdsList.size() > 0){
+ 			query.setParameterList("impactIdsList", impactIdsList);
+ 		}
+			return query.list();
+		}
+	 	
 }

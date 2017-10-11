@@ -193,4 +193,6 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Long> getLocationWiseAlertStatusDetailsInfo(Date fromDate , Date toDate,Long deptId,String year,Long locationTypeId,List<Long> locationValues,
 	 		List<Long> statusIds,int startIndex,int endIndex);
 	public List<Alert> getAlertDetailsOfNewstypeNew(Long alertCategoryType);
+	public List<Object[]> getAlertCategaryAndImpactLevelWiseDetailsOverView(Date fromDate , Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year,String type,
+ 			List<Long> alertCategeryIdsList,List<Long> statusIdsList,List<Long> impactIdsList,String otherCategory);
 }
