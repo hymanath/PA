@@ -1,6 +1,7 @@
 package com.itgrids.core.api.service.impl;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -71,17 +72,12 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			statusMap.put("61-80","OK");
 			statusMap.put("81-90","STRONG");
 			statusMap.put("91-100","VERY STRONG");
-			
-			List<Long> parliamentIdsList = new ArrayList<Long>(0);
+			String parliamentIdsArr = "";
 			if(locationTypeId != null && locationTypeId.longValue()==10L)
-				parliamentIdsList.add(locationValue);
+				parliamentIdsArr.concat(locationValue.toString());
 			else{
-				String[] parliamentIdsArr = IConstants.AP_PARLIAMENT_IDS_LIST;
-				if(parliamentIdsArr != null && parliamentIdsArr.length>0){
-					for (int i = 0; i < parliamentIdsArr.length; i++) {
-						parliamentIdsList.add(Long.valueOf(parliamentIdsArr[i].trim()));
-					}
-				}
+				parliamentIdsArr = IConstants.AP_PARLIAMENT_IDS_LIST_STR;
+				
 			}
 			List<Object[]> validVoterList= null;
 			if(locationTypeId != null && locationTypeId.longValue() !=5L && locationTypeId.longValue() !=7L && locationTypeId.longValue() !=6L ){
@@ -89,7 +85,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				if(!commonMethodsUtilService.isListOrSetValid(validVoterList)){
 					validVoterList = new ArrayList<Object[]>();
 				}
-				List<Object[]> parliamentWiseValidVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsList);
+				List<Object[]> parliamentWiseValidVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsArr);
 				if(commonMethodsUtilService.isListOrSetValid(parliamentWiseValidVoterList))
 					validVoterList.addAll(parliamentWiseValidVoterList);
 			}else{
@@ -149,7 +145,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				if(!commonMethodsUtilService.isListOrSetValid(earnedVotesList))
 					earnedVotesList = new ArrayList<Object[]>();
 					
-				List<Object[]> tempearnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsList,partyIdList);
+				List<Object[]> tempearnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsArr,partyIdList);
 				if(commonMethodsUtilService.isListOrSetValid(tempearnedVotesList))
 					earnedVotesList.addAll(tempearnedVotesList);
 			}else{
@@ -288,6 +284,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	}
 	private List<ElectionInformationVO> setLocationWiseStatus(Map<String, String> statusMap,Map<Long, ElectionInformationVO> locationMap) {
 		List<ElectionInformationVO> finalList= new ArrayList<ElectionInformationVO>(0);
+		DecimalFormat formatter = new DecimalFormat("0");
 		 for (Entry<Long, ElectionInformationVO> entry : locationMap.entrySet()) {
 			 if(commonMethodsUtilService.isListOrSetValid(entry.getValue().getList())){
 				 for (ElectionInformationVO element : entry.getValue().getList()) {
@@ -296,8 +293,8 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 					for (Entry<String, String> innerentry : statusMap.entrySet()) {
 						String val = innerentry.getKey();
 						String[] valueArr = val.split("-");
-						double d1 = Double.parseDouble(percentage);
-						if(d1 >= Double.parseDouble(valueArr[0]) &&  d1 <= Double.parseDouble(valueArr[1])){
+						String d1 = formatter.format(Double.parseDouble(percentage));
+						if(Double.parseDouble(d1) >= Double.parseDouble(valueArr[0]) &&  Double.parseDouble(d1) <= Double.parseDouble(valueArr[1])){
 							element.setStatus(innerentry.getValue());
 						}
 					}
