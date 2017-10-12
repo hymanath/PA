@@ -982,7 +982,7 @@ IElectionDAO {
 		sb.append(" select e.election_scope_id as election_scope_id ,c.constituency_id as locationId,c.name as locationName ,e.election_id as election_id ,et.election_type as election_type ,e.election_year as election_year," +
 				"n.party_id as party_id , p.short_name as short_name ,sum(cr.votes_earned) as sumCount from  constituency c,constituency_election ce,election e ,election_scope es ," +
 				"election_type et ,nomination n ,party p ,candidate_result cr where cr.nomination_id = n.nomination_id and cr.rank = 1 and " +
-				"e.election_scope_id  in (1,2,3,4,5,6,7,8,9) and n.consti_elec_id = ce.consti_elec_id and n.party_id = p.party_id and p.party_id in (:partyIds) and " +
+				"e.election_scope_id  in (1,2,3,4) and n.consti_elec_id = ce.consti_elec_id and n.party_id = p.party_id and p.party_id in (:partyIds) and " +
 				"e.election_scope_id = es.election_scope_id and et.election_type_id = es.election_type_id and c.constituency_id = ce.constituency_id and " +
 				" e.sub_type in (:subTypes) and (c.district_id BETWEEN 11 and 23) and e.election_year in (:electionYears) ");
 
@@ -1039,7 +1039,7 @@ IElectionDAO {
 				" sum(cr.votes_earned)  as sumCount " +
 				" from constituency c,constituency_election ce,election e ,election_scope es ," +
 				"election_type et ,nomination n ,party p ,district d ,candidate_result cr where cr.nomination_id = n.nomination_id and " +
-				"cr.rank = 1 and c.district_id = d.district_id and e.election_scope_id  in (1,2,3,4,5,6,7,8,9) and n.consti_elec_id = ce.consti_elec_id" +
+				"cr.rank = 1 and c.district_id = d.district_id and e.election_scope_id  in (1,2,3,4) and n.consti_elec_id = ce.consti_elec_id" +
 				" and n.party_id = p.party_id and p.party_id in (:partyIds) and  e.election_scope_id = es.election_scope_id and et.election_type_id = es.election_type_id and " +
 				"c.constituency_id = ce.constituency_id and e.sub_type in (:subTypes) and (c.district_id BETWEEN 11 and 23)" +
 				" and e.election_year in (:electionYears) and c.state_id = :locationValues  " +
