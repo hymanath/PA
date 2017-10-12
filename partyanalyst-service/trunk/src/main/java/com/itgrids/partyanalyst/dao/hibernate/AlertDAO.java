@@ -10887,7 +10887,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			if(otherCategory != null && otherCategory.equalsIgnoreCase("categoryOthers")){
 				queryStr.append(" and alertCategory.alertCategoryId not in (1,2,3) ");
 			}else if(otherCategory != null && otherCategory.equalsIgnoreCase("impactOthers")){
-				queryStr.append(" and alertImpactScope.alertImpactScopeId in (1,2,3,5,7,8,10) ");
+				queryStr.append(" and alertImpactScope.alertImpactScopeId not in (1,2,3,5,7,8,10) ");
 			}
 			if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
 	 	    	if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 4l){
