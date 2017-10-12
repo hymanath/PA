@@ -22,6 +22,7 @@ import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.ItInformationDtlsVO;
 import com.itgrids.dto.ItecOverviewVO;
+import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
 import com.itgrids.dto.MeesevaKPIDtlsVO;
 import com.itgrids.service.IItcDashboardService;
@@ -120,5 +121,23 @@ public class ItcController {
 	   public @ResponseBody  List<InnovationSocietyDtlsVO>  getInnovationAwardsDetailedData(@RequestBody InputVO inputVO) {
 		   List<InnovationSocietyDtlsVO>  resultList = itcDashboardService.getInnovationAwardsDetailedData(inputVO);
 		   return resultList;
-	   }	   
+	   }
+	   
+	   @RequestMapping(value = "/getITSectorWiseOverviewDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecPromotionDetailsVO>  getITSectorWiseOverviewDetails(@RequestBody InputVO inputVO) {
+		   List<ItecPromotionDetailsVO>  resultList = itcDashboardService.getITSectorWiseOverviewDetails();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getITSectorCategoryWiseDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecPromotionDetailsVO>  getITSectorCategoryWiseDetails(@RequestBody InputVO inputVO) {
+		   List<ItecPromotionDetailsVO>  resultList = itcDashboardService.getITSectorCategoryWiseDetails(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getITDistrictWiseDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecPromotionDetailsVO>  getITDistrictWiseDetails(@RequestBody InputVO inputVO) {
+		   List<ItecPromotionDetailsVO>  resultList = itcDashboardService.getITDistrictWiseDetails(inputVO);
+		   return resultList;
+	   }
 }
