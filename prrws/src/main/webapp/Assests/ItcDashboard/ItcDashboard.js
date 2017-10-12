@@ -2,7 +2,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 
 //var departmentWiseArr=[{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'eProcurement',id:'5',color:'#F06C1F',image:'eProcurement',blockName:'eProcurement'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
-var departmentWiseArr = [{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'}];
+var departmentWiseArr = [{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'}];
 var globalFromDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDate = moment().format("DD/MM/YYYY");
 $("#itcDateRangePickerId").daterangepicker({
@@ -37,11 +37,22 @@ $("header").on("click",".menu-cls",function(e){
 $(document).on("click",function(){
 	$(".menu-data-cls").hide();
 });
+$(document).on("click","#promotionsBlockSwitch li",function(){	
+	$("#promotionsBlockSwitch li").removeClass("active");
+	$(this).addClass("active");
+	getITSectorWiseOverviewDetails();
+	getITSectorCategoryWiseDetails("red");
+	getITSectorCategoryWiseDetails("green");
+	getITSectorCategoryWiseDetails("dropped");
+});
 onloadCalls();
 function onloadCalls(){
 	
 	departmentBlockWiseDetails("meesevaSla");
 	departmentWiseOverView();
+	getITSectorWiseOverviewDetails();
+	
+	
 	/*getPromotionsOverviewByDepartmentType();
 	getPromotionsDetailedDepartmentWise();
 	getEOfficePendencyDtlsByDepartmentType();
@@ -84,7 +95,7 @@ function departmentWiseOverView(){
 					block+='</div>';
 					if(departmentWiseArr[i].id ==1){
 						block+='<div class="m_top40">';
-							block+='<h2>11,25.Cr</h2>';
+							block+='<h2 id="promotionsHeadingId"></h2>';
 							block+='<h6>Committed Investment</h6>';
 						block+='<h6>(IT,E&F)</h6>';
 						block+='</div>';
@@ -138,7 +149,7 @@ function departmentBlockWiseDetails(divId)
 	var levelWiseBlockArr='';
 	if(divId == "promotions"){
 		
-		levelWiseBlockArr=[{name:'Promotions',id:'1'},{name:'Electronics',id:'2'},{name:'FinTech',id:'3'}];
+		levelWiseBlockArr=[{name:'Promotions',id:'1'}]//,{name:'Electronics',id:'2'},{name:'FinTech',id:'3'}];
 		
 	}else if(divId == "eOffice"){
 		
@@ -191,6 +202,53 @@ function departmentBlockWiseDetails(divId)
 									{
 										collapse+='<h4 style="margin-bottom:20px">Applications Received</h4>';
 									}
+									if(divId == "promotions")
+									{
+										collapse+='<div class="row">';
+											collapse+='<div class="col-sm-12">';
+												collapse+='<div class="row">';
+													collapse+='<div class="col-sm-7">';
+														collapse+='<h4>INFORMATION TECHNOLOGY OVERVIEW</h4>';
+														collapse+='<hr/>';
+													collapse+='</div>';
+													collapse+='<div class="col-sm-5">';
+														collapse+='<ul class="list-inline switch-btn" id="promotionsBlockSwitch">';
+															collapse+='<li class="active" attr_type="Total">ALL</li>';
+															collapse+='<li attr_type="Electronics">Electronics</li>';
+															collapse+='<li attr_type="Fintech">Fintech</li>';
+															collapse+='<li attr_type="IT">IT</li>';
+														collapse+='</ul>';
+													collapse+='</div>';
+												collapse+='</div>';
+											
+											collapse+='</div>';
+											collapse+='<div class="col-sm-3" id="promotionsTotalBlockId"></div>';
+											collapse+='<div class="col-sm-3" id="promotionsStageGreenBlockId"></div>';
+											collapse+='<div class="col-sm-3" id="promotionsStageRedBlockId"></div>';
+											collapse+='<div class="col-sm-3" id="promotionsStageDroppedBlockId"></div>';
+											collapse+='<div class="col-sm-12">';
+												collapse+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+												var	levelWiseBlockArrPromotions =[{name:'IT',id:'1'},{name:'Electronics',id:'2'},{name:'Fintech',id:'3'}];
+												for(var l in levelWiseBlockArrPromotions)
+												{
+													collapse+='<div class="panel panel-default m_top20">';
+														collapse+='<div class="panel-heading" role="tab" id="headingOne'+levelWiseBlockArrPromotions[l].name+'">';
+															collapse+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+levelWiseBlockArrPromotions[l].name+'" aria-expanded="true" aria-controls="collapseOne'+levelWiseBlockArrPromotions[l].name+'">';
+																collapse+='<h4 class="panel-title">'+levelWiseBlockArrPromotions[l].name+' Overview</h4>';
+															collapse+='</a>';
+														collapse+='</div>';
+														collapse+='<div id="collapseOne'+levelWiseBlockArrPromotions[l].name+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+levelWiseBlockArrPromotions[l].name+'">';
+															collapse+='<div class="panel-body">';
+																collapse+='<div id="'+levelWiseBlockArrPromotions[l].name+'OverviewBlockDivId"></div>';
+															collapse+='</div>';
+														collapse+='</div>';
+													collapse+='</div>';
+												}													
+													
+												collapse+='</div>';
+											collapse+='</div>';
+										collapse+='</div>';
+									}
 									collapse+='<div id="'+divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id+'"></div>';
 									if(divId == 'apInnovationSociety')
 									{
@@ -218,6 +276,16 @@ function departmentBlockWiseDetails(divId)
 					getCampaignsDetailedData();
 					getCampusInnovationCentersDetailedData();
 				}
+			}
+			if(divId == 'promotions')
+			{
+				getITSectorWiseOverviewDetails();
+				getITSectorCategoryWiseDetails("red");
+				getITSectorCategoryWiseDetails("green");
+				getITSectorCategoryWiseDetails("dropped");
+				getITDistrictWiseDetails("IT");
+				getITDistrictWiseDetails("Electronics");
+				getITDistrictWiseDetails("Fintech");
 			}
 }
 
@@ -391,15 +459,14 @@ function buildMeesevaSlaMonitoringDtls(result,divId,blockId) {
 	$("#meesevaSlaMonitoringDataTblId").dataTable();
 }
 
-function getPromotionsOverviewByDepartmentType(){
+function getITSectorWiseOverviewDetails(){
+	$("#promotionsTotalBlockId").html(spinner);
 	var json = {
-		fromDate:"",
-		toDate:"",
-		year:""
+		
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getPromotionsOverviewByDepartmentType',
+		url: 'getITSectorWiseOverviewDetails',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -407,8 +474,203 @@ function getPromotionsOverviewByDepartmentType(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
+		if(result != null && result.length > 0)
+		{
+			return buildData(result);
+		}
 	});		
+	function buildData(result)
+	{
+		var selectedBlockType = $("#promotionsBlockSwitch li.active").attr("attr_type");
+		for(var i in result)
+		{
+			if(result[i].sector == "Total")
+			{
+				$("#promotionsHeadingId").html(result[i].investment+"CR");
+			}
+			
+			var str = '';
+			var str1 = '';
+			if(selectedBlockType == result[i].sector)
+			{
+				str1+='<div class="white_block_ITC" style="background-color:#F1F1F1">';
+					str1+='<p>TOTAL</p>';
+					str1+='<div class="media m_top20">';
+						str1+='<div class="media-left">';
+							str1+='<img src="Assests/icons/ITC/Group 2818.png" class="media-object"/>';
+						str1+='</div>';
+						str1+='<div class="media-body">';
+							str1+='<p>Industry Count</p>';
+							str1+='<h3 class="m_top10">'+result[i].noProjects+'</h3>';
+						str1+='</div>';
+					str1+='</div>';
+					str1+='<div class="media m_top20">';
+						str1+='<div class="media-left">';
+							str1+='<img src="Assests/icons/ITC/Group 2817.png" class="media-object"/>';
+						str1+='</div>';
+						str1+='<div class="media-body">';
+							str1+='<p>Commited Investments</p>';
+							str1+='<h3 class="m_top10">'+result[i].investment+'</h3>';
+						str1+='</div>';
+					str1+='</div>';
+					str1+='<div class="media m_top20">';
+						str1+='<div class="media-left">';
+							str1+='<img src="Assests/icons/ITC/Group 2813.png" class="media-object"/>';
+						str1+='</div>';
+						str1+='<div class="media-body">';
+							str1+='<p>Commited Employment</p>';
+							str1+='<h3 class="m_top10">'+result[i].employment+'</h3>';
+						str1+='</div>';
+					str1+='</div>';
+				str1+='</div>';
+				$("#promotionsTotalBlockId").html(str1);
+			}
+		}
+	}
+}
+function getITSectorCategoryWiseDetails(type){
+	if(type == "green")
+	{
+		$("#promotionsStageGreenBlockId").html(spinner);
+	}else if(type == "red")
+	{
+		$("#promotionsStageRedBlockId").html(spinner);
+	}else if(type == "dropped")
+	{
+		$("#promotionsStageDroppedBlockId").html(spinner);
+	}
+	var json = {
+		category:type
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getITSectorCategoryWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			return buildData(result,type);
+		}else{
+			if(type == "green")
+			{
+				$("#promotionsStageGreenBlockId").html("");
+			}else if(type == "red")
+			{
+				$("#promotionsStageRedBlockId").html("");
+			}else if(type == "dropped")
+			{
+				$("#promotionsStageDroppedBlockId").html("");
+			}
+		}
+	});		
+	function buildData(result,type)
+	{
+		var str='';
+		var selectedBlockType = $("#promotionsBlockSwitch li.active").attr("attr_type");
+		
+		for(var i in result)
+		{
+			if(selectedBlockType == result[i].sector)
+			{
+				if(type == "green")
+				{
+					str+='<h4>';
+						str+='<span style="padding:5px 20px;background-color:#058E46;color:#fff">Civil Works commencement and beyond</span>';
+					str+='</h4>';
+				}else if(type == "red")
+				{
+					str+='<h4>';
+						str+='<span style="padding:5px 20px;background-color:#F75C5D;color:#fff">Before Civil Works commencement</span>';
+					str+='</h4>';
+				}else if(type == "dropped")
+				{
+					str+='<h4>';
+						str+='<span style="padding:5px 20px;background-color:#91CCC7;color:#fff">Dropped</span>';
+					str+='</h4>';
+				}
+					str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
+						str+='<div class="row m_top20">';
+							str+='<div class="col-sm-4">';
+								str+='<h4>'+result[i].noProjects+'</h4>';
+								str+='<p>INDUSTRIES</p>';
+							str+='</div>';
+							str+='<div class="col-sm-4">';
+								str+='<h4>'+result[i].investment+'</h4>';
+								str+='<p>INVESTMENTS</p>';
+							str+='</div>';
+							str+='<div class="col-sm-4">';
+								str+='<h4>'+result[i].employment+'</h4>';
+								str+='<p>EMPLOYMENT</p>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				
+			}
+			
+			if(type == "green")
+			{
+				$("#promotionsStageGreenBlockId").html(str);
+			}else if(type == "red")
+			{
+				$("#promotionsStageRedBlockId").html(str);
+			}else if(type == "dropped")
+			{
+				$("#promotionsStageDroppedBlockId").html(str);
+			}
+		}
+	}
+}
+function getITDistrictWiseDetails(type){
+	var json = {
+		category:"All",
+		source:type
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getITDistrictWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			return buildData(result,type);
+		}else{
+			$("#"+type+"OverviewBlockDivId").html("NO DATA AVAILABLE");
+		}
+	});
+	function buildData(result,type)
+	{
+		var str='';
+		str+='<table class="table table-bordered" id="'+type+'DataTable">';
+			str+='<thead>';
+				str+='<th>District</th>';
+				str+='<th>Industries</th>';
+				str+='<th>Committed Investment(<i class="fa fa-inr"></i> in Cr.)</th>';
+				str+='<th>Committed Employment</th>';
+			str+='</thead>';
+			for(var i in result)
+			{
+				str+='<tr>';
+					str+='<td>'+result[i].district+'</td>';
+					str+='<td>'+result[i].noProjects+'</td>';
+					str+='<td>'+result[i].investment+'</td>';
+					str+='<td>'+result[i].employment+'</td>';
+				str+='</tr>';
+			}
+			
+		str+='</table>';
+		$("#"+type+"OverviewBlockDivId").html(str);
+		$("#"+type+"DataTable").dataTable();
+	}
 }
 function getPromotionsDetailedDepartmentWise(){
 	var json = {
