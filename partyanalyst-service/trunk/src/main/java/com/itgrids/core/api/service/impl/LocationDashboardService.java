@@ -2264,7 +2264,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
 			List<Object[]> monthObjList = selfAppraisalToursMonthDAO.getMonthDtls(monthYear);
 
-			List<Object[]> rtrnCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getLocationWiseTourMemberDetails(locationTypeId, locationValues,stateId);
+			List<Object[]> rtrnCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getLocationWiseTourMemberDetails(locationTypeId, locationValues,stateId);	
 			//getting designation wise target
 			ToursBasicVO basicDtlsVO = getRequiredData(rtrnCandiateObjLst);
 			if(monthyearIds != null && monthyearIds.size() > 0 && basicDtlsVO.getComplaincandidateIdsSet() != null && basicDtlsVO.getNoNComplaincandidateIdsSet() != null){
@@ -2282,6 +2282,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				List<Object[]> rtrnGovtDaysToursObjLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourType", monthyearIds,  new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()),  new ArrayList<Long>(basicDtlsVO.getNoNComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds and getNoNComplaincandidateIdsSet() contains candidate ids
 				setMonthWiseComplainceDetails(rtrnGovtDaysToursObjLst,candiateDtlsMap,"tourType");
 			}
+			//getting designation wise leader submitted
+			List<Object[]> rtrnSubmittedLdrObjLst = selfAppraisalCandidateDetailsNewDAO.getToursSubmittedLeaderCntDesignationBy(monthyearIds, basicDtlsVO.getNoNComplaincandidateIdsSet());
+			Map<Long,Set<Long>> designationWiseTourSubmittedMap =  getDesignationWiseTourSubmittedUniqueMembers(rtrnSubmittedLdrObjLst);
+		
             //prepare data for Complaince 
 			prepareComplainceDataCandidateWise(candiateDtlsMap);
 			//month wise candidate Complaince 
@@ -2313,9 +2317,16 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					ToursBasicVO designationVO = new ToursBasicVO();  
 					designationVO.setDesignationId(entry.getKey());
 					designationVO.setToursMonthId(Long.valueOf(monthyearIds.size()));
+					 if (designationWiseTourSubmittedMap != null && designationWiseTourSubmittedMap.size() > 0) {
+						 designationVO.setNoOfLeaderCnt(designationVO.getNoOfLeaderCnt()+Long.valueOf(designationWiseTourSubmittedMap.get(entry.getKey()).size()));//this key contain tour submitted leader	 
+					 }
+					 
 					if(basicDtlsVO != null){
 						 if(entry.getKey() == 4l){
-							  designationVO.setDesignation("ORGANIZING SECRETARY/SECRETARY");	  
+							  designationVO.setDesignation("ORGANIZING SECRETARY/SECRETARY");
+							  if (designationWiseTourSubmittedMap != null && designationWiseTourSubmittedMap.size() > 0) {
+									 designationVO.setNoOfLeaderCnt(designationVO.getNoOfLeaderCnt()+Long.valueOf(designationWiseTourSubmittedMap.get(5l).size()));//5 - SECRETARY Id 
+								 }
 						  }else{
 							  designationVO.setDesignation(basicDtlsVO.getSubMap().get(entry.getKey()));  
 						  }
@@ -2326,7 +2337,6 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 								designationVO.setComplainceCnt(designationVO.getComplainceCnt()+1);//total complaince member designation wise
 								candiateEntry.getValue().setIsComplaince("True");
 							} else {
-								designationVO.setNonComplainceCnt(designationVO.getNonComplainceCnt()+1);//total non complaince member designation wise
 								candiateEntry.getValue().setIsComplaince("False");	
 							}
 							designationVO.getSubList().add(candiateEntry.getValue());
@@ -2336,10 +2346,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 								designationVO.setTotalSubmittedToursCnt(designationVO.getTotalSubmittedToursCnt()+candiateEntry.getValue().getMonthList().size());
 								for(ToursBasicVO monthVO:candiateEntry.getValue().getMonthList()){
 									 if (monthVO.getComplainceDays() > 0d) {
-										 designationVO.setSubmitedLeaderCnt(designationVO.getSubmitedLeaderCnt()+1);
+										 designationVO.setSubmitedLeaderCnt(designationVO.getSubmitedLeaderCnt()+1);//this key contain no of month submitted tour
 										 monthVO.setIsTourSubmitted("Y");
 									 } else {
-										 designationVO.setNotSubmitedLeaserCnt(designationVO.getNotSubmitedLeaserCnt()+1);
+										 designationVO.setNotSubmitedLeaserCnt(designationVO.getNotSubmitedLeaserCnt()+1);//this key contain no of month not submitted tour
 										 monthVO.setIsTourSubmitted("N");
 									 }
 								}
@@ -2683,6 +2693,24 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			LOG.error("Exception Occured in calculateCategoryWiseComplaince() in LocationDashboardService  : ",e); 
 		}
 	}
+	public Map<Long,Set<Long>> getDesignationWiseTourSubmittedUniqueMembers(List<Object[]> objList){
+		  Map<Long,Set<Long>> designationWiseTourSubmittedMap = new HashMap<Long, Set<Long>>(0);
+		  try{
+			  if(objList != null && objList.size() > 0){
+				  for(Object[] param:objList){
+					  Set<Long> candiateIdsSet = designationWiseTourSubmittedMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					   if(candiateIdsSet == null){
+						   candiateIdsSet = new HashSet<Long>();
+						   designationWiseTourSubmittedMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), candiateIdsSet);  
+					   }
+					   candiateIdsSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+				  }
+			  }
+		  }catch(Exception e){
+			  LOG.error("Exception Occured in getDesignationWiseTourSubmittedUniqueMembers() in LocationDashboardService  : ",e); 
+		  }
+		  return designationWiseTourSubmittedMap;
+	  }
 	public ToursBasicVO getCategoryMatchVO(List<ToursBasicVO> categoryList,String id){
 		try{
 			if(categoryList == null || categoryList.size() == 0)
