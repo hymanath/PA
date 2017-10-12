@@ -187,13 +187,18 @@ function departmentBlockWiseDetails(divId)
 							}
 							
 								collapse+='<div class="panel-body">';
+									if(divId == 'apInnovationSociety')
+									{
+										collapse+='<h4 style="margin-bottom:20px">Applications Received</h4>';
+									}
 									collapse+='<div id="'+divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id+'"></div>';
 									if(divId == 'apInnovationSociety')
 									{
+
 										collapse+='<div class="row">';
-											collapse+='<div class="col-sm-4" id="APISXLr8AP"></div>';
-											collapse+='<div class="col-sm-4" id="Campaigns"></div>';
-											collapse+='<div class="col-sm-4" id="CampusInnovationCenters"></div>';
+											collapse+='<div class="col-sm-4 m_top20" id="APISXLr8AP"></div>';
+											collapse+='<div class="col-sm-4 m_top20" id="Campaigns"></div>';
+											collapse+='<div class="col-sm-4 m_top20" id="CampusInnovationCenters"></div>';
 										collapse+='</div>';
 									}
 								collapse+='</div>';
@@ -654,7 +659,8 @@ function getAPISXLR8APDetailedData(){
 		
 		tableView+='<div class="white_block_ITC">';
 			tableView+='<h4 class="m_top10">APIS-XLr8AP</h4>';
-			tableView+='<table class="table table-bordered m_top20" id="APISXLr8APOverviewTable">';
+			tableView+='<div class="m_top20">';
+			tableView+='<table class="table table-bordered" id="APISXLr8APOverviewTable">';
 				tableView+='<thead>';
 					tableView+='<th>Batch</th>';
 					tableView+='<th style="background-color:#F8F8F8">Duration</th>';
@@ -671,6 +677,7 @@ function getAPISXLR8APDetailedData(){
 					tableView+='</tr>';
 				}
 			tableView+='</table>';
+			tableView+='</div>';
 		tableView+='</div>';
 		
 		$("#APISXLr8AP").html(overview);
@@ -715,6 +722,7 @@ function getCampaignsDetailedData(){
 		
 		tableView+='<div class="white_block_ITC">';
 			tableView+='<h4 class="m_top10">Campaigns</h4>';
+tableView+='<div class="m_top20">'
 			tableView+='<table class="table table-bordered m_top20" id="campaignsOverviewBlockTable">';
 				tableView+='<thead>';
 					tableView+='<th style="background-color:#FFFAF3">Name</th>';
@@ -733,7 +741,7 @@ function getCampaignsDetailedData(){
 				}
 			tableView+='</table>';
 		tableView+='</div>';
-		
+				tableView+='</div>';
 		$("#Campaigns").html(overview);
 		$("#campaignsOverviewBlock").html(tableView);
 		$("#campaignsOverviewBlockTable").dataTable()
@@ -776,6 +784,7 @@ function getCampusInnovationCentersDetailedData(){
 		
 		tableView+='<div class="white_block_ITC">';
 			tableView+='<h4 class="m_top10">Campus Innovation Centers</h4>';
+		tableView+='<div class="m_top20">';
 			tableView+='<table class="table table-bordered m_top20" id="campusOverviewBlockTable">';
 				tableView+='<thead>';
 					tableView+='<th style="background-color:#F8F8F8">NAME OF THE UNIVERSITY OR COLLEGE</th>';
@@ -791,6 +800,7 @@ function getCampusInnovationCentersDetailedData(){
 					tableView+='</tr>';
 				}
 			tableView+='</table>';
+		tableView+='</div>';
 		tableView+='</div>';
 		
 		$("#CampusInnovationCenters").html(overview);
