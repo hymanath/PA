@@ -144,7 +144,14 @@ var searchParams = new URLSearchParams(window.location.search);
 													</a>
 												</div>
 											</div>
-											
+											<div class="col-sm-12">
+												<div class="menu-block" style="background-color:#de4524 ">
+													<a href="itcDashboard">
+														<h3>IT E & C</h3>
+														<p>Dashboard</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>

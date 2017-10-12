@@ -15,6 +15,10 @@
 <link href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+<script type="text/javascript">
+var searchParams = new URLSearchParams(window.location.search);
+	searchParams = searchParams.get("component");
+</script>
 </head>
 <header>
 	<nav>
@@ -121,7 +125,14 @@
 													</a>
 												</div>
 											</div>
-											
+											<div class="col-sm-12">
+												<div class="menu-block" style="background-color:#de4524 ">
+													<a href="itcDashboard">
+														<h3>IT E & C</h3>
+														<p>Dashboard</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
