@@ -5990,6 +5990,8 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 	try {
 		Map<Long, ElectionInformationVO> levelMap=new HashMap<Long,ElectionInformationVO>(0);
 		Map<Long,Map<Long,ElectionInformationVO>> electionWisePartyMap = new HashMap<Long, Map<Long,ElectionInformationVO>>(0);
+		Map<Long,Map<Long,Long>> locationWisePolledVotesMap = new HashMap<Long, Map<Long,Long>>(0);
+		
 		if(totalCnt !=null && totalCnt.size()>0){	
 			for (Object[] objects : totalCnt){	
 				ElectionInformationVO locationVO = levelMap.get(commonMethodsUtilService.getLongValueForObject(objects[1]));
@@ -6024,9 +6026,22 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 					partyVO1.setElectionYear(commonMethodsUtilService.getStringValueForObject(objects[5]));
 					partyVO1.setPartyId(commonMethodsUtilService.getLongValueForObject(objects[6]));
 					partyVO1.setPartyName(commonMethodsUtilService.getStringValueForObject(objects[7]));
-					partyVO1.setEarnedVote("0");
+					partyVO1.setEarnedVote(commonMethodsUtilService.getStringValueForObject(objects[8]));
+					
 					partyListMap.put(partyVO1.getPartyId(), partyVO1);
 					electionWisePartyMap.put(electionVO.getElectionId(), partyListMap);
+					
+					Map<Long,Long> electionWiseVotersMap = locationWisePolledVotesMap.get(commonMethodsUtilService.getLongValueForObject(objects[1]));
+					if(!commonMethodsUtilService.isMapValid(electionWiseVotersMap)){
+						electionWiseVotersMap = new HashMap<Long, Long>(0);
+					}
+					
+					Long earnedVotesCount = electionWiseVotersMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
+					if(earnedVotesCount == null)
+						earnedVotesCount =0L;
+					earnedVotesCount = earnedVotesCount+commonMethodsUtilService.getLongValueForObject(objects[8]);
+					electionWiseVotersMap.put(commonMethodsUtilService.getLongValueForObject(objects[3]), earnedVotesCount);
+					locationWisePolledVotesMap.put(commonMethodsUtilService.getLongValueForObject(objects[1]), electionWiseVotersMap);
 				}
 				else{
 					
@@ -6044,6 +6059,19 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 					partyVO1.setEarnedVote("0");
 					partyListMap.put(partyVO1.getPartyId(), partyVO1);
 					electionWisePartyMap.put(commonMethodsUtilService.getLongValueForObject(objects[3]), partyListMap);// electionId,map
+					
+					
+					Map<Long,Long> electionWiseVotersMap = locationWisePolledVotesMap.get(commonMethodsUtilService.getLongValueForObject(objects[1]));
+					if(!commonMethodsUtilService.isMapValid(electionWiseVotersMap)){
+						electionWiseVotersMap = new HashMap<Long, Long>(0);
+					}
+					
+					Long earnedVotesCount = electionWiseVotersMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
+					if(earnedVotesCount == null)
+						earnedVotesCount =0L;
+					earnedVotesCount = earnedVotesCount+commonMethodsUtilService.getLongValueForObject(objects[8]);
+					electionWiseVotersMap.put(commonMethodsUtilService.getLongValueForObject(objects[3]), earnedVotesCount);
+					locationWisePolledVotesMap.put(commonMethodsUtilService.getLongValueForObject(objects[1]), electionWiseVotersMap);
 					
 		           ElectionInformationVO electionVO = getMatchedEleVO(locationVO.getSubList1(), commonMethodsUtilService.getLongValueForObject(objects[3]));
 				   if (electionVO == null) {
@@ -6072,7 +6100,7 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 				}
 			}
 		}
-		if(levelMap != null){
+		if(commonMethodsUtilService.isMapValid(levelMap)){
 			finalList = new ArrayList<ElectionInformationVO>(levelMap.values());
 			if(commonMethodsUtilService.isListOrSetValid(finalList)){
 				for (ElectionInformationVO locationVO : finalList) {
@@ -6106,8 +6134,12 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 						
 						for (ElectionInformationVO electionVO : locationVO.getSubList1()) {
 							List<Long> availableIdsList = new ArrayList<Long>(0);
+							Map<Long,Long> electionWisePolledVotesMap = locationWisePolledVotesMap.get(locationVO.getLocationId());
 							if(commonMethodsUtilService.isListOrSetValid(electionVO.getSubList1())){
 								for (ElectionInformationVO partyVO : electionVO.getSubList1()) {
+									Long polledVotesCount = electionWisePolledVotesMap.get(electionVO.getElectionId());
+									Double perc = (Double) (Long.valueOf(partyVO.getEarnedVote()) * 100.0/polledVotesCount);
+									partyVO.setPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(perc));
 									availableIdsList.add(partyVO.getPartyId());
 								}
 							}
@@ -6122,6 +6154,7 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 												   partyVO.setPartyId(partyVO.getPartyId());
 												   partyVO.setPartyName(partyVO.getPartyName());
 												   partyVO.setEarnedVote("0");
+												   partyVO.setPerc("0.0");
 												   electionVO.getSubList1().add(partyVO);
 											}
 										}
