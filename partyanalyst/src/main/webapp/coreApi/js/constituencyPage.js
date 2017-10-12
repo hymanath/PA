@@ -3693,7 +3693,7 @@ function getLocationWiseTourMembersComplainceDtls(){
 				tableView+='<div id="toursGraphDivId" style="height:300px;"></div>';
 			tableView+='</div>';
 			tableView+='<div class="col-sm-8">';
-				tableView+='<p class="pull-right f_12"><i class="glyphicon glyphicon-ok" style="color:#3DBC93;"></i> Complains<i class="glyphicon glyphicon-remove" style="color:#FF0000;margin-left:10px;"></i> Non Complains</p>';
+				tableView+='<p class="pull-right f_12"><i class="glyphicon glyphicon-ok" style="color:#3DBC93;"></i> Complaince<i class="glyphicon glyphicon-remove" style="color:#FF0000;margin-left:10px;"></i> Non Complaince</p>';
 				
 				tableView+='<div class="col-sm-12">';
 					tableView+='<div class="toursDesigCss">';
