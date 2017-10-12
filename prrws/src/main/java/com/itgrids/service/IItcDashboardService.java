@@ -11,6 +11,7 @@ import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.ItInformationDtlsVO;
 import com.itgrids.dto.ItecOverviewVO;
+import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
 import com.itgrids.dto.MeesevaKPIDtlsVO;
 
@@ -32,4 +33,8 @@ public interface IItcDashboardService {
 	public List<ApInnovationCenterVO> getCampusInnovationCentersDetails(InputVO inputVO);
 	public List<CohortDtlsVO> getCohortDetailsByCohortId(InputVO inputVO);
 	public List<InnovationSocietyDtlsVO> getInnovationAwardsDetailedData(InputVO inputVO);
+	
+	public List<ItecPromotionDetailsVO> getITSectorWiseOverviewDetails();
+	public List<ItecPromotionDetailsVO> getITSectorCategoryWiseDetails(InputVO inputVO);
+	public List<ItecPromotionDetailsVO> getITDistrictWiseDetails(InputVO inputVO);
 }

@@ -1,7 +1,7 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 //var subSpinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="subSpinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var imagesObj = {
-"PRIS":"Group 2344.png","DRAINS":"Group 2345.png","LED MONITORING":"Group 2348.png","UGD":"Group 2359.png","RDP":"Group 2343.png","FUND MANAGMENT SYSTEM":"Group 2352.png","ENGINEERING DEPARTMENT":"Group 2346.png","PANACHAYATI RAJ EXPENDITURE":"Group 2343.png","SPIKE ANALYSIS":"Group 2347.png","MGNREGS":"Group 2357.png","RURAL DEVELOPMENT":"Group 2349.png","RURAL WATER SUPPLY":"Group 2350.png","ITEC":"Group 2351.png","SWATCH BHARATH IHHL":"Group 2348.png",'Labour Budget':"Group 2344.png",'Farm Ponds':"Group 2344.png",'IHHL':"Group 2344.png",'Vermi Compost':"Group 2344.png",'SMC Trench':"Group 2344.png",'Imp to CD':"Group 2344.png",'MPT_PT':"Group 2344.png",'GC Works':"Group 2344.png",'CD_CW':"Group 2344.png",'GH':"Group 2344.png",'Check Dam':"Group 2344.png",'Rock fill dams':"Group 2344.png",'Solid Waste Management':"Group 2344.png",'Burial Ground':"Group 2344.png",'Play fields':"Group 2344.png",'Agriculture Activities':"Group 2344.png",'Average Wage':"Group 2344.png",'Average Days of Employment':"Group 2344.png",'HH Completed 100 Days':"Group 2344.png",'Timely Payment':"Group 2344.png",'CC Roads1':"Group 2344.png",'Anganwadi':"Group 2344.png",'GP Buildings1':"Group 2344.png",'Mandal buildings1':"Group 2344.png",'NTR 90 Days':"Group 2344.png",'Production of Bricks':"Group 2344.png",'Mulbery':"Group 2344.png",'Silk Worms':"Group 2344.png",'Horticulture':"Group 2344.png",'Avenue':"Group 2344.png",'Fish Ponds':"Group 2344.png",'Fish Drying Platforms':"Group 2344.png",'NURSERIES':"Group 2344.png",'Payments':"Group 2344.png",'FAperformance':"Group 2344.png",'OPGK-Perinnials':"Group 2344.png",'OPGK-Annuals':"Group 2344.png",'UGDrainage':"Group 2344.png"
+"PRIS":"Group 2344.png","DRAINS":"Group 2345.png","LED MONITORING":"Group 2348.png","UGD":"Group 2359.png","RDP":"Group 2343.png","FUND MANAGMENT SYSTEM":"Group 2352.png","ENGINEERING DEPARTMENT":"Group 2346.png","PANACHAYATI RAJ EXPENDITURE":"Group 2343.png","SPIKE ANALYSIS":"Group 2347.png","MGNREGS":"Group 2357.png","RURAL DEVELOPMENT":"Group 2349.png","RURAL WATER SUPPLY":"Group 2350.png","ITEC":"Group 2351.png","SWATCH BHARATH IHHL":"Group 2348.png","SWATCH BHARATH PAYMENTS":"Group 2352.png",'Labour Budget':"Group 2344.png",'Farm Ponds':"Group 2344.png",'IHHL':"Group 2344.png",'Vermi Compost':"Group 2344.png",'SMC Trench':"Group 2344.png",'Imp to CD':"Group 2344.png",'MPT_PT':"Group 2344.png",'GC Works':"Group 2344.png",'CD_CW':"Group 2344.png",'GH':"Group 2344.png",'Check Dam':"Group 2344.png",'Rock fill dams':"Group 2344.png",'Solid Waste Management':"Group 2344.png",'Burial Ground':"Group 2344.png",'Play fields':"Group 2344.png",'Agriculture Activities':"Group 2344.png",'Average Wage':"Group 2344.png",'Average Days of Employment':"Group 2344.png",'HH Completed 100 Days':"Group 2344.png",'Timely Payment':"Group 2344.png",'CC Roads1':"Group 2344.png",'Anganwadi':"Group 2344.png",'GP Buildings1':"Group 2344.png",'Mandal buildings1':"Group 2344.png",'NTR 90 Days':"Group 2344.png",'Production of Bricks':"Group 2344.png",'Mulbery':"Group 2344.png",'Silk Worms':"Group 2344.png",'Horticulture':"Group 2344.png",'Avenue':"Group 2344.png",'Fish Ponds':"Group 2344.png",'Fish Drying Platforms':"Group 2344.png",'NURSERIES':"Group 2344.png",'Payments':"Group 2344.png",'FAperformance':"Group 2344.png",'OPGK-Perinnials':"Group 2344.png",'OPGK-Annuals':"Group 2344.png",'UGDrainage':"Group 2344.png"
 }
 
 var blockClassObject = {
@@ -74,7 +74,7 @@ function buildFavouriteComponentsResult(result) {
 					str +='</div>';
 					str +='<div class="block-footer" style="border-top: 1px solid lightgrey;padding-top: 5px">';
 						str +='<i class="fa fa-star starcolorChange '+componentNameWithoutSpace+'Color" attr_url="'+result[i].url
-						+'" attr_full_block_name="'+compnentName+'" attr_color_name="red" attr_block_name="'+componentNameWithoutSpace+'" aria-hidden="true"></i>';
+						+'" attr_full_block_name="'+compnentName+'" attr_color_name="green" attr_block_name="'+componentNameWithoutSpace+'" aria-hidden="true"></i>';
 						str +='<a class="pull-right" href="'+result[i].url+'" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>';
 					str +='</div>';
 				str +='</div>';
@@ -90,9 +90,9 @@ function buildFavouriteComponentsResult(result) {
 			compnentName = "ITEC";
 		}
 		var componentNameWithoutSpace = compnentName.replace(/\s+/g, '');
-		$("."+componentNameWithoutSpace+"Color").css("color","red");
+		$("."+componentNameWithoutSpace+"Color").css("color","green");
 		$("."+componentNameWithoutSpace+"Color").attr("attr_block_id",result[i].id);
-		$("."+componentNameWithoutSpace+"Color").attr("attr_color_name","red");
+		$("."+componentNameWithoutSpace+"Color").attr("attr_color_name","green");
 		$("."+componentNameWithoutSpace+"Color").attr("title","click to remove from favourite list.");
 	}
 	onloadCallToGetAllBlockAchievent();
@@ -201,8 +201,8 @@ function saveFavouriteComponentDtls(url,blockName,fullBlockName){
 	}).done(function(result){
 		  saveFlag = true;
 		if (result.statusCode==0 && result.message=="success"){
-		     $("."+blockName+"Color").css("color","red");
-			  $("."+blockName+"Color").attr("attr_color_name","red");
+		     $("."+blockName+"Color").css("color","green");
+			  $("."+blockName+"Color").attr("attr_color_name","green");
 			  $("."+blockName+"Color").attr("title","click to remove from favourite list.");
 			  $("#blockModalMessageDivId").modal("show");
 			  //getFavouriteComponents();
@@ -213,8 +213,8 @@ function saveFavouriteComponentDtls(url,blockName,fullBlockName){
 					compnentName = "ITEC";
 				}
 				var cmpnentNameWithutSpce = compnentName.replace(/\s+/g, '');
-				$("."+cmpnentNameWithutSpce+"Color").css("color","red");
-				$("."+cmpnentNameWithutSpce+"Color").attr("attr_color_name","red");
+				$("."+cmpnentNameWithutSpce+"Color").css("color","green");
+				$("."+cmpnentNameWithutSpce+"Color").attr("attr_color_name","green");
 				$("."+cmpnentNameWithutSpce+"Color").attr("title","click to remove from favourite list.");
 			  
 		 } else {
@@ -250,7 +250,7 @@ function deleteFavouriteComponent(blockName,blockId){
 			   setTimeout(function(){ $("#blockModalMessageDivId").modal("hide"); }, 2000);
 			   $("."+blockName+"Color").attr("title","click to add as favourite component");
 			   var activeName = $(".block.active").attr("id");
-			   alert(activeName);
+			   //alert(activeName);
 			   if(activeName != null && activeName == "favourite"){
 				   getFavouriteComponents();
 			   }

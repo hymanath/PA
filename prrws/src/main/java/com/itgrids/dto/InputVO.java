@@ -93,8 +93,15 @@ public class InputVO implements Serializable {
 	
 	private String reportType;
 	private String category;
+	private String sector;
 	
 	
+	public String getSector() {
+		return sector;
+	}
+	public void setSector(String sector) {
+		this.sector = sector;
+	}
 	public String getCategory() {
 		return category;
 	}

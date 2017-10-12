@@ -19,6 +19,8 @@ import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.tempuri.MOUTrackerIT;
+import org.tempuri.TrackerITServiceSoapProxy;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,6 +34,7 @@ import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.ItInformationDtlsVO;
 import com.itgrids.dto.ItecOverviewVO;
+import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
 import com.itgrids.dto.MeesevaKPIDtlsVO;
 import com.itgrids.service.IItcDashboardService;
@@ -662,5 +665,80 @@ public class ItcDashboardService implements IItcDashboardService {
 			LOG.error("Exception raised at getDataInxmlFormat - ItcDashboardService service",e);
 		}
 		return list;
+	}
+	
+	/**
+	 * @author Sravanth
+	 * @param InputVO inputVO
+	 * @description {This service is used to get Itec Promotions Overview Details.}
+	 * @return List<ItecPromotionDetailsVO>
+	 * @Date 12-10-2017
+	 */
+	public List<ItecPromotionDetailsVO> getITSectorWiseOverviewDetails(){
+		List<ItecPromotionDetailsVO> returnList = new ArrayList<ItecPromotionDetailsVO>();
+		try {
+			MOUTrackerIT[] list = new TrackerITServiceSoapProxy().get_IT_SECTOR_WISE_OVERVIEW();
+			setDataToVO(list, returnList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getITSectorWiseOverviewDetails - ItcDashboardService service",e);
+		}
+		return returnList;
+	}
+	
+	/**
+	 * @author Sravanth
+	 * @param InputVO inputVO
+	 * @description {This service is used to get Itec Promotions Overview Details.}
+	 * @return List<ItecPromotionDetailsVO>
+	 * @Date 12-10-2017
+	 */
+	public List<ItecPromotionDetailsVO> getITSectorCategoryWiseDetails(InputVO inputVO){
+		List<ItecPromotionDetailsVO> returnList = new ArrayList<ItecPromotionDetailsVO>();
+		try {
+			MOUTrackerIT[] list = new TrackerITServiceSoapProxy().get_IT_SECTOR_CATEGORY_WISE(inputVO.getCategory());
+			setDataToVO(list, returnList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getITSectorCategoryWiseDetails - ItcDashboardService service",e);
+		}
+		return returnList;
+	}
+	
+	/**
+	 * @author Sravanth
+	 * @param InputVO inputVO
+	 * @description {This service is used to get Itec Promotions Overview Details.}
+	 * @return List<ItecPromotionDetailsVO>
+	 * @Date 12-10-2017
+	 */
+	public List<ItecPromotionDetailsVO> getITDistrictWiseDetails(InputVO inputVO){
+		List<ItecPromotionDetailsVO> returnList = new ArrayList<ItecPromotionDetailsVO>();
+		try {
+			MOUTrackerIT[] list = new TrackerITServiceSoapProxy().get_IT_DISTRICT_WISE_DTLS(inputVO.getSector(), inputVO.getCategory());
+			setDataToVO(list, returnList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getITDistrictWiseDetails - ItcDashboardService service",e);
+		}
+		return returnList;
+	}
+	
+	private void setDataToVO(MOUTrackerIT[] list,List<ItecPromotionDetailsVO> returnList){
+		try {
+			if(list != null && list.length > 0){
+				for (int i = 0; i < list.length; i++) {
+					ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
+					
+					vo.setSector(list[i].getSECTOR());
+					vo.setDistrict(list[i].getDISTRICT());
+					vo.setNoProjects(list[i].getNO_PROJECTS());
+					vo.setInvestment(list[i].getINVESTMENT());
+					vo.setRealizedInvestment(list[i].getREALIZED_INVESTMENT());
+					vo.setEmployment(list[i].getEMPLOYMENT());
+					vo.setRealizedEmployment(list[i].getREALIZED_EMPLOYMENT());
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at setDataToVO - ItcDashboardService service",e);
+		}
 	}
 }
