@@ -125,11 +125,7 @@
 <section style="margin-bottom: 100px" id="favouriteListMenu" landing-block="favourite" class="showhideCls">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-12 text-right m_top10">
-				<i class="fa fa-edit" title="edit priorities" id="editList" style="cursor:pointer;font-size:18px;"></i>
-				<i class="fa fa-save" title="save priorities" id="saveList" style="display:none;cursor:pointer;font-size:18px;"></i>
-				<span id="errorDivId"></span>
-			</div>
+			
 			<div id="favouriteComponentDivId"></div>
 		</div>
 	</div>
@@ -265,8 +261,6 @@
 								</div>
 							</div>
 						</div>
-						
-						
 						<a class="pull-right" href="MGNREGSDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -274,14 +268,28 @@
 			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2349.png" >
-					<h5 style="display: inline-block;">RURAL DEVELOPMENT</h5>
+					<h5 style="display: inline-block;">NTR JALASIRI</h5>
 					<div class=" " style="text-align: right">
-						<h2 class="rdOverAchvmntAllCls" style="margin-top: 0px">0%</h2>
+						<h2 class="NtrJalasiriAllCls" style="margin-top: 0px">0%</h2>
 						<p class="">ACHIEVEMENT</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange RURALDEVELOPMENTColor" title="click to add as favourite component." attr_url="RuralDevelopmentDashboard" attr_full_block_name="RURAL DEVELOPMENT" attr_color_name="gray" attr_block_name="RURALDEVELOPMENT" aria-hidden="true"></i>
-						<a class="pull-right" href="RuralDevelopmentDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+						<i class="fa fa-star starcolorChange NtrJalasiriColor" title="click to add as favourite component." attr_url="RuralDevelopmentDashboard" attr_full_block_name="Ntr Jalasiri" attr_color_name="gray" attr_block_name="Ntr Jalasiri" aria-hidden="true"></i>
+						<a class="pull-right" href="RuralDevelopmentDashboard?component=Ntr Jalasiri" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/Group 2350.png" >
+					<h5 style="display: inline-block;">WATER BUDGET</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="WaterBudgetAllCls" style="margin-top: 0px">0%</h2>
+						<p class="">ACHIEVEMENT</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange WaterBudgetColor" title="click to add as favourite component." attr_url="WaterBudget" attr_full_block_name="WaterBudget" attr_color_name="gray" attr_block_name="WaterBudget" aria-hidden="true"></i>
+						<a class="pull-right" href="RuralDevelopmentDashboard?component=WaterBudget" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -339,7 +347,7 @@
 <section style="margin-bottom: 100px;display:none" landing-block="itec" id="iteBlock" class="showhideCls">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-5">
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2351.png" >
 					<h5 style="display: inline-block;">IT E & C</h5>

@@ -1,14 +1,14 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 //var subSpinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="subSpinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var imagesObj = {
-"PRIS":"Group 2344.png","DRAINS":"Group 2345.png","LED MONITORING":"Group 2348.png","UGD":"Group 2359.png","RDP":"Group 2343.png","FUND MANAGMENT SYSTEM":"Group 2352.png","ENGINEERING DEPARTMENT":"Group 2346.png","PANACHAYATI RAJ EXPENDITURE":"Group 2343.png","SPIKE ANALYSIS":"Group 2347.png","MGNREGS":"Group 2357.png","RURAL DEVELOPMENT":"Group 2349.png","RURAL WATER SUPPLY":"Group 2350.png","ITEC":"Group 2351.png","SWATCH BHARATH IHHL":"Group 2348.png","SWATCH BHARATH PAYMENTS":"Group 2352.png",'Labour Budget':"Group 2344.png",'Farm Ponds':"Group 2344.png",'IHHL':"Group 2344.png",'Vermi Compost':"Group 2344.png",'SMC Trench':"Group 2344.png",'Imp to CD':"Group 2344.png",'MPT_PT':"Group 2344.png",'GC Works':"Group 2344.png",'CD_CW':"Group 2344.png",'GH':"Group 2344.png",'Check Dam':"Group 2344.png",'Rock fill dams':"Group 2344.png",'Solid Waste Management':"Group 2344.png",'Burial Ground':"Group 2344.png",'Play fields':"Group 2344.png",'Agriculture Activities':"Group 2344.png",'Average Wage':"Group 2344.png",'Average Days of Employment':"Group 2344.png",'HH Completed 100 Days':"Group 2344.png",'Timely Payment':"Group 2344.png",'CC Roads1':"Group 2344.png",'Anganwadi':"Group 2344.png",'GP Buildings1':"Group 2344.png",'Mandal buildings1':"Group 2344.png",'NTR 90 Days':"Group 2344.png",'Production of Bricks':"Group 2344.png",'Mulbery':"Group 2344.png",'Silk Worms':"Group 2344.png",'Horticulture':"Group 2344.png",'Avenue':"Group 2344.png",'Fish Ponds':"Group 2344.png",'Fish Drying Platforms':"Group 2344.png",'NURSERIES':"Group 2344.png",'Payments':"Group 2344.png",'FAperformance':"Group 2344.png",'OPGK-Perinnials':"Group 2344.png",'OPGK-Annuals':"Group 2344.png",'UGDrainage':"Group 2344.png"
+"PRIS":"Group 2344.png","DRAINS":"Group 2345.png","LED MONITORING":"Group 2348.png","UGD":"Group 2359.png","RDP":"Group 2343.png","FUND MANAGMENT SYSTEM":"Group 2352.png","ENGINEERING DEPARTMENT":"Group 2346.png","PANACHAYATI RAJ EXPENDITURE":"Group 2343.png","SPIKE ANALYSIS":"Group 2347.png","MGNREGS":"Group 2357.png","RURAL WATER SUPPLY":"Group 2350.png","ITEC":"Group 2351.png","SWATCH BHARATH IHHL":"Group 2348.png",'Labour Budget':"Group 2344.png",'Farm Ponds':"Group 2344.png",'IHHL':"Group 2344.png",'Vermi Compost':"Group 2344.png",'SMC Trench':"Group 2344.png",'Imp to CD':"Group 2344.png",'MPT_PT':"Group 2344.png",'GC Works':"Group 2344.png",'CD_CW':"Group 2344.png",'GH':"Group 2344.png",'Check Dam':"Group 2344.png",'Rock fill dams':"Group 2344.png",'Solid Waste Management':"Group 2344.png",'Burial Ground':"Group 2344.png",'Play fields':"Group 2344.png",'Agriculture Activities':"Group 2344.png",'Average Wage':"Group 2344.png",'Average Days of Employment':"Group 2344.png",'HH Completed 100 Days':"Group 2344.png",'Timely Payment':"Group 2344.png",'CC Roads1':"Group 2344.png",'Anganwadi':"Group 2344.png",'GP Buildings1':"Group 2344.png",'Mandal buildings1':"Group 2344.png",'NTR 90 Days':"Group 2344.png",'Production of Bricks':"Group 2344.png",'Mulbery':"Group 2344.png",'Silk Worms':"Group 2344.png",'Horticulture':"Group 2344.png",'Avenue':"Group 2344.png",'Fish Ponds':"Group 2344.png",'Fish Drying Platforms':"Group 2344.png",'NURSERIES':"Group 2344.png",'Payments':"Group 2344.png",'FAperformance':"Group 2344.png",'OPGK-Perinnials':"Group 2344.png",'OPGK-Annuals':"Group 2344.png",'UGDrainage':"Group 2344.png",'Ntr Jalasiri':"Group 2344.png",'WaterBudget':"Group 2350.png","SWATCH BHARATH PAYMENTS":"Group 2352.png"
 }
 
 var blockClassObject = {
-"PRIS":"prisOverAchvmntAllCls","DRAINS":"drainsOverAchvmntAllCls","LED MONITORING":"ledOverAchvmntAllCls","UGD":"","RDP":"","FUND MANAGMENT SYSTEM":"fundMngmntSstmOverAchvmntAllCls","ENGINEERING DEPARTMENT":"encOverAchvmntAllCls","PANACHAYATI RAJ EXPENDITURE":"preOverAchvmntAllCls","SPIKE ANALYSIS":"spikeOverAchvmntAllCls","MGNREGS":"mgnregsOverAchvmntAllCls","RURAL DEVELOPMENT":"rdOverAchvmntAllCls","RURAL WATER SUPPLY":"rwsOverAchvmntAllCls","ITEC":"itecOverAchvmntAllCls","SWATCH BHARATH IHHL":"swatchBharathIHHL","SWATCH BHARATH PAYMENTS":"swatchBharathPayments",'Labour Budget':'LabourBudgetAllCls','Farm Ponds':'FarmPondsAllCls','IHHL':'IHHLAllCls','Vermi Compost':'VermiCompostAllCls','SMC Trench':'SMCTrenchAllCls','Imp to CD':'ImptoCDAllCls','MPT_PT':'MPT_PTAllCls','GC Works':'GCWorksAllCls','CD_CW':'CD_CWAllCls','GH':'GHAllCls','Check Dam':'CheckDamAllCls','Rock fill dams':'RockfilldamsAllCls','Solid Waste Management':'SolidWasteManagementAllCls','Burial Ground':'BurialGroundAllCls','Play fields':'PlayfieldsAllCls','Agriculture Activities':'AgricultureActivitiesAllCls','Average Wage':'AverageWageAllCls','Average Days of Employment':'AverageDaysofEmploymentAllCls','HH Completed 100 Days':'HHCompleted100DaysAllCls','Timely Payment':'TimelyPaymentAllCls','CC Roads1':'CCRoads1AllCls','Anganwadi':'AnganwadiAllCls','GP Buildings1':'GPBuildings1AllCls','Mandal buildings1':'Mandalbuildings1AllCls','NTR 90 Days':'NTR90DaysAllCls','Production of Bricks':'ProductionofBricksAllCls','Mulbery':'MulberyAllCls','Silk Worms':'SilkWormsAllCls','Horticulture':'HorticultureAllCls','Avenue':'AvenueAllCls','Fish Ponds':'FishPondsAllCls','Fish Drying Platforms':'FishDryingPlatformsAllCls','Nurseries':'NurseriesAllCls','Payments':'PaymentsAllCls','FAperformance':'FAperformanceAllCls','OPGK-Perinnials':'OPGK-PerinnialsAllCls','OPGK-Annuals':'OPGK-AnnualsAllCls','UGDrainage':'UGDrainageAllCls'
+"PRIS":"prisOverAchvmntAllCls","DRAINS":"drainsOverAchvmntAllCls","LED MONITORING":"ledOverAchvmntAllCls","UGD":"","RDP":"","FUND MANAGMENT SYSTEM":"fundMngmntSstmOverAchvmntAllCls","ENGINEERING DEPARTMENT":"encOverAchvmntAllCls","PANACHAYATI RAJ EXPENDITURE":"preOverAchvmntAllCls","SPIKE ANALYSIS":"spikeOverAchvmntAllCls","MGNREGS":"mgnregsOverAchvmntAllCls","RURAL WATER SUPPLY":"rwsOverAchvmntAllCls","ITEC":"itecOverAchvmntAllCls","SWATCH BHARATH IHHL":"swatchBharathIHHL","SWATCH BHARATH PAYMENTS":"swatchBharathPayments",'Labour Budget':'LabourBudgetAllCls','Farm Ponds':'FarmPondsAllCls','IHHL':'IHHLAllCls','Vermi Compost':'VermiCompostAllCls','SMC Trench':'SMCTrenchAllCls','Imp to CD':'ImptoCDAllCls','MPT_PT':'MPT_PTAllCls','GC Works':'GCWorksAllCls','CD_CW':'CD_CWAllCls','GH':'GHAllCls','Check Dam':'CheckDamAllCls','Rock fill dams':'RockfilldamsAllCls','Solid Waste Management':'SolidWasteManagementAllCls','Burial Ground':'BurialGroundAllCls','Play fields':'PlayfieldsAllCls','Agriculture Activities':'AgricultureActivitiesAllCls','Average Wage':'AverageWageAllCls','Average Days of Employment':'AverageDaysofEmploymentAllCls','HH Completed 100 Days':'HHCompleted100DaysAllCls','Timely Payment':'TimelyPaymentAllCls','CC Roads1':'CCRoads1AllCls','Anganwadi':'AnganwadiAllCls','GP Buildings1':'GPBuildings1AllCls','Mandal buildings1':'Mandalbuildings1AllCls','NTR 90 Days':'NTR90DaysAllCls','Production of Bricks':'ProductionofBricksAllCls','Mulbery':'MulberyAllCls','Silk Worms':'SilkWormsAllCls','Horticulture':'HorticultureAllCls','Avenue':'AvenueAllCls','Fish Ponds':'FishPondsAllCls','Fish Drying Platforms':'FishDryingPlatformsAllCls','Nurseries':'NurseriesAllCls','Payments':'PaymentsAllCls','FAperformance':'FAperformanceAllCls','OPGK-Perinnials':'OPGK-PerinnialsAllCls','OPGK-Annuals':'OPGK-AnnualsAllCls','UGDrainage':'UGDrainageAllCls','Ntr Jalasiri':"NtrJalasiriAllCls",'WaterBudget':"WaterBudgetAllCls"
 }
 var blockHeadingObject = {
-"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"TOTAL LIGHTS","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"TOTAL CASES","MGNREGS":"ACHIEVEMENT","RURAL DEVELOPMENT":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHEIVED",'Farm Ponds':"ACHEIVED",'IHHL':"ACHEIVED",'Vermi Compost':"ACHEIVED",'SMC Trench':"ACHEIVED",'Imp to CD':"ACHEIVED",'MPT_PT':"ACHEIVED",'GC Works':"ACHEIVED",'CD_CW':"ACHEIVED",'GH':"ACHEIVED",'Check Dam':"ACHEIVED",'Rock fill dams':"ACHEIVED",'Solid Waste Management':"ACHEIVED",'Burial Ground':"ACHEIVED",'Play fields':"ACHEIVED",'Agriculture Activities':"ACHEIVED",'Average Wage':"ACHEIVED",'Average Days of Employment':"ACHEIVED",'HH Completed 100 Days':"ACHEIVED",'Timely Payment':"ACHEIVED",'CC Roads1':"ACHEIVED",'Anganwadi':"ACHEIVED",'GP Buildings1':"ACHEIVED",'Mandal buildings1':"ACHEIVED",'NTR 90 Days':"ACHEIVED",'Production of Bricks':"ACHEIVED",'Mulbery':"ACHEIVED",'Silk Worms':"ACHEIVED",'Horticulture':"ACHEIVED",'Avenue':"ACHEIVED",'Fish Ponds':"ACHEIVED",'Fish Drying Platforms':"ACHEIVED",'Nurseries':"ACHEIVED",'Payments':"ACHEIVED",'FAperformance':"ACHEIVED",'OPGK-Perinnials':"ACHEIVED",'OPGK-Annuals':"ACHEIVED",'UGDrainage':"ACHEIVED"
+"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"TOTAL LIGHTS","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"TOTAL CASES","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'SMC Trench':"ACHIEVED",'Imp to CD':"ACHIEVED",'MPT_PT':"ACHIEVED",'GC Works':"ACHIEVED",'CD_CW':"ACHIEVED",'GH':"ACHIEVED",'Check Dam':"ACHIEVED",'Rock fill dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery':"ACHIEVED",'Silk Worms':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Nurseries':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED"
 }
 var overViewArrConsolidated = [];
 var overViewIdsArr = [];
@@ -50,19 +50,34 @@ function getFavouriteComponents(){
 }
 function buildFavouriteComponentsResult(result) {
 	   var str = '';
+		str +='<div class="col-sm-12 text-right m_top10">';
+			str +='<i class="fa fa-edit" title="edit priorities" id="editList" style="cursor:pointer;font-size:18px;"></i>';
+			str +='<i class="fa fa-save" title="save priorities" id="saveList" style="display:none;cursor:pointer;font-size:18px;"></i>';
+			str +='<span id="errorDivId"></span>';
+		str +='</div>';
 		str +='<div id="sortableList">';
 		for (var i in result) {
 			var compnentName = result[i].name.trim();
+			if (result[i].name == "IT E & C") {
+				compnentName = "ITEC";
+			}else if (result[i].name == "CC Roads") {
+				compnentName = "CC Roads1";
+			}else if (result[i].name == "Anganwadi Buildings") {
+				compnentName = "Anganwadi";
+			}else if (result[i].name == "GP Buildings") {
+				compnentName = "GP Buildings1";
+			}else if (result[i].name == "Mandal Buildings") {
+				compnentName = "Mandal buildings1";
+			}
 			if (compnentName != null && compnentName!="PRIS" && compnentName!="DRAINS" && compnentName!="LED MONITORING" && compnentName!="FUND MANAGMENT SYSTEM" && compnentName!="ENGINEERING DEPARTMENT" && compnentName!="PANACHAYATI RAJ EXPENDITURE" &&  compnentName!="SPIKE ANALYSIS" && compnentName!="MGNREGS" && compnentName!="RURAL DEVELOPMENT" && compnentName!="RURAL WATER SUPPLY" && compnentName!="ITEC" && compnentName!="SWATCH BHARATH IHHL" && compnentName!="SWATCH BHARATH PAYMENTS") {
 			   globalComponentNameArr.push(compnentName);
 			}
+			
 			/*if (compnentName != null && compnentName!="PRIS" && compnentName!="DRAINS" && compnentName!="LED MONITORING" && compnentName!="FUND MANAGMENT SYSTEM" && compnentName!="ENGINEERING DEPARTMENT" && compnentName!="PANACHAYATI RAJ EXPENDITURE" &&  compnentName!="SPIKE ANALYSIS" && compnentName!="MGNREGS" && compnentName!="RURAL DEVELOPMENT" && compnentName!="RURAL WATER SUPPLY" && compnentName!="ITEC" && compnentName!="SWATCH BHARATH IHHL" && compnentName!="SWATCH BHARATH PAYMENTS") {
 			   globalComponentNameArr.push(compnentName);
 			}*/
 			
-			if (result[i].name == "IT E & C") {
-				compnentName = "ITEC";
-			}
+			
 			var componentNameWithoutSpace = compnentName.replace(/\s+/g, '');
 			str +='<div class="col-sm-4 draggable-element" order-by="'+result[i].id+'">'
 				str +='<div class="whiteBlock">';
@@ -80,6 +95,7 @@ function buildFavouriteComponentsResult(result) {
 				str +='</div>';
 			str +='</div>';
 		}
+		console.log(globalComponentNameArr);
 		str +='</div>';
 	$("#favouriteComponentDivId").html(str);
 	
@@ -88,6 +104,14 @@ function buildFavouriteComponentsResult(result) {
 		var compnentName = result[i].name.trim();;
 		if (result[i].name == "IT E & C") {
 			compnentName = "ITEC";
+		}else if (result[i].name == "CC Roads") {
+			compnentName = "CC Roads1";
+		}else if (result[i].name == "Anganwadi Buildings") {
+			compnentName = "Anganwadi";
+		}else if (result[i].name == "GP Buildings") {
+			compnentName = "GP Buildings1";
+		}else if (result[i].name == "Mandal Buildings") {
+			compnentName = "Mandal buildings1";
 		}
 		var componentNameWithoutSpace = compnentName.replace(/\s+/g, '');
 		$("."+componentNameWithoutSpace+"Color").css("color","green");
@@ -98,12 +122,12 @@ function buildFavouriteComponentsResult(result) {
 	onloadCallToGetAllBlockAchievent();
 }
 $(document).on("click","#saveList",function(){
-	
+	spinner = '<div class="spinner" style="height:20px;width:20px;display:inline-block"><div class="dot1"></div><div class="dot2"></div></div>';
+	$("#errorDivId").html(spinner)
 	var orderList = []
 	$(".draggable-element").each(function(){
 		orderList.push($(this).attr("order-by"));
 	});
-	console.log(orderList)
 	var json = {
 		componentIds : orderList
 	}
@@ -272,11 +296,11 @@ function onloadCallToGetAllBlockAchievent () {
 	getALlProgramesAmountDetails();//FMS 
 	getMeesevaSLAOverviewDtls();//ITEC 
 	getNregsLabourBudgetOverAllAchievent();//MGNREGS
-	getRuralDevelopmentAllAchievent();//Rural DEVELOPMENT
 	getIHHLOverviewData();//swatch Bharath IHHL
 	getSBPaymentsAbstract();//SWATCH BHARATH PAYMENTS
-	 console.log(globalComponentNameArr);
-	 for(var i in globalComponentNameArr)
+	getNtrJalaSiriAbstract('Ntr Jalasiri','state',"0");//ntr jalasiri
+	getRDAbstractDataByType('WaterBudget','state',"0");//ntr jalasiri
+	for(var i in globalComponentNameArr)
 	{
 		if(globalComponentNameArr[i] == 'NTR 90 Days' || globalComponentNameArr[i] == 'Production of Bricks' || globalComponentNameArr[i] == 'Mulbery' || globalComponentNameArr[i] == 'Silk Worms' || globalComponentNameArr[i] == 'Cattle Drinking Water Troughs' || globalComponentNameArr[i] == 'Raising of Perinnial Fodders' || globalComponentNameArr[i] == 'Fish Ponds' || globalComponentNameArr[i] == 'Fish Drying Platforms' || globalComponentNameArr[i] == 'NTR Rural House' || globalComponentNameArr[i] == 'OPGK-Perinnials' || globalComponentNameArr[i] == 'OPGK-Annuals')
 		{
@@ -577,39 +601,7 @@ function getNregsLabourBudgetOverAllAchievent()
 	});
 }
 	
-function getRuralDevelopmentAllAchievent()
-{
-	$(".rdOverAchvmntAllCls").html(spinner);
-	 var json = {
-		year : "2017",
-		fromDate : "2016-04-31",
-		toDate : nregsDate,
-		locationType: "state",
-		divType : "WaterBudget",
-		locationId : "-1",
-		sublocaType : "state"
-	}
-	$.ajax({
-		url: 'getRDLevelsWiseData',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			$(".rdOverAchvmntAllCls").html("0%");
-			if(ajaxresp != null && ajaxresp.length > 0){
-				for(var i in ajaxresp){
-					if (ajaxresp[i].percSant != null && ajaxresp[i].percSant>0) {
-						$(".rdOverAchvmntAllCls").html(ajaxresp[i].percSant+"%");
-					}
-				}
-			}
-		} 
-	});
-}
+
 function getIHHLOverviewData(){
 	$(".swatchBharathIHHL").html(spinner);
 	var json = {
@@ -764,11 +756,29 @@ function buildComponentByConvergType(result,divId,convergenceId)
 		for(var i in result)
 		{
 			selectionMenu+='<li>';
-				selectionMenu+='<label><i class="fa fa-star starcolorChange '+result[i].name.replace(/\s+/g, '')+'Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component='+result[i].name+'" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="'+result[i].name.replace(/\s+/g, '')+'" aria-hidden="true"></i>'+result[i].name+'</label>';
+				if(result[i].name == "CC Roads")
+				{
+					selectionMenu+='<label><i class="fa fa-star starcolorChange CCRoads1Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=CC Roads1" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="CC Roads1" aria-hidden="true"></i> CC Roads</label>';
+				}else if(result[i].name == "Anganwadi Buildings")
+				{
+					selectionMenu+='<label><i class="fa fa-star starcolorChange AnganwadiColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Anganwadi" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="Anganwadi" aria-hidden="true"></i> Anganwadi Buildings</label>';
+				}else if(result[i].name == "GP Buildings1")
+				{
+					selectionMenu+='<label><i class="fa fa-star starcolorChange GPBuildings1Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=GP Buildings1" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="GP Buildings1" aria-hidden="true"></i> GP Buildings</label>';
+				}else if (result[i].name == "Mandal Buildings") {
+					selectionMenu+='<label><i class="fa fa-star starcolorChange Mandalbuildings1Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Mandal buildings1" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="Mandal buildings1" aria-hidden="true"></i> Mandal Buildings</label>';
+				}else{
+					selectionMenu+='<label><i class="fa fa-star starcolorChange '+result[i].name.replace(/\s+/g, '')+'Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component='+result[i].name+'" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="'+result[i].name.replace(/\s+/g, '')+'" aria-hidden="true"></i>'+result[i].name+'</label>';
+				}
+				
 			selectionMenu+='</li>';
-			overViewArrConsolidated.push({"name":result[i].name,"id":result[i].id});
-			overViewIdsArr.push(result[i].id);
-		}		
+		}
+		if(convergenceId == 1)
+		{
+			selectionMenu+='<li>';
+				selectionMenu+='<label><i class="fa fa-star starcolorChange PaymentsColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Payments" attr_full_block_name="Payments" style="margin-right:5px;" attr_color_name="gray" attr_block_name="Payments" aria-hidden="true"></i> Payments</label>';
+			selectionMenu+='</li>';
+		}
 	selectionMenu+='</ul>';
 	$("#"+divId).html(selectionMenu);
 	
@@ -833,7 +843,7 @@ function getNregaPaymentsAbsAndOverviewDtls(type)
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			$("."+type.replace(/\s+/g, '')+"AllCls").html(ajaxresp[0].percentage+"%");
+			$("."+type.replace(/\s+/g, '')+"AllCls").html(ajaxresp[0].totalPendinAmount);
 		}
 	});
 }
@@ -890,4 +900,55 @@ function updateAddedFavouriteComponentId(componentName){
 			   $("."+cmpNameWithoutSpace+"Color").attr("attr_block_id",result[0].id);
 		 } 
 	});		
+}
+function getRDAbstractDataByType(type,locType,locId)
+{
+	$("."+type.replace(/\s+/g, '')+"AllCls").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : '2017-04-01',
+		toDate : moment().format("YYYY-MM")+'-30',
+		type : type,
+		locationType: locType,
+		locationId : locId
+	}
+	
+	$.ajax({
+		url: 'getRDAbstractDataByType',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			$("."+type.replace(/\s+/g, '')+"AllCls").html(ajaxresp[0].percentage+"%");
+		}
+	}); 
+}
+
+function getNtrJalaSiriAbstract(type,locType,locId)
+{
+	$("."+type.replace(/\s+/g, '')+"AllCls").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : '2017-04-01',
+		toDate : moment().format("YYYY-MM")+'-30',
+		locationType : "district",
+		locationId : locId
+	}
+	$.ajax({
+		url: 'getNtrJalaSiriAbstract',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			$("."+type.replace(/\s+/g, '')+"AllCls").html(ajaxresp[0].percentage+"%");
+		}
+	});
 }
