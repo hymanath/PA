@@ -564,13 +564,13 @@
 	</div><!--  /.modal-dialog -->
 </div><!--  /.modal -->
 <!----- Tours Modal End ---->
-<div class="modal fade" id="openPostModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
-	<div class="modal-dialog" role="document" style="width:90%;margin:auto">
+<div class="modal fade" id="openModalDiv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
+	<div class="modal-dialog" role="document" style="width:95%;margin:auto">
 		<div class="modal-content">
 			<div class="modal-header" style="background-color:#CCCCCC">
 				<div class="row" >
 					<div class="col-md-8">
-						<h4 class="modal-title text-capitalize panel-title theme-title-color" id="openPostTitleId" >Title</h4>
+						<h5 class="panel-title text-capital" id="TitleId" >Title</h5>
 					</div>
 					<div class="col-sm-3 pull-right">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -616,31 +616,79 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="positionLevelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
-	<div class="modal-dialog" role="document" style="width:90%;margin:auto">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color:#CCCCCC">
-				<div class="row" >
-					<div class="col-md-8">
-						<h3 class="modal-title text-capitalize" id="postionHeadingId" >Title</h3>
-					</div>
-					<div class="col-sm-3 pull-right">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					</div>
-				</div>
-			</div>
-			<div class="modal-body">        
+<!-- Model for Debate Start-->           
+		<div class="modal" tabindex="-1" role="dialog" id="cdrModelDivId" style="z-index:9999;">
+		  <div class="modal-dialog modal-lg">       
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#999999">
+				<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="tourDocHeadingId">Cadre Registration Comparison Details</h4>  
+			  </div>
+			  <div class="modal-body">   
 				<div class="row">
-					<div class="col-sm-12">
-						<div id="positionLevelDetailsId"></div>
-					</div>  
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="cdrModelId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertDestId" ></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="sourceHeadingId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="headingNameId" ></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertDocHeadingId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertDocId" ></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertAttachTitId"></div>    
+					</div> 
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertAttachImgId"></div>  
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertGroupAttachTitId"></div>    
+					</div> 
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertGroupAttachImgId"></div>  
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertInvolvedCandidates"></div>        
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertAssignedCandidates"></div>  
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertStatusDiv" ></div>    
+					</div>
+					<div  class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertCommentsDiv"></div>  
+					</div> 
+					<div  class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertVerificationDiv"></div>    
+					</div>
+					<div  class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertVerificationDtlsDiv"></div>  
+					</div>
 				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
+			  </div>
+			  <div class="modal-footer">     
+				<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+<!--end-->
+<div class="modal fade" id="myModalShowNew" style="z-index:9999;">
+	<div class="modal-dialog modal-lg" role="document" style="width:90%">
+		<div class="modal-content">
+			<div id="myModalShowNewId"></div>
 		</div>
-	</div>
+	</div>  
 </div>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
@@ -657,5 +705,6 @@
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
 <script src="coreApi/js/tourConstituencyPage.js" type="text/javascript"></script>
+<script src="coreApi/js/alertPopupDetails.js" type="text/javascript"></script>
 </body>
 </html>
