@@ -839,7 +839,10 @@ public class UserServiceImpl implements IUserService {
 					model.setInsertedTime(dateUtil.getCurrentDateAndTime());
 					model.setUpdatedTime(dateUtil.getCurrentDateAndTime());
 					model.setIsDeleted("N");
-					model.setOrderNo(maxOrder+1L);
+					if(maxOrder != null && maxOrder > 0L)
+						model.setOrderNo(maxOrder+1L);
+					else
+						maxOrder = 101L;
 					favouriteComponentDAO.save(model);
 					statusVO.setMessage("success");
 					statusVO.setStatusCode(0);
