@@ -982,7 +982,7 @@ IElectionDAO {
 		sb.append(" select e.election_scope_id as election_scope_id ,c.constituency_id as locationId,c.name as locationName ,e.election_id as election_id ,et.election_type as election_type ,e.election_year as election_year," +
 				"n.party_id as party_id , p.short_name as short_name ,sum(cr.votes_earned) as sumCount from  constituency c,constituency_election ce,election e ,election_scope es ," +
 				"election_type et ,nomination n ,party p ,candidate_result cr where cr.nomination_id = n.nomination_id and cr.rank = 1 and " +
-				"e.election_scope_id  in (1,2,3,4,5,6,7,8,9) and n.consti_elec_id = ce.consti_elec_id and n.party_id = p.party_id and p.party_id in (:partyIds) " +
+				"e.election_scope_id  in (1,2,3,4,5,6,7,8,9) and n.consti_elec_id = ce.consti_elec_id and n.party_id = p.party_id and p.party_id in (:partyIds) and " +
 				"e.election_scope_id = es.election_scope_id and et.election_type_id = es.election_type_id and c.constituency_id = ce.constituency_id and " +
 				"ce.election_id = :electionId and e.sub_type in (:subTypes) and (c.district_id BETWEEN 11 and 23) and e.election_year in (:electionYears) ");
 
@@ -1042,7 +1042,7 @@ IElectionDAO {
 				"cr.rank = 1 and c.district_id = d.district_id and e.election_scope_id  in (1,2,3,4,5,6,7,8,9) and n.consti_elec_id = ce.consti_elec_id" +
 				" and n.party_id = p.party_id and p.party_id in (:partyIds) and  e.election_scope_id = es.election_scope_id and et.election_type_id = es.election_type_id and " +
 				"c.constituency_id = ce.constituency_id and ce.election_id = :electionId and e.sub_type in (:subTypes) and (c.district_id BETWEEN 11 and 23)" +
-				" and e.election_year in (:electionYears) and c.state_id = :locationValue  " +
+				" and e.election_year in (:electionYears) and c.state_id = :locationValues  " +
 				" GROUP BY " +
 				" e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,c.district_id,n.party_id " +
 				" order BY e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,c.district_id,n.party_id");
@@ -1116,7 +1116,7 @@ IElectionDAO {
 			query.setParameter("electionId", electionId);
 		}
 		if(electionYears !=  null){
-			query.setParameterList("electionYear", electionYears);
+			query.setParameterList("electionYears", electionYears);
 		}
 		if(subTypes !=  null){
 			query.setParameterList("subTypes", subTypes);
@@ -1163,12 +1163,12 @@ IElectionDAO {
 		sb.append(" ce.consti_elec_id = bce.consti_elec_id and  ");
 		sb.append(" n.consti_elec_id = bce.consti_elec_id AND  ");
 		sb.append(" bce.booth_constituency_election_id = cbr.booth_constituency_election_id and  ");
-		sb.append(" bce.booth_id = b.booth_id and  e.sub_type in (:subType) and ");
-		sb.append(" e.election_year in (:electionYear) and  ");
+		sb.append(" bce.booth_id = b.booth_id and  e.sub_type in (:subTypes) and ");
+		sb.append(" e.election_year in (:electionYears) and  ");
 		sb.append(" b.local_election_body_id is null ");
 		if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
 			if (locationTypeId == 5L) {
-				sb.append(" and  b.tehsil_id  in (:locationValue) ");
+				sb.append(" and  b.tehsil_id  in (:locationValues) ");
 			} 		   
 		}
 		sb.append(" GROUP BY  ");
@@ -1233,7 +1233,7 @@ IElectionDAO {
 				.addScalar("short_name",Hibernate.STRING)
 				.addScalar("sumCount",Hibernate.LONG);
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
-			query.setParameterList("locationValue", locationValues);
+			query.setParameterList("locationValues", locationValues);
 		} 
 		if(electionId !=  null && electionId.longValue() > 0){
 			query.setParameter("electionId", electionId);
@@ -1249,4 +1249,4 @@ IElectionDAO {
 		} 
 		return query.list();
 	}  
-}
+	}
