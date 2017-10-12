@@ -2602,7 +2602,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 	       	
 	       sb.append(" select model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeeting.partyMeetingType.partyMeetingMainType.meetingType," +
 	          "model.partyMeeting.partyMeetingType.partyMeetingTypeId,model.partyMeeting.partyMeetingType.type,model.tdpCadre.tdpCadreId," +
-	          "model.partyMeeting.partyMeetingId from PartyMeetingInvitee model  where ");
+	          "model.partyMeeting.partyMeetingId from PartyMeetingInvitee model where model.partyMeeting.isActive = 'Y' and ");
 	       
 	       if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
 	    	   if(locationTypeId == 2l){
@@ -2630,7 +2630,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 	       if(fromDate != null && toDate != null){
 	    	   sb.append(" and date(model.partyMeeting.startDate) between :fromDate and :toDate ");
 	       }
-	      // sb.append(" group by model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeetingType.partyMeetingTypeId ");
+	      // sb.append(" group by model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,moedl.partyMeetingType.partyMeetingTypeId ");
 	       
 	       Query query = getSession().createQuery(sb.toString());
 	       

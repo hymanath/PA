@@ -752,7 +752,7 @@ public List<Object[]> getLocationWiseStateMeetingImages(List<Long> locationValue
     
     sb.append(" select model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeeting.partyMeetingType.partyMeetingMainType.meetingType," +
        "model.partyMeeting.partyMeetingType.partyMeetingTypeId,model.partyMeeting.partyMeetingType.type,model.path" +
-       ",model.partyMeeting.partyMeetingId from PartyMeetingDocument model  where ");
+       ",model.partyMeeting.partyMeetingId from PartyMeetingDocument model  where model.partyMeeting.isActive = 'Y' and  ");
     
     if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
  	   if(locationTypeId == 2l){

@@ -1,5 +1,6 @@
 package com.itgrids.core.api.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -265,7 +266,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 				endDate = sdf.parse(toDateStr);
 			}
 			
-			List<Object[]> totalList = partyMeetingDAO.getLocationWiseStateMeetings(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId);
+			List<Object[]> totalList = partyMeetingDAO.getLocationWiseStateMeetings(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,"");
 			List<Object[]> invitees = partyMeetingInviteeDAO.getLocationWiseStateMeetingInvitees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId);
 			List<Object[]> attendees = partyMeetingAttendanceDAO.getLocationWiseStateMeetingAttendees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId);
 			List<Object[]> images = partyMeetingDocumentDAO.getLocationWiseStateMeetingImages(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId);
@@ -273,6 +274,8 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 			Map<Long,PartyMeetingDataVO> totalCntMap = new HashMap<Long,PartyMeetingDataVO>();
 			if(commonMethodsUtilService.isListOrSetValid(totalList)){
 				for (Object[] param : totalList) {
+					returnVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					returnVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					PartyMeetingDataVO totalMeetings = totalCntMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
 					if(totalMeetings == null){
 						totalMeetings = new PartyMeetingDataVO();
@@ -282,9 +285,9 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 				}
 			}
 			
-			setMeetingDetails(meetingTypeMap,invitees,"invitees");
-			setMeetingDetails(meetingTypeMap,invitees,"attendees");
-			setMeetingDetails(meetingTypeMap,invitees,"images");
+			setMeetingDetails(meetingTypeMap,invitees,"invitees","");
+			setMeetingDetails(meetingTypeMap,attendees,"attendees","");
+			setMeetingDetails(meetingTypeMap,images,"images","");
 			
 			if(commonMethodsUtilService.isMapValid(meetingTypeMap)){
 				for (Entry<Long, Map<Long, PartyMeetingDataVO>> entry :meetingTypeMap.entrySet()) {
@@ -293,14 +296,14 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 					if(commonMethodsUtilService.isMapValid(cadresmap)){
 						for (Entry<Long, PartyMeetingDataVO> candidates :cadresmap.entrySet()) {
 							PartyMeetingDataVO vo =candidates.getValue();
-							meetingTypeVO.setPartyMeetingId(vo.getPartyMeetingId());
-							meetingTypeVO.setPartyMeetingName(vo.getPartyMeetingName());
-							meetingTypeVO.setId(vo.getId());
-							meetingTypeVO.setName(vo.getName());
+							meetingTypeVO.setPartyMeetingId(vo.getPartyMeetingId());//partyMeetingMaintypeid
+							meetingTypeVO.setPartyMeetingName(vo.getPartyMeetingName());//partyMeetingMainTypeName
+							meetingTypeVO.setId(vo.getId());//partymeetingTypeId
+							meetingTypeVO.setName(vo.getName());//patyMeetingType
 							Set<Long> inviteeIds = vo.getInviteeIds();
 							if(commonMethodsUtilService.isListOrSetValid(inviteeIds))
 								meetingTypeVO.setInvitedCount(meetingTypeVO.getInvitedCount()+inviteeIds.size());
-							Set<Long> attendedIds = vo.getInviteeIds();
+							Set<Long> attendedIds = vo.getAttendedIds();
 								if(commonMethodsUtilService.isListOrSetValid(attendedIds)){
 									meetingTypeVO.setAttendedCount(meetingTypeVO.getAttendedCount()+attendedIds.size());
 									for (Long long1 : attendedIds) {
@@ -312,9 +315,13 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 								}
 						}
 					}
+					meetingTypeVO.setAbsentCount(meetingTypeVO.getInvitedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue());
+					meetingTypeVO.setNonInviteesCount(meetingTypeVO.getAttendedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue());
 				}
 			}
+			if(commonMethodsUtilService.isMapValid(totalCntMap))
 			returnVO.getLevelList().addAll(totalCntMap.values());
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception raised at getLocationWiseStateMeetings", e);
@@ -322,8 +329,9 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 		return returnVO;
 	}
 	
-	public void setMeetingDetails(Map<Long,Map<Long,PartyMeetingDataVO>> meetingTypeMap,List<Object[]> invitees,String type){
+	public void setMeetingDetails(Map<Long,Map<Long,PartyMeetingDataVO>> meetingTypeMap,List<Object[]> invitees,String type,String sessionType){
 		try{
+			
 			if(commonMethodsUtilService.isListOrSetValid(invitees)){
 				for (Object[] param : invitees) {
 					Map<Long,PartyMeetingDataVO> inviteesMap = meetingTypeMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -344,7 +352,22 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 					if(type != null && type.equalsIgnoreCase("images")){
 						partyMeetingVO.setImagesCnt(partyMeetingVO.getImagesCnt()+1);
 					}else{
-						partyMeetingVO.getInviteeIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+						if(type.equalsIgnoreCase("attendees")){
+							partyMeetingVO.getAttendedIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+						}else{
+							partyMeetingVO.getInviteeIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+						}
+					}
+					 
+					if(type != null && type.equalsIgnoreCase("attendees") && sessionType != null && sessionType.equalsIgnoreCase("session")){
+						PartyMeetingDataVO vo = getMatchedVO(partyMeetingVO.getLevelList(),commonMethodsUtilService.getLongValueForObject(param[6]));
+						if(vo == null){
+							vo=new PartyMeetingDataVO();
+							vo.setId(commonMethodsUtilService.getLongValueForObject(param[6]));
+							vo.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
+							partyMeetingVO.getLevelList().add(vo);
+						}
+						vo.getAttendedIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
 					}
 				}
 			}
@@ -353,4 +376,145 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 			LOG.error("Exception raised at setMeetingDetails", e);
 		}
 	}
+	
+	public PartyMeetingDataVO getLocationWiseSpecialMeetings(Long locationTypeId, List<Long> locationValues,String fromDateStr,String toDateStr,Long partyMeetingMainTypeId){
+		PartyMeetingDataVO returnVO = new PartyMeetingDataVO();
+		
+		try{
+			List<PartyMeetingDataVO> partyMeetingTypes = new ArrayList<PartyMeetingDataVO>();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date startDate = null;
+			Date endDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			
+			List<Object[]> totalList = partyMeetingDAO.getLocationWiseStateMeetings(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,"");
+			List<Object[]> invitees = partyMeetingInviteeDAO.getLocationWiseStateMeetingInvitees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId);
+			List<Object[]> attendees = partyMeetingAttendanceDAO.getLocationWiseStateMeetingAttendees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId);
+			List<Object[]> images = partyMeetingDocumentDAO.getLocationWiseStateMeetingImages(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId);
+			Map<Long,Map<Long,PartyMeetingDataVO>> meetingTypeMap = new HashMap<Long,Map<Long,PartyMeetingDataVO>>();
+			Map<Long,PartyMeetingDataVO> totalCntMap = new HashMap<Long,PartyMeetingDataVO>();
+			if(commonMethodsUtilService.isListOrSetValid(totalList)){
+				for (Object[] param : totalList) {
+					PartyMeetingDataVO totalMeetings = totalCntMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+					if(totalMeetings == null){
+						totalMeetings = new PartyMeetingDataVO();
+						totalMeetings.setTotalMeetings(commonMethodsUtilService.getLongValueForObject(param[4]));
+						totalCntMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), totalMeetings);
+					}
+				}
+			}
+			
+			setMeetingDetails(meetingTypeMap,invitees,"invitees","");
+			setMeetingDetails(meetingTypeMap,attendees,"attendees","session");
+			setMeetingDetails(meetingTypeMap,images,"images","");
+			
+			//if(partyMeetingMainTypeId != null && partyMeetingMainTypeId.longValue() == 3l){
+				 List<Object[]> recentTimes = partyMeetingDAO.getLocationWiseStateMeetings(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,"recentTime");
+			
+				 if(commonMethodsUtilService.isListOrSetValid(recentTimes)){
+					 for (Object[] param : recentTimes) {
+						 PartyMeetingDataVO  meetingTypeVO = totalCntMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+						 String recentDate = commonMethodsUtilService.getStringValueForObject(param[4]);
+						 if(recentDate != null && !recentDate.isEmpty() ){
+								Date date = new SimpleDateFormat("yyyy-MM-dd").parse(recentDate);
+								String format = new SimpleDateFormat("MMM dd").format(date);
+								meetingTypeVO.setConductedDate(format+","+recentDate.substring(0,4));
+						}
+						 meetingTypeVO.setMeetingId(commonMethodsUtilService.getLongValueForObject(param[5]));
+					}
+				 }
+			//}
+			if(commonMethodsUtilService.isMapValid(meetingTypeMap)){
+				for (Entry<Long, Map<Long, PartyMeetingDataVO>> entry :meetingTypeMap.entrySet()) {
+					Map<Long,PartyMeetingDataVO> cadresmap = entry.getValue();
+					PartyMeetingDataVO  meetingTypeVO = totalCntMap.get(entry.getKey());
+					if(commonMethodsUtilService.isMapValid(cadresmap)){
+						for (Entry<Long, PartyMeetingDataVO> candidates :cadresmap.entrySet()) {
+							PartyMeetingDataVO vo =candidates.getValue();
+							Long partyMeetingId = candidates.getKey();
+							meetingTypeVO.setPartyMeetingId(vo.getPartyMeetingId());//partyMeetingMaintypeid
+							meetingTypeVO.setPartyMeetingName(vo.getPartyMeetingName());//partyMeetingMainTypeName
+							meetingTypeVO.setId(vo.getId());//partymeetingTypeId
+							meetingTypeVO.setName(vo.getName());//patyMeetingType
+							meetingTypeVO.getLevelList().addAll(vo.getLevelList());
+							Set<Long> inviteeIds = vo.getInviteeIds();
+							
+							Set<Long> attendedIds = vo.getAttendedIds();
+								if(commonMethodsUtilService.isListOrSetValid(attendedIds)){
+									meetingTypeVO.setAttendedCount(meetingTypeVO.getAttendedCount()+attendedIds.size());
+									for (Long long1 : attendedIds) {
+										if(inviteeIds.contains(long1)){
+											meetingTypeVO.setInviteeAttendedCount(meetingTypeVO.getInviteeAttendedCount()+1);
+										}
+									}
+								}
+								meetingTypeVO.setImagesCnt(meetingTypeVO.getImagesCnt()+vo.getImagesCnt());
+								//session Details for each partyMeetingType Vo
+								if(commonMethodsUtilService.isListOrSetValid(inviteeIds)){
+									meetingTypeVO.setInvitedCount(meetingTypeVO.getInvitedCount()+inviteeIds.size());
+									if(partyMeetingId.longValue() == meetingTypeVO.getMeetingId().longValue()){
+										meetingTypeVO.setRecentMeetingInviteesCnt(Long.valueOf(inviteeIds.size()));
+										//meetingTypeVO.getRecentInviteeIds().addAll(inviteeIds);
+										meetingTypeVO.setRecentImagesCnt(vo.getImagesCnt());
+									}
+								}
+								if(commonMethodsUtilService.isListOrSetValid(meetingTypeVO.getLevelList()) && partyMeetingId.longValue() == meetingTypeVO.getMeetingId().longValue()){
+									for (PartyMeetingDataVO sessionVO : vo.getLevelList()) {
+										Set<Long> sessionAttendedIds = sessionVO.getAttendedIds();
+										if(commonMethodsUtilService.isListOrSetValid(sessionAttendedIds)){
+											sessionVO.setAttendedCount(Long.valueOf(sessionAttendedIds.size()));
+											for (Long long1 : sessionAttendedIds) {
+												if(inviteeIds.contains(long1)){
+													sessionVO.setInviteeAttendedCount(sessionVO.getInviteeAttendedCount()+1);
+												}
+											}
+											
+											sessionVO.setAbsentCount(meetingTypeVO.getRecentMeetingInviteesCnt().longValue()-sessionVO.getInviteeAttendedCount().longValue());
+											sessionVO.setNonInviteesCount(sessionVO.getAttendedCount().longValue()-meetingTypeVO.getRecentMeetingInviteesCnt().longValue());
+											//sessionVO.setAbcentPerc(calculatePercantage(meetingTypeVO., totalCount));
+										}
+									}
+								}
+						}
+					}
+					meetingTypeVO.setAbsentCount(meetingTypeVO.getInvitedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue());
+					meetingTypeVO.setNonInviteesCount(meetingTypeVO.getAttendedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue());
+				}
+			}
+			if(commonMethodsUtilService.isMapValid(totalCntMap))
+			returnVO.getLevelList().addAll(totalCntMap.values());
+			
+			//setRecentMeetingOfPartyMeetingType();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised at getLocationWiseSpecialMeetings", e);
+		}
+		return returnVO;
+	}
+	
+	public Double calculatePercantage(Long subCount,Long totalCount){
+		Double d=0.0d;
+		if(subCount.longValue()>0l && totalCount.longValue()==0l)
+			LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
+
+		if(totalCount.longValue() > 0l){
+			d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
+		}
+		return d;
+	}
+	
+	public PartyMeetingDataVO getMatchedVO(List<PartyMeetingDataVO> voList, Long id) {
+		if (voList != null && voList.size() > 0 && id != null && id > 0l) {
+			for (PartyMeetingDataVO vo : voList) {
+				if (vo.getId().longValue() == id.longValue())
+					return vo;
+			}
+		}
+		return null;
+	}
+	
 }
