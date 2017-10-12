@@ -42,14 +42,15 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<ol class="breadcrumb m_top10" id="getMenuLocations" menu-location-state="1" menu-location-district="" menu-location-constituency="" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="2" menu-location-parliament="" menu-location-levelName="state" >
-					<li><i menu-name="state" class="fa fa-align-left fa-1x"></i> <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>
-					<li style="display:none"><span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capital">Nellore</span></li>
-					<li style="display:none"> <span menu-name="parliament" levelId="10" locationId="01" class="parliamentMenuName text-capital">Nellore(PC)</span></li>
-					<li style="display:none"><span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName text-capital"> Andhra Pradesh</span></li>
-					<li style="display:none"><span menu-name="mandal" levelId="5" locationId="01" class="mandalsMenuName text-capital"> Andhra Pradesh</span></li>
-					<li style="display:none"><span menu-name="panchayat" levelId="6" locationId="01" class="panchayatMenuName text-capital"> Andhra Pradesh</span></li>
+					<li><i class="fa fa-align-left fa-1x " id="menuHeaderId"></i> <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>
+					<li style="display:none"><span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capitalize"></span></li>
+					<li style="display:none"> <span menu-name="parliament" levelId="10" locationId="01" class="parliamentMenuName text-capitalize"></span></li>
+					<li style="display:none"><span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName text-capitalize"></span></li>
+					<li style="display:none"><span menu-name="mandal" levelId="5" locationId="01" class="mandalsMenuName text-capitalize"></span></li>
+					<li style="display:none"><span menu-name="panchayat" levelId="6" locationId="01" class="panchayatMenuName text-capitalize"></span></li>
 				</ol>
 				<div class="menu-dropdown" style="display:none;">
+					<i class="glyphicon glyphicon-remove menu-close"></i>
 					<div class="row">
 						<div class="col-sm-3">
 							<div id="districtMenu"></div>
@@ -98,7 +99,7 @@
 </section>
 <section>
 	<div class="container">
-		<h3 class="text-left text-capital"><span id="selectedMenuName" class="text-capital">Andhra Pradesh</span> Information</h3>
+		<!--<h3 class="text-left text-capital"><span id="selectedMenuName" class="text-capital">Andhra Pradesh</span> Information</h3>-->
 		<div class="row m_top15">
 		 	<div id="parliamentMemberId"></div>
 			<div id="assemblyMemberId"></div>
