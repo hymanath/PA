@@ -213,6 +213,7 @@ function onLoadAjaxCalls()
 	getLocationWiseMeetingsCount();
 	//getLocationWiseMeetingsCountDetails(1);
 	//getLocationWiseMeetingsCountDetails(2);
+	//getLocationWiseMeetingsCountDetails(3);
 	 //candidate Profiles 1st block
 	if(locationLevelId == "2"){
 		getPartyWiseMPandMLACandidatesCounts();

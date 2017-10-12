@@ -17605,7 +17605,7 @@
 			<param name="root">locationVotersVOList</param>       
 		</result> 
 	</action>
-	<action name="getLocationWiseMeetingsCountAction" class="locationDashboardAction"  method="getLocationWiseMeetingsCountDetails">
+	<action name="getLocationWiseMeetingsCountDetailsAction" class="locationDashboardAction"  method="getLocationWiseMeetingsCountDetails">
 		<result type="json" name="success">    
 			<param name="root">partyMeetingDataVO</param>       
 		</result> 

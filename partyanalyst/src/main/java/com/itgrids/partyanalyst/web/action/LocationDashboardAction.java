@@ -524,6 +524,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 				partyMeetingDataVO = meetingLocationDashboardService.getLocationWiseCommitteeMeetings(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr,partyMeetingMainTypeId);
 			}else if(partyMeetingMainTypeId != null && partyMeetingMainTypeId.longValue() >0l && partyMeetingMainTypeId.longValue()==2l){
 				partyMeetingDataVO = meetingLocationDashboardService.getLocationWiseStateMeetings(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr,partyMeetingMainTypeId);
+			}else if(partyMeetingMainTypeId != null && partyMeetingMainTypeId.longValue() >0l && partyMeetingMainTypeId.longValue()==3l){
+				partyMeetingDataVO = meetingLocationDashboardService.getLocationWiseSpecialMeetings(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr,partyMeetingMainTypeId);
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseMeetingsCount", e);
