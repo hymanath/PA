@@ -1035,7 +1035,7 @@ ul li[menu-levelname='panchayat']:after .active
 .tableOpenPostCss thead tr:nth-child(2){
 	border:none !important;
 }
-.openPostClickCls{
+.popUpDetailsClickCls{
 	cursor:pointer;
 	text-decoration:underline;
 	font-weight:bold;
@@ -1281,7 +1281,148 @@ font-size:12px !important;
     height: 10px;
     width: 10px;
 }
-.tableAlignment thead tr th, .tableAlignment tbody tr td{
+.tableAlignment thead tr th{
 	font-size:12px !important;
-	padding:2px !important;
+	padding:5px !important;
+}
+.tableAlignment tbody tr td{
+	font-size:13px !important;
+	padding:3px !important;
+}
+.imageUrlUlCls li
+{
+	border:2px solid #eee;
+}
+.headingColorStyling{
+	background-color: rgb(74, 88, 99);
+    color: #fff;
+    padding: 10px;
+    width: 215px;
+	line-height:10px;
+	height:29px;
+	
+}
+.assignedCandidatesUl
+{
+	border:1px solid #d3d3d3;
+	padding: 5px 0px;
+}
+.assignedCandidatesUl li
+{
+	padding:6px 20px 6px 10px;
+	border-right: 1px solid #ddd;
+	min-height:100px;
+}
+
+assignedCandidatesUl li:last-child
+{
+	border-right: 0px;
+}
+.alertComment .tab-pane
+{
+	border:1px solid #a286c0;
+	padding: 10px;
+}
+.alertCommentUl li a
+{
+	color:#333;
+	background-color:#A185BF;
+	text-transform: uppercase;
+	font-size:12px;
+	padding:12px;
+	border-radius:0px;
+}
+.alertCommentUl li.active a
+{
+	color:#A185BF;
+	background-color: #fff;
+	text-transform: uppercase
+}
+.alertCommentUl li.active .color_FF
+{
+	color:#333;
+}
+.color_FF
+{
+	color: #fff;
+}
+.alertStatusTracking
+{
+	padding-left:10px;
+}
+.alertStatusTracking li
+{
+	list-style:none;
+	border-radius:4px;
+	position:relative;
+}
+.arrow_box_left
+{
+	border:1px solid #A286C0 !important;
+	padding-bottom:18px !important;
+}
+.arrow_box_left:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-right-color: #fff;
+	border-width: 5px;
+	margin-top: -5px;
+}
+.arrow_box_left:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-right-color: #A286C0 !important;
+	border-width: 6px;
+	margin-top: -6px;
+}
+.arrow_box_left{
+	position: relative;
+	background: #fff;
+	padding:8px;
+	border: 1px solid #ccc;
+}
+.arrow_box_left:after, .arrow_box_left:before {
+	right: 100%;
+	top: 15px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box_left:after {
+	border-color: rgba(221, 221, 221, 0);
+	border-right-color: #fff;
+	border-width: 10px;
+	margin-top: -10px;
+}
+.arrow_box_left:before {
+	border-color: rgba(221, 221, 221, 0);
+	border-right-color: #ccc;
+	border-width: 11px;
+	margin-top: -11px;
+}
+.verifyHeadingColorStyling{
+	background-color: rgb(74, 88, 99);
+    color: #fff;
+    padding: 10px;
+    width: 315px;  
+	line-height:10px;
+	height:29px;
+	
+}
+.assignedCandidatesUl1
+{
+	border:1px solid #d3d3d3;
+	padding: 5px 0px;
+	min-height:90px;
+}
+.assignedCandidatesUl1 li  
+{
+	padding:6px 20px 6px 10px;
+	border-right: 1px solid #ddd;
+}
+assignedCandidatesUl1 li:last-child
+{
+	border-right: 0px;
 }
