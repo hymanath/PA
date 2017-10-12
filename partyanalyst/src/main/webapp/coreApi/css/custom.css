@@ -1258,6 +1258,7 @@ font-size:12px !important;
 .table-election tr td
 {
 	padding:20px 10px !important;
+	
 }
 .table-election tr td:nth-child(n+2)
 {
@@ -1425,4 +1426,12 @@ assignedCandidatesUl li:last-child
 assignedCandidatesUl1 li:last-child
 {
 	border-right: 0px;
+}
+.statusClr{
+	border-radius: 50%;
+    color: #ffffff;
+    display: inline-block;
+    height: 25px;
+    padding: 3px;
+    width: 25px;
 }

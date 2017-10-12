@@ -42,7 +42,7 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<ol class="breadcrumb m_top10" id="getMenuLocations" menu-location-state="1" menu-location-district="" menu-location-constituency="" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="2" menu-location-parliament="" menu-location-levelName="state" >
-					<li><i class="fa fa-align-left fa-1x " id="menuHeaderId"></i> <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>
+					<li><i class="fa fa-align-left fa-1x " id="menuHeaderId"></i> <span menu-name="state" levelId="2" locationId="1" class="stateMenuName">Andhra Pradesh</span></li>
 					<li style="display:none"><span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capitalize"></span></li>
 					<li style="display:none"> <span menu-name="parliament" levelId="10" locationId="01" class="parliamentMenuName text-capitalize"></span></li>
 					<li style="display:none"><span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName text-capitalize"></span></li>

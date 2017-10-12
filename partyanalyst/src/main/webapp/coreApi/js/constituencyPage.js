@@ -293,7 +293,7 @@ function onLoadClicks()
 		}else if(blockName == 'nominatedPosts'){
 			window.open('areaWiseDashboardDetailedViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'election'){
-			window.open('areaWiseElectionDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&constituencyId='+constituencyId+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
+			window.open('areaWiseElectionDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&constituencyId='+constituencyId+'&locationLevelName='+locationLevelName+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}
 		
 	});
