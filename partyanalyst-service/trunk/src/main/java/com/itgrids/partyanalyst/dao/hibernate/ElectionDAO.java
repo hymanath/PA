@@ -984,7 +984,7 @@ IElectionDAO {
 				"election_type et ,nomination n ,party p ,candidate_result cr where cr.nomination_id = n.nomination_id and cr.rank = 1 and " +
 				"e.election_scope_id  in (1,2,3,4,5,6,7,8,9) and n.consti_elec_id = ce.consti_elec_id and n.party_id = p.party_id and p.party_id in (:partyIds) and " +
 				"e.election_scope_id = es.election_scope_id and et.election_type_id = es.election_type_id and c.constituency_id = ce.constituency_id and " +
-				"ce.election_id = :electionId and e.sub_type in (:subTypes) and (c.district_id BETWEEN 11 and 23) and e.election_year in (:electionYears) ");
+				" e.sub_type in (:subTypes) and (c.district_id BETWEEN 11 and 23) and e.election_year in (:electionYears) ");
 
 		if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
 			if (locationTypeId.longValue() == 3L) 
@@ -1010,7 +1010,7 @@ IElectionDAO {
 		} 
 
 		if(electionId !=  null && electionId.longValue() > 0){
-			query.setParameter("electionId", electionId);
+			//query.setParameter("electionId", electionId);
 		}
 		if(electionYears!=  null){
 			query.setParameterList("electionYears", electionYears);
@@ -1041,7 +1041,7 @@ IElectionDAO {
 				"election_type et ,nomination n ,party p ,district d ,candidate_result cr where cr.nomination_id = n.nomination_id and " +
 				"cr.rank = 1 and c.district_id = d.district_id and e.election_scope_id  in (1,2,3,4,5,6,7,8,9) and n.consti_elec_id = ce.consti_elec_id" +
 				" and n.party_id = p.party_id and p.party_id in (:partyIds) and  e.election_scope_id = es.election_scope_id and et.election_type_id = es.election_type_id and " +
-				"c.constituency_id = ce.constituency_id and ce.election_id = :electionId and e.sub_type in (:subTypes) and (c.district_id BETWEEN 11 and 23)" +
+				"c.constituency_id = ce.constituency_id and e.sub_type in (:subTypes) and (c.district_id BETWEEN 11 and 23)" +
 				" and e.election_year in (:electionYears) and c.state_id = :locationValues  " +
 				" GROUP BY " +
 				" e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,c.district_id,n.party_id " +
@@ -1063,7 +1063,7 @@ IElectionDAO {
 		} 
 
 		if(electionId !=  null && electionId.longValue() > 0){
-			query.setParameter("electionId", electionId);
+			//query.setParameter("electionId", electionId);
 		}
 		if(electionYears !=  null){
 			query.setParameterList("electionYears", electionYears);
@@ -1086,7 +1086,7 @@ IElectionDAO {
 				"party p ,candidate_booth_result cbr,booth_constituency_election bce ,booth b,tehsil t" +
 				" where b.tehsil_id = t.tehsil_id and b.local_election_body_id is null AND " +
 				"c.constituency_id = ce.constituency_id and n.consti_elec_id = n.consti_elec_id and  " +
-				"ce.election_id = :electionId and e.election_scope_id = es.election_scope_id and " +
+				"  e.election_scope_id = es.election_scope_id and " +
 				"es.election_type_id = et.election_type_id and n.party_id = p.party_id and" +
 				" p.party_id in (:partyIds) and e.sub_type in (:subTypes) and  ce.consti_elec_id = bce.consti_elec_id and n.consti_elec_id = bce.consti_elec_id AND " +
 				"bce.booth_constituency_election_id = cbr.booth_constituency_election_id and " +
@@ -1113,7 +1113,7 @@ IElectionDAO {
 			query.setParameterList("locationValues", locationValues);
 		} 
 		if(electionId !=  null && electionId.longValue() > 0){
-			query.setParameter("electionId", electionId);
+			//query.setParameter("electionId", electionId);
 		}
 		if(electionYears !=  null){
 			query.setParameterList("electionYears", electionYears);
@@ -1210,7 +1210,7 @@ IElectionDAO {
 				"local_election_body leb,election_type et1 " +
 				"where leb.election_type_id  = et1.election_type_id and " +
 				"b.local_election_body_id = leb.local_election_body_id and c.constituency_id = ce.constituency_id " +
-				"and n.consti_elec_id = n.consti_elec_id and ce.election_id = :electionId and e.election_scope_id = es.election_scope_id " +
+				"and n.consti_elec_id = n.consti_elec_id and e.election_scope_id = es.election_scope_id " +
 				"and es.election_type_id = et.election_type_id and n.party_id = p.party_id and  p.party_id in (:partyIds)  and  e.sub_type in (:subTypes) and ce.consti_elec_id = bce.consti_elec_id and " +
 				"n.consti_elec_id = bce.consti_elec_id AND bce.booth_constituency_election_id = cbr.booth_constituency_election_id " +
 				"and bce.booth_id = b.booth_id and e.election_year in (:electionYears) and  " +
@@ -1236,7 +1236,7 @@ IElectionDAO {
 			query.setParameterList("locationValues", locationValues);
 		} 
 		if(electionId !=  null && electionId.longValue() > 0){
-			query.setParameter("electionId", electionId);
+			//query.setParameter("electionId", electionId);
 		}
 		if(electionYears !=  null){
 			query.setParameterList("electionYears", electionYears);
