@@ -325,11 +325,8 @@ function onLoadClicks()
 			$("[menu-name="+levelName+"]").closest("li").show();
 			$("[menu-name='parliament']").closest("li").hide();
 		}
-		if(levelName == 'parliament'){
-			$("[menu-name="+levelName+"]").html($(this).html()+" "+("(PC)"));
-		}else{
-			$("[menu-name="+levelName+"]").html($(this).html());
-		}
+		
+		$("[menu-name="+levelName+"]").html($(this).html()+"("+$(this).attr("short-name")+")");
 		
 		//$("[menu-name="+levelName+"]").width(((length)*(10)));
 		$("[levelId="+levelId+"]").removeClass("active");
@@ -451,9 +448,9 @@ function onLoadClicks()
 		getLocationWiseGrivanceTrustStatusCounts($(this).val());
 		getLocationWiseInsuranceStatusCount($(this).val());
 	});
-	$(document).on("click","[menu-name]",function(e){
+	$(document).on("click","#menuHeaderId",function(e){
 		e.stopPropagation();
-		$(".menu-dropdown").show();
+		$(".menu-dropdown").toggle();
 		//$("[menu-name]").removeClass("active");
 		//$(this).addClass("active");
 	});
@@ -478,10 +475,20 @@ function onLoadClicks()
 		$(".menu-dropdown").hide();
 		$("[menu-name]").removeClass("active");
 	});
+	$(document).on("click",'.menu-close',function(e){
+		$(".menu-dropdown").hide();
+	});
 	$(document).on("change","[role='tabListMobile']",function(){
 		var id = $('option:selected', this).attr('tab_id');
 		$("#"+id).closest(".tab-content").find("[role='tabpanel']").removeClass("active");
 		$("#"+id).addClass("active");
+	});
+	$(document).on("click","[menu-name]",function(){
+		locationLevelId = $(this).attr("levelid");
+		locationLevelName = $(this).attr("menu-name");
+		$(this).closest("li").nextAll("li").hide();
+		onLoadLocValue();
+		onLoadAjaxCalls();
 	});
 	$(document).on("click","#getLocationDetails",function(){	
 		$(".menu-dropdown").hide();
@@ -1002,21 +1009,42 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 	}
 	function buildResult(divId,result)
 	{
-		//if(levelId != '9' || levelId != 9)
-		//{
-			levelId = parseInt(levelId) + 1;
-		//}
+		levelId = parseInt(levelId) + 1;
+		var shortName = '';
+		
 		var menu='';
 		menu+='<h4 class="panel-title text-capitalize"><b>'+divId+'</b></h4>';
 		menu+='<div class="scroller'+divId+'">';
 			menu+='<ul>';
 				for(var i in result)
 				{
+					if(levelId == 3)
+					{
+						shortName = 'D'
+					}else if(levelId == 4 || levelId == 11)
+					{
+						shortName = 'AC'
+					}else if(levelId == 10)
+					{
+						shortName = 'PC'
+					}else if(levelId == 5 && result[i].name == 'Municipality' || levelId == 12 && result[i].name == 'Municipality')
+					{
+						shortName = 'MUN'
+					}else if(levelId == 5 && result[i].name == 'Mandal' || levelId == 12 && result[i].name == 'Mandal')
+					{
+						shortName = 'M'
+					}else if(levelId == 6 && result[i].name == 'Ward' || levelId == 13 && result[i].name == 'Ward')
+					{
+						shortName = 'W'
+					}else if(levelId == 6 && result[i].name == 'Village' || levelId == 13 && result[i].name == 'Village')
+					{
+						shortName = 'V'
+					}
 					if(levelId != '6' || levelId != 6)
 					{
-						menu+='<li menu-type="'+result[i].name+'" menu-click="'+result[i].locationId+'" menu-levelname="'+divId+'" levelId="'+levelId+'" class="text-capitalize">'+result[i].locationName+'</li>';
+						menu+='<li menu-type="'+result[i].name+'" short-name="'+shortName+'" menu-click="'+result[i].locationId+'" menu-levelname="'+divId+'" levelId="'+levelId+'" class="text-capitalize">'+result[i].locationName+'</li>';
 					}else{
-						menu+='<li menu-type="'+result[i].name+'" constituencyId="'+$("#constituencyMenu li.active").attr("menu-click")+'" class="text-capitalize" menu-levelname="'+divId+'" menu-click="'+result[i].locationId+'" levelId="'+levelId+'">'+result[i].locationName+'</li>';
+						menu+='<li menu-type="'+result[i].name+'" short-name="'+shortName+'" constituencyId="'+$("#constituencyMenu li.active").attr("menu-click")+'" class="text-capitalize" menu-levelname="'+divId+'" menu-click="'+result[i].locationId+'" levelId="'+levelId+'">'+result[i].locationName+'</li>';
 					}
 				}
 			menu+='</ul>';
@@ -6143,4 +6171,3 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 		
 	});
   }
-  
