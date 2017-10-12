@@ -66,9 +66,9 @@ function departmentWiseOverView(){
 		block+='<div class="col-sm-2 m_top10">';
 			if(i == 0)
 			{
-				block+='<div style="background-color:'+departmentWiseArr[i].color+';" class="active block_style_ITC blockWiseDetails" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+				block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="active block_style_ITC blockWiseDetails" attr_block_name="'+departmentWiseArr[i].blockName+'">';
 			}else{
-				block+='<div style="background-color:'+departmentWiseArr[i].color+';" class="block_style_ITC blockWiseDetails" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+				block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="block_style_ITC blockWiseDetails" attr_block_name="'+departmentWiseArr[i].blockName+'">';
 			}
 			
 					block+='<div class="media" style="margin-left: 25px;">';
@@ -653,7 +653,8 @@ function getAPISXLR8APDetailedData(){
 		overview+='</div>';
 		
 		tableView+='<div class="white_block_ITC">';
-			tableView+='<table class="table table-bordered" id="APISXLr8APOverviewTable">';
+			tableView+='<h4 class="m_top10">APIS-XLr8AP</h4>';
+			tableView+='<table class="table table-bordered m_top20" id="APISXLr8APOverviewTable">';
 				tableView+='<thead>';
 					tableView+='<th>Batch</th>';
 					tableView+='<th style="background-color:#F8F8F8">Duration</th>';
@@ -713,7 +714,8 @@ function getCampaignsDetailedData(){
 		overview+='</div>';
 		
 		tableView+='<div class="white_block_ITC">';
-			tableView+='<table class="table table-bordered" id="campaignsOverviewBlockTable">';
+			tableView+='<h4 class="m_top10">Campaigns</h4>';
+			tableView+='<table class="table table-bordered m_top20" id="campaignsOverviewBlockTable">';
 				tableView+='<thead>';
 					tableView+='<th style="background-color:#FFFAF3">Name</th>';
 					tableView+='<th>Submited Date</th>';
@@ -773,7 +775,8 @@ function getCampusInnovationCentersDetailedData(){
 		overview+='</div>';
 		
 		tableView+='<div class="white_block_ITC">';
-			tableView+='<table class="table table-bordered" id="campusOverviewBlockTable">';
+			tableView+='<h4 class="m_top10">Campus Innovation Centers</h4>';
+			tableView+='<table class="table table-bordered m_top20" id="campusOverviewBlockTable">';
 				tableView+='<thead>';
 					tableView+='<th style="background-color:#F8F8F8">NAME OF THE UNIVERSITY OR COLLEGE</th>';
 					tableView+='<th>NAME OF THE INNOVATION CENTRE</th>';
