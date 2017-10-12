@@ -445,4 +445,8 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return null;
 	}
+	@GetMapping("/keyPerfomanceDashBoard")
+	public String keyPerfomanceDashBoard(ModelMap model){
+		return "keyPerfomanceDashBoard";
+	}
 }
