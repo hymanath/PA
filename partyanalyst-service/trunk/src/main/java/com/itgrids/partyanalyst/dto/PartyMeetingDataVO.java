@@ -37,11 +37,102 @@ public class PartyMeetingDataVO implements Serializable{
 	private Long absentCount =0L;
 	private Set<Long> attendedIds =new HashSet<Long>();
 	private Set<Long> inviteeIds =new HashSet<Long>();
+	private Set<Long> recentInviteeIds =new HashSet<Long>();
 	private Long imagesCnt = 0l;
+	private Long meetingId;
+	private Long recentMeetingInviteesCnt = 0l;
+	private Long recentImagesCnt = 0l;
+	private String attendedPerc;
+	private String abcentPerc;
+	private String NonInviteePerc;
 	public PartyMeetingDataVO(){}
 	
 	
 	
+	public String getAttendedPerc() {
+		return attendedPerc;
+	}
+
+
+
+	public void setAttendedPerc(String attendedPerc) {
+		this.attendedPerc = attendedPerc;
+	}
+
+
+
+	public String getAbcentPerc() {
+		return abcentPerc;
+	}
+
+
+
+	public void setAbcentPerc(String abcentPerc) {
+		this.abcentPerc = abcentPerc;
+	}
+
+
+
+	public String getNonInviteePerc() {
+		return NonInviteePerc;
+	}
+
+
+
+	public void setNonInviteePerc(String nonInviteePerc) {
+		NonInviteePerc = nonInviteePerc;
+	}
+
+
+
+	public Set<Long> getRecentInviteeIds() {
+		return recentInviteeIds;
+	}
+
+
+
+	public void setRecentInviteeIds(Set<Long> recentInviteeIds) {
+		this.recentInviteeIds = recentInviteeIds;
+	}
+
+
+
+	public Long getRecentImagesCnt() {
+		return recentImagesCnt;
+	}
+
+
+
+	public void setRecentImagesCnt(Long recentImagesCnt) {
+		this.recentImagesCnt = recentImagesCnt;
+	}
+
+
+
+	public Long getRecentMeetingInviteesCnt() {
+		return recentMeetingInviteesCnt;
+	}
+
+
+
+	public void setRecentMeetingInviteesCnt(Long recentMeetingInviteesCnt) {
+		this.recentMeetingInviteesCnt = recentMeetingInviteesCnt;
+	}
+
+
+
+	public Long getMeetingId() {
+		return meetingId;
+	}
+
+
+
+	public void setMeetingId(Long meetingId) {
+		this.meetingId = meetingId;
+	}
+
+
+
 	public Long getImagesCnt() {
 		return imagesCnt;
 	}

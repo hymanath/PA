@@ -4609,31 +4609,37 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		return query.list();
 	}
 	 
-	public List<Object[]> getLocationWiseStateMeetings(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid){
+	public List<Object[]> getLocationWiseStateMeetings(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid,String type){
 	       
 	       //0-meetingStatus,1-levelId,2-level,3-count
 	       StringBuilder sb = new StringBuilder();
 	       
 	       sb.append(" select model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeetingType.partyMeetingMainType.meetingType," +
-	          "model.partyMeetingType.partyMeetingTypeId,model.partyMeetingType.type,count(distinct model.partyMeetingId) from PartyMeeting model  where ");
+	          "model.partyMeetingType.partyMeetingTypeId,model.partyMeetingType.type  ");
+	       if(type != null && type.equalsIgnoreCase("recentTime")){
+	    	   sb.append(",max(model.startDate),model.partyMeetingId ");
+	       }else{
+	    	   sb.append(" ,count(distinct model.partyMeetingId) ");
+	       }
 	       
+	       sb.append(" from PartyMeeting model  where model.isActive = 'Y' ");
 	       if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
 	    	   if(locationTypeId == 2l){
-		              sb.append("  model.meetingAddress.state.stateId in (:locationValues) ");
+		              sb.append("  and model.meetingAddress.state.stateId in (:locationValues) ");
 		        }else if(locationTypeId == 4l){
-	              sb.append("  model.meetingAddress.constituency.constituencyId in (:locationValues) ");
+	              sb.append(" and  model.meetingAddress.constituency.constituencyId in (:locationValues) ");
 	            }else if(locationTypeId == 3l){
-	              sb.append("  model.meetingAddress.district.districtId in (:locationValues)");
+	              sb.append(" and  model.meetingAddress.district.districtId in (:locationValues)");
 	            }else if(locationTypeId == 5l){
-	              sb.append("  model.meetingAddress.tehsil.tehsilId in (:locationValues)"); 
+	              sb.append(" and  model.meetingAddress.tehsil.tehsilId in (:locationValues)"); 
 	            }else if(locationTypeId == 6l){
-	              sb.append("  model.meetingAddress.panchayat.panchayatId in (:locationValues)"); 
+	              sb.append(" and model.meetingAddress.panchayat.panchayatId in (:locationValues)"); 
 	            }else if(locationTypeId==10l){
-	              sb.append("  model.meetingAddress.parliamentConstituency.constituencyId in (:locationValues) "); 
+	              sb.append(" and  model.meetingAddress.parliamentConstituency.constituencyId in (:locationValues) "); 
 	            }else if(locationTypeId == 7l){
-	              sb.append("  model.meetingAddress.localElectionBody.localElectionBodyId in (:locationValues)");
+	              sb.append(" and  model.meetingAddress.localElectionBody.localElectionBodyId in (:locationValues)");
 	            }else if(locationTypeId == 8l){
-	              sb.append("  model.meetingAddress.ward.constituencyId in (:locationValues)"); 
+	              sb.append(" and  model.meetingAddress.ward.constituencyId in (:locationValues)"); 
 	            }
 	        }
 	       if(partyMeetingMainTypeid != null && partyMeetingMainTypeid.longValue() > 0l){
