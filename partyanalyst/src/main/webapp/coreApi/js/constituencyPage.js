@@ -3672,23 +3672,17 @@ function getLocationWiseTourMembersComplainceDtls(){
 		var submittedCount = 0;
 		var totalNotSubmitted=0;
 		var totalSubNotSubmmitted=0;
+		var totalSubmittedLeaderCnt = 0;
 		
-		for(var i in result){
+		  for(var i in result){
 				submittedCount = submittedCount+result[i].submitedLeaderCnt;
 				totalNotSubmitted = totalNotSubmitted+result[i].notSubmitedLeaserCnt;
 				totalSubmitted =totalSubmitted+result[i].totalSubmittedToursCnt;	
-					
-				for(var j in result[i].subList)
-				{
-						if(result[i].subList[j].isComplaince == "False"){
-						totalNonCamplains = totalNonCamplains+1;
-					}else if(result[i].subList[j].isComplaince == "True"){
-						totalCamplains =totalCamplains+1;
-					}
-				}	
+				tottalCount = tottalCount + result[i].count;//total leader
+				totalCamplains = totalCamplains + result[i].complainceCnt;
+				totalSubmittedLeaderCnt = totalSubmittedLeaderCnt + result[i].noOfLeaderCnt;
 			}
-		tottalCount =totalCamplains+totalNonCamplains;
-		
+		totalNonCamplains = totalSubmittedLeaderCnt - totalCamplains;
 		tableView+='<div class="row">';
 			tableView+='<div class="col-sm-4" style="border-right:1px solid #d3d3d3;">';
 			var headingStr = "";
@@ -3728,7 +3722,7 @@ function getLocationWiseTourMembersComplainceDtls(){
 						tableView+='<ul class="toursSlickSlider list-inline m_0">';
 						
 								for(var i in result){
-									var totalCnt= result[i].complainceCnt+result[i].nonComplainceCnt;
+									var totalCnt= result[i].count;
 									tableView+='<li style="border-right:1px solid #d3d3d3;">';
 										tableView+='<div class="media">';
 												tableView+='<div class="media-left">';
@@ -3752,7 +3746,7 @@ function getLocationWiseTourMembersComplainceDtls(){
 														tableView+='<tbody>';
 														tableView+='<tr>';
 																tableView+='<td>';
-																	tableView+='<p class="f-12">Total('+totalCnt+' * '+result[0].toursMonthId+'M)</p>';
+																	tableView+='<p class="f-12">Total<b>('+totalCnt+' * '+result[0].toursMonthId+'M)</b></p>';
 																tableView+='</td>';
 																tableView+='<td class="pull-right">'; 
 																   if (result[i].totalSubmittedToursCnt != null && result[i].totalSubmittedToursCnt>0) {
@@ -3808,8 +3802,9 @@ function getLocationWiseTourMembersComplainceDtls(){
 																	tableView+='<p class="f-12">Non-Complaince</p>';
 																tableView+='</td>';
 																tableView+='<td class="pull-right">';
-																   if (result[i].nonComplainceCnt != null && result[i].nonComplainceCnt>0) {
-																	  		tableView+='<span class="toursCompNonCompClickCls" attr_designation_id="'+result[i].designationId+'" attr_tour_filter_type="nonComplaince" style="color: #337ab7;">'+result[i].nonComplainceCnt+'</span>';
+																var nonComplainceCnt = result[i].noOfLeaderCnt-result[i].complainceCnt; // noOfLeaderCnt key contains tour submitedLeaderCnt
+																   if (nonComplainceCnt != null && nonComplainceCnt>0) {
+																	  		tableView+='<span class="toursCompNonCompClickCls" attr_designation_id="'+result[i].designationId+'" attr_tour_filter_type="nonComplaince" style="color: #337ab7;">'+nonComplainceCnt+'</span>';
 																   } else {
 																	  		tableView+='<span">0</span>';
 																   }
@@ -3910,7 +3905,12 @@ function getLocationWiseTourMembersComplainceDtls(){
 																	if(result[i].subList[j].monthList[k].complaincePer>=100){
 																	  tableView+='<td><i class="glyphicon glyphicon-ok" style="color:#3DBC93;"></i></td>';
 																	}else{
-																		tableView+='<td><i class="glyphicon glyphicon-remove" style="color:#FF0000;"></i></td>';
+																		if (result[i].subList[j].monthList[k].isTourSubmitted=='N') {
+																			tableView+='<td>-</td>';
+																		} else {
+																			tableView+='<td><i class="glyphicon glyphicon-remove" style="color:#FF0000;"></i></td>';	
+																		}
+																		
 																	}
 																}
 															} 
