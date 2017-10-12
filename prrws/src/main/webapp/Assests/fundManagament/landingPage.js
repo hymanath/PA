@@ -44,6 +44,7 @@ function getFavouriteComponents(){
 			 buildFavouriteComponentsResult(result);
 		 } else {
 			 $("#favouriteComponentDivId").html("NO Favourite Component.");
+			 onloadCallToGetAllBlockAchievent();
 		 }
 	});		
 }
@@ -55,6 +56,9 @@ function buildFavouriteComponentsResult(result) {
 			if (compnentName != null && compnentName!="PRIS" && compnentName!="DRAINS" && compnentName!="LED MONITORING" && compnentName!="FUND MANAGMENT SYSTEM" && compnentName!="ENGINEERING DEPARTMENT" && compnentName!="PANACHAYATI RAJ EXPENDITURE" &&  compnentName!="SPIKE ANALYSIS" && compnentName!="MGNREGS" && compnentName!="RURAL DEVELOPMENT" && compnentName!="RURAL WATER SUPPLY" && compnentName!="ITEC" && compnentName!="SWATCH BHARATH IHHL" && compnentName!="SWATCH BHARATH PAYMENTS") {
 			   globalComponentNameArr.push(compnentName);
 			}
+			/*if (compnentName != null && compnentName!="PRIS" && compnentName!="DRAINS" && compnentName!="LED MONITORING" && compnentName!="FUND MANAGMENT SYSTEM" && compnentName!="ENGINEERING DEPARTMENT" && compnentName!="PANACHAYATI RAJ EXPENDITURE" &&  compnentName!="SPIKE ANALYSIS" && compnentName!="MGNREGS" && compnentName!="RURAL DEVELOPMENT" && compnentName!="RURAL WATER SUPPLY" && compnentName!="ITEC" && compnentName!="SWATCH BHARATH IHHL" && compnentName!="SWATCH BHARATH PAYMENTS") {
+			   globalComponentNameArr.push(compnentName);
+			}*/
 			
 			if (result[i].name == "IT E & C") {
 				compnentName = "ITEC";
@@ -245,7 +249,11 @@ function deleteFavouriteComponent(blockName,blockId){
 			   $("#blockModalMessageDivId").modal("show");
 			   setTimeout(function(){ $("#blockModalMessageDivId").modal("hide"); }, 2000);
 			   $("."+blockName+"Color").attr("title","click to add as favourite component");
-			 	// getFavouriteComponents();
+			   var activeName = $(".block.active").attr("id");
+			   alert(activeName);
+			   if(activeName != null && activeName == "favourite"){
+				   getFavouriteComponents();
+			   }
 		 } else {
 			    alert("Something went wrong,Please try again.");
 		 }
