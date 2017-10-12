@@ -5282,7 +5282,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 							}else{
 								if(result.impactScopeList[i].subList[j].count !=null && result.impactScopeList[i].subList[j].count>0){
 									if(result.impactScopeList[i].subList[j].status == "OTHERS"){
-										str+='<h6><span class="stausWiseColor" style="background-color:'+result.impactScopeList[i].subList[j].colour+';"></span><span style="margin-left: 5px;">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;</span><span class="pull-right popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.impactScopeList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="" attr_type="alert" attr_alert_type="impactOthers" attr_otherCategory="impactOthers" attr_impactIdsArr="'+result.impactScopeList[i].id+'" attr_status_name="'+result.impactScopeList[i].subList[j].status+'" attr_total_count="'+result.impactScopeList[i].subList[j].count+'">'+result.impactScopeList[i].subList[j].count+'</span></h6>';
+										str+='<h6><span class="stausWiseColor" style="background-color:'+result.impactScopeList[i].subList[j].colour+';"></span><span style="margin-left: 5px;">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;</span><span class="pull-right popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.impactScopeList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="" attr_type="alert" attr_alert_type="impactOthers" attr_otherCategory="" attr_impactIdsArr="'+result.impactScopeList[i].id+'" attr_status_name="'+result.impactScopeList[i].subList[j].status+'" attr_total_count="'+result.impactScopeList[i].subList[j].count+'">'+result.impactScopeList[i].subList[j].count+'</span></h6>';
 									}else{
 										str+='<h6><span class="stausWiseColor" style="background-color:'+result.impactScopeList[i].subList[j].colour+';"></span><span style="margin-left: 5px;">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;</span><span class="pull-right popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.impactScopeList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="" attr_type="alert" attr_alert_type="" attr_otherCategory="" attr_impactIdsArr="'+result.impactScopeList[i].id+'" attr_status_name="'+result.impactScopeList[i].subList[j].status+'" attr_total_count="'+result.impactScopeList[i].subList[j].count+'">'+result.impactScopeList[i].subList[j].count+'</span></h6>';
 									}
@@ -6344,9 +6344,9 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 		var jsObj={
 				fromDateStr 	  	:"",
 				toDateStr		  	:"",
-				locationValuesArr 	:[1],
+				locationValuesArr 	:userAccessLevelValuesArray,
 				alertTypeIdsStr 	:alertTypeIdsStr,
-				locationTypeId		:2,
+				locationTypeId		:locationLevelId,
 				year  				:"",
 				statusIdsArr 		:statusIdsArr,
 				designationId 		:designationId,
