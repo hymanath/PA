@@ -524,6 +524,20 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
+			
+			if(impactIdsList != null && impactIdsList.size() > 0){
+				if(impactIdsList.get(0).longValue() == 5l){
+					impactIdsList.add(12l);
+				}else if(impactIdsList.get(0).longValue() == 6l){
+					impactIdsList.add(7l);
+					impactIdsList.add(9l);
+				}else if(impactIdsList.get(0).longValue() == 3l){
+					impactIdsList.add(4l);
+				}else if(impactIdsList.get(0).longValue() == 13l){
+					impactIdsList.add(14l);
+				}
+					
+			}
 			if(otherCategory != null && otherCategory.equalsIgnoreCase("candidateAssignedOthers") || (type != null && type.equalsIgnoreCase("assigned"))){
 			 alertList = alertAssignedDAO.getDesignationWiseAssignedAlerts(fromDate, toDate, locationValues, alertTypeIds, locationTypeId, year,otherCategory,statusIdsList,designationId);
 			}else if(otherCategory != null && otherCategory.equalsIgnoreCase("candidateInvolvedOthers") || (type != null && type.equalsIgnoreCase("involved"))){
