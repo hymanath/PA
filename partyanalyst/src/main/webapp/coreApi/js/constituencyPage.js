@@ -201,8 +201,7 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {	
-	
-	 $("#enrolmentYears").chosen();
+	$("#enrolmentYears").chosen();
 	//Enrolment Years
 	getEnrollmentIds();
 	//Publications	
@@ -270,8 +269,7 @@ function onLoadAjaxCalls()
 	
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
-	getDesignationWiseAlertsOverview(defaultAlertCategoryIds); 
-	//getAlertOverviewClick(defaultAlertCategoryIds);
+	getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
 	/* setTimeout(function(){ 
 		//News Block
 		getPrintMediaCountsForConstituencyPage()
@@ -884,19 +882,20 @@ function onLoadClicks()
 	});
 	//Tours Click End
 	
-	$(document).on("click",".openPostClickCls",function(){
+	$(document).on("click",".popUpDetailsClickCls",function(){
 		var deptId =  $(this).attr("attr_department_id");
 		var boardLevelId =  $(this).attr("attr_boardLevelId");
 		var type =  $(this).attr("attr_type");
 		var departmentName =  $(this).attr("attr_department_name");
 		var statusIds =  $(this).attr("attr_board_statusIds");
+		
 		if(type == "open"){
-			$("#openPostModal").modal("show");
-			$("#openPostTitleId").html(departmentName+  "  Open Posts Details");
+			$("#openModalDiv").modal("show");
+			$("#TitleId").html(departmentName+  "  Open Posts Details");
 			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
 		}else if(type == "goIssued"){
-			$("#openPostModal").modal("show");
-			$("#openPostTitleId").html(departmentName + "  G.O Issued Positions");
+			$("#openModalDiv").modal("show");
+			$("#TitleId").html(departmentName + "  G.O Issued Positions");
 			getLevelWiseGoIssuedPostions(boardLevelId,statusIds);
 			
 		}else if(type == "department"){
@@ -904,9 +903,62 @@ function onLoadClicks()
 			$("#departmentDetailsModalDivId").html(spinner);
 			$("#deptHeadingId").html(departmentName+" Details");
 			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
+		}else if(type == "positionLevel"){
+			$("#openModalDiv").modal("show");
+			$("#TitleId").html(departmentName+" Level Details");
+			getNominatedPositionWiseCandidates(boardLevelId,departmentName);
+		}else if (type == "alert"){
+			
+			var alertTypeIdsStr = $(this).attr("attr_alertTypeIdsStr");
+			var statusIds = $(this).attr("attr_statusIds");
+			var designationId = $(this).attr("attr_designationId");
+			var alertCategeryId = $(this).attr("attr_alertCategeryId");
+			var alert_type = $(this).attr("attr_alert_type");
+			var otherCategory = $(this).attr("attr_otherCategory");
+			var impactIdsArr = $(this).attr("attr_impactIdsArr");
+			var status_name = $(this).attr("attr_status_name");
+			var total_count = $(this).attr("attr_total_count");
+			$("#openModalDiv").modal("show");
+			
+			if(designationId !=0){
+				$("#TitleId").html(status_name + " Designation Wise Alerts Details  -  Total "+total_count+" ");
+			}else{
+				$("#TitleId").html(status_name + " Alerts Details  -  Total "+total_count+" ");
+			}
+			
+			
+			getAlertOverviewClick(alertTypeIdsStr,statusIds,designationId,alertCategeryId,alert_type,otherCategory,impactIdsArr,status_name,total_count);
 		}	
 	});
 	
+	$(document).on("click",".descAlertCls",function(){
+		$("#cdrModelDivId").find(".close").addClass("modalClose");
+		$("#cdrModelDivId").find(".modal-footer .btn").addClass("modalClose");
+		$("#tourDocHeadingId").html("");
+		$("#cdrModelId").html("");
+		$("#alertDestId").html("");
+		$("#sourceHeadingId").html("");
+		$("#headingNameId").html("");
+		$("#alertAttachTitId").html("");
+		$("#alertAttachImgId").html("");
+		$("#alertInvolvedCandidates").html("");
+		$("#alertAssignedCandidates").html("");
+		$("#alertCommentsDiv").html("");
+		$("#tourDocHeadingId").html("ALERT TITLE <br>");
+		$("#alertVerificationDiv").html("");
+		$("#alertVerificationDtlsDiv").html("");
+		
+		$("#alertDocHeadingId").html("");
+		$("#alertDocId").html("");
+		
+		$("#cdrModelDivId").modal("show");
+		var alertId = $(this).attr("attr_alert_id");
+		var alertStatus = $(this).attr("attr_alert_status");
+		getAlertData(alertId);
+		getAlertAssignedCandidates(alertId);    
+		getAlertStatusCommentsTrackingDetails(alertId,alertStatus);
+		getVerificationDtls(alertId);
+	});
 }
 function menuCalls(levelId,levelValue,higherLevelVal)
 {
@@ -4294,24 +4346,39 @@ function getPositionWiseMemberCount(){
 				str+='<li>';
 				if(result[i].name =="Panchayat/Ward/Division"){
 					if(locationLevelId ==2 || locationLevelId ==3 || locationLevelId ==10){
-						str+='<h3 class="" attr_boardLevelId="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].count+'</h3>';
+						str+='<h3 class="" attr_boardLevelId="'+result[i].id+'" attr_department_name="'+result[i].name+'">'+result[i].count+'</h3>';
 					str+='<p class="text-capitalize">Village/Ward</p>';
 					}else{
-						str+='<h3 class="positionLevelModalClick" attr_boardLevelId="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].count+'</h3>';
-					str+='<p class="text-capitalize">Village/Ward</p>';
+						if(result[i].count !=null && result[i].count>0){
+							str+='<h3 class="popUpDetailsClickCls" attr_boardLevelId="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_type="positionLevel">'+result[i].count+'</h3>';
+						}else{
+							str+='<h3 class=""> - </h3>';
+						}
+						
+						str+='<p class="text-capitalize">Village/Ward</p>';
 					}
 					
 				}else if(result[i].name =="Mandal/Muncipality/Corporation"){
 					if(locationLevelId ==2 || locationLevelId ==3 || locationLevelId ==10){
-						str+='<h3 class="" attr_boardLevelId="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].count+'</h3>';
+						str+='<h3 class="" attr_boardLevelId="'+result[i].id+'" attr_department_name="'+result[i].name+'">'+result[i].count+'</h3>';
 					str+='<p class="text-capitalize">'+result[i].name+'</p>';
 					}else{
-						str+='<h3 class="positionLevelModalClick" attr_boardLevelId="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].count+'</h3>';
+						if(result[i].count !=null && result[i].count>0){
+							str+='<h3 class="popUpDetailsClickCls" attr_boardLevelId="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_type="positionLevel">'+result[i].count+'</h3>';
+						}else{
+							str+='<h3 class=""> - </h3>';
+						}
+						
 					str+='<p class="text-capitalize">'+result[i].name+'</p>';
 					}
 					
 				}else{
-					str+='<h3 class="positionLevelModalClick" attr_boardLevelId="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].count+'</h3>';
+					if(result[i].count !=null && result[i].count>0){
+						str+='<h3 class="popUpDetailsClickCls" attr_boardLevelId="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_type="positionLevel">'+result[i].count+'</h3>';
+					}else{
+						str+='<h3 class=""> - </h3>';
+					}
+					
 					str+='<p class="text-capitalize">'+result[i].name+'</p>';
 				}
 					
@@ -4525,10 +4592,10 @@ function getNominatedPostStatusWiseCount(){
 				str+='<li style="background-color:#FEEE99" class="f-12"><span class="statusBox" style="background-color:#FED501"></span>TOTAL POSTS<span class="count"><b>'+totalCount+'</b></span></li>';
 				for(var i in result){
 					if(result[i].name == "GO ISSUED"){
-						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'" ></span>COMPLETED/G.O ISSUED<span class="count openPostClickCls" attr_boardLevelId="'+globalboardLevelId+'" attr_type="goIssued" attr_department_name = "overAll" attr_board_statusIds="0">'+result[i].count+'</span></li>';
+						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'" ></span>COMPLETED/G.O ISSUED<span class="count popUpDetailsClickCls" attr_boardLevelId="'+globalboardLevelId+'" attr_type="goIssued" attr_department_name = "overAll" attr_board_statusIds="0">'+result[i].count+'</span></li>';
 					}else{
 						if(result[i].name == "OPEN"){
-							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count openPostClickCls" attr_department_id="0" attr_boardLevelId="'+globalboardLevelId+'" attr_type="open" attr_department_name = "">'+result[i].count+'</span></li>';
+							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count popUpDetailsClickCls" attr_department_id="0" attr_boardLevelId="'+globalboardLevelId+'" attr_type="open" attr_department_name = "">'+result[i].count+'</span></li>';
 						}else{
 							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count"><b>'+result[i].count+'</b></span></li>';
 						}
@@ -5006,22 +5073,23 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null){	
-			return buildAlertsTable(result);
+			return buildAlertsTable(result,defaultAlertCategoryIds);
 		}else{
 			$("#alertsBlockDivId").html(noData);
 		}
 	});	
-	function buildAlertsTable(result){
+	function buildAlertsTable(result,defaultAlertCategoryIds){
 		var str='';
 		str+='<h4>Alerts Overview</h4>';
 		str+='<div class="table-responsive m_top10">';
 			str+='<table class="table-alerts">';
 				str+='<tr>';
-					str+='<td colspan="3" style="background-color:#F6F6F6;"><div class="media"><div class="media-left"><img src="coreApi/img/total_alerts.png" style="width:50px;"/></div><div class="media-body"><h4>Total <span class="text-danger">Alerts</span></h4><h2 class="m_top10">'+result.totalAlertCount+'</h2></div></div></td>';
+					str+='<td colspan="3" style="background-color:#F6F6F6;"><div class="media"><div class="media-left"><img src="coreApi/img/total_alerts.png" style="width:50px;"/></div><div class="media-body"><h4>Total <span class="text-danger">Alerts</span></h4><h2 class="m_top10 popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="0" attr_alertCategeryId="" attr_alert_type="" attr_type="alert" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="Total" attr_total_count="'+result.totalAlertCount+'">'+result.totalAlertCount+'</h2></div></div></td>';
 					if(result.subList !=null && result.subList.length>0){
 						for(var i in result.subList)
 						{
 							str+='<td colspan="3"><h4>'+result.subList[i].status+'<br/>Alerts</h4></td>';
+							
 						}
 					}
 				str+='</tr>';
@@ -5040,7 +5108,8 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 								str+='<div class="media-body">';
 									str+='<p>'+result.alertTypeList[i].status+' Alerts</p>';
 									if(result.alertTypeList[i].count !=null && result.alertTypeList[i].count>0){
-										str+='<h3 class="m_top5">'+result.alertTypeList[i].count+'&nbsp;&nbsp;<small style="font-size:10px;" class="text-success text_bold">'+result.alertTypeList[i].percentage+'%</small></h3>';
+										
+										str+='<h3 class="m_top5 popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="0" attr_alertCategeryId=""  attr_alert_type="" attr_type="alert" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result.alertTypeList[i].status+'" attr_total_count="'+result.alertTypeList[i].count+'">'+result.alertTypeList[i].count+'&nbsp;&nbsp;<small style="font-size:10px;" class="text-success text_bold">'+result.alertTypeList[i].percentage+'%</small></h3>';
 									}else{
 										str+='<h3 class="m_top5"> - </h3>';
 									}
@@ -5054,7 +5123,22 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 					if(result.subList !=null && result.subList.length>0){
 						for(var i in result.subList)
 						{
-							str+='<td colspan="3"><h4>'+result.subList[i].count+'<small class="pull-right text-success text_bold m_top5">'+result.subList[i].percentage+' %</small></h4></td>';
+							if(result.subList[i].status == "Others"){
+								if(result.subList[i].count !=null && result.subList[i].count>0){
+									str+='<td colspan="3"><h4 class="popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_alert_type="categoryOthers" attr_type="alert"  attr_otherCategory="categoryOthers" attr_impactIdsArr="" attr_status_name="'+result.subList[i].status+'" attr_total_count="'+result.subList[i].count+'">'+result.subList[i].count+'<small class="pull-right text-success text_bold m_top5">'+result.subList[i].percentage+' %</small></h4></td>';
+								}else{
+									str+='<td colspan="3"><h4> - </h4></td>';
+								}
+								
+							}else{
+								if(result.subList[i].count !=null && result.subList[i].count>0){
+									str+='<td colspan="3"><h4 class="popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert" attr_alert_type ="" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result.subList[i].status+'" attr_total_count="'+result.subList[i].count+'">'+result.subList[i].count+'<small class="pull-right text-success text_bold m_top5">'+result.subList[i].percentage+' %</small></h4></td>';
+								}else{
+									str+='<td colspan="3"><h4> - </h4></td>';
+								}
+								
+							}
+							
 						}
 					}
 				str+='</tr>';
@@ -5068,11 +5152,20 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 										str+='<div style="padding:5px;font-size:12px;background-color:'+result.subList1[i].colour+'">';
 											str+='<div class="row">';
 												str+='<div class="col-sm-5">'+result.subList1[i].status+'</div>';
-												if(result.subList1[i].count !=null && result.subList1[i].count>0){
-													str+='<div class="col-sm-2 text_bold">'+result.subList1[i].count+'</div>';
+												if(result.subList1[i].status == "OTHERS"){
+													if(result.subList1[i].count !=null && result.subList1[i].count>0){
+														str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList1[i].id+'" attr_designationId="0" attr_alertCategeryId="" attr_type="alert"  attr_alert_type="categoryOthers" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result.subList1[i].status+'" attr_total_count="'+result.subList1[i].count+'">'+result.subList1[i].count+'</div>';
+													}else{
+														str+='<div class="col-sm-2 text_bold"> - </div>';
+													}
 												}else{
-													str+='<div class="col-sm-2 text_bold"> - </div>';
+													if(result.subList1[i].count !=null && result.subList1[i].count>0){
+														str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList1[i].id+'" attr_designationId="0" attr_alertCategeryId="" attr_type="alert" attr_alert_type="" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result.subList1[i].status+'" attr_total_count="'+result.subList1[i].count+'">'+result.subList1[i].count+'</div>';
+													}else{
+														str+='<div class="col-sm-2 text_bold"> - </div>';
+													}
 												}
+												
 												
 												
 												if(result.subList1[i].percentage !=null && result.subList1[i].percentage>0){
@@ -5100,11 +5193,40 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 												str+='<div style="padding:5px;font-size:12px;background-color:'+result.subList[i].subList[j].colour+'">';
 													str+='<div class="row">';
 														str+='<div class="col-sm-5">'+result.subList[i].subList[j].status+'</div>';
-														if(result.subList[i].subList[j].count !=null && result.subList[i].subList[j].count>0){
-															str+='<div class="col-sm-2 text_bold">'+result.subList[i].subList[j].count+'</div>';
+														
+														if(result.subList[i].status == "Others"){
+															if(result.subList[i].subList[j].status =="Others"){
+																if(result.subList[i].subList[j].count !=null && result.subList[i].subList[j].count>0){
+																	str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert"  attr_alert_type="categoryOthers" attr_otherCategory="categoryOthers" attr_impactIdsArr="" attr_status_name="'+result.subList[i].subList[j].status+'" attr_total_count="'+result.subList[i].subList[j].count+'">20</div>';
+																}else{
+																	str+='<div class="col-sm-2"> -</div>';
+																}
+															}else{
+																if(result.subList[i].subList[j].count !=null && result.subList[i].subList[j].count>0){
+																	str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert" attr_alert_type="" attr_otherCategory="categoryOthers" attr_impactIdsArr="" attr_status_name="'+result.subList[i].subList[j].status+'" attr_total_count="'+result.subList[i].subList[j].count+'">5</div>';
+																}else{
+																	str+='<div class="col-sm-2"> -</div>';
+																}
+															}
+															
 														}else{
-															str+='<div class="col-sm-2"> - </div>';
+															if(result.subList[i].subList[j].status =="Others"){
+																if(result.subList[i].subList[j].count !=null && result.subList[i].subList[j].count>0){
+																	str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert" attr_alert_type="categoryOthers" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result.subList[i].subList[j].status+'" attr_total_count="'+result.subList[i].subList[j].count+'">2</div>';
+																}else{
+																	str+='<div class="col-sm-2"> -</div>';
+																}
+															}else{
+																if(result.subList[i].subList[j].count !=null && result.subList[i].subList[j].count>0){
+																	str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert" attr_alert_type="" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result.subList[i].subList[j].status+'" attr_total_count="'+result.subList[i].subList[j].count+'">'+result.subList[i].subList[j].count+'</div>';
+																}else{
+																	str+='<div class="col-sm-2"> -</div>';
+																}
+															}
+															
 														}
+														
+														
 														if(result.subList[i].subList[j].percentage !=null && result.subList[i].subList[j].percentage>0){
 															str+='<div class="col-sm-5 text_bold"><p class="pull-right">'+result.subList[i].subList[j].percentage.toFixed(1)+' %</p></div>';
 														}else{
@@ -5129,10 +5251,47 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 				{
 					str+='<li>';
 						str+='<h4 class="panel-title">'+result.impactScopeList[i].status+'</h4>';
-						str+='<h5>'+result.impactScopeList[i].count+'&nbsp;&nbsp;<small class="f-10"> '+result.impactScopeList[i].percentage+'%</small></h5>';
+						if(result.impactScopeList[i].status =="Others"){
+							if(result.impactScopeList[i].count !=null && result.impactScopeList[i].count>0){
+								str+='<h5 class="popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="0" attr_alertCategeryId="" attr_type="alert" attr_alert_type="" attr_otherCategory="impactOthers" attr_impactIdsArr="" attr_status_name="'+result.impactScopeList[i].status+'" attr_total_count="'+result.impactScopeList[i].count+'">'+result.impactScopeList[i].count+'&nbsp;&nbsp;<small class="f-10"> '+result.impactScopeList[i].percentage+'%</small></h5>';
+							}else{
+								str+='<h5 > - </h5>';
+							}
+							
+						}else{
+							if(result.impactScopeList[i].count !=null && result.impactScopeList[i].count>0){
+								str+='<h5 class="popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="0" attr_alertCategeryId="" attr_type="alert" attr_alert_type="" attr_otherCategory="" attr_impactIdsArr="'+result.impactScopeList[i].id+'" attr_status_name="'+result.impactScopeList[i].status+'" attr_total_count="'+result.impactScopeList[i].count+'">'+result.impactScopeList[i].count+'&nbsp;&nbsp;<small class="f-10"> '+result.impactScopeList[i].percentage+'%</small></h5>';
+							}else{
+								str+='<h5 > - </h5>';
+							}
+							
+						}
+						
+						
 						for(var j in result.impactScopeList[i].subList){
 							str+='<hr style="margin-top:8px;margin-bottom:8px"/>';
-							str+='<h6><span class="stausWiseColor" style="background-color:'+result.impactScopeList[i].subList[j].colour+';"></span><span style="margin-left: 5px;">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;</span><span class="pull-right">'+result.impactScopeList[i].subList[j].count+'</span></h6>';
+							if(result.impactScopeList[i].status =="Other"){
+								
+								if(result.impactScopeList[i].subList[j].count !=null && result.impactScopeList[i].subList[j].count>0){
+									
+									str+='<h6><span class="stausWiseColor" style="background-color:'+result.impactScopeList[i].subList[j].colour+';"></span><span style="margin-left: 5px;">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;</span><span class="pull-right popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="0" attr_alertCategeryId="" attr_type="alert" attr_alert_type="impactOthers" attr_otherCategory="impactOthers" attr_impactIdsArr="" attr_status_name="'+result.impactScopeList[i].subList[j].status+'" attr_total_count="'+result.impactScopeList[i].subList[j].count+'">'+result.impactScopeList[i].subList[j].count+'</span></h6>';
+								}else{
+									str+='<h6><span class="stausWiseColor" style="background-color:'+result.impactScopeList[i].subList[j].colour+';"></span><span style="margin-left: 5px;">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;</span> -</h6>';
+								}
+								
+							}else{
+								if(result.impactScopeList[i].subList[j].count !=null && result.impactScopeList[i].subList[j].count>0){
+									if(result.impactScopeList[i].subList[j].status == "OTHERS"){
+										str+='<h6><span class="stausWiseColor" style="background-color:'+result.impactScopeList[i].subList[j].colour+';"></span><span style="margin-left: 5px;">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;</span><span class="pull-right popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.impactScopeList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="" attr_type="alert" attr_alert_type="impactOthers" attr_otherCategory="impactOthers" attr_impactIdsArr="'+result.impactScopeList[i].id+'" attr_status_name="'+result.impactScopeList[i].subList[j].status+'" attr_total_count="'+result.impactScopeList[i].subList[j].count+'">'+result.impactScopeList[i].subList[j].count+'</span></h6>';
+									}else{
+										str+='<h6><span class="stausWiseColor" style="background-color:'+result.impactScopeList[i].subList[j].colour+';"></span><span style="margin-left: 5px;">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;</span><span class="pull-right popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.impactScopeList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="" attr_type="alert" attr_alert_type="" attr_otherCategory="" attr_impactIdsArr="'+result.impactScopeList[i].id+'" attr_status_name="'+result.impactScopeList[i].subList[j].status+'" attr_total_count="'+result.impactScopeList[i].subList[j].count+'">'+result.impactScopeList[i].subList[j].count+'</span></h6>';
+									}
+								}else{
+									str+='<h6><span class="stausWiseColor" style="background-color:'+result.impactScopeList[i].subList[j].colour+';"></span><span style="margin-left: 5px;">'+result.impactScopeList[i].subList[j].status+' &nbsp;&nbsp;</span> -</h6>';
+								}
+							}
+							
+							
 						}
 					str+='</li>';
 				}
@@ -5621,18 +5780,8 @@ function getPartyWiseMPandMLACandidatesCounts(){
 		
 	});	
 }
-
-
-	$(document).on("click",".positionLevelModalClick",function(){
-		var boardLevelId =  $(this).attr("attr_boardLevelId");
-		var name =  $(this).attr("attr_name");
-		$("#positionLevelModal").modal("show");
-		$("#postionHeadingId").html(name+"  Level Details");
-		getNominatedPositionWiseCandidates(boardLevelId,name);
-	});
-	
   function getNominatedPositionWiseCandidates(boardLevelId,name){
-	  $("#positionLevelDetailsId").html(spinner);
+	  $("#openPostDetailsModalDivId").html(spinner);
 	var jsObj={
       "fromDateStr" 		:"",
       "toDateStr"			:"",
@@ -5683,7 +5832,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
-		$("#positionLevelDetailsId").html(str);
+		$("#openPostDetailsModalDivId").html(str);
 			$("#dataTablePositionLevelId").dataTable({
 			"iDisplayLength": 10,
 			"aaSorting": [],
@@ -5763,7 +5912,7 @@ function getLevelWisePostsOverView(){
 								str+='</td>';
 								str+='<td>';
 								if(result[i].goIsuuedCount !=null && result[i].goIsuuedCount>0){
-									str+='<span class="openPostClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="4">'+result[i].goIsuuedCount+'</span>';
+									str+='<span class="popUpDetailsClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="4">'+result[i].goIsuuedCount+'</span>';
 								}else{
 									str+='<span class="" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="4">'+result[i].goIsuuedCount+'</span>';
 								}
@@ -5782,7 +5931,7 @@ function getLevelWisePostsOverView(){
 								str+='</td>';
 								str+='<td>';
 								if(result[i].openCount !=null && result[i].openCount>0){
-									str+='<span class="openPostClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="open" attr_department_name = "'+result[i].board+' Level" attr_department_id="0">'+result[i].openCount+'</span>';
+									str+='<span class="popUpDetailsClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="open" attr_department_name = "'+result[i].board+' Level" attr_department_id="0">'+result[i].openCount+'</span>';
 								}else{
 									str+='<span class="" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="open" attr_department_name = "'+result[i].board+' Level" attr_department_id="0">'+result[i].openCount+'</span>';
 								}
@@ -5895,7 +6044,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 					for(var i in result){
 						str+='<tr>';
 							if(type =="open"){
-								str+='<td attr_department_name = "'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="'+globalboardLevelId+'" class="openPostClickCls" attr_type="department" style="color: #337ab7;font-weight:normaltext-decoration:none;">'+result[i].name+'</td>';
+								str+='<td attr_department_name = "'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="'+globalboardLevelId+'" class="popUpDetailsClickCls" attr_type="department" style="color: #337ab7;font-weight:normaltext-decoration:none;">'+result[i].name+'</td>';
 							}else{
 								str+='<td>'+result[i].name+'</td>';
 							}
@@ -6053,13 +6202,13 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result != null && result.length >0){
-		return buildDesignationWiseAlertsOverview(result);
+		return buildDesignationWiseAlertsOverview(result,defaultAlertCategoryIds);
 		}else {
 			$("#alertsDeignBlockDivId").html("No Data Available");
 		}
 	});	
 	
-		function buildDesignationWiseAlertsOverview(result){
+		function buildDesignationWiseAlertsOverview(result,defaultAlertCategoryIds){
 			var str='';
 			
 			str+='<h4>Designation wise Alerts Overview</h4>';
@@ -6099,18 +6248,54 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 							for(var i in result){
 								str+='<tr>';
 								str+='<td id='+result[i].id+'>'+result[i].status+'</td>';
-								str+='<td>'+result[i].totalAlertCount+'</td>';
-								str+='<td>'+result[i].alertCount+'</td>';
-								str+='<td>'+result[i].percentage1+'%</td>';
-								for(var j in result[i].subList){
-									str+='<td>'+result[i].subList[j].count+'</td>';
-									str+='<td>'+result[i].subList[j].percentage+'%</td>';
+								if(result[i].totalAlertCount !=null && result[i].totalAlertCount>0){
+									str+='<td class="popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="'+result[i].id+'" attr_alertCategeryId="" attr_type="alert" attr_alert_type="total" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result[i].status+'" attr_total_count="'+result[i].totalAlertCount+'">'+result[i].totalAlertCount+'</td>';
+								}else{
+									str+='<td> - </td>';
 								}
-								str+='<td>'+result[i].count+'</td>';
+								
+								if(result[i].count !=null && result[i].count>0){
+									str+='<td class="popUpDetailsClickCls text-center" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="'+result[i].id+'" attr_alertCategeryId="" attr_type="alert" attr_alert_type="involved" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result[i].status+'" attr_total_count="'+result[i].count+'">'+result[i].count+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								str+='<td>'+result[i].percentage1+'%</td>';
+								for(var j in result[i].subList1){
+									if(result[i].subList1[j].count !=null && result[i].subList1[j].count>0){
+										if(result[i].subList1[j].status == "OTHERS"){
+											str+='<td class="popUpDetailsClickCls text-center" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="'+result[i].id+'" attr_alertCategeryId="" attr_type="alert" attr_alert_type="involved" attr_otherCategory="candidateInvolvedOthers" attr_impactIdsArr="" attr_status_name="'+result[i].status+' ('+result[i].subList1[j].status+')" attr_total_count="'+result[i].subList1[j].count+'">'+result[i].subList1[j].count+'</td>';
+										}else{
+											str+='<td class="popUpDetailsClickCls text-center" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result[i].subList1[j].id+'" attr_designationId="'+result[i].id+'" attr_alertCategeryId="" attr_type="alert" attr_alert_type="involved" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result[i].status+' ('+result[i].subList1[j].status+')" attr_total_count="'+result[i].subList1[j].count+'">'+result[i].subList1[j].count+'</td>';
+										}
+										
+									}else{
+										str+='<td> - </td>';
+									}
+									
+									str+='<td>'+result[i].subList1[j].percentage+'%</td>';
+								}
+								
+								if(result[i].alertCount !=null && result[i].alertCount>0){
+									str+='<td class="popUpDetailsClickCls text-center" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="'+result[i].id+'" attr_alertCategeryId="" attr_type="alert" attr_alert_type="assigned" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result[i].status+'" attr_total_count="'+result[i].alertCount+'">'+result[i].alertCount+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
 								str+='<td>'+result[i].percentage+'</td>';
-								for(var k in result[i].subList1){
-									str+='<td>'+result[i].subList1[k].count+'</td>';
-									str+='<td>'+result[i].subList1[k].percentage+'%</td>';
+								for(var k in result[i].subList){
+									if(result[i].subList[k].count !=null && result[i].subList[k].count>0){
+										if(result[i].subList[k].status =="OTHERS"){
+											str+='<td class="popUpDetailsClickCls text-center" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="'+result[i].id+'" attr_alertCategeryId="" attr_type="alert" attr_alert_type="assigned" attr_otherCategory="candidateAssignedOthers" attr_impactIdsArr="" attr_status_name="'+result[i].status+' ('+result[i].subList[k].status+')" attr_total_count="'+result[i].subList[k].count+'">'+result[i].subList[k].count+'</td>';
+										}else{
+											str+='<td class="popUpDetailsClickCls text-center" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result[i].subList[k].id+'" attr_designationId="'+result[i].id+'" attr_alertCategeryId="" attr_type="alert" attr_alert_type="assigned" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result[i].status+' ('+result[i].subList[k].status+')" attr_total_count="'+result[i].subList[k].count+'">'+result[i].subList[k].count+'</td>';
+										}
+										
+									}else{
+										str+='<td> - </td>';
+									}
+									
+									str+='<td>'+result[i].subList[k].percentage+'%</td>';
 								}
 								str+='</tr>';
 							}
@@ -6128,20 +6313,47 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 			});
 		}
   }
-  function getAlertOverviewClick(defaultAlertCategoryIds){
+  function getAlertOverviewClick(alertTypeIds,statusIds,designationId,alertCategeryId,alert_type,otherCategory,impactIds,status_name,total_count){
+		$("#openPostDetailsModalDivId").html(spinner);
+		var statusIdsArr=[];
+		var alertCategeryIdsArr=[];
+		var impactIdsArr=[];
+		var impactIdsArr=[];
+		var alertTypeIdsStr=[];
+		
+		if(statusIds == "" || statusIds == 0){
+			statusIdsArr=[];
+		}else{
+			statusIdsArr.push(statusIds)
+		}
+		
+		if(alertCategeryId == "" || alertCategeryId == 0){
+			alertCategeryIdsArr=[];
+		}else{
+			alertCategeryIdsArr.push(alertCategeryId)
+		}
+		
+		if(impactIds == "" || impactIds == 0){
+			impactIdsArr=[];
+		}else{
+			impactIdsArr.push(impactIds)
+		}
+		
+		alertTypeIdsStr.push(alertTypeIds)
+		
 		var jsObj={
 				fromDateStr 	  	:"",
 				toDateStr		  	:"",
 				locationValuesArr 	:[1],
-				alertTypeIdsStr 	:defaultAlertCategoryIds,
+				alertTypeIdsStr 	:alertTypeIdsStr,
 				locationTypeId		:2,
 				year  				:"",
-				statusIdsArr :[],
-				designationId : 0,
-				alertCategeryIdsArr :[],
-				type : "",//involved,assigned,categoryOthers,impactOthers
-				otherCategory: "",//categoryOthers,impactOthers,candidateAssignedOthers,candidateInvolvedOthers,
-				impactIdsArr :[]
+				statusIdsArr 		:statusIdsArr,
+				designationId 		:designationId,
+				alertCategeryIdsArr :alertCategeryIdsArr,
+				type 				:alert_type,//involved,assigned,categoryOthers,impactOthers
+				otherCategory		:otherCategory,//categoryOthers,impactOthers,candidateAssignedOthers,candidateInvolvedOthers,
+				impactIdsArr 		:impactIdsArr
 			}
 		 $.ajax({
 	      type : "POST",
@@ -6149,8 +6361,90 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 	      dataType : 'json',
 	      data : {task :JSON.stringify(jsObj)}
 	    }).done(function(result){
-			
-		});	
+			if(result != null && result.length > 0){
+				return buildAlertDtls(result);   
+			}else{
+				$("#openPostDetailsModalDivId").html(noData);
+			}
+		});
+			function buildAlertDtls(result){
+				var str='';
+				str+='<div class="table-responsive">';
+				if($(window).width() < 800)
+				{
+					str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed tableAlignment" id="alertDtlsTabId">';   
+				}else{
+					str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed tableAlignment" id="alertDtlsTabId">'; 
+				}  
+				str+='<thead>';
+					str+='<tr>';
+					 str+='<th>Alert Source</th>';
+					 str+='<th>Title</th>';
+					 str+='<th>Created Date</th>';
+					 str+='<th>Last Updated Date</th>';
+					 str+='<th>Current Status</th>'	 
+					 str+='<th>LAG Days</th>';
+					 str+='<th>Alert Impact Level</th>';
+					 str+='<th>Location</th>';
+					 str+='</tr>';
+				 str+='</thead>';
+				 str+='<tbody>';
+				 for(var i in result){
+					str+='<tr>';
+					if(result[i].source != null && result[i].source.length > 0){
+						str+='<td>'+result[i].source+'</td>';         
+					}else{
+						str+='<td> - </td>';     
+					}
+					if(result[i].title != null && result[i].title.length > 0){
+						str+='<td class="descAlertCls" style="cursor:pointer;" attr_alert_status="'+result[i].status+'" attr_alert_id="'+result[i].id+'"><strong><u>'+result[i].title+'</u></strong></td>';         
+					}else{
+						str+='<td> - </td>';     
+					}
+					if(result[i].createdDate != null && result[i].createdDate.length > 0){
+						str+='<td>'+result[i].createdDate+'</td>';      
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].updatedDate != null && result[i].updatedDate.length > 0){
+						str+='<td>'+result[i].updatedDate+'</td>';      
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].status != null && result[i].status.length > 0){
+						str+='<td>'+result[i].status+'</td>';      
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].interval != null){
+						str+='<td>'+(parseInt(result[i].interval)-parseInt(1))+'</td>';            
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].alertLevel != null && result[i].alertLevel.length > 0){
+						str+='<td>'+result[i].alertLevel+'</td>';               
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].location != null && result[i].location.length > 0){
+						str+='<td>'+result[i].location+'</td>';      
+					}else{
+						str+='<td> - </td>';        
+					}
+					//str+='<td><button type="button" class="btn btn-default btn-success descAlertCls" attr_alert_id="'+result[i].id+'">Alert Details</button></td>';  
+					
+					str+='</tr>';
+					}
+					 str+='</tbody>';
+					 str+='</table>';
+					 str+='</div>';
+				 $("#openPostDetailsModalDivId").html(str);          
+				  $("#alertDtlsTabId").dataTable({  
+						 "aaSorting": [[ 4, "desc" ]], 
+						"iDisplayLength" : 10,
+						"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
+					 }); 
+			}
 	  }
   function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 	$("#locationWiseMeetingsCount").html(spinner);
