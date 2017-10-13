@@ -99,6 +99,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<LocationAlertVO> locationAlertVOList;
 	private List<AlertCoreDashBoardVO> alertVOList;
 	private PartyMeetingDataVO partyMeetingDataVO;
+	private List<PartyMeetingDataVO> locationParMetingVOList;
 	
 	
 	public PartyMeetingDataVO getPartyMeetingDataVO() {
@@ -413,6 +414,12 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	}
 	public void setAlertVOList(List<AlertCoreDashBoardVO> alertVOList) {
 		this.alertVOList = alertVOList;
+	}
+	public List<PartyMeetingDataVO> getLocationParMetingVOList() {
+		return locationParMetingVOList;
+	}
+	public void setLocationParMetingVOList(List<PartyMeetingDataVO> locationParMetingVOList) {
+		this.locationParMetingVOList = locationParMetingVOList;
 	}
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
@@ -1300,6 +1307,34 @@ public String getElectionInformationLocationWise(){
 		 }catch(Exception e){
 			 successMsg = "failure";
 			 LOG.error("Exception Occured in getAlertOverviewClick() method, Exception - ",e);
+		 }
+		 return Action.SUCCESS;
+	 }
+	
+	public String getLocationWiseMeetingStatusDetails(){
+		 try{
+			  RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+				if(regVo!=null && regVo.getRegistrationID()!=null){
+					Long userId = regVo.getRegistrationID();
+				}
+				jObj = new JSONObject(getTask());
+				String fromDateStr = jObj.getString("fromDateStr");
+				String toDateStr = jObj.getString("toDateStr");
+				Long searchLocationId = jObj.getLong("searchLocationId");
+				JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
+				List<Long> locationValues = new ArrayList<Long>();
+					for (int i = 0; i < locationValuesArr.length(); i++){
+						locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
+					} 
+				
+				 Long partyMeetinLevelId = jObj.getLong("partyMeetinLevelId");
+				 Long meetingTypeId = jObj.getLong("meetingTypeId");
+				
+				 locationParMetingVOList = meetingLocationDashboardService.getLocationWiseMeetingStatusDetails(searchLocationId,locationValues,fromDateStr,toDateStr,meetingTypeId,partyMeetinLevelId);
+				
+		 }catch(Exception e){
+			 successMsg = "failure";
+			 LOG.error("Exception Occured in getDesignationWiseAlertsOverview() method, Exception - ",e);
 		 }
 		 return Action.SUCCESS;
 	 }

@@ -18254,5 +18254,10 @@
          <param name="root">alertVOList</param>
        </result>
    </action>
+   <action name="getLocationWiseMeetingStatusDetailsAction" class="locationDashboardAction" method="getLocationWiseMeetingStatusDetails">
+		<result type="json" name="success">    
+			<param name="root">locationParMetingVOList</param>
+		</result>        
+   </action>
  </package>
 </struts>
