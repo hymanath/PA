@@ -5,8 +5,25 @@ var blockNames = ['DISTRICT','CONSTITUENCY','MANDAL'];
 var globalStateIdForSelectBox = 21;
 var glStartDate = moment().startOf('month').format("DD/MM/YYYY");
 var glEndDate = moment().format("DD/MM/YYYY");
-getSizeForRank(0,0,"");
-function getSizeForRank(min,max,status){  
+var selectedType = $("#spikeReportTypeId li.active").attr("attr_type");
+
+onLoadCalls();
+function onLoadCalls()
+{
+	selectedType = $("#spikeReportTypeId li.active").attr("attr_type");
+	getSizeForRank(0,0,"",selectedType);
+	initializeGlobalIds();
+	onRequestCall();   
+	collapseBlock();
+}
+$(document).on("click","#spikeReportTypeId li",function(){
+	$("#tourSlider").rangeSlider("destroy");
+	var type = $(this).attr("attr_type")
+	$("#spikeReportTypeId li").removeClass("active");
+	$(this).addClass("active");
+	onLoadCalls()
+});
+function getSizeForRank(min,max,status,selectedType){  
 	var diseasesIdArr=[];       
 	diseasesIdArr.push(1);
 	diseasesIdArr.push(2);
@@ -15,7 +32,8 @@ function getSizeForRank(min,max,status){
 		toDate : glEndDate,   
 		diseasesIdList : diseasesIdArr,
 		minVal : min,
-		maxVal : max
+		maxVal : max,
+		type : selectedType
     }
     $.ajax({
       url : "getLocationDtlsRankWise",           
@@ -55,7 +73,7 @@ function initializeRank(maxVal,status){
 		}
 	}
 }
-initializeGlobalIds();
+
 function initializeGlobalIds(){
 	$(document).on("click","#getRangeId",function(){
 		initializeSliderRange();
@@ -115,7 +133,7 @@ $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
 	}
 	$('.calendar_active_cls li').removeClass("active");
 	$("#defaultButtonId").addClass("active");
-	getSizeForRank(0,0,"dateChange");
+	getSizeForRank(0,0,"dateChange",selectedType);
 	onRequestCall();
 	
 });
@@ -134,7 +152,7 @@ $(document).on('click','.calendar_active_cls li', function(){
 	
 });
 
-onRequestCall();   
+
 function onRequestCall(){
 	getCaseCountDiseasesWise();
 	getLocationDtlsRankWise(0,0);
@@ -153,13 +171,13 @@ function onRequestCall(){
 	
 	for(var i in blockNames){  
 		if(blockNames[i] == 'DISTRICT'){ 
-			getCaseCountLocationWise(3,blockNames[i],"Districts",0);    
+			getCaseCountLocationWise(3,blockNames[i],"Districts",0,selectedType);    
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames");
 		}else if(blockNames[i] == 'CONSTITUENCY'){
 			$("#constLevelConstNames").html('');   
 			$("#constLevelConstNames").trigger('chosen:updated');  
 			
-			getCaseCountLocationWise(4,blockNames[i],"Districts",0);
+			getCaseCountLocationWise(4,blockNames[i],"Districts",0,selectedType);
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames");
 		}else if(blockNames[i] == 'MANDAL'){
 			$("#mandalLevelConstNames").html('');     
@@ -167,7 +185,7 @@ function onRequestCall(){
 			$("#mandalLevelMandalNames").html('');             
 			$("#mandalLevelMandalNames").trigger('chosen:updated');
 			
-			getCaseCountLocationWise(5,blockNames[i],"Districts",0);
+			getCaseCountLocationWise(5,blockNames[i],"Districts",0,selectedType);
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames");
 		}
 	}
@@ -200,13 +218,15 @@ function initializeMandalBlock(){
 	$("[table-menu='MANDAL'] li:first-child").addClass("active");
 }
 function getCaseCountDiseasesWise(){
+	$("#totalCasesId,#todayTotalCasesId,#dengueCountId,#denguePercentId,#dengueTodayId,#malariaCountId,#malariaPercentId,#malariaTodayId").html(spinner);
 	var diseasesIdArr=[];
-	diseasesIdArr.push(1);  
-	diseasesIdArr.push(2);
+		diseasesIdArr.push(1);  
+		diseasesIdArr.push(2);
 	var json = {
 		fromDate : glStartDate,
 		toDate : glEndDate, 
-		diseasesIdList : diseasesIdArr
+		diseasesIdList : diseasesIdArr,
+		type : selectedType
     }
     $.ajax({
       url : "getCaseCountDiseasesWise",       
@@ -248,7 +268,8 @@ function getLocationDtlsRankWise(min,max){
 		toDate : glEndDate,   
 		diseasesIdList : diseasesIdArr,
 		minVal : min,
-		maxVal : max
+		maxVal : max,
+		type : selectedType
     }
     $.ajax({
       url : "getLocationDtlsRankWise",           
@@ -321,7 +342,8 @@ function getCaseCountDateWise(dayType){
 		fromDate : glStartDate,  
 		toDate : glEndDate,   
 		diseasesIdList : diseasesIdArr,
-		rangeType : dayType            
+		rangeType : dayType,
+		type : selectedType
     }
     $.ajax({
       url : "getCaseCountDateWise",           
@@ -397,7 +419,7 @@ $(document).on('click','[table-menu-active] li',function(){
 	$(this).closest("ul").find("li").removeClass("active");
 	$(this).addClass("active");
 });
-collapseBlock();                  
+          
 function collapseBlock(){
 	var collapse='';
 	if(blockNames != null){
@@ -510,15 +532,16 @@ function collapseBlock(){
 	}
 	$("#levelBlock").html(collapse);
 	initializeClickEventOnTableDiv();
+	
 	for(var i in blockNames){
 		if(blockNames[i] == 'DISTRICT'){
-			getCaseCountLocationWise(3,blockNames[i],"Districts",0);    
+			getCaseCountLocationWise(3,blockNames[i],"Districts",0,selectedType);    
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames");
 		}else if(blockNames[i] == 'CONSTITUENCY'){
-			getCaseCountLocationWise(4,blockNames[i],"Districts",0);
+			getCaseCountLocationWise(4,blockNames[i],"Districts",0,selectedType);
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames");
 		}else if(blockNames[i] == 'MANDAL'){
-			getCaseCountLocationWise(5,blockNames[i],"Districts",0);
+			getCaseCountLocationWise(5,blockNames[i],"Districts",0,selectedType);
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames");
 		}
 	}
@@ -544,10 +567,10 @@ function initializeClickEventOnTableDiv(){
 		if(blockLevel == 'DISTRICT'){
 			if(filterType == "Districts"){
 				$("#distLevelDistrictNames").attr("attr_filter_type","Districts");
-				getCaseCountLocationWise(3,blockLevel,filterType,0);
+				getCaseCountLocationWise(3,blockLevel,filterType,0,selectedType);
 			}else{
 				$("#distLevelParliamentNames").attr("attr_filter_type","Parliaments");
-				getCaseCountLocationWise(10,blockLevel,filterType,0);
+				getCaseCountLocationWise(10,blockLevel,filterType,0,selectedType);
 			}
 		}else if(blockLevel == 'CONSTITUENCY'){
 			if(filterType == "Districts"){
@@ -559,7 +582,7 @@ function initializeClickEventOnTableDiv(){
 				$("#constLevelParliaNames").attr("attr_filter_type","Parliaments");
 				$("#constLevelConstNames").attr("attr_filter_type","Parliaments");
 			}
-			getCaseCountLocationWise(4,blockLevel,filterType,0);
+			getCaseCountLocationWise(4,blockLevel,filterType,0,selectedType);
 		}else if(blockLevel == 'MANDAL'){
 			if(filterType == "Districts"){
 				$("#mandalLevelDistNames").attr("attr_filter_type","Districts");
@@ -572,7 +595,7 @@ function initializeClickEventOnTableDiv(){
 				$("#mandalLevelConstNames").attr("attr_filter_type","Parliaments");
 				$("#mandalLevelMandalNames").attr("attr_filter_type","Parliaments");
 			}
-			getCaseCountLocationWise(5,blockLevel,filterType,0);
+			getCaseCountLocationWise(5,blockLevel,filterType,0,selectedType);
 		}
 		//DISTRICT   
 		if(blockLevel == 'DISTRICT' && filterType == "Parliaments"){
@@ -717,14 +740,14 @@ function initializeClickEventOnTableDiv(){
 		var blockName = $("#distLevelDistrictNames").attr("attr_block_name");
 		var filterType = $("#distLevelDistrictNames").attr("attr_filter_type");
 		var locationId = $("#distLevelDistrictNames").val();
-		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 	});
 	$(document).on("change","#distLevelParliamentNames",function(){
 		var scopeId = $("#distLevelParliamentNames").attr("attr_scope_id");
 		var blockName = $("#distLevelParliamentNames").attr("attr_block_name");
 		var filterType = $("#distLevelParliamentNames").attr("attr_filter_type");
 		var locationId = $("#distLevelParliamentNames").val();
-		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 	});
 	//CONSTITUENCY ON CHANGE
 	$(document).on("change","#constLevelDistNames",function(){
@@ -732,14 +755,14 @@ function initializeClickEventOnTableDiv(){
 		var blockName = $("#constLevelDistNames").attr("attr_block_name");
 		var filterType = $("#constLevelDistNames").attr("attr_filter_type");
 		var locationId = $("#constLevelDistNames").val();
-		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 	});
 	$(document).on("change","#constLevelParliaNames",function(){
 		var scopeId = $("#constLevelParliaNames").attr("attr_scope_id");
 		var blockName = $("#constLevelParliaNames").attr("attr_block_name");
 		var filterType = $("#constLevelParliaNames").attr("attr_filter_type");
 		var locationId = $("#constLevelParliaNames").val();
-		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 	});
 	$(document).on("change","#constLevelConstNames",function(){
 		var scopeId = $("#constLevelConstNames").attr("attr_scope_id");
@@ -749,9 +772,9 @@ function initializeClickEventOnTableDiv(){
 		if(locationId == 0){
 			var parentDivId = $("#constLevelConstNames").attr("attr_parent");
 			locationId = $("#"+parentDivId).val();  
-			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 		}else{
-			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 		}
 		
 	});
@@ -761,14 +784,14 @@ function initializeClickEventOnTableDiv(){
 		var blockName = $("#mandalLevelDistNames").attr("attr_block_name");
 		var filterType = $("#mandalLevelDistNames").attr("attr_filter_type");
 		var locationId = $("#mandalLevelDistNames").val();
-		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 	});
 	$(document).on("change","#mandalLevelParliNames",function(){
 		var scopeId = $("#mandalLevelParliNames").attr("attr_scope_id");
 		var blockName = $("#mandalLevelParliNames").attr("attr_block_name");
 		var filterType = $("#mandalLevelParliNames").attr("attr_filter_type");
 		var locationId = $("#mandalLevelParliNames").val();
-		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 	});
 	$(document).on("change","#mandalLevelConstNames",function(){
 		var scopeId = $("#mandalLevelConstNames").attr("attr_scope_id");
@@ -778,9 +801,9 @@ function initializeClickEventOnTableDiv(){
 		if(locationId == 0){
 			var parentDivId = $("#mandalLevelConstNames").attr("attr_parent");
 			locationId = $("#"+parentDivId).val();  
-			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 		}else{
-			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 		}
 		
 	});
@@ -792,14 +815,14 @@ function initializeClickEventOnTableDiv(){
 		if(locationId == 0){
 			var parentDivId = $("#mandalLevelMandalNames").attr("attr_parent");
 			locationId = $("#"+parentDivId).val();  
-			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 		}else{
-			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId,selectedType);
 		}
 	});
 }
 
-function getCaseCountLocationWise(scopeId,blockName,filterType,locationId){
+function getCaseCountLocationWise(scopeId,blockName,filterType,locationId,type){
 	$("#"+blockName+"-tableDivId").html(spinner);
 	var diseasesIdArr=[];     
 	diseasesIdArr.push(1);
@@ -809,7 +832,8 @@ function getCaseCountLocationWise(scopeId,blockName,filterType,locationId){
 		toDate : glEndDate, 
 		diseasesIdList : diseasesIdArr,
 		scopeId : scopeId,              
-		locationId : locationId
+		locationId : locationId,
+		type : type
     }
     $.ajax({
       url : "getCaseCountLocationWise",       
