@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rural Water Supply Dashboard</title>
+<title>Assets Dashboard</title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
@@ -260,6 +260,6 @@
 <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js" type="text/javascript"></script>
-<script src="Assests/ruralWaterSupply/ruralWaterSupplyDashBoard.js" type="text/javascript"></script>
+<script src="Assests/ruralWaterSupply/assetsDashBoard.js" type="text/javascript"></script>
 </body>
 </html>
