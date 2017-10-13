@@ -36,6 +36,7 @@
 </header>
 <main>
 	<div class="container m_top30">
+		<h3 class="text-capital text-center"><span id="mianHeadingId"></span> Level Election Results</h4>
 		<div class="row">
 			<div class="col-sm-12">
 				<div id="candidatesResultsDivId"></div>
@@ -45,6 +46,27 @@
 		<div class="row">
 			<div class="col-sm-12 m_top10">
 				<div class="block">
+					<div class="row">
+						<div class="col-sm-12">
+						<div class="col-sm-3">
+							<label>Election Years</label>
+							<select class="" id="electionYearId1" multiple>
+							</select>
+						</div>
+						<div class="col-sm-3 m_top30">
+							<label class="radio-inline">
+							  <input type="radio" id="mainId1" value="MAIN" name="optionsRadios2" class="electionSubTypeCls1" checked>Main Election
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" id="byeId1" value="BYE" name="optionsRadios2"  class="electionSubTypeCls1">Bye Election
+							</label>
+						</div>
+						<div class="col-sm-3 m_top30">
+							<button class="btn btn-success btn-xs getDetailsCls1">Submit</button>
+						</div>
+					</div>
+					</div>
+					
 					<div id="levelWiseCandidatesResultsDivId" class="m_top10"></div>
 					<div id="locationWiseCandidatesResultsDivId" class="m_top20"></div>
 				</div>
