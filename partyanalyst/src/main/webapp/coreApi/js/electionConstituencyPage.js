@@ -437,7 +437,8 @@ function getElectionDetailsData(electionYrVal,eletionSubType){
 							
 							if(result[0].subList1 !=null && result[0].subList1.length>0){
 								for(var i in result[0].subList1){
-									str+='<th colspan="'+result[0].subList1[i].subList1.length+'" class="text-center">'+result[0].subList1[i].electionYear+' ('+result[0].subList1[i].electionType+')</th>';
+									var length = result[0].subList1[i].subList1.length+result[0].subList1[i].subList1.length;
+									str+='<th colspan="'+length+'" class="text-center">'+result[0].subList1[i].electionYear+' ('+result[0].subList1[i].electionType+')</th>';
 									
 								}
 							}
@@ -466,7 +467,7 @@ function getElectionDetailsData(electionYrVal,eletionSubType){
 								str+='<td>'+result[i].locationName+'</td>';
 								for(var j in result[i].subList1){
 									if(result[i].subList1[j].subList1 !=null && result[i].subList1[j].subList1.length>0){
-										for(var j in result[i].subList1[j].subList1){
+										for(var k in result[i].subList1[j].subList1){
 											if(result[i].subList1[j].subList1[k].earnedVote !=null && result[i].subList1[j].subList1[k].earnedVote>0){
 												str+='<td>'+result[i].subList1[j].subList1[k].earnedVote+'</td>';
 											}else{
