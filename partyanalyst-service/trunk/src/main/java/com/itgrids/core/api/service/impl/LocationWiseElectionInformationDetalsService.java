@@ -219,7 +219,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 					if(commonMethodsUtilService.isListOrSetValid(locationVO.getList())){
 						Collections.sort(locationVO.getList(), new Comparator<ElectionInformationVO>() {
 							public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
-								return o2.getElectionId().compareTo(o1.getElectionId());
+								return Long.valueOf(o2.getElectionYear()).compareTo(Long.valueOf(o1.getElectionYear()));
 							}
 						});
 					}
@@ -279,13 +279,22 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				if(commonMethodsUtilService.isListOrSetValid(resultList)){
 					for (ElectionInformationVO locatinVO : resultList) {
 						if(commonMethodsUtilService.isListOrSetValid(locatinVO.getList())){
-							ElectionInformationVO electionVO = locatinVO.getList().get(0);
-							if(electionVO != null){
-								Map<String,Long>  statusCountMap= yearWiseStatusCountMap.get(electionVO.getElectionId());
-								if(commonMethodsUtilService.isMapValid(statusCountMap)){
-									if(!commonMethodsUtilService.isListOrSetValid(electionVO.getSubList1())){
-										for (String range : statusMap.keySet()) {
-											electionVO.getSubList1().add(new ElectionInformationVO(statusMap.get(range),range.trim(),statusCountMap.get(statusMap.get(range))));
+								for (ElectionInformationVO electionVO : locatinVO.getList()) {
+								if(electionVO != null){
+									Map<String,Long>  statusCountMap= yearWiseStatusCountMap.get(electionVO.getElectionId());
+									if(commonMethodsUtilService.isMapValid(statusCountMap)){
+										if(!commonMethodsUtilService.isListOrSetValid(electionVO.getSubList1())){
+											for (String range : statusMap.keySet()) {
+												electionVO.getSubList1().add(new ElectionInformationVO(statusMap.get(range),range.trim(),statusCountMap.get(statusMap.get(range))));
+											}
+											
+											Collections.sort(electionVO.getSubList1(), new Comparator<ElectionInformationVO>() {
+												public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
+													String[] o1Arr = o1.getRange().split("-");
+													String[] o2Arr = o2.getRange().split("-");
+													return Long.valueOf(o1Arr[0].trim()).compareTo(Long.valueOf(o2Arr[0].trim()));
+												}
+											});											
 										}
 									}
 								}
@@ -313,7 +322,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 						String val = innerentry.getKey();
 						String[] valueArr = val.split("-");
 						String d1 = formatter.format(Double.parseDouble(percentage));
-						if(Double.parseDouble(d1) >= Double.parseDouble(valueArr[0]) &&  Double.parseDouble(d1) <= Double.parseDouble(valueArr[1])){
+						if(Double.parseDouble(d1) >= Double.parseDouble(valueArr[0].trim()) &&  Double.parseDouble(d1) <= Double.parseDouble(valueArr[1].trim())){
 							element.setStatus(innerentry.getValue());
 						}
 					}
