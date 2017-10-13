@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -632,5 +633,32 @@ public class DateUtilService {
 		return diffMinutes;
 	}
 	
+	public static List<String> getMonthsBetweenDatesStringFormat(Date startdate, Date enddate)
+	{
+		
+		Calendar  beginCalendar= Calendar.getInstance();
+		beginCalendar.setTime(startdate);
+		
+		Calendar finishCalendar = Calendar.getInstance();
+		finishCalendar.setTime(enddate);
+		
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        List<String> dateStrList = new ArrayList<String>();
+        List<Date> dates = new ArrayList<Date>();
+        
+        while (beginCalendar.before(finishCalendar)) {
+            // add one month to date per loop
+            Date date = beginCalendar.getTime();
+            dates.add(date);
+            beginCalendar.add(Calendar.MONTH, 1);
+        }
+        
+        if(dates != null && dates.size() > 0){
+	    	for(Date dt : dates){
+	    		dateStrList.add(sdf.format(dt));
+			}
+	    }
+	    return dateStrList;
+	}
 
 }

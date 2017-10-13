@@ -45,6 +45,11 @@ public class PartyMeetingDataVO implements Serializable{
 	private String attendedPerc;
 	private String abcentPerc;
 	private String NonInviteePerc;
+	private List<PartyMeetingDataVO> datesList = new ArrayList<PartyMeetingDataVO>(0);
+	private String month;
+	private Long yesCount = 0L;
+	private Long noCount = 0L;
+	private Long maybeCount = 0L;
 	public PartyMeetingDataVO(){}
 	
 	
@@ -394,5 +399,46 @@ public class PartyMeetingDataVO implements Serializable{
 			return false;
 		return true;
 	}
-	
+
+	public List<PartyMeetingDataVO> getDatesList() {
+		return datesList;
+	}
+
+	public void setDatesList(List<PartyMeetingDataVO> datesList) {
+		this.datesList = datesList;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public Long getYesCount() {
+		return yesCount;
+	}
+
+	public void setYesCount(Long yesCount) {
+		this.yesCount = yesCount;
+	}
+
+	public Long getNoCount() {
+		return noCount;
+	}
+
+	public void setNoCount(Long noCount) {
+		this.noCount = noCount;
+	}
+
+	public Long getMaybeCount() {
+		return maybeCount;
+	}
+
+	public void setMaybeCount(Long maybeCount) {
+		this.maybeCount = maybeCount;
+	}
+
+
 }
