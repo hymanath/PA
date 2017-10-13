@@ -42,6 +42,12 @@ public class PartyMeetingDataVO implements Serializable{
 	private Long meetingId;
 	private Long recentMeetingInviteesCnt = 0l;
 	private Long recentImagesCnt = 0l;
+	private Set<Long> recentAttendedIds = new HashSet<Long>();
+	private Long recentInviteeAttended = 0l;
+	private Long recentAbcent = 0l;
+	private Long recentAttended = 0l;
+	private Long recentLate = 0l;
+	private Long recentNonInvitee = 0l;
 	private String attendedPerc;
 	private String abcentPerc;
 	private String NonInviteePerc;
@@ -52,10 +58,147 @@ public class PartyMeetingDataVO implements Serializable{
 	private Long maybeCount = 0L;
 	private Long lateCount = 0l;
 	private String latePerc;
+	private String yesPerc;
+	private String noPerc;
+	private String mayBePerc;
+	private String totalPerc;
+	private String NotUpdatePerc;
 	public PartyMeetingDataVO(){}
 	
 	
 	
+	public String getYesPerc() {
+		return yesPerc;
+	}
+
+
+
+	public void setYesPerc(String yesPerc) {
+		this.yesPerc = yesPerc;
+	}
+
+
+
+	public String getNoPerc() {
+		return noPerc;
+	}
+
+
+
+	public void setNoPerc(String noPerc) {
+		this.noPerc = noPerc;
+	}
+
+
+
+	public String getMayBePerc() {
+		return mayBePerc;
+	}
+
+
+
+	public void setMayBePerc(String mayBePerc) {
+		this.mayBePerc = mayBePerc;
+	}
+
+
+
+	public String getTotalPerc() {
+		return totalPerc;
+	}
+
+
+
+	public void setTotalPerc(String totalPerc) {
+		this.totalPerc = totalPerc;
+	}
+
+
+
+	public String getNotUpdatePerc() {
+		return NotUpdatePerc;
+	}
+
+
+
+	public void setNotUpdatePerc(String notUpdatePerc) {
+		NotUpdatePerc = notUpdatePerc;
+	}
+
+
+
+	public Long getRecentAttended() {
+		return recentAttended;
+	}
+
+
+
+	public void setRecentAttended(Long recentAttended) {
+		this.recentAttended = recentAttended;
+	}
+
+
+
+	public Set<Long> getRecentAttendedIds() {
+		return recentAttendedIds;
+	}
+
+
+
+	public void setRecentAttendedIds(Set<Long> recentAttendedIds) {
+		this.recentAttendedIds = recentAttendedIds;
+	}
+
+
+
+	public Long getRecentInviteeAttended() {
+		return recentInviteeAttended;
+	}
+
+
+
+	public void setRecentInviteeAttended(Long recentInviteeAttended) {
+		this.recentInviteeAttended = recentInviteeAttended;
+	}
+
+
+
+	public Long getRecentAbcent() {
+		return recentAbcent;
+	}
+
+
+
+	public void setRecentAbcent(Long recentAbcent) {
+		this.recentAbcent = recentAbcent;
+	}
+
+
+
+	public Long getRecentLate() {
+		return recentLate;
+	}
+
+
+
+	public void setRecentLate(Long recentLate) {
+		this.recentLate = recentLate;
+	}
+
+
+
+	public Long getRecentNonInvitee() {
+		return recentNonInvitee;
+	}
+
+
+
+	public void setRecentNonInvitee(Long recentNonInvitee) {
+		this.recentNonInvitee = recentNonInvitee;
+	}
+
+
+
 	public String getLatePerc() {
 		return latePerc;
 	}
