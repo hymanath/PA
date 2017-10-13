@@ -59,7 +59,19 @@ public class RuralWaterSupplyDashBoardController {
 	public String swatchBharatPaymentsInfo(ModelMap model){
 		return "swatchBharatPayments";
 	}
-
+	@GetMapping("/worksDashBoard")
+	public String worksDashBoard(ModelMap model){
+		return "worksDashBoard";
+	}
+	@GetMapping("/waterSourcesDashBoard")
+	public String waterSourcesDashBoard(ModelMap model){
+		return "waterSourcesDashBoard";
+	}
+	@GetMapping("/assetsDashBoard")
+	public String assetsDashBoard(ModelMap model){
+		return "assetsDashBoard";
+	}
+	
 	@PostMapping("/getHabitationCoverageByStatusByLocationType")
 	public @ResponseBody List<LocationVO> getHabitationCoverageByStatusByLocationType(@RequestBody InputVO vo) {
 		List<LocationVO> locationVOList = null;
