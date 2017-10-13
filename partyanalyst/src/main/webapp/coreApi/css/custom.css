@@ -1435,3 +1435,11 @@ assignedCandidatesUl1 li:last-child
     padding: 3px;
     width: 25px;
 }
+.tableAlignmentElecResults  thead tr th{
+	font-size:12px !important;
+	padding:5px !important;
+}
+.tableAlignmentElecResults tbody tr td{
+	font-size:12px !important;
+	padding:10px !important;
+}
