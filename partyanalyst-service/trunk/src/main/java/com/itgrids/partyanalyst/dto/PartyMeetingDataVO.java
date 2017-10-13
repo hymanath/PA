@@ -51,10 +51,18 @@ public class PartyMeetingDataVO implements Serializable{
 	private Long noCount = 0L;
 	private Long maybeCount = 0L;
 	private Long lateCount = 0l;
+	private String latePerc;
 	public PartyMeetingDataVO(){}
 	
 	
 	
+	public String getLatePerc() {
+		return latePerc;
+	}
+	public void setLatePerc(String latePerc) {
+		this.latePerc = latePerc;
+	}
+
 	public Long getLateCount() {
 		return lateCount;
 	}

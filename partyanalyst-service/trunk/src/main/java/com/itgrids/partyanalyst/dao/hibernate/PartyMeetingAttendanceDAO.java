@@ -1824,8 +1824,8 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	       
 	       sb.append(" select model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeeting.partyMeetingType.partyMeetingMainType.meetingType," +
 	          "model.partyMeeting.partyMeetingType.partyMeetingTypeId,model.partyMeeting.partyMeetingType.type,model.attendance.tdpCadre.tdpCadreId" +
-	          ",model.partyMeeting.partyMeetingId,sessionType.sessionTypeId,sessionType.type from PartyMeetingAttendance model left join  model.partyMeetingSession partyMeetingSession  " +
-	          "left join partyMeetingSession.sessionType sessionType where model.partyMeeting.isActive = 'Y' and  ");
+	          ",model.partyMeeting.partyMeetingId,sessionType.sessionTypeId,sessionType.type,model.attendance.attendedTime,partyMeetingSession.lateTime from PartyMeetingAttendance model left join  model.partyMeetingSession partyMeetingSession  " +
+	          "left join partyMeetingSession.sessionType sessionType where model.partyMeeting.isActive = 'Y' and partyMeetingSession.isDeleted = 'N' and ");
 	       
 	       if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
 	    	   if(locationTypeId == 2l){
