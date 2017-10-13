@@ -86,8 +86,8 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    		if(resultData != null && resultData.size() > 0)
 	 	    		 {
 	 	    			   /*Update lightMonitoring Data */
-	 	    			    List<Long> lighMonitoringIds = lightMonitoringDAO.getLightMonitroingIds(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
-	    					int updatedCount = lightMonitoringDAO.updateLightMoitoringData(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
+	 	    			    List<Long> lighMonitoringIds = lightMonitoringDAO.getLightMonitroingIds(dateUtilService.getCurrentDateAndTime());
+	    					int updatedCount = lightMonitoringDAO.updateLightMoitoringData(dateUtilService.getCurrentDateAndTime());
 	    					
 	    					if (lighMonitoringIds != null && lighMonitoringIds.size() > 0 ) {
 	    						int updatedLightWattageCount = lightMonitoringDAO.updateLightWattageMoitoringData(lighMonitoringIds);	
