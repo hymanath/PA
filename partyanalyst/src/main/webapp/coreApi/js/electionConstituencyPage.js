@@ -450,6 +450,28 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 		{
 			str+='<h4 class="text-capital">Location Level Election Comparision Results in '+partyName+' Party</h4>';
 		}
+		
+		str+='<div class="table-responsive m_top10">';
+		
+		str+='<table class="table table-condensed table-bordered" >';
+		str+='<tr>';
+		str+='<th style="background-color:#CC6600;">WORST %</th>';
+		str+='<th style="background-color:#FF9966;">VERY POOR %</th>';
+		str+='<th style="background-color:#FFCC00;">POOR %</th>';
+		str+='<th style="background-color:#009900;">OK %</th>';
+		str+='<th style="background-color:#FF3E3E;">STRONG %</th>';
+		str+='<th style="background-color:#428AE9;">VERY STRONG %</th>';
+		str+='</tr>';
+		str+='<th> 0 - 30 </th>';
+		str+='<th> 31 - 50 </th>';
+		str+='<th> 51 - 60 </th>';
+		str+='<th> 61 - 80 </th>';
+		str+='<th> 81 - 90 </th>';
+		str+='<th> 91 - 100 </th>';
+		str+='</tr>';
+		str+='</table>';
+		str+='</div>';
+		
 		str+='<div class="table-responsive m_top10">';
 			str+='<table class="table table-election" id="electionResults">';
 				str+='<thead>';
@@ -517,25 +539,25 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 				for(var i in result){
 					str+='<tr>';
 						str+='<td>'+result[i].locationName+'</td>';
-						for(var j in result[i].list){
+						for(var j in result[i].list){							
 							if(result[i].list[j].status == 'STRONG')
 							{
-								str+='<td style="background-color:#428AE9">';
+								str+='<td style="background-color:#FF3E3E">';
 							}else if(result[i].list[j].status == 'VERY STRONG')
 							{
-								str+='<td style="background-color:#009900">';
+								str+='<td style="background-color:#428AE9">';
 							}else if(result[i].list[j].status == 'OK')
 							{
-								str+='<td style="background-color:#FFCC00">';
+								str+='<td style="background-color:#009900">';
 							}else if(result[i].list[j].status == 'POOR')
 							{
-								str+='<td style="background-color:#FF9966">';
+								str+='<td style="background-color:#FFCC00">';
 							}else if(result[i].list[j].status == 'VERY POOR')
 							{
-								str+='<td style="background-color:#CC6600">';
+								str+='<td style="background-color:#FF9966">';
 							}else if(result[i].list[j].status == 'WORST')
 							{
-								str+='<td style="background-color:#FF3E3E">';
+								str+='<td style="background-color:#CC6600">';
 							}else{
 								str+='<td class="text-center">';
 							}
