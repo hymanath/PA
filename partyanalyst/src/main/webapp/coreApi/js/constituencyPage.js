@@ -5126,7 +5126,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 						{
 							if(result.subList[i].status == "Others"){
 								if(result.subList[i].count !=null && result.subList[i].count>0){
-									str+='<td colspan="3"><h4 class="popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_alert_type="categoryOthers" attr_type="alert"  attr_otherCategory="categoryOthers" attr_impactIdsArr="" attr_status_name="'+result.subList[i].status+'" attr_total_count="'+result.subList[i].count+'">'+result.subList[i].count+'<small class="pull-right text-success text_bold m_top5">'+result.subList[i].percentage+' %</small></h4></td>';
+									str+='<td colspan="3"><h4 class="popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_alert_type="" attr_type="alert"  attr_otherCategory="categoryOthers" attr_impactIdsArr="" attr_status_name="'+result.subList[i].status+'" attr_total_count="'+result.subList[i].count+'">'+result.subList[i].count+'<small class="pull-right text-success text_bold m_top5">'+result.subList[i].percentage+' %</small></h4></td>';
 								}else{
 									str+='<td colspan="3"><h4> - </h4></td>';
 								}
@@ -5196,28 +5196,29 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 														str+='<div class="col-sm-5">'+result.subList[i].subList[j].status+'</div>';
 														
 														if(result.subList[i].status == "Others"){
-															if(result.subList[i].subList[j].status =="Others"){
+															if(result.subList[i].subList[j].status =="OTHERS"){
 																if(result.subList[i].subList[j].count !=null && result.subList[i].subList[j].count>0){
-																	str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert"  attr_alert_type="categoryOthers" attr_otherCategory="categoryOthers" attr_impactIdsArr="" attr_status_name="'+result.subList[i].subList[j].status+'" attr_total_count="'+result.subList[i].subList[j].count+'">20</div>';
+																	str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert"  attr_alert_type="categoryOthers" attr_otherCategory="categoryOthers" attr_impactIdsArr="" attr_status_name="'+result.subList[i].subList[j].status+'" attr_total_count="'+result.subList[i].subList[j].count+'">'+result.subList[i].subList[j].count+'</div>';
 																}else{
 																	str+='<div class="col-sm-2"> -</div>';
 																}
 															}else{
 																if(result.subList[i].subList[j].count !=null && result.subList[i].subList[j].count>0){
-																	str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert" attr_alert_type="" attr_otherCategory="categoryOthers" attr_impactIdsArr="" attr_status_name="'+result.subList[i].subList[j].status+'" attr_total_count="'+result.subList[i].subList[j].count+'">5</div>';
+																	str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert" attr_alert_type="" attr_otherCategory="categoryOthers" attr_impactIdsArr="" attr_status_name="'+result.subList[i].subList[j].status+'" attr_total_count="'+result.subList[i].subList[j].count+'">'+result.subList[i].subList[j].count+'</div>';
 																}else{
 																	str+='<div class="col-sm-2"> -</div>';
 																}
 															}
 															
 														}else{
-															if(result.subList[i].subList[j].status =="Others"){
+															if(result.subList[i].subList[j].status =="OTHERS"){
+																
 																if(result.subList[i].subList[j].count !=null && result.subList[i].subList[j].count>0){
-																	str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert" attr_alert_type="categoryOthers" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result.subList[i].subList[j].status+'" attr_total_count="'+result.subList[i].subList[j].count+'">2</div>';
+																	str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert" attr_alert_type="categoryOthers" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result.subList[i].subList[j].status+'" attr_total_count="'+result.subList[i].subList[j].count+'">'+result.subList[i].subList[j].count+'</div>';
 																}else{
 																	str+='<div class="col-sm-2"> -</div>';
 																}
-															}else{
+															}else{									
 																if(result.subList[i].subList[j].count !=null && result.subList[i].subList[j].count>0){
 																	str+='<div class="col-sm-2 text_bold popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="'+result.subList[i].subList[j].id+'" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert" attr_alert_type="" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result.subList[i].subList[j].status+'" attr_total_count="'+result.subList[i].subList[j].count+'">'+result.subList[i].subList[j].count+'</div>';
 																}else{
@@ -6339,8 +6340,11 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 		}else{
 			impactIdsArr.push(impactIds)
 		}
-		
-		alertTypeIdsStr.push(alertTypeIds)
+		var myStr = alertTypeIds;
+        var strArray = myStr.split(",");
+        for(var i = 0; i < strArray.length; i++){
+           alertTypeIdsStr.push(strArray[i]); 
+        }
 		
 		var jsObj={
 				fromDateStr 	  	:"",
@@ -6459,7 +6463,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 	}
 	 $.ajax({
       type : "GET",
-      url : "getLocationWiseMeetingsCountDetailsAction.action",
+      url : "getLocationWiseMeetingsCountAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
