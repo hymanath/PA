@@ -1315,7 +1315,7 @@ font-size:12px !important;
 	min-height:100px;
 }
 
-assignedCandidatesUl li:last-child
+.assignedCandidatesUl li:last-child
 {
 	border-right: 0px;
 }
@@ -1423,7 +1423,7 @@ assignedCandidatesUl li:last-child
 	padding:6px 20px 6px 10px;
 	border-right: 1px solid #ddd;
 }
-assignedCandidatesUl1 li:last-child
+.assignedCandidatesUl1 li:last-child
 {
 	border-right: 0px;
 }
@@ -1443,4 +1443,40 @@ assignedCandidatesUl1 li:last-child
 .tableAlignmentElecResults tbody tr td{
 	font-size:12px !important;
 	padding:10px !important;
+}
+.tableAlignmentElecResults
+{
+	border-collapse: separate;
+	border-spacing:0px 0px
+}
+.tableAlignmentElecResults thead tr:first-child th:first-child , .tableAlignmentElecResults tr:last-child td:first-child
+{
+	border-left:0px !important;
+	border-right:0px !important;
+	border-top:0px !important
+}
+.tableAlignmentElecResults thead tr:first-child th:nth-child(n+2)
+{
+    border-bottom: 0 none;
+    border-left: 2px solid #cccccc;
+    border-right: 2px solid #cccccc;
+    border-top: 2px solid #cccccc !important;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.tableAlignmentElecResults tr:last-child td:nth-child(12n+1) {
+    border-bottom: 2px solid #cccccc !important;
+    border-bottom-right-radius: 10px;
+    border-right: 2px solid #cccccc !important;
+}
+.tableAlignmentElecResults tr:last-child td:nth-child(12n+2) {
+    border-bottom: 2px solid #cccccc !important;
+    border-bottom-left-radius: 10px;
+    border-left: 2px solid #cccccc !important;
+}
+.tableAlignmentElecResults tr:last-child td {
+    border-bottom: 2px solid #cccccc !important;
+}
+.tableAlignmentElecResults tr td:nth-child(12n+2) , .tableAlignmentElecResults thead th:nth-child(12n+1) {
+	border-left:2px solid #ccc;
 }
