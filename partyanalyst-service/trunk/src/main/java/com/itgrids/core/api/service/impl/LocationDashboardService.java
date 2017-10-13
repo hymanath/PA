@@ -5828,7 +5828,9 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 								if(partyVO.getPartyId() != null && partyVO.getPartyId().longValue() == 1887L)
 									vo = partyVO;
 							}
-						}					
+						}else{
+							partysList.add(vo);
+						}
 						vo.setPartyId(1887l);
 						vo.setPartyName("OTHERS");
 						vo.setPartyFlag("");						
@@ -5877,12 +5879,15 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 						vo.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[3]));
 						vo.setTotalSeatsCount(commonMethodsUtilService.getLongValueForObject(param[7]));
 						vo.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[8]));
+						partysList.add(vo);
 					}else{
 						if(commonMethodsUtilService.isListOrSetValid(partysList)){
 							for (ElectionInformationVO partyVO : partysList) {
 								if(partyVO.getPartyId() != null && partyVO.getPartyId().longValue() == 1887L)
 									vo = partyVO;
 							}
+						}else{
+							partysList.add(vo);
 						}
 						vo.setPartyId(1887l);
 						vo.setPartyName("OTHERS");
@@ -5901,12 +5906,8 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 						Double tempPerc  = (vo.getEarnedVotes()*100.0/polledVotes);
 						vo.setPerc(""+commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(tempPerc));
 					}
-					
-					
-					partysList.add(vo);
 					wonPartiesMap.put(electionId, partysList);
 				}
-				
 				
 				if(commonMethodsUtilService.isListOrSetValid(vacancyList)){
 					for (Object[] param : vacancyList) {
@@ -5938,13 +5939,16 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 				}
 				if(commonMethodsUtilService.isMapValid(vacancyMap)){
 					finalList.addAll(vacancyMap.values());
+					Collections.sort(finalList, new Comparator<ElectionInformationVO>() {
+						public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
+							return Long.valueOf(o2.getElectionYear()).compareTo(Long.valueOf(o1.getElectionYear()));
+						}
+					});
 				}
 			}
-			
 		}catch(Exception e){
 			Log.error("Exception raised in getLocationWiseElectionResults method of LocationDashboardService"+e);
 		}
-		 
 		return finalList;
 	}
 	/**
@@ -6169,11 +6173,11 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 							});
 						}
 						
-						Collections.sort(locationVO.getSubList1(), new Comparator<ElectionInformationVO>() {
+						/*Collections.sort(locationVO.getSubList1(), new Comparator<ElectionInformationVO>() {
 							public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
 								return o2.getElectionId().compareTo(o1.getElectionId());
 							}
-						});
+						});*/
 					}
 				}
 			}
