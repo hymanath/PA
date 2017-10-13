@@ -51,7 +51,7 @@ function onloadCalls(){
 	departmentBlockWiseDetails("promotions");
 	departmentWiseOverView();
 	getITSectorWiseOverviewDetails();
-	
+	getMeesevaSLAOverviewDtls("meesevaSla",5);
 	
 	/*getPromotionsOverviewByDepartmentType();
 	getPromotionsDetailedDepartmentWise();
