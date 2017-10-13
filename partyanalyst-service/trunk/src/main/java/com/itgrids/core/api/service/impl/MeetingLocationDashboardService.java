@@ -11,16 +11,20 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.IMeetingLocationDashboardService;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
+import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingDataVO;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class MeetingLocationDashboardService implements IMeetingLocationDashboardService{
 
@@ -31,6 +35,8 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 	private IPartyMeetingInviteeDAO partyMeetingInviteeDAO;
 	private IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO;
 	private IPartyMeetingDocumentDAO partyMeetingDocumentDAO;
+	private IDistrictDAO districtDAO;
+	private DateUtilService dateUtilService;
 	
 	
 	
@@ -87,6 +93,22 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
 	
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
 	public List<LocationVotersVO> getLocationWiseMeetingsCount(Long locationTypeId, List<Long> locationValues,String fromDateStr,String toDateStr){
 		List<LocationVotersVO> voList = new ArrayList<LocationVotersVO>(0);
 		try{
@@ -517,4 +539,154 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 		return null;
 	}
 	
+	/**
+	* @author Nandhini k 
+	* @param levelId,List<Long> levelVals,fromDateStr,toDateStr,meetingTypeId
+	* @Description :this service used for get the location wise MeetingStatus
+	*  @since 11-oct-2017
+	*  @return :List<PartyMeetingDataVO> 
+	*/
+	public List<PartyMeetingDataVO> getLocationWiseMeetingStatusDetails(Long searchLevelId,List<Long> levelValues,String startDateStr,String endDateStr,Long meetingTypeId,Long partyMeetinLevelId){
+		List<PartyMeetingDataVO> locationList = new ArrayList<PartyMeetingDataVO>(0);
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			// Here converting stirng to date formatte
+			if(startDateStr != null && startDateStr.trim().length() > 0 && endDateStr != null && endDateStr.trim().length() > 0){
+				fromDate = sdf.parse(startDateStr);
+				toDate = sdf.parse(endDateStr);
+			}
+			List<String> btnMonths = dateUtilService.getMonthsBetweenDatesStringFormat(fromDate, toDate);
+			
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf2 = new SimpleDateFormat("MMM yyyy");
+			SimpleDateFormat sdf3 = new SimpleDateFormat("MMM dd");
+			SimpleDateFormat sdf4 = new SimpleDateFormat("yyyy-MM");
+			
+			//SimpleDateFormat sdf4 = new SimpleDateFormat("MMM dd");
+			
+			List<Object[]> list = null;
+			Map<Long,PartyMeetingDataVO> locationMap = new HashMap<Long, PartyMeetingDataVO>(0);
+			Map<String,PartyMeetingDataVO> dateMap = new HashMap<String, PartyMeetingDataVO>(0);
+			
+			if(searchLevelId != null && searchLevelId.longValue() >0l && searchLevelId.longValue() == 2L){
+				if(partyMeetinLevelId != null && partyMeetinLevelId.longValue() >0L && partyMeetinLevelId.longValue() == 2L){
+					list = districtDAO.getDistrictIdsByState(levelValues);
+				}
+			}else if(searchLevelId != null && searchLevelId.longValue() >0l && searchLevelId.longValue() == 3L){
+				if(partyMeetinLevelId != null && partyMeetinLevelId.longValue() >0L && partyMeetinLevelId.longValue() == 2L){
+					list = districtDAO.getDistrictDetailsByDistrictIds(levelValues);
+				}
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] param : list) {
+					PartyMeetingDataVO locationVO = new PartyMeetingDataVO();
+						locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						locationVO.setDatesList(setBetweenMonthsVO(btnMonths));
+						locationMap.put(locationVO.getId(),locationVO);	
+					}
+				}
+				
+			List<Object[]> statusList = partyMeetingStatusDAO.getMeetingStatusByLocation(searchLevelId, levelValues, fromDate, toDate, meetingTypeId, partyMeetinLevelId);
+				if(commonMethodsUtilService.isListOrSetValid(statusList)){
+					for (Object[] param : statusList) {
+						Long locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						PartyMeetingDataVO finalDataVO = locationMap.get(locationId);
+						if(finalDataVO != null){
+							PartyMeetingDataVO monthVO = getMatchedVOByMonth(finalDataVO.getDatesList(),sdf4.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[2]))));
+							if(monthVO != null){
+								monthVO.setMomStatus(commonMethodsUtilService.getStringValueForObject(param[1]));
+								monthVO.setConductedDate(commonMethodsUtilService.getStringValueForObject(param[2]));
+								if(monthVO.getConductedDate() != null){
+									Date dated = sdf1.parse(monthVO.getConductedDate());
+									monthVO.setConductedDate(sdf3.format(dated));
+								}
+								if(monthVO.getMonth() != null){
+									Date dated = sdf4.parse(monthVO.getMonth());
+									monthVO.setMonth(sdf2.format(dated));
+								}
+							}
+						}
+					}
+				}
+				
+				if(commonMethodsUtilService.isMapValid(locationMap)){
+					locationList = new ArrayList<PartyMeetingDataVO>(locationMap.values());
+				}
+				
+				//Set OverAll Status Counts
+				if(commonMethodsUtilService.isListOrSetValid(btnMonths)){
+					for (String date : btnMonths) {
+						PartyMeetingDataVO locationVO = new PartyMeetingDataVO();
+						Date date1 = sdf1.parse(date);
+						locationVO.setMonth(sdf2.format(date1));
+						dateMap.put(locationVO.getMonth(),locationVO);	
+					}
+				}
+					
+				if(commonMethodsUtilService.isListOrSetValid(statusList)){
+					for (Object[] param : statusList) {
+						PartyMeetingDataVO countVO = dateMap.get(sdf2.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[2]))));
+						if(countVO != null){
+							if(commonMethodsUtilService.getStringValueForObject(param[1]).trim().equalsIgnoreCase("Y"))
+								countVO.setYesCount(countVO.getYesCount()+1);
+							else if(commonMethodsUtilService.getStringValueForObject(param[1]).trim().equalsIgnoreCase("N"))
+								countVO.setNoCount(countVO.getNoCount()+1);
+							else if(commonMethodsUtilService.getStringValueForObject(param[1]).trim().equalsIgnoreCase("M"))
+								countVO.setMaybeCount(countVO.getMaybeCount()+1);
+							else if(commonMethodsUtilService.getStringValueForObject(param[1]).trim().equalsIgnoreCase("NU"))
+								countVO.setNotUpdatedCount(countVO.getNotUpdatedCount()+1);
+						}
+						
+					}
+					
+				}
+				
+				if(dateMap != null){
+					locationList.get(0).getLevelList().addAll(dateMap.values());
+				}
+				
+		} catch (Exception e) {
+			Log.error("Exception raised in getLocationWiseMeetingStatusDetails method of LocationDashboardService"+e);
+		}
+		return locationList;
+	}
+	
+	public List<PartyMeetingDataVO> setBetweenMonthsVO(List<String> monthList){
+		List<PartyMeetingDataVO> returnList = new ArrayList<PartyMeetingDataVO>(0);
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM");
+			if(monthList != null && !monthList.isEmpty()){
+				for (String monthStr : monthList) {
+					PartyMeetingDataVO vo = new PartyMeetingDataVO();
+					Date date = sdf.parse(monthStr);
+					vo.setMonth(sdf1.format(date));
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in setBetweenDatesVO in DoorToDoorCampaignDashboardService", e);
+		}
+		return returnList;
+	}
+	
+	public PartyMeetingDataVO getMatchedVOByMonth(List<PartyMeetingDataVO> monthsList,String month){
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(monthsList)){
+				for (PartyMeetingDataVO meetingDataVO : monthsList) {
+					if(meetingDataVO.getMonth().equals(month)){
+						return meetingDataVO;
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getMatchedVOByDate in DoorToDoorCampaignDashboardService", e);
+		}
+		return null;
+	}
 }
