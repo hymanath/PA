@@ -1,9 +1,9 @@
 
-	getSwachhBharatMissionOverviewDtls();
-	getSwachhBharatMissionStatusOverviewDtls();
-	getIHHLCategoryWiseAnalysis();
-	getIHHLAchivementProgressDtls();
-	getSwachhBharatMissionLocationWiseDetails();
+	getSwachhBharatMissionOverviewDtls(); // first block
+	getSwachhBharatMissionStatusOverviewDtls();//secondBlock
+	getIHHLCategoryWiseAnalysis();//third block
+	getIHHLAchivementProgressDtls();//fourth block
+	getSwachhBharatMissionLocationWiseDetails();//last 
 	
 	function getSwachhBharatMissionOverviewDtls(){
 		var json = {
@@ -100,3 +100,5 @@
 							console.log(result);
 						});	
 					}
+					
+					
