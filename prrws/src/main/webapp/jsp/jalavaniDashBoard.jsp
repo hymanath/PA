@@ -125,7 +125,14 @@
 													</a>
 												</div>
 											</div>
-											
+											<div class="col-sm-12">
+												<div class="menu-block" style="background-color:#de4524 ">
+													<a href="itcDashboard">
+														<h3>IT E & C</h3>
+														<p>Dashboard</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -177,26 +184,16 @@
 		<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="row">
-					<div class="col-sm-5 pad_lR_5">
+				<div class="col-sm-5" style="padding-right: 5px;">
 						<div class="white-block">
-							<h5 style="padding:5px"><span class="chartTitleAlign">Water Source</span></h5>
-							<div class="chart" id="waterSources"></div>
-							<h5 style="text-align: center; font-weight: bold;" id="waterSourcesTtlValues"></h5>
+							<h5 style="padding:5px"><span class="chartTitleAlign">Alert Status - Jalavani</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#FC5049"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
+							<div class="chart2" id="alertStatus"></div>
 						</div>
 					</div>
-					<div class="col-sm-3" style="padding-left: 5px;">
+					<div class="col-sm-2 pad_lR_5">
 						<div class="white-block">
-							<h5 style="padding:5px"><span class="chartTitleAlign">Level Of Supply (MLD)</span></h5>
-							<div class="chart" id="levelOfSupply1"></div>
-							<h5 style="text-align: center; font-weight: bold;" id="levelSupplyTtlValues"></h5>
-						</div>
-					</div>
-					
-					<div class="col-sm-4" style="padding-right: 5px;">
-						<div class="white-block">
-							<h5 style="padding:5px"><span class="chartTitleAlign">Lab Test Water Sources</span></h5>
-							<div class="chart2" id="overView" style="height:315px;"></div>
+							<h5 style="padding:5px"><span class="chartTitleAlign">Water&nbsp;Satisfaction&nbsp;Level</span></h5>
+							<div class="chart2" id="drinkingWater" class="m_top20"></div>
 						</div>
 					</div>
 				</div>
@@ -283,6 +280,6 @@
 <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js" type="text/javascript"></script>
-<script src="Assests/ruralWaterSupply/waterSourcesDashBoard.js" type="text/javascript"></script>
+<script src="Assests/ruralWaterSupply/jalavaniDashBoard.js" type="text/javascript"></script>
 </body>
 </html>
