@@ -6459,7 +6459,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 	}
 	 $.ajax({
       type : "GET",
-      url : "getLocationWiseMeetingsCountAction.action",
+      url : "getLocationWiseMeetingsCountDetailsAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
