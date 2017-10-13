@@ -467,13 +467,13 @@ function getElectionDetailsData(electionYrVal,eletionSubType){
 								for(var j in result[i].subList1){
 									if(result[i].subList1[j].subList1 !=null && result[i].subList1[j].subList1.length>0){
 										for(var j in result[i].subList1[j].subList1){
-											if(result[i].subList1[j].subList1[j].earnedVote !=null && result[i].subList1[j].subList1[j].earnedVote>0){
-												str+='<td>'+result[i].subList1[j].subList1[j].earnedVote+'</td>';
+											if(result[i].subList1[j].subList1[k].earnedVote !=null && result[i].subList1[j].subList1[k].earnedVote>0){
+												str+='<td>'+result[i].subList1[j].subList1[k].earnedVote+'</td>';
 											}else{
 												str+='<td> - </td>';
 											}
-											if(result[i].subList1[j].subList1[j].perc !=null && result[i].subList1[j].subList1[j].perc>0){
-												str+='<td>'+result[i].subList1[j].subList1[j].perc+'</td>';
+											if(result[i].subList1[j].subList1[k].perc !=null && result[i].subList1[j].subList1[k].perc>0){
+												str+='<td>'+result[i].subList1[j].subList1[k].perc+'</td>';
 											}else{
 												str+='<td> - </td>';
 											}
