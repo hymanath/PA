@@ -2,7 +2,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 
 //var departmentWiseArr=[{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'eProcurement',id:'5',color:'#F06C1F',image:'eProcurement',blockName:'eProcurement'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
-var departmentWiseArr = [{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'}];
+var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'}];
 var globalFromDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDate = moment().format("DD/MM/YYYY");
 $("#itcDateRangePickerId").daterangepicker({
@@ -48,7 +48,7 @@ $(document).on("click","#promotionsBlockSwitch li",function(){
 onloadCalls();
 function onloadCalls(){
 	
-	departmentBlockWiseDetails("meesevaSla");
+	departmentBlockWiseDetails("promotions");
 	departmentWiseOverView();
 	getITSectorWiseOverviewDetails();
 	
@@ -283,9 +283,9 @@ function departmentBlockWiseDetails(divId)
 				getITSectorCategoryWiseDetails("red");
 				getITSectorCategoryWiseDetails("green");
 				getITSectorCategoryWiseDetails("dropped");
-				getITDistrictWiseDetails("IT");
-				getITDistrictWiseDetails("Electronics");
-				getITDistrictWiseDetails("Fintech");
+				getITDistrictWiseDetails("IT","All",'body');
+				getITDistrictWiseDetails("Electronics","All",'body');
+				getITDistrictWiseDetails("Fintech","All",'body');
 			}
 }
 
@@ -528,6 +528,10 @@ function getITSectorWiseOverviewDetails(){
 		}
 	}
 }
+$(document).on("click",".overview-click",function(){
+	var selectedBlockType = $("#promotionsBlockSwitch li.active").attr("attr_type");
+	getITDistrictWiseDetails(selectedBlockType,$(this).attr("attr_type"),'modal');
+});
 function getITSectorCategoryWiseDetails(type){
 	if(type == "green")
 	{
@@ -579,33 +583,33 @@ function getITSectorCategoryWiseDetails(type){
 			{
 				if(type == "green")
 				{
-					str+='<h4>';
+					str+='<p>';
 						str+='<span style="padding:5px 20px;background-color:#058E46;color:#fff">Civil Works commencement and beyond</span>';
-					str+='</h4>';
+					str+='</p>';
 				}else if(type == "red")
 				{
-					str+='<h4>';
+					str+='<p>';
 						str+='<span style="padding:5px 20px;background-color:#F75C5D;color:#fff">Before Civil Works commencement</span>';
-					str+='</h4>';
+					str+='</p>';
 				}else if(type == "dropped")
 				{
-					str+='<h4>';
+					str+='<p>';
 						str+='<span style="padding:5px 20px;background-color:#91CCC7;color:#fff">Dropped</span>';
-					str+='</h4>';
+					str+='</p>';
 				}
 					str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
 						str+='<div class="row m_top20">';
 							str+='<div class="col-sm-4">';
-								str+='<h4>'+result[i].noProjects+'</h4>';
-								str+='<p>INDUSTRIES</p>';
+								str+='<h4 class="overview-click" style="cursor:pointer;" attr_type="'+type+'">'+result[i].noProjects+'</h4>';
+								str+='<p><small>INDUSTRIES</small></p>';
 							str+='</div>';
 							str+='<div class="col-sm-4">';
 								str+='<h4>'+result[i].investment+'</h4>';
-								str+='<p>INVESTMENTS</p>';
+								str+='<p><small>INVESTMENTS</small></p>';
 							str+='</div>';
 							str+='<div class="col-sm-4">';
 								str+='<h4>'+result[i].employment+'</h4>';
-								str+='<p>EMPLOYMENT</p>';
+								str+='<p><small>EMPLOYMENT</small></p>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -625,9 +629,18 @@ function getITSectorCategoryWiseDetails(type){
 		}
 	}
 }
-function getITDistrictWiseDetails(type){
+function getITDistrictWiseDetails(type,category,divType){
+	if(divType == 'body')
+	{
+		$("#"+type+"OverviewBlockDivId").html(spinner);
+	}else{
+		$("#modalId").modal('show');
+		$("#cohortId").html(spinner);
+		
+	}
+	
 	var json = {
-		category:"All",
+		category:category,
 		source:type
 	}
 	$.ajax({                
@@ -642,15 +655,15 @@ function getITDistrictWiseDetails(type){
 	}).done(function(result){
 		if(result != null && result.length > 0)
 		{
-			return buildData(result,type);
+			return buildData(result,type,divType);
 		}else{
 			$("#"+type+"OverviewBlockDivId").html("NO DATA AVAILABLE");
 		}
 	});
-	function buildData(result,type)
+	function buildData(result,type,divType)
 	{
 		var str='';
-		str+='<table class="table table-bordered" id="'+type+'DataTable">';
+		str+='<table class="table table-bordered" id="'+type+'DataTable'+divType+'">';
 			str+='<thead>';
 				str+='<th>District</th>';
 				str+='<th>Industries</th>';
@@ -668,8 +681,15 @@ function getITDistrictWiseDetails(type){
 			}
 			
 		str+='</table>';
-		$("#"+type+"OverviewBlockDivId").html(str);
-		$("#"+type+"DataTable").dataTable();
+		if(divType == 'body')
+		{
+			$("#"+type+"OverviewBlockDivId").html(str);
+		}else{
+			$("#modalTitleId").html(type);
+			$("#cohortId").html(str);
+		}
+		
+		$("#"+type+"DataTable"+divType).dataTable();
 	}
 }
 function getPromotionsDetailedDepartmentWise(){
