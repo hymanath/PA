@@ -47,16 +47,16 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getCaseCountDiseasesWise(java.lang.String, java.lang.String, java.util.List, java.util.List)
 	 */
 	@Override
-	public List<DiseasesVO> getCaseCountDiseasesWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList){
+	public List<DiseasesVO> getCaseCountDiseasesWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,String type){
 		try{
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(fromDateStr,"dd/MM/yyyy","");
 			Date endDate = commonMethodsUtilService.stringTODateConvertion(toDateStr,"dd/MM/yyyy","");
 			diseasesIdList = commonMethodsUtilService.makeEmptyListByZeroValue(diseasesIdList);
 			deptIdList = commonMethodsUtilService.makeEmptyListByZeroValue(deptIdList);
 			
-			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getCaseCountDiseasesWise(startDate,endDate,diseasesIdList,deptIdList);
+			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getCaseCountDiseasesWise(startDate,endDate,diseasesIdList,deptIdList,type);
 			Date today = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> todayDiseasesList = departmentDiseasesInfoDAO.getCaseCountDiseasesWise(today,today,diseasesIdList,deptIdList);
+			List<Object[]> todayDiseasesList = departmentDiseasesInfoDAO.getCaseCountDiseasesWise(today,today,diseasesIdList,deptIdList,type);
 			List<DiseasesVO> diseasesVOs = new ArrayList<DiseasesVO>();
 			
 			//only diseases wise count
@@ -143,7 +143,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getCaseCountLocationWise(java.lang.String, java.lang.String, java.util.List, java.util.List, java.lang.Long)
 	 */
 	@Override
-	public List<DiseasesVO> getCaseCountLocationWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long scope,Long locationId){
+	public List<DiseasesVO> getCaseCountLocationWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long scope,Long locationId,String type){
 		try{
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(fromDateStr,"dd/MM/yyyy","");
 			Date endDate = commonMethodsUtilService.stringTODateConvertion(toDateStr,"dd/MM/yyyy","");
@@ -170,7 +170,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 				scope = locationLevelId;
 			}
 			//total
-			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,scope,locationLevelId,locationId);
+			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,scope,locationLevelId,locationId,type);
 			
 			List<Object[]> diseasesListForTown = null;
 			Long tempScopeId = null;
@@ -178,11 +178,11 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 				if(locationLevelId != null && locationLevelId.longValue() > 0L && locationLevelId.longValue() != 7L){
 					tempScopeId = 7L;
 					//total for town
-					diseasesListForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId);
+					diseasesListForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId,type);
 				}else if(locationLevelId != null && locationLevelId.longValue() == 0L){
 					tempScopeId = 7L;
 					//total for town
-					diseasesListForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId);
+					diseasesListForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId,type);
 				}
 				if(diseasesListForTown != null && diseasesListForTown.size() > 0){
 					if(diseasesList == null){
@@ -196,16 +196,16 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			List<Object[]> diseasesListTodayForTown = null;
 			Date today = dateUtilService.getCurrentDateAndTime();
 			//today
-			List<Object[]> diseasesListToday = departmentDiseasesInfoDAO.getCaseCountLocationWise(today,today,diseasesIdList,deptIdList,scope,locationLevelId,locationId);
+			List<Object[]> diseasesListToday = departmentDiseasesInfoDAO.getCaseCountLocationWise(today,today,diseasesIdList,deptIdList,scope,locationLevelId,locationId,type);
 			if(scope != null && scope.longValue() == 5L){//this block will execute only for tehsil block
 				if(locationLevelId != null && locationLevelId.longValue() > 0L && locationLevelId.longValue() != 7L){
 					tempScopeId = 7L;
 					//today for town
-					diseasesListTodayForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(today,today,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId);
+					diseasesListTodayForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(today,today,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId,type);
 				}else if(locationLevelId != null && locationLevelId.longValue() == 0L){
 					tempScopeId = 7L;
 					//today for town
-					diseasesListTodayForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(today,today,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId);
+					diseasesListTodayForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(today,today,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId,type);
 				}
 				if(diseasesListTodayForTown != null && diseasesListTodayForTown.size() > 0){
 					if(diseasesListToday == null){
@@ -250,7 +250,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			List<Object[]> overallListForTown = null;
 			Map<Long,Long> locIdAndCountMapForTehsil = new HashMap<Long,Long>();
 			if(locationIdList != null && locationIdList.size() > 0){
-				overallList = departmentDiseasesInfoDAO.getCaseCountByLocationIds(diseasesIdList,deptIdList,scope,locationIdList);
+				overallList = departmentDiseasesInfoDAO.getCaseCountByLocationIds(diseasesIdList,deptIdList,scope,locationIdList,type);
 				if(overallList != null && overallList.size() > 0){
 					for(Object[] param : overallList){
 						locIdAndCountMapForAll.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
@@ -258,7 +258,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 				}
 			}
 			if(locationIdListForTown != null && locationIdListForTown.size() > 0){
-				overallListForTown = departmentDiseasesInfoDAO.getCaseCountByLocationIds(diseasesIdList,deptIdList,7L,locationIdListForTown);//for tehsil
+				overallListForTown = departmentDiseasesInfoDAO.getCaseCountByLocationIds(diseasesIdList,deptIdList,7L,locationIdListForTown,type);//for tehsil
 				if(overallListForTown != null && overallListForTown.size() > 0){
 					for(Object[] param : overallListForTown){
 						locIdAndCountMapForTehsil.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
@@ -534,14 +534,14 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getCaseCountDateWise(java.lang.String, java.lang.String, java.util.List, java.util.List, java.lang.String)
 	 */
 	@Override
-	public List<DiseasesVO> getCaseCountDateWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,String rangeType){
+	public List<DiseasesVO> getCaseCountDateWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,String rangeType,String type){
 		try{
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(fromDateStr,"dd/MM/yyyy","");
 			Date endDate = commonMethodsUtilService.stringTODateConvertion(toDateStr,"dd/MM/yyyy","");
 			diseasesIdList = commonMethodsUtilService.makeEmptyListByZeroValue(diseasesIdList);
 			deptIdList = commonMethodsUtilService.makeEmptyListByZeroValue(deptIdList);
 			
-			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getCaseCountDateWise(startDate,endDate,diseasesIdList,deptIdList);
+			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getCaseCountDateWise(startDate,endDate,diseasesIdList,deptIdList,type);
 			List<DiseasesVO> diseasesVOs = new ArrayList<DiseasesVO>();
 			if(diseasesList != null && diseasesList.size() > 0){
 				buildCaseCountDateWise(diseasesVOs,diseasesList,rangeType,startDate,endDate);
@@ -772,27 +772,45 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 	 * Swadhin K Lenka
 	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getLocationDtlsRankWise(java.lang.String, java.lang.String, java.util.List, java.util.List)
 	 */
-	public List<DiseasesVO> getLocationDtlsRankWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long minVal,Long maxVal){
+	public List<DiseasesVO> getLocationDtlsRankWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long minVal,Long maxVal,String type){
 		try{
 			
 			DiseasesVO diseasesVO = null;
+			Long scopeId = 0L;
 			List<DiseasesVO> diseasesVOs = new ArrayList<DiseasesVO>(); 
 			
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(fromDateStr,"dd/MM/yyyy","");
 			Date endDate = commonMethodsUtilService.stringTODateConvertion(toDateStr,"dd/MM/yyyy","");
 			diseasesIdList = commonMethodsUtilService.makeEmptyListByZeroValue(diseasesIdList);
 			deptIdList = commonMethodsUtilService.makeEmptyListByZeroValue(deptIdList);
-			Long scopeId = 5L;
-			List<Object[]> diseasesListForManal = departmentDiseasesInfoDAO.getLocationDtlsRankWise(startDate,endDate,diseasesIdList,deptIdList,scopeId);
-			if(diseasesListForManal != null && diseasesListForManal.size() > 0){
-				createVOList(diseasesVOs,diseasesListForManal);
+			
+			if(type != null && type.trim().equalsIgnoreCase("Rural")){
+				scopeId = 5L;
+				List<Object[]> diseasesListForManal = departmentDiseasesInfoDAO.getLocationDtlsRankWise(startDate,endDate,diseasesIdList,deptIdList,scopeId);
+				if(diseasesListForManal != null && diseasesListForManal.size() > 0){
+					createVOList(diseasesVOs,diseasesListForManal);
+				}
+			}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
+				scopeId = 7L;
+				List<Object[]> diseasesListForTown = departmentDiseasesInfoDAO.getLocationDtlsRankWise(startDate,endDate,diseasesIdList,deptIdList,scopeId);
+				if(diseasesListForTown != null && diseasesListForTown.size() > 0){
+					createVOList(diseasesVOs,diseasesListForTown);
+				}
+			}else{
+				scopeId = 5L;
+				List<Object[]> diseasesListForManal = departmentDiseasesInfoDAO.getLocationDtlsRankWise(startDate,endDate,diseasesIdList,deptIdList,scopeId);
+				if(diseasesListForManal != null && diseasesListForManal.size() > 0){
+					createVOList(diseasesVOs,diseasesListForManal);
+				}
+				
+				scopeId = 7L;
+				List<Object[]> diseasesListForTown = departmentDiseasesInfoDAO.getLocationDtlsRankWise(startDate,endDate,diseasesIdList,deptIdList,scopeId);
+				if(diseasesListForTown != null && diseasesListForTown.size() > 0){
+					createVOList(diseasesVOs,diseasesListForTown);
+				}
+				
 			}
 			
-			scopeId = 7L;
-			List<Object[]> diseasesListForTown = departmentDiseasesInfoDAO.getLocationDtlsRankWise(startDate,endDate,diseasesIdList,deptIdList,scopeId);
-			if(diseasesListForTown != null && diseasesListForTown.size() > 0){
-				createVOList(diseasesVOs,diseasesListForTown);
-			}
 			//sort the list based on count.
 			Collections.sort(diseasesVOs, diseasesCaseWiseAscOrder);
 			

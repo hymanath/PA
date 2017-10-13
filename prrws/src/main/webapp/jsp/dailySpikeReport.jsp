@@ -150,6 +150,13 @@
 				<div class="col-sm-6">
 					 
 				</div>      
+				<div class="col-sm-3">
+					<ul class="switch-btn list-inline" id="spikeReportTypeId">
+						<li class="active" attr_type="All">All</li>
+						<li attr_type="Rural">Rural</li>
+						<li attr_type="Urban">Urban</li>
+					</ul>					 
+				</div>
 				<div class="col-sm-3 pull-right"> 
 					<div class="input-group dateRangePickerCls" >
 						<span class="input-group-addon" >

@@ -20,7 +20,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		super(DepartmentDiseasesInfo.class);
 	}
 	@Override
-	public List<Object[]> getCaseCountDiseasesWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList){
+	public List<Object[]> getCaseCountDiseasesWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select "
 				+ " departmentDiseasesInfo.diseases.diseasesId, "
@@ -36,6 +36,11 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		if(deptIdList != null && deptIdList.size() > 0){
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		if(type != null && type.trim().equalsIgnoreCase("Rural")){
+			sb.append(" and departmentDiseasesInfo.locationScopeId = 5");
+		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
+			sb.append(" and departmentDiseasesInfo.locationScopeId = 7");
 		}
 		sb.append("group by departmentDiseasesInfo.diseases.diseasesId ");
 		
@@ -55,7 +60,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 	}
 	//abc
 	@Override
-	public List<Object[]> getCaseCountLocationWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId, Long locationLevelId, Long locationId){
+	public List<Object[]> getCaseCountLocationWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId, Long locationLevelId, Long locationId,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select "
 				+ " departmentDiseasesInfo.diseasesId, ");//0
@@ -114,6 +119,11 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		if(deptIdList != null && deptIdList.size() > 0){
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
 		}
+		if(type != null && type.trim().equalsIgnoreCase("Rural")){
+			sb.append(" and tehsil.tehsilId is not null");
+		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
+			sb.append(" and localElectionBody.localElectionBodyId is not null");
+		}
 		
 		if(locationId != null && locationId.longValue() > 0){
 			if(locationLevelId != null && locationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
@@ -131,7 +141,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 			}
 		}
 		
-		sb.append("group by departmentDiseasesInfo.diseasesId, ");
+		sb.append(" group by departmentDiseasesInfo.diseasesId, ");
 		if(scopeId != null && scopeId.longValue() > 0){
 			if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
 				sb.append(" district.districtId ");
@@ -165,7 +175,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		return query.list();
 	}
 	@Override
-	public List<Object[]> getCaseCountDateWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList){
+	public List<Object[]> getCaseCountDateWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select "
 				+ " 1, "
@@ -181,6 +191,11 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		if(deptIdList != null && deptIdList.size() > 0){
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		if(type != null && type.trim().equalsIgnoreCase("Rural")){
+			sb.append(" and departmentDiseasesInfo.locationScopeId = 5");
+		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
+			sb.append(" and departmentDiseasesInfo.locationScopeId = 7");
 		}
 		sb.append("group by date(departmentDiseasesInfo.reportedDate) ");
 		
@@ -612,7 +627,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		return query.list();
 	}
-	public List<Object[]> getCaseCountByLocationIds(List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId,Set<Long> locationIdList){
+	public List<Object[]> getCaseCountByLocationIds(List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId,Set<Long> locationIdList,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select ");
 		if(scopeId != null && scopeId.longValue() > 0){
@@ -641,6 +656,11 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		if(deptIdList != null && deptIdList.size() > 0){
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		if(type != null && type.trim().equalsIgnoreCase("Rural")){
+			sb.append(" and departmentDiseasesInfo.locationAddress.tehsil.tehsilId is not null");
+		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
+			sb.append(" and departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId is not null");
 		}
 		
 		sb.append(" group by ");

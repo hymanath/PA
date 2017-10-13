@@ -33,22 +33,22 @@ public class HealthMedicalAndFamilyWelfareController {
     }
 	@PostMapping("/getCaseCountDiseasesWise")
 	public @ResponseBody List<DiseasesVO> getCaseCaDiseasesCount(@RequestBody InputVO inputVO){
-		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getCaseCountDiseasesWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList());
+		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getCaseCountDiseasesWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getType());
 		return diseasesList;
 	}
 	@PostMapping("/getCaseCountLocationWise")
 	public @ResponseBody List<DiseasesVO> getCaseCountLocationWise(@RequestBody InputVO inputVO){
-		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getCaseCountLocationWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getScopeId(),inputVO.getLocationId());
+		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getCaseCountLocationWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getScopeId(),inputVO.getLocationId(),inputVO.getType());
 		return diseasesList;
 	}
 	@PostMapping("/getCaseCountDateWise")
 	public @ResponseBody List<DiseasesVO> getCaseCountDateWise(@RequestBody InputVO inputVO){
-		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getCaseCountDateWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getRangeType());
+		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getCaseCountDateWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getRangeType(),inputVO.getType());
 		return diseasesList;
 	}
 	@PostMapping("/getLocationDtlsRankWise")
 	public @ResponseBody List<DiseasesVO> getLocationDtlsRankWise(@RequestBody InputVO inputVO){
-		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getLocationDtlsRankWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getMinVal(),inputVO.getMaxVal());
+		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getLocationDtlsRankWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getMinVal(),inputVO.getMaxVal(),inputVO.getType());
 		return diseasesList;
 	}
 	@PostMapping("/getSubLocationsBySuperLocationId")
