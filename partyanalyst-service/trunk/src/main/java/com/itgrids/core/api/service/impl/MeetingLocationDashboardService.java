@@ -337,8 +337,8 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 								}
 						}
 					}
-					meetingTypeVO.setAbsentCount(meetingTypeVO.getInvitedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue());
-					meetingTypeVO.setNonInviteesCount(meetingTypeVO.getAttendedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue());
+					meetingTypeVO.setAbsentCount(Math.abs(meetingTypeVO.getInvitedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue()));
+					meetingTypeVO.setNonInviteesCount(Math.abs(meetingTypeVO.getAttendedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue()));
 				}
 			}
 			if(commonMethodsUtilService.isMapValid(totalCntMap))
@@ -494,16 +494,16 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 												}
 											}
 											
-											sessionVO.setAbsentCount(meetingTypeVO.getRecentMeetingInviteesCnt().longValue()-sessionVO.getInviteeAttendedCount().longValue());
-											sessionVO.setNonInviteesCount(sessionVO.getAttendedCount().longValue()-meetingTypeVO.getRecentMeetingInviteesCnt().longValue());
+											sessionVO.setAbsentCount(Math.abs(meetingTypeVO.getRecentMeetingInviteesCnt().longValue()-sessionVO.getInviteeAttendedCount().longValue()));
+											sessionVO.setNonInviteesCount(Math.abs(sessionVO.getAttendedCount().longValue()-meetingTypeVO.getRecentMeetingInviteesCnt().longValue()));
 											//sessionVO.setAbcentPerc(calculatePercantage(meetingTypeVO., totalCount));
 										}
 									}
 								}
 						}
 					}
-					meetingTypeVO.setAbsentCount(meetingTypeVO.getInvitedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue());
-					meetingTypeVO.setNonInviteesCount(meetingTypeVO.getAttendedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue());
+					meetingTypeVO.setAbsentCount(Math.abs(meetingTypeVO.getInvitedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue()));
+					meetingTypeVO.setNonInviteesCount(Math.abs(meetingTypeVO.getAttendedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue()));
 				}
 			}
 			if(commonMethodsUtilService.isMapValid(totalCntMap))
@@ -530,9 +530,9 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 	}
 	
 	public PartyMeetingDataVO getMatchedVO(List<PartyMeetingDataVO> voList, Long id) {
-		if (voList != null && voList.size() > 0 && id != null && id > 0l) {
+		if (voList != null && voList.size() > 0) {
 			for (PartyMeetingDataVO vo : voList) {
-				if (vo.getId().longValue() == id.longValue())
+				if (id != null && vo.getId().longValue() == id.longValue())
 					return vo;
 			}
 		}
