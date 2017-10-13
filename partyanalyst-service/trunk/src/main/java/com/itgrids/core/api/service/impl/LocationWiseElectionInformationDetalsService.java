@@ -49,7 +49,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 		try{
 			
 			List<ElectionInformationVO> finalPartyList = new ArrayList<ElectionInformationVO>();
-			
+			Map<Long,List<Long>> electionIdAndLocationIdListMap=new HashMap<Long, List<Long>>();
 			Map<Long,List<ElectionInformationVO>> yearMap = new HashMap<Long, List<ElectionInformationVO>>();
 			Map<Long,ElectionInformationVO> electionYeasrMap = new HashMap<Long, ElectionInformationVO>();
 			if(electionYrs !=null && electionYrs.size()>0l){
@@ -99,6 +99,13 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			}
 			Map<Long, ElectionInformationVO> locationMap= new HashMap<Long, ElectionInformationVO>();
 			for (Object[] objects : validVoterList) {
+				List<Long> locationList=electionIdAndLocationIdListMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
+				if(!commonMethodsUtilService.isListOrSetValid(locationList))
+					locationList =new ArrayList<Long>();
+				
+				locationList.add(commonMethodsUtilService.getLongValueForObject(objects[5]));
+				electionIdAndLocationIdListMap.put(commonMethodsUtilService.getLongValueForObject(objects[3]), locationList);
+				
 				ElectionInformationVO yearVo =	locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[5]));
 				if(yearVo == null){
 					List<ElectionInformationVO> yearList = new ArrayList<ElectionInformationVO>();
@@ -226,11 +233,8 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				}
 			}
 			if(commonMethodsUtilService.isListOrSetValid(partyResultList)){
-				finalPartyList = buildSummaryForElectionResult(partyResultList,statusMap);
+				finalPartyList = buildSummaryForElectionResult(partyResultList,statusMap,electionIdAndLocationIdListMap);
 			}
-			
-		/*	List<ElectionInformationVO> partyResultList = setLocationWiseStatus(statusMap,locationMap);
-		*/
 		return finalPartyList;
 			
 		}catch(Exception e){
@@ -240,7 +244,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 		
 	}
 
-	public List<ElectionInformationVO> buildSummaryForElectionResult(List<ElectionInformationVO> finalPartyList,Map<String,String> statusMap){
+	public List<ElectionInformationVO> buildSummaryForElectionResult(List<ElectionInformationVO> finalPartyList,Map<String,String> statusMap,Map<Long,List<Long>> electionIdAndLocationIdListMap){
 		List<ElectionInformationVO> resultList = new ArrayList<ElectionInformationVO>(0);
 		try {
 			
@@ -252,6 +256,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 						
 						if(commonMethodsUtilService.isListOrSetValid(locationVO.getList())){
 							for (ElectionInformationVO electionVO : locationVO.getList()) {
+								List<Long> lcoationIdsList = electionIdAndLocationIdListMap.get(electionVO.getElectionId());
 								for (String range : statusMap.keySet()) {
 									statusCountMap = yearWiseStatusCountMap.get(electionVO.getElectionId());
 									if(!commonMethodsUtilService.isMapValid(statusCountMap))
@@ -267,7 +272,11 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 									Long count = statusCountMap.get(electionVO.getStatus());
 									if(count == null)
 										count=0L;
-									count = count+1L;
+									// in 2004 we have 226 assembly, but in 2014 175 . so am not adding  the counts and
+									// status details which are not available in this locations,
+									if(lcoationIdsList.contains(locationVO.getLocationId()))
+										count = count+1L;
+									
 									statusCountMap.put(electionVO.getStatus(),count);
 								}
 							}
