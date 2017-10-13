@@ -494,12 +494,12 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 								}
 								if(commonMethodsUtilService.isListOrSetValid(meetingTypeVO.getLevelList()) && partyMeetingId.longValue() == meetingTypeVO.getMeetingId().longValue()){
 									for (PartyMeetingDataVO sessionVO : meetingTypeVO.getLevelList()) {
-										Set<Long> sessionAttendedIds = sessionVO.getAttendedIds();
+										Set<Long> sessionAttendedIds = sessionVO.getRecentAttendedIds();
 										if(commonMethodsUtilService.isListOrSetValid(sessionAttendedIds)){
 											sessionVO.setRecentAttended(Long.valueOf(sessionAttendedIds.size()));
 											for (Long long1 : sessionAttendedIds) {
 												if(inviteeIds.contains(long1)){
-													sessionVO.setRecentInviteeAttended(sessionVO.getInviteeAttendedCount()+1);
+													sessionVO.setRecentInviteeAttended(sessionVO.getRecentInviteeAttended()+1);
 													sessionVO.setLatePerc(calculatePercantage(sessionVO.getLateCount(),meetingTypeVO.getRecentMeetingInviteesCnt()).toString());
 												}
 											}
@@ -508,7 +508,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 											sessionVO.setRecentNonInvitee(Math.abs(sessionVO.getRecentAttended().longValue()-meetingTypeVO.getRecentMeetingInviteesCnt().longValue()));
 											sessionVO.setAbcentPerc(calculatePercantage(sessionVO.getRecentAbcent(), meetingTypeVO.getRecentMeetingInviteesCnt()).toString());
 											sessionVO.setAttendedPerc(calculatePercantage(sessionVO.getRecentInviteeAttended(),meetingTypeVO.getRecentMeetingInviteesCnt()).toString());
-											sessionVO.setLatePerc(calculatePercantage(sessionVO.getRecentLate(),meetingTypeVO.getRecentMeetingInviteesCnt()).toString());
+											//sessionVO.setLatePerc(calculatePercantage(sessionVO.getRecentLate(),meetingTypeVO.getRecentMeetingInviteesCnt()).toString());
 										}
 									}
 								}
