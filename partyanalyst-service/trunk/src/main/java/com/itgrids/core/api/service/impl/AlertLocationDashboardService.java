@@ -372,8 +372,8 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 							vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
 						}
 					}else if(type != null && type.equalsIgnoreCase("alertCategory")){
-						if(impactLvlId == 6l || impactLvlId == 7l || impactLvlId == 8l || impactLvlId == 9l
-								 || impactLvlId == 4l || impactLvlId == 5l ) {
+						if(impactLvlId.longValue() == 6l || impactLvlId.longValue() == 7l || impactLvlId.longValue() == 8l || impactLvlId.longValue() == 9l
+								 || impactLvlId.longValue() == 4l || impactLvlId.longValue() == 5l ) {
 							vo = getImpactScopeMatchVO(finalVOList,commonMethodsUtilService.getLongValueForObject(6l));
 							if(vo == null){
 								 vo = new LocationAlertVO();
