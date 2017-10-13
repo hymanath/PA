@@ -4,6 +4,7 @@ import java.util.List;
 
 public class SwachhBharatMissionIHHLDtlsVO {
 
+	private Long id;
 	private Long target;
 	private Long achivement;
 	private Double percentage;
@@ -21,6 +22,13 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	
 	private String range;
 	
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public Long getTarget() {
 		return target;
 	}

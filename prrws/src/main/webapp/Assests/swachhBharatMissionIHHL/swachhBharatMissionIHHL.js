@@ -4,12 +4,13 @@
 	getIHHLCategoryWiseAnalysis();//third block
 	getIHHLAchivementProgressDtls();//fourth block
 	getSwachhBharatMissionLocationWiseDetails();//last 
-	
 	function getSwachhBharatMissionOverviewDtls(){
 		var json = {
 			fromDate:"",
 			toDate:"",
-			year:""
+			location:"state",
+			locationId:"-1",
+			subLocation:"state"
 		}
 		$.ajax({                
 			type:'POST',    
