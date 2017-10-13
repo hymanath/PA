@@ -41,11 +41,16 @@
 				<div id="candidatesResultsDivId"></div>
 			</div>
 		</div>
+		
 		<div class="row">
 			<div class="col-sm-12 m_top10">
-				<div id="levelWiseCandidatesResultsDivId" class="m_top10"></div>
+				<div class="block">
+					<div id="levelWiseCandidatesResultsDivId" class="m_top10"></div>
+					<div id="locationWiseCandidatesResultsDivId" class="m_top20"></div>
+				</div>
 			</div>
 		</div>
+		
 		<div class="row">
 			<div class="col-sm-12 m_top10">
 				<div class="block">
