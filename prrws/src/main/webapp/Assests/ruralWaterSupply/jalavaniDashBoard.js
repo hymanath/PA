@@ -16,10 +16,10 @@
 		var levelWiseSBArr = ['state','district','constituencies','mandal','panchayat'];
 		getAllFiniancialYears();
 		function onloadCalls(){
+			getLocationWiseAlertStatusCounts('graph',"",'state',"","",2);
+			getAlertFeedbackStatusDetails();
 			
-			getWaterSourceDeatils2("state","","","","","graph");
-			getLabTestDetails();
-			getHabitationSupplyDetails();
+			getHamletWiseIvrStatusCounts('graph','','state',"","",2);
 			getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 			getAllPrrwsDistricts("chosendistValmandalBlockId");
 			
@@ -28,7 +28,8 @@
 			tabBlocks('constituencyBlockId','constituency');
 			tabBlocks('mandalBlockId','mandal');
 			
-			
+			//hamlet detail List
+			//getLocationWiseHamletIvrList();
 			
 			responsiveTabs();
 		}
@@ -1714,13 +1715,13 @@
 			}
 			
 				tabBlock+='<div class="row">';
-					tabBlock+='<div class="col-sm-12 overViewCls" >';
+					tabBlock+='<div class="col-sm-12 overViewCls">';
 						tabBlock+='<div>';
 							
 							tabBlock+='<ul class="nav nav-tabs nav-tabs-custom custom_value'+blockName+'" role="tablist">';
 								for(var i in blocksArr)
 								{
-									if(i == 4)
+									if(i == 2)
 									{
 										if(blocksArr[i].id == "jalavani"){
 											tabBlock+='<li class="active" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><span>'+blocksArr[i].name+'</span></a></li>';
@@ -1765,7 +1766,7 @@
 					}
 					for(var i in blocksArr)
 					{
-						if(i == 4)
+						if(i == 2)
 						{
 							 if(blocksArr[i].id == "jalavani"){
 								 tabBlock+='<div >';
@@ -1792,12 +1793,15 @@
 		tabBlock+='</div>';
 		$("#"+blockId).html(tabBlock);
 		$(".overViewCls").hide();
-		getWaterSourceDeatils2('state',blocksArr,"","","","table")
-		getWaterSourceDeatils2('district',blocksArr,"","","","table")
-		getWaterSourceDeatils2('constituency',blocksArr,"","","","table")
-		getWaterSourceDeatils2('mandal',blocksArr,"","","","table")
 		
-		
+		getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'state',"","",2);
+		getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'state',"","",2);
+		getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'district',"","",2);
+		getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'district',"","",2);
+		getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'constituency',"","",3);
+		getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',"","",3);
+		getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',"","",3);
+		getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',"","",3);
 		
 		if(blockId == 'constituencyBlockId'){
 				selectBox('distVal'+blockId+'')

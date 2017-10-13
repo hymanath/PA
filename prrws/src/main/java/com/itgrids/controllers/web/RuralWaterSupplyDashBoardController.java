@@ -71,6 +71,10 @@ public class RuralWaterSupplyDashBoardController {
 	public String assetsDashBoard(ModelMap model){
 		return "assetsDashBoard";
 	}
+	@GetMapping("/jalavaniDashBoard")
+	public String jalavaniDashBoard(ModelMap model){
+		return "jalavaniDashBoard";
+	}
 	
 	@PostMapping("/getHabitationCoverageByStatusByLocationType")
 	public @ResponseBody List<LocationVO> getHabitationCoverageByStatusByLocationType(@RequestBody InputVO vo) {
