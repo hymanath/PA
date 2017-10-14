@@ -1235,7 +1235,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		if(electionYrs != null && electionYrs.size() > 0){
 			 sb.append(" and  e.election_year in (:electionYrs) ");
 		}
-		if(parliamentIds != null && parliamentIds.size() > 0){
+		if(parliamentIds != null && parliamentIds.size() > 0 && electionScopeId.longValue() == 1l){
 			 sb.append(" and  c.constituency_id in (:parliamentIds) ");
 		}
 		if(assemlyIds != null && assemlyIds.size() > 0){
