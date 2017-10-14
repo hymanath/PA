@@ -223,6 +223,7 @@ function onLoadAjaxCalls()
 	}else{
 		$(".assemblyElectionBlockCls").hide();
 	}
+	getLocationWiseCrossVotingDetails();
 	getVotersAndcadreAgeWiseCount(22,4);//Constituency Voter Information
 	//caste information
 	getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",22,4,"desending")
@@ -6712,4 +6713,27 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 			}
 		}
 	}
+}
+
+function getLocationWiseCrossVotingDetails(){
+	
+	jsObj={
+		electionYearArr			:[2004,2009,2014],
+		parliamentIdsArr			:[],
+		assemblyIdsArr 				:[],
+		partyIdsArr 					:[872,362,1117,886,72,269,265,163,1887],
+		locationValue	:userAccessLevelValuesArray,
+		withAlliance:"YES",
+		subTypesArr:["MAIN"],
+		locationLevelId:locationLevelId
+	}
+	$.ajax({
+		type : "GET",
+		url : "getLocationWiseCrossVotingDetailsAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){  
+		
+	});
+	
 }
