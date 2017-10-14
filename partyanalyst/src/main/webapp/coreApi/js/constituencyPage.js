@@ -853,6 +853,19 @@ function onLoadClicks()
 				$("#TitleId").html(status_name + " Alerts Details  -  Total "+total_count+" ");
 			}
 			getAlertOverviewClick(alertTypeIdsStr,statusIds,designationId,alertCategeryId,alert_type,otherCategory,impactIdsArr,status_name,total_count);
+		}else if(type == "MPMLA"){
+			var electionScopeId = $(this).attr("attr_election_scopeId");
+			var partyId = $(this).attr("attr_partyId");
+			var electionId = $(this).attr("attr_electionId");
+			if(electionId == null || electionScopeId == 1){
+				electionId = 260;
+			}else if(electionId == null || electionScopeId == 2){
+				electionId = 258;
+			}
+			$("#openModalDiv").modal("show");
+			$("#openModalDiv .modal-dialog").css("width","60%");
+			$("#TitleId").html("Party Wise Candidates Details");
+			getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,electionId)
 		}	
 	});
 	$(document).on("click",".descAlertCls",function(){
@@ -5457,8 +5470,8 @@ function getPartyWiseMPandMLACandidatesCounts(){
 						for(var i in result.subList){
 							str+='<td>';
 								str+='<div class="media">';
-								str+='<div class="media-left">';
-									str+='<h4 class="mpMlaRoundedCss">'+result.subList[i].condidateCount+'</h4>';
+								str+='<div class="media-left">';//ara
+									str+='<h4 class="mpMlaRoundedCss popUpDetailsClickCls" attr_type="MPMLA" attr_election_scopeId="1" attr_partyId="'+result.subList[i].partyId+'" attr_electionId="'+result.subList[i].electionId+'">'+result.subList[i].condidateCount+'</h4>';
 								str+='</div>';
 									str+='<div class="media-body media_width">';
 										if(result.subList[i].party == "BJP"){
@@ -5493,7 +5506,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 							str+='<td>';
 								str+='<div class="media">';
 								str+='<div class="media-left">';
-									str+='<h4 class="mpMlaRoundedCss">'+result.subList2[i].condidateCount+'</h4>';
+									str+='<h4 class="mpMlaRoundedCss popUpDetailsClickCls"attr_election_scopeId="2" attr_type="MPMLA" attr_election_scopeId="'+result.subList2[i].scopeId+'" attr_partyId="'+result.subList2[i].partyId+'" attr_electionId="'+result.subList2[i].electionId+'">'+result.subList2[i].condidateCount+'</h4>';
 								str+='</div>';
 									str+='<div class="media-body media_width">';
 									if(result.subList2[i].party == "BJP"){
@@ -6737,3 +6750,89 @@ function getLocationWiseCrossVotingDetails(){
 	});
 	
 }
+function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,electionId){
+	  
+	$("#openPostDetailsModalDivId").html(spinner);
+	var electionIds=[];
+	var electionScopeIds=[];
+	electionIds.push(electionId)
+	electionScopeIds.push(electionScopeId)
+		
+	
+	 var jsObj={
+       electionIds    		:electionIds,
+       loctionValue   		:1,
+       loactionTypeId   	:2,
+       electionScopeIds 	:electionScopeIds,
+	   partyId :partyId
+    }
+   $.ajax({
+      type : "POST",
+      url : "getPartyWiseMPandMLACandidatesCountDetialsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			return buildPartyWiseMPandMLACandidatesCountDetials(result,electionScopeId);
+		}else{
+			$("#openPostDetailsModalDivId").html(noData);
+		}
+		
+  }); 
+	 function buildPartyWiseMPandMLACandidatesCountDetials(result,electionScopeId){
+		
+		var str='';
+			str+='<div class="table-responsive">';
+				str+='<table class="table table-bordered table-condensed" id="candidateDataTableId">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>PARTY NAME </th>';
+						str+='<th>PHOTO</th>';
+						str+='<th>CANDIDATE NAME </th>';						
+						str+='<th>LOCATION NAME </th>';
+					 str+='</tr>';
+				 str+='</thead>';
+                 str+='<tbody>';
+				 for(var i in result){
+					str+='<tr>';
+						if(result[i].party != null ){
+							str+='<td>'+result[i].party+'</td>';         
+						}else{
+							str+='<td> - </td>';     
+						}						
+						if(result[i].cadreId != null && result[i].image !=null){
+							if(result[i].image != null && result[i].image.length>0)
+								str+='<td><img src="https://mytdp.com/images/cadre_images/'+result[i].image+'" style="height:75px;width:75px;border-radius:50%" class="profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/></td>';
+							else
+								str+='<td><img src="https://mytdp.com/images/candidates/'+result[i].condidateId+'.jpg" style="height:75px;width:75px;border-radius:50%" class="profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/></td>';
+						}else{
+							str+='<td><img src="https://mytdp.com/images/candidates/'+result[i].condidateId+'.jpg" style="height:75px;width:75px;border-radius:50%" class="profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/></td>';
+						}
+						if(result[i].candidateName != null ){
+							str+='<td>'+result[i].candidateName+'</td>';         
+						}else{
+							str+='<td> - </td>';     
+						}
+						if(result[i].constituencyName != null ){
+							if(electionScopeId == 1)
+								str+='<td>'+result[i].constituencyName+' Parliament MP </td>';
+							else if(electionScopeId == 2)
+								str+='<td>'+result[i].constituencyName+' Assembly  MLA </td>';
+						}else{
+							str+='<td> - </td>';     
+						}
+					str+='</tr>';
+				}
+					 str+='</tbody>';				 
+				str+='<table>';
+			str+='<div>';
+		$("#openPostDetailsModalDivId").html(str);
+		$("#candidateDataTableId").dataTable({
+			"paging":   true,
+			"info":     true,
+			"searching": true,
+			"autoWidth": true,
+			"sDom": '<"top"fl>rt<"bottom"ip><"clear">'
+		});
+	} 
+  }
