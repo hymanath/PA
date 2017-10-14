@@ -34,6 +34,9 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private String earnedVote;
 	private String status;
 	private String range;
+	private Long assemblyValidVoters;
+	private Long parliamentValidVoters;
+	private String earnedVotersPerc;
 	
 	private List<ElectionInformationVO> list = new CopyOnWriteArrayList<ElectionInformationVO>();
 	private List<ElectionInformationVO> subList1 = new ArrayList<ElectionInformationVO>();
@@ -206,5 +209,25 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	public void setEarnedVote(String earnedVote) {
 		this.earnedVote = earnedVote;
 	}
+	public Long getAssemblyValidVoters() {
+		return assemblyValidVoters;
+	}
+	public void setAssemblyValidVoters(Long assemblyValidVoters) {
+		this.assemblyValidVoters = assemblyValidVoters;
+	}
+	public Long getParliamentValidVoters() {
+		return parliamentValidVoters;
+	}
+	public void setParliamentValidVoters(Long parliamentValidVoters) {
+		this.parliamentValidVoters = parliamentValidVoters;
+	}
+	public String getEarnedVotersPerc() {
+		return earnedVotersPerc;
+	}
+	public void setEarnedVotersPerc(String earnedVotersPerc) {
+		this.earnedVotersPerc = earnedVotersPerc;
+	}
+	
+	
 
 }
