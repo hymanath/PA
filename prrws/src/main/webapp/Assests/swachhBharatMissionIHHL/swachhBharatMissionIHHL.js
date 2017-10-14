@@ -12,6 +12,14 @@ function onloadCalls(){
 	levelWiseSBData("IHHL");
 }
 function onloadIntiliazilation(){
+	$("header").on("click",".menu-cls",function(e){
+		e.stopPropagation();
+		$(".menu-data-cls").toggle();
+	});
+	$(document).on("click",function(){
+		$(".menu-data-cls").hide();
+	});
+	
 	$("#dateRangePickerAUM").daterangepicker({
 		opens: 'left',
 		startDate: globalFromDateForLevel,
