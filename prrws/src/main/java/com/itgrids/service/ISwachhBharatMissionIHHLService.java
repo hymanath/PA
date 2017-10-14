@@ -8,8 +8,6 @@ import com.itgrids.dto.SwachhBharatMissionIHHLDtlsVO;
 public interface ISwachhBharatMissionIHHLService {
 
 	public SwachhBharatMissionIHHLDtlsVO getSwachhBharatMissionOverviewDtls(InputVO inputVO);
-	public SwachhBharatMissionIHHLDtlsVO getSwachhBharatMissionStatusOverviewDtls(InputVO inputVO);
-	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLCategoryWiseAnalysis(InputVO inputVO);
 	public List<SwachhBharatMissionIHHLDtlsVO> getSwachhBharatMissionLocationWiseDetails(InputVO inputVO);
 	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLAchivementProgressDtls(InputVO inputVO);
 }

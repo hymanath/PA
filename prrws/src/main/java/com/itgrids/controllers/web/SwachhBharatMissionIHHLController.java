@@ -39,12 +39,12 @@ public class SwachhBharatMissionIHHLController {
 	   }
 	   @RequestMapping(value = "/getSwachhBharatMissionStatusOverviewDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	   public @ResponseBody  SwachhBharatMissionIHHLDtlsVO  getSwachhBharatMissionStatusOverviewDtls(@RequestBody InputVO inputVO) {
-		 SwachhBharatMissionIHHLDtlsVO  reusltVO = swachhBharatMissionIHHLService.getSwachhBharatMissionStatusOverviewDtls(inputVO);
+		 SwachhBharatMissionIHHLDtlsVO  reusltVO = null;
 		    return reusltVO;
 	   }
 	   @RequestMapping(value = "/getIHHLCategoryWiseAnalysis", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	   public @ResponseBody  List<SwachhBharatMissionIHHLDtlsVO>  getIHHLCategoryWiseAnalysis(@RequestBody InputVO inputVO) {
-		 List<SwachhBharatMissionIHHLDtlsVO>  resultList = swachhBharatMissionIHHLService.getIHHLCategoryWiseAnalysis(inputVO);
+		 List<SwachhBharatMissionIHHLDtlsVO>  resultList = null;
 		 return resultList;
 	   }
 	   @RequestMapping(value = "/getIHHLAchivementProgressDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
