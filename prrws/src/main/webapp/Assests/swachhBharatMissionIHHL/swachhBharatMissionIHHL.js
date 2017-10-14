@@ -89,12 +89,12 @@
 			}
 			function getSwachhBharatMissionLocationWiseDetails(){
 					var json = {
-						fromDate:"",
-						toDate:"",
+						fromDate:"02-10-2017",
+						toDate:"07-10-2017",
 						location:"state",
 						locationId:"-1",
 						subLocation:"district", //state/district/constituency/mandal
-						reportType:"status",//daily
+						reportType:"daily",//daily
 						displayType:"day"//day/week/month
 					}
 					$.ajax({                
