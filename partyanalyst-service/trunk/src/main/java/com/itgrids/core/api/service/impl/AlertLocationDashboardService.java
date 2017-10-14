@@ -538,6 +538,11 @@ public class AlertLocationDashboardService implements IAlertLocationDashboardSer
 				}
 					
 			}
+			if((type != null && type.equalsIgnoreCase("categoryOthers"))|| (otherCategory != null && otherCategory.equalsIgnoreCase("categoryOthers"))){
+				if(alertCategeryIdsList.get(0).longValue() == 6l){
+				   alertCategeryIdsList.clear();
+				}
+			}
 			if(type != null && type.equalsIgnoreCase("total")){
 				alertList = alertAssignedDAO.getDesignationWiseAssignedAlerts(fromDate, toDate, locationValues, alertTypeIds, locationTypeId, year,otherCategory,statusIdsList,designationId);
 			List<Object[]>	alertCandidateList = alertCandidateDAO.getDesignationWiseInvolvedAlerts(fromDate, toDate, locationValues, alertTypeIds, locationTypeId, year,otherCategory,statusIdsList,designationId);
