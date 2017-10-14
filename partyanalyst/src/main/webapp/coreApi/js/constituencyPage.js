@@ -6497,7 +6497,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 												}
 												if(result.levelList[i].attendedPerc != null)
 												{
-													str+='<small>'+result.levelList[i].attendedPerc+'</small>';
+													str+='<small class="text-success">'+result.levelList[i].attendedPerc+'</small>';
 												}
 											str+='</td>';
 											str+='<td>';
@@ -6507,7 +6507,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 												}
 												if(result.levelList[i].latePerc != null)
 												{
-													str+='<small>'+result.levelList[i].latePerc+'</small>';
+													str+='<small class="text-success">'+result.levelList[i].latePerc+'</small>';
 												}
 											str+='</td>';
 											str+='<td>';
@@ -6517,7 +6517,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 												}
 												if(result.levelList[i].abcentPerc != null)
 												{
-													str+='<small>'+result.levelList[i].abcentPerc+'</small>';
+													str+='<small class="text-success">'+result.levelList[i].abcentPerc+'</small>';
 												}
 											str+='</td>';
 											str+='<td>'+result.levelList[i].recentNonInvitee+'</td>';
