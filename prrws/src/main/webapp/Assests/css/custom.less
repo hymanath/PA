@@ -2153,3 +2153,68 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 .starcolorChange{
 	cursor:pointer;
 }
+.categoryRondedCss{
+	 border: 1px solid #d3d3d3;
+    border-radius: 50%;
+    color: #ffffff;
+    display: inline-block;
+    height: 25px;
+    margin-left: 10px;
+    padding: 1px 5px 5px 7px;
+    width: 25px;
+}
+.borderleft{
+	li:first-child{
+		border-left:none;
+	}
+	li{
+		border-left:1px solid #ccc;
+	}
+	li:last-child{
+		border-left:none;
+	}
+}
+.calendar_active_IHHL_cls{
+
+	li{
+		cursor:pointer;
+		padding:5px 8px;
+		img
+		{
+			width:16px;
+			height:16px;
+		}
+		&:hover
+		{
+			background-color: @white_color;
+			padding:5px 8px;
+			color: @black_color;
+			border-radius: 18px;
+			transition: 0.5s all ease-out;
+			border:1px solid #73D5CD;
+			-webkit-transition: 0.5s all ease-out;
+			-moz-transition: 0.5s all ease-out;
+		}
+		&:focus
+		{
+			background-color: @white_color;
+			padding:5px 8px;
+			color: @black_color;
+			border-radius: 18px;
+			border:1px solid #73D5CD;
+			transition: 0.5s all ease-out;
+			-webkit-transition: 0.5s all ease-out;
+			-moz-transition: 0.5s all ease-out;
+		}
+	}
+	li.active{
+		background-color: @white_color;
+		padding:5px 8px;
+		color: @black_color;
+		border:1px solid #73D5CD;
+		border-radius: 18px;
+		transition: 0.5s all ease-out;
+		-webkit-transition: 0.5s all ease-out;
+		-moz-transition: 0.5s all ease-out;
+	}
+}
