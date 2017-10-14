@@ -112,7 +112,6 @@ function onLoadInitialisations()
 		} else {
 			header.removeClass("header-fixed");
 		}
-
 		scrollAnimation();
 	});
 	function scrollAnimation(){
@@ -148,8 +147,6 @@ function onLoadInitialisations()
 		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
 	});
-	//Meetings End
-	
 	//Tours Start
 	$("#tourNewDateRangePickerId").daterangepicker({
 		opens: 'left',
@@ -174,9 +171,6 @@ function onLoadInitialisations()
 		var dd = date.getDate(); 
 		return dd;
 	}
-	
-	//Tours End
-	
 	//Alert Start
 	$("#alertNewDateRangePickerId").daterangepicker({
 		opens: 'left',
@@ -196,24 +190,17 @@ function onLoadInitialisations()
 		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
         }
 	});
-	//Alert End
-	
 }
 function onLoadAjaxCalls()
 {	
 	$("#enrolmentYears").chosen();
-	//Enrolment Years
-	getEnrollmentIds();
-	//Publications	
-	getPublications();
-	
-	//Committee
-	getLocationWiseCommitteesCount(2);
-	//Meetings
-	getLocationWiseMeetingsCount();
-	//getLocationWiseMeetingsCountDetails(1);
-	//getLocationWiseMeetingsCountDetails(2);
-	//getLocationWiseMeetingsCountDetails(3);
+	getEnrollmentIds();//Enrolment Years
+	getPublications();//Publications	
+	getLocationWiseCommitteesCount(2);//Committee
+	getLocationWiseMeetingsCount();	//Meetings
+	getLocationWiseMeetingsCountDetails(1);
+	getLocationWiseMeetingsCountDetails(2);
+	getLocationWiseMeetingsCountDetails(3);
 	 //candidate Profiles 1st block
 	if(locationLevelId == "2"){
 		getPartyWiseMPandMLACandidatesCounts();
@@ -221,7 +208,6 @@ function onLoadAjaxCalls()
 		 $("#statelevelMPMLAId").html(" ");
 	}
 	getCandidateAndPartyInfoForConstituency();
-	
 	 //Second Block
 	if(locationLevelId == "2"){
 		getCountsForStateLevel();
@@ -229,45 +215,34 @@ function onLoadAjaxCalls()
 		 $("#statelevelWiseCountDivId").html(" ");
 		 getCountsForConstituency();
 	}
-	
 	//Assembly Block
 	getElectionTypes("onload");
-	
 	if(locationLevelId == '4'){
 		$(".assemblyElectionBlockCls").show();
 		getDetailedElectionInformaction();
 	}else{
 		$(".assemblyElectionBlockCls").hide();
 	}
-	
-	//Constituency Voter Information
-	getVotersAndcadreAgeWiseCount(22,4);
-	
+	getVotersAndcadreAgeWiseCount(22,4);//Constituency Voter Information
 	//caste information
 	getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",22,4,"desending")
 	getVotersCastGroupWiseCount(22,4)
 	getActivityStatusList();
-	
 	//cadre Information Block
 	getLocationTypeWiseCadreCount("");
 	getAgeRangeGenerAndCasteGroupByCadreCount(4);
-	
 	//Tours 
 	getLocationWiseTourMembersComplainceDtls();
-	
 	// Benefits
 	getGovtSchemeWiseBenefitMembersCount();
-	
 	//Grievance And Insurance
 	getLocationWiseGrivanceTrustStatusCounts("3");
 	getLocationWiseInsuranceStatusCount("3");
-	
 	// Nominated Posts
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
 	getLevelWisePostsOverView(); 
-	
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
 	getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
@@ -275,7 +250,6 @@ function onLoadAjaxCalls()
 		//News Block
 		getPrintMediaCountsForConstituencyPage()
 		getLeadersInNewsForConstituencyPage();
-		
 		//Problems
 		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage("overAll")
 		for(var i in propertyIdGlobalStr){
@@ -315,7 +289,6 @@ function onLoadClicks()
 		var levelType = $(this).attr("menu-type");
 		$(".casteGroupTypeDiv li").removeClass("active")
 		$(".casteGroupTypeDiv li:nth-child(1)").addClass("active");
-		
 		if(levelName == 'parliament')
 		{
 			$("[menu-name="+levelName+"]").closest("li").show();
@@ -324,16 +297,13 @@ function onLoadClicks()
 			$("[menu-name="+levelName+"]").closest("li").show();
 			$("[menu-name='parliament']").closest("li").hide();
 		}
-		
 		$("[menu-name="+levelName+"]").html($(this).html()+"("+$(this).attr("short-name")+")");
-		
 		//$("[menu-name="+levelName+"]").width(((length)*(10)));
 		$("[levelId="+levelId+"]").removeClass("active");
 		$(this).addClass("active");
 		$("[menu-name="+levelName+"]").closest("li").show();
 		//$("[menu-name="+levelName+"]").addClass("active");
 		$("#getMenuLocations").attr("menu-location-"+levelName+"",locationId);
-		
 		$("#getMenuLocations").attr("menu-location-levelName",levelName);
 		if(levelType == 'Municipality')
 		{
@@ -346,7 +316,6 @@ function onLoadClicks()
 			locationLevelId = ((levelId)-(1));
 			$("#getMenuLocations").attr("menu-location-levelId",((levelId)));
 		}
-		
 		locationLevelName = levelName;
 		if(levelId == 10)
 		{
@@ -355,7 +324,6 @@ function onLoadClicks()
 		if(levelId == 3 || levelId == 10)
 		{
 			districtId = locationId;
-			
 			$("#getMenuLocations").attr("menu-location-constituency","");
 			$("#getMenuLocations").attr("menu-location-mandal","");
 			$("#getMenuLocations").attr("menu-location-panchayat","");
@@ -375,10 +343,7 @@ function onLoadClicks()
 		{
 			panchayatId = locationId
 		}
-		/* if(levelId != '5' || levelId != 5)
-		{
-			menuCalls(levelId,locationId,'')
-		}else{ */
+		/* if(levelId != '5' || levelId != 5){menuCalls(levelId,locationId,'')}else{ */
 			menuCalls(levelId,locationId,$("#constituencyMenu li.active").attr("menu-click"))
 		//}	
 	});
@@ -450,8 +415,6 @@ function onLoadClicks()
 	$(document).on("click","#menuHeaderId",function(e){
 		e.stopPropagation();
 		$(".menu-dropdown").toggle();
-		//$("[menu-name]").removeClass("active");
-		//$(this).addClass("active");
 	});
 	$(document).on("click",".menu-dropdown",function(e){
 		e.stopPropagation();
@@ -460,14 +423,7 @@ function onLoadClicks()
 		$(".districtMenuName,.parliamentMenuName,.constituencyMenuName,.mandalsMenuName,.panchayatMenuName").closest("li").hide();
 		$("#constituencyMenu,#mandalMenu,#panchayatMenu").html(" ");
 		$("[menu-type]").removeClass("active");
-		$("#getMenuLocations").attr("menu-location-state","1")
-							.attr("menu-location-district","")
-							.attr("menu-location-constituency","")
-							.attr("menu-location-mandal","")
-							.attr("menu-location-panchayat","")
-							.attr("menu-location-levelid","2")
-							.attr("menu-location-parliament","")
-							.attr("menu-location-levelname","state");
+		$("#getMenuLocations").attr("menu-location-state","1").attr("menu-location-district","").attr("menu-location-constituency","").attr("menu-location-mandal","").attr("menu-location-panchayat","").attr("menu-location-levelid","2").attr("menu-location-parliament","").attr("menu-location-levelname","state");
 		onLoadLocValue();
 	});
 	$(document).on("click",function(e){
@@ -514,12 +470,10 @@ function onLoadClicks()
 			}else if(locationLevelId == 12){
 				$("#selectedMenuName").html(name+' '+locationLevelName);
 			}
-			
 		}else if(locationLevelId == 9){
 			name = $("#parliamentMenu").find("li.active").html();
 			$("#selectedMenuName").html(name+' '+locationLevelName);
 		}
-		
 		$(".casteGroupTypeDiv li").removeClass("active")
 		$(".casteGroupTypeDiv li:nth-child(1)").addClass("active");
 		
@@ -533,7 +487,6 @@ function onLoadClicks()
 		locationLevelId = $("#getMenuLocations").attr("menu-location-levelId");
 		onLoadLocValue();
 		onLoadAjaxCalls();
-			
 	});
 	$(document).on("click","[refresh]",function(){	
 		var blockName = $(this).attr("refresh");
@@ -612,7 +565,6 @@ function onLoadClicks()
 					checkedTypeVal =$(this).val();
 				}
 			});
-			
 		var i = 0;	
 		 electionTypeVal = [];
 		 $(".electionTypeWiseCls").each(function(){
@@ -620,25 +572,19 @@ function onLoadClicks()
 				 electionTypeVal[i++] = $(this).val();
 			}
 		});
-		
 		var j = 0;	
-		 electionSubTypeArr = [];
-		 $(".checkedMainByeType").each(function(){
+		electionSubTypeArr = [];
+		$(".checkedMainByeType").each(function(){
 			if ($(this).is(':checked')){
 				 electionSubTypeArr[j++] = $(this).val();
 			}
 		});
-		
-			
 		var partyIds = $("#elctionBlockPartysId").val();
 		electionYrVal=[];
 		electionYrVal = $("#elctionYearsBlockId").val();
-		
-		 
 		getElectionInformationLocationWise(electionTypeVal,checkedTypeVal,partyIds,electionSubTypeArr,electionYrVal);
 	});
 	$(document).on("click",".checkedMainByeType",function(){
-		
 			var j = 0;	
 			 electionYearsSubTypeArr = [];
 			 $(".checkedMainByeType").each(function(){
@@ -657,25 +603,22 @@ function onLoadClicks()
 			});
 			getElectionYears();
 		} */
-		
-});		
-	$(document).on("click",".electionTypeWiseCls",function(){
-			var value = $(this).val();
-			if(value != 0){
-				$(".checkUncheckCls").prop("checked",false);
-			}else if(value == 0){
-				if ($(this).is(':checked')){
-					$(".checkUncheckCls").prop("checked",true);
-					$(".electionTypeWiseCls").prop("checked",true);
-				}else{
-					$(".checkUncheckCls").prop("checked",false);
-					$(".electionTypeWiseCls").prop("checked",false);
-				}
-				
-			}
 	});		
-	
-
+	$(document).on("click",".electionTypeWiseCls",function(){
+		var value = $(this).val();
+		if(value != 0){
+			$(".checkUncheckCls").prop("checked",false);
+		}else if(value == 0){
+			if ($(this).is(':checked')){
+				$(".checkUncheckCls").prop("checked",true);
+				$(".electionTypeWiseCls").prop("checked",true);
+			}else{
+				$(".checkUncheckCls").prop("checked",false);
+				$(".electionTypeWiseCls").prop("checked",false);
+			}
+			
+		}
+	});		
 	$(document).on("click",".yearCadreDetails",function(){
 		$(".yearCadreDetails").removeClass("cadreBorderStyle");
 		$(this).addClass("cadreBorderStyle");
@@ -705,7 +648,6 @@ function onLoadClicks()
 			$(this).text("Click to more");
 			$(".assembly-members-view").removeClass("active");
 		}
-		
 	});
 	$(document).on("click",".assembly-viewRes",function(){
 		if($(this).text() == 'Click to more')
@@ -716,15 +658,12 @@ function onLoadClicks()
 			$(this).text("Click to more");
 			$(".assembly-members-viewRes").removeClass("active");
 		}
-		
 	});
-	
 	$(document).on("click",".casteGroupWiseClickCls",function(){
 		var casteGroupId =  $(this).attr("attr_id");
 		var casteName =  $(this).attr("attr_name");
 		var publicationId = $("#publicationCasteId").val();
 		var enrollmentId = $("#enrollmentCasteId").val();
-		
 		getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,"tabClick",casteName,publicationId,enrollmentId,$("[active-type='casteSorting'] li.active").attr("type"));
 	});
 	$(document).on("change","#publicationCasteId",function(){
@@ -747,19 +686,15 @@ function onLoadClicks()
 		var casteGroupId =  $(this).attr("attr_caste_group_id");
 		var casteId =  $(this).attr("attr_caste_id");
 		var casteName =  $(this).attr("attr_caste_name");
-		
 		var enrollmentId =  $("#enrollmentCasteId").val();
 		var publicationId = $("#publicationCasteId").val();
 		getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,enrollmentId,publicationId,casteName)
-		
 	});
-	
 	$(document).on("change","#enrollmentCadreId",function(){
 		var enrollmentId =  $(this).val();
 		getLocationTypeWiseCadreCount("");
 		getAgeRangeGenerAndCasteGroupByCadreCount(enrollmentId);
 	});
-	
 	$(document).on('click','.cadreRedirectPage',function(){ 
 		var cadreId = $(this).attr("attr_cadre_id")
 		var redirectWindow = window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');  
@@ -768,7 +703,6 @@ function onLoadClicks()
 		var candidateId = $(this).attr("attr_candidate_id")
 		var redirectWindow = window.open('candidateElectionResultsAction.action?candidateId='+candidateId+'','_blank');  
 	});
-
 	//Tours Click Start
 	$(document).on("click",".toursCompNonCompClickCls",function(){
 		var designationId =  $(this).attr("attr_designation_id");
@@ -776,7 +710,6 @@ function onLoadClicks()
 		 $("#tourDetailsModalId").modal("show");
 		getTourLeaderDtlsBasedOnSelectionType (designationId,filterType);
 	});
-	
 	$(document).on("click",".tourIndividualCls",function(){
 		$("#tourSlider").dateRangeSlider("destroy");
 		 var selectLevel = $(this).attr("attr_type");
@@ -786,7 +719,6 @@ function onLoadClicks()
 			}, 500);                     
 		} 
 	}); 
-	
 	$(document).on("click",".candiateCls",function(){
 		var candiateId = $(this).attr("attr_candiate_id");
 		 $("#subMitBtn").attr("attr_candidate_id",candiateId);
@@ -798,7 +730,6 @@ function onLoadClicks()
 		$("#dateRangeSliderYear").val(0);
 		getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 	});
-	
 	$(document).on('click','#showTourPdfId',function(){
 		//$("#cdrModelId").modal("show");
 		var dbFilePath = $(this).attr("attr_filePath");         
@@ -811,7 +742,6 @@ function onLoadClicks()
 			//window.open('http://ieee802.org/secmail/docIZSEwEqHFr.doc','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}else{
-			
 			if(extName.trim()=="pdf" || extName.trim()=="PDF"){
 				$("#tourNewDocumentId").modal("show");
 				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
@@ -882,14 +812,12 @@ function onLoadClicks()
 		getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat);
 	});
 	//Tours Click End
-	
 	$(document).on("click",".popUpDetailsClickCls",function(){
 		var deptId =  $(this).attr("attr_department_id");
 		var boardLevelId =  $(this).attr("attr_boardLevelId");
 		var type =  $(this).attr("attr_type");
 		var departmentName =  $(this).attr("attr_department_name");
 		var statusIds =  $(this).attr("attr_board_statusIds");
-		
 		if(type == "open"){
 			$("#openModalDiv").modal("show");
 			$("#TitleId").html(departmentName+  "  Open Posts Details");
@@ -898,7 +826,6 @@ function onLoadClicks()
 			$("#openModalDiv").modal("show");
 			$("#TitleId").html(departmentName + "  G.O Issued Positions");
 			getLevelWiseGoIssuedPostions(boardLevelId,statusIds);
-			
 		}else if(type == "department"){
 			$("#departmentPostModal").modal("show");
 			$("#departmentDetailsModalDivId").html(spinner);
@@ -909,7 +836,6 @@ function onLoadClicks()
 			$("#TitleId").html(departmentName+" Level Details");
 			getNominatedPositionWiseCandidates(boardLevelId,departmentName);
 		}else if (type == "alert"){
-			
 			var alertTypeIdsStr = $(this).attr("attr_alertTypeIdsStr");
 			var statusIds = $(this).attr("attr_statusIds");
 			var designationId = $(this).attr("attr_designationId");
@@ -920,38 +846,19 @@ function onLoadClicks()
 			var status_name = $(this).attr("attr_status_name");
 			var total_count = $(this).attr("attr_total_count");
 			$("#openModalDiv").modal("show");
-			
 			if(designationId !=0){
 				$("#TitleId").html(status_name + " Designation Wise Alerts Details  -  Total "+total_count+" ");
 			}else{
 				$("#TitleId").html(status_name + " Alerts Details  -  Total "+total_count+" ");
 			}
-			
-			
 			getAlertOverviewClick(alertTypeIdsStr,statusIds,designationId,alertCategeryId,alert_type,otherCategory,impactIdsArr,status_name,total_count);
 		}	
 	});
-	
 	$(document).on("click",".descAlertCls",function(){
 		$("#cdrModelDivId").find(".close").addClass("modalClose");
 		$("#cdrModelDivId").find(".modal-footer .btn").addClass("modalClose");
-		$("#tourDocHeadingId").html("");
-		$("#cdrModelId").html("");
-		$("#alertDestId").html("");
-		$("#sourceHeadingId").html("");
-		$("#headingNameId").html("");
-		$("#alertAttachTitId").html("");
-		$("#alertAttachImgId").html("");
-		$("#alertInvolvedCandidates").html("");
-		$("#alertAssignedCandidates").html("");
-		$("#alertCommentsDiv").html("");
+		$("#tourDocHeadingId,#cdrModelId,#alertDestId,#sourceHeadingId,#headingNameId,#alertAttachTitId,#alertAttachImgId,#alertInvolvedCandidates,#alertAssignedCandidates,#alertCommentsDiv,#alertVerificationDiv,#alertVerificationDtlsDiv,#alertDocHeadingId,#alertDocId").html("");
 		$("#tourDocHeadingId").html("ALERT TITLE <br>");
-		$("#alertVerificationDiv").html("");
-		$("#alertVerificationDtlsDiv").html("");
-		
-		$("#alertDocHeadingId").html("");
-		$("#alertDocId").html("");
-		
 		$("#cdrModelDivId").modal("show");
 		var alertId = $(this).attr("attr_alert_id");
 		var alertStatus = $(this).attr("attr_alert_status");
@@ -959,6 +866,9 @@ function onLoadClicks()
 		getAlertAssignedCandidates(alertId);    
 		getAlertStatusCommentsTrackingDetails(alertId,alertStatus);
 		getVerificationDtls(alertId);
+	});
+	$(window,document).on('resize', function(){
+		responsiveTabs();
 	});
 }
 function menuCalls(levelId,levelValue,higherLevelVal)
@@ -1064,7 +974,6 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 	{
 		levelId = parseInt(levelId) + 1;
 		var shortName = '';
-		
 		var menu='';
 		menu+='<h4 class="panel-title text-capitalize"><b>'+divId+'</b></h4>';
 		menu+='<div class="scroller'+divId+'">';
@@ -1109,10 +1018,8 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 		}else if(result.length > 9){
 			$(".scroller"+divId).mCustomScrollbar({setHeight:'300px'})
 		}		
-	}
-	
+	}	
 }
-
 function subStr(name,noOfChar){
 	ellipsetext=".."
 	var showChar = noOfChar;
@@ -1133,14 +1040,12 @@ function minimise(Id,count)
 	minimized_elements.each(function(){    
 		var t = $(this).text();        
 		if(t.length < count) return;
-
 		$(this).html(
 			'<span class="less">'+t.slice(0,count)+'..</span>'+
 			'<span style="display:none;" class="more text-capitalize">'+t+'</span>'
 		);
 
 	}); 
-	
 	$(document).on("mouseover",id,function(){
 		$(this).find('span').hide();
 		$(this).find('span.more').show();
@@ -1149,13 +1054,11 @@ function minimise(Id,count)
 		$(this).find('span.less').show();
 		$(this).find('span.more').hide();
 	});
-	
 }
 function rightNav()
 {
 	var indexValue = '';
 	var navBar = $(".right-nav-list li");
-	
 	navBar.click(function(){
 		navBar.removeClass("active");
 		$(this).addClass("active");
@@ -1191,9 +1094,6 @@ function collapseClick()
 		$('[collapseid='+expandId+']').removeClass('glyphicon-minus').addClass('glyphicon-plus');
 	});
 }
-$(window,document).on('resize', function(){
-		responsiveTabs();
-});
 function responsiveTabs()
 {
 	var $this = $(this);
@@ -1207,7 +1107,6 @@ function responsiveTabs()
 		$('[role="tablist"]').show();
 	}
 }
-
 function getCandidateAndPartyInfoForConstituency(){
 	$("#parliamentMemberId,#assemblyMemberId,#representativeMembersId,#statelevelMembersId").html(blockSpinner);
 	if(locationLevelId == '8'){
@@ -1269,17 +1168,14 @@ function getCandidateAndPartyInfoForConstituency(){
 			if(locationLevelId == '3' || locationLevelId == '10')
 			{
 				return buildCandidateAndPartyInfoForDistrict(result);
-					
 			}else if(locationLevelId == '2'){
 				return buildCandidateAndPartyForStateLevel(result);
 			}else{
 				return buildCandidateAndPartyInfoForConstituency(result);
 			}
-			
 		}else{
 			$("#parliamentMemberId,#assemblyMemberId,#statelevelMembersId").html(noData);
 		}
-		
 	});
 	function buildCandidateAndPartyInfoForDistrict(result){
 		var parliament = '';
@@ -1300,8 +1196,6 @@ function getCandidateAndPartyInfoForConstituency(){
 										}else{
 											parliament+='<img src="https://mytdp.com/images/candidates/'+result[0].subList1[i].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
 										}
-										
-										
 										parliament+='<span class="border-image img-border">';
 											parliament+='<img src="images/party_flags/'+result[0].subList1[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
 										parliament+='</span>';
@@ -1320,7 +1214,6 @@ function getCandidateAndPartyInfoForConstituency(){
 										}else{
 											parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].subList1[i].candidateId+'">View Candidate Profile</span>';
 										}
-										
 									parliament+='</div>';
 								parliament+='</div>';
 							parliament+='</div>';
@@ -1340,7 +1233,6 @@ function getCandidateAndPartyInfoForConstituency(){
 					}else{
 						assembly+='<div class="block">';
 					}
-					
 						assembly+='<div class="row">';
 							for(var i in result)
 							{
@@ -1385,7 +1277,6 @@ function getCandidateAndPartyInfoForConstituency(){
 		assembly+='</div>';
 		$("#assemblyMemberId").html(assembly);
 		$("#statelevelMembersId").html("");
-		
 	}
 	function buildCandidateAndPartyInfoForConstituency(result)
 	{
@@ -1399,7 +1290,7 @@ function getCandidateAndPartyInfoForConstituency(){
 							parliament+='<div class="media media-profile">';
 								parliament+='<span id="mlaSpinnerId"></span>';
 								parliament+='<div class="media-left">';
-									if(result[0].subList1[0].education != null){
+									if(result[0].subList1[0].education != null && result[0].subList1[0].education.trim().length > 0){
 										parliament+='<img src="https://mytdp.com/images/cadre_images/'+result[0].subList1[0].education+'" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
 									}else{
 										  parliament+='<img src="https://mytdp.com/images/candidates/'+result[0].subList1[0].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
@@ -1461,13 +1352,11 @@ function getCandidateAndPartyInfoForConstituency(){
 					parliament+='</div>';
 				parliament+='</div>';
 			parliament+='</div>';
-			
 		parliament+='</div>';
 		$("#parliamentMemberId").html(parliament);
 		$("#assemblyMemberId").html("");
 		$("#statelevelMembersId").html("");
 	}
-	
 	function buildCandidateAndPartyForStateLevel(result){
 		var stateLevel='';
 			stateLevel+='<div class="col-sm-12">';
@@ -1658,7 +1547,6 @@ function getCountsForConstituency(){
 			{
 				str+='<h4 class="panel-title theme-title-color">'+$(".panchayatMenuName").text()+' level Wise Details</h4>';
 			} 
-			
 			str+='<table class="table table-bordered m_top15">';
 				str+='<tr>';
 					if(results.constituencyCount != null && results.constituencyCount >0){
@@ -1670,7 +1558,6 @@ function getCountsForConstituency(){
 							str+='</td>';
 						}
 					}
-					
 						if(results.tehsilCount !=null && results.tehsilCount>0){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Mandals</h4>';
@@ -1678,7 +1565,6 @@ function getCountsForConstituency(){
 								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
-					
 						if(results.municipalityCount !=null && results.municipalityCount>0){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Municipalities</h4>';
@@ -1686,7 +1572,6 @@ function getCountsForConstituency(){
 								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
-					
 						if(results.villageIdCount !=null && results.villageIdCount>0){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Panchayats</h4>';	
@@ -1694,7 +1579,6 @@ function getCountsForConstituency(){
 								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
-					
 						if(results.totalNoOfWards !=null && results.totalNoOfWards>0){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Wards</h4>';
@@ -1702,7 +1586,6 @@ function getCountsForConstituency(){
 								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
-					
 						if(results.boothCount !=null && results.boothCount>0){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Booths</h4>';
@@ -1710,8 +1593,6 @@ function getCountsForConstituency(){
 								//str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
 							str+='</td>';
 						}
-						
-					
 						if(results.hamletCount !=null && results.hamletCount>0){
 							str+='<td>';
 								str+='<h4 class="text-capitalize text-muted">Hamlets</h4>';
@@ -1721,14 +1602,10 @@ function getCountsForConstituency(){
 						}
 				str+='</tr>';
 			str+='</table>';
-			
 		str+='</div>';
-		
-		
 		$("#levelWiseCountDivId").html(str);
 	}
 }
-
 function getCountsForStateLevel(){
 	var str='';
 	str+='<h4 class="panel-title theme-title-color">Andhra Pradesh</h4>';
@@ -1772,21 +1649,17 @@ function getCountsForStateLevel(){
 					str+='</td>';
 			str+='</tr>';
 		str+='</table>';
-		
 	str+='</div>';
 	$("#statelevelWiseCountDivId").html(str);
 }
-	
 function getVotersAndcadreAgeWiseCount(pubId,enrollmentId){
 	$("#constituencyVoterInfo").html(spinner);
-	
 	var jsObj={
 		locationTypeId		: locationLevelId,
 		locationValue		: locationLevelVal,
 		publicationDateId	: pubId,
 		enrollmentYearId	: enrollmentId
 	}
-	
     $.ajax({
       type : "GET",
       url : "getVotersAndcadreAgeWiseCountAction.action",
@@ -1801,7 +1674,6 @@ function getVotersAndcadreAgeWiseCount(pubId,enrollmentId){
   });
 }
 function buildVotersAndcadreAgeWiseCount(result){
-	
 	if(result !=null && result.length>0){
 		var theadArr=['','total Voters','total Cadre','Male Voter','Male Cadre','Female Voter','Female Cadre'];
 		var totalVotersCount =0;
@@ -1813,111 +1685,105 @@ function buildVotersAndcadreAgeWiseCount(result){
 		var countVar1 =0;
 		var countVar =0;
 		var str='';
-			for(var i in result){
-					totalVotersCount =totalVotersCount+result[i].totalVoters;
-					totalCadresCount =totalCadresCount+result[i].totalCadres;
-					totalMaleVoterCount =totalMaleVoterCount+result[i].maleVoters;
-					totalMaleCadreCount =totalMaleCadreCount+result[i].maleCadres;
-					totalFemaleVoterCount =totalFemaleVoterCount+result[i].femaleVoters;
-					totalFemaleCadreCount =totalFemaleCadreCount+result[i].femaleCadres;
-					countVar1 =countVar1+1;
-					if (countVar1 === 6) {
-						break;
-					}
+		for(var i in result){
+			totalVotersCount =totalVotersCount+result[i].totalVoters;
+			totalCadresCount =totalCadresCount+result[i].totalCadres;
+			totalMaleVoterCount =totalMaleVoterCount+result[i].maleVoters;
+			totalMaleCadreCount =totalMaleCadreCount+result[i].maleCadres;
+			totalFemaleVoterCount =totalFemaleVoterCount+result[i].femaleVoters;
+			totalFemaleCadreCount =totalFemaleCadreCount+result[i].femaleCadres;
+			countVar1 =countVar1+1;
+			if (countVar1 === 6) {
+				break;
 			}
-			str+='<div class="table-responsive">';
-				str+='<table class="table tableVoters">';
-					str+='<thead>';
-					for(var i in theadArr){
-						str+='<th>';
-							if(theadArr[i] == "total Cadre" || theadArr[i] == "Male Cadre" || theadArr[i] =="Female Cadre"){
-								str+='<img src="coreApi/img/tableHead1.png" alt="cadres"/>';
-							}else{
-								str+='<img src="coreApi/img/tableHead.png" alt="voters"/>';
-							}
-							/* if(theadArr[i] != "total population"){
-								
-							} */
-							str+='<h4 class="text-capitalize">'+theadArr[i]+'</h4>';
-							if(theadArr[i] == ""){
-								//str+='<h3></h3>';
-							}else if(theadArr[i] == "total Voters"){
-								str+='<h3>'+totalVotersCount+'</h3>';
-							}else if(theadArr[i] == "total Cadre"){
-								str+='<h3>'+totalCadresCount+'</h3>';
-							}else if(theadArr[i] == "Male Voter"){
-								str+='<h3>'+totalMaleVoterCount+'</h3>';
-							}else if(theadArr[i] == "Male Cadre"){
-								str+='<h3>'+totalMaleCadreCount+'</h3>';
-							}else if(theadArr[i] == "Female Voter"){
-								str+='<h3>'+totalFemaleVoterCount+'</h3>';
-							}else if(theadArr[i] == "Female Cadre"){
-								str+='<h3>'+totalFemaleCadreCount+'</h3>';
-							}
-						str+='</th>';
-					}
-					str+='</thead>';
-					str+='<tbody>';
-					for(var i in result){
-						if(i>0 && i<6){
-							
-							str+='<tr>';
-								str+='<td>';
-									str+='<b>'+result[i].ageRange+'</b>';
-									/* str+='2000';
-									str+='<span class="pull-right text-success">';
-										str+='2%';
-									str+='</span>'; */
-								str+='</td>';
-								str+='<td>';
-									str+=''+result[i].totalVoters+'';
-									str+='<span class="pull-right text-success">';
-										str+=''+result[i].totalVotersPerc+'';
-									str+='</span>';
-								str+='</td>';
-								str+='<td>';
-									str+=''+result[i].totalCadres+'';
-									str+='<span class="pull-right text-success">';
-										str+=''+result[i].totalCadrePerc+'';
-									str+='</span>';
-								str+='</td>';
-								str+='<td>';
-									str+=''+result[i].maleVoters+'';
-									str+='<span class="pull-right text-success">';
-										str+=''+result[i].maleVotersPerc+'';
-									str+='</span>';
-								str+='</td>';
-								str+='<td>';
-									str+=''+result[i].maleCadres+'';
-									str+='<span class="pull-right text-success">';
-										str+=''+result[i].maleCadrePerc+'';
-									str+='</span>';
-								str+='</td>';
-								str+='<td>';
-									str+=''+result[i].femaleVoters+'';
-									str+='<span class="pull-right text-success">';
-										str+=''+result[i].femaleVotersPerc+'';
-									str+='</span>';
-								str+='</td>';
-								str+='<td>';
-									str+=''+result[i].femaleCadres+'';
-									str+='<span class="pull-right text-success">';
-										str+=''+result[i].femaleCadrePerc+'';
-									str+='</span>';
-								str+='</td>';
-							str+='</tr>';
-							countVar =countVar+1;
-							if (countVar === 6) {
-								break;
-							}
+		}
+		str+='<div class="table-responsive">';
+			str+='<table class="table tableVoters">';
+				str+='<thead>';
+				for(var i in theadArr){
+					str+='<th>';
+						if(theadArr[i] == "total Cadre" || theadArr[i] == "Male Cadre" || theadArr[i] =="Female Cadre"){
+							str+='<img src="coreApi/img/tableHead1.png" alt="cadres"/>';
+						}else{
+							str+='<img src="coreApi/img/tableHead.png" alt="voters"/>';
+						}
+						str+='<h4 class="text-capitalize">'+theadArr[i]+'</h4>';
+						if(theadArr[i] == ""){
+							//str+='<h3></h3>';
+						}else if(theadArr[i] == "total Voters"){
+							str+='<h3>'+totalVotersCount+'</h3>';
+						}else if(theadArr[i] == "total Cadre"){
+							str+='<h3>'+totalCadresCount+'</h3>';
+						}else if(theadArr[i] == "Male Voter"){
+							str+='<h3>'+totalMaleVoterCount+'</h3>';
+						}else if(theadArr[i] == "Male Cadre"){
+							str+='<h3>'+totalMaleCadreCount+'</h3>';
+						}else if(theadArr[i] == "Female Voter"){
+							str+='<h3>'+totalFemaleVoterCount+'</h3>';
+						}else if(theadArr[i] == "Female Cadre"){
+							str+='<h3>'+totalFemaleCadreCount+'</h3>';
+						}
+					str+='</th>';
+				}
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					if(i>0 && i<6){
+						str+='<tr>';
+							str+='<td>';
+								str+='<b>'+result[i].ageRange+'</b>';
+								/* str+='2000';
+								str+='<span class="pull-right text-success">';
+									str+='2%';
+								str+='</span>'; */
+							str+='</td>';
+							str+='<td>';
+								str+=''+result[i].totalVoters+'';
+								str+='<span class="pull-right text-success">';
+									str+=''+result[i].totalVotersPerc+'';
+								str+='</span>';
+							str+='</td>';
+							str+='<td>';
+								str+=''+result[i].totalCadres+'';
+								str+='<span class="pull-right text-success">';
+									str+=''+result[i].totalCadrePerc+'';
+								str+='</span>';
+							str+='</td>';
+							str+='<td>';
+								str+=''+result[i].maleVoters+'';
+								str+='<span class="pull-right text-success">';
+									str+=''+result[i].maleVotersPerc+'';
+								str+='</span>';
+							str+='</td>';
+							str+='<td>';
+								str+=''+result[i].maleCadres+'';
+								str+='<span class="pull-right text-success">';
+									str+=''+result[i].maleCadrePerc+'';
+								str+='</span>';
+							str+='</td>';
+							str+='<td>';
+								str+=''+result[i].femaleVoters+'';
+								str+='<span class="pull-right text-success">';
+									str+=''+result[i].femaleVotersPerc+'';
+								str+='</span>';
+							str+='</td>';
+							str+='<td>';
+								str+=''+result[i].femaleCadres+'';
+								str+='<span class="pull-right text-success">';
+									str+=''+result[i].femaleCadrePerc+'';
+								str+='</span>';
+							str+='</td>';
+						str+='</tr>';
+						countVar =countVar+1;
+						if (countVar === 6) {
+							break;
 						}
 					}
-						
-					str+='</tbody>';
-				str+='</table>';
-			str+='</div>';
-			
-			$("#constituencyVoterInfo").html(str);
+				}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		$("#constituencyVoterInfo").html(str);
 	}
 	
 }
@@ -1937,14 +1803,13 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 	});
 }
 function getVotersCastGroupWiseCount(publicationId,enrollmentId){
-  
-  var jsObj={
+	var jsObj={
       locationTypeId    :locationLevelId,
       locationValue    	:locationLevelVal,
       publicationDateId :publicationId,
       enrollmentyearId 	:enrollmentId
     }
-   $.ajax({
+	$.ajax({
       type : "POST",
       url : "getVotersCastGroupWiseCountAction.action",
       dataType : 'json',
@@ -1953,7 +1818,7 @@ function getVotersCastGroupWiseCount(publicationId,enrollmentId){
 		if(result !=null && result.length>0){
 			buildVotersCastGroupWiseCount(result);
 		}
-  });  
+	});  
 }
 function buildVotersCastGroupWiseCount(result){
 	var str='';
@@ -2037,7 +1902,6 @@ function buildVotersCastGroupWiseCount(result){
 				}
 			str+='</div>';
 	str+='</div>';
-	
 	$("#casteOverViewDivId").html(str);
 	$("#topTenCastesDivId,#totalCastesAndCadrePercBarGraph").html(spinner);
 	$("#dataTableOverViewCastGroupId").dataTable({
@@ -2155,7 +2019,6 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,type,casteName,publ
 			}else{
 				buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName);
 			}
-			
 		}
 	});	
 }
@@ -2189,7 +2052,6 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
 					break;
 				}	
 			}
-			
 		str+='</tbody>';
 	str+='</table>';
 	$("#topTenCastesDivId").html(str);
@@ -2200,7 +2062,6 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
 		"autoWidth": true,
 		"sDom": '<"top"iflp>rt<"bottom"><"clear">'
 	});
-	
 }
 function buildGraphForCaste(result)
 {
@@ -2358,7 +2219,6 @@ function buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName){
 }
 function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,enrollmentId,publicationId,casteName){
 	$("#casteCategoryModalDivId").html(spinner);
-	
 	jsObj={
 		locationTypeId		:locationLevelId,
 		locationValue		:locationLevelVal,
@@ -2434,9 +2294,7 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,enrollmentId,pub
 
 function getActivityStatusList(){
 	$("#activitesId").html(spinner);
-	
 	var userAccessLevelId=locationLevelId;
-	
 	var jsObj={
 			fromDate : globalFromDate,
 			toDate: globalToDate,
@@ -2456,7 +2314,6 @@ function getActivityStatusList(){
 			$("#activitesId").html(noData);
 		}
 	});	
-		
 	function buildTable(result)
 	{
 		var str = '';
@@ -2496,7 +2353,6 @@ function getActivityStatusList(){
 					
 				str+='</div>';
 			}
-				
 			str+='</div>';
 		str+='</div>';
 		$("#activitesId").html(str);
@@ -2597,8 +2453,6 @@ function getLocationTypeWiseCadreCount(enrollmentId){
 		}
 	});	
 	function buildLocationTypeWiseCadreCount(result){
-		
-		
 			var str='';
 			str+='<ul class="list-inline cadre-info-list">';
 			for(var i in result)
@@ -2626,7 +2480,6 @@ function getLocationTypeWiseCadreCount(enrollmentId){
 							str+='</table>';
 						str+='</div>';
 				str+='</li>';
-			
 			}
 			str+='</ul>';
 			$("#cadreInfoGraphDivId").html(str);	
@@ -2719,7 +2572,6 @@ function getLocationTypeWiseCadreCount(enrollmentId){
 				}];
 				highcharts(id,type,data,plotOptions,title,tooltip,legend);
 			}
-			
 	}
 }
 
@@ -2727,13 +2579,12 @@ function getLocationTypeWiseCadreCount(enrollmentId){
 
 function getAgeRangeGenerAndCasteGroupByCadreCount(enrollmentId){
 	$("#cadreInfoGraphBar,#cadreInfoTableView").html(spinner);
-	
 	jsObj={
 		locationTypeId	 :locationLevelId,
 		locationValue	 :locationLevelVal,
 		enrollmentYearId :enrollmentId
 	}
-	 $.ajax({
+	$.ajax({
       type : "POST",
       url : "getAgeRangeGenerAndCasteGroupByCadreCountAction.action",
       dataType : 'json',
@@ -2747,7 +2598,6 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(enrollmentId){
 			$("#cadreInfoTableView").html('');
 			$("#cadreInfoGraphBar").removeAttr("style");
 		}
-			
 	});	
 	function buildAgeRangeGenerAndCasteGroupByCadreCount(result,enrollmentId){
 		if(result !=null && result.length>0){
@@ -2810,10 +2660,6 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(enrollmentId){
 					var uniqCnt = {y:parseInt(totalCadreCount)-parseInt(result[i].toalCadreCount),color:"#D3D3D3"};
 					count.push(uniqCnt);
 				}
-				
-
-				//var getWidth = $("#cadreInfoGraphBar").width();
-			   // $("#cadreInfoGraphBar").css("width",getWidth);	
 				$("#cadreInfoGraphBar").highcharts({
 					//colors: ['#53BF8B'],     
 					chart: {
@@ -2822,7 +2668,6 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(enrollmentId){
 					title: {
 						text: ''
 					},
-				   
 					xAxis: {
 						min: 0,
 						gridLineWidth: 0,
@@ -2837,31 +2682,24 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(enrollmentId){
 						title: {
 							text: ''
 						},
-						
-						
 					},
 					tooltip: {
 						formatter: function () {
 							var s = '<b>' + this.x + '</b>';
-
-								$.each(this.points, function () {
+							$.each(this.points, function () {
 								if(this.series.name != "Series 1")  
 								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
 									this.y/* +' - ' +
 									(Highcharts.numberFormat(this.percentage,1)+'%'); */
 							});
-
 							return s;
 						},
 						shared: true
 					},
-					
 					legend: {   
-											
 							enabled: false,				
-											
-						},				
-						plotOptions: {
+					},				
+					plotOptions: {
 							column: {
 								stacking: 'percent',  
 								dataLabels:{
@@ -2896,11 +2734,9 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(enrollmentId){
 								fontWeight: 'bold',
 								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
 							},
-						
 					}
 					}]
 				});
-					
 		}
 	}
 }
@@ -2995,9 +2831,7 @@ function getPrintMediaCountsForConstituencyPage(){
 										str+='<td>'+result.coreDashBoardVOList[i].negativCountMain+' <small class="m_left5 text-danger">'+result.coreDashBoardVOList[i].negativePerc+'%</small></td>';
 									str+='</tr>';
 								}
-								
 							}
-								
 							str+='</tbody>';
 						str+='</table>';
 					str+='</div>';
@@ -3029,13 +2863,11 @@ function getPrintMediaCountsForConstituencyPage(){
 									str+='</tr>';
 								}
 							}
-								
 							str+='</tbody>';
 						str+='</table>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
-			
 			$("#newsMainBlockDivId").html(str);
 			/* var maxHeight = 0;
 			 $(".blockHeights").each(function(){
@@ -3044,7 +2876,6 @@ function getPrintMediaCountsForConstituencyPage(){
 			$(".blockHeights").height(maxHeight); */
 		}
 	}
-
 }
 
 
@@ -3131,9 +2962,9 @@ function getLeadersInNewsForConstituencyPage(){
 			str+='</div>';
 		$("#leadersMainBlockDivId").html(str);
 		if(result.length > 20)
-			{
-				$(".scrollerNewsDiv").mCustomScrollbar({setHeight: '290px'});
-			}
+		{
+			$(".scrollerNewsDiv").mCustomScrollbar({setHeight: '290px'});
+		}
 	}
 }	
 function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
@@ -3173,7 +3004,6 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 		locationLevelNewsVal = '9';		
 		userAccessLevelValuesNewsArray.push(panchayatId.substring(1,panchayatId.length))
 	}
-	
 	var state="ap";
 	var date1 = globalFromDate.split('/');
 	var date2 = globalToDate.split('/');
@@ -3264,19 +3094,13 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 						str+=' </div>';
 					str+=' </div>';
 				}
-					  
-					 
 				str+='</div>';
-					
 				$("#overAllAnalysisProbDivId").html(str);
-				
 				var overAllAnalysisMainArr=[];
 				for(var i in result){
 					var name = result[i].name;
 					var Perc=result[i].positivePerc;
-					
 					var colorsId = globalColorNews[result[i].name.trim()];
-					
 					var obj = {
 						name: name,
 						y:Perc,
@@ -3317,7 +3141,6 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 					name: '',
 					data: overAllAnalysisMainArr
 				}];
-					
 				highcharts(id,type,data,plotOptions,title,tooltip,legend);
 			}else{
 				$("#overAllAnalysisProbDivId").html("NO DATA");
@@ -3337,13 +3160,11 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 					$("#problemsContsDivId"+propertyIdGlobalStr[i]).html(collapse);
 					$(".scrollerProblemsDiv"+propertyIdGlobalStr[i]).mCustomScrollbar({setHeight:'320px'})
 				}
-				
 			}else{
 				for(var i in propertyIdGlobalStr){
 					$("#problemsContsDivId"+propertyIdGlobalStr[i]).html("NO DATA");
 				}
 			}
-			
 		}
 	}
 }
@@ -3541,11 +3362,11 @@ function getLocationWiseMeetingsCount(){
 		fromDate :customStartATMDate,
 		toDate :customEndATMDate
 	}
-	 $.ajax({
-      type : "GET",
-      url : "getLocationWiseMeetingsCountAction.action",
-      dataType : 'json',
-      data : {task :JSON.stringify(jsObj)}
+	$.ajax({
+		type : "GET",
+		url : "getLocationWiseMeetingsCountAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
 		if(result!=null && result.length>0){
 			return buildTable(result);
@@ -3679,7 +3500,6 @@ function getLocationWiseMeetingsCount(){
 						},
 						
 					},
-					
 				},
 				series: [{
 					data: count
@@ -3690,7 +3510,6 @@ function getLocationWiseMeetingsCount(){
 				}]
 			});
 		}
-		
 	}
 }
 function getLocationWiseTourMembersComplainceDtls(){
@@ -3880,9 +3699,7 @@ function getLocationWiseTourMembersComplainceDtls(){
 														
 													tableView+='</p>'; */
 												tableView+='</div>';
-											
 										tableView+='</li>';
-										
 								}
 							tableView+='</div>';	
 								tableView+='</ul>';
@@ -3899,24 +3716,19 @@ function getLocationWiseTourMembersComplainceDtls(){
 												tableView+='<th colspan="'+length+'" class="text-center">Submitted</th>';
 												tableView+='<th colspan="'+length+'" class="text-center">Complaince</th>';
 											tableView+='</tr>';
-											
 											tableView+='<tr>';
 												 for(var i in result[0].subList[0].monthList){
 													tableView+='<th>'+result[0].subList[0].monthList[i].name+'</th>';
-													
 												} 
 												 for(var i in result[0].subList[0].monthList){
 													tableView+='<th>'+result[0].subList[0].monthList[i].name+'</th>';
-													
 												} 
 											tableView+='</tr>';
 										tableView+='</thead>';
 									tableView+='<tbody>';
 										for(var i in result)
 										{
-										
 										 if (result[i].subList != null && result[i].subList.length > 0) {
-											 
 											for(var j in result[i].subList)
 											{
 												 if (result[i].subList[j].monthList != null && result[i].subList[j].monthList.length > 0) {
@@ -3929,28 +3741,17 @@ function getLocationWiseTourMembersComplainceDtls(){
 														if(candidateName !=null && candidateName.length>17){
 															
 															tableView+='<td ><span style="cursor:pointer;color:#337ab7" attr_type="mainLevel" class="candiateCls tooltipTourCls" attr_candiate_id="'+candiateId+'" attr_candiate_name="'+candidateName+'" attr_designation_name="'+designationName+'"  data-toggle="tooltip" data-placement="right" title="'+candidateName+'">'+candidateName.substring(0,17)+'...</span></td>';
-															
 														}else{
 															tableView+='<td style="cursor:pointer;color:#337ab7" attr_type="mainLevel" class="candiateCls" attr_candiate_id="'+candiateId+'" attr_candiate_name="'+candidateName+'" attr_designation_name="'+designationName+'">'+candidateName+'</td>';
 														}
-														
-														
-														
 														if(designationName !=null && designationName.length>17){
 															tableView+='<td><span class="tooltipTourCls" style="cursor:pointer;"  data-toggle="tooltip" data-placement="top" title="'+designationName+'">'+designationName.substring(0,17)+'...</span></td>'; 
 														}else{
 															tableView+='<td>'+designationName+'</td>'; 
 														}
-														
-														
-														
-														
-														
-														 
 														 for(var k in result[i].subList[j].monthList){
 															tableView+='<td>'+result[i].subList[j].monthList[k].isTourSubmitted+'</td>';
 														 } 
-															
 														 for(var k in result[i].subList[j].monthList){
 																if (result[i].subList[j].monthList[k].isComplaince != null && result[i].subList[j].monthList[k].isComplaince == "No Target") {
 																	tableView+='<td>-</td>';
@@ -3963,7 +3764,6 @@ function getLocationWiseTourMembersComplainceDtls(){
 																		} else {
 																			tableView+='<td><i class="glyphicon glyphicon-remove" style="color:#FF0000;"></i></td>';	
 																		}
-																		
 																	}
 																}
 															} 
@@ -6315,7 +6115,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 			});
 		}
   }
-  function getAlertOverviewClick(alertTypeIds,statusIds,designationId,alertCategeryId,alert_type,otherCategory,impactIds,status_name,total_count){
+function getAlertOverviewClick(alertTypeIds,statusIds,designationId,alertCategeryId,alert_type,otherCategory,impactIds,status_name,total_count){
 		$("#openPostDetailsModalDivId").html(spinner);
 		var statusIdsArr=[];
 		var alertCategeryIdsArr=[];
@@ -6372,7 +6172,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 				$("#openPostDetailsModalDivId").html(noData);
 			}
 		});
-			function buildAlertDtls(result){
+	function buildAlertDtls(result){
 				var str='';
 				str+='<div class="table-responsive">';
 				if($(window).width() < 800)
@@ -6450,23 +6250,466 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 						"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
 					 }); 
 			}
-	  }
-  function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
-	$("#locationWiseMeetingsCount").html(spinner);
-	
-	jsObj={
-		locationTypeId:	locationLevelId,
-		locationValues:	userAccessLevelValuesArray,
-		fromDate :"",
-		toDate :"",
-		partyMeetingMainTypeId:partyMeetingMainTypeId
+	  
+}
+function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
+	if(partyMeetingMainTypeId == '1' || partyMeetingMainTypeId == 1)
+	{
+		$("#committeeMeetingsBlockId").html(spinner);
+	}else if(partyMeetingMainTypeId == '2' || partyMeetingMainTypeId == 2)
+	{
+		$("#stateMeetingsBlockId").html(spinner);
+	}else if(partyMeetingMainTypeId == '3' || partyMeetingMainTypeId == 3)
+	{
+		$("#specialMeetingsBlockId").html(spinner);
 	}
-	 $.ajax({
-      type : "GET",
-      url : "getLocationWiseMeetingsCountAction.action",
-      dataType : 'json',
-      data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){  
-		
+	jsObj={
+		locationTypeId			:locationLevelId,
+		locationValues			:userAccessLevelValuesArray,
+		fromDate 				:"",
+		toDate 					:"",
+		partyMeetingMainTypeId	:partyMeetingMainTypeId
+	}
+	$.ajax({
+		type : "GET",
+		url : "getLocationWiseMeetingsCountDetailsAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){  
+		if(result.levelList != null && result.levelList.length > 0)
+		{
+			return buildGraph(result);
+		}
 	});
-  }
+	function buildGraph(result)
+	{
+		var str='';
+		if(partyMeetingMainTypeId == '1' || partyMeetingMainTypeId == 1)
+		{
+			str+='<div class="row">';
+				for(var i in result.levelList)
+				{
+					str+='<div class="col-sm-6">';
+						str+='<div class="block m_top10">';
+							str+='<h4 class="panel-title">'+result.levelList[i].name+'</h4>';
+							if(result.levelList[i].name == "DISTRICT")
+							{
+								str+='<p>Every month : 22nd/23rd/24th</p>';
+							}else if(result.levelList[i].name == "CONSTITUENCY")
+							{
+								str+='<p>Every month : 18th/19th/20th</p>';
+							}else if(result.levelList[i].name == "MANDAL/DIVISION/TOWN")
+							{
+								str+='<p>Every month : 14th/15th/16th</p>';
+							}else if(result.levelList[i].name == "VILLAGE/WARD")
+							{
+								str+='<p>Every month : 9th/10th/11th</p>';
+							}
+							str+='<div style="height:150px;" id="meetingsGraphBlock'+result.levelList[i].name.substr(0,6)+'Id"></div>';
+						str+='</div>';
+					str+='</div>';
+				}
+			str+='</div>';
+			$("#committeeMeetingsBlockId").html(str);
+			var colorsArr = ['#D7AD06','#63CCB9','#994100','#AFCE69'];
+			for(var i in result.levelList)
+			{
+				var mainArr = [{"y":result.levelList[i].totalMeetings,"extra":result.levelList[i].totalPerc},{"y":result.levelList[i].conductedMeetings,"extra":result.levelList[i].yesPerc},{"y":result.levelList[i].notConductedMeetings,"extra":result.levelList[i].noPerc},{"y":result.levelList[i].maybeeMeetings,"extra":result.levelList[i].mayBePerc},{"y":result.levelList[i].notUpdatedCount,"extra":result.levelList[i].notUpdatePerc}];
+				var	count = [{"y":result.levelList[i].totalMeetings,color:"#D3D3D3"},{"y":result.levelList[i].totalMeetings,color:"#D3D3D3"},{"y":result.levelList[i].totalMeetings,color:"#D3D3D3"},{"y":result.levelList[i].totalMeetings,color:"#D3D3D3"},{"y":result.levelList[i].totalMeetings,color:"#D3D3D3"}];
+				
+				var categoriesArr = [];
+					categoriesArr.push('Total','Yes','No','May Be','Not Updated')
+				
+				$("#meetingsGraphBlock"+result.levelList[i].name.substr(0,6)+"Id").highcharts({
+					colors : [colorsArr[i]],
+					chart: {
+						type: 'bar'
+					},
+					title: {
+						text: ''
+					},
+				   
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: categoriesArr,
+						type: 'category',
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						title: {
+							text: ''
+						},
+					},
+					tooltip: {
+						formatter: function () {
+							var s = '<b>' + this.x + '</b>';
+
+								$.each(this.points, function () {
+								if(this.series.name != "Series 1")  
+								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+									this.y/* +' - ' +
+									(Highcharts.numberFormat(this.percentage,1)+'%'); */
+							});
+							return s;
+						},
+						shared: true
+					},
+					legend: {   
+							enabled: false,				
+						},				
+						plotOptions: {
+							bar: {
+								stacking: 'stacking',  
+								dataLabels:{
+									enabled: true,
+									formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return (this.point.extra+"%");
+										}
+									}
+								},
+							},
+						},
+					series: [{
+						name: "Completed Meetings",
+						data: mainArr,
+						colorByPoint: true
+					}]
+				});
+			}
+		}else if(partyMeetingMainTypeId == '2' || partyMeetingMainTypeId == 2)
+		{
+			var str='';
+			str+='<div class="block">';
+				str+='<div id="meetingsGraphBlockStateIdMain"></div>';
+			str+='</div>';
+			$("#stateMeetingsBlockId").html(str);
+			var finalArr = [];
+			var colorsArr = ['#06D7A7','#0888DE','#994100','#AFCE69']
+			for(var i in result.levelList)
+			{
+				var mainArr = [{"y":result.levelList[i].totalMeetings,"color":colorsArr[i]},{"y":result.levelList[i].invitedCount,"color":colorsArr[i]},{"y":result.levelList[i].imagesCnt,"color":colorsArr[i]}];
+				
+				var categoriesArr = [];
+					categoriesArr.push('Total','Invited','Images')
+				finalArr.push({name: result.levelList[i].name,stack: result.levelList[i].name,data: mainArr})
+				$("#meetingsGraphBlockStateIdMain").highcharts({
+					chart: {
+						type: 'bar'
+					},
+					title: {
+						text: ''
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: categoriesArr,
+						type: 'category',
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						title: {
+							text: ''
+						},
+					},
+					tooltip: {
+						formatter: function () {
+							var s = '<b>' + this.x + '</b>';
+								$.each(this.points, function () {
+								if(this.series.name != "Series 1")  
+								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+									this.y/* +' - ' +
+									(Highcharts.numberFormat(this.percentage,1)+'%'); */
+							});
+							return s;
+						},
+						shared: true
+					},
+					legend: {   
+							enabled: true,				
+						},				
+						plotOptions: {
+							bar: {
+								stacking: 'normal',  
+								dataLabels:{
+									enabled: false,
+									formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return (this.y);
+										}
+									}
+								},
+							},
+						},
+					series: finalArr
+				});
+			}
+		}else if(partyMeetingMainTypeId == '3' || partyMeetingMainTypeId == 3){
+			var str='';
+			
+			str+='<div class="scrollListMeeting">';
+				str+='<div class="row">';
+					for(var i in result.levelList)
+					{
+						str+='<div class="col-sm-6 m_top10">';
+							str+='<div class="block">';
+								str+='<h4 class="panel-title">'+result.levelList[i].name+'</h4>';
+								str+='<div class="row m_top10">';
+									str+='<div class="col-sm-3">';
+										str+='<div id="specialTotalMeetings'+i+'" style="height:120px;"></div>';
+										str+='<p>Total Meetings</p>';
+									str+='</div>';
+									str+='<div class="col-sm-5" style="border-right:2px dashed #ddd;border-left:2px dashed #ddd">';
+										str+='<div id="specialInviteesMeetings'+i+'" style="height:150px;"></div>';
+									str+='</div>';
+									str+='<div class="col-sm-4">';
+										str+='<p>Attended</p>';
+										str+='<div id="specialAttendedMeetings'+i+'" style="height:150px;"></div>';
+									str+='</div>';
+								str+='</div>';
+								str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].conductedDate+'  ( Total Inviees:'+result.levelList[i].recentMeetingInviteesCnt+')</p>';
+								str+='<div class="table-responsive">';
+									str+='<table class="table m_top10">';
+										str+='<thead class="bg-E9">';
+											str+='<th></th>';
+											str+='<th>Attended</th>';
+											str+='<th>Late</th>';
+											str+='<th>Absent</th>';
+											str+='<th>NI</th>';
+										str+='</thead>';
+										str+='<tr>';
+											str+='<td>Attendance</td>';
+											str+='<td>';
+												if(result.levelList[i].recentInviteeAttended != null)
+												{
+													str+=''+result.levelList[i].recentInviteeAttended+'';
+												}
+												if(result.levelList[i].attendedPerc != null)
+												{
+													str+='<small>'+result.levelList[i].attendedPerc+'</small>';
+												}
+											str+='</td>';
+											str+='<td>';
+												if(result.levelList[i].recentLate != null)
+												{
+													str+=''+result.levelList[i].recentLate+'';
+												}
+												if(result.levelList[i].latePerc != null)
+												{
+													str+='<small>'+result.levelList[i].latePerc+'</small>';
+												}
+											str+='</td>';
+											str+='<td>';
+												if(result.levelList[i].recentAbcent != null)
+												{
+													str+=''+result.levelList[i].recentAbcent+'';
+												}
+												if(result.levelList[i].abcentPerc != null)
+												{
+													str+='<small>'+result.levelList[i].abcentPerc+'</small>';
+												}
+											str+='</td>';
+											str+='<td>'+result.levelList[i].recentNonInvitee+'</td>';
+										str+='</tr>';
+									str+='</table>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					}
+				str+='</div>';
+			str+='</div>';
+			$("#specialMeetingsBlockId").html(str);
+			$(".scrollListMeeting").mCustomScrollbar({setHeight:"600px"})
+			var colorsArr = ['#06D7A7','#0888DE','#994100','#AFCE69']
+			for(var i in result.levelList)
+			{
+				$("#specialTotalMeetings"+i).highcharts({
+					colors:['#3BB878'],
+					chart: {
+						plotBackgroundColor: null,
+						plotBorderWidth: 0,
+						plotShadow: false
+					},
+					title: {
+						text: ''+result.levelList[i].totalMeetings+'',
+						align: 'center',
+						verticalAlign: 'middle',
+						y: 10,
+						style: {
+							color: '#000',
+							font: 'bold 14px "Lato", sans-serif',
+						}
+					},
+					tooltip: {
+						pointFormat: '{series.name}: {y}</b>'
+					},
+					plotOptions: {
+						pie: {
+							dataLabels: {
+								enabled: false,
+								distance: -10,
+								style: {
+									fontWeight: 'bold',
+									color: 'white'
+								}
+							},
+							size:"170%",
+							startAngle: -90,
+							endAngle: 90,
+							center: ['50%', '80%']
+						}
+					},
+					series: [{
+						type: 'pie',
+						name: 'Total Meetings',
+						innerSize: '50%',
+						data: [
+							['Total Meetings',   result.levelList[i].totalMeetings],
+						]
+					}]
+				});
+				var categoriesArr = ['Invitees','Late','Absent','Non-invitee'];
+				var mainArr = [{"y":result.levelList[i].inviteeAttendedCount},{"y":result.levelList[i].lateCount},{"y":result.levelList[i].absentCount},{"y":result.levelList[i].nonInviteesCount}];
+				$("#specialAttendedMeetings"+i).highcharts({
+					colors:['#3BB878','#E69C64','#ED5C5C','#259381'],
+					chart: {
+						type: 'column'
+					},
+					title: {
+						text: ''
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: categoriesArr,
+						type: 'category',
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						labels: {
+							enabled:false
+						},
+						title: {
+							text: ''
+						},
+					},
+					tooltip: {
+						formatter: function () {
+							var s = '<b>' + this.x + '</b>';
+								$.each(this.points, function () {
+								if(this.series.name != "Series 1")  
+								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+									this.y/* +' - ' +
+									(Highcharts.numberFormat(this.percentage,1)+'%'); */
+							});
+							return s;
+						},
+						shared: true
+					},
+					legend: {   
+							enabled: false,				
+						},				
+						plotOptions: {
+							column: {
+								stacking: 'normal',  
+								dataLabels:{
+									enabled: false,
+									formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return (this.y);
+										}
+									}
+								},
+							},
+						},
+					series: [{
+						name: "Special Meetings",
+						data: mainArr,
+						colorByPoint: true
+					}]
+				});
+				var specialInviteesMeetingsCatArr = ['Total Invited','Total Attended'];
+				var specialInviteesMeetingsArr = [{"y":result.levelList[i].invitedCount},{"y":result.levelList[i].attendedCount}];
+				$("#specialInviteesMeetings"+i).highcharts({
+					colors:['#D7AD06'],
+					chart: {
+						type: 'bar'
+					},
+					title: {
+						text: ''
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: specialInviteesMeetingsCatArr,
+						type: 'category',
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						labels: {
+							enabled:false
+						},
+						title: {
+							text: ''
+						},
+					},
+					tooltip: {
+						formatter: function () {
+							var s = '<b>' + this.x + '</b>';
+								$.each(this.points, function () {
+								if(this.series.name != "Series 1")  
+								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+									this.y/* +' - ' +
+									(Highcharts.numberFormat(this.percentage,1)+'%'); */
+							});
+							return s;
+						},
+						shared: true
+					},
+					legend: {   
+							enabled: false,				
+						},				
+						plotOptions: {
+							bar: {
+								stacking: 'normal',  
+								dataLabels:{
+									enabled: false,
+									formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return (this.y);
+										}
+									}
+								},
+							},
+						},
+					series: [{
+						name: "Invitees",
+						data: specialInviteesMeetingsArr,
+						colorByPoint: true
+					}]
+				});
+			}
+		}
+	}
+}

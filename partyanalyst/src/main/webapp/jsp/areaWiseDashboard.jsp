@@ -270,7 +270,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12 m_top30" navbar-index="meetings">
-				<div class="row">
+				<!--<div class="row">
 					<div class="col-sm-6">
 						<h4 class="panel-title theme-title-color m_top10">Meetings</h4>
 					</div>
@@ -288,9 +288,32 @@
 				</div>
 				<div class="block m_top10">
 					<div id="locationWiseMeetingsCount" class="m_top10"></div>
+				</div>-->
+				<div class="row">
+					<div class="col-sm-6">
+						<h4 class="panel-title theme-title-color m_top10">Meetings</h4>
+					</div>
+				</div>
+				<div class="block m_top10">
+					<div class="row">
+						<div class="col-sm-4">
+							<h4 class="panel-title">State Meetings</h4>
+							<div id="stateMeetingsBlockId" class="m_top20"></div>
+						</div>
+						<div class="col-sm-8">
+							<h4 class="panel-title">Committee Meetings</h4>
+							<div id="committeeMeetingsBlockId" class="m_top10"></div>
+						</div>
+					</div>
+					<div class="row m_top20">
+						<div class="col-sm-12">
+							<h4 class="panel-title">Special Meetings</h4>
+							<small>NOTE: Showing Information 'Participantes' from this location Level Only</small>
+							<div id="specialMeetingsBlockId" class="m_top10"></div>
+						</div>
+					</div>
 				</div>
 			</div>
-			
 			<div class="col-sm-12 m_top30" navbar-index="tours">
 				<div class="row">
 					<div class="col-sm-6">
