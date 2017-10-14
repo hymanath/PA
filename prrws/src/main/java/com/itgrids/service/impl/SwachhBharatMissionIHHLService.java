@@ -225,6 +225,8 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 					SwachhBharatMissionIHHLDtlsVO rangeVO = new SwachhBharatMissionIHHLDtlsVO();
 					rangeVO.setRange(entry.getKey());
 					rangeVO.setList(entry.getValue());
+					rangeVO.setFromDate(entry.getValue().get(0));
+					rangeVO.setToDate(entry.getValue().get(entry.getValue().size()-1));
 					if (entry.getValue() != null && entry.getValue().size() > 0) {
 						for (String date : entry.getValue()) {
 							SwachhBharatMissionIHHLDtlsVO dateDtlsVO = getMatchVO(dateWiseTargetAchivementList, date);
@@ -447,6 +449,8 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
     						 SwachhBharatMissionIHHLDtlsVO targetAchivementDtlsVO = new SwachhBharatMissionIHHLDtlsVO();
     						 targetAchivementDtlsVO.setRange(rangeEntry.getKey());
     						 targetAchivementDtlsVO.setList(rangeEntry.getValue());
+    						 targetAchivementDtlsVO.setFromDate(rangeEntry.getValue().get(0));
+    						 targetAchivementDtlsVO.setToDate(rangeEntry.getValue().get(rangeEntry.getValue().size()-1));
     						   if (rangeEntry.getValue() != null && rangeEntry.getValue().size() > 0) {
     							   for(String date:rangeEntry.getValue()) {
     								   SwachhBharatMissionIHHLDtlsVO dateDtlsVO = getMatchVO(tempList, date);
@@ -500,7 +504,9 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 						SwachhBharatMissionIHHLDtlsVO lcatnVO = locationMap.get(locationIdStr);
 						if (lcatnVO == null) {
 							lcatnVO = new SwachhBharatMissionIHHLDtlsVO();
+							
 							setBaseLocationByLocationType(jObj, lcatnVO,inputVO.getSubLocation(),inputVO.getReportType());// setting location based on location type
+							
 							lcatnVO.setSubList(new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0));
 							locationMap.put(locationIdStr, lcatnVO);
 						}
@@ -574,8 +580,9 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	 private void setBaseLocationByLocationType(JSONObject jObj,SwachhBharatMissionIHHLDtlsVO locatioVO,String subLocation,String type){
 			try {
 				if (subLocation != null && subLocation.trim().equalsIgnoreCase("state")){
-					locatioVO.setStateName("State");
+					locatioVO.setStateName("Andhra Pradesh");
 					locatioVO.setStateCode("01");
+					locatioVO.setLocationIdStr("01");
 				}
 				if (subLocation != null && subLocation.trim().equalsIgnoreCase("district") || subLocation.trim().equalsIgnoreCase("constituency") || subLocation != null && subLocation.trim().equalsIgnoreCase("mandal")){
 					if (type != null && type.equalsIgnoreCase("daily")) {
@@ -584,14 +591,17 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 						locatioVO.setDistrictName(jObj.has("DNAME") ? jObj.getString("DNAME"):"");	
 					}
 					locatioVO.setDistrictCode(jObj.has("DID") ? jObj.getString("DID"):"0");
+					locatioVO.setLocationIdStr(locatioVO.getDistrictCode());
 				}
 				if (subLocation != null && subLocation.trim().equalsIgnoreCase("constituency") || subLocation != null && subLocation.trim().equalsIgnoreCase("mandal")){
 					locatioVO.setConstName(jObj.has("ANAME") ? jObj.getString("ANAME"):"");
 					locatioVO.setConstituencyCode(jObj.has("ACODE") ? jObj.getString("ACODE"):"0");
+					locatioVO.setLocationIdStr(locatioVO.getConstituencyCode());
 				}
 				if (subLocation != null && subLocation.trim().equalsIgnoreCase("mandal")){
 					locatioVO.setMandalName(jObj.has("MNAME") ? jObj.getString("MNAME"):"");
 					locatioVO.setMandalCode(jObj.has("MID") ? jObj.getString("MID"):"0");
+					locatioVO.setLocationIdStr(locatioVO.getMandalCode());
 				}
 			} catch (Exception e) {
 				LOG.error("Exception raised at setBaseLocationByLocationType - SwachhBharatMissionIHHLService service", e);

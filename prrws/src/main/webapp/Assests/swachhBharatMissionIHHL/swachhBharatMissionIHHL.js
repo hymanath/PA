@@ -45,6 +45,9 @@ function highcharts1(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,
 	});
 }
 function getSwachhBharatMissionOverviewDtls(){
+	$("#categoryWiseDataId").html(spinner);
+	$("#overAllIHHLPerformanceId").html(spinner);
+	$("#statusWiseIHHLPerformanceId").html(spinner);
 	var json = {
 		fromDate:"",
 		toDate:"",
@@ -62,6 +65,9 @@ function getSwachhBharatMissionOverviewDtls(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$("#categoryWiseDataId").html('');
+		$("#overAllIHHLPerformanceId").html('');
+		$("#statusWiseIHHLPerformanceId").html('');
 		if(result !=null){
 			return buildSwachhBharatMissionOverviewDtls(result);
 		}
@@ -150,7 +156,7 @@ function getSwachhBharatMissionOverviewDtls(){
 			useHTML: true,
 			backgroundColor: '#FCFFC5', 
 			formatter: function() {
-				return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>"+this.y+" - ("+(Highcharts.numberFormat(this.percentage,1))+" %)</b>";
+				return "<b style='color:"+this.point.color+"'>"+this.point.name+" <br/>"+this.y+"</b>";//- ("+(Highcharts.numberFormat(this.percentage,1))+" %)
 			}  
 		}; 
 		var plotOptions ={
@@ -176,19 +182,19 @@ function getSwachhBharatMissionOverviewDtls(){
 			useHTML: true,
 			
 			labelFormatter: function() {
-				return '<div><span style="color:'+this.color+'">'+this.name + '- <b>' + this.y + ' - '+(Highcharts.numberFormat(this.percentage,1)) + ' %'+'</b></span></div>';
+				return '<div><span style="color:'+this.color+'">'+this.name + '- <b>' + this.y +'</b></span></div>';//' - '+(Highcharts.numberFormat(this.percentage,1)) + ' %'+
 			}
 		};
 		var data = [{
 			name: '',
 			data: [
 				{
-				  name: 'Target',
+				  name: 'TARGET',
 				  y: targetCount,
 				  color:"#FC615E"
 				},
 				{
-				  name: 'Achivement',
+				  name: 'COMPLETED',
 				  y: achivementCount,
 				  color:"#13B9AC"
 				}
@@ -234,7 +240,7 @@ function getSwachhBharatMissionOverviewDtls(){
 				useHTML:true,	
 				formatter: function () {
 					var pcnt = (this.y / totalCount) * 100;
-					return '<b>' + this.x + '</b><br/> '+this.series.name+" - " +this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+					return '<b>' + this.x + '</b><br/> '+this.series.name+" - " +this.y;//"-"+((Highcharts.numberFormat(pcnt)))+'%'
 				}
 			},
 			plotOptions: { 
@@ -253,7 +259,7 @@ function getSwachhBharatMissionOverviewDtls(){
 					align: 'center',
 					formatter: function() {
 						var pcnt = (this.y / totalCount) * 100;
-						return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+						return '<span>'+this.y+'</span>';//'<br>('+Highcharts.numberFormat(pcnt)+'%)
 					}
 				}
 			}]

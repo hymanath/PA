@@ -5,6 +5,7 @@ import java.util.List;
 public class SwachhBharatMissionIHHLDtlsVO {
 
 	private Long id;
+	private String locationIdStr;
 	private Long target=0l;
 	private Long achivement=0l;
 	private String percentage;
@@ -22,6 +23,8 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	private String districtCode;
 	private String constituencyCode;
 	private String mandalCode;
+	private String fromDate;
+	private String toDate;
 	
 	private List<SwachhBharatMissionIHHLDtlsVO> subList;
 	private List<String> list;
@@ -32,12 +35,17 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	
 	private String range;
 	
-	
-	public Long getId() {
+   public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public String getLocationIdStr() {
+		return locationIdStr;
+	}
+	public void setLocationIdStr(String locationIdStr) {
+		this.locationIdStr = locationIdStr;
 	}
 	public Long getTarget() {
 		return target;
@@ -177,8 +185,17 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	public void setList(List<String> list) {
 		this.list = list;
 	}
-	
-	
-	
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
 	
 }
