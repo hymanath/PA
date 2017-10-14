@@ -34,6 +34,7 @@
 			getHamletWiseIvrStatusCounts('graph','','state',"","",2);
 			getIHHLOverviewData("abstract");
 			getSBPaymentsAbstract();
+			getSwachhBharatMissionOverviewDtls();
 			//locationType,filterType,filterValue,districtValue,divId
 			//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
 			//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
@@ -5730,3 +5731,106 @@ function getSBPaymentsAbstract(){
 					}
 				}
 		}
+
+$(document).on("click",".overViewDtlsSwatchBharatMissionCls",function(){
+		window.open('swachhBharatMissionIHHL','_blank');
+});
+function getSwachhBharatMissionOverviewDtls(){
+	$("#swatchBharatMissionDivId").html(spinner);
+	
+	var json = {
+		fromDate:"",
+		toDate:"",
+		location:"state",
+		locationId:"-1",
+		subLocation:"state"
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getSwachhBharatMissionOverviewDtls',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			return buildSwachhBharatMissionOverviewDtls(result);
+		}
+	});	
+	
+	function buildSwachhBharatMissionOverviewDtls(result){
+		if(result !=null){
+			var dataArr=[];
+			dataArr.push(result.target)
+			dataArr.push(result.completed)
+			var colors = ['#FC615E','#13B9AC']
+			var id = 'swatchBharatMissionDivId';
+			var type = {
+				type: 'column',
+				backgroundColor:'transparent'
+			};
+			var title = { text: ''
+				/* text: 'Habitation',
+				align:'left',
+				 style: {
+					 color: '#000',
+					 font: 'bold 16px "Lato", sans-serif'
+				  } */
+			};
+		
+			var legend = {
+				enabled: false
+			};
+			var yAxis = {
+				title: {
+					text: null
+				},
+			};
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: ['TARGET','COMPLETED'],
+				labels: {
+					useHTML:true,
+					formatter: function() {
+						return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value+'</p>';
+						
+					},
+					
+				}
+				
+			};
+			
+			var plotOptions ={ column: {
+					colorByPoint: true
+				}};
+			var tooltip = {
+				useHTML:true,
+				formatter: function () {
+						return '<b>' + this.x + '</b><br/>' +
+							this.y;
+					}
+			};
+
+			var data = [{
+				name: '',
+				data: dataArr,
+
+				dataLabels: {
+					enabled: true,
+					color: '#000',
+					align: 'center',
+					formatter: function() {
+						return '<span>'+this.y+'</span>';
+					}
+				}
+			}];
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+			
+		}
+	}
+}
+
