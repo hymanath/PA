@@ -1,7 +1,7 @@
 
 	getSwachhBharatMissionOverviewDtls(); // first block
-	getSwachhBharatMissionStatusOverviewDtls();//secondBlock
-	getIHHLCategoryWiseAnalysis();//third block
+	getSwachhBharatMissionStatusOverviewDtls();//secondBlock #NOT USED
+	getIHHLCategoryWiseAnalysis();//third block #NOT USED
 	getIHHLAchivementProgressDtls();//fourth block
 	getSwachhBharatMissionLocationWiseDetails();//last 
 	function getSwachhBharatMissionOverviewDtls(){
@@ -63,11 +63,16 @@
 				console.log(result);
 			});	
 		}
+		
 		function getIHHLAchivementProgressDtls(){
 				var json = {
-					fromDate:"",
-					toDate:"",
-					year:""
+					fromDate:"02-10-2017",
+					toDate:"07-10-2017",
+					location:"state",
+					locationId:"-1",
+					subLocation:"state",
+					reportType:"daily",//daily
+					displayType:"month"//day/week/month
 				}
 				$.ajax({                
 					type:'POST',    
@@ -88,7 +93,7 @@
 						toDate:"",
 						location:"state",
 						locationId:"-1",
-						subLocation:"district", // district/constituency/manal
+						subLocation:"district", //state/district/constituency/mandal
 						reportType:"status",//daily
 						displayType:"day"//day/week/month
 					}

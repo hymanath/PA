@@ -1,9 +1,15 @@
 package com.itgrids.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -12,10 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itgrids.dao.impl.LightMonitoringDAO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.SwachhBharatMissionIHHLDtlsVO;
 import com.itgrids.service.ISwachhBharatMissionIHHLService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
+import com.itgrids.utils.DateUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 
 @Service
@@ -26,6 +34,9 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	
 	@Autowired
 	private WebServiceUtilService webServiceUtilService;
+	
+	@Autowired
+	private LightMonitoringDAO lightMonitoringDAO;
 	
 	/**
 	 * @author Santosh Kumar Verma
@@ -176,25 +187,191 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	 * @Date 14-10-2017
 	 */
 	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLAchivementProgressDtls(InputVO inputVO) {
-		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
+		List<SwachhBharatMissionIHHLDtlsVO> resultList = null;
 		try {
-			SwachhBharatMissionIHHLDtlsVO timeRangeVO = new SwachhBharatMissionIHHLDtlsVO();
-			timeRangeVO.setRange("01-08-2017");
-			timeRangeVO.setTarget(10000l);
-			timeRangeVO.setCompleted(1000l);
-			SwachhBharatMissionIHHLDtlsVO timeRangeVO1 = new SwachhBharatMissionIHHLDtlsVO();
-			timeRangeVO1.setRange("02-08-2017");
-			timeRangeVO1.setTarget(10000l);
-			timeRangeVO1.setCompleted(2000l);
-			SwachhBharatMissionIHHLDtlsVO timeRangeVO2 = new SwachhBharatMissionIHHLDtlsVO();
-			timeRangeVO2.setRange("03-08-2017");
-			timeRangeVO2.setTarget(10000l);
-			timeRangeVO2.setCompleted(3000l);
-			resultList.add(timeRangeVO);
-			resultList.add(timeRangeVO1);
-			resultList.add(timeRangeVO2);
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if (inputVO.getFromDate() != null && inputVO.getFromDate().trim().length() > 0 && inputVO.getToDate() != null && inputVO.getToDate().trim().length() > 0) {
+				fromDate = sdf.parse(inputVO.getFromDate());
+				toDate = sdf.parse(inputVO.getToDate());
+			}
+
+			String str = convertingInputVOToString(inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails",str);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				if (output != null && !output.isEmpty()) {
+					JSONObject jsonObject = new JSONObject(output);
+					JSONArray dateWiseStateDtlsArr = jsonObject.getJSONArray("MinisterDBStateFundMngmntData");
+					if (dateWiseStateDtlsArr != null && dateWiseStateDtlsArr.length() > 0) {
+
+						List<SwachhBharatMissionIHHLDtlsVO> dateWiseTargetAchivementList = getDateWiseTargetAndAchivementDtls(dateWiseStateDtlsArr);
+
+						if (inputVO.getDisplayType() != null && !inputVO.getDisplayType().trim().isEmpty() && inputVO.getDisplayType().trim().length() > 0) {
+							if (inputVO.getDisplayType().trim().equalsIgnoreCase("day")) {
+
+								List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+								resultList = getDayWiseReportDtls(dateWiseTargetAchivementList, dayList);
+
+							} else if (inputVO.getDisplayType().trim().equalsIgnoreCase("week")) {
+
+								Map<String, List<String>> weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
+								resultList = getWeekMonthWiseReportDtls(dateWiseTargetAchivementList,weekAndDaysMap);
+
+							} else if (inputVO.getDisplayType().trim().equalsIgnoreCase("month")) {
+
+								Map<String, List<String>> monthMap = getMonthWeekAndDaysList(inputVO.getFromDate(),inputVO.getToDate(), "month");
+								resultList = getWeekMonthWiseReportDtls(dateWiseTargetAchivementList, monthMap);
+							}
+						}
+
+					}
+
+				}
+			}
 		} catch (Exception e) {
 			LOG.error("Exception occured at getIHHLAchivementProgressDtls() in SwachhBharatMissionIHHLService class",e);
+		}
+		return resultList;
+	}
+
+	private List<SwachhBharatMissionIHHLDtlsVO> getDayWiseReportDtls(List<SwachhBharatMissionIHHLDtlsVO> dateWiseTargetAchivementList,List<String> dayList) {
+		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
+		try {
+			if (dayList != null && dayList.size() > 0) {
+				for (String date : dayList) {
+					SwachhBharatMissionIHHLDtlsVO rangeVO = new SwachhBharatMissionIHHLDtlsVO();
+					rangeVO.setRange(date);
+					SwachhBharatMissionIHHLDtlsVO dateDtlsVO = getMatchVO(dateWiseTargetAchivementList, date);
+					if (dateDtlsVO != null) {
+						rangeVO.setTarget(dateDtlsVO.getTarget());
+						rangeVO.setCompleted(dateDtlsVO.getAchivement());
+					}
+					resultList.add(rangeVO);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured at getDayWiseReportDtls() in SwachhBharatMissionIHHLService class",e);
+		}
+		return resultList;
+	}
+
+	private List<SwachhBharatMissionIHHLDtlsVO> getWeekMonthWiseReportDtls(List<SwachhBharatMissionIHHLDtlsVO> dateWiseTargetAchivementList,Map<String, List<String>> weekMap) {
+		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
+		try {
+			if (weekMap != null && weekMap.size() > 0) {
+				for (Entry<String, List<String>> entry : weekMap.entrySet()) {
+					SwachhBharatMissionIHHLDtlsVO rangeVO = new SwachhBharatMissionIHHLDtlsVO();
+					rangeVO.setRange(entry.getKey());
+					rangeVO.setList(entry.getValue());
+					if (entry.getValue() != null && entry.getValue().size() > 0) {
+						for (String date : entry.getValue()) {
+							SwachhBharatMissionIHHLDtlsVO dateDtlsVO = getMatchVO(dateWiseTargetAchivementList, date);
+							if (dateDtlsVO != null) {
+								rangeVO.setTarget(rangeVO.getTarget()+ dateDtlsVO.getTarget());
+								rangeVO.setCompleted(rangeVO.getCompleted()+ dateDtlsVO.getAchivement());
+							}
+						}
+					}
+					resultList.add(rangeVO);
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception occured at getWeekWiseReportDtls() in SwachhBharatMissionIHHLService class",e);
+		}
+		return resultList;
+	}
+	private SwachhBharatMissionIHHLDtlsVO getMatchVO(List<SwachhBharatMissionIHHLDtlsVO> list, String date) {
+		try {
+			if (list == null && list.size() == 0)
+				return null;
+			for (SwachhBharatMissionIHHLDtlsVO vo : list) {
+				if (vo.getRange().equalsIgnoreCase(date)) {
+					return vo;
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getMatchVO() in SwachhBharatMissionIHHLService class",e);
+		}
+		return null;
+	}
+	@SuppressWarnings("static-access")
+	public LinkedHashMap<String,List<String>> getMonthWeekAndDaysList(String startDate,String endDate,String type){
+		LinkedHashMap<String,List<String>> returnDays = new LinkedHashMap<String, List<String>>();
+    	try{
+		List<String> daysArr = new ArrayList<String>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");  
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf1 = new SimpleDateFormat("MMM-yyyy");
+		if(type != null && type.trim().equalsIgnoreCase("month")){
+		 List<String> mntDays = lightMonitoringDAO.getMonthAndYear(sdf.parse(startDate),sdf.parse(endDate));
+			int i = 1;
+			for (String string : mntDays) {
+				Date dateee = sdf1.parse(string);
+				cal.setTime(dateee);
+				cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+				Date monthStart = cal.getTime();
+				
+				cal.setTime(dateee);
+				cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+				Date monthEnd = cal.getTime();
+				 
+				cal.setTime(sdf.parse(startDate));
+				Date  strDate = cal.getTime();
+				cal.setTime(sdf.parse(endDate));
+				Date  edDate = cal.getTime();
+				
+				if(i == 1){
+					if(strDate.compareTo(monthStart) > 0){
+						monthStart = strDate;
+					}
+				}
+				if(i == mntDays.size()){
+					if(monthEnd.compareTo(edDate) > 0){
+						monthEnd = edDate;
+					}
+				}
+				
+				daysArr = DateUtilService.getDaysBetweenDatesStringFormat(monthStart,monthEnd);
+				returnDays.put(string,daysArr);
+				i++;
+			}
+		}
+    	}catch(Exception e){
+    		LOG.error("Error occured getMonthWeekAndDays() method of SwachhBharatMissionIHHLService",e);
+    	}
+		
+		return returnDays;
+	}
+	
+	@SuppressWarnings("unused")
+	private List<SwachhBharatMissionIHHLDtlsVO> getDateWiseTargetAndAchivementDtls(JSONArray dateWiseStateDtlsArr) {
+		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			for (int i = 0; i < dateWiseStateDtlsArr.length(); i++) {
+				SwachhBharatMissionIHHLDtlsVO rangeVO = new SwachhBharatMissionIHHLDtlsVO();
+				JSONObject jObj = (JSONObject) dateWiseStateDtlsArr.get(i);
+				String dateStr = jObj.has("DATESEQ") ? jObj.getString("DATESEQ") : "";
+				if (dateStr != null && dateStr.trim().length() > 2) {
+					Date date = sdf.parse(dateStr);
+					rangeVO.setRange(sdf1.format(date));
+					rangeVO.setTarget(jObj.has("TARGET") ? jObj.getLong("TARGET") : 0l);
+					rangeVO.setAchivement(jObj.has("ACHIVED") ? jObj.getLong("ACHIVED") : 0l);
+					resultList.add(rangeVO);
+				}
+
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getDateWiseTargetAndAchivementDtls() in SwachhBharatMissionIHHLService class",e);
 		}
 		return resultList;
 	}
@@ -299,18 +476,28 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		try {
 			str = "{";
 			
-			if(inputVO.getFromDate() != null )
-			/*	str += "\"fromMonth\" : \""+inputVO.getFromDate()+"\",";
-			if(inputVO.getToDate() != null)
-				str += "\"toMonth\" : \""+inputVO.getToDate()+"\",";*/
-			if(inputVO.getLocation() != null)
-				str += "\"Location\" : \""+inputVO.getLocation()+"\",";
-			/*if(inputVO.getLocationIdStr() != null)
-				str += "\"locationId\" : \""+inputVO.getLocationIdStr()+"\",";else*/
-			 if(inputVO.getLocationId() != null)
-				str += "\"LocationID\" : \""+inputVO.getLocationId()+"\",";
-			if(inputVO.getSubLocation() != null)
-				str += "\"SubLocation\" : \""+inputVO.getSubLocation()+"\",";
+			if (inputVO.getReportType() != null && inputVO.getReportType().equalsIgnoreCase("daily")) {
+				if(inputVO.getFromDate() != null )
+					str += "\"fromdate\" : \""+inputVO.getFromDate()+"\",";
+				if(inputVO.getToDate() != null)
+					str += "\"todate\" : \""+inputVO.getToDate()+"\",";
+				if(inputVO.getLocation() != null)
+					str += "\"Location\" : \""+inputVO.getLocation()+"\",";
+				/*if(inputVO.getLocationIdStr() != null)
+					str += "\"locationId\" : \""+inputVO.getLocationIdStr()+"\",";else*/
+				 if(inputVO.getLocationId() != null)
+					str += "\"LocationID\" : \""+inputVO.getLocationId()+"\",";
+				if(inputVO.getSubLocation() != null)
+					str += "\"SUBLOCATION\" : \""+inputVO.getSubLocation()+"\",";
+				
+			} else {
+				if(inputVO.getLocation() != null)
+					str += "\"Location\" : \""+inputVO.getLocation()+"\",";
+				 if(inputVO.getLocationId() != null)
+					str += "\"LocationID\" : \""+inputVO.getLocationId()+"\",";
+				if(inputVO.getSubLocation() != null)
+					str += "\"SubLocation\" : \""+inputVO.getSubLocation()+"\",";
+			}
 			
 			if(str.length() > 1)
 				str = str.substring(0,str.length()-1);
