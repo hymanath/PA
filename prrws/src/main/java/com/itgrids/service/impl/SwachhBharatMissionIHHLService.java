@@ -224,7 +224,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 				for (Entry<String, List<String>> entry : weekMap.entrySet()) {
 					SwachhBharatMissionIHHLDtlsVO rangeVO = new SwachhBharatMissionIHHLDtlsVO();
 					rangeVO.setRange(entry.getKey());
-					rangeVO.setList(entry.getValue());
+					//rangeVO.setList(entry.getValue());
 					rangeVO.setFromDate(entry.getValue().get(0));
 					rangeVO.setToDate(entry.getValue().get(entry.getValue().size()-1));
 					if (entry.getValue() != null && entry.getValue().size() > 0) {
@@ -448,7 +448,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
     					 for (Entry<String, List<String>> rangeEntry : map.entrySet()) {
     						 SwachhBharatMissionIHHLDtlsVO targetAchivementDtlsVO = new SwachhBharatMissionIHHLDtlsVO();
     						 targetAchivementDtlsVO.setRange(rangeEntry.getKey());
-    						 targetAchivementDtlsVO.setList(rangeEntry.getValue());
+    						// targetAchivementDtlsVO.setList(rangeEntry.getValue());
     						 targetAchivementDtlsVO.setFromDate(rangeEntry.getValue().get(0));
     						 targetAchivementDtlsVO.setToDate(rangeEntry.getValue().get(rangeEntry.getValue().size()-1));
     						   if (rangeEntry.getValue() != null && rangeEntry.getValue().size() > 0) {
