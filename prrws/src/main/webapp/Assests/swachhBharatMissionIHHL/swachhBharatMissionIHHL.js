@@ -1,16 +1,15 @@
-/* getSwachhBharatMissionStatusOverviewDtls();//secondBlock
-	getIHHLCategoryWiseAnalysis();//third block
-	getIHHLAchivementProgressDtls();//fourth block */
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalColor = {"A":"#009587","B":"#99B95F","C":"#E67401","D":"#FD403A"};	
 var levelWiseSBArr = ['state','district','constituency','mandal'];
 var globalFromDateForLevel = moment().subtract(10,'days').format("DD-MM-YYYY");
 var globalToDateForLevel = moment().format("DD-MM-YYYY");
+
 onloadCalls();
 onloadIntiliazilation();
 function onloadCalls(){
 	getSwachhBharatMissionOverviewDtls(); // first block And Second Block
-	levelWiseSBData("IHHL")
+	getIHHLAchivementProgressDtls("day");
+	levelWiseSBData("IHHL");
 }
 function onloadIntiliazilation(){
 	$("#dateRangePickerAUM").daterangepicker({
@@ -237,7 +236,7 @@ function getSwachhBharatMissionOverviewDtls(){
 				  color:"#FC615E"
 				},
 				{
-				  name: 'Achivement',
+				  name: 'Completed',
 				  y: achivementCount,
 				  color:"#13B9AC"
 				}
@@ -348,15 +347,16 @@ function getIHHLCategoryWiseAnalysis(){
 			console.log(result);
 		});	
 }
-function getIHHLAchivementProgressDtls(){
+function getIHHLAchivementProgressDtls(displayType){
+	$("#IHHLAchivementProgress").html(spinner)
 		var json = {
-					fromDate:"02-10-2017",
-					toDate:"07-10-2017",
+					fromDate:globalFromDateForLevel,
+					toDate:globalToDateForLevel,
 					location:"state",
 					locationId:"-1",
 					subLocation:"state",
 					reportType:"daily",//daily
-					displayType:"month"//day/week/month
+					displayType:displayType//day/week/month
 				}
 		$.ajax({                
 			type:'POST',    
@@ -368,8 +368,80 @@ function getIHHLAchivementProgressDtls(){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			console.log(result);
-		});	
+			if(result !=null && result.length>0){
+				buildIHHLAchivementProgressDtls(result);
+			}else{
+				$("#IHHLAchivementProgress").html("No Data Available")
+			}
+		});
+
+		function buildIHHLAchivementProgressDtls(result){
+			var datesArr=[];
+			var targetArr=[];
+			var completedArr=[];
+			for(var i in result){
+				datesArr.push(result[i].range);
+				targetArr.push(result[i].target)
+				completedArr.push(result[i].completed)
+			}
+			$('#IHHLAchivementProgress').highcharts({
+				chart: {
+					type: 'area'
+				},
+				title: {
+					text: ''
+				},
+				subtitle: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories:datesArr
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,	
+					title: {
+						text: ''
+					},
+				},
+				tooltip: {
+					useHTML: true,
+					formatter: function() {
+						return '<b>'+this.x+' <br/> '+this.series.name+' : '+this.y+'</b>'
+					}, 
+					// shared: true
+					//pointFormat: '{series.name} <b>{point.y:,.0f}</b><br/>warheads in {point.x}',
+					
+				},
+				plotOptions: {
+					area: {
+						marker: {
+							enabled: false,
+							symbol: 'circle',
+							radius: 2,
+							states: {
+								hover: {
+									enabled: true
+								}
+							}
+						}
+					}
+				},
+				series: [{
+					name: 'Target',
+					data: targetArr,
+					color:"#FC615E"
+				}, {
+					name: 'COMPLETED',
+					data: completedArr,
+					color:"#13B9AC" 
+				}]
+			});
+		}
 }
 function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displayType){
 	$("#IHHL"+subLocation).html(spinner);
@@ -444,9 +516,9 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 									str+='<th rowspan="2">Constituency</th>';
 									str+='<th rowspan="2">Mandal</th>';
 								}
-								str+='<th rowspan="2" style="background-color:#13B9AC;color:#fff">Target</th>';	
-								str+='<th rowspan="2" style="background-color:#FC615E;color:#fff">Achivement</th>';	
-								str+='<th rowspan="2" style="background-color:#FC615E;color:#fff">%</th>';	
+								str+='<th rowspan="2" style="background-color:#FC615E;color:#fff">Target</th>';	
+								str+='<th rowspan="2" style="background-color:#13B9AC;color:#fff">Achivement</th>';	
+								str+='<th rowspan="2" style="background-color:#13B9AC;color:#fff">%</th>';	
 								if(result[0].subList !=null && result[0].subList.length>0){
 									for(var i in result[0].subList){
 										str+='<th colspan="3" class="text-center">'+result[0].subList[i].range+'</th>';	
@@ -482,48 +554,96 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 								}
 								if(reportType == "status"){
 									if(result[i].target !=null && result[i].target>0){
-										str+='<td>'+result[i].target+'</td>';
+										str+='<td class="text-center">'+result[i].target+'</td>';
 									}else{
-										str+='<td> - </td>';
+										str+='<td class="text-center"> - </td>';
 									}	
 									if(result[i].grounded !=null && result[i].grounded>0){
-										str+='<td>'+result[i].grounded+'</td>';
+										str+='<td class="text-center">'+result[i].grounded+'</td>';
 									}else{
-										str+='<td> - </td>';
+										str+='<td class="text-center"> - </td>';
 									}
 									if(result[i].noTGrounded !=null && result[i].noTGrounded>0){
-										str+='<td>'+result[i].noTGrounded+'</td>';
+										str+='<td class="text-center">'+result[i].noTGrounded+'</td>';
 									}else{
-										str+='<td> - </td>';
+										str+='<td class="text-center"> - </td>';
 									}	
 									if(result[i].inProgress !=null && result[i].inProgress>0){
-										str+='<td>'+result[i].inProgress+'</td>';
+										str+='<td class="text-center">'+result[i].inProgress+'</td>';
 									}else{
-										str+='<td> - </td>';
+										str+='<td class="text-center"> - </td>';
 									}
 									if(result[i].completed !=null && result[i].completed>0){
-										str+='<td>'+result[i].completed+'</td>';
+										str+='<td class="text-center">'+result[i].completed+'</td>';
 									}else{
-										str+='<td> - </td>';
+										str+='<td class="text-center"> - </td>';
 									}
-									if(result[i].percentage !=null && result[i].percentage>0){
-										if(result[i].percentage < 100){
-											str+='<td style="background-color:#FFE296">'+result[i].percentage+' %</td>';
-										}else{
-											str+='<td style="background-color:#C7F0C5;">'+result[i].percentage+' %</td>';
+									if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
+										if(parseFloat(result[i].percentage) >=100 || parseFloat(result[i].percentage)<76){
+											str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
+										}else if(parseFloat(result[i].percentage) >=75 || parseFloat(result[i].percentage)<50){
+											str+='<td class="text-center" style="background-color:#99B95F;color:#fff">'+result[i].percentage+'</td>';
+										}else if(parseFloat(result[i].percentage) >=49 || parseFloat(result[i].percentage)<25){
+											str+='<td class="text-center" style="background-color:#E67401;color:#fff">'+result[i].percentage+'</td>';
+										}else if(parseFloat(result[i].percentage) >=24 || parseFloat(result[i].percentage)<0){
+											str+='<td class="text-center" style="background-color:#FD403A;color:#fff">'+result[i].percentage+'</td>';
 										}
 									}else{
-										str+='<td> - </td>';
+										str+='<td class="text-center"> - </td>';
 									}
 								}else if(reportType == "daily"){
-									str+='<td style="background-color:#13B9AC;color:#fff">'+result[i].target+'</td>';
-									str+='<td style="background-color:#FC615E;color:#fff">'+result[i].completed+'</td>';
-									str+='<td style="background-color:#FC615E;color:#fff">'+result[i].percentage+'</td>';
+									if(result[i].target !=null && result[i].target>0){
+										str+='<td class="text-center">'+result[i].target+'</td>';
+									}else{
+										str+='<td class="text-center"> - </td>';
+									}
+									
+									if(result[i].completed !=null && result[i].completed>0){
+										if(parseFloat(result[i].percentage) >=100 || parseFloat(result[i].percentage)<76){
+											str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].completed+'</td>';
+										}else if(parseFloat(result[i].percentage) >=75 || parseFloat(result[i].percentage)<50){
+											str+='<td class="text-center" style="background-color:#99B95F;color:#fff">'+result[i].completed+'</td>';
+										}else if(parseFloat(result[i].percentage) >=49 || parseFloat(result[i].percentage)<25){
+											str+='<td class="text-center" style="background-color:#E67401;color:#fff">'+result[i].completed+'</td>';
+										}else if(parseFloat(result[i].percentage) >=24 || parseFloat(result[i].percentage)<0){
+											str+='<td class="text-center" style="background-color:#FD403A;color:#fff">'+result[i].completed+'</td>';
+										}
+									}else{
+										str+='<td class="text-center"> - </td>';
+									}
+									
+									if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
+										if(parseFloat(result[i].percentage) >=100 || parseFloat(result[i].percentage)<76){
+											str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
+										}else if(parseFloat(result[i].percentage) >=75 || parseFloat(result[i].percentage)<50){
+											str+='<td class="text-center" style="background-color:#99B95F;color:#fff">'+result[i].percentage+'</td>';
+										}else if(parseFloat(result[i].percentage) >=49 || parseFloat(result[i].percentage)<25){
+											str+='<td class="text-center" style="background-color:#E67401;color:#fff">'+result[i].percentage+'</td>';
+										}else if(parseFloat(result[i].percentage) >=24 || parseFloat(result[i].percentage)<0){
+											str+='<td class="text-center" style="background-color:#FD403A;color:#fff">'+result[i].percentage+'</td>';
+										}
+									}else{
+										str+='<td class="text-center"> - </td>';
+									}
+									
+									
 									
 									for(var j in result[i].subList){
-										str+='<td>'+result[i].subList[j].target+'</td>';
-										str+='<td>'+result[i].subList[j].completed+'</td>';
-										str+='<td>'+result[i].subList[j].percentage+'</td>';
+										if(result[i].subList[j].target !=null && result[i].subList[j].target>0){
+											str+='<td class="text-center">'+result[i].subList[j].target+'</td>';
+										}else{
+											str+='<td class="text-center"> - </td>';
+										}
+										if(result[i].subList[j].completed !=null && result[i].subList[j].completed>0){
+											str+='<td class="text-center">'+result[i].subList[j].completed+'</td>';
+										}else{
+											str+='<td class="text-center"> - </td>';
+										}
+										if(result[i].subList[j].percentage !=null && result[i].subList[j].percentage>0){
+											str+='<td class="text-center">'+result[i].subList[j].percentage+'</td>';
+										}else{
+											str+='<td class="text-center"> - </td>';
+										}
 									}
 								}
 							
@@ -641,15 +761,20 @@ $(document).on("click","[role='tabStatusWise'] li",function(){
 $(document).on("click",".calendar_active_IHHL_cls li",function(){
 	$(this).closest("ul").find("li").removeClass("active");
 	$(this).addClass("active");
+	var levelType = $(this).closest("ul").attr("attr_level_type");
 	
 	var displayType ='';
 	if($(this).hasClass("active")){
 		displayType = $(this).attr("attr_val");
 	}
-	if(displayType !="custom"){
-		for(var i in levelWiseSBArr){
-			getSwachhBharatMissionLocationWiseDetails(levelWiseSBArr[i],"daily",displayType);
-		}
-	}
 	
+	if(levelType == "table"){
+		if(displayType !="custom"){
+			for(var i in levelWiseSBArr){
+				getSwachhBharatMissionLocationWiseDetails(levelWiseSBArr[i],"daily",displayType);
+			}
+		}
+	}else{
+		getIHHLAchivementProgressDtls(displayType);
+	}	
 });

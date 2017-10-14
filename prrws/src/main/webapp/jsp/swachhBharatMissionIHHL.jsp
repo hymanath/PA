@@ -39,7 +39,7 @@
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
-					<p>IT E & C - Dashboard</p>
+					<p>Swatch Bharat Mission IHHL</p>
 				</div>
 				
 				<div class="col-sm-3 col-xs-12 pull-right">
@@ -198,15 +198,29 @@
 			</div>
 			<div class="row m_top20"  style="padding: 11px; margin-left: 0px; margin-right: 0px;">
 				<div class="col-sm-12" style="border: 1px solid #ccc;">
-					<h5 class="m_top10">CATEGORY WISE ANALYSIS  <span class="pull-right">Note : D - DISTRICT , C - CONSTITUENCY , M - MANDAL</span></h5>
+					<h5 class="m_top10"><b>CATEGORY WISE ANALYSIS</b>  <span class="pull-right">Note : D - DISTRICT , C - CONSTITUENCY , M - MANDAL</span></h5>
 					<div id="categoryWiseDataId"></div>
+				</div>
+			</div>
+			<div class="row m_top20"  style="padding: 11px; margin-left: 0px; margin-right: 0px;">
+				<div class="col-sm-12" style="border: 1px solid #ccc;">
+					<h5 class="m_top10"><b>IHHL Achivement Progress</b></h5>
+					<div class="row">
+							<ul class="list-inline pull-right calendar_active_IHHL_cls" attr_level_type="graph">
+								<li class="active defaultActiveClsDay" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
+								<li attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
+								<li attr_val="month"><img src="Assests/icons/CustomRange_icon.png" />&nbsp;&nbsp;<b><span>Month</span></b></li>
+								</li>
+							</ul>  
+					</div>
+					<div id="IHHLAchivementProgress" style="height:300px;"></div>
 				</div>
 			</div>
 		</div>
 		<div class="white-block m_top20" style="background-color:#F0F0F0;padding:10px">
 			<div class="row">
 				<div class="col-sm-12">
-					<ul class="list-inline pull-right calendar_active_IHHL_cls">
+					<ul class="list-inline pull-right calendar_active_IHHL_cls" attr_level_type="table">
 						<li class="active defaultActiveClsDay" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
 						<li attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
 						<li attr_val="month"><img src="Assests/icons/CustomRange_icon.png" />&nbsp;&nbsp;<b><span>Month</span></b></li>
