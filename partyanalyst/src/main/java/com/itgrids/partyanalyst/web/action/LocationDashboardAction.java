@@ -101,8 +101,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private PartyMeetingDataVO partyMeetingDataVO;
 	private List<PartyMeetingDataVO> locationParMetingVOList;
 	private ElectionInformationVO electionInformationVO;
-	
-	
+	private List<CandidateDetailsForConstituencyTypesVO> typeVoList;
+
 	public ElectionInformationVO getElectionInformationVO() {
 		return electionInformationVO;
 	}
@@ -427,6 +427,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	}
 	public void setLocationParMetingVOList(List<PartyMeetingDataVO> locationParMetingVOList) {
 		this.locationParMetingVOList = locationParMetingVOList;
+	}
+	public List<CandidateDetailsForConstituencyTypesVO> getTypeVoList() {
+		return typeVoList;
+	}
+	public void setTypeVoList(
+			List<CandidateDetailsForConstituencyTypesVO> typeVoList) {
+		this.typeVoList = typeVoList;
 	}
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
@@ -1177,7 +1184,8 @@ public String getElectionInformationLocationWise(){
 					subTypeList.add(jsonArray.getString(i).toString());
 				}
 			}
-			informationVo = locationDashboardService.getLocationWiseElectionResults(electionScopeIdsList,subTypeList,jObj.getLong("lelevlId"),locationValuesList,yearIdsList,partyIdsList);
+			Long constituencyId = jObj.getLong("constituencyId");
+			informationVo = locationDashboardService.getLocationWiseElectionResults(electionScopeIdsList,subTypeList,jObj.getLong("lelevlId"),locationValuesList,yearIdsList,partyIdsList,constituencyId);
 		}catch(Exception e){
 			LOG.error("Exception raised at getLevelWiseGrievanceCounts() of LocationDashboardAction{}",e);
 		}
@@ -1379,4 +1387,20 @@ public String getElectionInformationLocationWise(){
 		 }
 		 return Action.SUCCESS;
 	 }
+	public String getPartyWiseMPandMLACandidatesCountDetials(){
+		try{
+			jObj = new JSONObject(getTask());			
+					
+			List<Long> electionIdsList = convertJsonStringList(jObj.getJSONArray("electionIds"));				
+			Long loactionTypeId = jObj.getLong("loactionTypeId");
+			Long loctionValue= jObj.getLong("loctionValue");
+			List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIds"));
+			Long partyId =jObj.getLong("partyId");
+			typeVoList =  locationDashboardService.getPartyWiseMPandMLACandidatesCountDetials(electionIdsList,electionScopeIds,loactionTypeId,loctionValue,partyId);
+			
+		}catch(Exception e){
+			LOG.error("Entered into getPartyWiseMPandMLACandidatesCountDetials method of LocationDashboardAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
 }
