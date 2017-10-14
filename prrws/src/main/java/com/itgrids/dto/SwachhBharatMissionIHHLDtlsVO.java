@@ -7,13 +7,22 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	private Long id;
 	private Long target;
 	private Long achivement;
-	private Double percentage;
+	private String percentage;
 	private Long locationId;
 	private String name;
 	private Long grounded;
 	private Long noTGrounded;
 	private Long completed;
 	private Long inProgress;
+	private String stateCode;
+	private String stateName;
+	private String districtName;
+	private String constName;
+	private String mandalName;
+	private String districtCode;
+	private String constituencyCode;
+	private String mandalCode;
+	
 	private List<SwachhBharatMissionIHHLDtlsVO> subList;
 	
 	private Long districtCount;
@@ -41,10 +50,10 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	public void setAchivement(Long achivement) {
 		this.achivement = achivement;
 	}
-	public Double getPercentage() {
+	public String getPercentage() {
 		return percentage;
 	}
-	public void setPercentage(Double percentage) {
+	public void setPercentage(String percentage) {
 		this.percentage = percentage;
 	}
 	public Long getLocationId() {
@@ -113,6 +122,55 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	public void setMandalCount(Long mandalCount) {
 		this.mandalCount = mandalCount;
 	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getConstName() {
+		return constName;
+	}
+	public void setConstName(String constName) {
+		this.constName = constName;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+	public String getDistrictCode() {
+		return districtCode;
+	}
+	public void setDistrictCode(String districtCode) {
+		this.districtCode = districtCode;
+	}
+	public String getConstituencyCode() {
+		return constituencyCode;
+	}
+	public void setConstituencyCode(String constituencyCode) {
+		this.constituencyCode = constituencyCode;
+	}
+	public String getMandalCode() {
+		return mandalCode;
+	}
+	public void setMandalCode(String mandalCode) {
+		this.mandalCode = mandalCode;
+	}
+	public String getStateCode() {
+		return stateCode;
+	}
+	public void setStateCode(String stateCode) {
+		this.stateCode = stateCode;
+	}
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+	
 	
 	
 }
