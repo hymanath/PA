@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.ILocationWiseElectionInformationDetalsService;
+import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -25,6 +26,17 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	
 	private CommonMethodsUtilService commonMethodsUtilService;
 	private ICandidateDAO candidateDAO;
+	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
+
+	
+	public IBoothConstituencyElectionDAO getBoothConstituencyElectionDAO() {
+		return boothConstituencyElectionDAO;
+	}
+
+	public void setBoothConstituencyElectionDAO(
+			IBoothConstituencyElectionDAO boothConstituencyElectionDAO) {
+		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
+	}
 
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
@@ -372,4 +384,118 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 		return null;
 	}
 	
+	/**
+	* @author Hymavathi G 
+	* @Description :Cross Voting Details For Location
+	*  @since 14-oct-2017
+	*  @return :void
+	*/
+	public ElectionInformationVO getLocationWiseCrossVotingDetails(List<Long> electionYrs,List<Long> parliamentIds,List<Long> assemlyIds ,
+			List<Long> partyids,String withAlliance,Long levelId,List<Long> locationVals,List<String> subtypes){
+		
+		ElectionInformationVO returnVO = new ElectionInformationVO();
+		try {
+			Map<Long,ElectionInformationVO> yearsPolledMap = new HashMap<Long,ElectionInformationVO>();
+			List<Object[]> assemlyPolledVotes = boothConstituencyElectionDAO.getLocationWiseAssemblyElectionPolledVotes(electionYrs, parliamentIds, assemlyIds, levelId, locationVals,subtypes,2l);
+			List<Object[]> parliamentPolledVoters = boothConstituencyElectionDAO.getLocationWiseAssemblyElectionPolledVotes(electionYrs, parliamentIds, assemlyIds, levelId, locationVals,subtypes,1l);
+			
+			setPolledVotesPerElectionYear(assemlyPolledVotes,yearsPolledMap,"assembly",partyids);
+			setPolledVotesPerElectionYear(parliamentPolledVoters,yearsPolledMap,"parliament",partyids);
+			List<Object[]> assemblyEarnedVotes = boothConstituencyElectionDAO.getLocationwiseAssemblyEarnedVotes(electionYrs, parliamentIds, assemlyIds, partyids, levelId, locationVals, subtypes, 2l);
+			List<Object[]> parlearnedVotes = boothConstituencyElectionDAO.getLocationwiseAssemblyEarnedVotes(electionYrs, parliamentIds, assemlyIds, partyids, levelId, locationVals, subtypes, 1l);
+			
+			setEarnedVotesPercentagePerPartyInYear(assemblyEarnedVotes,yearsPolledMap,"assembly");
+			setEarnedVotesPercentagePerPartyInYear(parlearnedVotes,yearsPolledMap,"parliament");
+			if(commonMethodsUtilService.isMapValid(yearsPolledMap)){
+				
+				returnVO.getSubList1().addAll(yearsPolledMap.values());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception raised at getLocationWiseCrossVotingDetails service"+e);
+		}
+		return returnVO;
+	}
+	
+	public void setPolledVotesPerElectionYear(List<Object[]> polledVotes,Map<Long,ElectionInformationVO> yearsPolledMap,String type,List<Long> partyids){
+		try{
+			
+			if(commonMethodsUtilService.isListOrSetValid(polledVotes)){
+				for (Object[] param : polledVotes) {
+					ElectionInformationVO yearVO = yearsPolledMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(yearVO == null){
+						yearVO = new ElectionInformationVO();
+						yearVO.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[0]));
+						yearsPolledMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), yearVO);
+					}
+					if(type != null &&type.equalsIgnoreCase("assembly")){
+						yearVO.setAssemblyValidVoters(commonMethodsUtilService.getLongValueForObject(param[1]));
+					}else{
+						yearVO.setParliamentValidVoters(commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+					if(type != null &&type.equalsIgnoreCase("assembly")){
+					if(commonMethodsUtilService.isListOrSetValid(partyids)){
+						for (Long Long : partyids) {
+							ElectionInformationVO partyVO = new ElectionInformationVO();
+							partyVO.setPartyId(Long);
+							yearVO.getList().add(partyVO);
+						}
+					}
+					}
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception raised at setPolledVotesPerElectionYear service"+e);
+		}
+	}
+	public void setEarnedVotesPercentagePerPartyInYear(List<Object[]> earnedVoters,Map<Long,ElectionInformationVO> yearsPolledMap,String type){
+		try{
+			
+			if(commonMethodsUtilService.isListOrSetValid(earnedVoters)){
+				for (Object[] param : earnedVoters) {
+					ElectionInformationVO yearVO = yearsPolledMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(yearVO != null){
+						ElectionInformationVO partyVO = getMatchedVO(yearVO.getList(),commonMethodsUtilService.getLongValueForObject(param[2]));
+						
+							if(partyVO != null){
+								partyVO.setPartyFlag(commonMethodsUtilService.getStringValueForObject(param[4]));
+								partyVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[5]));
+								partyVO.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[3]));
+								if(type != null &&type.equalsIgnoreCase("assembly")){
+									partyVO.setEarnedVotersPerc(calculatePercentage(yearVO.getAssemblyValidVoters(), partyVO.getEarnedVotes()));
+								}else{
+									partyVO.setEarnedVotersPerc(calculatePercentage(yearVO.getParliamentValidVoters(), partyVO.getEarnedVotes()));
+								}
+							
+						}
+					}
+					/*if(type != null &&type.equalsIgnoreCase("assembly")){
+						yearVO.setAssemblyValidVoters(commonMethodsUtilService.getLongValueForObject(param[1]));
+					}else{
+						yearVO.setParliamentValidVoters(commonMethodsUtilService.getLongValueForObject(param[1]));
+					}*/
+					
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception raised at setPolledVotesPerElectionYear service"+e);
+		}
+	}
+	
+	public ElectionInformationVO getMatchedVO(List<ElectionInformationVO> list,Long id){
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (ElectionInformationVO electionInformationVO : list) {
+					if(electionInformationVO.getPartyId().longValue() == id.longValue()){
+						return electionInformationVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised at getMatchedVO service"+e);
+		}
+		return null;
+	}
 }
