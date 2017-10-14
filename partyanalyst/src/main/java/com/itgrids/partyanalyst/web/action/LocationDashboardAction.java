@@ -100,8 +100,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<AlertCoreDashBoardVO> alertVOList;
 	private PartyMeetingDataVO partyMeetingDataVO;
 	private List<PartyMeetingDataVO> locationParMetingVOList;
+	private ElectionInformationVO electionInformationVO;
 	
 	
+	public ElectionInformationVO getElectionInformationVO() {
+		return electionInformationVO;
+	}
+	public void setElectionInformationVO(ElectionInformationVO electionInformationVO) {
+		this.electionInformationVO = electionInformationVO;
+	}
 	public PartyMeetingDataVO getPartyMeetingDataVO() {
 		return partyMeetingDataVO;
 	}
@@ -1335,6 +1342,40 @@ public String getElectionInformationLocationWise(){
 		 }catch(Exception e){
 			 successMsg = "failure";
 			 LOG.error("Exception Occured in getDesignationWiseAlertsOverview() method, Exception - ",e);
+		 }
+		 return Action.SUCCESS;
+	 }
+	
+	public String getLocationWiseCrossVotingDetails(){
+		 try{
+			  RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+				if(regVo!=null && regVo.getRegistrationID()!=null){
+					Long userId = regVo.getRegistrationID();
+				}
+				jObj = new JSONObject(getTask());
+				//String fromDateStr = jObj.getString("fromDateStr");
+				//String toDateStr = jObj.getString("toDateStr");
+				 List<Long> electionYrs = convertJsonStringList(jObj.getJSONArray("electionYearArr"));
+				 List<Long> parliamentIds = convertJsonStringList(jObj.getJSONArray("parliamentIdsArr"));
+				 List<Long> assemblyIds = convertJsonStringList(jObj.getJSONArray("assemblyIdsArr"));
+				 List<Long> partyIds = convertJsonStringList(jObj.getJSONArray("partyIdsArr"));
+				 List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValue"));
+				 
+				String withAlliance = jObj.getString("withAlliance");
+				JSONArray subTypesArr = jObj.getJSONArray("subTypesArr");  
+				List<String> subTypes = new ArrayList<String>();
+					for (int i = 0; i < subTypesArr.length(); i++){
+						subTypes.add(subTypesArr.getString(i).toString());        
+					} 
+				
+				 Long locationLevelId = jObj.getLong("locationLevelId");
+				
+				 electionInformationVO = locationWiseElectionInformationDetalsService.getLocationWiseCrossVotingDetails( electionYrs, parliamentIds,assemblyIds ,
+						 partyIds, withAlliance, locationLevelId, locationValues, subTypes);
+				
+		 }catch(Exception e){
+			 successMsg = "failure";
+			 LOG.error("Exception Occured in getLocationWiseCrossVotingDetails() method, Exception - ",e);
 		 }
 		 return Action.SUCCESS;
 	 }
