@@ -18264,5 +18264,10 @@
 			<param name="root">electionInformationVO</param>
 		</result>        
    </action>
+   <action name="getPartyWiseMPandMLACandidatesCountDetialsAction" class="locationDashboardAction" method="getPartyWiseMPandMLACandidatesCountDetials">
+		<result type="json" name="success">    
+			<param name="root">typeVoList</param>
+		</result>        
+   </action>
  </package>
 </struts>
