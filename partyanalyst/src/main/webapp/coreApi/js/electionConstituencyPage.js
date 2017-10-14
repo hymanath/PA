@@ -237,7 +237,8 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType){
 		lelevlId:locationLevelId,
 		locationValuesArr:userAccessLevelValuesArray,
 		yearsArr:electionYrVal,
-		partyIdsArr:[872,362,1117,886,72,269,265,163,1887]
+		partyIdsArr:[872,362,1117,886,72,269,265,163,1887],
+		constituencyId :284
     }
     $.ajax({
       type : "GET",
