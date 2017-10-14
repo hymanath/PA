@@ -5430,7 +5430,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue) {
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT es.election_scope_id,p.party_id,p.short_name,"
-				+ " count(distinct n.candidate_id),p.long_name,p.party_flag from nomination n,constituency_election ce,"
+				+ " count(distinct n.candidate_id),p.long_name,p.party_flag,e.election_id from nomination n,constituency_election ce,"
 				+ " constituency_election_result cer,election e,election_scope es,party p,"
 				+ " constituency c ,candidate_result cr ,parliament_assembly pc "
 				+ " where n.party_id = p.party_id and n.consti_elec_id = ce.consti_elec_id "
@@ -5468,7 +5468,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT es.election_scope_id,p.party_id,p.short_name," +
-				" count(distinct n.candidate_id),p.long_name,p.party_flag from nomination n," +
+				" count(distinct n.candidate_id),p.long_name,p.party_flag,e.election_id from nomination n," +
 				" constituency_election ce,constituency_election_result cer," +
 				" election e ,election_scope es ,party p , constituency c ,candidate_result cr " +
 				" where n.party_id = p.party_id and n.consti_elec_id = ce.consti_elec_id and " +
@@ -5496,6 +5496,92 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		/*if (loactionTypeId != null && loactionTypeId.longValue() == 2l) {
 			qurQuery.setParameter("loctionValue", loctionValue);
 		}*/
+		return qurQuery.list();
+		
+	}
+	public List<Object[]> partyWiseMemberOfParlimentsDetails(List<Long> electionIds,
+			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue,Long partyId) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("SELECT distinct C.candidate_id," +
+				" C.lastname,c.constituency_id,c.name,p.party_id,p.short_name,"
+				+ " p.party_flag from nomination n,constituency_election ce,"
+				+ " constituency_election_result cer,election e,election_scope es,party p,"
+				+ " constituency c ,candidate_result cr ,parliament_assembly pc,candidate C "
+				+ " where n.party_id = p.party_id and n.consti_elec_id = ce.consti_elec_id "
+				+ " and ce.constituency_id = c.constituency_id and ce.consti_elec_id = cer.consti_elec_id "
+				+ " and ce.election_id = e.election_id  and n.candidate_id = C.candidate_id ");
+		if (electionIds != null && electionIds.size() > 0) {
+			queryStr.append(" and ce.election_id in (:electionIds)");
+		}
+		queryStr.append(" and e.election_year = '2014'");
+		if (electionScopeIds != null && electionScopeIds.size() > 0l) {
+			queryStr.append(" and e.election_scope_id in (:electionScopeIds)");
+		}
+		queryStr.append("and n.nomination_id = cr.nomination_id "
+				+ " and  cr.rank = 1  ");
+			queryStr.append(" and  c.constituency_id = pc.parliament_id ");
+		if (loactionTypeId != null && loactionTypeId.longValue() > 0l) {
+			queryStr.append(" and pc.state_id =:loctionValue ");
+		}
+		if(partyId != null && partyId.longValue()>0l){
+			queryStr.append(" and p.party_id =:partyId ");
+		}else{
+			queryStr.append(" and p.party_id  not in(872,163,1117)");
+		}
+		queryStr.append(" and c.constituency_id in ("+IConstants.AP_PARLIAMENT_IDS_LIST_STR+")");
+		Query qurQuery = getSession().createSQLQuery(queryStr.toString());
+		if (electionIds != null && electionIds.size() > 0) {
+			qurQuery.setParameterList("electionIds", electionIds);
+		}
+		if (electionScopeIds != null && electionScopeIds.size() > 0l) {
+			qurQuery.setParameterList("electionScopeIds", electionScopeIds);
+		}
+		if (loactionTypeId != null && loactionTypeId.longValue() == 2l) {
+			qurQuery.setParameter("loctionValue", loctionValue);
+		}
+		if(partyId != null && partyId.longValue()>0l){
+			qurQuery.setParameter("partyId", partyId);
+		}
+		return qurQuery.list();
+		
+   }
+	public List<Object[]> partyWiseMemberOfAssemblyCandidateDetails(List<Long> electionIds,
+			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue,Long partyId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("SELECT distinct C.candidate_id,C.lastname,c.constituency_id," +
+				" c.name,p.party_id,p.short_name," +
+				" p.party_flag from nomination n," +
+				" constituency_election ce,constituency_election_result cer," +
+				" election e ,election_scope es ,party p , constituency c ,candidate_result cr,candidate C " +
+				" where n.party_id = p.party_id and n.consti_elec_id = ce.consti_elec_id and " +
+				" ce.constituency_id = c.constituency_id and ce.consti_elec_id = cer.consti_elec_id " +
+				" and ce.election_id = e.election_id  and n.candidate_id = C.candidate_id " );
+		if (electionIds != null && electionIds.size() > 0) {
+			queryStr.append(" and ce.election_id in (:electionIds) ");
+		}
+		queryStr.append(" and e.election_year = '2014' " );
+			if (electionScopeIds != null && electionScopeIds.size() > 0l) {
+				queryStr.append(" and e.election_scope_id in (:electionScopeIds) " );
+			}
+			queryStr.append(" and n.nomination_id = cr.nomination_id and cr.rank = 1 " );
+			if (loactionTypeId != null && loactionTypeId.longValue() == 2l) {
+			queryStr.append("and (c.district_id BETWEEN 11 and 23 )");
+			}
+			if(partyId != null && partyId.longValue()>0l){
+				queryStr.append(" and p.party_id =:partyId ");
+			}else{
+				queryStr.append(" and p.party_id not in(872,163,1117)");
+			}
+		Query qurQuery = getSession().createSQLQuery(queryStr.toString());
+		if(electionIds != null && electionIds.size() > 0) {
+			qurQuery.setParameterList("electionIds", electionIds);
+		}
+		if(electionScopeIds != null && electionScopeIds.size() > 0l) {
+			qurQuery.setParameterList("electionScopeIds", electionScopeIds);
+		}
+		if(partyId != null && partyId.longValue()>0l){
+			qurQuery.setParameter("partyId", partyId);
+		}
 		return qurQuery.list();
 		
 	}

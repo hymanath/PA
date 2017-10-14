@@ -35,8 +35,15 @@ public class CandidateDetailsForConstituencyTypesVO {
 	private String mobileNo;
 	private String memberShipNo;
 	private String committeLevel;
+	private Long electionId;
 	private List<CandidateDetailsForConstituencyTypesVO> candateList=new ArrayList<CandidateDetailsForConstituencyTypesVO>(0);
-	
+	private String image;
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
 	public List<CandidateInfoForConstituencyVO> getList() {
 		return list;
 	}
@@ -228,6 +235,13 @@ public class CandidateDetailsForConstituencyTypesVO {
 	public void setCommitteLevel(String committeLevel) {
 		this.committeLevel = committeLevel;
 	}
+	public Long getElectionId() {
+		return electionId;
+	}
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+	
 	
 	
 }

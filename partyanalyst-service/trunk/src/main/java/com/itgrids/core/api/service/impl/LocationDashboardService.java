@@ -93,11 +93,9 @@ import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.model.BoardLevel;
 import com.itgrids.partyanalyst.model.CasteCategory;
-import com.itgrids.partyanalyst.model.Designation;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.model.Position;
-import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.TdpCommitteeLevel;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
@@ -4853,6 +4851,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 						   partCountVo.setParty(commonMethodsUtilService.getStringValueForObject(param[2]));
 						   partCountVo.setCandidateName(commonMethodsUtilService.getStringValueForObject(param[4]));
 						   partCountVo.setPartyFlag(commonMethodsUtilService.getStringValueForObject(param[5]));
+						   partCountVo.setElectionId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						   countMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),partCountVo);
 						   if(type != null && type.equalsIgnoreCase("parlaiment")){
 						    mpList.add(partCountVo);
@@ -5772,7 +5771,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 		}
 		return null;
 	}
-	public List<ElectionInformationVO> getLocationWiseElectionResults(List<Long> electionScopeId,List<String> subTypeList,Long lelevlId,List<Long> levelValue,List<Long> year,List<Long> partyIdsList){
+	public List<ElectionInformationVO> getLocationWiseElectionResults(List<Long> electionScopeId,List<String> subTypeList,Long lelevlId,List<Long> levelValue,List<Long> year,List<Long> partyIdsList,Long constituencyId){
 		List<ElectionInformationVO> finalList=new ArrayList<ElectionInformationVO>();
 		try{
 			Map<Long,ElectionInformationVO> vacancyMap= new HashMap<Long,ElectionInformationVO>();
@@ -6223,6 +6222,75 @@ public CandidateDetailsForConstituencyTypesVO getMatchedVOForCadreIdForCadreId(L
 		if(cadreVOs != null && cadreVOs.size() > 0){
 			for(CandidateDetailsForConstituencyTypesVO param : cadreVOs){
 				if(param.getCadreId().longValue() == id){
+					return param;
+				}
+			}
+		}
+	}catch(Exception e){
+		Log.error("Exception raised in getMatchedVOForCadreId method of LocationDashboardService"+e);
+	}
+	return null;
+}
+public ElectionInformationVO getMatchedVOForPartyId(List<ElectionInformationVO> cadreVOs,Long id){
+	try{
+		if(cadreVOs != null && cadreVOs.size() > 0){
+			for(ElectionInformationVO param : cadreVOs){
+				if(param.getPartyId().longValue() == id){
+					return param;
+				}
+			}
+		}
+	}catch(Exception e){
+		Log.error("Exception raised in getMatchedVOForCadreId method of LocationDashboardService"+e);
+	}
+	return null;
+}
+public List<CandidateDetailsForConstituencyTypesVO> getPartyWiseMPandMLACandidatesCountDetials(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue,Long partyId){
+	List<CandidateDetailsForConstituencyTypesVO> finalList= new ArrayList<CandidateDetailsForConstituencyTypesVO>();
+	try{
+		List<Object[]> mpPartyCountDetails = nominationDAO.partyWiseMemberOfParlimentsDetails(electionIds,electionScopeIds, loactionTypeId,loctionValue,partyId);
+		settingPartyWiseCandidateDetails(mpPartyCountDetails,finalList);
+		List<Object[]> mlaPartyCountDetails=nominationDAO.partyWiseMemberOfAssemblyCandidateDetails(electionIds,electionScopeIds, loactionTypeId,loctionValue,partyId);
+		settingPartyWiseCandidateDetails(mlaPartyCountDetails,finalList);
+		
+	}catch(Exception e){
+		Log.error("Exception raised in getPartyWiseMPandMLACandidatesCountDetials method of LocationDashboardService"+e);
+	}
+	return finalList;
+	
+}
+public void settingPartyWiseCandidateDetails(List<Object[]> mpPartyCountDetails,List<CandidateDetailsForConstituencyTypesVO> finalList){
+	List<Long> candidateIds = new ArrayList<Long>();
+	if(mpPartyCountDetails != null && mpPartyCountDetails.size()>0){
+		for(Object[] param : mpPartyCountDetails){
+			CandidateDetailsForConstituencyTypesVO typeVo=new CandidateDetailsForConstituencyTypesVO();
+			typeVo.setCondidateId(commonMethodsUtilService.getLongValueForObject(param[0]));
+			candidateIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+			typeVo.setCandidateName(commonMethodsUtilService.getStringValueForObject(param[1]));
+			typeVo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[2]));
+			typeVo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[3]));
+			typeVo.setPartyId(commonMethodsUtilService.getLongValueForObject(param[4]));
+			typeVo.setParty(commonMethodsUtilService.getStringValueForObject(param[5]));
+			typeVo.setPartyFlag(commonMethodsUtilService.getStringValueForObject(param[6]));
+			finalList.add(typeVo);
+		}
+		List<Object[]> cadreCandidateDeatils = tdpCadreCandidateDAO.nomiantionCandidateDetails(candidateIds);
+			if(cadreCandidateDeatils != null && cadreCandidateDeatils.size()>0){
+				for(Object[] obj : cadreCandidateDeatils){
+					CandidateDetailsForConstituencyTypesVO matchedVo = getMatchedVOForCandiadteId(finalList,commonMethodsUtilService.getLongValueForObject(obj[1]));
+					if(matchedVo != null){
+						matchedVo.setCadreId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+						matchedVo.setImage(commonMethodsUtilService.getStringValueForObject(obj[2]));
+					}
+				}
+			}
+	}
+}
+public CandidateDetailsForConstituencyTypesVO getMatchedVOForCandiadteId(List<CandidateDetailsForConstituencyTypesVO> cadreVOs,Long id){
+	try{
+		if(cadreVOs != null && cadreVOs.size() > 0){
+			for(CandidateDetailsForConstituencyTypesVO param : cadreVOs){
+				if(param.getCondidateId().longValue() == id){
 					return param;
 				}
 			}
