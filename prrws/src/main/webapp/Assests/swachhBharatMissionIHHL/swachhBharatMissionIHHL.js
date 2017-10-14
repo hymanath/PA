@@ -7,10 +7,56 @@ var levelWiseSBArr = ['state','district','constituency','mandal'];
 var globalFromDateForLevel = moment().subtract(10,'days').format("DD-MM-YYYY");
 var globalToDateForLevel = moment().format("DD-MM-YYYY");
 onloadCalls();
+onloadIntiliazilation();
 function onloadCalls(){
 	getSwachhBharatMissionOverviewDtls(); // first block And Second Block
 	levelWiseSBData("IHHL")
 }
+function onloadIntiliazilation(){
+	$("#dateRangePickerAUM").daterangepicker({
+		opens: 'left',
+		startDate: globalFromDateForLevel,
+        endDate: globalToDateForLevel,
+		locale: {
+		  format: 'DD-MM-YYYY'
+		},
+		ranges: {
+		   'Last 10 Days': [moment().subtract(10, 'days'), moment()],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+        }
+	});
+	$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
+			globalFromDateForLevel = picker.startDate.format('DD-MM-YYYY');
+			globalToDateForLevel = picker.endDate.format('DD-MM-YYYY');
+			onloadCalls();
+	});	
+	$("#singleDateRangePicker").daterangepicker({
+		opens: 'left',
+		startDate: globalFromDateForLevel,
+		endDate: globalToDateForLevel,
+		locale: {
+		  format: 'DD-MM-YYYY'
+		}
+	});
+	$('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+		
+		globalFromDateForLevel = picker.startDate.format('DD-MM-YYYY')
+		globalToDateForLevel = picker.endDate.format('DD-MM-YYYY')
+		$(".defaultActiveClsDay").addClass("active");
+		
+		for(var i in levelWiseSBArr){
+			getSwachhBharatMissionLocationWiseDetails(levelWiseSBArr[i],"daily",'day')
+		}
+	});
+}
+
 function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 	'use strict';
 	$('#'+id).highcharts({
@@ -45,12 +91,12 @@ function highcharts1(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,
 	});
 }
 function getSwachhBharatMissionOverviewDtls(){
-	$("#categoryWiseDataId").html(spinner);
 	$("#overAllIHHLPerformanceId").html(spinner);
 	$("#statusWiseIHHLPerformanceId").html(spinner);
+	$("#categoryWiseDataId").html(spinner);
 	var json = {
-		fromDate:"",
-		toDate:"",
+		fromDate:globalFromDateForLevel,
+		toDate:globalToDateForLevel,
 		location:"state",
 		locationId:"-1",
 		subLocation:"state"
@@ -65,9 +111,6 @@ function getSwachhBharatMissionOverviewDtls(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$("#categoryWiseDataId").html('');
-		$("#overAllIHHLPerformanceId").html('');
-		$("#statusWiseIHHLPerformanceId").html('');
 		if(result !=null){
 			return buildSwachhBharatMissionOverviewDtls(result);
 		}
@@ -156,7 +199,7 @@ function getSwachhBharatMissionOverviewDtls(){
 			useHTML: true,
 			backgroundColor: '#FCFFC5', 
 			formatter: function() {
-				return "<b style='color:"+this.point.color+"'>"+this.point.name+" <br/>"+this.y+"</b>";//- ("+(Highcharts.numberFormat(this.percentage,1))+" %)
+				return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>"+this.y+"</b>";
 			}  
 		}; 
 		var plotOptions ={
@@ -182,19 +225,19 @@ function getSwachhBharatMissionOverviewDtls(){
 			useHTML: true,
 			
 			labelFormatter: function() {
-				return '<div><span style="color:'+this.color+'">'+this.name + '- <b>' + this.y +'</b></span></div>';//' - '+(Highcharts.numberFormat(this.percentage,1)) + ' %'+
+				return '<div><span style="color:'+this.color+'">'+this.name + '- <b>' + this.y +'</b></span></div>';
 			}
 		};
 		var data = [{
 			name: '',
 			data: [
 				{
-				  name: 'TARGET',
+				  name: 'Target',
 				  y: targetCount,
 				  color:"#FC615E"
 				},
 				{
-				  name: 'COMPLETED',
+				  name: 'Achivement',
 				  y: achivementCount,
 				  color:"#13B9AC"
 				}
@@ -240,7 +283,7 @@ function getSwachhBharatMissionOverviewDtls(){
 				useHTML:true,	
 				formatter: function () {
 					var pcnt = (this.y / totalCount) * 100;
-					return '<b>' + this.x + '</b><br/> '+this.series.name+" - " +this.y;//"-"+((Highcharts.numberFormat(pcnt)))+'%'
+					return '<b>' + this.x + '</b><br/> '+this.series.name+" - " +this.y+'';
 				}
 			},
 			plotOptions: { 
@@ -259,7 +302,7 @@ function getSwachhBharatMissionOverviewDtls(){
 					align: 'center',
 					formatter: function() {
 						var pcnt = (this.y / totalCount) * 100;
-						return '<span>'+this.y+'</span>';//'<br>('+Highcharts.numberFormat(pcnt)+'%)
+						return '<span>'+this.y+'</span>';
 					}
 				}
 			}]
@@ -269,8 +312,8 @@ function getSwachhBharatMissionOverviewDtls(){
 
 function getSwachhBharatMissionStatusOverviewDtls(){
 	var json = {
-		fromDate:"",
-		toDate:"",
+		fromDate:globalFromDateForLevel,
+		toDate:globalToDateForLevel,
 		year:""
 	}
 	$.ajax({                
@@ -288,8 +331,8 @@ function getSwachhBharatMissionStatusOverviewDtls(){
 }
 function getIHHLCategoryWiseAnalysis(){
 		var json = {
-			fromDate:"",
-			toDate:"",
+			fromDate:globalFromDateForLevel,
+			toDate:globalToDateForLevel,
 			year:""
 		}
 		$.ajax({                
@@ -360,14 +403,14 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 		
 		str+='<div class="table-responsive">';
 		if(reportType == "status"){
-			str+='<table class="table table-bordered table-condensed" id="dataTable'+subLocation+'">';
+			str+='<table class="table table-bordered table-condensed" id="dataTable'+subLocation+'" style="width:100%">';
 		}else if(reportType == "daily"){
-			str+='<table class="table table-bordered table-condensed" id="dataTableDaily'+subLocation+'">';
+			str+='<table class="table table-bordered table-condensed" id="dataTableDaily'+subLocation+'" style="width:100%">';
 		}
 			
 				str+='<thead>';
 					if(reportType == "status"){
-						str+='<tr>';	
+						str+='<tr class="text-capital">';	
 							if(subLocation =="state"){
 								str+='<th>State</th>';
 							}else if(subLocation =="district"){
@@ -388,7 +431,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 							str+='<th>Achivement %</th>';
 						str+='</tr>';
 						}else if(reportType == "daily"){
-								str+='<tr>';
+								str+='<tr class="text-capital">';
 								if(subLocation =="state"){
 									str+='<th rowspan="2">State</th>';
 								}else if(subLocation =="district"){
@@ -401,16 +444,16 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 									str+='<th rowspan="2">Constituency</th>';
 									str+='<th rowspan="2">Mandal</th>';
 								}
-								str+='<th rowspan="2">Target</th>';	
-								str+='<th rowspan="2">Achivement</th>';	
-								str+='<th rowspan="2">%</th>';	
+								str+='<th rowspan="2" style="background-color:#13B9AC;color:#fff">Target</th>';	
+								str+='<th rowspan="2" style="background-color:#FC615E;color:#fff">Achivement</th>';	
+								str+='<th rowspan="2" style="background-color:#FC615E;color:#fff">%</th>';	
 								if(result[0].subList !=null && result[0].subList.length>0){
 									for(var i in result[0].subList){
-										str+='<th colspan="3">'+result[0].subList[i].range+'</th>';	
+										str+='<th colspan="3" class="text-center">'+result[0].subList[i].range+'</th>';	
 									}
 								}
 							str+='</tr>';
-							str+='<tr>';
+							str+='<tr class="text-capital">';
 								if(result[0].subList !=null && result[0].subList.length>0){
 									for(var i in result[0].subList){
 										str+='<th>Target</th>';	
@@ -423,7 +466,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 				str+='</thead>';
 				str+='<tbody>';
 					for(var i in result){
-						str+='<tr>';
+						str+='<tr class="text-capital">';
 							if(subLocation =="state"){
 								str+='<td>'+result[i].stateName+'</td>';
 								}else if(subLocation =="district"){
@@ -473,9 +516,9 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 										str+='<td> - </td>';
 									}
 								}else if(reportType == "daily"){
-									str+='<td>'+result[i].target+'</td>';
-									str+='<td>'+result[i].completed+'</td>';
-									str+='<td>'+result[i].percentage+'</td>';
+									str+='<td style="background-color:#13B9AC;color:#fff">'+result[i].target+'</td>';
+									str+='<td style="background-color:#FC615E;color:#fff">'+result[i].completed+'</td>';
+									str+='<td style="background-color:#FC615E;color:#fff">'+result[i].percentage+'</td>';
 									
 									for(var j in result[i].subList){
 										str+='<td>'+result[i].subList[j].target+'</td>';
@@ -504,6 +547,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 				"iDisplayLength": 10,
 				"aaSorting": [],
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				
 			});
 		}
 	}
@@ -608,22 +652,4 @@ $(document).on("click",".calendar_active_IHHL_cls li",function(){
 		}
 	}
 	
-});
-$("#singleDateRangePicker").daterangepicker({
-	opens: 'left',
-	startDate: globalFromDateForLevel,
-	endDate: globalToDateForLevel,
-	locale: {
-	  format: 'DD-MM-YYYY'
-	}
-});
-$('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
-	
-	globalFromDate = picker.startDate.format('DD-MM-YYYY')
-	globalToDate = picker.endDate.format('DD-MM-YYYY')
-	$(".defaultActiveClsDay").addClass("active");
-	
-	for(var i in levelWiseSBArr){
-		getSwachhBharatMissionLocationWiseDetails(levelWiseSBArr[i],"daily",'day')
-	}
 });

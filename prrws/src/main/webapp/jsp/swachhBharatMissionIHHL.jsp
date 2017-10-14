@@ -17,6 +17,17 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+<style type="text/css">
+.DTFC_LeftBodyWrapper
+{
+	top:-13px !important;
+}
+.DTFC_LeftBodyWrapper tr td
+{
+	background-color:#fff;
+}
+
+</style>
 </head>
 <body>
  <header>
@@ -151,25 +162,17 @@
 				<div class="col-sm-2 border_right">
 					Note: All Amount in Lakhs
 				</div>
-				<!--<div class="col-sm-3 border_right">
-					<div class="form-horizontal">
-						<div class="form-group form-group-sm">
-							<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
-							<div class="col-sm-8">
-								<select id="financialYearId" class="chosenSelect"></select>
-							</div>
-						</div>
-					</div>
-				</div>-->
-				<!--<div class="col-sm-6">
-					<ul class="list-inline">
-						<li><span class="color-label color-label-success"></span> 80% and above</li>
-						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
-						<li><span class="color-label color-label-danger"></span> 0% - 49%</li>
+				
+				<div class="col-sm-6">
+					<ul class="list-inline pull-right">
+						<li><span class="categoryRondedCss" style="background-color:#009587">A</span>  100% TO 76%</li>
+						<li><span class="categoryRondedCss" style="background-color:#99B95F">B</span>  75% TO 51%</li>
+						<li><span class="categoryRondedCss" style="background-color:#E67401">C</span>  50% TO 26%</li>
+						<li><span class="categoryRondedCss" style="background-color:#FD403A">D</span>  25% TO 0%</li>
 					</ul>
-				</div>-->
-				<div class="col-sm-3 pull-right">
-					<div class="input-group">
+				</div>
+				<div class="col-sm-3">
+					<div class="input-group pull-right">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
@@ -195,7 +198,7 @@
 			</div>
 			<div class="row m_top20"  style="padding: 11px; margin-left: 0px; margin-right: 0px;">
 				<div class="col-sm-12" style="border: 1px solid #ccc;">
-					<h5 class="m_top10">CATEGORY WISE ANALYSIS</h5>
+					<h5 class="m_top10">CATEGORY WISE ANALYSIS  <span class="pull-right">Note : D - DISTRICT , C - CONSTITUENCY , M - MANDAL</span></h5>
 					<div id="categoryWiseDataId"></div>
 				</div>
 			</div>
@@ -234,6 +237,7 @@
 <script src="Assests/Plugins/DataTable/pdf.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="Assests/swachhBharatMissionIHHL/swachhBharatMissionIHHL.js" type="text/javascript"></script>
 </body>
 </html>
