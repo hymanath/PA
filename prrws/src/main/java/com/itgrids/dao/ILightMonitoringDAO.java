@@ -19,5 +19,6 @@ public interface ILightMonitoringDAO extends GenericDao<LightMonitoring, Long > 
  	public Integer updateLightMoitoringData(Date date);
  	public Integer updateLightWattageMoitoringData(List<Long> lightMonitroingIds);
  	public List<Long> isDataExist(Date fromDate, Date toDate);
+ 	public List<String> getMonthAndYear(Date fromDate,Date toDate);
 
 }

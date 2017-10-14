@@ -5,14 +5,14 @@ import java.util.List;
 public class SwachhBharatMissionIHHLDtlsVO {
 
 	private Long id;
-	private Long target;
-	private Long achivement;
+	private Long target=0l;
+	private Long achivement=0l;
 	private String percentage;
 	private Long locationId;
 	private String name;
 	private Long grounded;
 	private Long noTGrounded;
-	private Long completed;
+	private Long completed=0l;
 	private Long inProgress;
 	private String stateCode;
 	private String stateName;
@@ -24,6 +24,7 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	private String mandalCode;
 	
 	private List<SwachhBharatMissionIHHLDtlsVO> subList;
+	private List<String> list;
 	
 	private Long districtCount;
 	private Long constituencyCount;
@@ -170,6 +171,13 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	public void setStateName(String stateName) {
 		this.stateName = stateName;
 	}
+	public List<String> getList() {
+		return list;
+	}
+	public void setList(List<String> list) {
+		this.list = list;
+	}
+	
 	
 	
 	
