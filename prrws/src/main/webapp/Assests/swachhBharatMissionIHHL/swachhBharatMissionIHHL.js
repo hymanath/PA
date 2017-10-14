@@ -472,8 +472,11 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
+			$("#IHHL"+subLocation).html('');
 			if(result !=null && result.length>0){
 				return buildSwachhBharatMissionLocationWiseDetails(result,reportType,subLocation);
+			} else {
+				$("#IHHL"+subLocation).html("NO DATA AVAILABLE.");
 			}
 		});
 	

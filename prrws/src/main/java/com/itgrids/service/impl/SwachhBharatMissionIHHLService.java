@@ -339,7 +339,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	 * @Date 14-10-2017
 	 */
 	public List<SwachhBharatMissionIHHLDtlsVO> getSwachhBharatMissionLocationWiseDetails(InputVO inputVO) {
-		List<SwachhBharatMissionIHHLDtlsVO> resultList = null;
+		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
 		try {
 			Date fromDate = null;
 			Date toDate = null;
