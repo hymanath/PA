@@ -1399,7 +1399,7 @@ function getCandidateAndPartyInfoForConstituency(){
 							parliament+='<div class="media media-profile">';
 								parliament+='<span id="mlaSpinnerId"></span>';
 								parliament+='<div class="media-left">';
-									if(result[0].subList1[0].education != null && result[0].subList1[0].education.trim().length()>0){
+									if(result[0].subList1[0].education != null){
 										parliament+='<img src="https://mytdp.com/images/cadre_images/'+result[0].subList1[0].education+'" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
 									}else{
 										  parliament+='<img src="https://mytdp.com/images/candidates/'+result[0].subList1[0].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
