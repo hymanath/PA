@@ -165,10 +165,10 @@
 				
 				<div class="col-sm-6">
 					<ul class="list-inline pull-right">
-						<li><span class="categoryRondedCss" style="background-color:#009587">A</span>  100% TO 76%</li>
-						<li><span class="categoryRondedCss" style="background-color:#99B95F">B</span>  75% TO 51%</li>
-						<li><span class="categoryRondedCss" style="background-color:#E67401">C</span>  50% TO 26%</li>
-						<li><span class="categoryRondedCss" style="background-color:#FD403A">D</span>  25% TO 0%</li>
+						<li><span class="categoryRondedCss" style="background-color:#009587">A</span>  80% TO 100%</li>
+						<li><span class="categoryRondedCss" style="background-color:#99B95F">B</span>  60% TO <&nbsp80%</li>
+						<li><span class="categoryRondedCss" style="background-color:#E67401">C</span>  40% TO <&nbsp60%</li>
+						<li><span class="categoryRondedCss" style="background-color:#FD403A">D</span>  0% TO <&nbsp40%</li>
 					</ul>
 				</div>
 				<div class="col-sm-3">
@@ -207,7 +207,7 @@
 				<div class="col-sm-12" style="border: 1px solid #ccc;">
 					<h5 class="m_top10"><b>IHHL Achivement Progress</b></h5>
 					<div class="row">
-							<ul class="list-inline pull-right calendar_active_IHHL_cls" attr_level_type="graph">
+							<ul class="list-inline pull-right calendar_active_IHHL_cls ihhlAchivementProgressCls" attr_level_type="graph">
 								<li class="defaultActiveClsDay commpnliCls" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
 								<li class="active commpnliCls weeklicls" attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
 								<li class="commpnliCls" attr_val="month"><img src="Assests/icons/CustomRange_icon.png" />&nbsp;&nbsp;<b><span>Month</span></b></li>
@@ -222,9 +222,9 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<ul class="list-inline pull-right calendar_active_IHHL_cls" attr_level_type="table">
-						<li class="defaultActiveClsDay commpnliCls" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
-						<li class="active commpnliCls weeklicls" attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
-						<li class="commpnliCls" attr_val="month"><img src="Assests/icons/CustomRange_icon.png" />&nbsp;&nbsp;<b><span>Month</span></b></li>
+						<li class="defaultActiveClsDay commpnliCls timePeriodCommonCls" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
+						<li class="active commpnliCls weeklicls locationLevelWeekCls timePeriodCommonCls" attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
+						<li class="commpnliCls timePeriodCommonCls" attr_val="month"><img src="Assests/icons/CustomRange_icon.png" />&nbsp;&nbsp;<b><span>Month</span></b></li>
 						<li attr_val="custom" id="singleDateRangePicker"><b><span>Custom Range</span></b></li>
 						</li>
 					</ul>  

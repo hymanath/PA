@@ -62,6 +62,8 @@ function onloadIntiliazilation(){
 		globalToDateForLevel = picker.endDate.format('DD-MM-YYYY')
 		$(".defaultActiveClsDay").addClass("active");
 		
+		$(".timePeriodCommonCls").removeClass("active");
+		$(".locationLevelWeekCls").addClass("active");
 		for(var i in levelWiseSBArr){
 			getSwachhBharatMissionLocationWiseDetails(levelWiseSBArr[i],"daily",'day')
 		}
@@ -124,6 +126,10 @@ function getSwachhBharatMissionOverviewDtls(){
 	}).done(function(result){
 		if(result !=null){
 			return buildSwachhBharatMissionOverviewDtls(result);
+		} else {
+			$("#overAllIHHLPerformanceId").html("NO DATA AVAILABLE");
+			$("#statusWiseIHHLPerformanceId").html("NO DATA AVAILABLE");
+			$("#categoryWiseDataId").html("NO DATA AVAILABLE");
 		}
 	});	
 	
@@ -140,7 +146,7 @@ function getSwachhBharatMissionOverviewDtls(){
 									str+='<span class="categoryRondedCss" style="background-color:'+globalColor[result.subList[i].name.trim()]+';">'+result.subList[i].name+'</span>';
 								str+='</div>';
 								str+='<div class="col-sm-10">';
-									str+='<p class="text-right" style="font-size: 16px;color:'+globalColor[result.subList[i].name.trim()]+'">'+result.subList[i].range+' %</p>';
+									str+='<p class="text-right" style="font-size: 16px;color:'+globalColor[result.subList[i].name.trim()]+'">'+result.subList[i].range+'</p>';
 									str+='<h5 class="panel-title text-right" style="color:'+globalColor[result.subList[i].name.trim()]+'">Achivement</h5>';
 								str+='</div>';
 							str+='</div>';
@@ -620,13 +626,13 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 										str+='<td class="text-center"> - </td>';
 									}
 									if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
-										if(parseFloat(result[i].percentage)>=76 && parseFloat(result[i].percentage) <=100){
+										if(parseFloat(result[i].percentage)>=80 && parseFloat(result[i].percentage) <=100){
 											str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
-										}else if(parseFloat(result[i].percentage) >=51 && parseFloat(result[i].percentage)<=75){
+										}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
 											str+='<td class="text-center" style="background-color:#99B95F;color:#fff">'+result[i].percentage+'</td>';
-										}else if(parseFloat(result[i].percentage) >=26 && parseFloat(result[i].percentage)<=50){
+										}else if(parseFloat(result[i].percentage) >=40 && parseFloat(result[i].percentage)<60){
 											str+='<td class="text-center" style="background-color:#E67401;color:#fff">'+result[i].percentage+'</td>';
-										}else if(parseFloat(result[i].percentage) >0 && parseFloat(result[i].percentage)<=25){
+										}else if(parseFloat(result[i].percentage) >=0 && parseFloat(result[i].percentage)<40){
 											str+='<td class="text-center" style="background-color:#FD403A;color:#fff">'+result[i].percentage+'</td>';
 										}else{
 											str+='<td class="text-center">'+result[i].percentage+' </td>';
@@ -642,13 +648,13 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 									}
 									
 									if(result[i].completed !=null && result[i].completed>0){
-										if(parseFloat(result[i].percentage) >=76 && parseFloat(result[i].percentage)<=100){
+										if(parseFloat(result[i].percentage) >=80 && parseFloat(result[i].percentage)<=100){
 											str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].completed+'</td>';
-										}else if(parseFloat(result[i].percentage) >=51 && parseFloat(result[i].percentage)<=75){
+										}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
 											str+='<td class="text-center" style="background-color:#99B95F;color:#fff">'+result[i].completed+'</td>';
-										}else if(parseFloat(result[i].percentage) >=26 && parseFloat(result[i].percentage)<=50){
+										}else if(parseFloat(result[i].percentage) >=40 && parseFloat(result[i].percentage)<60){
 											str+='<td class="text-center" style="background-color:#E67401;color:#fff">'+result[i].completed+'</td>';
-										}else if(parseFloat(result[i].percentage) >0 && parseFloat(result[i].percentage)<=25){
+										}else if(parseFloat(result[i].percentage) >=0 && parseFloat(result[i].percentage)<40){
 											str+='<td class="text-center" style="background-color:#FD403A;color:#fff">'+result[i].completed+'</td>';
 										}else{
 											str+='<td class="text-center">'+result[i].completed+'</td>';
@@ -658,13 +664,13 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 									}
 									
 									if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
-										if(parseFloat(result[i].percentage)>=76 && parseFloat(result[i].percentage) <=100){
+										if(parseFloat(result[i].percentage)>=80 && parseFloat(result[i].percentage) <=100){
 											str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
-										}else if(parseFloat(result[i].percentage) >=51 && parseFloat(result[i].percentage)<=75){
+										}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
 											str+='<td class="text-center" style="background-color:#99B95F;color:#fff">'+result[i].percentage+'</td>';
-										}else if(parseFloat(result[i].percentage) >=26 && parseFloat(result[i].percentage)<=50){
+										}else if(parseFloat(result[i].percentage) >=40 && parseFloat(result[i].percentage)<60){
 											str+='<td class="text-center" style="background-color:#E67401;color:#fff">'+result[i].percentage+'</td>';
-										}else if(parseFloat(result[i].percentage) >0 && parseFloat(result[i].percentage)<=25){
+										}else if(parseFloat(result[i].percentage) >=0 && parseFloat(result[i].percentage)<40){
 											str+='<td class="text-center" style="background-color:#FD403A;color:#fff">'+result[i].percentage+'</td>';
 										}else{
 											str+='<td class="text-center">'+result[i].percentage+' </td>';
@@ -811,6 +817,7 @@ $(document).on("click","[role='tabStatusWise'] li",function(){
 	
 	if(reportType == "status"){
 		$(".calendar_active_IHHL_cls").hide();
+		$(".ihhlAchivementProgressCls").show();
 	}else{
 		$(".calendar_active_IHHL_cls").show();
 	}

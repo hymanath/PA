@@ -76,9 +76,10 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	 	    			for(int i=0;i<categoryWiseDataArr.length();i++){
 	 	    				SwachhBharatMissionIHHLDtlsVO categoryVO = new SwachhBharatMissionIHHLDtlsVO();
 	 	    				JSONObject jObj = (JSONObject) categoryWiseDataArr.get(i);
-	 	    				categoryVO.setRange(jObj.has("CAT") ? jObj.getString("CAT"):"");
-	 	    				String[] strArr = getRankIdBasedOnCategory(categoryVO.getRange());
+	 	    				String range = jObj.has("CAT") ? jObj.getString("CAT"):"";
+	 	    				String[] strArr = getRankIdBasedOnCategory(range);
 	 	    				if (strArr.length > 0) {
+	 	    					categoryVO.setRange(strArr[2]);
 	 	    					categoryVO.setId(Long.valueOf(strArr[0]));
 	 	    					categoryVO.setName(strArr[1]);
 	 	    				}
@@ -108,25 +109,30 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		}
 	};
 	private String[] getRankIdBasedOnCategory(String category) {
-		String[] strArr = new String[2];
+		String[] strArr = new String[3];
 		 try {
 			 
 			 if (category != null && category.trim().length() > 0) {
-				 if(category.equalsIgnoreCase("100 TO 76")){
+				 if(category.equalsIgnoreCase("80% to 100%")){
 					 strArr[0] = "1";
 					 strArr[1] = "A";
-				 } else if (category.equalsIgnoreCase("75 TO 51")) {
+					 strArr[2] = "80% TO 100%";
+				 } else if (category.equalsIgnoreCase("60% to Less than 80%")) {
 					 strArr[0] = "2";
 					 strArr[1] = "B";
-				 }else if (category.equalsIgnoreCase("50 TO 26")) {
+					 strArr[2] = "60% TO < 80%";
+				 }else if (category.equalsIgnoreCase("40% to Less than 60%")) {
 					 strArr[0] = "3";
 					 strArr[1] = "C";
-				 }else if (category.equalsIgnoreCase("25 TO 0")){
+					 strArr[2] = "40% TO < 60%";
+				 }else if (category.equalsIgnoreCase("0% to Less than 40%")){
 					 strArr[0] = "4";
 					 strArr[1] = "D";
+					 strArr[2] = "0% TO < 40%";
 				 } else {
 					 strArr[0] = "5";
 					 strArr[1] = "E";
+					 strArr[2] = " ";
 				 }
 			 }
 		 } catch (Exception e) {
