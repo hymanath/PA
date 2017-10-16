@@ -122,12 +122,15 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			}
 			Map<Long, ElectionInformationVO> locationMap= new HashMap<Long, ElectionInformationVO>();
 			for (Object[] objects : validVoterList) {
-				List<Long> locationList=electionIdAndLocationIdListMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
+			/*	List<Long> locationList=electionIdAndLocationIdListMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
 				if(!commonMethodsUtilService.isListOrSetValid(locationList))
 					locationList =new ArrayList<Long>();
 				
 				locationList.add(commonMethodsUtilService.getLongValueForObject(objects[5]));
 				electionIdAndLocationIdListMap.put(commonMethodsUtilService.getLongValueForObject(objects[3]), locationList);
+				*/
+				if(commonMethodsUtilService.getLongValueForObject(objects[5]).longValue() == 145L)
+					System.out.println("commonMethodsUtilService.getLongValueForObject(objects[5]) ");
 				
 				ElectionInformationVO yearVo =	locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[5]));
 				if(yearVo == null){
@@ -169,9 +172,8 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 					tempYearVO.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(objects[1]));
 					tempYearVO.setElectionType(commonMethodsUtilService.getStringValueForObject(objects[2]));
 					tempYearVO.setElectionId(commonMethodsUtilService.getLongValueForObject(objects[3]));
-					tempYearVO.setValidVoters(0L);
+					tempYearVO.setValidVoters(commonMethodsUtilService.getLongValueForObject(objects[4]));
 					tempYearVO.setEarnedVotes(0L);
-					tempYearVO.setStatus("WORST");
 					electionYeasrMap.put(tempYearVO.getElectionId(), tempYearVO);
 				}
 			}
@@ -189,6 +191,14 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				earnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null,partyIdList,searchType);
 			}
 			for (Object[] param : earnedVotesList) {
+				
+				List<Long> locationList=electionIdAndLocationIdListMap.get(commonMethodsUtilService.getLongValueForObject(param[5]));
+				if(!commonMethodsUtilService.isListOrSetValid(locationList))
+					locationList =new ArrayList<Long>();
+				
+				locationList.add(commonMethodsUtilService.getLongValueForObject(param[7]));
+				electionIdAndLocationIdListMap.put(commonMethodsUtilService.getLongValueForObject(param[5]), locationList);
+				
 				ElectionInformationVO yearVo= locationMap.get(commonMethodsUtilService.getLongValueForObject(param[7]));
 				if(yearVo == null){
 					List<ElectionInformationVO> yearList = new ArrayList<ElectionInformationVO>();
@@ -270,37 +280,44 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	public List<ElectionInformationVO> buildSummaryForElectionResult(List<ElectionInformationVO> finalPartyList,Map<String,String> statusMap,Map<Long,List<Long>> electionIdAndLocationIdListMap){
 		List<ElectionInformationVO> resultList = new ArrayList<ElectionInformationVO>(0);
 		try {
-			
+	
 			if(commonMethodsUtilService.isListOrSetValid(finalPartyList)){
 				Map<Long,Map<String,Long>> yearWiseStatusCountMap = new HashMap<Long,Map<String, Long>>(0);
 				for (ElectionInformationVO locationVO : finalPartyList) {
+					
 					if(commonMethodsUtilService.isMapValid(statusMap)){
 						Map<String,Long>  statusCountMap= new HashMap<String, Long>(0);
 						
 						if(commonMethodsUtilService.isListOrSetValid(locationVO.getList())){
 							for (ElectionInformationVO electionVO : locationVO.getList()) {
-								List<Long> lcoationIdsList = electionIdAndLocationIdListMap.get(electionVO.getElectionId());
-								for (String range : statusMap.keySet()) {
-									statusCountMap = yearWiseStatusCountMap.get(electionVO.getElectionId());
-									if(!commonMethodsUtilService.isMapValid(statusCountMap))
-										statusCountMap = new HashMap<String, Long>(0);
-									if(statusCountMap.get(electionVO.getStatus()) == null)
-										statusCountMap.put(statusMap.get(range), 0L);
-									
-									yearWiseStatusCountMap.put(electionVO.getElectionId(), statusCountMap);
-								}
 								
-								statusCountMap = yearWiseStatusCountMap.get(electionVO.getElectionId());
-								if(commonMethodsUtilService.isMapValid(statusCountMap)){
-									Long count = statusCountMap.get(electionVO.getStatus());
-									if(count == null)
-										count=0L;
-									// in 2004 we have 226 assembly, but in 2014 175 . so am not adding  the counts and
-									// status details which are not available in this locations,
-									if(lcoationIdsList.contains(locationVO.getLocationId()))
-										count = count+1L;
+								if(electionVO.getStatus() != null && electionVO.getStatus().length()>0){
+									List<Long> lcoationIdsList = electionIdAndLocationIdListMap.get(electionVO.getElectionId());
+									if(yearWiseStatusCountMap.get(electionVO.getElectionId()) == null){
+										for (String range : statusMap.keySet()) {
+											statusCountMap = yearWiseStatusCountMap.get(electionVO.getElectionId());
+											if(!commonMethodsUtilService.isMapValid(statusCountMap))
+												statusCountMap = new HashMap<String, Long>(0);
+											if(statusCountMap.get(electionVO.getStatus()) == null)
+												statusCountMap.put(statusMap.get(range.trim()), 0L);
+											
+											yearWiseStatusCountMap.put(electionVO.getElectionId(), statusCountMap);
+										}
+									}
 									
-									statusCountMap.put(electionVO.getStatus(),count);
+									statusCountMap = yearWiseStatusCountMap.get(electionVO.getElectionId());
+									if(commonMethodsUtilService.isMapValid(statusCountMap)){
+										Long count = statusCountMap.get(electionVO.getStatus().trim());
+										if(count == null)
+											count=0L;
+										// in 2004 we have 226 assembly, but in 2014 175 . so am not adding  the counts and
+										// status details which are not available in this locations,
+										if(lcoationIdsList !=null && lcoationIdsList.size() >0 && lcoationIdsList.contains(locationVO.getLocationId()))
+											count = count+1L;
+
+										statusCountMap.put(electionVO.getStatus().trim(),count);
+										
+									}
 								}
 							}
 						}
@@ -338,7 +355,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			
 			return resultList;
 		} catch (Exception e) {
-			Log.error("Exception raised in buildSummaryForelectionResult method of LocationWiseElectionInformationDetalsService"+e);
+			Log.error("Exception raised in buildSummaryForelectionResult method of LocationWiseElectionInformationDetalsService",e);
 			return null;
 		}
 	}
@@ -350,13 +367,17 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				 for (ElectionInformationVO element : entry.getValue().getList()) {
 					String percentage= calculatePercentage(element.getValidVoters(),element.getEarnedVotes());
 					element.setPerc(percentage);
-					for (Entry<String, String> innerentry : statusMap.entrySet()) {
-						String val = innerentry.getKey();
-						String[] valueArr = val.split("-");
-						String d1 = formatter.format(Double.parseDouble(percentage));
-						if(Double.parseDouble(d1) >= Double.parseDouble(valueArr[0].trim()) &&  Double.parseDouble(d1) <= Double.parseDouble(valueArr[1].trim())){
-							element.setStatus(innerentry.getValue());
+					if(element.getEarnedVotes() != null && element.getEarnedVotes().longValue()>0){
+						for (Entry<String, String> innerentry : statusMap.entrySet()) {
+							String val = innerentry.getKey();
+							String[] valueArr = val.split("-");
+							Long perc = Math.round(Double.parseDouble(percentage));
+							if(Double.parseDouble(perc.toString()) >= Double.parseDouble(valueArr[0].trim()) &&  Double.parseDouble(perc.toString()) <= Double.parseDouble(valueArr[1].trim())){
+								element.setStatus(innerentry.getValue().trim());break;
+							}
 						}
+					}else{
+						element.setStatus("NOT PARTICIPATED".trim());
 					}
 				}
 			 }
