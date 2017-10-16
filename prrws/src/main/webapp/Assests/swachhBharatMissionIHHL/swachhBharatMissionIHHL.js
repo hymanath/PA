@@ -8,7 +8,7 @@ onloadCalls();
 onloadIntiliazilation();
 function onloadCalls(){
 	getSwachhBharatMissionOverviewDtls(); // first block And Second Block
-	getIHHLAchivementProgressDtls("day");
+	getIHHLAchivementProgressDtls("week");
 	levelWiseSBData("IHHL");
 }
 function onloadIntiliazilation(){
@@ -170,16 +170,16 @@ function getSwachhBharatMissionOverviewDtls(){
 		var inProgressCount=0;
 		var completedCount=0;
 		
-		totalCount =result.target+result.grounded+result.noTGrounded+result.inProgress+result.completed
+		totalCount =result.target;
 		
 		
 		
 		targetCount = result.target;
 		achivementCount = result.completed;
 		dataArr.push(result.target)
-		dataArr.push(result.grounded)
-		dataArr.push(result.noTGrounded)
-		dataArr.push(result.inProgress)
+		dataArr.push(result.noTGrounded);
+		dataArr.push(result.grounded);
+		dataArr.push(result.inProgress);
 		dataArr.push(result.completed)
 					
 		/* targetCount1 = result.target
@@ -198,7 +198,7 @@ function getSwachhBharatMissionOverviewDtls(){
 			}
 		};
 		var title = {
-			text: 'Total Swatch Bharat - IHHL',
+			text: 'Total Swatch Bharat - IHHL(up to 31 march)',
 			style: {
 				 color: '#000',
 				 font: 'bold 13px "Lato", sans-serif'
@@ -208,7 +208,13 @@ function getSwachhBharatMissionOverviewDtls(){
 			useHTML: true,
 			backgroundColor: '#FCFFC5', 
 			formatter: function() {
-				return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>"+this.y+"</b>";
+				   var pcnt = (this.y / totalCount) * 100;
+					if (this.point.name == "TARGET") {
+						str="";
+					} else {
+						str='-'+Highcharts.numberFormat(pcnt)+'%';
+					}
+				return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>"+this.y+""+str+"</b>";
 			}  
 		}; 
 		var plotOptions ={
@@ -234,19 +240,25 @@ function getSwachhBharatMissionOverviewDtls(){
 			useHTML: true,
 			
 			labelFormatter: function() {
-				return '<div><span style="color:'+this.color+'">'+this.name + '- <b>' + this.y +'</b></span></div>';
+					  var pcnt = (this.y / totalCount) * 100;
+						if (this.name == "TARGET") {
+							str="";
+						} else {
+							str='-'+Highcharts.numberFormat(pcnt)+'%';
+						}
+						return '<div><span style="color:'+this.color+'">'+this.name + '- <b>' + this.y +'</b>'+str+'</span></div>';
 			}
 		};
 		var data = [{
 			name: '',
 			data: [
 				{
-				  name: 'Target',
+				  name: 'TARGET',
 				  y: targetCount,
 				  color:"#FC615E"
 				},
 				{
-				  name: 'Completed',
+				  name: 'COMPLETED',
 				  y: achivementCount,
 				  color:"#13B9AC"
 				}
@@ -255,12 +267,12 @@ function getSwachhBharatMissionOverviewDtls(){
 		highcharts(id,type,data,plotOptions,title,tooltip,legend);
 		
 		$("#statusWiseIHHLPerformanceId").highcharts({
-			colors:["#FC615E","#FFBA00","#3B876E","#00D2BC","#686CC6"],
+			colors:["#FC615E","#3B876E","#FFBA00","#00D2BC","#686CC6"],
 			chart: {
 				type: 'column'
 			},
 			title: {
-				text: 'Swatch Bharat - IHHL Status',
+				text: 'Swatch Bharat - IHHL Status(<b>up to 31 march)',
 				style: {
 				 color: '#000',
 				 font: 'bold 13px "Lato", sans-serif'
@@ -274,7 +286,7 @@ function getSwachhBharatMissionOverviewDtls(){
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,	
 				type: 'category',
-				categories: ['TARGET','GROUNDED','NOT GROUNDED','IN PROGRESS','COMPLETED'],
+				categories: ['TARGET','NOT GROUNDED','GROUNDED','IN PROGRESS','COMPLETED'],
 				
 			},
 			yAxis: {
@@ -292,8 +304,15 @@ function getSwachhBharatMissionOverviewDtls(){
 				useHTML:true,	
 				formatter: function () {
 					var pcnt = (this.y / totalCount) * 100;
-					return '<b>' + this.x + '</b><br/> '+this.series.name+" - " +this.y+'';
+						var str="";
+						if (this.x == "TARGET") {
+							str="";
+						} else {
+							str='-'+Highcharts.numberFormat(pcnt)+'%';
+						}
+					return '<b>' + this.x + '</b><br/> '+this.series.name+" - " +this.y+''+str+"";
 				}
+				
 			},
 			plotOptions: { 
 				column: {
@@ -311,7 +330,13 @@ function getSwachhBharatMissionOverviewDtls(){
 					align: 'center',
 					formatter: function() {
 						var pcnt = (this.y / totalCount) * 100;
-						return '<span>'+this.y+'</span>';
+						var str="";
+						if (this.x == "TARGET") {
+							str="";
+						} else {
+							str='<br>('+Highcharts.numberFormat(pcnt)+'%)';
+						}
+						return '<span>'+this.y+''+str+'</span>';
 					}
 				}
 			}]
@@ -739,7 +764,7 @@ function levelWiseSBData(divId)
 		$("#levelWiseDetailsBlockId").html(collapse);
 		setTimeout(function(){ 
 		for(var i in levelWiseSBArr){
-			getSwachhBharatMissionLocationWiseDetails(levelWiseSBArr[i],"daily",'day')
+			getSwachhBharatMissionLocationWiseDetails(levelWiseSBArr[i],"daily",'week');
 		}	
 	
 	}, 1500);
