@@ -142,10 +142,49 @@
 					<div id="crossVotingDetailsBlockId"></div>
 				</div>
 			</div>
+			<div class="col-sm-12 m_top10" id="boothWiseResults" style="display:none">
+				<div class="block">
+					<div class="row">
+						<div class="col-sm-6">
+							<h4 class="theme-title-color">Booth Wise Election Results</h4>
+						</div>
+						<div class="col-sm-6">
+							<ul class=""></ul>
+						</div>
+					</div>
+					<div id="boothWiseResultsBlockId"></div>
+				</div>
+			</div>
 		</div>
 		
 	</div>
 <main>
+<div class="modal fade" id="electionDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
+	<div class="modal-dialog" role="document" style="width:90%;margin:auto">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="row">
+					<div class="col-md-8">
+						<h4 class="modal-title text-capitalize" id="headingTitle">TITLE</h4>
+					</div>
+					<div class="col-sm-3 pull-right">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					</div>
+				</div>
+			</div>
+			<div class="modal-body">        
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="electionDetailModalBlockId"></div>
+					</div>  
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
