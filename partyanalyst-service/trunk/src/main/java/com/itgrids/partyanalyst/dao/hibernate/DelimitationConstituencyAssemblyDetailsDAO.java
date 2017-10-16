@@ -682,6 +682,8 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 			sb.append(" and  model.constituency.tehsil.tehsilId =P.tehsil.tehsilId and P.panchayatId in(:locationValues)");
 		}else if(loactionTypeId != null && loactionTypeId.longValue() == 8l){
 			//sb.append(" and  model.constituency.localElectionBody.localElectionBodyId is not null and model.constituency.constituencyId in(:locationValues)");
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 10l){
+			sb.append(" and  model.delimitationConstituency.constituency.constituencyId in(:locationValues) ");
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if(districtids != null && districtids.size()>0){
