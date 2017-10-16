@@ -37,128 +37,208 @@
 <main>
 	<div class="container m_top30">
 		<h3 class="text-capital text-center"><span id="mianHeadingId"></span> Level Election Results</h4>
-		<div class="row">
-			<div class="col-sm-12">
-				<div id="candidatesResultsDivId"></div>
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col-sm-12 m_top10">
-				<div class="block">
-					<div class="row">
-						<div class="col-sm-12">
-						<div class="col-sm-3">
-							<label>Election Years</label>
-							<select class="" id="electionYearId1" multiple>
-							</select>
-						</div>
-						<div class="col-sm-3 m_top30">
-							<label class="radio-inline">
-							  <input type="radio" id="mainId1" value="MAIN" name="optionsRadios2" class="electionSubTypeCls1" checked>Main Election
-							</label>
-							<label class="radio-inline">
-							  <input type="radio" id="byeId1" value="BYE" name="optionsRadios2"  class="electionSubTypeCls1">Bye Election
-							</label>
-						</div>
-						<div class="col-sm-3 m_top30">
-							<button class="btn btn-success btn-xs getDetailsCls1">Submit</button>
-						</div>
-					</div>
-					</div>
-					
-					<div id="levelWiseCandidatesResultsDivId" class="m_top10"></div>
-					<div id="locationWiseCandidatesResultsDivId" class="m_top20"></div>
+		<section class="m_top10">
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="candidatesResultsDivId"></div>
 				</div>
 			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col-sm-12 m_top10">
-				<div class="block">
-					<div class="row">
-						<div class="col-sm-2 elctionTypeValCls" style="display:none;">
-							<label>Election Type</label>
-							<select class="form-control chosen-select" id="elctionTypeValId">
-								<option value="0">Select Election Type</option>
-								<option value="1">Parliament</option>
-								<option value="2" selected>Assembly</option>
-								<option value="3">MPTC</option>
-								<option value="4">ZPTC</option>
-								<option value="5">MUNCIPALITY</option>
-								<option value="6">CORPORATION</option>
-								<option value="7">Greater Municipal Corp</option>
-								<option value="8">Panchayar</option>
-								<option value="9">Ward</option>
-							</select>
+		</section>
+		<section class="m_top10">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="block">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="col-sm-3">
+									<label>Election Years</label>
+									<select class="" id="electionYearId1" multiple>
+									</select>
+								</div>
+								<div class="col-sm-3 m_top30">
+									<label class="radio-inline">
+									  <input type="radio" id="mainIdP" value="MAIN" name="optionsRadios2" class="electionSubTypePartyTrendsCls" checked attr_type="partyTrends">Main Election
+									</label>
+									<label class="radio-inline">
+									  <input type="radio" id="byeIdP" value="BYE" name="optionsRadios2"  class="electionSubTypePartyTrendsCls" attr_type="partyTrends">Bye Election
+									</label>
+								</div>
+								<div class="col-sm-3 m_top30">
+									<button class="btn btn-success btn-xs getDetailsForPartyTrendsCls" attr_result_type="partyTrendsType">Submit</button>
+								</div>
+							</div>
 						</div>
-						<div class="col-sm-2 searchLevelCls" style="display:none;">
-							<label>Search Level</label>
-							<select class="form-control chosen-select" id="searchLevelId">
-								<option value="district" selected>District</option>
-								<option value="constituency">Constituency</option>
-								<option value="parliament">Parliament</option>
-							</select>
-						</div>
-						<div class="col-sm-2">
-							<label>Party</label>
-							<select class="form-control chosen-select" id="partyId">
-								<option value="0">Select Party</option>
-								<option value="872" selected>TDP</option>
-								<option value="1117">YSRC</option>
-								<option value="163">BJP</option>
-								<option value="72">AIMIM</option>
-								<option value="362">INC</option>
-								<option value="265">CPI</option>
-								<option value="269">CPM</option>
-								<option value="662">PRP</option>
-								<option value="886">TRS</option>
-							</select>
-						</div>
-						<div class="col-sm-3">
-							<label>Election Years</label>
-							<select class="" id="electionYearId" multiple>
-							</select>
-						</div>
-						<div class="col-sm-3 m_top30">
-							<label class="radio-inline">
-							  <input type="radio" id="mainId" value="MAIN" name="optionsRadios" class="electionSubTypeCls" checked>Main Election
-							</label>
-							<label class="radio-inline">
-							  <input type="radio" id="byeId" value="BYE" name="optionsRadios"  class="electionSubTypeCls">Bye Election
-							</label>
+						<div class="row m_top10">
+							<div class="col-sm-12 m_top10">
+								<div id="levelWiseCandidatesResultsDivId"></div>
+							</div>
+							<div class="col-sm-12 m_top20">
+								<div id="locationWiseCandidatesResultsDivId"></div>
+							</div>
 						</div>
 					</div>
-					<div class="row m_top10">
-						<div class="col-sm-12">
-							<button class="btn btn-success btn-sm pull-right getDetailsCls">Submit</button>
+				</div>
+			</div>
+		</section>
+		<section class="m_top10">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="block">
+						<div class="row">
+							<div class="col-sm-2">
+								<label>Election Type</label>
+								<select class="form-control chosen-select" id="elctionTypeValId">
+									<option value="0">Select Election Type</option>
+									<option value="1">Parliament</option>
+									<option value="2" selected>Assembly</option>
+									<option value="3">MPTC</option>
+									<option value="4">ZPTC</option>
+									<option value="5">MUNCIPALITY</option>
+									<option value="6">CORPORATION</option>
+									<option value="7">Greater Municipal Corp</option>
+									<option value="8">Panchayar</option>
+									<option value="9">Ward</option>
+								</select>
+							</div>
+							<div class="col-sm-2 searchLevelCls" style="display:none;">
+								<label>Search Level</label>
+								<select class="form-control chosen-select" id="searchLevelId">
+									<option value="district" selected>District</option>
+									<option value="constituency">Constituency</option>
+									<option value="parliament">Parliament</option>
+								</select>
+							</div>
+							<div class="col-sm-2">
+								<label>Party</label>
+								<select class="form-control chosen-select" id="partyId">
+									<option value="0">Select Party</option>
+									<option value="872" selected>TDP</option>
+									<option value="1117">YSRC</option>
+									<option value="163">BJP</option>
+									<option value="72">AIMIM</option>
+									<option value="362">INC</option>
+									<option value="265">CPI</option>
+									<option value="269">CPM</option>
+									<option value="662">PRP</option>
+									<option value="886">TRS</option>
+								</select>
+							</div>
+							<div class="col-sm-3">
+								<label>Election Years</label>
+								<select class="" id="electionYearId" multiple>
+								</select>
+							</div>
+							<div class="col-sm-3 m_top30">
+								<label class="radio-inline">
+								  <input type="radio" id="mainId1" value="MAIN" name="optionsRadios" class="electionSubTypeCls" checked attr_type="strongPoor">Main Election
+								</label>
+								<label class="radio-inline">
+								  <input type="radio" id="byeId1" value="BYE" name="optionsRadios"  class="electionSubTypeCls" attr_type="strongPoor">Bye Election
+								</label>
+							</div>
+							<div class="col-sm-12">
+								<button class="btn btn-success btn-sm pull-right getDetailsCls" attr_result_type="strongPoorType">Submit</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 m_top10">
+								<div id="locationWiseStrongVsPoor"></div>
+							</div>
 						</div>
 					</div>
-					<div id="locationWiseStrongVsPoor" class="m_top10"></div>
 				</div>
 			</div>
-			<div class="col-sm-12 m_top10">
-				<div class="block">
-					<div id="crossVotingDetailsBlockId"></div>
-				</div>
-			</div>
-			<div class="col-sm-12 m_top10" id="boothWiseResults" style="display:none">
-				<div class="block">
-					<div class="row">
-						<div class="col-sm-6">
-							<h4 class="theme-title-color">Booth Wise Election Results</h4>
+		</section>
+		<section class="m_top10">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="block">
+						<div class="row">
+							<div class="col-sm-3">
+								<label>Election Years</label>
+								<select class="" id="electionYearCrossVotingId" multiple>
+								</select>
+							</div>
+							<div class="col-sm-3">
+								<label>Election Type</label>
+								<div class="row">
+									<label class="radio-inline">
+									  <input type="radio" id="mainCrossId" value="MAIN" name="optionsRadiosCross" class="electionSubTypeCrossVotingCls" checked attr_type="crossVoting">Main Election
+									</label>
+									<label class="radio-inline">
+									  <input type="radio" id="byeCrossId" value="BYE" name="optionsRadiosCross"  class="electionSubTypeCrossVotingCls" attr_type="crossVoting">Bye Election
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<label>Parliament Constituency</label>
+								<select class="chosen-select" id="parliamentConsId">
+								</select>
+							</div>
+							<div class="col-sm-3">
+								<label>Assembly Constituency</label>
+								<select class="chosen-select" id="assemblyConsId">
+									<option value="0">Select Constituency</option>
+								</select>
+							</div>
 						</div>
-						<div class="col-sm-6">
-							<ul class=""></ul>
+						<div class="row">
+							<div class="col-sm-2">
+								<label>Party</label>
+								<select class="form-control chosen-select" id="partyCrossVotingId">
+									<option value="0">All Parties</option>
+									<option value="872">TDP</option>
+									<option value="1117">YSRC</option>
+									<option value="163">BJP</option>
+									<option value="72">AIMIM</option>
+									<option value="362">INC</option>
+									<option value="265">CPI</option>
+									<option value="269">CPM</option>
+									<option value="662">PRP</option>
+									<option value="886">TRS</option>
+								</select>
+							</div>
+							<div class="col-sm-2 m_top30">
+								<label class="checkbox-inline">
+								  <input type="checkbox" id="" value="YES" name="alliance" class="includeAllianceCls" checked>Include Alliance
+								</label>
+							</div>
+							<div class="col-sm-3 m_top30">
+								<button class="btn btn-success btn-xs getDetailsForCrossVotingCls" attr_result_type="crossVoting">Submit</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 m_top10">
+								<div id="crossVotingDetailsBlockId"></div>
+							</div>
 						</div>
 					</div>
-					<div id="boothWiseResultsBlockId"></div>
 				</div>
 			</div>
-		</div>
-		
+		</section>
+		<section class="m_top10">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="block">
+						<div class="row">
+							<div class="col-sm-6">
+								<h4 class="theme-title-color">Booth Wise Election Results</h4>
+							</div>
+							<div class="col-sm-6">
+								<ul class=""></ul>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 m_top10">
+								<div id="boothWiseResultsBlockId"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 	</div>
-<main>
+</main>
 <div class="modal fade" id="electionDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
 	<div class="modal-dialog" role="document" style="width:90%;margin:auto">
 		<div class="modal-content">

@@ -223,7 +223,6 @@ function onLoadAjaxCalls()
 	}else{
 		$(".assemblyElectionBlockCls").hide();
 	}
-	getLocationWiseCrossVotingDetails();
 	getVotersAndcadreAgeWiseCount(22,4);//Constituency Voter Information
 	//caste information
 	getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",22,4,"desending")
