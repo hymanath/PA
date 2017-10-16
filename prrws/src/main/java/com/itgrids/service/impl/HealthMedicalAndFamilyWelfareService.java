@@ -616,7 +616,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			//update fromDate due to no data
 			fromDate = sdf.parse(firstDate);
 			weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
-			SimpleDateFormat sdf1 = new SimpleDateFormat("MMM yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("MMM - yyyy");
 			
 			//create a template for UI
 			DiseasesVO diseasesVO = null;
