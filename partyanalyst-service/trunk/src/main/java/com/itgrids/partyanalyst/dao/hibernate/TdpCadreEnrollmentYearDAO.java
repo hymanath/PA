@@ -1242,4 +1242,19 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		query.setParameter("enrollmentYearId",enrollmentId);
 		return query.list();
 	}
+	
+	public List<Object[]> getEnrollmentYears(List<Long> publicationIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct model.enrollmentYear.enrollmentYearId,model.enrollmentYear.description  from TdpCadreEnrollmentYear model ,PublicationDate model1 " +
+				  " where model.enrollmentYear.year = model1.year "+
+				  " and publication_date_id in(:publicationIds) " +
+				  " and model.isDeleted ='N'");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+        if(publicationIds != null && publicationIds.size() >0){
+        	query.setParameterList("publicationIds", publicationIds);
+		}
+		return query.list();
+	}
 }

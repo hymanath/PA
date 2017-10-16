@@ -36,7 +36,7 @@ public interface ILocationDashboardService {
 	//committees
 	public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType,Long locationId,Long enrollmentId);
 	
-	public List<BasicVO> getEnrollmentIds();
+	public List<BasicVO> getEnrollmentIds(List<Long> publicationDateIds);
 	public List<BasicVO> getElectionTypes();
 	public List<BasicVO> getPublications();
 	

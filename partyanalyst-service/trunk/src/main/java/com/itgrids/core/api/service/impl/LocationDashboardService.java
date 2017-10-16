@@ -1766,21 +1766,17 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getEnrollmentIds()
 	 */
 
-	public List<BasicVO> getEnrollmentIds() {
+	public List<BasicVO> getEnrollmentIds(List<Long> publicationDateIds) {
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
-		List<EnrollmentYear> tdpCommitteeEnrollment = enrollmentYearDAO.getAll();
-		for (EnrollmentYear tdpCommitteeEnrollment2 : tdpCommitteeEnrollment) {
-			BasicVO enrollmentList = new BasicVO();
-			enrollmentList.setId(tdpCommitteeEnrollment2.getEnrollmentYearId());
-			enrollmentList.setDescription(tdpCommitteeEnrollment2.getDescription());
-			finalList.add(enrollmentList);
-			
+		List<Object[]> yearIdsList = tdpCadreEnrollmentYearDAO.getEnrollmentYears(publicationDateIds);
+		if(yearIdsList != null && yearIdsList.size() >0){
+			for(Object[] param :yearIdsList){
+				BasicVO enrollmentList = new BasicVO();
+				enrollmentList.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				enrollmentList.setDescription(commonMethodsUtilService.getStringValueForObject(param[1]));
+				finalList.add(enrollmentList);
+			}
 		}
-		Collections.sort(finalList, new Comparator<BasicVO>() {
-		    public int compare(BasicVO one, BasicVO other) {
-		        return other.getId().compareTo(one.getId());
-		    }
-		}); 
 		return finalList;
 	}
 
