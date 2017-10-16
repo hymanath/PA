@@ -190,10 +190,10 @@
 				<div class="col-sm-12">
 				  <h3>OVERALL PROGRESS DETAILS UP TO 31 MARCH<h4>
 					<div class="col-sm-3 m_top10">
-						<div id="overAllIHHLPerformanceId" style="height:260px;border:1px solid #ccc"></div>
+						<div id="overAllIHHLPerformanceId" style="height:280px;border:1px solid #ccc"></div>
 					</div>
 					<div class="col-sm-9 m_top10">
-						<div id="statusWiseIHHLPerformanceId" style="height:260px;border:1px solid #ccc;margin-left: -5px;"></div>
+						<div id="statusWiseIHHLPerformanceId" style="height:280px;border:1px solid #ccc;margin-left: -5px;"></div>
 					</div>
 				</div>
 			</div>
