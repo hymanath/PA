@@ -246,7 +246,7 @@ function onLoadAjaxCalls()
 	getLevelWisePostsOverView(); 
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
-	getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
+	getDesignationWiseAlertsOverview(defaultAlertCategoryIds); 
 	/* setTimeout(function(){ 
 		//News Block
 		getPrintMediaCountsForConstituencyPage()
@@ -352,7 +352,9 @@ function onLoadClicks()
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
 		customStartATMDate = picker.startDate.format('DD/MM/YYYY');
 		customEndATMDate = picker.endDate.format('DD/MM/YYYY');
-		getLocationWiseMeetingsCount();
+		getLocationWiseMeetingsCountDetails(1);
+		getLocationWiseMeetingsCountDetails(2);
+		getLocationWiseMeetingsCountDetails(3);
 	});
 	//Tours
 	$('#tourNewDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
@@ -507,7 +509,9 @@ function onLoadClicks()
 			getLocationWiseInsuranceStatusCount($("#enrolmentYearsGrievance").val());
 		}else if(blockName == 'meetings')
 		{
-			getLocationWiseMeetingsCount();
+			getLocationWiseMeetingsCountDetails(1);
+			getLocationWiseMeetingsCountDetails(2);
+			getLocationWiseMeetingsCountDetails(3);
 		}else if(blockName == 'tours')
 		{
 			getLocationWiseTourMembersComplainceDtls();
@@ -866,6 +870,11 @@ function onLoadClicks()
 			$("#openModalDiv .modal-dialog").css("width","60%");
 			$("#TitleId").html("Party Wise Candidates Details");
 			getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,electionId)
+		}else if(type == "meeting_type"){
+			$("#openModalDiv").modal("show");
+			$("#TitleId").html("Committee Meetings - District Level");
+			$("#subTitleId").html("(Every month : 22nd/23rd/24th)");
+			getLocationWiseMeetingStatusDetailsAction();
 		}	
 	});
 	$(document).on("click",".descAlertCls",function(){
@@ -6320,6 +6329,9 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 								str+='<p>Every month : 9th/10th/11th</p>';
 							}
 							str+='<div style="height:150px;" id="meetingsGraphBlock'+result.levelList[i].name.substr(0,6)+'Id"></div>';
+							if(result.levelList[i].name == "DISTRICT"){
+								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-24 popUpDetailsClickCls" attr_type="meeting_type" style="margin-top:-16px;cursor:pointer;"></i>';
+							}
 						str+='</div>';
 					str+='</div>';
 				}
@@ -6349,6 +6361,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						minorGridLineWidth: 0,
 						categories: categoriesArr,
 						type: 'category',
+						
 					},
 					yAxis: {
 						min: 0,
@@ -6357,6 +6370,9 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						title: {
 							text: ''
 						},
+						labels: {
+							enabled: false,
+						}
 					},
 					tooltip: {
 						formatter: function () {
@@ -6426,6 +6442,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						minorGridLineWidth: 0,
 						categories: categoriesArr,
 						type: 'category',
+						
 					},
 					yAxis: {
 						min: 0,
@@ -6434,6 +6451,9 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						title: {
 							text: ''
 						},
+						labels: {
+							enabled: false,
+						}
 					},
 					tooltip: {
 						formatter: function () {
@@ -6807,4 +6827,132 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 			"sDom": '<"top"fl>rt<"bottom"ip><"clear">'
 		});
 	} 
+  }
+ 
+  function getLocationWiseMeetingStatusDetailsAction(){
+	  $("#openPostDetailsModalDivId").html(spinner);
+	  var jsObj={
+		searchLocationId:  locationLevelId,
+		locationValuesArr:  userAccessLevelValuesArray,
+		fromDateStr :customStartATMDate,
+		toDateStr :customEndATMDate,
+		meetingTypeId:1, 	//CommitteeId
+		partyMeetinLevelId :2 //districtId
+	  }
+	   $.ajax({
+		  type : "GET",
+		  url : "getLocationWiseMeetingStatusDetailsAction.action",
+		  dataType : 'json',
+		  data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){  
+			if(result !=null && result.length>0){
+				return buildLocationWiseMeetingStatusDetailsAction(result);
+			}
+		});
+		
+	function buildLocationWiseMeetingStatusDetailsAction(result){
+		
+		var str='';
+		var overAllTotalCount=0;
+		var overAllYesCount=0;
+		var overAllNoCount=0;
+		var overAllMayBeCount=0;
+		var overAllNotUpdatedCount=0;
+		var monthtotalCount=0;
+		
+		str+='<h4>Month Overview</h4>';
+		str+='<div class="table-responsive">';
+			str+='<table class="table tableAlignment table-bordered">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th rowspan="2" style="min-width: 120px ! important;">Total Meetings Every Month</th>';
+						str+='<th colspan="5">OVERALL</th>';
+						if(result[0].levelList !=null && result[0].levelList.length>0){
+							for(var i in result[0].levelList){
+								str+='<th colspan="5">'+result[0].levelList[i].month+'</th>';
+							}
+						}
+						
+					str+='</tr>';
+					str+='<tr>';
+						str+='<th>Total</th>';
+						str+='<th>Yes</th>';
+						str+='<th>No</th>';
+						str+='<th>Maybe</th>';
+						str+='<th>Not Updated</th>';
+						if(result[0].levelList !=null && result[0].levelList.length>0){
+							for(var i in result[0].levelList){
+								overAllYesCount = overAllYesCount+result[0].levelList[i].yesCount;
+								overAllNoCount = overAllNoCount+result[0].levelList[i].noCount;
+								overAllMayBeCount = overAllMayBeCount+result[0].levelList[i].maybeCount;
+								overAllNotUpdatedCount =overAllNotUpdatedCount+result[0].levelList[i].notUpdatedCount;
+								overAllTotalCount = overAllTotalCount+result[0].levelList[i].yesCount+result[0].levelList[i].noCount+result[0].levelList[i].maybeCount+result[0].levelList[i].notUpdatedCount;
+								str+='<th>Total</th>';
+								str+='<th>Yes</th>';
+								str+='<th>No</th>';
+								str+='<th>Maybe</th>';
+								str+='<th>Not Updated</th>';
+							}
+						}
+						
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					str+='<tr>';
+						str+='<td>14</td>';
+						str+='<td>'+overAllTotalCount+'</td>';
+						str+='<td>'+overAllYesCount+'</td>';
+						str+='<td>'+overAllNoCount+'</td>';
+						str+='<td>'+overAllMayBeCount+'</td>';
+						str+='<td>'+overAllNotUpdatedCount+'</td>';
+						for(var i in result[0].levelList){
+							var totalMonthCount=0;
+							totalMonthCount =result[0].levelList[i].yesCount+result[0].levelList[i].noCount+result[0].levelList[i].maybeCount+result[0].levelList[i].notUpdatedCount;
+							str+='<td>'+totalMonthCount+'</td>';
+							str+='<td>'+result[0].levelList[i].yesCount+'</td>';
+							str+='<td>'+result[0].levelList[i].noCount+'</td>';
+							str+='<td>'+result[0].levelList[i].maybeCount+'</td>';
+							str+='<td>'+result[0].levelList[i].notUpdatedCount+'</td>';
+						}
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		
+		str+='<h4 class="m_top10">Destrict wise Meeting Conducted Details</h4>';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered tableAlignment">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>Location Name</th>';
+						for(var i in result[0].datesList){
+							str+='<th>'+result[0].datesList[i].month+'</th>';
+						}
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					
+						for(var i in result){
+							str+='<tr>';
+							str+='<td>'+result[i].name+'</td>';
+							for(var j in result[i].datesList){
+								if(result[i].datesList[j].momStatus == "Y"){
+									str+='<td>Yes ('+result[i].datesList[j].conductedDate+')</td>';
+								}else if(result[i].datesList[j].momStatus == "N"){
+									str+='<td>No</td>';
+								}else if(result[i].datesList[j].momStatus == "M"){
+									str+='<td>May Be</td>';
+								}else if(result[i].datesList[j].momStatus == "NU"){
+									str+='<td>Not Updated</td>';
+								}
+								
+							}
+							str+='</tr>';
+						}
+					
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		$("#openPostDetailsModalDivId").html(str);
+	}
   }

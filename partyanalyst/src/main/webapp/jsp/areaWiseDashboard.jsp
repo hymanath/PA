@@ -594,6 +594,7 @@
 				<div class="row" >
 					<div class="col-md-8">
 						<h5 class="panel-title text-capital" id="TitleId" >Title</h5>
+						<p id="subTitleId"></p>
 					</div>
 					<div class="col-sm-3 pull-right">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
