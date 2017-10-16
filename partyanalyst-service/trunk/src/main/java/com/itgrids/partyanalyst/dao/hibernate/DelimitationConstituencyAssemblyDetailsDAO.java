@@ -674,19 +674,19 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 			sb.append(" and model.constituency.district.districtId in(:locationValues)");
 		}else if(loactionTypeId != null && loactionTypeId.longValue() == 4l && locationValues != null && locationValues.size()>0){
 			sb.append(" and model.constituency.constituencyId in(:locationValues)");
-		}else if(loactionTypeId != null && loactionTypeId.longValue() == 7l && locationValues != null && locationValues.size()>0){
-			sb.append(" and model.constituency.localElectionBody.localElectionBodyId in(:locationValues)");
 		}else if(loactionTypeId != null && loactionTypeId.longValue() == 10l && locationValues != null && locationValues.size()>0){
 			sb.append(" and  model.delimitationConstituency.constituency.constituencyId in(:locationValues) ");
 		}else if(loactionTypeId != null && loactionTypeId.longValue() == 5l && canstituencyIds != null && canstituencyIds.size()>0){
 			sb.append(" and model.constituency.constituencyId in(:canstituencyIds)");
 		}else if(loactionTypeId != null && loactionTypeId.longValue() == 6l && canstituencyIds != null && canstituencyIds.size()>0){
 			sb.append(" and model.constituency.constituencyId in(:canstituencyIds) ");
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 7l && canstituencyIds != null && canstituencyIds.size()>0){
+			sb.append(" and model.constituency.constituencyId in(:canstituencyIds) ");
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if(districtids != null && districtids.size()>0){
 		  query.setParameterList("districtIds", districtids);
-		}else if(loactionTypeId != null && loactionTypeId.longValue()>2l && loactionTypeId.longValue() !=5l && loactionTypeId.longValue() !=6l && locationValues != null && locationValues.size()>0){
+		}else if(loactionTypeId != null && loactionTypeId.longValue()>2l && loactionTypeId.longValue() !=5l && loactionTypeId.longValue() !=6l && loactionTypeId.longValue() !=7l && locationValues != null && locationValues.size()>0){
 			query.setParameterList("locationValues", locationValues);
 		}else if(canstituencyIds != null && canstituencyIds.size()>0){
 			query.setParameterList("canstituencyIds", canstituencyIds);
