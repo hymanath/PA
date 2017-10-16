@@ -1403,4 +1403,17 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}
+   public String getAllParliamentConstituencyByAllLevels(){
+		
+		try{	
+			jObj = new JSONObject(getTask());
+			Long loactionTypeId = jObj.getLong("loactionTypeId");
+			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValue"));
+			locationVOList = locationDashboardService.getAllParliamentConstituencyByAllLevels(loactionTypeId,locationValues);
+		}catch(Exception e){
+			LOG.error("Exception occured in getAllParliamentConstituencyByAllLevels() method ",e);
+
+		}
+		return Action.SUCCESS;
+	}
 }
