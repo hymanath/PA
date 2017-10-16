@@ -16,5 +16,5 @@ import com.itgrids.partyanalyst.model.DelimitationConstituencyMandalDetails;
 public interface IDelimitationConstituencyMandalDetailsDAO extends
 		GenericDao<DelimitationConstituencyMandalDetails, Long> {
 	public List<Object[]> getConstitencyWiseTehsil(Long constituencyId);
-
+	public List<Long> getAllParliamentMandalByAllLevels(List<Long> locationValues,Long loactionTypeId);
 }
