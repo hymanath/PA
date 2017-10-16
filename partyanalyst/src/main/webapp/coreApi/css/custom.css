@@ -1489,6 +1489,11 @@ font-size:12px !important;
 	border-collapse: separate;
 	border-spacing:0px 10px
 }
+.table-cross-voting thead tr th
+{
+	font-size: 16px !important;
+    font-weight: normal !important;
+}
 .table-cross-voting thead
 {
 	box-shadow:0px 0px 6px rgba(0,0,0,0.4);
@@ -1514,7 +1519,9 @@ font-size:12px !important;
 {
 	border-radius:50%;
 	padding:10px 20px;
-	border:1px solid #CBCBCB;
+	border:1px solid #ccc;
+	text-align:center;
+	
 }
 .cross-voting-list li .media img
 {
