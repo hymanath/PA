@@ -208,9 +208,9 @@
 					<h5 class="m_top10"><b>IHHL Achivement Progress</b></h5>
 					<div class="row">
 							<ul class="list-inline pull-right calendar_active_IHHL_cls" attr_level_type="graph">
-								<li class="defaultActiveClsDay" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
-								<li class="active" attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
-								<li  attr_val="month"><img src="Assests/icons/CustomRange_icon.png" />&nbsp;&nbsp;<b><span>Month</span></b></li>
+								<li class="defaultActiveClsDay commpnliCls" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
+								<li class="active commpnliCls weeklicls" attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
+								<li class="commpnliCls" attr_val="month"><img src="Assests/icons/CustomRange_icon.png" />&nbsp;&nbsp;<b><span>Month</span></b></li>
 								</li>
 							</ul>  
 					</div>
