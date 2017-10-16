@@ -21,7 +21,7 @@ function onLoadCalls()
 		getDetailedElectionInformaction();
 	}
 	getElectionYears(eletionSubType,"onload")
-	
+	//getLocationWiseCrossVotingDetails();
 }
 
 function getDetailedElectionInformaction(){
@@ -762,7 +762,62 @@ function getElectionYears(eletionSubType,type){
 		}
 		
     });
-  }
+}
+function getLocationWiseCrossVotingDetails(){
+	$("#crossVotingDetailsBlockId").html(spinner);
+	jsObj={
+		electionYearArr		:[2004,2009,2014],
+		parliamentIdsArr	:[],
+		assemblyIdsArr 		:[],
+		partyIdsArr 		:[872,362,1117,886,72,269,265,163,1887],
+		locationValue		:userAccessLevelValuesArray,
+		withAlliance		:"YES",
+		subTypesArr			:["MAIN"],
+		locationLevelId		:locationLevelId
+	}
+	$.ajax({
+		type : "GET",
+		url : "getLocationWiseCrossVotingDetailsAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){  
+		console.log(result);
+		return buildTableData();
+	});
+	function buildTableData()
+	{
+		var table='';
+		table+='<table class="table table-cross-voting">';
+			table+='<thead>';
+				table+='<th>Election Year</th>';
+				table+='<th>Assembly Polled</th>';
+				table+='<th>Parliament Polled</th>';
+				table+='<th>Cross Voting</th>';
+			table+='</thead>';
+			table+='<tr>';
+				table+='<td></td>';
+				table+='<td></td>';
+				table+='<td></td>';
+				table+='<td>';
+					table+='<ul class="cross-voting-list">';
+						table+='<li>';
+							table+='<div class="media">';
+								table+='<div class="media-left">';
+									table+='<img src=""/>';
+									table+='<span>TDP</span>';
+								table+='</div>';
+								table+='<div class="media-body">';
+									table+='<p>-2.59 <i class="fa fa-arrow-down text-danger"></i> <i class="fa fa-info-circle"></i></p>';
+								table+='</div>';
+							table+='</div>';
+						table+='</li>';
+					table+='</ul>';
+				table+='</td>';
+			table+='</tr>';
+		table+='</table>';
+		$("#crossVotingDetailsBlockId").html(table);
+	}	
+}
 $(document).on("click",".getDetailsCls",function(){
 	var searchLevelVal = $("#searchLevelId").val();
 	var electionTypeVal = $("#elctionTypeValId").val();
@@ -798,5 +853,3 @@ $(document).on("click",".getDetailsCls1",function(){
 	getLocationWiseElectionResults(electionYrVal,eletionSubType);
 	getElectionDetailsData(electionYrVal,eletionSubType);
 });
-
-  

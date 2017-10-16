@@ -6727,39 +6727,13 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 		}
 	}
 }
-
-function getLocationWiseCrossVotingDetails(){
-	
-	jsObj={
-		electionYearArr			:[2004,2009,2014],
-		parliamentIdsArr			:[],
-		assemblyIdsArr 				:[],
-		partyIdsArr 					:[872,362,1117,886,72,269,265,163,1887],
-		locationValue	:userAccessLevelValuesArray,
-		withAlliance:"YES",
-		subTypesArr:["MAIN"],
-		locationLevelId:locationLevelId
-	}
-	$.ajax({
-		type : "GET",
-		url : "getLocationWiseCrossVotingDetailsAction.action",
-		dataType : 'json',
-		data : {task :JSON.stringify(jsObj)}
-	}).done(function(result){  
-		
-	});
-	
-}
 function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,electionId){
-	  
 	$("#openPostDetailsModalDivId").html(spinner);
 	var electionIds=[];
 	var electionScopeIds=[];
 	electionIds.push(electionId)
 	electionScopeIds.push(electionScopeId)
-		
-	
-	 var jsObj={
+	var jsObj={
        electionIds    		:electionIds,
        loctionValue   		:1,
        loactionTypeId   	:2,
@@ -6767,20 +6741,18 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 	   partyId :partyId
     }
    $.ajax({
-      type : "POST",
-      url : "getPartyWiseMPandMLACandidatesCountDetialsAction.action",
-      dataType : 'json',
-      data : {task :JSON.stringify(jsObj)}
+		type : "POST",
+		url : "getPartyWiseMPandMLACandidatesCountDetialsAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
 			return buildPartyWiseMPandMLACandidatesCountDetials(result,electionScopeId);
 		}else{
 			$("#openPostDetailsModalDivId").html(noData);
 		}
-		
-  }); 
-	 function buildPartyWiseMPandMLACandidatesCountDetials(result,electionScopeId){
-		
+	}); 
+	function buildPartyWiseMPandMLACandidatesCountDetials(result,electionScopeId){
 		var str='';
 			str+='<div class="table-responsive">';
 				str+='<table class="table table-bordered table-condensed" id="candidateDataTableId">';

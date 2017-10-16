@@ -137,6 +137,11 @@
 					<div id="locationWiseStrongVsPoor" class="m_top10"></div>
 				</div>
 			</div>
+			<div class="col-sm-12 m_top10">
+				<div class="block">
+					<div id="crossVotingDetailsBlockId"></div>
+				</div>
+			</div>
 		</div>
 		
 	</div>
