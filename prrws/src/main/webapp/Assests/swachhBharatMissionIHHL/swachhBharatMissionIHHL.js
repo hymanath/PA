@@ -199,9 +199,10 @@ function getSwachhBharatMissionOverviewDtls(){
 		};
 		var title = {
 			text: 'Total Swatch Bharat - IHHL(up to 31 march)',
+			align: 'left',
 			style: {
 				 color: '#000',
-				 font: 'bold 13px "Lato", sans-serif'
+				 font: 'bold 12px "Lato", sans-serif'
 			  }
 		};
 		var tooltip = {
@@ -700,19 +701,21 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 		str+='</div>';
 		
 		$("#IHHL"+subLocation).html(str);
-		if(reportType == "status"){
+		if (subLocation !="district") {
+			if(reportType == "status"){
 			$("#dataTable"+subLocation).dataTable({
 				"iDisplayLength": 10,
 				"aaSorting": [],
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 			});
-		}else if(reportType == "daily"){
+		   }else if(reportType == "daily"){
 			$("#dataTableDaily"+subLocation).dataTable({
 				"iDisplayLength": 10,
 				"aaSorting": [],
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 				
 			});
+		  }
 		}
 	}
 }
