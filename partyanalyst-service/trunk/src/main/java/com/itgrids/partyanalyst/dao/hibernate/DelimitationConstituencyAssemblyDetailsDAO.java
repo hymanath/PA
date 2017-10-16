@@ -662,5 +662,34 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		queryObject.setParameter("parliamentConstituencyId", parliamentConstituencyId);
 		return queryObject.list();
 	}
+	@Override
+	public List<Object[]> getAllParliamentConstituencyByAllLevels(List<Long> districtids,List<Long> locationValues,Long loactionTypeId) {
+		StringBuilder sb= new StringBuilder();
+		sb.append("select distinct model.delimitationConstituency.constituency.constituencyId," +
+				"model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model,Panchayat P " +
+				" where model.delimitationConstituency.year =2009 " );
+		if(districtids != null && districtids.size()>0){
+			sb.append(" and model.constituency.district.districtId in(:districtIds)");
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 3l){
+			sb.append(" and model.constituency.district.districtId in(:locationValues)");
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 4l){
+			sb.append(" and model.constituency.constituencyId in(:locationValues)");
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 5l){
+			sb.append(" and model.constituency.tehsil.tehsilId in(:locationValues)");
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 6l){
+			sb.append(" and model.constituency.localElectionBody.localElectionBodyId in(:locationValues)");
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 7l){
+			sb.append(" and  model.constituency.tehsil.tehsilId =P.tehsil.tehsilId and P.panchayatId in(:locationValues)");
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 8l){
+			//sb.append(" and  model.constituency.localElectionBody.localElectionBodyId is not null and model.constituency.constituencyId in(:locationValues)");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(districtids != null && districtids.size()>0){
+		  query.setParameterList("districtIds", districtids);
+		}else if(loactionTypeId != null && loactionTypeId.longValue()>2l){
+			query.setParameterList("locationValues", locationValues);
+		}
+	 return query.list();
+	}
 	
 }

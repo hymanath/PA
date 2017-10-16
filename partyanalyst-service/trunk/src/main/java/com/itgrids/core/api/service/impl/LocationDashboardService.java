@@ -6335,4 +6335,46 @@ public CandidateDetailsForConstituencyTypesVO getMatchedVOForCandiadteId(List<Ca
 	}
 	return null;
 }
+public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(Long loactionTypeId,List<Long> locationValues) {
+	try{
+		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
+		List<Object[]> parlimentList =null;
+		List<Long> districtids = new ArrayList<Long>();
+		Long[] ids = IConstants.AP_NEW_DISTRICTS_IDS;
+		for (Long obj : ids) {
+			districtids.add(obj);
+		}
+		if(loactionTypeId != null && loactionTypeId.longValue() == 2l){
+		    parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(districtids,locationValues,loactionTypeId);   
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 3l){
+			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 4l){
+			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 5l){
+			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 6l){
+			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 7l){
+			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 8l){
+			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
+		}
+		for (Object[] objects : parlimentList) {
+			if(objects!=null){
+				LocationWiseBoothDetailsVO locationVo= new LocationWiseBoothDetailsVO();
+				locationVo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				locationVo.setLocationName(WordUtils.capitalizeFully(commonMethodsUtilService.getStringValueForObject(objects[1])));
+				locationVo.setName("Parliment");
+				idNameVOList.add(locationVo);
+			}
+			
+		}
+		return idNameVOList;
+	}catch(Exception e){
+		Log.error("Exception raised at getAllParliamentConstituencyByAllLevels", e);
+		return null;
+	}
+
+	
+}
 }
