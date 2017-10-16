@@ -5778,19 +5778,25 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 			Map<Long,List<ElectionInformationVO>> participantsMap= new HashMap<Long,List<ElectionInformationVO>>();
 			Map<Long,List<ElectionInformationVO>> wonPartiesMap= new HashMap<Long,List<ElectionInformationVO>>();
 			Map<Long,Long> electionWisePolledVotesMap= new HashMap<Long,Long>();
-			List<Object[]> vacancyList= candidateDAO.getAvailableSeatsforElection(year,lelevlId,levelValue,electionScopeId,subTypeList,null);
+			 List<Object[]> vacancyList=null;
+			 List<Object[]> participantsList=null;
+			if(lelevlId != null && lelevlId.longValue() != 5l && lelevlId.longValue() != 7l && lelevlId.longValue() != 6l){
+			    vacancyList= candidateDAO.getAvailableSeatsforElection(year,lelevlId,levelValue,electionScopeId,subTypeList,null);
 			if(lelevlId.longValue() == 2l || lelevlId.longValue() == 3l || lelevlId.longValue() ==10l){
 			List<Object[]> parliamVacancyList= candidateDAO.getAvailableSeatsforElection(year,lelevlId,levelValue,electionScopeId,subTypeList,"parliament");
 			 if(parliamVacancyList != null && parliamVacancyList.size()>0){
 			      vacancyList.addAll(parliamVacancyList);
 			 }
 			}
-			List<Object[]> participantsList= candidateDAO.getParticipatedPartyListforElection(year,lelevlId,levelValue,electionScopeId,subTypeList,null);
+			}
+			if(lelevlId != null && lelevlId.longValue() != 5l && lelevlId.longValue() != 7l && lelevlId.longValue() != 6l){
+		      participantsList= candidateDAO.getParticipatedPartyListforElection(year,lelevlId,levelValue,electionScopeId,subTypeList,null);
 			if(lelevlId.longValue() == 2l || lelevlId.longValue() == 3l || lelevlId.longValue() ==10l){
 				List<Object[]> parlimParticipantsList= candidateDAO.getParticipatedPartyListforElection(year,lelevlId,levelValue,electionScopeId,subTypeList,"parliament");
 				if(parlimParticipantsList != null && parlimParticipantsList.size()>0){
 					participantsList.addAll(parlimParticipantsList);
 				}
+			}
 			}
 			List<Object[]> partyWonResultsList= candidateDAO.getParticipatedPartyListforElectionDetails(year,lelevlId,levelValue,electionScopeId,subTypeList,null);
 			 if(lelevlId.longValue() == 2l || lelevlId.longValue() == 3l || lelevlId.longValue() ==10l){
@@ -5798,6 +5804,11 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 			 if(parlimPartyWonResultsList != null && parlimPartyWonResultsList.size()>0){
 				 partyWonResultsList.addAll(parlimPartyWonResultsList);
 			 }
+			}else if(lelevlId.longValue() == 4l || lelevlId.longValue() == 5l || lelevlId.longValue() == 6l){
+				List<Object[]> assemblyList = candidateDAO.getAssemblyPartyListforElection(electionScopeId,subTypeList,year,constituencyId,lelevlId);
+				if(assemblyList != null && assemblyList.size()>0){
+					partyWonResultsList.addAll(assemblyList);
+				}
 			}
 			 
 			if(commonMethodsUtilService.isListOrSetValid(participantsList)){
@@ -5935,6 +5946,30 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 						}
 						vacancyMap.put(vo.getElectionId(), vo);
 					}
+				}else if(commonMethodsUtilService.isListOrSetValid(partyWonResultsList)){
+					//e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id,p.short_name,count(n.party_id),sum(cr.votes_earned)
+					for (Object[] param : partyWonResultsList) {
+						ElectionInformationVO vo = new ElectionInformationVO();
+						vo.setElectionId(commonMethodsUtilService.getLongValueForObject(param[1]));
+						vo.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[4]));
+						vo.setElectionType(commonMethodsUtilService.getStringValueForObject(param[2]));
+						vo.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[3]));
+						//vo.setTotalSeatsCount(commonMethodsUtilService.getLongValueForObject(param[5]));						
+						List<ElectionInformationVO> wonPartyList = wonPartiesMap.get(vo.getElectionId());
+						if(commonMethodsUtilService.isListOrSetValid(wonPartyList)){
+							for (ElectionInformationVO pPartyVO : wonPartyList) {
+								ElectionInformationVO	partyVo= getMatchedVOForPartyId(wonPartyList,pPartyVO.getPartyId());
+								if(partyVo != null){
+									partyVo.setPerc(pPartyVO.getPerc());
+									partyVo.setTotalSeatsCount(0l);
+								}
+								pPartyVO.setPerc(pPartyVO.getPerc());
+								pPartyVO.setTotalSeatsCount(0l);
+								vo.getList().add(pPartyVO);
+							}
+						}
+						vacancyMap.put(vo.getElectionId(), vo);
+					}	
 				}
 				if(commonMethodsUtilService.isMapValid(vacancyMap)){
 					finalList.addAll(vacancyMap.values());
