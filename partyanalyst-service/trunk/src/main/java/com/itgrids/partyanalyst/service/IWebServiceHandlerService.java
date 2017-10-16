@@ -262,7 +262,7 @@ public interface IWebServiceHandlerService {
     public AmsKeyValueVO getDistrictWiseInfoForAms(AmsAppLoginVO keyVo);
     public List<DistrictOfficeViewAlertVO> getTotalAlertByOtherStatusForAMS(AmsDataVO keyVo);
     public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType, Long locationId,Long enrollmentId);
-    public List<BasicVO> getEnrollments();
+    public List<BasicVO> getEnrollments(List<Long> publicationIds);
     public AppointmentCountDetailsVO getAppointmentCandidateCountDeatils(Long userId);
     public List<AppointmentCountDetailsVO> getAppointmentCandidateDetails(String fromDateStr,String toDateStr,Long userId);
     public ResultStatus checkMemberWalkInForToday( String memberShipId, String date ,  String uniqueId, Long loginUserId,Long tabPrimaryKey,String isCheckedStatus);

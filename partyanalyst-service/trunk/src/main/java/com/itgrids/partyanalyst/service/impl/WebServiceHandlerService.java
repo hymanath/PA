@@ -5308,9 +5308,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 return null;
 	 }
 	 
-	 public List<BasicVO> getEnrollments(){
+	 public List<BasicVO> getEnrollments(List<Long> publicationDatesIds){
 		 try{
-			 return locationDashboardService.getEnrollmentIds();
+			 return locationDashboardService.getEnrollmentIds(publicationDatesIds);
 		 }catch(Exception e){
 			 log.error("Exception raised at getEnrollments", e);
 		 }
