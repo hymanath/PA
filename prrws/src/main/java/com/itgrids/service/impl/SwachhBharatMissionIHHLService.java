@@ -488,10 +488,10 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
         	    							locationEntry.getValue().setCompleted(locationEntry.getValue().getCompleted()+dateDtlsVO.getAchivement());
     	    							}
     	    					   }
-    							   //calculating percentage week or month wise
-    							   targetAchivementDtlsVO.setPercentage(calculatePercantage(locationEntry.getValue().getCompleted(),locationEntry.getValue().getTarget()).toString());
     						   }
-    							locationEntry.getValue().getSubList().add(targetAchivementDtlsVO);
+    						   //calculating percentage week or month wise
+							   targetAchivementDtlsVO.setPercentage(calculatePercantage(targetAchivementDtlsVO.getCompleted(),targetAchivementDtlsVO.getTarget()).toString());
+							locationEntry.getValue().getSubList().add(targetAchivementDtlsVO);
     					}
     				 }
     				 //over all location percentage
