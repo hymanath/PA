@@ -6355,14 +6355,14 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		for (Long obj : ids) {
 			districtids.add(obj);
 		}
-		if(loactionTypeId != null && (loactionTypeId.longValue() == 5l || loactionTypeId.longValue() == 6l )){
+		if(loactionTypeId != null && (loactionTypeId.longValue() == 5l || loactionTypeId.longValue() == 6l || loactionTypeId.longValue() == 7l ) ){
 			 canstituencyIds = delimitationConstituencyMandalDetailsDAO.getAllParliamentMandalByAllLevels(locationValues,loactionTypeId);
 		}
 		if(loactionTypeId != null && loactionTypeId.longValue() == 2l){
 		    parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(districtids,locationValues,loactionTypeId,null);   
-		}else if(loactionTypeId != null && (loactionTypeId.longValue() == 3l || loactionTypeId.longValue() == 4l ||  loactionTypeId.longValue() == 10l || loactionTypeId.longValue() == 7l)){
+		}else if(loactionTypeId != null && (loactionTypeId.longValue() == 3l || loactionTypeId.longValue() == 4l ||  loactionTypeId.longValue() == 10l )){
 			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId,null);
-		}else if(loactionTypeId != null && (loactionTypeId.longValue() == 5l || loactionTypeId.longValue() == 6l )){
+		}else if(loactionTypeId != null && (loactionTypeId.longValue() == 5l || loactionTypeId.longValue() == 6l || loactionTypeId.longValue() == 7l )){
 			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId,canstituencyIds);
 		}
 		for (Object[] objects : parlimentList) {

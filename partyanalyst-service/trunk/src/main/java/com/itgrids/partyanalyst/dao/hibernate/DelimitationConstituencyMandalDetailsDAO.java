@@ -40,12 +40,16 @@ public class DelimitationConstituencyMandalDetailsDAO extends
 		sb.append("select distinct model.delimitationConstituency.constituency.constituencyId from DelimitationConstituencyMandalDetails model " );
 		if(loactionTypeId != null && loactionTypeId.longValue() == 6l){
 			sb.append(" ,Panchayat P " );
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 7l){
+			sb.append(" ,LocalElectionBody LEB " );
 		}
 		if(locationValues != null && locationValues.size()>0){
 		if(loactionTypeId != null && loactionTypeId.longValue() == 5l){
 			sb.append(" where  model.tehsil.tehsilId in(:locationValues) and " );
 		}else if(loactionTypeId != null && loactionTypeId.longValue() == 6l){
 			sb.append(" where  model.tehsil.tehsilId=P.tehsil.tehsilId  and P.panchayatId in(:locationValues) and ");
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 7l){
+			sb.append(" where  model.tehsil.tehsilId=LEB.tehsil.tehsilId  and LEB.localElectionBodyId in(:locationValues) and ");
 		}
 		}
 		sb.append("  model.delimitationConstituency.year =2009 " );
