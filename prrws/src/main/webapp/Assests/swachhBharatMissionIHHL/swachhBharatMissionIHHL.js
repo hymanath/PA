@@ -539,7 +539,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 							str+='<th>Not Grounded</th>';	
 							str+='<th>In Progress</th>';	
 							str+='<th>Completed</th>';	
-							str+='<th>Achivement %</th>';
+							str+='<th>Achievement %</th>';
 						str+='</tr>';
 						}else if(reportType == "daily"){
 								str+='<tr class="text-capital">';
