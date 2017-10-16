@@ -18269,5 +18269,10 @@
 			<param name="root">typeVoList</param>
 		</result>        
    </action>
+   <action name="getAllParliamentConstituencyByAllLevelsAction" class="locationDashboardAction"  method="getAllParliamentConstituencyByAllLevels">
+		<result type="json" name="success">    
+			<param name="root">locationVOList</param>       
+		</result>
+  	</action>
  </package>
 </struts>
