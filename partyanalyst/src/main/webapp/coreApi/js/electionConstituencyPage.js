@@ -676,28 +676,41 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 							if(result[i].list[j].status == 'STRONG')
 							{
 								str+='<td style="background-color:#FF3E3E">';
+								str+='<h5 >'+result[i].list[j].status+'</h5>';
+									str+='<h6>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</h6>';
 							}else if(result[i].list[j].status == 'VERY STRONG')
 							{
 								str+='<td style="background-color:#428AE9">';
+								str+='<h5 >'+result[i].list[j].status+'</h5>';
+									str+='<h6>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</h6>';
 							}else if(result[i].list[j].status == 'OK')
 							{
 								str+='<td style="background-color:#009900">';
+								str+='<h5 >'+result[i].list[j].status+'</h5>';
+									str+='<h6>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</h6>';
 							}else if(result[i].list[j].status == 'POOR')
 							{
 								str+='<td style="background-color:#FFCC00">';
+								str+='<h5 >'+result[i].list[j].status+'</h5>';
+									str+='<h6>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</h6>';
 							}else if(result[i].list[j].status == 'VERY POOR')
 							{
 								str+='<td style="background-color:#FF9966">';
+								str+='<h5 >'+result[i].list[j].status+'</h5>';
+									str+='<h6>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</h6>';
 							}else if(result[i].list[j].status == 'WORST')
 							{
 								str+='<td style="background-color:#CC6600">';
-							}else{
-								str+='<td class="text-center">';
-							}
-									str+='<h5 >'+result[i].list[j].status+'</h5>';
+								str+='<h5 >'+result[i].list[j].status+'</h5>';
 									str+='<h6>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</h6>';
+							}else  if(result[i].list[j].status == null || result[i].list[j].status.length == 0 ){
+								str+='<td class="text-center"  style="background-color:grey;" >';
+								str+='<h5 title="Removed after delimitation in 2009 "> NOT AVAILABLE </h5>';
+							}else {
+								str+='<td class="text-center" >';
+								str+='<h5 >'+result[i].list[j].status+'</h5>';								
+							}	
 								str+='</td>';
-							
 						}
 					str+='</tr>';
 				}
@@ -706,7 +719,11 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 		str+='</div>';
 		
 		$("#locationWiseStrongVsPoor").html(str);
-		$("#electionResults").dataTable();
+		$("#electionResults").dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
 	}
 }
 $(document).on("click",".electionSubTypeCls",function(){
