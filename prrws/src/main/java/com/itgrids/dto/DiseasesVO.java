@@ -51,6 +51,8 @@ public class DiseasesVO implements Serializable {
 	private String color;
 	private Long rankId;
 	
+	private String month;
+	
 	private List<DiseasesVO> subList1;
 	
 	private List<DiseasesVO> distCountList;
@@ -308,6 +310,12 @@ public class DiseasesVO implements Serializable {
 	}
 	public void setOverAll(Long overAll) {
 		this.overAll = overAll;
+	}
+	public String getMonth() {
+		return month;
+	}
+	public void setMonth(String month) {
+		this.month = month;
 	}
 	
 	
