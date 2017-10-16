@@ -356,18 +356,23 @@ function getCaseCountDateWise(dayType){
       },
       success : function(ajaxresp){
 		  if(ajaxresp != null && ajaxresp.length > 0){
-			  buildGraph(ajaxresp,diseasesIdArr);
+			  buildGraph(ajaxresp,diseasesIdArr,dayType);
 		  }else{
 			  $("#chronologicalId").html("No Data Available");
 		  }
       }
     });
 }
-function buildGraph(ajaxresp,diseasesIdArr){
+function buildGraph(ajaxresp,diseasesIdArr,dayType){
 	var chronologicalList = [];
 	var caseCountList = [];
 	for(var i in ajaxresp){
-		chronologicalList.push(ajaxresp[i].name);
+		if(dayType == 'Week'){
+			chronologicalList.push(ajaxresp[i].name+' ( '+ajaxresp[i].month+' ) ');
+		}else{
+			chronologicalList.push(ajaxresp[i].name);
+		}
+		
 		caseCountList.push(ajaxresp[i].count);
 	}  
 	var name = '';
