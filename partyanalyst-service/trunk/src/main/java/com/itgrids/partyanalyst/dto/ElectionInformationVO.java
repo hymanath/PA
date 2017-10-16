@@ -36,7 +36,10 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private String range;
 	private Long assemblyValidVoters;
 	private Long parliamentValidVoters;
-	private String earnedVotersPerc;
+	private Double earnedVotersPerc;
+	private Long assemblyEarndVotes;
+	private Long parliamentEarnedVotes;
+	private Double earnedVotersPerc1;
 	
 	private List<ElectionInformationVO> list = new CopyOnWriteArrayList<ElectionInformationVO>();
 	private List<ElectionInformationVO> subList1 = new ArrayList<ElectionInformationVO>();
@@ -221,11 +224,29 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	public void setParliamentValidVoters(Long parliamentValidVoters) {
 		this.parliamentValidVoters = parliamentValidVoters;
 	}
-	public String getEarnedVotersPerc() {
+	public Double getEarnedVotersPerc() {
 		return earnedVotersPerc;
 	}
-	public void setEarnedVotersPerc(String earnedVotersPerc) {
+	public void setEarnedVotersPerc(Double earnedVotersPerc) {
 		this.earnedVotersPerc = earnedVotersPerc;
+	}
+	public Long getAssemblyEarndVotes() {
+		return assemblyEarndVotes;
+	}
+	public void setAssemblyEarndVotes(Long assemblyEarndVotes) {
+		this.assemblyEarndVotes = assemblyEarndVotes;
+	}
+	public Long getParliamentEarnedVotes() {
+		return parliamentEarnedVotes;
+	}
+	public void setParliamentEarnedVotes(Long parliamentEarnedVotes) {
+		this.parliamentEarnedVotes = parliamentEarnedVotes;
+	}
+	public Double getEarnedVotersPerc1() {
+		return earnedVotersPerc1;
+	}
+	public void setEarnedVotersPerc1(Double earnedVotersPerc1) {
+		this.earnedVotersPerc1 = earnedVotersPerc1;
 	}
 	
 	

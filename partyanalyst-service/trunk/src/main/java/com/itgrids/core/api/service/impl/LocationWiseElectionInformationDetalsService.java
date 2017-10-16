@@ -16,6 +16,7 @@ import org.jfree.util.Log;
 import com.itgrids.core.api.service.ILocationWiseElectionInformationDetalsService;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -27,8 +28,18 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	private CommonMethodsUtilService commonMethodsUtilService;
 	private ICandidateDAO candidateDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 
 	
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
 	public IBoothConstituencyElectionDAO getBoothConstituencyElectionDAO() {
 		return boothConstituencyElectionDAO;
 	}
@@ -396,6 +407,24 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 		ElectionInformationVO returnVO = new ElectionInformationVO();
 		try {
 			Map<Long,ElectionInformationVO> yearsPolledMap = new HashMap<Long,ElectionInformationVO>();
+			if(parliamentIds != null && parliamentIds.size() > 0 && assemlyIds.size() == 0){
+				List<Object[]> findAssembliesConstituencies = (List<Object[]>) delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliaments(parliamentIds);
+				if(commonMethodsUtilService.isListOrSetValid(findAssembliesConstituencies)){
+					for (Object[] param : findAssembliesConstituencies) {
+						assemlyIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					}
+				}
+			}
+			
+			if(levelId != null && levelId.longValue() == 10l){
+				List<Object[]> findAssembliesConstituencies = (List<Object[]>) delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliaments(parliamentIds);
+				locationVals.clear();
+				if(commonMethodsUtilService.isListOrSetValid(findAssembliesConstituencies)){
+					for (Object[] param : findAssembliesConstituencies) {
+						locationVals.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					}
+				}
+			}
 			List<Object[]> assemlyPolledVotes = boothConstituencyElectionDAO.getLocationWiseAssemblyElectionPolledVotes(electionYrs, parliamentIds, assemlyIds, levelId, locationVals,subtypes,2l);
 			List<Object[]> parliamentPolledVoters = boothConstituencyElectionDAO.getLocationWiseAssemblyElectionPolledVotes(electionYrs, parliamentIds, assemlyIds, levelId, locationVals,subtypes,1l);
 			
@@ -463,10 +492,21 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 								partyVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[5]));
 								partyVO.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[3]));
 								if(type != null &&type.equalsIgnoreCase("assembly")){
-									partyVO.setEarnedVotersPerc(calculatePercentage(yearVO.getAssemblyValidVoters(), partyVO.getEarnedVotes()));
+									partyVO.setAssemblyEarndVotes(commonMethodsUtilService.getLongValueForObject(param[3]));
 								}else{
-									partyVO.setEarnedVotersPerc(calculatePercentage(yearVO.getParliamentValidVoters(), partyVO.getEarnedVotes()));
+									partyVO.setParliamentEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[3]));
 								}
+								if(type != null &&type.equalsIgnoreCase("assembly")){
+									partyVO.setEarnedVotersPerc(Double.valueOf(calculatePercentage(yearVO.getAssemblyValidVoters(), partyVO.getAssemblyEarndVotes())));
+								}else{
+									partyVO.setEarnedVotersPerc1(Double.valueOf(calculatePercentage(yearVO.getParliamentValidVoters(), partyVO.getParliamentEarnedVotes())));
+									Double parliamentPerc = partyVO.getEarnedVotersPerc1() != null ?partyVO.getEarnedVotersPerc1():0.0;
+									Double assmblyPerc = partyVO.getEarnedVotersPerc() != null ?partyVO.getEarnedVotersPerc():0.0;
+									Double diffPerc = parliamentPerc-assmblyPerc;
+									partyVO.setPerc(diffPerc.toString());
+								}
+								
+								
 							
 						}
 					}

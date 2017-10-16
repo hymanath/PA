@@ -1156,17 +1156,23 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 				" e.election_year,sum(br.valid_votes) as polled_votes" +
 				" from booth_result  br, booth b , booth_constituency_election bce,constituency_election ce, election e ," +
 				" constituency c where br.booth_constituency_election_id = bce.booth_constituency_election_id and " +
-				" bce.booth_id = b.booth_id and bce.consti_elec_id = ce.consti_elec_id and ce.election_id = e.election_id and" +
-				" b.constituency_id = c.constituency_id and (c.district_id BETWEEN 11 and 23)  " );
+				" bce.booth_id = b.booth_id and bce.consti_elec_id = ce.consti_elec_id and ce.election_id = e.election_id   " );
 		
 		if(electionYrs != null && electionYrs.size() > 0){
 			 sb.append(" and  e.election_year in (:electionYrs) ");
 		}
-		if(parliamentIds != null && parliamentIds.size() > 0){
+		if(parliamentIds != null && parliamentIds.size() > 0 && electionScopeId.longValue() == 1l){
 			 sb.append(" and  c.constituency_id in (:parliamentIds) ");
+		}else if( electionScopeId.longValue() == 1l){
+			sb.append(" and c.constituency_id in ("+IConstants.AP_PARLIAMENT_IDS_LIST_STR+") ");
 		}
-		if(assemlyIds != null && assemlyIds.size() > 0){
-			 sb.append(" and  c.constituency_id in (:assemlyIds) ");
+		if(assemlyIds != null && assemlyIds.size() > 0 && electionScopeId.longValue() != 1l){
+			 sb.append(" and  c.constituency_id in (:assemlyIds)  ");
+		}else if(assemlyIds != null && assemlyIds.size() > 0 && electionScopeId.longValue() == 1l){
+			sb.append(" and  b.constituency_id  in (:assemlyIds) ");
+		}
+		if(electionScopeId != null && electionScopeId.longValue() != 1l){
+			sb.append(" and b.constituency_id = c.constituency_id and (c.district_id BETWEEN 11 and 23) ");
 		}
 		if(subtypes != null && subtypes.size() > 0){
 			 sb.append(" and  e.sub_type  in (:subtypes) ");
@@ -1175,9 +1181,9 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 			sb.append(" and e.election_scope_id = :electionScopeId  ");
 		}
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
-	    	   if(locationTypeId.longValue() == 2l){
+	    	   if(locationTypeId.longValue() == 2l && electionScopeId.longValue() != 1l){
 		          sb.append(" and c.state_id in (:locationValues) ");
-		        }else if(locationTypeId.longValue() == 3l){
+		        }else if(locationTypeId.longValue() == 3l && electionScopeId.longValue() != 1l){
 		          sb.append(" and c.district_id in (:locationValues)");
 		        }else if(locationTypeId.longValue() == 4l || locationTypeId.longValue() == 10l){
 	              sb.append(" and c.constituency_id in (:locationValues) ");
@@ -1198,10 +1204,12 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 				if(electionYrs != null && electionYrs.size() > 0){
 					query.setParameterList("electionYrs", electionYrs);
 				}
-				if(parliamentIds != null && parliamentIds.size() > 0){
+				if(parliamentIds != null && parliamentIds.size() > 0 && electionScopeId.longValue() == 1l){
 					query.setParameterList("parliamentIds", parliamentIds);
 				}
-				if(assemlyIds != null && assemlyIds.size() > 0){
+				if(assemlyIds != null && assemlyIds.size() > 0 && electionScopeId.longValue() != 1l){
+					query.setParameterList("assemlyIds", assemlyIds);
+				}else if(electionScopeId.longValue() == 1l && assemlyIds != null && assemlyIds.size() > 0 ){
 					query.setParameterList("assemlyIds", assemlyIds);
 				}
 				if(subtypes != null && subtypes.size() > 0){
@@ -1210,8 +1218,9 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 				if(electionScopeId != null && electionScopeId.longValue() >0){
 					query.setParameter("electionScopeId", electionScopeId);
 				}
-				if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
-					query.setParameterList("locationValues", locationValues);
+				if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 ){
+					if((electionScopeId.longValue() == 1l && (locationTypeId.longValue() == 2l || locationTypeId.longValue() == 3l))){}
+					else{query.setParameterList("locationValues", locationValues);}
 				}
 				return query.list();
 	}
@@ -1224,22 +1233,24 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 				" where n.consti_elec_id = ce.consti_elec_id and ce.election_id = e.election_id and e.election_scope_id = es.election_scope_id and " +
 				" es.election_type_id = et.election_type_id and n.party_id = p.party_id and bce.consti_elec_id  =ce.consti_elec_id and " +
 				" bce.booth_constituency_election_id = cbr.booth_constituency_election_id and cbr.nomination_id = n.nomination_id and " +
-				"     ce.constituency_id = c.constituency_id and " +
-				" (c.district_id BETWEEN 11 and 23)   and bce.booth_id = b.booth_id " );
+				"     ce.constituency_id = c.constituency_id  " +
+				"    and bce.booth_id = b.booth_id " );
 				
 		if(electionScopeId != null && electionScopeId.longValue() != 1l){
-			sb.append(" and b.constituency_id = ce.constituency_id " );
-		}else{
-			sb.append(" and c.constituency_id in ("+IConstants.AP_PARLIAMENT_IDS_LIST_STR+") ");
+			sb.append(" and b.constituency_id = ce.constituency_id and (c.district_id BETWEEN 11 and 23) " );
 		}
 		if(electionYrs != null && electionYrs.size() > 0){
 			 sb.append(" and  e.election_year in (:electionYrs) ");
 		}
 		if(parliamentIds != null && parliamentIds.size() > 0 && electionScopeId.longValue() == 1l){
 			 sb.append(" and  c.constituency_id in (:parliamentIds) ");
+		}else if( electionScopeId.longValue() == 1l && parliamentIds.size() == 0){
+			sb.append(" and c.constituency_id in ("+IConstants.AP_PARLIAMENT_IDS_LIST_STR+") ");
 		}
-		if(assemlyIds != null && assemlyIds.size() > 0){
+		if(assemlyIds != null && assemlyIds.size() > 0 && electionScopeId.longValue() != 1l){
 			 sb.append(" and  c.constituency_id in (:assemlyIds) ");
+		}else if (assemlyIds != null && assemlyIds.size() > 0 && electionScopeId.longValue() == 1l){
+			sb.append(" and  b.constituency_id in (:assemlyIds) ");
 		}
 		if(subtypes != null && subtypes.size() > 0){
 			 sb.append(" and  e.sub_type  in (:subtypes) ");
@@ -1253,7 +1264,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
 	    	   if(locationTypeId.longValue() == 2l && electionScopeId.longValue() != 1l){
 		          sb.append(" and c.state_id in (:locationValues) ");
-		        }else if(locationTypeId.longValue() == 3l){
+		        }else if(locationTypeId.longValue() == 3l && electionScopeId.longValue() != 1l){
 		          sb.append(" and c.district_id in (:locationValues)");
 		        }else if(locationTypeId.longValue() == 4l || locationTypeId.longValue() == 10l){
 	              sb.append(" and c.constituency_id in (:locationValues) ");
@@ -1274,10 +1285,12 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		if(electionYrs != null && electionYrs.size() > 0){
 			query.setParameterList("electionYrs", electionYrs);
 		}
-		if(parliamentIds != null && parliamentIds.size() > 0){
+		if(parliamentIds != null && parliamentIds.size() > 0 && electionScopeId.longValue() == 1l){
 			query.setParameterList("parliamentIds", parliamentIds);
 		}
-		if(assemlyIds != null && assemlyIds.size() > 0){
+		if(assemlyIds != null && assemlyIds.size() > 0 && electionScopeId.longValue() != 1l){
+			query.setParameterList("assemlyIds", assemlyIds);
+		}else if (electionScopeId.longValue() == 1l && assemlyIds.size() > 0 && electionScopeId.longValue() == 1l){
 			query.setParameterList("assemlyIds", assemlyIds);
 		}
 		if(subtypes != null && subtypes.size() > 0){
@@ -1289,8 +1302,9 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		if(partyids != null && partyids.size() > 0){
 			query.setParameterList("partyids", partyids);
 		}
-		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 && electionScopeId.longValue() != 1l){
-			query.setParameterList("locationValues", locationValues);
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 ){
+			if((electionScopeId.longValue() == 1l && (locationTypeId.longValue() == 2l || locationTypeId.longValue() == 3l))){}
+			else{query.setParameterList("locationValues", locationValues);}
 		}
 		return query.list();
 	}
