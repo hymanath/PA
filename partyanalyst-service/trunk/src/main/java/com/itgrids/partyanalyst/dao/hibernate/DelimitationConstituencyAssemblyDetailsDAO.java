@@ -663,10 +663,10 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		return queryObject.list();
 	}
 	@Override
-	public List<Object[]> getAllParliamentConstituencyByAllLevels(List<Long> districtids,List<Long> locationValues,Long loactionTypeId) {
+	public List<Object[]> getAllParliamentConstituencyByAllLevels(List<Long> districtids,List<Long> locationValues,Long loactionTypeId,List<Long> canstituencyIds) {
 		StringBuilder sb= new StringBuilder();
 		sb.append("select distinct model.delimitationConstituency.constituency.constituencyId," +
-				"model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model,Panchayat P " +
+				"model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model " +
 				" where model.delimitationConstituency.year =2009 " );
 		if(districtids != null && districtids.size()>0){
 			sb.append(" and model.constituency.district.districtId in(:districtIds)");
@@ -674,22 +674,22 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 			sb.append(" and model.constituency.district.districtId in(:locationValues)");
 		}else if(loactionTypeId != null && loactionTypeId.longValue() == 4l){
 			sb.append(" and model.constituency.constituencyId in(:locationValues)");
-		}else if(loactionTypeId != null && loactionTypeId.longValue() == 5l){
-			sb.append(" and model.constituency.tehsil.tehsilId in(:locationValues)");
-		}else if(loactionTypeId != null && loactionTypeId.longValue() == 6l){
-			sb.append(" and model.constituency.localElectionBody.localElectionBodyId in(:locationValues)");
 		}else if(loactionTypeId != null && loactionTypeId.longValue() == 7l){
-			sb.append(" and  model.constituency.tehsil.tehsilId =P.tehsil.tehsilId and P.panchayatId in(:locationValues)");
-		}else if(loactionTypeId != null && loactionTypeId.longValue() == 8l){
-			//sb.append(" and  model.constituency.localElectionBody.localElectionBodyId is not null and model.constituency.constituencyId in(:locationValues)");
+			sb.append(" and model.constituency.localElectionBody.localElectionBodyId in(:locationValues)");
 		}else if(loactionTypeId != null && loactionTypeId.longValue() == 10l){
 			sb.append(" and  model.delimitationConstituency.constituency.constituencyId in(:locationValues) ");
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 5l && canstituencyIds != null && canstituencyIds.size()>0){
+			sb.append(" and model.constituency.constituencyId in(:canstituencyIds)");
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 6l && canstituencyIds != null && canstituencyIds.size()>0){
+			sb.append(" and model.constituency.constituencyId in(:canstituencyIds) ");
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if(districtids != null && districtids.size()>0){
 		  query.setParameterList("districtIds", districtids);
 		}else if(loactionTypeId != null && loactionTypeId.longValue()>2l){
 			query.setParameterList("locationValues", locationValues);
+		}else if(canstituencyIds != null && canstituencyIds.size()>0){
+			query.setParameterList("canstituencyIds", canstituencyIds);
 		}
 	 return query.list();
 	}

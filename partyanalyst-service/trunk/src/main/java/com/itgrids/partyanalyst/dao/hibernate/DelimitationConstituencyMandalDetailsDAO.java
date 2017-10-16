@@ -35,5 +35,22 @@ public class DelimitationConstituencyMandalDetailsDAO extends
 		return query.list();
 
 	}
-
+	public List<Long> getAllParliamentMandalByAllLevels(List<Long> locationValues,Long loactionTypeId) {
+		StringBuilder sb= new StringBuilder();
+		sb.append("select distinct model.delimitationConstituency.constituency.constituencyId from DelimitationConstituencyMandalDetails model " );
+		if(loactionTypeId != null && loactionTypeId.longValue() == 6l){
+			sb.append(" ,Panchayat P " );
+		}
+		if(loactionTypeId != null && loactionTypeId.longValue() == 5l){
+			sb.append(" where  model.tehsil.tehsilId in(:locationValues) and " );
+		}else if(loactionTypeId != null && loactionTypeId.longValue() == 6l){
+			sb.append(" where  model.tehsil.tehsilId=P.tehsil.tehsilId  and P.panchayatId in(:locationValues) and ");
+		}
+		sb.append("  model.delimitationConstituency.year =2009 " );
+		Query query = getSession().createQuery(sb.toString());
+		if(loactionTypeId != null && loactionTypeId.longValue()>0l){
+			query.setParameterList("locationValues", locationValues);
+		}
+	 return query.list();
+	}
 }

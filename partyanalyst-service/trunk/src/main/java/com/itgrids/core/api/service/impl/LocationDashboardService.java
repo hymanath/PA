@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -161,7 +162,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
 	private IPartyDAO partyDAO;
 	private IElectionDAO electionDAO;
-	
+	private IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO;
+
 	
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
@@ -549,6 +551,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			IPublicRepresentativeDAO publicRepresentativeDAO) {
 		this.publicRepresentativeDAO = publicRepresentativeDAO;
 	}//roleIds,committeeIds,enrollmentYears,basicCommoteeId,enrollmentId
+	
+	public IDelimitationConstituencyMandalDetailsDAO getDelimitationConstituencyMandalDetailsDAO() {
+		return delimitationConstituencyMandalDetailsDAO;
+	}
+	public void setDelimitationConstituencyMandalDetailsDAO(
+			IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO) {
+		this.delimitationConstituencyMandalDetailsDAO = delimitationConstituencyMandalDetailsDAO;
+	}
 	public List<CandidateDetailsForConstituencyTypesVO> getCandidateAndPartyInfoForConstituency(Long locationValue,Long locationTypeId,List<Long> representativTypeIds,List<Long> roleIds,List<Long> committeeIds,List<Long> enrollmentYears,Long basicCommoteeId,Long enrollmentId) {
 		List<CandidateDetailsForConstituencyTypesVO> finalList= new ArrayList<CandidateDetailsForConstituencyTypesVO>();
 		List<CandidateInfoForConstituencyVO> parliementfinalList= new ArrayList<CandidateInfoForConstituencyVO>();
@@ -6339,25 +6349,21 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 	try{
 		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
 		List<Object[]> parlimentList =null;
+		List<Long> canstituencyIds =null;
 		List<Long> districtids = new ArrayList<Long>();
 		Long[] ids = IConstants.AP_NEW_DISTRICTS_IDS;
 		for (Long obj : ids) {
 			districtids.add(obj);
 		}
+		if(loactionTypeId != null && (loactionTypeId.longValue() == 5l || loactionTypeId.longValue() == 6l )){
+			 canstituencyIds = delimitationConstituencyMandalDetailsDAO.getAllParliamentMandalByAllLevels(locationValues,loactionTypeId);
+		}
 		if(loactionTypeId != null && loactionTypeId.longValue() == 2l){
-		    parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(districtids,locationValues,loactionTypeId);   
-		}else if(loactionTypeId != null && loactionTypeId.longValue() == 3l){
-			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
-		}else if(loactionTypeId != null && loactionTypeId.longValue() == 4l){
-			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
-		}else if(loactionTypeId != null && loactionTypeId.longValue() == 5l){
-			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
-		}else if(loactionTypeId != null && loactionTypeId.longValue() == 6l){
-			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
-		}else if(loactionTypeId != null && loactionTypeId.longValue() == 7l){
-			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
-		}else if(loactionTypeId != null && loactionTypeId.longValue() == 8l){
-			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId);
+		    parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(districtids,locationValues,loactionTypeId,null);   
+		}else if(loactionTypeId != null && (loactionTypeId.longValue() == 3l || loactionTypeId.longValue() == 4l ||  loactionTypeId.longValue() == 10l || loactionTypeId.longValue() == 7l)){
+			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId,null);
+		}else if(loactionTypeId != null && (loactionTypeId.longValue() == 5l || loactionTypeId.longValue() == 6l )){
+			parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationValues,loactionTypeId,canstituencyIds);
 		}
 		for (Object[] objects : parlimentList) {
 			if(objects!=null){
@@ -6374,7 +6380,5 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		Log.error("Exception raised at getAllParliamentConstituencyByAllLevels", e);
 		return null;
 	}
-
-	
 }
 }
