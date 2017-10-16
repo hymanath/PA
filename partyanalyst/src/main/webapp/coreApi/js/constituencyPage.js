@@ -640,8 +640,14 @@ function onLoadClicks()
 		getVotersAndcadreAgeWiseCount(pubId,enrollmentId);
 	});
 	$(document).on("change","#enrollmentvoterId",function(){
-		var pubId = $("#publicationChangeId").val();
+		//var pubId = $("#publicationChangeId").val();
+		var pubId ="0";
 		var enrollmentId = $("#enrollmentvoterId").val();
+		if(enrollmentId == 3){
+			pubId = "11";
+		}else if(enrollmentId == 4){
+			pubId = "22";
+		}
 		getVotersAndcadreAgeWiseCount(pubId,enrollmentId);
 	});
 	$(document).on("click",".assembly-view",function(){
@@ -679,8 +685,14 @@ function onLoadClicks()
 		getVotersCastGroupWiseCount(publicationId,enrollmentId);
 	});
 	$(document).on("change","#enrollmentCasteId",function(){
+		var publicationId ="0";
 		var enrollmentId =  $(this).val();
-		var publicationId = $("#publicationCasteId").val();
+		
+		if(enrollmentId == 3){
+			publicationId = "11";
+		}else if(enrollmentId == 4){
+			publicationId = "22";
+		}
 		
 		getCasteGroupNAgeWiseVoterNCadreCounts(0,"onload","All",publicationId,enrollmentId,$("[active-type='casteSorting'] li.active").attr("type"));
 		getVotersCastGroupWiseCount(publicationId,enrollmentId);
@@ -5127,8 +5139,9 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 }
 
 function getEnrollmentIds(){
+	var publicationDateIds = [11,22]
 	var jsObj={
-			
+			publicationDateIdsLst : publicationDateIds
 	}
 	 $.ajax({
       type : "GET",

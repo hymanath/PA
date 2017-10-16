@@ -651,7 +651,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getEnrollmentYearsList(){
 		 try{
 			 jObj = new JSONObject(getTask());
-			 enrollmentYears = locationDashboardService.getEnrollmentIds();
+			 List<Long> publicationDateIdsLst = convertJsonStringList(jObj.getJSONArray("publicationDateIdsLst"));
+			 enrollmentYears = locationDashboardService.getEnrollmentIds(publicationDateIdsLst);
 		 }catch(Exception e){
 			 LOG.error("Exception raised at getEnrollemtYears() of LocationDashboardAction{}", e);
 		 }
