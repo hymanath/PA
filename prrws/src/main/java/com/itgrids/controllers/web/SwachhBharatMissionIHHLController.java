@@ -44,7 +44,7 @@ public class SwachhBharatMissionIHHLController {
 	   }
 	   @RequestMapping(value = "/getIHHLCategoryWiseAnalysis", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	   public @ResponseBody  List<SwachhBharatMissionIHHLDtlsVO>  getIHHLCategoryWiseAnalysis(@RequestBody InputVO inputVO) {
-		 List<SwachhBharatMissionIHHLDtlsVO>  resultList = null;
+		 List<SwachhBharatMissionIHHLDtlsVO>  resultList = swachhBharatMissionIHHLService.getIHHLCategoryWiseAnalysis(inputVO);
 		 return resultList;
 	   }
 	   @RequestMapping(value = "/getIHHLAchivementProgressDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)

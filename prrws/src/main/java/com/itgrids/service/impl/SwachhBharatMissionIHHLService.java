@@ -134,7 +134,33 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		 }
 		 return strArr;
 	}
-	
+	/**
+	 * @author Santosh Kumar Verma
+	 * @param InputVO inputVO
+	 * @description {This service is used to get Swachh Bharat Mission category wise analysis details.}
+	 * @return List<SwachhBharatMissionIHHLDtlsVO>
+	 * @Date 14-10-2017
+	 */
+	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLCategoryWiseAnalysis(InputVO inputVO) {
+		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
+		try {
+			SwachhBharatMissionIHHLDtlsVO vo = new SwachhBharatMissionIHHLDtlsVO();
+			vo.setRange("100% TO 76%");
+			vo.setDistrictCount(10l);
+			vo.setConstituencyCount(5l);
+			vo.setMandalCount(2l);
+			SwachhBharatMissionIHHLDtlsVO vo1 = new SwachhBharatMissionIHHLDtlsVO();
+			vo1.setRange("75% TO 51%");
+			vo1.setDistrictCount(10l);
+			vo1.setConstituencyCount(5l);
+			vo1.setMandalCount(2l);
+			resultList.add(vo);
+			resultList.add(vo1);
+		} catch (Exception e) {
+			LOG.error("Exception occured at getIHHLCategoryWiseAnalysis() in SwachhBharatMissionIHHLService class",e);
+		}
+		return resultList;
+	}
 	/**
 	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
@@ -143,7 +169,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	 * @Date 14-10-2017
 	 */
 	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLAchivementProgressDtls(InputVO inputVO) {
-		List<SwachhBharatMissionIHHLDtlsVO> resultList = null;
+		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<>(0);
 		try {
 			Date fromDate = null;
 			Date toDate = null;

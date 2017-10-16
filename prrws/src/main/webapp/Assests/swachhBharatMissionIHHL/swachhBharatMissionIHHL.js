@@ -368,7 +368,7 @@ function getIHHLCategoryWiseAnalysis(){
 		var json = {
 			fromDate:globalFromDateForLevel,
 			toDate:globalToDateForLevel,
-			year:""
+			reportType:"daily"
 		}
 		$.ajax({                
 			type:'POST',    
@@ -407,7 +407,7 @@ function getIHHLAchivementProgressDtls(displayType){
 			if(result !=null && result.length>0){
 				buildIHHLAchivementProgressDtls(result);
 			}else{
-				$("#IHHLAchivementProgress").html("No Data Available")
+				$("#IHHLAchivementProgress").html("NO DATA AVAILABLE.");
 			}
 		});
 
