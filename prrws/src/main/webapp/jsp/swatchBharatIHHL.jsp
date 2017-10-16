@@ -276,10 +276,12 @@ function buildIHHLOverviewDataAbstractOverView(result){
 	if(result.subList1 !=null && result.subList1.length>0){
 			var dataArr=[];
 			var totalCount=0;
+			var ComPerc=0;
 			for(var i in result.subList1){
 				dataArr.push(result.subList1[i].target)
 				dataArr.push(result.subList1[i].completed)
-				totalCount =result.subList1[i].target+result.subList1[i].completed
+				totalCount =result.subList1[i].target+result.subList1[i].completed;
+				ComPerc =result.subList1[i].completed*100/result.subList1[i].target;
 			}
 		var colors = ['#FC5049','#14BAAD']
 		var id = 'swatchBharatDivId';
@@ -329,9 +331,14 @@ function buildIHHLOverviewDataAbstractOverView(result){
 		var tooltip = {
 			useHTML:true,
 			formatter: function () {
-					var pcnt = (this.y / totalCount) * 100;
-					return '<b>' + this.x + '</b><br/>' +
+					if(this.x != "TARGET"){
+						var pcnt = ComPerc;
+						return '<b>' + this.x + '</b><br/>' +
 						this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+					}else{
+						return '<b>' + this.x + '</b><br/>' +
+						this.y+'';
+					}
 				}
 		};
 
@@ -344,8 +351,12 @@ function buildIHHLOverviewDataAbstractOverView(result){
 				color: '#000',
 				align: 'center',
 				formatter: function() {
-					var pcnt = (this.y / totalCount) * 100;
-					return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+					if(this.x != "TARGET"){
+						var pcnt = ComPerc;
+						return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+					}else{
+						return '<span>'+this.y+'';
+					}
 				}
 			}
 		}];
@@ -523,9 +534,9 @@ function levelWiseSBData(divId)
 									collapse+='<a role="button" class="panelCollapseIcon collapsed '+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
 								}
 								if(levelWiseSBArr[i] == "state" || levelWiseSBArr[i] == "district" || levelWiseSBArr[i] == "constituency")
-									collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview - (SBM- '+divId+') - All Amounts in Lakhs.</h4>';
+									collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview - (SBM- '+divId+')</h4>';
 								else
-									collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview - (SBM- '+divId+') - All Amounts in Rupees.</h4>';
+									collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview - (SBM- '+divId+')</h4>';
 									
 								collapse+='</a>';
 							collapse+='</div>';
@@ -652,7 +663,7 @@ function buildIHHLlocationLvlWiseData(ajaxresp,locationType){
 					str+='<th class="text-capital">TARGET</th>';
 					str+='<th class="text-capital">Grounded</th>';
 					str+='<th class="text-capital">Not-Grounded</th>';
-					str+='<th class="text-capital">In Progress</th>';
+					//str+='<th class="text-capital">In Progress</th>';
 					str+='<th class="text-capital">Completed</th>';
 					str+='<th class="text-capital">Achivement Percentage</th>';
 					
@@ -684,7 +695,7 @@ function buildIHHLlocationLvlWiseData(ajaxresp,locationType){
 							str+='<td class="text-capital">'+ajaxresp[i].target+'</td>';										
 							str+='<td class="text-capital">'+ajaxresp[i].grounded+'</td>';										
 							str+='<td class="text-capital">'+ajaxresp[i].noTGrounded+'</td>';										
-							str+='<td class="text-capital">'+ajaxresp[i].completed+'</td>';										
+							//str+='<td class="text-capital">'+ajaxresp[i].completed+'</td>';										
 							str+='<td class="text-capital">'+ajaxresp[i].completed+'</td>';	
 							
 							if(ajaxresp[i].percentage >=80){

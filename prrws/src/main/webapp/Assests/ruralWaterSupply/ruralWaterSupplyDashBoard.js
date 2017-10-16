@@ -5026,10 +5026,12 @@
 		if(result.subList1 !=null && result.subList1.length>0){
 				var dataArr=[];
 				var totalCount=0;
+				var ComPerc=0;
 				for(var i in result.subList1){
 					dataArr.push(result.subList1[i].target)
 					dataArr.push(result.subList1[i].completed)
-					totalCount =result.subList1[i].target+result.subList1[i].completed
+					totalCount =result.subList1[i].target+result.subList1[i].completed;
+					ComPerc =result.subList1[i].completed*100/result.subList1[i].target;
 				}
 			var colors = ['#FC5049','#14BAAD']
 			var id = 'swatchBharatDivId';
@@ -5076,9 +5078,15 @@
 			var tooltip = {
 				useHTML:true,
 				formatter: function () {
-						var pcnt = (this.y / totalCount) * 100;
-						return '<b>' + this.x + '</b><br/>' +
-							this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+						if(this.x != "TARGET"){
+								var pcnt = ComPerc;
+								return '<b>' + this.x + '</b><br/>' +
+								this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+						}else{
+								return '<b>' + this.x + '</b><br/>' +
+								this.y+'';
+						}
+						
 					}
 			};
 
@@ -5091,8 +5099,12 @@
 					color: '#000',
 					align: 'center',
 					formatter: function() {
-						var pcnt = (this.y / totalCount) * 100;
-						return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+						if(this.x != "TARGET"){
+							var pcnt = ComPerc;
+							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+						}else{
+							return '<span>'+this.y+'';
+						}
 					}
 				}
 			}];

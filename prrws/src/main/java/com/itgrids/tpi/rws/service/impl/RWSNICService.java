@@ -2290,7 +2290,11 @@ public class RWSNICService implements IRWSNICService{
 	 	    				locationVO.setGrounded(jObj.getLong("GROUNDED"));
 	 	    				locationVO.setNoTGrounded(jObj.getLong("NOT_GROUNDED"));
 	 	    				locationVO.setCompleted(jObj.getLong("COMPLETED"));
-	 	    				locationVO.setPercentage(new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				//locationVO.setPercentage(new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				if(locationVO.getCompleted() != null && locationVO.getCompleted().longValue() > 0L && locationVO.getTarget() != null && locationVO.getTarget().longValue() > 0L)
+	 	    					locationVO.setPercentage(new BigDecimal(locationVO.getCompleted()*100.0/locationVO.getTarget()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				else
+	 	    					locationVO.setPercentage("0.00");
 	 	    				resultList.add(locationVO);
 	 	    			}	
 	 	    		}
