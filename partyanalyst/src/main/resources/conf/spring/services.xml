@@ -4510,5 +4510,6 @@
     	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	<property name="candidateDAO" ref="candidateDAO" />
     	<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+    	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
     </bean>
 </beans>			
