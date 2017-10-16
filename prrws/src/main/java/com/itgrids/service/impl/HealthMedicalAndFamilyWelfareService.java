@@ -616,6 +616,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			//update fromDate due to no data
 			fromDate = sdf.parse(firstDate);
 			weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
+			SimpleDateFormat sdf1 = new SimpleDateFormat("MMM yyyy");
 			
 			//create a template for UI
 			DiseasesVO diseasesVO = null;
@@ -646,6 +647,9 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 					}
 					param.setCount(weekCount);
 					param.setPercent(commonMethodsUtilService.calculatePercantage(param.getCount(),totalCount));
+					
+					Date dated = sdf.parse(param.getFromDate());
+					param.setMonth(sdf1.format(dated));
 				}
 			}
 		}catch(Exception e){

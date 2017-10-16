@@ -152,8 +152,8 @@
 				</div>      
 				<div class="col-sm-3">
 					<ul class="switch-btn list-inline" id="spikeReportTypeId">
-						<li class="active" attr_type="All">All</li>
-						<li attr_type="Rural">Rural</li>
+						<li attr_type="All">All</li>
+						<li  class="active" attr_type="Rural">Rural</li>
 						<li attr_type="Urban">Urban</li>
 					</ul>					 
 				</div>
@@ -242,7 +242,7 @@
 								<h4 class="panel-title">RANK WISE ANALYSIS</h4>
 							</div>   
 							<div class="col-sm-8">
-								<p><span class="pull-right">D - DISTRICT , C - CONSTITUENCY , M - MANDAL , T -  TOWN , D - DIVISION</span></p>
+								<p><span class="pull-right">D - DISTRICT , C - CONSTITUENCY , M - MANDAL , T -  TOWN </span></p>
 							</div>
 						</div>
 					</div>
