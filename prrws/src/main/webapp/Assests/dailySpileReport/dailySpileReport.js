@@ -21,6 +21,8 @@ $(document).on("click","#spikeReportTypeId li",function(){
 	var type = $(this).attr("attr_type")
 	$("#spikeReportTypeId li").removeClass("active");
 	$(this).addClass("active");
+	$('.calendar_active_cls li').removeClass("active");
+	$("#defaultButtonId").addClass("active");
 	onLoadCalls()
 });
 function getSizeForRank(min,max,status,selectedType){  
