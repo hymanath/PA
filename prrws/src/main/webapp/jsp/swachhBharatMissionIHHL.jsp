@@ -188,6 +188,7 @@
 		<div class="white-block">
 			<div class="row">
 				<div class="col-sm-12">
+				  <h3>OVERALL PROGRESS DETAILS UP TO 31 MARCH<h4>
 					<div class="col-sm-3 m_top10">
 						<div id="overAllIHHLPerformanceId" style="height:260px;border:1px solid #ccc"></div>
 					</div>
@@ -198,7 +199,7 @@
 			</div>
 			<div class="row m_top20"  style="padding: 11px; margin-left: 0px; margin-right: 0px;">
 				<div class="col-sm-12" style="border: 1px solid #ccc;">
-					<h5 class="m_top10"><b>CATEGORY WISE ANALYSIS</b>  <span class="pull-right">Note : D - DISTRICT , C - CONSTITUENCY , M - MANDAL</span></h5>
+					<h5 class="m_top10"><b>CATEGORY WISE ANALYSIS(up to 31 march)</b>  <span class="pull-right">Note : D - DISTRICT , C - CONSTITUENCY , M - MANDAL</span></h5>
 					<div id="categoryWiseDataId"></div>
 				</div>
 			</div>
@@ -207,9 +208,9 @@
 					<h5 class="m_top10"><b>IHHL Achivement Progress</b></h5>
 					<div class="row">
 							<ul class="list-inline pull-right calendar_active_IHHL_cls" attr_level_type="graph">
-								<li class="active defaultActiveClsDay" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
-								<li attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
-								<li attr_val="month"><img src="Assests/icons/CustomRange_icon.png" />&nbsp;&nbsp;<b><span>Month</span></b></li>
+								<li class="defaultActiveClsDay" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
+								<li class="active" attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
+								<li  attr_val="month"><img src="Assests/icons/CustomRange_icon.png" />&nbsp;&nbsp;<b><span>Month</span></b></li>
 								</li>
 							</ul>  
 					</div>
@@ -221,8 +222,8 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<ul class="list-inline pull-right calendar_active_IHHL_cls" attr_level_type="table">
-						<li class="active defaultActiveClsDay" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
-						<li attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
+						<li class="defaultActiveClsDay" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
+						<li class="active" attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
 						<li attr_val="month"><img src="Assests/icons/CustomRange_icon.png" />&nbsp;&nbsp;<b><span>Month</span></b></li>
 						<li attr_val="custom" id="singleDateRangePicker"><b><span>Custom Range</span></b></li>
 						</li>
