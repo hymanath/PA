@@ -784,14 +784,14 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			sb.append(" and (c.district_id BETWEEN 11 and 23)");
 		}
 		if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l){
-			if (locationTypeId == 3l) {
+			if (locationTypeId.longValue() == 3l) {
 				sb.append("  and c.district_id in(:locationValue) ");
-			} else if (locationTypeId == 4l) {
+			} else if (locationTypeId.longValue() == 4l) {
 				sb.append(" and c.constituency_id in(:locationValue) ");
 			}
 			}
-			sb.append("   " +
-				" group by ce.election_id " +
+			
+		sb.append(" group by ce.election_id " +
 				" order by e.election_year,e.election_id,e.election_scope_id ");
 		SQLQuery query = getSession().createSQLQuery(sb.toString());
 		if(electionScopeIds != null && electionScopeIds.size()>0){
@@ -800,7 +800,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(subTypeList != null && subTypeList.size()>0){
 			query.setParameterList("subTypeList", subTypeList);
 		}
-		if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && locationTypeId.longValue() !=2l){
+		if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && (locationTypeId.longValue() ==3l || locationTypeId.longValue()== 4l)){
 	    	  query.setParameterList("locationValue", locationValue);
 	      }	
 		if(yearsList != null && yearsList.size()>0){
@@ -852,10 +852,10 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l){
 			if (locationTypeId == 3l) {
 				sb.append("  and c.district_id in(:locationValue) ");
-			} else if (locationTypeId == 4l ) {
+			} /*else if (locationTypeId == 4l ) {
 				sb.append(" and c.constituency_id in(:locationValue) ");
 			
-			}
+			}*/
 			}
 		
 		sb.append(" group by e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id");
@@ -876,7 +876,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	         query.setParameterList("years", yearsList);
 	       }
 	      
-		 if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && locationTypeId.longValue() !=2l){
+		 if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && locationTypeId.longValue() ==3l){
 	    	  query.setParameterList("locationValue", locationValue);
 	      }
 	      if(electionScopeIds != null && electionScopeIds.size()>0){
@@ -922,10 +922,10 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l){
 		if (locationTypeId == 3l) {
 			sb.append("  and c.district_id in(:locationValue) ");
-		} else if (locationTypeId == 4l ) {
+		} /*else if (locationTypeId == 4l ) {
 			sb.append(" and c.constituency_id in(:locationValue)");
 		
-		}
+		}*/
 		}
 		
 		if (yearsList != null && yearsList.size() > 0) {
@@ -953,7 +953,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	         query.setParameterList("years", yearsList);
 	       }
 	      
-	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && locationTypeId.longValue() !=2l){
+	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && locationTypeId.longValue() ==3l ){
 	    	  query.setParameterList("locationValue", locationValue);
 	      }
 	      if(electionScopeIds != null && electionScopeIds.size()>0){
@@ -1265,5 +1265,72 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			query.setParameterList("partIds",partIds);
 		}
 		return query.list();
+	}
+	public List<Object[]> getAssemblyPartyListforElection(List<Long> electionScopeIds,List<String> subTypeList,List<Long> yearList,Long constituencyId,Long lelevlId){
+		StringBuilder sb=new StringBuilder();
+		if(lelevlId != null && lelevlId.longValue() ==4l){
+		sb.append("select ");
+				//" b.tehsil_id," );
+		}else if(lelevlId != null && lelevlId.longValue() ==5l || lelevlId != null && lelevlId.longValue() ==7l){
+		sb.append("select " );
+				//" b.local_election_body_id," );
+		}else if(lelevlId != null && lelevlId.longValue() ==6l){
+		sb.append("select " );
+				//"b.panchayat_id," );	
+		}
+		sb.append(" e.election_scope_id,e.election_id,et.election_type,e.election_scope_id," +
+				" e.election_year,n.party_id,p.short_name,count(n.party_id)," +
+				" sum(cbr.votes_earned) from constituency c," +
+				" constituency_election ce,election e ," +
+				" election_scope es ,election_type et ,nomination n ,party p ," +
+				" booth_constituency_election bce,candidate_booth_result cbr,booth b " +
+				" where bce.booth_id = b.booth_id and bce.consti_elec_id = ce.consti_elec_id " +
+				" and cbr.booth_constituency_election_id = bce.booth_constituency_election_id " +
+				" and cbr.nomination_id = n.nomination_id " );
+		if(electionScopeIds != null && electionScopeIds.size()>0){
+			sb.append(" and e.election_scope_id  in (:electionScopeIds) " );
+		  }
+		sb.append(" and n.consti_elec_id = ce.consti_elec_id and n.party_id = p.party_id " +
+				" and e.election_scope_id = es.election_scope_id and et.election_type_id = es.election_type_id " +
+				" and c.constituency_id = ce.constituency_id and ce.election_id = e.election_id " );
+		if(subTypeList != null && subTypeList.size()>0){
+			sb.append(" and e.sub_type in(:subTypeList)" );
+		 }
+		 sb.append(" and (c.district_id BETWEEN 11 and 23)" );
+		if(yearList != null && yearList.size()>0){
+			sb.append(" and e.election_year in(:yearList) ");
+		}	
+		if(constituencyId != null && constituencyId.longValue()>0l){
+			sb.append(" and b.constituency_id =:constituencyId and b.local_election_body_id is null " );
+		  }
+		if(lelevlId != null && lelevlId.longValue() ==4l){
+		sb.append(" group by b.tehsil_id,e.election_scope_id,e.election_id,et.election_type," +
+				" e.election_scope_id,e.election_year,n.party_id " +
+				" order by b.tehsil_id,e.election_scope_id,e.election_id," +
+				" et.election_type,e.election_scope_id,e.election_year,n.party_id");
+		}else if(lelevlId != null && lelevlId.longValue() ==5l || lelevlId != null && lelevlId.longValue() ==7l){
+			sb.append(" group by b.local_election_body_id,e.election_scope_id,e.election_id,et.election_type,e.election_scope_id," +
+					" e.election_year,n.party_id" +
+					"  order by b.local_election_body_id,e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id ");
+		}else if(lelevlId != null && lelevlId.longValue() ==6l){
+			sb.append(" group by b.panchayat_id,e.election_scope_id,e.election_id," +
+					" et.election_type,e.election_scope_id,e.election_year,n.party_id " +
+					" order by b.panchayat_id,e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id ");	
+		}
+		Query query = getSession().createSQLQuery(sb.toString());
+		if(electionScopeIds != null && electionScopeIds.size()>0){
+			query.setParameterList("electionScopeIds", electionScopeIds);
+		}
+		if(yearList != null && yearList.size()>0){
+			query.setParameterList("yearList", yearList);
+		}
+		if(subTypeList != null && subTypeList.size()>0){
+			query.setParameterList("subTypeList", subTypeList);
+		}
+		if(constituencyId != null && constituencyId.longValue()>0l){
+			query.setParameter("constituencyId", constituencyId);
+		}
+		return query.list();
+		
 	}
 }
