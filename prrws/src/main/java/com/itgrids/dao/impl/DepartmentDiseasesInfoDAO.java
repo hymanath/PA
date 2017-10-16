@@ -408,6 +408,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		if(deptIdList != null && deptIdList.size() > 0){
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
 		}
+		
 		sb.append(" order by departmentDiseasesInfo.locationAddress.parliament.name ");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("superLocationId", superLocationId);
@@ -458,7 +459,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		return query.list();
 	}
 	@Override
-	public List<Object[]> getAllConstituencyByDistrictId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList){
+	public List<Object[]> getAllConstituencyByDistrictId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct ");
 		sb.append(" departmentDiseasesInfo.locationAddress.constituency.constituencyId, "
@@ -475,6 +476,11 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		if(deptIdList != null && deptIdList.size() > 0){
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		if(type != null && type.trim().equalsIgnoreCase("Rural")){
+			sb.append(" and departmentDiseasesInfo.locationAddress.tehsil.tehsilId is not null");
+		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
+			sb.append(" and departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId is not null");
 		}
 		sb.append(" order by departmentDiseasesInfo.locationAddress.constituency.name ");
 		Query query = getSession().createQuery(sb.toString());
