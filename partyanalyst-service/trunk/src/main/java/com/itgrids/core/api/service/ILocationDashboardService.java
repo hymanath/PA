@@ -76,4 +76,5 @@ public interface ILocationDashboardService {
 	public List<ElectionInformationVO> getLocationWiseElectionResults(List<Long> electionScopeId,List<String> subTypeList,Long lelevlId,List<Long> levelValue,List<Long> year,List<Long> partyIdsList,Long constituencyId);
 	public  List<ElectionInformationVO>  getElectionDetailsData(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds);
 	public List<CandidateDetailsForConstituencyTypesVO> getPartyWiseMPandMLACandidatesCountDetials(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue,Long partyId);
+	public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(Long loactionTypeId,List<Long> locationValues);
 	}
