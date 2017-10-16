@@ -420,10 +420,10 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
     								targetAchivementDtlsVO.setTarget(dateDtlsVO.getTarget());
     								targetAchivementDtlsVO.setCompleted(dateDtlsVO.getAchivement());
     								targetAchivementDtlsVO.setPercentage(dateDtlsVO.getPercentage());
-    							}
-    							//overall location data
-    							locationEntry.getValue().setTarget(locationEntry.getValue().getTarget()+dateDtlsVO.getTarget());
-    							locationEntry.getValue().setCompleted(locationEntry.getValue().getCompleted()+dateDtlsVO.getAchivement());
+    								//overall location data
+        							locationEntry.getValue().setTarget(locationEntry.getValue().getTarget()+dateDtlsVO.getTarget());
+        							locationEntry.getValue().setCompleted(locationEntry.getValue().getCompleted()+dateDtlsVO.getAchivement());
+        						}
     							locationEntry.getValue().getSubList().add(targetAchivementDtlsVO);
 						}
     				 }
@@ -457,10 +457,10 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
     	    							if (dateDtlsVO != null) {
     	    								targetAchivementDtlsVO.setTarget(targetAchivementDtlsVO.getTarget()+dateDtlsVO.getTarget());
     	    								targetAchivementDtlsVO.setCompleted(targetAchivementDtlsVO.getCompleted()+dateDtlsVO.getAchivement());
+    	    								//over all location count
+        	    							locationEntry.getValue().setTarget(locationEntry.getValue().getTarget()+dateDtlsVO.getTarget());
+        	    							locationEntry.getValue().setCompleted(locationEntry.getValue().getCompleted()+dateDtlsVO.getAchivement());
     	    							}
-    	    							//over all location count
-    	    							locationEntry.getValue().setTarget(locationEntry.getValue().getTarget()+dateDtlsVO.getTarget());
-    	    							locationEntry.getValue().setCompleted(locationEntry.getValue().getCompleted()+dateDtlsVO.getAchivement());
     	    					   }
     							   //calculating percentage week or month wise
     							   targetAchivementDtlsVO.setPercentage(calculatePercantage(locationEntry.getValue().getCompleted(),locationEntry.getValue().getTarget()).toString());

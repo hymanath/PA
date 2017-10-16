@@ -1,7 +1,7 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalColor = {"A":"#009587","B":"#99B95F","C":"#E67401","D":"#FD403A"};	
 var levelWiseSBArr = ['state','district','constituency','mandal'];
-var globalFromDateForLevel = moment().subtract(10,'days').format("DD-MM-YYYY");
+var globalFromDateForLevel = "01-10-2017";
 var globalToDateForLevel = moment().format("DD-MM-YYYY");
 
 onloadCalls();
@@ -24,19 +24,20 @@ function onloadIntiliazilation(){
 		opens: 'left',
 		startDate: globalFromDateForLevel,
         endDate: globalToDateForLevel,
+		minDate: globalFromDateForLevel,
 		locale: {
 		  format: 'DD-MM-YYYY'
 		},
 		ranges: {
-		   'Last 10 Days': [moment().subtract(10, 'days'), moment()],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'This Year': [moment().startOf('Year'), moment()],
-		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+		  // 'Last 10 Days': [moment().subtract(10, 'days'), moment()],
+          // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		  // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   //'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		  // 'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		  // 'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           //'This Month': [moment().startOf('month'), moment()],//.endOf('month')
+          // 'This Year': [moment().startOf('Year'), moment()],
+		  // 'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
 	});
 	$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
@@ -48,6 +49,7 @@ function onloadIntiliazilation(){
 		opens: 'left',
 		startDate: globalFromDateForLevel,
 		endDate: globalToDateForLevel,
+		minDate: globalFromDateForLevel,
 		locale: {
 		  format: 'DD-MM-YYYY'
 		}
