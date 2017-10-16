@@ -620,8 +620,7 @@ function getIHHLOverviewData(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		var totalCount = result.subList1[0].target+result.subList1[0].completed;
-			totalCount = (result.subList1[0].completed / totalCount) * 100;
+		var totalCount = (result.subList1[0].completed *100) / result.subList1[0].target;
 		$(".swatchBharathIHHL").html(totalCount.toFixed(2)+'%');
 	});
 }
