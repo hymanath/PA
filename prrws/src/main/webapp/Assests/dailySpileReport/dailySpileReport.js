@@ -174,13 +174,13 @@ function onRequestCall(){
 	for(var i in blockNames){  
 		if(blockNames[i] == 'DISTRICT'){ 
 			getCaseCountLocationWise(3,blockNames[i],"Districts",0,selectedType);    
-			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames");
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames",selectedType);
 		}else if(blockNames[i] == 'CONSTITUENCY'){
 			$("#constLevelConstNames").html('');   
 			$("#constLevelConstNames").trigger('chosen:updated');  
 			
 			getCaseCountLocationWise(4,blockNames[i],"Districts",0,selectedType);
-			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames");
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames",selectedType);
 		}else if(blockNames[i] == 'MANDAL'){
 			$("#mandalLevelConstNames").html('');     
 			$("#mandalLevelConstNames").trigger('chosen:updated');
@@ -188,7 +188,7 @@ function onRequestCall(){
 			$("#mandalLevelMandalNames").trigger('chosen:updated');
 			
 			getCaseCountLocationWise(5,blockNames[i],"Districts",0,selectedType);
-			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames");
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames",selectedType);
 		}
 	}
 }
@@ -543,13 +543,13 @@ function collapseBlock(){
 	for(var i in blockNames){
 		if(blockNames[i] == 'DISTRICT'){
 			getCaseCountLocationWise(3,blockNames[i],"Districts",0,selectedType);    
-			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames");
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames",selectedType);
 		}else if(blockNames[i] == 'CONSTITUENCY'){
 			getCaseCountLocationWise(4,blockNames[i],"Districts",0,selectedType);
-			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames");
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames",selectedType);
 		}else if(blockNames[i] == 'MANDAL'){
 			getCaseCountLocationWise(5,blockNames[i],"Districts",0,selectedType);
-			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames");
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames",selectedType);
 		}
 	}
 }
@@ -607,10 +607,10 @@ function initializeClickEventOnTableDiv(){
 		//DISTRICT   
 		if(blockLevel == 'DISTRICT' && filterType == "Parliaments"){
 			$(".toggleClassForDistBlock").toggle();
-			getSubLocationsBySuperLocationId(11,"distLevelParliamentNames");
+			getSubLocationsBySuperLocationId(11,"distLevelParliamentNames",selectedType);
 		}else if(blockLevel == 'DISTRICT' && filterType == "Districts"){
 			$(".toggleClassForDistBlock").toggle();
-			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames");   
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames",selectedType);   
 		}
 		
 		//CONSTITUENCY
@@ -625,7 +625,7 @@ function initializeClickEventOnTableDiv(){
 			//UPDATE ATTR_PARENT OF constLevelConstNames SECTION
 			$("#constLevelConstNames").attr("attr_parent","constLevelParliaNames");
 			
-			getSubLocationsBySuperLocationId(11,"constLevelParliaNames");
+			getSubLocationsBySuperLocationId(11,"constLevelParliaNames",selectedType);
 		}else if(blockLevel == 'CONSTITUENCY' && filterType == "Districts"){
 			$(".toggleClassForConstBlock").toggle();
 			
@@ -637,7 +637,7 @@ function initializeClickEventOnTableDiv(){
 			//UPDATE ATTR_PARENT OF constLevelConstNames SECTION
 			$("#constLevelConstNames").attr("attr_parent","constLevelDistNames");
 			
-			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames");   
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames",selectedType);   
 		}
 		
 		//MANDAL
@@ -658,7 +658,7 @@ function initializeClickEventOnTableDiv(){
 			$("#mandalLevelConstNames").attr("attr_parent","mandalLevelParliNames");
 			
 			
-			getSubLocationsBySuperLocationId(11,"mandalLevelParliNames");
+			getSubLocationsBySuperLocationId(11,"mandalLevelParliNames",selectedType);
 		}else if(blockLevel == 'MANDAL' && filterType == "Districts"){
 			$(".toggleClassForMandalBlock").toggle();
 			
@@ -675,7 +675,7 @@ function initializeClickEventOnTableDiv(){
 			//UPDATE ATTR_PARENT OF mandalLevelConstNames SECTION
 			$("#mandalLevelConstNames").attr("attr_parent","mandalLevelDistNames");
 			
-			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames");   
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames",selectedType);   
 		}
 		
 	});
@@ -687,7 +687,7 @@ function initializeClickEventOnTableDiv(){
 			$("#"+dependantDivId).html('');   
 			$("#"+dependantDivId).trigger('chosen:updated');
 		}
-		getSubLocationsBySuperLocationId(dependantId,dependantDivId);
+		getSubLocationsBySuperLocationId(dependantId,dependantDivId,selectedType);
 	});
 	
 	$(document).on("change","#mandalLevelDistNames",function(){
@@ -702,7 +702,7 @@ function initializeClickEventOnTableDiv(){
 			$("#"+nextDependantDivId).trigger('chosen:updated');
 			
 		}
-		getSubLocationsBySuperLocationId(dependantId,dependantDivId);
+		getSubLocationsBySuperLocationId(dependantId,dependantDivId,selectedType);
 	});
 	
 	$(document).on("change","#mandalLevelConstNames",function(){
@@ -712,7 +712,7 @@ function initializeClickEventOnTableDiv(){
 			$("#"+dependantDivId).html('');   
 			$("#"+dependantDivId).trigger('chosen:updated');
 		}  
-		getSubLocationsBySuperLocationId(dependantId,dependantDivId);
+		getSubLocationsBySuperLocationId(dependantId,dependantDivId,selectedType);
 	});
 	
 	$(document).on("change","#constLevelParliaNames",function(){
@@ -722,7 +722,7 @@ function initializeClickEventOnTableDiv(){
 			$("#"+dependantDivId).html('');   
 			$("#"+dependantDivId).trigger('chosen:updated');
 		}
-		getSubLocationsBySuperLocationId(dependantId,dependantDivId);
+		getSubLocationsBySuperLocationId(dependantId,dependantDivId,selectedType);
 	});
 	
 	$(document).on("change","#mandalLevelParliNames",function(){
@@ -737,7 +737,7 @@ function initializeClickEventOnTableDiv(){
 			$("#"+nextDependantDivId).trigger('chosen:updated');
 			
 		}
-		getSubLocationsBySuperLocationId(dependantId,dependantDivId);   
+		getSubLocationsBySuperLocationId(dependantId,dependantDivId,selectedType);   
 	});
 	
 	//ON CHANGE AJAX CALLS
@@ -1076,7 +1076,7 @@ function buildTableData(ajaxresp,blockName,filterType,glStartDate,glEndDate){
 	});
 }
 
-function getSubLocationsBySuperLocationId(globalStateIdForSelectBox,divId){
+function getSubLocationsBySuperLocationId(globalStateIdForSelectBox,divId,selectedType){
 	var diseasesIdArr=[];
 	diseasesIdArr.push(1);
 	diseasesIdArr.push(2);
@@ -1084,7 +1084,8 @@ function getSubLocationsBySuperLocationId(globalStateIdForSelectBox,divId){
 		fromDate : glStartDate,
 		toDate : glEndDate,                 
 		diseasesIdList : diseasesIdArr,
-		superLocationId : globalStateIdForSelectBox       
+		superLocationId : globalStateIdForSelectBox,
+		type       : selectedType
     }
     $.ajax({
       url : "getSubLocationsBySuperLocationId",       

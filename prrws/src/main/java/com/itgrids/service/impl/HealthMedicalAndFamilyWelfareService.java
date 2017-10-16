@@ -891,7 +891,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
  	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getAllSubLocationsBySuperLocationId(com.itgrids.dto.InputVO)
  	 */
  	@Override
- 	public Set<LocationIdNameVO> getAllSubLocationsBySuperLocationId(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long superLocationId){
+ 	public Set<LocationIdNameVO> getAllSubLocationsBySuperLocationId(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long superLocationId,String type){
  		try{
  			Set<LocationIdNameVO> detailsVOs = new LinkedHashSet<LocationIdNameVO>();
  			LocationIdNameVO locationFundDetailsVO = null;
@@ -939,9 +939,9 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 				}
 				lvlIdStr = IConstants.DISTRICT_LEVEL_SCOPE_ID.toString();
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get constituencyIds
-				locationList = departmentDiseasesInfoDAO.getAllConstituencyByDistrictId(sDate,eDate,superLocationId,diseasesIdList,deptIdList);
+				locationList = departmentDiseasesInfoDAO.getAllConstituencyByDistrictId(sDate,eDate,superLocationId,diseasesIdList,deptIdList,type);
 				if(!(today.getTime() >= sDate.getTime() && today.getTime() <= eDate.getTime())){
-					locationListToday = departmentDiseasesInfoDAO.getAllConstituencyByDistrictId(today,today,superLocationId,diseasesIdList,deptIdList);
+					locationListToday = departmentDiseasesInfoDAO.getAllConstituencyByDistrictId(today,today,superLocationId,diseasesIdList,deptIdList,type);
 				}
 				lvlIdStr = IConstants.CONSTITUENCY_LEVEL_SCOPE_ID.toString();
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds

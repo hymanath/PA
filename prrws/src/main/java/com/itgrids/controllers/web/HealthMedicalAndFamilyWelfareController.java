@@ -53,7 +53,7 @@ public class HealthMedicalAndFamilyWelfareController {
 	}
 	@PostMapping("/getSubLocationsBySuperLocationId")
 	public @ResponseBody Set<LocationIdNameVO> getAllSubLocationsBySuperLocationId(@RequestBody InputVO inputVO){
-		Set<LocationIdNameVO> locationList = healthMedicalAndFamilyWelfareService.getAllSubLocationsBySuperLocationId(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getSuperLocationId());
+		Set<LocationIdNameVO> locationList = healthMedicalAndFamilyWelfareService.getAllSubLocationsBySuperLocationId(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getSuperLocationId(),inputVO.getType());
 		return locationList;
 	}
 }

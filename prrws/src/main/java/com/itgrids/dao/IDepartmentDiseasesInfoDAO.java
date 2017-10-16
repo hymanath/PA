@@ -17,7 +17,7 @@ public interface IDepartmentDiseasesInfoDAO extends GenericDao<DepartmentDisease
 	public List<Object[]> getLocationDtlsRankWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId);
 	public List<Object[]> getAllParliamentByStateId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList);
 	public List<Object[]> getAllDistrictByStateId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList);
-	public List<Object[]> getAllConstituencyByDistrictId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList);
+	public List<Object[]> getAllConstituencyByDistrictId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList,String type);
 	public List<Object[]> getAllTehsilByConstituencyId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList);
 	public List<Object[]> getAllPanchayatByTehsilId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList);
 	public List<Object[]> getAllConstituencyByParliamentConstId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList);
