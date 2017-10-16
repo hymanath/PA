@@ -43,6 +43,8 @@ function onloadIntiliazilation(){
 	$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 			globalFromDateForLevel = picker.startDate.format('DD-MM-YYYY');
 			globalToDateForLevel = picker.endDate.format('DD-MM-YYYY');
+			$(".commpnliCls").removeClass("active");
+			$(".weeklicls").addClass("active");
 			onloadCalls();
 	});	
 	$("#singleDateRangePicker").daterangepicker({
@@ -802,7 +804,9 @@ $(document).on("click","[role='tabStatusWise'] li",function(){
 		 if($(this).hasClass("active")){
 			  displayType = $(this).attr("attr_val");
 		 }
-		
+		if(displayType =='custom'){
+			displayType='week';
+		}
 	});
 	
 	if(reportType == "status"){
