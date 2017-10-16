@@ -4407,7 +4407,8 @@
   		<property name="publicRepresentativeDAO" ref="publicRepresentativeDAO"></property> 				
   		<property name="tdpCommitteeLevelDAO" ref="tdpCommitteeLevelDAO"></property> 
   		<property name="partyDAO" ref="partyDAO"></property> 
-  		<property name="electionDAO" ref="electionDAO"></property> 						
+  		<property name="electionDAO" ref="electionDAO"></property> 
+  		<property name="delimitationConstituencyMandalDetailsDAO" ref="delimitationConstituencyMandalDetailsDAO"></property>						
   </bean>
   <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
          <property name="districtDAO" ref="districtDAO" />
