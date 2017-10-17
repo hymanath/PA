@@ -1197,7 +1197,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	              sb.append(" and b.ward_id in (:locationValues)"); 
 	            }
 	        }
-				sb.append(" GROUP BY e.election_year ");
+				sb.append(" GROUP BY e.election_year order by e.election_year desc ");
 				
 				Query query = getSession().createSQLQuery(sb.toString());
 				
@@ -1228,7 +1228,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	public List<Object[]> getLocationwiseAssemblyEarnedVotes(List<Long> electionYrs,List<Long> parliamentIds,List<Long> assemlyIds ,List<Long> partyids,Long locationTypeId,List<Long> locationValues,List<String> subtypes,Long electionScopeId){
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(" SELECT c.state_id,e.election_year,n.party_id,sum(cbr.votes_earned),p.party_flag,p.short_name from election e ,election_scope es,election_type  et ," +
+		sb.append(" SELECT c.state_id,e.election_year,n.party_id,sum(cbr.votes_earned)  from election e ,election_scope es,election_type  et ," +
 				" nomination n, constituency_election ce,party p,booth b ,constituency c ,booth_constituency_election bce,candidate_booth_result cbr" +
 				" where n.consti_elec_id = ce.consti_elec_id and ce.election_id = e.election_id and e.election_scope_id = es.election_scope_id and " +
 				" es.election_type_id = et.election_type_id and n.party_id = p.party_id and bce.consti_elec_id  =ce.consti_elec_id and " +
@@ -1278,7 +1278,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	              sb.append(" and b.ward_id in (:locationValues)"); 
 	            }
 	        }
-		sb.append("GROUP BY c.state_id,e.election_year,n.party_id");
+		sb.append("GROUP BY c.state_id,e.election_year,n.party_id order by e.election_year desc ");
 		
 		Query query = getSession().createSQLQuery(sb.toString());
 		
