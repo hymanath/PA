@@ -28,7 +28,14 @@ public class MeetingsVO implements Serializable{
 	   
 	private List<MeetingsVO> villageWardList;
 	private List<MeetingsVO> mandalTownList;
-	
+	private List<MeetingsVO> yearWiseMeetingsCount;
+	private Long id;
+	private Long year=0l;
+	private String status;
+	private Long count;
+	private Long NoOfMonth=0l;
+	private String monthName;
+	private Long total = 0l;
 	public Long getYesCount() {
 		return yesCount;
 	}
@@ -149,6 +156,54 @@ public class MeetingsVO implements Serializable{
 	}
 	public void setMandalTownSerialNo(int mandalTownSerialNo) {
 		this.mandalTownSerialNo = mandalTownSerialNo;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getYear() {
+		return year;
+	}
+	public void setYear(Long year) {
+		this.year = year;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public List<MeetingsVO> getYearWiseMeetingsCount() {
+		return yearWiseMeetingsCount;
+	}
+	public void setYearWiseMeetingsCount(List<MeetingsVO> yearWiseMeetingsCount) {
+		this.yearWiseMeetingsCount = yearWiseMeetingsCount;
+	}
+	public Long getNoOfMonth() {
+		return NoOfMonth;
+	}
+	public void setNoOfMonth(Long noOfMonth) {
+		NoOfMonth = noOfMonth;
+	}
+	public String getMonthName() {
+		return monthName;
+	}
+	public void setMonthName(String monthName) {
+		this.monthName = monthName;
+	}
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
 	}
 	
 }
