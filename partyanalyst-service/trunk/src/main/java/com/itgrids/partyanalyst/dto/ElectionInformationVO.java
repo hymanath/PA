@@ -40,6 +40,9 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private Long assemblyEarndVotes;
 	private Long parliamentEarnedVotes;
 	private Double earnedVotersPerc1;
+	private Long id;
+	private String name;
+	private Double percentage = 0.0;
 	
 	private List<ElectionInformationVO> list = new CopyOnWriteArrayList<ElectionInformationVO>();
 	private List<ElectionInformationVO> subList1 = new ArrayList<ElectionInformationVO>();
@@ -50,6 +53,12 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 		this.partyName=name;
 	}
 	
+	public Double getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(Double percentage) {
+		this.percentage = percentage;
+	}
 	public ElectionInformationVO(String status,String range,Long wonSeatsCount){
 		this.status=status;
 		this.range=range;
@@ -248,7 +257,17 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	public void setEarnedVotersPerc1(Double earnedVotersPerc1) {
 		this.earnedVotersPerc1 = earnedVotersPerc1;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	
-	
-
 }
