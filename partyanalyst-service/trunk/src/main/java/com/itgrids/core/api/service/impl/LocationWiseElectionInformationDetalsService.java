@@ -670,4 +670,67 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			Log.error("Exception raised at setPolledVotesPerElectionYear service"+e);
 		}
 	}
+	
+	 /**
+	 * @author : Babu kurakula <href:kondababu.kurakula@itgrids.com >
+	 * @Date   :17th OCT,2017
+	 * @description : get location wise status wise counts and deatiles 
+	 * @param : locationTypeId, locationValue ,partyIdList,electionYrs,
+	 * 		 electionScopeIds,subTypes,searchType,statusType,year
+	 * @return :List of ElectionInformationVO 
+ */
+public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYearWise(Long locationTypeId,Long locationValue,List<Long> partyIdList,
+	List<Long> electionYrs,List<Long> electionScopeIds, List<String> subTypes,String searchType,String statusType,String year){
+	List<ElectionInformationVO> finalList=new ArrayList<ElectionInformationVO>(0);
+	Map<String,Map<String,Long>>  yearAndStatusCountMap=new HashMap<String,Map<String,Long>>();
+	try{
+		List<ElectionInformationVO> electionInformationVOList=getElectionInformationLocationWiseStatus(locationTypeId,locationValue,partyIdList,electionYrs,electionScopeIds,subTypes,searchType);
+		if(commonMethodsUtilService.isListOrSetValid(electionInformationVOList)){
+			for(ElectionInformationVO locationVo:electionInformationVOList){
+				boolean flage=false;
+				if(commonMethodsUtilService.isListOrSetValid(locationVo.getList())){
+					for(ElectionInformationVO listVo:locationVo.getList()){
+						if(listVo.getStatus() !=null && listVo.getStatus().trim().equalsIgnoreCase(statusType.trim()) && listVo.getElectionYear().trim().equalsIgnoreCase(year.trim())){
+							flage=true;
+						}
+					}
+				}
+				if(flage){
+					finalList.add(locationVo);
+				}
+			}
+			for(ElectionInformationVO vo :finalList){
+				if(commonMethodsUtilService.isListOrSetValid(vo.getList())){
+					for(ElectionInformationVO subVo: vo.getList()){
+						Map<String,Long> statusCountsMap=yearAndStatusCountMap.get(subVo.getElectionYear().trim());
+						if(!commonMethodsUtilService.isMapValid(statusCountsMap))
+							statusCountsMap=new HashMap<String,Long>();
+						if(subVo.getStatus() !=null && subVo.getStatus().trim().length() >0){
+							Long count=statusCountsMap.get(subVo.getStatus().trim());
+							if(count ==null)
+								count=0L;
+							count=count+1L;
+							statusCountsMap.put(subVo.getStatus().trim(), count);
+						}		
+						yearAndStatusCountMap.put(subVo.getElectionYear().trim(),statusCountsMap);
+					}
+				}
+			}
+		}
+		if(commonMethodsUtilService.isListOrSetValid(finalList.get(0).getList())){
+			for(ElectionInformationVO subvo: finalList.get(0).getList()){
+				Map<String,Long> statusCountsMap=yearAndStatusCountMap.get(subvo.getElectionYear().trim());
+				if(commonMethodsUtilService.isListOrSetValid(subvo.getSubList1())){
+					for(ElectionInformationVO vo: subvo.getSubList1()){
+						vo.setWonSeatsCount(statusCountsMap.get(vo.getStatus().trim()));
+					}
+				}
+			}
+		}
+	}catch(Exception e){
+		Log.error("Exception raised at getElectionInformationLocationWiseStatusAndYearWise service"+e);
+
+	}
+	return finalList;
+}
 }
