@@ -515,16 +515,8 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 		try {
-			JSONArray locationDtlsArr = null;
-			if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("State")) {
-				locationDtlsArr = jsonObject.getJSONArray("MinisterDBStateFundMngmntData");
-			} else if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("district")) {
-				locationDtlsArr = jsonObject.getJSONArray("MinisterDBDistrictFundMngmntData");
-			} else if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("constituency")) {
-				locationDtlsArr = jsonObject.getJSONArray("MinisterDBAssemblyFundMngmntData");
-			} else if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("mandal")) {
-				locationDtlsArr = jsonObject.getJSONArray("MinisterDBMandalFundMngmntData");
-			}
+			
+			JSONArray locationDtlsArr = getJsonArrayBasedOnLocationType(inputVO, jsonObject); //getting JSONArray from jsonObject based on location
 
 			if (locationDtlsArr != null && locationDtlsArr.length() > 0) {
 				for (int i = 0; i < locationDtlsArr.length(); i++) {
@@ -573,19 +565,12 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		}
 		return locationIdStr;
 	}
-	public List<SwachhBharatMissionIHHLDtlsVO> getStatusWiseLocationDetails(InputVO inputVO, JSONObject jsonObject) {
+	
+	private List<SwachhBharatMissionIHHLDtlsVO> getStatusWiseLocationDetails(InputVO inputVO, JSONObject jsonObject) {
 		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
 		try {
-			JSONArray locationDtlsArr = null;
-			if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("State")) {
-				locationDtlsArr = jsonObject.getJSONArray("MinisterDBStateFundMngmntData");
-			} else if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("district")){
-				locationDtlsArr = jsonObject.getJSONArray("MinisterDBDistrictFundMngmntData");
-			} else if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("constituency")) {
-				locationDtlsArr = jsonObject.getJSONArray("MinisterDBAssemblyFundMngmntData");
-			} else if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("mandal")) {
-				locationDtlsArr = jsonObject.getJSONArray("MinisterDBMandalFundMngmntData");
-			}
+			
+			JSONArray locationDtlsArr = getJsonArrayBasedOnLocationType(inputVO, jsonObject); //getting JSONArray from jsonObject based on location
 
 			if (locationDtlsArr != null && locationDtlsArr.length() > 0) {
 				for (int i = 0; i < locationDtlsArr.length(); i++) {
@@ -594,13 +579,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 					JSONObject jObj = (JSONObject) locationDtlsArr.get(i);
 
 					setBaseLocationByLocationType(jObj, locationVO,inputVO.getSubLocation(),inputVO.getReportType());// setting location based on location type
-
-					locationVO.setTarget(jObj.has("TARGET") ? jObj.getLong("TARGET") : 0l);
-					locationVO.setGrounded(jObj.has("GROUNDED") ? jObj.getLong("GROUNDED") : 0l);
-					locationVO.setNoTGrounded(jObj.has("NOTGROUNDED") ? jObj.getLong("NOTGROUNDED") : 0l);
-					locationVO.setInProgress(jObj.has("INPROGRESS") ? jObj.getLong("INPROGRESS") : 0l);
-					locationVO.setCompleted(jObj.has("COMPLETEED") ? jObj.getLong("COMPLETEED") : 0l);
-					locationVO.setPercentage(jObj.has("ACHIVEMENTPERCENTAGE") ? jObj.getString("ACHIVEMENTPERCENTAGE") : "");
+					setBasicInformationBasedOnLocationType(locationVO, jObj);//setting other information
 					resultList.add(locationVO);
 				}
 			}
@@ -649,6 +628,133 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		    }
 		    return d;
 	 }
+	 private JSONArray getJsonArrayBasedOnLocationType(InputVO inputVO,JSONObject jsonObject) {
+		  JSONArray locationDtlsArr = null;
+		  try {
+				if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("State")) {
+					locationDtlsArr = jsonObject.getJSONArray("MinisterDBStateFundMngmntData");
+				} else if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("district")){
+					locationDtlsArr = jsonObject.getJSONArray("MinisterDBDistrictFundMngmntData");
+				} else if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("constituency")) {
+					locationDtlsArr = jsonObject.getJSONArray("MinisterDBAssemblyFundMngmntData");
+				} else if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("mandal")) {
+					locationDtlsArr = jsonObject.getJSONArray("MinisterDBMandalFundMngmntData");
+				}
+		  } catch (Exception e) {
+			  LOG.error("Exception raised at getJsonArray - SwachhBharatMissionIHHLService service", e);
+		  }
+		  return locationDtlsArr;
+	 }
+	     /**
+		 * @author Santosh Kumar Verma
+		 * @param InputVO inputVO
+		 * @description {This service is used to get Location Details based on category.}
+		 * @return List<SwachhBharatMissionIHHLDtlsVO>
+		 * @Date 17-10-2017
+		 */
+	 public List<SwachhBharatMissionIHHLDtlsVO> getLocationDetailsBasedOnCategory(InputVO inputVO) {
+		 List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<>(0);
+		  try {
+			    Date fromDate = null;
+				Date toDate = null;
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				if (inputVO.getFromDate() != null && inputVO.getFromDate().trim().length() > 0 && inputVO.getToDate() != null && inputVO.getToDate().trim().length() > 0) {
+					fromDate = sdf.parse(inputVO.getFromDate());
+					toDate = sdf.parse(inputVO.getToDate());
+				}
+
+				String str = convertingInputVOToString(inputVO);
+				ClientResponse response = null;
+				if (inputVO.getReportType() != null && inputVO.getReportType().equalsIgnoreCase("status")) {
+					response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails",str);
+				} else  {
+					response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails",str);
+				}
+				 String output = response.getEntity(String.class);
+				if (output != null && output.length() > 0) {
+					JSONObject jsonObject = new JSONObject(output);
+
+					if (inputVO.getReportType().equalsIgnoreCase("status")) {
+						resultList = filterRequiredLocationBasedOnCategory(inputVO,jsonObject);
+					} else if (inputVO.getReportType().equalsIgnoreCase("daily")) {
+                       //resultList  = getDateWiseLocationDetails(inputVO,jsonObject,fromDate,toDate);
+					}
+				}
+				
+				
+		  } catch (Exception e) {
+			  LOG.error("Exception raised at getLocationDetailsBasedOnCategory - SwachhBharatMissionIHHLService service", e);
+		  }
+		  return resultList;
+	 }
+	 
+	private List<SwachhBharatMissionIHHLDtlsVO> filterRequiredLocationBasedOnCategory(InputVO inputVO, JSONObject jsonObject) {
+		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
+		try {
+
+			JSONArray locationDtlsArr = getJsonArrayBasedOnLocationType(inputVO, jsonObject); // getting JSONArray from jsonObject based on location
+
+			if (locationDtlsArr != null && locationDtlsArr.length() > 0) {
+				for (int i = 0; i < locationDtlsArr.length(); i++) {
+
+					SwachhBharatMissionIHHLDtlsVO locationVO = null;
+					JSONObject jObj = (JSONObject) locationDtlsArr.get(i);
+					Double percentage = Double.parseDouble(jObj.has("ACHIVEMENTPERCENTAGE") ? jObj.getString("ACHIVEMENTPERCENTAGE") : "0");
+					if (inputVO.getDisplayType() != null) {
+						if (inputVO.getDisplayType().equalsIgnoreCase("A")) {
+							if (percentage >= 80d && percentage <= 100d) {
+								locationVO = new SwachhBharatMissionIHHLDtlsVO();
+								setBaseLocationByLocationType(jObj, locationVO,inputVO.getSubLocation(),inputVO.getReportType());// setting location based on  location type
+								setBasicInformationBasedOnLocationType(locationVO, jObj);// setting other information
+								resultList.add(locationVO);
+							}
+
+						} else if (inputVO.getDisplayType().equalsIgnoreCase("B")) {
+							if (percentage >= 60d && percentage < 80d) {
+								locationVO = new SwachhBharatMissionIHHLDtlsVO();
+								setBaseLocationByLocationType(jObj, locationVO,inputVO.getSubLocation(),inputVO.getReportType());
+								setBasicInformationBasedOnLocationType(locationVO, jObj);
+								resultList.add(locationVO);
+							}
+						} else if (inputVO.getDisplayType().equalsIgnoreCase("C")) {
+							if (percentage >= 40d && percentage < 60d) {
+								locationVO = new SwachhBharatMissionIHHLDtlsVO();
+								setBaseLocationByLocationType(jObj, locationVO,inputVO.getSubLocation(),inputVO.getReportType());
+								setBasicInformationBasedOnLocationType(locationVO, jObj);
+								resultList.add(locationVO);
+							}
+						} else if (inputVO.getDisplayType().equalsIgnoreCase("D")) {
+							if (percentage > 0d && percentage < 40) {
+								locationVO = new SwachhBharatMissionIHHLDtlsVO();
+								setBaseLocationByLocationType(jObj, locationVO,inputVO.getSubLocation(),inputVO.getReportType());
+								setBasicInformationBasedOnLocationType(locationVO, jObj);
+								resultList.add(locationVO);
+							}
+						}
+
+					}
+
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getStatusWiseLocationDetails() in SwachhBharatMissionIHHLService class",e);
+		}
+		return resultList;
+	}
+	 
+	 private void setBasicInformationBasedOnLocationType(SwachhBharatMissionIHHLDtlsVO locationVO,JSONObject jObj) {
+		  try {
+				locationVO.setTarget(jObj.has("TARGET") ? jObj.getLong("TARGET") : 0l);
+				locationVO.setGrounded(jObj.has("GROUNDED") ? jObj.getLong("GROUNDED") : 0l);
+				locationVO.setNoTGrounded(jObj.has("NOTGROUNDED") ? jObj.getLong("NOTGROUNDED") : 0l);
+				locationVO.setInProgress(jObj.has("INPROGRESS") ? jObj.getLong("INPROGRESS") : 0l);
+				locationVO.setCompleted(jObj.has("COMPLETEED") ? jObj.getLong("COMPLETEED") : 0l);
+				locationVO.setPercentage(jObj.has("ACHIVEMENTPERCENTAGE") ? jObj.getString("ACHIVEMENTPERCENTAGE") : "");
+		  } catch (Exception e) {
+			  LOG.error("Exception occured at setBasicInformationBasedOnLocationType() in SwachhBharatMissionIHHLService class",e);
+		  }
+	 }
+	 
 	private String convertingInputVOToString(InputVO inputVO){
 		String str = "";
 		try {

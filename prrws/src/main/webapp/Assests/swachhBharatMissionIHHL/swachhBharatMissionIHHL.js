@@ -154,9 +154,9 @@ function getSwachhBharatMissionOverviewDtls(){
 						str+='</div>';
 						str+='<div class="panel-body">';
 							str+='<ul class="list-inline borderleft">';
-								str+='<li><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">D</span> - '+result.subList[i].districtCount+'</h3></li>';
-								str+='<li><h3 ><span style="color:'+globalColor[result.subList[i].name.trim()]+'">C</span> - '+result.subList[i].constituencyCount+'</h3></li>';
-								str+='<li><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">M</span> - '+result.subList[i].mandalCount+'</h3></li>';
+								str+='<li style="cursor:pointer;" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="district" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">D</span> - '+result.subList[i].districtCount+'</h3></li>';
+								str+='<li style="cursor:pointer;" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="constituency" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">C</span> - '+result.subList[i].constituencyCount+'</h3></li>';
+								str+='<li style="cursor:pointer;" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="mandal" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">M</span> - '+result.subList[i].mandalCount+'</h3></li>';
 							str+='<ul>';
 						str+='</div>';	
 					str+='</div>';
@@ -351,26 +351,6 @@ function getSwachhBharatMissionOverviewDtls(){
 			}]
 		});
 	}
-}
-
-function getSwachhBharatMissionStatusOverviewDtls(){
-	var json = {
-		fromDate:globalFromDateForLevel,
-		toDate:globalToDateForLevel,
-		year:""
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getSwachhBharatMissionStatusOverviewDtls',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		console.log(result);
-	});	
 }
 function getIHHLCategoryWiseAnalysis(){
 		var json = {
@@ -852,3 +832,32 @@ $(document).on("click",".calendar_active_IHHL_cls li",function(){
 		getIHHLAchivementProgressDtls(displayType);
 	}	
 });
+$(document).on("click",".categoryCls",function() {
+	var categoryType = $(this).attr("attr_category_type");
+	var locationType = $(this).attr("attr_location_type");
+	getLocationDetailsBasedOnCategory(categoryType,locationType);
+});
+
+function getLocationDetailsBasedOnCategory(categoryType,locationType){
+	var json = {
+		fromDate:globalFromDateForLevel,
+		toDate:globalToDateForLevel,
+		location:"state",
+		locationId:"-1",
+		subLocation:locationType, 
+		displayType:categoryType,
+		reportType:"status",
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getLocationDetailsBasedOnCategory',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		console.log(result);
+	});	
+}
