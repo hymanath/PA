@@ -198,11 +198,11 @@
 									<option value="886">TRS</option>
 								</select>
 							</div>
-							<div class="col-sm-2 m_top30">
+							<!--<div class="col-sm-2 m_top30">
 								<label class="checkbox-inline">
 								  <input type="checkbox" id="" value="YES" name="alliance" class="includeAllianceCls" checked>Include Alliance
 								</label>
-							</div>
+							</div>-->
 							<div class="col-sm-3 m_top30">
 								<button class="btn btn-success btn-xs getDetailsForCrossVotingCls" attr_result_type="crossVoting">Submit</button>
 							</div>

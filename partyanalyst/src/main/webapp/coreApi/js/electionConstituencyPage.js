@@ -205,15 +205,15 @@ function getAllConstituencyByParlimentId(parliamentId){
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
+			var str='';
+			str+='<option value="0" >All</option>';
 		  if(result !=null && result.length>0){
-				var str='';
 				for(var i in result){
-					str+='<option value="'+result[i].locationId+'" selected>'+result[i].locationName+'</option>';
-						
+					str+='<option value="'+result[i].locationId+'" >'+result[i].locationName+'</option>';
 				} 
-				$('#assemblyConsId').html(str);
-				$('#assemblyConsId').trigger("chosen:updated");
 			}
+			$('#assemblyConsId').html(str);
+				$('#assemblyConsId').trigger("chosen:updated");
 		});
    }
 function getDetailedElectionInformaction(){
@@ -980,7 +980,7 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 					table+='<td>'+result.subList1[i].assemblyValidVoters+'</td>';
 					table+='<td>'+result.subList1[i].parliamentValidVoters+'</td>';
 						for(var j in result.subList1[i].list){
-							if(result.subList1[i].list[j].perc != null && result.subList1[i].list[j].perc != "0.0"){
+							if(result.subList1[i].list[j].perc != null ){
 								table+='<td>';
 									table+='<ul class="cross-voting-list">';
 									table+='<li >';
