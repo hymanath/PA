@@ -6171,6 +6171,12 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 									}
 								}
 							}
+							Collections.sort(locationVO.getSubList1(), new Comparator<ElectionInformationVO>() {
+								public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
+									return o2.getElectionYear().compareTo(o1.getElectionYear());
+								}
+							});
+							
 						}
 						
 						for (ElectionInformationVO electionVO : locationVO.getSubList1()) {
