@@ -966,7 +966,7 @@ IElectionDAO {
 			sb.append(" where  sub_type in (:electionSubTypes) ");
 		}
 
-		sb.append(" order by election_year asc ");
+		sb.append(" order by election_year desc ");
 		Query query = getSession().createSQLQuery(sb.toString());
 		if(electionSubTypes != null && electionSubTypes.size() >0){
 			query.setParameterList("electionSubTypes", electionSubTypes);
@@ -1248,5 +1248,12 @@ IElectionDAO {
 			query.setParameterList("partyIds", partyIds);
 		} 
 		return query.list();
-	}  
+	} 
+	public List<Object[]> getElectionWiseYears(Long stateId,String electionType)
+	{
+		
+		Object[] params = {stateId,electionType,"1",IConstants.ELECTION_SUBTYPE_MAIN};
+		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where (model.electionScope.state.stateId = ? or model.electionScope.state.stateId is null) and " +
+				" model.electionScope.electionType.electionType = ? and model.isPartial = ? and model.elecSubtype = ?  order by model.electionYear desc",params);
+	}
 	}
