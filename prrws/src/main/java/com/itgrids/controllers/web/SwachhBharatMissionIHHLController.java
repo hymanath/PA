@@ -34,13 +34,13 @@ public class SwachhBharatMissionIHHLController {
 	   }
 	   @RequestMapping(value = "/getSwachhBharatMissionOverviewDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	   public @ResponseBody  SwachhBharatMissionIHHLDtlsVO  getSwachhBharatMissionOverviewDtls(@RequestBody InputVO inputVO) {
-		 SwachhBharatMissionIHHLDtlsVO  reusltVO = swachhBharatMissionIHHLService.getSwachhBharatMissionOverviewDtls(inputVO);
+			 SwachhBharatMissionIHHLDtlsVO  reusltVO = swachhBharatMissionIHHLService.getSwachhBharatMissionOverviewDtls(inputVO);
 		    return reusltVO;
 	   }
-	   @RequestMapping(value = "/getSwachhBharatMissionStatusOverviewDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  SwachhBharatMissionIHHLDtlsVO  getSwachhBharatMissionStatusOverviewDtls(@RequestBody InputVO inputVO) {
-		 SwachhBharatMissionIHHLDtlsVO  reusltVO = null;
-		    return reusltVO;
+	   @RequestMapping(value = "/getLocationDetailsBasedOnCategory", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<SwachhBharatMissionIHHLDtlsVO>  getSwachhBharatMissionStatusOverviewDtls(@RequestBody InputVO inputVO) {
+		 List<SwachhBharatMissionIHHLDtlsVO>  resultList = swachhBharatMissionIHHLService.getLocationDetailsBasedOnCategory(inputVO);
+		 return resultList;
 	   }
 	   @RequestMapping(value = "/getIHHLCategoryWiseAnalysis", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	   public @ResponseBody  List<SwachhBharatMissionIHHLDtlsVO>  getIHHLCategoryWiseAnalysis(@RequestBody InputVO inputVO) {

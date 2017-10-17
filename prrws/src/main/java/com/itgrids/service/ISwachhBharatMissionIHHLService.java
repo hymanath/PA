@@ -11,5 +11,6 @@ public interface ISwachhBharatMissionIHHLService {
 	public List<SwachhBharatMissionIHHLDtlsVO> getSwachhBharatMissionLocationWiseDetails(InputVO inputVO);
 	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLAchivementProgressDtls(InputVO inputVO);
 	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLCategoryWiseAnalysis(InputVO inputVO);
+	public List<SwachhBharatMissionIHHLDtlsVO> getLocationDetailsBasedOnCategory(InputVO inputVO);
 }
 
