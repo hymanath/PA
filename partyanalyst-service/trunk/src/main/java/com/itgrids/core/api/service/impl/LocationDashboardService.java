@@ -6380,4 +6380,121 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		return null;
 	}
 }
+
+/**
+ * @author  Sai Kumar  <href:saikumar.mandal@itgrids.com >
+ * @Date 17th oct,2017
+ * @description to  get  Locationwise  meeting detailes
+ * @param locationScopeId,locationValues, start date,end date,meetingLevelId,meetingTypeId,meetingMainTypeId
+ * @return List of MeetingsVO 
+*/
+	@Override
+	public List<MeetingsVO> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues, String startDate, String endDate,Long meetingLevelId, Long meetingTypeId, Long meetingMainTypeId) {
+		List<MeetingsVO> finalList=new ArrayList<MeetingsVO>();
+		Map<Long,MeetingsVO> locationWiseDetailsVOMap=new HashMap<Long, MeetingsVO>();
+		try{
+		Date fromDate = null;
+		Date toDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		// Here converting stirng to date formatte
+		if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+			fromDate = sdf.parse(startDate);
+			toDate = sdf.parse(endDate);
+		}
+		
+		//0 districtId,1 districtName,2 month,3 year 
+		//4 meetingStatus,5 meetingsCount 
+		List<Object[]> areaWisePartyMeetingDetailsObj=partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId);
+		
+		if(areaWisePartyMeetingDetailsObj != null && areaWisePartyMeetingDetailsObj.size()>0){
+			for(Object[] param : areaWisePartyMeetingDetailsObj){
+				Long locationId=commonMethodsUtilService.getLongValueForObject(param[0]);
+				Long year=commonMethodsUtilService.getLongValueForObject(param[3]);
+				Long month=commonMethodsUtilService.getLongValueForObject(param[2]);
+				
+				if(locationWiseDetailsVOMap.containsKey(locationId)){
+					MeetingsVO locationVO=locationWiseDetailsVOMap.get(locationId);
+					List<MeetingsVO> yearWiseVOList=locationVO.getYearWiseMeetingsCount();
+						MeetingsVO matchedYearVO=getMatchedVO(yearWiseVOList,year,month);
+						if(matchedYearVO == null){
+							MeetingsVO monthWiseVO=getMonthWiseVO(param,yearWiseVOList.get(0));
+							yearWiseVOList.add(monthWiseVO);
+						}else{
+							setStatusToVO(matchedYearVO,param,yearWiseVOList.get(0));
+						}
+				}else{
+					MeetingsVO locationVO=new MeetingsVO();
+					locationVO.setId(locationId);
+					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					
+					List<MeetingsVO> monthWiseVOList=new ArrayList<MeetingsVO>();
+					MeetingsVO OverallStatusVO=new MeetingsVO();
+
+					MeetingsVO monthWiseVO=getMonthWiseVO(param,OverallStatusVO);
+					monthWiseVOList.add(0, OverallStatusVO);//OverallStatusVO at 0th position
+					monthWiseVOList.add(monthWiseVO);				
+					locationVO.setYearWiseMeetingsCount(monthWiseVOList);
+					locationWiseDetailsVOMap.put(locationId, locationVO);
+				  }
+			   }
+			}
+		finalList.addAll(locationWiseDetailsVOMap.values());
+		for (MeetingsVO meetingVo : finalList) {
+			List<MeetingsVO> yearWiseVOList=meetingVo.getYearWiseMeetingsCount();
+			if(yearWiseVOList.get(1) != null){
+				MeetingsVO yearWiseVO=yearWiseVOList.get(1);
+				meetingVo.setTotal(yearWiseVO.getYesCount()+yearWiseVO.getNoCount()+yearWiseVO.getMayBeCount()+yearWiseVO.getNotUpDatedCount());
+			}
+		}
+		}
+		catch (Exception e) {
+			Log.error("Exception raised at getAreaWisePartyMeetingsDetails in  LocationDashboardService ", e);
+		}
+		return finalList;
+	}
+	public MeetingsVO getMatchedVO(List<MeetingsVO> voList,Long year,Long month){
+		try{
+			if(voList == null || voList.size() == 0)
+				return null;
+			for(MeetingsVO vo:voList){
+				if(vo.getYear().equals(year) && vo.getNoOfMonth().equals(month))
+	    			return vo;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public MeetingsVO getMonthWiseVO(Object[] param,MeetingsVO OverallStatusVO){
+		MeetingsVO monthWiseVO=new MeetingsVO();
+		Long month=commonMethodsUtilService.getLongValueForObject(param[2]);
+		monthWiseVO.setYear(commonMethodsUtilService.getLongValueForObject(param[3]));
+		monthWiseVO.setNoOfMonth(month);
+		monthWiseVO.setMonthName(IConstants.MONTH_NAMES[Integer.parseInt(month.toString())-1]);
+		setStatusToVO(monthWiseVO,param,OverallStatusVO);
+		return monthWiseVO;
+	}
+	
+	public MeetingsVO setStatusToVO(MeetingsVO vo,Object[] param,MeetingsVO OverallStatusVO){
+		Long count=commonMethodsUtilService.getLongValueForObject(param[5]);
+		OverallStatusVO.setTotal(OverallStatusVO.getTotal()+count);
+		String status=commonMethodsUtilService.getStringValueForObject(param[4]);
+	
+		if(status.equalsIgnoreCase("Y")){
+			vo.setYesCount(count);
+			OverallStatusVO.setYesCount(OverallStatusVO.getYesCount()+count);
+		}else if(status.equalsIgnoreCase("N")){
+			vo.setNoCount(count);
+			OverallStatusVO.setNoCount(OverallStatusVO.getNoCount()+count);
+		}else if(status.equalsIgnoreCase("M")){
+			vo.setMayBeCount(count);
+			OverallStatusVO.setMayBeCount(OverallStatusVO.getMayBeCount()+count);
+		}else if(status.equalsIgnoreCase("NU")){
+			vo.setNotUpDatedCount(count);
+			OverallStatusVO.setNotUpDatedCount(OverallStatusVO.getNotUpDatedCount()+count);
+		}
+		return vo;
+	}
 }
+
