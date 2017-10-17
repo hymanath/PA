@@ -12,6 +12,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -26,6 +28,7 @@ import com.itgrids.dto.SwachhBharatMissionIHHLDtlsVO;
 import com.itgrids.service.ISwachhBharatMissionIHHLService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.DateUtilService;
+import com.itgrids.utils.SwachhBharatMissionIHHLThread;
 import com.sun.jersey.api.client.ClientResponse;
 
 @Service
@@ -116,7 +119,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 				 if(category.equalsIgnoreCase("80% to 100%")){
 					 strArr[0] = "1";
 					 strArr[1] = "A";
-					 strArr[2] = "80% TO 100%";
+					 strArr[2] = "80% TO >= 100%";
 				 } else if (category.equalsIgnoreCase("60% to Less than 80%")) {
 					 strArr[0] = "2";
 					 strArr[1] = "B";
@@ -147,25 +150,134 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	 * @return List<SwachhBharatMissionIHHLDtlsVO>
 	 * @Date 14-10-2017
 	 */
-	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLCategoryWiseAnalysis(InputVO inputVO) {
+	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLCategoryWiseAnalysisBySelectedDate(InputVO inputVO) {
 		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
 		try {
-			SwachhBharatMissionIHHLDtlsVO vo = new SwachhBharatMissionIHHLDtlsVO();
-			vo.setRange("100% TO 76%");
-			vo.setDistrictCount(10l);
-			vo.setConstituencyCount(5l);
-			vo.setMandalCount(2l);
-			SwachhBharatMissionIHHLDtlsVO vo1 = new SwachhBharatMissionIHHLDtlsVO();
-			vo1.setRange("75% TO 51%");
-			vo1.setDistrictCount(10l);
-			vo1.setConstituencyCount(5l);
-			vo1.setMandalCount(2l);
-			resultList.add(vo);
-			resultList.add(vo1);
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if (inputVO.getFromDate() != null && inputVO.getFromDate().trim().length() > 0 && inputVO.getToDate() != null && inputVO.getToDate().trim().length() > 0) {
+				fromDate = sdf.parse(inputVO.getFromDate());
+				toDate = sdf.parse(inputVO.getToDate());
+			}
+			List<String[]> categoryTemplateList = new ArrayList<>();
+			categoryTemplateList.add(new String[]{"1","A","80% TO >= 100%"});
+			categoryTemplateList.add(new String[]{"2","B","60% TO < 80%"});
+			categoryTemplateList.add(new String[]{"3","C","40% TO < 60%"});
+			categoryTemplateList.add(new String[]{"4","D","0% TO < 40%"});
+			
+			for (String[] strings : categoryTemplateList) {
+				SwachhBharatMissionIHHLDtlsVO categoryVO = new SwachhBharatMissionIHHLDtlsVO();
+					categoryVO.setId(Long.valueOf(strings[0]));
+					categoryVO.setName(strings[1]);
+					categoryVO.setRange(strings[2]);
+					categoryVO.setDistrictCount(0l);
+					categoryVO.setConstituencyCount(0l);
+					categoryVO.setMandalCount(0l);
+					resultList.add(categoryVO);
+			}
+			
+			Map<String,ClientResponse> responseMap = new HashMap<>();
+			String[] locationArr = { "district", "constituency", "mandal" };
+			String URL = "http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails";
+			
+			if (locationArr != null && locationArr.length > 0) {
+				ExecutorService executor = Executors.newFixedThreadPool(4);
+				for (String location : locationArr) {
+					     inputVO.setSubLocation(location);
+					     String str = convertingInputVOToString(inputVO);
+					     Runnable worker = new SwachhBharatMissionIHHLThread(URL,responseMap,str,location);
+						 executor.execute(worker);
+				}
+				executor.shutdown();
+				while(!executor.isTerminated()) {}
+				
+				System.out.println("All work has finished "+responseMap.values());
+			}
+			
+			if (responseMap.size() > 0) {
+				for (Entry<String, ClientResponse> resonseEntry : responseMap.entrySet()) {
+					String subLcation = resonseEntry.getKey();
+					inputVO.setSubLocation(subLcation);
+					String output = resonseEntry.getValue().getEntity(String.class);
+					
+					if (output != null && !output.isEmpty()) {
+						JSONObject jsonObject = new JSONObject(output);
+
+						JSONArray locationDtlsArr = getJsonArrayBasedOnLocationType(inputVO, jsonObject); // getting JSONArray from jsonObject based on location
+
+						if (locationDtlsArr != null && locationDtlsArr.length() > 0) {
+
+							Map<String,SwachhBharatMissionIHHLDtlsVO> targetAchivementDtlsMap = getDailyTargetAndAchivemetnDtlsLocationWise(inputVO, jsonObject);
+
+							if (inputVO.getDisplayType() != null && !inputVO.getDisplayType().trim().isEmpty() && inputVO.getDisplayType().trim().length() > 0) {
+
+								if (inputVO.getDisplayType().trim().equalsIgnoreCase("day")) {
+
+									List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+									List<SwachhBharatMissionIHHLDtlsVO> returnList = getLocationWiseDayReportDtls(targetAchivementDtlsMap, dayList);
+
+									if (returnList != null && returnList.size() > 0) {
+
+										for (SwachhBharatMissionIHHLDtlsVO vo : returnList) {
+
+											if (vo != null && vo.getPercentage() != null) {
+												
+												Double percentage = Double.parseDouble(vo.getPercentage());
+												
+												SwachhBharatMissionIHHLDtlsVO matchVO = null;
+
+												if (percentage != null && percentage > 0d) {
+													if (percentage >= 80d ) {//&& percentage <= 100d
+														matchVO = getCategoryMatchVO(resultList, "A");
+													}
+													if (percentage >= 60d && percentage < 80d) {
+														matchVO = getCategoryMatchVO(resultList, "B");
+													}
+													if (percentage >= 40d && percentage < 60d) {
+														matchVO = getCategoryMatchVO(resultList, "C");
+													}
+													if (percentage > 0d && percentage < 40) {
+														matchVO = getCategoryMatchVO(resultList, "D");
+													}
+												}
+												if (matchVO != null) {
+													if (subLcation != null && subLcation.trim().equalsIgnoreCase("district")) {
+														matchVO.setDistrictCount(matchVO.getDistrictCount() + 1);
+													} else if (subLcation != null && subLcation.trim().equalsIgnoreCase("constituency")) {
+														matchVO.setConstituencyCount(matchVO.getConstituencyCount() + 1);
+													} else if (subLcation != null && subLcation.trim().equalsIgnoreCase("mandal")) {
+														matchVO.setMandalCount(matchVO.getMandalCount() + 1);
+													}
+												}
+											}
+											
+										}
+									}
+								}
+							}
+						}
+				}
+			}
+		}
 		} catch (Exception e) {
-			LOG.error("Exception occured at getIHHLCategoryWiseAnalysis() in SwachhBharatMissionIHHLService class",e);
+			LOG.error("Exception occured at getIHHLCategoryWiseAnalysisBySelectedDate() in SwachhBharatMissionIHHLService class",e);
 		}
 		return resultList;
+	}
+	private SwachhBharatMissionIHHLDtlsVO getCategoryMatchVO(List<SwachhBharatMissionIHHLDtlsVO> list, String name) {
+		try {
+			if (list == null || list.size() == 0)
+				return null;
+			for (SwachhBharatMissionIHHLDtlsVO vo : list) {
+				if (vo.getName().equalsIgnoreCase(name)) {
+					return vo;
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getCategoryMatchVO() in SwachhBharatMissionIHHLService class",e);
+		}
+		return null;
 	}
 	/**
 	 * @author Santosh Kumar Verma
@@ -334,7 +446,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 			}
 		}
     	}catch(Exception e){
-    		LOG.error("Error occured getMonthWeekAndDays() method of SwachhBharatMissionIHHLService",e);
+    		LOG.error("Error occured getMonthWeekAndDaysList() method of SwachhBharatMissionIHHLService",e);
     	}
 		
 		return returnDays;
@@ -677,7 +789,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 					if (inputVO.getReportType().equalsIgnoreCase("status")) {
 						resultList = filterRequiredLocationBasedOnCategory(inputVO,jsonObject);
 					} else if (inputVO.getReportType().equalsIgnoreCase("daily")) {
-                       //resultList  = getDateWiseLocationDetails(inputVO,jsonObject,fromDate,toDate);
+                       resultList  = filterRequiredLocationBasedOnCategoryBasedOnSelectedDate(inputVO,jsonObject,fromDate,toDate);
 					}
 				}
 				
@@ -737,7 +849,53 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Exception occured at getStatusWiseLocationDetails() in SwachhBharatMissionIHHLService class",e);
+			LOG.error("Exception occured at filterRequiredLocationBasedOnCategory() in SwachhBharatMissionIHHLService class",e);
+		}
+		return resultList;
+	}
+
+	private List<SwachhBharatMissionIHHLDtlsVO> filterRequiredLocationBasedOnCategoryBasedOnSelectedDate(InputVO inputVO, JSONObject jsonObject, Date fromDate, Date toDate) {
+		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
+		try {
+
+			Map<String, SwachhBharatMissionIHHLDtlsVO> targetAchivementDtlsMap = getDailyTargetAndAchivemetnDtlsLocationWise(inputVO, jsonObject);
+
+			if (inputVO.getDisplayType() != null && !inputVO.getDisplayType().trim().isEmpty() && inputVO.getDisplayType().trim().length() > 0) {
+
+					List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+					List<SwachhBharatMissionIHHLDtlsVO> returnList = getLocationWiseDayReportDtls(targetAchivementDtlsMap, dayList);
+
+					if (returnList != null && returnList.size() > 0) {
+						for (SwachhBharatMissionIHHLDtlsVO swachhBharatMissionIHHLDtlsVO : returnList) {
+							if (swachhBharatMissionIHHLDtlsVO != null && swachhBharatMissionIHHLDtlsVO.getPercentage() != null) {
+								Double percentage = Double.parseDouble(swachhBharatMissionIHHLDtlsVO.getPercentage());
+								if (inputVO.getDisplayType() != null) {
+									if (inputVO.getDisplayType().equalsIgnoreCase("A")) {
+										if (percentage >= 80d) {//&& percentage <= 100d
+											resultList.add(swachhBharatMissionIHHLDtlsVO);
+										}
+
+									} else if (inputVO.getDisplayType().equalsIgnoreCase("B")) {
+										if (percentage >= 60d && percentage < 80d) {
+											resultList.add(swachhBharatMissionIHHLDtlsVO);
+										}
+									} else if (inputVO.getDisplayType().equalsIgnoreCase("C")) {
+										if (percentage >= 40d && percentage < 60d) {
+											resultList.add(swachhBharatMissionIHHLDtlsVO);
+										}
+									} else if (inputVO.getDisplayType().equalsIgnoreCase("D")) {
+										if (percentage > 0d && percentage < 40) {
+											resultList.add(swachhBharatMissionIHHLDtlsVO);
+										}
+									}
+
+								}
+							}
+						}
+					}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at filterRequiredLocationBasedOnCategoryBasedOnSelectedDate() in SwachhBharatMissionIHHLService class",e);
 		}
 		return resultList;
 	}
@@ -767,8 +925,6 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 					str += "\"todate\" : \""+inputVO.getToDate()+"\",";
 				if(inputVO.getLocation() != null)
 					str += "\"Location\" : \""+inputVO.getLocation()+"\",";
-				/*if(inputVO.getLocationIdStr() != null)
-					str += "\"locationId\" : \""+inputVO.getLocationIdStr()+"\",";else*/
 				 if(inputVO.getLocationId() != null)
 					str += "\"LocationID\" : \""+inputVO.getLocationId()+"\",";
 				if(inputVO.getSubLocation() != null)

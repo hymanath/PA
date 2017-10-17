@@ -165,7 +165,7 @@
 				
 				<div class="col-sm-6">
 					<ul class="list-inline pull-right">
-						<li><span class="categoryRondedCss" style="background-color:#009587">A</span>  80% TO 100%</li>
+						<li><span class="categoryRondedCss" style="background-color:#009587">A</span>  80% TO >=&nbsp100%</li>
 						<li><span class="categoryRondedCss" style="background-color:#99B95F">B</span>  60% TO <&nbsp80%</li>
 						<li><span class="categoryRondedCss" style="background-color:#E67401">C</span>  40% TO <&nbsp60%</li>
 						<li><span class="categoryRondedCss" style="background-color:#FD403A">D</span>  0% TO <&nbsp40%</li>
@@ -201,6 +201,10 @@
 				<div class="col-sm-12" style="border: 1px solid #ccc;">
 					<h5 class="m_top10"><b>CATEGORY WISE ANALYSIS(up to 31 march)</b>  <span class="pull-right">Note : D - DISTRICT , C - CONSTITUENCY , M - MANDAL</span></h5>
 					<div id="categoryWiseDataId"></div>
+				</div>
+				<div class="col-sm-12" style="border: 1px solid #ccc;">
+				<h5 class="m_top10"><b>CATEGORY WISE ANALYSIS(<b>Based On Selected Date</b>)</h5>
+					<div id="selectedDatecategoryWiseDataId"></div>
 				</div>
 			</div>
 			<div class="row m_top20"  style="padding: 11px; margin-left: 0px; margin-right: 0px;">
@@ -238,6 +242,19 @@
 		</div>
 	</div>
 </main>
+<div class="modal fade" id="categoryWiseAnalysisModalDivId" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 95%;">
+    <div class="modal-content modal-custom">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
+        <h4 class="modal-title" id="modalHeadingId"></h4>
+      </div>
+      <div class="modal-body">
+	   <div id="categoryWiseAnalysisTableDivId"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>

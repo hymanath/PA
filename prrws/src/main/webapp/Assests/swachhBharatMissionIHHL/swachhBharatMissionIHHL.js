@@ -8,6 +8,7 @@ onloadCalls();
 onloadIntiliazilation();
 function onloadCalls(){
 	getSwachhBharatMissionOverviewDtls(); // first block And Second Block
+	getIHHLCategoryWiseAnalysisBySelectedDate();
 	getIHHLAchivementProgressDtls("week");
 	levelWiseSBData("IHHL");
 }
@@ -154,9 +155,9 @@ function getSwachhBharatMissionOverviewDtls(){
 						str+='</div>';
 						str+='<div class="panel-body">';
 							str+='<ul class="list-inline borderleft">';
-								str+='<li style="cursor:pointer;" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="district" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">D</span> - '+result.subList[i].districtCount+'</h3></li>';
-								str+='<li style="cursor:pointer;" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="constituency" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">C</span> - '+result.subList[i].constituencyCount+'</h3></li>';
-								str+='<li style="cursor:pointer;" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="mandal" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">M</span> - '+result.subList[i].mandalCount+'</h3></li>';
+								str+='<li style="cursor:pointer;" attr_report_type="status" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="district" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">D</span> - '+result.subList[i].districtCount+'</h3></li>';
+								str+='<li style="cursor:pointer;" attr_report_type="status" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="constituency" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">C</span> - '+result.subList[i].constituencyCount+'</h3></li>';
+								str+='<li style="cursor:pointer;" attr_report_type="status" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="mandal" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">M</span> - '+result.subList[i].mandalCount+'</h3></li>';
 							str+='<ul>';
 						str+='</div>';	
 					str+='</div>';
@@ -189,13 +190,7 @@ function getSwachhBharatMissionOverviewDtls(){
 		dataArr.push(result.grounded);
 		dataArr.push(result.inProgress);
 		dataArr.push(result.completed)
-					
-		/* targetCount1 = result.target
-		groundedCount = result.grounded
-		notGroundedCount = result.noTGrounded
-		inProgressCount = result.inProgress
-		completedCount = result.completed */
-		
+	
 		var id = "overAllIHHLPerformanceId";
 		var type = {
 			type: 'pie',
@@ -352,25 +347,6 @@ function getSwachhBharatMissionOverviewDtls(){
 		});
 	}
 }
-function getIHHLCategoryWiseAnalysis(){
-		var json = {
-			fromDate:globalFromDateForLevel,
-			toDate:globalToDateForLevel,
-			reportType:"daily"
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getIHHLCategoryWiseAnalysis',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-			console.log(result);
-		});	
-}
 function getIHHLAchivementProgressDtls(displayType){
 	$("#IHHLAchivementProgress").html(spinner)
 		var json = {
@@ -379,8 +355,8 @@ function getIHHLAchivementProgressDtls(displayType){
 					location:"state",
 					locationId:"-1",
 					subLocation:"state",
-					reportType:"daily",//daily
-					displayType:displayType//day/week/month
+					reportType:"daily",
+					displayType:displayType
 				}
 		$.ajax({                
 			type:'POST',    
@@ -474,9 +450,9 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 			toDate:globalToDateForLevel,
 			location:"state",
 			locationId:"-1",
-			subLocation:subLocation, // district/constituency/manal
-			reportType:reportType,//daily
-			displayType:displayType//day/week/month
+			subLocation:subLocation, 
+			reportType:reportType,
+			displayType:displayType
 		}
 		$.ajax({                
 			type:'POST',    
@@ -606,7 +582,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 										str+='<td class="text-center"> - </td>';
 									}
 									if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
-										if(parseFloat(result[i].percentage)>=80 && parseFloat(result[i].percentage) <=100){
+										if(parseFloat(result[i].percentage)>=80){// && parseFloat(result[i].percentage) <=100
 											str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
 										}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
 											str+='<td class="text-center" style="background-color:#99B95F;color:#fff">'+result[i].percentage+'</td>';
@@ -628,7 +604,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 									}
 									
 									if(result[i].completed !=null && result[i].completed>0){
-										if(parseFloat(result[i].percentage) >=80 && parseFloat(result[i].percentage)<=100){
+										if(parseFloat(result[i].percentage) >=80){//&& parseFloat(result[i].percentage)<=100
 											str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].completed+'</td>';
 										}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
 											str+='<td class="text-center" style="background-color:#99B95F;color:#fff">'+result[i].completed+'</td>';
@@ -644,7 +620,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 									}
 									
 									if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
-										if(parseFloat(result[i].percentage)>=80 && parseFloat(result[i].percentage) <=100){
+										if(parseFloat(result[i].percentage)>=80){//&& parseFloat(result[i].percentage) <=100
 											str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
 										}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
 											str+='<td class="text-center" style="background-color:#99B95F;color:#fff">'+result[i].percentage+'</td>';
@@ -833,13 +809,16 @@ $(document).on("click",".calendar_active_IHHL_cls li",function(){
 	}	
 });
 $(document).on("click",".categoryCls",function() {
-	var categoryType = $(this).attr("attr_category_type");
-	var locationType = $(this).attr("attr_location_type");
-	return;
-	getLocationDetailsBasedOnCategory(categoryType,locationType);
+		var categoryType = $(this).attr("attr_category_type");
+		var locationType = $(this).attr("attr_location_type");
+		var reportType = $(this).attr("attr_report_type");
+		$("#categoryWiseAnalysisModalDivId").modal('show');
+		$("#modalHeadingId").html(locationType.toUpperCase()+" DETAILS");
+		$("#categoryWiseAnalysisTableDivId").html(spinner);
+	    getLocationDetailsBasedOnCategory(categoryType,locationType,reportType);
 });
 
-function getLocationDetailsBasedOnCategory(categoryType,locationType){
+function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType){
 	var json = {
 		fromDate:globalFromDateForLevel,
 		toDate:globalToDateForLevel,
@@ -847,7 +826,7 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType){
 		locationId:"-1",
 		subLocation:locationType, 
 		displayType:categoryType,
-		reportType:"status",
+		reportType:reportType,
 	}
 	$.ajax({                
 		type:'POST',    
@@ -859,6 +838,185 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
+		buildTableDetailsData(result,locationType,reportType);
 	});	
+}
+
+ function buildTableDetailsData(result,subLocation,reportType){
+	 if(result !=null && result.length>0){
+		     var str='';
+		     str+='<div class="table-responsive">';
+		     str+='<table class="table table-bordered" id="locationWiseDataTblId">';
+			 str+='<thead>';
+				str+='<tr class="text-capital">';
+						if(subLocation =="state"){
+							str+='<th>State</th>';
+						}else if(subLocation =="district"){
+							str+='<th>District</th>';
+						}else if(subLocation =="constituency"){
+							str+='<th>District</th>';
+							str+='<th>Constituency</th>';
+						}else if(subLocation =="mandal"){
+							str+='<th>District</th>';
+							str+='<th>Constituency</th>';
+							str+='<th>Mandal</th>';
+						}
+						if (reportType != null && reportType=="status") {
+							str+='<th>Target</th>';	
+							str+='<th>Grounded</th>';	
+							str+='<th>Not Grounded</th>';	
+							str+='<th>In Progress</th>';	
+							str+='<th>Completed</th>';	
+							str+='<th>Achievement %</th>';
+						} else {
+							str+='<th>Target</th>';	
+							str+='<th>Completed</th>';	
+							str+='<th>Achievement %</th>';
+						}
+						
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				for(var i in result){
+					   str+='<tr class="text-capital">';	
+							if(subLocation =="state"){
+								str+='<td>'+result[i].stateName+'</td>';
+							}else if(subLocation =="district"){
+								str+='<td>'+result[i].districtName+'</td>';
+							}else if(subLocation =="constituency"){
+								str+='<td>'+result[i].districtName+'</td>';
+								str+='<td>'+result[i].constName+'</td>';
+							}else if(subLocation =="mandal"){
+								str+='<td>'+result[i].districtName+'</td>';
+								str+='<td>'+result[i].constName+'</td>';
+								str+='<td>'+result[i].mandalName+'</td>';
+							}
+						if (reportType != null && reportType=="status") {
+							if(result[i].target !=null && result[i].target>0){
+								str+='<td class="text-center">'+result[i].target+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}	
+							if(result[i].grounded !=null && result[i].grounded>0){
+								str+='<td class="text-center">'+result[i].grounded+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}
+							if(result[i].noTGrounded !=null && result[i].noTGrounded>0){
+								str+='<td class="text-center">'+result[i].noTGrounded+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}	
+							if(result[i].inProgress !=null && result[i].inProgress>0){
+								str+='<td class="text-center">'+result[i].inProgress+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}
+							if(result[i].completed !=null && result[i].completed>0){
+								str+='<td class="text-center">'+result[i].completed+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}
+						} else {
+							if(result[i].target !=null && result[i].target>0){
+								str+='<td class="text-center">'+result[i].target+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}	
+							if(result[i].completed !=null && result[i].completed>0){
+								str+='<td class="text-center">'+result[i].completed+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}
+						}
+							if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
+								if(parseFloat(result[i].percentage)>=80 ){//&& parseFloat(result[i].percentage) <=100
+									str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
+								}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
+									str+='<td class="text-center" style="background-color:#99B95F;color:#fff">'+result[i].percentage+'</td>';
+								}else if(parseFloat(result[i].percentage) >=40 && parseFloat(result[i].percentage)<60){
+									str+='<td class="text-center" style="background-color:#E67401;color:#fff">'+result[i].percentage+'</td>';
+								}else if(parseFloat(result[i].percentage) >=0 && parseFloat(result[i].percentage)<40){
+									str+='<td class="text-center" style="background-color:#FD403A;color:#fff">'+result[i].percentage+'</td>';
+								}else{
+									str+='<td class="text-center">'+result[i].percentage+' </td>';
+								}
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}
+								str+='</tr>';
+						
+					}
+					str+='</tbody>';
+					str+='</table>';
+					str+='</div>';
+					$("#categoryWiseAnalysisTableDivId").html(str);
+					$("#locationWiseDataTblId").dataTable({
+						"iDisplayLength": 10,
+						"aaSorting": [],
+						"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+					}); 
+		}else{
+			$("#categoryWiseAnalysisTableDivId").html("NO DATA AVAILABLE.");
+		}
+	}
+  
+  function getIHHLCategoryWiseAnalysisBySelectedDate(){
+	  $("#selectedDatecategoryWiseDataId").html(spinner);
+		var json = {
+			fromDate:globalFromDateForLevel,
+			toDate:globalToDateForLevel,
+			location:"state",
+			locationId:"-1",
+			displayType:"day"
+			
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getIHHLCategoryWiseAnalysisBySelectedDate',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if (result != null && result.length > 0) {
+				buildCateggoryWiseAnalysisBasedOnSelectedDate(result);
+			} else {
+				$("#selectedDatecategoryWiseDataId").html("NO DATA AVAILABLE.");
+			}
+		});	
+		
+	function buildCateggoryWiseAnalysisBasedOnSelectedDate(result) {
+		 var str='';
+		if(result !=null && result.length>0){
+			for(var i in result){
+				str+='<div class="col-sm-3 m_top10">';
+					str+='<div class="panel panel-default">';
+						str+='<div class="panel-heading" style="padding: 3px;background-color:#fff;">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-2 m_top10">';
+									str+='<span class="categoryRondedCss" style="background-color:'+globalColor[result[i].name.trim()]+';">'+result[i].name+'</span>';
+								str+='</div>';
+								str+='<div class="col-sm-10">';
+									str+='<p class="text-right" style="font-size: 16px;color:'+globalColor[result[i].name.trim()]+'">'+result[i].range+'</p>';
+									str+='<h5 class="panel-title text-right" style="color:'+globalColor[result[i].name.trim()]+'">Achivement</h5>';
+								str+='</div>';
+							str+='</div>';
+							
+						str+='</div>';
+						str+='<div class="panel-body">';
+							str+='<ul class="list-inline borderleft">';
+								str+='<li style="cursor:pointer;" attr_report_type="daily" attr_category_type="'+result[i].name.trim()+'" attr_location_type="district" class="categoryCls"><h3><span style="color:'+globalColor[result[i].name.trim()]+'">D</span> - '+result[i].districtCount+'</h3></li>';
+								str+='<li attr_report_type="daily" style="cursor:pointer;" attr_category_type="'+result[i].name.trim()+'" attr_location_type="constituency" class="categoryCls"><h3><span style="color:'+globalColor[result[i].name.trim()]+'">C</span> - '+result[i].constituencyCount+'</h3></li>';
+								str+='<li attr_report_type="daily" style="cursor:pointer;" attr_category_type="'+result[i].name.trim()+'" attr_location_type="mandal" class="categoryCls"><h3><span style="color:'+globalColor[result[i].name.trim()]+'">M</span> - '+result[i].mandalCount+'</h3></li>';
+							str+='<ul>';
+						str+='</div>';	
+					str+='</div>';
+				str+='</div>';
+			}
+		}
+		$("#selectedDatecategoryWiseDataId").html(str);
+	}
 }

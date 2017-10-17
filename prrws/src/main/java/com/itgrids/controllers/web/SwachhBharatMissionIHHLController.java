@@ -42,9 +42,9 @@ public class SwachhBharatMissionIHHLController {
 		 List<SwachhBharatMissionIHHLDtlsVO>  resultList = swachhBharatMissionIHHLService.getLocationDetailsBasedOnCategory(inputVO);
 		 return resultList;
 	   }
-	   @RequestMapping(value = "/getIHHLCategoryWiseAnalysis", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   @RequestMapping(value = "/getIHHLCategoryWiseAnalysisBySelectedDate", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	   public @ResponseBody  List<SwachhBharatMissionIHHLDtlsVO>  getIHHLCategoryWiseAnalysis(@RequestBody InputVO inputVO) {
-		 List<SwachhBharatMissionIHHLDtlsVO>  resultList = swachhBharatMissionIHHLService.getIHHLCategoryWiseAnalysis(inputVO);
+		 List<SwachhBharatMissionIHHLDtlsVO>  resultList = swachhBharatMissionIHHLService.getIHHLCategoryWiseAnalysisBySelectedDate(inputVO);
 		 return resultList;
 	   }
 	   @RequestMapping(value = "/getIHHLAchivementProgressDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
