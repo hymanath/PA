@@ -6800,7 +6800,11 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 				 for(var i in result){
 					str+='<tr>';
 						if(result[i].party != null ){
-							str+='<td>'+result[i].party+'</td>';         
+							if(result[i].party != null && result[i].cadreId != null && result[i].partyId !=872){
+								str+='<td>'+result[i].party+'<i class="fa fa-star" aria-hidden="true" ></i></td>'; 
+							}else{
+							    str+='<td>'+result[i].party+'</td>'; 
+							}							
 						}else{
 							str+='<td> - </td>';     
 						}						
