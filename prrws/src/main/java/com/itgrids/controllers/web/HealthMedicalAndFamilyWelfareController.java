@@ -38,7 +38,7 @@ public class HealthMedicalAndFamilyWelfareController {
 	}
 	@PostMapping("/getCaseCountLocationWise")
 	public @ResponseBody List<DiseasesVO> getCaseCountLocationWise(@RequestBody InputVO inputVO){
-		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getCaseCountLocationWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getScopeId(),inputVO.getLocationId(),inputVO.getType());
+		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getCaseCountLocationWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getScopeId(),inputVO.getLocationId(),inputVO.getType(),inputVO.getConstituencyId());
 		return diseasesList;
 	}
 	@PostMapping("/getCaseCountDateWise")
