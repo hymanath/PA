@@ -4,6 +4,8 @@ var globalCrossVotionBgColor={"TDP":'#FFFFB8',"YSRC":"#CEE8DF","BJP":"#f4c36e","
 var eletionSubType=["MAIN"];
 var electionYrVal = [];
 var globalParliamentIds = [];
+var mainArr = [];
+var boothWiseDetailsArr;
 setTimeout(function(){
 	onLoadCalls();
 },1500)
@@ -1036,42 +1038,103 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 		}
 		
 	});
+
 	function buildData(result)
 	{
+		
 		var table = '';
+		mainArr = [];
+		boothWiseDetailsArr = [];
+		mainArr.push(result);
+		var isWonCandidateAvailable = false;
+		var remainingVotes = 0;
+		var remainingPercentage = 0.00;
+		var totalVotes = parseInt(result.partyBoothPerformanceVOList[0].totalValidVotes);
+		
 		table+='<div class="row m_top20">';
-			//table+='<div class="col-sm-4"></div>';
-			table+='<div class="col-sm-12">';
-				table+='<h4 class="panel-title">Candidate Details</h4>';
+			table+='<div>';
+			table+='<div class="col-sm-3">';
+				table+='<h4 class="panel-title text-capitalize">Assembly Results</h4>';
+				table+='<div id="boothWiseRstsGraphId" style="height:200px;"></div>';
+			table+='</div>';
+			table+='<div class="col-sm-9">';
+				table+='<h4 class="panel-title text-capitalize">Candidate Details</h4>';
 				table+='<div class="table-responsive m_top10">';
-					table+='<table class="table">';
+					table+='<table class="table tableBoothWise table-bordered">';
+						table+='<tr>';
 						table+='<thead class="bg-E9">';
 							table+='<th>Candidate Name</th>';
 							table+='<th>Party Name</th>';
 							table+='<th>Total Votes Gained</th>';
 							table+='<th>%</th>';
 							table+='<th>Margin Votes</th>';
+						table+='</tr>';	
 						table+='</thead>';
-						for(var i in result.partyBoothPerformanceVOList)
+						table +='<tbody>';
+						for(var k in result.partyBoothPerformanceVOList)
 						{
-							table+='<tr>';
-								table+='<td>'+result.partyBoothPerformanceVOList[i].candidateName+'</td>';
-								table+='<td>'+result.partyBoothPerformanceVOList[i].partyName+'</td>';
-								table+='<td>'+result.partyBoothPerformanceVOList[i].totalVotes+'</td>';
-								table+='<td>'+result.partyBoothPerformanceVOList[i].percentage+'</td>';
-								table+='<td>'+result.partyBoothPerformanceVOList[i].marginVotes+'</td>';
-							table+='</tr>';
-						}
+							if(result.partyBoothPerformanceVOList[k].rank ==1)
+							{
+								isWonCandidateAvailable = true;
+								table +='<tr>';
+									table +='<td>'+result.partyBoothPerformanceVOList[k].candidateName+'</td>';
+									table +='<td>'+result.partyBoothPerformanceVOList[k].partyName+'</td>';
+									table +='<td >'+result.partyBoothPerformanceVOList[k].votesGained+'</td>';						
+									table +='<td >'+result.partyBoothPerformanceVOList[k].percentage+'  </td>';
+									table +='<td >'+result.partyBoothPerformanceVOList[k].marginVotes+'  ( Rank - '+result.partyBoothPerformanceVOList[k].rank+') </td>';
+								table +='</tr>';
+								remainingVotes = remainingVotes + parseInt(result.partyBoothPerformanceVOList[k].votesGained);
+								remainingPercentage = parseFloat(remainingPercentage) + parseFloat(result.partyBoothPerformanceVOList[k].percentage);
+							}
+							else
+							{
+								table +='<tr>';
+									table +='<td>'+result.partyBoothPerformanceVOList[k].candidateName+'</td>';
+									table +='<td>'+result.partyBoothPerformanceVOList[k].partyName+'</td>';
+									table +='<td>'+result.partyBoothPerformanceVOList[k].votesGained+'</td>';						
+									table +='<td>'+result.partyBoothPerformanceVOList[k].percentage+'  </td>';
+									table +='<td>'+result.partyBoothPerformanceVOList[k].marginVotes+'  ( Rank - '+result.partyBoothPerformanceVOList[k].rank+') </td>';
+								table +='</tr>';
+								remainingVotes = remainingVotes + parseInt(result.partyBoothPerformanceVOList[k].votesGained);
+								remainingPercentage = parseFloat(remainingPercentage) + parseFloat(result.partyBoothPerformanceVOList[k].percentage);
+							}
+																	
+						}		
+						if(!isWonCandidateAvailable)
+							{
+								table +='<tr>';
+									table +='<td>'+result.partyBoothPerformanceVOList[0].wonCandidate[0].candidateName+'</td>';
+									table +='<td>'+result.partyBoothPerformanceVOList[0].wonCandidate[0].partyName+'</td>';
+									table +='<td >'+result.partyBoothPerformanceVOList[0].wonCandidate[0].votesEarned+'</td>';						
+									table +='<td >'+result.partyBoothPerformanceVOList[0].wonCandidate[0].votesPercengate+'  </td>';
+									table +='<td >'+result.partyBoothPerformanceVOList[0].wonCandidate[0].marginVotes+' ( Rank - '+result.partyBoothPerformanceVOList[0].wonCandidate[0].rank+') </td>';
+								table +='</tr>';
+								remainingVotes = remainingVotes + parseInt(result.partyBoothPerformanceVOList[0].wonCandidate[0].votesEarned);
+								remainingPercentage = parseFloat(remainingPercentage) + parseFloat(result.partyBoothPerformanceVOList[k].percentage);
+
+							}
+						
+								table +='<tr>';
+									table +='<td> Others </td>';
+									table +='<td> --  </td>';
+									table +='<td> '+(totalVotes - remainingVotes)+' </td>';						
+									table +='<td> '+(parseFloat(100.00) - remainingPercentage).toFixed(2)+' </td>';
+									table +='<td> --  </td>';
+								table +='</tr>';
+							
+					table +='</tbody>';
 					table+='</table>';
 				table+='</div>';
+			table+='</div>';
 			table+='</div>';
 		table+='</div>';
 		table+='<div class="row">';
 			table+='<div class="col-sm-12">';
-				table+='<h4 class="panel-title">Polling Percentage Range Wise Party Voters Percentage</h4>';
-				table+='<div class="table-responsive">';
-					table+='<table class="table" id="pollingPercTableId">';
-						table+='<thead>';
+				table+='<h3 class="panel-title text-capitalize">Polling Percentage Range Wise Party Voters Percentage</h3>';
+				var partiesSize=0;
+				table+='<div class="table-responsive m_top10">';
+					table+='<table class="table tableBoothWise table-bordered" id="pollingPercTableId">';
+						table+='<thead class="bg-E9">';
 							table+='<tr>';				
 								table+='<th rowspan="2"> Polling % Range </th>';
 								table+='<th rowspan="2"> Total No of Booths </th>';
@@ -1080,14 +1143,14 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 								partiesSize =  result.partyBoothPerformanceVOList.length;
 									for(var j in result.partyBoothPerformanceVOList)
 									{
-										table+='<th colspan="2" style="text-align:center"> '+result.partyBoothPerformanceVOList[j].partyName+' </th>';
+										table+='<th colspan="2" style="text-align:center;"> '+result.partyBoothPerformanceVOList[j].partyName+' </th>';
 									}
 								}
 								table+='<th colspan="2" style="text-align:center"> Others </th>';
 							table+='</tr>';
 
 							table+='<tr>';
-									for(var p=0; p<partiesSize ; p++)
+									for(var j in result.partyBoothPerformanceVOList)
 									{						
 										table+='<th> Party Votes % </th>';
 										table+='<th> Won Booths  </th>';					
@@ -1165,13 +1228,13 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 		table+='</div>';
 		table+='<div class="row">';
 			table+='<div class="col-sm-12">';
-				table +='<h4 class="panel-title m_top20">Party Votes Percentage Range Wise Polling Percentage</h4>';
+				table +='<h4 class="panel-title m_top20 text-capitalize">Party Votes Percentage Range Wise Polling Percentage</h4>';
 				var partiesSize = 0;
 				if(result.perWiseboothResults != null && result.perWiseboothResults.length >0)
 				{
 					table +='<div class="table-responsive m_top20">';
-						table +='<table class="table table-bordered m_top20" id="majarityCandidatesTab">';	
-							table +='<thead>';
+						table +='<table class="table table-bordered m_top20 tableBoothWise" id="majarityCandidatesTab">';	
+							table +='<thead class="bg-E9">';
 								table +='<tr>';				
 									table +='<th rowspan="2"> Party Votes % Range </th>';
 									if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
@@ -1219,82 +1282,273 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 				}
 			table+='</div>';
 		table+='</div>';
-		table+='<div class="row">';
-			table+='<div class="col-sm-12">';
-				table+='<div style="background-color:#f3f3f3;padding:10px">';
-				table+='<div class="row">';
-					table+='<div class="col-sm-12">';
-						table +='<h4> Booth Wise Details </h4>';
-						if(result.boothResults != null && result.boothResults.length >0)
+	
+		var str1='';
+		var str='';
+		str+='<div class="row">';
+		str+='<div class="col-sm-12">';
+		str +='<h4 class="panel-title m_top10 text-capitalize">Booth Wise Performance</h4>';
+		if(result.boothResults != null && result.boothResults.length >0)
+		{
+			str+='<div class="row m_top10">';
+			str+='<div class="col-sm-12">';
+			str+='  <label class="checkbox-inline"> <input type="checkbox"  id="locationId" onclick="hideAndShow();"><h6 class="m_top5">Show Location</h6></label>';
+			str+='  <label class="checkbox-inline"> <input type="checkbox" id="villageId" onclick="hideAndShow();"><h6 class="m_top5">Show Villages</h6></label>';
+			str+='  <label class="checkbox-inline"> <input type="checkbox"  id="mandalId" onclick="hideAndShow();"><h6 class="m_top5">Show Mandal</h6></label>';		
+			str+='</div>';
+			str+='</div>';
+			
+			str1+='<div class="table-responsive m_top20">';	
+			str1 +='<table class="table table-bordered tableBoothWise" id="boothWiseResultsPage">';	
+			str1 +='<thead class="bg-E9">';
+				str1 +='<tr>';				
+					str1 +='<th>S.No </th>';
+					str1 +='<th>Booth No</th>';
+					str1 +='<th>Total Votes</th>';
+					//str1 +='<th> Location  </th>';
+					//str1 +='<th> Village Covered  </th>';
+					//str1 +='<th> Mandal </th>';
+					str1 +='<th >   Polled Votes </th>';	
+					str1 +='<th > Polling %   </th>';
+					if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
+					{
+						partiesSize =  result.partyBoothPerformanceVOList.length;
+						for(var j in result.partyBoothPerformanceVOList)
 						{
-							table +='<div class="table-responsive m_top20 ">';	
-								table +='<table class="table table-bordered m_top20 " id="boothWiseResultsPage">';	
-									table +='<thead>';
-										table +='<tr>';				
-											table +='<th> S.No  </th>';
-											table +='<th> Booth No  </th>';
-											table +='<th> Total Votes  </th>';
-											table +='<th >   Polled Votes </th>';	
-											table +='<th > Polling %   </th>';
-											if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
-											{
-												partiesSize =  result.partyBoothPerformanceVOList.length;
-												for(var j in result.partyBoothPerformanceVOList)
-												{
-													table +='<th> '+result.partyBoothPerformanceVOList[j].partyName+' Polled Votes </th>';
-													table +='<th> '+result.partyBoothPerformanceVOList[j].partyName+' Polling % </th>';
-												}
-											}
-											table +='<th >  Others Polled Votes </th>';	
-											table +='<th > Others Polling %   </th>';
-											//str1 +='<th > Won Party   </th>';
-															
-										table +='</tr>';
-
-									table +='</thead>';	
-									table +='<tbody>';	
-									for(var k in result.boothResults)
-									{
-										var votersCount = result.boothResults[k].boothResultVOList[0].totalVoters;
-										var percentage = 0.00;
-											table +='<tr>';
-											table +='<td>'+(parseInt(k)+parseInt(1))+'</td>';
-											table +='<td> Booth-'+result.boothResults[k].partNo+'</td>';
-												if(result.boothResults[k].boothResultVOList != null && result.boothResults[k].boothResultVOList.length>0)
-												{
-													
-													
-													//str1 +='<td>'+result.boothResults[k].boothResultVOList[0].location+'</td>';
-													//str1 +='<td>'+result.boothResults[k].boothResultVOList[0].villagesCovered+'</td>';
-													//str1 +='<td>'+result.boothResults[k].boothResultVOList[0].mandal+'</td>';
-													table +='<td>'+result.boothResults[k].boothResultVOList[0].totalBoothVoters+'</td>';
-													table +='<td>'+result.boothResults[k].boothResultVOList[0].totalVoters+'</td>';
-													table +='<td>'+result.boothResults[k].boothResultVOList[0].pollingPercentage+'</td>';
-													
-													for(var m in result.boothResults[k].boothResultVOList)
-													{
-														votersCount = parseInt(votersCount) - parseInt(result.boothResults[k].boothResultVOList[m].votesEarned);
-														percentage = parseFloat(percentage) + parseFloat(parseInt(result.boothResults[k].boothResultVOList[m].percentage));
-														table +='<td>'+result.boothResults[k].boothResultVOList[m].votesEarned+'</td>';
-														table +='<td>'+result.boothResults[k].boothResultVOList[m].percentage+'</td>';
-													}
-												}
-												
-												table +='<td>'+votersCount+'</td>';
-												table +='<td>'+(parseFloat(100.00) - parseFloat(percentage) ).toFixed(2)+'</td>';
-													//str1 +='<td>'+result.boothResults[k].boothResultVOList[m].wonParty+'</td>';	
-											table +='</tr>';						
-									}
-									
-									table +='</tbody>';
-								table +='</table>';
-							table +='</div>';
+							str1 +='<th> '+result.partyBoothPerformanceVOList[j].partyName+' Polled Votes </th>';
+							str1 +='<th> '+result.partyBoothPerformanceVOList[j].partyName+' Polling % </th>';
 						}
-					table+='</div>';
-				table+='</div>';
-			table+='</div>';
-		table+='</div>';
+					}
+					str1 +='<th >  Others Polled Votes </th>';	
+					str1 +='<th > Others Polling %   </th>';
+					//str1 +='<th > Won Party   </th>';
+									
+				str1 +='</tr>';
+
+				str1 +='</thead>';	
+			str1 +='<tbody>';	
+			for(var k in result.boothResults)
+			{
+				var votersCount = result.boothResults[k].boothResultVOList[0].totalVoters;
+				var percentage = 0.00;
+					str1 +='<tr>';
+					str1 +='<td>'+(parseInt(k)+parseInt(1))+'</td>';
+					str1 +='<td> Booth-'+result.boothResults[k].partNo+'</td>';
+						if(result.boothResults[k].boothResultVOList != null && result.boothResults[k].boothResultVOList.length>0)
+						{
+							
+							
+							//str1 +='<td>'+result.boothResults[k].boothResultVOList[0].location+'</td>';
+							//str1 +='<td>'+result.boothResults[k].boothResultVOList[0].villagesCovered+'</td>';
+							//str1 +='<td>'+result.boothResults[k].boothResultVOList[0].mandal+'</td>';
+							str1 +='<td>'+result.boothResults[k].boothResultVOList[0].totalBoothVoters+'</td>';
+							str1 +='<td>'+result.boothResults[k].boothResultVOList[0].totalVoters+'</td>';
+							str1 +='<td>'+result.boothResults[k].boothResultVOList[0].pollingPercentage+'</td>';
+							
+							for(var m in result.boothResults[k].boothResultVOList)
+							{
+								votersCount = parseInt(votersCount) - parseInt(result.boothResults[k].boothResultVOList[m].votesEarned);
+								percentage = parseFloat(percentage) + parseFloat(parseInt(result.boothResults[k].boothResultVOList[m].percentage));
+								str1 +='<td>'+result.boothResults[k].boothResultVOList[m].votesEarned+'</td>';
+								str1 +='<td>'+result.boothResults[k].boothResultVOList[m].percentage+'</td>';
+							}
+						}
+						
+						str1 +='<td>'+votersCount+'</td>';
+						str1 +='<td>'+(parseFloat(100.00) - parseFloat(percentage) ).toFixed(2)+'</td>';
+							//str1 +='<td>'+result.boothResults[k].boothResultVOList[m].wonParty+'</td>';	
+					str1 +='</tr>';						
+			}
+			
+			str1 +='</tbody>';
+			str1 +='</table>';
+			str1 +='</div>';
+		}
+		str+='</div>';
+		str+='</div>';
+		
 		$("#boothWiseResultsBlockId").html(table);
-		$("#pollingPercTableId,#majarityCandidatesTab,#boothWiseResultsPage").dataTable();
+		$("#locationWiseBoothResultsId").html(str1);
+		$("#hideShowlocationId").html(str);
+		$("#pollingPercTableId,#majarityCandidatesTab,#boothWiseResultsPage").dataTable({
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15,20,50, -1], [10, 15, 20,50, "All"]]
+		});
+		
+		var dataArr=[];
+		var polledPerc=0;
+		dataArr.push(result.partyBoothPerformanceVOList[0].totalVotes)
+		dataArr.push(result.partyBoothPerformanceVOList[0].totalValidVotes)
+		polledPerc = result.partyBoothPerformanceVOList[0].votingPercentage;
+		
+		$("#boothWiseRstsGraphId").highcharts({
+			colors:["#339900","#3BB878"],
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: '',
+				style: {
+				 color: '#000',
+				 font: 'bold 13px "Lato", sans-serif'
+			  }
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,	
+				type: 'category',
+				categories: ['Voters','Polled'],
+				
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				}
+			},
+			legend: {
+				enabled: false
+			},
+			tooltip: {
+				useHTML:true,	
+				formatter: function () {
+					if(this.x !="Voters"){
+						var pcnt = polledPerc;
+						return '<b>' + this.x + '</b><br/>' +
+						this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+					}else{
+						return '<b>' + this.x + '</b><br/>' +
+						this.y+'';
+					}
+					
+				}
+			},
+			plotOptions: { 
+				column: {
+					pointWidth: 30,
+					gridLineWidth: 25,
+					colorByPoint: true
+				}
+			},
+			series: [{
+				name: 'Count',
+				data: dataArr,
+				dataLabels: {
+					enabled: true,
+					color: '#000',
+					align: 'center',
+					formatter: function() {
+						if(this.x !="Voters"){
+							var pcnt = polledPerc;
+							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+						}else{
+							var pcnt = polledPerc;
+							return '<span>'+this.y+'</span>';
+						}
+						
+					}
+				}
+			}]
+		});
 	}	
 } 
+
+function hideAndShow()
+{
+	var isVillage = $('#villageId').is(":checked");
+	var isMandal = $('#mandalId').is(":checked");
+	var isLocation = $('#locationId').is(":checked");
+	$('#locationWiseBoothResultsId').html('');
+	buildSelectionWiseTable(isVillage,isMandal,isLocation);
+
+}
+function buildSelectionWiseTable(isVillage,isMandal,isLocation)
+{
+
+var result = mainArr[0];
+	var str1 = '';
+			str1 +='<div class="table-responsive">';
+			str1 +='<table class="table table-bordered m_top10 tableBoothWise" id="boothWiseResultsLocPage">';	
+			str1 +='<thead class="bg-E9">';
+				str1 +='<tr>';				
+					str1 +='<th> S.No  </th>';
+					str1 +='<th> Booth No  </th>';
+					if(isLocation)
+						str1 +='<th> Location  </th>';
+					if(isVillage)
+						str1 +='<th> Village Covered  </th>';
+					if(isMandal)
+						str1 +='<th> Mandal </th>';
+					str1 +='<th >   Total Votes </th>';	
+					str1 +='<th >   Polled Votes </th>';	
+					str1 +='<th > Polling %   </th>';
+					if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
+					{
+						partiesSize =  result.partyBoothPerformanceVOList.length;
+						for(var j in result.partyBoothPerformanceVOList)
+						{
+							str1 +='<th> '+result.partyBoothPerformanceVOList[j].partyName+' Polled Votes </th>';
+							str1 +='<th> '+result.partyBoothPerformanceVOList[j].partyName+' Polling % </th>';
+						}
+					}
+					str1 +='<th >  Others Polled Votes </th>';	
+					str1 +='<th > Others Polling %   </th>';
+					//str1 +='<th > Won Party   </th>';
+									
+				str1 +='</tr>';
+	
+			str1 +='</thead>';	
+			str1 +='<tbody>';	
+			for(var k in result.boothResults)
+			{
+				var votersCount = result.boothResults[k].boothResultVOList[0].totalVoters;
+				var percentage = 0.00;
+					str1 +='<tr>';
+					str1 +='<td>'+(parseInt(k)+parseInt(1))+'</td>';
+					str1 +='<td> Booth-'+result.boothResults[k].partNo+'</td>';
+						if(result.boothResults[k].boothResultVOList != null && result.boothResults[k].boothResultVOList.length>0)
+						{
+							if(isLocation)
+								str1 +='<td>'+result.boothResults[k].boothResultVOList[0].location+'</td>';
+							if(isVillage)
+								str1 +='<td>'+result.boothResults[k].boothResultVOList[0].villagesCovered+'</td>';
+							if(isMandal)
+								str1 +='<td>'+result.boothResults[k].boothResultVOList[0].mandal+'</td>';
+							str1 +='<td>'+result.boothResults[k].boothResultVOList[0].totalBoothVoters+'</td>';
+							str1 +='<td>'+result.boothResults[k].boothResultVOList[0].totalVoters+'</td>';
+							str1 +='<td>'+result.boothResults[k].boothResultVOList[0].pollingPercentage+'</td>';
+							
+							for(var m in result.boothResults[k].boothResultVOList)
+							{
+								votersCount = parseInt(votersCount) - parseInt(result.boothResults[k].boothResultVOList[m].votesEarned);
+								percentage = parseFloat(percentage) + parseFloat(parseInt(result.boothResults[k].boothResultVOList[m].percentage));
+								str1 +='<td>'+result.boothResults[k].boothResultVOList[m].votesEarned+'</td>';
+								str1 +='<td>'+result.boothResults[k].boothResultVOList[m].percentage+'</td>';
+							}
+						}
+						
+						str1 +='<td>'+votersCount+'</td>';
+						str1 +='<td>'+(parseFloat(100.00) - parseFloat(percentage) ).toFixed(2)+'</td>';
+								//str1 +='<td>'+result.boothResults[k].boothResultVOList[m].wonParty+'</td>';	
+					str1 +='</tr>';						
+			}
+			
+			str1 +='</tbody>';
+			str1 +='</table>';
+			str1 +='</div>';
+		
+
+		$('#locationWiseBoothResultsId').html(str1);
+		$('#boothWiseResultsLocPage').dataTable({
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15,20,50, -1], [10, 15, 20,50, "All"]]
+		});
+}

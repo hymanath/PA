@@ -1539,3 +1539,11 @@ font-size:12px !important;
 	font-size:14px;
 	color:#cbcbcb
 }
+.tableBoothWise thead tr  th{
+	font-size:12px !important;
+	padding:3px !important
+}
+.tableBoothWise tbody tr  td{
+	font-size:14px !important;
+	padding:5px !important
+}
