@@ -121,17 +121,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				validVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null,searchType);
 			}
 			Map<Long, ElectionInformationVO> locationMap= new HashMap<Long, ElectionInformationVO>();
-			for (Object[] objects : validVoterList) {
-			/*	List<Long> locationList=electionIdAndLocationIdListMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
-				if(!commonMethodsUtilService.isListOrSetValid(locationList))
-					locationList =new ArrayList<Long>();
-				
-				locationList.add(commonMethodsUtilService.getLongValueForObject(objects[5]));
-				electionIdAndLocationIdListMap.put(commonMethodsUtilService.getLongValueForObject(objects[3]), locationList);
-				*/
-				if(commonMethodsUtilService.getLongValueForObject(objects[5]).longValue() == 145L)
-					System.out.println("commonMethodsUtilService.getLongValueForObject(objects[5]) ");
-				
+			for (Object[] objects : validVoterList) {	
 				ElectionInformationVO yearVo =	locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[5]));
 				if(yearVo == null){
 					List<ElectionInformationVO> yearList = new ArrayList<ElectionInformationVO>();
