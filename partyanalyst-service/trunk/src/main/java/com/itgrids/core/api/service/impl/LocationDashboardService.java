@@ -4971,25 +4971,27 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			Map<Long,ElectionInformationVO> partyMap = new HashMap<Long, ElectionInformationVO>(0);
 			
 			for (Object[] objects : validVoterList) {
-				List<ElectionInformationVO> totalVoList =yearMap.get(commonMethodsUtilService.getLongValueForObject(objects[1]));
-				if(totalVoList == null){
-					totalVoList = new ArrayList<ElectionInformationVO>();
-				}
-				
-				for (ElectionInformationVO electionInformationVO : totalVoList) {
-					if(electionInformationVO.getElectionYear().equalsIgnoreCase(commonMethodsUtilService.getStringValueForObject(objects[1]))){
-						List<ElectionInformationVO> listEvo =finalYearMap.get(Long.valueOf(electionInformationVO.getElectionYear()));
-						if(listEvo == null){
-							listEvo = new ArrayList<ElectionInformationVO>();
+				if(electionScopeIds.contains(commonMethodsUtilService.getLongValueForObject(objects[2]))){
+					List<ElectionInformationVO> totalVoList =yearMap.get(commonMethodsUtilService.getLongValueForObject(objects[1]));
+					if(totalVoList == null){
+						totalVoList = new ArrayList<ElectionInformationVO>();
+					}
+					
+					for (ElectionInformationVO electionInformationVO : totalVoList) {
+						if(electionInformationVO.getElectionYear().equalsIgnoreCase(commonMethodsUtilService.getStringValueForObject(objects[1]))){
+							List<ElectionInformationVO> listEvo =finalYearMap.get(Long.valueOf(electionInformationVO.getElectionYear()));
+							if(listEvo == null){
+								listEvo = new ArrayList<ElectionInformationVO>();
+							}
+							electionInformationVO = new ElectionInformationVO();
+							electionInformationVO.setElectionId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+							electionInformationVO.setValidVoters(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							electionInformationVO.setElectionYear(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							electionInformationVO.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+							electionInformationVO.setElectionType(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							listEvo.add(electionInformationVO);
+							finalYearMap.put(Long.valueOf(electionInformationVO.getElectionYear()), listEvo);
 						}
-						electionInformationVO = new ElectionInformationVO();
-						electionInformationVO.setElectionId(commonMethodsUtilService.getLongValueForObject(objects[4]));
-						electionInformationVO.setValidVoters(commonMethodsUtilService.getLongValueForObject(objects[0]));
-						electionInformationVO.setElectionYear(commonMethodsUtilService.getStringValueForObject(objects[1]));
-						electionInformationVO.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(objects[2]));
-						electionInformationVO.setElectionType(commonMethodsUtilService.getStringValueForObject(objects[3]));
-						listEvo.add(electionInformationVO);
-						finalYearMap.put(Long.valueOf(electionInformationVO.getElectionYear()), listEvo);
 					}
 				}
 			}
@@ -5044,9 +5046,6 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 							innerVo.setElectionYear(commonMethodsUtilService.getStringValueForObject(objects[5]));
 							String number =calculatePercentage(vo.getValidVoters(),innerVo.getEarnedVotes());
 							innerVo.setLocationName(number);
-							
-							
-							
 						}
 					}
 				}
@@ -5064,9 +5063,11 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 							for (ElectionInformationVO electionVO : electionsList) {
 								if(commonMethodsUtilService.isListOrSetValid(electionVO.getList())){
 									for (ElectionInformationVO electionPartyVO : electionVO.getList()) {
-										electionsMap.put(electionPartyVO.getElectionId(), new ElectionInformationVO(electionVO.getElectionYear(),electionPartyVO.getElectionId(),electionPartyVO.getElectionType()));
-										if(partyVO.getPartyId().longValue() == electionPartyVO.getPartyId().longValue()){
-											partyVO1.getList().add(electionPartyVO);
+										if(electionScopeIds.contains(electionVO.getElectionTypeId())){
+											electionsMap.put(electionPartyVO.getElectionId(), new ElectionInformationVO(electionVO.getElectionYear(),electionPartyVO.getElectionId(),electionPartyVO.getElectionType()));
+											if(partyVO.getPartyId().longValue() == electionPartyVO.getPartyId().longValue()){
+												partyVO1.getList().add(electionPartyVO);
+											}
 										}
 									}
 								}
@@ -5156,15 +5157,11 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 					});
 				}
 			}
-			
-			
 			return finalPartyList;
-			
 		}catch(Exception e){
 			Log.error("Exception raised in getElectionInformationLocationWiseVoterShare method of LocationDashboardService"+e);
 			return null;
 		}
-		
 	}
 	
 	public String calculatePercentage(Long totalVoters,Long count)
