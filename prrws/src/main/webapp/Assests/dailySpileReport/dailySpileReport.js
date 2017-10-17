@@ -834,13 +834,21 @@ function getCaseCountLocationWise(scopeId,blockName,filterType,locationId,type){
 	var diseasesIdArr=[];     
 	diseasesIdArr.push(1);
 	diseasesIdArr.push(2);
+	var constituencyId ;
+	
+	if(scopeId != null && (scopeId == 5)){
+		constituencyId = $("#mandalLevelConstNames").val();
+	}else{
+		constituencyId = 0;
+	}
 	var json = {
 		fromDate : glStartDate,
 		toDate : glEndDate, 
 		diseasesIdList : diseasesIdArr,
 		scopeId : scopeId,              
 		locationId : locationId,
-		type : type
+		type : type,
+		constituencyId : constituencyId
     }
     $.ajax({
       url : "getCaseCountLocationWise",       

@@ -38,11 +38,11 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
 		}
 		if(type != null && type.trim().equalsIgnoreCase("Rural")){
-			sb.append(" and departmentDiseasesInfo.locationScopeId = 5");
+			sb.append(" and departmentDiseasesInfo.locationAddress.tehsil.tehsilId is not null");
 		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
-			sb.append(" and departmentDiseasesInfo.locationScopeId = 7");
+			sb.append(" and departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId is not null");
 		}
-		sb.append("group by departmentDiseasesInfo.diseases.diseasesId ");
+		sb.append(" group by departmentDiseasesInfo.diseases.diseasesId ");
 		
 		sb.append("order by sum(departmentDiseasesInfo.noOfCases) ");
 		Query query = getSession().createQuery(sb.toString());
@@ -60,9 +60,9 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 	}
 	//abc
 	@Override
-	public List<Object[]> getCaseCountLocationWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId, Long locationLevelId, Long locationId,String type){
+	public List<Object[]> getCaseCountLocationWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId, Long locationLevelId, Long locationId,String type,Long constituencyId){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select "
+		sb.append(" select distinct"
 				+ " departmentDiseasesInfo.diseasesId, ");//0
 		if(scopeId != null && scopeId.longValue() > 0){
 			if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
@@ -124,7 +124,9 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
 			sb.append(" and localElectionBody.localElectionBodyId is not null");
 		}
-		
+		if(constituencyId != null && constituencyId.longValue() > 0L){
+			sb.append(" and constituency.constituencyId = :constituencyId");
+		}
 		if(locationId != null && locationId.longValue() > 0){
 			if(locationLevelId != null && locationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
 				sb.append(" and district.districtId =:locationId ");
@@ -150,9 +152,9 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 			}else if(scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 				sb.append(" constituency.constituencyId ");
 			}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-				sb.append(" tehsil.tehsilId ");
+				sb.append(" constituency.constituencyId,tehsil.tehsilId ");
 			}else if(scopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_LEVEL_SCOPE_ID){
-				sb.append(" localElectionBody.localElectionBodyId ");
+				sb.append(" constituency.constituencyId,localElectionBody.localElectionBodyId ");
 			}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
 				sb.append(" panchayat.panchayatId ");
 			}
@@ -171,6 +173,9 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		if(locationId != null && locationId.longValue() > 0 && locationLevelId != null && locationLevelId.longValue() > 0L){
 			query.setParameter("locationId", locationId);
+		}
+		if(constituencyId != null && constituencyId.longValue() > 0L){
+			query.setParameter("constituencyId", constituencyId);
 		}
 		return query.list();
 	}
@@ -359,6 +364,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		if(deptIdList != null && deptIdList.size() > 0){
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
 		}
+		
 		sb.append("group by ");
 		if(scopeId != null && scopeId.longValue() > 0){
 			if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
@@ -368,9 +374,9 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 			}else if(scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 				sb.append(" constituency.constituencyId ");
 			}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-				sb.append(" tehsil.tehsilId ");
+				sb.append(" constituency.constituencyId,tehsil.tehsilId ");
 			}else if(scopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_LEVEL_SCOPE_ID){
-				sb.append(" localElectionBody.localElectionBodyId ");
+				sb.append(" constituency.constituencyId,localElectionBody.localElectionBodyId ");
 			}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
 				sb.append(" panchayat.panchayatId ");
 			}
@@ -633,7 +639,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		return query.list();
 	}
-	public List<Object[]> getCaseCountByLocationIds(List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId,Set<Long> locationIdList,String type){
+	public List<Object[]> getCaseCountByLocationIds(List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId,Set<Long> locationIdList,String type,Long constituencyId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select ");
 		if(scopeId != null && scopeId.longValue() > 0){
@@ -669,6 +675,10 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 			sb.append(" and departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId is not null");
 		}
 		
+		if(constituencyId != null && constituencyId.longValue() >0L){
+			sb.append(" and departmentDiseasesInfo.locationAddress.constituency.constituencyId = :constituencyId");
+		}
+		
 		sb.append(" group by ");
 		if(scopeId != null && scopeId.longValue() > 0){
 			if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
@@ -678,9 +688,9 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 			}else if(scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 				sb.append(" departmentDiseasesInfo.locationAddress.constituency.constituencyId ");
 			}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-				sb.append(" departmentDiseasesInfo.locationAddress.tehsil.tehsilId ");
+				sb.append(" departmentDiseasesInfo.locationAddress.constituency.constituencyId,departmentDiseasesInfo.locationAddress.tehsil.tehsilId ");
 			}else if(scopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_LEVEL_SCOPE_ID){
-				sb.append(" departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId ");
+				sb.append(" departmentDiseasesInfo.locationAddress.constituency.constituencyId,departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId ");
 			}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
 				sb.append(" departmentDiseasesInfo.locationAddress.panchayat.panchayatId ");
 			}
@@ -692,6 +702,9 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		if(deptIdList != null && deptIdList.size() > 0){
 			query.setParameterList("deptIdList", deptIdList);
+		}
+		if(constituencyId != null && constituencyId.longValue() >0L){
+			query.setParameter("constituencyId", constituencyId);
 		}
 		return query.list();
 	}

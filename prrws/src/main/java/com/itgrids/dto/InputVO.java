@@ -94,6 +94,7 @@ public class InputVO implements Serializable {
 	private String reportType;
 	private String category;
 	private String sector;
+	private Long constituencyId;
 	
 	
 	public String getSector() {
@@ -586,6 +587,12 @@ public class InputVO implements Serializable {
 	}
 	public void setSubMap(Map<String, Long> subMap) {
 		this.subMap = subMap;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	
    	
