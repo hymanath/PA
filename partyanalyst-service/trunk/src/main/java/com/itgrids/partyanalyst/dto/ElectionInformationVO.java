@@ -34,8 +34,8 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private String earnedVote;
 	private String status;
 	private String range;
-	private Long assemblyValidVoters;
-	private Long parliamentValidVoters;
+	private Long assemblyValidVoters =0l;
+	private Long parliamentValidVoters = 0l;
 	private Double earnedVotersPerc;
 	private Long assemblyEarndVotes;
 	private Long parliamentEarnedVotes;
