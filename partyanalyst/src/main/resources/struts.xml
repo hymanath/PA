@@ -18284,5 +18284,10 @@
 			<param name="root">electioninformationList</param>
 		</result>        
    </action>
+   <action name="getElectionInformationLocationWiseStatusAndYearWiseAction" class="locationDashboardAction"  method="getElectionInformationLocationWiseStatusAndYearWise">
+		<result type="json" name="success">    
+			<param name="root">electioninformationList</param>       
+		</result>
+  	</action>
  </package>
 </struts>
