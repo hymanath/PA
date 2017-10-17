@@ -1,10 +1,14 @@
 package com.itgrids.tpi.rws.service.impl;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -2501,4 +2505,158 @@ public class RWSNICService implements IRWSNICService{
 		return returnList;
 	}
 	
+	public Map<Long,IdNameVO> getAllAdminWorksDetails(){
+		Map<Long,IdNameVO> assestWorkMap = new LinkedHashMap<Long,IdNameVO>();
+		try {
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getAllWorkAdminDetails");	        
+			String authStringEnc = getAuthenticationString("itgrids","Itgrids@123");	        
+			ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class);
+			
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);//null;
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+		 	    	if(finalArray!=null && finalArray.length()>0){
+		 	    		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		 	    		Calendar calendar = Calendar.getInstance();
+		 	    		
+		 	    		for(int i=0;i<finalArray.length();i++){
+		 	    			JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    			IdNameVO vo = new IdNameVO();
+	 	    				vo.setWorkId(jObj.getLong("workId"));
+	 	    				vo.setWorkName(jObj.getString("workName"));
+	 	    				vo.setAdminDate(jObj.getString("adminDate"));
+	 	    				vo.setAdminNo(jObj.getString("adminNo"));
+	 	    				vo.setSanctionAmount(jObj.getLong("sanctionAmount"));
+	 	    				vo.setTypeOfAssestName(jObj.getString("typeOfAssestName"));
+	 	    				
+	 	    				Long groundedDate = jObj.getLong("groundingDate");
+	 	    				calendar.setTimeInMillis(groundedDate);
+	 	    				vo.setGroundedDate(formatter.format(calendar.getTime()));
+	 	    				calendar.clear();
+	 	    				
+	 	    				Long targetDate = jObj.getLong("targetDateComp");
+	 	    				calendar.setTimeInMillis(targetDate);
+	 	    				vo.setTargetDate(formatter.format(calendar.getTime()));
+	 	    				
+	 	    				assestWorkMap.put(vo.getWorkId(),vo);
+		 	    		}
+		 	    	}
+	 	    	}
+	 	      }
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getAllAdminWorksDetails() method, Exception - ",e);
+		}
+		return assestWorkMap;
+	}
+	
+	public IdNameVO getExceededTargetWorksDetails(){
+		IdNameVO returnvo = new IdNameVO();
+		try {
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getAllWorkComplitionDetails");	        
+			String authStringEnc = getAuthenticationString("itgrids","Itgrids@123");	        
+			ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class);
+			
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);//null;
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+		 	    	if(finalArray!=null && finalArray.length()>0){
+		 	    		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		 	    		Calendar completedCal = Calendar.getInstance();
+		 	    		Calendar targetCal = Calendar.getInstance();
+		 	    		Map<Long,IdNameVO> assesetWorkMap = getAllAdminWorksDetails();
+		 	    		
+		 	    		String[] templateArr = {"0-30 Days","31-60 Days","61-90 Days","91-180 Days","181-365 Days","More Than 1 Year"};
+		 	    		for (int i = 0; i < templateArr.length; i++) {
+							IdNameVO vo = new IdNameVO();
+							vo.setId((long)i+1L);
+							vo.setName(templateArr[i]);
+							returnvo.getCompletedList().add(vo);
+						}
+		 	    		
+		 	    		for(int i=0;i<finalArray.length();i++){
+		 	    			JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    			Long workId = jObj.getLong("workId");
+ 	    					IdNameVO assestvo = assesetWorkMap.get(workId);
+ 	    					String assestName = assestvo.getTypeOfAssestName();
+ 	    					if(jObj.has("dateOfCompletion")){
+		 	    				Long completed = jObj.getLong("dateOfCompletion");
+		 	    				Long target = jObj.getLong("targetDateComp");
+		 	    				completedCal.setTimeInMillis(completed);
+		 	    				targetCal.setTimeInMillis(target);
+		 	    				Date completedDate = completedCal.getTime();
+		 	    				Date targetDate = targetCal.getTime();
+		 	    				Long daysDiff = completedDate.getTime() - targetDate.getTime();
+		 	    				String dayStr = "";	
+		 	    				
+		 	    				if(daysDiff != null && daysDiff >= 0L && daysDiff <= 30L)
+		 	    					dayStr = "0-30 Days";
+		 	    				else if(daysDiff != null && daysDiff >= 31L && daysDiff <= 60L)
+		 	    					dayStr = "31-60 Days";
+		 	    				else if(daysDiff != null && daysDiff >= 61L && daysDiff <= 90L)
+		 	    					dayStr = "61-90 Days";
+		 	    				else if(daysDiff != null && daysDiff >= 91L && daysDiff <= 180L)
+		 	    					dayStr = "91-180 Days";
+		 	    				else if(daysDiff != null && daysDiff >= 181L && daysDiff <= 365L)
+		 	    					dayStr = "180-365 Days";
+		 	    				else if(daysDiff != null && daysDiff > 365L)
+		 	    					dayStr = "More Than 1 Year";
+		 	    				
+		 	    				IdNameVO dayvo = getMatchedIdNameVO(returnvo.getCompletedList(), dayStr);
+		 	    				if(dayvo != null){
+		 	    					if(assestName != null && assestName.trim().equalsIgnoreCase("PWS")){
+		 	    						dayvo.setPwsCount(dayvo.getPwsCount()+1L);
+		 	    						dayvo.setPwsAmount(dayvo.getPwsAmount()+jObj.getLong("sanctionAmount"));
+		 	    					}
+		 	    					else if(assestName != null && assestName.trim().equalsIgnoreCase("CPWS")){
+		 	    						dayvo.setCpwsCount(dayvo.getCpwsCount()+1L);
+		 	    						dayvo.setCpwsAmount(dayvo.getCpwsAmount()+jObj.getLong("sanctionAmount"));
+		 	    					}
+		 	    				}
+		 	    			}
+		 	    			else{
+		 	    				if(assestName != null && assestName.trim().equalsIgnoreCase("PWS")){
+	 	    						returnvo.setOnGoingPwsCount(returnvo.getOnGoingPwsCount()+1L);
+	 	    						returnvo.setOnGoingPwsAmount(returnvo.getOnGoingPwsAmount()+jObj.getLong("sanctionAmount"));
+	 	    					}
+	 	    					else if(assestName != null && assestName.trim().equalsIgnoreCase("CPWS")){
+	 	    						returnvo.setOnGoingCpwsCount(returnvo.getOnGoingCpwsCount()+1L);
+	 	    						returnvo.setOnGoingCpwsAmount(returnvo.getOnGoingCpwsAmount()+jObj.getLong("sanctionAmount"));
+	 	    					}
+		 	    			}
+		 	    			
+		 	    			if(assestName != null && assestName.trim().equalsIgnoreCase("PWS")){
+ 	    						returnvo.setPwsCount(returnvo.getPwsCount()+1L);
+ 	    						returnvo.setPwsAmount(returnvo.getPwsAmount()+jObj.getLong("sanctionAmount"));
+ 	    					}
+ 	    					else if(assestName != null && assestName.trim().equalsIgnoreCase("CPWS")){
+ 	    						returnvo.setCpwsCount(returnvo.getCpwsCount()+1L);
+ 	    						returnvo.setCpwsAmount(returnvo.getCpwsAmount()+jObj.getLong("sanctionAmount"));
+ 	    					}
+		 	    		}
+		 	    	}
+	 	    	}
+	 	      }
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getExceededTargetWorksDetails() method, Exception - ",e);
+		}
+		return returnvo;
+	}
+	
+	public IdNameVO getMatchedIdNameVO(List<IdNameVO> voList,String dayStr){
+		if(voList != null && voList.size() > 0){
+			for (IdNameVO vo : voList) {
+				if(vo.getName().equalsIgnoreCase(dayStr))
+					return vo;
+			}
+		}
+		return null;
+	}
  }
