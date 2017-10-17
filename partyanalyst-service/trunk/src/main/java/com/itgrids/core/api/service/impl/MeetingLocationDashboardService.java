@@ -251,7 +251,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 						levelVO.setNotConductedMeetings(levelVO.getNotConductedMeetings()+commonMethodsUtilService.getLongValueForObject(objects[5])); // NO count
 					}else if(status != null && status.equalsIgnoreCase("M")){
 						levelVO.setMaybeeMeetings(levelVO.getMaybeeMeetings()+commonMethodsUtilService.getLongValueForObject(objects[5])); // May be count
-					}else if(status != null && status.equalsIgnoreCase("N")){
+					}else if(status != null && status.equalsIgnoreCase("NU")){
 						levelVO.setNotUpdatedCount(levelVO.getNotUpdatedCount()+commonMethodsUtilService.getLongValueForObject(objects[5])); // Not Updated count
 					}
 					levelVO.setTotalMeetings(levelVO.getTotalMeetings()+commonMethodsUtilService.getLongValueForObject(objects[5]));//total
@@ -338,8 +338,8 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 											meetingTypeVO.setInviteeAttendedCount(meetingTypeVO.getInviteeAttendedCount()+1);
 										}
 									}
-									meetingTypeVO.setImagesCnt(meetingTypeVO.getImagesCnt()+vo.getImagesCnt());
 								}
+								meetingTypeVO.setImagesCnt(meetingTypeVO.getImagesCnt()+vo.getImagesCnt());
 						}
 					}
 					meetingTypeVO.setAbsentCount(Math.abs(meetingTypeVO.getInvitedCount().longValue()-meetingTypeVO.getInviteeAttendedCount().longValue()));
@@ -383,7 +383,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 						inviteesMap.put(commonMethodsUtilService.getLongValueForObject(param[5]),partyMeetingVO);
 					}
 					if(type != null && type.equalsIgnoreCase("images")){
-						partyMeetingVO.setImagesCnt(partyMeetingVO.getImagesCnt()+1);
+						partyMeetingVO.setImagesCnt(partyMeetingVO.getImagesCnt().longValue()+1l);
 					}else{
 						if(type.equalsIgnoreCase("attendees")){
 							partyMeetingVO.getAttendedIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
