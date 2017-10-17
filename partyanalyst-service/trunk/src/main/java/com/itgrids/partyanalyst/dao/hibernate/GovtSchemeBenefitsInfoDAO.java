@@ -163,7 +163,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 				}else if (locationType == 3l || locationType == 10l) {
 					queryStr.append(" constituency.constituencyId,constituency.name,count(model.govtSchemeId),sum(model.grivenaceCount),sum(model.benefitAmount) ");
 				}else if (locationType == 4l) {
-					queryStr.append(" tehsil.tehsilId,tehsil.tehsilName,count(model.govtSchemeId),sum(model.grivenaceCount),sum(model.benefitAmount) ");
+					queryStr.append(" tehsilCons.tehsilId,tehsilCons.tehsil.tehsilName,count(model.govtSchemeId),sum(model.grivenaceCount),sum(model.benefitAmount) ");
 				}else if (locationType == 5l) {
 					queryStr.append(" panchayat.panchayatId,panchayat.panchayatName,count(model.govtSchemeId),sum(model.grivenaceCount),sum(model.benefitAmount) ");
 				}
@@ -177,7 +177,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 					queryStr.append(" constituency.constituencyId,constituency.name,model.govtSchemeId," +
 							" model.govtSchemes.schemeName,sum(model.grivenaceCount),sum(model.benefitAmount) ");
 				}else if (locationType == 4l) {
-					queryStr.append(" tehsil.tehsilId,tehsil.tehsilName,model.govtSchemeId,model.govtSchemes.schemeName," +
+					queryStr.append(" tehsilCons.tehsilId,tehsilCons.tehsil.tehsilName,model.govtSchemeId,model.govtSchemes.schemeName," +
 							" sum(model.grivenaceCount),sum(model.benefitAmount) ");
 				}else if (locationType == 5l) {
 					queryStr.append(" panchayat.panchayatId,panchayat.panchayatName,model.govtSchemeId,model.govtSchemes.schemeName," +
@@ -190,17 +190,17 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 				        " GovtSchemeBenefitsInfo model " );
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
 			if (locationType == 2l) {
-				queryStr.append(" ,District district where  model.locationValue=district.districtId " +
+				queryStr.append(" ,District district where  model.locationValue= district.districtId " +
 						" and (district.districtId between 11 and 23) and model.locationScopeId =3 ");
 			}else if (locationType == 3l || locationType == 10l){
-				queryStr.append(" ,Constituency constituency where  model.locationValue=constituency.constituencyId" +
+				queryStr.append(" ,Constituency constituency where  model.locationValue= constituency.constituencyId" +
 						"  and constituency.district.districtId =:locationValue and model.locationScopeId=:locationType");
 			}else if (locationType == 4l) {
-				queryStr.append(" ,TehsilConstituency tehsilConstituency where model.locationValue =tehsilConstituency.tehsil.tehsilId " +
-						" and tehsilConstituency.constituencyId =:locationValue  and model.locationScopeId=5 ");
-			}else if (locationType == 6l) {
+				queryStr.append(" ,TehsilConstituency tehsilCons where model.locationValue = tehsilCons.tehsilId " +
+						" and tehsilCons.constituencyId =:locationValue and model.locationScopeId=:locationType ");
+			}else if (locationType == 5l) {
 				queryStr.append(" ,Panchayat panchayat where model.locationValue = panchayat.panchayatId " +
-						" and panchayat.tehsil.tehsilId =:locationValue ");
+						" and panchayat.tehsil.tehsilId =:locationValue and model.locationScopeId=:locationType ");
 			}
 		}
 		
@@ -210,7 +210,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 			}else if (locationType == 10l || locationType == 3l) {
 				queryStr.append(" group by constituency.constituencyId ");
 			}else if (locationType == 4l) {
-				queryStr.append(" group by tehsil.tehsilId ");
+				queryStr.append(" group by tehsilCons.tehsilId ");
 			}else if (locationType == 5l) {
 				queryStr.append(" group by panchayat.panchayatId ");
 			}
@@ -218,10 +218,15 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 		Query query = getSession().createQuery(queryStr.toString());
 			if (locationType != 2l && locationType.longValue() != 10l){ 
 				query.setParameter("locationType", locationType+1l);
+				if(locationType == 4l){
+					query.setParameter("locationValue", locationValue);
+				}else if(locationType == 5l){
+					query.setParameter("locationValue", locationValue);
+				}
 			}else if(locationType == 10l ){
 				query.setParameter("locationType", 4L);
 				query.setParameter("locationValue", locationValue);
-			}else if(locationType == 6l || locationType == 4l || locationType == 3l){
+			}else if(locationType == 3l){
 				query.setParameter("locationValue", locationValue);
 			}
 					
