@@ -477,14 +477,9 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				 parliamentPolledVoters = boothConstituencyElectionDAO.getLocationWiseAssemblyElectionPolledVotes(electionYrs, parliamentIds, assemlyIds, levelId, locationVals,subtypes,1l);
 				  parlearnedVotes = boothConstituencyElectionDAO.getLocationwiseAssemblyEarnedVotes(electionYrs, parliamentIds, assemlyIds, partyids, levelId, locationVals, subtypes, 1l);
 			}
-			//List<Object[]> assemlyPolledVotes = boothConstituencyElectionDAO.getLocationWiseAssemblyElectionPolledVotes(electionYrs, parliamentIds, assemlyIds, levelId, locationVals,subtypes,2l);
-			//List<Object[]> parliamentPolledVoters = boothConstituencyElectionDAO.getLocationWiseAssemblyElectionPolledVotes(electionYrs, parliamentIds, assemlyIds, levelId, locParliamntVals,subtypes,1l);
-			
 			setTemplateForParties(partyids);
 			setPolledVotesPerElectionYear(assemlyPolledVotes,yearsPolledMap,"assembly",partyids);
 			setPolledVotesPerElectionYear(parliamentPolledVoters,yearsPolledMap,"parliament",partyids);
-			//List<Object[]> assemblyEarnedVotes = boothConstituencyElectionDAO.getLocationwiseAssemblyEarnedVotes(electionYrs, parliamentIds, assemlyIds, partyids, levelId, locationVals, subtypes, 2l);
-			//List<Object[]> parlearnedVotes = boothConstituencyElectionDAO.getLocationwiseAssemblyEarnedVotes(electionYrs, parliamentIds, assemlyIds, partyids, levelId, locationVals, subtypes, 1l);
 			
 			setEarnedVotesPercentagePerPartyInYear(assemblyEarnedVotes,yearsPolledMap,"assembly");
 			setEarnedVotesPercentagePerPartyInYear(parlearnedVotes,yearsPolledMap,"parliament");
@@ -512,7 +507,6 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			List<Object[]> parties = partyDAO.getPartyShortNameByIds(partyids);
 			if(commonMethodsUtilService.isListOrSetValid(parties)){
 				for (Object[] param : parties) {
-					//ElectionInformationVO partyVO = getMatchedVO(yearVO.getList(),partyId.longValue());
 					ElectionInformationVO partyVO = new ElectionInformationVO();
 						partyVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
 						partyVO.setPartyFlag(commonMethodsUtilService.getStringValueForObject(param[2]));
@@ -545,19 +539,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 					}else{
 						yearVO.setParliamentValidVoters(commonMethodsUtilService.getLongValueForObject(param[1]));
 					}
-					//if(type != null &&type.equalsIgnoreCase("assembly")){
 					
-					/*if(commonMethodsUtilService.isListOrSetValid(partyids)){
-						for (Long partyId : partyids) {
-							ElectionInformationVO partyVO = getMatchedVO(yearVO.getList(),partyId.longValue());
-							if(partyVO == null){
-								partyVO = new ElectionInformationVO();
-								partyVO.setPartyId(partyId);
-								yearVO.getList().add(partyVO);
-							}
-						}
-					}*/
-				//	}
 				}
 			}
 		}catch (Exception e) {
@@ -575,9 +557,6 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 						ElectionInformationVO partyVO = getMatchedVO(yearVO.getList(),commonMethodsUtilService.getLongValueForObject(param[2]));
 						
 							if(partyVO != null){
-								//partyVO.setPartyFlag(commonMethodsUtilService.getStringValueForObject(param[4]));
-								//partyVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[5]));
-								//partyVO.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[3]));
 								if(type != null &&type.equalsIgnoreCase("assembly")){
 									partyVO.setAssemblyEarndVotes(commonMethodsUtilService.getLongValueForObject(param[3]));
 								}else{
@@ -586,10 +565,10 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 								if(type != null &&type.equalsIgnoreCase("assembly")){
 									partyVO.setEarnedVotersPerc(Double.valueOf(calculatePercentage(yearVO.getAssemblyValidVoters(), partyVO.getAssemblyEarndVotes())));
 								}else{
-									partyVO.setEarnedVotersPerc1(Double.valueOf(calculatePercentage(yearVO.getParliamentValidVoters(), partyVO.getParliamentEarnedVotes())));
+									partyVO.setEarnedVotersPerc1(Double.valueOf(calculatePercentage(yearVO.getAssemblyValidVoters(), partyVO.getParliamentEarnedVotes())));
 									Double parliamentPerc = partyVO.getEarnedVotersPerc1() != null ?partyVO.getEarnedVotersPerc1():0.0;
 									Double assmblyPerc = partyVO.getEarnedVotersPerc() != null ?partyVO.getEarnedVotersPerc():0.0;
-									Double diffPerc = parliamentPerc-assmblyPerc;
+									Double diffPerc = assmblyPerc-parliamentPerc;
 									partyVO.setPerc(diffPerc.toString());
 								}
 								
@@ -597,11 +576,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 							
 						}
 					}
-					/*if(type != null &&type.equalsIgnoreCase("assembly")){
-						yearVO.setAssemblyValidVoters(commonMethodsUtilService.getLongValueForObject(param[1]));
-					}else{
-						yearVO.setParliamentValidVoters(commonMethodsUtilService.getLongValueForObject(param[1]));
-					}*/
+					
 					
 				}
 			}
@@ -624,5 +599,75 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			Log.error("Exception raised at getMatchedVO service"+e);
 		}
 		return null;
+	}
+	
+	/**
+	* @author Hymavathi G 
+	* @Description :Voting Details For Location
+	*  @since 17-oct-2017
+	*  @return :List<ElectionInformationVO>
+	*/
+	public List<ElectionInformationVO> getLocationWiseVotingDetails(List<Long> electionYrs,Long levelId,List<Long> locationVals,List<String> subtypes,String searchLevel){
+		List<ElectionInformationVO> returnList = new ArrayList<ElectionInformationVO>();
+		try{
+			Map<Long,ElectionInformationVO> locationMap  = new HashMap<Long,ElectionInformationVO>();
+			List<Object[]> polledVotes = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locationVals, subtypes, searchLevel);
+			setLocationWiseVotersDetails( polledVotes, locationMap,"polled");
+			
+			List<Object[]> assemblyEarnedVotes = boothConstituencyElectionDAO.getLocationWiseErnedVotesForVotingDetails(electionYrs, levelId, locationVals, subtypes, searchLevel, 2l);
+			setLocationWiseVotersDetails( assemblyEarnedVotes, locationMap,"assembly");
+			
+			List<Object[]> parliamentEarnedVotes = boothConstituencyElectionDAO.getLocationWiseErnedVotesForVotingDetails(electionYrs, levelId, locationVals, subtypes, searchLevel, 1l);
+			setLocationWiseVotersDetails( parliamentEarnedVotes, locationMap,"parliament");
+			
+			if(commonMethodsUtilService.isMapValid(locationMap)){
+				returnList.addAll(locationMap.values());
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception raised at getLocationWiseVotingDetails service"+e);
+		}
+		return returnList;
+	}
+	
+	/**
+	* @author Hymavathi G 
+	* @Description :service build function for Voting Details
+	*  @since 17-oct-2017
+	*  @return :void
+	*/
+	public void setLocationWiseVotersDetails(List<Object[]> polledVotes,Map<Long,ElectionInformationVO> yearsPolledMap,String type){
+		try{
+			
+			if(commonMethodsUtilService.isListOrSetValid(polledVotes)){
+				for (Object[] param : polledVotes) {
+					ElectionInformationVO locationVO = yearsPolledMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locationVO == null){
+						locationVO = new ElectionInformationVO();
+						locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						yearsPolledMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationVO);
+					}
+					if(type != null &&type.equalsIgnoreCase("polled")){
+						locationVO.setValidVoters(commonMethodsUtilService.getLongValueForObject(param[2]));
+					}else if(type != null &&type.equalsIgnoreCase("assembly")){
+						locationVO.setAssemblyEarndVotes(commonMethodsUtilService.getLongValueForObject(param[2]));
+						locationVO.setEarnedVotersPerc(Double.valueOf(calculatePercentage(locationVO.getValidVoters(), locationVO.getAssemblyEarndVotes())));
+						//yearVO.setParliamentValidVoters(commonMethodsUtilService.getLongValueForObject(param[1]));
+					}else if(type != null &&type.equalsIgnoreCase("parliament")){
+						locationVO.setParliamentEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[2]));
+						locationVO.setEarnedVotersPerc1(Double.valueOf(calculatePercentage(locationVO.getValidVoters(), locationVO.getParliamentEarnedVotes())));
+						Double parliamentPerc = locationVO.getEarnedVotersPerc1() != null ?locationVO.getEarnedVotersPerc1():0.0;
+						Double assmblyPerc = locationVO.getEarnedVotersPerc() != null ?locationVO.getEarnedVotersPerc():0.0;
+						Double diffPerc = parliamentPerc-assmblyPerc;
+						locationVO.setPerc(diffPerc.toString());
+					}
+					
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception raised at setPolledVotesPerElectionYear service"+e);
+		}
 	}
 }
