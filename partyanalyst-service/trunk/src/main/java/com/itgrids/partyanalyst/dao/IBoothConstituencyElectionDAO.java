@@ -195,5 +195,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List<Object[]> getTotalVotersByLocationId(List<Long> locationIdsList,String locationType,Long electionId,Long constituencyId,List<Long> constituencyIdsList,Long publicationDateId);
 	public List<Object[]> getLocationWiseAssemblyElectionPolledVotes(List<Long> electionYrs,List<Long> parliamentIds,List<Long> assemlyIds ,Long locationTypeId,List<Long> locationValues,List<String> subtypes,Long scopeId);
 	public List<Object[]> getLocationwiseAssemblyEarnedVotes(List<Long> electionYrs,List<Long> parliamentIds,List<Long> assemlyIds ,List<Long> partyids,Long levelId,List<Long> locationVals,List<String> subtypes,Long scopeId);
-	
+	public List<Object[]> getLocationWisePolledVotesForVotingDetails(List<Long> electionYrs,Long locationTypeId,List<Long> locationValues,List<String> subtypes,String searchLevel);
+	public List<Object[]> getLocationWiseErnedVotesForVotingDetails(List<Long> electionYrs,Long locationTypeId,List<Long> locationValues,List<String> subtypes,String searchLevel,Long electionScopeId);
 }
