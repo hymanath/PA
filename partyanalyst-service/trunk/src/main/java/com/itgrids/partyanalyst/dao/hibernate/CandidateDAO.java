@@ -1300,9 +1300,19 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(yearList != null && yearList.size()>0){
 			sb.append(" and e.election_year in(:yearList) ");
 		}	
+		if(lelevlId != null && lelevlId.longValue() ==4l){
 		if(constituencyId != null && constituencyId.longValue()>0l){
 			sb.append(" and b.constituency_id =:constituencyId and b.local_election_body_id is null " );
 		  }
+		}else if(lelevlId != null && lelevlId.longValue() ==6l){
+			if(constituencyId != null && constituencyId.longValue()>0l){
+			 sb.append(" and b.constituency_id =:constituencyId ");
+			}
+		}else if(lelevlId != null && (lelevlId.longValue() ==5l || lelevlId.longValue() ==7l)){
+			if(constituencyId != null && constituencyId.longValue()>0l){
+				sb.append(" and b.constituency_id =:constituencyId and b.local_election_body_id is not null " );
+			  }
+		}
 		if(lelevlId != null && lelevlId.longValue() ==4l){
 		sb.append(" group by b.tehsil_id,e.election_scope_id,e.election_id,et.election_type," +
 				" e.election_scope_id,e.election_year,n.party_id " +
