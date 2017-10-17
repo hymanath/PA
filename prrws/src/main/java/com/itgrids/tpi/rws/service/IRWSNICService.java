@@ -1,6 +1,7 @@
 package com.itgrids.tpi.rws.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
@@ -51,4 +52,7 @@ public interface IRWSNICService {
 	public List<NregaLocationOverviewVO> getIHHLlocationLvlWiseData(InputVO inputVO);
 	public NregaLocationOverviewVO getSBPaymentsAbstract(InputVO inputVO);
 	public List<NregaLocationOverviewVO> getSBPaymentsLevelsWiseData(InputVO inputVO);
+	
+	public Map<Long,IdNameVO> getAllAdminWorksDetails();
+	public IdNameVO getExceededTargetWorksDetails();
 }

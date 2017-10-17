@@ -465,4 +465,14 @@ public class RuralWaterSupplyDashBoardController {
 	public String keyPerfomanceDashBoard(ModelMap model){
 		return "keyPerfomanceDashBoard";
 	}
+	
+	@PostMapping("/getExceededTargetWorksDetails")
+	public @ResponseBody IdNameVO getExceededTargetWorksDetails() {
+		try {
+			return rWSNICService.getExceededTargetWorksDetails();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getExceededTargetWorksDetails - RuralWaterSupplyDashBoardController controller", e);
+		}
+		return null;
+	}
 }
