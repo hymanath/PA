@@ -4816,10 +4816,10 @@ function getDetailedElectionInformaction(){
 		str+='<table class="table table-noborder" id="dataTableAssemblyElecBlock">';
 			str+='<thead class="bg-DD text-capitalize">';
 				str+='<th style="vertical-align: middle;">Year</th>';
-				str+='<th style="vertical-align: middle;"> <img src="images/constituencyPage/green-hand.png" alt="green-hand"/></th>';
+				str+='<th style="vertical-align: middle;"> <img src="coreApi/img/winner_icon.png" alt="green-hand"/></th>';
 				str+='<th style="vertical-align: middle;">Won Candidate</th>';
 				str+='<th style="vertical-align: middle;">Majority Of Votes</th>';
-				str+='<th style="vertical-align: middle;"><img src="images/constituencyPage/red-hand.png" alt="red-hand"/></th>';
+				str+='<th style="vertical-align: middle;"><img src="coreApi/img/loser_icon.png" alt="red-hand"/></th>';
 				str+='<th style="vertical-align: middle;">Lost Candidate</th>';
 			str+='</thead>';
 			str+='<tbody>';
