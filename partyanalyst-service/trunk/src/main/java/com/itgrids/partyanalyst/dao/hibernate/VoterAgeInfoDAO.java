@@ -273,17 +273,22 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 		
 		public List<Object[]> getVotersAgeWiseCount(List<Long> constituencyIds,Long publicationDateId,Long reportLevelId){
 			StringBuilder sb = new StringBuilder();
+			if(reportLevelId == null || reportLevelId.longValue()==0L)
+				reportLevelId=1L;
 			
 			sb.append("select model.voterAgeRange.voterAgeRangeId," +
 					" sum(model.totalVoters),sum(model.totalVotersPercentage), " +
 					" sum(model.maleVoters),sum(model.maleVotersPercentage), " +
 					" sum(model.femaleVoters),sum(model.femaleVotersPercentage) " +
-					" from VoterAgeInfo model " +
-					" where model.publicationDate.publicationDateId=:publicationDateId " );
+					" from VoterAgeInfo model " );
+					if(reportLevelId.longValue() == 1L)
+						sb.append(" ,Constituency model1 " );
+			sb.append(" where model.publicationDate.publicationDateId=:publicationDateId and model.voterAgeRange.voterAgeRangeId > 1 " );			
 			if(reportLevelId != null && reportLevelId.longValue()>0l){
 				sb.append("and model.voterReportLevel.voterReportLevelId = :levelValue ");
 			}
-				
+			if(reportLevelId.longValue() == 1L)
+				sb.append(" and  model.reportLevelValue = model1.constituencyId and (model1.district.districtId between 11 and 23) " );
 			if(constituencyIds !=null && constituencyIds.size()>0){
 				sb.append("and model.reportLevelValue in (:constituencyId)");
 			}

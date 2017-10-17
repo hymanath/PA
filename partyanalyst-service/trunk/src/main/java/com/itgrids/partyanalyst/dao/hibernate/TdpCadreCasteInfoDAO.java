@@ -426,7 +426,8 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 				" from TdpCadreCasteInfo model where model.tdpCadreEnrollmentId = :enrollmentYearId " );
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append(" and model.locationId in (:locationValue) and model.locationType ='District' ");
+				//sb.append(" and model.locationId in (:locationValue) and model.locationType ='District' ");
+				sb.append(" and model.locationId in (:locationValue)  and model.locationType ='Constituency'  ");
 			} else if (locationTypeId == 4l || locationTypeId == 10l) {
 				sb.append(" and model.locationId in (:locationValue)  and model.locationType ='Constituency'  ");
 			} else if (locationTypeId == 5l) {
