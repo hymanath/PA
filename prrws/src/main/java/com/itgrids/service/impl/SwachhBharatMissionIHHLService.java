@@ -592,7 +592,6 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
     					 for (Entry<String, List<String>> rangeEntry : map.entrySet()) {
     						 SwachhBharatMissionIHHLDtlsVO targetAchivementDtlsVO = new SwachhBharatMissionIHHLDtlsVO();
     						 targetAchivementDtlsVO.setRange(rangeEntry.getKey());
-    						// targetAchivementDtlsVO.setList(rangeEntry.getValue());
     						 targetAchivementDtlsVO.setFromDate(rangeEntry.getValue().get(0));
     						 targetAchivementDtlsVO.setToDate(rangeEntry.getValue().get(rangeEntry.getValue().size()-1));
     						   if (rangeEntry.getValue() != null && rangeEntry.getValue().size() > 0) {
@@ -636,7 +635,12 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 					String dateStr = jObj.has("DATESEQ") ? jObj.getString("DATESEQ") : "";
 					if (dateStr != null && dateStr.trim().length() > 2) {
 						Date date = sdf.parse(dateStr);
-						String locationIdStr = getLocationIdByLocationType(inputVO.getSubLocation(), jObj);// getting  locationId
+						String locationIdStr = null;
+						 locationIdStr = getLocationIdByLocationType(inputVO.getSubLocation(), jObj);// getting  locationId
+						if (inputVO.getSubLocation() != null && inputVO.getSubLocation().equalsIgnoreCase("mandal")) {
+							String districtCode = jObj.has("DID") ? jObj.getString("DID"):"";
+							locationIdStr = districtCode+ locationIdStr;
+						}
 						SwachhBharatMissionIHHLDtlsVO lcatnVO = locationMap.get(locationIdStr);
 						if (lcatnVO == null) {
 							lcatnVO = new SwachhBharatMissionIHHLDtlsVO();
@@ -724,6 +728,9 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 				if (subLocation != null && subLocation.trim().equalsIgnoreCase("mandal")){
 					locatioVO.setMandalName(jObj.has("MNAME") ? jObj.getString("MNAME"):"");
 					locatioVO.setMandalCode(jObj.has("MID") ? jObj.getString("MID"):"0");
+					if (type != null && type.equalsIgnoreCase("daily")) {
+						locatioVO.setMandalCode(locatioVO.getDistrictCode()+locatioVO.getMandalCode());
+					}
 					locatioVO.setLocationIdStr(locatioVO.getMandalCode());
 				}
 			} catch (Exception e) {
