@@ -100,12 +100,12 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			}
 			
 			Map<String,String> statusMap = new HashMap<String, String>();
-			statusMap.put("0-30","WORST");
-			statusMap.put("31-50","VERY POOR");
-			statusMap.put("51-60","POOR");
-			statusMap.put("61-80","OK");
-			statusMap.put("81-90","STRONG");
-			statusMap.put("91-100","VERY STRONG");
+			statusMap.put("0-5","WORST");
+			statusMap.put("6-10","VERY POOR");
+			statusMap.put("11-20","POOR");
+			statusMap.put("21-30","OK");
+			statusMap.put("31-40","STRONG");
+			statusMap.put("41-100","VERY STRONG");
 
 			List<Long> parliamentIdsList = new ArrayList<Long>(0);
 			if(locationTypeId != null && locationTypeId.longValue()==10L)
