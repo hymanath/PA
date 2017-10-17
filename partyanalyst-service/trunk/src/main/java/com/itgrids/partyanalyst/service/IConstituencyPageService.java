@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyNominationsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
+import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
@@ -148,4 +149,5 @@ public interface IConstituencyPageService {
 	public SelectOptionVO getConstituencyElectionResultsByConstituencyId(Long constituencyId);
 	
 	public List<VotersInfoForMandalVO> getvotersInfoByPublicationConstiId(Long publicationId,Long constituencyId);
+	public ElectionInformationVO getLocationwiseSchemesOverview(Long locationScopeId,Long locationValue);
 }
