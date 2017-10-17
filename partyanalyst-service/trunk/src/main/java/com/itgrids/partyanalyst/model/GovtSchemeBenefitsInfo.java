@@ -29,6 +29,8 @@ public class GovtSchemeBenefitsInfo  extends BaseModel implements Serializable{
 	private Long locationValue;
 	private Long  govtSchemeId;
 	private Long grivenaceCount;
+	private Long benefitAmount;
+	
 	private GovtSchemes govtSchemes;
 	
 	@Id
@@ -78,6 +80,11 @@ public class GovtSchemeBenefitsInfo  extends BaseModel implements Serializable{
 	public void setGovtSchemes(GovtSchemes govtSchemes) {
 		this.govtSchemes = govtSchemes;
 	}
-	
-	
+	@Column(name="benefit_amount")
+	public Long getBenefitAmount() {
+		return benefitAmount;
+	}
+	public void setBenefitAmount(Long benefitAmount) {
+		this.benefitAmount = benefitAmount;
+	}
 }
