@@ -392,6 +392,8 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="voterReportService" ref="voterReportService" />
+		<property name="govtSchemeBenefitsInfoDAO" ref="govtSchemeBenefitsInfoDAO" />
+		
 	</bean>	
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
