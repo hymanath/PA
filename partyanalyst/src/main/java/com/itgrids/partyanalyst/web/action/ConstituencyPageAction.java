@@ -46,6 +46,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
@@ -61,7 +62,6 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
-import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
@@ -158,8 +158,16 @@ public class ConstituencyPageAction extends ActionSupport implements
     private Boolean pollWidget;
     private SelectOptionVO partyPerformenceList;
     private List<VotersInfoForMandalVO> votersInfo;
+    private ElectionInformationVO electionInformationVO;
     
-    public SelectOptionVO getPartyPerformenceList() {
+    
+    public ElectionInformationVO getElectionInformationVO() {
+		return electionInformationVO;
+	}
+	public void setElectionInformationVO(ElectionInformationVO electionInformationVO) {
+		this.electionInformationVO = electionInformationVO;
+	}
+	public SelectOptionVO getPartyPerformenceList() {
 		return partyPerformenceList;
 	}
 	public void setPartyPerformenceList(SelectOptionVO partyPerformenceList) {
@@ -550,7 +558,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 
 	HttpSession session;
 	private ServletContext context;
-	IConstituencyPageService constituencyPageService;
+	private IConstituencyPageService constituencyPageService;
 	
     public void setServletContext(ServletContext context) {
 	   this.context = context;
@@ -1994,6 +2002,21 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			Long publicationId = jObj.getLong("publicationId");
 			votersInfo = constituencyPageService.getvotersInfoByPublicationConstiId(publicationId,constituencyId);
 			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+  public String getLocationwiseSchemesOverviewAction(){
+		
+		try {
+ 			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			
+			Long locationScopeId = jObj.getLong("locationScopeId");
+			Long locationValue = jObj.getLong("locationValue");
+			electionInformationVO = constituencyPageService.getLocationwiseSchemesOverview(locationScopeId,locationValue);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
