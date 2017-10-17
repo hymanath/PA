@@ -6534,40 +6534,43 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 											str+='<th>Absent</th>';
 											str+='<th>NI</th>';
 										str+='</thead>';
+										for(var j in result.levelList[i].levelList)
+					{
 										str+='<tr>';
-											str+='<td>Attendance</td>';
+											str+='<td>'+result.levelList[i].levelList[j].name+'</td>';
 											str+='<td>';
-												if(result.levelList[i].recentInviteeAttended != null)
+												if(result.levelList[i].levelList[j].recentInviteeAttended != null)
 												{
-													str+=''+result.levelList[i].recentInviteeAttended+'';
+													str+=''+result.levelList[i].levelList[j].recentInviteeAttended+'';
 												}
-												if(result.levelList[i].attendedPerc != null)
+												if(result.levelList[i].levelList[j].attendedPerc != null)
 												{
-													str+='<small class="text-success">'+result.levelList[i].attendedPerc+'</small>';
+													str+='<small class="text-success">'+result.levelList[i].levelList[j].attendedPerc+'</small>';
 												}
 											str+='</td>';
 											str+='<td>';
-												if(result.levelList[i].recentLate != null)
+												if(result.levelList[i].levelList[j].recentLate != null)
 												{
-													str+=''+result.levelList[i].recentLate+'';
+													str+=''+result.levelList[i].levelList[j].recentLate+'';
 												}
-												if(result.levelList[i].latePerc != null)
+												if(result.levelList[i].levelList[j].latePerc != null)
 												{
-													str+='<small class="text-success">'+result.levelList[i].latePerc+'</small>';
+													str+='<small class="text-success">'+result.levelList[i].levelList[j].latePerc+'</small>';
 												}
 											str+='</td>';
 											str+='<td>';
-												if(result.levelList[i].recentAbcent != null)
+												if(result.levelList[i].levelList[j].recentAbcent != null)
 												{
-													str+=''+result.levelList[i].recentAbcent+'';
+													str+=''+result.levelList[i].levelList[j].recentAbcent+'';
 												}
-												if(result.levelList[i].abcentPerc != null)
+												if(result.levelList[i].levelList[j].abcentPerc != null)
 												{
-													str+='<small class="text-success">'+result.levelList[i].abcentPerc+'</small>';
+													str+='<small class="text-success">'+result.levelList[i].levelList[j].abcentPerc+'</small>';
 												}
 											str+='</td>';
-											str+='<td>'+result.levelList[i].recentNonInvitee+'</td>';
+											str+='<td>'+result.levelList[i].levelList[j].recentNonInvitee+'</td>';
 										str+='</tr>';
+					}
 									str+='</table>';
 								str+='</div>';
 							str+='</div>';
