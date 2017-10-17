@@ -222,7 +222,7 @@
 					<div class="block">
 						<div class="row">
 							<div class="col-sm-6">
-								<h4 class="theme-title-color">Booth Wise Election Results</h4>
+								<h4 class="theme-title-color text-capital">Booth Wise Election Results</h4>
 							</div>
 							<div class="col-sm-6">
 								<ul class=""></ul>
@@ -231,6 +231,12 @@
 						<div class="row">
 							<div class="col-sm-12 m_top10">
 								<div id="boothWiseResultsBlockId"></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 m_top10">
+								<div id="hideShowlocationId"></div>
+								<div id="locationWiseBoothResultsId"></div>
 							</div>
 						</div>
 					</div>
