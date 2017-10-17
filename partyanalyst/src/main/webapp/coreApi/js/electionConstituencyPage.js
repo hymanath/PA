@@ -849,7 +849,7 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 										for(var k in result[0].list[j].subList1){
 											str+='<div class="col-sm-2">';
 											if(result[0].list[j].subList1[k].wonSeatsCount !=null && result[0].list[j].subList1[k].wonSeatsCount>0){
-												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+'">'+result[0].list[j].subList1[k].wonSeatsCount+'</span>';
+												str+='<span class="statusClr statusClickCls" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+'"  status_attr="'+result[0].list[j].subList1[k].status+'" year_attr="'+result[0].list[j].electionYear+'">'+result[0].list[j].subList1[k].wonSeatsCount+'</span>';
 											}else{
 												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+'">0</span>';
 											}
@@ -1574,4 +1574,65 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr){
 	}).done(function(result){  
 
 	});
+}
+$(document).on("click",".statusClickCls",function(){
+	$("#locationWiseStrongVsPoor").html(spinner);
+	var statusTpe=$(this).attr("status_attr");
+	var year=$(this).attr("year_attr");
+	var searchLevelVal = $("#searchLevelId").val();
+	var electionTypeVal = $("#elctionTypeValId").val();
+	var partyId = $("#partyId").val();
+	var partyName = $("#partyId option:selected").text();
+	var electionTypetext = $("#elctionTypeValId option:selected").text();
+	
+	var eletionSubType=[];
+	 $('.electionSubTypeCls').each(function(){
+		if ($(this).is(':checked')){
+			eletionSubType.push($(this).val());
+		}
+	 });
+	var	electionYrVal=[];
+	electionYrVal = $("#electionYearId").val();		
+getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,electionYrVal,partyId,searchLevelVal,electionTypeVal,partyName,electionTypetext,statusTpe,year);
+});
+
+
+function  getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,electionYrVal,partyId,searchLevelVal,electionTypeVal,partyName,electionTypetext,statusTpe,year){
+$("#locationWiseStrongVsPoor").html("");
+$("#locationWiseStrongVsPoor").html(spinner);
+
+var partyIdsList=[];
+var electionScopeIds=[];
+
+if(partyId !=0){
+	partyIdsList.push(partyId)
+}else{
+	partyIdsList=[];
+}
+electionScopeIds.push(electionTypeVal);
+
+var jsObj={
+  	locationTypeId 		:locationLevelId,
+	locationValue 		:userAccessLevelValue,
+	electionScopeIds	:electionScopeIds,
+	partyIdsList  		:partyIdsList,
+	electionYears     	:electionYrVal,
+	electionSubTypeArr 	:eletionSubType,
+	searchType			:searchLevelVal,
+	statusType			:statusTpe,
+	year				:year
+}
+
+$.ajax({
+  type : "GET",
+  url : "getElectionInformationLocationWiseStatusAndYearWiseAction.action",
+  dataType : 'json',
+  data : {task :JSON.stringify(jsObj)}
+}).done(function(result){
+	if(result !=null && result.length>0){
+		buildElectionInformationLocationWiseStatus(result,electionTypeVal,searchLevelVal,partyName,electionTypetext);
+	}else{
+		$("#locationWiseStrongVsPoor").html("No Data Available");
+	}
+});
 }
