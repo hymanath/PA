@@ -1468,4 +1468,22 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}
+   public String getAreaWisePartyMeetingsDetails(){
+		
+		try{	
+			jObj = new JSONObject(getTask());
+			Long locationScopeId = jObj.getLong("locationScopeId");
+			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValue"));
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			Long meetingLevelId = jObj.getLong("meetingLevelId");
+			Long meetingTypeId = jObj.getLong("meetingTypeId");
+			Long meetingMainTypeId = jObj.getLong("meetingMainTypeId");
+			meetingsVO = locationDashboardService.getAreaWisePartyMeetingsDetails(locationScopeId,locationValues,startDate,endDate,meetingLevelId,meetingTypeId,meetingMainTypeId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getAreaWisePartyMeetingsDetails() method ",e);
+
+		}
+		return Action.SUCCESS;
+	}
 }
