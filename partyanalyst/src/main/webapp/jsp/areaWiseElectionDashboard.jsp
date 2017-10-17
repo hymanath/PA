@@ -190,12 +190,12 @@
 									<option value="872">TDP</option>
 									<option value="1117">YSRC</option>
 									<option value="163">BJP</option>
-									<option value="72">AIMIM</option>
 									<option value="362">INC</option>
+									<!--<option value="72">AIMIM</option>
 									<option value="265">CPI</option>
 									<option value="269">CPM</option>
 									<option value="662">PRP</option>
-									<option value="886">TRS</option>
+									<option value="886">TRS</option>-->
 								</select>
 							</div>
 							<!--<div class="col-sm-2 m_top30">

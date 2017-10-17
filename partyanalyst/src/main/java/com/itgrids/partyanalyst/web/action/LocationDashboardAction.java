@@ -1417,4 +1417,31 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}
+   
+   public String getLocationWiseVotingDetails(){
+		 try{
+			  RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+				if(regVo!=null && regVo.getRegistrationID()!=null){
+					Long userId = regVo.getRegistrationID();
+				}
+				jObj = new JSONObject(getTask());
+				 List<Long> electionYrs = convertJsonStringList(jObj.getJSONArray("electionYearArr"));
+				 List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValue"));
+				 
+				 JSONArray subTypesArr = jObj.getJSONArray("subTypesArr");  
+				List<String> subTypes = new ArrayList<String>();
+					for (int i = 0; i < subTypesArr.length(); i++){
+						subTypes.add(subTypesArr.getString(i).toString());        
+					} 
+				
+				 Long locationLevelId = jObj.getLong("locationLevelId");
+				 String searchLevel = jObj.getString("searchLevel");
+				 electioninformationList = locationWiseElectionInformationDetalsService.getLocationWiseVotingDetails( electionYrs, locationLevelId, locationValues, subTypes,searchLevel);
+				
+		 }catch(Exception e){
+			 successMsg = "failure";
+			 LOG.error("Exception Occured in getLocationWiseVotingDetails() method, Exception - ",e);
+		 }
+		 return Action.SUCCESS;
+	 }
 }

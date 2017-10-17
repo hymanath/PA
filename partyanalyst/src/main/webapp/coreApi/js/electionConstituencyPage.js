@@ -192,6 +192,7 @@ function getElectionYears(eletionSubType,type){
 			getElectionDetailsData(electionYrVal,eletionSubType);
 			
 			getLocationWiseCrossVotingDetails(electionYrVal,0,0,0,"YES",eletionSubType);
+			//getLocationWiseVotingDetails(electionYrVal,eletionSubType);
 		}
 		
     });
@@ -933,7 +934,7 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 	}
 	
 	if(partyId == 0){
-		partyIdsArr=[872,362,1117,886,72,269,265,163]
+		partyIdsArr=[872,362,1117,163]
 	}else{
 		partyIdsArr.push(partyId)
 	}
@@ -1551,4 +1552,23 @@ var result = mainArr[0];
 			"aaSorting": [],
 			"aLengthMenu": [[10, 15,20,50, -1], [10, 15, 20,50, "All"]]
 		});
+}
+
+function getLocationWiseVotingDetails(electionYrVal,subTypesArr){
+	
+	jsObj={
+		electionYearArr		:electionYrVal,
+		locationValue		:userAccessLevelValuesArray,
+		subTypesArr			:subTypesArr,
+		locationLevelId		:locationLevelId,
+		searchLevel:""
+	}
+	$.ajax({
+		type : "GET",
+		url : "getLocationWiseVotingDetailsAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){  
+
+	});
 }
