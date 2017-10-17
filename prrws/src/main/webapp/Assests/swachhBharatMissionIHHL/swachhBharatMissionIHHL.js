@@ -835,6 +835,7 @@ $(document).on("click",".calendar_active_IHHL_cls li",function(){
 $(document).on("click",".categoryCls",function() {
 	var categoryType = $(this).attr("attr_category_type");
 	var locationType = $(this).attr("attr_location_type");
+	return;
 	getLocationDetailsBasedOnCategory(categoryType,locationType);
 });
 
