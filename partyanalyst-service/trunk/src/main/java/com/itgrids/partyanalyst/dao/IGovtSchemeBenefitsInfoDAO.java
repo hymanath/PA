@@ -9,5 +9,5 @@ import com.itgrids.partyanalyst.model.GovtSchemeBenefitsInfo;
 public interface IGovtSchemeBenefitsInfoDAO extends GenericDao<GovtSchemeBenefitsInfo, Long>{
 	public List<Object[]> getGovtSchemeWiseBenefitMemberCount(Long locationType, Long locationValue,List<Long> constituencyIds);
 	public List<Object[]> getMandalWiseBenefitMemberCountByGovtScheme(Long locationType, Long locationValue,Long govtSchemeId,List<Long> constituencyIds);
-
+	public List<Object[]> getLocationWiseSchemeOverview(Long locationType, Long locationValue,String type);
 }
