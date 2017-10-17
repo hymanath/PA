@@ -171,16 +171,16 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 		}else if(type.equalsIgnoreCase("Schemes")){
 			if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
 				if (locationType == 2l) {
-					queryStr.append(" district.districtId,district.districtName,model.govtSchemeId,model.govtSchemes.schemeName," +
+					queryStr.append(" model.govtSchemeId,model.govtSchemes.schemeName," +
 							" sum(model.grivenaceCount),sum(model.benefitAmount) ");
 				}else if (locationType == 3l || locationType == 10l) {
-					queryStr.append(" constituency.constituencyId,constituency.name,model.govtSchemeId," +
+					queryStr.append(" model.govtSchemeId," +
 							" model.govtSchemes.schemeName,sum(model.grivenaceCount),sum(model.benefitAmount) ");
 				}else if (locationType == 4l) {
-					queryStr.append(" tehsilCons.tehsilId,tehsilCons.tehsil.tehsilName,model.govtSchemeId,model.govtSchemes.schemeName," +
+					queryStr.append(" model.govtSchemeId,model.govtSchemes.schemeName," +
 							" sum(model.grivenaceCount),sum(model.benefitAmount) ");
 				}else if (locationType == 5l) {
-					queryStr.append(" panchayat.panchayatId,panchayat.panchayatName,model.govtSchemeId,model.govtSchemes.schemeName," +
+					queryStr.append(" model.govtSchemeId,model.govtSchemes.schemeName," +
 							" sum(model.grivenaceCount),sum(model.benefitAmount) ");
 				}
 			}
@@ -205,14 +205,18 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 		}
 		
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
-			if(locationType == 2l ){
-				queryStr.append(" group by district.districtId ");
-			}else if (locationType == 10l || locationType == 3l) {
-				queryStr.append(" group by constituency.constituencyId ");
-			}else if (locationType == 4l) {
-				queryStr.append(" group by tehsilCons.tehsilId ");
-			}else if (locationType == 5l) {
-				queryStr.append(" group by panchayat.panchayatId ");
+			if(type.equalsIgnoreCase("Location")){
+				if(locationType == 2l ){
+					queryStr.append(" group by district.districtId ");
+				}else if (locationType == 10l || locationType == 3l) {
+					queryStr.append(" group by constituency.constituencyId ");
+				}else if (locationType == 4l) {
+					queryStr.append(" group by tehsilCons.tehsilId ");
+				}else if (locationType == 5l) {
+					queryStr.append(" group by panchayat.panchayatId ");
+				}
+			}else{
+				queryStr.append(" group by model.govtSchemeId ");
 			}
 		}
 		Query query = getSession().createQuery(queryStr.toString());
@@ -222,12 +226,12 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 					query.setParameter("locationValue", locationValue);
 				}else if(locationType == 5l){
 					query.setParameter("locationValue", locationValue);
+				}else if(locationType == 10l ){
+					query.setParameter("locationType", 4L);
+					query.setParameter("locationValue", locationValue);
+				}else if(locationType == 3l){
+					query.setParameter("locationValue", locationValue);
 				}
-			}else if(locationType == 10l ){
-				query.setParameter("locationType", 4L);
-				query.setParameter("locationValue", locationValue);
-			}else if(locationType == 3l){
-				query.setParameter("locationValue", locationValue);
 			}
 					
 		  return query.list();

@@ -6276,12 +6276,10 @@ public class ConstituencyPageService implements IConstituencyPageService{
 			if(schemsList != null && schemsList.size() >0){
 				for (Object[] objects : schemsList){
 					ElectionInformationVO schemeVo = new ElectionInformationVO();
-						schemeVo.setId((Long)objects[0]);
-						schemeVo.setName(objects[1] != null ? objects[1].toString() : "");
-						schemeVo.setPartyId(objects[2] !=null ? (Long)objects[2]:null);
-						schemeVo.setPartyName(objects[3] != null ? objects[3].toString() : "");
-						schemeVo.setTotalSeatsCount(objects[4] !=null ? (Long)objects[4]:null);
-						schemeVo.setParticipatedSeatsCount(objects[5] !=null ? (Long)objects[5]:null);
+						schemeVo.setId(objects[0] !=null ? (Long)objects[0]:null);
+						schemeVo.setPartyName(objects[1] != null ? objects[1].toString() : "");
+						schemeVo.setTotalSeatsCount(objects[2] !=null ? (Long)objects[2]:null);
+						schemeVo.setParticipatedSeatsCount(objects[3] !=null ? (Long)objects[3]:null);
 					
 					finalVo.getSubList1().add(schemeVo);	
 				}
@@ -6292,9 +6290,7 @@ public class ConstituencyPageService implements IConstituencyPageService{
 					totalCount =totalCount+schmeVo.getTotalSeatsCount();
 				}
 				for (ElectionInformationVO returnVo : finalVo.getSubList1()){
-					ElectionInformationVO matchedVo = getMatchedVO(finalVo.getSubList1(),returnVo.getId());
-					 if(matchedVo != null)
-							matchedVo.setPercentage(caclPercantage(returnVo.getParticipatedSeatsCount(),totalCount));
+					returnVo.setPercentage(caclPercantage(returnVo.getTotalSeatsCount(),totalCount));
 				}
 			}
 		} catch (Exception e) {
