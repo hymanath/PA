@@ -22,9 +22,12 @@ function onLoadCalls()
 	
 	$(".chosen-select").chosen();
 	if(locationLevelId == '4'){
+		$(".boothsWiseResultCls").show();
 		getDetailedElectionInformaction();
 		boothWiseResults();
 		$("#boothWiseResults").show();
+	}else{
+		$(".boothsWiseResultCls").hide();
 	}
 	 
 }
@@ -772,7 +775,7 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 			str+='<h4 class="text-capital">Location Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 		}
 		
-		str+='<div class="table-responsive m_top10">';
+		str+='<div class="table-responsive m_top10" style="display:none;">';
 		
 		str+='<table class="table table-condensed table-bordered" >';
 		str+='<tr>';
@@ -783,12 +786,12 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 		str+='<th style="background-color:#FF3E3E;">STRONG %</th>';
 		str+='<th style="background-color:#428AE9;">VERY STRONG %</th>';
 		str+='</tr>';
-		str+='<th> 0 - 30 </th>';
-		str+='<th> 31 - 50 </th>';
-		str+='<th> 51 - 60 </th>';
-		str+='<th> 61 - 80 </th>';
-		str+='<th> 81 - 90 </th>';
-		str+='<th> 91 - 100 </th>';
+		str+='<th> 0 - 5 </th>';
+		str+='<th> 6 - 10 </th>';
+		str+='<th> 11 - 20 </th>';
+		str+='<th> 21 - 30 </th>';
+		str+='<th> 31 - 40 </th>';
+		str+='<th> 41 - 100 </th>';
 		str+='</tr>';
 		str+='</table>';
 		str+='</div>';

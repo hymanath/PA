@@ -216,7 +216,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="m_top10">
+		<section class="m_top10 boothsWiseResultCls" style="display:none;">
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block">
