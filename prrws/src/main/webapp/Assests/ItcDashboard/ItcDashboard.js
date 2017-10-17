@@ -82,9 +82,11 @@ function departmentWiseOverView(){
 				block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="block_style_ITC blockWiseDetails" attr_block_name="'+departmentWiseArr[i].blockName+'">';
 			}
 			
-					block+='<div class="media" style="margin-left: 25px;">';
-						block+='<img src="Assests/icons/ITC/'+departmentWiseArr[i].image+'.png" class="pull-left">';
-					  block+='<div class="media-body">';
+					block+='<div class="media">';
+						block+='<div class="media-left">';
+							block+='<img src="Assests/icons/ITC/'+departmentWiseArr[i].image+'.png" class="media-object" style="height:20px;width:20px;">';
+						block+='</div>';
+						block+='<div class="media-body">';
 						block+='<h5><b>'+departmentWiseArr[i].name+'</b></h5>';
 						if(departmentWiseArr[i].id ==3){
 							//block+='<h6 style="font-size:8px;color:#d3d3d3;">Department & District Wise SLA Monitoring</h6>';
@@ -94,41 +96,41 @@ function departmentWiseOverView(){
 					  block+='</div>';
 					block+='</div>';
 					if(departmentWiseArr[i].id ==1){
-						block+='<div class="m_top40">';
-							block+='<h2 id="promotionsHeadingId"></h2>';
+						block+='<div class="m_top20">';
+							block+='<h3 id="promotionsHeadingId"></h3>';
 							block+='<h6>Committed Investment</h6>';
 						block+='<h6>(IT,E&F)</h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==2){
-						block+='<div class="m_top50">';
-							block+='<h2>11,25.Cr</h2>';
+						block+='<div class="m_top20">';
+							block+='<h3>11,25.Cr</h3>';
 							block+='<h6 class="m_top5">Total Pendency</h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==3){
-						block+='<div class="m_top40">';
-							block+='<h2 id="meesevaHeadingId"></h2>';
+						block+='<div class="m_top20">';
+							block+='<h3 id="meesevaHeadingId"></h3>';
 							block+='<h6 class="m_top5">Beyond SLA</h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==4){
-						block+='<div class="m_top40">';
-							block+='<h2>11,25.Cr</h2>';
+						block+='<div class="m_top20">';
+							block+='<h3>11,25.Cr</h3>';
 							block+='<h6 class="m_top10">etaal - KPI</h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==5){
-						block+='<div class="m_top40">';
-							block+='<h2>11,25.Cr</h2>';
+						block+='<div class="m_top20">';
+							block+='<h3>11,25.Cr</h3>';
 							block+='<h6 class="m_top10">IT&E Department Tenders</h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==6){
-						block+='<div class="m_top25">';
+						block+='<div class="m_top10">';
 							block+='<h4>2369/</h4>';
-							block+='<h2>11,25.Cr</h2>';
+							block+='<h3>11,25.Cr</h3>';
 							block+='<h6 class="m_top10">Total / Approved</h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==7){
-						block+='<div class="m_top40">';
-							block+='<h2 id="apInnovationSociety"></h2>';
-							block+='<h6 class="m_top5">Startups</h6>';
+						block+='<div class="m_top20">';
+							block+='<h3 id="apInnovationSociety"></h3>';
+							block+='<h6>Startups</h6>';
 						block+='</div>';
 					}
 			block+='</div>';
@@ -939,26 +941,34 @@ function getAPISXLR8APDetailedData(){
 			overview+='</div>';
 		overview+='</div>';
 		
-		tableView+='<div class="white_block_ITC">';
-			tableView+='<h4 class="m_top10">APIS-XLr8AP</h4>';
-			tableView+='<div class="m_top20">';
-			tableView+='<table class="table table-bordered" id="APISXLr8APOverviewTable">';
-				tableView+='<thead>';
-					tableView+='<th>Batch</th>';
-					tableView+='<th style="background-color:#F8F8F8">Duration</th>';
-					tableView+='<th style="background-color:#FFFAF3">Companies Registered</th>';
-					tableView+='<th style="background-color:#FFFAF3">Jobs Created</th>';
-				tableView+='</thead>';
-				for(var i in result)
-				{
-					tableView+='<tr>';
-						tableView+='<td class="cohortIdClick" style="cursor:pointer" attr_id="'+result[i].batchId+'">'+result[i].batch+'</td>';
-						tableView+='<td style="background-color:#F8F8F8">'+result[i].duration+'</td>';
-						tableView+='<td style="background-color:#FFFAF3">'+result[i].companiesRegisterd+'</td>';
-						tableView+='<td style="background-color:#FFFAF3">'+result[i].jobsCreated+'</td>';
-					tableView+='</tr>';
-				}
-			tableView+='</table>';
+		tableView+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+			tableView+='<div class="panel panel-default panel-black">';
+				tableView+='<div class="panel-heading" role="tab" id="headingOne">';
+					tableView+='<a role="button" class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">';
+						tableView+='<h4 class="panel-title">APIS-XLr8AP</h4>';
+					tableView+='</a>';
+				tableView+='</div>';
+				tableView+='<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">';
+					tableView+='<div class="panel-body">';
+						tableView+='<table class="table table-bordered" id="APISXLr8APOverviewTable">';
+							tableView+='<thead>';
+								tableView+='<th>Batch</th>';
+								tableView+='<th style="background-color:#F8F8F8">Duration</th>';
+								tableView+='<th style="background-color:#FFFAF3">Companies Registered</th>';
+								tableView+='<th style="background-color:#FFFAF3">Jobs Created</th>';
+							tableView+='</thead>';
+							for(var i in result)
+							{
+								tableView+='<tr>';
+									tableView+='<td class="cohortIdClick" style="cursor:pointer" attr_id="'+result[i].batchId+'">'+result[i].batch+'</td>';
+									tableView+='<td style="background-color:#F8F8F8">'+result[i].duration+'</td>';
+									tableView+='<td style="background-color:#FFFAF3">'+result[i].companiesRegisterd+'</td>';
+									tableView+='<td style="background-color:#FFFAF3">'+result[i].jobsCreated+'</td>';
+								tableView+='</tr>';
+							}
+						tableView+='</table>';
+					tableView+='</div>';
+				tableView+='</div>';
 			tableView+='</div>';
 		tableView+='</div>';
 		
@@ -1001,29 +1011,37 @@ function getCampaignsDetailedData(){
 				overview+='</div>';
 			overview+='</div>';
 		overview+='</div>';
-		
-		tableView+='<div class="white_block_ITC">';
-			tableView+='<h4 class="m_top10">Campaigns</h4>';
-tableView+='<div class="m_top20">'
-			tableView+='<table class="table table-bordered m_top20" id="campaignsOverviewBlockTable">';
-				tableView+='<thead>';
-					tableView+='<th style="background-color:#FFFAF3">Name</th>';
-					tableView+='<th>Submited Date</th>';
-					tableView+='<th>Campaign Name</th>';
-					tableView+='<th>Campaign Type</th>';
-				tableView+='</thead>';
-				for(var i in result)
-				{
-					tableView+='<tr>';
-						tableView+='<td style="background-color:#FFFAF3">'+result[i].location+'</td>';
-						tableView+='<td>'+result[i].duration+'</td>';
-						tableView+='<td>'+result[i].campaignName+'</td>';
-						tableView+='<td>'+result[i].campaignType+'</td>';
-					tableView+='</tr>';
-				}
-			tableView+='</table>';
-		tableView+='</div>';
+		tableView+='<div class="panel-group" id="accordionCampaign" role="tablist" aria-multiselectable="true">';
+			tableView+='<div class="panel panel-default panel-black">';
+				tableView+='<div class="panel-heading" role="tab" id="headingOneCampaign">';
+					tableView+='<a role="button" class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordionCampaign" href="#collapseOneCampaign" aria-expanded="true" aria-controls="collapseOneCampaign">';
+						tableView+='<h4 class="panel-title">Campaigns</h4>';
+					tableView+='</a>';
 				tableView+='</div>';
+				tableView+='<div id="collapseOneCampaign" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneCampaign">';
+					tableView+='<div class="panel-body">';
+						tableView+='<table class="table table-bordered m_top20" id="campaignsOverviewBlockTable">';
+							tableView+='<thead>';
+								tableView+='<th style="background-color:#FFFAF3">Name</th>';
+								tableView+='<th>Submited Date</th>';
+								tableView+='<th>Campaign Name</th>';
+								tableView+='<th>Campaign Type</th>';
+							tableView+='</thead>';
+							for(var i in result)
+							{
+								tableView+='<tr>';
+									tableView+='<td style="background-color:#FFFAF3">'+result[i].location+'</td>';
+									tableView+='<td>'+result[i].duration+'</td>';
+									tableView+='<td>'+result[i].campaignName+'</td>';
+									tableView+='<td>'+result[i].campaignType+'</td>';
+								tableView+='</tr>';
+							}
+						tableView+='</table>';
+					tableView+='</div>';
+				tableView+='</div>';
+			tableView+='</div>';
+		tableView+='</div>';
+		
 		$("#Campaigns").html(overview);
 		$("#campaignsOverviewBlock").html(tableView);
 		$("#campaignsOverviewBlockTable").dataTable()
@@ -1063,28 +1081,34 @@ function getCampusInnovationCentersDetailedData(){
 				overview+='</div>';
 			overview+='</div>';
 		overview+='</div>';
-		
-		tableView+='<div class="white_block_ITC">';
-			tableView+='<h4 class="m_top10">Campus Innovation Centers</h4>';
-		tableView+='<div class="m_top20">';
-			tableView+='<table class="table table-bordered m_top20" id="campusOverviewBlockTable">';
-				tableView+='<thead>';
-					tableView+='<th style="background-color:#F8F8F8">NAME OF THE UNIVERSITY OR COLLEGE</th>';
-					tableView+='<th>NAME OF THE INNOVATION CENTRE</th>';
-					tableView+='<th>LOCATION</th>';
-				tableView+='</thead>';
-				for(var i in result)
-				{
-					tableView+='<tr>';
-						tableView+='<td style="background-color:#F8F8F8">'+result[i].universityORCollegeName+'</td>';
-						tableView+='<td>'+result[i].innovationCentreName+'</td>';
-						tableView+='<td>'+result[i].location+'</td>';
-					tableView+='</tr>';
-				}
-			tableView+='</table>';
+		tableView+='<div class="panel-group" id="accordionCampus" role="tablist" aria-multiselectable="true">';
+			tableView+='<div class="panel panel-default panel-black">';
+				tableView+='<div class="panel-heading" role="tab" id="headingOneCampus">';
+					tableView+='<a role="button" class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordionCampus" href="#collapseOneCampus" aria-expanded="true" aria-controls="collapseOneCampus">';
+						tableView+='<h4 class="panel-title">Campus Innovation Centers</h4>';
+					tableView+='</a>';
+				tableView+='</div>';
+				tableView+='<div id="collapseOneCampus" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneCampus">';
+					tableView+='<div class="panel-body">';
+						tableView+='<table class="table table-bordered m_top20" id="campusOverviewBlockTable">';
+							tableView+='<thead>';
+								tableView+='<th style="background-color:#F8F8F8">NAME OF THE UNIVERSITY OR COLLEGE</th>';
+								tableView+='<th>NAME OF THE INNOVATION CENTRE</th>';
+								tableView+='<th>LOCATION</th>';
+							tableView+='</thead>';
+							for(var i in result)
+							{
+								tableView+='<tr>';
+									tableView+='<td style="background-color:#F8F8F8">'+result[i].universityORCollegeName+'</td>';
+									tableView+='<td>'+result[i].innovationCentreName+'</td>';
+									tableView+='<td>'+result[i].location+'</td>';
+								tableView+='</tr>';
+							}
+						tableView+='</table>';
+					tableView+='</div>';
+				tableView+='</div>';
+			tableView+='</div>';
 		tableView+='</div>';
-		tableView+='</div>';
-		
 		$("#CampusInnovationCenters").html(overview);
 		$("#campusOverviewBlock").html(tableView);
 		$("#campusOverviewBlockTable").dataTable()
