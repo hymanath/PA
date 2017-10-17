@@ -1444,4 +1444,28 @@ public String getElectionInformationLocationWise(){
 		 }
 		 return Action.SUCCESS;
 	 }
+   
+   @SuppressWarnings("null")
+	public String getElectionInformationLocationWiseStatusAndYearWise(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			List<Long> partyIdList = convertJsonStringList(jObj.getJSONArray("partyIdsList"));
+			List<Long> electionYearsList = convertJsonStringList(jObj.getJSONArray("electionYears"));
+			List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIds"));
+			List<String> subTypeList = new ArrayList<String>();
+			JSONArray jsonArray = jObj.getJSONArray("electionSubTypeArr");
+			if (jsonArray != null && jsonArray.length() > 0) {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					subTypeList.add(jsonArray.getString(i).toString());
+				}
+			}
+			electioninformationList = locationWiseElectionInformationDetalsService.getElectionInformationLocationWiseStatusAndYearWise(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),
+				partyIdList,electionYearsList,electionScopeIds,subTypeList,jObj.getString("searchType"),jObj.getString("statusType"),jObj.getString("year"));
+
+		}catch(Exception e){
+			LOG.error("Exception raised at getElectionInformationLocationWiseStatusAndYearWise() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
 }
