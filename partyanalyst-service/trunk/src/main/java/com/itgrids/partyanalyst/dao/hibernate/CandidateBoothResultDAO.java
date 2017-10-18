@@ -1891,6 +1891,96 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 	   query.setParameterList("partyIds", partyIds);
 	   return (Long) query.uniqueResult();
    }
+
+@Override
+public List<Object[]> findLocationWiseBoothWisePollingPercentage(List<Long> partyIds, Long locationTypeId, Long locationValue,List<Long> electionYears,String level,
+		Long electionScopeId) {
+
+	StringBuilder sb = new StringBuilder();
+	
+	sb.append("select b.booth_id as boothId, b.part_no as partno, p.short_name as partyName, cn.votes_earned as votesEarned" +
+			" from  candidate_booth_result cn, nomination n, party p, constituency_election ce," +
+			" booth_constituency_election bc, booth b, constituency c, election e ");
+	
+	if(level.equalsIgnoreCase(level) && level == null){
+		sb.append(" where n.party_id=p.party_id and cn.nomination_id=n.nomination_id and" +
+				" n.consti_elec_id=ce.consti_elec_id and" +
+				" bc.booth_constituency_election_id=cn.booth_constituency_election_id and" +
+				" bc.booth_id=b.booth_id and" +
+				"  c.constituency_id=ce.constituency_id and" +
+				"  e.election_id=constituen2_.election_id ");
+		if(electionScopeId!=null && electionScopeId.longValue()>0){
+			
+			sb.append(" and e.election_scope_id=:electionScopeId" );
+		}
+		if(locationTypeId == 5l)
+		sb.append(" and b.tehsil_id =:locationValue");
+		else if(locationTypeId == 6l)
+			sb.append(" and b.panchayat_id =:locationValue");
+		else if(locationTypeId == 7l)
+			sb.append(" and b.local_election_body_id =:locationValue");
+
+	}else{
+		sb.append(" where n.party_id=p.party_id and cn.nomination_id=n.nomination_id and" +
+				" n.consti_elec_id=ce.consti_elec_id and" +
+				" bc.booth_constituency_election_id=cn.booth_constituency_election_id and" +
+				" bc.booth_id=b.booth_id and" +
+				"  c.constituency_id=ce.constituency_id and" +
+				"  e.election_id=constituen2_.election_id ");
+		if(locationTypeId !=null && locationValue !=null){
+			sb.append("and b.constituency_id=:locationValue ");
+
+		}if(electionScopeId!=null && electionScopeId.longValue()>0){
+			
+			sb.append(" and e.election_scope_id=:electionScopeId" );
+		}
+	}
+	sb.append(" order by b.booth_id, candidateb0_.votes_earned desc");
+	return null;
+}
+public List<Object[]> LocatioWisefindboothWiseResultsForCandidate(Long constituencyId, Long nominationId)
+{
+	    
+	   Query query = getSession().createQuery("select " +
+		   		" model.boothConstituencyElection.booth.boothId, " +  //0
+		   		" model.boothConstituencyElection.booth.partNo, " +//1
+		   		" model.boothConstituencyElection.booth.location, " + //2
+		   		" model.boothConstituencyElection.booth.totalVoters, " + //3
+		   		" model.boothConstituencyElection.boothResult.validVotes, " + //4
+				" model.boothConstituencyElection.booth.villagesCovered, " + //5
+		   		" model.boothConstituencyElection.booth.localBody.localElectionBodyId, " + //6
+		   		" model.boothConstituencyElection.booth.tehsil, " + //7
+		   		" model.votesEarned " + //8
+		   		//" model.boothConstituencyElection.booth.boothLocalBodyWard " + //9
+		   		" from CandidateBoothResult model " + 
+			   		"  where  " +
+			   		"  model.boothConstituencyElection.booth.constituency.constituencyId =:constituencyId  " +
+			   		"  and model.nomination.nominationId = :nominationId  order by model.boothConstituencyElection.booth.partNo ");
+	   
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("nominationId", nominationId);
+			
+			return query.list();
+			
+}
+
+@Override
+public List<Object[]> locationWisefindboothWiseResultsForNominators(Long constituencyId, Long electionYears) {
+	Query query = getSession().createQuery("select B.boothId,B.partNo,N.party.shortName,CBR.votesEarned  " + //8
+	   		" from CandidateBoothResult CBR, Nomination N, ConstituencyElection CE, BoothConstituencyElection BCE , Booth B " + 
+		   		"  where  " +
+		   		" CBR.nomination.nominationId = N.nominationId and " +
+		   		" N.constituencyElection.constiElecId = CE.constiElecId and " +
+		   		" BCE.boothConstituencyElectionId = CBR.boothConstituencyElection.boothConstituencyElectionId and  " +
+		   		" BCE.booth.boothId = B.boothId and " +
+		   		" CE.election.electionYear =:electionYears and " +
+		   		" CE.constituency.constituencyId = :constituencyId order by B.boothId,CBR.votesEarned desc ");
    
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("electionYears", String.valueOf(electionYears));
+		
+		return query.list();
+}
+
    
 }

@@ -157,12 +157,16 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		
 		queryStr.append(" select  model.candidate.candidateId,upper(model.candidate.lastname),model.party.partyId, upper(model.party.shortName), model.constituencyElection.reservationZone,  ");
 		queryStr.append(" model.candidateResult.votesEarned,model.candidateResult.marginVotes,model.candidateResult.votesPercengate from Nomination model where model.constituencyElection.election.electionYear="+electionYear+" ");
-		queryStr.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds) and model.constituencyElection.election.electionId in (:electionIdList) ");
+		queryStr.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
+		if(electionIdList !=null){
+			queryStr.append(" and model.constituencyElection.election.electionId in (:electionIdList) ");
+		}
 		queryStr.append(" and model.candidateResult.rank = 1 ");
 		Query qurQuery = getSession().createQuery(queryStr.toString());
 		qurQuery.setParameterList("constituencyIds", constituencyIds);
-		qurQuery.setParameterList("electionIdList", electionIdList);
-		
+		if(electionIdList !=null){
+			qurQuery.setParameterList("electionIdList", electionIdList);
+		}
 		return qurQuery.list();	
 		
 	}
@@ -5585,5 +5589,48 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return qurQuery.list();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findByLocationBasedConstituencyPartyInfoAndElectionsYears(List<Long> partyIds, List<Long> constituencyIds, String electionYear,Long electionScopeId){
+
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model.party.partyId, " + //0
+				"model.party.shortName," + //1
+				" model.candidate.lastname," + //2
+				" model.constituencyElection.constituency.name , "); //3
+		
+		queryStr.append(" model.constituencyElection.election.electionScope.electionType.electionType, " + //4
+				" model.constituencyElection.election.electionYear,  "); //5
+		queryStr.append(" model.constituencyElection.constituencyElectionResult.totalVotesPolled, " + //6
+				" model.constituencyElection.constituencyElectionResult.validVotes, " +  //7
+				" model.constituencyElection.constituencyElectionResult.votingPercentage ,  "); //8
+		queryStr.append(" model.candidateResult.votesEarned,  " + //9
+				"  model.candidateResult.votesPercengate,  " + //10
+				"  model.candidateResult.rank,  " + //11
+				"  model.candidateResult.marginVotes, " + //12
+				"  model.nominationId," + //13
+				"  model.constituencyElection.constituencyElectionResult.totalVotes "); //14
+		
+		queryStr.append(" from Nomination model  where model.party.partyId in (:partyIds) and model.constituencyElection.election.electionYear="+electionYear+" and model.constituencyElection.election.electionScope.electionScopeId =:electionScopeId  ");
+		if(electionScopeId == 1l){
+			queryStr.append(" and model.constituencyElection.constituency.constituencyId = "+
+					" (select distinct model.parliamentId from ParliamentAssembly model where model.assemblyId=:constituencyIds) " );
+			
+		}else{
+			
+			queryStr.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds) " );
+		}
+		queryStr.append(" group by model.party.partyId order by model.candidateResult.votesEarned desc ");
+		
+		Query qurQuery = getSession().createQuery(queryStr.toString());
+		qurQuery.setParameterList("constituencyIds", constituencyIds);
+		qurQuery.setParameterList("partyIds", partyIds);
+		qurQuery.setParameter("electionScopeId", electionScopeId);
+		
+		return qurQuery.list();	
+		
+	}
+	
 }
 
