@@ -724,12 +724,12 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
-			return buildElectionInformationLocationWiseStatus(result,electionTypeVal,searchLevelVal,partyName,electionTypetext);
+			 buildElectionInformationLocationWiseStatus(result,electionTypeVal,searchLevelVal,partyName,electionTypetext);
 		}else{
 			$("#locationWiseStrongVsPoor").html("No Data Available");
 		}
 	});
-	
+}
 	function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searchLevelVal,partyName,electionTypetext){
 		
 		var str='';
@@ -913,7 +913,7 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
-		
+			
 		$("#locationWiseStrongVsPoor").html(str);
 		$("#electionResults").dataTable({
 			"iDisplayLength": 15,
@@ -921,7 +921,7 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		});
 	}
-}
+
 
 function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyId,withAlliance,subTypesArr){
 	$("#crossVotingDetailsBlockId").html(spinner);
@@ -1584,7 +1584,6 @@ $(document).on("click",".statusClickCls",function(){
 	var partyId = $("#partyId").val();
 	var partyName = $("#partyId option:selected").text();
 	var electionTypetext = $("#elctionTypeValId option:selected").text();
-	
 	var eletionSubType=[];
 	 $('.electionSubTypeCls').each(function(){
 		if ($(this).is(':checked')){
@@ -1593,46 +1592,42 @@ $(document).on("click",".statusClickCls",function(){
 	 });
 	var	electionYrVal=[];
 	electionYrVal = $("#electionYearId").val();		
-getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,electionYrVal,partyId,searchLevelVal,electionTypeVal,partyName,electionTypetext,statusTpe,year);
+	getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,electionYrVal,partyId,searchLevelVal,electionTypeVal,partyName,electionTypetext,statusTpe,year);
 });
 
 
 function  getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,electionYrVal,partyId,searchLevelVal,electionTypeVal,partyName,electionTypetext,statusTpe,year){
-$("#locationWiseStrongVsPoor").html("");
-$("#locationWiseStrongVsPoor").html(spinner);
+	$("#locationWiseStrongVsPoor").html(spinner);
 
-var partyIdsList=[];
-var electionScopeIds=[];
-
-if(partyId !=0){
-	partyIdsList.push(partyId)
-}else{
-	partyIdsList=[];
-}
-electionScopeIds.push(electionTypeVal);
-
-var jsObj={
-  	locationTypeId 		:locationLevelId,
-	locationValue 		:userAccessLevelValue,
-	electionScopeIds	:electionScopeIds,
-	partyIdsList  		:partyIdsList,
-	electionYears     	:electionYrVal,
-	electionSubTypeArr 	:eletionSubType,
-	searchType			:searchLevelVal,
-	statusType			:statusTpe,
-	year				:year
-}
-
-$.ajax({
-  type : "GET",
-  url : "getElectionInformationLocationWiseStatusAndYearWiseAction.action",
-  dataType : 'json',
-  data : {task :JSON.stringify(jsObj)}
-}).done(function(result){
-	if(result !=null && result.length>0){
-		buildElectionInformationLocationWiseStatus(result,electionTypeVal,searchLevelVal,partyName,electionTypetext);
+	var partyIdsList=[];
+	var electionScopeIds=[];
+	if(partyId !=0){
+		partyIdsList.push(partyId)
 	}else{
-		$("#locationWiseStrongVsPoor").html("No Data Available");
+		partyIdsList=[];
 	}
-});
+	electionScopeIds.push(electionTypeVal);
+	var jsObj={
+		locationTypeId 		:locationLevelId,
+		locationValue 		:userAccessLevelValue,
+		electionScopeIds	:electionScopeIds,
+		partyIdsList  		:partyIdsList,
+		electionYears     	:electionYrVal,
+		electionSubTypeArr 	:eletionSubType,
+		searchType			:searchLevelVal,
+		statusType			:statusTpe,
+		year				:year
+	}
+	$.ajax({
+	  type : "GET",
+	  url : "getElectionInformationLocationWiseStatusAndYearWiseAction.action",
+	  dataType : 'json',
+	  data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildElectionInformationLocationWiseStatus(result,electionTypeVal,searchLevelVal,partyName,electionTypetext);
+		}else{
+			$("#locationWiseStrongVsPoor").html("No Data Available");
+		}
+	});
 }
