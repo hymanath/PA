@@ -38,4 +38,5 @@ public interface IItcDashboardService {
 	public List<ItecPromotionDetailsVO> getITSectorCategoryWiseDetails(InputVO inputVO);
 	public List<ItecPromotionDetailsVO> getITDistrictWiseDetails(InputVO inputVO);
 	public List<ItecPromotionDetailsVO> getITSectorLeadCategoryWiseDetails(InputVO inputVO);
+	public List<ItecPromotionDetailsVO> getITSectorSubLeadCategoryWiseDetails(InputVO inputVO);
 }

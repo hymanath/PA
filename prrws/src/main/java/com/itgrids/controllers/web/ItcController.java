@@ -146,4 +146,10 @@ public class ItcController {
 		   List<ItecPromotionDetailsVO>  resultList = itcDashboardService.getITSectorLeadCategoryWiseDetails(inputVO);
 		   return resultList;
 	   }
+	   
+	   @RequestMapping(value = "/getITSectorSubLeadCategoryWiseDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecPromotionDetailsVO>  getITSectorSubLeadCategoryWiseDetails(@RequestBody InputVO inputVO) {
+		   List<ItecPromotionDetailsVO>  resultList = itcDashboardService.getITSectorSubLeadCategoryWiseDetails(inputVO);
+		   return resultList;
+	   }
 }
