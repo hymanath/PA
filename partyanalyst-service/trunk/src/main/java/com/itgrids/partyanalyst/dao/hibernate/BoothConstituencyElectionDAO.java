@@ -1314,31 +1314,48 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		
 		sb.append(" SELECT " );
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
-	    	   if(locationTypeId.longValue() == 2l ){
-		          sb.append(" d.district_id,d.district_name  ");
-		        }else if(locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l ){
-		          sb.append("  c.constituency_id ,c.name ");
+	    	   if(locationTypeId.longValue() == 2l  || locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l ){
+		          sb.append(" distinct c.constituency_id ,c.name ");
 		        }else if(locationTypeId.longValue() == 4l ){
 		        	if(searchLevel != null && searchLevel.equalsIgnoreCase("panchayat")){
-		        		 sb.append("  p.panchayat_id,p.panchayat_name  ");
+		        		 sb.append(" distinct pan.panchayat_id,pan.panchayat_name  ");
 		        	}else if(searchLevel != null && searchLevel.equalsIgnoreCase("tehsil")){
-		        		 sb.append("  t.tehsil_id ,t.tehsil_name ");
+		        		 sb.append(" distinct t.tehsil_id ,t.tehsil_name ");
 		        	}
 	            }else if(locationTypeId.longValue() == 5l || locationTypeId.longValue() == 6l){
-	            	 sb.append("  p.panchayat_id,p.panchayat_name  "); 
+	            	 sb.append(" distinct  pan.panchayat_id,pan.panchayat_name  "); 
 	            }else if(locationTypeId == 7l ){
-	              sb.append("  leb.local_election_body_id ,leb.name ");
+	              sb.append(" distinct leb.local_election_body_id ,leb.name ");
 	            }/*else if(locationTypeId == 8l){
 	              sb.append(" and b.ward_id in (:locationValues)"); 
 	            }*/
 	        }
-		
 		sb.append(" ,sum(br.valid_votes) as polled_votes" +
 				" from booth_result  br, booth b , booth_constituency_election bce,constituency_election ce, election e ," +
-				" constituency c,district d,tehsil t,panchayat p,local_election_body leb where br.booth_constituency_election_id = bce.booth_constituency_election_id and " +
-				" bce.booth_id = b.booth_id and bce.consti_elec_id = ce.consti_elec_id and ce.election_id = e.election_id " +
-				" and c.district_id=d.district_id  and t.tehsil_id=b.tehsil_id and p.panchayat_id=b.panchayat_id " +
-				" and leb.local_election_body_id=b.local_election_body_id " );
+				" constituency c " );
+		
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
+	    	   if(locationTypeId.longValue() == 2l  || locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l ){
+		          sb.append(" where ");
+		        }else if(locationTypeId.longValue() == 4l ){
+		        	if(searchLevel != null && searchLevel.equalsIgnoreCase("panchayat")){
+		        		 sb.append(",panchayat pan where pan.panchayat_id=b.panchayat_id and   ");
+		        	}else if(searchLevel != null && searchLevel.equalsIgnoreCase("tehsil")){
+		        		 sb.append(" ,tehsil t where t.tehsil_id=b.tehsil_id and  ");
+		        	}
+	            }else if(locationTypeId.longValue() == 5l || locationTypeId.longValue() == 6l){
+	            	 sb.append(" ,panchayat pan where pan.panchayat_id=b.panchayat_id and  "); 
+	            }else if(locationTypeId == 7l ){
+	              sb.append(" ,local_election_body leb  where leb.local_election_body_id=b.local_election_body_id and ");
+	            }/*else if(locationTypeId == 8l){
+	              sb.append(" and b.ward_id in (:locationValues)"); 
+	            }*/
+	        }
+		//if(electionScopeId != null && electionScopeId.longValue() != 1l){
+			sb.append("  b.constituency_id = ce.constituency_id and (c.district_id BETWEEN 11 and 23) " );
+		//}
+		sb.append(" and br.booth_constituency_election_id = bce.booth_constituency_election_id and " +
+				" bce.booth_id = b.booth_id and bce.consti_elec_id = ce.consti_elec_id and ce.election_id = e.election_id " );
 		
 		if(electionYrs != null && electionYrs.size() > 0){
 			 sb.append(" and  e.election_year in (:electionYrs) ");
@@ -1347,7 +1364,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		if(subtypes != null && subtypes.size() > 0){
 			 sb.append(" and  e.sub_type  in (:subtypes) ");
 		}
-		
+		sb.append(" and c.election_scope_id = 2  and c.deform_date is null and  b.constituency_id = c.constituency_id ");
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
 	    	   if(locationTypeId.longValue() == 2l ){
 		          sb.append(" and c.state_id in (:locationValues) ");
@@ -1366,18 +1383,17 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	            }
 	        }
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
-	    	   if(locationTypeId.longValue() == 2l ){
-		          sb.append("  group by d.district_id order by d.district_name  ");
-		        }else if(locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l ){
+	    	   if(locationTypeId.longValue() == 2l  || locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l ){
 		          sb.append("  group by c.constituency_id order by  c.name ");
-		        }else if(locationTypeId.longValue() == 4l ){
+		        }
+		        else if(locationTypeId.longValue() == 4l ){
 		        	if(searchLevel != null && searchLevel.equalsIgnoreCase("panchayat")){
-		        		 sb.append("  group by p.panchayat_id order by  p.panchayat_name  ");
+		        		 sb.append("  group by pan.panchayat_id order by  pan.panchayat_name  ");
 		        	}else if(searchLevel != null && searchLevel.equalsIgnoreCase("tehsil")){
 		        		 sb.append(" group by t.tehsil_id order by  t.tehsil_name ");
 		        	}
 	            }else if(locationTypeId.longValue() == 5l || locationTypeId.longValue() == 6l){
-	            	 sb.append(" group by p.panchayat_id order by p.panchayat_name  "); 
+	            	 sb.append(" group by pan.panchayat_id order by pan.panchayat_name  "); 
 	            }else if(locationTypeId == 7l ){
 	              sb.append(" group by leb.local_election_body_id order by  leb.name ");
 	            }/*else if(locationTypeId == 8l){
@@ -1405,36 +1421,51 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		
 		sb.append(" SELECT " );
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
-	    	   if(locationTypeId.longValue() == 2l ){
-		          sb.append(" d.district_id,d.district_name  ");
-		        }else if(locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l ){
-		          sb.append("  c.constituency_id ,c.name ");
-		        }else if(locationTypeId.longValue() == 4l ){
+	    	   if(locationTypeId.longValue() == 2l  || locationTypeId.longValue() == 10l || locationTypeId.longValue() == 3l){
+		          sb.append(" distinct c.constituency_id ,c.name ");
+		        }
+		        else if(locationTypeId.longValue() == 4l ){
 		        	if(searchLevel != null && searchLevel.equalsIgnoreCase("panchayat")){
-		        		 sb.append("  pan.panchayat_id,pan.panchayat_name  ");
+		        		 sb.append(" distinct pan.panchayat_id,pan.panchayat_name  ");
 		        	}else if(searchLevel != null && searchLevel.equalsIgnoreCase("tehsil")){
-		        		 sb.append("  t.tehsil_id ,t.tehsil_name ");
+		        		 sb.append(" distinct t.tehsil_id ,t.tehsil_name ");
 		        	}
 	            }else if(locationTypeId.longValue() == 5l || locationTypeId.longValue() == 6l){
-	            	 sb.append("  p.panchayat_id,p.panchayat_name  "); 
+	            	 sb.append(" distinct pan.panchayat_id,pan.panchayat_name  "); 
 	            }else if(locationTypeId == 7l ){
-	              sb.append("  leb.local_election_body_id ,leb.name ");
+	              sb.append(" distinct leb.local_election_body_id ,leb.name ");
 	            }/*else if(locationTypeId == 8l){
 	              sb.append(" and b.ward_id in (:locationValues)"); 
 	            }*/
 	        }
 		sb.append(" ,sum(cbr.votes_earned)  from election e ,election_scope es,election_type  et ," +
-				" nomination n, constituency_election ce,party p,booth b ,constituency c ,booth_constituency_election bce,candidate_booth_result cbr" +
-				" ,district d,tehsil t,panchayat pan,local_election_body leb where n.consti_elec_id = ce.consti_elec_id and ce.election_id = e.election_id and e.election_scope_id = es.election_scope_id and " +
+				" nomination n, constituency_election ce,party p,booth b ,constituency c ,booth_constituency_election bce,candidate_booth_result cbr " );
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
+	    	   if(locationTypeId.longValue() == 2l  || locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l ){
+		          sb.append(" where ");
+		        }else if(locationTypeId.longValue() == 4l ){
+		        	if(searchLevel != null && searchLevel.equalsIgnoreCase("panchayat")){
+		        		 sb.append(",panchayat pan where pan.panchayat_id=b.panchayat_id and  ");
+		        	}else if(searchLevel != null && searchLevel.equalsIgnoreCase("tehsil")){
+		        		 sb.append(" ,tehsil t where t.tehsil_id=b.tehsil_id and  ");
+		        	}
+	            }else if(locationTypeId.longValue() == 5l || locationTypeId.longValue() == 6l){
+	            	 sb.append(" ,panchayat pan where pan.panchayat_id=b.panchayat_id and "); 
+	            }else if(locationTypeId == 7l ){
+	              sb.append(" ,local_election_body leb  where leb.local_election_body_id=b.local_election_body_id and ");
+	            }/*else if(locationTypeId == 8l){
+	              sb.append(" and b.ward_id in (:locationValues)"); 
+	            }*/
+	        }
+		sb.append("  n.consti_elec_id = ce.consti_elec_id and ce.election_id = e.election_id and e.election_scope_id = es.election_scope_id and " +
 				" es.election_type_id = et.election_type_id and n.party_id = p.party_id and bce.consti_elec_id  =ce.consti_elec_id and " +
 				" bce.booth_constituency_election_id = cbr.booth_constituency_election_id and cbr.nomination_id = n.nomination_id and " +
-				"     ce.constituency_id = c.constituency_id  " +
-				"    and bce.booth_id = b.booth_id and c.district_id=d.district_id  and t.tehsil_id=b.tehsil_id and pan.panchayat_id=b.panchayat_id " +
-				" and leb.local_election_body_id=b.local_election_body_id " );
-				
-		if(electionScopeId != null && electionScopeId.longValue() != 1l){
-			sb.append(" and b.constituency_id = ce.constituency_id and (c.district_id BETWEEN 11 and 23) " );
-		}
+				"     bce.booth_id = b.booth_id  " );
+			
+		sb.append(" and c.election_scope_id = 2  and c.deform_date is null ");
+		//if(electionScopeId != null && electionScopeId.longValue() != 1l){
+			sb.append(" and b.constituency_id = c.constituency_id and (c.district_id BETWEEN 11 and 23) " );
+		//}
 		if(electionYrs != null && electionYrs.size() > 0){
 			 sb.append(" and  e.election_year in (:electionYrs) ");
 		}
@@ -1447,11 +1478,11 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		}
 		
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
-	    	   if(locationTypeId.longValue() == 2l && electionScopeId.longValue() != 1l){
+	    	   if(locationTypeId.longValue() == 2l ){
 		          sb.append(" and c.state_id in (:locationValues) ");
-		        }else if(locationTypeId.longValue() == 3l && electionScopeId.longValue() != 1l){
+		        }else if(locationTypeId.longValue() == 3l ){
 		          sb.append(" and c.district_id in (:locationValues)");
-		        }else if(locationTypeId.longValue() == 4l || locationTypeId.longValue() == 10l){
+		        }else if(locationTypeId.longValue() == 4l || locationTypeId.longValue() == 10l ){
 	              sb.append(" and c.constituency_id in (:locationValues) ");
 	            }else if(locationTypeId.longValue() == 5l){
 	              sb.append(" and b.tehsil_id in (:locationValues)"); 
@@ -1464,18 +1495,16 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	            }
 	        }
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
-	    	   if(locationTypeId.longValue() == 2l ){
-		          sb.append("  group by d.district_id order by d.district_name  ");
-		        }else if(locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l ){
+	    	   if(locationTypeId.longValue() == 2l  || locationTypeId.longValue() == 10l || locationTypeId.longValue() == 3l ){
 		          sb.append("  group by c.constituency_id order by  c.name ");
 		        }else if(locationTypeId.longValue() == 4l ){
 		        	if(searchLevel != null && searchLevel.equalsIgnoreCase("panchayat")){
-		        		 sb.append("  group by p.panchayat_id order by  p.panchayat_name  ");
+		        		 sb.append("  group by pan.panchayat_id order by  pan.panchayat_name  ");
 		        	}else if(searchLevel != null && searchLevel.equalsIgnoreCase("tehsil")){
 		        		 sb.append(" group by t.tehsil_id order by  t.tehsil_name ");
 		        	}
 	            }else if(locationTypeId.longValue() == 5l || locationTypeId.longValue() == 6l){
-	            	 sb.append(" group by p.panchayat_id order by p.panchayat_name  "); 
+	            	 sb.append(" group by pan.panchayat_id order by pan.panchayat_name  "); 
 	            }else if(locationTypeId == 7l ){
 	              sb.append(" group by leb.local_election_body_id order by  leb.name ");
 	            }/*else if(locationTypeId == 8l){
@@ -1496,8 +1525,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		}
 		
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 ){
-			if((electionScopeId.longValue() == 1l && (locationTypeId.longValue() == 2l || locationTypeId.longValue() == 3l))){}
-			else{query.setParameterList("locationValues", locationValues);}
+			 query.setParameterList("locationValues", locationValues);
 		}
 		return query.list();
 	}
