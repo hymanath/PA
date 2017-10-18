@@ -13,7 +13,64 @@ public class ItecPromotionDetailsVO {
     private String employment;
     private String realizedEmployment;
     
+    private String sourceOfLead;
+    private String category;
+    private String lineOfActivity;
+    private String subSector;
+    private String itSector;
+    private String nameOfCompany;
+    private String districtName;
+    private String deptName;
     
+    
+	public String getSourceOfLead() {
+		return sourceOfLead;
+	}
+	public void setSourceOfLead(String sourceOfLead) {
+		this.sourceOfLead = sourceOfLead;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getLineOfActivity() {
+		return lineOfActivity;
+	}
+	public void setLineOfActivity(String lineOfActivity) {
+		this.lineOfActivity = lineOfActivity;
+	}
+	public String getSubSector() {
+		return subSector;
+	}
+	public void setSubSector(String subSector) {
+		this.subSector = subSector;
+	}
+	public String getItSector() {
+		return itSector;
+	}
+	public void setItSector(String itSector) {
+		this.itSector = itSector;
+	}
+	public String getNameOfCompany() {
+		return nameOfCompany;
+	}
+	public void setNameOfCompany(String nameOfCompany) {
+		this.nameOfCompany = nameOfCompany;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
 	public Long getId() {
 		return id;
 	}

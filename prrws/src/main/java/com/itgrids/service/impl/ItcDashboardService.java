@@ -741,4 +741,44 @@ public class ItcDashboardService implements IItcDashboardService {
 			LOG.error("Exception raised at setDataToVO - ItcDashboardService service",e);
 		}
 	}
+	
+	/**
+	 * @author Sravanth
+	 * @param InputVO inputVO
+	 * @description {This service is used to get Itec Promotions Overview Details.}
+	 * @return List<ItecPromotionDetailsVO>
+	 * @Date 12-10-2017
+	 */
+	public List<ItecPromotionDetailsVO> getITSectorLeadCategoryWiseDetails(InputVO inputVO){
+		List<ItecPromotionDetailsVO> returnList = new ArrayList<ItecPromotionDetailsVO>();
+		try {
+			MOUTrackerIT[] list = new TrackerITServiceSoapProxy().GET_LEAD_CATEGORY_WISE(inputVO.getLeadName(),inputVO.getCategory());
+			if(list != null && list.length > 0){
+				for (int i = 0; i < list.length; i++) {
+					ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
+					
+					vo.setSector(list[i].getSECTOR());
+					vo.setDistrict(list[i].getDISTRICT());
+					vo.setNoProjects(list[i].getNO_PROJECTS());
+					vo.setInvestment(list[i].getINVESTMENT());
+					vo.setRealizedInvestment(list[i].getREALIZED_INVESTMENT());
+					vo.setEmployment(list[i].getEMPLOYMENT());
+					vo.setRealizedEmployment(list[i].getREALIZED_EMPLOYMENT());
+					vo.setSourceOfLead(list[i].getSOURCE_OF_LEAD());
+					vo.setCategory(list[i].getCATEGORY());
+					vo.setLineOfActivity(list[i].getLINEOFACTIVITY());
+					vo.setSubSector(list[i].getSUBSECTOR());
+					vo.setItSector(list[i].getITSECTOR());
+					vo.setNameOfCompany(list[i].getNAMEOFTHECOMPANY());
+					vo.setDistrictName(list[i].getDISTRICTNAME());
+					vo.setDeptName(list[i].getDEPTNAME());
+					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getITSectorLeadCategoryWiseDetails - ItcDashboardService service",e);
+		}
+		return returnList;
+	}
 }
