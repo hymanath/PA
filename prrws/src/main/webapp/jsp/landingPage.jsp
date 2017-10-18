@@ -341,6 +341,76 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/Jalavani.png" >
+					<h5 style="display: inline-block;">JALAVANI</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="JalavaniAllCls" style="margin-top: 0px"></h2>
+						<p class="">COMPLETED & CLOSED</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange JALAVANIColor" title="click to add as favourite component." attr_url="jalavaniDashBoard" attr_full_block_name="JALAVANI" attr_color_name="gray" attr_block_name="JALAVANI" aria-hidden="true"></i>
+						<a class="pull-right" href="jalavaniDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/assets.png" >
+					<h5 style="display: inline-block;">ASSETS</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="assetsAllCls" style="margin-top: 0px"></h2>
+						<p class="">TOTAL</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange ASSETSColor" title="click to add as favourite component." attr_url="assetsDashBoard" attr_full_block_name="ASSETS" attr_color_name="gray" attr_block_name="ASSETS" aria-hidden="true"></i>
+						<a class="pull-right" href="assetsDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/kpi.png" >
+					<h5 style="display: inline-block;">KEY PERFORMANCE</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="keyPerforamanceAllCls" style="margin-top: 0px"></h2>
+						<p class="">TOTAL</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange KEYPERFORMANCEColor" title="click to add as favourite component." attr_url="keyPerfomanceDashBoard" attr_full_block_name="KEY PERFORMANCE" attr_color_name="gray" attr_block_name="KEY PERFORMANCE" aria-hidden="true"></i>
+						<a class="pull-right" href="keyPerfomanceDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/water source.png" >
+					<h5 style="display: inline-block;">WATER SOURCE</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="waterSourceAllCls" style="margin-top: 0px"></h2>
+						<p class="">TOTAL</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange WATERSOURCEColor" title="click to add as favourite component." attr_url="waterSourcesDashBoard" attr_full_block_name="WATER SOURCE" attr_color_name="gray" attr_block_name="WATER SOURCE" aria-hidden="true"></i>
+						<a class="pull-right" href="waterSourcesDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/works.png" >
+					<h5 style="display: inline-block;">WORKS</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="worksAllCls" style="margin-top: 0px"></h2>
+						<p class="">TOTAL</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange WORKSColor" title="click to add as favourite component." attr_url="worksDashBoard" attr_full_block_name="WORKS" attr_color_name="gray" attr_block_name="WORKS" aria-hidden="true"></i>
+						<a class="pull-right" href="worksDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
