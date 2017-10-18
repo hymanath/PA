@@ -6975,3 +6975,108 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 		$("#openPostDetailsModalDivId").html(str);
 	}
   }
+  
+//getAreaWisePartyMeetingsDetailsAction();
+  function getAreaWisePartyMeetingsDetailsAction(){
+ 	 $('#areaWiseMeetingsId').html(spinner);
+ 	  //'2017-07-09' and '2018-10-09'
+ 	  var jsObj={
+ 		"locationScopeId":2,
+ 		"locationValue":[1],
+ 		"startDate":"09-07-2017",
+ 		"endDate":"09-10-2018",
+ 		"meetingLevelId":1,
+ 		"meetingTypeId":1,
+ 		"meetingMainTypeId":1
+ 	  }
+ 	   $.ajax({
+ 		  type : "POST",
+ 		  url : "getAreaWisePartyMeetingsDetailsAction.action",
+ 		  dataType : 'json',
+ 		  data : {task :JSON.stringify(jsObj)}
+ 		}).done(function(result){  
+ 			console.log(result);
+ 			if(result ==""){
+ 				$('#areaWiseMeetingsId').html("<p>No Data Available</p>");
+ 			}else{
+ 			//buildAreaWiseMeetingsCountTable(result);
+ 			}
+ 		});
+  }
+  
+  function buildAreaWiseMeetingsCountTable(results){
+ 		var str=""
+ 		str+="<div class='table-responsive'>";
+ 		str+="<table class='table table-bordered' id='dataTableIdAreaWise'>";
+ 			str+="<thead>";
+ 				str+="<tr>";
+ 						str+="<th class='text-center' rowspan='2'>Location Name</th>";
+ 						str+="<th class='text-center' rowspan='2'>Total Meetings Every Month</th>";	
+ 						var str2="";
+ 								str2+="<tr>";
+ 				for(var j in results[0].yearWiseMeetingsCount){	
+ 					if(results[0].yearWiseMeetingsCount[j].monthName!=null && results[0].yearWiseMeetingsCount[j].monthName.length >0){
+ 						str+="<th class='text-center' colspan='5'>"+results[0].yearWiseMeetingsCount[j].monthName+" "+results[0].yearWiseMeetingsCount[j].year+"</th>";
+ 					}else{
+ 						str+="<th class='text-center' colspan='5'>OVERALL</th>";								
+ 					}
+ 								str2+="<th>Total</th>";
+ 								str2+="<th>Yes</th>";
+ 								str2+="<th>No</th>";
+ 								str2+="<th>Maybe</th>";
+ 								str2+="<th>Not Updated</th>";
+ 				}
+ 				str+="</tr>";
+ 								str2+="</tr>";
+ 				str=str+str2;
+ 			str+="</thead>";
+ 			str+="<tbody>";
+ 		 for (var i in results) {
+ 				str+="<tr>";
+ 					str+="<td>"+results[i].locationName+"</td>";
+ 					str+="<td>"+results[i].total+"</td>";
+ 				for(var j in results[i].yearWiseMeetingsCount){
+ 					str+="<td>"+results[i].yearWiseMeetingsCount[j].total+"</td>";
+ 					if(results[i].yearWiseMeetingsCount[j].yesCountPercentage!=null){
+ 					str+="<td>";
+ 						str+="<p>"+results[i].yearWiseMeetingsCount[j].yesCount+"</p>";
+ 						str+="<small>"+results[i].yearWiseMeetingsCount[j].yesCountPercentage+"<span>%</span></small>";
+ 					str+="</td>";
+ 					}else{
+ 						str+="<td>"+results[i].yearWiseMeetingsCount[j].yesCount+"</td>";
+ 					}
+ 					if(results[i].yearWiseMeetingsCount[j].noCountPercentage!=null){
+ 					str+="<td>";
+ 						str+="<p>"+results[i].yearWiseMeetingsCount[j].noCount+"</p>";
+ 						str+="<small>"+results[i].yearWiseMeetingsCount[j].noCountPercentage+"<span>%</span><small>";
+ 					str+="</td>";
+ 					}else{
+ 						str+="<td>"+results[i].yearWiseMeetingsCount[j].noCount+"</td>";
+ 					}
+ 					if(results[i].yearWiseMeetingsCount[j].mayBeCountPercentage!=null){
+ 					str+="<td>";
+ 						str+="<p>"+results[i].yearWiseMeetingsCount[j].mayBeCount+"</p>";
+ 						str+="<small>"+results[i].yearWiseMeetingsCount[j].mayBeCountPercentage+"<span>%</span></small>";
+ 					str+="</td>";
+ 					}else{
+ 						str+="<td>"+results[i].yearWiseMeetingsCount[j].mayBeCount+"</td>";
+ 					}
+ 					if(results[i].yearWiseMeetingsCount[j].notUpDatedCountPercentage!=null){
+ 					str+="<td>";
+ 						str+="<p>"+results[i].yearWiseMeetingsCount[j].notUpDatedCount+"</p>";
+ 						str+="<small>"+results[i].yearWiseMeetingsCount[j].notUpDatedCountPercentage+"<span>%</span></small>";
+ 					str+="</td>";
+ 					}else{
+ 						str+="<td>"+results[i].yearWiseMeetingsCount[j].notUpDatedCount+"</td>";
+ 					}		
+ 				}
+ 				str+="</tr>";
+ 		 }
+ 			str+="</tbody>";
+ 		str+="</table>";
+ 		str+="</div>";
+ 	$('#areaWiseMeetingsId').html(str);
+ 	$("#dataTableIdAreaWise").dataTable({
+ 		"iDisplayLength": 10
+ 	});
+ 	}

@@ -294,6 +294,8 @@
 						<h4 class="panel-title theme-title-color m_top10">Meetings</h4>
 					</div>
 				</div>
+				<div id="areaWiseMeetingsId" class="block m_top10" style="display:none;">
+				</div>
 				<div class="block m_top10">
 					<div class="row">
 						<div class="col-sm-4">
