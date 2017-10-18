@@ -6293,6 +6293,26 @@ public class ConstituencyPageService implements IConstituencyPageService{
 					returnVo.setPercentage(caclPercantage(returnVo.getTotalSeatsCount(),totalCount));
 				}
 			}
+			List<Object[]> schemeDetailsObj = govtSchemeBenefitsInfoDAO.getLocationWiseSchemesDetailsInfo(locationScopeId, locationValue);
+			
+			if(finalVo.getList() != null && finalVo.getList().size() >0){
+					if(schemeDetailsObj != null && schemeDetailsObj.size() >0){
+						for (Object[] objects : schemeDetailsObj){
+							ElectionInformationVO matchedVo = getMatchedVO(finalVo.getList(),(Long)objects[0]);
+							if(matchedVo != null){
+								ElectionInformationVO subVo = new ElectionInformationVO();
+									subVo.setId(objects[0] !=null ? (Long)objects[0]:null);
+									subVo.setName(objects[1] != null ? objects[1].toString() : "");
+									subVo.setPartyId(objects[2] !=null ? (Long)objects[2]:null);
+									subVo.setPartyName(objects[3] != null ? objects[3].toString() : "");
+									subVo.setTotalSeatsCount(objects[4] !=null ? (Long)objects[4]:null);
+									subVo.setParticipatedSeatsCount(objects[5] !=null ? (Long)objects[5]:null);
+									
+									matchedVo.getSchemesList().add(subVo);
+							}
+						}
+					}
+			}
 		} catch (Exception e) {
 			log.error("Exception raised getLocationwiseSchemesOverview method "+e);
 		}
