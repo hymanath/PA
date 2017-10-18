@@ -203,7 +203,7 @@
 					<div id="categoryWiseDataId"></div>
 				</div>
 				<div class="col-sm-12" style="border: 1px solid #ccc;">
-				<h5 class="m_top10"><b>CATEGORY WISE ANALYSIS(<b>Based On Selected Date</b>)</h5>
+				<h5 class="m_top10"><b>CATEGORY WISE ANALYSIS(<span style="color:green;" id="dailyCategoryWiseAnalysisHeadinId" ></span>)</h5>
 					<div id="selectedDatecategoryWiseDataId"></div>
 				</div>
 			</div>
