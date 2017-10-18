@@ -11,11 +11,13 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CommentsDashBoardVO;
 import com.itgrids.partyanalyst.dto.DoorCampaignDashboardVO;
 import com.itgrids.partyanalyst.dto.DoorToDoorInputVO;
+import com.itgrids.partyanalyst.dto.InputCommentVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.IDoorToDoorCampaignDashboardService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -29,6 +31,9 @@ public class DoorToDoorCampaignDashboardAction extends ActionSupport implements 
 	private IDoorToDoorCampaignDashboardService doorToDoorCampaignDashboardService;
 	private DoorCampaignDashboardVO doorCampaignDashboardVO;
 	private List<DoorCampaignDashboardVO> doorCampaignDashboardVOList;
+	private String resultStatus;
+	private List<CommentsDashBoardVO>  commentsVOList = new ArrayList<CommentsDashBoardVO>(0);
+	
 	
 	
 	public DoorCampaignDashboardVO getDoorCampaignDashboardVO() {
@@ -75,7 +80,6 @@ public class DoorToDoorCampaignDashboardAction extends ActionSupport implements 
 		
 	}
 	
-	
 	public IDoorToDoorCampaignDashboardService getDoorToDoorCampaignDashboardService() {
 		return doorToDoorCampaignDashboardService;
 	}
@@ -84,6 +88,18 @@ public class DoorToDoorCampaignDashboardAction extends ActionSupport implements 
 		this.doorToDoorCampaignDashboardService = doorToDoorCampaignDashboardService;
 	}
 	
+	public String getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(String resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	public List<CommentsDashBoardVO> getCommentsVOList() {
+		return commentsVOList;
+	}
+	public void setCommentsVOList(List<CommentsDashBoardVO> commentsVOList) {
+		this.commentsVOList = commentsVOList;
+	}
 	public String execute()
 	{	
 		session = request.getSession();
@@ -484,6 +500,76 @@ public class DoorToDoorCampaignDashboardAction extends ActionSupport implements 
 			doorCampaignDashboardVOList = doorToDoorCampaignDashboardService.getAssignedConstituenciesForUser(inputvo);
 		}catch (Exception e) {
 			LOG.error("Exception rised in getAssignedConstituenciesForUser",e);
+		}
+		
+		return Action.SUCCESS; 
+	}
+	
+	public String saveConstituencyComments(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			Long commentId = jObj.getLong("commentId");
+			Long constId = jObj.getLong("constituencyId");
+			String commentDate = jObj.getString("commentDate");
+			String comment = jObj.getString("comment");
+			Long userId = jObj.getLong("userId");
+			InputCommentVO inputvo = new InputCommentVO();
+			inputvo.setCommentId(commentId);
+			inputvo.setCommentDate(commentDate);
+			inputvo.setComment(comment);
+			inputvo.setConstituencyId(constId);
+			inputvo.setUserId(userId); 
+			
+			resultStatus = doorToDoorCampaignDashboardService.saveConstituencyComments(inputvo);
+		}catch (Exception e) {
+			LOG.error("Exception rised in saveConstituencyComments",e);
+		}
+		
+		return Action.SUCCESS; 
+	}
+	
+	public String getLocationWiseComments(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			String fromDate = jObj.getString("startDate");
+			String toDate = jObj.getString("endDate");
+			InputCommentVO inputvo = new InputCommentVO();
+			inputvo.setStartDate(fromDate);
+			inputvo.setEndDate(toDate);
+			inputvo.setConstituencyId(constituencyId);
+			inputvo.setDistrictId(districtId);
+			
+			
+			commentsVOList = doorToDoorCampaignDashboardService.getLocationWiseComments(inputvo);
+		}catch (Exception e) {
+			LOG.error("Exception rised in getLocationWiseComments",e);
+		}
+		
+		return Action.SUCCESS; 
+	}
+	
+	public String getConstituencyWiseCommentDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			String fromDate = jObj.getString("startDate");
+			String toDate = jObj.getString("endDate");
+			InputCommentVO inputvo = new InputCommentVO();
+			inputvo.setStartDate(fromDate);
+			inputvo.setEndDate(toDate);
+			inputvo.setConstituencyId(constituencyId);
+			inputvo.setDistrictId(districtId);
+			
+			
+			commentsVOList = doorToDoorCampaignDashboardService.getConstituencyWiseCommentDetails(inputvo);
+		}catch (Exception e) {
+			LOG.error("Exception rised in getLocationWiseComments",e);
 		}
 		
 		return Action.SUCCESS; 
