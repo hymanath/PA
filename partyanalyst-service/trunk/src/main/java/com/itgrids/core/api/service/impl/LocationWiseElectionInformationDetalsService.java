@@ -17,6 +17,7 @@ import com.itgrids.core.api.service.ILocationWiseElectionInformationDetalsServic
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IMarginVotesRangeDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -31,7 +32,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IPartyDAO partyDAO;
-
+    private IMarginVotesRangeDAO marginVotesRangeDAO;
 	
 	
 	public IPartyDAO getPartyDAO() {
@@ -77,6 +78,14 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 		this.candidateDAO = candidateDAO;
 	}
 
+	public IMarginVotesRangeDAO getMarginVotesRangeDAO() {
+		return marginVotesRangeDAO;
+	}
+
+	public void setMarginVotesRangeDAO(IMarginVotesRangeDAO marginVotesRangeDAO) {
+		this.marginVotesRangeDAO = marginVotesRangeDAO;
+	}
+
 	@Override
 	public List<ElectionInformationVO> getElectionInformationLocationWiseStatus(Long locationTypeId,Long locationValue, 
 			List<Long> partyIdList, List<Long> electionYrs,List<Long> electionScopeIds, List<String> subTypes,String searchType) {
@@ -100,13 +109,14 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			}
 			
 			Map<String,String> statusMap = new HashMap<String, String>();
-			statusMap.put("0-5","WORST");
-			statusMap.put("6-10","VERY POOR");
-			statusMap.put("11-20","POOR");
-			statusMap.put("21-30","OK");
-			statusMap.put("31-40","STRONG");
-			statusMap.put("41-100","VERY STRONG");
-
+			List<Object[]> marginWiseStatusObjs = marginVotesRangeDAO.getMarginVotesAgeRangeDetails();
+			if(marginWiseStatusObjs != null && marginWiseStatusObjs.size() >0){
+				for(Object[] objs : marginWiseStatusObjs){
+					
+					statusMap.put(commonMethodsUtilService.getStringValueForObject(objs[0]),commonMethodsUtilService.getStringValueForObject(objs[1]));
+					}
+				}
+			
 			List<Long> parliamentIdsList = new ArrayList<Long>(0);
 			if(locationTypeId != null && locationTypeId.longValue()==10L)
 				parliamentIdsList.add(locationValue);
