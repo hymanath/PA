@@ -4192,4 +4192,7 @@
 	  <bean id="kaizalaResponderTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaResponderTypeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="marginVotesRangeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MarginVotesRangeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		

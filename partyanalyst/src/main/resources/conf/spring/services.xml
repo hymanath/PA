@@ -4515,5 +4515,6 @@
     	<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
     	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
     	<property name="partyDAO" ref="partyDAO" />
+    	<property name="marginVotesRangeDAO" ref="marginVotesRangeDAO" />
     </bean>
 </beans>			

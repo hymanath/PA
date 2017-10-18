@@ -1331,6 +1331,8 @@
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaGroupDocumentType</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaGroupDocument</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaResponderType</value>
+		      		   
+		      		   <value>com.itgrids.partyanalyst.model.MarginVotesRange</value>
 				  </list>
 			
 		</property>
