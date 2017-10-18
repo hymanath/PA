@@ -8,6 +8,7 @@ var globalToDateForLevel = moment().format("DD-MM-YYYY");
 onloadCalls();
 onloadIntiliazilation();
 function onloadCalls(){
+	$("#dailyCategoryWiseAnalysisHeadinId").html(globalFromDateForLevel+" to "+globalToDateForLevel);
 	getSwachhBharatMissionOverviewDtls(); // first block And Second Block
 	getIHHLCategoryWiseAnalysisBySelectedDate();
 	getIHHLAchivementProgressDtls("week");
@@ -156,9 +157,22 @@ function getSwachhBharatMissionOverviewDtls(){
 						str+='</div>';
 						str+='<div class="panel-body">';
 							str+='<ul class="list-inline borderleft">';
-								str+='<li style="cursor:pointer;" attr_report_type="status" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="district" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">D</span> - '+result.subList[i].districtCount+'</h3></li>';
-								str+='<li style="cursor:pointer;" attr_report_type="status" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="constituency" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">C</span> - '+result.subList[i].constituencyCount+'</h3></li>';
-								str+='<li style="cursor:pointer;" attr_report_type="status" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="mandal" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">M</span> - '+result.subList[i].mandalCount+'</h3></li>';
+							    if (result.subList[i].districtCount != null && result.subList[i].districtCount > 0) {
+									str+='<li style="cursor:pointer;" attr_report_type="status" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="district" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">D</span> - '+result.subList[i].districtCount+'</h3></li>';
+								} else {
+									str+='<li><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">D</span> - '+result.subList[i].districtCount+'</h3></li>';
+								}
+								if (result.subList[i].constituencyCount != null && result.subList[i].constituencyCount > 0) {
+									str+='<li style="cursor:pointer;" attr_report_type="status" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="constituency" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">C</span> - '+result.subList[i].constituencyCount+'</h3></li>';
+								} else {
+									str+='<li><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">C</span> - '+result.subList[i].constituencyCount+'</h3></li>';
+								}
+								if (result.subList[i].mandalCount != null && result.subList[i].mandalCount > 0) {
+									str+='<li style="cursor:pointer;" attr_report_type="status" attr_category_type="'+result.subList[i].name.trim()+'" attr_location_type="mandal" class="categoryCls"><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">M</span> - '+result.subList[i].mandalCount+'</h3></li>';
+								} else {
+									str+='<li><h3><span style="color:'+globalColor[result.subList[i].name.trim()]+'">M</span> - '+result.subList[i].mandalCount+'</h3></li>';
+								}
+								
 							str+='<ul>';
 						str+='</div>';	
 					str+='</div>';
@@ -1023,9 +1037,21 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType)
 						str+='</div>';
 						str+='<div class="panel-body">';
 							str+='<ul class="list-inline borderleft">';
+							if (result[i].districtCount != null && result[i].districtCount > 0) {
 								str+='<li style="cursor:pointer;" attr_report_type="daily" attr_category_type="'+result[i].name.trim()+'" attr_location_type="district" class="categoryCls"><h3><span style="color:'+globalColor[result[i].name.trim()]+'">D</span> - '+result[i].districtCount+'</h3></li>';
+							} else {
+								str+='<li><h3><span style="color:'+globalColor[result[i].name.trim()]+'">D</span> - '+result[i].districtCount+'</h3></li>';
+							}
+							if (result[i].constituencyCount != null && result[i].constituencyCount > 0) {
 								str+='<li attr_report_type="daily" style="cursor:pointer;" attr_category_type="'+result[i].name.trim()+'" attr_location_type="constituency" class="categoryCls"><h3><span style="color:'+globalColor[result[i].name.trim()]+'">C</span> - '+result[i].constituencyCount+'</h3></li>';
+							} else {
+								str+='<li><h3><span style="color:'+globalColor[result[i].name.trim()]+'">C</span> - '+result[i].constituencyCount+'</h3></li>';
+							}
+							if (result[i].mandalCount != null && result[i].mandalCount > 0) {
 								str+='<li attr_report_type="daily" style="cursor:pointer;" attr_category_type="'+result[i].name.trim()+'" attr_location_type="mandal" class="categoryCls"><h3><span style="color:'+globalColor[result[i].name.trim()]+'">M</span> - '+result[i].mandalCount+'</h3></li>';
+							} else {
+								str+='<li><h3><span style="color:'+globalColor[result[i].name.trim()]+'">M</span> - '+result[i].mandalCount+'</h3></li>';
+							}
 							str+='<ul>';
 						str+='</div>';	
 					str+='</div>';
