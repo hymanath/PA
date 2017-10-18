@@ -450,7 +450,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				}
 			}
 			List<Long> locParliamntVals = new ArrayList<Long> ();
-			if(levelId != null && levelId.longValue() == 10l){
+			if(levelId != null && levelId.longValue() == 4l){
 				List<Object[]> findAssembliesConstituencies = (List<Object[]>) delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByAllLevels(null,locationVals,levelId,null);
 				//locationVals.clear();
 				if(commonMethodsUtilService.isListOrSetValid(findAssembliesConstituencies)){
@@ -610,14 +610,31 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	public List<ElectionInformationVO> getLocationWiseVotingDetails(List<Long> electionYrs,Long levelId,List<Long> locationVals,List<String> subtypes,String searchLevel){
 		List<ElectionInformationVO> returnList = new ArrayList<ElectionInformationVO>();
 		try{
-			Map<Long,ElectionInformationVO> locationMap  = new HashMap<Long,ElectionInformationVO>();
-			List<Object[]> polledVotes = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locationVals, subtypes, searchLevel);
-			setLocationWiseVotersDetails( polledVotes, locationMap,"polled");
 			
-			List<Object[]> assemblyEarnedVotes = boothConstituencyElectionDAO.getLocationWiseErnedVotesForVotingDetails(electionYrs, levelId, locationVals, subtypes, searchLevel, 2l);
+			List<Long> locAssmblyVals = new ArrayList<Long>();
+			locAssmblyVals.addAll(locationVals);
+			if(levelId != null && levelId.longValue() == 10l){
+				List<Object[]> findAssembliesConstituencies = (List<Object[]>) delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliaments(locationVals);
+				//locationVals.clear();
+				if(commonMethodsUtilService.isListOrSetValid(findAssembliesConstituencies)){
+					locAssmblyVals.clear();
+					for (Object[] param : findAssembliesConstituencies) {
+						locAssmblyVals.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					}
+				}
+			}
+			
+			Map<Long,ElectionInformationVO> locationMap  = new HashMap<Long,ElectionInformationVO>();
+			List<Object[]> polledVotes = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, searchLevel);
+			setLocationWiseVotersDetails( polledVotes, locationMap,"polled");
+			List<Object[]> assemblyEarnedVotes = null;
+			
+				 assemblyEarnedVotes = boothConstituencyElectionDAO.getLocationWiseErnedVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, searchLevel, 2l);
+			
+			
 			setLocationWiseVotersDetails( assemblyEarnedVotes, locationMap,"assembly");
 			
-			List<Object[]> parliamentEarnedVotes = boothConstituencyElectionDAO.getLocationWiseErnedVotesForVotingDetails(electionYrs, levelId, locationVals, subtypes, searchLevel, 1l);
+			List<Object[]> parliamentEarnedVotes = boothConstituencyElectionDAO.getLocationWiseErnedVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, searchLevel, 1l);
 			setLocationWiseVotersDetails( parliamentEarnedVotes, locationMap,"parliament");
 			
 			if(commonMethodsUtilService.isMapValid(locationMap)){
@@ -659,7 +676,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 						locationVO.setEarnedVotersPerc1(Double.valueOf(calculatePercentage(locationVO.getValidVoters(), locationVO.getParliamentEarnedVotes())));
 						Double parliamentPerc = locationVO.getEarnedVotersPerc1() != null ?locationVO.getEarnedVotersPerc1():0.0;
 						Double assmblyPerc = locationVO.getEarnedVotersPerc() != null ?locationVO.getEarnedVotersPerc():0.0;
-						Double diffPerc = parliamentPerc-assmblyPerc;
+						Double diffPerc = assmblyPerc-parliamentPerc;
 						locationVO.setPerc(diffPerc.toString());
 					}
 					
@@ -671,6 +688,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 		}
 	}
 	
+
 	 /**
 	 * @author : Babu kurakula <href:kondababu.kurakula@itgrids.com >
 	 * @Date   :17th OCT,2017
@@ -678,7 +696,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	 * @param : locationTypeId, locationValue ,partyIdList,electionYrs,
 	 * 		 electionScopeIds,subTypes,searchType,statusType,year
 	 * @return :List of ElectionInformationVO 
- */
+*/
 public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYearWise(Long locationTypeId,Long locationValue,List<Long> partyIdList,
 	List<Long> electionYrs,List<Long> electionScopeIds, List<String> subTypes,String searchType,String statusType,String year){
 	List<ElectionInformationVO> finalList=new ArrayList<ElectionInformationVO>(0);
