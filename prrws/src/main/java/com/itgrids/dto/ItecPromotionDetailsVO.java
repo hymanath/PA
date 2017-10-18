@@ -21,6 +21,7 @@ public class ItecPromotionDetailsVO {
     private String nameOfCompany;
     private String districtName;
     private String deptName;
+    private Long categoryCount = 0L;
     
     
 	public String getSourceOfLead() {
@@ -124,5 +125,11 @@ public class ItecPromotionDetailsVO {
 	}
 	public void setRealizedEmployment(String realizedEmployment) {
 		this.realizedEmployment = realizedEmployment;
+	}
+	public Long getCategoryCount() {
+		return categoryCount;
+	}
+	public void setCategoryCount(Long categoryCount) {
+		this.categoryCount = categoryCount;
 	}
 }
