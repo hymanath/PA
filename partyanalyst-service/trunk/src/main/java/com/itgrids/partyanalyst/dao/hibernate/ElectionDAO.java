@@ -1248,7 +1248,29 @@ IElectionDAO {
 			query.setParameterList("partyIds", partyIds);
 		} 
 		return query.list();
-	} 
+	}
+
+	@Override
+	public List<Long> getElectionDetailsByYearAndElectionTypeForLocation(String year,Long electionTypeId,Long stateId)
+	{
+		Query query = null;
+		if(electionTypeId == 1l){
+			
+			query = getSession().createQuery("select model.electionId from Election model where " +
+					"model.electionYear ="+year+" and model.electionScope.electionType.electionTypeId = :electionTypeId ");	
+		}else{
+
+			query = getSession().createQuery("select model.electionId from Election model where " +
+					"model.electionYear ="+year+" and model.electionScope.electionType.electionTypeId = :electionTypeId and  model.electionScope.state.stateId = :stateId ");		
+			query.setParameter("stateId", stateId);
+		}
+
+		query.setParameter("electionTypeId", electionTypeId);
+		
+		return query.list();
+	}
+	 
+	 
 	public List<Object[]> getElectionWiseYears(Long stateId,String electionType)
 	{
 		
