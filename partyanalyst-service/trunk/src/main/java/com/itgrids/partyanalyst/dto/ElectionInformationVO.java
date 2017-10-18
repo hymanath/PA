@@ -46,6 +46,7 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	
 	private List<ElectionInformationVO> list = new CopyOnWriteArrayList<ElectionInformationVO>();
 	private List<ElectionInformationVO> subList1 = new ArrayList<ElectionInformationVO>();
+	private List<Long> idsList=new ArrayList<Long>(0);
 	private List<ElectionInformationVO> schemesList = new ArrayList<ElectionInformationVO>();
 	public ElectionInformationVO(){}
 	public ElectionInformationVO(Long partyId,String name){
@@ -274,6 +275,12 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	}
 	public void setSchemesList(List<ElectionInformationVO> schemesList) {
 		this.schemesList = schemesList;
+	}
+	public List<Long> getIdsList() {
+		return idsList;
+	}
+	public void setIdsList(List<Long> idsList) {
+		this.idsList = idsList;
 	}
 	
 }
