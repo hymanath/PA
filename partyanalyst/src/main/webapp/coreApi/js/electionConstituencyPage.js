@@ -1564,7 +1564,7 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr){
 		locationValue		:userAccessLevelValuesArray,
 		subTypesArr			:subTypesArr,
 		locationLevelId		:locationLevelId,
-		searchLevel:""
+		searchLevel:""//panchayat,tehsil only if locationLevelId=4 
 	}
 	$.ajax({
 		type : "GET",
