@@ -2,8 +2,10 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CommentsDashBoardVO;
 import com.itgrids.partyanalyst.dto.DoorCampaignDashboardVO;
 import com.itgrids.partyanalyst.dto.DoorToDoorInputVO;
+import com.itgrids.partyanalyst.dto.InputCommentVO;
 
 public interface IDoorToDoorCampaignDashboardService {
 
@@ -22,4 +24,7 @@ public interface IDoorToDoorCampaignDashboardService {
 	public List<DoorCampaignDashboardVO> getUserWiseCountsFrLoginUser(DoorToDoorInputVO inputVO);
 	
 	public List<DoorCampaignDashboardVO> getAssignedConstituenciesForUser(DoorToDoorInputVO inputVO);
+	public List<CommentsDashBoardVO> getLocationWiseComments(InputCommentVO inputVO);
+	public String saveConstituencyComments(InputCommentVO inputVO);
+	public List<CommentsDashBoardVO> getConstituencyWiseCommentDetails(InputCommentVO inputVO);
 }
