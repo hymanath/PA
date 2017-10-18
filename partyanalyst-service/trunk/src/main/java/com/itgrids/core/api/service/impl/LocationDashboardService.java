@@ -3242,7 +3242,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				for (Entry<Long, ConstituencyCadreVO> entry : ageRangeMap.entrySet()) {
 					entry.getValue().setMalePercentage(calculatePercantage(entry.getValue().getMaleCount(), entry.getValue().getToalCadreCount()));
 					entry.getValue().setFemalePercentage(calculatePercantage(entry.getValue().getFemaleCount(), entry.getValue().getToalCadreCount()));
-					if (entry.getValue() != null && entry.getValue().getCasteGroupList() != null) {
+					if (entry.getValue() != null && entry.getValue().getCasteGroupList() != null) { 
 						for (ConstituencyCadreVO casteCategoryVO : entry.getValue().getCasteGroupList()) {
 							casteCategoryVO.setPercentage(calculatePercantage(casteCategoryVO.getToalCadreCount(), entry.getValue().getToalCadreCount()));
 						}
