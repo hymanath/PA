@@ -1359,3 +1359,42 @@ $(document).on("change","#constituencyNamesId",function(){
 	}
 	onLoadCalls();
 });
+//saveConstituencyComments();
+function saveConstituencyComments()
+{
+	
+	var jsObj={
+		constituencyId : 212,
+		commentDate : '18-10-2017',
+		comment : "Nandhini Test",
+		commentId : 0,
+		userId : 1234
+	}
+	$.ajax({
+	  type : "POST",
+	  url : "saveConstituencyCommentsAction.action",
+	  dataType : 'json',
+	  data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		
+	});
+}
+//getLocationWiseComments();
+function getLocationWiseComments()
+{
+	
+	var jsObj={
+		constituencyId : 212,
+		startDate : '18-10-2017',
+		endDate : '18-10-2017',
+		districtId : 17
+	}
+	$.ajax({
+	  type : "POST",
+	  url : "getLocationWiseCommentsAction.action",
+	  dataType : 'json',
+	  data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		
+	});
+}

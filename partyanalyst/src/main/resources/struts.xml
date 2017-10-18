@@ -18294,5 +18294,20 @@
 			<param name="root">meetingsVO</param>       
 		</result>
   	</action>
+   <action name="saveConstituencyCommentsAction" class="doorToDoorCampaignDashboardAction"  method="saveConstituencyComments">
+		<result type="json" name="success">    
+			<param name="root">resultStatus</param>       
+		</result>
+   </action>
+   <action name="getLocationWiseCommentsAction" class="doorToDoorCampaignDashboardAction"  method="getLocationWiseComments">
+		<result type="json" name="success">    
+			<param name="root">commentsVOList</param>       
+		</result>
+   </action>
+   <action name="getConstituencyWiseCommentDetailsAction" class="doorToDoorCampaignDashboardAction"  method="getConstituencyWiseCommentDetails">
+		<result type="json" name="success">    
+			<param name="root">commentsVOList</param>       
+		</result>
+   </action>
  </package>
 </struts>
