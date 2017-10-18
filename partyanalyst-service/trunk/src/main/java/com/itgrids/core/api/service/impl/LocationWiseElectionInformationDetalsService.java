@@ -1431,9 +1431,11 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	 * @return :List of ElectionInformationVO 
 */
 public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYearWise(Long locationTypeId,Long locationValue,List<Long> partyIdList,
-	List<Long> electionYrs,List<Long> electionScopeIds, List<String> subTypes,String searchType,String statusType,String year){
+	List<Long> electionYrs,List<Long> electionScopeIds, List<String> subTypes,String searchType,String statusType,String year,List<Long> locationIds){
+	
 	List<ElectionInformationVO> finalList=new ArrayList<ElectionInformationVO>(0);
 	Map<String,Map<String,Long>>  yearAndStatusCountMap=new HashMap<String,Map<String,Long>>();
+	Map<String,Map<String,List<Long>>> YearAndstatusAndLocationIdsMap=new HashMap<String,Map<String,List<Long>>>();
 	try{
 		List<ElectionInformationVO> electionInformationVOList=getElectionInformationLocationWiseStatus(locationTypeId,locationValue,partyIdList,electionYrs,electionScopeIds,subTypes,searchType);
 		if(commonMethodsUtilService.isListOrSetValid(electionInformationVOList)){
@@ -1447,12 +1449,16 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 					}
 				}
 				if(flage){
-					finalList.add(locationVo);
+					if(locationIds !=null && locationIds.size() >0 && locationIds.contains(locationVo.getLocationId())){
+						finalList.add(locationVo);
+					}else if(locationIds ==null || locationIds.size()==0){
+						finalList.add(locationVo);
+					}
 				}
 			}
 			for(ElectionInformationVO vo :finalList){
 				if(commonMethodsUtilService.isListOrSetValid(vo.getList())){
-					for(ElectionInformationVO subVo: vo.getList()){
+					for(ElectionInformationVO subVo: vo.getList()){//YearAndstatusAndLocationIdsMap
 						Map<String,Long> statusCountsMap=yearAndStatusCountMap.get(subVo.getElectionYear().trim());
 						if(!commonMethodsUtilService.isMapValid(statusCountsMap))
 							statusCountsMap=new HashMap<String,Long>();
@@ -1464,6 +1470,20 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 							statusCountsMap.put(subVo.getStatus().trim(), count);
 						}		
 						yearAndStatusCountMap.put(subVo.getElectionYear().trim(),statusCountsMap);
+						
+						Map<String,List<Long>> statusLocationIdssMap=YearAndstatusAndLocationIdsMap.get(subVo.getElectionYear().trim());
+						if(!commonMethodsUtilService.isMapValid(statusLocationIdssMap))
+							statusLocationIdssMap=new HashMap<String,List<Long>>();
+						
+						if(subVo.getStatus() !=null && subVo.getStatus().trim().length() >0){
+							List<Long> locationIdsList=statusLocationIdssMap.get(subVo.getStatus().trim());
+							if(!commonMethodsUtilService.isListOrSetValid(locationIdsList))
+								locationIdsList=new ArrayList<Long>();
+							locationIdsList.add(vo.getLocationId());
+							statusLocationIdssMap.put(subVo.getStatus().trim(), locationIdsList);
+						}
+						
+						YearAndstatusAndLocationIdsMap.put(subVo.getElectionYear().trim(), statusLocationIdssMap);
 					}
 				}
 			}
@@ -1471,9 +1491,13 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 		if(commonMethodsUtilService.isListOrSetValid(finalList.get(0).getList())){
 			for(ElectionInformationVO subvo: finalList.get(0).getList()){
 				Map<String,Long> statusCountsMap=yearAndStatusCountMap.get(subvo.getElectionYear().trim());
+				Map<String,List<Long>> statusLocationIdsMap=YearAndstatusAndLocationIdsMap.get(subvo.getElectionYear().trim());
 				if(commonMethodsUtilService.isListOrSetValid(subvo.getSubList1())){
 					for(ElectionInformationVO vo: subvo.getSubList1()){
 						vo.setWonSeatsCount(statusCountsMap.get(vo.getStatus().trim()));
+						if(vo.getStatus() != null && vo.getStatus().trim().length()>0 && statusLocationIdsMap.get(vo.getStatus().trim()) !=null && statusLocationIdsMap.get(vo.getStatus().trim()).size() >0)	
+							vo.getIdsList().addAll(statusLocationIdsMap.get(vo.getStatus().trim()));
+				
 					}
 				}
 			}
