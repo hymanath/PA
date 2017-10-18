@@ -40,8 +40,10 @@ import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingDataVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
+import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -102,7 +104,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<PartyMeetingDataVO> locationParMetingVOList;
 	private ElectionInformationVO electionInformationVO;
 	private List<CandidateDetailsForConstituencyTypesVO> typeVoList;
-
+	private PartyBoothPerformanceVO boothResult;
+	
+	
+	public PartyBoothPerformanceVO getBoothResult() {
+		return boothResult;
+	}
+	public void setBoothResult(PartyBoothPerformanceVO boothResult) {
+		this.boothResult = boothResult;
+	}
 	public ElectionInformationVO getElectionInformationVO() {
 		return electionInformationVO;
 	}
@@ -1193,7 +1203,6 @@ public String getElectionInformationLocationWise(){
 		return Action.SUCCESS;
 	}
 	
-	@SuppressWarnings("null")
 	public String getElectionInformationLocationWiseStatus(){
 		try{
 			
@@ -1228,20 +1237,8 @@ public String getElectionInformationLocationWise(){
 				String year = jObj.getString("year");
 				String toDateStr = jObj.getString("toDateStr");
 				Long locationTypeId = jObj.getLong("locationTypeId");
-				JSONArray alertTypeIdsStr = jObj.getJSONArray("alertTypeIdsStr");  
-				List<Long> alertTypeIds = new ArrayList<Long>();
-				if(alertTypeIdsStr != null && alertTypeIdsStr.length() > 0){
-					for (int i = 0; i < alertTypeIdsStr.length(); i++){
-						alertTypeIds.add(Long.parseLong(alertTypeIdsStr.getString(i)));        
-					} 
-				}
-				JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
-				List<Long> locationValues = new ArrayList<Long>();
-				if(locationValuesArr != null && locationValuesArr.length() > 0){
-					for (int i = 0; i < locationValuesArr.length(); i++){
-						locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
-					} 
-				}
+				List<Long> alertTypeIds =  convertJsonStringList(jObj.getJSONArray("alertTypeIdsStr"));  
+				List<Long> locationValues =  convertJsonStringList(jObj.getJSONArray("locationValuesArr")); 
 				locationAlertVOList = alertLocationDashboardService.getDesignationWiseAlertsOverview(fromDateStr,toDateStr,locationValues,alertTypeIds,locationTypeId,year);
 				
 		 }catch(Exception e){
@@ -1280,43 +1277,13 @@ public String getElectionInformationLocationWise(){
 				String year = jObj.getString("year");
 				String toDateStr = jObj.getString("toDateStr");
 				Long locationTypeId = jObj.getLong("locationTypeId");
-				JSONArray alertTypeIdsStr = jObj.getJSONArray("alertTypeIdsStr");  
-				List<Long> alertTypeIds = new ArrayList<Long>();
-				if(alertTypeIdsStr != null && alertTypeIdsStr.length() > 0){
-					for (int i = 0; i < alertTypeIdsStr.length(); i++){
-						alertTypeIds.add(Long.parseLong(alertTypeIdsStr.getString(i)));        
-					} 
-				}
-				JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
-				List<Long> locationValues = new ArrayList<Long>();
-				if(locationValuesArr != null && locationValuesArr.length() > 0){
-					for (int i = 0; i < locationValuesArr.length(); i++){
-						locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
-					} 
-				}
-				JSONArray statusIdsArr = jObj.getJSONArray("statusIdsArr");
-				List<Long> statusIdsList = new ArrayList<Long>();
-				if(statusIdsArr != null && statusIdsArr.length() > 0){
-					for (int i = 0; i < statusIdsArr.length(); i++){
-						statusIdsList.add(Long.parseLong(statusIdsArr.getString(i)));        
-					} 
-				}
-				JSONArray impactIdsArr = jObj.getJSONArray("impactIdsArr");
-				List<Long> impactIdsList = new ArrayList<Long>();
-				if(impactIdsArr != null && impactIdsArr.length() > 0){
-					for (int i = 0; i < impactIdsArr.length(); i++){
-						impactIdsList.add(Long.parseLong(impactIdsArr.getString(i)));        
-					} 
-				}
+				List<Long> alertTypeIds = convertJsonStringList(jObj.getJSONArray("alertTypeIdsStr"));
+				List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+				List<Long> statusIdsList = convertJsonStringList(jObj.getJSONArray("statusIdsArr"));
+				List<Long> impactIdsList = convertJsonStringList(jObj.getJSONArray("impactIdsArr"));
 				String type=jObj.getString("type");
 				Long designationId=jObj.getLong("designationId");
-				JSONArray alertCategeryIdsArr = jObj.getJSONArray("alertCategeryIdsArr");
-				List<Long> alertCategeryIdsList = new ArrayList<Long>();
-				if(alertCategeryIdsArr != null && alertCategeryIdsArr.length() > 0){
-					for (int i = 0; i < alertCategeryIdsArr.length(); i++){
-						alertCategeryIdsList.add(Long.parseLong(alertCategeryIdsArr.getString(i)));        
-					} 
-				}
+				List<Long> alertCategeryIdsList = convertJsonStringList(jObj.getJSONArray("alertCategeryIdsArr"));
 				String otherCategory =jObj.getString("otherCategory");
 				alertVOList = alertLocationDashboardService.getAlertOverviewClick(fromDateStr,toDateStr,locationValues,alertTypeIds,locationTypeId,year,statusIdsList,impactIdsList,type,designationId,alertCategeryIdsList,otherCategory);
 				
@@ -1337,12 +1304,7 @@ public String getElectionInformationLocationWise(){
 				String fromDateStr = jObj.getString("fromDateStr");
 				String toDateStr = jObj.getString("toDateStr");
 				Long searchLocationId = jObj.getLong("searchLocationId");
-				JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
-				List<Long> locationValues = new ArrayList<Long>();
-					for (int i = 0; i < locationValuesArr.length(); i++){
-						locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
-					} 
-				
+				List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr")); 
 				 Long partyMeetinLevelId = jObj.getLong("partyMeetinLevelId");
 				 Long meetingTypeId = jObj.getLong("meetingTypeId");
 				
@@ -1416,6 +1378,67 @@ public String getElectionInformationLocationWise(){
 
 		}
 		return Action.SUCCESS;
+	}
+   
+   public String getlocationBasedBoothWiseResult()
+	{
+		try {
+			
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("constituencyId");
+			JSONArray partyArr = jObj.getJSONArray("partyList");
+			List<Long> partyIds = new ArrayList<Long>();
+			
+			if(partyArr != null && partyArr.length()>0)
+			{
+				for (int i = 0; i < partyArr.length(); i++) {
+					partyIds.add(Long.valueOf(partyArr.get(i).toString()));
+				}
+			}
+			
+			
+			List<PartyBoothPerformanceVO> boothResults = locationWiseElectionInformationDetalsService.getBoothWiseElectionResults(partyIds, constituencyId, jObj.getLong("electionyears"),jObj.getLong("electionScopeId"));
+			
+			String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
+
+			List<PartyBoothPerformanceVO> PartyBoothPerformanceVOList1 = new ArrayList<PartyBoothPerformanceVO>();
+			
+			if(jObj.getString("task").equalsIgnoreCase("assemblyWiseResults"))
+			{				
+				if(boothResults != null && boothResults.size()>0)
+				{
+					for (PartyBoothPerformanceVO vo : boothResults) 
+					{	
+						path = IWebConstants.STATIC_CONTENT_FOLDER_URL+""+vo.getPartyName();
+						PartyBoothPerformanceVO boothResult1 = locationWiseElectionInformationDetalsService.getVotingPercentageWiseBoothResultForParties(vo,true,path,partyIds);
+												boothResult1 = locationWiseElectionInformationDetalsService.getVotingPercentageWiseBoothResultForParties(vo,false,null,partyIds);
+						
+						PartyBoothPerformanceVOList1.add(boothResult1);
+					}
+				}
+			 
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("parliamentWiseResults"))
+			{			
+				if(boothResults != null && boothResults.size()>0)
+				{
+					for (PartyBoothPerformanceVO vo : boothResults) 
+					{	
+						path = IWebConstants.STATIC_CONTENT_FOLDER_URL+""+vo.getPartyName();
+						PartyBoothPerformanceVO boothResult1 = locationWiseElectionInformationDetalsService.getVotingPercentageWiseBoothResultForParties(vo,true,path,partyIds);
+												boothResult1 = locationWiseElectionInformationDetalsService.getVotingPercentageWiseBoothResultForParties(vo,false,null,partyIds);
+						
+						PartyBoothPerformanceVOList1.add(boothResult1);
+					}
+				}
+			}
+			
+			boothResult = locationWiseElectionInformationDetalsService.segrigateBoothWiseResults(PartyBoothPerformanceVOList1);
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in ajaxHandler() in PartyBoothResult2Action action class.",e);
+		}
+		return SUCCESS;
 	}
    
    public String getLocationWiseVotingDetails(){
