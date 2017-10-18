@@ -1112,10 +1112,9 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		return query.list();
 	}
 	@Override
-	public List<Object[]> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues, Date startDate, Date endDate,Long meetingLevelId, Long meetingTypeId, Long meetingMainTypeId) {
+	public List<Object[]> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues, Date startDate, Date endDate,Long meetingLevelId, Long meetingTypeId, Long meetingMainTypeId,String searchType) {
 		//0 districtId,1 districtName,2 month,3 year 
 		//4 meetingStatus,5 meetingsCount 
-		String searchType =null;
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT distinct ");
 		if(locationScopeId != null && locationScopeId.longValue() == 2L)
@@ -1145,9 +1144,10 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		else if(locationScopeId != null && locationScopeId.longValue() == 5L)
 			sb.append(" , panchayat p  ");
 		
+       //'2017-07-09' and '2018-10-09'
 		sb.append(" where pms.party_meeting_id = pm.party_meeting_id and pm.party_meeting_type_id = pmt.party_meeting_type_id and" +
 				" pmt.party_meeting_main_type_id = pmmt.party_meeting_main_type_id and  pm.party_meeting_level_id = pml.party_meeting_level_id and " +
-				" (date(pm.start_date) BETWEEN '2017-07-09' and '2018-10-09') and pmmt.party_meeting_main_type_id = 1 and " +
+				" date(pm.start_date) BETWEEN :startDate and :endDate and pmmt.party_meeting_main_type_id = 1 and " +
 				" pm.meeting_address_id = ua.user_address_id ");
 		
 		if(locationScopeId != null && locationScopeId.longValue() == 2L){
@@ -1174,7 +1174,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 			sb.append(" and ua.panchayat_id = p.panchayat_id and ua.local_election_body is null ");
 			sb.append(" GROUP BY ua.panchayat_id,month(pm.start_date),pms.meeting_status  ");
 		}
-		
+		sb.append("order by month(pm.start_date) desc ");
 		Query query = getSession().createSQLQuery(sb.toString())
 				.addScalar("locationId", Hibernate.LONG)
 				.addScalar("locationName", Hibernate.STRING)
@@ -1184,6 +1184,10 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 				.addScalar("count", Hibernate.LONG);
 				
 				query.setParameterList("locationValues", locationValues);
+				if(startDate != null && endDate != null){
+				    query.setDate("startDate", startDate);
+					query.setDate("endDate", endDate);
+				}
 				return query.list();
 	}
 	
