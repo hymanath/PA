@@ -18274,6 +18274,11 @@
 			<param name="root">locationVOList</param>       
 		</result>
   	</action>
+	<action name="locationBasedBoothWiseResultAction" class="locationDashboardAction" method="getlocationBasedBoothWiseResult">
+		<result type="json" name="success" >
+		  <param name="root">boothResult</param>
+		</result>
+	</action>
    <action name="getLocationwiseSchemesOverviewAction" class="constituencyPageAction" method="getLocationwiseSchemesOverviewAction">
 		<result type="json" name="success">    
 			<param name="root">electionInformationVO</param>
