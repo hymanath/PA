@@ -1471,7 +1471,6 @@ public String getElectionInformationLocationWise(){
    @SuppressWarnings("null")
 	public String getElectionInformationLocationWiseStatusAndYearWise(){
 		try{
-			
 			jObj = new JSONObject(getTask());
 			List<Long> partyIdList = convertJsonStringList(jObj.getJSONArray("partyIdsList"));
 			List<Long> electionYearsList = convertJsonStringList(jObj.getJSONArray("electionYears"));
@@ -1483,14 +1482,16 @@ public String getElectionInformationLocationWise(){
 					subTypeList.add(jsonArray.getString(i).toString());
 				}
 			}
+			List<Long> locationIdsList = convertJsonStringList(jObj.getJSONArray("locationIds"));
+			
 			electioninformationList = locationWiseElectionInformationDetalsService.getElectionInformationLocationWiseStatusAndYearWise(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),
-				partyIdList,electionYearsList,electionScopeIds,subTypeList,jObj.getString("searchType"),jObj.getString("statusType"),jObj.getString("year"));
-
+				partyIdList,electionYearsList,electionScopeIds,subTypeList,jObj.getString("searchType"),jObj.getString("statusType"),jObj.getString("year"),locationIdsList);
 		}catch(Exception e){
 			LOG.error("Exception raised at getElectionInformationLocationWiseStatusAndYearWise() of LocationDashboardAction{}",e);
 		}
 		return Action.SUCCESS;
 	}
+   
    public String getAreaWisePartyMeetingsDetails(){
 		
 		try{	
