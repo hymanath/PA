@@ -1,5 +1,6 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalColor = {"A":"#009587","B":"#99B95F","C":"#E67401","D":"#FD403A"};	
+var globalGradientsColorArr = {"A":"padding: 3px;background: -moz-linear-gradient(left, #009688 0%, #ffffff 100%);background: -webkit-linear-gradient(left, #009688 0%, #ffffff 100%);padding-top: 10px; padding-bottom: 10px;","B":"padding: 3px;background: -moz-linear-gradient(left, #99BA60 0%, #ffffff 100%);background: -webkit-linear-gradient(left, #99BA60 0%, #ffffff 100%);padding-top: 10px; padding-bottom: 10px;","C":"padding: 3px;background: -moz-linear-gradient(left, #E67401 0%, #ffffff 100%);background: -webkit-linear-gradient(left, #E67401 0%, #ffffff 100%);padding-top: 10px; padding-bottom: 10px;","D":"padding: 3px;background: -moz-linear-gradient(left, #fd504a 0%, #ffffff 100%);background: -webkit-linear-gradient(left, #fd504a 0%, #ffffff 100%);padding-top: 10px; padding-bottom: 10px;"};	
 var levelWiseSBArr = ['state','district','constituency','mandal'];
 var globalFromDateForLevel = "01-10-2017";
 var globalToDateForLevel = moment().format("DD-MM-YYYY");
@@ -142,15 +143,15 @@ function getSwachhBharatMissionOverviewDtls(){
 				str+='<div class="col-sm-3 m_top10">';
 					str+='<div class="panel panel-default">';
 						str+='<div class="panel-heading" style="padding: 3px;background-color:#fff;">';
-							str+='<div class="row">';
+							 str+='<div class="row" style="color:'+globalGradientsColorArr[result.subList[i].name.trim()]+'>';
 								str+='<div class="col-sm-2 m_top10">';
 									str+='<span class="categoryRondedCss" style="background-color:'+globalColor[result.subList[i].name.trim()]+';">'+result.subList[i].name+'</span>';
 								str+='</div>';
-								str+='<div class="col-sm-10">';
+								/*str+='<div class="col-sm-10">';
 									str+='<p class="text-right" style="font-size: 16px;color:'+globalColor[result.subList[i].name.trim()]+'">'+result.subList[i].range+'</p>';
 									str+='<h5 class="panel-title text-right" style="color:'+globalColor[result.subList[i].name.trim()]+'">Achivement</h5>';
-								str+='</div>';
-							str+='</div>';
+								str+='</div>';*/
+							str+='</div>'; 
 							
 						str+='</div>';
 						str+='<div class="panel-body">';
@@ -369,18 +370,24 @@ function getIHHLAchivementProgressDtls(displayType){
 			}
 		}).done(function(result){
 			if(result !=null && result.length>0){
-				buildIHHLAchivementProgressDtls(result);
+				buildIHHLAchivementProgressDtls(result,displayType);
 			}else{
 				$("#IHHLAchivementProgress").html("NO DATA AVAILABLE.");
 			}
 		});
 
-		function buildIHHLAchivementProgressDtls(result){
+		function buildIHHLAchivementProgressDtls(result,displayType){
 			var datesArr=[];
 			var targetArr=[];
 			var completedArr=[];
 			for(var i in result){
-				datesArr.push(result[i].range);
+				var heading="";
+				if (displayType=="week") {
+					heading = formDateInRequiredFormat(result[i].fromDate)+" TO "+formDateInRequiredFormat(result[i].toDate);
+				} else {
+					heading = result[i].range;
+				}
+				datesArr.push(heading);
 				targetArr.push(result[i].target)
 				completedArr.push(result[i].completed)
 			}
@@ -432,7 +439,7 @@ function getIHHLAchivementProgressDtls(displayType){
 					}
 				},
 				series: [{
-					name: 'Target',
+					name: 'TARGET',
 					data: targetArr,
 					color:"#FC615E"
 				}, {
@@ -466,13 +473,13 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 		}).done(function(result){
 			$("#IHHL"+subLocation).html('');
 			if(result !=null && result.length>0){
-				return buildSwachhBharatMissionLocationWiseDetails(result,reportType,subLocation);
+				return buildSwachhBharatMissionLocationWiseDetails(result,reportType,subLocation,displayType);
 			} else {
 				$("#IHHL"+subLocation).html("NO DATA AVAILABLE.");
 			}
 		});
 	
-	function buildSwachhBharatMissionLocationWiseDetails(result,reportType,subLocation){
+	function buildSwachhBharatMissionLocationWiseDetails(result,reportType,subLocation,displayType){
 		
 		var str='';
 		
@@ -520,11 +527,17 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 									str+='<th rowspan="2">Mandal</th>';
 								}
 								str+='<th rowspan="2" style="background-color:#FC615E;color:#fff">Target</th>';	
-								str+='<th rowspan="2" style="background-color:#13B9AC;color:#fff">Achivement</th>';	
+								str+='<th rowspan="2" style="background-color:#13B9AC;color:#fff">achievement</th>';	
 								str+='<th rowspan="2" style="background-color:#13B9AC;color:#fff">%</th>';	
 								if(result[0].subList !=null && result[0].subList.length>0){
 									for(var i in result[0].subList){
-										str+='<th colspan="3" class="text-center">'+result[0].subList[i].range+'</th>';	
+										var heading="";
+										if (displayType=="week") {
+											heading = formDateInRequiredFormat(result[0].subList[i].fromDate)+"&nbsp;<b style='color:green;'>to</b>&nbsp;"+formDateInRequiredFormat(result[0].subList[i].toDate);
+										} else {
+											heading = result[0].subList[i].range;
+										}
+										str+='<th colspan="3" class="text-center">'+heading+'</th>';	
 									}
 								}
 							str+='</tr>';
@@ -532,7 +545,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 								if(result[0].subList !=null && result[0].subList.length>0){
 									for(var i in result[0].subList){
 										str+='<th>Target</th>';	
-										str+='<th>Achivement</th>';	
+										str+='<th>achievement</th>';	
 										str+='<th>%</th>';	
 									}
 								}
@@ -796,6 +809,9 @@ $(document).on("click",".calendar_active_IHHL_cls li",function(){
 	if($(this).hasClass("active")){
 		displayType = $(this).attr("attr_val");
 	}
+	if (displayType == "view") {
+		return;
+	}
 	
 	if(levelType == "table"){
 		if(displayType !="custom"){
@@ -995,16 +1011,15 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType)
 				str+='<div class="col-sm-3 m_top10">';
 					str+='<div class="panel panel-default">';
 						str+='<div class="panel-heading" style="padding: 3px;background-color:#fff;">';
-							str+='<div class="row">';
+							 str+='<div class="row" style="color:'+globalGradientsColorArr[result[i].name.trim()]+'>';
 								str+='<div class="col-sm-2 m_top10">';
 									str+='<span class="categoryRondedCss" style="background-color:'+globalColor[result[i].name.trim()]+';">'+result[i].name+'</span>';
 								str+='</div>';
-								str+='<div class="col-sm-10">';
+								/*str+='<div class="col-sm-10">';
 									str+='<p class="text-right" style="font-size: 16px;color:'+globalColor[result[i].name.trim()]+'">'+result[i].range+'</p>';
 									str+='<h5 class="panel-title text-right" style="color:'+globalColor[result[i].name.trim()]+'">Achivement</h5>';
-								str+='</div>';
-							str+='</div>';
-							
+								str+='</div>';*/
+							str+='</div>'; 
 						str+='</div>';
 						str+='<div class="panel-body">';
 							str+='<ul class="list-inline borderleft">';
@@ -1019,4 +1034,8 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType)
 		}
 		$("#selectedDatecategoryWiseDataId").html(str);
 	}
+}
+function formDateInRequiredFormat(date) {
+	var dateArr = date.split("-");
+	return dateArr[2]+"-"+dateArr[1]+"-"+dateArr[0];;
 }
