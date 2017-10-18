@@ -204,11 +204,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 					if (output != null && !output.isEmpty()) {
 						JSONObject jsonObject = new JSONObject(output);
 
-						JSONArray locationDtlsArr = getJsonArrayBasedOnLocationType(inputVO, jsonObject); // getting JSONArray from jsonObject based on location
-
-						if (locationDtlsArr != null && locationDtlsArr.length() > 0) {
-
-							Map<String,SwachhBharatMissionIHHLDtlsVO> targetAchivementDtlsMap = getDailyTargetAndAchivemetnDtlsLocationWise(inputVO, jsonObject);
+						Map<String,SwachhBharatMissionIHHLDtlsVO> targetAchivementDtlsMap = getDailyTargetAndAchivemetnDtlsLocationWise(inputVO, jsonObject);//getting data based day wise
 
 							if (inputVO.getDisplayType() != null && !inputVO.getDisplayType().trim().isEmpty() && inputVO.getDisplayType().trim().length() > 0) {
 
@@ -257,8 +253,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 								}
 							}
 						}
-				}
-			}
+			  }
 		}
 		} catch (Exception e) {
 			LOG.error("Exception occured at getIHHLCategoryWiseAnalysisBySelectedDate() in SwachhBharatMissionIHHLService class",e);
@@ -319,7 +314,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 
 							} else if (inputVO.getDisplayType().trim().equalsIgnoreCase("week")) {
 
-								Map<String, List<String>> weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
+								Map<String, List<String>> weekAndDaysMap = DateUtilService.getTotalWeeksMapInWeekOrder(fromDate, toDate);
 								resultList = getWeekMonthWiseReportDtls(dateWiseTargetAchivementList,weekAndDaysMap);
 
 							} else if (inputVO.getDisplayType().trim().equalsIgnoreCase("month")) {
@@ -533,7 +528,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 
 					} else if (inputVO.getDisplayType().trim().equalsIgnoreCase("week")) {
 
-						Map<String, List<String>> weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
+						Map<String, List<String>> weekAndDaysMap = DateUtilService.getTotalWeeksMapInWeekOrder(fromDate, toDate);
 						resultList = getLocationWiseWeekMonthReportDtls(targetAchivementDtlsMap,weekAndDaysMap);
 
 					} else if (inputVO.getDisplayType().trim().equalsIgnoreCase("month")) {

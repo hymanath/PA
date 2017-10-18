@@ -226,10 +226,11 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<ul class="list-inline pull-right calendar_active_IHHL_cls" attr_level_type="table">
+						<li attr_val="view" style="cursor:none;"><b><span>View wise&nbsp:</span></b></li>
 						<li class="defaultActiveClsDay commpnliCls timePeriodCommonCls" attr_val="day"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
 						<li class="active commpnliCls weeklicls locationLevelWeekCls timePeriodCommonCls" attr_val="week"><img src="Assests/icons/Week_icon.png" />&nbsp;&nbsp;<b><span> Week</span></b></li>
 						<li class="commpnliCls timePeriodCommonCls" attr_val="month"><img src="Assests/icons/CustomRange_icon.png" />&nbsp;&nbsp;<b><span>Month</span></b></li>
-						<li attr_val="custom" id="singleDateRangePicker"><b><span>Custom Range</span></b></li>
+						<!--<li attr_val="custom" id="singleDateRangePicker"><b><span>Custom Range</span></b></li>-->
 						</li>
 					</ul>  
 				</div>
