@@ -1,6 +1,7 @@
 package com.itgrids.core.api.service.impl;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -6388,23 +6389,32 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
  * @param locationScopeId,locationValues, start date,end date,meetingLevelId,meetingTypeId,meetingMainTypeId
  * @return List of MeetingsVO 
 */
+	@SuppressWarnings("null")
 	@Override
 	public List<MeetingsVO> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues, String startDate, String endDate,Long meetingLevelId, Long meetingTypeId, Long meetingMainTypeId) {
 		List<MeetingsVO> finalList=new ArrayList<MeetingsVO>();
 		Map<Long,MeetingsVO> locationWiseDetailsVOMap=new HashMap<Long, MeetingsVO>();
+		String searchType=null;
 		try{
 		Date fromDate = null;
 		Date toDate = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		// Here converting stirng to date formatte
 		if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
 			fromDate = sdf.parse(startDate);
 			toDate = sdf.parse(endDate);
 		}
 		
+		List<Object[]> areaWisePartyMeetingDetailsObj=new ArrayList<Object[]>(0);
+		
 		//0 districtId,1 districtName,2 month,3 year 
 		//4 meetingStatus,5 meetingsCount 
-		List<Object[]> areaWisePartyMeetingDetailsObj=partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId);
+		if(locationScopeId == 4l){
+			 areaWisePartyMeetingDetailsObj.addAll(partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId,"rural"));
+			 areaWisePartyMeetingDetailsObj.addAll(partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId,"urban"));
+		}else{
+		    areaWisePartyMeetingDetailsObj.addAll(partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId,null));
+		}
 		
 		if(areaWisePartyMeetingDetailsObj != null && areaWisePartyMeetingDetailsObj.size()>0){
 			for(Object[] param : areaWisePartyMeetingDetailsObj){
@@ -6441,9 +6451,18 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		finalList.addAll(locationWiseDetailsVOMap.values());
 		for (MeetingsVO meetingVo : finalList) {
 			List<MeetingsVO> yearWiseVOList=meetingVo.getYearWiseMeetingsCount();
-			if(yearWiseVOList.get(1) != null){
+			if(yearWiseVOList.get(1) != null){//get yearWiseVO at 1st position from list and get all counts from that vo and add to main vo(locationWiseVO) as total
 				MeetingsVO yearWiseVO=yearWiseVOList.get(1);
 				meetingVo.setTotal(yearWiseVO.getYesCount()+yearWiseVO.getNoCount()+yearWiseVO.getMayBeCount()+yearWiseVO.getNotUpDatedCount());
+			}
+			if(yearWiseVOList.get(0) != null){//get yearWiseVO(Overall) at 0st position from list and calculate percentage for all status count 
+				DecimalFormat df = new DecimalFormat("###.##");
+				MeetingsVO yearWiseVO=yearWiseVOList.get(0);
+				yearWiseVO.setYesCountPercentage(df.format(((float)yearWiseVO.getYesCount()/(float)yearWiseVO.getTotal())*100));
+				yearWiseVO.setNoCountPercentage(df.format(((float)yearWiseVO.getNoCount()/(float)yearWiseVO.getTotal())*100));
+				yearWiseVO.setMayBeCountPercentage(df.format(((float)yearWiseVO.getMayBeCount()/(float)yearWiseVO.getTotal())*100));
+				yearWiseVO.setNotUpDatedCountPercentage(df.format(((float)yearWiseVO.getNotUpDatedCount()/(float)yearWiseVO.getTotal())*100));
+
 			}
 		}
 		}
@@ -6483,15 +6502,19 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 	
 		if(status.equalsIgnoreCase("Y")){
 			vo.setYesCount(count);
+			vo.setTotal(vo.getTotal()+count);
 			OverallStatusVO.setYesCount(OverallStatusVO.getYesCount()+count);
 		}else if(status.equalsIgnoreCase("N")){
 			vo.setNoCount(count);
+			vo.setTotal(vo.getTotal()+count);
 			OverallStatusVO.setNoCount(OverallStatusVO.getNoCount()+count);
 		}else if(status.equalsIgnoreCase("M")){
 			vo.setMayBeCount(count);
+			vo.setTotal(vo.getTotal()+count);
 			OverallStatusVO.setMayBeCount(OverallStatusVO.getMayBeCount()+count);
 		}else if(status.equalsIgnoreCase("NU")){
 			vo.setNotUpDatedCount(count);
+			vo.setTotal(vo.getTotal()+count);
 			OverallStatusVO.setNotUpDatedCount(OverallStatusVO.getNotUpDatedCount()+count);
 		}
 		return vo;

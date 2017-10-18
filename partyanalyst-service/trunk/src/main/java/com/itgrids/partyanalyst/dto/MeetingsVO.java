@@ -36,6 +36,10 @@ public class MeetingsVO implements Serializable{
 	private Long NoOfMonth=0l;
 	private String monthName;
 	private Long total = 0l;
+	private String yesCountPercentage ;
+	private String noCountPercentage ;
+	private String mayBeCountPercentage ;
+	private String notUpDatedCountPercentage ;
 	public Long getYesCount() {
 		return yesCount;
 	}
@@ -204,6 +208,30 @@ public class MeetingsVO implements Serializable{
 	}
 	public void setTotal(Long total) {
 		this.total = total;
+	}
+	public String getYesCountPercentage() {
+		return yesCountPercentage;
+	}
+	public void setYesCountPercentage(String yesCountPercentage) {
+		this.yesCountPercentage = yesCountPercentage;
+	}
+	public String getNoCountPercentage() {
+		return noCountPercentage;
+	}
+	public void setNoCountPercentage(String noCountPercentage) {
+		this.noCountPercentage = noCountPercentage;
+	}
+	public String getMayBeCountPercentage() {
+		return mayBeCountPercentage;
+	}
+	public void setMayBeCountPercentage(String mayBeCountPercentage) {
+		this.mayBeCountPercentage = mayBeCountPercentage;
+	}
+	public String getNotUpDatedCountPercentage() {
+		return notUpDatedCountPercentage;
+	}
+	public void setNotUpDatedCountPercentage(String notUpDatedCountPercentage) {
+		this.notUpDatedCountPercentage = notUpDatedCountPercentage;
 	}
 	
 }
