@@ -1263,8 +1263,15 @@ public List<Constituency> getConstituenciesByStteIdStatTypeId(Long stateId,Long 
 
 	public List<Object[]> getAllConstituenciesInADistrict(Long districtId) {
 		
-		return getHibernateTemplate().find("select distinct model.constituencyId,model.name from Constituency model where model.district.districtId =? and " +
+		if(districtId != null && districtId.longValue()>0L){
+			return getHibernateTemplate().find("select distinct model.constituencyId,model.name from Constituency model where model.district.districtId =? and " +
 				"  model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null order by model.name",districtId);
+		}else if(districtId == null || districtId.longValue() == 0L){
+			return getHibernateTemplate().find("select distinct model.constituencyId,model.name from Constituency model where " +
+					"  model.electionScope.electionScopeId = 2 and model.deformDate is null and (model.district.districtId between 11 and 23 ) " +
+					" order by model.name ");
+		}
+		return null;
 			
 	}
 	
