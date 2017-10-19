@@ -36,7 +36,55 @@
 </header>
 <main>
 	<div class="container m_top30">
-		<h3 class="text-capital text-center"><span id="mianHeadingId"></span> Level Election Results</h4>
+		<section>
+			<div class="scrollHeading">
+				<h4 class="text-capital text-center"><span id="mianHeadingId" ></span> Level Election Results</h4>
+				<div class="row m_top10">
+					<div id="electionScopeDivIds"></div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<label><b>Election Years</b></label>
+						<div class="row">	
+							<select class="" id="electionYearId" multiple>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-3 m_top10">
+						<label><b>Election Type</b></label>
+						<div class="row">
+							<label class="radio-inline">
+							  <input type="radio" id="mainId" value="MAIN" name="optionsRadios2" class="electionSubTypeCls" checked >Main Election
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" id="byeId" value="BYE" name="optionsRadios2"  class="electionSubTypeCls">Bye Election
+							</label>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<label><b>Party</b></label>
+						<div class="row">	
+						<select class="form-control" id="partyId" multiple>
+							<option value="0">All Parties</option>
+							<option value="872" selected>TDP</option>
+							<option value="1117" selected>YSRC</option>
+							<option value="163" selected>BJP</option>
+							<option value="362" selected>INC</option>
+							<option value="72">AIMIM</option>
+							<option value="265">CPI</option>
+							<option value="269">CPM</option>
+							<option value="662">PRP</option>
+							<option value="886">TRS</option>
+						</select>
+						</div>
+					</div>
+					<div class="col-sm-3 m_top20">
+						<button class="btn btn-success getDetailsCls buttonClr">Submit</button>
+					</div>
+				</div>
+			</div>
+		</section>
+		
 		<section class="m_top10">
 			<div class="row">
 				<div class="col-sm-12">
@@ -48,26 +96,6 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block">
-						<div class="row">
-							<div class="col-sm-12">
-								<div class="col-sm-3">
-									<label>Election Years</label>
-									<select class="" id="electionYearId1" multiple>
-									</select>
-								</div>
-								<div class="col-sm-3 m_top30">
-									<label class="radio-inline">
-									  <input type="radio" id="mainIdP" value="MAIN" name="optionsRadios2" class="electionSubTypePartyTrendsCls" checked attr_type="partyTrends">Main Election
-									</label>
-									<label class="radio-inline">
-									  <input type="radio" id="byeIdP" value="BYE" name="optionsRadios2"  class="electionSubTypePartyTrendsCls" attr_type="partyTrends">Bye Election
-									</label>
-								</div>
-								<div class="col-sm-3 m_top30">
-									<button class="btn btn-success btn-xs getDetailsForPartyTrendsCls" attr_result_type="partyTrendsType">Submit</button>
-								</div>
-							</div>
-						</div>
 						<div class="row m_top10">
 							<div class="col-sm-12 m_top10">
 								<div id="levelWiseCandidatesResultsDivId"></div>
@@ -110,7 +138,7 @@
 							</div>
 							<div class="col-sm-2">
 								<label>Party</label>
-								<select class="form-control chosen-select" id="partyId">
+								<select class="form-control chosen-select" id="partyIdForStrongBlock">
 									<option value="0">Select Party</option>
 									<option value="872" selected>TDP</option>
 									<option value="1117">YSRC</option>
@@ -123,53 +151,25 @@
 									<option value="886">TRS</option>
 								</select>
 							</div>
-							<div class="col-sm-3">
-								<label>Election Years</label>
-								<select class="" id="electionYearId" multiple>
-								</select>
-							</div>
-							<div class="col-sm-3 m_top30">
-								<label class="radio-inline">
-								  <input type="radio" id="mainId1" value="MAIN" name="optionsRadios" class="electionSubTypeCls" checked attr_type="strongPoor">Main Election
-								</label>
-								<label class="radio-inline">
-								  <input type="radio" id="byeId1" value="BYE" name="optionsRadios"  class="electionSubTypeCls" attr_type="strongPoor">Bye Election
-								</label>
-							</div>
-							<div class="col-sm-12">
-								<button class="btn btn-success btn-sm pull-right getDetailsCls" attr_result_type="strongPoorType">Submit</button>
+							<div class="col-sm-3 m_top20">
+								<button class="btn btn-success buttonClr getDetailsForStrongCls">Submit</button>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-12 m_top10">
+							<div class="col-sm-12">
 								<div id="locationWiseStrongVsPoor"></div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			
 		</section>
 		<section class="m_top10">
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block">
 						<div class="row">
-							<div class="col-sm-3">
-								<label>Election Years</label>
-								<select class="" id="electionYearCrossVotingId" multiple>
-								</select>
-							</div>
-							<div class="col-sm-3">
-								<label>Election Type</label>
-								<div class="row">
-									<label class="radio-inline">
-									  <input type="radio" id="mainCrossId" value="MAIN" name="optionsRadiosCross" class="electionSubTypeCrossVotingCls" checked attr_type="crossVoting">Main Election
-									</label>
-									<label class="radio-inline">
-									  <input type="radio" id="byeCrossId" value="BYE" name="optionsRadiosCross"  class="electionSubTypeCrossVotingCls" attr_type="crossVoting">Bye Election
-									</label>
-								</div>
-							</div>
 							<div class="col-sm-3">
 								<label>Parliament Constituency</label>
 								<select class="chosen-select" id="parliamentConsId">
@@ -181,34 +181,29 @@
 									<option value="0">Select Constituency</option>
 								</select>
 							</div>
-						</div>
-						<div class="row">
 							<div class="col-sm-2">
 								<label>Party</label>
-								<select class="form-control chosen-select" id="partyCrossVotingId">
+								<div class="row">
+								<select class="form-control" id="partyCrossVotingId" multiple>
 									<option value="0">All Parties</option>
-									<option value="872">TDP</option>
-									<option value="1117">YSRC</option>
-									<option value="163">BJP</option>
-									<option value="362">INC</option>
-									<!--<option value="72">AIMIM</option>
+									<option value="872" selected>TDP</option>
+									<option value="1117" selected>YSRC</option>
+									<option value="163" selected>BJP</option>
+									<option value="362" selected>INC</option>
+									<option value="72">AIMIM</option>
 									<option value="265">CPI</option>
 									<option value="269">CPM</option>
 									<option value="662">PRP</option>
-									<option value="886">TRS</option>-->
+									<option value="886">TRS</option>
 								</select>
+								</div>
 							</div>
-							<!--<div class="col-sm-2 m_top30">
-								<label class="checkbox-inline">
-								  <input type="checkbox" id="" value="YES" name="alliance" class="includeAllianceCls" checked>Include Alliance
-								</label>
-							</div>-->
-							<div class="col-sm-3 m_top30">
-								<button class="btn btn-success btn-xs getDetailsForCrossVotingCls" attr_result_type="crossVoting">Submit</button>
+							<div class="col-sm-3 m_top20">
+								<button class="btn btn-success buttonClr getDetailsForCrossVotingCls">Submit</button>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-12 m_top10">
+							<div class="col-sm-12">
 								<div id="crossVotingDetailsBlockId"></div>
 							</div>
 						</div>
@@ -216,20 +211,66 @@
 				</div>
 			</div>
 		</section>
-		<section class="m_top10 boothsWiseResultCls" style="display:none;">
+		<section class="m_top10 boothWiseEleHidesShow" style="display:none;">
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block">
 						<div class="row">
-							<div class="col-sm-6">
-								<h4 class="theme-title-color text-capital">Booth Wise Election Results</h4>
+							<div class="col-sm-3">
+								<label><b>Election Years</b></label>
+									<select class="chosen-select" id="electionYearBoothWiseId">
+									</select>
+								</div>
+							<div class="col-sm-3 m_top10">
+								<label><b>Election Type</b></label>
+									<div class="row">	
+									<label class="radio-inline">
+									  <input type="radio" id="mainId1" value="MAIN" name="optionsRadios" class="electionSubTypeBoothWiseCls" checked >Main Election
+									</label>
+									<label class="radio-inline">
+									  <input type="radio" id="byeId1" value="BYE" name="optionsRadios"  class="electionSubTypeBoothWiseCls">Bye Election
+									</label>
+								</div>
 							</div>
-							<div class="col-sm-6">
-								<ul class=""></ul>
+							<div class="col-sm-3">
+								<label>Constituency</label>
+								<select class="chosen-select" id="assemblyConsBoothWiseId">
+									<option value="0">Select Constituency</option>
+								</select>
+							</div>
+							<div class="col-sm-3">
+								<label>Party</label>
+								<div class="row">
+								<select class="form-control" multiple id="partyBoothWiseId">
+									<option value="0">All Parties</option>
+									<option value="872" selected>TDP</option>
+									<option value="1117" selected>YSRC</option>
+									<option value="163" selected>BJP</option>
+									<option value="362" selected>INC</option>
+									<option value="72">AIMIM</option>
+									<option value="265">CPI</option>
+									<option value="269">CPM</option>
+									<option value="662">PRP</option>
+									<option value="886">TRS</option>
+								</select>
+								</div>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-12 m_top10">
+							<div class="col-sm-3 m_top20">
+								<button class="btn btn-success buttonClr getDetailsForBoothWiseCls">Submit</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<ul class="switch-btn-New pull-right" role="tabSwitch">
+									<li class="active activeCls" attr_val="2">Assembly Election</li>
+									<li  attr_val="1">Parliament Election</li>
+								</ul>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
 								<div id="boothWiseResultsBlockId"></div>
 							</div>
 						</div>
@@ -245,32 +286,6 @@
 		</section>
 	</div>
 </main>
-<div class="modal fade" id="electionDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
-	<div class="modal-dialog" role="document" style="width:90%;margin:auto">
-		<div class="modal-content">
-			<div class="modal-header">
-				<div class="row">
-					<div class="col-md-8">
-						<h4 class="modal-title text-capitalize" id="headingTitle">TITLE</h4>
-					</div>
-					<div class="col-sm-3 pull-right">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					</div>
-				</div>
-			</div>
-			<div class="modal-body">        
-				<div class="row">
-					<div class="col-sm-12">
-						<div id="electionDetailModalBlockId"></div>
-					</div>  
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-</div>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
