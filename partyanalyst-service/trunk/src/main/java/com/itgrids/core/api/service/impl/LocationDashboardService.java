@@ -4894,6 +4894,9 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		}
 	}
 	
+	/***
+	 * electionYears 
+	 */
 	public KeyValueVO getElectionYears(List<String> subTypes) {
 		KeyValueVO retrunVO = new KeyValueVO();
 		try{
