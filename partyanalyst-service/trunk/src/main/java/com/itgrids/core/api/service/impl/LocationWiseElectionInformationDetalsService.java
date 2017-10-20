@@ -1362,8 +1362,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				List<Object[]> totalVoters = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, searchLevel,clickType);
 				setLocationWiseVotersDetails( totalVoters, locationMap,"totalVoters",levelId,searchLevel);
 				
-				List<Object[]> muncipalTotalVotes = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, "muncipality",clickType);
-				setLocationWiseVotersDetails( muncipalTotalVotes, locationMap,"totalVoters",levelId,"muncipality");
+				
 			}
 			List<Object[]> polledVotes = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, searchLevel,"");
 			setLocationWiseVotersDetails( polledVotes, locationMap,"polled",levelId,searchLevel);
@@ -1376,7 +1375,8 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			setLocationWiseVotersDetails( parliamentEarnedVotes, locationMap,"parliament",levelId,searchLevel);
 			
 			if(levelId != null && levelId.longValue() == 4l){
-				
+				List<Object[]> muncipalTotalVotes = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, "muncipality",clickType);
+				setLocationWiseVotersDetails( muncipalTotalVotes, locationMap,"totalVoters",levelId,"muncipality");
 				List<Object[]> muncipalPolledVotes = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, "muncipality","");
 				setLocationWiseVotersDetails( muncipalPolledVotes, locationMap,"polled",levelId,"muncipality");
 				

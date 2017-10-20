@@ -1344,7 +1344,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 				" constituency c " );
 		
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
-	    	   if(locationTypeId.longValue() == 2l  || locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l ){
+	    	   if(locationTypeId.longValue() == 2l  || locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l || locationTypeId.longValue() == 6l){
 		          sb.append(" where ");
 		        }else if(locationTypeId.longValue() == 4l ){
 		        	if(searchLevel != null && searchLevel.equalsIgnoreCase("panchayat")){
@@ -1408,10 +1408,10 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	            }else if(locationTypeId.longValue() == 5l ){
 	            	 sb.append(" group by pan.panchayat_id order by pan.panchayat_name  "); 
 	            }else if( locationTypeId.longValue() == 6l){
-	            	sb.append(" group by b.ward_id order by b.location  "); 
+	            	sb.append(" group by b.booth_id order by b.location  "); 
 	            }/*else if(locationTypeId == 7l ){
 	              sb.append(" group by leb.local_election_body_id order by  leb.name ");
-	            }*/else if(locationTypeId == 8l){
+	            }*/else if(locationTypeId == 8l || locationTypeId == 7l){
 	              sb.append(" group by  b.ward_id in (:locationValues)"); 
 	            }
 	        }
@@ -1460,7 +1460,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		sb.append(" ,sum(cbr.votes_earned)  from election e ,election_scope es,election_type  et ," +
 				" nomination n, constituency_election ce,party p,booth b ,constituency c ,booth_constituency_election bce,candidate_booth_result cbr " );
 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
-	    	   if(locationTypeId.longValue() == 2l  || locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l ){
+	    	   if(locationTypeId.longValue() == 2l  || locationTypeId.longValue() == 3l || locationTypeId.longValue() == 10l  || locationTypeId.longValue() == 6l){
 		          sb.append(" where ");
 		        }else if(locationTypeId.longValue() == 4l ){
 		        	if(searchLevel != null && searchLevel.equalsIgnoreCase("panchayat")){
@@ -1508,7 +1508,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	            }else if(locationTypeId.longValue() == 5l){
 	              sb.append(" and b.tehsil_id in (:locationValues)"); 
 	            }else if(locationTypeId.longValue() == 6l){
-	              sb.append(" and pan.panchayat_id in (:locationValues)"); 
+	              sb.append(" and b.panchayat_id in (:locationValues)"); 
 	            }else if(locationTypeId == 7l){
 	              sb.append(" and b.local_election_body_id in (:locationValues)");
 	            }else if(locationTypeId == 8l){
