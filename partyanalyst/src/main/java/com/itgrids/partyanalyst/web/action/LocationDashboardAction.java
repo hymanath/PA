@@ -1260,7 +1260,9 @@ public String getElectionInformationLocationWise(){
 					subTypes.add(jsonArray.getString(i).toString());        
 				}
 			}
-			electioninformationList = locationDashboardService.getElectionDetailsData(electionYears, jObj.getLong("locationTypeId"),locationValues,jObj.getLong("electionId"),subTypes,partyIds);
+			List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIdsArr"));
+			
+			electioninformationList = locationDashboardService.getElectionDetailsData(electionYears, jObj.getLong("locationTypeId"),locationValues,jObj.getLong("electionId"),subTypes,partyIds,electionScopeIds);
 		}catch(Exception e){
 			LOG.error("Exception raised at getConstituencyWiseInsuranceWiseIssueTypeCounts() of LocationDashboardAction{}",e);
 		}
@@ -1340,9 +1342,9 @@ public String getElectionInformationLocationWise(){
 					} 
 				
 				 Long locationLevelId = jObj.getLong("locationLevelId");
-				
+				 List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIdsArr"));
 				 electionInformationVO = locationWiseElectionInformationDetalsService.getLocationWiseCrossVotingDetails( electionYrs, parliamentIds,assemblyIds ,
-						 partyIds, withAlliance, locationLevelId, locationValues, subTypes);
+						 partyIds, withAlliance, locationLevelId, locationValues, subTypes,electionScopeIds);
 				
 		 }catch(Exception e){
 			 successMsg = "failure";
