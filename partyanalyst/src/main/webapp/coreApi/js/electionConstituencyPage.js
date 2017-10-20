@@ -307,7 +307,7 @@ function getElectionYearsForBooth(eletionSubType,type){
     }
     $.ajax({   
       type:'GET',
-      url:'getElectionYearsAction.action',  
+      url:'getAllElectionYearsAction.action',  
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
@@ -435,7 +435,7 @@ function getElectionYears(eletionSubType,type){
     }
     $.ajax({   
       type:'GET',
-      url:'getElectionYearsAction.action',  
+      url:'getAllElectionYearsAction.action',  
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
