@@ -1314,7 +1314,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 				sb.append(" and b.constituency_id =:constituencyId and b.local_election_body_id is not null " );
 			  }
 		}
-		if(lelevlId != null && locationValue != null && locationValue.size()>0l && lelevlId.longValue()>0l){
+		/*if(lelevlId != null && locationValue != null && locationValue.size()>0l && lelevlId.longValue()>0l){
 			if(lelevlId.longValue() ==5l){
 				sb.append(" and b.tehsil_id in(:locationValue)");
 			}else if(lelevlId.longValue() ==6l){
@@ -1322,21 +1322,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			}else if(lelevlId.longValue() ==7l){
 				sb.append(" and b.local_election_body_id in(:locationValue)");
 			}
-		}
-		/*if(lelevlId != null && lelevlId.longValue() ==4l){
-		sb.append(" group by b.tehsil_id,e.election_scope_id,e.election_id,et.election_type," +
-				" e.election_scope_id,e.election_year,n.party_id " +
-				" order by b.tehsil_id,e.election_scope_id,e.election_id," +
-				" et.election_type,e.election_scope_id,e.election_year,n.party_id");
-		}else if(lelevlId != null && lelevlId.longValue() ==5l || lelevlId != null && lelevlId.longValue() ==7l){
-			sb.append(" group by b.local_election_body_id,e.election_scope_id,e.election_id,et.election_type,e.election_scope_id," +
-					" e.election_year,n.party_id" +
-					"  order by b.local_election_body_id,e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id ");
-		}else if(lelevlId != null && lelevlId.longValue() ==6l){
-			sb.append(" group by b.panchayat_id,e.election_scope_id,e.election_id," +
-					" et.election_type,e.election_scope_id,e.election_year,n.party_id " +
-					" order by b.panchayat_id,e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id ");	
 		}*/
+		
 		sb.append(" group by e.election_scope_id,e.election_id,et.election_type," +
 				" e.election_scope_id,e.election_year,n.party_id " +
 				" order by b.tehsil_id,e.election_scope_id,e.election_id," +
@@ -1354,9 +1341,9 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(constituencyId != null && constituencyId.longValue()>0l){
 			query.setParameter("constituencyId", constituencyId);
 		}
-		if(lelevlId != null && locationValue != null && locationValue.size()>0l && lelevlId.longValue()>0l){
+		/*if(lelevlId != null && locationValue != null && locationValue.size()>0l && lelevlId.longValue()>0l){
 			query.setParameterList("locationValue", locationValue);
-		}
+		}*/
 		return query.list();
 		
 	}
