@@ -3102,6 +3102,17 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId,district
 			locationId : menuLocationId,
 			districtId:districtId
 		}
+	}else if(projectDivId == 'Timely Payment'){
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+		    toDate : glEndDate,
+			divType : globalDivName,
+			locationType : menuLocationType,
+			locationId : menuLocationId,
+			districtId:districtId,
+			program : "-1"
+		}
 	}else{
 		var json = {
 			year : "2017",
@@ -3143,6 +3154,17 @@ function getNregasPopupOverview(menuLocationType,menuLocationId)
 			locationType : menuLocationType,
 			locationId : menuLocationId,
 			districtId:districtId
+		}
+	}else if(globalDivName == 'Timely Payment'){
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+		    toDate : glEndDate,
+			divType : globalDivName,
+			locationType : menuLocationType,
+			locationId : menuLocationId,
+			districtId:districtId,
+			program : "-1"
 		}
 	}else{
 		var json = {

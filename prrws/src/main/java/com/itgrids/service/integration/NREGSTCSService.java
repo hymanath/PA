@@ -442,6 +442,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				str += "\"ToRange\" : \""+inputVO.getToRange()+"\",";
 			if(inputVO.getType() != null)
 				str += "\"type\" : \""+inputVO.getType()+"\",";
+			if(inputVO.getProgram() != null)
+				str += "\"program\" : \""+inputVO.getProgram()+"\",";
 			
 			if(str.length() > 1)
 				str = str.substring(0,str.length()-1);
