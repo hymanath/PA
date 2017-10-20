@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -967,5 +968,46 @@ public class CommonMethodsUtilService {
 
 			}
 			
+		}
+		
+		/**
+		  * @param  List<ElectionInformationVO> listOfPartyVos 
+		  * @return  List<ElectionInformationVO> returnList 
+		  * @author babu kurakula <href:kondababu.kurakula@itgrids.com> 
+		  * @Description :This Service Method id used for  sort party wise vos
+		  * @since 20-10-2017
+		  */
+		public  List<ElectionInformationVO> sortElectionInformationVOsList(List<ElectionInformationVO> list){
+			try {
+				Map<String,ElectionInformationVO> levelMap=new HashMap<String,ElectionInformationVO>(0);
+				for(ElectionInformationVO vo : list){
+					levelMap.put(vo.getPartyName().trim().toUpperCase(), vo);
+				}
+				list.clear();
+				if(levelMap.containsKey("TDP")){
+					list.add(levelMap.get("TDP"));
+				}
+				if(levelMap.containsKey("BJP")){
+					list.add(levelMap.get("BJP"));
+				}
+				if(levelMap.containsKey("YSRC")){
+					list.add(levelMap.get("YSRC"));
+					}
+				if(levelMap.containsKey("INC")){
+					list.add(levelMap.get("INC"));
+				}
+				if(levelMap.containsKey("CPM")){
+					list.add(levelMap.get("CPM"));
+				}
+				if(levelMap.containsKey("CPI")){
+					list.add(levelMap.get("CPI"));
+				}
+				if(levelMap.containsKey("OTHERS")){
+					list.add(levelMap.get("OTHERS"));
+				}
+			} catch (Exception e) {
+				LOG.error("Exception Occured in sortElectionInformationVOsList() Method");
+			}
+			return list;
 		}
 }
