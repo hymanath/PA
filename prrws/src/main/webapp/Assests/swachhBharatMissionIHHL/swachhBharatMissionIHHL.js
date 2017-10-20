@@ -8,6 +8,7 @@ var globalToDateForLevel = moment().format("DD-MM-YYYY");
 onloadCalls();
 onloadIntiliazilation();
 function onloadCalls(){
+	$(".tooltipCls").tooltip();
 	$("#dailyCategoryWiseAnalysisHeadinId").html(globalFromDateForLevel+" to "+globalToDateForLevel);
 	getSwachhBharatMissionOverviewDtls(); // first block And Second Block
 	getIHHLCategoryWiseAnalysisBySelectedDate();
