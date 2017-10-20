@@ -134,6 +134,7 @@ $(document).on("change","#parliamentConsId",function(){
 		getElectionDetailsData(electionYrVal,eletionSubType,partyIdArr,electionScopeId);
 		//Cross Voting Block
 		getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);
+		getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
 		//Booth Wise Results
 		getElectionYearsForBooth(eletionSubType,"onload");
 		getAllParliamentConstituencyByAllLevels("booth");
@@ -169,7 +170,9 @@ $(document).on("change","#parliamentConsId",function(){
 		electionYrVal=[];
 		electionYrVal = $("#electionYearId").val();
 		
-		getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);	
+		getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);
+		getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
+			
 		
 	});
 	$(document).on("click","[role='tabSwitch'] li",function(){
@@ -285,7 +288,8 @@ function getElectionTypes(){
 		//don't deleted this call
 		getAllParliamentConstituencyByAllLevels("");
 		getElectionYearsForBooth(eletionSubType,"onload");
-		getAllParliamentConstituencyByAllLevels("booth");
+		
+		
 		
 		/* if(locationLevelId == '4'){
 			getAllParliamentConstituencyByAllLevels("");
@@ -306,7 +310,7 @@ function getElectionYearsForBooth(eletionSubType,type){
       electionSubTypeArr:eletionSubType
     }
     $.ajax({   
-      type:'GET',
+      type:'POST',
       url:'getAllElectionYearsAction.action',  
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
@@ -324,11 +328,57 @@ function getElectionYearsForBooth(eletionSubType,type){
 			$('#electionYearBoothWiseId').trigger("chosen:updated");
 		}
 		if(type == "onload"){
-			getConstituenciesByDistrict(0);
+			if(locationLevelId == '10'){
+				getAllConstituencyByParliments(parliamentId);
+			}else if(locationLevelId == '4'){
+				//var constituencyId= $("#assemblyConsBoothWiseId").val();
+				var electionScopeId=0;var electionScopeId =2;
+				var partyIdArr=[];
+				partyIdArr = $("#partyId").val();
+				var electionYrVal = $("#electionYearBoothWiseId").val();
+				boothWiseResults(constituencyId,partyIdArr,electionYrVal,electionScopeId)
+			}else{
+				getConstituenciesByDistrict(0);
+			}
+			
 		}
 		
 	});
 }
+function getAllConstituencyByParliments(id){
+	$('#assemblyConsBoothWiseId').html('');
+	var consId = constituencyId;
+	  var jsObj={
+		 "parlimentId":id
+		}
+		$.ajax({
+		  type : "GET",
+		  url : "getAllConstituencyByParlimentIdForLoationDashBoardAction.action",
+		  dataType : 'json',
+		  data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				var str='';
+				for(var i in result){
+					if(result[i].locationId == consId){
+						str+='<option value="'+result[i].locationId+'" selected>'+result[i].locationName+'</option>';
+					}else{
+						str+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>';
+					}
+					
+				} 
+				$('#assemblyConsBoothWiseId').html(str);
+				$('#assemblyConsBoothWiseId').trigger("chosen:updated");
+			}
+			
+			var constituencyId= $("#assemblyConsBoothWiseId").val();
+			var electionScopeId=0;var electionScopeId =2;
+			var partyIdArr=[];
+			partyIdArr = $("#partyId").val();
+			var electionYrVal = $("#electionYearBoothWiseId").val();
+			boothWiseResults(constituencyId,partyIdArr,electionYrVal,electionScopeId)
+		});
+   }
 function getConstituenciesByDistrict(id){
 	$('#assemblyConsBoothWiseId').html('');
 	var consId = constituencyId;
@@ -434,7 +484,7 @@ function getElectionYears(eletionSubType,type){
       electionSubTypeArr:eletionSubType
     }
     $.ajax({   
-      type:'GET',
+      type:'POST',
       url:'getAllElectionYearsAction.action',  
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
@@ -474,6 +524,7 @@ function getElectionYears(eletionSubType,type){
 			getElectionDetailsData(electionYrVal,eletionSubType,partyIdArr,electionScopeId);
 			//Cross Voting Block
 			getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);
+			getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
 			//StrongVsPoor Block
 			getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,"872","district","2","TDP","Assembly",0);
 		}
@@ -1129,7 +1180,7 @@ function boothWiseResults(constituencyId,partiesArr,electionYrVal,electionScopeI
 	jsObj={
 		constituencyId		:constituencyId,
 		partyList			:partyIdsArr,
-		electionyears 		:electionYrVal,
+		electionyears 		:parseInt(electionYrVal),
 		electionScopeId		:electionScopeId,
 		task				:"assemblyWiseResults",
 	}
@@ -1159,7 +1210,7 @@ function buildData(result)
 		var isWonCandidateAvailable = false;
 		var remainingVotes = 0;
 		var remainingPercentage = 0.00;
-		var totalVotes = parseInt(result.partyBoothPerformanceVOList[0].totalValidVotes);
+		var totalVotes = result.partyBoothPerformanceVOList[0].totalValidVotes;
 		
 		table+='<div class="row m_top20">';
 			table+='<div>';
@@ -2002,3 +2053,109 @@ function  getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,ele
 		}
 	});
 }
+function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAccessLevelValuesArray,locationLevelId){
+  
+  jsObj={
+    electionYearArr  :electionYrVal,
+    locationValue    :userAccessLevelValuesArray, //Id
+    subTypesArr      :subTypesArr,
+    locationLevelId  :locationLevelId, //locationId
+    searchLevel:"tehsil",//panchayat,tehsil only if locationLevelId=4 
+    clickType:clickType
+  }
+  $.ajax({
+    type : "GET",
+    url : "getLocationWiseVotingDetailsAction.action",
+    dataType : 'json',
+    data : {task :JSON.stringify(jsObj)}
+  }).done(function(result){  
+	if(result !=null && result.length>0){
+		return buildLocationWiseVotingDetails(result,clickType);
+	}else{
+		$("#votingDetailsBlockId").html("No Data Available")
+	}	
+  });
+  
+  function buildLocationWiseVotingDetails(result,clickType){
+	  
+	  var str='';
+	  
+	  str+='<div class="table-responsive">';
+		str+='<table class="table table-condensed" id="dataTableVotingDts">';
+			str+='<thead class="bg-E9">';
+				str+='<tr>';
+					if(clickType == "clickFunction"){
+						str+='<th>Part No</th>';
+						str+='<th>Villages Covered</th>';
+						str+='<th>Total Voters</th>';
+						str+='<th>(A)Polled Votes</th>';
+						str+='<th>AC* Votes</th>';
+						str+='<th>PC* Votes</th>';
+						str+='<th>AC* %</th>';
+						str+='<th>PC* %</th>';
+						str+='<th>% Diff</th>';
+					}else{
+						str+='<th>Mandal</th>';
+						str+='<th>Polled Votes</th>';
+						str+='<th>Assembly Candidate</th>';
+						str+='<th>Parliament Candidate</th>';
+						str+='<th>Cross Voting</th>';
+					}
+					
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				
+					for(var i in result){
+						if(clickType == "clickFunction"){
+							str+='<tr>';
+							str+='</tr>';
+						}else{
+							var assemblyCandPerc = parseFloat(result[i].earnedVotersPerc).toFixed(2)
+							var parliamentCandPerc =  parseFloat(result[i].earnedVotersPerc1).toFixed(2)
+							var crossVotingPerc = parseFloat(result[i].perc).toFixed(2)
+							
+							str+='<tr>';
+								str+='<td class="" attr_locationId="'+result[i].locationId+'" attr_locationValue="'+result[i].id+'">'+result[i].name+'</td>';
+								str+='<td>'+result[i].validVoters+'</td>';
+								str+='<td>'+assemblyCandPerc+' %</td>';
+								str+='<td>'+result[i].earnedVotersPerc1+' %</td>';
+								str+='<td>'+result[i].perc+' %</td>';
+							str+='</tr>';
+						}
+						
+					}
+				
+			str+='</tbody>';
+		str+='</table>';
+	  str+='</div>';
+	  if(clickType == "clickFunction"){
+		  $("#votingDetailsSubLevelBlockId").html(str);
+	  }else{
+		  $("#votingDetailsBlockId").html(str);
+	  }
+	  
+  }
+}
+$(document).on("click",".votingDtsClickCls",function(){
+	
+	var locationLevelId = $(this).attr("attr_locationId")
+	var locationLevelValue = $(this).attr("attr_locationValue")
+	
+	userAccessLevelValuesArray=[];
+	userAccessLevelValuesArray.push(locationLevelValue)
+	
+	
+	eletionSubType=[];
+		 $('.electionSubTypeCls').each(function(){
+			if ($(this).is(':checked')){
+				eletionSubType.push($(this).val());
+			}
+		 });
+		electionYrVal=[];
+		electionYrVal = $("#electionYearId").val();
+	
+	$("#openModalDivId").modal("show");
+		
+	getLocationWiseVotingDetails(electionYrVal,eletionSubType,"clickFunction",userAccessLevelValuesArray,locationLevelId)
+});

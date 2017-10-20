@@ -1060,7 +1060,7 @@ public String getElectionInformationLocationWise(){
 	     return Action.SUCCESS;
 	   }
 	
-	public String getElectionYears(){
+	public String getAllElectionYears(){
 	     try{
 	       jObj = new JSONObject(getTask());
 	      List<String> subTypes = new ArrayList<String>();

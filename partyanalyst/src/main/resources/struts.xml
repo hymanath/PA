@@ -18139,7 +18139,7 @@
       <param name="root">nominatedPostCandList</param>       
     </result> 
   </action>
-  <action name="getElectionYearsAction" class="locationDashboardAction"  method="getElectionYears">
+  <action name="getAllElectionYearsAction" class="locationDashboardAction"  method="getAllElectionYears">
     <result type="json" name="success">    
       <param name="root">keyValueVO</param>       
     </result> 
