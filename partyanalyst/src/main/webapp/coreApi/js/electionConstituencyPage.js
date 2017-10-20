@@ -169,6 +169,8 @@ $(document).on("change","#parliamentConsId",function(){
 		 });
 		electionYrVal=[];
 		electionYrVal = $("#electionYearId").val();
+		userAccessLevelValuesArray=[];
+		userAccessLevelValuesArray.push(userAccessLevelValue);
 		
 		getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);
 		getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
@@ -932,7 +934,7 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 	function buildElectionDetailsData(result){
 		
 		var str='';
-		str+='<div class="block">';
+		str+='<div class="block boderBlock">';
 			if(locationLevelId == '2')
 			{
 				str+='<h4 class="text-capital">District Level Party Election Results</h4>';
@@ -1111,7 +1113,6 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 	function buildTableData(result)
 	{
 		var table='';
-		table+='<h4 class="theme-title-color">Cross Voting Report</h4>';
 		table+='<div class="table-responsive">';
 		table+='<table class="table table-cross-voting">';
 			table+='<thead>';
@@ -1758,43 +1759,43 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 	if(locationLevelId == '2')
 	{
 		if(electionTypeVal == "2" && searchLevelVal == "constituency" || searchLevelVal == "parliament"){
-			str+='<h4 class="text-capital">Constituency Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
+			str+='<h4 class="text-capital m_top10">Constituency Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 		}else if(electionTypeVal == "3" && searchLevelVal =="constituency"){
-			str+='<h4 class="text-capital">Panchayat Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
+			str+='<h4 class="text-capital m_top10">Panchayat Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 		}else if(electionTypeVal == "4" && searchLevelVal == "constituency"){
-			str+='<h4 class="text-capital">Mandal Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
+			str+='<h4 class="text-capital m_top10">Mandal Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 		}else{
-			str+='<h4 class="text-capital">District Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
+			str+='<h4 class="text-capital m_top10">District Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 		}
 		
 	}else if(locationLevelId == '3')
 	{
 		if(electionTypeVal == "3"){
-			str+='<h4 class="text-capital">Mandal Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
+			str+='<h4 class="text-capital m_top10">Mandal Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 		}else if(electionTypeVal == "4"){
-			str+='<h4 class="text-capital"> Panchayat '+electionTypetext+' Level Election Comparision Results For '+partyName+' Party</h4>';
+			str+='<h4 class="text-capital m_top10"> Panchayat '+electionTypetext+' Level Election Comparision Results For '+partyName+' Party</h4>';
 		}else{
-			str+='<h4 class="text-capital">Constituency '+electionTypetext+' Level Election Comparision Results For '+partyName+' Party</h4>';
+			str+='<h4 class="text-capital m_top10">Constituency '+electionTypetext+' Level Election Comparision Results For '+partyName+' Party</h4>';
 		}
 		
 	}else if(locationLevelId == '10')
 	{
-		str+='<h4 class="text-capital">Constituency Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
+		str+='<h4 class="text-capital m_top10">Constituency Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 	}else if(locationLevelId == '4' || electionTypeVal == "3")
 	{
-		str+='<h4 class="text-capital">Mandal Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
+		str+='<h4 class="text-capital m_top10">Mandal Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 	}else if(locationLevelId == '5' || electionTypeVal == "4")
 	{
-		str+='<h4 class="text-capital">panchayat Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
+		str+='<h4 class="text-capital m_top10">panchayat Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 	}else if(locationLevelId == '6')
 	{
-		str+='<h4 class="text-capital">Panchayat Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
+		str+='<h4 class="text-capital m_top10">Panchayat Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 	}else if(locationLevelId == '7' || electionTypeVal == "5")
 	{
-		str+='<h4 class="text-capital">Municipality Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
+		str+='<h4 class="text-capital m_top10">Municipality Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 	}else
 	{
-		str+='<h4 class="text-capital">Location Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
+		str+='<h4 class="text-capital m_top10">Location Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 	}
 	
 	str+='<div class="table-responsive m_top10" style="display:none;">';
@@ -2054,7 +2055,11 @@ function  getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,ele
 	});
 }
 function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAccessLevelValuesArray,locationLevelId){
-  
+  if(clickType == "clickFunction"){
+		  $("#votingDetailsSubLevelBlockId").html(spinner);
+	  }else{
+		  $("#votingDetailsBlockId").html(spinner);
+	  }
   jsObj={
     electionYearArr  :electionYrVal,
     locationValue    :userAccessLevelValuesArray, //Id
@@ -2072,7 +2077,11 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
 	if(result !=null && result.length>0){
 		return buildLocationWiseVotingDetails(result,clickType);
 	}else{
-		$("#votingDetailsBlockId").html("No Data Available")
+		if(clickType == "clickFunction"){
+		  $("#votingDetailsSubLevelBlockId").html("No Data Available");
+		}else{
+		  $("#votingDetailsBlockId").html("No Data Available");
+		}
 	}	
   });
   
@@ -2081,7 +2090,12 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
 	  var str='';
 	  
 	  str+='<div class="table-responsive">';
-		str+='<table class="table table-condensed" id="dataTableVotingDts">';
+	  if(clickType == "clickFunction"){
+		  str+='<table class="table table-condensed" id="dataTableVotingSubLevelDts">';
+		}else{
+		  str+='<table class="table table-condensed" id="dataTableVotingDts">';
+		}
+		
 			str+='<thead class="bg-E9">';
 				str+='<tr>';
 					if(clickType == "clickFunction"){
@@ -2094,8 +2108,28 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
 						str+='<th>AC* %</th>';
 						str+='<th>PC* %</th>';
 						str+='<th>% Diff</th>';
+
 					}else{
-						str+='<th>Mandal</th>';
+						if(locationLevelId == '2')
+						{
+							str+='<th>District</th>';
+						}else if(locationLevelId == '3')
+						{
+							str+='<th>Constituency</th>';
+						}else if(locationLevelId == '10')
+						{
+							str+='<th>Constituency</th>';
+						}else if(locationLevelId == '4' || locationLevelId == '11' )
+						{
+							str+='<th>Mandal</th>';
+						}else if(locationLevelId == '5' || locationLevelId == '12' )
+						{
+							str+='<th>Panchayat</th>';
+						}else if(locationLevelId == '6'){
+							str+='<th>Panchayat</th>';
+						}else{
+							str+='<th>Location</th>';
+						}
 						str+='<th>Polled Votes</th>';
 						str+='<th>Assembly Candidate</th>';
 						str+='<th>Parliament Candidate</th>';
@@ -2111,16 +2145,16 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
 							str+='<tr>';
 							str+='</tr>';
 						}else{
-							var assemblyCandPerc = parseFloat(result[i].earnedVotersPerc).toFixed(2)
-							var parliamentCandPerc =  parseFloat(result[i].earnedVotersPerc1).toFixed(2)
-							var crossVotingPerc = parseFloat(result[i].perc).toFixed(2)
+							var assemblyCandPerc = (parseFloat(result[i].earnedVotersPerc)).toFixed(2);
+							var parliamentCandPerc =  (parseFloat(result[i].earnedVotersPerc1)).toFixed(2);
+							var crossVotingPerc = (parseFloat(result[i].perc)).toFixed(2);
 							
 							str+='<tr>';
 								str+='<td class="" attr_locationId="'+result[i].locationId+'" attr_locationValue="'+result[i].id+'">'+result[i].name+'</td>';
 								str+='<td>'+result[i].validVoters+'</td>';
 								str+='<td>'+assemblyCandPerc+' %</td>';
-								str+='<td>'+result[i].earnedVotersPerc1+' %</td>';
-								str+='<td>'+result[i].perc+' %</td>';
+								str+='<td>'+parliamentCandPerc+' %</td>';
+								str+='<td>'+crossVotingPerc+' %</td>';
 							str+='</tr>';
 						}
 						
@@ -2131,8 +2165,18 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
 	  str+='</div>';
 	  if(clickType == "clickFunction"){
 		  $("#votingDetailsSubLevelBlockId").html(str);
+			  $("#dataTableVotingSubLevelDts").dataTable({
+				"iDisplayLength": 10,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			});
 	  }else{
 		  $("#votingDetailsBlockId").html(str);
+			  $("#dataTableVotingDts").dataTable({
+				"iDisplayLength": 10,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			});
 	  }
 	  
   }

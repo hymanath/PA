@@ -1618,3 +1618,6 @@ font-size:12px !important;
 	text-decoration:underline;
 	cursor:pointer;
 }
+.boderBlock{
+	border:1px solid #777;
+}

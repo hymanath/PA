@@ -37,81 +37,148 @@
 <main>
 	<div class="container m_top30">
 		<section>
-			<div class="scrollHeading">
-				<h4 class="text-capital text-center"><span id="mianHeadingId" ></span> Level Election Results</h4>
-				<div class="row m_top10">
-					<div id="electionScopeDivIds"></div>
-				</div>
-				<div class="row">
-					<div class="col-sm-3">
-						<label><b>Election Years</b></label>
-						<div class="row">	
-							<select class="" id="electionYearId" multiple>
-							</select>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="block boderBlock">
+					<section>
+						<div class="scrollHeading">
+							<h4 class="text-capital text-center"><span id="mianHeadingId" ></span> Level Election Results</h4>
+							<div class="row m_top10">
+								<div id="electionScopeDivIds"></div>
+							</div>
+							<div class="row">
+								<div class="col-sm-3">
+									<label><b>Election Years</b></label>
+									<div class="row">	
+										<select class="" id="electionYearId" multiple>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-3 m_top10">
+									<label><b>Election Type</b></label>
+									<div class="row">
+										<label class="radio-inline">
+										  <input type="radio" id="mainId" value="MAIN" name="optionsRadios2" class="electionSubTypeCls" checked >Main Election
+										</label>
+										<label class="radio-inline">
+										  <input type="radio" id="byeId" value="BYE" name="optionsRadios2"  class="electionSubTypeCls">Bye Election
+										</label>
+									</div>
+								</div>
+								<div class="col-sm-2">
+									<label><b>Party</b></label>
+									<div class="row">	
+									<select class="form-control" id="partyId" multiple>
+										<option value="0">All Parties</option>
+										<option value="872" selected>TDP</option>
+										<option value="1117" selected>YSRC</option>
+										<option value="163" selected>BJP</option>
+										<option value="362" selected>INC</option>
+										<option value="72">AIMIM</option>
+										<option value="265">CPI</option>
+										<option value="269">CPM</option>
+										<option value="662">PRP</option>
+										<option value="886">TRS</option>
+									</select>
+									</div>
+								</div>
+								<div class="col-sm-3 m_top20">
+									<button class="btn btn-success getDetailsCls buttonClr">Submit</button>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-sm-3 m_top10">
-						<label><b>Election Type</b></label>
+					</section>
+					
+					<section class="m_top10">
 						<div class="row">
-							<label class="radio-inline">
-							  <input type="radio" id="mainId" value="MAIN" name="optionsRadios2" class="electionSubTypeCls" checked >Main Election
-							</label>
-							<label class="radio-inline">
-							  <input type="radio" id="byeId" value="BYE" name="optionsRadios2"  class="electionSubTypeCls">Bye Election
-							</label>
+							<div class="col-sm-12">
+								<div id="candidatesResultsDivId"></div>
+							</div>
 						</div>
-					</div>
-					<div class="col-sm-2">
-						<label><b>Party</b></label>
-						<div class="row">	
-						<select class="form-control" id="partyId" multiple>
-							<option value="0">All Parties</option>
-							<option value="872" selected>TDP</option>
-							<option value="1117" selected>YSRC</option>
-							<option value="163" selected>BJP</option>
-							<option value="362" selected>INC</option>
-							<option value="72">AIMIM</option>
-							<option value="265">CPI</option>
-							<option value="269">CPM</option>
-							<option value="662">PRP</option>
-							<option value="886">TRS</option>
-						</select>
+					</section>
+					<section class="m_top10">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="block boderBlock">
+									<div class="row m_top10">
+										<div class="col-sm-12 m_top10">
+											<div id="levelWiseCandidatesResultsDivId"></div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-sm-3 m_top20">
-						<button class="btn btn-success getDetailsCls buttonClr">Submit</button>
-					</div>
+					</section>
+					<section class="m_top10">
+						<div class="row">
+							<div class="col-sm-12">
+								<div id="locationWiseCandidatesResultsDivId"></div>
+							</div>
+						</div>
+					</section>
+					<section class="m_top10">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="block boderBlock">
+									<h4 class="theme-title-color">Cross Voting Report</h4>
+									<div class="row m_top10">
+										<div class="col-sm-3">
+											<label>Parliament Constituency</label>
+											<select class="chosen-select" id="parliamentConsId">
+											</select>
+										</div>
+										<div class="col-sm-3">
+											<label>Assembly Constituency</label>
+											<select class="chosen-select" id="assemblyConsId">
+												<option value="0">Select Constituency</option>
+											</select>
+										</div>
+										<div class="col-sm-2">
+											<label>Party</label>
+											<div class="row">
+											<select class="form-control" id="partyCrossVotingId" multiple>
+												<option value="0">All Parties</option>
+												<option value="872" selected>TDP</option>
+												<option value="1117" selected>YSRC</option>
+												<option value="163" selected>BJP</option>
+												<option value="362" selected>INC</option>
+												<option value="72">AIMIM</option>
+												<option value="265">CPI</option>
+												<option value="269">CPM</option>
+												<option value="662">PRP</option>
+												<option value="886">TRS</option>
+											</select>
+											</div>
+										</div>
+										<div class="col-sm-3 m_top20">
+											<button class="btn btn-success buttonClr getDetailsForCrossVotingCls">Submit</button>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12">
+											<div id="crossVotingDetailsBlockId"></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12">
+											<h4 class="theme-title-color">Voting Details in Mandal/s</h4>
+											<div id="votingDetailsBlockId" class="m_top10"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
 				</div>
 			</div>
+		</div>
+			
 		</section>
 		
 		<section class="m_top10">
 			<div class="row">
 				<div class="col-sm-12">
-					<div id="candidatesResultsDivId"></div>
-				</div>
-			</div>
-		</section>
-		<section class="m_top10">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="block">
-						<div class="row m_top10">
-							<div class="col-sm-12 m_top10">
-								<div id="levelWiseCandidatesResultsDivId"></div>
-							</div>
-							<div class="col-sm-12 m_top20">
-								<div id="locationWiseCandidatesResultsDivId"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<section class="m_top10">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="block">
+					<div class="block boderBlock">
 						<div class="row">
 							<div class="col-sm-2">
 								<label>Election Type</label>
@@ -168,59 +235,8 @@
 		<section class="m_top10">
 			<div class="row">
 				<div class="col-sm-12">
-					<div class="block">
-						<div class="row">
-							<div class="col-sm-3">
-								<label>Parliament Constituency</label>
-								<select class="chosen-select" id="parliamentConsId">
-								</select>
-							</div>
-							<div class="col-sm-3">
-								<label>Assembly Constituency</label>
-								<select class="chosen-select" id="assemblyConsId">
-									<option value="0">Select Constituency</option>
-								</select>
-							</div>
-							<div class="col-sm-2">
-								<label>Party</label>
-								<div class="row">
-								<select class="form-control" id="partyCrossVotingId" multiple>
-									<option value="0">All Parties</option>
-									<option value="872" selected>TDP</option>
-									<option value="1117" selected>YSRC</option>
-									<option value="163" selected>BJP</option>
-									<option value="362" selected>INC</option>
-									<option value="72">AIMIM</option>
-									<option value="265">CPI</option>
-									<option value="269">CPM</option>
-									<option value="662">PRP</option>
-									<option value="886">TRS</option>
-								</select>
-								</div>
-							</div>
-							<div class="col-sm-3 m_top20">
-								<button class="btn btn-success buttonClr getDetailsForCrossVotingCls">Submit</button>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12">
-								<div id="crossVotingDetailsBlockId"></div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12">
-								<h4 class="theme-title-color">Voting Details in Mandal/s</h4>
-								<div id="votingDetailsBlockId" class="m_top10"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<section class="m_top10">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="block">
+					<div class="block boderBlock">
+						<h4 class="theme-title-color">Booth Wise Election Results</h4>
 						<div class="row">
 							<div class="col-sm-3">
 								<label><b>Election Years</b></label>
