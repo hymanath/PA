@@ -165,10 +165,10 @@
 				
 				<div class="col-sm-6">
 					<ul class="list-inline pull-right">
-						<li><span class="categoryRondedCss" style="background-color:#009587">A</span>  80% TO >=&nbsp100%</li>
+						<li><span class="categoryRondedCss" style="background-color:#009587">A</span> >=&nbsp 80% </li>
 						<li><span class="categoryRondedCss" style="background-color:#99B95F">B</span>  60% TO <&nbsp80%</li>
 						<li><span class="categoryRondedCss" style="background-color:#E67401">C</span>  40% TO <&nbsp60%</li>
-						<li><span class="categoryRondedCss" style="background-color:#FD403A">D</span>  0% TO <&nbsp40%</li>
+						<li><span class="categoryRondedCss" style="background-color:#FD403A">D</span>&nbsp<&nbsp40%</li>
 					</ul>
 				</div>
 				<div class="col-sm-3">
@@ -188,7 +188,7 @@
 		<div class="white-block">
 			<div class="row">
 				<div class="col-sm-12">
-				  <h3>OVERALL PROGRESS DETAILS UP TO 31 MARCH<h4>
+				  <h3>&nbsp&nbsp&nbspOVERALL PROGRESS DETAILS UP TO 31 MARCH&nbsp&nbsp<span><i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:green;" class="glyphicon glyphicon-info-sign tooltipCls"  data-toggle="tooltip" data-placement="top" title="Total Status Up To 31'st March which includes before OCT 1'st completed works."></i></span><h4>
 					<div class="col-sm-3 m_top10">
 						<div id="overAllIHHLPerformanceId" style="height:280px;border:1px solid #ccc"></div>
 					</div>
@@ -199,11 +199,11 @@
 			</div>
 			<div class="row m_top20"  style="padding: 11px; margin-left: 0px; margin-right: 0px;">
 				<div class="col-sm-12" style="border: 1px solid #ccc;">
-					<h5 class="m_top10"><b>CATEGORY WISE ANALYSIS(up to 31 march)</b>  <span class="pull-right">Note : D - DISTRICT , C - CONSTITUENCY , M - MANDAL</span></h5>
+					<h5 class="m_top10"><b>CATEGORY WISE ANALYSIS&nbsp&nbsp<span><i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:green;" class="glyphicon glyphicon-info-sign tooltipCls"  data-toggle="tooltip" data-placement="top" title="Total Status Up To 31'st March which includes before OCT 1'st completed works."></i></span></b>  <span class="pull-right">Note : D - DISTRICT , C - CONSTITUENCY , M - MANDAL</span></h5>
 					<div id="categoryWiseDataId"></div>
 				</div>
 				<div class="col-sm-12" style="border: 1px solid #ccc;">
-				<h5 class="m_top10"><b>CATEGORY WISE ANALYSIS(<span style="color:green;" id="dailyCategoryWiseAnalysisHeadinId" ></span>)</h5>
+				<h5 class="m_top10"><b>CATEGORY WISE ANALYSIS&nbsp&nbsp(<span style="color:green;" id="dailyCategoryWiseAnalysisHeadinId" ></span>)</h5>
 					<div id="selectedDatecategoryWiseDataId"></div>
 				</div>
 			</div>
