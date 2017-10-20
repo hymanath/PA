@@ -1340,7 +1340,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	*  @since 17-oct-2017
 	*  @return :List<ElectionInformationVO>
 	*/
-	public List<ElectionInformationVO> getLocationWiseVotingDetails(List<Long> electionYrs,Long levelId,List<Long> locationVals,List<String> subtypes,String searchLevel){
+	public List<ElectionInformationVO> getLocationWiseVotingDetails(List<Long> electionYrs,Long levelId,List<Long> locationVals,List<String> subtypes,String searchLevel,String clickType){
 		List<ElectionInformationVO> returnList = new ArrayList<ElectionInformationVO>();
 		try{
 			
@@ -1358,18 +1358,34 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			}
 			
 			Map<Long,ElectionInformationVO> locationMap  = new HashMap<Long,ElectionInformationVO>();
-			List<Object[]> polledVotes = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, searchLevel);
-			setLocationWiseVotersDetails( polledVotes, locationMap,"polled");
+			if(clickType != null && clickType.equalsIgnoreCase("clickFunction")){
+				List<Object[]> totalVoters = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, searchLevel,clickType);
+				setLocationWiseVotersDetails( totalVoters, locationMap,"totalVoters",levelId,searchLevel);
+				
+				List<Object[]> muncipalTotalVotes = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, "muncipality",clickType);
+				setLocationWiseVotersDetails( muncipalTotalVotes, locationMap,"totalVoters",levelId,"muncipality");
+			}
+			List<Object[]> polledVotes = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, searchLevel,"");
+			setLocationWiseVotersDetails( polledVotes, locationMap,"polled",levelId,searchLevel);
 			List<Object[]> assemblyEarnedVotes = null;
 			
 				 assemblyEarnedVotes = boothConstituencyElectionDAO.getLocationWiseErnedVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, searchLevel, 2l);
-			
-			
-			setLocationWiseVotersDetails( assemblyEarnedVotes, locationMap,"assembly");
+			setLocationWiseVotersDetails( assemblyEarnedVotes, locationMap,"assembly",levelId,searchLevel);
 			
 			List<Object[]> parliamentEarnedVotes = boothConstituencyElectionDAO.getLocationWiseErnedVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, searchLevel, 1l);
-			setLocationWiseVotersDetails( parliamentEarnedVotes, locationMap,"parliament");
+			setLocationWiseVotersDetails( parliamentEarnedVotes, locationMap,"parliament",levelId,searchLevel);
 			
+			if(levelId != null && levelId.longValue() == 4l){
+				
+				List<Object[]> muncipalPolledVotes = boothConstituencyElectionDAO.getLocationWisePolledVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, "muncipality","");
+				setLocationWiseVotersDetails( muncipalPolledVotes, locationMap,"polled",levelId,"muncipality");
+				
+				List<Object[]> muncipalAssemblyEarnedVotes = boothConstituencyElectionDAO.getLocationWiseErnedVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, "muncipality", 2l);
+				setLocationWiseVotersDetails( muncipalAssemblyEarnedVotes, locationMap,"assembly",levelId,"muncipality");
+				
+				List<Object[]> muncipalParliamentEarnedVotes = boothConstituencyElectionDAO.getLocationWiseErnedVotesForVotingDetails(electionYrs, levelId, locAssmblyVals, subtypes, "muncipality", 1l);
+				setLocationWiseVotersDetails( muncipalParliamentEarnedVotes, locationMap,"parliament",levelId,"muncipality");
+			}
 			if(commonMethodsUtilService.isMapValid(locationMap)){
 				returnList.addAll(locationMap.values());
 			}
@@ -1386,9 +1402,27 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	*  @since 17-oct-2017
 	*  @return :void
 	*/
-	public void setLocationWiseVotersDetails(List<Object[]> polledVotes,Map<Long,ElectionInformationVO> yearsPolledMap,String type){
+	public void setLocationWiseVotersDetails(List<Object[]> polledVotes,Map<Long,ElectionInformationVO> yearsPolledMap,String type,Long locationTypeId,String searchLevel){
 		try{
-			
+			Long locationLevelId = 0l;
+			if(locationTypeId.longValue() == 2l  || locationTypeId.longValue() == 10l || locationTypeId.longValue() == 3l){
+				locationLevelId  = 4l;
+		        }
+		        else if(locationTypeId.longValue() == 4l ){
+		        	if(searchLevel != null && searchLevel.equalsIgnoreCase("panchayat")){
+		        		locationLevelId  = 6l;
+		        	}else if(searchLevel != null && searchLevel.equalsIgnoreCase("tehsil")){
+		        		locationLevelId  = 5l;
+		        	}else if(searchLevel != null && searchLevel.equalsIgnoreCase("muncipality")){
+		        		locationLevelId  = 7l;
+		        	}
+	            }else if(locationTypeId.longValue() == 5l){
+	            	locationLevelId  = 6l;
+	            }else if(locationTypeId.longValue() == 6l){
+	            	locationLevelId  = 0l;
+	            }else if(locationTypeId == 8l || locationTypeId == 7l){
+	            	locationLevelId  = 8l;
+	             }
 			if(commonMethodsUtilService.isListOrSetValid(polledVotes)){
 				for (Object[] param : polledVotes) {
 					ElectionInformationVO locationVO = yearsPolledMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -1396,9 +1430,12 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 						locationVO = new ElectionInformationVO();
 						locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 						locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						locationVO.setLocationId(locationLevelId);
 						yearsPolledMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationVO);
 					}
-					if(type != null &&type.equalsIgnoreCase("polled")){
+					if(type != null &&type.equalsIgnoreCase("totalVoters")){
+						locationVO.setTotalVoters(commonMethodsUtilService.getLongValueForObject(param[2]));
+					}else if(type != null &&type.equalsIgnoreCase("polled")){
 						locationVO.setValidVoters(commonMethodsUtilService.getLongValueForObject(param[2]));
 					}else if(type != null &&type.equalsIgnoreCase("assembly")){
 						locationVO.setAssemblyEarndVotes(commonMethodsUtilService.getLongValueForObject(param[2]));
