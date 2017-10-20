@@ -110,5 +110,5 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{
 
 	List<Object[]> getElectionInformationLocationWiseDetailEarnedVoterShare(List<Long> electionYrs, Long locationTypeId, Long locationValue,
 			List<Long> electionScopeIds, Object object, List<String> subTypes,List<Long> parliamentIdsList, List<Long> partIds,String searchType);
-	public List<Object[]> getAssemblyPartyListforElection(List<Long> electionScopeIds,List<String> subTypeList,List<Long> yearList,Long constituencyId,Long lelevlId);
+	public List<Object[]> getAssemblyPartyListforElection(List<Long> electionScopeIds,List<String> subTypeList,List<Long> yearList,Long constituencyId,Long lelevlId,List<Long> locationValue);
 }

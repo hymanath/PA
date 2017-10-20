@@ -5787,6 +5787,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 			Map<Long,Long> electionWisePolledVotesMap= new HashMap<Long,Long>();
 			 List<Object[]> vacancyList=null;
 			 List<Object[]> participantsList=null;
+			 List<Object[]> partyWonResultsList =null;
 			if(lelevlId != null && lelevlId.longValue() != 5l && lelevlId.longValue() != 7l && lelevlId.longValue() != 6l){
 			    vacancyList= candidateDAO.getAvailableSeatsforElection(year,lelevlId,levelValue,electionScopeId,subTypeList,null);
 			if(lelevlId.longValue() == 2l || lelevlId.longValue() == 3l || lelevlId.longValue() ==10l){
@@ -5805,19 +5806,18 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 				}
 			}
 			}
-			List<Object[]> partyWonResultsList= candidateDAO.getParticipatedPartyListforElectionDetails(year,lelevlId,levelValue,electionScopeId,subTypeList,null);
-			 if(lelevlId.longValue() == 2l || lelevlId.longValue() == 3l || lelevlId.longValue() ==10l){
-		    List<Object[]> parlimPartyWonResultsList= candidateDAO.getParticipatedPartyListforElectionDetails(year,lelevlId,levelValue,electionScopeId,subTypeList,"parliament");
-			 if(parlimPartyWonResultsList != null && parlimPartyWonResultsList.size()>0){
+		    if(lelevlId != null && lelevlId.longValue() != 5l && lelevlId.longValue() != 7l && lelevlId.longValue() != 6l){
+			    partyWonResultsList= candidateDAO.getParticipatedPartyListforElectionDetails(year,lelevlId,levelValue,electionScopeId,subTypeList,null);
+		    if(lelevlId.longValue() == 2l || lelevlId.longValue() == 3l || lelevlId.longValue() ==10l){
+		       List<Object[]> parlimPartyWonResultsList= candidateDAO.getParticipatedPartyListforElectionDetails(year,lelevlId,levelValue,electionScopeId,subTypeList,"parliament");
+			if(parlimPartyWonResultsList != null && parlimPartyWonResultsList.size()>0){
 				 partyWonResultsList.addAll(parlimPartyWonResultsList);
 			 }
-			}else if(lelevlId.longValue() == 4l || lelevlId.longValue() == 5l || lelevlId.longValue() == 6l){
-				List<Object[]> assemblyList = candidateDAO.getAssemblyPartyListforElection(electionScopeId,subTypeList,year,constituencyId,lelevlId);
-				if(assemblyList != null && assemblyList.size()>0){
-					partyWonResultsList.addAll(assemblyList);
-				}
 			}
-			 
+			}else if(lelevlId.longValue() == 5l || lelevlId.longValue() == 6l || lelevlId.longValue() == 7l){
+				partyWonResultsList = candidateDAO.getAssemblyPartyListforElection(electionScopeId,subTypeList,year,constituencyId,lelevlId,levelValue);
+			}
+		
 			if(commonMethodsUtilService.isListOrSetValid(participantsList)){
 				for (Object[] param : participantsList) {
 					Long electionId = commonMethodsUtilService.getLongValueForObject(param[1]);
@@ -5861,7 +5861,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 					participantsMap.put(electionId, partysList);
 				}
 			}
-
+		
 			if(commonMethodsUtilService.isListOrSetValid(partyWonResultsList)){
 				for (Object[] param : partyWonResultsList) {
 					Long electionId = commonMethodsUtilService.getLongValueForObject(param[1]);
@@ -5950,6 +5950,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 								}
 								vo.getList().add(pPartyVO);
 							}
+							
 						}
 						vacancyMap.put(vo.getElectionId(), vo);
 					}
@@ -5969,9 +5970,10 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 								if(partyVo != null){
 									partyVo.setPerc(pPartyVO.getPerc());
 									partyVo.setTotalSeatsCount(0l);
-								}
+								}else{
 								pPartyVO.setPerc(pPartyVO.getPerc());
 								pPartyVO.setTotalSeatsCount(0l);
+								}
 								vo.getList().add(pPartyVO);
 							}
 						}
@@ -5985,6 +5987,21 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 							return Long.valueOf(o2.getElectionYear()).compareTo(Long.valueOf(o1.getElectionYear()));
 						}
 					});
+					
+				}
+				if(finalList != null && finalList.size()>0){
+					for(ElectionInformationVO vo : finalList){
+						List<ElectionInformationVO> list= vo.getList();
+						 sortPartyList(list);
+						if(list != null && list.size()>0){
+							Collections.sort(list, new Comparator<ElectionInformationVO>() {
+							    public int compare(ElectionInformationVO one, ElectionInformationVO other) {
+							        return other.getPerc().compareTo(one.getPerc());
+							    }
+							}); 
+						}
+						
+					}
 				}
 			}
 		}catch(Exception e){
@@ -6001,25 +6018,25 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 	 * @author Swapna
 	 * @Description :This service to show Election Year Wise Details electionId,electionType,electionYears,partyIds,partynames,votesEarned 
 	  */	
-public  List<ElectionInformationVO> getElectionDetailsData(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds){
+public  List<ElectionInformationVO> getElectionDetailsData(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds){
 	List<ElectionInformationVO> returnList = new ArrayList<ElectionInformationVO>();
 	try
 	{	
 		List<Object[]>    totalCnt = null;
 		if(locationTypeId == 2L){
-			totalCnt = electionDAO.getElectionDetailsDistrictWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds);
+			totalCnt = electionDAO.getElectionDetailsDistrictWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
 			returnList = setElectionDetailsData(totalCnt);
 		}else if (locationTypeId.longValue() == 3L  ||locationTypeId.longValue() == 10L) {
-			totalCnt = electionDAO.getElectionDetailsConstituencyWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds);
+			totalCnt = electionDAO.getElectionDetailsConstituencyWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
 			returnList = setElectionDetailsData(totalCnt);
 		}else if (locationTypeId.longValue() == 4L) {
-			totalCnt = electionDAO.getElectionDetailsMandalWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds);
+			totalCnt = electionDAO.getElectionDetailsMandalWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
 			returnList = setElectionDetailsData(totalCnt);
 			totalCnt.clear();
-			totalCnt = electionDAO.getElectionDetailsMuncipalityWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds);
+			totalCnt = electionDAO.getElectionDetailsMuncipalityWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
 			returnList = setElectionDetailsData(totalCnt);
 		}else if (locationTypeId.longValue() == 5L) {
-			totalCnt = electionDAO.getElectionDetailsPanchayatWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds);
+			totalCnt = electionDAO.getElectionDetailsPanchayatWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
 			returnList = setElectionDetailsData(totalCnt);
 		}	
 		
@@ -6521,6 +6538,39 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			OverallStatusVO.setNotUpDatedCount(OverallStatusVO.getNotUpDatedCount()+count);
 		}
 		return vo;
+	}
+	public static void sortPartyList(List<ElectionInformationVO> list){
+		
+		try {
+			Map<String,ElectionInformationVO> levelMap=new HashMap<String,ElectionInformationVO>(0);
+			for(ElectionInformationVO vo : list){
+				levelMap.put(vo.getPartyName().trim().toUpperCase(), vo);
+			}
+			list.clear();
+			if(levelMap.containsKey("TDP")){
+				list.add(0,levelMap.get("TDP"));
+			}else if(levelMap.containsKey("TDP/BJP")){
+				list.add(0,levelMap.get("TDP/BJP"));
+			}
+			
+			if(levelMap.containsKey("BJP")){
+				list.add(1,levelMap.get("BJP"));
+			}
+			if(levelMap.containsKey("YCP")){
+				list.add(2,levelMap.get("YCP"));
+			}else if(levelMap.containsKey("YSRC")){
+				list.add(2,levelMap.get("YSRC"));
+				}
+			if(levelMap.containsKey("INC")){
+				list.add(3,levelMap.get("INC"));
+			}else if(levelMap.containsKey("OTHERS")){
+				list.add(3,levelMap.get("OTHERS"));
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in sortPartyList() Method");
+
+		}
+		
 	}
 }
 
