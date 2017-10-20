@@ -267,7 +267,7 @@ function onLoadClicks()
 		}else if(blockName == 'nominatedPosts'){
 			window.open('areaWiseDashboardDetailedViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'election'){
-			window.open('areaWiseElectionDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&constituencyId='+constituencyId+'&locationLevelName='+locationLevelName+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
+			window.open('areaWiseElectionDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&constituencyId='+constituencyId+'&locationLevelName='+locationLevelName+'&parliamentId='+parliamentId+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}
 		
 	});
@@ -590,10 +590,10 @@ function onLoadClicks()
 	});
 	$(document).on("click",".checkedMainByeType",function(){
 			var j = 0;	
-			 electionYearsSubTypeArr = [];
+			 electionSubTypeArr = [];
 			 $(".checkedMainByeType").each(function(){
 				if ($(this).is(':checked')){
-					 electionYearsSubTypeArr[j++] = $(this).val();
+					 electionSubTypeArr[j++] = $(this).val();
 				}
 			});
 			getElectionYears("change");
@@ -5558,10 +5558,10 @@ function getPartyWiseMPandMLACandidatesCounts(){
 	 $('#electionTypeSpinnerId').show();
 	 
   var jsObj={
-      electionSubTypeArr:electionYearsSubTypeArr
+      electionSubTypeArr:electionSubTypeArr
     }
     $.ajax({   
-      type:'GET',
+      type:'POST',
       url:'getAllElectionYearsAction.action',  
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}

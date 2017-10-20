@@ -1614,3 +1614,7 @@ font-size:12px !important;
 	box-shadow:0px 5px 16px rgba(0,0,0,0.4);
 	padding:30px;
 }
+.votingDtsClickCls{
+	text-decoration:underline;
+	cursor:pointer;
+}
