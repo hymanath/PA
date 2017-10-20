@@ -510,7 +510,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	*  @return :void
 	*/
 	public ElectionInformationVO getLocationWiseCrossVotingDetails(List<Long> electionYrs,List<Long> parliamentIds,List<Long> assemlyIds ,
-			List<Long> partyids,String withAlliance,Long levelId,List<Long> locationVals,List<String> subtypes){
+			List<Long> partyids,String withAlliance,Long levelId,List<Long> locationVals,List<String> subtypes,List<Long> electionScopeIds){
 		
 		ElectionInformationVO returnVO = new ElectionInformationVO();
 		try {
