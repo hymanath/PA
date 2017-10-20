@@ -9,6 +9,7 @@ var boothWiseDetailsArr;
 $(window).scroll(function(){
 		var windowScrollTop = $(window).scrollTop();
 		//var header = $('.scrollHeading')
+		var header = $('.dummy')
 		if (windowScrollTop>50) {
 			header.addClass("header-fixed");
 		} else{
@@ -54,11 +55,7 @@ function onLoadCalls()
 	if(locationLevelId == '4'){
 		getDetailedElectionInformaction();
 	}
-	if(locationLevelId == '4' || locationLevelId == '10'){
-		$(".boothWiseEleHidesShow").show();
-	}else{
-		$(".boothWiseEleHidesShow").hide();
-	}
+	
 	if(locationLevelId == "2"){
 		$(".searchLevelCls").show();
 	}else{
@@ -137,12 +134,12 @@ $(document).on("change","#parliamentConsId",function(){
 		getElectionDetailsData(electionYrVal,eletionSubType,partyIdArr,electionScopeId);
 		//Cross Voting Block
 		getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);
+		//Booth Wise Results
+		getElectionYearsForBooth(eletionSubType,"onload");
+		getAllParliamentConstituencyByAllLevels("booth");
 		
 		if(locationLevelId == '4'){
 			getDetailedElectionInformaction();
-			getElectionYearsForBooth(eletionSubType,"onload");
-		}else if(locationLevelId == '10'){
-			getAllParliamentConstituencyByAllLevels("booth");
 		}
 	});
 	
@@ -286,14 +283,18 @@ function getElectionTypes(){
 		}
 		$("#electionScopeDivIds").html(str);
 		//don't deleted this call
-		if(locationLevelId == '4'){
+		getAllParliamentConstituencyByAllLevels("");
+		getElectionYearsForBooth(eletionSubType,"onload");
+		getAllParliamentConstituencyByAllLevels("booth");
+		
+		/* if(locationLevelId == '4'){
 			getAllParliamentConstituencyByAllLevels("");
 			getElectionYearsForBooth(eletionSubType,"onload");
 		}else if(locationLevelId == '10'){
 			getAllParliamentConstituencyByAllLevels("booth");
 		}else{
 			getAllParliamentConstituencyByAllLevels("");
-		}
+		} */
 		
 		
 	});	
@@ -1048,8 +1049,13 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 		url : "getLocationWiseCrossVotingDetailsAction.action",
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)}
-	}).done(function(result){  
-		buildTableData(result);
+	}).done(function(result){
+		if(result !=null && result.subList1 !=null && result.subList1.length>0){
+			buildTableData(result);
+		}else{
+			$("#crossVotingDetailsBlockId").html("No Data Available");
+		}	
+		
 	});
 	function buildTableData(result)
 	{
