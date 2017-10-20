@@ -121,11 +121,11 @@
 									<option value="2" selected>Assembly</option>
 									<option value="3">MPTC</option>
 									<option value="4">ZPTC</option>
-									<option value="5">MUNCIPALITY</option>
+									<!--<option value="5">MUNCIPALITY</option>
 									<option value="6">CORPORATION</option>
 									<option value="7">Greater Municipal Corp</option>
 									<option value="8">Panchayar</option>
-									<option value="9">Ward</option>
+									<option value="9">Ward</option>-->
 								</select>
 							</div>
 							<div class="col-sm-2 searchLevelCls" style="display:none;">
@@ -211,7 +211,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="m_top10 boothWiseEleHidesShow" style="display:none;">
+		<section class="m_top10">
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block">
