@@ -824,7 +824,7 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,ele
 										}else{
 											str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'.png" alt="'+result[i].list[j].partyName+'"></img>   '+result[i].list[j].partyName+'</p></td>';
 										}
-										str+='<td class="text-center">'+result[i].list[j].totalSeatsCount+'</td>';
+										str+='<td class="text-center">'+result[i].list[j].participatedSeatsCount+'</td>';
 										str+='<td class="text-center">'+result[i].list[j].wonSeatsCount+'</td>';
 										str+='<td class="text-center">'+result[i].list[j].perc+' %</td>';
 									str+='</tr>';
