@@ -96,8 +96,15 @@ public class InputVO implements Serializable {
 	private String sector;
 	private String leadName;
 	private Long constituencyId;
+	private String program;
 	
 	
+	public String getProgram() {
+		return program;
+	}
+	public void setProgram(String program) {
+		this.program = program;
+	}
 	public String getLeadName() {
 		return leadName;
 	}
