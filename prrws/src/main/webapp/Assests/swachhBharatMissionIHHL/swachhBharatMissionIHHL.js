@@ -647,7 +647,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 										str+='<td class="text-center"> - </td>';
 									}
 									
-									if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
+									if(result[i].percentage !=null && parseFloat(result[i].percentage)>=0){
 										if(parseFloat(result[i].percentage)>=80){//&& parseFloat(result[i].percentage) <=100
 											str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
 										}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
@@ -948,6 +948,22 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType)
 							}else{
 								str+='<td class="text-center"> - </td>';
 							}
+							if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
+								if(parseFloat(result[i].percentage)>=80 ){//&& parseFloat(result[i].percentage) <=100
+									str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
+								}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
+									str+='<td class="text-center" style="background-color:#99B95F;color:#fff">'+result[i].percentage+'</td>';
+								}else if(parseFloat(result[i].percentage) >=40 && parseFloat(result[i].percentage)<60){
+									str+='<td class="text-center" style="background-color:#E67401;color:#fff">'+result[i].percentage+'</td>';
+								}else if(parseFloat(result[i].percentage) >=0 && parseFloat(result[i].percentage)<40){
+									str+='<td class="text-center" style="background-color:#FD403A;color:#fff">'+result[i].percentage+'</td>';
+								}else {
+									str+='<td class="text-center">'+result[i].percentage+' </td>';
+								}
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}
+								str+='</tr>';
 						} else {
 							if(result[i].target !=null && result[i].target>0){
 								str+='<td class="text-center">'+result[i].target+'</td>';
@@ -959,8 +975,7 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType)
 							}else{
 								str+='<td class="text-center"> - </td>';
 							}
-						}
-							if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
+							if(result[i].percentage !=null && parseFloat(result[i].percentage)>=0){
 								if(parseFloat(result[i].percentage)>=80 ){//&& parseFloat(result[i].percentage) <=100
 									str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
 								}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
@@ -969,13 +984,15 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType)
 									str+='<td class="text-center" style="background-color:#E67401;color:#fff">'+result[i].percentage+'</td>';
 								}else if(parseFloat(result[i].percentage) >=0 && parseFloat(result[i].percentage)<40){
 									str+='<td class="text-center" style="background-color:#FD403A;color:#fff">'+result[i].percentage+'</td>';
-								}else{
+								}else {
 									str+='<td class="text-center">'+result[i].percentage+' </td>';
 								}
 							}else{
 								str+='<td class="text-center"> - </td>';
 							}
 								str+='</tr>';
+						}
+							
 						
 					}
 					str+='</tbody>';

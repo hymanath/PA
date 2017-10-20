@@ -180,7 +180,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 			Map<String,ClientResponse> responseMap = new HashMap<>();
 			String[] locationArr = { "district", "constituency", "mandal" };
 			String URL = "http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails";
-			
+			Long startTime = System.currentTimeMillis();
 			if (locationArr != null && locationArr.length > 0) {
 				ExecutorService executor = Executors.newFixedThreadPool(4);
 				for (String location : locationArr) {
@@ -191,10 +191,10 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 				}
 				executor.shutdown();
 				while(!executor.isTerminated()) {}
-				
+				Long endTime = System.currentTimeMillis();
+				System.out.println("Thread time taken : "+(endTime-startTime));
 				System.out.println("All work has finished "+responseMap.values());
 			}
-			
 			if (responseMap.size() > 0) {
 				for (Entry<String, ClientResponse> resonseEntry : responseMap.entrySet()) {
 					String subLcation = resonseEntry.getKey();
@@ -223,7 +223,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 												
 												SwachhBharatMissionIHHLDtlsVO matchVO = null;
 
-												if (percentage != null && percentage > 0d) {
+												if (percentage != null) {
 													if (percentage >= 80d ) {//&& percentage <= 100d
 														matchVO = getCategoryMatchVO(resultList, "A");
 													}
@@ -233,7 +233,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 													if (percentage >= 40d && percentage < 60d) {
 														matchVO = getCategoryMatchVO(resultList, "C");
 													}
-													if (percentage > 0d && percentage < 40) {
+													if (percentage >= 0d && percentage < 40) {
 														matchVO = getCategoryMatchVO(resultList, "D");
 													}
 												}
@@ -291,10 +291,11 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 				fromDate = sdf.parse(inputVO.getFromDate());
 				toDate = sdf.parse(inputVO.getToDate());
 			}
-
-			String str = convertingInputVOToString(inputVO);
+			Long startTime = System.currentTimeMillis();
+            String str = convertingInputVOToString(inputVO);
 			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails",str);
-
+			Long endTime = System.currentTimeMillis();
+			 System.out.println("GetIHHLAchivementProgressDtls  service time take "+(endTime-startTime));
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			} else {
@@ -780,9 +781,15 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 				String str = convertingInputVOToString(inputVO);
 				ClientResponse response = null;
 				if (inputVO.getReportType() != null && inputVO.getReportType().equalsIgnoreCase("status")) {
+					Long startTime = System.currentTimeMillis();
 					response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails",str);
+					Long endTime = System.currentTimeMillis();
+					System.out.println(inputVO.getSubLocation()+" status service Time Take "+(endTime-startTime));
 				} else  {
+					Long startTime = System.currentTimeMillis();
 					response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails",str);
+					Long endTime = System.currentTimeMillis();
+					System.out.println(inputVO.getSubLocation()+" daily service Time Take "+(endTime-startTime));
 				}
 				 String output = response.getEntity(String.class);
 				if (output != null && output.length() > 0) {
@@ -886,7 +893,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 											resultList.add(swachhBharatMissionIHHLDtlsVO);
 										}
 									} else if (inputVO.getDisplayType().equalsIgnoreCase("D")) {
-										if (percentage > 0d && percentage < 40) {
+										if (percentage >= 0d && percentage < 40) {
 											resultList.add(swachhBharatMissionIHHLDtlsVO);
 										}
 									}

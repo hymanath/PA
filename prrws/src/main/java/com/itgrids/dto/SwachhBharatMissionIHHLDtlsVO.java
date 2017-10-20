@@ -8,7 +8,7 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	private String locationIdStr;
 	private Long target=0l;
 	private Long achivement=0l;
-	private String percentage;
+	private String percentage="0";
 	private Long locationId;
 	private String name;
 	private Long grounded;
