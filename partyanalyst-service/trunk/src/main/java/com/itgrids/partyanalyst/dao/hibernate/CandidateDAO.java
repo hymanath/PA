@@ -504,9 +504,10 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			sb.append( " GROUP BY e.election_year,e.election_id , et.election_type_id  ");
 			sb.append( " ORDER BY e.election_year,e.election_id , et.election_type_id ");
 		}else{
-			sb.append("SELECT SUM(cer.valid_votes) as totalVotes, e.election_year as year, et.election_type_id as electionTypeid,et.election_type as electionType, e.election_id as electionId " +
-					" FROM constituency_election_result cer " +
-					" JOIN constituency_election ce ON  ce.consti_elec_id = cer.consti_elec_id " +
+			sb.append("SELECT SUM(cer.votes_earned) as totalVotes, e.election_year as year, et.election_type_id as electionTypeid,et.election_type as electionType, e.election_id as electionId " +
+					" FROM candidate_result cer " +
+					" JOIN nomination n ON  cer.nomination_id = n.nomination_id  " +
+					" JOIN constituency_election ce ON  ce.consti_elec_id = n.consti_elec_id  " +
 					" JOIN constituency c ON c.constituency_id = ce.constituency_id " +
 					" JOIN election_scope es ON es.election_scope_id = c.election_scope_id " +
 					" JOIN election e ON e.election_id = ce.election_id " +
@@ -876,7 +877,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	         query.setParameterList("years", yearsList);
 	       }
 	      
-		 if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && (locationTypeId.longValue() ==3l || locationTypeId.longValue() ==4l)){
+		 if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l &&
+				  ( locationTypeId.longValue() ==3l || locationTypeId.longValue() ==4l)){
 	    	  query.setParameterList("locationValue", locationValue);
 	      }
 	      if(electionScopeIds != null && electionScopeIds.size()>0){
@@ -892,7 +894,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	}
 	
 	
-	public List<Object[]> getParticipatedPartyListforElectionDetails(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,List<String> subTypeList,String type){
+	public List<Object[]> getParticipatedPartyListforElectionDetails(List<Long> yearsList ,Long locationTypeId,List<Long> locationValue,List<Long> electionScopeIds,List<String> subTypeList,String type,String resultFor){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT "+ 
 		          " e.election_scope_id as temp,e.election_id as electionId,et.election_type as electionType,e.election_scope_id as electionScopeId," +
@@ -900,14 +902,15 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		          " p.party_flag as flag " +
 		          " from constituency c,constituency_election ce,election e ,election_scope es ," +
 		          " election_type et ,nomination n ,party p ,candidate_result cr " );
-		sb.append(" where cr.nomination_id = n.nomination_id  " +
-		          " and cr.rank = 1  " );
+		sb.append(" where cr.nomination_id = n.nomination_id  " );
+		if(resultFor != null && resultFor.trim().equalsIgnoreCase("WONRESULT"))
+			sb.append(" and cr.rank = 1  " );
 		if(electionScopeIds != null && electionScopeIds.size()>0){
 			sb.append("	and e.election_scope_id  in (:electionScopeIds) ");
 		}
 		sb.append(" and n.consti_elec_id = ce.consti_elec_id and " +
 				  " n.party_id = p.party_id and " +
-		          " e.election_scope_id = es.election_scope_id and " +
+		          " e.election_scope_id = es.election_scope_id and  " +
 	              " et.election_type_id = es.election_type_id and " +
 		          " c.constituency_id = ce.constituency_id and " +
 		          " ce.election_id = e.election_id  " );
@@ -953,7 +956,8 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	         query.setParameterList("years", yearsList);
 	       }
 	      
-	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && (locationTypeId.longValue() ==3l || locationTypeId.longValue() ==4l)){
+	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && 
+	    		  (locationTypeId.longValue() ==3l || locationTypeId.longValue() ==4l)){
 	    	  query.setParameterList("locationValue", locationValue);
 	      }
 	      if(electionScopeIds != null && electionScopeIds.size()>0){
@@ -1184,7 +1188,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 					" ce.consti_elec_id = cer.consti_elec_id AND  n.consti_elec_id = ce.consti_elec_id AND " +
 					" n.party_id = p.party_id and n.candidate_id = c.candidate_id and  ce.constituency_id = c1.constituency_id and  cr.nomination_id = n.nomination_id ");
 			
-			if(partIds.size() != 0 && partIds !=null){
+			if(partIds !=null && partIds.size() != 0){
 				sbe.append(" and n.party_id in (:partIds) ");
 			}
 			if(electionYrs != null && electionYrs.size() > 0l){
@@ -1262,7 +1266,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		}else if(electionScopeIds !=null && electionScopeIds.size()>0){
 			query.setParameterList("electionScopeIds",electionScopeIds);
 		}
-		if(partIds.size() != 0 && partIds !=null){
+		if(partIds !=null && partIds.size() != 0){
 			query.setParameterList("partIds",partIds);
 		}
 		return query.list();
@@ -1303,7 +1307,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		}	
 		if(lelevlId != null && lelevlId.longValue() ==5l){
 		if(constituencyId != null && constituencyId.longValue()>0l){
-			sb.append(" and b.constituency_id =:constituencyId and b.local_election_body_id is null " );
+			sb.append(" and b.constituency_id =:constituencyId  " );
 		  }
 		}else if(lelevlId != null && lelevlId.longValue() ==6l){
 			if(constituencyId != null && constituencyId.longValue()>0l){
@@ -1314,20 +1318,23 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 				sb.append(" and b.constituency_id =:constituencyId and b.local_election_body_id is not null " );
 			  }
 		}
-		/*if(lelevlId != null && locationValue != null && locationValue.size()>0l && lelevlId.longValue()>0l){
-			if(lelevlId.longValue() ==5l){
-				sb.append(" and b.tehsil_id in(:locationValue)");
-			}else if(lelevlId.longValue() ==6l){
-				sb.append(" and b.panchayat_id in(:locationValue)");
-			}else if(lelevlId.longValue() ==7l){
-				sb.append(" and b.local_election_body_id in(:locationValue)");
-			}
+		/*if(lelevlId != null && lelevlId.longValue() ==4l){
+		//sb.append(" group by b.tehsil_id,e.election_scope_id,e.election_id,et.election_type," +
+				//" e.election_scope_id,e.election_year,n.party_id " +
+				////" order by b.tehsil_id,e.election_scope_id,e.election_id," +
+				//" et.election_type,e.election_scope_id,e.election_year,n.party_id");
+		}else if(lelevlId != null && lelevlId.longValue() ==5l || lelevlId != null && lelevlId.longValue() ==7l){
+			sb.append(" group by b.local_election_body_id,e.election_scope_id,e.election_id,et.election_type,e.election_scope_id," +
+					" e.election_year,n.party_id" +
+					"  order by b.local_election_body_id,e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id ");
+		}else if(lelevlId != null && lelevlId.longValue() ==6l){
+			sb.append(" group by b.panchayat_id,e.election_scope_id,e.election_id," +
+					" et.election_type,e.election_scope_id,e.election_year,n.party_id " +
+					" order by b.panchayat_id,e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id ");	
 		}*/
-		
-		sb.append(" group by e.election_scope_id,e.election_id,et.election_type," +
-				" e.election_scope_id,e.election_year,n.party_id " +
-				" order by b.tehsil_id,e.election_scope_id,e.election_id," +
-				" et.election_type,e.election_scope_id,e.election_year,n.party_id ");
+		sb.append(" group by e.election_scope_id,e.election_id," +
+				" et.election_type,e.election_scope_id,e.election_year,n.party_id " +
+				" order by b.panchayat_id,e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id ");
 		Query query = getSession().createSQLQuery(sb.toString());
 		if(electionScopeIds != null && electionScopeIds.size()>0){
 			query.setParameterList("electionScopeIds", electionScopeIds);
