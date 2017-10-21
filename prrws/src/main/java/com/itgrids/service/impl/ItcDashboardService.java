@@ -4,10 +4,13 @@ package com.itgrids.service.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -33,6 +36,7 @@ import com.itgrids.dto.EofficeDtlsVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.ItInformationDtlsVO;
+import com.itgrids.dto.ItecEOfficeVO;
 import com.itgrids.dto.ItecOverviewVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
@@ -827,4 +831,192 @@ public class ItcDashboardService implements IItcDashboardService {
 		}
 		return returnList;
 	}
+	
+	/**
+	 * @author Nandhini
+	 * @description {This service is used to get getEOfcDepartWiseOverviewDetails.}
+	 * @return List<ItecEOfficeVO>
+	 * @Date 21-10-2017
+	 */
+	public List<ItecEOfficeVO> getEOfcDepartWiseOverviewDetails() {
+		List<ItecEOfficeVO> returnList = new ArrayList<ItecEOfficeVO>(0);
+		try {
+			Long[] deptIdsArr = IConstants.ITEC_EOFFICE_DEPT_IDS;
+			List<Long> deptIds = new ArrayList<Long>(0);
+			if(deptIdsArr != null && deptIdsArr.length > 0){
+				for (int i = 0; i < deptIdsArr.length; i++) {
+					deptIds.add(Long.valueOf(deptIdsArr[i].toString()));
+				}
+			}
+			
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("https://demo.eoffice.ap.gov.in/TTReports/Apsectdeptwise.php");
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				if (output != null && !output.isEmpty()) {
+					JSONArray finalArray = new JSONArray(output);
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+								if(Long.valueOf(jObj.getLong("departmentid")) != null && deptIds.contains(jObj.getLong("departmentid"))){
+									ItecEOfficeVO departVO = new ItecEOfficeVO();
+									departVO.setDepartmentId(jObj.getLong("departmentid"));
+									departVO.setDepartmentName(jObj.getString("departmentname"));
+									departVO.setCreated(jObj.getLong("created"));
+									departVO.setTotalCount(jObj.getLong("totalcount"));
+									if(departVO.getCreated() != null && departVO.getCreated().longValue() > 0L && departVO.getTotalCount() != null && departVO.getTotalCount().longValue() > 0L){
+										departVO.setPercentage(new BigDecimal(departVO.getTotalCount()*100.00/departVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									}else{
+										departVO.setPercentage("0.00");
+									}
+									returnList.add(departVO);
+								}
+							}
+						}
+					}
+				}
+			
+			if(returnList != null && !returnList.isEmpty()){
+				ItecEOfficeVO finalCountVO = new ItecEOfficeVO();
+				for (ItecEOfficeVO vo : returnList) {
+					finalCountVO.setCreated(finalCountVO.getCreated()+vo.getCreated());
+				}
+				returnList.get(0).getSubList().add(finalCountVO);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured at getEOfcDepartWiseOverviewDetails() in  ItcDashboardService class",e);
+		}
+		return returnList;
+	}
+	
+	/**
+	 * @author Nandhini
+	 * @description {This service is used to get getEOfcDepartWiseOverviewDetails.}
+	 * @return List<ItecEOfficeVO>
+	 * @Date 21-10-2017
+	 */
+	public List<ItecEOfficeVO> getEOfcDeptPendancyStatusWiseDetails() {
+		List<ItecEOfficeVO> returnList = new ArrayList<ItecEOfficeVO>(0);
+		try {
+			Long[] deptIdsArr = IConstants.ITEC_EOFFICE_DEPT_IDS;
+			List<Long> deptIds = new ArrayList<Long>(0);
+			if(deptIdsArr != null && deptIdsArr.length > 0){
+				for (int i = 0; i < deptIdsArr.length; i++) {
+					deptIds.add(Long.valueOf(deptIdsArr[i].toString()));
+				}
+			}
+			
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("https://demo.eoffice.ap.gov.in/TTReports/Apsectdeptwise.php");
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				if (output != null && !output.isEmpty()) {
+					JSONArray finalArray = new JSONArray(output);
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+								if(Long.valueOf(jObj.getLong("departmentid")) != null && deptIds.contains(jObj.getLong("departmentid"))){
+									ItecEOfficeVO departVO = new ItecEOfficeVO();
+									departVO.setDepartmentId(jObj.getLong("departmentid"));
+									departVO.setDepartmentName(jObj.getString("departmentname"));
+									departVO.setCreated(jObj.getLong("created"));
+									departVO.setTotalCount(jObj.getLong("totalcount"));
+									departVO.setZeroToSeven(jObj.getLong("0-7"));
+									departVO.setEightToFifteen(jObj.getLong("8-15"));
+									departVO.setSixteenToThirty(jObj.getLong("16-30"));
+									departVO.setThirtyoneToSixty(jObj.getLong("31-60"));
+									departVO.setAboveSixty(jObj.getLong(">60"));
+									if(departVO.getCreated() != null && departVO.getCreated().longValue() > 0L && departVO.getTotalCount() != null && departVO.getTotalCount().longValue() > 0L){
+										departVO.setPercentage(new BigDecimal(departVO.getTotalCount()*100.00/departVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									}else{
+										departVO.setPercentage("0.00");
+									}
+									returnList.add(departVO);
+								}
+							}
+						}
+					}
+				}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getEOfcDeptPendancyStatusWiseDetails() in  ItcDashboardService class",e);
+		}
+		return returnList;
+	}
+	
+	/*public List<ItecEOfficeVO> getEofficeDesignationWiseDetails(){
+	    List<ItecEOfficeVO> returnList = new ArrayList<ItecEOfficeVO>(0);
+	    try {
+	    	
+	    	Map<String,ItecEOfficeVO> designtionMap = new HashMap<String,ItecEOfficeVO>(0);
+	    	List<Long> departmentIds = new ArrayList<Long>(0);
+            Long[] deptArr = IConstants.ITEC_EOFFICE_DEPT_IDS;
+            for (int i = 0; i < deptArr.length; i++) {
+              departmentIds.add(deptArr[i]);
+            }
+            
+            ClientResponse response = itcWebServiceUtilService.getWebServiceCall("https://demo.eoffice.ap.gov.in/TTReports/Apsectdesignationwise.php");
+		      if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		      } else {
+		        String output = response.getEntity(String.class);
+		        if (output != null && !output.isEmpty()) {
+		          JSONArray finalArray = new JSONArray(output);
+		          if (finalArray != null && finalArray.length() > 0) {
+		            for (int i = 0; i < finalArray.length(); i++) {
+		              JSONObject jObj = (JSONObject) finalArray.get(i);
+		              Long departmentId = jObj.getLong("departmentid");
+		              if(departmentId != null && departmentIds.contains(departmentId)){
+		            	  ItecEOfficeVO vo = new ItecEOfficeVO();
+		            	  
+		            	  ItecEOfficeVO designationVO = designtionMap.get(jObj.getString("designation"));
+		            	  if(designationVO == null){
+		            		  designationVO = new ItecEOfficeVO();
+		            		 // ItecEOfficeVO vo = new ItecEOfficeVO();
+		            		  designationVO.setDepartmentId(jObj.getLong("departmentid"));
+		            		  designationVO.setDepartmentName(jObj.getString("departmentname"));
+		            		  designationVO.setCreated(jObj.getLong("created"));
+		            		  designationVO.setTotalCount(jObj.getLong("totalcount"));
+		            		  designationVO.setEmployeeName(jObj.getString("employeename"));
+		            		  designationVO.setDesignation(jObj.getString("designation"));
+		            		  if(designationVO.getCreated() != null && designationVO.getCreated().longValue() > 0L && designationVO.getTotalCount() != null && designationVO.getTotalCount().longValue() > 0L){
+		            			  designationVO.setPercentage(new BigDecimal(designationVO.getTotalCount()*100.00/designationVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								}else{
+									designationVO.setPercentage("0.00");
+								}
+		            		  
+		            		 // designationVO.add(vo);
+		            		  designtionMap.put(designationVO.getDesignation(), designationVO);
+		            	  }else{
+		            		  ItecEOfficeVO vo = new ItecEOfficeVO();
+		            		  vo.setDepartmentId(jObj.getLong("departmentid"));
+		            		  vo.setDepartmentName(jObj.getString("departmentname"));
+		            		  vo.setCreated(jObj.getLong("created"));
+		            		  vo.setTotalCount(jObj.getLong("totalcount"));
+		            		  vo.setEmployeeName(jObj.getString("employeename"));
+		            		  vo.setDesignation(jObj.getString("designation"));
+		            		  if(vo.getCreated() != null && vo.getCreated().longValue() > 0L && vo.getTotalCount() != null && vo.getTotalCount().longValue() > 0L){
+		            			  vo.setPercentage(new BigDecimal(vo.getTotalCount()*100.00/vo.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								}else{
+									vo.setPercentage("0.00");
+								}
+		            		  destionVOList.add(vo);
+		            		  //designtionMap.put(vo.getDesignation(), destionVOList); 
+		            	  }
+		               }
+		             }
+		           }
+		         }
+		      }
+		      if(designtionMap != null){
+		    	  returnList = new ArrayList<ItecEOfficeVO>(designtionMap.va);
+		      }
+		      
+		    } catch (Exception e) {
+		      LOG.error("Exception raised at getEofficeDesignationWiseDetails - ItcDashboardService service",e);
+		    }
+		    return returnList;
+	}*/
 }
