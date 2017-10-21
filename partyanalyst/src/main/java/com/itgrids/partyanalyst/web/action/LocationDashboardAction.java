@@ -1398,9 +1398,9 @@ public String getElectionInformationLocationWise(){
 				}
 			}
 			
-			
-			List<PartyBoothPerformanceVO> boothResults = locationWiseElectionInformationDetalsService.getBoothWiseElectionResults(partyIds, constituencyId, jObj.getLong("electionyears"),jObj.getLong("electionScopeId"));
-			
+			List<PartyBoothPerformanceVO> boothResults = locationWiseElectionInformationDetalsService.getBoothWiseElectionResults(partyIds, constituencyId, jObj.getLong("electionyears"),jObj.getLong("electionScopeId"),
+					jObj.getLong("locationTypeId"),jObj.getLong("locationValue"));
+
 			String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
 
 			List<PartyBoothPerformanceVO> PartyBoothPerformanceVOList1 = new ArrayList<PartyBoothPerformanceVO>();

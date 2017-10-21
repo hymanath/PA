@@ -4520,5 +4520,6 @@
     	<property name="electionDAO" ref="electionDAO" />
     	<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />    	
     	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+    	<property name="tehsilDAO" ref="tehsilDAO" />
     	</bean>
 </beans>			

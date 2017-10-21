@@ -1190,6 +1190,8 @@ function boothWiseResults(constituencyId,partiesArr,electionYrVal,electionScopeI
 		electionyears 		:parseInt(electionYrVal),
 		electionScopeId		:electionScopeId,
 		task				:"assemblyWiseResults",
+		locationTypeId 		: locationLevelId,
+		locationValue		:userAccessLevelValue
 	}
 	$.ajax({
 		type : "GET",
