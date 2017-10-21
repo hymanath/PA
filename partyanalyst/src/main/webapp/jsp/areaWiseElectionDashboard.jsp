@@ -159,12 +159,12 @@
 											<div id="crossVotingDetailsBlockId"></div>
 										</div>
 									</div>
-									<div class="row">
+									<!--<div class="row">
 										<div class="col-sm-12">
 											<h4 class="theme-title-color">Voting Details in Mandal/s</h4>
 											<div id="votingDetailsBlockId" class="m_top10"></div>
 										</div>
-									</div>
+									</div>-->
 								</div>
 							</div>
 						</div>

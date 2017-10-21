@@ -345,12 +345,12 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12 m_top30" navbar-index="activities">
+			<!--<div class="col-sm-12 m_top30" navbar-index="activities">
 				<h4 class="panel-title theme-title-color">Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="activities"></i></span></h4>
 				<div class="block m_top10">
 					<div id ="activitesId"></div>
 				</div>
-			</div>
+			</div>-->
 			<div class="col-sm-12 m_top30" navbar-index="alerts">
 				<div class="row">
 					<div class="col-sm-6">

@@ -134,7 +134,7 @@ $(document).on("change","#parliamentConsId",function(){
 		getElectionDetailsData(electionYrVal,eletionSubType,partyIdArr,electionScopeId);
 		//Cross Voting Block
 		getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);
-		getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
+		//getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
 		//Booth Wise Results
 		getElectionYearsForBooth(eletionSubType,"onload");
 		getAllParliamentConstituencyByAllLevels("booth");
@@ -173,7 +173,7 @@ $(document).on("change","#parliamentConsId",function(){
 		userAccessLevelValuesArray.push(userAccessLevelValue);
 		
 		getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);
-		getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
+		//getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
 			
 		
 	});
@@ -526,7 +526,7 @@ function getElectionYears(eletionSubType,type){
 			getElectionDetailsData(electionYrVal,eletionSubType,partyIdArr,electionScopeId);
 			//Cross Voting Block
 			getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);
-			getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
+			//getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
 			//StrongVsPoor Block
 			getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,"872","district","2","TDP","Assembly",0);
 		}
@@ -2083,7 +2083,8 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
     subTypesArr      :subTypesArr,
     locationLevelId  :locationLevelId, //locationId
     searchLevel:"tehsil",//panchayat,tehsil only if locationLevelId=4 
-    clickType:clickType
+    clickType:clickType,
+	partyIds:[872,1117,163,362]
   }
   $.ajax({
     type : "GET",
@@ -2111,13 +2112,14 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
 		  str+='<table class="table table-condensed" id="dataTableVotingSubLevelDts">';
 		}else{
 		  str+='<table class="table table-condensed" id="dataTableVotingDts">';
-		}
+		} 
 		
 			str+='<thead class="bg-E9">';
-				str+='<tr>';
+				
 					if(clickType == "clickFunction"){
-						str+='<th>Part No</th>';
-						str+='<th>Villages Covered</th>';
+						str+='<tr>';
+						//str+='<th>Part No</th>';
+						str+='<th>Locations Covered</th>';
 						str+='<th>Total Voters</th>';
 						str+='<th>(A)Polled Votes</th>';
 						str+='<th>AC* Votes</th>';
@@ -2125,8 +2127,9 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
 						str+='<th>AC* %</th>';
 						str+='<th>PC* %</th>';
 						str+='<th>% Diff</th>';
-
+						str+='</tr>';
 					}else{
+						str+='<tr>';
 						if(locationLevelId == '2')
 						{
 							str+='<th>District</th>';
@@ -2151,23 +2154,38 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
 						str+='<th>Assembly Candidate</th>';
 						str+='<th>Parliament Candidate</th>';
 						str+='<th>Cross Voting</th>';
+						str+='</tr>';
 					}
 					
-				str+='</tr>';
+				
 			str+='</thead>';
 			str+='<tbody>';
 				
 					for(var i in result){
 						if(clickType == "clickFunction"){
-							str+='<tr>';
-							str+='</tr>';
-						}else{
+							
 							var assemblyCandPerc = (parseFloat(result[i].earnedVotersPerc)).toFixed(2);
 							var parliamentCandPerc =  (parseFloat(result[i].earnedVotersPerc1)).toFixed(2);
 							var crossVotingPerc = (parseFloat(result[i].perc)).toFixed(2);
 							
 							str+='<tr>';
 								str+='<td class="" attr_locationId="'+result[i].locationId+'" attr_locationValue="'+result[i].id+'">'+result[i].name+'</td>';
+								str+='<td>'+result[i].totalVoters+'</td>';
+								str+='<td>'+result[i].validVoters+'</td>';
+								str+='<td>'+result[i].assemblyEarndVotes+'</td>';
+								str+='<td>'+result[i].parliamentEarnedVotes+'</td>';
+								str+='<td>'+assemblyCandPerc+' %</td>';
+								str+='<td>'+parliamentCandPerc+' %</td>';
+								str+='<td>'+crossVotingPerc+' %</td>';
+							str+='</tr>';
+							
+						}else{
+							var assemblyCandPerc = (parseFloat(result[i].earnedVotersPerc)).toFixed(2);
+							var parliamentCandPerc =  (parseFloat(result[i].earnedVotersPerc1)).toFixed(2);
+							var crossVotingPerc = (parseFloat(result[i].perc)).toFixed(2);
+							
+							str+='<tr>';
+								str+='<td style="cursor:pointer;" class="votingDtsClickCls" attr_locationId="'+result[i].locationId+'" attr_locationValue="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].name+'</td>';
 								str+='<td>'+result[i].validVoters+'</td>';
 								str+='<td>'+assemblyCandPerc+' %</td>';
 								str+='<td>'+parliamentCandPerc+' %</td>';
@@ -2182,26 +2200,27 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
 	  str+='</div>';
 	  if(clickType == "clickFunction"){
 		  $("#votingDetailsSubLevelBlockId").html(str);
-			  $("#dataTableVotingSubLevelDts").dataTable({
+	 		  $("#dataTableVotingSubLevelDts").dataTable({
 				"iDisplayLength": 10,
 				"aaSorting": [],
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
-			});
+			}); 
 	  }else{
 		  $("#votingDetailsBlockId").html(str);
-			  $("#dataTableVotingDts").dataTable({
+			   $("#dataTableVotingDts").dataTable({
 				"iDisplayLength": 10,
 				"aaSorting": [],
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
-			});
+			}); 
 	  }
 	  
   }
 }
 $(document).on("click",".votingDtsClickCls",function(){
 	
-	var locationLevelId = $(this).attr("attr_locationId")
-	var locationLevelValue = $(this).attr("attr_locationValue")
+	var locationLevelId = $(this).attr("attr_locationId");
+	var locationLevelValue = $(this).attr("attr_locationValue");
+	var locationName = $(this).attr("attr_name");
 	
 	userAccessLevelValuesArray=[];
 	userAccessLevelValuesArray.push(locationLevelValue)
@@ -2217,6 +2236,6 @@ $(document).on("click",".votingDtsClickCls",function(){
 		electionYrVal = $("#electionYearId").val();
 	
 	$("#openModalDivId").modal("show");
-		
-	getLocationWiseVotingDetails(electionYrVal,eletionSubType,"clickFunction",userAccessLevelValuesArray,locationLevelId)
+		$("#titleId").html(locationName+"  Voting Details");
+	//getLocationWiseVotingDetails(electionYrVal,eletionSubType,"clickFunction",userAccessLevelValuesArray,locationLevelId)
 });
