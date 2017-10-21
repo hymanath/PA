@@ -934,6 +934,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				candidateInfo1.setPartyFlag(values[10].toString());
 			}
 			candidateInfo1.setLatestElecYear(values[11].toString());
+			
+			candidateInfo1.setElectionId(commonMethodsUtilService.getLongValueForObject(values[12]));
+			candidateInfo1.setElectionYear(commonMethodsUtilService.getLongValueForObject(values[13]));
+			
 			candidateInfoList.add(candidateInfo1);
 		}
 
@@ -4859,6 +4863,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 						   partCountVo.setCandidateName(commonMethodsUtilService.getStringValueForObject(param[4]));
 						   partCountVo.setPartyFlag(commonMethodsUtilService.getStringValueForObject(param[5]));
 						   partCountVo.setElectionId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						   partCountVo.setElectionYear(commonMethodsUtilService.getLongValueForObject(param[7]));
 						   countMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),partCountVo);
 						   if(type != null && type.equalsIgnoreCase("parlaiment")){
 						    mpList.add(partCountVo);

@@ -605,9 +605,10 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			
 		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId," +
 				"model.constituencyElection.constituency.name,model.candidate.candidateId,model.candidate.firstname," +
-				"model.candidate.middlename,model.candidate.lastname,model.party.partyId,model.party.shortName," +
+				"model.candidate.middlename,model.candidate.lastname,model.party.partyId,model.party.shortName," +//7
 				"model.constituencyElection.constituency.deformDate,model.constituencyElection.constituency.electionScope.electionType.electionType," +
-				"model.party.partyFlag, model.constituencyElection.election.electionYear " +
+				"model.party.partyFlag, model.constituencyElection.election.electionYear,model.constituencyElection.election.electionId," +//12
+				" model.constituencyElection.election.electionYear " +//13
 				"from Nomination model where model.constituencyElection.constituency.constituencyId = ? and model.candidateResult.rank = ? and " +
 				"model.constituencyElection.election.electionYear = (select max(nModel.constituencyElection.election.electionYear) from ConstituencyElectionResult nModel where nModel.constituencyElection.election.electionScope.electionType.electionType = ? "+
 				"and nModel.constituencyElection.constituency.constituencyId = ? )",params);
@@ -5435,7 +5436,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue) {
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT es.election_scope_id,p.party_id,p.short_name,"
-				+ " count(distinct n.candidate_id),p.long_name,p.party_flag,e.election_id from nomination n,constituency_election ce,"
+				+ " count(distinct n.candidate_id),p.long_name,p.party_flag,e.election_id,e.election_year  from nomination n,constituency_election ce,"
 				+ " constituency_election_result cer,election e,election_scope es,party p,"
 				+ " constituency c ,candidate_result cr ,parliament_assembly pc "
 				+ " where n.party_id = p.party_id and n.consti_elec_id = ce.consti_elec_id "
@@ -5473,7 +5474,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT es.election_scope_id,p.party_id,p.short_name," +
-				" count(distinct n.candidate_id),p.long_name,p.party_flag,e.election_id from nomination n," +
+				" count(distinct n.candidate_id),p.long_name,p.party_flag,e.election_id,e.election_year from nomination n," +
 				" constituency_election ce,constituency_election_result cer," +
 				" election e ,election_scope es ,party p , constituency c ,candidate_result cr " +
 				" where n.party_id = p.party_id and n.consti_elec_id = ce.consti_elec_id and " +
