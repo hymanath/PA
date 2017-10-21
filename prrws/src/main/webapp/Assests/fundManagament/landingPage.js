@@ -51,6 +51,7 @@ function getFavouriteComponents(){
 function buildFavouriteComponentsResult(result) {
 	   var str = '';
 		str +='<div class="col-sm-12 text-right m_top10">';
+			//str +='<i class="fa fa-refresh" title="Refresh" id="refreshList" style="cursor:pointer;font-size:18px;"></i>';
 			str +='<i class="fa fa-edit" title="edit priorities" id="editList" style="cursor:pointer;font-size:18px;"></i>';
 			str +='<i class="fa fa-save" title="save priorities" id="saveList" style="display:none;cursor:pointer;font-size:18px;"></i>';
 			str +='<span id="errorDivId"></span>';
@@ -166,11 +167,14 @@ $(document).on("click","[landing-link]",function(){
 	var blockName = $(this).attr("landing-link");
 	$("[landing-block]").hide();
 	$("[landing-block="+blockName+"]").show();
-	if (blockName == "favourite") {
+	/* if (blockName == "favourite") {
 		getFavouriteComponents();
-	}
+	} */
 });	
 	
+$(document).on('click','#refreshList',function(){
+	getFavouriteComponents();
+});
 $(document).on('click','.starcolorChange',function(){
    var blockName = $(this).attr("attr_block_name");
    var colorName = $(this).attr("attr_color_name");
@@ -200,10 +204,11 @@ function addRemoveComponentToFavourite(actionType,blockName,fullBlockName,url,bl
 	} else if (actionType == "Remove") {
 		if (deleteFlag == true) {
 			deleteFlag = false;
-		  deleteFavouriteComponent(blockName,blockId)	
+			deleteFavouriteComponent(blockName,blockId)	
 		}
 		
 	}
+	
 }
 
 function saveFavouriteComponentDtls(url,blockName,fullBlockName){
@@ -240,7 +245,7 @@ function saveFavouriteComponentDtls(url,blockName,fullBlockName){
 				$("."+cmpnentNameWithutSpce+"Color").css("color","green");
 				$("."+cmpnentNameWithutSpce+"Color").attr("attr_color_name","green");
 				$("."+cmpnentNameWithutSpce+"Color").attr("title","click to remove from favourite list.");
-			  
+			  getFavouriteComponents()
 		 } else {
 			 alert("Something went wrong,Please try again.");
 		 }
@@ -265,22 +270,21 @@ function deleteFavouriteComponent(blockName,blockId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		  deleteFlag = true;
+		deleteFlag = true;
 		if (result.statusCode==0 && result.message=="success"){
-			   $("."+blockName+"Color").css("color","gray");
-			   $("."+blockName+"Color").attr("attr_color_name","gray");
-			   $("#blockOperationStatusHeadingId").html("Block removed from favourite list.");
-			   $("#blockModalMessageDivId").modal("show");
-			   setTimeout(function(){ $("#blockModalMessageDivId").modal("hide"); }, 2000);
-			   $("."+blockName+"Color").attr("title","click to add as favourite component");
-			   var activeName = $(".block.active").attr("id");
-			   //alert(activeName);
-			   if(activeName != null && activeName == "favourite"){
-				   getFavouriteComponents();
-			   }
-		 } else {
-			    alert("Something went wrong,Please try again.");
-		 }
+		   $("."+blockName+"Color").css("color","gray");
+		   $("."+blockName+"Color").attr("attr_color_name","gray");
+		   $("#blockOperationStatusHeadingId").html("Block removed from favourite list.");
+		   $("#blockModalMessageDivId").modal("show");
+		   setTimeout(function(){ $("#blockModalMessageDivId").modal("hide"); }, 2000);
+		   $("."+blockName+"Color").attr("title","click to add as favourite component");
+		   var activeName = $(".block.active").attr("id");
+		   //alert(activeName);
+			  getFavouriteComponents();
+		   
+		}else {
+			alert("Something went wrong,Please try again.");
+		}
 	});		
 }
 
