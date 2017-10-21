@@ -26,6 +26,7 @@
 			tabBlocks('constituencyBlockId','constituency');
 			tabBlocks('mandalBlockId','mandal');
 			responsiveTabs();
+			getExceededTargetWorksDetails()
 		}
 		function getSelectedType(){
 			for(var i in levelNamesArr){
@@ -700,6 +701,7 @@
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 		}
 		function getSchemeWiseWorkDetails(type,locationType,divId,filterType,filterValue,districtValue){
+			$("#habitationWorksPWS,#habitationWorksCPWS").html(spinner);
 			var typeVal="";
 			if(type =="graph"){
 				$("#habitationWorks").html(spinner);
@@ -758,24 +760,36 @@
 		}
 		function buildSchemeWiseWorkDetails(result){
 			var dataArr = [];
-			var assetTypeArr = [];
-			var workOngoingArr = [];
-			var workNotGroundedArr = [];
-			var workCompletedArr = [];
-			var workComissionedArr = [];
+			var assetTypeArrPWS = [];
+			var assetTypeArrCPWS = [];
+			var workOngoingArrPWS = [];
+			var workOngoingArrCPWS = [];
+			var workNotGroundedArrPWS = [];
+			var workNotGroundedArrCPWS = [];
+			var workCompletedArrPWS = [];
+			var workCompletedArrCPWS = [];
+			var workComissionedArrPWS = [];
+			var workComissionedArrCPWS = [];
 				for(var i in result)
 				  {					 
-					if(result[i].assetType == "PWS" || result[i].assetType == "CPWS")
+					if(result[i].assetType == "PWS")
 					{
-						assetTypeArr.push(result[i].assetType);						
-						workOngoingArr.push({"y":result[i].workOngoingCount,"extra":result[i].percentageOne.toFixed(1)});
-						workNotGroundedArr.push({"y":result[i].workNotGroundedCount,"extra":result[i].percentageFour.toFixed(1)});
-						workCompletedArr.push({"y":result[i].workCompletedCount,"extra":result[i].percentageThree.toFixed(1)});
-						workComissionedArr.push({"y":result[i].workComissionedCount,"extra":result[i].percentageTwo.toFixed(1)});						
+						assetTypeArrPWS.push(result[i].assetType);						
+						workOngoingArrPWS.push({"y":result[i].workOngoingCount,"extra":result[i].percentageOne.toFixed(1)});
+						workNotGroundedArrPWS.push({"y":result[i].workNotGroundedCount,"extra":result[i].percentageFour.toFixed(1)});
+						workCompletedArrPWS.push({"y":result[i].workCompletedCount,"extra":result[i].percentageThree.toFixed(1)});
+						workComissionedArrPWS.push({"y":result[i].workComissionedCount,"extra":result[i].percentageTwo.toFixed(1)});						
+					}else if(result[i].assetType == "CPWS"){
+						assetTypeArrCPWS.push(result[i].assetType);						
+						workOngoingArrCPWS.push({"y":result[i].workOngoingCount,"extra":result[i].percentageOne.toFixed(1)});
+						workNotGroundedArrCPWS.push({"y":result[i].workNotGroundedCount,"extra":result[i].percentageFour.toFixed(1)});
+						workCompletedArrCPWS.push({"y":result[i].workCompletedCount,"extra":result[i].percentageThree.toFixed(1)});
+						workComissionedArrCPWS.push({"y":result[i].workComissionedCount,"extra":result[i].percentageTwo.toFixed(1)});			
 					}
 					
 				  }
-				$("#habitationWorks").highcharts({
+				$("#habitationWorksPWS").highcharts({
+					colors:['#00B5A7','#FC5D57','#FFC013','#1D9ED5'],
 					chart: {
 						type: 'column'
 					},
@@ -791,7 +805,7 @@
 						min: 0,
 						gridLineWidth: 0,
 						minorGridLineWidth: 0,
-						categories: assetTypeArr
+						categories: assetTypeArrPWS
 					},
 					yAxis:{
 						min: 0,
@@ -834,20 +848,96 @@
 					},
 					series: [{
 							name: 'Ongoing',
-							data: workOngoingArr,
+							data: workOngoingArrPWS,
 							color:'#14BBAE'
 						}, {
 							name: 'Not Grounded',
-							data: workNotGroundedArr,
+							data: workNotGroundedArrPWS,
 							color:'#FC5E57'
 						}, {
 							name: 'Completed',
-							data: workCompletedArr,
+							data: workCompletedArrPWS,
 							color:'#FFBF14'
 						}, {
 							name: 'Commissioned',
-							data: workComissionedArr,
-							color:'#465556'
+							data: workComissionedArrPWS,
+							color:'#1D9ED5'
+						}]
+				});
+				$("#habitationWorksCPWS").highcharts({
+					colors:['#00B5A7','#FC5D57','#FFC013','#1D9ED5'],
+					chart: {
+						type: 'column'
+					},
+					title: {
+						text: '',
+						align:'left',
+						style: {
+							color: '#000',
+							font: 'bold 16px "Lato", sans-serif'
+						}
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: assetTypeArrCPWS
+					},
+					yAxis:{
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+							title: {
+								text: null
+							},
+					}, 
+					
+					legend: {
+						symbolHeight: 12,
+						symbolWidth: 12,
+						symbolRadius: 6,
+						enabled: true
+					},
+					tooltip: {
+						useHTML:true,
+						formatter: function () {
+							return '<b>' + this.x + '</b><br/>' +
+								this.series.name + ': ' + this.y+"-"+((this.point.extra))+'%';
+						}
+					},
+					plotOptions: {
+						column: {
+							//colorByPoint: true
+							dataLabels: {
+								useHTML:true,
+								enabled: true,
+								formatter: function() {
+									if(this.y == 0){
+										return null;
+									}else{
+										return '<span>'+this.y+'<br>('+(this.point.extra)+'%)</span>';
+									}
+									
+								}
+							}
+						}
+					},
+					series: [{
+							name: 'Ongoing',
+							data: workOngoingArrCPWS,
+							color:'#14BBAE'
+						}, {
+							name: 'Not Grounded',
+							data: workNotGroundedArrCPWS,
+							color:'#FC5E57'
+						}, {
+							name: 'Completed',
+							data: workCompletedArrCPWS,
+							color:'#FFBF14'
+						}, {
+							name: 'Commissioned',
+							data: workComissionedArrCPWS,
+							color:'#1D9ED5'
 						}]
 				});
 				
@@ -1980,7 +2070,7 @@
 				$("#alertStatus"+locationType).html(tableView);
 				if(locationType !="state" || locationType !="district"){
 					$(".dataTableAlert"+locationType).dataTable({
-						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+						"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 							"<'row'<'col-sm-12'tr>>" +
 							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 						buttons: [
@@ -5705,3 +5795,126 @@ function getSBPaymentsAbstract(){
 					}
 				}
 		}
+		
+		
+function getExceededTargetWorksDetails(){
+	$("#ExceededTargetDetails,#ExceededTargetDetailsTotal").html(spinner);
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getExceededTargetWorksDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		console.log(result);
+		return buildGraph(result);
+	});
+	function buildGraph(result)
+	{
+		var cateArr = [];
+		var pwsArr = [];
+		var cpwsArr = [];
+		var totalWorksPWS = 0;
+		var totalWorksCPWS = 0;
+		var totalAmountPWS = 0;
+		var totalAmountCPWS = 0;
+		for(var i in result.completedList)
+		{
+			cateArr.push(result.completedList[i].name)
+			pwsArr.push(result.completedList[i].pwsCount)
+			cpwsArr.push(result.completedList[i].cpwsCount)
+			totalWorksPWS = totalWorksPWS + result.completedList[i].pwsCount;
+			totalWorksCPWS = totalWorksCPWS + result.completedList[i].cpwsCount;
+			totalAmountPWS = totalAmountPWS + result.completedList[i].pwsAmount;
+			totalAmountCPWS = totalAmountCPWS + result.completedList[i].cpwsAmount;
+		}
+		Highcharts.chart('ExceededTargetDetailsTotal', {
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: null
+			},
+			xAxis: {
+				categories:['Total']
+			},
+			yAxis: {
+				allowDecimals: false,
+				min: 0,
+				title: {
+					text: null
+				}
+			},
+			tooltip: {
+				formatter: function () {
+					return '<b>' + this.x + '</b><br/>' +
+						this.series.name + ': ' + this.y + '<br/>'
+						//+'Total: ' + this.point.stackTotal;
+				}
+			},
+			plotOptions: {
+				column: {
+					stacking: 'normal'
+				}
+			},
+			series: [{
+				name: 'PWS',
+				data: [totalWorksPWS],
+				stack: 'PWS',
+				color:'#EE6CA9'
+			}, {
+				name: 'CPWS',
+				data: [totalAmountCPWS],
+				stack: 'CPWS',
+				color:'#C61379'
+			}]
+		});
+		Highcharts.chart('ExceededTargetDetails', {
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: null
+			},
+			xAxis: {
+				categories:cateArr
+			},
+			yAxis: {
+				allowDecimals: false,
+				min: 0,
+				title: {
+					text: null
+				}
+			},
+			tooltip: {
+				formatter: function () {
+					return '<b>' + this.x + '</b><br/>' +
+						this.series.name + ': ' + this.y + '<br/>' +
+						'Total: ' + this.point.stackTotal;
+				}
+			},
+			plotOptions: {
+				column: {
+					stacking: 'normal'
+				}
+			},
+			series: [{
+				name: 'PWS',
+				data: pwsArr,
+				stack: 'PWS',
+				color:'#EE6CA9'
+			}, {
+				name: 'CPWS',
+				data: cpwsArr,
+				stack: 'CPWS',
+				color:'#C61379'
+			}]
+		});
+	}
+}
