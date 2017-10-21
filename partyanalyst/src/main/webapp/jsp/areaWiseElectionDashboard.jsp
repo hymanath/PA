@@ -42,18 +42,11 @@
 				<div class="block boderBlock">
 					<section>
 						<div class="scrollHeading">
-							<h4 class="text-capital text-center"><span id="mianHeadingId" ></span> Level Election Results</h4>
+							<h3 class="theme-title-color text-center" style="text-transform: uppercase !important;"><span id="mianHeadingId" ></span> Level Election Results</h3>
 							<div class="row m_top10">
 								<div id="electionScopeDivIds"></div>
 							</div>
 							<div class="row">
-								<div class="col-sm-3">
-									<label><b>Election Years</b></label>
-									<div class="row">	
-										<select class="" id="electionYearId" multiple>
-										</select>
-									</div>
-								</div>
 								<div class="col-sm-3 m_top10">
 									<label><b>Election Type</b></label>
 									<div class="row">
@@ -66,20 +59,27 @@
 									</div>
 								</div>
 								<div class="col-sm-2">
+									<label><b>Election Years</b></label>
+									<div class="row">	
+										<select class="" id="electionYearId" multiple>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-2">
 									<label><b>Party</b></label>
 									<div class="row">	
-									<select class="form-control" id="partyId" multiple>
-										<option value="0">All Parties</option>
-										<option value="872" selected>TDP</option>
-										<option value="1117" selected>YSRC</option>
-										<option value="163" selected>BJP</option>
-										<option value="362" selected>INC</option>
-										<option value="72">AIMIM</option>
-										<option value="265">CPI</option>
-										<option value="269">CPM</option>
-										<option value="662">PRP</option>
-										<option value="886">TRS</option>
-									</select>
+										<select class="form-control" id="partyId" multiple>
+											<option value="0">All Parties</option>
+											<option value="872" selected>TDP</option>
+											<option value="1117" selected>YSRC</option>
+											<option value="163" selected>BJP</option>
+											<option value="362" selected>INC</option>
+											<option value="72">AIMIM</option>
+											<option value="265">CPI</option>
+											<option value="269">CPM</option>
+											<option value="662">PRP</option>
+											<option value="886">TRS</option>
+										</select>
 									</div>
 								</div>
 								<div class="col-sm-3 m_top20">
@@ -91,7 +91,7 @@
 					
 					<section class="m_top10">
 						<div class="row">
-							<div class="col-sm-12">
+							<div class="col-sm-12 m_top10">
 								<div id="candidatesResultsDivId"></div>
 							</div>
 						</div>
@@ -161,7 +161,7 @@
 									</div>
 									<!--<div class="row">
 										<div class="col-sm-12">
-											<h4 class="theme-title-color">Voting Details in Mandal/s</h4>
+											<h4 class="theme-title-color">Voting Details</h4>
 											<div id="votingDetailsBlockId" class="m_top10"></div>
 										</div>
 									</div>-->
@@ -236,16 +236,10 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block boderBlock">
-						<h4 class="theme-title-color">Booth Wise Election Results</h4>
-						<div class="row">
-							<div class="col-sm-3">
-								<label><b>Election Years</b></label>
-									<select class="chosen-select" id="electionYearBoothWiseId">
-									</select>
-								</div>
+						<h4 class="theme-title-color">Booth Wise Election Results - <span id="levelNameDivId"></span></h4>
 							<div class="col-sm-3 m_top10">
 								<label><b>Election Type</b></label>
-									<div class="row">	
+								<div class="row">
 									<label class="radio-inline">
 									  <input type="radio" id="mainId1" value="MAIN" name="optionsRadios" class="electionSubTypeBoothWiseCls" checked >Main Election
 									</label>
@@ -254,13 +248,18 @@
 									</label>
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-2">
+								<label><b>Election Years</b></label>
+									<select class="chosen-select" id="electionYearBoothWiseId">
+									</select>
+							</div>
+							<div class="col-sm-2">
 								<label>Constituency</label>
 								<select class="chosen-select" id="assemblyConsBoothWiseId">
 									<option value="0">Select Constituency</option>
 								</select>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-2">
 								<label>Party</label>
 								<div class="row">
 								<select class="form-control" multiple id="partyBoothWiseId">
@@ -277,31 +276,26 @@
 								</select>
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-3 m_top20">
+							<div class="col-sm-2 m_top20">
 								<button class="btn btn-success buttonClr getDetailsForBoothWiseCls">Submit</button>
 							</div>
-						</div>
-						<div class="row">
 							<div class="col-sm-12">
 								<ul class="switch-btn-New pull-right" role="tabSwitch">
 									<li class="active activeCls" attr_val="2">Assembly Election</li>
 									<li  attr_val="1">Parliament Election</li>
 								</ul>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12">
-								<div id="boothWiseResultsBlockId"></div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="boothWiseResultsBlockId"></div>
+								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12 m_top10">
-								<div id="hideShowlocationId"></div>
-								<div id="locationWiseBoothResultsId"></div>
+							<div class="row">
+								<div class="col-sm-12 m_top10">
+									<div id="hideShowlocationId"></div>
+									<div id="locationWiseBoothResultsId"></div>
+								</div>
 							</div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -355,6 +349,8 @@
 <script type="text/javascript">
 var locationLevelId = "${param.locationLevelId}";
 var constituencyId = "${param.constituencyId}";
+var districtId = "${param.districtId}";
+var locationName = "${param.locationName}";
 var parliamentId = "${param.parliamentId}";
 var locationLevelName = "${param.locationLevelName}";
 var userAccessLevelValue = "${param.userAccessLevelValuesArray}";

@@ -22,6 +22,7 @@ var mandalId = $("#getMenuLocations").attr("menu-location-mandal");
 var panchayatId = $("#getMenuLocations").attr("menu-location-panchayat");
 var locationLevelName = $("#getMenuLocations").attr("menu-location-levelName");
 var locationLevelId = $("#getMenuLocations").attr("menu-location-levelId");
+var locationName = $("#getMenuLocations").attr("menu-location-name");
 var userAccessLevelValuesArray=[];
 var commitessArr=["mandalLevelGraph","villageLevelGraph","affMandalLevelGraph","affVillageLevelGraph"];
 var grivanceIdsArr=["grivanceId","trustId"];
@@ -245,7 +246,7 @@ function onLoadAjaxCalls()
 	getLevelWisePostsOverView(); 
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
-	getDesignationWiseAlertsOverview(defaultAlertCategoryIds); 
+	getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
 	/* setTimeout(function(){ 
 		//News Block
 		getPrintMediaCountsForConstituencyPage()
@@ -267,7 +268,7 @@ function onLoadClicks()
 		}else if(blockName == 'nominatedPosts'){
 			window.open('areaWiseDashboardDetailedViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'election'){
-			window.open('areaWiseElectionDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&constituencyId='+constituencyId+'&locationLevelName='+locationLevelName+'&parliamentId='+parliamentId+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
+			window.open('areaWiseElectionDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&constituencyId='+constituencyId+'&locationLevelName='+locationLevelName+'&parliamentId='+parliamentId+'&locationName='+locationName+'&districtId='+districtId+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}
 		
 	});
@@ -305,6 +306,7 @@ function onLoadClicks()
 		//$("[menu-name="+levelName+"]").addClass("active");
 		$("#getMenuLocations").attr("menu-location-"+levelName+"",locationId);
 		$("#getMenuLocations").attr("menu-location-levelName",levelName);
+		$("#getMenuLocations").attr("menu-location-name",$(this).html()+"("+$(this).attr("short-name")+")");
 		if(levelType == 'Municipality')
 		{
 			locationLevelId = 7;
@@ -487,6 +489,7 @@ function onLoadClicks()
 		panchayatId = $("#getMenuLocations").attr("menu-location-panchayat");
 		locationLevelName = $("#getMenuLocations").attr("menu-location-levelName");
 		locationLevelId = $("#getMenuLocations").attr("menu-location-levelId");
+		locationName = $("#getMenuLocations").attr("menu-location-name");
 		onLoadLocValue();
 		onLoadAjaxCalls();
 	});
@@ -5570,7 +5573,11 @@ function getPartyWiseMPandMLACandidatesCounts(){
 		if(result !=null && result.imageList !=null && result.imageList.length>0){
 			var str='';
 			for(var i in result.imageList){
-				str+='<option value="'+result.imageList[i]+'" selected>'+result.imageList[i]+'</option>';
+				if(result.imageList[i] == "2014" || result.imageList[i] == "2009"){
+					str+='<option value="'+result.imageList[i]+'" selected>'+result.imageList[i]+'</option>';
+				}else{
+					str+='<option value="'+result.imageList[i]+'">'+result.imageList[i]+'</option>';
+				}
 					
 			} 
 			$('#elctionYearsBlockId').html(str);
