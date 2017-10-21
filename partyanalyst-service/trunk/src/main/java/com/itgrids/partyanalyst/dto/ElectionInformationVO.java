@@ -34,6 +34,7 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private String earnedVote;
 	private String status;
 	private String range;
+	private Long rank=0L;
 	private Long assemblyValidVoters =0l;
 	private Long parliamentValidVoters = 0l;
 	private Double earnedVotersPerc;
@@ -43,9 +44,13 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private Long id;
 	private String name;
 	private Double percentage = 0.0;
+	private Long min;
+	private Long max;
 	
 	private List<ElectionInformationVO> list = new CopyOnWriteArrayList<ElectionInformationVO>();
 	private List<ElectionInformationVO> subList1 = new ArrayList<ElectionInformationVO>();
+	private List<ElectionInformationVO> subList2 = new ArrayList<ElectionInformationVO>();
+
 	private List<Long> idsList=new ArrayList<Long>(0);
 	private List<ElectionInformationVO> schemesList = new ArrayList<ElectionInformationVO>();
 	public ElectionInformationVO(){}
@@ -53,7 +58,12 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 		this.partyId=partyId;
 		this.partyName=name;
 	}
-	
+	public ElectionInformationVO(String name,String range,Long min,Long max){
+		this.min=min;
+		this.max=max;
+		this.partyName=name;
+		this.range=range;
+	}
 	public Double getPercentage() {
 		return percentage;
 	}
@@ -66,6 +76,25 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 		this.wonSeatsCount = wonSeatsCount;
 	}
 	
+	
+	public Long getMin() {
+		return min;
+	}
+	public void setMin(Long min) {
+		this.min = min;
+	}
+	public Long getMax() {
+		return max;
+	}
+	public void setMax(Long max) {
+		this.max = max;
+	}
+	public Long getRank() {
+		return rank;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
+	}
 	public String getRange() {
 		return range;
 	}
@@ -282,5 +311,10 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	public void setIdsList(List<Long> idsList) {
 		this.idsList = idsList;
 	}
-	
+	public List<ElectionInformationVO> getSubList2() {
+		return subList2;
+	}
+	public void setSubList2(List<ElectionInformationVO> subList2) {
+		this.subList2 = subList2;
+	}
 }
