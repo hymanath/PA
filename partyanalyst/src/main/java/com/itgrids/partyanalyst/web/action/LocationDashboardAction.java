@@ -1462,7 +1462,8 @@ public String getElectionInformationLocationWise(){
 				 Long locationLevelId = jObj.getLong("locationLevelId");
 				 String searchLevel = jObj.getString("searchLevel");
 				 String clickType = jObj.getString("clickType");
-				 electioninformationList = locationWiseElectionInformationDetalsService.getLocationWiseVotingDetails( electionYrs, locationLevelId, locationValues, subTypes,searchLevel,clickType);
+				 List<Long> partyIds = convertJsonStringList(jObj.getJSONArray("partyIds"));
+				 electioninformationList = locationWiseElectionInformationDetalsService.getLocationWiseVotingDetails( electionYrs, locationLevelId, locationValues, subTypes,searchLevel,clickType,partyIds);
 				
 		 }catch(Exception e){
 			 successMsg = "failure";
