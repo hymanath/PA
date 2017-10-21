@@ -2829,10 +2829,20 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				returnVO.getFundList().add(2, mandalVO);
 			}
 			
+			// For All Senariao Add Nrega Count
+			if((inputVO.getDeptIdsList() == null ||  inputVO.getDeptIdsList().size() == 0) && (inputVO.getSchemeIdsList() == null || inputVO.getSchemeIdsList().size() == 0)){
+				LocationFundDetailsVO AllVO = getMgnregsTopLowAverageLocation(inputVO);
+				if(inputVO.getSchemeIdsList() == null || inputVO.getSchemeIdsList().size() == 0){
+					if(AllVO != null){
+						returnVO.setTotalAmt(String.valueOf(Double.valueOf(returnVO.getTotalAmt().replaceAll(",", ""))+Double.valueOf(AllVO.getTotalAmt())));
+					}
+				}
+			}
+			
 			 /* MEARGINING MGNREGS DATA START */
 			   if((inputVO.getDeptIdsList() == null ||  inputVO.getDeptIdsList().size() == 0 || inputVO.getDeptIdsList().contains(3l)) && (inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().contains(-1l))){//-1 we are sending scheme id for mgnregs from ui for identification purpose
 				  returnVO = getMgnregsTopLowAverageLocation(inputVO);
-			   }
+				}
 			   /* END */
 			
 			

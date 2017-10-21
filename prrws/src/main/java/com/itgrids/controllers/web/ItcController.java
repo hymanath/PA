@@ -21,6 +21,7 @@ import com.itgrids.dto.EofficeDtlsVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.ItInformationDtlsVO;
+import com.itgrids.dto.ItecEOfficeVO;
 import com.itgrids.dto.ItecOverviewVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
@@ -151,5 +152,17 @@ public class ItcController {
 	   public @ResponseBody  List<ItecPromotionDetailsVO>  getITSectorSubLeadCategoryWiseDetails(@RequestBody InputVO inputVO) {
 		   List<ItecPromotionDetailsVO>  resultList = itcDashboardService.getITSectorSubLeadCategoryWiseDetails(inputVO);
 		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getEOfcDepartWiseOverviewDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ItecEOfficeVO>  getEOfcDepartWiseOverviewDetails() {
+		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEOfcDepartWiseOverviewDetails();
+		   return returnList;
+	   }
+	   
+	   @RequestMapping(value = "/getEOfcDeptPendancyStatusWiseDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ItecEOfficeVO>  getEOfcDeptPendancyStatusWiseDetails() {
+		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEOfcDeptPendancyStatusWiseDetails();
+		   return returnList;
 	   }
 }

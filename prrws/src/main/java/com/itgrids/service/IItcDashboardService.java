@@ -10,6 +10,7 @@ import com.itgrids.dto.EofficeDtlsVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.ItInformationDtlsVO;
+import com.itgrids.dto.ItecEOfficeVO;
 import com.itgrids.dto.ItecOverviewVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
@@ -39,4 +40,6 @@ public interface IItcDashboardService {
 	public List<ItecPromotionDetailsVO> getITDistrictWiseDetails(InputVO inputVO);
 	public List<ItecPromotionDetailsVO> getITSectorLeadCategoryWiseDetails(InputVO inputVO);
 	public List<ItecPromotionDetailsVO> getITSectorSubLeadCategoryWiseDetails(InputVO inputVO);
+	public List<ItecEOfficeVO> getEOfcDepartWiseOverviewDetails();
+	public List<ItecEOfficeVO> getEOfcDeptPendancyStatusWiseDetails();
 }
