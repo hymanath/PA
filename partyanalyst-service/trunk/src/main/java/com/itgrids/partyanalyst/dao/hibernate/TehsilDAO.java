@@ -339,7 +339,25 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 	   return  query.list();
 	
 	}
+	
+	public List<Long> getConstituencyByPanchayt(Long panchaytId){
+		StringBuilder queryString = new StringBuilder();
+		queryString.append( "select distinct c.constituency_id from panchayat p, tehsil_constituency tc,constituency c where p.tehsil_id=tc.tehsil_id and " +
+				" tc.constituency_id=c.constituency_id and p.panchayat_id =:panchaytId");
+		Query query = getSession().createSQLQuery(queryString.toString());
+		query.setParameter("panchaytId", panchaytId);
+		return query.list();
 	}
+
+	public List<Long> getConstituencyByLocalBody(Long locationValue) {
+		StringBuilder queryString = new StringBuilder();
+		queryString.append( "select distinct c.constituency_id from  local_election_body leb,tehsil t, tehsil_constituency tc,constituency c " +
+				"where leb.tehsil_id = t.tehsil_id AND tc.tehsil_id = t.tehsil_id AND tc.constituency_id = c.constituency_id AND leb.local_election_body_id =:locationValue");
+		Query query = getSession().createSQLQuery(queryString.toString());
+		query.setParameter("locationValue", locationValue);
+		return query.list();
+	}
+}
 	
 	
 	

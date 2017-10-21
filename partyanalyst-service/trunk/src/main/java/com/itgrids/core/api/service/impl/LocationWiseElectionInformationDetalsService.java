@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IMarginVotesRangeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.BaseCandidateResultVO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -54,6 +55,8 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 
 	private IElectionDAO electionDAO;
+
+	private TehsilDAO tehsilDAO;
 	private SetterAndGetterUtilService setterAndGetterUtilService = new SetterAndGetterUtilService();
 	
 	public SetterAndGetterUtilService getSetterAndGetterUtilService() {
@@ -161,6 +164,15 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 
 	public void setMarginVotesRangeDAO(IMarginVotesRangeDAO marginVotesRangeDAO) {
 		this.marginVotesRangeDAO = marginVotesRangeDAO;
+	}
+	
+
+	public TehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(TehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
 	}
 
 	@Override
@@ -861,20 +873,39 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
  * 
  */
 	@Override
-	public List<PartyBoothPerformanceVO> getBoothWiseElectionResults(List<Long> partyIds, Long constituencyId, Long electionYears,Long electionScopeId) {
+	public List<PartyBoothPerformanceVO> getBoothWiseElectionResults(List<Long> partyIds, Long constituencyId, Long electionYears,Long electionScopeId,Long locationTypeId,Long locationValue) {
 		
 		try{
 			List<PartyBoothPerformanceVO> boothResultsForParties = new ArrayList<PartyBoothPerformanceVO>();
-			Long locationTypeId=2l, locationValue=1l; 
+			List<Long> constituencyIds = new ArrayList<Long>();
 			String level = null;
 			if(locationTypeId==5l || locationTypeId==6l || locationTypeId == 7l){
 				level ="lowLevel";
+				if(locationTypeId== 5l){
+					List<Long> constiList = tehsilDAO.getAllConstituenciesByTehilId(locationValue);
+					constituencyIds.addAll(constiList);
+					constituencyId=locationValue;
+				}if(locationTypeId== 6l){
+					List<Long> constiList = tehsilDAO.getConstituencyByPanchayt(locationValue);
+					constituencyIds.addAll(constiList);
+					constituencyId=locationValue;
+				}if(locationTypeId== 7l){
+					List<Long> constiList = tehsilDAO.getConstituencyByLocalBody(locationValue);
+					constituencyIds.addAll(constiList);
+					constituencyId=locationValue;
+				}
+				
+			}else{
+				
+				constituencyIds.add(constituencyId);
+				
 			}
-			List<Long> constituencyIds = new ArrayList<Long>();
-			constituencyIds.add(constituencyId);
-			
+				
 			List<Long> electionIds = electionDAO.getElectionDetailsByYearAndElectionTypeForLocation(String.valueOf(electionYears), electionScopeId,1L);
-			List<Object[]> wincandidatesList = nominationDAO.findWonCandidateInConstituency(constituencyIds,String.valueOf(electionYears),null);
+			
+			List<Object[]> wincandidatesList =null;
+			if(locationTypeId !=6l && locationTypeId !=7l)
+			wincandidatesList = nominationDAO.locationWisefindWonCandidateInConstituency(constituencyIds,String.valueOf(electionYears),electionScopeId);
 			
 			List<BaseCandidateResultVO> basicWonCandidateVOList = new ArrayList<BaseCandidateResultVO>(0);
 			
@@ -900,8 +931,8 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			}
 			
 			//	List<Object[]> boothResult = candidateBoothResultDAO.findLocationWiseBoothWisePollingPercentage(partyIds,locationTypeId,locationValue,electionYears,level,electionScopeId);
-			
-			List<Object[]> boothWiseWonPartyList = candidateBoothResultDAO.locationWisefindboothWiseResultsForNominators(constituencyId,electionYears);
+
+			List<Object[]> boothWiseWonPartyList = candidateBoothResultDAO.locationWisefindboothWiseResultsForNominators(constituencyId,electionYears,locationTypeId);
 			
 			Map<Long,String> boothwiseWonPartyMap = new HashMap<Long, String>();
 			
@@ -946,7 +977,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 						
 						//List<CandidateBoothResult> candidateboothResults = new ArrayList<CandidateBoothResult>(nomination.getCandidateBoothResults() != null ? nomination.getCandidateBoothResults():null);
 						
-						List<Object[]> candidateboothResults = candidateBoothResultDAO.LocatioWisefindboothWiseResultsForCandidate(constituencyId,param[13] != null ? Long.valueOf(param[13].toString()):0L);
+						List<Object[]> candidateboothResults = candidateBoothResultDAO.LocatioWisefindboothWiseResultsForCandidate(constituencyId,param[13] != null ? Long.valueOf(param[13].toString()):0L, locationTypeId);
 						System.out.println("In getBoothWiseResultsForParty::"+candidateboothResults.size());
 						
 						if(candidateboothResults != null && candidateboothResults.size()>0)

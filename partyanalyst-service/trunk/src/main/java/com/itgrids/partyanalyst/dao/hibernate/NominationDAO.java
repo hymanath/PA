@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -5595,41 +5596,74 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 
 		StringBuilder queryStr = new StringBuilder();
 		
-		queryStr.append(" select model.party.partyId, " + //0
-				"model.party.shortName," + //1
-				" model.candidate.lastname," + //2
-				" model.constituencyElection.constituency.name , "); //3
-		
-		queryStr.append(" model.constituencyElection.election.electionScope.electionType.electionType, " + //4
-				" model.constituencyElection.election.electionYear,  "); //5
-		queryStr.append(" model.constituencyElection.constituencyElectionResult.totalVotesPolled, " + //6
-				" model.constituencyElection.constituencyElectionResult.validVotes, " +  //7
-				" model.constituencyElection.constituencyElectionResult.votingPercentage ,  "); //8
-		queryStr.append(" model.candidateResult.votesEarned,  " + //9
-				"  model.candidateResult.votesPercengate,  " + //10
-				"  model.candidateResult.rank,  " + //11
-				"  model.candidateResult.marginVotes, " + //12
-				"  model.nominationId," + //13
-				"  model.constituencyElection.constituencyElectionResult.totalVotes "); //14
-		
-		queryStr.append(" from Nomination model  where model.party.partyId in (:partyIds) and model.constituencyElection.election.electionYear="+electionYear+" and model.constituencyElection.election.electionScope.electionScopeId =:electionScopeId  ");
+		queryStr.append(" SELECT n.party_id AS partyId,p.short_name AS shortName,c.lastname AS lastName, cn.name AS name, et.election_type AS electionType," +
+				" e.election_year AS electionYear,cer.total_votes_polled AS totalPolledVotes,cer.valid_votes AS validVotes,cer.voting_percentage AS votingPercentage," +
+				" cr.votes_earned AS votesEarned,cr.votes_percentage AS votesPercentage,cr.rank AS rank,cr.margin_votes AS marginVotes,n.nomination_id AS nominationId," +
+				" cer.total_votes AS totalVotes FROM" +
+				"  nomination n, party p, candidate c, constituency_election ce, constituency cn, election e, election_scope es, election_type et," +
+				" constituency_election_result cer, candidate_result cr " +
+				" WHERE n.party_id = p.party_id AND n.candidate_id = c.candidate_id AND n.consti_elec_id = ce.consti_elec_id AND ce.constituency_id = cn.constituency_id " +
+				" AND ce.election_id = e.election_id AND e.election_scope_id = es.election_scope_id AND es.election_type_id = et.election_type_id " +
+				" AND ce.consti_elec_id = cer.consti_elec_id AND n.nomination_id = cr.nomination_id   AND e.election_year ="+electionYear+ " AND e.election_scope_id ="+electionScopeId);
+
 		if(electionScopeId == 1l){
-			queryStr.append(" and model.constituencyElection.constituency.constituencyId = "+
-					" (select distinct model.parliamentId from ParliamentAssembly model where model.assemblyId=:constituencyIds) " );
+			queryStr.append(" and ce.constituency_id IN (SELECT DISTINCT parliament28_.parliament_id FROM parliament_assembly parliament28_ " +
+					" WHERE parliament28_.assembly_id IN (:constituencyIds)) " );
 			
 		}else{
 			
-			queryStr.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds) " );
+			queryStr.append(" and ce.constituency_id in (:constituencyIds) " );
 		}
-		queryStr.append(" group by model.party.partyId order by model.candidateResult.votesEarned desc ");
+		if(partyIds!= null && partyIds.size()>0){
+			queryStr.append(" AND n.party_id IN (:partyIds) ");
+		}
+		queryStr.append(" group by n.party_id order by cr.votes_earned desc ");
 		
-		Query qurQuery = getSession().createQuery(queryStr.toString());
+		Query qurQuery = getSession().createSQLQuery(queryStr.toString()).addScalar("partyId",Hibernate.LONG)
+				.addScalar("shortName",Hibernate.STRING)
+				.addScalar("lastName",Hibernate.STRING)
+				.addScalar("name",Hibernate.STRING)
+				.addScalar("electionType",Hibernate.STRING)
+				.addScalar("electionYear",Hibernate.LONG)
+				.addScalar("totalPolledVotes",Hibernate.LONG)
+				.addScalar("validVotes",Hibernate.LONG)
+				.addScalar("votingPercentage",Hibernate.BIG_DECIMAL)
+				.addScalar("votesEarned",Hibernate.LONG)
+				.addScalar("votesPercentage",Hibernate.BIG_DECIMAL)
+				.addScalar("rank",Hibernate.LONG)
+				.addScalar("marginVotes",Hibernate.LONG)
+				.addScalar("nominationId",Hibernate.LONG)
+				.addScalar("totalVotes",Hibernate.LONG);
 		qurQuery.setParameterList("constituencyIds", constituencyIds);
 		qurQuery.setParameterList("partyIds", partyIds);
-		qurQuery.setParameter("electionScopeId", electionScopeId);
 		
 		return qurQuery.list();	
 		
+	}
+	@Override
+	public List<Object[]> locationWisefindWonCandidateInConstituency(List<Long> constituencyIds, String electionYear, Long electionScopeId) {
+
+
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select  model.candidate.candidateId,upper(model.candidate.lastname),model.party.partyId, upper(model.party.shortName), model.constituencyElection.reservationZone,  ");
+		queryStr.append(" model.candidateResult.votesEarned,model.candidateResult.marginVotes,model.candidateResult.votesPercengate from Nomination model where model.constituencyElection.election.electionYear="+electionYear+" ");
+		if(electionScopeId !=null && electionScopeId.longValue() >0){
+			if(electionScopeId ==1l)
+			queryStr.append(" and model.constituencyElection.constituency.constituencyId in (select distinct model.parliamentId from ParliamentAssembly model where model.assemblyId in(:constituencyIds))");
+			if(electionScopeId ==2l)
+				queryStr.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
+			queryStr.append(" and model.constituencyElection.election.electionScope.electionScopeId in (:electionScopeId) ");
+		}
+		queryStr.append(" and model.candidateResult.rank = 1 ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("constituencyIds", constituencyIds);
+		if(electionScopeId !=null && electionScopeId.longValue() >0){
+			query.setParameter("electionScopeId", electionScopeId);
+		}
+		List<Object[]> result= query.list();	
+		return result;
+	
 	}
 	
 }

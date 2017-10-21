@@ -708,4 +708,6 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 
 	public List<Object[]> findByLocationBasedConstituencyPartyInfoAndElectionsYears(List<Long> partyIds, List<Long> constituencyIds, String electionYear,Long electionScopeId);
 
+	public List<Object[]> locationWisefindWonCandidateInConstituency(List<Long> constituencyIds, String electionYear, Long electionScopeId);
+
 }
