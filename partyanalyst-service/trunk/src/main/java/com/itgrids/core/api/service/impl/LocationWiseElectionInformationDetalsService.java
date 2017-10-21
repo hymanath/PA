@@ -1024,6 +1024,12 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 									
 									boothResultVO.setWonParty(partyName);
 									boothResultVOs.add(boothResultVO);
+									Object [] partiesArr={"TDP","BJP","TDP+BJP","TDP/BJP","TDP & BJP","YSRC","INC","CPM","CPI","OTHERS"};
+									List<BoothResultVO> returnList = (List<BoothResultVO>) commonMethodsUtilService.sortElectionInformationVOsList(boothResultVOs,"message",partiesArr);
+									if(commonMethodsUtilService.isListOrSetValid(returnList)){							
+										boothResultVOs.clear();
+										boothResultVOs.addAll(returnList);
+									}
 									partyBoothPerformanceVO.setBoothResults(boothResultVOs);
 								
 							}
@@ -1031,7 +1037,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 						
 						
 						boothResultsForParties.add(partyBoothPerformanceVO);
-					
+						
 				}
 			}
 			return boothResultsForParties;
@@ -1340,10 +1346,12 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 					candidateVO.setMarginVotes(vo.getMarginVotes());
 					candidateVO.setWonCandidate(vo.getWonCandidate());
 					candidatesList.add(candidateVO);
-					
-					
-					
-					
+					Object [] partiesArr={"TDP","BJP","TDP+BJP","TDP/BJP","TDP & BJP","YSRC","INC","CPM","CPI","OTHERS"};
+					List<PartyBoothPerformanceVO> returnList = (List<PartyBoothPerformanceVO>) commonMethodsUtilService.sortElectionInformationVOsList(candidatesList,"partyName",partiesArr);
+					if(commonMethodsUtilService.isListOrSetValid(returnList)){							
+						candidatesList.clear();
+						candidatesList.addAll(returnList);
+					}		
 					if(vo.getBoothResults() != null && vo.getBoothResults().size()>0)
 					{
 						List<BoothResultVO> boothwiseResultVOList = null;

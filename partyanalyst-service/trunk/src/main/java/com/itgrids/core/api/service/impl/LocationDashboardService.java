@@ -5908,6 +5908,12 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 							vo.setPerc(""+commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(tempPerc));
 						}
 					}
+					Object [] partiesArr={"TDP","BJP","TDP+BJP","TDP/BJP","TDP & BJP","YSRC","INC","CPM","CPI","OTHERS"};
+					List<ElectionInformationVO> returnList = (List<ElectionInformationVO>) commonMethodsUtilService.sortElectionInformationVOsList(partysList,"partyName",partiesArr);
+					if(commonMethodsUtilService.isListOrSetValid(returnList)){							
+					 vo.getList().clear();
+					 vo.getList().addAll(returnList);
+					}
 					participantsMap.put(electionId, partysList);
 				}
 			}
@@ -5960,6 +5966,12 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 						vo.setElectionType(commonMethodsUtilService.getStringValueForObject(param[2]));
 						vo.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[3]));
 						vo.setTotalSeatsCount(vo.getTotalSeatsCount() + commonMethodsUtilService.getLongValueForObject(param[7]));
+					}
+					Object [] partiesArr={"TDP","BJP","TDP+BJP","TDP/BJP","TDP & BJP","YSRC","INC","CPM","CPI","OTHERS"};
+					List<ElectionInformationVO> returnList = (List<ElectionInformationVO>) commonMethodsUtilService.sortElectionInformationVOsList(partysList,"partyName",partiesArr);
+					if(commonMethodsUtilService.isListOrSetValid(returnList)){							
+					 vo.getList().clear();
+					 vo.getList().addAll(returnList);
 					}
 					wonPartiesMap.put(electionId, partysList);
 				}
@@ -6026,6 +6038,16 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 					}
 				});
 			}
+			if(finalList != null && finalList.size()>0){
+				for(ElectionInformationVO vo : finalList){
+					Object [] partiesArr={"TDP","BJP","TDP+BJP","TDP/BJP","TDP & BJP","YSRC","INC","CPM","CPI","OTHERS"};
+					List<ElectionInformationVO> returnList = (List<ElectionInformationVO>) commonMethodsUtilService.sortElectionInformationVOsList(vo.getList(),"partyName",partiesArr);
+					if(commonMethodsUtilService.isListOrSetValid(returnList)){							
+					 vo.getList().clear();
+					 vo.getList().addAll(returnList);
+					}
+				}
+			}		
 				
 		}catch(Exception e){
 			Log.error("Exception raised in getLocationWiseElectionResults method of LocationDashboardService"+e);
