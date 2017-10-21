@@ -57,11 +57,27 @@ function onLoadCalls()
 		getDetailedElectionInformaction();
 	}
 	
-	if(locationLevelId == "2"){
+	if(locationLevelId < "5"){
 		$(".searchLevelCls").show();
 	}else{
 		$(".searchLevelCls").hide();
 	}
+	if(locationLevelId == '3'){
+		$("#searchLevelId").html('');
+		$("#searchLevelId").append('<option value="constituency">Constituency</option>');
+		$("#searchLevelId").append('<option value="mandal">Mandal</option>');
+		$("#searchLevelId").trigger("chosen:updated");
+	}else if(locationLevelId == '4'){
+		$("#searchLevelId").html('');
+		$("#searchLevelId").append('<option value="mandal">Mandal</option>');
+		$("#searchLevelId").append('<option value="panchayat">Panchayat</option>');
+		$("#searchLevelId").trigger("chosen:updated");
+	}else if(locationLevelId == '10'){
+		$("#searchLevelId").html('');
+		$("#searchLevelId").append('<option value="constituency">constituency</option>');
+		$("#searchLevelId").trigger("chosen:updated");
+	}
+	
 	getElectionTypes();
 	
 }
@@ -1910,7 +1926,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 											if(result[0].list[j].subList1[k].wonSeatsCount !=null && result[0].list[j].subList1[k].wonSeatsCount>0){
 												str+='<span class="statusClr statusClickCls" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;"  status_attr="'+result[0].list[j].subList1[k].status+'" year_attr="'+result[0].list[j].electionYear+'" title="click here to view  '+result[0].list[j].subList1[k].status+' locations details" locationids_attr="'+result[0].list[j].subList1[k].idsList+'">'+result[0].list[j].subList1[k].wonSeatsCount+'</span>';
 											}else{
-												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;">0</span>';
+												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;text-decoration:none;cursor: auto;">0</span>';
 											}
 												
 											str+='</div>';
@@ -1927,7 +1943,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 											if(result[0].list[j].subList1[k].wonSeatsCount !=null && result[0].list[j].subList1[k].wonSeatsCount>0){
 												str+='<span class="statusClr statusClickCls" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;"  status_attr="'+result[0].list[j].subList1[k].status+'" year_attr="'+result[0].list[j].electionYear+'" title="click here to view  '+result[0].list[j].subList1[k].status+' locations details"  locationids_attr="'+result[0].list[j].subList1[k].idsList+'">'+result[0].list[j].subList1[k].wonSeatsCount+'</span>';
 											}else{
-												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;">0</span>';
+												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;text-decoration:none;cursor: auto;">0</span>';
 											}
 												
 											str+='</div>';
@@ -1944,7 +1960,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 											if(result[0].list[j].subList1[k].wonSeatsCount !=null && result[0].list[j].subList1[k].wonSeatsCount>0){
 												str+='<span class="statusClr statusClickCls" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;"  status_attr="'+result[0].list[j].subList1[k].status+'" year_attr="'+result[0].list[j].electionYear+'" title="click here to view  '+result[0].list[j].subList1[k].status+' locations details"  locationids_attr="'+result[0].list[j].subList1[k].idsList+'">'+result[0].list[j].subList1[k].wonSeatsCount+'</span>';
 											}else{
-												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;">0</span>';
+												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;text-decoration:none;cursor: auto;">0</span>';
 											}
 												
 											str+='</div>';
@@ -2261,4 +2277,24 @@ $(document).on("click",".votingDtsClickCls",function(){
 	$("#openModalDivId").modal("show");
 		$("#titleId").html(locationName+"  Voting Details");
 	//getLocationWiseVotingDetails(electionYrVal,eletionSubType,"clickFunction",userAccessLevelValuesArray,locationLevelId)
+});
+$(document).on("change","#elctionTypeValId",function(){
+	var value = $(this).val();
+	
+	if(locationLevelId == "2"){
+		
+		if(value == "1" || value == 1){
+			
+			$("#searchLevelId").html('');
+			$("#searchLevelId").append('<option value="parliament">Parliament</option>');	
+			$("#searchLevelId").trigger("chosen:updated");
+		}else{
+			$("#searchLevelId").html('');
+			$("#searchLevelId").append('<option value="district">District</option>');	
+			$("#searchLevelId").append('<option value="constituency">Constituency</option>');	
+			$("#searchLevelId").append('<option value="parliament">Parliament</option>');	
+			$("#searchLevelId").trigger("chosen:updated");
+		}
+	}
+	
 });
