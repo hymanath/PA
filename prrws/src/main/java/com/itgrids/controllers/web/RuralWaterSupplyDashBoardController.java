@@ -81,6 +81,7 @@ public class RuralWaterSupplyDashBoardController {
 		List<LocationVO> locationVOList = null;
 		try {
 			locationVOList = rWSNICService.getHabitationCoverageByStatusByLocationType(vo);
+			//locationVOList = rWSNICService.getHabitationCoverageStatus(vo);
 
 		} catch (Exception e) {
 			LOG.error(
@@ -461,9 +462,30 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return null;
 	}
+	
+	@GetMapping("/habitationCoverageStatus")
+	public String habitationCoverageStatusDashBoardPage(ModelMap model,HttpSession session){
+		return "habitationCoverageStatus";
+	}
+	@GetMapping("/getAllData")
+	public void getAllData(){
+		rWSNICService.getAllData();
+	}
 	@GetMapping("/keyPerfomanceDashBoard")
 	public String keyPerfomanceDashBoard(ModelMap model){
 		return "keyPerfomanceDashBoard";
+	}
+	@GetMapping("/getStressedHabitationDetailsByStatusByLocationType")
+	public void getStressedHabitationDetailsByStatusByLocationType(){
+		rWSNICService.getStressedHabitationDetailsByStatusByLocationType();
+	}
+	@GetMapping("/updateAllHabitationData")
+	public void updateAllHabitationData(){
+		rWSNICService.updateAllHabitationData();
+	}
+	@GetMapping("/updateAllTressedHabitationData")
+	public void updateAllTressedHabitationData(){
+		rWSNICService.updateAllTressedHabitationData();
 	}
 	
 	@PostMapping("/getExceededTargetWorksDetails")

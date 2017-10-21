@@ -1,5 +1,8 @@
 package com.itgrids.dao.impl;
 
+import java.util.List;
+import java.util.Set;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -21,10 +24,6 @@ public class RwsConstituencyDAO extends GenericDaoHibernate<RwsConstituency, Lon
 	
 	@Override
 	public String getRwsCode(Long constituencyId){
-		/*
-		 * select rwscons.constituency_code from rws_constituency rwscons, constituency con 
-where rwscons.rws_constituency_id=con.rws_constituency_id;
-		*/
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.constituencyCode from RwsConstituency model, Constituency model1 "+
 				" where model.rwsConstituencyId=model1.rwsConstituencyId and model1.constituencyId =:constituencyId  ");
@@ -32,5 +31,11 @@ where rwscons.rws_constituency_id=con.rws_constituency_id;
 		query.setParameter("constituencyId", constituencyId);
 		 return (String) query.uniqueResult();
 	}
-
+	public List<Object[]> getConstituencyList(Set<String> constituencyIdList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select RC.constituencyCode , RC.constituencyName from RwsConstituency RC where RC.constituencyCode in (:constituencyIdList) ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("constituencyIdList", constituencyIdList);
+		return query.list();
+	}
 }
