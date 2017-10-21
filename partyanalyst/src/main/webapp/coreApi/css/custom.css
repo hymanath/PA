@@ -1255,6 +1255,7 @@ font-size:12px !important;
 	border-left:2px solid #008855;
 	border-right:2px solid #008855;
 }
+
 .table-election tr td
 {
 	padding:20px 10px !important;
@@ -1620,4 +1621,72 @@ font-size:12px !important;
 }
 .boderBlock{
 	border:1px solid #777;
+}
+.table-meetings-month
+{
+	border-collapse: separate;
+	border-spacing:0px;
+	width:100%;
+	padding-top:5px;
+	background-color:#E9F0FC
+}
+.table-meetings-month tr
+{
+	background-color:#DFE0E0
+}
+.table-meetings-month thead th , .table-meetings-month tr td
+{
+	padding:10px 8px;
+}
+.table-meetings-month thead th
+{
+	background-color:#E9F0FC
+}
+.table-meetings-month thead tr:first-child th:nth-child(n+2)
+{
+	border-top-left-radius:8px;
+	border-top-right-radius:8px;
+	border-left:2px solid #71D4F5;
+	border-right:2px solid #71D4F5;
+	border-top:2px solid #71D4F5;
+}
+.table-meetings-month tr:last-child td:nth-child(n+2)
+{
+	border-bottom:2px solid #71D4F5;
+}
+.table-meetings-month thead tr:nth-child(2) th:nth-child(5n+1)
+{
+	border-left:2px solid #71D4F5;
+}
+.table-meetings-month thead tr:nth-child(2) th:nth-child(8n+5)
+{
+	border-right:2px solid #71D4F5;
+}
+.table-meetings-month tr:last-child td:nth-child(8n+6)
+{
+	border-right:2px solid #71D4F5;
+	border-bottom-right-radius:8px;
+}
+.table-meetings-month tr:last-child td:nth-child(5n+2)
+{
+	border-bottom-left-radius:8px;
+	border-left:2px solid #71D4F5;
+	border-bottom:2px solid #71D4F5;
+}
+.table-meetings-month-dist.table-election thead th:nth-child(n+2)
+{
+	border-left-color:#71D4F5;
+	border-right-color:#71D4F5;
+	border-top-color:#71D4F5 !important;
+}
+.table-meetings-month-dist.table-election tr td:nth-child(n+2)
+{
+	border-left-color:#71D4F5;
+	border-right-color:#71D4F5;
+}
+.table-meetings-month-dist.table-election tr:last-child td:nth-child(n+2)
+{
+	border-left-color:#71D4F5;
+	border-right-color:#71D4F5;
+	border-bottom-color:#71D4F5 !important;
 }

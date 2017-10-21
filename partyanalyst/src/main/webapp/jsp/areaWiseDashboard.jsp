@@ -293,26 +293,30 @@
 					<div class="col-sm-6">
 						<h4 class="panel-title theme-title-color m_top10">Meetings</h4>
 					</div>
+					<div class="col-sm-6">
+						<span class="pull-right" style="margin-top: 10px;">
+							<i class="glyphicon glyphicon-refresh f-14" refresh="meetings"></i>
+						</span>
+						<div class="input-group pull-right dateRangePickerClsForMeetings" expand-block-date="meetings" style="width:200px;margin-right:12px;">
+							<input type="text" id="dateRangeIdForMeetings" style="width:190px" class="form-control"/>
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</div>
+					</div>
 				</div>
 				<div id="areaWiseMeetingsId" class="block m_top10" style="display:none;">
 				</div>
 				<div class="block m_top10">
 					<div class="row">
-						<div class="col-sm-4">
-							<h4 class="panel-title">State Meetings</h4>
-							<div id="stateMeetingsBlockId" class="m_top20"></div>
-						</div>
-						<div class="col-sm-8">
+						<div id="stateMeetingsBlockId" class="m_top20"></div>
+						<div class="col-sm-8" id="committeeMeetingsBLock">
 							<h4 class="panel-title">Committee Meetings</h4>
 							<div id="committeeMeetingsBlockId" class="m_top10"></div>
 						</div>
 					</div>
 					<div class="row m_top20">
-						<div class="col-sm-12">
-							<h4 class="panel-title">Special Meetings</h4>
-							<small>NOTE: Showing Information 'Participantes' from this location Level Only</small>
-							<div id="specialMeetingsBlockId" class="m_top10"></div>
-						</div>
+						<div id="specialMeetingsBlockId" class="m_top10"></div>
 					</div>
 				</div>
 			</div>
@@ -590,7 +594,7 @@
 </div><!--  /.modal -->
 <!----- Tours Modal End ---->
 <div class="modal fade" id="openModalDiv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
-	<div class="modal-dialog" role="document" style="width:95%;margin:auto">
+	<div class="modal-dialog" role="document" style="width:95%">
 		<div class="modal-content">
 			<div class="modal-header" style="background-color:#CCCCCC">
 				<div class="row" >
