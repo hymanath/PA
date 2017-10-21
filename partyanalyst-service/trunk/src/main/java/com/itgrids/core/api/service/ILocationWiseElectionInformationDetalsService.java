@@ -18,7 +18,7 @@ public interface ILocationWiseElectionInformationDetalsService {
 	public PartyBoothPerformanceVO segrigateBoothWiseResults(List<PartyBoothPerformanceVO> partyBoothPerformanceVOList);
 	List<PartyBoothPerformanceVO> getBoothWiseElectionResults(List<Long> partyIds, Long constituencyId, Long electionYears,Long electionScopeId,Long locationTypeId,Long locationValue);
 
-	public List<ElectionInformationVO> getLocationWiseVotingDetails(List<Long> electionYrs,Long levelId,List<Long> locationVals,List<String> subtypes,String searchLevel,String clickType);
+	public List<ElectionInformationVO> getLocationWiseVotingDetails(List<Long> electionYrs,Long levelId,List<Long> locationVals,List<String> subtypes,String searchLevel,String clickType,List<Long> partyIds);
 	public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYearWise(Long locationTypeId,Long locationValue,List<Long> partyIdList,
 			List<Long> electionYrs,List<Long> electionScopeIds, List<String> subTypes,String searchType,String statusType,String year,List<Long> locationIdsList);
 }
