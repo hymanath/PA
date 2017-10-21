@@ -34,6 +34,8 @@ var electionYrVal = [];
 var electionSubTypeArr=["MAIN"];
 var electionYearsSubTypeArr=["MAIN","BYE"];
 //Tours And Meetings And Alerts Dates Start 
+var customStartMeetingsDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
+var customEndMeetingsDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 var customStartATMDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
 var customEndATMDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 var globalboardLevelId='';
@@ -132,20 +134,20 @@ function onLoadInitialisations()
 	//Meetings	Start
 	$("#dateRangeIdForMeetings").daterangepicker({
 		opens: 'left',
-		startDate: customStartATMDate,
-        endDate: customEndATMDate,
+		startDate: customStartMeetingsDate,
+        endDate: customEndMeetingsDate,
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
 		ranges: {
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'This Month': [moment().startOf('month'), moment()],
            'This Year': [moment().startOf('Year'), moment()],
-		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
         }
 	});
 	//Tours Start
@@ -351,9 +353,10 @@ function onLoadClicks()
 	});
 	//Meetings
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
-		customStartATMDate = picker.startDate.format('DD/MM/YYYY');
-		customEndATMDate = picker.endDate.format('DD/MM/YYYY');
-		getLocationWiseMeetingsCountDetails(1);
+		customStartMeetingsDate = picker.startDate.format('DD/MM/YYYY');
+		customEndMeetingsDate = picker.endDate.format('DD/MM/YYYY');
+		getLocationWiseMeetingsCount();	//Meetings
+		getLocationWiseMeetingsCountDetails(1);	
 		getLocationWiseMeetingsCountDetails(2);
 		getLocationWiseMeetingsCountDetails(3);
 	});
@@ -3396,8 +3399,8 @@ function getLocationWiseMeetingsCount(){
 	jsObj={
 		locationTypeId:	locationLevelId,
 		locationValues:	userAccessLevelValuesArray,
-		fromDate :customStartATMDate,
-		toDate :customEndATMDate
+		fromDate :customStartMeetingsDate,
+		toDate :customEndMeetingsDate
 	}
 	$.ajax({
 		type : "GET",
@@ -6297,19 +6300,26 @@ function getAlertOverviewClick(alertTypeIds,statusIds,designationId,alertCateger
 function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 	if(partyMeetingMainTypeId == '1' || partyMeetingMainTypeId == 1)
 	{
-		$("#committeeMeetingsBlockId").html(spinner);
+		$("#committeeMeetingsBlockId").html(spinner).show();
 	}else if(partyMeetingMainTypeId == '2' || partyMeetingMainTypeId == 2)
 	{
-		$("#stateMeetingsBlockId").html(spinner);
+		$("#stateMeetingsBlockId").html(spinner).show();
 	}else if(partyMeetingMainTypeId == '3' || partyMeetingMainTypeId == 3)
 	{
-		$("#specialMeetingsBlockId").html(spinner);
+		$("#specialMeetingsBlockId").html(spinner).show();
+	}
+	if(locationLevelId == 2)
+	{
+		$("#stateMeetingsBlockId").show();
+		$("#committeeMeetingsBLock").addClass("col-sm-8").removeClass("col-sm-12");
+	}else{
+		$("#stateMeetingsBlockId").hide();
 	}
 	jsObj={
 		locationTypeId			:locationLevelId,
 		locationValues			:userAccessLevelValuesArray,
-		fromDate 				:"",
-		toDate 					:"",
+		fromDate 				:customStartMeetingsDate,
+		toDate 					:customEndMeetingsDate,
 		partyMeetingMainTypeId	:partyMeetingMainTypeId
 	}
 	$.ajax({
@@ -6321,6 +6331,18 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 		if(result.levelList != null && result.levelList.length > 0)
 		{
 			return buildGraph(result);
+		}else{
+			if(partyMeetingMainTypeId == '1' || partyMeetingMainTypeId == 1)
+			{
+				$("#committeeMeetingsBlockId").hide();
+			}else if(partyMeetingMainTypeId == '2' || partyMeetingMainTypeId == 2)
+			{
+				$("#stateMeetingsBlockId").hide();
+				$("#committeeMeetingsBLock").addClass("col-sm-12").removeClass("col-sm-8");
+			}else if(partyMeetingMainTypeId == '3' || partyMeetingMainTypeId == 3)
+			{
+				$("#specialMeetingsBlockId").hide();
+			}
 		}
 	});
 	function buildGraph(result)
@@ -6349,7 +6371,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 							}
 							str+='<div style="height:150px;" id="meetingsGraphBlock'+result.levelList[i].name.substr(0,6)+'Id"></div>';
 							if(result.levelList[i].name == "DISTRICT"){
-								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-24 popUpDetailsClickCls" attr_type="meeting_type" style="margin-top:-16px;cursor:pointer;"></i>';
+								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-24 popUpDetailsClickCls" attr_type="meeting_type" style="margin-top:-16px;cursor:pointer;text-decoration:none;"></i>';
 							}
 						str+='</div>';
 					str+='</div>';
@@ -6414,7 +6436,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 							bar: {
 								stacking: 'stacking',  
 								dataLabels:{
-									enabled: true,
+									enabled: false,
 									formatter: function() {
 										if (this.y === 0) {
 											return null;
@@ -6435,8 +6457,11 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 		}else if(partyMeetingMainTypeId == '2' || partyMeetingMainTypeId == 2)
 		{
 			var str='';
-			str+='<div class="block">';
-				str+='<div id="meetingsGraphBlockStateIdMain"></div>';
+			str+='<div class="col-sm-4">';
+				str+='<h4 class="panel-title">State Meetings</h4>';
+				str+='<div class="block">';
+					str+='<div id="meetingsGraphBlockStateIdMain"></div>';
+				str+='</div>';
 			str+='</div>';
 			$("#stateMeetingsBlockId").html(str);
 			var finalArr = [];
@@ -6510,83 +6535,89 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 			}
 		}else if(partyMeetingMainTypeId == '3' || partyMeetingMainTypeId == 3){
 			var str='';
-			
-			str+='<div class="scrollListMeeting">';
-				str+='<div class="row">';
-					for(var i in result.levelList)
-					{
-						str+='<div class="col-sm-6 m_top10">';
-							str+='<div class="block">';
-								str+='<h4 class="panel-title">'+result.levelList[i].name+'</h4>';
-								str+='<div class="row m_top10">';
-									str+='<div class="col-sm-3">';
-										str+='<div id="specialTotalMeetings'+i+'" style="height:120px;"></div>';
-										str+='<p>Total Meetings</p>';
+			str+='<div class="col-sm-12">';
+				str+='<h4 class="panel-title">Special Meetings</h4>';
+				str+='<small>NOTE: Showing Information "Participantes" from this location Level Only</small>';
+				str+='<div class="scrollListMeeting">';
+					str+='<div class="row">';
+						for(var i in result.levelList)
+						{
+							str+='<div class="col-sm-6 m_top10">';
+								str+='<div class="block">';
+									str+='<h4 class="panel-title">'+result.levelList[i].name+'</h4>';
+									str+='<div class="row m_top10">';
+										str+='<div class="col-sm-3">';
+											str+='<div id="specialTotalMeetings'+i+'" style="height:120px;"></div>';
+											str+='<p>Total Meetings</p>';
+										str+='</div>';
+										str+='<div class="col-sm-5" style="border-right:2px dashed #ddd;border-left:2px dashed #ddd">';
+											str+='<div id="specialInviteesMeetings'+i+'" style="height:150px;"></div>';
+										str+='</div>';
+										str+='<div class="col-sm-4">';
+											str+='<p>Attended</p>';
+											str+='<div id="specialAttendedMeetings'+i+'" style="height:150px;"></div>';
+										str+='</div>';
 									str+='</div>';
-									str+='<div class="col-sm-5" style="border-right:2px dashed #ddd;border-left:2px dashed #ddd">';
-										str+='<div id="specialInviteesMeetings'+i+'" style="height:150px;"></div>';
+									str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].conductedDate+'  ( Total Inviees:'+result.levelList[i].recentMeetingInviteesCnt+')</p>';
+									str+='<div class="table-responsive" style="height:121px">';
+										str+='<table class="table m_top10">';
+											str+='<thead class="bg-E9">';
+												str+='<th></th>';
+												str+='<th>Attended</th>';
+												str+='<th>Late</th>';
+												str+='<th>Absent</th>';
+												str+='<th>NI</th>';
+											str+='</thead>';
+											for(var j in result.levelList[i].levelList)
+						{
+											str+='<tr>';
+												str+='<td>'+result.levelList[i].levelList[j].name+'</td>';
+												str+='<td>';
+													if(result.levelList[i].levelList[j].recentInviteeAttended != null)
+													{
+														str+=''+result.levelList[i].levelList[j].recentInviteeAttended+'';
+													}
+													if(result.levelList[i].levelList[j].attendedPerc != null)
+													{
+														str+='<small class="text-success">'+result.levelList[i].levelList[j].attendedPerc+'</small>';
+													}
+												str+='</td>';
+												str+='<td>';
+													if(result.levelList[i].levelList[j].recentLate != null)
+													{
+														str+=''+result.levelList[i].levelList[j].recentLate+'';
+													}
+													if(result.levelList[i].levelList[j].latePerc != null)
+													{
+														str+='<small class="text-success">'+result.levelList[i].levelList[j].latePerc+'</small>';
+													}
+												str+='</td>';
+												str+='<td>';
+													if(result.levelList[i].levelList[j].recentAbcent != null)
+													{
+														str+=''+result.levelList[i].levelList[j].recentAbcent+'';
+													}
+													if(result.levelList[i].levelList[j].abcentPerc != null)
+													{
+														str+='<small class="text-success">'+result.levelList[i].levelList[j].abcentPerc+'</small>';
+													}
+												str+='</td>';
+												str+='<td>'+result.levelList[i].levelList[j].recentNonInvitee+'</td>';
+											str+='</tr>';
+						}
+										str+='</table>';
 									str+='</div>';
-									str+='<div class="col-sm-4">';
-										str+='<p>Attended</p>';
-										str+='<div id="specialAttendedMeetings'+i+'" style="height:150px;"></div>';
-									str+='</div>';
-								str+='</div>';
-								str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].conductedDate+'  ( Total Inviees:'+result.levelList[i].recentMeetingInviteesCnt+')</p>';
-								str+='<div class="table-responsive">';
-									str+='<table class="table m_top10">';
-										str+='<thead class="bg-E9">';
-											str+='<th></th>';
-											str+='<th>Attended</th>';
-											str+='<th>Late</th>';
-											str+='<th>Absent</th>';
-											str+='<th>NI</th>';
-										str+='</thead>';
-										for(var j in result.levelList[i].levelList)
-					{
-										str+='<tr>';
-											str+='<td>'+result.levelList[i].levelList[j].name+'</td>';
-											str+='<td>';
-												if(result.levelList[i].levelList[j].recentInviteeAttended != null)
-												{
-													str+=''+result.levelList[i].levelList[j].recentInviteeAttended+'';
-												}
-												if(result.levelList[i].levelList[j].attendedPerc != null)
-												{
-													str+='<small class="text-success">'+result.levelList[i].levelList[j].attendedPerc+'</small>';
-												}
-											str+='</td>';
-											str+='<td>';
-												if(result.levelList[i].levelList[j].recentLate != null)
-												{
-													str+=''+result.levelList[i].levelList[j].recentLate+'';
-												}
-												if(result.levelList[i].levelList[j].latePerc != null)
-												{
-													str+='<small class="text-success">'+result.levelList[i].levelList[j].latePerc+'</small>';
-												}
-											str+='</td>';
-											str+='<td>';
-												if(result.levelList[i].levelList[j].recentAbcent != null)
-												{
-													str+=''+result.levelList[i].levelList[j].recentAbcent+'';
-												}
-												if(result.levelList[i].levelList[j].abcentPerc != null)
-												{
-													str+='<small class="text-success">'+result.levelList[i].levelList[j].abcentPerc+'</small>';
-												}
-											str+='</td>';
-											str+='<td>'+result.levelList[i].levelList[j].recentNonInvitee+'</td>';
-										str+='</tr>';
-					}
-									str+='</table>';
 								str+='</div>';
 							str+='</div>';
-						str+='</div>';
-					}
+						}
+					str+='</div>';
 				str+='</div>';
 			str+='</div>';
 			$("#specialMeetingsBlockId").html(str);
-			$(".scrollListMeeting").mCustomScrollbar({setHeight:"600px"})
+			if(result.levelList.length > 2)
+			{
+				$(".scrollListMeeting").mCustomScrollbar({setHeight:"600px"})
+			}
 			var colorsArr = ['#06D7A7','#0888DE','#994100','#AFCE69']
 			for(var i in result.levelList)
 			{
@@ -6858,12 +6889,12 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
   function getLocationWiseMeetingStatusDetailsAction(){
 	  $("#openPostDetailsModalDivId").html(spinner);
 	  var jsObj={
-		searchLocationId:  locationLevelId,
-		locationValuesArr:  userAccessLevelValuesArray,
-		fromDateStr :customStartATMDate,
-		toDateStr :customEndATMDate,
-		meetingTypeId:1, 	//CommitteeId
-		partyMeetinLevelId :2 //districtId
+		searchLocationId	:  locationLevelId,
+		locationValuesArr	:  userAccessLevelValuesArray,
+		fromDateStr 		:customStartATMDate,
+		toDateStr 			:customEndATMDate,
+		meetingTypeId		:1, 	//CommitteeId
+		partyMeetinLevelId 	:2 //districtId
 	  }
 	   $.ajax({
 		  type : "GET",
@@ -6888,7 +6919,7 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 		
 		str+='<h4>Month Overview</h4>';
 		str+='<div class="table-responsive">';
-			str+='<table class="table tableAlignment table-bordered">';
+			str+='<table class="table-meetings-month">';
 				str+='<thead>';
 					str+='<tr>';
 						str+='<th rowspan="2" style="min-width: 120px ! important;">Total Meetings Every Month</th>';
@@ -6920,7 +6951,6 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 								str+='<th>Not Updated</th>';
 							}
 						}
-						
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -6945,14 +6975,14 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 			str+='</table>';
 		str+='</div>';
 		
-		str+='<h4 class="m_top10">Destrict wise Meeting Conducted Details</h4>';
+		str+='<h4 class="m_top10 text-capitalize">District wise Meeting Conducted Details</h4>';
 		str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered tableAlignment">';
+			str+='<table class="table-meetings-month-dist table-election table">';
 				str+='<thead>';
 					str+='<tr>';
-						str+='<th>Location Name</th>';
+						str+='<th style="background-color:#E9F0FC">Location Name</th>';
 						for(var i in result[0].datesList){
-							str+='<th>'+result[0].datesList[i].month+'</th>';
+							str+='<th class="text-center" style="background-color:#E9F0FC">'+result[0].datesList[i].month+'</th>';
 						}
 					str+='</tr>';
 				str+='</thead>';
@@ -6963,13 +6993,13 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 							str+='<td>'+result[i].name+'</td>';
 							for(var j in result[i].datesList){
 								if(result[i].datesList[j].momStatus == "Y"){
-									str+='<td>Yes ('+result[i].datesList[j].conductedDate+')</td>';
+									str+='<td class="text-center" style="color:#53BC7C">Yes ('+result[i].datesList[j].conductedDate+')</td>';
 								}else if(result[i].datesList[j].momStatus == "N"){
-									str+='<td>No</td>';
+									str+='<td class="text-center" style="color:#F89394">No</td>';
 								}else if(result[i].datesList[j].momStatus == "M"){
-									str+='<td>May Be</td>';
+									str+='<td class="text-center" style="color:#99410F">May Be</td>';
 								}else if(result[i].datesList[j].momStatus == "NU"){
-									str+='<td>Not Updated</td>';
+									str+='<td class="text-center" class="text-danger">Not Updated</td>';
 								}
 								
 							}
