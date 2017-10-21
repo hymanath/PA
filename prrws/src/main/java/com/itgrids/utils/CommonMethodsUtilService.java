@@ -83,7 +83,22 @@ public class CommonMethodsUtilService {
 		}
 		return null;
 	}
-	
+	public Double getDoubleValueForObject(Object param)
+	{
+		try {
+			if(param != null && !param.toString().isEmpty())
+			{
+				return Double.valueOf(param.toString().trim());
+			}
+			else
+			{
+				return 0.0D;
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getStringValueForObject() in CommonUtilService class .",e);
+		}
+		return null;
+	}
 	public Long getLongValueForString(String param)
 	{
 		try {

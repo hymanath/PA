@@ -52,6 +52,11 @@ public interface IRWSNICService {
 	public List<NregaLocationOverviewVO> getIHHLlocationLvlWiseData(InputVO inputVO);
 	public NregaLocationOverviewVO getSBPaymentsAbstract(InputVO inputVO);
 	public List<NregaLocationOverviewVO> getSBPaymentsLevelsWiseData(InputVO inputVO);
+	public void getAllData();
+	public void getStressedHabitationDetailsByStatusByLocationType();
+	public void updateAllTressedHabitationData();
+	public void updateAllHabitationData();
+	public List<LocationVO> getHabitationCoverageStatus(InputVO inputVO);
 	
 	public Map<Long,IdNameVO> getAllAdminWorksDetails();
 	public IdNameVO getExceededTargetWorksDetails();

@@ -1,6 +1,7 @@
 package com.itgrids.tpi.rws.service.impl;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,10 +9,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -22,10 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
+import com.itgrids.dao.IHabitationDAO;
 import com.itgrids.dao.IRwsConstituencyDAO;
 import com.itgrids.dao.IRwsDistrictDAO;
 import com.itgrids.dao.IRwsTehsilDAO;
 import com.itgrids.dao.ITehsilDAO;
+import com.itgrids.dao.ITressedHabitationDAO;
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.IdNameVO;
@@ -38,6 +44,8 @@ import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.dto.WaterSourceVO;
+import com.itgrids.model.Habitation;
+import com.itgrids.model.TressedHabitation;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -68,6 +76,12 @@ public class RWSNICService implements IRWSNICService{
 	private IRwsConstituencyDAO rwsConstituencyDAO;
 	@Autowired
 	private WebServiceUtilService webServiceUtilService;
+	
+	@Autowired
+	private IHabitationDAO habitationDAO;
+	
+	@Autowired
+	private ITressedHabitationDAO tressedHabitationDAO;
 	/*
 	 * Date : 15/06/2017
 	 * Author :Sandeep
@@ -155,7 +169,6 @@ public class RWSNICService implements IRWSNICService{
 		StatusVO FCVO = new StatusVO();
 		FCVO.setStatus("FC");
 		tempList.add(0,FCVO);
-		
 		StatusVO pc4VO = new StatusVO();
 		pc4VO.setStatus("PC4");
 		tempList.add(1,pc4VO);
@@ -2504,7 +2517,1035 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return returnList;
 	}
+	/*
+	 * Swadhin K Lenka
+	 * @see com.itgrids.tpi.rws.service.IRWSNICService#getAllData()
+	 */
+	public void getAllData(){
+		try{
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getAllHabitationDetails");
+	        String authStringEnc = getAuthenticationString("itgrids","Itgrids@123");
+	        InputVO inputVO = new InputVO();
+	        inputVO.setYear("2017");
+	        
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
+        	
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+ 	    			JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			Habitation habitation = null;
+	 	    			for(int i=0;i<0;i++){
+	 	    				try{
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				if(jObj.length() > 0){
+		 	    					habitation = new Habitation();
+		 	    					if(jObj.has("dName")){
+		 	    						habitation.setDistrictName(commonMethodsUtilService.getStringValueForObject(jObj.getString("dName")));
+		 	    					}
+		 	    					if(jObj.has("mName")){
+		 	    						habitation.setMandalName(commonMethodsUtilService.getStringValueForObject(jObj.getString("mName")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("pName")){
+		 	    						habitation.setPanchayatName(commonMethodsUtilService.getStringValueForObject(jObj.getString("pName")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("vName")){
+		 	    						habitation.setVillageName(commonMethodsUtilService.getStringValueForObject(jObj.getString("vName")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("panchName")){
+		 	    						habitation.setPanchName(commonMethodsUtilService.getStringValueForObject(jObj.getString("panchName")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("panchCode")){
+		 	    						habitation.setPanchCode(commonMethodsUtilService.getStringValueForObject(jObj.getLong("panchCode")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("censusYear")){
+		 	    						habitation.setCensusYear(commonMethodsUtilService.getLongValueForObject(jObj.getLong("censusYear")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("censusPlainPopu")){
+		 	    						habitation.setCensusPlainPopulation(commonMethodsUtilService.getLongValueForObject(jObj.getLong("censusPlainPopu")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("censusSCPopu")){
+		 	    						habitation.setCensusScPopulation(commonMethodsUtilService.getLongValueForObject(jObj.getLong("censusSCPopu")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("censusSTPopu")){
+		 	    						habitation.setCensusStPopulation(commonMethodsUtilService.getLongValueForObject(jObj.getLong("censusSTPopu")));
+		 	    					}
+		 	    					
+		 	    					
+		 	    					habitation.setTotalPopulation(habitation.getCensusPlainPopulation()+habitation.getCensusScPopulation()+habitation.getCensusStPopulation());
+		 	    					if(jObj.has("plainPopCovered")){
+		 	    						habitation.setPlainPopulationCovered(commonMethodsUtilService.getLongValueForObject(jObj.getLong("plainPopCovered")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("statusDate")){
+		 	    						habitation.setStatusDate(new Date(commonMethodsUtilService.getLongValueForObject(jObj.getLong("statusDate"))));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("unSafeLpcd")){
+		 	    						habitation.setUnSafeLpcd(commonMethodsUtilService.getDoubleValueForObject(jObj.getDouble("unSafeLpcd")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("safeLpcd")){
+		 	    						habitation.setSafeLpcd(commonMethodsUtilService.getDoubleValueForObject(jObj.getDouble("safeLpcd")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("coverageStatus")){
+		 	    						habitation.setCoverageStatus(commonMethodsUtilService.getStringValueForObject(jObj.getString("coverageStatus")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("previousYrStatus")){
+		 	    						habitation.setPreviousYearStatus(commonMethodsUtilService.getStringValueForObject(jObj.getString("previousYrStatus")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("latitude")){
+		 	    						habitation.setLatitude(commonMethodsUtilService.getStringValueForObject(jObj.getString("latitude")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("longtitude")){
+		 	    						habitation.setLongtitude(commonMethodsUtilService.getStringValueForObject(jObj.getString("longtitude")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("scPopCovered")){
+		 	    						habitation.setScPopulationCovered(commonMethodsUtilService.getLongValueForObject(jObj.getLong("scPopCovered")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("dCode")){
+		 	    						habitation.setDistrictCode(commonMethodsUtilService.getLongValueForObject(jObj.getLong("dCode")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("mCode")){
+		 	    						habitation.setMandalCode(commonMethodsUtilService.getLongValueForObject(jObj.getLong("mCode")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("pCode")){
+		 	    						habitation.setPanchayatCode(commonMethodsUtilService.getLongValueForObject(jObj.getLong("pCode")));
+		 	    					}
+		 	    					
+		 	    					if(jObj.has("vCode")){
+		 	    						habitation.setVillageCode(commonMethodsUtilService.getLongValueForObject(jObj.getLong("vCode")));
+		 	    					}
+		 	    					habitation.setIsDeleted("N");
+		 	    					habitationDAO.save(habitation);
+		 	    				}
+		 	    			}catch(Exception e){
+		 	    				e.printStackTrace();
+		 	    			}
+	 	    			}
+	 	    		}
+	 	    	}
+ 	      	}
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAllData() method, Exception - ",e);
+		}
+	}
+	/*
+	 * Swadhin K Lenka
+	 * @see com.itgrids.tpi.rws.service.IRWSNICService#getStressedHabitationDetailsByStatusByLocationType()
+	 */
+	public void getStressedHabitationDetailsByStatusByLocationType(){
+		try{
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getStressedHabitationDetailsByStatusByLocationType");
+	        String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, new InputVO());
+        	
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+ 	    			JSONArray finalArray = new JSONArray(output);//25848
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			TressedHabitation tressedHabitation = null;
+	 	    			
+	 	    			for(int i=0;i<0;i++){
+	 	    				try{
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				if(jObj.length() > 0){
+		 	    					tressedHabitation = new TressedHabitation();
+		 	    					if(jObj.has("districtCode")){
+		 	    						tressedHabitation.setDistrictCode(commonMethodsUtilService.getLongValueForObject(jObj.getString("districtCode")));
+		 	    					}
+		 	    					if(jObj.has("districtName")){
+		 	    						tressedHabitation.setDistrictName(commonMethodsUtilService.getStringValueForObject(jObj.getString("districtName")));
+		 	    					}
+		 	    					if(jObj.has("constituencyCode")){
+		 	    						tressedHabitation.setConstituencyCode(commonMethodsUtilService.getLongValueForObject(jObj.getString("constituencyCode")));
+		 	    					}
+		 	    					if(jObj.has("constituencyName")){
+		 	    						tressedHabitation.setConstituencyName(commonMethodsUtilService.getStringValueForObject(jObj.getString("constituencyName")));
+		 	    					}
+		 	    					if(jObj.has("mandalCode")){
+		 	    						tressedHabitation.setMandalCode(commonMethodsUtilService.getLongValueForObject(jObj.getString("mandalCode")));
+		 	    					}
+		 	    					if(jObj.has("mandalName")){
+		 	    						tressedHabitation.setMandalName(commonMethodsUtilService.getStringValueForObject(jObj.getString("mandalName")));
+		 	    					}
+		 	    					if(jObj.has("habitationCode")){
+		 	    						tressedHabitation.setHabitationCode(commonMethodsUtilService.getStringValueForObject(jObj.getString("habitationCode")));
+		 	    					}
+		 	    					if(jObj.has("habitationName")){
+		 	    						tressedHabitation.setHabitationName(commonMethodsUtilService.getStringValueForObject(jObj.getString("habitationName")));
+		 	    					}
+		 	    					if(jObj.has("coverageStatus")){
+		 	    						tressedHabitation.setCoverageStatus(commonMethodsUtilService.getStringValueForObject(jObj.getString("coverageStatus")));
+		 	    					}
+		 	    					tressedHabitation.setIsDeleted("N");
+		 	    					tressedHabitationDAO.save(tressedHabitation);
+		 	    				}
+		 	    			}catch(Exception e){
+		 	    				e.printStackTrace();
+		 	    			}
+	 	    			}
+	 	    		}
+	 	    	}
+ 	      	}
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAllData() method, Exception - ",e);
+		}
+	}
 	
+	/*
+	 * Swadhin K Lenka
+	 * @see com.itgrids.tpi.rws.service.IRWSNICService#updateAllHabitationData()
+	 */
+	public void updateAllHabitationData(){
+		try{
+			//get all the records from habitation
+			List<Object[]> hubList = habitationDAO.getHabitationDataList(new InputVO());
+			
+			//create a list of Habitation
+			List<Habitation> alreadyExistHabitationList = new ArrayList<Habitation>();
+			List<Habitation> habitationList = new ArrayList<Habitation>();
+			createHabitationList(hubList,habitationList);
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getAllHabitationDetails");
+	        String authStringEnc = getAuthenticationString("itgrids","Itgrids@123");
+	        InputVO inputVO = new InputVO();
+	        //inputVO.setYear("2017");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
+        	Set<Long> mandalCode = new HashSet<Long>();
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+ 	      		String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+ 	    			JSONArray finalArray = new JSONArray(output);//48363
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			Habitation hab = null;
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				if(jObj.length() > 0){
+	 	    					mandalCode.add(commonMethodsUtilService.getLongValueForObject(jObj.getLong("mCode")));
+		 	    				hab = new Habitation();
+		 	    				initializeHabitation(hab,jObj);
+		 	    				
+	 	    					if(habitationList.contains(hab)){
+	 	    						//System.out.println("From list:"+habitationList.get(habitationList.indexOf(hab)).hashCode());
+	 	    						//System.out.println("From individual:"+hab.hashCode());
+	 	    						alreadyExistHabitationList.add(habitationList.get(habitationList.indexOf(hab)));
+	 	    					}else{
+	 	    						hab.setTotalPopulation(hab.getCensusPlainPopulation()+hab.getCensusScPopulation()+hab.getCensusStPopulation());
+	 	    						hab.setIsDeleted("N");
+	 	    						habitationDAO.save(hab);
+	 	    					}
+	 	    				}
+	 	    			}
+	 	    		}
+				}
+ 	      	}
+        	List<Long> totalId = new ArrayList<Long>();
+        	List<Long> existingId = new ArrayList<Long>();
+        	if(habitationList != null && alreadyExistHabitationList != null){
+        		for(Habitation param : habitationList){
+        			totalId.add(param.getHabitationId());
+        		}
+        		for(Habitation param : alreadyExistHabitationList){
+        			existingId.add(param.getHabitationId());
+        		}
+        		if(totalId != null && existingId != null){
+        			for(Long id : existingId){
+        				totalId.remove(id);
+        			}
+        			//System.out.println(totalId);
+        		}
+        		
+        	}
+        	if(totalId != null && totalId.size() > 0){
+        		habitationDAO.deleteObsolateData(totalId);
+        	}
+        	
+		}catch(Exception e){
+			LOG.error("Exception Occured in updateAllHabitationData() method, Exception - ",e);
+		}
+	}
+	/*
+	censusPlainPopulation.hashCode());
+	censusScPopulation.hashCode());
+	censusStPopulation.hashCode());
+	censusYear.hashCode());
+	coverageStatus.hashCode());
+	districtCode.hashCode());
+	mandalCode.hashCode());
+	panchCode.hashCode());
+	panchayatCode.hashCode());
+	plainPopulationCovered.hashCode());
+	previousYearStatus.hashCode());
+	safeLpcd.hashCode());
+	scPopulationCovered.hashCode());
+	statusDate.hashCode());
+	unSafeLpcd.hashCode());
+	villageCode.hashCode());
+	*/
+	public void initializeHabitation(Habitation hab,JSONObject jObj){
+		try{
+			if(jObj.has("dName")){
+				hab.setDistrictName(commonMethodsUtilService.getStringValueForObject(jObj.getString("dName")).trim());
+			}
+			if(jObj.has("mName")){
+				hab.setMandalName(commonMethodsUtilService.getStringValueForObject(jObj.getString("mName")).trim());
+			}
+			
+			if(jObj.has("pName")){
+				hab.setPanchayatName(commonMethodsUtilService.getStringValueForObject(jObj.getString("pName")).trim());
+			}
+			
+			if(jObj.has("vName")){
+				hab.setVillageName(commonMethodsUtilService.getStringValueForObject(jObj.getString("vName")).trim());
+			}
+			
+			if(jObj.has("panchName")){
+				hab.setPanchName(commonMethodsUtilService.getStringValueForObject(jObj.getString("panchName")).trim());
+			}
+			
+			if(jObj.has("panchCode")){
+				hab.setPanchCode(commonMethodsUtilService.getStringValueForObject(jObj.getLong("panchCode")).trim());
+			}
+			
+			if(jObj.has("censusYear")){
+				hab.setCensusYear(commonMethodsUtilService.getLongValueForObject(jObj.getLong("censusYear")));
+			}
+			
+			if(jObj.has("censusPlainPopu")){
+				hab.setCensusPlainPopulation(commonMethodsUtilService.getLongValueForObject(jObj.getLong("censusPlainPopu")));
+			}
+			
+			if(jObj.has("censusSCPopu")){
+				hab.setCensusScPopulation(commonMethodsUtilService.getLongValueForObject(jObj.getLong("censusSCPopu")));
+			}
+			
+			if(jObj.has("censusSTPopu")){
+				hab.setCensusStPopulation(commonMethodsUtilService.getLongValueForObject(jObj.getLong("censusSTPopu")));
+			}
+			
+			if(jObj.has("plainPopCovered")){
+				hab.setPlainPopulationCovered(commonMethodsUtilService.getLongValueForObject(jObj.getLong("plainPopCovered")));
+			}
+			
+			Date date = new Date(commonMethodsUtilService.getLongValueForObject(jObj.getLong("statusDate")));
+			
+		    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		    format.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
+		    String dateStr = format.format(date);
+		    date = format.parse(dateStr);
+			if(jObj.has("statusDate")){
+				hab.setStatusDate(date);
+			}
+			
+			if(jObj.has("unSafeLpcd")){
+				hab.setUnSafeLpcd(commonMethodsUtilService.getDoubleValueForObject(jObj.getDouble("unSafeLpcd")));
+			}
+			
+			if(jObj.has("safeLpcd")){
+				hab.setSafeLpcd(commonMethodsUtilService.getDoubleValueForObject(jObj.getDouble("safeLpcd")));
+			}
+			
+			if(jObj.has("coverageStatus")){
+				hab.setCoverageStatus(commonMethodsUtilService.getStringValueForObject(jObj.getString("coverageStatus")).trim());
+			}
+			
+			if(jObj.has("previousYrStatus")){
+				hab.setPreviousYearStatus(commonMethodsUtilService.getStringValueForObject(jObj.getString("previousYrStatus")).trim());
+			}
+			
+			if(jObj.has("latitude")){
+				hab.setLatitude(commonMethodsUtilService.getStringValueForObject(jObj.getString("latitude")).trim());
+			}
+			
+			if(jObj.has("longtitude")){
+				hab.setLongtitude(commonMethodsUtilService.getStringValueForObject(jObj.getString("longtitude")).trim());
+			}
+			
+			if(jObj.has("scPopCovered")){
+				hab.setScPopulationCovered(commonMethodsUtilService.getLongValueForObject(jObj.getLong("scPopCovered")));
+			}
+			
+			if(jObj.has("dCode")){
+				hab.setDistrictCode(commonMethodsUtilService.getLongValueForObject(jObj.getLong("dCode")));
+			}
+			
+			if(jObj.has("mCode")){
+				hab.setMandalCode(commonMethodsUtilService.getLongValueForObject(jObj.getLong("mCode")));
+			}
+			
+			if(jObj.has("pCode")){
+				hab.setPanchayatCode(commonMethodsUtilService.getLongValueForObject(jObj.getLong("pCode")));
+			}
+			
+			if(jObj.has("vCode")){
+				hab.setVillageCode(commonMethodsUtilService.getLongValueForObject(jObj.getLong("vCode")));
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in initializeHabitation() method, Exception - ",e);
+		}
+	}
+	/*
+	this.districtCode = districtCode;
+	this.districtName = districtName;
+	this.constituencyCode = constituencyCode;
+	this.constituencyName = constituencyName;
+	this.mandalCode = mandalCode;
+	this.mandalName = mandalName;
+	this.habitationCode = habitationCode;
+	this.habitationName = habitationName;
+	this.coverageStatus = coverageStatus;*/
+	
+	public TressedHabitation initializeTressedHabitation(JSONObject jObj){
+		try{
+			Long districtCode=null;
+			String districtName=null;
+			Long constituencyCode=null;
+			String constituencyName=null;
+			Long mandalCode=null;
+			String mandalName=null;
+			String habitationCode=null;
+			String habitationName=null;
+			String coverageStatus=null;
+			if(jObj.has("districtCode")){
+				districtCode=commonMethodsUtilService.getLongValueForObject(jObj.getString("districtCode"));
+			}
+			if(jObj.has("districtName")){
+				districtName=commonMethodsUtilService.getStringValueForObject(jObj.getString("districtName")).trim();
+			}
+			if(jObj.has("constituencyCode")){
+				constituencyCode=commonMethodsUtilService.getLongValueForObject(jObj.getString("constituencyCode"));
+			}
+			if(jObj.has("constituencyName")){
+				constituencyName=commonMethodsUtilService.getStringValueForObject(jObj.getString("constituencyName")).trim();
+			}
+			if(jObj.has("mandalCode")){
+				mandalCode=commonMethodsUtilService.getLongValueForObject(jObj.getString("mandalCode"));
+			}
+			if(jObj.has("mandalName")){
+				mandalName=commonMethodsUtilService.getStringValueForObject(jObj.getString("mandalName")).trim();
+			}
+			if(jObj.has("habitationCode")){
+				habitationCode=commonMethodsUtilService.getStringValueForObject(jObj.getString("habitationCode")).trim();
+			}
+			if(jObj.has("habitationName")){
+				habitationName=commonMethodsUtilService.getStringValueForObject(jObj.getString("habitationName")).trim();
+			}
+			if(jObj.has("coverageStatus")){
+				coverageStatus=commonMethodsUtilService.getStringValueForObject(jObj.getString("coverageStatus")).trim();
+			}
+			TressedHabitation tressedHabitation = new TressedHabitation(null,districtCode, districtName, constituencyCode, constituencyName, mandalCode, mandalName, habitationCode, habitationName, coverageStatus,null);
+			return tressedHabitation;
+		}catch(Exception e){
+			LOG.error("Exception Occured in initializeTressedHabitation() method, Exception - ",e);
+		}
+		return null;
+	}
+	public void createHabitationList(List<Object[]> hubList,List<Habitation> habitationList){
+		try{
+			Habitation habitation = null;
+			if(hubList != null && hubList.size() > 0){
+				for(Object[] param : hubList){
+					habitation = new Habitation();
+					habitation.setHabitationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					
+					habitation.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[1]).trim());
+ 					
+ 					habitation.setMandalName(commonMethodsUtilService.getStringValueForObject(param[2]).trim());
+ 					
+ 					habitation.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[3]).trim());
+ 					
+ 					habitation.setVillageName(commonMethodsUtilService.getStringValueForObject(param[4]).trim());
+ 					
+ 					habitation.setPanchName(commonMethodsUtilService.getStringValueForObject(param[5]).trim());
+ 					
+ 					habitation.setPanchCode(commonMethodsUtilService.getStringValueForObject(param[6]).trim());
+ 					
+ 					habitation.setCensusYear(commonMethodsUtilService.getLongValueForObject(param[7]));
+ 					
+ 					habitation.setCensusPlainPopulation(commonMethodsUtilService.getLongValueForObject(param[8]));
+ 					
+ 					habitation.setCensusScPopulation(commonMethodsUtilService.getLongValueForObject(param[9]));
+ 					
+ 					habitation.setCensusStPopulation(commonMethodsUtilService.getLongValueForObject(param[10]));
+ 					
+ 					
+ 					
+ 					habitation.setPlainPopulationCovered(commonMethodsUtilService.getLongValueForObject(param[11]));
+ 					
+ 					Date date =null;
+ 					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+ 					format.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
+ 					if(commonMethodsUtilService.getStringValueForObject(param[12]).trim().length() > 10){
+ 						date = format.parse(commonMethodsUtilService.getStringValueForObject(param[12]).trim().substring(0, 10));
+ 					}
+ 					habitation.setStatusDate(date);
+ 					
+ 				
+ 					habitation.setUnSafeLpcd(commonMethodsUtilService.getDoubleValueForObject(param[13]));
+ 					
+ 					habitation.setSafeLpcd(commonMethodsUtilService.getDoubleValueForObject(param[14]));
+ 					
+ 					habitation.setCoverageStatus(commonMethodsUtilService.getStringValueForObject(param[15]).trim());
+ 					
+ 					habitation.setPreviousYearStatus(commonMethodsUtilService.getStringValueForObject(param[16]).trim());
+ 					
+ 					habitation.setLatitude(commonMethodsUtilService.getStringValueForObject(param[17]).trim());
+ 					
+ 					habitation.setLongtitude(commonMethodsUtilService.getStringValueForObject(param[18]).trim());
+ 					
+ 					habitation.setScPopulationCovered(commonMethodsUtilService.getLongValueForObject(param[19]));
+ 					
+ 					habitation.setDistrictCode(commonMethodsUtilService.getLongValueForObject(param[20]));
+ 					
+ 					habitation.setMandalCode(commonMethodsUtilService.getLongValueForObject(param[21]));
+ 				
+ 					habitation.setPanchayatCode(commonMethodsUtilService.getLongValueForObject(param[22]));
+ 					
+ 					habitation.setVillageCode(commonMethodsUtilService.getLongValueForObject(param[23]));
+ 					
+ 					habitationList.add(habitation);
+ 					
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in createHabitationList() method, Exception - ",e);
+		}
+	}
+	public void createTressedHabitationList(List<Object[]> tressedHubList,List<TressedHabitation> tressedHabitationList){
+		try{
+			Long tressedHabitationId=null;
+			Long districtCode=null;
+			String districtName=null;
+			Long constituencyCode=null;
+			String constituencyName=null;
+			Long mandalCode=null;
+			String mandalName=null;
+			String habitationCode=null;
+			String habitationName=null;
+			String coverageStatus=null;
+			TressedHabitation tressedHabitation = null;
+			if(tressedHubList != null && tressedHubList.size() > 0){
+				for(Object[] param : tressedHubList){
+					tressedHabitationId=commonMethodsUtilService.getLongValueForObject(param[0]);
+					
+					districtCode=commonMethodsUtilService.getLongValueForObject(param[1]);
+ 				
+					districtName=commonMethodsUtilService.getStringValueForObject(param[2]).trim();
+ 					
+					constituencyCode=commonMethodsUtilService.getLongValueForObject(param[3]);
+ 					
+					constituencyName=commonMethodsUtilService.getStringValueForObject(param[4]).trim();
+ 				
+					mandalCode=commonMethodsUtilService.getLongValueForObject(param[5]);
+ 					
+					mandalName=commonMethodsUtilService.getStringValueForObject(param[6]).trim();
+ 					
+					habitationCode=commonMethodsUtilService.getStringValueForObject(param[7]).trim();
+ 				
+					habitationName=commonMethodsUtilService.getStringValueForObject(param[8]).trim();
+ 					
+					coverageStatus=commonMethodsUtilService.getStringValueForObject(param[9]).trim();
+					
+					tressedHabitation=new TressedHabitation(tressedHabitationId, districtCode, districtName, constituencyCode, constituencyName, mandalCode, mandalName, habitationCode, habitationName, coverageStatus, null);
+ 					 					
+					tressedHabitationList.add(tressedHabitation);
+ 					
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in createTressedHabitationList() method, Exception - ",e);
+		}
+	}
+	/*
+	 * Swadhin K Lenka
+	 * @see com.itgrids.tpi.rws.service.IRWSNICService#updateAllTressedHabitationData()
+	 */
+	public void updateAllTressedHabitationData(){
+		try{
+			//get all the records from habitation
+			List<Object[]> tressedHubList = tressedHabitationDAO.getTressedHabitationDataList(new InputVO());
+			//create a list of Habitation
+			List<TressedHabitation> alreadyExistTressedHabitationList = new ArrayList<TressedHabitation>();
+			List<TressedHabitation> tressedHabitationList = new ArrayList<TressedHabitation>();
+			createTressedHabitationList(tressedHubList,tressedHabitationList);
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getStressedHabitationDetailsByStatusByLocationType");
+	        String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, new InputVO());
+        	//Set<String> hubCodeList = new HashSet<String>();
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+ 	      		String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+ 	    			JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			TressedHabitation tressedHab = null;
+	 	    			
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				if(jObj.length() > 0){
+		 	    				//tressedHab = new TressedHabitation();
+	 	    					tressedHab = initializeTressedHabitation(jObj);
+	 	    					//hubCodeList.add(commonMethodsUtilService.getStringValueForObject(jObj.getString("habitationCode")).trim());
+		 	    				
+	 	    					if(tressedHabitationList.contains(tressedHab)){
+	 	    						//System.out.println("From list:"+tressedHabitationList.get(tressedHabitationList.indexOf(tressedHab)).hashCode());
+	 	    						//System.out.println("From individual:"+tressedHab.hashCode());
+	 	    						alreadyExistTressedHabitationList.add(tressedHabitationList.get(tressedHabitationList.indexOf(tressedHab)));
+	 	    					}else{
+	 	    						tressedHab.setIsDeleted("N");
+	 	    						tressedHabitationDAO.save(tressedHab);
+	 	    					}
+	 	    				}
+	 	    			}
+	 	    		}
+				}
+ 	      	}
+        	List<Long> totalId = new ArrayList<Long>();
+        	List<Long> existingId = new ArrayList<Long>();
+        	if(tressedHabitationList != null && alreadyExistTressedHabitationList != null){
+        		for(TressedHabitation param : tressedHabitationList){
+        			totalId.add(param.getTressedHabitationId());
+        		}
+        		for(TressedHabitation param : alreadyExistTressedHabitationList){
+        			existingId.add(param.getTressedHabitationId());
+        		}
+        		if(totalId != null && existingId != null){
+        			for(Long id : existingId){
+        				totalId.remove(id);
+        			}
+        			//System.out.println(totalId);
+        		}
+        		
+        	}
+        	if(totalId != null && totalId.size() > 0){
+        		tressedHabitationDAO.deleteObsolateData(totalId);
+        	}
+        	
+		}catch(Exception e){
+			LOG.error("Exception Occured in updateAllTressedHabitationData() method, Exception - ",e);
+		}
+	}
+	public void stop(){
+		System.out.println("stop");
+	}
+	/*
+	constituencyCode.hashCode());
+	coverageStatus.hashCode());
+	districtCode.hashCode());
+	habitationCode.hashCode());
+	mandalCode.hashCode());
+	*/
+	
+	/*
+	public static void main(String...strings) throws ParseException{
+		 Date date = new Date(1490985000000l);
+		  DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		    format.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
+		    String dateStr = format.format(date);
+		    date = format.parse(dateStr);
+		    System.out.println(date);
+		 System.out.println(format.format(date));
+		
+	}
+	*/
+	/*
+	 * Swadhin K Lenka
+	 * @see com.itgrids.tpi.rws.service.IRWSNICService#getHabitationCoverageStatus(com.itgrids.dto.InputVO)
+	 */
+	public List<LocationVO> getHabitationCoverageStatus(InputVO inputVO){
+		try{
+			List<LocationVO> voList = new ArrayList<LocationVO>(0);
+			LocationVO vo = null;
+			List<StatusVO> tempList = null;
+			Set<String> constituencyIdList = new HashSet<String>();
+			List<Object[]> conList = null;
+			Map<Long,String> constituencyIdAndNameMap = new HashMap<Long,String>();
+			if(inputVO!= null){
+				inputVO = setFilterVal(inputVO);
+			}
+			List<Object[]> habDataList = null;
+			List<Object[]> tressedHabDataList = null;
+			if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+				habDataList = habitationDAO.getHabitationDetailsForConstituency(inputVO,null,null);
+				//collect constituencyId and get constituency name.
+				if(habDataList != null && habDataList.size() > 0){
+					for(Object[] param : habDataList){
+						constituencyIdList.add(commonMethodsUtilService.getStringValueForObject(param[0]));
+					}
+					if(constituencyIdList != null && constituencyIdList.size() > 0){
+						conList = rwsConstituencyDAO.getConstituencyList(constituencyIdList); 
+					}
+					if(conList != null && conList.size() > 0){
+						for(Object[] param : conList){
+							constituencyIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+						}
+					}
+					for(Object[] param : habDataList){
+						String name = constituencyIdAndNameMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						param[1] = name;
+					}
+					
+				}
+		 	    //tressedHabDataList = habitationDAO.getTressedHabitationDetailsForConstituency(inputVO,null,null);
+			}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
+				habDataList = habitationDAO.getHabitationDetailsForMandal(inputVO,null,null);
+				
+			}else{
+				habDataList = habitationDAO.getHabitationDetails(inputVO,null,null);
+				if(inputVO.getCallType() != null &&  inputVO.getCallType().trim().equalsIgnoreCase("graph")){
+					tressedHabDataList = habitationDAO.getTressedHabitationDetails(inputVO,null,null);
+				}
+			}
+	 	    
+			//create two  map for locationId and status and LocationCount , locationId and status and PopulationCount for habitation
+			Map<Long,String> locationIdAndName = new HashMap<Long,String>();
+			
+			Map<Long,Map<String,Long>> locationIdAndStatusAndLocationCount = new HashMap<Long,Map<String,Long>>();
+			Map<Long,Map<String,Long>> locationIdAndStatusAndPopulationCount = new HashMap<Long,Map<String,Long>>();
+			
+			
+			Map<Long,Map<Long,Map<String,Long>>> DistIdAndlocationIdAndStatusAndLocationCount = new HashMap<Long,Map<Long,Map<String,Long>>>();
+			Map<Long,Map<Long,Map<String,Long>>> DistIdAndlocationIdAndStatusAndPopulationCount = new HashMap<Long,Map<Long,Map<String,Long>>>();
+			
+			
+			Map<Long,Map<Long,String>> distIdAndMandalIdAndNameMap = new HashMap<Long,Map<Long,String>>();
+			
+			
+			if(habDataList != null && habDataList.size() > 0 && inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
+				initializeHabitationMapForMandal(DistIdAndlocationIdAndStatusAndLocationCount,DistIdAndlocationIdAndStatusAndPopulationCount,habDataList,distIdAndMandalIdAndNameMap);
+			}else{
+				initializeHabitationMap(locationIdAndStatusAndLocationCount,locationIdAndStatusAndPopulationCount,habDataList,locationIdAndName);
+			}
+			
+			
+			//create two map for locationId and status and LocationCount, locationId and status and PopulationCount for tressed habitation
+			
+			Map<Long,Map<String,Long>> locationIdAndStatusAndLocationCountForTressedHabitation = new HashMap<Long,Map<String,Long>>();
+			Map<Long,Map<String,Long>> locationIdAndStatusAndPopulationCountForTressedHabitation = new HashMap<Long,Map<String,Long>>();
+			
+			if(tressedHabDataList != null && tressedHabDataList.size() > 0){
+				initializeTressedHabitationMap(locationIdAndStatusAndLocationCountForTressedHabitation,locationIdAndStatusAndPopulationCountForTressedHabitation,tressedHabDataList);
+			}
+			if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
+				if(DistIdAndlocationIdAndStatusAndLocationCount!=null && DistIdAndlocationIdAndStatusAndLocationCount.size() > 0 && DistIdAndlocationIdAndStatusAndPopulationCount != null && DistIdAndlocationIdAndStatusAndPopulationCount.size() > 0){
+					for(Entry<Long,Map<Long,Map<String,Long>>> outerParam : DistIdAndlocationIdAndStatusAndLocationCount.entrySet()){
+						Long total = null;
+		    			for(Entry<Long,Map<String,Long>> param : outerParam.getValue().entrySet()){
+		    				total = new Long(0L);
+		    				vo = new LocationVO();
+		    				vo.setGoNumber(param.getKey().toString());
+		    				vo.setLocationName(commonMethodsUtilService.getStringValueForObject(distIdAndMandalIdAndNameMap.get(outerParam.getKey()).get(param.getKey())));
+		    				if(inputVO.getCallType() != null &&  inputVO.getCallType().trim().equalsIgnoreCase("graph")){
+		    					tempList = getTotalStatusSkeleton();
+		    				}else{
+		    					tempList = getStatusSkeleton();
+		    				}
+		    				
+		    				for(Entry<String,Long> innerParam : param.getValue().entrySet()){
+		    					StatusVO statusVO = getMatchedStatusVO(tempList,innerParam.getKey());
+		    					if(statusVO != null){
+		    						statusVO.setCount(innerParam.getValue());
+		    						total = total + innerParam.getValue();
+		    						if(DistIdAndlocationIdAndStatusAndPopulationCount.get(outerParam.getKey()) != null && DistIdAndlocationIdAndStatusAndPopulationCount.get(outerParam.getKey()).get(param.getKey()) != null && DistIdAndlocationIdAndStatusAndPopulationCount.get(outerParam.getKey()).get(param.getKey()).get(innerParam.getKey()) != null){
+		    							statusVO.setPopulation(DistIdAndlocationIdAndStatusAndPopulationCount.get(outerParam.getKey()).get(param.getKey()).get(innerParam.getKey()));
+		    						}
+		    					}
+		    				}
+		    				vo.setStatusList(tempList);
+		    				vo.setTotalCount(total);
+		    				voList.add(vo);
+		    			}
+					}
+				}
+			}else{
+				if(locationIdAndStatusAndLocationCount!=null && locationIdAndStatusAndLocationCount.size() > 0 && locationIdAndStatusAndPopulationCount != null && locationIdAndStatusAndPopulationCount.size() > 0){
+	    			Long total = null;
+	    			for(Entry<Long,Map<String,Long>> param : locationIdAndStatusAndLocationCount.entrySet()){
+	    				total = new Long(0L);
+	    				vo = new LocationVO();
+	    				vo.setGoNumber(param.getKey().toString());
+	    				vo.setLocationName(commonMethodsUtilService.getStringValueForObject(locationIdAndName.get(param.getKey())));
+	    				if(inputVO.getCallType() != null &&  inputVO.getCallType().trim().equalsIgnoreCase("graph")){
+	    					tempList = getTotalStatusSkeleton();
+	    				}else{
+	    					tempList = getStatusSkeleton();
+	    				}
+	    				
+	    				for(Entry<String,Long> innerParam : param.getValue().entrySet()){
+	    					StatusVO statusVO = getMatchedStatusVO(tempList,innerParam.getKey());
+	    					if(statusVO != null){
+	    						statusVO.setCount(innerParam.getValue());
+	    						total = total + innerParam.getValue();
+	    						if(locationIdAndStatusAndPopulationCount.get(param.getKey()) != null && locationIdAndStatusAndPopulationCount.get(param.getKey()).get(innerParam.getKey()) != null){
+	    							statusVO.setPopulation(locationIdAndStatusAndPopulationCount.get(param.getKey()).get(innerParam.getKey()));
+	    						}
+	    					}
+	    				}
+	    				vo.setStatusList(tempList);
+	    				vo.setTotalCount(total);
+	    				voList.add(vo);
+	    			}
+	    		}
+			}
+    		
+    		if(inputVO.getCallType() != null &&  inputVO.getCallType().trim().equalsIgnoreCase("graph") && locationIdAndStatusAndLocationCountForTressedHabitation!=null && locationIdAndStatusAndLocationCountForTressedHabitation.size() > 0 && locationIdAndStatusAndPopulationCountForTressedHabitation != null && locationIdAndStatusAndPopulationCountForTressedHabitation.size() > 0){
+    			for(Entry<Long,Map<String,Long>> param : locationIdAndStatusAndLocationCountForTressedHabitation.entrySet()){
+    				vo = getMatchedLocationVO(voList,param.getKey());
+    				if(vo != null){
+						for(Entry<String,Long> innerParam : param.getValue().entrySet()){
+							StatusVO statusVO = getMatchedStatusVO(vo.getStatusList(),innerParam.getKey());
+							if(statusVO != null){
+								statusVO.setCount(innerParam.getValue());
+								if(locationIdAndStatusAndPopulationCountForTressedHabitation.get(param.getKey()) != null && locationIdAndStatusAndPopulationCountForTressedHabitation.get(param.getKey()).get(innerParam.getKey()) != null){
+									statusVO.setPopulation(locationIdAndStatusAndPopulationCount.get(param.getKey()).get(innerParam.getKey()));
+								}
+							}
+						}
+    				}
+    			}
+    		}
+    		if(voList != null && voList.size() > 0){
+    			for(LocationVO param : voList){
+    				for(StatusVO stsvo : param.getStatusList()){
+    					stsvo.setPercentage(commonMethodsUtilService.calculatePercantage(stsvo.getCount(), param.getTotalCount()));
+    				}
+    			}
+    		}
+    		return voList;
+		}catch(Exception e){
+			LOG.error("Exception Occured in getHabitationCoverageStatus() method, Exception - ",e);
+		}
+		return null;
+	}
+	public void initializeHabitationMapForMandal(Map<Long,Map<Long,Map<String,Long>>> distIdAndlocationIdAndStatusAndLocationCount,Map<Long,Map<Long,Map<String,Long>>> distIdAndlocationIdAndStatusAndPopulationCount,List<Object[]> habDataList, Map<Long,Map<Long,String>> distIdAndlocationIdAndName){
+		try{
+			Map<Long,Map<String,Long>> locationIdAndstatusAndLocationCountMap = null;
+			Map<String,Long> statusAndLocationCountMap = null;
+			
+			Map<Long,Map<String,Long>> locationIdAndstatusAndPopulationCountMap = null;
+			Map<String,Long> statusAndPopulationCountMap = null;
+			
+			Map<Long,String> locationIdAndNameMap = null;
+			
+			if(habDataList != null && habDataList.size() > 0){
+				for(Object[] param : habDataList){
+					locationIdAndstatusAndLocationCountMap = distIdAndlocationIdAndStatusAndLocationCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locationIdAndstatusAndLocationCountMap == null){
+						statusAndLocationCountMap = new HashMap<String,Long>();
+						statusAndLocationCountMap.put(commonMethodsUtilService.getStringValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						locationIdAndstatusAndLocationCountMap = new HashMap<Long,Map<String,Long>>();
+						locationIdAndstatusAndLocationCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), statusAndLocationCountMap);
+						distIdAndlocationIdAndStatusAndLocationCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationIdAndstatusAndLocationCountMap);
+					}else{
+						statusAndLocationCountMap = locationIdAndstatusAndLocationCountMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+						if(statusAndLocationCountMap == null){
+							statusAndLocationCountMap = new HashMap<String,Long>();
+							locationIdAndstatusAndLocationCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), statusAndLocationCountMap);
+						}
+						statusAndLocationCountMap.put(commonMethodsUtilService.getStringValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+					}
+				}
+				
+				for(Object[] param : habDataList){
+					locationIdAndstatusAndPopulationCountMap = distIdAndlocationIdAndStatusAndPopulationCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locationIdAndstatusAndPopulationCountMap == null){
+						statusAndPopulationCountMap = new HashMap<String,Long>();
+						statusAndPopulationCountMap.put(commonMethodsUtilService.getStringValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						locationIdAndstatusAndPopulationCountMap = new HashMap<Long,Map<String,Long>>();
+						locationIdAndstatusAndPopulationCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), statusAndPopulationCountMap);
+						distIdAndlocationIdAndStatusAndPopulationCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationIdAndstatusAndPopulationCountMap);
+					}else{
+						statusAndPopulationCountMap = locationIdAndstatusAndPopulationCountMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+						if(statusAndPopulationCountMap == null){
+							statusAndPopulationCountMap = new HashMap<String,Long>();
+							locationIdAndstatusAndPopulationCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), statusAndPopulationCountMap);
+						}
+						statusAndPopulationCountMap.put(commonMethodsUtilService.getStringValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+					}
+				}
+				
+				for(Object[] param : habDataList){
+					locationIdAndNameMap = distIdAndlocationIdAndName.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locationIdAndNameMap == null){
+						locationIdAndNameMap = new HashMap<Long,String>();
+						distIdAndlocationIdAndName.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationIdAndNameMap);
+					}
+					locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getStringValueForObject(param[2]));
+				}
+				
+			}
+			
+	
+		}catch(Exception e){
+			LOG.error("Exception Occured in initializeHabitationMap() method, Exception - ",e);
+		}
+	}
+	public LocationVO getMatchedLocationVO(List<LocationVO> voList,Long locationId){
+		try{
+			if(voList != null && voList.size() > 0){
+				for(LocationVO param : voList){
+					if(param.getGoNumber().equalsIgnoreCase(locationId.toString())){
+						return param;
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in getMatchedLocationVO() method, Exception - ",e);
+		}
+		return null;
+	}
+	public List<StatusVO> getTotalStatusSkeleton(){
+		List<StatusVO> tempList = new ArrayList<StatusVO>(0);
+		StatusVO FCVO = new StatusVO();
+		FCVO.setStatus("FC");
+		tempList.add(0,FCVO);
+		
+		StatusVO STFCVO = new StatusVO();
+		STFCVO.setStatus("Stressed FC");
+		tempList.add(1,STFCVO);
+		
+		StatusVO pc4VO = new StatusVO();
+		pc4VO.setStatus("PC4");
+		tempList.add(2,pc4VO);
+		
+		StatusVO stpc4VO = new StatusVO();
+		stpc4VO.setStatus("Stressed PC4");
+		tempList.add(3,stpc4VO);
+		
+		
+		StatusVO pc3VO = new StatusVO();
+		pc3VO.setStatus("PC3");
+		tempList.add(4,pc3VO);
+		
+		StatusVO stpc3VO = new StatusVO();
+		stpc3VO.setStatus("Stressed PC3");
+		tempList.add(5,stpc3VO);
+		
+		
+		StatusVO pc2VO = new StatusVO();
+		pc2VO.setStatus("PC2");
+		tempList.add(6,pc2VO);
+		
+		StatusVO stpc2VO = new StatusVO();
+		stpc2VO.setStatus("Stressed PC2");
+		tempList.add(7,stpc2VO);
+		
+		
+		StatusVO pc1VO = new StatusVO();
+		pc1VO.setStatus("PC1");
+		tempList.add(8,pc1VO);
+		
+		StatusVO stpc1VO = new StatusVO();
+		stpc1VO.setStatus("Stressed PC1");
+		tempList.add(9,stpc1VO);
+		
+		
+		StatusVO nssVO = new StatusVO();
+		nssVO.setStatus("NSS");
+		tempList.add(10,nssVO);
+		
+		StatusVO stnssVO = new StatusVO();
+		stnssVO.setStatus("Stressed NSS");
+		tempList.add(11,stnssVO);
+		
+		return tempList;
+	}
+	public void initializeHabitationMap(Map<Long,Map<String,Long>> locationIdAndStatusAndLocationCount,Map<Long,Map<String,Long>> locationIdAndStatusAndPopulationCount,List<Object[]> habDataList, Map<Long,String> locationIdAndName){
+		try{
+			Map<String,Long> statusAndLocationCountMap = null;
+			Map<String,Long> statusAndPopulationCountMap = null;
+			if(habDataList != null && habDataList.size() > 0){
+				for(Object[] param : habDataList){
+					if(commonMethodsUtilService.getStringValueForObject(param[2]).equalsIgnoreCase("NC")){
+						continue;
+					}
+					if(locationIdAndName != null){
+						locationIdAndName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					}
+					statusAndLocationCountMap = locationIdAndStatusAndLocationCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(null == statusAndLocationCountMap){
+						statusAndLocationCountMap = new HashMap<String,Long>();
+						locationIdAndStatusAndLocationCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusAndLocationCountMap);
+					}
+					statusAndLocationCountMap.put(commonMethodsUtilService.getStringValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[3]));
+					
+					statusAndPopulationCountMap = locationIdAndStatusAndPopulationCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(null == statusAndPopulationCountMap){
+						statusAndPopulationCountMap = new HashMap<String,Long>();
+						locationIdAndStatusAndPopulationCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusAndPopulationCountMap);
+					}
+					statusAndPopulationCountMap.put(commonMethodsUtilService.getStringValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+					
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in initializeHabitationMap() method, Exception - ",e);
+		}
+	}
+	
+	public void initializeTressedHabitationMap(Map<Long,Map<String,Long>> locationIdAndStatusAndLocationCount,Map<Long,Map<String,Long>> locationIdAndStatusAndPopulationCount,List<Object[]> habDataList){
+		try{
+			Map<String,String> statusMap = new HashMap<String,String>();
+			statusMap.put("FC", "Stressed FC");
+			statusMap.put("PC4", "Stressed PC4");
+			statusMap.put("PC3", "Stressed PC3");
+			statusMap.put("PC2", "Stressed PC2");
+			statusMap.put("PC1", "Stressed PC1");
+			statusMap.put("NSS", "Stressed NSS");
+			Map<String,Long> statusAndLocationCountMap = null;
+			Map<String,Long> statusAndPopulationCountMap = null;
+			if(habDataList != null && habDataList.size() > 0){
+				for(Object[] param : habDataList){
+					if(commonMethodsUtilService.getStringValueForObject(param[2]).equalsIgnoreCase("NC")){
+						continue;
+					}
+					statusAndLocationCountMap = locationIdAndStatusAndLocationCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(null == statusAndLocationCountMap){
+						statusAndLocationCountMap = new HashMap<String,Long>();
+						locationIdAndStatusAndLocationCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusAndLocationCountMap);
+					}
+					statusAndLocationCountMap.put(statusMap.get(commonMethodsUtilService.getStringValueForObject(param[2])), commonMethodsUtilService.getLongValueForObject(param[3]));
+					
+					statusAndPopulationCountMap = locationIdAndStatusAndPopulationCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(null == statusAndPopulationCountMap){
+						statusAndPopulationCountMap = new HashMap<String,Long>();
+						locationIdAndStatusAndPopulationCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusAndPopulationCountMap);
+					}
+					statusAndPopulationCountMap.put(statusMap.get(commonMethodsUtilService.getStringValueForObject(param[2])), commonMethodsUtilService.getLongValueForObject(param[4]));
+					
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in initializeHabitationMap() method, Exception - ",e);
+		}
+	}
 	public Map<Long,IdNameVO> getAllAdminWorksDetails(){
 		Map<Long,IdNameVO> assestWorkMap = new LinkedHashMap<Long,IdNameVO>();
 		try {
