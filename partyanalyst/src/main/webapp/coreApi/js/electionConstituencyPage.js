@@ -736,13 +736,15 @@ function getDetailedElectionInformaction(){
 		});
 	}
 }
+var searchParams = new URLSearchParams(window.location.search);
+ searchParams = searchParams.get("constituencyId");
 function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,electionScopeId){
 	
 	$("#levelWiseCandidatesResultsDivId").html(spinner);
 	
 	var partyIdsArr=[];
 	var electionScopeIdsArr=[];
-	
+	var constituencyId;
 	if(partyId == 0){
 		partyIdsArr = [872,362,1117,886,72,269,265,163];
 	}else{
@@ -759,7 +761,11 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,ele
 	}else{
 		electionScopeIdsArr = electionScopeId
 	}
-	
+	if(locationLevelId != null &&(locationLevelId == 2 || locationLevelId == 3 || locationLevelId == 10)){
+		constituencyId = 0;
+	}else{
+		constituencyId = searchParams
+	}
 	var jsObj={
 		
 		electionScopeIdsArr:electionScopeIdsArr,
@@ -768,7 +774,7 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,ele
 		locationValuesArr:userAccessLevelValuesArray,
 		yearsArr:electionYrVal,
 		partyIdsArr:partyIdsArr,
-		constituencyId :284
+		constituencyId :constituencyId
     }
     $.ajax({
       type : "GET",
