@@ -167,14 +167,36 @@
 <main>
 	<section>
 		<div class="container-fluid">
-		<div class="row">
-			<div class="col-sm-12">
-						<div class="white-block">
-							<h5 style="padding:5px"><span class="chartTitleAlign">Works</span></h5>
-							<div class="chart2" id="habitationWorks" style="height:315px;"></div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="white-block" style="padding:10px;">
+						<h4>Works -  STATE LEVEL OVERVIEW</h4>
+						<div class="row">
+							<div class="col-sm-6">
+								<h5 style="padding:5px"><span class="chartTitleAlign">Works</span></h5>
+								<div class="chart2" id="habitationWorksPWS" style="height:315px;"></div>
+							</div>
+							<div class="col-sm-6">
+								<h5 style="padding:5px"><span class="chartTitleAlign">Works</span></h5>
+								<div class="chart2" id="habitationWorksCPWS" style="height:315px;"></div>
+							</div>
 						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 m_top20">
+					<div class="white-block" style="padding:10px;">
+						<h4>Exceeded Target Works Details</h4>
+						<div class="row">
+							<div class="col-sm-3">
+								<div id="ExceededTargetDetailsTotal"></div>
+							</div>
+							<div class="col-sm-9">
+								<div id="ExceededTargetDetails"></div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
 		</div>
 	</section>
 	<section>
