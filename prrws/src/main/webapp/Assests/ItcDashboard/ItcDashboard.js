@@ -41,9 +41,9 @@ $(document).on("click","#promotionsBlockSwitch li",function(){
 	$("#promotionsBlockSwitch li").removeClass("active");
 	$(this).addClass("active");
 	getITSectorWiseOverviewDetails();
-	getITSectorCategoryWiseDetails("red");
-	getITSectorCategoryWiseDetails("green");
-	getITSectorCategoryWiseDetails("dropped");
+	getITSectorCategoryWiseDetails("RED");
+	getITSectorCategoryWiseDetails("GREEN");
+	getITSectorCategoryWiseDetails("DROPPED");
 });
 onloadCalls();
 function onloadCalls(){
@@ -282,12 +282,12 @@ function departmentBlockWiseDetails(divId)
 			if(divId == 'promotions')
 			{
 				getITSectorWiseOverviewDetails();
-				getITSectorCategoryWiseDetails("red");
-				getITSectorCategoryWiseDetails("green");
-				getITSectorCategoryWiseDetails("dropped");
-				getITDistrictWiseDetails("IT","All",'body');
-				getITDistrictWiseDetails("Electronics","All",'body');
-				getITDistrictWiseDetails("Fintech","All",'body');
+				getITSectorCategoryWiseDetails("RED");
+				getITSectorCategoryWiseDetails("GREEN");
+				getITSectorCategoryWiseDetails("DROPPED");
+				getITDistrictWiseDetails("IT","ALL",'body');
+				getITDistrictWiseDetails("Electronics","ALL",'body');
+				getITDistrictWiseDetails("Fintech","ALL",'body');
 			}
 }
 
@@ -535,13 +535,13 @@ $(document).on("click",".overview-click",function(){
 	getITDistrictWiseDetails(selectedBlockType,$(this).attr("attr_type"),'modal');
 });
 function getITSectorCategoryWiseDetails(type){
-	if(type == "green")
+	if(type == "GREEN")
 	{
 		$("#promotionsStageGreenBlockId").html(spinner);
-	}else if(type == "red")
+	}else if(type == "RED")
 	{
 		$("#promotionsStageRedBlockId").html(spinner);
-	}else if(type == "dropped")
+	}else if(type == "DROPPED")
 	{
 		$("#promotionsStageDroppedBlockId").html(spinner);
 	}
@@ -562,13 +562,13 @@ function getITSectorCategoryWiseDetails(type){
 		{
 			return buildData(result,type);
 		}else{
-			if(type == "green")
+			if(type == "GREEN")
 			{
 				$("#promotionsStageGreenBlockId").html("");
-			}else if(type == "red")
+			}else if(type == "RED")
 			{
 				$("#promotionsStageRedBlockId").html("");
-			}else if(type == "dropped")
+			}else if(type == "DROPPED")
 			{
 				$("#promotionsStageDroppedBlockId").html("");
 			}
@@ -583,20 +583,20 @@ function getITSectorCategoryWiseDetails(type){
 		{
 			if(selectedBlockType == result[i].sector)
 			{
-				if(type == "green")
+				if(type == "GREEN")
 				{
 					str+='<p>';
-						str+='<span style="padding:5px 20px;background-color:#058E46;color:#fff">Civil Works commencement and beyond</span>';
+						str+='<span style="padding:5px 10px;background-color:#058E46;color:#fff">Civil Works commencement and beyond</span>';
 					str+='</p>';
-				}else if(type == "red")
+				}else if(type == "RED")
 				{
 					str+='<p>';
-						str+='<span style="padding:5px 20px;background-color:#F75C5D;color:#fff">Before Civil Works commencement</span>';
+						str+='<span style="padding:5px 10px;background-color:#F75C5D;color:#fff">Before Civil Works commencement</span>';
 					str+='</p>';
-				}else if(type == "dropped")
+				}else if(type == "DROPPED")
 				{
 					str+='<p>';
-						str+='<span style="padding:5px 20px;background-color:#91CCC7;color:#fff">Dropped</span>';
+						str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">Dropped</span>';
 					str+='</p>';
 				}
 					str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
@@ -618,13 +618,13 @@ function getITSectorCategoryWiseDetails(type){
 				
 			}
 			
-			if(type == "green")
+			if(type == "GREEN")
 			{
 				$("#promotionsStageGreenBlockId").html(str);
-			}else if(type == "red")
+			}else if(type == "RED")
 			{
 				$("#promotionsStageRedBlockId").html(str);
-			}else if(type == "dropped")
+			}else if(type == "DROPPED")
 			{
 				$("#promotionsStageDroppedBlockId").html(str);
 			}
@@ -638,7 +638,6 @@ function getITDistrictWiseDetails(type,category,divType){
 	}else{
 		$("#modalId").modal('show');
 		$("#cohortId").html(spinner);
-		
 	}
 	
 	var json = {
@@ -690,7 +689,6 @@ function getITDistrictWiseDetails(type,category,divType){
 			$("#modalTitleId").html(type);
 			$("#cohortId").html(str);
 		}
-		
 		$("#"+type+"DataTable"+divType).dataTable();
 	}
 }
@@ -751,8 +749,6 @@ function getEOfficePendencyByDepartmentAndDayWise(){
 		console.log(result);
 	});		
 }
-
-
 function getMeesevaKPIIndicatorsProgressDtls(){
 	var json = {
 		fromDate:"",
