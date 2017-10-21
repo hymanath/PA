@@ -977,37 +977,27 @@ public class CommonMethodsUtilService {
 		  * @Description :This Service Method id used for  sort party wise vos
 		  * @since 20-10-2017
 		  */
-		public  List<ElectionInformationVO> sortElectionInformationVOsList(List<ElectionInformationVO> list){
+		
+		public   List<?> sortElectionInformationVOsList(List<?> searchList,String propertyName,Object [] partiesArr){
+			//Object [] partiesArr={"OTHERS","BJP","tdp","YSRC","INC","CPM","CPI"};
+			List<Object> returnList=new ArrayList<Object>();
 			try {
-				Map<String,ElectionInformationVO> levelMap=new HashMap<String,ElectionInformationVO>(0);
-				for(ElectionInformationVO vo : list){
-					levelMap.put(vo.getPartyName().trim().toUpperCase(), vo);
-				}
-				list.clear();
-				if(levelMap.containsKey("TDP")){
-					list.add(levelMap.get("TDP"));
-				}
-				if(levelMap.containsKey("BJP")){
-					list.add(levelMap.get("BJP"));
-				}
-				if(levelMap.containsKey("YSRC")){
-					list.add(levelMap.get("YSRC"));
+				Map<Object,Object> levelMap=new HashMap<Object,Object> ();
+				for(Object vo : searchList){
+					Class<?> cls= vo.getClass();
+					Field field = cls.getDeclaredField(propertyName);
+					field.setAccessible(true);
+					Object fieldValue = field.get(vo);
+					levelMap.put(fieldValue.toString().trim().toUpperCase(),vo);
+				}		
+				for(int i=0; i<partiesArr.length ;i++){
+					if(levelMap.containsKey(partiesArr[i].toString().trim().toUpperCase())){
+						returnList.add(levelMap.get(partiesArr[i].toString().trim().toUpperCase()));
 					}
-				if(levelMap.containsKey("INC")){
-					list.add(levelMap.get("INC"));
-				}
-				if(levelMap.containsKey("CPM")){
-					list.add(levelMap.get("CPM"));
-				}
-				if(levelMap.containsKey("CPI")){
-					list.add(levelMap.get("CPI"));
-				}
-				if(levelMap.containsKey("OTHERS")){
-					list.add(levelMap.get("OTHERS"));
 				}
 			} catch (Exception e) {
-				LOG.error("Exception Occured in sortElectionInformationVOsList() Method");
 			}
-			return list;
+			return returnList;
 		}
+		
 }
