@@ -125,7 +125,6 @@
 <section style="margin-bottom: 100px" id="favouriteListMenu" landing-block="favourite" class="showhideCls">
 	<div class="container">
 		<div class="row">
-			
 			<div id="favouriteComponentDivId"></div>
 		</div>
 	</div>
@@ -196,7 +195,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-4">
+			<!--<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2343.png" >
 					<h5 style="display: inline-block;">PANACHAYATI RAJ EXPENDITURE</h5>
@@ -209,7 +208,7 @@
 						<a class="pull-right" href="prExpenditureDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
-			</div>
+			</div>-->
 			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2348.png" >
