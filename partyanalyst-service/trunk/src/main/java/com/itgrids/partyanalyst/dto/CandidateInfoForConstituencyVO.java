@@ -27,11 +27,23 @@ public class CandidateInfoForConstituencyVO {
 	private String migrateCandidate;
 	private String candDesignation;
 	private Long designationId;
-		
+	private Long electionYear;
+	private Long electionId;
 	private CandidateElectionVO candidateElectionVO;
 	private List<CandidateDetailsForConstituencyTypesVO> subList;
 	
-	
+	public Long getElectionYear() {
+		return electionYear;
+	}
+	public void setElectionYear(Long electionYear) {
+		this.electionYear = electionYear;
+	}
+	public Long getElectionId() {
+		return electionId;
+	}
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
 	public List<CandidateInfoForConstituencyVO> getList() {
 		return list;
 	}

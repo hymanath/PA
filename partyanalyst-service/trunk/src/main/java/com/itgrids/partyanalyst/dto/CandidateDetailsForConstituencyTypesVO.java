@@ -36,8 +36,16 @@ public class CandidateDetailsForConstituencyTypesVO {
 	private String memberShipNo;
 	private String committeLevel;
 	private Long electionId;
+	private Long electionYear;
 	private List<CandidateDetailsForConstituencyTypesVO> candateList=new ArrayList<CandidateDetailsForConstituencyTypesVO>(0);
 	private String image;
+	
+	public Long getElectionYear() {
+		return electionYear;
+	}
+	public void setElectionYear(Long electionYear) {
+		this.electionYear = electionYear;
+	}
 	public String getImage() {
 		return image;
 	}
