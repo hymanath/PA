@@ -95,4 +95,6 @@ public List<Object[]> getAllTehsilInfoDetails();
 	public List<Long> getAllConstituenciesByPanchayatId(Long panchayatId);
 	public List<Long> getAllConstituenciesByLocalElectionBodyId(Long localElectionBodyId);
 	//public Long getAllConstituenciesByLocalElectionBodyWardId(Long localElectionBodyWardId) ;
+	public List<Long> getConstituencyByPanchayt(Long panchaytId);
+	public List<Long> getConstituencyByLocalBody(Long locationValue);
 }

@@ -1076,13 +1076,29 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 					sbs.append(" ,c.constituency_id as locationId,c.name as locationName ");
 					sbe.append(" and c.state_id =:locationValue GROUP BY c.constituency_id,");
 				}else if(locationTypeId ==3l){
-					sbs.append(" ,c.constituency_id as locationId,c.name as locationName ");
-					sbe.append(" and c.district_id =:locationValue  GROUP BY c.constituency_id,");
+					if(searchType.equalsIgnoreCase("mandal")){
+						sbs.append(" ,tc.tehsil_id as locationId,t.tehsil_name as locationName ");
+						sbm.append(" join tehsil_constituency tc on tc.constituency_id=c.constituency_id " +
+								" join tehsil t on t.tehsil_id =tc.tehsil_id ");
+						sbe.append(" and c.district_id =:locationValue  GROUP BY tc.tehsil_id, ");
+					}else{
+						sbs.append(" ,c.constituency_id as locationId,c.name as locationName ");
+						sbe.append(" and c.district_id =:locationValue  GROUP BY c.constituency_id,");
+					}
+					
 				}else if(locationTypeId ==4l ){
-					sbs.append(" ,tc.tehsil_id as locationId,t.tehsil_name as locationName ");
-					sbm.append(" join tehsil_constituency tc on tc.constituency_id=c.constituency_id " +
-							" join tehsil t on t.tehsil_id =tc.tehsil_id ");
-					sbe.append(" and c.constituency_id =:locationValue  GROUP BY tc.tehsil_id, ");
+					if(searchType.equalsIgnoreCase("village")){
+						sbs.append(" ,p1.panchayat_id as locationId,p1.panchayat_name as locationName ");
+						sbm.append(" join panchayat p1 on p1.tehsil_id=tc.tehsil_id join tehsil_constituency tc on tc.constituency_id=c.constituency_id " +
+								" join tehsil t on t.tehsil_id =tc.tehsil_id ");
+						sbe.append(" and c.constituency_id =:locationValue  GROUP BY tc.tehsil_id, ");
+					}else{
+						sbs.append(" ,tc.tehsil_id as locationId,t.tehsil_name as locationName ");
+						sbm.append(" join tehsil_constituency tc on tc.constituency_id=c.constituency_id " +
+								" join tehsil t on t.tehsil_id =tc.tehsil_id ");
+						sbe.append(" and c.constituency_id =:locationValue  GROUP BY tc.tehsil_id, ");
+					}
+					
 				}else if(locationTypeId ==10l){
 					sbs.append(" ,c.constituency_id as locationId,c.name as locationName ");
 					sbe.append(" and c.constituency_id in (select distinct p.assembly_id from parliament_assembly p where parliament_id =:locationValue) GROUP BY c.constituency_id,");
@@ -1141,7 +1157,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			sbe.append(" ce.consti_elec_id = bce.consti_elec_id and  e.election_id = ce.election_id and  ");
 			sbe.append(" br.booth_constituency_election_id = bce.booth_constituency_election_id and  ");
 			sbe.append(" bce.booth_id = b.booth_id");
-			if(partIds.size() != 0 && partIds !=null){
+			if(partIds !=null && partIds.size() != 0){
 			sbe.append(" and n.party_id in (:partIds) ");
 			}
 			if(electionYrs != null && electionYrs.size() > 0l){
@@ -1188,7 +1204,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 					" ce.consti_elec_id = cer.consti_elec_id AND  n.consti_elec_id = ce.consti_elec_id AND " +
 					" n.party_id = p.party_id and n.candidate_id = c.candidate_id and  ce.constituency_id = c1.constituency_id and  cr.nomination_id = n.nomination_id ");
 			
-			if(partIds !=null && partIds.size() != 0){
+			if(partIds !=null && partIds.size() != 0 ){
 				sbe.append(" and n.party_id in (:partIds) ");
 			}
 			if(electionYrs != null && electionYrs.size() > 0l){
@@ -1221,9 +1237,16 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 					//sbe.append(" and c.state_id =:locationValue");
 					sbe.append(" GROUP BY e.election_id, et.election_type_id ,p.party_id,c1.constituency_id ");
 				}else if(locationTypeId.longValue() ==3l){
-					sb.append(" ,c1.constituency_id as locationId,c1.name as locationName ");
-					sbe.append(" and c1.district_id =:locationValue");
-					sbe.append(" GROUP BY e.election_id, e.election_year, et.election_type_id ,p.party_id,c1.constituency_id ");
+					if(searchType.equalsIgnoreCase("mandal")){
+						sb.append(" ,tc.tehsil_id as locationid, t.tehsil_name as locationName ");
+						sbm.append(" ,tehsil_constituency tc,tehsil t ");
+						sbe.append(" and tc.constituency_id=c1.constituency_id and t.tehsil_id =tc.tehsil_id and c1.district_id =:locationValue");
+						sbe.append(" GROUP BY e.election_id, e.election_year, et.election_type_id ,p.party_id,t.tehsil_id ");
+					}else{
+						sb.append(" ,c1.constituency_id as locationId,c1.name as locationName ");
+						sbe.append(" and c1.district_id =:locationValue");
+						sbe.append(" GROUP BY e.election_id, e.election_year, et.election_type_id ,p.party_id,c1.constituency_id ");
+					}
 				}else if(locationTypeId.longValue() ==4l){
 					sb.append(" ,tc.tehsil_id as locationid, t.tehsil_name as locationName ");
 					sbm.append(" ,tehsil_constituency tc,tehsil t ");

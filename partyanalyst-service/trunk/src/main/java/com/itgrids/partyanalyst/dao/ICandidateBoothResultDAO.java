@@ -267,8 +267,8 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 
 	public List<Object[]> findLocationWiseBoothWisePollingPercentage(List<Long> partyIds, Long locationTypeId, Long locationValue,List<Long> electionYears, String level, Long electionScopeId);
 
-	public List<Object[]> LocatioWisefindboothWiseResultsForCandidate(Long constituencyId, Long nominationId);
+	public List<Object[]> LocatioWisefindboothWiseResultsForCandidate(Long constituencyId, Long nominationId,Long locationTypeId);
 
-	public List<Object[]> locationWisefindboothWiseResultsForNominators(Long constituencyId, Long electionYears);
+	List<Object[]> locationWisefindboothWiseResultsForNominators(Long constituencyId, Long electionYears, Long locationTypeId);
 
 }
