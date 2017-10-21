@@ -1,5 +1,5 @@
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var globalStrongPoorColor={"VERY STRONG":'#009900',"OK":"#FFCC00","POOR":"#FF9966","VERY POOR":"#CC6600","WORST":"#FF3E3E","STRONG":"#428AE9"}
+var globalStrongPoorColor={"VERY GOOD":'#009900',"OK":"#FFCC00","POOR":"#FF9966","VERY POOR":"#CC6600","WORST":"#FF3E3E","GOOD":"#428AE9","EXCELLENT":"#009999"}
 var globalCrossVotionBgColor={"TDP":'#FFFFB8',"YSRC":"#CEE8DF","BJP":"#f4c36e","AIMIM":"#7bf7a6","INC":"#CEDFEA","CPI":"#fc713f","CPM":"#f995b5","PRP":"#b6f986","TRS":"#F7E8D9"}
 var eletionSubType=["MAIN"];
 var electionYrVal = [];
@@ -1798,23 +1798,26 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 		str+='<h4 class="text-capital m_top10">Location Level '+electionTypetext+' Election Comparision Results For '+partyName+' Party</h4>';
 	}
 	
-	str+='<div class="table-responsive m_top10" style="display:none;">';
+	str+='<div class="table-responsive m_top10">';
 	
 	str+='<table class="table table-condensed table-bordered" >';
 	str+='<tr>';
-	str+='<th style="background-color:#CC6600;">WORST %</th>';
-	str+='<th style="background-color:#FF9966;">VERY POOR %</th>';
-	str+='<th style="background-color:#FFCC00;">POOR %</th>';
-	str+='<th style="background-color:#009900;">OK %</th>';
-	str+='<th style="background-color:#FF3E3E;">STRONG %</th>';
-	str+='<th style="background-color:#428AE9;">VERY STRONG %</th>';
+	str+='<th style="background-color:#FF3E3E;">WORST %</th>';
+	str+='<th style="background-color:#CC6600;">VERY POOR %</th>';
+	str+='<th style="background-color:#FF9966;">POOR %</th>';
+	str+='<th style="background-color:#FFCC00;">OK %</th>';
+	str+='<th style="background-color:#428AE9;">GOOD %</th>';
+	str+='<th style="background-color:#009900;">VERY GOOD %</th>';
+	str+='<th style="background-color:#009999;">EXCELLENT %</th>';
 	str+='</tr>';
-	str+='<th> 0 - 5 </th>';
-	str+='<th> 6 - 10 </th>';
-	str+='<th> 11 - 20 </th>';
-	str+='<th> 21 - 30 </th>';
-	str+='<th> 31 - 40 </th>';
-	str+='<th> 41 - 100 </th>';
+	str+='<th> Below (-11) </th>';
+	str+='<th> -10 to -6 </th>';
+	str+='<th> -5 to 0 </th>';
+	str+='<th> 0 to 5 </th>';
+	str+='<th> 6 to 10 </th>';
+	str+='<th> 11 to 20 </th>';
+	str+='<th> 21 Above  </th>';
+	
 	str+='</tr>';
 	str+='</table>';
 	str+='</div>';
@@ -1930,36 +1933,42 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 				str+='<tr>';
 					str+='<td>'+result[i].locationName+'</td>';
 					for(var j in result[i].list){							
-						if(result[i].list[j].status == 'STRONG')
+						if(result[i].list[j].status == 'GOOD')
 						{
 							str+='<td style="background-color:#428AE9;color:#fff">';
 							str+='<h5 ><b>'+result[i].list[j].status+'</b></h5>';
-								str+='<h6><b>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
-						}else if(result[i].list[j].status == 'VERY STRONG')
+								str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+						}
+						else if(result[i].list[j].status == 'EXCELLENT')
+						{
+							str+='<td style="background-color:#009999;color:#fff">';
+							str+='<h5 ><b>'+result[i].list[j].status+'</b></h5>';
+								str+='<h6><b>Margin Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+						}else if(result[i].list[j].status == 'VERY GOOD')
 						{
 							str+='<td style="background-color:#009900;color:#fff">';
 							str+='<h5 ><b>'+result[i].list[j].status+'</b></h5>';
-								str+='<h6><b>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+								str+='<h6><b>Margin Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 						}else if(result[i].list[j].status == 'OK')
 						{
 							str+='<td style="background-color:#FFCC00;color:#fff">';
 							str+='<h5 ><b>'+result[i].list[j].status+'</b></h5>';
-								str+='<h6><b>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+								str+='<h6><b>Margin Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 						}else if(result[i].list[j].status == 'POOR')
 						{
 							str+='<td style="background-color:#FF9966;color:#fff">';
 							str+='<h5 ><b>'+result[i].list[j].status+'</b></h5>';
-								str+='<h6><b>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+								str+='<h6><b>Margin Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 						}else if(result[i].list[j].status == 'VERY POOR')
 						{
 							str+='<td style="background-color:#CC6600;color:#fff">';
 							str+='<h5 ><b>'+result[i].list[j].status+'</b></h5>';
-								str+='<h6><b>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+								str+='<h6><b>Margin Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 						}else if(result[i].list[j].status == 'WORST')
 						{
 							str+='<td style="background-color:#FF3E3E;color:#fff">';
 							str+='<h5 ><b>'+result[i].list[j].status+'</b></h5>';
-								str+='<h6><b>Earned Votes:'+result[i].list[j].earnedVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+								str+='<h6><b>Margin Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 						}else  if(result[i].list[j].status == null || result[i].list[j].status.length == 0 ){
 							str+='<td class="text-center"  style="background-color:grey;" >';
 							str+='<h5 title="Removed after delimitation in 2009 "> NOT AVAILABLE </h5>';
