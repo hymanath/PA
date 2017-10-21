@@ -963,7 +963,7 @@ IElectionDAO {
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct election_year from election ");
 		if(electionSubTypes != null && electionSubTypes.size() >0){
-			sb.append(" where  sub_type in (:electionSubTypes) ");
+			sb.append(" where  sub_type in (:electionSubTypes) and election_year > 1982 ");
 		}
 
 		sb.append(" order by election_year desc ");
