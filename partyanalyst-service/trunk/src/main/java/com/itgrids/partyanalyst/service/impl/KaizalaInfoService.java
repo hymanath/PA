@@ -256,14 +256,17 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						}
 						JSONObject dataObj = jsonObj.getJSONObject("data");
 						
-						Long id = kaizalaGroupsDAO.checkGroupExistence(dataObj.getString("groupId"));
-						if(id == null || id == 0l){
+						List<Long> ids = kaizalaGroupsDAO.checkGroupExistence(dataObj.getString("groupId"));
+						Long id = null;
+						if(ids == null || ids.size() == 0l){
 							KaizalaGroups kg = new KaizalaGroups();
 							
 							kg.setGroupId(dataObj.getString("groupId"));
 							kg.setIsDeleted("N");
 							kg.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 							id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+						}else{
+							id = ids.get(ids.size()-1);
 						}
 						eventRes.setGroupId(dataObj.getString("groupId"));
 						eventRes.setKaizalaGroupsId(id);
@@ -461,8 +464,9 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						DateUtilService dateService = new DateUtilService();
 						JSONObject jsonObj = new JSONObject(output);
 						JSONObject dataObj = jsonObj.getJSONObject("data");
-							Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-							if(id == null || id == 0l){
+							List<Long> ids = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+							Long id = null;
+							if(ids == null || ids.size() == 0l){
 								Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 								KaizalaGroups kg = new KaizalaGroups();
 								kg.setGroupId(jsonObj.getString("objectId"));
@@ -470,6 +474,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 								kg.setInsertedTime(dateService.getCurrentDateAndTime());
 								kg.setKaizalaGroupTypeId(groupTypeId);
 								id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+							}else{
+								id = ids.get(ids.size()-1);
 							}
 							KER.setGroupId(jsonObj.getString("objectId"));
 							KER.setKaizalaGroupsId(id);
@@ -525,8 +531,9 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 						Date dueDate = sdf.parse(dataObj.getString("dueDate"));
 						
-						Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-							if(id == null || id == 0l){
+						List<Long> ids = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+						Long id = null;
+							if(ids == null || ids.size() == 0l){
 								Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 								KaizalaGroups kg = new KaizalaGroups();
 								kg.setGroupId(jsonObj.getString("objectId"));
@@ -534,6 +541,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 								kg.setInsertedTime(dateService.getCurrentDateAndTime());
 								kg.setKaizalaGroupTypeId(groupTypeId);
 								id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+							}else{
+								id = ids.get(ids.size()-1);
 							}
 							KER.setGroupId(jsonObj.getString("objectId"));
 							KER.setKaizalaGroupsId(id);
@@ -653,8 +662,9 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 					if(output != null && !output.isEmpty()){
 						DateUtilService dateUtilService = new DateUtilService();
 						JSONObject jsonObj = new JSONObject(output);
-						Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-						if(id==null || id==0l){
+						List<Long> ids = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+						Long id = null;
+						if(ids == null || ids.size() == 0l){
 							Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 							KaizalaGroups kg = new KaizalaGroups();
 							kg.setGroupId(jsonObj.getString("objectId"));
@@ -662,6 +672,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							kg.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							kg.setKaizalaGroupTypeId(groupTypeId);
 							id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+						}else{
+							id = ids.get(ids.size()-1);
 						}
 						
 						KaizalaEventsResponse eventRes = new KaizalaEventsResponse();
@@ -728,15 +740,18 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						JSONArray propArray = dataObj.getJSONArray("properties");
 						
 						
-						Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-						Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
-						if(id == null || id == 0l){
+						List<Long> ids = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+						Long id = null;
+						if(ids == null || ids.size() == 0l){
+							Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 							KaizalaGroups kg = new KaizalaGroups();
 							kg.setGroupId(jsonObj.getString("objectId"));
 							kg.setIsDeleted("N");
 							kg.setInsertedTime(dateService.getCurrentDateAndTime());
 							kg.setKaizalaGroupTypeId(groupTypeId);
 							id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+						}else{
+							id = ids.get(ids.size()-1);
 						}
 						
 						Long actionId = kaizalaActionsDAO.checkexistenceOrNot(dataObj.getString("actionId"));
@@ -826,8 +841,9 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						JSONObject responseDetailsObj = dataObj.getJSONObject("responseDetails");
 						JSONObject responseObj = responseDetailsObj.getJSONObject("response");
 						
-						Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-						if(id == null || id == 0l){
+						List<Long> ids = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+						Long id = null;
+						if(ids == null || ids.size() == 0l){
 							Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 							KaizalaGroups kg = new KaizalaGroups();
 							kg.setGroupId(jsonObj.getString("objectId"));
@@ -835,6 +851,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							kg.setInsertedTime(dateService.getCurrentDateAndTime());
 							kg.setKaizalaGroupTypeId(groupTypeId);
 							id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+						}else{
+							id = ids.get(ids.size()-1);
 						}
 						
 						Long actionId = kaizalaActionsDAO.checkexistenceOrNot(dataObj.getString("actionId"));
@@ -893,20 +911,20 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						DateUtilService dateService = new DateUtilService();
 						JSONObject jsonObj = new JSONObject(output);
 						
-						Long parentGroupId = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+						List<Long> parentGroupIds = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
 						
 						JSONObject dataObj = jsonObj.getJSONObject("data");
 						KaizalaGroups subGroup = new KaizalaGroups();
 						subGroup.setGroupId(dataObj.getString("groupId"));
 						subGroup.setGroupName(dataObj.getString("groupName"));
 						subGroup.setKaizalaGroupTypeId(kaizalaGroupTypeDAO.checkGroupTypeExistence(dataObj.getString("groupType")));
-						subGroup.setParentKaizalaGroupsId(parentGroupId);
+						subGroup.setParentKaizalaGroupsId(parentGroupIds.get(parentGroupIds.size()-1));
 						subGroup.setInsertedTime(dateService.getCurrentDateAndTime());
 						subGroup.setIsDeleted("N");
 						subGroup = kaizalaGroupsDAO.save(subGroup);
 						
 						
-						KER.setKaizalaGroupsId(parentGroupId);
+						KER.setKaizalaGroupsId(parentGroupIds.get(parentGroupIds.size()-1));
 						KER.setGroupId(jsonObj.getString("objectId"));
 						KER.setEventId(jsonObj.getString("eventId"));
 						KER.setKaizalaEventsId(11l);
@@ -950,14 +968,14 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						DateUtilService dateService = new DateUtilService();
 						JSONObject jsonObj = new JSONObject(output);
 						
-						Long parentGroupId = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-						Long childGroupId = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getJSONObject("data").getString("groupId"));
+						List<Long> parentGroupIds = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+						List<Long> childGroupIds = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getJSONObject("data").getString("groupId"));
 						
-						KER.setKaizalaGroupsId(parentGroupId);
+						KER.setKaizalaGroupsId(parentGroupIds.get(parentGroupIds.size()-1));
 						KER.setGroupId(jsonObj.getString("objectId"));
 						KER.setEventId(jsonObj.getString("eventId"));
 						KER.setKaizalaEventsId(12l);
-						KER.setAddedKaizalaGroupsId(childGroupId);
+						KER.setAddedKaizalaGroupsId(childGroupIds.get(childGroupIds.size()-1));
 						KER.setInsertedTime(dateService.getCurrentDateAndTime());
 						KER.setUpdatedTime(dateService.getCurrentDateAndTime());
 						
@@ -979,7 +997,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						
 						kaizalaEventsResponseDAO.save(KER);
 						
-						kaizalaGroupsDAO.removeParentGroup(childGroupId);
+						kaizalaGroupsDAO.removeParentGroup(childGroupIds.get(childGroupIds.size()-1));
 					 }
 					
 				} catch (Exception e) {
@@ -999,8 +1017,9 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							JSONObject jsonObj = new JSONObject(output);
 							JSONObject dataObj = jsonObj.getJSONObject("data");
 							
-							Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-							if(id == null || id == 0l){
+							List<Long> ids = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+							Long id = null;
+							if(ids == null || ids.size() == 0l){
 								Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 								KaizalaGroups kg = new KaizalaGroups();
 								kg.setGroupId(jsonObj.getString("objectId"));
@@ -1008,6 +1027,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 								kg.setInsertedTime(dateService.getCurrentDateAndTime());
 								kg.setKaizalaGroupTypeId(groupTypeId);
 								id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+							}else{
+								id = ids.get(ids.size()-1);
 							}
 							
 							List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));
@@ -1070,8 +1091,9 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							JSONObject jsonObj = new JSONObject(output);
 							JSONObject dataObj = jsonObj.getJSONObject("data");
 							
-							Long id = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
-							if(id == null || id == 0l){
+							List<Long> ids = kaizalaGroupsDAO.checkGroupExistence(jsonObj.getString("objectId"));
+							Long  id = null;
+							if(ids == null || ids.size() == 0l){
 								Long groupTypeId = kaizalaGroupTypeDAO.checkGroupTypeExistence(jsonObj.getString("objectType"));
 								KaizalaGroups kg = new KaizalaGroups();
 								kg.setGroupId(jsonObj.getString("objectId"));
@@ -1079,6 +1101,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 								kg.setInsertedTime(dateService.getCurrentDateAndTime());
 								kg.setKaizalaGroupTypeId(groupTypeId);
 								id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+							}else{
+								id = ids.get(ids.size()-1);
 							}
 							
 							List<Long> resIds = kaizalaResponderInfoDAO.getRespondentId(jsonObj.getString("fromUser"));

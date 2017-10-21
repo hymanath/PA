@@ -1,10 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import com.itgrids.partyanalyst.dao.IKaizalaGroupsDAO;
 import com.itgrids.partyanalyst.model.KaizalaGroups;
@@ -15,12 +14,12 @@ public class KaizalaGroupsDAO extends GenericDaoHibernate<KaizalaGroups, Long> i
 		super(KaizalaGroups.class);
 	}
 	
-	public Long checkGroupExistence(String groupId){
+	public List<Long> checkGroupExistence(String groupId){
 		Query query = getSession().createQuery(" select model.kaizalaGroupsId "
 				+ " from KaizalaGroups model "
-				+ " where model.groupId=:groupId ");
+				+ " where model.groupId=:groupId and model.isDeleted='N' ");
 		query.setParameter("groupId", groupId);
-		return (Long) query.uniqueResult();
+		return query.list();
 	}
 
 	public Integer removeParentGroup(Long kaizalaGroupId){
