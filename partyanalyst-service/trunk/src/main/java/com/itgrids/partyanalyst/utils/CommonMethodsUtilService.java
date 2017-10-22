@@ -719,7 +719,10 @@ public class CommonMethodsUtilService {
 		  
 		public String percentageMergeintoTwoDecimalPlaces(Double perc){
 			try {
-				 return new BigDecimal(perc).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				if(!Double.isNaN(perc))
+					return new BigDecimal(perc).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				else
+					return "0.0";
 			} catch (Exception e) {
 				LOG.error("Exception raised in percentageMergeintoTwoDecimalPlaces in CommonMethodsUtilService ", e);
 			}
