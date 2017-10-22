@@ -1359,7 +1359,10 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			if( locationTypeId==2l && searchType == null || (searchType!=null && !searchType.equalsIgnoreCase("constituency"))){
 				query.setParameter("locationValue",locationValue);
 			}else{
-				query.setParameter("locationValue",locationValue);
+				if(locationTypeId ==2l && parlimentIds == null && searchType.equalsIgnoreCase("constituency"))
+					;//query.setParameter("locationValue",locationValue);
+				else
+					query.setParameter("locationValue",locationValue);
 			}
 			
 		}
