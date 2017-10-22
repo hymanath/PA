@@ -58,11 +58,12 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 		this.partyId=partyId;
 		this.partyName=name;
 	}
-	public ElectionInformationVO(String name,String range,Long min,Long max){
+	public ElectionInformationVO(String name,String range,Long min,Long max,Long rank){
 		this.min=min;
 		this.max=max;
 		this.partyName=name;
 		this.range=range;
+		this.rank = rank;
 	}
 	public Double getPercentage() {
 		return percentage;
