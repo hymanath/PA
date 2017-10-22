@@ -983,19 +983,19 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 		str+='<div class="block boderBlock">';
 			if(locationLevelId == '2')
 			{
-				str+='<h4 class="theme-title-color">District Level Party Election Results</h4>';
+				str+='<h4 class="theme-title-color">District wise State Level Party Election Results</h4>';
 			}else if(locationLevelId == '3')
 			{
-				str+='<h4 class="theme-title-color">District Level Party Election Results</h4>';		
+				str+='<h4 class="theme-title-color">Assembly wise District Level Party Election Results</h4>';		
 			}else if(locationLevelId == '10')
 			{
-				str+='<h4 class="theme-title-color">Parliament Level Party Election Results</h4>';
+				str+='<h4 class="theme-title-color">Assembly wise  Parliamenr Level Party Election Results</h4>';
 			}else if(locationLevelId == '4')
 			{
-				str+='<h4 class="theme-title-color">Constituency Level Party Election Results</h4>';
+				str+='<h4 class="theme-title-color">Mandal/Muncipality wise Constituency Level Party Election Results</h4>';
 			}else if(locationLevelId == '5')
 			{
-				str+='<h4 class="theme-title-color">Mandal Level Party Election Results</h4>';
+				str+='<h4 class="theme-title-color">Panchayat wise Mandal Level Party Election Results</h4>';
 			}else if(locationLevelId == '6')
 			{
 				str+='<h4 class="theme-title-color">Panchayat Level Party Election Results</h4>';
@@ -1016,10 +1016,10 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 								str+='<th rowspan="2">District Name</th>';	
 							}else if(locationLevelId == '10')
 							{
-								str+='<th rowspan="2">Parliament Name</th>';
+								str+='<th rowspan="2">Assembly Name</th>';
 							}else if(locationLevelId == '4')
 							{
-								str+='<th rowspan="2">Constituency Name</th>';
+								str+='<th rowspan="2">Mandal/Muncipality Name</th>';
 							}else if(locationLevelId == '5')
 							{
 								str+='<th rowspan="2">Mandal Name</th>';
@@ -1028,7 +1028,7 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 								str+='<th rowspan="2">Panchayat Name</th>';
 							}else if(locationLevelId == '7')
 							{
-								str+='<th rowspan="2">Location Name</th>';
+								str+='<th rowspan="2">Mandal/Muncipality Name</th>';
 							}else
 							{
 								str+='<th rowspan="2">Location Name</th>';
@@ -1857,13 +1857,13 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 	str+='<th style="background-color:#009900;">VERY GOOD %</th>';
 	str+='<th style="background-color:#009999;">EXCELLENT %</th>';
 	str+='</tr>';
-	str+='<th> Below (-11) </th>';
-	str+='<th> -10 to -6 </th>';
-	str+='<th> -5 to 0 </th>';
+	str+='<th> Below (-10) </th>';
+	str+='<th> -10 to -5 </th>';
+	str+='<th> -5 to <0 </th>';
 	str+='<th> 0 to 5 </th>';
-	str+='<th> 6 to 10 </th>';
-	str+='<th> 11 to 20 </th>';
-	str+='<th> 21 Above  </th>';
+	str+='<th> 5 to 10 </th>';
+	str+='<th> 10 to 20 </th>';
+	str+='<th> 20 Above  </th>';
 	
 	str+='</tr>';
 	str+='</table>';
