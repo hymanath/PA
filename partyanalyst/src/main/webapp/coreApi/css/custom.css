@@ -1703,3 +1703,11 @@ font-size:12px !important;
     border-top: 1px solid rgb(74, 88, 101) !important;
     cursor: pointer;
 }
+.benefit_block{
+	background-color: #dddddd;
+    padding: 10px;
+}
+.media_padding{
+	background-color:#fff;
+	padding:5px;
+}
