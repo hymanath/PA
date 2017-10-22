@@ -599,7 +599,7 @@
 			<div class="modal-header" style="background-color:#CCCCCC">
 				<div class="row" >
 					<div class="col-md-8">
-						<h5 class="panel-title text-capital" id="TitleId" >Title</h5>
+						<h4 class="theme-title-color text-capital" id="TitleId" >Title</h4>
 						<p id="subTitleId"></p>
 					</div>
 					<div class="col-sm-3 pull-right">
