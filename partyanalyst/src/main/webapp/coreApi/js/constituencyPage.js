@@ -147,8 +147,7 @@ function onLoadInitialisations()
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
            'This Month': [moment().startOf('month'), moment()],
            'This Year': [moment().startOf('Year'), moment()],
-		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
-        }
+		}
 	});
 	//Tours Start
 	$("#tourNewDateRangePickerId").daterangepicker({
@@ -3935,17 +3934,16 @@ function getGovtSchemeWiseBenefitMembersCount(){
 	
 	
 	jsObj={
-		locationTypeId	:locationLevelId,
-		locationValue	:locationLevelVal,
-		publicationDateId:22
+		locationScopeId	:locationLevelId,
+		locationValue	:locationLevelVal
 	}
 	 $.ajax({
       type : "POST",
-      url : "getGovtSchemeWiseBenefitMembersCountAction.action",
+      url : "getLocationwiseSchemesOverviewAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-		if(result!=null && result.length>0){
+		if(result!=null){
 			return buildTabs(result,locationLevelId,locationLevelVal);
 		}else{
 			$("#benefitsBlockId").html(noData);
@@ -3953,56 +3951,144 @@ function getGovtSchemeWiseBenefitMembersCount(){
 	});	
 	function buildTabs(result,locationLevelId,locationLevelVal)
 	{
-		var navTabs = '';
-		navTabs+='';
-		navTabs+='<div class="col-sm-3 pad_right0">';
-			navTabs+='<select class="form-control" role="tabListMobile">';
-				for(var i in result)
-				{
-					navTabs+='<option tab_id="benefits'+result[i].id+'">'+result[i].name+' ('+result[i].totalCount+')</option>';
+		var str='';
+		str+='<div class="col-sm-4">';
+			str+='<div class="benefit_block">';
+				str+='<div id="benefitMainGraphId"></div>';
+				str+='<div class="row">';
+					str+='<div class="col-sm-6">';
+						str+='<div class="media media_padding">';
+							str+='<div class="media-left">';
+								str+='<img src="coreApi/img/group.png" alt="Group"/></img>';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h6>Benefited Members</h6>';
+								str+='<h5>  - </h5>';
+							str+=' </div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-6">';
+						str+='<div class="media media_padding">';
+							str+='<div class="media-left">';
+								str+='<i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:28px"></i>';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h6 class="m_top5">Benefited<br/>Amount</h6>';
+								str+='<h5>  - </h5>';
+							str+=' </div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<h5 class="m_top10">Location Wise Overview</h5>';
+			str+='<div class="table-responsive m_top10">';
+				str+='<table class="table tableAlignment">';
+					str+='<thead class="bg-E9">';
+						str+='<tr>';
+							str+='<th>Location</th>';
+							str+='<th>Benefite Schemes</th>';
+							str+='<th>Memberes</th>';
+							str+='<th>Amount</th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						str+='<tr>';
+							str+='<td>Srikakulam</td>';
+							str+='<td>10</td>';
+							str+='<td>18546</td>';
+							str+='<td>18546/-</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-8">';
+			str+='<h5>Schemes Overview</h5>';
+			str+='<div class="table-responsive m_top10">';
+				str+='<table class="table tableAlignment">';
+					str+='<thead class="bg-E9">';
+						str+='<tr>';
+							str+='<th>Location</th>';
+							str+='<th></th>';
+							str+='<th>Memberes</th>';
+							str+='<th>Amount</th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						str+='<tr>';
+							str+='<td>Srikakulam</td>';
+							str+='<td><div id="schemesGraphId" style="height:50px;"></div></td>';
+							str+='<td>18546</td>';
+							str+='<td>18546/-</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+		
+		$("#benefitsBlockId").html(str);
+		$('#schemesGraphId').highcharts({
+			chart: {
+				type: 'bar'
+			},
+			title: {
+				text: ''
+			},
+			
+			xAxis: {
+				type: 'category',
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				tickLength: 0,
+				labels: {
+					enabled: false
 				}
-				
-			navTabs+='</select>';
-			navTabs+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
-				for(var i in result)
-				{
-					if(i == 0)
-					{
-						if(result[i].name !=null && result[i].name.length>20){
-							navTabs+='<li class="active tooltipBeneCls"  data-toogle="tooltip" title="'+result[i].name+'" style="cursor:pointer;" data-placement="top" style="font-size:13px;cursor:pointer;"><a href="#benefits'+result[i].id+'" navTabs-click="'+result[i].id+'" aria-controls="benefits'+result[i].id+'" role="tab" data-toggle="tab" >'+result[i].name.substr(0,20)+'...<span class="pull-right">'+result[i].totalCount+'</span></a></li>';
-						}else{
-							navTabs+='<li class="active" style="font-size:13px;"><a href="#benefits'+result[i].id+'" navTabs-click="'+result[i].id+'" aria-controls="benefits'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="pull-right">'+result[i].totalCount+'</span></a></li>';
-						}
-						
-					}else{
-						if(result[i].name !=null && result[i].name.length>20){
-							navTabs+='<li class="tooltipBeneCls"  data-toogle="tooltip" title="'+result[i].name+'" style="cursor:pointer;" data-placement="top" style="font-size:13px;cursor:pointer;"><a href="#benefits'+result[i].id+'" navTabs-click="'+result[i].id+'" aria-controls="benefits'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name.substr(0,20)+'...<span class="pull-right">'+result[i].totalCount+'</span></a></li>';
-						}else{
-							navTabs+='<li class="tooltipBeneCls" style="font-size:13px;"><a href="#benefits'+result[i].id+'" navTabs-click="'+result[i].id+'" aria-controls="benefits'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+' <span class="pull-right">'+result[i].totalCount+'</span></a></li>';
-						}
-						
-						
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				tickLength: 0,
+				title: {
+					text: ''
+				},
+				labels: {
+					enabled: false
+				}
+			},
+			legend: {
+				enabled: false
+			},
+			tooltip: {
+				pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>'
+			},
+			plotOptions : { 
+				bar: {
+					pointWidth: 15,
+					gridLineWidth: 10,
+					colorByPoint: true
+				}
+			},
+			series: [{
+				name: 'Population',
+				data: [
+				   [20]
+				],
+				dataLabels: {
+					enabled: false,
+					rotation: -90,
+					color: '#FFFFFF',
+					align: 'right',
+					format: '{point.y:.1f}', // one decimal
+					y: 10, // 10 pixels down from the top
+					style: {
+						fontSize: '13px',
+						fontFamily: 'Verdana, sans-serif'
 					}
 				}
-			navTabs+='</ul>';
-		navTabs+='</div>';
-		navTabs+='<div class="col-sm-9 pad_left0">';
-			navTabs+='<div class="tab-content">';
-				for(var i in result)
-				{
-					if(i == 0)
-					{
-						navTabs+='<div role="tabpanel" class="tab-pane active pad_10" id="benefits'+result[i].id+'"></div>';
-					}else{
-						navTabs+='<div role="tabpanel" class="tab-pane pad_10" id="benefits'+result[i].id+'"></div>';
-					}
-				}
-			navTabs+='</div>';
-		navTabs+='</div>';
-		$("#benefitsBlockId").html(navTabs);
-		$(".tooltipBeneCls").tooltip();
-		responsiveTabs();
-		getMandalWiseBenefitMembersCount(result[0].id)
+			}]
+		});
 	}
 }
 
@@ -6428,6 +6514,18 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						},
 						labels: {
 							enabled: false,
+						},
+						stackLabels: {
+							enabled: true,
+							style: {
+								fontWeight: 'bold',
+								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+							},
+							formatter: function() {
+								//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+								//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+								return (this.total);
+							},
 						}
 					},
 					tooltip: {
@@ -6463,7 +6561,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 							},
 						},
 					series: [{
-						name: "Completed Meetings",
+						name: "count",
 						data: mainArr,
 						colorByPoint: true
 					}]
@@ -6487,7 +6585,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 				
 				var categoriesArr = [];
 					categoriesArr.push('Total','Invited','Images')
-				finalArr.push({name: result.levelList[i].name,stack: result.levelList[i].name,data: mainArr})
+				finalArr.push({name: result.levelList[i].name,data: mainArr})
 				$("#meetingsGraphBlockStateIdMain").highcharts({
 					chart: {
 						type: 'bar'
@@ -6512,6 +6610,17 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						},
 						labels: {
 							enabled: false,
+						},
+						stackLabels: {
+							enabled: true,
+							style: {
+								fontWeight: 'bold',
+								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+							},formatter: function() {
+								//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+								//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+								return (this.total);
+							},
 						}
 					},
 					tooltip: {
@@ -6528,7 +6637,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						shared: true
 					},
 					legend: {   
-							enabled: true,				
+							enabled: false,				
 						},				
 						plotOptions: {
 							bar: {
@@ -6629,10 +6738,10 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 				str+='</div>';
 			str+='</div>';
 			$("#specialMeetingsBlockId").html(str);
-			if(result.levelList.length > 2)
+			/* if(result.levelList.length > 2)
 			{
 				$(".scrollListMeeting").mCustomScrollbar({setHeight:"600px"})
-			}
+			} */
 			var colorsArr = ['#06D7A7','#0888DE','#994100','#AFCE69']
 			for(var i in result.levelList)
 			{
@@ -6654,7 +6763,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						}
 					},
 					tooltip: {
-						pointFormat: '{series.name}: {y}</b>'
+						enabled: false,
 					},
 					plotOptions: {
 						pie: {
@@ -6697,6 +6806,17 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						minorGridLineWidth: 0,
 						categories: categoriesArr,
 						type: 'category',
+						labels: {
+							formatter: function() {
+								return this.value.toString().substring(0, 5)+'';
+								
+							},
+							formatter: function() {
+								//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+								//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+								return (this.total);
+							},
+						}
 					},
 					yAxis: {
 						min: 0,
@@ -6708,6 +6828,13 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						title: {
 							text: ''
 						},
+						stackLabels: {
+							enabled: true,
+							style: {
+								fontWeight: 'bold',
+								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+							}
+						}
 					},
 					tooltip: {
 						formatter: function () {
@@ -6741,7 +6868,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 							},
 						},
 					series: [{
-						name: "Special Meetings",
+						name: "count",
 						data: mainArr,
 						colorByPoint: true
 					}]
@@ -6773,6 +6900,18 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						title: {
 							text: ''
 						},
+						stackLabels: {
+							enabled: true,
+							style: {
+								fontWeight: 'bold',
+								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+							},
+							formatter: function() {
+								//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+								//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+								return (this.total);
+							},
+						}
 					},
 					tooltip: {
 						formatter: function () {
@@ -6806,7 +6945,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 							},
 						},
 					series: [{
-						name: "Invitees",
+						name: "count",
 						data: specialInviteesMeetingsArr,
 						colorByPoint: true
 					}]
@@ -6900,14 +7039,13 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 		});
 	} 
   }
- 
   function getLocationWiseMeetingStatusDetailsAction(){
 	  $("#openPostDetailsModalDivId").html(spinner);
 	  var jsObj={
 		searchLocationId	:  locationLevelId,
 		locationValuesArr	:  userAccessLevelValuesArray,
-		fromDateStr 		:customStartATMDate,
-		toDateStr 			:customEndATMDate,
+		fromDateStr 		:customStartMeetingsDate,
+		toDateStr 			:customEndMeetingsDate,
 		meetingTypeId		:1, 	//CommitteeId
 		partyMeetinLevelId 	:2 //districtId
 	  }
@@ -7015,6 +7153,8 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 									str+='<td class="text-center" style="color:#99410F">May Be</td>';
 								}else if(result[i].datesList[j].momStatus == "NU"){
 									str+='<td class="text-center" class="text-danger">Not Updated</td>';
+								}else{
+									str+='<td class="text-center"> - </td>';
 								}
 								
 							}
