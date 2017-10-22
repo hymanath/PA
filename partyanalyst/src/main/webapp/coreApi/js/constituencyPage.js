@@ -892,6 +892,15 @@ function onLoadClicks()
 			$("#TitleId").html("Committee Meetings - District Level");
 			$("#subTitleId").html("(Every month : 22nd/23rd/24th)");
 			getLocationWiseMeetingStatusDetailsAction();
+		}else if(type == "electionResults"){
+			var constituencyId = $(this).attr("attr_constituencyId");
+			var electionYear = $(this).attr("attr_election_year");
+			var electionType = $(this).attr("attr_election_type");
+			var name = $(this).attr("attr_name");
+			$("#openModalDiv").modal("show");
+			$("#TitleId").html(name+"  "+electionType+" Election Result");
+			
+			getDetailedElectionResults(constituencyId,electionYear,"table")
 		}	
 	});
 	$(document).on("click",".descAlertCls",function(){
@@ -1250,9 +1259,9 @@ function getCandidateAndPartyInfoForConstituency(){
 										parliament+='</h4>';
 										parliament+='<p class="text-muted text-capital m_left5 f_12" style="margin-bottom: 5px;">'+result[0].subList1[i].constituencyName+' (PC)</p>';
 										if(result[0].subList1[i].tdpCadreId !=null && result[0].subList1[i].tdpCadreId>0){
-											parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].subList1[i].tdpCadreId+'">View Candidate Profile</span>';
+											parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].subList1[i].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[0].subList1[i].constituencyId+'" attr_election_year="'+result[0].subList1[i].latestElecYear+'" attr_election_type="Parliament" attr_name="'+result[0].subList1[i].constituencyName+'">View Results</span>';
 										}else{
-											parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].subList1[i].candidateId+'">View Candidate Profile</span>';
+											parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].subList1[i].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[0].subList1[i].constituencyId+'" attr_election_year="'+result[0].subList1[i].latestElecYear+'" attr_election_type="Parliament" attr_name="'+result[0].subList1[i].constituencyName+'">View Results</span>';
 										}
 									parliament+='</div>';
 								parliament+='</div>';
@@ -1301,9 +1310,9 @@ function getCandidateAndPartyInfoForConstituency(){
 											assembly+='</h4>';
 											 assembly+='<p class="text-muted text-capital m_left5 f_12" style="margin-bottom:5px"><span>AC : '+result[i].assemblyCandidateInfo[0].constituencyName+'</span> <span>PC : '+result[i].assemblyCandidateInfo[0].parliamnerName+'</span></p>';
 											if(result[i].assemblyCandidateInfo[0].tdpCadreId !=null && result[i].assemblyCandidateInfo[0].tdpCadreId>0){
-												assembly+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].assemblyCandidateInfo[0].tdpCadreId+'">View Candidate Profile</span>';
+												assembly+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].assemblyCandidateInfo[0].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
 											}else{
-												assembly+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].assemblyCandidateInfo[0].candidateId+'">View Candidate Profile</span>';
+												assembly+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].assemblyCandidateInfo[0].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
 											}
 										assembly+='</div>';
 									assembly+='</div>';
@@ -1349,9 +1358,9 @@ function getCandidateAndPartyInfoForConstituency(){
 									parliament+='</h4>';
 									parliament+='<p class="text-muted text-capital m_left5 f_12" style="margin-bottom:5px;">MP ('+result[0].subList1[0].constituencyName+')</p>';
 									if(result[0].subList1[0].tdpCadreId !=null && result[0].subList1[0].tdpCadreId>0){
-										parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].subList1[0].tdpCadreId+'">View Candidate Profile</span>';
+										parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].subList1[0].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[0].subList1[0].constituencyId+'" attr_election_year="'+result[0].subList1[0].latestElecYear+'" attr_election_type="Parliament" attr_name="'+result[0].subList1[0].constituencyName+'">View Results</span>';
 									}else{
-										parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].subList1[0].candidateId+'">View Candidate Profile</span>';
+										parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].subList1[0].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[0].subList1[0].constituencyId+'" attr_election_year="'+result[0].subList1[0].latestElecYear+'" attr_election_type="Parliament" attr_name="'+result[0].subList1[0].constituencyName+'">View Results</span>';
 									}
 								parliament+='</div>';
 							parliament+='</div>';
@@ -1381,9 +1390,9 @@ function getCandidateAndPartyInfoForConstituency(){
 										parliament+='</h4>';
 										 parliament+='<p class="text-muted text-capital m_left5 f_12" style="margin-bottom:5px"><span>AC : '+result[i].assemblyCandidateInfo[0].constituencyName+'</span> <span>PC : '+result[i].assemblyCandidateInfo[0].parliamnerName+'</span></p>';
 										if(result[i].assemblyCandidateInfo[0].tdpCadreId !=null && result[i].assemblyCandidateInfo[0].tdpCadreId>0){
-											parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].assemblyCandidateInfo[0].tdpCadreId+'">View Candidate Profile</span>';
+											parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].assemblyCandidateInfo[0].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
 										}else{
-											parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].assemblyCandidateInfo[0].candidateId+'">View Candidate Profile</span>';
+											parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].assemblyCandidateInfo[0].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
 										}
 									parliament+='</div>';
 								parliament+='</div>';
@@ -4819,18 +4828,20 @@ function getDetailedElectionInformaction(){
 			}
 			
 		}	
-		str+='<table class="table table-noborder" id="dataTableAssemblyElecBlock">';
+		str+='<table class="table table-noborder table_election_results tableHoverLevels" id="dataTableAssemblyElecBlock">';
 			str+='<thead class="bg-DD text-capitalize">';
 				str+='<th style="vertical-align: middle;">Year</th>';
-				str+='<th style="vertical-align: middle;"> <img src="coreApi/img/winner_icon.png" style="width:25px;height:25px;" alt="green-hand"/></th>';
-				str+='<th style="vertical-align: middle;">Won Candidate</th>';
-				str+='<th style="vertical-align: middle;">Majority Of Votes</th>';
-				str+='<th style="vertical-align: middle;"><img src="coreApi/img/loser_icon.png" style="width:25px;height:25px;" alt="red-hand"/></th>';
-				str+='<th style="vertical-align: middle;">Lost Candidate</th>';
+				str+='<th style="vertical-align: middle;">Party</th>';
+				str+='<th style="vertical-align: middle;"><img src="coreApi/img/winner_icon.png" style="width:25px;height:25px;" alt="green-hand"/> Won Candidate</th>';
+				str+='<th style="vertical-align: middle;">Polled Votes</th>';
+				str+='<th style="vertical-align: middle;border:1px solid #008855 !important;" >Margin Votes</th>';
+				str+='<th style="vertical-align: middle;">Party</th>';
+				str+='<th style="vertical-align: middle;"><img src="coreApi/img/loser_icon.png" style="width:25px;height:25px;" alt="red-hand"/> Lost Candidate</th>';
+				str+='<th style="vertical-align: middle;">Polled Votes</th>';
 			str+='</thead>';
 			str+='<tbody>';
 			for(var i in result){
-				str+='<tr>';
+				str+='<tr class="popUpDetailsClickCls" attr_type="electionResults" attr_constituencyId="'+constituencyId+'" attr_election_year="'+result[i].electionYear+'" attr_election_type="Assembly" attr_name="'+locationName+'" style="text-decoration:none;font-weight:normal;">';
 					str+='<td>'+result[i].electionYear+'</td>';
 					if(result[i].candidateResultsVO.partyShortName == "TDP" || result[i].candidateResultsVO.partyShortName == "YSRC"){
 						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="'+result[i].candidateResultsVO.partyShortName+'"/></td>';
@@ -4840,13 +4851,16 @@ function getDetailedElectionInformaction(){
 					
 					str+='<td>'+result[i].candidateResultsVO.candidateName+'</td>';
 					str+='<td>'+result[i].candidateResultsVO.votesEarned+'</td>';
+					
+					str+='<td style="border:1px solid #008855 !important;text-align:center;">'+result[i].candidateResultsVO.votesMargin+'</td>';
+					
 					if(result[i].candidateOppositionList[0].partyShortName == "TDP" || result[i].candidateOppositionList[0].partyShortName == "YSRC"){
 						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateOppositionList[0].partyShortName+'.PNG" alt="'+result[i].candidateOppositionList[0].partyShortName+'"/></td>';
 					}else{
 						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateOppositionList[0].partyShortName+'.png" alt="'+result[i].candidateOppositionList[0].partyShortName+'"/></td>';
 					}
 					str+='<td>'+result[i].candidateOppositionList[0].candidateName+'</td>';
-					
+					str+='<td>'+result[i].candidateOppositionList[0].votesEarned+'</td>';
 					
 				str+='</tr>';
 			}
@@ -4859,7 +4873,8 @@ function getDetailedElectionInformaction(){
 			"info":     false,
 			"searching": false,
 			"autoWidth": true,
-			"sDom": '<"top"iflp>rt<"bottom"><"clear">'
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"order": [ 0, 'desc' ]
 		});
 		$('#assemblyElectionGraphDetails').highcharts({
 			title: {
@@ -7117,3 +7132,213 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
  		"iDisplayLength": 10
  	});
  	}
+
+function getDetailedElectionResults(constituencyId,electionYear,type){
+	$("#openPostDetailsModalDivId").html(spinner);
+	jsObj={
+	  	constituencyId: constituencyId
+    }
+    $.ajax({
+      type : "GET",
+      url : "getDetailedElectionInformactionAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			return buildDetailedElectionInformaction(result,constituencyId,electionYear,type);
+		}
+	});
+	
+	function buildDetailedElectionInformaction(result,constituencyId,electionYear,type){
+		
+		var navTabs = '';
+		navTabs+='<div class="block">';
+			//navTabs+='<h4 class="theme-title-color">Assembly Election Year Wise Details</h4>';
+		navTabs+='<div class="row">';
+			navTabs+='<div class="col-sm-5" style="padding-right: 10px;">';
+				navTabs+='<div class="panel panel-default panel-border">';
+					navTabs+='<div class="panel-heading winnersColor" >';
+						navTabs+='<div class="media">';
+							navTabs+='<div class="media-left">';
+								navTabs+='<img src="coreApi/img/winner_icon.png" alt="winner_icon"></img>';
+							navTabs+='</div>';
+							navTabs+='<div class="media-body">';
+								navTabs+='<h3 class="m_top20">Winners</h3>';
+							navTabs+=' </div>';
+						navTabs+='</div>';
+					navTabs+='</div>';
+					navTabs+='<div class="panel-body">';
+						navTabs+='<ul class="nav nav-tabs nav-tabs-horizontal_Elec" role="tablist">';
+							for(var i in result){
+								/* if(electionYear == result[i].electionYear){
+									alert(1)
+									$('.nav-tabs-horizontal_Elec a[href="#candidatesResult'+i+'"]').trigger('click');
+								} */
+								
+								if(electionYear == result[i].electionYear){
+									navTabs+='<li class="active">';
+										navTabs+='<a href="#candidatesResult'+i+'" navTabs-click="" aria-controls="candidatesResult'+i+'" role="tab" data-toggle="tab">';
+											navTabs+='<div class="media">';
+												navTabs+='<div class="media-left">';
+													navTabs+='<div class="row">';
+															navTabs+='<div class="col-sm-5">';
+																navTabs+='<h4 class="m_top10">'+result[i].electionYear+'</h4>';
+															navTabs+=' </div>';
+															navTabs+='<div class="col-sm-5">';
+															if(result[i].candidateResultsVO.partyShortName == "TDP" || result[i].candidateResultsVO.partyShortName == "YSRC"){
+																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="'+result[i].candidateResultsVO.partyShortName+'"></img>';
+															}else{
+																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="'+result[i].candidateResultsVO.partyShortName+'"></img>';
+															}
+																navTabs+='<p class="">'+result[i].candidateResultsVO.partyShortName+'</p>';
+															navTabs+=' </div>';
+													navTabs+='</div>';
+													
+												navTabs+='</div>';
+													navTabs+='<div class="media_body_custom">';
+														navTabs+='<h5>'+result[i].candidateResultsVO.candidateName+'</h5>';
+															navTabs+='<div class="row m_top5">';
+																navTabs+='<div class="col-sm-6">';
+																navTabs+='<h6 class="f-11 normal_font">Votes&nbsp;Earned</h6>';
+																navTabs+='<h6 class="m_top5 f-11 normal_font">'+result[i].candidateResultsVO.votesEarned+'   <span style="color:green;">'+result[i].candidateResultsVO.votesPercentage+'%</span></h6>';
+															navTabs+='</div>';
+															navTabs+='<div class="col-sm-6">';
+																navTabs+='<h6 class="f-11 normal_font">Margin&nbsp;Gained</h6>';
+																navTabs+='<h6 class="m_top5 f-11 normal_font">'+result[i].candidateResultsVO.votesMargin+'   <span style="color:green;">'+result[i].candidateResultsVO.votesPercentMargin+'%</span></h6>';
+															navTabs+='</div>';
+														navTabs+=' </div>';
+													navTabs+=' </div>';
+											navTabs+='</div>';
+										navTabs+='</a>';
+									navTabs+='</li>'; 
+								}else{
+									navTabs+='<li class="">';
+										navTabs+='<a href="#candidatesResult'+i+'" navTabs-click="" aria-controls="candidatesResult'+i+'" role="tab" data-toggle="tab">';
+											navTabs+='<div class="media">';
+												navTabs+='<div class="media-left">';
+													navTabs+='<div class="row">';
+															navTabs+='<div class="col-sm-5">';
+																navTabs+='<h4 class="m_top10">'+result[i].electionYear+'</h4>';
+															navTabs+=' </div>';
+															navTabs+='<div class="col-sm-5">';
+															if(result[i].candidateResultsVO.partyShortName == "TDP" || result[i].candidateResultsVO.partyShortName == "YSRC"){
+																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="'+result[i].candidateResultsVO.partyShortName+'"></img>';
+															}else{
+																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="'+result[i].candidateResultsVO.partyShortName+'"></img>';
+															}
+																navTabs+='<p class="">'+result[i].candidateResultsVO.partyShortName+'</p>';
+															navTabs+=' </div>';
+													navTabs+='</div>';
+													
+												navTabs+='</div>';
+													navTabs+='<div class="media_body_custom">';
+														navTabs+='<h5>'+result[i].candidateResultsVO.candidateName+'</h5>';
+															navTabs+='<div class="row m_top5">';
+																navTabs+='<div class="col-sm-6">';
+																navTabs+='<h6 class="f-11 normal_font">Votes&nbsp;Earned</h6>';
+																navTabs+='<h6 class="m_top5 f-11 normal_font">'+result[i].candidateResultsVO.votesEarned+'   <span style="color:green;">'+result[i].candidateResultsVO.votesPercentage+'%</span></h6>';
+															navTabs+='</div>';
+															navTabs+='<div class="col-sm-6">';
+																navTabs+='<h6 class="f-11 normal_font">Margin&nbsp;Gained</h6>';
+																navTabs+='<h6 class="m_top5 f-11 normal_font">'+result[i].candidateResultsVO.votesMargin+'   <span style="color:green;">'+result[i].candidateResultsVO.votesPercentMargin+'%</span></h6>';
+															navTabs+='</div>';
+														navTabs+=' </div>';
+													navTabs+=' </div>';
+											navTabs+='</div>';
+										navTabs+='</a>';
+									navTabs+='</li>';
+								}
+							}
+							
+							
+						navTabs+='</ul>';
+					navTabs+='</div>';
+				navTabs+='</div>';
+			navTabs+='</div>';
+			
+				
+			
+			navTabs+='<div class="col-sm-7 pad_left0">';
+				navTabs+='<div class="panel panel-default panel-border">';
+					navTabs+='<div class="panel-heading looserColor" >';
+					
+						navTabs+='<div class="media">';
+							navTabs+='<div class="media-left">';
+								navTabs+='<img src="coreApi/img/loser_icon.png" alt="loser_icon"></img>';
+							navTabs+='</div>';
+							navTabs+='<div class="media-body">';
+								navTabs+='<h3 class="m_top20">Losers</h3>';
+							navTabs+=' </div>';
+						navTabs+='</div>';
+						
+					navTabs+='</div>';
+					navTabs+='<div class="panel-body panel_body_custom">';
+						navTabs+='<div class="tab-content">';
+								for(var i in result){
+									if(electionYear == result[i].electionYear){
+										navTabs+='<div role="tabpanel" class="tab-pane active pad_10 block" id="candidatesResult'+i+'" style="border-radius: 10px;">';
+									}else{
+										navTabs+='<div role="tabpanel" class="tab-pane pad_10 block" id="candidatesResult'+i+'" style="border-radius: 10px;">';
+									}
+										navTabs+='<div class="table-responsive">';
+										navTabs+='<table class="table table-condensed table_padding" id="candidatesResultsDT">';
+											navTabs+='<thead>';
+												navTabs+='<tr>';
+													navTabs+='<th>Candidate Name</th>';
+													navTabs+='<th>Party</th>';
+													navTabs+='<th>Party Flag</th>';
+													navTabs+='<th>Votes Earned</th>';
+													navTabs+='<th>Earned %</th>';
+													navTabs+='<th>Rank</th>';
+												navTabs+='</tr>';
+											navTabs+='</thead>';
+											
+											navTabs+='<tbody>';
+												for(var j in result[i].candidateOppositionList){
+													navTabs+='<tr>';
+														if(result[i].candidateOppositionList[j].candidateName !=null && result[i].candidateOppositionList[j].candidateName.length>10){
+															navTabs+='<td><span class="candidate_rounded">'+result[i].candidateOppositionList[j].candidateName.charAt(0)+'</span><span class="tooltipCls" style="cursor:pointer; data-toggle="tooltip" data-placement="right" title="'+result[i].candidateOppositionList[j].candidateName+'">'+result[i].candidateOppositionList[j].candidateName.substring(0,10)+'...</span></td>';
+														}else{
+															navTabs+='<td><span class="candidate_rounded">'+result[i].candidateOppositionList[j].candidateName.charAt(0)+'</span>'+result[i].candidateOppositionList[j].candidateName+'</td>';
+														}
+														
+														
+														navTabs+='<td>'+result[i].candidateOppositionList[j].partyShortName+'</td>';
+														
+														if(result[i].candidateOppositionList[j].partyShortName == "TDP" || result[i].candidateOppositionList[j].partyShortName == "YSRC"){
+															navTabs+='<td><img class="" src="images/party_flags/'+result[i].candidateOppositionList[j].partyShortName+'.PNG" alt="'+result[i].candidateOppositionList[j].partyShortName+'"></img></td>';
+														}else{
+															navTabs+='<td><img class="" src="images/party_flags/'+result[i].candidateOppositionList[j].partyShortName+'.png" alt="'+result[i].candidateOppositionList[j].partyShortName+'"></img></td>';
+														}
+														
+														navTabs+='<td>'+result[i].candidateOppositionList[j].votesEarned+'</td>';
+														navTabs+='<td>'+result[i].candidateOppositionList[j].votesPercentage+'</td>';
+														navTabs+='<td>'+result[i].candidateOppositionList[j].rank+'</td>';
+													navTabs+='</tr>';
+												}
+											navTabs+='</tbody>';
+										navTabs+='</table>';
+										navTabs+='</div>';
+									navTabs+='</div>';
+								}	
+								
+							
+						navTabs+='</div>'; 
+					navTabs+='</div>';
+				navTabs+='</div>';
+			navTabs+='</div>';
+		navTabs+='</div>';
+		navTabs+='</div>';
+		$("#openPostDetailsModalDivId").html(navTabs);
+		$(".tooltipCls").tooltip();
+		$("#candidatesResultsDT").dataTable({
+			"paging":   true,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
+	}
+}
