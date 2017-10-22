@@ -204,7 +204,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				for(Object[] objs : marginWiseStatusObjs){
 					statusMap.put(commonMethodsUtilService.getStringValueForObject(objs[2])+" - "+commonMethodsUtilService.getStringValueForObject(objs[3]),commonMethodsUtilService.getStringValueForObject(objs[1]));
 					statusVOMap.put(commonMethodsUtilService.getStringValueForObject(objs[2])+" - "+commonMethodsUtilService.getStringValueForObject(objs[3]), new ElectionInformationVO(commonMethodsUtilService.getStringValueForObject(objs[1]),commonMethodsUtilService.getStringValueForObject(objs[0]),
-							commonMethodsUtilService.getLongValueForObject(objs[2]),commonMethodsUtilService.getLongValueForObject(objs[3])));
+							commonMethodsUtilService.getLongValueForObject(objs[2]),commonMethodsUtilService.getLongValueForObject(objs[3]),commonMethodsUtilService.getLongValueForObject(objs[4])));
 					}
 				}
 			
@@ -246,8 +246,8 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			}
 			Map<Long, ElectionInformationVO> locationMap= new HashMap<Long, ElectionInformationVO>();
 			for (Object[] objects : validVoterList) {	
-				//if(commonMethodsUtilService.getLongValueForObject(objects[5]) != 11L)
-					//continue;
+				//if(commonMethodsUtilService.getLongValueForObject(objects[5]) != 280L)
+				//	continue;
 				ElectionInformationVO yearVo =	locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[5]));
 				if(yearVo == null){
 					List<ElectionInformationVO> yearList = new ArrayList<ElectionInformationVO>();
@@ -323,8 +323,8 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				locationList.add(commonMethodsUtilService.getLongValueForObject(param[7]));
 				electionIdAndLocationIdListMap.put(commonMethodsUtilService.getLongValueForObject(param[5]), locationList);
 				
-				//if(commonMethodsUtilService.getLongValueForObject(param[7]) != 11L)
-					//continue;
+				//if(commonMethodsUtilService.getLongValueForObject(param[7]) != 280L)
+				//	continue;
 				ElectionInformationVO yearVo= locationMap.get(commonMethodsUtilService.getLongValueForObject(param[7]));
 				if(yearVo == null){
 					List<ElectionInformationVO> yearList = new ArrayList<ElectionInformationVO>();
@@ -500,13 +500,14 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 													rangeVO.setMin(rangeInfoVO.getMin());
 													rangeVO.setMax(rangeInfoVO.getMax());
 													rangeVO.setRange(rangeInfoVO.getPartyName().trim());
+													rangeVO.setRank(rangeInfoVO.getRank());
 												}
 												electionVO.getSubList1().add(rangeVO);
 											}
 											
 											Collections.sort(electionVO.getSubList1(), new Comparator<ElectionInformationVO>() {
 												public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
-													return o1.getMin().compareTo(o2.getMin());
+													return o1.getRank().compareTo(o2.getRank());
 												}
 											});											
 										}
@@ -540,103 +541,114 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 							});
 						}
 						
-						 int ourPartyPositionNo = 0;
-							for (int i=0;i<electionVO.getSubList2().size();i++) {
-								ElectionInformationVO tempPartyVO = electionVO.getSubList2().get(i);
-								tempPartyVO.setRank(Long.valueOf(String.valueOf(i+1)));
-								if(tempPartyVO.getPartyId() != null && partyIdsList.contains(tempPartyVO.getPartyId().longValue()))
-									ourPartyPositionNo =i;break;
-							}
-							
-							if(ourPartyPositionNo == 0){// rank 1 - first position after sorting
-								ElectionInformationVO rankOneVO = electionVO.getSubList2().get(ourPartyPositionNo);
-								ElectionInformationVO rankTwoVO = null;
-								if(electionVO.getSubList2() != null && electionVO.getSubList2().size()>1){
-									rankTwoVO = electionVO.getSubList2().get(ourPartyPositionNo+1);
+						if(commonMethodsUtilService.isListOrSetValid(electionVO.getSubList2())){
+							 int ourPartyPositionNo = -1;
+								for (int i=0;i<electionVO.getSubList2().size();) {
+									ElectionInformationVO tempPartyVO = electionVO.getSubList2().get(i);
+									tempPartyVO.setRank(Long.valueOf(String.valueOf(i+1)));
+									if(tempPartyVO.getPartyId() != null && partyIdsList.contains(tempPartyVO.getPartyId().longValue())){
+										ourPartyPositionNo =i;break;
+									}
+									i++;
 								}
-								if(rankTwoVO != null && rankOneVO != null){
-									Long marginVotes = rankOneVO.getEarnedVotes() - rankTwoVO.getEarnedVotes();
-									rankOneVO.setMarginVotes(marginVotes);
-									String rank1Perc= calculatePercentage(electionVO.getValidVoters(),rankOneVO.getEarnedVotes());
-									String rank2Perc= calculatePercentage(electionVO.getValidVoters(),rankTwoVO.getEarnedVotes());
-									
-									Double marginPerc = Double.parseDouble(rank1Perc) - Double.parseDouble(rank2Perc);
-									Long perc = Math.round(marginPerc);
-									
-									if(perc != null && perc.longValue()>0L){
-										rankOneVO.setPerc(perc.toString());
-										electionVO.setPerc(perc.toString());
-									}else{
+								
+								if(ourPartyPositionNo == 0){// rank 1 - first position after sorting
+									ElectionInformationVO rankOneVO = electionVO.getSubList2().get(ourPartyPositionNo);
+									ElectionInformationVO rankTwoVO = null;
+									if(electionVO.getSubList2() != null && electionVO.getSubList2().size()>1){
+										rankTwoVO = electionVO.getSubList2().get(ourPartyPositionNo+1);
+									}
+									if(rankTwoVO != null && rankOneVO != null){
+										Long marginVotes = rankOneVO.getEarnedVotes() - rankTwoVO.getEarnedVotes();
+										rankOneVO.setMarginVotes(marginVotes);
+										String rank1Perc= calculatePercentage(electionVO.getValidVoters(),rankOneVO.getEarnedVotes());
+										String rank2Perc= calculatePercentage(electionVO.getValidVoters(),rankTwoVO.getEarnedVotes());
+										
+										Double marginPerc = Double.parseDouble(rank1Perc) - Double.parseDouble(rank2Perc);
 										rankOneVO.setPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(marginPerc));
 										electionVO.setPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(marginPerc));
-									}
-									
-									electionVO.setMarginVotes(marginVotes);
-									
-									for (String rangeValue : statusMap.keySet()) {
-										ElectionInformationVO ststusVO = statusMap.get(rangeValue);
-										if(ststusVO !=null){
-											if(Double.parseDouble(electionVO.getPerc()) > 0.0d && 
-													 Double.parseDouble(electionVO.getPerc()) >= Double.parseDouble(ststusVO.getMin().toString().trim()) &&  Double.parseDouble(electionVO.getPerc()) <= Double.parseDouble(ststusVO.getMax().toString().trim())){
-												rankOneVO.setStatus(ststusVO.getPartyName().trim());
-												electionVO.setStatus(ststusVO.getPartyName().trim());break;
-											}else if(Double.parseDouble(electionVO.getPerc()) < 0.0d && 
-													 Double.parseDouble(electionVO.getPerc()) >= Double.parseDouble(ststusVO.getMax().toString().trim()) &&  Double.parseDouble(electionVO.getPerc()) <= Double.parseDouble(ststusVO.getMin().toString().trim())){
-												rankOneVO.setStatus(ststusVO.getPartyName().trim());
-												electionVO.setStatus(ststusVO.getPartyName().trim());break;
+										
+										/*Long perc = Math.round(marginPerc);
+										
+										if(perc != null && perc.longValue()>0L){
+											rankOneVO.setPerc(perc.toString());
+											electionVO.setPerc(perc.toString());
+										}else{
+											rankOneVO.setPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(marginPerc));
+											electionVO.setPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(marginPerc));
+										}*/
+										
+										electionVO.setMarginVotes(marginVotes);
+										
+										for (String rangeValue : statusMap.keySet()) {
+											ElectionInformationVO ststusVO = statusMap.get(rangeValue);
+											if(ststusVO !=null){
+												if(Double.parseDouble(electionVO.getPerc()) > 0.0d && 
+														 Double.parseDouble(electionVO.getPerc()) >= Double.parseDouble(ststusVO.getMin().toString().trim()) &&  Double.parseDouble(electionVO.getPerc()) <= Double.parseDouble(ststusVO.getMax().toString().trim())){
+													rankOneVO.setStatus(ststusVO.getPartyName().trim());
+													electionVO.setStatus(ststusVO.getPartyName().trim());break;
+												}else if(Double.parseDouble(electionVO.getPerc()) < 0.0d && 
+														 Double.parseDouble(electionVO.getPerc()) >= Double.parseDouble(ststusVO.getMax().toString().trim()) &&  Double.parseDouble(electionVO.getPerc()) <= Double.parseDouble(ststusVO.getMin().toString().trim())){
+													rankOneVO.setStatus(ststusVO.getPartyName().trim());
+													electionVO.setStatus(ststusVO.getPartyName().trim());break;
+												}
 											}
 										}
 									}
-								}
-							}else{
-								// Not first position after sorting
-								ElectionInformationVO rankOne1VO = electionVO.getSubList2().get(0);
-								ElectionInformationVO nextRankVO = null;
-								if(electionVO.getSubList2() != null && electionVO.getSubList2().size()>1){
-									nextRankVO = electionVO.getSubList2().get(ourPartyPositionNo);
-								}
-								if(nextRankVO != null && rankOne1VO != null){
-									Long marginVotes = nextRankVO.getEarnedVotes() - rankOne1VO.getEarnedVotes();
-									nextRankVO.setMarginVotes(marginVotes);
-									String rank1Perc= calculatePercentage(electionVO.getValidVoters(),rankOne1VO.getEarnedVotes());
-									String rank2Perc= calculatePercentage(electionVO.getValidVoters(),nextRankVO.getEarnedVotes());
-									
-									Double marginPerc = Double.parseDouble(rank2Perc) - Double.parseDouble(rank1Perc);
-									Long perc = Math.round(marginPerc);
-									if(perc != null && perc.longValue()>0L){
-										nextRankVO.setPerc(perc.toString());
-										electionVO.setPerc(perc.toString());
-									}else{
+								}else if(ourPartyPositionNo >0){
+									// Not first position after sorting
+									ElectionInformationVO rankOne1VO = electionVO.getSubList2().get(0);
+									ElectionInformationVO nextRankVO = null;
+									if(electionVO.getSubList2() != null && electionVO.getSubList2().size()>1){
+										nextRankVO = electionVO.getSubList2().get(ourPartyPositionNo);
+									}
+									if(nextRankVO != null && rankOne1VO != null){
+										Long marginVotes = nextRankVO.getEarnedVotes() - rankOne1VO.getEarnedVotes();
+										nextRankVO.setMarginVotes(marginVotes);
+										String rank1Perc= calculatePercentage(electionVO.getValidVoters(),rankOne1VO.getEarnedVotes());
+										String rank2Perc= calculatePercentage(electionVO.getValidVoters(),nextRankVO.getEarnedVotes());
+										
+										Double marginPerc = Double.parseDouble(rank2Perc) - Double.parseDouble(rank1Perc);
+										/*Long perc = Math.round(marginPerc);
+										if(perc != null && perc.longValue()>0L){
+											nextRankVO.setPerc(perc.toString());
+											electionVO.setPerc(perc.toString());
+										}else{
+											nextRankVO.setPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(marginPerc));
+											electionVO.setPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(marginPerc));
+										}*/
 										nextRankVO.setPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(marginPerc));
 										electionVO.setPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(marginPerc));
-									}
-									electionVO.setMarginVotes(marginVotes);
-									
-									for (String rangeValue : statusMap.keySet()) {
-										ElectionInformationVO ststusVO = statusMap.get(rangeValue);
-										if(ststusVO !=null){
-											if(Double.parseDouble(electionVO.getPerc().toString()) > 0.0d && 
-													 Double.parseDouble(electionVO.getPerc().toString()) >= Double.parseDouble(ststusVO.getMin().toString().trim()) &&  Double.parseDouble(electionVO.getPerc().toString()) <= Double.parseDouble(ststusVO.getMax().toString().trim())){
-												nextRankVO.setStatus(ststusVO.getPartyName().trim());
-												electionVO.setStatus(ststusVO.getPartyName().trim());break;
-											}else if(Double.parseDouble(electionVO.getPerc().toString()) < 0.0d && 
-													 Double.parseDouble(electionVO.getPerc().toString()) >= Double.parseDouble(ststusVO.getMax().toString().trim()) &&  Double.parseDouble(electionVO.getPerc().toString()) <= Double.parseDouble(ststusVO.getMin().toString().trim())){
-												nextRankVO.setStatus(ststusVO.getPartyName().trim());
-												electionVO.setStatus(ststusVO.getPartyName().trim());break;
+										electionVO.setMarginVotes(marginVotes);
+										
+										for (String rangeValue : statusMap.keySet()) {
+											ElectionInformationVO ststusVO = statusMap.get(rangeValue);
+											if(ststusVO !=null){
+												if(Double.parseDouble(electionVO.getPerc().toString()) > 0.0d && 
+														 Double.parseDouble(electionVO.getPerc().toString()) >= Double.parseDouble(ststusVO.getMin().toString().trim()) &&  Double.parseDouble(electionVO.getPerc().toString()) <= Double.parseDouble(ststusVO.getMax().toString().trim())){
+													nextRankVO.setStatus(ststusVO.getPartyName().trim());
+													electionVO.setStatus(ststusVO.getPartyName().trim());break;
+												}else if(Double.parseDouble(electionVO.getPerc().toString()) < 0.0d && 
+														 Double.parseDouble(electionVO.getPerc().toString()) >= Double.parseDouble(ststusVO.getMax().toString().trim()) &&  Double.parseDouble(electionVO.getPerc().toString()) <= Double.parseDouble(ststusVO.getMin().toString().trim())){
+													nextRankVO.setStatus(ststusVO.getPartyName().trim());
+													electionVO.setStatus(ststusVO.getPartyName().trim());break;
+												}
 											}
 										}
 									}
 								}
-							}
-						if(electionVO != null && commonMethodsUtilService.isListOrSetValid(electionVO.getSubList2())){
-							List<ElectionInformationVO> electionPartyVOList = new ArrayList<ElectionInformationVO>(0);
-							for (ElectionInformationVO partyVO : electionVO.getSubList2()) {
-								if(partyVO.getPartyId() != null && partyIdsList.contains(partyVO.getPartyId().longValue()))
-									electionPartyVOList.add(partyVO);break;
-							}
-							if(commonMethodsUtilService.isListOrSetValid(electionPartyVOList)){
-								electionVO.getSubList2().clear();
-								electionVO.getSubList2().addAll(electionPartyVOList);
+							if(ourPartyPositionNo >=0 && electionVO != null && commonMethodsUtilService.isListOrSetValid(electionVO.getSubList2())){
+								List<ElectionInformationVO> electionPartyVOList = new ArrayList<ElectionInformationVO>(0);
+								for (ElectionInformationVO partyVO : electionVO.getSubList2()) {
+									if(partyVO.getPartyId() != null && partyIdsList.contains(partyVO.getPartyId().longValue()))
+										electionPartyVOList.add(partyVO);break;
+								}
+								if(commonMethodsUtilService.isListOrSetValid(electionPartyVOList)){
+									electionVO.getSubList2().clear();
+									electionVO.getSubList2().addAll(electionPartyVOList);
+								}
+							}else{
+								electionVO.setStatus("NOT PARTICIPATED");
 							}
 						}
 					}
@@ -996,7 +1008,6 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 						//List<CandidateBoothResult> candidateboothResults = new ArrayList<CandidateBoothResult>(nomination.getCandidateBoothResults() != null ? nomination.getCandidateBoothResults():null);
 						
 						List<Object[]> candidateboothResults = candidateBoothResultDAO.LocatioWisefindboothWiseResultsForCandidate(constituencyId,param[13] != null ? Long.valueOf(param[13].toString()):0L, locationTypeId);
-						System.out.println("In getBoothWiseResultsForParty::"+candidateboothResults.size());
 						
 						if(candidateboothResults != null && candidateboothResults.size()>0)
 						{

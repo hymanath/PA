@@ -17,7 +17,7 @@ public class MarginVotesRangeDAO extends GenericDaoHibernate<MarginVotesRange, L
 
 	public List<Object[]> getMarginVotesAgeRangeDetails(){
 		
-		Query query = getSession().createQuery(" select model.rangeValue,model.description,model.minValue,model.maxValue from MarginVotesRange model where model.isDeleted = 'N'  order by model.orderNo " );
+		Query query = getSession().createQuery(" select model.rangeValue,model.description,model.minValue,model.maxValue,model.orderNo from MarginVotesRange model where model.isDeleted = 'N'  order by model.orderNo " );
 		return query.list();
 	}
 }
