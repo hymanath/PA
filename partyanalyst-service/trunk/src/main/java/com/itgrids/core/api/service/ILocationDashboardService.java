@@ -78,4 +78,11 @@ public interface ILocationDashboardService {
 	public List<CandidateDetailsForConstituencyTypesVO> getPartyWiseMPandMLACandidatesCountDetials(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue,Long partyId);
 	public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(Long loactionTypeId,List<Long> locationValues);
 	public List<MeetingsVO> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues,String startDate,String endDate,Long meetingLevelId,Long meetingTypeId,Long meetingMainTypeId);
+	
+	public GrivenceStatusVO getGrivenceOverviewDtls(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
+	public List<GrivenceStatusVO> getGrivenceComplaintCountDepartmentWise(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
+	public GrivenceStatusVO getGrivenceFinancialSupportDtls(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
+	public List<GrivenceStatusVO> getLocationWiseTypeOfIssueGrivenceComplaintCount(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
+	public GrivenceStatusVO getInsuranceOverviewDetails(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
+	public List<GrivenceStatusVO> getLocationWiseInsuranceIssueTypeComplaintCount(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
 	}

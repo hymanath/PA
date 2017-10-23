@@ -8,6 +8,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.IInsuranceStatusDAO;
 import com.itgrids.partyanalyst.dto.CadreInsuranceInputVO;
@@ -1891,4 +1892,514 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 				  .addScalar("subject", Hibernate.STRING);
 		  return query.list(); 
 	 }
+	
+	 public List<Object[]> getGrievanceTypeOfIssueIssueTypeAndStatusComplaintCnt(Long locationTypeId,List<Long> locationValues,Long stateId,Date fromDate,Date toDate) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select cm.type_of_issue as typeOfIssue," +
+						" cm.issue_type as issueType," +
+						" cm.Completed_Status as completeStatus," +
+						" COUNT(cm.Complaint_id) as complaintCount " +
+						" from complaint_master cm " +
+						" where " +
+						" cm.type_of_issue IN ('Party','Govt','Welfare') and (cm.delete_status IS NULL OR cm.delete_status != 0) " +
+						" AND cm.state_id_cmp IN (:stateId) AND cm.Subject IS NOT NULL AND cm.Subject != ''" +
+						" AND cm.issue_type is not null " +
+						" AND cm.issue_type !='' ");
+		
+
+		if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0) {
+
+			if (locationTypeId == IConstants.DISTRICT_SCOPE_ID) {
+				queryStr.append(" AND cm.district_id in(:locationValues) ");
+			} else if (locationTypeId == IConstants.CONSTITUENCY_SCOPE_ID) {
+				queryStr.append(" AND cm.assembly_id in(:locationValues) ");
+			} else if (locationTypeId == IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID) {
+				queryStr.append(" AND cm.parliament_id in(:locationValues) ");
+			} else if (locationTypeId == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID) {
+				queryStr.append(" AND cm.local_election_body_id in(:locationValues) ");
+			} else if (locationTypeId == IConstants.TEHSIL_SCOPE_ID) {
+				queryStr.append(" AND cm.tehsil_id in(:locationValues) ");
+			} else if (locationTypeId == IConstants.VILLAGE_SCOPE_ID) {
+				queryStr.append(" AND cm.panchayat_id in(:locationValues) ");
+			}
+		}
+		
+		if(fromDate !=null && toDate !=null){
+			queryStr.append(" AND date(cm.Raised_Date) between :fromDate and  :toDate  ");
+	   	}
+		queryStr.append(" group by cm.type_of_issue,cm.issue_type,cm.Completed_Status");
+		queryStr.append(" order by cm.type_of_issue,cm.issue_type,cm.Completed_Status ");
+
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("typeOfIssue", Hibernate.STRING)
+				.addScalar("issueType", Hibernate.STRING)
+				.addScalar("completeStatus", Hibernate.STRING)
+				.addScalar("complaintCount", Hibernate.LONG);
+		
+        query.setParameter("stateId", stateId);
+		if (locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId.longValue() !=2l && locationValues != null && locationValues.size() > 0) {
+			query.setParameterList("locationValues", locationValues);
+		}
+		if(fromDate != null && toDate != null){
+    		query.setDate("fromDate", fromDate);
+    		query.setDate("toDate", toDate);
+    	}
+		return query.list();
+	}
+	 public List<Object[]> getGrievanceDepartmentWiseComplaintCnt(Long locationTypeId,List<Long> locationValues,Long stateId,Date fromDate,Date toDate) {
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select cm.deptname as deptName," +
+							" cm.Completed_Status as completeStatus," +
+							" COUNT(cm.Complaint_id) as complaintCount " +
+							" from complaint_master cm " +
+							" where " +
+							" cm.type_of_issue IN ('Party','Govt','Welfare') and (cm.delete_status IS NULL OR cm.delete_status != 0) " +
+							" AND cm.state_id_cmp IN (:stateId) AND cm.Subject IS NOT NULL AND cm.Subject != '' " +
+							" AND cm.deptname is not null AND cm.deptname !='' ");
+			
+
+			if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0) {
+
+				if (locationTypeId == IConstants.DISTRICT_SCOPE_ID) {
+					queryStr.append(" AND cm.district_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.CONSTITUENCY_SCOPE_ID) {
+					queryStr.append(" AND cm.assembly_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID) {
+					queryStr.append(" AND cm.parliament_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID) {
+					queryStr.append(" AND cm.local_election_body_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.TEHSIL_SCOPE_ID) {
+					queryStr.append(" AND cm.tehsil_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.VILLAGE_SCOPE_ID) {
+					queryStr.append(" AND cm.panchayat_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.WARD_SCOPE_ID) {
+					queryStr.append(" AND cm.ward in(:locationValues) ");
+				}
+			}
+			if(fromDate !=null && toDate !=null){
+				queryStr.append(" AND date(cm.Raised_Date) between :fromDate and  :toDate  ");
+		   	}
+			queryStr.append(" group by cm.deptname,cm.Completed_Status ");
+			queryStr.append(" order by cm.deptname,cm.Completed_Status ");
+
+			Query query = getSession().createSQLQuery(queryStr.toString())
+					.addScalar("deptName", Hibernate.STRING)
+					.addScalar("completeStatus", Hibernate.STRING)
+					.addScalar("complaintCount", Hibernate.LONG);
+			
+	        query.setParameter("stateId", stateId);
+			if (locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId.longValue() !=2l && locationValues != null && locationValues.size() > 0) {
+				query.setParameterList("locationValues", locationValues);
+			}
+			if(fromDate != null && toDate != null){
+	    		query.setDate("fromDate", fromDate);
+	    		query.setDate("toDate", toDate);
+	    	}
+			return query.list();
+		}
+	 public List<Object[]> getGrievanceAmountByIssueType(Long locationTypeId,List<Long> locationValues,Long stateId,Date fromDate,Date toDate) {
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select cm.type_of_issue as typeOfIssue," +
+							" cm.issue_type as issueType," +
+							" cm.Completed_Status as completeStatus," +
+							" COUNT(cm.Complaint_id) as complaintCount," +
+							" SUM(cm.expected_amount) as exceptedAmount," +
+							" SUM(cm.approved_amount) as approvedAmount " +
+							" from complaint_master cm " +
+							" where " +
+							" cm.type_of_issue IN ('Party','Govt','Welfare') and (cm.delete_status IS NULL OR cm.delete_status != 0) " +
+							" AND cm.state_id_cmp IN (:stateId) AND cm.Subject IS NOT NULL AND cm.Subject != '' " +
+							" AND cm.approved_amount >=0 AND cm.Completed_Status IN ('approved','completed') ");
+			
+
+			if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0) {
+
+				if (locationTypeId == IConstants.DISTRICT_SCOPE_ID) {
+					queryStr.append(" AND cm.district_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.CONSTITUENCY_SCOPE_ID) {
+					queryStr.append(" AND cm.assembly_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID) {
+					queryStr.append(" AND cm.parliament_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID) {
+					queryStr.append(" AND cm.local_election_body_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.TEHSIL_SCOPE_ID) {
+					queryStr.append(" AND cm.tehsil_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.VILLAGE_SCOPE_ID) {
+					queryStr.append(" AND cm.panchayat_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.WARD_SCOPE_ID) {
+					queryStr.append(" AND cm.ward in(:locationValues) ");
+				}
+			}
+			if(fromDate !=null && toDate !=null){
+				queryStr.append(" AND date(cm.Raised_Date) between :fromDate and  :toDate  ");
+		   	}
+			queryStr.append(" group by cm.type_of_issue,cm.issue_type,cm.Completed_Status");
+			queryStr.append(" order by cm.type_of_issue,cm.issue_type,cm.Completed_Status ");
+
+			Query query = getSession().createSQLQuery(queryStr.toString())
+					.addScalar("typeOfIssue", Hibernate.STRING)
+					.addScalar("issueType", Hibernate.STRING)
+					.addScalar("completeStatus", Hibernate.STRING)
+					.addScalar("complaintCount", Hibernate.LONG)
+					.addScalar("exceptedAmount", Hibernate.LONG)
+					.addScalar("approvedAmount", Hibernate.LONG);
+			
+	        query.setParameter("stateId", stateId);
+			if (locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId.longValue() !=2l && locationValues != null && locationValues.size() > 0) {
+				query.setParameterList("locationValues", locationValues);
+			}
+			if(fromDate != null && toDate != null){
+	    		query.setDate("fromDate", fromDate);
+	    		query.setDate("toDate", toDate);
+	    	}
+			return query.list();
+		}
+
+	public List<Object[]> getLocationWiseGrievanceComplaintCnt(Long filterScopeId, List<Long> filterScopeValues, Long stateId,String groupType,Date fromDate,Date toDate) {
+
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select");
+
+	    StringBuilder locationQueryStr = prepareSelectQueryBasedLocationLevel(groupType);
+	     if (locationQueryStr.length() > 0) {
+	    	 queryStr.append(locationQueryStr);
+	     }
+
+		queryStr.append(" cm.type_of_issue as typeOfIssue,COUNT(Complaint_id) as complaintCount ");
+
+		queryStr.append(" FROM complaint_master cm ");
+
+		StringBuilder dynamicTableQuery = gettingDynamicTableBasedOnLocationLevel(groupType);
+		
+		 if (dynamicTableQuery.length() > 0) {
+			 queryStr.append(dynamicTableQuery);
+		 }
+		
+		queryStr.append(" where cm.type_of_issue IN ('Party','Govt','Welfare') and (cm.delete_status IS NULL OR cm.delete_status != 0) AND "
+						+ " cm.state_id_cmp IN (:stateId) AND cm.Subject IS NOT NULL AND cm.Subject != '' ");
+
+		StringBuilder dynamicTablJoinQuery = gettingDynamicTableJoinedBasedOnLocationLevel(groupType);
+		
+		if (dynamicTablJoinQuery.length() > 0) {
+			queryStr.append(dynamicTablJoinQuery);
+		}
+		
+		StringBuilder filterQueryStr = prepareFilterQueryBasedLocationLevel(filterScopeId, filterScopeValues);
+		 if (filterQueryStr.length() > 0) {
+			 queryStr.append(filterQueryStr);
+			 
+		 }
+
+		
+		if(fromDate !=null && toDate !=null){
+			queryStr.append(" AND date(cm.Raised_Date) between :fromDate and  :toDate  ");
+	   	}
+		
+		StringBuilder groupQuery = prepareGroupQueryBasedLocationLevel(groupType);
+		
+		 if (queryStr.length()  > 0) {
+			 queryStr.append(groupQuery);
+			 queryStr.append(",cm.type_of_issue");
+		 }
+		
+
+		Session session = getSession();
+		SQLQuery sqlQuery = session.createSQLQuery(queryStr.toString());
+		if (groupType != null && groupType.equalsIgnoreCase("District")) {
+			sqlQuery.addScalar("districtId", Hibernate.LONG);
+			sqlQuery.addScalar("districtName", Hibernate.STRING);
+		} else if (groupType != null && groupType.equalsIgnoreCase("Constituency")) {
+			sqlQuery.addScalar("assemblyId", Hibernate.LONG);
+			sqlQuery.addScalar("assemblyName", Hibernate.STRING);
+		} else if (groupType != null && groupType.equalsIgnoreCase("Mandal")) {
+			sqlQuery.addScalar("tehsilId", Hibernate.LONG);
+			sqlQuery.addScalar("tehsilName", Hibernate.STRING);
+		} else if (groupType != null && groupType.equalsIgnoreCase("Village")) {
+			sqlQuery.addScalar("panchayatId", Hibernate.LONG);
+			sqlQuery.addScalar("panchayatName", Hibernate.STRING);
+		} else if (groupType != null && groupType.equalsIgnoreCase("parliament")) {
+			sqlQuery.addScalar("parliamentId", Hibernate.LONG);
+			sqlQuery.addScalar("parliamentName", Hibernate.STRING);
+		} else if (groupType != null && groupType.equalsIgnoreCase("TownDivision")) {
+			sqlQuery.addScalar("localElectionBoydId", Hibernate.LONG);
+			sqlQuery.addScalar("localElectionBoydName", Hibernate.STRING);
+		} else if (groupType != null && groupType.equalsIgnoreCase("ward")) {
+			sqlQuery.addScalar("wardId", Hibernate.LONG);
+			sqlQuery.addScalar("wardName", Hibernate.STRING);
+		}
+		sqlQuery.addScalar("typeOfIssue", Hibernate.STRING);
+		sqlQuery.addScalar("complaintCount", Hibernate.LONG);
+
+		sqlQuery.setParameter("stateId", stateId);
+		if (filterScopeId != null && filterScopeId.longValue() > 0l && filterScopeId.longValue() !=2l && filterScopeValues != null && filterScopeValues.size() > 0) {
+			sqlQuery.setParameterList("filterScopeValues", filterScopeValues);
+		}
+		if(fromDate != null && toDate != null){
+			sqlQuery.setDate("fromDate", fromDate);
+			sqlQuery.setDate("toDate", toDate);
+    	}
+		return sqlQuery.list();
+   }
+	 public List<Object[]> getInsuranceIssueTypeAndStatusWiseComplaintCnt(Long locationTypeId,List<Long> locationValues,Long stateId,Date fromDate,Date toDate) {
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select " +
+							" cm.issue_type as issueType," +
+							" GIS.grievance_insurance_status_id as grievanceInsuranceStatusId," +
+							" GIS.status as status," +
+							" COUNT(cm.Complaint_id) as complaintCount " +
+							" from complaint_master cm,grievance_insurance_status GIS " +
+							" where " +
+							" cm.grievance_insurance_status_id = GIS.grievance_insurance_status_id " +
+							" AND cm.type_of_issue IN ('Insurance') AND (cm.delete_status IS NULL OR cm.delete_status != 0) " +
+							" AND cm.state_id_cmp IN (:stateId) AND cm.Subject IS NOT NULL AND cm.Subject != ''" +
+							" AND cm.issue_type is not null AND cm.issue_type in ('Death','Hospitalization') " +
+							" AND cm.issue_type !='' ");
+			
+
+			if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0) {
+
+				if (locationTypeId == IConstants.DISTRICT_SCOPE_ID) {
+					queryStr.append(" AND cm.district_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.CONSTITUENCY_SCOPE_ID) {
+					queryStr.append(" AND cm.assembly_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID) {
+					queryStr.append(" AND cm.parliament_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID) {
+					queryStr.append(" AND cm.local_election_body_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.TEHSIL_SCOPE_ID) {
+					queryStr.append(" AND cm.tehsil_id in(:locationValues) ");
+				} else if (locationTypeId == IConstants.VILLAGE_SCOPE_ID) {
+					queryStr.append(" AND cm.panchayat_id in(:locationValues) ");
+				}
+			}
+			
+			if(fromDate !=null && toDate !=null){
+				queryStr.append(" AND date(cm.Raised_Date) between :fromDate and  :toDate  ");
+		   	}
+			queryStr.append(" group by cm.issue_type,GIS.grievance_insurance_status_id ");
+			queryStr.append(" order by GIS.grievance_insurance_status_id asc ");
+
+			Query query = getSession().createSQLQuery(queryStr.toString())
+					.addScalar("issueType", Hibernate.STRING)
+					.addScalar("grievanceInsuranceStatusId", Hibernate.LONG)
+					.addScalar("status", Hibernate.STRING)
+					.addScalar("complaintCount", Hibernate.LONG);
+			
+	        query.setParameter("stateId", stateId);
+			if (locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId.longValue() !=2l && locationValues != null && locationValues.size() > 0) {
+				query.setParameterList("locationValues", locationValues);
+			}
+			if(fromDate != null && toDate != null){
+	    		query.setDate("fromDate", fromDate);
+	    		query.setDate("toDate", toDate);
+	    	}
+			return query.list();
+		}
+	 public List<Object[]> getLocationWiseInsuranceIssueTypeComplaintCnt(Long filterScopeId, List<Long> filterScopeValues, Long stateId,String groupType,Date fromDate,Date toDate) {
+
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select");
+
+			StringBuilder locationQueryStr = prepareSelectQueryBasedLocationLevel(groupType);
+			if (locationQueryStr.length() > 0) {
+				queryStr.append(locationQueryStr);
+			}
+
+			queryStr.append(" cm.issue_type as issueType," +
+							" GIS.grievance_insurance_status_id as grievanceInsuranceStatusId," +
+							" GIS.status as status," +
+							" COUNT(Complaint_id) as complaintCount ");
+
+			queryStr.append(" FROM complaint_master cm,grievance_insurance_status GIS ");
+
+			StringBuilder dynamicTableQuery = gettingDynamicTableBasedOnLocationLevel(groupType);
+
+			if (dynamicTableQuery.length() > 0) {
+				queryStr.append(dynamicTableQuery);
+			}
+
+			queryStr.append(" where cm.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND " +
+							" cm.type_of_issue IN ('Insurance') and (cm.delete_status IS NULL OR cm.delete_status != 0) AND "
+							+ " cm.state_id_cmp IN (:stateId) AND cm.Subject IS NOT NULL AND cm.Subject != '' " 
+							+ " AND cm.issue_type is not null AND cm.issue_type in ('Death','Hospitalization') ");
+
+			StringBuilder dynamicTablJoinQuery = gettingDynamicTableJoinedBasedOnLocationLevel(groupType);
+			
+			if (dynamicTablJoinQuery.length() > 0) {
+				queryStr.append(dynamicTablJoinQuery);
+			}
+			
+			StringBuilder filterQueryStr = prepareFilterQueryBasedLocationLevel(filterScopeId, filterScopeValues);
+			if (filterQueryStr.length() > 0) {
+				queryStr.append(filterQueryStr);
+			}
+
+			if (fromDate != null && toDate != null) {
+				queryStr.append(" AND date(cm.Raised_Date) between :fromDate and  :toDate  ");
+			}
+
+			StringBuilder groupQuery = prepareGroupQueryBasedLocationLevel(groupType);
+
+			if (queryStr.length() > 0) {
+				queryStr.append(groupQuery);
+				queryStr.append(",cm.issue_type,GIS.grievance_insurance_status_id");
+			}
+
+			Session session = getSession();
+			SQLQuery sqlQuery = session.createSQLQuery(queryStr.toString());
+			if (groupType != null && groupType.equalsIgnoreCase("District")) {
+				sqlQuery.addScalar("districtId", Hibernate.LONG);
+				sqlQuery.addScalar("districtName", Hibernate.STRING);
+			} else if (groupType != null && groupType.equalsIgnoreCase("Constituency")) {
+				sqlQuery.addScalar("assemblyId", Hibernate.LONG);
+				sqlQuery.addScalar("assemblyName", Hibernate.STRING);
+			} else if (groupType != null && groupType.equalsIgnoreCase("Mandal")) {
+				sqlQuery.addScalar("tehsilId", Hibernate.LONG);
+				sqlQuery.addScalar("tehsilName", Hibernate.STRING);
+			} else if (groupType != null && groupType.equalsIgnoreCase("Village")) {
+				sqlQuery.addScalar("panchayatId", Hibernate.LONG);
+				sqlQuery.addScalar("panchayatName", Hibernate.STRING);
+			} else if (groupType != null && groupType.equalsIgnoreCase("parliament")) {
+				sqlQuery.addScalar("parliamentId", Hibernate.LONG);
+				sqlQuery.addScalar("parliamentName", Hibernate.STRING);
+			} else if (groupType != null && groupType.equalsIgnoreCase("TownDivision")) {
+				sqlQuery.addScalar("localElectionBoydId", Hibernate.LONG);
+				sqlQuery.addScalar("localElectionBoydName", Hibernate.STRING);
+			} else if (groupType != null && groupType.equalsIgnoreCase("ward")) {
+				sqlQuery.addScalar("wardId", Hibernate.LONG);
+				sqlQuery.addScalar("wardName", Hibernate.STRING);
+			}
+			sqlQuery.addScalar("issueType", Hibernate.STRING);
+			sqlQuery.addScalar("grievanceInsuranceStatusId", Hibernate.LONG);
+			sqlQuery.addScalar("status", Hibernate.STRING);
+			sqlQuery.addScalar("complaintCount", Hibernate.LONG);
+
+			sqlQuery.setParameter("stateId", stateId);
+			if (filterScopeId != null && filterScopeId.longValue() > 0l && filterScopeId.longValue() !=2l && filterScopeValues != null && filterScopeValues.size() > 0) {
+				sqlQuery.setParameterList("filterScopeValues", filterScopeValues);
+			}
+			if(fromDate != null && toDate != null){
+				sqlQuery.setDate("fromDate", fromDate);
+				sqlQuery.setDate("toDate", toDate);
+	    	}
+			return sqlQuery.list();
+	   }
+	  private StringBuilder prepareSelectQueryBasedLocationLevel(String groupType){
+			
+		  StringBuilder queryStr = new StringBuilder();
+		  
+		  if (groupType != null && groupType.equalsIgnoreCase("District")) {
+				queryStr.append(" d.district_id as districtId,");
+				queryStr.append(" d.district_name as districtName,");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Constituency")) {
+				queryStr.append(" c.constituency_id as assemblyId,");
+				queryStr.append(" c.name as assemblyName,");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Parliament")) {
+				queryStr.append(" pc.constituency_id as parliamentId,");
+				queryStr.append(" pc.name as parliamentName,");
+			} else if (groupType != null && groupType.equalsIgnoreCase("TownDivision")) {
+				queryStr.append(" leb.local_election_body_id as localElectionBoydId,");
+				queryStr.append(" leb.name as localElectionBoydName,");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Mandal")) {
+				queryStr.append(" t.tehsil_id as tehsilId,");
+				queryStr.append(" t.tehsil_name as tehsilName,");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Village")) {
+				queryStr.append(" p.panchayat_id as panchayatId,");
+				queryStr.append(" p.panchayat_name as panchayatName,");
+			} else if (groupType != null && groupType.equalsIgnoreCase("ward")) {
+				queryStr.append(" ward.constituency_id as wardId,");
+				queryStr.append(" ward.name as wardName,");
+			}
+		return queryStr;
+	}
+	  private StringBuilder gettingDynamicTableBasedOnLocationLevel(String groupType){
+			
+		  StringBuilder queryStr = new StringBuilder();
+		  
+		   if (groupType != null && groupType.equalsIgnoreCase("District")) {
+				queryStr.append(",district d");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Constituency")) {
+				queryStr.append(",constituency c ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Mandal")) {
+				queryStr.append(",tehsil t ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Village")) {
+				queryStr.append(",panchayat p ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("parliament")) {
+				queryStr.append(",constituency pc ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("TownDivision")) {
+				queryStr.append(",local_election_body leb ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("ward")) {
+				queryStr.append(",constituency ward ");
+			}
+		return queryStr;
+	}
+	  private StringBuilder gettingDynamicTableJoinedBasedOnLocationLevel(String groupType){
+			
+		  StringBuilder queryStr = new StringBuilder();
+		  
+		   if (groupType != null && groupType.equalsIgnoreCase("District")) {
+			   queryStr.append(" and cm.district_id=d.district_id");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Constituency")) {
+				 queryStr.append(" and cm.assembly_id=c.constituency_id ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Mandal")) {
+				queryStr.append(" and cm.tehsil_id=t.tehsil_id ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Village")) {
+				queryStr.append(" and cm.panchayat_id=p.panchayat_id "); 
+			} else if (groupType != null && groupType.equalsIgnoreCase("parliament")) {
+				queryStr.append(" and cm.parliament_id = pc.constituency_id ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("TownDivision")) {
+				queryStr.append(" and cm.local_election_body_id=leb.local_election_body_id "); 
+			} else if (groupType != null && groupType.equalsIgnoreCase("ward")) {
+				queryStr.append(" and cm.ward=c.constituency_id"); 
+			}
+		   
+		   
+		return queryStr;
+	}
+	  
+	  
+	 private StringBuilder prepareFilterQueryBasedLocationLevel(Long filterScopeId, List<Long> filterScopeValues){
+			
+		     StringBuilder queryStr = new StringBuilder();
+		  
+		     if (filterScopeId != null && filterScopeValues != null && filterScopeValues.size() > 0) {
+				if (filterScopeId.longValue() == IConstants.DISTRICT_SCOPE_ID) {
+					queryStr.append(" AND cm.district_id in (:filterScopeValues)");
+				} else if (filterScopeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID) {
+					queryStr.append(" AND cm.parliament_constituency_id in (:filterScopeValues)");
+				} else if (filterScopeId.longValue() == IConstants.CONSTITUENCY_SCOPE_ID) {
+					queryStr.append(" AND cm.constituency_id in (:filterScopeValues)");
+				} else if (filterScopeId.longValue() == IConstants.TEHSIL_SCOPE_ID) {
+					queryStr.append(" AND cm.tehsil_id in (:filterScopeValues)");
+				} else if (filterScopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID) { // town/division
+					queryStr.append(" AND cm.local_election_body in (:filterScopeValues)");
+				} else if (filterScopeId.longValue() == IConstants.VILLAGE_SCOPE_ID) {
+					queryStr.append(" AND cm.panchayat_id in (:filterScopeValues)");
+				} else if (filterScopeId.longValue() == IConstants.WARD_SCOPE_ID) {
+					queryStr.append(" AND cm.ward in (:filterScopeValues)");
+				}
+			}
+		return queryStr;
+	}
+	 private StringBuilder prepareGroupQueryBasedLocationLevel(String groupType){
+			
+		  StringBuilder queryStr = new StringBuilder();
+		  
+		   if (groupType != null && groupType.equalsIgnoreCase("District")) {
+				queryStr.append(" group by d.district_id ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Constituency")) {
+				queryStr.append(" group by c.constituency_id ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Mandal")) {
+				queryStr.append(" group by t.tehsil_id ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("Village")) {
+				queryStr.append(" group by p.panchayat_id ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("parliament")) {
+				queryStr.append(" group by pc.constituency_id ");
+			} else if (groupType != null && groupType.equalsIgnoreCase("TownDivision")) {
+				queryStr.append(" group by leb.local_election_body_id");
+			} else if (groupType != null && groupType.equalsIgnoreCase("ward")) {
+				queryStr.append(" group by ward.ward ");
+			}
+		return queryStr;
+	}
 }
