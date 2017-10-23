@@ -2516,7 +2516,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 				} else if (filterScopeId.longValue() == IConstants.TEHSIL_SCOPE_ID) {
 					queryStr.append(" AND cm.tehsil_id in (:filterScopeValues)");
 				} else if (filterScopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID) { // town/division
-					queryStr.append(" AND cm.local_election_body in (:filterScopeValues)");
+					queryStr.append(" AND cm.local_election_body_id in (:filterScopeValues)");
 				} else if (filterScopeId.longValue() == IConstants.VILLAGE_SCOPE_ID) {
 					queryStr.append(" AND cm.panchayat_id in (:filterScopeValues)");
 				} else if (filterScopeId.longValue() == IConstants.WARD_SCOPE_ID) {
