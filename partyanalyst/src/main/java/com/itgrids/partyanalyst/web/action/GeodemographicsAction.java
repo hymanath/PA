@@ -418,6 +418,8 @@ public class GeodemographicsAction extends ActionSupport implements ServletReque
 	public String newConstituencyPage()
 	{
 		constituencyId = 232l;
+		List<Long> electionScopeIds = new ArrayList<Long>();
+		electionScopeIds.add(2l);
 		String url = request.getRequestURL().toString();
 		String substr = url.substring(7);
 		String path = substr.substring(0, substr.indexOf('/')) ;
@@ -466,7 +468,7 @@ public class GeodemographicsAction extends ActionSupport implements ServletReque
 		
 		constituencyName = constituencyDetails.getConstituencyName();
 		
-		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId); //for building graph use this.
+		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId,electionScopeIds); //for building graph use this.
 		
 		DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO = delimitationConstituencyMandalService.getMandalsForDelConstituency(constituencyId);
 		

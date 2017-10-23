@@ -789,8 +789,9 @@ public class ConstituencyPageAction extends ActionSupport implements
 		checkForRegionAndReportLevelEntitlements(regVO);
 		
 		constituencyName = constituencyDetails.getConstituencyName();
-		
-		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId); //for building graph use this.
+		 List<Long> electionScopeIds = new ArrayList<Long>();
+		 electionScopeIds.add(2l);
+		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId,electionScopeIds); //for building graph use this.
 		
 		DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO = delimitationConstituencyMandalService.getMandalsForDelConstituency(constituencyId);
 		
@@ -1130,7 +1131,9 @@ public class ConstituencyPageAction extends ActionSupport implements
 			e.printStackTrace();
 		}
 		Long constiId = jObj.getLong("constituencyId");
-		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constiId);
+		List<Long> electionScopeIds = new ArrayList<Long>();
+		electionScopeIds.add(2l);
+		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constiId,electionScopeIds);
 		
 		return Action.SUCCESS;
 	}
@@ -1745,7 +1748,9 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 				e.printStackTrace();
 			}
 		 constituencyId=jObj.getLong("conId");
-		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
+			List<Long> electionScopeIds = new ArrayList<Long>();
+			electionScopeIds.add(2l);
+		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId,electionScopeIds);
 		return SUCCESS;
 	}
 	
