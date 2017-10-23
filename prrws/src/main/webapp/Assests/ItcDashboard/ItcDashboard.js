@@ -1331,7 +1331,7 @@ function getEofficeDesignationWisePendencyDetails()
 							tabView+='<div class="table-responsive">';
 								tabView+='<table class="table table-bordered" id="eOfcDataTableId">';
 									tabView+='<thead>';
-										tabView+='<th style="background-color:#fff;">Designation</th>';
+										tabView+='<th style="background-color:#fff;">Employee</th>';
 										tabView+='<th style="background-color:#B2DFDB">Total</th>';
 										tabView+='<th style="background-color:#FBACAC">Total Pendency</th>';
 										tabView+='<th style="background-color:#FBACAC">%</th>';
