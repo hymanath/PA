@@ -7246,7 +7246,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 						 GrivenceStatusVO statusMatchVO = getInsuranceStatusmatchVO(issueTypeMatchVO.getSubList(), commonMethodsUtilService.getLongValueForObject(param[3]));
 						 if (statusMatchVO != null) {
 							 statusMatchVO.setCount(commonMethodsUtilService.getLongValueForObject(param[5]));
-							 issueTypeMatchVO.setCount(locationVO.getCount() + statusMatchVO.getCount());
+							 issueTypeMatchVO.setCount(issueTypeMatchVO.getCount() + statusMatchVO.getCount());
 							 locationVO.setCount(locationVO.getCount()+statusMatchVO.getCount());
 						}
 					 }
