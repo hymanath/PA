@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMarginVotesRangeDAO;
@@ -55,8 +57,9 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 
 	private IElectionDAO electionDAO;
-
 	private TehsilDAO tehsilDAO;
+	private IElectionAllianceDAO electionAllianceDAO;
+	
 	private SetterAndGetterUtilService setterAndGetterUtilService = new SetterAndGetterUtilService();
 	
 	public SetterAndGetterUtilService getSetterAndGetterUtilService() {
@@ -165,14 +168,20 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	public void setMarginVotesRangeDAO(IMarginVotesRangeDAO marginVotesRangeDAO) {
 		this.marginVotesRangeDAO = marginVotesRangeDAO;
 	}
-	
-
 	public TehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
 
 	public void setTehsilDAO(TehsilDAO tehsilDAO) {
 		this.tehsilDAO = tehsilDAO;
+	}
+
+	public IElectionAllianceDAO getElectionAllianceDAO() {
+		return electionAllianceDAO;
+	}
+
+	public void setElectionAllianceDAO(IElectionAllianceDAO electionAllianceDAO) {
+		this.electionAllianceDAO = electionAllianceDAO;
 	}
 
 	@Override
@@ -1811,5 +1820,137 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 
 	}
 	return finalList;
+}
+
+public  Map<Long,Map<Long,ElectionInformationVO>> getSegregateAliancePartiesMap(List<String> subTypes,List<Long> electionYear,List<Long> electionScopeIds){
+	
+	Map<Long,Map<Long,ElectionInformationVO>> electionIdAndgroptIdVomap = new HashMap<Long,Map<Long,ElectionInformationVO>>();
+	try{
+		//0-election_id 1-election_type 2-election_year 3-group_id 4-group_name 5-party_id
+				List<Object[]> segregateObjects=electionAllianceDAO.getSegregateAlianceParties(subTypes, electionYear, electionScopeIds);
+				if( segregateObjects !=null && segregateObjects.size() >0 ){
+					for(Object[] param :segregateObjects){
+						Map<Long,ElectionInformationVO> groupIdVOsMap=electionIdAndgroptIdVomap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(!commonMethodsUtilService.isMapValid(groupIdVOsMap))
+							groupIdVOsMap = new HashMap<Long,ElectionInformationVO>() ;
+						
+						ElectionInformationVO vo=groupIdVOsMap.get(commonMethodsUtilService.getLongValueForObject(param[3]));
+						if(vo==null){
+								vo = new ElectionInformationVO();
+							vo.setElectionId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							vo.setElectionType(commonMethodsUtilService.getStringValueForObject(param[1]));
+							vo.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[2]));
+							vo.setGroupId(commonMethodsUtilService.getLongValueForObject(param[3]));
+							vo.setPartyName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						}
+						vo.getIdsList().add(commonMethodsUtilService.getLongValueForObject(param[5]));
+						
+						groupIdVOsMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), vo);
+						electionIdAndgroptIdVomap.put(commonMethodsUtilService.getLongValueForObject(param[0]), groupIdVOsMap);
+					}
+				}
+	}catch(Exception e){
+		Log.error("Exception raised at getSegregateAliancePartiesDetails service"+e);
+
+	}
+	return electionIdAndgroptIdVomap;
+}
+@SuppressWarnings("unused")
+public List<Object[]> segregateAlianceParties(List<Object[]> inputObjList,List<String> subTypes,List<Long> electionYear,List<Long> electionScopeIds,Map<Long, Map<Long, ElectionInformationVO>> alliancedPartiesWithGroupId) {
+	List<Object[]> finalObjList = new ArrayList<Object[]>();
+	List<Object[]> aliancedPartiesObj = new ArrayList<Object[]>();
+	List<Object[]> notAliancedPartiesObj = new ArrayList<Object[]>();;
+	//Map<Long,Map<Long,ElectionInformationVO>> alliancedPartiesWithGroupId = getSegregateAliancePartiesMap(subTypes,electionYear,electionScopeIds);
+	try{
+	List<Object[]> withOutSegragateObjList = inputObjList.subList(0, inputObjList.size()-1);
+	if(withOutSegragateObjList != null && withOutSegragateObjList.size()>0){
+		for(Object[] param : withOutSegragateObjList){
+			Long electionId = commonMethodsUtilService.getLongValueForObject(param[6]);
+			Long partyId = commonMethodsUtilService.getLongValueForObject(param[0]);
+			String partyName = commonMethodsUtilService.getStringValueForObject(param[1]);
+			List<String> groupIdAndName = findMatchedPartyId(alliancedPartiesWithGroupId,electionId,partyId);
+	        if(groupIdAndName == null){
+	        	notAliancedPartiesObj.add(param);
+	        }else{
+	        	addAliancePartyToList(aliancedPartiesObj, param,groupIdAndName,electionId);
+	         }
+			}
+		 }
+	finalObjList.addAll(aliancedPartiesObj);
+	finalObjList.addAll(notAliancedPartiesObj);
+	}catch(Exception e){
+		Log.error("Exception raised at segregateAlianceParties service",e);
+
+	}
+	return finalObjList;
+}
+
+
+public List<String> findMatchedPartyId(Map<Long,Map<Long,ElectionInformationVO>> alliancedPartiesWithGroupId,Long electionId,Long partyId){
+	List<String> groupIdAndName = null;
+	   if(alliancedPartiesWithGroupId != null && alliancedPartiesWithGroupId.size() >0){
+	    for (Entry<Long,Map<Long, ElectionInformationVO>> electionEntry : alliancedPartiesWithGroupId.entrySet()) {
+	    	Long innerElectionId = electionEntry.getKey();
+	    	if(innerElectionId.equals(electionId)){
+	    		Map<Long, ElectionInformationVO> groupIdMap = electionEntry.getValue();
+	    		 if(groupIdMap != null && groupIdMap.size() >0){
+	    		    for (Entry<Long, ElectionInformationVO>  groupEntry : groupIdMap.entrySet()) {
+	    		    	//Long innerGroupId = groupEntry.getKey();
+	    		    	ElectionInformationVO electionInformationVO = groupEntry.getValue();
+	    		    	List<Long> partyIdsList = electionInformationVO.getIdsList();
+	    		    	if(partyIdsList.contains(partyId)){
+	    		    		groupIdAndName = new ArrayList<String>();
+	    		    		//String prefixedGroupId ="999999"+innerGroupId.toString();
+	    		    		String prefixedGroupId =partyIdsList.get(0).toString();
+	    		    		groupIdAndName.add(prefixedGroupId);
+	    		    		groupIdAndName.add(electionInformationVO.getPartyName());
+	    		    		return groupIdAndName;
+	    		    	}
+	    		     }
+	    		   }
+	    	}
+	    }
+	   }
+	return groupIdAndName;
+}
+
+public List<Object[]> addAliancePartyToList(List<Object[]> aliancedPartiesObj,Object[] param,List<String> groupIdAndName,Long electionId){
+	
+	  if(aliancedPartiesObj != null && aliancedPartiesObj.size() == 0){
+		  Object [] newObj = new Object[param.length];
+			newObj[0] =(Object)groupIdAndName.get(0);
+			newObj[1] = (Object)groupIdAndName.get(1);//group name
+			newObj[2]=param[2];
+			newObj[3]=param[3];
+			newObj[4]=param[4];
+			newObj[5]=param[5];
+			newObj[6] = (Object)electionId;
+			aliancedPartiesObj.add(newObj);
+			 return aliancedPartiesObj;
+	  }
+	  boolean addNewObjstatus = false;
+	  if(aliancedPartiesObj != null && aliancedPartiesObj.size() > 0){
+		  for(Object[] aliancedPartiesParam:aliancedPartiesObj){
+			  String aliancedGroupId = commonMethodsUtilService.getStringValueForObject(aliancedPartiesParam[0]);
+			  if(aliancedGroupId.equals(groupIdAndName.get(0).trim())){
+				  aliancedPartiesParam[2] = commonMethodsUtilService.getLongValueForObject(aliancedPartiesParam[2])+commonMethodsUtilService.getLongValueForObject(param[2]);
+				  addNewObjstatus = true;
+				  return aliancedPartiesObj;
+			  }
+		  }
+	  }
+	  if(addNewObjstatus == false){
+		  Object [] newObj = new Object[param.length];
+			newObj[0] =(Object)groupIdAndName.get(0);
+			newObj[1] =(Object)groupIdAndName.get(1);//group name
+			newObj[2]=param[2];
+			newObj[3]=param[3];
+			newObj[4]=param[4];
+			newObj[5]=param[5];
+			newObj[6] = (Object)electionId;
+			aliancedPartiesObj.add(newObj);
+		    return aliancedPartiesObj;
+	  }
+	return null;
 }
 }
