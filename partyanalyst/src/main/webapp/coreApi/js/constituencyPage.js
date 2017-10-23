@@ -4887,7 +4887,8 @@ function getPublications(){
 function getDetailedElectionInformaction(){
 	$("#assemblyElectionGraphDetails,#assemblyElectionDetails").html(spinner);
 	jsObj={
-	  	constituencyId: constituencyId
+	  	constituencyId: constituencyId,
+		electionScopeIdsArr:[2]
     }
     $.ajax({
       type : "GET",
