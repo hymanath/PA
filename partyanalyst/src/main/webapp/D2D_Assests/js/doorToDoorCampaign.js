@@ -689,9 +689,9 @@ function buildLocationWiseCountDetails(ajaxresp,locationType){
 						/*str+='<th class="text-capital">In-active</th>';*/
 						str+='<th class="text-capital">Households</th>';
 						str+='<th class="text-capital">Visited Count</th>';
-						str+='<th class="text-capital">Visited Perc</th>';
+						str+='<th class="text-capital">Visited %</th>';
 						//str+='<th class="text-capital">Pending Count</th>';
-						str+='<th class="text-capital">Pending Perc</th>';
+						str+='<th class="text-capital">OverAll Pending %</th>';
 						str+='<th class="text-capital">Total Grievances</th>';
 						//str+='<th class="text-capital">Individual</th>';
 						//str+='<th class="text-capital">Community</th>';
@@ -761,7 +761,7 @@ function buildLocationWiseCountDetails(ajaxresp,locationType){
 									if(ajaxresp[i].vistedPerc =="100.00"){
 									str+='<td class="text-capital">100 %</td>';	
 									}else{
-										str+='<td class="text-capital">'+ajaxresp[i].vistedPerc+' %</td>';	
+										str+='<td class="text-capital">'+ajaxresp[i].vistedPerc+'</td>';	
 									}	
 								}else{
 									str+='<td class="text-capital"> - </td>';	
@@ -777,7 +777,7 @@ function buildLocationWiseCountDetails(ajaxresp,locationType){
 									if(ajaxresp[i].pendingPerc =="100.00"){
 									str+='<td class="text-capital">100 %</td>';	
 									}else{
-										str+='<td class="text-capital">'+ajaxresp[i].pendingPerc+' %</td>';	
+										str+='<td class="text-capital">'+ajaxresp[i].pendingPerc+'</td>';	
 									}	
 								}else{
 									str+='<td class="text-capital"> - </td>';	
