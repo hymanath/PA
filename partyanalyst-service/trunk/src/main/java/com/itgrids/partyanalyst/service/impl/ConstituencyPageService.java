@@ -488,12 +488,12 @@ public class ConstituencyPageService implements IConstituencyPageService{
 		this.voterReportService = voterReportService;
 	}
 
-	public List<ConstituencyElectionResultsVO> getConstituencyElectionResults(Long constituencyId)
+	public List<ConstituencyElectionResultsVO> getConstituencyElectionResults(Long constituencyId,List<Long> electionScopeIdsList)
 	{
 		try
 		{
 			String searchFor ="chart";
-			List<ConstituencyElectionResult> constituencyElectionResults = constituencyElectionResultDAO.findByConstituency(constituencyId);
+			List<ConstituencyElectionResult> constituencyElectionResults = constituencyElectionResultDAO.findByConstituency(constituencyId,electionScopeIdsList);
 			List<ConstituencyElectionResultsVO> constituencyElectionResultList = new ArrayList<ConstituencyElectionResultsVO>(0);
 			List<ConstituencyElectionResultsVO> returnList = new ArrayList<ConstituencyElectionResultsVO>(0);
 			ConstituencyElectionResultsVO constElecResultVO = null;

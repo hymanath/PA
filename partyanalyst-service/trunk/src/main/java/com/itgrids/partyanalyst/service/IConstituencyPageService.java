@@ -31,7 +31,7 @@ import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 
 public interface IConstituencyPageService {
 
-	public List<ConstituencyElectionResultsVO> getConstituencyElectionResults(Long constituencyId);
+	public List<ConstituencyElectionResultsVO> getConstituencyElectionResults(Long constituencyId,List<Long> electionScopeIdsList);
 	  
 	public ConstituencyInfoVO getConstituencyDetails(Long constituencyId);
 	
