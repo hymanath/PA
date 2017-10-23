@@ -4410,7 +4410,8 @@
   		<property name="tdpCommitteeLevelDAO" ref="tdpCommitteeLevelDAO"></property> 
   		<property name="partyDAO" ref="partyDAO"></property> 
   		<property name="electionDAO" ref="electionDAO"></property> 
-  		<property name="delimitationConstituencyMandalDetailsDAO" ref="delimitationConstituencyMandalDetailsDAO"></property>						
+  		<property name="delimitationConstituencyMandalDetailsDAO" ref="delimitationConstituencyMandalDetailsDAO"></property>	
+  		<property name="locationWiseElectionInformationDetalsService" ref="locationWiseElectionInformationDetalsService"></property>						
   </bean>
   <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
          <property name="districtDAO" ref="districtDAO" />
@@ -4521,5 +4522,6 @@
     	<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />    	
     	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
     	<property name="tehsilDAO" ref="tehsilDAO" />
+    	<property name="electionAllianceDAO" ref="electionAllianceDAO" />
     	</bean>
 </beans>			
