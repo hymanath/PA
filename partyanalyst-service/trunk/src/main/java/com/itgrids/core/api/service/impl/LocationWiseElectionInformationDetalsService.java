@@ -1797,6 +1797,7 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 				Map<String,List<Long>> statusLocationIdsMap=YearAndstatusAndLocationIdsMap.get(subvo.getElectionYear().trim());
 				if(commonMethodsUtilService.isListOrSetValid(subvo.getSubList1())){
 					for(ElectionInformationVO vo: subvo.getSubList1()){
+						if(subvo.getElectionYear() !=null && subvo.getElectionYear().length() >0 && year != null && year.trim().length() > 0&& !subvo.getElectionYear().equalsIgnoreCase(year) )
 						vo.setWonSeatsCount(statusCountsMap.get(vo.getStatus().trim()));
 						if(vo.getStatus() != null && vo.getStatus().trim().length()>0 && statusLocationIdsMap.get(vo.getStatus().trim()) !=null && statusLocationIdsMap.get(vo.getStatus().trim()).size() >0)	
 							vo.getIdsList().addAll(statusLocationIdsMap.get(vo.getStatus().trim()));
