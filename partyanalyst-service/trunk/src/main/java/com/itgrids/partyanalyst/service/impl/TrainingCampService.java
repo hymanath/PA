@@ -122,10 +122,10 @@ import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
 import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
+import com.itgrids.partyanalyst.dto.TrainingCampSheduleDetailsVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
-import com.itgrids.partyanalyst.dto.TrainingCampSheduleDetailsVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyMeeting;
@@ -155,12 +155,15 @@ import com.itgrids.partyanalyst.service.ICadreDetailsUtils;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
-import com.itgrids.partyanalyst.utils.TrainingProcedureTestData;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 class TrainingCampService implements ITrainingCampService{
 
 	public static Logger LOG = Logger.getLogger(TrainingCampService.class);
@@ -5066,6 +5069,48 @@ class TrainingCampService implements ITrainingCampService{
 			
 			if(schedulesList != null && schedulesList.size() > 0){
 				finalList = getTdpCadreDetailsforASchedule(schedulesList,batchId,enrollmentYearId);
+				//get marks for cadres
+				if(finalList != null && finalList.size() > 0 && finalList.get(0).getSubList() != null && finalList.get(0).getSubList().size() > 0){
+					StringBuilder sb=null;
+					for (CadreDetailsVO vo : finalList.get(0).getSubList()) {
+						if(sb == null){
+							sb = new StringBuilder();
+							sb.append(vo.getId().toString());
+						}else{
+							sb.append(","+vo.getId());
+						}
+					}
+					ClientConfig clientConfig = new DefaultClientConfig();
+				     
+				     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+			         Client client = Client.create(clientConfig);
+					 
+			         WebResource webResource = client.resource("http://mytdp.com/Survey/WebService/getMemberWiseMarksDetails/"+sb.toString());
+			         //WebResource webResource = client.resource("http://192.168.11.109:8080/Survey/WebService/getMemberWiseMarksDetails/9152955,7637453");
+			         
+			         ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+			         
+			          if(response.getStatus() != 200){
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      }else{
+			 	    	  String output = response.getEntity(String.class);
+			 	    	  if(output != null && !output.isEmpty()){
+			 	    		  Map<Long,Long> marksMap = new HashMap<Long, Long>(0); 
+			 	    		  JSONArray finalArray = new JSONArray(output);
+			 	    		  if(finalArray!=null && finalArray.length()>0){
+			 	    			 for(int i=0;i<finalArray.length();i++){
+			 	    				JSONObject tmp = (JSONObject) finalArray.get(i);
+			 	    				marksMap.put(tmp.getLong("id"), tmp.getLong("count"));
+			 	    			 }
+			 	    		  }
+			 	    		  
+			 	    		  //set the marks to final list
+			 	    		  for (CadreDetailsVO vo : finalList.get(0).getSubList()) {
+			 	    			  vo.setMarks(marksMap.get(vo.getId()));
+			 	    		  }
+			 	    	  }
+			 	     }
+				}
 			}
 			
 		}catch(Exception e){

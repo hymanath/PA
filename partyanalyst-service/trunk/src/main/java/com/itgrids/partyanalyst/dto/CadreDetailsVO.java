@@ -69,10 +69,17 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private Long apptCount;
 	private Long apptUserId;
 	private String apptcandidateName;
+	private Long marks;
 	
 	
 	
 	
+	public Long getMarks() {
+		return marks;
+	}
+	public void setMarks(Long marks) {
+		this.marks = marks;
+	}
 	public String getApptcandidateName() {
 		return apptcandidateName;
 	}
