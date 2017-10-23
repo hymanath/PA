@@ -882,9 +882,15 @@ function onLoadClicks()
 			}else if(electionId == null || electionScopeId == 2){
 				electionId = 258;
 			}
+			var designation;
+			if(electionScopeId == 1){
+				designation="MP";
+			}else if(electionScopeId == 2){
+				designation="MLA";
+			}
 			$("#openModalDiv").modal("show");
 			$("#openModalDiv .modal-dialog").css("width","60%");
-			$("#TitleId").html("Party Wise Candidates Details");
+			$("#TitleId").html("Party Wise"+" "+designation+" "+"Candidates Details");
 			getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,electionId)
 		}else if(type == "meeting_type"){
 			$("#openModalDiv").modal("show");
@@ -6985,7 +6991,7 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 				str+='<table class="table table-bordered table-condensed" id="candidateDataTableId">';
 				str+='<thead>';
 					str+='<tr>';
-						str+='<th>PARTY NAME </th>';
+						str+='<th>PARTY </th>';
 						str+='<th>PHOTO</th>';
 						str+='<th>CANDIDATE NAME </th>';						
 						str+='<th>LOCATION NAME </th>';
@@ -6994,11 +7000,12 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
                  str+='<tbody>';
 				 for(var i in result){
 					str+='<tr>';
-						if(result[i].party != null ){
+						if(result[i].partyFlag != null ){
 							if(result[i].party != null && result[i].cadreId != null && result[i].partyId !=872){
-								str+='<td>'+result[i].party+'<i class="fa fa-star" aria-hidden="true" ></i></td>'; 
+								str+='<td><img src="images/party_flags/'+result[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/><i class="fa fa-star" aria-hidden="true" ></i></td>'; 
 							}else{
-							    str+='<td>'+result[i].party+'</td>'; 
+							    //str+='<td>'+result[i].partyFlag+'</td>'; 
+						       str+='<td><img src="images/party_flags/'+result[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/></td>';
 							}							
 						}else{
 							str+='<td> - </td>';     
@@ -7018,9 +7025,9 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 						}
 						if(result[i].constituencyName != null ){
 							if(electionScopeId == 1)
-								str+='<td>'+result[i].constituencyName+' Parliament MP </td>';
+								str+='<td>'+result[i].constituencyName+' Parliament </td>';
 							else if(electionScopeId == 2)
-								str+='<td>'+result[i].constituencyName+' Assembly  MLA </td>';
+								str+='<td>'+result[i].constituencyName+' Assembly  </td>';
 						}else{
 							str+='<td> - </td>';     
 						}
