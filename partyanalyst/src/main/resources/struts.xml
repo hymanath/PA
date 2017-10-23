@@ -18314,5 +18314,35 @@
 			<param name="root">commentsVOList</param>       
 		</result>
    </action>
+    <action name="getGrivenceOverviewDtlsAction" class="locationDashboardAction" method="getGrivenceOverviewDtls">
+        <result type="json" name="success">
+         <param name="root">grveneVO</param>
+       </result>
+   </action>
+    <action name="getGrivenceComplaintCountDepartmentWiseAction" class="locationDashboardAction" method="getGrivenceComplaintCountDepartmentWise">
+        <result type="json" name="success">
+         <param name="root">grivenceVO</param>
+       </result>
+   </action>
+    <action name="getGrivenceFinancialSupportDtlsAction" class="locationDashboardAction" method="getGrivenceFinancialSupportDtls">
+        <result type="json" name="success">
+         <param name="root">grveneVO</param>
+       </result>
+   </action>
+    <action name="getLocationWiseTypeOfIssueGrivenceComplaintCountAction" class="locationDashboardAction" method="getLocationWiseTypeOfIssueGrivenceComplaintCount">
+        <result type="json" name="success">
+         <param name="root">grivenceVO</param>
+       </result>
+   </action>
+    <action name="getInsuranceOverviewDetailsAction" class="locationDashboardAction" method="getInsuranceOverviewDetails">
+        <result type="json" name="success">
+         <param name="root">grveneVO</param>
+       </result>
+   </action>
+    <action name="getLocationWiseInsuranceIssueTypeComplaintCountAction" class="locationDashboardAction" method="getLocationWiseInsuranceIssueTypeComplaintCount">
+        <result type="json" name="success">
+         <param name="root">grivenceVO</param>
+       </result>
+   </action>
  </package>
 </struts>
