@@ -89,8 +89,8 @@
 			<li index="committees">committees</li>
 			<li index="meetings">meetings</li>
 			<li index="tours">tours</li>
-			<li index="benefits">benefits</li>
-			<li index="activities">activities</li>
+			<!--<li index="benefits">benefits</li>
+			<li index="activities">activities</li>-->
 			<li index="alerts">alerts</li>
 			<li index="nominatedPosts">nominated posts</li>
 			<li index="grievance">grievance</li>
@@ -131,11 +131,6 @@
 					</div>
 				
 				<div class="m_top20 assemblyElectionBlockCls" style="display:none">
-					<div class="row">
-						<div class="col-sm-12">
-							<h4 class="panel-title theme-title-color">Assembly Election Details</h4>
-						</div>
-					</div>
 					<div class="row m_top20">
 						<!--<div class="col-sm-6">
 							<div id="assemblyElectionGraphDetails"></div>

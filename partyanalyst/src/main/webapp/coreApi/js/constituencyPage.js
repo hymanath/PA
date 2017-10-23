@@ -22,7 +22,8 @@ var mandalId = $("#getMenuLocations").attr("menu-location-mandal");
 var panchayatId = $("#getMenuLocations").attr("menu-location-panchayat");
 var locationLevelName = $("#getMenuLocations").attr("menu-location-levelName");
 var locationLevelId = $("#getMenuLocations").attr("menu-location-levelId");
-var locationName = $("#getMenuLocations").attr("menu-location-name");
+var locationName='';
+locationName = $("#getMenuLocations").attr("menu-location-name");
 var userAccessLevelValuesArray=[];
 var commitessArr=["mandalLevelGraph","villageLevelGraph","affMandalLevelGraph","affVillageLevelGraph"];
 var grivanceIdsArr=["grivanceId","trustId"];
@@ -212,16 +213,20 @@ function onLoadAjaxCalls()
 	getCandidateAndPartyInfoForConstituency();
 	 //Second Block
 	if(locationLevelId == "2"){
+		$("#levelWiseCountDivId").html("");
 		getCountsForStateLevel();
 	}else{
-		 $("#statelevelWiseCountDivId").html(" ");
+		 $("#statelevelWiseCountDivId").html("");
 		 getCountsForConstituency();
 	}
 	//Assembly Block
 	getElectionTypes("onload");
 	if(locationLevelId == '4'){
 		$(".assemblyElectionBlockCls").show();
-		getDetailedElectionInformaction();
+		getDetailedElectionInformaction(2,constituencyId);
+	}else if(locationLevelId == '10'){
+		$(".assemblyElectionBlockCls").show();
+		getDetailedElectionInformaction(1,parliamentId);
 	}else{
 		$(".assemblyElectionBlockCls").hide();
 	}
@@ -560,7 +565,10 @@ function onLoadClicks()
 			getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal); */
 			if(locationLevelId == '4'){
 				$(".assemblyElectionBlockCls").show();
-				getDetailedElectionInformaction();
+				getDetailedElectionInformaction(2,constituencyId);
+			}else if(locationLevelId == '10'){
+				$(".assemblyElectionBlockCls").show();
+				getDetailedElectionInformaction(1,parliamentId);
 			}else{
 				$(".assemblyElectionBlockCls").hide();
 			}
@@ -842,19 +850,23 @@ function onLoadClicks()
 		if(type == "open"){
 			$("#openModalDiv").modal("show");
 			$("#TitleId").html(departmentName+  "  Open Posts Details");
+			$("#subTitleId").html("");
 			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
 		}else if(type == "goIssued"){
 			$("#openModalDiv").modal("show");
 			$("#TitleId").html(departmentName + "  G.O Issued Positions");
+			$("#subTitleId").html("");
 			getLevelWiseGoIssuedPostions(boardLevelId,statusIds);
 		}else if(type == "department"){
 			$("#departmentPostModal").modal("show");
 			$("#departmentDetailsModalDivId").html(spinner);
 			$("#deptHeadingId").html(departmentName+" Details");
+			$("#subTitleId").html("");
 			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
 		}else if(type == "positionLevel"){
 			$("#openModalDiv").modal("show");
 			$("#TitleId").html(departmentName+" Level Details");
+			$("#subTitleId").html("");
 			getNominatedPositionWiseCandidates(boardLevelId,departmentName);
 		}else if (type == "alert"){
 			var alertTypeIdsStr = $(this).attr("attr_alertTypeIdsStr");
@@ -869,8 +881,10 @@ function onLoadClicks()
 			$("#openModalDiv").modal("show");
 			if(designationId !=0){
 				$("#TitleId").html(status_name + " Designation Wise Alerts Details  -  Total "+total_count+" ");
+				$("#subTitleId").html("");
 			}else{
 				$("#TitleId").html(status_name + " Alerts Details  -  Total "+total_count+" ");
+				$("#subTitleId").html("");
 			}
 			getAlertOverviewClick(alertTypeIdsStr,statusIds,designationId,alertCategeryId,alert_type,otherCategory,impactIdsArr,status_name,total_count);
 		}else if(type == "MPMLA"){
@@ -891,6 +905,7 @@ function onLoadClicks()
 			$("#openModalDiv").modal("show");
 			$("#openModalDiv .modal-dialog").css("width","60%");
 			$("#TitleId").html("Party Wise"+" "+designation+" "+"Candidates Details");
+			$("#subTitleId").html("");
 			getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,electionId)
 		}else if(type == "meeting_type"){
 			$("#openModalDiv").modal("show");
@@ -904,7 +919,7 @@ function onLoadClicks()
 			var name = $(this).attr("attr_name");
 			$("#openModalDiv").modal("show");
 			$("#TitleId").html(name+"  "+electionType+" Election Result");
-			
+			$("#subTitleId").html("");
 			getDetailedElectionResults(constituencyId,electionYear,"table")
 		}	
 	});
@@ -1454,14 +1469,14 @@ function getCandidateAndPartyInfoForConstituency(){
 													
 													if(result[i].cadreId !=null && result[i].cadreId>0){
 														if(result[i].candidateName == "NARA CHANDRABABU NAIDU"){
-															stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>  <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].constituencyId+'" attr_election_year="2014" attr_election_type="Assembly" attr_name="Assembly">View Results</span>';
+															stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>  <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].constituencyId+'" attr_election_year="2014" attr_election_type="Assembly" attr_name="">View Results</span>';
 														}else{
 															stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>';
 														}
 														
 													}else{
 														if(result[i].candidateName == "NARA CHANDRABABU NAIDU"){
-															stateLevel+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].condidateId+'">View Candidate Profile</span>  <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].constituencyId+'" attr_election_year="2014" attr_election_type="Assembly" attr_name="Assembly">View Results</span>';
+															stateLevel+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].condidateId+'">View Candidate Profile</span>  <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].constituencyId+'" attr_election_year="2014" attr_election_type="Assembly" attr_name="">View Results</span>';
 														}else{
 															stateLevel+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].condidateId+'">View Candidate Profile</span>';
 														}
@@ -4884,11 +4899,13 @@ function getPublications(){
 	}
 }
 
-function getDetailedElectionInformaction(){
+function getDetailedElectionInformaction(id,typeId){
 	$("#assemblyElectionGraphDetails,#assemblyElectionDetails").html(spinner);
+	var electionScopeIdsArr=[];
+	electionScopeIdsArr.push(id);
 	jsObj={
-	  	constituencyId: constituencyId,
-		electionScopeIdsArr:[2]
+	  	constituencyId: typeId,
+		electionScopeIdsArr:electionScopeIdsArr
     }
     $.ajax({
       type : "GET",
@@ -4897,13 +4914,13 @@ function getDetailedElectionInformaction(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
-			return buildAssemblyResultsTable(result)
+			return buildAssemblyResultsTable(result,id)
 		}else{
 			$("#assemblyElectionGraphDetails,#assemblyElectionDetails").html(noData);
 		}
 	});
 	
-	function buildAssemblyResultsTable(result)
+	function buildAssemblyResultsTable(result,id)
 	{
 		var str='';
 		
@@ -4930,7 +4947,13 @@ function getDetailedElectionInformaction(){
 					
 			}
 			
-		}	
+		}
+		if(id == 2){
+			str+='<h4 class="panel-title theme-title-color">Assembly Election Details</h4>';
+		}else{
+			str+='<h4 class="panel-title theme-title-color">Parliament Election Details</h4>';
+		}
+			
 		str+='<table class="table table-noborder table_election_results tableHoverLevels" id="dataTableAssemblyElecBlock">';
 			str+='<thead class="bg-DD text-capitalize">';
 				str+='<th style="vertical-align: middle;">Year</th>';
@@ -4938,6 +4961,7 @@ function getDetailedElectionInformaction(){
 				str+='<th style="vertical-align: middle;"><img src="coreApi/img/winner_icon.png" style="width:25px;height:25px;" alt="green-hand"/> Won Candidate</th>';
 				str+='<th style="vertical-align: middle;">Polled Votes</th>';
 				str+='<th style="vertical-align: middle;border:1px solid #008855 !important;" >Margin Votes</th>';
+				str+='<th style="vertical-align: middle;border:1px solid #008855 !important;" >%</th>';
 				str+='<th style="vertical-align: middle;">Party</th>';
 				str+='<th style="vertical-align: middle;"><img src="coreApi/img/loser_icon.png" style="width:25px;height:25px;" alt="red-hand"/> Lost Candidate</th>';
 				str+='<th style="vertical-align: middle;">Polled Votes</th>';
@@ -4955,7 +4979,16 @@ function getDetailedElectionInformaction(){
 					str+='<td>'+result[i].candidateResultsVO.candidateName+'</td>';
 					str+='<td>'+result[i].candidateResultsVO.votesEarned+'</td>';
 					
-					str+='<td style="border:1px solid #008855 !important;text-align:center;">'+result[i].candidateResultsVO.votesMargin+'</td>';
+					if(result[i].candidateResultsVO.votesMargin !=null && result[i].candidateResultsVO.votesMargin>0){
+						str+='<td style="border:1px solid #008855 !important;text-align:center;">'+result[i].candidateResultsVO.votesMargin+'</td>';
+					}else{
+						str+='<td style="border:1px solid #008855 !important;text-align:center;"> - </td>';
+					}
+					if(result[i].candidateResultsVO.votesPercentMargin !=null && result[i].candidateResultsVO.votesPercentMargin>0){
+						str+='<td style="border:1px solid #008855 !important;text-align:center;">'+result[i].candidateResultsVO.votesPercentMargin+'</td>';
+					}else{
+						str+='<td style="border:1px solid #008855 !important;text-align:center;"> - </td>';
+					}
 					
 					if(result[i].candidateOppositionList[0].partyShortName == "TDP" || result[i].candidateOppositionList[0].partyShortName == "YSRC"){
 						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateOppositionList[0].partyShortName+'.PNG" alt="'+result[i].candidateOppositionList[0].partyShortName+'"/></td>';
@@ -5316,17 +5349,13 @@ function getElectionTypes(type){
 					for(var i in result){
 						str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
 						if(result[i].id == "1" || result[i].id == "2" || result[i].id == "3" ||result[i].id == "4"){
-							if(result[i].name == "Pancahat_Ward"){
-								str+='<input value ="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span class="f-12">Ward</span>';
-							}else{
+							if(result[i].name != "Pancahat_Ward" && result[i].name != "Panchayat"){
 								str+='<input value ="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
-							}	
+							}
 						}else{
-							if(result[i].name == "Pancahat_Ward"){
-								str+='<input value ="'+result[i].id+'" type="checkbox"  class="electionTypeWiseCls" /><span class="f-12">Ward</span>';
-							}else{
+							if(result[i].name != "Pancahat_Ward" && result[i].name !="Panchayat"){
 								str+='<input value ="'+result[i].id+'" type="checkbox"  class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
-							}	
+							}
 						}
 										
 						str+='</label>';
@@ -5354,7 +5383,7 @@ function getElectionTypes(type){
 								str+='<span id="electionTypeSpinnerId" style="margin-left:-22px;display:none;"><img  src="coreApi/img/search.gif" alt="search"  class="m_top10" /></span>';
 								str+='<label class="pull-right">';
 									str+='<input value ="MAIN" type="checkbox" name="optionsRadios1" class="checkedMainByeType" checked/><span class="f-12">Main Election</span>';
-									str+='<input value ="BYE" type="checkbox" name="optionsRadios1"  class="checkedMainByeType f-12" style="margin-left: 10px;"  /><span class="f-12">Bye Election</span>';
+									str+='<input value ="BYE" type="checkbox" name="optionsRadios1"  class="checkedMainByeType f-12" style="margin-left: 10px;"  /><span class="f-12">By Election</span>';
 								str+='</label>';
 							str+='</div>';
 							
@@ -5396,11 +5425,11 @@ function getElectionInformationLocationWise(electionVal,type,partyIds,electionSu
 	}else{
 		$("#electionDetailsGraphWiseId,#electionDetailsTableWiseId").show();
 	} */
-	for(var i in electionVal){
+	/* for(var i in electionVal){
 		if(electionVal[i] == 0){
 			electionVal=[];
 		}
-	}
+	} */
 	
 	for(var i in electionYrVal){
 		if(electionYrVal[i] == 0){
@@ -5450,17 +5479,23 @@ function buildElectionInformationLocationWise(result,type){
 				str+='<table class="table table-condensed table-hover m_top10  table-bordered table-striped" id="dataTableElecBlock">';
 					str+='<thead>';
 						str+='<tr>';
-							str+='<th>Party</th>';
+							str+='<th rowspan="2">Party</th>';
 								for(var j in result[0].list){
 									if(result[0].list[j].electionType == "Assembly"){
-										str+='<th>'+result[0].list[j].electionYear+'   AC</th>';
+										str+='<th colspan="2">'+result[0].list[j].electionYear+'   AC</th>';
 									}else if(result[0].list[j].electionType == "Parliament"){
-										str+='<th>'+result[0].list[j].electionYear+'   PC</th>';
+										str+='<th colspan="2">'+result[0].list[j].electionYear+'   PC</th>';
 									}else{
-										str+='<th>'+result[0].list[j].electionYear+'   '+result[0].list[j].electionType+'</th>';
+										str+='<th colspan="2">'+result[0].list[j].electionYear+'   '+result[0].list[j].electionType+'</th>';
 									}
 									
 								}
+						str+='</tr>';
+						str+='<tr>';
+						for(var j in result[0].list){
+							str+='<th>Won Count</th>';
+							str+='<th>Vote Share %</th>';
+						}
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
@@ -5468,12 +5503,16 @@ function buildElectionInformationLocationWise(result,type){
 								str+='<tr>';
 									str+='<td>'+result[i].partyName+'</td>';
 									for(var j in result[i].list){
-										if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
-											str+='<td>'+result[i].list[j].wonSeatsCount+'  <small style="color:#2B908F;"><b>'+result[i].list[j].locationName+' %</b></small></td>';
+										if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
+											str+='<td>'+result[i].list[j].wonSeatsCount+'  </td>';
 										}else{
 											str+='<td> - </td>';
 										}
-										
+										if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
+											str+='<td><small style="color:#2B908F;"><b>'+result[i].list[j].locationName+' %</b></small></td>';
+										}else{
+											str+='<td> - </td>';
+										}
 									}
 								str+='</tr>';
 							}
@@ -5484,7 +5523,7 @@ function buildElectionInformationLocationWise(result,type){
 		$("#electionDetailsTableWiseId").html(str);
 		$("#dataTableElecBlock").dataTable({
 			"iDisplayLength": 10,
-			"aaSorting": [],
+			 "aaSorting": [[ 2, "desc" ]], 
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		});
 		var mainDataArr=[];
@@ -7294,7 +7333,8 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 function getDetailedElectionResults(constituencyId,electionYear,type){
 	$("#openPostDetailsModalDivId").html(spinner);
 	jsObj={
-	  	constituencyId: constituencyId
+	  	constituencyId: constituencyId,
+		electionScopeIdsArr:[2]
     }
     $.ajax({
       type : "GET",
@@ -7502,12 +7542,13 @@ function getDetailedElectionResults(constituencyId,electionYear,type){
 }
 
   // new ajax call for grivence based on new design
-	//getGrivenceOverviewDtls(yearId);
-	//getGrivenceComplaintCountDepartmentWise(yearId);
-	 // getGrivenceFinancialSupportDtls(yearId);
-	//getLocationWiseTypeOfIssueGrivenceComplaintCount(yearId);
-	  //getInsuranceOverviewDetails(yearId);
-	// getLocationWiseInsuranceIssueTypeComplaintCount(yearId);
+		/* getGrivenceOverviewDtls(""); //first block
+		getGrivenceComplaintCountDepartmentWise("");
+		getGrivenceFinancialSupportDtls("");
+		getLocationWiseTypeOfIssueGrivenceComplaintCount(""); */
+	  
+	  //getInsuranceOverviewDetails("");
+	  //getLocationWiseInsuranceIssueTypeComplaintCount("");
     //getTrustEducationOverviewDetails(yearId);
 	//getLocationWiseTrustEducationComplaintCount(yearId);
 function getGrivenceOverviewDtls(yearId){
