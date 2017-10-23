@@ -1,18 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.HibernateException;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
-import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.model.ElectionAlliance;
-import com.itgrids.partyanalyst.model.Group;
 
 public class ElectionAllianceDAO extends GenericDaoHibernate<ElectionAlliance, Long> implements
 IElectionAllianceDAO {
@@ -98,5 +93,35 @@ IElectionAllianceDAO {
 		queryObject.setParameterList("eleIds",eleIds);	
 		queryObject.setParameter("stateId",stateId);	
 		return queryObject.list();	
+	}
+	
+	public List<Object[]> getSegregateAlianceParties(List<String> subTypes,List<Long> electionYear,List<Long> electionScopeIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT e.election_id as electionId,et.election_type as electionType ,e.election_year as electionYear" +
+				",g.group_id as groupId,g.group_name as groupName,ag.party_id as partyId ");
+		sb.append(" from  election_alliances ea, groups g, alliance_groups ag ,election e ,election_scope es,election_type et ");
+		sb.append("where " +
+				"e.election_scope_id = es.election_scope_id and  es.election_type_id = et.election_type_id and ");
+		sb.append(" ea.election_id = e.election_id and ea.group_id  =g.group_id and ag.group_id = g.group_id " );
+		if(subTypes != null && subTypes.size() >0)
+			sb.append(" and e.sub_type in (:subTypes) ");
+		if(electionYear != null && electionYear.size() >0)
+			sb.append(" and e.election_year in (:electionYear) ");
+		if(electionScopeIds != null && electionScopeIds.size() >0L)
+			sb.append(" and e.election_scope_id in (:electionScopeIds)  ");
+		Query query=getSession().createSQLQuery(sb.toString())
+				.addScalar("electionId", Hibernate.LONG)
+				.addScalar("electionType",Hibernate.STRING)
+				.addScalar("electionYear",Hibernate.STRING)
+				.addScalar("groupId",Hibernate.LONG)
+				.addScalar("groupName",Hibernate.STRING)
+				.addScalar("partyId",Hibernate.LONG);
+		if(subTypes != null && subTypes.size() >0)
+		query.setParameterList("subTypes", subTypes);
+		if(electionYear != null && electionYear.size() >0)
+			query.setParameterList("electionYear", electionYear);
+		if(electionScopeIds != null && electionScopeIds.size() >0L)
+			query.setParameterList("electionScopeIds", electionScopeIds);
+		return query.list();
 	}
 }

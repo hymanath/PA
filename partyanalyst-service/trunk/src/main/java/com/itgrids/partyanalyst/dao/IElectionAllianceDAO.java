@@ -28,4 +28,6 @@ public interface IElectionAllianceDAO extends GenericDao<ElectionAlliance, Long>
 	public List<ElectionAlliance> findByElectionYearAndType(final String electionYear, final Long electionType, Long stateId);
 	
 	public List getAllAllianceElectionYearsForAPartyByElectionIds(Long partyId,List<Long> eleIds,Long stateId);
+	
+	public List<Object[]> getSegregateAlianceParties(List<String> subTypes,List<Long> electionYear,List<Long> electionScopeIds);
 }

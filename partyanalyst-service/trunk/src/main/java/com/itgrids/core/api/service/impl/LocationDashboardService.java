@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
+import com.itgrids.core.api.service.ILocationWiseElectionInformationDetalsService;
 import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
@@ -164,7 +165,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IPartyDAO partyDAO;
 	private IElectionDAO electionDAO;
 	private IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO;
-
+	private ILocationWiseElectionInformationDetalsService locationWiseElectionInformationDetalsService;
 	
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
@@ -560,6 +561,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO) {
 		this.delimitationConstituencyMandalDetailsDAO = delimitationConstituencyMandalDetailsDAO;
 	}
+	
+	public ILocationWiseElectionInformationDetalsService getLocationWiseElectionInformationDetalsService() {
+		return locationWiseElectionInformationDetalsService;
+	}
+	public void setLocationWiseElectionInformationDetalsService(
+			ILocationWiseElectionInformationDetalsService locationWiseElectionInformationDetalsService) {
+		this.locationWiseElectionInformationDetalsService = locationWiseElectionInformationDetalsService;
+	}
+	
 	public List<CandidateDetailsForConstituencyTypesVO> getCandidateAndPartyInfoForConstituency(Long locationValue,Long locationTypeId,List<Long> representativTypeIds,List<Long> roleIds,List<Long> committeeIds,List<Long> enrollmentYears,Long basicCommoteeId,Long enrollmentId) {
 		List<CandidateDetailsForConstituencyTypesVO> finalList= new ArrayList<CandidateDetailsForConstituencyTypesVO>();
 		List<CandidateInfoForConstituencyVO> parliementfinalList= new ArrayList<CandidateInfoForConstituencyVO>();
@@ -5016,6 +5026,13 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			}else{
 				earnedVotesList= candidateDAO.getElectionInformationLocationWiseEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null);
 			}
+			Map<Long,Map<Long,ElectionInformationVO>> alliancedPartiesWithGroupIdMap =  new HashMap<Long,Map<Long,ElectionInformationVO>>(0);
+			/*Map<Long,Map<Long,ElectionInformationVO>> alliancedPartiesWithGroupIdMap = locationWiseElectionInformationDetalsService.getSegregateAliancePartiesMap(subTypes,electionYrs,electionScopeIds);
+			List<Object[]> segregeteObjs = locationWiseElectionInformationDetalsService.segregateAlianceParties(earnedVotesList,subTypes, electionYrs,electionScopeIds,alliancedPartiesWithGroupIdMap);
+			if(commonMethodsUtilService.isListOrSetValid(segregeteObjs)){
+				earnedVotesList.clear();
+				earnedVotesList.addAll(segregeteObjs) ;
+			}*/
 			
 			for (Object[] objects : earnedVotesList) {
 				List<ElectionInformationVO> polledVoList =finalYearMap.get(commonMethodsUtilService.getLongValueForObject(objects[5]));
@@ -5132,8 +5149,34 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 							availableIds.add(vo.getElectionId());
 							
 							Map<Long,Long> partyWiseWonSeatsMap = electionWiseWonSeatsMap.get(vo.getElectionId());
+							Map<Long,ElectionInformationVO> alliancePartyDetailsMap = alliancedPartiesWithGroupIdMap.get(vo.getElectionId());
 							if(commonMethodsUtilService.isMapValid(partyWiseWonSeatsMap)){
-								vo.setWonSeatsCount(partyWiseWonSeatsMap.get(vo.getPartyId()));
+								if(commonMethodsUtilService.isMapValid(alliancePartyDetailsMap)){
+									for (Long allianceGroupId : alliancePartyDetailsMap.keySet()) {
+										ElectionInformationVO groupVO= alliancePartyDetailsMap.get(allianceGroupId);
+										if(groupVO != null){
+											if(commonMethodsUtilService.isListOrSetValid(groupVO.getIdsList())){ // checking alliance partyList with won party details
+												if(groupVO.getIdsList().contains(vo.getPartyId())){
+													for (Long alliancePartyId : groupVO.getIdsList()) {
+														if(partyWiseWonSeatsMap.get(alliancePartyId) != null){
+															if(vo.getWonSeatsCount() != null && vo.getWonSeatsCount().longValue()>0L){
+																vo.setWonSeatsCount(vo.getWonSeatsCount()+partyWiseWonSeatsMap.get(alliancePartyId));
+															}else{
+																vo.setWonSeatsCount(partyWiseWonSeatsMap.get(alliancePartyId));
+															}
+														}
+													}
+												}else{
+													vo.setWonSeatsCount(partyWiseWonSeatsMap.get(vo.getPartyId()));
+												}
+											}else{
+												vo.setWonSeatsCount(partyWiseWonSeatsMap.get(vo.getPartyId()));
+											}
+										}
+									}
+								}else{
+									vo.setWonSeatsCount(partyWiseWonSeatsMap.get(vo.getPartyId()));
+								}
 							}
 							if(vo.getWonSeatsCount() == null)
 								vo.setWonSeatsCount(0L);
@@ -5144,8 +5187,34 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 							if(!availableIds.contains(electionId)){
 								ElectionInformationVO vo = electionsMap.get(electionId);
 								Map<Long,Long> partyWiseWonSeatsMap = electionWiseWonSeatsMap.get(vo.getElectionId());
+								Map<Long,ElectionInformationVO> alliancePartyDetailsMap = alliancedPartiesWithGroupIdMap.get(vo.getElectionId());
 								if(commonMethodsUtilService.isMapValid(partyWiseWonSeatsMap)){
-									vo.setWonSeatsCount(partyWiseWonSeatsMap.get(vo.getPartyId()));
+									if(commonMethodsUtilService.isMapValid(alliancePartyDetailsMap)){
+										for (Long allianceGroupId : alliancePartyDetailsMap.keySet()) {
+											ElectionInformationVO groupVO= alliancePartyDetailsMap.get(allianceGroupId);
+											if(groupVO != null){
+												if(commonMethodsUtilService.isListOrSetValid(groupVO.getIdsList())){ // checking alliance partyList with won party details
+													if(groupVO.getIdsList().contains(vo.getPartyId())){
+														for (Long alliancePartyId : groupVO.getIdsList()) {
+															if(partyWiseWonSeatsMap.get(alliancePartyId) != null){
+																if(vo.getWonSeatsCount() != null && vo.getWonSeatsCount().longValue()>0L){
+																	vo.setWonSeatsCount(vo.getWonSeatsCount()+partyWiseWonSeatsMap.get(alliancePartyId));
+																}else{
+																	vo.setWonSeatsCount(partyWiseWonSeatsMap.get(alliancePartyId));
+																}
+															}
+														}
+													}else{
+														vo.setWonSeatsCount(partyWiseWonSeatsMap.get(vo.getPartyId()));
+													}
+												}else{
+													vo.setWonSeatsCount(partyWiseWonSeatsMap.get(vo.getPartyId()));
+												}
+											}
+										}
+									}else{
+										vo.setWonSeatsCount(partyWiseWonSeatsMap.get(vo.getPartyId()));
+									}
 								}
 								if(vo.getWonSeatsCount() == null)
 									vo.setWonSeatsCount(0L);
@@ -5168,6 +5237,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			}
 			return finalPartyList;
 		}catch(Exception e){
+			e.printStackTrace();
 			Log.error("Exception raised in getElectionInformationLocationWiseVoterShare method of LocationDashboardService"+e);
 			return null;
 		}
@@ -6512,34 +6582,51 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		    areaWisePartyMeetingDetailsObj.addAll(partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId,null));
 		}
 		
+		Map<String,MeetingsVO>  monthTemplateMap=new HashMap<String,MeetingsVO>();
+		if(areaWisePartyMeetingDetailsObj != null && areaWisePartyMeetingDetailsObj.size()>0){
+		for(Object[] param : areaWisePartyMeetingDetailsObj){
+			Long year=commonMethodsUtilService.getLongValueForObject(param[3]);
+			Long month=commonMethodsUtilService.getLongValueForObject(param[2]);
+			String key = month+"_"+year;
+			MeetingsVO monthDtlsVO = monthTemplateMap.get(key);
+			  if (monthDtlsVO == null ) {
+				  monthDtlsVO = new MeetingsVO();
+				  monthDtlsVO.setYear(year);
+				  monthDtlsVO.setNoOfMonth(month);
+				  monthDtlsVO.setMonthName(IConstants.MONTH_NAMES[Integer.parseInt(month.toString())-1]);
+				  monthTemplateMap.put(key, monthDtlsVO);
+			  }
+		  }
+		}
+		
+		
 		if(areaWisePartyMeetingDetailsObj != null && areaWisePartyMeetingDetailsObj.size()>0){
 			for(Object[] param : areaWisePartyMeetingDetailsObj){
 				Long locationId=commonMethodsUtilService.getLongValueForObject(param[0]);
 				Long year=commonMethodsUtilService.getLongValueForObject(param[3]);
 				Long month=commonMethodsUtilService.getLongValueForObject(param[2]);
 				
-				if(locationWiseDetailsVOMap.containsKey(locationId)){
+				if(locationWiseDetailsVOMap.containsKey(locationId)) {
 					MeetingsVO locationVO=locationWiseDetailsVOMap.get(locationId);
-					List<MeetingsVO> yearWiseVOList=locationVO.getYearWiseMeetingsCount();
-						MeetingsVO matchedYearVO=getMatchedVO(yearWiseVOList,year,month);
-						if(matchedYearVO == null){
-							MeetingsVO monthWiseVO=getMonthWiseVO(param,yearWiseVOList.get(0));
-							yearWiseVOList.add(monthWiseVO);
-						}else{
+					List<MeetingsVO> yearWiseVOList = locationVO.getYearWiseMeetingsCount();
+						MeetingsVO matchedYearVO = getMatchedVO(yearWiseVOList,year,month);
+						if(matchedYearVO != null){
 							setStatusToVO(matchedYearVO,param,yearWiseVOList.get(0));
 						}
 				}else{
-					MeetingsVO locationVO=new MeetingsVO();
+					MeetingsVO locationVO = new MeetingsVO();
 					locationVO.setId(locationId);
 					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					
-					List<MeetingsVO> monthWiseVOList=new ArrayList<MeetingsVO>();
-					MeetingsVO OverallStatusVO=new MeetingsVO();
-
-					MeetingsVO monthWiseVO=getMonthWiseVO(param,OverallStatusVO);
-					monthWiseVOList.add(0, OverallStatusVO);//OverallStatusVO at 0th position
-					monthWiseVOList.add(monthWiseVO);				
-					locationVO.setYearWiseMeetingsCount(monthWiseVOList);
+					MeetingsVO OverallStatusVO = new MeetingsVO();
+					ArrayList<MeetingsVO> tempList=new ArrayList<MeetingsVO>(monthTemplateMap.values());
+					//locationVO.setYearWiseMeetingsCount(new ArrayList<MeetingsVO>(monthTemplateMap.values()));
+					locationVO.setYearWiseMeetingsCount(getMonthTemplate(monthTemplateMap));
+					MeetingsVO matchedYearVO = getMatchedVO(locationVO.getYearWiseMeetingsCount(),year,month);
+					if (matchedYearVO != null) {
+						setStatusToVO(matchedYearVO, param, OverallStatusVO);
+					}
+					locationVO.getYearWiseMeetingsCount().add(0, OverallStatusVO);//OverallStatusVO at 0th position
 					locationWiseDetailsVOMap.put(locationId, locationVO);
 				  }
 			   }
@@ -7354,5 +7441,22 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		}
 		return dateArr;
 	}
+	public List<MeetingsVO> getMonthTemplate(Map<String,MeetingsVO>  monthTemplateMap) {
+		List<MeetingsVO> monthTemlateList = new ArrayList<MeetingsVO>();  
+		try {
+			  if (monthTemplateMap != null && monthTemplateMap.size() > 0) {
+				  for (Entry<String, MeetingsVO> monthEntry : monthTemplateMap.entrySet()) {
+					  MeetingsVO monthDtlsVO = new MeetingsVO();
+					  monthDtlsVO.setYear(monthEntry.getValue().getYear());
+					  monthDtlsVO.setNoOfMonth(monthEntry.getValue().getNoOfMonth());
+					  monthDtlsVO.setMonthName(monthEntry.getValue().getMonthName());
+					  monthTemlateList.add(monthDtlsVO);
+				}
+			  }
+		  } catch (Exception e){
+			  LOG.error("Exception Occured in getMonthTemplate() Method");
+		  }
+		return monthTemlateList;
+		}
 }
 

@@ -46,6 +46,7 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private Double percentage = 0.0;
 	private Long min;
 	private Long max;
+	private Long groupId;
 	
 	private List<ElectionInformationVO> list = new CopyOnWriteArrayList<ElectionInformationVO>();
 	private List<ElectionInformationVO> subList1 = new ArrayList<ElectionInformationVO>();
@@ -318,4 +319,11 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	public void setSubList2(List<ElectionInformationVO> subList2) {
 		this.subList2 = subList2;
 	}
+	public Long getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(Long groupId) {
+		this.groupId = groupId;
+	}
+	
 }
