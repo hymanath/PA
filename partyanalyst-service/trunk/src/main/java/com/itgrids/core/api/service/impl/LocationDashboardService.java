@@ -6648,5 +6648,709 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		}
 		
 	}
+	
+	/**
+	 * @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationTypeId
+	 * @param List<Long> locationValues
+	 * @param Long stateId
+	 * @return GrivenceStatusVO
+	 * @author Santosh Kumar Verma
+	 * @Description :This Service Method is used to get grivence overview details. 
+	 * @Date 21-OCT-2017
+	 */
+	public GrivenceStatusVO getGrivenceOverviewDtls(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId) {
+		GrivenceStatusVO resultVO = new GrivenceStatusVO();
+		try{
+			
+			Date fromDate = getDates(fromDateStr,toDateStr)[0];
+			Date toDate = getDates(fromDateStr,toDateStr)[1];
+			
+			List<Object[]> grivenceDtlsObjList = insuranceStatusDAO.getGrievanceTypeOfIssueIssueTypeAndStatusComplaintCnt(locationTypeId, locationValues, stateId, fromDate, toDate);
+			
+			Map<String,GrivenceStatusVO> statusMap = getStatusWiseComplaintCount(grivenceDtlsObjList);//getting status wise complaint count
+			List<GrivenceStatusVO> typeOfIssueList = getTypeOfIssueStatusWiseComplaintCount(grivenceDtlsObjList);//getting type of issue and status wise complaint count
+			List<GrivenceStatusVO> typeOfIssueIssueTypeList = getTypeOfIssueIssueTypeStatusWiseComplaintCount(grivenceDtlsObjList, statusMap);//getting type of issue,issue type and status list
+			
+			resultVO.getSubList().addAll(statusMap.values());
+			resultVO.setSubList1(typeOfIssueList);
+			resultVO.setSubList2(typeOfIssueIssueTypeList);
+			
+		}catch(Exception e){
+			Log.error("Exception raised at getGrivenceOverviewDtls() in  LocationDashboardService class "+e);
+		}
+		return resultVO;
+	}
+
+	private Map<String, GrivenceStatusVO> getStatusWiseComplaintCount(List<Object[]> objList) {
+		Map<String, GrivenceStatusVO> statusMap = new LinkedHashMap<String, GrivenceStatusVO>();
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					String status = commonMethodsUtilService.getStringValueForObject(param[2]).trim();
+					GrivenceStatusVO statusVO = statusMap.get(getInUpperCase(status));
+					if (statusVO == null) {
+						statusVO = new GrivenceStatusVO();
+						statusVO.setName(getInUpperCase(status));
+						statusMap.put(statusVO.getName(), statusVO);
+					}
+					statusVO.setCount(statusVO.getCount()+ commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+
+		} catch (Exception e) {
+			Log.error("Exception raised at getStatusWiseComplaintCount() in  LocationDashboardService class "+ e);
+		}
+		return statusMap;
+	}
+
+	private List<GrivenceStatusVO> getTypeOfIssueStatusWiseComplaintCount(List<Object[]> objList) {
+		List<GrivenceStatusVO> typeOfIssueList = new ArrayList<GrivenceStatusVO>(0);
+		try {
+			if (objList != null && objList.size() > 0) {
+				Map<String, Map<String, GrivenceStatusVO>> typeOfIssueMap = new LinkedHashMap<String, Map<String, GrivenceStatusVO>>(0);
+				for (Object[] param : objList) {
+					Map<String, GrivenceStatusVO> statusMap = typeOfIssueMap.get(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[0]).trim()));// typeOfIssue
+					if (statusMap == null) {
+						statusMap = new LinkedHashMap<String, GrivenceStatusVO>();
+						typeOfIssueMap.put(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[0]).trim()),statusMap);
+					}
+					String status = commonMethodsUtilService.getStringValueForObject(param[2]).trim();
+					GrivenceStatusVO statusVO = statusMap.get(getInUpperCase(status));
+					if (statusVO == null) {
+						statusVO = new GrivenceStatusVO();
+						statusVO.setName(getInUpperCase(status));
+						statusMap.put(statusVO.getName(), statusVO);
+					}
+					statusVO.setCount(statusVO.getCount()+ commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+				
+				//Preparing list
+				if (typeOfIssueMap.size() > 0) {
+					for (Entry<String, Map<String, GrivenceStatusVO>> typeOfIssueEntry : typeOfIssueMap.entrySet()) {
+						GrivenceStatusVO typeOfIssueVO = new GrivenceStatusVO();
+						typeOfIssueVO.setName(typeOfIssueEntry.getKey());
+						 if (typeOfIssueEntry.getValue() != null ) {
+							 for (Entry<String, GrivenceStatusVO> statusEntry : typeOfIssueEntry.getValue().entrySet()) {
+								 typeOfIssueVO.getSubList().add(statusEntry.getValue());
+								 typeOfIssueVO.setCount(typeOfIssueVO.getCount()+statusEntry.getValue().getCount());
+							}
+						 }
+						typeOfIssueList.add(typeOfIssueVO);
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			Log.error("Exception raised at getTypeOfIssueStatusWiseComplaintCount() in  LocationDashboardService class "+ e);
+		}
+		return typeOfIssueList;
+	}
+   
+	private List<GrivenceStatusVO> getTypeOfIssueIssueTypeStatusWiseComplaintCount(List<Object[]> objList, Map<String, GrivenceStatusVO> sttsMap) {
+		List<GrivenceStatusVO> typeOfIssueList = new ArrayList<GrivenceStatusVO>(0);
+		try {
+			if (objList != null && objList.size() > 0) {
+				Map<String, Map<String, Map<String, GrivenceStatusVO>>> typeOfIssueIssueTypeMap = new LinkedHashMap<String, Map<String, Map<String, GrivenceStatusVO>>>(0);
+				for (Object[] param : objList) {
+					Map<String, Map<String, GrivenceStatusVO>> issueTypeMap = typeOfIssueIssueTypeMap.get(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[0]).trim()));// typeOfIssue
+					if (issueTypeMap == null) {
+						issueTypeMap = new LinkedHashMap<String, Map<String, GrivenceStatusVO>>(0);
+						typeOfIssueIssueTypeMap.put(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[0])).trim(),issueTypeMap);
+					}
+					Map<String, GrivenceStatusVO> statusMap = issueTypeMap.get(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[1])));//issue type
+					if (statusMap == null) {
+						statusMap = new LinkedHashMap<String, GrivenceStatusVO>();
+						issueTypeMap.put(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[1])), statusMap);
+					}
+					String status = commonMethodsUtilService.getStringValueForObject(param[2]).trim();
+					GrivenceStatusVO statusVO = statusMap.get(getInUpperCase(status));
+					if (statusVO == null) {
+						statusVO = new GrivenceStatusVO();
+						statusVO.setName(getInUpperCase(status));
+						statusMap.put(statusVO.getName(), statusVO);
+					}
+					statusVO.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+
+				// Preparing list
+				if (typeOfIssueIssueTypeMap.size() > 0) {
+					for (Entry<String, Map<String, Map<String, GrivenceStatusVO>>> typeOfIssueEntry : typeOfIssueIssueTypeMap.entrySet()) {
+						GrivenceStatusVO typeOfIssueVO = new GrivenceStatusVO();
+						typeOfIssueVO.setName(typeOfIssueEntry.getKey());
+
+						if (typeOfIssueEntry.getValue() != null) {
+							for (Entry<String, Map<String, GrivenceStatusVO>> issueTypeEntry : typeOfIssueEntry.getValue().entrySet()) {
+								GrivenceStatusVO issueTypeVO = new GrivenceStatusVO();
+								issueTypeVO.setName(issueTypeEntry.getKey());
+								if (issueTypeEntry != null) {
+									Map<String, GrivenceStatusVO> statusMap = issueTypeEntry.getValue();
+									if (sttsMap != null) {
+										for (Entry<String, GrivenceStatusVO> statusEntry : sttsMap.entrySet()) {
+											if (statusMap.get(statusEntry.getKey()) != null) {
+												issueTypeVO.getSubList().add(statusMap.get(statusEntry.getKey()));
+												issueTypeVO.setCount(issueTypeVO.getCount()+ statusMap.get(statusEntry.getKey()).getCount());
+												typeOfIssueVO.setCount(typeOfIssueVO.getCount() + statusMap.get(statusEntry.getKey()).getCount());
+											} else {
+												 GrivenceStatusVO statusVO = (GrivenceStatusVO) statusEntry.getValue().clone();
+												 statusVO.setCount(0l);
+												 issueTypeVO.getSubList().add(statusVO);
+											}
+										}
+									}
+								}
+								typeOfIssueVO.getSubList().add(issueTypeVO);
+							}
+						}
+						typeOfIssueList.add(typeOfIssueVO);
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			Log.error("Exception raised at getTypeOfIssueStatusWiseComplaintCount() in  LocationDashboardService class "+ e);
+		}
+		return typeOfIssueList;
+	}
+	/**
+	 * @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationTypeId
+	 * @param List<Long> locationValues
+	 * @param String year
+	 * @param Long stateId
+	 * @return List<GrivenceStatusVO>
+	 * @author Santosh Kumar Verma
+	 * @Description :This Service Method is used to get grivence complaint count department wise. 
+	 * @Date 21-OCT-2017
+	 */
+	public List<GrivenceStatusVO> getGrivenceComplaintCountDepartmentWise(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId) {
+		List<GrivenceStatusVO> resultList = new ArrayList<GrivenceStatusVO>(0);
+		try{
+			Date fromDate = getDates(fromDateStr,toDateStr)[0];
+			Date toDate = getDates(fromDateStr,toDateStr)[1];
+			
+			List<Object[]> grivenceDeptDtlsObjList = insuranceStatusDAO.getGrievanceDepartmentWiseComplaintCnt(locationTypeId, locationValues, stateId, fromDate, toDate);
+			
+			Map<String,GrivenceStatusVO> statusMap = getAllStatus(grivenceDeptDtlsObjList);//getting status wise complaint count
+			
+			if (grivenceDeptDtlsObjList != null && grivenceDeptDtlsObjList.size() > 0) {
+				Map<String, GrivenceStatusVO> deptMap = new HashMap<String, GrivenceStatusVO>(0);
+				for (Object[] param : grivenceDeptDtlsObjList) {
+
+					GrivenceStatusVO deptVO = deptMap.get(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[0])));
+					if (deptVO == null) {
+						deptVO = new GrivenceStatusVO();
+						deptVO.setName(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[0])));
+						deptVO.getSubList().addAll(getRequiredTemplate(statusMap));//getting template
+						deptMap.put(deptVO.getName(), deptVO);
+					}
+					String status = commonMethodsUtilService.getStringValueForObject(param[1]).trim();
+					GrivenceStatusVO matchVO = getGrivanceStastusMatchVO(deptVO.getSubList(),getInUpperCase(status));
+					if (matchVO != null) {
+						matchVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						deptVO.setCount(deptVO.getCount() + matchVO.getCount());
+					}
+
+				}
+				resultList.addAll(deptMap.values());
+			}
+			
+		}catch(Exception e){
+			Log.error("Exception raised at getGrivenceOverviewDtls() in  LocationDashboardService class "+e);
+		}
+		return resultList;
+	}
+
+	private GrivenceStatusVO getGrivanceStastusMatchVO(List<GrivenceStatusVO> list, String status) {
+		try {
+			if (list == null || list.size() == 0) {
+				return null;
+			}
+			for (GrivenceStatusVO grivenceStatusVO : list) {
+				if (grivenceStatusVO.getName().equalsIgnoreCase(status)) {
+					return grivenceStatusVO;
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised at getGrivanceStastusMatchVO() in  LocationDashboardService class "+ e);
+		}
+		return null;
+	}
+	private Map<String, GrivenceStatusVO> getAllStatus(List<Object[]> objList) {
+		Map<String, GrivenceStatusVO> statusMap = new LinkedHashMap<String, GrivenceStatusVO>();
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					String status = commonMethodsUtilService.getStringValueForObject(param[1]).trim();
+					GrivenceStatusVO statusVO = statusMap.get(getInUpperCase(status));
+					if (statusVO == null) {
+						statusVO = new GrivenceStatusVO();
+						statusVO.setName(getInUpperCase(status));
+						statusMap.put(statusVO.getName(), statusVO);
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			Log.error("Exception raised at getAllStatus() in  LocationDashboardService class "+ e);
+		}
+		return statusMap;
+	}
+	/**
+	 * @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationTypeId
+	 * @param List<Long> locationValues
+	 * @param String year
+	 * @param Long stateId
+	 * @return GrivenceStatusVO
+	 * @author Santosh Kumar Verma
+	 * @Description :This Service Method is used to get grivence financial support amount type of issue wise. 
+	 * @Date 21-OCT-2017
+	 */
+	public GrivenceStatusVO getGrivenceFinancialSupportDtls(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId) {
+		GrivenceStatusVO resultVO = new GrivenceStatusVO();
+		try{
+			Date fromDate = getDates(fromDateStr,toDateStr)[0];
+			Date toDate = getDates(fromDateStr,toDateStr)[1];
+			
+			List<Object[]> grivenceFinancialSupportDtlsObjList = insuranceStatusDAO.getGrievanceAmountByIssueType(locationTypeId, locationValues, stateId, fromDate, toDate);
+			setGrivenceFinancialSupportDtls(grivenceFinancialSupportDtlsObjList, resultVO);
+			
+			if (grivenceFinancialSupportDtlsObjList != null && grivenceFinancialSupportDtlsObjList.size() > 0 ) {
+				Map<String,GrivenceStatusVO> issueTypeMap = new HashMap<String, GrivenceStatusVO>();
+				for (Object[] param : grivenceFinancialSupportDtlsObjList) {
+					String status = commonMethodsUtilService.getStringValueForObject(param[2]); 
+					String issueType = commonMethodsUtilService.getStringValueForObject(param[1]);
+					GrivenceStatusVO issueTypeVO = issueTypeMap.get(getInUpperCase(issueType));
+					if (issueTypeVO == null ) {
+						 issueTypeVO = new GrivenceStatusVO();
+						 issueTypeVO.setName(getInUpperCase(issueType));
+						 issueTypeMap.put(issueTypeVO.getName(), issueTypeVO);
+					 }
+					issueTypeVO.setExpectedAmount(issueTypeVO.getExpectedAmount()+commonMethodsUtilService.getLongValueForObject(param[4]));
+					issueTypeVO.setMemberCount(issueTypeVO.getMemberCount()+commonMethodsUtilService.getLongValueForObject(param[3]));
+					 if (status.equalsIgnoreCase("Completed")) {
+						 issueTypeVO.setCompletedCount(issueTypeVO.getCompletedCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+					 } else if (status.equalsIgnoreCase("approved")) {
+						 issueTypeVO.setApprovedAmount(issueTypeVO.getApprovedAmount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+					 }
+					 issueTypeVO.setTotalAmount(issueTypeVO.getTotalAmount()+commonMethodsUtilService.getLongValueForObject(param[5]));//total amount = approved amount+completed amount
+				}
+				//preparing list
+				resultVO.getSubList().addAll(issueTypeMap.values());
+			}
+			
+		}catch(Exception e){
+			Log.error("Exception raised at getGrivenceFinancialSupportDtls() in  LocationDashboardService class "+e);
+		}
+		return resultVO;
+	}
+
+	public void setGrivenceFinancialSupportDtls(List<Object[]> objList,GrivenceStatusVO resultVO) {
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					String typeOfIssue = commonMethodsUtilService.getStringValueForObject(param[0]);
+					if (typeOfIssue.equalsIgnoreCase("Govt")) {
+						resultVO.setMemberCount(resultVO.getMemberCount() + commonMethodsUtilService.getLongValueForObject(param[3]));
+						resultVO.setGovtCount(resultVO.getGovtCount() + commonMethodsUtilService.getLongValueForObject(param[4]));
+						resultVO.setGovtCount(resultVO.getGovtCount() + commonMethodsUtilService.getLongValueForObject(param[5]));
+					} else if (typeOfIssue.equalsIgnoreCase("Party") || typeOfIssue.equalsIgnoreCase("Welfare")) {
+						resultVO.setMemberCount(resultVO.getMemberCount() + commonMethodsUtilService.getLongValueForObject(param[3]));
+						resultVO.setPartyCount(resultVO.getPartyCount()+ commonMethodsUtilService.getLongValueForObject(param[4]));
+						resultVO.setPartyCount(resultVO.getPartyCount() + commonMethodsUtilService.getLongValueForObject(param[5]));
+					}
+				}
+				resultVO.setTotalAmount(resultVO.getGovtCount()+resultVO.getPartyCount());
+			}
+
+		} catch (Exception e) {
+			Log.error("Exception raised at setGrivenceFinancialSupportDtls() in  LocationDashboardService class "+ e);
+		}
+	}
+	/**
+	 * @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationTypeId
+	 * @param List<Long> locationValues
+	 * @param String year
+	 * @param Long stateId
+	 * @return GrivenceStatusVO
+	 * @author Santosh Kumar Verma
+	 * @Description :This Service Method is used to get location wise grivence complaint count. 
+	 * @Date 21-OCT-2017
+	 */
+	public List<GrivenceStatusVO> getLocationWiseTypeOfIssueGrivenceComplaintCount(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId) {
+		List<GrivenceStatusVO> resultList = new ArrayList<GrivenceStatusVO>(0);
+		try{
+			Date fromDate = getDates(fromDateStr,toDateStr)[0];
+			Date toDate = getDates(fromDateStr,toDateStr)[1];
+			String groupType = getGroupType(locationTypeId);
+			
+			if (locationTypeId != null && locationTypeId == IConstants.CONSTITUENCY_SCOPE_ID) {
+				List<Object[]> mandalDtlsObjList = insuranceStatusDAO.getLocationWiseGrievanceComplaintCnt(locationTypeId, locationValues, stateId,groupType, fromDate, toDate);
+				List<Object[]> locationEleBodyObjList = insuranceStatusDAO.getLocationWiseGrievanceComplaintCnt(locationTypeId, locationValues, stateId,"TownDivision", fromDate, toDate);
+				List<Object[]> objList = new ArrayList<Object[]>(0);
+				objList.addAll(mandalDtlsObjList);
+				objList.addAll(locationEleBodyObjList);
+				Map<String,GrivenceStatusVO> typeOfIssueMap = getTypeOfIssue(objList);
+				List<GrivenceStatusVO> mandalList = getLocationWiseTypeOfIssueGrivenceComplaintDtls(mandalDtlsObjList, typeOfIssueMap, "1");
+				List<GrivenceStatusVO> locationEleBodyList = getLocationWiseTypeOfIssueGrivenceComplaintDtls(locationEleBodyObjList, typeOfIssueMap, "2");
+				resultList.addAll(mandalList);
+				resultList.addAll(locationEleBodyList);
+			} else {
+				List<Object[]> typeOfIssueObjList = insuranceStatusDAO.getLocationWiseGrievanceComplaintCnt(locationTypeId, locationValues, stateId,groupType, fromDate, toDate);
+				Map<String,GrivenceStatusVO> typeOfIssueMap = getTypeOfIssue(typeOfIssueObjList);
+				List<GrivenceStatusVO> locationDtlsList = getLocationWiseTypeOfIssueGrivenceComplaintDtls(typeOfIssueObjList, typeOfIssueMap, "");
+				resultList.addAll(locationDtlsList);
+			}
+			
+		}catch(Exception e){
+			Log.error("Exception raised at getGrivenceFinancialSupportDtls() in  LocationDashboardService class "+e);
+		}
+		return resultList;
+	}
+	private List<GrivenceStatusVO> getLocationWiseTypeOfIssueGrivenceComplaintDtls(List<Object[]> objList,Map<String,GrivenceStatusVO> typeOfIssueMap,String locationTypeIdStr) {
+		List<GrivenceStatusVO> resultList = new ArrayList<GrivenceStatusVO>(0);
+		try {
+			if (objList != null && objList.size() > 0 ) {
+				Map<String,GrivenceStatusVO> locationMap = new HashMap<String, GrivenceStatusVO>();
+				for (Object[] param : objList) {
+					String locationId = commonMethodsUtilService.getStringValueForObject(param[0]); 
+					GrivenceStatusVO locationVO = locationMap.get((locationTypeIdStr+locationId).trim());
+					if (locationVO == null ) {
+						locationVO = new GrivenceStatusVO();
+						locationVO.setLocationIdStr((locationTypeIdStr+locationId).trim());
+						locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						locationVO.getSubList().addAll(getRequiredTemplate(typeOfIssueMap));//getting template
+						locationMap.put(locationVO.getLocationIdStr(), locationVO);
+					 }
+					 String typeOfIssue = commonMethodsUtilService.getStringValueForObject(param[2]).trim();
+					 GrivenceStatusVO matchVO = getGrivanceStastusMatchVO(locationVO.getSubList(),getInUpperCase(typeOfIssue));
+					if (matchVO != null) {
+						matchVO.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+						locationVO.setCount(locationVO.getCount() + matchVO.getCount());
+					}
+				}
+				//preparing list
+				resultList.addAll(locationMap.values());
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised at getLocationWiseTypeOfIssueGrivenceComplaintDtls() in  LocationDashboardService class "+e);
+		}
+		return resultList;
+	}
+	private Map<String,GrivenceStatusVO> getTypeOfIssue(List<Object[]> objList) {
+		Map<String,GrivenceStatusVO> typeOfIssueMap = new HashMap<String, GrivenceStatusVO>(0);
+		 try {
+			  if (objList != null && objList.size() > 0 ) {
+				  for (Object[] param : objList) {
+					  String typeOfIssue = commonMethodsUtilService.getStringValueForObject(param[2]).trim();
+					if (!typeOfIssueMap.containsKey(getInUpperCase(typeOfIssue))) {
+						GrivenceStatusVO typeOfIssueVO = new GrivenceStatusVO();
+						typeOfIssueVO.setName(getInUpperCase(typeOfIssue));
+						typeOfIssueMap.put(typeOfIssueVO.getName(), typeOfIssueVO);
+					}
+				}
+			  }
+		 } catch (Exception e) {
+			 Log.error("Exception raised at getTypeOfIssue() in  LocationDashboardService class "+e);
+		 }
+		 return typeOfIssueMap;
+	}
+	/**
+	 * @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationTypeId
+	 * @param List<Long> locationValues
+	 * @param Long stateId
+	 * @return GrivenceStatusVO
+	 * @author Santosh Kumar Verma
+	 * @Description :This Service Method is used to get insurance overview details. 
+	 * @Date 23-OCT-2017
+	 */
+	public GrivenceStatusVO getInsuranceOverviewDetails(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId) {
+		GrivenceStatusVO resultVO = new GrivenceStatusVO();
+		try{
+			
+			Date fromDate = getDates(fromDateStr,toDateStr)[0];
+			Date toDate = getDates(fromDateStr,toDateStr)[1];
+			
+			List<Object[]> grivenceDtlsObjList = insuranceStatusDAO.getInsuranceIssueTypeAndStatusWiseComplaintCnt(locationTypeId, locationValues, stateId, fromDate, toDate);
+			
+			Map<Long,GrivenceStatusVO> statusMap = getInsuranceStatusWiseIssueTypeComplaintCount(grivenceDtlsObjList);//getting status wise complaint count
+			Map<String, GrivenceStatusVO> issueTypeMap = getInsuranceTypeOfIssueStatusWiseComplaintCount(grivenceDtlsObjList,statusMap);//getting type of issue and status wise complaint count
+			
+			resultVO.getSubList().addAll(statusMap.values());
+			resultVO.setSubList1(new ArrayList<GrivenceStatusVO>(issueTypeMap.values()));
+			
+			
+		}catch(Exception e){
+			Log.error("Exception raised at getInsuranceIssueTypeAndStatusWiseComplaintCnt() in  LocationDashboardService class "+e);
+		}
+		return resultVO;
+	}
+
+	private Map<Long, GrivenceStatusVO> getInsuranceStatusWiseIssueTypeComplaintCount(List<Object[]> objList) {
+		Map<Long, GrivenceStatusVO> typeOfIssueMap = new HashMap<Long, GrivenceStatusVO>(0);
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					String typeOfIssue = commonMethodsUtilService.getStringValueForObject(param[0]);
+					GrivenceStatusVO statusVO = typeOfIssueMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if (statusVO == null) {
+						statusVO = new GrivenceStatusVO();
+						statusVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+						statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+						statusVO.getSubList().addAll(getTypeOfIssueTemplate());//getting template
+						typeOfIssueMap.put(statusVO.getId(), statusVO);
+					}
+					GrivenceStatusVO issueTypeMatchVO = getGrivanceStastusMatchVO(statusVO.getSubList(),(typeOfIssue.trim().length() > 0) ? typeOfIssue.toUpperCase() : typeOfIssue);
+					if (issueTypeMatchVO != null) {
+						issueTypeMatchVO.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+						statusVO.setCount(statusVO.getCount() + issueTypeMatchVO.getCount());
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			Log.error("Exception raised at getInsuranceStatusWiseIssueTypeComplaintCount() in  LocationDashboardService class "+ e);
+		}
+		return typeOfIssueMap;
+
+	}
+	
+	private Map<String, GrivenceStatusVO> getInsuranceTypeOfIssueStatusWiseComplaintCount(List<Object[]> objList,Map<Long,GrivenceStatusVO> statusMap) {
+		Map<String, GrivenceStatusVO> typeOfIssueMap = new HashMap<String, GrivenceStatusVO>(0);
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					String typeOfIssue = commonMethodsUtilService.getStringValueForObject(param[0]);
+					GrivenceStatusVO typeOfIssueVO = typeOfIssueMap.get(getInUpperCase(typeOfIssue));
+					if (typeOfIssueVO == null) {
+						typeOfIssueVO = new GrivenceStatusVO();
+						typeOfIssueVO.setName(getInUpperCase(typeOfIssue));
+						typeOfIssueVO.getSubList().addAll(getRequiredTemplate(statusMap));//getting template
+						typeOfIssueMap.put(typeOfIssueVO.getName(), typeOfIssueVO);
+					}
+					GrivenceStatusVO statusMatchVO = getInsuranceStatusmatchVO(typeOfIssueVO.getSubList(),commonMethodsUtilService.getLongValueForObject(param[1]));
+					if (statusMatchVO != null) {
+						statusMatchVO.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+						typeOfIssueVO.setCount(typeOfIssueVO.getCount() + statusMatchVO.getCount());
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			Log.error("Exception raised at getInsuranceTypeOfIssueStatusWiseComplaintCount() in  LocationDashboardService class "+ e);
+		}
+		return typeOfIssueMap;
+
+	}
+	private List<GrivenceStatusVO> getTypeOfIssueTemplate() {
+		List<GrivenceStatusVO> typeOfIssueList = new ArrayList<GrivenceStatusVO>(0);
+		try {
+			GrivenceStatusVO deathVO = new GrivenceStatusVO();
+			deathVO.setName("DEATH");
+			GrivenceStatusVO hospitalizationVO = new GrivenceStatusVO();
+			deathVO.setName("HOSPITALIZATION");
+			typeOfIssueList.add(deathVO);
+			typeOfIssueList.add(hospitalizationVO);
+		} catch (Exception e) {
+			Log.error("Exception raised at getIssueTypeWiseStatusComplaintCount() in  LocationDashboardService class "+e);
+		}
+		return typeOfIssueList;
+	}
+	/**
+	 * @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationTypeId
+	 * @param List<Long> locationValues
+	 * @param String year
+	 * @param Long stateId
+	 * @return List<GrivenceStatusVO>
+	 * @author Santosh Kumar Verma
+	 * @Description :This Service Method is used to get location wise insurance complaint count. 
+	 * @Date 23-OCT-2017
+	 */
+	public List<GrivenceStatusVO> getLocationWiseInsuranceIssueTypeComplaintCount(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId) {
+		List<GrivenceStatusVO> resultList = new ArrayList<GrivenceStatusVO>(0);
+		try{
+			Date fromDate = getDates(fromDateStr,toDateStr)[0];
+			Date toDate = getDates(fromDateStr,toDateStr)[1];
+			String groupType = getGroupType(locationTypeId);
+			
+			if (locationTypeId != null && locationTypeId == IConstants.CONSTITUENCY_SCOPE_ID) {
+				List<Object[]> mandalDtlsObjList = insuranceStatusDAO.getLocationWiseInsuranceIssueTypeComplaintCnt(locationTypeId, locationValues, stateId,groupType, fromDate, toDate);
+				List<Object[]> locationEleBodyObjList = insuranceStatusDAO.getLocationWiseInsuranceIssueTypeComplaintCnt(locationTypeId, locationValues, stateId,"TownDivision", fromDate, toDate);
+				List<Object[]> objList = new ArrayList<Object[]>(0);
+				objList.addAll(mandalDtlsObjList);
+				objList.addAll(locationEleBodyObjList);
+				Map<Long,GrivenceStatusVO> typeOfIssueMap = getInsuranceStatusMap(objList);
+				List<GrivenceStatusVO> mandalList = getLocationWiseInsuranceComplaintDtls(mandalDtlsObjList, typeOfIssueMap, "1");
+				List<GrivenceStatusVO> locationEleBodyList = getLocationWiseInsuranceComplaintDtls(locationEleBodyObjList, typeOfIssueMap, "2");
+				resultList.addAll(mandalList);
+				resultList.addAll(locationEleBodyList);
+			} else {
+				List<Object[]> typeOfIssueObjList = insuranceStatusDAO.getLocationWiseInsuranceIssueTypeComplaintCnt(locationTypeId, locationValues, stateId,groupType, fromDate, toDate);
+				Map<Long,GrivenceStatusVO> typeOfIssueMap = getInsuranceStatusMap(typeOfIssueObjList);
+				List<GrivenceStatusVO> locationDtlsList = getLocationWiseInsuranceComplaintDtls(typeOfIssueObjList, typeOfIssueMap, "");
+				resultList.addAll(locationDtlsList);
+			}
+			
+		}catch(Exception e){
+			Log.error("Exception raised at getLocationWiseInsuranceIssueTypeComplaintCount() in  LocationDashboardService class "+e);
+		}
+		return resultList;
+	}
+	private Map<Long,GrivenceStatusVO> getInsuranceStatusMap(List<Object[]> objList) {
+		Map<Long,GrivenceStatusVO> statusMap = new HashMap<Long, GrivenceStatusVO>(0); 
+		try {
+			 if (objList != null && objList.size() > 0) {
+				 for (Object[] param : objList) {
+					GrivenceStatusVO statusVO = statusMap.get(commonMethodsUtilService.getLongValueForObject(param[3]));
+					  if (statusVO == null ) {
+						  statusVO = new GrivenceStatusVO();
+						  statusVO.setId(commonMethodsUtilService.getLongValueForObject(param[3]));
+						  statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						  statusMap.put(statusVO.getId(), statusVO);
+					  }
+				}
+			 }
+		 } catch (Exception e) {
+			 Log.error("Exception raised at getInsuranceStatusMap() in  LocationDashboardService class "+e);
+		 }
+		return statusMap;
+	}
+	private List<GrivenceStatusVO> getLocationWiseInsuranceComplaintDtls(List<Object[]> objList,Map<Long,GrivenceStatusVO> statusMap,String locationTypeIdStr) {
+		List<GrivenceStatusVO> resultList = new ArrayList<GrivenceStatusVO>(0);
+		try {
+			if (objList != null && objList.size() > 0 ) {
+				Map<String,GrivenceStatusVO> locationMap = new HashMap<String, GrivenceStatusVO>();
+				for (Object[] param : objList) {
+					String locationId = commonMethodsUtilService.getStringValueForObject(param[0]); 
+					GrivenceStatusVO locationVO = locationMap.get((locationTypeIdStr+locationId).trim());
+					if (locationVO == null ) {
+						locationVO = new GrivenceStatusVO();
+						locationVO.setLocationIdStr((locationTypeIdStr+locationId).trim());
+						locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						locationVO.getSubList().addAll(getIssueTypeTemplate(statusMap));//getting template
+						locationMap.put(locationVO.getLocationIdStr(), locationVO);
+					 }
+					 String issueType = commonMethodsUtilService.getStringValueForObject(param[2]).trim();
+					 GrivenceStatusVO issueTypeMatchVO = getGrivanceStastusMatchVO(locationVO.getSubList(),(issueType.length() > 0) ? issueType.toUpperCase():issueType);
+					 GrivenceStatusVO statusMatchVO = getInsuranceStatusmatchVO(issueTypeMatchVO.getSubList(), commonMethodsUtilService.getLongValueForObject(param[3]));
+					 if (statusMatchVO != null) {
+						 statusMatchVO.setCount(commonMethodsUtilService.getLongValueForObject(param[5]));
+						 issueTypeMatchVO.setCount(locationVO.getCount() + statusMatchVO.getCount());
+						 locationVO.setCount(locationVO.getCount()+statusMatchVO.getCount());
+					}
+				}
+				//preparing list
+				resultList.addAll(locationMap.values());
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised at getLocationWiseInsuranceComplaintDtls() in  LocationDashboardService class "+e);
+		}
+		return resultList;
+	}
+
+	private List<GrivenceStatusVO> getIssueTypeTemplate(Map<Long, GrivenceStatusVO> statusMap) {
+		List<GrivenceStatusVO> issueTypeList = new ArrayList<GrivenceStatusVO>(0);
+		try {
+			for (GrivenceStatusVO issueTypeVO : getTypeOfIssueTemplate()) {
+				GrivenceStatusVO issTypVO = (GrivenceStatusVO) issueTypeVO.clone();
+				if (statusMap != null && statusMap.size() > 0) {
+					for (Entry<Long, GrivenceStatusVO> statusEntry : statusMap.entrySet()) {
+						issTypVO.getSubList().add((GrivenceStatusVO) statusEntry.getValue().clone());
+					}
+				}
+				issueTypeList.add(issTypVO);
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised at getIssueTypeTemplate() in  LocationDashboardService class "+ e);
+		}
+		return issueTypeList;
+	}
+	private List<GrivenceStatusVO> getRequiredTemplate(Map<?, GrivenceStatusVO> statusMap) {
+		List<GrivenceStatusVO> issueTypeList = new ArrayList<GrivenceStatusVO>(0);
+		try {
+			if (statusMap != null && statusMap.size() > 0) {
+				for (Entry<?, GrivenceStatusVO> statusEntry : statusMap.entrySet()) {
+					issueTypeList.add((GrivenceStatusVO) statusEntry.getValue().clone());
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised at getRequiredTemplate() in  LocationDashboardService class "+ e);
+		}
+		return issueTypeList;
+	}
+	private GrivenceStatusVO getInsuranceStatusmatchVO(List<GrivenceStatusVO> list, Long statusId) {
+		try {
+			if (list == null || list.size() == 0) {
+				return null;
+			}
+			for (GrivenceStatusVO insuranceStatusVO : list) {
+				if (insuranceStatusVO.getId() == statusId.longValue()) {
+					return insuranceStatusVO;
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised at getInsuranceStatusmatchVO() in  LocationDashboardService class "+ e);
+		}
+		return null;
+	}
+	private String getGroupType(Long locationScopeId) {
+		String groupType="";
+		 try {
+			 if (locationScopeId != null ) {
+				   if (locationScopeId.longValue() == 2l) { // state
+					   groupType = "District";
+				   } else if (locationScopeId.longValue() == IConstants.DISTRICT_SCOPE_ID) {
+					   groupType = "Constituency";
+					} else if (locationScopeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID) {
+						groupType = "Constituency";
+					} else if (locationScopeId.longValue() == IConstants.CONSTITUENCY_SCOPE_ID) {
+						groupType = "Mandal";
+					} else if (locationScopeId.longValue() == IConstants.TEHSIL_SCOPE_ID) {
+						groupType = "Village";
+					} else if (locationScopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID) { // town/division
+						groupType = "ward";
+					} else if (locationScopeId.longValue() == IConstants.VILLAGE_SCOPE_ID) {
+						groupType = "Village";
+					} else if (locationScopeId.longValue() == IConstants.WARD_SCOPE_ID) {
+						groupType = "ward";
+					}
+				}
+		 } catch (Exception e) {
+			 Log.error("Exception raised at getGroupType() in  LocationDashboardService class "+e);
+		 }
+		 return groupType;
+	}
+	 private String getInUpperCase(String type) {
+	    	String typeInUpperCase ="";
+	    	try {
+	    		typeInUpperCase = (type.length() > 0) ? type.toUpperCase():type;
+	    	} catch (Exception e) {
+	    		Log.error("Exception raised at getInUpperCase() in  LocationDashboardService class "+ e);
+	    	}
+	    	return typeInUpperCase;
+	 }
+	private Date[] getDates(String fromDateStr, String toDateStr) {
+		Date[] dateArr = new Date[2];
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if (fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0) {
+				dateArr[0] = sdf.parse(fromDateStr);
+				dateArr[1] = sdf.parse(toDateStr);
+			}
+		} catch (Exception e) {
+			Log.error("Exception occured at getDates() method in LocationDashboardService class",e);
+		}
+		return dateArr;
+	}
 }
 

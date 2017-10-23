@@ -794,6 +794,8 @@ public interface IConstants {
     public static final Long TEHSIL_SCOPE_ID = 5L;
     public static final Long BOOTH_SCOPE_ID = 9L;
     public static final Long MUNICIPAL_CORP_GMC_SCOPE_ID = 7L;
+    public static final Long VILLAGE_SCOPE_ID = 6L;
+    public static final Long WARD_SCOPE_ID = 8L;
     
     public static final Long DATA_COLLECTOR_ROLE_ID = 1L;
     public static final Long VERIFIER_ROLE_ID = 4L;

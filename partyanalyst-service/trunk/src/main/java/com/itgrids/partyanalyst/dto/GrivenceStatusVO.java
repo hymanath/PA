@@ -3,7 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GrivenceStatusVO {
+public class GrivenceStatusVO implements Cloneable {
 	
 	
 	private String grivenceType;
@@ -11,6 +11,7 @@ public class GrivenceStatusVO {
 	private Long count = 0l;
 	private List<GrivenceStatusVO> subList=new ArrayList<GrivenceStatusVO>(0);
 	private Long id;
+	private String locationIdStr;
 	private Long partyCount = 0l;
 	private Long govtCount = 0l;
 	private Long welfareCount = 0l;
@@ -18,7 +19,14 @@ public class GrivenceStatusVO {
 	private Long hosptalCount = 0l;
 	private Long feeConsCount = 0l;
 	private Long seatCount = 0l;
+	private Long memberCount = 0l;
+	private Long expectedAmount=0l;
+	private Long approvedAmount=0l;
+	private Long completedCount=0l;
+	private Long totalAmount=0l;
 	private String perc;
+	private List<GrivenceStatusVO> subList1;
+	private List<GrivenceStatusVO> subList2;
 	
 	public String getGrivenceType() {
 		return grivenceType;
@@ -99,7 +107,55 @@ public class GrivenceStatusVO {
 	public void setPerc(String perc) {
 		this.perc = perc;
 	}
-	
-	
-	
+	public List<GrivenceStatusVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<GrivenceStatusVO> subList1) {
+		this.subList1 = subList1;
+	}
+	public List<GrivenceStatusVO> getSubList2() {
+		return subList2;
+	}
+	public void setSubList2(List<GrivenceStatusVO> subList2) {
+		this.subList2 = subList2;
+	}
+	public Long getMemberCount() {
+		return memberCount;
+	}
+	public void setMemberCount(Long memberCount) {
+		this.memberCount = memberCount;
+	}
+	public Long getExpectedAmount() {
+		return expectedAmount;
+	}
+	public void setExpectedAmount(Long expectedAmount) {
+		this.expectedAmount = expectedAmount;
+	}
+	public Long getApprovedAmount() {
+		return approvedAmount;
+	}
+	public void setApprovedAmount(Long approvedAmount) {
+		this.approvedAmount = approvedAmount;
+	}
+	public Long getCompletedCount() {
+		return completedCount;
+	}
+	public void setCompletedCount(Long completedCount) {
+		this.completedCount = completedCount;
+	}
+	public Long getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(Long totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	public String getLocationIdStr() {
+		return locationIdStr;
+	}
+	public void setLocationIdStr(String locationIdStr) {
+		this.locationIdStr = locationIdStr;
+	}
+	public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
