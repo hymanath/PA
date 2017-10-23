@@ -489,11 +489,11 @@ function buildMeesevaSlaMonitoringDtls(result,divId,blockId) {
 function getITSectorWiseOverviewDetails(){
 	$("#promotionsTotalBlockId").html(spinner);
 	var json = {
-		
+		category:'ALL'
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getITSectorWiseOverviewDetails',
+		url: 'getITSectorCategoryWiseDetails',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -522,7 +522,7 @@ function getITSectorWiseOverviewDetails(){
 			{
 				str1+='<div class="white_block_ITC" style="background-color:#F1F1F1">';
 					str1+='<p>TOTAL</p>';
-					str1+='<div class="media m_top20">';
+					str1+='<div class="media m_top40">';
 						str1+='<div class="media-left">';
 							str1+='<img src="Assests/icons/ITC/Group 2818.png" class="media-object"/>';
 						str1+='</div>';
@@ -531,7 +531,7 @@ function getITSectorWiseOverviewDetails(){
 							str1+='<h3 class="m_top10">'+result[i].noProjects+'</h3>';
 						str1+='</div>';
 					str1+='</div>';
-					str1+='<div class="media m_top20">';
+					str1+='<div class="media m_top40">';
 						str1+='<div class="media-left">';
 							str1+='<img src="Assests/icons/ITC/Group 2817.png" class="media-object"/>';
 						str1+='</div>';
@@ -540,7 +540,7 @@ function getITSectorWiseOverviewDetails(){
 							str1+='<h3 class="m_top10">'+result[i].investment+'</h3>';
 						str1+='</div>';
 					str1+='</div>';
-					str1+='<div class="media m_top20">';
+					str1+='<div class="media m_top40">';
 						str1+='<div class="media-left">';
 							str1+='<img src="Assests/icons/ITC/Group 2813.png" class="media-object"/>';
 						str1+='</div>';
@@ -557,7 +557,13 @@ function getITSectorWiseOverviewDetails(){
 }
 $(document).on("click",".overview-click",function(){
 	var selectedBlockType = $("#promotionsBlockSwitch li.active").attr("attr_type");
-	getITDistrictWiseDetails(selectedBlockType,$(this).attr("attr_type"),'modal');
+	var categoryType = $(this).attr("attr_category");
+	if(categoryType != null)
+	{
+		getITSectorSubLeadCategoryWiseDetails(selectedBlockType,categoryType)
+	}else{
+		getITDistrictWiseDetails(selectedBlockType,$(this).attr("attr_type"),'modal');
+	}
 });
 function getITSectorCategoryWiseDetails(type){
 	if(type == "GREEN")
@@ -585,6 +591,7 @@ function getITSectorCategoryWiseDetails(type){
 	}).done(function(result){
 		if(result != null && result.length > 0)
 		{
+			getITSectorLeadCategoryWiseDetails(type)
 			return buildData(result,type);
 		}else{
 			if(type == "GREEN")
@@ -625,6 +632,22 @@ function getITSectorCategoryWiseDetails(type){
 					str+='</p>';
 				}
 					str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
+						if(type == "GREEN")
+						{
+							str+='<p>';
+								str+='<span style="padding:5px 10px;background-color:#058E46;color:#fff">Overall</span>';
+							str+='</p>';
+						}else if(type == "RED")
+						{
+							str+='<p>';
+								str+='<span style="padding:5px 10px;background-color:#F75C5D;color:#fff">Overall</span>';
+							str+='</p>';
+						}else if(type == "DROPPED")
+						{
+							str+='<p>';
+								str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">Overall</span>';
+							str+='</p>';
+						}
 						str+='<div class="row m_top20">';
 							str+='<div class="col-sm-4">';
 								str+='<h4 class="overview-click" style="cursor:pointer;" attr_type="'+type+'">'+result[i].noProjects+'</h4>';
@@ -654,6 +677,136 @@ function getITSectorCategoryWiseDetails(type){
 				$("#promotionsStageDroppedBlockId").html(str);
 			}
 		}
+	}
+}
+function getITSectorLeadCategoryWiseDetails(type){
+	var json = {
+		leadName:"0",
+		category:type
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getITSectorLeadCategoryWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			return buildData(result,type);
+		}
+	});
+	function buildData(result,type)
+	{
+		var str='';
+		var selectedBlockType = $("#promotionsBlockSwitch li.active").attr("attr_type");
+		for(var i in result)
+		{
+			str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
+				if(type == "GREEN")
+				{
+					str+='<p>';
+						str+='<span style="padding:5px 10px;background-color:#058E46;color:#fff">'+result[i].category+'</span>';
+					str+='</p>';
+				}else if(type == "RED")
+				{
+					str+='<p>';
+						str+='<span style="padding:5px 10px;background-color:#F75C5D;color:#fff">'+result[i].category+'</span>';
+					str+='</p>';
+				}else if(type == "DROPPED")
+				{
+					str+='<p>';
+						str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">'+result[i].category+'</span>';
+					str+='</p>';
+				}
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-4">';
+						str+='<h4 class="overview-click" attr_category="'+result[i].category+'" style="cursor:pointer;" attr_type="'+type+'">'+result[i].categoryCount+'</h4>';
+						str+='<p><small>INDUSTRIES</small></p>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<h4>'+result[i].investment+'</h4>';
+						str+='<p><small>INVESTMENTS</small></p>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<h4>'+result[i].employment+'</h4>';
+						str+='<p><small>EMPLOYMENT</small></p>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';				
+		}
+		if(type == "GREEN")
+		{
+			$("#promotionsStageGreenBlockId").append(str);
+		}else if(type == "RED")
+		{
+			$("#promotionsStageRedBlockId").append(str);
+		}else if(type == "DROPPED")
+		{
+			$("#promotionsStageDroppedBlockId").append(str);
+		}
+	}
+}
+
+function getITSectorSubLeadCategoryWiseDetails(type,categoryType){
+	$("#modalId").modal('show');
+	$("#cohortId").html(spinner);
+	
+	var json = {
+		leadName:"0",
+		category:type,
+		reportType:categoryType
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getITSectorSubLeadCategoryWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			return buildData(result,type)
+		}
+	});
+	function buildData(result,type)
+	{
+		var str='';
+		str+='<table class="table table-bordered" id="'+type+'DataTable">';
+			str+='<thead>';
+				str+='<th>District</th>';
+				str+='<th>Sector</th>';
+				str+='<th>Sub Sector</th>';
+				str+='<th>Department</th>';
+				str+='<th>Company</th>';
+				str+='<th>Line Of Activity</th>';
+				str+='<th>Committed Investment(<i class="fa fa-inr"></i> in Cr.)</th>';
+				str+='<th>Committed Employment</th>';
+			str+='</thead>';
+			for(var i in result)
+			{
+				str+='<tr>';
+					str+='<td>'+result[i].districtName+'</td>';
+					str+='<td>'+result[i].itSector+'</td>';
+					str+='<td>'+result[i].subSector+'</td>';
+					str+='<td>'+result[i].deptName+'</td>';
+					str+='<td>'+result[i].nameOfCompany+'</td>';
+					str+='<td>'+result[i].lineOfActivity+'</td>';
+					str+='<td>'+result[i].investment+'</td>';
+					str+='<td>'+result[i].employment+'</td>';
+				str+='</tr>';
+			}
+			
+		str+='</table>';
+		$("#modalTitleId").html(type+' '+categoryType);
+		$("#cohortId").html(str);
+		$("#"+type+"DataTable").dataTable();
 	}
 }
 function getITDistrictWiseDetails(type,category,divType){
