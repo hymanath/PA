@@ -2,7 +2,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 
 //var departmentWiseArr=[{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'eProcurement',id:'5',color:'#F06C1F',image:'eProcurement',blockName:'eProcurement'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
-var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'}];
+var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'}];
 var globalFromDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDate = moment().format("DD/MM/YYYY");
 $("#itcDateRangePickerId").daterangepicker({
@@ -113,7 +113,7 @@ function departmentWiseOverView(){
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==4){
 						block+='<div class="m_top20">';
-							block+='<h3>11,25.Cr</h3>';
+							block+='<h3>3499</h3>';
 							block+='<h6 class="m_top10">etaal - KPI</h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==5){
@@ -277,6 +277,8 @@ function departmentBlockWiseDetails(divId)
 					getAPISXLR8APDetailedData();
 					getCampaignsDetailedData();
 					getCampusInnovationCentersDetailedData();
+				}else if(divId == 'meesevaKpi'){
+					getMeesavaKpiGraphBuild(divId,levelWiseBlockArr[i].id);
 				}
 			}
 			if(divId == 'promotions')
@@ -1191,3 +1193,215 @@ function getCohortDetailsByCohortId(id){
 		console.log(result);
 	});		
 }
+function getMeesavaKpiGraphBuild(divId,id){
+	var str='';
+	var dateWiseArr=['Monthly','Quarterly','HalfYearly','Yearly']
+	var meesavaCenterOpenedArr=[{name:"Srikakulam",id:45},{name:"Vizianagaram",id:0},{name:"Visakhapatnam",id:0},{name:"East Godavari",id:74},{name:"West Godavari",id:341},{name:"Krishna",id:0},{name:"Guntur",id:36},{name:"Prakasam",id:0},{name:"Sri Potti Sriramulu Nellore",id:0},{name:"Chittoor",id:0},{name:"Y.S.R",id:0},{name:"Ananthapuramu",id:53},{name:"Kurnool",id:0},{name:"Total",id:549}]
+	
+	var meesavaOnlineArr=[{name:'AGRICULTURE',service:'AMENDMENT CENTRALIZED SEED LICENSE CHANGE OF FIRM NAME',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT CENTRALIZED SEED LICENSE CHANGE OF OFFICE ADDRESS',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT CENTRALIZED SEED LICENSE CHANGE OF RESPONSIBLE PERSON DETAILS',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT CENTRALIZED SEED LICENSE DELETION OF UNITS',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT CENTRALIZED SEED LICENSE INCLUSION OF IMPORTED PRIVATE VARIETIES',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT CENTRALIZED SEED LICENSE INCLUSION OF NOTIFIED VARIETIES',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT CENTRALIZED SEED LICENSE INCLUSION OF PRIVATE VARIETIES FOR STORAGE',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT CENTRALIZED SEED LICENSE INCLUSION OF PRIVATE VARIETY FOR REGULAR MARKETING',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT CENTRALIZED SEED LICENSE INCLUSION OF PRIVATE VARIETY FOR TRAIL MARKETING',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT CENTRALIZED SEED LICENSE INCLUSION OF UNITS',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT SEED DEAER LICENSE CHANGE OF FIRM NAME',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT SEED DEALER CHANGE OF OFFICE ADDRESS',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT SEED DEALER LICENSE CHANGE IN SALE POINT PREMISES',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT SEED DEALER LICENSE CHANGE OF PERSON RESPONSIBLE',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT SEED DEALER LICENSE STORAGE POINT INCLUSION',year:"2016-2017"},{name:'AGRICULTURE',service:'AMENDMENT SEED DEALER STORAGE POINT DELETION',year:"2016-2017"},{name:'AGRICULTURE',service:'DUPLICATE CENTRALIZED SEED LICENSE',year:"2016-2017"},{name:'AGRICULTURE',service:'DUPLICATE SEED DEALER LICENSE',year:"2016-2017"},{name:'AGRICULTURE',service:'NEW CENTRALIZED SEED LICENSE',year:"2016-2017"},{name:'AGRICULTURE',service:'NEW SEED DEALER LICENSE',year:"2016-2017"},{name:'AGRICULTURE',service:'OTHER STATE OFFICE ADDRESS CHANGE FOR AMENDMENT SEED CSL',year:"2016-2017"},{name:'AGRICULTURE',service:'RENEWAL CENTRALIZED SEED LICENSE',year:"2016-2017"},{name:'AGRICULTURE',service:'RENEWAL SEED DEALER LICENSE',year:"2016-2017"},{name:'CRDA',service:'My Brick - My Amaravati',year:"2016-2017"},{name:'ELECTION',service:'Correct your Card (Form - 8)',year:"2016-2017"},{name:'ELECTION',service:'Know your status',year:"2016-2017"},{name:'ELECTION',service:'New Enrollment (Form - 6)',year:"2016-2017"},{name:'ELECTION',service:'Objection to Inclusion of Names (Form - 7)',year:"2016-2017"},{name:'ELECTION',service:'Transpose your Card (Form - 8A)',year:"2016-2017"},{name:'HEALTH CARE',service:'AP Pharmacy Council Fee Payment',year:"2016-2017"},{name:'Income Tax Pan Services Unit',service:'Changes or Corrections in PAN Details',year:"2016-2017"},{name:'Income Tax Pan Services Unit',service:'New Pan for Foreign Citizens (Form 49AA)',year:"2016-2017"},{name:'Income Tax Pan Services Unit',service:'New Pan for Indian Citizens (Form 49A)',year:"2016-2017"},{name:'Income Tax Pan Services Unit',service:'Reprint of PAN Card',year:"2016-2017"},{name:'Income Tax Pan Services Unit',service:'Status Track for PAN Application',year:"2016-2017"},{name:'Income Tax Pan Services Unit',service:'Transaction Status Enquiry',year:"2016-2017"},{name:'LABOUR',service:'APPLICATION FOR AMENDMENT OF ISSUE OF INTEGRATED REGISTRATION OF ESTABLISHMENT UNDER LABOUR LAWS',year:"2016-2017"},{name:'LABOUR',service:'Combined Annual Return under Labour Laws',year:"2016-2017"},{name:'MEE BHOOMI (REVENUE)',service:'Aadhaar Seeding Request',year:"2016-2017"},{name:'MEE BHOOMI (REVENUE)',service:'FMB',year:"2016-2017"},{name:'MEE BHOOMI (REVENUE)',service:'ROR 1B',year:"2016-2017"},{name:'MEE BHOOMI (REVENUE)',service:'Village Adangal',year:"2016-2017"},{name:'MEE BHOOMI (REVENUE)',service:'Village Map Copy',year:"2016-2017"},{name:'MEE BHOOMI (REVENUE)',service:'Village ROR',year:"2016-2017"},{name:'PANCHAYATHIRAJ DEPARTMENT',service:'Building Permission',year:"2016-2017"},{name:'PANCHAYATHIRAJ DEPARTMENT',service:'House Tax online Payment',year:"2016-2017"},{name:'PANCHAYATHIRAJ DEPARTMENT',service:'Layout Permission',year:"2016-2017"},{name:'PANCHAYATHIRAJ DEPARTMENT',service:'Marriage Certificate',year:"2016-2017"},{name:'PANCHAYATHIRAJ DEPARTMENT',service:'Mutation',year:"2016-2017"},{name:'PANCHAYATHIRAJ DEPARTMENT',service:'NOC for small,medium and large scale industries',year:"2016-2017"},{name:'PANCHAYATHIRAJ DEPARTMENT',service:'Private Water Tap Connection',year:"2016-2017"},{name:'PANCHAYATHIRAJ DEPARTMENT',service:'Property Valuation Certificate',year:"2016-2017"},{name:'PANCHAYATHIRAJ DEPARTMENT',service:'Trade License',year:"2016-2017"},{name:'REVENUE',service:'Issuance Of Local Status Certificate',year:"2016-2017"},{name:'TECHNICAL EDUCATION',service:'e Pariksha Exam Fee Payment Service',year:"2016-2017"},{name:'APMAPB (Ayush): Andhra Pradesh Medical & Aromatic Plants Board',service:'FARMERS SUBSIDY APPLICATION FORM',year:"2016-2017"}]
+	
+	var meesavaAppArr=['TSSPDCL','Aadhaar Card Printing','Vodafone','Aircel','Bsnl','Idea','Indicom','Docomo','Reliance GSM','Uninor','Airtel','Relinace CDMA','Airtel TV','Big TV','Dish TV','Sun TV','Tatasky TV','Videcon TV','Reliance NetConnect','Idea Netsetter','BSNL Data','Aircel Data','AIRTEL - Postpaid','BSNL LANDLINE','IDEA - Postpaid','Tata Docomo - Postpaid','Vodafone - Postpaid','Aircel - Postpaid','Reliance - Postpaid','AIRTEL Landline','CellOne - Postpaid','BSNL','Tikona','Airtel','Idea','Aircel','MTS','Reliance CDMA','Tata Indicom','Tata Docomo','Vodafone','Uninor','T24','Airtel Data','Idea Netsetter','BSNL Data','Vodafone Data','Airtel DTH','DISH TV','SUN TV','Videocon D2H','Reliance GSM','LIC','SBI LIFE','ICICI PRUDENTIAL','AVIVA','Hyderabad Metropolitan Water Supply & Sewerage Board','Bookmyshow','Airtel','Idea','Reliance CDMA','Reliance GSM','Tata Indicom','Tata Docomo','Uninor','Vodafone','JIO','ADANGAL / PHAHANI','ROR 1B','BIRTH CERTIFICATE','DEATH CERTIFICATE','AGRICULTURE INCOME','INCOME CERTIFICATE','EBC CERTIFICATE','OBC CERTIFICATE','INTEGRATED CERTIFICATE','FAMILY MEMBERSHIP','NO EARNING MEMBER','ENCUMBRANCE CERTIFICATE','Sri Kalahasteeswara Swamy Vari Devasthanam Seva Booking, Srikalahasti','Sri Durga Malleswara Swamy Seva Booking, Vijayawada','Sri Venkateswara Swamy Seva Booking, Dwaraka Tirumala','AMARAVATI DONATIONS','F.M.B COPY','New Issuance Of Voter/EPIC Card(PVC)','Re-Issuance of Integrated Certificate','Issuance Of Voter/EPIC Card','Child Name Inclusion - CDMA','Corrections in birth certificate -CDMA','Non availability birth application - CDMA','Non availability death application - CDMA','Late Registration Of Birth/Death','Surrender of Ration Card','New Gas Connection Application','Sanction of Incentives','Sri Kalahasteeswara Swamy Temple Room Booking, Srikalahasti','Sri Veera Venkata Satyanarayana Swamy Temple Room Booking, Annavaram','Sri Venkateswara Swamy Temple Room Booking, Dwaraka Tirumala','POSESSION CERTIFICATE','Corrections in death certificate -CDMA','Ration Card Transfer','AIRTEL POSTPAID','AIRTEL LANDLINE','IDEA POSTPAID','ELECTRICITY BILL - EPDCL','ELECTRICITY BILL - SPDCL','Traffic Challan - Chittoor Dist','Traffic Challan - Prakasam Dist','Traffic Challan - Vizianagaram Dist','Traffic Challan - West Godavari Dist','Traffic Challan - Nellore Dist','Traffic Challan - East Godavari Dist','Traffic Challan - Krishna Dist','Traffic Challan - Srikakulam Dist','Traffic Challan - Ananthapur Dist','Traffic Challan - VISAKHAPATNAM Dist']
+	
+		str+='<div class="row">';
+			str+='<ul class="list-inline calendar_active_IHHL_cls meesavaKpi">';
+				str+='<li class="active" attr_type="meesavaCenterEst" >No.of MeeSeva Centres Established</li>';
+				str+='<li attr_type="meeasvaCenterOpen">No.of Meeseva Centers opened</li>';
+				str+='<li attr_type="meeasvaOnline">Online Services</li>';
+				str+='<li attr_type="meesavaApp">MeeSeva App Services</li>';
+			str+='</ul>';
+		str+='</div>';
+		
+		str+='<div class="row">';
+			str+='<div class="m_top20 meesavaCenterEst">';
+			for(var i in dateWiseArr){
+				str+='<div class="col-sm-3">';
+					str+='<div id="indicatorProgressGraphId'+dateWiseArr[i]+'" style="height:300px;"></div>';
+				str+='</div>';
+			}
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="row">';
+			str+='<div class="col-sm-6 meeasvaCenterOpen" style="display:none;">';
+			str+='<div class="table-responsive">';
+				str+='<table class="table table-bordered" id="meeasvaCenterOpenDT">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>District Name</th>';
+						str+='<th>No.Of Meeseva Centers opened</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in meesavaCenterOpenedArr){
+					str+='<tr>';
+						str+='<td>'+meesavaCenterOpenedArr[i].name+'</td>';
+						str+='<td>'+meesavaCenterOpenedArr[i].id+'</td>';
+					str+='</tr>';
+				}
+				str+='<tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="row">';
+		str+='<div class="col-sm-12 meeasvaOnline" style="display:none;">';
+			str+='<div class="table-responsive">';
+				str+='<table class="table table-bordered" id="meeasvaOnlineDT">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>Department Name</th>';
+						str+='<th>No.Of Meeseva Centers opened</th>';
+						str+='<th>Year</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in meesavaOnlineArr){
+					str+='<tr>';
+						str+='<td>'+meesavaOnlineArr[i].name+'</td>';
+						str+='<td>'+meesavaOnlineArr[i].service+'</td>';
+						str+='<td>'+meesavaOnlineArr[i].year+'</td>';
+					str+='</tr>';
+				}
+				str+='<tbody>';
+				str+='</table>';
+			str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="row">';
+			str+='<div class="col-sm-6 meesavaApp" style="display:none;">';
+			str+='<h4 style="text-align:center;text-transform:uppercase;"><b>Total Meesava  App  Services - 116</b></h4>';	
+			str+='<div class="table-responsive m_top10">';
+				str+='<table class="table table-bordered" id="meesavaAppDT">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>MeeSeva App Services </th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in meesavaAppArr){
+					str+='<tr>';
+						str+='<td>'+meesavaAppArr[i]+'</td>';
+					str+='</tr>';
+				}
+				str+='<tbody>';
+				str+='</table>';
+			str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+	$("#"+divId+"Block"+id).html(str);
+	$("#meesavaAppDT ,#meeasvaOnlineDT, #meeasvaCenterOpenDT").dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	});
+	
+	for(var i in dateWiseArr){
+		var mainArr=[];
+		if(dateWiseArr[i] == "Monthly"){
+			var obj= {
+				name:'Monthly',
+				data:[{"y":300,color:"#009587"},{"y":549,color:"#ADD2CE"}]
+			}
+		}else if(dateWiseArr[i] == "Quarterly"){
+			var obj= {
+				name:'Quarterly',
+				data:[{"y":800,color:"#009587"},{"y":1802,color:"#ADD2CE"}]
+			}
+		}else if(dateWiseArr[i] == "HalfYearly"){
+			var obj= {
+				name:'Half Yearly',
+				data:[{"y":1400,color:"#009587"},{"y":1935,color:"#ADD2CE"}]
+			}
+		}else if(dateWiseArr[i] == "Yearly"){
+			var obj= {
+				name:'Yearly',
+				data:[{"y":3499,color:"#009587"},{"y":1935,color:"#ADD2CE"}]
+			}
+		}
+		mainArr.push(obj);
+		$("#indicatorProgressGraphId"+dateWiseArr[i]).highcharts({
+			chart: {
+				type: 'column'
+			},
+
+			title: {
+				text: dateWiseArr[i],
+				align:'left',
+					style: {
+						color: '#000',
+						font: 'bold 16px "Lato", sans-serif'
+					}
+			},
+			xAxis: {
+				 min: 0,
+				 gridLineWidth: 0,
+				 minorGridLineWidth: 0,	
+				categories: ['Target', 'Achivement']
+			},
+			yAxis: {
+				 min: 0,
+				 gridLineWidth: 0,
+				 minorGridLineWidth: 0,
+				title: {
+					text: ''
+				},
+			},
+			legend: {
+				enabled: false
+			},
+			tooltip: {
+				formatter: function () {
+					return '<b>' + this.x + '</b><br/>' +
+						this.series.name + ': ' + this.y
+				}
+			},
+
+			plotOptions: {
+				column: {
+				   // stacking: 'normal',
+				      dataLabels: {
+						enabled: true,
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'gray',
+						formatter: function() {
+							return (this.y);
+						},
+					},
+				}
+			},
+
+			series: mainArr
+		});
+		
+	}
+	
+}
+$(document).on("click",".calendar_active_IHHL_cls li",function(){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	var blockType = $(this).attr("attr_type");
+	if(blockType == "meesavaCenterEst"){
+		$(".meesavaCenterEst").show();
+		$(".meeasvaCenterOpen").hide();
+		$(".meeasvaOnline").hide();
+		$(".meesavaApp").hide();
+		
+	}else if(blockType == "meeasvaCenterOpen"){
+		$(".meesavaCenterEst").hide();
+		$(".meeasvaCenterOpen").show();
+		$(".meeasvaOnline").hide();
+		$(".meesavaApp").hide();
+	}else if(blockType == "meeasvaOnline"){
+		$(".meesavaCenterEst").hide();
+		$(".meeasvaCenterOpen").hide();
+		$(".meeasvaOnline").show();
+		$(".meesavaApp").hide();
+	}else if(blockType == "meesavaApp"){
+		$(".meesavaCenterEst").hide();
+		$(".meeasvaCenterOpen").hide();
+		$(".meeasvaOnline").hide();
+		$(".meesavaApp").show();
+	}
+});
