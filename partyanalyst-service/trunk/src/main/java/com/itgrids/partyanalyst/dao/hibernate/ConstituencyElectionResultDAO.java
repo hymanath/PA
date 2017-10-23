@@ -147,8 +147,24 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ConstituencyElectionResult> findByConstituency(Long constituencyId){
-		return getHibernateTemplate().find("from ConstituencyElectionResult model where model.constituencyElection.constituency.constituencyId = ?", constituencyId);
+	public List<ConstituencyElectionResult> findByConstituency(Long constituencyId,List<Long> electionScopeIdsList){
+		//return getHibernateTemplate().find("from ConstituencyElectionResult model where model.constituencyElection.constituency.constituencyId = ? and  model.constituencyElection.election.electionScope.electionScopeId in(?) ",constituencyId);
+		StringBuilder sb= new StringBuilder();
+		sb.append(" from ConstituencyElectionResult model where ");
+		if(constituencyId != null && constituencyId.longValue()>0){
+			sb.append(" model.constituencyElection.constituency.constituencyId =:constituencyId ");
+		}
+		if(electionScopeIdsList != null && electionScopeIdsList.size()>0){
+			sb.append(" and model.constituencyElection.election.electionScope.electionScopeId in(:electionScopeIdsList)");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(constituencyId != null && constituencyId.longValue()>0){
+			query.setParameter("constituencyId", constituencyId);
+		}
+		if(electionScopeIdsList != null && electionScopeIdsList.size()>0){
+			query.setParameterList("electionScopeIdsList", electionScopeIdsList);
+		}
+		return query.list(); 
 	}
 
 	@SuppressWarnings("unchecked")
