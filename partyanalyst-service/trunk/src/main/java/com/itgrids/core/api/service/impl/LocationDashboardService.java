@@ -6945,7 +6945,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			}
 			
 		}catch(Exception e){
-			Log.error("Exception raised at getGrivenceOverviewDtls() in  LocationDashboardService class "+e);
+			Log.error("Exception raised at getGrivenceComplaintCountDepartmentWise() in  LocationDashboardService class "+e);
 		}
 		return resultList;
 	}
@@ -7102,7 +7102,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			}
 			
 		}catch(Exception e){
-			Log.error("Exception raised at getGrivenceFinancialSupportDtls() in  LocationDashboardService class "+e);
+			Log.error("Exception raised at getLocationWiseTypeOfIssueGrivenceComplaintCount() in  LocationDashboardService class "+e);
 		}
 		return resultList;
 	}
@@ -7182,7 +7182,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			
 			
 		}catch(Exception e){
-			Log.error("Exception raised at getInsuranceIssueTypeAndStatusWiseComplaintCnt() in  LocationDashboardService class "+e);
+			Log.error("Exception raised at getInsuranceOverviewDetails() in  LocationDashboardService class "+e);
 		}
 		return resultVO;
 	}
@@ -7253,7 +7253,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			typeOfIssueList.add(deathVO);
 			typeOfIssueList.add(hospitalizationVO);
 		} catch (Exception e) {
-			Log.error("Exception raised at getIssueTypeWiseStatusComplaintCount() in  LocationDashboardService class "+e);
+			Log.error("Exception raised at getTypeOfIssueTemplate() in  LocationDashboardService class "+e);
 		}
 		return typeOfIssueList;
 	}
@@ -7522,7 +7522,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			}
 			
 		}catch(Exception e){
-			Log.error("Exception raised at getLocationWiseInsuranceIssueTypeComplaintCount() in  LocationDashboardService class "+e);
+			Log.error("Exception raised at getLocationWiseTrustEducationComplaintCount() in  LocationDashboardService class "+e);
 		}
 		return resultList;
 	}
@@ -7556,7 +7556,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 				resultList.addAll(locationMap.values());
 			}
 		} catch (Exception e) {
-			Log.error("Exception raised at getLocationWiseInsuranceComplaintDtls() in  LocationDashboardService class "+e);
+			Log.error("Exception raised at getLocationWiseTrustEducationComplaintDtls() in  LocationDashboardService class "+e);
 		}
 		return resultList;
 	}

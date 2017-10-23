@@ -1921,6 +1921,8 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 				queryStr.append(" AND cm.tehsil_id in(:locationValues) ");
 			} else if (locationTypeId == IConstants.VILLAGE_SCOPE_ID) {
 				queryStr.append(" AND cm.panchayat_id in(:locationValues) ");
+			} else if (locationTypeId.longValue() == IConstants.WARD_SCOPE_ID) {
+				queryStr.append(" AND cm.ward in (:locationValues)");
 			}
 		}
 		
@@ -2170,6 +2172,8 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 					queryStr.append(" AND cm.tehsil_id in(:locationValues) ");
 				} else if (locationTypeId == IConstants.VILLAGE_SCOPE_ID) {
 					queryStr.append(" AND cm.panchayat_id in(:locationValues) ");
+				} else if (locationTypeId.longValue() == IConstants.WARD_SCOPE_ID) {
+					queryStr.append(" AND cm.ward in (:locationValues)");
 				}
 			}
 			
@@ -2311,6 +2315,8 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 					queryStr.append(" AND cm.tehsil_id in(:locationValues) ");
 				} else if (locationTypeId == IConstants.VILLAGE_SCOPE_ID) {
 					queryStr.append(" AND cm.panchayat_id in(:locationValues) ");
+				} else if (locationTypeId.longValue() == IConstants.WARD_SCOPE_ID) {
+					queryStr.append(" AND cm.ward in (:locationValues)");
 				}
 			}
 			
@@ -2488,7 +2494,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			} else if (groupType != null && groupType.equalsIgnoreCase("TownDivision")) {
 				queryStr.append(" and cm.local_election_body_id=leb.local_election_body_id "); 
 			} else if (groupType != null && groupType.equalsIgnoreCase("ward")) {
-				queryStr.append(" and cm.ward=c.constituency_id"); 
+				queryStr.append(" and cm.ward=ward.constituency_id"); 
 			}
 		   
 		   
@@ -2504,9 +2510,9 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 				if (filterScopeId.longValue() == IConstants.DISTRICT_SCOPE_ID) {
 					queryStr.append(" AND cm.district_id in (:filterScopeValues)");
 				} else if (filterScopeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID) {
-					queryStr.append(" AND cm.parliament_constituency_id in (:filterScopeValues)");
+					queryStr.append(" AND cm.parliament_id in (:filterScopeValues)");
 				} else if (filterScopeId.longValue() == IConstants.CONSTITUENCY_SCOPE_ID) {
-					queryStr.append(" AND cm.constituency_id in (:filterScopeValues)");
+					queryStr.append(" AND cm.assembly_id in (:filterScopeValues)");
 				} else if (filterScopeId.longValue() == IConstants.TEHSIL_SCOPE_ID) {
 					queryStr.append(" AND cm.tehsil_id in (:filterScopeValues)");
 				} else if (filterScopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID) { // town/division
@@ -2536,7 +2542,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			} else if (groupType != null && groupType.equalsIgnoreCase("TownDivision")) {
 				queryStr.append(" group by leb.local_election_body_id");
 			} else if (groupType != null && groupType.equalsIgnoreCase("ward")) {
-				queryStr.append(" group by ward.ward ");
+				queryStr.append(" group by ward.constituency_id ");
 			}
 		return queryStr;
 	}
