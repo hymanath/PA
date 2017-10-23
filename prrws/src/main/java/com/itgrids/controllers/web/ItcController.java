@@ -165,4 +165,16 @@ public class ItcController {
 		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEOfcDeptPendancyStatusWiseDetails();
 		   return returnList;
 	   }
+	   
+	   @RequestMapping(value = "/getEofficeDesignationWiseDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ItecEOfficeVO>  getEofficeDesignationWiseDetails() {
+		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEofficeDesignationWiseDetails();
+		   return returnList;
+	   }
+	   
+	   @RequestMapping(value = "/getEofficeDesignationWisePendencyDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ItecEOfficeVO>  getEofficeDesignationWisePendencyDetails() {
+		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEofficeDesignationWisePendencyDetails();
+		   return returnList;
+	   }
 }
