@@ -170,7 +170,7 @@ color: red !important;
 										<label class="checkbox"><input type="checkbox" value="selectAll" id="selecctall">Select All</label>
 									</div>
 									<div class="col-md-2">
-											<label class="checkbox"><input type="checkbox" value="isFamilyUpdated" checked="true" id="isFamilyUpdatedId" class="checkbox">IsFamily Updated</label>
+											<label class="checkbox"><input type="checkbox" value="isFamilyUpdated" id="isFamilyUpdatedId" class="checkbox">IsFamily Updated</label>
 									</div>
 									<div class="col-md-2">
 										<label class="checkbox"><input type="checkbox" value="achievements" id="acheivementsId" class="checkbox">Achievements</label>
@@ -221,7 +221,9 @@ color: red !important;
 										<div class="col-md-3">
 											<label class="checkbox"><input type="checkbox" value="feedBackDocuments" id="feedBackDocumentsChkId" class="checkbox">FeedBack Documents</label>
 										</div>
-										
+										<div class="col-md-3">
+											<label class="checkbox"><input type="checkbox" value="feedBackMarks" id="feedBackMarksChkId" class="checkbox" checked>FeedBack Marks</label>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -447,6 +449,9 @@ function exportToExcel()
 					  if(checkBoxArray[12]){
 						str+='<th>FeedBack Documents</th>';
 					  }
+					  if(checkBoxArray[13]){
+						str+='<th>Marks</th>';
+					  }
 					  /*str+='<th>IsFamilyUpdated</th>'
 					  str+='<th>Achievements</th>'
 					  str+='<th>Goals</th>'
@@ -591,6 +596,14 @@ function exportToExcel()
 					  }
 					  if(checkBoxArray[12]){
 						str+='<td><span class="text-center facebookUsingCls">'+results[i].subList[j].feedBackDocumentsCount+'</span></td>';							 
+					  }
+					  if(checkBoxArray[13]){
+						 if(results[i].subList[j].marks != null){
+							str+='<td><span class="text-center facebookUsingCls">'+results[i].subList[j].marks+'</span></td>';							  
+						 }else{
+							 str+='<td><span class="text-center facebookUsingCls">-</span></td>';
+						 }
+						
 					  }
 					  /* if(results[i].subList[j].familyUpdted=='Yes'){
 						   str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
@@ -1351,8 +1364,9 @@ function exportToExcel()
 	  var facebookKnown = document.getElementById("facebookKnownId").checked;
 	  var feedBackAnswer = document.getElementById("feedBackAnswerChkId").checked;
 	  var feedBackDocuments = document.getElementById("feedBackDocumentsChkId").checked;
+	  var feedBackMarks = document.getElementById("feedBackMarksChkId").checked;
 	  
-	  checkBoxArray = [isFamilyUpdated,achievements,goals,leadershipLevel,communicationSkills,leadershipSkills,health,smartPhoneUsing,whatsupUsing,whatsupSharing,facebookKnown,feedBackAnswer,feedBackDocuments];
+	  checkBoxArray = [isFamilyUpdated,achievements,goals,leadershipLevel,communicationSkills,leadershipSkills,health,smartPhoneUsing,whatsupUsing,whatsupSharing,facebookKnown,feedBackAnswer,feedBackDocuments,feedBackMarks];
 	  
 	  $("#ajaxImage").show();
 	  $("#accordion").html('');
@@ -1851,7 +1865,6 @@ var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
 window.location.href = uri + base64(format(template, ctx))
 }
 })()
-
 	</script>
 </body>
 </html>
