@@ -910,6 +910,7 @@ public class ItcDashboardService implements IItcDashboardService {
 				ItecEOfficeVO finalCountVO = new ItecEOfficeVO();
 				for (ItecEOfficeVO vo : returnList) {
 					finalCountVO.setCreated(finalCountVO.getCreated()+vo.getCreated());
+					finalCountVO.setTotalCount(finalCountVO.getTotalCount()+vo.getTotalCount());
 				}
 				returnList.get(0).getSubList().add(finalCountVO);
 			}
@@ -1001,14 +1002,16 @@ public class ItcDashboardService implements IItcDashboardService {
 		            	  ItecEOfficeVO designationVO = designtionMap.get(jObj.getString("designation"));
 		            	  if(designationVO == null){
 		            		  designationVO = new ItecEOfficeVO();
-		            		  designationVO.setDepartmentId(jObj.getLong("departmentid"));
-		            		  designationVO.setDepartmentName(jObj.getString("departmentname"));
+		            		  //designationVO.setDepartmentId(jObj.getLong("departmentid"));
+		            		  //designationVO.setDepartmentName(jObj.getString("departmentname"));
 		            		  designationVO.setDesignation(jObj.getString("designation"));
 		            		  	ItecEOfficeVO subvo = new ItecEOfficeVO();
 		            		  	subvo.setCreated(jObj.getLong("created"));
 		            		  	subvo.setTotalCount(jObj.getLong("totalcount"));
 		            		  	subvo.setEmployeeName(jObj.getString("employeename"));
-		            		  	
+		            		  	subvo.setDepartmentId(jObj.getLong("departmentid"));
+		            		  	subvo.setDepartmentName(jObj.getString("departmentname"));
+			            		
 		            		  	if(subvo.getCreated() != null && subvo.getCreated().longValue() > 0L && subvo.getTotalCount() != null && subvo.getTotalCount().longValue() > 0L){
 		            		  		subvo.setPercentage(new BigDecimal(subvo.getTotalCount()*100.00/subvo.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 								}else{
@@ -1021,6 +1024,9 @@ public class ItcDashboardService implements IItcDashboardService {
 		            		  subvo.setCreated(jObj.getLong("created"));
 		            		  subvo.setTotalCount(jObj.getLong("totalcount"));
 		            		  subvo.setEmployeeName(jObj.getString("employeename"));
+		            		  subvo.setDepartmentId(jObj.getLong("departmentid"));
+		            		  subvo.setDepartmentName(jObj.getString("departmentname"));
+		            		  
 		            		  if(subvo.getCreated() != null && subvo.getCreated().longValue() > 0L && subvo.getTotalCount() != null && subvo.getTotalCount().longValue() > 0L){
 		            			  subvo.setPercentage(new BigDecimal(subvo.getTotalCount()*100.00/subvo.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 								}else{
@@ -1069,8 +1075,8 @@ public class ItcDashboardService implements IItcDashboardService {
 		            	  ItecEOfficeVO designationVO = designtionMap.get(jObj.getString("designation"));
 		            	  if(designationVO == null){
 		            		  designationVO = new ItecEOfficeVO();
-		            		  designationVO.setDepartmentId(jObj.getLong("departmentid"));
-		            		  designationVO.setDepartmentName(jObj.getString("departmentname"));
+		            		 // designationVO.setDepartmentId(jObj.getLong("departmentid"));
+		            		 // designationVO.setDepartmentName(jObj.getString("departmentname"));
 		            		  designationVO.setDesignation(jObj.getString("designation"));
 		            		  	ItecEOfficeVO subvo = new ItecEOfficeVO();
 		            		  	subvo.setCreated(jObj.getLong("created"));
@@ -1081,6 +1087,8 @@ public class ItcDashboardService implements IItcDashboardService {
 		            		  	subvo.setSixteenToThirty(jObj.getLong("16-30"));
 		            		  	subvo.setThirtyoneToSixty(jObj.getLong("31-60"));
 		            		  	subvo.setAboveSixty(jObj.getLong(">60"));
+		            		  	subvo.setDepartmentId(jObj.getLong("departmentid"));
+		            		  	subvo.setDepartmentName(jObj.getString("departmentname"));
 		            		  	
 		            		  	if(subvo.getCreated() != null && subvo.getCreated().longValue() > 0L && subvo.getTotalCount() != null && subvo.getTotalCount().longValue() > 0L){
 		            		  		subvo.setPercentage(new BigDecimal(subvo.getTotalCount()*100.00/subvo.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -1099,6 +1107,9 @@ public class ItcDashboardService implements IItcDashboardService {
 		            		  subvo.setSixteenToThirty(jObj.getLong("16-30"));
 		            		  subvo.setThirtyoneToSixty(jObj.getLong("31-60"));
 		            		  subvo.setAboveSixty(jObj.getLong(">60"));
+		            		  subvo.setDepartmentId(jObj.getLong("departmentid"));
+		            		  subvo.setDepartmentName(jObj.getString("departmentname"));
+		            		  	
 		            		  if(subvo.getCreated() != null && subvo.getCreated().longValue() > 0L && subvo.getTotalCount() != null && subvo.getTotalCount().longValue() > 0L){
 		            			  subvo.setPercentage(new BigDecimal(subvo.getTotalCount()*100.00/subvo.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 								}else{
