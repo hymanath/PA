@@ -85,4 +85,6 @@ public interface ILocationDashboardService {
 	public List<GrivenceStatusVO> getLocationWiseTypeOfIssueGrivenceComplaintCount(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
 	public GrivenceStatusVO getInsuranceOverviewDetails(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
 	public List<GrivenceStatusVO> getLocationWiseInsuranceIssueTypeComplaintCount(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
+	public GrivenceStatusVO getTrustEducationOverviewDetails(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
+	public List<GrivenceStatusVO> getLocationWiseTrustEducationComplaintCount(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
 	}
