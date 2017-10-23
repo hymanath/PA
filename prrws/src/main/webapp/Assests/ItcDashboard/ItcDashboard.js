@@ -2,7 +2,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 
 //var departmentWiseArr=[{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'eProcurement',id:'5',color:'#F06C1F',image:'eProcurement',blockName:'eProcurement'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
-var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'}];
+var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'}];
 var globalFromDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDate = moment().format("DD/MM/YYYY");
 $("#itcDateRangePickerId").daterangepicker({
@@ -64,6 +64,7 @@ function onloadCalls(){
 	
 	//AP Innovation Society Ajax Call Start
 		getAPInnovationSocietyOverview('onload','apInnovationSociety');
+		getEOfcDepartWiseOverviewDetails('onload');
 	  /*getInnovationAwardsDetailedData();*/
 }
 $(document).on("click",".cohortIdClick",function(){
@@ -103,13 +104,13 @@ function departmentWiseOverView(){
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==2){
 						block+='<div class="m_top20">';
-							block+='<h3>11,25.Cr</h3>';
-							block+='<h6 class="m_top5">Total Pendency</h6>';
+							block+='<h3 id="itcDeptWiseCount"></h3>';
+							block+='<h6 class="m_top10">Total Pendency</h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==3){
 						block+='<div class="m_top20">';
 							block+='<h3 id="meesevaHeadingId"></h3>';
-							block+='<h6 class="m_top5">Beyond SLA</h6>';
+							block+='<h6 class="m_top10">Beyond SLA</h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==4){
 						block+='<div class="m_top20">';
@@ -130,7 +131,7 @@ function departmentWiseOverView(){
 					}else if(departmentWiseArr[i].id ==7){
 						block+='<div class="m_top20">';
 							block+='<h3 id="apInnovationSociety"></h3>';
-							block+='<h6>Startups</h6>';
+							block+='<h6 class="m_top10">Startups</h6>';
 						block+='</div>';
 					}
 			block+='</div>';
@@ -261,10 +262,28 @@ function departmentBlockWiseDetails(divId)
 											collapse+='<div class="col-sm-4 m_top20" id="CampusInnovationCenters"></div>';
 										collapse+='</div>';
 									}
+									
 								collapse+='</div>';
 							collapse+='</div>';
 						collapse+='</div>';
 					collapse+='</div>';
+					if(divId == 'eOffice')
+					{
+						collapse+='<div class="panel-group" id="accordionEOffc" role="tablist" aria-multiselectable="true">';
+							collapse+='<div class="panel panel-default panel-black">';
+								collapse+='<div class="panel-heading" role="tab" id="headingOneEOffc">';
+									collapse+='<a role="button" class="panelCollapseIcon " data-toggle="collapse" data-parent="#accordionEOffc" href="#collapseOneEOffc" aria-expanded="true" aria-controls="collapseOneEOffc">';
+										collapse+='<h4 class="panel-title">E-OFFICE PENDENCY STATUS</h4>';
+									collapse+='</a>';
+								collapse+='</div>';
+								collapse+='<div id="collapseOneEOffc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneEOffc">';
+									collapse+='<div class="panel-body">';
+										collapse+='<div id="eOfficePendencyWise"></div>';
+									collapse+='</div>';
+								collapse+='</div>';
+							collapse+='</div>';
+						collapse+='</div>';
+					}
 				}
 			$("#departmentBlockWiseDetailsId").html(collapse);
 			
@@ -277,6 +296,10 @@ function departmentBlockWiseDetails(divId)
 					getAPISXLR8APDetailedData();
 					getCampaignsDetailedData();
 					getCampusInnovationCentersDetailedData();
+				}else if(divId == 'eOffice')
+				{
+					getEOfcDepartWiseOverviewDetails('overview');
+					getEofficeDesignationWisePendencyDetails();
 				}else if(divId == 'meesevaKpi'){
 					getMeesavaKpiGraphBuild(divId,levelWiseBlockArr[i].id);
 				}
@@ -644,7 +667,7 @@ function getITDistrictWiseDetails(type,category,divType){
 	
 	var json = {
 		category:category,
-		source:type
+		sector:type
 	}
 	$.ajax({                
 		type:'POST',    
@@ -703,82 +726,6 @@ function getPromotionsDetailedDepartmentWise(){
 	$.ajax({                
 		type:'POST',    
 		url: 'getPromotionsDetailedDepartmentWise',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		console.log(result);
-	});		
-}
-function getEOfficePendencyDtlsByDepartmentType(){
-	var json = {
-		fromDate:"",
-		toDate:"",
-		year:""
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getEOfficePendencyDtlsByDepartmentType',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		console.log(result);
-	});		
-}
-function getEOfficePendencyByDepartmentAndDayWise(){
-	var json = {
-		fromDate:"",
-		toDate:"",
-		year:""
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getEOfficePendencyByDepartmentAndDayWise',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		console.log(result);
-	});		
-}
-function getMeesevaKPIIndicatorsProgressDtls(){
-	var json = {
-		fromDate:"",
-		toDate:"",
-		year:""
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getMeesevaKPIIndicatorsProgressDtls',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		console.log(result);
-	});		
-}
-function getMeesevaKPIIndicatorsPeriodWise(){
-	var json = {
-		fromDate:"",
-		toDate:"",
-		year:""
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getMeesevaKPIIndicatorsPeriodWise',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -1174,7 +1121,8 @@ function getCohortDetailsByCohortId(id){
 		$("#cohortId").html(str);
 		$("#cohortIdTable").dataTable();
 	}
-}function getInnovationAwardsDetailedData(){
+}
+function getInnovationAwardsDetailedData(){
 	var json = {
 		fromDate:"",
 		toDate:"",
@@ -1192,6 +1140,235 @@ function getCohortDetailsByCohortId(id){
 	}).done(function(result){
 		console.log(result);
 	});		
+}
+var eOfcDeptResult = '';
+function getEOfcDepartWiseOverviewDetails(type){
+	if(type == 'onload')
+	{
+		$("#itcDeptWiseCount").html(spinner);
+	}
+	var json = {
+		departmentid:"",		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getEOfcDepartWiseOverviewDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		eOfcDeptResult = result;
+		getEofficeDesignationWiseDetails()
+		if(type == 'onload')
+		{
+			$("#itcDeptWiseCount").html(result[0].subList[0].totalCount+'/<small>'+result[0].subList[0].created+'</small>');
+		}		
+	});		
+}
+function getEOfcDeptPendancyStatusWiseDetails(){
+	$("#departmentWise").html(spinner);
+	var json = {
+		departmentid:"",		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getEOfcDeptPendancyStatusWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			return buildTable(result);
+		}else{
+			$("#departmentWise").html("NO DATA AVAILABLE");
+		}
+	});
+	function buildTable(result)
+	{
+		var tableView = '';
+		tableView+='<div class="table-responsive">';
+			tableView+='<table class="table table-bordered" id="eOfcDataTableId">';
+				tableView+='<thead>';
+					tableView+='<th style="background-color:#fff;">Departments</th>';
+					tableView+='<th style="background-color:#B2DFDB">Total</th>';
+					tableView+='<th style="background-color:#FBACAC">Total Pendency</th>';
+					tableView+='<th style="background-color:#FBACAC">%</th>';
+					tableView+='<th style="background-color:#FDCECE">0 - 7 days</th>';
+					tableView+='<th style="background-color:#FDCECE">8 - 15 days</th>';
+					tableView+='<th style="background-color:#FDCECE">16 - 30 days</th>';
+					tableView+='<th style="background-color:#FDCECE">31 - 60 days</th>';
+					tableView+='<th style="background-color:#FDCECE"> > 60 days</th>';
+				tableView+='</thead>';
+				for(var i in result)
+				{
+					tableView+='<tr>';
+						tableView+='<td>'+result[i].departmentName+'</td>';
+						tableView+='<td style="background-color:#B2DFDB">'+result[i].created+'</td>';
+						tableView+='<td style="background-color:#FBACAC">'+result[i].totalCount+'</td>';
+						tableView+='<td style="background-color:#FBACAC">'+result[i].percentage+'</td>';
+						tableView+='<td style="background-color:#FDCECE">'+result[i].zeroToSeven+'</td>';
+						tableView+='<td style="background-color:#FDCECE">'+result[i].eightToFifteen+'</td>';
+						tableView+='<td style="background-color:#FDCECE">'+result[i].sixteenToThirty+'</td>';
+						tableView+='<td style="background-color:#FDCECE">'+result[i].thirtyoneToSixty+'</td>';
+						tableView+='<td style="background-color:#FDCECE">'+result[i].aboveSixty+'</td>';
+					tableView+='</tr>';
+				}			
+			tableView+='</table>';
+		tableView+='</div>';
+		$("#departmentWise").html(tableView);
+		$("#eOfcDataTableId").dataTable();
+	}
+}
+
+function getEofficeDesignationWiseDetails(){
+	$("#eOfficeBlock4").html(spinner);
+	var json = {
+		designation:"",		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getEofficeDesignationWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			return buildTable(result);
+		}else{
+			$("#eOfficeBlock4").html("NO DATA AVAILABLE");
+		}
+	});
+	function buildTable(result)
+	{
+		var tableView = '';
+		var colorsArr = ['#009587','#84ED50','#FFB300','#FF2C95','#F75C5D','#FF2C95','#FFB300','#009587','#84ED50','#FFB300','#FF2C95','#F75C5D','#FF2C95','#FFB300'];
+		tableView+='<div class="table-responsive" style="height:600px;">';
+			tableView+='<table class="table-desig">';
+				tableView+='<tr>';
+					tableView+='<td>DEPARTMENT WISE</td>';
+					for(var i in eOfcDeptResult)
+					{
+						tableView+='<td style="border-left:3px solid '+colorsArr[i]+'">';
+							tableView+='<p class="f-16"><b>'+eOfcDeptResult[i].departmentName+'</b></p>';
+							tableView+='<p>'+eOfcDeptResult[i].totalCount+' / <small>'+eOfcDeptResult[i].created+'</small></p>';
+						tableView+='</td>';
+					}
+				tableView+='</tr>';
+				for(var i in result)
+				{
+					tableView+='<tr>';
+						tableView+='<td>'+result[i].designation+'</td>';
+						for(var j in result[i].subList)
+						{
+							tableView+='<td style="border-left:3px solid '+colorsArr[j]+'">';
+								tableView+='<p class="f-16"><b>'+result[i].subList[j].employeeName+'</b></p>';
+								tableView+='<p>'+result[i].subList[j].totalCount+' / <small>'+result[i].subList[j].created+'</small></p>';
+							tableView+='</td>';
+						}
+					tableView+='</tr>';
+				}
+			tableView+='</table>';
+		tableView+='</div>';
+		$("#eOfficeBlock4").html(tableView);
+		//$(".table-desig-scroll").mCustomScrollbar({setHeight:'500px'});
+	}
+}
+function getEofficeDesignationWisePendencyDetails()
+{
+	$("#eOfficePendencyWise").html(spinner);
+	var json = {
+		departmentid:"",		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getEofficeDesignationWisePendencyDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			buildTabs(result);
+		}else{
+			$("#eOfficePendencyWise").html("NO DATA AVAILABLE");
+		}
+	});
+	function buildTabs(result)
+	{
+		var tabView = '';
+		tabView+='<div class="row">';
+			tabView+='<div class="col-sm-3">';
+				tabView+='<div class="eOfcScroll">';
+					tabView+='<ul class="nav nav-tabs tab-view-eofc" role="tablist">';
+						tabView+='<li role="presentation" class="active"><a EofficeDesignationId="" EofficeDesignation="departmentWise" href="#departmentWise" aria-controls="departmentWise" role="tab" data-toggle="tab">DEPARTMENT WISE</a></li>';
+						for(var i in result)
+						{
+							tabView+='<li role="presentation"><a EofficeDesignationId="'+result[i].departmentId+'" EofficeDesignation="'+result[i].designation.replace(/\s+/g, '')+'" href="#'+result[i].designation.replace(/\s+/g, '')+'" aria-controls="'+result[i].designation.replace(/\s+/g, '')+'" role="tab" data-toggle="tab">'+result[i].designation+'</a></li>';
+						}
+					tabView+='</ul>';
+				tabView+='</div>';
+			tabView+='</div>';
+			tabView+='<div class="col-sm-9">';
+				tabView+='<div class="tab-content">';
+					tabView+='<div role="tabpanel" class="tab-pane active" id="departmentWise">'+spinner+'</div>';
+					for(var i in result)
+					{
+						tabView+='<div role="tabpanel" class="tab-pane" id="'+result[i].designation.replace(/\s+/g, '')+'">';
+							tabView+='<div class="table-responsive">';
+								tabView+='<table class="table table-bordered" id="eOfcDataTableId">';
+									tabView+='<thead>';
+										tabView+='<th style="background-color:#fff;">Designation</th>';
+										tabView+='<th style="background-color:#B2DFDB">Total</th>';
+										tabView+='<th style="background-color:#FBACAC">Total Pendency</th>';
+										tabView+='<th style="background-color:#FBACAC">%</th>';
+										tabView+='<th style="background-color:#FDCECE">0 - 7 days</th>';
+										tabView+='<th style="background-color:#FDCECE">8 - 15 days</th>';
+										tabView+='<th style="background-color:#FDCECE">16 - 30 days</th>';
+										tabView+='<th style="background-color:#FDCECE">31 - 60 days</th>';
+										tabView+='<th style="background-color:#FDCECE"> > 60 days</th>';
+									tabView+='</thead>';
+									for(var j in result[i].subList)
+									{
+										tabView+='<tr>';
+											tabView+='<td>'+result[i].subList[j].employeeName+'</td>';
+											tabView+='<td style="background-color:#B2DFDB">'+result[i].subList[j].created+'</td>';
+											tabView+='<td style="background-color:#FBACAC">'+result[i].subList[j].totalCount+'</td>';
+											tabView+='<td style="background-color:#FBACAC">'+result[i].subList[j].percentage+'</td>';
+											tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].zeroToSeven+'</td>';
+											tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].eightToFifteen+'</td>';
+											tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].sixteenToThirty+'</td>';
+											tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].thirtyoneToSixty+'</td>';
+											tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].aboveSixty+'</td>';
+										tabView+='</tr>';
+									}			
+								tabView+='</table>';
+							tabView+='</div>';
+						tabView+='</div>';
+					}
+				tabView+='</div>';
+			tabView+='</div>';
+		tabView+='</div>';
+		$("#eOfficePendencyWise").html(tabView);
+		if(result.length > 6)
+		{
+			$(".eOfcScroll").mCustomScrollbar({setHeight:'400px'});
+		}
+		getEOfcDeptPendancyStatusWiseDetails();
+	}
 }
 function getMeesavaKpiGraphBuild(divId,id){
 	var str='';

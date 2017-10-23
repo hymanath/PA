@@ -9,6 +9,7 @@
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
@@ -149,13 +150,13 @@
 			</div>
 		</div>
 	</nav>
-	<section class="navbar-section">
+	<!--<section class="navbar-section">
 		<div class="container-fluid">
 			<div class="row">
 				<!--<div class="col-sm-2 border_right m_top5">
 					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_distId="" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
 					<div class="multi-level-selection-menu arrow_box_top"></div>
-				</div>-->
+				</div>
 				<div class="col-sm-12">
 					<ul class="list-inline pull-right sub-menu">
 						  <div class="input-group">
@@ -168,7 +169,7 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</section>-->
 </header>
 <main class="m_top5">
 	<div class="container-fluid">
