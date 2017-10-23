@@ -1587,4 +1587,26 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}
+   public String getTrustEducationOverviewDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+
+			grveneVO = locationDashboardService.getTrustEducationOverviewDetails(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValuesList,jObj.getString("year"),jObj.getLong("stateId"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getTrustEducationOverviewDetails() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
+  public String getLocationWiseTrustEducationComplaintCount(){
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+
+			grivenceVO = locationDashboardService.getLocationWiseTrustEducationComplaintCount(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValuesList,jObj.getString("year"),jObj.getLong("stateId"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getLocationWiseTrustEducationComplaintCount() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
 }

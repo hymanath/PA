@@ -7500,16 +7500,18 @@ function getDetailedElectionResults(constituencyId,electionYear,type){
 		});
 	}
 }
-       // new ajax call for grivence based on new design
+
+  // new ajax call for grivence based on new design
 	//getGrivenceOverviewDtls(yearId);
 	//getGrivenceComplaintCountDepartmentWise(yearId);
 	 // getGrivenceFinancialSupportDtls(yearId);
 	//getLocationWiseTypeOfIssueGrivenceComplaintCount(yearId);
 	  //getInsuranceOverviewDetails(yearId);
 	// getLocationWiseInsuranceIssueTypeComplaintCount(yearId);
-
+    //getTrustEducationOverviewDetails(yearId);
+	//getLocationWiseTrustEducationComplaintCount(yearId);
 function getGrivenceOverviewDtls(yearId){
-	
+
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -7611,6 +7613,42 @@ function getLocationWiseInsuranceIssueTypeComplaintCount(yearId){
 	 $.ajax({
 	  type : "POST",
 	  url : "getLocationWiseInsuranceIssueTypeComplaintCountAction.action",
+	  dataType : 'json',
+	  data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){  
+		console.log(result);
+	});	
+}
+function getTrustEducationOverviewDetails(yearId){
+	var jsObj={
+			"fromDate" 			: "",
+			"toDate"			: "",
+			"locationTypeId" 	: locationLevelId,
+			"locationValuesArr" : userAccessLevelValuesArray,
+			"year"				: yearId,
+			stateId 			: 1
+		}
+	 $.ajax({
+	  type : "POST",
+	  url : "getTrustEducationOverviewDetailsAction.action",
+	  dataType : 'json',
+	  data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){  
+		console.log(result);
+	});	
+}
+function getLocationWiseTrustEducationComplaintCount(yearId){
+	var jsObj={
+			"fromDate" 			: "",
+			"toDate"			: "",
+			"locationTypeId" 	: locationLevelId,
+			"locationValuesArr" : userAccessLevelValuesArray,
+			"year"				: yearId,
+			stateId 			: 1
+		}
+	 $.ajax({
+	  type : "POST",
+	  url : "getLocationWiseTrustEducationComplaintCountAction.action",
 	  dataType : 'json',
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
