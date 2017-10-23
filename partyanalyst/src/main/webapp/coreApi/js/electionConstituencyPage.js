@@ -233,7 +233,7 @@ $(document).on("click",".getDetailsForBoothWiseCls",function(){
 		boothWiseResults(constituencyId,partiesArr,electionYrVal,electionScopeId)	
 		
 });
-$(document).on("click",".getDetailsForStrongCls",function(){
+$(document).on("click",".getDetailsForStrongCls,.removeFilterCls",function(){
 		var partyId = $("#partyIdForStrongBlock").val();
 		
 		var searchLevelVal = $("#searchLevelId").val();
@@ -1924,7 +1924,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 										for(var k in result[0].list[j].subList1){
 											str+='<div class="col-sm-1" style="margin-left:5px">';
 											if(result[0].list[j].subList1[k].wonSeatsCount !=null && result[0].list[j].subList1[k].wonSeatsCount>0){
-												str+='<span class="statusClr statusClickCls" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;"  status_attr="'+result[0].list[j].subList1[k].status+'" year_attr="'+result[0].list[j].electionYear+'" title="click here to view  '+result[0].list[j].subList1[k].status+' locations details" locationids_attr="'+result[0].list[j].subList1[k].idsList+'">'+result[0].list[j].subList1[k].wonSeatsCount+'</span>';
+												str+='<span class="statusClr statusClickCls" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;cursor:pointer"  status_attr="'+result[0].list[j].subList1[k].status+'" year_attr="'+result[0].list[j].electionYear+'" title="click here to view  '+result[0].list[j].subList1[k].status+' locations details" locationids_attr="'+result[0].list[j].subList1[k].idsList+'">'+result[0].list[j].subList1[k].wonSeatsCount+'</span>';
 											}else{
 												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;text-decoration:none;cursor: auto;">0</span>';
 											}
@@ -1936,12 +1936,13 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 									str+='</div>';
 								str+='</th>';
 							}else if(result[0].list[j].electionYear==year){
-								str+='<th style="min-width:210px;background-color:#ccc;">Election Year<h3>'+result[0].list[j].electionYear+'</h3>';
+								str+='<th style="min-width:210px;background-color:#ccc;"><div class="row"><div class="col-sm-6"> Election Year<h3>'+result[0].list[j].electionYear+'</h3></div>';
+								str+='<div class="col-sm-6"><button class="btn btn-xs btn-success pull-right removeFilterCls">Back </button></div></div>';
 									str+='<div class="row">';
 										for(var k in result[0].list[j].subList1){
 											str+='<div class="col-sm-1" style="margin-left:5px">';
 											if(result[0].list[j].subList1[k].wonSeatsCount !=null && result[0].list[j].subList1[k].wonSeatsCount>0){
-												str+='<span class="statusClr statusClickCls" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;"  status_attr="'+result[0].list[j].subList1[k].status+'" year_attr="'+result[0].list[j].electionYear+'" title="click here to view  '+result[0].list[j].subList1[k].status+' locations details"  locationids_attr="'+result[0].list[j].subList1[k].idsList+'">'+result[0].list[j].subList1[k].wonSeatsCount+'</span>';
+												str+='<span class="statusClr statusClickCls" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;cursor:pointer"  status_attr="'+result[0].list[j].subList1[k].status+'" year_attr="'+result[0].list[j].electionYear+'" title="click here to view  '+result[0].list[j].subList1[k].status+' locations details"  locationids_attr="'+result[0].list[j].subList1[k].idsList+'">'+result[0].list[j].subList1[k].wonSeatsCount+'</span>';
 											}else{
 												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;text-decoration:none;cursor: auto;">0</span>';
 											}
@@ -1958,7 +1959,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 										for(var k in result[0].list[j].subList1){
 											str+='<div class="col-sm-1" style="margin-left:5px">';
 											if(result[0].list[j].subList1[k].wonSeatsCount !=null && result[0].list[j].subList1[k].wonSeatsCount>0){
-												str+='<span class="statusClr statusClickCls" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;"  status_attr="'+result[0].list[j].subList1[k].status+'" year_attr="'+result[0].list[j].electionYear+'" title="click here to view  '+result[0].list[j].subList1[k].status+' locations details"  locationids_attr="'+result[0].list[j].subList1[k].idsList+'">'+result[0].list[j].subList1[k].wonSeatsCount+'</span>';
+												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;text-decoration:none;"  title="'+result[0].list[j].subList1[k].status+' Locations "  status_attr="'+result[0].list[j].subList1[k].status+'" year_attr="'+result[0].list[j].electionYear+'"   locationids_attr="'+result[0].list[j].subList1[k].idsList+'">'+result[0].list[j].subList1[k].wonSeatsCount+'</span>';
 											}else{
 												str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result[0].list[j].subList1[k].status.trim()]+';color:#fff;text-decoration:none;cursor: auto;">0</span>';
 											}
