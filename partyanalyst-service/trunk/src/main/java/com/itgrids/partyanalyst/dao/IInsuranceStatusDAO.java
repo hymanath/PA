@@ -57,4 +57,6 @@ public interface IInsuranceStatusDAO extends GenericDao<InsuranceStatus, Long>{
 	 public List<Object[]> getLocationWiseGrievanceComplaintCnt(Long filterScopeId, List<Long> filterScopeValues, Long stateId,String groupType,Date fromDate,Date toDate);
 	 public List<Object[]> getInsuranceIssueTypeAndStatusWiseComplaintCnt(Long locationTypeId,List<Long> locationValues,Long stateId,Date fromDate,Date toDate);
 	 public List<Object[]> getLocationWiseInsuranceIssueTypeComplaintCnt(Long filterScopeId, List<Long> filterScopeValues, Long stateId,String groupType,Date fromDate,Date toDate);
+	 public List<Object[]> getTrustEducationComplaintCnt(Long locationTypeId,List<Long> locationValues,Long stateId,Date fromDate,Date toDate);
+	 public List<Object[]> getLocationWiseTrustEducationComplaintCnt(Long filterScopeId, List<Long> filterScopeValues, Long stateId,String groupType,Date fromDate,Date toDate);
 }
