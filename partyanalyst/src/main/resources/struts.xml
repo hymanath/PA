@@ -18344,5 +18344,15 @@
          <param name="root">grivenceVO</param>
        </result>
    </action>
+    <action name="getTrustEducationOverviewDetailsAction" class="locationDashboardAction" method="getTrustEducationOverviewDetails">
+        <result type="json" name="success">
+         <param name="root">grveneVO</param>
+       </result>
+   </action>
+   <action name="getLocationWiseTrustEducationComplaintCountAction" class="locationDashboardAction" method="getLocationWiseTrustEducationComplaintCount">
+        <result type="json" name="success">
+         <param name="root">grivenceVO</param>
+       </result>
+   </action>
  </package>
 </struts>
