@@ -1164,7 +1164,7 @@ function getEOfcDepartWiseOverviewDetails(type){
 		getEofficeDesignationWiseDetails()
 		if(type == 'onload')
 		{
-			$("#itcDeptWiseCount").html(result[0].subList[0].totalCount+'/<small>'+result[0].subList[0].created+'</small>');
+			$("#itcDeptWiseCount").html(result[0].subList[0].totalCount+'/<small style="color:#fff;font-size:14px;top:0px;">'+result[0].subList[0].created+'</small>');
 		}		
 	});		
 }
