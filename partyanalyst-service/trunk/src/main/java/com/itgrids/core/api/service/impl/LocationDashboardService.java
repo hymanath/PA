@@ -7108,7 +7108,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 						statusVO.getSubList().addAll(getTypeOfIssueTemplate());//getting template
 						typeOfIssueMap.put(statusVO.getId(), statusVO);
 					}
-					GrivenceStatusVO issueTypeMatchVO = getGrivanceStastusMatchVO(statusVO.getSubList(),(typeOfIssue.trim().length() > 0) ? typeOfIssue.toUpperCase() : typeOfIssue);
+					GrivenceStatusVO issueTypeMatchVO = getGrivanceStastusMatchVO(statusVO.getSubList(),getInUpperCase(typeOfIssue));
 					if (issueTypeMatchVO != null) {
 						issueTypeMatchVO.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
 						statusVO.setCount(statusVO.getCount() + issueTypeMatchVO.getCount());
@@ -7156,7 +7156,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			GrivenceStatusVO deathVO = new GrivenceStatusVO();
 			deathVO.setName("DEATH");
 			GrivenceStatusVO hospitalizationVO = new GrivenceStatusVO();
-			deathVO.setName("HOSPITALIZATION");
+			hospitalizationVO.setName("HOSPITALIZATION");
 			typeOfIssueList.add(deathVO);
 			typeOfIssueList.add(hospitalizationVO);
 		} catch (Exception e) {
@@ -7241,14 +7241,16 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 						locationMap.put(locationVO.getLocationIdStr(), locationVO);
 					 }
 					 String issueType = commonMethodsUtilService.getStringValueForObject(param[2]).trim();
-					 GrivenceStatusVO issueTypeMatchVO = getGrivanceStastusMatchVO(locationVO.getSubList(),(issueType.length() > 0) ? issueType.toUpperCase():issueType);
-					 GrivenceStatusVO statusMatchVO = getInsuranceStatusmatchVO(issueTypeMatchVO.getSubList(), commonMethodsUtilService.getLongValueForObject(param[3]));
-					 if (statusMatchVO != null) {
-						 statusMatchVO.setCount(commonMethodsUtilService.getLongValueForObject(param[5]));
-						 issueTypeMatchVO.setCount(locationVO.getCount() + statusMatchVO.getCount());
-						 locationVO.setCount(locationVO.getCount()+statusMatchVO.getCount());
+					 GrivenceStatusVO issueTypeMatchVO = getGrivanceStastusMatchVO(locationVO.getSubList(),getInUpperCase(issueType));
+					 if (issueTypeMatchVO != null) {
+						 GrivenceStatusVO statusMatchVO = getInsuranceStatusmatchVO(issueTypeMatchVO.getSubList(), commonMethodsUtilService.getLongValueForObject(param[3]));
+						 if (statusMatchVO != null) {
+							 statusMatchVO.setCount(commonMethodsUtilService.getLongValueForObject(param[5]));
+							 issueTypeMatchVO.setCount(locationVO.getCount() + statusMatchVO.getCount());
+							 locationVO.setCount(locationVO.getCount()+statusMatchVO.getCount());
+						}
+					 }
 					}
-				}
 				//preparing list
 				resultList.addAll(locationMap.values());
 			}
