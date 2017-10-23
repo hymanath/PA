@@ -1453,9 +1453,19 @@ function getCandidateAndPartyInfoForConstituency(){
 													stateLevel+='<p class="text-muted text-capital m_left7 f_12" style="margin-bottom:5px">'+result[i].committeLevel+'</p>';
 													
 													if(result[i].cadreId !=null && result[i].cadreId>0){
-														stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>';
+														if(result[i].candidateName == "NARA CHANDRABABU NAIDU"){
+															stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>  <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].constituencyId+'" attr_election_year="2014" attr_election_type="Assembly" attr_name="Assembly">View Results</span>';
+														}else{
+															stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>';
+														}
+														
 													}else{
-														stateLevel+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].condidateId+'">View Candidate Profile</span>';
+														if(result[i].candidateName == "NARA CHANDRABABU NAIDU"){
+															stateLevel+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].condidateId+'">View Candidate Profile</span>  <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].constituencyId+'" attr_election_year="2014" attr_election_type="Assembly" attr_name="Assembly">View Results</span>';
+														}else{
+															stateLevel+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].condidateId+'">View Candidate Profile</span>';
+														}
+														
 													}
 												stateLevel+='</div>';
 											stateLevel+='</div>';
