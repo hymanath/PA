@@ -40,6 +40,9 @@ public interface IItcDashboardService {
 	public List<ItecPromotionDetailsVO> getITDistrictWiseDetails(InputVO inputVO);
 	public List<ItecPromotionDetailsVO> getITSectorLeadCategoryWiseDetails(InputVO inputVO);
 	public List<ItecPromotionDetailsVO> getITSectorSubLeadCategoryWiseDetails(InputVO inputVO);
+	
 	public List<ItecEOfficeVO> getEOfcDepartWiseOverviewDetails();
 	public List<ItecEOfficeVO> getEOfcDeptPendancyStatusWiseDetails();
+	public List<ItecEOfficeVO> getEofficeDesignationWiseDetails();
+	public List<ItecEOfficeVO> getEofficeDesignationWisePendencyDetails();
 }
