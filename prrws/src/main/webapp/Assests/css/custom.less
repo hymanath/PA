@@ -2223,3 +2223,44 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
     text-transform: uppercase;
 	margin-left: 20px;
 }
+.table-desig
+{
+	border-collapse: separate; 
+	border-spacing: 0px 15px; 
+	width:100%;
+	tr
+	{
+		box-shadow:0px 0px 9px rgba(0, 0, 0, 0.4);
+		td
+		{
+			background-color:#fff;
+			padding:15px 10px;
+		}
+	}
+}
+.tab-view-eofc
+{
+	li
+	{
+		width:100%;
+		display:block;
+		a
+		{
+			border-right:0px !important;
+			border-radius:0px;
+		}		
+	}
+	li.active
+	{
+		a
+		{
+			border-left:3px solid @dark_yellow_color;
+			border-bottom:1px solid #ddd !important;
+		}
+		&:hover , &:active
+		{
+			border-left:3px solid @dark_yellow_color;
+			border-bottom:1px solid #ddd !important;
+		}
+	}
+}
