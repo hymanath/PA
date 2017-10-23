@@ -475,7 +475,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		  try{
 			  jObj=new JSONObject(getTask());
 			  Long constituencyId = jObj.getLong("constituencyId");
-			  constituencyElectionResultsVOList = constituencyPageService.getConstituencyElectionResults(constituencyId);
+			  List<Long> electionScopeIdsList = convertJsonStringList(jObj.getJSONArray("electionScopeIdsArr"));
+			  constituencyElectionResultsVOList = constituencyPageService.getConstituencyElectionResults(constituencyId,electionScopeIdsList);
 			  
 		  }catch(Exception e){
 			  LOG.error("Entered into getDetailedElectionInformatiopn method in locationDashboardAction....");
