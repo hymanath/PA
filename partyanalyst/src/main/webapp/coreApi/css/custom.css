@@ -1711,3 +1711,11 @@ font-size:12px !important;
 	background-color:#fff;
 	padding:5px;
 }
+.table_benefits thead tr th,.table_benefits tbody tr td{
+	font-size:12px !important;
+	padding:3px !important;
+}
+.table_benefits1 thead tr th,.table_benefits1 tbody tr td{
+	font-size:12px !important;
+	padding:5px !important;
+}

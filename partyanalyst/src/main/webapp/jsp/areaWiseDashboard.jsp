@@ -89,8 +89,8 @@
 			<li index="committees">committees</li>
 			<li index="meetings">meetings</li>
 			<li index="tours">tours</li>
-			<!--<li index="benefits">benefits</li>
-			<li index="activities">activities</li>-->
+			<li index="benefits">benefits</li>
+			<!--<li index="activities">activities</li>-->
 			<li index="alerts">alerts</li>
 			<li index="nominatedPosts">nominated posts</li>
 			<li index="grievance">grievance</li>
@@ -336,14 +336,19 @@
 					<div id="locationWiseTourMembersComplainceDtls" class="m_top15"></div>
 				</div>
 			</div>
-			<!--<div class="col-sm-12 m_top30" navbar-index="benefits">
+			<div class="col-sm-12 m_top30" navbar-index="benefits">
 				<h4 class="panel-title theme-title-color">Benefits<span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="benefits"></i></span></h4>
 				<div class="block m_top10">
 					<div class="row">
 						<div id="benefitsBlockId"></div>
 					</div>
+					<div class="row m_top10 detailedBenefitBlockCls">
+						<div class="col-sm-12">
+							<button class="btn btn-success btn-success-white text-capital" detailed-block="benefits">detailed information</button>
+						</div>
+					</div>	
 				</div>
-			</div>-->
+			</div>
 			<!--<div class="col-sm-12 m_top30" navbar-index="activities">
 				<h4 class="panel-title theme-title-color">Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="activities"></i></span></h4>
 				<div class="block m_top10">
