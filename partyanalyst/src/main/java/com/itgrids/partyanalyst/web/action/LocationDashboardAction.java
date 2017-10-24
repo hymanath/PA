@@ -1396,6 +1396,7 @@ public String getElectionInformationLocationWise(){
 			
 			jObj = new JSONObject(getTask());
 			Long constituencyId = jObj.getLong("constituencyId");
+			Long electionScopeId =jObj.getLong("electionScopeId");
 			JSONArray partyArr = jObj.getJSONArray("partyList");
 			List<Long> partyIds = new ArrayList<Long>();
 			
@@ -1406,15 +1407,16 @@ public String getElectionInformationLocationWise(){
 				}
 			}
 			
-			List<PartyBoothPerformanceVO> boothResults = locationWiseElectionInformationDetalsService.getBoothWiseElectionResults(partyIds, constituencyId, jObj.getLong("electionyears"),jObj.getLong("electionScopeId"),
-					jObj.getLong("locationTypeId"),jObj.getLong("locationValue"));
+			
 
 			String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
 
 			List<PartyBoothPerformanceVO> PartyBoothPerformanceVOList1 = new ArrayList<PartyBoothPerformanceVO>();
 			
-			if(jObj.getString("task").equalsIgnoreCase("assemblyWiseResults"))
+			if(jObj.getString("task").equalsIgnoreCase("assemblyWiseResults") && electionScopeId >0l)
 			{				
+				List<PartyBoothPerformanceVO> boothResults = locationWiseElectionInformationDetalsService.getBoothWiseElectionResults(partyIds, constituencyId, jObj.getLong("electionyears"),jObj.getLong("electionScopeId"),
+						jObj.getLong("locationTypeId"),jObj.getLong("locationValue"));
 				if(boothResults != null && boothResults.size()>0)
 				{
 					for (PartyBoothPerformanceVO vo : boothResults) 
@@ -1426,10 +1428,14 @@ public String getElectionInformationLocationWise(){
 						PartyBoothPerformanceVOList1.add(boothResult1);
 					}
 				}
-			 
+				
+				boothResult = locationWiseElectionInformationDetalsService.segrigateBoothWiseResults(PartyBoothPerformanceVOList1);
 			}
-			else if(jObj.getString("task").equalsIgnoreCase("parliamentWiseResults"))
+			else if(jObj.getString("task").equalsIgnoreCase("parliamentWiseResults") && electionScopeId >0l)
 			{			
+				List<PartyBoothPerformanceVO> boothResults = locationWiseElectionInformationDetalsService.getBoothWiseElectionResults(partyIds, constituencyId, jObj.getLong("electionyears"),jObj.getLong("electionScopeId"),
+						jObj.getLong("locationTypeId"),jObj.getLong("locationValue"));
+				
 				if(boothResults != null && boothResults.size()>0)
 				{
 					for (PartyBoothPerformanceVO vo : boothResults) 
@@ -1441,10 +1447,50 @@ public String getElectionInformationLocationWise(){
 						PartyBoothPerformanceVOList1.add(boothResult1);
 					}
 				}
-			}
-			
-			boothResult = locationWiseElectionInformationDetalsService.segrigateBoothWiseResults(PartyBoothPerformanceVOList1);
-			
+				
+				boothResult = locationWiseElectionInformationDetalsService.segrigateBoothWiseResults(PartyBoothPerformanceVOList1);
+			}else if(electionScopeId == 0l){
+				List<PartyBoothPerformanceVO> PartyBoothPerformanceVOList2 = new ArrayList<PartyBoothPerformanceVO>();
+				List<PartyBoothPerformanceVO> PartyBoothPerformanceVOList3 = new ArrayList<PartyBoothPerformanceVO>();
+				
+				//assembly booth wise result
+				List<PartyBoothPerformanceVO> boothResults2 = locationWiseElectionInformationDetalsService.getBoothWiseElectionResults(partyIds, constituencyId, jObj.getLong("electionyears"),2L,
+						jObj.getLong("locationTypeId"),jObj.getLong("locationValue"));
+								
+					if(boothResults2 != null && boothResults2.size()>0)
+					{
+						for (PartyBoothPerformanceVO vo : boothResults2) 
+						{	
+							path = IWebConstants.STATIC_CONTENT_FOLDER_URL+""+vo.getPartyName();
+							PartyBoothPerformanceVO boothResult1 = locationWiseElectionInformationDetalsService.getVotingPercentageWiseBoothResultForParties(vo,true,path,partyIds);
+													boothResult1 = locationWiseElectionInformationDetalsService.getVotingPercentageWiseBoothResultForParties(vo,false,null,partyIds);
+							
+							PartyBoothPerformanceVOList2.add(boothResult1);
+						}
+					}
+				 
+				
+							
+					// parliament booth wise result
+					List<PartyBoothPerformanceVO> boothResults3 = locationWiseElectionInformationDetalsService.getBoothWiseElectionResults(partyIds, constituencyId, jObj.getLong("electionyears"),1L,
+							jObj.getLong("locationTypeId"),jObj.getLong("locationValue"));
+					if(boothResults3 != null && boothResults3.size()>0)
+					{
+						for (PartyBoothPerformanceVO vo : boothResults3) 
+						{	
+							path = IWebConstants.STATIC_CONTENT_FOLDER_URL+""+vo.getPartyName();
+							PartyBoothPerformanceVO boothResult1 = locationWiseElectionInformationDetalsService.getVotingPercentageWiseBoothResultForParties(vo,true,path,partyIds);
+													boothResult1 = locationWiseElectionInformationDetalsService.getVotingPercentageWiseBoothResultForParties(vo,false,null,partyIds);
+							
+							PartyBoothPerformanceVOList3.add(boothResult1);
+						}
+					}
+				
+				PartyBoothPerformanceVO assemblyBoothResultVO = locationWiseElectionInformationDetalsService.segrigateBoothWiseResults(PartyBoothPerformanceVOList2);
+				PartyBoothPerformanceVO parliamentBoothResultVO = locationWiseElectionInformationDetalsService.segrigateBoothWiseResults(PartyBoothPerformanceVOList3);
+				
+				boothResult = locationWiseElectionInformationDetalsService.getBoothWiseElectionResultsForAssamblyAndParlaiment(assemblyBoothResultVO,parliamentBoothResultVO);
+			}					
 		} catch (Exception e) {
 			LOG.error(" exception occured in ajaxHandler() in PartyBoothResult2Action action class.",e);
 		}
