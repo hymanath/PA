@@ -416,7 +416,7 @@
 <section style="margin-bottom: 100px;display:none" landing-block="itec" id="iteBlock" class="showhideCls">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-5">
+			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2351.png" >
 					<h5 style="display: inline-block;">IT E & C</h5>
@@ -427,6 +427,76 @@
 					<div class="block-footer">
 						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
 						<span style="font-size: 9px;color:#8286FF">INFORMATION TECHNOLOGY , ELECTRONICS & FIN TECH</span>
+						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/promotions.png" >
+					<h5 style="display: inline-block;">PROMOTIONS</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="itecPromotionsAllCls" style="margin-top: 0px"></h2>
+						<p class="">Committed Investment</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
+						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/eOffice.png" >
+					<h5 style="display: inline-block;">E OFFICE</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="itecEOfficeAllCls" style="margin-top: 0px"></h2>
+						<p class="">Total Pendency</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
+						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/meeSevaSla.png" >
+					<h5 style="display: inline-block;">MEESEVA - SLA</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="itecMeeSevaSlaAllCls" style="margin-top: 0px"></h2>
+						<p class="">Beyond SLA</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
+						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/APInnovationSoc.png" >
+					<h5 style="display: inline-block;">AP INNOVATION SOCIETY</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="itecApInnovationAllCls" style="margin-top: 0px"></h2>
+						<p class="">Startups</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
+						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/MeeSevaKPI.png" >
+					<h5 style="display: inline-block;">MEESEVA & KPI</h5>
+					<div class=" " style="text-align: right">
+						<h2 style="margin-top: 0px">3499</h2>
+						<p class="">etaal - KPI</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
 						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
