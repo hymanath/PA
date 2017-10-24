@@ -1655,6 +1655,17 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}
+  public String getTrustEducationSubjectForDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+
+			grveneVO = locationDashboardService.getTrustEducationSubjectForDetails(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValuesList,jObj.getString("year"),jObj.getLong("stateId"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getTrustEducationSubjectForDetails() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
   public String getElectionYearAndPartiesWiseDetails(){
 	   try{
 		   LOG.info("Entered into getElectionYearAndPartiesWiseDetails of locationDashboardAction");

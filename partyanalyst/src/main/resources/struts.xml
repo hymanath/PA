@@ -18354,6 +18354,11 @@
          <param name="root">grivenceVO</param>
        </result>
    </action>
+   <action name="getTrustEducationSubjectForDetailsAction" class="locationDashboardAction" method="getTrustEducationSubjectForDetails">
+        <result type="json" name="success">
+         <param name="root">grveneVO</param>
+       </result>
+   </action>
    <action name="getElectionYearAndPartiesAction" class="locationDashboardAction"  method="getElectionYearAndPartiesWiseDetails">
 		<result type="json" name="success">    
 			<param name="root">electioninformationList</param>       

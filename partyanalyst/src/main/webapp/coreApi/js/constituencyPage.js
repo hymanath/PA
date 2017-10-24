@@ -7553,6 +7553,7 @@ function getDetailedElectionResults(constituencyId,electionYear,type){
 	  //getLocationWiseInsuranceIssueTypeComplaintCount("");
     //getTrustEducationOverviewDetails(yearId);
 	//getLocationWiseTrustEducationComplaintCount(yearId);
+    //getTrustEducationSubjectForDetails("");
 function getGrivenceOverviewDtls(yearId){
 
 	var jsObj={
@@ -7697,6 +7698,23 @@ function getLocationWiseTrustEducationComplaintCount(yearId){
 	}).done(function(result){  
 		console.log(result);
 	});	
+	function getTrustEducationSubjectForDetails(yearId){
+		var jsObj={
+				"fromDate" 			: "",
+				"toDate"			: "",
+				"locationTypeId" 	: locationLevelId,
+				"locationValuesArr" : userAccessLevelValuesArray,
+				"year"				: yearId,
+				stateId 			: 1
+			}
+		 $.ajax({
+		  type : "POST",
+		  url : "getTrustEducationSubjectForDetailsAction.action",
+		  dataType : 'json',
+		  data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){  
+			console.log(result);
+		});	
 }
 /*$(document).on('click','.electionTypeWiseCls',function(){
 	var  electionScopeIds = $(this).attr("value");
