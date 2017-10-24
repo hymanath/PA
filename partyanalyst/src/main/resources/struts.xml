@@ -18369,5 +18369,10 @@
 			<param name="root">keyValueVOList</param>       
 		</result>
    </action>
+    <action name="areaWiseBenefitsViewAction" class="locationDashboardAction" method="locationDashboard">
+			<result name="success">/jsp/areaWiseBenefitsView.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src="areaWiseBenefitsViewAction"</result>	
+	</action> 
  </package>
 </struts>

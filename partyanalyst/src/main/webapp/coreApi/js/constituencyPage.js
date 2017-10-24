@@ -275,6 +275,8 @@ function onLoadClicks()
 			window.open('areaWiseDashboardDetailedViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'election'){
 			window.open('areaWiseElectionDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&constituencyId='+constituencyId+'&locationLevelName='+locationLevelName+'&parliamentId='+parliamentId+'&locationName='+locationName+'&districtId='+districtId+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
+		}else if(blockName == 'benefits'){
+			window.open('areaWiseBenefitsViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}
 		
 	});
@@ -3974,19 +3976,47 @@ function getGovtSchemeWiseBenefitMembersCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-		if(result!=null){
+		if(result !=null && result.list !=null && result.list.length>0 && result.subList1 !=null && result.subList1.length>0){
+			$("#detailedBenefitBlockCls").show();
 			return buildTabs(result,locationLevelId,locationLevelVal);
 		}else{
 			$("#benefitsBlockId").html(noData);
+			$("#detailedBenefitBlockCls").hide();
 		}
 	});	
 	function buildTabs(result,locationLevelId,locationLevelVal)
 	{
 		var str='';
-		str+='<div class="col-sm-4">';
+		var totalBenefitsMemberesCount=0;
+		var totalBenefitsAmountCount=0;
+		var mainArr=[];
+		var percentage=0;
+		var totalSchemesCount=0;
+		var totalBenefitsCount=16;
+		if(result !=null && result.list !=null && result.list.length>0){
+			for(var i in result.list){
+				totalBenefitsMemberesCount =totalBenefitsMemberesCount+result.list[i].totalSeatsCount;
+				totalBenefitsAmountCount = totalBenefitsAmountCount+result.list[i].participatedSeatsCount;
+			}
+		}
+		if(result !=null && result.subList1 !=null && result.subList1.length>0){
+			totalSchemesCount =totalSchemesCount+result.subList1.length;
+			/* for(var i in result.subList1){
+				
+				/* if(result.subList1[i].totalSeatsCount !=null && result.subList1[i].totalSeatsCount>0){
+					totalBenefitsCount = totalBenefitsCount+result.subList1[i].totalSeatsCount;
+					
+				} 
+			} */
+		}
+		mainArr.push(totalSchemesCount)
+		mainArr.push(totalBenefitsCount)
+		percentage = parseFloat((totalBenefitsCount*100)/totalSchemesCount);
+		
+		str+='<div class="col-sm-5" style="border-right: 1px solid rgb(204, 204, 204);">';
 			str+='<div class="benefit_block">';
-				str+='<div id="benefitMainGraphId"></div>';
-				str+='<div class="row">';
+				str+='<div id="benefitMainGraphId" style="height:180px;"></div>';
+				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-6">';
 						str+='<div class="media media_padding">';
 							str+='<div class="media-left">';
@@ -3994,7 +4024,12 @@ function getGovtSchemeWiseBenefitMembersCount(){
 							str+='</div>';
 							str+='<div class="media-body">';
 								str+='<h6>Benefited Members</h6>';
-								str+='<h5>  - </h5>';
+								if(totalBenefitsMemberesCount !=null && totalBenefitsMemberesCount>0){
+									str+='<h5 class="m_top10">'+totalBenefitsMemberesCount+'</h5>';
+								}else{
+									str+='<h5 class="m_top10"> - </h5>';
+								}
+								
 							str+=' </div>';
 						str+='</div>';
 					str+='</div>';
@@ -4004,8 +4039,13 @@ function getGovtSchemeWiseBenefitMembersCount(){
 								str+='<i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:28px"></i>';
 							str+='</div>';
 							str+='<div class="media-body">';
-								str+='<h6 class="m_top5">Benefited<br/>Amount</h6>';
-								str+='<h5>  - </h5>';
+								str+='<h6 class="m_top5">Benefited Amount</h6>';
+								if(totalBenefitsAmountCount !=null && totalBenefitsAmountCount>0){
+									str+='<h5 class="m_top10">'+totalBenefitsAmountCount+'</h5>';
+								}else{
+									str+='<h5 class="m_top10"> - </h5>';
+								}
+								
 							str+=' </div>';
 						str+='</div>';
 					str+='</div>';
@@ -4013,113 +4053,262 @@ function getGovtSchemeWiseBenefitMembersCount(){
 			str+='</div>';
 			str+='<h5 class="m_top10">Location Wise Overview</h5>';
 			str+='<div class="table-responsive m_top10">';
-				str+='<table class="table tableAlignment">';
+				str+='<table class="table table_benefits" id="locationBenefitDT">';
 					str+='<thead class="bg-E9">';
 						str+='<tr>';
-							str+='<th>Location</th>';
+							str+='<th>'+locationName+'</th>';
 							str+='<th>Benefite Schemes</th>';
 							str+='<th>Memberes</th>';
 							str+='<th>Amount</th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
-						str+='<tr>';
-							str+='<td>Srikakulam</td>';
-							str+='<td>10</td>';
-							str+='<td>18546</td>';
-							str+='<td>18546/-</td>';
+					if(result !=null && result.list !=null && result.list.length>0){
+						for(var i in result.list){
+							str+='<tr>';
+								str+='<td>'+result.list[i].name+'</td>';
+								if(result.list[i].wonSeatsCount !=null && result.list[i].wonSeatsCount>0){
+									str+='<td>'+result.list[i].wonSeatsCount+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result.list[i].totalSeatsCount !=null && result.list[i].totalSeatsCount>0){
+									str+='<td>'+result.list[i].totalSeatsCount+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result.list[i].participatedSeatsCount !=null && result.list[i].participatedSeatsCount>0){
+									str+='<td>'+result.list[i].participatedSeatsCount+'/-</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+							str+='</tr>';
+						}
+						
+					}else{
+						str+='<tr colspan="4">';
+							str+='<td>No Data Available</td>';
 						str+='</tr>';
+					}
+						
 					str+='</tbody>';
 				str+='</table>';
 			str+='</div>';
 		str+='</div>';
-		str+='<div class="col-sm-8">';
+		str+='<div class="col-sm-7">';
 			str+='<h5>Schemes Overview</h5>';
 			str+='<div class="table-responsive m_top10">';
-				str+='<table class="table tableAlignment">';
-					str+='<thead class="bg-E9">';
+				str+='<table class="table_benefits" id="benefitSchemeDT" style="width:100%">';
+					str+='<thead class="">';
 						str+='<tr>';
-							str+='<th>Location</th>';
 							str+='<th></th>';
-							str+='<th>Memberes</th>';
-							str+='<th>Amount</th>';
+							str+='<th></th>';
+							str+='<th><img src="coreApi/img/group.png" alt="Group" style="width:25px;height:25px;"/></img></th>';
+							str+='<th><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:18px"></i></th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
-						str+='<tr>';
-							str+='<td>Srikakulam</td>';
-							str+='<td><div id="schemesGraphId" style="height:50px;"></div></td>';
-							str+='<td>18546</td>';
-							str+='<td>18546/-</td>';
+					if(result !=null && result.subList1 !=null && result.subList1.length>0){
+						for(var i in result.subList1){
+							str+='<tr>';
+								str+='<td>'+result.subList1[i].partyName+'</td>';
+								str+='<td style="width:40%"><div id="schemesGraphId'+i+'" style="height:37px;"></div></td>';
+								if(result.subList1[i].totalSeatsCount !=null && result.subList1[i].totalSeatsCount>0){
+									str+='<td>'+result.subList1[i].totalSeatsCount+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(result.subList1[i].participatedSeatsCount !=null && result.subList1[i].participatedSeatsCount>0){
+									str+='<td>'+result.subList1[i].participatedSeatsCount+'/-</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+							str+='</tr>';
+						}
+						
+					}else{
+						str+='<tr colspan="4">';
+							str+='<td>No Data Available</td>';
 						str+='</tr>';
+					}
+						
 					str+='</tbody>';
 				str+='</table>';
 			str+='</div>';
 		str+='</div>';
 		
 		$("#benefitsBlockId").html(str);
-		$('#schemesGraphId').highcharts({
+		$("#benefitSchemeDT").dataTable({
+			"paging":   true,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"iDisplayLength": 13,
+			 "aaSorting": [[ 3, "desc" ]], 
+			"aLengthMenu": [[13, 15, 20, -1], [13, 15, 20, "All"]]
+		});
+		$("#locationBenefitDT").dataTable({
+			"paging":   true,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"iDisplayLength": 10,
+			 "aaSorting": [[ 3, "desc" ]], 
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
+		$("#benefitSchemeDT_length").remove();
+		$("#locationBenefitDT_length").remove();
+		$("#benefitMainGraphId").highcharts({
+			colors:["#339900","#3BB878"],
 			chart: {
-				type: 'bar'
+				type: 'column'
 			},
 			title: {
+				text: '',
+				style: {
+				 color: '#000',
+				 font: 'bold 13px "Lato", sans-serif'
+			  }
+			},
+			subtitle: {
 				text: ''
 			},
-			
 			xAxis: {
-				type: 'category',
 				min: 0,
 				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				tickLength: 0,
-				labels: {
-					enabled: false
-				}
+				minorGridLineWidth: 0,	
+				type: 'category',
+				categories: ['Total Schemes','Benefite Schemes'],
+				
 			},
 			yAxis: {
 				min: 0,
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
-				tickLength: 0,
 				title: {
-					text: ''
-				},
-				labels: {
-					enabled: false
+					text: null
 				}
 			},
 			legend: {
 				enabled: false
 			},
 			tooltip: {
-				pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>'
+				useHTML:true,	
+				formatter: function () {
+					if(this.x !="Total Schemes"){
+						var pcnt = percentage;
+						return '<b>' + this.x + '</b><br/>' +
+						this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+					}else{
+						return '<b>' + this.x + '</b><br/>' +
+						this.y+'';
+					}
+					
+				}
 			},
-			plotOptions : { 
-				bar: {
-					pointWidth: 15,
-					gridLineWidth: 10,
+			plotOptions: { 
+				column: {
+					pointWidth: 30,
+					gridLineWidth: 25,
 					colorByPoint: true
 				}
 			},
 			series: [{
-				name: 'Population',
-				data: [
-				   [20]
-				],
+				name: 'Count',
+				data: mainArr,
 				dataLabels: {
-					enabled: false,
-					rotation: -90,
-					color: '#FFFFFF',
-					align: 'right',
-					format: '{point.y:.1f}', // one decimal
-					y: 10, // 10 pixels down from the top
-					style: {
-						fontSize: '13px',
-						fontFamily: 'Verdana, sans-serif'
+					enabled: true,
+					color: '#000',
+					align: 'center',
+					formatter: function() {
+						if(this.x !="Total Schemes"){
+							var pcnt = percentage;
+							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+						}else{
+							return '<span>'+this.y+'</span>';
+						}
+						
 					}
 				}
 			}]
 		});
+		if(result !=null && result.subList1 !=null && result.subList1.length>0){
+			for(var i in result.subList1){
+				var dataArr = [];
+				var tempArr=[];
+				var statusNamesArr=[];
+				statusNamesArr.push(result.subList1[i].partyName)
+				tempArr.push(result.subList1[i].percentage)
+				dataArr.push(tempArr)
+				console.log(dataArr)
+				$('#schemesGraphId'+i).highcharts({
+					colors:['#3BB878'],
+					chart: {
+						type: 'bar'
+					},
+					title: {
+						text: ''
+					},
+					
+					xAxis: {
+						type: 'category',
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						tickLength: 0,
+						categories: statusNamesArr,
+						labels: {
+							enabled: false
+						}
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						tickLength: 0,
+						title: {
+							text: ''
+						},
+						labels: {
+							enabled: false
+						}
+					},
+					legend: {
+						enabled: false
+					},
+					tooltip : {
+						enabled: false,
+						useHTML:true,
+						formatter: function () {
+							return '<b>' + this.x + '</b><br/>' +
+								this.y+'%';
+						}
+					},
+					plotOptions : { 
+						bar: {
+							pointWidth:15,
+							gridLineWidth:10,
+							colorByPoint: true,
+							dataLabels: {
+								enabled: true,
+								formatter: function() {
+									return '<span>'+this.y+' %</span>';
+								} 
+							}
+							
+						}
+					},
+					series: [{
+						name: 'Memberes',
+						data: dataArr,
+						
+					}]
+				});
+			}
+		}
+		
 	}
 }
 
