@@ -2075,7 +2075,7 @@ return (Long) query.uniqueResult();
 	 
 	 	if (locationType != null && locationValuesList != null && locationValuesList.size()>0) {
 	 			if (locationType == 2) {
-	 				sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValue) ");
+	 				//sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValue) ");
 	 			} else if (locationType == 3) {
 					sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValue) ");
 				} else if (locationType == 10) {
@@ -2099,7 +2099,9 @@ return (Long) query.uniqueResult();
 	 sb.append(" group by nominatedPost.nominatedPostStatus.nominatedPostStatusId "); 
 	 sb.append(" order by nominatedPost.nominatedPostStatus.nominatedPostStatusId ");
 	 Query query = getSession().createQuery(sb.toString());
-	 query.setParameterList("locationValue",locationValuesList);
+	 if(locationType != 2){
+		 query.setParameterList("locationValue",locationValuesList);
+	 }
 	 if(startDate != null && endDate != null){
 		 query.setDate("startDate",startDate);
 		 query.setDate("endDate",endDate);
@@ -2372,8 +2374,8 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 				if(searchLevelId != null && searchLevelId.longValue()>0L){
 					if((searchLevelId.longValue() == 1L))
 						builder.append(" and model.nominatedPostMember.address.country.countryId  = 1 ");
-					else if((searchLevelId.longValue() == 2L) && locationValues != null && locationValues.size()>0)
-						builder.append(" and state.stateId  in (:locationValue) ");
+					/*else if((searchLevelId.longValue() == 2L) && locationValues != null && locationValues.size()>0)
+						builder.append(" and state.stateId  in (:locationValue) ");*/
 					else if(searchLevelId.longValue() ==3L && locationValues != null && locationValues.size()>0)
 						builder.append(" and district.districtId in (:locationValue) ");
 					else if(searchLevelId.longValue() ==4L  && locationValues != null && locationValues.size()>0)
@@ -2416,9 +2418,9 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 				}else if(type != null && type.equalsIgnoreCase("ageGroup")){
 					builder.append(" ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
 				}else if(type != null && type.equalsIgnoreCase("mandal")){
-					if((searchLevelId.longValue() == 1L))
+					/*if((searchLevelId.longValue() == 1L))
 						builder.append("  ,state.stateId ");
-					else if((searchLevelId.longValue() == 2L) )
+					else*/ if((searchLevelId.longValue() == 2L) )
 						builder.append(", district.districtId ");
 					else if(searchLevelId.longValue() ==3L || searchLevelId.longValue() == 10l)
 						builder.append("  ,constituency.constituencyId ");
@@ -2442,7 +2444,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 					query.setDate("endDate", endDate);
 				}
 				
-				if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
+				if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0 && searchLevelId.longValue() != 2L){
 					query.setParameterList("locationValue", locationValues);
 				}
 				if(statusIds != null && statusIds.size() >0){
@@ -2462,11 +2464,11 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 
 		   StringBuilder sb = new StringBuilder();
 		   
-		    sb.append("select count(model.nominatedPostId),model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId from  NominatedPost model  where model.isDeleted ='N' and model.nominatedPostMember.isDeleted='N'"); 		        
+		    sb.append("select count(model.nominatedPostId),model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId from  NominatedPost model  where model.isDeleted ='N' and model.isExpired = 'N' and model.nominatedPostMember.isDeleted='N'"); 		        
 
 		    if (levelId != null && levelValues != null && levelValues.size()>0) {
 		        if (levelId.longValue() == 2L) {
-		          sb.append(" and model.nominatedPostMember.address.state.stateId in(:levelValues) ");
+		          //sb.append(" and model.nominatedPostMember.address.state.stateId in(:levelValues) ");
 		          //sb.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 		        } else if (levelId.longValue() == 3L) {
 		         sb.append(" and model.nominatedPostMember.address.district.districtId in(:levelValues) ");
@@ -2508,7 +2510,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 		query.setParameter("year", Integer.parseInt(year));
 		 	  }
 		     
-		     if(levelId != null && levelId.longValue() > 0l && levelValues != null && levelValues.size() > 0){
+		     if(levelId != null && levelId.longValue() > 0l && levelValues != null && levelValues.size() > 0 && levelId.longValue() != 2L){
 			           	query.setParameterList("levelValues", levelValues);
 			       
 			    } 
@@ -2533,7 +2535,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			builder.append(" where model.isDeleted = 'N' and model.isExpired = 'N' and model.nominationPostCandidate.isDeleted = 'N' " );
 			if (searchLevelId != null && locationValues != null && locationValues.size()>0) {
 		        if (searchLevelId == 2) {
-		        	builder.append(" and model.nominatedPostMember.address.state.stateId in(:locationValues) ");
+		        	//builder.append(" and model.nominatedPostMember.address.state.stateId in(:locationValues) ");
 		        	//builder.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 		        } else if (searchLevelId == 3) {
 		        	builder.append(" and model.nominatedPostMember.address.district.districtId in(:locationValues) ");
@@ -2579,7 +2581,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 		query.setParameter("year", Integer.parseInt(year));
 	 	     }
 			
-			if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
+			if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0 && searchLevelId != 2){
 				query.setParameterList("locationValues", locationValues);
 			}
 			if(statusIdsList != null && statusIdsList.size()>0){
@@ -2625,8 +2627,8 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		    builder.append(" where model.isDeleted = 'N' and model.isExpired = 'N' and model.nominatedPostMember.isDeleted = 'N' " );
 		    if (searchLevelId != null && locationValues != null && locationValues.size()>0) {
 		        if (searchLevelId == 2) {
-		        	builder.append(" and state.stateId in(:locationValues) ");
-		        	builder.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		        	//builder.append(" and state.stateId in(:locationValues) ");
+		        	//builder.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 		        } else if (searchLevelId == 3) {
 		        	builder.append(" and district.districtId in(:locationValues) ");
 		       } else if (searchLevelId == 10) {
@@ -2681,7 +2683,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			if(year !=null && !year.trim().isEmpty()){
 		 		query.setParameter("year", Integer.parseInt(year));
 		 	 }
-		    if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0){
+		    if(searchLevelId != null && searchLevelId.longValue()>0L && locationValues != null && locationValues.size()>0 && searchLevelId.longValue() != 2l){
 		      query.setParameterList("locationValues", locationValues);
 		    }
 		    if(statusIds != null && statusIds.size() >0){
@@ -2805,10 +2807,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 					   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
 			 
 			 	if (locationType != null && locationValuesList != null && locationValuesList.size()>0) {
-			 			if (locationType == 2) {
-			 				sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValue) ");
+			 			/*if (locationType == 2) {
+			 				//sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValue) ");
 			 				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-			 			} else if (locationType == 3) {
+			 			} else*/ if (locationType == 3) {
 							sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValue) ");
 						} else if (locationType == 10) {
 							sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValue) ");
@@ -2834,10 +2836,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			 sb.append(" group by nominatedPost.nominatedPostStatus.nominatedPostStatusId,nominatedPost.nominatedPostMember.boardLevel.boardLevelId "); 
 			 sb.append(" order by nominatedPost.nominatedPostStatus.nominatedPostStatusId ");
 			 Query query = getSession().createQuery(sb.toString());
-			 /*if (locationType != null && locationValuesList != null && locationValuesList.size()>0 && locationType !=2l) {
+			 if (locationType != null && locationValuesList != null && locationValuesList.size()>0 && locationType !=2l) {
 			   query.setParameterList("locationValue",locationValuesList);
-			 }*/
-			 query.setParameterList("locationValue",locationValuesList);
+			 }
+			// query.setParameterList("locationValue",locationValuesList);
 			 if(startDate != null && endDate != null){
 				 query.setDate("startDate",startDate);
 				 query.setDate("endDate",endDate);
@@ -2867,10 +2869,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
 	 	 
 	 	if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
- 			if (locationTypeId == 2) {
- 				sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValues) ");
+ 			/*if (locationTypeId == 2) {
+ 				//sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValues) ");
  				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
- 			} else if (locationTypeId == 3) {
+ 			} else*/ if (locationTypeId == 3) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValues) ");
 			} else if (locationTypeId == 10) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValues) ");
@@ -2915,7 +2917,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 	 
 	 	 Query query = getSession().createQuery(sb.toString());
 	 	 
-	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 && locationTypeId != 2){
 	 		  query.setParameterList("locationValues", locationValues);
 	 	  }
 	 	

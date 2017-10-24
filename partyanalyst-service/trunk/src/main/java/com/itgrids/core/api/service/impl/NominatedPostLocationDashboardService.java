@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
@@ -150,7 +151,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 			          }
 		            if(statusId.longValue() == 1l){
 		        	   deptVO.setOpenCount(deptVO.getOpenCount()+commonMethodsUtilService.getLongValueForObject(param[2])); 
-		            }else if(statusId.longValue() == 4l){
+		            }else if(statusId.longValue() == 4l || statusId.longValue() == 3l){
 		            	deptVO.setGoIsuuedCount(deptVO.getGoIsuuedCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
 		            }
 		            deptVO.setTotalPosts(deptVO.getTotalPosts()+commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -273,7 +274,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 	 *  @since 6-OCT-2017
 	 */
 	public List<NominatedPostCandidateDtlsVO> getLevelWiseGoIssuedPostions(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLvlId
-			,List<Long> statusIds){
+			,List<Long> statusIds,Long startIndex,Long endIndex){
 		List<NominatedPostCandidateDtlsVO> finalList = new CopyOnWriteArrayList<NominatedPostCandidateDtlsVO>();
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -284,7 +285,9 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
 			}
-			List<Object[]> candList = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedPostions(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,statusIds);
+			Map<Long,NominatedPostCandidateDtlsVO> candidatesMap = new TreeMap<Long,NominatedPostCandidateDtlsVO> ();
+			List<Object[]> pageNationCount = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedPostions(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,statusIds, null, null);
+			List<Object[]> candList = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedPostions(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,statusIds, startIndex, endIndex);
 			if(commonMethodsUtilService.isListOrSetValid(candList)){
 				for (Object[] param : candList) {
 					NominatedPostCandidateDtlsVO vo = new NominatedPostCandidateDtlsVO();
@@ -301,15 +304,31 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 					}else if(commonMethodsUtilService.getStringValueForObject(param[8]).equalsIgnoreCase("F")){
 						vo.setGender("Female");
 					}
+					
 					vo.setCasteCategory(commonMethodsUtilService.getStringValueForObject(param[9]));
-					String goDateStr = commonMethodsUtilService.getStringValueForObject(param[10]);
-					if(goDateStr != null && !goDateStr.isEmpty() ){
-					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(goDateStr);
-					String format = new SimpleDateFormat("MMM dd").format(date);
-					vo.setDate(format+","+goDateStr.substring(0,4));
-					}
-					vo.setImage(commonMethodsUtilService.getStringValueForObject(param[11]));
+					
+					vo.setImage(commonMethodsUtilService.getStringValueForObject(param[10]));
+					vo.setNominatedPostId(commonMethodsUtilService.getLongValueForObject(param[11]));
+					candidatesMap.put(vo.getNominatedPostId(), vo);
 					finalList.add(vo);
+				}
+			}
+			if(pageNationCount != null && finalList != null && pageNationCount.size() >0 && finalList.size() >0){
+				finalList.get(0).setPostCount(Long.valueOf(pageNationCount.size()));
+			}
+			List<Object[]> goIssuedExpiredDates = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedDate(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,statusIds,candidatesMap.keySet());
+			if(commonMethodsUtilService.isListOrSetValid(candList)){
+				for (Object[] param : goIssuedExpiredDates) {
+					NominatedPostCandidateDtlsVO vo =candidatesMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(vo != null){
+						String goDateStr = commonMethodsUtilService.getStringValueForObject(param[0]);
+						if(goDateStr != null && !goDateStr.isEmpty() ){
+						Date date = new SimpleDateFormat("yyyy-MM-dd").parse(goDateStr);
+						String format = new SimpleDateFormat("MMM dd").format(date);
+						vo.setDate(format+","+goDateStr.substring(0,4));
+						}
+					}
+					
 				}
 			}
 		}catch (Exception e) {
