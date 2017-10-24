@@ -3010,16 +3010,31 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId)
 {
 	$("#"+divIdd).html(spinner);
+	if(globalDivName == "Farm Ponds"){
 	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-		toDate : glEndDate,
-		locationType: menuLocationType,
-		divType : globalDivName,
-		locationId : menuLocationId,
-		sublocaType : locationTypeNew,
-		districtId:districtId
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			locationType: menuLocationType,
+			divType : globalDivName,
+			locationId : menuLocationId,
+			sublocaType : locationTypeNew,
+			districtId:districtId,
+			program : "-1"
+		}
+	}else{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			locationType: menuLocationType,
+			divType : globalDivName,
+			locationId : menuLocationId,
+			sublocaType : locationTypeNew,
+			districtId:districtId
+		}
 	}
+	
 	$.ajax({
 		url: 'getNregaLevelsWiseData',
 		data: JSON.stringify(json),
