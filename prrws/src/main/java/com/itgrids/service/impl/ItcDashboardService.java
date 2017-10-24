@@ -659,8 +659,9 @@ public class ItcDashboardService implements IItcDashboardService {
 			if(list != null && list.length > 0){
 				for (int i = 0; i < list.length; i++) {
 					ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
-					if(inputVO.getReportType() != null && (inputVO.getReportType().trim().equalsIgnoreCase(list[i].getCATEGORY())
-							&& !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total"))){
+					if(inputVO.getReportType() != null && !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total") && 
+							(inputVO.getReportType().trim().equalsIgnoreCase(list[i].getCATEGORY())
+							|| inputVO.getReportType().trim().equalsIgnoreCase("R3C"))){
 						
 						vo.setSector(list[i].getSECTOR());
 						vo.setDistrict(list[i].getDISTRICT());
@@ -716,7 +717,11 @@ public class ItcDashboardService implements IItcDashboardService {
 				for (ItecPromotionDetailsVO finalVO : returnList) {
 					for(int i = 0; i < list.length; i++){
 						if(list[i].getLINEOFACTIVITY() != null && !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total")){
-							if(list[i].getCATEGORY() != null && list[i].getCATEGORY().trim().equalsIgnoreCase(finalVO.getCategory())){
+							String categoryNew = list[i].getCATEGORY().trim();
+							if(categoryNew != null && categoryNew.equalsIgnoreCase("R3C"))
+								categoryNew = "R3";
+								
+							if(categoryNew != null && categoryNew.equalsIgnoreCase(finalVO.getCategory())){
 								finalVO.setCategoryCount(finalVO.getCategoryCount()+1);
 							}
 						}
