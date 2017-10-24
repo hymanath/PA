@@ -7746,32 +7746,57 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		try {
 			LOG.info("Entered into LocationDashboardService of getLocationWiseElectionDetails() method");
 			if(locationType != null && locationType.equalsIgnoreCase("state")){
-				KeyValueVO stateVO = new KeyValueVO();
-						stateVO.setId(3l);
-						stateVO.setName("DISTRICT");
-						stateVO.setId(4l);
-						stateVO.setName("CONSTITUENCY");
-						stateVO.setId(5l);
-						stateVO.setName("MANDAL");
-						stateVO.setId(6l);
-						stateVO.setName("PANCHAYAT");
-				finalList.add(stateVO);
-			}else if(locationType != null && locationType.equalsIgnoreCase("district")){
+				
 				KeyValueVO districtVO = new KeyValueVO();
-						districtVO.setId(4l);
-						districtVO.setName("CONSTITUENCY");
-						districtVO.setId(5l);
-						districtVO.setName("MANDAL");
-						districtVO.setId(6l);
-						districtVO.setName("PANCHAYAT");
+				districtVO.setId(3l);
+				districtVO.setName("DISTRICT");
+						
+			   KeyValueVO constituencyVO = new KeyValueVO();
+			   constituencyVO.setId(4l);
+			   constituencyVO.setName("CONSTITUENCY");
+			   
+			   KeyValueVO mandalVO = new KeyValueVO();
+			   mandalVO.setId(5l);
+			   mandalVO.setName("MANDAL");
+			   
+			   KeyValueVO panchayatVO = new KeyValueVO();
+			   panchayatVO.setId(6l);
+			   panchayatVO.setName("PANCHAYAT");
+			   
 				finalList.add(districtVO);
-			}else if(locationType != null && locationType.equalsIgnoreCase("constituency")){
-				KeyValueVO constituencyVO = new KeyValueVO();
-						constituencyVO.setId(5l);
-						constituencyVO.setName("MANDAL");
-						constituencyVO.setId(6l);
-						constituencyVO.setName("PANCHAYAT");
 				finalList.add(constituencyVO);
+				finalList.add(mandalVO);
+				finalList.add(panchayatVO);
+			
+			}else if(locationType != null && locationType.equalsIgnoreCase("district")){
+				 KeyValueVO constituencyVO = new KeyValueVO();
+				 constituencyVO.setId(4l);
+				 constituencyVO.setName("CONSTITUENCY");
+						
+				 KeyValueVO mandalVO = new KeyValueVO();
+				   mandalVO.setId(5l);
+				   mandalVO.setName("MANDAL");
+				   
+				   KeyValueVO panchayatVO = new KeyValueVO();
+				   panchayatVO.setId(6l);
+				   panchayatVO.setName("PANCHAYAT");
+				   
+				finalList.add(constituencyVO);
+				finalList.add(mandalVO);
+				finalList.add(panchayatVO);
+				
+			}else if(locationType != null && locationType.equalsIgnoreCase("constituency")){
+				 KeyValueVO mandalVO = new KeyValueVO();
+				   mandalVO.setId(5l);
+				   mandalVO.setName("MANDAL");
+				   
+				   KeyValueVO panchayatVO = new KeyValueVO();
+				   panchayatVO.setId(6l);
+				   panchayatVO.setName("PANCHAYAT");
+				   
+				finalList.add(mandalVO);
+				finalList.add(panchayatVO);
+				
 			}else if(locationType != null && locationType.equalsIgnoreCase("mandal")){
 				KeyValueVO mandalVO = new KeyValueVO();
 						mandalVO.setId(6l);
