@@ -4559,10 +4559,10 @@ function getNominatedPostStatusWiseCount(){
 				str+='<li style="background-color:#FEEE99" class="f-12"><span class="statusBox" style="background-color:#FED501"></span>TOTAL POSTS<span class="count"><b>'+totalCount+'</b></span></li>';
 				for(var i in result){
 					if(result[i].name == "GO ISSUED"){
-						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'" ></span>COMPLETED/G.O ISSUED<span class="count popUpDetailsClickCls" attr_boardLevelId="'+globalboardLevelId+'" attr_type="goIssued" attr_department_name = "overAll" attr_board_statusIds="0">'+result[i].count+'</span></li>';
+						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'" ></span>COMPLETED/G.O ISSUED<span class="count popUpDetailsClickCls" attr_boardLevelId="0" attr_type="goIssued" attr_department_name = "overAll" attr_board_statusIds="0">'+result[i].count+'</span></li>';
 					}else{
 						if(result[i].name == "OPEN"){
-							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count popUpDetailsClickCls" attr_department_id="0" attr_boardLevelId="'+globalboardLevelId+'" attr_type="open" attr_department_name = "">'+result[i].count+'</span></li>';
+							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count popUpDetailsClickCls" attr_department_id="0" attr_boardLevelId="0" attr_type="open" attr_department_name = "">'+result[i].count+'</span></li>';
 						}else{
 							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count"><b>'+result[i].count+'</b></span></li>';
 						}
@@ -5865,6 +5865,8 @@ function getLevelWisePostsOverView(){
     }).done(function(result){
 		if(result !=null && result.length>0){
 			return buildLevelWisePostsOverView(result);
+		}else{
+			$("#levelWiseNominatedPosts").html("NO DATA AVAILABLE ");
 		}
 	});	
 	
@@ -5918,9 +5920,9 @@ function getLevelWisePostsOverView(){
 								str+='</td>';
 								str+='<td>';
 								if(result[i].goIsuuedCount !=null && result[i].goIsuuedCount>0){
-									str+='<span class="popUpDetailsClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="4">'+result[i].goIsuuedCount+'</span>';
+									str+='<span class="popUpDetailsClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="0">'+result[i].goIsuuedCount+'</span>';
 								}else{
-									str+='<span class="" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="4">'+result[i].goIsuuedCount+'</span>';
+									str+='<span class="" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="0">'+result[i].goIsuuedCount+'</span>';
 								}
 									
 								str+='</td>';
@@ -6119,8 +6121,6 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 	  var statusIds=[];
 	  if(statusId == 0){
 		  statusIds.push(3,4)
-	  }else{
-		  statusIds.push(statusId)
 	  }
 	  
 	var jsObj={
@@ -6130,7 +6130,9 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
       locationTypeId	:locationLevelId,
       year				:"",
       boardLevelId		:boardLevelId, 
-	  statusIds			:statusIds // 3-complered 4 goIsuued
+	  statusIds			:statusIds, // 3-complered 4 goIsuued
+	  startIndex:0,
+	  endIndex:10000
      
     }
     $.ajax({   
