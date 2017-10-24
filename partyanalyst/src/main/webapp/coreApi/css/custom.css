@@ -1719,3 +1719,79 @@ font-size:12px !important;
 	font-size:12px !important;
 	padding:5px !important;
 }
+.black_block{
+	background-color:#ddd;
+	padding:10px;
+}
+.squareCss{
+	display:inline-block;
+	width:10px;
+	height:10px;
+}
+.list_style_css,.list_style_css1,.list_style_css2{
+	padding:0px;
+}
+.list_style_css li,.list_style_css1,.list_style_css2{
+	list-style:none;
+}
+
+.list_style_css li h6{
+	line-height:40px;
+	padding:4px;
+	text-transform:uppercase;
+}
+.list_style_css1 li h6{
+	line-height:25px;
+	padding:4px;
+	text-transform:uppercase;
+}
+.arrow_box_bottom {
+	border: 1px solid #EDEEF0;
+}
+.arrow_box_bottom:after, .arrow_box_bottom:before {
+	top: 100%;
+	right: 10px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box_bottom:after {
+	border-color: rgba(237, 238, 240, 0);
+	border-top-color: #EDEEF0;
+	border-width: 10px;
+	margin-left: -10px;
+}
+.arrow_box_bottom:before {
+	border-color: rgba(237, 238, 240, 0);
+	border-top-color: #EDEEF0;
+	border-width: 11px;
+	margin-left: -11px;
+}
+.list_style_css2{
+	padding:4px;
+	text-transform:uppercase;
+}
+.media_padding_grievance{
+	padding:20px;
+	border:1px solid #ccc;
+}
+.media_padding_grievance h3{
+	font-weight:normal;
+}
+.borderCss{
+	border:1px solid #ccc;
+}
+.border_left{
+	border-left:1px solid #ccc;
+}
+.border_right{
+	border-right:1px solid #ccc;
+}
+.table_griveance_pad thead tr th,.table_griveance_pad tbody tr td{
+	font-size:12px !important;
+	padding:10px !important;
+}
