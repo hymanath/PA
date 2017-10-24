@@ -658,12 +658,16 @@ public class ItcDashboardService implements IItcDashboardService {
 			MOUTrackerIT[] list = new TrackerITServiceSoapProxy().GET_LEAD_CATEGORY_WISE(inputVO.getLeadName(),inputVO.getCategory());
 			if(list != null && list.length > 0){
 				for (int i = 0; i < list.length; i++) {
-					ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
-					if(inputVO.getReportType() != null && !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total") && 
-							(inputVO.getReportType().trim().equalsIgnoreCase(list[i].getCATEGORY())
-							|| inputVO.getReportType().trim().equalsIgnoreCase("R3A") || inputVO.getReportType().trim().equalsIgnoreCase("R3B")
-							|| inputVO.getReportType().trim().equalsIgnoreCase("R3C"))){
-						
+					String categoryNew = list[i].getCATEGORY().trim();
+					if(categoryNew != null && categoryNew.equalsIgnoreCase("R3A"))
+						categoryNew = "R3";
+					else if(categoryNew != null && categoryNew.equalsIgnoreCase("R3B"))
+						categoryNew = "R3";
+					if(categoryNew != null && categoryNew.equalsIgnoreCase("R3C"))
+						categoryNew = "R3";
+					
+					if(inputVO.getReportType() != null && !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total") && inputVO.getReportType().trim().equalsIgnoreCase(categoryNew)){
+						ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
 						vo.setSector(list[i].getSECTOR());
 						vo.setDistrict(list[i].getDISTRICT());
 						vo.setNoProjects(list[i].getNO_PROJECTS());
