@@ -7418,11 +7418,11 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			Date fromDate = getDates(fromDateStr,toDateStr)[0];
 			Date toDate = getDates(fromDateStr,toDateStr)[1];
 			
-			List<Object[]> grivenceDtlsObjList = insuranceStatusDAO.getTrustEducationComplaintCnt(locationTypeId, locationValues, stateId, fromDate, toDate);
+			List<Object[]> trustEduDtlsObjList = insuranceStatusDAO.getTrustEducationComplaintCnt(locationTypeId, locationValues, stateId, fromDate, toDate);
 			
-			Map<String,GrivenceStatusVO> statusMap = getStatusWiseComplaintCount(grivenceDtlsObjList);//getting status wise complaint count
-			Map<String, GrivenceStatusVO> supportForDtlsMap = getTrustEducationSupportForWiseComplaintCount(grivenceDtlsObjList,statusMap);//getting type of issue and status wise complaint count
-			Map<String, GrivenceStatusVO> supportPurposeDtlsMap = getTrustEducationSupportPurPoseWiseComplaintCount(grivenceDtlsObjList,statusMap);//getting type of issue and status wise complaint count
+			Map<String,GrivenceStatusVO> statusMap = getStatusWiseComplaintCount(trustEduDtlsObjList);//getting status wise complaint count
+			Map<String, GrivenceStatusVO> supportForDtlsMap = getTrustEducationSupportForWiseComplaintCount(trustEduDtlsObjList,statusMap);//getting type of issue and status wise complaint count
+			Map<String, GrivenceStatusVO> supportPurposeDtlsMap = getTrustEducationSupportPurPoseWiseComplaintCount(trustEduDtlsObjList,statusMap);//getting type of issue and status wise complaint count
 			
 			resultVO.getSubList().addAll(statusMap.values());
 			resultVO.setSubList1(new ArrayList<GrivenceStatusVO>(supportForDtlsMap.values()));
@@ -7483,6 +7483,62 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			 Log.error("Exception raised at getTrustEducationSupportPurPoseWiseComplaintCount() in  LocationDashboardService class "+e);
 		 }
 		 return supportPurposeMap;
+	}
+	/**
+	 * @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationTypeId
+	 * @param List<Long> locationValues
+	 * @param String year
+	 * @param Long stateId
+	 * @return GrivenceStatusVO
+	 * @author Santosh Kumar Verma
+	 * @Description :This Service Method is used to get trust education subject for details. 
+	 * @Date 24-OCT-2017
+	 */
+	public GrivenceStatusVO getTrustEducationSubjectForDetails(String fromDateStr, String toDateStr, Long locationTypeId,List<Long> locationValues, String year, Long stateId) {
+		GrivenceStatusVO resultVO = new GrivenceStatusVO();
+		try {
+
+			Date fromDate = getDates(fromDateStr, toDateStr)[0];
+			Date toDate = getDates(fromDateStr, toDateStr)[1];
+
+			List<Object[]> trustEduDtlsObjList = insuranceStatusDAO.getTrustEducationComplaintCnt(locationTypeId,locationValues, stateId, fromDate, toDate);
+
+			if (trustEduDtlsObjList != null && trustEduDtlsObjList.size() > 0) {
+				Map<String, GrivenceStatusVO> subjectForDtlsMap = new HashMap<String, GrivenceStatusVO>(0);
+				for (Object[] param : trustEduDtlsObjList) {
+					String subjectPurpose = getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[0])).trim();
+					String subjectFor = getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[1])).trim();
+					Long complaintCount = commonMethodsUtilService.getLongValueForObject(param[3]);
+
+					if (subjectPurpose.equalsIgnoreCase("FEE CONCESSION")) {
+						resultVO.setFeeConsCount(resultVO.getFeeConsCount() + complaintCount);
+					} else if (subjectPurpose.equalsIgnoreCase("SEAT")) {
+						resultVO.setSeatCount(resultVO.getSeatCount() + complaintCount);
+					}
+
+					GrivenceStatusVO subjectForVO = subjectForDtlsMap.get(subjectFor);
+					if (subjectForVO == null) {
+						subjectForVO = new GrivenceStatusVO();
+						subjectForVO.setName(subjectFor);
+						subjectForVO.setSubList(getTrustEducationRequiredTemplate());// getting template
+						subjectForDtlsMap.put(subjectForVO.getName(),subjectForVO);
+					}
+					GrivenceStatusVO subjectPurposeMatchVO = getGrivanceStastusMatchVO(subjectForVO.getSubList(), subjectPurpose);
+					if (subjectPurposeMatchVO != null) {
+						subjectPurposeMatchVO.setCount(complaintCount);
+						subjectForVO.setCount(subjectForVO.getCount() + subjectPurposeMatchVO.getCount());
+					}
+				}
+				// preparing final list
+				resultVO.setCount(resultVO.getFeeConsCount() + resultVO.getSeatCount());
+				resultVO.getSubList().addAll(subjectForDtlsMap.values());
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised at getTrustEducationSubjectForDetails() in  LocationDashboardService class "+ e);
+		}
+		return resultVO;
 	}
 	/**
 	 * @param String fromDateStr

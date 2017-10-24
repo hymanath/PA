@@ -78,15 +78,19 @@ public interface ILocationDashboardService {
 	public List<CandidateDetailsForConstituencyTypesVO> getPartyWiseMPandMLACandidatesCountDetials(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue,Long partyId);
 	public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(Long loactionTypeId,List<Long> locationValues);
 	public List<MeetingsVO> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues,String startDate,String endDate,Long meetingLevelId,Long meetingTypeId,Long meetingMainTypeId);
-	
+	//Grievance
 	public GrivenceStatusVO getGrivenceOverviewDtls(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
 	public List<GrivenceStatusVO> getGrivenceComplaintCountDepartmentWise(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
 	public GrivenceStatusVO getGrivenceFinancialSupportDtls(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
 	public List<GrivenceStatusVO> getLocationWiseTypeOfIssueGrivenceComplaintCount(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
+	//Insurance
 	public GrivenceStatusVO getInsuranceOverviewDetails(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
 	public List<GrivenceStatusVO> getLocationWiseInsuranceIssueTypeComplaintCount(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
+	//Trust education
 	public GrivenceStatusVO getTrustEducationOverviewDetails(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
 	public List<GrivenceStatusVO> getLocationWiseTrustEducationComplaintCount(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
+	public GrivenceStatusVO getTrustEducationSubjectForDetails(String fromDateStr, String toDateStr, Long locationTypeId,List<Long> locationValues, String year, Long stateId);
+	
 	public List<ElectionInformationVO> getElectionYearWisePartyDetails(List<Long> electionScopeIdsLst,List<String> subTypes);
 	public List<KeyValueVO> getLocationWiseElectionDetails(String locationType,List<Long> locationValues);
 	}
