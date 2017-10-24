@@ -2489,7 +2489,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 				   " and nominatedPostApplication.isExpired = 'N' ");
 		if (locationType != null && locationValue != null && locationValue.size()>0) {
 				if (locationType == 2) {
-				sb.append(" and nominatedPostApplication.address.state.stateId in(:locationValue) ");
+				//sb.append(" and nominatedPostApplication.address.state.stateId in(:locationValue) ");
 				} else if (locationType == 3) {
 					sb.append(" and nominatedPostApplication.address.district.districtId in(:locationValue) ");
 				} else if (locationType == 10) {
@@ -2513,7 +2513,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		 sb.append(" order by nominatedPostApplication.applicationStatus.applicationStatusId ");
 		 Query query = getSession().createQuery(sb.toString());
 		
-		 if (locationType != null && locationValue != null && locationValue.size() > 0) {
+		 if (locationType != null && locationValue != null && locationValue.size() > 0 && locationType != 2) {
 			 query.setParameterList("locationValue",locationValue);
 		 }
 		 if(startDate != null && endDate != null){
@@ -2525,27 +2525,27 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	public List<Object[]> getTotalReceivedApplicationsForLocation(List<Long> boardLevelId,Long levelId,List<Long> levelValues,Date startDate, Date endDate, String year){
 	    
 	    StringBuilder sb = new StringBuilder();
-	    sb.append(" select count(model.nominatedPostApplicationId),model.nominatedPostMember.boardLevelId from NominatedPostApplication model where  model.isDeleted ='N' and  model.isExpired ='N' and " +
+	    sb.append(" select count(model.nominatedPostApplicationId),model.boardLevelId from NominatedPostApplication model where  model.isDeleted ='N' and  model.isExpired ='N' and " +
 	        " model.applicationStatus.applicationStatusId not in(2,4,8) ");
 	    
 	    if (levelId != null && levelValues != null && levelValues.size()>0) {
 	        if (levelId.longValue() == 2L) {
-	          sb.append(" and model.nominatedPostMember.address.state.stateId in(:levelValues) ");
+	         // sb.append(" and model.address.state.stateId in(:levelValues) ");
 	          //sb.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 	        } else if (levelId.longValue() == 3L) {
-	         sb.append(" and model.nominatedPostMember.address.district.districtId in(:levelValues) ");
+	         sb.append(" and model.address.district.districtId in(:levelValues) ");
 	       } else if (levelId.longValue() == 10L) {
-	         sb.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:levelValues) ");
+	         sb.append(" and model.address.constituency.constituencyId in(:levelValues) ");
 	       } else if (levelId.longValue() == 4L) {
-	         sb.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:levelValues) ");
+	         sb.append(" and model.address.constituency.constituencyId in(:levelValues) ");
 	       } else if (levelId.longValue() == 5L) {
-	         sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId in(:levelValues) ");
+	         sb.append(" and model.address.tehsil.tehsilId in(:levelValues) ");
 	       }else if (levelId.longValue() == 6L) {
-	         sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId in(:levelValues) ");
+	         sb.append(" and model.address.panchayat.panchayatId in(:levelValues) ");
 	       }else if (levelId.longValue() == 7L) {
-	         sb.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:levelValues) ");
+	         sb.append(" and model.address.localElectionBody.localElectionBodyId in(:levelValues) ");
 	       }else if (levelId.longValue() == 8L) {
-	         sb.append(" and model.nominatedPostMember.address.ward.constituencyId in(:levelValues) ");
+	         sb.append(" and model.address.ward.constituencyId in(:levelValues) ");
 	       }    
 	       }
 	    if(startDate != null && endDate != null){
@@ -2558,10 +2558,10 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	        
 	       if(boardLevelId != null && boardLevelId.size() > 0L){
 	           
-	             sb.append(" and model.nominatedPostMember.boardLevelId in (:boardLevelId) ");
+	             sb.append(" and model.boardLevelId in (:boardLevelId) ");
 	           
 	       }
-	       sb.append("group by model.nominatedPostMember.boardLevelId");
+	       sb.append("group by model.boardLevelId");
 	       Query query = getSession().createQuery(sb.toString());
 	       
 	       if(startDate != null && endDate != null){
@@ -2576,7 +2576,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	       if(boardLevelId != null && boardLevelId.size() > 0L){
 	         query.setParameterList("boardLevelId",boardLevelId );
 	       }
-	       if(levelId != null && levelId.longValue() > 0l && levelValues != null && levelValues.size() > 0){
+	       if(levelId != null && levelId.longValue() > 0l && levelValues != null && levelValues.size() > 0 && levelId.longValue() != 2L){
 	         query.setParameterList("levelValues",levelValues );
 	       }
 	       
@@ -2591,7 +2591,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		    
 		    if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
 	 			if (locationTypeId == 2) {
-	 				sb.append(" and model.nominatedPostMember.address.state.stateId in(:locationValue) ");
+	 				//sb.append(" and model.nominatedPostMember.address.state.stateId in(:locationValue) ");
 	 				//sb.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 	 			} else if (locationTypeId == 3) {
 					sb.append(" and model.nominatedPostMember.address.district.districtId in(:locationValue) ");
@@ -2619,10 +2619,10 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		     sb.append(" and model.applicationStatus.applicationStatusId not in(8,2,4) ");
 		       sb.append(" group by model.nominatedPostMember.boardLevelId");
 		       Query query = getSession().createQuery(sb.toString());
-		       /*if (locationTypeId != null && locationValues != null && locationValues.size()>0 && locationTypeId !=2l) {
+		       if (locationTypeId != null && locationValues != null && locationValues.size()>0 && locationTypeId !=2l) {
 		          query.setParameterList("locationValue",locationValues);
-		       }*/
-		       query.setParameterList("locationValue",locationValues);
+		       }
+		      // query.setParameterList("locationValue",locationValues);
 		       if(boardLevelId != null && boardLevelId.longValue() > 0L){
 		         query.setParameter("boardLevelId",boardLevelId );
 		       }   
@@ -2654,10 +2654,10 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 			   " and nominatedPostApplication.nominatedPostMember.isDeleted = 'N' ");
 	 	 
 	 	if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
- 			if (locationTypeId == 2) {
+ 			/*if (locationTypeId == 2) {
  				sb.append(" and nominatedPostApplication.nominatedPostMember.address.state.stateId in(:locationValues) ");
  				//sb.append(" and nominatedPostApplication.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
- 			} else if (locationTypeId == 3) {
+ 			} else*/ if (locationTypeId == 3) {
 				sb.append(" and nominatedPostApplication.nominatedPostMember.address.district.districtId in(:locationValues) ");
 			} else if (locationTypeId == 10) {
 				sb.append(" and nominatedPostApplication.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValues) ");
@@ -2703,7 +2703,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 	 
 	 	 Query query = getSession().createQuery(sb.toString());
 	 	 
-	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 && locationTypeId.longValue() != 2){
 	 		  query.setParameterList("locationValues", locationValues);
 	 	  }
 	 	

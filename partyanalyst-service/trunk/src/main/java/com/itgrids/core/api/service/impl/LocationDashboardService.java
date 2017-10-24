@@ -4424,6 +4424,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			 if(candidateDetails != null && candidateDetails.size()>0){
 				 for(Object[] param : candidateDetails){
 					    vo = new NominatedPostDetailsVO();
+					    vo.setCount(commonMethodsUtilService.getLongValueForObject(param[0]));
 					 vo.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
 					 vo.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
 					 totalCount = totalCount+vo.getCount();
