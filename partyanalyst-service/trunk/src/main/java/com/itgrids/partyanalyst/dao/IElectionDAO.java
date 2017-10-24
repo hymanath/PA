@@ -225,5 +225,6 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List<Object[]> getElectionDetailsPanchayatWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds);
 
 	List<Long> getElectionDetailsByYearAndElectionTypeForLocation(String year,Long electionTypeId, Long stateId);
+	public  List<String> getElectionYearByScopeIds(List<Long> electionScopeIds,List<String> subTypeArr);
 
 }

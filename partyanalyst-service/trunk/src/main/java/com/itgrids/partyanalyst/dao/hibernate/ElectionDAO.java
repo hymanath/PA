@@ -1359,5 +1359,25 @@ IElectionDAO {
 		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where (model.electionScope.state.stateId = ? or model.electionScope.state.stateId is null) and " +
 				" model.electionScope.electionType.electionType = ? and model.isPartial = ? and model.elecSubtype = ?  order by model.electionYear desc",params);
 	}
-
+	
+	public  List<String> getElectionYearByScopeIds(List<Long> electionScopeIds,List<String> subTypeArr){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct model.electionYear from Election model " +
+				         " where model.electionScope.electionScopeId in(:electionScopeIds)");
+		
+		if(subTypeArr.size()>0l && subTypeArr !=null){
+			sb.append(" and model.elecSubtype in(:subTypeArr)");
+		}
+		
+		Query qry = getSession().createQuery(sb.toString());
+				        
+		if(electionScopeIds != null && electionScopeIds.size() >0){
+			qry.setParameterList("electionScopeIds", electionScopeIds);
+		}
+		if(subTypeArr != null && subTypeArr.size() >0){
+			qry.setParameterList("subTypeArr", subTypeArr);
+		}
+		return qry.list();
 	}
+	
+}

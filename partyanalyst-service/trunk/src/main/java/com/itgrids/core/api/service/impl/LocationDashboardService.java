@@ -7657,5 +7657,31 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		  }
 		return monthTemlateList;
 		}
+	
+	/**
+	 * @param List<Long> locationScopeIds
+	 * @param List<String> subType
+	 * @return List<ElectionInformationVO>
+	 * @author krishna
+	 * @Description :This Service Method is used to get election years. 
+	 * @Date 24-OCT-2017
+	 */
+	public List<ElectionInformationVO> getElectionYearWisePartyDetails(List<Long> electionScopeIdsLst,List<String> subTypes){
+		 List<ElectionInformationVO>  resultList = new ArrayList<ElectionInformationVO>();
+		try{
+			List<String> yearWiseObjsList = electionDAO.getElectionYearByScopeIds(electionScopeIdsLst,subTypes);
+			if(yearWiseObjsList != null && yearWiseObjsList.size() >0){
+				for(String param : yearWiseObjsList){
+					ElectionInformationVO elecionVo = new ElectionInformationVO();
+					
+					elecionVo.setElectionYear(param);
+					resultList.add(elecionVo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at LocationdashBoardService of getLocationWiseMemberDetails()",e);
+		}
+		return resultList;
+	}
 }
 
