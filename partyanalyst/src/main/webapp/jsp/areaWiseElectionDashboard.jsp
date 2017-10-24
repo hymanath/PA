@@ -283,6 +283,7 @@
 								<ul class="switch-btn-New pull-right" role="tabSwitch">
 									<li class="active activeCls" attr_val="2">Assembly Election</li>
 									<li  attr_val="1">Parliament Election</li>
+									<!--<li  attr_val="0">Both</li>-->
 								</ul>
 							</div>
 							<div class="row">
