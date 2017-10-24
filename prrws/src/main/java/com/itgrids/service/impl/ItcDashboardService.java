@@ -57,74 +57,7 @@ public class ItcDashboardService implements IItcDashboardService {
 	private ItcWebServiceUtilService itcWebServiceUtilService;
 	
 	/**
-	 * @author Santosh
-	 * @param InputVO inputVO
-	 * @description {This service is used to get department wise promotion overview details.}
-	 * @return ItecOverviewVO
-	 * @Date 21-09-2017
-	 */
-	public ItecOverviewVO getPromotionsOverviewByDepartmentType(InputVO inputVO) {
-		ItecOverviewVO resultVO = new ItecOverviewVO();
-		 try {
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getPromotionsOverviewByDepartmentType() in  ItcDashboardService class",e);
-		 }
-		 return resultVO;
-	}
-	/**
-	 * @author Santosh
-	 * @param InputVO inputVO
-	 * @description {This service is used to get department wise promotion overview details.}
-	 * @return List<ItInformationDtlsVO>
-	 * @Date 21-09-2017
-	 */
-	public List<ItInformationDtlsVO> getPromotionsDetailedDepartmentWise(InputVO inputVO) {
-		List<ItInformationDtlsVO> resultList = new ArrayList<ItInformationDtlsVO>(0);
-		 try {
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getPromotionsDetailedDepartmentWise() in  ItcDashboardService class",e);
-		 }
-		 return resultList;
-	}
-	
-	/**
-	 * @author Santosh
-	 * @param InputVO inputVO
-	 * @description {This service is used to get E office details.}
-	 * @return EofficeDtlsVO
-	 * @Date 21-09-2017
-	 */
-	public EofficeDtlsVO getEOfficePendencyDtlsByDepartmentType(InputVO inputVO) {
-		EofficeDtlsVO resultVO = new EofficeDtlsVO();
-		 try {
-			 
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getEOfficePendencyDtlsByDepartmentType() in  ItcDashboardService class",e);
-		 }
-		 return resultVO;
-	}
-	/**
-	 * @author Santosh
-	 * @param InputVO inputVO
-	 * @description {This service is used to get E office details department or designation and day wise}
-	 * @return List<EofficeDtlsVO>
-	 * @Date 21-09-2017
-	 */
-	public List<EofficeDtlsVO> getEOfficePendencyByDepartmentAndDayWise(InputVO inputVO) {
-		List<EofficeDtlsVO> resultList = new ArrayList<EofficeDtlsVO>(0);
-		 try {
-			 
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getEOfficePendencyByDepartmentAndDayWise() in  ItcDashboardService class",e);
-		 }
-		 return resultList;
-	}
-	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to meesevaSLA overview details.}
 	 * @return List<MeesevaDtlsVO>
@@ -285,7 +218,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		}
 	};
 	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to get E office details department or designation and day wise}
 	 * @return List<MeesevaDtlsVO>
@@ -331,41 +264,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		return resultList;
 	}
 	/**
-	 * @author Santosh
-	 * @param InputVO inputVO
-	 * @description {This service is used to get MeesevaKpi indicator progress details.}
-	 * @return List<MeesevaKPIDtlsVO>
-	 * @Date 21-09-2017
-	 */
-	public List<MeesevaKPIDtlsVO> getMeesevaKPIIndicatorsProgressDtls(InputVO inputVO) {
-		List<MeesevaKPIDtlsVO> resultList = new ArrayList<MeesevaKPIDtlsVO>(0);
-		 try {
-			 
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getMeesevaKPIIndicatorsProgressDtls() in  ItcDashboardService class",e);
-		 }
-		 return resultList;
-	}
-	/**
-	 * @author Santosh
-	 * @param InputVO inputVO
-	 * @description {This service is used to get MeesevaKpi indicator details period wise.}
-	 * @return List<MeesevaKPIDtlsVO>
-	 * @Date 21-09-2017
-	 */
-	public List<MeesevaKPIDtlsVO> getMeesevaKPIIndicatorsPeriodWise(InputVO inputVO) {
-		List<MeesevaKPIDtlsVO> resultList = new ArrayList<MeesevaKPIDtlsVO>(0);
-		 try {
-			 
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception occured at getMeesevaKPIIndicatorsPeriodWise() in  ItcDashboardService class",e);
-		 }
-		 return resultList;
-	}
-	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to get CM eoDB details period.}
 	 * @return CmEoDBDtlsVO
@@ -382,7 +281,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		 return resultVO;
 	}
 	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to get CM eoDB details status wise.}
 	 * @return List<MeesevaKPIDtlsVO>
@@ -399,7 +298,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		 return resultList;
 	}
 	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to get innovation society details.}
 	 * @return InnovationSocietyDtlsVO
@@ -424,7 +323,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		return resultVO;
 	}
 	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to get innovation society details.}
 	 * @return InnovationSocietyDtlsVO
@@ -448,7 +347,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		return resultVO;
 	}
 	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to get APISXLR8 details.}
 	 * @return List<InnovationSocietyDtlsVO>
@@ -504,7 +403,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		return resultVO;
 	}
 	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to get APISXLR8 details.}
 	 * @return List<InnovationSocietyDtlsVO>
@@ -539,7 +438,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		return resultList;
 	}
 	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to get APISXLR8 details.}
 	 * @return List<InnovationSocietyDtlsVO>
@@ -562,7 +461,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		return resultVO;
 	}
 	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to get getCampusInnovationCentersDetails.}
 	 * @return List<InnovationSocietyDtlsVO>
@@ -595,7 +494,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		return resultList;
 	}
 	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to get suo Moto Proposals details.}
 	 * @return List<InnovationSocietyDtlsVO>
@@ -621,7 +520,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		return resultList;
 	}
 	/**
-	 * @author Santosh
+	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
 	 * @description {This service is used to get Innovation Awards Details details.}
 	 * @return List<InnovationSocietyDtlsVO>

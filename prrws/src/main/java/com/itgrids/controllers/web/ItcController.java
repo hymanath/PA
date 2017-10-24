@@ -43,26 +43,6 @@ public class ItcController {
 			return "ItcDashboard";
 	    }
 
-	   @RequestMapping(value = "/getPromotionsOverviewByDepartmentType", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  ItecOverviewVO  getPromotionsOverviewByDepartmentType(@RequestBody InputVO inputVO) {
-		  ItecOverviewVO  reusltVO = itcDashboardService.getPromotionsOverviewByDepartmentType(inputVO);
-	       return reusltVO;
-	  }
-	   @RequestMapping(value = "/getPromotionsDetailedDepartmentWise", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<ItInformationDtlsVO>  getPromotionsDetailedDepartmentWise(@RequestBody InputVO inputVO) {
-		   List<ItInformationDtlsVO>  resultList = itcDashboardService.getPromotionsDetailedDepartmentWise(inputVO);
-	       return resultList;
-	   }
-	   @RequestMapping(value = "/getEOfficePendencyDtlsByDepartmentType", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  EofficeDtlsVO  getEOfficePendencyDtlsByDepartmentType(@RequestBody InputVO inputVO) {
-		   EofficeDtlsVO  reusltVO = itcDashboardService.getEOfficePendencyDtlsByDepartmentType(inputVO);
-		    return reusltVO;
-	   }
-	   @RequestMapping(value = "/getEOfficePendencyByDepartmentAndDayWise", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<EofficeDtlsVO>  getEOfficePendencyByDepartmentAndDayWise(@RequestBody InputVO inputVO) {
-		   List<EofficeDtlsVO>  resultList = itcDashboardService.getEOfficePendencyByDepartmentAndDayWise(inputVO);
-	    return resultList;
-	   }
 	   @RequestMapping(value = "/getMeesevaSLAOverviewDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	   public @ResponseBody  List<MeesevaDtlsVO>  getMeesevaSLAOverviewDtls(@RequestBody InputVO inputVO) {
 		   List<MeesevaDtlsVO>  resultList = itcDashboardService.getMeesevaSLAOverviewDtls(inputVO);
@@ -71,16 +51,6 @@ public class ItcController {
 	   @RequestMapping(value = "/getMeesevaSLAMonitoringDtlsDepartmentWise", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	   public @ResponseBody   List<MeesevaDtlsVO>  getMeesevaSLAMonitoringDtlsDepartmentWise(@RequestBody InputVO inputVO) {
 		    List<MeesevaDtlsVO>  resultList = itcDashboardService.getMeesevaSLAMonitoringDtlsDepartmentWise(inputVO);
-		   return resultList;
-	   }
-	   @RequestMapping(value = "/getMeesevaKPIIndicatorsProgressDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPIIndicatorsProgressDtls(@RequestBody InputVO inputVO) {
-		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPIIndicatorsProgressDtls(inputVO);
-		   return resultList;
-	   }
-	   @RequestMapping(value = "/getMeesevaKPIIndicatorsPeriodWise", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPIIndicatorsPeriodWise(@RequestBody InputVO inputVO) {
-		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPIIndicatorsPeriodWise(inputVO);
 		   return resultList;
 	   }
 	   @RequestMapping(value = "/getCMEDOBOverview", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)

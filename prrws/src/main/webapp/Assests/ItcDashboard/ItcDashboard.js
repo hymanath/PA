@@ -53,13 +53,8 @@ function onloadCalls(){
 	getITSectorWiseOverviewDetails();
 	getMeesevaSLAOverviewDtls("meesevaSla",5);
 	
-	/*getPromotionsOverviewByDepartmentType();
-	getPromotionsDetailedDepartmentWise();
-	getEOfficePendencyDtlsByDepartmentType();
-	getEOfficePendencyByDepartmentAndDayWise();
-    getMeesevaKPIIndicatorsProgressDtls();
-	getMeesevaKPIIndicatorsPeriodWise();
-	getCMEDOBOverview();
+	/*
+    getCMEDOBOverview();
 	getCMEDOBReportStatusWise();*/
 	
 	//AP Innovation Society Ajax Call Start
@@ -870,25 +865,7 @@ function getITDistrictWiseDetails(type,category,divType){
 		$("#"+type+"DataTable"+divType).dataTable();
 	}
 }
-function getPromotionsDetailedDepartmentWise(){
-	var json = {
-		fromDate:"",
-		toDate:"",
-		year:""
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getPromotionsDetailedDepartmentWise',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		console.log(result);
-	});		
-}
+
 function getCMEDOBOverview(){
 	var json = {
 		fromDate:"",
