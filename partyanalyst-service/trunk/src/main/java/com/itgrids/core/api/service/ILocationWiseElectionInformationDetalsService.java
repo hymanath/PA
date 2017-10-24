@@ -24,4 +24,5 @@ public interface ILocationWiseElectionInformationDetalsService {
 			List<Long> electionYrs,List<Long> electionScopeIds, List<String> subTypes,String searchType,String statusType,String year,List<Long> locationIdsList);
 	public List<Object[]> segregateAlianceParties(List<Object[]> inputObjList,List<String> subTypes,List<Long> electionYear,List<Long> electionScopeIds,Map<Long, Map<Long, ElectionInformationVO>> alliancedPartiesWithGroupId);
 	public Map<Long, Map<Long, ElectionInformationVO>> getSegregateAliancePartiesMap(List<String> subTypes, List<Long> electionYrs,List<Long> electionScopeIds);
+	public PartyBoothPerformanceVO getBoothWiseElectionResultsForAssamblyAndParlaiment(PartyBoothPerformanceVO assemblyBoothResultVO,PartyBoothPerformanceVO parliamentBoothResultVO);
 }

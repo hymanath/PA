@@ -1953,4 +1953,57 @@ public List<Object[]> addAliancePartyToList(List<Object[]> aliancedPartiesObj,Ob
 	  }
 	return null;
 }
+public PartyBoothPerformanceVO getBoothWiseElectionResultsForAssamblyAndParlaiment(PartyBoothPerformanceVO assemblyBoothResultVO,PartyBoothPerformanceVO parliamentBoothResultVO) {
+	PartyBoothPerformanceVO finalVo = new PartyBoothPerformanceVO();
+	try{
+		Map<Long,BoothResultVO> assemblyMap= new HashMap<Long,BoothResultVO>();
+		if(assemblyBoothResultVO != null){
+			List<BoothResultVO> boothResultVOs = assemblyBoothResultVO.getBoothResults();
+			if(boothResultVOs != null && boothResultVOs.size()>0){
+				for(BoothResultVO resultVo: boothResultVOs){
+					List<BoothResultVO> boothResults = resultVo.getBoothResultVOList();
+					if(boothResults != null && boothResults.size()>0){
+						for(BoothResultVO param : boothResults){
+							if(param.getBoothId() != null){
+								assemblyMap.put(param.getBoothId(), resultVo);break;
+							}
+						}
+					}
+				}
+			}
+		}
+		if(parliamentBoothResultVO != null ){
+			List<BoothResultVO> boothResultVOs = parliamentBoothResultVO.getBoothResults();
+			if(boothResultVOs != null && boothResultVOs.size()>0){
+				for(BoothResultVO resultVo: boothResultVOs){
+					List<BoothResultVO> partyResults = resultVo.getBoothResultVOList();
+					if(partyResults != null && partyResults.size()>0){
+						for(BoothResultVO partyVO : partyResults){
+							if(partyVO.getBoothId() != null){
+								BoothResultVO boothVO = assemblyMap.get(partyVO.getBoothId());
+								if(boothVO != null && commonMethodsUtilService.isListOrSetValid(boothVO.getBoothResultVOList())){
+									for (BoothResultVO assemblyPartyVO : boothVO.getBoothResultVOList()) {
+										if(partyVO.getOppPartyId().longValue() == assemblyPartyVO.getOppPartyId().longValue() ){
+											assemblyPartyVO.setParlaimentCount(partyVO.getVotesEarned());
+											assemblyPartyVO.setParlaimentPerc(partyVO.getPercentage());
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		finalVo.getPartyBoothPerformanceVOList().addAll(assemblyBoothResultVO.getPartyBoothPerformanceVOList());
+		finalVo.getBoothResults().addAll(assemblyMap.values());
+		return finalVo;
+	}catch(Exception e){
+		Log.error("Exception raised at getBoothWiseElectionResultsForAssamblyAndParlaiment service"+e);
+		return null;
+	}
+	
+	
+}
 }

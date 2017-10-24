@@ -21,11 +21,12 @@ public class BoothResultVO extends ResultStatus{
 	private int oppPartyVotesEarned;
 	private String oppPartyPercentage;
 	private String pollingPercentage;
-	private int totalBoothVoters;
 	private List<BoothResultVO> BoothResultVOList = new ArrayList<BoothResultVO>();
 	private List<BoothResultVO> BoothResultVOList1 = new ArrayList<BoothResultVO>();
 	private String wonParty;
-	
+	private int totalBoothVoters;
+	private int parlaimentCount=0;
+	private String parlaimentPerc;
 	public BoothResultVO(){
 		
 	}
@@ -178,5 +179,20 @@ public class BoothResultVO extends ResultStatus{
 		this.totalBoothVoters = totalBoothVoters;
 	}
 
-	
+	public int getParlaimentCount() {
+		return parlaimentCount;
+	}
+
+	public void setParlaimentCount(int parlaimentCount) {
+		this.parlaimentCount = parlaimentCount;
+	}
+
+	public String getParlaimentPerc() {
+		return parlaimentPerc;
+	}
+
+	public void setParlaimentPerc(String parlaimentPerc) {
+		this.parlaimentPerc = parlaimentPerc;
+	}
+
 }
