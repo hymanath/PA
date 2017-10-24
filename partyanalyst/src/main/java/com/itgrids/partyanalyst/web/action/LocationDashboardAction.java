@@ -1609,4 +1609,22 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}
+  public String getElectionYearAndPartiesWiseDetails(){
+	   try{
+		   LOG.info("Entered into getElectionYearAndPartiesWiseDetails of locationDashboardAction");
+		   jObj = new JSONObject(getTask());
+		   List<Long> electionScopeIdsList = convertJsonStringList(jObj.getJSONArray("electionScopeIds"));
+		   List<String> subTypeList = new ArrayList<String>();
+		   JSONArray jsonArray = jObj.getJSONArray("electionSubTypeArr");
+			if (jsonArray != null && jsonArray.length() > 0) {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					subTypeList.add(jsonArray.getString(i).toString());
+				}
+			}
+		   electioninformationList = locationDashboardService.getElectionYearWisePartyDetails(electionScopeIdsList,subTypeList);
+	   }catch(Exception e){
+		   LOG.error("Exception occured in getElectionYearAndPartiesWiseDetails() method of locationDashboardAction ",e);
+	   }
+	   return Action.SUCCESS;
+  }
 }
