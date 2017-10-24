@@ -1139,7 +1139,9 @@ public String getElectionInformationLocationWise(){
 	       jObj = new JSONObject(getTask());
 	        List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
 	        List<Long> statusList = convertJsonStringList(jObj.getJSONArray("statusIds")); 
-	        nominatedPostCandList = nominatedPostLocationDashboardService.getLevelWiseGoIssuedPostions(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"),jObj.getLong("boardLevelId"),statusList);
+	        Long startIndex = jObj.getLong("startIndex");
+	        Long endIndex = jObj.getLong("endIndex");
+	        nominatedPostCandList = nominatedPostLocationDashboardService.getLevelWiseGoIssuedPostions(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"),jObj.getLong("boardLevelId"),statusList,startIndex,endIndex);
 	     }catch(Exception e){
 	       LOG.error("Exception raised at getLevelWiseGoIssuedPostions() of LocationDashboardAction{}", e);
 	     }

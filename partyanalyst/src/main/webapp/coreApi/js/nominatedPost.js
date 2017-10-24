@@ -1,7 +1,7 @@
 // please do not try to edit these options which may cause the entire page to stop working.	
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var globalFromDate = moment().subtract(3,'year').format("DD/MM/YYYY");
-var globalToDate = moment().format("DD/MM/YYYY");
+var globalFromDate = "";//moment().subtract(3,'year').format("DD/MM/YYYY");
+var globalToDate ="";// moment().format("DD/MM/YYYY");
 
 setTimeout(function(){
 	onLoadCalls();
@@ -106,7 +106,7 @@ function getAllNominatedStatusListLevelWiseDataDashBoard(){
 									str+='<h4 class="m_top10">'+result.positinsList[i].totalPosts+'</h4>';
 								str+='</li>';
 								str+='<li>';
-									str+='<p class="text-muted">G.O Issued</p>';
+									str+='<p class="text-muted">G.O Issued/Finalized</p>';
 									str+='<h4 class="m_top10">'+result.positinsList[i].finalizedAndGoIssued+'</h4>';
 								str+='</li>';
 								str+='<li>';
@@ -255,6 +255,7 @@ function getAreaWiseDashboardCandidatesCountView(){
 			overview+='</table>';
 		overview+='</div>';
 		$("#levelWiseBlockOverviewId").html(overview);
+		if(result.subList[0] != null){
 		str+='<div class="table-responsive">';
 			str+='<table class="table table-bordered" id="LocationWiseLevelTableId">';
 				str+='<thead>';
@@ -289,6 +290,9 @@ function getAreaWiseDashboardCandidatesCountView(){
 			str+='</table>';
 		str+='</div>';
 		$("#LocationWiseLevelBlockId").html(str);
+		}else{
+			$("#LocationWiseLevelBlockId").html("");
+		}
 		$("#LocationWiseLevelTableId").dataTable({
 			"iDisplayLength": 10,
 			"aaSorting": [],
@@ -343,7 +347,8 @@ function getLocationWiseNominatedPostCandidateAgeRangeAndCasteCategorDetails(typ
 		{
 			return buildData(result);
 		}else{
-			$("#LocationWiseLevelBlockId").html("NO DATA AVAILABLE");
+			//$("#LocationWiseLevelBlockId").html("NO DATA AVAILABLE");
+			$("#"+type+"BlockId").html("NO DATA AVAILABLE");
 		}
 	});
 	function buildData(result)
