@@ -7698,6 +7698,7 @@ function getLocationWiseTrustEducationComplaintCount(yearId){
 	}).done(function(result){  
 		console.log(result);
 	});	
+}
 	function getTrustEducationSubjectForDetails(yearId){
 		var jsObj={
 				"fromDate" 			: "",
