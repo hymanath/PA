@@ -243,8 +243,9 @@ function onLoadAjaxCalls()
 	// Benefits
 	getGovtSchemeWiseBenefitMembersCount();
 	//Grievance And Insurance
-	getLocationWiseGrivanceTrustStatusCounts("3");
-	getLocationWiseInsuranceStatusCount("3");
+	getGrivenceOverviewDtls(""); 
+	getInsuranceOverviewDetails("");
+ 	getTrustEducationOverviewDetails("");
 	// Nominated Posts
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
@@ -270,13 +271,17 @@ function onLoadClicks()
 		var blockName = $(this).attr("detailed-block");
 		if(blockName == 'grievance')
 		{ 
-			window.open('areaWiseGrievanceDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
+			window.open('areaWiseGrievanceDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'nominatedPosts'){
 			window.open('areaWiseDashboardDetailedViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'election'){
 			window.open('areaWiseElectionDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&constituencyId='+constituencyId+'&locationLevelName='+locationLevelName+'&parliamentId='+parliamentId+'&locationName='+locationName+'&districtId='+districtId+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'benefits'){
 			window.open('areaWiseBenefitsViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
+		}else if(blockName == 'insurance'){
+			window.open('areaWiseInsuranceViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
+		}else if(blockName == 'ntrTrust'){
+			window.open('areaWiseNtrTrustViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}
 		
 	});
@@ -421,10 +426,6 @@ function onLoadClicks()
 	$(document).on("change","#enrolmentYears",function(){
 		getLocationWiseCommitteesCount($(this).val());
 	});
-	$(document).on("change","#enrolmentYearsGrievance",function(){
-		getLocationWiseGrivanceTrustStatusCounts($(this).val());
-		getLocationWiseInsuranceStatusCount($(this).val());
-	});
 	$(document).on("click","#menuHeaderId",function(e){
 		e.stopPropagation();
 		$(".menu-dropdown").toggle();
@@ -516,8 +517,14 @@ function onLoadClicks()
 			getAgeRangeGenerAndCasteGroupByCadreCount(4);
 		}else if(blockName == 'grievance')
 		{
-			getLocationWiseGrivanceTrustStatusCounts($("#enrolmentYearsGrievance").val());
-			getLocationWiseInsuranceStatusCount($("#enrolmentYearsGrievance").val());
+			getGrivenceOverviewDtls(""); 
+			
+		}else if(blockName == 'insurance')
+		{
+			getInsuranceOverviewDetails("");
+		}else if(blockName == 'ntrTrust')
+		{
+			getTrustEducationOverviewDetails("");
 		}else if(blockName == 'meetings')
 		{
 			getLocationWiseMeetingsCountDetails(1);
@@ -4838,221 +4845,6 @@ function getNominatedPostStatusWiseCount(){
 		});
 	}
 }
-function getLocationWiseInsuranceStatusCount(yearId){
-	$("#insuranceDetails").html(spinner);
-	$("#insuranceTotalCount").html("Total Count - ");
-	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
-			"locationTypeId" 	: locationLevelId,
-			"locationValuesArr" : userAccessLevelValuesArray,
-			"year"				: yearId
-		}
-	 $.ajax({
-      type : "POST",
-      url : "getLocationWiseInsuranceStatusCountAction.action",
-      dataType : 'json',
-      data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){  
-    	if(result != null){
-    		$("#insuranceDetails").css("height","300px");
-			return buildGraph(result);
-		}else{
-			$("#insuranceDetails").html("<h4 class='text-center'>NO DATA AVAILABLE</h4>");
-			$("#insuranceDetails").removeAttr(style);
-		}
-	});	
-	function buildGraph(result){
-		if(result !=null){
-				var mainArr=[];
-				var insuranceTotalCount = 0;
-				for(var j in result.subList){
-					var colorsId = insuranceColorObj[result.subList[j].name.trim()];
-					var obj1 = {
-						name: result.subList[j].name,
-						y:result.subList[j].count,
-						color:colorsId
-					}
-					mainArr.push(obj1);
-					insuranceTotalCount = insuranceTotalCount + result.subList[j].count;
-				}
-				$("#insuranceTotalCount").html("Total Count - "+insuranceTotalCount);
-				var id = 'insuranceDetails';
-				var type = {
-					type: 'pie',
-					backgroundColor:'transparent',
-					options3d: {
-						enabled: true,
-						alpha: 25
-					}
-				};
-				var title = {
-					text: ''
-				};
-				var tooltip = {
-					useHTML: true,
-					backgroundColor: '#FCFFC5', 
-					formatter: function() {
-						var cnt = this.point.count;
-						return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
-					}  
-				}; 
-				var plotOptions ={
-					pie: {
-						innerSize: 70,
-						depth: 50,
-						dataLabels: {
-							enabled: false,
-							formatter: function() {
-								return (this.y) + ' %';
-							},
-							distance: -20,
-							color:'#333'
-						},
-						showInLegend: legend
-					},
-				};
-				var legend = {
-					enabled: true,
-					align: 'left',
-					verticalAlign: 'bottom',
-					useHTML: true,
-					labelFormatter: function() {
-						return '<span style="color:'+this.color+'">'+this.name + '-' + this.y + '';
-					}
-				};
-				var data = [{
-					name: '',
-					data: mainArr
-				}];
-				highcharts(id,type,data,plotOptions,title,tooltip,legend);
-			
-		}
-	}
-}
-function getLocationWiseGrivanceTrustStatusCounts(yearId){
-	$("#grivanceId0,#grivanceId1").html(spinner);
-	$("#totalGrievanceCount,#NtrTrustTotalCount").html('Total Count - ');
-	var jsObj={
-			"fromDate" : "",
-			"toDate":"",
-			"locationTypeId" : locationLevelId,
-			"locationValuesArr" :userAccessLevelValuesArray,
-			"year": yearId
-		}
-	$.ajax({
-		type : "POST",
-		url : "getLocationWiseGrivanceTrustStatusCountsAction.action",
-		dataType : 'json',
-		data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-		if(result !=null && result.length>0){
-			$("#grivanceId0,#grivanceId1").css("height","300px");
-			return buildGraph(result);
-		}else{
-			if(result !=null && result.length>0){
-				for(var i in result){
-					if(typeof result[i].grivenceType == "undefined" || typeof result[i].grivenceType === undefined){
-						$("#grivanceId0,#grivanceId1").html(noData);
-						$("#grivanceId0,#grivanceId1").removeAttr("style");
-					}
-				}
-			}else{
-				$("#grivanceId0,#grivanceId1").html(noData);
-				$("#grivanceId0,#grivanceId1").removeAttr("style");
-			}
-			
-		}
-	});
-
-	function buildGraph(result){
-		if(result !=null && result.length>0){
-			for(var i in result){
-				var mainArr=[];
-				if(result[i].grivenceType == "Grivence"){
-					var totalGrievanceCount = 0;
-					for(var j in result[i].subList){
-						var colorsId = grivanceColorObj[result[i].subList[j].name.trim()];
-						var obj = {
-							name: result[i].subList[j].name,
-							y:result[i].subList[j].count,
-							color:colorsId
-						}
-						mainArr.push(obj);
-						totalGrievanceCount = totalGrievanceCount + result[i].subList[j].count;
-					}
-					$("#totalGrievanceCount").html('Total Count - '+totalGrievanceCount);
-				}else if(result[i].grivenceType == "NTR Trust"){
-					var NtrTrustTotalCount = 0;
-					for(var j in result[i].subList){
-						var colorsId = grivanceColorObj[result[i].subList[j].name.trim()];
-						var obj1 = {
-							name: result[i].subList[j].name,
-							y:result[i].subList[j].count,
-							color:colorsId
-						}
-						mainArr.push(obj1);
-						NtrTrustTotalCount = NtrTrustTotalCount + result[i].subList[j].count;
-					}
-					$("#NtrTrustTotalCount").html('Total Count - '+NtrTrustTotalCount);
-				}
-				
-				var id = 'grivanceId'+i;
-				var type = {
-					type: 'pie',
-					backgroundColor:'transparent',
-					options3d: {
-						enabled: true,
-						alpha: 25
-					}
-				};
-				var title = {
-					text: ''
-				};
-				var tooltip = {
-					useHTML: true,
-					backgroundColor: '#FCFFC5', 
-					formatter: function() {
-						var cnt = this.point.count;
-						return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
-					}  
-				}; 
-				var plotOptions ={
-					pie: {
-						innerSize: 70,
-						depth: 50,
-						dataLabels: {
-							enabled: false,
-							formatter: function() {
-								return (this.y) + ' %';
-							},
-							distance: -10,
-							color:'#333'
-						},
-						showInLegend: legend
-					},
-				};
-				var legend = {
-					enabled: true,
-					layout: 'vertical',
-					align: 'center',
-					verticalAlign: 'bottom',
-					useHTML: true,
-					
-					labelFormatter: function() {
-						return '<div><span style="color:'+this.color+'">'+this.name + '-' + this.y + '</span></div>';
-					}
-				};
-				var data = [{
-					name: '',
-					data: mainArr
-				}];
-				highcharts(id,type,data,plotOptions,title,tooltip,legend);
-			}
-		}
-	}	
-}
-
 function getPublications(){
 	var jsObj={
 			
@@ -7734,17 +7526,6 @@ function getDetailedElectionResults(constituencyId,electionYear,type){
 	}
 }
 
-  // new ajax call for grivence based on new design
-		/* getGrivenceOverviewDtls(""); //first block
-		getGrivenceComplaintCountDepartmentWise("");
-		getGrivenceFinancialSupportDtls("");
-		getLocationWiseTypeOfIssueGrivenceComplaintCount(""); */
-	  
-	  //getInsuranceOverviewDetails("");
-	  //getLocationWiseInsuranceIssueTypeComplaintCount("");
-    //getTrustEducationOverviewDetails(yearId);
-	//getLocationWiseTrustEducationComplaintCount(yearId);
-    //getTrustEducationSubjectForDetails("");
 function getGrivenceOverviewDtls(yearId){
 
 	var jsObj={
@@ -7761,61 +7542,9 @@ function getGrivenceOverviewDtls(yearId){
 	  dataType : 'json',
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
-		console.log(result);
-	});	
-}
-function getGrivenceComplaintCountDepartmentWise(yearId){
-	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
-			"locationTypeId" 	: locationLevelId,
-			"locationValuesArr" : userAccessLevelValuesArray,
-			"year"				: yearId,
-			stateId 			: 1
+		if(result !=null){
+			buildGrivenceOverviewDtls(result,"grievance");
 		}
-	 $.ajax({
-	  type : "POST",
-	  url : "getGrivenceComplaintCountDepartmentWiseAction.action",
-	  dataType : 'json',
-	  data : {task :JSON.stringify(jsObj)}
-	}).done(function(result){  
-		console.log(result);
-	});	
-}
-function getGrivenceFinancialSupportDtls(yearId){
-	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
-			"locationTypeId" 	: locationLevelId,
-			"locationValuesArr" : userAccessLevelValuesArray,
-			"year"				: yearId,
-			stateId 			: 1
-		}
-	 $.ajax({
-	  type : "POST",
-	  url : "getGrivenceFinancialSupportDtlsAction.action",
-	  dataType : 'json',
-	  data : {task :JSON.stringify(jsObj)}
-	}).done(function(result){  
-		console.log(result);
-	});	
-}
-function getLocationWiseTypeOfIssueGrivenceComplaintCount(yearId){
-	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
-			"locationTypeId" 	: locationLevelId,
-			"locationValuesArr" : userAccessLevelValuesArray,
-			"year"				: yearId,
-			stateId 			: 1
-		}
-	 $.ajax({
-	  type : "POST",
-	  url : "getLocationWiseTypeOfIssueGrivenceComplaintCountAction.action",
-	  dataType : 'json',
-	  data : {task :JSON.stringify(jsObj)}
-	}).done(function(result){  
-		console.log(result);
 	});	
 }
 function getInsuranceOverviewDetails(yearId){
@@ -7833,25 +7562,9 @@ function getInsuranceOverviewDetails(yearId){
 	  dataType : 'json',
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
-		console.log(result);
-	});	
-}
-function getLocationWiseInsuranceIssueTypeComplaintCount(yearId){
-	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
-			"locationTypeId" 	: locationLevelId,
-			"locationValuesArr" : userAccessLevelValuesArray,
-			"year"				: yearId,
-			stateId 			: 1
+		if(result !=null){
+			buildGrivenceOverviewDtls(result,"insurance");
 		}
-	 $.ajax({
-	  type : "POST",
-	  url : "getLocationWiseInsuranceIssueTypeComplaintCountAction.action",
-	  dataType : 'json',
-	  data : {task :JSON.stringify(jsObj)}
-	}).done(function(result){  
-		console.log(result);
 	});	
 }
 function getTrustEducationOverviewDetails(yearId){
@@ -7869,45 +7582,283 @@ function getTrustEducationOverviewDetails(yearId){
 	  dataType : 'json',
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
-		console.log(result);
-	});	
-}
-function getLocationWiseTrustEducationComplaintCount(yearId){
-	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
-			"locationTypeId" 	: locationLevelId,
-			"locationValuesArr" : userAccessLevelValuesArray,
-			"year"				: yearId,
-			stateId 			: 1
+		if(result !=null){
+			buildGrivenceOverviewDtls(result,"ntrTrust");
 		}
-	 $.ajax({
-	  type : "POST",
-	  url : "getLocationWiseTrustEducationComplaintCountAction.action",
-	  dataType : 'json',
-	  data : {task :JSON.stringify(jsObj)}
-	}).done(function(result){  
-		console.log(result);
 	});	
 }
-	function getTrustEducationSubjectForDetails(yearId){
-		var jsObj={
-				"fromDate" 			: "",
-				"toDate"			: "",
-				"locationTypeId" 	: locationLevelId,
-				"locationValuesArr" : userAccessLevelValuesArray,
-				"year"				: yearId,
-				stateId 			: 1
+	
+	function buildGrivenceOverviewDtls(result,type){
+		var str='';
+		var totalCount=0;
+		if(result !=null && result.subList !=null && result.subList.length>0){
+			for(var i in result.subList){
+				totalCount =totalCount+result.subList[i].count;
 			}
-		 $.ajax({
-		  type : "POST",
-		  url : "getTrustEducationSubjectForDetailsAction.action",
-		  dataType : 'json',
-		  data : {task :JSON.stringify(jsObj)}
-		}).done(function(result){  
-			console.log(result);
-		});	
-}
+		}
+			if(type == "grievance"){
+				str+='<div class="col-sm-3">';
+			}else if(type == "insurance"){
+				str+='<div class="col-sm-4">';
+			}else if(type == "ntrTrust"){
+				str+='<div class="col-sm-3">';
+			}
+			str+='<div class="black_block">';
+				str+='<h5>Overview</h5>';
+				str+='<h3 class="m_top20">Total - '+totalCount+'</h3>';
+				str+='<ul class="list_style_css m_top20">';
+				if(result !=null && result.subList !=null && result.subList.length>0){
+					for(var i in result.subList){
+						str+='<li>';
+							if(type == "grievance"){
+								str+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right">'+result.subList[i].count+'</span></h6>';
+								
+							}else if(type == "insurance"){
+								str+='<h6><span class="squareCss" style="background-color:'+insuranceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right">'+result.subList[i].count+'</span></h6>';
+							}else if(type == "ntrTrust"){
+								str+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right">'+result.subList[i].count+'</span></h6>';
+							}
+						
+						str+='</li>';
+					}
+				}else{
+					str+='<li> - </li>';
+					
+				}
+					
+				str+='</ul>';
+					
+			str+='</div>';
+		str+='</div>';
+		if(type =="grievance" || type == "insurance"){
+			if(result !=null && result.subList1 !=null && result.subList1.length>0){
+				for(var i in result.subList1){
+						if(type == "grievance"){
+							str+='<div class="col-sm-3">';
+						}else if(type == "insurance"){
+							str+='<div class="col-sm-4">';
+						}
+						str+='<div class="block">';
+							str+='<h5>'+result.subList1[i].name+'</h5>';
+								if(type == "grievance"){
+									str+='<div id="'+type+'MainBlockId'+i+'" style="height:200px;" class="m_top5"></div>';
+								}else if(type == "insurance"){
+									str+='<div id="'+type+'MainBlockId'+i+'" style="height:300px;" class="m_top5"></div>';
+								}
+								
+								str+='<div id="'+type+'StatusMainBlockId'+i+'"></div>';
+						str+='</div>';
+					str+='</div>';
+				}
+			}
+		}else{
+			if(result !=null && result.subList2 !=null && result.subList2.length>0){
+				for(var i in result.subList2){
+						str+='<div class="col-sm-3">';
+						str+='<div class="block">';
+							str+='<h5>'+result.subList2[i].name+'</h5>';
+								str+='<div id="'+type+'MainBlockId'+i+'" style="height:200px;" class="m_top5"></div>';
+								str+='<div id="'+type+'StatusMainBlockId'+i+'"></div>';
+						str+='</div>';
+					str+='</div>';
+				}
+			}
+		}
+		
+		$("#"+type+"MainBlockId").html(str);
+		if(type =="grievance" || type == "insurance"){
+			if(result !=null && result.subList2 !=null && result.subList2.length>0){
+				for(var i in result.subList2){
+					var str1='';
+					str1+='<ul class="list_style_css1 m_top20">';
+					for(var j in result.subList2[i].subList){
+						str1+='<li>';
+							str1+='<div class="dropup">';
+								str1+='<h6>'+result.subList2[i].subList[j].name+'';
+								str1+='<span class="pull-right dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu'+i+''+j+'" >'+result.subList2[i].subList[j].count+'</span>';
+								str1+='<div class="dropdown-menu pull-right arrow_box_bottom" aria-labelledby="dropdownMenu'+i+''+j+'" style="padding:0px;min-width:200px;">';
+								var totalcountDp=0;
+								for(var k in result.subList2[i].subList[j].subList){
+									totalcountDp =totalcountDp+result.subList2[i].subList[j].subList[k].count;
+								}	
+									str1+='<div class="panel panel-default">';
+										  str1+='<div class="panel-heading" style="background-color: #f4f5f5 !important; border-bottom: 1px solid #dddddd !important;text-align: center;">';
+											str1+='<h3 class="panel-title">Total - '+totalcountDp+'</h3>';
+										  str1+='</div>';
+										  str1+='<div class="panel-body">';
+											str1+='<ul class="list_style_css2">';
+											for(var k in result.subList2[i].subList[j].subList){
+												str1+='<li>';
+													str1+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList2[i].subList[j].subList[k].name.trim()]+'"></span>  '+result.subList2[i].subList[j].subList[k].name+' <span class="pull-right">'+result.subList2[i].subList[j].subList[k].count+'</span></h6>';
+												str1+='</li>';
+											}
+											str1+='</ul>';
+										  str1+='</div>';
+									str1+='</div>';
+								
+									
+								str1+='</div>';
+								str+='</h6>';
+							str1+='</div>';
+						str1+='</li>';
+					}
+					
+					str1+='</ul>';
+					
+					$("#"+type+"StatusMainBlockId"+i).html(str1);
+				}
+			}
+		}else{
+			if(result !=null && result.subList1 !=null && result.subList1.length>0){
+				var str1='';
+					str1+='<ul class="list_style_css1 m_top20">';
+				var l =0;	
+				for(var i in result.subList1){
+					
+					str1+='<li>';
+						str1+='<div class="dropup">';
+						str1+='<h6>'+result.subList1[i].name+' <span class="pull-right dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuN'+i+'" >'+result.subList1[i].count+'</span>';
+							str1+='<div class="dropdown-menu pull-right arrow_box_bottom" aria-labelledby="dropdownMenuN'+i+'" style="padding:0px;min-width:200px;">';
+								var totalcountDp=0;
+								for(var k in result.subList1[i].subList){
+									totalcountDp =totalcountDp+result.subList1[i].subList[k].count;
+								}	
+									str1+='<div class="panel panel-default">';
+										  str1+='<div class="panel-heading" style="background-color: #f4f5f5 !important; border-bottom: 1px solid #dddddd !important;text-align: center;">';
+											str1+='<h3 class="panel-title">Total - '+totalcountDp+'</h3>';
+										  str1+='</div>';
+										  str1+='<div class="panel-body">';
+											str1+='<ul class="list_style_css2">';
+											for(var k in result.subList1[i].subList){
+												str1+='<li>';
+													str1+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList1[i].subList[k].name.trim()]+'"></span>  '+result.subList1[i].subList[k].name+' <span class="pull-right">'+result.subList1[i].subList[k].count+'</span></h6>';
+												str1+='</li>';
+											}
+											str1+='</ul>';
+										  str1+='</div>';
+									str1+='</div>';
+								
+									
+								str1+='</div>';
+						str1+='</h6>';
+						str1+='</div>';
+					str1+='</li>';
+				}
+				str1+='</ul>';
+				$("#"+type+"StatusMainBlockId"+l).html(str1);
+				l=l+1;
+			}
+		}
+		if(result !=null && result.subList1 !=null && result.subList1.length>0){
+			var categoriesArr=[];
+			var totalCount=0;
+			for(var i in result.subList1){
+				var mainArr=[];
+				totalCount = result.subList1[i].count;
+				if(result.subList1[i].subList !=null && result.subList1[i].subList.length>0){
+					for(var j in result.subList1[i].subList){
+						categoriesArr.push(result.subList1[i].subList[j].name);
+						if(type == "grievance"){
+							mainArr.push({"y":result.subList1[i].subList[j].count,color:grivanceColorObj[result.subList1[i].subList[j].name.trim()]})
+						}else if(type == "insurance"){
+							mainArr.push({"y":result.subList1[i].subList[j].count,color:insuranceColorObj[result.subList1[i].subList[j].name.trim()]})
+						}else if(type == "ntrTrust"){
+							mainArr.push({"y":result.subList1[i].subList[j].count,color:grivanceColorObj[result.subList1[i].subList[j].name.trim()]})
+						}
+						
+					}
+				}
+				
+				$("#"+type+"MainBlockId"+i).highcharts({
+					chart: {
+						backgroundColor: '#F4F4F5',
+						borderColor: '#D4D6D7',
+						borderWidth: 1,
+						type: 'column'
+					},
+					title: {
+						text: 'TOTAL - '+totalCount+'',
+						align:'left',
+						style: {
+						 color: '#000',
+						 font: 'bold 16px "Lato", sans-serif'
+					  },
+					},
+				   
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: categoriesArr,
+						type: 'category',
+						
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						title: {
+							text: ''
+						},
+						labels: {
+							enabled: false,
+						},
+						stackLabels: {
+							enabled: true,
+							style: {
+								fontWeight: 'bold',
+								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+							},
+							formatter: function() {
+								//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+								//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+								return (this.total);
+							},
+						}
+					},
+					tooltip: {
+						formatter: function () {
+							var s = '<b>' + this.x + '</b>';
+
+								$.each(this.points, function () {
+								if(this.series.name != "Series 1")  
+								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+									this.y/* +' - ' +
+									(Highcharts.numberFormat(this.percentage,1)+'%'); */
+							});
+							return s;
+						},
+						shared: true
+					},
+					legend: {   
+							enabled: false,				
+						},				
+						plotOptions: {
+							column: {
+								pointWidth: 20,
+								gridLineWidth: 15,
+								stacking: 'stacking',  
+								dataLabels:{
+									enabled: false,
+									formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return (this.y);
+										}
+									}
+								},
+							},
+						},
+					series: [{
+						name: "count",
+						data: mainArr,
+						colorByPoint: true
+					}]
+				});
+			}
+		}
+	}
 /*$(document).on('click','.electionTypeWiseCls',function(){
 	var  electionScopeIds = $(this).attr("value");
 	var electionSubTypeArr = $("input[name='optionsRadios1']:checked").val();

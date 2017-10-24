@@ -94,6 +94,8 @@
 			<li index="alerts">alerts</li>
 			<li index="nominatedPosts">nominated posts</li>
 			<li index="grievance">grievance</li>
+			<li index="insurance">insurance</li>
+			<li index="ntrTrust">ntrTrust</li>
 		</ul>
 	</div>
 </section>
@@ -437,33 +439,43 @@
 				<h4 class="panel-title theme-title-color">Grievance Details <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h4>
 				<div class="block m_top10">
 					<div class="row">
-						<!--<div class="col-sm-2">
-							<select id="enrolmentYearsGrievance">
-								<option value="3">2014-2016</option>
-								<option value="4">2016-2018</option>
-							</select>
-						</div>-->
-					</div>
-					<div class="row m_top15">
-						<div class="col-sm-4">
-							<h4 class="panel-title text-capital text-center">Grievance</h4>
-							<p class="m_top10 text-capital text-center" id="totalGrievanceCount"></p>
-							<div id="grivanceId0" style="height:300px;"></div>
-						</div>
-						<div class="col-sm-4">
-							<h4 class="panel-title text-capital text-center">Insurance</h4>
-							<p class="m_top10 text-capital text-center" id="insuranceTotalCount"></h4>
-							<div id="insuranceDetails" style="height:300px;"></div>
-						</div>
-						<div class="col-sm-4">
-							<h4 class="panel-title text-capital text-center">NTR TRUST</h4>
-							<p class="m_top10 text-capital text-center" id="NtrTrustTotalCount"></h4>
-							<div id="grivanceId1" style="height:300px;"></div>
+						<div class="col-sm-12">
+							<div id="grievanceMainBlockId"></div>
 						</div>
 					</div>
 					<div class="row m_top10">
 						<div class="col-sm-12">
 							<button class="btn btn-success btn-success-white text-capital" detailed-block="grievance">detailed information</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 m_top30"  navbar-index="insurance">
+				<h4 class="panel-title theme-title-color">Insurance Details <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="insurance"></i></span></h4>
+				<div class="block m_top10">
+					<div class="row">
+						<div class="col-sm-12">
+							<div id="insuranceMainBlockId"></div>
+						</div>
+					</div>
+					<div class="row m_top10">
+						<div class="col-sm-12">
+							<button class="btn btn-success btn-success-white text-capital" detailed-block="insurance">detailed information</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 m_top30"  navbar-index="ntrTrust">
+				<h4 class="panel-title theme-title-color">Ntr Trust Details <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="ntrTrust"></i></span></h4>
+				<div class="block m_top10">
+					<div class="row">
+						<div class="col-sm-12">
+							<div id="ntrTrustMainBlockId"></div>
+						</div>
+					</div>
+					<div class="row m_top10">
+						<div class="col-sm-12">
+							<button class="btn btn-success btn-success-white text-capital" detailed-block="ntrTrust">detailed information</button>
 						</div>
 					</div>
 				</div>

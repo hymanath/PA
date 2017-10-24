@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Election Details</title>
+<title>Benefits Details</title>
 <link href="coreApi/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="coreApi/css/custom.css" rel="stylesheet" type="text/css">
 <link href="coreApi/css/responsive.css" rel="stylesheet" type="text/css">
@@ -42,10 +42,7 @@
 					<div id="benefitsOverViewBlockId"></div>
 				</div>
 			</div>
-			</div>
 		</section>
-		
-		
 	</div>				
 </main>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>

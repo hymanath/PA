@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Grievance Details</title>
+<title>Insurance Details</title>
 <link href="coreApi/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="coreApi/css/custom.css" rel="stylesheet" type="text/css">
 <link href="coreApi/css/responsive.css" rel="stylesheet" type="text/css">
@@ -36,34 +36,17 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block boderBlock">
-						<div id="financialBlockDivId"></div>
+						<div id="CategoryInsuranceBlockDivId"></div>
 					</div>
 				</div>
 			</div>
 		</section>
+		
 		<section class="m_top10">
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block boderBlock">
-						<div id="CategoryBlockDivId"></div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<section class="m_top10">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="block boderBlock">
-						<div id="departmentBlockDivId"></div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<section class="m_top10">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="block boderBlock">
-						<div id="locationBlockDivId"></div>
+						<div id="locationIsuranceBlockDivId"></div>
 					</div>
 				</div>
 			</div>
@@ -82,7 +65,7 @@
 <script src="coreApi/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
-<script src="coreApi/js/grievanceConstituencyPage.js" type="text/javascript"></script>
+<script src="coreApi/js/insuranceConstituencyPage.js" type="text/javascript"></script>
 <script type ="text/javascript">
 var locationLevelId = "${param.locationLevelId}";
 var locationName = "${param.locationLevelName}";

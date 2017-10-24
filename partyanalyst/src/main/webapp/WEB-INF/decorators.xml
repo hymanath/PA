@@ -755,6 +755,8 @@
 		<pattern>/areaWiseGrievanceDashboardAction*</pattern>
 		<pattern>/areaWiseElectionDashboardAction*</pattern>
 		<pattern>/areaWiseBenefitsViewAction*</pattern>
+		<pattern>/areaWiseInsuranceViewAction*</pattern>
+		<pattern>/areaWiseNtrTrustViewAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">

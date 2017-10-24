@@ -18374,5 +18374,15 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src="areaWiseBenefitsViewAction"</result>	
 	</action> 
+	 <action name="areaWiseInsuranceViewAction" class="locationDashboardAction" method="locationDashboard">
+			<result name="success">/jsp/areaWiseInsuranceView.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src="areaWiseInsuranceViewAction"</result>	
+	</action> 
+	 <action name="areaWiseNtrTrustViewAction" class="locationDashboardAction" method="locationDashboard">
+			<result name="success">/jsp/areaWiseNtrTrustView.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src="areaWiseNtrTrustViewAction"</result>	
+	</action> 
  </package>
 </struts>
