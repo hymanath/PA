@@ -7704,3 +7704,20 @@ function getLocationWiseTrustEducationComplaintCount(yearId){
 	alert(electionScopeIds);
 	alert(electionSubTypeArr);
 });*/
+
+function getLocationWiseElectionDetails(){
+	var jsObj = {
+			
+			locationTypeId 	: locationLevelId,
+			locationValuesArr : userAccessLevelValuesArray
+			
+		}
+	 $.ajax({
+	  type : "POST",
+	  url : "getLocationBasedElectionDetailsAction.action",
+	  dataType : 'json',
+	  data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){  
+		console.log(result);
+	});	
+}

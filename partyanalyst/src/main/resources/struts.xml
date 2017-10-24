@@ -18359,5 +18359,10 @@
 			<param name="root">electioninformationList</param>       
 		</result>
    </action>
+   <action name="getLocationBasedElectionDetailsAction" class="locationDashboardAction"  method="getLocationBasedElectionDetails">
+		<result type="json" name="success">    
+			<param name="root">keyValueVOList</param>       
+		</result>
+   </action>
  </package>
 </struts>
