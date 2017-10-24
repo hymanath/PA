@@ -40,10 +40,11 @@ $(document).on("click",function(){
 $(document).on("click","#promotionsBlockSwitch li",function(){	
 	$("#promotionsBlockSwitch li").removeClass("active");
 	$(this).addClass("active");
+	var typeOfBlock = $(this).attr("attr_type");
 	getITSectorWiseOverviewDetails();
-	getITSectorCategoryWiseDetails("RED");
-	getITSectorCategoryWiseDetails("GREEN");
-	getITSectorCategoryWiseDetails("DROPPED");
+	getITSectorCategoryWiseDetails("RED",typeOfBlock);
+	getITSectorCategoryWiseDetails("GREEN",typeOfBlock);
+	getITSectorCategoryWiseDetails("DROPPED",typeOfBlock);
 });
 onloadCalls();
 function onloadCalls(){
@@ -302,9 +303,9 @@ function departmentBlockWiseDetails(divId)
 			if(divId == 'promotions')
 			{
 				getITSectorWiseOverviewDetails();
-				getITSectorCategoryWiseDetails("RED");
-				getITSectorCategoryWiseDetails("GREEN");
-				getITSectorCategoryWiseDetails("DROPPED");
+				getITSectorCategoryWiseDetails("RED",'Total');
+				getITSectorCategoryWiseDetails("GREEN",'Total');
+				getITSectorCategoryWiseDetails("DROPPED",'Total');
 				getITDistrictWiseDetails("IT","ALL",'body');
 				getITDistrictWiseDetails("Electronics","ALL",'body');
 				getITDistrictWiseDetails("Fintech","ALL",'body');
@@ -560,7 +561,7 @@ $(document).on("click",".overview-click",function(){
 		getITDistrictWiseDetails(selectedBlockType,$(this).attr("attr_type"),'modal');
 	}
 });
-function getITSectorCategoryWiseDetails(type){
+function getITSectorCategoryWiseDetails(type,typeOfBlock){
 	if(type == "GREEN")
 	{
 		$("#promotionsStageGreenBlockId").html(spinner);
@@ -586,7 +587,10 @@ function getITSectorCategoryWiseDetails(type){
 	}).done(function(result){
 		if(result != null && result.length > 0)
 		{
-			getITSectorLeadCategoryWiseDetails(type)
+			if(typeOfBlock == 'Total')
+			{
+				getITSectorLeadCategoryWiseDetails(type)
+			}
 			return buildData(result,type);
 		}else{
 			if(type == "GREEN")

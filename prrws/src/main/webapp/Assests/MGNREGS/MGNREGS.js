@@ -183,9 +183,52 @@ function onLoadCalls()
 			}
 		}
 	});
-	
 	$(document).on('click','#getWebserviceDetailsId', function(){
 		getWebserviceHealthDetails(glStartDateForWebservice,glEndDateForWebservice);
+	});   
+	$(document).on('click','.timelyPaymentRadioCls', function(){
+		var programType = $(this).attr("attr_type");
+		var divIdd = $(this).attr("attr_id");
+		
+		var locationType = $(this).attr("attr_locationType");
+		var levelId = $(this).attr("attr_levelId");
+		var locationId = $(this).attr("overview-locationId");
+		var menuLocationType = '';
+		var menuLocationId = '';
+		var buildType = $(this).attr("attr_name");
+		if(levelId == 2)
+		{
+			menuLocationId = "-1";
+			menuLocationType = "state";
+		}else if(levelId == 3)
+		{
+			menuLocationId = locationId;
+			menuLocationType = "district";
+		}
+		getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,menuLocationId,'Timely Payment',programType)
+	}); 
+	$(document).on('click','.timelyPaymentOverviewCls', function(){
+		var programType = $(this).attr("attr_type");
+		var levelId = $(this).attr("levelId");
+		var menuLocationId = '';
+		var menuLocationType = '';
+		var districtId = '';
+		if(levelId == 2)
+		{
+			menuLocationId = "-1";
+			menuLocationType = "state";
+		}else if(levelId == 3)
+		{
+			menuLocationId = locationId;
+			menuLocationType = "district";
+		}else if(levelId == 4)
+		{
+			menuLocationId = locationId;
+			menuLocationType = "constituency";
+			districtId = $("#selectedName").attr("attr_distId");
+		}
+		
+		getNregasOverview('Timely Payment',menuLocationType,menuLocationId,districtId,programType);
 	});   
 	$(document).on('click','[overview-level]', function(){
 		var levelType = $(this).attr("overview-level");
@@ -240,9 +283,40 @@ function onLoadCalls()
 				
 				if((globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && levelType == "state")
 					theadArr = [levelType,'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
-
-				if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms') && levelType == "state")
-					theadArr = [levelType,'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+				if(globalDivName == 'Farm Ponds' || globalDivName == 'IHHL' || globalDivName == 'Vermi Compost' || globalDivName == 'Burial Ground' || globalDivName == 'Solid Waste Management' || globalDivName == 'Play fields' || globalDivName == 'NTR 90 Days' || globalDivName == 'Production of Bricks')
+				{
+					if(levelType == "constituency")
+					{
+						theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					}else if(levelType == "mandal"){
+						theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					}else if(levelType == "panchayat"){
+						theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					}else{
+						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					}
+				}
+					
+				if(globalDivName == 'Mulbery' || globalDivName == 'Silk Worms')
+				{
+					if(levelType == "state")
+					{
+						theadArr = [levelType,'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage','Wage Exp','Material Exp','Total Exp'];
+					}else if(levelType == "district")
+					{
+						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					}else if(levelType == "constituency")
+					{
+						theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					}else if(levelType == "mandal")
+					{
+						theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					}else if(levelType == "panchayat")
+					{
+						theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					}
+				}
+					
 				
 				if((globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
 					theadArr = [levelType,'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
@@ -275,8 +349,10 @@ function onLoadCalls()
 					getNREGSLabBugdtLelwiseData(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == "Agriculture Activities")
 					getNregaLevelsWiseDataFrAgriculture(tableId,levelType,menuLocationType,menuLocationId,divId);
-				else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries" || divId == "Timely Payment")
+				else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries")
 					getNregaLevelsWiseDataFrNewCalls(tableId,levelType,menuLocationType,menuLocationId,divId);
+				else if(divId == "Timely Payment")
+					getNregaLevelsWiseDataFrNewCalls(tableId,levelType,menuLocationType,menuLocationId,divId,'-1');
 				else if(divId == "Horticulture")//
 					getNregaLevelsWiseDataFrHorticulture(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == "Avenue")//
@@ -559,6 +635,21 @@ function projectData(divId,levelId,locationId)
 										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="All" type="radio" attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> All';
 									collapse+='</label>';
 								}
+								if(divId == 'Timely Payment')
+								{
+									collapse+='<label class="radio-inline">';
+										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="-1" attr_id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" checked name="timelyPayment'+dataArr[i]+'"/>ALL';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="MCC" attr_id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" name="timelyPayment'+dataArr[i]+'"/>MCC';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="WCC" attr_id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" name="timelyPayment'+dataArr[i]+'"/>WCC';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="BCC" attr_id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" name="timelyPayment'+dataArr[i]+'"/>BCC';
+									collapse+='</label>';
+								}
 									collapse+='<div id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"></div>';
 								collapse+='</div>';
 							collapse+='</div>';
@@ -616,15 +707,49 @@ function projectData(divId,levelId,locationId)
 			if((globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && dataArr[i] == "state")
 				theadArr = [dataArr[i],'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 
-			if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms') && dataArr[i] == "state")
-				theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+			if(globalDivName == 'Mulbery' || globalDivName == 'Silk Worms')
+			{
+				if(dataArr[i] == "state")
+				{
+					theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage','Wage Exp','Material Exp','Total Exp'];
+				}else if(dataArr[i] == "district")
+				{
+					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+				}else if(dataArr[i] == "constituency")
+				{
+					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+				}else if(dataArr[i] == "mandal")
+				{
+					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+				}else if(dataArr[i] == "panchayat")
+				{
+					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+				}
+			}
 			
 			if((globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (dataArr[i] == "state" || dataArr[i] == "district"))
 				theadArr = [dataArr[i],'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 			
 			if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (dataArr[i] == "state" || dataArr[i] == "district"))
 				theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
-			
+			if(divId == 'Farm Ponds' || divId == 'IHHL' || divId == 'Vermi Compost' || divId == 'Burial Ground' || divId == 'Solid Waste Management' || divId == 'Play fields' || divId == 'NTR 90 Days' || divId == 'Production of Bricks')
+			{
+				if(dataArr[i] == "state" || dataArr[i] == "district")
+				{
+					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+				}else if(dataArr[i] == "constituency")
+				{
+					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+				}else if(dataArr[i] == "mandal")
+				{
+					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+				}else if(dataArr[i] == "panchayat")
+				{
+					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+				}
+			}
+				
+				
 			else if(divId == 'Anganwadi')
 			{
 				if(dataArr[i] == "state" || dataArr[i] == "district")
@@ -638,7 +763,7 @@ function projectData(divId,levelId,locationId)
 					theadArr =["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				}else if(dataArr[i] == "panchayat")
 				{
-					theadArr =["district","constituency","panchayat",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr =["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				}
 			}
 				
@@ -650,8 +775,10 @@ function projectData(divId,levelId,locationId)
 			getNREGSLabBugdtLelwiseData(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
 		else if(divId == "Agriculture Activities")
 			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
-		else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries" || divId == "Timely Payment")
+		else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries")
 			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
+		else if(divId == "Timely Payment")
+			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i],menuLocationType,menuLocationId,divId,'-1');
 		else if(divId == "Horticulture")//
 			getNregaLevelsWiseDataFrHorticulture(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
 		else if(divId == "Avenue")//
@@ -726,6 +853,21 @@ function overviewData(divId,levelId,locationId)
 						collapse+='</div>';
 						collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+'">';
 							collapse+='<div class="panel-body">';
+								if(divId == 'Timely Payment')
+								{
+									collapse+='<label class="radio-inline">';
+										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="-1" name="timelyPayment'+divId.replace(/\s+/g, '')+'Overview" checked/>ALL';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="MCC" name="timelyPayment'+divId.replace(/\s+/g, '')+'Overview"/>MCC';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="WCC" name="timelyPayment'+divId.replace(/\s+/g, '')+'Overview"/>WCC';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="BCC" name="timelyPayment'+divId.replace(/\s+/g, '')+'Overview"/>BCC';
+									collapse+='</label>';
+								}
 								collapse+='<div id="projectOvervw'+divId.replace(/\s+/g, '')+'"></div>';
 							collapse+='</div>';
 						collapse+='</div>';
@@ -759,6 +901,8 @@ function overviewData(divId,levelId,locationId)
 		getNREGSLabourBudgetOverview(divId,menuLocationType,menuLocationId);
 	else if(divId == 'Payments')
 		getNregaPaymentsAbsAndOverviewDtls(divId,menuLocationType,menuLocationId,2,'overview');
+	else if(divId == 'Timely Payment')
+		getNregasOverview(divId,menuLocationType,menuLocationId,districtId,'-1');
 	else
 		getNregasOverview(divId,menuLocationType,menuLocationId,districtId);
 }
@@ -3078,6 +3222,12 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}
 							}
+							if(globalDivName == 'Farm Ponds' || globalDivName == 'IHHL' || globalDivName == 'Vermi Compost' || globalDivName == 'Burial Ground' || globalDivName == 'Solid Waste Management' || globalDivName == 'Play fields' || globalDivName == 'NTR 90 Days' || globalDivName == 'Production of Bricks' || globalDivName == 'Mulbery' || globalDivName == 'Silk Worms')
+							{
+								str+='<td>'+ajaxresp[i].wageExpenditure+'</td>';
+								str+='<td>'+ajaxresp[i].materialExpenditure+'</td>';
+								str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
+							}
 						}
 						
 					str+='</tr>';
@@ -3088,7 +3238,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 	});
 }
 
-function getNregasOverview(projectDivId,menuLocationType,menuLocationId,districtId)
+function getNregasOverview(projectDivId,menuLocationType,menuLocationId,districtId,programId)
 {
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	if(projectDivId == 'FAperformance')
@@ -3111,7 +3261,7 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId,district
 			locationType : menuLocationType,
 			locationId : menuLocationId,
 			districtId:districtId,
-			program : "-1"
+			program : programId
 		}
 	}else{
 		var json = {
@@ -3193,7 +3343,7 @@ function getNregasPopupOverview(menuLocationType,menuLocationId)
 	});
 }
 
-function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,menuLocationId,divId)
+function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,menuLocationId,divId,programId)
 {
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
@@ -3238,18 +3388,33 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 			else if(locationType == "panchayat")
 				theadArr = ["district","constituency","mandal",locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 	}
-	
-	
-	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-		toDate : glEndDate,
-		locationType: menuLocationType,
-		divType : globalDivName,
-		locationId : menuLocationId,
-		sublocaType : locationType,
-		districtId : districtId
+	if(divId == 'Timely Payment')
+	{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			locationType: menuLocationType,
+			divType : globalDivName,
+			locationId : menuLocationId,
+			sublocaType : locationType,
+			districtId : districtId,
+			program: programId
+		}
+	}else{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			locationType: menuLocationType,
+			divType : globalDivName,
+			locationId : menuLocationId,
+			sublocaType : locationType,
+			districtId : districtId
+		}
 	}
+	
+	
 	$.ajax({
 		url: 'getNregaLevelsWiseDataFrNewCalls',
 		data: JSON.stringify(json),
@@ -3609,7 +3774,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 }
 
 
-//var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings1','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Grounds','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
+//var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings1','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Ground','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
 var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Check Dam','Rock fill dams','Solid Waste Management','Burial Ground','Play fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads1','Anganwadi','GP Buildings1','Mandal buildings1','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','OPGK-Perinnials','OPGK-Annuals','UGDrainage'];
 
 buildNREGSProjectsOverview(overViewArr,'')
