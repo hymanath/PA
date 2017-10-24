@@ -31,6 +31,8 @@ public class PartyBoothPerformanceVO implements Serializable{
 	private String url;
 	private List<PartyBoothPerformanceVO> PartyBoothPerformanceVOList = new ArrayList<PartyBoothPerformanceVO>();
 	private List<String> selectedPartyList = new ArrayList<String>();
+	private String parlaimentPer;
+	private int parlaimentCount;
 	
 	
 	public PartyBoothPerformanceVO(String partyName, String candidateName,
@@ -247,6 +249,34 @@ public class PartyBoothPerformanceVO implements Serializable{
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+
+
+	public String getParlaimentPer() {
+		return parlaimentPer;
+	}
+
+
+
+	public void setParlaimentPer(String parlaimentPer) {
+		this.parlaimentPer = parlaimentPer;
+	}
+
+
+
+	public int getParlaimentCount() {
+		return parlaimentCount;
+	}
+
+
+
+	public void setParlaimentCount(int parlaimentCount) {
+		this.parlaimentCount = parlaimentCount;
+	}
+
+
+
+	
 
 	
 }
