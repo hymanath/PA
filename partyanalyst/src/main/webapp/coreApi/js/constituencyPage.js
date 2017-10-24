@@ -5721,51 +5721,53 @@ function getPartyWiseMPandMLACandidatesCounts(){
 	 $('#electionTypeSpinnerId').show();
 	 
   var jsObj={
-      electionSubTypeArr:electionSubTypeArr
+     electionScopeIds:["1","2","3","4"],
+	  electionSubTypeArr:electionSubTypeArr
     }
     $.ajax({   
       type:'POST',
-      url:'getAllElectionYearsAction.action',  
+      url:'getElectionYearAndPartiesAction.action',  
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
 		 $('#electionTypeSpinnerId').hide();
-		if(result !=null && result.imageList !=null && result.imageList.length>0){
-			var str='';
-			for(var i in result.imageList){
-				if(result.imageList[i] == "2014" || result.imageList[i] == "2009"){
-					str+='<option value="'+result.imageList[i]+'" selected>'+result.imageList[i]+'</option>';
-				}else{
-					str+='<option value="'+result.imageList[i]+'">'+result.imageList[i]+'</option>';
-				}
-					
-			} 
-			$('#elctionYearsBlockId').html(str);
-			$('#elctionYearsBlockId').multiselect({
-				enableFiltering: true,
-				includeSelectAllOption: true,
-				selectAllText: 'All Election Years',
-				maxHeight: 300,
-				maxWidth: 300,
-				dropDown: true,
-				selectAllNumber: true,
-				allSelectedText: 'All Election Years selected'
-			});
-			$("#elctionYearsBlockId").multiselect("refresh");
+		if(result !=null && result.length>0){
+				var str='';
+				for(var i in result){
+					if(result[i].electionYear == "2014" || result[i].electionYear == "2009"){
+						//str+='<option value="'+result.imageList[i]+'" selected>'+result.imageList[i]+'</option>';
+						str+='<option value="'+result[i].electionYear+'" selected>'+result[i].electionYear+'</option>';
+					}else{
+						//str+='<option value="'+result.imageList[i]+'">'+result.imageList[i]+'</option>';
+						str+='<option value="'+result[i].electionYear+'">'+result[i].electionYear+'</option>';
+					}
+						
+				} 
+				$('#elctionYearsBlockId').html(str);
+				$('#elctionYearsBlockId').multiselect({
+					enableFiltering: true,
+					includeSelectAllOption: true,
+					selectAllText: 'All Election Years',
+					maxHeight: 300,
+					maxWidth: 300,
+					dropDown: true,
+					selectAllNumber: true,
+					allSelectedText: 'All Election Years selected'
+				});
+				$("#elctionYearsBlockId").multiselect("refresh");
+				
+			}
 			
-		}
-		
-		if(type == "onload"){
-			electionYrVal=[];
-			electionYrVal = $("#elctionYearsBlockId").val();
+			if(type == "onload"){
+				electionYrVal=[];
+				electionYrVal = $("#elctionYearsBlockId").val();
+				
+				var partyIds = [872,362,1117,886,72,269,265,163,1887];
+				getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal);
+			}
 			
-			var partyIds = [872,362,1117,886,72,269,265,163,1887];
-			getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal);
-		}
-		
-    });
+	    });
   }
-
   function getCommitteeCount(){
 	
 	var jsObj={
@@ -7696,3 +7698,9 @@ function getLocationWiseTrustEducationComplaintCount(yearId){
 		console.log(result);
 	});	
 }
+/*$(document).on('click','.electionTypeWiseCls',function(){
+	var  electionScopeIds = $(this).attr("value");
+	var electionSubTypeArr = $("input[name='optionsRadios1']:checked").val();
+	alert(electionScopeIds);
+	alert(electionSubTypeArr);
+});*/
