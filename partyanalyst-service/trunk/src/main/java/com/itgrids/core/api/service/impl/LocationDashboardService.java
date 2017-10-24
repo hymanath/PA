@@ -7474,7 +7474,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 					  GrivenceStatusVO statusMatchVO = getGrivanceStastusMatchVO(supportPurPoseVO.getSubList(), getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[2])));
 					   if (statusMatchVO != null) {
 						   statusMatchVO.setCount(statusMatchVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[3]));
-						   supportPurPoseVO.setCount(supportPurPoseVO.getCount()+statusMatchVO.getCount());
+						   supportPurPoseVO.setCount(supportPurPoseVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[3]));
 					   }
 				}
 			 }
