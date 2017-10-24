@@ -648,6 +648,21 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    					else
 		 	    						vo.setPercentage("0.00");
 		 	    				}
+		 	    				
+		 	    				if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Farm Ponds") 
+		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("IHHL")
+		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Vermi Compost")
+		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Ground")
+		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Solid Waste Management")
+		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Play Fields")
+		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR 90 Days")
+		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Production of Bricks")
+		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")
+		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk Worms"))){
+		 	    					vo.setWageExpenditure(jObj.getString("WAGE_EXP"));
+		 	    					vo.setMaterialExpenditure(jObj.getString("MAT_EXP"));
+		 	    					vo.setTotalExpenditure(jObj.getString("TOT_EXP"));
+		 	    				}
 		 	    			}
 	 	    				
 	 	    				voList.add(vo);
