@@ -68,13 +68,13 @@ public interface ILocationDashboardService {
 	public LocationVO getAllLocationWiseCount(List<Long> levelValues,Long levelId,Long publicationDateId );
 	public CandidateDetailsForConstituencyTypesVO getPartyWiseMPandMLACandidatesCount(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue);
 	public KeyValueVO getElectionYears(List<String> subTypes);
-	public List<ElectionInformationVO> getElectionInformationLocationWiseVoterShare(String fromDate, String toDate, Long locationTypeId,Long locationValue, List<Long> electionScopeIds,List<Long> partyIds,List<Long> electionYrs,List<String> subTypes);
+	public List<ElectionInformationVO> getElectionInformationLocationWiseVoterShare(String fromDate, String toDate, Long locationTypeId,Long locationValue, List<Long> electionScopeIds,List<Long> partyIds,List<Long> electionYrs,List<String> subTypes,String withAllaince);
 	public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(String fromDateStr, String toDateStr, Long locationTypeId,List<Long> locationValues,String year);
 	public List<GrivenceStatusVO> getLocationWiseGrivenceTrustIssueTypesCounts(String fromDateStr, String toDateStr, Long locationTypeId,List<Long> locationValues,String year);
 	public List<GrivenceStatusVO> getGrivenceDetails(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year) ;
 	public List<GrivenceStatusVO> getLevelWiseGrievanceCounts(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year);
-	public List<ElectionInformationVO> getLocationWiseElectionResults(List<Long> electionScopeId,List<String> subTypeList,Long lelevlId,List<Long> levelValue,List<Long> year,List<Long> partyIdsList,Long constituencyId);
-	public  List<ElectionInformationVO>  getElectionDetailsData(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds);
+	public List<ElectionInformationVO> getLocationWiseElectionResults(List<Long> electionScopeId,List<String> subTypeList,Long lelevlId,List<Long> levelValue,List<Long> year,List<Long> partyIdsList,Long constituencyId,String withAllaince);
+	public  List<ElectionInformationVO>  getElectionDetailsData(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds,String withAllaince);
 	public List<CandidateDetailsForConstituencyTypesVO> getPartyWiseMPandMLACandidatesCountDetials(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue,Long partyId);
 	public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(Long loactionTypeId,List<Long> locationValues);
 	public List<MeetingsVO> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues,String startDate,String endDate,Long meetingLevelId,Long meetingTypeId,Long meetingMainTypeId);
