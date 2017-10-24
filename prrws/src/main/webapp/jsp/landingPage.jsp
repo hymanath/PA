@@ -440,7 +440,7 @@
 						<p class="">Committed Investment</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
+						<i class="fa fa-star PROMOTIONSColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="PROMOTIONS" attr_color_name="gray" aria-hidden="true" attr_block_name="PROMOTIONS"></i>
 						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -454,7 +454,7 @@
 						<p class="">Total Pendency</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
+						<i class="fa fa-star EOFFICEColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="E OFFICE" attr_color_name="gray" aria-hidden="true" attr_block_name="EOFFICE"></i>
 						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -468,7 +468,7 @@
 						<p class="">Beyond SLA</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
+						<i class="fa fa-star MEESEVA-SLAColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="MEESEVA - SLA" attr_color_name="gray" aria-hidden="true" attr_block_name="MEESEVA-SLA"></i>
 						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -482,7 +482,7 @@
 						<p class="">Startups</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
+						<i class="fa fa-star APINNOVATIONSOCIETYColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="AP INNOVATION SOCIETY" attr_color_name="gray" aria-hidden="true" attr_block_name="APINNOVATIONSOCIETY"></i>
 						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -496,7 +496,7 @@
 						<p class="">etaal - KPI</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star ITECColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="IT E & C" attr_color_name="gray" aria-hidden="true" attr_block_name="ITEC"></i>
+						<i class="fa fa-star MEESEVA&KPIColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="MEESEVA & KPI" attr_color_name="gray" aria-hidden="true" attr_block_name="MEESEVA&KPI"></i>
 						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
