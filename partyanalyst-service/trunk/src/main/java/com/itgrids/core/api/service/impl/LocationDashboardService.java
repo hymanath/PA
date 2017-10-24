@@ -7683,5 +7683,49 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		}
 		return resultList;
 	}
+	
+	public List<KeyValueVO> getLocationWiseElectionDetails(String locationType,List<Long> locationValues){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		
+		try {
+			LOG.info("Entered into LocationDashboardService of getLocationWiseElectionDetails() method");
+			if(locationType != null && locationType.equalsIgnoreCase("state")){
+				KeyValueVO stateVO = new KeyValueVO();
+						stateVO.setId(3l);
+						stateVO.setName("DISTRICT");
+						stateVO.setId(4l);
+						stateVO.setName("CONSTITUENCY");
+						stateVO.setId(5l);
+						stateVO.setName("MANDAL");
+						stateVO.setId(6l);
+						stateVO.setName("PANCHAYAT");
+				finalList.add(stateVO);
+			}else if(locationType != null && locationType.equalsIgnoreCase("district")){
+				KeyValueVO districtVO = new KeyValueVO();
+						districtVO.setId(4l);
+						districtVO.setName("CONSTITUENCY");
+						districtVO.setId(5l);
+						districtVO.setName("MANDAL");
+						districtVO.setId(6l);
+						districtVO.setName("PANCHAYAT");
+				finalList.add(districtVO);
+			}else if(locationType != null && locationType.equalsIgnoreCase("constituency")){
+				KeyValueVO constituencyVO = new KeyValueVO();
+						constituencyVO.setId(5l);
+						constituencyVO.setName("MANDAL");
+						constituencyVO.setId(6l);
+						constituencyVO.setName("PANCHAYAT");
+				finalList.add(constituencyVO);
+			}else if(locationType != null && locationType.equalsIgnoreCase("mandal")){
+				KeyValueVO mandalVO = new KeyValueVO();
+						mandalVO.setId(6l);
+						mandalVO.setName("PANCHAYAT");
+				finalList.add(mandalVO);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised into LocationDashboardService of getLocationWiseElectionDetails() method", e);
+		}
+		return finalList;
+	}
 }
 

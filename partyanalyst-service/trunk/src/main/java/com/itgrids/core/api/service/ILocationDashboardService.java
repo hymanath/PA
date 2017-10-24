@@ -88,4 +88,5 @@ public interface ILocationDashboardService {
 	public GrivenceStatusVO getTrustEducationOverviewDetails(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
 	public List<GrivenceStatusVO> getLocationWiseTrustEducationComplaintCount(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year,Long stateId);
 	public List<ElectionInformationVO> getElectionYearWisePartyDetails(List<Long> electionScopeIdsLst,List<String> subTypes);
+	public List<KeyValueVO> getLocationWiseElectionDetails(String locationType,List<Long> locationValues);
 	}
