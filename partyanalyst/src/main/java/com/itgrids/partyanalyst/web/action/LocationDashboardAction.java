@@ -1673,4 +1673,17 @@ public String getElectionInformationLocationWise(){
 	   }
 	   return Action.SUCCESS;
   }
+  
+  public String getLocationBasedElectionDetails(){
+	   try{
+		   LOG.info("Entered into getLocationBasedElectionDetails of locationDashboardAction");
+		   jObj = new JSONObject(getTask());
+		   String locationType = jObj.getString("locationTypeId");
+		   List<Long> locationValuesLst = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+		   keyValueVOList = locationDashboardService.getLocationWiseElectionDetails(locationType,locationValuesLst);
+	   }catch(Exception e){
+		   LOG.error("Exception occured in getElectionYearAndPartiesWiseDetails() method of locationDashboardAction ",e);
+	   }
+	   return Action.SUCCESS;
+ }
 }
