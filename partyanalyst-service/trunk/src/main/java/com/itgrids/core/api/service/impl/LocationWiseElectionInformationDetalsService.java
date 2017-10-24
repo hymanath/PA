@@ -186,7 +186,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 
 	@Override
 	public List<ElectionInformationVO> getElectionInformationLocationWiseStatus(Long locationTypeId,Long locationValue, 
-			List<Long> partyIdList, List<Long> electionYrs,List<Long> electionScopeIds, List<String> subTypes,String searchType) {
+			List<Long> partyIdList, List<Long> electionYrs,List<Long> electionScopeIds, List<String> subTypes,String searchType,String withAllaince) {
 		try{
 			
 			List<ElectionInformationVO> finalPartyList = new ArrayList<ElectionInformationVO>();
@@ -323,7 +323,25 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 						earnedVotesList.addAll(tempearnedVotesList);
 				}
 			}
+			
+			Map<Long,Map<Long,ElectionInformationVO>> alliancedPartiesWithGroupIdMap = null;
+			if(withAllaince != null && withAllaince.trim().equalsIgnoreCase("true"))
+				alliancedPartiesWithGroupIdMap = getSegregateAliancePartiesMap(subTypes,electionYrs,electionScopeIds);
+			if(!commonMethodsUtilService.isMapValid(alliancedPartiesWithGroupIdMap))
+				alliancedPartiesWithGroupIdMap = new HashMap<Long, Map<Long,ElectionInformationVO>>(0);
+			
 			for (Object[] param : earnedVotesList) {
+				
+				Long partyId =commonMethodsUtilService.getLongValueForObject(param[0]);
+				String partyName =commonMethodsUtilService.getStringValueForObject(param[1]);
+				Long electionId = commonMethodsUtilService.getLongValueForObject(param[5]);
+				
+				List<String> alliancePartyIdNameList  = findMatchedPartyId(alliancedPartiesWithGroupIdMap,electionId,partyId);
+				if(commonMethodsUtilService.isListOrSetValid(alliancePartyIdNameList)){
+					partyId = Long.valueOf(alliancePartyIdNameList.get(0));
+					partyName = alliancePartyIdNameList.get(1);
+					partyIdList.add(partyId);
+				}
 				
 				List<Long> locationList=electionIdAndLocationIdListMap.get(commonMethodsUtilService.getLongValueForObject(param[5]));
 				if(!commonMethodsUtilService.isListOrSetValid(locationList))
@@ -342,23 +360,28 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 					yearVo.setLocationId(commonMethodsUtilService.getLongValueForObject(param[7]));
 					yearVo.setLocationName(commonMethodsUtilService.getStringValueForObject(param[8]));
 					
-					innerEvo.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					innerEvo.setPartyName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					innerEvo.setPartyId(partyId);
+					innerEvo.setPartyName(partyName);
 					innerEvo.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[2]));
 					innerEvo.setElectionType(commonMethodsUtilService.getStringValueForObject(param[3]));
 					innerEvo.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[4]));
 					innerEvo.setElectionId(commonMethodsUtilService.getLongValueForObject(param[5]));
 					innerEvo.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[6]));
 					
-					ElectionInformationVO partyVO = new ElectionInformationVO();
-					partyVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					partyVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					
+					ElectionInformationVO partyVO = getMatchedElectionInformationVOByPartyName(innerEvo.getSubList2(),partyName);
+					if(partyVO == null){
+						partyVO = new ElectionInformationVO();
+						innerEvo.getSubList2().add(partyVO);
+					}
+					
+					partyVO.setPartyId(partyId);
+					partyVO.setPartyName(partyName);
 					partyVO.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[2]));
 					partyVO.setElectionType(commonMethodsUtilService.getStringValueForObject(param[3]));
 					partyVO.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[4]));
 					partyVO.setElectionId(commonMethodsUtilService.getLongValueForObject(param[5]));
 					partyVO.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[6]));
-					innerEvo.getSubList2().add(partyVO);
 					
 					yearList.add(innerEvo);
 					yearVo.setList(yearList);
@@ -381,23 +404,26 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 							
 						}else{
 							innerEvo = new ElectionInformationVO();
-							innerEvo.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
-							innerEvo.setPartyName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							innerEvo.setPartyId(partyId);
+							innerEvo.setPartyName(partyName);
 							innerEvo.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[2]));
 							innerEvo.setElectionType(commonMethodsUtilService.getStringValueForObject(param[3]));
 							innerEvo.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[4]));
 							innerEvo.setElectionId(commonMethodsUtilService.getLongValueForObject(param[5]));
 							innerEvo.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[6]));
 							
-							ElectionInformationVO partyVO = new ElectionInformationVO();
-							partyVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
-							partyVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							ElectionInformationVO partyVO = getMatchedElectionInformationVOByPartyName(innerEvo.getSubList2(),partyName);
+							if(partyVO == null){
+								partyVO = new ElectionInformationVO();
+								innerEvo.getSubList2().add(partyVO);
+							}
+							partyVO.setPartyId(partyId);
+							partyVO.setPartyName(partyName);
 							partyVO.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[2]));
 							partyVO.setElectionType(commonMethodsUtilService.getStringValueForObject(param[3]));
 							partyVO.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[4]));
 							partyVO.setElectionId(commonMethodsUtilService.getLongValueForObject(param[5]));
 							partyVO.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[6]));
-							innerEvo.getSubList2().add(partyVO);
 							
 							yearVo.getList().add(innerEvo);
 						}
@@ -441,6 +467,21 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 		
 	}
 
+	public ElectionInformationVO getMatchedElectionInformationVOByPartyName(List<ElectionInformationVO> partyVOList , String partyName){
+		ElectionInformationVO returnVO =null;
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(partyVOList) && partyName != null && partyName.trim().length()>0){
+				for (ElectionInformationVO vo : partyVOList) {
+					if(vo != null && vo.getPartyName() != null && vo.getPartyName().trim().equalsIgnoreCase(partyName.trim()))
+						return vo;
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised in getElectionInformationLocationWiseVoterShare method of LocationDashboardService"+e);
+		}
+		return returnVO;
+	}
+	
 	public List<ElectionInformationVO> buildSummaryForElectionResult(List<ElectionInformationVO> finalPartyList,Map<String,String> statusMap,Map<Long,List<Long>> electionIdAndLocationIdListMap,
 			Map<String,ElectionInformationVO> statusVOMap){
 		List<ElectionInformationVO> resultList = new ArrayList<ElectionInformationVO>(0);
@@ -1743,13 +1784,13 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	 * @return :List of ElectionInformationVO 
 */
 public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYearWise(Long locationTypeId,Long locationValue,List<Long> partyIdList,
-	List<Long> electionYrs,List<Long> electionScopeIds, List<String> subTypes,String searchType,String statusType,String year,List<Long> locationIds){
+	List<Long> electionYrs,List<Long> electionScopeIds, List<String> subTypes,String searchType,String statusType,String year,List<Long> locationIds,String withAllaince){
 	
 	List<ElectionInformationVO> finalList=new ArrayList<ElectionInformationVO>(0);
 	Map<String,Map<String,Long>>  yearAndStatusCountMap=new HashMap<String,Map<String,Long>>();
 	Map<String,Map<String,List<Long>>> YearAndstatusAndLocationIdsMap=new HashMap<String,Map<String,List<Long>>>();
 	try{
-		List<ElectionInformationVO> electionInformationVOList=getElectionInformationLocationWiseStatus(locationTypeId,locationValue,partyIdList,electionYrs,electionScopeIds,subTypes,searchType);
+		List<ElectionInformationVO> electionInformationVOList=getElectionInformationLocationWiseStatus(locationTypeId,locationValue,partyIdList,electionYrs,electionScopeIds,subTypes,searchType,withAllaince);
 		if(commonMethodsUtilService.isListOrSetValid(electionInformationVOList)){
 			for(ElectionInformationVO locationVo:electionInformationVOList){
 				boolean flage=false;
@@ -1844,6 +1885,8 @@ public  Map<Long,Map<Long,ElectionInformationVO>> getSegregateAliancePartiesMap(
 							vo.setPartyName(commonMethodsUtilService.getStringValueForObject(param[4]));
 						}
 						vo.getIdsList().add(commonMethodsUtilService.getLongValueForObject(param[5]));
+						
+						Collections.sort(vo.getIdsList());
 						
 						groupIdVOsMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), vo);
 						electionIdAndgroptIdVomap.put(commonMethodsUtilService.getLongValueForObject(param[0]), groupIdVOsMap);

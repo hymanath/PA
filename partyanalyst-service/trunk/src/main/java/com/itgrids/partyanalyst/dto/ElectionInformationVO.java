@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -52,7 +53,7 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private List<ElectionInformationVO> subList1 = new ArrayList<ElectionInformationVO>();
 	private List<ElectionInformationVO> subList2 = new ArrayList<ElectionInformationVO>();
 
-	private List<Long> idsList=new ArrayList<Long>(0);
+	private List<Long> idsList=new LinkedList<Long>();
 	private List<ElectionInformationVO> schemesList = new ArrayList<ElectionInformationVO>();
 	public ElectionInformationVO(){}
 	public ElectionInformationVO(Long partyId,String name){
@@ -325,5 +326,22 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	public void setGroupId(Long groupId) {
 		this.groupId = groupId;
 	}
+	
+	/* public boolean equals(Object obj) {
+	        boolean returner = false;
+	        if (obj instanceof ElectionInformationVO) {
+	        	ElectionInformationVO infoObj = (ElectionInformationVO) obj;
+	        	if(this.partyId.equals(infoObj.getPartyId()))
+	        		returner =  true;
+	        } else {
+	            returner = false;
+	        }
+	        return returner;
+	    }
+	   
+	    public int hashCode() {
+	        return 1;
+	    }
+	    */
 	
 }
