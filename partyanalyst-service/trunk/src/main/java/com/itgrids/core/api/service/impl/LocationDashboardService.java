@@ -4144,14 +4144,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					 }
 					 NominatedPostDetailsVO positionVO = null;
 					 if(type.equalsIgnoreCase("boardLevelWise")){
-						 Long boardLvlId = 0l;
-					   if(objects[1] != null && (Long)objects[1] == 5l || (Long)objects[1] == 6l){
+						 Long boardLvlId = commonMethodsUtilService.getLongValueForObject(objects[1]);
+					   if(objects[1] != null && (boardLvlId.longValue() == 5l || boardLvlId.longValue() == 6l)){
 						    boardLvlId=5l;
-					   }else if(objects[1] != null && (Long)objects[1] == 7l || (Long)objects[1] == 8l){
+					   }else if(objects[1] != null && (boardLvlId.longValue() == 7l || boardLvlId.longValue() == 8l)){
 						    boardLvlId=7l;
-					   }else if(objects[1] != null){
+					   }/*else {
 						    boardLvlId=(Long)objects[1] ;
-					   }
+					   }*/
 					    positionVO = positionMap.get(boardLvlId) ;
 					 }else{
 					    positionVO = positionMap.get(commonMethodsUtilService.getLongValueForObject(objects[1])) ;
@@ -4507,14 +4507,15 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		   
 		   if(commonMethodsUtilService.isListOrSetValid(candidateList)){
 			   for (Object[] obj : candidateList) {
-				   Long boardLvlId = 0l;
-				   if(obj[1] != null && (Long)obj[1] == 5l || (Long)obj[1] == 6l){
+				   Long boardLvlId = commonMethodsUtilService.getLongValueForObject(obj[1]);
+				   
+				   if(obj[1] != null && (boardLvlId.longValue() == 5l || boardLvlId.longValue() == 6l)){
 					    boardLvlId=5l;
-				   }if(obj[1] != null && (Long)obj[1] == 7l || (Long)obj[1] == 8l){
+				   }if(obj[1] != null && (boardLvlId.longValue() == 7l || boardLvlId.longValue() == 8l)){
 					    boardLvlId=7l;
-				   }else if(obj[1] != null){
+				   }/*else if(obj[1] != null){
 					    boardLvlId=(Long)obj[1] ;
-				   }
+				   }*/
 				   NominatedPostDetailsVO vo = boardLvelMap.get(boardLvlId);
 				   if(vo != null){
 					   if(commonMethodsUtilService.getStringValueForObject(obj[5]).toString().equalsIgnoreCase("M")){
@@ -4561,15 +4562,15 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 				   Long boardLvlId =0l;
 				   String name = "";
 				   if(boardLevel.getBoardLevelId() != null 
-						   && boardLevel.getBoardLevelId().longValue() == 5l || boardLevel.getBoardLevelId().longValue() == 6l){
+						   && (boardLevel.getBoardLevelId().longValue() == 5l || boardLevel.getBoardLevelId().longValue() == 6l)){
 					    vo = boardLvelMap.get(5l);
 					    boardLvlId=5l;
 					    name= "Mandal/Muncipality/Corporation";
 				   }else if(boardLevel.getBoardLevelId() != null 
-						   && boardLevel.getBoardLevelId().longValue() == 7l || boardLevel.getBoardLevelId().longValue() == 8l){
+						   && (boardLevel.getBoardLevelId().longValue() == 7l || boardLevel.getBoardLevelId().longValue() == 8l)){
 					    vo = boardLvelMap.get(7l);
 					    boardLvlId=7l;
-					    name= "Panchayat/Ward/Division";
+					    name= "Panchayat/Ward";
 				   }else {
 					    vo = boardLvelMap.get(boardLevel.getBoardLevelId());
 					    boardLvlId=boardLevel.getBoardLevelId();

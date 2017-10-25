@@ -172,7 +172,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 					}
 					NominatedPostCandidateDtlsVO deptVO = levelMap.get(levelId);
 					if(deptVO != null){
-						deptVO.setRecivedCount(commonMethodsUtilService.getLongValueForObject(param[0]));
+						deptVO.setRecivedCount(deptVO.getRecivedCount()+commonMethodsUtilService.getLongValueForObject(param[0]));
 					}
 					//total=total+deptVO.getRecivedCount();
 				}

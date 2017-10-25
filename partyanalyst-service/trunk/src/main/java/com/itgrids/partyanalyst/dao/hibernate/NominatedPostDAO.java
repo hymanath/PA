@@ -2525,10 +2525,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		
 		StringBuilder builder =new StringBuilder();
 		if(type != null && type.equalsIgnoreCase("ageRange")){
-		 builder.append(" select count(distinct model.nominationPostCandidateId),model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
+		 builder.append(" select count( model.nominationPostCandidateId),model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
 		 		" model.nominationPostCandidate.nominatedPostAgeRange.ageRange " );
 		}else if(type != null && type.equalsIgnoreCase("casteCategory")){
-		 builder.append(" select count( distinct model.nominationPostCandidateId),model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+		 builder.append(" select count(  model.nominationPostCandidateId),model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
 		 		" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName " );
 		}
 		   builder.append(" from NominatedPost model  ");

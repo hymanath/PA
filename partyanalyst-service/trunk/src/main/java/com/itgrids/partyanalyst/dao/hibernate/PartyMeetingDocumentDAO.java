@@ -745,14 +745,14 @@ public List<Object[]> getPartyMeetingFilesId(List<Long> partMeetingIds,String ty
 		return query.list();	
 	}
 
-public List<Object[]> getLocationWiseStateMeetingImages(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid){
+public List<Object[]> getLocationWiseStateMeetingImages(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid,Long partyMeetingTypeId){
     
     //0-meetingStatus,1-levelId,2-level,3-count
     StringBuilder sb = new StringBuilder();
     
     sb.append(" select model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeeting.partyMeetingType.partyMeetingMainType.meetingType," +
        "model.partyMeeting.partyMeetingType.partyMeetingTypeId,model.partyMeeting.partyMeetingType.type,model.path" +
-       ",model.partyMeeting.partyMeetingId from PartyMeetingDocument model  where model.partyMeeting.isActive = 'Y' and  ");
+       ",model.partyMeeting.partyMeetingId,model.partyMeeting.meetingName from PartyMeetingDocument model  where model.partyMeeting.isActive = 'Y' and  ");
     
     if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
  	   if(locationTypeId == 2l){
@@ -776,7 +776,9 @@ public List<Object[]> getLocationWiseStateMeetingImages(List<Long> locationValue
     if(partyMeetingMainTypeid != null && partyMeetingMainTypeid.longValue() > 0l){
  	   sb.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeid ");
     }
-    
+    if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0l){
+ 	   sb.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId = :partyMeetingTypeId ");
+    }
     if(fromDate != null && toDate != null){
  	   sb.append(" and date(model.partyMeeting.startDate) between :fromDate and :toDate ");
     }
@@ -790,6 +792,9 @@ public List<Object[]> getLocationWiseStateMeetingImages(List<Long> locationValue
     if(fromDate != null && toDate != null){
       query.setDate("fromDate", fromDate);
          query.setDate("toDate", toDate); 
+    }
+    if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0l){
+ 	   query.setParameter("partyMeetingTypeId", partyMeetingTypeId);
     }
     if(partyMeetingMainTypeid != null && partyMeetingMainTypeid.longValue() > 0l){
  	   query.setParameter("partyMeetingMainTypeid", partyMeetingMainTypeid);

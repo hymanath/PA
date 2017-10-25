@@ -4609,15 +4609,16 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		return query.list();
 	}
 	 
-	public List<Object[]> getLocationWiseStateMeetings(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid,String type){
+	public List<Object[]> getLocationWiseStateMeetings(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid,String type,Long partyMeetingTypeId){
 	       
-	       //0-meetingStatus,1-levelId,2-level,3-count
 	       StringBuilder sb = new StringBuilder();
 	       
 	       sb.append(" select model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeetingType.partyMeetingMainType.meetingType," +
 	          "model.partyMeetingType.partyMeetingTypeId,model.partyMeetingType.type  ");
 	       if(type != null && type.equalsIgnoreCase("recentTime")){
-	    	   sb.append(",max(model.startDate),model.partyMeetingId ");
+	    	   sb.append(",max(model.startDate),model.partyMeetingId,model.meetingName ");
+	       }else if(type != null && type.equalsIgnoreCase("meetings")){
+	    	   sb.append(",model.startDate,model.partyMeetingId,model.meetingName ");
 	       }else{
 	    	   sb.append(" ,count(distinct model.partyMeetingId) ");
 	       }
@@ -4645,12 +4646,17 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	       if(partyMeetingMainTypeid != null && partyMeetingMainTypeid.longValue() > 0l){
 	    	   sb.append(" and model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeid ");
 	       }
-	       
+	       if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0l){
+	    	   sb.append(" and model.partyMeetingType.partyMeetingTypeId = :partyMeetingTypeId " );
+	       }
 	       if(fromDate != null && toDate != null){
 	         sb.append(" and date(model.startDate) between :fromDate and :toDate ");
 	       }
 	       sb.append(" group by model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeetingType.partyMeetingTypeId ");
 	       
+	       if(type != null && type.equalsIgnoreCase("meetings")){
+	    	   sb.append("  , model.partyMeetingId " );
+	       }
 	       Query query = getSession().createQuery(sb.toString());
 	       
 	       if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
@@ -4662,6 +4668,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	       }
 	       if(partyMeetingMainTypeid != null && partyMeetingMainTypeid.longValue() > 0l){
 	    	   query.setParameter("partyMeetingMainTypeid", partyMeetingMainTypeid);
+	       }
+	       if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0l){
+	    	   query.setParameter("partyMeetingTypeId", partyMeetingTypeId);
 	       }
 	       return query.list();
 	     }
