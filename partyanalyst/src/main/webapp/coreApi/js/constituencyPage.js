@@ -7709,7 +7709,7 @@ function getTrustEducationOverviewDetails(yearId){
 			}else if(type == "insurance"){
 				str+='<div class="col-sm-4">';
 			}else if(type == "ntrTrust"){
-				str+='<div class="col-sm-3">';
+				str+='<div class="col-sm-4">';
 			}
 			str+='<div class="black_block">';
 				str+='<h5>Overview</h5>';
@@ -7782,7 +7782,7 @@ function getTrustEducationOverviewDetails(yearId){
 		}else{
 			if(result !=null && result.subList1 !=null && result.subList1.length>0){
 				for(var i in result.subList1){
-						str+='<div class="col-sm-3">';
+						str+='<div class="col-sm-4">';
 						str+='<div class="block">';
 							str+='<h5>'+result.subList1[i].name+'</h5>';
 								str+='<div id="'+type+'MainBlockId'+i+'" style="height:200px;" class="m_top5"></div>';
