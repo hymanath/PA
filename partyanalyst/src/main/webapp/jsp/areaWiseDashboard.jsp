@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="coreApi/css/bootstrap-multiselect.css" type="text/css">
 <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <body>
@@ -670,6 +671,11 @@
 						<div id="openPostDetailsModalDivId"></div>
 					</div>  
 				</div>
+				<div class="row paginationCls">
+					<div class="col-md-12 m_top20">
+						<div class="paginationId"></div>
+					</div>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -790,6 +796,7 @@
 <script type="text/javascript" src="coreApi/js/bootstrap-multiselect.js"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
 <script src="coreApi/js/tourConstituencyPage.js" type="text/javascript"></script>
 <script src="coreApi/js/alertPopupDetails.js" type="text/javascript"></script>

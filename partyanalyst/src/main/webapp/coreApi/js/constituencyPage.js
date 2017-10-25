@@ -949,22 +949,25 @@ function onLoadClicks()
 			$("#openModalDiv").modal("show");
 			$("#TitleId").html(departmentName+  "  Open Posts Details");
 			$("#subTitleId").html("");
+			$("#paginationCls").html("");
 			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
 		}else if(type == "goIssued"){
 			$("#openModalDiv").modal("show");
 			$("#TitleId").html(departmentName + "  G.O Issued Positions");
 			$("#subTitleId").html("");
-			getLevelWiseGoIssuedPostions(boardLevelId,statusIds);
+			getLevelWiseGoIssuedPostions(boardLevelId,statusIds,0,10);
 		}else if(type == "department"){
 			$("#departmentPostModal").modal("show");
 			$("#departmentDetailsModalDivId").html(spinner);
 			$("#deptHeadingId").html(departmentName+" Details");
 			$("#subTitleId").html("");
+			$("#paginationCls").html("");
 			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
 		}else if(type == "positionLevel"){
 			$("#openModalDiv").modal("show");
 			$("#TitleId").html(departmentName+" Level Details");
 			$("#subTitleId").html("");
+			$("#paginationCls").html("");
 			getNominatedPositionWiseCandidates(boardLevelId,departmentName);
 		}else if (type == "alert"){
 			var alertTypeIdsStr = $(this).attr("attr_alertTypeIdsStr");
@@ -977,6 +980,7 @@ function onLoadClicks()
 			var status_name = $(this).attr("attr_status_name");
 			var total_count = $(this).attr("attr_total_count");
 			$("#openModalDiv").modal("show");
+			$("#paginationCls").html("");
 			if(designationId !=0){
 				$("#TitleId").html(status_name + " Designation Wise Alerts Details  -  Total "+total_count+" ");
 				$("#subTitleId").html("");
@@ -1001,6 +1005,7 @@ function onLoadClicks()
 				designation="MLA";
 			}
 			$("#openModalDiv").modal("show");
+			$("#paginationCls").html("");
 			$("#openModalDiv .modal-dialog").css("width","60%");
 			$("#TitleId").html("Party Wise"+" "+designation+" "+"Candidates Details");
 			$("#subTitleId").html("");
@@ -1016,6 +1021,7 @@ function onLoadClicks()
 			var electionType = $(this).attr("attr_election_type");
 			var name = $(this).attr("attr_name");
 			$("#openModalDiv").modal("show");
+			$("#paginationCls").html("");
 			$("#TitleId").html(name+"  "+electionType+" Election Result");
 			$("#subTitleId").html("");
 			getDetailedElectionResults(constituencyId,electionYear,"table")
@@ -6196,14 +6202,14 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 	}
   }
   
-  function getLevelWiseGoIssuedPostions(boardLevelId,statusId){
+  function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex){
 	  $("#openPostDetailsModalDivId").html(spinner)
 	  
 	  var statusIds=[];
 	  if(statusId == 0){
 		  statusIds.push(3,4)
 	  }
-	  
+	 var totalPosCount = 0; 
 	var jsObj={
       fromDateStr 		:"",
       toDateStr			:"",
@@ -6212,8 +6218,8 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
       year				:"",
       boardLevelId		:boardLevelId, 
 	  statusIds			:statusIds, // 3-complered 4 goIsuued
-	  startIndex:0,
-	  endIndex:10000
+	  startIndex:startIndex,
+	  endIndex:endIndex
      
     }
     $.ajax({   
@@ -6223,11 +6229,17 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
-			return LevelWiseGoIssuedPostions(result);
+			return LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,statusId);
+		}else{
+			$(".paginationId").html("");
+			$("#openPostDetailsModalDivId").html("No Data Available");
 		}
 		
     });
-	function LevelWiseGoIssuedPostions(result){
+	function LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,statusId){
+		if(startIndex == 0){
+			totalPosCount=result[0].postCount;
+		}
 		var str='';
 		str+='<div class="table-responsive">';
 			str+='<table class="table table-condensed tableStyledGoIssued" id="dataTablegoIssuedPostId">';
@@ -6264,13 +6276,20 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
-		$("#openPostDetailsModalDivId").html(str);
-			$("#dataTablegoIssuedPostId").dataTable({
-			"iDisplayLength": 10,
-			"aaSorting": [],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
-		});
-		
+		if(startIndex == 0 && totalPosCount > 10){
+			$(".paginationId").pagination({
+				items: totalPosCount,
+				itemsOnPage: 10,
+				cssStyle: 'light-theme',
+				hrefTextPrefix: '#pages-',
+				onPageClick: function(pageNumber) { 
+					var num=(pageNumber-1)*10;
+					getLevelWiseGoIssuedPostions(boardLevelId,statusId,num,10)
+				}
+				
+			});
+		}
+		$("#openPostDetailsModalDivId").html(str);		
 	}
   }
   function getDesignationWiseAlertsOverview(defaultAlertCategoryIds){
