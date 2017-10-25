@@ -2594,19 +2594,19 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 				//sb.append(" and model.nominatedPostMember.address.state.stateId in(:locationValue) ");
 	 				//sb.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 	 			} else if (locationTypeId == 3) {
-					sb.append(" and model.nominatedPostMember.address.district.districtId in(:locationValue) ");
+					sb.append(" and model.address.district.districtId in(:locationValue) ");
 				} else if (locationTypeId == 10) {
-					sb.append(" and model.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValue) ");
+					sb.append(" and model.address.parliamentConstituency.constituencyId in(:locationValue) ");
 				} else if (locationTypeId == 4) {
-					sb.append(" and model.nominatedPostMember.address.constituency.constituencyId in(:locationValue) ");
+					sb.append(" and model.address.constituency.constituencyId in(:locationValue) ");
 				} else if (locationTypeId == 5) {
-					sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId in(:locationValue) ");
+					sb.append(" and model.address.tehsil.tehsilId in(:locationValue) ");
 				}else if (locationTypeId == 6) {
-					sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId in(:locationValue) ");
+					sb.append(" and model.address.panchayat.panchayatId in(:locationValue) ");
 				}else if (locationTypeId == 7) {
-					sb.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValue) ");
+					sb.append(" and model.address.localElectionBody.localElectionBodyId in(:locationValue) ");
 				}else if (locationTypeId == 8) {
-					sb.append(" and model.nominatedPostMember.address.ward.constituencyId in(:locationValue) ");
+					sb.append(" and model.address.ward.constituencyId in(:locationValue) ");
 				}		
 				
 	        }
