@@ -7251,7 +7251,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 				for (Object[] param : objList) {
 					String typeOfIssue = commonMethodsUtilService.getStringValueForObject(param[0]);
 					if (typeOfIssue.equalsIgnoreCase("Govt")) {
-						resultVO.setMemberCount(resultVO.getMemberCount() + commonMethodsUtilService.getLongValueForObject(param[3]));
+						/*resultVO.setMemberCount(resultVO.getMemberCount() + commonMethodsUtilService.getLongValueForObject(param[3]));*/
 						resultVO.setGovtCount(resultVO.getGovtCount() + commonMethodsUtilService.getLongValueForObject(param[4]));
 						resultVO.setGovtCount(resultVO.getGovtCount() + commonMethodsUtilService.getLongValueForObject(param[5]));
 					} else if (typeOfIssue.equalsIgnoreCase("Party") || typeOfIssue.equalsIgnoreCase("Welfare")) {
