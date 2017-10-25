@@ -5330,7 +5330,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		    		    		List<String> partNamesList=electionInformationVO.getPartyNamesList();
 		    		    		String commaSeparatedNames="";
 		    		    		for(String partyName:partNamesList){
-		    		    			commaSeparatedNames+=partyName+", ";
+		    		    			commaSeparatedNames+=partyName+",";
 		    		    		}
 		    		    		groupIdAndName.add(commaSeparatedNames.substring(0, commaSeparatedNames.length()-1));
 		    		    		return groupIdAndName;
