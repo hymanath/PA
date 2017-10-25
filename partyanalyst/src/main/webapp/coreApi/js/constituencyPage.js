@@ -272,6 +272,7 @@ function onLoadAjaxCalls()
 	getLocationWiseMeetingsCountDetails(1);
 	getLocationWiseMeetingsCountDetails(2);
 	getLocationWiseMeetingsCountDetails(3);
+	 //getLocationWiseSpecialMeetingsMeetingsExpanction(3,26);
 	 //candidate Profiles 1st block
 	if(locationLevelId == "2"){
 		getPartyWiseMPandMLACandidatesCounts();
@@ -7975,4 +7976,23 @@ function getLocationWiseElectionDetails(){
 	}).done(function(result){  
 		console.log(result);
 	});	
+}
+
+function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId,partyMeetingTypeId){
+	jsObj={
+		locationTypeId			:locationLevelId,
+		locationValues			:userAccessLevelValuesArray,
+		fromDate 				:customStartMeetingsDate,
+		toDate 					:customEndMeetingsDate,
+		partyMeetingMainTypeId	:partyMeetingMainTypeId,
+		partyMeetingTypeId:partyMeetingTypeId
+	}
+	$.ajax({
+		type : "GET",
+		url : "getLocationWiseSpecialMeetingsMeetingsExpanctionAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){ 
+	
+	});
 }
