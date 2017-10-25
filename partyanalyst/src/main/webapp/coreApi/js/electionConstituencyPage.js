@@ -818,7 +818,7 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,ele
 		yearsArr:electionYrVal,
 		partyIdsArr:partyIdsArr,
 		constituencyId :constituencyId,
-			withAllaince:withAllance
+		withAllaince:withAllance
     }
     $.ajax({
       type : "GET",
@@ -976,7 +976,7 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 		partyIdsArr       	:partyIdsArr,
 		electionSubTypeArr  :eletionSubType,
 		electionScopeIdsArr:electionScopeIdsArr,
-			withAllaince:withAllance
+		withAllaince:withAllance
     }
     $.ajax({
       type : "GET",
@@ -1284,15 +1284,15 @@ function buildData(result)
 			table+='<div class="col-sm-9">';
 				table+='<h4 class="panel-title text-capitalize">Candidate Details</h4>';
 				table+='<div class="table-responsive m_top10">';
-					table+='<table class="table tableBoothWise table-bordered">';
-						table+='<tr>';
-						table+='<thead class="bg-E9">';
-							table+='<th>Candidate Name</th>';
-							table+='<th>Party Name</th>';
-							table+='<th>Total Votes Gained</th>';
-							table+='<th>%</th>';
-							table+='<th>Margin Votes</th>';
-						table+='</tr>';	
+					table+='<table class="table tableBoothWise">';
+						table+='<thead>';
+							table+='<tr>';
+								table+='<th>Candidate Name</th>';
+								table+='<th>Party Name</th>';
+								table+='<th>Total Votes Gained</th>';
+								table+='<th>%</th>';
+								table+='<th>Margin Votes</th>';
+							table+='</tr>';	
 						table+='</thead>';
 						table +='<tbody>';
 						for(var k in result.partyBoothPerformanceVOList)
@@ -1357,8 +1357,8 @@ function buildData(result)
 				table+='<h3 class="panel-title text-capitalize">Polling Percentage Range Wise Party Voters Percentage</h3>';
 				var partiesSize=0;
 				table+='<div class="table-responsive m_top10">';
-					table+='<table class="table tableBoothWise table-bordered" id="pollingPercTableId">';
-						table+='<thead class="bg-E9">';
+					table+='<table class="table tableBoothWise" id="pollingPercTableId">';
+						table+='<thead>';
 							table+='<tr>';				
 								table+='<th rowspan="2"> Polling % Range </th>';
 								table+='<th rowspan="2"> Total No of Booths </th>';
@@ -1457,8 +1457,8 @@ function buildData(result)
 				if(result.perWiseboothResults != null && result.perWiseboothResults.length >0)
 				{
 					table +='<div class="table-responsive m_top20">';
-						table +='<table class="table table-bordered m_top20 tableBoothWise" id="majarityCandidatesTab">';	
-							table +='<thead class="bg-E9">';
+						table +='<table class="table m_top20 tableBoothWise table-majority" id="majarityCandidatesTab">';	
+							table +='<thead>';
 								table +='<tr>';				
 									table +='<th rowspan="2"> Party Votes % Range </th>';
 									if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
@@ -1524,7 +1524,7 @@ function buildData(result)
 			
 			str1+='<div class="table-responsive m_top20">';	
 			str1 +='<table class="table table-bordered tableBoothWise" id="boothWiseResultsPage">';	
-			str1 +='<thead class="bg-E9">';
+			str1 +='<thead>';
 				str1 +='<tr>';				
 					str1 +='<th>S.No </th>';
 					str1 +='<th>Booth No</th>';
@@ -1595,9 +1595,14 @@ function buildData(result)
 		$("#locationWiseBoothResultsId").html(str1);
 		$("#hideShowlocationId").html(str);
 		$("#pollingPercTableId,#majarityCandidatesTab,#boothWiseResultsPage").dataTable({
+			"paging"		: true,
+			"info"			: false,
+			"searching"		: false,
+			"autoWidth"		: true,
 			"iDisplayLength": 10,
-			"aaSorting": [],
-			"aLengthMenu": [[10, 15,20,50, -1], [10, 15, 20,50, "All"]]
+			"aaSorting"		: [],
+			"aLengthMenu"	: [[10, 15,20,50, -1], [10, 15, 20,50, "All"]],
+			"sDom"			: '<"top"ifl>rt<"bottom"p><"clear">'
 		});
 		
 		var dataArr=[];
@@ -1614,9 +1619,9 @@ function buildData(result)
 			title: {
 				text: '',
 				style: {
-				 color: '#000',
-				 font: 'bold 13px "Lato", sans-serif'
-			  }
+					color: '#000',
+					font: 'bold 13px "Lato", sans-serif'
+				}
 			},
 			subtitle: {
 				text: ''
@@ -1627,7 +1632,6 @@ function buildData(result)
 				minorGridLineWidth: 0,	
 				type: 'category',
 				categories: ['Voters','Polled'],
-				
 			},
 			yAxis: {
 				min: 0,
@@ -1651,7 +1655,6 @@ function buildData(result)
 						return '<b>' + this.x + '</b><br/>' +
 						this.y+'';
 					}
-					
 				}
 			},
 			plotOptions: { 
@@ -1877,7 +1880,7 @@ function buildBothData(result,electionScopeId)
 						if(result.perWiseboothResults != null && result.perWiseboothResults.length >0)
 						{
 							table +='<div class="table-responsive m_top20">';
-								table +='<table class="table table-bordered m_top20 tableBoothWise" id="majarityCandidatesTab">';	
+								table +='<table class="table table-bordered m_top20 tableBoothWise table-majority table-bordered" id="majarityCandidatesTab">';	
 									table +='<thead class="bg-E9">';
 										table +='<tr>';				
 											table +='<th rowspan="2"> Party Votes % Range </th>';
@@ -2256,7 +2259,7 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 		electionYears     	:electionYrVal,
 		electionSubTypeArr 	:eletionSubType,
 		searchType			:searchLevelVal,
-			withAllaince:withAllance
+		withAllaince:withAllance
     }
     $.ajax({
       type : "GET",
@@ -2574,7 +2577,7 @@ function  getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,ele
 		statusType			:statusTpe,
 		year				:year,
 		locationIds			:locationIds,
-			withAllaince:withAllance
+		withAllaince:withAllance
 		
 	}
 	$.ajax({
