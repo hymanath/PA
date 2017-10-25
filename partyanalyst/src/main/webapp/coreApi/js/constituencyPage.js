@@ -7804,7 +7804,7 @@ function getTrustEducationOverviewDetails(yearId){
 							str1+='<div class="dropup">';
 								str1+='<h6>'+result.subList2[i].subList[j].name+'';
 								if(result.subList2[i].subList[j].count !=null && result.subList2[i].subList[j].count>0){
-									str1+='<span class="pull-right dropdown-toggle" style="cursor:pointer"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu'+i+''+j+'" >'+result.subList2[i].subList[j].count+'</span>';
+									str1+='<span class="pull-right dropdown-toggle" style="cursor:pointer;text-decoration:underline"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu'+i+''+j+'" >'+result.subList2[i].subList[j].count+'</span>';
 								}else{
 									str1+='<span class="pull-right"> - </span>';
 								}
@@ -7853,7 +7853,7 @@ function getTrustEducationOverviewDetails(yearId){
 						str1+='<div class="dropup">';
 						str1+='<h6>'+result.subList2[i].name+'';
 						if(result.subList2[i].count !=null && result.subList2[i].count>0){
-							str1+='<span class="pull-right dropdown-toggle" style="cursor:pointer;"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuN'+i+'" >'+result.subList2[i].count+'</span>';
+							str1+='<span class="pull-right dropdown-toggle" style="cursor:pointer;text-decoration:underline"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuN'+i+'" >'+result.subList2[i].count+'</span>';
 						}else{
 							str1+='<span class="pull-right"> - </span>';
 						}
