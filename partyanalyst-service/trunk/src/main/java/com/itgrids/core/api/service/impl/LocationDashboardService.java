@@ -6035,6 +6035,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 						partyId = Long.valueOf(alliancePartyIdNameList.get(0));
 						partyName = alliancePartyIdNameList.get(1);
 						isAlliance = true;
+						partyIdsList.add(partyId);
 					}
 					ElectionInformationVO vo = null;
 					List<ElectionInformationVO> partysList = participantsMap.get(electionId);
@@ -6105,12 +6106,12 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 							vo.setPerc(""+commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(tempPerc));
 						}
 					}
-					Object [] partiesArr={"TDP","BJP","TDP+BJP","TDP/BJP","TDP & BJP","YSRC","INC","CPM","CPI","OTHERS"};
+					/*Object [] partiesArr={"TDP","BJP","TDP+BJP","TDP/BJP","TDP & BJP","YSRC","INC","CPM","CPI","OTHERS"};
 					List<ElectionInformationVO> returnList = (List<ElectionInformationVO>) commonMethodsUtilService.sortElectionInformationVOsList(partysList,"partyName",partiesArr);
 					if(commonMethodsUtilService.isListOrSetValid(returnList)){							
 					 vo.getList().clear();
 					 vo.getList().addAll(returnList);
-					}
+					}*/
 					participantsMap.put(electionId, partysList);
 				}
 			}
@@ -6126,6 +6127,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 						partyId = Long.valueOf(alliancePartyIdNameList.get(0));
 						partyName = alliancePartyIdNameList.get(1);
 						isAlliance = true;
+						
 					}
 					ElectionInformationVO vo = null;
 					List<ElectionInformationVO> partysList = wonPartiesMap.get(electionId);
@@ -6147,7 +6149,6 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 						vo.setPartyId(partyId);
 						vo.setPartyName(partyName);
 						vo.setPartyFlag(commonMethodsUtilService.getStringValueForObject(param[8]));
-						
 						vo.setElectionId(commonMethodsUtilService.getLongValueForObject(param[1]));
 						vo.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[4]));
 						vo.setElectionType(commonMethodsUtilService.getStringValueForObject(param[2]));
@@ -6182,12 +6183,12 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 						vo.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[3]));
 						vo.setTotalSeatsCount(vo.getTotalSeatsCount() + commonMethodsUtilService.getLongValueForObject(param[7]));
 					}
-					Object [] partiesArr={"TDP","BJP","TDP+BJP","TDP/BJP","TDP & BJP","YSRC","INC","CPM","CPI","OTHERS"};
+					/*Object [] partiesArr={"TDP","BJP","TDP+BJP","TDP/BJP","TDP & BJP","YSRC","INC","CPM","CPI","OTHERS"};
 					List<ElectionInformationVO> returnList = (List<ElectionInformationVO>) commonMethodsUtilService.sortElectionInformationVOsList(partysList,"partyName",partiesArr);
 					if(commonMethodsUtilService.isListOrSetValid(returnList)){							
 					 vo.getList().clear();
 					 vo.getList().addAll(returnList);
-					}
+					}*/
 					wonPartiesMap.put(electionId, partysList);
 				}
 			}
@@ -6208,7 +6209,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 							List<ElectionInformationVO> wonPartyList = wonPartiesMap.get(vo.getElectionId());
 							if(commonMethodsUtilService.isListOrSetValid(wonPartyList)){
 								for (ElectionInformationVO wonParty : wonPartyList) {
-									if(wonParty.getPartyId().longValue() == pPartyVO.getPartyId().longValue()){
+									if( wonParty.getPartyId() != null &&  pPartyVO.getPartyId() != null && wonParty.getPartyId().longValue() == pPartyVO.getPartyId().longValue()){
 										pPartyVO.setWonSeatsCount(wonParty.getTotalSeatsCount());break;
 										//pPartyVO.setPerc(wonParty.getPerc());
 									}
@@ -6253,7 +6254,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 					}
 				});
 			}
-			if(finalList != null && finalList.size()>0){
+			/*if(finalList != null && finalList.size()>0){
 				for(ElectionInformationVO vo : finalList){
 					Object [] partiesArr={"TDP","BJP","TDP + BJP","TDP+BJP","TDP/BJP","TDP & BJP","YSRC","INC","CPM","CPI","OTHERS"};
 					List<ElectionInformationVO> returnList = (List<ElectionInformationVO>) commonMethodsUtilService.sortElectionInformationVOsList(vo.getList(),"partyName",partiesArr);
@@ -6262,9 +6263,10 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 					 vo.getList().addAll(returnList);
 					}
 				}
-			}		
+			}*/
 				
 		}catch(Exception e){
+			e.printStackTrace();
 			Log.error("Exception raised in getLocationWiseElectionResults method of LocationDashboardService"+e);
 		}
 		return finalList;

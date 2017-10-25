@@ -996,6 +996,8 @@ public class CommonMethodsUtilService {
 				for(int i=0; i<partiesArr.length ;i++){
 					if(levelMap.containsKey(partiesArr[i].toString().trim().toUpperCase())){
 						returnList.add(levelMap.get(partiesArr[i].toString().trim().toUpperCase()));
+					}else{
+						returnList.add(levelMap.get(partiesArr[i].toString().trim().toUpperCase()));
 					}
 				}
 			} catch (Exception e) {
