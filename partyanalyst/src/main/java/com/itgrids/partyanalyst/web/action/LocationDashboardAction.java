@@ -1699,4 +1699,20 @@ public String getElectionInformationLocationWise(){
 	   }
 	   return Action.SUCCESS;
  }
+  
+  public String  getLocationWiseSpecialMeetingsMeetingsExpanction(){
+		 try {
+			jObj = new JSONObject(getTask());
+			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValues"));
+			String fromDateStr =jObj.getString("fromDate");
+			String toDateStr =jObj.getString("toDate");
+			Long partyMeetingMainTypeId =jObj.getLong("partyMeetingMainTypeId"); 
+			Long partyMeetingTypeId =jObj.getLong("partyMeetingTypeId");
+			
+			partyMeetingDataVO = meetingLocationDashboardService.getLocationWiseSpecialMeetingsMeetingsExpanction(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr,partyMeetingMainTypeId,partyMeetingTypeId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseSpecialMeetingsMeetingsExpanction", e);
+		}
+		 return Action.SUCCESS;
+	 }
 }

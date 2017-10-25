@@ -18384,5 +18384,10 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src="areaWiseNtrTrustViewAction"</result>	
 	</action> 
+	<action name="getLocationWiseSpecialMeetingsMeetingsExpanctionAction" class="locationDashboardAction"  method="getLocationWiseSpecialMeetingsMeetingsExpanction">
+		<result type="json" name="success">    
+			<param name="root">partyMeetingDataVO</param>       
+		</result>
+   </action>
  </package>
 </struts>
