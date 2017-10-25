@@ -1758,7 +1758,7 @@ function getSectorWiseOverviewCountDetails(sectorType,category,district){
 }
 function buildData(result,district,sectorType){
 		var str='';
-		str+='<table class="table table-bordered" id="'+district+'DataTable">';
+		str+='<table class="table table-bordered" id="'+district.replace(/\s+/g, '')+'DataTable">';
 			str+='<thead>';
 				str+='<th>District</th>';
 				str+='<th>Sector</th>';
@@ -1788,5 +1788,5 @@ function buildData(result,district,sectorType){
 		str+='</table>';
 		$("#sectorModalTitleId").html(district+' '+'District'+' '+sectorType+' '+'Industries'+' '+'Details');
 		$("#sectorModalDivId").html(str);
-		$("#"+district+"DataTable").dataTable();
+		$("#"+district.replace(/\s+/g, '')+"DataTable").dataTable();
 	}
