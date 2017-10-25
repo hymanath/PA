@@ -5584,7 +5584,10 @@ function buildElectionInformationLocationWise(result,type){
 					str+='<tbody>';
 							for(var i in result){
 								str+='<tr>';
-									str+='<td>'+result[i].partyName+'</td>';
+								if(result[i].name !=null && result[i].name.trim().length>0)
+									str+='<td title="'+result[i].name+'"> '+result[i].partyName+'</td>';
+								else									
+									str+='<td> '+result[i].partyName+'</td>';
 									for(var j in result[i].list){
 										if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
 											str+='<td>'+result[i].list[j].wonSeatsCount+'  </td>';
