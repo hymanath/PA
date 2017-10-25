@@ -173,7 +173,7 @@ function getGrivenceFinancialSupportDtls(yearId){
 						str+='<div class="media-body">';
 							str+='<h3>Donations to Party</h3>';
 							if(result.partyCount !=null && result.partyCount>0){
-								str+='<h4 class="m_top5">'+result.partyCount+' ('+result.memberCount+' Memberes)</h4>';
+								str+='<h4 class="m_top5">'+result.partyCount+' ('+result.memberCount+' Members)</h4>';
 							}else{
 								str+='<h4 class="m_top5"> - </h4>';
 							}
