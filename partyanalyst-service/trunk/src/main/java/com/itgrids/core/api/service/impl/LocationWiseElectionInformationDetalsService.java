@@ -2106,11 +2106,11 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 											Long assemblyVotesCount = partyVO.getAssemblyEarndVotes();
 											Long parliaentVotesCount = partyVO.getParliamentEarnedVotes();
 											
-											Long crossVotesCount = parliaentVotesCount - assemblyVotesCount;
+											Long crossVotesCount = assemblyVotesCount - parliaentVotesCount ;
 											String assemblyPerc = calculatePercentage(validVotesCount,assemblyVotesCount);;
 											String parliamentPerc = calculatePercentage(validVotesCount,parliaentVotesCount);;
 											
-											Double crossVotingPerc = Double.parseDouble(parliamentPerc) - Double.parseDouble(assemblyPerc);
+											Double crossVotingPerc = Double.parseDouble(assemblyPerc) - Double.parseDouble(parliamentPerc);
 											String perc = String.valueOf(crossVotingPerc);
 											returnPartyVO.setCrossVotingPerc(String.valueOf(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc))));
 											returnPartyVO.setCrossVotingCount(crossVotesCount);
