@@ -55,7 +55,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		  }
 		  return query.list();
  }
-	  //this dao is used both place coreDashboard and constiency page
+	  //this dao is used both place coreDashboard and constituency page
 	  public List<Object[]> getToursSubmittedLeaderCntDesignationBy(List<Long> monthYearIds,Set<Long> candiateIds){
 			StringBuilder queryStr = new StringBuilder();
 			queryStr.append(" select " +
