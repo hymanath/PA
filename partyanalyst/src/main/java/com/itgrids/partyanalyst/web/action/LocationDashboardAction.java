@@ -1101,7 +1101,7 @@ public String getElectionInformationLocationWise(){
 				}
 			}
 			electioninformationList = locationDashboardService.getElectionInformationLocationWiseVoterShare(jObj.getString("fromDate"),
-							jObj.getString("toDate"),jObj.getLong("locationId"),jObj.getLong("locationValue"), electionScopeIds,partyIds, electionYrs, subTypes);
+							jObj.getString("toDate"),jObj.getLong("locationId"),jObj.getLong("locationValue"), electionScopeIds,partyIds, electionYrs, subTypes,jObj.getString("withAllaince"));
 
 
 		} catch (Exception e) {
@@ -1206,7 +1206,7 @@ public String getElectionInformationLocationWise(){
 				}
 			}
 			Long constituencyId = jObj.getLong("constituencyId");
-			informationVo = locationDashboardService.getLocationWiseElectionResults(electionScopeIdsList,subTypeList,jObj.getLong("lelevlId"),locationValuesList,yearIdsList,partyIdsList,constituencyId);
+			informationVo = locationDashboardService.getLocationWiseElectionResults(electionScopeIdsList,subTypeList,jObj.getLong("lelevlId"),locationValuesList,yearIdsList,partyIdsList,constituencyId,jObj.getString("withAllaince"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getLevelWiseGrievanceCounts() of LocationDashboardAction{}",e);
 		}
@@ -1228,7 +1228,7 @@ public String getElectionInformationLocationWise(){
 				}
 			}
 			electioninformationList = locationWiseElectionInformationDetalsService.getElectionInformationLocationWiseStatus(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),
-					partyIdList,electionYearsList,electionScopeIds,subTypeList,jObj.getString("searchType"));
+					partyIdList,electionYearsList,electionScopeIds,subTypeList,jObj.getString("searchType"),jObj.getString("withAllaince"));
 
 		}catch(Exception e){
 			LOG.error("Exception raised at getElectionInformationLocationWiseStatus() of LocationDashboardAction{}",e);
@@ -1272,7 +1272,7 @@ public String getElectionInformationLocationWise(){
 			}
 			List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIdsArr"));
 			
-			electioninformationList = locationDashboardService.getElectionDetailsData(electionYears, jObj.getLong("locationTypeId"),locationValues,jObj.getLong("electionId"),subTypes,partyIds,electionScopeIds);
+			electioninformationList = locationDashboardService.getElectionDetailsData(electionYears, jObj.getLong("locationTypeId"),locationValues,jObj.getLong("electionId"),subTypes,partyIds,electionScopeIds,jObj.getString("withAllaince"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getConstituencyWiseInsuranceWiseIssueTypeCounts() of LocationDashboardAction{}",e);
 		}
@@ -1538,14 +1538,14 @@ public String getElectionInformationLocationWise(){
 			List<String> subTypeList = new ArrayList<String>();
 			JSONArray jsonArray = jObj.getJSONArray("electionSubTypeArr");
 			if (jsonArray != null && jsonArray.length() > 0) {
-				for (int i = 0; i < jsonArray.length(); i++) {
+				for (int i = 0; i < jsonArray.length(); i++) { 
 					subTypeList.add(jsonArray.getString(i).toString());
 				}
 			}
 			List<Long> locationIdsList = convertJsonStringList(jObj.getJSONArray("locationIds"));
 			
 			electioninformationList = locationWiseElectionInformationDetalsService.getElectionInformationLocationWiseStatusAndYearWise(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),
-				partyIdList,electionYearsList,electionScopeIds,subTypeList,jObj.getString("searchType"),jObj.getString("statusType"),jObj.getString("year"),locationIdsList);
+				partyIdList,electionYearsList,electionScopeIds,subTypeList,jObj.getString("searchType"),jObj.getString("statusType"),jObj.getString("year"),locationIdsList,jObj.getString("withAllaince"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getElectionInformationLocationWiseStatusAndYearWise() of LocationDashboardAction{}",e);
 		}
