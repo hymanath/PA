@@ -69,6 +69,8 @@
 <script type ="text/javascript">
 var locationLevelId = "${param.locationLevelId}";
 var locationName = "${param.locationLevelName}";
+var customStartInsuranceDate = "${param.customStartInsuranceDate}";
+var customEndInsuranceDate = "${param.customEndInsuranceDate}";
 var userAccessLevelValue = "${param.userAccessLevelValuesArray}";
 var userAccessLevelValuesArray =[];
 	userAccessLevelValuesArray.push(userAccessLevelValue);

@@ -69,6 +69,8 @@
 <script type ="text/javascript">
 var locationLevelId = "${param.locationLevelId}";
 var locationName = "${param.locationLevelName}";
+var customStartNtrTrustDate = "${param.customStartNtrTrustDate}";
+var customEndNtrTrustDate = "${param.customEndNtrTrustDate}";
 var userAccessLevelValue = "${param.userAccessLevelValuesArray}";
 var userAccessLevelValuesArray =[];
 	userAccessLevelValuesArray.push(userAccessLevelValue);

@@ -29,8 +29,8 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 function getTrustEducationSubjectForDetails(yearId){
 	$("#financialNtrTrustBlockDivId").html(spinner);
 	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
+			"fromDate" 			: customStartNtrTrustDate,
+			"toDate"			: customEndNtrTrustDate,
 			"locationTypeId" 	: locationLevelId,
 			"locationValuesArr" : userAccessLevelValuesArray,
 			"year"				: yearId,
@@ -79,7 +79,7 @@ function getTrustEducationSubjectForDetails(yearId){
 							str+='<i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:45px"></i>';
 						str+='</div>';
 						str+='<div class="media-body">';
-							str+='<h3>Fee Concession Count</h3>';
+							str+='<h3>Fee Concession</h3>';
 							if(result.feeConsCount !=null && result.feeConsCount>0){
 								str+='<h4 class="m_top5">'+result.feeConsCount+'</h4>';
 							}else{
@@ -96,7 +96,7 @@ function getTrustEducationSubjectForDetails(yearId){
 							str+='<i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:45px"></i>';
 						str+='</div>';
 						str+='<div class="media-body">';
-							str+='<h3>Seat Complaint Count</h3>';
+							str+='<h3>Seat</h3>';
 							if(result.seatCount !=null && result.seatCount>0){
 								str+='<h4 class="m_top5">'+result.seatCount+'</h4>';
 							}else{
@@ -225,8 +225,8 @@ function getTrustEducationSubjectForDetails(yearId){
 function getLocationWiseTrustEducationComplaintCount(yearId){
 	$("#locationNtrTrustBlockDivId").html(spinner);
 	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
+			"fromDate" 			: customStartNtrTrustDate,
+			"toDate"			: customEndNtrTrustDate,
 			"locationTypeId" 	: locationLevelId,
 			"locationValuesArr" : userAccessLevelValuesArray,
 			"year"				: yearId,
@@ -239,23 +239,24 @@ function getLocationWiseTrustEducationComplaintCount(yearId){
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
 		if(result !=null && result.length>0){
-			return buildLocationWiseTrustEducationComplaintCount(result);
+			return buildLocationWiseTrustEducationComplaintCount(result,locationLevelId);
 		}else{
 			$("#locationNtrTrustBlockDivId").html("No Data Available");
 		}
 	});
 	
-	function buildLocationWiseTrustEducationComplaintCount(result){
+	function buildLocationWiseTrustEducationComplaintCount(result,locationLevelId){
+		var headingStr = getDynamicHeading(locationLevelId);
 		var str='';
 			str+='<div class="row m_top20" style="margin-left: 0px; margin-right: 0px;">';
 				str+='<div class="col-sm-12 borderCss m_top10">';
 					str+='<div style="padding:10px">';
-						str+='<h4 class="theme-title-color">Location Wise Detailes</h4>';
+						str+='<h4 class="theme-title-color">'+headingStr.toUpperCase()+' WISE DETAILS</h4>';
 						str+='<div class="table-responsive m_top10">';
-							str+='<table class="table table_griveance_pad">';
+							str+='<table class="table table_griveance_pad" id="trustEducationLocationWiseDataTblId">';
 								str+='<thead class="bg-E9">';
 									str+='<tr>';
-										str+='<th>Location Name</th>';
+										str+='<th>LOCATION NAME</th>';
 										str+='<th>TOTAL</th>';
 										for(var j in result[0].subList){
 											str+='<th>'+result[0].subList[j].name+'</th>';
@@ -289,6 +290,40 @@ function getLocationWiseTrustEducationComplaintCount(yearId){
 			str+='</div>';
 		
 		$("#locationNtrTrustBlockDivId").html(str);
+		if (result != null && result.length > 10) {
+			$("#trustEducationLocationWiseDataTblId").dataTable({
+			"paging":   true,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		  });
+		}
 	}
 }
-	
+
+  function getDynamicHeading(locationScopeId) {
+		var headingStr="";
+		 if (locationScopeId != null ) {
+			   if (locationScopeId == 2) { // state
+				   headingStr = "District";
+			   } else if (locationScopeId == 3) {
+				   headingStr = "Constituency";
+				} else if (locationScopeId == 10) {
+					headingStr = "Constituency";
+				} else if (locationScopeId == 4) {
+					headingStr = "Mandal";
+				} else if (locationScopeId == 5) {
+					headingStr = "Village";
+				} else if (locationScopeId == 7) { // town/division
+					headingStr = "ward";
+				} else if (locationScopeId == 6) {
+					headingStr = "Village";
+				} else if (locationScopeId == 8) {
+					headingStr = "ward";
+				}
+			}
+		 return headingStr;
+	}
