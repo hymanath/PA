@@ -7623,12 +7623,12 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			List<Object[]> trustEduDtlsObjList = insuranceStatusDAO.getTrustEducationComplaintCnt(locationTypeId, locationValues, stateId, fromDate, toDate);
 			
 			Map<String,GrivenceStatusVO> statusMap = getStatusWiseComplaintCount(trustEduDtlsObjList);//getting status wise complaint count
-			Map<String, GrivenceStatusVO> supportForDtlsMap = getTrustEducationSupportForWiseComplaintCount(trustEduDtlsObjList,statusMap);//getting type of issue and status wise complaint count
+			List<GrivenceStatusVO> supportPurposeList = getTrustEducationSupportForWiseComplaintCount(trustEduDtlsObjList,statusMap);//getting type of issue and status wise complaint count
 			Map<String, GrivenceStatusVO> supportPurposeDtlsMap = getTrustEducationSupportPurPoseWiseComplaintCount(trustEduDtlsObjList,statusMap);//getting type of issue and status wise complaint count
 			
 			resultVO.getSubList().addAll(statusMap.values());
 			resultVO.setSubList1(new ArrayList<GrivenceStatusVO>(supportPurposeDtlsMap.values()));
-			resultVO.setSubList2(new ArrayList<GrivenceStatusVO>(supportForDtlsMap.values()));
+			resultVO.setSubList2(supportPurposeList);
 			
 			
 		}catch(Exception e){
@@ -7636,30 +7636,46 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		}
 		return resultVO;
 	}
-	private Map<String,GrivenceStatusVO> getTrustEducationSupportForWiseComplaintCount(List<Object[]> objList,Map<String,GrivenceStatusVO> statusMap) {
-		Map<String,GrivenceStatusVO> supportPurposeMap = new HashMap<String, GrivenceStatusVO>(0);
-		 try {
+	private List<GrivenceStatusVO> getTrustEducationSupportForWiseComplaintCount(List<Object[]> objList,Map<String,GrivenceStatusVO> statusMap) {
+		List<GrivenceStatusVO>  subjectPurposeList = new ArrayList<GrivenceStatusVO>(0); 
+		try {
 			 if (objList != null && objList.size() > 0 ) {
+				 Map<String,Map<String,GrivenceStatusVO>> supportPurposeMap = new HashMap<String,Map<String,GrivenceStatusVO>>(0);
 				 for (Object[] param : objList) {
-					 GrivenceStatusVO supportForVO = supportPurposeMap.get(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[1])));
-					  if (supportForVO == null ) {
-						  supportForVO = new GrivenceStatusVO();
-						  supportForVO.setName(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[1])));
-						  supportForVO.getSubList().addAll(getRequiredTemplate(statusMap)); // getting template
-						  supportPurposeMap.put(supportForVO.getName(), supportForVO);
+					  Map<String,GrivenceStatusVO> supportForMap = supportPurposeMap.get(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[0])));
+					  if (supportForMap == null ) {
+						  supportForMap = new HashMap<String, GrivenceStatusVO>();
+						  supportPurposeMap.put(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[0])), supportForMap);
 					  }
-					  GrivenceStatusVO statusMatchVO = getGrivanceStastusMatchVO(supportForVO.getSubList(), getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[2])));
+					  GrivenceStatusVO subjectForVO = supportForMap.get(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[1])));
+					   if (subjectForVO == null) {
+						   subjectForVO = new GrivenceStatusVO();
+						   subjectForVO.setName(getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[1])));
+						   subjectForVO.getSubList().addAll(getRequiredTemplate(statusMap)); // getting template
+						   supportForMap.put(subjectForVO.getName(), subjectForVO);
+					
+					   }
+					   GrivenceStatusVO statusMatchVO = getGrivanceStastusMatchVO(subjectForVO.getSubList(), getInUpperCase(commonMethodsUtilService.getStringValueForObject(param[2])));
 					   if (statusMatchVO != null) {
 						   statusMatchVO.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
-						   supportForVO.setCount(supportForVO.getCount()+statusMatchVO.getCount());
+						   subjectForVO.setCount(subjectForVO.getCount()+statusMatchVO.getCount());
 					   }
 				}
+				 //preparing list
+				 if (supportPurposeMap.size() > 0) {
+					 for (Entry<String, Map<String, GrivenceStatusVO>> subjectPuroseEntry : supportPurposeMap.entrySet()) {
+						  GrivenceStatusVO subjectPurposeVO = new GrivenceStatusVO();
+						  subjectPurposeVO.setName(subjectPuroseEntry.getKey());
+						  subjectPurposeVO.getSubList().addAll(subjectPuroseEntry.getValue().values());
+						  subjectPurposeList.add(subjectPurposeVO);
+					}
+				 }
 			 }
 			 
 		 } catch (Exception e) {
-			 Log.error("Exception raised at getTrustEducationSupportPurposeWiseComplaintCount() in  LocationDashboardService class "+e);
+			 Log.error("Exception raised at getTrustEducationSupportForWiseComplaintCount() in  LocationDashboardService class "+e);
 		 }
-		 return supportPurposeMap;
+		 return subjectPurposeList;
 	}
 	private Map<String,GrivenceStatusVO> getTrustEducationSupportPurPoseWiseComplaintCount(List<Object[]> objList,Map<String,GrivenceStatusVO> statusMap) {
 		Map<String,GrivenceStatusVO> supportPurposeMap = new HashMap<String, GrivenceStatusVO>(0);
