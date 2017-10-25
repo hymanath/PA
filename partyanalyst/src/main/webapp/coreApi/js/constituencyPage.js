@@ -1371,7 +1371,7 @@ function getCandidateAndPartyInfoForConstituency(){
 											parliament+='<img src="https://mytdp.com/images/candidates/'+result[0].subList1[i].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
 										}
 										parliament+='<span class="border-image img-border">';
-											parliament+='<img src="images/party_flags/'+result[0].subList1[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
+											parliament+='<img src="images/party_flags/'+result[0].subList1[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/>';
 										parliament+='</span>';
 									parliament+='</div>';
 									parliament+='<div class="media-body">';
@@ -1422,7 +1422,7 @@ function getCandidateAndPartyInfoForConstituency(){
 											
 											
 											assembly+='<span class="border-image img-border">';
-												assembly+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
+												assembly+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party" style="height:25px;width:25px;"/>';
 											assembly+='</span>';
 										assembly+='</div>';
 										assembly+='<div class="media-body">';
@@ -1470,7 +1470,7 @@ function getCandidateAndPartyInfoForConstituency(){
 										  parliament+='<img src="https://mytdp.com/images/candidates/'+result[0].subList1[0].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
 									 }
 										parliament+='<span class="border-image img-border">';
-										parliament+='<img src="images/party_flags/'+result[0].subList1[0].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/>';
+										parliament+='<img src="images/party_flags/'+result[0].subList1[0].partyFlag+'"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/>';
 									parliament+='</span>';
 								parliament+='</div>';
 								parliament+='<div class="media-body">';
@@ -1502,7 +1502,7 @@ function getCandidateAndPartyInfoForConstituency(){
 											parliament+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/candidates/'+result[i].assemblyCandidateInfo[0].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
 										}
 										parliament+='<span class="border-image img-border">';
-											parliament+='<img  onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party"/>';
+											parliament+='<img  onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party" style="height:25px;width:25px;"/>';
 										parliament+='</span>';
 									parliament+='</div>';
 									parliament+='<div class="media-body">';
@@ -1560,7 +1560,7 @@ function getCandidateAndPartyInfoForConstituency(){
 													stateLevel+='<span class="border-image img-border">';
 													if(result[i].partyFlag !=null){
 														
-														stateLevel+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].partyFlag+'" alt="party"/>';
+														stateLevel+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].partyFlag+'" alt="party" style="height:25px;width:25px;"/>';
 													}else{
 														stateLevel+='<img  src="images/User.png" alt="party" style="width:20px;"/>';
 													}
@@ -1640,7 +1640,7 @@ function getCandidateAndPartyInfoForConstituency(){
 												representative+='<span class="border-image img-border">';
 												if(result[0].list[i].list[j].partyFlag !=null){
 													
-													representative+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[0].list[i].list[j].partyFlag+'" alt="party"/>';
+													representative+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[0].list[i].list[j].partyFlag+'" alt="party" style="height:25px;width:25px;"/>';
 												}else{
 													representative+='<img  src="images/User.png" alt="party" style="width:20px;"/>';
 												}
@@ -3005,11 +3005,11 @@ function getPrintMediaCountsForConstituencyPage(){
 								for(var i in result.coreDashBoardVOList){
 									str+='<tr>';
 									if(result.coreDashBoardVOList[i].organization == "TDP" || result.coreDashBoardVOList[i].organization == "YSRC"){
-										str+='<td><p><img  onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList[i].organization+'.PNG" alt="party"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList[i].count+'</span></p></td>';
+										str+='<td><p><img  onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList[i].organization+'.PNG" alt="party" style="height:25px;width:25px;"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList[i].count+'</span></p></td>';
 									}else if(result.coreDashBoardVOList[i].organization == "JANASENA"){
-										str+='<td><p><img  onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList[i].organization.trim()+'.PNG" alt="party" />&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList[i].count+'</span></p></td>';
+										str+='<td><p><img  onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList[i].organization.trim()+'.PNG" alt="party" style="height:25px;width:25px;"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList[i].count+'</span></p></td>';
 									}else{
-										str+='<td><p><img onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList[i].organization+'.png" alt="party"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList[i].count+'</span></p></td>';
+										str+='<td><p><img onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList[i].organization+'.png" alt="party" style="height:25px;width:25px;"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList[i].count+'</span></p></td>';
 									}
 										str+='<td>'+result.coreDashBoardVOList[i].positiveCountMain+' <small class="m_left5 text-success">'+result.coreDashBoardVOList[i].positivePerc+'%</small></td>';
 										str+='<td>'+result.coreDashBoardVOList[i].negativCountMain+' <small class="m_left5 text-danger">'+result.coreDashBoardVOList[i].negativePerc+'%</small></td>';
@@ -3036,11 +3036,11 @@ function getPrintMediaCountsForConstituencyPage(){
 								for(var i in result.coreDashBoardVOList1){
 									str+='<tr>';
 										if(result.coreDashBoardVOList1[i].organization == "TDP" || result.coreDashBoardVOList1[i].organization == "YSRC"){
-											str+='<td><p><img onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList1[i].organization+'.PNG" alt="party"/>&nbsp;&nbsp;&nbsp;<span>'+result.coreDashBoardVOList1[i].count+'</span></p></td>';
+											str+='<td><p><img onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList1[i].organization+'.PNG" alt="party" style="height:25px;width:25px;"/>&nbsp;&nbsp;&nbsp;<span>'+result.coreDashBoardVOList1[i].count+'</span></p></td>';
 										}else if(result.coreDashBoardVOList1[i].organization == "JANASENA"){
-											str+='<td><p><img onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList1[i].organization.trim()+'.PNG" alt="party" style="width: 30px; height: 30px;"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList1[i].count+'</span></p></td>';
+											str+='<td><p><img onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList1[i].organization.trim()+'.PNG" alt="party" style="height:25px;width:25px;"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList1[i].count+'</span></p></td>';
 										}else{
-											str+='<td><p><img onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList1[i].organization+'.png" alt="party"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList1[i].count+'</span></p></td>';
+											str+='<td><p><img onerror="setDefaultImage(this);" src="images/party_flags/'+result.coreDashBoardVOList1[i].organization+'.png" alt="party" style="height:25px;width:25px;"/>&nbsp;&nbsp;&nbsp; <span>'+result.coreDashBoardVOList1[i].count+'</span></p></td>';
 										}
 										str+='<td>'+result.coreDashBoardVOList1[i].positiveCountMain+' <small class="m_left5 text-success">'+result.coreDashBoardVOList1[i].positivePerc+'%</small></td>';
 										str+='<td>'+result.coreDashBoardVOList1[i].negativCountMain+' <small class="m_left5 text-danger">'+result.coreDashBoardVOList1[i].negativePerc+'%</small></td>';
@@ -5741,11 +5741,11 @@ function getPartyWiseMPandMLACandidatesCounts(){
 								str+='</div>';
 									str+='<div class="media-body media_width">';
 										if(result.subList[i].party == "BJP"){
-											str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
+											str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.png"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
 										}else if(result.subList[i].party == "OTHERS"){
 											str+='<p class="m_top10">'+result.subList[i].party+'</p>';
 										}else{
-											str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
+											str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
 										}
 										//str+='<p class="f-10">Telugu Desam Party</p>';
 									str+='</div>';
@@ -5776,11 +5776,11 @@ function getPartyWiseMPandMLACandidatesCounts(){
 								str+='</div>';
 									str+='<div class="media-body media_width">';
 									if(result.subList2[i].party == "BJP"){
-										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.png"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
+										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.png"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
 									}else if(result.subList2[i].party == "OTHERS"){
 										str+='<p class="m_top10">'+result.subList2[i].party+'</p>';
 									}else{
-										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" /> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
+										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
 									}
 										
 										//str+='<p class="f-10">Telugu Desam Party</p>';
@@ -7148,10 +7148,10 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 					str+='<tr>';
 						if(result[i].partyFlag != null ){
 							if(result[i].party != null && result[i].cadreId != null && result[i].partyId !=872){
-								str+='<td><img src="images/party_flags/'+result[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/><i class="fa fa-star" aria-hidden="true" ></i></td>'; 
+								str+='<td><img src="images/party_flags/'+result[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/><i class="fa fa-star" aria-hidden="true" ></i></td>'; 
 							}else{
 							    //str+='<td>'+result[i].partyFlag+'</td>'; 
-						       str+='<td><img src="images/party_flags/'+result[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party"/></td>';
+						       str+='<td><img src="images/party_flags/'+result[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/></td>';
 							}							
 						}else{
 							str+='<td> - </td>';     
@@ -7480,9 +7480,9 @@ function getDetailedElectionResults(constituencyId,electionYear,type){
 															navTabs+=' </div>';
 															navTabs+='<div class="col-sm-5">';
 															if(result[i].candidateResultsVO.partyShortName == "TDP" || result[i].candidateResultsVO.partyShortName == "YSRC"){
-																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="'+result[i].candidateResultsVO.partyShortName+'"></img>';
+																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="'+result[i].candidateResultsVO.partyShortName+'" style="height:25px;width:25px;"></img>';
 															}else{
-																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="'+result[i].candidateResultsVO.partyShortName+'"></img>';
+																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="'+result[i].candidateResultsVO.partyShortName+'" style="height:25px;width:25px;"></img>';
 															}
 																navTabs+='<p class="">'+result[i].candidateResultsVO.partyShortName+'</p>';
 															navTabs+=' </div>';
@@ -7516,9 +7516,9 @@ function getDetailedElectionResults(constituencyId,electionYear,type){
 															navTabs+=' </div>';
 															navTabs+='<div class="col-sm-5">';
 															if(result[i].candidateResultsVO.partyShortName == "TDP" || result[i].candidateResultsVO.partyShortName == "YSRC"){
-																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="'+result[i].candidateResultsVO.partyShortName+'"></img>';
+																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="'+result[i].candidateResultsVO.partyShortName+'" style="height:25px;width:25px;"></img>';
 															}else{
-																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="'+result[i].candidateResultsVO.partyShortName+'"></img>';
+																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="'+result[i].candidateResultsVO.partyShortName+'" style="height:25px;width:25px;"></img>';
 															}
 																navTabs+='<p class="">'+result[i].candidateResultsVO.partyShortName+'</p>';
 															navTabs+=' </div>';
