@@ -5666,6 +5666,19 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return result;
 	
 	}
+	@Override
+	public List<Object[]> getParticipatedLocation(List<Long> candidateList) {
+	
+		Query query= getSession().createSQLQuery("select c.constituency_id as parlimentId,c.name as parlimentName ,e.election_scope_id electionScopeId,n.candidate_id as candidateId " +
+				"from nomination n ,constituency_election ce,constituency c,election e " +
+				"where n.consti_elec_id=ce.consti_elec_id and c.constituency_id=ce.constituency_id and e.election_id=ce.election_id and n.candidate_id in(:candidateList)")
+				.addScalar("parlimentId",Hibernate.LONG)
+				.addScalar("parlimentName",Hibernate.STRING)
+				.addScalar("electionScopeId",Hibernate.LONG)
+				.addScalar("candidateId",Hibernate.LONG);
+		query.setParameterList("candidateList", candidateList);
+		return query.list();
+	}
 	
 }
 

@@ -710,4 +710,6 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 
 	public List<Object[]> locationWisefindWonCandidateInConstituency(List<Long> constituencyIds, String electionYear, Long electionScopeId);
 
+	public List<Object[]> getParticipatedLocation(List<Long> candidateList);
+
 }
