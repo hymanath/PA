@@ -7931,7 +7931,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		return resultList;
 	}
 	
-	public List<KeyValueVO> getLocationWiseElectionDetails(String locationType,List<Long> locationValues){
+	public List<KeyValueVO> getLocationWiseElectionDetails(String locationType){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		
 		try {
