@@ -7538,7 +7538,7 @@ function getDetailedElectionResults(constituencyId,electionYear,type){
 }
 
 function getGrivenceOverviewDtls(yearId){
-
+	$("#grievanceMainBlockId").html(spinner);
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -7553,12 +7553,15 @@ function getGrivenceOverviewDtls(yearId){
 	  dataType : 'json',
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
-		if(result !=null){
+		if(result !=null && result.subList !=null && result.subList.length>0 && result.subList1 !=null && result.subList1.length>0 && result.subList2 !=null && result.subList2.length>0){
 			buildGrivenceOverviewDtls(result,"grievance");
+		}else{
+			$("#grievanceMainBlockId").html("No Data Available");
 		}
 	});	
 }
 function getInsuranceOverviewDetails(yearId){
+	$("#insuranceMainBlockId").html(spinner);
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -7573,12 +7576,15 @@ function getInsuranceOverviewDetails(yearId){
 	  dataType : 'json',
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
-		if(result !=null){
+		if(result !=null && result.subList !=null && result.subList.length>0 && result.subList1 !=null && result.subList1.length>0){
 			buildGrivenceOverviewDtls(result,"insurance");
+		}else{
+			$("#insuranceMainBlockId").html("No Data Available");
 		}
 	});	
 }
 function getTrustEducationOverviewDetails(yearId){
+	$("#ntrTrustMainBlockId").html(spinner);
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -7593,8 +7599,10 @@ function getTrustEducationOverviewDetails(yearId){
 	  dataType : 'json',
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
-		if(result !=null){
+		if(result !=null && result.subList !=null && result.subList.length>0 && result.subList1 !=null && result.subList1.length>0 && result.subList2 !=null && result.subList2.length>0){
 			buildGrivenceOverviewDtls(result,"ntrTrust");
+		}else{
+			$("#ntrTrustMainBlockId").html("No Data Available");
 		}
 	});	
 }
@@ -7616,18 +7624,38 @@ function getTrustEducationOverviewDetails(yearId){
 			}
 			str+='<div class="black_block">';
 				str+='<h5>Overview</h5>';
-				str+='<h3 class="m_top20">Total - '+totalCount+'</h3>';
+				if(totalCount !=null && totalCount>0){
+					str+='<h3 class="m_top20">Total - '+totalCount+'</h3>';
+				}else{
+					str+='<h3 class="m_top20">Total - 0</h3>';
+				}
+				
 				str+='<ul class="list_style_css m_top20">';
 				if(result !=null && result.subList !=null && result.subList.length>0){
 					for(var i in result.subList){
 						str+='<li>';
 							if(type == "grievance"){
-								str+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right">'+result.subList[i].count+'</span></h6>';
+								if(result.subList[i].count !=null && result.subList[i].count>0){
+									str+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right">'+result.subList[i].count+'</span></h6>';
+								}else{
+									str+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right"> - </span></h6>';
+								}
+								
 								
 							}else if(type == "insurance"){
-								str+='<h6><span class="squareCss" style="background-color:'+insuranceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right">'+result.subList[i].count+'</span></h6>';
+								if(result.subList[i].count !=null && result.subList[i].count>0){
+									str+='<h6><span class="squareCss" style="background-color:'+insuranceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right">'+result.subList[i].count+'</span></h6>';
+								}else{
+									str+='<h6><span class="squareCss" style="background-color:'+insuranceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right"> - </span></h6>';
+								}
+								
 							}else if(type == "ntrTrust"){
-								str+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right">'+result.subList[i].count+'</span></h6>';
+								if(result.subList[i].count !=null && result.subList[i].count>0){
+									str+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right">'+result.subList[i].count+'</span></h6>';
+								}else{
+									str+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+' <span class="pull-right"> - </span></h6>';
+								}
+								
 							}
 						
 						str+='</li>';
@@ -7686,7 +7714,13 @@ function getTrustEducationOverviewDetails(yearId){
 						str1+='<li>';
 							str1+='<div class="dropup">';
 								str1+='<h6>'+result.subList2[i].subList[j].name+'';
-								str1+='<span class="pull-right dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu'+i+''+j+'" >'+result.subList2[i].subList[j].count+'</span>';
+								if(result.subList2[i].subList[j].count !=null && result.subList2[i].subList[j].count>0){
+									str1+='<span class="pull-right dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu'+i+''+j+'" >'+result.subList2[i].subList[j].count+'</span>';
+								}else{
+									str1+='<span class="pull-right"> - </span>';
+								}
+								
+								
 								str1+='<div class="dropdown-menu pull-right arrow_box_bottom" aria-labelledby="dropdownMenu'+i+''+j+'" style="padding:0px;min-width:200px;">';
 								var totalcountDp=0;
 								for(var k in result.subList2[i].subList[j].subList){
@@ -7728,7 +7762,14 @@ function getTrustEducationOverviewDetails(yearId){
 					
 					str1+='<li>';
 						str1+='<div class="dropup">';
-						str1+='<h6>'+result.subList1[i].name+' <span class="pull-right dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuN'+i+'" >'+result.subList1[i].count+'</span>';
+						str1+='<h6>'+result.subList1[i].name+'';
+						if(result.subList1[i].count !=null && result.subList1[i].count>0){
+							str1+='<span class="pull-right dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuN'+i+'" >'+result.subList1[i].count+'</span>';
+						}else{
+							str1+='<span class="pull-right"> - </span>';
+						}
+						
+						
 							str1+='<div class="dropdown-menu pull-right arrow_box_bottom" aria-labelledby="dropdownMenuN'+i+'" style="padding:0px;min-width:200px;">';
 								var totalcountDp=0;
 								for(var k in result.subList1[i].subList){

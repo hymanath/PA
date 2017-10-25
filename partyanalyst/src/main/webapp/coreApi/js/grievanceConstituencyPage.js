@@ -31,7 +31,7 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 	});
 }
 function getGrivenceOverviewDtls(yearId){
-
+$("#CategoryBlockDivId").html(spinner);
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -46,8 +46,10 @@ function getGrivenceOverviewDtls(yearId){
 	  dataType : 'json',
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
-		if(result !=null){
+		if(result !=null && result.subList2 !=null && result.subList2.length>0){
 			return buildGrivenceOverviewDtls(result);
+		}else{
+			$("#CategoryBlockDivId").html("No Data Available");
 		}
 	});	
 	
@@ -73,9 +75,19 @@ function getGrivenceOverviewDtls(yearId){
 									for(var j in result.subList2[i].subList){
 										str+='<tr>';
 											str+='<td>'+result.subList2[i].subList[j].name+'</td>';
-											str+='<td>'+result.subList2[i].subList[j].count+'</td>';
+											if(result.subList2[i].subList[j].count !=null && result.subList2[i].subList[j].count>0){
+												str+='<td>'+result.subList2[i].subList[j].count+'</td>';
+											}else{
+												str+='<td> - </td>';
+											}
+											
 											for(var k in result.subList2[i].subList[j].subList){
-												str+='<td>'+result.subList2[i].subList[j].subList[k].count+'</td>';
+												if(result.subList2[i].subList[j].subList[k].count !=null && result.subList2[i].subList[j].subList[k].count>0){
+													str+='<td>'+result.subList2[i].subList[j].subList[k].count+'</td>';
+												}else{
+													str+='<td> - </td>';
+												}
+												
 											}
 										str+='</tr>';
 									}
@@ -90,6 +102,7 @@ function getGrivenceOverviewDtls(yearId){
 }
 
 function getGrivenceFinancialSupportDtls(yearId){
+	$("#financialBlockDivId").html(spinner);
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -104,8 +117,10 @@ function getGrivenceFinancialSupportDtls(yearId){
 	  dataType : 'json',
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
-		if(result !=null){
+		if(result !=null && result.subList !=null && result.subList.length>0){
 			return buildGrivenceFinancialSupportDtls(result);
+		}else{
+			$("#financialBlockDivId").html("No Data Available");
 		}
 	});
 		
@@ -191,11 +206,32 @@ function getGrivenceFinancialSupportDtls(yearId){
 								for(var i in result.subList){
 									str+='<tr>';
 										str+='<td><span class="squareCss" style="background-color:'+financialColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+'</td>';
-										str+='<td>'+result.subList[i].memberCount+'</td>';
-										str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList[i].expectedAmount+'</td>';
-										str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList[i].approvedAmount+'</td>';
-										str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList[i].completedCount+'</td>';
-										str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList[i].totalAmount+'</td>';
+										if(result.subList[i].memberCount !=null && result.subList[i].memberCount>0){
+											str+='<td>'+result.subList[i].memberCount+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										if(result.subList[i].expectedAmount !=null && result.subList[i].expectedAmount>0){
+											str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList[i].expectedAmount+'</td>';
+										}else{
+											str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> -</td>';
+										}
+										if(result.subList[i].approvedAmount !=null && result.subList[i].approvedAmount>0){
+											str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList[i].approvedAmount+'</td>';
+										}else{
+											str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> -</td>';
+										}
+										if(result.subList[i].completedCount !=null && result.subList[i].completedCount>0){
+											str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList[i].completedCount+'</td>';
+										}else{
+											str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> -</td>';
+										}
+										if(result.subList[i].totalAmount !=null && result.subList[i].totalAmount>0){
+											str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList[i].totalAmount+'</td>';
+										}else{
+											str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> -</td>';
+										}
+										
 									str+='</tr>';
 								}
 								
@@ -274,6 +310,7 @@ function getGrivenceFinancialSupportDtls(yearId){
 }
 
 function getGrivenceComplaintCountDepartmentWise(yearId){
+	$("#departmentBlockDivId").html(spinner);
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -290,6 +327,8 @@ function getGrivenceComplaintCountDepartmentWise(yearId){
 	}).done(function(result){  
 		if(result !=null && result.length>0){
 			buildGrivenceComplaintCountDepartmentWise(result,"department");
+		}else{
+			$("#departmentBlockDivId").html("No Data Available");
 		}
 	});	
 }
@@ -298,12 +337,22 @@ function getGrivenceComplaintCountDepartmentWise(yearId){
 			str+='<div class="row m_top20" style="margin-left: 0px; margin-right: 0px;">';
 				str+='<div class="col-sm-12 borderCss m_top10">';
 					str+='<div style="padding:10px">';
+					if(type == "department"){
 						str+='<h4 class="theme-title-color">Department Wise Detailes</h4>';
+					}else{
+						str+='<h4 class="theme-title-color">Location Wise Detailes</h4>';
+					}
+						
 						str+='<div class="table-responsive m_top10">';
 							str+='<table class="table table_griveance_pad">';
 								str+='<thead class="bg-E9">';
 									str+='<tr>';
+									if(type == "department"){
 										str+='<th>Department Name</th>';
+									}else{
+										str+='<th>Location Name</th>';
+									}
+										
 										str+='<th>TOTAL</th>';
 										for(var j in result[0].subList){
 											str+='<th>'+result[0].subList[j].name+'</th>';
@@ -314,9 +363,19 @@ function getGrivenceComplaintCountDepartmentWise(yearId){
 									for(var i in result){
 										str+='<tr>';
 											str+='<td>'+result[i].name+'</td>';
-											str+='<td>'+result[i].count+'</td>';
+											if(result[i].count !=null && result[i].count>0){
+												str+='<td>'+result[i].count+'</td>';
+											}else{
+												str+='<td> - </td>';
+											}
+											
 											for(var j in result[i].subList){
-												str+='<td>'+result[i].subList[j].count+'</td>';
+												if(result[i].subList[j].count !=null && result[i].subList[j].count>0){
+													str+='<td>'+result[i].subList[j].count+'</td>';
+												}else{
+													str+='<td> - </td>';
+												}
+												
 											}
 										str+='</tr>';
 									}
@@ -331,6 +390,7 @@ function getGrivenceComplaintCountDepartmentWise(yearId){
 
 
 function getLocationWiseTypeOfIssueGrivenceComplaintCount(yearId){
+	$("#locationBlockDivId").html(spinner);
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -347,6 +407,8 @@ function getLocationWiseTypeOfIssueGrivenceComplaintCount(yearId){
 	}).done(function(result){  
 		if(result !=null && result.length>0){
 			buildGrivenceComplaintCountDepartmentWise(result,"location");
+		}else{
+			$("#locationBlockDivId").html("No Data Available");
 		}
 	});	
 }

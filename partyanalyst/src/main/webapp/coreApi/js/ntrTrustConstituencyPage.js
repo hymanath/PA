@@ -27,6 +27,7 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 	});
 }
 function getTrustEducationSubjectForDetails(yearId){
+	$("#financialNtrTrustBlockDivId").html(spinner);
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -41,8 +42,10 @@ function getTrustEducationSubjectForDetails(yearId){
 	  dataType : 'json',
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
-		if(result !=null){
+		if(result !=null && result.subList !=null && result.subList.length>0){
 			return buildTrustEducationSubjectForDetails(result);
+		}else{
+			$("#financialNtrTrustBlockDivId").html("No Data Available");
 		}
 	});	
 	
@@ -58,9 +61,9 @@ function getTrustEducationSubjectForDetails(yearId){
 							str+='<i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:45px"></i>';
 						str+='</div>';
 						str+='<div class="media-body">';
-							str+='<h3>Expected Amount</h3>';
-							if(result.expectedAmount !=null && result.expectedAmount>0){
-								str+='<h4 class="m_top5">'+result.expectedAmount+'</h4>';
+							str+='<h3>Total</h3>';
+							if(result.count !=null && result.count>0){
+								str+='<h4 class="m_top5">'+result.count+'</h4>';
 							}else{
 								str+='<h4 class="m_top5"> - </h4>';
 							}
@@ -76,9 +79,9 @@ function getTrustEducationSubjectForDetails(yearId){
 							str+='<i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:45px"></i>';
 						str+='</div>';
 						str+='<div class="media-body">';
-							str+='<h3>Approved Amount</h3>';
-							if(result.approvedAmount !=null && result.approvedAmount>0){
-								str+='<h4 class="m_top5">'+result.approvedAmount+'</h4>';
+							str+='<h3>Fee Concession Count</h3>';
+							if(result.feeConsCount !=null && result.feeConsCount>0){
+								str+='<h4 class="m_top5">'+result.feeConsCount+'</h4>';
 							}else{
 								str+='<h4 class="m_top5"> - </h4>';
 							}
@@ -86,7 +89,23 @@ function getTrustEducationSubjectForDetails(yearId){
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
-		
+			str+='<div class="col-sm-4">';
+				str+='<div class="media_padding_grievance">';
+					str+='<div class="media">';
+						str+='<div class="media-left">';
+							str+='<i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:45px"></i>';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h3>Seat Complaint Count</h3>';
+							if(result.seatCount !=null && result.seatCount>0){
+								str+='<h4 class="m_top5">'+result.seatCount+'</h4>';
+							}else{
+								str+='<h4 class="m_top5"> - </h4>';
+							}
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
 		str+='</div>';
 		
 		str+='<div class="row m_top20" style="margin-left: 0px; margin-right: 0px;">';
@@ -111,9 +130,21 @@ function getTrustEducationSubjectForDetails(yearId){
 								for(var i in result.subList){
 									str+='<tr>';
 										str+='<td><span class="squareCss" style="background-color:'+ntrTrustColorObj[result.subList[i].name.trim()]+'"></span>  '+result.subList[i].name+'</td>';
-										str+='<td>'+result.subList[i].count+'</td>';
-										for(var j in result.subList[i].subList)
-										str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList[i].subList[j].count+'</td>';
+										if(result.subList[i].count !=null && result.subList[i].count>0){
+											str+='<td>'+result.subList[i].count+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										
+										for(var j in result.subList[i].subList){
+											if(result.subList[i].subList[j].count !=null && result.subList[i].subList[j].count>0){
+												str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList[i].subList[j].count+'</td>';
+											}else{
+												str+='<td><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>  -</td>';
+											}
+											
+										}
+										
 										
 									str+='</tr>';
 								}
@@ -192,6 +223,7 @@ function getTrustEducationSubjectForDetails(yearId){
 	}
 }
 function getLocationWiseTrustEducationComplaintCount(yearId){
+	$("#locationNtrTrustBlockDivId").html(spinner);
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -208,6 +240,8 @@ function getLocationWiseTrustEducationComplaintCount(yearId){
 	}).done(function(result){  
 		if(result !=null && result.length>0){
 			return buildLocationWiseTrustEducationComplaintCount(result);
+		}else{
+			$("#locationNtrTrustBlockDivId").html("No Data Available");
 		}
 	});
 	
@@ -232,9 +266,19 @@ function getLocationWiseTrustEducationComplaintCount(yearId){
 									for(var i in result){
 										str+='<tr>';
 											str+='<td>'+result[i].name+'</td>';
-											str+='<td>'+result[i].count+'</td>';
+											if(result[i].count !=null && result[i].count>0){
+												str+='<td>'+result[i].count+'</td>';
+											}else{
+												str+='<td> - </td>';
+											}
+											
 											for(var j in result[i].subList){
-												str+='<td>'+result[i].subList[j].count+'</td>';
+												if(result[i].subList[j].count !=null && result[i].subList[j].count>0){
+													str+='<td>'+result[i].subList[j].count+'</td>';
+												}else{
+													str+='<td> - </td>';
+												}
+												
 											}
 										str+='</tr>';
 									}

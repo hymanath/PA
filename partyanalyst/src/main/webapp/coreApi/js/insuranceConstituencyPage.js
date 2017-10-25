@@ -10,6 +10,7 @@ function onloadCalls(){
 	
 }
 function getInsuranceOverviewDetails(yearId){
+	$("#CategoryInsuranceBlockDivId").html(spinner);
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -24,8 +25,10 @@ function getInsuranceOverviewDetails(yearId){
 	  dataType : 'json',
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
-		if(result !=null){
+		if(result !=null && result.subList1 !=null && result.subList1.length>0){
 			return buildInsuranceOverviewDetails(result);
+		}else{
+			$("#CategoryInsuranceBlockDivId").html("No Data Available");
 		}
 	});	
 	function buildInsuranceOverviewDetails(result){
@@ -50,9 +53,19 @@ function getInsuranceOverviewDetails(yearId){
 									for(var j in result.subList1[i].subList){
 										str+='<tr>';
 										str+='<td>'+result.subList1[i].subList[j].name+'</td>';
-										str+='<td>'+result.subList1[i].subList[j].count+'</td>';
+										if(result.subList1[i].subList[j].count !=null && result.subList1[i].subList[j].count>0){
+											str+='<td>'+result.subList1[i].subList[j].count+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										
 										for(var k in result.subList1[i].subList[j].subList){
-											str+='<td>'+result.subList1[i].subList[j].subList[k].count+'</td>';
+											if(result.subList1[i].subList[j].subList[k].count !=null && result.subList1[i].subList[j].subList[k].count>0){
+												str+='<td>'+result.subList1[i].subList[j].subList[k].count+'</td>';
+											}else{
+												str+='<td> - </td>';
+											}
+											
 										}
 									str+='</tr>';
 									}
@@ -67,6 +80,7 @@ function getInsuranceOverviewDetails(yearId){
 	}
 }
 function getLocationWiseInsuranceIssueTypeComplaintCount(yearId){
+	$("#locationIsuranceBlockDivId").html(spinner);
 	var jsObj={
 			"fromDate" 			: "",
 			"toDate"			: "",
@@ -83,6 +97,8 @@ function getLocationWiseInsuranceIssueTypeComplaintCount(yearId){
 	}).done(function(result){  
 		if(result !=null && result.length>0){
 			return buildLocationWiseInsuranceIssueTypeComplaintCount(result);
+		}else{
+			$("#locationIsuranceBlockDivId").html("No Data Available");
 		}
 	});	
 	function buildLocationWiseInsuranceIssueTypeComplaintCount(result){
@@ -106,9 +122,19 @@ function getLocationWiseInsuranceIssueTypeComplaintCount(yearId){
 									for(var i in result){
 										str+='<tr>';
 											str+='<td>'+result[i].name+'</td>';
-											str+='<td>'+result[i].count+'</td>';
+											if(result[i].count !=null && result[i].count>0){
+												str+='<td>'+result[i].count+'</td>';
+											}else{
+												str+='<td> - </td>';
+											}
+											
 											for(var j in result[i].subList){
-												str+='<td>'+result[i].subList[j].count+'</td>';
+												if(result[i].subList[j].count !=null && result[i].subList[j].count>0){
+													str+='<td>'+result[i].subList[j].count+'</td>';
+												}else{
+													str+='<td> - </td>';
+												}
+												
 											}
 										str+='</tr>';
 									}
