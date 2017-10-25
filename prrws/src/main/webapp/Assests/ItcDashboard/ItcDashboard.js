@@ -41,6 +41,13 @@ $(document).on("click","#promotionsBlockSwitch li",function(){
 	$("#promotionsBlockSwitch li").removeClass("active");
 	$(this).addClass("active");
 	var typeOfBlock = $(this).attr("attr_type");
+	if(typeOfBlock != 'Total')
+	{
+		$("[promotions]").hide();
+		$("[promotions="+typeOfBlock+"]").show();
+	}else{
+		$("[promotions]").show();
+	}
 	getITSectorWiseOverviewDetails();
 	getITSectorCategoryWiseDetails("RED",typeOfBlock);
 	getITSectorCategoryWiseDetails("GREEN",typeOfBlock);
@@ -230,7 +237,7 @@ function departmentBlockWiseDetails(divId)
 												var	levelWiseBlockArrPromotions =[{name:'IT',id:'1'},{name:'Electronics',id:'2'},{name:'Fintech',id:'3'}];
 												for(var l in levelWiseBlockArrPromotions)
 												{
-													collapse+='<div class="panel panel-default m_top20">';
+													collapse+='<div class="panel panel-default m_top20" promotions="'+levelWiseBlockArrPromotions[l].name+'">';
 														collapse+='<div class="panel-heading" role="tab" id="headingOne'+levelWiseBlockArrPromotions[l].name+'">';
 															collapse+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+levelWiseBlockArrPromotions[l].name+'" aria-expanded="true" aria-controls="collapseOne'+levelWiseBlockArrPromotions[l].name+'">';
 																collapse+='<h4 class="panel-title">'+levelWiseBlockArrPromotions[l].name+' Overview</h4>';
@@ -836,7 +843,7 @@ function getITSectorSubLeadCategoryWiseDetails(type,categoryType){
 			}
 			
 		str+='</table>';
-		$("#modalTitleId").html(type+' '+categoryType);
+		$("#modalTitleId").html(type+' '+categoryType+' '+'Indurstrices');
 		$("#cohortId").html(str);
 		$("#"+type+"DataTable").dataTable();
 	}
@@ -874,29 +881,69 @@ function getITDistrictWiseDetails(type,category,divType){
 	function buildData(result,type,divType,category)
 	{
 		var str='';
-		str+='<table class="table table-bordered" id="'+type+'DataTable'+divType+'">';
-			str+='<thead>';
-				str+='<th>District</th>';
-				str+='<th>Industries</th>';
-				str+='<th>Committed Investment(<i class="fa fa-inr"></i> in Cr.)</th>';
-				str+='<th>Committed Employment</th>';
-			str+='</thead>';
-			for(var i in result)
-			{
-				str+='<tr>';
-					str+='<td>'+result[i].district+'</td>';
-					if(result[i].district != null && result[i].district == 'ZTotal'){
-						str+='<td>'+result[i].noProjects+'</td>';
-					}else{
-						str+='<td class="sectorWiseCuntCls" attr_block_name="'+type+'" attr_category="'+category+'" attr_district="'+result[i].district+'" style="cursor:pointer;">'+result[i].noProjects+'</td>';
-					}
-					
-					str+='<td>'+result[i].investment+'</td>';
-					str+='<td>'+result[i].employment+'</td>';
-				str+='</tr>';
-			}
-			
-		str+='</table>';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered" id="'+type+'DataTable'+divType+'">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th rowspan="2">District</th>';
+						str+='<th colspan="3" class="text-center">Total</th>';
+						str+='<th colspan="3" class="text-center">Green</th>';
+						str+='<th colspan="3" class="text-center">Red</th>';
+						str+='<th colspan="3" class="text-center">Dropped</th>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<th>Industries</th>';
+						str+='<th>Committed Investment(<i class="fa fa-inr"></i> in Cr.)</th>';
+						str+='<th>Committed Employment</th>';
+						str+='<th>Industries</th>';
+						str+='<th>Committed Investment(<i class="fa fa-inr"></i> in Cr.)</th>';
+						str+='<th>Committed Employment</th>';
+						str+='<th>Industries</th>';
+						str+='<th>Committed Investment(<i class="fa fa-inr"></i> in Cr.)</th>';
+						str+='<th>Committed Employment</th>';
+						str+='<th>Industries</th>';
+						str+='<th>Committed Investment(<i class="fa fa-inr"></i> in Cr.)</th>';
+						str+='<th>Committed Employment</th>';
+					str+='</tr>';
+				str+='</thead>';
+				for(var i in result)
+				{
+					str+='<tr>';
+						str+='<td>'+result[i].district+'</td>';
+						if(result[i].district != null && result[i].district == 'ZTotal'){
+							str+='<td>'+result[i].noProjects+'</td>';
+						}else{
+							str+='<td class="sectorWiseCuntCls" attr_block_name="'+type+'" attr_category="'+category+'" attr_district="'+result[i].district+'" style="cursor:pointer;">'+result[i].noProjects+'</td>';
+						}
+						
+						str+='<td>'+result[i].investment+'</td>';
+						str+='<td>'+result[i].employment+'</td>';
+						for(var j in result[i].subList)
+						{
+							if(result[i].subList[j].noProjects == 'undefined' || result[i].subList[j].noProjects === undefined)
+							{
+								str+='<td>-</td>';
+							}else{
+								str+='<td>'+result[i].subList[j].noProjects+'</td>';
+							}
+							if(result[i].subList[j].investment == 'undefined' || result[i].subList[j].investment === undefined)
+							{
+								str+='<td>-</td>';
+							}else{
+								str+='<td>'+result[i].subList[j].investment+'</td>';
+							}
+							if(result[i].subList[j].employment == 'undefined' || result[i].subList[j].employment === undefined)
+							{
+								str+='<td>-</td>';
+							}else{
+								str+='<td>'+result[i].subList[j].employment+'</td>';
+							}
+						}
+					str+='</tr>';
+				}
+				
+			str+='</table>';
+		str+='</div>';
 		if(divType == 'body')
 		{
 			$("#"+type+"OverviewBlockDivId").html(str);

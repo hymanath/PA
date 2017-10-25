@@ -616,8 +616,94 @@ public class ItcDashboardService implements IItcDashboardService {
 	public List<ItecPromotionDetailsVO> getITDistrictWiseDetails(InputVO inputVO){
 		List<ItecPromotionDetailsVO> returnList = new ArrayList<ItecPromotionDetailsVO>();
 		try {
+			Map<String,ItecPromotionDetailsVO> distMap = new HashMap<String,ItecPromotionDetailsVO>(0);
 			MOUTrackerIT[] list = new TrackerITServiceSoapProxy().get_IT_DISTRICT_WISE_DTLS(inputVO.getSector(), inputVO.getCategory());
-			setDataToVO(list, returnList);
+			//setDataToVO(list, returnList);
+			
+			inputVO.setCategory("RED");
+			MOUTrackerIT[] redList = new TrackerITServiceSoapProxy().get_IT_DISTRICT_WISE_DTLS(inputVO.getSector(), inputVO.getCategory());
+			
+			inputVO.setCategory("GREEN");
+			MOUTrackerIT[] greenList = new TrackerITServiceSoapProxy().get_IT_DISTRICT_WISE_DTLS(inputVO.getSector(), inputVO.getCategory());
+			
+			inputVO.setCategory("DROPPED");
+			MOUTrackerIT[] dropList = new TrackerITServiceSoapProxy().get_IT_DISTRICT_WISE_DTLS(inputVO.getSector(), inputVO.getCategory());
+			
+			if(list != null && list.length > 0){
+				for (int i = 0; i < list.length; i++) {
+					ItecPromotionDetailsVO distVO = distMap.get(list[i].getDISTRICT());
+					if(distVO == null){
+						distVO = new ItecPromotionDetailsVO();
+						distVO.setSector(list[i].getSECTOR());
+						distVO.setDistrict(list[i].getDISTRICT());
+						distVO.setNoProjects(list[i].getNO_PROJECTS());
+						distVO.setInvestment(list[i].getINVESTMENT());
+						distVO.setRealizedInvestment(list[i].getREALIZED_INVESTMENT());
+						distVO.setEmployment(list[i].getEMPLOYMENT());
+						distVO.setRealizedEmployment(list[i].getREALIZED_EMPLOYMENT());
+						ItecPromotionDetailsVO greenVO  = new ItecPromotionDetailsVO();
+							distVO.getSubList().add(greenVO);
+						ItecPromotionDetailsVO redVO  = new ItecPromotionDetailsVO();
+							distVO.getSubList().add(redVO);
+						ItecPromotionDetailsVO dropVO  = new ItecPromotionDetailsVO();
+							distVO.getSubList().add(dropVO);
+						distMap.put(distVO.getDistrict(), distVO);
+					}
+				}
+			}
+					
+			if(greenList != null && greenList.length > 0L){
+				for ( int j = 0; j < greenList.length; j++) {
+					ItecPromotionDetailsVO distVO = distMap.get(greenList[j].getDISTRICT());
+					if(distVO != null){
+						distVO.getSubList().get(0).setSector(greenList[j].getSECTOR());
+						distVO.getSubList().get(0).setDistrict(greenList[j].getDISTRICT());
+						distVO.getSubList().get(0).setNoProjects(greenList[j].getNO_PROJECTS());
+						distVO.getSubList().get(0).setInvestment(greenList[j].getINVESTMENT());
+						distVO.getSubList().get(0).setRealizedInvestment(greenList[j].getREALIZED_INVESTMENT());
+						distVO.getSubList().get(0).setEmployment(greenList[j].getEMPLOYMENT());
+						distVO.getSubList().get(0).setRealizedEmployment(greenList[j].getREALIZED_EMPLOYMENT());
+						distVO.getSubList().get(0).setCategory("GREEN");
+					}
+				}
+			}
+						
+			if(redList != null && redList.length > 0L){
+				for ( int j = 0; j < redList.length; j++) {
+					ItecPromotionDetailsVO distVO = distMap.get(redList[j].getDISTRICT());
+					if(distVO != null){
+						distVO.getSubList().get(1).setSector(redList[j].getSECTOR());
+						distVO.getSubList().get(1).setDistrict(redList[j].getDISTRICT());
+						distVO.getSubList().get(1).setNoProjects(redList[j].getNO_PROJECTS());
+						distVO.getSubList().get(1).setInvestment(redList[j].getINVESTMENT());
+						distVO.getSubList().get(1).setRealizedInvestment(redList[j].getREALIZED_INVESTMENT());
+						distVO.getSubList().get(1).setEmployment(redList[j].getEMPLOYMENT());
+						distVO.getSubList().get(1).setRealizedEmployment(redList[j].getREALIZED_EMPLOYMENT());
+						distVO.getSubList().get(1).setCategory("RED");
+					}
+				}
+			}
+			
+			if(dropList != null && dropList.length > 0L){
+				for ( int j = 0; j < dropList.length; j++) {
+					ItecPromotionDetailsVO distVO = distMap.get(dropList[j].getDISTRICT());
+					if(distVO != null){
+						distVO.getSubList().get(2).setSector(dropList[j].getSECTOR());
+						distVO.getSubList().get(2).setDistrict(dropList[j].getDISTRICT());
+						distVO.getSubList().get(2).setNoProjects(dropList[j].getNO_PROJECTS());
+						distVO.getSubList().get(2).setInvestment(dropList[j].getINVESTMENT());
+						distVO.getSubList().get(2).setRealizedInvestment(dropList[j].getREALIZED_INVESTMENT());
+						distVO.getSubList().get(2).setEmployment(dropList[j].getEMPLOYMENT());
+						distVO.getSubList().get(2).setRealizedEmployment(dropList[j].getREALIZED_EMPLOYMENT());
+						distVO.getSubList().get(2).setCategory("DROPED");
+					}
+				}
+			}
+			
+			if(distMap != null){
+				returnList = new ArrayList<>(distMap.values());
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getITDistrictWiseDetails - ItcDashboardService service",e);
 		}
@@ -1061,21 +1147,18 @@ public class ItcDashboardService implements IItcDashboardService {
 					if(inputVO.getSector() != null && inputVO.getSector().trim().equalsIgnoreCase(list[i].getITSECTOR()) 
 					  && inputVO.getDistrictValue() != null && inputVO.getDistrictValue().trim().equalsIgnoreCase(list[i].getDISTRICTNAME())){
 						ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
-						//vo.setSector(list[i].getSECTOR());
-						//vo.setDistrict(list[i].getDISTRICT());
-						//vo.setNoProjects(list[i].getNO_PROJECTS());
-						vo.setInvestment(list[i].getINVESTMENT());
-						vo.setRealizedInvestment(list[i].getREALIZED_INVESTMENT());
-						vo.setEmployment(list[i].getEMPLOYMENT());
-						vo.setRealizedEmployment(list[i].getREALIZED_EMPLOYMENT());
-						vo.setSourceOfLead(list[i].getSOURCE_OF_LEAD());
-						vo.setCategory(list[i].getCATEGORY());
-						vo.setLineOfActivity(list[i].getLINEOFACTIVITY());
-						vo.setSubSector(list[i].getSUBSECTOR());
-						vo.setItSector(list[i].getITSECTOR());
-						vo.setNameOfCompany(list[i].getNAMEOFTHECOMPANY());
-						vo.setDistrictName(list[i].getDISTRICTNAME());
-						vo.setDeptName(list[i].getDEPTNAME());
+							vo.setInvestment(list[i].getINVESTMENT());
+							vo.setRealizedInvestment(list[i].getREALIZED_INVESTMENT());
+							vo.setEmployment(list[i].getEMPLOYMENT());
+							vo.setRealizedEmployment(list[i].getREALIZED_EMPLOYMENT());
+							vo.setSourceOfLead(list[i].getSOURCE_OF_LEAD());
+							vo.setCategory(list[i].getCATEGORY());
+							vo.setLineOfActivity(list[i].getLINEOFACTIVITY());
+							vo.setSubSector(list[i].getSUBSECTOR());
+							vo.setItSector(list[i].getITSECTOR());
+							vo.setNameOfCompany(list[i].getNAMEOFTHECOMPANY());
+							vo.setDistrictName(list[i].getDISTRICTNAME());
+							vo.setDeptName(list[i].getDEPTNAME());
 						
 						returnList.add(vo);
 					}

@@ -87,7 +87,13 @@ function buildFavouriteComponentsResult(result) {
 					str +='<h5 style="display: inline-block;text-transform:uppercase;">'+result[i].name+'</h5>';
 					str +='<div class=" " style="text-align: right">';
 						str +='<h2 class="'+blockClassObject[compnentName]+'" style="margin-top: 0px"></h2>';
-						str +='<p class="">'+blockHeadingObject[compnentName]+'</p>';
+						if(result[i].name == 'ENGINEERING DEPARTMENT')
+						{
+							str +='<p class="" style="text-align: right;height: 53px;">'+blockHeadingObject[compnentName]+'</p>';
+						}else{
+							str +='<p class="">'+blockHeadingObject[compnentName]+'</p>';
+						}
+						
 					str +='</div>';
 					str +='<div class="block-footer" style="border-top: 1px solid lightgrey;padding-top: 5px">';
 						str +='<i class="fa fa-star starcolorChange '+componentNameWithoutSpace+'Color" attr_url="'+result[i].url

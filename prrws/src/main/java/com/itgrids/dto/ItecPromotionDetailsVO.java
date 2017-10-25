@@ -1,5 +1,8 @@
 package com.itgrids.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItecPromotionDetailsVO {
 
 	private Long id;
@@ -22,6 +25,8 @@ public class ItecPromotionDetailsVO {
     private String districtName;
     private String deptName;
     private Long categoryCount = 0L;
+    
+    private List<ItecPromotionDetailsVO> subList = new ArrayList<ItecPromotionDetailsVO>(0);
     
     
 	public String getSourceOfLead() {
@@ -132,4 +137,10 @@ public class ItecPromotionDetailsVO {
 	public void setCategoryCount(Long categoryCount) {
 		this.categoryCount = categoryCount;
 	}
+	public List<ItecPromotionDetailsVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<ItecPromotionDetailsVO> subList) {
+		this.subList = subList;
+	} 
 }
