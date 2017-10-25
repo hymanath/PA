@@ -20,8 +20,18 @@ public class NregaConsolidatedInputVO implements Serializable{
 	private String subLocationType;
 	private List<Long> componentIds = new ArrayList<Long>();
 	private String searchType;
+	private String program;
 	
 	
+	public void setConvergenceTypeId(Long convergenceTypeId) {
+		this.convergenceTypeId = convergenceTypeId;
+	}
+	public String getProgram() {
+		return program;
+	}
+	public void setProgram(String program) {
+		this.program = program;
+	}
 	public String getSearchType() {
 		return searchType;
 	}
