@@ -1983,6 +1983,7 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 									partyVO.setAssemblyEarndVotes(commonMethodsUtilService.getLongValueForObject(param[9]));
 									parliamentPartyVO.setAssemblyEarndVotes(parliamentPartyVO.getAssemblyEarndVotes()+partyVO.getAssemblyEarndVotes());
 									
+									parliamentVO.setAssemblyEarndVotes(parliamentVO.getAssemblyEarndVotes()+parliamentPartyVO.getAssemblyEarndVotes());
 									assemblyVO.setAssemblyValidVoters(assemblyVO.getAssemblyValidVoters()+partyVO.getAssemblyEarndVotes());									
 									assemblyVO.setValidVoters(assemblyVO.getValidVoters()+partyVO.getAssemblyEarndVotes());
 								}
