@@ -18261,7 +18261,7 @@
    </action>
    <action name="getLocationWiseCrossVotingDetailsAction" class="locationDashboardAction" method="getLocationWiseCrossVotingDetails">
 		<result type="json" name="success">    
-			<param name="root">electionInformationVO</param>
+			<param name="root">listElectionInformationVO</param>
 		</result>        
    </action>
    <action name="getPartyWiseMPandMLACandidatesCountDetialsAction" class="locationDashboardAction" method="getPartyWiseMPandMLACandidatesCountDetials">

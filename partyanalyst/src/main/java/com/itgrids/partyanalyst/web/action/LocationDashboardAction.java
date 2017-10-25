@@ -106,8 +106,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private ElectionInformationVO electionInformationVO;
 	private List<CandidateDetailsForConstituencyTypesVO> typeVoList;
 	private PartyBoothPerformanceVO boothResult;
+	private List<ElectionInformationVO> listElectionInformationVO;
 	
 	
+	public List<ElectionInformationVO> getListElectionInformationVO() {
+		return listElectionInformationVO;
+	}
+	public void setListElectionInformationVO(List<ElectionInformationVO> listElectionInformationVO) {
+		this.listElectionInformationVO = listElectionInformationVO;
+	}
 	public PartyBoothPerformanceVO getBoothResult() {
 		return boothResult;
 	}
@@ -1353,8 +1360,8 @@ public String getElectionInformationLocationWise(){
 				
 				 Long locationLevelId = jObj.getLong("locationLevelId");
 				 List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIdsArr"));
-				 electionInformationVO = locationWiseElectionInformationDetalsService.getLocationWiseCrossVotingDetails( electionYrs, parliamentIds,assemblyIds ,
-						 partyIds, withAlliance, locationLevelId, locationValues, subTypes,electionScopeIds);
+				 listElectionInformationVO = locationWiseElectionInformationDetalsService.getLocationBasedCrossVotingReult( electionYrs,  locationLevelId, locationValues,null,subTypes,
+						 partyIds,electionScopeIds);
 				
 		 }catch(Exception e){
 			 successMsg = "failure";
@@ -1570,6 +1577,8 @@ public String getElectionInformationLocationWise(){
 		}
 		return Action.SUCCESS;
 	}
+   
+
    public String getGrivenceOverviewDtls(){
 		try{
 			jObj = new JSONObject(getTask());

@@ -4522,6 +4522,7 @@
     	<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />    	
     	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
     	<property name="tehsilDAO" ref="tehsilDAO" />
+    	<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO" />
     	<property name="electionAllianceDAO" ref="electionAllianceDAO" />
     	</bean>
 </beans>			
