@@ -6306,19 +6306,19 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 			List<Object[]>    totalCnt = null;
 			if(locationTypeId == 2L){
 				totalCnt = electionDAO.getElectionDetailsDistrictWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
-				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap);
+				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap,locationTypeId,electionScopeIds);
 			}else if (locationTypeId.longValue() == 3L  ||locationTypeId.longValue() == 10L) {
 				totalCnt = electionDAO.getElectionDetailsConstituencyWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
-				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap);
+				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap,null,null);
 			}else if (locationTypeId.longValue() == 4L) {
 				totalCnt = electionDAO.getElectionDetailsMandalWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
-				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap);
+				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap,null,null);
 				totalCnt.clear();
 				totalCnt = electionDAO.getElectionDetailsMuncipalityWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
-				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap);
+				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap,null,null);
 			}else if (locationTypeId.longValue() == 5L) {
 				totalCnt = electionDAO.getElectionDetailsPanchayatWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
-				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap);
+				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap,null,null);
 			}	
 			
 		}catch(Exception e){
@@ -6327,7 +6327,8 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 		return returnList;
 	}
 		
-public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalCnt,Map<Long,Map<Long,ElectionInformationVO>> alliancedPartiesWithGroupIdMap){
+
+public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalCnt,Map<Long,Map<Long,ElectionInformationVO>> alliancedPartiesWithGroupIdMap,Long loctionTypeId,List<Long> electionScopeIds){
 	List<ElectionInformationVO> finalList = new ArrayList<ElectionInformationVO>();
 	try {
 		Map<Long, ElectionInformationVO> levelMap=new HashMap<Long,ElectionInformationVO>(0);
@@ -6335,13 +6336,37 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 		Map<Long,Map<Long,Long>> locationWisePolledVotesMap = new HashMap<Long, Map<Long,Long>>(0);
 		Map<Long,String> partyNameMap = new HashMap<Long,String>(0);
 		Map<Long,String> partyFlagMap = new HashMap<Long,String>(0);
+		Map<Long,Map <Long,Map<Long,Long>>> loctionIdEleIdpartyIdCountsMap = new HashMap<Long, Map<Long,Map<Long,Long>>>();
+		Set<Long> loctionidsSet = new HashSet<Long>(0);
+		Set<Long> electionIdsSet = new HashSet<Long>(0);
 		
 		if(totalCnt !=null && totalCnt.size()>0){
 			Set<Long> partyIdList = new HashSet<Long>(0);
 			for (Object[] param : totalCnt){
 				partyIdList.add(commonMethodsUtilService.getLongValueForObject(param[6]));
+				if(loctionTypeId !=null && loctionTypeId.longValue() ==2L){
+					loctionidsSet.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					electionIdsSet.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+			List<Object[]> wonCountObjs=null;
+			if(loctionTypeId !=null && loctionTypeId.longValue()== 2L){
+				wonCountObjs=electionDAO.getWonConstituencyCountsInLocation(loctionidsSet,electionScopeIds,electionIdsSet);
 			}
 			
+			if(wonCountObjs !=null && wonCountObjs.size() >0){
+				for(Object[] obj:wonCountObjs){
+					Map<Long,Map<Long,Long>> electionIdAndPartsCountMap=loctionIdEleIdpartyIdCountsMap.get(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					if(!commonMethodsUtilService.isMapValid(electionIdAndPartsCountMap))
+						electionIdAndPartsCountMap=new HashMap<Long, Map<Long,Long>>();
+					Map<Long,Long> partyIdAndCountMap=electionIdAndPartsCountMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					if(!commonMethodsUtilService.isMapValid(partyIdAndCountMap))
+						partyIdAndCountMap=new HashMap<Long, Long>();
+					partyIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(obj[2]), commonMethodsUtilService.getLongValueForObject(obj[3]));
+					electionIdAndPartsCountMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), partyIdAndCountMap);
+					loctionIdEleIdpartyIdCountsMap.put(commonMethodsUtilService.getLongValueForObject(obj[1]), electionIdAndPartsCountMap);
+				}
+			}
 			List<Object[]> partyNamesList = partyDAO.getPartyShortNameByIds(new ArrayList<Long>(partyIdList));
 			if(commonMethodsUtilService.isListOrSetValid(partyNamesList)){
 				for (Object[] param : partyNamesList) {
@@ -6589,6 +6614,23 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 								return o2.getElectionId().compareTo(o1.getElectionId());
 							}
 						});*/
+					}
+				}
+			}
+		}// here we adding the  won counts of each party in a location
+		// iterating finalList and  get the counts from loctionIdEleIdpartyIdCountsMap map 
+		if(commonMethodsUtilService.isListOrSetValid(finalList) && commonMethodsUtilService.isMapValid(loctionIdEleIdpartyIdCountsMap)){
+			for(ElectionInformationVO loctionVo:finalList){
+				Map<Long,Map<Long,Long>> elctionIdAndPartCounts=loctionIdEleIdpartyIdCountsMap.get(loctionVo.getLocationId());
+				if(commonMethodsUtilService.isMapValid(elctionIdAndPartCounts) && commonMethodsUtilService.isListOrSetValid(loctionVo.getSubList1())){
+					for(ElectionInformationVO electionVo:loctionVo.getSubList1()){//kkb
+						Map<Long,Long> partiesCounts=elctionIdAndPartCounts.get(electionVo.getElectionId());
+						if(commonMethodsUtilService.isMapValid(partiesCounts) && commonMethodsUtilService.isListOrSetValid(electionVo.getSubList1())){
+							for(ElectionInformationVO partVo:electionVo.getSubList1() ){
+								if(partiesCounts.get(partVo.getPartyId()) !=null && partiesCounts.get(partVo.getPartyId()).longValue() >0L)
+								partVo.setWonSeatsCount(partiesCounts.get(partVo.getPartyId()));
+							}
+						}
 					}
 				}
 			}
