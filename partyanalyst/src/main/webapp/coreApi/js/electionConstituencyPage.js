@@ -654,9 +654,9 @@ function getDetailedElectionInformaction(){
 															navTabs+=' </div>';
 															navTabs+='<div class="col-sm-5">';
 															if(result[i].candidateResultsVO.partyShortName == "TDP" || result[i].candidateResultsVO.partyShortName == "YSRC"){
-																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="'+result[i].candidateResultsVO.partyShortName+'"></img>';
+																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.PNG" alt="'+result[i].candidateResultsVO.partyShortName+'" style="height:25px;width:25px;"></img>';
 															}else{
-																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="'+result[i].candidateResultsVO.partyShortName+'"></img>';
+																navTabs+='<img class="" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'.png" alt="'+result[i].candidateResultsVO.partyShortName+'" style="height:25px;width:25px;"></img>';
 															}
 																navTabs+='<p class="">'+result[i].candidateResultsVO.partyShortName+'</p>';
 															navTabs+=' </div>';
@@ -738,9 +738,9 @@ function getDetailedElectionInformaction(){
 														navTabs+='<td>'+result[i].candidateOppositionList[j].partyShortName+'</td>';
 														
 														if(result[i].candidateOppositionList[j].partyShortName == "TDP" || result[i].candidateOppositionList[j].partyShortName == "YSRC"){
-															navTabs+='<td><img class="" src="images/party_flags/'+result[i].candidateOppositionList[j].partyShortName+'.PNG" alt="'+result[i].candidateOppositionList[j].partyShortName+'"></img></td>';
+															navTabs+='<td><img class="" src="images/party_flags/'+result[i].candidateOppositionList[j].partyShortName+'.PNG" alt="'+result[i].candidateOppositionList[j].partyShortName+'" style="height:25px;width:25px;"></img></td>';
 														}else{
-															navTabs+='<td><img class="" src="images/party_flags/'+result[i].candidateOppositionList[j].partyShortName+'.png" alt="'+result[i].candidateOppositionList[j].partyShortName+'"></img></td>';
+															navTabs+='<td><img class="" src="images/party_flags/'+result[i].candidateOppositionList[j].partyShortName+'.png" alt="'+result[i].candidateOppositionList[j].partyShortName+'" style="height:25px;width:25px;"></img></td>';
 														}
 														
 														navTabs+='<td>'+result[i].candidateOppositionList[j].votesEarned+'</td>';
@@ -872,9 +872,9 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,ele
 								for(var j in result[i].list){
 									str+='<tr>';
 										if(result[i].list[j].partyName == "TDP" || result[i].list[j].partyName == "YSRC"){
-											str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'.PNG" alt="'+result[i].list[j].partyName+'"></img>  '+result[i].list[j].partyName+'</p></td>';
+											str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'.PNG" alt="'+result[i].list[j].partyName+'" style="height:25px;width:25px;"></img>  '+result[i].list[j].partyName+'</p></td>';
 										}else{
-											str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'.png" alt="'+result[i].list[j].partyName+'"></img>   '+result[i].list[j].partyName+'</p></td>';
+											str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'.png" alt="'+result[i].list[j].partyName+'" style="height:25px;width:25px;"></img>   '+result[i].list[j].partyName+'</p></td>';
 										}
 										str+='<td class="text-center">'+result[i].list[j].participatedSeatsCount+'</td>';
 										str+='<td class="text-center">'+result[i].list[j].wonSeatsCount+'</td>';
@@ -1061,9 +1061,9 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 									if(result[0].subList1[i].subList1 !=null && result[0].subList1[i].subList1.length>0){
 										for(var j in result[0].subList1[i].subList1){
 											if(result[0].subList1[i].subList1[j].partyName == "TDP" || result[0].subList1[i].subList1[j].partyName == "YSRC"){
-												str+='<th class="text-center"><img class="" src="images/party_flags/'+result[0].subList1[i].subList1[j].partyName+'.PNG" alt="'+result[0].subList1[i].subList1[j].partyName+'"></img></th>';
+												str+='<th class="text-center"><img class="" src="images/party_flags/'+result[0].subList1[i].subList1[j].partyName+'.PNG" alt="'+result[0].subList1[i].subList1[j].partyName+'" style="height:25px;width:25px;"></img></th>';
 											}else{
-												str+='<th class="text-center"><img class="" src="images/party_flags/'+result[0].subList1[i].subList1[j].partyName+'.png" alt="'+result[0].subList1[i].subList1[j].partyName+'"></img></th>';
+												str+='<th class="text-center"><img class="" src="images/party_flags/'+result[0].subList1[i].subList1[j].partyName+'.png" alt="'+result[0].subList1[i].subList1[j].partyName+'" style="height:25px;width:25px;"></img></th>';
 											}
 											str+='<th class="text-center">%</th>';
 										}
@@ -1193,7 +1193,7 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 									table+='<li >';
 										table+='<div class="media">';
 											table+='<div class="media-left" style="background-color:'+globalCrossVotionBgColor[result.subList1[i].list[j].partyName.trim()]+'">';
-												table+='<img class="" src="images/party_flags/'+result.subList1[i].list[j].partyFlag+'" alt="'+result.subList1[i].list[j].partyFlag+'"></img>';
+												table+='<img class="" src="images/party_flags/'+result.subList1[i].list[j].partyFlag+'" alt="'+result.subList1[i].list[j].partyFlag+'" style="height:25px;width:25px;"></img>';
 												table+='<span>'+result.subList1[i].list[j].partyName+'</span>';
 											table+='</div>';
 											table+='<div class="media-body">';
