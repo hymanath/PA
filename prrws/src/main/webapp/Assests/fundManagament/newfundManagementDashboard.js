@@ -2900,7 +2900,7 @@ getAllDepartments();
 				total+='</ul>';
 			}else{
 				//var totalAmountVal =result.totalAmt;
-				total+='<h3>'+parseFloat(result.totalAmt).toFixed(3);+'</h3>';
+				total+='<h3>'+result.totalAmt+'</h3>';
 				total+='<ul class="list-inline">';
 				for(var i in result.subList)
 				{
