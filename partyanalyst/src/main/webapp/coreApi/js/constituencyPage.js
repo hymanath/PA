@@ -7777,12 +7777,14 @@ function getTrustEducationOverviewDetails(yearId){
 					
 			str+='</div>';
 		str+='</div>';
-		if(type =="grievance" || type == "insurance"){
+		if(type =="grievance" || type == "insurance" || type == "ntrTrust"){
 			if(result !=null && result.subList1 !=null && result.subList1.length>0){
 				for(var i in result.subList1){
 						if(type == "grievance"){
 							str+='<div class="col-sm-3">';
 						}else if(type == "insurance"){
+							str+='<div class="col-sm-4">';
+						} else if(type =="ntrTrust"){
 							str+='<div class="col-sm-4">';
 						}
 						str+='<div class="block">';
@@ -7791,6 +7793,8 @@ function getTrustEducationOverviewDetails(yearId){
 									str+='<div id="'+type+'MainBlockId'+i+'" style="height:200px;" class="m_top5"></div>';
 								}else if(type == "insurance"){
 									str+='<div id="'+type+'MainBlockId'+i+'" style="height:300px;" class="m_top5"></div>';
+								} else if (type = "ntrTrust") {
+									str+='<div id="'+type+'MainBlockId'+i+'" style="height:300px;" class="m_top5"></div>';
 								}
 								
 								str+='<div id="'+type+'StatusMainBlockId'+i+'"></div>';
@@ -7798,22 +7802,9 @@ function getTrustEducationOverviewDetails(yearId){
 					str+='</div>';
 				}
 			}
-		}else{
-			if(result !=null && result.subList1 !=null && result.subList1.length>0){
-				for(var i in result.subList1){
-						str+='<div class="col-sm-4">';
-						str+='<div class="block">';
-							str+='<h5>'+result.subList1[i].name+'</h5>';
-								str+='<div id="'+type+'MainBlockId'+i+'" style="height:200px;" class="m_top5"></div>';
-								str+='<div id="'+type+'StatusMainBlockId'+i+'"></div>';
-						str+='</div>';
-					str+='</div>';
-				}
-			}
 		}
-		
 		$("#"+type+"MainBlockId").html(str);
-		if(type =="grievance" || type == "insurance"){
+		if(type =="grievance" || type == "insurance" || type == "ntrTrust"){
 			if(result !=null && result.subList2 !=null && result.subList2.length>0){
 				for(var i in result.subList2){
 					var str1='';
@@ -7860,53 +7851,6 @@ function getTrustEducationOverviewDetails(yearId){
 					
 					$("#"+type+"StatusMainBlockId"+i).html(str1);
 				}
-			}
-		}else{
-			if(result !=null && result.subList2 !=null && result.subList2.length>0){
-				var str1='';
-					str1+='<ul class="list_style_css1 m_top20">';
-				var l =0;	
-				for(var i in result.subList2){
-					
-					str1+='<li>';
-						str1+='<div class="dropup">';
-						str1+='<h6>'+result.subList2[i].name+'';
-						if(result.subList2[i].count !=null && result.subList2[i].count>0){
-							str1+='<span class="pull-right dropdown-toggle" style="cursor:pointer;text-decoration:underline"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuN'+i+'" >'+result.subList2[i].count+'</span>';
-						}else{
-							str1+='<span class="pull-right"> - </span>';
-						}
-						
-						
-							str1+='<div class="dropdown-menu pull-right arrow_box_bottom" aria-labelledby="dropdownMenuN'+i+'" style="padding:0px;min-width:200px;">';
-								var totalcountDp=0;
-								for(var k in result.subList2[i].subList){
-									totalcountDp =totalcountDp+result.subList2[i].subList[k].count;
-								}	
-									str1+='<div class="panel panel-default">';
-										  str1+='<div class="panel-heading" style="background-color: #f4f5f5 !important; border-bottom: 1px solid #dddddd !important;text-align: center;">';
-											str1+='<h3 class="panel-title">Total - '+totalcountDp+'</h3>';
-										  str1+='</div>';
-										  str1+='<div class="panel-body">';
-											str1+='<ul class="list_style_css2">';
-											for(var k in result.subList2[i].subList){
-												str1+='<li>';
-													str1+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList2[i].subList[k].name.trim()]+'"></span>  '+result.subList2[i].subList[k].name+' <span class="pull-right">'+result.subList2[i].subList[k].count+'</span></h6>';
-												str1+='</li>';
-											}
-											str1+='</ul>';
-										  str1+='</div>';
-									str1+='</div>';
-								
-									
-								str1+='</div>';
-						str1+='</h6>';
-						str1+='</div>';
-					str1+='</li>';
-				}
-				str1+='</ul>';
-				$("#"+type+"StatusMainBlockId"+l).html(str1);
-				l=l+1;
 			}
 		}
 		if(result !=null && result.subList1 !=null && result.subList1.length>0){
