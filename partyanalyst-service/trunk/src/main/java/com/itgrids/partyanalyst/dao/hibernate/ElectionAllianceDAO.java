@@ -98,11 +98,11 @@ IElectionAllianceDAO {
 	public List<Object[]> getSegregateAlianceParties(List<String> subTypes,List<Long> electionYear,List<Long> electionScopeIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT e.election_id as electionId,et.election_type as electionType ,e.election_year as electionYear" +
-				",g.group_id as groupId,g.group_name as groupName,ag.party_id as partyId ");
-		sb.append(" from  election_alliances ea, groups g, alliance_groups ag ,election e ,election_scope es,election_type et ");
+				",g.group_id as groupId,g.group_name as groupName,ag.party_id as partyId,p.short_name as partyName ");
+		sb.append(" from  election_alliances ea, groups g, alliance_groups ag ,election e ,election_scope es,election_type et,party p ");
 		sb.append("where " +
 				"e.election_scope_id = es.election_scope_id and  es.election_type_id = et.election_type_id and ");
-		sb.append(" ea.election_id = e.election_id and ea.group_id  =g.group_id and ag.group_id = g.group_id " );
+		sb.append(" ea.election_id = e.election_id and ea.group_id  =g.group_id and ag.group_id = g.group_id and ag.party_id =p.party_id " );
 		if(subTypes != null && subTypes.size() >0)
 			sb.append(" and e.sub_type in (:subTypes) ");
 		if(electionYear != null && electionYear.size() >0)
@@ -115,7 +115,8 @@ IElectionAllianceDAO {
 				.addScalar("electionYear",Hibernate.STRING)
 				.addScalar("groupId",Hibernate.LONG)
 				.addScalar("groupName",Hibernate.STRING)
-				.addScalar("partyId",Hibernate.LONG);
+				.addScalar("partyId",Hibernate.LONG)
+				.addScalar("partyName",Hibernate.STRING);
 		if(subTypes != null && subTypes.size() >0)
 		query.setParameterList("subTypes", subTypes);
 		if(electionYear != null && electionYear.size() >0)
