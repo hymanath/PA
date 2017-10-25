@@ -1369,6 +1369,8 @@ IElectionDAO {
 			sb.append(" and model.elecSubtype in(:subTypeArr)");
 		}
 		
+		sb.append(" order by model.electionYear desc ");
+		
 		Query qry = getSession().createQuery(sb.toString());
 				        
 		if(electionScopeIds != null && electionScopeIds.size() >0){
