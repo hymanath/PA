@@ -723,15 +723,16 @@ function onLoadClicks()
 		var value = $(this).val();
 		if(value != 0){
 			$(".checkUncheckCls").prop("checked",false);
+			getElectionYears('change');
 		}else if(value == 0){
 			if ($(this).is(':checked')){
 				$(".checkUncheckCls").prop("checked",true);
 				$(".electionTypeWiseCls").prop("checked",true);
+				getElectionYears('change');
 			}else{
 				$(".checkUncheckCls").prop("checked",false);
 				$(".electionTypeWiseCls").prop("checked",false);
 			}
-			
 		}
 	});		
 	$(document).on("click",".yearCadreDetails",function(){
@@ -2648,7 +2649,7 @@ function getLocationTypeWiseCadreCount(enrollmentId){
 				
 						str+='<h5 class="text-capital">'+result[i].enrollmentYear+' cadre</h5>';
 						str+='<div class="col-sm-5">';
-							str+='<div id="cadreInfoGraph'+i+'" style = "height:130px;"></div>';
+							str+='<div id="cadreInfoGraph'+i+'" style="height:130px;"></div>';
 						str+='</div>';
 						str+='<div class="col-sm-7">';
 							str+='<table class="table table-noborder tableStyledCadre">';
@@ -3251,7 +3252,7 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 								str+='<h4 class="panel-title text-capital"><b>Problem Can be Solved'+result[i].name+'</b></h4>';
 							str+='</a>';
 						}else{
-							str+='<a role="button" class = "collapsed collapseIcon" data-toggle="collapse"  data-parent="#problemsCollapse" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+							str+='<a role="button" class="collapsed collapseIcon" data-toggle="collapse"  data-parent="#problemsCollapse" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
 								str+='<h4 class="panel-title text-capital"><b>Probem Can be Solved '+result[i].name+'</b></h4>';
 							str+='</a>';
 						}
@@ -4344,7 +4345,6 @@ function getGovtSchemeWiseBenefitMembersCount(){
 				statusNamesArr.push(result.subList1[i].partyName)
 				tempArr.push(result.subList1[i].percentage)
 				dataArr.push(tempArr)
-				console.log(dataArr)
 				$('#schemesGraphId'+i).highcharts({
 					colors:['#3BB878'],
 					chart: {
@@ -4850,10 +4850,10 @@ function getNominatedPostStatusWiseCount(){
 				str+='<li style="background-color:#FEEE99" class="f-12"><span class="statusBox" style="background-color:#FED501"></span>TOTAL POSTS<span class="count"><b>'+totalCount+'</b></span></li>';
 				for(var i in result){
 					if(result[i].name == "GO ISSUED"){
-						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'" ></span>COMPLETED/G.O ISSUED<span class="count popUpDetailsClickCls" attr_boardLevelId="0" attr_type="goIssued" attr_department_name = "overAll" attr_board_statusIds="0">'+result[i].count+'</span></li>';
+						str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'" ></span>COMPLETED/G.O ISSUED<span class="count popUpDetailsClickCls" attr_boardLevelId="0" attr_type="goIssued" attr_department_name="overAll" attr_board_statusIds="0">'+result[i].count+'</span></li>';
 					}else{
 						if(result[i].name == "OPEN"){
-							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count popUpDetailsClickCls" attr_department_id="0" attr_boardLevelId="0" attr_type="open" attr_department_name = "">'+result[i].count+'</span></li>';
+							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count popUpDetailsClickCls" attr_department_id="0" attr_boardLevelId="0" attr_type="open" attr_department_name="">'+result[i].count+'</span></li>';
 						}else{
 							str+='<li style="background-color:'+colorsArr[i]+'" class="f-12"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count"><b>'+result[i].count+'</b></span></li>';
 						}
@@ -4957,12 +4957,12 @@ function getPublications(){
 	function buildPublications(result){
 		var str='';
 		str+='<select class="chosen-select publicationChangeCls" id="publicationChangeId">';
-		str+='<option value = "0">Select Publication</option>';
+		str+='<option value="0">Select Publication</option>';
 		for(var i in result){
 			if(result[i].id == "22"){
-				str+='<option value = "'+result[i].id+'" selected>'+result[i].name+'</option>';
+				str+='<option value="'+result[i].id+'" selected>'+result[i].name+'</option>';
 			}else{
-				str+='<option value = "'+result[i].id+'">'+result[i].name+'</option>';
+				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 			}
 			
 		}
@@ -5200,7 +5200,7 @@ function getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds){
 								
 							}else{
 								if(result.subList[i].count !=null && result.subList[i].count>0){
-									str+='<td colspan="3"><h4 class="popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert" attr_alert_type ="" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result.subList[i].status+'" attr_total_count="'+result.subList[i].count+'">'+result.subList[i].count+'<small class="pull-right text-success text_bold m_top5">'+result.subList[i].percentage+' %</small></h4></td>';
+									str+='<td colspan="3"><h4 class="popUpDetailsClickCls" attr_alertTypeIdsStr="'+defaultAlertCategoryIds+'" attr_statusIds="" attr_designationId="0" attr_alertCategeryId="'+result.subList[i].id+'" attr_type="alert" attr_alert_type="" attr_otherCategory="" attr_impactIdsArr="" attr_status_name="'+result.subList[i].status+'" attr_total_count="'+result.subList[i].count+'">'+result.subList[i].count+'<small class="pull-right text-success text_bold m_top5">'+result.subList[i].percentage+' %</small></h4></td>';
 								}else{
 									str+='<td colspan="3"><h4> - </h4></td>';
 								}
@@ -5426,11 +5426,11 @@ function getElectionTypes(type){
 						str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
 						if(result[i].id == "1" || result[i].id == "2" || result[i].id == "3" ||result[i].id == "4"){
 							if(result[i].name != "Pancahat_Ward" && result[i].name != "Panchayat"){
-								str+='<input value ="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
+								str+='<input value="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
 							}
 						}else{
 							if(result[i].name != "Pancahat_Ward" && result[i].name !="Panchayat"){
-								str+='<input value ="'+result[i].id+'" type="checkbox"  class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
+								str+='<input value="'+result[i].id+'" type="checkbox"  class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
 							}
 						}
 										
@@ -5439,46 +5439,41 @@ function getElectionTypes(type){
 				str+='</div>';
 				str+='</div>';
 				str+='<div class="row m_top10">';
-					str+='<div class="col-sm-12">';
-							str+='<div class="col-sm-2">';
-								str+='<select class="" id="elctionBlockPartysId" multiple>';
-									//str+='<option value="0" selected>All Parties</option>';
-									for(var i in result[0].selectedCasteDetails){
-										if(result[0].selectedCasteDetails[i].id == 163 || result[0].selectedCasteDetails[i].id == 265 || result[0].selectedCasteDetails[i].id == 269 || result[0].selectedCasteDetails[i].id == 872 || result[0].selectedCasteDetails[i].id == 1117  || result[0].selectedCasteDetails[i].id == 362 || result[0].selectedCasteDetails[i].id == 662  ){
-											str+='<option value="'+result[0].selectedCasteDetails[i].id+'" selected>'+result[0].selectedCasteDetails[i].name+'</option>';
-										}
-										
-									}
-								str+='</select>';
-							str+='</div>';
-							str+='<div class="col-sm-3" style="margin-left: 20px;">';
-								str+='<select class="" id="elctionYearsBlockId" multiple>';
-								str+='</select>';
-							str+='</div>';
-							str+='<div class="col-sm-3">';
-								str+='<span id="electionTypeSpinnerId" style="margin-left:-22px;display:none;"><img  src="coreApi/img/search.gif" alt="search"  class="m_top10" /></span>';
-								str+='<label class="pull-right">';
-									str+='<input value ="MAIN" type="checkbox" name="optionsRadios1" class="checkedMainByeType" checked/><span class="f-12">Main Election</span>';
-									str+='<input value ="BYE" type="checkbox" name="optionsRadios1"  class="checkedMainByeType f-12" style="margin-left: 10px;"  /><span class="f-12">By Election</span>';
-								str+='</label>';
-							str+='</div>';
-							
-							str+='<div class="col-sm-3">';
-								str+='<label class="pull-right">';
-									str+='<input value ="true" type="checkbox" name="allianceParty" id="allaincePartyFieldId" class="checkedMainByeType" /><span class="f-12">WITH ALLAINCE</span>';
-								str+='</label>';
-							str+='</div>';
-							
-							str+='<div class="col-sm-3">';
-								str+='<label class="">';
-									str+='<input value ="wonSeat" type="radio" name="optionsRadios" class="checkedType" /><span class="f-12">Won Seats</span>';
-									str+='<input value ="voteShare" type="radio" name="optionsRadios"  class="checkedType" style="margin-left: 10px;" checked /><span class="f-12">Vote Share %</span>';
-								str+='</label>';
-							str+='</div>';
+					str+='<div class="col-sm-2">';
+						str+='<select class="" id="elctionBlockPartysId" multiple>';
+							//str+='<option value="0" selected>All Parties</option>';
+							for(var i in result[0].selectedCasteDetails){
+								if(result[0].selectedCasteDetails[i].id == 163 || result[0].selectedCasteDetails[i].id == 265 || result[0].selectedCasteDetails[i].id == 269 || result[0].selectedCasteDetails[i].id == 872 || result[0].selectedCasteDetails[i].id == 1117  || result[0].selectedCasteDetails[i].id == 362 || result[0].selectedCasteDetails[i].id == 662  ){
+									str+='<option value="'+result[0].selectedCasteDetails[i].id+'" selected>'+result[0].selectedCasteDetails[i].name+'</option>';
+								}
+							}
+						str+='</select>';
 					str+='</div>';
-					str+='<div class="col-sm-12">';
-						str+='<button class="btn btn-primary btn-xs electionDetailsCls pull-right" >Submit</button>';
+					str+='<div class="col-sm-2">';
+						str+='<select class="" id="elctionYearsBlockId" multiple></select>';
 					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<span id="electionTypeSpinnerId" style="display:none;"><img  src="coreApi/img/search.gif" alt="search"  class="m_top10" /></span>';
+						str+='<label class="checkbox-inline">';
+							str+='<input value="MAIN" type="checkbox" name="optionsRadios1" class="checkedMainByeType" checked/>Main Election';
+						str+='</label>';
+						str+='<label class="checkbox-inline">';
+							str+='<input value="BYE" type="checkbox" name="optionsRadios1"  class="checkedMainByeType" />By Election';
+						str+='</label>';
+						str+='<label class="checkbox-inline">';
+							str+='<input value="true" type="checkbox" name="allianceParty" id="allaincePartyFieldId" class="checkedMainByeType" />With Alliance';
+						str+='</label>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<label class="radio-inline">';
+							str+='<input value="wonSeat" type="radio" name="optionsRadios" class="checkedType" />Won Seats';
+						str+='</label>';
+						str+='<label class="radio-inline">';
+							str+='<input value="voteShare" type="radio" name="optionsRadios"  class="checkedType" checked />Vote Share %';
+						str+='</label>';
+						str+='<button class="btn btn-primary btn-xs pull-right electionDetailsCls" >Submit</button>';
+					str+='</div>';
+				str+='</div>';
 			$("#electionTypeValuesId").html(str);
 			getElectionYears(type);
 		}else{
@@ -5490,7 +5485,7 @@ function getElectionTypes(type){
 			includeSelectAllOption: true,
 			selectAllText: 'All Parties',
 			maxHeight: 300,
-			maxWidth: 300,
+			buttonWidth: '100%',
 			dropDown: true,
 			selectAllName: false,
 			allSelectedText: 'All Parties selected'
@@ -5750,7 +5745,7 @@ function getPartyWiseMPandMLACandidatesCounts(){
 										}else if(result.subList[i].party == "OTHERS"){
 											str+='<p class="m_top10">'+result.subList[i].party+'</p>';
 										}else{
-											str+='<p class="m_top10"><img class = "logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
+											str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
 										}
 										//str+='<p class="f-10">Telugu Desam Party</p>';
 									str+='</div>';
@@ -5803,14 +5798,20 @@ function getPartyWiseMPandMLACandidatesCounts(){
   }
 }
 
-  function getElectionYears(type){
-	 $('#elctionYearsBlockId').html('');
-	 $('#electionTypeSpinnerId').show();
-	 
-  var jsObj={
-     electionScopeIds:["1","2","3","4"],
-	  electionSubTypeArr:electionSubTypeArr
-    }
+function getElectionYears(type){
+	$('#elctionYearsBlockId').html('');
+	$('#electionTypeSpinnerId').show();
+	var i = 0;	
+	electionTypeVal = [];
+	$(".electionTypeWiseCls").each(function(){
+		if ($(this).is(':checked') && $(this).val() != 0){
+			electionTypeVal[i++] = $(this).val();
+		}
+	});
+	var jsObj={
+		electionScopeIds:electionTypeVal,
+		electionSubTypeArr:electionSubTypeArr
+	}
     $.ajax({   
       type:'POST',
       url:'getElectionYearAndPartiesAction.action',  
@@ -5821,30 +5822,21 @@ function getPartyWiseMPandMLACandidatesCounts(){
 		if(result !=null && result.length>0){
 				var str='';
 				for(var i in result){
-					if(result[i].electionYear == "2014" || result[i].electionYear == "2009"){
-						//str+='<option value="'+result.imageList[i]+'" selected>'+result.imageList[i]+'</option>';
-						str+='<option value="'+result[i].electionYear+'" selected>'+result[i].electionYear+'</option>';
-					}else{
-						//str+='<option value="'+result.imageList[i]+'">'+result.imageList[i]+'</option>';
-						str+='<option value="'+result[i].electionYear+'">'+result[i].electionYear+'</option>';
-					}
-						
+					str+='<option value="'+result[i].electionYear+'" selected>'+result[i].electionYear+'</option>';
 				} 
+				$("#elctionYearsBlockId").multiselect("destroy");
 				$('#elctionYearsBlockId').html(str);
 				$('#elctionYearsBlockId').multiselect({
 					enableFiltering: true,
 					includeSelectAllOption: true,
 					selectAllText: 'All Election Years',
 					maxHeight: 300,
-					maxWidth: 300,
+					buttonWidth: '100%',
 					dropDown: true,
 					selectAllNumber: true,
 					allSelectedText: 'All Election Years selected'
 				});
-				$("#elctionYearsBlockId").multiselect("refresh");
-				
 			}
-			
 			if(type == "onload"){
 				electionYrVal=[];
 				electionYrVal = $("#elctionYearsBlockId").val();
@@ -6007,9 +5999,9 @@ function getLevelWisePostsOverView(){
 								str+='</td>';
 								str+='<td>';
 								if(result[i].goIsuuedCount !=null && result[i].goIsuuedCount>0){
-									str+='<span class="popUpDetailsClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="0">'+result[i].goIsuuedCount+'</span>';
+									str+='<span class="popUpDetailsClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name="'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="0">'+result[i].goIsuuedCount+'</span>';
 								}else{
-									str+='<span class="" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name = "'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="0">'+result[i].goIsuuedCount+'</span>';
+									str+='<span class="" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name="'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="0">'+result[i].goIsuuedCount+'</span>';
 								}
 									
 								str+='</td>';
@@ -6026,9 +6018,9 @@ function getLevelWisePostsOverView(){
 								str+='</td>';
 								str+='<td>';
 								if(result[i].openCount !=null && result[i].openCount>0){
-									str+='<span class="popUpDetailsClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="open" attr_department_name = "'+result[i].board+' Level" attr_department_id="0">'+result[i].openCount+'</span>';
+									str+='<span class="popUpDetailsClickCls" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="open" attr_department_name="'+result[i].board+' Level" attr_department_id="0">'+result[i].openCount+'</span>';
 								}else{
-									str+='<span class="" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="open" attr_department_name = "'+result[i].board+' Level" attr_department_id="0">'+result[i].openCount+'</span>';
+									str+='<span class="" attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="open" attr_department_name="'+result[i].board+' Level" attr_department_id="0">'+result[i].openCount+'</span>';
 								}
 									
 								str+='</td>';
@@ -6139,7 +6131,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
 					for(var i in result){
 						str+='<tr>';
 							if(type =="open"){
-								str+='<td attr_department_name = "'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="'+globalboardLevelId+'" class="popUpDetailsClickCls" attr_type="department" style="color: #337ab7;font-weight:normaltext-decoration:none;">'+result[i].name+'</td>';
+								str+='<td attr_department_name="'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="'+globalboardLevelId+'" class="popUpDetailsClickCls" attr_type="department" style="color: #337ab7;font-weight:normaltext-decoration:none;">'+result[i].name+'</td>';
 							}else{
 								str+='<td>'+result[i].name+'</td>';
 							}
