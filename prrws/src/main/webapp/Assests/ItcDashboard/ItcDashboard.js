@@ -1766,6 +1766,7 @@ function buildData(result,district,sectorType){
 				str+='<th>Department</th>';
 				str+='<th>Company</th>';
 				str+='<th>Line Of Activity</th>';
+				str+='<th>Category</th>';
 				str+='<th>Committed Investment(<i class="fa fa-inr"></i> in Cr.)</th>';
 				str+='<th>Committed Employment</th>';
 			str+='</thead>';
@@ -1778,6 +1779,7 @@ function buildData(result,district,sectorType){
 					str+='<td>'+result[i].deptName+'</td>';
 					str+='<td>'+result[i].nameOfCompany+'</td>';
 					str+='<td>'+result[i].lineOfActivity+'</td>';
+					str+='<td>'+result[i].category+'</td>';
 					str+='<td>'+result[i].investment+'</td>';
 					str+='<td>'+result[i].employment+'</td>';
 				str+='</tr>';
