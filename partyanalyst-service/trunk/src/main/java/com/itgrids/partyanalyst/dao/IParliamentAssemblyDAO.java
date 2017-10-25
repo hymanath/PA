@@ -12,4 +12,5 @@ public interface IParliamentAssemblyDAO extends GenericDao<ParliamentAssembly, L
 	public List<Object[]> getParliamentDetailsOfAssembly(Long stateId);
 	public List<Object[]> getParliamentByAssemblyId(Long assemblyId);
 	public List<Object[]> getConsIdsByParliamntsIds(List<Long> locationIds);
+	public List<Object[]> getConsIdsByParliamntId(List<Long> parlimentId);
 }

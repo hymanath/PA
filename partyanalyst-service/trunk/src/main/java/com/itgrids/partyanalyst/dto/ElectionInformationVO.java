@@ -47,9 +47,12 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private Double percentage = 0.0;
 	private Long min;
 	private Long max;
+	private Long candidateId;
 	private Long groupId;
 	
-	private List<ElectionInformationVO> list = new CopyOnWriteArrayList<ElectionInformationVO>();
+	private Long crossVotingCount=0L;
+	private String crossVotingPerc="";
+	private List<ElectionInformationVO> list = new ArrayList<ElectionInformationVO>();
 	private List<ElectionInformationVO> subList1 = new ArrayList<ElectionInformationVO>();
 	private List<ElectionInformationVO> subList2 = new ArrayList<ElectionInformationVO>();
 
@@ -79,7 +82,18 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 		this.wonSeatsCount = wonSeatsCount;
 	}
 	
-	
+	public Long getCrossVotingCount() {
+		return crossVotingCount;
+	}
+	public void setCrossVotingCount(Long crossVotingCount) {
+		this.crossVotingCount = crossVotingCount;
+	}
+	public String getCrossVotingPerc() {
+		return crossVotingPerc;
+	}
+	public void setCrossVotingPerc(String crossVotingPerc) {
+		this.crossVotingPerc = crossVotingPerc;
+	}
 	public Long getMin() {
 		return min;
 	}
@@ -320,6 +334,13 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	public void setSubList2(List<ElectionInformationVO> subList2) {
 		this.subList2 = subList2;
 	}
+	public Long getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+
 	public Long getGroupId() {
 		return groupId;
 	}

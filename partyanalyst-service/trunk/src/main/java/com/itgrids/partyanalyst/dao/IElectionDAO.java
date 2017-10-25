@@ -227,4 +227,9 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	List<Long> getElectionDetailsByYearAndElectionTypeForLocation(String year,Long electionTypeId, Long stateId);
 	public  List<String> getElectionYearByScopeIds(List<Long> electionScopeIds,List<String> subTypeArr);
 
+	public List<Object[]> getElectionDetailsForCrossVoting(List<Long> electionYears, Long locationTypeId,List<Long> locationValues, Long electionId, List<String> subTypes,
+			List<Long> partyIds, List<Long> electionScopeIds);
+
+	public List<Object[]> getMarginVotesForCrossVoting(Long locationTypeId ,List<Long> locationValues,List<Long> electionScopeIds,List<String> subTypes,List<Long> electionYear, boolean isParliment);
+
 }

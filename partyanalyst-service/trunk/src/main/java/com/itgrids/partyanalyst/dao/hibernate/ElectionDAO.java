@@ -1359,7 +1359,121 @@ IElectionDAO {
 		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where (model.electionScope.state.stateId = ? or model.electionScope.state.stateId is null) and " +
 				" model.electionScope.electionType.electionType = ? and model.isPartial = ? and model.elecSubtype = ?  order by model.electionYear desc",params);
 	}
-	
+
+	@Override
+	public List<Object[]> getElectionDetailsForCrossVoting(List<Long> electionYears, Long locationTypeId,List<Long> locationValues, Long electionId, List<String> subTypes,
+			List<Long> partyIds, List<Long> electionScopeIds) {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" SELECT e.election_scope_id AS election_scope_id, c.constituency_id AS locationId, c.name as locationName, e.election_id AS election_id," +
+				" et.election_type AS election_type, e.election_year AS election_year, n.party_id AS party_id, p.short_name AS short_name,n.candidate_id AS candidateId, " +
+				" SUM(cbr.votes_earned) AS sumCount FROM " );
+		sb.append(" nomination n, constituency_election ce, candidate_booth_result cbr, booth_constituency_election bce, booth b, election e, " +
+				" constituency c, district d, election_scope es, election_type et, party p WHERE" +
+				" e.election_scope_id = es.election_scope_id AND et.election_type_id = es.election_type_id AND c.district_id = d.district_id" +
+				" AND b.constituency_id = c.constituency_id AND (c.district_id BETWEEN 11 AND 23) AND ce.election_id = e.election_id" +
+				" AND n.nomination_id = cbr.nomination_id AND p.party_id=n.party_id AND cbr.booth_constituency_election_id = bce.booth_constituency_election_id" +
+				" AND bce.booth_id = b.booth_id AND n.consti_elec_id = ce.consti_elec_id AND ce.consti_elec_id = bce.consti_elec_id AND e.sub_type IN (:subTypes) ");
+		if(electionYears != null && electionYears.size()>0)
+				sb.append(" AND e.election_year IN (:electionYears)");
+		if(electionScopeIds != null && electionScopeIds.size()>0)		
+				sb.append(" AND e.election_scope_id IN (:electionScopeIds)");
+		if(partyIds!=null && partyIds.size()>0)
+				sb.append(" AND n.party_id IN (:partyIds)");
+		/*if(locationTypeId != null && locationTypeId.longValue() >0 && locationValues != null && locationValues.size()>0){
+				sb.append("AND c.constituency_id in (SELECT DISTINCT parliament28_.assembly_id FROM" +
+						" parliament_assembly parliament28_ WHERE parliament28_.parliament_id IN (:locationValues))");
+		}*/
+		sb.append(" GROUP BY c.constituency_id , ce.election_id , n.party_id order By c.constituency_id,sumCount desc");
+		
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("election_scope_id",Hibernate.LONG)
+				.addScalar("locationId",Hibernate.LONG)
+				.addScalar("locationName",Hibernate.STRING)
+				.addScalar("election_id",Hibernate.LONG)
+				.addScalar("election_type",Hibernate.STRING)
+				.addScalar("election_year",Hibernate.STRING)
+				.addScalar("party_id",Hibernate.LONG)
+				.addScalar("short_name",Hibernate.STRING)
+				.addScalar("candidateId",Hibernate.LONG)
+				.addScalar("sumCount",Hibernate.LONG);
+		
+		query.setParameterList("subTypes",subTypes);
+		if(electionYears != null && electionYears.size()>0)
+			query.setParameterList("electionYears",electionYears);
+		if(electionScopeIds != null && electionScopeIds.size()>0)		
+			query.setParameterList("electionScopeIds",electionScopeIds);
+		if(partyIds!=null && partyIds.size()>0)
+			query.setParameterList("partyIds",partyIds);
+		/*if(locationValues != null && locationValues.size()>0){
+			query.setParameterList("locationValues",locationValues);
+	}*/
+		return query.list();
+	}
+
+	@Override
+	public List<Object[]> getMarginVotesForCrossVoting(Long locationTypeId ,List<Long> locationValues,List<Long> electionScopeIds,List<String> subTypes,List<Long> electionYear,boolean isParliment) {
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select e.election_scope_id as electionScopeId, CER.valid_votes as validVotes,CER.voting_percentage as votingPecentage," +
+				"CR.margin_votes as marginVotes,CR.margin_votes_percentage as marginVotesPercentage, CR.rank as rank,CR.votes_earned as voteEarned," +
+				"CR.votes_percentage as votesPecentage, N.party_id as partyId,c.constituency_id as locationId,c.name as locationName" +
+				" from constituency_election CE, constituency_election_result CER, candidate_result CR, nomination N,constituency c, election e," +
+				" parliament_assembly pa, constituency ac " +
+				" where CE.consti_elec_id=CER.consti_elec_id AND CE.consti_elec_id=N.consti_elec_id AND N.nomination_id=CR.nomination_id and" +
+				" c.constituency_id=CE.constituency_id AND e.election_id=CE.election_id and pa.parliament_id=c.constituency_id and " +
+				" pa.assembly_id=ac.constituency_id ");
+		if(locationTypeId != null && locationTypeId.longValue()>0 && locationValues != null && locationValues.size()>0){
+			if(locationTypeId ==2l){
+				if(isParliment){
+
+					queryStr.append(" and c.constituency_id in (:locationValues)");
+					
+				}else{
+					queryStr.append(" and ac.constituency_id in (:locationValues)");
+				}
+			}
+		}
+		if(electionYear != null && electionYear.size()>0){
+			queryStr.append(" and e.election_year in(:electionYear) ");
+		}
+		if(electionScopeIds != null && electionScopeIds.size()>0){
+			queryStr.append(" and  e.election_scope_id in(:electionScopeIds)");
+		}
+		if(subTypes != null && subTypes.size()>0){
+			queryStr.append(" and e.sub_type in(:subTypes)");
+		}
+		queryStr.append(" GROUP BY e.election_scope_id,N.party_id,c.constituency_id,CR.rank");
+
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("electionScopeId",Hibernate.LONG)
+				.addScalar("validVotes",Hibernate.LONG)
+				.addScalar("votingPecentage",Hibernate.BIG_DECIMAL)
+				.addScalar("marginVotes",Hibernate.LONG)
+				.addScalar("marginVotesPercentage")
+				.addScalar("rank",Hibernate.LONG)
+				.addScalar("voteEarned",Hibernate.LONG)
+				.addScalar("votesPecentage",Hibernate.BIG_DECIMAL)
+				.addScalar("partyId",Hibernate.LONG)
+				.addScalar("locationId",Hibernate.LONG)
+				.addScalar("locationName",Hibernate.STRING);
+		
+		if(locationTypeId != null && locationTypeId.longValue()>0 && locationValues != null && locationValues.size()>0){
+			query.setParameterList("locationValues",locationValues);
+		}
+		if(electionYear != null && electionYear.size()>0){
+			query.setParameterList("electionYear",electionYear);
+		}
+		if(electionScopeIds != null && electionScopeIds.size()>0){
+			query.setParameterList("electionScopeIds",electionScopeIds);
+		}
+		if(subTypes != null && subTypes.size()>0){
+			query.setParameterList("subTypes",subTypes);
+		}
+		return query.list();
+	}
+
 	public  List<String> getElectionYearByScopeIds(List<Long> electionScopeIds,List<String> subTypeArr){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.electionYear from Election model " +

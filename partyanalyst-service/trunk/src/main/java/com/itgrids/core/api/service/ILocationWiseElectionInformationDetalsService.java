@@ -25,4 +25,10 @@ public interface ILocationWiseElectionInformationDetalsService {
 	public List<Object[]> segregateAlianceParties(List<Object[]> inputObjList,List<String> subTypes,List<Long> electionYear,List<Long> electionScopeIds,Map<Long, Map<Long, ElectionInformationVO>> alliancedPartiesWithGroupId);
 	public Map<Long, Map<Long, ElectionInformationVO>> getSegregateAliancePartiesMap(List<String> subTypes, List<Long> electionYrs,List<Long> electionScopeIds);
 	public PartyBoothPerformanceVO getBoothWiseElectionResultsForAssamblyAndParlaiment(PartyBoothPerformanceVO assemblyBoothResultVO,PartyBoothPerformanceVO parliamentBoothResultVO);
+
+	//crossVoting
+	
+	public List<ElectionInformationVO> getLocationBasedCrossVotingReult(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds);
+
+
 }
