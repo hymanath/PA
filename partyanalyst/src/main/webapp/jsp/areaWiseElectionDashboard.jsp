@@ -74,17 +74,21 @@
 											<option value="1117" selected>YSRC</option>
 											<option value="163" selected>BJP</option>
 											<option value="362" selected>INC</option>
-											<option value="72">AIMIM</option>
+											<!--<option value="72">AIMIM</option>-->
+											<option value="362">INC</option>
 											<option value="265">CPI</option>
 											<option value="269">CPM</option>
 											<option value="662">PRP</option>
-											<option value="886">TRS</option>
+											<!--<option value="886">TRS</option>-->
 										</select>
 									</div>
 								</div>
 								<div class="col-sm-3 m_top20">
-									<button class="btn btn-success getDetailsCls buttonClr">Submit</button>
+									<input value ="true" type="checkbox" name="allianceParty" id="allaincePartiFieldId" class="checkedMainByeType" /><span class="f-12">WITH ALLAINCE</span>
 								</div>
+								<div class="col-sm-3 m_top20">
+									<button class="btn btn-success getDetailsCls buttonClr">Submit</button>
+								</div>								
 							</div>
 						</div>
 					</section>
@@ -142,11 +146,12 @@
 												<option value="1117" selected>YSRC</option>
 												<option value="163" selected>BJP</option>
 												<option value="362" selected>INC</option>
-												<option value="72">AIMIM</option>
+												<!--<option value="72">AIMIM</option>-->
+												<option value="362">INC</option>
 												<option value="265">CPI</option>
 												<option value="269">CPM</option>
 												<option value="662">PRP</option>
-												<option value="886">TRS</option>
+												<!--<option value="886">TRS</option>-->
 											</select>
 											</div>
 										</div>
@@ -210,14 +215,18 @@
 									<option value="872" selected>TDP</option>
 									<option value="1117">YSRC</option>
 									<option value="163">BJP</option>
-									<option value="72">AIMIM</option>
+									<!--<option value="72">AIMIM</option>-->
 									<option value="362">INC</option>
 									<option value="265">CPI</option>
 									<option value="269">CPM</option>
 									<option value="662">PRP</option>
-									<option value="886">TRS</option>
+									<!--<option value="886">TRS</option>-->
 								</select>
 							</div>
+							<div class="col-sm-3 m_top20">
+								<input value ="true" type="checkbox" name="allianceParty" id="allainceStatusPartyFieldId" class="checkedMainByeType" /><span class="f-12">WITH ALLAINCE</span>
+							</div>
+							
 							<div class="col-sm-3 m_top20">
 								<button class="btn btn-success buttonClr getDetailsForStrongCls">Submit</button>
 							</div>
@@ -268,11 +277,12 @@
 									<option value="1117" selected>YSRC</option>
 									<option value="163" selected>BJP</option>
 									<option value="362" selected>INC</option>
-									<option value="72">AIMIM</option>
+									<!--<option value="72">AIMIM</option>-->
+									<option value="362">INC</option>
 									<option value="265">CPI</option>
 									<option value="269">CPM</option>
 									<option value="662">PRP</option>
-									<option value="886">TRS</option>
+									<!--<option value="886">TRS</option>-->
 								</select>
 								</div>
 							</div>

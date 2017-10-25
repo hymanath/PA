@@ -5369,6 +5369,12 @@ function getElectionTypes(type){
 							str+='</div>';
 							
 							str+='<div class="col-sm-3">';
+								str+='<label class="pull-right">';
+									str+='<input value ="true" type="checkbox" name="allianceParty" id="allaincePartyFieldId" class="checkedMainByeType" /><span class="f-12">WITH ALLAINCE</span>';
+								str+='</label>';
+							str+='</div>';
+							
+							str+='<div class="col-sm-3">';
 								str+='<label class="">';
 									str+='<input value ="wonSeat" type="radio" name="optionsRadios" class="checkedType" /><span class="f-12">Won Seats</span>';
 									str+='<input value ="voteShare" type="radio" name="optionsRadios"  class="checkedType" style="margin-left: 10px;" checked /><span class="f-12">Vote Share %</span>';
@@ -5423,6 +5429,10 @@ function getElectionInformationLocationWise(electionVal,type,partyIds,electionSu
 		}
 	}
 	
+	var withAllance="false";
+	if($('#allaincePartyFieldId').is(':checked')){
+		withAllance="true";
+	}
 	var jsObj={
 			fromDate 	  	:"",
 			toDate		  	:"",
@@ -5432,7 +5442,7 @@ function getElectionInformationLocationWise(electionVal,type,partyIds,electionSu
 			partyIds		:partyIds,
 			electionYrs     :electionYrVal,
 			electionSubTypeArr :electionSubTypeArr,
-			withAllaince:"false"
+			withAllaince:withAllance
 			
 	}
 	 $.ajax({

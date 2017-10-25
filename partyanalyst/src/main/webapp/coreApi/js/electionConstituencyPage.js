@@ -804,6 +804,11 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,ele
 	}else{
 		constituencyId = searchParams
 	}
+	
+	var withAllance="false";
+	if($('#allaincePartiFieldId').is(':checked')){
+		withAllance="true";
+	}
 	var jsObj={
 		
 		electionScopeIdsArr:electionScopeIdsArr,
@@ -813,7 +818,7 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,ele
 		yearsArr:electionYrVal,
 		partyIdsArr:partyIdsArr,
 		constituencyId :constituencyId,
-			withAllaince:"false"
+			withAllaince:withAllance
     }
     $.ajax({
       type : "GET",
@@ -958,6 +963,11 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 		electionScopeIdsArr = electionScopeId
 	}
 	
+	var withAllance="false";
+	if($('#allaincePartiFieldId').is(':checked')){
+		withAllance="true";
+	}
+	
 	var jsObj={
 		locationTypeId     	:locationLevelId,
 		locationValuesArr   :userAccessLevelValuesArray,
@@ -966,7 +976,7 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 		partyIdsArr       	:partyIdsArr,
 		electionSubTypeArr  :eletionSubType,
 		electionScopeIdsArr:electionScopeIdsArr,
-			withAllaince:"false"
+			withAllaince:withAllance
     }
     $.ajax({
       type : "GET",
@@ -2234,7 +2244,10 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 	}
 	
 	electionScopeIdsArr.push(electionScopeId);
-	
+	var withAllance="false";
+	if($('#allainceStatusPartyFieldId').is(':checked')){
+		withAllance="true";
+	}
 	var jsObj={
 	  	locationTypeId 		:locationLevelId,
 		locationValue 		:userAccessLevelValue,
@@ -2243,7 +2256,7 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 		electionYears     	:electionYrVal,
 		electionSubTypeArr 	:eletionSubType,
 		searchType			:searchLevelVal,
-			withAllaince:"false"
+			withAllaince:withAllance
     }
     $.ajax({
       type : "GET",
@@ -2543,6 +2556,12 @@ function  getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,ele
 			strx   = stringIds.split(',');
 		locationIds = locationIds.concat(strx);
 	}
+	
+	var withAllance="false";
+	if($('#allainceStatusPartyFieldId').is(':checked')){
+		withAllance="true";
+	}
+	
 	var jsObj={
 		locationTypeId 		:locationLevelId,
 		locationValue 		:userAccessLevelValue,
@@ -2555,7 +2574,7 @@ function  getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,ele
 		statusType			:statusTpe,
 		year				:year,
 		locationIds			:locationIds,
-			withAllaince:"false"
+			withAllaince:withAllance
 		
 	}
 	$.ajax({
