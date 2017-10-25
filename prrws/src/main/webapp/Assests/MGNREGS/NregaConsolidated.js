@@ -447,7 +447,8 @@ function getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,su
 		subLocationType : subLocationType,
 		districtId : districtId,
 		componentIds : overViewIdsArr,
-		searchType : searchType
+		searchType : searchType,
+		program : "-1"
 	}
 	$.ajax({
 		url: 'getNREGSLevelWiseConsolidatedReport',

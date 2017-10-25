@@ -969,6 +969,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 				str += "\"SublocationType\" : \""+inputVO.getSubLocationType()+"\",";
 			if(inputVO.getComponentName() != null)
 				str += "\"type\" : \""+inputVO.getComponentName()+"\",";
+			if(inputVO.getProgram() != null)
+				str += "\"program\" : \""+inputVO.getProgram()+"\",";
 			
 			if(str.length() > 1)
 				str = str.substring(0,str.length()-1);

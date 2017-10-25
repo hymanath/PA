@@ -509,7 +509,7 @@ function getITSectorWiseOverviewDetails(){
 		{
 			if(result[i].sector == "Total")
 			{
-				$("#promotionsHeadingId").html(result[i].investment+"CR");
+				$("#promotionsHeadingId").html(result[i].investment+" Cr");
 			}
 			
 			var str = '';
@@ -533,7 +533,7 @@ function getITSectorWiseOverviewDetails(){
 						str1+='</div>';
 						str1+='<div class="media-body">';
 							str1+='<p>Commited Investments</p>';
-							str1+='<h3 class="m_top10">'+result[i].investment+'</h3>';
+							str1+='<h3 class="m_top10">'+result[i].investment+' Cr</h3>';
 						str1+='</div>';
 					str1+='</div>';
 					str1+='<div class="media m_top40">';
@@ -546,6 +546,39 @@ function getITSectorWiseOverviewDetails(){
 						str1+='</div>';
 					str1+='</div>';
 				str1+='</div>';
+				str1+='<ul class="list-inline m_top10">';
+					str1+='<li>';
+						str1+='<span class="roundCircle" style="background-color:#058E46;color:#fff">G1</span>Gone into Production';
+					str1+='</li>';
+					str1+='<li>';
+						str1+='<span class="roundCircle" style="background-color:#058E46;color:#fff">G2</span>Trial Production	';
+					str1+='</li>';
+					str1+='<li>';
+						str1+='<span class="roundCircle" style="background-color:#058E46;color:#fff">G4</span>Civil Works commenced	';
+					str1+='</li>';
+					str1+='<li>';
+						str1+='<span class="roundCircle" style="background-color:#058E46;color:#fff">Y</span>Ready for Foundation Stone';
+					str1+='</li>';
+				str1+='</ul>';
+				str1+='<ul class="list-inline m_top20">';
+					str1+='<li>';
+						str1+='<span class="roundCircle" style="background-color:#F75C5D;color:#fff">R1</span>Land in possession and approvals granted	';
+					str1+='</li>';
+					str1+='<li>';
+						str1+='<span class="roundCircle" style="background-color:#F75C5D;color:#fff">R2</span>Land in possession and approvals in progress	';
+					str1+='</li>';
+					str1+='<li>';
+						str1+='<span class="roundCircle" style="background-color:#F75C5D;color:#fff">R3</span>Government land sought, but not allocated	';
+					str1+='</li>';
+					str1+='<li>';
+						str1+='<span class="roundCircle" style="background-color:#F75C5D;color:#fff">R4</span>DPR to be submitted';
+					str1+='</li>';
+				str1+='</ul>';
+				str1+='<ul class="list-inline m_top20">';
+					str1+='<li>';
+						str1+='<span class="roundCircle" style="background-color:#91CCC7;color:#fff">D</span>Dropped';
+					str1+='</li>';
+				str1+='</ul>';
 				$("#promotionsTotalBlockId").html(str1);
 			}
 		}
@@ -653,7 +686,7 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 								str+='<p><small>INDUSTRIES</small></p>';
 							str+='</div>';
 							str+='<div class="col-sm-4">';
-								str+='<h4>'+result[i].investment+'</h4>';
+								str+='<h4 style="font-size:16px;">'+result[i].investment+'Cr</h4>';
 								str+='<p><small>INVESTMENTS</small></p>';
 							str+='</div>';
 							str+='<div class="col-sm-4">';
@@ -727,7 +760,7 @@ function getITSectorLeadCategoryWiseDetails(type){
 						str+='<p><small>INDUSTRIES</small></p>';
 					str+='</div>';
 					str+='<div class="col-sm-4">';
-						str+='<h4>'+result[i].investment+'</h4>';
+						str+='<h4 style="font-size:16px;">'+result[i].investment+'Cr</h4>';
 						str+='<p><small>INVESTMENTS</small></p>';
 					str+='</div>';
 					str+='<div class="col-sm-4">';

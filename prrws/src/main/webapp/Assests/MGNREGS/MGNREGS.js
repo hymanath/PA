@@ -3364,13 +3364,13 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 	if( divId == 'Average Wage'){
-			theadArr = [locationType,'Target Average Wage(Rs/-)','Expenditure(Rs/-)','Achieved Average Wage'];
+			theadArr = [locationType,'Target Average Wage','Achieved','Achieved Average Wage'];
 			if(locationType == "constituency")
-				theadArr = ["district",locationType,'Target Average Wage(Rs/-)','Expenditure(Rs/-)','Achieved Average Wage'];
+				theadArr = ["district",locationType,'Target Average Wage','Achieved','Achieved Average Wage'];
 			else if(locationType == "mandal")
-				theadArr = ["district","constituency",locationType,'Target Average Wage(Rs/-)','Expenditure(Rs/-)','Achieved Average Wage'];
+				theadArr = ["district","constituency",locationType,'Target Average Wage','Achieved','Achieved Average Wage'];
 			else if(locationType == "panchayat")
-				theadArr = ["district","constituency","mandal",locationType,'Target Average Wage(Rs/-)','Expenditure(Rs/-)','Achieved Average Wage'];
+				theadArr = ["district","constituency","mandal",locationType,'Target Average Wage','Achieved','Achieved Average Wage'];
 	}else if( divId == 'Average Days of Employment'){
 			theadArr = [locationType,'Target Average Days of Employment','Achieved','Achieved Percentage'];
 			if(locationType == "constituency")
