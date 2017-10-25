@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Criteria;
@@ -1496,4 +1497,28 @@ IElectionDAO {
 		return qry.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getWonConstituencyCountsInLocation(Set<Long> locationIds,List<Long> electionScopeIds,Set<Long> electionIds){
+		StringBuilder sb = new StringBuilder();	
+			sb.append("select e.election_id,c.district_id,n.party_id,count(n.party_id) ");
+			sb.append(" from constituency_election ce, nomination n ,constituency c ,election e,candidate_result cr ");
+			sb.append("where e.election_id = ce.election_id  and  n.nomination_id = cr.nomination_id and ");
+			sb.append("ce.constituency_id = c.constituency_id and n.consti_elec_id = ce.consti_elec_id ");
+			sb.append("and cr.nomination_id = n.nomination_id and  cr.rank =1 ");
+			if(electionScopeIds !=null && electionScopeIds.size() >0)
+				sb.append("and e.election_scope_id  in(:electionScopeIds) ");
+			if(electionIds !=null && electionIds.size() >0)
+				sb.append("and e.election_id  in(:electionIds) ");
+			if(locationIds !=null && locationIds.size() >0)
+				sb.append("and c.district_id  in(:locationIds) ");
+			sb.append("group by  e.election_id,c.district_id,n.party_id ");
+		Query query=getSession().createSQLQuery(sb.toString());
+		if(electionScopeIds !=null && electionScopeIds.size() >0)
+			query.setParameterList("electionScopeIds", electionScopeIds);
+		if(electionIds !=null && electionIds.size() >0)
+			query.setParameterList("electionIds", electionIds);
+		if(locationIds !=null && locationIds.size() >0)
+			query.setParameterList("locationIds", locationIds);
+		return query.list();
+	}
 }
