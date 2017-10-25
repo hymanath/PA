@@ -6825,9 +6825,20 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		finalList.addAll(locationWiseDetailsVOMap.values());
 		for (MeetingsVO meetingVo : finalList) {
 			List<MeetingsVO> yearWiseVOList=meetingVo.getYearWiseMeetingsCount();
-			if(yearWiseVOList.get(1) != null){//get yearWiseVO at 1st position from list and get all counts from that vo and add to main vo(locationWiseVO) as total
-				MeetingsVO yearWiseVO=yearWiseVOList.get(1);
-				meetingVo.setTotal(yearWiseVO.getYesCount()+yearWiseVO.getNoCount()+yearWiseVO.getMayBeCount()+yearWiseVO.getNotUpDatedCount());
+			if(yearWiseVOList != null && yearWiseVOList.size() >= 1) {
+				boolean foundStatus=false;
+				for(MeetingsVO yearWiseVO:yearWiseVOList.subList(1, yearWiseVOList.size())){
+					if(yearWiseVO.getYesCount().longValue() >0l ||yearWiseVO.getNoCount().longValue() >0l ||yearWiseVO.getMayBeCount().longValue() >0l ||yearWiseVO.getNotUpDatedCount().longValue() >0l) {
+						foundStatus=true;
+						meetingVo.setTotal(yearWiseVO.getYesCount()+yearWiseVO.getNoCount()+yearWiseVO.getMayBeCount()+yearWiseVO.getNotUpDatedCount());
+		                break;
+					}
+
+				}
+				if(foundStatus ==false) {
+					MeetingsVO yearWiseVO=yearWiseVOList.get(0);
+					meetingVo.setTotal(yearWiseVO.getYesCount()+yearWiseVO.getNoCount()+yearWiseVO.getMayBeCount()+yearWiseVO.getNotUpDatedCount());		
+				}
 			}
 			if(yearWiseVOList.get(0) != null){//get yearWiseVO(Overall) at 0st position from list and calculate percentage for all status count 
 				DecimalFormat df = new DecimalFormat("###.##");
