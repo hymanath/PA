@@ -5349,7 +5349,7 @@ function getElectionTypes(type){
 								str+='<select class="" id="elctionBlockPartysId" multiple>';
 									//str+='<option value="0" selected>All Parties</option>';
 									for(var i in result[0].selectedCasteDetails){
-										if(result[0].selectedCasteDetails[i].id == 163 || result[0].selectedCasteDetails[i].id == 265 || result[0].selectedCasteDetails[i].id == 269 || result[0].selectedCasteDetails[i].id == 662 || result[0].selectedCasteDetails[i].id == 872 || result[0].selectedCasteDetails[i].id == 886 || result[0].selectedCasteDetails[i].id == 1117  || result[0].selectedCasteDetails[i].id == 362 || result[0].selectedCasteDetails[i].id == 72 ){
+										if(result[0].selectedCasteDetails[i].id == 163 || result[0].selectedCasteDetails[i].id == 265 || result[0].selectedCasteDetails[i].id == 269 || result[0].selectedCasteDetails[i].id == 872 || result[0].selectedCasteDetails[i].id == 1117  || result[0].selectedCasteDetails[i].id == 362 || result[0].selectedCasteDetails[i].id == 662  ){
 											str+='<option value="'+result[0].selectedCasteDetails[i].id+'" selected>'+result[0].selectedCasteDetails[i].name+'</option>';
 										}
 										
@@ -5431,7 +5431,8 @@ function getElectionInformationLocationWise(electionVal,type,partyIds,electionSu
 			electionScopeIds:electionVal,
 			partyIds		:partyIds,
 			electionYrs     :electionYrVal,
-			electionSubTypeArr :electionSubTypeArr
+			electionSubTypeArr :electionSubTypeArr,
+			withAllaince:"false"
 			
 	}
 	 $.ajax({
@@ -5503,9 +5504,9 @@ function buildElectionInformationLocationWise(result,type){
 		str+='</div>';
 		$("#electionDetailsTableWiseId").html(str);
 		$("#dataTableElecBlock").dataTable({
-			"iDisplayLength": 10,
+			"iDisplayLength": 20,
 			 "aaSorting": [[ 2, "desc" ]], 
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"aLengthMenu": [[20, 30, 50, -1], [20, 30, 50, "All"]]
 		});
 		var mainDataArr=[];
 		var electionYearArr = [];

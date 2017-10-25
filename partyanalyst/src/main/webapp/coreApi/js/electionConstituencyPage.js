@@ -812,7 +812,8 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,ele
 		locationValuesArr:userAccessLevelValuesArray,
 		yearsArr:electionYrVal,
 		partyIdsArr:partyIdsArr,
-		constituencyId :constituencyId
+		constituencyId :constituencyId,
+			withAllaince:"false"
     }
     $.ajax({
       type : "GET",
@@ -960,11 +961,12 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 	var jsObj={
 		locationTypeId     	:locationLevelId,
 		locationValuesArr   :userAccessLevelValuesArray,
-		electionId       	:258,
+		electionId       	:0,
 		electionYearArr     :electionYrVal,
 		partyIdsArr       	:partyIdsArr,
 		electionSubTypeArr  :eletionSubType,
 		electionScopeIdsArr:electionScopeIdsArr,
+			withAllaince:"false"
     }
     $.ajax({
       type : "GET",
@@ -2240,7 +2242,8 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,p
 		partyIdsList  		:partyIdsList,
 		electionYears     	:electionYrVal,
 		electionSubTypeArr 	:eletionSubType,
-		searchType			:searchLevelVal
+		searchType			:searchLevelVal,
+			withAllaince:"false"
     }
     $.ajax({
       type : "GET",
@@ -2551,7 +2554,8 @@ function  getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,ele
 		searchType			:searchLevelVal,
 		statusType			:statusTpe,
 		year				:year,
-		locationIds			:locationIds
+		locationIds			:locationIds,
+			withAllaince:"false"
 		
 	}
 	$.ajax({
