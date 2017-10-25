@@ -34,11 +34,27 @@ var defaultAlertCategoryIds=[1];
 var electionYrVal = [];
 var electionSubTypeArr=["MAIN"];
 var electionYearsSubTypeArr=["MAIN","BYE"];
+function getDay(){
+	var date = new Date();
+	var dd = date.getDate(); 
+	return dd;
+}
 //Tours And Meetings And Alerts Dates Start 
 var customStartMeetingsDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
 var customEndMeetingsDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 var customStartATMDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
 var customEndATMDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
+
+
+var customStartGrivanceDate = moment().subtract(1, 'years').startOf('year').format('DD/MM/YYYY')
+var customEndGrivanceDate = moment().format('DD/MM/YYYY');
+
+var customStartInsuranceDate = moment().subtract(1, 'years').startOf('year').format('DD/MM/YYYY')
+var customEndInsuranceDate = moment().format('DD/MM/YYYY');
+
+var customStartNtrTrustDate = moment().subtract(1, 'years').startOf('year').format('DD/MM/YYYY')
+var customEndNtrTrustDate = moment().format('DD/MM/YYYY');
+
 var globalboardLevelId='';
 //Tours And Meetings And Alerts Dates End 
 // please do not try to edit these options which may cause the entire page to stop working. //end
@@ -169,11 +185,63 @@ function onLoadInitialisations()
 		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
         }
 	});
-	function getDay(){
-		var date = new Date();
-		var dd = date.getDate(); 
-		return dd;
-	}
+	//Grievance
+	$("#grievanceNewDateRangePickerId").daterangepicker({
+		opens: 'left',
+	    startDate: customStartGrivanceDate,
+        endDate:customEndGrivanceDate,
+		locale: {
+			format: 'DD/MM/YYYY'
+		},
+		ranges: { ////moment().endOf('Year')
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment()],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
+        }
+	});
+	//Insurance
+	$("#insuranceNewDateRangePickerId").daterangepicker({
+		opens: 'left',
+	    startDate: customStartInsuranceDate,
+        endDate:customEndInsuranceDate,
+		locale: {
+			format: 'DD/MM/YYYY'
+		},
+		ranges: { ////moment().endOf('Year')
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment()],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
+        }
+	});
+	//Ntr Trust
+	$("#ntrTrustNewDateRangePickerId").daterangepicker({
+		opens: 'left',
+	    startDate: customStartNtrTrustDate,
+        endDate:customEndNtrTrustDate,
+		locale: {
+			format: 'DD/MM/YYYY'
+		},
+		ranges: { ////moment().endOf('Year')
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment()],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
+        }
+	});
 	//Alert Start
 	$("#alertNewDateRangePickerId").daterangepicker({
 		opens: 'left',
@@ -264,14 +332,14 @@ function onLoadAjaxCalls()
 			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 		}
 	}, 2000); */
-}
+}			
 function onLoadClicks()
 {
 	$(document).on("click","[detailed-block]",function(){
 		var blockName = $(this).attr("detailed-block");
 		if(blockName == 'grievance')
 		{ 
-			window.open('areaWiseGrievanceDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
+			window.open('areaWiseGrievanceDashboardAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'&customStartGrivanceDate='+customStartGrivanceDate+'&customEndGrivanceDate='+customEndGrivanceDate+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'nominatedPosts'){
 			window.open('areaWiseDashboardDetailedViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'election'){
@@ -279,9 +347,9 @@ function onLoadClicks()
 		}else if(blockName == 'benefits'){
 			window.open('areaWiseBenefitsViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'insurance'){
-			window.open('areaWiseInsuranceViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
+			window.open('areaWiseInsuranceViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'&customStartInsuranceDate='+customStartInsuranceDate+'&customEndInsuranceDate='+customEndInsuranceDate+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}else if(blockName == 'ntrTrust'){
-			window.open('areaWiseNtrTrustViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
+			window.open('areaWiseNtrTrustViewAction.action?locationLevelId='+locationLevelId+'&userAccessLevelValuesArray='+userAccessLevelValuesArray+'&locationLevelName='+locationLevelName+'&customStartNtrTrustDate='+customStartNtrTrustDate+'&customEndNtrTrustDate='+customEndNtrTrustDate+'','constituency','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,resizable=yes,scrollbars=yes,top=600,left=600,width=1000,height=800');
 		}
 		
 	});
@@ -385,6 +453,27 @@ function onLoadClicks()
 		$(".alertCategoryWiseCls li:nth-child(1)").addClass("active");
 		getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
 		getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
+	});
+	$('#grievanceNewDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+		
+		customStartGrivanceDate = picker.startDate.format('DD/MM/YYYY');
+		customEndGrivanceDate = picker.endDate.format('DD/MM/YYYY');
+		
+		getGrivenceOverviewDtls(""); 
+		
+	});
+	$('#insuranceNewDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+		
+		customStartInsuranceDate = picker.startDate.format('DD/MM/YYYY');
+		customEndInsuranceDate = picker.endDate.format('DD/MM/YYYY');
+		
+		getInsuranceOverviewDetails("");
+	});
+	$('#ntrTrustNewDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+		
+		customStartNtrTrustDate = picker.startDate.format('DD/MM/YYYY');
+		customEndNtrTrustDate = picker.endDate.format('DD/MM/YYYY');
+		getTrustEducationOverviewDetails("");
 	});
 	$(document).on("click","[active-type] li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
@@ -7540,8 +7629,8 @@ function getDetailedElectionResults(constituencyId,electionYear,type){
 function getGrivenceOverviewDtls(yearId){
 	$("#grievanceMainBlockId").html(spinner);
 	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
+			"fromDate" 			:customStartGrivanceDate,
+			"toDate"			:customEndGrivanceDate,
 			"locationTypeId" 	: locationLevelId,
 			"locationValuesArr" : userAccessLevelValuesArray,
 			"year"				: yearId,
@@ -7563,8 +7652,8 @@ function getGrivenceOverviewDtls(yearId){
 function getInsuranceOverviewDetails(yearId){
 	$("#insuranceMainBlockId").html(spinner);
 	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
+			"fromDate" 			:customStartInsuranceDate,
+			"toDate"			:customEndInsuranceDate,
 			"locationTypeId" 	: locationLevelId,
 			"locationValuesArr" : userAccessLevelValuesArray,
 			"year"				: yearId,
@@ -7586,8 +7675,8 @@ function getInsuranceOverviewDetails(yearId){
 function getTrustEducationOverviewDetails(yearId){
 	$("#ntrTrustMainBlockId").html(spinner);
 	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
+			"fromDate" 			:customStartNtrTrustDate,
+			"toDate"			:customEndNtrTrustDate,
 			"locationTypeId" 	: locationLevelId,
 			"locationValuesArr" : userAccessLevelValuesArray,
 			"year"				: yearId,
@@ -7691,11 +7780,11 @@ function getTrustEducationOverviewDetails(yearId){
 				}
 			}
 		}else{
-			if(result !=null && result.subList2 !=null && result.subList2.length>0){
-				for(var i in result.subList2){
+			if(result !=null && result.subList1 !=null && result.subList1.length>0){
+				for(var i in result.subList1){
 						str+='<div class="col-sm-3">';
 						str+='<div class="block">';
-							str+='<h5>'+result.subList2[i].name+'</h5>';
+							str+='<h5>'+result.subList1[i].name+'</h5>';
 								str+='<div id="'+type+'MainBlockId'+i+'" style="height:200px;" class="m_top5"></div>';
 								str+='<div id="'+type+'StatusMainBlockId'+i+'"></div>';
 						str+='</div>';
@@ -7715,7 +7804,7 @@ function getTrustEducationOverviewDetails(yearId){
 							str1+='<div class="dropup">';
 								str1+='<h6>'+result.subList2[i].subList[j].name+'';
 								if(result.subList2[i].subList[j].count !=null && result.subList2[i].subList[j].count>0){
-									str1+='<span class="pull-right dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu'+i+''+j+'" >'+result.subList2[i].subList[j].count+'</span>';
+									str1+='<span class="pull-right dropdown-toggle" style="cursor:pointer"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu'+i+''+j+'" >'+result.subList2[i].subList[j].count+'</span>';
 								}else{
 									str1+='<span class="pull-right"> - </span>';
 								}
@@ -7754,17 +7843,17 @@ function getTrustEducationOverviewDetails(yearId){
 				}
 			}
 		}else{
-			if(result !=null && result.subList1 !=null && result.subList1.length>0){
+			if(result !=null && result.subList2 !=null && result.subList2.length>0){
 				var str1='';
 					str1+='<ul class="list_style_css1 m_top20">';
 				var l =0;	
-				for(var i in result.subList1){
+				for(var i in result.subList2){
 					
 					str1+='<li>';
 						str1+='<div class="dropup">';
-						str1+='<h6>'+result.subList1[i].name+'';
-						if(result.subList1[i].count !=null && result.subList1[i].count>0){
-							str1+='<span class="pull-right dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuN'+i+'" >'+result.subList1[i].count+'</span>';
+						str1+='<h6>'+result.subList2[i].name+'';
+						if(result.subList2[i].count !=null && result.subList2[i].count>0){
+							str1+='<span class="pull-right dropdown-toggle" style="cursor:pointer;"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuN'+i+'" >'+result.subList2[i].count+'</span>';
 						}else{
 							str1+='<span class="pull-right"> - </span>';
 						}
@@ -7772,8 +7861,8 @@ function getTrustEducationOverviewDetails(yearId){
 						
 							str1+='<div class="dropdown-menu pull-right arrow_box_bottom" aria-labelledby="dropdownMenuN'+i+'" style="padding:0px;min-width:200px;">';
 								var totalcountDp=0;
-								for(var k in result.subList1[i].subList){
-									totalcountDp =totalcountDp+result.subList1[i].subList[k].count;
+								for(var k in result.subList2[i].subList){
+									totalcountDp =totalcountDp+result.subList2[i].subList[k].count;
 								}	
 									str1+='<div class="panel panel-default">';
 										  str1+='<div class="panel-heading" style="background-color: #f4f5f5 !important; border-bottom: 1px solid #dddddd !important;text-align: center;">';
@@ -7781,9 +7870,9 @@ function getTrustEducationOverviewDetails(yearId){
 										  str1+='</div>';
 										  str1+='<div class="panel-body">';
 											str1+='<ul class="list_style_css2">';
-											for(var k in result.subList1[i].subList){
+											for(var k in result.subList2[i].subList){
 												str1+='<li>';
-													str1+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList1[i].subList[k].name.trim()]+'"></span>  '+result.subList1[i].subList[k].name+' <span class="pull-right">'+result.subList1[i].subList[k].count+'</span></h6>';
+													str1+='<h6><span class="squareCss" style="background-color:'+grivanceColorObj[result.subList2[i].subList[k].name.trim()]+'"></span>  '+result.subList2[i].subList[k].name+' <span class="pull-right">'+result.subList2[i].subList[k].count+'</span></h6>';
 												str1+='</li>';
 											}
 											str1+='</ul>';

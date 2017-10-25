@@ -33,8 +33,8 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 function getGrivenceOverviewDtls(yearId){
 $("#CategoryBlockDivId").html(spinner);
 	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
+			"fromDate" 			:customStartGrivanceDate,
+			"toDate"			:customEndGrivanceDate,
 			"locationTypeId" 	: locationLevelId,
 			"locationValuesArr" : userAccessLevelValuesArray,
 			"year"				: yearId,
@@ -59,7 +59,7 @@ $("#CategoryBlockDivId").html(spinner);
 			str+='<div class="row m_top20" style="margin-left: 0px; margin-right: 0px;">';
 				str+='<div class="col-sm-12 borderCss m_top10">';
 					str+='<div style="padding:10px">';
-						str+='<h4 class="theme-title-color">'+result.subList2[i].name+' Category Wise Details</h4>';
+						str+='<h4 class="theme-title-color text-capital">'+result.subList2[i].name+' CATEGORY WISE DETAILS</h4>';
 						str+='<div class="table-responsive m_top10">';
 							str+='<table class="table table_griveance_pad">';
 								str+='<thead class="bg-E9">';
@@ -104,8 +104,8 @@ $("#CategoryBlockDivId").html(spinner);
 function getGrivenceFinancialSupportDtls(yearId){
 	$("#financialBlockDivId").html(spinner);
 	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
+			"fromDate" 			:customStartGrivanceDate,
+			"toDate"			:customEndGrivanceDate,
 			"locationTypeId" 	: locationLevelId,
 			"locationValuesArr" : userAccessLevelValuesArray,
 			"year"				: yearId,
@@ -312,8 +312,8 @@ function getGrivenceFinancialSupportDtls(yearId){
 function getGrivenceComplaintCountDepartmentWise(yearId){
 	$("#departmentBlockDivId").html(spinner);
 	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
+			"fromDate" 			: customStartGrivanceDate,
+			"toDate"			: customEndGrivanceDate,
 			"locationTypeId" 	: locationLevelId,
 			"locationValuesArr" : userAccessLevelValuesArray,
 			"year"				: yearId,
@@ -326,25 +326,26 @@ function getGrivenceComplaintCountDepartmentWise(yearId){
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
 		if(result !=null && result.length>0){
-			buildGrivenceComplaintCountDepartmentWise(result,"department");
+			buildGrivenceComplaintCountDepartmentWise(result,"department",locationLevelId);
 		}else{
 			$("#departmentBlockDivId").html("No Data Available");
 		}
 	});	
 }
-	function buildGrivenceComplaintCountDepartmentWise(result,type){
+	function buildGrivenceComplaintCountDepartmentWise(result,type,locationLevelId){
 		var str='';
+		var headingStr = getDynamicHeading(locationLevelId);
 			str+='<div class="row m_top20" style="margin-left: 0px; margin-right: 0px;">';
 				str+='<div class="col-sm-12 borderCss m_top10">';
 					str+='<div style="padding:10px">';
 					if(type == "department"){
-						str+='<h4 class="theme-title-color">Department Wise Detailes</h4>';
+						str+='<h4 class="theme-title-color">DEPARTMENT WISE DETAILS</h4>';
 					}else{
-						str+='<h4 class="theme-title-color">Location Wise Detailes</h4>';
+						str+='<h4 class="theme-title-color">'+headingStr.toUpperCase()+' WISE DETAILS</h4>';
 					}
 						
 						str+='<div class="table-responsive m_top10">';
-							str+='<table class="table table_griveance_pad">';
+							str+='<table class="table table_griveance_pad" id="grievanceDataTblId'+type+'">';
 								str+='<thead class="bg-E9">';
 									str+='<tr>';
 									if(type == "department"){
@@ -386,14 +387,25 @@ function getGrivenceComplaintCountDepartmentWise(yearId){
 			str+='</div>';
 		
 		$("#"+type+"BlockDivId").html(str);
+		if (result != null && result.length > 10) {
+			$("#grievanceDataTblId"+type).dataTable({
+			"paging":   true,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		  });
+		}
 	}
 
 
 function getLocationWiseTypeOfIssueGrivenceComplaintCount(yearId){
 	$("#locationBlockDivId").html(spinner);
 	var jsObj={
-			"fromDate" 			: "",
-			"toDate"			: "",
+			"fromDate" 			: customStartGrivanceDate,
+			"toDate"			: customEndGrivanceDate,
 			"locationTypeId" 	: locationLevelId,
 			"locationValuesArr" : userAccessLevelValuesArray,
 			"year"				: yearId,
@@ -406,9 +418,34 @@ function getLocationWiseTypeOfIssueGrivenceComplaintCount(yearId){
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){  
 		if(result !=null && result.length>0){
-			buildGrivenceComplaintCountDepartmentWise(result,"location");
+			buildGrivenceComplaintCountDepartmentWise(result,"location",locationLevelId);
 		}else{
 			$("#locationBlockDivId").html("No Data Available");
 		}
 	});	
 }
+
+function getDynamicHeading(locationScopeId) {
+	var headingStr="";
+	 if (locationScopeId != null ) {
+		   if (locationScopeId == 2) { // state
+			   headingStr = "District";
+		   } else if (locationScopeId == 3) {
+			   headingStr = "Constituency";
+			} else if (locationScopeId == 10) {
+				headingStr = "Constituency";
+			} else if (locationScopeId == 4) {
+				headingStr = "Mandal";
+			} else if (locationScopeId == 5) {
+				headingStr = "Village";
+			} else if (locationScopeId == 7) { // town/division
+				headingStr = "ward";
+			} else if (locationScopeId == 6) {
+				headingStr = "Village";
+			} else if (locationScopeId == 8) {
+				headingStr = "ward";
+			}
+		}
+	 return headingStr;
+}
+	

@@ -436,7 +436,22 @@
 				</div>
 			</div>
 			<div class="col-sm-12 m_top30"  navbar-index="grievance">
-				<h4 class="panel-title theme-title-color">Grievance Details <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h4>
+				<div class="row">
+					<div class="col-sm-6">
+						<h4 class="panel-title theme-title-color m_top10">Grievance</h4>
+					</div>
+					<div class="col-sm-6">
+						<span class="pull-right" style="margin-top: 10px;">
+							<i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i>
+						</span>
+						<div class="input-group pull-right dateRangePickerClsForGrievance" expand-block-date="tours" style="width:200px;margin-right:12px;">
+							<input type="text" id="grievanceNewDateRangePickerId" style="width:190px" class="form-control"/>
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</div>
+					</div>
+				</div>
 				<div class="block m_top10">
 					<div class="row">
 						<div class="col-sm-12">
@@ -451,7 +466,22 @@
 				</div>
 			</div>
 			<div class="col-sm-12 m_top30"  navbar-index="insurance">
-				<h4 class="panel-title theme-title-color">Insurance Details <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="insurance"></i></span></h4>
+				<div class="row">
+					<div class="col-sm-6">
+						<h4 class="panel-title theme-title-color m_top10">Insurance</h4>
+					</div>
+					<div class="col-sm-6">
+						<span class="pull-right" style="margin-top: 10px;">
+							<i class="glyphicon glyphicon-refresh f-14" refresh="insurance"></i>
+						</span>
+						<div class="input-group pull-right dateRangePickerClsForInsurance" expand-block-date="tours" style="width:200px;margin-right:12px;">
+							<input type="text" id="insuranceNewDateRangePickerId" style="width:190px" class="form-control"/>
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</div>
+					</div>
+				</div>
 				<div class="block m_top10">
 					<div class="row">
 						<div class="col-sm-12">
@@ -466,7 +496,22 @@
 				</div>
 			</div>
 			<div class="col-sm-12 m_top30"  navbar-index="ntrTrust">
-				<h4 class="panel-title theme-title-color">Ntr Trust Details <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="ntrTrust"></i></span></h4>
+				<div class="row">
+					<div class="col-sm-6">
+						<h4 class="panel-title theme-title-color m_top10">Trust Education</h4>
+					</div>
+					<div class="col-sm-6">
+						<span class="pull-right" style="margin-top: 10px;">
+							<i class="glyphicon glyphicon-refresh f-14" refresh="ntrTrust"></i>
+						</span>
+						<div class="input-group pull-right dateRangePickerClsForNtrTrust" expand-block-date="tours" style="width:200px;margin-right:12px;">
+							<input type="text" id="ntrTrustNewDateRangePickerId" style="width:190px" class="form-control"/>
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</div>
+					</div>
+				</div>
 				<div class="block m_top10">
 					<div class="row">
 						<div class="col-sm-12">

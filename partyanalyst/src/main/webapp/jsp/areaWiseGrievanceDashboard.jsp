@@ -86,6 +86,8 @@
 <script type ="text/javascript">
 var locationLevelId = "${param.locationLevelId}";
 var locationName = "${param.locationLevelName}";
+var customStartGrivanceDate = "${param.customStartGrivanceDate}";
+var customEndGrivanceDate = "${param.customEndGrivanceDate}";
 var userAccessLevelValue = "${param.userAccessLevelValuesArray}";
 var userAccessLevelValuesArray =[];
 	userAccessLevelValuesArray.push(userAccessLevelValue);
