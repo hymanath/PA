@@ -147,4 +147,10 @@ public class ItcController {
 		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEofficeDesignationWisePendencyDetails();
 		   return returnList;
 	   }
+	   
+	   @RequestMapping(value = "/getSectorWiseOverviewCountDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecPromotionDetailsVO>  getSectorWiseOverviewCountDetails(@RequestBody InputVO inputVO) {
+		   List<ItecPromotionDetailsVO>  resultList = itcDashboardService.getSectorWiseOverviewCountDetails(inputVO);
+		   return resultList;
+	   }
 }

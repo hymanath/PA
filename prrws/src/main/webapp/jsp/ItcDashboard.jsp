@@ -203,6 +203,21 @@
 		</div>
 	</div>
 </div>
+<!-- Modal For Sector Wise Count Details -->
+<div class="modal fade" id="sectorModalId" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width:80%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="sectorModalTitleId"></h4>
+			</div>
+			<div class="modal-body">
+				<div id="sectorModalDivId"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
