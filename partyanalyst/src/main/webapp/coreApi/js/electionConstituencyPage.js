@@ -1080,7 +1080,11 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 									if(result[i].subList1[j].subList1 !=null && result[i].subList1[j].subList1.length>0){
 										for(var k in result[i].subList1[j].subList1){
 											if(result[i].subList1[j].subList1[k].earnedVote !=null && result[i].subList1[j].subList1[k].earnedVote>0){
-												str+='<td>'+result[i].subList1[j].subList1[k].earnedVote+'</td>';
+												str+='<td>'+result[i].subList1[j].subList1[k].earnedVote;
+												if(result[i].subList1[j].subList1[k].earnedVote !=null && result[i].subList1[j].subList1[k].wonSeatsCount>0){
+													str+='<span style="margin-left:5px;color:green;">('+result[i].subList1[j].subList1[k].wonSeatsCount+')</span>';
+												}
+												str+='</td>';
 											}else{
 												str+='<td> - </td>';
 											}
