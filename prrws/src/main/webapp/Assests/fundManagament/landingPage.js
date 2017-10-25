@@ -624,14 +624,15 @@ function getNregsLabourBudgetOverAllAchievent()
 function getIHHLOverviewData(){
 	$(".swatchBharathIHHL").html(spinner);
 	var json = {
-			fromMonth	:"201704",
-			toMonth		:"201707",
-			location	:"state",
-			locationId	:"01"
+			fromDate:"",
+			toDate:"",
+			location:"state",
+			locationId:"-1",
+			subLocation:"state"
 		}
 	$.ajax({                
 		type:'POST',    
-		url: 'getIHHLOverviewData',
+		url: 'getSwachhBharatMissionOverviewDtls',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -639,7 +640,7 @@ function getIHHLOverviewData(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		var totalCount = (result.subList1[0].completed *100) / result.subList1[0].target;
+		var totalCount = (result.completed *100) / result.target;
 		$(".swatchBharathIHHL").html(totalCount.toFixed(2)+'%');
 	});
 }
