@@ -57,24 +57,30 @@ public class TdpCadreEnrollmentInfoDAO extends GenericDaoHibernate<TdpCadreEnrol
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getLocationTypeWiseCadreCount(Long locationScopeId,List<Long> locationValues,String year, Long LocationTypeid){
+	public List<Object[]> getLocationTypeWiseCadreCount(List<Long> locationValues,String year, Long LocationTypeid){
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append(" select model.enrollmentYear.enrollmentYearId,model.enrollmentYear.description,sum(model.totalCadre),sum(model.newCadre)," +
 		 		" sum(model.renewalCadre) " +
 		 		" from TdpCadreEnrollmentInfo model");
 		
-		 if(locationScopeId != null && locationValues!= null && locationValues.size() >0 && LocationTypeid ==2l){
-			  queryStr.append(" where model.locationScopeId=:locationScopeId and model.stateId in(:locationValues) ");
-		}else if(locationScopeId != null && locationValues!= null && locationValues.size() >0){
-		  queryStr.append(" where model.locationScopeId=:locationScopeId and model.locationValue in(:locationValues) ");
+		 queryStr.append(" where ");
+		 if(locationValues!= null && locationValues.size() >0 && LocationTypeid ==2l){
+			  queryStr.append("  model.locationScopeId=:LocationTypeid and model.stateId in(:locationValues) ");
+		}else if( LocationTypeid == 3l && locationValues!= null && locationValues.size() >0){
+		  queryStr.append("  model.locationScopeId=:LocationTypeid and model.locationValue in(:locationValues) ");
+		 }else if(LocationTypeid == 4l && locationValues!= null && locationValues.size() >0){
+			 queryStr.append(" model.locationScopeId=:LocationTypeid and model.locationValue in(:locationValues) ");
+		 }
+		 else if( locationValues!= null && locationValues.size() >0 && (LocationTypeid == 5l || LocationTypeid == 6l || LocationTypeid == 7l || LocationTypeid == 8l)){
+			 queryStr.append(" model.locationScopeId=:LocationTypeid and model.locationValue in(:locationValues) ");
 		 }
 		 if(year != null && !year.trim().isEmpty()){
 	 	    queryStr.append(" and year(model.surveyTime) =:year ");   
 	 	 }
 		 queryStr.append(" group by model.enrollmentYear.enrollmentYearId order by model.enrollmentYear.orderNo desc ");
 		 Query query = getSession().createQuery(queryStr.toString());
-		 if(locationScopeId != null && locationValues!= null && locationValues.size() >0){
-			 query.setParameter("locationScopeId", locationScopeId); 
+		 if(LocationTypeid != null && locationValues!= null && locationValues.size() >0){
+			 query.setParameter("LocationTypeid", LocationTypeid); 
 			 query.setParameterList("locationValues", locationValues); 
 		 }
 		 if(year !=null && !year.trim().isEmpty()){

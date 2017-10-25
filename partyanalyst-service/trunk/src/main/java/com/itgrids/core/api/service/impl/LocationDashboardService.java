@@ -3160,7 +3160,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public List<ConstituencyCadreVO> getLocationTypeWiseCadreCount(Long locationTypeId,List<Long> locationValues,String year){
 		List<ConstituencyCadreVO> resultList = new ArrayList<ConstituencyCadreVO>(0);
 		try{
-			if(locationTypeId == 3l){
+			/*if(locationTypeId == 3l){
 				List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(locationValues);
 				locationValues.clear();
 				for (Object[] objects : locationValuesObj) {
@@ -3171,9 +3171,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				
 			}else if(locationTypeId == 10l){
 				locationValues = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationValues);
-			}
+			}*/
 			
-			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(4l,locationValues,year,locationTypeId);
+			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(locationValues,year,locationTypeId);
 			if(rtrnCaderCountObjLst != null && rtrnCaderCountObjLst.size() > 0){
 				for (Object[] param : rtrnCaderCountObjLst) {
 					ConstituencyCadreVO enrollmentYearVO = new ConstituencyCadreVO();
