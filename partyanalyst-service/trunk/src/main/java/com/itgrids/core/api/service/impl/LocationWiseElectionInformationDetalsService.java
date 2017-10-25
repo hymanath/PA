@@ -2204,7 +2204,7 @@ public  Map<Long,Map<Long,ElectionInformationVO>> getSegregateAliancePartiesMap(
 	
 	Map<Long,Map<Long,ElectionInformationVO>> electionIdAndgroptIdVomap = new HashMap<Long,Map<Long,ElectionInformationVO>>();
 	try{
-		//0-election_id 1-election_type 2-election_year 3-group_id 4-group_name 5-party_id
+		//0-election_id 1-election_type 2-election_year 3-group_id 4-group_name 5-party_id 6-partyIdAndName
 				List<Object[]> segregateObjects=electionAllianceDAO.getSegregateAlianceParties(subTypes, electionYear, electionScopeIds);
 				if( segregateObjects !=null && segregateObjects.size() >0 ){
 					for(Object[] param :segregateObjects){
@@ -2222,7 +2222,7 @@ public  Map<Long,Map<Long,ElectionInformationVO>> getSegregateAliancePartiesMap(
 							vo.setPartyName(commonMethodsUtilService.getStringValueForObject(param[4]));
 						}
 						vo.getIdsList().add(commonMethodsUtilService.getLongValueForObject(param[5]));
-						
+						vo.getPartyNamesList().add(commonMethodsUtilService.getStringValueForObject(param[6]));
 						Collections.sort(vo.getIdsList());
 						
 						groupIdVOsMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), vo);

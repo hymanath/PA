@@ -5100,6 +5100,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 											innerVo = new ElectionInformationVO();
 											innerVo.setPartyId(alliancePartyId);
 											innerVo.setPartyName(alliancePartyName);
+											innerVo.setName(alliancePartyIdNameList.get(2));
 											innerList.add(innerVo);
 										}
 									}else{
@@ -5130,6 +5131,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 					ElectionInformationVO partyVO1 = new ElectionInformationVO();
 					partyVO1.setPartyId(partyVO.getPartyId());
 					partyVO1.setPartyName(partyVO.getPartyName());
+					partyVO1.setName(partyVO.getName());
 					
 					for (Long year : finalYearMap.keySet()) {
 						List<ElectionInformationVO> electionsList = finalYearMap.get(year);
@@ -5228,6 +5230,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 										ElectionInformationVO mainPartyVO = new ElectionInformationVO();
 										mainPartyVO.setPartyId(partyVO.getPartyId());
 										mainPartyVO.setPartyName(partyVO.getPartyName());
+										mainPartyVO.setName(partyVO.getName());
 										mainPartyVO.setElectionId(partyVO.getElectionId());
 										mainPartyVO.setElectionYear(partyVO.getElectionYear());
 										
@@ -5324,6 +5327,12 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		    		    		String prefixedGroupId =partyIdsList.get(0).toString();
 		    		    		groupIdAndName.add(prefixedGroupId);
 		    		    		groupIdAndName.add(electionInformationVO.getPartyName());
+		    		    		List<String> partNamesList=electionInformationVO.getPartyNamesList();
+		    		    		String commaSeparatedNames="";
+		    		    		for(String partyName:partNamesList){
+		    		    			commaSeparatedNames+=partyName+", ";
+		    		    		}
+		    		    		groupIdAndName.add(commaSeparatedNames.substring(0, commaSeparatedNames.length()-1));
 		    		    		return groupIdAndName;
 		    		    	}
 		    		     }
@@ -6850,6 +6859,8 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 				yearWiseVO.setNotUpDatedCountPercentage(df.format(((float)yearWiseVO.getNotUpDatedCount()/(float)yearWiseVO.getTotal())*100));
 
 			}
+			 Collections.sort(yearWiseVOList.subList(1, yearWiseVOList.size()),monthWiseSort);
+			 Collections.sort(yearWiseVOList.subList(1, yearWiseVOList.size()),yearWiseSort);
 		}
 		}
 		catch (Exception e) {
@@ -6857,6 +6868,23 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		}
 		return finalList;
 	}
+	
+	 public static Comparator<MeetingsVO> yearWiseSort = new Comparator<MeetingsVO>()
+	 {
+	   public int compare(MeetingsVO pvol1, MeetingsVO pvol2)
+	     {
+	        return ((pvol2.getYear().intValue() - pvol1.getYear().intValue()));
+	     }
+	 };
+	 
+	 public static Comparator<MeetingsVO> monthWiseSort = new Comparator<MeetingsVO>()
+			 {
+			   public int compare(MeetingsVO pvol1, MeetingsVO pvol2)
+			     {
+			        return ((pvol2.getNoOfMonth().intValue() - pvol1.getNoOfMonth().intValue()));
+			     }
+			 };
+	 
 	public MeetingsVO getMatchedVO(List<MeetingsVO> voList,Long year,Long month){
 		try{
 			if(voList == null || voList.size() == 0)
@@ -6869,16 +6897,6 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public MeetingsVO getMonthWiseVO(Object[] param,MeetingsVO OverallStatusVO){
-		MeetingsVO monthWiseVO=new MeetingsVO();
-		Long month=commonMethodsUtilService.getLongValueForObject(param[2]);
-		monthWiseVO.setYear(commonMethodsUtilService.getLongValueForObject(param[3]));
-		monthWiseVO.setNoOfMonth(month);
-		monthWiseVO.setMonthName(IConstants.MONTH_NAMES[Integer.parseInt(month.toString())-1]);
-		setStatusToVO(monthWiseVO,param,OverallStatusVO);
-		return monthWiseVO;
 	}
 	
 	public MeetingsVO setStatusToVO(MeetingsVO vo,Object[] param,MeetingsVO OverallStatusVO){
