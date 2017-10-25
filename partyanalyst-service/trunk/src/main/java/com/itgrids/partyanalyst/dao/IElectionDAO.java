@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -231,5 +232,6 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 			List<Long> partyIds, List<Long> electionScopeIds);
 
 	public List<Object[]> getMarginVotesForCrossVoting(Long locationTypeId ,List<Long> locationValues,List<Long> electionScopeIds,List<String> subTypes,List<Long> electionYear, boolean isParliment);
-
+	
+	public List<Object[]> getWonConstituencyCountsInLocation(Set<Long> locationIds,List<Long> electionScopeIds,Set<Long> electionIds);
 }
