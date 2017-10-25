@@ -2337,13 +2337,16 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					designationVO.setDesignationId(entry.getKey());
 					designationVO.setToursMonthId(Long.valueOf(monthyearIds.size()));
 					 if (designationWiseTourSubmittedMap != null && designationWiseTourSubmittedMap.size() > 0) {
-						 designationVO.setNoOfLeaderCnt(designationVO.getNoOfLeaderCnt()+Long.valueOf(designationWiseTourSubmittedMap.get(entry.getKey()).size()));//this key contain tour submitted leader	 
+						 if (designationWiseTourSubmittedMap.get(entry.getKey()) != null){
+							 designationVO.setNoOfLeaderCnt(designationVO.getNoOfLeaderCnt()+Long.valueOf(designationWiseTourSubmittedMap.get(entry.getKey()).size()));//this key contain tour submitted leader			 
+						 }
+							 
 					 }
 					 
 					if(basicDtlsVO != null){
 						 if(entry.getKey() == 4l){
 							  designationVO.setDesignation("ORGANIZING SECRETARY/SECRETARY");
-							  if (designationWiseTourSubmittedMap != null && designationWiseTourSubmittedMap.size() > 0) {
+							  if (designationWiseTourSubmittedMap != null && designationWiseTourSubmittedMap.size() > 0 && designationWiseTourSubmittedMap.containsKey(5l)) {
 									 designationVO.setNoOfLeaderCnt(designationVO.getNoOfLeaderCnt()+Long.valueOf(designationWiseTourSubmittedMap.get(5l).size()));//5 - SECRETARY Id 
 								 }
 						  }else{
