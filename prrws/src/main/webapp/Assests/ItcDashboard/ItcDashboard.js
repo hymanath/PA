@@ -833,12 +833,12 @@ function getITDistrictWiseDetails(type,category,divType){
 	}).done(function(result){
 		if(result != null && result.length > 0)
 		{
-			return buildData(result,type,divType);
+			return buildData(result,type,divType,category);
 		}else{
 			$("#"+type+"OverviewBlockDivId").html("NO DATA AVAILABLE");
 		}
 	});
-	function buildData(result,type,divType)
+	function buildData(result,type,divType,category)
 	{
 		var str='';
 		str+='<table class="table table-bordered" id="'+type+'DataTable'+divType+'">';
@@ -852,7 +852,12 @@ function getITDistrictWiseDetails(type,category,divType){
 			{
 				str+='<tr>';
 					str+='<td>'+result[i].district+'</td>';
-					str+='<td>'+result[i].noProjects+'</td>';
+					if(result[i].district != null && result[i].district == 'ZTotal'){
+						str+='<td>'+result[i].noProjects+'</td>';
+					}else{
+						str+='<td class="sectorWiseCuntCls" attr_block_name="'+type+'" attr_category="'+category+'" attr_district="'+result[i].district+'" style="cursor:pointer;">'+result[i].noProjects+'</td>';
+					}
+					
 					str+='<td>'+result[i].investment+'</td>';
 					str+='<td>'+result[i].employment+'</td>';
 				str+='</tr>';
@@ -1716,3 +1721,70 @@ $(document).on("click",".calendar_active_IHHL_cls li",function(){
 		$(".meesavaApp").show();
 	}
 });
+
+$(document).on("click",".sectorWiseCuntCls",function(){
+	$("#sectorModalTitleId").html("");
+	var sectorType = $(this).attr("attr_block_name");
+	var category = $(this).attr("attr_category");
+	var district = $(this).attr("attr_district");
+	getSectorWiseOverviewCountDetails(sectorType,category,district);
+});
+
+function getSectorWiseOverviewCountDetails(sectorType,category,district){
+	$("#sectorModalId").modal('show');
+	$("#sectorModalDivId").html(spinner);
+	
+	var json = {
+		leadName:"0",
+		category:category,
+		sector : sectorType,
+		districtValue : district
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getSectorWiseOverviewCountDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			return buildData(result,district,sectorType)
+		}
+	});
+}
+function buildData(result,district,sectorType){
+		var str='';
+		str+='<table class="table table-bordered" id="'+district+'DataTable">';
+			str+='<thead>';
+				str+='<th>District</th>';
+				str+='<th>Sector</th>';
+				str+='<th>Sub Sector</th>';
+				str+='<th>Department</th>';
+				str+='<th>Company</th>';
+				str+='<th>Line Of Activity</th>';
+				str+='<th>Committed Investment(<i class="fa fa-inr"></i> in Cr.)</th>';
+				str+='<th>Committed Employment</th>';
+			str+='</thead>';
+			for(var i in result)
+			{
+				str+='<tr>';
+					str+='<td>'+result[i].districtName+'</td>';
+					str+='<td>'+result[i].itSector+'</td>';
+					str+='<td>'+result[i].subSector+'</td>';
+					str+='<td>'+result[i].deptName+'</td>';
+					str+='<td>'+result[i].nameOfCompany+'</td>';
+					str+='<td>'+result[i].lineOfActivity+'</td>';
+					str+='<td>'+result[i].investment+'</td>';
+					str+='<td>'+result[i].employment+'</td>';
+				str+='</tr>';
+			}
+			
+		str+='</table>';
+		$("#sectorModalTitleId").html(district+' '+'District'+' '+sectorType+' '+'Industries'+' '+'Details');
+		$("#sectorModalDivId").html(str);
+		$("#"+district+"DataTable").dataTable();
+	}
