@@ -7921,9 +7921,7 @@ function getTrustEducationOverviewDetails(yearId){
 function getLocationWiseElectionDetails(){
 	var jsObj = {
 			
-			locationTypeId 	: locationLevelId,
-			locationValuesArr : userAccessLevelValuesArray
-			
+			locationType 	: locationLevelName	
 		}
 	 $.ajax({
 	  type : "POST",

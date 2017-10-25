@@ -1691,9 +1691,9 @@ public String getElectionInformationLocationWise(){
 	   try{
 		   LOG.info("Entered into getLocationBasedElectionDetails of locationDashboardAction");
 		   jObj = new JSONObject(getTask());
-		   String locationType = jObj.getString("locationTypeId");
-		   List<Long> locationValuesLst = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
-		   keyValueVOList = locationDashboardService.getLocationWiseElectionDetails(locationType,locationValuesLst);
+		   String locationType = jObj.getString("locationType");
+		 
+		   keyValueVOList = locationDashboardService.getLocationWiseElectionDetails(locationType);
 	   }catch(Exception e){
 		   LOG.error("Exception occured in getElectionYearAndPartiesWiseDetails() method of locationDashboardAction ",e);
 	   }
