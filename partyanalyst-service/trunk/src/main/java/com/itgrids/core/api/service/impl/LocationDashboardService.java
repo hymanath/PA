@@ -7627,8 +7627,8 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			Map<String, GrivenceStatusVO> supportPurposeDtlsMap = getTrustEducationSupportPurPoseWiseComplaintCount(trustEduDtlsObjList,statusMap);//getting type of issue and status wise complaint count
 			
 			resultVO.getSubList().addAll(statusMap.values());
-			resultVO.setSubList1(new ArrayList<GrivenceStatusVO>(supportForDtlsMap.values()));
-			resultVO.setSubList2(new ArrayList<GrivenceStatusVO>(supportPurposeDtlsMap.values()));
+			resultVO.setSubList1(new ArrayList<GrivenceStatusVO>(supportPurposeDtlsMap.values()));
+			resultVO.setSubList2(new ArrayList<GrivenceStatusVO>(supportForDtlsMap.values()));
 			
 			
 		}catch(Exception e){
