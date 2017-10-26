@@ -1174,7 +1174,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 			sb.append(" and ua.panchayat_id = p.panchayat_id and ua.local_election_body is null ");
 			sb.append(" GROUP BY ua.panchayat_id,month(pm.start_date),pms.meeting_status  ");
 		}
-		sb.append("order by month(pm.start_date) desc ");
+		sb.append("order by year(pm.start_date) desc,month(pm.start_date) desc ");
 		Query query = getSession().createSQLQuery(sb.toString())
 				.addScalar("locationId", Hibernate.LONG)
 				.addScalar("locationName", Hibernate.STRING)
