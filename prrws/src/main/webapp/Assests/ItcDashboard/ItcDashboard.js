@@ -55,20 +55,21 @@ $(document).on("click","#promotionsBlockSwitch li",function(){
 });
 onloadCalls();
 function onloadCalls(){
+	if(searchParams == null)
+	{
+		departmentBlockWiseDetails("promotions");
+	}else{
+		departmentBlockWiseDetails(searchParams);
+	}
 	
-	departmentBlockWiseDetails("promotions");
 	departmentWiseOverView();
 	getITSectorWiseOverviewDetails();
 	getMeesevaSLAOverviewDtls("meesevaSla",5);
 	
-	/*
-    getCMEDOBOverview();
-	getCMEDOBReportStatusWise();*/
-	
 	//AP Innovation Society Ajax Call Start
-		getAPInnovationSocietyOverview('onload','apInnovationSociety');
-		getEOfcDepartWiseOverviewDetails('onload');
-	  /*getInnovationAwardsDetailedData();*/
+	getAPInnovationSocietyOverview('onload','apInnovationSociety');
+	getEOfcDepartWiseOverviewDetails('onload');
+	/*getInnovationAwardsDetailedData();*/
 }
 $(document).on("click",".cohortIdClick",function(){
 	$("#modalId").modal('show');
@@ -79,12 +80,23 @@ function departmentWiseOverView(){
 	var block='';
 	for(var i in departmentWiseArr){
 		block+='<div class="col-sm-2 m_top10">';
-			if(i == 0)
+			if(searchParams == null)
 			{
-				block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="active block_style_ITC blockWiseDetails" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+				if(i == 0)
+				{
+					block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="active block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+				}else{
+					block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+				}
 			}else{
-				block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="block_style_ITC blockWiseDetails" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+				if(searchParams == departmentWiseArr[i].blockName)
+				{
+					block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="active block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+				}else{
+					block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+				}
 			}
+			
 			
 					block+='<div class="media">';
 						block+='<div class="media-left">';
@@ -317,6 +329,7 @@ function departmentBlockWiseDetails(divId)
 				getITDistrictWiseDetails("Electronics","ALL",'body');
 				getITDistrictWiseDetails("Fintech","ALL",'body');
 			}
+			
 }
 
 /* function getOverAllDetils(divId,blockId){
@@ -953,45 +966,6 @@ function getITDistrictWiseDetails(type,category,divType){
 		}
 		$("#"+type+"DataTable"+divType).dataTable();
 	}
-}
-
-function getCMEDOBOverview(){
-	var json = {
-		fromDate:"",
-		toDate:"",
-		year:""
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getCMEDOBOverview',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		console.log(result);
-	});		
-}
-function getCMEDOBReportStatusWise(){
-	var json = {
-		fromDate:"",
-		toDate:"",
-		year:""
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getCMEDOBReportStatusWise',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		console.log(result);
-	});		
 }
 function getAPInnovationSocietyOverview(type,divId){
 	$("#"+divId).html(spinner);
