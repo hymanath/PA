@@ -394,7 +394,7 @@ function getGrivenceComplaintCountDepartmentWise(yearId){
 			"searching": true,
 			"autoWidth": true,
 			"iDisplayLength": 10,
-			"aaSorting": [[0, "asc"]],
+			"aaSorting": [],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		  });
 		}
