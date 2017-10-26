@@ -263,7 +263,7 @@ function onLoadInitialisations()
 	});
 }
 function onLoadAjaxCalls()
-{	
+{	 
 	$("#enrolmentYears").chosen();
 	getEnrollmentIds();//Enrolment Years
 	getPublications();//Publications	
@@ -272,7 +272,6 @@ function onLoadAjaxCalls()
 	getLocationWiseMeetingsCountDetails(1);
 	getLocationWiseMeetingsCountDetails(2);
 	getLocationWiseMeetingsCountDetails(3);
-	 //getLocationWiseSpecialMeetingsMeetingsExpanction(3,26);
 	 //candidate Profiles 1st block
 	if(locationLevelId == "2"){
 		getPartyWiseMPandMLACandidatesCounts();
@@ -787,7 +786,7 @@ function onLoadClicks()
 		var casteName =  $(this).attr("attr_name");
 		var publicationId = $("#publicationCasteId").val();
 		var enrollmentId = $("#enrollmentCasteId").val();
-		getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,"tabClick",casteName,publicationId,enrollmentId,$("[active-type='casteSorting'] li.active").attr("type"));
+		getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,"tabClick",casteName,22,enrollmentId,$("[active-type='casteSorting'] li.active").attr("type"));
 	});
 	$(document).on("change","#publicationCasteId",function(){
 		var publicationId =  $(this).val();
@@ -817,7 +816,7 @@ function onLoadClicks()
 		var casteName =  $(this).attr("attr_caste_name");
 		var enrollmentId =  $("#enrollmentCasteId").val();
 		var publicationId = $("#publicationCasteId").val();
-		getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,enrollmentId,publicationId,casteName)
+		getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,enrollmentId,22,casteName)
 	});
 	$(document).on("change","#enrollmentCadreId",function(){
 		var enrollmentId =  $(this).val();
@@ -1027,6 +1026,15 @@ function onLoadClicks()
 			$("#TitleId").html(name+"  "+electionType+" Election Result");
 			$("#subTitleId").html("");
 			getDetailedElectionResults(constituencyId,electionYear,"table")
+		}else if(type == "meeting_type_special"){
+			var partyMeetingMainTypeId = $(this).attr("attr_partyMeetingMainTypeId");
+			var partyMeetingTypeId = $(this).attr("attr_partyMeetingTypeId");
+			var name = $(this).attr("attr_name");
+			$("#openModalDiv").modal("show");
+			$("#paginationCls").html("");
+			$("#TitleId").html("Special Meeting -"+name+" - Details");
+			$("#subTitleId").html("");
+			getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId,partyMeetingTypeId);
 		}	
 	});
 	$(document).on("click",".descAlertCls",function(){
@@ -6727,7 +6735,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 		{
 			var str='';
 			str+='<div class="col-sm-4">';
-				str+='<h4 class="panel-title">State Meetings</h4>';
+				str+='<h3 class="theme-title-color">State Meetings</h3>';
 				str+='<div class="block">';
 					str+='<div id="meetingsGraphBlockStateIdMain"></div>';
 				str+='</div>';
@@ -6816,7 +6824,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 		}else if(partyMeetingMainTypeId == '3' || partyMeetingMainTypeId == 3){
 			var str='';
 			str+='<div class="col-sm-12">';
-				str+='<h4 class="panel-title">Special Meetings</h4>';
+				str+='<h3 class="theme-title-color">Special Meetings</h3>';
 				str+='<small>NOTE: Showing Information "Participantes" from this location Level Only</small>';
 				str+='<div class="scrollListMeeting">';
 					str+='<div class="row">';
@@ -6824,7 +6832,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 						{
 							str+='<div class="col-sm-6 m_top10">';
 								str+='<div class="block">';
-									str+='<h4 class="panel-title">'+result.levelList[i].name+'</h4>';
+									str+='<h4 class="panel-title text-capital">'+result.levelList[i].name+'</h4>';
 									str+='<div class="row m_top10">';
 										str+='<div class="col-sm-3">';
 											str+='<div id="specialTotalMeetings'+i+'" style="height:120px;"></div>';
@@ -6838,7 +6846,12 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 											str+='<div id="specialAttendedMeetings'+i+'" style="height:150px;"></div>';
 										str+='</div>';
 									str+='</div>';
-									str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].conductedDate+'  ( Total Inviees:'+result.levelList[i].recentMeetingInviteesCnt+')</p>';
+									if(result.levelList[i].imagesCnt>0){
+										str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].conductedDate+'  ( Total Inviees : <b>'+result.levelList[i].recentMeetingInviteesCnt+'</b> Images : <b>'+result.levelList[i].imagesCnt+'</b>  )</p>';
+									}else{
+										str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].conductedDate+'  ( Total Inviees : <b>'+result.levelList[i].recentMeetingInviteesCnt+'</b>  )</p>';
+									}
+									
 									str+='<div class="table-responsive" style="height:121px">';
 										str+='<table class="table m_top10">';
 											str+='<thead class="bg-E9">';
@@ -6848,45 +6861,45 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 												str+='<th>Absent</th>';
 												str+='<th>NI</th>';
 											str+='</thead>';
-											for(var j in result.levelList[i].levelList)
-						{
-											str+='<tr>';
-												str+='<td>'+result.levelList[i].levelList[j].name+'</td>';
-												str+='<td>';
-													if(result.levelList[i].levelList[j].recentInviteeAttended != null)
-													{
-														str+=''+result.levelList[i].levelList[j].recentInviteeAttended+'';
-													}
-													if(result.levelList[i].levelList[j].attendedPerc != null)
-													{
-														str+='<small class="text-success">'+result.levelList[i].levelList[j].attendedPerc+'</small>';
-													}
-												str+='</td>';
-												str+='<td>';
-													if(result.levelList[i].levelList[j].recentLate != null)
-													{
-														str+=''+result.levelList[i].levelList[j].recentLate+'';
-													}
-													if(result.levelList[i].levelList[j].latePerc != null)
-													{
-														str+='<small class="text-success">'+result.levelList[i].levelList[j].latePerc+'</small>';
-													}
-												str+='</td>';
-												str+='<td>';
-													if(result.levelList[i].levelList[j].recentAbcent != null)
-													{
-														str+=''+result.levelList[i].levelList[j].recentAbcent+'';
-													}
-													if(result.levelList[i].levelList[j].abcentPerc != null)
-													{
-														str+='<small class="text-success">'+result.levelList[i].levelList[j].abcentPerc+'</small>';
-													}
-												str+='</td>';
-												str+='<td>'+result.levelList[i].levelList[j].recentNonInvitee+'</td>';
-											str+='</tr>';
-						}
+											for(var j in result.levelList[i].levelList){
+												str+='<tr>';
+													str+='<td>'+result.levelList[i].levelList[j].name+'</td>';
+													str+='<td>';
+														if(result.levelList[i].levelList[j].recentInviteeAttended != null)
+														{
+															str+=''+result.levelList[i].levelList[j].recentInviteeAttended+'';
+														}
+														if(result.levelList[i].levelList[j].attendedPerc != null)
+														{
+															str+='   <small class="text-success">'+result.levelList[i].levelList[j].attendedPerc+'</small>';
+														}
+													str+='</td>';
+													str+='<td>';
+														if(result.levelList[i].levelList[j].recentLate != null)
+														{
+															str+=''+result.levelList[i].levelList[j].recentLate+'';
+														}
+														if(result.levelList[i].levelList[j].latePerc != null)
+														{
+															str+='   <small class="text-success">'+result.levelList[i].levelList[j].latePerc+'</small>';
+														}
+													str+='</td>';
+													str+='<td>';
+														if(result.levelList[i].levelList[j].recentAbcent != null)
+														{
+															str+=''+result.levelList[i].levelList[j].recentAbcent+'';
+														}
+														if(result.levelList[i].levelList[j].abcentPerc != null)
+														{
+															str+='   <small class="text-success">'+result.levelList[i].levelList[j].abcentPerc+'</small>';
+														}
+													str+='</td>';
+													str+='<td>'+result.levelList[i].levelList[j].recentNonInvitee+'</td>';
+												str+='</tr>';
+											}
 										str+='</table>';
 									str+='</div>';
+									str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-24 popUpDetailsClickCls" attr_type="meeting_type_special" attr_partyMeetingMainTypeId="'+result.levelList[i].partyMeetingId+'" attr_partyMeetingTypeId="'+result.levelList[i].id+'" attr_name="'+result.levelList[i].name+'" style="margin-top:-16px;cursor:pointer;text-decoration:none;"></i>';
 								str+='</div>';
 							str+='</div>';
 						}
@@ -6967,19 +6980,14 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 								return this.value.toString().substring(0, 5)+'';
 								
 							},
-							formatter: function() {
-								//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-								//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-								return (this.total);
-							},
-						}
+						},
 					},
 					yAxis: {
 						min: 0,
 						gridLineWidth: 0,
 						minorGridLineWidth: 0,
 						labels: {
-							enabled:false
+							enabled:true
 						},
 						title: {
 							text: ''
@@ -6989,7 +6997,12 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 							style: {
 								fontWeight: 'bold',
 								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-							}
+							},
+							formatter: function() {
+								//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+								//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+								return (this.total);
+							},
 						}
 					},
 					tooltip: {
@@ -7989,8 +8002,8 @@ function getLocationWiseElectionDetails(){
 		console.log(result);
 	});	
 }
-
 function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId,partyMeetingTypeId){
+	$("#openPostDetailsModalDivId").html(spinner);
 	jsObj={
 		locationTypeId			:locationLevelId,
 		locationValues			:userAccessLevelValuesArray,
@@ -8005,6 +8018,277 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){ 
-	
+			if(result !=null && result.levelList !=null && result.levelList.length>0){
+				return buildLocationWiseSpecialMeetingsMeetingsExpanction(result)
+			}	
+		
 	});
+	
+	function buildLocationWiseSpecialMeetingsMeetingsExpanction(result){
+		var str='';
+			for(var i in result.levelList){		
+				str+='<div class="block">';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-3">';
+							str+='<div id="specialTotalMeetingsExpand'+i+'" style="height:120px;"></div>';
+							str+='<p>Total Meetings</p>';
+						str+='</div>';
+						str+='<div class="col-sm-5" style="border-right:2px dashed #ddd;border-left:2px dashed #ddd">';
+							str+='<div id="specialInviteesMeetingsExpand'+i+'" style="height:150px;"></div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<p>Attended</p>';
+							str+='<div id="specialAttendedMeetingsExpand'+i+'" style="height:150px;"></div>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="table-responsive">';
+						str+='<table class="table m_top10 table-bordered">';
+							str+='<thead class="bg-E9">';
+								str+='<th>Meeting Date</th>';
+								str+='<th>Title</th>';
+								str+='<th>Attendance</th>';
+								str+='<th>Total Invitees</th>';
+								str+='<th>Attended</th>';
+								str+='<th>Late</th>';
+								str+='<th>Absent</th>';
+								str+='<th>NI</th>';
+								str+='<th>Images</th>';
+							str+='</thead>';
+							for(var j in result.levelList[i].levelList){
+								var length = result.levelList[i].levelList[j].datesList.length+1;
+								
+								str+='<tr>';
+									str+='<td rowspan="'+length+'">'+result.levelList[i].levelList[j].conductedDate+'</td>';
+									str+='<td rowspan="'+length+'">'+result.levelList[i].levelList[j].name+'</td>';
+								str+='</tr>';
+								for(var k in result.levelList[i].levelList[j].datesList){
+									str+='<tr>';
+										str+='<td>'+result.levelList[i].levelList[j].datesList[k].name+'</td>';
+										str+='<td>'+result.levelList[i].levelList[j].recentMeetingInviteesCnt+'</td>';
+										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentAttended+'</td>';
+										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentLate+'</td>';
+										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentAbcent+'</td>';
+										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentNonInvitee+'</td>';
+										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentImagesCnt+'</td>';
+									str+='</tr>';
+								}
+								
+							}
+						str+='</table>';
+					str+='</div>';
+				str+='</div>';
+			}
+	
+	$("#openPostDetailsModalDivId").html(str);
+	var colorsArr = ['#06D7A7','#0888DE','#994100','#AFCE69']
+		for(var i in result.levelList)
+		{
+			$("#specialTotalMeetingsExpand"+i).highcharts({
+				colors:['#3BB878'],
+				chart: {
+					plotBackgroundColor: null,
+					plotBorderWidth: 0,
+					plotShadow: false
+				},
+				title: {
+					text: ''+result.levelList[i].totalMeetings+'',
+					align: 'center',
+					verticalAlign: 'middle',
+					y: 10,
+					style: {
+						color: '#000',
+						font: 'bold 14px "Lato", sans-serif',
+					}
+				},
+				tooltip: {
+					enabled: false,
+				},
+				plotOptions: {
+					pie: {
+						dataLabels: {
+							enabled: false,
+							distance: -10,
+							style: {
+								fontWeight: 'bold',
+								color: 'white'
+							}
+						},
+						size:"170%",
+						startAngle: -90,
+						endAngle: 90,
+						center: ['50%', '80%']
+					}
+				},
+				series: [{
+					type: 'pie',
+					name: 'Total Meetings',
+					innerSize: '50%',
+					data: [
+						['Total Meetings',   result.levelList[i].totalMeetings],
+					]
+				}]
+			});
+			var categoriesArr = ['Invitees','Late','Absent','Non-invitee'];
+			var mainArr = [{"y":result.levelList[i].inviteeAttendedCount},{"y":result.levelList[i].lateCount},{"y":result.levelList[i].absentCount},{"y":result.levelList[i].nonInviteesCount}];
+			$("#specialAttendedMeetingsExpand"+i).highcharts({
+				colors:['#3BB878','#E69C64','#ED5C5C','#259381'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: categoriesArr,
+					type: 'category',
+					labels: {
+						formatter: function() {
+							return this.value.toString().substring(0, 5)+'';
+							
+						},
+					},
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					labels: {
+						enabled:true
+					},
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						},
+						formatter: function() {
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						},
+					}
+				},
+				tooltip: {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+							$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
+						return s;
+					},
+					shared: true
+				},
+				legend: {   
+						enabled: false,				
+					},				
+					plotOptions: {
+						column: {
+							stacking: 'normal',  
+							dataLabels:{
+								enabled: false,
+								formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return (this.y);
+									}
+								}
+							},
+						},
+					},
+				series: [{
+					name: "count",
+					data: mainArr,
+					colorByPoint: true
+				}]
+			});
+			var specialInviteesMeetingsCatArr = ['Total Invited','Total Attended'];
+			var specialInviteesMeetingsArr = [{"y":result.levelList[i].invitedCount},{"y":result.levelList[i].attendedCount}];
+			$("#specialInviteesMeetingsExpand"+i).highcharts({
+				colors:['#D7AD06'],
+				chart: {
+					type: 'bar'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: specialInviteesMeetingsCatArr,
+					type: 'category',
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					labels: {
+						enabled:false
+					},
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						},
+						formatter: function() {
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						},
+					}
+				},
+				tooltip: {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+							$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
+						return s;
+					},
+					shared: true
+				},
+				legend: {   
+						enabled: false,				
+					},				
+					plotOptions: {
+						bar: {
+							stacking: 'normal',  
+							dataLabels:{
+								enabled: false,
+								formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return (this.y);
+									}
+								}
+							},
+						},
+					},
+				series: [{
+					name: "count",
+					data: specialInviteesMeetingsArr,
+					colorByPoint: true
+				}]
+			});
+		}
+	}
 }
