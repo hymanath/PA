@@ -1603,7 +1603,7 @@ font-size:12px !important;
 .scrollHeading
 {
 	background-color:#fff;
-	padding:30px;
+	padding:10px;
 }
 .scrollHeading.header-fixed
 {
@@ -1613,7 +1613,7 @@ font-size:12px !important;
 	right:0px;
 	z-index:9999;
 	box-shadow:0px 5px 16px rgba(0,0,0,0.4);
-	padding:30px;
+	padding:5px;
 }
 .votingDtsClickCls{
 	text-decoration:underline;
@@ -1794,4 +1794,7 @@ font-size:12px !important;
 .table_griveance_pad thead tr th,.table_griveance_pad tbody tr td{
 	font-size:12px !important;
 	padding:10px !important;
+}
+.table_font thead tr th{
+	font-size:12px !important;
 }
