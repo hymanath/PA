@@ -11,8 +11,8 @@ public class ItecCMeoDBDetailsVO {
 	private String pendingWithInSLA;
 	private String pendingBeyondSLA;
 	private String totalReApproved;
-	private Long dashBoardNO;
-	private Long clearenceId;
+	private String dashBoardNO;
+	private String clearenceId;
 	private String lowApproveClearenceName;
 	private String lowRejectedClearenceName;
 	private String lowPendingClearenceName;
@@ -28,6 +28,24 @@ public class ItecCMeoDBDetailsVO {
 	private String lowRejected;
 	private String highPending;
 	private String lowPending;
+	private String category;
+	private String finaYear;
+	private String sectorName;
+	private String industryName;
+	private String address;
+	private String activity;
+	private String totalCost;
+	private String empolyeement;
+	private String appFilledDate;
+	private String corRecievedDate;
+	private String delayDays;
+	private String permApprovalDate;
+	private String appRejDate;
+	private String approvalFileId;
+	private String applicationId;
+	private String regId;
+	
+	
 	
 	public String getDashboardName() {
 		return dashboardName;
@@ -83,16 +101,16 @@ public class ItecCMeoDBDetailsVO {
 	public void setTotalReApproved(String totalReApproved) {
 		this.totalReApproved = totalReApproved;
 	}
-	public Long getDashBoardNO() {
+	public String getDashBoardNO() {
 		return dashBoardNO;
 	}
-	public void setDashBoardNO(Long dashBoardNO) {
+	public void setDashBoardNO(String dashBoardNO) {
 		this.dashBoardNO = dashBoardNO;
 	}
-	public Long getClearenceId() {
+	public String getClearenceId() {
 		return clearenceId;
 	}
-	public void setClearenceId(Long clearenceId) {
+	public void setClearenceId(String clearenceId) {
 		this.clearenceId = clearenceId;
 	}
 	public String getLowApproveClearenceName() {
@@ -184,5 +202,101 @@ public class ItecCMeoDBDetailsVO {
 	}
 	public void setLowPending(String lowPending) {
 		this.lowPending = lowPending;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getFinaYear() {
+		return finaYear;
+	}
+	public void setFinaYear(String finaYear) {
+		this.finaYear = finaYear;
+	}
+	public String getSectorName() {
+		return sectorName;
+	}
+	public void setSectorName(String sectorName) {
+		this.sectorName = sectorName;
+	}
+	public String getIndustryName() {
+		return industryName;
+	}
+	public void setIndustryName(String industryName) {
+		this.industryName = industryName;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getActivity() {
+		return activity;
+	}
+	public void setActivity(String activity) {
+		this.activity = activity;
+	}
+	public String getTotalCost() {
+		return totalCost;
+	}
+	public void setTotalCost(String totalCost) {
+		this.totalCost = totalCost;
+	}
+	public String getEmpolyeement() {
+		return empolyeement;
+	}
+	public void setEmpolyeement(String empolyeement) {
+		this.empolyeement = empolyeement;
+	}
+	public String getAppFilledDate() {
+		return appFilledDate;
+	}
+	public void setAppFilledDate(String appFilledDate) {
+		this.appFilledDate = appFilledDate;
+	}
+	public String getCorRecievedDate() {
+		return corRecievedDate;
+	}
+	public void setCorRecievedDate(String corRecievedDate) {
+		this.corRecievedDate = corRecievedDate;
+	}
+	public String getDelayDays() {
+		return delayDays;
+	}
+	public void setDelayDays(String delayDays) {
+		this.delayDays = delayDays;
+	}
+	public String getPermApprovalDate() {
+		return permApprovalDate;
+	}
+	public void setPermApprovalDate(String permApprovalDate) {
+		this.permApprovalDate = permApprovalDate;
+	}
+	public String getAppRejDate() {
+		return appRejDate;
+	}
+	public void setAppRejDate(String appRejDate) {
+		this.appRejDate = appRejDate;
+	}
+	public String getApprovalFileId() {
+		return approvalFileId;
+	}
+	public void setApprovalFileId(String approvalFileId) {
+		this.approvalFileId = approvalFileId;
+	}
+	public String getApplicationId() {
+		return applicationId;
+	}
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
+	}
+	public String getRegId() {
+		return regId;
+	}
+	public void setRegId(String regId) {
+		this.regId = regId;
 	}
 }

@@ -98,6 +98,8 @@ public class InputVO implements Serializable {
 	private String leadName;
 	private Long constituencyId;
 	private String program;
+	private String eoDBstatus;
+	private String clearence;
 	
 	
 	public String getProgram() {
@@ -614,6 +616,18 @@ public class InputVO implements Serializable {
 	}
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+	public String getEoDBstatus() {
+		return eoDBstatus;
+	}
+	public void setEoDBstatus(String eoDBstatus) {
+		this.eoDBstatus = eoDBstatus;
+	}
+	public String getClearence() {
+		return clearence;
+	}
+	public void setClearence(String clearence) {
+		this.clearence = clearence;
 	}
 	
    	
