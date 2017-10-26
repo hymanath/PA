@@ -120,32 +120,47 @@
 							</div>
 						</div>
 					</section>
-					<section class="m_top10" style="display:none;" >
+					<section class="m_top10">
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="block boderBlock">
 									<h4 class="theme-title-color">Cross Voting Report</h4>
-									<div class="row m_top10">
-										<div class="col-sm-3">
-											<label>Parliament Constituency</label>
-											<select class="chosen-select" id="parliamentConsId">
-											</select>
+										<div class="col-sm-3 m_top10">
+											<label><b>Election Type</b></label>
+											<div class="row">
+												<label class="radio-inline">
+												  <input type="radio" id="mainId2" value="MAIN" name="optionsRadios" class="electionSubTypeCrossVotingCls" checked >Main Election
+												</label>
+												<label class="radio-inline">
+												  <input type="radio" id="byeId2" value="BYE" name="optionsRadios"  class="electionSubTypeCrossVotingCls">Bye Election
+												</label>
+											</div>
+										</div>
+										<div class="col-sm-2">
+											<label><b>Election Years</b></label>
+												<select class="chosen-select" id="electionYearCrossVotingId">
+												</select>
+										</div>
+										<!--<div class="col-sm-3">
+												<label>Parliament Constituency</label>
+												<select class="chosen-select" id="parliamentConsId">
+												</select>
 										</div>
 										<div class="col-sm-3">
 											<label>Assembly Constituency</label>
 											<select class="chosen-select" id="assemblyConsId">
 												<option value="0">Select Constituency</option>
 											</select>
-										</div>
+										</div>-->
 										<div class="col-sm-2">
 											<label>Party</label>
 											<div class="row">
-											<select class="form-control" id="partyCrossVotingId" multiple>
+											<select class="form-control chosen-select" id="partyCrossVotingId">
 												<option value="0">All Parties</option>
 												<option value="872" selected>TDP</option>
-												<option value="1117" selected>YSRC</option>
-												<option value="163" selected>BJP</option>
-												<option value="362" selected>INC</option>
+												<option value="1117">YSRC</option>
+												<option value="163">BJP</option>
+												<option value="362">INC</option>
 												<!--<option value="72">AIMIM</option>-->
 												<option value="362">INC</option>
 												<option value="265">CPI</option>
@@ -158,7 +173,7 @@
 										<div class="col-sm-3 m_top20">
 											<button class="btn btn-success buttonClr getDetailsForCrossVotingCls">Submit</button>
 										</div>
-									</div>
+									
 									<div class="row">
 										<div class="col-sm-12">
 											<div id="crossVotingDetailsBlockId"></div>
@@ -319,7 +334,7 @@
 			<div class="modal-header" style="background-color:#CCCCCC">
 				<div class="row" >
 					<div class="col-md-8">
-						<h3 class="modal-title text-capitalize" id="titleId" >Title</h3>
+						<h3 class="theme-title-color" id="titleId" >Title</h3>
 					</div>
 					<div class="col-sm-3 pull-right">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -40,7 +40,7 @@ setTimeout(function(){
 function onLoadCalls()
 {
 	$(".chosen-select").chosen();
-	$('#partyBoothWiseId, #partyId,#partyCrossVotingId').multiselect({
+	$('#partyBoothWiseId, #partyId').multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
 		selectAllText: 'All Parties',
@@ -145,12 +145,15 @@ $(document).on("change","#parliamentConsId",function(){
 		partyIdArr = $("#partyId").val();
 		var parliamentId=0;var assemblyId=0;
 		
+		var partyIdForCrossVoting = $("#partyCrossVotingId").val();
+		var electionYearCrossVoting = $("#electionYearCrossVotingId").val();
+		
 		//party wise election trends Block
 		getLocationWiseElectionResults(electionYrVal,eletionSubType,partyIdArr,electionScopeId);
 		//Party Election Results Block
 		getElectionDetailsData(electionYrVal,eletionSubType,partyIdArr,electionScopeId);
 		//Cross Voting Block
-		getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);
+		getLocationWiseCrossVotingDetails(electionYearCrossVoting,parliamentId,assemblyId,partyIdForCrossVoting,eletionSubType,electionScopeId,"mainView");
 		//getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
 		//Booth Wise Results
 		getElectionYearsForBooth(eletionSubType,"onload");
@@ -177,8 +180,6 @@ $(document).on("change","#parliamentConsId",function(){
 		
 		var parliamentId = $("#parliamentConsId").val();
 		var assemblyId = $("#assemblyConsId").val();
-		var partyIdArr=[];
-		partyIdArr = $("#partyCrossVotingId").val();
 		
 		var i = 0;	
 		 var electionScopeId =[];
@@ -194,12 +195,13 @@ $(document).on("change","#parliamentConsId",function(){
 				eletionSubType.push($(this).val());
 			}
 		 });
-		electionYrVal=[];
-		electionYrVal = $("#electionYearId").val();
+		var partyIdForCrossVoting = $("#partyCrossVotingId").val();
+		var electionYearCrossVoting = $("#electionYearCrossVotingId").val();
+		
 		userAccessLevelValuesArray=[];
 		userAccessLevelValuesArray.push(userAccessLevelValue);
 		
-		getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);
+		getLocationWiseCrossVotingDetails(electionYearCrossVoting,parliamentId,assemblyId,partyIdForCrossVoting,eletionSubType,electionScopeId,"mainView");
 		//getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
 			
 		
@@ -539,6 +541,9 @@ function getElectionYears(eletionSubType,type){
 				}
 			} 
 			$('#electionYearId').html(str);
+			$('#electionYearCrossVotingId').html(str);
+			$('#electionYearCrossVotingId').trigger("chosen:updated");
+			
 			$('#electionYearId').multiselect({
 				enableFiltering: true,
 				includeSelectAllOption: true,
@@ -558,13 +563,20 @@ function getElectionYears(eletionSubType,type){
 			var electionScopeId=0;var parliamentId=0;var assemblyId=0;
 			var partyIdArr=[];
 			partyIdArr = $("#partyId").val();
+			
+			var partyIdForCrossVoting = $("#partyCrossVotingId").val();
+			var electionYearCrossVoting = $("#electionYearCrossVotingId").val();
+		
 			//party wise election trends Block
 			getLocationWiseElectionResults(electionYrVal,eletionSubType,partyIdArr,electionScopeId);
 			//Party Election Results Block
 			getElectionDetailsData(electionYrVal,eletionSubType,partyIdArr,electionScopeId);
 			//Cross Voting Block
-			getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyIdArr,eletionSubType,electionScopeId);
-			//getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
+			if(locationLevelId == '2'){//state Level
+				getLocationWiseCrossVotingDetails(electionYearCrossVoting,parliamentId,assemblyId,partyIdForCrossVoting,eletionSubType,electionScopeId,"mainView");
+				//getLocationWiseVotingDetails(electionYrVal,eletionSubType,"",userAccessLevelValuesArray,locationLevelId)
+			}
+			
 			//StrongVsPoor Block
 			getElectionInformationLocationWiseStatus(eletionSubType,electionYrVal,"872","district","2","TDP","Assembly",0);
 		}
@@ -1114,25 +1126,29 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 		});
 	}
 }
-function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyId,eletionSubType,electionScopeId){
-	$("#crossVotingDetailsBlockId").html(spinner);
+function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId,partyId,eletionSubType,electionScopeId,type){
+	if(type == "mainView"){
+		$("#crossVotingDetailsBlockId").html(spinner);
+	}else{
+		$("#votingDetailsSubLevelBlockId").html(spinner);
+	}
 	
 	var assemblyIdsArr=[];
 	var partyIdsArr=[];
 	var parliamentIdsArr=[];
 	var electionScopeIdsArr=[];
 	
-	if(assemblyId == 0){
+	var electionYearArr=[];
+	electionYearArr.push(electionYrVal)
+	partyIdsArr.push(partyId)
+	
+	if(assemblyId == 0 || assemblyId == ""){
 		assemblyIdsArr=[]
 	}else{
 		assemblyIdsArr.push(assemblyId)
 	}
 	
-	if(partyId == 0){
-		partyIdsArr=[872,362,1117,886,72,269,265,163]
-	}else{
-		partyIdsArr = partyId
-	}
+	
 	if(parliamentId == 0){
 		parliamentIdsArr = globalParliamentIds;
 	}else{
@@ -1151,9 +1167,9 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 	}
 	
 	jsObj={
-		electionYearArr		:electionYrVal,
+		electionYearArr		:electionYearArr,
 		parliamentIdsArr	:parliamentIdsArr,
-		assemblyIdsArr 		:assemblyIdsArr,
+		assemblyIdsArr 		:[],
 		partyIdsArr 		:partyIdsArr,
 		locationValue		:userAccessLevelValuesArray,
 		withAlliance		:"YES",
@@ -1167,16 +1183,70 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		if(result !=null && result.subList1 !=null && result.subList1.length>0){
-			buildTableData(result);
+		if(result !=null && result.length>0){
+			if(type == "mainView"){
+				buildTableData(result,type);
+			}else{
+				buildExpandTableData(result,type,parliamentId);
+			}
+			
 		}else{
-			$("#crossVotingDetailsBlockId").html("No Data Available");
+			if(type == "mainView"){
+				$("#crossVotingDetailsBlockId").html("No Data Available");
+			}else{
+				$("#votingDetailsSubLevelBlockId").html("No Data Available");
+			}
+			
 		}	
 		
 	});
-	function buildTableData(result)
+}
+	function buildTableData(result,type)
 	{
 		var table='';
+		table+='<div class="table-responsive">';
+		table+='<table class="table">';
+			table+='<thead>';
+			table+='<tr>';
+				table+='<th>Parliament Name</th>';
+				table+='<th>Polled Votes(PC)</th>';
+				table+='<th>Polled Votes(AC)</th>';
+				table+='<th>Rank(PC)</th>';
+				table+='<th>Margin Votes(PC)</th>';
+				table+='<th>Margin %(PC)</th>';
+				table+='<th>Cross Voting Votes</th>';
+				table+='<th>Cross Voting %</th>';
+				table+='</tr>';
+			table+='</thead>';
+			table+='<tbody>';
+			for(var i in result){
+				table+='<tr>';
+					table+='<td class="votingDtsClickCls" attr_type="crossVoting" attr_name="'+result[i].locationName+'" attr_parliamentId="'+result[i].locationId+'">'+result[i].locationName+'</td>';
+					table+='<td>'+result[i].validVoters+'</td>';
+					table+='<td>'+result[i].assemblyEarndVotes+'</td>';
+					for(var j in result[i].subList1){
+						table+='<td>'+result[i].subList1[j].rank+'</td>';
+						table+='<td>'+result[i].subList1[j].marginVotes+'</td>';
+						table+='<td>'+result[i].subList1[j].perc+'</td>';
+						table+='<td>'+result[i].subList1[j].crossVotingCount+'</td>';
+						if(parseFloat(result[i].subList1[j].crossVotingPerc)>0){
+							table+='<td>'+parseFloat(result[i].subList1[j].crossVotingPerc).toFixed(2)+'';
+							table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+						}else{
+							table+='<td>'+parseFloat(result[i].subList1[j].crossVotingPerc).toFixed(2)+'';
+							table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+						}
+					}
+					
+				table+='</tr>';
+			}
+				
+			table+='</tbody>';
+			
+		table+='</table>';
+		table+='</div>';
+		
+		/* var table='';
 		table+='<div class="table-responsive">';
 		table+='<table class="table table-cross-voting">';
 			table+='<thead>';
@@ -1223,11 +1293,60 @@ function getLocationWiseCrossVotingDetails(electionYrVal,parliamentId,assemblyId
 			}
 			
 		table+='</table>';
+		table+='</div>'; */
+		$("#crossVotingDetailsBlockId").html(table);
+		
+	}	
+
+	function buildExpandTableData(result,type,parliamentId)
+	{
+		var table='';
+		table+='<div class="table-responsive">';
+		table+='<table class="table">';
+			table+='<thead>';
+			table+='<tr>';
+				table+='<th>Parliament Name</th>';
+				table+='<th>Polled Votes(PC)</th>';
+				table+='<th>Polled Votes(AC)</th>';
+				table+='<th>Rank(PC)</th>';
+				table+='<th>Margin Votes(PC)</th>';
+				table+='<th>Margin %(PC)</th>';
+				table+='<th>Cross Voting Votes</th>';
+				table+='<th>Cross Voting %</th>';
+				table+='</tr>';
+			table+='</thead>';
+			table+='<tbody>';
+			for(var i in result){
+				if(parliamentId == result[i].locationId){
+					for(var j in result[i].list){
+						table+='<tr>';
+							table+='<td>'+result[i].list[j].locationName+'</td>';
+							table+='<td>'+result[i].list[j].parliamentValidVoters+'</td>';
+							table+='<td>'+result[i].list[j].assemblyValidVoters+'</td>';
+							for(var k in result[i].list[j].subList1){
+								table+='<td>'+result[i].list[j].subList1[k].rank+'</td>';
+								table+='<td>'+result[i].list[j].subList1[k].marginVotes+'</td>';
+								table+='<td>'+result[i].list[j].subList1[k].perc+'</td>';
+								table+='<td>'+result[i].list[j].subList1[k].crossVotingCount+'</td>';
+								if(parseFloat(result[i].list[j].subList1[k].crossVotingPerc)>0){
+									table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+									table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+								}else{
+									table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+									table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+								}
+							}
+						table+='</tr>';
+					}
+				}
+			}
+			table+='</tbody>';
+		table+='</table>';
 		table+='</div>';
 		
-		$("#crossVotingDetailsBlockId").html(table);
-	}	
-}
+		$("#votingDetailsSubLevelBlockId").html(table);
+		
+	}
 
 function boothWiseResults(constituencyId,partiesArr,electionYrVal,electionScopeId){
 	
@@ -2713,7 +2832,7 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
 							var crossVotingPerc = (parseFloat(result[i].perc)).toFixed(2);
 							
 							str+='<tr>';
-								str+='<td style="cursor:pointer;" class="votingDtsClickCls" attr_locationId="'+result[i].locationId+'" attr_locationValue="'+result[i].id+'" attr_name="'+result[i].name+'">'+result[i].name+'</td>';
+								str+='<td style="cursor:pointer;" class="votingDtsClickCls" attr_locationId="'+result[i].locationId+'" attr_locationValue="'+result[i].id+'" attr_name="'+result[i].name+'" attr_type="votingDetails">'+result[i].name+'</td>';
 								str+='<td>'+result[i].validVoters+'</td>';
 								str+='<td>'+assemblyCandPerc+' %</td>';
 								str+='<td>'+parliamentCandPerc+' %</td>';
@@ -2745,27 +2864,58 @@ function getLocationWiseVotingDetails(electionYrVal,subTypesArr,clickType,userAc
   }
 }
 $(document).on("click",".votingDtsClickCls",function(){
+	var type = $(this).attr("attr_type");
+	if(type == "votingDetails"){
+		var locationLevelId = $(this).attr("attr_locationId");
+		var locationLevelValue = $(this).attr("attr_locationValue");
+		var locationName = $(this).attr("attr_name");
+		
+		
+		userAccessLevelValuesArray=[];
+		userAccessLevelValuesArray.push(locationLevelValue)
+		
+		
+		eletionSubType=[];
+			 $('.electionSubTypeCls').each(function(){
+				if ($(this).is(':checked')){
+					eletionSubType.push($(this).val());
+				}
+			 });
+			electionYrVal=[];
+			electionYrVal = $("#electionYearId").val();
+		
+		$("#openModalDivId").modal("show");
+			$("#titleId").html(locationName+"  Voting Details");
+		//getLocationWiseVotingDetails(electionYrVal,eletionSubType,"clickFunction",userAccessLevelValuesArray,locationLevelId)
+	}else{
+		var locationName = $(this).attr("attr_name");
+		var parliamentId = $(this).attr("attr_parliamentId");
+		$("#openModalDivId").modal("show");
+		
+		$("#titleId").html(locationName+"  Parliament Assembly Wise Cross Voting Report");
+		
+			var assemblyId = $("#assemblyConsId").val();
+			
+			var i = 0;	
+			 var electionScopeId =[];
+			 $(".electionTypeWiseCls").each(function(){
+				if ($(this).is(':checked')){
+					 electionScopeId[i++] = $(this).val();
+				}
+			});
+			
+			eletionSubType=[];
+			 $('.electionSubTypeCls').each(function(){
+				if ($(this).is(':checked')){
+					eletionSubType.push($(this).val());
+				}
+			 });
+			var partyIdForCrossVoting = $("#partyCrossVotingId").val();
+			var electionYearCrossVoting = $("#electionYearCrossVotingId").val();
+			
+		getLocationWiseCrossVotingDetails(electionYearCrossVoting,parliamentId,assemblyId,partyIdForCrossVoting,eletionSubType,electionScopeId,"expand")
+	}
 	
-	var locationLevelId = $(this).attr("attr_locationId");
-	var locationLevelValue = $(this).attr("attr_locationValue");
-	var locationName = $(this).attr("attr_name");
-	
-	userAccessLevelValuesArray=[];
-	userAccessLevelValuesArray.push(locationLevelValue)
-	
-	
-	eletionSubType=[];
-		 $('.electionSubTypeCls').each(function(){
-			if ($(this).is(':checked')){
-				eletionSubType.push($(this).val());
-			}
-		 });
-		electionYrVal=[];
-		electionYrVal = $("#electionYearId").val();
-	
-	$("#openModalDivId").modal("show");
-		$("#titleId").html(locationName+"  Voting Details");
-	//getLocationWiseVotingDetails(electionYrVal,eletionSubType,"clickFunction",userAccessLevelValuesArray,locationLevelId)
 });
 $(document).on("change","#elctionTypeValId",function(){
 	var value = $(this).val();
