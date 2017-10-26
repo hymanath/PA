@@ -119,7 +119,7 @@ function getTrustEducationSubjectForDetails(yearId){
 						str+='<table class="table table_griveance_pad">';
 							str+='<thead class="bg-E9">';
 								str+='<tr>';
-									str+='<th></th>';
+									str+='<th>CATEGORY</th>';
 									str+='<th>TOTAL MEMBERS</th>';
 									for(var i in result.subList[0].subList){
 										str+='<th>'+result.subList[0].subList[i].name+'</th>';
@@ -256,7 +256,7 @@ function getLocationWiseTrustEducationComplaintCount(yearId){
 							str+='<table class="table table_griveance_pad" id="trustEducationLocationWiseDataTblId">';
 								str+='<thead class="bg-E9">';
 									str+='<tr>';
-										str+='<th>LOCATION NAME</th>';
+										str+='<th>'+headingStr.toUpperCase()+' NAME</th>';
 										str+='<th>TOTAL</th>';
 										for(var j in result[0].subList){
 											str+='<th>'+result[0].subList[j].name+'</th>';
@@ -294,10 +294,10 @@ function getLocationWiseTrustEducationComplaintCount(yearId){
 			$("#trustEducationLocationWiseDataTblId").dataTable({
 			"paging":   true,
 			"info":     false,
-			"searching": false,
+			"searching": true,
 			"autoWidth": true,
 			"iDisplayLength": 10,
-			"aaSorting": [],
+			"aaSorting": [[0, "asc"]],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		  });
 		}

@@ -2136,3 +2136,36 @@ function buildLeadersInNewsBlock(result){
 str+='</div>';
 $("#leadersInNewsDiv").html(str);
 }
+
+function areawisePartyMeetingsDetailsAction(){
+	jsObj={
+			locationScopeId:3,
+			locationValue:232, 
+			startDate:startDate, 
+			endDate:endDate, 
+			meetingLevelId:2, 
+			meetingTypeId:1, 
+			meetingMainTypeId:1
+    }
+	 $.ajax({
+      type : "GET",
+      url : "areawisePartyMeetingsDetailsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+    	console.log()
+      });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+

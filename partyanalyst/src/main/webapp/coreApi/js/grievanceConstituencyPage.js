@@ -194,7 +194,7 @@ function getGrivenceFinancialSupportDtls(yearId){
 						str+='<table class="table table_griveance_pad">';
 							str+='<thead class="bg-E9">';
 								str+='<tr>';
-									str+='<th></th>';
+									str+='<th>CATEGORY</th>';
 									str+='<th>TOTAL MEMBERS</th>';
 									str+='<th>REQUESTED</th>';
 									str+='<th>APPROVED</th>';
@@ -351,7 +351,7 @@ function getGrivenceComplaintCountDepartmentWise(yearId){
 									if(type == "department"){
 										str+='<th>Department Name</th>';
 									}else{
-										str+='<th>Location Name</th>';
+										str+='<th>'+headingStr.toUpperCase()+' Name</th>';
 									}
 										
 										str+='<th>TOTAL</th>';
@@ -391,10 +391,10 @@ function getGrivenceComplaintCountDepartmentWise(yearId){
 			$("#grievanceDataTblId"+type).dataTable({
 			"paging":   true,
 			"info":     false,
-			"searching": false,
+			"searching": true,
 			"autoWidth": true,
 			"iDisplayLength": 10,
-			"aaSorting": [],
+			"aaSorting": [[0, "asc"]],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		  });
 		}
