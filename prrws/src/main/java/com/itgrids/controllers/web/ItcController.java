@@ -156,4 +156,16 @@ public class ItcController {
 		   List<ItecCMeoDBDetailsVO>  resultList = itcDashboardService.getCMeoDBOverviewDetails();
 		   return resultList;
 	   }
+	   
+	   @RequestMapping(value = "/getCMeoDBStatusDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ItecCMeoDBDetailsVO>  getCMeoDBStatusDetails() {
+		   List<ItecCMeoDBDetailsVO>  resultList = itcDashboardService.getCMeoDBStatusDetails();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getCMeoDBStatusCountDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecCMeoDBDetailsVO>  getCMeoDBStatusCountDetails(@RequestBody InputVO inputVO) {
+		   List<ItecCMeoDBDetailsVO>  resultList = itcDashboardService.getCMeoDBStatusCountDetails(inputVO);
+		   return resultList;
+	   }
 }

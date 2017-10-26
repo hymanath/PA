@@ -42,4 +42,6 @@ public interface IItcDashboardService {
 	public List<ItecEOfficeVO> getEofficeDesignationWisePendencyDetails();
 	public List<ItecPromotionDetailsVO> getSectorWiseOverviewCountDetails(InputVO inputVO);
 	public List<ItecCMeoDBDetailsVO> getCMeoDBOverviewDetails();
+	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusDetails();
+	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusCountDetails(InputVO inputVO);
 }
