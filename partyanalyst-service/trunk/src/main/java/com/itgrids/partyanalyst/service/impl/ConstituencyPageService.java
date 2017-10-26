@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyTownDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationVillageDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationWardDAO;
 import com.itgrids.partyanalyst.dao.IGovtSchemeBenefitsInfoDAO;
+import com.itgrids.partyanalyst.dao.IGovtSchemesDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
@@ -61,6 +62,7 @@ import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ElectionDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
@@ -170,7 +172,22 @@ public class ConstituencyPageService implements IConstituencyPageService{
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IVoterReportService voterReportService;	
 	private IGovtSchemeBenefitsInfoDAO govtSchemeBenefitsInfoDAO;
+	private IGovtSchemesDAO govtSchemesDAO;
+	private IVoterInfoDAO voterInfoDAO;
 	
+	
+	public IVoterInfoDAO getVoterInfoDAO() {
+		return voterInfoDAO;
+	}
+	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
+		this.voterInfoDAO = voterInfoDAO;
+	}
+	public IGovtSchemesDAO getGovtSchemesDAO() {
+		return govtSchemesDAO;
+	}
+	public void setGovtSchemesDAO(IGovtSchemesDAO govtSchemesDAO) {
+		this.govtSchemesDAO = govtSchemesDAO;
+	}
 	public IGovtSchemeBenefitsInfoDAO getGovtSchemeBenefitsInfoDAO() {
 		return govtSchemeBenefitsInfoDAO;
 	}
@@ -6271,16 +6288,17 @@ public class ConstituencyPageService implements IConstituencyPageService{
 					finalVo.getList().add(locationVo);	
 				}
 			}
+			
+			
 			//id-0,name-1,schemeId-2,schemeName-3,grievanceCnt -3,benefitCount-4
 			List<Object[]> schemsList = govtSchemeBenefitsInfoDAO.getLocationWiseSchemeOverview(locationScopeId, locationValue,"Schemes");
 			if(schemsList != null && schemsList.size() >0){
 				for (Object[] objects : schemsList){
 					ElectionInformationVO schemeVo = new ElectionInformationVO();
-						schemeVo.setId(objects[0] !=null ? (Long)objects[0]:null);
+						schemeVo.setPartyId(objects[0] !=null ? (Long)objects[0]:null);
 						schemeVo.setPartyName(objects[1] != null ? objects[1].toString() : "");
 						schemeVo.setTotalSeatsCount(objects[2] !=null ? (Long)objects[2]:null);
 						schemeVo.setParticipatedSeatsCount(objects[3] !=null ? (Long)objects[3]:null);
-					
 					finalVo.getSubList1().add(schemeVo);	
 				}
 			}
@@ -6297,26 +6315,81 @@ public class ConstituencyPageService implements IConstituencyPageService{
 			
 			if(finalVo.getList() != null && finalVo.getList().size() >0){
 					if(schemeDetailsObj != null && schemeDetailsObj.size() >0){
+						List<Object[]> allSchemeLst = govtSchemesDAO.getAllSchemeDetails();
+						List<Object[]> totalVotersLst = voterInfoDAO.getTotalVotersForlocationWiseData(locationScopeId, locationValue,false);
+						if(totalVotersLst != null && totalVotersLst.size() >0){
+							for (Object[] params : totalVotersLst) {
+								ElectionInformationVO matchedLocationVo = getMatchedVO(finalVo.getList(),(Long)params[0]);
+								if(matchedLocationVo != null){
+									matchedLocationVo.setTotalVoters(params[1] !=null ? (Long)params[1]:null);
+								}
+							}
+						}
 						for (Object[] objects : schemeDetailsObj){
 							ElectionInformationVO matchedVo = getMatchedVO(finalVo.getList(),(Long)objects[0]);
-							if(matchedVo != null){
+							if(matchedVo == null){
 								ElectionInformationVO subVo = new ElectionInformationVO();
-									subVo.setId(objects[0] !=null ? (Long)objects[0]:null);
-									subVo.setName(objects[1] != null ? objects[1].toString() : "");
-									subVo.setPartyId(objects[2] !=null ? (Long)objects[2]:null);
-									subVo.setPartyName(objects[3] != null ? objects[3].toString() : "");
-									subVo.setTotalSeatsCount(objects[4] !=null ? (Long)objects[4]:null);
-									subVo.setParticipatedSeatsCount(objects[5] !=null ? (Long)objects[5]:null);
+								prepareRquiredTemplate(allSchemeLst,subVo.getSchemesList());
 									
-									matchedVo.getSchemesList().add(subVo);
+								ElectionInformationVO schemeVo = getMatchedSchemeVO(subVo.getSchemesList(),(Long)objects[2]);		
+									if(schemeVo != null){
+										schemeVo.setTotalSeatsCount(objects[4] !=null ? (Long)objects[4]:null);
+										schemeVo.setParticipatedSeatsCount(objects[5] !=null ? (Long)objects[5]:null);
+									}
+									finalVo.getList().add(subVo);
+							}else{
+								if(matchedVo.getSchemesList() == null || matchedVo.getSchemesList().size() == 0){
+									prepareRquiredTemplate(allSchemeLst,matchedVo.getSchemesList());
+								}
+								ElectionInformationVO schemeVo = getMatchedSchemeVO(matchedVo.getSchemesList(),(Long)objects[2]);
+								if(schemeVo != null){
+									schemeVo.setTotalSeatsCount(objects[4] !=null ? (Long)objects[4]:null);
+									schemeVo.setParticipatedSeatsCount(objects[5] !=null ? (Long)objects[5]:null);
+								}
 							}
 						}
 					}
 			}
+			Collections.sort(finalVo.getSubList1(), new Comparator<ElectionInformationVO>() {
+				public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
+					return o2.getPartyId().compareTo(o1.getPartyId());
+				}
+			});
 		} catch (Exception e) {
 			log.error("Exception raised getLocationwiseSchemesOverview method "+e);
 		}
 		return finalVo;
 	}
+	 public void prepareRquiredTemplate(List<Object[]> objList,List<ElectionInformationVO> list){
+		 try{
+			 if(objList != null && objList.size() > 0){
+				 for(Object[] param:objList){
+					 ElectionInformationVO VO = new ElectionInformationVO();
+					 VO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 VO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					 list.add(VO);
+				 }
+			 }
+		 }catch(Exception e){
+			 log.error("Exception occured  in getStateImpactLevelAlertDtlsCnt() in AlertsNewsPortalService class ",e);
+		 }
+	 }
+	 public ElectionInformationVO getMatchedSchemeVO(List<ElectionInformationVO> returnList,Long schemeId)
+		{
+			try{
+				if(returnList == null || returnList.size() == 0 || schemeId == null )
+					return null;
+				for(ElectionInformationVO vo : returnList)
+				{
+					if(vo.getPartyId().longValue()== schemeId.longValue())
+						return vo;
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return null;
+		}
 }
 
