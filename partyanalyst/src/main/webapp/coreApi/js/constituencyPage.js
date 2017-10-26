@@ -46,13 +46,13 @@ var customStartATMDate = moment().subtract(1, 'month').startOf('month').format('
 var customEndATMDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 
 
-var customStartGrivanceDate = moment().subtract(1, 'years').startOf('year').format('DD/MM/YYYY')
+var customStartGrivanceDate = moment().subtract(3, 'years').startOf('year').format('DD/MM/YYYY')
 var customEndGrivanceDate = moment().format('DD/MM/YYYY');
 
-var customStartInsuranceDate = moment().subtract(1, 'years').startOf('year').format('DD/MM/YYYY')
+var customStartInsuranceDate = moment().subtract(3, 'years').startOf('year').format('DD/MM/YYYY')
 var customEndInsuranceDate = moment().format('DD/MM/YYYY');
 
-var customStartNtrTrustDate = moment().subtract(1, 'years').startOf('year').format('DD/MM/YYYY')
+var customStartNtrTrustDate = moment().subtract(3, 'years').startOf('year').format('DD/MM/YYYY')
 var customEndNtrTrustDate = moment().format('DD/MM/YYYY');
 
 var globalboardLevelId='';
@@ -201,7 +201,7 @@ function onLoadInitialisations()
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
            'This Month': [moment().startOf('month'), moment()],
            'This Year': [moment().startOf('Year'), moment()],
-		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
+		   'Overall' : [moment().subtract(3, 'years').startOf('year'), moment()],
         }
 	});
 	//Insurance
@@ -220,7 +220,7 @@ function onLoadInitialisations()
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
            'This Month': [moment().startOf('month'), moment()],
            'This Year': [moment().startOf('Year'), moment()],
-		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
+		   'Overall' : [moment().subtract(3, 'years').startOf('year'), moment()],
         }
 	});
 	//Ntr Trust
@@ -239,7 +239,7 @@ function onLoadInitialisations()
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
            'This Month': [moment().startOf('month'), moment()],
            'This Year': [moment().startOf('Year'), moment()],
-		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
+		   'Overall' : [moment().subtract(3, 'years').startOf('year'), moment()],
         }
 	});
 	//Alert Start
@@ -7849,7 +7849,7 @@ function getTrustEducationOverviewDetails(yearId){
 				}
 			}
 		}
-		if(result !=null && result.subList1 !=null && result.subList1.length>0){
+	    if(result !=null && result.subList1 !=null && result.subList1.length>0){
 			var totalCount=0;
 			for(var i in result.subList1){
 				var categoriesArr=[];
