@@ -1016,7 +1016,8 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType)
 			toDate:globalToDateForLevel,
 			location:"state",
 			locationId:"-1",
-			displayType:"day"
+			displayType:"day",
+			reportType:"daily"
 			
 		}
 		$.ajax({                
