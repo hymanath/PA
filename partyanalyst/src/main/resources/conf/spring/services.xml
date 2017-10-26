@@ -393,6 +393,8 @@
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="voterReportService" ref="voterReportService" />
 		<property name="govtSchemeBenefitsInfoDAO" ref="govtSchemeBenefitsInfoDAO" />
+		<property name="govtSchemesDAO" ref="govtSchemesDAO" />
+		<property name="voterInfoDAO" ref="voterInfoDAO" />
 		
 	</bean>	
 	
