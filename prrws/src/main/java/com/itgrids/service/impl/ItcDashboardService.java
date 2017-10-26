@@ -36,6 +36,7 @@ import com.itgrids.dto.EofficeDtlsVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.ItInformationDtlsVO;
+import com.itgrids.dto.ItecCMeoDBDetailsVO;
 import com.itgrids.dto.ItecEOfficeVO;
 import com.itgrids.dto.ItecOverviewVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
@@ -1165,6 +1166,141 @@ public class ItcDashboardService implements IItcDashboardService {
 					
 				}
 			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSectorWiseOverviewCountDetails - ItcDashboardService service",e);
+		}
+		return returnList;
+	}
+	
+	/**
+	 * @author Nandhini
+	 * @param InputVO inputVO
+	 * @description {This service is used to get CM eoDB OverView Deatails.}
+	 * @return List<ItecCMeoDBDetailsVO>
+	 * @Date 26-10-2017
+	 */
+	public List<ItecCMeoDBDetailsVO> getCMeoDBOverviewDetails(){
+		List<ItecCMeoDBDetailsVO> returnList = new ArrayList<ItecCMeoDBDetailsVO>();
+		try {
+			MOUTrackerIT[] list = new TrackerITServiceSoapProxy().EODB_ABSTRACT_REPORT();
+			if(list != null && list.length > 0){
+				for (int i = 0; i < list.length; i++) {
+					if(list[i].getCLEARENCE_NAME() != null && list[i].getCLEARENCE_NAME().trim().equalsIgnoreCase("Total")){
+						ItecCMeoDBDetailsVO totalVO = new ItecCMeoDBDetailsVO();
+							totalVO.setClearenceName(list[i].getCLEARENCE_NAME());
+							totalVO.setTotalApplications(list[i].getTOTAL_APPLICATIONS());
+							totalVO.setTotalApproved(list[i].getTOTAL_APPROVED());
+							totalVO.setTotalRejected(list[i].getTOTAL_REJECTED());
+							totalVO.setTotalReApproved(list[i].getTOTAL_REAPPROVED());
+							totalVO.setTotalPending(list[i].getTOTAL_PENDING());
+							totalVO.setPendingWithInSLA(list[i].getPENDING_WITN_IN_SLA());
+							totalVO.setPendingBeyondSLA(list[i].getPENDING_BEYOND_SLA());
+					
+						returnList.add(totalVO);
+					}
+				}
+			}
+			Long highApprovedValue = 0L;
+			Long lowApprovedValue = 0L;
+			Long highRejectedValue = 0L;
+			Long lowRejectedValue = 0L;
+			Long highPendingValue = 0L;
+			Long lowPendingValue = 0L;
+			if(list != null && list.length > 0){
+				for (int i = 0; i < list.length; i++) {
+				   if(i != list.length-1){
+					if(list[i+1].getCLEARENCE_NAME() != null && !list[i+1].getCLEARENCE_NAME().trim().equalsIgnoreCase("Total")){
+					if(i == 0){
+						highApprovedValue = Long.valueOf(list[i].getTOTAL_APPROVED());
+						lowApprovedValue = Long.valueOf(list[i].getTOTAL_APPROVED());
+						highRejectedValue = Long.valueOf(list[i].getTOTAL_REJECTED());
+						lowRejectedValue = Long.valueOf(list[i].getTOTAL_REJECTED());
+						highPendingValue  = Long.valueOf(list[i].getTOTAL_PENDING());
+						lowPendingValue = Long.valueOf(list[i].getTOTAL_PENDING());
+					}
+					
+					//High Approved 
+					 if(highApprovedValue >= Long.valueOf(list[i+1].getTOTAL_APPROVED())){
+						 highApprovedValue = highApprovedValue;
+					}else{
+						highApprovedValue = Long.valueOf(list[i+1].getTOTAL_APPROVED());
+					}
+					 
+					 //Low Approved
+					if(lowApprovedValue <= Long.valueOf(list[i+1].getTOTAL_APPROVED())){
+						lowApprovedValue = lowApprovedValue;
+					}else{
+						lowApprovedValue = Long.valueOf(list[i+1].getTOTAL_APPROVED());
+					}
+					
+					//High Rejected 
+					 if(highRejectedValue >= Long.valueOf(list[i+1].getTOTAL_REJECTED())){
+						 highRejectedValue = highRejectedValue;
+					}else{
+						highRejectedValue = Long.valueOf(list[i+1].getTOTAL_REJECTED());
+					}
+					 
+					 //Low Rejected
+					if(lowRejectedValue <= Long.valueOf(list[i+1].getTOTAL_REJECTED())){
+						lowRejectedValue = lowRejectedValue;
+					}else{
+						lowRejectedValue = Long.valueOf(list[i+1].getTOTAL_REJECTED());
+					}
+					
+					//High Pending 
+					 if(highPendingValue >= Long.valueOf(list[i+1].getTOTAL_PENDING())){
+						 highPendingValue = highPendingValue;
+					}else{
+						highPendingValue = Long.valueOf(list[i+1].getTOTAL_PENDING());
+					}
+					 
+					 //Low Pending
+					if(lowPendingValue <= Long.valueOf(list[i+1].getTOTAL_PENDING())){
+						lowPendingValue = lowPendingValue;
+					}else{
+						lowPendingValue = Long.valueOf(list[i+1].getTOTAL_PENDING());
+					}
+					
+					}
+				 }
+				}
+			}
+			if(list != null && list.length > 0){
+				ItecCMeoDBDetailsVO comparisionVO= new ItecCMeoDBDetailsVO();
+				for (int i = 0; i < list.length; i++) {
+						if(highApprovedValue != null && highApprovedValue.longValue() == Long.valueOf(list[i].getTOTAL_APPROVED())){
+							comparisionVO.setClearenceName(list[i].getCLEARENCE_NAME());
+							comparisionVO.setDashboardName(list[i].getDASH_BOARD_NAME());
+							comparisionVO.setTotalApproved(list[i].getTOTAL_APPROVED());
+						}
+						if(lowApprovedValue != null && lowApprovedValue.longValue() == Long.valueOf(list[i].getTOTAL_APPROVED())){
+							comparisionVO.setLowApproveClearenceName(list[i].getCLEARENCE_NAME());
+							comparisionVO.setLowApprDashBoardName(list[i].getDASH_BOARD_NAME());
+							comparisionVO.setLowApproval(list[i].getTOTAL_APPROVED());
+						}		
+						if(highRejectedValue != null && highRejectedValue.longValue() == Long.valueOf(list[i].getTOTAL_REJECTED())){
+							comparisionVO.setHighRejectedClearenceName(list[i].getCLEARENCE_NAME());
+							comparisionVO.setHighRejectedDashboardName(list[i].getDASH_BOARD_NAME());
+							comparisionVO.setHighRejected(list[i].getTOTAL_REJECTED());
+						}
+						if(lowRejectedValue != null && lowRejectedValue.longValue() == Long.valueOf(list[i].getTOTAL_REJECTED())){
+							comparisionVO.setLowRejectedClearenceName(list[i].getCLEARENCE_NAME());
+							comparisionVO.setLowRejctedDashBoardName(list[i].getDASH_BOARD_NAME());
+							comparisionVO.setLowRejected(list[i].getTOTAL_REJECTED());
+						}
+						if(highPendingValue != null && highPendingValue.longValue() == Long.valueOf(list[i].getTOTAL_PENDING())){
+							comparisionVO.setHighPendingClearenceName(list[i].getCLEARENCE_NAME());
+							comparisionVO.setHighPendingDashboardName(list[i].getDASH_BOARD_NAME());
+							comparisionVO.setHighPending(list[i].getTOTAL_PENDING());
+						}
+						if(lowPendingValue != null && lowPendingValue.longValue() == Long.valueOf(list[i].getTOTAL_PENDING())){
+							comparisionVO.setLowPendingClearenceName(list[i].getCLEARENCE_NAME());
+							comparisionVO.setLowPendingDashBoardName(list[i].getDASH_BOARD_NAME());
+							comparisionVO.setLowPending(list[i].getTOTAL_PENDING());
+						}
+					}
+				returnList.add(comparisionVO);
+				}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getSectorWiseOverviewCountDetails - ItcDashboardService service",e);
 		}

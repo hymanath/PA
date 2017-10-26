@@ -17,15 +17,12 @@ import com.itgrids.dto.ApInnovationCenterVO;
 import com.itgrids.dto.ApInnovationSocietyOverviewVO;
 import com.itgrids.dto.CmEoDBDtlsVO;
 import com.itgrids.dto.CohortDtlsVO;
-import com.itgrids.dto.EofficeDtlsVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
-import com.itgrids.dto.ItInformationDtlsVO;
+import com.itgrids.dto.ItecCMeoDBDetailsVO;
 import com.itgrids.dto.ItecEOfficeVO;
-import com.itgrids.dto.ItecOverviewVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
-import com.itgrids.dto.MeesevaKPIDtlsVO;
 import com.itgrids.service.IItcDashboardService;
 
 @EnableAutoConfiguration
@@ -151,6 +148,12 @@ public class ItcController {
 	   @RequestMapping(value = "/getSectorWiseOverviewCountDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	   public @ResponseBody  List<ItecPromotionDetailsVO>  getSectorWiseOverviewCountDetails(@RequestBody InputVO inputVO) {
 		   List<ItecPromotionDetailsVO>  resultList = itcDashboardService.getSectorWiseOverviewCountDetails(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getCMeoDBOverviewDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ItecCMeoDBDetailsVO>  getCMeoDBOverviewDetails() {
+		   List<ItecCMeoDBDetailsVO>  resultList = itcDashboardService.getCMeoDBOverviewDetails();
 		   return resultList;
 	   }
 }
