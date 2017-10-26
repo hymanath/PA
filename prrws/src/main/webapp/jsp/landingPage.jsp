@@ -321,7 +321,21 @@
 						<p class="">COMPLETED</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange SWATCHBHARATHIHHLColor" title="click to add as favourite component." attr_url="swatchBharatIHHLInfo" attr_full_block_name="SWATCH BHARATH IHHL" attr_color_name="gray" attr_block_name="SWATCHBHARATHIHHL" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange SWATCHBHARATHIHHLColor" title="click to add as favourite component." attr_url="swachhBharatMissionIHHL" attr_full_block_name="SWATCH BHARATH IHHL" attr_color_name="gray" attr_block_name="SWATCHBHARATHIHHL" aria-hidden="true"></i>
+						<a class="pull-right" href="swachhBharatMissionIHHL"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/Group 2362.png" >
+					<h5 style="display: inline-block;">MGNREGS IHHL</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="MGNREGSIHHLAllCls" style="margin-top: 0px"></h2>
+						<p class="">COMPLETED</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange MGNREGSIHHLColor" title="click to add as favourite component." attr_url="swatchBharatIHHLInfo" attr_full_block_name="MGNREGS IHHL" attr_color_name="gray" attr_block_name="MGNREGSIHHL" aria-hidden="true"></i>
 						<a class="pull-right" href="swatchBharatIHHLInfo"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -416,7 +430,7 @@
 <section style="margin-bottom: 100px;display:none" landing-block="itec" id="iteBlock" class="showhideCls">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-4">
+			<!--<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2351.png" >
 					<h5 style="display: inline-block;">IT E & C</h5>
@@ -430,7 +444,7 @@
 						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
-			</div>
+			</div>-->
 			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/promotions.png" >
@@ -441,7 +455,7 @@
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star PROMOTIONSColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="PROMOTIONS" attr_color_name="gray" aria-hidden="true" attr_block_name="PROMOTIONS"></i>
-						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+						<a class="pull-right" href="itcDashboard?component=promotions" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -455,7 +469,7 @@
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star EOFFICEColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="E OFFICE" attr_color_name="gray" aria-hidden="true" attr_block_name="EOFFICE"></i>
-						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+						<a class="pull-right" href="itcDashboard?component=eOffice" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -469,7 +483,7 @@
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star MEESEVA-SLAColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="MEESEVA - SLA" attr_color_name="gray" aria-hidden="true" attr_block_name="MEESEVA-SLA"></i>
-						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+						<a class="pull-right" href="itcDashboard?component=meesevaSla" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -483,7 +497,7 @@
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star APINNOVATIONSOCIETYColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="AP INNOVATION SOCIETY" attr_color_name="gray" aria-hidden="true" attr_block_name="APINNOVATIONSOCIETY"></i>
-						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+						<a class="pull-right" href="itcDashboard?component=apInnovationSociety" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -497,7 +511,7 @@
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star MEESEVA&KPIColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="MEESEVA & KPI" attr_color_name="gray" aria-hidden="true" attr_block_name="MEESEVA&KPI"></i>
-						<a class="pull-right" href="itcDashboard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+						<a class="pull-right" href="itcDashboard?component=meesevaKpi" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>

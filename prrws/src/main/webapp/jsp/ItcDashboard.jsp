@@ -22,6 +22,10 @@
 	border-color:#333
 }
 </style>
+<script type="text/javascript">
+var searchParams = new URLSearchParams(window.location.search);
+	searchParams = searchParams.get("component");
+</script>
 </head>
 <body>
    <header>
@@ -179,7 +183,7 @@
 					<div id="departmentWiseDivId"></div>
 				</div>
 			</div>
-			<div class="row  m_top25">
+			<div class="row m_top25">
 				<div class="col-sm-12">
 					<div id="departmentBlockWiseDetailsId"></div>
 					<div id="APISXLr8APOverview" class="m_top10"></div>
