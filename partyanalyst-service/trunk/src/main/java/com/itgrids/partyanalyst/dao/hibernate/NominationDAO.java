@@ -5510,7 +5510,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT distinct C.candidate_id," +
 				" C.lastname,c.constituency_id,c.name,p.party_id,p.short_name,"
-				+ " p.party_flag from nomination n,constituency_election ce,"
+				+ " p.party_flag,cr.margin_votes,cr.margin_votes_percentage from nomination n,constituency_election ce,"
 				+ " constituency_election_result cer,election e,election_scope es,party p,"
 				+ " constituency c ,candidate_result cr ,parliament_assembly pc,candidate C "
 				+ " where n.party_id = p.party_id and n.consti_elec_id = ce.consti_elec_id "
@@ -5556,7 +5556,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT distinct C.candidate_id,C.lastname,c.constituency_id," +
 				" c.name,p.party_id,p.short_name," +
-				" p.party_flag from nomination n," +
+				" p.party_flag,cr.margin_votes,cr.margin_votes_percentage from nomination n," +
 				" constituency_election ce,constituency_election_result cer," +
 				" election e ,election_scope es ,party p , constituency c ,candidate_result cr,candidate C " +
 				" where n.party_id = p.party_id and n.consti_elec_id = ce.consti_elec_id and " +
