@@ -1474,8 +1474,8 @@ IElectionDAO {
 		}
 		return query.list();
 	}
-
-	public  List<String> getElectionYearByScopeIds(List<Long> electionScopeIds,List<String> subTypeArr){
+	
+	public  List<String> getElectionYearByScopeIds(List<Long> electionScopeIds,List<String> subTypeArr){//ara
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.electionYear from Election model " +
 				         " where model.electionScope.electionScopeId in(:electionScopeIds)");
@@ -1483,7 +1483,7 @@ IElectionDAO {
 		if(subTypeArr.size()>0l && subTypeArr !=null){
 			sb.append(" and model.elecSubtype in(:subTypeArr)");
 		}
-		
+		sb.append(" and model.electionYear >1982 ");
 		sb.append(" order by model.electionYear desc ");
 		
 		Query qry = getSession().createQuery(sb.toString());
