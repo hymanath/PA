@@ -5470,7 +5470,7 @@ function getElectionTypes(type){
 							str+='<input value="BYE" type="checkbox" name="optionsRadios1"  class="checkedMainByeType" />By Election';
 						str+='</label>';
 						str+='<label class="checkbox-inline">';
-							str+='<input value="true" type="checkbox" name="allianceParty" id="allaincePartyFieldId" class="checkedMainByeType" />With Alliance';
+							str+='<input value="true" type="checkbox" name="allianceParty" id="allaincePartyFieldId" class="" />With Alliance';
 						str+='</label>';
 					str+='</div>';
 					str+='<div class="col-sm-4">';
@@ -5566,8 +5566,8 @@ function buildElectionInformationLocationWise(result,type){
 		
 		//str+='<div class="col-sm-12">';
 		str+='<div class="table-responsive">';
-		str+='<h5 style="color:#2B908F;" class="pull-right"><b>Vote Share %</b></h5>';	
-				str+='<table class="table table-condensed table-hover m_top10  table-bordered table-striped" id="dataTableElecBlock">';
+		//str+='<h5 style="color:#2B908F;" class="pull-right"><b>Vote Share %</b></h5>';	
+				str+='<table class="table table-condensed table-hover m_top10  table-bordered table-striped table_font" id="dataTableElecBlock">';
 					str+='<thead>';
 						str+='<tr>';
 							str+='<th rowspan="2">Party</th>';
@@ -5585,7 +5585,7 @@ function buildElectionInformationLocationWise(result,type){
 						str+='<tr>';
 						for(var j in result[0].list){
 							str+='<th>Won Count</th>';
-							str+='<th>Vote Share %</th>';
+							str+='<th>Vote Share&nbsp;%</th>';
 						}
 						str+='</tr>';
 					str+='</thead>';
