@@ -7850,19 +7850,28 @@ function getTrustEducationOverviewDetails(yearId){
 			}
 		}
 		if(result !=null && result.subList1 !=null && result.subList1.length>0){
-			var categoriesArr=[];
 			var totalCount=0;
 			for(var i in result.subList1){
+				var categoriesArr=[];
 				var mainArr=[];
 				totalCount = result.subList1[i].count;
 				if(result.subList1[i].subList !=null && result.subList1[i].subList.length>0){
 					for(var j in result.subList1[i].subList){
-						categoriesArr.push(result.subList1[i].subList[j].name);
+						
 						if(type == "grievance"){
+							if(result.subList1[i].name == "GOVT"){
+								categoriesArr.push(result.subList1[i].subList[j].name);
+							}else if(result.subList1[i].name == "PARTY"){
+								categoriesArr.push(result.subList1[i].subList[j].name);
+							}else if(result.subList1[i].name == "WELFARE"){
+								categoriesArr.push(result.subList1[i].subList[j].name);
+							}
 							mainArr.push({"y":result.subList1[i].subList[j].count,color:grivanceColorObj[result.subList1[i].subList[j].name.trim()]})
 						}else if(type == "insurance"){
+							categoriesArr.push(result.subList1[i].subList[j].name);
 							mainArr.push({"y":result.subList1[i].subList[j].count,color:insuranceColorObj[result.subList1[i].subList[j].name.trim()]})
 						}else if(type == "ntrTrust"){
+							categoriesArr.push(result.subList1[i].subList[j].name);
 							mainArr.push({"y":result.subList1[i].subList[j].count,color:grivanceColorObj[result.subList1[i].subList[j].name.trim()]})
 						}
 						
