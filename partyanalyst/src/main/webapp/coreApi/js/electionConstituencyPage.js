@@ -902,7 +902,9 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,ele
 				"info":     false,
 				"searching": false,
 				"autoWidth": true,
-				"sDom": '<"top"iflp>rt<"bottom"><"clear">'
+				"aaSorting": [[2,"desc"]],
+				"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+				
 			});
 		}
 		$('.levelWiseCandiRstsCls').slick({
