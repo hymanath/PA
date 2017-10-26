@@ -6825,7 +6825,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		    areaWisePartyMeetingDetailsObj.addAll(partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId,null));
 		}
 		
-		Map<String,MeetingsVO>  monthTemplateMap=new HashMap<String,MeetingsVO>();
+		Map<String,MeetingsVO>  monthTemplateMap=new LinkedHashMap<String,MeetingsVO>();
 		if(areaWisePartyMeetingDetailsObj != null && areaWisePartyMeetingDetailsObj.size()>0){
 		for(Object[] param : areaWisePartyMeetingDetailsObj){
 			Long year=commonMethodsUtilService.getLongValueForObject(param[3]);
@@ -6901,8 +6901,6 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 				yearWiseVO.setNotUpDatedCountPercentage(df.format(((float)yearWiseVO.getNotUpDatedCount()/(float)yearWiseVO.getTotal())*100));
 
 			}
-			 Collections.sort(yearWiseVOList.subList(1, yearWiseVOList.size()),monthWiseSort);
-			 Collections.sort(yearWiseVOList.subList(1, yearWiseVOList.size()),yearWiseSort);
 		}
 		}
 		catch (Exception e) {
@@ -6911,22 +6909,6 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		return finalList;
 	}
 	
-	 public static Comparator<MeetingsVO> yearWiseSort = new Comparator<MeetingsVO>()
-	 {
-	   public int compare(MeetingsVO pvol1, MeetingsVO pvol2)
-	     {
-	        return ((pvol2.getYear().intValue() - pvol1.getYear().intValue()));
-	     }
-	 };
-	 
-	 public static Comparator<MeetingsVO> monthWiseSort = new Comparator<MeetingsVO>()
-			 {
-			   public int compare(MeetingsVO pvol1, MeetingsVO pvol2)
-			     {
-			        return ((pvol2.getNoOfMonth().intValue() - pvol1.getNoOfMonth().intValue()));
-			     }
-			 };
-	 
 	public MeetingsVO getMatchedVO(List<MeetingsVO> voList,Long year,Long month){
 		try{
 			if(voList == null || voList.size() == 0)
