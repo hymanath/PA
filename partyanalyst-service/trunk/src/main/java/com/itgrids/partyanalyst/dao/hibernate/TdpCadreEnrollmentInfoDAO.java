@@ -71,7 +71,7 @@ public class TdpCadreEnrollmentInfoDAO extends GenericDaoHibernate<TdpCadreEnrol
 		 }else if(LocationTypeid == 4l && locationValues!= null && locationValues.size() >0){
 			 queryStr.append(" model.locationScopeId=:LocationTypeid and model.locationValue in(:locationValues) ");
 		 }
-		 else if( locationValues!= null && locationValues.size() >0 && (LocationTypeid == 5l || LocationTypeid == 6l || LocationTypeid == 7l || LocationTypeid == 8l)){
+		 else if( locationValues!= null && locationValues.size() >0 && (LocationTypeid == 5l || LocationTypeid == 6l || LocationTypeid == 7l || LocationTypeid == 8l || LocationTypeid == 10l)){
 			 queryStr.append(" model.locationScopeId=:LocationTypeid and model.locationValue in(:locationValues) ");
 		 }
 		 if(year != null && !year.trim().isEmpty()){
