@@ -245,7 +245,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 								for(var i in result.list){
 									str+='<tr>';
 									str+='<td>'+result.list[i].name+'</td>';
-									str+='<td>200</td>';
+									str+='<td>'+result.list[i].totalVoters+'</td>';
 									if(result.list[i].wonSeatsCount !=null && result.list[i].wonSeatsCount>0){
 										str+='<td>'+result.list[i].wonSeatsCount+'</td>';
 									}else{
@@ -276,11 +276,11 @@ function getGovtSchemeWiseBenefitMembersCount(){
 		str+='</div>';
 		
 		$("#benefitsOverViewBlockId").html(str);
-		/* $("#locationWiseBenefitDT").dataTable({
+		$("#locationWiseBenefitDT").dataTable({
 			"iDisplayLength": 10,
 			 "aaSorting": [[ 3, "desc" ]], 
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
-		}); */
+		}); 
 		$(".tooltipCls").tooltip();
 		
 		$("#benefitMainGraphDivId").highcharts({
