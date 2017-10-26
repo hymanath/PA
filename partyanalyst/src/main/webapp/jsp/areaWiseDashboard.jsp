@@ -309,7 +309,7 @@
 					<div class="row">
 						<div id="stateMeetingsBlockId" class="m_top20"></div>
 						<div class="col-sm-8" id="committeeMeetingsBLock">
-							<h4 class="panel-title">Committee Meetings</h4>
+							<h3 class="theme-title-color">Committee Meetings</h3>
 							<div id="committeeMeetingsBlockId" class="m_top10"></div>
 						</div>
 					</div>
