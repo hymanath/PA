@@ -39,6 +39,8 @@ public class CandidateDetailsForConstituencyTypesVO {
 	private Long electionYear;
 	private List<CandidateDetailsForConstituencyTypesVO> candateList=new ArrayList<CandidateDetailsForConstituencyTypesVO>(0);
 	private String image;
+	private Long marginVotes;
+	private String marginVotesPercentage;
 	
 	public Long getElectionYear() {
 		return electionYear;
@@ -248,6 +250,18 @@ public class CandidateDetailsForConstituencyTypesVO {
 	}
 	public void setElectionId(Long electionId) {
 		this.electionId = electionId;
+	}
+	public Long getMarginVotes() {
+		return marginVotes;
+	}
+	public void setMarginVotes(Long marginVotes) {
+		this.marginVotes = marginVotes;
+	}
+	public String getMarginVotesPercentage() {
+		return marginVotesPercentage;
+	}
+	public void setMarginVotesPercentage(String marginVotesPercentage) {
+		this.marginVotesPercentage = marginVotesPercentage;
 	}
 	
 	
