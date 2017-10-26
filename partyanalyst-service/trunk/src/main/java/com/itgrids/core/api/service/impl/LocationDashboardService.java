@@ -6726,6 +6726,8 @@ public void settingPartyWiseCandidateDetails(List<Object[]> mpPartyCountDetails,
 			typeVo.setPartyId(commonMethodsUtilService.getLongValueForObject(param[4]));
 			typeVo.setParty(commonMethodsUtilService.getStringValueForObject(param[5]));
 			typeVo.setPartyFlag(commonMethodsUtilService.getStringValueForObject(param[6]));
+			typeVo.setMarginVotes(commonMethodsUtilService.getLongValueForObject(param[7]));
+			typeVo.setMarginVotesPercentage(commonMethodsUtilService.getStringValueForObject(param[8]));
 			finalList.add(typeVo);
 		}
 		List<Object[]> cadreCandidateDeatils = tdpCadreCandidateDAO.nomiantionCandidateDetails(candidateIds);
