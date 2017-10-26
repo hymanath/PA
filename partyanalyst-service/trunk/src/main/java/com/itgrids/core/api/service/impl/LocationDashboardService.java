@@ -7347,7 +7347,10 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 				List<GrivenceStatusVO> locationDtlsList = getLocationWiseTypeOfIssueGrivenceComplaintDtls(typeOfIssueObjList, typeOfIssueMap, "");
 				resultList.addAll(locationDtlsList);
 			}
-			
+			if(resultList != null && resultList.size()>0){
+				Collections.sort(resultList, idSorting);
+			}
+
 		}catch(Exception e){
 			Log.error("Exception raised at getLocationWiseTypeOfIssueGrivenceComplaintCount() in  LocationDashboardService class "+e);
 		}
@@ -7383,6 +7386,15 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		}
 		return resultList;
 	}
+	public static Comparator<GrivenceStatusVO> idSorting = new Comparator<GrivenceStatusVO>()
+	{
+		@Override
+		public int compare(GrivenceStatusVO gsvo1, GrivenceStatusVO gsvo2) {
+			
+			return(Long.valueOf(gsvo1.getLocationIdStr()).intValue() - Long.valueOf(gsvo2.getLocationIdStr()).intValue());
+		}
+		
+	};
 	private Map<String,GrivenceStatusVO> getTypeOfIssue(List<Object[]> objList) {
 		Map<String,GrivenceStatusVO> typeOfIssueMap = new HashMap<String, GrivenceStatusVO>(0);
 		 try {
@@ -7540,7 +7552,9 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 				List<GrivenceStatusVO> locationDtlsList = getLocationWiseInsuranceComplaintDtls(typeOfIssueObjList, typeOfIssueMap, "");
 				resultList.addAll(locationDtlsList);
 			}
-			
+			if(resultList != null && resultList.size()>0){
+				Collections.sort(resultList, idSorting);
+			}
 		}catch(Exception e){
 			Log.error("Exception raised at getLocationWiseInsuranceIssueTypeComplaintCount() in  LocationDashboardService class "+e);
 		}
@@ -7838,6 +7852,9 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 				Map<String,GrivenceStatusVO> typeOfIssueMap = getAllStatus(objList,"trustEducation");
 				List<GrivenceStatusVO> locationDtlsList = getLocationWiseTrustEducationComplaintDtls(objList, typeOfIssueMap, "");
 				resultList.addAll(locationDtlsList);
+			}
+			if(resultList != null && resultList.size()>0){
+				Collections.sort(resultList, idSorting);
 			}
 			
 		}catch(Exception e){
