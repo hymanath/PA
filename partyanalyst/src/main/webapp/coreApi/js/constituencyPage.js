@@ -1387,7 +1387,11 @@ function getCandidateAndPartyInfoForConstituency(){
 											parliament+='<img src="https://mytdp.com/images/candidates/'+result[0].subList1[i].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile" onerror="setDefaultImage(this);"/>';
 										}
 										parliament+='<span class="border-image img-border">';
-											parliament+='<img src="images/party_flags/'+result[0].subList1[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/>';
+											if(result[0].subList1[i].party == "TDP" || result[0].subList1[i].party == "YSRC"){
+												parliament+='<img class="" onerror="setDefaultImage(this);" src="images/party_flags/'+result[0].subList1[i].party+'_01.PNG" alt="'+result[0].subList1[i].party+'" style="height:25px;width:25px;"></img>';
+											}else{
+												parliament+='<img class="" onerror="setDefaultImage(this);" src="images/party_flags/'+result[0].subList1[i].party+'.png" alt="'+result[0].subList1[i].party+'" style="height:25px;width:25px;"></img>';
+											}
 										parliament+='</span>';
 									parliament+='</div>';
 									parliament+='<div class="media-body">';
@@ -1438,7 +1442,11 @@ function getCandidateAndPartyInfoForConstituency(){
 											
 											
 											assembly+='<span class="border-image img-border">';
-												assembly+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party" style="height:25px;width:25px;"/>';
+												if(result[i].assemblyCandidateInfo[0].party == "TDP" || result[i].assemblyCandidateInfo[0].party == "YSRC"){
+													assembly+='<img class="" onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].party+'_01.PNG" alt="'+result[i].assemblyCandidateInfo[0].party+'" style="height:25px;width:25px;"></img>';
+												}else{
+													assembly+='<img class="" onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].party+'.png" alt="'+result[i].assemblyCandidateInfo[0].party+'" style="height:25px;width:25px;"></img>';
+												}
 											assembly+='</span>';
 										assembly+='</div>';
 										assembly+='<div class="media-body">';
@@ -1486,7 +1494,11 @@ function getCandidateAndPartyInfoForConstituency(){
 										  parliament+='<img src="https://mytdp.com/images/candidates/'+result[0].subList1[0].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile"  onerror="setDefaultImage(this);"/>';
 									 }
 										parliament+='<span class="border-image img-border">';
-										parliament+='<img src="images/party_flags/'+result[0].subList1[0].partyFlag+'"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/>';
+										if(result[0].subList1[0].party == "TDP" || result[0].subList1[0].party == "YSRC"){
+											parliament+='<img class="" onerror="setDefaultImage(this);" src="images/party_flags/'+result[0].subList1[0].party+'_01.PNG" alt="'+result[0].subList1[0].party+'" style="height:25px;width:25px;"></img>';
+										}else{
+											parliament+='<img class="" onerror="setDefaultImage(this);" src="images/party_flags/'+result[0].subList1[0].party+'.png" alt="'+result[0].subList1[0].party+'" style="height:25px;width:25px;"></img>';
+										}
 									parliament+='</span>';
 								parliament+='</div>';
 								parliament+='<div class="media-body">';
@@ -1518,7 +1530,11 @@ function getCandidateAndPartyInfoForConstituency(){
 											parliament+='<img  onerror="setDefaultImage(this);" src="https://mytdp.com/images/candidates/'+result[i].assemblyCandidateInfo[0].candidateId+'.jpg" class="media-object profile-image img-border" alt="profile"/>';
 										}
 										parliament+='<span class="border-image img-border">';
-											parliament+='<img  onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].partyFlag+'" alt="party" style="height:25px;width:25px;"/>';
+											if(result[i].assemblyCandidateInfo[0].party == "TDP" || result[i].assemblyCandidateInfo[0].party == "YSRC"){
+												parliament+='<img class="" onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].party+'_01.PNG" alt="'+result[i].assemblyCandidateInfo[0].party+'" style="height:25px;width:25px;"></img>';
+											}else{
+												parliament+='<img class="" onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].assemblyCandidateInfo[0].party+'.png" alt="'+result[i].assemblyCandidateInfo[0].party+'" style="height:25px;width:25px;"></img>';
+											}
 										parliament+='</span>';
 									parliament+='</div>';
 									parliament+='<div class="media-body">';
@@ -1574,9 +1590,14 @@ function getCandidateAndPartyInfoForConstituency(){
 												}
 													
 													stateLevel+='<span class="border-image img-border">';
-													if(result[i].partyFlag !=null){
-														
-														stateLevel+='<img onerror="setDefaultImage(this);" src="images/party_flags/'+result[i].partyFlag+'" alt="party" style="height:25px;width:25px;"/>';
+													
+													
+													if(result[i].party !=null){
+														if(result[i].party == "TDP" || result[i].party == "YSRC"){
+															stateLevel+='<img class="" src="images/party_flags/'+result[i].party+'_01.PNG" alt="'+result[i].party+'" style="height:25px;width:25px;"></img>';
+														}else{
+															stateLevel+='<img class="" src="images/party_flags/'+result[i].party+'.png" alt="'+result[i].party+'" style="height:25px;width:25px;"></img>';
+														}
 													}else{
 														stateLevel+='<img  src="images/User.png" alt="party" style="width:20px;"/>';
 													}
@@ -5764,7 +5785,12 @@ function getPartyWiseMPandMLACandidatesCounts(){
 										}else if(result.subList[i].party == "OTHERS"){
 											str+='<p class="m_top10">'+result.subList[i].party+'</p>';
 										}else{
-											str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
+											if(result.subList[i].party == "TDP" || result.subList[i].party == "YSRC"){
+												str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'_01.PNG"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
+											}else{
+												str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/> '+result.subList[i].party+'</p><p class="f-12">'+result.subList[i].candidateName+'</p>';
+											}
+											
 										}
 										//str+='<p class="f-10">Telugu Desam Party</p>';
 									str+='</div>';
@@ -5799,7 +5825,12 @@ function getPartyWiseMPandMLACandidatesCounts(){
 									}else if(result.subList2[i].party == "OTHERS"){
 										str+='<p class="m_top10">'+result.subList2[i].party+'</p>';
 									}else{
-										str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
+										if(result.subList2[i].party == "TDP" || result.subList2[i].party == "YSRC"){
+											str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'_01.PNG"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
+										}else{
+											str+='<p class="m_top10"><img class="logoRoundedCss" src="images/party_flags/'+result.subList2[i].party+'.PNG"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/> '+result.subList2[i].party+'</p><p class="f-12">'+result.subList2[i].candidateName+'</p>';
+										}
+										
 									}
 										
 										//str+='<p class="f-10">Telugu Desam Party</p>';
@@ -7174,10 +7205,20 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 					str+='<tr>';
 						if(result[i].partyFlag != null ){
 							if(result[i].party != null && result[i].cadreId != null && result[i].partyId !=872){
-								str+='<td style="vertical-align: middle; text-align: center;"><img src="images/party_flags/'+result[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/><i class="fa fa-star" aria-hidden="true" ></i></td>'; 
+								if(result[i].party == "TDP" || result[i].party == "YSRC"){
+									str+='<td style="vertical-align: middle; text-align: center;"><img src="images/party_flags/'+result[i].party+'_01.PNG"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/><i class="fa fa-star" aria-hidden="true" ></i></td>'; 
+								}else{
+									str+='<td style="vertical-align: middle; text-align: center;"><img src="images/party_flags/'+result[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/><i class="fa fa-star" aria-hidden="true" ></i></td>'; 
+								}
+								
 							}else{
 							    //str+='<td>'+result[i].partyFlag+'</td>'; 
-						       str+='<td style="vertical-align: middle; text-align: center;"><img src="images/party_flags/'+result[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/></td>';
+								if(result[i].party == "TDP" || result[i].party == "YSRC"){
+									str+='<td style="vertical-align: middle; text-align: center;"><img src="images/party_flags/'+result[i].party+'_01.PNG"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/></td>';
+								}else{
+									str+='<td style="vertical-align: middle; text-align: center;"><img src="images/party_flags/'+result[i].partyFlag+'"  onerror="setDefaultImage(this);" alt="party" style="height:25px;width:25px;"/></td>';
+								}
+						       
 							}							
 						}else{
 							str+='<td style="vertical-align: middle; text-align: center;"> - </td>';     
