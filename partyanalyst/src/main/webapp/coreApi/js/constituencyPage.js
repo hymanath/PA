@@ -272,6 +272,7 @@ function onLoadAjaxCalls()
 	getLocationWiseMeetingsCountDetails(1);
 	getLocationWiseMeetingsCountDetails(2);
 	getLocationWiseMeetingsCountDetails(3);
+	getLocationWiseMeetingInviteeMembersAction(3,26);
 	 //candidate Profiles 1st block
 	if(locationLevelId == "2"){
 		getPartyWiseMPandMLACandidatesCounts();
@@ -8346,4 +8347,26 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 			});
 		}
 	}
+}
+function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,partyMeetingTypeId){
+	//$("#openPostDetailsModalDivId").html(spinner);
+	jsObj={
+		
+		locationTypeId			:locationLevelId,
+		locationValues			:userAccessLevelValuesArray,
+		fromDate 				:customStartMeetingsDate,
+		toDate 					:customEndMeetingsDate,
+		partyMeetingMainTypeId	:partyMeetingMainTypeId,
+		partyMeetingTypeId:partyMeetingTypeId,
+		includePastMeetings:"",
+		partyMeetingId:701580
+	}
+	$.ajax({
+		type : "GET",
+		url : "getLocationWiseMeetingInviteeMembersAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){ 
+				
+	});
 }

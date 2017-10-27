@@ -4496,6 +4496,7 @@
     	<property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO" />
     	<property name="districtDAO" ref="districtDAO" />
     	<property name="dateUtilService" ref="dateUtilService" />
+    	<property name="coreDashboardPartyMeetingService" ref="coreDashboardPartyMeetingService" />
     </bean>
     <bean name="loactionDetailsDashBoardService" class="com.itgrids.core.api.service.impl.LoactionDetailsDashBoardService" >
     	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
