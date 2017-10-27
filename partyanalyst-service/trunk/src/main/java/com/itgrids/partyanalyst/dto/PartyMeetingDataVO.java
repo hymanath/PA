@@ -66,10 +66,21 @@ public class PartyMeetingDataVO implements Serializable{
 	private Long designationId = 0l;
 	private String designationname;
 	private List<String> stringList;
+	private Set<Long> inviteeAttendedIdsList = new HashSet<Long>(0);
+	
 	public PartyMeetingDataVO(){}
 	
 	
-	
+	public Set<Long> getInviteeAttendedIdsList() {
+		return inviteeAttendedIdsList;
+	}
+
+	public void setInviteeAttendedIdsList(Set<Long> inviteeAttendedIdsList) {
+		this.inviteeAttendedIdsList = inviteeAttendedIdsList;
+	}
+
+
+
 	public List<String> getStringList() {
 		return stringList;
 	}
