@@ -1033,6 +1033,19 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 							sessionVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
 							sessionVO.setDateOfbirth(commonMethodsUtilService.getStringValueForObject(param[8]));
 							sessionVO.setDateStr(commonMethodsUtilService.getStringValueForObject(param[9]));
+							SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+							SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					        Date lateTime = sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[8]).substring(0, 10)+" "+commonMethodsUtilService.getStringValueForObject(param[9]));
+					        Date attendedTme = sdf2.parse(commonMethodsUtilService.getStringValueForObject(param[8]));
+					        long attendedMilliSec = attendedTme.getTime();
+					        long lateMilliSec = lateTime.getTime();
+							if(attendedMilliSec>=lateMilliSec){
+								sessionVO.setStatus("late");
+							}else if(attendedMilliSec<lateMilliSec){
+								sessionVO.setStatus("intime");
+							}else{
+								sessionVO.setStatus("abscent");
+							}
 							partyMeetingVO.getIdnameList().add(sessionVO);
 						}
 						
