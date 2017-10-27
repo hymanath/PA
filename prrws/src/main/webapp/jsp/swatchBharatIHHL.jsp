@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rural Water Supply Dashboard</title>
+<title>MGNREGS IHHL</title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
@@ -153,7 +153,7 @@
 				<div class="col-sm-12">
 					<div class="panel panel-black panel-default">
 						<div class="panel-heading">
-							<h4 class="panel-title">Swatch Bharat - IHHL</h4>
+							<h4 class="panel-title">MGNREGS - IHHL</h4>
 						</div>
 						<div class="panel-body">
 							<div class="row">
@@ -389,7 +389,7 @@ function overviewData(divId){
 					collapse+='<div class="panel panel-default panel-black">';
 						collapse+='<div class="panel-heading" role="tab" id="heading'+divId+'">';
 							collapse+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+'" href="#collapse'+divId.replace(/\s+/g, '')+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+'">';
-							collapse+='<h4 class="panel-title text-capital">'+divId+' overview</h4>';
+							collapse+='<h4 class="panel-title text-capital">MGNREGS '+divId+' overview</h4>';
 							collapse+='</a>';
 						collapse+='</div>';
 						collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+'">';

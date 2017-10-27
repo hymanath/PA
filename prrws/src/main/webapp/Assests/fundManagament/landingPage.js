@@ -664,8 +664,14 @@ function getMGNREGSIHHLOverviewData(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		var ComPerc =result.subList1[0].completed*100/result.subList1[0].target;
-		$(".MGNREGSIHHLAllCls").html(ComPerc.toFixed(2)+'%');
+		if(result != null )
+		{
+			var ComPerc =result.subList1[0].completed*100/result.subList1[0].target;
+			$(".MGNREGSIHHLAllCls").html(ComPerc.toFixed(2)+'%');
+		}else{
+			$(".MGNREGSIHHLAllCls").html(" - ");
+		}
+		
 	});
 }
 function getSBPaymentsAbstract(){
@@ -1018,21 +1024,19 @@ function getLocationWiseAlertStatusCounts()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp){
-			var CompleteClosedCount = 0;
-			var completeClosed = 0;
+			var notifiedAct = 0;
 			for(var i in ajaxresp)
 			{
 				for(var j in ajaxresp[i].statusList)
 				{
-					if(ajaxresp[i].statusList[j].id==4 ||  ajaxresp[i].statusList[j].id == 12){
-						if(ajaxresp[i].statusList[j].count !=null && ajaxresp[i].statusList[j].count>0){
-							CompleteClosedCount = CompleteClosedCount+ajaxresp[i].statusList[j].count;
-							completeClosed = CompleteClosedCount;
-						}
+					if(ajaxresp[i].statusList[j].id==2){
+						notifiedAct = notifiedAct + ajaxresp[i].statusList[j].count;
+					}else if(ajaxresp[i].statusList[j].id==3){
+						notifiedAct = notifiedAct + ajaxresp[i].statusList[j].count;
 					}
 				}
 			}
-			$(".JalavaniAllCls").html(completeClosed);
+			$(".JalavaniAllCls").html(notifiedAct);
 		}
 	});
 }
