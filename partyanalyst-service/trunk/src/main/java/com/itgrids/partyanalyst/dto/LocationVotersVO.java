@@ -23,7 +23,11 @@ public class LocationVotersVO {
 	public Long casteGroupId;
 	public String castgroup;
 	public Double voterPercentage=0.0d;
-
+	public Long casteId = 0l;
+	public String casteName;
+	public Long locationId;
+	public String locationName;
+	
 	public Long getAgeRangeId() {
 		return ageRangeId;
 	}
@@ -139,6 +143,30 @@ public class LocationVotersVO {
 	}
 	public void setVoterPercentage(Double voterPercentage) {
 		this.voterPercentage = voterPercentage;
+	}
+	public Long getCasteId() {
+		return casteId;
+	}
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
+	}
+	public String getCasteName() {
+		return casteName;
+	}
+	public void setCasteName(String casteName) {
+		this.casteName = casteName;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
 	}
 	
 	

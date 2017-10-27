@@ -10,5 +10,6 @@ public interface ILocationWiseCasteInfoService {
 	public List<LocationVotersVO> getVotersCastGroupWiseCount(Long locationTypeId,Long locationValue,Long publicationDateId,Long EnrollmentYearId);
 	public List<LocationVotersVO> getCasteNAgeWiseVoterNCadreCounts(Long locationTypeId,Long locationValue, Long publicationDateId,Long casteGroupId, Long casteId,Long enrollemntyearId);
 	public List<LocationVotersVO> getVotersAndcadreAgeWiseCount(Long locationTypeId,Long locationValue, Long publicationDateId, Long enrollmentId);
+	public List<LocationVotersVO> getCasteWiseCadreCounts(Long locationTypeId,List<Long> LocationValue, List<Long> enrollmentYearIds);
 
 }
