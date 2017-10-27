@@ -1817,14 +1817,15 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationWiseStateMeetingAttendees(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid,Long partyMeetingTypeId){
+	public List<Object[]> getLocationWiseStateMeetingAttendees(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid,Long partyMeetingTypeId,Long partyMeetingId,Set<Long> inviteeIds){
 	       
 	       //0-meetingStatus,1-levelId,2-level,3-count
 	       StringBuilder sb = new StringBuilder();
 	       
 	       sb.append(" select model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeeting.partyMeetingType.partyMeetingMainType.meetingType," +
 	          "model.partyMeeting.partyMeetingType.partyMeetingTypeId,model.partyMeeting.partyMeetingType.type,model.attendance.tdpCadre.tdpCadreId" +
-	          ",model.partyMeeting.partyMeetingId,sessionType.sessionTypeId,sessionType.type,model.attendance.attendedTime,partyMeetingSession.lateTime,model.partyMeeting.meetingName from PartyMeetingAttendance model left join  model.partyMeetingSession partyMeetingSession  " +
+	          ",model.partyMeeting.partyMeetingId,sessionType.sessionTypeId,sessionType.type,model.attendance.attendedTime,partyMeetingSession.lateTime,model.partyMeeting.meetingName," +
+	          "model.partyMeeting.startDate  from PartyMeetingAttendance model left join  model.partyMeetingSession partyMeetingSession  " +
 	          "left join partyMeetingSession.sessionType sessionType where model.partyMeeting.isActive = 'Y' and partyMeetingSession.isDeleted = 'N' and ");
 	       
 	       if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
@@ -1853,11 +1854,16 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	       if(partyMeetingMainTypeid != null && partyMeetingMainTypeid.longValue() > 0l){
 	    	   sb.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeid ");
 	       }
-	       
+	       if(inviteeIds != null && inviteeIds.size() >0){
+	    	   sb.append(" and model.attendance.tdpCadre.tdpCadreId in (:inviteeIds) ");
+	       }
 	       if(fromDate != null && toDate != null){
 	    	   sb.append(" and date(model.partyMeeting.startDate) between :fromDate and :toDate ");
 	       }
-	       //sb.append(" group by model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeetingType.partyMeetingTypeId ");
+	       if(partyMeetingId != null && partyMeetingId.longValue() >0){
+	    	   sb.append(" and model.partyMeeting.partyMeetingId = :partyMeetingId " );
+	       }
+	       sb.append(" order by model.partyMeeting.startDate desc ");
 	       
 	       Query query = getSession().createQuery(sb.toString());
 	       
@@ -1873,6 +1879,12 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	       }
 	       if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0l){
 	    	   query.setParameter("partyMeetingTypeId", partyMeetingTypeId);
+	       }
+	       if(partyMeetingId != null && partyMeetingId.longValue() >0){
+	    	   query.setParameter("partyMeetingId", partyMeetingId);
+	       }
+	       if(inviteeIds != null && inviteeIds.size() >0){
+	    	   query.setParameterList("inviteeIds", inviteeIds); 
 	       }
 	       return query.list();
 	     }

@@ -2651,6 +2651,93 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 	       }
 	       return query.list();
 	     }
+	
+	public List<Object[]> getLocationWiseMeetingInviteeMembers(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid
+			,Long partyMeetingTypeId,Long partyMeetingId,Set<Long> inviteeIds){
+	       
+	        StringBuilder sb = new StringBuilder();
+	       	
+	       sb.append(" SELECT TC.tdp_cadre_id,TC.first_name,PRT.position," +
+	       		"TR.role,TCL.tdp_committee_level,TC.mobile_no,  D.district_name , PRT.public_representative_type_id ,PM.remarks,PM.party_meeting_id " +
+	          " from party_meeting_invitee model" +
+	          "  LEFT OUTER JOIN party_meeting PM ON PM.party_meeting_id=model.party_meeting_id and PM.is_active = 'Y' " +
+	          " LEFT OUTER JOIN party_meeting_type  PMT ON PMT.party_meeting_type_id = PM.party_meeting_type_id " +
+	          "  LEFT OUTER JOIN party_meeting_main_type PMMT ON PMMT.party_meeting_main_type_id=PMT.party_meeting_main_type_id " +
+	          " LEFT OUTER JOIN user_address meetinAddress  ON meetinAddress.user_address_id =  PM.meeting_address_id " +
+	          " LEFT OUTER JOIN tdp_cadre TC ON model.tdp_cadre_id = TC.tdp_cadre_id  "+
+	                   " LEFT OUTER JOIN tdp_cadre_candidate TCC ON TC.tdp_cadre_id = TCC.tdp_cadre_id "+
+	                   " LEFT OUTER JOIN public_representative  PR ON TCC.candidate_id = PR.candidate_id "+
+	                   " LEFT OUTER JOIN public_representative_type PRT ON PR.public_representative_type_id = PRT.public_representative_type_id "+
+	                   " LEFT OUTER JOIN tdp_committee_member TCM ON TC.tdp_cadre_id = TCM.tdp_cadre_id AND TCM.is_active = 'Y' "+
+	                   " LEFT OUTER JOIN tdp_committee_role TCR ON TCM.tdp_committee_role_id = TCR.tdp_committee_role_id "+
+	                   " LEFT OUTER JOIN tdp_roles TR ON TCR.tdp_roles_id = TR.tdp_roles_id "+
+	                   " LEFT OUTER JOIN tdp_committee TCT ON TCR.tdp_committee_id = TCT.tdp_committee_id "+
+	                   " LEFT OUTER JOIN tdp_committee_level TCL ON TCT.tdp_committee_level_id = TCL.tdp_committee_level_id " +
+	                   " LEFT OUTER JOIN user_address UA ON UA.user_address_id =  TC.address_id " +
+	                   " LEFT OUTER JOIN district D ON D.district_id = UA.district_id " +
+	          " where  ");
+	       
+	       if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
+	    	   if(locationTypeId == 2l){
+		          sb.append("  meetinAddress.state_id in (:locationValues) ");
+		        }else if(locationTypeId == 4l){
+	              sb.append("  meetinAddress.constituency_id in (:locationValues) ");
+	            }else if(locationTypeId == 3l){
+	              sb.append("  meetinAddress.district_id in (:locationValues)");
+	            }else if(locationTypeId == 5l){
+	              sb.append("  meetinAddress.tehsil_id in (:locationValues)"); 
+	            }else if(locationTypeId == 6l){
+	              sb.append("   meetinAddress.panchayat_id in (:locationValues)"); 
+	            }else if(locationTypeId==10l){
+	              sb.append("  model.partyMeeting.meetingAddress.parliament_constituency_id in (:locationValues) "); 
+	            }else if(locationTypeId == 7l){
+	              sb.append("  meetinAddress.local_election_body in (:locationValues)");
+	            }else if(locationTypeId == 8l){
+	              sb.append("  meetinAddress.ward (:locationValues)"); 
+	            }
+	        }
+	       
+	       if(inviteeIds != null && inviteeIds.size() >0){
+	    	   sb.append(" and TC.tdp_cadre_id in (:inviteeIds) ");
+	       }
+	       if(partyMeetingMainTypeid != null && partyMeetingMainTypeid.longValue() > 0l){
+	    	   sb.append(" and PMMT.party_meeting_main_type_id = :partyMeetingMainTypeid ");
+	       }
+	       if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0l){
+	    	   sb.append(" and PMT.party_meeting_type_id = :partyMeetingTypeId ");
+	       }
+	       if(fromDate != null && toDate != null){
+	    	   sb.append(" and date(PM.start_date) between :fromDate and :toDate ");
+	       }
+	       if(partyMeetingId != null && partyMeetingId.longValue() > 0l){
+	    	   sb.append(" and PM.party_meeting_id = :partyMeetingId ");
+	       }
+	      // sb.append(" group by model.partyMeeting.partyMeetingId order by model.partyMeeting.startDate desc ");
+	       
+	       SQLQuery query = getSession().createSQLQuery(sb.toString());
+	       
+	       if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	         query.setParameterList("locationValues", locationValues);
+	       }
+	       if(fromDate != null && toDate != null){
+	         query.setDate("fromDate", fromDate);
+	            query.setDate("toDate", toDate); 
+	       }
+	       if(partyMeetingMainTypeid != null && partyMeetingMainTypeid.longValue() > 0l){
+	    	   query.setParameter("partyMeetingMainTypeid", partyMeetingMainTypeid);
+	       }
+	       if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0l){
+	    	   query.setParameter("partyMeetingTypeId", partyMeetingTypeId);
+	       }
+	       if(partyMeetingId != null && partyMeetingId.longValue() > 0l){
+	    	   query.setParameter("partyMeetingId", partyMeetingId);
+	       }
+	       
+	       if(inviteeIds != null && inviteeIds.size() >0){
+	    	   query.setParameterList("inviteeIds", inviteeIds); 
+	       }
+	       return query.list();
+	     }
 }
 
 
