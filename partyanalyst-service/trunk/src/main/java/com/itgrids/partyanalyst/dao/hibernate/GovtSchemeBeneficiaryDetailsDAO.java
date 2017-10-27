@@ -273,4 +273,84 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 		}
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getMemberDetailsForBenefitInfo(Long locationscopeId, Long locationValue,Long govtSchemeId) {
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select " );
+		if (locationscopeId != null && locationValue != null && locationValue.longValue() > 0l) {
+			if (locationscopeId == 2) {
+				queryStr.append(" district.districtId,district.districtName, ");
+			}else if (locationscopeId == 3 || locationscopeId == 10) {
+				queryStr.append(" constituency.constituencyId,constituency.name, ");
+			}else if (locationscopeId == 4) {
+				queryStr.append(" tehsil.tehsilId,tehsil.tehsilName, ");
+			} else if (locationscopeId == 5 || locationscopeId == 6l) {
+				queryStr.append(" panchayat.panchayatId,panchayat.panchayatName, ");
+			}else if (locationscopeId == 7l) {
+				queryStr.append(" localElectionBody.localElectionBodyId,localElectionBody.name, ");
+			}else if (locationscopeId == 8l) {
+				queryStr.append(" ward.constituencyId,ward.name, ");
+			}
+		}
+		queryStr.append(" model.benefiaryName,model.mobileNo,model.govtSchemes.schemeName,caste.casteName,sum(model.benefitedAmount) " +
+				        " from " );
+		queryStr.append("  UserVoterDetails uvd ,CasteState cs, Caste c, ");
+		queryStr.append(" GovtSchemeBeneficiaryDetails model " );
+		queryStr.append(" LEFT JOIN GovtSchemes gs on gs.govtSchemesId = model.govtSchemesId  ");
+		queryStr.append( " LEFT JOIN UserAddress ua  on model.userAddressId = ua.userAddressId ");
+		
+		
+		if (locationscopeId != null && locationValue != null && locationValue.longValue() > 0l) {
+			if (locationscopeId == 2) {
+				queryStr.append(" LEFT JOIN District district  on ua.districtId = district.districtId ");
+			}else if (locationscopeId == 3 || locationscopeId == 10) {
+				queryStr.append(" LEFT JOIN Constituency constituency  on ua.constituencyId = constituency.constituencyId ");
+			}else if (locationscopeId == 4) {
+				queryStr.append(" LEFT JOIN Tehsil tehsil  on ua.tehsilId = tehsil.tehsilId ");
+			} else if (locationscopeId == 5 || locationscopeId == 6l) {
+				queryStr.append(" LEFT JOIN Panchayat panchayat  on ua.panchayatId = panchayat.panchayatId ");
+			}else if (locationscopeId == 7l) {
+				queryStr.append(" LEFT JOIN LocalElectionBody localElectionBody  on ua.localElectionBodyId = localElectionBody.localElectionBodyId ");
+			}
+		}
+		
+		queryStr.append("  where " +
+				" model.isDeleted='N' and model.voter.voterId = uvd.voter.voterId and  uvd.casteStateId = cs.casteStateId " +
+				" and cs.casteId = c.casteId ");
+		
+		if (locationscopeId != null && locationValue != null && locationValue.longValue() > 0l) {
+			if (locationscopeId == 2) {
+				queryStr.append(" and district.districtId=:locationValue ");
+			}else if (locationscopeId == 3) {
+				queryStr.append(" and constituency.constituencyId=:locationValue ");
+			}else if (locationscopeId == 10) {
+				queryStr.append(" and parliamentConstituency.constituencyId=:locationValue ");
+			}else if (locationscopeId == 4) {
+				queryStr.append(" and constituency.constituencyId=:locationValue ");
+			}else if (locationscopeId == 5) {
+				queryStr.append(" and tehsil.tehsilId=:locationValue ");
+			}else if (locationscopeId == 6l) {
+				queryStr.append(" and panchayat.panchayatId=:locationValue ");
+			}else if (locationscopeId == 7l) {
+				queryStr.append(" and localElectionBody.localElectionBodyId=:locationValue ");
+			}else if (locationscopeId == 8l) {
+				queryStr.append(" and ward.constituencyId=:locationValue ");
+			}
+		}
+		if (govtSchemeId != null && govtSchemeId.longValue() > 0){
+			queryStr.append(" and model.govtSchemes.govtSchemesId =:govtSchemeId");
+		}
+		queryStr.append(" group by model.govtSchemeBeneficiaryDetailsId ");
+			
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if (locationValue != null && locationValue.longValue() > 0l){
+			query.setParameter("locationValue", locationValue);
+		}
+		if (govtSchemeId != null && govtSchemeId.longValue() > 0){
+			query.setParameter("govtSchemeId", govtSchemeId);
+		}
+		return query.list();
+	}
 }
