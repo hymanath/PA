@@ -7348,7 +7348,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 				resultList.addAll(locationDtlsList);
 			}
 			if(resultList != null && resultList.size()>0){
-				Collections.sort(resultList, idSorting);
+				Collections.sort(resultList, locationIdSorting);
 			}
 
 		}catch(Exception e){
@@ -7386,7 +7386,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		}
 		return resultList;
 	}
-	public static Comparator<GrivenceStatusVO> idSorting = new Comparator<GrivenceStatusVO>()
+	public static Comparator<GrivenceStatusVO> locationIdSorting = new Comparator<GrivenceStatusVO>()
 	{
 		@Override
 		public int compare(GrivenceStatusVO gsvo1, GrivenceStatusVO gsvo2) {
@@ -7553,7 +7553,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 				resultList.addAll(locationDtlsList);
 			}
 			if(resultList != null && resultList.size()>0){
-				Collections.sort(resultList, idSorting);
+				Collections.sort(resultList, locationIdSorting);
 			}
 		}catch(Exception e){
 			Log.error("Exception raised at getLocationWiseInsuranceIssueTypeComplaintCount() in  LocationDashboardService class "+e);
@@ -7854,7 +7854,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 				resultList.addAll(locationDtlsList);
 			}
 			if(resultList != null && resultList.size()>0){
-				Collections.sort(resultList, idSorting);
+				Collections.sort(resultList, locationIdSorting);
 			}
 			
 		}catch(Exception e){
