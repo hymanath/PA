@@ -5282,7 +5282,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 					
 					Collections.sort(partyVO.getList(), new Comparator<ElectionInformationVO>() {
 						public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
-							return Long.valueOf(o2.getElectionId()).compareTo(Long.valueOf(o1.getElectionId()));
+							return Long.valueOf(o2.getElectionYear()).compareTo(Long.valueOf(o1.getElectionYear()));
 						}
 					});
 				}
@@ -6726,7 +6726,7 @@ public void settingPartyWiseCandidateDetails(List<Object[]> mpPartyCountDetails,
 			typeVo.setPartyId(commonMethodsUtilService.getLongValueForObject(param[4]));
 			typeVo.setParty(commonMethodsUtilService.getStringValueForObject(param[5]));
 			typeVo.setPartyFlag(commonMethodsUtilService.getStringValueForObject(param[6]));
-			typeVo.setMarginVotes(commonMethodsUtilService.getLongValueForObject(param[7]));
+			typeVo.setMarginVotes(commonMethodsUtilService.getStringValueForObject(param[7]));
 			typeVo.setMarginVotesPercentage(commonMethodsUtilService.getStringValueForObject(param[8]));
 			finalList.add(typeVo);
 		}
