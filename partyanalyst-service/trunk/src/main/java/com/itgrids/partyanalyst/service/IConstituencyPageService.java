@@ -150,4 +150,5 @@ public interface IConstituencyPageService {
 	
 	public List<VotersInfoForMandalVO> getvotersInfoByPublicationConstiId(Long publicationId,Long constituencyId);
 	public ElectionInformationVO getLocationwiseSchemesOverview(Long locationScopeId,Long locationValue);
+	public List<ElectionInformationVO> getMemberDetailsForBenefitInfo(Long schemeId,Long locationScopeId,Long locationValue);
 }
