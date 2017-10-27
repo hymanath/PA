@@ -8420,6 +8420,7 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 			buildMeetingMemberDtls(globalMeetingMembersResult,partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position);
 		}
 	});
+}
 	
 	function buildMeetingMemberDtls(result,partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position){	
 		var str = '';
@@ -8554,3 +8555,20 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 			console.log(result);
 		});	
 	}
+getMemberDetailsForBenefitInfo();
+function getMemberDetailsForBenefitInfo(){
+	jsObj={
+		
+		locationScopeId			:2,
+		locationValue			:19,
+		schemeId 				:3
+	}
+	$.ajax({
+		type : "GET",
+		url : "getMemberDetailsForBenefitInfo.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){ 
+				
+	});
+}
