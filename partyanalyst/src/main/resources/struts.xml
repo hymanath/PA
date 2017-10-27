@@ -18399,5 +18399,10 @@
 			<param name="root">cadreDtlsList</param>       
 		</result> 
 	</action>
+   <action name="getMemberDetailsForBenefitInfo" class="constituencyPageAction"  method="getMemberDetailsForBenefitInfo">
+		<result type="json" name="success">    
+			<param name="root">electionInformationVO</param>       
+		</result>
+   </action>
  </package>
 </struts>
