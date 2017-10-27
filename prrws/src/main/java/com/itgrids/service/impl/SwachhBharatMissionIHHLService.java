@@ -144,7 +144,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		 return strArr;
 	}
 	
-	/*public List<SwachhBharatMissionIHHLDtlsVO> getIHHLCategoryWiseAnalysisBySelectedDate(InputVO inputVO) {
+	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLCategoryWiseAnalysisBySelectedDate(InputVO inputVO) {
 		List<SwachhBharatMissionIHHLDtlsVO> categoryList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
 		try {
 			String str = convertingInputVOToString(inputVO);
@@ -185,7 +185,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 			LOG.error("Exception occured at getIHHLCategoryWiseAnalysisBySelectedDate() in SwachhBharatMissionIHHLService class",e); 
 		}
 		return categoryList;
-	}*/
+	}
 	/**
 	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
@@ -193,7 +193,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	 * @return List<SwachhBharatMissionIHHLDtlsVO>
 	 * @Date 14-10-2017
 	 */
-	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLCategoryWiseAnalysisBySelectedDate(InputVO inputVO) {
+	public List<SwachhBharatMissionIHHLDtlsVO> getIHHLCategoryWiseAnalysisBySelectedDateOld(InputVO inputVO) {
 		List<SwachhBharatMissionIHHLDtlsVO> resultList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
 		try {
 			Date fromDate = null;
@@ -778,8 +778,11 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		}
 	 private Double calculatePercantage(Long subCount,Long totalCount){
 		    Double d=0.0d;
-		    if(subCount.longValue()>0l && totalCount.longValue()==0l)
-		    LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
+		    if(subCount.longValue()>0l && totalCount.longValue()==0l){
+		    	LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
+		    	return 100d;
+		    }
+		    
 
 		    if(totalCount.longValue() > 0l){
 		       d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();   
