@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.record.formula.functions.Islogical;
+import org.jfree.util.HashNMap;
 import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.ILocationWiseCasteInfoService;
@@ -22,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dto.CadreBasicVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -654,6 +657,154 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 			LOG.error("Exception raised at votersAndcadreAgeWiseCount", e);
 		}
 		return voList;
+	}
+	
+	@Override
+	public List<LocationVotersVO> getCasteWiseCadreCounts(Long locationTypeId, List<Long> LocationValue,List<Long> enrollmentYearIds){
+		List<LocationVotersVO> finalList = new ArrayList<LocationVotersVO>();
+		try{
+			List<Object[]> enrollmentYearsList =  tdpCadreCasteInfoDAO.enrollmentYearsBasedOnenrollmentYearIds(enrollmentYearIds);
+			Map<Long,LocationVotersVO> cadreLocationMap = new HashMap<Long, LocationVotersVO>();
+			Map<Long,LocationVotersVO> cadreCasteWiseMap = new HashMap<Long, LocationVotersVO>();
+		
+			List<Object[]> casteCadreList = tdpCadreCasteInfoDAO.getCasteWiseCadreCounts(locationTypeId, LocationValue, enrollmentYearIds);
+			
+			// o-casteCategoryId,1-casteCategoryName,2-caste_state_id,3-castName, 4-count,5-yearId 6-locationUId ,7-locationNAme
+			if(commonMethodsUtilService.isListOrSetValid(casteCadreList)){
+				for (Object[] objects : casteCadreList) {
+					LocationVotersVO locationVo= cadreLocationMap.get(commonMethodsUtilService.getLongValueForObject(objects[6]));
+					if(locationVo ==null){
+						locationVo = new LocationVotersVO();
+						locationVo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[6]));
+						locationVo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+							
+						LocationVotersVO yearVo = new LocationVotersVO();
+						yearVo.setAgeRangeId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+							
+						LocationVotersVO innerVo = new LocationVotersVO();
+						innerVo.setCasteGroupId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						innerVo.setCastgroup(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						innerVo.setCasteId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+						innerVo.setCasteName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+						innerVo.setTotalCadres(commonMethodsUtilService.getLongValueForObject(objects[4]));
+						
+						yearVo.getLocationVotersVOList().add(innerVo);
+						locationVo.getLocationVotersVOList().add(yearVo);
+						
+						cadreLocationMap.put(commonMethodsUtilService.getLongValueForObject(objects[6]), locationVo);
+					}else{
+						LocationVotersVO yearVo= getMatchedYearVO(locationVo.getLocationVotersVOList(), commonMethodsUtilService.getLongValueForObject(objects[5]));
+						
+						if(yearVo == null){ 
+							yearVo = new LocationVotersVO();
+							yearVo.setAgeRangeId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+							
+							LocationVotersVO innerVo = new LocationVotersVO();
+							innerVo.setCasteGroupId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							innerVo.setCastgroup(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							innerVo.setCasteId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+							innerVo.setCasteName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							innerVo.setTotalCadres(commonMethodsUtilService.getLongValueForObject(objects[4]));
+							yearVo.getLocationVotersVOList().add(innerVo);
+							locationVo.getLocationVotersVOList().add(yearVo);
+						}else{
+							LocationVotersVO innerVo = new LocationVotersVO();
+							innerVo.setCasteGroupId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							innerVo.setCastgroup(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							innerVo.setCasteId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+							innerVo.setCasteName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							innerVo.setTotalCadres(commonMethodsUtilService.getLongValueForObject(objects[4]));
+							yearVo.getLocationVotersVOList().add(innerVo);
+						}
+						
+					}
+				}
+			}
+			
+			Map<Long,Long> yearWiseTotalCadreMap = new HashMap<Long, Long>(0);
+			
+			for (Object[] param : casteCadreList) {
+				
+				LocationVotersVO casteVo = cadreCasteWiseMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+				if(casteVo == null){
+					
+					casteVo = new LocationVotersVO();
+					casteVo.setCasteGroupId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					casteVo.setCastgroup(commonMethodsUtilService.getStringValueForObject(param[1]));
+					casteVo.setCasteId(commonMethodsUtilService.getLongValueForObject(param[2]));
+					casteVo.setCasteName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					
+					LocationVotersVO yearVo = new LocationVotersVO();
+					yearVo.setAgeRangeId(commonMethodsUtilService.getLongValueForObject(param[5]));
+					yearVo.setTotalCadres(yearVo.getTotalCadres()+commonMethodsUtilService.getLongValueForObject(param[4]));
+					
+					casteVo.getLocationVotersVOList().add(yearVo);
+					
+					cadreCasteWiseMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), casteVo);
+				}else{
+					LocationVotersVO yearVo= getMatchedYearVO(casteVo.getLocationVotersVOList(), commonMethodsUtilService.getLongValueForObject(param[5]));
+					if(yearVo == null){ 
+						yearVo = new LocationVotersVO();
+						yearVo.setAgeRangeId(commonMethodsUtilService.getLongValueForObject(param[5]));
+						yearVo.setTotalCadres(yearVo.getTotalCadres()+commonMethodsUtilService.getLongValueForObject(param[4]));
+
+						casteVo.getLocationVotersVOList().add(yearVo);
+					}else{
+						yearVo.setTotalCadres(yearVo.getTotalCadres()+commonMethodsUtilService.getLongValueForObject(param[4]));
+						yearVo.getLocationVotersVOList().add(yearVo);
+					}
+				}
+				
+			}
+			finalList.addAll(cadreLocationMap.values());
+			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				finalList.get(0).getLocationVotersVOList1().addAll(cadreCasteWiseMap.values());
+			}
+			for (LocationVotersVO objects : finalList) {
+				for (LocationVotersVO param : objects.getLocationVotersVOList()) {
+					Collections.sort(param.getLocationVotersVOList(), new Comparator<LocationVotersVO>() {
+						public int compare(LocationVotersVO one, LocationVotersVO two) {
+							return two.getTotalCadres().compareTo(one.getTotalCadres());
+						}
+					});
+				}
+			}
+			//0-id,1-year2-desc
+			for (Object[] objects : enrollmentYearsList) {
+				for (LocationVotersVO locationVotersVO : finalList) {
+					for (LocationVotersVO innerLocatioNVo : locationVotersVO.getLocationVotersVOList()) {
+						if(innerLocatioNVo.getAgeRangeId() == commonMethodsUtilService.getLongValueForObject(objects[0])){
+							innerLocatioNVo.setAgeRange(commonMethodsUtilService.getStringValueForObject(objects[2]));
+						}
+					}
+					
+				}
+				for (LocationVotersVO casteVo : finalList.get(0).getLocationVotersVOList1()) {
+					for (LocationVotersVO innerLocatioNVo : casteVo.getLocationVotersVOList()) {
+						if(innerLocatioNVo.getAgeRangeId() == commonMethodsUtilService.getLongValueForObject(objects[0])){
+							innerLocatioNVo.setAgeRange(commonMethodsUtilService.getStringValueForObject(objects[2]));
+						}
+					}
+					
+				}
+				
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at votersAndcadreAgeWiseCount", e);
+		}
+		
+		return finalList;
+		
+	}
+	
+	public LocationVotersVO getMatchedYearVO(List<LocationVotersVO> voList, Long id) {
+		if (voList != null && voList.size() > 0 && id != null && id.longValue() > 0l) {
+			for (LocationVotersVO locationVotersVO : voList) {
+				if (locationVotersVO != null && locationVotersVO.getAgeRangeId().longValue() == id.longValue())
+					return locationVotersVO;
+			}
+		}
+		return null;
 	}
 	
 }

@@ -456,35 +456,112 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		return query.list();
 	}
 
-public List<Object[]> getCategoryWiseGenderCount(Long locationScopeId,List<Long> locationValuesList,List<Long> enrollmentYearIdsList){
-	//0 tdpCadreEnrollmentId, 1 categoryName, 2 casteCategoryId
-	//3 gender,4 count, 5 description
-	StringBuilder sb = new StringBuilder();
-	sb.append("SELECT ");
-	sb.append("tcci.tdp_cadre_enrollment_id as tdpCadreEnrollmentId,cc.category_name as categoryName,");
-	sb.append("cc.caste_category_id as casteCategoryId,tcci.gender as gender,sum(count) as count,ey.description as description ");
-	sb.append("from ");
-	sb.append("tdp_cadre_caste_info tcci, tdp_cadre_enrollment_year tcey,");
-	sb.append("enrollment_year ey,caste_category cc, caste_category_group ccg  ");
-	sb.append("where ");
-	sb.append("tcci.caste_category_id = cc.caste_category_id and ");
-	sb.append("tcci.tdp_cadre_enrollment_id = tcey.tdp_cadre_enrollment_year_id and ");
-	sb.append("tcey.enrollment_year_id=ey.enrollment_year_id and ");
-	sb.append("cc.caste_category_id = ccg.caste_category_id  and ");
-	sb.append(" tcci.caste_category_id = ccg.caste_category_id  and tcci.tdp_cadre_enrollment_id in(:enrollmentYearIdsList)  ");
-	sb.append("GROUP BY ");
-	sb.append("tcci.tdp_cadre_enrollment_id,cc.caste_category_id,tcci.gender");
-	  
+	@Override
+	public List<Object[]> getCasteWiseCadreCounts(Long locationTypeId,List<Long> locationValue, List<Long> enrollmentYearId) {
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sm= new StringBuilder();
+		StringBuilder se= new StringBuilder();
+		// o-casteCategoryId,1-casteCategoryName,2-caste_state_id,4-castName, 5-count,6-yearId
 
-	Query query = getSession().createSQLQuery(sb.toString())
-			.addScalar("tdpCadreEnrollmentId", Hibernate.LONG)
-			.addScalar("categoryName", Hibernate.STRING)
-			.addScalar("casteCategoryId", Hibernate.LONG)
-			.addScalar("gender", Hibernate.STRING)
-			.addScalar("count", Hibernate.LONG)
-	        .addScalar("description", Hibernate.STRING);
-	 		
-			query.setParameterList("enrollmentYearIdsList", enrollmentYearIdsList);
-			return query.list();	
-}
+		sb.append("select tcf.caste_category_id AS casteCategoryId, cc.category_name AS casteCategoryName, tcf.caste_state_id AS casteId,c.caste_name AS castname, " +
+				" SUM(tcf.count) AS count,tcf.tdp_cadre_enrollment_id  as yearId ");
+		sm.append(" from tdp_cadre_caste_info tcf, caste c,caste_category cc ");
+		se.append(" WHERE c.caste_id = caste_state_id AND cc.caste_category_id = tcf.caste_category_id");
+		if (enrollmentYearId != null && enrollmentYearId.size() > 0l) {
+			se.append(" and tdp_cadre_enrollment_id in(:enrollmentYearId)");
+		}
+		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
+			
+			 if (locationTypeId == 2l) {
+				sb.append(" ,d.district_id as locationId, d.district_name as loactionName ");
+				sm.append(",district d ");
+				se.append(" AND tcf.location_id = d.state_id AND (d.district_id BETWEEN 11 AND 23) and location_id in (:locationValue) and tcf.location_type_id="+locationTypeId);
+				se.append(" GROUP BY tcf.caste_state_id , d.district_id,tcf.tdp_cadre_enrollment_id order by count desc");
+			} else if (locationTypeId == 3l) {
+				sb.append(" ,co.constituency_id as locationId, co.name as loactionName ");
+				sm.append(",constituency co ");
+				se.append(" AND tcf.location_id = co.constituency_id and " +
+						"tcf.location_id in (:select distinct constituency_id from constituency where district_id in(:locationValue)" +
+						" and deform_date is null and election_scope_id=2) and tcf.location_type_id=4");
+				se.append(" GROUP BY tcf.caste_state_id , co.constituency_id order by count desc");
+				
+			} else if (locationTypeId == 4l || locationTypeId == 10l) {
+				se.append("location_id in (:locationValue)");
+			} else if (locationTypeId == 5l) {
+				se.append("location_id in (:locationValue)");
+			} else if (locationTypeId == 6l) {
+				se.append("location_id in (:locationValue)");
+			} else if (locationTypeId == 7l) {
+				se.append("location_id in (:locationValue)");
+			} else if (locationTypeId == 8l) {
+				se.append("location_id in (:locationValue)");
+			}
+		}
+		
+		sb.append(sm.toString()).append(se.toString());
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("casteCategoryId", Hibernate.LONG)
+				.addScalar("casteCategoryName",Hibernate.STRING)
+				.addScalar("casteId",Hibernate.LONG)
+				.addScalar("castname",Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG)
+				.addScalar("yearId",Hibernate.LONG)
+				.addScalar("locationId",Hibernate.LONG)
+				.addScalar("loactionName", Hibernate.STRING);
+		if (enrollmentYearId != null && enrollmentYearId.size() > 0l) {
+			query.setParameterList("enrollmentYearId", enrollmentYearId);
+		}
+
+		if (locationValue != null && locationValue.size() > 0l) {
+			query.setParameterList("locationValue", locationValue);
+		}
+		return query.list();
+	}
+	
+	public List<Object[]> enrollmentYearsBasedOnenrollmentYearIds(List<Long> enrollmentYearIds){
+		//0-id,1-year2-desc
+		Query query =  getSession().createSQLQuery( "select enrollment_year_id as enrollmentYearId,year as year, description as description from enrollment_year where  enrollment_year_id in(:enrollmentYearIds)" )
+				.addScalar("enrollmentYearId",Hibernate.LONG)
+				.addScalar("year", Hibernate.LONG)
+				.addScalar("description", Hibernate.STRING);
+		
+		if (enrollmentYearIds != null && enrollmentYearIds.size() > 0l) {
+			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		}
+
+		
+		return query.list();
+		
+	}
+	public List<Object[]> getCategoryWiseGenderCount(Long locationScopeId,List<Long> locationValuesList,List<Long> enrollmentYearIdsList){
+		//0 tdpCadreEnrollmentId, 1 categoryName, 2 casteCategoryId
+		//3 gender,4 count, 5 description
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT ");
+		sb.append("tcci.tdp_cadre_enrollment_id as tdpCadreEnrollmentId,cc.category_name as categoryName,");
+		sb.append("cc.caste_category_id as casteCategoryId,tcci.gender as gender,sum(count) as count,ey.description as description ");
+		sb.append("from ");
+		sb.append("tdp_cadre_caste_info tcci, tdp_cadre_enrollment_year tcey,");
+		sb.append("enrollment_year ey,caste_category cc, caste_category_group ccg  ");
+		sb.append("where ");
+		sb.append("tcci.caste_category_id = cc.caste_category_id and ");
+		sb.append("tcci.tdp_cadre_enrollment_id = tcey.tdp_cadre_enrollment_year_id and ");
+		sb.append("tcey.enrollment_year_id=ey.enrollment_year_id and ");
+		sb.append("cc.caste_category_id = ccg.caste_category_id  and ");
+		sb.append(" tcci.caste_category_id = ccg.caste_category_id  and tcci.tdp_cadre_enrollment_id in(:enrollmentYearIdsList)  ");
+		sb.append("GROUP BY ");
+		sb.append("tcci.tdp_cadre_enrollment_id,cc.caste_category_id,tcci.gender");
+		  
+
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("tdpCadreEnrollmentId", Hibernate.LONG)
+				.addScalar("categoryName", Hibernate.STRING)
+				.addScalar("casteCategoryId", Hibernate.LONG)
+				.addScalar("gender", Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG)
+		        .addScalar("description", Hibernate.STRING);
+		 		
+				query.setParameterList("enrollmentYearIdsList", enrollmentYearIdsList);
+				return query.list();	
+	}
 }
