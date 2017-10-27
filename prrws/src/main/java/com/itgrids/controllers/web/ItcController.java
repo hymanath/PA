@@ -169,6 +169,12 @@ public class ItcController {
 		   return resultList;
 	   }
 	   
+	   @RequestMapping(value = "/getDepartmentWiseHierarchicalDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ItecEOfficeVO>  getDepartmentWiseHierarchicalDetails() {
+		   List<ItecEOfficeVO>  returnList = itcDashboardService.getDepartmentWiseHierarchicalDetails();
+		   return returnList;
+	   }
+	   
 	   @RequestMapping(value = "/getCMeoDBStatusDetailsNew", method = RequestMethod.POST)
 	   public @ResponseBody  List<ItecCMeoDBDetailsVO>  getCMeoDBStatusDetailsNew() {
 		   List<ItecCMeoDBDetailsVO>  resultList = itcDashboardService.getCMeoDBStatusDetailsNew();

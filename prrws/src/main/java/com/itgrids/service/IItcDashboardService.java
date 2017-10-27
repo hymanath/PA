@@ -6,16 +6,12 @@ import com.itgrids.dto.ApInnovationCenterVO;
 import com.itgrids.dto.ApInnovationSocietyOverviewVO;
 import com.itgrids.dto.CmEoDBDtlsVO;
 import com.itgrids.dto.CohortDtlsVO;
-import com.itgrids.dto.EofficeDtlsVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
-import com.itgrids.dto.ItInformationDtlsVO;
 import com.itgrids.dto.ItecCMeoDBDetailsVO;
 import com.itgrids.dto.ItecEOfficeVO;
-import com.itgrids.dto.ItecOverviewVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
-import com.itgrids.dto.MeesevaKPIDtlsVO;
 
 public interface IItcDashboardService {
 
@@ -44,5 +40,6 @@ public interface IItcDashboardService {
 	public List<ItecCMeoDBDetailsVO> getCMeoDBOverviewDetails();
 	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusDetails();
 	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusCountDetails(InputVO inputVO);
+	public List<ItecEOfficeVO> getDepartmentWiseHierarchicalDetails();
 	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusDetailsNew();
 }
