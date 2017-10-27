@@ -1823,7 +1823,6 @@ function getboothWiseResults(electionYrValForBooth,partyIdForBoothArr,constituen
 }
 function buildData(result,constituencyName)
 	{
-		alert(constituencyName)
 		var table = '';
 		var table1 = '';
 		mainArr = [];
