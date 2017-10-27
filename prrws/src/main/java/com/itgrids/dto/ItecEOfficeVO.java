@@ -24,6 +24,18 @@ public class ItecEOfficeVO {
 	private String percentage;
 	private List<ItecEOfficeVO> subList = new ArrayList<ItecEOfficeVO>(0);
 	
+	private List<ItecEOfficeVO> jsList = new ArrayList<ItecEOfficeVO>(0);
+	private List<ItecEOfficeVO> directorList = new ArrayList<ItecEOfficeVO>(0);
+	private List<ItecEOfficeVO> jdList = new ArrayList<ItecEOfficeVO>(0);
+	
+	private List<ItecEOfficeVO> specialOfficerList = new ArrayList<ItecEOfficeVO>(0);
+	private List<ItecEOfficeVO> pmList = new ArrayList<ItecEOfficeVO>(0);
+	private List<ItecEOfficeVO> soList = new ArrayList<ItecEOfficeVO>(0);
+	private List<ItecEOfficeVO> aaoList = new ArrayList<ItecEOfficeVO>(0);
+	private List<ItecEOfficeVO> asoList = new ArrayList<ItecEOfficeVO>(0);
+	private List<ItecEOfficeVO> jaoList = new ArrayList<ItecEOfficeVO>(0);
+	private List<ItecEOfficeVO> otherList = new ArrayList<ItecEOfficeVO>(0);
+	
 	
 	public Long getId() {
 		return id;
@@ -126,5 +138,65 @@ public class ItecEOfficeVO {
 	}
 	public void setSubList(List<ItecEOfficeVO> subList) {
 		this.subList = subList;
+	}
+	public List<ItecEOfficeVO> getJsList() {
+		return jsList;
+	}
+	public void setJsList(List<ItecEOfficeVO> jsList) {
+		this.jsList = jsList;
+	}
+	public List<ItecEOfficeVO> getDirectorList() {
+		return directorList;
+	}
+	public void setDirectorList(List<ItecEOfficeVO> directorList) {
+		this.directorList = directorList;
+	}
+	public List<ItecEOfficeVO> getJdList() {
+		return jdList;
+	}
+	public void setJdList(List<ItecEOfficeVO> jdList) {
+		this.jdList = jdList;
+	}
+	public List<ItecEOfficeVO> getSpecialOfficerList() {
+		return specialOfficerList;
+	}
+	public void setSpecialOfficerList(List<ItecEOfficeVO> specialOfficerList) {
+		this.specialOfficerList = specialOfficerList;
+	}
+	public List<ItecEOfficeVO> getPmList() {
+		return pmList;
+	}
+	public void setPmList(List<ItecEOfficeVO> pmList) {
+		this.pmList = pmList;
+	}
+	public List<ItecEOfficeVO> getSoList() {
+		return soList;
+	}
+	public void setSoList(List<ItecEOfficeVO> soList) {
+		this.soList = soList;
+	}
+	public List<ItecEOfficeVO> getAaoList() {
+		return aaoList;
+	}
+	public void setAaoList(List<ItecEOfficeVO> aaoList) {
+		this.aaoList = aaoList;
+	}
+	public List<ItecEOfficeVO> getAsoList() {
+		return asoList;
+	}
+	public void setAsoList(List<ItecEOfficeVO> asoList) {
+		this.asoList = asoList;
+	}
+	public List<ItecEOfficeVO> getJaoList() {
+		return jaoList;
+	}
+	public void setJaoList(List<ItecEOfficeVO> jaoList) {
+		this.jaoList = jaoList;
+	}
+	public List<ItecEOfficeVO> getOtherList() {
+		return otherList;
+	}
+	public void setOtherList(List<ItecEOfficeVO> otherList) {
+		this.otherList = otherList;
 	}
 }
