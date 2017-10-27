@@ -395,7 +395,7 @@
 		<property name="govtSchemeBenefitsInfoDAO" ref="govtSchemeBenefitsInfoDAO" />
 		<property name="govtSchemesDAO" ref="govtSchemesDAO" />
 		<property name="voterInfoDAO" ref="voterInfoDAO" />
-		
+		<property name="govtSchemeBeneficiaryDetailsDAO" ref="govtSchemeBeneficiaryDetailsDAO" />
 	</bean>	
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
