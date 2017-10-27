@@ -456,5 +456,35 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		return query.list();
 	}
 
+public List<Object[]> getCategoryWiseGenderCount(Long locationScopeId,List<Long> locationValuesList,List<Long> enrollmentYearIdsList){
+	//0 tdpCadreEnrollmentId, 1 categoryName, 2 casteCategoryId
+	//3 gender,4 count, 5 description
+	StringBuilder sb = new StringBuilder();
+	sb.append("SELECT ");
+	sb.append("tcci.tdp_cadre_enrollment_id as tdpCadreEnrollmentId,cc.category_name as categoryName,");
+	sb.append("cc.caste_category_id as casteCategoryId,tcci.gender as gender,sum(count) as count,ey.description as description ");
+	sb.append("from ");
+	sb.append("tdp_cadre_caste_info tcci, tdp_cadre_enrollment_year tcey,");
+	sb.append("enrollment_year ey,caste_category cc, caste_category_group ccg  ");
+	sb.append("where ");
+	sb.append("tcci.caste_category_id = cc.caste_category_id and ");
+	sb.append("tcci.tdp_cadre_enrollment_id = tcey.tdp_cadre_enrollment_year_id and ");
+	sb.append("tcey.enrollment_year_id=ey.enrollment_year_id and ");
+	sb.append("cc.caste_category_id = ccg.caste_category_id  and ");
+	sb.append(" tcci.caste_category_id = ccg.caste_category_id  and tcci.tdp_cadre_enrollment_id in(:enrollmentYearIdsList)  ");
+	sb.append("GROUP BY ");
+	sb.append("tcci.tdp_cadre_enrollment_id,cc.caste_category_id,tcci.gender");
+	  
 
+	Query query = getSession().createSQLQuery(sb.toString())
+			.addScalar("tdpCadreEnrollmentId", Hibernate.LONG)
+			.addScalar("categoryName", Hibernate.STRING)
+			.addScalar("casteCategoryId", Hibernate.LONG)
+			.addScalar("gender", Hibernate.STRING)
+			.addScalar("count", Hibernate.LONG)
+	        .addScalar("description", Hibernate.STRING);
+	 		
+			query.setParameterList("enrollmentYearIdsList", enrollmentYearIdsList);
+			return query.list();	
+}
 }

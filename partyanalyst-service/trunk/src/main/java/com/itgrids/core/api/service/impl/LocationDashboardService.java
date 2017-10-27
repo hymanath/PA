@@ -8105,5 +8105,97 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		}
 		return finalList;
 	}
+	
+	/**
+	 * @param Long locationScopeIds
+	 * @param List<Long> locationValuesList
+	 * @return List<ConstituencyCadreVO>
+	 * @author Sai Kumar
+	 * @Description :This Service Method is used to get category wise gender count. 
+	 * @Date 27-OCT-2017
+	 */
+	@Override
+	public List<ConstituencyCadreVO> getCategoryWiseGenderCount(Long locationScopeId,List<Long> locationValuesList, List<Long> enrollmentYearIdsList) {
+		List<ConstituencyCadreVO> finalList=new ArrayList<ConstituencyCadreVO>();
+		List<Object[]> categoryWiseGenderCountList=tdpCadreCasteInfoDAO.getCategoryWiseGenderCount(locationScopeId, locationValuesList, enrollmentYearIdsList);
+		Map<Long,ConstituencyCadreVO> enrollmentYearMap = new HashMap<Long, ConstituencyCadreVO>();
+		Map<Long,Long> enrollmentYearWithCountMap = new HashMap<Long, Long>();
+		if(categoryWiseGenderCountList !=null && categoryWiseGenderCountList.size() >0){
+		for(Object[] param:categoryWiseGenderCountList) {
+			Long enrollmentYearId = commonMethodsUtilService.getLongValueForObject(param[0]);
+			Long categoryId = commonMethodsUtilService.getLongValueForObject(param[2]);
+			if(enrollmentYearMap.containsKey(enrollmentYearId)) {
+				enrollmentYearWithCountMap.put(enrollmentYearId,enrollmentYearWithCountMap.get(enrollmentYearId)+commonMethodsUtilService.getLongValueForObject(param[4]));
+				ConstituencyCadreVO enrollmentYearVO = enrollmentYearMap.get(enrollmentYearId);
+				List<ConstituencyCadreVO> categorysList = enrollmentYearVO.getCasteGroupList();
+				ConstituencyCadreVO matchedCategoryVO = getMatchedConstituencyCadreVO(categorysList,categoryId);
+				if(matchedCategoryVO == null){
+					ConstituencyCadreVO categoryVO = createCategoryVO(param);
+					categorysList.add(categoryVO);
+				}else{
+					if(commonMethodsUtilService.getStringValueForObject(param[3]).equalsIgnoreCase("M")){
+						matchedCategoryVO.setMaleCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+					}else{
+						matchedCategoryVO.setFemaleCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+					}
+				}
+			}else{
+				ConstituencyCadreVO enrollmentYearVO = new ConstituencyCadreVO();
+				enrollmentYearVO.setEnrollmentYearId(enrollmentYearId);
+				enrollmentYearVO.setEnrollmentYear(commonMethodsUtilService.getStringValueForObject(param[5]));
+			
+				List<ConstituencyCadreVO> categorysList = new ArrayList<ConstituencyCadreVO>();
+				ConstituencyCadreVO categoryVO = createCategoryVO(param);
+				categorysList.add(categoryVO);
+				enrollmentYearVO.setCasteGroupList(categorysList);
+				enrollmentYearMap.put(enrollmentYearId, enrollmentYearVO);
+				enrollmentYearWithCountMap.put(enrollmentYearId, commonMethodsUtilService.getLongValueForObject(param[4]));
+			}
+		}
+		}
+		finalList.addAll(enrollmentYearMap.values());
+		for(ConstituencyCadreVO enrollmentYearVO:finalList){
+			List<ConstituencyCadreVO> categorysList = enrollmentYearVO.getCasteGroupList();
+			for(ConstituencyCadreVO categoryVO:categorysList){
+				categoryVO.setToalCadreCount(categoryVO.getToalCadreCount()+categoryVO.getMaleCount()+categoryVO.getFemaleCount());
+				enrollmentYearVO.setToalCadreCount(enrollmentYearVO.getToalCadreCount()+categoryVO.getMaleCount()+categoryVO.getFemaleCount());
+				enrollmentYearVO.setMaleCount(enrollmentYearVO.getMaleCount()+categoryVO.getMaleCount());
+				enrollmentYearVO.setFemaleCount(enrollmentYearVO.getFemaleCount()+categoryVO.getFemaleCount());
+				
+				DecimalFormat df = new DecimalFormat("###.##");
+				Long totalCount = enrollmentYearWithCountMap.get(enrollmentYearVO.getEnrollmentYearId());
+				categoryVO.setPercentage(Double.valueOf((df.format(((float)categoryVO.getToalCadreCount()/(float)totalCount)*100))));
+				enrollmentYearVO.setMalePercentage(Double.valueOf((df.format(((float)enrollmentYearVO.getMaleCount()/(float)totalCount)*100))));
+				enrollmentYearVO.setFemalePercentage(Double.valueOf((df.format(((float)enrollmentYearVO.getFemaleCount()/(float)totalCount)*100))));
+			}
+		}
+		return finalList;
+	}
+	
+	public ConstituencyCadreVO createCategoryVO(Object[] param){
+		ConstituencyCadreVO categoryVO = new ConstituencyCadreVO();
+		categoryVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+		categoryVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+		if(commonMethodsUtilService.getStringValueForObject(param[3]).equalsIgnoreCase("M")){
+			categoryVO.setMaleCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+		}else{
+		categoryVO.setFemaleCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+		}
+		return categoryVO;
+	}
+	
+	public ConstituencyCadreVO getMatchedConstituencyCadreVO(List<ConstituencyCadreVO> categorysList,Long id){
+		try{
+			if(categorysList == null || categorysList.size() == 0)
+				return null;
+			for(ConstituencyCadreVO vo:categorysList){
+				if(vo.getId().equals(id))
+	    			return vo;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
 
