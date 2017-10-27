@@ -783,6 +783,22 @@
 		</div>
 	</div>  
 </div>
+<div class="modal fade" tabindex="-1" id="meetingMemDetailsId" role="dialog" style="z-index:9999;">
+ <div class="modal-dialog" role="document" style="width:85%;">   
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close closeBtnCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="">Member Details</h4>      
+		</div>
+		<div class="modal-body" id="">   
+          <div id="meetingMemDetailsBodyId"></div>
+       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default closeBtnCls" data-dismiss="modal">Close</button>
+      </div>
+    </div><!--   /.modal-content -->  
+  </div><!--  /.modal-dialog -->
+</div><!--   /.modal -->
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>

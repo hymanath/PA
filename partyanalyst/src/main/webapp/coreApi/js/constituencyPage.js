@@ -272,7 +272,6 @@ function onLoadAjaxCalls()
 	getLocationWiseMeetingsCountDetails(1);
 	getLocationWiseMeetingsCountDetails(2);
 	getLocationWiseMeetingsCountDetails(3);
-	getLocationWiseMeetingInviteeMembersAction(3,26);
 	 //candidate Profiles 1st block
 	if(locationLevelId == "2"){
 		getPartyWiseMPandMLACandidatesCounts();
@@ -8091,12 +8090,12 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 		data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){ 
 			if(result !=null && result.levelList !=null && result.levelList.length>0){
-				return buildLocationWiseSpecialMeetingsMeetingsExpanction(result)
+				return buildLocationWiseSpecialMeetingsMeetingsExpanction(result,partyMeetingMainTypeId,partyMeetingTypeId)
 			}	
 		
 	});
 	
-	function buildLocationWiseSpecialMeetingsMeetingsExpanction(result){
+	function buildLocationWiseSpecialMeetingsMeetingsExpanction(result,partyMeetingMainTypeId,partyMeetingTypeId){
 		var str='';
 			for(var i in result.levelList){		
 				str+='<div class="block">';
@@ -8137,7 +8136,7 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 								for(var k in result.levelList[i].levelList[j].datesList){
 									str+='<tr>';
 										str+='<td>'+result.levelList[i].levelList[j].datesList[k].name+'</td>';
-										str+='<td>'+result.levelList[i].levelList[j].recentMeetingInviteesCnt+'</td>';
+										str+='<td class="" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false">'+result.levelList[i].levelList[j].recentMeetingInviteesCnt+'</td>';
 										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentAttended+'</td>';
 										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentLate+'</td>';
 										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentAbcent+'</td>';
@@ -8364,8 +8363,10 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 		}
 	}
 }
-function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,partyMeetingTypeId){
-	//$("#openPostDetailsModalDivId").html(spinner);
+var globalMeetingMembersResult = '';
+function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position){
+	
+	$("#meetingMemDetailsBodyId").html(spinner);
 	jsObj={
 		
 		locationTypeId			:locationLevelId,
@@ -8373,16 +8374,153 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 		fromDate 				:customStartMeetingsDate,
 		toDate 					:customEndMeetingsDate,
 		partyMeetingMainTypeId	:partyMeetingMainTypeId,
-		partyMeetingTypeId:partyMeetingTypeId,
-		includePastMeetings:"",
-		partyMeetingId:701580
+		partyMeetingTypeId		:partyMeetingTypeId,
+		includePastMeetings		:"",
+		partyMeetingId			:partyMeetingId
 	}
 	$.ajax({
 		type : "GET",
 		url : "getLocationWiseMeetingInviteeMembersAction.action",
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)}
-	}).done(function(result){ 
-				
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			globalMeetingMembersResult = result;
+			buildMeetingMemberDtls(globalMeetingMembersResult,partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position);	
+		}else{
+			$("#meetingMemDetailsBodyId").html("No Data Available");
+		}
+			
 	});
 }
+	$(document).on("click",".getCmtMemDtls,.getCmtMemDtlsDesgClick",function(){
+		
+		var desgSearchRequired = $(this).attr("attr_search"); 
+		var position = $(this).attr("attr_position"); 
+		var partyMeetingMainTypeId = $(this).attr("attr_partyMeetingMainTypeId"); 
+		var partyMeetingTypeId = $(this).attr("attr_partyMeetingTypeId"); 
+		var partyMeetingId = $(this).attr("attr_party_meeting_id"); 
+		
+		var searchDesignation ="";
+		if(desgSearchRequired == "required"){
+			searchDesignation = $(this).attr("attr_desg_name"); 
+		}else{
+			globalMeetingMembersResult = '';
+		}
+		var isNonInvitee = $(this).attr("attr_non_invitee");
+		
+		$("#meetingMemDetailsId").modal("show");     
+		$("#meetingMemDetailsBodyId").html(spinner);
+		
+		if(desgSearchRequired == "notrequired"){
+			getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position)
+		}else{
+			buildMeetingMemberDtls(globalMeetingMembersResult,partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position);
+		}
+	});
+	
+	function buildMeetingMemberDtls(result,partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position){	
+		var str = '';
+		//Building Summary
+		if(position == "overview"){
+			if(result[0].publicRepDesgList != null && result[0].publicRepDesgList.length > 0 ){
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<div class="panel panel-default">';
+				  str+='<div class="panel-heading">';
+					str+='<h3 class="panel-title">DESIGNATIONS SUMMARY</h3>';
+				  str+='</div>';
+				  str+='<div class="panel-body">';
+						str+='<p style="font-size:15px;" class="m_top10">';
+							if(result[0].publicRepDesgList != null && result[0].publicRepDesgList.length > 0){
+								 for(var i in result[0].publicRepDesgList){
+									str+='<span style="text-transform:uppercase;">'+result[0].publicRepDesgList[i].name+'</span> ';
+									str+='( <span class ="getCmtMemDtlsDesgClick" attr_search="required" attr_position="'+position+'" attr_non_invitee="'+isNonInvitee+'"  attr_desg_name="'+result[0].publicRepDesgList[i].name+'" style="font-weight:bold;color:green;cursor:pointer;">'+result[0].publicRepDesgList[i].count+'</span> )';
+									if( i!= result[0].publicRepDesgList.length -1 ){
+										str+=' , ';
+									}
+								 }
+							}
+						str+='</p>';
+				  str+='</div>';
+				str+='</div>';
+				str+='</div>';
+	      }
+		}
+		
+		
+	 //BULDING MEMBERS
+		str+='<div class="row m_top10">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		  str+='<div class="table-responsive">';
+		  str+='<table class="table border_top_apply" id="cmtMemberDtlsTableId">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th>District Name</th>';
+					str+='<th>Leader Name</th>';
+					str+='<th>Designation</th>';
+					str+='<th>Contact Number</th>';
+					str+='<th>Total Invitations</th>';
+					str+='<th>Total Present</th>';
+					str+='<th>Total Absent</th>';
+					str+='<th>Total Non-Invitee</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			
+			for(var i in result){
+				var build = false;
+				if(desgSearchRequired == "required"){
+				  if(result[i].subList != null && result[i].subList.length > 0){
+						for( var j in result[i].subList){
+							if(result[i].subList[j].trim().toUpperCase() == searchDesignation.trim().toUpperCase()){
+								build = true;
+								break;
+							}
+						}
+					}
+			    }else{
+					build = true;
+				}
+				if(build){
+				  //block
+                    str+='<tr>';
+					if(result[i].districtName != null && result[i].districtName.length > 0){
+						str+='<td>'+result[i].districtName+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					if(result[i].name != null && result[i].name.length > 0){
+						str+='<td>'+result[i].name+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					if(result[i].status != null && result[i].status.length > 0){
+						str+='<td>'+result[i].status+'</td>';
+					}else{
+						str+='<td>-</td>';   
+					}
+					if(result[i].mobileNo != null && result[i].mobileNo.length > 0){
+						str+='<td>'+result[i].mobileNo+'</td>';
+					}else{
+						str+='<td>-</td>';  
+					}
+					str+='<td>-</td>'; 
+					str+='<td>-</td>'; 
+					str+='<td>-</td>'; 
+					str+='<td>-</td>'; 
+				  str+='</tr>';					  
+				}
+			}
+		   str+='</tbody>';
+		   str+='</table>';
+		str+='</div>';
+		str+='</div>';
+		
+		if(position == "overview"){
+			$("#meetingMemDetailsBodyId").html(str);
+			$("#cmtMemberDtlsTableId").dataTable();   
+		}
+	   
+	}
+
+	
