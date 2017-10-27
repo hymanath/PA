@@ -381,6 +381,7 @@ function onLoadClicks()
 			$("[menu-name='parliament']").closest("li").hide();
 		}
 		$("[menu-name="+levelName+"]").html($(this).html()+"("+$(this).attr("short-name")+")");
+		$("[menu-name="+levelName+"]").attr("menu-type",$(this).attr("menu-type"));
 		//$("[menu-name="+levelName+"]").width(((length)*(10)));
 		$("[levelId="+levelId+"]").removeClass("active");
 		$(this).addClass("active");
@@ -393,6 +394,7 @@ function onLoadClicks()
 		{
 			locationLevelId = 7;
 			$("#getMenuLocations").attr("menu-location-levelId","7");
+			$("[menu-name="+levelName+"]").attr("levelid",7);
 		}else if(levelType == 'Ward'){
 			locationLevelId = 8;
 			$("#getMenuLocations").attr("menu-location-levelId","8");
@@ -545,6 +547,17 @@ function onLoadClicks()
 	$(document).on("click","[menu-name]",function(){
 		locationLevelId = $(this).attr("levelid");
 		locationLevelName = $(this).attr("menu-name");
+		menuLevelType = $(this).attr("menu-type")
+		if(locationLevelId == 5 && menuLevelType == 'Municipality' || locationLevelId == 12 && menuLevelType == 'Municipality')
+		{
+			locationLevelId = 7
+		}else if(locationLevelId == 6 && menuLevelType == 'Ward' || locationLevelId == 13 && menuLevelType == 'Ward')
+		{
+			locationLevelId = 8
+		}else if(locationLevelId == 6 && menuLevelType == 'Village' || locationLevelId == 13 && menuLevelType == 'Village')
+		{
+			locationLevelId = 6
+		}
 		$(this).closest("li").nextAll("li").hide();
 		onLoadLocValue();
 		onLoadAjaxCalls();
@@ -4151,7 +4164,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 		percentage = parseFloat((totalBenefitsCount*100)/totalSchemesCount);
 		
 		str+='<div class="col-sm-5" style="border-right: 1px solid rgb(204, 204, 204);">';
-			str+='<div class="benefit_block">';
+			str+='<div class="block">';
 				str+='<div id="benefitMainGraphId" style="height:180px;"></div>';
 				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-6">';
@@ -4300,7 +4313,8 @@ function getGovtSchemeWiseBenefitMembersCount(){
 		$("#benefitMainGraphId").highcharts({
 			colors:["#339900","#3BB878"],
 			chart: {
-				type: 'column'
+				type: 'column',
+				backgroundColor:'transparent'
 			},
 			title: {
 				text: '',
@@ -7869,7 +7883,13 @@ function getTrustEducationOverviewDetails(yearId){
 			if(result !=null && result.subList2 !=null && result.subList2.length>0){
 				for(var i in result.subList2){
 					var str1='';
-					str1+='<ul class="list_style_css1 m_top20">';
+					if(type == "ntrTrust")
+					{
+						str1+='<ul class="list_style_css1 m_top20" style="min-height:90px">';
+					}else{
+						str1+='<ul class="list_style_css1 m_top20" style="min-height:230px">';
+					}
+					
 					for(var j in result.subList2[i].subList){
 						str1+='<li>';
 							str1+='<div class="dropup">';
