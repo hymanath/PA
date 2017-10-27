@@ -1384,4 +1384,73 @@ public class ItcDashboardService implements IItcDashboardService {
 		}
 		return returnList;
 	}
+	
+	/**
+	 * @author Nandhini
+	 * @param InputVO inputVO
+	 * @description {This service is used to get CM eoDB Status Deatails.}
+	 * @return List<ItecCMeoDBDetailsVO>
+	 * @Date 27-10-2017
+	 */
+	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusDetailsNew(){
+	    List<ItecCMeoDBDetailsVO> returnList = new ArrayList<ItecCMeoDBDetailsVO>(0);
+	    try {
+	    	
+	    	Map<String,ItecCMeoDBDetailsVO> departmentMap = new HashMap<String,ItecCMeoDBDetailsVO>(0);
+	    	MOUTrackerIT[] list = new TrackerITServiceSoapProxy().EODB_ABSTRACT_REPORT();
+            if(list != null && list.length > 0){
+				for (int i = 0; i < list.length; i++) {
+					if(list[i].getCLEARENCE_NAME() != null && !list[i].getCLEARENCE_NAME().trim().equalsIgnoreCase("Total")){
+						ItecCMeoDBDetailsVO departmntVO = departmentMap.get(list[i].getDASH_BOARD_NAME());
+		            	  if(departmntVO == null){
+		            		  departmntVO  = new ItecCMeoDBDetailsVO();
+		            		  departmntVO.setDashboardName(list[i].getDASH_BOARD_NAME());
+		            		  ItecCMeoDBDetailsVO subVO = new ItecCMeoDBDetailsVO();
+			            		  subVO.setClearenceName(list[i].getCLEARENCE_NAME());
+			            		  subVO.setTotalApplications(list[i].getTOTAL_APPLICATIONS());
+			            		  subVO.setTotalApproved(list[i].getTOTAL_APPROVED());
+			            		  subVO.setTotalRejected(list[i].getTOTAL_REJECTED());
+								  subVO.setTotalReApproved(list[i].getTOTAL_REAPPROVED());
+								  subVO.setTotalPending(list[i].getTOTAL_PENDING());
+								  subVO.setPendingWithInSLA(list[i].getPENDING_WITN_IN_SLA());
+								  subVO.setPendingBeyondSLA(list[i].getPENDING_BEYOND_SLA());
+								  subVO.setDashBoardNO(list[i].getDASH_BOARD_NO());
+								  subVO.setClearenceId(list[i].getCLEARANCE_ID());
+							  departmntVO.getSubList().add(subVO);
+							  departmentMap.put(departmntVO.getDashboardName(), departmntVO);
+		            		 }else{
+		            			 ItecCMeoDBDetailsVO subVO = new ItecCMeoDBDetailsVO();
+			            			  subVO.setClearenceName(list[i].getCLEARENCE_NAME());
+				            		  subVO.setTotalApplications(list[i].getTOTAL_APPLICATIONS());
+				            		  subVO.setTotalApproved(list[i].getTOTAL_APPROVED());
+				            		  subVO.setTotalRejected(list[i].getTOTAL_REJECTED());
+									  subVO.setTotalReApproved(list[i].getTOTAL_REAPPROVED());
+									  subVO.setTotalPending(list[i].getTOTAL_PENDING());
+									  subVO.setPendingWithInSLA(list[i].getPENDING_WITN_IN_SLA());
+									  subVO.setPendingBeyondSLA(list[i].getPENDING_BEYOND_SLA());
+									  subVO.setDashBoardNO(list[i].getDASH_BOARD_NO());
+									  subVO.setClearenceId(list[i].getCLEARANCE_ID());
+							  departmntVO.getSubList().add(subVO);
+			            	  }
+							}
+		             	}
+		           }
+            
+              if(departmentMap != null){
+		    	  returnList = new ArrayList<ItecCMeoDBDetailsVO>(departmentMap.values());
+		      }
+              if(returnList != null && !returnList.isEmpty()){
+            	  for (ItecCMeoDBDetailsVO finalVO : returnList) {
+					for (ItecCMeoDBDetailsVO subCuntVO : finalVO.getSubList()) {
+						finalVO.setDeprtTotalApplications(finalVO.getDeprtTotalApplications()+Long.valueOf(subCuntVO.getTotalApplications()));
+						finalVO.setDeprtTotalApproval(finalVO.getDeprtTotalApproval()+Long.valueOf(subCuntVO.getTotalApproved()));
+					}
+				}
+              }
+		      
+		    } catch (Exception e) {
+		      LOG.error("Exception raised at getCMeoDBStatusDetailsNew - ItcDashboardService service",e);
+		    }
+		    return returnList;
+	}
 }

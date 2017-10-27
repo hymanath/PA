@@ -168,4 +168,10 @@ public class ItcController {
 		   List<ItecCMeoDBDetailsVO>  resultList = itcDashboardService.getCMeoDBStatusCountDetails(inputVO);
 		   return resultList;
 	   }
+	   
+	   @RequestMapping(value = "/getCMeoDBStatusDetailsNew", method = RequestMethod.POST)
+	   public @ResponseBody  List<ItecCMeoDBDetailsVO>  getCMeoDBStatusDetailsNew() {
+		   List<ItecCMeoDBDetailsVO>  resultList = itcDashboardService.getCMeoDBStatusDetailsNew();
+		   return resultList;
+	   }
 }

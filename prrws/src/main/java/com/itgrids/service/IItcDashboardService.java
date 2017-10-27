@@ -44,4 +44,5 @@ public interface IItcDashboardService {
 	public List<ItecCMeoDBDetailsVO> getCMeoDBOverviewDetails();
 	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusDetails();
 	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusCountDetails(InputVO inputVO);
+	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusDetailsNew();
 }
