@@ -752,12 +752,14 @@ public List<Object[]> getLocationWiseStateMeetingImages(List<Long> locationValue
     
     sb.append(" select model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeeting.partyMeetingType.partyMeetingMainType.meetingType," +
        "model.partyMeeting.partyMeetingType.partyMeetingTypeId,model.partyMeeting.partyMeetingType.type,model.path" +
-       ",model.partyMeeting.partyMeetingId,model.partyMeeting.meetingName from PartyMeetingDocument model  where model.partyMeeting.isActive = 'Y' and  ");
+       ",model.partyMeeting.partyMeetingId,sessionType.sessionTypeId,sessionType.type from PartyMeetingDocument model " +
+       "  left join  model.partyMeetingSession partyMeetingSession  left join partyMeetingSession.sessionType sessionType " +
+       " where model.partyMeeting.isActive = 'Y' and   partyMeetingSession.isDeleted = 'N' and ");
     
     if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){ 
  	   if(locationTypeId == 2l){
 	          sb.append("  model.partyMeeting.meetingAddress.state.stateId in (:locationValues) ");
-	        }else if(locationTypeId == 4l){
+	      }else if(locationTypeId == 4l){
            sb.append("  model.partyMeeting.meetingAddress.constituency.constituencyId in (:locationValues) ");
          }else if(locationTypeId == 3l){
            sb.append("  model.partyMeeting.meetingAddress.district.districtId in (:locationValues)");

@@ -63,10 +63,25 @@ public class PartyMeetingDataVO implements Serializable{
 	private String mayBePerc;
 	private String totalPerc;
 	private String NotUpdatePerc;
+	private Long designationId = 0l;
+	private String designationname;
+	private List<String> stringList;
 	public PartyMeetingDataVO(){}
 	
 	
 	
+	public List<String> getStringList() {
+		return stringList;
+	}
+
+
+
+	public void setStringList(List<String> stringList) {
+		this.stringList = stringList;
+	}
+
+
+
 	public String getYesPerc() {
 		return yesPerc;
 	}
@@ -588,6 +603,18 @@ public class PartyMeetingDataVO implements Serializable{
 	public void setMaybeCount(Long maybeCount) {
 		this.maybeCount = maybeCount;
 	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	public String getDesignationname() {
+		return designationname;
+	}
+	public void setDesignationname(String designationname) {
+		this.designationname = designationname;
+	}
 
-
+	
 }
