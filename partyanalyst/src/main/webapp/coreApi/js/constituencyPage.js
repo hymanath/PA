@@ -8531,4 +8531,26 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 	   
 	}
 
-	
+	//getCategoryWiseGenderCount();
+	function getCategoryWiseGenderCount(){
+		var locationScopeId=4;
+		var locationValuesArr=[];
+		locationValuesArr.push(4);
+		var enrollmentYearIdsArr=[];
+			enrollmentYearIdsArr.push(1);
+			enrollmentYearIdsArr.push(2);
+		    enrollmentYearIdsArr.push(4);
+		jsObj={
+			locationScopeId: locationScopeId,
+			locationValuesArr:	locationValuesArr,
+			enrollmentYearIdsArr:enrollmentYearIdsArr
+		}
+		$.ajax({
+			type : "POST",
+			url : "getCategoryWiseGenderCountAction.action",
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)}
+	    }).done(function(result){ 
+			console.log(result);
+		});	
+	}

@@ -1750,4 +1750,16 @@ public String getElectionInformationLocationWise(){
 		}
 		 return Action.SUCCESS;
 	 }
+  public String  getCategoryWiseGenderCount(){
+		 try {
+			jObj = new JSONObject(getTask());
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr")); 
+			List<Long> enrollmentYearIdsList = convertJsonStringList(jObj.getJSONArray("enrollmentYearIdsArr")); 
+
+			cadreDtlsList = locationDashboardService.getCategoryWiseGenderCount(jObj.getLong("locationScopeId"),locationValuesList,enrollmentYearIdsList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCategoryWiseGenderCount in LocationDashboardAction class", e);
+		}
+		 return Action.SUCCESS;
+	 }
 }
