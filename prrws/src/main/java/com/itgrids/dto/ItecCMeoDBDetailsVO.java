@@ -1,5 +1,8 @@
 package com.itgrids.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItecCMeoDBDetailsVO {
 
 	private String dashboardName;
@@ -44,8 +47,9 @@ public class ItecCMeoDBDetailsVO {
 	private String approvalFileId;
 	private String applicationId;
 	private String regId;
-	
-	
+	private List<ItecCMeoDBDetailsVO>  subList = new ArrayList<ItecCMeoDBDetailsVO>(0);
+	private Long deprtTotalApplications = 0L;
+	private Long deprtTotalApproval = 0L;
 	
 	public String getDashboardName() {
 		return dashboardName;
@@ -298,5 +302,23 @@ public class ItecCMeoDBDetailsVO {
 	}
 	public void setRegId(String regId) {
 		this.regId = regId;
+	}
+	public List<ItecCMeoDBDetailsVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<ItecCMeoDBDetailsVO> subList) {
+		this.subList = subList;
+	}
+	public Long getDeprtTotalApplications() {
+		return deprtTotalApplications;
+	}
+	public void setDeprtTotalApplications(Long deprtTotalApplications) {
+		this.deprtTotalApplications = deprtTotalApplications;
+	}
+	public Long getDeprtTotalApproval() {
+		return deprtTotalApproval;
+	}
+	public void setDeprtTotalApproval(Long deprtTotalApproval) {
+		this.deprtTotalApproval = deprtTotalApproval;
 	}
 }
