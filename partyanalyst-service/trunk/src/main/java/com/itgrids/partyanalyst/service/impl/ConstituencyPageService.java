@@ -6288,18 +6288,23 @@ public class ConstituencyPageService implements IConstituencyPageService{
 					finalVo.getList().add(locationVo);	
 				}
 			}
-			
-			
+			List<Object[]> allSchemeLst = govtSchemesDAO.getAllSchemeDetails();
+			  prepareRquiredTemplate(allSchemeLst,finalVo.getSubList1());
 			//id-0,name-1,schemeId-2,schemeName-3,grievanceCnt -3,benefitCount-4
 			List<Object[]> schemsList = govtSchemeBenefitsInfoDAO.getLocationWiseSchemeOverview(locationScopeId, locationValue,"Schemes");
 			if(schemsList != null && schemsList.size() >0){
 				for (Object[] objects : schemsList){
-					ElectionInformationVO schemeVo = new ElectionInformationVO();
+					ElectionInformationVO schemeVo = getMatchedSchemeVO(finalVo.getSubList1(),(Long)objects[0]);		
+					if(schemeVo != null){
+						schemeVo.setTotalSeatsCount(objects[2] !=null ? (Long)objects[2]:null);
+						schemeVo.setParticipatedSeatsCount(objects[3] !=null ? (Long)objects[3]:null);
+					}
+					/*ElectionInformationVO schemeVo = new ElectionInformationVO();
 						schemeVo.setPartyId(objects[0] !=null ? (Long)objects[0]:null);
 						schemeVo.setPartyName(objects[1] != null ? objects[1].toString() : "");
 						schemeVo.setTotalSeatsCount(objects[2] !=null ? (Long)objects[2]:null);
 						schemeVo.setParticipatedSeatsCount(objects[3] !=null ? (Long)objects[3]:null);
-					finalVo.getSubList1().add(schemeVo);	
+					finalVo.getSubList1().add(schemeVo);	*/
 				}
 			}
 			Long totalCount =0l;
@@ -6315,7 +6320,6 @@ public class ConstituencyPageService implements IConstituencyPageService{
 			
 			if(finalVo.getList() != null && finalVo.getList().size() >0){
 					if(schemeDetailsObj != null && schemeDetailsObj.size() >0){
-						List<Object[]> allSchemeLst = govtSchemesDAO.getAllSchemeDetails();
 						List<Object[]> totalVotersLst = voterInfoDAO.getTotalVotersForlocationWiseData(locationScopeId, locationValue,false);
 						if(totalVotersLst != null && totalVotersLst.size() >0){
 							for (Object[] params : totalVotersLst) {
@@ -6352,9 +6356,32 @@ public class ConstituencyPageService implements IConstituencyPageService{
 			}
 			Collections.sort(finalVo.getSubList1(), new Comparator<ElectionInformationVO>() {
 				public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
-					return o2.getPartyId().compareTo(o1.getPartyId());
+					return o2.getTotalSeatsCount().compareTo(o1.getTotalSeatsCount());
 				}
 			});
+			if(finalVo.getSubList1() != null && finalVo.getSubList1().size() >0){
+				for (int i = 0; i <5; i++){
+					ElectionInformationVO vo = finalVo.getSubList1().get(i);
+					finalVo.getSubList1().get(0).getSubList1().add(vo);
+				}
+			}
+			if(finalVo.getSubList1() != null && finalVo.getSubList1().size() >0){
+				int size=finalVo.getSubList1().size();
+			    int x= finalVo.getSubList1().size()-5;
+			    for(int j =size-1 ; j >=x ; j-- ){
+					finalVo.getSubList1().get(0).getSubList2().add((finalVo.getSubList1().get(j)));
+				}
+			}
+			Long benefitMembersCnt =0l;
+			Long benefitAmountCnt =0l;
+			if(finalVo.getList() != null && finalVo.getList().size() >0){
+				for (ElectionInformationVO vo : finalVo.getList()){
+					benefitMembersCnt =benefitMembersCnt+vo.getTotalSeatsCount();
+					benefitAmountCnt =benefitAmountCnt+vo.getParticipatedSeatsCount();
+				}
+				finalVo.getList().get(0).setEarnedVote(calculatetempAmountInWords(benefitMembersCnt));
+				finalVo.getList().get(0).setRange(calculatetempAmountInWords(benefitAmountCnt));
+			}
 		} catch (Exception e) {
 			log.error("Exception raised getLocationwiseSchemesOverview method "+e);
 		}
@@ -6371,7 +6398,7 @@ public class ConstituencyPageService implements IConstituencyPageService{
 				 }
 			 }
 		 }catch(Exception e){
-			 log.error("Exception occured  in getStateImpactLevelAlertDtlsCnt() in AlertsNewsPortalService class ",e);
+			 log.error("Exception occured  in prepareRquiredTemplate() in AlertsNewsPortalService class ",e);
 		 }
 	 }
 	 public ElectionInformationVO getMatchedSchemeVO(List<ElectionInformationVO> returnList,Long schemeId)
@@ -6391,5 +6418,34 @@ public class ConstituencyPageService implements IConstituencyPageService{
 			}
 			return null;
 		}
+	 public  static String calculatetempAmountInWords(Long number){
+         String amountStr = number.toString();
+         int lenght = amountStr.trim().length();
+         int maxLength=0;
+         String tempAmount = amountStr;
+         if(lenght>5){
+          //tempAmount = amountStr.substring(0, amountStr.length()-5);
+         }
+         amountStr = tempAmount;
+         lenght = tempAmount.trim().length();
+         if(amountStr.length()>3){
+           String temp="";
+           String temp1="";
+           for (int i = 0; i < amountStr.length(); i++){
+             if(i==2){
+               temp = amountStr.substring(lenght-(i+1),lenght);
+               temp1=temp;
+             }else if(i>2 && i%2==0 ){
+               maxLength=lenght-(i+1)+2;
+               temp = amountStr.substring(lenght-(i+1),maxLength)+","+temp;
+               temp1 = temp1+amountStr.substring(lenght-(i+1),maxLength);
+             }  else if(temp.length()>0 && temp1.length()>0 && lenght-temp1.length()==1){
+               temp = amountStr.substring(0,1)+","+temp;
+             }            
+       }
+           amountStr = temp;
+         }
+         return amountStr;  
+}
 }
 
