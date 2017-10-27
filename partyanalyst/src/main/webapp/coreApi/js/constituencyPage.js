@@ -4133,22 +4133,18 @@ function getGovtSchemeWiseBenefitMembersCount(){
 		var mainArr=[];
 		var percentage=0;
 		var totalSchemesCount=0;
-		var totalBenefitsCount=16;
-		if(result !=null && result.list !=null && result.list.length>0){
-			for(var i in result.list){
-				totalBenefitsMemberesCount =totalBenefitsMemberesCount+result.list[i].totalSeatsCount;
-				totalBenefitsAmountCount = totalBenefitsAmountCount+result.list[i].participatedSeatsCount;
-			}
+		var totalBenefitsCount=0;
+		if(result !=null && result.list !=null){
+				totalBenefitsMemberesCount =result.list[0].earnedVote;
+				totalBenefitsAmountCount =result.list[0].range;
 		}
 		if(result !=null && result.subList1 !=null && result.subList1.length>0){
 			totalSchemesCount =totalSchemesCount+result.subList1.length;
-			/* for(var i in result.subList1){
-				
-				/* if(result.subList1[i].totalSeatsCount !=null && result.subList1[i].totalSeatsCount>0){
-					totalBenefitsCount = totalBenefitsCount+result.subList1[i].totalSeatsCount;
-					
+			 for(var i in result.subList1){
+				 if(result.subList1[i].totalSeatsCount !=null && result.subList1[i].totalSeatsCount != 0){
+					totalBenefitsCount = totalBenefitsCount+1;
 				} 
-			} */
+			}
 		}
 		mainArr.push(totalSchemesCount)
 		mainArr.push(totalBenefitsCount)
@@ -4168,7 +4164,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 								if(totalBenefitsMemberesCount !=null && totalBenefitsMemberesCount>0){
 									str+='<h5 class="m_top10">'+totalBenefitsMemberesCount+'</h5>';
 								}else{
-									str+='<h5 class="m_top10"> - </h5>';
+									str+='<h5 class="m_top10">'+totalBenefitsMemberesCount+'</h5>';
 								}
 								
 							str+=' </div>';
@@ -4181,10 +4177,10 @@ function getGovtSchemeWiseBenefitMembersCount(){
 							str+='</div>';
 							str+='<div class="media-body">';
 								str+='<h6 class="m_top5">Benefited Amount</h6>';
-								if(totalBenefitsAmountCount !=null && totalBenefitsAmountCount>0){
+								 if(totalBenefitsAmountCount !=null && totalBenefitsAmountCount>0){
 									str+='<h5 class="m_top10">'+totalBenefitsAmountCount+'</h5>';
-								}else{
-									str+='<h5 class="m_top10"> - </h5>';
+								}else{ 
+									str+='<h5 class="m_top10">'+totalBenefitsAmountCount+'</h5>';
 								}
 								
 							str+=' </div>';
