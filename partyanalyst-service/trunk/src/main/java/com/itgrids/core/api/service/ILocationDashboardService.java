@@ -93,4 +93,5 @@ public interface ILocationDashboardService {
 	
 	public List<ElectionInformationVO> getElectionYearWisePartyDetails(List<Long> electionScopeIdsLst,List<String> subTypes);
 	public List<KeyValueVO> getLocationWiseElectionDetails(String locationType);
+	public List<ConstituencyCadreVO> getCategoryWiseGenderCount(Long locationScopeId,List<Long> locationValuesList,List<Long> enrollmentYearIdsList);
 	}
