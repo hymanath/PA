@@ -1018,7 +1018,7 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType)
 			locationId:"-1",
 			displayType:"day",
 			reportType:"daily"
-			
+			//subLocation:"state"
 		}
 		$.ajax({                
 			type:'POST',    

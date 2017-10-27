@@ -143,6 +143,49 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		 }
 		 return strArr;
 	}
+	
+	/*public List<SwachhBharatMissionIHHLDtlsVO> getIHHLCategoryWiseAnalysisBySelectedDate(InputVO inputVO) {
+		List<SwachhBharatMissionIHHLDtlsVO> categoryList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
+		try {
+			String str = convertingInputVOToString(inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails", str);
+			
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject jsonObject = new JSONObject(output);
+	 	    		
+	 	    		JSONArray categoryWiseDataArr = jsonObject.getJSONArray("categorycount");
+	 	    		if(categoryWiseDataArr != null && categoryWiseDataArr.length() > 0){
+	 	    			for(int i=0;i<categoryWiseDataArr.length();i++){
+	 	    				SwachhBharatMissionIHHLDtlsVO categoryVO = new SwachhBharatMissionIHHLDtlsVO();
+	 	    				JSONObject jObj = (JSONObject) categoryWiseDataArr.get(i);
+	 	    				String range = jObj.has("CAT") ? jObj.getString("CAT"):"";
+	 	    				String[] strArr = getRankIdBasedOnCategory(range);
+	 	    				if (strArr.length > 0) {
+	 	    					categoryVO.setRange(strArr[2]);
+	 	    					categoryVO.setId(Long.valueOf(strArr[0]));
+	 	    					categoryVO.setName(strArr[1]);
+	 	    				}
+	 	    				categoryVO.setDistrictCount(jObj.has("D") ? jObj.getLong("D"):0l);
+	 	    				categoryVO.setConstituencyCount(jObj.has("C") ? jObj.getLong("C"):0l);
+	 	    				categoryVO.setMandalCount(jObj.has("M") ? jObj.getLong("M"):0l);
+	 	    				categoryList.add(categoryVO);
+	 	    			}	
+	 	    			if (categoryList.size() > 0) {
+	 	    				Collections.sort(categoryList, sortListBasedOnId);
+	 	    				//resultVO.setSubList(categoryList);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+		} catch (Exception e) {
+			LOG.error("Exception occured at getIHHLCategoryWiseAnalysisBySelectedDate() in SwachhBharatMissionIHHLService class",e); 
+		}
+		return categoryList;
+	}*/
 	/**
 	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO
