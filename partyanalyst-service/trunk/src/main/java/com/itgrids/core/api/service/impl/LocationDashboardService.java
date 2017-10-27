@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -6336,9 +6337,10 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 		Map<Long,Map<Long,Long>> locationWisePolledVotesMap = new HashMap<Long, Map<Long,Long>>(0);
 		Map<Long,String> partyNameMap = new HashMap<Long,String>(0);
 		Map<Long,String> partyFlagMap = new HashMap<Long,String>(0);
-		Map<Long,Map <Long,Map<Long,Long>>> loctionIdEleIdpartyIdCountsMap = new HashMap<Long, Map<Long,Map<Long,Long>>>();
+		Map<Long,Map <Long,Map<String,Long>>> loctionIdEleIdpartyIdCountsMap = new HashMap<Long, Map<Long,Map<String,Long>>>();
 		Set<Long> loctionidsSet = new HashSet<Long>(0);
 		Set<Long> electionIdsSet = new HashSet<Long>(0);
+		Map<String,List<String>> groupUIdAndPartyNamesMap=new HashMap<String, List<String>>();
 		
 		if(totalCnt !=null && totalCnt.size()>0){
 			Set<Long> partyIdList = new HashSet<Long>(0);
@@ -6356,13 +6358,13 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 			
 			if(wonCountObjs !=null && wonCountObjs.size() >0){
 				for(Object[] obj:wonCountObjs){
-					Map<Long,Map<Long,Long>> electionIdAndPartsCountMap=loctionIdEleIdpartyIdCountsMap.get(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					Map<Long,Map<String,Long>> electionIdAndPartsCountMap=loctionIdEleIdpartyIdCountsMap.get(commonMethodsUtilService.getLongValueForObject(obj[1]));
 					if(!commonMethodsUtilService.isMapValid(electionIdAndPartsCountMap))
-						electionIdAndPartsCountMap=new HashMap<Long, Map<Long,Long>>();
-					Map<Long,Long> partyIdAndCountMap=electionIdAndPartsCountMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+						electionIdAndPartsCountMap=new HashMap<Long, Map<String,Long>>();
+					Map<String,Long> partyIdAndCountMap=electionIdAndPartsCountMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
 					if(!commonMethodsUtilService.isMapValid(partyIdAndCountMap))
-						partyIdAndCountMap=new HashMap<Long, Long>();
-					partyIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(obj[2]), commonMethodsUtilService.getLongValueForObject(obj[3]));
+						partyIdAndCountMap=new HashMap<String, Long>();
+					partyIdAndCountMap.put(commonMethodsUtilService.getStringValueForObject(obj[2]), commonMethodsUtilService.getLongValueForObject(obj[3]));
 					electionIdAndPartsCountMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), partyIdAndCountMap);
 					loctionIdEleIdpartyIdCountsMap.put(commonMethodsUtilService.getLongValueForObject(obj[1]), electionIdAndPartsCountMap);
 				}
@@ -6388,6 +6390,8 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 				if(commonMethodsUtilService.isListOrSetValid(alliancePartyIdNameList)){
 					partyId = Long.valueOf(alliancePartyIdNameList.get(0));
 					partyName = alliancePartyIdNameList.get(1);
+					String[] namesArr=alliancePartyIdNameList.get(2).split(",");
+					groupUIdAndPartyNamesMap.put(partyName.trim(),Arrays.asList(namesArr));
 				}
 				
 				ElectionInformationVO locationVO = levelMap.get(commonMethodsUtilService.getLongValueForObject(objects[1]));
@@ -6620,15 +6624,28 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 		}// here we adding the  won counts of each party in a location
 		// iterating finalList and  get the counts from loctionIdEleIdpartyIdCountsMap map 
 		if(commonMethodsUtilService.isListOrSetValid(finalList) && commonMethodsUtilService.isMapValid(loctionIdEleIdpartyIdCountsMap)){
-			for(ElectionInformationVO loctionVo:finalList){
-				Map<Long,Map<Long,Long>> elctionIdAndPartCounts=loctionIdEleIdpartyIdCountsMap.get(loctionVo.getLocationId());
+			for(ElectionInformationVO loctionVo:finalList){		
+				Map<Long,Map<String,Long>> elctionIdAndPartCounts=loctionIdEleIdpartyIdCountsMap.get(loctionVo.getLocationId());
 				if(commonMethodsUtilService.isMapValid(elctionIdAndPartCounts) && commonMethodsUtilService.isListOrSetValid(loctionVo.getSubList1())){
-					for(ElectionInformationVO electionVo:loctionVo.getSubList1()){//kkb
-						Map<Long,Long> partiesCounts=elctionIdAndPartCounts.get(electionVo.getElectionId());
+					for(ElectionInformationVO electionVo:loctionVo.getSubList1()){
+						Map<String,Long> partiesCounts=elctionIdAndPartCounts.get(electionVo.getElectionId());
 						if(commonMethodsUtilService.isMapValid(partiesCounts) && commonMethodsUtilService.isListOrSetValid(electionVo.getSubList1())){
 							for(ElectionInformationVO partVo:electionVo.getSubList1() ){
-								if(partiesCounts.get(partVo.getPartyId()) !=null && partiesCounts.get(partVo.getPartyId()).longValue() >0L)
-								partVo.setWonSeatsCount(partiesCounts.get(partVo.getPartyId()));
+								if(partVo.getPartyName() !=null && partVo.getPartyName().trim().length() >0){
+									//with ALLIANCE count							//this alianceparty map having group id and party names
+									if(commonMethodsUtilService.isListOrSetValid(groupUIdAndPartyNamesMap.get(partVo.getPartyName().trim()))){
+										Long alliancePartyCount=0L;		//this block calcute total parties won count in group
+										for(String partyname : groupUIdAndPartyNamesMap.get(partVo.getPartyName().trim())){
+											if(partyname !=null && partyname.trim().length() >0)
+												alliancePartyCount=alliancePartyCount+((partiesCounts.get(partyname.trim()) !=null )? partiesCounts.get(partyname.trim()):0L);
+										}
+											partVo.setWonSeatsCount(alliancePartyCount);
+											// with out alliance count
+										}else if(partiesCounts.get(partVo.getPartyName()) !=null && partiesCounts.get(partVo.getPartyName().trim())>0L){
+										partVo.setWonSeatsCount(partiesCounts.get(partVo.getPartyName().trim()));
+									}
+									
+								}
 							}
 						}
 					}
