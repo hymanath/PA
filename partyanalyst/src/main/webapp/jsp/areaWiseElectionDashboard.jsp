@@ -168,7 +168,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="m_top10">
+		<section class="m_top10"  style="display:none">
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block boderBlock">
@@ -206,7 +206,7 @@
 						</div>
 						<div class="row">
 							<div class="col-sm-12">
-								<div id="crossVotingDetailsBlockId"></div>
+								<div id="crossVotingDetailsBlockId" style="display:none"></div>
 							</div>
 						</div>
 					</div>
