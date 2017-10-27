@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationAlertVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
@@ -107,8 +108,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<CandidateDetailsForConstituencyTypesVO> typeVoList;
 	private PartyBoothPerformanceVO boothResult;
 	private List<ElectionInformationVO> listElectionInformationVO;
+	private List<IdNameVO> IdNameVOList;
 	
 	
+	public List<IdNameVO> getIdNameVOList() {
+		return IdNameVOList;
+	}
+	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
+		IdNameVOList = idNameVOList;
+	}
 	public List<ElectionInformationVO> getListElectionInformationVO() {
 		return listElectionInformationVO;
 	}
@@ -1721,6 +1729,24 @@ public String getElectionInformationLocationWise(){
 			partyMeetingDataVO = meetingLocationDashboardService.getLocationWiseSpecialMeetingsMeetingsExpanction(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr,partyMeetingMainTypeId,partyMeetingTypeId);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseSpecialMeetingsMeetingsExpanction", e);
+		}
+		 return Action.SUCCESS;
+	 }
+  
+  public String  getLocationWiseMeetingInviteeMembers(){
+		 try {
+			jObj = new JSONObject(getTask());
+			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValues"));
+			String fromDateStr =jObj.getString("fromDate");
+			String toDateStr =jObj.getString("toDate");
+			Long partyMeetingMainTypeId =jObj.getLong("partyMeetingMainTypeId"); 
+			Long partyMeetingTypeId =jObj.getLong("partyMeetingTypeId");
+			Long partyMeetingId = jObj.getLong("partyMeetingId");
+			String includePastMeetings =jObj.getString("includePastMeetings");
+			
+			IdNameVOList = meetingLocationDashboardService.getLocationWiseMeetingInviteeMembers(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr,partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,includePastMeetings);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseMeetingInviteeMembers", e);
 		}
 		 return Action.SUCCESS;
 	 }

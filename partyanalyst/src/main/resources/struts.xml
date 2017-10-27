@@ -18389,5 +18389,10 @@
 			<param name="root">partyMeetingDataVO</param>       
 		</result>
    </action>
+   <action name="getLocationWiseMeetingInviteeMembersAction" class="locationDashboardAction"  method="getLocationWiseMeetingInviteeMembers">
+		<result type="json" name="success">    
+			<param name="root">IdNameVOList</param>       
+		</result>
+   </action>
  </package>
 </struts>
