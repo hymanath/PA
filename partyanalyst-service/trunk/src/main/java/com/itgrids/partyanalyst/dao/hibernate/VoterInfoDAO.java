@@ -757,19 +757,19 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 			reportlevelId = 3l;
 		}
 		StringBuilder sb = new StringBuilder();
-
+		sb.append(" select ");
 		if(locationScopeId != null && locationScopeId == 2l){
 			sb.append("C.district_id as locationId,sum(VI.total_voters) as count from voter_info VI,constituency C,district D " +
 				" where VI.report_level_value=C.constituency_id and D.district_id=C.district_id and (C.district_id between 11 and 23) AND VI.report_level_id=1 " +
 				" and VI.publication_date_id=22 group by C.district_id ");
 		}else if(locationScopeId != null && locationScopeId == 3l){
-			sb.append("select C.constituency_id as locationId, sum(VI.total_voters) as count from voter_info VI,constituency C" +
+			sb.append(" C.constituency_id as locationId, sum(VI.total_voters) as count from voter_info VI,constituency C" +
 					" where VI.report_level_value=C.constituency_id and C.district_id =:locationValue " +
 					" AND VI.report_level_id =1 and VI.publication_date_id=22 " +
 					" group by C.constituency_id ");
 		}else if(locationScopeId != null && locationScopeId == 4l){
 			if(!isLocationBodyId){
-				sb.append("select t.tehsil_id as locationId ,sum(VI.total_voters) as count " +
+				sb.append("  t.tehsil_id as locationId ,sum(VI.total_voters) as count " +
 						" from voter_info VI,constituency C,tehsil_constituency tc,tehsil t " +
 						" where VI.report_level_value=t.tehsil_id and tc.constituency_id=C.constituency_id and tc.tehsil_id=t.tehsil_id and " +
 						" C.constituency_id=:locationValue " +
@@ -777,7 +777,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 						" AND VI.report_level_id =2 " +
 						" group by t.tehsil_id ");
 			}else{
-				sb.append("select leb.local_election_body_id as locationId,sum(VI.total_voters) as count " +
+				sb.append(" leb.local_election_body_id as locationId,sum(VI.total_voters) as count " +
 						" from voter_info VI, constituency C, tehsil_constituency tc," +
 						" tehsil t,local_election_body leb where VI.report_level_value=leb.local_election_body_id and tc.constituency_id=C.constituency_id and " +
 						" tc.tehsil_id=t.tehsil_id and leb.tehsil_id=t.tehsil_id and C.constituency_id=:locationValue " +
@@ -787,13 +787,13 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 			}
 			
 		}else if(locationScopeId != null && locationScopeId == 5l){
-			sb.append(" select p.panchayat_id  as locationId,sum(vi.total_voters) as count" +
+			sb.append(" p.panchayat_id  as locationId,sum(vi.total_voters) as count" +
 					" from voter_info vi, tehsil t,panchayat p where " +
 					" vi.report_level_value=p.panchayat_id and p.tehsil_id=t.tehsil_id" +
 					" and t.tehsil_id=:locationValue and vi.report_level_id=3 " +
 					" group by p.panchayat_id ");
 		}else if(locationScopeId != null && locationScopeId == 6l){
-			sb.append(" select p.panchayat_id  as locationId,sum(vi.total_voters) as count" +
+			sb.append(" p.panchayat_id  as locationId,sum(vi.total_voters) as count" +
 					" from voter_info vi,panchayat p where " +
 					" vi.report_level_value=p.panchayat_id " +
 					" and p.panchayat_id=:locationValue and vi.report_level_id=3 " +
