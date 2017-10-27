@@ -159,9 +159,16 @@ public class ConstituencyPageAction extends ActionSupport implements
     private SelectOptionVO partyPerformenceList;
     private List<VotersInfoForMandalVO> votersInfo;
     private ElectionInformationVO electionInformationVO;
+    private List<ElectionInformationVO> electionInformationVOLst;
     
-    
-    public ElectionInformationVO getElectionInformationVO() {
+    public List<ElectionInformationVO> getElectionInformationVOLst() {
+		return electionInformationVOLst;
+	}
+	public void setElectionInformationVOLst(
+			List<ElectionInformationVO> electionInformationVOLst) {
+		this.electionInformationVOLst = electionInformationVOLst;
+	}
+	public ElectionInformationVO getElectionInformationVO() {
 		return electionInformationVO;
 	}
 	public void setElectionInformationVO(ElectionInformationVO electionInformationVO) {
@@ -2022,6 +2029,22 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			Long locationScopeId = jObj.getLong("locationScopeId");
 			Long locationValue = jObj.getLong("locationValue");
 			electionInformationVO = constituencyPageService.getLocationwiseSchemesOverview(locationScopeId,locationValue);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+  public String getMemberDetailsForBenefitInfo(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			
+			Long locationScopeId = jObj.getLong("locationScopeId");
+			Long locationValue = jObj.getLong("locationValue");
+			Long schemeId = jObj.getLong("schemeId");
+			electionInformationVOLst = constituencyPageService.getMemberDetailsForBenefitInfo(schemeId,locationScopeId,locationValue);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
