@@ -1732,6 +1732,19 @@ public String getElectionInformationLocationWise(){
 		}
 		 return Action.SUCCESS;
 	 }
+  public String getCastWiseCadreCount(){
+		 try {
+			// getCasteWiseCadreCounts(Long locationTypeId, List<Long> LocationValue,List<Long> enrollmentYearIds)
+			 jObj = new JSONObject(getTask());
+			 List<Long> enrollmentYearIds=convertJsonStringList(jObj.getJSONArray("enrollmentyearIds"));
+			 List<Long> LocationValues=convertJsonStringList(jObj.getJSONArray("LocationValues"));
+			 
+			 locationVotersVOList = locationWiseCasteInfoService.getCasteWiseCadreCounts(jObj.getLong("locationTypeId"),LocationValues,enrollmentYearIds);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEnrollmentYearAgeGroupWiseCadres", e);
+		}
+		 return Action.SUCCESS;
+	 }
   
   public String  getLocationWiseMeetingInviteeMembers(){
 		 try {
