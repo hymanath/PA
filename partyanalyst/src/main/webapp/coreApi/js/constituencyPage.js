@@ -965,7 +965,7 @@ function onLoadClicks()
 			$("#openModalDiv .modal-dialog").css("width","95%");
 			$("#TitleId").html(departmentName+  "  Open Posts Details");
 			$("#subTitleId").html("");
-			$("#paginationCls").html("");
+			$(".paginationCls").html("");
 			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
 		}else if(type == "goIssued"){
 			$("#openModalDiv").modal("show");
@@ -979,14 +979,14 @@ function onLoadClicks()
 			$("#departmentDetailsModalDivId").html(spinner);
 			$("#deptHeadingId").html(departmentName+" Details");
 			$("#subTitleId").html("");
-			$("#paginationCls").html("");
+			$(".paginationCls").html("");
 			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
 		}else if(type == "positionLevel"){
 			$("#openModalDiv").modal("show");
 			$("#openModalDiv .modal-dialog").css("width","95%");
 			$("#TitleId").html(departmentName+" Level Details");
 			$("#subTitleId").html("");
-			$("#paginationCls").html("");
+			$(".paginationCls").html("");
 			getNominatedPositionWiseCandidates(boardLevelId,departmentName);
 		}else if (type == "alert"){
 			var alertTypeIdsStr = $(this).attr("attr_alertTypeIdsStr");
@@ -1000,7 +1000,7 @@ function onLoadClicks()
 			var total_count = $(this).attr("attr_total_count");
 			$("#openModalDiv").modal("show");
 			$("#openModalDiv .modal-dialog").css("width","95%");
-			$("#paginationCls").html("");
+			$(".paginationCls").html("");
 			if(designationId !=0){
 				$("#TitleId").html(status_name + " Designation Wise Alerts Details  -  Total "+total_count+" ");
 				$("#subTitleId").html("");
@@ -1025,7 +1025,7 @@ function onLoadClicks()
 				designation="MLA";
 			}
 			$("#openModalDiv").modal("show");
-			$("#paginationCls").html("");
+			$(".paginationCls").html("");
 			$("#openModalDiv .modal-dialog").css("width","70%");
 			$("#TitleId").html("Party Wise"+" "+designation+" "+"Candidates Details");
 			$("#subTitleId").html("");
@@ -1034,6 +1034,7 @@ function onLoadClicks()
 			$("#openModalDiv").modal("show");
 			$("#TitleId").html("Committee Meetings - District Level");
 			$("#subTitleId").html("(Every month : 22nd/23rd/24th)");
+			$(".paginationCls").html("");
 			getLocationWiseMeetingStatusDetailsAction();
 		}else if(type == "electionResults"){
 			var constituencyId = $(this).attr("attr_constituencyId");
@@ -1042,7 +1043,7 @@ function onLoadClicks()
 			var name = $(this).attr("attr_name");
 			$("#openModalDiv").modal("show");
 			$("#openModalDiv .modal-dialog").css("width","95%");
-			$("#paginationCls").html("");
+			$(".paginationCls").html("");
 			$("#TitleId").html(name+"  "+electionType+" Election Result");
 			$("#subTitleId").html("");
 			getDetailedElectionResults(constituencyId,electionYear,"table")
@@ -1052,7 +1053,7 @@ function onLoadClicks()
 			var name = $(this).attr("attr_name");
 			$("#openModalDiv").modal("show");
 			$("#openModalDiv .modal-dialog").css("width","95%");
-			$("#paginationCls").html("");
+			$(".paginationCls").html("");
 			$("#TitleId").html("Special Meeting -"+name+" - Details");
 			$("#subTitleId").html("");
 			getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId,partyMeetingTypeId);
@@ -8129,24 +8130,37 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 								str+='<th>Images</th>';
 							str+='</thead>';
 							for(var j in result.levelList[i].levelList){
-								var length = result.levelList[i].levelList[j].datesList.length+1;
-								
-								str+='<tr>';
-									str+='<td rowspan="'+length+'">'+result.levelList[i].levelList[j].conductedDate+'</td>';
-									str+='<td rowspan="'+length+'">'+result.levelList[i].levelList[j].name+'</td>';
-								str+='</tr>';
-								for(var k in result.levelList[i].levelList[j].datesList){
+								if(result.levelList[i].levelList[j].datesList !=null && result.levelList[i].levelList[j].datesList.length>0){
+									var length = result.levelList[i].levelList[j].datesList.length+1;
+									
 									str+='<tr>';
-										str+='<td>'+result.levelList[i].levelList[j].datesList[k].name+'</td>';
-										str+='<td class="" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false">'+result.levelList[i].levelList[j].recentMeetingInviteesCnt+'</td>';
-										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentAttended+'</td>';
-										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentLate+'</td>';
-										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentAbcent+'</td>';
-										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentNonInvitee+'</td>';
-										str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentImagesCnt+'</td>';
+										str+='<td rowspan="'+length+'">'+result.levelList[i].levelList[j].conductedDate+'</td>';
+										str+='<td rowspan="'+length+'">'+result.levelList[i].levelList[j].name+'</td>';
 									str+='</tr>';
-								}
-								
+									if(result.levelList[i].levelList[j].datesList !=null && result.levelList[i].levelList[j].datesList.length>0){
+										for(var k in result.levelList[i].levelList[j].datesList){
+											str+='<tr>';
+												str+='<td>'+result.levelList[i].levelList[j].datesList[k].name+'</td>';
+												str+='<td class="getCmtMemDtls" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false">'+result.levelList[i].levelList[j].recentMeetingInviteesCnt+'</td>';
+												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentAttended+'</td>';
+												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentLate+'</td>';
+												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentAbcent+'</td>';
+												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentNonInvitee+'</td>';
+												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentImagesCnt+'</td>';
+											str+='</tr>';
+										}
+									}else{
+										str+='<tr>';
+												str+='<td> - </td>';
+												str+='<td> - </td>';
+												str+='<td> - </td>';
+												str+='<td> - </td>';
+												str+='<td> - </td>';
+												str+='<td> - </td>';
+												str+='<td> - </td>';
+											str+='</tr>';
+									}
+								}	
 							}
 						str+='</table>';
 					str+='</div>';
@@ -8415,8 +8429,11 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 		$("#meetingMemDetailsBodyId").html(spinner);
 		
 		if(desgSearchRequired == "notrequired"){
+			$(".memberMeetingCls li").removeClass("active");
 			getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position)
 		}else{
+			$(".memberMeetingCls li").removeClass("active");
+			$(this).parent("li").addClass("active");
 			buildMeetingMemberDtls(globalMeetingMembersResult,partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position);
 		}
 	});
@@ -8427,45 +8444,64 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 		//Building Summary
 		if(position == "overview"){
 			if(result[0].publicRepDesgList != null && result[0].publicRepDesgList.length > 0 ){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<div class="panel panel-default">';
-				  str+='<div class="panel-heading">';
-					str+='<h3 class="panel-title">DESIGNATIONS SUMMARY</h3>';
-				  str+='</div>';
-				  str+='<div class="panel-body">';
-						str+='<p style="font-size:15px;" class="m_top10">';
+				str+='<div class="col-sm-12">';
+				str+='<h3 class="panel-title">DESIGNATIONS SUMMARY</h3>';
+					str+='<div class="scrollerMeetingDiv">';
+						str+='<ul class="m_top10 list-inline memberMeetingCls">';
 							if(result[0].publicRepDesgList != null && result[0].publicRepDesgList.length > 0){
 								 for(var i in result[0].publicRepDesgList){
-									str+='<span style="text-transform:uppercase;">'+result[0].publicRepDesgList[i].name+'</span> ';
-									str+='( <span class ="getCmtMemDtlsDesgClick" attr_search="required" attr_position="'+position+'" attr_non_invitee="'+isNonInvitee+'"  attr_desg_name="'+result[0].publicRepDesgList[i].name+'" style="font-weight:bold;color:green;cursor:pointer;">'+result[0].publicRepDesgList[i].count+'</span> )';
-									if( i!= result[0].publicRepDesgList.length -1 ){
-										str+=' , ';
-									}
+									str+='<li class="text-capital m_top10" style="margin-left:10px;">';
+										str+='<h5><span class ="getCmtMemDtlsDesgClick" attr_search="required" attr_position="'+position+'" attr_non_invitee="'+isNonInvitee+'"  attr_desg_name="'+result[0].publicRepDesgList[i].name+'" style="cursor:pointer;">'+result[0].publicRepDesgList[i].count+'</span>&nbsp;<span class="f-12">'+result[0].publicRepDesgList[i].name+'</span></h5>';
+									str+='</li>';
 								 }
 							}
-						str+='</p>';
-				  str+='</div>';
-				str+='</div>';
-				str+='</div>';
+						str+='</ul>';
+					 str+='</div>';
+					 str+='</div>';
 	      }
 		}
 		
 		
 	 //BULDING MEMBERS
-		str+='<div class="row m_top10">';
-		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		str+='<div class="row m_top20">';
+		str+='<div class="col-sm-12">';
+		str+='<h3 class="panel-title">Details</h3>';
 		  str+='<div class="table-responsive">';
-		  str+='<table class="table border_top_apply" id="cmtMemberDtlsTableId">';
+		  str+='<table class="table table_custom table-bordered m_top10" id="cmtMemberDtlsTableId">';
 			str+='<thead>';
 				str+='<tr>';
-					str+='<th>District Name</th>';
-					str+='<th>Leader Name</th>';
-					str+='<th>Designation</th>';
-					str+='<th>Contact Number</th>';
-					str+='<th>Total Invitations</th>';
-					str+='<th>Total Present</th>';
-					str+='<th>Total Absent</th>';
-					str+='<th>Total Non-Invitee</th>';
+					str+='<th rowspan="3" style="vertical-align:middle;">District</th>';
+					str+='<th rowspan="3" style="vertical-align:middle;">Leader Name</th>';
+					str+='<th rowspan="3" style="vertical-align:middle;">Designation</th>';
+					str+='<th rowspan="3" style="vertical-align:middle;">Mobile No</th>';
+					str+='<th rowspan="3" style="vertical-align:middle;">Total Invitations</th>';
+					str+='<th rowspan="3" style="vertical-align:middle;">Total Present</th>';
+					str+='<th rowspan="3" style="vertical-align:middle;">Total Absent</th>';
+					str+='<th rowspan="3" style="vertical-align:middle;">Total Non-Invitee</th>';
+					for(var i in result[0].subList1){
+						if(i == 0){
+							str+='<th colspan="'+result[0].subList1[i].idnameList.length+'" style="vertical-align:middle;">Recent Meeting</th>';
+						}else{
+							str+='<th colspan="'+result[0].subList1[i].idnameList.length+'" style="vertical-align:middle;">Past Meetings</th>';
+						}
+					}
+				str+='</tr>';
+				str+='<tr>';
+					for(var i in result[0].subList1){
+						if(i == 0){
+							str+='<th colspan="'+result[0].subList1[i].idnameList.length+'" style="vertical-align:middle;">'+(result[0].subList1[i].dateStr).substring(0,10)+'</th>';
+						}else{
+							str+='<th colspan="'+result[0].subList1[i].idnameList.length+'" style="vertical-align:middle;">'+(result[0].subList1[i].dateStr).substring(0,10)+'</th>';
+						}
+					}
+				str+='</tr>';
+				str+='<tr>';
+					for(var i in result[0].subList1){
+						for(var j in result[0].subList1[i].idnameList){
+							str+='<th style="vertical-align:middle;">'+result[0].subList1[i].idnameList[j].name+'</th>';
+						}
+						
+					}
 				str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -8486,38 +8522,59 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 				}
 				if(build){
 				  //block
-                    str+='<tr>';
-					if(result[i].districtName != null && result[i].districtName.length > 0){
-						str+='<td>'+result[i].districtName+'</td>';
-					}else{
-						str+='<td>-</td>';
-					}
-					if(result[i].name != null && result[i].name.length > 0){
-						str+='<td>'+result[i].name+'</td>';
-					}else{
-						str+='<td>-</td>';
-					}
-					if(result[i].status != null && result[i].status.length > 0){
-						str+='<td>'+result[i].status+'</td>';
-					}else{
-						str+='<td>-</td>';   
-					}
-					if(result[i].mobileNo != null && result[i].mobileNo.length > 0){
-						str+='<td>'+result[i].mobileNo+'</td>';
-					}else{
-						str+='<td>-</td>';  
-					}
-					str+='<td>'+result[i].inviteeAttnd+'</td>'; 
-					str+='<td>'+result[i].actualCount+'</td>'; 
-					str+='<td>0</td>'; 
-					if(result[i].actualCount>result[i].inviteeAttnd){
-						var nonInviteesCount = result[i].actualCount - result[i].inviteeAttnd;
-						str+='<td>'+nonInviteesCount+'</td>'; 
-					}else{
+				if(result[i].subList1 !=null && result[i].subList1.length>0){
+						str+='<tr>';
+						if(result[i].districtName != null && result[i].districtName.length > 0){
+							str+='<td>'+result[i].districtName+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].name != null && result[i].name.length > 0){
+							str+='<td>'+result[i].name+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].status != null && result[i].status.length > 0){
+							str+='<td>'+result[i].status+'</td>';
+						}else{
+							str+='<td>-</td>';   
+						}
+						if(result[i].mobileNo != null && result[i].mobileNo.length > 0){
+							str+='<td>'+result[i].mobileNo+'</td>';
+						}else{
+							str+='<td>-</td>';  
+						}
+						str+='<td>'+result[i].inviteeAttnd+'</td>'; 
+						str+='<td>'+result[i].actualCount+'</td>'; 
 						str+='<td>0</td>'; 
-					}
-					
-				  str+='</tr>';					  
+						if(result[i].actualCount>result[i].inviteeAttnd){
+							var nonInviteesCount = result[i].actualCount - result[i].inviteeAttnd;
+							str+='<td>'+nonInviteesCount+'</td>'; 
+						}else{
+							str+='<td>0</td>'; 
+						}
+						if(result[i].subList1 !=null && result[i].subList1.length>0){
+							for(var j in result[i].subList1){
+								if(result[i].subList1[j].idnameList !=null && result[i].subList1[j].idnameList.length>0){
+									for(var k in result[i].subList1[j].idnameList){
+										if(result[i].subList1[j].idnameList[k].status == "intime"){
+											str+='<td class="text-success">Y('+(result[i].subList1[j].idnameList[k].dateStr).substring(0,5)+')</td>';
+										}else if(result[i].subList1[j].idnameList[k].status == "late"){
+											str+='<td class="text-danger">Y('+(result[i].subList1[j].idnameList[k].dateStr).substring(0,5)+')</td>';
+										}else if(result[i].subList1[j].idnameList[k].status == "absent"){  
+											str+='<td>N</td>';  
+										}else{  
+											str+='<td>'+result[i].subList1[j].idnameList[k].status+'</td>';             
+										}
+									}
+								}else{
+									str+='<td> - </td>';
+								}
+							}
+						}
+				  
+				  str+='</tr>';	
+				}				  
 				}
 			}
 		   str+='</tbody>';
@@ -8528,6 +8585,9 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 		if(position == "overview"){
 			$("#meetingMemDetailsBodyId").html(str);
 			$("#cmtMemberDtlsTableId").dataTable();   
+		}
+		if(result[0].publicRepDesgList.length > 20){
+			$(".scrollerMeetingDiv").mCustomScrollbar({setHeight: '290px'});
 		}
 	   
 	}
