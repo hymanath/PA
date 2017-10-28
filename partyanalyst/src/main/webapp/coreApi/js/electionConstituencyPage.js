@@ -245,6 +245,7 @@ $(document).on("click",".getDetailsCls",function(){
 	var j = 0;	
 	 eletionSubType = [];
 	 $(".electionSubTypeCls").each(function(){
+		 var type = $(this).attr("attr_type")
 		 if(type == "partyTrends"){
 			 if ($(this).is(':checked')){
 				eletionSubType.push($(this).val());
@@ -365,7 +366,7 @@ function getElectionYears(type,typeLoad){
 		
 		var i = 0;	
 		electionScopeValArr = [];
-		$('#electionScopeDivIds input[type=checkbox]').each(function(){
+		$('.electionTypeWiseCls').each(function(){
 			if ($(this).is(':checked') && $(this).val() != 0){
 				electionScopeValArr[i++] = $(this).val();
 			}
