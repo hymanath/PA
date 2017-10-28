@@ -8420,7 +8420,7 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 			buildMeetingMemberDtls(globalMeetingMembersResult,partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position);
 		}
 	});
-}
+
 	
 	function buildMeetingMemberDtls(result,partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position){	
 		var str = '';
