@@ -1500,10 +1500,10 @@ IElectionDAO {
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getWonConstituencyCountsInLocation(Set<Long> locationIds,List<Long> electionScopeIds,Set<Long> electionIds){
 		StringBuilder sb = new StringBuilder();	
-			sb.append("select e.election_id,c.district_id,n.party_id,count(n.party_id) ");
-			sb.append(" from constituency_election ce, nomination n ,constituency c ,election e,candidate_result cr ");
+			sb.append("select e.election_id,c.district_id,pa.short_name,count(n.party_id),n.party_id ");
+			sb.append(" from constituency_election ce, nomination n ,constituency c ,election e,candidate_result cr,party pa ");
 			sb.append("where e.election_id = ce.election_id  and  n.nomination_id = cr.nomination_id and ");
-			sb.append("ce.constituency_id = c.constituency_id and n.consti_elec_id = ce.consti_elec_id ");
+			sb.append("ce.constituency_id = c.constituency_id and n.consti_elec_id = ce.consti_elec_id and pa.party_id=n.party_id  ");
 			sb.append("and cr.nomination_id = n.nomination_id and  cr.rank =1 ");
 			if(electionScopeIds !=null && electionScopeIds.size() >0)
 				sb.append("and e.election_scope_id  in(:electionScopeIds) ");
