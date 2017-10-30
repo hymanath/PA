@@ -1040,13 +1040,14 @@ function onLoadClicks()
 			var constituencyId = $(this).attr("attr_constituencyId");
 			var electionYear = $(this).attr("attr_election_year");
 			var electionType = $(this).attr("attr_election_type");
+			var electionTypeId = $(this).attr("attr_election_typeId");
 			var name = $(this).attr("attr_name");
 			$("#openModalDiv").modal("show");
 			$("#openModalDiv .modal-dialog").css("width","95%");
 			$(".paginationCls").html("");
 			$("#TitleId").html(name+"  "+electionType+" Election Result");
 			$("#subTitleId").html("");
-			getDetailedElectionResults(constituencyId,electionYear,"table")
+			getDetailedElectionResults(constituencyId,electionYear,"table",electionTypeId)
 		}else if(type == "meeting_type_special"){
 			var partyMeetingMainTypeId = $(this).attr("attr_partyMeetingMainTypeId");
 			var partyMeetingTypeId = $(this).attr("attr_partyMeetingTypeId");
@@ -1419,9 +1420,9 @@ function getCandidateAndPartyInfoForConstituency(){
 										parliament+='</h4>';
 										parliament+='<p class="text-muted text-capital m_left5 f_12" style="margin-bottom: 5px;">'+result[0].subList1[i].constituencyName+' (PC)</p>';
 										if(result[0].subList1[i].tdpCadreId !=null && result[0].subList1[i].tdpCadreId>0){
-											parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].subList1[i].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[0].subList1[i].constituencyId+'" attr_election_year="'+result[0].subList1[i].latestElecYear+'" attr_election_type="Parliament" attr_name="'+result[0].subList1[i].constituencyName+'">View Results</span>';
+											parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].subList1[i].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[0].subList1[i].constituencyId+'" attr_election_year="'+result[0].subList1[i].latestElecYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[0].subList1[i].constituencyName+'">View Results</span>';
 										}else{
-											parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].subList1[i].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[0].subList1[i].constituencyId+'" attr_election_year="'+result[0].subList1[i].latestElecYear+'" attr_election_type="Parliament" attr_name="'+result[0].subList1[i].constituencyName+'">View Results</span>';
+											parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].subList1[i].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_election_typeId="1" attr_constituencyId="'+result[0].subList1[i].constituencyId+'" attr_election_year="'+result[0].subList1[i].latestElecYear+'" attr_election_type="Parliament" attr_name="'+result[0].subList1[i].constituencyName+'">View Results</span>';
 										}
 									parliament+='</div>';
 								parliament+='</div>';
@@ -1474,9 +1475,9 @@ function getCandidateAndPartyInfoForConstituency(){
 											assembly+='</h4>';
 											 assembly+='<p class="text-muted text-capital m_left5 f_12" style="margin-bottom:5px"><span>AC : '+result[i].assemblyCandidateInfo[0].constituencyName+'</span> <span>PC : '+result[i].assemblyCandidateInfo[0].parliamnerName+'</span></p>';
 											if(result[i].assemblyCandidateInfo[0].tdpCadreId !=null && result[i].assemblyCandidateInfo[0].tdpCadreId>0){
-												assembly+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].assemblyCandidateInfo[0].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
+												assembly+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].assemblyCandidateInfo[0].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_election_typeId="2" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
 											}else{
-												assembly+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].assemblyCandidateInfo[0].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
+												assembly+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].assemblyCandidateInfo[0].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_election_typeId="2" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
 											}
 										assembly+='</div>';
 									assembly+='</div>';
@@ -1526,9 +1527,9 @@ function getCandidateAndPartyInfoForConstituency(){
 									parliament+='</h4>';
 									parliament+='<p class="text-muted text-capital m_left5 f_12" style="margin-bottom:5px;">MP ('+result[0].subList1[0].constituencyName+')</p>';
 									if(result[0].subList1[0].tdpCadreId !=null && result[0].subList1[0].tdpCadreId>0){
-										parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].subList1[0].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[0].subList1[0].constituencyId+'" attr_election_year="'+result[0].subList1[0].latestElecYear+'" attr_election_type="Parliament" attr_name="'+result[0].subList1[0].constituencyName+'">View Results</span>';
+										parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[0].subList1[0].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_election_typeId="1" attr_constituencyId="'+result[0].subList1[0].constituencyId+'" attr_election_year="'+result[0].subList1[0].latestElecYear+'" attr_election_type="Parliament" attr_name="'+result[0].subList1[0].constituencyName+'">View Results</span>';
 									}else{
-										parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].subList1[0].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[0].subList1[0].constituencyId+'" attr_election_year="'+result[0].subList1[0].latestElecYear+'" attr_election_type="Parliament" attr_name="'+result[0].subList1[0].constituencyName+'">View Results</span>';
+										parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[0].subList1[0].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_election_typeId="1" attr_constituencyId="'+result[0].subList1[0].constituencyId+'" attr_election_year="'+result[0].subList1[0].latestElecYear+'" attr_election_type="Parliament" attr_name="'+result[0].subList1[0].constituencyName+'">View Results</span>';
 									}
 								parliament+='</div>';
 							parliament+='</div>';
@@ -1562,9 +1563,9 @@ function getCandidateAndPartyInfoForConstituency(){
 										parliament+='</h4>';
 										 parliament+='<p class="text-muted text-capital m_left5 f_12" style="margin-bottom:5px"><span>AC : '+result[i].assemblyCandidateInfo[0].constituencyName+'</span> <span>PC : '+result[i].assemblyCandidateInfo[0].parliamnerName+'</span></p>';
 										if(result[i].assemblyCandidateInfo[0].tdpCadreId !=null && result[i].assemblyCandidateInfo[0].tdpCadreId>0){
-											parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].assemblyCandidateInfo[0].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
+											parliament+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].assemblyCandidateInfo[0].tdpCadreId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_election_typeId="2" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
 										}else{
-											parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].assemblyCandidateInfo[0].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
+											parliament+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].assemblyCandidateInfo[0].candidateId+'">View Candidate Profile</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_election_typeId="2" attr_constituencyId="'+result[i].assemblyCandidateInfo[0].constituencyId+'" attr_election_year="'+result[i].assemblyCandidateInfo[0].latestElecYear+'" attr_election_type="Assembly" attr_name="'+result[i].assemblyCandidateInfo[0].constituencyName+'">View Results</span>';
 										}
 									parliament+='</div>';
 								parliament+='</div>';
@@ -1626,14 +1627,14 @@ function getCandidateAndPartyInfoForConstituency(){
 													
 													if(result[i].cadreId !=null && result[i].cadreId>0){
 														if(result[i].candidateName == "NARA CHANDRABABU NAIDU"){
-															stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>  <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].constituencyId+'" attr_election_year="2014" attr_election_type="Assembly" attr_name="">View Results</span>';
+															stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>  <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].constituencyId+'" attr_election_year="2014" attr_election_type="Assembly" attr_election_typeId="2" attr_name="">View Results</span>';
 														}else{
 															stateLevel+='<span class="text-success text-capital cadreRedirectPage viewPageCls" attr_cadre_id="'+result[i].cadreId+'">View Candidate Profile</span>';
 														}
 														
 													}else{
 														if(result[i].candidateName == "NARA CHANDRABABU NAIDU"){
-															stateLevel+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].condidateId+'">View Candidate Profile</span>  <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].constituencyId+'" attr_election_year="2014" attr_election_type="Assembly" attr_name="">View Results</span>';
+															stateLevel+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].condidateId+'">View Candidate Profile</span>  <span class="text-success text-capital viewPageCls popUpDetailsClickCls"  attr_type="electionResults" attr_election_typeId="2" attr_constituencyId="'+result[i].constituencyId+'" attr_election_year="2014" attr_election_type="Assembly" attr_name="">View Results</span>';
 														}else{
 															stateLevel+='<span class="text-success text-capital candidateRedirectPage viewPageCls" attr_candidate_id="'+result[i].condidateId+'">View Candidate Profile</span>';
 														}
@@ -5093,7 +5094,13 @@ function getDetailedElectionInformaction(id,typeId){
 			str+='</thead>';
 			str+='<tbody>';
 			for(var i in result){
-				str+='<tr class="popUpDetailsClickCls" attr_type="electionResults" attr_constituencyId="'+constituencyId+'" attr_election_year="'+result[i].electionYear+'" attr_election_type="Assembly" attr_name="'+locationName+'" style="text-decoration:none;font-weight:normal;">';
+				if(id == 2){
+					str+='<tr class="popUpDetailsClickCls" attr_type="electionResults" attr_constituencyId="'+constituencyId+'" attr_election_year="'+result[i].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+locationName+'" style="text-decoration:none;font-weight:normal;">';
+				}else{
+					str+='<tr class="popUpDetailsClickCls" attr_type="electionResults" attr_constituencyId="'+constituencyId+'" attr_election_year="'+result[i].electionYear+'" attr_election_type="Assembly" attr_election_typeId="1" attr_name="'+locationName+'" style="text-decoration:none;font-weight:normal;">';
+				}
+				
+				
 					str+='<td>'+result[i].electionYear+'</td>';
 					if(result[i].candidateResultsVO.partyShortName == "TDP" || result[i].candidateResultsVO.partyShortName == "YSRC"){
 						str+='<td><img style="height:25px;width:25px;" src="images/party_flags/'+result[i].candidateResultsVO.partyShortName+'_01.PNG" alt="'+result[i].candidateResultsVO.partyShortName+'"/></td>';
@@ -7511,11 +7518,13 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
  	});
  	}
 
-function getDetailedElectionResults(constituencyId,electionYear,type){
+function getDetailedElectionResults(constituencyId,electionYear,type,electionTypeId){
 	$("#openPostDetailsModalDivId").html(spinner);
+	var electionScopeIdsArr=[];
+	electionScopeIdsArr.push(electionTypeId)
 	jsObj={
 	  	constituencyId: constituencyId,
-		electionScopeIdsArr:[2]
+		electionScopeIdsArr:electionScopeIdsArr
     }
     $.ajax({
       type : "GET",
