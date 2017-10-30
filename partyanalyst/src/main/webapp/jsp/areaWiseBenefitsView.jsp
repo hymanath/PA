@@ -39,7 +39,19 @@
 		<section>
 			<div class="row">
 				<div class="col-sm-12">
-					<div id="benefitsOverViewBlockId"></div>
+					<div class="block boderBlock">
+						<div id="benefitsOverViewBlockId"></div>
+					</div>
+				</div>
+				<div class="col-sm-12 m_top10">
+					<div class="block boderBlock">
+						<div id="benefitsSchemesBlockId"></div>
+					</div>
+				</div>
+				<div class="col-sm-12 m_top10">
+					<div class="block boderBlock">
+						<div id="memberDetailsBlockId"></div>
+					</div>
 				</div>
 			</div>
 		</section>
