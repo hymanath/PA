@@ -5283,7 +5283,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 					
 					Collections.sort(partyVO.getList(), new Comparator<ElectionInformationVO>() {
 						public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
-							return Long.valueOf(o2.getElectionYear()).compareTo(Long.valueOf(o1.getElectionYear()));
+							return Long.valueOf(o2.getElectionId()).compareTo(Long.valueOf(o1.getElectionId()));
 						}
 					});
 				}
