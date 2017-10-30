@@ -331,8 +331,8 @@ $(document).on("click",".getDetailsForCrossVotingCls",function(){
 	});
 $(document).on("click",".getDetailsForBoothWiseCls",function(){
 		
-		$(".switch-btn-New li").removeClass("active");
-		$(".activeCls").addClass("active");
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
 		var electionYrValForBooth = $("#electionYearBoothWiseId").val();
 		var partyIdForBoothArr=[];
 		partyIdForBoothArr = $("#partyBoothWiseId").val();
@@ -1799,6 +1799,7 @@ function getboothWiseResults(electionYrValForBooth,partyIdForBoothArr,constituen
 	
 	$("#boothWiseResultsBlockId").html(spinner);
 	$("#locationWiseBoothResultsId").html(spinner);
+	$("#boothWiseResultsMainBlockId").html(spinner);
 	var electionYears=[];
 	var partyIdsArr=[];
 	if(electionYrValForBooth == "null" || electionYrValForBooth == null || electionYrValForBooth == 0 || electionYrValForBooth == "0"){
@@ -1834,7 +1835,9 @@ function getboothWiseResults(electionYrValForBooth,partyIdForBoothArr,constituen
 			//return buildBothData(result,electionScopeId);
 		}else{
 			$("#locationWiseBoothResultsId").html('');
+			$("#boothWiseResultsMainBlockId").html('');
 			$("#boothWiseResultsBlockId").html("No Data Available");
+			
 		}
 		
 	});

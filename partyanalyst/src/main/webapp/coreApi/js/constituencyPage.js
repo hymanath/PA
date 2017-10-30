@@ -671,10 +671,11 @@ function onLoadClicks()
 			getVotersAndcadreAgeWiseCount(22,4);
 		}else if(blockName == 'election')
 		{
-			getElectionTypes();
+			getElectionTypes("onload");
 			//getElectionYears();
 			/* var partyIds = [872,362,1117,886,72,269,265,163,1887];
 			getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal); */
+			
 			if(locationLevelId == '4'){
 				$(".assemblyElectionBlockCls").show();
 				getDetailedElectionInformaction(2,constituencyId);
@@ -5480,15 +5481,18 @@ function getElectionTypes(type){
 					str+='</label>';
 					for(var i in result){
 						str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
-						if(result[i].id == "1" || result[i].id == "2" || result[i].id == "3" ||result[i].id == "4"){
-							if(result[i].name != "Pancahat_Ward" && result[i].name != "Panchayat"){
-								str+='<input value="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
-							}
-						}else{
-							if(result[i].name != "Pancahat_Ward" && result[i].name !="Panchayat"){
-								str+='<input value="'+result[i].id+'" type="checkbox"  class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
+						if(result[i].id != "5" && result[i].id != "6" && result[i].id != "7" && result[i].id != "8" && result[i].id != "9"){
+							if(result[i].id == "1" || result[i].id == "2" || result[i].id == "3" ||result[i].id == "4"){
+								if(result[i].name != "Pancahat_Ward" && result[i].name != "Panchayat"){
+									str+='<input value="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
+								}
+							}else{
+								if(result[i].name != "Pancahat_Ward" && result[i].name !="Panchayat"){
+									str+='<input value="'+result[i].id+'" type="checkbox"  class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
+								}
 							}
 						}
+						
 										
 						str+='</label>';
 					}
@@ -5672,17 +5676,27 @@ function buildElectionInformationLocationWise(result,type){
 		
 			for(var i in result){
 				var wonSeatsCountArr=[];
+				var partiesName='';
 				for(var j in result[i].list){
+					if((result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0) || (result[i].list[j].locationName !=null && result[i].list[j].locationName>0)){
+						partiesName = result[i].partyName;
+					}
+					
 					electionYearArr.push(result[i].list[j].electionYear+'  '+result[i].list[j].electionType);
 					if(type == "wonSeat"){
-						wonSeatsCountArr.push(parseFloat(result[i].list[j].wonSeatsCount));
+						if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
+							wonSeatsCountArr.push(parseFloat(result[i].list[j].wonSeatsCount));
+						}
 					}else{
-						wonSeatsCountArr.push(parseFloat(result[i].list[j].locationName));
+						if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
+							wonSeatsCountArr.push(parseFloat(result[i].list[j].locationName));
+						}
+						
 					}
 					
 				}
 				var obj ={
-						name: result[i].partyName,
+						name: partiesName,
 						data: wonSeatsCountArr,
 						color:globalColorPartyNames[result[i].partyName.trim()]
 					}

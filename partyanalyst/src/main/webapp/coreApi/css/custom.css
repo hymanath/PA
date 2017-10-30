@@ -1798,3 +1798,24 @@ font-size:12px !important;
 .table_font thead tr th{
 	font-size:12px !important;
 }
+.getCmtMemDtls{
+	text-decoration:underline;
+}
+.memberMeetingCls{
+	background-color:#F4F4F5;
+	padding:10px;
+}
+.memberMeetingCls li{
+	background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+.getCmtMemDtlsDesgClick{
+	border: 1px solid #777777;
+    border-radius: 100%;
+    height: 25px;
+    padding: 5px 12px;
+    text-align: center;
+    text-decoration: underline;
+    width: 25px;
+}
