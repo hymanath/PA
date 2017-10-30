@@ -352,7 +352,15 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				if(commonMethodsUtilService.isListOrSetValid(alliancePartyIdNameList)){
 					partyId = Long.valueOf(alliancePartyIdNameList.get(0));
 					partyName = alliancePartyIdNameList.get(1);
-					partyIdList.add(partyId);
+					String []alianceArr=alliancePartyIdNameList.get(2).replace("[", "").replace("]", "").split(",");
+					List<Long> alisceidSList=new ArrayList<Long>();
+					for(int i=0; i< alianceArr.length;i++){
+						alisceidSList.add(Long.parseLong(alianceArr[i].trim()));
+					}
+					for(Long id :alisceidSList ){
+						if(partyIdList.contains(id))
+							partyIdList.add(partyId);
+					}
 				}
 				
 				List<Long> locationList=electionIdAndLocationIdListMap.get(commonMethodsUtilService.getLongValueForObject(param[5]));
@@ -2284,6 +2292,7 @@ public List<String> findMatchedPartyId(Map<Long,Map<Long,ElectionInformationVO>>
 	    		    		String prefixedGroupId =partyIdsList.get(0).toString();
 	    		    		groupIdAndName.add(prefixedGroupId);
 	    		    		groupIdAndName.add(electionInformationVO.getPartyName());
+	    		    		groupIdAndName.add(partyIdsList.toString());
 	    		    		return groupIdAndName;
 	    		    	}
 	    		     }
