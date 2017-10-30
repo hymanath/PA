@@ -5,9 +5,11 @@ setTimeout(function(){
 
 function onLoadCalls(){
 	getGovtSchemeWiseBenefitMembersCount();
+	getMemberDetailsForBenefitInfo();
+	
 }
 function getGovtSchemeWiseBenefitMembersCount(){
-	$("#benefitsOverViewBlockId").html(spinner);
+	$("#benefitsOverViewBlockId,#benefitsSchemesBlockId").html(spinner);
 	
 	
 	jsObj={
@@ -23,12 +25,13 @@ function getGovtSchemeWiseBenefitMembersCount(){
 		if(result!=null){
 			return buildTabs(result);
 		}else{
-			$("#benefitsOverViewBlockId").html(noData);
+			$("#benefitsOverViewBlockId,#benefitsSchemesBlockId").html(noData);
 		}
 	});	
 	function buildTabs(result)
 	{
 		var str='';
+		var str1='';
 		var totalBenefitsMemberesCount=0;
 		var totalBenefitsAmountCount=0;
 		var mainArr=[];
@@ -51,9 +54,8 @@ function getGovtSchemeWiseBenefitMembersCount(){
 		mainArr.push(totalBenefitsCount)
 		percentage = parseFloat((totalBenefitsCount*100)/totalSchemesCount);
 		
-		str+='<div class="block boderBlock">';
 		str+='<h4 class="theme-title-color">Overall Overview</h4>';	
-		str+='<div class="row">';
+		str+='<div class="row m_top10">';
 		str+='<div class="col-sm-5">';
 			str+='<div class="benefit_block">';
 				str+='<div id="benefitMainGraphDivId" style="height:180px;"></div>';
@@ -110,14 +112,14 @@ function getGovtSchemeWiseBenefitMembersCount(){
 										str+='<p class="text-muted">'+result.subList1[i].partyName+'</p>';
 									}
 									if(result.subList1[i].totalSeatsCount !=null && result.subList1[i].totalSeatsCount>0){
-										str+='<h4 class="m_top10">'+result.subList1[i].totalSeatsCount+'</h4>';
+										str+='<h4 class="m_top10 f-14">'+result.subList1[i].totalSeatsCount+'</h4>';
 									}else{
-										str+='<h4 class="m_top10"> - </h4>';
+										str+='<h4 class="m_top10 f-14"> - </h4>';
 									}
 									if(result.subList1[i].participatedSeatsCount !=null && result.subList1[i].participatedSeatsCount>0){
-										str+='<h4 class="m_top10"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList1[i].participatedSeatsCount+'</h4>';
+										str+='<h4 class="m_top10 f-14"><i class="fa fa-inr m_top5" aria-hidden="true" ></i>&nbsp;'+result.subList1[i].participatedSeatsCount+'</h4>';
 									}else{
-										str+='<h4 class="m_top10"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> - </h4>';
+										str+='<h4 class="m_top10 f-14"><i class="fa fa-inr m_top5" aria-hidden="true" ></i> - </h4>';
 									}
 									
 								str+='</li>';
@@ -130,8 +132,8 @@ function getGovtSchemeWiseBenefitMembersCount(){
 						}else{
 							str+='<li>';
 								str+='<p class="text-muted"> - </p>';
-								str+='<h4 class="m_top10"> - </h4>';
-								str+='<h4 class="m_top10"> - </h4>';
+								str+='<h4 class="m_top10 f-14"> - </h4>';
+								str+='<h4 class="m_top10 f-14"> - </h4>';
 							str+='</li>';
 							
 						}
@@ -153,14 +155,14 @@ function getGovtSchemeWiseBenefitMembersCount(){
 												str+='<p class="text-muted">'+result.subList1[0].subList2[i].partyName+'</p>';
 											}
 											if(result.subList1[0].subList2[i].totalSeatsCount !=null && result.subList1[0].subList2[i].totalSeatsCount>0){
-												str+='<h4 class="m_top10">'+result.subList1[0].subList2[i].totalSeatsCount+'</h4>';
+												str+='<h4 class="m_top10 f-14">'+result.subList1[0].subList2[i].totalSeatsCount+'</h4>';
 											}else{
-												str+='<h4 class="m_top10"> - </h4>';
+												str+='<h4 class="m_top10 f-14"> - </h4>';
 											}
 											if(result.subList1[0].subList2[i].participatedSeatsCount !=null && result.subList1[0].subList2[i].participatedSeatsCount>0){
-												str+='<h4 class="m_top10"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> '+result.subList1[0].subList2[i].participatedSeatsCount+'</h4>';
+												str+='<h4 class="m_top10 f-14"><i class="fa fa-inr m_top5" aria-hidden="true" ></i>&nbsp;'+result.subList1[0].subList2[i].participatedSeatsCount+'</h4>';
 											}else{
-												str+='<h4 class="m_top10"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i> - </h4>';
+												str+='<h4 class="m_top10 f-14"><i class="fa fa-inr m_top5" aria-hidden="true" ></i> - </h4>';
 											}
 											
 										str+='</li>';
@@ -185,94 +187,96 @@ function getGovtSchemeWiseBenefitMembersCount(){
 			str+='</div>';
 		str+='</div>';
 		str+='</div>';
-		str+='<div class="block boderBlock m_top20">';
-			str+='<div class="row">';
-				str+='<div class="col-sm-12">';
+		
+		
+			str1+='<div class="row">';
+				str1+='<div class="col-sm-12">';
 					var locationLevelName='';
 					if(locationLevelId == '2')
 					{
-						str+='<h4 class="theme-title-color">District Wise Benifit Overview</h4>';
+						str1+='<h4 class="theme-title-color">District Wise Benifit Overview</h4>';
 						locationLevelName = "District";
 					}else if(locationLevelId == '3')
 					{
-						str+='<h4 class="theme-title-color">Constituency Wise Benifit Overview</h4>';
+						str1+='<h4 class="theme-title-color">Constituency Wise Benifit Overview</h4>';
 						locationLevelName = "Constituency";
 					}else if(locationLevelId == '10')
 					{
-						str+='<h4 class="theme-title-color">'+locationName+' Wise Benifit Overview</h4>';
+						str1+='<h4 class="theme-title-color">'+locationName+' Wise Benifit Overview</h4>';
 					}else if(locationLevelId == '4')
 					{
-						str+='<h4 class="theme-title-color">'+locationName+' Wise Benifit Overview</h4>';
+						str1+='<h4 class="theme-title-color">'+locationName+' Wise Benifit Overview</h4>';
 						locationLevelName = "Constituency";
 					}else if(locationLevelId == '5')
 					{
-						str+='<h4 class="theme-title-color">'+locationName+' Wise Benifit Overview</h4>';
+						str1+='<h4 class="theme-title-color">'+locationName+' Wise Benifit Overview</h4>';
 						locationLevelName = "Mandal";
 					}else if(locationLevelId == '6')
 					{
-						str+='<h4 class="theme-title-color">'+locationName+' Wise Benifit Overview</h4>';
+						str1+='<h4 class="theme-title-color">'+locationName+' Wise Benifit Overview</h4>';
 					}else
 					{
-						str+='<h4 class="theme-title-color">Location Wise Benifit Overview</h4>';
+						str1+='<h4 class="theme-title-color">Location Wise Benifit Overview</h4>';
 					}
 					
-					str+='<div class="col-sm-12">';
-						str+='<div class="table-responsive">';
-						str+='<table class="table table-bordered table_benefits1" id="locationWiseBenefitDT">';
-							str+='<thead>';
-								str+='<tr>';
-									str+='<th style="text-transform:capitalize;">'+locationLevelName+'</th>';
-									str+='<th>Total Voters</th>';
-									str+='<th>Benified</th>';
-									str+='<th>Amount</th>';
+					
+						str1+='<div class="table-responsive">';
+						str1+='<table class="table table-bordered table_benefits1 m_top10" id="locationWiseBenefitDT">';
+							str1+='<thead>';
+								str1+='<tr>';
+									str1+='<th style="text-transform:capitalize;">'+locationLevelName+'</th>';
+									str1+='<th>Total Voters</th>';
+									str1+='<th>Benified</th>';
+									str1+='<th>Amount</th>';
 									if(result !=null && result.list !=null && result.list.length>0){
 										for(var i in result.list[0].schemesList){
 											if(result.list[0].schemesList[i].partyName !=null && result.list[0].schemesList[i].partyName.length>10){
-												str+='<th><span class="tooltipCls" data-toggle="tooltip" style="cursor:pointer" title="'+result.list[0].schemesList[i].partyName+'">'+result.list[0].schemesList[i].partyName.substring(0,10)+'...</span></th>';
+												str1+='<th><span class="tooltipCls" data-toggle="tooltip" style="cursor:pointer" title="'+result.list[0].schemesList[i].partyName+'">'+result.list[0].schemesList[i].partyName.substring(0,10)+'...</span></th>';
 											}else{
-												str+='<th>'+result.list[0].schemesList[i].partyName+'</th>';
+												str1+='<th>'+result.list[0].schemesList[i].partyName+'</th>';
 											}
 											
 										}
 									}
-								str+='</tr>';
+								str1+='</tr>';
 								
-							str+='</thead>';
-							str+='<tbody>';
+							str1+='</thead>';
+							str1+='<tbody>';
 								for(var i in result.list){
-									str+='<tr>';
-									str+='<td>'+result.list[i].name+'</td>';
-									str+='<td>'+result.list[i].totalVoters+'</td>';
+									str1+='<tr>';
+									str1+='<td>'+result.list[i].name+'</td>';
+									str1+='<td>'+result.list[i].totalVoters+'</td>';
 									if(result.list[i].wonSeatsCount !=null && result.list[i].wonSeatsCount>0){
-										str+='<td>'+result.list[i].wonSeatsCount+'</td>';
+										str1+='<td>'+result.list[i].wonSeatsCount+'</td>';
 									}else{
-										str+='<td> - </td>';
+										str1+='<td> - </td>';
 									}
 									if(result.list[i].participatedSeatsCount !=null && result.list[i].participatedSeatsCount>0){
-										str+='<td>'+result.list[i].participatedSeatsCount+'</td>';
+										str1+='<td>'+result.list[i].participatedSeatsCount+'</td>';
 									}else{
-										str+='<td> - </td>';
+										str1+='<td> - </td>';
 									}
 									
 									for(var j in result.list[i].schemesList){
 										if(result.list[i].schemesList[j].totalSeatsCount !=null && result.list[i].schemesList[j].totalSeatsCount>0){
-											str+='<td>'+result.list[i].schemesList[j].totalSeatsCount+'</td>';
+											str1+='<td>'+result.list[i].schemesList[j].totalSeatsCount+'</td>';
 										}else{
-											str+='<td> - </td>';
+											str1+='<td> - </td>';
 										}
 										
 									}
-									str+='</tr>';
+									str1+='</tr>';
 								}
-							str+='</tbody>';
-						str+='</table>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
+							str1+='</tbody>';
+						str1+='</table>';
+						
+					str1+='</div>';
+				str1+='</div>';
+			
+		
 		
 		$("#benefitsOverViewBlockId").html(str);
+		$("#benefitsSchemesBlockId").html(str1);
 		$("#locationWiseBenefitDT").dataTable({
 			"iDisplayLength": 10,
 			 "aaSorting": [[ 3, "desc" ]], 
@@ -355,4 +359,92 @@ function getGovtSchemeWiseBenefitMembersCount(){
 			}]
 		});
 	}
+}
+
+function getMemberDetailsForBenefitInfo(){
+	$("#memberDetailsBlockId").html(spinner);
+	
+		jsObj={
+			locationScopeId	:locationLevelId,//
+			locationValue	:userAccessLevelValue,//
+			schemeId 		:3
+	}
+	$.ajax({
+		type : "GET",
+		url : "getMemberDetailsForBenefitInfo.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){ 
+		if(result !=null && result.length>0){
+			buildMemberDetailsForBenefitInfo(result);
+		}else{
+			$("#memberDetailsBlockId").html("No Data Available");
+		}
+	});
+}
+function buildMemberDetailsForBenefitInfo(result){
+	var str='';
+	
+	str+='<div class="row">';
+		str+='<div class="col-sm-3">';
+			str+='<h4 class="theme-title-color">Member Details</h4>';	
+		str+='</div>';
+		str+='<div class="col-sm-3 pull-right">';
+			str+='<label>Scheme</label>';
+			str+='<select class="chosen-select" id="schemeSelectBoxId">';
+				str+='<option value="0">Select Scheme</option>';
+			str+='</select>';
+		str+='</div>';
+		str+='<div class="col-sm-3 pull-right">';
+			str+='<label>Location</label>';
+			str+='<select class="chosen-select" id="locationId">';
+				str+='<option value="0">Select Location</option>';
+			str+='</select>';
+		str+='</div>';
+	str+='</div>';
+	
+	str+='<div class="row">';
+	str+='<div class="col-sm-12">';
+	str+='<div class="table-responsive">';
+	str+='<table class="table table-bordered table_benefits1" id="memberDetailsId">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th>Member Name</th>';
+					str+='<th>Mobile No</th>';
+					str+='<th>Caste</th>';
+					str+='<th><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:18px"></i>Amount</th>';
+					str+='<th>Scheme</th>';
+					str+='<th>Location</th>';
+					
+				str+='</tr>';
+				str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td>'+result[i].partyFlag+'</td>';
+					str+='<td>'+result[i].partyName+'</td>';
+					str+='<td>'+result[i].perc+'</td>';
+					str+='<td>'+result[i].totalSeatsCount+'</td>';
+					str+='<td>'+result[i].status+'</td>';
+					str+='<td>'+result[i].name+'</td>';
+				str+='</tr>';
+			}
+			str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	str+='</div>';
+	str+='</div>';
+	
+	$("#memberDetailsBlockId").html(str);
+	$(".chosen-select").chosen();
+	$("#memberDetailsId").dataTable({
+			"paging":   true,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"iDisplayLength": 10,
+			 "aaSorting": [[ 3, "desc" ]], 
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		}); 
+	$("#memberDetailsId_length").remove();
 }
