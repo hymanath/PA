@@ -320,7 +320,7 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 						" LEFT JOIN caste c on cs.caste_id = c.caste_id " +
 						" where uvd.user_id = 1 and ua.tehsil_id =:locationValue and b.is_deleted='N' ");
 			}else if (locationscopeId == 7l) {
-				queryStr.append("select t.local_election_body_id,SELECT CONCAT(t.name,' ',et.election_type) ,b.benefiary_name,b.mobile_no,gs.scheme_name,c.caste_name,sum(b.benefited_amount) from govt_scheme_beneficiary_details b " +
+				queryStr.append(" SELECT t.local_election_body_id,CONCAT(t.name,' ',et.election_type) ,b.benefiary_name,b.mobile_no,gs.scheme_name,c.caste_name,sum(b.benefited_amount) from govt_scheme_beneficiary_details b " +
 						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id LEFT JOIN local_election_body t  ON ua.local_election_body = t.local_election_body_id" +
 						" LEFT JOIN election_type et on t.election_type_id = et.election_type_id LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
 						" LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id LEFT JOIN caste c on cs.caste_id = c.caste_id " +
