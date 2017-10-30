@@ -6292,7 +6292,8 @@ public class ConstituencyPageService implements IConstituencyPageService{
 						locationVo.setWonSeatsCount(objects[2] !=null ? (Long)objects[2]:null);
 						locationVo.setTotalSeatsCount(objects[3] !=null ? (Long)objects[3]:null);
 						locationVo.setParticipatedSeatsCount(objects[4] !=null ? (Long)objects[4]:null);
-					
+						locationVo.setTotalSeatsCount1(calculatetempAmountInWords(objects[3] !=null ? (Long)objects[3]:null));
+						locationVo.setParticipatedSeatsCount1(calculatetempAmountInWords(objects[4] !=null ? (Long)objects[4]:null));
 					finalVo.getList().add(locationVo);	
 				}
 			}
@@ -6306,13 +6307,9 @@ public class ConstituencyPageService implements IConstituencyPageService{
 					if(schemeVo != null){
 						schemeVo.setTotalSeatsCount(objects[2] !=null ? (Long)objects[2]:null);
 						schemeVo.setParticipatedSeatsCount(objects[3] !=null ? (Long)objects[3]:null);
+						schemeVo.setTotalSeatsCount1(calculatetempAmountInWords(objects[2] !=null ? (Long)objects[2]:null));
+						schemeVo.setParticipatedSeatsCount1(calculatetempAmountInWords(objects[3] !=null ? (Long)objects[3]:null));
 					}
-					/*ElectionInformationVO schemeVo = new ElectionInformationVO();
-						schemeVo.setPartyId(objects[0] !=null ? (Long)objects[0]:null);
-						schemeVo.setPartyName(objects[1] != null ? objects[1].toString() : "");
-						schemeVo.setTotalSeatsCount(objects[2] !=null ? (Long)objects[2]:null);
-						schemeVo.setParticipatedSeatsCount(objects[3] !=null ? (Long)objects[3]:null);
-					finalVo.getSubList1().add(schemeVo);	*/
 				}
 			}
 			Long totalCount =0l;
@@ -6347,6 +6344,8 @@ public class ConstituencyPageService implements IConstituencyPageService{
 									if(schemeVo != null){
 										schemeVo.setTotalSeatsCount(objects[4] !=null ? (Long)objects[4]:null);
 										schemeVo.setParticipatedSeatsCount(objects[5] !=null ? (Long)objects[5]:null);
+										schemeVo.setTotalSeatsCount1(calculatetempAmountInWords(objects[4] !=null ? (Long)objects[4]:null));
+										schemeVo.setParticipatedSeatsCount1(calculatetempAmountInWords(objects[5] !=null ? (Long)objects[5]:null));
 									}
 									finalVo.getList().add(subVo);
 							}else{
@@ -6357,6 +6356,8 @@ public class ConstituencyPageService implements IConstituencyPageService{
 								if(schemeVo != null){
 									schemeVo.setTotalSeatsCount(objects[4] !=null ? (Long)objects[4]:null);
 									schemeVo.setParticipatedSeatsCount(objects[5] !=null ? (Long)objects[5]:null);
+									schemeVo.setTotalSeatsCount1(calculatetempAmountInWords(objects[4] !=null ? (Long)objects[4]:null));
+									schemeVo.setParticipatedSeatsCount1(calculatetempAmountInWords(objects[5] !=null ? (Long)objects[5]:null));
 								}
 							}
 						}
