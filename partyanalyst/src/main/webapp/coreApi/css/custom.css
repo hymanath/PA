@@ -1819,3 +1819,105 @@ font-size:12px !important;
     text-decoration: underline;
     width: 25px;
 }
+.table_benefits1
+{
+	border-collapse: separate;
+	border-spacing:5px 0px
+}
+.table_benefits1 thead th:nth-child(n+5)
+{
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-top:1px solid #008855 !important;
+	border-left:1px solid #008855;
+	border-right:1px solid #008855;
+	background-color:#EBF8F1;
+}
+
+.table_benefits1 tr td
+{
+	padding:5px !important;
+	
+}
+.table_benefits1 tr td:nth-child(n+5){
+	border-left:1px solid #008855;
+	border-right:1px solid #008855;
+	background-color:#EBF8F1;
+}
+.table_benefits1 tr:last-child td:nth-child(n+5)
+{
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border-bottom:1px solid #008855 !important;
+	border-left:1px solid #008855;
+	border-right:1px solid #008855;
+}
+.panel-black
+{
+	border-radius:0px;
+}
+.panel-black > .panel-heading{
+	background-color:#000 !important;
+	color:#fff !important;
+	border-radius:0px;
+		
+}
+.panelCollapseIcon:before
+{
+	font-family:'Glyphicons Halflings';
+	content:"\2212";
+	float: right;
+	font-size:10px;
+	font-weight:400 !important;
+	margin-left:-4px;
+	color:#fff;
+	border:1px solid #fff;
+	padding:2px 4px;
+	.rounded-corners(4px);
+}
+.panelCollapseIcon.collapsed:before
+{
+	content:"\002b";
+}
+.table_meeting_level
+{
+	border-collapse: separate;
+	border-spacing:0px;
+	width:100%;
+	padding-top:5px;
+	background-color:#E9F0FC
+}
+.table_meeting_level tr
+{
+	background-color:#DFE0E0
+}
+.table_meeting_level thead th , .table_meeting_level tr td
+{
+	padding:10px 8px;
+}
+.table_meeting_level thead th
+{
+	background-color:#E9F0FC
+}
+.table_meeting_level thead th:nth-child(n+6)
+{
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-top:1px solid #008855 !important;
+	border-left:1px solid #008855;
+	border-right:1px solid #008855;
+	background-color:#EBF8F1;
+}
+.table_meeting_level thead tr:nth-child(2) th:nth-child(5n+1)
+{
+	border-left:2px solid #71D4F5;
+}
+.table_meeting_level thead tr:nth-child(2) th:nth-child(8n+5)
+{
+	border-right:2px solid #71D4F5;
+}
+.table_meeting_level tr:last-child td:nth-child(8n+6)
+{
+	border-right:2px solid #71D4F5;
+	border-bottom-right-radius:8px;
+}
