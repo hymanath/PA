@@ -1578,7 +1578,8 @@ public String getElectionInformationLocationWise(){
 			Long meetingLevelId = jObj.getLong("meetingLevelId");
 			Long meetingTypeId = jObj.getLong("meetingTypeId");
 			Long meetingMainTypeId = jObj.getLong("meetingMainTypeId");
-			meetingsVO = locationDashboardService.getAreaWisePartyMeetingsDetails(locationScopeId,locationValues,startDate,endDate,meetingLevelId,meetingTypeId,meetingMainTypeId);
+			String searchFor = jObj.getString("searchFor");
+			meetingsVO = locationDashboardService.getAreaWisePartyMeetingsDetails(locationScopeId,locationValues,startDate,endDate,meetingLevelId,meetingTypeId,meetingMainTypeId,searchFor);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAreaWisePartyMeetingsDetails() method ",e);
 
