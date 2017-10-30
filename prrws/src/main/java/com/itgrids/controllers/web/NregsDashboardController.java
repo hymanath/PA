@@ -428,4 +428,40 @@ public class NregsDashboardController {
 		}
 		return resultList;
 	}
+	
+	@PostMapping("/getNREGSForestAbstact")
+	public @ResponseBody List<NregsProjectsVO> getNREGSForestAbstact(@RequestBody InputVO vo){
+		List<NregsProjectsVO> locationVOList = null;
+		try {
+			locationVOList = nregsTcsService.getNREGSForestAbstact(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSForestAbstact - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
+	
+	@PostMapping("/getNregaForestLevelData")
+	public @ResponseBody List<NregsDataVO> getNregaForestLevelData(@RequestBody InputVO vo){
+		List<NregsDataVO> locationVOList = null;
+		try {
+			locationVOList = nregsTcsService.getNregaForestLevelData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaForestLevelData - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
+	
+	@PostMapping("/getNregasForestOverview")
+	public @ResponseBody NregsOverviewVO getNregasForestOverview(@RequestBody InputVO vo){
+		NregsOverviewVO overViewVO = null;
+		try {
+			overViewVO = nregsTcsService.getNregasForestOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregasForestOverview - NREGSController controller", e);
+		}
+		return overViewVO;
+	}
 }
