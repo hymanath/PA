@@ -3317,4 +3317,33 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 	
+	public List<Object[]> getLocationWiseMandalAndConstituency(List<Long> thesilIds,String searchType){
+		//0 id,1name,2total,3districtId,4tehsilName,5 localBody,6localBody type
+		Query query = null;
+		if(searchType != null && searchType.equalsIgnoreCase("mandal")){
+			 query = getSession().createQuery("select model.constituency.constituencyId,model.constituency.name,model.tehsil.tehsilId,model.tehsil.tehsilName from Booth model "+
+					" where model.tehsil.tehsilId in(:thesilIds) " +
+					" order by model.constituency.constituencyId ");
+		}
+		if(thesilIds != null && thesilIds.size() >0){
+			query.setParameterList("thesilIds", thesilIds);
+		}
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getLocationWiseMandalAndpanchayat(List<Long> panchayatIds,String searchType){
+		Query query = null;
+		if(searchType != null && searchType.equalsIgnoreCase("panchayat")){
+			 query = getSession().createQuery("select model.tehsil.tehsilId,model.tehsil.tehsilName,model.panchayat.panchayatId,model.panchayat.panchayatName from Booth model "+
+					" where model.panchayat.panchayatId in(:panchayatIds)  " +
+					" order by model.tehsil.tehsilId ");
+		}
+		if(panchayatIds != null && panchayatIds.size() >0){
+			query.setParameterList("panchayatIds", panchayatIds);
+		}
+		
+		return query.list();
+		
+	}
 }

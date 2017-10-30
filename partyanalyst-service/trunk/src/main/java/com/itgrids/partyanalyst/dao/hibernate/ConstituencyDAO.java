@@ -2266,7 +2266,26 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 		  
 	  }
 	
-	}
+	public List<Object[]> getLocationsDetailsBySearchType(List<Long> locationIds,String searchType){
+		  
+		StringBuilder sb = new StringBuilder();
+		if(searchType != null && searchType.equalsIgnoreCase("constituency")){
+		sb.append(" select  model.district.districtId,model.district.districtName, model.constituencyId,model.name " +
+				  " from Constituency model " +
+				  " where model.electionScope.electionScopeId = 2 " +
+				  " and model.constituencyId in (:locationIds) ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(locationIds != null && locationIds.size() >0){
+			query.setParameterList("locationIds", locationIds);
+		}
+				
+		  return query.list();
+	  }
+	
+	
+}
 
 	
 	

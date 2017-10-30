@@ -16,8 +16,10 @@ import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.ILocationWiseElectionInformationDetalsService;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -26,6 +28,8 @@ import com.itgrids.partyanalyst.dao.IMarginVotesRangeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.BaseCandidateResultVO;
@@ -50,6 +54,8 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	private IPartyDAO partyDAO;
     private IMarginVotesRangeDAO marginVotesRangeDAO;
 	private DelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IConstituencyDAO constituencyDAO;
+	
 
 	private INominationDAO nominationDAO;
 
@@ -60,6 +66,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	private IElectionDAO electionDAO;
 	private TehsilDAO tehsilDAO;
 	private IElectionAllianceDAO electionAllianceDAO;
+	private IBoothDAO boothDAO;
 	
 	private SetterAndGetterUtilService setterAndGetterUtilService = new SetterAndGetterUtilService();
 
@@ -194,6 +201,23 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 
 	public void setElectionAllianceDAO(IElectionAllianceDAO electionAllianceDAO) {
 		this.electionAllianceDAO = electionAllianceDAO;
+	}
+	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
 	}
 
 	@Override
@@ -478,8 +502,39 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			if(commonMethodsUtilService.isListOrSetValid(partyResultList)){
 				finalPartyList = buildSummaryForElectionResult(partyResultList,statusMap,electionIdAndLocationIdListMap,statusVOMap);
 			}
-		return finalPartyList;
+			//Location LevelWise spliting the data in Constituency and Mandal and panchayat wise
+			List<Long> locationIdsList = new ArrayList<Long>();
+			Map<Long,String> locationIdadsubLocationMap=new HashMap<Long, String>();
+			if(commonMethodsUtilService.isListOrSetValid(finalPartyList)){
+				for(ElectionInformationVO locationVO : finalPartyList){
+					locationIdsList.add(locationVO.getLocationId());
+				}
+				
+			List<Object[]> locationWiseObjsList = null;
+			if(searchType != null && searchType.equalsIgnoreCase("constituency")){
+				locationWiseObjsList = constituencyDAO.getLocationsDetailsBySearchType(locationIdsList, searchType);
+				
+			}else if(searchType.equalsIgnoreCase("mandal")){
+				locationWiseObjsList = boothDAO.getLocationWiseMandalAndConstituency(locationIdsList, searchType);
+			}else if(searchType.equalsIgnoreCase("panchayat")){
+				locationWiseObjsList  = boothDAO.getLocationWiseMandalAndpanchayat(locationIdsList, searchType);
+			}
+				if(locationWiseObjsList != null && locationWiseObjsList.size() >0){
+					for(Object[] objs : locationWiseObjsList){
+						locationIdadsubLocationMap.put(commonMethodsUtilService.getLongValueForObject(objs[2]), commonMethodsUtilService.getStringValueForObject(objs[1]));
+					
+					}
+				}
+		}
 			
+			if(commonMethodsUtilService.isListOrSetValid(finalPartyList)){
+				for(ElectionInformationVO locationVO : finalPartyList){
+					locationVO.setName(locationIdadsubLocationMap.get(locationVO.getLocationId()));
+					
+				}
+			}
+		return finalPartyList;
+		
 		}catch(Exception e){
 			Log.error("Exception raised in getElectionInformationLocationWiseVoterShare method of LocationWiseElectionInformationDetalsService"+e);
 			return null;
