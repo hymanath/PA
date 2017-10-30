@@ -1112,13 +1112,26 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		return query.list();
 	}
 	@Override
-	public List<Object[]> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues, Date startDate, Date endDate,Long meetingLevelId, Long meetingTypeId, Long meetingMainTypeId,String searchType) {
+	public List<Object[]> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues, Date startDate, Date endDate,Long meetingLevelId, Long meetingTypeId, Long meetingMainTypeId,String searchType,String searchFor) {
 		//0 districtId,1 districtName,2 month,3 year 
 		//4 meetingStatus,5 meetingsCount 
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT distinct ");
-		if(locationScopeId != null && locationScopeId.longValue() == 2L)
-			sb.append("  ua.district_id as locationId,d.district_name as locationName, ");
+		if(locationScopeId != null && locationScopeId.longValue() == 2L){
+			if(searchFor !=null && searchFor.equalsIgnoreCase("district")){
+				sb.append("  ua.district_id as locationId,d.district_name as locationName, ");
+			}else if(searchFor !=null && searchFor.equalsIgnoreCase("parliament")){
+				sb.append("  ua.parliament_constituency_id as locationId,c.name as locationName, ");	
+			}else  if(searchFor !=null && searchFor.equalsIgnoreCase("constituency")){
+				sb.append("  ua.constituency_id as locationId,c.name as locationName, ");	
+			}else  if(searchFor !=null && searchFor.equalsIgnoreCase("mandal") && searchType != null && searchType.equalsIgnoreCase("rural")){
+				sb.append("  ua.tehsil_id as locationId,t.tehsil_name as locationName, ");	
+			}else  if(searchFor !=null && searchFor.equalsIgnoreCase("mandal") && searchType != null && searchType.equalsIgnoreCase("urban")){
+				sb.append("  ua.local_election_body as locationId,leb.name as locationName, ");	
+			}else  if(searchFor !=null && searchFor.equalsIgnoreCase("panchayat") ){
+				sb.append("  ua.panchayat_id as locationId,p.panchayat_name as locationName, ");	
+			}
+		}
 		else if(locationScopeId != null && (locationScopeId.longValue() == 3L || locationScopeId.longValue() == 10L ))
 			sb.append("  ua.constituency_id as locationId,c.name as locationName, ");
 		else if(locationScopeId != null && locationScopeId.longValue() == 4L   && searchType != null && searchType.equalsIgnoreCase("rural"))
@@ -1133,8 +1146,19 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		sb.append("  from party_meeting_status pms, ");
 		sb.append("  party_meeting pm,party_meeting_type pmt, party_meeting_main_type pmmt," +
 				" party_meeting_level pml ,user_address ua  ");
-		if(locationScopeId != null && locationScopeId.longValue() == 2L)
+		if(locationScopeId != null && locationScopeId.longValue() == 2L){
+			if(searchFor !=null && searchFor.equalsIgnoreCase("district")){
 			sb.append(" , district d ");
+			}else if(searchFor !=null && searchFor.equalsIgnoreCase("parliament") || searchFor.equalsIgnoreCase("constituency")){
+				sb.append(" , constituency c ");
+			}else  if(searchFor !=null && searchFor.equalsIgnoreCase("mandal") && searchType != null && searchType.equalsIgnoreCase("rural")){
+				sb.append(" , tehsil t ");
+			}else  if(searchFor !=null && searchFor.equalsIgnoreCase("mandal") && searchType != null && searchType.equalsIgnoreCase("urban")){
+				sb.append(" , local_election_body leb ");
+			}else  if(searchFor !=null && searchFor.equalsIgnoreCase("panchayat")){
+				sb.append(" , panchayat p ");
+			}
+		}
 		else if(locationScopeId != null && (locationScopeId.longValue() == 3L || locationScopeId.longValue() == 10L )) 
 			sb.append(" , constituency c ");
 		else if(locationScopeId != null && locationScopeId.longValue() == 4L  && searchType != null && searchType.equalsIgnoreCase("rural"))
@@ -1152,8 +1176,25 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		
 		if(locationScopeId != null && locationScopeId.longValue() == 2L){
 			sb.append(" and ua.state_id in (:locationValues)  ");
-			sb.append(" and ua.district_id = d.district_id ");
-			sb.append(" GROUP BY ua.district_id,month(pm.start_date),pms.meeting_status  ");
+				if(searchFor !=null && searchFor.equalsIgnoreCase("district")){
+					sb.append(" and ua.district_id = d.district_id ");
+					sb.append(" GROUP BY ua.district_id,month(pm.start_date),pms.meeting_status  ");
+				}else if(searchFor !=null && searchFor.equalsIgnoreCase("parliament")){
+					sb.append(" and ua.parliament_constituency_id = c.constituency_id ");
+					sb.append(" GROUP BY ua.parliament_constituency_id,month(pm.start_date),pms.meeting_status  ");
+				}else  if(searchFor !=null && searchFor.equalsIgnoreCase("constituency")){
+					sb.append(" and ua.constituency_id = c.constituency_id ");
+					sb.append(" GROUP BY ua.constituency_id,month(pm.start_date),pms.meeting_status  ");
+				}else  if(searchFor !=null && searchFor.equalsIgnoreCase("mandal") && searchType != null && searchType.equalsIgnoreCase("rural") ){
+					sb.append(" and ua.tehsil_id = t.tehsil_id ");
+					sb.append(" GROUP BY ua.tehsil_id,month(pm.start_date),pms.meeting_status  ");
+				}else  if(searchFor !=null && searchFor.equalsIgnoreCase("mandal") && searchType != null && searchType.equalsIgnoreCase("urban") ){
+					sb.append(" and ua.local_election_body = leb.local_election_body_id ");
+					sb.append(" GROUP BY ua.local_election_body,month(pm.start_date),pms.meeting_status  ");
+				}else  if(searchFor !=null && searchFor.equalsIgnoreCase("panchayat")){
+					sb.append(" and ua.panchayat_id = p.panchayat_id ");
+					sb.append(" GROUP BY ua.panchayat_id,month(pm.start_date),pms.meeting_status  ");
+				}
 		}else if(locationScopeId != null  && (locationScopeId.longValue() == 3L || locationScopeId.longValue() == 10L )) {
 			if(locationScopeId.longValue() == 3L)
 				sb.append(" and ua.district_id in (:locationValues)  ");
