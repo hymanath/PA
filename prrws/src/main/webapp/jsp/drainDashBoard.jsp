@@ -61,11 +61,26 @@
 									</div>
 								</div>  -->
 							<div class="col-sm-12">
-								<div class="menu-block" style="background-color: #56A3C5">
-									<a href="ruralWaterSupplyDashBoard">
-										<h3>RWS</h3>
-										<p>Rural Water Supply</p>
-									</a>
+								<div class="menu-heading-block">
+									<h4 class="text-capital">Rural Water Supply</h4>
+									<div class="row">
+										<div class="col-sm-6 m_top10">
+											<div class="menu-block" style="background-color:#56A3C5">
+												<a href="ruralWaterSupplyDashBoard">
+													<h3>RWS</h3>
+													<p>Rural Water Supply</p>
+												</a>
+											</div>
+										</div>
+										<div class="col-sm-6 m_top10">
+											<div class="menu-block" style="background-color:#1e92b2">
+												<a href="swachhBharatMissionIHHL">
+													<h3>IHHL</h3>
+													<p>Swatch Bharat Mission</p>
+												</a>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="col-sm-12 m_top10">
