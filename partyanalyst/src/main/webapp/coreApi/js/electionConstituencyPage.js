@@ -1268,7 +1268,12 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 	
 	
 	str+='<div class="table-responsive m_top10">';
+	if(searchLevelVal == "constituency" || searchLevelVal == "mandal" || searchLevelVal == "panchayat"){
+		str+='<table class="table table-election1" id="electionResults">';
+	}else{
 		str+='<table class="table table-election" id="electionResults">';
+	}
+		
 			str+='<thead>';
 				str+='<tr>';
 					if(locationLevelId == '2' || locationLevelId == 2){
@@ -1285,6 +1290,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "parliament"){
 							str+='<th>Parliament</th>';
 						}else if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
+							str+='<th>District</th>';
 							str+='<th>Constituency</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 							str+='<th>Parliament</th>';
@@ -1293,8 +1299,9 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 						}
 						
 					}else if(locationLevelId == '3' || locationLevelId == 3){
-						if(electionScopetext == "Assembly" && searchLevelVal == "mandal"){
+						if(electionScopetext == "Assembly" && (searchLevelVal == "mandal" || searchLevelVal == "Mandal")){
 							str+='<th>Constituency</th>';
+							str+='<th>Mandal</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "mandal"){
 							str+='<th>Location</th>';
 						}else if(electionScopetext == "MPTC"){
@@ -1302,6 +1309,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 						}else if(electionScopetext == "ZPTC"){
 							str+='<th>Mandal</th>';
 						}else if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
+							str+='<th>District</th>';
 							str+='<th>Constituency</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 							str+='<th>Location</th>';
@@ -1309,7 +1317,8 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 							str+='<th>Location</th>';
 						}
 					}else if(locationLevelId == '4' || locationLevelId == 4){
-						if(electionScopetext == "Assembly" && searchLevelVal == "mandal"){
+						if(electionScopetext == "Assembly" && (searchLevelVal == "mandal" || searchLevelVal == "Mandal")){
+							str+='<th>Constituency</th>';
 							str+='<th>Mandal</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "mandal"){
 							str+='<th>Mandal</th>';
@@ -1317,8 +1326,9 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 							str+='<th>Location</th>';
 						}else if(electionScopetext == "ZPTC"){
 							str+='<th>Location</th>';
-						}else if(electionScopetext == "Assembly" && searchLevelVal == "Panchayat"){
+						}else if(electionScopetext == "Assembly" && (searchLevelVal == "Panchayat" || searchLevelVal == "panchayat")){
 							str+='<th>Mandal</th>';
+							str+='<th>Panchayat</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "Panchayat"){
 							str+='<th>Mandal</th>';
 						}else{
@@ -1330,6 +1340,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 						}else if(electionScopetext == "ZPTC"){
 							str+='<th>Location</th>';
 						}else if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
+							str+='<th>District</th>';
 							str+='<th>Constituency</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 							str+='<th>Constituency</th>';
@@ -1406,6 +1417,13 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 			str+='<tbody>';
 			for(var i in result){
 				str+='<tr>';
+				if(electionScopetext == "Assembly" && (searchLevelVal == "constituency" || searchLevelVal == "Mandal" || searchLevelVal == "mandal" || searchLevelVal == "Panchayat" || searchLevelVal == "panchayat" ))
+					if(result[i].name != null){
+						str+='<td>'+result[i].name+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					
 					str+='<td>'+result[i].locationName+'</td>';
 					for(var j in result[i].list){							
 						if(result[i].list[j].status == 'GOOD')

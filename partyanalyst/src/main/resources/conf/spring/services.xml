@@ -4527,5 +4527,7 @@
     	<property name="tehsilDAO" ref="tehsilDAO" />
     	<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO" />
     	<property name="electionAllianceDAO" ref="electionAllianceDAO" />
+    	<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="boothDAO" ref="boothDAO" />
     	</bean>
 </beans>			

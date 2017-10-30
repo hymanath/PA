@@ -1242,12 +1242,12 @@ font-size:12px !important;
 	border-radius:6px;
 	margin:8px;
 }
-.table-election
+.table-election,.table-election1
 {
 	border-collapse: separate;
 	border-spacing:10px 0px
 }
-.table-election thead th:nth-child(n+2)
+.table-election thead th:nth-child(n+2),.table-election1 thead th:nth-child(n+3)
 {
 	border-top-left-radius:10px;
 	border-top-right-radius:10px;
@@ -1256,17 +1256,17 @@ font-size:12px !important;
 	border-right:2px solid #008855;
 }
 
-.table-election tr td
+.table-election tr td,.table-election1 tr td
 {
 	padding:20px 10px !important;
 	
 }
-.table-election tr td:nth-child(n+2)
+.table-election tr td:nth-child(n+2),.table-election1 tr td:nth-child(n+3)
 {
 	border-left:2px solid #008855;
 	border-right:2px solid #008855;
 }
-.table-election tr:last-child td:nth-child(n+2)
+.table-election tr:last-child td:nth-child(n+2),.table-election1 tr:last-child td:nth-child(n+3)
 {
 	border-bottom-left-radius:10px;
 	border-bottom-right-radius:10px;
