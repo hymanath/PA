@@ -764,15 +764,15 @@ function onLoadClicks()
 		var enrollmentId = $("#enrollmentvoterId").val();
 		getVotersAndcadreAgeWiseCount(pubId,enrollmentId);
 	});
-	$(document).on("change","#enrollmentvoterId",function(){
-		//var pubId = $("#publicationChangeId").val();
-		var pubId ="0";
+	$(document).on("change","#enrollmentvoterId,#publicationChangeId",function(){
+		var pubId = $("#publicationChangeId").val();
+		//var pubId ="0";
 		var enrollmentId = $("#enrollmentvoterId").val();
-		if(enrollmentId == 3){
+		/* if(enrollmentId == 3){
 			pubId = "11";
 		}else if(enrollmentId == 4){
 			pubId = "22";
-		}
+		 }*/
 		getVotersAndcadreAgeWiseCount(pubId,enrollmentId);
 	});
 	$(document).on("click",".assembly-view",function(){
