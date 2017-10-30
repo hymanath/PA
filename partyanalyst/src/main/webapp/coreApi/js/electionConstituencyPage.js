@@ -541,8 +541,8 @@ function getElectionYears(type,typeLoad){
 					$("#assemblyConsBoothWiseId").append('<option value="'+constituencyId+'">'+locationName+'</option>');	
 					$("#assemblyConsBoothWiseId").trigger("chosen:updated");
 					 
-					var constituencyId = $('#assemblyConsBoothWiseId').val();
-					var constituencyName = $('#assemblyConsBoothWiseId option:selected').text();
+					//var constituencyName = $('#assemblyConsBoothWiseId option:selected').text();
+					//var constituencyId = $('#assemblyConsBoothWiseId').val();
 					
 					var electionScopeVal=0;
 					
@@ -551,7 +551,7 @@ function getElectionYears(type,typeLoad){
 							electionScopeVal = $(this).attr("attr_val");
 						}
 					});
-					getboothWiseResults(electionYrValForBooth,partyIdForBoothArr,constituencyId,electionScopeVal,constituencyName)
+					getboothWiseResults(electionYrValForBooth,partyIdForBoothArr,constituencyId,electionScopeVal,locationName)
 				}
 				
 			}
@@ -1781,7 +1781,6 @@ function getboothWiseResults(electionYrValForBooth,partyIdForBoothArr,constituen
 	
 	$("#boothWiseResultsBlockId").html(spinner);
 	$("#locationWiseBoothResultsId").html(spinner);
-	
 	var electionYears=[];
 	var partyIdsArr=[];
 	if(electionYrValForBooth == "null" || electionYrValForBooth == null || electionYrValForBooth == 0 || electionYrValForBooth == "0"){
