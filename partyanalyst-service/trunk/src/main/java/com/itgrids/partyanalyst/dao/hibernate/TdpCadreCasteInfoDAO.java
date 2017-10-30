@@ -543,12 +543,40 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		sb.append("from ");
 		sb.append("tdp_cadre_caste_info tcci, tdp_cadre_enrollment_year tcey,");
 		sb.append("enrollment_year ey,caste_category cc, caste_category_group ccg  ");
+		
+		if(locationScopeId != null && locationScopeId.longValue() == 2L)
+			sb.append(" , state s ");
+		else if(locationScopeId != null && (locationScopeId.longValue() == 3L)) 
+			sb.append(" , district d ");
+		else if(locationScopeId != null && locationScopeId.longValue() == 4L || locationScopeId.longValue() == 8L || locationScopeId.longValue() == 10L )
+			sb.append(" , constituency c ");
+		else if(locationScopeId != null && locationScopeId.longValue() == 5L)
+			sb.append(" , tehsil t  ");
+		else if(locationScopeId != null && locationScopeId.longValue() == 6L)
+			sb.append(" , panchayat p ");
+		else if(locationScopeId != null && locationScopeId.longValue() == 7L)
+			sb.append(" , local_election_body leb ");
+		
 		sb.append("where ");
 		sb.append("tcci.caste_category_id = cc.caste_category_id and ");
 		sb.append("tcci.tdp_cadre_enrollment_id = tcey.tdp_cadre_enrollment_year_id and ");
 		sb.append("tcey.enrollment_year_id=ey.enrollment_year_id and ");
 		sb.append("cc.caste_category_id = ccg.caste_category_id  and ");
 		sb.append(" tcci.caste_category_id = ccg.caste_category_id  and tcci.tdp_cadre_enrollment_id in(:enrollmentYearIdsList)  ");
+		
+		if(locationScopeId != null && locationScopeId.longValue() == 2L)
+			sb.append("and tcci.location_Id = s.state_id and s.state_id in (:locationValuesList) ");
+		else if(locationScopeId != null && (locationScopeId.longValue() == 3L)) 
+			sb.append("and tcci.location_Id = d.district_id and d.district_id in (:locationValuesList) ");
+		else if(locationScopeId != null && locationScopeId.longValue() == 4L || locationScopeId.longValue() == 8L || locationScopeId.longValue() == 10L )
+			sb.append("and  tcci.location_Id = c.constituency_id and  c.constituency_id in (:locationValuesList) ");
+		else if(locationScopeId != null && locationScopeId.longValue() == 5L)
+			sb.append("and  tcci.location_Id = t.tehsil_id and  t.tehsil_id in (:locationValuesList) ");
+		else if(locationScopeId != null && locationScopeId.longValue() == 6L)
+			sb.append("and  tcci.location_Id = p.panchayat_id and  p.panchayat_id in (:locationValuesList) ");
+		else if(locationScopeId != null && locationScopeId.longValue() == 7L)
+			sb.append("and  tcci.location_Id = leb.local_election_body_id and  leb.local_election_body_id in (:locationValuesList) ");
+		
 		sb.append("GROUP BY ");
 		sb.append("tcci.tdp_cadre_enrollment_id,cc.caste_category_id,tcci.gender");
 		  
@@ -561,6 +589,7 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 				.addScalar("count", Hibernate.LONG)
 		        .addScalar("description", Hibernate.STRING);
 		 		
+				query.setParameterList("locationValuesList", locationValuesList);
 				query.setParameterList("enrollmentYearIdsList", enrollmentYearIdsList);
 				return query.list();	
 	}
