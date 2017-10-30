@@ -884,7 +884,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 													if(inviteeIds.contains(tdpCadreId)){
 														sessionVO.getInviteeAttendedIdsList().add(tdpCadreId);
 														sessionVO.setRecentInviteeAttended(Long.valueOf(String.valueOf(sessionVO.getInviteeAttendedIdsList().size())));
-														sessionVO.setLatePerc(calculatePercantage(sessionVO.getLateCount(),meetingTypeVO.getRecentMeetingInviteesCnt()).toString());
+														sessionVO.setLatePerc(calculatePercantage(sessionVO.getRecentLate(),partyMeetingVO.getRecentMeetingInviteesCnt()).toString());
 													}
 												}
 												
@@ -931,10 +931,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 				for (Object[] param : attendeesList) {
 						Map<Long,PartyMeetingDataVO> cadresmap = meetingTypeMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
 						PartyMeetingDataVO  meetingTypeVO = totalCntMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
-						if(commonMethodsUtilService.isMapValid(cadresmap)){
-							for (Entry<Long, PartyMeetingDataVO> candidates :cadresmap.entrySet()) {
-								PartyMeetingDataVO vo =candidates.getValue();
-								//Long partyMeetingId = candidates.getKey();
+							PartyMeetingDataVO vo =cadresmap.get(commonMethodsUtilService.getLongValueForObject(param[5]));
 								PartyMeetingDataVO partyMeetingVO = getMatchedVO(meetingTypeVO.getLevelList(),commonMethodsUtilService.getLongValueForObject(param[5]));
 								if(partyMeetingVO != null){
 									Set<Long> inviteeIds = vo.getInviteeIds();
@@ -943,6 +940,8 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 											sessionVO=new PartyMeetingDataVO();
 											sessionVO.setId(commonMethodsUtilService.getLongValueForObject(param[6]));
 											sessionVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
+											sessionVO.setMomStatus(commonMethodsUtilService.getStringValueForObject(param[8]));//attendedTime
+											sessionVO.setAtrStatus(commonMethodsUtilService.getStringValueForObject(param[9]));//lateTime
 											partyMeetingVO.getDatesList().add(sessionVO);
 										}
 									if(type != null && type.equalsIgnoreCase("attendee")){
@@ -961,13 +960,11 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 											}
 										}
 									}else if(type != null && type.equalsIgnoreCase("images")){
-										sessionVO.setRecentImagesCnt(sessionVO.getImagesCnt()+1);
+										sessionVO.setRecentImagesCnt(sessionVO.getRecentImagesCnt().longValue()+1l);
 									}
 								  }
 								}
-							}
-						}
-			      }
+					}
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1019,44 +1016,15 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 					}
 				}
 			}
-			List<IdNameVO> partyMeetings = new ArrayList<IdNameVO>();
 			List<Object[]> attendees = partyMeetingAttendanceDAO.getLocationWiseStateMeetingAttendees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,partyMeetingTypeId,null,inviteesMap.keySet());
-			if(commonMethodsUtilService.isListOrSetValid(attendees)){
-				for(Object[] param :attendees){
-					IdNameVO partyMeetingVO = getMatchedVOInList(partyMeetings,commonMethodsUtilService.getLongValueForObject(param[5]));
-					if(partyMeetingVO == null){
-						partyMeetingVO = new IdNameVO();
-						partyMeetingVO.setId(commonMethodsUtilService.getLongValueForObject(param[5]));
-						partyMeetingVO.setName(commonMethodsUtilService.getStringValueForObject(param[10]));
-						partyMeetingVO.setDateStr(commonMethodsUtilService.getStringValueForObject(param[11]));
-						partyMeetings.add(partyMeetingVO);
-					}
-					IdNameVO sessionVO = getMatchedVOInList(partyMeetingVO.getIdnameList(),commonMethodsUtilService.getLongValueForObject(param[6]));
-					if(sessionVO == null){
-						sessionVO = new IdNameVO();
-						sessionVO.setId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						sessionVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						sessionVO.setDateStr(commonMethodsUtilService.getStringValueForObject(param[9]));
-						sessionVO.setStatus("abscent");
-						partyMeetingVO.getIdnameList().add(sessionVO);
-					}
-				}
-			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(attendees)){
 				for(Object[] param :attendees){
 					IdNameVO inviteeMem = inviteesMap.get(commonMethodsUtilService.getLongValueForObject(param[4]));
 					if(inviteeMem != null ){
-						inviteeMem.setSubList1(partyMeetings);
+						inviteeMem.setSubList1(setPartyMeetingsTemplate(attendees));
 						IdNameVO partyMeetingVO = getMatchedVOInList(inviteeMem.getSubList1(),commonMethodsUtilService.getLongValueForObject(param[5]));
 						if(partyMeetingVO != null){
-							/*partyMeetingVO = new IdNameVO();
-							partyMeetingVO.setId(commonMethodsUtilService.getLongValueForObject(param[5]));
-							partyMeetingVO.setName(commonMethodsUtilService.getStringValueForObject(param[9]));
-							partyMeetingVO.setDateStr(commonMethodsUtilService.getStringValueForObject(param[10]));
-							inviteeMem.getSubList1().add(partyMeetingVO);*/
-						
-						
 						IdNameVO sessionVO = getMatchedVOInList(partyMeetingVO.getIdnameList(),commonMethodsUtilService.getLongValueForObject(param[6]));
 						if(sessionVO != null){
 							/*sessionVO = new IdNameVO();
@@ -1070,9 +1038,9 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 					        Date attendedTme = sdf2.parse(commonMethodsUtilService.getStringValueForObject(param[8]));
 					        long attendedMilliSec = attendedTme.getTime();
 					        long lateMilliSec = lateTime.getTime();
-							if(attendedMilliSec>=lateMilliSec){
+							if(attendedMilliSec>lateMilliSec){
 								sessionVO.setStatus("late");
-							}else if(attendedMilliSec<lateMilliSec){
+							}else if(attendedMilliSec<=lateMilliSec){
 								sessionVO.setStatus("intime");
 							}else{
 								sessionVO.setStatus("abscent");
@@ -1114,6 +1082,39 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 		}
 		return returnList;
 		
+	}
+	public List<IdNameVO> setPartyMeetingsTemplate(List<Object[]> attendees){
+		List<IdNameVO> partyMeetings = new ArrayList<IdNameVO>();
+		try{
+			
+			
+			if(commonMethodsUtilService.isListOrSetValid(attendees)){
+				for(Object[] param :attendees){
+					IdNameVO partyMeetingVO = getMatchedVOInList(partyMeetings,commonMethodsUtilService.getLongValueForObject(param[5]));
+					if(partyMeetingVO == null){
+						partyMeetingVO = new IdNameVO();
+						partyMeetingVO.setId(commonMethodsUtilService.getLongValueForObject(param[5]));
+						partyMeetingVO.setName(commonMethodsUtilService.getStringValueForObject(param[10]));
+						partyMeetingVO.setDateStr(commonMethodsUtilService.getStringValueForObject(param[11]));
+						partyMeetings.add(partyMeetingVO);
+					}
+					IdNameVO sessionVO = getMatchedVOInList(partyMeetingVO.getIdnameList(),commonMethodsUtilService.getLongValueForObject(param[6]));
+					if(sessionVO == null){
+						sessionVO = new IdNameVO();
+						sessionVO.setId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						sessionVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
+						sessionVO.setDateStr(commonMethodsUtilService.getStringValueForObject(param[9]));
+						sessionVO.setStatus("abscent");
+						partyMeetingVO.getIdnameList().add(sessionVO);
+					}
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised at setPartyMeetingsTemplate", e);
+		}
+		return partyMeetings;
 	}
 	public IdNameVO getMatchedVOInList(List<IdNameVO> voList, Long id) {
 		if (voList != null && voList.size() > 0) {
