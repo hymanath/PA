@@ -62,6 +62,8 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private List<Long> idsList=new LinkedList<Long>();
 	private List<ElectionInformationVO> schemesList = new ArrayList<ElectionInformationVO>();
 	private List<String> partyNamesList=new ArrayList<String>();
+	private String totalSeatsCount1;
+	private String participatedSeatsCount1;
 	public ElectionInformationVO(){}
 	public ElectionInformationVO(Long partyId,String name){
 		this.partyId=partyId;
@@ -362,6 +364,18 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	}
 	public void setSubList3(List<ElectionInformationVO> subList3) {
 		this.subList3 = subList3;
+	}
+	public String getTotalSeatsCount1() {
+		return totalSeatsCount1;
+	}
+	public void setTotalSeatsCount1(String totalSeatsCount1) {
+		this.totalSeatsCount1 = totalSeatsCount1;
+	}
+	public String getParticipatedSeatsCount1() {
+		return participatedSeatsCount1;
+	}
+	public void setParticipatedSeatsCount1(String participatedSeatsCount1) {
+		this.participatedSeatsCount1 = participatedSeatsCount1;
 	}
 	
 	
