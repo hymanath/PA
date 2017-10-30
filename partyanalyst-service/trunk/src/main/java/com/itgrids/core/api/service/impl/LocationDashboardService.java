@@ -6822,7 +6822,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 */
 	@SuppressWarnings("null")
 	@Override
-	public List<MeetingsVO> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues, String startDate, String endDate,Long meetingLevelId, Long meetingTypeId, Long meetingMainTypeId) {
+	public List<MeetingsVO> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues, String startDate, String endDate,Long meetingLevelId, Long meetingTypeId, Long meetingMainTypeId,String searchFor) {
 		List<MeetingsVO> finalList=new ArrayList<MeetingsVO>();
 		Map<Long,MeetingsVO> locationWiseDetailsVOMap=new HashMap<Long, MeetingsVO>();
 		String searchType=null;
@@ -6840,11 +6840,11 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		
 		//0 districtId,1 districtName,2 month,3 year 
 		//4 meetingStatus,5 meetingsCount 
-		if(locationScopeId == 4l){
-			 areaWisePartyMeetingDetailsObj.addAll(partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId,"rural"));
-			 areaWisePartyMeetingDetailsObj.addAll(partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId,"urban"));
+		if(locationScopeId == 4l || searchFor !=null && searchFor.equalsIgnoreCase("mandal")){
+			 areaWisePartyMeetingDetailsObj.addAll(partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId,"rural",searchFor));
+			 areaWisePartyMeetingDetailsObj.addAll(partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId,"urban",searchFor));
 		}else{
-		    areaWisePartyMeetingDetailsObj.addAll(partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId,null));
+		    areaWisePartyMeetingDetailsObj.addAll(partyMeetingStatusDAO.getAreaWisePartyMeetingsDetails(locationScopeId, locationValues, fromDate, toDate, meetingLevelId, meetingTypeId, meetingMainTypeId,null,searchFor));
 		}
 		
 		Map<String,MeetingsVO>  monthTemplateMap=new LinkedHashMap<String,MeetingsVO>();
@@ -8156,7 +8156,10 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			}
 		}
 		}
+		if(enrollmentYearMap != null && enrollmentYearMap.size() >0)
 		finalList.addAll(enrollmentYearMap.values());
+		
+		if(finalList !=null && finalList.size() >0){
 		for(ConstituencyCadreVO enrollmentYearVO:finalList){
 			List<ConstituencyCadreVO> categorysList = enrollmentYearVO.getCasteGroupList();
 			for(ConstituencyCadreVO categoryVO:categorysList){
@@ -8171,6 +8174,7 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 				enrollmentYearVO.setMalePercentage(Double.valueOf((df.format(((float)enrollmentYearVO.getMaleCount()/(float)totalCount)*100))));
 				enrollmentYearVO.setFemalePercentage(Double.valueOf((df.format(((float)enrollmentYearVO.getFemaleCount()/(float)totalCount)*100))));
 			}
+		 }
 		}
 		return finalList;
 	}
