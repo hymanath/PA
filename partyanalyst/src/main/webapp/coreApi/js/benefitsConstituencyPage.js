@@ -390,16 +390,16 @@ function buildMemberDetailsForBenefitInfo(result){
 			str+='<h4 class="theme-title-color">Member Details</h4>';	
 		str+='</div>';
 		str+='<div class="col-sm-3 pull-right">';
-			str+='<label>Scheme</label>';
-			str+='<select class="chosen-select" id="schemeSelectBoxId">';
-				str+='<option value="0">Select Scheme</option>';
-			str+='</select>';
+			//str+='<label>Scheme</label>';
+			//str+='<select class="chosen-select" id="schemeSelectBoxId">';
+			//	str+='<option value="0">Select Scheme</option>';
+			//str+='</select>';
 		str+='</div>';
 		str+='<div class="col-sm-3 pull-right">';
-			str+='<label>Location</label>';
-			str+='<select class="chosen-select" id="locationId">';
-				str+='<option value="0">Select Location</option>';
-			str+='</select>';
+			//str+='<label>Location</label>';
+			//str+='<select class="chosen-select" id="locationId">';
+				//str+='<option value="0">Select Location</option>';
+			//str+='</select>';
 		str+='</div>';
 	str+='</div>';
 	
