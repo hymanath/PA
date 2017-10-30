@@ -1059,6 +1059,15 @@ function onLoadClicks()
 			$("#TitleId").html("Special Meeting -"+name+" - Details");
 			$("#subTitleId").html("");
 			getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId,partyMeetingTypeId);
+		}else if(type == "meeting_type_level"){
+			var meeting_levelId = $(this).attr("attr_meeting_levelId");
+			var partyMeetingTypeId = $(this).attr("attr_partyMeetingTypeId");
+			$("#openModalDiv").modal("show");
+			$("#openModalDiv .modal-dialog").css("width","95%");
+			$(".paginationCls").html("");
+			$("#TitleId").html("Committee Meetings");
+			$("#subTitleId").html("");
+			buildlevelWiseBlockDetails(meeting_levelId,partyMeetingTypeId,"meeting")
 		}	
 	});
 	$(document).on("click",".descAlertCls",function(){
@@ -6707,9 +6716,12 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 								str+='<p>Every month : 9th/10th/11th</p>';
 							}
 							str+='<div style="height:150px;" id="meetingsGraphBlock'+result.levelList[i].name.substr(0,6)+'Id"></div>';
-							if(result.levelList[i].name == "DISTRICT"){
+							/* if(result.levelList[i].name == "DISTRICT"){
 								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-24 popUpDetailsClickCls" attr_type="meeting_type" style="margin-top:-16px;cursor:pointer;text-decoration:none;"></i>';
-							}
+							}else{
+								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-24 popUpDetailsClickCls" attr_type="meeting_type_level" attr_meeting_levelId="'+result.levelList[i].id+'" attr_partyMeetingTypeId="'+result.levelList[i].partyMeetingId+'" style="margin-top:-16px;cursor:pointer;text-decoration:none;"></i>';
+								
+							} */
 						str+='</div>';
 					str+='</div>';
 				}
@@ -7426,113 +7438,7 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 		$("#openPostDetailsModalDivId").html(str);
 	}
   }
-  
-//getAreaWisePartyMeetingsDetailsAction();
-  function getAreaWisePartyMeetingsDetailsAction(){
- 	 $('#areaWiseMeetingsId').html(spinner);
- 	  //'2017-07-09' and '2018-10-09'
- 	  var jsObj={
- 		"locationScopeId":2,
- 		"locationValue":[1],
- 		"startDate":"09-07-2017",
- 		"endDate":"09-10-2018",
- 		"meetingLevelId":1,
- 		"meetingTypeId":1,
- 		"meetingMainTypeId":1
- 	  }
- 	   $.ajax({
- 		  type : "POST",
- 		  url : "getAreaWisePartyMeetingsDetailsAction.action",
- 		  dataType : 'json',
- 		  data : {task :JSON.stringify(jsObj)}
- 		}).done(function(result){  
- 			console.log(result);
- 			if(result ==""){
- 				$('#areaWiseMeetingsId').html("<p>No Data Available</p>");
- 			}else{
- 			//buildAreaWiseMeetingsCountTable(result);
- 			}
- 		});
-  }
-  
-  function buildAreaWiseMeetingsCountTable(results){
- 		var str=""
- 		str+="<div class='table-responsive'>";
- 		str+="<table class='table table-bordered' id='dataTableIdAreaWise'>";
- 			str+="<thead>";
- 				str+="<tr>";
- 						str+="<th class='text-center' rowspan='2'>Location Name</th>";
- 						str+="<th class='text-center' rowspan='2'>Total Meetings Every Month</th>";	
- 						var str2="";
- 								str2+="<tr>";
- 				for(var j in results[0].yearWiseMeetingsCount){	
- 					if(results[0].yearWiseMeetingsCount[j].monthName!=null && results[0].yearWiseMeetingsCount[j].monthName.length >0){
- 						str+="<th class='text-center' colspan='5'>"+results[0].yearWiseMeetingsCount[j].monthName+" "+results[0].yearWiseMeetingsCount[j].year+"</th>";
- 					}else{
- 						str+="<th class='text-center' colspan='5'>OVERALL</th>";								
- 					}
- 								str2+="<th>Total</th>";
- 								str2+="<th>Yes</th>";
- 								str2+="<th>No</th>";
- 								str2+="<th>Maybe</th>";
- 								str2+="<th>Not Updated</th>";
- 				}
- 				str+="</tr>";
- 								str2+="</tr>";
- 				str=str+str2;
- 			str+="</thead>";
- 			str+="<tbody>";
- 		 for (var i in results) {
- 				str+="<tr>";
- 					str+="<td>"+results[i].locationName+"</td>";
- 					str+="<td>"+results[i].total+"</td>";
- 				for(var j in results[i].yearWiseMeetingsCount){
- 					str+="<td>"+results[i].yearWiseMeetingsCount[j].total+"</td>";
- 					if(results[i].yearWiseMeetingsCount[j].yesCountPercentage!=null){
- 					str+="<td>";
- 						str+="<p>"+results[i].yearWiseMeetingsCount[j].yesCount+"</p>";
- 						str+="<small>"+results[i].yearWiseMeetingsCount[j].yesCountPercentage+"<span>%</span></small>";
- 					str+="</td>";
- 					}else{
- 						str+="<td>"+results[i].yearWiseMeetingsCount[j].yesCount+"</td>";
- 					}
- 					if(results[i].yearWiseMeetingsCount[j].noCountPercentage!=null){
- 					str+="<td>";
- 						str+="<p>"+results[i].yearWiseMeetingsCount[j].noCount+"</p>";
- 						str+="<small>"+results[i].yearWiseMeetingsCount[j].noCountPercentage+"<span>%</span><small>";
- 					str+="</td>";
- 					}else{
- 						str+="<td>"+results[i].yearWiseMeetingsCount[j].noCount+"</td>";
- 					}
- 					if(results[i].yearWiseMeetingsCount[j].mayBeCountPercentage!=null){
- 					str+="<td>";
- 						str+="<p>"+results[i].yearWiseMeetingsCount[j].mayBeCount+"</p>";
- 						str+="<small>"+results[i].yearWiseMeetingsCount[j].mayBeCountPercentage+"<span>%</span></small>";
- 					str+="</td>";
- 					}else{
- 						str+="<td>"+results[i].yearWiseMeetingsCount[j].mayBeCount+"</td>";
- 					}
- 					if(results[i].yearWiseMeetingsCount[j].notUpDatedCountPercentage!=null){
- 					str+="<td>";
- 						str+="<p>"+results[i].yearWiseMeetingsCount[j].notUpDatedCount+"</p>";
- 						str+="<small>"+results[i].yearWiseMeetingsCount[j].notUpDatedCountPercentage+"<span>%</span></small>";
- 					str+="</td>";
- 					}else{
- 						str+="<td>"+results[i].yearWiseMeetingsCount[j].notUpDatedCount+"</td>";
- 					}		
- 				}
- 				str+="</tr>";
- 		 }
- 			str+="</tbody>";
- 		str+="</table>";
- 		str+="</div>";
- 	$('#areaWiseMeetingsId').html(str);
- 	$("#dataTableIdAreaWise").dataTable({
- 		"iDisplayLength": 10
- 	});
- 	}
-
-function getDetailedElectionResults(constituencyId,electionYear,type,electionTypeId){
+ function getDetailedElectionResults(constituencyId,electionYear,type,electionTypeId){
 	$("#openPostDetailsModalDivId").html(spinner);
 	var electionScopeIdsArr=[];
 	electionScopeIdsArr.push(electionTypeId)
@@ -8638,3 +8544,155 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 			console.log(result);
 		});	
 	}
+function buildlevelWiseBlockDetails(meeting_levelId,partyMeetingTypeId,divId){
+	var levelArr=[];
+	if(meeting_levelId == "3"){
+		levelArr=["district","constituency","mandal","panchayat"]
+	}else if(meeting_levelId == "4"){
+		levelArr=["constituency","mandal","panchayat"]
+	}else if(meeting_levelId == "7"){
+		levelArr=["mandal","panchayat"]
+	}
+	var collapse='';
+	collapse+='<section>';
+		collapse+='<div class="row">';
+		collapse+='<div class="col-sm-12">';
+			for(var i in levelArr)
+			{
+				collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+levelArr[i]+'" role="tablist" aria-multiselectable="true">';
+					collapse+='<div class="panel panel-default panel-black">';
+						collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelArr[i]+'">';
+							if(i == 0)
+							{
+								collapse+='<a role="button" class="panelCollapseIcon '+divId.replace(/\s+/g, '')+''+levelArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelArr[i]+'">';
+							}else{
+								collapse+='<a role="button" class="panelCollapseIcon collapsed '+divId.replace(/\s+/g, '')+''+levelArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelArr[i]+'">';
+							}
+							collapse+='<h4 class="panel-title text-capital" style="color:#fff;">'+levelArr[i]+' level</h4>';
+								
+							collapse+='</a>';
+						collapse+='</div>';
+						if(i == 0)
+						{
+							collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+levelArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+levelArr[i]+'">';
+						}else{
+							collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+levelArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+levelArr[i]+'">';
+						}
+						
+							collapse+='<div class="panel-body">';
+								collapse+='<ul class="switch-btn-New" role="tabSwitch">';
+									collapse+='<li class="active activeCls" attr_val="district">District</li>';
+									collapse+='<li  attr_val="constituency">Parliament</li>';
+								collapse+='</ul>';
+								collapse+='<div id="'+divId.replace(/\s+/g, '')+''+levelArr[i]+'" class="m_top10"></div>';
+							collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+				collapse+='</div>';
+			}
+		collapse+='</div>';
+		collapse+='</div>';
+		collapse+='</section>';
+	
+	$("#openPostDetailsModalDivId").html(collapse);
+	for(var i in levelArr){
+		getAreaWisePartyMeetingsDetailsAction(levelArr[i],meeting_levelId,partyMeetingTypeId,divId);
+	}	
+}
+function getAreaWisePartyMeetingsDetailsAction(searchType,meeting_levelId,partyMeetingTypeId,divId){
+ 	 $('#areaWiseMeetingsId').html(spinner);
+	var date1 = customStartMeetingsDate.split('/');
+	var date2 = customEndMeetingsDate.split('/');
+	var startDate = date1[0]+'-'+date1[1]+'-'+date1[2]
+	var endDate = date2[0]+'-'+date2[1]+'-'+date2[2]
+		
+	  var jsObj={
+		"locationScopeId"	:locationLevelId,
+ 		"locationValue"		:userAccessLevelValuesArray,
+ 		"startDate"			:startDate,
+ 		"endDate"			:endDate,
+ 		"meetingLevelId"	:meeting_levelId,
+ 		"meetingTypeId"		:partyMeetingTypeId,
+ 		"meetingMainTypeId"	:1,
+		"searchFor"			:searchType
+	  }
+ 	   $.ajax({
+ 		  type : "POST",
+ 		  url : "getAreaWisePartyMeetingsDetailsAction.action",
+ 		  dataType : 'json',
+ 		  data : {task :JSON.stringify(jsObj)}
+ 		}).done(function(result){ 
+			if(result !=null && result.length>0){
+				buildlevelWiseMeetingDetails(result,searchType,meeting_levelId,partyMeetingTypeId,divId);
+			}else{
+				 $('#areaWiseMeetingsId').html("No Data Available");
+			}
+ 		});
+  }
+  
+function buildlevelWiseMeetingDetails(result,searchType,meeting_levelId,partyMeetingTypeId,divId){
+	
+	var str='';
+	var overAllYesMeetingCount =0;
+	var overAllNoMeetingCount =0;
+	var overAllMaybeMeetingCount =0;
+	var overAllNUMeetingCount =0;
+	var overAllTotalMeetingCount=0;
+	str+='<div class="table-responsive">';
+		str+='<table class="table table_meeting_level">';
+			str+='<thead>';
+			str+='<tr>';
+				str+='<th rowspan="2">District Name</th>';
+				str+='<th rowspan="2">Total Meetings<br/> Every Month</th>';
+				str+='<th colspan="5">Overall</th>';
+				for(var i in result[0].yearWiseMeetingsCount){
+					str+='<th colspan="4">'+result[0].yearWiseMeetingsCount[i].monthName+' '+result[0].yearWiseMeetingsCount[i].year+'</th>';
+				}
+			str+='</tr>';
+			str+='<tr>';
+				str+='<th>Total</th>';
+				str+='<th>Yes</th>';
+				str+='<th>No</th>';
+				str+='<th>Maybe</th>';
+				str+='<th>Not Updated</th>';
+				for(var i in result[0].yearWiseMeetingsCount){
+					str+='<th>Yes</th>';
+					str+='<th>No</th>';
+					str+='<th>Maybe</th>';
+					str+='<th>Not Updated</th>';
+				}	
+			str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			
+				for(var i in result){
+					for(var j in result[i].yearWiseMeetingsCount){
+						overAllYesMeetingCount = overAllYesMeetingCount+result[i].yearWiseMeetingsCount[j].yesCount;
+						overAllNoMeetingCount = overAllNoMeetingCount+result[i].yearWiseMeetingsCount[j].noCount;
+						overAllMaybeMeetingCount = overAllMaybeMeetingCount+result[i].yearWiseMeetingsCount[j].mayBeCount;
+						overAllNUMeetingCount = overAllNUMeetingCount+result[i].yearWiseMeetingsCount[j].notUpDatedCount;
+						overAllTotalMeetingCount = overAllTotalMeetingCount+result[i].yearWiseMeetingsCount[j].yesCount+result[i].yearWiseMeetingsCount[j].noCount+result[i].yearWiseMeetingsCount[j].mayBeCount+result[i].yearWiseMeetingsCount[j].notUpDatedCount;
+						
+					}
+					str+='<tr>';
+						str+='<td>'+result[i].locationName+'</td>';
+						str+='<td>'+result[i].total+'</td>';
+						str+='<td>'+overAllTotalMeetingCount+'</td>';
+						str+='<td>'+overAllYesMeetingCount+'</td>';
+						str+='<td>'+overAllNoMeetingCount+'</td>';
+						str+='<td>'+overAllMaybeMeetingCount+'</td>';
+						str+='<td>'+overAllNUMeetingCount+'</td>';
+						for(var j in result[i].yearWiseMeetingsCount){
+							str+='<td>'+result[i].yearWiseMeetingsCount[j].yesCount+'</td>';
+							str+='<td>'+result[i].yearWiseMeetingsCount[j].noCount+'</td>';
+							str+='<td>'+result[i].yearWiseMeetingsCount[j].mayBeCount+'</td>';
+							str+='<td>'+result[i].yearWiseMeetingsCount[j].notUpDatedCount+'</td>';
+						}
+					str+='</tr>';
+				}
+			str+='</tbody>';
+		str+='</table>';
+	str+='</div>';
+	
+	$("#"+divId+searchType).html(str);
+}

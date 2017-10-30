@@ -106,8 +106,8 @@ function getGovtSchemeWiseBenefitMembersCount(){
 						if(result !=null && result.subList1 !=null && result.subList1.length>0){
 							for(var i in result.subList1){
 								str+='<li>';
-									if(result.subList1[i].partyName !=null && result.subList1[i].partyName.length>10){
-										str+='<p class="text-muted"><span class="tooltipCls" data-toggle="tooltip" style="cursor:pointer" title="'+result.subList1[i].partyName+'" >'+result.subList1[i].partyName.substring(0,10)+'...</span></p>';
+									if(result.subList1[i].partyName !=null && result.subList1[i].partyName.length>9){
+										str+='<p class="text-muted"><span class="tooltipCls" data-toggle="tooltip" style="cursor:pointer" title="'+result.subList1[i].partyName+'" >'+result.subList1[i].partyName.substring(0,9)+'...</span></p>';
 									}else{
 										str+='<p class="text-muted">'+result.subList1[i].partyName+'</p>';
 									}
@@ -149,8 +149,8 @@ function getGovtSchemeWiseBenefitMembersCount(){
 								if(result !=null && result.subList1[0].subList2 !=null && result.subList1[0].subList2.length>0){
 									for(var i in result.subList1[0].subList2){
 										str+='<li>';
-											if(result.subList1[0].subList2[i].partyName !=null && result.subList1[0].subList2[i].partyName.length>10){
-												str+='<p class="text-muted"><span class="tooltipCls" data-toggle="tooltip" style="cursor:pointer" title="'+result.subList1[0].subList2[i].partyName+'" >'+result.subList1[0].subList2[i].partyName.substring(0,10)+'...</span></p>';
+											if(result.subList1[0].subList2[i].partyName !=null && result.subList1[0].subList2[i].partyName.length>9){
+												str+='<p class="text-muted"><span class="tooltipCls" data-toggle="tooltip" style="cursor:pointer" title="'+result.subList1[0].subList2[i].partyName+'" >'+result.subList1[0].subList2[i].partyName.substring(0,9)+'...</span></p>';
 											}else{
 												str+='<p class="text-muted">'+result.subList1[0].subList2[i].partyName+'</p>';
 											}
@@ -221,7 +221,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 					
 					
 						str1+='<div class="table-responsive">';
-						str1+='<table class="table table-bordered table_benefits1 m_top10" id="locationWiseBenefitDT">';
+						str1+='<table class="table  table_benefits1 m_top10" id="locationWiseBenefitDT">';
 							str1+='<thead>';
 								str1+='<tr>';
 									str1+='<th style="text-transform:capitalize;">'+locationLevelName+'</th>';
@@ -230,11 +230,12 @@ function getGovtSchemeWiseBenefitMembersCount(){
 									str1+='<th>Amount</th>';
 									if(result !=null && result.list !=null && result.list.length>0){
 										for(var i in result.list[0].schemesList){
-											if(result.list[0].schemesList[i].partyName !=null && result.list[0].schemesList[i].partyName.length>10){
+											/* if(result.list[0].schemesList[i].partyName !=null && result.list[0].schemesList[i].partyName.length>10){
 												str1+='<th><span class="tooltipCls" data-toggle="tooltip" style="cursor:pointer" title="'+result.list[0].schemesList[i].partyName+'">'+result.list[0].schemesList[i].partyName.substring(0,10)+'...</span></th>';
 											}else{
 												str1+='<th>'+result.list[0].schemesList[i].partyName+'</th>';
-											}
+											} */
+											str1+='<th style="min-width:140px;">'+result.list[0].schemesList[i].partyName+'</th>';
 											
 										}
 									}
@@ -406,7 +407,7 @@ function buildMemberDetailsForBenefitInfo(result){
 	str+='<div class="row">';
 	str+='<div class="col-sm-12">';
 	str+='<div class="table-responsive">';
-	str+='<table class="table table-bordered table_benefits1" id="memberDetailsId">';
+	str+='<table class="table table-bordered table_benefits" id="memberDetailsId">';
 			str+='<thead>';
 				str+='<tr>';
 					str+='<th>Member Name</th>';
