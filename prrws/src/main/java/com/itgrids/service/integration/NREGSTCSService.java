@@ -4693,33 +4693,36 @@ public class NREGSTCSService implements INREGSTCSService{
 				paymentDtlsVO.setReprocessPendingWageAmount(jsonObj.getString("REPROCESS_PENDING_AMT"));
 				
 				//paymentDtlsVO.setTotalPendinAmount(String.valueOf(Long.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Long.valueOf(jsonObj.getString("COMPLETED_AMT"))));
-				paymentDtlsVO.setTotalPendinAmount(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_AMT"))
+				paymentDtlsVO.setTotalPendinAmount(new BigDecimal(Double.valueOf(jsonObj.getString("NOT_GENERATED_AMT"))
 						+Double.valueOf(jsonObj.getString("NOT_UPLOADED_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_AMT"))
 						+Double.valueOf(jsonObj.getString("REJECT_AMT"))
 						//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT"))));
-						+Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT"))));
+						+Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT"))).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+				
+				//new BigDecimal(Double.valueOf(value)/10000000.00d).setScale(2, BigDecimal.ROUND_HALF_UP).toString()
+				
 				paymentDtlsVO.setPendingAtBankAmount(String.valueOf(Long.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Long.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT"))));
 			 } else {
-				paymentDtlsVO.setTotalAmount(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_AMOUNT")));
-				paymentDtlsVO.setGeneratedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("GENERATED_AMT")));
-				paymentDtlsVO.setNotGeneratedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_GENERATED_AMT")));
-				paymentDtlsVO.setUploadedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("UPLOADED_AMT")));
-				paymentDtlsVO.setNotUploadedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_UPLOADED_AMT")));
-				paymentDtlsVO.setSentBankWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("SENTPFMS_AMT")));
-				paymentDtlsVO.setNotSentBankWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_SENTPFMS_AMT")));
-				paymentDtlsVO.setCompletedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("COMPLETED_AMT")));
-				paymentDtlsVO.setRejectedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REJECT_AMT")));
-				paymentDtlsVO.setReleasePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RELEASE_PENDING_AMT")));
-				paymentDtlsVO.setResponsePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RESPONSE_PENDING_AMT")));
-				paymentDtlsVO.setReprocessPendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REPROCESS_PENDING_AMT")));
+				paymentDtlsVO.setTotalAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("TOTAL_AMOUNT")));
+				paymentDtlsVO.setGeneratedWageAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("GENERATED_AMT")));
+				paymentDtlsVO.setNotGeneratedWagesAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("NOT_GENERATED_AMT")));
+				paymentDtlsVO.setUploadedWageAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("UPLOADED_AMT")));
+				paymentDtlsVO.setNotUploadedWagesAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("NOT_UPLOADED_AMT")));
+				paymentDtlsVO.setSentBankWageAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("SENTPFMS_AMT")));
+				paymentDtlsVO.setNotSentBankWageAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("NOT_SENTPFMS_AMT")));
+				paymentDtlsVO.setCompletedWageAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("COMPLETED_AMT")));
+				paymentDtlsVO.setRejectedWagesAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("REJECT_AMT")));
+				paymentDtlsVO.setReleasePendingWageAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("RELEASE_PENDING_AMT")));
+				paymentDtlsVO.setResponsePendingWageAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("RESPONSE_PENDING_AMT")));
+				paymentDtlsVO.setReprocessPendingWageAmount(cnvrtRupeesIntoCroresNew(jsonObj.getString("REPROCESS_PENDING_AMT")));
 				
 				//paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Long.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Long.valueOf(jsonObj.getString("COMPLETED_AMT")))));
-				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_AMT"))
+				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCroresNew(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_AMT"))
 						+Double.valueOf(jsonObj.getString("NOT_UPLOADED_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_AMT"))
 						+Double.valueOf(jsonObj.getString("REJECT_AMT"))
 						//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT")))));
 						+Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")))));
-				paymentDtlsVO.setPendingAtBankAmount(cnvrtRupeesIntoCrores(String.valueOf(Long.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Long.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT")))));
+				paymentDtlsVO.setPendingAtBankAmount(cnvrtRupeesIntoCroresNew(String.valueOf(Long.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Long.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT")))));
 				}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPaymentDtlsData - NREGSTCSService service", e);
@@ -4900,4 +4903,16 @@ public class NREGSTCSService implements INREGSTCSService{
 		return voList;
 	}
 	
+	public String cnvrtRupeesIntoCroresNew(String value){
+		String returnVal = "0";
+		try {
+			if(value != null) {
+				returnVal = new BigDecimal(Double.valueOf(value)/10000000.00d).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				//returnVal = returnVal + " CR";
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at cnvrtRupeesIntoCroresNew - NREGSTCSService service", e);
+		}
+		return returnVal.trim();
+	}
 }

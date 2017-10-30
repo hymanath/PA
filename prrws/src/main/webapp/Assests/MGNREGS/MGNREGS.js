@@ -935,17 +935,34 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 							tableView+='<th rowspan="2">Panchayat</th>';
 						}
 						tableView+='<th rowspan="2">Type</th>';
-						tableView+='<th rowspan="2">Total Amount Generated</th>';
-						tableView+='<th rowspan="2">Total Pending</th>';
-						tableView+='<th colspan="5">Details Of Pending Amount</th>';
-						tableView+='<th rowspan="2">Regenerated out of rejected</th>';
+						if(locationType == 'mandal' || locationType == 'panchayat'){
+							tableView+='<th rowspan="2">Total Amount Generated </th>';
+							tableView+='<th rowspan="2">Total Pending</th>';
+							tableView+='<th colspan="5">Details Of Pending Amount</th>';
+							tableView+='<th rowspan="2">Regenerated out of rejected</th>';
+						}else{
+							tableView+='<th rowspan="2">Total Amount Generated (CR)</th>';
+							tableView+='<th rowspan="2">Total Pending(CR)</th>';
+							tableView+='<th colspan="5">Details Of Pending Amount</th>';
+							tableView+='<th rowspan="2">Regenerated out of rejected (CR)</th>';
+						}
+						
 					tableView+='</tr>';
 					tableView+='<tr>';
+					if(locationType == 'mandal' || locationType == 'panchayat'){
 						tableView+='<th>FTO s not generated</th>';
 						tableView+='<th>FTO s not uploaded</th>';
 						tableView+='<th>Not sent to Bank</th>';
 						tableView+='<th>Pending at Bank</th>';
 						tableView+='<th>Rejected</th>';
+					}else{
+						tableView+='<th>FTO s not generated(CR)</th>';
+						tableView+='<th>FTO s not uploaded(CR)</th>';
+						tableView+='<th>Not sent to Bank(CR)</th>';
+						tableView+='<th>Pending at Bank(CR)</th>';
+						tableView+='<th>Rejected(CR)</th>';
+					}
+						
 					tableView+='</tr>';
 				}else{
 					for(var i in theadArr)
