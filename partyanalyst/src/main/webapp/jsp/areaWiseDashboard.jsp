@@ -157,10 +157,10 @@
 				<h4 class="panel-title theme-title-color">voters information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="constituencyVoters"></i></span></h4>
 				<div class="block m_top10">
 					<div class="row">
-						<!-- <div class="col-sm-3">
+						 <div class="col-sm-3">
 							<label>Publication</label>
 							<div id="publicationsDivId"></div>
-						</div> -->
+						</div>
 						<div class="col-sm-3">
 							<label>Enrollment Year</label>
 							<select id="enrollmentvoterId" class="form-control chosen-select"></select>
