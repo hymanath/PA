@@ -4230,7 +4230,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 									str+='<td> - </td>';
 								}
 								if(result.list[i].participatedSeatsCount1 !=null && result.list[i].participatedSeatsCount1 !=""){
-									str+='<td>'+result.list[i].participatedSeatsCount1+'/-</td>';
+									str+='<td>'+result.list[i].participatedSeatsCount1+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
@@ -4272,7 +4272,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 								}
 								
 								if(result.subList1[i].participatedSeatsCount1 !=null && result.subList1[i].participatedSeatsCount1 !=""){
-									str+='<td>'+result.subList1[i].participatedSeatsCount1+'/-</td>';
+									str+='<td>'+result.subList1[i].participatedSeatsCount1+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}

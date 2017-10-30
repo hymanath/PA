@@ -424,7 +424,7 @@ function buildMemberDetailsForBenefitInfo(result){
 					str+='<td>'+result[i].partyFlag+'</td>';
 					str+='<td>'+result[i].partyName+'</td>';
 					str+='<td>'+result[i].perc+'</td>';
-					str+='<td>'+result[i].totalSeatsCount+'</td>';
+					str+='<td>'+result[i].totalSeatsCount1+'</td>';
 					str+='<td>'+result[i].status+'</td>';
 					str+='<td>'+result[i].name+'</td>';
 				str+='</tr>';
