@@ -6293,7 +6293,7 @@ public class ConstituencyPageService implements IConstituencyPageService{
 						locationVo.setTotalSeatsCount(objects[3] !=null ? (Long)objects[3]:null);
 						locationVo.setParticipatedSeatsCount(objects[4] !=null ? (Long)objects[4]:null);
 						locationVo.setTotalSeatsCount1(calculatetempAmountInWords(objects[3] !=null ? (Long)objects[3]:null));
-						locationVo.setParticipatedSeatsCount1(calculatetempAmountInWords(objects[4] !=null ? (Long)objects[4]:null));
+						locationVo.setParticipatedSeatsCount1(cnvrtLakhIntoCrores(objects[4] !=null ? (Long)objects[4]:null));
 					finalVo.getList().add(locationVo);	
 				}
 			}
@@ -6308,7 +6308,7 @@ public class ConstituencyPageService implements IConstituencyPageService{
 						schemeVo.setTotalSeatsCount(objects[2] !=null ? (Long)objects[2]:null);
 						schemeVo.setParticipatedSeatsCount(objects[3] !=null ? (Long)objects[3]:null);
 						schemeVo.setTotalSeatsCount1(calculatetempAmountInWords(objects[2] !=null ? (Long)objects[2]:null));
-						schemeVo.setParticipatedSeatsCount1(calculatetempAmountInWords(objects[3] !=null ? (Long)objects[3]:null));
+						schemeVo.setParticipatedSeatsCount1(cnvrtLakhIntoCrores(objects[3] !=null ? (Long)objects[3]:null));
 					}
 				}
 			}
@@ -6345,7 +6345,7 @@ public class ConstituencyPageService implements IConstituencyPageService{
 										schemeVo.setTotalSeatsCount(objects[4] !=null ? (Long)objects[4]:null);
 										schemeVo.setParticipatedSeatsCount(objects[5] !=null ? (Long)objects[5]:null);
 										schemeVo.setTotalSeatsCount1(calculatetempAmountInWords(objects[4] !=null ? (Long)objects[4]:null));
-										schemeVo.setParticipatedSeatsCount1(calculatetempAmountInWords(objects[5] !=null ? (Long)objects[5]:null));
+										schemeVo.setParticipatedSeatsCount1(cnvrtLakhIntoCrores(objects[5] !=null ? (Long)objects[5]:null));
 									}
 									finalVo.getList().add(subVo);
 							}else{
@@ -6357,7 +6357,7 @@ public class ConstituencyPageService implements IConstituencyPageService{
 									schemeVo.setTotalSeatsCount(objects[4] !=null ? (Long)objects[4]:null);
 									schemeVo.setParticipatedSeatsCount(objects[5] !=null ? (Long)objects[5]:null);
 									schemeVo.setTotalSeatsCount1(calculatetempAmountInWords(objects[4] !=null ? (Long)objects[4]:null));
-									schemeVo.setParticipatedSeatsCount1(calculatetempAmountInWords(objects[5] !=null ? (Long)objects[5]:null));
+									schemeVo.setParticipatedSeatsCount1(cnvrtLakhIntoCrores(objects[5] !=null ? (Long)objects[5]:null));
 								}
 							}
 						}
@@ -6388,8 +6388,8 @@ public class ConstituencyPageService implements IConstituencyPageService{
 					benefitMembersCnt =benefitMembersCnt+vo.getTotalSeatsCount();
 					benefitAmountCnt =benefitAmountCnt+vo.getParticipatedSeatsCount();
 				}
-				finalVo.getList().get(0).setEarnedVote(calculatetempAmountInWords(benefitMembersCnt));
-				finalVo.getList().get(0).setRange(calculatetempAmountInWords(benefitAmountCnt));
+				finalVo.getList().get(0).setEarnedVote(cnvrtLakhIntoCrores(benefitMembersCnt));
+				finalVo.getList().get(0).setRange(cnvrtLakhIntoCrores(benefitAmountCnt));
 			}
 		} catch (Exception e) {
 			log.error("Exception raised getLocationwiseSchemesOverview method "+e);
@@ -6471,7 +6471,7 @@ public class ConstituencyPageService implements IConstituencyPageService{
 					 vo.setPartyName(param[3] != null ? param[3].toString():"");
 					 vo.setStatus(param[4] != null ? param[4].toString():"");
 					 vo.setPerc(param[5] != null ? param[5].toString():"");
-					 vo.setTotalSeatsCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+					 vo.setTotalSeatsCount1(cnvrtLakhIntoCrores(commonMethodsUtilService.getLongValueForObject(param[6])));
 					 
 					 returnList.add(vo);
 				 }
@@ -6481,6 +6481,16 @@ public class ConstituencyPageService implements IConstituencyPageService{
 		 }
 		return returnList;
 	} 
-	 
+	public String cnvrtLakhIntoCrores(Long value){
+		String returnVal = "0";
+		try {
+			if(value != null) {
+				returnVal = new BigDecimal(Double.valueOf(value)/10000000.00d).setScale(3, BigDecimal.ROUND_HALF_UP).toString();
+			}
+		} catch (Exception e) {
+			log.error("Exception raised at cnvrtLakhIntoCrores ", e);
+		}
+		return returnVal.trim();
+	}
 }
 
