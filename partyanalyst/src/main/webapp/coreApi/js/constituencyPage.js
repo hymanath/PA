@@ -4224,13 +4224,13 @@ function getGovtSchemeWiseBenefitMembersCount(){
 								}else{
 									str+='<td> - </td>';
 								}
-								if(result.list[i].totalSeatsCount !=null && result.list[i].totalSeatsCount>0){
-									str+='<td>'+result.list[i].totalSeatsCount+'</td>';
+								if(result.list[i].totalSeatsCount1 !=null && result.list[i].totalSeatsCount1 !=""){
+									str+='<td>'+result.list[i].totalSeatsCount1+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
-								if(result.list[i].participatedSeatsCount !=null && result.list[i].participatedSeatsCount>0){
-									str+='<td>'+result.list[i].participatedSeatsCount+'/-</td>';
+								if(result.list[i].participatedSeatsCount1 !=null && result.list[i].participatedSeatsCount1 !=""){
+									str+='<td>'+result.list[i].participatedSeatsCount1+'/-</td>';
 								}else{
 									str+='<td> - </td>';
 								}
@@ -4265,14 +4265,14 @@ function getGovtSchemeWiseBenefitMembersCount(){
 							str+='<tr>';
 								str+='<td>'+result.subList1[i].partyName+'</td>';
 								str+='<td style="width:40%"><div id="schemesGraphId'+i+'" style="height:37px;"></div></td>';
-								if(result.subList1[i].totalSeatsCount !=null && result.subList1[i].totalSeatsCount>0){
-									str+='<td>'+result.subList1[i].totalSeatsCount+'</td>';
+								if(result.subList1[i].totalSeatsCount1 !=null && result.subList1[i].totalSeatsCount1 !=""){
+									str+='<td>'+result.subList1[i].totalSeatsCount1+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
 								
-								if(result.subList1[i].participatedSeatsCount !=null && result.subList1[i].participatedSeatsCount>0){
-									str+='<td>'+result.subList1[i].participatedSeatsCount+'/-</td>';
+								if(result.subList1[i].participatedSeatsCount1 !=null && result.subList1[i].participatedSeatsCount1 !=""){
+									str+='<td>'+result.subList1[i].participatedSeatsCount1+'/-</td>';
 								}else{
 									str+='<td> - </td>';
 								}
@@ -8624,20 +8624,3 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 			console.log(result);
 		});	
 	}
-getMemberDetailsForBenefitInfo();
-function getMemberDetailsForBenefitInfo(){
-	jsObj={
-		
-		locationScopeId			:2,
-		locationValue			:19,
-		schemeId 				:3
-	}
-	$.ajax({
-		type : "GET",
-		url : "getMemberDetailsForBenefitInfo.action",
-		dataType : 'json',
-		data : {task :JSON.stringify(jsObj)}
-	}).done(function(result){ 
-				
-	});
-}

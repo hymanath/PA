@@ -111,13 +111,13 @@ function getGovtSchemeWiseBenefitMembersCount(){
 									}else{
 										str+='<p class="text-muted">'+result.subList1[i].partyName+'</p>';
 									}
-									if(result.subList1[i].totalSeatsCount !=null && result.subList1[i].totalSeatsCount>0){
-										str+='<h4 class="m_top10 f-14">'+result.subList1[i].totalSeatsCount+'</h4>';
+									if(result.subList1[i].totalSeatsCount1 !=null && result.subList1[i].totalSeatsCount1 !=""){
+										str+='<h4 class="m_top10 f-14">'+result.subList1[i].totalSeatsCount1+'</h4>';
 									}else{
 										str+='<h4 class="m_top10 f-14"> - </h4>';
 									}
-									if(result.subList1[i].participatedSeatsCount !=null && result.subList1[i].participatedSeatsCount>0){
-										str+='<h4 class="m_top10 f-14"><i class="fa fa-inr m_top5" aria-hidden="true" ></i>&nbsp;'+result.subList1[i].participatedSeatsCount+'</h4>';
+									if(result.subList1[i].participatedSeatsCount1 !=null && result.subList1[i].participatedSeatsCount1 !=""){
+										str+='<h4 class="m_top10 f-14"><i class="fa fa-inr m_top5" aria-hidden="true" ></i>&nbsp;'+result.subList1[i].participatedSeatsCount1+'</h4>';
 									}else{
 										str+='<h4 class="m_top10 f-14"><i class="fa fa-inr m_top5" aria-hidden="true" ></i> - </h4>';
 									}
@@ -154,13 +154,13 @@ function getGovtSchemeWiseBenefitMembersCount(){
 											}else{
 												str+='<p class="text-muted">'+result.subList1[0].subList2[i].partyName+'</p>';
 											}
-											if(result.subList1[0].subList2[i].totalSeatsCount !=null && result.subList1[0].subList2[i].totalSeatsCount>0){
-												str+='<h4 class="m_top10 f-14">'+result.subList1[0].subList2[i].totalSeatsCount+'</h4>';
+											if(result.subList1[0].subList2[i].totalSeatsCount1 !=null && result.subList1[0].subList2[i].totalSeatsCount1 !=""){
+												str+='<h4 class="m_top10 f-14">'+result.subList1[0].subList2[i].totalSeatsCount1+'</h4>';
 											}else{
 												str+='<h4 class="m_top10 f-14"> - </h4>';
 											}
-											if(result.subList1[0].subList2[i].participatedSeatsCount !=null && result.subList1[0].subList2[i].participatedSeatsCount>0){
-												str+='<h4 class="m_top10 f-14"><i class="fa fa-inr m_top5" aria-hidden="true" ></i>&nbsp;'+result.subList1[0].subList2[i].participatedSeatsCount+'</h4>';
+											if(result.subList1[0].subList2[i].participatedSeatsCount1 !=null && result.subList1[0].subList2[i].participatedSeatsCount1 !=""){
+												str+='<h4 class="m_top10 f-14"><i class="fa fa-inr m_top5" aria-hidden="true" ></i>&nbsp;'+result.subList1[0].subList2[i].participatedSeatsCount1+'</h4>';
 											}else{
 												str+='<h4 class="m_top10 f-14"><i class="fa fa-inr m_top5" aria-hidden="true" ></i> - </h4>';
 											}
@@ -251,15 +251,15 @@ function getGovtSchemeWiseBenefitMembersCount(){
 									}else{
 										str1+='<td> - </td>';
 									}
-									if(result.list[i].participatedSeatsCount !=null && result.list[i].participatedSeatsCount>0){
-										str1+='<td>'+result.list[i].participatedSeatsCount+'</td>';
+									if(result.list[i].participatedSeatsCount1 !=null && result.list[i].participatedSeatsCount1 !=""){
+										str1+='<td>'+result.list[i].participatedSeatsCount1+'</td>';
 									}else{
 										str1+='<td> - </td>';
 									}
 									
 									for(var j in result.list[i].schemesList){
-										if(result.list[i].schemesList[j].totalSeatsCount !=null && result.list[i].schemesList[j].totalSeatsCount>0){
-											str1+='<td>'+result.list[i].schemesList[j].totalSeatsCount+'</td>';
+										if(result.list[i].schemesList[j].totalSeatsCount1 !=null && result.list[i].schemesList[j].totalSeatsCount1 !=""){
+											str1+='<td>'+result.list[i].schemesList[j].totalSeatsCount1+'</td>';
 										}else{
 											str1+='<td> - </td>';
 										}
