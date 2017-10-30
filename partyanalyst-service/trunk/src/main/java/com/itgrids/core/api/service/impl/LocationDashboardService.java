@@ -6312,7 +6312,10 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 				totalCnt = electionDAO.getElectionDetailsConstituencyWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
 				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap,null,null);
 			}else if (locationTypeId.longValue() == 4L) {
-				totalCnt = electionDAO.getElectionDetailsMandalWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);
+				totalCnt = electionDAO.getElectionDetailsMandalWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds,false);
+				List<Object[]>  totalCntTmp = electionDAO.getElectionDetailsMandalWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds,true);
+				if(commonMethodsUtilService.isListOrSetValid(totalCnt))
+					totalCnt.addAll(totalCntTmp);
 				returnList = setElectionDetailsData(totalCnt,alliancedPartiesWithGroupIdMap,null,null);
 				totalCnt.clear();
 				totalCnt = electionDAO.getElectionDetailsMuncipalityWise(electionYears, locationTypeId, locationValues, electionId,subTypes,partyIds,electionScopeIds);

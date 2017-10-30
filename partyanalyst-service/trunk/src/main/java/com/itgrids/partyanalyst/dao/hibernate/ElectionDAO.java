@@ -1120,11 +1120,17 @@ IElectionDAO {
 		return query.list();
 
 	}  
-	public List<Object[]> getElectionDetailsMandalWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds){
+	public List<Object[]> getElectionDetailsMandalWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds,boolean islocalbody){
 		StringBuilder sb = new StringBuilder();	
 		
 		sb.append(" SELECT ");
-		sb.append(" e.election_scope_id as election_scope_id , t.tehsil_id as locationId ,t.tehsil_name as locationName,  e.election_id as election_id, ");
+		sb.append(" e.election_scope_id as election_scope_id" );
+		if(islocalbody){
+			sb.append(" ,leb.local_election_body_id AS locationId,concat(leb.name,'-',et2.election_type) AS locationName");
+		}else{
+			sb.append(" ,t.tehsil_id as locationId ,t.tehsil_name as locationName ");
+		}
+		sb.append(" ,e.election_id as election_id, ");
 		sb.append(" et.election_type as election_type,   ");
 		sb.append(" e.election_year as election_year ,n.party_id as party_id, '' as short_name , sum(cbr.votes_earned)  as sumCount ");
 		sb.append(" from  ");
@@ -1136,8 +1142,18 @@ IElectionDAO {
 		sb.append(" election e , ");
 		sb.append(" constituency c , ");
 		sb.append(" election_scope es ,  ");
-		sb.append(" election_type et, tehsil t  ");
-		sb.append(" where   b.tehsil_id = t.tehsil_id and b.local_election_body_id is null AND ");
+		sb.append(" election_type et," );
+		if(islocalbody){
+			sb.append("local_election_body leb,election_type et2");
+		}else{
+			sb.append(" tehsil t  ");
+		}
+		sb.append(" where ");
+		if(islocalbody){
+			sb.append(" b.local_election_body_id = leb.local_election_body_id AND et2.election_type_id=leb.election_type_id  AND b.local_election_body_id IS Not NULL AND");
+		}else{
+			sb.append(" b.tehsil_id = t.tehsil_id and b.local_election_body_id is null AND ");
+		}
 		sb.append(" e.election_scope_id = es.election_scope_id and  ");
 		sb.append(" et.election_type_id = es.election_type_id and  ");
 		sb.append(" b.constituency_id = c.constituency_id and  ");
@@ -1158,8 +1174,14 @@ IElectionDAO {
 				sb.append(" and  c.constituency_id  in (:locationValues) ");
 			}
 		}
-		sb.append(" group by t.tehsil_id,e.election_scope_id,e.election_id,et.election_type," +
-				"e.election_year,n.party_id ");
+		if(islocalbody){
+			sb.append(" group by leb.local_election_body_id,e.election_scope_id,e.election_id,et.election_type," +
+					"e.election_year,n.party_id ");
+		}else{
+			sb.append(" group by t.tehsil_id,e.election_scope_id,e.election_id,et.election_type," +
+					"e.election_year,n.party_id ");
+		}
+		
 		Query query = getSession().createSQLQuery((sb.toString()))
 				.addScalar("election_scope_id",Hibernate.LONG)
 				.addScalar("locationId",Hibernate.LONG)
