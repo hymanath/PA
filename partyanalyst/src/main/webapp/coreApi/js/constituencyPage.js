@@ -8151,7 +8151,7 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 											str+='<tr>';
 												str+='<td>'+result.levelList[i].levelList[j].datesList[k].name+'</td>';
 												str+='<td class="getCmtMemDtls" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false">'+result.levelList[i].levelList[j].recentMeetingInviteesCnt+'</td>';
-												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentAttended+'</td>';
+												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentInviteeAttended+'</td>';
 												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentLate+'</td>';
 												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentAbcent+'</td>';
 												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentNonInvitee+'</td>';
@@ -8564,21 +8564,21 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 						}
 						if(result[i].subList1 !=null && result[i].subList1.length>0){
 							for(var j in result[i].subList1){
-								if(result[i].subList1[j].idnameList !=null && result[i].subList1[j].idnameList.length>0){
+								//if(result[i].subList1[j].idnameList !=null && result[i].subList1[j].idnameList.length>0){
 									for(var k in result[i].subList1[j].idnameList){
 										if(result[i].subList1[j].idnameList[k].status == "intime"){
 											str+='<td class="text-success">Y('+(result[i].subList1[j].idnameList[k].dateStr).substring(0,5)+')</td>';
 										}else if(result[i].subList1[j].idnameList[k].status == "late"){
 											str+='<td class="text-danger">Y('+(result[i].subList1[j].idnameList[k].dateStr).substring(0,5)+')</td>';
-										}else if(result[i].subList1[j].idnameList[k].status == "absent"){  
+										}else if(result[i].subList1[j].idnameList[k].status == "abscent"){  
 											str+='<td>N</td>';  
 										}else{  
 											str+='<td>'+result[i].subList1[j].idnameList[k].status+'</td>';             
 										}
 									}
-								}else{
+								/* }else{
 									str+='<td> - </td>';
-								}
+								} */
 							}
 						}
 				  
