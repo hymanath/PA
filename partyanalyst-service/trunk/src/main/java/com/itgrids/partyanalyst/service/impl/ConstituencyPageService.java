@@ -6464,13 +6464,13 @@ public class ConstituencyPageService implements IConstituencyPageService{
 			 if(objList != null && objList.size() > 0){
 				 for(Object[] param:objList){
 					 ElectionInformationVO vo = new ElectionInformationVO();
-					 vo.setId((Long)param[0]);
+					 vo.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					 vo.setName(param[1] != null ? param[1].toString():"");
 					 vo.setPartyFlag(param[2] != null ? param[2].toString():"");
 					 vo.setPartyName(param[3] != null ? param[3].toString():"");
 					 vo.setStatus(param[4] != null ? param[4].toString():"");
 					 vo.setPerc(param[5] != null ? param[5].toString():"");
-					 vo.setTotalSeatsCount((Long)param[6]);
+					 vo.setTotalSeatsCount(commonMethodsUtilService.getLongValueForObject(param[6]));
 					 
 					 returnList.add(vo);
 				 }
