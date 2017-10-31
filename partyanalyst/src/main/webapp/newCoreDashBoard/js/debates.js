@@ -140,11 +140,21 @@ $(document).ready(function(){
 		}
         
       });
+	  var participantLocIdArry =[];
+     $(".radioStateCls1").each(function(){
+        if($(this).prop('checked')==true){
+               participantLocIdArry.push($(this).val());
+        }else{
+			participantLocIdArry.push(0);
+		}
+        
+      });
 		var jsObj={
 			startDate: customStartDate,
 			endDate: customEndDate,
 			state:globalState,
-			debateLocationIdArry:debateLocationIdArry
+			debateLocationIdArry:debateLocationIdArry,
+			debateParticipantLocIdArry:participantLocIdArry
 		}
 		$.ajax({
 			type : 'POST',
@@ -328,11 +338,21 @@ function getCandidateOverAllPerformanceCohort(){
 		}
         
       });
+	  var debateLocationIdArry =[];
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               debateLocationIdArry.push($(this).val());
+        }else{
+			debateLocationIdArry.push(0);
+		}
+        
+      });
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
 			state:globalState,
-			participantLocIdArry:participantLocIdArry
+			participantLocIdArry:participantLocIdArry,
+			debateLocationIdArry:debateLocationIdArry
 		}
 	    $.ajax({
 			type : 'POST',
@@ -545,12 +565,22 @@ function getSpokesPersonWiseDebate(searchType){
 		}
         
       });
+	   var debateLocationIdArry =[];
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               debateLocationIdArry.push($(this).val());
+        }else{
+			debateLocationIdArry.push(0);
+		}
+        
+      });
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
 			searchType:searchType,
 			state:globalState,
-			debateParticipantLocIdArry :debateParticipantLocIdArry
+			debateParticipantLocIdArry :debateParticipantLocIdArry,
+			debateLocationIdArry:debateLocationIdArry
 		}
 	    $.ajax({
 			type : 'POST',
@@ -1124,13 +1154,23 @@ $(document).on("click",".partyWiseDebateCls",function(){
 function getCoreDebateBasicDetailsOfParty(partyId,type,popupLocationId){
 	$(".debateModelCls").html("");	
 	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var participantLocIdArry =[];
+     $(".radioStateCls1").each(function(){
+        if($(this).prop('checked')==true){
+               participantLocIdArry.push($(this).val());
+        }else{
+			participantLocIdArry.push(0);
+		}
+        
+      });
 	var jsObj={
 		partyId:partyId,
 		startDate:customStartDate,
 		endDate:customEndDate,
 		searchType:type,
 		candidateId:0,
-		popupLocationIdArry:popupLocationId
+		popupLocationIdArry:popupLocationId,
+		participantLocIdArry:participantLocIdArry
 	}		
 	$.ajax({
 	 type: "POST",
