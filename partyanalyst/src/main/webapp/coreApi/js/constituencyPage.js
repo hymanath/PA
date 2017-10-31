@@ -4155,6 +4155,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 		var str='';
 		var totalBenefitsMemberesCount=0;
 		var totalBenefitsAmountCount=0;
+		var totalBenefitAmountCnt=0;
 		var mainArr=[];
 		var percentage=0;
 		var totalSchemesCount=0;
@@ -4162,6 +4163,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 		if(result !=null && result.list !=null){
 				totalBenefitsMemberesCount =result.list[0].earnedVote;
 				totalBenefitsAmountCount =result.list[0].range;
+				totalBenefitAmountCnt = result.list[0].status1;
 		}
 		if(result !=null && result.subList1 !=null && result.subList1.length>0){
 			totalSchemesCount =totalSchemesCount+result.subList1.length;
@@ -4203,9 +4205,9 @@ function getGovtSchemeWiseBenefitMembersCount(){
 							str+='<div class="media-body">';
 								str+='<h6 class="m_top5">Benefited Amount</h6>';
 								 if(totalBenefitsAmountCount !=null && totalBenefitsAmountCount>0){
-									str+='<h5 class="m_top10">'+totalBenefitsAmountCount+'</h5>';
+									str+='<h5 class="m_top10"><span class="tooltipBenefitCls" data-toggle="tooltip" title="Amount in crores('+totalBenefitAmountCnt+')">'+totalBenefitsAmountCount+'</span></h5>';
 								}else{ 
-									str+='<h5 class="m_top10">'+totalBenefitsAmountCount+'</h5>';
+									str+='<h5 class="m_top10"><span class="tooltipBenefitCls" data-toggle="tooltip" title="Amount in crores('+totalBenefitAmountCnt+')">'+totalBenefitsAmountCount+'</span></h5>';
 								}
 								
 							str+=' </div>';
@@ -4218,7 +4220,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 				str+='<table class="table table_benefits" id="locationBenefitDT">';
 					str+='<thead class="bg-E9">';
 						str+='<tr>';
-							str+='<th>'+locationName+'</th>';
+							str+='<th>Name</th>';
 							str+='<th>Benefite Schemes</th>';
 							str+='<th>Memberes</th>';
 							str+='<th>Amount</th>';
@@ -4240,7 +4242,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 									str+='<td> - </td>';
 								}
 								if(result.list[i].participatedSeatsCount1 !=null && result.list[i].participatedSeatsCount1 !=""){
-									str+='<td>'+result.list[i].participatedSeatsCount1+'</td>';
+									str+='<td><span class="tooltipBenefitCls" data-toggle="tooltip" data-placement="left" title="Amount in crores('+result.list[i].participatedSeatsCount+')">'+result.list[i].participatedSeatsCount1+'</span></td>';
 								}else{
 									str+='<td> - </td>';
 								}
@@ -4282,7 +4284,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 								}
 								
 								if(result.subList1[i].participatedSeatsCount1 !=null && result.subList1[i].participatedSeatsCount1 !=""){
-									str+='<td>'+result.subList1[i].participatedSeatsCount1+'</td>';
+									str+='<td><span class="tooltipBenefitCls" data-toggle="tooltip" data-placement="left" title="Amount in crores('+result.subList1[i].participatedSeatsCount+')">'+result.subList1[i].participatedSeatsCount1+'</span></td>';
 								}else{
 									str+='<td> - </td>';
 								}
@@ -4302,6 +4304,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 		str+='</div>';
 		
 		$("#benefitsBlockId").html(str);
+		$(".tooltipBenefitCls").tooltip();
 		$("#benefitSchemeDT").dataTable({
 			"paging":   true,
 			"info":     false,

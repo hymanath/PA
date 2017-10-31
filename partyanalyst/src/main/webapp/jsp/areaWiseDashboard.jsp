@@ -340,7 +340,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12 m_top30" navbar-index="benefits">
-				<h4 class="panel-title theme-title-color">Benefits<span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="benefits"></i></span><span>(Amount in lakhs) </span></h4>
+				<h4 class="panel-title theme-title-color">Benefits<span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="benefits"></i></span><span>(Amount in crores) </span></h4>
 				<div class="block m_top10">
 					<div class="row">
 						<div id="benefitsBlockId"></div>
