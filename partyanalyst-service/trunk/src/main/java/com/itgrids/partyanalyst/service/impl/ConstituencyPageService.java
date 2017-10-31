@@ -6388,7 +6388,8 @@ public class ConstituencyPageService implements IConstituencyPageService{
 					benefitMembersCnt =benefitMembersCnt+vo.getTotalSeatsCount();
 					benefitAmountCnt =benefitAmountCnt+vo.getParticipatedSeatsCount();
 				}
-				finalVo.getList().get(0).setEarnedVote(cnvrtLakhIntoCrores(benefitMembersCnt));
+				finalVo.getList().get(0).setEarnedVote(calculatetempAmountInWords(benefitMembersCnt));
+				finalVo.getList().get(0).setStatus1(calculatetempAmountInWords(benefitAmountCnt));
 				finalVo.getList().get(0).setRange(cnvrtLakhIntoCrores(benefitAmountCnt));
 			}
 		} catch (Exception e) {
@@ -6460,7 +6461,7 @@ public class ConstituencyPageService implements IConstituencyPageService{
 		List<ElectionInformationVO> returnList = new ArrayList<ElectionInformationVO>(0);
 		try{
 			 List<Object[]> objList = govtSchemeBeneficiaryDetailsDAO.getMemberDetailsForBenefitInfo(locationScopeId, locationValue, schemeId);
-			 //0-locationId,1-locationName,2-beneficicaryName,3-mobileNum,4-schemename,5-casteName,6-amount
+			 //0-locationId,1-locationName,2-beneficicaryName,3-mobileNum,4-schemename,6-amount
 			 
 			 if(objList != null && objList.size() > 0){
 				 for(Object[] param:objList){
@@ -6470,11 +6471,19 @@ public class ConstituencyPageService implements IConstituencyPageService{
 					 vo.setPartyFlag(param[2] != null ? param[2].toString():"");
 					 vo.setPartyName(param[3] != null ? param[3].toString():"");
 					 vo.setStatus(param[4] != null ? param[4].toString():"");
-					 vo.setPerc(param[5] != null ? param[5].toString():"");
-					 vo.setTotalSeatsCount1(cnvrtLakhIntoCrores(commonMethodsUtilService.getLongValueForObject(param[6])));
-					 
+					 vo.setTotalSeatsCount1(cnvrtLakhIntoCrores(commonMethodsUtilService.getLongValueForObject(param[5])));
+					 vo.setId(commonMethodsUtilService.getLongValueForObject(param[6]));
 					 returnList.add(vo);
 				 }
+			 }
+			 List<Object[]> objLst = govtSchemeBeneficiaryDetailsDAO.getMemberDetailsForBenefitInfoForClick(locationScopeId, locationValue, schemeId);
+			 if(objLst != null && objLst.size() >0){
+				 for (Object[] param : objLst) {
+					 ElectionInformationVO matchedVo = getMatchedVO(returnList,commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(matchedVo != null){
+							matchedVo.setPerc(param[1] != null ? param[1].toString():"");
+						}
+				}
 			 }
 		 }catch(Exception e){
 			 log.error("Exception occured  in getMemberDetailsForBenefitInfo() ",e);
