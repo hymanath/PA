@@ -457,7 +457,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 
 	@Override
 	public List<Object[]> getElectionInformationLocationWiseVoterShare(List<Long> electionYrs, Long locationTypeId, Long locationValue,
-			List<Long> electionScopeIds, Object object, List<String> subTypes, List<Long> parlimentIds) {
+			List<Long> electionScopeIds, Object object, List<String> subTypes, List<Long> parlimentIds,boolean isMandal) {
 		SQLQuery query = null;
 		StringBuilder sb = new StringBuilder();
 		if(object !=null && object.toString().equalsIgnoreCase("lowLevels")){
@@ -530,7 +530,12 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 				}else if(locationTypeId ==3l){
 					sb.append(" and c.district_id =:locationValue");
 				}else if(locationTypeId ==4l){
-					sb.append(" and c.constituency_id =:locationValue");
+					if(isMandal){
+						sb.append(" and c.tehsil_id in( select distinct tehsil_id from tehsil_constituency where constituency_id=:locationValue)");
+					}else{
+						sb.append(" and c.constituency_id =:locationValue");
+					}
+						
 				}else if(locationTypeId ==5l){
 					sb.append(" and c.tehsil_id =:locationValue");
 				}
@@ -564,7 +569,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	
 	@Override
 	public List<Object[]> getElectionInformationLocationWiseEarnedVoterShare(List<Long> electionYrs, Long locationTypeId, Long locationValue,
-			List<Long> electionScopeIds, Object object, List<String> subTypes, List<Long> parlimentIds) {
+			List<Long> electionScopeIds, Object object, List<String> subTypes, List<Long> parlimentIds,boolean isMandal) {
 		
 		SQLQuery query = null;
 		StringBuilder sb = new StringBuilder();
@@ -650,7 +655,11 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 				}else if(locationTypeId ==3l){
 					sb.append(" and c1.district_id =:locationValue");
 				}else if(locationTypeId ==4l){
-					sb.append(" and c1.constituency_id =:locationValue");
+					if(isMandal){
+						sb.append(" and c1.tehsil_id in( select distinct tehsil_id from tehsil_constituency where constituency_id=:locationValue)");
+					}else{
+						sb.append("  and c1.constituency_id =:locationValue");
+					}
 				}else if(locationTypeId ==5l){
 					sb.append(" and c1.tehsil_id =:locationValue");
 				}
@@ -690,7 +699,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 
 	@Override
 	public List<Object[]> getElectionInformationLocationWiseWonedCount(List<Long> electionYrs, Long locationTypeId, Long locationValue,
-			List<Long> electionScopeIds, List<String> subTypes, List<Long> parlimentIds) {
+			List<Long> electionScopeIds, List<String> subTypes, List<Long> parlimentIds,boolean isMandal) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT p.party_id as partyId,p.short_name as partyName, count(n.party_id) as woncount,et.election_type_id AS electionTypeId," +
 				" et.election_type AS electionType, e.election_year as electionyear,e.election_id as electionId" +
@@ -724,7 +733,11 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			}else if(locationTypeId ==3l){
 				sb.append(" and c1.district_id =:locationValue");
 			}else if(locationTypeId ==4l){
-				sb.append(" and c1.constituency_id =:locationValue");
+				if(isMandal){
+					sb.append(" and c1.tehsil_id in( select distinct tehsil_id from tehsil_constituency where constituency_id=:locationValue)");
+				}else{
+					sb.append("  and c1.constituency_id =:locationValue");
+				}
 			}else if(locationTypeId ==5l){
 				sb.append(" and c1.tehsil_id =:locationValue");
 			}
