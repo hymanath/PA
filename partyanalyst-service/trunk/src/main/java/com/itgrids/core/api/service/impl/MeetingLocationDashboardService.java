@@ -307,7 +307,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 			
 			List<Object[]> totalList = partyMeetingDAO.getLocationWiseStateMeetings(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,"",null);
 			List<Object[]> invitees = partyMeetingInviteeDAO.getLocationWiseStateMeetingInvitees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,null);
-			List<Object[]> attendees = partyMeetingAttendanceDAO.getLocationWiseStateMeetingAttendees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,null,null,null);
+			List<Object[]> attendees = partyMeetingAttendanceDAO.getLocationWiseStateMeetingAttendees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,null,null,null,null);
 			List<Object[]> images = partyMeetingDocumentDAO.getLocationWiseStateMeetingImages(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,null);
 			Map<Long,Map<Long,PartyMeetingDataVO>> meetingTypeMap = new HashMap<Long,Map<Long,PartyMeetingDataVO>>();
 			Map<Long,PartyMeetingDataVO> totalCntMap = new HashMap<Long,PartyMeetingDataVO>();
@@ -436,7 +436,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 			
 			List<Object[]> totalList = partyMeetingDAO.getLocationWiseStateMeetings(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,"",null);
 			List<Object[]> invitees = partyMeetingInviteeDAO.getLocationWiseStateMeetingInvitees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,null);
-			List<Object[]> attendees = partyMeetingAttendanceDAO.getLocationWiseStateMeetingAttendees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,null,null,null);
+			List<Object[]> attendees = partyMeetingAttendanceDAO.getLocationWiseStateMeetingAttendees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,null,null,null,null);
 			List<Object[]> images = partyMeetingDocumentDAO.getLocationWiseStateMeetingImages(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,null);
 			Map<Long,Map<Long,PartyMeetingDataVO>> meetingTypeMap = new HashMap<Long,Map<Long,PartyMeetingDataVO>>();
 			Map<Long,PartyMeetingDataVO> totalCntMap = new HashMap<Long,PartyMeetingDataVO>();
@@ -587,9 +587,10 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 									        long attendedMilliSec = attendedTme.getTime();
 									        long lateMilliSec = lateTime.getTime();
 											if(attendedMilliSec>=lateMilliSec){
-												sessionVO.getInviteeAttendedIdsList().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+												sessionVO.getAttendedIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
 												//sessionVO.setRecentInviteeAttended(Long.valueOf(String.valueOf(sessionVO.getInviteeAttendedIdsList().size())));
-												sessionVO.setRecentLate(Long.valueOf(String.valueOf(sessionVO.getInviteeAttendedIdsList().size())));
+												sessionVO.setRecentLate(Long.valueOf(String.valueOf(sessionVO.getAttendedIds().size())));
+												meetingTypeVO.setLateCount(Long.valueOf(sessionVO.getAttendedIds().size()));
 											}
 										}
 									}
@@ -797,7 +798,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 			
 			List<Object[]> totalList = partyMeetingDAO.getLocationWiseStateMeetings(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,"",partyMeetingTypeId);
 			List<Object[]> invitees = partyMeetingInviteeDAO.getLocationWiseStateMeetingInvitees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,partyMeetingTypeId);
-			List<Object[]> attendees = partyMeetingAttendanceDAO.getLocationWiseStateMeetingAttendees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,partyMeetingTypeId,null,null);
+			List<Object[]> attendees = partyMeetingAttendanceDAO.getLocationWiseStateMeetingAttendees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,partyMeetingTypeId,null,null,null);
 			List<Object[]> images = partyMeetingDocumentDAO.getLocationWiseStateMeetingImages(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,partyMeetingTypeId);
 			Map<Long,Map<Long,PartyMeetingDataVO>> meetingTypeMap = new HashMap<Long,Map<Long,PartyMeetingDataVO>>();
 			Map<Long,PartyMeetingDataVO> totalCntMap = new HashMap<Long,PartyMeetingDataVO>();
@@ -978,7 +979,8 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 	*  @since 26-oct-2017
 	*  @return :void
 	*/
-	public List<IdNameVO> getLocationWiseMeetingInviteeMembers(Long locationTypeId, List<Long> locationValues,String fromDateStr,String toDateStr,Long partyMeetingMainTypeId,Long partyMeetingTypeId,Long partyMeetingId,String pastMeetings){
+	public List<IdNameVO> getLocationWiseMeetingInviteeMembers(Long locationTypeId, List<Long> locationValues,String fromDateStr,String toDateStr,Long partyMeetingMainTypeId,
+			Long partyMeetingTypeId,Long partyMeetingId,String pastMeetings,Long sessionTypeId,String status){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
 			//CoreDashboardPartyMeetingService coreDashboardPartyMeetingService = new CoreDashboardPartyMeetingService();
@@ -990,13 +992,14 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 				endDate = sdf.parse(toDateStr);
 			}
 			Map<Long,IdNameVO> inviteesMap = new HashMap<Long,IdNameVO>();
+			List<Object[]> attendees = partyMeetingAttendanceDAO.getLocationWiseStateMeetingAttendees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,partyMeetingTypeId,null,inviteesMap.keySet(),sessionTypeId);
 			List<Object[]> invitees = partyMeetingInviteeDAO.getLocationWiseMeetingInviteeMembers(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,null);
 			if(commonMethodsUtilService.isListOrSetValid(invitees)){
 				for(Object[] param :invitees){
 					IdNameVO inviteeMem = inviteesMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(inviteeMem == null ){
 						inviteeMem = new IdNameVO();
-						
+						inviteeMem.setSubList1(setPartyMeetingsTemplate(attendees));
 						inviteeMem.setId(commonMethodsUtilService.getLongValueForObject(param[0]));//tdpCadreId
 						inviteeMem.setName(commonMethodsUtilService.getStringValueForObject(param[1]));//cadreName
 						inviteeMem.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));//mobileNo
@@ -1016,13 +1019,15 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 					}
 				}
 			}
-			List<Object[]> attendees = partyMeetingAttendanceDAO.getLocationWiseStateMeetingAttendees(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,partyMeetingTypeId,null,inviteesMap.keySet());
+			
+			
 			
 			if(commonMethodsUtilService.isListOrSetValid(attendees)){
 				for(Object[] param :attendees){
+					
 					IdNameVO inviteeMem = inviteesMap.get(commonMethodsUtilService.getLongValueForObject(param[4]));
 					if(inviteeMem != null ){
-						inviteeMem.setSubList1(setPartyMeetingsTemplate(attendees));
+						//inviteeMem.setSubList1(setPartyMeetingsTemplate(attendees));
 						IdNameVO partyMeetingVO = getMatchedVOInList(inviteeMem.getSubList1(),commonMethodsUtilService.getLongValueForObject(param[5]));
 						if(partyMeetingVO != null){
 						IdNameVO sessionVO = getMatchedVOInList(partyMeetingVO.getIdnameList(),commonMethodsUtilService.getLongValueForObject(param[6]));
@@ -1053,7 +1058,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 						inviteeMem.setActualCount((long) inviteeMem.getNonInviteeIds().size());//present/attended partyMeetings Count
 						
 					}
-				}
+				  }
 			}
 			
 			List<Object[]> invitations = partyMeetingInviteeDAO.getLocationWiseMeetingInviteeMembers(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,partyMeetingTypeId,null,inviteesMap.keySet());
@@ -1063,6 +1068,9 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 					if(inviteeMem != null ){
 						inviteeMem.getInviteeIds().add(commonMethodsUtilService.getLongValueForObject(param[9]));//invited partyMeetings cadre ids
 						inviteeMem.setInviteeAttnd((long) inviteeMem.getInviteeIds().size());//invited partyMeetings Count
+						if(inviteeMem.getInviteeAttnd().longValue() > 0l && (inviteeMem.getActualCount().longValue() == 0l || inviteeMem.getActualCount() == null)){
+							inviteeMem.setAvailableCount(inviteeMem.getInviteeAttnd().longValue());
+						}
 						IdNameVO partyMeetingVO = getMatchedVOInList(inviteeMem.getSubList1(),commonMethodsUtilService.getLongValueForObject(param[9]));
 						if(partyMeetingVO != null){
 							partyMeetingVO.setRemark(commonMethodsUtilService.getStringValueForObject(param[8]));
@@ -1072,7 +1080,21 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 			}
 			
 			if(commonMethodsUtilService.isMapValid(inviteesMap)){
-				returnList.addAll(inviteesMap.values());
+				for(Map.Entry<Long, IdNameVO> entry :inviteesMap.entrySet()){
+					IdNameVO inviteeMem =entry.getValue();
+					if(status != null && status.equalsIgnoreCase("attendee")){
+						if(inviteeMem.getActualCount() != null && inviteeMem.getActualCount().longValue() >0l){
+							returnList.add(inviteeMem);
+						}
+					}else if(status != null && status.equalsIgnoreCase("abscent")){
+						if(inviteeMem.getAvailableCount() != null && inviteeMem.getAvailableCount().longValue() >0l){
+							returnList.add(inviteeMem);
+						}	
+					}else if(status != null && status.equalsIgnoreCase("invitee")){
+						returnList.add(inviteeMem);
+					}
+				}
+				//returnList.addAll(inviteesMap.values());
 			}
 			Map<String,IdNameVO>  designationsMap = new HashMap<String,IdNameVO>();
 			returnList = coreDashboardPartyMeetingService.getOnlyNonInvitteeAttendedMembers(returnList,designationsMap);
