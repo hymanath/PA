@@ -1448,79 +1448,101 @@ public class ItcDashboardService implements IItcDashboardService {
 		              if(departmentId != null && departmentIds.contains(departmentId)){
 		            	  ItecEOfficeVO deptvo = getMatchedItecEOfficeVO(departmentList, departmentId);
 		            	  if(deptvo != null){
-		            		  String postName = jObj.getString("postname");
-		            		  if(postName != null && postName.trim().equalsIgnoreCase("JOINT SECRETARY")){
-		            			  ItecEOfficeVO vo = new ItecEOfficeVO();
-		            			  vo.setPostName(postName);
-		            			  vo.setDesignation(jObj.getString("designation"));
-		            			  vo.setEmployeeName(jObj.getString("employeename"));
-		            			  vo.setCreated(jObj.getLong("created"));
-		            			  vo.setTotalCount(jObj.getLong("totalcount"));
-		            			  deptvo.getJsList().add(vo);
-		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("DIRECTOR")){
-		            			  ItecEOfficeVO vo = new ItecEOfficeVO();
-		            			  vo.setPostName(postName);
-		            			  vo.setDesignation(jObj.getString("designation"));
-		            			  vo.setEmployeeName(jObj.getString("employeename"));
-		            			  vo.setCreated(jObj.getLong("created"));
-		            			  vo.setTotalCount(jObj.getLong("totalcount"));
-		            			  deptvo.getDirectorList().add(vo);
-		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JOINT DIRECTOR")){
-		            			  ItecEOfficeVO vo = new ItecEOfficeVO();
-		            			  vo.setPostName(postName);
-		            			  vo.setDesignation(jObj.getString("designation"));
-		            			  vo.setEmployeeName(jObj.getString("employeename"));
-		            			  vo.setCreated(jObj.getLong("created"));
-		            			  vo.setTotalCount(jObj.getLong("totalcount"));
-		            			  deptvo.getJdList().add(vo);
-		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SPECIAL OFFICER")){
-		            			  ItecEOfficeVO vo = new ItecEOfficeVO();
-		            			  vo.setPostName(postName);
-		            			  vo.setDesignation(jObj.getString("designation"));
-		            			  vo.setEmployeeName(jObj.getString("employeename"));
-		            			  vo.setCreated(jObj.getLong("created"));
-		            			  vo.setTotalCount(jObj.getLong("totalcount"));
-		            			  deptvo.getSpecialOfficerList().add(vo);
-		            		  }else if(postName != null && (postName.trim().equalsIgnoreCase("PROJECT MANAGER") || postName.trim().equalsIgnoreCase("PROJECT ENGINEER") || postName.trim().equalsIgnoreCase("PROJECT ASSISTANT"))){
-		            			  ItecEOfficeVO vo = new ItecEOfficeVO();
-		            			  vo.setPostName(postName);
-		            			  vo.setDesignation(jObj.getString("designation"));
-		            			  vo.setEmployeeName(jObj.getString("employeename"));
-		            			  vo.setCreated(jObj.getLong("created"));
-		            			  vo.setTotalCount(jObj.getLong("totalcount"));
-		            			  deptvo.getPmList().add(vo);
-		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SECTION OFFICER")){
-		            			  ItecEOfficeVO vo = new ItecEOfficeVO();
-		            			  vo.setPostName(postName);
-		            			  vo.setDesignation(jObj.getString("designation"));
-		            			  vo.setEmployeeName(jObj.getString("employeename"));
-		            			  vo.setCreated(jObj.getLong("created"));
-		            			  vo.setTotalCount(jObj.getLong("totalcount"));
-		            			  deptvo.getSoList().add(vo);
-		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ADMIN ASSISTANT")){
-		            			  ItecEOfficeVO vo = new ItecEOfficeVO();
-		            			  vo.setPostName(postName);
-		            			  vo.setDesignation(jObj.getString("designation"));
-		            			  vo.setEmployeeName(jObj.getString("employeename"));
-		            			  vo.setCreated(jObj.getLong("created"));
-		            			  vo.setTotalCount(jObj.getLong("totalcount"));
-		            			  deptvo.getAaoList().add(vo);
-		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ASSISTANT SECTION OFFICER")){
-		            			  ItecEOfficeVO vo = new ItecEOfficeVO();
-		            			  vo.setPostName(postName);
-		            			  vo.setDesignation(jObj.getString("designation"));
-		            			  vo.setEmployeeName(jObj.getString("employeename"));
-		            			  vo.setCreated(jObj.getLong("created"));
-		            			  vo.setTotalCount(jObj.getLong("totalcount"));
-		            			  deptvo.getAsoList().add(vo);
-		            		  }else{
-		            			  ItecEOfficeVO vo = new ItecEOfficeVO();
-		            			  vo.setPostName(postName);
-		            			  vo.setDesignation(jObj.getString("designation"));
-		            			  vo.setEmployeeName(jObj.getString("employeename"));
-		            			  vo.setCreated(jObj.getLong("created"));
-		            			  vo.setTotalCount(jObj.getLong("totalcount"));
-		            			  deptvo.getOtherList().add(vo);
+		            		  if(departmentId != null && departmentId.longValue() == 15L){
+		            			  String postName = jObj.getString("postname");
+			            		  if(postName != null && postName.trim().equalsIgnoreCase("JOINT SECRETARY")){
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getJsList().add(vo);
+			            		  }else if(postName != null && postName.trim().equalsIgnoreCase("DIRECTOR")){
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getDirectorList().add(vo);
+			            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JOINT DIRECTOR")){
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getJdList().add(vo);
+			            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SPECIAL OFFICER")){
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getSpecialOfficerList().add(vo);
+			            		  }else if(postName != null && (postName.trim().equalsIgnoreCase("PROJECT MANAGER") || postName.trim().equalsIgnoreCase("PROJECT ENGINEER") || postName.trim().equalsIgnoreCase("PROJECT ASSISTANT"))){
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getPmList().add(vo);
+			            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SECTION OFFICER")){
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getSoList().add(vo);
+			            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ADMIN ASSISTANT")){
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getAaoList().add(vo);
+			            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ASSISTANT SECTION OFFICER")){
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getAsoList().add(vo);
+			            		  }else{
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getOtherList().add(vo);
+			            		  }
+		            		  }
+		            		  else{
+		            			  String postName = jObj.getString("postname");
+			            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getCeoList().add(vo);
+			            		  }else{
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getOtherList().add(vo);
+			            		  }
 		            		  }
 		            	  }
 		              }
