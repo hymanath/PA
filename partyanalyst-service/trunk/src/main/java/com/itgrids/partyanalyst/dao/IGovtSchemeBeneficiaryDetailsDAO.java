@@ -16,4 +16,5 @@ public interface IGovtSchemeBeneficiaryDetailsDAO extends GenericDao<GovtSchemeB
 	public List<Object[]> getGovtSchemeWiseBenefitMemberCount(Long locationType, Long locationValue);
 	public List<Object[]> getMandalWiseBenefitMemberCountByGovtScheme(Long locationType, Long locationValue,Long govtSchemeId);
 	public List<Object[]> getMemberDetailsForBenefitInfo(Long locationscopeId, Long locationValue,Long govtSchemeId);
+	public List<Object[]> getMemberDetailsForBenefitInfoForClick(Long locationscopeId, Long locationValue,Long govtSchemeId) ;
 }

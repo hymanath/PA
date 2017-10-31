@@ -278,53 +278,31 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 		StringBuilder queryStr = new StringBuilder();
 		if (locationscopeId != null && locationValue != null && locationValue.longValue() > 0l) {
 			if (locationscopeId == 2) {
-				//if(locationValue != null && locationValue ==1l){
-					queryStr.append(" SELECT t.district_id,t.district_name,b.benefiary_name,b.mobile_no,gs.scheme_name,c.caste_name,sum(b.benefited_amount) from " +
+					queryStr.append(" SELECT t.district_id,t.district_name,b.benefiary_name,b.mobile_no,gs.scheme_name,sum(b.benefited_amount),b.govt_scheme_beneficiary_details_id " +
+							" from " +
 							" govt_scheme_beneficiary_details b  " +
 							" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id " +
 							" LEFT JOIN district t  ON ua.district_id = t.district_id " +
 							" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
-							" LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id " +
-							" LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id " +
-							" LEFT JOIN caste c on cs.caste_id = c.caste_id " +
-							" where uvd.user_id = 1 and ua.district_id =t.district_id and (t.district_id between 11 and 23)  and b.is_deleted='N' ");
-				
-					/*}else if(locationValue != null && locationValue>0){
-					queryStr.append(" SELECT t.district_id,t.district_name,b.benefiary_name,b.mobile_no,gs.scheme_name,c.caste_name,sum(b.benefited_amount) from " +
-							" govt_scheme_beneficiary_details b  " +
-							" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id " +
-							" LEFT JOIN district t  ON ua.district_id = t.district_id " +
-							" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
-							" LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id " +
-							" LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id " +
-							" LEFT JOIN caste c on cs.caste_id = c.caste_id " +
-							" where uvd.user_id = 1 and ua.district_id =:locationValue and b.is_deleted='N' ");
-				}*/
+							" where ua.district_id =:locationValue and b.is_deleted='N' ");
 			}else if (locationscopeId == 3 || locationscopeId == 10) {
-				queryStr.append(" SELECT t.constituency_id,t.name,b.benefiary_name,b.mobile_no,gs.scheme_name,c.caste_name,sum(b.benefited_amount) from govt_scheme_beneficiary_details b " +
+				queryStr.append(" SELECT t.constituency_id,t.name,b.benefiary_name,b.mobile_no,gs.scheme_name,sum(b.benefited_amount),b.govt_scheme_beneficiary_details_id " +
+						" from govt_scheme_beneficiary_details b " +
 						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id LEFT JOIN constituency t  ON ua.constituency_id = t.constituency_id" +
-						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id " +
-						" LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id LEFT JOIN caste c on cs.caste_id = c.caste_id " +
-						" where uvd.user_id = 1 and ua.district_id =:locationValue and b.is_deleted='N'");
+						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
+						" where ua.district_id =:locationValue and b.is_deleted='N'");
 			}else if (locationscopeId == 4) {
-				queryStr.append(" SELECT t.tehsil_id,t.tehsil_name,b.benefiary_name,b.mobile_no,gs.scheme_name,c.caste_name,sum(b.benefited_amount) from govt_scheme_beneficiary_details b " +
+				queryStr.append(" SELECT t.tehsil_id,t.tehsil_name,b.benefiary_name,b.mobile_no,gs.scheme_name,sum(b.benefited_amount),b.govt_scheme_beneficiary_details_id " +
+						" from govt_scheme_beneficiary_details b " +
 						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id LEFT JOIN tehsil t  ON ua.tehsil_id = t.tehsil_id" +
-						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id  LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id " +
-						" LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id LEFT JOIN caste c on cs.caste_id = c.caste_id " +
-						" where uvd.user_id = 1 and ua.constituency_id =:locationValue and ua.local_election_body is null and b.is_deleted='N' ");
+						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
+						" where ua.constituency_id =:locationValue and ua.local_election_body is null and b.is_deleted='N' ");
 			} else if (locationscopeId == 5 || locationscopeId == 6l) {
-				queryStr.append(" SELECT t.panchayat_id,t.panchayat_name,b.benefiary_name,b.mobile_no,gs.scheme_name,c.caste_name,sum(b.benefited_amount) from  govt_scheme_beneficiary_details b " +
+				queryStr.append(" SELECT t.panchayat_id,t.panchayat_name,b.benefiary_name,b.mobile_no,gs.scheme_name,sum(b.benefited_amount),b.govt_scheme_beneficiary_details_id " +
+						" from  govt_scheme_beneficiary_details b " +
 						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id LEFT JOIN panchayat t  ON ua.panchayat_id = t.panchayat_id" +
 						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
-						" LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id" +
-						" LEFT JOIN caste c on cs.caste_id = c.caste_id " +
-						" where uvd.user_id = 1 and ua.tehsil_id =:locationValue and b.is_deleted='N' ");
-			}else if (locationscopeId == 7l) {
-				queryStr.append(" SELECT t.local_election_body_id,CONCAT(t.name,' ',et.election_type) ,b.benefiary_name,b.mobile_no,gs.scheme_name,c.caste_name,sum(b.benefited_amount) from govt_scheme_beneficiary_details b " +
-						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id LEFT JOIN local_election_body t  ON ua.local_election_body = t.local_election_body_id" +
-						" LEFT JOIN election_type et on t.election_type_id = et.election_type_id LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
-						" LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id LEFT JOIN caste c on cs.caste_id = c.caste_id " +
-						" where uvd.user_id = 1 and ua.local_election_body =:locationValue  and ua.local_election_body is not null and b.is_deleted='N' ");
+						" where ua.tehsil_id =:locationValue and b.is_deleted='N' ");
 			}
 		}
 		if(govtSchemeId != null && govtSchemeId.longValue() >0){
@@ -335,9 +313,71 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 		Query query = getSession().createSQLQuery(queryStr.toString());
 		if (locationscopeId != null && locationValue != null && locationValue.longValue() > 0l) {
 			if (locationscopeId == 2){
-				if(locationValue != null && locationValue != 1l){
-					query.setParameter("locationValue", locationValue);
-				}
+				query.setParameter("locationValue", locationValue);
+			}else if (locationscopeId == 3 || locationscopeId == 10){
+				query.setParameter("locationValue", locationValue);
+			}else if (locationscopeId == 4){
+				query.setParameter("locationValue", locationValue);
+			} else if (locationscopeId == 5 || locationscopeId == 6l){
+				query.setParameter("locationValue", locationValue);
+			}else if (locationscopeId == 7l){
+				query.setParameter("locationValue", locationValue);
+			}
+		}
+		if (govtSchemeId != null && govtSchemeId.longValue() > 0){
+			query.setParameter("govtSchemeId", govtSchemeId);
+		}
+		return query.list();
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getMemberDetailsForBenefitInfoForClick(Long locationscopeId, Long locationValue,Long govtSchemeId) {
+		StringBuilder queryStr = new StringBuilder();
+		if (locationscopeId != null && locationValue != null && locationValue.longValue() > 0l) {
+			if (locationscopeId == 2) {
+				queryStr.append(" SELECT b.govt_scheme_beneficiary_details_id,c.caste_name from " +
+						" govt_scheme_beneficiary_details b  " +
+						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id " +
+						" LEFT JOIN district t  ON ua.district_id = t.district_id " +
+						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
+						" LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id " +
+						" LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id " +
+						" LEFT JOIN caste c on cs.caste_id = c.caste_id " +
+						" where uvd.user_id = 1 and ua.district_id =:locationValue and b.is_deleted='N' ");
+			}else if (locationscopeId == 3 || locationscopeId == 10) {
+				queryStr.append(" SELECT b.govt_scheme_beneficiary_details_id,c.caste_name " +
+						" from govt_scheme_beneficiary_details b " +
+						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id LEFT JOIN constituency t  ON ua.constituency_id = t.constituency_id" +
+						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id " +
+						" LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id LEFT JOIN caste c on cs.caste_id = c.caste_id " +
+						" where uvd.user_id = 1 and ua.district_id =:locationValue and b.is_deleted='N'");
+			}else if (locationscopeId == 4) {
+				queryStr.append(" SELECT b.govt_scheme_beneficiary_details_id,c.caste_name " +
+						" from govt_scheme_beneficiary_details b " +
+						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id LEFT JOIN tehsil t  ON ua.tehsil_id = t.tehsil_id" +
+						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id  LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id " +
+						" LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id LEFT JOIN caste c on cs.caste_id = c.caste_id " +
+						" where uvd.user_id = 1 and ua.constituency_id =:locationValue and ua.local_election_body is null and b.is_deleted='N' ");
+			} else if (locationscopeId == 5 || locationscopeId == 6l) {
+				queryStr.append(" SELECT b.govt_scheme_beneficiary_details_id,c.caste_name " +
+						" from  govt_scheme_beneficiary_details b " +
+						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id LEFT JOIN panchayat t  ON ua.panchayat_id = t.panchayat_id" +
+						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
+						" LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id" +
+						" LEFT JOIN caste c on cs.caste_id = c.caste_id " +
+						" where uvd.user_id = 1 and ua.tehsil_id =:locationValue and b.is_deleted='N' ");
+			}
+		}
+		if(govtSchemeId != null && govtSchemeId.longValue() >0){
+			queryStr.append(" and b.govt_schemes_id =:govtSchemeId ");
+		}
+		queryStr.append(" GROUP BY b.govt_scheme_beneficiary_details_id  ");
+			
+		Query query = getSession().createSQLQuery(queryStr.toString());
+		if (locationscopeId != null && locationValue != null && locationValue.longValue() > 0l) {
+			if (locationscopeId == 2){
+				query.setParameter("locationValue", locationValue);
 			}else if (locationscopeId == 3 || locationscopeId == 10){
 				query.setParameter("locationValue", locationValue);
 			}else if (locationscopeId == 4){
