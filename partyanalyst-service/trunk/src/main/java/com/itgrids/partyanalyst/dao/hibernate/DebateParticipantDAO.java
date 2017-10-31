@@ -543,7 +543,7 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		return query.list();
 	}
 	
-	public List<Object[]> getTotalDabtesCountsForEachCandidateNew(Date fromDate , Date toDate,String state,List<Long> debateParticipantLocationIdList)
+	public List<Object[]> getTotalDabtesCountsForEachCandidateNew(Date fromDate , Date toDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList)
 	{
 		StringBuilder str = new StringBuilder();		
 		 str.append("select distinct model1.party.partyId,model1.party.shortName,model1.candidate.candidateId,model1.candidate.lastname,count(distinct model.debateId)  from " +
@@ -563,7 +563,10 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		 
 		if(fromDate !=null && toDate !=null){
 			 str.append(" and date(model.startTime) >= :fromDate and date(model.endTime) <= :toDate ");
-		}		
+		}
+		if(debateLocationIdList != null && debateLocationIdList.size()>0){
+			str.append(" and model1.debate.address.state.stateId in(:debateLocationIdList)  ");
+		}
 		str.append(" group by model1.party.partyId,model1.candidate.candidateId " +
 				" order by model1.party.newsOrderNo ");		
 		Query query = getSession().createQuery(str.toString());		
@@ -574,6 +577,9 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		if(debateParticipantLocationIdList != null  && debateParticipantLocationIdList.size() >0  && debateParticipantLocationIdList.size() != 3L && !debateParticipantLocationIdList.contains(2L)){
 			 query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
 		 }
+        if(debateLocationIdList != null && debateLocationIdList.size()>0){
+        	 query.setParameterList("debateLocationIdList", debateLocationIdList);
+		}
 		return query.list();
 	}
 	public List<Object[]> getChannelWiseDebateDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList){		
@@ -668,26 +674,27 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 				return query.list();
 	}
 	
-	public List<Object[]> getPartyWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList){
+	public List<Object[]> getPartyWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList){
 		
 		StringBuilder str = new StringBuilder();
 		
 		str.append("select ");
 		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
-			str.append(" '','',");
+			//str.append(" '','',");
+			str.append(" distinct model.candidate.candidateId,model.candidate.lastname, ");
 		}else if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
-			str.append(" model.candidate.candidateId,model.candidate.lastname, ");
+			str.append(" distinct model.candidate.candidateId,model.candidate.lastname, ");
 		}else{
-			str.append(" model.candidate.candidateId,model.candidate.lastname, ");
+			//str.append(" distinct model.candidate.candidateId,model.candidate.lastname, ");
 		}
 		
-		str.append("  DS.debate.debateId,model.debate.startTime,model.debate.endTime," +
+		str.append(" DS.debate.debateId,model.debate.startTime,model.debate.endTime," +
 				" DOB.observer.observerId,DOB.observer.observerName,model.debate.channel.channelId,model.debate.channel.channelName, " +
 				" model.debate.address.state.stateId " +
 				"  FROM DebateParticipant model,DebateSubject DS,DebateObserver DOB " );
-		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
+		/*if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 		      str.append(" , Debate model3 ");
-		    }
+		    }*/
 		str.append(" WHERE model.debateId = DS.debate.debateId  " +
 				" and model.debate.debateId = DOB.debate.debateId" +
 				" and model.debate.isDeleted = 'N' ");
@@ -702,13 +709,22 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debate.startTime)  between :startDate and :endDate  ");
 		}
-		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
+		/*if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 		      str.append(" and model.debateId = model3.debateId and model3.isDeleted ='N' ");
-		    }
+		    }*/
+		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
 		if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
-		      str.append(" and model3.address.state.stateId in (:debateLocationIdList) " );
+		      str.append(" and model.debate.address.state.stateId in (:debateLocationIdList) " );
 		    }
-		
+		}
+		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
+		if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
+			      str.append(" and model.debate.address.state.stateId in (:debateLocationIdList) " );
+			    }
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+			str.append(" and model.candidate.state.stateId in (:debateParticipantLocationIdList) " );
+		}
+		}
 		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
 			str.append(" group by DS.debate.debateId ");
 		}else{
@@ -731,6 +747,11 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		}
 		if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
 			query.setParameterList("debateLocationIdList", debateLocationIdList);
+		}
+		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
+        if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+        	query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+		}
 		}
 		return query.list();
 	}
@@ -900,13 +921,14 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		}
 		return query.list();
 	}
-   public List<Object[]> getPartyWiseOthersDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList){
+   public List<Object[]> getPartyWiseOthersDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList){
 		
 		StringBuilder str = new StringBuilder();
 		
 		str.append("select ");
 		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
-			str.append(" '','',");
+			//str.append(" '','',");
+			str.append(" model.candidate.candidateId,model.candidate.lastname, ");
 		}else if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
 			str.append(" model.candidate.candidateId,model.candidate.lastname, ");
 		}else{
@@ -919,7 +941,7 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 				"  FROM DebateParticipant model,DebateSubject DS,DebateObserver DOB " );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 		      str.append(" , Debate model3 ");
-		    }
+	       }
 		str.append(" WHERE model.debateId = DS.debate.debateId  " +
 				" and model.debate.debateId = DOB.debate.debateId" +
 				" and model.debate.isDeleted = 'N' ");
@@ -934,13 +956,24 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debate.startTime)  between :startDate and :endDate  ");
 		}
+		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 		      str.append(" and model.debateId = model3.debateId and model3.isDeleted ='N' ");
 		    }
 		if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
 		      str.append(" and model3.address.state.stateId is null " );
 		    }
-		
+		}else if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
+		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
+			      str.append(" and model.debateId = model3.debateId and model3.isDeleted ='N' ");
+			    }
+		if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
+			      str.append(" and model3.address.state.stateId is null " );
+			    }
+        if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+        	str.append(" and model.candidate.state.stateId in (:debateParticipantLocationIdList) " );
+		}
+		}
 		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
 			str.append(" group by DS.debate.debateId ");
 		}else{
@@ -961,7 +994,96 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		if(candidateId != null && candidateId.longValue() >0){
 			query.setParameter("candidateId", candidateId);
 		}
-		
+		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
+        if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+        	query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+		}
+		}
 		return query.list();
 	} 
+   public List<Object[]> getPartyWiseDebateParticipantOtherDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList ){		
+		StringBuilder str = new StringBuilder();		//0.partyId,1.shortName,2.debateCount,3.candidateCount
+		str.append(" select model.party.partyId,model.party.shortName,count(distinct model.debate.debateId),count(distinct model.candidate.candidateId)" +
+				" from DebateParticipant model" );
+		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
+			   str.append(" , Debate model3 ");
+		    }
+		str.append(" where model.debate.isDeleted = 'N' " +
+				" and model.party.isNewsPortal = 'Y'" );
+		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
+			str.append(" and model.debateId = model3.debateId and model3.isDeleted = 'N' ");
+		    }
+		   if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
+			   str.append(" and model3.address.state.stateId is null ");
+		    }
+		if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			str.append(" and model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			str.append(" and model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+						
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.debate.startTime) >= :startDate and date(model.debate.endTime) <= :endDate  ");
+		}		
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+			str.append(" and model.candidate.state.stateId in(:debateParticipantLocationIdList) "); 
+		}
+		str.append(" group by model.party.partyId " +
+				" order by model.party.newsOrderNo ");
+		
+		Query query = getSession().createQuery(str.toString());	
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+			query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+		}
+		return query.list();
+	}
+   public List<Object[]> getPartyWiseDebateParticipantDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList){		
+		StringBuilder str = new StringBuilder();		//0.partyId,1.shortName,2.debateCount,3.candidateCount
+		str.append(" select model.party.partyId,model.party.shortName,count(distinct model.debate.debateId),count(distinct model.candidate.candidateId)" +
+				" from DebateParticipant model" );
+		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
+			   str.append(" , Debate model3 ");
+		    }
+		str.append(" where model.debate.isDeleted = 'N' " +
+				" and model.party.isNewsPortal = 'Y'" );
+		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
+			str.append(" and model.debateId = model3.debateId and model3.isDeleted = 'N' ");
+		    }
+		   if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
+			   str.append(" and model3.address.state.stateId  in (:debateLocationIdList) " );
+		    }
+		if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			str.append(" and model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			str.append(" and model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+						
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.debate.startTime) >= :startDate and date(model.debate.endTime) <= :endDate  ");
+		}		
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+			str.append(" and model.candidate.state.stateId in(:debateParticipantLocationIdList) "); 
+		}
+		str.append(" group by model.party.partyId " +
+				" order by model.party.newsOrderNo ");
+		
+		Query query = getSession().createQuery(str.toString());	
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
+			 query.setParameterList("debateLocationIdList", debateLocationIdList);
+		 }
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+			query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+		}
+		return query.list();
+	}
 }
