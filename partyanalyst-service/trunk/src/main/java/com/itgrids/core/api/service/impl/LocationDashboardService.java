@@ -5009,7 +5009,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			
 			Map<Long,ElectionInformationVO> partyMap = new HashMap<Long, ElectionInformationVO>(0);
 			
-			for (Object[] objects : validVoterList) {
+			for (Object[] objects : validVoterList ) {
 				if(electionScopeIds.contains(commonMethodsUtilService.getLongValueForObject(objects[2]))){
 					List<ElectionInformationVO> totalVoList =yearMap.get(commonMethodsUtilService.getLongValueForObject(objects[1]));
 					if(totalVoList == null){
@@ -5185,7 +5185,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 			List<Object[]> wonResultList=  null;
 			if(locationTypeId != null && locationTypeId.longValue() !=5L && locationTypeId.longValue() !=7L && locationTypeId.longValue() !=6L ){
 				 wonResultList= candidateDAO.getElectionInformationLocationWiseWonedCount(electionYrs, locationTypeId, locationValue, electionScopeIds, subTypes,null,false);
-				 if(locationTypeId == 4l){
+				 if(locationTypeId == 4l || locationTypeId == 10l){
 					List<Object[]> wonResultListtemp = candidateDAO.getElectionInformationLocationWiseWonedCount(electionYrs, locationTypeId, locationValue, electionScopeIds, subTypes,null,true);
 					 if(commonMethodsUtilService.isListOrSetValid(wonResultListtemp)){
 						 wonResultList.addAll(wonResultListtemp);
