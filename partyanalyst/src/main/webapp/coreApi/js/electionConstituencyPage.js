@@ -640,8 +640,15 @@ function getElectionYears(type,typeLoad){
    }
   function getDetailedElectionInformaction(){
 	$("#candidatesResultsDivId").html(spinner);
+	var electionScopeIdsArr=[];
+		if(locationLevelId == '10'){
+			electionScopeIdsArr.push(1)
+		}else{
+			electionScopeIdsArr.push(2)	
+		}
 	jsObj={
-	  	constituencyId: constituencyId
+	  	constituencyId: constituencyId,
+		electionScopeIdsArr:electionScopeIdsArr
     }
     $.ajax({
       type : "GET",
