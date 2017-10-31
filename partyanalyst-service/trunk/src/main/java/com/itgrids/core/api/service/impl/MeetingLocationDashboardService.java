@@ -863,13 +863,13 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 									meetingTypeVO.setAttendedCount(meetingTypeVO.getAttendedCount()+attendedIds.size());
 									for (Long tdpCadreId : attendedIds) {
 										if(inviteeIds.contains(tdpCadreId)){
-											meetingTypeVO.getInviteeAttendedIdsList().add(tdpCadreId);
-											meetingTypeVO.setInviteeAttendedCount(Long.valueOf(String.valueOf(meetingTypeVO.getInviteeAttendedIdsList().size())));
+											//meetingTypeVO.getInviteeAttendedIdsList().add(tdpCadreId);
+											//meetingTypeVO.setInviteeAttendedCount(Long.valueOf(String.valueOf(meetingTypeVO.getInviteeAttendedIdsList().size())));
 										}
 									}
 								}
 								meetingTypeVO.setImagesCnt(meetingTypeVO.getImagesCnt()+vo.getImagesCnt());
-								meetingTypeVO.setLateCount(meetingTypeVO.getLateCount()+vo.getLateCount());
+								//meetingTypeVO.setLateCount(meetingTypeVO.getLateCount()+vo.getLateCount());
 								
 								//session Details for each partyMeetingType Vo
 								if(commonMethodsUtilService.isListOrSetValid(inviteeIds)){
@@ -887,6 +887,8 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 													if(inviteeIds.contains(tdpCadreId)){
 														sessionVO.getInviteeAttendedIdsList().add(tdpCadreId);
 														sessionVO.setRecentInviteeAttended(Long.valueOf(String.valueOf(sessionVO.getInviteeAttendedIdsList().size())));
+														meetingTypeVO.getInviteeAttendedIdsList().add(tdpCadreId);
+														meetingTypeVO.setInviteeAttendedCount(Long.valueOf(String.valueOf(meetingTypeVO.getInviteeAttendedIdsList().size())));
 														sessionVO.setLatePerc(calculatePercantage(sessionVO.getRecentLate(),partyMeetingVO.getRecentMeetingInviteesCnt()).toString());
 													}
 												}
@@ -960,7 +962,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 											if(attendedMilliSec>lateMilliSec){
 												sessionVO.getAttendedIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
 												sessionVO.setRecentLate(Long.valueOf(String.valueOf(sessionVO.getAttendedIds().size())));
-												vo.setLateCount(partyMeetingVO.getLateCount()+Long.valueOf(String.valueOf(sessionVO.getAttendedIds().size())));
+												partyMeetingVO.setLateCount(partyMeetingVO.getLateCount()+Long.valueOf(String.valueOf(sessionVO.getAttendedIds().size())));
 											}
 										}
 									}else if(type != null && type.equalsIgnoreCase("images")){
