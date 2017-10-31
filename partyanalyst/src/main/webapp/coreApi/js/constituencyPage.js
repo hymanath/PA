@@ -6716,12 +6716,12 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 								str+='<p>Every month : 9th/10th/11th</p>';
 							}
 							str+='<div style="height:150px;" id="meetingsGraphBlock'+result.levelList[i].name.substr(0,6)+'Id"></div>';
-							/* if(result.levelList[i].name == "DISTRICT"){
+							if(result.levelList[i].name == "DISTRICT"){
 								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-24 popUpDetailsClickCls" attr_type="meeting_type" style="margin-top:-16px;cursor:pointer;text-decoration:none;"></i>';
 							}else{
 								str+='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-24 popUpDetailsClickCls" attr_type="meeting_type_level" attr_meeting_levelId="'+result.levelList[i].id+'" attr_partyMeetingTypeId="'+result.levelList[i].partyMeetingId+'" style="margin-top:-16px;cursor:pointer;text-decoration:none;"></i>';
 								
-							} */
+							}
 						str+='</div>';
 					str+='</div>';
 				}
@@ -8643,10 +8643,19 @@ function buildlevelWiseMeetingDetails(result,searchType,meeting_levelId,partyMee
 	var overAllNUMeetingCount =0;
 	var overAllTotalMeetingCount=0;
 	str+='<div class="table-responsive">';
-		str+='<table class="table table_meeting_level">';
+		str+='<table class="table table-bordered table_custom" id="dataTable'+searchType+'">';
 			str+='<thead>';
 			str+='<tr>';
-				str+='<th rowspan="2">District Name</th>';
+				if(searchType == "district"){
+					str+='<th rowspan="2">District Name</th>';
+				}else if(searchType == "constituency"){
+					str+='<th rowspan="2">Constituency</th>';
+				}else if(searchType == "mandal"){
+					str+='<th rowspan="2">Mandal</th>';
+				}else if(searchType == "panchayat"){
+					str+='<th rowspan="2">Panchayat</th>';
+				}
+				
 				str+='<th rowspan="2">Total Meetings<br/> Every Month</th>';
 				str+='<th colspan="5">Overall</th>';
 				for(var i in result[0].yearWiseMeetingsCount){
@@ -8699,4 +8708,9 @@ function buildlevelWiseMeetingDetails(result,searchType,meeting_levelId,partyMee
 	str+='</div>';
 	
 	$("#"+divId+searchType).html(str);
+	$("#dataTable"+searchType).dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	});
 }
