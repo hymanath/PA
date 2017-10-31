@@ -8070,10 +8070,10 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 										for(var k in result.levelList[i].levelList[j].datesList){
 											str+='<tr>';
 												str+='<td>'+result.levelList[i].levelList[j].datesList[k].name+'</td>';
-												str+='<td class="getCmtMemDtls" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false">'+result.levelList[i].levelList[j].recentMeetingInviteesCnt+'</td>';
-												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentInviteeAttended+'</td>';
+												str+='<td class="getCmtMemDtls" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false" attr_click_type="invitee" attr_session_typeId="'+result.levelList[i].levelList[j].datesList[k].id+'">'+result.levelList[i].levelList[j].recentMeetingInviteesCnt+'</td>';
+												str+='<td class="getCmtMemDtls" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false" attr_click_type="attendee" attr_session_typeId="'+result.levelList[i].levelList[j].datesList[k].id+'">'+result.levelList[i].levelList[j].datesList[k].recentInviteeAttended+'</td>';
 												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentLate+'</td>';
-												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentAbcent+'</td>';
+												str+='<td class="getCmtMemDtls" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false" attr_click_type="abscent" attr_session_typeId="'+result.levelList[i].levelList[j].datesList[k].id+'">'+result.levelList[i].levelList[j].datesList[k].recentAbcent+'</td>';
 												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentNonInvitee+'</td>';
 												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentImagesCnt+'</td>';
 											str+='</tr>';
@@ -8309,7 +8309,7 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 	}
 }
 var globalMeetingMembersResult = '';
-function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position){
+function getLocationWiseMeetingInviteeMembers(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position,status){
 	
 	$("#meetingMemDetailsBodyId").html(spinner);
 	jsObj={
@@ -8321,7 +8321,9 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 		partyMeetingMainTypeId	:partyMeetingMainTypeId,
 		partyMeetingTypeId		:partyMeetingTypeId,
 		includePastMeetings		:"",
-		partyMeetingId			:partyMeetingId
+		partyMeetingId			:partyMeetingId,
+		status:status,
+		sessionTypeId:0
 	}
 	$.ajax({
 		type : "GET",
@@ -8345,6 +8347,8 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 		var partyMeetingMainTypeId = $(this).attr("attr_partyMeetingMainTypeId"); 
 		var partyMeetingTypeId = $(this).attr("attr_partyMeetingTypeId"); 
 		var partyMeetingId = $(this).attr("attr_party_meeting_id"); 
+		var status =$(this).attr("attr_click_type");
+		var sessionTypeId = $(this).attr("attr_session_typeId"); 
 		
 		var searchDesignation ="";
 		if(desgSearchRequired == "required"){
@@ -8359,7 +8363,7 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 		
 		if(desgSearchRequired == "notrequired"){
 			$(".memberMeetingCls li").removeClass("active");
-			getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position)
+			getLocationWiseMeetingInviteeMembers(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position,status)
 		}else{
 			$(".memberMeetingCls li").removeClass("active");
 			$(this).parent("li").addClass("active");
@@ -8475,7 +8479,7 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 						}
 						str+='<td>'+result[i].inviteeAttnd+'</td>'; 
 						str+='<td>'+result[i].actualCount+'</td>'; 
-						str+='<td>0</td>'; 
+						str+='<td>'+result[i].availableCount+'</td>'; 
 						if(result[i].actualCount>result[i].inviteeAttnd){
 							var nonInviteesCount = result[i].actualCount - result[i].inviteeAttnd;
 							str+='<td>'+nonInviteesCount+'</td>'; 
@@ -8484,7 +8488,7 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 						}
 						if(result[i].subList1 !=null && result[i].subList1.length>0){
 							for(var j in result[i].subList1){
-								//if(result[i].subList1[j].idnameList !=null && result[i].subList1[j].idnameList.length>0){
+								if(result[i].subList1[j].idnameList !=null && result[i].subList1[j].idnameList.length>0){
 									for(var k in result[i].subList1[j].idnameList){
 										if(result[i].subList1[j].idnameList[k].status == "intime"){
 											str+='<td class="text-success">Y('+(result[i].subList1[j].idnameList[k].dateStr).substring(0,5)+')</td>';
@@ -8496,9 +8500,9 @@ function getLocationWiseMeetingInviteeMembersAction(partyMeetingMainTypeId,party
 											str+='<td>'+result[i].subList1[j].idnameList[k].status+'</td>';             
 										}
 									}
-								/* }else{
+								 }else{
 									str+='<td> - </td>';
-								} */
+								} 
 							}
 						}
 				  

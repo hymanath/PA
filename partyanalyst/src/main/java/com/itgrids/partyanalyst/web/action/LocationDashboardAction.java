@@ -1757,8 +1757,11 @@ public String getElectionInformationLocationWise(){
 			Long partyMeetingTypeId =jObj.getLong("partyMeetingTypeId");
 			Long partyMeetingId = jObj.getLong("partyMeetingId");
 			String includePastMeetings =jObj.getString("includePastMeetings");
+			String status =jObj.getString("status");
+			Long sessionTypeId = jObj.getLong("sessionTypeId");
 			
-			IdNameVOList = meetingLocationDashboardService.getLocationWiseMeetingInviteeMembers(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr,partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,includePastMeetings);
+			IdNameVOList = meetingLocationDashboardService.getLocationWiseMeetingInviteeMembers(jObj.getLong("locationTypeId"),locationValues,fromDateStr,toDateStr,partyMeetingMainTypeId,
+					partyMeetingTypeId,partyMeetingId,includePastMeetings,sessionTypeId,status);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseMeetingInviteeMembers", e);
 		}
