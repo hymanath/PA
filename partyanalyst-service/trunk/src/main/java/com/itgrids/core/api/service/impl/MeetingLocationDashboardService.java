@@ -394,6 +394,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 						partyMeetingVO.setPartyMeetingName(commonMethodsUtilService.getStringValueForObject(param[1]));
 						partyMeetingVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
 						partyMeetingVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+						partyMeetingVO.setMeetingId(commonMethodsUtilService.getLongValueForObject(param[5]));
 						inviteesMap.put(commonMethodsUtilService.getLongValueForObject(param[5]),partyMeetingVO);
 					}
 					if(type != null && type.equalsIgnoreCase("images")){
@@ -472,11 +473,12 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 				 }
 			//}
 				 
-				 calculateLateTime(totalCntMap,attendees,meetingTypeMap);
-			if(commonMethodsUtilService.isMapValid(meetingTypeMap)){
-				for (Entry<Long, Map<Long, PartyMeetingDataVO>> entry :meetingTypeMap.entrySet()) {
-					Map<Long,PartyMeetingDataVO> cadresmap = entry.getValue();
-					PartyMeetingDataVO  meetingTypeVO = totalCntMap.get(entry.getKey());
+				 calculateLateTime(totalCntMap,attendees,meetingTypeMap,"attendee");
+				 //calculateLateTime(totalCntMap,images,meetingTypeMap,"images");
+			if(commonMethodsUtilService.isMapValid(totalCntMap)){
+				for (Entry<Long, PartyMeetingDataVO> entry :totalCntMap.entrySet()) {
+					Map<Long,PartyMeetingDataVO> cadresmap = meetingTypeMap.get(entry.getKey());
+					PartyMeetingDataVO  meetingTypeVO = entry.getValue();;
 					if(commonMethodsUtilService.isMapValid(cadresmap)){
 						for (Entry<Long, PartyMeetingDataVO> candidates :cadresmap.entrySet()) {
 							PartyMeetingDataVO vo =candidates.getValue();
@@ -495,7 +497,6 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 										if(inviteeIds.contains(tdpCadreId)){
 											meetingTypeVO.getInviteeAttendedIdsList().add(tdpCadreId);
 											meetingTypeVO.setInviteeAttendedCount(Long.valueOf(String.valueOf(meetingTypeVO.getInviteeAttendedIdsList().size())));
-											//meetingTypeVO.setInviteeAttendedCount(meetingTypeVO.getInviteeAttendedCount().longValue()+1l);
 										}
 									}
 								}
@@ -519,7 +520,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 													sessionVO.getInviteeAttendedIdsList().add(tdpCadreId);
 													sessionVO.setRecentInviteeAttended(Long.valueOf(String.valueOf(sessionVO.getInviteeAttendedIdsList().size())));
 													//sessionVO.setRecentInviteeAttended(sessionVO.getRecentInviteeAttended().longValue()+1l); 
-													sessionVO.setLatePerc(calculatePercantage(sessionVO.getLateCount(),meetingTypeVO.getRecentMeetingInviteesCnt()).toString());
+													sessionVO.setLatePerc(calculatePercantage(sessionVO.getRecentLate(),meetingTypeVO.getRecentMeetingInviteesCnt()).toString());
 												}
 											}
 											
@@ -555,17 +556,15 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 	*  @since 13-oct-2017
 	*  @return :void
 	*/
-	public void calculateLateTime(Map<Long,PartyMeetingDataVO> totalCntMap,List<Object[]> attendeesList,Map<Long,Map<Long,PartyMeetingDataVO>> meetingTypeMap){
+	public void calculateLateTime(Map<Long,PartyMeetingDataVO> totalCntMap,List<Object[]> attendeesList,Map<Long,Map<Long,PartyMeetingDataVO>> meetingTypeMap,String type){
 		
 		try{
 			if(commonMethodsUtilService.isListOrSetValid(attendeesList)){
 				for (Object[] param : attendeesList) {
 						Map<Long,PartyMeetingDataVO> cadresmap = meetingTypeMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
 						PartyMeetingDataVO  meetingTypeVO = totalCntMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
-						if(commonMethodsUtilService.isMapValid(cadresmap)){
-							for (Entry<Long, PartyMeetingDataVO> candidates :cadresmap.entrySet()) {
-								PartyMeetingDataVO vo =candidates.getValue();
-								Long partyMeetingId = candidates.getKey();
+						PartyMeetingDataVO vo =cadresmap.get(commonMethodsUtilService.getLongValueForObject(param[5]));
+								Long partyMeetingId = vo.getMeetingId();
 								if(partyMeetingId.longValue() == meetingTypeVO.getMeetingId().longValue()){
 									Set<Long> inviteeIds = vo.getInviteeIds();
 									PartyMeetingDataVO sessionVO = getMatchedVO(vo.getLevelList(),commonMethodsUtilService.getLongValueForObject(param[6]));
@@ -577,6 +576,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 											//vo.setMonth(commonMethodsUtilService.getStringValueForObject(param[9]));
 										vo.getLevelList().add(sessionVO);
 										}
+									if(type != null && type.equalsIgnoreCase("attendee")){
 										sessionVO.getRecentAttendedIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
 										vo.getAttendedIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
 										if(inviteeIds.contains(commonMethodsUtilService.getLongValueForObject(param[4]))){
@@ -586,18 +586,19 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 									        Date attendedTme = sdf2.parse(commonMethodsUtilService.getStringValueForObject(param[8]));
 									        long attendedMilliSec = attendedTme.getTime();
 									        long lateMilliSec = lateTime.getTime();
-											if(attendedMilliSec>=lateMilliSec){
+											if(attendedMilliSec>lateMilliSec){
 												sessionVO.getAttendedIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
 												//sessionVO.setRecentInviteeAttended(Long.valueOf(String.valueOf(sessionVO.getInviteeAttendedIdsList().size())));
 												sessionVO.setRecentLate(Long.valueOf(String.valueOf(sessionVO.getAttendedIds().size())));
 												meetingTypeVO.setLateCount(Long.valueOf(sessionVO.getAttendedIds().size()));
 											}
 										}
+									}else if(type != null && type.equalsIgnoreCase("images")){
+										sessionVO.setRecentImagesCnt(sessionVO.getRecentImagesCnt()+1l);
 									}
+								  }
 								}
-							}
-						}
-			      }
+					}
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -868,6 +869,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 									}
 								}
 								meetingTypeVO.setImagesCnt(meetingTypeVO.getImagesCnt()+vo.getImagesCnt());
+								meetingTypeVO.setLateCount(meetingTypeVO.getLateCount()+vo.getLateCount());
 								
 								//session Details for each partyMeetingType Vo
 								if(commonMethodsUtilService.isListOrSetValid(inviteeIds)){
@@ -958,6 +960,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 											if(attendedMilliSec>lateMilliSec){
 												sessionVO.getAttendedIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
 												sessionVO.setRecentLate(Long.valueOf(String.valueOf(sessionVO.getAttendedIds().size())));
+												vo.setLateCount(partyMeetingVO.getLateCount()+Long.valueOf(String.valueOf(sessionVO.getAttendedIds().size())));
 											}
 										}
 									}else if(type != null && type.equalsIgnoreCase("images")){
@@ -1125,7 +1128,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 						sessionVO = new IdNameVO();
 						sessionVO.setId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						sessionVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						sessionVO.setDateStr(commonMethodsUtilService.getStringValueForObject(param[9]));
+						sessionVO.setDateStr(commonMethodsUtilService.getStringValueForObject(param[8]));
 						sessionVO.setStatus("abscent");
 						partyMeetingVO.getIdnameList().add(sessionVO);
 					}
