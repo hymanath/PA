@@ -43,6 +43,12 @@
 						<div class="scrollHeading">
 							<h3 class="theme-title-color text-center" style="text-transform: uppercase !important;"><span id="mianHeadingId" ></span> Level Election Results</h3>
 						</div>
+						<div class="row">
+							<div class="col-sm-12 m_top10">
+								<div id="candidatesResultsDivId"></div>
+							</div>
+						</div>
+						
 						<div id="electionScopeDivIds" class="m_top10"></div>
 						<div class="row">
 							<div class="col-sm-3 m_top10">
@@ -75,11 +81,6 @@
 							</div>
 							<div class="col-sm-2">
 								<button class="btn btn-success getDetailsCls buttonClr">Submit</button>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12 m_top10">
-								<div id="candidatesResultsDivId"></div>
 							</div>
 						</div>
 						<div class="row">
