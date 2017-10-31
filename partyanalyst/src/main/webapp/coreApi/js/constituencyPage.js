@@ -8615,8 +8615,8 @@ function getAreaWisePartyMeetingsDetailsAction(searchType,meeting_levelId,partyM
  		"locationValue"		:userAccessLevelValuesArray,
  		"startDate"			:startDate,
  		"endDate"			:endDate,
- 		"meetingLevelId"	:meeting_levelId,
- 		"meetingTypeId"		:partyMeetingTypeId,
+ 		"meetingLevelId"	:0,//meeting_levelId
+ 		"meetingTypeId"		:0,
  		"meetingMainTypeId"	:1,
 		"searchFor"			:searchType
 	  }
