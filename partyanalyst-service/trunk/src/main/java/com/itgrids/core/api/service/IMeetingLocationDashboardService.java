@@ -15,5 +15,5 @@ public interface IMeetingLocationDashboardService {
 	public PartyMeetingDataVO getLocationWiseSpecialMeetings(Long locationTypeId, List<Long> locationValues,String fromDateStr,String toDateStr,Long partyMeetingMainTypeId);
 	public List<PartyMeetingDataVO> getLocationWiseMeetingStatusDetails(Long searchLevelId,List<Long> levelValues,String startDateStr,String endDateStr,Long meetingTypeId,Long partyMeetinLevelId);
 	public PartyMeetingDataVO getLocationWiseSpecialMeetingsMeetingsExpanction(Long locationTypeId, List<Long> locationValues,String fromDateStr,String toDateStr,Long partyMeetingMainTypeId,Long partyMeetingTypeId);
-	public List<IdNameVO> getLocationWiseMeetingInviteeMembers(Long locationTypeId, List<Long> locationValues,String fromDateStr,String toDateStr,Long partyMeetingMainTypeId,Long partyMeetingTypeId,Long partyMeetingId,String pastMeetings);
+	public List<IdNameVO> getLocationWiseMeetingInviteeMembers(Long locationTypeId, List<Long> locationValues,String fromDateStr,String toDateStr,Long partyMeetingMainTypeId,Long partyMeetingTypeId,Long partyMeetingId,String pastMeetings,Long sessionTypeId,String status);
 }

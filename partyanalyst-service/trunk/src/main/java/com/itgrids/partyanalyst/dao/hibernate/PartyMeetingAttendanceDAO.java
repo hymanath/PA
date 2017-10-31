@@ -1817,7 +1817,8 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationWiseStateMeetingAttendees(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid,Long partyMeetingTypeId,Long partyMeetingId,Set<Long> inviteeIds){
+	public List<Object[]> getLocationWiseStateMeetingAttendees(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid,Long partyMeetingTypeId,Long partyMeetingId
+			,Set<Long> inviteeIds,Long sessionTypeId){
 	       
 	       //0-meetingStatus,1-levelId,2-level,3-count
 	       StringBuilder sb = new StringBuilder();
@@ -1850,6 +1851,9 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	       
 	       if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0l){
 	    	   sb.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId = :partyMeetingTypeId ");
+	       }
+	       if(sessionTypeId != null && sessionTypeId.longValue() > 0l){
+	    	   sb.append(" and sessionType.sessionTypeId = :sessionTypeId ");
 	       }
 	       if(partyMeetingMainTypeid != null && partyMeetingMainTypeid.longValue() > 0l){
 	    	   sb.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeid ");
@@ -1885,6 +1889,9 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	       }
 	       if(inviteeIds != null && inviteeIds.size() >0){
 	    	   query.setParameterList("inviteeIds", inviteeIds); 
+	       }
+	       if(sessionTypeId != null && sessionTypeId.longValue() > 0l){
+	    	   query.setParameter("sessionTypeId", sessionTypeId);
 	       }
 	       return query.list();
 	     }
