@@ -1170,9 +1170,21 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		
        //'2017-07-09' and '2018-10-09'
 		sb.append(" where pms.party_meeting_id = pm.party_meeting_id and pm.party_meeting_type_id = pmt.party_meeting_type_id and" +
-				" pmt.party_meeting_main_type_id = pmmt.party_meeting_main_type_id and  pm.party_meeting_level_id = pml.party_meeting_level_id and " +
-				" date(pm.start_date) BETWEEN :startDate and :endDate and pmmt.party_meeting_main_type_id = 1 and " +
-				" pm.meeting_address_id = ua.user_address_id ");
+				" pmt.party_meeting_main_type_id = pmmt.party_meeting_main_type_id and  pm.party_meeting_level_id = pml.party_meeting_level_id  " +
+				" and pm.meeting_address_id = ua.user_address_id ");
+		
+		if(startDate != null && endDate != null){
+			sb.append(" and (date(pm.start_date) BETWEEN :startDate and :endDate) ");
+		}
+		if(meetingMainTypeId != null && meetingMainTypeId.longValue() >0L){
+			sb.append(" and pmmt.party_meeting_main_type_id = :meetingMainTypeId ");
+		}
+		if(meetingTypeId != null && meetingTypeId.longValue() >0L){
+			sb.append(" and pmt.party_meeting_type_id = :meetingTypeId ");
+		}
+		if(meetingLevelId != null && meetingLevelId.longValue() >0L){
+			sb.append(" and pml.party_meeting_level_id = :meetingLevelId ");
+		}
 		
 		if(locationScopeId != null && locationScopeId.longValue() == 2L){
 			sb.append(" and ua.state_id in (:locationValues)  ");
@@ -1228,6 +1240,16 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 				if(startDate != null && endDate != null){
 				    query.setDate("startDate", startDate);
 					query.setDate("endDate", endDate);
+				}
+				
+				if(meetingMainTypeId != null && meetingMainTypeId.longValue() >0L){
+					query.setParameter("meetingMainTypeId", meetingMainTypeId);
+				}
+				if(meetingTypeId != null && meetingTypeId.longValue() >0L){
+					query.setParameter("meetingTypeId", meetingTypeId);
+				}
+				if(meetingLevelId != null && meetingLevelId.longValue() >0L){
+					query.setParameter("meetingLevelId", meetingLevelId);
 				}
 				return query.list();
 	}
