@@ -34,8 +34,8 @@ public interface IDebateParticipantCharcsDAO extends GenericDao<DebateParticipan
 	
 	public List<Object[]> getTopicWiseStrongOrWeakCandidatsForSelection(Date fromDate,Date toDate, List<Long> channelIds,List<Long> partyIds,List<Long> candidateIds,String sortOrder,Long stateId);
 	public List<Object[]> getPartyWiseScalesOfEachCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
-	public List<Object[]> getPartywiseCandidateScaling(Date startDate,Date endDate,String searchType,String state,List<Long> debateParticipantLocationIdList);
-	public List<Object[]> getPartywiseCandidateCharectersScaling(Date startDate,Date endDate,String state,List<Long> debateParticipantLocationIdList);
+	public List<Object[]> getPartywiseCandidateScaling(Date startDate,Date endDate,String searchType,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
+	public List<Object[]> getPartywiseCandidateCharectersScaling(Date startDate,Date endDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
 	public List<Object[]> getChannelAndPartyWiseCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
 	public List<Object[]> getRoleBasedPerformanceCohort(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
 	public List<Object[]> getScaleOfCandidate(Date startDate,Date endDate,List<Long> roles,String state,List<Long> participantLocationIdList);

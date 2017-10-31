@@ -646,7 +646,7 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		
 	}
 	
-	public List<Object[]> getPartywiseCandidateScaling(Date startDate,Date endDate,String searchType,String state,List<Long> debateParticipantLocationIdList){		
+	public List<Object[]> getPartywiseCandidateScaling(Date startDate,Date endDate,String searchType,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList){		
 		StringBuilder str = new StringBuilder();		
 		str.append(" select model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
 				" model.debateParticipant.candidate.candidateId,model.debateParticipant.candidate.lastname,sum(model.scale) " +
@@ -674,6 +674,9 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 		}
+		if(debateLocationIdList != null && debateLocationIdList.size()>0){
+			str.append(" and model.debateParticipant.debate.address.state.stateId in (:debateLocationIdList) " );
+		}
 		str.append(" group by model.debateParticipant.party.partyId, model.debateParticipant.candidate.candidateId" +
 				" order by model.debateParticipant.party.newsOrderNo ");
 		/*
@@ -692,11 +695,14 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		if(debateParticipantLocationIdList != null  && debateParticipantLocationIdList.size() >0  && debateParticipantLocationIdList.size() != 3L && !debateParticipantLocationIdList.contains(2L)){
 			query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
 		}
+        if(debateLocationIdList != null && debateLocationIdList.size()>0){
+        	query.setParameterList("debateLocationIdList", debateLocationIdList);
+		}
 		return query.list(); 
 		
 	}
 	
-	public List<Object[]> getPartywiseCandidateCharectersScaling(Date startDate,Date endDate,String state,List<Long> debateParticipantLocationIdList){
+	public List<Object[]> getPartywiseCandidateCharectersScaling(Date startDate,Date endDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList){
 		
 		StringBuilder str = new StringBuilder();		
 		str.append(" select model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
@@ -726,6 +732,9 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 		}
+		if(debateLocationIdList != null && debateLocationIdList.size()>0){
+			 str.append(" and model.debateParticipant.debate.address.state.stateId in (:debateLocationIdList)");
+		}
 		str.append(" group by model.debateParticipant.party.partyId, model.debateParticipant.candidate.candidateId,model.characteristics.characteristicsId " +
 				" order by model.debateParticipant.party.newsOrderNo,model.debateParticipant.candidate.candidateId,model.characteristics.characteristicsId ");
 		
@@ -737,6 +746,9 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		}
 		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0 ){
 			query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+		}
+        if(debateLocationIdList != null && debateLocationIdList.size()>0){
+        	query.setParameterList("debateLocationIdList", debateLocationIdList);
 		}
 		return query.list(); 
 		
