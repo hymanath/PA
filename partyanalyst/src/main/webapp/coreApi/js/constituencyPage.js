@@ -6931,7 +6931,7 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 										str+='</div>';
 									str+='</div>';
 									if(result.levelList[i].imagesCnt>0){
-										str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].conductedDate+'  ( Total Inviees : <b>'+result.levelList[i].recentMeetingInviteesCnt+'</b> Images : <b>'+result.levelList[i].imagesCnt+'</b>  )</p>';
+										str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].conductedDate+'  ( Total Inviees : <b>'+result.levelList[i].recentMeetingInviteesCnt+'</b> Images : <b>'+result.levelList[i].recentImagesCnt+'</b>  )</p>';
 									}else{
 										str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].conductedDate+'  ( Total Inviees : <b>'+result.levelList[i].recentMeetingInviteesCnt+'</b>  )</p>';
 									}
@@ -8070,10 +8070,10 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 										for(var k in result.levelList[i].levelList[j].datesList){
 											str+='<tr>';
 												str+='<td>'+result.levelList[i].levelList[j].datesList[k].name+'</td>';
-												str+='<td class="getCmtMemDtls" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false" attr_click_type="invitee" attr_session_typeId="'+result.levelList[i].levelList[j].datesList[k].id+'">'+result.levelList[i].levelList[j].recentMeetingInviteesCnt+'</td>';
-												str+='<td class="getCmtMemDtls" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false" attr_click_type="attendee" attr_session_typeId="'+result.levelList[i].levelList[j].datesList[k].id+'">'+result.levelList[i].levelList[j].datesList[k].recentInviteeAttended+'</td>';
-												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentLate+'</td>';
-												str+='<td class="getCmtMemDtls" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false" attr_click_type="abscent" attr_session_typeId="'+result.levelList[i].levelList[j].datesList[k].id+'">'+result.levelList[i].levelList[j].datesList[k].recentAbcent+'</td>';
+												str+='<td class="getCmtMemDtls" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false" attr_click_type="invitee" attr_session_typeId="0">'+result.levelList[i].levelList[j].recentMeetingInviteesCnt+'</td>';
+												str+='<td class="getCmtMemDtls" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false" attr_click_type="attendee" attr_session_typeId="'+result.levelList[i].levelList[j].datesList[k].id+'">'+result.levelList[i].levelList[j].datesList[k].recentInviteeAttended+'&nbsp;&nbsp;<small style="color:green;text-decoration:none!important;">'+result.levelList[i].levelList[j].datesList[k].attendedPerc+' %</small></td>';
+												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentLate+'&nbsp;&nbsp;<small style="color:green;text-decoration:none!important;">'+result.levelList[i].levelList[j].datesList[k].latePerc+' %</small></td>';
+												str+='<td class="" attr_search="notrequired" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_partyMeetingMainTypeId="'+partyMeetingMainTypeId+'" attr_partyMeetingTypeId="'+partyMeetingTypeId+'" attr_party_meeting_id="'+result.levelList[i].levelList[j].id+'" attr_non_invitee="false" attr_click_type="abscent" attr_session_typeId="'+result.levelList[i].levelList[j].datesList[k].id+'">'+result.levelList[i].levelList[j].datesList[k].recentAbcent+'&nbsp;&nbsp;<small style="color:green;text-decoration:none!important;">'+result.levelList[i].levelList[j].datesList[k].abcentPerc+' %</small></td>';
 												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentNonInvitee+'</td>';
 												str+='<td>'+result.levelList[i].levelList[j].datesList[k].recentImagesCnt+'</td>';
 											str+='</tr>';
@@ -8309,7 +8309,7 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 	}
 }
 var globalMeetingMembersResult = '';
-function getLocationWiseMeetingInviteeMembers(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position,status){
+function getLocationWiseMeetingInviteeMembers(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position,status,sessionTypeId){
 	
 	$("#meetingMemDetailsBodyId").html(spinner);
 	jsObj={
@@ -8323,7 +8323,7 @@ function getLocationWiseMeetingInviteeMembers(partyMeetingMainTypeId,partyMeetin
 		includePastMeetings		:"",
 		partyMeetingId			:partyMeetingId,
 		status:status,
-		sessionTypeId:0
+		sessionTypeId:sessionTypeId
 	}
 	$.ajax({
 		type : "GET",
@@ -8363,7 +8363,7 @@ function getLocationWiseMeetingInviteeMembers(partyMeetingMainTypeId,partyMeetin
 		
 		if(desgSearchRequired == "notrequired"){
 			$(".memberMeetingCls li").removeClass("active");
-			getLocationWiseMeetingInviteeMembers(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position,status)
+			getLocationWiseMeetingInviteeMembers(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingId,isNonInvitee,desgSearchRequired,searchDesignation,position,status,sessionTypeId)
 		}else{
 			$(".memberMeetingCls li").removeClass("active");
 			$(this).parent("li").addClass("active");
@@ -8491,9 +8491,9 @@ function getLocationWiseMeetingInviteeMembers(partyMeetingMainTypeId,partyMeetin
 								if(result[i].subList1[j].idnameList !=null && result[i].subList1[j].idnameList.length>0){
 									for(var k in result[i].subList1[j].idnameList){
 										if(result[i].subList1[j].idnameList[k].status == "intime"){
-											str+='<td class="text-success">Y('+(result[i].subList1[j].idnameList[k].dateStr).substring(0,5)+')</td>';
+											str+='<td class="text-success">Y('+(result[i].subList1[j].idnameList[k].dateStr).substring(11,16)+')</td>';
 										}else if(result[i].subList1[j].idnameList[k].status == "late"){
-											str+='<td class="text-danger">Y('+(result[i].subList1[j].idnameList[k].dateStr).substring(0,5)+')</td>';
+											str+='<td class="text-danger">Y('+(result[i].subList1[j].idnameList[k].dateStr).substring(11,16)+')</td>';
 										}else if(result[i].subList1[j].idnameList[k].status == "abscent"){  
 											str+='<td>N</td>';  
 										}else{  
