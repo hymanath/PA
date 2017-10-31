@@ -5,7 +5,6 @@ setTimeout(function(){
 
 function onLoadCalls(){
 	getGovtSchemeWiseBenefitMembersCount();
-	getMemberDetailsForBenefitInfo();
 	
 }
 function getGovtSchemeWiseBenefitMembersCount(){
@@ -260,7 +259,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 									
 									for(var j in result.list[i].schemesList){
 										if(result.list[i].schemesList[j].totalSeatsCount1 !=null && result.list[i].schemesList[j].totalSeatsCount1 !=""){
-											str1+='<td>'+result.list[i].schemesList[j].totalSeatsCount1+'</td>';
+											str1+='<td class="schemeWiseCls" style="cursor:pointer;" attr_scheme_id="'+result.list[i].schemesList[j].partyId+'" attr_locationscope_id="'+locationLevelId+'" attr_location_value="'+result.list[i].id+'"><a>'+result.list[i].schemesList[j].totalSeatsCount1+'</a></td>';
 										}else{
 											str1+='<td> - </td>';
 										}
@@ -362,13 +361,13 @@ function getGovtSchemeWiseBenefitMembersCount(){
 	}
 }
 
-function getMemberDetailsForBenefitInfo(){
+function getMemberDetailsForBenefitInfo(locationLevelId,userAccessLevelValue,schemeId){
 	$("#memberDetailsBlockId").html(spinner);
 	
 		jsObj={
 			locationScopeId	:locationLevelId,//
 			locationValue	:userAccessLevelValue,//
-			schemeId 		:3
+			schemeId 		:schemeId
 	}
 	$.ajax({
 		type : "GET",
@@ -424,7 +423,12 @@ function buildMemberDetailsForBenefitInfo(result){
 				str+='<tr>';
 					str+='<td>'+result[i].partyFlag+'</td>';
 					str+='<td>'+result[i].partyName+'</td>';
-					str+='<td>'+result[i].perc+'</td>';
+					if(result[i].perc != null && result[i].perc !="" && result[i].perc !="0.0"){
+						str+='<td>'+result[i].perc+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					
 					str+='<td>'+result[i].totalSeatsCount1+'</td>';
 					str+='<td>'+result[i].status+'</td>';
 					str+='<td>'+result[i].name+'</td>';
@@ -449,3 +453,9 @@ function buildMemberDetailsForBenefitInfo(result){
 		}); 
 	$("#memberDetailsId_length").remove();
 }
+$(document).on("click",".schemeWiseCls",function(){
+	var locationScopeId =$(this).attr("attr_locationscope_id");
+	var locationValue =$(this).attr("attr_location_value");
+	var schemeId =$(this).attr("attr_scheme_id");
+getMemberDetailsForBenefitInfo(locationScopeId,locationValue,schemeId);
+});
