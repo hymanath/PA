@@ -727,7 +727,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 			 sb.append(" and e.election_year in(:electionYrs)");
 		}
 		
-		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l){
+		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l && (parlimentIds == null || parlimentIds.size() == 0)){
 			if(locationTypeId ==2l){
 				sb.append(" and c1.state_id =:locationValue");
 			}else if(locationTypeId ==3l){
@@ -740,6 +740,14 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 				}
 			}else if(locationTypeId ==5l){
 				sb.append(" and c1.tehsil_id =:locationValue");
+			}else if(locationTypeId == 10l ){
+				if(isMandal){
+					sb.append(" and c1.tehsil_id in (select distinct tehsil_id from tehsil_constituency where constituency_id in" +
+							" (select distinct assembly_id from parliament_assembly where parliament_id =:locationValue)) ");
+				}else{
+					
+					sb.append(" and  c1.constituency_id in (select distinct assembly_id from parliament_assembly where parliament_id =:locationValue)");
+				}
 			}
 		}
 		if(subTypes.size()>0l && subTypes !=null){
@@ -762,7 +770,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(subTypes.size()>0l && subTypes !=null){
 			query.setParameterList("subTypes",subTypes);
 		}
-		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l  && locationTypeId.longValue() != 10L){
+		if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l && locationTypeId.longValue()>0l && (parlimentIds == null || parlimentIds.size() == 0) ){
 			query.setParameter("locationValue",locationValue);
 		}
 		if(parlimentIds != null && parlimentIds.size() > 0){
