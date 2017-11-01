@@ -8700,7 +8700,7 @@ function getAreaWisePartyMeetingsDetailsAction(searchType,meeting_levelId,partyM
 			if(result !=null && result.length>0){
 				buildlevelWiseMeetingDetails(result,searchType,meeting_levelId,partyMeetingTypeId,divId);
 			}else{
-				$("#"+divId+searchType).html(spinner);
+				$("#"+divId+searchType).html("<p>No data available</p>");
 			}
  		});
   }
