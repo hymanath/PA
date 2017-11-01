@@ -994,6 +994,9 @@
 										  <li>
 										<a href="nominatedPostProfileAction.action"><i class="fa fa-pencil-square-o ico-white"></i><span>&nbsp;&nbsp;Apply Nominated Post</span></a>
 										</li>
+										<li>
+										<a href="applyQuickApprovalNominatedPostAction.action"><i class="fa fa-file ico-white"></i><span>&nbsp;&nbsp;Apply Quick Approval Post</span></a> 
+										</li>
 										</c:if>
 											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_ENTITLEMENT')}">
 										  <li>
