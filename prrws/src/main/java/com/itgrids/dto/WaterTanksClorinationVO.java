@@ -12,6 +12,9 @@ public class WaterTanksClorinationVO {
 	private String isSysAdmin;
 	private String lastLoginDate;
 	private String host;
+	private Long checked = 0L;
+	private Long clorinated = 0L;
+	private Long notClorinated = 0L;
 	
 	
 	public String getSessionToken() {
@@ -73,5 +76,23 @@ public class WaterTanksClorinationVO {
 	}
 	public void setHost(String host) {
 		this.host = host;
+	}
+	public Long getChecked() {
+		return checked;
+	}
+	public void setChecked(Long checked) {
+		this.checked = checked;
+	}
+	public Long getClorinated() {
+		return clorinated;
+	}
+	public void setClorinated(Long clorinated) {
+		this.clorinated = clorinated;
+	}
+	public Long getNotClorinated() {
+		return notClorinated;
+	}
+	public void setNotClorinated(Long notClorinated) {
+		this.notClorinated = notClorinated;
 	}
 }
