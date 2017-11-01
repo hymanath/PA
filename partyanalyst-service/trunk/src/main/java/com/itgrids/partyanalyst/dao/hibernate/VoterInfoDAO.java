@@ -808,7 +808,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		 Query query = getSession().createSQLQuery(sb.toString()).
 				 addScalar("locationId",Hibernate.LONG)
 				 .addScalar("count", Hibernate.LONG);
-		 if(locationScopeId != null && locationScopeId.longValue()>0){
+		 if(locationScopeId != null && locationScopeId.longValue()>0 && locationScopeId !=2l){
 			 query.setParameter("locationValue",locationValue);
 		  }
 		return query.list();
