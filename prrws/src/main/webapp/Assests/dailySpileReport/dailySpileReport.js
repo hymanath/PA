@@ -14,21 +14,22 @@ function onLoadCalls()
 	getSizeForRank(0,0,"",selectedType);
 	initializeGlobalIds();
 	onRequestCall();   
-	collapseBlock();
+	collapseBlock();   
 }
 $(document).on("click","#spikeReportTypeId li",function(){
-	$("#tourSlider").rangeSlider("destroy");
+	//$("#tourSlider").rangeSlider("destroy");
 	var type = $(this).attr("attr_type")
 	$("#spikeReportTypeId li").removeClass("active");
 	$(this).addClass("active");
 	$('.calendar_active_cls li').removeClass("active");
 	$("#defaultButtonId").addClass("active");
-	onLoadCalls()
+	onLoadCalls();
 });
 function getSizeForRank(min,max,status,selectedType){  
 	var diseasesIdArr=[];       
 	diseasesIdArr.push(1);
 	diseasesIdArr.push(2);
+	//alert(glStartDate+":"+glEndDate+":"+diseasesIdArr+":"+min+":"+max+":"+selectedType);
 	var json = {
 		fromDate : glStartDate,  
 		toDate : glEndDate,   
@@ -55,14 +56,13 @@ function getSizeForRank(min,max,status,selectedType){
 		  }
       }
     });
-} 
+} //18:dateChange
 function initializeRank(maxVal,status){
 	if(status=="dateChange"){
 		if(maxVal==1){
 			$("#showHideRangeId").hide();
 		}else{
 			$("#showHideRangeId").show();   
-			$("#tourSlider").rangeSlider("destroy");
 			$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: maxVal},defaultValues:{min: 1, max: maxVal}});
 		}
 		 
@@ -78,9 +78,10 @@ function initializeRank(maxVal,status){
 
 function initializeGlobalIds(){
 	$(document).on("click","#getRangeId",function(){
-		initializeSliderRange();
+		initializeSliderRange();  
 	});
 }
+
 /* setTimeout(function(){
 	$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: 174},defaultValues:{min: 1, max: 174}});   
 },1000) */
@@ -137,7 +138,6 @@ $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
 	$("#defaultButtonId").addClass("active");
 	getSizeForRank(0,0,"dateChange",selectedType);
 	onRequestCall();
-	
 });
 
 $(document).on('click','.calendar_active_cls li', function(){
@@ -284,8 +284,10 @@ function getLocationDtlsRankWise(min,max){
       },
       success : function(ajaxresp){  
 		  if(ajaxresp != null && ajaxresp.length > 0){
+			  $("#showHideRangeId").show();        
 			  buildLocationDtlsRankWise(ajaxresp);
 		  }else{
+			  $("#showHideRangeId").hide();
 			  $("#rankDivId").html("No Data Available");
 		  }
       }
