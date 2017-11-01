@@ -90,8 +90,9 @@
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="panel panel-default">
 					<div class="panel-heading" style="background-color:#CCC">
-						<h4 class="panel-title"><span class="subName"></span> <small>(<span class="debateDate"></span><span class="debateTime"></span>)</small>
-							<i class="fa fa-youtube pull-right youtubeVideo" style="cursor:pointer;display:none;"></i>
+						<h4 class="panel-title"><span class="subName"></span> <small>(<span class="debateDate"></span><span class="debateTime"></span>)</small>						
+							<b><i class="fa fa-youtube pull-right youtubeVideo" style="cursor:pointer;display:none;"></i></b>
+							<span class="pull-right" id="locationSpanId" style="display:none"> Location : <span id="locationId"> </span></span>
 						</h4>
 					</div>
 					<div class="panel-body">
@@ -145,6 +146,13 @@ function generateDebateReport(result)
 	var str = '';
 	
 	var youtubeUrlttl = result.youtubeUrl;
+	var debateLocation = result.debateLocation;
+	
+	if(debateLocation !=null ){
+		$("#locationSpanId").show();
+		$("#locationId").html(debateLocation);		
+	}
+	
 	if(youtubeUrlttl != null && youtubeUrlttl.length > 0)
 		$(".youtubeVideo").show();
 	var yutbArr = youtubeUrlttl.split("=");
