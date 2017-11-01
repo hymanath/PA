@@ -11,6 +11,7 @@
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/getorgchart/getorgchart.css" type="text/css" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
@@ -20,6 +21,14 @@
 .panel-default
 {
 	border-color:#333
+}
+#people {
+	width: 100%;
+	height: 400px;
+}
+.get-text.get-text-2
+{
+	font-size:28px;
 }
 </style>
 <script type="text/javascript">
@@ -251,6 +260,7 @@ var searchParams = new URLSearchParams(window.location.search);
 <script src="Assests/Plugins/DataTable/pdf.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
+<script src="Assests/Plugins/getorgchart/getorgchart.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
 <script src="Assests/ItcDashboard/ItcDashboard.js" type="text/javascript"></script>
 </body>
