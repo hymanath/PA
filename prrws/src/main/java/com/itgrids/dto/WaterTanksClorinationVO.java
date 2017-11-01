@@ -16,7 +16,78 @@ public class WaterTanksClorinationVO {
 	private Long clorinated = 0L;
 	private Long notClorinated = 0L;
 	
+	private Long districtId;
+	private String districtName;
+	private Long areaId;
+	private String areaName;
+	private Long servicePointId;
+	private String servicePointName;
+	private Long vanId;
+	private String vanNo;
+	private Long noOfSPs = 0L;
+	private String visitDate;
 	
+	
+	public String getVisitDate() {
+		return visitDate;
+	}
+	public void setVisitDate(String visitDate) {
+		this.visitDate = visitDate;
+	}
+	public Long getNoOfSPs() {
+		return noOfSPs;
+	}
+	public void setNoOfSPs(Long noOfSPs) {
+		this.noOfSPs = noOfSPs;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public Long getAreaId() {
+		return areaId;
+	}
+	public void setAreaId(Long areaId) {
+		this.areaId = areaId;
+	}
+	public String getAreaName() {
+		return areaName;
+	}
+	public void setAreaName(String areaName) {
+		this.areaName = areaName;
+	}
+	public Long getServicePointId() {
+		return servicePointId;
+	}
+	public void setServicePointId(Long servicePointId) {
+		this.servicePointId = servicePointId;
+	}
+	public String getServicePointName() {
+		return servicePointName;
+	}
+	public void setServicePointName(String servicePointName) {
+		this.servicePointName = servicePointName;
+	}
+	public Long getVanId() {
+		return vanId;
+	}
+	public void setVanId(Long vanId) {
+		this.vanId = vanId;
+	}
+	public String getVanNo() {
+		return vanNo;
+	}
+	public void setVanNo(String vanNo) {
+		this.vanNo = vanNo;
+	}
 	public String getSessionToken() {
 		return sessionToken;
 	}
