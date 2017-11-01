@@ -112,7 +112,15 @@
 												<div class="menu-block" style="background-color:#ff5e1c">
 													<a href="prExpenditureDashboard">
 														<h3>PR EXP</h3>
-														<p>Panchayat Raj Expenditure</p>
+														<p>Panchayat Raj <br/>Expenditure</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#1c94ef">
+													<a href="waterTanksClorinationDashBoard">
+														<h3>WTC</h3>
+														<p>Water Tank Clorination</p>
 													</a>
 												</div>
 											</div>
