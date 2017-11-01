@@ -4635,7 +4635,7 @@ public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,Stri
 									VO.setScalePerc(Double.parseDouble(new BigDecimal(VO.getScalePerc()/charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 								}									
 							}*/
-							VO.setOverAllDebateCount(commonMethodsUtilService.getLongValueForObject(obj[2]));			
+							VO.setOverAllDebateCount(commonMethodsUtilService.getLongValueForObject(obj[2]) + VO.getOverAllDebateCount());			
 						}				
 					}
 				}					
@@ -5849,7 +5849,13 @@ public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String s
 		
 		if(listObj !=null && listObj.size()>0){			
 			for(Object[] obj:listObj){
-				CoreDebateVO VO = null;
+				CoreDebateVO VO = new CoreDebateVO();
+				if(searchType !=null && !searchType.trim().isEmpty() && (searchType.trim().equalsIgnoreCase("candidate") || searchType.trim().equalsIgnoreCase("debate"))){
+					VO.setCandidateId(obj[0] !=null ? (Long)obj[0]:0l);
+					VO.setCandidateName(obj[1] !=null ? obj[1].toString():"");
+					//finalList.add(VO);
+				}
+				/* VO = null;
 				candidateId = obj[0] !=null ? (Long)obj[0]:0l;
 				if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
 				  VO = getMatchVOList2(finalList,candidateId);
@@ -5866,7 +5872,7 @@ public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String s
 					  VO = new CoreDebateVO();
 					  VO.setCandidateId(obj[0] !=null ? (Long)obj[0]:0l);
 					  VO.setCandidateName(obj[1] !=null ? obj[1].toString():"");
-				}
+				}*/
 				//VO.setName(obj[1] !=null ? obj[1].toString():"");				
 				VO.setId(obj[2] !=null ? (Long)obj[2]:0l);
 				VO.setStartTime(obj[3] !=null ? sdf1.format((Date)obj[3]):null);
@@ -5876,11 +5882,13 @@ public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String s
 				VO.setCharecterId(obj[7] !=null ? (Long)obj[7]:0l);
 				VO.setCharecterName(obj[8] !=null ? obj[8].toString():"");
 				VO.setDebateLocationId(obj[9] !=null ? (Long)obj[9]:0l);
+				VO.setDebateLocation(obj[10] !=null ? obj[10].toString():"");
 				debateIds.add(VO.getId());
+				finalList.add(VO);
 				//mainMap.put(VO.getId(), VO);
-				if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
+				/*if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
 				  finalList.add(VO);
-				}
+				}*/
 				
 			}	
 		}

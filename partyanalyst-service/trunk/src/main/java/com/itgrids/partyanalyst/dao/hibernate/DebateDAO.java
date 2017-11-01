@@ -27,19 +27,12 @@ public class DebateDAO  extends GenericDaoHibernate<Debate, Long> implements IDe
 		sb.append(" select model.debateId,model.startTime," +
 				" model.endTime," +
 				" model.channel.channelId,model.channel.channelName , " +
-				" model.summary,model.youtubeUrl,model.address.state.stateId from Debate model " );
-		/*if(stateId != null && stateId.longValue() > 0){
-		      sb.append(" , Debate model3 ");
-		    }*/
+				" model.summary,model.youtubeUrl,state.stateName" +
+				" from Debate model " +
+				" left join model.address address " +
+				" left join address.state state " );
+		
 		sb.append(" where  model.isDeleted = 'N' ");
-		/*if(stateId != null && stateId.longValue() > 0){
-		      sb.append(" and model.debateId = model3.debateId  and model3.isDeleted = 'N' ");
-		    }
-		 if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 1L){
-		      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_AP_STATE_ID);
-		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
-		      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_TS_STATE_ID);
-		    }*/
 		
 		if(debateId != null && debateId.longValue()>0 ){
 			sb.append(" and model.debateId =:debateId ");
