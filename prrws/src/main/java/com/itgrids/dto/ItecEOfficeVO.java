@@ -36,6 +36,7 @@ public class ItecEOfficeVO {
 	private List<ItecEOfficeVO> jaoList = new ArrayList<ItecEOfficeVO>(0);
 	private List<ItecEOfficeVO> otherList = new ArrayList<ItecEOfficeVO>(0);
 	private List<ItecEOfficeVO> ceoList = new ArrayList<ItecEOfficeVO>(0);
+	private List<ItecEOfficeVO> ministerList = new ArrayList<ItecEOfficeVO>(0);
 	
 	
 	public Long getId() {
@@ -205,5 +206,11 @@ public class ItecEOfficeVO {
 	}
 	public void setCeoList(List<ItecEOfficeVO> ceoList) {
 		this.ceoList = ceoList;
+	}
+	public List<ItecEOfficeVO> getMinisterList() {
+		return ministerList;
+	}
+	public void setMinisterList(List<ItecEOfficeVO> ministerList) {
+		this.ministerList = ministerList;
 	}
 }
