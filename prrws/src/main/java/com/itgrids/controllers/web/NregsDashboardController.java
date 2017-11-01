@@ -481,4 +481,16 @@ public class NregsDashboardController {
     public String clorinationDashBoardPage(ModelMap model) {
 		return "waterTanksClorination";
     }
+	
+	@PostMapping("/getWaterBodyCumulativeCounts")
+	public @ResponseBody WaterTanksClorinationVO getWaterBodyCumulativeCounts(@RequestBody InputVO vo){
+		WaterTanksClorinationVO resultVO = null;
+		try {
+			resultVO = nregsTcsService.getWaterBodyCumulativeCounts(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getWaterBodyCumulativeCounts - NREGSController controller", e);
+		}
+		return resultVO;
+	}
 }
