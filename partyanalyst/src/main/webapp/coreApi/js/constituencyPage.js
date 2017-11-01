@@ -5947,7 +5947,7 @@ function getElectionYears(type){
 				electionYrVal=[];
 				electionYrVal = $("#elctionYearsBlockId").val();
 				
-				var partyIds = [872,362,1117,886,72,269,265,163,1887];
+				var partyIds = [872,362,1117,72,269,265,163,1887];
 				getElectionInformationLocationWise(electionTypeVal,"voteShare",partyIds,electionSubTypeArr,electionYrVal);
 			}
 			
