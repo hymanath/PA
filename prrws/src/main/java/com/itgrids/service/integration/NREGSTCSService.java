@@ -5089,6 +5089,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	public WaterTanksClorinationVO getWaterBodyCumulativeCounts(InputVO inputVO){
 		WaterTanksClorinationVO finaVO = new WaterTanksClorinationVO();
 		try {
+			Map<String,Long> districtCuntMap = new HashMap<String,Long>(0);
+			Map<String,Long> spsCuntMap = new HashMap<String,Long>(0);
+			Long noOfDistricts = 0L;
+			Long noOfSPs = 0L;
 			String url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")";
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(url);
 			ClientResponse response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
@@ -5103,12 +5107,26 @@ public class NREGSTCSService implements INREGSTCSService{
 					if(locationDtlsArr!=null && locationDtlsArr.length()>0){
 	 	    			for(int i=0;i<locationDtlsArr.length();i++){
 	 	    				JSONObject jObj = (JSONObject) locationDtlsArr.get(i);
+	 	    				String districtName = jObj.getString("dist_name");//Districts Count
+	 	    				String spName = jObj.getString("sp_name");
+	 	    				Long distCunt = districtCuntMap.get(districtName);
+	 	    				if(distCunt == null){
+	 	    					noOfDistricts++;
+	 	    					districtCuntMap.put(districtName, noOfDistricts);
+	 	    				}
+	 	    				Long spCunt = spsCuntMap.get(spName);//SpS Count
+	 	    				if(spCunt == null){
+	 	    					noOfSPs++;
+	 	    					spsCuntMap.put(spName, noOfSPs);
+	 	    				}
 	 	    				finaVO.setChecked(finaVO.getChecked()+jObj.getLong("wb_checked"));
 	 	    				finaVO.setClorinated(finaVO.getClorinated()+jObj.getLong("wb_chlorinated"));
 	 	    				finaVO.setNotClorinated(finaVO.getNotClorinated()+jObj.getLong("wb_nil_chlorine"));
 	 	    			}
 	 	    		}
 				}
+				finaVO.setNoOfDistricts(noOfDistricts);
+				finaVO.setNoOfSPs(noOfSPs);
 	 	    }
 		} catch (Exception e) {
 			LOG.error("Exception raised at getWaterBodyCumulativeCounts - NREGSTCSService service", e);

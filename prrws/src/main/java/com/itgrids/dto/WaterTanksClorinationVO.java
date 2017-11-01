@@ -26,6 +26,7 @@ public class WaterTanksClorinationVO {
 	private String vanNo;
 	private Long noOfSPs = 0L;
 	private String visitDate;
+	private Long noOfDistricts = 0L;
 	
 	
 	public String getVisitDate() {
@@ -165,5 +166,11 @@ public class WaterTanksClorinationVO {
 	}
 	public void setNotClorinated(Long notClorinated) {
 		this.notClorinated = notClorinated;
+	}
+	public Long getNoOfDistricts() {
+		return noOfDistricts;
+	}
+	public void setNoOfDistricts(Long noOfDistricts) {
+		this.noOfDistricts = noOfDistricts;
 	}
 }
