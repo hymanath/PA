@@ -7968,7 +7968,7 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 				}]
 			});
 			var specialInviteesMeetingsCatArr = ['Total Invited','Total Attended'];
-			var specialInviteesMeetingsArr = [{"y":result.levelList[i].invitedCount},{"y":result.levelList[i].attendedCount}];
+			var specialInviteesMeetingsArr = [{"y":result.levelList[i].invitedCount},{"y":result.levelList[i].inviteeAttendedCount}];
 			$("#specialInviteesMeetings"+i).highcharts({
 				colors:['#D7AD06'],
 				chart: {
