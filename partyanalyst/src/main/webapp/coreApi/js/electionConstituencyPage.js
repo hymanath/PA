@@ -487,6 +487,14 @@ function getElectionYears(type,typeLoad){
 				var partyIdArr=[];
 				partyIdArr = $("#partyId").val();
 				
+				var electionScopeValPartyArr = [];
+				var j = 0;	
+				$('.electionTypeWiseCls').each(function(){
+					if ($(this).is(':checked') && $(this).val() != 0){
+						electionScopeValPartyArr[j++] = $(this).val();
+					}
+				});
+				
 				//party wise election trends Block
 				getLocationWiseElectionResults(electionYrVal,eletionSubType,partyIdArr,electionScopeValArr);
 				//Party Election Results Block
