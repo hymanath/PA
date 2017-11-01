@@ -49,7 +49,7 @@
 					</div>
 				</div>
 				<div class="col-sm-12 m_top10">
-					<div class="block boderBlock">
+					<div class="block boderBlock" style="display:none">
 						<div id="memberDetailsBlockId"></div>
 					</div>
 				</div>
