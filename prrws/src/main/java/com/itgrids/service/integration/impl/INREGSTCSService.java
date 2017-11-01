@@ -12,6 +12,7 @@ import com.itgrids.dto.NregaPaymentsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
+import com.itgrids.dto.WaterTanksClorinationVO;
 import com.itgrids.dto.WebserviceDetailsVO;
 
 public interface INREGSTCSService {
@@ -60,4 +61,5 @@ public interface INREGSTCSService {
 	public List<NregsProjectsVO> getNREGSForestAbstact(InputVO inputVO);
 	public List<NregsDataVO> getNregaForestLevelData(InputVO inputVO);
 	public NregsOverviewVO getNregasForestOverview(InputVO inputVO);
+	public WaterTanksClorinationVO getSessionTokenDetails(InputVO inputVO);
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +22,7 @@ import com.itgrids.dto.NregaPaymentsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
+import com.itgrids.dto.WaterTanksClorinationVO;
 import com.itgrids.dto.WebserviceDetailsVO;
 import com.itgrids.service.IUserService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
@@ -464,4 +464,21 @@ public class NregsDashboardController {
 		}
 		return overViewVO;
 	}
+	
+	@PostMapping("/getSessionToken")
+	public @ResponseBody WaterTanksClorinationVO getSessionTokenDetails(@RequestBody InputVO vo){
+		WaterTanksClorinationVO resultVO = null;
+		try {
+			resultVO = nregsTcsService.getSessionTokenDetails(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSessionTokenDetails - NREGSController controller", e);
+		}
+		return resultVO;
+	}
+	
+	@RequestMapping(value ="/waterTanksClorinationDashBoard", method = RequestMethod.GET)
+    public String clorinationDashBoardPage(ModelMap model) {
+		return "waterTanksClorination";
+    }
 }

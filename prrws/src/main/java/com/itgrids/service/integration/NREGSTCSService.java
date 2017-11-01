@@ -31,6 +31,8 @@ import com.itgrids.dto.NregaPaymentsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
+import com.itgrids.dto.RangeVO;
+import com.itgrids.dto.WaterTanksClorinationVO;
 import com.itgrids.dto.WebserviceDetailsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
@@ -4914,5 +4916,65 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at cnvrtRupeesIntoCroresNew - NREGSTCSService service", e);
 		}
 		return returnVal.trim();
+	}
+	/*
+	 * Date : 31/10/2017
+	 * Author :Nandhini
+	 * @description : getSessionTokenDetails
+	 */
+	
+	public WaterTanksClorinationVO getSessionTokenDetails(InputVO inputVO){
+		WaterTanksClorinationVO finaVO = new WaterTanksClorinationVO();
+		try {
+			String str = convertingInputVOToStringFrWBDashBoard(inputVO);
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://115.112.122.116/api/v2/user/session");
+			ClientResponse response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").post(ClientResponse.class, str);
+			
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	    }else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					JSONObject jObj = new JSONObject(output);
+					finaVO.setSessionToken(jObj.getString("session_token"));
+					finaVO.setSessionId(jObj.getString("session_id"));
+					finaVO.setId(jObj.getLong("id"));
+					finaVO.setName(jObj.getString("name"));
+					finaVO.setFirstName(jObj.getString("first_name"));
+					finaVO.setLastName(jObj.getString("last_name"));
+					finaVO.setEmail(jObj.getString("email"));
+					finaVO.setIsSysAdmin(jObj.getString("is_sys_admin"));
+					finaVO.setLastLoginDate(jObj.getString("last_login_date"));
+					finaVO.setHost(jObj.getString("host"));
+				}
+	 	    }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSessionTokenDetails - NREGSTCSService service", e);
+		}
+		return finaVO;
+	}
+	
+	public String convertingInputVOToStringFrWBDashBoard(InputVO inputVO){
+		String str = "";
+		try {
+			str = "{";
+			
+			if(inputVO.getLeadName() != null )
+				str += "\"email\" : \""+inputVO.getLeadName()+"\",";
+			if(inputVO.getCategory() != null)
+				str += "\"password\" : \""+inputVO.getCategory()+"\",";
+			if(inputVO.getYear() != null)
+				str += "\"duration\" : \""+inputVO.getYear()+"\",";
+			
+			
+			if(str.length() > 1)
+				str = str.substring(0,str.length()-1);
+			
+			str += "}";
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertingInputVOToStringFrWBDashBoard - NREGSTCSService service", e);
+		}
+		return str;
 	}
 }
