@@ -268,7 +268,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			if(locationTypeId != null && locationTypeId.longValue() !=4L &&locationTypeId.longValue() !=5L && locationTypeId.longValue() !=7L && locationTypeId.longValue() !=6L && locationTypeId.longValue() !=10L){
 				
 				if(!searchType.equalsIgnoreCase("Parliament"))
-					validVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,null,searchType,false);
+					validVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,null,searchType,false,false);
 				
 				if(!commonMethodsUtilService.isListOrSetValid(validVoterList)){
 					validVoterList = new ArrayList<Object[]>();
@@ -276,15 +276,20 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				
 				if(electionScopeIds.contains(1l) || searchType.equalsIgnoreCase("Parliament")){
 					
-					List<Object[]> parliamentWiseValidVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsList,null,false);
+					List<Object[]> parliamentWiseValidVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsList,null,false,false);
 					if(commonMethodsUtilService.isListOrSetValid(parliamentWiseValidVoterList))
 						validVoterList.addAll(parliamentWiseValidVoterList);
 				}
 			}else{
-				validVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null,searchType,false);
-				
+				validVoterList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null,searchType,false,false);
+				if((electionScopeIds.contains(3l) ||electionScopeIds.contains(4l)) && (locationTypeId == 4l ||  locationTypeId == 5l)){
+					List<Object[]> validVoterListTmp= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,null,searchType,false,true);
+					if(commonMethodsUtilService.isListOrSetValid(validVoterListTmp))
+						validVoterList.addAll(validVoterListTmp);
+				}
+
 				if(searchType.equalsIgnoreCase("mandal")){
-					List<Object[]> municipalList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null,searchType,true);
+					List<Object[]> municipalList= candidateDAO.getElectionInformationLocationWisedetailsForValidVotes(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null,searchType,true,false);
 					if(commonMethodsUtilService.isListOrSetValid(municipalList))
 						validVoterList.addAll(municipalList);
 				}
@@ -341,19 +346,24 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			List<Object[]> earnedVotesList = null;
 			if(locationTypeId != null && locationTypeId.longValue() !=4L && locationTypeId.longValue() !=5L && locationTypeId.longValue() !=7L && locationTypeId.longValue() !=6L && locationTypeId.longValue() !=10L){
 				if(!searchType.equalsIgnoreCase("Parliament"))
-					earnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,null,null,searchType,false);
+					earnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,null,null,searchType,false,false);
 				if(!commonMethodsUtilService.isListOrSetValid(earnedVotesList))
 					earnedVotesList = new ArrayList<Object[]>();
 					
 				if(electionScopeIds.contains(1l) || searchType.equalsIgnoreCase("Parliament")){	
-					List<Object[]> tempearnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsList,null,null,false);
+					List<Object[]> tempearnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,parliamentIdsList,null,null,false,false);
 					if(commonMethodsUtilService.isListOrSetValid(tempearnedVotesList))
 						earnedVotesList.addAll(tempearnedVotesList);
 				}
 			}else{
-				earnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null,null,searchType,false);
+				earnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null,null,searchType,false,false);
+				if((electionScopeIds.contains(3l) ||electionScopeIds.contains(4l)) && (locationTypeId == 4l ||  locationTypeId == 5l)){
+					List<Object[]> earnedVotesListTmp= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,null,subTypes,null,null,searchType,false,true);
+					if(commonMethodsUtilService.isListOrSetValid(earnedVotesListTmp))
+						earnedVotesList.addAll(earnedVotesListTmp);
+				}
 				if(searchType.equalsIgnoreCase("mandal")){
-					List<Object[]> tempearnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null,null,searchType,true);
+					List<Object[]> tempearnedVotesList= candidateDAO.getElectionInformationLocationWiseDetailEarnedVoterShare(electionYrs, locationTypeId, locationValue,electionScopeIds,"lowLevels",subTypes,null,null,searchType,true,false);
 					
 					if(commonMethodsUtilService.isListOrSetValid(tempearnedVotesList))
 						earnedVotesList.addAll(tempearnedVotesList);
