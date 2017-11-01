@@ -62,4 +62,5 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregaForestLevelData(InputVO inputVO);
 	public NregsOverviewVO getNregasForestOverview(InputVO inputVO);
 	public WaterTanksClorinationVO getSessionTokenDetails(InputVO inputVO);
+	public WaterTanksClorinationVO getWaterBodyCumulativeCounts(InputVO inputVO);
 }

@@ -100,7 +100,7 @@ public class InputVO implements Serializable {
 	private String program;
 	private String eoDBstatus;
 	private String clearence;
-	
+	private String session;
 	
 	public String getProgram() {
 		return program;
@@ -628,6 +628,12 @@ public class InputVO implements Serializable {
 	}
 	public void setClearence(String clearence) {
 		this.clearence = clearence;
+	}
+	public String getSession() {
+		return session;
+	}
+	public void setSession(String session) {
+		this.session = session;
 	}
 	
    	

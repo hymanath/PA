@@ -1,7 +1,7 @@
 package com.itgrids.service.integration;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,7 +31,6 @@ import com.itgrids.dto.NregaPaymentsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
-import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.WaterTanksClorinationVO;
 import com.itgrids.dto.WebserviceDetailsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
@@ -4976,5 +4975,41 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at convertingInputVOToStringFrWBDashBoard - NREGSTCSService service", e);
 		}
 		return str;
+	}
+	
+	/*
+	 * Date : 01/11/2017
+	 * Author :Nandhini
+	 * @description : getWaterBodyCumulativeCounts
+	 */
+	
+	public WaterTanksClorinationVO getWaterBodyCumulativeCounts(InputVO inputVO){
+		WaterTanksClorinationVO finaVO = new WaterTanksClorinationVO();
+		try {
+			String url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")";
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject(url);
+			ClientResponse response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
+			
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	    }else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					JSONObject jsonObject = new JSONObject(output);
+	 	    		JSONArray locationDtlsArr = jsonObject.getJSONArray("resource");
+					if(locationDtlsArr!=null && locationDtlsArr.length()>0){
+	 	    			for(int i=0;i<locationDtlsArr.length();i++){
+	 	    				JSONObject jObj = (JSONObject) locationDtlsArr.get(i);
+	 	    				finaVO.setChecked(finaVO.getChecked()+jObj.getLong("wb_checked"));
+	 	    				finaVO.setClorinated(finaVO.getClorinated()+jObj.getLong("wb_chlorinated"));
+	 	    				finaVO.setNotClorinated(finaVO.getNotClorinated()+jObj.getLong("wb_nil_chlorine"));
+	 	    			}
+	 	    		}
+				}
+	 	    }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getWaterBodyCumulativeCounts - NREGSTCSService service", e);
+		}
+		return finaVO;
 	}
 }
