@@ -1,5 +1,5 @@
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var globalStrongPoorColor={"VERY GOOD":'#009900',"OK":"#FFCC00","POOR":"#FF9966","VERY POOR":"#CC6600","WORST":"#FF3E3E","GOOD":"#428AE9","EXCELLENT":"#009999"}
+var globalStrongPoorColor={"VERY GOOD":'#98FB98',"OK":"#FFCC00","POOR":"#FF9966","VERY POOR":"#CC6600","WORST":"#FF3E3E","GOOD":"#428AE9","EXCELLENT":"#0B6623"}
 var globalCrossVotionBgColor={"TDP":'#FFFFB8',"YSRC":"#CEE8DF","BJP":"#f4c36e","AIMIM":"#7bf7a6","INC":"#CEDFEA","CPI":"#fc713f","CPM":"#f995b5","PRP":"#b6f986","TRS":"#F7E8D9"}
 var electionScopeValArr=[];
 var eletionSubType=["MAIN"];
@@ -1283,12 +1283,12 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 	
 	
 	str+='<div class="table-responsive m_top10">';
-	if(searchLevelVal == "constituency" || searchLevelVal == "mandal" || searchLevelVal == "panchayat"){
+	/*if(searchLevelVal == "constituency" || searchLevelVal == "mandal" || searchLevelVal == "panchayat"){
 		str+='<table class="table table-election1" id="electionResults">';
 	}else{
 		str+='<table class="table table-election" id="electionResults">';
-	}
-		
+	}*/
+	str+='<table class="table table-election" id="electionResults">';
 			str+='<thead>';
 				str+='<tr>';
 					if(locationLevelId == '2' || locationLevelId == 2){
@@ -1305,7 +1305,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "parliament"){
 							str+='<th>Parliament</th>';
 						}else if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
-							str+='<th>District</th>';
+							//str+='<th>District</th>';
 							str+='<th>Constituency</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 							str+='<th>Parliament</th>';
@@ -1315,7 +1315,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 						
 					}else if(locationLevelId == '3' || locationLevelId == 3){
 						if(electionScopetext == "Assembly" && (searchLevelVal == "mandal" || searchLevelVal == "Mandal")){
-							str+='<th>Constituency</th>';
+							//str+='<th>Constituency</th>';
 							str+='<th>Mandal</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "mandal"){
 							str+='<th>Location</th>';
@@ -1333,7 +1333,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 						}
 					}else if(locationLevelId == '4' || locationLevelId == 4){
 						if(electionScopetext == "Assembly" && (searchLevelVal == "mandal" || searchLevelVal == "Mandal")){
-							str+='<th>Constituency</th>';
+							//str+='<th>Constituency</th>';
 							str+='<th>Mandal</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "mandal"){
 							str+='<th>Mandal</th>';
@@ -1342,7 +1342,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 						}else if(electionScopetext == "ZPTC"){
 							str+='<th>Location</th>';
 						}else if(electionScopetext == "Assembly" && (searchLevelVal == "Panchayat" || searchLevelVal == "panchayat")){
-							str+='<th>Mandal</th>';
+							//str+='<th>Mandal</th>';
 							str+='<th>Panchayat</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "Panchayat"){
 							str+='<th>Mandal</th>';
@@ -1355,7 +1355,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 						}else if(electionScopetext == "ZPTC"){
 							str+='<th>Location</th>';
 						}else if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
-							str+='<th>District</th>';
+							//str+='<th>District</th>';
 							str+='<th>Constituency</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 							str+='<th>Constituency</th>';
@@ -1432,12 +1432,12 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 			str+='<tbody>';
 			for(var i in result){
 				str+='<tr>';
-				if(electionScopetext == "Assembly" && (searchLevelVal == "constituency" || searchLevelVal == "Mandal" || searchLevelVal == "mandal" || searchLevelVal == "Panchayat" || searchLevelVal == "panchayat" ))
+				/*if(electionScopetext == "Assembly" && (searchLevelVal == "constituency" || searchLevelVal == "Mandal" || searchLevelVal == "mandal" || searchLevelVal == "Panchayat" || searchLevelVal == "panchayat" ))
 					if(result[i].name != null){
 						str+='<td>'+result[i].name+'</td>';
 					}else{
 						str+='<td>-</td>';
-					}
+					}*/
 					
 					str+='<td>'+result[i].locationName+'</td>';
 					for(var j in result[i].list){							
