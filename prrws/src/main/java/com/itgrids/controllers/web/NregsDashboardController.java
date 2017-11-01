@@ -493,4 +493,28 @@ public class NregsDashboardController {
 		}
 		return resultVO;
 	}
+	
+	@PostMapping("/getDistrictWiseClorinationDetails")
+	public @ResponseBody List<WaterTanksClorinationVO> getDistrictWiseClorinationDetails(@RequestBody InputVO vo){
+		List<WaterTanksClorinationVO> returnList = null;
+		try {
+			returnList = nregsTcsService.getDistrictWiseClorinationDetails(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDistrictWiseClorinationDetails - NREGSController controller", e);
+		}
+		return returnList;
+	}
+	
+	@PostMapping("/getLocationWiseClorinationDetails")
+	public @ResponseBody List<WaterTanksClorinationVO> getLocationWiseClorinationDetails(@RequestBody InputVO vo){
+		List<WaterTanksClorinationVO> returnList = null;
+		try {
+			returnList = nregsTcsService.getLocationWiseClorinationDetails(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseClorinationDetails - NREGSController controller", e);
+		}
+		return returnList;
+	}
 }
