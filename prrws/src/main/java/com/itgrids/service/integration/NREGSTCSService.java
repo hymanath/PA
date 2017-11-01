@@ -60,6 +60,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	private IPrDistrictDAO prDistrictDAO;
 	@Autowired
 	private IPrConstituencyDAO prConstituencyDAO;
+	
+	private String sessionToken;
 	/*
 	 * Date : 16/06/2017
 	 * Author :Sravanth
@@ -4945,6 +4947,7 @@ public class NREGSTCSService implements INREGSTCSService{
 					finaVO.setIsSysAdmin(jObj.getString("is_sys_admin"));
 					finaVO.setLastLoginDate(jObj.getString("last_login_date"));
 					finaVO.setHost(jObj.getString("host"));
+					sessionToken = jObj.getString("session_token");
 				}
 	 	    }
 		} catch (Exception e) {
@@ -4997,7 +5000,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
-	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		JSONObject jsonObject = new JSONObject(output);
+	 	    		JSONArray finalArray = jsonObject.getJSONArray("resource");
 	 	    		if(finalArray!=null && finalArray.length()>0){
 	 	    			for(int i=0;i<finalArray.length();i++){
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
@@ -5051,7 +5055,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
-	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		JSONObject jsonObject = new JSONObject(output);
+	 	    		JSONArray finalArray = jsonObject.getJSONArray("resource");
 	 	    		if(finalArray!=null && finalArray.length()>0){
 	 	    			for(int i=0;i<finalArray.length();i++){
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
