@@ -1,34 +1,33 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-
+var orgChart = '';
 //var departmentWiseArr=[{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'eProcurement',id:'5',color:'#F06C1F',image:'eProcurement',blockName:'eProcurement'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
 var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'}];
 var globalFromDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDate = moment().format("DD/MM/YYYY");
 $("#itcDateRangePickerId").daterangepicker({
-      opens: 'left',
-      startDate: globalFromDate,
-      endDate: globalToDate,
-    locale: {
-      format: 'DD/MM/YYYY'
-    },
-    ranges: {
-        'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().format("DD/MM/YYYY")],
-        'Today' : [moment(), moment()],
+	opens: 'left',
+	startDate: globalFromDate,
+	endDate: globalToDate,
+	locale: {
+		format: 'DD/MM/YYYY'
+	},
+	ranges: {
+		'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().format("DD/MM/YYYY")],
+		'Today' : [moment(), moment()],
 		'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-        'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-        'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
-        'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
-        'This Month': [moment().startOf('month'), moment()],
-        'This Year': [moment().startOf('Year'), moment()]
-    }
-  });
+		'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
+		'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
+		'This Month': [moment().startOf('month'), moment()],
+		'This Year': [moment().startOf('Year'), moment()]
+	}
+});
 $('#itcDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
 	globalFromDate = picker.startDate.format('DD/MM/YYYY');
 	globalToDate = picker.endDate.format('DD/MM/YYYY'); 
     onloadCalls();
-	
 });
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
@@ -70,6 +69,7 @@ function onloadCalls(){
 	getAPInnovationSocietyOverview('onload','apInnovationSociety');
 	getEOfcDepartWiseOverviewDetails('onload');
 	/*getInnovationAwardsDetailedData();*/
+	
 }
 $(document).on("click",".cohortIdClick",function(){
 	$("#modalId").modal('show');
@@ -192,144 +192,151 @@ function departmentBlockWiseDetails(divId)
 		levelWiseBlockArr = [{name:'AP Innovation Society',id:'9'}];
 	}
 	
-			var collapse='';
-				for(var i in levelWiseBlockArr)
-				{
-					collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" role="tablist" aria-multiselectable="true">';
-						collapse+='<div class="panel panel-default panel-black">';
-							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseBlockArr[i].id+'">';
-								if(i == 0)
-								{
-									collapse+='<a role="button" class="panelCollapseIcon '+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'">';
-								}else{
-									collapse+='<a role="button" class="panelCollapseIcon collapsed '+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'">';
-								}
-								collapse+='<h4 class="panel-title text-capital">'+levelWiseBlockArr[i].name+' overview</h4>';
-									
-								collapse+='</a>';
-							collapse+='</div>';
-							if(i == 0)
+	var collapse='';
+		for(var i in levelWiseBlockArr)
+		{
+			collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" role="tablist" aria-multiselectable="true">';
+				collapse+='<div class="panel panel-default panel-black">';
+					collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseBlockArr[i].id+'">';
+						if(i == 0)
+						{
+							collapse+='<a role="button" class="panelCollapseIcon '+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'">';
+						}else{
+							collapse+='<a role="button" class="panelCollapseIcon collapsed '+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'">';
+						}
+						collapse+='<h4 class="panel-title text-capital">'+levelWiseBlockArr[i].name+' overview</h4>';
+							
+						collapse+='</a>';
+					collapse+='</div>';
+					if(i == 0)
+					{
+						collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'">';
+					}else{
+						collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'">';
+					}
+					
+						collapse+='<div class="panel-body">';
+							
+							if(divId == 'apInnovationSociety')
 							{
-								collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'">';
-							}else{
-								collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'">';
+								collapse+='<h4 style="margin-bottom:20px">Applications Received</h4>';
+							}
+							if(divId == 'eOffice')
+							{
+								collapse+='<div id="hieraricalViewErr"></div>';
+								collapse+='<div id="hieraricalView"></div>';
+							}
+							if(divId == "promotions")
+							{
+								collapse+='<div class="row">';
+									collapse+='<div class="col-sm-12">';
+										collapse+='<div class="row">';
+											collapse+='<div class="col-sm-7">';
+												collapse+='<h4>INFORMATION TECHNOLOGY OVERVIEW</h4>';
+												collapse+='<hr/>';
+											collapse+='</div>';
+											collapse+='<div class="col-sm-5">';
+												collapse+='<ul class="list-inline switch-btn" id="promotionsBlockSwitch">';
+													collapse+='<li class="active" attr_type="Total">ALL</li>';
+													collapse+='<li attr_type="Electronics">Electronics</li>';
+													collapse+='<li attr_type="Fintech">Fintech</li>';
+													collapse+='<li attr_type="IT">IT</li>';
+												collapse+='</ul>';
+											collapse+='</div>';
+										collapse+='</div>';
+									
+									collapse+='</div>';
+									collapse+='<div class="col-sm-3" id="promotionsTotalBlockId"></div>';
+									collapse+='<div class="col-sm-3" id="promotionsStageGreenBlockId"></div>';
+									collapse+='<div class="col-sm-3" id="promotionsStageRedBlockId"></div>';
+									collapse+='<div class="col-sm-3" id="promotionsStageDroppedBlockId"></div>';
+									collapse+='<div class="col-sm-12">';
+										collapse+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+										var	levelWiseBlockArrPromotions =[{name:'IT',id:'1'},{name:'Electronics',id:'2'},{name:'Fintech',id:'3'}];
+										for(var l in levelWiseBlockArrPromotions)
+										{
+											collapse+='<div class="panel panel-default m_top20" promotions="'+levelWiseBlockArrPromotions[l].name+'">';
+												collapse+='<div class="panel-heading" role="tab" id="headingOne'+levelWiseBlockArrPromotions[l].name+'">';
+													collapse+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+levelWiseBlockArrPromotions[l].name+'" aria-expanded="true" aria-controls="collapseOne'+levelWiseBlockArrPromotions[l].name+'">';
+														collapse+='<h4 class="panel-title">'+levelWiseBlockArrPromotions[l].name+' Overview</h4>';
+													collapse+='</a>';
+												collapse+='</div>';
+												collapse+='<div id="collapseOne'+levelWiseBlockArrPromotions[l].name+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+levelWiseBlockArrPromotions[l].name+'">';
+													collapse+='<div class="panel-body">';
+														collapse+='<div id="'+levelWiseBlockArrPromotions[l].name+'OverviewBlockDivId"></div>';
+													collapse+='</div>';
+												collapse+='</div>';
+											collapse+='</div>';
+										}													
+											
+										collapse+='</div>';
+									collapse+='</div>';
+								collapse+='</div>';
+							}
+							collapse+='<div id="'+divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id+'"></div>';
+							if(divId == 'apInnovationSociety')
+							{
+
+								collapse+='<div class="row">';
+									collapse+='<div class="col-sm-4 m_top20" id="APISXLr8AP"></div>';
+									collapse+='<div class="col-sm-4 m_top20" id="Campaigns"></div>';
+									collapse+='<div class="col-sm-4 m_top20" id="CampusInnovationCenters"></div>';
+								collapse+='</div>';
 							}
 							
-								collapse+='<div class="panel-body">';
-									if(divId == 'apInnovationSociety')
-									{
-										collapse+='<h4 style="margin-bottom:20px">Applications Received</h4>';
-									}
-									if(divId == "promotions")
-									{
-										collapse+='<div class="row">';
-											collapse+='<div class="col-sm-12">';
-												collapse+='<div class="row">';
-													collapse+='<div class="col-sm-7">';
-														collapse+='<h4>INFORMATION TECHNOLOGY OVERVIEW</h4>';
-														collapse+='<hr/>';
-													collapse+='</div>';
-													collapse+='<div class="col-sm-5">';
-														collapse+='<ul class="list-inline switch-btn" id="promotionsBlockSwitch">';
-															collapse+='<li class="active" attr_type="Total">ALL</li>';
-															collapse+='<li attr_type="Electronics">Electronics</li>';
-															collapse+='<li attr_type="Fintech">Fintech</li>';
-															collapse+='<li attr_type="IT">IT</li>';
-														collapse+='</ul>';
-													collapse+='</div>';
-												collapse+='</div>';
-											
-											collapse+='</div>';
-											collapse+='<div class="col-sm-3" id="promotionsTotalBlockId"></div>';
-											collapse+='<div class="col-sm-3" id="promotionsStageGreenBlockId"></div>';
-											collapse+='<div class="col-sm-3" id="promotionsStageRedBlockId"></div>';
-											collapse+='<div class="col-sm-3" id="promotionsStageDroppedBlockId"></div>';
-											collapse+='<div class="col-sm-12">';
-												collapse+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
-												var	levelWiseBlockArrPromotions =[{name:'IT',id:'1'},{name:'Electronics',id:'2'},{name:'Fintech',id:'3'}];
-												for(var l in levelWiseBlockArrPromotions)
-												{
-													collapse+='<div class="panel panel-default m_top20" promotions="'+levelWiseBlockArrPromotions[l].name+'">';
-														collapse+='<div class="panel-heading" role="tab" id="headingOne'+levelWiseBlockArrPromotions[l].name+'">';
-															collapse+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+levelWiseBlockArrPromotions[l].name+'" aria-expanded="true" aria-controls="collapseOne'+levelWiseBlockArrPromotions[l].name+'">';
-																collapse+='<h4 class="panel-title">'+levelWiseBlockArrPromotions[l].name+' Overview</h4>';
-															collapse+='</a>';
-														collapse+='</div>';
-														collapse+='<div id="collapseOne'+levelWiseBlockArrPromotions[l].name+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+levelWiseBlockArrPromotions[l].name+'">';
-															collapse+='<div class="panel-body">';
-																collapse+='<div id="'+levelWiseBlockArrPromotions[l].name+'OverviewBlockDivId"></div>';
-															collapse+='</div>';
-														collapse+='</div>';
-													collapse+='</div>';
-												}													
-													
-												collapse+='</div>';
-											collapse+='</div>';
-										collapse+='</div>';
-									}
-									collapse+='<div id="'+divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id+'"></div>';
-									if(divId == 'apInnovationSociety')
-									{
-
-										collapse+='<div class="row">';
-											collapse+='<div class="col-sm-4 m_top20" id="APISXLr8AP"></div>';
-											collapse+='<div class="col-sm-4 m_top20" id="Campaigns"></div>';
-											collapse+='<div class="col-sm-4 m_top20" id="CampusInnovationCenters"></div>';
-										collapse+='</div>';
-									}
-									
-								collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+				collapse+='</div>';
+			collapse+='</div>';
+			if(divId == 'eOffice')
+			{
+				collapse+='<div class="panel-group" id="accordionEOffc" role="tablist" aria-multiselectable="true">';
+					collapse+='<div class="panel panel-default panel-black">';
+						collapse+='<div class="panel-heading" role="tab" id="headingOneEOffc">';
+							collapse+='<a role="button" class="panelCollapseIcon " data-toggle="collapse" data-parent="#accordionEOffc" href="#collapseOneEOffc" aria-expanded="true" aria-controls="collapseOneEOffc">';
+								collapse+='<h4 class="panel-title">E-OFFICE PENDENCY STATUS</h4>';
+							collapse+='</a>';
+						collapse+='</div>';
+						collapse+='<div id="collapseOneEOffc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneEOffc">';
+							collapse+='<div class="panel-body">';
+								collapse+='<div id="eOfficePendencyWise"></div>';
 							collapse+='</div>';
 						collapse+='</div>';
 					collapse+='</div>';
-					if(divId == 'eOffice')
-					{
-						collapse+='<div class="panel-group" id="accordionEOffc" role="tablist" aria-multiselectable="true">';
-							collapse+='<div class="panel panel-default panel-black">';
-								collapse+='<div class="panel-heading" role="tab" id="headingOneEOffc">';
-									collapse+='<a role="button" class="panelCollapseIcon " data-toggle="collapse" data-parent="#accordionEOffc" href="#collapseOneEOffc" aria-expanded="true" aria-controls="collapseOneEOffc">';
-										collapse+='<h4 class="panel-title">E-OFFICE PENDENCY STATUS</h4>';
-									collapse+='</a>';
-								collapse+='</div>';
-								collapse+='<div id="collapseOneEOffc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneEOffc">';
-									collapse+='<div class="panel-body">';
-										collapse+='<div id="eOfficePendencyWise"></div>';
-									collapse+='</div>';
-								collapse+='</div>';
-							collapse+='</div>';
-						collapse+='</div>';
-					}
-				}
-			$("#departmentBlockWiseDetailsId").html(collapse);
-			
-			for(var i in levelWiseBlockArr){
-				if(divId == "meesevaSla"){
-					getMeesevaSLAOverviewDtls(divId,levelWiseBlockArr[i].id);
-				}else if(divId == 'apInnovationSociety')
-				{
-					getAPInnovationSocietyOverview('overview',divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id);
-					getAPISXLR8APDetailedData();
-					getCampaignsDetailedData();
-					getCampusInnovationCentersDetailedData();
-				}else if(divId == 'eOffice')
-				{
-					getEOfcDepartWiseOverviewDetails('overview');
-					getEofficeDesignationWisePendencyDetails();
-				}else if(divId == 'meesevaKpi'){
-					getMeesavaKpiGraphBuild(divId,levelWiseBlockArr[i].id);
-				}
+				collapse+='</div>';
 			}
-			if(divId == 'promotions')
-			{
-				getITSectorWiseOverviewDetails();
-				getITSectorCategoryWiseDetails("RED",'Total');
-				getITSectorCategoryWiseDetails("GREEN",'Total');
-				getITSectorCategoryWiseDetails("DROPPED",'Total');
-				getITDistrictWiseDetails("IT","ALL",'body');
-				getITDistrictWiseDetails("Electronics","ALL",'body');
-				getITDistrictWiseDetails("Fintech","ALL",'body');
-			}
+		}
+	$("#departmentBlockWiseDetailsId").html(collapse);
+	
+	for(var i in levelWiseBlockArr){
+		if(divId == "meesevaSla"){
+			getMeesevaSLAOverviewDtls(divId,levelWiseBlockArr[i].id);
+		}else if(divId == 'apInnovationSociety')
+		{
+			getAPInnovationSocietyOverview('overview',divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id);
+			getAPISXLR8APDetailedData();
+			getCampaignsDetailedData();
+			getCampusInnovationCentersDetailedData();
+		}else if(divId == 'eOffice')
+		{
+			//getEOfcDepartWiseOverviewDetails('overview');
+			getEofficeDesignationWisePendencyDetails();
+			getDepartmentWiseHierarchicalDetails();
 			
+		}else if(divId == 'meesevaKpi'){
+			getMeesavaKpiGraphBuild(divId,levelWiseBlockArr[i].id);
+		}
+	}
+	if(divId == 'promotions')
+	{
+		getITSectorWiseOverviewDetails();
+		getITSectorCategoryWiseDetails("RED",'Total');
+		getITSectorCategoryWiseDetails("GREEN",'Total');
+		getITSectorCategoryWiseDetails("DROPPED",'Total');
+		getITDistrictWiseDetails("IT","ALL",'body');
+		getITDistrictWiseDetails("Electronics","ALL",'body');
+		getITDistrictWiseDetails("Fintech","ALL",'body');
+	}
 }
 
 /* function getOverAllDetils(divId,blockId){
@@ -1354,7 +1361,7 @@ function getEOfcDepartWiseOverviewDetails(type){
 		}
 	}).done(function(result){
 		eOfcDeptResult = result;
-		getEofficeDesignationWiseDetails()
+		//getEofficeDesignationWiseDetails()
 		if(type == 'onload')
 		{
 			$("#itcDeptWiseCount").html(result[0].subList[0].totalCount+'/<small style="color:#fff;font-size:14px;top:0px;">'+result[0].subList[0].created+'</small>');
@@ -1504,7 +1511,7 @@ function getEofficeDesignationWisePendencyDetails()
 	{
 		var tabView = '';
 		tabView+='<div class="row">';
-			tabView+='<div class="col-sm-3">';
+			/* tabView+='<div class="col-sm-3">';
 				tabView+='<div class="eOfcScroll">';
 					tabView+='<ul class="nav nav-tabs tab-view-eofc" role="tablist">';
 						tabView+='<li role="presentation" class="active"><a EofficeDesignationId="" EofficeDesignation="departmentWise" href="#departmentWise" aria-controls="departmentWise" role="tab" data-toggle="tab">DEPARTMENT WISE</a></li>';
@@ -1514,16 +1521,16 @@ function getEofficeDesignationWisePendencyDetails()
 						}
 					tabView+='</ul>';
 				tabView+='</div>';
-			tabView+='</div>';
-			tabView+='<div class="col-sm-9">';
-				tabView+='<div class="tab-content">';
+			tabView+='</div>'; */
+			tabView+='<div class="col-sm-12">';
+				/* tabView+='<div class="tab-content">';
 					tabView+='<div role="tabpanel" class="tab-pane active" id="departmentWise">'+spinner+'</div>';
-					for(var i in result)
-					{
-						tabView+='<div role="tabpanel" class="tab-pane" id="'+result[i].designation.replace(/\s+/g, '')+'">';
+					
+						tabView+='<div role="tabpanel" class="tab-pane" id="'+result[i].designation.replace(/\s+/g, '')+'">'; */
 							tabView+='<div class="table-responsive">';
 								tabView+='<table class="table table-bordered" id="eOfcDataTableId">';
 									tabView+='<thead>';
+										tabView+='<th style="background-color:#fff;">Designation</th>';
 										tabView+='<th style="background-color:#fff;">Employee</th>';
 										tabView+='<th style="background-color:#B2DFDB">Total</th>';
 										tabView+='<th style="background-color:#FBACAC">Total Pendency</th>';
@@ -1534,33 +1541,34 @@ function getEofficeDesignationWisePendencyDetails()
 										tabView+='<th style="background-color:#FDCECE">31 - 60 days</th>';
 										tabView+='<th style="background-color:#FDCECE"> > 60 days</th>';
 									tabView+='</thead>';
-									for(var j in result[i].subList)
+									for(var i in result)
 									{
-										tabView+='<tr>';
-											tabView+='<td>'+result[i].subList[j].employeeName+'</td>';
-											tabView+='<td style="background-color:#B2DFDB">'+result[i].subList[j].created+'</td>';
-											tabView+='<td style="background-color:#FBACAC">'+result[i].subList[j].totalCount+'</td>';
-											tabView+='<td style="background-color:#FBACAC">'+result[i].subList[j].percentage+'</td>';
-											tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].zeroToSeven+'</td>';
-											tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].eightToFifteen+'</td>';
-											tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].sixteenToThirty+'</td>';
-											tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].thirtyoneToSixty+'</td>';
-											tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].aboveSixty+'</td>';
-										tabView+='</tr>';
-									}			
+										for(var j in result[i].subList)
+										{
+											tabView+='<tr>';
+												tabView+='<td>'+result[i].designation+'</td>';
+												tabView+='<td>'+result[i].subList[j].employeeName+'</td>';
+												tabView+='<td style="background-color:#B2DFDB">'+result[i].subList[j].created+'</td>';
+												tabView+='<td style="background-color:#FBACAC">'+result[i].subList[j].totalCount+'</td>';
+												tabView+='<td style="background-color:#FBACAC">'+result[i].subList[j].percentage+'</td>';
+												tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].zeroToSeven+'</td>';
+												tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].eightToFifteen+'</td>';
+												tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].sixteenToThirty+'</td>';
+												tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].thirtyoneToSixty+'</td>';
+												tabView+='<td style="background-color:#FDCECE">'+result[i].subList[j].aboveSixty+'</td>';
+											tabView+='</tr>';
+										}
+									}									
 								tabView+='</table>';
-							tabView+='</div>';
-						tabView+='</div>';
-					}
+						/* 	tabView+='</div>';
+						tabView+='</div>'; */
+					
 				tabView+='</div>';
 			tabView+='</div>';
 		tabView+='</div>';
 		$("#eOfficePendencyWise").html(tabView);
-		if(result.length > 6)
-		{
-			$(".eOfcScroll").mCustomScrollbar({setHeight:'400px'});
-		}
-		getEOfcDeptPendancyStatusWiseDetails();
+		$("#eOfcDataTableId").dataTable();
+		//getEOfcDeptPendancyStatusWiseDetails();
 	}
 }
 function getMeesavaKpiGraphBuild(divId,id){
@@ -1811,36 +1819,198 @@ function getSectorWiseOverviewCountDetails(sectorType,category,district){
 	});
 }
 function buildData(result,district,sectorType){
-		var str='';
-		str+='<table class="table table-bordered" id="'+district.replace(/\s+/g, '')+'DataTable">';
-			str+='<thead>';
-				str+='<th>District</th>';
-				str+='<th>Sector</th>';
-				str+='<th>Sub Sector</th>';
-				str+='<th>Department</th>';
-				str+='<th>Company</th>';
-				str+='<th>Line Of Activity</th>';
-				str+='<th>Category</th>';
-				str+='<th>Committed Investment(<i class="fa fa-inr"></i> in Cr.)</th>';
-				str+='<th>Committed Employment</th>';
-			str+='</thead>';
+	var str='';
+	str+='<table class="table table-bordered" id="'+district.replace(/\s+/g, '')+'DataTable">';
+		str+='<thead>';
+			str+='<th>District</th>';
+			str+='<th>Sector</th>';
+			str+='<th>Sub Sector</th>';
+			str+='<th>Department</th>';
+			str+='<th>Company</th>';
+			str+='<th>Line Of Activity</th>';
+			str+='<th>Category</th>';
+			str+='<th>Committed Investment(<i class="fa fa-inr"></i> in Cr.)</th>';
+			str+='<th>Committed Employment</th>';
+		str+='</thead>';
+		for(var i in result)
+		{
+			str+='<tr>';
+				str+='<td>'+result[i].districtName+'</td>';
+				str+='<td>'+result[i].itSector+'</td>';
+				str+='<td>'+result[i].subSector+'</td>';
+				str+='<td>'+result[i].deptName+'</td>';
+				str+='<td>'+result[i].nameOfCompany+'</td>';
+				str+='<td>'+result[i].lineOfActivity+'</td>';
+				str+='<td>'+result[i].category+'</td>';
+				str+='<td>'+result[i].investment+'</td>';
+				str+='<td>'+result[i].employment+'</td>';
+			str+='</tr>';
+		}
+		
+	str+='</table>';
+	$("#sectorModalTitleId").html(district+' '+'District'+' '+sectorType+' '+'Industries'+' '+'Details');
+	$("#sectorModalDivId").html(str);
+	$("#"+district.replace(/\s+/g, '')+"DataTable").dataTable();
+}
+
+function getDepartmentWiseHierarchicalDetails(){
+	$("#hieraricalViewErr").html(spinner);
+	$("#hieraricalViewErr").append("<p>Please wait till the chart loads</p>");
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getDepartmentWiseHierarchicalDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		$("#hieraricalViewErr").html(" ");
+		var hodCount = 0;
+		var hodTotal = 0;
+		for(var i in result)
+		{
+			if(i != 0 )
+			{
+				hodCount = hodCount + result[0].created;
+				hodTotal = hodTotal + result[0].totalCount;
+			}
+		}
+		var dataArr = [];
+			dataArr.push({"id": 1, "parentId": 0, "Name": "SECRETARY IT,E & C DEPARTMENT", "title": "SECRETARY IT,E & C DEPARTMENT"});
+			//dataArr.push({"id": 2, "parentId": 1, "Name": "MINISTER NARA LOKESH", "title": "MINISTER NARA LOKESH"});
+			for(var i in result[0].ministerList)
+			{
+				dataArr.push({"id": 2, "parentId":1,"Name": result[0].ministerList[i].employeeName, "title": result[0].ministerList[i].employeeName, "postname": result[0].ministerList[i].postName, "count": result[0].ministerList[i].totalCount+"/"+result[0].ministerList[i].created});
+			
+			}
+			dataArr.push({"id": 3, "parentId": 2, "Name": "ITEC", "title": "ITEC", "count": result[0].totalCount+"/"+result[0].created});
+			dataArr.push({"id": 4, "parentId": 2, "Name": "HODS", "title": "HODS", "count": hodTotal+"/"+hodCount});
+			var k = 5;
+			
 			for(var i in result)
 			{
-				str+='<tr>';
-					str+='<td>'+result[i].districtName+'</td>';
-					str+='<td>'+result[i].itSector+'</td>';
-					str+='<td>'+result[i].subSector+'</td>';
-					str+='<td>'+result[i].deptName+'</td>';
-					str+='<td>'+result[i].nameOfCompany+'</td>';
-					str+='<td>'+result[i].lineOfActivity+'</td>';
-					str+='<td>'+result[i].category+'</td>';
-					str+='<td>'+result[i].investment+'</td>';
-					str+='<td>'+result[i].employment+'</td>';
-				str+='</tr>';
+				if(i == 0 )
+				{
+					dataArr.push({"id": k, "parentId": 3 , "Name": result[i].departmentName, "title": result[i].departmentName, "count": result[i].totalCount+"/"+result[i].created});
+				}else{
+					dataArr.push({"id": k, "parentId": 4, "Name": result[i].departmentName, "title": result[i].departmentName, "count": result[i].totalCount+"/"+result[i].created});
+				}
+				k = k +1;
 			}
-			
-		str+='</table>';
-		$("#sectorModalTitleId").html(district+' '+'District'+' '+sectorType+' '+'Industries'+' '+'Details');
-		$("#sectorModalDivId").html(str);
-		$("#"+district.replace(/\s+/g, '')+"DataTable").dataTable();
-	}
+			for(var i in result[0].jsList)
+			{
+				dataArr.push({"id": k, "parentId": 5,"Name": result[0].jsList[i].employeeName, "title": result[0].jsList[i].employeeName, "postname": result[0].jsList[i].postName, "count": result[0].jsList[i].totalCount+"/"+result[0].jsList[i].created});
+				k = k +1;
+			}
+			for(var i in result[0].directorList)
+			{
+				dataArr.push({"id": k, "parentId": 5, "Name": result[0].directorList[i].employeeName, "title": result[0].directorList[i].employeeName, "postname": result[0].directorList[i].postName, "count": result[0].directorList[i].totalCount+"/"+result[0].directorList[i].created});
+				k = k +1;
+			}
+			for(var i in result[0].jdList)
+			{
+				dataArr.push({"id": k, "parentId": 5, "Name": result[0].jdList[i].employeeName, "title": result[0].jdList[i].employeeName, "postname": result[0].jdList[i].postName, "count": result[0].jdList[i].totalCount+"/"+result[0].jdList[i].created});
+				k = k +1;
+			}
+			for(var i in result[0].specialOfficerList)
+			{
+				dataArr.push({"id": k, "parentId": 12, "Name": result[0].specialOfficerList[i].employeeName, "title": result[0].specialOfficerList[i].employeeName, "postname": result[0].specialOfficerList[i].postName, "count": result[0].specialOfficerList[i].totalCount+"/"+result[0].specialOfficerList[i].created});
+				k = k +1;
+			}
+			for(var i in result[0].aaoList)
+			{
+				dataArr.push({"id": k, "parentId": 12, "Name": result[0].aaoList[i].employeeName, "title": result[0].aaoList[i].employeeName, "postname": result[0].aaoList[i].postName,"count": result[0].aaoList[i].totalCount+"/"+result[0].aaoList[i].created});
+				k = k +1;
+			}
+			for(var i in result[0].pmList)
+			{
+				dataArr.push({"id": k, "parentId": 13, "Name": result[0].pmList[i].employeeName, "title": result[0].pmList[i].employeeName, "postname": result[0].pmList[i].postName,"count": result[0].pmList[i].totalCount+"/"+result[0].pmList[i].created});
+				k = k +1;
+			}
+			for(var i in result[0].soList)
+			{
+				dataArr.push({"id": k, "parentId": 16, "Name": result[0].soList[i].employeeName, "title": result[0].soList[i].employeeName, "postname": result[0].soList[i].postName, "count": result[0].soList[i].totalCount+"/"+result[0].soList[i].created});
+				k = k +1;
+			}
+			for(var i in result[0].asoList)
+			{
+				dataArr.push({"id": k, "parentId": 25, "Name": result[0].asoList[i].employeeName, "title": result[0].asoList[i].employeeName, "postname": result[0].asoList[i].postName, "count": result[0].asoList[i].totalCount+"/"+result[0].asoList[i].created});
+				k = k +1;
+			}
+			for(var i in result[0].otherList)
+			{
+				dataArr.push({"id": k, "parentId": 26, "Name": result[0].otherList[i].employeeName, "title": result[0].otherList[i].employeeName, "postname": result[0].otherList[i].postName, "count": result[0].otherList[i].totalCount+"/"+result[0].otherList[i].created});
+				k = k +1;
+			}
+			for(var i in result)
+			{
+				if(i != 0 )
+				{
+					if(result[i].otherList != null && result[i].otherList.length > 0)
+					{
+						for(var j in result[i].otherList)
+						{
+							if(result[i].departmentName == "ANDHRA PRADESH TECHNOLOGY SERVICES")
+							{
+								dataArr.push({"id": k, "parentId": 6, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								k = k +1;
+							}else if(result[i].departmentName == "DIRECTOR ESD")
+							{
+								dataArr.push({"id": k, "parentId": 7, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								k = k +1;
+							}else if(result[i].departmentName == "ANDHRAPRADESH INFORMATION TECHNOLOGY ACADEMY")
+							{
+								dataArr.push({"id": k, "parentId": 8, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								k = k +1;
+							}else if(result[i].departmentName == "ANDHRAPRADESH INNOVATION SOCIETY")
+							{
+								dataArr.push({"id": k, "parentId": 9, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								k = k +1;
+							}else if(result[i].departmentName == "ANDHRAPRADESH E PRAGATI AUTHORITY")
+							{
+								dataArr.push({"id": k, "parentId": 10, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								k = k +1;
+							}else if(result[i].departmentName == "ANDHRAPRADESH ELECTRONICS AND IT AGENCY")
+							{
+								dataArr.push({"id": k, "parentId": 11, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								k = k +1;
+							}
+						}
+					}
+					
+				}
+			}
+		var peopleElement = document.getElementById("hieraricalView");
+		orgChart = new getOrgChart(peopleElement, {
+			primaryFields: ["name", "title", "postname", "count"],
+			enableEdit: false,
+			expandToLevel: 4,
+			scale: 12,
+			enableDetailsView: false,
+			layout: getOrgChart.MIXED_HIERARCHY_TOP_LINKS,
+			boxSizeInPercentage: {
+				minBoxSize: {
+					width: 5,
+					height: 7
+				},
+				boxSize: {
+					width: 20,
+					height: 25
+				},
+				maxBoxSize: {
+					width: 100,
+					height: 120
+				}
+			},
+			dataSource: dataArr
+		});
+		//orgChart.insertNode(5,{"id": k , "Name": "JS(HRD)"});
+		//orgChart.insertNode(5,{"id": k , "Name": "Director (Comms & Infra)"});
+		//orgChart.insertNode(5,{"id": k , "Name": "JD (Prom - 1)"});
+	});
+}
