@@ -514,10 +514,15 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			}
 			//Location LevelWise spliting the data in Constituency and Mandal and panchayat wise
 			List<Long> locationIdsList = new ArrayList<Long>();
+			List<Long> locationIdsListMuncipality = new ArrayList<Long>();
 			Map<Long,String> locationIdadsubLocationMap=new HashMap<Long, String>();
 			if(commonMethodsUtilService.isListOrSetValid(finalPartyList)){
 				for(ElectionInformationVO locationVO : finalPartyList){
-					locationIdsList.add(locationVO.getLocationId());
+					if(!locationVO.getLocationName().contains("MUNCIPALITY")){
+						locationIdsList.add(locationVO.getLocationId());
+					}else{
+						locationIdsListMuncipality.add(locationVO.getLocationId());
+					}
 				}
 				
 			List<Object[]> locationWiseObjsList = null;
@@ -525,7 +530,15 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				locationWiseObjsList = constituencyDAO.getLocationsDetailsBySearchType(locationIdsList, searchType);
 				
 			}else if(searchType.equalsIgnoreCase("mandal")){
-				locationWiseObjsList = boothDAO.getLocationWiseMandalAndConstituency(locationIdsList, searchType);
+				locationWiseObjsList = boothDAO.getLocationWiseMandalAndConstituency(locationIdsList, searchType,false);
+				if(locationIdsListMuncipality !=null && locationIdsListMuncipality.size()>0 ){
+					List<Object[]> locationWiseObjsListTmp = boothDAO.getLocationWiseMandalAndConstituency(locationIdsListMuncipality, searchType,true);
+					if(!commonMethodsUtilService.isListOrSetValid(locationWiseObjsList)){
+						locationWiseObjsList = new ArrayList<Object[]>();
+					}if(commonMethodsUtilService.isListOrSetValid(locationWiseObjsListTmp)){
+						locationWiseObjsList.addAll(locationWiseObjsListTmp);
+					}
+				}
 			}else if(searchType.equalsIgnoreCase("panchayat")){
 				locationWiseObjsList  = boothDAO.getLocationWiseMandalAndpanchayat(locationIdsList, searchType);
 			}
