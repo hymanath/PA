@@ -576,7 +576,7 @@ public class DebateService implements IDebateService{
 				//debateVO.setTelecastTime(debateDetails[6] != null ? debateDetails[6].toString() :"");
 				debateVO.setDebateSummery(debateDetails[5] != null ? StringEscapeUtils.unescapeJava(debateDetails[5].toString()) :"");
 				debateVO.setYoutubeUrl(debateDetails[6] != null ? debateDetails[6].toString():"");
-				debateVO.setDebateLocId(debateDetails[7] != null ? (Long)debateDetails[7] :0l);
+				debateVO.setDebateLocation(debateDetails[7] != null ? debateDetails[7].toString() :null);
 			}
 			// here we are getting the all details of the sma question and answer with percentage details
 			List<Object[]> debateSmsDetails = debateSmsQuestionOptionDAO.getDebateSmsQuestionsForSelectedDebate(debateId);

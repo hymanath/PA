@@ -690,8 +690,10 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		
 		str.append(" DS.debate.debateId,model.debate.startTime,model.debate.endTime," +
 				" DOB.observer.observerId,DOB.observer.observerName,model.debate.channel.channelId,model.debate.channel.channelName, " +
-				" model.debate.address.state.stateId " +
-				"  FROM DebateParticipant model,DebateSubject DS,DebateObserver DOB " );
+				" state.stateId,state.stateName " +
+				"  FROM DebateSubject DS,DebateObserver DOB,DebateParticipant model " +
+				" left join model.debate.address address " +
+				" left join address.state state  " );
 		/*if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 		      str.append(" , Debate model3 ");
 		    }*/
@@ -937,11 +939,15 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		
 		str.append("  DS.debate.debateId,model.debate.startTime,model.debate.endTime," +
 				" DOB.observer.observerId,DOB.observer.observerName,model.debate.channel.channelId,model.debate.channel.channelName, " +
-				" model.debate.address.state.stateId " +
-				"  FROM DebateParticipant model,DebateSubject DS,DebateObserver DOB " );
+				" state.stateId,state.stateName " +
+				"  FROM DebateSubject DS,DebateObserver DOB " );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 		      str.append(" , Debate model3 ");
 	       }
+		str.append(" ,DebateParticipant model " +
+				" left join model.debate.address address " +
+				" left join address.state state ");
+		
 		str.append(" WHERE model.debateId = DS.debate.debateId  " +
 				" and model.debate.debateId = DOB.debate.debateId" +
 				" and model.debate.isDeleted = 'N' ");
@@ -964,15 +970,15 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		      str.append(" and model3.address.state.stateId is null " );
 		    }
 		}else if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
-		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
+			if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 			      str.append(" and model.debateId = model3.debateId and model3.isDeleted ='N' ");
-			    }
-		if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
-			      str.append(" and model3.address.state.stateId is null " );
-			    }
-        if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
-        	str.append(" and model.candidate.state.stateId in (:debateParticipantLocationIdList) " );
-		}
+			 }
+			if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
+				      str.append(" and model3.address.state.stateId is null " );
+			}
+	        if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+	        	str.append(" and model.candidate.state.stateId in (:debateParticipantLocationIdList) " );
+			}
 		}
 		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
 			str.append(" group by DS.debate.debateId ");

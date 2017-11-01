@@ -28,6 +28,7 @@ public class CoreDebateVO implements Serializable {
 	private Long observerId;
 	private String observerName;
 	private Long debateLocationId;
+	private String debateLocation;
 	private List<CoreDebateVO> coreDebateVOList ;
 	
 	public Long getId() {
@@ -156,6 +157,13 @@ public class CoreDebateVO implements Serializable {
 	public void setDebateLocationId(Long debateLocationId) {
 		this.debateLocationId = debateLocationId;
 	}
+	public String getDebateLocation() {
+		return debateLocation;
+	}
+	public void setDebateLocation(String debateLocation) {
+		this.debateLocation = debateLocation;
+	}
+	
 	
 	
 }
