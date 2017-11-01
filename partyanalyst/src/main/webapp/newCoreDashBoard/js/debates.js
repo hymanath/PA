@@ -916,12 +916,22 @@ function getRolesPerformanceOfCandidate(roleId){
 		}
         
       });
+	  var debateLocationIdArry =[];
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               debateLocationIdArry.push($(this).val());
+        }else{
+			debateLocationIdArry.push(0);
+		}
+        
+      });
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
 			state:globalState,
 			roleId:roleId,
-			participantLocIdArry:participantLocIdArry
+			participantLocIdArry:participantLocIdArry,
+			debateLocationIdArry:debateLocationIdArry
 		}
 		$.ajax({
 			type : 'POST',
@@ -1342,6 +1352,15 @@ $(document).on("click",".perforamnceDebateCls",function(){
 	$(".debateModelCls").html("");	
 	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var stateId =[];
+	  /* var debateLocationIdArry =[];
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               debateLocationIdArry.push($(this).val());
+        }else{
+			debateLocationIdArry.push(0);
+		}
+        
+      }); */
   var participantLocIdArry =[];
      $(".radioStateCls1").each(function(){
         if($(this).prop('checked')==true){
