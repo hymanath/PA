@@ -1514,7 +1514,15 @@ public class ItcDashboardService implements IItcDashboardService {
 			            			  vo.setCreated(jObj.getLong("created"));
 			            			  vo.setTotalCount(jObj.getLong("totalcount"));
 			            			  deptvo.getAsoList().add(vo);
-			            		  }else{
+			            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MINISTER")){
+			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
+			            			  vo.setPostName(postName);
+			            			  vo.setDesignation(jObj.getString("designation"));
+			            			  vo.setEmployeeName(jObj.getString("employeename"));
+			            			  vo.setCreated(jObj.getLong("created"));
+			            			  vo.setTotalCount(jObj.getLong("totalcount"));
+			            			  deptvo.getMinisterList().add(vo);
+			            		  }else if(postName != null && !postName.trim().equalsIgnoreCase("MINISTER")){
 			            			  ItecEOfficeVO vo = new ItecEOfficeVO();
 			            			  vo.setPostName(postName);
 			            			  vo.setDesignation(jObj.getString("designation"));
