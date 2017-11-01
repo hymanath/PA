@@ -11,8 +11,15 @@ var globalToYesterdayDate = moment().subtract(1,'day').format('DD-MM-YYYY');
 var levelWiseData=["DISTRICT","VILLAGE"]
 getSessionToken();
 
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
 function getSessionToken(){
-	
+	$("#clorinatedMainViewId").html(spinner);
 	var json = {
 		leadName:"village_chlorination@psmri.com",
 		category:"vc_2991_12",
@@ -34,6 +41,15 @@ function getSessionToken(){
 		
 	});
 }
+$("#singleDateRangePicker").daterangepicker({
+	opens: 'left',
+	startDate: globalFromDate,
+	endDate: globalToDate,
+	locale: {
+	  format: 'DD-MM-YYYY'
+	}
+});
+
 $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	globalFromDate = picker.startDate.format('DD-MM-YYYY')
 	globalToDate = picker.endDate.format('DD-MM-YYYY')
@@ -123,7 +139,7 @@ function buildlevelWiseData(divId,sessionToken)
 }
 	
 	function buildWaterBodyCumulativeCounts(sessionToken){
-		$("#clorinatedMainViewId").html(spinner);
+		
 		
 		var ChlorinatArr=["Cumulative","Today","Yesterday"];
 		var str='';
