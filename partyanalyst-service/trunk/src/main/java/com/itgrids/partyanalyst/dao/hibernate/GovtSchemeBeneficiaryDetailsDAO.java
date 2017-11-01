@@ -297,12 +297,19 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id LEFT JOIN tehsil t  ON ua.tehsil_id = t.tehsil_id" +
 						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
 						" where ua.tehsil_id =:locationValue and ua.local_election_body is null and b.is_deleted='N' ");
-			} else if (locationscopeId == 5 || locationscopeId == 6l) {
+			}else if (locationscopeId == 5 || locationscopeId == 6l) {
 				queryStr.append(" SELECT t.panchayat_id,t.panchayat_name,b.benefiary_name,b.mobile_no,gs.scheme_name,sum(b.benefited_amount),b.govt_scheme_beneficiary_details_id " +
 						" from  govt_scheme_beneficiary_details b " +
 						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id LEFT JOIN panchayat t  ON ua.panchayat_id = t.panchayat_id" +
 						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
 						" where ua.panchayat_id =:locationValue and b.is_deleted='N' ");
+			}else if (locationscopeId == 7l) {
+				queryStr.append(" SELECT t.local_election_body_id,t.name,b.benefiary_name,b.mobile_no,gs.scheme_name,sum(b.benefited_amount),b.govt_scheme_beneficiary_details_id " +
+						" from  govt_scheme_beneficiary_details b " +
+						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id " +
+						" LEFT JOIN local_election_body t  ON ua.local_election_body = t.local_election_body_id " +
+						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id " +
+						" where ua.local_election_body =:locationValue and b.is_deleted='N' ");
 			}
 		}
 		if(govtSchemeId != null && govtSchemeId.longValue() >0){
@@ -359,7 +366,7 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id  LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id " +
 						" LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id LEFT JOIN caste c on cs.caste_id = c.caste_id " +
 						" where uvd.user_id = 1 and ua.tehsil_id =:locationValue and ua.local_election_body is null and b.is_deleted='N' ");
-			} else if (locationscopeId == 5 || locationscopeId == 6l) {
+			}else if (locationscopeId == 5 || locationscopeId == 6l) {
 				queryStr.append(" SELECT b.govt_scheme_beneficiary_details_id,c.caste_name " +
 						" from  govt_scheme_beneficiary_details b " +
 						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id LEFT JOIN panchayat t  ON ua.panchayat_id = t.panchayat_id" +
@@ -367,6 +374,15 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 						" LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id" +
 						" LEFT JOIN caste c on cs.caste_id = c.caste_id " +
 						" where uvd.user_id = 1 and ua.panchayat_id =:locationValue and b.is_deleted='N' ");
+			}else if (locationscopeId == 7l) {
+				queryStr.append(" SELECT b.govt_scheme_beneficiary_details_id,c.caste_name " +
+						" from  govt_scheme_beneficiary_details b " +
+						" LEFT JOIN user_address ua  ON b.user_address_id = ua.user_address_id " +
+						" LEFT JOIN local_election_body t  ON ua.local_election_body = t.local_election_body_id" +
+						" LEFT JOIN govt_schemes gs ON gs.govt_schemes_id = b.govt_schemes_id  " +
+						" LEFT JOIN  user_voter_details uvd  on b.voter_id = uvd.voter_id LEFT JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id" +
+						" LEFT JOIN caste c on cs.caste_id = c.caste_id " +
+						" where uvd.user_id = 1 and ua.local_election_body =:locationValue and b.is_deleted='N' ");
 			}
 		}
 		if(govtSchemeId != null && govtSchemeId.longValue() >0){
