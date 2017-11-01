@@ -843,17 +843,23 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		return query.list(); 		
 	}
 	
-	public List<Object[]> getScaleOfCandidate(Date startDate,Date endDate,List<Long> roles,String state,List<Long> participantLocationIdList){
+	public List<Object[]> getScaleOfCandidate(Date startDate,Date endDate,List<Long> roles,String state,List<Long> participantLocationIdList,List<Long> debateLocationIdList){
 		
 		StringBuilder str = new StringBuilder();
 		
 		str.append( "  select C.candidate_id as candidateId,C.lastname as candidateName,P.party_id as partyId,P.short_name as partyName," +
 				"  sum(DPC.scale) as sum,count(distinct D.debate_id) as count " +
-				" from debate_participant DP,debate_participant_charcs DPC,debate D,candidate C,party P,characteristics CH " );
+				" from debate_participant DP,debate_participant_charcs DPC,debate D,candidate C,party P,characteristics CH" );
+		if(debateLocationIdList != null && debateLocationIdList.size()>0){
+			str.append( " ,user_address UA " );
+		}
 		str.append( " where DP.debate_participant_id = DPC.debate_participant_id " +
 				" and DP.debate_id = D.debate_id  and DP.candidate_id = C.candidate_id " +
-				" and P.party_id = DP.party_id  and DPC.characteristics_id = CH.characteristics_id " +
-				" and D.is_deleted ='N'  and C.is_debate_candidate = 'Y' " +
+				" and P.party_id = DP.party_id  and DPC.characteristics_id = CH.characteristics_id " );
+		if(debateLocationIdList != null && debateLocationIdList.size()>0){
+			str.append( "  and D.address_id = UA.user_address_id " );
+		 }
+		str.append( " and D.is_deleted ='N'  and C.is_debate_candidate = 'Y' " +
 				"  and CH.is_deleted ='N' " );
 		   if(participantLocationIdList != null && participantLocationIdList.size() > 0 ){
 		      str.append(" and C.state_id in(:participantLocationIdList)");
@@ -867,7 +873,9 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 				}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
 					str.append(" and P.party_id not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
 				}
-				
+				if(debateLocationIdList != null && debateLocationIdList.size()>0){
+					str.append(" and UA.state_id in(:debateLocationIdList) ");
+				}
 				str.append(" group by C.candidate_id,P.party_id " +
 						"  order by sum(DPC.scale) desc  " );
 				
@@ -886,11 +894,14 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 				if(participantLocationIdList != null && participantLocationIdList.size() > 0 ){
 					query.setParameterList("participantLocationIdList", participantLocationIdList);
 				}
+				if(debateLocationIdList != null && debateLocationIdList.size()>0){
+					query.setParameterList("debateLocationIdList", debateLocationIdList);
+				}
 				return query.list();
 		
 	}
 	
-	public List<Object[]> getScaleOfCandidateNew(Date startDate,Date endDate,List<Long> roles,String state,List<Long> participantLocationIdList){
+	public List<Object[]> getScaleOfCandidateNew(Date startDate,Date endDate,List<Long> roles,String state,List<Long> participantLocationIdList,List<Long> debateLocationIdList){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -924,7 +935,9 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 			if(roles !=null && roles.size()>0){
 				str.append(" and model1.debateRoles.debateRolesId in (:roles) ");
 			}
-			
+			if(debateLocationIdList != null && debateLocationIdList.size()>0){
+				str.append(" and model.debateParticipant.debate.address.state.stateId in(:debateLocationIdList)");
+			}
 			str.append(" group by model.debateParticipant.candidate.candidateId, model.debateParticipant.party.partyId " +
 					" order by model.debateParticipant.party.newsOrderNo ");
 		
@@ -939,6 +952,9 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 			}
 			if(participantLocationIdList != null && participantLocationIdList.size() > 0 ){
 				query.setParameterList("participantLocationIdList", participantLocationIdList);
+			}
+			if(debateLocationIdList != null && debateLocationIdList.size()>0){
+				query.setParameterList("debateLocationIdList", debateLocationIdList);
 			}
 			return query.list(); 		
 

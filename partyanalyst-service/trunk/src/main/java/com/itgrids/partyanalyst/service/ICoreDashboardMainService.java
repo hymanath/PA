@@ -40,7 +40,7 @@ public interface ICoreDashboardMainService {
 	public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,Long stateId,String dateStr,String option,List<Long> enrollYrIds);
 	public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> programIdList, Long stateId, String dateStr,List<Long> enrollYrIds);
 	public List<List<IdNameVO>> getDistrictWiseCampAttendedMembers(List<Long> programIdList, Long stateId, String dateStr,List<Long> enrollmentYrIds);
-	public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,String endDateStr,List<Long> roles,String state,List<Long> participantLocationIdList);
+	public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,String endDateStr,List<Long> roles,String state,List<Long> participantLocationIdList,List<Long> debateLocationIdList);
 	public List<IdNameVO> getDebateRolesNew();
 	public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long stateId, String strDate);   //,String dateStr
 	public List<IdNameVO> getLeaderShipCandidateDtlsPerDist(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, Long distId, String dateStr,List<Long> enrollmentYearIds,List<Long> trainingCampProgramIds);
