@@ -157,29 +157,34 @@
 			</div>
 		</div>
 	</nav>
-	<section class="navbar-section">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-9">
-					<ul class="list-inline pull-right calendar_active_cls">
-						<li attr_val="Overall" ><img src="Assests/icons/Overall_icon.png"/>&nbsp;&nbsp;<b><span>Overall</span></b></li>
-						<li attr_val="Week"><img src="Assests/icons/Week_icon.png"/>&nbsp;&nbsp;<b><span> Week</span></b></li>
-						<li  attr_val="Month"><img src="Assests/icons/Month_icon.png"/>&nbsp;&nbsp;<b><span>Month</span></b></li>
-						<li attr_val="3Months" class="active"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>3Months</span></b></li>
-						<li attr_val="6Months"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>6Months</span></b></li>
-						<li attr_val="Year"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Year</span></b></li>
-						<li attr_val="custom" id="singleDateRangePicker"><img src="Assests/icons/CustomRange_icon.png"/>&nbsp;&nbsp;<b><span>Custom Range</span></b></li>
-						</li>
-					</ul>  
-				</div>
-			</div>
-		</div>
-	</section>
 </header>
 <main class="m_top5">
 	<div class="container-fluid">
-		<section>
-			<div id="levelWiseWaterTankDetails"></div>
+		<section class="chartDateWise m_top10">
+			<div class="date_block_css">
+				<div class="row">
+					<div class="col-sm-12">
+						<ul class="list-inline pull-right calendar_active_cls">
+							<li attr_val="Overall" ><img src="Assests/icons/Overall_icon.png"/>&nbsp;&nbsp;<b><span>Overall</span></b></li>
+							<li attr_val="Week"><img src="Assests/icons/Week_icon.png"/>&nbsp;&nbsp;<b><span> Week</span></b></li>
+							<li attr_val="Month" class="active"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Month</span></b></li>
+							<li attr_val="3Months" ><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>3Months</span></b></li>
+							<li attr_val="6Months"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>6Months</span></b></li>
+							<li attr_val="Year"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Year</span></b></li>
+							<li attr_val="custom" id="singleDateRangePicker"><img src="Assests/icons/CustomRange_icon.png"/>&nbsp;&nbsp;<b><span>Custom Range</span></b></li>
+							</li>
+						</ul> 
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="m_top10">
+			<div class="row">
+				<div id="clorinatedMainViewId"></div>
+			</div>
+		</section>
+		<section class="m_top10">
+				<div id="levelWiseWaterTankDetails"></div>
 		</section>
 	</div>
 </main>
