@@ -363,8 +363,8 @@ function getGovtSchemeWiseBenefitMembersCount(){
 
 function getMemberDetailsForBenefitInfo(locationLevelId,userAccessLevelValue,schemeId){
 	$("#memberDetailsBlockId").html(spinner);
-	
-		jsObj={
+	$("#memberDetailsBlockId").closest(".block").show();
+	jsObj={
 			locationScopeId	:locationLevelId,//
 			locationValue	:userAccessLevelValue,//
 			schemeId 		:schemeId
