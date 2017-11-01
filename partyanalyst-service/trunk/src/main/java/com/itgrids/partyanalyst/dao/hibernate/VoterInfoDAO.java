@@ -803,6 +803,14 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 					" where VI.report_level_value=C.constituency_id and C.constituency_id in  (select distinct assembly_id from parliament_assembly where parliament_id=:locationValue) " +
 					" AND VI.report_level_id =1 and VI.publication_date_id=22 " +
 					" group by C.constituency_id ");
+		}else if(locationScopeId == 7l){
+				sb.append(" leb.local_election_body_id as locationId,sum(VI.total_voters) as count " +
+						" from voter_info VI, constituency C, tehsil_constituency tc," +
+						" tehsil t,local_election_body leb where VI.report_level_value=leb.local_election_body_id and tc.constituency_id=C.constituency_id and " +
+						" tc.tehsil_id=t.tehsil_id and leb.tehsil_id=t.tehsil_id and C.constituency_id=:locationValue " +
+						" and VI.publication_date_id=22 AND " +
+						" VI.report_level_id =6 " +
+						" group by leb.local_election_body_id  ");
 		}
 				
 		 Query query = getSession().createSQLQuery(sb.toString()).
