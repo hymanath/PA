@@ -3317,14 +3317,22 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationWiseMandalAndConstituency(List<Long> thesilIds,String searchType){
+	public List<Object[]> getLocationWiseMandalAndConstituency(List<Long> thesilIds,String searchType,boolean isLocalBody){
 		//0 id,1name,2total,3districtId,4tehsilName,5 localBody,6localBody type
 		Query query = null;
-		if(searchType != null && searchType.equalsIgnoreCase("mandal")){
-			 query = getSession().createQuery("select model.constituency.constituencyId,model.constituency.name,model.tehsil.tehsilId,model.tehsil.tehsilName from Booth model "+
+		if(searchType != null && searchType.equalsIgnoreCase("mandal") && !isLocalBody){
+			 query = getSession().createQuery("select model.constituency.constituencyId,model.constituency.name,model.tehsil.tehsilId,model.tehsil.tehsilName from TehsilConstituency model "+
 					" where model.tehsil.tehsilId in(:thesilIds) " +
 					" order by model.constituency.constituencyId ");
-		}
+		}else if(searchType != null && searchType.equalsIgnoreCase("mandal") && isLocalBody){
+			 query = getSession().createSQLQuery("select c.constituency_id as constituencyId,c.name as constituencyName,leb.local_election_body_id as tehsilId,concat(leb.name,'-',et.election_type) as tehsilName" +
+			 		" From local_election_body leb,tehsil_constituency tc, constituency c, election_type et where leb.tehsil_id=tc.tehsil_id " +
+			 		"and tc.constituency_id=c.constituency_id and et.election_type_id=leb.election_type_id and leb.local_election_body_id in(:thesilIds) ")
+			 		.addScalar("constituencyId",Hibernate.LONG)
+			 		.addScalar("constituencyName",Hibernate.STRING)
+			 		.addScalar("tehsilId",Hibernate.LONG)
+			 		.addScalar("tehsilName",Hibernate.STRING);
+			}
 		if(thesilIds != null && thesilIds.size() >0){
 			query.setParameterList("thesilIds", thesilIds);
 		}
