@@ -1342,13 +1342,23 @@ $(document).on("click",".perforamnceDebateCls",function(){
 	$(".debateModelCls").html("");	
 	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var stateId =[];
+  var participantLocIdArry =[];
+     $(".radioStateCls1").each(function(){
+        if($(this).prop('checked')==true){
+               participantLocIdArry.push($(this).val());
+        }else{
+			participantLocIdArry.push(0);
+		}
+        
+      });
 	var jsObj={
 		partyId:partyId,
 		startDate:customStartDate,
 		endDate:customEndDate,
 		searchType:type,
 		candidateId:candidateId,
-		popupLocationIdArry:stateId
+		popupLocationIdArry:stateId, 
+		participantLocIdArry:participantLocIdArry
 	}		
 	$.ajax({
 	 type: "POST",
