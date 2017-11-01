@@ -4979,6 +4979,109 @@ public class NREGSTCSService implements INREGSTCSService{
 	
 	/*
 	 * Date : 01/11/2017
+	 * Author :Sravanth
+	 * @description : getDistrictWiseClorinationDetails
+	 */
+	
+	public List<WaterTanksClorinationVO> getDistrictWiseClorinationDetails(InputVO inputVO){
+		List<WaterTanksClorinationVO> returnList = new ArrayList<WaterTanksClorinationVO>(0);
+		try {
+			String url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")";
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject(url);
+			ClientResponse response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
+			
+			Map<Long,WaterTanksClorinationVO> districtMap = new LinkedHashMap<Long,WaterTanksClorinationVO>();
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				
+	 	    				Long districtId = jObj.getLong("dist_id");
+	 	    				WaterTanksClorinationVO distvo = districtMap.get(districtId);
+	 	    				if(distvo == null){
+	 	    					distvo = new WaterTanksClorinationVO();
+	 	    					distvo.setDistrictId(districtId);
+	 	    					distvo.setDistrictName(jObj.getString("dist_name"));
+	 	    					distvo.setNoOfSPs(1L);
+	 	    					distvo.setChecked(jObj.getLong("wb_checked"));
+	 	    					distvo.setClorinated(jObj.getLong("wb_chlorinated"));
+	 	    					distvo.setNotClorinated(jObj.getLong("wb_nil_chlorine"));
+	 	    					
+	 	    					districtMap.put(districtId, distvo);
+	 	    				}else{
+	 	    					distvo.setNoOfSPs(distvo.getNoOfSPs()+1L);
+	 	    					distvo.setChecked(distvo.getChecked()+jObj.getLong("wb_checked"));
+	 	    					distvo.setClorinated(distvo.getClorinated()+jObj.getLong("wb_chlorinated"));
+	 	    					distvo.setNotClorinated(distvo.getNotClorinated()+jObj.getLong("wb_nil_chlorine"));
+	 	    				}
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    	if(districtMap != null)
+	 	    		returnList = new ArrayList<WaterTanksClorinationVO>(districtMap.values());
+	 	      }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDistrictWiseClorinationDetails - NREGSTCSService service", e);
+		}
+		return returnList;
+	}
+	
+	/*
+	 * Date : 01/11/2017
+	 * Author :Sravanth
+	 * @description : getSpWiseClorinationDetails
+	 */
+	
+	public List<WaterTanksClorinationVO> getLocationWiseClorinationDetails(InputVO inputVO){
+		List<WaterTanksClorinationVO> returnList = new ArrayList<WaterTanksClorinationVO>(0);
+		try {
+			String url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")";
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject(url);
+			ClientResponse response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
+			
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				
+	 	    				WaterTanksClorinationVO distvo = new WaterTanksClorinationVO();
+	 	    				distvo.setVisitDate(jObj.getString("visit_date"));
+ 	    					distvo.setDistrictId(jObj.getLong("dist_id"));
+ 	    					distvo.setDistrictName(jObj.getString("dist_name"));
+ 	    					distvo.setAreaId(jObj.getLong("area_id"));
+ 	    					distvo.setAreaName(jObj.getString("area_name"));
+ 	    					distvo.setServicePointId(jObj.getLong("sp_id"));
+ 	    					distvo.setServicePointName(jObj.getString("sp_name"));
+ 	    					distvo.setVanId(jObj.getLong("van_id"));
+ 	    					distvo.setVanNo(jObj.getString("van_no"));
+ 	    					distvo.setNoOfSPs(1L);
+ 	    					distvo.setChecked(jObj.getLong("wb_checked"));
+ 	    					distvo.setClorinated(jObj.getLong("wb_chlorinated"));
+ 	    					distvo.setNotClorinated(jObj.getLong("wb_nil_chlorine"));
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+	 	 } catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseClorinationDetails - NREGSTCSService service", e);
+		}
+		return returnList;
+	}
+	
+	/*
+	 * Date : 01/11/2017
 	 * Author :Nandhini
 	 * @description : getWaterBodyCumulativeCounts
 	 */
