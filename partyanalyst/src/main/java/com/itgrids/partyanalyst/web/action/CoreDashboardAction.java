@@ -2185,7 +2185,14 @@ public String getRolesPerformanceOfCandidate(){
 					participantLocationIdList.add(Long.parseLong(participantLocIdArry.getString(i)));          
 				}  
 			}
-			codeDebateVoList = coreDashboardMainService.getRolesPerformanceOfCandidate(jObj.getString("startDate"),jObj.getString("endDate"),roles,jObj.getString("state"),participantLocationIdList);
+			JSONArray popupLocationIdArry = jObj.getJSONArray("debateLocationIdArry");  
+			List<Long> debateLocationIdList = new ArrayList<Long>();
+			if(popupLocationIdArry != null && popupLocationIdArry.length() > 0){
+				for (int i = 0; i < popupLocationIdArry.length(); i++){
+					debateLocationIdList.add(Long.parseLong(popupLocationIdArry.getString(i)));          
+				}  
+			}
+			codeDebateVoList = coreDashboardMainService.getRolesPerformanceOfCandidate(jObj.getString("startDate"),jObj.getString("endDate"),roles,jObj.getString("state"),participantLocationIdList,debateLocationIdList);
 					
 		}catch (Exception e) {
 			LOG.error("Exception raised at getRolesPerformanceOfCandidate() method of CoreDashBoardAction", e);
