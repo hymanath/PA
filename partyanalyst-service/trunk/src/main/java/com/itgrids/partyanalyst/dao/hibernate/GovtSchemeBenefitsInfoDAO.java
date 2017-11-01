@@ -192,7 +192,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 			if (locationType == 2l) {
 				queryStr.append(" ,District district where  model.locationValue= district.districtId " +
 						" and (district.districtId between 11 and 23) and model.locationScopeId =3 ");
-			}else if (locationType == 3l || locationType == 10l){
+			}else if (locationType == 3l){
 				queryStr.append(" ,Constituency constituency where  model.locationValue= constituency.constituencyId" +
 						"  and constituency.district.districtId =:locationValue and model.locationScopeId=:locationType");
 			}else if (locationType == 4l) {
@@ -201,6 +201,9 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 			}else if (locationType == 5l) {
 				queryStr.append(" ,Panchayat panchayat where model.locationValue = panchayat.panchayatId " +
 						" and panchayat.tehsil.tehsilId =:locationValue and model.locationScopeId=:locationType ");
+			}else if(locationType == 10l){
+				queryStr.append(" ,Constituency constituency where  model.locationValue= constituency.constituencyId" +
+						"  and constituency.constituencyId in(select distinct assemblyId from ParliamentAssembly where parliamentId=:locationValue) and model.locationScopeId=:locationType");
 			}
 		}
 		
@@ -220,7 +223,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 			}
 		}
 		Query query = getSession().createQuery(queryStr.toString());
-			if (locationType != 2l && locationType.longValue() != 10l){ 
+			if (locationType != 2l){ 
 				query.setParameter("locationType", locationType+1l);
 				if(locationType == 4l){
 					query.setParameter("locationValue", locationValue);
@@ -264,7 +267,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 			if (locationType == 2l) {
 				queryStr.append(" ,District district where  model.locationValue= district.districtId " +
 						" and (district.districtId between 11 and 23) and model.locationScopeId =3 ");
-			}else if (locationType == 3l || locationType == 10l){
+			}else if (locationType == 3l){
 				queryStr.append(" ,Constituency constituency where  model.locationValue= constituency.constituencyId" +
 						"  and constituency.district.districtId =:locationValue and model.locationScopeId=:locationType");
 			}else if (locationType == 4l) {
@@ -273,6 +276,9 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 			}else if (locationType == 5l) {
 				queryStr.append(" ,Panchayat panchayat where model.locationValue = panchayat.panchayatId " +
 						" and panchayat.tehsil.tehsilId =:locationValue and model.locationScopeId=:locationType ");
+			}else if(locationType == 10l){
+				queryStr.append(" ,Constituency constituency where  model.locationValue= constituency.constituencyId" +
+						"  and constituency.constituencyId in(select distinct assemblyId from ParliamentAssembly where parliamentId=:locationValue) and model.locationScopeId=:locationType");
 			}
 		}
 		
@@ -288,7 +294,7 @@ public class GovtSchemeBenefitsInfoDAO  extends GenericDaoHibernate<GovtSchemeBe
 				}
 		}
 		Query query = getSession().createQuery(queryStr.toString());
-			if (locationType != 2l && locationType.longValue() != 10l){ 
+			if (locationType != 2l){ 
 				query.setParameter("locationType", locationType+1l);
 				if(locationType == 4l){
 					query.setParameter("locationValue", locationValue);

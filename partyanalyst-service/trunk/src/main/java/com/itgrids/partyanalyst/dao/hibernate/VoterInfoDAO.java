@@ -762,7 +762,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 			sb.append("C.district_id as locationId,sum(VI.total_voters) as count from voter_info VI,constituency C,district D " +
 				" where VI.report_level_value=C.constituency_id and D.district_id=C.district_id and (C.district_id between 11 and 23) AND VI.report_level_id=1 " +
 				" and VI.publication_date_id=22 group by C.district_id ");
-		}else if(locationScopeId != null && locationScopeId == 3l){
+		}else if(locationScopeId != null && locationScopeId == 3l ){
 			sb.append(" C.constituency_id as locationId, sum(VI.total_voters) as count from voter_info VI,constituency C" +
 					" where VI.report_level_value=C.constituency_id and C.district_id =:locationValue " +
 					" AND VI.report_level_id =1 and VI.publication_date_id=22 " +
@@ -798,23 +798,18 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 					" vi.report_level_value=p.panchayat_id " +
 					" and p.panchayat_id=:locationValue and vi.report_level_id=3 " +
 					" group by p.panchayat_id ");
+		}else if(locationScopeId != null && locationScopeId == 10l ){
+			sb.append(" C.constituency_id as locationId, sum(VI.total_voters) as count from voter_info VI,constituency C" +
+					" where VI.report_level_value=C.constituency_id and C.constituency_id in  (select distinct assembly_id from parliament_assembly where parliament_id=:locationValue) " +
+					" AND VI.report_level_id =1 and VI.publication_date_id=22 " +
+					" group by C.constituency_id ");
 		}
 				
 		 Query query = getSession().createSQLQuery(sb.toString()).
 				 addScalar("locationId",Hibernate.LONG)
 				 .addScalar("count", Hibernate.LONG);
-		 if(locationScopeId != null && locationScopeId == 3l){
+		 if(locationScopeId != null && locationScopeId.longValue()>0){
 			 query.setParameter("locationValue",locationValue);
-		 }else if(locationScopeId != null && locationScopeId == 4l){
-			 if(!isLocationBodyId){
-			  query.setParameter("locationValue",locationValue);
-		  }else{
-			  query.setParameter("locationValue",locationValue);
-			  }
-		  }else if(locationScopeId != null && locationScopeId == 5l){
-			  query.setParameter("locationValue",locationValue);
-		  }else if(locationScopeId != null && locationScopeId == 6l){
-			  query.setParameter("locationValue",locationValue);
 		  }
 		return query.list();
     }
