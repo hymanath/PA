@@ -4655,7 +4655,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	       sb.append(" group by model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId,model.partyMeetingType.partyMeetingTypeId ");
 	       
 	       if(type != null && type.equalsIgnoreCase("meetings")){
-	    	   sb.append("  , model.partyMeetingId " );
+	    	   sb.append("  , model.partyMeetingId order by model.startDate desc " );
 	       }
 	       Query query = getSession().createQuery(sb.toString());
 	       
