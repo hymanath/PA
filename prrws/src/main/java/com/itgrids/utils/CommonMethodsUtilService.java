@@ -16,12 +16,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.zip.Adler32;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -1062,4 +1065,50 @@ public class CommonMethodsUtilService {
 		      return amountStr+"."+decAmount;  
 		     
 		    }
+		public Session getNewSessionObject(String host)
+		{
+			try{
+				Session session = null;
+				Properties props = null;
+				
+				if(host.equalsIgnoreCase(IConstants.SERVER))
+				{
+			        props = new Properties();
+			 
+			        props.put("mail.smtp.host", IConstants.HOST);
+			        props.put("mail.smtp.port", IConstants.PORT);
+			        props.put("mail.smtp.user", IConstants.EMAIL_USERNAME);
+			        props.put("mail.smtp.socketFactory.port", IConstants.PORT);
+			        props.put("mail.smtp.auth", "true");
+			        props.put("mail.smtp.starttls.enable", "true");
+			        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			        props.put("mail.smtp.socketFactory.fallback", "true");
+			 
+			        try {
+			            	session = Session.getInstance(props, new javax.mail.Authenticator() {
+							protected PasswordAuthentication getPasswordAuthentication() {
+								return new PasswordAuthentication(IConstants.EMAIL_USERNAME,IConstants.EMAIL_PASSWORD);
+							}
+						});
+			            
+			            session.setDebug(true);
+			        }catch (Exception e) {
+			        	return null;
+					}
+			            
+				}
+				else if(host.equalsIgnoreCase(IConstants.SERVER))
+				{
+					props = System.getProperties();
+					session = Session.getDefaultInstance(props);
+				}
+				else
+					LOG.warn("Please specify the host to send the Emails");
+				
+				return session;
+			}catch (Exception e) {
+				LOG.error("Error During Creating MimeMessage Object - Please Check Once, Exception is - "+e);
+				return null;
+			}
+		}
 }
