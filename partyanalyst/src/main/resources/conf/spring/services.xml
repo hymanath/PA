@@ -2781,6 +2781,7 @@
 		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
 		<property name="cadreRegistrationAllowAreasDAO" ref="cadreRegistrationAllowAreasDAO" />
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
+		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
 	</bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">

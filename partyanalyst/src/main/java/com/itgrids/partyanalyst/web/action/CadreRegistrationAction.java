@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +35,8 @@ import com.itgrids.partyanalyst.dto.FieldReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValuePairVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
-import com.itgrids.partyanalyst.dto.MeetingDetailsInfoVO;
 import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
@@ -173,8 +172,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<MeetingBasicDetailsVO> basicDetailsVOs;
 	private ICoreDashboardInsuranceService coreDashboardInsuranceService;
 	private List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs;
+	private List<KeyValuePairVO> keyValuePairVOList ;
 	
 	
+	public List<KeyValuePairVO> getKeyValuePairVOList() {
+		return keyValuePairVOList;
+	}
+	public void setKeyValuePairVOList(List<KeyValuePairVO> keyValuePairVOList) {
+		this.keyValuePairVOList = keyValuePairVOList;
+	}
 	public List<CoreDashboardInsuranceVO> getCoreDashboardInsuranceVOs() {
 		return coreDashboardInsuranceVOs;
 	}
@@ -3525,4 +3531,41 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   		}
   		return Action.SUCCESS;
   	}
+  	
+  	public String getStateWiseDistrictsForUsers() {
+
+		try {
+			jobj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			Long stateId = jobj.getLong("stateId");
+
+			keyValuePairVOList = cadreRegistrationService.getStateWiseDistrictsForUsers(stateId,user.getRegistrationID());
+
+		} catch (Exception e) {
+			LOG.error(
+					"Exception raised in getStateWiseDistrict method in CadreRegistrationAction Action",
+					e);
+		}
+		return Action.SUCCESS;
+	}
+  	
+  	public String getConstituenciesByDistrictForUser() {
+
+		try {
+			jobj = new JSONObject(getTask());
+
+			Long districtId = jobj.getLong("districtId");
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			keyValuePairVOList = cadreRegistrationService.getConstituenciesByDistrictForUser(districtId,user.getRegistrationID());
+
+		} catch (Exception e) {
+			LOG.error(
+					"Exception raised in getStateWiseDistrict method in CadreRegistrationAction Action",
+					e);
+		}
+		return Action.SUCCESS;
+	}
 }

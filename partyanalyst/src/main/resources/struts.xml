@@ -18409,5 +18409,15 @@
 			<param name="root">electionInformationVOLst</param>       
 		</result>
    </action>
+   <action name="getDistrictsForUserStateWiseAction" class="cadreRegistrationAction"  method="getStateWiseDistrictsForUsers">
+			<result type="json" name="success">
+			<param name="root">keyValuePairVOList</param>
+		</result>
+	</action>
+	<action name="getConstituenciesByDistrictForUserAction" class="cadreRegistrationAction"  method="getConstituenciesByDistrictForUser">
+			<result type="json" name="success">
+			<param name="root">keyValuePairVOList</param>
+		</result>
+	</action>
  </package>
 </struts>
