@@ -2882,6 +2882,10 @@ public class NREGSTCSService implements INREGSTCSService{
 								vo.setTarget(jObj.getString("TARGET"));
 								vo.setCompleted(jObj.getString("ACHMT"));
 							}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("coffee")){
+								vo.setTarget(jObj.getString("TARGET_AREA"));
+								vo.setCompleted(jObj.getString("PLANT_AREA"));
+							}
 	 	    				else{
 	 	    					vo.setTarget(jObj.getString("TARGET"));
 		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
@@ -2903,6 +2907,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					vo.setPercentage(jObj.getString("PER"));
 	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Payments"))
 	 	    					vo.setPENDINGRESPONSECNT(jObj.getString("PENDINGRESPONSECNT"));
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("coffee"))
+	 	    					vo.setPercentage(jObj.getString("PLANT_PERC"));
 	 	    				else
 	 	    					vo.setPercentage(jObj.getString("PERCENTAGE"));
 	 	    				
