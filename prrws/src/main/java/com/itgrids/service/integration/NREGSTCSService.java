@@ -1,7 +1,6 @@
 package com.itgrids.service.integration;
 
 import java.math.BigDecimal;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -604,8 +603,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    						vo.setCompleted(jObj.getLong("COMPLETED"));
 		 	    				
 		 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
-		 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")
-		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worms")
+		 	    				//(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")
+		 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worms")
 		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle drinking water troughs")
 		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodders"))
 		 	    							&& inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state")){

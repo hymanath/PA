@@ -22,8 +22,15 @@ public class NregaConsolidatedInputVO implements Serializable{
 	private String searchType;
 	private String program;
 	private String categoryName;
+	private String groupName;
 	
 	
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 	public void setConvergenceTypeId(Long convergenceTypeId) {
 		this.convergenceTypeId = convergenceTypeId;
 	}
