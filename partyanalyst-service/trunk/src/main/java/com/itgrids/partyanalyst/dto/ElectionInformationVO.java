@@ -2,11 +2,8 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ElectionInformationVO implements Serializable, Cloneable {
 	
@@ -62,6 +59,12 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	private List<Long> idsList=new LinkedList<Long>();
 	private List<ElectionInformationVO> schemesList = new ArrayList<ElectionInformationVO>();
 	private List<String> partyNamesList=new ArrayList<String>();
+	
+	private  Long mlaCandidateEarnedVotes=0L;
+	private  Long mpCandidateEarnedVotes=0L;
+	private  Long assemblyValidVotes=0L;
+	private  Long parliamentValidVotes=0L;
+	
 	private String totalSeatsCount1;
 	private String participatedSeatsCount1;
 	private String status1;
@@ -385,23 +388,28 @@ public class ElectionInformationVO implements Serializable, Cloneable {
 	public void setStatus1(String status1) {
 		this.status1 = status1;
 	}
-	
-	
-	/* public boolean equals(Object obj) {
-	        boolean returner = false;
-	        if (obj instanceof ElectionInformationVO) {
-	        	ElectionInformationVO infoObj = (ElectionInformationVO) obj;
-	        	if(this.partyId.equals(infoObj.getPartyId()))
-	        		returner =  true;
-	        } else {
-	            returner = false;
-	        }
-	        return returner;
-	    }
-	   
-	    public int hashCode() {
-	        return 1;
-	    }
-	    */
-	
+	public Long getMlaCandidateEarnedVotes() {
+		return mlaCandidateEarnedVotes;
+	}
+	public void setMlaCandidateEarnedVotes(Long mlaCandidateEarnedVotes) {
+		this.mlaCandidateEarnedVotes = mlaCandidateEarnedVotes;
+	}
+	public Long getMpCandidateEarnedVotes() {
+		return mpCandidateEarnedVotes;
+	}
+	public void setMpCandidateEarnedVotes(Long mpCandidateEarnedVotes) {
+		this.mpCandidateEarnedVotes = mpCandidateEarnedVotes;
+	}
+	public Long getAssemblyValidVotes() {
+		return assemblyValidVotes;
+	}
+	public void setAssemblyValidVotes(Long assemblyValidVotes) {
+		this.assemblyValidVotes = assemblyValidVotes;
+	}
+	public Long getParliamentValidVotes() {
+		return parliamentValidVotes;
+	}
+	public void setParliamentValidVotes(Long parliamentValidVotes) {
+		this.parliamentValidVotes = parliamentValidVotes;
+	}
 }

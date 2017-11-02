@@ -213,7 +213,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 			//for top 15 castes
 			voList = compareList(voList,"desending");
 			List<LocationVotersVO> topCastesList = new ArrayList<LocationVotersVO>(0);
-			for(int i=0; i<=15; i++){
+			for(int i=0; i<voList.size(); i++){
 				LocationVotersVO topCastesVo = voList.get(i);
 				topCastesList.add(topCastesVo);
 			}
