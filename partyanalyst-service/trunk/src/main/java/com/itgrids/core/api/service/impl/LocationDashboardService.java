@@ -5335,9 +5335,9 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 					@Override
 					public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
 						int val;
-							val= (o2.getElectionType()).compareTo(o1.getElectionType());
+						 	val= (o2.getElectionYear()).compareTo(o1.getElectionYear());
 						 if(val ==0)
-							 val= (o2.getElectionYear()).compareTo(o1.getElectionYear());
+							 val= (o1.getElectionType()).compareTo(o2.getElectionType());
 						 return val;
 					}
 				});
