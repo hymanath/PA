@@ -1202,30 +1202,48 @@ $(document).on("click",".debateDetailsCls",function(){
 		$("#debateModelDivId").modal("show");
 		var partyId = $(this).attr("attr_party_id");		
 		var candidateId = $(this).attr("attr_candidate_id");		
-        var stateId =$(this).attr("attr_state_id");		
+        //var stateId =$(this).attr("attr_state_id");		
 		getCandidateWiseDebateDetailsOfCore(partyId,candidateId,stateId);		
 	});
 	
-function getCandidateWiseDebateDetailsOfCore(partyId,candidateId,stateId){
+function getCandidateWiseDebateDetailsOfCore(partyId,candidateId){
 	$(".debateModelCls").html("");	
 	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var debateLocationIdArry =[];
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               debateLocationIdArry.push($(this).val());
+        }else{
+			debateLocationIdArry.push(0);
+		}
+        
+      }); 
+  var participantLocIdArry =[];
+     $(".radioStateCls1").each(function(){
+        if($(this).prop('checked')==true){
+               participantLocIdArry.push($(this).val());
+        }else{
+			participantLocIdArry.push(0);
+		}
+        
+      });
 	var jsObj={
 		partyId:partyId,
 		startDate:customStartDate,
 		endDate:customEndDate,
 		candidateId:candidateId,
-		debateLocationIdArry:debateLocationIdArry
+		debateLocationIdArry:debateLocationIdArry,
+		participantLocIdArry:participantLocIdArry
 	}		
 	$.ajax({
 	 type: "POST",
 	 url: "getCandidateWiseDebateDetailsOfCoreAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		buildDebateModelDetails(result,"debate",stateId);
+		buildDebateModelDetails(result,"debate");
 	});
 }
-function buildDebateModelDetails(result,type,stateId){
+function buildDebateModelDetails(result,type){
 		var str = '';
 		if(result !=null && result.length>0){
 								
@@ -1284,8 +1302,7 @@ function buildDebateModelDetails(result,type,stateId){
 		}
 		
 }
-function buildCoreDebatesBasicDetailsOfParty(result,type,stateId){
-	//alert(stateId);
+function buildCoreDebatesBasicDetailsOfParty(result,type){
 	var str = '';
 		if(result !=null && result.length>0){
 								
@@ -1319,9 +1336,9 @@ function buildCoreDebatesBasicDetailsOfParty(result,type,stateId){
 										candiName=getTitleContent(result[i].candidateName,30);
 							}		
 						if(type =="candidate"){
-							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' attr_state_id="'+stateId+'" style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+'  style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
 						}							
-							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+'  attr_state_id="'+stateId+'" style="cursor:pointer;"><a>'+subject+'</a></td>';
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+'   style="cursor:pointer;"><a>'+subject+'</a></td>';
 							str+='<td>'+result[i].startTime+'</td>';
 							str+='<td>'+result[i].endTime+'</td>';
 							str+='<td>'+result[i].observerName+'</td>';
@@ -1351,8 +1368,8 @@ $(document).on("click",".perforamnceDebateCls",function(){
 	var candidateId = $(this).attr("attr_candidateId");
 	$(".debateModelCls").html("");	
 	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	  var stateId =[];
-	  /* var debateLocationIdArry =[];
+	  //var stateId =[];
+	   var debateLocationIdArry =[];
      $(".radioStateCls").each(function(){
         if($(this).prop('checked')==true){
                debateLocationIdArry.push($(this).val());
@@ -1360,7 +1377,7 @@ $(document).on("click",".perforamnceDebateCls",function(){
 			debateLocationIdArry.push(0);
 		}
         
-      }); */
+      }); 
   var participantLocIdArry =[];
      $(".radioStateCls1").each(function(){
         if($(this).prop('checked')==true){
@@ -1376,7 +1393,7 @@ $(document).on("click",".perforamnceDebateCls",function(){
 		endDate:customEndDate,
 		searchType:type,
 		candidateId:candidateId,
-		popupLocationIdArry:stateId, 
+		popupLocationIdArry:debateLocationIdArry, 
 		participantLocIdArry:participantLocIdArry
 	}		
 	$.ajax({
@@ -1384,7 +1401,7 @@ $(document).on("click",".perforamnceDebateCls",function(){
 	 url: "getCoreDebateBasicDetailsOfPartyAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		buildCoreDebatesBasicDetailsOfParty(result,type,stateId);
+		buildCoreDebatesBasicDetailsOfParty(result,type);
 	});	
 });
 $(document).on("click",".debatesSettingsCloseBody",function(){
