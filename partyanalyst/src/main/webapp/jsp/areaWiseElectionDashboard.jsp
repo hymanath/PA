@@ -169,7 +169,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="m_top10"  style="display:none">
+		<section class="m_top10" >
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block boderBlock">
@@ -201,13 +201,16 @@
 									<!--<option value="886">TRS</option>-->
 								</select>
 							</div>
+							<div class="col-sm-2 m_top20">
+								<input value ="true" type="checkbox" name="allianceParty" id="croosVotingAllaincePartyFieldId" class="checkedMainByeType" /><span class="f-12">WITH ALLAINCE</span>
+							</div>
 							<div class="col-sm-3 m_top20">
 								<button class="btn btn-success buttonClr getDetailsForCrossVotingCls">Submit</button>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-sm-12">
-								<div id="crossVotingDetailsBlockId" style="display:none"></div>
+								<div id="crossVotingDetailsBlockId"></div>
 							</div>
 						</div>
 					</div>

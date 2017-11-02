@@ -1369,7 +1369,7 @@ public String getElectionInformationLocationWise(){
 				 Long locationLevelId = jObj.getLong("locationLevelId");
 				 List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIdsArr"));
 				 listElectionInformationVO = locationWiseElectionInformationDetalsService.getLocationBasedCrossVotingReult( electionYrs,  locationLevelId, locationValues,null,subTypes,
-						 partyIds,electionScopeIds);
+						 partyIds,electionScopeIds,withAlliance);
 				
 		 }catch(Exception e){
 			 successMsg = "failure";

@@ -4530,5 +4530,6 @@
     	<property name="electionAllianceDAO" ref="electionAllianceDAO" />
     	<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="boothDAO" ref="boothDAO" />
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
     	</bean>
 </beans>			
