@@ -449,6 +449,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				str += "\"program\" : \""+inputVO.getProgram()+"\",";
 			if(inputVO.getCategory() != null)
 				str += "\"categoryName\" : \""+inputVO.getCategory()+"\",";
+			if(inputVO.getGroupName() != null)
+				str += "\"groupName\" : \""+inputVO.getGroupName()+"\",";
 			
 			if(str.length() > 1)
 				str = str.substring(0,str.length()-1);
@@ -2890,7 +2892,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("SMC Trench") || inputVO.getType().toString().trim().equalsIgnoreCase("Imp to CD")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("MPT_PT") || inputVO.getType().toString().trim().equalsIgnoreCase("GC Works")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CD_CW")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Check Dam") || inputVO.getType().toString().trim().equalsIgnoreCase("Rock fill dams"))
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Check Dam") || inputVO.getType().toString().trim().equalsIgnoreCase("Rock fill dams")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Others MCC"))
 	 	    					vo.setPercentage(jObj.getString("PERC"));
 	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")
@@ -5139,5 +5142,111 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at getWaterBodyCumulativeCounts - NREGSTCSService service", e);
 		}
 		return finaVO;
+	}
+	
+	/*
+	 * Date : 2/11/2017
+	 * Author :Nandhini
+	 * @description : getNregaOtherMCCLevelData
+	 */
+	public List<NregsDataVO> getNregaOtherMCCLevelData(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			
+			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MCCOthersService/MCCOthersData";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUEID").toString().trim().length() > 0 ? jObj.getString("UNIQUEID") : "1").toString()));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TARGET"));
+	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    			vo.setPercentage(jObj.getString("PERCENTAGE"));
+		 	    			voList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+	    } catch (Exception e) {
+			LOG.error("Exception raised at getNregaOtherMCCLevelData - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	/*
+	 * Date :02/11/2017
+	 * Author :Nandhini
+	 * @description : getNregaLevelsWiseDataFrCoffeePlantation
+	 */
+	public List<NregsDataVO> getNregaLevelsWiseDataFrCoffeePlantation(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			
+			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CoffeeService/CoffeeData";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTargetACRES(jObj.getString("TARGET_AREA"));
+	 	    				vo.setPittingArea(jObj.getString("PIT_AREA"));
+	 	    				vo.setPlantingArea(jObj.getString("PLANT_AREA"));
+	 	    				vo.setPencentageOfPlanting(jObj.getString("PLANT_PERC"));
+	 	    				vo.setTotalExpenditure(jObj.getString("TOTAL_EXP"));
+	 	    				vo.setPittingExp(jObj.getString("PIT_PERC"));
+	 	    				vo.setPlantingExp(jObj.getString("PLANT_EXP"));
+	 	    				vo.setPitingPerc(jObj.getString("PIT_PERC"));
+	 	    				
+	 	    				voList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	   }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataFrCoffeePlantation - NREGSTCSService service", e);
+		}
+		
+		return voList;
 	}
 }

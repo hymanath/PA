@@ -517,4 +517,28 @@ public class NregsDashboardController {
 		}
 		return returnList;
 	}
+	
+	@PostMapping("/getNregaOtherMCCLevelData")
+	public @ResponseBody List<NregsDataVO> getNregaOtherMCCLevelData(@RequestBody InputVO vo){
+		List<NregsDataVO> locationVOList = null;
+		try {
+			locationVOList = nregsTcsService.getNregaOtherMCCLevelData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaOtherMCCLevelData - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
+	
+	@PostMapping("/getNregaLevelsWiseDataFrCoffeePlantation")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsWiseDataFrCoffeePlantation(@RequestBody InputVO vo){
+		List<NregsDataVO> locationVOList = null;
+		try {
+			locationVOList = nregsTcsService.getNregaLevelsWiseDataFrCoffeePlantation(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataFrCoffeePlantation - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
 }

@@ -127,6 +127,9 @@ public class NregsDataVO implements Serializable{
 	
 	private String targetPalnting;
 	private String targetPitting;
+	private String pittingExp = "0";
+	private String plantingExp = "0";
+	private String pitingPerc = "0";
 	
 	
 	public String getTargetPalnting() {
@@ -764,5 +767,23 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setOpgkTarget(String opgkTarget) {
 		this.opgkTarget = opgkTarget;
+	}
+	public String getPittingExp() {
+		return pittingExp;
+	}
+	public void setPittingExp(String pittingExp) {
+		this.pittingExp = pittingExp;
+	}
+	public String getPlantingExp() {
+		return plantingExp;
+	}
+	public void setPlantingExp(String plantingExp) {
+		this.plantingExp = plantingExp;
+	}
+	public String getPitingPerc() {
+		return pitingPerc;
+	}
+	public void setPitingPerc(String pitingPerc) {
+		this.pitingPerc = pitingPerc;
 	}
 }
