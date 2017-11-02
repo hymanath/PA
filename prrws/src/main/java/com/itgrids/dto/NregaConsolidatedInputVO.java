@@ -21,6 +21,7 @@ public class NregaConsolidatedInputVO implements Serializable{
 	private List<Long> componentIds = new ArrayList<Long>();
 	private String searchType;
 	private String program;
+	private String categoryName;
 	
 	
 	public void setConvergenceTypeId(Long convergenceTypeId) {
@@ -109,5 +110,11 @@ public class NregaConsolidatedInputVO implements Serializable{
 	}
 	public void setComponentIds(List<Long> componentIds) {
 		this.componentIds = componentIds;
+	}
+	public String getCategoryName() {
+		return categoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 }

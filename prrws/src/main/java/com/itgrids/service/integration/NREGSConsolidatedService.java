@@ -98,11 +98,16 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 				}
 				
 				List<ClientResponse> responseList = new ArrayList<ClientResponse>();
-				String str = convertingInputVOToString(inputVO);
-				String faStr = convertingInputVOToStringForFA(inputVO);
 				if(urlsList != null && !urlsList.isEmpty()){
 					ExecutorService executor = Executors.newFixedThreadPool(30);
 					for (NregaConsolidatedInputVO urlvo : urlsList) {
+						if(urlvo.getId() != null && (urlvo.getId().longValue() == 43l || urlvo.getId().longValue() == 44l 
+								|| urlvo.getId().longValue() == 45l || urlvo.getId().longValue() == 46l || urlvo.getId().longValue() == 47l 
+								|| urlvo.getId().longValue() == 48l)){
+							inputVO.setCategoryName(urlvo.getComponentName());
+						}
+						String str = convertingInputVOToString(inputVO);
+						String faStr = convertingInputVOToStringForFA(inputVO);
 						if(urlvo.getId() != null && urlvo.getId().longValue() == 14l){
 							Runnable worker = new NREGSCumulativeThread(urlvo.getUrl(),responseList,faStr);
 							executor.execute(worker);
@@ -208,6 +213,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 								componentName = "Check Dam";
 							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("RockfillDamService/RockfillDamData"))
 								componentName = "Rock fill dams";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("ForestService/ForestData"))
+								componentName = inputVO.getCategoryName();
 							/*else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SilkwarmServiceNew/SilkwarmDataNew"))
 								componentName = "Silk Worms";*/
 							
@@ -254,7 +261,11 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														componentvo.setPercentage(jObj.getString("PERCENTAGE"));
 													}
 													else{
-														componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+														if(jObj.getLong("GROUNDED") > 0 && jObj.getString("TARGET") != null && jObj.getLong("TARGET") > 0)
+															componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+														else
+															componentvo.setPercentage("0.00");
+														//componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 													}
 													
 													/*if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Anganwadi Buildings")){
@@ -314,7 +325,11 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														componentvo.setPercentage(jObj.getString("PERCENTAGE"));
 													}
 													else{
-														componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+														if(jObj.getLong("GROUNDED") > 0 && jObj.getString("TARGET") != null && jObj.getLong("TARGET") > 0)
+															componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+														else
+															componentvo.setPercentage("0.00");
+														//componentvo.setPercentage(new BigDecimal(jObj.getLong("GROUNDED")*100.00/Double.valueOf(jObj.getString("TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 													}
 													
 													/*if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Anganwadi Buildings")){
@@ -971,6 +986,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 				str += "\"type\" : \""+inputVO.getComponentName()+"\",";
 			if(inputVO.getProgram() != null)
 				str += "\"program\" : \""+inputVO.getProgram()+"\",";
+			if(inputVO.getCategoryName() != null)
+				str += "\"categoryName\" : \""+inputVO.getCategoryName()+"\",";
 			
 			if(str.length() > 1)
 				str = str.substring(0,str.length()-1);
