@@ -27,6 +27,7 @@
 			tabBlocks('mandalBlockId','mandal');
 			responsiveTabs();
 			getExceededTargetWorksDetails()
+			getExceedWorkDetailsLocationWise();
 		}
 		function getSelectedType(){
 			for(var i in levelNamesArr){
@@ -5918,3 +5919,32 @@ function getExceededTargetWorksDetails(){
 		});
 	}
 }
+
+function getExceedWorkDetailsLocationWise(){
+	
+	 //GUMMAGATTA mandal name  1218
+		var json = {
+				year:"2017",
+				fromDateStr:glStartDate,
+				toDateStr:glEndDate,
+				districtValue:"",
+				filterType:"",
+				filterValue:"",
+				locationType:"district",
+				assetTypeList:['CPWS','PWS'],
+				statusList : ['completed','ongoing'],
+				}
+		
+		$.ajax({                
+			type:'POST',    
+			url: 'getExceedWorkDetailsLocationWise',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+		  console.log(result);
+		});
+	}

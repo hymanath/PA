@@ -60,4 +60,5 @@ public interface IRWSNICService {
 	
 	public Map<Long,IdNameVO> getAllAdminWorksDetails();
 	public IdNameVO getExceededTargetWorksDetails();
+	public List<IdNameVO> getExceededWorkDetailsLocationWise(InputVO inputVO);
 }
