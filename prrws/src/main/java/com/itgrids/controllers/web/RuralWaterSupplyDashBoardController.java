@@ -215,8 +215,7 @@ public class RuralWaterSupplyDashBoardController {
 			return  rWSNICService.getStressedHabitationsInfoByLocationType(vo);
 
 		} catch (Exception e) {
-			LOG.error(
-					"Exception raised at stressedHabitationsInfo - RuralWaterSupplyDashBoardController controller",
+			LOG.error("Exception raised at stressedHabitationsInfo - RuralWaterSupplyDashBoardController controller",
 					e);
 		}
 		return null;
@@ -497,4 +496,14 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return null;
 	}
+	@PostMapping("/getExceedWorkDetailsLocationWise")
+	public @ResponseBody List<IdNameVO> getExceededWorkDetailsLocationWise(@RequestBody InputVO inputVO) {
+	  try {
+			 return rWSNICService.getExceededWorkDetailsLocationWise(inputVO);
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
+	  }
+	 return null;
+	}
+	
 }

@@ -10,10 +10,14 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -49,7 +53,9 @@ import com.itgrids.model.TressedHabitation;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
+import com.itgrids.utils.RWSThread;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
@@ -3700,4 +3706,397 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return null;
 	}
+	/**
+	 * @author Santosh Kumar Verma
+	 * @param InputVO inputVO
+	 * @description {This service is used to get Rural Water Supply department work details.}
+	 * @return List<IdNameVO>
+	 * @Date 31-10-2017
+	 */
+	
+	public List<IdNameVO> getExceededWorkDetailsLocationWise(InputVO inputVO){
+		List<IdNameVO> resultList = new ArrayList<>(0);
+		try {
+			
+			Map<String,IdNameVO> workDetailsMap = getWorkDetails();//getting work completed,dateofTarget date
+			
+			Map<String,ClientResponse> responseMap = new HashMap<>(0);
+			List<InputVO> parameterList = getRequiredParamer(inputVO);
+			String URL = IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getOnclickWorkDetails";
+			if (parameterList != null && parameterList.size() > 0) {
+				ExecutorService executor = Executors.newFixedThreadPool(5);
+				Long startTime = System.currentTimeMillis();
+				for (InputVO inptVO : parameterList) {
+					if (inptVO.getAssetTypeList() != null && inptVO.getAssetTypeList().size() > 0) {
+						for (String workStatus : inptVO.getAssetTypeList()) {
+							InputVO input = prepareRequiredInputDetails(workStatus,inptVO.getAssetType(), inputVO);
+							String resultType = input.getAssetType() + "-"+ input.getWorkStatus();
+							Runnable worker = new RWSThread(URL, responseMap, input, resultType);
+							executor.execute(worker);
+						}
+					}
+				}
+			    executor.shutdown();
+				while(!executor.isTerminated()) {}
+				Long endTime = System.currentTimeMillis();
+				System.out.println("Thread time taken : "+(endTime-startTime));
+				System.out.println("All work has finished "+responseMap.values());
+			 }
+			
+			Map<String,IdNameVO> allWorksDtlsMap = getAssetTypeWiseAllWorkDetails(responseMap,workDetailsMap);
+			Map<String,IdNameVO> resultMap = prepareWrokDtlsLocationWise (inputVO,allWorksDtlsMap);
+			if (resultMap != null && resultMap.size() > 0 ) {
+				resultList.addAll(new ArrayList<>(resultMap.values()));
+				calculatingPercentage(resultList);
+			}
+	 	    }catch(Exception e){
+	 	    	 LOG.error("Exception Occured in getExceededWorkDetailsLocationWise() method, Exception - ",e);
+	 	    }
+		return resultList;
+		
+	}
+
+	private void calculatingPercentage(List<IdNameVO> resultList) {
+		try {
+			if (resultList.size() > 0) {
+				for (Iterator<IdNameVO> it = resultList.iterator(); it.hasNext();) {
+					IdNameVO vo = it.next();
+					if (vo.getCount() == 0l) {
+						it.remove();
+						System.out.println("no exceed work");
+					} else {
+						if (vo.getSubList() != null && vo.getSubList().size() > 0) {
+							for (IdNameVO assetTypeVO : vo.getSubList()) {
+
+								if (assetTypeVO.getSubList() != null && assetTypeVO.getSubList().size() > 0) {
+									for (IdNameVO rangeVO : assetTypeVO .getSubList()) {
+										rangeVO.setPercentage(commonMethodsUtilService.calculatePercantage(rangeVO.getCount(),assetTypeVO.getCount()));
+									}
+								}
+
+							}
+						}
+					}
+					it.next();
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception Occured in calculatingPercentage() method, Exception - ",e);
+		}
+	}
+   
+	private Map<String, IdNameVO> prepareWrokDtlsLocationWise(InputVO inputVO,Map<String, IdNameVO> workDtlsMap) {
+		Map<String, IdNameVO> locationMap = new HashMap<>();
+		try {
+			if (workDtlsMap != null && workDtlsMap.size() > 0) {
+				for (Entry<String, IdNameVO> entry : workDtlsMap.entrySet()) {
+					String locationIdStr = getLocationIdByLocationType(inputVO.getLocationType(), entry.getValue());
+					IdNameVO locationVO = locationMap.get(locationIdStr);// getting locationId based on location type
+					if (locationVO == null) {
+						locationVO = new IdNameVO();
+						locationVO.setLocationIdStr(locationIdStr);
+						locationVO.setName(getLocationNameByLocationType(inputVO.getLocationType(), entry.getValue()));// getting locationName based on location type
+						locationVO.setCount(0l);
+						locationVO.setSanctionAmount(0l);
+						locationVO.setSubList(getRequiredTemplate());// getting template
+						locationMap.put(locationVO.getLocationIdStr(),locationVO);
+					}
+					for (IdNameVO assetTypeVO : locationVO.getSubList()) {
+
+						for (IdNameVO workStatus : assetTypeVO.getSubList()) {
+							IdNameVO matchVO = getMatchedVO(entry.getValue(),workStatus.getName(),assetTypeVO.getAssetType());
+							if (matchVO != null) {
+									workStatus.setCount(workStatus.getCount() + 1);
+									assetTypeVO.setCount(assetTypeVO.getCount() + 1);
+									locationVO.setCount(locationVO.getCount()+1);
+									locationVO.setSanctionAmount(locationVO.getSanctionAmount()+ matchVO.getSanctionAmount());
+									workStatus.setSanctionAmount(workStatus.getSanctionAmount()+matchVO.getSanctionAmount());
+									assetTypeVO.setSanctionAmount(assetTypeVO.getSanctionAmount()+ matchVO.getSanctionAmount());
+							}
+
+						}
+					}
+
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in prepareWrokDtlsLocationWise() method, Exception - ",e);
+		}
+		return locationMap;
+	}
+	private IdNameVO getMatchedVO(IdNameVO vo,String name,String assetType){
+		try {
+			if(vo != null){
+				if(vo.getName().equalsIgnoreCase(name) && vo.getAssetType().equalsIgnoreCase(assetType)) {
+					return vo;
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getMatchedVO() method, Exception - ",e);
+		}
+		return null;
+	}
+	private String getLocationIdByLocationType(String locationType,IdNameVO workDtlsVO) {
+		String locationIdStr="";
+		try {
+			if (locationType != null && locationType.trim().equalsIgnoreCase("state")){
+				locationIdStr="01";
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("district")){
+				locationIdStr = workDtlsVO.getDistrictCode();
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("constituency")){
+				locationIdStr = workDtlsVO.getConstituencyCode();
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("mandal")){
+				locationIdStr = workDtlsVO.getDistrictCode().concat(workDtlsVO.getMandalCode());
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getLocationIdByLocationType() in RWSNICService class",e);
+		}
+		return locationIdStr;
+	}
+	private String getLocationNameByLocationType(String locationType,IdNameVO workDtlsVO) {
+		String locationIdName="";
+		try {
+			if (locationType != null && locationType.trim().equalsIgnoreCase("state")){
+				locationIdName = "Andhra Pradesh";
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("district")){
+				locationIdName = workDtlsVO.getDistrictName();
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("constituency")){
+				locationIdName = workDtlsVO.getConstituencyName();
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("mandal")){
+				locationIdName = workDtlsVO.getMandalName();
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getLocationNameByLocationType() in RWSNICService class",e);
+		}
+		return locationIdName;
+	}
+	
+	private Map<String,IdNameVO> getWorkDetails() {
+		Map<String,IdNameVO> workDetailsMap = new HashMap<>();
+		 try {
+			    WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getAllWorkComplitionDetails");	        
+				String authStringEnc = getAuthenticationString("itgrids","Itgrids@123");	        
+				ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class);
+				
+				if(response.getStatus() != 200){
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	    }else{
+		 	    	 String output = response.getEntity(String.class);
+		 	    	 if(output != null && !output.isEmpty()){
+		 	    		JSONArray finalArray = new JSONArray(output);
+		 	    		for(int i=0;i<finalArray.length();i++){
+		 	    			JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    			String workId = jObj.getString("workId");
+		 	    			IdNameVO datesvo =new IdNameVO();
+		 	    			String completed = jObj.has("dateOfCompletion") ? jObj.getString("dateOfCompletion"):null;
+		 	    			String target = jObj.has("targetDateComp") ? jObj.getString("targetDateComp"):null;
+		 	    			datesvo.setTargetDate(getDateInStringFrormat(target));
+			 	    		datesvo.setCompletionDate(getDateInStringFrormat(completed));
+			 	    		workDetailsMap.put(workId, datesvo);
+		 	    		}
+		 	    	 }
+		 	  }  
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in getWorkDetails() method, Exception - ",e);
+		 }
+		 return workDetailsMap;
+	}
+
+	private Map<String, IdNameVO> getAssetTypeWiseAllWorkDetails(Map<String, ClientResponse> responseMap,Map<String, IdNameVO> workTargetCompletedDateMap) {
+		Map<String, IdNameVO> workDetailsMap = new HashMap<>();
+		String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
+		try {
+			if (responseMap.size() > 0) {
+				for (Entry<String, ClientResponse> responseEntry : responseMap.entrySet()) {
+					if (responseEntry.getValue().getStatus() != 200) {
+						throw new RuntimeException("Failed : HTTP error code : " + responseEntry.getValue().getStatus());
+					} else {
+						String output = responseEntry.getValue().getEntity(String.class);
+						String[] assetTypeWrokStatusArr = responseEntry.getKey().split("-");
+						String assetType = (assetTypeWrokStatusArr != null && assetTypeWrokStatusArr.length > 0) ? assetTypeWrokStatusArr[0] : "";
+						String workStatus = (assetTypeWrokStatusArr != null && assetTypeWrokStatusArr.length > 1) ? assetTypeWrokStatusArr[1] : "";
+						if (output != null && !output.isEmpty()) {
+							JSONObject jsonObj = new JSONObject(output);
+							String status = jsonObj.has("status") ? jsonObj.getString("status") : "";
+							if (status.equalsIgnoreCase("Success")) {
+								JSONArray finalArray = jsonObj.has("onClickWorksList") ? jsonObj.getJSONArray("onClickWorksList") : null;
+								if (finalArray != null && finalArray.length() > 0) {
+									for (int i = 0; i < finalArray.length(); i++) {
+
+										JSONObject jObj = (JSONObject) finalArray.get(i);
+										IdNameVO workDetailsVO = new IdNameVO();
+										workDetailsVO.setAssetType(assetType);
+										workDetailsVO.setWorkStatus(workStatus);
+										workDetailsVO.setWrokIdStr(jObj.has("workId") ? jObj.getString("workId") : null);
+										workDetailsVO.setMandalCode(jObj.has("mandalCode") ? jObj.getString("mandalCode") : null);
+										workDetailsVO.setConstituencyCode(jObj.has("constituencyCode") ? jObj.getString("constituencyCode") : null);
+										workDetailsVO.setConstituencyName(jObj.has("constituencyName") ? jObj.getString("constituencyName") : null);
+										workDetailsVO.setDistrictCode(jObj.has("districtCode") ? jObj.getString("districtCode"): null);
+										workDetailsVO.setDistrictName(jObj.has("districtName") ? jObj.getString("districtName"): null);
+										workDetailsVO.setMandalName(jObj.has("mandalName") ? jObj.getString("mandalName") : null);
+										workDetailsVO.setSanctionAmount(jObj.has("sacntionedAmount") ? jObj.getLong("sacntionedAmount"): null);
+										if (workStatus.equalsIgnoreCase("ongoing")) {
+											workDetailsVO.setTargetDate( jObj.has("targetDate") ? jObj.getString("targetDate").substring(0, 10) : null);
+											workDetailsVO.setCompletionDate(currentDate);
+										} else if (workStatus.equalsIgnoreCase("completed")) {
+											workDetailsVO.setCompletionDate(jObj.has("completionDate") ? jObj.getString("completionDate").substring(0, 10) : null);
+											
+											if (workTargetCompletedDateMap != null && workTargetCompletedDateMap.size() > 0) { //setting target date
+												IdNameVO workDateDtlsVO = workTargetCompletedDateMap.get(workDetailsVO.getWrokIdStr());
+												if (workDateDtlsVO != null) {
+													workDetailsVO.setTargetDate(workDateDtlsVO.getTargetDate());
+												}
+											}
+										}
+										// calculating noOfDays between two difference date
+										workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus()));
+                                        workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
+                                        workDetailsMap.put(workDetailsVO.getWrokIdStr(),workDetailsVO);
+									}
+								}
+
+							}
+						}
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getWorkDetails() method, Exception - ",e);
+		}
+		return workDetailsMap;
+	}
+	private String getRangeLevelNameBasedOnDays(Long daysDiff) {
+		String rangeLevelName="";
+		 try {
+			 if (daysDiff != null ) {
+				 if(daysDiff >= 0L && daysDiff <= 30L) {
+					 rangeLevelName = "0-30 Days";
+				 }else if(daysDiff >= 31L && daysDiff <= 60L) {
+					 rangeLevelName = "31-60 Days";
+				 } else if( daysDiff >= 61L && daysDiff <= 90L) {
+					 rangeLevelName = "61-90 Days";
+				 } else if(daysDiff >= 91L && daysDiff <= 180L) {
+					 rangeLevelName = "91-180 Days";
+				 } else if(daysDiff >= 181L && daysDiff <= 365L) {
+					 rangeLevelName = "181-365 Days";
+				 } else if(daysDiff > 365L) {
+					 rangeLevelName = "More Than 1 Year";
+				 }
+			 }
+			
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in getRangeLevelNameBasedOnDays() method, Exception - ",e);
+		 }
+		 return rangeLevelName;
+	}
+	private Long getNoOfDaysDifference(String completionDate,String targetDate,String workStatus) {
+		Long diffDays = null;
+		 try {
+		     if (completionDate != null && completionDate.trim().length() > 0 && targetDate != null && targetDate.trim().length() > 0) {
+		    	 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		    	  Long completionDateTimeInMiliSecond =  sdf.parse(completionDate).getTime();
+					 Long targetDateTimeInMiliSecond =  sdf.parse(targetDate).getTime();
+					 if (completionDateTimeInMiliSecond >= targetDateTimeInMiliSecond) {
+						 Long  diffTime = completionDateTimeInMiliSecond-targetDateTimeInMiliSecond;
+							  diffDays = TimeUnit.MILLISECONDS.toDays(diffTime);
+					 } 
+		     }
+		   
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in getNoOfDaysDifference() method, Exception - ",e);
+		 }
+		 return diffDays;
+	}
+	private String getDateInStringFrormat(String dateInMilisecondeFormat){
+		 try {
+			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			 sdf.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
+	         if (dateInMilisecondeFormat != null && dateInMilisecondeFormat.length() > 0 ) {
+	             Date date = new Date(Long.valueOf(dateInMilisecondeFormat));
+		         String formatted = sdf.format(date);
+		         Date dateFormat = sdf.parse(formatted);
+		         String returnDate = sdf1.format(dateFormat);
+		         return returnDate;     	 
+	         }
+	     } catch (Exception e) {
+			 LOG.error("Exception Occured in getDateInStringFrormat() method, Exception - ",e);
+		 }
+		return null;
+	}
+	
+	private List<IdNameVO> getRequiredTemplate() {
+		List<IdNameVO> resultList = new ArrayList<>(0);
+		String[] templateArr = {"0-30 Days","31-60 Days","61-90 Days","91-180 Days","181-365 Days","More Than 1 Year"};
+		try {
+			IdNameVO cpwsVO = new IdNameVO();
+			cpwsVO.setAssetType("CPWS");
+			cpwsVO.setCount(0l);
+			cpwsVO.setSanctionAmount(0l);
+			cpwsVO.setSubList(new ArrayList<IdNameVO>());
+			for (int i = 0; i < templateArr.length; i++) {
+				IdNameVO vo = new IdNameVO();
+				vo.setId((long)i+1L);
+				vo.setName(templateArr[i]);
+				vo.setCount(0l);
+				vo.setSanctionAmount(0l);
+				cpwsVO.getSubList().add(vo);
+		   }
+			
+			IdNameVO pwsVO = new IdNameVO();
+			pwsVO.setAssetType("PWS");
+			pwsVO.setCount(0l);
+			pwsVO.setSanctionAmount(0l);
+			pwsVO.setSubList(new ArrayList<IdNameVO>());
+			for (int i = 0; i < templateArr.length; i++) {
+				IdNameVO vo = new IdNameVO();
+				vo.setId((long)i+1L);
+				vo.setName(templateArr[i]);
+				vo.setCount(0l);
+				vo.setSanctionAmount(0l);
+				pwsVO.getSubList().add(vo);
+		   }
+			resultList.add(cpwsVO);
+		    resultList.add(pwsVO);
+		} catch (Exception e) {
+			 LOG.error("Exception Occured in getDateInStringFrormat() method, Exception - ",e);
+		}
+		return resultList;
+	}
+   private List<InputVO> getRequiredParamer(InputVO inputVO) {
+		List<InputVO> parameterList = new ArrayList<>(0);
+		try {
+			if (inputVO.getAssetTypeList() != null && inputVO.getAssetTypeList().size() > 0 ) {
+				for (String assettype:inputVO.getAssetTypeList()) {
+					InputVO vo = new InputVO();
+					vo.setAssetType(assettype);
+					vo.setAssetTypeList(inputVO.getStatusList());
+					parameterList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			 LOG.error("Exception Occured in getRequiredParamer() method, Exception - ",e);
+		}
+		return parameterList;
+	}
+	private InputVO prepareRequiredInputDetails(String workStatus,String assetType,InputVO inputVO){
+		InputVO input = new InputVO();
+		try {
+			input.setAssetType(assetType);
+			input.setDistrictValue(inputVO.getDistrictValue());
+			input.setFilterType(inputVO.getFilterType());
+			input.setFilterValue(inputVO.getFilterValue());
+			input.setFromDateStr(inputVO.getFromDateStr());
+			input.setToDateStr(inputVO.getToDateStr());
+			input.setWorkStatus(workStatus);
+			input.setYear(inputVO.getYear());
+		} catch (Exception e) {
+			LOG.error("Exception Occured in prepareRequiredInputDetails() method, Exception - ",e);
+		}
+		return input;
+	}		
+				
+				
  }

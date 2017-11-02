@@ -41,6 +41,21 @@ public class IdNameVO implements Serializable{
 	private Long onGoingCpwsCount = 0L;
 	private Long onGoingPwsAmount = 0L;
 	private Long onGoingCpwsAmount = 0L;
+	private String completionDate;
+	private String wrokIdStr;
+	
+    private String mandalCode;
+    private String mandalName;
+    private String constituencyName;
+    private String constituencyCode;
+	private String districtName;
+    private String districtCode;
+    private String assetType;
+    private String workStatus;
+    private Long noOfDays;
+    private String locationIdStr;
+    private List<IdNameVO> subList;
+
 	
 	
 	public IdNameVO() {
@@ -237,4 +252,85 @@ public class IdNameVO implements Serializable{
 	public void setOnGoingCpwsAmount(Long onGoingCpwsAmount) {
 		this.onGoingCpwsAmount = onGoingCpwsAmount;
 	}
+	public String getCompletionDate() {
+		return completionDate;
+	}
+	public void setCompletionDate(String completionDate) {
+		this.completionDate = completionDate;
+	}
+	public String getWrokIdStr() {
+		return wrokIdStr;
+	}
+	public void setWrokIdStr(String wrokIdStr) {
+		this.wrokIdStr = wrokIdStr;
+	}
+	public String getMandalCode() {
+		return mandalCode;
+	}
+	public void setMandalCode(String mandalCode) {
+		this.mandalCode = mandalCode;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public String getConstituencyCode() {
+		return constituencyCode;
+	}
+	public void setConstituencyCode(String constituencyCode) {
+		this.constituencyCode = constituencyCode;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getDistrictCode() {
+		return districtCode;
+	}
+	public void setDistrictCode(String districtCode) {
+		this.districtCode = districtCode;
+	}
+	public String getAssetType() {
+		return assetType;
+	}
+	public void setAssetType(String assetType) {
+		this.assetType = assetType;
+	}
+	public String getWorkStatus() {
+		return workStatus;
+	}
+	public void setWorkStatus(String workStatus) {
+		this.workStatus = workStatus;
+	}
+	public Long getNoOfDays() {
+		return noOfDays;
+	}
+	public void setNoOfDays(Long noOfDays) {
+		this.noOfDays = noOfDays;
+	}
+	public String getLocationIdStr() {
+		return locationIdStr;
+	}
+	public void setLocationIdStr(String locationIdStr) {
+		this.locationIdStr = locationIdStr;
+	}
+	public List<IdNameVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<IdNameVO> subList) {
+		this.subList = subList;
+	}
+	
+	
+	
 }
