@@ -2271,7 +2271,7 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,type,casteName,publ
     }).done(function(result){ 
 		if(result !=null && result.length>0){
 			if(type == "onload"){
-				buildCasteGroupNAgeWiseVoterNCadreCounts(result);
+				buildCasteGroupNAgeWiseVoterNCadreCounts(result,casteGroupId);
 				buildCasteGroupWiseDetailsCounts(result,casteGroupId,casteName);
 			}else if(type == "sortingType"){
 				buildGraphForCaste(result);
@@ -2281,7 +2281,7 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(casteGroupId,type,casteName,publ
 		}
 	});	
 }
-function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
+function buildCasteGroupNAgeWiseVoterNCadreCounts(result,casteGroupId){
 	buildGraphForCaste(result);
 	var str='';
 	var countVar =0;
@@ -2300,7 +2300,7 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result){
 			for(var i in result){
 				//k=k+1;
 				str+='<tr>';
-				str+='<td>'+result[i].ageRange+'</td>';
+				str+='<td class="casteCategoryGroupWiseClickCls" attr_caste_id="'+result[i].ageRangeId+'" attr_caste_group_id="'+casteGroupId+'" attr_caste_name="'+result[i].ageRange+'" style="color:#337ab7;cursor:pointer;">'+result[i].ageRange+'</td>';
 				str+='<td>'+result[i].totalVoters+'</td>';
 				str+='<td>'+result[i].totalVotersPerc+'</td>';
 				str+='<td>'+result[i].totalCadres+'</td>';
