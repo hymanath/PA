@@ -35,6 +35,17 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	
 	private String range;
 	
+	private Long sanctioned;
+	private Long excessben;
+	private Long notSanctioned;
+	private Long notStarted;
+	private String sanctionpercentage="0";
+	private String notSanctionPercentage="0";
+	private String notStaredPercentage="0";
+	private String inProgressPerc="0";
+	private String completedPerce="0";
+	
+	
    public Long getId() {
 		return id;
 	}
@@ -197,5 +208,60 @@ public class SwachhBharatMissionIHHLDtlsVO {
 	public void setToDate(String toDate) {
 		this.toDate = toDate;
 	}
+	public Long getSanctioned() {
+		return sanctioned;
+	}
+	public void setSanctioned(Long sanctioned) {
+		this.sanctioned = sanctioned;
+	}
+	public Long getExcessben() {
+		return excessben;
+	}
+	public void setExcessben(Long excessben) {
+		this.excessben = excessben;
+	}
+	public Long getNotSanctioned() {
+		return notSanctioned;
+	}
+	public void setNotSanctioned(Long notSanctioned) {
+		this.notSanctioned = notSanctioned;
+	}
+	public Long getNotStarted() {
+		return notStarted;
+	}
+	public void setNotStarted(Long notStarted) {
+		this.notStarted = notStarted;
+	}
+	public String getSanctionpercentage() {
+		return sanctionpercentage;
+	}
+	public void setSanctionpercentage(String sanctionpercentage) {
+		this.sanctionpercentage = sanctionpercentage;
+	}
+	public String getNotSanctionPercentage() {
+		return notSanctionPercentage;
+	}
+	public void setNotSanctionPercentage(String notSanctionPercentage) {
+		this.notSanctionPercentage = notSanctionPercentage;
+	}
+	public String getNotStaredPercentage() {
+		return notStaredPercentage;
+	}
+	public void setNotStaredPercentage(String notStaredPercentage) {
+		this.notStaredPercentage = notStaredPercentage;
+	}
+	public String getInProgressPerc() {
+		return inProgressPerc;
+	}
+	public void setInProgressPerc(String inProgressPerc) {
+		this.inProgressPerc = inProgressPerc;
+	}
+	public String getCompletedPerce() {
+		return completedPerce;
+	}
+	public void setCompletedPerce(String completedPerce) {
+		this.completedPerce = completedPerce;
+	}
+	
 	
 }

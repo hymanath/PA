@@ -194,19 +194,21 @@ function getSwachhBharatMissionOverviewDtls(){
 		var notGroundedCount=0;
 		var inProgressCount=0;
 		var completedCount=0;
-		
+		var notSanctionCount=0;
+		var notStartedCount=0;
+		var sanctionedCount=0;
 		totalCount =result.target;
-		
-		
-		
+		notSanctionCount=result.target-result.sanctioned;
+		notStartedCount=result.sanctioned-(result.inProgress+result.completed);
+		sanctionedCount=result.sanctioned;
 		targetCount = result.target;
 		achivementCount = result.completed;
-		dataArr.push(result.target)
-		dataArr.push(result.noTGrounded);
-		dataArr.push(result.grounded);
+		dataArr.push(result.target);
+		dataArr.push(notSanctionCount)
+		dataArr.push(result.sanctioned)
+		dataArr.push(notStartedCount);
 		dataArr.push(result.inProgress);
 		dataArr.push(result.completed)
-	
 		var id = "overAllIHHLPerformanceId";
 		var type = {
 			type: 'pie',
@@ -278,7 +280,7 @@ function getSwachhBharatMissionOverviewDtls(){
 				  color:"#FC615E"
 				},
 				{
-				  name: 'COMPLETED',
+				  name: 'ACHIEVEMENT',
 				  y: achivementCount,
 				  color:"#13B9AC"
 				}
@@ -306,8 +308,8 @@ function getSwachhBharatMissionOverviewDtls(){
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,	
 				type: 'category',
-				categories: ['TARGET','NOT GROUNDED','GROUNDED','IN PROGRESS','COMPLETED'],
-				
+				categories: ['TARGET','NOT SANCTIONED','SANCTIONED','NOT STARTED','IN PROGRESS','COMPLETED'],
+				//categories: ['SANCTIONED','TARGET','NOT GROUNDED','IN PROGRESS','COMPLETED','EXCESSBEN'],
 			},
 			yAxis: {
 				min: 0,
@@ -323,7 +325,12 @@ function getSwachhBharatMissionOverviewDtls(){
 			tooltip: {
 				useHTML:true,	
 				formatter: function () {
-					var pcnt = (this.y / totalCount) * 100;
+					var pcnt='';
+					if(this.x =="NOT STARTED" || this.x =="IN PROGRESS" || this.x =="COMPLETED"){
+					 pcnt = (this.y /sanctionedCount) * 100;
+					}else if(this.x == "SANCTIONED" || this.x == "NOT SANCTIONED"){
+						pcnt = (this.y / totalCount) * 100;
+					}
 						var str="";
 						if (this.x == "TARGET") {
 							str="";
@@ -349,7 +356,12 @@ function getSwachhBharatMissionOverviewDtls(){
 					color: '#000',
 					align: 'center',
 					formatter: function() {
-						var pcnt = (this.y / totalCount) * 100;
+						var pcnt ="";
+						if(this.x =="NOT STARTED" || this.x =="IN PROGRESS" || this.x =="COMPLETED"){
+							pcnt = (this.y /sanctionedCount) * 100;
+						}else if(this.x == "SANCTIONED" || this.x == "NOT SANCTIONED"){
+							pcnt = (this.y / totalCount) * 100;
+						}
 						var str="";
 						if (this.x == "TARGET") {
 							str="";
@@ -507,7 +519,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 			
 				str+='<thead>';
 					if(reportType == "status"){
-						str+='<tr class="text-capital">';	
+						str+='<tr class="text-capital  text-center">';	
 							if(subLocation =="state"){
 								str+='<th>State</th>';
 							}else if(subLocation =="district"){
@@ -521,10 +533,18 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 								str+='<th>Mandal</th>';
 							}
 							str+='<th>Target</th>';	
-							str+='<th>Grounded</th>';	
-							str+='<th>Not Grounded</th>';	
-							str+='<th>In Progress</th>';	
-							str+='<th>Completed</th>';	
+							str+='<th class="sacnotsacClass">NOT SANCTIONED</th>';
+							str+='<th class="sacnotsacClass">%</th>';
+							str+='<th class="sacnotsacClass">SANCTIONED</th>';
+							str+='<th class="sacnotsacClass">%</th>';
+							//str+='<th>Grounded</th>';	
+						//	str+='<th>Not Grounded</th>';
+							str+='<th class="notstartinprogresscomClass">NOT STARTED</th>';
+							str+='<th class="notstartinprogresscomClass">%</th>';							
+							str+='<th class="notstartinprogresscomClass">In Progress</th>';	
+							str+='<th class="notstartinprogresscomClass">%</th>';
+							str+='<th class="notstartinprogresscomClass">Completed</th>';	
+							str+='<th class="notstartinprogresscomClass">%</th>';
 							str+='<th>Achievement %</th>';
 						str+='</tr>';
 						}else if(reportType == "daily"){
@@ -589,7 +609,27 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 									}else{
 										str+='<td class="text-center"> - </td>';
 									}	
-									if(result[i].grounded !=null && result[i].grounded>0){
+									if(result[i].notSanctioned !=null && result[i].notSanctioned>0){
+										str+='<td class="text-center">'+result[i].notSanctioned+'</td>';
+									}else{
+										str+='<td class="text-center"> - </td>';
+									}	
+									if(result[i].notSanctionPercentage !=null && result[i].notSanctionPercentage>0){
+										str+='<td class="text-center">'+result[i].notSanctionPercentage+'</td>';
+									}else{
+										str+='<td class="text-center"> - </td>';
+									}	
+									if(result[i].sanctioned !=null && result[i].sanctioned>0){
+										str+='<td class="text-center">'+result[i].sanctioned+'</td>';
+									}else{
+										str+='<td class="text-center"> - </td>';
+									}	
+									if(result[i].sanctionpercentage !=null && result[i].sanctionpercentage>0){
+										str+='<td class="text-center">'+result[i].sanctionpercentage+'</td>';
+									}else{
+										str+='<td class="text-center"> - </td>';
+									}	
+							/*		if(result[i].grounded !=null && result[i].grounded>0){
 										str+='<td class="text-center">'+result[i].grounded+'</td>';
 									}else{
 										str+='<td class="text-center"> - </td>';
@@ -599,13 +639,35 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 									}else{
 										str+='<td class="text-center"> - </td>';
 									}	
+									*/
+									if(result[i].notStarted !=null && result[i].notStarted>0){
+										str+='<td class="text-center">'+result[i].notStarted+'</td>';
+									}else{
+										str+='<td class="text-center"> - </td>';
+									}
+							
+									if(result[i].notStaredPercentage !=null && result[i].notStaredPercentage>0){
+										str+='<td class="text-center">'+result[i].notStaredPercentage+'</td>';
+									}else{
+										str+='<td class="text-center"> - </td>';
+									}
 									if(result[i].inProgress !=null && result[i].inProgress>0){
 										str+='<td class="text-center">'+result[i].inProgress+'</td>';
 									}else{
 										str+='<td class="text-center"> - </td>';
 									}
+									if(result[i].inProgressPerc !=null && result[i].inProgressPerc>0){
+										str+='<td class="text-center">'+result[i].inProgressPerc+'</td>';
+									}else{
+										str+='<td class="text-center"> - </td>';
+									}
 									if(result[i].completed !=null && result[i].completed>0){
 										str+='<td class="text-center">'+result[i].completed+'</td>';
+									}else{
+										str+='<td class="text-center"> - </td>';
+									}
+									if(result[i].completedPerce !=null && result[i].completedPerce>0){
+										str+='<td class="text-center">'+result[i].completedPerce+'</td>';
 									}else{
 										str+='<td class="text-center"> - </td>';
 									}
@@ -894,10 +956,18 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType)
 						}
 						if (reportType != null && reportType=="status") {
 							str+='<th>Target</th>';	
-							str+='<th>Grounded</th>';	
-							str+='<th>Not Grounded</th>';	
-							str+='<th>In Progress</th>';	
-							str+='<th>Completed</th>';	
+							str+='<th class="sacnotsacClass">NOT SANCTIONED</th>';	
+							str+='<th class="sacnotsacClass">%</th>';
+							str+='<th class="sacnotsacClass">SANCTIONED</th>';	
+							str+='<th class="sacnotsacClass">%</th>';
+							str+='<th class="notstartinprogresscomClass">NOT STARTED</th>';	
+							str+='<th  class="notstartinprogresscomClass">%</th>';	
+							//str+='<th>Grounded</th>';	
+							//str+='<th>Not Grounded</th>';	
+							str+='<th  class="notstartinprogresscomClass">In Progress</th>';
+							str+='<th  class="notstartinprogresscomClass">%</th>';							
+							str+='<th  class="notstartinprogresscomClass">Completed</th>';	
+							str+='<th  class="notstartinprogresscomClass">%</th>';
 							str+='<th>Achievement %</th>';
 						} else {
 							str+='<th>Target</th>';	
@@ -928,23 +998,63 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType)
 							}else{
 								str+='<td class="text-center"> - </td>';
 							}	
-							if(result[i].grounded !=null && result[i].grounded>0){
-								str+='<td class="text-center">'+result[i].grounded+'</td>';
+							if(result[i].notSanctioned !=null && result[i].notSanctioned>0){
+								str+='<td class="text-center">'+result[i].notSanctioned+'</td>';
 							}else{
 								str+='<td class="text-center"> - </td>';
+							}	
+							if(result[i].notSanctionPercentage !=null && result[i].notSanctionPercentage>0){
+								str+='<td class="text-center">'+result[i].notSanctionPercentage+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}	
+							if(result[i].sanctioned !=null && result[i].sanctioned>0){
+								str+='<td class="text-center">'+result[i].sanctioned+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}	
+							if(result[i].sanctionpercentage !=null && result[i].sanctionpercentage>0){
+								str+='<td class="text-center">'+result[i].sanctionpercentage+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}	
+					/*		if(result[i].grounded !=null && result[i].grounded>0){
+								str+='<td class="text-center">'+result[i].grounded+'</td>';
+							}else{
+								//str+='<td class="text-center"> - </td>';
 							}
 							if(result[i].noTGrounded !=null && result[i].noTGrounded>0){
 								str+='<td class="text-center">'+result[i].noTGrounded+'</td>';
 							}else{
 								str+='<td class="text-center"> - </td>';
-							}	
+							}	*/
+							if(result[i].notStarted !=null && result[i].notStarted>0){
+								str+='<td class="text-center">'+result[i].notStarted+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}
+							if(result[i].notStaredPercentage !=null && result[i].notStaredPercentage>0){
+								str+='<td class="text-center">'+result[i].notStaredPercentage+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}
 							if(result[i].inProgress !=null && result[i].inProgress>0){
 								str+='<td class="text-center">'+result[i].inProgress+'</td>';
 							}else{
 								str+='<td class="text-center"> - </td>';
 							}
+							if(result[i].inProgressPerc !=null && result[i].inProgressPerc>0){
+								str+='<td class="text-center">'+result[i].inProgressPerc+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}
 							if(result[i].completed !=null && result[i].completed>0){
 								str+='<td class="text-center">'+result[i].completed+'</td>';
+							}else{
+								str+='<td class="text-center"> - </td>';
+							}
+							if(result[i].completedPerce !=null && result[i].completedPerce>0){
+								str+='<td class="text-center">'+result[i].completedPerce+'</td>';
 							}else{
 								str+='<td class="text-center"> - </td>';
 							}

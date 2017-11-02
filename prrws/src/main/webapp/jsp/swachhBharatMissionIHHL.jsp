@@ -26,7 +26,16 @@
 {
 	background-color:#fff;
 }
-
+.sacnotsacClass
+{
+	background-color:green !important;
+	color:#fff;
+}
+.notstartinprogresscomClass
+{
+	background-color:brown !important;
+	color:#fff;
+}
 </style>
 </head>
 <body>
