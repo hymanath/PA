@@ -55,4 +55,12 @@ public interface IConstants {
     public static final String ITC__WEB_SERVICE_PASSWORD = "MEESEVA";
     public static final String ITC_WEB_SERVICE_NAME_SPACE = "http://AP.org/";
     public static final Long[] ITEC_EOFFICE_DEPT_IDS = {15L,6567L,1260L,6575L,6581L,1257L,3688L};
+    
+    public static final String DEFAULT_MAIL_SERVER = "server";
+    public static final String EMAIL_USERNAME = "info@itgrids.com";
+    public static final String EMAIL_PASSWORD = "itgrids$678";
+    public static final String STATIC_CONTENT_FOLDER_URL = "D:/Tomcat 8.5/webapps/PRRWS-1.0/";
+    public static final String SUCCESS = "Success";
+    public static final String FAILURE = "Failure";
+    
 }
