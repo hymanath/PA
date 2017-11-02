@@ -62,5 +62,6 @@ public interface IConstants {
     public static final String STATIC_CONTENT_FOLDER_URL = "D:/Tomcat 8.5/webapps/PRRWS-1.0/";
     public static final String SUCCESS = "Success";
     public static final String FAILURE = "Failure";
+    public static final String LOCALHOST = "localhost";
     
 }
