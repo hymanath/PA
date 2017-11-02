@@ -904,7 +904,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 								resultList.add(locationVO);
 							}
 						} else if (inputVO.getDisplayType().equalsIgnoreCase("D")) {
-							if (percentage > 0d && percentage < 40) {
+							if (percentage >= 0d && percentage < 40) {
 								locationVO = new SwachhBharatMissionIHHLDtlsVO();
 								setBaseLocationByLocationType(jObj, locationVO,inputVO.getSubLocation(),inputVO.getReportType());
 								setBasicInformationBasedOnLocationType(locationVO, jObj);
