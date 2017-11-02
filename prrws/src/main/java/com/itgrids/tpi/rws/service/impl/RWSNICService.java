@@ -3725,7 +3725,6 @@ public class RWSNICService implements IRWSNICService{
 			String URL = IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getOnclickWorkDetails";
 			if (parameterList != null && parameterList.size() > 0) {
 				ExecutorService executor = Executors.newFixedThreadPool(5);
-				Long startTime = System.currentTimeMillis();
 				for (InputVO inptVO : parameterList) {
 					if (inptVO.getAssetTypeList() != null && inptVO.getAssetTypeList().size() > 0) {
 						for (String workStatus : inptVO.getAssetTypeList()) {
@@ -3738,8 +3737,6 @@ public class RWSNICService implements IRWSNICService{
 				}
 			    executor.shutdown();
 				while(!executor.isTerminated()) {}
-				Long endTime = System.currentTimeMillis();
-				System.out.println("Thread time taken : "+(endTime-startTime));
 				System.out.println("All work has finished "+responseMap.values());
 			 }
 			
@@ -3763,7 +3760,6 @@ public class RWSNICService implements IRWSNICService{
 					IdNameVO vo = it.next();
 					if (vo.getCount() == 0l) {
 						it.remove();
-						System.out.println("no exceed work");
 					} else {
 						if (vo.getSubList() != null && vo.getSubList().size() > 0) {
 							for (IdNameVO assetTypeVO : vo.getSubList()) {
