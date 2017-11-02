@@ -4252,7 +4252,14 @@ public String getCandidateWiseDebateDetailsOfCore(){
 				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
 			}  
 		}
-		codeDebateVoList = coreDashboardMainService.getCandidateWiseDebateDetailsOfCore(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getLong("candidateId"),debateLocationIdList);
+		JSONArray debateParticipantLocIdArry = jObj.getJSONArray("participantLocIdArry");  
+		List<Long> debateParticipantLocationIdList = new ArrayList<Long>();
+		if(debateParticipantLocIdArry != null && debateParticipantLocIdArry.length() > 0){
+			for (int i = 0; i < debateParticipantLocIdArry.length(); i++){
+				debateParticipantLocationIdList.add(Long.parseLong(debateParticipantLocIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getCandidateWiseDebateDetailsOfCore(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getLong("candidateId"),debateLocationIdList,debateParticipantLocationIdList);
 		
 	} catch (Exception e) {
 		LOG.info("\n\n getCandidateWiseDebateDetailsOfCore ");
