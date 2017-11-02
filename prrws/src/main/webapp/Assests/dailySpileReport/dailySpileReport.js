@@ -62,7 +62,9 @@ function initializeRank(maxVal,status){
 		if(maxVal==1){
 			$("#showHideRangeId").hide();
 		}else{
-			$("#showHideRangeId").show();   
+			$("#showHideRangeId").show(); 
+			$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: 2},defaultValues:{min: 1, max: 2}});
+			$("#tourSlider").rangeSlider( "destroy" );
 			$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: maxVal},defaultValues:{min: 1, max: maxVal}});
 		}
 		 
@@ -70,7 +72,9 @@ function initializeRank(maxVal,status){
 		if(maxVal==1){
 			$("#showHideRangeId").hide();
 		}else{
-			$("#showHideRangeId").show();   
+			$("#showHideRangeId").show(); 
+			$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: 2},defaultValues:{min: 1, max: 2}});
+			$("#tourSlider").rangeSlider( "destroy" );
 			$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: maxVal},defaultValues:{min: 1, max: maxVal}});
 		}
 	}
