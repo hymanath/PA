@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.KeyValuePairVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
@@ -221,5 +222,7 @@ public interface ICadreRegistrationService {
 	 //public List<IdAndNameVO> getAllDistricts();
 	 public List<CadreRegisterInfo> getDistrictsByState(Long stateId);
 	 public  String sendSMSInTelugu(String mobileNo,String msg);
+	 public List<KeyValuePairVO> getStateWiseDistrictsForUsers(Long stateId,Long userId);
+	 public List<KeyValuePairVO> getConstituenciesByDistrictForUser(Long districtId,Long userId);
 }
 

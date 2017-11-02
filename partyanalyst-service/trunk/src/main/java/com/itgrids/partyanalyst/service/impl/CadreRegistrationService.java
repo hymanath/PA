@@ -117,6 +117,7 @@ import com.itgrids.partyanalyst.dao.ITwoWaySmsMobileDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVerifiedDataRequestDAO;
@@ -149,6 +150,7 @@ import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.KeyValuePairVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
@@ -233,7 +235,6 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 import com.itgrids.partyanalyst.utils.MD5Algoritm;
-//import com.google.gson.Gson;
 
 
 public class CadreRegistrationService implements ICadreRegistrationService {
@@ -343,6 +344,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	private ICadreRegistrationAllowAreasDAO cadreRegistrationAllowAreasDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;   
@@ -360,6 +362,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public void setUserConstituencyAccessInfoDAO(
 			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
 		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
+	}
+
+	public IUserDistrictAccessInfoDAO getUserDistrictAccessInfoDAO() {
+		return userDistrictAccessInfoDAO;
+	}
+
+	public void setUserDistrictAccessInfoDAO(
+			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
+		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
 	}
 
 	public void setCadreTabRecordsStatusDAO(
@@ -14412,5 +14423,66 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 				LOG.error("Exception raised in getDistrictsByState in CadreRegistrationService service", e);
 			}
 		return cadreRegisterInfoList;
+	}
+	
+	public List<KeyValuePairVO> getStateWiseDistrictsForUsers(Long stateId,Long userId) {
+		List<KeyValuePairVO> districtList = null;
+		try {
+			
+			List<Object[]> list =userDistrictAccessInfoDAO.getLocationIdList(userId);
+			if (commonMethodsUtilService.isListOrSetValid(list)) {
+				districtList = new ArrayList<KeyValuePairVO>();
+				for (Object[] param : list) {
+					if (!districtList.contains(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
+						districtList.add(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+					}
+				}
+			}else{
+				List<Object[]> alldistrictlist = districtDAO.getDistrictsForState(stateId);
+				if (commonMethodsUtilService.isListOrSetValid(alldistrictlist)) {
+					districtList = new ArrayList<KeyValuePairVO>();
+					for (Object[] param : alldistrictlist) {
+						if (!districtList.contains(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
+							districtList.add(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+						}
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getStateWiseConstituency() in CadreRegistrationService class", e);
+		}
+		return districtList;
+	}
+	public List<KeyValuePairVO> getConstituenciesByDistrictForUser(Long districtId,Long userId) {
+		List<KeyValuePairVO> districtList = null;
+		try {
+			
+			List<Object[]> list =userConstituencyAccessInfoDAO.findByUser(userId);
+			if (commonMethodsUtilService.isListOrSetValid(list)) {
+				districtList = new ArrayList<KeyValuePairVO>();
+				for (Object[] param : list) {
+					if (!districtList.contains(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
+						districtList.add(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+					}
+			}
+			}else{
+				List<Object[]>  allConstituencylist = constituencyDAO.getDistrictWiseConstituency(districtId);
+				if (commonMethodsUtilService.isListOrSetValid(list)) {
+					districtList = new ArrayList<KeyValuePairVO>();
+					for (Object[] param : allConstituencylist) {
+						if (!districtList.contains(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
+							districtList.add(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+						}
+				}
+			}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getStateWiseConstituency() in CadreRegistrationService class", e);
+		}
+		return districtList;
 	}
 }
