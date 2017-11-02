@@ -3777,7 +3777,6 @@ public class RWSNICService implements IRWSNICService{
 							}
 						}
 					}
-					it.next();
 				}
 			}
 
