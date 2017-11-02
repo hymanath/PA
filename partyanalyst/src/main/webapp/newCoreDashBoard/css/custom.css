@@ -866,6 +866,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .panelNewEvents {
     border: 0 none;
     box-shadow: none !important;
+	margin-bottom:0px !important;
 }
 .headingColor {
     background-color: rgb(74, 88, 99);
@@ -2998,4 +2999,22 @@ color: rgb(51, 122, 183);
 .debatesViewList li:last-child
 {
 	border-bottom:1px solid transparent;
+}
+.alertsHideBody
+{
+	max-height: 200px;
+    transition: max-height 0.5s ease-out;
+	overflow: hidden;
+	box-shadow:inset 0px -13px 17px -8px;
+}
+.alertsHideBody.active
+{
+	max-height: 1500px;
+    transition: max-height 0.5s ease-in;
+	box-shadow: none;
+	padding:0px;
+}
+.alertsShowBody
+{
+	cursor:pointer;
 }

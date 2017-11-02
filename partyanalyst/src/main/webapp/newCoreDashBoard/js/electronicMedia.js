@@ -354,7 +354,15 @@ function getAllTvChannels()
 		}
   });
 }
-
+$(document).on("click",".electronicMediaOthrPartiesBtn",function(){
+	if($(this).html() == '+')
+	{
+		$(this).html("-")
+	}else{
+		$(this).html("+")
+	}
+	$(".electronicMediaOthrParties").toggle();
+});
 function getMediaProgramsOnParty(locationLevelIdGlb,locationValueArrGlb)
 {
 	$("#electronicMediaChannelCountId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -411,7 +419,8 @@ function getpartyWiseChannelCounts(result){
 		{
 			str+='</div>';
 		}
-		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Other Parties</span></h4>';
+		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Other Parties</span><span class="pull-right electronicMediaOthrPartiesBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span></h4>';
+		str+='<div class="electronicMediaOthrParties" style="display:none">';
 		for(var i=1;i<(result.length-1);i++)
 		{
 			str+='<h4 class="panel-title m_top10"><img src="newCoreDashBoard/img/'+result[i].organization+'.png" class="debatesPartyIcon"/>'+result[i].organization+'</h4>';
@@ -450,7 +459,8 @@ function getpartyWiseChannelCounts(result){
 				str+='</div>';
 			}
 		}
-		
+		str+='</div>';
+		str+='<div style="margin-top:20px;">';
 		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="government icon" class="newsIcon"/>Government</span></h4>';
 		var EmnG = result.length-1;
 		if($(window).width() < 500)
@@ -481,6 +491,7 @@ function getpartyWiseChannelCounts(result){
 				}
 			str+='</tr>';
 		str+='</table>';
+		str+='</div>';
 		if($(window).width() < 500)
 		{
 			str+='</div>';

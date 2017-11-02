@@ -88,7 +88,15 @@
 	}
 	
 });*/
-
+$(document).on("click",".activitiesCollapseBtn",function(e){
+	if($(this).html() == '+')
+	{
+		$(this).html("-")
+	}else{
+		$(this).html("+")
+	}
+	$(".activitiesCollapseBody").toggle();
+});
 $(document).on("click",".moreEventsBlocksIcon",function(){
 	//$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events")	
 	$("#eventsCmpBlckDivId").find("ul li:first-child").addClass("active");

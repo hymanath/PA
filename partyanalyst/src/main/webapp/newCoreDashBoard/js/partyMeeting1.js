@@ -24,6 +24,15 @@ var globalStateId=1;
 			getPartyMeetingBasicCountDetails();
 			$("#committeeTypeDivId").hide();
 		});
+		$(document).on("click",".specialMeetingsCollapseBtn",function(e){
+			if($(this).html() == '+')
+			{
+				$(this).html("-")
+			}else{
+				$(this).html("+")
+			}
+			$(".specialMeetingsCollapseBody").toggle();
+		});
 		$(document).on("click",".selectAllSpecialMeeting",function(){
 			if($(this).is(":checked")){
 				$("#specialMeetingUlId li").each(function() {
