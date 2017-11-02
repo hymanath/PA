@@ -5322,6 +5322,13 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 					});
 				}
 			}
+			if(finalPartyList != null && partyIds != null && finalPartyList.size() ==2 && partyIds.size()==1 ){
+				for(int i=0; i<=finalPartyList.size() ; i++){
+					if(finalPartyList.get(i).getPartyId() == 1887){
+						finalPartyList.remove(i);
+					}
+				}
+			}
 			return finalPartyList;
 		}catch(Exception e){
 			e.printStackTrace();
