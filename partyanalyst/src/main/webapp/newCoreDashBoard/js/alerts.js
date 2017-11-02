@@ -19,6 +19,16 @@
 				$(".alertStausCls").prop('checked', false);
 			}
     });
+	$(document).on("click",".alertsShowBody",function(){
+		if($(this).text() == 'Click to more')
+		{
+			$(this).text("Click for less");
+			$(".alertsHideBody").addClass("active");
+		}else{
+			$(this).text("Click to more");
+			$(".alertsHideBody").removeClass("active");
+		}
+	});
 	  var globalAlertStatusArr = [];
 	  var globalImpactScopeArr = [];
 	  var globalDistrictImpactLevelScopeArr = [];
@@ -2922,6 +2932,22 @@ function getTotalArticledetails(articleId){
 			}
 		});
 	}
+	$(document).on("click","[alert_overview_col]",function(){
+		var id = $(this).attr("alert_overview_col");
+		$("[alert_overview_col_body]").hide();
+		if($(this).html() == '+')
+		{
+			$("[alert_overview_col]").html("+");
+			$(this).html("-")
+			$("[alert_overview_col_body="+id+"]").show();
+			
+		}else{
+			$(this).html("+")
+			$("[alert_overview_col_body="+id+"]").hide();
+		}
+		
+		
+	});
 	function setAlertLastUpdatedTime(lastUpdatedTime){
 	 $("#lastAlertUpdatedTimeId").html(" Last Updated : "+lastUpdatedTime+"");
 	}
@@ -2976,8 +3002,8 @@ function getTotalArticledetails(articleId){
 			str+='<tr>';
 			   if(result.overAllVO.totalAlertCnt > 0){
 				   //typeId,count,type
-				str+='<td colspan="2" onclick ="getEditioDtls(0,0);arrowPositionMove(overAllArrowPostion);" id="overAllArrowPostion" class="alertsArrow alertOverViewDetailsCls" attr_alert_type_id="0" attr_edition_type_id="0">';
-				str+='<div class="alertsArrow alertInnerArrow" >';
+				str+='<td colspan="2" onclick ="getEditioDtls(0,0);arrowPositionMove(overAllArrowPostion);" id="overAllArrowPostion" class=" alertOverViewDetailsCls" attr_alert_type_id="0" attr_edition_type_id="0">';
+				str+='<div class=" alertInnerArrow" >';
 					if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
 						
 						str+='<h3 class="alertColorFont">'+result.overAllVO.totalAlertCnt+'&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(0,'+result.overAllVO.totalAlertCnt+',\'TOTAL ALERTS\');" attr_alert_type_name="TOTAL ALERTS" attr_alert_count="'+result.overAllVO.totalAlertCnt+'" attr_alert_type="0" ></i>';
@@ -2999,8 +3025,8 @@ function getTotalArticledetails(articleId){
 				if(!(result.overAllVO.partyAlertCnt == 0)){
 					var partyAlertPerc = ((parseInt(result.overAllVO.partyAlertCnt)*100)/parseInt(result.overAllVO.totalAlertCnt)).toFixed(2);
 					
-					str+='<td colspan="2" onclick ="getEditioDtls(1,0);arrowPositionMove(overAllPartyArrowPostion);" id="overAllPartyArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="1" attr_edition_type_id="0">';
-					str+='<div class="alertInnerArrow " >';
+					str+='<td colspan="2" onclick ="getEditioDtls(1,0);arrowPositionMove(overAllPartyArrowPostion);" id="overAllPartyArrowPostion" class="alertOverViewDetailsCls alertsArrow" attr_alert_type_id="1" attr_edition_type_id="0">';
+					str+='<div class="alertInnerArrow alertsArrow" >';
 					if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
 						str+='<h3 class="alertColorFont">'+result.overAllVO.partyAlertCnt+'&nbsp<small>('+partyAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(1,'+result.overAllVO.partyAlertCnt+',\'PARTY ALERTS\');" attr_alert_type_name="PARTY ALERTS" attr_alert_count="'+result.overAllVO.partyAlertCnt+'" attr_alert_type="1" ></i>';
 						str+='</h3>';
@@ -3209,7 +3235,7 @@ function getTotalArticledetails(articleId){
 		str+='<div class="row m_top10">';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div style="border-top:3px solid #D5D5D5;border-left:1px solid #D5D5D5;border-right:1px solid #D5D5D5;border-bottom:1px solid #D5D5D5;padding:10px;">';
-					str+='<div class="row">';
+					str+='<div class="row alertsHideBody">';
 						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 							if(alertTypeId == 0){
 								if(alertEdition == 1){
@@ -3272,8 +3298,13 @@ function getTotalArticledetails(articleId){
 												}else{
 													str+='<h4 style="cursor:pointer;" class="alertDtlsCls" attr_edition_id="'+alertEdition+'" attr_category_id="0" attr_status_id="'+result.statusList[i].statusTypeId+'" attr_count="'+result.statusList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'" ><span class="alertColorFont">'+result.statusList[i].statusCnt+'</span>&nbsp;&nbsp;<small class="text-success">'+result.statusList[i].statusCntPer+'%</small></h4>';
 												}
+												if(result.statusList[i].statusType.length > 10)
+												{
+													str+='<p title="'+result.statusList[i].statusType+'" class="alertStatusTooltip">'+result.statusList[i].statusType.substring(0,10)+'..&nbsp;&nbsp;</p>';
+												}else{
+													str+='<p>'+result.statusList[i].statusType+'&nbsp;&nbsp;</p>';
+												}
 												
-												str+='<p>'+result.statusList[i].statusType+'&nbsp;&nbsp;</p>';
 											str+='</td>';
 										str+='</tr>';
 									  
@@ -3320,7 +3351,7 @@ function getTotalArticledetails(articleId){
 						}
 						
 					str+='</div>';
-					
+					str+='<p class="text-center alertsShowBody" style="text-decoration:underline">Click to more</p>';
 				 	/* Alert Action Wise Result Block */
 				    if(result.actionTypeList != null && result.actionTypeList.length > 0){
 							for(var k in result.actionTypeList){
@@ -3360,10 +3391,10 @@ function getTotalArticledetails(articleId){
 					{
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-								str+='<h4 class="panel-title text-capital alertDtlsCls" style="cursor:pointer;" attr_edition_id="'+alertEdition+'" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_count="'+result.categoryList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'">'+result.categoryList[i].statusType+' - <span class="alertColorFont">'+result.categoryList[i].statusCnt+'</span></h4>';
+								str+='<h4 class="panel-title text-capital " style="cursor:pointer;" attr_edition_id="'+alertEdition+'" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_count="'+result.categoryList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'">'+result.categoryList[i].statusType+' - <span class="alertColorFont alertDtlsCls">'+result.categoryList[i].statusCnt+'</span><span class="pull-right" alert_overview_col="alertOverview'+result.categoryList[i].statusTypeId+'" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span></h4>';
 							str+='</div>';
 							if(alertEdition == 0 && result.categoryList[i].statusTypeId == 2){//printmedia      
-								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+								str+='<div class="col-md-12 col-xs-12 col-sm-12" style="display:none" alert_overview_col_body="alertOverview'+result.categoryList[i].statusTypeId+'">';
 									
 										str+='<div class="row">';
 										for(var j in result.categoryList[i].editionList)
@@ -3382,7 +3413,7 @@ function getTotalArticledetails(articleId){
 									str+='</div>';
 								str+='</div>';
 							}  
-							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" style="display:none" alert_overview_col_body="alertOverview'+result.categoryList[i].statusTypeId+'">';
 								str+='<div class="pad_5 bg_ED">';
 								if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
 									
@@ -3440,6 +3471,7 @@ function getTotalArticledetails(articleId){
 			str+='</div>';
 		str+='</div>';
 		$("#alertOverviewDetails").html(str);
+		$(".alertStatusTooltip").tooltip();
 	}
 	function arrowPositionMove(id){
 	$(".alertOverViewDetailsLowCls,.alertInnerArrowLow").removeClass("alertsArrowLow");

@@ -1854,15 +1854,9 @@
 									
 								</div>
 								<div id="customMeetingsDiv"></div>
-								<div class ="row">
-								<div class="col-md-5 col-xs-12 col-sm-5 pull-right" style="cursor:pointer; margin-top: 15px; ">
-									<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew  defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">this month</button>
-									<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="" >last month</button>
-								</div>
-								</div>
+								
 								<div class="panelBlock m_top20">
 									<div class="row">
-										
 										<div class="col-md-7 col-xs-12 col-sm-7" style="padding-right:0px;">
 											<h4>
 												<span class="headingColor text-capitalize">special meetings</span>
@@ -1872,6 +1866,9 @@
 												<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeeting();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
 											</h4>
 										</div>
+										<div class="col-md-5 col-xs-12 col-sm-5" style="padding-right:0px;">
+											<span class="pull-right specialMeetingsCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
+										</div>
 										<div class="specialMeetingDropDown " style="left:0px;top:30px;">
 											<ul class="list-inline">
 												<li><label><input type="checkbox" class="selectAllSpecialMeeting"/>&nbsp&nbspSelect All</label></li>
@@ -1879,7 +1876,13 @@
 											<div id="specialMeetingDivId"></div>
 											<button type="button" onclick="specialMeetingBtncls()" attr_main_type_meeting_id="3"  class="btn btn-success specialMeetingBtncls">Get Details</button>
 										</div>
-										<div id="specialMeetingBasicCnt"></div>
+									</div>
+									<div class="row specialMeetingsCollapseBody" style="display:none">
+										<div class="col-md-5 col-xs-12 col-sm-5 pull-right" style="cursor:pointer; margin-top: 15px; ">
+											<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew  defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">this month</button>
+											<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="" >last month</button>
+										</div>
+										<div id="specialMeetingBasicCnt" class="m_top10"></div>
 									</div>
 								</div>
 								
@@ -2602,8 +2605,10 @@
 								<h4><span class="headingColor text-capital">events</span>
 								<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
 								<div id="mainEventsList" class="m_top20"></div>
-								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
-									<div id="activityEventsListNew" class="m_top20"></div>				
+								<h4 style="margin-top:20px !important;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span>
+									<span class="pull-right activitiesCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
+								</h4>
+									<div id="activityEventsListNew" class="activitiesCollapseBody" style="display:none"></div>
 				
 								<!--<div style="border : 1px solid #333; padding : 5px">-->
 									<!--<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>-->
