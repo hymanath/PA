@@ -474,7 +474,22 @@ function tableViewConsolidated(result,divId,subLocationType)
 				tableView+='<th>'+subLocationType+'</th>';
 				for(var i in result[0].subList)
 				{
-					tableView+='<th>'+result[0].subList[i].component+'</th>';
+					if(result[0].subList[i].component != null && result[0].subList[i].component == 'IHHL'){
+						tableView+='<th>Individual HouseHold Latrines</th>';
+					}else if(result[0].subList[i].component != null && result[0].subList[i].component == 'GH'){
+						tableView+='<th>Greening of Hillocks</th>';
+					}else if(result[0].subList[i].component != null && result[0].subList[i].component == 'Imp to CD'){
+						tableView+='<th>Improvements to Check Dams and Percolation Tanks</th>';
+					}else if(result[0].subList[i].component != null && result[0].subList[i].component == 'MPT_PT'){
+						tableView+='<th>Mini Percolation Tanks and Percolation Tanks</th>';
+					}else if(result[0].subList[i].component != null && result[0].subList[i].component == 'GC Works'){
+						tableView+='<th>Gully Control Works</th>';
+					}else if(result[0].subList[i].component != null && result[0].subList[i].component == 'CD_CW'){
+						tableView+='<th>Check Dams and Check Walls</th>';
+					}else{
+						tableView+='<th>'+result[0].subList[i].component+'</th>';
+					}
+					
 				}
 				tableView+='<th>Green </th>';
 				tableView+='<th>Orange</th>';

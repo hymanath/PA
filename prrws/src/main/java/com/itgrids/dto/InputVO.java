@@ -101,6 +101,7 @@ public class InputVO implements Serializable {
 	private String eoDBstatus;
 	private String clearence;
 	private String session;
+	private String groupName;
 	
 	public String getProgram() {
 		return program;
@@ -635,7 +636,10 @@ public class InputVO implements Serializable {
 	public void setSession(String session) {
 		this.session = session;
 	}
-	
-   	
-	
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 }

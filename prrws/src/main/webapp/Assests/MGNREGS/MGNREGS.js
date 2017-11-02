@@ -43,7 +43,10 @@ function onLoadCalls()
 		var locationId = $(this).attr("attr_locationId");
 		$("[overview-state='"+projectDivId+"'],[overview-district='"+projectDivId+"']").addClass("active");
 		globalDivName = projectDivId;
-		overviewData(projectDivId,levelId,locationId);
+		if(globalDivName != 'Others MCC')
+		{
+			overviewData(projectDivId,levelId,locationId);
+		}
 		projectData(projectDivId,levelId,locationId);
 		$('html,body').animate({
 			scrollTop: $("#projectOverviewBlock").offset().top},
@@ -373,6 +376,10 @@ function onLoadCalls()
 					getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == 'Rock Fill Dams' || divId == 'Raising and Maintenance of Nursery' || divId == 'Desilting of Perculation Tanks and Check Dams' || divId == 'Mini Percolation Tanks' || divId == 'Continuous Contour Trenches' || divId == 'Check Dams')
 					getNregaForestLevelData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId);
+				else if(divId == 'Others MCC')
+					getNregaOtherMCCLevelData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId,$("#mccTypeId").val());
+				else if(divId == 'Coffee plantation')
+					getNregaLevelsWiseDataFrCoffeePlantation(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
 				else
 					getNregaLevelsWiseData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId);
 			}
@@ -656,6 +663,26 @@ function projectData(divId,levelId,locationId)
 			collapse+='<div class="col-sm-12">';
 				for(var i in dataArr)
 				{
+					if(divId == 'Others MCC' && i == 0)
+					{
+						collapse+='<div class="row" style="margin-bottom:15px;">';
+							collapse+='<div class="col-sm-3">';
+								collapse+='<select id="mccTypeId" class="form-control" mcctype_click="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" attr_blockName="'+divId.replace(/\s+/g, '')+'" attr_levelId="'+levelId+'" attr_divIdd="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" attr_locationType="'+dataArr[i]+'">';
+									collapse+='<option value="Greenary works (Chettu)">Greenary works (Chettu)</option>';
+									collapse+='<option value="Agriculture Related Works">Agriculture Related Works</option>';
+									collapse+='<option value="Rural Sanitation Works">Rural Sanitation Works</option>';
+									collapse+='<option value="Soil Moisture Conservation works (Neeru)">Soil Moisture Conservation works (Neeru)</option>';
+									collapse+='<option value="Works in community lands">Works in community lands</option>';
+									collapse+='<option value="Institutional Development Works">Institutional Development Works</option>';
+									collapse+='<option value="Road Works">Road Works</option>';
+									collapse+='<option value="Water Harvesting Structures (Neeru)">Water Harvesting Structures (Neeru)</option>';
+									collapse+='<option value="Fisheries work">Fisheries work</option>';
+									collapse+='<option value="AH-Live Stock Related works">AH-Live Stock Related works</option>';
+									collapse+='<option value="OTHERS">OTHERS</option>';
+								collapse+='</select>';
+							collapse+='</div>';
+						collapse+='</div>';
+					}
 					collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
 						collapse+='<div class="panel panel-default panel-black">';
 							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+dataArr[i]+'">';
@@ -751,6 +778,7 @@ function projectData(divId,levelId,locationId)
 										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="BCC" attr_id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" name="timelyPayment'+dataArr[i]+'"/>BCC';
 									collapse+='</label>';
 								}
+								
 									collapse+='<div id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"></div>';
 								collapse+='</div>';
 							collapse+='</div>';
@@ -892,6 +920,10 @@ function projectData(divId,levelId,locationId)
 			getNregaLevelsWiseDataForFAPerformance(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
 		else if(divId == 'Rock Fill Dams' || divId == 'Raising and Maintenance of Nursery' || divId == 'Desilting of Perculation Tanks and Check Dams' || divId == 'Mini Percolation Tanks' || divId == 'Continuous Contour Trenches' || divId == 'Check Dams')
 			getNregaForestLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId);
+		else if(divId == 'Others MCC')
+			getNregaOtherMCCLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,$("#mccTypeId").val());
+		else if(divId == 'Coffee plantation')
+			getNregaLevelsWiseDataFrCoffeePlantation(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
 		else
 			getNregaLevelsWiseData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId);
 	}
@@ -1185,7 +1217,7 @@ function buildNREGSProjectsOverview(result,blockName)
 					str+='<div class="row">';//'SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','WaterBudget','GH'
 					for(var i in result)
 					{
-						if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "SMC Trench" || result[i] == "Imp to CD" || result[i] == "MPT_PT" || result[i] == "GC Works" || result[i] == "CD_CW" || result[i] == "GH" || result[i] == "Solid Waste Management" || result[i] == "Play fields" || result[i] == "Burial Ground" || result[i] == "Agriculture Activities" || result[i] == "Payments" || result[i] == "FAperformance" || result[i] == "SMC Trench" || result[i] == "Imp to CD" || result[i] == "MPT_PT" || result[i] == "GC Works" || result[i] == "CD_CW"){
+						if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "SMC Trench" || result[i] == "Imp to CD" || result[i] == "MPT_PT" || result[i] == "GC Works" || result[i] == "CD_CW" || result[i] == "GH" || result[i] == "Solid Waste Management" || result[i] == "Play fields" || result[i] == "Burial Ground" || result[i] == "Agriculture Activities" || result[i] == "Payments" || result[i] == "FAperformance" || result[i] == "SMC Trench" || result[i] == "Imp to CD" || result[i] == "MPT_PT" || result[i] == "GC Works" || result[i] == "CD_CW" || result[i] == "Others MCC"){
 							str+='<div class="col-sm-2 m_top10">';
 							if(result[i] == "FAperformance"){
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
@@ -3941,7 +3973,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 
 
 //var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings1','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Ground','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
-var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Check Dam','Rock fill dams','Solid Waste Management','Burial Ground','Play fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads1','Anganwadi','GP Buildings1','Mandal buildings1','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','OPGK-Perinnials','OPGK-Annuals','UGDrainage','Rock Fill Dams','Raising and Maintenance of Nursery','Desilting of Perculation Tanks and Check Dams','Mini Percolation Tanks','Continuous Contour Trenches','Check Dams'];
+var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Check Dam','Rock fill dams','Solid Waste Management','Burial Ground','Play fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads1','Anganwadi','GP Buildings1','Mandal buildings1','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','OPGK-Perinnials','OPGK-Annuals','UGDrainage','Rock Fill Dams','Raising and Maintenance of Nursery','Desilting of Perculation Tanks and Check Dams','Mini Percolation Tanks','Continuous Contour Trenches','Check Dams','Others MCC'];
 
 buildNREGSProjectsOverview(overViewArr,'')
 for(var i in overViewArr)
@@ -5513,6 +5545,235 @@ function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,m
 						str+='<td>'+ajaxresp[i].rejectedWagesAmount+'</td>';
 						//str+='<td>'+ajaxresp[i].responsePendingWageAmount+'</td>';
 						str+='<td>'+ajaxresp[i].reprocessPendingWageAmount+'</td>';
+					str+='</tr>';
+				}
+			}
+			tableView(divIdd,theadArr,str,locationType,blockName);
+		}
+	});
+}
+
+function getNregaOtherMCCLevelData(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId,mccType)
+{
+	$("#"+divIdd).html(spinner);
+	
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: menuLocationType,
+		groupName : mccType,
+		locationId : menuLocationId,
+		sublocationType : locationTypeNew,
+		districtId:districtId
+	}
+	
+	$.ajax({
+		url: 'getNregaOtherMCCLevelData',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+					str+='<tr>';
+						if(locationTypeNew == "state"){
+							str+='<td class="text-capitalize">'+locationTypeNew+'</td>';
+						}
+						else if(locationTypeNew == "district"){
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+						}
+						else if(locationTypeNew == "constituency"){
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+						}
+						else if(locationTypeNew == "mandal"){
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+						}
+						else if(locationTypeNew == "panchayat"){
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
+						}
+						
+						str+='<td>'+ajaxresp[i].target+'</td>';
+						str+='<td>'+ajaxresp[i].grounded+'</td>';
+						
+						var groundValue = ajaxresp[i].grounded;
+						var targetValue = ajaxresp[i].target;
+						var groundedPerc = "0.00";
+						if(targetValue > 0 && groundValue > 0)
+							groundedPerc = ((groundValue*100)/targetValue).toFixed(2);
+						if(groundedPerc < 50){
+							str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+						}else if(groundedPerc >= 50 && groundedPerc < 80){
+							str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+						}else if(groundedPerc >= 80)
+						{
+							str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+						}else{
+							str+='<td style="background-color:#FF0000;color:#fff">-</td>';
+						}
+						
+						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+						str+='<td>'+ajaxresp[i].inProgress+'</td>';
+						str+='<td>'+ajaxresp[i].completed+'</td>';
+						
+						if(ajaxresp[i].percentage < 50){
+							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 80){
+							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}
+						
+					str+='</tr>';
+				}
+			}
+			tableView(divIdd,theadArr,str,locationTypeNew,blockName);
+		}
+	});
+}
+$(document).on("change","[mcctype_click]",function(){
+	
+	//collapse+='<select class="form-control" mcctype_click="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"
+	//attr_blockName="'+divId.replace(/\s+/g, '')+'" 
+	//attr_levelId="'+levelId+'" attr_divIdd="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" attr_locationType="'+dataArr[i]+'">';
+	var blockTypeId = $(this).attr("mcctype_click");
+	var	mccType = $("[mcctype_click="+blockTypeId+"]").val();
+	var divId = $(this).attr("attr_divIdd");
+	var levelId = $(this).attr("attr_levelId");
+	var blockName = $(this).attr("attr_blockName");
+	var districtId = '';
+	var menuLocationId = '';
+	var menuLocationType = '';
+	if(levelId == 2)
+	{
+		menuLocationId = "-1";
+		menuLocationType = "state";
+	}else if(levelId == 3)
+	{
+		menuLocationId = locationId;
+		menuLocationType = "district";
+	}else if(levelId == 4)
+	{
+		menuLocationId = locationId;
+		menuLocationType = "constituency";
+		districtId = $("#selectedName").attr("attr_distid");
+	}
+	
+	var dataArr = '';
+	if(levelId == 2)
+	{
+		dataArr = ['state','district','constituency','mandal','panchayat'];
+	}else if(levelId == 3)
+	{
+		dataArr = ['district','constituency','mandal','panchayat'];
+	}else if(levelId == 4)
+	{
+		dataArr = ['constituency','mandal','panchayat'];		
+	}
+	for(var i in dataArr)
+	{
+		var theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		if(dataArr[i] == "constituency")
+			theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		else if(dataArr[i] == "mandal")
+			theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		else if(dataArr[i] == "panchayat")
+			theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		var tableId = blockName.replace(/\s+/g, '')+''+dataArr[i];
+		getNregaOtherMCCLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,mccType);
+	}	
+});
+
+function getNregaLevelsWiseDataFrCoffeePlantation(divIdd,locationType,menuLocationType,menuLocationId,blockName)
+{
+	var districtId = $("#selectedName").attr("attr_distid");
+	$("#"+divIdd).html(spinner);
+	 var theadArr = [locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expanditure','Planting  Area (in Acres)','Planting Expanditure','Total Expanditure','Pitting Perc','Planting Perc'];
+	if(locationType == "constituency")
+		theadArr = ["district",locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expanditure','Planting  Area (in Acres)','Planting Expanditure','Total Expanditure','Pitting Perc','Planting Perc'];
+	else if(locationType == "mandal")
+		theadArr = ["district","constituency",locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expanditure','Planting  Area (in Acres)','Planting Expanditure','Total Expanditure','Pitting Perc','Planting Perc'];
+	else if(locationType == "panchayat")
+		theadArr = ["district","constituency","mandal",locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expanditure','Planting  Area (in Acres)','Planting Expanditure','Total Expanditure','Pitting Perc','Planting Perc'];
+	
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: menuLocationType,
+		divType : globalDivName,
+		locationId : menuLocationId,
+		sublocaType : locationType,
+		districtId:districtId
+	}
+	$.ajax({
+		url: 'getNregaLevelsWiseDataFrCoffeePlantation',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+					str+='<tr>';
+						if(locationType == "state"){
+							str+='<td class="text-capitalize">'+locationType+'</td>';
+						}
+						else if(locationType == "district"){
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+						}
+						else if(locationType == "constituency"){
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+						}
+						else if(locationType == "mandal"){
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+						}
+						else if(locationType == "panchayat"){
+							str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
+						}
+						
+							str+='<td>'+ajaxresp[i].targetACRES+'</td>';
+							str+='<td>'+ajaxresp[i].pittingArea+'</td>';
+							str+='<td>'+ajaxresp[i].pittingExp+'</td>';
+							str+='<td>'+ajaxresp[i].plantingArea+'</td>';
+							str+='<td>'+ajaxresp[i].plantingExp+'</td>';
+							str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
+							
+							if(ajaxresp[i].pitingPerc < 50)
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
+							else if(ajaxresp[i].pitingPerc >= 50 && ajaxresp[i].pitingPerc < 80)
+								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
+							else if(ajaxresp[i].pitingPerc >= 80)
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
+						
+							if(ajaxresp[i].pencentageOfPlanting < 50){
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+							}else if(ajaxresp[i].pencentageOfPlanting >= 50 && ajaxresp[i].pencentageOfPlanting < 80){
+								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+							}else if(ajaxresp[i].pencentageOfPlanting >= 80){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+							}
 					str+='</tr>';
 				}
 			}

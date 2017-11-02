@@ -66,4 +66,6 @@ public interface INREGSTCSService {
 	
 	public List<WaterTanksClorinationVO> getDistrictWiseClorinationDetails(InputVO inputVO);
 	public List<WaterTanksClorinationVO> getLocationWiseClorinationDetails(InputVO inputVO);
+	public List<NregsDataVO> getNregaOtherMCCLevelData(InputVO inputVO);
+	public List<NregsDataVO> getNregaLevelsWiseDataFrCoffeePlantation(InputVO inputVO);
 }
