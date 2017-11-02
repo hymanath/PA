@@ -239,7 +239,7 @@
 			</div>
 			<div class="col-sm-4">
 				<div class="whiteBlock">
-					<img src="Assests/img/waterTank.jpg" style="width: 52px; height: 50px;">
+					<img src="Assests/img/waterTank.png">
 					<h5 style="display: inline-block;">WATER TANK CLORINATION</h5>
 					<div class=" " style="text-align: right">
 						<h2 class="waterTankClorinationAllCls" style="margin-top: 0px"></h2>
