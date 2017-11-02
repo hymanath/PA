@@ -5329,6 +5329,20 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 					}
 				}
 			}
+			
+			for (ElectionInformationVO evo : finalPartyList) {
+				Collections.sort(evo.getList(), new Comparator<ElectionInformationVO>() {
+					@Override
+					public int compare(ElectionInformationVO o1,ElectionInformationVO o2) {
+						int val;
+							val= (o2.getElectionType()).compareTo(o1.getElectionType());
+						 if(val ==0)
+							 val= (o2.getElectionYear()).compareTo(o1.getElectionYear());
+						 return val;
+					}
+				});
+			}
+			
 			return finalPartyList;
 		}catch(Exception e){
 			e.printStackTrace();
