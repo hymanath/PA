@@ -144,7 +144,7 @@
 							buildChartForHabitationCoverage(ajaxresp);
 							buildChartForHabitationCoverageStatus(ajaxresp);
 						}else{
-							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations');
+							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',"");
 						}
 						
 						
@@ -742,7 +742,7 @@
 						if(type == "graph"){
 							buildSchemeWiseWorkDetails(ajaxresp);
 						}else{
-							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations');
+							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',"completeOverview");
 						}
 						
 					}else{
@@ -979,7 +979,7 @@
 						buildAssetInfoBetweenDates(result);
 					}else{
 						if(result !=null && result.length>0){
-							buildTableForHabitationCoverage(result,locationType,divId,'habitations');
+							buildTableForHabitationCoverage(result,locationType,divId,'habitations',"");
 						}else{
 							for(var k in divId){
 								$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
@@ -1201,7 +1201,7 @@
 						if(type=="graph"){
 							buildKeyPerformanceIndicatorsInfo(ajaxresp)
 						}else{
-							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations');
+							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',"");
 						}
 						
 					}else{
@@ -1830,6 +1830,10 @@
 				tabBlock+='</div>';
 			
 			tabBlock+='<div class="panel-body">';
+				tabBlock+='<ul class="switch-btn-New" role="tabCummulative" attr_level_type="'+blockName+'">';
+					tabBlock+='<li class="active ActiveStateCls" attr_type="completeOverview">Complete Overview</li>';
+					tabBlock+='<li  attr_type="exceededOverview">Exceeded Target Works Details</li>';
+				tabBlock+='</ul>';
 				tabBlock+='<select class="form-control" role="tabListMobile">';
 					for(var i in blocksArr)
 					{
@@ -1860,7 +1864,7 @@
 									 tabBlock+='<div role="tabpanel" class="tab-pane active" id="drinking'+blockName+'"></div>';
 								 tabBlock+='</div>';
 							 }else{
-								 tabBlock+='<div role="tabpanel" class="tab-pane active" id="'+blockId+''+blocksArr[i].id+'"></div>';
+								 tabBlock+='<div role="tabpanel" class="tab-pane active m_top10" id="'+blockId+''+blocksArr[i].id+'"></div>';
 							 }
 						}else{
 							 if(blocksArr[i].id == "jalavani"){
@@ -1869,7 +1873,7 @@
 									tabBlock+='<div  role="tabpanel" class="tab-pane" id="drinking'+blockName+'"></div>';
 								tabBlock+='</div>';
 							}else{
-								tabBlock+='<div role="tabpanel" class="tab-pane" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
+								tabBlock+='<div role="tabpanel" class="tab-pane m_top10" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
 							} 
 						}
 					}
@@ -1879,10 +1883,10 @@
 		tabBlock+='</div>';
 		$("#"+blockId).html(tabBlock);
 		$(".overViewCls").hide();
-		getSchemeWiseWorkDetails('table','state',blocksArr,"","","");
-		getSchemeWiseWorkDetails('table','district',blocksArr,"","","");
-		getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","");
-		getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","");
+		getSchemeWiseWorkDetails('table','state',blocksArr,"","","","completeOverview");
+		getSchemeWiseWorkDetails('table','district',blocksArr,"","","","completeOverview");
+		getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","","completeOverview");
+		getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","","completeOverview");
 		
 		if(blockId == 'constituencyBlockId'){
 				selectBox('distVal'+blockId+'')
@@ -1912,7 +1916,7 @@
 	$(window,document).on('resize', function(){
 		responsiveTabs();
 	});
-		function buildTableForHabitationCoverage(result,locationType,divId,type){
+		function buildTableForHabitationCoverage(result,locationType,divId,type,blockType){
 			if(type =="alertStatus"){
 				var GLtbodyAlertArr=[];
 				if(result !=null && result.length>0){
@@ -1938,7 +1942,7 @@
 						GLtbodyArr.push(result[i]);
 					}
 				}
-				tableViewHabitationStatus(divId,GLtbodyArr,locationType)
+				tableViewHabitationStatus(divId,GLtbodyArr,locationType,blockType)
 			}
 		}
 		
@@ -2190,7 +2194,7 @@
 			
 			
 		}
-		function tableViewHabitationStatus(divId,GLtbodyArr,locationType)//aravind
+		function tableViewHabitationStatus(divId,GLtbodyArr,locationType,blockType)//aravind
 		{
 				 for(var k in divId){
 					 var $windowWidth = $(window).width();
@@ -2202,19 +2206,19 @@
 						//}
 						if(divId[k].id=="habitation"){
 							if(locationType !="district"){
-								tableView+='<table class="table table-bordered" id="dataTable1'+locationType+divId[k].id+'">';
+								tableView+='<table class="table table-bordered table_custom" id="dataTable1'+locationType+divId[k].id+'">';
 							}else{
-								tableView+='<table class="table table-bordered" id="dataTableDis'+locationType+divId[k].id+'">';
+								tableView+='<table class="table table-bordered table_custom" id="dataTableDis'+locationType+divId[k].id+'">';
 							}
 							
 						}else if(divId[k].id=="performance"){
-							tableView+='<table class="table table-bordered" id="dataTable'+locationType+divId[k].id+'">';
+							tableView+='<table class="table table-bordered table_custom" id="dataTable'+locationType+divId[k].id+'">';
 						}else if(divId[k].id=="schemeId"){
-							tableView+='<table class="table table-bordered" id="dataTable3'+locationType+divId[k].id+'">';
+							tableView+='<table class="table table-bordered table_custom" id="dataTable3'+locationType+divId[k].id+'">';
 						}else if(divId[k].id=="assestsId"){
-							tableView+='<table class="table table-bordered" id="dataTable2'+locationType+divId[k].id+'">';
+							tableView+='<table class="table table-bordered table_custom" id="dataTable2'+locationType+divId[k].id+'">';
 						}else if(divId[k].id=="waterSourceId"){
-							tableView+='<table class="table table-bordered" id="dataTable4'+locationType+divId[k].id+'">';
+							tableView+='<table class="table table-bordered table_custom" id="dataTable4'+locationType+divId[k].id+'">';
 						}
 							tableView+='<thead class="text-capital">';
 							
@@ -2249,35 +2253,88 @@
 								tableView+='<th>% Percentage</th>';
 								tableView+='</tr>'; 
 							}else if(divId[k].id=="schemeId"){
-								tableView+='<tr>';
-								tableView+='<th rowspan="2">'+locationType+'</th>';
-								if(GLtbodyArr[0] !=null && GLtbodyArr[0].basicList !=null && GLtbodyArr[0].basicList.length>0){
-									for(var j in GLtbodyArr[0].basicList){
-											if(GLtbodyArr[0].basicList[j].assetType == 'PWS' || GLtbodyArr[0].basicList[j].assetType == "CPWS"){
-												tableView+='<th colspan="8">'+GLtbodyArr[0].basicList[j].assetType+'</th>';
-											}
-										
+								if(blockType == "completeOverview"){
+									tableView+='<tr>';
+									tableView+='<th rowspan="2">'+locationType+'</th>';
+									if(GLtbodyArr[0] !=null && GLtbodyArr[0].basicList !=null && GLtbodyArr[0].basicList.length>0){
+										for(var j in GLtbodyArr[0].basicList){
+												if(GLtbodyArr[0].basicList[j].assetType == 'PWS' || GLtbodyArr[0].basicList[j].assetType == "CPWS"){
+													tableView+='<th colspan="8">'+GLtbodyArr[0].basicList[j].assetType+'</th>';
+												}
+											
+										}
 									}
+									tableView+='</tr>';
+									tableView+='<tr>';
+										tableView+='<th>OnGoing</th>';
+										tableView+='<th>%</th>';
+										tableView+='<th>Not Grounded</th>';
+										tableView+='<th>%</th>';
+										tableView+='<th>Completed</th>';
+										tableView+='<th>%</th>';
+										tableView+='<th>Commissioned</th>';
+										tableView+='<th>%</th>';
+										tableView+='<th>OnGoing</th>';
+										tableView+='<th>%</th>';
+										tableView+='<th>Not Grounded</th>';
+										tableView+='<th>%</th>';
+										tableView+='<th>Completed</th>';
+										tableView+='<th>%</th>';
+										tableView+='<th>Commissioned</th>';
+										tableView+='<th>%</th>';
+									tableView+='</tr>'
+								}else{
+									var totalCPWSCount=0;
+									var totalPWSCount=0;
+									var length = (GLtbodyArr[0].subList[0].subList.length+1)*2;
+									for(var i in GLtbodyArr){
+										for(var j in GLtbodyArr[i].subList){
+											if(GLtbodyArr[i].subList[j].assetType == "CPWS"){
+												totalCPWSCount = totalCPWSCount+GLtbodyArr[i].subList[j].count;
+											}else{
+												totalPWSCount = totalPWSCount+GLtbodyArr[i].subList[j].count;
+											}
+											
+											
+										}
+									}
+									tableView+='<tr>';
+										tableView+='<th rowspan="3">'+locationType+'</th>';
+										for(var i in GLtbodyArr[0].subList){
+											if(GLtbodyArr[0].subList[i].assetType == "CPWS"){
+												tableView+='<th colspan="'+length+'">'+GLtbodyArr[0].subList[i].assetType+' - '+totalCPWSCount+' (Works)</th>';
+											}else{
+												tableView+='<th colspan="'+length+'">'+GLtbodyArr[0].subList[i].assetType+' - '+totalPWSCount+' (Works)</th>';
+											}
+											
+										}
+									tableView+='</tr>'
+									tableView+='<tr>';
+										tableView+='<th colspan="2">TOTAL WORKS</th>';
+										for(var i in GLtbodyArr[0].subList[0].subList){
+											tableView+='<th colspan="2">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+										}
+										tableView+='<th colspan="2">TOTAL WORKS</th>';
+										for(var i in GLtbodyArr[0].subList[0].subList){
+											tableView+='<th colspan="2">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+										}		
+									tableView+='</tr>'
+									tableView+='<tr>';
+										tableView+='<th>Works</th>';
+										tableView+='<th><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+										for(var i in GLtbodyArr[0].subList[0].subList){
+											tableView+='<th>Works</th>';
+											tableView+='<th><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+										}
+										tableView+='<th>Works</th>';
+										tableView+='<th><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+										for(var i in GLtbodyArr[0].subList[0].subList){
+											tableView+='<th>Works</th>';
+											tableView+='<th><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+										}
+									tableView+='</tr>'
 								}
-								tableView+='</tr>';
-								tableView+='<tr>';
-									tableView+='<th>OnGoing</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Not Grounded</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Completed</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Commissioned</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>OnGoing</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Not Grounded</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Completed</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Commissioned</th>';
-									tableView+='<th>%</th>';
-								tableView+='</tr>'
+								
 									
 							}else if(divId[k].id=="assestsId"){
 								tableView+='<tr>';
@@ -2383,57 +2440,80 @@
 								
 							}else if(divId[k].id=="schemeId"){
 								for(var i in GLtbodyArr){
-									tableView+='<tr>';
-										tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
-									
-									if(GLtbodyArr[i].basicList !=null && GLtbodyArr[i].basicList.length>0){
-										for(var j in GLtbodyArr[i].basicList){
-										if(GLtbodyArr[i].basicList[j].assetType == 'PWS' || GLtbodyArr[i].basicList[j].assetType == "CPWS"){
-												
-												if(GLtbodyArr[i].basicList[j].workOngoingCount !=null && GLtbodyArr[i].basicList[j].workOngoingCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "ongoing" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workOngoingCount+'</td>';
-												}else{
-													tableView+='<td> - </td>';
+									if(blockType == "completeOverview"){
+										tableView+='<tr>';
+											tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
+										
+										if(GLtbodyArr[i].basicList !=null && GLtbodyArr[i].basicList.length>0){
+											for(var j in GLtbodyArr[i].basicList){
+											if(GLtbodyArr[i].basicList[j].assetType == 'PWS' || GLtbodyArr[i].basicList[j].assetType == "CPWS"){
+													
+													if(GLtbodyArr[i].basicList[j].workOngoingCount !=null && GLtbodyArr[i].basicList[j].workOngoingCount>0){
+														tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "ongoing" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workOngoingCount+'</td>';
+													}else{
+														tableView+='<td> - </td>';
+													}
+													if(GLtbodyArr[i].basicList[j].percentageOne !=null && GLtbodyArr[i].basicList[j].percentageOne>0){
+														tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageOne.toFixed(1)+'</small></td>';
+													}else{
+														tableView+='<td> - </td>';
+													}
+													if(GLtbodyArr[i].basicList[j].workNotGroundedCount !=null && GLtbodyArr[i].basicList[j].workNotGroundedCount>0){
+														tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "notgrounded" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workNotGroundedCount+'</td>';
+													}else{
+														tableView+='<td> - </td>';
+													}
+													if(GLtbodyArr[i].basicList[j].percentageFour !=null && GLtbodyArr[i].basicList[j].percentageFour>0){
+														tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageFour.toFixed(1)+'</small></td>';
+													}else{
+														tableView+='<td> - </td>';
+													}	
+													if(GLtbodyArr[i].basicList[j].workCompletedCount !=null && GLtbodyArr[i].basicList[j].workCompletedCount>0){
+														tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "completed" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workCompletedCount+'</td>';
+													}else{
+														tableView+='<td> - </td>';
+													}
+													if(GLtbodyArr[i].basicList[j].percentageThree !=null && GLtbodyArr[i].basicList[j].percentageThree>0){
+														tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageThree.toFixed(1)+'</small></td>';
+													}else{
+														tableView+='<td> - </td>';
+													}	
+													if(GLtbodyArr[i].basicList[j].workComissionedCount !=null && GLtbodyArr[i].basicList[j].workComissionedCount>0){
+														tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "Commissioned" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workComissionedCount+'</td>';
+													}else{
+														tableView+='<td> - </td>';
+													}
+													if(GLtbodyArr[i].basicList[j].percentageTwo !=null && GLtbodyArr[i].basicList[j].percentageTwo>0){
+														tableView+='<td ><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageTwo.toFixed(1)+'</small></td>';
+													}else{
+														tableView+='<td> - </td>';
+													}	
 												}
-												if(GLtbodyArr[i].basicList[j].percentageOne !=null && GLtbodyArr[i].basicList[j].percentageOne>0){
-													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageOne.toFixed(1)+'</small></td>';
-												}else{
-													tableView+='<td> - </td>';
-												}
-												if(GLtbodyArr[i].basicList[j].workNotGroundedCount !=null && GLtbodyArr[i].basicList[j].workNotGroundedCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "notgrounded" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workNotGroundedCount+'</td>';
-												}else{
-													tableView+='<td> - </td>';
-												}
-												if(GLtbodyArr[i].basicList[j].percentageFour !=null && GLtbodyArr[i].basicList[j].percentageFour>0){
-													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageFour.toFixed(1)+'</small></td>';
-												}else{
-													tableView+='<td> - </td>';
-												}	
-												if(GLtbodyArr[i].basicList[j].workCompletedCount !=null && GLtbodyArr[i].basicList[j].workCompletedCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "completed" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workCompletedCount+'</td>';
-												}else{
-													tableView+='<td> - </td>';
-												}
-												if(GLtbodyArr[i].basicList[j].percentageThree !=null && GLtbodyArr[i].basicList[j].percentageThree>0){
-													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageThree.toFixed(1)+'</small></td>';
-												}else{
-													tableView+='<td> - </td>';
-												}	
-												if(GLtbodyArr[i].basicList[j].workComissionedCount !=null && GLtbodyArr[i].basicList[j].workComissionedCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "Commissioned" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workComissionedCount+'</td>';
-												}else{
-													tableView+='<td> - </td>';
-												}
-												if(GLtbodyArr[i].basicList[j].percentageTwo !=null && GLtbodyArr[i].basicList[j].percentageTwo>0){
-													tableView+='<td ><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageTwo.toFixed(1)+'</small></td>';
-												}else{
-													tableView+='<td> - </td>';
-												}	
 											}
 										}
+										tableView+='</tr>';
+									}else{
+										tableView+='<tr>';
+											tableView+='<td>'+GLtbodyArr[i].name+'</td>';
+											for(var j in GLtbodyArr[i].subList){
+												var cpwsPerc =0;
+												var pswsPerc=0;
+												if(GLtbodyArr[i].subList[j].assetType == "CPWS"){
+													cpwsPerc = (GLtbodyArr[i].subList[j].count/totalCPWSCount*100).toFixed(2);
+													tableView+='<td>'+GLtbodyArr[i].subList[j].count+'<br/> <small style="color:green;">'+cpwsPerc+' %</small></td>';
+												}else{
+													pswsPerc = (GLtbodyArr[i].subList[j].count/totalPWSCount*100).toFixed(2);
+													tableView+='<td>'+GLtbodyArr[i].subList[j].count+'<br/> <small style="color:green;">'+pswsPerc+' %</small></td>';
+												}
+												tableView+='<td>'+GLtbodyArr[i].subList[j].sanctionAmount+'</td>';
+												for(var k in GLtbodyArr[i].subList[j].subList){
+													tableView+='<td>'+GLtbodyArr[i].subList[j].subList[k].count+'<br/> <small style="color:green;">'+GLtbodyArr[i].subList[j].subList[k].percentage+' %</small></td>';
+													tableView+='<td>'+GLtbodyArr[i].subList[j].subList[k].sanctionAmount+'</td>';
+												}
+											}
+										tableView+='</tr>';
 									}
-									tableView+='</tr>';
+									
 								}
 							}else if(divId[k].id=="assestsId"){
 								for(var i in GLtbodyArr){
@@ -2715,7 +2795,7 @@
 				}else if(id == "stateBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','state',blocksArr,"","","");
 				}else if(id == "stateBlockIdschemeId"){
-					getSchemeWiseWorkDetails('table','state',blocksArr,"","","");
+					getSchemeWiseWorkDetails('table','state',blocksArr,"","","","completeOverview");
 				}else if(id == "stateBlockIdwaterSourceId"){
 					getWaterSourceDeatils2('state',blocksArr,"","","","table")
 				}
@@ -2731,7 +2811,7 @@
 				}else if(id == "districtBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','district',blocksArr,"","","");
 				}else if(id == "districtBlockIdschemeId"){
-					getSchemeWiseWorkDetails('table','district',blocksArr,"","","");
+					getSchemeWiseWorkDetails('table','district',blocksArr,"","","","completeOverview");
 				}else if(id == "districtBlockIdwaterSourceId"){
 					getWaterSourceDeatils2('district',blocksArr,"","","","table")
 				}
@@ -2756,7 +2836,7 @@
 				}else if(id == "constituencyBlockIdschemeId"){
 					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
 					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
-					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","");
+					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","","completeOverview");
 				}else if(id == "constituencyBlockIdwaterSourceId"){
 					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
@@ -2783,7 +2863,7 @@
 				}else if(id == "mandalBlockIdschemeId"){
 					getAllPrrwsDistricts("chosendistValmandalBlockId");
 					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
-					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","");
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","","completeOverview");
 				}else if(id == "mandalBlockIdwaterSourceId"){
 					getAllPrrwsDistricts("chosendistValmandalBlockId");
 					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
@@ -2865,7 +2945,7 @@
 				}else if(id == "stateBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','state',blocksArr,"","","");
 				}else if(id == "stateBlockIdschemeId"){
-					getSchemeWiseWorkDetails('table','state',blocksArr,"","","");
+					getSchemeWiseWorkDetails('table','state',blocksArr,"","","","completeOverview");
 				}else if(id == "stateBlockIdwaterSourceId"){
 					getWaterSourceDeatils2('state',blocksArr,"","","","table")
 				}
@@ -2881,7 +2961,7 @@
 				}else if(id == "districtBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','district',blocksArr,"","","");
 				}else if(id == "districtBlockIdschemeId"){
-					getSchemeWiseWorkDetails('table','district',blocksArr,"","","");
+					getSchemeWiseWorkDetails('table','district',blocksArr,"","","","completeOverview");
 				}else if(id == "districtBlockIdwaterSourceId"){
 					getWaterSourceDeatils2('district',blocksArr,"","","","table")
 				}
@@ -2906,7 +2986,7 @@
 				}else if(id == "constituencyBlockIdschemeId"){
 					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
 					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
-					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","");
+					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","","completeOverview");
 				}else if(id == "constituencyBlockIdwaterSourceId"){
 					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
@@ -2933,7 +3013,7 @@
 				}else if(id == "mandalBlockIdschemeId"){
 					getAllPrrwsDistricts("chosendistValmandalBlockId");
 					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
-					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","");
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","","completeOverview");
 				}else if(id == "mandalBlockIdwaterSourceId"){
 					getAllPrrwsDistricts("chosendistValmandalBlockId");
 					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
@@ -3375,7 +3455,7 @@
 				}else if(tabId == "constituencyBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','constituency',blocksArr,"","","");
 				}else if(tabId == "constituencyBlockIdschemeId"){
-					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","");
+					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","","completeOverview");
 				}else if(tabId == "constituencyBlockIdwaterSourceId"){
 					getWaterSourceDeatils2('constituency',blocksArr,"","","","table")
 				}
@@ -3402,7 +3482,7 @@
 				}else if(tabId == "constituencyBlockIdschemeId"){
 					getConstituenciesForDistrict(distId,"chosenconstValconstituencyBlockId");
 					 //getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
-					getSchemeWiseWorkDetails('table','constituency',blocksArr,"district",distId,"");
+					getSchemeWiseWorkDetails('table','constituency',blocksArr,"district",distId,"","completeOverview");
 					
 				}else if(tabId == "constituencyBlockIdwaterSourceId"){
 					getConstituenciesForDistrict(distId,"chosenconstValconstituencyBlockId");
@@ -3460,9 +3540,9 @@
 				
 			}else if(tabId == "constituencyBlockIdschemeId"){
 				if(constId == 0){
-					getSchemeWiseWorkDetails('table','constituency',blocksArr,"district",distId,"");
+					getSchemeWiseWorkDetails('table','constituency',blocksArr,"district",distId,"","completeOverview");
 				}else{
-					getSchemeWiseWorkDetails('table','constituency',blocksArr,"constituency",constId,"");
+					getSchemeWiseWorkDetails('table','constituency',blocksArr,"constituency",constId,"","completeOverview");
 				}
 				
 			}else if(tabId == "constituencyBlockIdwaterSourceId"){
@@ -3502,7 +3582,7 @@
 				}else if(tabIdM == "mandalBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','mandal',blocksArr,"","","");
 				}else if(tabIdM == "mandalBlockIdschemeId"){
-					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","");
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","","completeOverview");
 				}else if(tabIdM == "mandalBlockIdwaterSourceId"){
 					getWaterSourceDeatils2('mandal',blocksArr,"","","","table")
 				}
@@ -3526,7 +3606,7 @@
 				}else if(tabIdM == "mandalBlockIdschemeId"){
 					getConstituenciesForDistrict(distId,"chosenconstValmandalBlockId");
 					// getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
-					 getSchemeWiseWorkDetails('table','mandal',blocksArr,"district",distId,"");
+					 getSchemeWiseWorkDetails('table','mandal',blocksArr,"district",distId,"","completeOverview");
 					
 				}else if(tabIdM == "mandalBlockIdwaterSourceId"){
 					getConstituenciesForDistrict(distId,"chosenconstValmandalBlockId");
@@ -3593,9 +3673,9 @@
 				getTehsilsForConstituency(constId,"chosenmandalValmandalBlockId");
 				//getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
 				if(constId == 0){
-					getSchemeWiseWorkDetails('table','mandal',blocksArr,"district",distId,"");
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"district",distId,"","completeOverview");
 				}else{
-					getSchemeWiseWorkDetails('table','mandal',blocksArr,"constituency",constId,"");
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"constituency",constId,"","completeOverview");
 				}
 				
 			}else if(tabIdM == "mandalBlockIdwaterSourceId"){
@@ -3662,9 +3742,9 @@
 				
 			}else if(tabIdM == "mandalBlockIdschemeId"){
 				if(mandalId == 0){
-					getSchemeWiseWorkDetails('table','mandal',blocksArr,"constituency",constId,"");
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"constituency",constId,"","completeOverview");
 				}else{
-					getSchemeWiseWorkDetails('table','mandal',blocksArr,"mandal",mandalId,distId);
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"mandal",mandalId,distId,"completeOverview");
 				}
 				
 			}else if(tabIdM == "mandalBlockIdwaterSourceId"){
@@ -5919,18 +5999,70 @@ function getExceededTargetWorksDetails(){
 		});
 	}
 }
-
-function getExceedWorkDetailsLocationWise(){
-	
-	 //GUMMAGATTA mandal name  1218
-		var json = {
-				year:"2017",
+$(document).on("click","[role='tabCummulative'] li",function(){
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		var blockName = $(this).closest("ul").attr("attr_level_type");
+		var blockType = $(this).attr("attr_type");
+		
+	if(blockName == "state"){
+		if(blockType == "completeOverview"){
+			getSchemeWiseWorkDetails('table','state',blocksArr,"","","",blockType);
+		}else{
+			getExceedWorkDetailsLocationWise('table','state',blocksArr,"","","",blockType)
+		}
+		
+	}else if(blockName == "district"){
+		if(blockType == "completeOverview"){
+			getSchemeWiseWorkDetails('table','district',blocksArr,"","","",blockType);
+		}else{
+			getExceedWorkDetailsLocationWise('table','district',blocksArr,"","","",blockType)
+		}
+		
+	}else if(blockName == "constituency"){
+		if(blockType == "completeOverview"){
+			$("#distValconstituencyBlockId").show();
+			$("#constValconstituencyBlockId").show();
+			getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","",blockType);
+		}else{
+			$("#distValconstituencyBlockId").hide();
+			$("#constValconstituencyBlockId").hide();
+			getExceedWorkDetailsLocationWise('table','constituency',blocksArr,"","","",blockType)
+		}
+		
+	}else if(blockName == "mandal"){
+		if(blockType == "completeOverview"){
+			$("#distValmandalBlockId").show();
+			$("#constValmandalBlockId").show();
+			$("#mandalValmandalBlockId").show();
+			getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","",blockType);	
+		}else{
+			$("#distValmandalBlockId").hide();
+			$("#constValmandalBlockId").hide();
+			$("#mandalValmandalBlockId").hide();
+			getExceedWorkDetailsLocationWise('table','mandal',blocksArr,"","","",blockType)
+		}
+		
+	}
+});
+function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,filterValue,districtValue,blockType){
+		for(var k in divId){
+			$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+		}
+		var yearVal="";
+		var financialVal =$("#financialYearId").val();
+		if(financialVal != 0){
+			 yearVal=financialVal;
+		}
+		
+	 	var json = {
+				year:yearVal,
 				fromDateStr:glStartDate,
 				toDateStr:glEndDate,
 				districtValue:"",
 				filterType:"",
 				filterValue:"",
-				locationType:"district",
+				locationType:locationType, 
 				assetTypeList:['CPWS','PWS'],
 				statusList : ['completed','ongoing'],
 				}
@@ -5944,7 +6076,13 @@ function getExceedWorkDetailsLocationWise(){
 				xhr.setRequestHeader("Accept", "application/json");
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
-		}).done(function(result){
-		  console.log(result);
+		}).done(function(ajaxresp){
+		 	if(ajaxresp !=null && ajaxresp.length>0){
+				buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',blockType);
+			}else{
+				for(var k in divId){
+					$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
+				}
+			}
 		});
 	}
