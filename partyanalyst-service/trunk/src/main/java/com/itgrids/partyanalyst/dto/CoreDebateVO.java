@@ -30,6 +30,8 @@ public class CoreDebateVO implements Serializable {
 	private Long debateLocationId;
 	private String debateLocation;
 	private List<CoreDebateVO> coreDebateVOList ;
+	private Long debatesCount=0l;
+	private Double scalesCount=0.00;;
 	
 	public Long getId() {
 		return id;
@@ -163,6 +165,19 @@ public class CoreDebateVO implements Serializable {
 	public void setDebateLocation(String debateLocation) {
 		this.debateLocation = debateLocation;
 	}
+	public Long getDebatesCount() {
+		return debatesCount;
+	}
+	public void setDebatesCount(Long debatesCount) {
+		this.debatesCount = debatesCount;
+	}
+	public Double getScalesCount() {
+		return scalesCount;
+	}
+	public void setScalesCount(Double scalesCount) {
+		this.scalesCount = scalesCount;
+	}
+	
 	
 	
 	
