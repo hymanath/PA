@@ -671,7 +671,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 									}else{
 										str+='<td class="text-center"> - </td>';
 									}
-									if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
+									if(result[i].percentage !=null && parseFloat(result[i].percentage)>=0){
 										if(parseFloat(result[i].percentage)>=80){// && parseFloat(result[i].percentage) <=100
 											str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
 										}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
@@ -1058,7 +1058,7 @@ function getLocationDetailsBasedOnCategory(categoryType,locationType,reportType)
 							}else{
 								str+='<td class="text-center"> - </td>';
 							}
-							if(result[i].percentage !=null && parseFloat(result[i].percentage)>0){
+							if(result[i].percentage !=null && parseFloat(result[i].percentage)>=0){
 								if(parseFloat(result[i].percentage)>=80 ){//&& parseFloat(result[i].percentage) <=100
 									str+='<td class="text-center" style="background-color:#009587;color:#fff">'+result[i].percentage+'</td>';
 								}else if(parseFloat(result[i].percentage) >=60 && parseFloat(result[i].percentage)<80){
