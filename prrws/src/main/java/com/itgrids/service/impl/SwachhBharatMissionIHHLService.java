@@ -54,10 +54,11 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		SwachhBharatMissionIHHLDtlsVO resultVO = new SwachhBharatMissionIHHLDtlsVO();
 		try {
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails", str);
-			
-			if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails?", str);
+
+																			//http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails? 
+			if(response.getStatus() != 200){								//http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());///kkb
 	 	      }else{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
@@ -67,10 +68,21 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	 	    			for(int i=0;i<locationDtlsArr.length();i++){
 	 	    				JSONObject jObj = (JSONObject) locationDtlsArr.get(i);
 	 	    				resultVO.setTarget(jObj.has("TARGET") ? jObj.getLong("TARGET"):0l);
-	 	    				resultVO.setGrounded(jObj.has("GROUNDED") ? jObj.getLong("GROUNDED"):0l);
+	 	    				//resultVO.setGrounded(jObj.has("GROUNDED") ? jObj.getLong("GROUNDED"):0l);
 	 	    				resultVO.setNoTGrounded(jObj.has("NOTGROUNDED") ? jObj.getLong("NOTGROUNDED"):0l);
 	 	    				resultVO.setInProgress(jObj.has("INPROGRESS") ? jObj.getLong("INPROGRESS"):0l);
 	 	    				resultVO.setCompleted(jObj.has("COMPLETEED") ? jObj.getLong("COMPLETEED"):0l);
+	 	    				resultVO.setSanctioned(jObj.has("SANCTIONED") ? jObj.getLong("SANCTIONED"):0l);
+	 	    				resultVO.setExcessben(jObj.has("EXCESSBEN") ? jObj.getLong("EXCESSBEN"):0l);
+	 	    				resultVO.setNotSanctioned(resultVO.getTarget()-resultVO.getSanctioned());
+	 	    				resultVO.setNotStarted(resultVO.getSanctioned()-(resultVO.getInProgress()+resultVO.getCompleted()));
+	 	    				resultVO.setSanctionpercentage(calculatePercantage(resultVO.getSanctioned(),resultVO.getTarget()).toString());
+	 	    				resultVO.setNotSanctionPercentage(calculatePercantage(resultVO.getNotSanctioned(),resultVO.getTarget()).toString());
+	 	    				resultVO.setNotStaredPercentage(calculatePercantage(resultVO.getNotStarted(),resultVO.getSanctioned()).toString());
+	 	    				resultVO.setInProgressPerc(calculatePercantage(resultVO.getInProgress(),resultVO.getSanctioned()).toString());
+	 	    				resultVO.setCompletedPerce(calculatePercantage(resultVO.getCompleted(),resultVO.getSanctioned()).toString());
+
+	 	    				//calculatePercantage
 	 	    			}	
 	 	    		}
 	 	    		JSONArray categoryWiseDataArr = jsonObject.getJSONArray("categorycount");
@@ -535,7 +547,8 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 			String str = convertingInputVOToString(inputVO);
 			ClientResponse response = null;
 			if (inputVO.getReportType() != null && inputVO.getReportType().equalsIgnoreCase("status")) {
-				response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails",str);
+				response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails?",str);
+															//http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails
 			} else  {
 				response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails",str);
 			}
@@ -828,8 +841,8 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 				ClientResponse response = null;
 				if (inputVO.getReportType() != null && inputVO.getReportType().equalsIgnoreCase("status")) {
 					Long startTime = System.currentTimeMillis();
-					response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails",str);
-					Long endTime = System.currentTimeMillis();
+					response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails?",str);
+					Long endTime = System.currentTimeMillis();//kkb  http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails
 					System.out.println(inputVO.getSubLocation()+" status service Time Take "+(endTime-startTime));
 				} else  {
 					Long startTime = System.currentTimeMillis();
@@ -958,11 +971,21 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	 private void setBasicInformationBasedOnLocationType(SwachhBharatMissionIHHLDtlsVO locationVO,JSONObject jObj) {
 		  try {
 				locationVO.setTarget(jObj.has("TARGET") ? jObj.getLong("TARGET") : 0l);
-				locationVO.setGrounded(jObj.has("GROUNDED") ? jObj.getLong("GROUNDED") : 0l);
+				//locationVO.setGrounded(jObj.has("GROUNDED") ? jObj.getLong("GROUNDED") : 0l);
 				locationVO.setNoTGrounded(jObj.has("NOTGROUNDED") ? jObj.getLong("NOTGROUNDED") : 0l);
 				locationVO.setInProgress(jObj.has("INPROGRESS") ? jObj.getLong("INPROGRESS") : 0l);
 				locationVO.setCompleted(jObj.has("COMPLETEED") ? jObj.getLong("COMPLETEED") : 0l);
 				locationVO.setPercentage(jObj.has("ACHIVEMENTPERCENTAGE") ? jObj.getString("ACHIVEMENTPERCENTAGE") : "");
+				locationVO.setSanctioned(jObj.has("SANCTIONED") ? jObj.getLong("SANCTIONED") : 0l);
+				locationVO.setExcessben(jObj.has("EXCESSBEN") ? jObj.getLong("EXCESSBEN") : 0l);
+				locationVO.setNotSanctioned(locationVO.getTarget()-locationVO.getSanctioned());
+				locationVO.setNotStarted(locationVO.getSanctioned()-(locationVO.getInProgress()+locationVO.getCompleted()));
+				locationVO.setSanctionpercentage(calculatePercantage(locationVO.getSanctioned(),locationVO.getTarget()).toString());
+				locationVO.setNotSanctionPercentage(calculatePercantage(locationVO.getNotSanctioned(),locationVO.getTarget()).toString());
+				locationVO.setNotStaredPercentage(calculatePercantage(locationVO.getNotStarted(),locationVO.getSanctioned()).toString());
+				locationVO.setInProgressPerc(calculatePercantage(locationVO.getInProgress(),locationVO.getSanctioned()).toString());
+				locationVO.setCompletedPerce(calculatePercantage(locationVO.getCompleted(),locationVO.getSanctioned()).toString());
+
 		  } catch (Exception e) {
 			  LOG.error("Exception occured at setBasicInformationBasedOnLocationType() in SwachhBharatMissionIHHLService class",e);
 		  }
