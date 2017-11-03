@@ -5195,6 +5195,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 		 	    			vo.setPercentage(jObj.getString("PERCENTAGE"));
+		 	    			vo.setParameter("");
 		 	    			voList.add(vo);
 	 	    			}
 	 	    		}

@@ -115,7 +115,7 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-6 m_top10">
+											<div class="col-sm-12 m_top10">
 												<div class="menu-block" style="background-color:#1c94ef">
 													<a href="waterTanksClorinationDashBoard">
 														<h3>WTC</h3>
@@ -124,7 +124,6 @@
 												</div>
 											</div>
 										</div>
-										
 									</div>
 								</div>
 								<div class="col-sm-12 m_top10">
@@ -147,15 +146,15 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-12 m_top10">
-												<div class="menu-block" style="background-color:#de4524 ">
-													<a href="itcDashboard">
-														<h3>IT E & C</h3>
-														<p>Dashboard</p>
-													</a>
-												</div>
-											</div>
 										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-block" style="background-color:#de4524 ">
+										<a href="itcDashboard">
+											<h3>IT E & C</h3>
+											<p>Dashboard</p>
+										</a>
 									</div>
 								</div>
 							</div>

@@ -130,8 +130,15 @@ public class NregsDataVO implements Serializable{
 	private String pittingExp = "0";
 	private String plantingExp = "0";
 	private String pitingPerc = "0";
+	private String parameter;
 	
 	
+	public String getParameter() {
+		return parameter;
+	}
+	public void setParameter(String parameter) {
+		this.parameter = parameter;
+	}
 	public String getTargetPalnting() {
 		return targetPalnting;
 	}

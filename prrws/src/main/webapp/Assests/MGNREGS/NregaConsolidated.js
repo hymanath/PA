@@ -210,9 +210,9 @@ function buildAllConvergenceTypes(result)
 				{
 					if(i == 0)
 					{
-						selectionMenu+='<div role="tabpanel" class="tab-pane active" id="selectionMenuId'+result[i].id+'">A'+result[i].id+'</div>';
+						selectionMenu+='<div role="tabpanel" class="tab-pane active" id="selectionMenuId'+result[i].id+'">'+result[i].id+'</div>';
 					}else{
-						selectionMenu+='<div role="tabpanel" class="tab-pane" id="selectionMenuId'+result[i].id+'">A'+result[i].id+'</div>';
+						selectionMenu+='<div role="tabpanel" class="tab-pane" id="selectionMenuId'+result[i].id+'">'+result[i].id+'</div>';
 					}
 				}
 				
@@ -261,7 +261,25 @@ function buildComponentByConvergType(result,divId,convergenceId)
 		for(var i in result)
 		{
 			selectionMenu+='<li>';
-				selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>'+result[i].name+'</label>';
+				if(result[i].name == 'GH')
+				{
+					selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>Greening Of Hillocks</label>';
+				}else if(result[i].name == 'CD_CW')
+				{
+					selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>Check Dams and Check Walls</label>';
+				}else if(result[i].name == 'GC Works')
+				{
+					selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>Gully Control Work</label>';
+				}else if(result[i].name == 'MPT_PT')
+				{
+					selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>Mini Percolation Tanks and Percolation Tanks</label>';
+				}else if(result[i].name == 'Imp to CD')
+				{
+					selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>Improvements to Check Dams and Percolation Tanks</label>';
+				}else{
+					selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>'+result[i].name+'</label>';
+				}
+				
 			selectionMenu+='</li>';
 			overViewArrConsolidated.push({"name":result[i].name,"id":result[i].id});
 			overViewIdsArr.push(result[i].id);
