@@ -222,7 +222,7 @@ public interface ICadreRegistrationService {
 	 //public List<IdAndNameVO> getAllDistricts();
 	 public List<CadreRegisterInfo> getDistrictsByState(Long stateId);
 	 public  String sendSMSInTelugu(String mobileNo,String msg);
-	 public List<KeyValuePairVO> getStateWiseDistrictsForUsers(Long stateId,Long userId);
-	 public List<KeyValuePairVO> getConstituenciesByDistrictForUser(Long districtId,Long userId);
+	 public List<GenericVO> getStateWiseDistrictsForUsers(Long stateId,Long userId);
+	 public List<GenericVO> getConstituenciesByDistrictForUser(Long districtId,Long userId);
 }
 
