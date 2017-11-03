@@ -365,7 +365,6 @@ function getCandidateOverAllPerformanceCohort(){
 	}
 function BuildCandidateOverAllPerformanceCohort(result,participantLocIdArry)
 {
-	var debateCandidateStateId =0;
 	var str='';
 	
 	if(result !=null){
@@ -408,7 +407,7 @@ function BuildCandidateOverAllPerformanceCohort(result,participantLocIdArry)
 													//str+='<td class="text-capitalize">'+canidateName+'</td>';
 													str+='<td class="text-capitalize">'+canidateName.toUpperCase()+'</td>';
 													str+='<td>';
-															str+='<h5 ><a class="overAllCandidateCls" attr_party_id ='+result[i].coreDebateVOList[0].coreDebateVOList[0].id+' attr_candidate_id='+result[i].coreDebateVOList[j].coreDebateVOList[0].candidateId+' attr_state_id ='+debateCandidateStateId+' style="cursor:pointer;">'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+'</a></h5>';
+															str+='<h5 ><a class="overAllCandidateCls" attr_party_id ='+result[i].coreDebateVOList[0].coreDebateVOList[0].id+' attr_candidate_id='+result[i].coreDebateVOList[j].coreDebateVOList[0].candidateId+'  style="cursor:pointer;">'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+'</a></h5>';
 													str+='</td>';
 													
 													if(result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc !=null){
@@ -943,7 +942,6 @@ function getRolesPerformanceOfCandidate(roleId){
 		});
 	}
 	function buildRolesPerformanceOfCandidate(result,participantLocIdArry){
-		var debateCandidateStateId =0;
 		var str='';
 		if(result !=null && result.length>0){
 			str+='<div class="table-responsive">';
@@ -957,7 +955,7 @@ function getRolesPerformanceOfCandidate(roleId){
 							str+='</td>';
 							str+='<td class="text-capital">';
 								str+='<p>debates</p>';
-								str+='<p class="text-muted"><span class="perforamnceDebateCls" attr_partyId='+result[i].candidateId+' attr_state_id ="'+debateCandidateStateId+'" attr_type="debate" style="cursor:pointer;" attr_candidateId='+result[i].id+'><a>'+result[i].debateCount+'</a></span></p>';
+								str+='<p class="text-muted"><span class="perforamnceDebateCls" attr_partyId='+result[i].candidateId+'  attr_type="debate" style="cursor:pointer;" attr_candidateId='+result[i].id+'><a>'+result[i].debateCount+'</a></span></p>';
 							str+='</td>';
 							
 							//Digit Adding
@@ -1203,7 +1201,7 @@ $(document).on("click",".debateDetailsCls",function(){
 		var partyId = $(this).attr("attr_party_id");		
 		var candidateId = $(this).attr("attr_candidate_id");		
         //var stateId =$(this).attr("attr_state_id");		
-		getCandidateWiseDebateDetailsOfCore(partyId,candidateId,stateId);		
+		getCandidateWiseDebateDetailsOfCore(partyId,candidateId);		
 	});
 	
 function getCandidateWiseDebateDetailsOfCore(partyId,candidateId){
@@ -1277,9 +1275,9 @@ function buildDebateModelDetails(result,type){
 										candiName=getTitleContent(result[i].candidateName,30);
 							}		
 						if(type =="candidate"){
-							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' attr_state_id="'+stateId+'" style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+'  style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
 						}							
-							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' attr_state_id="'+stateId+'" style="cursor:pointer;"><a>'+subject+'</a></td>';
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+'  style="cursor:pointer;"><a>'+subject+'</a></td>';
 							str+='<td>'+result[i].startTime+'</td>';
 							str+='<td>'+result[i].endTime+'</td>';
 							str+='<td>'+result[i].observerName+'</td>';
