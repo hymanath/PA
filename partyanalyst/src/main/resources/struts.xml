@@ -18419,5 +18419,10 @@
 			<param name="root">genericVOList</param>       
 		</result>
    </action>
+     <action name="getTrainingCampProgramsAction" class="coreDashboardAction"  method="getTrainingCampPrograms">
+		<result type="json" name="success">    
+			<param name="root">programIdsList</param>       
+		</result>
+   </action>
  </package>
 </struts>
