@@ -103,6 +103,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ToursBasicVO toursBasicVO;
 	private List<ToursBasicVO> toursDtlsList;
 	private List<List<ToursBasicVO>> memberList;
+	private List<Long> programIdsList;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
@@ -192,6 +193,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<BoothInchargesVO> boothInchargesVOList;
 	
 	//setters And Getters
+	public List<Long> getProgramIdsList() {
+		return programIdsList;
+	}
+
+	public void setProgramIdsList(List<Long> programIdsList) {
+		this.programIdsList = programIdsList;
+	}
+
 	public List<List<ToursBasicVO>> getMemberList() {
 		return memberList;
 	}
@@ -4822,4 +4831,13 @@ public String getInsuraceStatusWiseComplaintsDetails()
 		}
 		return Action.SUCCESS;
 	}
+	public String getTrainingCampPrograms(){
+		try {
+			programIdsList = coreDashboardMainService.getTrainingCampPrograms();
+		}catch(Exception e) {
+			LOG.error("Exception raised at getTrainingCampProgramsAction() in CoreDashBoard Action class", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

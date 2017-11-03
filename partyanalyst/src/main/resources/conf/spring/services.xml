@@ -3850,7 +3850,9 @@
 	    <property name="trainingCampAttendanceDAO"  ref="trainingCampAttendanceDAO"></property>
 	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
 	  	<property name="trainingCampBatchAttendeeDAO"  ref="trainingCampBatchAttendeeDAO"></property> 
-	  	<property name="publicRepresentativeTypeDAO"  ref="publicRepresentativeTypeDAO"></property>     
+	  	<property name="publicRepresentativeTypeDAO"  ref="publicRepresentativeTypeDAO"></property>  
+	  	<property name="trainingCampScheduleDAO" ref="trainingCampScheduleDAO" /> 
+	  	   
 	  <!-- Debate -->
 	  <property name="debateParticipantDAO"  ref="debateParticipantDAO"></property>
 	  <property name="debateParticipantCharcsDAO"  ref="debateParticipantCharcsDAO"></property>	  
