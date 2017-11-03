@@ -225,9 +225,12 @@ textarea {
 		       <!--   <div class="col-md-12 col-xs-12 col-sm-12">
 				      <span id="mainPageBackId" class="backBtn"> ← Back</span>
 			      </div>-->
-	 	       </div>	
+	 	       </div>
+		<div class="col-sm-12">
+			<a href="newlogoutAction.action" style="color:#fff"><button type="button" class="btn btn-success btn-xs text-capital pull-right">Sign-out</button></a>
+		</div>			   
         </div>
-        <div class="col-md-6 col-xs-12 col-sm-6">
+        <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
         	<div class="mainBlock new">
              <div class="row">
                 	<div class="col-md-9 col-xs-9 col-xs-offset-3 col-sm-9 col-md-offset-3">
@@ -259,7 +262,7 @@ textarea {
 				</div>
 			</div> -->
         </div>
-        <div class="col-md-6 col-xs-12 col-sm-6">
+        <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
         	<div class="mainBlock renewal">
             	<div class="row">
                 	<div class="col-md-9 col-xs-9 col-xs-offset-3 col-sm-9 col-md-offset-3">
@@ -286,6 +289,9 @@ textarea {
 	</div>
 	
     <div class="row  hide subBlock">
+		<div class="col-sm-12">
+			<a href="newlogoutAction.action" style="color:#fff"><button type="button" class="btn btn-success btn-xs text-capital pull-right">Sign-out</button></a>
+		</div>
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration m_top20">
 				<div class="panel-heading renewalN hide" >
