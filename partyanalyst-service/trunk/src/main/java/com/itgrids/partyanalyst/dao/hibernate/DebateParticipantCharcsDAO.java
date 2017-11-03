@@ -606,7 +606,8 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		    }
 		str.append(" where model.debateParticipant.debate.isDeleted = 'N' " +
 				" and model.characteristics.isDeleted ='N' " +
-				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+				" and model.debateParticipant.party.isNewsPortal = 'Y' " +
+				" and model.debateParticipant.candidate.isDebateCandidate ='Y' " );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 		      str.append(" and model.debateParticipant.debateId = model3.debateId and model3.isDeleted = 'N' ");
 		    }
@@ -651,20 +652,13 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		str.append(" select model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
 				" model.debateParticipant.candidate.candidateId,model.debateParticipant.candidate.lastname,sum(model.scale) " +
 				" from DebateParticipantCharcs model " );
-		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0){
-		      str.append(" , DebateParticipant model3 ");
-		    }
 		str.append(" where model.debateParticipant.debate.isDeleted = 'N' " +
 				" and model.characteristics.isDeleted ='N' " +
-				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+				" and model.debateParticipant.party.isNewsPortal = 'Y'" +
+				" and model.debateParticipant.candidate.isDebateCandidate ='Y' " );
+				//" and  model.debateParticipant.candidate.isDebateCandidate ='Y' " );
 		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0){
-		      str.append(" and model.debateParticipant.debateParticipantId = model3.debateParticipantId  ");
-		    }
-		if(debateParticipantLocationIdList != null  && debateParticipantLocationIdList.size() >0  && debateParticipantLocationIdList.size() != 3L && !debateParticipantLocationIdList.contains(2L)){
-		      str.append(" and model3.candidate.state.stateId in (:debateParticipantLocationIdList) " );
-			   }
-		   else if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0 && debateParticipantLocationIdList.size() == 1L && debateParticipantLocationIdList.contains(2L)){
-		    	str.append(" and model3.address.state.stateId is null ");
+		      str.append(" and model.debateParticipant.candidate.state.stateId in (:debateParticipantLocationIdList) ");
 		    }
 		if(state !=null && state.trim().equalsIgnoreCase("ap")){
 			str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
@@ -692,7 +686,7 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
 		}
-		if(debateParticipantLocationIdList != null  && debateParticipantLocationIdList.size() >0  && debateParticipantLocationIdList.size() != 3L && !debateParticipantLocationIdList.contains(2L)){
+		if(debateParticipantLocationIdList != null  && debateParticipantLocationIdList.size() >0 ){
 			query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
 		}
         if(debateLocationIdList != null && debateLocationIdList.size()>0){
@@ -716,7 +710,8 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		    }
 		str.append(" where model.debateParticipant.debate.isDeleted = 'N' " +
 				" and model.characteristics.isDeleted ='N' " +
-				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+				" and model.debateParticipant.party.isNewsPortal = 'Y' " +
+				" and  model.debateParticipant.candidate.isDebateCandidate ='Y' " );
 		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0){
 		      str.append(" and model.debateParticipant.debateParticipantId = model3.debateParticipantId  ");
 		    }
@@ -971,7 +966,8 @@ public List<Object[]> getPartyWiseScalesOfOthersEachCharecter(Date startDate,Dat
 		    }
 		str.append(" where model.debateParticipant.debate.isDeleted = 'N' " +
 				" and model.characteristics.isDeleted ='N' " +
-				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+				" and model.debateParticipant.party.isNewsPortal = 'Y'" +
+				" and model.debateParticipant.candidate.isDebateCandidate ='Y' " );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 		      str.append(" and model.debateParticipant.debateId = model3.debateId and model3.isDeleted = 'N' ");
 		    }
@@ -1211,7 +1207,8 @@ public List<Object[]> getPartywiseOthersCandidateCharectersScaling(Date startDat
 	    }
 	str.append(" where model.debateParticipant.debate.isDeleted = 'N' " +
 			" and model.characteristics.isDeleted ='N' " +
-			" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+			" and model.debateParticipant.party.isNewsPortal = 'Y'" +
+			" and model.debateParticipant.candidate.isDebateCandidate = 'Y' " );
 	if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0){
 	      str.append(" and model.debateParticipant.debateParticipantId = model3.debateParticipantId  ");
 	    }
@@ -1242,9 +1239,52 @@ public List<Object[]> getPartywiseOthersCandidateCharectersScaling(Date startDat
 	if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0 ){
 		query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
 	}
-    /*if(debateLocationIdList != null && debateLocationIdList.size()>0){
-    	query.setParameterList("debateLocationIdList", debateLocationIdList);
-	}*/
+	return query.list(); 
+	
+}
+public List<Object[]> getPartywiseCandidateOthersScaling(Date startDate,Date endDate,String searchType,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList){		
+	StringBuilder str = new StringBuilder();		
+	str.append(" select model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
+			" model.debateParticipant.candidate.candidateId,model.debateParticipant.candidate.lastname,sum(model.scale) " +
+			" from DebateParticipantCharcs model " );
+	
+	str.append(" where model.debateParticipant.debate.isDeleted = 'N' " +
+			" and model.characteristics.isDeleted ='N' " +
+			" and model.debateParticipant.party.isNewsPortal = 'Y' " +
+			" and  model.debateParticipant.candidate.isDebateCandidate ='Y' ");
+			//" and  model.debateParticipant.candidate.isDebateCandidate ='Y' " );
+	if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0){
+		 str.append(" and model.debateParticipant.candidate.state.stateId in (:debateParticipantLocationIdList) " );
+	    }
+	if(state !=null && state.trim().equalsIgnoreCase("ap")){
+		str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+	}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+		str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+	}				
+	if(startDate !=null && endDate !=null){
+		str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
+	}
+	if(debateLocationIdList != null && debateLocationIdList.size()>0){
+		str.append(" and model.debateParticipant.debate.address.state.stateId is null " );
+	}
+	str.append(" group by model.debateParticipant.party.partyId, model.debateParticipant.candidate.candidateId" +
+			" order by model.debateParticipant.party.newsOrderNo ");
+	/*
+	if(searchType !=null && searchType.trim().equalsIgnoreCase("top")){
+		str.append(" order by sum(model.scale) desc ");
+	}else if(searchType !=null && searchType.trim().equalsIgnoreCase("poor")){
+		str.append(" order by sum(model.scale) ");
+	}
+	*/
+	Query query = getSession().createQuery(str.toString());	
+	
+	if(startDate !=null && endDate !=null){
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+	}
+	if(debateParticipantLocationIdList != null  && debateParticipantLocationIdList.size() >0 ){
+		query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+	}
 	return query.list(); 
 	
 }
