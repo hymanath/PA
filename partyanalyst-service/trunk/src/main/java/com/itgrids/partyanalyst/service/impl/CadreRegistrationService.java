@@ -14469,7 +14469,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			}
 			}else{
 				List<Object[]>  allConstituencylist = constituencyDAO.getDistrictWiseConstituency(districtId);
-				if (commonMethodsUtilService.isListOrSetValid(list)) {
+				if (commonMethodsUtilService.isListOrSetValid(allConstituencylist)) {
 					districtList = new ArrayList<GenericVO>();
 					for (Object[] param : allConstituencylist) {
 						if (!districtList.contains(new GenericVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
