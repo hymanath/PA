@@ -671,6 +671,13 @@ function projectData(divId,levelId,locationId)
 							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FFBA00;border-radius:50%;"></span> 35% to 40%</li>';
 							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FF0000;border-radius:50%;"></span> Above 40%</li>';
 						collapse+='</ul>';
+					}else if(divId == 'Agriculture Activities' && i == 0)
+					{
+						collapse+='<ul class="list-inline">';
+							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#00AF50;border-radius:50%;"></span> Above 65%</li>';
+							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FFBA00;border-radius:50%;"></span> 60% to 65%</li>';
+							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FF0000;border-radius:50%;"></span> Below 60%</li>';
+						collapse+='</ul>';
 					}
 					collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
 						collapse+='<div class="panel panel-default panel-black">';
