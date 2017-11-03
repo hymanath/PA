@@ -175,6 +175,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<KeyValuePairVO> keyValuePairVOList ;
 	
 	
+	
 	public List<KeyValuePairVO> getKeyValuePairVOList() {
 		return keyValuePairVOList;
 	}
@@ -3541,7 +3542,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			Long stateId = jobj.getLong("stateId");
 
-			keyValuePairVOList = cadreRegistrationService.getStateWiseDistrictsForUsers(stateId,user.getRegistrationID());
+			genericVOList = cadreRegistrationService.getStateWiseDistrictsForUsers(stateId,user.getRegistrationID());
 
 		} catch (Exception e) {
 			LOG.error(
@@ -3559,7 +3560,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			Long districtId = jobj.getLong("districtId");
 			session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-			keyValuePairVOList = cadreRegistrationService.getConstituenciesByDistrictForUser(districtId,user.getRegistrationID());
+			genericVOList = cadreRegistrationService.getConstituenciesByDistrictForUser(districtId,user.getRegistrationID());
 
 		} catch (Exception e) {
 			LOG.error(

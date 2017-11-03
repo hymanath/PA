@@ -59,7 +59,7 @@
 	}
     $.ajax({
           type:'GET',
-          url: 'getConstituenciesListForDistrictAction.action',
+          url: 'getConstituenciesByDistrictForUser.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
@@ -487,7 +487,7 @@ $("#boothsList").trigger("chosen:updated");
 	}
     $.ajax({
           type:'GET',
-          url: 'getDistrictsWiseStateAction.action',
+          url: 'getDistrictsForUserStateWise.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
@@ -2166,7 +2166,7 @@ function addressFieldsValidation()
 	}
     $.ajax({
           type:'GET',
-          url: 'getDistrictsWiseStateAction.action',
+          url: 'getDistrictsForUserStateWise.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
