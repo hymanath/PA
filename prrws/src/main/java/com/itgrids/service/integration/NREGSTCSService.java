@@ -5160,6 +5160,13 @@ public class NREGSTCSService implements INREGSTCSService{
 			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
+			if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Greenary works Chettu"))
+				inputVO.setGroupName("Greenary works (Chettu)");
+			else if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Soil Moisture Conservation works Neeru"))
+				inputVO.setGroupName("Soil Moisture Conservation works (Neeru)");
+			else if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Water Harvesting Structures Neeru"))
+				inputVO.setGroupName("Water Harvesting Structures (Neeru)");
+			
 			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MCCOthersService/MCCOthersData";
 			
 			String str = convertingInputVOToString(inputVO);
