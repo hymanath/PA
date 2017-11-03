@@ -133,48 +133,48 @@
 												</a>
 											</div>
 										</div>
-										<div class="col-sm-6 m_top10">
-											<div class="menu-block" style="background-color:#1c94ef">
-												<a href="waterTanksClorinationDashBoard">
-													<h3>WTC</h3>
-													<p>Water Tank Clorination</p>
-												</a>
+										<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#1c94ef">
+													<a href="waterTanksClorinationDashBoard">
+														<h3>WTC</h3>
+														<p>Water Tank Clorination</p>
+													</a>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-sm-12 m_top10">
-								<div class="menu-heading-block">
-									<h4>RURAL DEVELOPMENT</h4>
-									<div class="row">
-										<div class="col-sm-12 m_top10">
-											<div class="menu-block" style="background-color: #88186B">
-												<a href="MGNREGSDashboard">
-													<h3>MGNREGS</h3>
-													<p>Mahatma Gandhi Rural employement guarantee scheme</p>
-												</a>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>RURAL DEVELOPMENT</h4>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#88186B">
+													<a href="MGNREGSDashboard">
+														<h3>MGNREGS</h3>
+														<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+													</a>
+												</div>
 											</div>
-										</div>
-										<div class="col-sm-12 m_top10">
-											<div class="menu-block" style="background-color: #ff1c5e">
-												<a href="RuralDevelopmentDashboard">
-													<h3>RD</h3>
-													<p>Rural Development Dashboard</p>
-												</a>
-											</div>
-										</div>
-										<div class="col-sm-12 m_top10">
-											<div class="menu-block" style="background-color: #de4524">
-												<a href="itcDashboard">
-													<h3>IT E & C</h3>
-													<p>Dashboard</p>
-												</a>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#ff1c5e">
+													<a href="RuralDevelopmentDashboard">
+														<h3>RD</h3>
+														<p>Rural Development Dashboard</p>
+													</a>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-block" style="background-color:#de4524 ">
+										<a href="itcDashboard">
+											<h3>IT E & C</h3>
+											<p>Dashboard</p>
+										</a>
+									</div>
+								</div>
 						</div>
 					</div>
 				</div>
