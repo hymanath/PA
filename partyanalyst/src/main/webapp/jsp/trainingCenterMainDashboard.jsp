@@ -333,19 +333,19 @@ content:"\002b";
 							
                             	<div class="col-md-12">
 								
-								<div class="panel panel-default panel-black" id="heading8">
+								<div class="panel panel-default panel-black" id="heading11">
 									<div id="feedBackCountMainDivId">
 										<div class="panel-heading bg_d">
 											
 											<div class="row">
 												<div class="col-sm-12">
-													<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse8" aria-expanded="true" aria-controls="collapse8">
+													<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse11" aria-expanded="true" aria-controls="collapse11">
 														<h4 class="panel-title text-capital">TRAINED CADRE AND FEEDBACK DETAILS</h4>
 													</a>
 												</div>
 											</div>
 										</div>
-										<div id="collapse7" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading8">
+										<div id="collapse11" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading11">
 											<div class="panel-body pad_0">
 												<img id="feefbackLoadingImgId" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif">
 												<div style="" id="feedBackCountId"></div>
