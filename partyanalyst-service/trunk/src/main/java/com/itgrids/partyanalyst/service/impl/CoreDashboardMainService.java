@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampScheduleDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.BoothInchargesVO;
@@ -96,11 +97,19 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private IBoothInchargeDAO boothInchargeDAO;
 	 private IConstituencyDAO constituencyDAO;
 	 private IBoothDAO boothDAO;
+	 private ITrainingCampScheduleDAO trainingCampScheduleDAO;
 	//SETTERS
 	 
 	public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
 		this.coreDashboardGenericService = coreDashboardGenericService;
 	 }
+	public ITrainingCampScheduleDAO getTrainingCampScheduleDAO() {
+		return trainingCampScheduleDAO;
+	}
+	public void setTrainingCampScheduleDAO(
+			ITrainingCampScheduleDAO trainingCampScheduleDAO) {
+		this.trainingCampScheduleDAO = trainingCampScheduleDAO;
+	}
 	public void setDelimitationConstituencyAssemblyDetailsDAO(IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO){
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -7665,5 +7674,18 @@ public CoreDebateVO getMatchedCandidateId(List<CoreDebateVO> returnList,Long cha
 	}
 	return null;
 }
+public List<Long> getTrainingCampPrograms(Long enrollmentIds){
+	List<Long> programIds = new ArrayList<Long>();
+	try{
+		
+		 programIds = trainingCampScheduleDAO.getTrainingCampProgramIds(enrollmentIds);
+			
+	}catch(Exception e){
+
+		LOG.error("Error occured at getTrainingCampProgramIds() in CoreDashboardMainService {}",e);
+	}
+	return programIds;
+ }
+
 }  
 

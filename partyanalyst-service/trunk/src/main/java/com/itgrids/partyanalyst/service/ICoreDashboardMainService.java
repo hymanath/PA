@@ -53,4 +53,5 @@ public interface ICoreDashboardMainService {
 	public List<CoreDebateVO> getCandidateWiseDebateDetailsOfCore(Long partyId,String startDateStr,String endDateStr,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
 	public BoothInchargesVO  getUserTypeWiseBoothCommitteesInchargeDetails(Long activityMemberId,String state,String dateString,List<Long> committeeEnrollmentYearsIdsLst);
 	public List<BoothInchargesVO> getBoothCommitteeInchargesCount(Long activityMemId,List<Long> committeeEnrlmntYrIds,String dateStr,Long stateId);
+	public List<Long> getTrainingCampPrograms(Long enrollmentId);
 }
