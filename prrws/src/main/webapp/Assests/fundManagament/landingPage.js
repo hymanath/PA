@@ -84,7 +84,7 @@ function buildFavouriteComponentsResult(result) {
 			str +='<div class="col-sm-4 draggable-element" order-by="'+result[i].id+'">'
 				str +='<div class="whiteBlock">';
 					str +='<img src="Assests/img/'+imagesObj[compnentName]+'" >';
-					if(result[i].name == "Desilting of Perculation Tanks and Check Dams"){
+					if(result[i].name == "Desilting of Perculation Tanks and Check Dams" || result[i].name == "Soil Moisture Conservation works Neeru" || result[i].name == "Institutional Development Works" || result[i].name == "Water Harvesting Structures Neeru" || result[i].name == "AH-Live Stock Related works"){
 						if(result[i].name !=null && result[i].name.length>15){
 							str +='<h5 class="tooltipCls" style="display: inline-block;text-transform:uppercase;cursor:pointer;" data-toogle="tooltip" title="'+result[i].name+'">'+result[i].name.substring(0, 15)+'...</h5>';
 						}
