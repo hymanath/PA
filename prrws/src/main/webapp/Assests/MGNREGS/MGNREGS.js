@@ -663,6 +663,15 @@ function projectData(divId,levelId,locationId)
 			collapse+='<div class="col-sm-12">';
 				for(var i in dataArr)
 				{
+					if(divId == 'Labour Budget' && i == 0)
+					{
+						collapse+='<ul class="list-inline">';
+							collapse+='<li>Material Percentage Summary</li>';
+							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#00AF50;border-radius:50%;"></span> below 35%</li>';
+							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FFBA00;border-radius:50%;"></span> 35% to 40%</li>';
+							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FF0000;border-radius:50%;"></span> Above 40%</li>';
+						collapse+='</ul>';
+					}
 					collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
 						collapse+='<div class="panel panel-default panel-black">';
 							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+dataArr[i]+'">';
@@ -1634,7 +1643,17 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 						str+='<td>'+ajaxresp[i].wageExpenditure+'</td>';
 						str+='<td>'+ajaxresp[i].materialExpenditure+'</td>';
 						str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
-						str+='<td>'+ajaxresp[i].materialExpenditurePerc+'</td>';
+						if(ajaxresp[i].materialExpenditurePerc < 35)
+						{
+							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].materialExpenditurePerc+'</td>';
+						}else if(ajaxresp[i].materialExpenditurePerc >= 35 && ajaxresp[i].materialExpenditurePerc < 40)
+						{
+							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].materialExpenditurePerc+'</td>';
+						}else if(ajaxresp[i].materialExpenditurePerc >= 40)
+						{
+							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].materialExpenditurePerc+'</td>';
+						}
+						//str+='<td>'+ajaxresp[i].materialExpenditurePerc+'</td>';
 					str+='</tr>';
 				}
 			}
@@ -3735,9 +3754,12 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 						str+='<td>'+ajaxresp[i].argicultureExpenditure+'</td>';
 						if(ajaxresp[i].achivement < 60){
 							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].achivement+'</td>';
-						}else if(ajaxresp[i].achivement >= 60)
+						}else if(ajaxresp[i].achivement >= 65)
 						{
 							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].achivement+'</td>';
+						}else if(ajaxresp[i].achivement >= 60 && ajaxresp[i].achivement < 65)
+						{
+							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].achivement+'</td>';
 						}
 					str+='</tr>';
 				}
