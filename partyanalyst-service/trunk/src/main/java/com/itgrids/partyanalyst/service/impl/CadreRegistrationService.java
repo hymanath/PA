@@ -14425,25 +14425,25 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		return cadreRegisterInfoList;
 	}
 	
-	public List<KeyValuePairVO> getStateWiseDistrictsForUsers(Long stateId,Long userId) {
-		List<KeyValuePairVO> districtList = null;
+	public List<GenericVO> getStateWiseDistrictsForUsers(Long stateId,Long userId) {
+		List<GenericVO> districtList = null;
 		try {
 			
 			List<Object[]> list =userDistrictAccessInfoDAO.getLocationIdList(userId);
 			if (commonMethodsUtilService.isListOrSetValid(list)) {
-				districtList = new ArrayList<KeyValuePairVO>();
+				districtList = new ArrayList<GenericVO>();
 				for (Object[] param : list) {
-					if (!districtList.contains(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
-						districtList.add(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+					if (!districtList.contains(new GenericVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
+						districtList.add(new GenericVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
 					}
 				}
 			}else{
 				List<Object[]> alldistrictlist = districtDAO.getDistrictsForState(stateId);
 				if (commonMethodsUtilService.isListOrSetValid(alldistrictlist)) {
-					districtList = new ArrayList<KeyValuePairVO>();
+					districtList = new ArrayList<GenericVO>();
 					for (Object[] param : alldistrictlist) {
-						if (!districtList.contains(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
-							districtList.add(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+						if (!districtList.contains(new GenericVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
+							districtList.add(new GenericVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
 						}
 					}
 				}
@@ -14455,25 +14455,25 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		}
 		return districtList;
 	}
-	public List<KeyValuePairVO> getConstituenciesByDistrictForUser(Long districtId,Long userId) {
-		List<KeyValuePairVO> districtList = null;
+	public List<GenericVO> getConstituenciesByDistrictForUser(Long districtId,Long userId) {
+		List<GenericVO> districtList = null;
 		try {
 			
 			List<Object[]> list =userConstituencyAccessInfoDAO.findByUser(userId);
 			if (commonMethodsUtilService.isListOrSetValid(list)) {
-				districtList = new ArrayList<KeyValuePairVO>();
+				districtList = new ArrayList<GenericVO>();
 				for (Object[] param : list) {
-					if (!districtList.contains(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
-						districtList.add(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+					if (!districtList.contains(new GenericVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
+						districtList.add(new GenericVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
 					}
 			}
 			}else{
 				List<Object[]>  allConstituencylist = constituencyDAO.getDistrictWiseConstituency(districtId);
 				if (commonMethodsUtilService.isListOrSetValid(list)) {
-					districtList = new ArrayList<KeyValuePairVO>();
+					districtList = new ArrayList<GenericVO>();
 					for (Object[] param : allConstituencylist) {
-						if (!districtList.contains(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
-							districtList.add(new KeyValuePairVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+						if (!districtList.contains(new GenericVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))) {
+							districtList.add(new GenericVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
 						}
 				}
 			}

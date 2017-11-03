@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Hyma
@@ -10,7 +8,7 @@ import java.util.List;
 public class KeyValuePairVO {
 	private Long id;
 	private String name;
-	
+	public KeyValuePairVO(){}
 	public KeyValuePairVO(Long id,String name){
 		this.id=id;
 		this.name=name;
