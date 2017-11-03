@@ -1,15 +1,15 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 //var subSpinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="subSpinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var imagesObj = {
-"PRIS":"Group 2344.png","DRAINS":"Group 2345.png","LED MONITORING":"Group 2348.png","UGD":"Group 2359.png","RDP":"Group 2343.png","FUND MANAGMENT SYSTEM":"Group 2352.png","ENGINEERING DEPARTMENT":"Group 2346.png","PANACHAYATI RAJ EXPENDITURE":"Group 2343.png","SPIKE ANALYSIS":"Group 2347.png","MGNREGS":"Group 2357.png","RURAL WATER SUPPLY":"Group 2350.png","ITEC":"Group 2351.png","SWATCH BHARATH IHHL":"Group 2362.png","MGNREGS IHHL":"Group 2362.png",'Labour Budget':"Group 2344.png",'Farm Ponds':"Group 2344.png",'IHHL':"Group 2344.png",'Vermi Compost':"Group 2344.png",'SMC Trench':"Group 2344.png",'Imp to CD':"Group 2344.png",'MPT_PT':"Group 2344.png",'GC Works':"Group 2344.png",'CD_CW':"Group 2344.png",'GH':"Group 2344.png",'Check Dam':"Group 2344.png",'Rock fill dams':"Group 2344.png",'Solid Waste Management':"Group 2344.png",'Burial Ground':"Group 2344.png",'Play fields':"Group 2344.png",'Agriculture Activities':"Group 2344.png",'Average Wage':"Group 2344.png",'Average Days of Employment':"Group 2344.png",'HH Completed 100 Days':"Group 2344.png",'Timely Payment':"Group 2344.png",'CC Roads1':"Group 2344.png",'Anganwadi':"Group 2344.png",'GP Buildings1':"Group 2344.png",'Mandal buildings1':"Group 2344.png",'NTR 90 Days':"Group 2344.png",'Production of Bricks':"Group 2344.png",'Mulbery':"Group 2344.png",'Silk Worms':"Group 2344.png",'Horticulture':"Group 2344.png",'Avenue':"Group 2344.png",'Fish Ponds':"Group 2344.png",'Fish Drying Platforms':"Group 2344.png",'NURSERIES':"Group 2344.png",'Payments':"Group 2344.png",'FAperformance':"Group 2344.png",'OPGK-Perinnials':"Group 2344.png",'OPGK-Annuals':"Group 2344.png",'UGDrainage':"Group 2344.png",'Ntr Jalasiri':"Group 2344.png",'WaterBudget':"Group 2350.png","SWATCH BHARATH PAYMENTS":"Group 2352.png","JALAVANI":"Jalavani.png","JALAVANI":"Jalavani.png",'ASSETS':"assets","WATER SOURCE":"water source.png","WORKS":"works.png","PROMOTIONS":"promotions.png","E OFFICE":"eOffice.png","MEESEVA - SLA":"meeSevaSla.png","AP INNOVATION SOCIETY":"APInnovationSoc.png","MEESEVA & KPI":"MeeSevaKPI.png","WATER TANK CLORINATION":"waterTank.png","Others MCC":"Group 2352.png","coffee":"Group 2907.png"
+"PRIS":"Group 2344.png","DRAINS":"Group 2345.png","LED MONITORING":"Group 2348.png","UGD":"Group 2359.png","RDP":"Group 2343.png","FUND MANAGMENT SYSTEM":"Group 2352.png","ENGINEERING DEPARTMENT":"Group 2346.png","PANACHAYATI RAJ EXPENDITURE":"Group 2343.png","SPIKE ANALYSIS":"Group 2347.png","MGNREGS":"Group 2357.png","RURAL WATER SUPPLY":"Group 2350.png","ITEC":"Group 2351.png","SWATCH BHARATH IHHL":"Group 2362.png","MGNREGS IHHL":"Group 2362.png",'Labour Budget':"Group 2344.png",'Farm Ponds':"Group 2344.png",'IHHL':"Group 2344.png",'Vermi Compost':"Group 2344.png",'SMC Trench':"Group 2344.png",'Imp to CD':"Group 2344.png",'MPT_PT':"Group 2344.png",'GC Works':"Group 2344.png",'CD_CW':"Group 2344.png",'GH':"Group 2344.png",'Check Dams':"Group 2344.png",'Rock Fill Dams':"Group 2344.png",'Solid Waste Management':"Group 2344.png",'Burial Ground':"Group 2344.png",'Play fields':"Group 2344.png",'Agriculture Activities':"Group 2344.png",'Average Wage':"Group 2344.png",'Average Days of Employment':"Group 2344.png",'HH Completed 100 Days':"Group 2344.png",'Timely Payment':"Group 2344.png",'CC Roads1':"Group 2344.png",'Anganwadi':"Group 2344.png",'GP Buildings1':"Group 2344.png",'Mandal buildings1':"Group 2344.png",'NTR 90 Days':"Group 2344.png",'Production of Bricks':"Group 2344.png",'Mulbery':"Group 2344.png",'Silk Worms':"Group 2344.png",'Horticulture':"Group 2344.png",'Avenue':"Group 2344.png",'Fish Ponds':"Group 2344.png",'Fish Drying Platforms':"Group 2344.png",'Nurseries':"Group 2344.png",'Payments':"Group 2344.png",'FAperformance':"Group 2344.png",'OPGK-Perinnials':"Group 2344.png",'OPGK-Annuals':"Group 2344.png",'UGDrainage':"Group 2344.png",'Ntr Jalasiri':"Group 2344.png",'WaterBudget':"Group 2350.png","SWATCH BHARATH PAYMENTS":"Group 2352.png","JALAVANI":"Jalavani.png","JALAVANI":"Jalavani.png",'ASSETS':"assets","WATER SOURCE":"water source.png","WORKS":"works.png","PROMOTIONS":"promotions.png","E OFFICE":"eOffice.png","MEESEVA - SLA":"meeSevaSla.png","AP INNOVATION SOCIETY":"APInnovationSoc.png","MEESEVA & KPI":"MeeSevaKPI.png","WATER TANK CLORINATION":"waterTank.png","Others MCC":"Group 2352.png","coffee":"Group 2907.png","Raising and Maintenance of Nursery":"RaisingandMaintenanceofNursery.png","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and Check Dams.png","Mini Percolation Tanks":"Mini Percolation Tanks.png","Continuous Contour Trenches":"Continuous Contour Trenches.png"
 }
 
 var blockClassObject = {
-"PRIS":"prisOverAchvmntAllCls","DRAINS":"drainsOverAchvmntAllCls","LED MONITORING":"ledOverAchvmntAllCls","UGD":"","RDP":"","FUND MANAGMENT SYSTEM":"fundMngmntSstmOverAchvmntAllCls","ENGINEERING DEPARTMENT":"encOverAchvmntAllCls","PANACHAYATI RAJ EXPENDITURE":"preOverAchvmntAllCls","SPIKE ANALYSIS":"spikeOverAchvmntAllCls","MGNREGS":"mgnregsOverAchvmntAllCls","RURAL WATER SUPPLY":"rwsOverAchvmntAllCls","ITEC":"itecOverAchvmntAllCls","SWATCH BHARATH IHHL":"swatchBharathIHHL","MGNREGS IHHL":"MGNREGSIHHL","SWATCH BHARATH PAYMENTS":"swatchBharathPayments",'Labour Budget':'LabourBudgetAllCls','Farm Ponds':'FarmPondsAllCls','IHHL':'IHHLAllCls','Vermi Compost':'VermiCompostAllCls','SMC Trench':'SMCTrenchAllCls','Imp to CD':'ImptoCDAllCls','MPT_PT':'MPT_PTAllCls','GC Works':'GCWorksAllCls','CD_CW':'CD_CWAllCls','GH':'GHAllCls','Check Dam':'CheckDamAllCls','Rock fill dams':'RockfilldamsAllCls','Solid Waste Management':'SolidWasteManagementAllCls','Burial Ground':'BurialGroundAllCls','Play fields':'PlayfieldsAllCls','Agriculture Activities':'AgricultureActivitiesAllCls','Average Wage':'AverageWageAllCls','Average Days of Employment':'AverageDaysofEmploymentAllCls','HH Completed 100 Days':'HHCompleted100DaysAllCls','Timely Payment':'TimelyPaymentAllCls','CC Roads1':'CCRoads1AllCls','Anganwadi':'AnganwadiAllCls','GP Buildings1':'GPBuildings1AllCls','Mandal buildings1':'Mandalbuildings1AllCls','NTR 90 Days':'NTR90DaysAllCls','Production of Bricks':'ProductionofBricksAllCls','Mulbery':'MulberyAllCls','Silk Worms':'SilkWormsAllCls','Horticulture':'HorticultureAllCls','Avenue':'AvenueAllCls','Fish Ponds':'FishPondsAllCls','Fish Drying Platforms':'FishDryingPlatformsAllCls','Nurseries':'NurseriesAllCls','Payments':'PaymentsAllCls','FAperformance':'FAperformanceAllCls','OPGK-Perinnials':'OPGK-PerinnialsAllCls','OPGK-Annuals':'OPGK-AnnualsAllCls','UGDrainage':'UGDrainageAllCls','Ntr Jalasiri':"NtrJalasiriAllCls",'WaterBudget':"WaterBudgetAllCls",'JALAVANI':"JalavaniAllCls",'ASSETS':"assetsAllCls","WATER SOURCE":"waterSourceAllCls","WORKS":"worksAllCls","PROMOTIONS":"itecPromotionsAllCls","E OFFICE":"itecEOfficeAllCls","MEESEVA - SLA":"itecMeeSevaSlaAllCls","AP INNOVATION SOCIETY":"itecApInnovationAllCls","WATER TANK CLORINATION":"waterTankClorinationAllCls","Others MCC":"OthersMCCAllCls","coffee":"coffeeAllCls"
+"PRIS":"prisOverAchvmntAllCls","DRAINS":"drainsOverAchvmntAllCls","LED MONITORING":"ledOverAchvmntAllCls","UGD":"","RDP":"","FUND MANAGMENT SYSTEM":"fundMngmntSstmOverAchvmntAllCls","ENGINEERING DEPARTMENT":"encOverAchvmntAllCls","PANACHAYATI RAJ EXPENDITURE":"preOverAchvmntAllCls","SPIKE ANALYSIS":"spikeOverAchvmntAllCls","MGNREGS":"mgnregsOverAchvmntAllCls","RURAL WATER SUPPLY":"rwsOverAchvmntAllCls","ITEC":"itecOverAchvmntAllCls","SWATCH BHARATH IHHL":"swatchBharathIHHL","MGNREGS IHHL":"MGNREGSIHHL","SWATCH BHARATH PAYMENTS":"swatchBharathPayments",'Labour Budget':'LabourBudgetAllCls','Farm Ponds':'FarmPondsAllCls','IHHL':'IHHLAllCls','Vermi Compost':'VermiCompostAllCls','SMC Trench':'SMCTrenchAllCls','Imp to CD':'ImptoCDAllCls','MPT_PT':'MPT_PTAllCls','GC Works':'GCWorksAllCls','CD_CW':'CD_CWAllCls','GH':'GHAllCls','Check Dams':'CheckDamsAllCls','Rock Fill Dams':'RockFillDamsAllCls','Solid Waste Management':'SolidWasteManagementAllCls','Burial Ground':'BurialGroundAllCls','Play fields':'PlayfieldsAllCls','Agriculture Activities':'AgricultureActivitiesAllCls','Average Wage':'AverageWageAllCls','Average Days of Employment':'AverageDaysofEmploymentAllCls','HH Completed 100 Days':'HHCompleted100DaysAllCls','Timely Payment':'TimelyPaymentAllCls','CC Roads1':'CCRoads1AllCls','Anganwadi':'AnganwadiAllCls','GP Buildings1':'GPBuildings1AllCls','Mandal buildings1':'Mandalbuildings1AllCls','NTR 90 Days':'NTR90DaysAllCls','Production of Bricks':'ProductionofBricksAllCls','Mulbery':'MulberyAllCls','Silk Worms':'SilkWormsAllCls','Horticulture':'HorticultureAllCls','Avenue':'AvenueAllCls','Fish Ponds':'FishPondsAllCls','Fish Drying Platforms':'FishDryingPlatformsAllCls','Nurseries':'NurseriesAllCls','Payments':'PaymentsAllCls','FAperformance':'FAperformanceAllCls','OPGK-Perinnials':'OPGK-PerinnialsAllCls','OPGK-Annuals':'OPGK-AnnualsAllCls','UGDrainage':'UGDrainageAllCls','Ntr Jalasiri':"NtrJalasiriAllCls",'WaterBudget':"WaterBudgetAllCls",'JALAVANI':"JalavaniAllCls",'ASSETS':"assetsAllCls","WATER SOURCE":"waterSourceAllCls","WORKS":"worksAllCls","PROMOTIONS":"itecPromotionsAllCls","E OFFICE":"itecEOfficeAllCls","MEESEVA - SLA":"itecMeeSevaSlaAllCls","AP INNOVATION SOCIETY":"itecApInnovationAllCls","WATER TANK CLORINATION":"waterTankClorinationAllCls","Others MCC":"OthersMCCAllCls","coffee":"coffeeAllCls","Raising and Maintenance of Nursery":"RaisingandMaintenanceofNurseryAllCls","Desilting of Perculation Tanks and Check Dams":"DesiltingofPerculationTanksandCheckDamsAllCls","Mini Percolation Tanks":"MiniPercolationTanksAllCls","Continuous Contour Trenches":"ContinuousContourTrenchesAllCls"
 }
 
 var blockHeadingObject = {
-"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"TOTAL LIGHTS","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"TOTAL CASES","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'SMC Trench':"ACHIEVED",'Imp to CD':"ACHIEVED",'MPT_PT':"ACHIEVED",'GC Works':"ACHIEVED",'CD_CW':"ACHIEVED",'GH':"ACHIEVED",'Check Dam':"ACHIEVED",'Rock fill dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery':"ACHIEVED",'Silk Worms':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Nurseries':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"COMPLETED & CLOSED",'ASSETS':"COMPLETED & CLOSED","WATER SOURCE":"TOTAL","WORKS":"TOTAL","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA - SLA":"BEYOND SLA","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CLORINATION":"CLORINATED","Others MCC":"Others MCC","coffee":"COFFEE"
+"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"TOTAL LIGHTS","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"TOTAL CASES","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'SMC Trench':"ACHIEVED",'Imp to CD':"ACHIEVED",'MPT_PT':"ACHIEVED",'GC Works':"ACHIEVED",'CD_CW':"ACHIEVED",'GH':"ACHIEVED",'Check Dams':"ACHIEVED",'Rock Fill Dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery':"ACHIEVED",'Silk Worms':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Nurseries':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"COMPLETED & CLOSED",'ASSETS':"COMPLETED & CLOSED","WATER SOURCE":"TOTAL","WORKS":"TOTAL","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA - SLA":"BEYOND SLA","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CLORINATION":"CLORINATED","Others MCC":"Others MCC","coffee":"COFFEE","Raising and Maintenance of Nursery":"Raising and Maintenance of Nursery","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and CheckDams","Mini Percolation Tanks":"Mini Percolation Tanks","Continuous Contour Trenches":"Continuous Contour Trenches"
 }
 var overViewArrConsolidated = [];
 var overViewIdsArr = [];
@@ -84,7 +84,14 @@ function buildFavouriteComponentsResult(result) {
 			str +='<div class="col-sm-4 draggable-element" order-by="'+result[i].id+'">'
 				str +='<div class="whiteBlock">';
 					str +='<img src="Assests/img/'+imagesObj[compnentName]+'" >';
-					str +='<h5 style="display: inline-block;text-transform:uppercase;">'+result[i].name+'</h5>';
+					if(result[i].name == "Desilting of Perculation Tanks and Check Dams"){
+						if(result[i].name !=null && result[i].name.length>15){
+							str +='<h5 class="tooltipCls" style="display: inline-block;text-transform:uppercase;cursor:pointer;" data-toogle="tooltip" title="'+result[i].name+'">'+result[i].name.substring(0, 15)+'...</h5>';
+						}
+					}else{
+						str +='<h5 style="display: inline-block;text-transform:uppercase;">'+result[i].name+'</h5>';
+					}
+					
 					str +='<div class=" " style="text-align: right">';
 						str +='<h2 class="'+blockClassObject[compnentName]+'" style="margin-top: 0px"></h2>';
 						if(result[i].name == 'ENGINEERING DEPARTMENT')
@@ -106,7 +113,7 @@ function buildFavouriteComponentsResult(result) {
 		console.log(globalComponentNameArr);
 		str +='</div>';
 	$("#favouriteComponentDivId").html(str);
-	
+	$(".tooltipCls").tooltip();
 	/*adding required filed dynamically*/
 	for (var i in result) { 
 		var compnentName = result[i].name.trim();;
@@ -329,10 +336,15 @@ function onloadCallToGetAllBlockAchievent () {
 		}else if(globalComponentNameArr[i] == 'Payments')
 		{
 			getNregaPaymentsAbsAndOverviewDtls(globalComponentNameArr[i]);
+		}else if(globalComponentNameArr[i] == 'Rock Fill Dams' || globalComponentNameArr[i] == "Check Dams" || globalComponentNameArr[i] == "Raising and Maintenance of Nursery" || globalComponentNameArr[i] == "Desilting of Perculation Tanks and Check Dams" || globalComponentNameArr[i] == "Mini Percolation Tanks" || globalComponentNameArr[i] == "Continuous Contour Trenches"){
+			
+			getNREGSForestAbstact(globalComponentNameArr[i]);
+		
 		}else if(globalComponentNameArr[i] != 'WATER TANK CLORINATION'){
 			getNREGSAbstractDataByType(globalComponentNameArr[i]);
 			
 		}
+		
 		
 		
 	} 
@@ -1276,4 +1288,30 @@ function getWaterBodyCumulativeCounts(sessionToken){
 				
 		});
 	}
+function getNREGSForestAbstact(type)
+{
+	$("."+type.replace(/\s+/g, '')+"AllCls").html(spinner);
 	
+	var json = {
+	   year : "2017",
+	   fromDate :"2017-04-01",
+	   toDate :moment().format("YYYY-MM-DD"),
+	   locationType: "state" ,
+	   locationId: "-1",
+	   type: type 
+	}
+	
+	$.ajax({
+		url: 'getNREGSForestAbstact',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			$("."+type.replace(/\s+/g, '')+"AllCls").html(ajaxresp[0].percentage+"%");
+		}
+	}); 
+}	
