@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleDAO;
 import com.itgrids.partyanalyst.model.TrainingCampSchedule;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TrainingCampScheduleDAO extends GenericDaoHibernate<TrainingCampSchedule, Long> implements ITrainingCampScheduleDAO{
 
@@ -110,6 +111,16 @@ public class TrainingCampScheduleDAO extends GenericDaoHibernate<TrainingCampSch
 		query.setParameter("scheduleId", scheduleId);
 		
 		return query.list();
+	}
+	@Override
+	public List<Long> getTrainingCampProgramIds(Long enrollmentYearId) {
+		
+	Query query = getSession().createQuery(" select distinct model.trainingCampProgramId from TrainingCampSchedule model, TrainingCampBatch model1 where model1.trainingCampScheduleId = model.trainingCampScheduleId and model1.attendeeTypeId :=attendeeTypeId and model.enrollmentYearId =:enrollmentYearId ");
+			
+			query.setParameter("enrollmentYearId", enrollmentYearId);
+			query.setParameter("attendeeTypeId", IConstants.ATTENDEE_TYPE_ID);
+			
+			return query.list();
 	}
 	
 }
