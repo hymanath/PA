@@ -6283,7 +6283,11 @@ public class ConstituencyPageService implements IConstituencyPageService{
 		ElectionInformationVO finalVo = new ElectionInformationVO();
 		try {
 			//id-0,name-1,schemeCount-2,grievanceCnt -3,benefitCount-4
-			List<Object[]> objList = govtSchemeBenefitsInfoDAO.getLocationWiseSchemeOverview(locationScopeId, locationValue,"Location");
+			List<Object[]> objList = govtSchemeBenefitsInfoDAO.getLocationWiseSchemeOverview(locationScopeId, locationValue,"Location",false);
+			List<Object[]> objListTmp = govtSchemeBenefitsInfoDAO.getLocationWiseSchemeOverview(locationScopeId, locationValue,"Location",true);
+			if(commonMethodsUtilService.isListOrSetValid(objListTmp)){
+				objList.addAll(objListTmp);
+			}
 			if(objList != null && objList.size() >0){
 				for (Object[] objects : objList){
 					ElectionInformationVO locationVo = new ElectionInformationVO();
@@ -6300,7 +6304,11 @@ public class ConstituencyPageService implements IConstituencyPageService{
 			List<Object[]> allSchemeLst = govtSchemesDAO.getAllSchemeDetails();
 			  prepareRquiredTemplate(allSchemeLst,finalVo.getSubList1());
 			//id-0,name-1,schemeId-2,schemeName-3,grievanceCnt -3,benefitCount-4
-			List<Object[]> schemsList = govtSchemeBenefitsInfoDAO.getLocationWiseSchemeOverview(locationScopeId, locationValue,"Schemes");
+			List<Object[]> schemsList = govtSchemeBenefitsInfoDAO.getLocationWiseSchemeOverview(locationScopeId, locationValue,"Schemes",false);
+			List<Object[]> schemsListTmp = govtSchemeBenefitsInfoDAO.getLocationWiseSchemeOverview(locationScopeId, locationValue,"Schemes",true);
+			if(commonMethodsUtilService.isListOrSetValid(schemsListTmp)){
+				schemsList.addAll(schemsListTmp);
+			}
 			if(schemsList != null && schemsList.size() >0){
 				for (Object[] objects : schemsList){
 					ElectionInformationVO schemeVo = getMatchedSchemeVO(finalVo.getSubList1(),(Long)objects[0]);		
@@ -6321,11 +6329,19 @@ public class ConstituencyPageService implements IConstituencyPageService{
 					returnVo.setPercentage(caclPercantage(returnVo.getTotalSeatsCount(),totalCount));
 				}
 			}
-			List<Object[]> schemeDetailsObj = govtSchemeBenefitsInfoDAO.getLocationWiseSchemesDetailsInfo(locationScopeId, locationValue);
+			List<Object[]> schemeDetailsObj = govtSchemeBenefitsInfoDAO.getLocationWiseSchemesDetailsInfo(locationScopeId, locationValue, false);
+			List<Object[]> schemeDetailsObjTmp = govtSchemeBenefitsInfoDAO.getLocationWiseSchemesDetailsInfo(locationScopeId, locationValue, true);
 			
+			if(commonMethodsUtilService.isListOrSetValid(schemeDetailsObjTmp)){
+				schemeDetailsObj.addAll(schemeDetailsObjTmp);	
+				}
 			if(finalVo.getList() != null && finalVo.getList().size() >0){
 					if(schemeDetailsObj != null && schemeDetailsObj.size() >0){
 						List<Object[]> totalVotersLst = voterInfoDAO.getTotalVotersForlocationWiseData(locationScopeId, locationValue,false);
+						List<Object[]> totalVotersLstTmp = voterInfoDAO.getTotalVotersForlocationWiseData(locationScopeId, locationValue,true);
+						if(commonMethodsUtilService.isListOrSetValid(totalVotersLstTmp)){
+							totalVotersLst.addAll(totalVotersLstTmp);
+						}
 						if(totalVotersLst != null && totalVotersLst.size() >0){
 							for (Object[] params : totalVotersLst) {
 								ElectionInformationVO matchedLocationVo = getMatchedVO(finalVo.getList(),(Long)params[0]);
@@ -6460,7 +6476,12 @@ public class ConstituencyPageService implements IConstituencyPageService{
 	public List<ElectionInformationVO> getMemberDetailsForBenefitInfo(Long schemeId,Long locationScopeId,Long locationValue){
 		List<ElectionInformationVO> returnList = new ArrayList<ElectionInformationVO>(0);
 		try{
-			 List<Object[]> objList = govtSchemeBeneficiaryDetailsDAO.getMemberDetailsForBenefitInfo(locationScopeId, locationValue, schemeId);
+			
+			 List<Object[]> objList = govtSchemeBeneficiaryDetailsDAO.getMemberDetailsForBenefitInfo(locationScopeId, locationValue, schemeId,false);
+			 List<Object[]> objListTmp = govtSchemeBeneficiaryDetailsDAO.getMemberDetailsForBenefitInfo(locationScopeId, locationValue, schemeId,true);
+			 if(commonMethodsUtilService.isListOrSetValid(objListTmp)){
+				 objList.addAll(objListTmp);
+			 }
 			 //0-locationId,1-locationName,2-beneficicaryName,3-mobileNum,4-schemename,6-amount
 			 
 			 if(objList != null && objList.size() > 0){
