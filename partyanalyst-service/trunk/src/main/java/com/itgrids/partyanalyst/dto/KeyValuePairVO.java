@@ -8,7 +8,7 @@ package com.itgrids.partyanalyst.dto;
 public class KeyValuePairVO {
 	private Long id;
 	private String name;
-	public KeyValuePairVO(){}
+	
 	public KeyValuePairVO(Long id,String name){
 		this.id=id;
 		this.name=name;
@@ -25,9 +25,17 @@ public class KeyValuePairVO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	@Override
 	public boolean equals(Object obj){
-		KeyValuePairVO  vo = (KeyValuePairVO)obj;
-		return (vo.id == this.id) && (vo.name == this.name);
+		if(id==null)
+			id = -1L;
+		if(obj instanceof KeyValuePairVO){
+			KeyValuePairVO vo = (KeyValuePairVO) obj;
+			return this.id.equals(vo.getId());
+		}
+		return false;
 	}
+	
 	
 }
