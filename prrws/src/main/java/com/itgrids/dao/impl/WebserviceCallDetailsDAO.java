@@ -60,4 +60,26 @@ public class WebserviceCallDetailsDAO extends GenericDaoHibernate<WebserviceCall
 		query.setDate("endDate", endDate);
 		return query.list();  
 	}
+	@Override
+	public List<Object[]> getWebserviceDetails(Date startDate, Date endDate) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select "
+				+ " webserviceCallDetails.webservice.webserviceId, "//0
+				+ " webserviceCallDetails.webservice.url, "//1
+				+ " webserviceCallDetails.webservice.serviceName, "//2
+				+ " webserviceCallDetails.callTime, " //3
+				+ " webserviceCallDetails.timeTaken, " //4
+				+ " webserviceCallDetails.webservice.serviceProvider.providerName," //5
+				+ " webserviceCallDetails.status " //6
+				+ " from "
+				+ " WebserviceCallDetails webserviceCallDetails "
+				+ " where "
+				+ " (date(webserviceCallDetails.callTime) between :startDate and :endDate)  "
+				+ " order by "
+				+ " webserviceCallDetails.webservice.webserviceId , webserviceCallDetails.callTime ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		return query.list();  
+	}
 }

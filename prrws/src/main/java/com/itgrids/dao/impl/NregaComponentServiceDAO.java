@@ -19,7 +19,8 @@ public class NregaComponentServiceDAO extends GenericDaoHibernate<NregaComponent
 	public List<Object[]> getComponentUrlsByComponentIds(List<Long> componentIds,String serviceType){
 		Query query = getSession().createQuery("select distinct model.nregaComponent.nregaComponentId,"
 											+ " model.nregaComponent.componentName,"
-											+ " model.webService.url"
+											+ " model.webService.url,"
+											+ " model.webService.webserviceId"
 											+ " from NregaComponentService model"
 											+ " where model.nregaComponent.nregaComponentId in (:componentIds)"
 											+ " and model.serviceType = :serviceType");
