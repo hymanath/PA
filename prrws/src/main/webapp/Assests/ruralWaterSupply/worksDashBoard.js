@@ -13,21 +13,21 @@
 		var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 		var levelNamesArr=[{name:'state',id:'2'},{name:'district',id:'3'},{name:'constituency',id:'4'},{name:'mandal',id:'5'}];
 		var levelWiseSBArr = ['state','district','constituencies','mandal','panchayat'];
+		var globalStateLevelExceededTargetWorks='';
 		getAllFiniancialYears();
 		function onloadCalls(){
+			globalStateLevelExceededTargetWorks='';
 			getSchemesDetails();
 			getSchemeWiseWorkDetails('graph','state',"","","","");
-			
 			getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 			getAllPrrwsDistricts("chosendistValmandalBlockId");
-			
 			tabBlocks('stateBlockId','state');
 			tabBlocks('districtBlockId','district');
 			tabBlocks('constituencyBlockId','constituency');
 			tabBlocks('mandalBlockId','mandal');
 			responsiveTabs();
-			getExceededTargetWorksDetails()
-			getExceedWorkDetailsLocationWise();
+			//getExceededTargetWorksDetails();
+			getExceedWorkDetailsLocationWise("",'state',"","","","","");
 		}
 		function getSelectedType(){
 			for(var i in levelNamesArr){
@@ -702,9 +702,10 @@
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 		}
 		function getSchemeWiseWorkDetails(type,locationType,divId,filterType,filterValue,districtValue){
-			$("#habitationWorksPWS,#habitationWorksCPWS").html(spinner);
+			//$("#habitationWorksPWS,#habitationWorksCPWS").html(spinner);
 			var typeVal="";
 			if(type =="graph"){
+				$("#habitationWorksPWS,#habitationWorksCPWS").html(spinner);
 				$("#habitationWorks").html(spinner);
 				typeVal ="graph"
 			}else{
@@ -748,6 +749,7 @@
 					}else{
 						if(type == "graph"){
 							$("#habitationWorks").html("No Data Available");
+							$("#habitationWorksPWS,#habitationWorksCPWS").html("No Data Available");
 						}else{
 							for(var k in divId){
 								$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
@@ -5894,10 +5896,12 @@ function getExceededTargetWorksDetails(){
 		}
 	}).done(function(result){
 		console.log(result);
-		return buildGraph(result);
+		//return buildGraph(result);
 	});
+}
 	function buildGraph(result)
 	{
+		var colorsArr=['#EE6CA9','#C61379'];
 		var cateArr = [];
 		var pwsArr = [];
 		var cpwsArr = [];
@@ -5905,16 +5909,32 @@ function getExceededTargetWorksDetails(){
 		var totalWorksCPWS = 0;
 		var totalAmountPWS = 0;
 		var totalAmountCPWS = 0;
-		for(var i in result.completedList)
+		
+		for(var i in result[0].subList)
 		{
-			cateArr.push(result.completedList[i].name)
-			pwsArr.push(result.completedList[i].pwsCount)
-			cpwsArr.push(result.completedList[i].cpwsCount)
-			totalWorksPWS = totalWorksPWS + result.completedList[i].pwsCount;
-			totalWorksCPWS = totalWorksCPWS + result.completedList[i].cpwsCount;
-			totalAmountPWS = totalAmountPWS + result.completedList[i].pwsAmount;
-			totalAmountCPWS = totalAmountCPWS + result.completedList[i].cpwsAmount;
+			//cateArr.push(result.subList[i].name)
+			//pwsArr.push(result.subList[i].count)
+			//cpwsArr.push(result.completedList[i].cpwsCount)
+			//totalWorksPWS = totalWorksPWS + result.subList[i].count;
+			//totalWorksCPWS = totalWorksCPWS + result.subList[i].count;
+			//totalAmountPWS = totalAmountPWS + result.completedList[i].pwsAmount;
+			//totalAmountCPWS = totalAmountCPWS + result.completedList[i].cpwsAmount;
+			
+			if(result[0].subList[i].assetType == 'PWS'){
+				totalWorksPWS = totalWorksPWS + result[0].subList[i].count;
+			}else if(result[0].subList[i].assetType == 'CPWS'){
+				totalWorksCPWS = totalWorksCPWS + result[0].subList[i].count;
+			}
+			for( var j in result[0].subList[i].subList){
+				cateArr.push(result[0].subList[i].subList[j].name);
+				if(result[0].subList[i].assetType == 'PWS'){
+					pwsArr.push(result[0].subList[i].subList[j].count);
+				}else if(result[0].subList[i].assetType == 'CPWS'){
+					cpwsArr.push(result[0].subList[i].subList[j].count);
+				}
+			}
 		}
+		
 		Highcharts.chart('ExceededTargetDetailsTotal', {
 			chart: {
 				type: 'column'
@@ -5923,7 +5943,7 @@ function getExceededTargetWorksDetails(){
 				text: null
 			},
 			xAxis: {
-				categories:['Total']
+				categories:["Total"]
 			},
 			yAxis: {
 				allowDecimals: false,
@@ -5951,7 +5971,7 @@ function getExceededTargetWorksDetails(){
 				color:'#EE6CA9'
 			}, {
 				name: 'CPWS',
-				data: [totalAmountCPWS],
+				data: [totalWorksCPWS],
 				stack: 'CPWS',
 				color:'#C61379'
 			}]
@@ -5998,18 +6018,16 @@ function getExceededTargetWorksDetails(){
 			}]
 		});
 	}
-}
 $(document).on("click","[role='tabCummulative'] li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 		var blockName = $(this).closest("ul").attr("attr_level_type");
 		var blockType = $(this).attr("attr_type");
-		
 	if(blockName == "state"){
 		if(blockType == "completeOverview"){
 			getSchemeWiseWorkDetails('table','state',blocksArr,"","","",blockType);
-		}else{
-			getExceedWorkDetailsLocationWise('table','state',blocksArr,"","","",blockType)
+		}else{// here using global globalStateLevelExceededTargetWorks arr no need sent ajax call in state level table building we have responce object onLoad
+			buildTableForHabitationCoverage(globalStateLevelExceededTargetWorks,'state',blocksArr,'habitations',blockType);
 		}
 		
 	}else if(blockName == "district"){
@@ -6046,6 +6064,10 @@ $(document).on("click","[role='tabCummulative'] li",function(){
 	}
 });
 function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,filterValue,districtValue,blockType){
+		if(locationType == 'state'){
+			$("#ExceededTargetDetailsTotal").html(spinner);
+			$("#ExceededTargetDetails").html(spinner);
+		}
 		for(var k in divId){
 			$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
 		}
@@ -6078,8 +6100,14 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 			}
 		}).done(function(ajaxresp){
 		 	if(ajaxresp !=null && ajaxresp.length>0){
-				buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',blockType);
+				if(locationType == 'state'){
+					globalStateLevelExceededTargetWorks=ajaxresp;
+					buildGraph(ajaxresp);
+				}else{
+					buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',blockType);
+				}
 			}else{
+				$("#ExceededTargetDetailsTotal,#ExceededTargetDetails").html("No Data Available");
 				for(var k in divId){
 					$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
 				}
