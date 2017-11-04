@@ -4903,7 +4903,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
-		 	    			vo.setPercentage(jObj.getString("PERCENTAGE"));
+		 	    			vo.setPercentage(jObj.getString("PERC"));
 		 	    			voList.add(vo);
 	 	    			}
 	 	    		}
@@ -5330,6 +5330,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT"))
 				inputVO.setGroupName("Construction of Post Harvest facilities (Drying Platform) including Pucca storage facilities of 100MT");
+			else if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Renovation and Improvements to existing Check Dams Check Wall"))
+				inputVO.setGroupName("Renovation and Improvements to existing Check Dams / Check Wall");
+			else if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Renovation and Improvements to existing Percolation Tank Mini Percolation tank"))
+				inputVO.setGroupName("Renovation and Improvements to existing Percolation Tank / Mini Percolation tank");
+			else if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Construction of Crematoria Burial Grounds"))
+				inputVO.setGroupName("Construction of Crematoria/Burial Grounds");
 			
 			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/DCCPRService/DCCPRData";
 			
