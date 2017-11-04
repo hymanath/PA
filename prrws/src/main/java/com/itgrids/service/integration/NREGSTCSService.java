@@ -577,10 +577,20 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 	 	    				else{
-	 	    					if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+	 	    					if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery") && 
+	 	    							(inputVO.getSublocationType().trim().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().equalsIgnoreCase("district") || inputVO.getSublocationType().trim().equalsIgnoreCase("constituency")))
 	 	    						vo.setMulbTarget(jObj.getString("TARGET"));
-	 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") || inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals")))
+	 	    					else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery") && 
+	 	    							(inputVO.getSublocationType().trim().equalsIgnoreCase("mandal") || inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat")))
+	 	    						vo.setMulbTarget(jObj.getString("TARGETNEW"));
+	 	    					else if(inputVO.getDivType() != null && 
+	 	    							(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") || inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals"))
+	 	    									&& (inputVO.getSublocationType().trim().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().equalsIgnoreCase("district") || inputVO.getSublocationType().trim().equalsIgnoreCase("constituency")))
 	 	    						vo.setOpgkTarget(jObj.getString("TARGET"));
+	 	    					else if(inputVO.getDivType() != null && 
+	 	    							(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") || inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals"))
+	 	    									&& (inputVO.getSublocationType().trim().equalsIgnoreCase("mandal") || inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat")))
+	 	    						vo.setOpgkTarget(jObj.getString("TARGETNEW"));
 	 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Mandal buildings1") && inputVO.getSublocationType().trim().equalsIgnoreCase("mandal")))
 	 	    						vo.setTarget(jObj.getLong("TARGETNEW"));
 	 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("GP buildings1") && (inputVO.getSublocationType().trim().equalsIgnoreCase("mandal") 
