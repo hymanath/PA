@@ -265,7 +265,7 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {	
-	 $("#enrolmentYears").chosen();
+	$("#enrolmentYears").chosen();
 	getEnrollmentIds();//Enrolment Years
 	getPublications();//Publications	
 	getLocationWiseCommitteesCount(2);//Committee
@@ -324,8 +324,8 @@ function onLoadAjaxCalls()
 	getLevelWisePostsOverView(); 
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
-	getDesignationWiseAlertsOverview(defaultAlertCategoryIds); 
-	 setTimeout(function(){ 
+	getDesignationWiseAlertsOverview(defaultAlertCategoryIds);
+	/* setTimeout(function(){ 
 		//News Block
 		getPrintMediaCountsForConstituencyPage()
 		getLeadersInNewsForConstituencyPage();
@@ -334,7 +334,7 @@ function onLoadAjaxCalls()
 		for(var i in propertyIdGlobalStr){
 			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 		}
-	}, 2000); 
+	}, 2000); */
 }			
 function onLoadClicks()
 {
@@ -5741,56 +5741,59 @@ function buildElectionInformationLocationWise(result,type){
 				type: 'area'
 			},
 			title: {
-				text: ''
+				text: null
 			},
 			subtitle: {
-				text: ''
+				text: null
 			},
 			xAxis: {
 				categories: electionYearArr,
 				tickmarkPlacement: 'on',
 				title: {
-					enabled: false
+				  enabled: false
 				}
-			},
-			yAxis: {
+			  },
+			  yAxis: {
 				title: {
-					text: ''
+				  text: ''
 				}
-			},
+			  },
 			tooltip: {
 				formatter: function () {
-					var s = '<b>' + this.x + '</b>';
+				  var s = '<b>' + this.x + '</b>';
 
-						$.each(this.points, function () {
-						if(type == "wonSeat"){
-							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-							this.y+" Won"
-						}else{
-							if(this.y == "undefined" || this.y == 0 || this.y === undefined){
-								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-								0+" %"
-							}else{
-								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-								this.y+" %"
-							}
-							
-						}  
-						
-					});
+					$.each(this.points, function () {
+					if(type == "wonSeat"){
+					  s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+					  this.y+" Won"
+					}else{
+					  if(this.y == "undefined" || this.y == 0 || this.y === undefined){
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+						0+" %"
+					  }else{
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+						this.y+" %"
+					  }
+					  
+					}  
+					
+				  });
 
-					return s;
+				  return s;
 				},
 				shared: true
 			},
 			plotOptions: {
 				area: {
-					stacking: 'normal',
-					lineColor: '#666666',
-					lineWidth: 1,
 					marker: {
-						lineWidth: 1,
-						lineColor: '#666666'
+						enabled: false,
+						symbol: 'circle',
+						radius: 2,
+						states: {
+							hover: {
+								enabled: true
+							}
+						}
 					}
 				}
 			},
