@@ -777,13 +777,10 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 						" AND VI.report_level_id =2 " +
 						" group by t.tehsil_id ");
 			}else{
-				sb.append(" leb.local_election_body_id as locationId,sum(VI.total_voters) as count " +
-						" from voter_info VI, constituency C, tehsil_constituency tc," +
-						" tehsil t,local_election_body leb where VI.report_level_value=leb.local_election_body_id and tc.constituency_id=C.constituency_id and " +
-						" tc.tehsil_id=t.tehsil_id and leb.tehsil_id=t.tehsil_id and C.constituency_id=:locationValue " +
-						" and VI.publication_date_id=22 AND " +
-						" VI.report_level_id =6 " +
-						" group by leb.local_election_body_id  ");
+				sb.append(" leb.local_election_body_id as locationId,sum(VI.total_voters) as count  from voter_info VI, constituency C, tehsil_constituency tc," +
+						" tehsil t,local_election_body leb where" +
+						" VI.report_level_value=leb.local_election_body_id and tc.constituency_id=C.constituency_id and  tc.tehsil_id=t.tehsil_id and" +
+						" leb.tehsil_id=t.tehsil_id and C.constituency_id =:locationValue  and VI.publication_date_id=22 AND  VI.report_level_id =5 group by leb.local_election_body_id ");
 			}
 			
 		}else if(locationScopeId != null && locationScopeId == 5l){
