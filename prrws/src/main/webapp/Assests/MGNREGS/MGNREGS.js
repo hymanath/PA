@@ -116,7 +116,7 @@ function onLoadCalls()
 			{
 				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
 			}
-			else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams')
+			else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams' || overViewArr[i] == 'Avenue Plantation')
 			{
 				getNREGSForestProjectsAbstract(overViewArr[i],'state',"0",'',2);
 			}else if(overViewArr[i] == 'Payments')
@@ -170,7 +170,7 @@ function onLoadCalls()
 			{
 				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
 			}
-			else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams')
+			else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams' || overViewArr[i] == 'Avenue Plantation')
 			{
 				getNREGSForestProjectsAbstract(overViewArr[i],'state',"0",'',2);
 			}else if(overViewArr[i] == 'Payments')
@@ -312,7 +312,12 @@ function onLoadCalls()
 				{
 					if(levelType == "state")
 					{
-						theadArr = [levelType,'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage','Wage Exp','Material Exp','Total Exp'];
+						if(globalDivName == 'Mulbery' ){
+							theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+						}else{
+							theadArr = [levelType,'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage','Wage Exp','Material Exp','Total Exp'];
+						}
+						
 					}else if(levelType == "district")
 					{
 						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
@@ -374,12 +379,12 @@ function onLoadCalls()
 					getNregaPaymentsDtlsLocationWise(tableId,levelType,menuLocationType,menuLocationId,'Wage',divId);
 				else if(divId == "FAperformance")
 					getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId,divId);
-				else if(divId == 'Rock Fill Dams' || divId == 'Raising and Maintenance of Nursery' || divId == 'Desilting of Perculation Tanks and Check Dams' || divId == 'Mini Percolation Tanks' || divId == 'Continuous Contour Trenches' || divId == 'Check Dams')
+				else if(divId == 'Rock Fill Dams' || divId == 'Raising and Maintenance of Nursery' || divId == 'Desilting of Perculation Tanks and Check Dams' || divId == 'Mini Percolation Tanks' || divId == 'Continuous Contour Trenches' || divId == 'Check Dams' || divId == 'Avenue Plantation')
 					getNregaForestLevelData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId);
 				else if(divId == 'Greenary works Chettu' || divId == 'Agriculture Related Works' || divId == 'Rural Sanitation Works' || divId == 'Soil Moisture Conservation works Neeru' || divId == 'Works in community lands' || divId == 'OTHERS' || divId == 'Institutional Development Works' || divId == 'Road Works' || divId == 'Water Harvesting Structures Neeru' || divId == 'Fisheries work' || divId == 'AH-Live Stock Related works')
 					getNregaOtherMCCLevelData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
 				else if(divId == 'coffee')
-					getNregaLevelsWiseDataFrCoffeePlantation(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
+					getNregaLevelsWiseDataFrCoffeePlantation(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId);
 				else
 					getNregaLevelsWiseData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId);
 			}
@@ -836,7 +841,12 @@ function projectData(divId,levelId,locationId)
 			{
 				if(dataArr[i] == "state")
 				{
-					theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage','Wage Exp','Material Exp','Total Exp'];
+					if(globalDivName == 'Mulbery'){
+						theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					}else{
+						theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage','Wage Exp','Material Exp','Total Exp'];
+					}
+					
 				}else if(dataArr[i] == "district")
 				{
 					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
@@ -914,12 +924,12 @@ function projectData(divId,levelId,locationId)
 			getNregaPaymentsDtlsLocationWise(tableId,dataArr[i],menuLocationType,menuLocationId,'Wage',divId);
 		else if(divId == "FAperformance")
 			getNregaLevelsWiseDataForFAPerformance(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
-		else if(divId == 'Rock Fill Dams' || divId == 'Raising and Maintenance of Nursery' || divId == 'Desilting of Perculation Tanks and Check Dams' || divId == 'Mini Percolation Tanks' || divId == 'Continuous Contour Trenches' || divId == 'Check Dams')
+		else if(divId == 'Rock Fill Dams' || divId == 'Raising and Maintenance of Nursery' || divId == 'Desilting of Perculation Tanks and Check Dams' || divId == 'Mini Percolation Tanks' || divId == 'Continuous Contour Trenches' || divId == 'Check Dams' || divId == 'Avenue Plantation')
 			getNregaForestLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId);
 		else if(divId == 'Greenary works Chettu' || divId == 'Agriculture Related Works' || divId == 'Rural Sanitation Works' || divId == 'Soil Moisture Conservation works Neeru' || divId == 'Works in community lands' || divId == 'OTHERS' || divId == 'Institutional Development Works' || divId == 'Road Works' || divId == 'Water Harvesting Structures Neeru' || divId == 'Fisheries work' || divId == 'AH-Live Stock Related works')
 			getNregaOtherMCCLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
 		else if(divId == 'coffee')
-			getNregaLevelsWiseDataFrCoffeePlantation(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
+			getNregaLevelsWiseDataFrCoffeePlantation(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId);
 		else
 			getNregaLevelsWiseData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId);
 	}
@@ -1034,7 +1044,7 @@ function overviewData(divId,levelId,locationId)
 		getNregaPaymentsAbsAndOverviewDtls(divId,menuLocationType,menuLocationId,2,'overview');
 	else if(divId == 'Timely Payment')
 		getNregasOverview(divId,menuLocationType,menuLocationId,districtId,'-1');
-	else if(divId == 'Rock Fill Dams' || divId == 'Raising and Maintenance of Nursery' || divId == 'Desilting of Perculation Tanks and Check Dams' || divId == 'Mini Percolation Tanks' || divId == 'Continuous Contour Trenches' || divId == 'Check Dams')
+	else if(divId == 'Rock Fill Dams' || divId == 'Raising and Maintenance of Nursery' || divId == 'Desilting of Perculation Tanks and Check Dams' || divId == 'Mini Percolation Tanks' || divId == 'Continuous Contour Trenches' || divId == 'Check Dams' || divId == 'Avenue Plantation')
 		getNregasForestOverview(divId,menuLocationType,menuLocationId,districtId);
 	else
 		getNregasOverview(divId,menuLocationType,menuLocationId,districtId);
@@ -1433,7 +1443,7 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='<div class="row">';	
 								for(var i in result)
 								{
-									if(result[i] == "Nurseries" || result[i] == "Check Dam" || result[i] == "Rock fill dams" || result[i] == 'Rock Fill Dams' || result[i] == 'Raising and Maintenance of Nursery' || result[i] == 'Desilting of Perculation Tanks and Check Dams' || result[i] == 'Mini Percolation Tanks' || result[i] == 'Continuous Contour Trenches' || result[i] == 'Check Dams'){
+									if(result[i] == "Nurseries" || result[i] == "Check Dam" || result[i] == "Rock fill dams" || result[i] == 'Rock Fill Dams' || result[i] == 'Raising and Maintenance of Nursery' || result[i] == 'Desilting of Perculation Tanks and Check Dams' || result[i] == 'Mini Percolation Tanks' || result[i] == 'Continuous Contour Trenches' || result[i] == 'Check Dams' || result[i] == 'Avenue Plantation'){
 										str+='<div class="col-sm-2 m_top10">';
 											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
 												if(result[i].length > 12)
@@ -3284,7 +3294,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							{
 								str+='<td>'+ajaxresp[i].target+'</td>';
 							}
-							if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms' || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
+							if((globalDivName == 'Silk Worms' || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 								//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 							}
@@ -4006,7 +4016,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 
 
 //var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings1','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Ground','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
-var overViewArr = ['Labour Budget','Greenary works Chettu','Agriculture Related Works', 'Rural Sanitation Works','Soil Moisture Conservation works Neeru','Works in community lands','OTHERS','Institutional Development Works','Road Works','Water Harvesting Structures Neeru','Fisheries work','AH-Live Stock Related works','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Solid Waste Management','Burial Ground','Play fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads1','Anganwadi','GP Buildings1','Mandal buildings1','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','OPGK-Perinnials','OPGK-Annuals','UGDrainage','Rock Fill Dams','Raising and Maintenance of Nursery','Desilting of Perculation Tanks and Check Dams','Mini Percolation Tanks','Continuous Contour Trenches','Check Dams','coffee'];
+var overViewArr = ['Labour Budget','Greenary works Chettu','Agriculture Related Works', 'Rural Sanitation Works','Soil Moisture Conservation works Neeru','Works in community lands','OTHERS','Institutional Development Works','Road Works','Water Harvesting Structures Neeru','Fisheries work','AH-Live Stock Related works','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Solid Waste Management','Burial Ground','Play fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads1','Anganwadi','GP Buildings1','Mandal buildings1','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','OPGK-Perinnials','OPGK-Annuals','UGDrainage','Rock Fill Dams','Raising and Maintenance of Nursery','Desilting of Perculation Tanks and Check Dams','Mini Percolation Tanks','Continuous Contour Trenches','Check Dams','coffee','Avenue Plantation'];
 //'Check Dam','Rock fill dams',
 buildNREGSProjectsOverview(overViewArr,'')
 for(var i in overViewArr)
@@ -4016,7 +4026,7 @@ for(var i in overViewArr)
 	{
 		getNREGSProjectsAbstractNew(overViewArr[i],'state',"0",'',2);
 	}
-	else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams')
+	else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams' || overViewArr[i] == 'Avenue Plantation')
 	{
 		getNREGSForestProjectsAbstract(overViewArr[i],'state',"0",'',2);
 	}else if(overViewArr[i] == 'Payments')
@@ -4887,7 +4897,7 @@ $(document).on("click",".menuDataCollapse",function(){
 				{
 					getNREGSProjectsAbstractNew(overViewArr[i],'state',locId,blockName,levelId);
 				}
-				else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams')
+				else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams' || overViewArr[i] == 'Avenue Plantation')
 				{
 					getNREGSForestProjectsAbstract(overViewArr[i],'state',"0",'',2);
 				}else if(overViewArr[i] == 'Payments')
@@ -5752,7 +5762,7 @@ $(document).on("change","[mcctype_click]",function(){
 	}	
 });
 
-function getNregaLevelsWiseDataFrCoffeePlantation(divIdd,locationType,menuLocationType,menuLocationId,blockName)
+function getNregaLevelsWiseDataFrCoffeePlantation(divIdd,locationType,theadArr,menuLocationType,menuLocationId,blockName)
 {
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
