@@ -541,4 +541,28 @@ public class NregsDashboardController {
 		}
 		return locationVOList;
 	}
+	
+	@PostMapping("/getNregaMCCNewComponetsLevelData")
+	public @ResponseBody List<NregsDataVO> getNregaMCCNewComponetsLevelData(@RequestBody InputVO vo){
+		List<NregsDataVO> locationVOList = null;
+		try {
+			locationVOList = nregsTcsService.getNregaMCCNewComponetsLevelData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaMCCNewComponetsLevelData - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
+	
+	@PostMapping("/getNregaCovergancePROtherLevelData")
+	public @ResponseBody List<NregsDataVO> getNregaCovergancePROtherLevelData(@RequestBody InputVO vo){
+		List<NregsDataVO> locationVOList = null;
+		try {
+			locationVOList = nregsTcsService.getNregaCovergancePROtherLevelData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaCovergancePROtherLevelData - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
 }
