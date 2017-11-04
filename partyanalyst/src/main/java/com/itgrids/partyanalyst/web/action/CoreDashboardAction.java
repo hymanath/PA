@@ -4833,7 +4833,9 @@ public String getInsuraceStatusWiseComplaintsDetails()
 	}
 	public String getTrainingCampPrograms(){
 		try {
-			programIdsList = coreDashboardMainService.getTrainingCampPrograms();
+           jObj = new JSONObject(getTask());
+			Long enrollmentId = jObj.getLong("enrollmentYearId");
+			programIdsList = coreDashboardMainService.getTrainingCampPrograms(enrollmentId);
 		}catch(Exception e) {
 			LOG.error("Exception raised at getTrainingCampProgramsAction() in CoreDashBoard Action class", e);
 		}
