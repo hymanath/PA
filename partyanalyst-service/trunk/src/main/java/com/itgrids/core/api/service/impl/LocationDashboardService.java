@@ -4094,7 +4094,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : locations) {
 					Map<Long,NominatedPostDetailsVO> positionMap = new HashMap<Long,NominatedPostDetailsVO>();
 					NominatedPostDetailsVO locationVO = new NominatedPostDetailsVO();
-					locationVO.setId(locationWiseBoothDetailsVO.getLocationId());
+					locationVO.setId(Long.valueOf(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
 					locationVO.setName(locationWiseBoothDetailsVO.getLocationName());
 					
 					if(type.equalsIgnoreCase("boardLevelWise"))
