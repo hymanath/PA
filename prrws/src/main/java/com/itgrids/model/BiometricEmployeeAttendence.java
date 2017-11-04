@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "biometric-employee_attendence")
+@Table(name = "biometric_employee_attendence")
 public class BiometricEmployeeAttendence {
 	
 	private Long employeeAttendencId;
@@ -25,6 +25,7 @@ public class BiometricEmployeeAttendence {
 	private String empId;
 	private String inDeviceId;
 	private Date inTime;
+	private Date outTime;
 	private String outDeviceId;
 	private String atType;
 	private String flag;
@@ -58,7 +59,7 @@ public class BiometricEmployeeAttendence {
 	public void setsNo(Long sNo) {
 		this.sNo = sNo;
 	}
-	@Column(name="bio-metric_org_details_id")
+	@Column(name="bio_metric_org_details_id")
 	public Long getBioMetricOrgDetailsId() {
 		return bioMetricOrgDetailsId;
 	}
@@ -92,6 +93,14 @@ public class BiometricEmployeeAttendence {
 	}
 	public void setInTime(Date inTime) {
 		this.inTime = inTime;
+	}
+	
+    @Column(name = "out_time")
+	public Date getOutTime() {
+		return outTime;
+	}
+	public void setOutTime(Date outTime) {
+		this.outTime = outTime;
 	}
 	@Column(name="out_device_id ")
 	public String getOutDeviceId() {
@@ -144,7 +153,7 @@ public class BiometricEmployeeAttendence {
 	} 
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "bio-metric_org_details_id", insertable = false, updatable = false)
+	@JoinColumn(name = "bio_metric_org_details_id", insertable = false, updatable = false)
 	public BioMetricOrgDetails getBioMetricOrgDetails() {
 		return bioMetricOrgDetails;
 	}
