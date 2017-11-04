@@ -265,19 +265,7 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {	
-	//Assembly Block
-	getElectionTypes("onload");
-	if(locationLevelId == '4'){
-		$(".assemblyElectionBlockCls").show();
-		getDetailedElectionInformaction(2,constituencyId);
-	}else if(locationLevelId == '10'){
-		$(".assemblyElectionBlockCls").show();
-		getDetailedElectionInformaction(1,parliamentId);
-	}else{
-		$(".assemblyElectionBlockCls").hide();
-	}
-	
-	/* $("#enrolmentYears").chosen();
+	 $("#enrolmentYears").chosen();
 	getEnrollmentIds();//Enrolment Years
 	getPublications();//Publications	
 	getLocationWiseCommitteesCount(2);//Committee
@@ -324,6 +312,7 @@ function onLoadAjaxCalls()
 	getLocationWiseTourMembersComplainceDtls();
 	// Benefits
 	getGovtSchemeWiseBenefitMembersCount();
+	getGovtSchemeWiseBenefitMembersCount();
 	//Grievance And Insurance
 	getGrivenceOverviewDtls(""); 
 	getInsuranceOverviewDetails("");
@@ -335,8 +324,8 @@ function onLoadAjaxCalls()
 	getLevelWisePostsOverView(); 
 	//Alerts
 	getTotalAlertDetailsForConstituencyInfo(defaultAlertCategoryIds);
-	getDesignationWiseAlertsOverview(defaultAlertCategoryIds); */
-	/* setTimeout(function(){ 
+	getDesignationWiseAlertsOverview(defaultAlertCategoryIds); 
+	 setTimeout(function(){ 
 		//News Block
 		getPrintMediaCountsForConstituencyPage()
 		getLeadersInNewsForConstituencyPage();
@@ -345,7 +334,7 @@ function onLoadAjaxCalls()
 		for(var i in propertyIdGlobalStr){
 			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 		}
-	}, 2000); */
+	}, 2000); 
 }			
 function onLoadClicks()
 {
@@ -4285,6 +4274,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 		str+='</div>';
 		str+='<div class="col-sm-7">';
 			str+='<h5>Schemes Overview</h5>';
+			str+='<div class="scrollLocationBenefitCls">';
 			str+='<div class="table-responsive m_top10">';
 				str+='<table class="table_benefits" id="benefitSchemeDT" style="width:100%">';
 					str+='<thead class="">';
@@ -4325,19 +4315,24 @@ function getGovtSchemeWiseBenefitMembersCount(){
 					str+='</tbody>';
 				str+='</table>';
 			str+='</div>';
+			str+='</div>';
 		str+='</div>';
 		
 		$("#benefitsBlockId").html(str);
 		$(".tooltipBenefitCls").tooltip();
 		$("#benefitSchemeDT").dataTable({
-			"paging":   true,
+			"paging":   false,
 			"info":     false,
-			"searching": false,
+			"searching": true,
 			"autoWidth": true,
 			"iDisplayLength": 13,
 			 "aaSorting": [[ 3, "desc" ]], 
 			"aLengthMenu": [[13, 15, 20, -1], [13, 15, 20, "All"]]
 		});
+		if(result.subList1.length > 13)
+		{
+			$(".scrollLocationBenefitCls").mCustomScrollbar({setHeight:"600px"})
+		}
 		$("#locationBenefitDT").dataTable({
 			"paging":   true,
 			"info":     false,
@@ -4348,7 +4343,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		});
 		$("#benefitSchemeDT_length").remove();
-		$("#locationBenefitDT_length").remove();
+		//$("#locationBenefitDT_length").remove();
 		$("#benefitMainGraphId").highcharts({
 			colors:["#339900","#3BB878"],
 			chart: {
