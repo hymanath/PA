@@ -1888,63 +1888,83 @@ function getDepartmentWiseHierarchicalDetails(){
 				dataArr.push({"id": 2, "parentId":1,"Name": result[0].ministerList[i].employeeName, "title": result[0].ministerList[i].employeeName, "postname": result[0].ministerList[i].postName, "count": result[0].ministerList[i].totalCount+"/"+result[0].ministerList[i].created});
 			
 			}
-			dataArr.push({"id": 3, "parentId": 2, "Name": "ITEC", "title": "ITEC", "count": result[0].totalCount+"/"+result[0].created});
-			dataArr.push({"id": 4, "parentId": 2, "Name": "HODS", "title": "HODS", "count": hodTotal+"/"+hodCount});
-			var k = 5;
+			dataArr.push({"id": 3, "parentId": 2, "Name": "VIJAYANAND", "title": "VIJAYANAND"});
+			dataArr.push({"id": 4, "parentId": 3, "Name": "IT,E & C", "title": "IT,E & C", "count": result[0].totalCount+"/"+result[0].created});
+			dataArr.push({"id": 5, "parentId": 3, "Name": "HODS", "title": "HODS", "count": hodTotal+"/"+hodCount});
+			var k = 6;
 			
 			for(var i in result)
 			{
 				if(i == 0 )
 				{
-					dataArr.push({"id": k, "parentId": 3 , "Name": result[i].departmentName, "title": result[i].departmentName, "count": result[i].totalCount+"/"+result[i].created});
+					dataArr.push({"id": k, "parentId": 4 , "Name": result[i].departmentName, "title": result[i].departmentName , "count": result[i].totalCount+"/"+result[i].created});
 				}else{
-					dataArr.push({"id": k, "parentId": 4, "Name": result[i].departmentName, "title": result[i].departmentName, "count": result[i].totalCount+"/"+result[i].created});
+					if(result[i].departmentName == 'ANDHRA PRADESH TECHNOLOGY SERVICES')
+					{
+						dataArr.push({"id": k, "parentId": 5, "Name": result[i].departmentName, "title": result[i].departmentName, "postname": "VALETI PREMCHAND", "count": result[i].totalCount+"/"+result[i].created});
+					}else if(result[i].departmentName == 'DIRECTOR ESD')
+					{
+						dataArr.push({"id": k, "parentId": 5, "Name": result[i].departmentName, "title": result[i].departmentName, "postname": "SUNDAR B", "count": result[i].totalCount+"/"+result[i].created});
+					}else if(result[i].departmentName == 'ANDHRAPRADESH INFORMATION TECHNOLOGY ACADEMY')
+					{
+						dataArr.push({"id": k, "parentId": 5, "Name": result[i].departmentName, "title": result[i].departmentName, "postname": "SUNDAR B", "count": result[i].totalCount+"/"+result[i].created});
+					}else if(result[i].departmentName == 'ANDHRAPRADESH INNOVATION SOCIETY')
+					{
+						dataArr.push({"id": k, "parentId": 5, "Name": result[i].departmentName, "title": result[i].departmentName, "postname": "VALLI KUMARI VATSAVAYI", "count": result[i].totalCount+"/"+result[i].created});
+					}else if(result[i].departmentName == 'ANDHRAPRADESH E PRAGATI AUTHORITY')
+					{
+						dataArr.push({"id": k, "parentId": 5, "Name": result[i].departmentName, "title": result[i].departmentName, "postname": "SUNDAR B", "count": result[i].totalCount+"/"+result[i].created});
+					}else if(result[i].departmentName == 'ANDHRAPRADESH ELECTRONICS AND IT AGENCY')
+					{
+						dataArr.push({"id": k, "parentId": 5, "Name": result[i].departmentName, "title": result[i].departmentName, "postname": "K. BHASKAR REDDY", "count": result[i].totalCount+"/"+result[i].created});
+					}
+					
 				}
 				k = k +1;
 			}
 			for(var i in result[0].jsList)
 			{
-				dataArr.push({"id": k, "parentId": 5,"Name": result[0].jsList[i].employeeName, "title": result[0].jsList[i].employeeName, "postname": result[0].jsList[i].postName, "count": result[0].jsList[i].totalCount+"/"+result[0].jsList[i].created});
+				dataArr.push({"id": k, "parentId": 6,"Name": result[0].jsList[i].employeeName, "title": result[0].jsList[i].employeeName, "postname": result[0].jsList[i].postName, "count": result[0].jsList[i].totalCount+"/"+result[0].jsList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].directorList)
 			{
-				dataArr.push({"id": k, "parentId": 5, "Name": result[0].directorList[i].employeeName, "title": result[0].directorList[i].employeeName, "postname": result[0].directorList[i].postName, "count": result[0].directorList[i].totalCount+"/"+result[0].directorList[i].created});
+				dataArr.push({"id": k, "parentId": 6, "Name": result[0].directorList[i].employeeName, "title": result[0].directorList[i].employeeName, "postname": result[0].directorList[i].postName, "count": result[0].directorList[i].totalCount+"/"+result[0].directorList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].jdList)
 			{
-				dataArr.push({"id": k, "parentId": 5, "Name": result[0].jdList[i].employeeName, "title": result[0].jdList[i].employeeName, "postname": result[0].jdList[i].postName, "count": result[0].jdList[i].totalCount+"/"+result[0].jdList[i].created});
+				dataArr.push({"id": k, "parentId": 6, "Name": result[0].jdList[i].employeeName, "title": result[0].jdList[i].employeeName, "postname": result[0].jdList[i].postName, "count": result[0].jdList[i].totalCount+"/"+result[0].jdList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].specialOfficerList)
 			{
-				dataArr.push({"id": k, "parentId": 12, "Name": result[0].specialOfficerList[i].employeeName, "title": result[0].specialOfficerList[i].employeeName, "postname": result[0].specialOfficerList[i].postName, "count": result[0].specialOfficerList[i].totalCount+"/"+result[0].specialOfficerList[i].created});
+				dataArr.push({"id": k, "parentId": 13, "Name": result[0].specialOfficerList[i].employeeName, "title": result[0].specialOfficerList[i].employeeName, "postname": result[0].specialOfficerList[i].postName, "count": result[0].specialOfficerList[i].totalCount+"/"+result[0].specialOfficerList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].aaoList)
 			{
-				dataArr.push({"id": k, "parentId": 12, "Name": result[0].aaoList[i].employeeName, "title": result[0].aaoList[i].employeeName, "postname": result[0].aaoList[i].postName,"count": result[0].aaoList[i].totalCount+"/"+result[0].aaoList[i].created});
+				dataArr.push({"id": k, "parentId": 13, "Name": result[0].aaoList[i].employeeName, "title": result[0].aaoList[i].employeeName, "postname": result[0].aaoList[i].postName,"count": result[0].aaoList[i].totalCount+"/"+result[0].aaoList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].pmList)
 			{
-				dataArr.push({"id": k, "parentId": 13, "Name": result[0].pmList[i].employeeName, "title": result[0].pmList[i].employeeName, "postname": result[0].pmList[i].postName,"count": result[0].pmList[i].totalCount+"/"+result[0].pmList[i].created});
+				dataArr.push({"id": k, "parentId": 14, "Name": result[0].pmList[i].employeeName, "title": result[0].pmList[i].employeeName, "postname": result[0].pmList[i].postName,"count": result[0].pmList[i].totalCount+"/"+result[0].pmList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].soList)
 			{
-				dataArr.push({"id": k, "parentId": 16, "Name": result[0].soList[i].employeeName, "title": result[0].soList[i].employeeName, "postname": result[0].soList[i].postName, "count": result[0].soList[i].totalCount+"/"+result[0].soList[i].created});
+				dataArr.push({"id": k, "parentId": 17, "Name": result[0].soList[i].employeeName, "title": result[0].soList[i].employeeName, "postname": result[0].soList[i].postName, "count": result[0].soList[i].totalCount+"/"+result[0].soList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].asoList)
 			{
-				dataArr.push({"id": k, "parentId": 25, "Name": result[0].asoList[i].employeeName, "title": result[0].asoList[i].employeeName, "postname": result[0].asoList[i].postName, "count": result[0].asoList[i].totalCount+"/"+result[0].asoList[i].created});
+				dataArr.push({"id": k, "parentId": 26, "Name": result[0].asoList[i].employeeName, "title": result[0].asoList[i].employeeName, "postname": result[0].asoList[i].postName, "count": result[0].asoList[i].totalCount+"/"+result[0].asoList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].otherList)
 			{
-				dataArr.push({"id": k, "parentId": 26, "Name": result[0].otherList[i].employeeName, "title": result[0].otherList[i].employeeName, "postname": result[0].otherList[i].postName, "count": result[0].otherList[i].totalCount+"/"+result[0].otherList[i].created});
+				dataArr.push({"id": k, "parentId": 27, "Name": result[0].otherList[i].employeeName, "title": result[0].otherList[i].employeeName, "postname": result[0].otherList[i].postName, "count": result[0].otherList[i].totalCount+"/"+result[0].otherList[i].created});
 				k = k +1;
 			}
 			for(var i in result)
@@ -1957,27 +1977,27 @@ function getDepartmentWiseHierarchicalDetails(){
 						{
 							if(result[i].departmentName == "ANDHRA PRADESH TECHNOLOGY SERVICES")
 							{
-								dataArr.push({"id": k, "parentId": 6, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								dataArr.push({"id": k, "parentId": 7, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
 								k = k +1;
 							}else if(result[i].departmentName == "DIRECTOR ESD")
 							{
-								dataArr.push({"id": k, "parentId": 7, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								dataArr.push({"id": k, "parentId": 8, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
 								k = k +1;
 							}else if(result[i].departmentName == "ANDHRAPRADESH INFORMATION TECHNOLOGY ACADEMY")
 							{
-								dataArr.push({"id": k, "parentId": 8, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								dataArr.push({"id": k, "parentId": 9, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
 								k = k +1;
 							}else if(result[i].departmentName == "ANDHRAPRADESH INNOVATION SOCIETY")
 							{
-								dataArr.push({"id": k, "parentId": 9, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								dataArr.push({"id": k, "parentId": 10, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
 								k = k +1;
 							}else if(result[i].departmentName == "ANDHRAPRADESH E PRAGATI AUTHORITY")
 							{
-								dataArr.push({"id": k, "parentId": 10, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								dataArr.push({"id": k, "parentId": 11, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
 								k = k +1;
 							}else if(result[i].departmentName == "ANDHRAPRADESH ELECTRONICS AND IT AGENCY")
 							{
-								dataArr.push({"id": k, "parentId": 11, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								dataArr.push({"id": k, "parentId": 12, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
 								k = k +1;
 							}
 						}
@@ -1992,18 +2012,18 @@ function getDepartmentWiseHierarchicalDetails(){
 			expandToLevel: 4,
 			scale: 12,
 			enableDetailsView: false,
-			layout: getOrgChart.MIXED_HIERARCHY_TOP_LINKS,
+			layout: getOrgChart.MIXED_HIERARCHY_RIGHT_LINKS,
 			boxSizeInPercentage: {
 				minBoxSize: {
-					width: 5,
+					width: 7,
 					height: 7
 				},
 				boxSize: {
-					width: 20,
+					width: 22,
 					height: 25
 				},
 				maxBoxSize: {
-					width: 100,
+					width: 120,
 					height: 120
 				}
 			},
