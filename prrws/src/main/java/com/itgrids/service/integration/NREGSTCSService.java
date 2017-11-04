@@ -5328,6 +5328,9 @@ public class NREGSTCSService implements INREGSTCSService{
 			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
+			if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT"))
+				inputVO.setGroupName("Construction of Post Harvest facilities (Drying Platform) including Pucca storage facilities of 100MT");
+			
 			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/DCCPRService/DCCPRData";
 			
 			String str = convertingInputVOToString(inputVO);
