@@ -19,7 +19,7 @@ public class BiometricEmployeeDetails {
 
 	private Long biometricEmployeeDetailsId;
 	private Long id;
-	private  String empId;
+	private String empId;
 	private Long bioMetricOrgDetailsId;
 	private String districtCode;
 	private String stateCode;
@@ -30,13 +30,13 @@ public class BiometricEmployeeDetails {
 	private String aadhaarNo;
 	private String designation;
 	private String empName;
-	private String empDob;
+	private Date empDob;
 	private String gender;
 	private String email;
 	private String empMobile;
 	private Date creationDate;
 	private Date lastUpdatedDate;
-	private String location_Type;
+	private String locationType;
 	private Date insertedTime;
 	private Date updatedTime;
 	private String isDeleted;
@@ -67,7 +67,7 @@ public class BiometricEmployeeDetails {
 	public void setEmpId(String empId) {
 		this.empId = empId;
 	}
-	@Column(name="bio-metric_org_details_id")
+	@Column(name="bio_metric_org_details_id")
 	public Long getBioMetricOrgDetailsId() {
 		return bioMetricOrgDetailsId;
 	}
@@ -123,7 +123,7 @@ public class BiometricEmployeeDetails {
 	public void setAadhaarNo(String aadhaarNo) {
 		this.aadhaarNo = aadhaarNo;
 	}
-	@Column(name="designation")
+	@Column(name = "designation")
 	public String getDesignation() {
 		return designation;
 	}
@@ -138,10 +138,10 @@ public class BiometricEmployeeDetails {
 		this.empName = empName;
 	}
 	@Column(name="emp_dob")
-	public String getEmpDob() {
+	public Date getEmpDob() {
 		return empDob;
 	}
-	public void setEmpDob(String empDob) {
+	public void setEmpDob(Date empDob) {
 		this.empDob = empDob;
 	}
 	@Column(name="gender")
@@ -180,16 +180,18 @@ public class BiometricEmployeeDetails {
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
 	@Column(name="location_Type")
-	public String getLocation_Type() {
-		return location_Type;
+	public String getLocationType() {
+		return locationType;
 	}
-	public void setLocation_Type(String location_Type) {
-		this.location_Type = location_Type;
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
 	}
+	
 	@Column(name="inserted_time")
 	public Date getInsertedTime() {
 		return insertedTime;
 	}
+	
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
@@ -208,7 +210,7 @@ public class BiometricEmployeeDetails {
 		this.isDeleted = isDeleted;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "bio-metric_org_details_id", insertable = false, updatable = false)
+	@JoinColumn(name = "bio_metric_org_details_id", insertable = false, updatable = false)
 	public BioMetricOrgDetails getBioMetricOrgDetails() {
 		return bioMetricOrgDetails;
 	}
