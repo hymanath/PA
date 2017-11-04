@@ -226,6 +226,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 									str1+='<th style="text-transform:capitalize;">'+locationLevelName+'</th>';
 									str1+='<th>Total Voters</th>';
 									str1+='<th>Benified</th>';
+									str1+='<th>Members</th>';
 									str1+='<th>Amount</th>';
 									if(result !=null && result.list !=null && result.list.length>0){
 										for(var i in result.list[0].schemesList){
@@ -242,12 +243,24 @@ function getGovtSchemeWiseBenefitMembersCount(){
 								
 							str1+='</thead>';
 							str1+='<tbody>';
+							
 								for(var i in result.list){
 									str1+='<tr>';
 									str1+='<td>'+result.list[i].name+'</td>';
 									str1+='<td>'+result.list[i].totalVoters+'</td>';
 									if(result.list[i].wonSeatsCount !=null && result.list[i].wonSeatsCount>0){
 										str1+='<td>'+result.list[i].wonSeatsCount+'</td>';
+									}else{
+										str1+='<td> - </td>';
+									}
+									var toatlMembersCount=0;
+									for(var k in result.list[i].schemesList){
+										if(result.list[i].schemesList[k].totalSeatsCount1 !=null && result.list[i].schemesList[k].totalSeatsCount1>0)
+										toatlMembersCount =toatlMembersCount+result.list[i].schemesList[k].totalSeatsCount;
+									}
+									
+									if(toatlMembersCount !=null && toatlMembersCount>0){
+										str1+='<td>'+toatlMembersCount+'</td>';
 									}else{
 										str1+='<td> - </td>';
 									}
@@ -428,8 +441,12 @@ function buildMemberDetailsForBenefitInfo(result){
 					}else{
 						str+='<td>-</td>';
 					}
+					if(result[i].totalSeatsCount1 >0){
+						str+='<td>'+result[i].totalSeatsCount1+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
 					
-					str+='<td>'+result[i].totalSeatsCount1+'</td>';
 					str+='<td>'+result[i].status+'</td>';
 					str+='<td>'+result[i].name+'</td>';
 				str+='</tr>';
@@ -443,15 +460,11 @@ function buildMemberDetailsForBenefitInfo(result){
 	$("#memberDetailsBlockId").html(str);
 	$(".chosen-select").chosen();
 	$("#memberDetailsId").dataTable({
-			"paging":   true,
-			"info":     false,
-			"searching": false,
-			"autoWidth": true,
+			
 			"iDisplayLength": 10,
 			 "aaSorting": [[ 3, "desc" ]], 
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		}); 
-	$("#memberDetailsId_length").remove();
 }
 $(document).on("click",".schemeWiseCls",function(){
 	var locationScopeId =$(this).attr("attr_locationscope_id");

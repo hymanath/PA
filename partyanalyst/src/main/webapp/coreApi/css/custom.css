@@ -1824,7 +1824,7 @@ font-size:12px !important;
 	border-collapse: separate;
 	border-spacing:5px 0px
 }
-.table_benefits1 thead th:nth-child(n+5)
+.table_benefits1 thead th:nth-child(n+6)
 {
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
@@ -1839,12 +1839,12 @@ font-size:12px !important;
 	padding:5px !important;
 	
 }
-.table_benefits1 tr td:nth-child(n+5){
+.table_benefits1 tr td:nth-child(n+6){
 	border-left:1px solid #008855;
 	border-right:1px solid #008855;
 	background-color:#EBF8F1;
 }
-.table_benefits1 tr:last-child td:nth-child(n+5)
+.table_benefits1 tr:last-child td:nth-child(n+6)
 {
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
