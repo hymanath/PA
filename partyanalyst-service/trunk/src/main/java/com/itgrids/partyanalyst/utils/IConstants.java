@@ -1340,6 +1340,8 @@ public interface IConstants {
 	public static final Long COMMITTEE_MEETINGS = 1L;
 	public static final Long SPECIAL_MEETINGS = 3L;
 	
+	public static final Long ATTENDEE_TYPE_ID=1L;
+	
 	public static final String[] AP_PARLIAMENT_IDS_LIST = {"504","509","466","508","464","463","500","479","494","473","483","507","493","474","467","497","495","506","478","501","482","491","476","465","472"};
 	public static final String AP_PARLIAMENT_IDS_LIST_STR = "504, 509, 466, 508, 464, 463, 500, 479, 494, 473, 483, 507, 493, 474, 467, 497, 495, 506, 478, 501, 482, 491, 476, 465, 472";
 }
