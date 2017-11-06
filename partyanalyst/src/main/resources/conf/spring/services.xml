@@ -3867,6 +3867,7 @@
 	  <property name="boothDAO"  ref="boothDAO"></property>
 	  <property name="boothInchargeDAO"  ref="boothInchargeDAO"></property>  
 	  <property name="constituencyDAO"  ref="constituencyDAO"></property>
+	  <property name="trainingCampDAO"  ref="trainingCampDAO"></property>
 	</bean>
 	
 	<bean name="newsCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.NewsCoreDashBoardService">
