@@ -3015,6 +3015,7 @@
 									 <div id="stateTblDivId"></div>
 									<!--<hr class="m_0"/>"/>
 								</div>-->
+								<div id="campWiseTrainingId"></div>
 							</div>
 						</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock" expand-block-right="training">
@@ -5300,6 +5301,7 @@ var globalImages;
 		//$(".eventsheader").hide();
 		$('[data-toggle="tooltip"]').tooltip();
 		stateLevelCampDetails();
+		getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();
 		getCadreEnrolmentYears();
 		getBoothCadreEnrolmentYears();
 	});
@@ -5579,4 +5581,4 @@ function refreshMeetingStatus(){
 }
 </script> 
 </body>
-</html>
+</html>ustom.css
