@@ -2028,3 +2028,64 @@ function getDepartmentWiseHierarchicalDetails(){
 		//orgChart.insertNode(5,{"id": k , "Name": "JD (Prom - 1)"});
 	});
 }
+
+
+getCMEDOBReportStatusWise();
+function getCMEDOBReportStatusWise(){
+
+	var json = {
+		"deptId":"0"
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getCMEDOBReportStatusWise',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		buildCMEDOBReportStatusWise(result)
+	});
+		
+}
+function buildCMEDOBReportStatusWise(result){
+	alert(result);
+	var str='';
+		str+='<div class="table-responsive m_top20">';	
+		str+='<table  class="table table-bordered"  id="cmedobTableId">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th>Departments Name</th>';
+					str+='<th>Clearance Name</th>';
+					str+='<th>Total</th>';
+					str+='<th>Approved</th>';
+					str+='<th>Rejected</th>';
+					str+='<th>Re-Approved</th>';
+					str+='<th>Within SLA </th>';
+					str+='<th>Beyond SLA</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+			str+='<tr>';
+				str+='<td rowspan="'+result[i].subList.length+'">'+result[i].dashboardName+'</td>';
+				
+				for(var j in result[i].subList){
+						str+='<td id="'+result[i].subList[j].clearenceId+'">'+result[i].subList[j].clearenceName+'</td>';
+						str+='<td>'+result[i].subList[j].totalApplications+'</td>';
+						str+='<td>'+result[i].subList[j].totalApproved+'</td>';
+						str+='<td>'+result[i].subList[j].totalRejected+'</td>';
+						str+='<td>'+result[i].subList[j].totalReApproved+'</td>';
+						str+='<td>'+result[i].subList[j].pendingWithInSLA+'</td>';
+						str+='<td>'+result[i].subList[j].pendingBeyondSLA+'</td>';
+						str+='</tr>';
+				}
+			}
+			str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+		$("#cmedobDivId").html(str);
+		$("#cmedobTableId").dataTable();
+}

@@ -56,8 +56,8 @@ public class ItcController {
 		   return reusltVO;
 	   }
 	   @RequestMapping(value = "/getCMEDOBReportStatusWise", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<CmEoDBDtlsVO>  getCMEDOBReportStatusWise(@RequestBody InputVO inputVO) {
-		   List<CmEoDBDtlsVO>  resultList = itcDashboardService.getCMEDOBReportStatusWise(inputVO);
+	   public @ResponseBody  List<ItecCMeoDBDetailsVO>  getCMEDOBReportStatusWise(@RequestBody InputVO inputVO) {
+		   List<ItecCMeoDBDetailsVO>  resultList = itcDashboardService.getCMEDOBReportStatusWise(inputVO);
 		   return resultList;
 	   }
 	   @RequestMapping(value = "/getAPInnovationSocietyOverview", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
