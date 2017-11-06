@@ -267,9 +267,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/HousingServiceNew/HousingOverviewNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/HousingService/HousingOverview
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Production of Bricks"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BricksServiceNew/BricksOverviewNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BricksService/BricksOverview
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MulberyServiceNew/MulberyOverviewNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SericultureService/SericultureOverview
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk Worms"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm New"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SilkwarmServiceNew/SilkwarmOverviewNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SilkwormService/SilkwormOverview
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CattleServiceNew/CattleOverviewNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AHService/AHOverview
@@ -493,9 +493,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/HousingServiceNew/HousingDataNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/HousingService/HousingData
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Production of Bricks"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BricksServiceNew/BricksDataNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BricksService/BricksData
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MulberyServiceNew/MulberyDataNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SericultureService/SericultureData
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk Worms"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm New"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SilkwarmServiceNew/SilkwarmDataNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SilkwormService/SilkwormData
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CattleServiceNew/CattleDataNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AHService/AHData
@@ -577,10 +577,10 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 	 	    				else{
-	 	    					if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery") && 
+	 	    					if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm New")) && 
 	 	    							(inputVO.getSublocationType().trim().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().equalsIgnoreCase("district") || inputVO.getSublocationType().trim().equalsIgnoreCase("constituency")))
 	 	    						vo.setMulbTarget(jObj.getString("TARGET"));
-	 	    					else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery") && 
+	 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm New")) && 
 	 	    							(inputVO.getSublocationType().trim().equalsIgnoreCase("mandal") || inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat")))
 	 	    						vo.setMulbTarget(jObj.getString("TARGETNEW"));
 	 	    					else if(inputVO.getDivType() != null && 
@@ -603,32 +603,31 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    					vo.setNotGrounded("0");
 		 	    				else
 		 	    					vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
-		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New"))
 		 	    					vo.setMulbInprogress(jObj.getString("INPROGRESS"));
 		 	    				else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") ||  inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals")))
 	 	    						vo.setOpgkInProgress(jObj.getString("INPROGRESS"));
 		 	    				else
 	 	    						vo.setInProgress(jObj.getLong("INPROGRESS"));
-		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New"))
 		 	    					vo.setMulbCompleted(jObj.getString("COMPLETED"));
 	 	    					else
 	 	    						vo.setCompleted(jObj.getLong("COMPLETED"));
 		 	    				
 		 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
 		 	    				//(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")
-		 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worms")
-		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle drinking water troughs")
+		 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle drinking water troughs")
 		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodders"))
 		 	    							&& inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state")){
 		 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
 		 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
 		 	    					
-		 	    					if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+		 	    					if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New"))
 		 	    						vo.setPercSant(new BigDecimal(Double.valueOf(vo.getMulbCompleted())*100.00/Double.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    					else
 		 	    						vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Double.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    					
-		 	    					if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")){
+		 	    					if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New")){
 		 	    						if(vo.getMulbCompleted() != null && Double.valueOf(vo.getMulbCompleted()) > 0 && vo.getMulbTarget() != null && Double.valueOf(vo.getMulbTarget()) > 0)
 			 	    						vo.setSanctionedPerc(new BigDecimal(Double.valueOf(vo.getMulbCompleted())*100.00/Double.valueOf(vo.getMulbTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			 	    					else
@@ -660,7 +659,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    						vo.setPercSant("0.00");
 		 	    				}
 		 	    				
-		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worms")){
+		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm New")){
 		 	    					if(vo.getCompleted() != null && vo.getCompleted().longValue() > 0l && vo.getTarget() != null && Double.valueOf(vo.getTarget()) > 0)
 		 	    						vo.setPercentage(new BigDecimal(vo.getCompleted()*100.00/Double.valueOf(vo.getTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    					else
@@ -675,13 +674,22 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Play Fields")
 		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR 90 Days")
 		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Production of Bricks")
-		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")
-		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk Worms"))){
+		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New")
+		 	    						|| inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm New"))){
 		 	    					vo.setWageExpenditure(jObj.getString("WAGE_EXP"));
 		 	    					vo.setMaterialExpenditure(jObj.getString("MAT_EXP"));
 		 	    					vo.setTotalExpenditure(jObj.getString("TOT_EXP"));
 		 	    				}
 		 	    			}
+	 	    				
+	 	    				if(inputVO.getDivType() != null && (inputVO.getDivType().trim().equalsIgnoreCase("Anganwadi") 
+	 	    						|| inputVO.getDivType().trim().equalsIgnoreCase("GP Buildings1") || inputVO.getDivType().trim().equalsIgnoreCase("Mandal buildings1"))){
+	 	    					if(inputVO.getDivType().trim().equalsIgnoreCase("Anganwadi"))
+	 	    						vo.setIcdsExpenditure(jObj.getString("ICDS_EXP"));
+	 	    					vo.setEgsExpenditure(jObj.getString("EGS_EXP"));
+	 	    					vo.setConvergenceExpn(jObj.getString("CONVERGENCE_EXP"));
+	 	    					vo.setTotalExpenditure(jObj.getString("TOT_EXP"));
+	 	    				}
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
@@ -862,9 +870,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/HousingServiceNew/HousingDataNew";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Production of Bricks"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BricksServiceNew/BricksDataNew";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MulberyServiceNew/MulberyDataNew";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk Worms"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm New"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SilkwarmServiceNew/SilkwarmDataNew";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CattleServiceNew/CattleDataNew";//old AH
@@ -1174,7 +1182,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				nregsDataVO.setConstituency(jObj.getString("CONSTITUENCY"));
 			 	    				nregsDataVO.setMandal(jObj.getString("MANDAL"));
 			 	    				nregsDataVO.setPanchayat(jObj.getString("PANCHAYAT"));
-			 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+			 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New"))
 			 	    					nregsDataVO.setMulbTarget(jObj.getString("TARGET"));
 		 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") || inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals")))
 		 	    						nregsDataVO.setOpgkTarget(jObj.getString("TARGET"));
@@ -1192,13 +1200,13 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				else
 			 	    					nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
 			 	    				
-			 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+			 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New"))
 			 	    					nregsDataVO.setMulbInprogress(jObj.getString("INPROGRESS"));
 			 	    				else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") ||  inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals")))
 			 	    					nregsDataVO.setOpgkInProgress(jObj.getString("INPROGRESS"));
 			 	    				else
 			 	    					nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
-			 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+			 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New"))
 			 	    					nregsDataVO.setMulbCompleted(jObj.getString("COMPLETED"));
 		 	    					else
 		 	    						nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
@@ -2309,6 +2317,11 @@ public class NREGSTCSService implements INREGSTCSService{
  	    					else
  	    						vo.setPercSant("0.00");
 	 	    				
+	 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CC Roads1")){
+	 	    					vo.setEgsExpenditure(jObj.getString("EXP_EGS"));
+	 	    					vo.setConvergenceExpn(jObj.getString("CONV_EXP"));
+	 	    				}
+	 	    				
 	 	    				voList.add(vo);
 	 	    			}
 	 	    		}
@@ -2362,7 +2375,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/HousingServiceNew/HousingDataNew";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Production of Bricks"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BricksServiceNew/BricksDataNew";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery New"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MulberyServiceNew/MulberyDataNew";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk Worms"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SilkwarmServiceNew/SilkwarmDataNew";
@@ -4612,21 +4625,21 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT"))
-	 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT"))
+	 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT"))//)));
 	 	    				//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_WAGES_AMT"))-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")))));
 	 	    				+Double.valueOf(jsonObj.getString("RELEASE_PENDING_WAGES_AMT"))+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
 	 	    				
 	 	    				paymentDtlsVO.setPendingWage(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))
-	 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))
+	 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))//)));
 	 	    				//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_WAGES_AMT")))));
 	 	    				+Double.valueOf(jsonObj.getString("RELEASE_PENDING_WAGES_AMT")))));
 	 	    				
 	 	    				paymentDtlsVO.setPendingMaterial(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT"))
-	 	    				+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT"))
+	 	    				+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT"))//)));
 	 	    				//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")))));
 	 	    				+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
 	 	    				  
@@ -4718,7 +4731,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				//paymentDtlsVO.setTotalPendinAmount(String.valueOf(Long.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Long.valueOf(jsonObj.getString("COMPLETED_AMT"))));
 				paymentDtlsVO.setTotalPendinAmount(new BigDecimal(Double.valueOf(jsonObj.getString("NOT_GENERATED_AMT"))
 						+Double.valueOf(jsonObj.getString("NOT_UPLOADED_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_AMT"))
-						+Double.valueOf(jsonObj.getString("REJECT_AMT"))
+						+Double.valueOf(jsonObj.getString("REJECT_AMT"))//).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
 						//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT"))));
 						+Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT"))).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
 				
@@ -4742,7 +4755,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				//paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Long.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Long.valueOf(jsonObj.getString("COMPLETED_AMT")))));
 				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCroresNew(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_AMT"))
 						+Double.valueOf(jsonObj.getString("NOT_UPLOADED_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_AMT"))
-						+Double.valueOf(jsonObj.getString("REJECT_AMT"))
+						+Double.valueOf(jsonObj.getString("REJECT_AMT"))//)));
 						//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT")))));
 						+Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")))));
 				paymentDtlsVO.setPendingAtBankAmount(cnvrtRupeesIntoCroresNew(String.valueOf(Long.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Long.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT")))));
@@ -5288,6 +5301,8 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AHOthersService/AHOthersData";
 			
+			if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Comprehensive Restoration of minor Irrigation Tank1"))
+				inputVO.setGroupName("Comprehensive Restoration of minor Irrigation Tank0");
 			String str = convertingInputVOToString(inputVO);
 			
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);

@@ -132,7 +132,29 @@ public class NregsDataVO implements Serializable{
 	private String pitingPerc = "0";
 	private String parameter;
 	
+	private String egsExpenditure;
+	private String convergenceExpn;
+	private String icdsExpenditure;
 	
+	
+	public String getEgsExpenditure() {
+		return egsExpenditure;
+	}
+	public void setEgsExpenditure(String egsExpenditure) {
+		this.egsExpenditure = egsExpenditure;
+	}
+	public String getConvergenceExpn() {
+		return convergenceExpn;
+	}
+	public void setConvergenceExpn(String convergenceExpn) {
+		this.convergenceExpn = convergenceExpn;
+	}
+	public String getIcdsExpenditure() {
+		return icdsExpenditure;
+	}
+	public void setIcdsExpenditure(String icdsExpenditure) {
+		this.icdsExpenditure = icdsExpenditure;
+	}
 	public String getParameter() {
 		return parameter;
 	}
