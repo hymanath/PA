@@ -19,7 +19,7 @@ public class TrainingCampProgramVO {
 	private TrainingCampProgramVO mandalTownDivisionVO;
 	private TrainingCampProgramVO districtVO;
 	private TrainingCampProgramVO stateVO;
-	private List<TrainingCampProgramVO> trainingProgramList;
+	private List<TrainingCampProgramVO> trainingProgramList = new ArrayList<TrainingCampProgramVO>();
 	private List<TrainingCampProgramVO> districtList;
 	private List<TrainingCampProgramVO> constituencyList;
 	private List<TrainingCampProgramVO> mandalList;
@@ -33,7 +33,15 @@ public class TrainingCampProgramVO {
 	private Long only2daysCount =0L;
 	private Long only3daysCount =0L;
 	private Long othersCount = 0l;
-	 
+	private Long totalBath = 0L;
+	private Long only1dayCountInvited =0L;
+	private Long only2daysCountInvited =0L;
+	private Long only3daysCountInvited =0L;
+	
+	private Long only1dayCountNonInvited =0L;
+	private Long only2daysCountNonInvited =0L;
+	private Long only3daysCountNonInvited =0L;
+	
 	private Set<Long> inviteesIds = new HashSet<Long>(0);
 	private Set<Long> nonInviteesIds = new HashSet<Long>(0);
 	private Set<Long> othersIds = new HashSet<Long>(0);
@@ -206,6 +214,48 @@ public class TrainingCampProgramVO {
 	}
 	public void setNonInviteeAttended(Long nonInviteeAttended) {
 		this.nonInviteeAttended = nonInviteeAttended;
+	}
+	public Long getTotalBath() {
+		return totalBath;
+	}
+	public void setTotalBath(Long totalBath) {
+		this.totalBath = totalBath;
+	}
+	public Long getOnly1dayCountInvited() {
+		return only1dayCountInvited;
+	}
+	public void setOnly1dayCountInvited(Long only1dayCountInvited) {
+		this.only1dayCountInvited = only1dayCountInvited;
+	}
+	public Long getOnly2daysCountInvited() {
+		return only2daysCountInvited;
+	}
+	public void setOnly2daysCountInvited(Long only2daysCountInvited) {
+		this.only2daysCountInvited = only2daysCountInvited;
+	}
+	public Long getOnly3daysCountInvited() {
+		return only3daysCountInvited;
+	}
+	public void setOnly3daysCountInvited(Long only3daysCountInvited) {
+		this.only3daysCountInvited = only3daysCountInvited;
+	}
+	public Long getOnly1dayCountNonInvited() {
+		return only1dayCountNonInvited;
+	}
+	public void setOnly1dayCountNonInvited(Long only1dayCountNonInvited) {
+		this.only1dayCountNonInvited = only1dayCountNonInvited;
+	}
+	public Long getOnly2daysCountNonInvited() {
+		return only2daysCountNonInvited;
+	}
+	public void setOnly2daysCountNonInvited(Long only2daysCountNonInvited) {
+		this.only2daysCountNonInvited = only2daysCountNonInvited;
+	}
+	public Long getOnly3daysCountNonInvited() {
+		return only3daysCountNonInvited;
+	}
+	public void setOnly3daysCountNonInvited(Long only3daysCountNonInvited) {
+		this.only3daysCountNonInvited = only3daysCountNonInvited;
 	}
 	
 	
