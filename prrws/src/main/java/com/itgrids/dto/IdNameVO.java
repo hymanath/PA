@@ -41,6 +41,10 @@ public class IdNameVO implements Serializable{
 	private Long onGoingCpwsCount = 0L;
 	private Long onGoingPwsAmount = 0L;
 	private Long onGoingCpwsAmount = 0L;
+	private String timeTaken;
+	private String callTime;
+	private String serviceProviderName;
+	
 	private String completionDate;
 	private String wrokIdStr;
 	
@@ -72,6 +76,26 @@ public class IdNameVO implements Serializable{
 		this.name = name;
 		this.totl = totl;
 	}
+
+	public String getServiceProviderName() {
+		return serviceProviderName;
+	}
+	public void setServiceProviderName(String serviceProviderName) {
+		this.serviceProviderName = serviceProviderName;
+	}
+	public String getTimeTaken() {
+		return timeTaken;
+	}
+	public void setTimeTaken(String timeTaken) {
+		this.timeTaken = timeTaken;
+	}
+	public String getCallTime() {
+		return callTime;
+	}
+	public void setCallTime(String callTime) {
+		this.callTime = callTime;
+	}
+
 	public String getMinDate() {
 		return minDate;
 	}
