@@ -1388,23 +1388,6 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
 					 queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
 			 }
-		  /*  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-		      queryStr.append(" and model.meetingAddress.state.stateId in (:userAccessLevelValues)");  
-		    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-		      queryStr.append(" and model.meetingAddress.district.districtId in (:userAccessLevelValues)");  
-		    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-		        queryStr.append(" and model.meetingAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
-			}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-		         queryStr.append(" and model.meetingAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
-			}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
-		      queryStr.append(" and model.meetingAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
-			}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
-		      queryStr.append(" and model.meetingAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
-			}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
-		      queryStr.append(" and model.meetingAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
-			}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
-		      queryStr.append(" and model.meetingAddress.ward.constituencyId in (:userAccessLevelValues)"); 
-			}*/
 	        if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		      queryStr.append(" group by  model.meetingAddress.state.stateId order by model.meetingAddress.state.stateId ");  
 		    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -1423,9 +1406,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			  queryStr.append(" group by model.meetingAddress.ward.constituencyId order by model.meetingAddress.ward.constituencyId");	
 			} 
 		    Query query = getSession().createQuery(queryStr.toString());
-	     	/* if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
-				   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
-			 }*/
+	     	
 			 if(fromDate!= null && toDate!=null){
 			   query.setDate("fromDate", fromDate);
 			   query.setDate("toDate", toDate);
