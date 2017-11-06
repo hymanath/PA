@@ -1,4 +1,4 @@
-s//Training Program
+//Training Program
 var globalStateId=1; //default Ap 
 var customStartDate1 = moment().format('DD/MM/YYYY');
 //$(".trainingDate").html(" UPTO DATE ( "+customStartDate1+" )");
@@ -97,7 +97,7 @@ var getDocumentWidth = $(document).width();
 			 str+='<span class="programSkillsCls"  state-level="false" expand-icon-inner="training" style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to expand">';
 				str+='<i class="glyphicon glyphicon-fullscreen"></i>';
 			str+='</span></h4>';  
-			str+='<table class="table tableTraining">';
+			str+='<table class="table tableTraining bg_ED">';
 				str+='<tr>';
 					str+='<td>';
 						str+='<h4>'+programList[i].totalEligibleCount+'</h4>';
@@ -3202,7 +3202,7 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 							}else{
 								str+='<a role="button" class="collapsed collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
 							}
-				str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<small >[Total Batchs :'+result.trainingProgramList[i].totalBath+']</small></h4>';
+				str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<br/><small>[Total Batchs :'+result.trainingProgramList[i].totalBath+']</small></h4>';
 							str+='</a>';
 						str+='</div>';
 						if(i == 0)

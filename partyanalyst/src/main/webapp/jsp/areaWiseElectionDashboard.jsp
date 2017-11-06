@@ -77,7 +77,7 @@
 								</select>
 							</div>
 							<div class="col-sm-2" style="margin-left: 10px;">
-								<input value="true" type="checkbox" name="allianceParty" id="allaincePartiFieldId" /><span class="f-12">WITH ALLAINCE</span>
+								<input value="true" type="checkbox" name="allianceParty" id="allaincePartiFieldId" checked class="alliancePartyCls" attr_type="partyTrends"/><span class="f-12">WITH ALLAINCE</span>
 							</div>
 							<div class="col-sm-2">
 								<button class="btn btn-success getDetailsCls buttonClr">Submit</button>
@@ -160,7 +160,7 @@
 								</select>
 							</div>
 							<div class="col-sm-2 m_top20">
-								<input value ="true" type="checkbox" name="allianceParty" id="allainceStatusPartyFieldId" class="checkedMainByeType" /><span class="f-12">WITH ALLAINCE</span>
+								<input value ="true" type="checkbox" name="allianceParty" id="allainceStatusPartyFieldId" class="checkedMainByeType alliancePartyCls" checked  attr_type="strong" /><span class="f-12">WITH ALLAINCE</span>
 							</div>
 						</div>
 						<div class="row">
@@ -194,6 +194,7 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block boderBlock">
+						<h4 class="theme-title-color">Cross Voting Report</h4>
 						<div class="row m_top10">
 							<div class="col-sm-3 m_top10">
 								<label class="radio-inline">
@@ -223,7 +224,7 @@
 								</select>
 							</div>
 							<div class="col-sm-2 m_top20">
-								<input value ="true" type="checkbox" name="allianceParty" id="croosVotingAllaincePartyFieldId" class="checkedMainByeType" /><span class="f-12">WITH ALLAINCE</span>
+								<input value ="true" type="checkbox" name="allianceParty" id="croosVotingAllaincePartyFieldId" class="checkedMainByeType alliancePartyCls" checked attr_type="cross"/><span class="f-12">WITH ALLAINCE</span>
 							</div>
 							<div class="col-sm-3 m_top20">
 								<button class="btn btn-success buttonClr getDetailsForCrossVotingCls">Submit</button>
@@ -247,6 +248,7 @@
 							<li  attr_val="1">Parliament Election</li>
 							<!--<li  attr_val="0">Both</li>-->
 						</ul>
+						<div id="boothWiseResultsMainHeadingId"></div>
 						<div class="row m_top10">
 							<div class="col-sm-3 m_top10">
 								<label class="radio-inline">

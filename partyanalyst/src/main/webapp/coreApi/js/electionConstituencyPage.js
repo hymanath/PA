@@ -500,9 +500,9 @@ function getElectionYears(type,typeLoad){
 				});
 				
 				//party wise election trends Block
-				getLocationWiseElectionResults(electionYrVal,eletionSubType,partyIdArr,electionScopeValArr);
+				getLocationWiseElectionResults(electionYrVal,eletionSubType,partyIdArr,electionScopeValPartyArr);
 				//Party Election Results Block
-				getElectionDetailsData(electionYrVal,eletionSubType,partyIdArr,electionScopeValArr);
+				getElectionDetailsData(electionYrVal,eletionSubType,partyIdArr,electionScopeValPartyArr);
 				//strong Block
 				
 			}else if(type == "strong" && typeLoad == "onload"){
@@ -1253,7 +1253,7 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrValFo
 function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searchLevelVal,partyNameForStrong,electionScopetext,year){
 		
 	var str='';
-	$("#partyWiseStrongHeadingId").html("<h4 class='text-capital m_top10'> "+searchLevelVal+" Level "+electionScopetext+" Election Comparision Results For "+partyNameForStrong+" Party</h4>")
+	$("#partyWiseStrongHeadingId").html("<h4 class='theme-title-color m_top10'> "+searchLevelVal+" Level "+electionScopetext+" Election Comparision Results For "+partyNameForStrong+" Party</h4>")
 	
 	/* str+='<div class="table-responsive m_top10">';
 	
@@ -1689,10 +1689,10 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 	function buildTableData(result,type)
 	{
 		var table='';
-		table+='<h4 class="theme-title-color">Cross Voting Report</h4>';
+		//table+='<h4 class="theme-title-color">Cross Voting Report</h4>';
 		table+='<div class="col-sm-12">';					
-		table+='<h6 class="pull-right"><span class="identifyClrCss" style="background-color:lightgreen"></span> if margin +VE  and Cross Voting Perc -VE</h6><br/>';
-		table+='<h6 class="pull-right"><span class="identifyClrCss" style="background-color:#ff6666"></span> if margin -VE  and Cross Voting Perc +VE</h6>';
+		table+='<h6 class="pull-right m_top10"><span class="identifyClrCss" style="background-color:lightgreen"></span> if margin +VE  and Cross Voting Perc -VE , <span class="identifyClrCss" style="background-color:#ff6666"></span>  if margin -VE  and Cross Voting Perc +VE</h6><br/>';
+		//table+='<h6 class="pull-right"><span class="identifyClrCss" style="background-color:#ff6666"></span> if margin -VE  and Cross Voting Perc +VE</h6>';
 		table+='</div>';
 		table+='<div class="col-sm-12">';
 		table+='<div class="table-responsive m_top10">';
@@ -1899,7 +1899,7 @@ function getboothWiseResults(electionYrValForBooth,partyIdForBoothArr,constituen
 		data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){ 
 		if(result !=null){
-			buildData(result,constituencyName);
+			buildData(result,constituencyName,electionScopeVal);
 		}else if(result !=null && electionScopeId == 0){
 			//return buildBothData(result,electionScopeId);
 		}else{
@@ -1911,7 +1911,7 @@ function getboothWiseResults(electionYrValForBooth,partyIdForBoothArr,constituen
 		
 	});
 }
-function buildData(result,constituencyName)
+function buildData(result,constituencyName,electionScopeVal)
 	{
 		var table = '';
 		var table1 = '';
@@ -1923,11 +1923,22 @@ function buildData(result,constituencyName)
 		var remainingPercentage = 0.00;
 		var totalVotes = result.partyBoothPerformanceVOList[0].totalValidVotes;
 		
-		table1+='<h4 class="theme-title-color m_top10">Booth Wise Election Results - '+constituencyName+'</h4>';
+		//table1+='<h4 class="theme-title-color m_top10">Booth Wise Election Results - '+constituencyName+'</h4>';
+		if(electionScopeVal == 1){
+			$("#boothWiseResultsMainHeadingId").html("<h4 class='theme-title-color m_top10'>Booth Wise Parliament Election Results - "+constituencyName+"</h4>")
+		}else{
+			$("#boothWiseResultsMainHeadingId").html("<h4 class='theme-title-color m_top10'>Booth Wise Assembly Election Results - "+constituencyName+"</h4>")
+		}
+		
 		table1+='<div class="row m_top20">';
 			table1+='<div>';
 			table1+='<div class="col-sm-3">';
+			if(electionScopeVal == 1){
+				table1+='<h5 class="text-capital m_top10">Parliament Results</h5>';
+			}else{
 				table1+='<h5 class="text-capital m_top10">Assembly Results</h5>';
+			}
+				
 				table1+='<div id="boothWiseRstsGraphId" style="height:200px;"></div>';
 			table1+='</div>';
 			table1+='<div class="col-sm-9">';
@@ -2450,4 +2461,15 @@ $(document).on("click",".hideShowBtn",function(){
 		$(".partyBlockDiv").toggle();
 	}
 
+});
+$(document).on("click",".alliancePartyCls",function(){
+	var type  = $(this).attr("attr_type");
+	if(type == "partyTrends"){
+		$("#levelWiseCandidatesResultsDivId").html('');
+		$("#locationWiseCandidatesResultsDivId").html('');
+	}else if(type == "strong"){
+		$("#locationWiseStrongVsPoor").html('');
+	}else if(type == "cross"){
+		$("#crossVotingDetailsBlockId").html('');
+	}
 });
