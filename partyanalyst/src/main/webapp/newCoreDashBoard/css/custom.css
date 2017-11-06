@@ -3018,3 +3018,17 @@ color: rgb(51, 122, 183);
 {
 	cursor:pointer;
 }
+.bg_ED.notesArrow::after,.bg_ED.notesArrow::before{
+	border: medium solid rgba(0, 0, 0, 0);
+    position: absolute;
+    left: 40px;
+    width: 0;
+}
+.bg_ED.notesArrow::after{
+	border-width: 12px;
+	 border-color: rgba(136, 183, 213, 0) rgba(136, 183, 213, 0) rgb(85, 85, 85);
+}
+.bg_ED.notesArrow::before{
+	border-width: 12px;
+	border-color: rgba(194, 225, 245, 0) rgba(194, 225, 245, 0) rgb(85, 85, 85);
+}
