@@ -2484,8 +2484,8 @@
 			fromDate  : startDate,
 			toDate    : endDate,
 			basiccommitteeTypeIdsList : basiccommitteeTypeIds,
-			committeeTypeIdsList :committeeTypeIds
-			committeeLevelId :committeeLevelId,
+			committeeTypeIdsList :committeeTypeIds,
+			committeeLevelId :"",
 			locationScopeId: 2,
 			LocationValuesList :locationValuesArr,
 			enrollmentIdsLst :enrollmentIds

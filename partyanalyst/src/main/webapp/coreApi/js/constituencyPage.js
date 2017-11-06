@@ -5553,7 +5553,7 @@ function getElectionTypes(type){
 							str+='<input value="BYE" type="checkbox" name="optionsRadios1"  class="checkedMainByeType" />By Election';
 						str+='</label>';
 						str+='<label class="checkbox-inline">';
-							str+='<input value="true" type="checkbox" name="allianceParty" id="allaincePartyFieldId" class="" />With Alliance';
+							str+='<input value="true" type="checkbox" name="allianceParty" id="allaincePartyFieldId" class="" checked />With Alliance';
 						str+='</label>';
 					str+='</div>';
 					str+='<div class="col-sm-4">';

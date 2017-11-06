@@ -2950,13 +2950,13 @@
 			<div class="panel panel-default panelNewCustom panel1">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="training">
+						<div class="col-md-7 col-sm-9 col-xs-12" expand-block-heading="training">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
 								training  <small class="text-muted trainingDate">- OVERALL (TILL NOW)</small>
 							</h4>
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="training">
+						<div class="col-md-5 col-sm-3 col-xs-12" expand-block-heading1="training">
 							<!--<span class="settingsIcon pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>-->
