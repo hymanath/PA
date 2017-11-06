@@ -2459,3 +2459,43 @@
 					
 		});
 	}
+	
+	
+	getCommitteeDetailedReport();
+	
+	function getCommitteeDetailedReport(){
+		
+		var basiccommitteeTypeIds = [];
+		var committeeTypeIds = [];
+		
+		committeeTypeIds.push($('#tdpCommitteeYearId').val());
+		var enrollmentIds = [];
+		
+		var locationValuesArr = [];
+		locationValuesArr.push(1);
+		
+		var dateStr = $('#dateRangeId').val();
+		var dateStrArr = dateStr.split('-');
+		var startDate  = dateStrArr[0];
+		var endDate = dateStrArr[1];
+	
+		var jObj = {
+			
+			fromDate  : startDate,
+			toDate    : endDate,
+			basiccommitteeTypeIdsList : basiccommitteeTypeIds,
+			committeeTypeIdsList :committeeTypeIds
+			committeeLevelId :committeeLevelId,
+			locationScopeId: 2,
+			LocationValuesList :locationValuesArr,
+			enrollmentIdsLst :enrollmentIds
+			
+		}
+			
+		$.ajax({
+          type:'GET',
+          url: 'getCommitteeDetailedReportAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+	      });
+	}

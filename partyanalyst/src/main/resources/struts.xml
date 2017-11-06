@@ -18429,5 +18429,10 @@
 			<param name="root">trainingCampProgramVO</param>       
 		</result> 
 	</action>
+	<action name="getCommitteeDetailedReportAction" class="coreDashboardAction"  method="getCommitteeDetailedReports">
+		<result type="json" name="success">    
+			<param name="root">committeeDataVOList</param>       
+		</result> 
+	</action>
  </package>
 </struts>
