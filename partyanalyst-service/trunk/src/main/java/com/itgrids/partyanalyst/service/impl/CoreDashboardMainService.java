@@ -7703,14 +7703,6 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampC
 		}
 		Long accessLevelValue = 0l;
 		accessLevelValue = userAccessLevelId;
-		List<Long> tdpCommitteeLvlIds = new ArrayList<Long>();
-		tdpCommitteeLvlIds.add(6l);
-		tdpCommitteeLvlIds.add(8l);
-		tdpCommitteeLvlIds.add(5l);
-		tdpCommitteeLvlIds.add(7l);
-		tdpCommitteeLvlIds.add(9l);
-		
-		
 		// take all attended cadre camp wise.
 		
 		//List<Object[]> attendedList = trainingCampAttendanceDAO.getAttendedCountForTrainingCamp(accessLevelValue, userAccessLevelValues,fromDate,toDate,enrollmentYearIds.get(0),programIdList);
@@ -7718,9 +7710,9 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampC
 		List<Object[]>  tempList = null;
 		List<Object[]>  tempList2 = null;
 		if(accessLevelValue.longValue() == IConstants.STATE_LEVEl_ACCESS_ID){
-			List<Long> distList1 = new ArrayList<Long>(){{add(11L);add(12L);add(13L);add(14L);add(15L);add(16L);}};
+			List<Long> distList1 = new ArrayList<Long>(){{add(11L);add(12L);add(13L);add(14L);add(15L);add(16L);add(17L);}};
 			tempList  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList1,enrollmentYearIds.get(0),programIdList);//Procedure Call
-			List<Long> distList2 = new ArrayList<Long>(){{add(17L);add(18L);add(19L);add(20L);add(21L);add(22L);add(517L);}};
+			List<Long> distList2 = new ArrayList<Long>(){{add(18L);add(19L);add(20L);add(21L);add(22L);add(23L);add(517L);}};
 			tempList2  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList2,enrollmentYearIds.get(0),programIdList);//Procedure Call
 			tempList.addAll(tempList2);
 		}else{
