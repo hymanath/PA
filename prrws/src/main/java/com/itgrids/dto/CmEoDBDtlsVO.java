@@ -1,28 +1,33 @@
 package com.itgrids.dto;
 
+import java.util.List;
+
 public class CmEoDBDtlsVO {
 
-	private Long id;
+	private String idStr;
 	private String name;
 	private Long count;
 	private Long total;
-	private Long aprooved;
-	private Long rejected;
+	private Long aprooved = 0l;
+	private Long rejected = 0l;
 	private Long reAprooved;
-	private Long pendingWithinSLA;
-	private Long pendingBeyondSLA;
-	private Long highApprovalDepartment;
+	private Long pendingWithinSLA = 0l;
+	private Long pendingBeyondSLA = 0l;
+	private Long highApprovalDepartmentCount;
 	private String highApprovalDepartmentName;
-	private Long lowApprovalDepartment;
+	private Long lowApprovalDepartmentCount;
 	private String lowApprovalDepartmentName;
-	private Long highRejectedDepartment;
+	private Long highRejectedDepartmentCount;
 	private String highRejectedDepartmentName;
-	private Long lowRejectedDepartment;
+	private Long lowRejectedDepartmentCount;
 	private String lowRejectedDepartmentName;
-	private Long highPendingDepartment;
+	private Long highPendingDepartmentCount;
 	private String highPendingDepartmentName;
-	private Long lowPendingDepartment;
+	private Long lowPendingDepartmentCount;
 	private String lowPendingDepartmentName;
+	
+	private CmEoDBDtlsVO overviewDtls;
+	
 	
 	public Long getTotal() {
 		return total;
@@ -60,23 +65,11 @@ public class CmEoDBDtlsVO {
 	public void setPendingBeyondSLA(Long pendingBeyondSLA) {
 		this.pendingBeyondSLA = pendingBeyondSLA;
 	}
-	public Long getHighApprovalDepartment() {
-		return highApprovalDepartment;
-	}
-	public void setHighApprovalDepartment(Long highApprovalDepartment) {
-		this.highApprovalDepartment = highApprovalDepartment;
-	}
 	public String getHighApprovalDepartmentName() {
 		return highApprovalDepartmentName;
 	}
 	public void setHighApprovalDepartmentName(String highApprovalDepartmentName) {
 		this.highApprovalDepartmentName = highApprovalDepartmentName;
-	}
-	public Long getLowApprovalDepartment() {
-		return lowApprovalDepartment;
-	}
-	public void setLowApprovalDepartment(Long lowApprovalDepartment) {
-		this.lowApprovalDepartment = lowApprovalDepartment;
 	}
 	public String getLowApprovalDepartmentName() {
 		return lowApprovalDepartmentName;
@@ -84,23 +77,11 @@ public class CmEoDBDtlsVO {
 	public void setLowApprovalDepartmentName(String lowApprovalDepartmentName) {
 		this.lowApprovalDepartmentName = lowApprovalDepartmentName;
 	}
-	public Long getHighRejectedDepartment() {
-		return highRejectedDepartment;
-	}
-	public void setHighRejectedDepartment(Long highRejectedDepartment) {
-		this.highRejectedDepartment = highRejectedDepartment;
-	}
 	public String getHighRejectedDepartmentName() {
 		return highRejectedDepartmentName;
 	}
 	public void setHighRejectedDepartmentName(String highRejectedDepartmentName) {
 		this.highRejectedDepartmentName = highRejectedDepartmentName;
-	}
-	public Long getLowRejectedDepartment() {
-		return lowRejectedDepartment;
-	}
-	public void setLowRejectedDepartment(Long lowRejectedDepartment) {
-		this.lowRejectedDepartment = lowRejectedDepartment;
 	}
 	public String getLowRejectedDepartmentName() {
 		return lowRejectedDepartmentName;
@@ -108,35 +89,17 @@ public class CmEoDBDtlsVO {
 	public void setLowRejectedDepartmentName(String lowRejectedDepartmentName) {
 		this.lowRejectedDepartmentName = lowRejectedDepartmentName;
 	}
-	public Long getHighPendingDepartment() {
-		return highPendingDepartment;
-	}
-	public void setHighPendingDepartment(Long highPendingDepartment) {
-		this.highPendingDepartment = highPendingDepartment;
-	}
 	public String getHighPendingDepartmentName() {
 		return highPendingDepartmentName;
 	}
 	public void setHighPendingDepartmentName(String highPendingDepartmentName) {
 		this.highPendingDepartmentName = highPendingDepartmentName;
 	}
-	public Long getLowPendingDepartment() {
-		return lowPendingDepartment;
-	}
-	public void setLowPendingDepartment(Long lowPendingDepartment) {
-		this.lowPendingDepartment = lowPendingDepartment;
-	}
 	public String getLowPendingDepartmentName() {
 		return lowPendingDepartmentName;
 	}
 	public void setLowPendingDepartmentName(String lowPendingDepartmentName) {
 		this.lowPendingDepartmentName = lowPendingDepartmentName;
-	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
 	}
 	public String getName() {
 		return name;
@@ -150,6 +113,57 @@ public class CmEoDBDtlsVO {
 	public void setCount(Long count) {
 		this.count = count;
 	}
+	public CmEoDBDtlsVO getOverviewDtls() {
+		return overviewDtls;
+	}
+	public void setOverviewDtls(CmEoDBDtlsVO overviewDtls) {
+		this.overviewDtls = overviewDtls;
+	}
+	public Long getHighApprovalDepartmentCount() {
+		return highApprovalDepartmentCount;
+	}
+	public void setHighApprovalDepartmentCount(Long highApprovalDepartmentCount) {
+		this.highApprovalDepartmentCount = highApprovalDepartmentCount;
+	}
+	public Long getLowApprovalDepartmentCount() {
+		return lowApprovalDepartmentCount;
+	}
+	public void setLowApprovalDepartmentCount(Long lowApprovalDepartmentCount) {
+		this.lowApprovalDepartmentCount = lowApprovalDepartmentCount;
+	}
+	public Long getHighRejectedDepartmentCount() {
+		return highRejectedDepartmentCount;
+	}
+	public void setHighRejectedDepartmentCount(Long highRejectedDepartmentCount) {
+		this.highRejectedDepartmentCount = highRejectedDepartmentCount;
+	}
+	public Long getLowRejectedDepartmentCount() {
+		return lowRejectedDepartmentCount;
+	}
+	public void setLowRejectedDepartmentCount(Long lowRejectedDepartmentCount) {
+		this.lowRejectedDepartmentCount = lowRejectedDepartmentCount;
+	}
+	public Long getHighPendingDepartmentCount() {
+		return highPendingDepartmentCount;
+	}
+	public void setHighPendingDepartmentCount(Long highPendingDepartmentCount) {
+		this.highPendingDepartmentCount = highPendingDepartmentCount;
+	}
+	public Long getLowPendingDepartmentCount() {
+		return lowPendingDepartmentCount;
+	}
+	public void setLowPendingDepartmentCount(Long lowPendingDepartmentCount) {
+		this.lowPendingDepartmentCount = lowPendingDepartmentCount;
+	}
+	public String getIdStr() {
+		return idStr;
+	}
+	public void setIdStr(String idStr) {
+		this.idStr = idStr;
+	}
+	
+
+	
     
    
 

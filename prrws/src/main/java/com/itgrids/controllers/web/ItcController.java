@@ -50,9 +50,9 @@ public class ItcController {
 		    List<MeesevaDtlsVO>  resultList = itcDashboardService.getMeesevaSLAMonitoringDtlsDepartmentWise(inputVO);
 		   return resultList;
 	   }
-	   @RequestMapping(value = "/getCMEDOBOverview", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  CmEoDBDtlsVO  getCMEDOBOverview(@RequestBody InputVO inputVO) {
-		   CmEoDBDtlsVO  reusltVO = itcDashboardService.getCMEDOBOverview(inputVO);
+	   @RequestMapping(value = "/getCMEDOBOverview", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  CmEoDBDtlsVO  getCMEDOBOverview() {
+		   CmEoDBDtlsVO  reusltVO = itcDashboardService.getCMEDOBOverview();
 		   return reusltVO;
 	   }
 	   @RequestMapping(value = "/getCMEDOBReportStatusWise", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)

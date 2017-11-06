@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.lucene.analysis.ReusableAnalyzerBase;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.jdom.Document;
@@ -267,16 +268,136 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return CmEoDBDtlsVO
 	 * @Date 21-09-2017
 	 */
-	public CmEoDBDtlsVO getCMEDOBOverview(InputVO inputVO) {
+	public CmEoDBDtlsVO getCMEDOBOverview() {
 		CmEoDBDtlsVO resultVO = new CmEoDBDtlsVO();
 		 try {
-			 
-			 
+			 MOUTrackerIT[] dataArr = new TrackerITServiceSoapProxy().EODB_ABSTRACT_REPORT();
+			 if (dataArr != null && dataArr.length > 0 ) {
+				 CmEoDBDtlsVO overviewVO = getCmEodbStatusWiseOverviewDetails(dataArr);
+				 List<CmEoDBDtlsVO> deptList = getCmEoDbDepartmentList(dataArr);
+				 
+				 if (deptList != null && deptList.size() > 0) {
+					 Collections.sort(deptList, sortDecendingDpetByRejectedCount);
+					 setRequiredData(deptList.get(0),deptList.get(deptList.size()-1),"rejected",resultVO);
+					 Collections.sort(deptList, sortDecendingDpetByApprovedCount);
+					 setRequiredData(deptList.get(0),deptList.get(deptList.size()-1),"approved",resultVO);
+					 Collections.sort(deptList, sortDecendingByPendingCount);
+					 setRequiredData(deptList.get(0),deptList.get(deptList.size()-1),"pending",resultVO);
+				 }
+				 resultVO.setOverviewDtls(overviewVO); 
+			 }
+			
 		 }catch (Exception e) {
 			 LOG.error("Exception occured at getCMEDOBOverview() in  ItcDashboardService class",e);
 		 }
 		 return resultVO;
 	}
+	
+	public void setRequiredData( CmEoDBDtlsVO topDeptVO,CmEoDBDtlsVO lowDeptVO,String type,CmEoDBDtlsVO resultVO) {
+		try {
+			if (type.equalsIgnoreCase("rejected")) {
+				resultVO.setHighRejectedDepartmentName(topDeptVO.getName());
+				resultVO.setHighRejectedDepartmentCount(topDeptVO.getRejected());
+				resultVO.setLowRejectedDepartmentName(lowDeptVO.getName());
+				resultVO.setLowRejectedDepartmentCount(lowDeptVO.getRejected());
+			} else if (type.equalsIgnoreCase("approved")) {
+				resultVO.setHighApprovalDepartmentName(topDeptVO.getName());
+				resultVO.setHighApprovalDepartmentCount(topDeptVO.getAprooved());
+				resultVO.setLowApprovalDepartmentName(lowDeptVO.getName());
+				resultVO.setLowApprovalDepartmentCount(lowDeptVO.getAprooved());
+			} else if (type.equalsIgnoreCase("pending")) {
+				resultVO.setHighPendingDepartmentName(topDeptVO.getName());
+				resultVO.setHighPendingDepartmentCount(topDeptVO.getPendingBeyondSLA());
+				resultVO.setLowPendingDepartmentName(lowDeptVO.getName());
+				resultVO.setLowPendingDepartmentCount(lowDeptVO.getPendingBeyondSLA());
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured at setRequiredData() in  ItcDashboardService class",e);
+		}
+	}
+	
+	private List<CmEoDBDtlsVO> getCmEoDbDepartmentList(MOUTrackerIT[] dataArr) {
+		List<CmEoDBDtlsVO> deptList = new ArrayList<>(0);
+		Map<String,CmEoDBDtlsVO> deptMap = new HashMap<>();
+		 try {
+			 for (MOUTrackerIT moutrackerVO : dataArr) {
+				 if ( !moutrackerVO.getCLEARENCE_NAME().equalsIgnoreCase("Total")) {
+					 CmEoDBDtlsVO deptVO = deptMap.get(moutrackerVO.getDASH_BOARD_NAME());
+					   if (deptVO == null ) {
+						   	 deptVO = new CmEoDBDtlsVO();
+						     deptVO.setName(moutrackerVO.getDASH_BOARD_NAME());
+							 deptVO.setIdStr(moutrackerVO.getDASH_BOARD_NO()); 
+							 deptMap.put(deptVO.getName(), deptVO);
+					   } 
+					 deptVO.setAprooved(deptVO.getAprooved()+Long.valueOf(moutrackerVO.getTOTAL_APPROVED()));
+					 deptVO.setRejected(deptVO.getRejected()+Long.valueOf(moutrackerVO.getTOTAL_REJECTED()));
+					 deptVO.setPendingBeyondSLA(deptVO.getPendingBeyondSLA()+Long.valueOf(moutrackerVO.getTOTAL_PENDING()));	
+				 }
+			 }
+			 if (deptMap.size() > 0) {
+				 deptList.addAll(deptMap.values());
+			 }
+		 } catch (Exception e) {
+			 LOG.error("Exception occured at getCmEoDbDepartmentList() in  ItcDashboardService class",e);
+		 }
+		 return deptList;
+	}
+	
+	private CmEoDBDtlsVO getCmEodbStatusWiseOverviewDetails( MOUTrackerIT[] dataArr) {
+		CmEoDBDtlsVO overStatusDltsVO = new CmEoDBDtlsVO();
+		 try {
+			 MOUTrackerIT overViewData = dataArr[dataArr.length-1];
+			 overStatusDltsVO.setName(overViewData.getCLEARENCE_NAME());
+			 overStatusDltsVO.setAprooved(Long.valueOf(overViewData.getTOTAL_APPROVED()));
+			 overStatusDltsVO.setRejected(Long.valueOf(overViewData.getTOTAL_REJECTED()));
+			 overStatusDltsVO.setReAprooved(Long.valueOf(overViewData.getTOTAL_REAPPROVED()));
+			 overStatusDltsVO.setPendingWithinSLA(Long.valueOf(overViewData.getPENDING_WITN_IN_SLA()));
+			 overStatusDltsVO.setPendingBeyondSLA(Long.valueOf(overViewData.getPENDING_BEYOND_SLA()));
+			 overStatusDltsVO.setTotal(overStatusDltsVO.getAprooved()+overStatusDltsVO.getReAprooved()
+			 +overStatusDltsVO.getRejected()+overStatusDltsVO.getPendingBeyondSLA()+overStatusDltsVO.getPendingWithinSLA());
+			
+		 } catch (Exception e) {
+			 LOG.error("Exception occured at getCmEodbStatusWiseOverviewDetails() in  ItcDashboardService class",e);
+		 }
+		 return overStatusDltsVO;
+	}
+	private static Comparator<CmEoDBDtlsVO> sortDecendingDpetByRejectedCount = new Comparator<CmEoDBDtlsVO>() {
+		public int compare(CmEoDBDtlsVO o1, CmEoDBDtlsVO o2) {
+			try {
+				if (o2.getRejected() != null && o1.getRejected() != null) {
+					return o2.getRejected().compareTo(o1.getRejected());
+				}
+			} catch (Exception e) {
+				LOG.error(" Exception occured in sortDpetByRejectedCount ", e);
+			}
+			return 0;
+		}
+	};
+	private static Comparator<CmEoDBDtlsVO> sortDecendingDpetByApprovedCount = new Comparator<CmEoDBDtlsVO>() {
+		public int compare(CmEoDBDtlsVO o1, CmEoDBDtlsVO o2) {
+			try {
+				if (o2.getAprooved() != null && o1.getAprooved() != null) {
+					return o2.getAprooved().compareTo(o1.getAprooved());
+				}
+			} catch (Exception e) {
+				LOG.error(" Exception occured in sortDecendingDpetByApprovedCount ", e);
+			}
+			return 0;
+		}
+	};
+	private static Comparator<CmEoDBDtlsVO> sortDecendingByPendingCount = new Comparator<CmEoDBDtlsVO>() {
+		public int compare(CmEoDBDtlsVO o1, CmEoDBDtlsVO o2) {
+			try {
+				if (o2.getPendingBeyondSLA() != null && o1.getPendingBeyondSLA() != null) {
+					return o2.getPendingBeyondSLA().compareTo(o1.getPendingBeyondSLA());
+				}
+			} catch (Exception e) {
+				LOG.error(" Exception occured in sortDecendingByPendingCount ", e);
+			}
+			return 0;
+		}
+	};
 	/**
 	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO

@@ -68,7 +68,7 @@ function onloadCalls(){
 	//AP Innovation Society Ajax Call Start
 	getAPInnovationSocietyOverview('onload','apInnovationSociety');
 	getEOfcDepartWiseOverviewDetails('onload');
-	/*getInnovationAwardsDetailedData();*/
+	//getCMEDOBOverview();
 	
 }
 $(document).on("click",".cohortIdClick",function(){
@@ -1322,17 +1322,11 @@ function getCohortDetailsByCohortId(id){
 		$("#cohortIdTable").dataTable();
 	}
 }
-function getInnovationAwardsDetailedData(){
-	var json = {
-		fromDate:"",
-		toDate:"",
-		year:""
-	}
+function getCMEDOBOverview(){
 	$.ajax({                
-		type:'POST',    
-		url: 'getInnovationAwardsDetailedData',
+		type:'GET',    
+		url: 'getCMEDOBOverview',
 		dataType: 'json',
-		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
 			xhr.setRequestHeader("Accept", "application/json");
 			xhr.setRequestHeader("Content-Type", "application/json");
