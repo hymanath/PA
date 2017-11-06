@@ -1927,3 +1927,13 @@ font-size:12px !important;
 	height:12px;
 	padding:5px;
 }
+.rangeWiseCss{
+	border-radius: 100%;
+    content: "";
+    display: inline-block;
+    height: 15px;
+    margin-top: 10px;
+    position: relative;
+    top: 3px;
+    width: 15px;
+}

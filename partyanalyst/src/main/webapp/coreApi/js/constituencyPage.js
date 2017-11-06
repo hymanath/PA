@@ -5738,7 +5738,7 @@ function buildElectionInformationLocationWise(result,type){
 		$(".electionDetailsGraphHeight").css("height","500px !important;");
 		$('#electionDetailsGraphWiseId').highcharts({
 			chart: {
-				type: 'area'
+				type: 'column'
 			},
 			title: {
 				text: null
@@ -5784,8 +5784,9 @@ function buildElectionInformationLocationWise(result,type){
 				shared: true
 			},
 			plotOptions: {
-				area: {
-					marker: {
+				column: {
+					stacking:"percent"
+					/* marker: {
 						enabled: false,
 						symbol: 'circle',
 						radius: 2,
@@ -5794,7 +5795,7 @@ function buildElectionInformationLocationWise(result,type){
 								enabled: true
 							}
 						}
-					}
+					} */
 				}
 			},
 			series: mainDataArr

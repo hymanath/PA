@@ -101,20 +101,28 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="block boderBlock">
-					
-						<label class="radio-inline text-capital f-13" for="electionPCId">
-						  <input type="radio" id="electionPCId" value="1" name="electionScope" class="electionTypeWiseStrongCls">Parliament
-						</label>
-						<label class="radio-inline text-capital f-13" for="electionACId">
-						  <input type="radio" id="electionACId" value="2" name="electionScope"  class="electionTypeWiseStrongCls" checked>Assembly
-						</label>
-						<label class="radio-inline text-capital f-13" for="electionMPTCId">
-						  <input type="radio" id="electionMPTCId" value="3" name="electionScope"  class="electionTypeWiseStrongCls">MPTC
-						</label>
-						<label class="radio-inline text-capital f-13" for="electionZPTCId">
-						  <input type="radio" id="electionZPTCId" value="4" name="electionScope"  class="electionTypeWiseStrongCls">ZPTC
-						</label>
+						<div class="row">
+							<div class="col-sm-12">
+								<div id="partyWiseStrongHeadingId"></div>
+							</div>
+						</div>
 						
+						<div class="row m_top10">
+							<div class="col-sm-12">
+								<label class="radio-inline text-capital f-13" for="electionPCId">
+								  <input type="radio" id="electionPCId" value="1" name="electionScope" class="electionTypeWiseStrongCls">Parliament
+								</label>
+								<label class="radio-inline text-capital f-13" for="electionACId">
+								  <input type="radio" id="electionACId" value="2" name="electionScope"  class="electionTypeWiseStrongCls" checked>Assembly
+								</label>
+								<label class="radio-inline text-capital f-13" for="electionMPTCId">
+								  <input type="radio" id="electionMPTCId" value="3" name="electionScope"  class="electionTypeWiseStrongCls">MPTC
+								</label>
+								<label class="radio-inline text-capital f-13" for="electionZPTCId">
+								  <input type="radio" id="electionZPTCId" value="4" name="electionScope"  class="electionTypeWiseStrongCls">ZPTC
+								</label>
+							</div>
+						</div>
 						<div class="row m_top10">
 							<div class="col-sm-3 m_top10">
 								<label class="radio-inline">
@@ -158,6 +166,19 @@
 						<div class="row">
 							<div class="col-sm-3 pull-right">
 								<button class="btn btn-success buttonClr getDetailsForStrongCls pull-right">Submit</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<ul class="list-inline m_top10 pull-right">
+									<li><h5 style="color:#FF3E3E"><span class="rangeWiseCss" style="border: 2px solid #FF3E3E;"></span> WORST<p style="margin-left: 15px;" class="f-12">(Below -10)</p></h5></li>
+									<li><h5 style="color:#CC6600"><span class="rangeWiseCss" style="border: 2px solid #CC6600;"></span> VERY POOR<p style="margin-left: 15px;" class="f-12">(-10 to -5)</p></h5></li>
+									<li><h5 style="color:#FF9966"><span class="rangeWiseCss" style="border: 2px solid #FF9966;"></span> POOR <p style="margin-left: 15px;" class="f-12">(-5 to < 0)</p></h5> </li>
+									<li><h5 style="color:#FFCC00"><span class="rangeWiseCss" style="border: 2px solid #FFCC00;"></span> OK <p style="margin-left: 15px;" class="f-12">(0 to 5)</p> </h5></li>
+									<li><h5 style="color:#428AE9"><span class="rangeWiseCss" style="border: 2px solid #428AE9;"></span> GOOD <p style="margin-left: 15px;" class="f-12">(5 to 10)</p> </h5></li>
+									<li><h5 style="color:#17a589"><span class="rangeWiseCss" style="border: 2px solid #17a589;"></span> VERY GOOD <p style="margin-left: 15px;" class="f-12">(10 to 20)</p></h5></li>
+									<li><h5 style="color:#0B6623"><span class="rangeWiseCss" style="border: 2px solid #0B6623;"></span> EXCELLENT <p style="margin-left: 15px;" class="f-12">(20 Above)</p></h5></li>
+								</ul>
 							</div>
 						</div>
 						<div class="row">
@@ -250,7 +271,6 @@
 								<label>Party</label>
 								
 									<select class="form-control" multiple id="partyBoothWiseId">
-										<option value="0">All Parties</option>
 										<option value="872" selected>TDP</option>
 										<option value="1117" selected>YSRC</option>
 										<option value="163" selected>BJP</option>
