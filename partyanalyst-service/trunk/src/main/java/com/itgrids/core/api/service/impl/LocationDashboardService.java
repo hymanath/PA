@@ -6323,6 +6323,22 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 					}
 				});
 			}
+			if(partyIdsList !=null && partyIdsList.size()==1){
+				for (ElectionInformationVO outerVO : finalList) {
+					List<ElectionInformationVO> partylist = outerVO.getList();
+					for (ElectionInformationVO electionInformationVO : partylist) {
+						if(electionInformationVO.getPartyId()==1887){
+							partylist.remove(electionInformationVO);
+							break;
+						}
+						break;
+					}
+					if(outerVO.getList() ==null || outerVO.getList().size() ==0){
+						finalList.remove(outerVO);
+						break;
+					}
+				}
+			}
 			/*if(finalList != null && finalList.size()>0){
 				for(ElectionInformationVO vo : finalList){
 					Object [] partiesArr={"TDP","BJP","TDP + BJP","TDP+BJP","TDP/BJP","TDP & BJP","YSRC","INC","CPM","CPI","OTHERS"};
@@ -6333,7 +6349,6 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 					}
 				}
 			}*/
-				
 		}catch(Exception e){
 			e.printStackTrace();
 			Log.error("Exception raised in getLocationWiseElectionResults method of LocationDashboardService"+e);
