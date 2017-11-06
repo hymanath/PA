@@ -18424,5 +18424,10 @@
 			<param name="root">programIdsList</param>       
 		</result>
    </action>
+	<action name="getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWiseAction" class="coreDashboardAction"  method="getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise">
+		<result type="json" name="success">    
+			<param name="root">trainingCampProgramVO</param>       
+		</result> 
+	</action>
  </package>
 </struts>
