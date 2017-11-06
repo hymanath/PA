@@ -3202,7 +3202,7 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 							}else{
 								str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
 							}
-				str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<small >[Total Batch Count :'+result.trainingProgramList[i].totalBath+']</small></h4>';
+				str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<small >[Total Batch :'+result.trainingProgramList[i].totalBath+']</small></h4>';
 							str+='</a>';
 						str+='</div>';
 						if(i == 0)
