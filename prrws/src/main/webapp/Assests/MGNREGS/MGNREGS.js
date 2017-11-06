@@ -751,6 +751,9 @@ function projectData(divId,levelId,locationId)
 									}else if(divId == 'OPGK-Annuals')
 									{
 										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Oorura Pasu Graasa Kshetralu - Annuals</h4>';
+									}else if(divId == 'NTR Rural House')
+									{
+										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - NTR IHHL</h4>';
 									}else{
 										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - '+divId+'</h4>';
 									}
@@ -988,6 +991,9 @@ function overviewData(divId,levelId,locationId)
 							}else if(divId == 'OPGK-Annuals')
 							{
 								collapse+='<h4 class="panel-title text-capitalize">Oorura Pasu Graasa Kshetralu - Annuals overview</h4>';
+							}else if(divId == 'NTR Rural House')
+							{
+								collapse+='<h4 class="panel-title text-capitalize">NTR IHHL overview</h4>';
 							}else if(divId == 'CC Roads1')
 							{
 								collapse+='<h4 class="panel-title text-capitalize">CC Roads overview</h4>';
@@ -4594,6 +4600,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else if(type == 'OPGK-Annuals')
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Annuals">Oorura Pasu..</h4>';
+					}else if(type == 'NTR Rural House')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="NTR IHHL">NTR IHHL</h4>';
 					}
 					else if(type == 'Agriculture Activities')
 					{
@@ -4646,8 +4655,8 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					
 					str+='<div class="row">';
 						str+='<div class="col-sm-6 text-center">';
-						if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'OTHERS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas'){
-							str+='<label>Sanction</label>';
+						if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'OTHERS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Cattle Ponds' || type == 'Desilting of Drinking Water Tanks' || type == 'coffee' || type == 'Comprehensive Restoration of minor Irrigation Tank1' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == 'NTR 90 Days' || type == 'NTR Rural House' || type == 'Production of Bricks'){
+							str+='<label>Sanctioned</label>';
 						}else{
 							str+='<label>Target</label>';
 						}
@@ -4793,6 +4802,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}else if(type == 'OPGK-Annuals')
 							{
 								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Annuals">Oorura Pasu..</h4>';
+							}else if(type == 'NTR Rural House')
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="NTR IHHL">NTR IHHL</h4>';
 							}else if(type.length > 12)
 							{
 								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';

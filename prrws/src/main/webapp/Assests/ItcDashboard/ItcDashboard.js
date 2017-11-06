@@ -2,7 +2,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 var orgChart = '';
 //var departmentWiseArr=[{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'eProcurement',id:'5',color:'#F06C1F',image:'eProcurement',blockName:'eProcurement'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
-var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'}];
+var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'e Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'}];
 var globalFromDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDate = moment().format("DD/MM/YYYY");
 $("#itcDateRangePickerId").daterangepicker({
@@ -130,7 +130,7 @@ function departmentWiseOverView(){
 					}else if(departmentWiseArr[i].id ==4){
 						block+='<div class="m_top20">';
 							block+='<h3>3499</h3>';
-							block+='<h6 class="m_top10">etaal - KPI</h6>';
+							block+='<h6 class="m_top10">eTaal - KPI</h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==5){
 						block+='<div class="m_top20">';
