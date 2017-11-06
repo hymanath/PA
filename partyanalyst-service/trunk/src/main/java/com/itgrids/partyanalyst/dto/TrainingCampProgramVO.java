@@ -26,6 +26,8 @@ public class TrainingCampProgramVO {
 	private List<TrainingCampProgramVO> villageList;
 	private List<TrainingCampProgramVO> locationList;
 	
+	private List<TrainingCampProgramVO> leaderTrainingList = new ArrayList<TrainingCampProgramVO>();
+	
 	private String lastUpdatedTime;
 	private Long InviteeAttended = 0l;
 	private Long nonInviteeAttended=0l;
@@ -45,7 +47,10 @@ public class TrainingCampProgramVO {
 	private Set<Long> inviteesIds = new HashSet<Long>(0);
 	private Set<Long> nonInviteesIds = new HashSet<Long>(0);
 	private Set<Long> othersIds = new HashSet<Long>(0);
-	
+	private Long totalBatch = 0L;
+	private Long runningBatch = 0L;
+	private Long completedBatch = 0L;
+	private Long upcommintbatch = 0L;
 	public Set<Long> getInviteesIds() {
 		return inviteesIds;
 	}
@@ -256,6 +261,36 @@ public class TrainingCampProgramVO {
 	}
 	public void setOnly3daysCountNonInvited(Long only3daysCountNonInvited) {
 		this.only3daysCountNonInvited = only3daysCountNonInvited;
+	}
+	public List<TrainingCampProgramVO> getLeaderTrainingList() {
+		return leaderTrainingList;
+	}
+	public void setLeaderTrainingList(List<TrainingCampProgramVO> leaderTrainingList) {
+		this.leaderTrainingList = leaderTrainingList;
+	}
+	public Long getTotalBatch() {
+		return totalBatch;
+	}
+	public void setTotalBatch(Long totalBatch) {
+		this.totalBatch = totalBatch;
+	}
+	public Long getRunningBatch() {
+		return runningBatch;
+	}
+	public void setRunningBatch(Long runningBatch) {
+		this.runningBatch = runningBatch;
+	}
+	public Long getCompletedBatch() {
+		return completedBatch;
+	}
+	public void setCompletedBatch(Long completedBatch) {
+		this.completedBatch = completedBatch;
+	}
+	public Long getUpcommintbatch() {
+		return upcommintbatch;
+	}
+	public void setUpcommintbatch(Long upcommintbatch) {
+		this.upcommintbatch = upcommintbatch;
 	}
 	
 	

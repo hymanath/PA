@@ -2440,7 +2440,8 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			 for(int i=1; i<userAccessLevelValues.size(); i++){
 				 location.append(","+userAccessLevelValues.get(i));
 			 }
-		 }//get_training_camp_attendance_batch
+		 }
+		 //get_training_camp_attendance_batch
 		 //Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8','2','1')")
 		 Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_batch(:programIds,'2012-01-01','2030-12-30',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8',:accessLevelValue,:userAccessLevelValues,null)")
 			.addScalar("tdp_cadre_id", Hibernate.LONG)
@@ -2472,6 +2473,81 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			query.setParameter("programIds", program.toString()).setParameter("enrollemntYrId", enrollmentYearId).setParameter("basicCommitteeId", 1L)
 			.setParameter("accessLevelValue", accessLevelValue).setParameter("userAccessLevelValues", location.toString());
 			
+			return query.list();
+	}
+	 public List<Object[]> getDayWiseTrainingCampDetailsCountLocationLevelWise(Long accessLevelValue,List<Long> userAccessLevelValues,List<Long> enrollmentYearIds,List<Long> programIdsList,List<Long> batchIdsList)
+	 { 
+		
+	 	String  committeeEnrollmetYrId = "";
+	   if(enrollmentYearIds.contains(4L) && enrollmentYearIds.contains(3L) ){
+		   committeeEnrollmetYrId="1,2";
+	   }else if(enrollmentYearIds.contains(3L)){
+		   committeeEnrollmetYrId="1";
+	   }else if(enrollmentYearIds.contains(4L)){
+		   committeeEnrollmetYrId="2";
+	   }
+	   
+	   String batchIdStr="";
+	   if(batchIdsList != null && batchIdsList.size()>0){
+		   for (Long batchId : batchIdsList) {
+			   if(batchIdStr.trim().length()==0)
+				   batchIdStr = ""+batchId;
+			   else
+				   batchIdStr = batchIdStr+","+batchId;
+		}
+	   }
+	   if(batchIdStr.isEmpty())
+		   batchIdStr = null;
+	   
+	   StringBuilder location = new StringBuilder();
+		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			 location.append(userAccessLevelValues.get(0).toString());
+			 for(int i=1; i<userAccessLevelValues.size(); i++){
+				 location.append(","+userAccessLevelValues.get(i));
+			 }
+		 }
+		 
+		 StringBuilder program = new StringBuilder();
+		 if(programIdsList != null && programIdsList.size() > 0){
+			 program.append(programIdsList.get(0).toString());
+			 program.append(","+8);
+			 /*for(int i=1; i<programIdsList.size(); i++){
+				 program.append(","+8);
+			 }*/
+		 }
+	   //Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8','2','1')")
+	   Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_batch(:programId,'2012-07-23','2030-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8',:userAccessLevelId,:levelValueList,:batchIdStr)")
+			.addScalar("tdp_cadre_id", Hibernate.LONG)
+			.addScalar("date(A.attended_time)", Hibernate.STRING)
+			.addScalar("training_camp_batch_id", Hibernate.LONG)
+			.addScalar("tdp_roles_id", Hibernate.LONG)
+			.addScalar("tdp_committee_level_id", Hibernate.LONG)
+			.addScalar("state_id", Hibernate.LONG)
+			.addScalar("scope_value", Hibernate.LONG)
+			.addScalar("Attended_Status", Hibernate.STRING)
+			.addScalar("training_camp_program_id", Hibernate.LONG)
+			.addScalar("state_id", Hibernate.LONG)
+			.addScalar("state_name", Hibernate.STRING)
+			.addScalar("district_id", Hibernate.LONG)
+			.addScalar("district_name", Hibernate.STRING)
+			.addScalar("parliament_constituency_id", Hibernate.LONG)
+			.addScalar("parliament_constituency_name", Hibernate.STRING)
+			.addScalar("constituency_id", Hibernate.LONG)
+			.addScalar("constituency", Hibernate.STRING)
+			.addScalar("tehsil_id", Hibernate.LONG)
+			.addScalar("tehsil_name", Hibernate.STRING)
+			.addScalar("local_election_body", Hibernate.LONG)
+			.addScalar("town", Hibernate.STRING)
+			.addScalar("panchayat_id", Hibernate.LONG)
+			.addScalar("panchayat_name", Hibernate.STRING)
+			.addScalar("ward_id", Hibernate.LONG)
+			.addScalar("ward_name", Hibernate.STRING)
+			.addScalar("training_camp_id", Hibernate.LONG)//25
+			.addScalar("training_camp_batch_type_id", Hibernate.LONG)//26
+			.addScalar("from_date", Hibernate.STRING)//27
+			.addScalar("to_date", Hibernate.STRING);//28
+			query.setParameter("programId", program.toString()).setParameter("enrollemntYrId", committeeEnrollmetYrId).setParameter("basicCommitteeId", 1L)
+			.setParameter("batchIdStr", batchIdStr).setParameter("userAccessLevelId", accessLevelValue).setParameter("levelValueList", location.toString()); 	
 			return query.list();
 	}
 }

@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
@@ -100,11 +101,19 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private IBoothDAO boothDAO;
 	 private ITrainingCampDAO trainingCampDAO;
 	 private ITrainingCampScheduleDAO trainingCampScheduleDAO;
+	 private ITrainingCampProgramDAO trainingCampProgramDAO;
 	//SETTERS
 	
 	public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
 		this.coreDashboardGenericService = coreDashboardGenericService;
 	 }
+	public ITrainingCampProgramDAO getTrainingCampProgramDAO() {
+		return trainingCampProgramDAO;
+	}
+	public void setTrainingCampProgramDAO(
+			ITrainingCampProgramDAO trainingCampProgramDAO) {
+		this.trainingCampProgramDAO = trainingCampProgramDAO;
+	}
 	public ITrainingCampDAO getTrainingCampDAO() {
 		return trainingCampDAO;
 	}
@@ -7493,11 +7502,10 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
         String toDay = sdf1.format(currentDate);			
 		String levelVals = getListToString(userAccessLevelValues);
 		String committeeLvlVals = "5,6,7,8,9";
-		String programIds = getListToString(programIdList);
 		String enrollmentYrIds = getListToString(enrollmentYearIds);
 		
 		
-		
+		List<Long> programIds = trainingCampScheduleDAO.getTrainingCampProgramIds(enrollmentYearIds.get(0));
 		//List<Object[]> attendedList = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrIds,1L,committeeLvlVals,userAccessLevelId,levelVals);
 		List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(null,null,enrollmentYearIds,programIdList);
 		List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
@@ -7566,18 +7574,231 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 				programVO.setTotalNotAttenedCountPer(calculatePercantage(programVO.getTotalNotAttenedCount(),	programVO.getTotalEligibleCount()));
 				trainingCampProgramDtlsMap.put(programVO.getId(), programVO);
 			}
-		}
+		}  
 		if (trainingCampProgramDtlsMap != null	&& trainingCampProgramDtlsMap.size() > 0) {
-			finalResultVO.setTrainingProgramList(new ArrayList<TrainingCampProgramVO>(trainingCampProgramDtlsMap.values()));
+			finalResultVO.setLeaderTrainingList(new ArrayList<TrainingCampProgramVO>(trainingCampProgramDtlsMap.values()));
 		}
 	} catch (Exception e) {
 		LOG.error(
 				"Error occured at getTotalEligibleAttendedAndNotAttenedOverviewCount() in CoreDashboardMainService {}",
 				e);
 	}
+	//add leadership skills for other leader
+	addLeadershipSkillsForOtherLeader(userAccessLevelId, userAccessLevelValues, stateId,enrollmentYearIds,finalResultVO);
+	
 	return finalResultVO;
 }
-
+public List<Object[]> getCampDetailsListByFilteringAccessLevelWise(Long userAccessLevelId,List<Long> levelValueList,List<Long> enrollmentYearIds,List<Long> programYearIds,List<Long> batchIdsList){
+    List<Object[]> campDetailsList = new ArrayList<Object[]>(0);
+    if(batchIdsList != null && batchIdsList.size()>0){
+               int filterCount = 50;
+               int i = 0; 
+               int j = filterCount;
+               int maxcount = batchIdsList.size();
+               while (maxcount >0){  
+                   if(maxcount<filterCount)
+                       j = i+maxcount;
+                       List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCountLocationLevelWise(userAccessLevelId,levelValueList,enrollmentYearIds,programYearIds,batchIdsList.subList(i, j));//Procedure Call
+                      if(commonMethodsUtilService.isListOrSetValid(tempList)){
+                    	  for(Object[] param : tempList){
+                    		  if(commonMethodsUtilService.getLongValueForObject(param[26]).longValue() == 2L){
+                    			  param[8]=9L;
+                    			  campDetailsList.add(param);
+                    		  }
+                    	  }
+                      }
+                       i=j;
+                       maxcount = maxcount-filterCount;
+                       j=j+filterCount;
+               }
+          }
+    return campDetailsList;
+}
+public void addLeadershipSkillsForOtherLeader(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, List<Long> enrollmentYearIds, TrainingCampProgramVO finalResultVO){
+	try{
+		List<Object[]> batchIdAndProgramIdList = trainingCampBatchDAO.getProgramIdAndBatchIdListByPassingEnrollmentYearId(enrollmentYearIds.get(0));
+		Set<Long> programIdList = new HashSet<Long>();
+		Set<Long> catchIdList = new HashSet<Long>();
+		if(batchIdAndProgramIdList != null && batchIdAndProgramIdList.size() > 0){
+			for(Object[] param : batchIdAndProgramIdList){
+				catchIdList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+				programIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+			}
+		}
+		
+		Long accessLevelValue = userAccessLevelId;
+		
+		List<Object[]>  tempList = null;
+		List<Object[]>  tempList2 = null;
+		if(accessLevelValue.longValue() == IConstants.STATE_LEVEl_ACCESS_ID){
+			List<Long> distList1 = new ArrayList<Long>(){{add(11L);add(12L);add(13L);add(14L);add(15L);add(16L);add(17L);}};
+			tempList  = getCampDetailsListByFilteringAccessLevelWise(3L,distList1,enrollmentYearIds,new ArrayList<Long>(programIdList),new ArrayList<Long>(catchIdList));
+			List<Long> distList2 = new ArrayList<Long>(){{add(18L);add(19L);add(20L);add(21L);add(22L);add(23L);add(517L);}};
+			tempList2  = getCampDetailsListByFilteringAccessLevelWise(3L,distList2,enrollmentYearIds,new ArrayList<Long>(programIdList),new ArrayList<Long>(catchIdList));
+			tempList.addAll(tempList2);
+		}else{
+			tempList  = getCampDetailsListByFilteringAccessLevelWise(accessLevelValue,userAccessLevelValues,enrollmentYearIds,new ArrayList<Long>(programIdList),new ArrayList<Long>(catchIdList));
+		}
+		
+		//take total attended.
+		List<Object[]> attendedList = new ArrayList<Object[]>();
+		buildTotalAttendedProgramWise(attendedList,tempList);
+		
+		
+		
+		//create a map for training camp id and cadreId and list of attended date.
+		Map<Long,Map<Long,Set<String>>> programIdAndCadreIdAndListOfAttendedDate = new HashMap<Long,Map<Long,Set<String>>>();
+		
+		Map<Long,Set<Long>> programIdAndTotalBatchList = new HashMap<Long,Set<Long>>();
+		
+		initializeTrainingCampMap(programIdAndCadreIdAndListOfAttendedDate,programIdAndTotalBatchList,attendedList,"all","camp");
+		
+		// teke all invite attended cadre list
+		Map<Long,Map<Long,Set<String>>> programIdAndInviteeCadreIdAndListOfAttendedDate = new HashMap<Long,Map<Long,Set<String>>>();
+		
+		
+		
+		initializeTrainingCampMap(programIdAndInviteeCadreIdAndListOfAttendedDate,null,tempList,"inviteeAttended","special");
+		
+		//get camp name
+		List<Object[]> programNameList = null;
+		if(programIdAndTotalBatchList != null && programIdAndTotalBatchList.keySet() != null && programIdAndTotalBatchList.keySet().size() > 0){
+			programNameList = trainingCampProgramDAO.getTrainingProgramDetailsByProgramIds(new ArrayList<Long>(programIdAndTotalBatchList.keySet()));
+		}
+		Map<Long,String> programIdAndNameMap = new HashMap<Long,String>();
+		if(programNameList != null && programNameList.size() > 0){
+			for(Object[] param : programNameList){
+				programIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+			}
+		}
+		
+		//build vo for ui
+		
+		List<TrainingCampProgramVO> finalVO = new ArrayList<TrainingCampProgramVO>();
+		if(programIdAndCadreIdAndListOfAttendedDate != null && programIdAndCadreIdAndListOfAttendedDate.size() > 0){
+			for(Entry<Long,Map<Long,Set<String>>> param : programIdAndCadreIdAndListOfAttendedDate.entrySet()){
+				String programName = programIdAndNameMap.get(param.getKey());
+				initializeTotalAttendedVO(finalVO,param.getKey(),programName,param.getValue(),programIdAndTotalBatchList);
+			}
+		}
+		
+		if(programIdAndInviteeCadreIdAndListOfAttendedDate != null && programIdAndInviteeCadreIdAndListOfAttendedDate.size() > 0){
+			for(Entry<Long,Map<Long,Set<String>>> param : programIdAndInviteeCadreIdAndListOfAttendedDate.entrySet()){
+				initializeTotalInviteeAttendedVO(finalVO,param.getKey(),param.getValue());
+			}
+		}
+		//push completed and running batches per program
+		Map<Long,Map<Long,String>> programIdAndBatchIdAndbetweenDate = new HashMap<Long,Map<Long,String>>();
+		if(tempList != null && tempList.size() > 0){
+			buildProgramWiseBatchMap(tempList,programIdAndBatchIdAndbetweenDate);
+			pushProgramWiseBatch(finalVO,programIdAndBatchIdAndbetweenDate);
+		}
+		
+		if(finalVO != null && finalVO.size() > 0){
+			for(TrainingCampProgramVO outerParam : finalVO){
+				outerParam.setNonInviteeAttended(outerParam.getTotalAttenedCount() - outerParam.getInviteeAttended());
+				List<TrainingCampProgramVO> tempVOList = outerParam.getTrainingProgramList();
+				if(tempVOList != null && tempVOList.size() > 0){
+					for(TrainingCampProgramVO innerParam : tempVOList){
+						innerParam.setOnly1dayCountNonInvited(innerParam.getOnly1dayCount() - innerParam.getOnly1dayCountInvited());
+						innerParam.setOnly1dayCountNonInvited(innerParam.getOnly1dayCount() - innerParam.getOnly1dayCountInvited());
+						innerParam.setOnly1dayCountNonInvited(innerParam.getOnly1dayCount() - innerParam.getOnly1dayCountInvited());
+					}
+				}
+			}
+		}
+		
+		
+		if(finalVO != null && finalVO.size() > 0){
+			finalResultVO.setLeaderTrainingList(finalVO);
+		}
+		
+	}catch(Exception e){
+		LOG.error("Error occured at addLeadershipSkillsForOtherLeader() in CoreDashboardMainService {}",e);
+	}
+}
+public void pushProgramWiseBatch(List<TrainingCampProgramVO> finalVO,Map<Long,Map<Long,String>> programIdAndBatchIdAndbetweenDate){
+	try{
+		for(TrainingCampProgramVO campProgramVO : finalVO){
+			Long programId = campProgramVO.getId();
+			Map<Long,String> batchIdAndBetweenDate = programIdAndBatchIdAndbetweenDate.get(programId);
+			if(batchIdAndBetweenDate != null && batchIdAndBetweenDate.size() > 0){
+				setBatchStatus(campProgramVO,batchIdAndBetweenDate);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Error occured at pushProgramWiseBatch() in CoreDashboardMainService {}",e);
+	}
+}
+public void setBatchStatus(TrainingCampProgramVO campProgramVO,Map<Long,String> batchIdAndBetweenDate){
+	try{
+		DateUtilService dateUtilService = new DateUtilService();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Long totalBatch = 0L;
+		Long runningBatch = 0L;
+		Long completedBatch = 0L;
+		Long upcommingBatch = 0L;
+		for(Entry<Long,String> param : batchIdAndBetweenDate.entrySet()){
+			totalBatch = totalBatch + 1L;
+			String[] dateArr = param.getValue().split(",");
+			Date fromDate = sdf.parse(dateArr[0]);
+			Long fromDateMili = fromDate.getTime();
+			Date toDate = sdf.parse(dateArr[1]);
+			Long toDateMili = toDate.getTime();
+			Date today = dateUtilService.getCurrentDateAndTime();
+			Long todayMili = today.getTime();
+			
+			if(fromDateMili <= todayMili && toDateMili >= todayMili){
+				runningBatch = runningBatch + 1L;
+			}else if(todayMili > toDateMili){
+				completedBatch = completedBatch + 1L;
+			}else if(fromDateMili > todayMili){
+				upcommingBatch = upcommingBatch + 1L;
+			}
+		}
+		campProgramVO.setTotalBatch(totalBatch);
+		campProgramVO.setCompletedBatch(completedBatch);
+		campProgramVO.setRunningBatch(runningBatch);
+		campProgramVO.setUpcommintbatch(upcommingBatch);
+	}catch(Exception e){
+		LOG.error("Error occured at setBatchStatus() in CoreDashboardMainService {}",e);
+	}
+}
+public void buildProgramWiseBatchMap(List<Object[]> tempList,Map<Long,Map<Long,String>> programIdAndBatchIdAndbetweenDate){
+	try{
+		Map<Long,String> batchIdAndBetweenDateMap = null;
+		String btnDate = "";
+		for(Object[] param : tempList){
+			batchIdAndBetweenDateMap = programIdAndBatchIdAndbetweenDate.get(commonMethodsUtilService.getLongValueForObject(param[8]));
+			if(batchIdAndBetweenDateMap == null){
+				batchIdAndBetweenDateMap = new HashMap<Long,String>();
+				programIdAndBatchIdAndbetweenDate.put(commonMethodsUtilService.getLongValueForObject(param[8]), batchIdAndBetweenDateMap);
+			}
+				String betweenDate = commonMethodsUtilService.getStringValueForObject(param[27]).trim().substring(0, 10)+","+commonMethodsUtilService.getStringValueForObject(param[28]).trim().substring(0, 10);
+				batchIdAndBetweenDateMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), betweenDate);
+			
+		}
+	}catch(Exception e){
+		LOG.error("Error occured at buildProgramWiseBatchMap() in CoreDashboardMainService {}",e);
+	}
+}
+public void buildTotalAttendedProgramWise(List<Object[]> attendedList, List<Object[]> tempList){
+	try{
+		Object[] objArr = null;
+		if(tempList != null && tempList.size() > 0){
+			for(Object[] param : tempList){
+				objArr = new Object[4];
+				objArr[0] = param[8];
+				objArr[1] = param[2];
+				objArr[2] = param[0];
+				objArr[3] = param[1];
+				attendedList.add(objArr);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Error occured at buildTotalAttended() in CoreDashboardMainService {}",e);
+	}
+}
 public void setDayWiseCountToProgramWiseVO(TrainingCampProgramVO programVO,List<TrainingCampProgramVO> list){
 	try{
 		
@@ -7682,14 +7903,14 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampC
 		
 		Map<Long,Set<Long>> campIdAndTotalBatchList = new HashMap<Long,Set<Long>>();
 		
-		initializeTrainingCampMap(campIdAndCadreIdAndListOfAttendedDate,campIdAndTotalBatchList,attendedList,"all");
+		initializeTrainingCampMap(campIdAndCadreIdAndListOfAttendedDate,campIdAndTotalBatchList,attendedList,"all","camp");
 		
 		// teke all invite attended cadre list
 		Map<Long,Map<Long,Set<String>>> campIdAndInviteeCadreIdAndListOfAttendedDate = new HashMap<Long,Map<Long,Set<String>>>();
 		
 		
 		
-		initializeTrainingCampMap(campIdAndInviteeCadreIdAndListOfAttendedDate,null,tempList,"inviteeAttended");
+		initializeTrainingCampMap(campIdAndInviteeCadreIdAndListOfAttendedDate,null,tempList,"inviteeAttended","camp");
 		
 		//get camp name
 		List<Object[]> campNameList = null;
@@ -7853,7 +8074,7 @@ public void initializeTotalAttendedVO(List<TrainingCampProgramVO> finalVO,Long c
 		LOG.error("Error occured at initializeVO() in CoreDashboardMainService {}",e);
 	}
 }
-public void initializeTrainingCampMap(Map<Long,Map<Long,Set<String>>> campIdAndCadreIdAndListOfAttendedDate, Map<Long,Set<Long>> campIdAndTotalBatchList,List<Object[]> attendedList,String mapType){
+public void initializeTrainingCampMap(Map<Long,Map<Long,Set<String>>> campIdAndCadreIdAndListOfAttendedDate, Map<Long,Set<Long>> campIdAndTotalBatchList,List<Object[]> attendedList,String mapType,String blockType){
 	try{
 		Map<Long,Set<String>> cadreIdAndListOfAttendedDate = null;
 		Set<String> attendedDateList = null;
@@ -7862,15 +8083,19 @@ public void initializeTrainingCampMap(Map<Long,Map<Long,Set<String>>> campIdAndC
 		int campIdPosition = 0;
 		int cadreIdPosition = 0;
 		int datePosition = 0;
-		if(mapType.trim().equalsIgnoreCase("all")){
+		if(mapType.trim().equalsIgnoreCase("all") && blockType.trim().equalsIgnoreCase("camp")){
 			campIdPosition = 0;
 			cadreIdPosition = 2;
 			datePosition = 3;
-		}else{
+		}else if(mapType.trim().equalsIgnoreCase("inviteeAttended") && blockType.trim().equalsIgnoreCase("camp")){
 			campIdPosition = 25;
 			cadreIdPosition = 0;
 			datePosition = 1;
-		}//[6393149, 2017-07-10, 473, 3, 8, 1, 20, INVITEE, 8, 1, Andhra Pradesh, 20, Kadapa, 501, Rajampet, 252, RAJAMPET, null, null, 89, Rajampet, null, null, 29977, WARD-6]
+		}else{
+			campIdPosition = 8;
+			cadreIdPosition = 0;
+			datePosition = 1;
+		}
 		if(attendedList != null && attendedList.size() > 0){
 			for(Object[] param : attendedList){
 				if(mapType.trim().equalsIgnoreCase("inviteeAttended") && commonMethodsUtilService.getStringValueForObject(param[7]).trim().equalsIgnoreCase("NON INVITEE")){

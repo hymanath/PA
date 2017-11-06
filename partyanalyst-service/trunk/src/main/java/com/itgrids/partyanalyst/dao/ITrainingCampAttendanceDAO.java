@@ -79,4 +79,5 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Object[]> getDayWiseTrainingCampDetailsCount(List<Long> enrollmentYearIds,List<Long> programIdsList,List<Long> batchIdsList);
 	public List<Object[]> getAttendedCountForTrainingCamp(Long accessLevelValue, List<Long> userAccessLevelValues, Date fromDate, Date toDate, Long enrollmentYearId,List<Long> programId);
 	public List<Object[]> getInviteAttendedCountForTrainingCamp(Long accessLevelValue, List<Long> userAccessLevelValues, Long enrollmentYearId,List<Long> programIdsList);
+	public List<Object[]> getDayWiseTrainingCampDetailsCountLocationLevelWise(Long accessLevelValue,List<Long> userAccessLevelValues,List<Long> enrollmentYearIds,List<Long> programIdsList,List<Long> batchIdsList);
 }
