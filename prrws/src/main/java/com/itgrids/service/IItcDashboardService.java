@@ -18,7 +18,7 @@ public interface IItcDashboardService {
 	public List<MeesevaDtlsVO> getMeesevaSLAOverviewDtls(InputVO inputVO);
 	public List<MeesevaDtlsVO> getMeesevaSLAMonitoringDtlsDepartmentWise(InputVO inputVO);
 	public CmEoDBDtlsVO getCMEDOBOverview();
-	public List<CmEoDBDtlsVO> getCMEDOBReportStatusWise(InputVO inputVO);
+	public List<ItecCMeoDBDetailsVO> getCMEDOBReportStatusWise(InputVO inputVO);
 	public ApInnovationSocietyOverviewVO getAPInnovationSocietyOverview(InputVO inputVO);
 	public List<ApInnovationCenterVO> getAPISXLR8APDetailedData(InputVO inputVO);
 	public List<ApInnovationCenterVO> getCampaignsDetailedData(InputVO inputVO);

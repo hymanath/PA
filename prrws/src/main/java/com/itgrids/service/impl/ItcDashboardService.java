@@ -11,9 +11,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.analysis.ReusableAnalyzerBase;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.jdom.Document;
@@ -292,7 +292,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		 }
 		 return resultVO;
 	}
-	
+
 	public void setRequiredData( CmEoDBDtlsVO topDeptVO,CmEoDBDtlsVO lowDeptVO,String type,CmEoDBDtlsVO resultVO) {
 		try {
 			if (type.equalsIgnoreCase("rejected")) {
@@ -405,10 +405,46 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return List<MeesevaKPIDtlsVO>
 	 * @Date 21-09-2017
 	 */
-	public List<CmEoDBDtlsVO> getCMEDOBReportStatusWise(InputVO inputVO) {
-		List<CmEoDBDtlsVO> resultList = new ArrayList<CmEoDBDtlsVO>(0);
+	//babu
+	public List<ItecCMeoDBDetailsVO> getCMEDOBReportStatusWise(InputVO inputVO) {
+		List<ItecCMeoDBDetailsVO> resultList = new ArrayList<ItecCMeoDBDetailsVO>(0);
 		 try {
-			 
+			 MOUTrackerIT[] dataArr = new TrackerITServiceSoapProxy().EODB_ABSTRACT_REPORT();
+			 Map<String,List<ItecCMeoDBDetailsVO>> deptNameAndVosMap = new HashMap<String,List<ItecCMeoDBDetailsVO>>();
+		     if(dataArr != null && dataArr.length > 0){
+		    	 for( int i = 0; i < dataArr.length-2 ; i++ ){
+		    		List<ItecCMeoDBDetailsVO> clearnceVosList= deptNameAndVosMap.get(dataArr[i].getDASH_BOARD_NAME().trim());
+		    		if( clearnceVosList == null ){
+		    			clearnceVosList = new ArrayList<ItecCMeoDBDetailsVO>();
+		    			deptNameAndVosMap.put(dataArr[i].getDASH_BOARD_NAME().trim(),clearnceVosList);
+		    		}
+		    		ItecCMeoDBDetailsVO vo = new ItecCMeoDBDetailsVO();
+		    		vo.setClearenceName(dataArr[i].getCLEARENCE_NAME());
+		    		vo.setTotalApplications(dataArr[i].getTOTAL_APPLICATIONS());
+		    		vo.setTotalApproved(dataArr[i].getTOTAL_APPROVED());
+		    		vo.setTotalRejected(dataArr[i].getTOTAL_REJECTED());
+		    		vo.setTotalPending(dataArr[i].getTOTAL_PENDING());
+		    		vo.setPendingWithInSLA(dataArr[i].getPENDING_WITN_IN_SLA());
+		    		vo.setPendingBeyondSLA(dataArr[i].getPENDING_BEYOND_SLA());
+		    		vo.setTotalReApproved(dataArr[i].getTOTAL_REAPPROVED());
+		    		vo.setDashBoardNO(dataArr[i].getDASH_BOARD_NO());
+		    		vo.setClearenceId(dataArr[i].getCLEARANCE_ID());
+		    		clearnceVosList.add(vo);
+		    	 }
+		    	 if(deptNameAndVosMap != null && deptNameAndVosMap.size() > 0){
+		    		 for(Entry<String,List<ItecCMeoDBDetailsVO>> entry: deptNameAndVosMap.entrySet()){
+		    			 ItecCMeoDBDetailsVO mainVo = new ItecCMeoDBDetailsVO();
+		    			String dashBordname= entry.getKey();
+		    			if(dashBordname != null && dashBordname.trim().length() > 0){
+		    				mainVo.setDashboardName(dashBordname);
+		    				mainVo.getSubList().addAll(entry.getValue());
+		    				 resultList.add(mainVo);
+		    			}
+		    			
+		    		 }
+		    		
+		    	 }
+		       }
 			 
 		 }catch (Exception e) {
 			 LOG.error("Exception occured at getCMEDOBReportStatusWise() in  ItcDashboardService class",e);
