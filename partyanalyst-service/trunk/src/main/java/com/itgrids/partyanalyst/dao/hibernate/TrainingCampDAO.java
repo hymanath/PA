@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -64,4 +65,11 @@ public class TrainingCampDAO extends GenericDaoHibernate<TrainingCamp, Long> imp
 		query.setParameterList("programIds", programIds);
 		return query.list();
 	}
+    public List<Object[]> getTrainingCamps(Set<Long> campIds){
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("select model.trainingCampId, model.campName from TrainingCamp model where model.trainingCampId in (:campIds) ");
+    	Query query = getSession().createQuery(sb.toString());
+    	query.setParameterList("campIds", campIds);
+    	return query.list();
+    }
 }
