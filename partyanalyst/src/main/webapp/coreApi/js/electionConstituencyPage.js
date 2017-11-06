@@ -1,5 +1,5 @@
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var globalStrongPoorColor={"VERY GOOD":'#98FB98',"OK":"#FFCC00","POOR":"#FF9966","VERY POOR":"#CC6600","WORST":"#FF3E3E","GOOD":"#428AE9","EXCELLENT":"#0B6623"}
+var globalStrongPoorColor={"VERY GOOD":'#17a589',"OK":"#FFCC00","POOR":"#FF9966","VERY POOR":"#CC6600","WORST":"#FF3E3E","GOOD":"#428AE9","EXCELLENT":"#0B6623"}
 var globalCrossVotionBgColor={"TDP":'#FFFFB8',"YSRC":"#CEE8DF","BJP":"#f4c36e","AIMIM":"#7bf7a6","INC":"#CEDFEA","CPI":"#fc713f","CPM":"#f995b5","PRP":"#b6f986","TRS":"#F7E8D9"}
 var electionScopeValArr=[];
 var eletionSubType=["MAIN"];
@@ -40,6 +40,7 @@ setTimeout(function(){
 function onLoadCalls()
 {
 	$(".chosen-select").chosen();
+	$("#mianHeadingId").html('');
 	$("#mianHeadingId").html((locationName)+"  "+locationLevelName);
 	if(locationLevelId < "5"){
 		$(".searchLevelCls").show();
@@ -71,9 +72,12 @@ function onLoadCalls()
 		$("#searchLevelId").append('<option value="panchayat">Panchayat</option>');
 		$("#searchLevelId").trigger("chosen:updated");
 	}else if(locationLevelId == '10'){
+		$("#electionACId").hide();
 		$("#searchLevelId").html('');
 		$("#searchLevelId").append('<option value="constituency">constituency</option>');
 		$("#searchLevelId").trigger("chosen:updated");
+	}else{
+		$("#electionACId").show();
 	}
 	getElectionTypes();
 	
@@ -1249,10 +1253,9 @@ function getElectionInformationLocationWiseStatus(eletionSubType,electionYrValFo
 function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searchLevelVal,partyNameForStrong,electionScopetext,year){
 		
 	var str='';
-	str+='<h4 class="text-capital m_top10">'+searchLevelVal+' Level '+electionScopetext+' Election Comparision Results For '+partyNameForStrong+' Party</h4>';
+	$("#partyWiseStrongHeadingId").html("<h4 class='text-capital m_top10'> "+searchLevelVal+" Level "+electionScopetext+" Election Comparision Results For "+partyNameForStrong+" Party</h4>")
 	
-	
-	str+='<div class="table-responsive m_top10">';
+	/* str+='<div class="table-responsive m_top10">';
 	
 	str+='<table class="table table-condensed table-bordered" >';
 	str+='<thead>';
@@ -1278,7 +1281,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 	str+='</tr>';
 	str+='</tbody>';
 	str+='</table>';
-	str+='</div>';
+	str+='</div>'; */
 	
 	
 	str+='<div class="table-responsive m_top10">';
@@ -1371,7 +1374,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 						for(var j in result[0].list){
 							
 							if(year == 0){
-								str+='<th style="min-width:210px;">Election Year<h3>'+result[0].list[j].electionYear+'</h3>';
+								str+='<th style="min-width:220px;">Election Year<h3>'+result[0].list[j].electionYear+'</h3>';
 									str+='<div class="row">';
 										for(var k in result[0].list[j].subList1){
 											str+='<div class="col-sm-1" style="margin-left:5px">';
@@ -1388,7 +1391,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 									str+='</div>';
 								str+='</th>';
 							}else if(result[0].list[j].electionYear==year){
-								str+='<th style="min-width:210px;background-color:#ccc;"><div class="row"><div class="col-sm-6"> Election Year<h3>'+result[0].list[j].electionYear+'</h3></div>';
+								str+='<th style="min-width:220px;background-color:#ccc;"><div class="row"><div class="col-sm-6"> Election Year<h3>'+result[0].list[j].electionYear+'</h3></div>';
 								str+='<div class="col-sm-6"><button class="btn btn-xs btn-success pull-right removeFilterCls">Back </button></div></div>';
 									str+='<div class="row">';
 										for(var k in result[0].list[j].subList1){
@@ -1406,7 +1409,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 									str+='</div>';
 								str+='</th>';
 							}else{
-								str+='<th style="min-width:210px;">Election Year<h3>'+result[0].list[j].electionYear+'</h3>';
+								str+='<th style="min-width:220px;">Election Year<h3>'+result[0].list[j].electionYear+'</h3>';
 									str+='<div class="row">';
 										for(var k in result[0].list[j].subList1){
 											str+='<div class="col-sm-1" style="margin-left:5px">';
@@ -1453,7 +1456,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 								str+='<h6><b>Margin Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 						}else if(result[i].list[j].status == 'VERY GOOD')
 						{
-							str+='<td style="background-color:#98FB98;color:#fff">';
+							str+='<td style="background-color:#17a589;color:#fff">';
 							str+='<h5 ><b>'+result[i].list[j].status+'</b></h5>';
 								str+='<h6><b>Margin Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 						}else if(result[i].list[j].status == 'OK')
