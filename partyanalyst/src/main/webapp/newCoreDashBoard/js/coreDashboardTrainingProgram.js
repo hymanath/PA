@@ -1,4 +1,4 @@
-//Training Program
+s//Training Program
 var globalStateId=1; //default Ap 
 var customStartDate1 = moment().format('DD/MM/YYYY');
 //$(".trainingDate").html(" UPTO DATE ( "+customStartDate1+" )");
@@ -3198,11 +3198,11 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 						str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingTrainingBatch'+i+'">';
 						if(i == 0)  
 							{
-								str+='<a role="button" class="collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
+								str+='<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
 							}else{
-								str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
+								str+='<a role="button" class="collapsed collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
 							}
-				str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<small >[Total Batch :'+result.trainingProgramList[i].totalBath+']</small></h4>';
+				str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<small >[Total Batchs :'+result.trainingProgramList[i].totalBath+']</small></h4>';
 							str+='</a>';
 						str+='</div>';
 						if(i == 0)
