@@ -3000,14 +3000,17 @@
 						<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;"><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></div>
 						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand" expand-block-inner="training">
 							<div class="row">
-							   <div id="programsDtlsCntTableId"></div>
-								<div class="col-md-12 col-xs-12 col-sm-12">
+							   <div id="programsDtlsCntTableId" class="m_top10"></div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									 <div id="villageWardTblId"></div>
 								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									 <div id="mdlTwnDvsnTabId"></div>
 								</div>
-								<div id="stateLevelCampId"></div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									 <div id="specialProgramLeaderId"></div>
+								</div>
+								<div id="stateLevelCampId" class="m_top10"></div>
 								<!--<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
 									 <div id="districtTblId"></div>
 								</div>
@@ -3015,7 +3018,7 @@
 									 <div id="stateTblDivId"></div>
 									<!--<hr class="m_0"/>"/>
 								</div>-->
-								<div id="campWiseTrainingId"></div>
+								<div id="campWiseTrainingId" class="m_top10"></div>
 							</div>
 						</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock" expand-block-right="training">
@@ -4957,9 +4960,10 @@ $(document).on("click","[expand-icon-inner]",function(){
 		var expandName = $this.attr("expand_event_name");
 		if(blockName == 'events')
 		{
-			
+			alert(1)
 			if(expandName == "events")
 			{
+				alert(2)
 				$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events");	
 				$("#eventsCmpBlckDivId").find("ul li:nth-child(2)").removeClass("active")	
 				$(".moreEventsBlocksIcon").removeClass("acitivitiesMoreExpand");
@@ -5037,6 +5041,7 @@ $(document).on("click","[expand-icon-inner]",function(){
 			}
 			
 		}else if(blockName == 'training'){
+			
 			stateLevel = $this.attr("state-level");
 			if(stateLevel == 'true')
 			{
@@ -5581,4 +5586,4 @@ function refreshMeetingStatus(){
 }
 </script> 
 </body>
-</html>ustom.css
+</html>
