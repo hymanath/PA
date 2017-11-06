@@ -1,5 +1,6 @@
 package com.itgrids.utils;
 
+import com.google.common.collect.ImmutableList;
 
 public interface IConstants {
 	public static final String HOST = "smtp.gmail.com";
@@ -59,9 +60,10 @@ public interface IConstants {
     public static final String DEFAULT_MAIL_SERVER = "server";
     public static final String EMAIL_USERNAME = "info@itgrids.com";
     public static final String EMAIL_PASSWORD = "itgrids$678";
-    public static final String STATIC_CONTENT_FOLDER_URL = "D:/Tomcat 8.5/webapps/PRRWS-1.0/";
+    public static final String STATIC_CONTENT_FOLDER_URL = "D:/Tomcat 8.0/webapps/PRRWS-1.0/";
     public static final String SUCCESS = "Success";
     public static final String FAILURE = "Failure";
     public static final String LOCALHOST = "localhost";
+    public static final ImmutableList<Long>  COMPONENT_IDS =ImmutableList.of(15L, 16L, 17L, 18L, 39L, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 11L, 12L, 14L, 16L, 17L, 18L,19L, 20L, 21L, 22L, 25L, 26L, 27L, 28L, 29L, 30L, 31L, 32L, 33L, 34L, 35L,  37L, 38L, 40L, 41L,43L, 44L, 45L, 46L, 47L, 48L, 49L, 50L, 51L, 52L, 53L, 54L, 55L, 56L, 57L, 58L, 59L, 60L);
     
 }

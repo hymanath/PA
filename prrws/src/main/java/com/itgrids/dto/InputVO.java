@@ -27,7 +27,7 @@ public class InputVO implements Serializable {
 	private Long searchLevelValue;
 	private List<Long> searchLvlVals;
 	private String displayType;
-	
+	private String path;
 	private String year;
 	private String locationType;
 	private String locationName;
@@ -103,6 +103,12 @@ public class InputVO implements Serializable {
 	private String session;
 	private String groupName;
 	
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
 	public String getProgram() {
 		return program;
 	}

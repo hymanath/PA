@@ -1,5 +1,7 @@
 package com.itgrids.tpi.rws.service.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,21 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -28,6 +45,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.IHabitationDAO;
@@ -36,30 +66,40 @@ import com.itgrids.dao.IRwsDistrictDAO;
 import com.itgrids.dao.IRwsTehsilDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dao.ITressedHabitationDAO;
+import com.itgrids.dao.IWebserviceCallDetailsDAO;
+import com.itgrids.dao.impl.NregaComponentServiceDAO;
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
+import com.itgrids.dto.EmailAttributesVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.NregaConsolidatedInputVO;
 import com.itgrids.dto.NregaLocationOverviewVO;
 import com.itgrids.dto.RangeVO;
+import com.itgrids.dto.ResultStatus;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.dto.WaterSourceVO;
+import com.itgrids.dto.WebserviceHealthVO;
 import com.itgrids.model.Habitation;
 import com.itgrids.model.TressedHabitation;
+import com.itgrids.model.WebserviceCallDetails;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
+import com.itgrids.utils.NREGSCumulativeThread;
+import com.itgrids.utils.NREGSCumulativeThreadPerformance;
 import com.itgrids.utils.RWSThread;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 import sun.misc.BASE64Encoder;
+import sun.util.logging.resources.logging;
 
 @Service
 @Transactional
@@ -82,7 +122,12 @@ public class RWSNICService implements IRWSNICService{
 	private IRwsConstituencyDAO rwsConstituencyDAO;
 	@Autowired
 	private WebServiceUtilService webServiceUtilService;
-	
+	@Autowired
+	private DateUtilService dateUtilService;
+	@Autowired
+	private IWebserviceCallDetailsDAO webserviceCallDetailsDAO;
+    @Autowired
+    private NregaComponentServiceDAO nregaComponentServiceDAO;
 	@Autowired
 	private IHabitationDAO habitationDAO;
 	
@@ -4093,5 +4138,380 @@ public class RWSNICService implements IRWSNICService{
 		return input;
 	}		
 				
+	public List<IdNameVO> getWebserviceDetails() {
+		SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
+		List<IdNameVO> finalvoList = new ArrayList<>();
+		try{
+		      //getting input url list
+			List<NregaConsolidatedInputVO> urlsList = new ArrayList<NregaConsolidatedInputVO>(0);
+			NregaConsolidatedInputVO inputVO = new NregaConsolidatedInputVO();
+			inputVO.getComponentIds().addAll(IConstants.COMPONENT_IDS);
+			if(inputVO != null && inputVO.getComponentIds() != null && !inputVO.getComponentIds().isEmpty()){
+					List<Object[]> list = nregaComponentServiceDAO.getComponentUrlsByComponentIds(inputVO.getComponentIds(), "DATA");
+					if(list != null && !list.isEmpty()){
+						for (Object[] obj : list) {
+							NregaConsolidatedInputVO vo = new NregaConsolidatedInputVO();
+							vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+							vo.setUrl(obj[2] != null ? obj[2].toString():"");
+							vo.setComponentName(obj[1] != null ? obj[1].toString():"");
+							vo.setId(Long.valueOf(obj[3]!= null ? obj[3].toString():"0"));
+							urlsList.add(vo);
+						}
+					}
+			    }	
+			  //sending url list to thread class and saving in database
+				List<WebserviceHealthVO> responseList = new ArrayList<WebserviceHealthVO>();
+				String str = convertingStaticInputVOToString();
+				String faStr = convertingInputVOToStringForFA();
+			    if(urlsList != null && !urlsList.isEmpty()){
+				  ExecutorService executor = Executors.newFixedThreadPool(30);
+					 for (NregaConsolidatedInputVO urlvo : urlsList) {
+							 if(urlvo.getId() != null && urlvo.getId().longValue() == 14l){
+								Runnable worker = new NREGSCumulativeThreadPerformance(urlvo.getUrl(),urlvo.getId(),responseList,faStr);
+								executor.execute(worker);
+							   }else{
+								Runnable worker = new NREGSCumulativeThreadPerformance(urlvo.getUrl(),urlvo.getId(),responseList,str);
+								executor.execute(worker);
+							   }
+						    }	 
+							executor.shutdown();
+							while (!executor.isTerminated()) {
+									
+							}
+							System.out.println("Finished all threads"+responseList);
+		
+					}
+					
+				if(responseList != null && !responseList.isEmpty()){
+					for (WebserviceHealthVO response : responseList) {
+			    
+							WebserviceCallDetails webserviceCallDetails = new WebserviceCallDetails();
+							webserviceCallDetails.setWebserviceId(response.getUrlId());
+							webserviceCallDetails.setStatusCode(response.getStatusCode());
+							webserviceCallDetails.setCallTime(response.getStartTime());
+							webserviceCallDetails.setStatus(response.getStatus());
+							webserviceCallDetails.setInputData(str);
+							Date startDate =response.getStartTime();
+							Date endDate = response.getEndDate();
+							Long difference = endDate.getTime()-startDate.getTime();
+							webserviceCallDetails.setTimeTaken(difference);
+							webserviceCallDetailsDAO.save(webserviceCallDetails);
+						
+					}
+			
+				}
+				//reterving web service data from database 
+				Date endDate =dateUtilService.getCurrentDateAndTime();
+				Calendar cal = Calendar.getInstance();
+				cal.add(Calendar.HOUR, -1);
+				Date oneHourBack = cal.getTime();
+				Date startDate= oneHourBack;
+				List<Object[]> webserviceList = webserviceCallDetailsDAO.getWebserviceDetails(startDate, endDate);
+						if(webserviceList!= null && webserviceList.size()>0L){
+							List<Long> webserviceIdList = new ArrayList<Long>();
+								for(Object[] obj : webserviceList){
+									Long webserviceId =commonMethodsUtilService.getLongValueForObject(obj[0]);
+										if(!(webserviceIdList.contains(webserviceId))){
+											Long timeTaken =(Long)obj[4]/1000L;
+											if(timeTaken>5L){
+												IdNameVO webservicevo = new IdNameVO();
+												webservicevo.setId(webserviceId);
+												webservicevo.setUrl(commonMethodsUtilService.getStringValueForObject(obj[1]));
+												webservicevo.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));
+												webservicevo.setCallTime(commonMethodsUtilService.getStringValueForObject(obj[3]));
+												webservicevo.setTimeTaken(commonMethodsUtilService.getStringValueForObject(timeTaken.toString()));
+												webservicevo.setServiceProviderName(commonMethodsUtilService.getStringValueForObject(obj[5]));
+												webservicevo.setWorkStatus(commonMethodsUtilService.getStringValueForObject(obj[6]));
+												webserviceIdList.add(webserviceId);
+												finalvoList.add(webservicevo);
+												}
+												
+									    }
+								}
+							EmailAttributesVO vo =buildPDFTable(finalvoList);
+							sendEmailWithPdfAttachment(vo);
+					}		
+				 }catch(Exception e){
+					LOG.error("Exception occured in getWebserviceDetails method",e);
+				 }
+			return finalvoList;
+	   }
+		
+	private String convertingInputVOToStringForFA() {
+		String str ="";
+		try{
+			str = "{";
+			
+			str += "\"fromDate\" : \"2017-04-31"+"\",";
+			str += "\"toDate\" : \"2017-11-31"+"\",";
+			str += "\"year\" : \"2017"+"\",";
+			str += "\"locationType\" : \"state"+"\",";
+			str += "\"locationId\" : \"-1"+"\",";
+			str += "\"SublocationType\" : \"mandal"+"\",";
+			
+		
+		if(str.length() > 1)
+			str = str.substring(0,str.length()-1);
+		
+		str += "}";
+			
+		}catch(Exception e){
+	         LOG.error("Exception occured in convertingInputVOToStringForFA method",e);
+		}
+		return null;
+	}
+
+	public  String convertingStaticInputVOToString() {
+		String str = "";
+		try {
 				
+			str = "{";
+			
+				str += "\"fromDate\" : \"2017-04-31"+"\",";
+				str += "\"toDate\" : \"2017-11-31"+"\",";
+				str += "\"year\" : \"2017"+"\",";
+				str += "\"locationType\" : \"state"+"\",";
+				str += "\"locationId\" : \"-1"+"\",";
+				str += "\"SublocationType\" : \"mandal"+"\",";
+				str += "\"program\" : \"-1"+"\",";
+			
+			if(str.length() > 1)
+				str = str.substring(0,str.length()-1);
+			
+			str += "}";
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertingInputVOToString - NREGSConsolidatedService service", e);
+		}
+		return str;
+		
+	}
+	/**
+	 * @description to build pdf from table 
+	 * @param emailAttributesVO
+	 * @return ResultStatus 
+	*/
+
+	public EmailAttributesVO buildPDFTable(List<IdNameVO> finalvoList){
+			try{
+				EmailAttributesVO finalvo =new EmailAttributesVO();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mma");
+				SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
+				String dt = sdf.format(new Date());
+				String filename =sdf2.format(new Date());
+				//String uniqueName=UUID.randomUUID().toString();
+				String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL  + "PDF" ;//change this attr
+				String pdfFileName =filename+".pdf";
+			     String pdfPath = staticPath + "/"+ pdfFileName;
+				 //String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL  +"PDF" + "/" +filename+".pdf";//change this at
+				 finalvo.setFilePath(staticPath);
+				 finalvo.setDate(dt);
+				 finalvo.setFileName(pdfFileName);
+				 new File(staticPath).mkdir();
+			     FileOutputStream out=new FileOutputStream(pdfPath);
+			     Rectangle pageSize = new Rectangle(PageSize.A4);
+			     pageSize.setBackgroundColor(new BaseColor(255,255,255));
+			    // Document document = new Document( pageSize );
+			     Document  document=new Document(pageSize);
+			     PdfWriter writer=PdfWriter.getInstance(document,out);
+			     Font fontHead = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.WHITE);
+			     Font fontBody = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.BLACK);
+			     Chunk c = new Chunk("WEBSERVICE TIME INFORMATION", fontBody);
+			     //c.setBackground(BaseColor.BLUE);
+			     Paragraph paragraph=new Paragraph(c);
+		         paragraph.setAlignment(Element.ALIGN_CENTER);
+		         
+		         Paragraph paragraph1=new Paragraph();
+			     paragraph1.add("      DATE:"+dt);
+			     paragraph1.setAlignment(Element.ALIGN_CENTER);
+			     paragraph1.add(Chunk.NEWLINE);
+			     document.open();
+			       
+			        PdfPTable table = new PdfPTable(5); // 3 columns.
+			        table.setWidthPercentage(100); //Width 100%
+			        table.setSpacingBefore(10f); //Space before table
+			        table.setSpacingAfter(10f); //Space after table
+			        
+			        //Set Column widths
+			        float[] columnWidths = {2f,4f, 6f, 2f,2f};
+			        table.setWidths(columnWidths);
+			        PdfPCell cell0 = new PdfPCell(new Paragraph("Service Provider Name",fontHead));
+			        cell0.setBorderColor(BaseColor.BLACK);
+			        cell0.setBackgroundColor(BaseColor.DARK_GRAY);
+			        cell0.setPaddingLeft(10);
+			        cell0.setHorizontalAlignment(Element.ALIGN_CENTER);
+			        cell0.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			        
+			        PdfPCell cell1 = new PdfPCell(new Paragraph("Service Name",fontHead));
+			        cell1.setBorderColor(BaseColor.BLACK);
+			        cell1.setBackgroundColor(BaseColor.DARK_GRAY);
+			        cell1.setPaddingLeft(10);
+			        cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			        cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			 
+			        PdfPCell cell2 = new PdfPCell(new Paragraph("Url",fontHead));
+			        cell2.setBorderColor(BaseColor.BLACK);
+			        cell2.setBackgroundColor(BaseColor.DARK_GRAY);
+			        cell2.setPaddingLeft(10);
+			        cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			        cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	
+			        PdfPCell cell3 = new PdfPCell(new Paragraph("Time Taken(sec)",fontHead));
+			        cell3.setBorderColor(BaseColor.BLACK);
+			        cell3.setBackgroundColor(BaseColor.DARK_GRAY);
+			        cell3.setPaddingLeft(10);
+			        cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
+			        cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			        
+			        PdfPCell cell4 = new PdfPCell(new Paragraph("Status",fontHead));
+			        cell4.setBorderColor(BaseColor.BLACK);
+			        cell4.setBackgroundColor(BaseColor.DARK_GRAY);
+			        cell4.setPaddingLeft(10);
+			        cell4.setHorizontalAlignment(Element.ALIGN_CENTER);
+			        cell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			        
+			        table.addCell(cell0);
+			        table.addCell(cell1);
+			        table.addCell(cell2);
+			        table.addCell(cell3);
+			        table.addCell(cell4);
+			 
+			      for(int i=0;i<finalvoList.size();i++){
+				    	  
+					    	  PdfPCell providerName=new PdfPCell(new Phrase(finalvoList.get(i).getServiceProviderName()));
+						        providerName.setBorderColor(BaseColor.BLACK);
+						        providerName.setBackgroundColor(BaseColor.WHITE);
+						        providerName.setPaddingLeft(10);
+						        providerName.setHorizontalAlignment(Element.ALIGN_CENTER);
+						        providerName.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						        table.addCell(providerName);
+							        	
+						        PdfPCell nameCell=new PdfPCell(new Phrase(finalvoList.get(i).getName()));
+						        nameCell.setBorderColor(BaseColor.BLACK);
+						        nameCell.setBackgroundColor(BaseColor.WHITE);
+						        nameCell.setPaddingLeft(10);
+						        nameCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						        nameCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						        table.addCell(nameCell);
+						 	 
+						        PdfPCell urlCell=new PdfPCell(new Phrase(finalvoList.get(i).getUrl()));
+						        
+						 	     urlCell.setBorderColor(BaseColor.BLACK);
+						 	     urlCell.setBackgroundColor(BaseColor.WHITE);
+						 	     urlCell.setPaddingLeft(10);
+						 	     urlCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						 	     urlCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						 	     table.addCell(urlCell);
+						 	   
+						 	    PdfPCell timeTakenInsec=new PdfPCell(new Phrase(finalvoList.get(i).getTimeTaken()));
+						 	      timeTakenInsec.setBorderColor(BaseColor.BLACK);
+						 	     timeTakenInsec.setBackgroundColor(BaseColor.WHITE);
+						 	      timeTakenInsec.setPaddingLeft(10);
+						 	      timeTakenInsec.setHorizontalAlignment(Element.ALIGN_CENTER);
+						 	      timeTakenInsec.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						 	     table.addCell(timeTakenInsec);
+						 	     
+						 	    PdfPCell status=new PdfPCell(new Phrase(finalvoList.get(i).getWorkStatus()));
+						 	      status.setBorderColor(BaseColor.BLACK);
+						 	      status.setBackgroundColor(BaseColor.WHITE);
+						 	      status.setPaddingLeft(10);
+						 	      status.setHorizontalAlignment(Element.ALIGN_CENTER);
+						 	      status.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						 	     table.addCell(status);
+				 
+				        }
+				        
+				        document.add(paragraph);
+				        document.add(paragraph1);
+				        
+				        document.add(table);
+				 
+				        document.close();
+				        writer.close();
+				        return finalvo;
+			  }catch(Exception e){
+			LOG.error("exception occured in pdf to table format",e);
+	        }
+		return null;
+    }
+	/**
+	 * @description to  send Email with pdf attachment 
+	 * @param emailAttributesVO
+	 * @return ResultStatus 
+	*/
+	
+	public ResultStatus sendEmailWithPdfAttachment(EmailAttributesVO emailAttributesVO){
+	      ResultStatus resultStatus = new ResultStatus();
+	      try{
+		        DateUtilService dateUtilService = new DateUtilService();
+		        
+		        String host = IConstants.DEFAULT_MAIL_SERVER;
+		        Session session = commonMethodsUtilService.getNewSessionObject(host);
+			        if(session == null)
+			        {
+			          //LOG.error("MimeMessage Object is Not Created");  
+			          resultStatus.setResultCode(0);
+			          return resultStatus;
+			        }
+		        //sending mail to client  
+			        try{        
+			        MimeMessage message = new MimeMessage(session);    
+			        
+			        message.setFrom(new InternetAddress(IConstants.EMAIL_USERNAME));  
+			        
+			        message.addRecipient(Message.RecipientType.TO, new InternetAddress("accounts@telugudesam.org")); 
+			        //message.addRecipient(Message.RecipientType.TO, new InternetAddress("a.dakavaram@itgrids.com"));  
+			        message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhin.lenka@itgrids.com"));    
+			    
+			        message.setHeader("Return-Path", IConstants.EMAIL_USERNAME);
+			        message.setSentDate(dateUtilService.getCurrentDateAndTime());
+			        message.setSubject(" This Is webService perfomance Status ");//change this attr
+			        Multipart multipart = new MimeMultipart();
+			         
+			          BodyPart htmlPart = new MimeBodyPart();
+			          StringBuilder msgText= new StringBuilder();    
+			          
+			          msgText.append("Dear Sir,<br><br> Please find the attached  pdf document for webservice performance details for the time:"+emailAttributesVO.getDate()) ;
+			       
+			          
+			          msgText.append("<br><br>Thanks");
+			          msgText.append("<br>IT TEAM");
+			          htmlPart.setContent(msgText.toString(),"text/html");
+			          multipart.addBodyPart(htmlPart);
+			          String pdfFileName = emailAttributesVO.getFileName();////change this attr
+			          String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL  + "PDF" ;//change this attr
+				      String pdfPath = staticPath + "/"+ pdfFileName;
+				      DataSource source = new FileDataSource(pdfPath);
+			          BodyPart  attachment  = new MimeBodyPart();
+			          attachment.setDataHandler(new DataHandler(source));
+			          attachment.setFileName(emailAttributesVO.getFileName());////change this attr
+			          multipart.addBodyPart(attachment);
+			           
+			          message.setContent(multipart);
+			           
+				          if(host.equalsIgnoreCase(IConstants.LOCALHOST))  
+				          {
+				             Transport transport = session.getTransport("smtp");
+				              transport.connect(IConstants.HOST,IConstants.EMAIL_USERNAME,IConstants.EMAIL_PASSWORD);
+				              transport.sendMessage(message, message.getAllRecipients());
+				              transport.close();
+				        }
+				        else{
+				              Transport.send(message);
+				        }
+			          resultStatus.setMessage(IConstants.SUCCESS);
+			        resultStatus.setResultCode(1); 
+			        }catch(Exception e){
+		          //LOG.error("Exception in sending mail : ",e);
+		          resultStatus.setMessage(IConstants.FAILURE);
+		          resultStatus.setResultCode(0);
+		        }
+		        return resultStatus;
+		      }catch(Exception e){
+		        resultStatus.setExceptionEncountered(e);
+		        resultStatus.setExceptionMsg(e.getMessage());
+		        resultStatus.setResultCode(0);
+		        return resultStatus;
+		      }
+	    }
  }

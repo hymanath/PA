@@ -1,5 +1,6 @@
 package com.itgrids.utils;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.service.integration.external.NregaWebServiceUtilService;
@@ -10,8 +11,9 @@ public class NREGSCumulativeThread implements Runnable {
 	private String url =null;
 	private ClientResponse response =null;
 	private String inputVO =null;
+	
 	private List responseVo=null;
-
+	private DateUtilService dateUtilService = new DateUtilService();
 	 
 
 	public NREGSCumulativeThread(String url,List responseVo,String input) {
@@ -31,7 +33,9 @@ public class NREGSCumulativeThread implements Runnable {
 		try {
 			 
 			NregaWebServiceUtilService webServiceUtilService = new NregaWebServiceUtilService();
+			Date startTime = dateUtilService.getCurrentDateAndTime();
 		    ClientResponse response = webServiceUtilService.callWebService(url, inputVO);
+		    Date endTime = dateUtilService.getCurrentDateAndTime();
 		    responseVo.add(response) ;
 		} catch (Exception e) {
 			e.printStackTrace();
