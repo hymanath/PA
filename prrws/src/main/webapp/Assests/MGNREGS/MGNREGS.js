@@ -1243,8 +1243,8 @@ function buildNREGSProjectsOverview(result,blockName)
 					str+='<div class="row m_top10" collapse-overview-body="nonConvergence">';
 						str+='<div class="col-sm-12">';
 							str+='<div class="block-border">';
-								str+='<h5 class="text-danger">Other MCC</h5>';
-								str+='<h5 class="text-danger" style="top: -14px;padding: 3px;margin-left: 3px;"><span class="pull-right" collapse-overview="nonConvergenceOthers" style="cursor:pointer;border:1px solid #fff;color:#333">-</span></h5>';
+								str+='<h5 class="text-danger" style="top:-29px">Other MCC</h5>';
+								str+='<h5 class="text-danger" style="border: 1px solid #cccccc;margin-left: 4px;padding: 3px;top: -21px;width: 25px;"><span class="pull-right" collapse-overview="nonConvergenceOthers" style="cursor:pointer;border:1px solid #fff;color:#333; margin-right:5px;">-</span></h5>';
 								str+='<div class="row" collapse-overview-body="nonConvergenceOthers">';	
 									for(var i in result)
 									{
@@ -1376,8 +1376,8 @@ function buildNREGSProjectsOverview(result,blockName)
 				str+='<div class="row m_top10" collapse-overview-body="convergencePr" style="display:none;">';
 					str+='<div class="col-sm-12">';
 						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Other</h5>';
-							str+='<h5 class="text-danger" style="top: -14px;padding: 3px;margin-left: 3px;"><span class="pull-right" collapse-overview="convergenceOthers" style="cursor:pointer;border:1px solid #fff;;color:#333">+</span></h5>';
+							str+='<h5 class="text-danger" style="top:-29px">Other</h5>';
+							str+='<h5 class="text-danger" style="border: 1px solid #cccccc;margin-left: 4px;padding: 3px;top: -21px;width: 25px;"><span class="pull-right" collapse-overview="convergenceOthers" style="cursor:pointer;border:1px solid #fff;color:#333;margin-right:5px;">+</span></h5>';
 							str+='<div class="row" collapse-overview-body="convergenceOthers" style="display:none;">';
 								for(var i in result)
 								{
@@ -4646,7 +4646,12 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					
 					str+='<div class="row">';
 						str+='<div class="col-sm-6 text-center">';
+						if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'OTHERS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas'){
+							str+='<label>Sanction</label>';
+						}else{
 							str+='<label>Target</label>';
+						}
+							
 							if(result[i].target != null && result[i].target.length > 0)
 							{
 								
