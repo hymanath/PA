@@ -3235,7 +3235,7 @@ function getTotalArticledetails(articleId){
 		str+='<div class="row m_top10">';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div style="border-top:3px solid #D5D5D5;border-left:1px solid #D5D5D5;border-right:1px solid #D5D5D5;border-bottom:1px solid #D5D5D5;padding:10px;">';
-					str+='<div class="row alertsHideBody">';
+					str+='<div class="row alertsHideBody" style="box-shadow:none;">';
 						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 							if(alertTypeId == 0){
 								if(alertEdition == 1){

@@ -3032,3 +3032,6 @@ color: rgb(51, 122, 183);
 	border-width: 12px;
 	border-color: rgba(194, 225, 245, 0) rgba(194, 225, 245, 0) rgb(85, 85, 85);
 }
+.text_decoration_hover:hover{
+	text-decoration:none !important;
+}
