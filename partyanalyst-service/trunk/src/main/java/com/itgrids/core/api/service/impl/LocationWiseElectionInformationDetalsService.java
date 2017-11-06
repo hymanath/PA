@@ -386,7 +386,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 				if(commonMethodsUtilService.isListOrSetValid(alliancePartyIdNameList)){
 					partyId = Long.valueOf(alliancePartyIdNameList.get(0));
 					partyName = alliancePartyIdNameList.get(1);
-					String []alianceArr=alliancePartyIdNameList.get(2).replace("[", "").replace("]", "").split(",");
+					String []alianceArr=alliancePartyIdNameList.get(3).replace("[", "").replace("]", "").split(",");
 					List<Long> alisceidSList=new ArrayList<Long>();
 					for(int i=0; i< alianceArr.length;i++){
 						alisceidSList.add(Long.parseLong(alianceArr[i].trim()));
