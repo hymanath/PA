@@ -504,6 +504,8 @@ function tableViewConsolidated(result,divId,subLocationType)
 						tableView+='<th>Gully Control Works</th>';
 					}else if(result[0].subList[i].component != null && result[0].subList[i].component == 'CD_CW'){
 						tableView+='<th>Check Dams and Check Walls</th>';
+					}else if(result[0].subList[i].component != null && result[0].subList[i].component == 'NTR Rural House'){
+						tableView+='<th>NTR IHHL</th>';
 					}else{
 						if(result[0].subList[i].component !=null && result[0].subList[i].component.length>15){
 							tableView+='<th><span class="tooltipMGCls" style="cursor:pointer;" data-toogle="tooltip" data-placement="bottom" title="'+result[0].subList[i].component+'">'+result[0].subList[i].component.substring(0, 15)+'...</span></th>';

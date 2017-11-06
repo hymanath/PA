@@ -240,13 +240,13 @@
 			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/waterTank.png">
-					<h5 style="display: inline-block;">WATER TANK CLORINATION</h5>
+					<h5 style="display: inline-block;">WATER TANK CHLORINATION</h5>
 					<div class=" " style="text-align: right">
-						<h2 class="waterTankClorinationAllCls" style="margin-top: 0px"></h2>
-						<p class="">CLORINATED</p>
+						<h2 class="waterTankChlorinationAllCls" style="margin-top: 0px"></h2>
+						<p class="">CHLORINATED</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange WATERTANKCLORINATIONColor" title="click to add as favourite component." attr_url="waterTanksClorinationDashBoard" attr_full_block_name="WATER TANK CLORINATION" attr_color_name="gray" attr_block_name="WATERTANKCLORINATION" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange WATERTANKCHLORINATIONColor" title="click to add as favourite component." attr_url="waterTanksClorinationDashBoard" attr_full_block_name="WATER TANK CLORINATION" attr_color_name="gray" attr_block_name="WATERTANKCLORINATION" aria-hidden="true"></i>
 						<a class="pull-right"  href="waterTanksClorinationDashBoard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
