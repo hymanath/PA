@@ -7461,8 +7461,7 @@ public List<Object[]> getCampDetailsListByFiltering(List<Long> enrollmentYearIds
                }
           }
     return campDetailsList;
-}
-//demo
+}//demo
 public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long userAccessLevelId, List<Long> userAccessLevelValues,Long stateId, String toDateStr, List<Long> enrollmentYearIds,List<Long> programIdList) {
 	TrainingCampProgramVO finalResultVO = new TrainingCampProgramVO();
 	Map<Long, TrainingCampProgramVO> trainingCampProgramDtlsMap = new HashMap<Long, TrainingCampProgramVO>();
@@ -7505,7 +7504,7 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 		String enrollmentYrIds = getListToString(enrollmentYearIds);
 		
 		
-		List<Long> programIds = trainingCampScheduleDAO.getTrainingCampProgramIds(enrollmentYearIds.get(0));
+		//List<Long> programIds = trainingCampScheduleDAO.getTrainingCampProgramIds(enrollmentYearIds.get(0));
 		//List<Object[]> attendedList = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrIds,1L,committeeLvlVals,userAccessLevelId,levelVals);
 		List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(null,null,enrollmentYearIds,programIdList);
 		List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
@@ -7576,7 +7575,7 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 			}
 		}  
 		if (trainingCampProgramDtlsMap != null	&& trainingCampProgramDtlsMap.size() > 0) {
-			finalResultVO.setLeaderTrainingList(new ArrayList<TrainingCampProgramVO>(trainingCampProgramDtlsMap.values()));
+			finalResultVO.setTrainingProgramList(new ArrayList<TrainingCampProgramVO>(trainingCampProgramDtlsMap.values()));
 		}
 	} catch (Exception e) {
 		LOG.error(
