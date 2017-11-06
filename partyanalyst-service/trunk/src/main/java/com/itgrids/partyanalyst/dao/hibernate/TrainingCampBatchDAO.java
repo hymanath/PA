@@ -648,4 +648,14 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		}	
 		return query.list();
 	}
+	public List<Object[]> getProgramIdAndBatchIdListByPassingEnrollmentYearId(Long yearId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct model.trainingCampBatchId, model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId " +
+				  " from TrainingCampBatch model " +
+				  " where model.trainingCampBatchTypeId = 2 " +
+				  " and model.trainingCampSchedule.enrollmentYearId = :yearId ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("yearId", yearId);
+		return query.list(); 
+	}
 }
