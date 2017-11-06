@@ -4886,4 +4886,57 @@ public String getInsuraceStatusWiseComplaintsDetails()
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getCommitteeDetailedReports(){
+		try {
+			LOG.info("entered into CoreDashboardAction of getCommitteeDetailedReports() ");
+			jObj = new JSONObject(getTask());
+			
+			String fromDateStr = jObj.getString("fromDate");	
+			String toDateStr = jObj.getString("toDate");
+			
+			List<Long> enrollmentYearIdList = new ArrayList<Long>();
+			
+			JSONArray enrollmentYearIdArr = jObj.getJSONArray("enrollmentIdsLst");
+			if(enrollmentYearIdArr!=null &&  enrollmentYearIdArr.length()>0){
+				for( int i=0;i<enrollmentYearIdArr.length();i++){
+					enrollmentYearIdList.add(Long.valueOf(enrollmentYearIdArr.getString(i))); 
+				}
+			}
+			
+			List<Long> basiccommitteeTypeIdsList = new ArrayList<Long>();
+			JSONArray basiccommitteeTypeIdArr =jObj.getJSONArray("basiccommitteeTypeIdsList");
+			if(basiccommitteeTypeIdArr!=null &&  basiccommitteeTypeIdArr.length()>0){
+				for( int i=0;i<enrollmentYearIdArr.length();i++){
+					basiccommitteeTypeIdsList.add(Long.valueOf(basiccommitteeTypeIdArr.getString(i))); 
+				}
+			}
+			
+			List<Long> committeeTypeIdsLst = new ArrayList<Long>();
+			
+			JSONArray committeeTypeIdsArr  =jObj.getJSONArray("basiccommitteeTypeIdsList");
+			if(committeeTypeIdsArr!=null &&  committeeTypeIdsArr.length()>0){
+				for( int i=0;i<enrollmentYearIdArr.length();i++){
+					committeeTypeIdsLst.add(Long.valueOf(committeeTypeIdsArr.getString(i))); 
+				}
+			}
+			Long locationScopeId = jObj.getLong("locationScopeId");
+			
+			Long committeeLevelId = jObj.getLong("committeeLevelId");
+			
+			List<Long> locationValues = new ArrayList<Long>();
+			
+			JSONArray locationValueArr  =jObj.getJSONArray("LocationValuesList");
+			if(locationValueArr!=null &&  locationValueArr.length()>0){
+				for( int i=0;i<locationValueArr.length();i++){
+					locationValues.add(Long.valueOf(locationValueArr.getString(i))); 
+				}
+			}
+			
+			committeeDataVOList = null;//coreDashboardMainService.getCommitteeDetailedReports(fromDateStr,toDateStr,locationScopeId,committeeLevelId,enrollmentYearIdList,basiccommitteeTypeIdsList,committeeTypeIdsLst,locationValues);
+		} catch (Exception e) {
+			LOG.error("Exception raised into CoreDashboardAction of getCommitteeDetailedReports()",e);
+		}
+		return Action.SUCCESS;
+	}
 }
