@@ -1,7 +1,6 @@
 //Training Program
 var globalStateId=1; //default Ap 
 var customStartDate1 = moment().format('DD/MM/YYYY');
-
 //$(".trainingDate").html(" UPTO DATE ( "+customStartDate1+" )");
  $('#dateRangeIdForTrainingCamp').on('apply.daterangepicker', function(ev, picker) {
 	customStartDate = picker.startDate.format('DD/MM/YYYY');
@@ -14,6 +13,12 @@ $("#tdpTriningYearId").on('change', function() {
 	stateLevelCampDetails();
 	getTrainingCampBasicDetailsCntOverview();
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
+		var enrollmentYearId=$("#tdpTriningYearId").val();
+		if(enrollmentYearId == 4){
+			 $("#campWiseTrainingId").show();
+		}else{
+			$("#campWiseTrainingId").hide();
+		}
 });
  function initialiseDatePickerForTrainingProgram(){
 		$("#dateRangeIdForTrainingCamp").daterangepicker({
@@ -3155,3 +3160,108 @@ function getTrainingRecentTime(){
 		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
 		});        
   }
+  
+function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
+		$("#campWiseTrainingId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var jsObj={  
+	userAccessLevelId :globalUserAccessLevelId,         
+	userAccessLevelValues : globalUserAccessLevelValues,        
+	stateId : globalStateId,
+	fromDate : '01/01/2017',
+	toDate : '30/12/2017',                              
+	enrollmentYearIds : [2],                   
+	programIds : [8,9]
+	} 
+	$.ajax({            
+		type : 'POST',    
+		url : 'getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWiseAction.action',  
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)} 
+	}).done(function(result){
+		if(result != null && result.trainingProgramList.length > 0){
+			buildTrainingCampBatchCenterWiseDetails(result);
+		}else{
+			$("#campWiseTrainingId").html("No Data Available"); 
+		}
+	});
+}
+ function buildTrainingCampBatchCenterWiseDetails(result){ 
+  var str='';
+  str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+  str+='<h4 class="text-capital"><span class="headingColor">Training Center Wise Analysis</span></h4>';
+  str+='<div class="panel-group trainingCenterPanel m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
+  for(var i in result.trainingProgramList)
+			{
+				if(result.trainingProgramList[i].totalBath != null && result.trainingProgramList[i].totalBath> 0)
+				{
+					str+='<div class="panel panel-default">';
+						str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingTrainingBatch'+i+'">';
+						if(i == 0)  
+							{
+								str+='<a role="button" class="collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
+							}else{
+								str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
+							}
+				str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<small >[Total Batch Count :'+result.trainingProgramList[i].totalBath+']</small></h4>';
+							str+='</a>';
+						str+='</div>';
+						if(i == 0)
+						{
+							str+='<div id="collapseTrainingBatch'+i+'" class="panel-collapse collapse in" aria-labelledby="headingTrainingBatch'+i+'" style="position:relative">';
+						}else{
+							str+='<div id="collapseTrainingBatch'+i+'" class="panel-collapse collapse" aria-labelledby="headingTrainingBatch'+i+'" style="position:relative">';
+						}
+							str+='<div class="panel-body bg_ED " style="margin-top:0px;">';  
+		if($(window).width() < 300)
+		{
+			str+='<div class="table-responsive">';
+		}
+		str+='<table class="table tableBatchWiseTraining bg_ED table-condensed">';     
+			str+='<tbody>';
+				str+='<tr>';
+					str+='<td>';
+						str+='<p class="text-muted text-capitalize">Days</p>';
+						str+='<p class="responsiveFont">-</p>';
+						
+					str+='</td>';
+					str+='<td>';
+					str+='<p class="text-muted text-capitalize">Total Attended</p>';
+					str+='<p class="responsiveFont">'+result.trainingProgramList[i].totalAttenedCount
+					str+='</td>';							
+					str+='<td>';
+						str+='<p class="text-muted text-capitalize" title="Invitee Attended">Invitee Attended</p>';
+						var totalpercentage = ((parseInt(result.trainingProgramList[i].inviteeAttended)/parseInt(result.trainingProgramList[i].totalAttenedCount))*100).toFixed(2);
+						str+='<p class="responsiveFont">'+result.trainingProgramList[i].inviteeAttended+'&nbsp;<span class="font-10 text-danger"> ('+totalpercentage+')%</span></p>';
+			str+='</td>';
+			str+='<td>';
+						str+='<p class="text-muted text-capitalize" title="Non Invitee Attended">Non Invitee Attended</p>';
+						str+='<p class="responsiveFont">'+result.trainingProgramList[i].nonInviteeAttended+'</p>';
+			str+='</td>';
+			str+='</tr>';
+			for(var j in result.trainingProgramList[i].trainingProgramList)
+			 {
+	var percentage = ((parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited)/parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCount))*100).toFixed(2);
+			  str+='<tr>';
+				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].name+'</td>';
+				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCount+'</td>';
+				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited +'&nbsp;<span class="font-10 text-danger"> ('+percentage+')%</span></td>';
+				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCountNonInvited+'</td>';
+				
+			  str+='</tr>';
+			 }
+			str+='</tbody>';
+		str+='</table>';  
+		if($(window).width() < 300)
+		 {
+			 str+='</div>';
+		 }
+						str+='</div>';
+						str+='</div>';
+						str+='</div>';
+	}
+	}
+   str+='</div>';
+  str+='</div>';	
+  $("#campWiseTrainingId").html(str);        
+ }
+  
