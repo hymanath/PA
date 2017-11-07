@@ -2032,13 +2032,13 @@
 								<div role="tabpanel" class="tab-pane" id="home">
 									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
 									<hr style ="margin-bottom:0px;" />
-									<div class="basicCommitteeDetailsDiv">
+									<div class="basicBoothCommitteeDetailsDiv">
 									<ul class="settingsUl">
 									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
 									   <c:if test="${basicCommittee.id == 1}">
 										<li>
 											<label class="checkbox-inline">
-												<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
+												<input type="checkbox"  class="districtBoothCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
 												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 										   </label>
 										</li>	
@@ -2054,7 +2054,7 @@
 											<c:if test="${basicCommittee.id != 1}">
 											<li>
 											  <label class="checkbox-inline">
-												 <input type="checkbox"  class="districtCommitteecheckBoxClass districtCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}"><!--checked-->
+												 <input type="checkbox"  class="districtBoothCommitteecheckBoxClass districtBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}"><!--checked-->
 												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 											   </label>
 											</li>   
@@ -2067,13 +2067,13 @@
 								<div role="tabpanel" class="tab-pane" id="profile">
 									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
 									<hr style ="margin-bottom:0px;" />
-									<div class="basicCommitteeDetailsDiv">
+									<div class="basicBoothCommitteeDetailsDiv">
 									<ul class="settingsUl">
 									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
 									   <c:if test="${basicCommittee.id == 1}">
 										 <li>
 										   <label class="checkbox-inline">
-											 <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
+											 <input type="checkbox"  class="checkedBasicComm mandalBoothCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
 											 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 										   </label>
 										 </li>
@@ -2091,7 +2091,7 @@
 											   <c:when test="${basicCommittee.id == 10 || basicCommittee.id == 16}">
 												 <li>
 												  <label class="checkbox-inline">
-													 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
+													 <input type="checkbox"  class="mandalBoothCommitteecheckBoxClass mandalBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
 													 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 												  </label>
 												 </li> 
@@ -2099,7 +2099,7 @@
 												<c:otherwise>
 													<li>
 													  <label class="checkbox-inline">
-														 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" ><!--checked-->
+														 <input type="checkbox"  class="mandalBoothCommitteecheckBoxClass mandalBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" ><!--checked-->
 														 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 													   </label>
 													 </li> 
@@ -2114,13 +2114,13 @@
 								<div role="tabpanel" class="tab-pane active" id="boothMessages">
 									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
 									<hr style ="margin-bottom:0px;" />
-									<div class="basicCommitteeDetailsDiv">
+									<div class="basicBoothCommitteeDetailsDiv">
 									<ul class="settingsUl">
 									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
 										   <c:if test="${basicCommittee.id == 1}">
 											 <li>
 											   <label class="checkbox-inline">
-												 <input type="checkbox"  class="villageCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+												 <input type="checkbox"  class="villageBoothCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
 												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 											   </label>
 											 </li>
@@ -2137,7 +2137,7 @@
 											<c:if test="${basicCommittee.id != 1}">
 											<li>
 											  <label class="checkbox-inline">
-												 <input type="checkbox"  class="villageCommitteecheckBoxClass villageCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
+												 <input type="checkbox"  class="villageBoothCommitteecheckBoxClass villageBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
 												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 											   </label>
 											</li>   
@@ -2147,7 +2147,7 @@
 									</div>
 								</div>
 							  </div>
-							  <button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
+							  <button type="button" class="btn btn-success basicBoothCommittessDiv">Get Details</button>
 							</div>
 						
 						</div>
@@ -5319,6 +5319,7 @@ var globalImages;
 	
 	//settings scroll
 	$(".basicCommitteeDetailsDiv").mCustomScrollbar({setHeight:'300px'})
+	$(".basicBoothCommitteeDetailsDiv").mCustomScrollbar({setHeight:'300px'})
 	DatePickerDropdown();
 	function DatePickerDropdown()
 	{
