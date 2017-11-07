@@ -4914,7 +4914,7 @@ public String getInsuraceStatusWiseComplaintsDetails()
 			
 			List<Long> committeeTypeIdsLst = new ArrayList<Long>();
 			
-			JSONArray committeeTypeIdsArr  =jObj.getJSONArray("basiccommitteeTypeIdsList");
+			JSONArray committeeTypeIdsArr  =jObj.getJSONArray("committeeTypeIdsList");
 			if(committeeTypeIdsArr!=null &&  committeeTypeIdsArr.length()>0){
 				for( int i=0;i<enrollmentYearIdArr.length();i++){
 					committeeTypeIdsLst.add(Long.valueOf(committeeTypeIdsArr.getString(i))); 
@@ -4933,7 +4933,7 @@ public String getInsuraceStatusWiseComplaintsDetails()
 				}
 			}
 			
-			committeeDataVOList = null;//coreDashboardMainService.getCommitteeDetailedReports(fromDateStr,toDateStr,locationScopeId,committeeLevelId,enrollmentYearIdList,basiccommitteeTypeIdsList,committeeTypeIdsLst,locationValues);
+			committeeDataVOList = coreDashboardMainService.getCommitteeDetailedReport(enrollmentYearIdList, committeeLevelId,fromDateStr, toDateStr, basiccommitteeTypeIdsList, committeeTypeIdsLst, locationScopeId, locationValues );
 		} catch (Exception e) {
 			LOG.error("Exception raised into CoreDashboardAction of getCommitteeDetailedReports()",e);
 		}

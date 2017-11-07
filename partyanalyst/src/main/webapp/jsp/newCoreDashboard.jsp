@@ -14,6 +14,7 @@
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DataTable_NewVersion/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="coreApi/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
@@ -2230,7 +2231,7 @@
 									<div id="boothDistrictWiseCommitteesReport" ></div>
 								</div>
                             </div>
-                        </div>
+						</div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBoothBlocks1" style="display:none;"  expand-block-more="boothCommittees">
                             <!--<p><i>Selected:</i> <b>Main Committee</b></p>-->
                             <div class="panel panel-default panelNew">
@@ -2512,6 +2513,19 @@
                                 </div>
                                 <div class="panel-body verticalScrollBar">
 									<div id="districtWiseCommitteesReport" ></div>
+								</div>
+                            </div>
+							<div class="panel panel-default panelNew">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-12 col-sm-12">
+                                            <span class="headingColor text-capitalize">Committee Detailed Report</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+									<div id="commiteeWiseDetailedReportId" ></div>
 								</div>
                             </div>
                         </div>
@@ -3973,7 +3987,7 @@
 										<h5>PRAJA SANKALPA YATRA</h5>
 									</div>
 									<div class="col-sm-7">
-										<h5>PRAJA SAMASYALA PARISHKARA CHATTAM</h5>
+										<h5>COUNTER ON PRAJA SANKALPA YATRA</h5>
 									</div>
 								</div>
 								<div id="printMediaOverAllBlockId" class=""></div>
@@ -3987,7 +4001,7 @@
 										<h5>PRAJA SANKALPA YATRA</h5>
 									</div>
 									<div class="col-sm-7">
-										<h5>PRAJA SAMASYALA PARISHKARA CHATTAM</h5>
+										<h5>COUNTER ON PRAJA SANKALPA YATRA</h5>
 									</div>
 								</div>
 								<div id="electronicMediaOverAllBlockId" class=""></div>
@@ -4858,6 +4872,11 @@
 <script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script src="dist/DataTable_NewVersion/dataTable.js" type="text/javascript"></script>
+<script src="coreApi/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
+<script src="coreApi/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
+<script src="coreApi/Plugins/DataTable/pdf.js" type="text/javascript"></script>
+<script src="coreApi/Plugins/DataTable/v5font.js" type="text/javascript"></script>
+<script src="coreApi/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
@@ -5377,6 +5396,7 @@ var globalImages;
 	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();
 		onloadPrajaSankaplaYatraCalls();
+		//getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');

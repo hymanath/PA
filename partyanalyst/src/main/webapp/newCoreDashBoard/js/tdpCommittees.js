@@ -15,6 +15,13 @@
 				districtBasicCommitteeIds.push( $(this).val() );
 			}
 		}); 
+		
+		$(".villageCommitteecheckBoxClass").each(function(){
+			if($(this).is(':checked')){
+				districtBasicCommitteeIds.push( $(this).val() );
+			}
+		}); 
+		
 		var districtCommitteeLevelObject = new Object();
 		districtCommitteeLevelObject.committeeLevelId = 11;
 		districtCommitteeLevelObject.basicCommitteeIds = districtBasicCommitteeIds;
@@ -27,6 +34,13 @@
 				mandalBasicCommitteeIds.push( $(this).val() );
 			}
 		}); 
+		
+		$(".villageCommitteecheckBoxClass").each(function(){
+			if($(this).is(':checked')){
+				mandalBasicCommitteeIds.push( $(this).val() );
+			}
+		}); 
+		
 		var mandalCommitteeLevelObject = new Object();
 		mandalCommitteeLevelObject.committeeLevelId = 5;
 		mandalCommitteeLevelObject.basicCommitteeIds = mandalBasicCommitteeIds;
@@ -68,6 +82,7 @@
 		   $('.districtCommitteeAffliatedcheckBoxClass').prop('checked', false);
 		}
 	});
+	
 	function getCommitteesBasicCountReport(){
 		
 		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -160,7 +175,7 @@
 		});
 	}
 	function getLevelWiseBasicCommitteesCountReport(){
-		
+		getCommitteeDetailedReport();
 		$("#levelWiseBasicCommittees").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var state = globalState;
 	   
@@ -1962,6 +1977,7 @@
 				$(".moreBlocksDistrictlevel").hide();
 				
 				getLevelWiseBasicCommitteesCountReport();
+				
 			}
 			if($(".comparisionBlock").hasClass("active")){
 				$("#directChildActivityMemberDiv").html('');
@@ -1972,7 +1988,8 @@
 		}
 	}
 	function committeeBasicCall(){
-			getCommitteesBasicCountReport(); 
+			getCommitteesBasicCountReport();
+			
 	}
 	$(document).on("click",".comparisonSelect li",function(){
 		if($(this).hasClass("active") == true)
@@ -2460,19 +2477,105 @@
 		});
 	}
 	
+	function getCommitteeDetailledReport(){
+		
+		var basiccommitteeTypeIds = [];
+		var committeeTypeIds = [];
+		
+		//basiccommitteeTypeIds.push(2);// affiliated 
+		var enrollmentIds = [];
+		enrollmentIds.push(2); // committee_enrollmentYearId
+		
+		var locationValuesArr = [];
+		locationValuesArr.push(1);	// ap state 
+		
+		var dateStr = $('#dateRangeId').val();
+		var dateStrArr = dateStr.split('-');
+		var date1 = dateStrArr[0].split('/');;
+		var date2 = dateStrArr[1].split('/');;
+		
+		var startDate = date1[0]+'-'+date1[1]+'-'+date1[2]
+		var endDate = date2[0]+'-'+date2[1]+'-'+date2[2]
+		
 	
-	//getCommitteeDetailedReport();
+	
+	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+		
+		var allSelectedCommitteeIdsArray = [];
+		//district level
+		$(".districtCommitteecheckBoxClass").each(function(){
+			if($(this).is(':checked')){
+				allSelectedCommitteeIdsArray.push( $(this).val() );
+			}
+		}); 
+		//mandal/town/division level.
+		$(".mandalCommitteecheckBoxClass").each(function(){
+			if($(this).is(':checked')){
+				allSelectedCommitteeIdsArray.push( $(this).val() );
+			}
+		}); 
+		//village/ward level.
+		$(".villageCommitteecheckBoxClass").each(function(){
+			if($(this).is(':checked')){
+				allSelectedCommitteeIdsArray.push( $(this).val() );
+			}
+		}); 
+		var committeeLevelId='';
+		
+		$("[role='tablist'] li").each(function(){
+			if($(this).hasClass("active")){
+				var type = $(this).find("a").html();
+				if(type == "District Level"){
+					committeeLevelId = "11";
+				}else if(type == "Mandal/town/division level"){
+					committeeLevelId = "5";
+				}else if(type == "village/ward level"){
+					committeeLevelId = "6";
+				}
+			}
+		}); 
+		
+		var jObj = {
+			
+			fromDate  : startDate,
+			toDate    : endDate,
+			basiccommitteeTypeIdsList : levelWiseBasicCommitteesArray,
+			committeeTypeIdsList :allSelectedCommitteeIdsArray,
+			committeeLevelId :committeeLevelId,
+			locationScopeId: 2,
+			LocationValuesList :locationValuesArr,
+			enrollmentIdsLst :enrollmentIds
+			//activityMemberId : globalActivityMemberId,
+	        //userTypeId : globalUserTypeId
+			
+		}
+		
+		$.ajax({
+          type:'GET',
+          url: 'getCommitteeDetailedReportAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result !=null && result.length>0){
+				buildCommitteeDetailedReport(result);
+			}else{
+				$("#commiteeWiseDetailedReportId").html("No Data Available");
+			}
+			
+	    });
+	}
+	
 	
 	function getCommitteeDetailedReport(){
 		
 		var basiccommitteeTypeIds = [];
 		var committeeTypeIds = [];
 		
-		committeeTypeIds.push($('#tdpCommitteeYearId').val());
+		//basiccommitteeTypeIds.push(2);// affiliated 
 		var enrollmentIds = [];
+		enrollmentIds.push(2); // committee_enrollmentYearId
 		
 		var locationValuesArr = [];
-		locationValuesArr.push(1);
+		locationValuesArr.push(1);	// ap state 
 		
 		var dateStr = $('#dateRangeId').val();
 		var dateStrArr = dateStr.split('-');
@@ -2481,21 +2584,94 @@
 	
 		var jObj = {
 			
-			fromDate  : startDate,
-			toDate    : endDate,
+			fromDate  : '12-12-2014',
+			toDate    : '12-12-2017',
 			basiccommitteeTypeIdsList : basiccommitteeTypeIds,
 			committeeTypeIdsList :committeeTypeIds,
-			committeeLevelId :"",
+			committeeLevelId :"11",
 			locationScopeId: 2,
 			LocationValuesList :locationValuesArr,
 			enrollmentIdsLst :enrollmentIds
 			
 		}
-			
+		
 		$.ajax({
           type:'GET',
           url: 'getCommitteeDetailedReportAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-	      });
+			if(result !=null && result.length>0){
+				buildCommitteeDetailedReport(result);
+			}else{
+				$("#commiteeWiseDetailedReportId").html("No Data Available");
+			}
+			
+	    });
 	}
+	
+function buildCommitteeDetailedReport(result){
+	
+	var str='';
+	str+='<div class="table-responsive">';
+		str+='<table class="table table-condensed table_custom table-bordered" id="commiteeWiseDetailedReportDT">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th rowspan="2">Location</th>';
+					for(var i in result[0].subList){
+						str+='<th colspan="2">'+result[0].subList[i].name+'</th>';
+					}
+				str+='</tr>';
+				str+='<tr>';
+				for(var i in result[0].subList){
+					str+='<th>Vancancy</th>';
+					str+='<th>Filled</th>';
+				}
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+						if(result[i].name !=null && result[i].name.length>10){
+							str+='<td><span class="tooltipCls" data-toogle="tooltip" data-placement="right" title="'+result[i].name+'"></span>'+result[i].name.substring(0,10)+'..</td>';
+						}else{
+							str+='<td>'+result[i].name+'</td>';
+						}
+						
+						for(var j in result[i].subList){
+							if(result[i].subList[j].totalCount !=null && result[i].subList[j].totalCount>0){
+								str+='<td>'+result[i].subList[j].totalCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if(result[i].subList[j].completedCount !=null && result[i].subList[j].completedCount>0){
+								str+='<td>'+result[i].subList[j].completedCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							
+						}
+					str+='</tr>';
+				}
+				
+			str+='</tbody>';
+		str+='</table>';
+	str+='</div>';
+	
+	$("#commiteeWiseDetailedReportId").html(str);
+	$(".tooltipCls").tooltip();
+	$("#commiteeWiseDetailedReportDT").dataTable({
+			"iDisplayLength": 16,
+			"aaSorting": [],
+			"aLengthMenu": [[16, 20, -1], [16, 20, "All"]],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+				}
+			]
+	});
+}
