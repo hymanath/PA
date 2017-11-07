@@ -3035,3 +3035,11 @@ color: rgb(51, 122, 183);
 .text_decoration_hover:hover{
 	text-decoration:none !important;
 }
+.table_custom thead tr  th{
+	font-size:12px !important;
+	padding:3px !important
+}
+.table_custom tbody tr  td{
+	font-size:14px !important;
+	padding:5px !important
+}
