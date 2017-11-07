@@ -5506,7 +5506,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		
 	}
 	public List<Object[]> partyWiseMemberOfParlimentsDetails(List<Long> electionIds,
-			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue,Long partyId) {
+			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue,Long partyId,List<String> electionYears) {
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT distinct C.candidate_id," +
 				" C.lastname,c.constituency_id,c.name,p.party_id,p.short_name,"
@@ -5519,7 +5519,10 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		if (electionIds != null && electionIds.size() > 0) {
 			queryStr.append(" and ce.election_id in (:electionIds)");
 		}
-		queryStr.append(" and e.election_year = '2014'");
+		if(electionYears != null && electionYears.size() >0){
+			queryStr.append(" and e.election_year in (:electionYears)" );
+		}
+		//queryStr.append(" and e.election_year = '2014'");
 		if (electionScopeIds != null && electionScopeIds.size() > 0l) {
 			queryStr.append(" and e.election_scope_id in (:electionScopeIds)");
 		}
@@ -5548,11 +5551,14 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		if(partyId != null && partyId.longValue()>0l){
 			qurQuery.setParameter("partyId", partyId);
 		}
+		if(electionYears != null && electionYears.size() >0){
+			qurQuery.setParameterList("electionYears", electionYears);
+		}
 		return qurQuery.list();
 		
    }
 	public List<Object[]> partyWiseMemberOfAssemblyCandidateDetails(List<Long> electionIds,
-			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue,Long partyId){
+			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue,Long partyId,List<String> electionYears){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT distinct C.candidate_id,C.lastname,c.constituency_id," +
 				" c.name,p.party_id,p.short_name," +
@@ -5565,7 +5571,10 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		if (electionIds != null && electionIds.size() > 0) {
 			queryStr.append(" and ce.election_id in (:electionIds) ");
 		}
-		queryStr.append(" and e.election_year = '2014' " );
+		if(electionYears != null && electionYears.size() >0){
+			queryStr.append(" and e.election_year in (:electionYears)" );
+		}
+		//queryStr.append(" and e.election_year = '2014' " );
 			if (electionScopeIds != null && electionScopeIds.size() > 0l) {
 				queryStr.append(" and e.election_scope_id in (:electionScopeIds) " );
 			}
@@ -5587,6 +5596,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		}
 		if(partyId != null && partyId.longValue()>0l){
 			qurQuery.setParameter("partyId", partyId);
+		}
+		if(electionYears != null && electionYears.size() >0){
+			qurQuery.setParameterList("electionYears", electionYears);
 		}
 		return qurQuery.list();
 		
