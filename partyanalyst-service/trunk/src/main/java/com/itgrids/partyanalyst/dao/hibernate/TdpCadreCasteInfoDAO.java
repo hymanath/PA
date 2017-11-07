@@ -233,22 +233,23 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		//0-ageRangeId,1- agerRange, 2- gender 3-castecatId, 4-copunt
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("select voter_age_range_id as voterAgeRangeid, gender as gender,caste_category_id as caste, sum(count) as count from tdp_cadre_caste_info where ");
+		sb.append("select voter_age_range_id as voterAgeRangeid, gender as gender,caste_category_id as caste, sum(count) as count from tdp_cadre_caste_info where " +
+				" location_type_id = :locationTypeId   and voter_age_range_id is not null  ");
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			} else if (locationTypeId == 4l || locationTypeId == 10l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			} else if (locationTypeId == 5l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			} else if (locationTypeId == 6l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			} else if (locationTypeId == 7l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			} else if (locationTypeId == 2l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			}else if (locationTypeId == 8l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			}
 
 		}
@@ -264,7 +265,9 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		if (enrollmentYearId != null && enrollmentYearId.longValue() > 0l) {
 			query.setParameter("enrollmentYearId", enrollmentYearId);
 		}
-
+		if(locationTypeId != null && locationTypeId.longValue()>0L)
+			query.setParameter("locationTypeId", locationTypeId);
+		
 		if (locationValue != null && locationValue.size() > 0) {
 			query.setParameterList("locationValue", locationValue);
 		}
@@ -371,24 +374,27 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("select tcf.voter_age_range_id as voterAgeRangeid,var.age_range as ageRangename, tcf.gender as gender,tcf.count as count from tdp_cadre_caste_info tcf " +
-				" join voter_age_range var  on var.voter_age_range_id = tcf.voter_age_range_id  where ");
-		
+				" join voter_age_range var  on var.voter_age_range_id = tcf.voter_age_range_id  where  " +
+				" location_type_id = :locationTypeId   ");
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
-				sb.append("location_id in(:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			} else if (locationTypeId == 4l || locationTypeId == 10l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			} else if (locationTypeId == 5l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			} else if (locationTypeId == 6l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			} else if (locationTypeId == 7l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
 			} else if (locationTypeId == 2l) {
-				sb.append("location_id in (:locationValue)");
+				sb.append(" and location_id in (:locationValue)");
+			}else if (locationTypeId == 8l) {
+				sb.append(" and location_id in (:locationValue)");
 			}
 
 		}
+
 		if(casteId != null && casteId.longValue()>0l){
 			sb.append(" and tcf.caste_state_id=:casteId");
 		}
@@ -416,6 +422,9 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		}
 		if(casteGroupId != null && casteGroupId.longValue()>0l){
 			query.setParameter("casteGroupId",casteGroupId);
+		}
+		if(locationTypeId != null && locationTypeId.longValue()>0l){
+			query.setParameter("locationTypeId",locationTypeId);
 		}
 		return query.list();
 	}
