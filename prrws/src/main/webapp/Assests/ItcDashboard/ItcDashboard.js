@@ -284,7 +284,10 @@ function departmentBlockWiseDetails(divId)
 								collapse+='</div>';
 							}
 							if(divId == 'cMeoDB'){
-								collapse+='<div class="row">';
+								collapse+='<div class="col-md-12 m_top10">';
+							    	collapse+='<h4><b>CM eoDB Status Report</b></h4>';
+								collapse+='</div>';
+								collapse+='<div class="row m_top10">';
 									collapse+='<div id="cmedobDivId"></div>';
 								collapse+='</div>';
 							}
@@ -2245,8 +2248,8 @@ function buildCMEDOBReportStatusWise(result){
 							str+='<th>Approved</th>';
 							str+='<th>Rejected</th>';
 							str+='<th>Re-Approved</th>';
-							str+='<th>Within SLA </th>';
-							str+='<th>Beyond SLA</th>';
+							str+='<th>Pending Within SLA </th>';
+							str+='<th>Pending Beyond SLA</th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
