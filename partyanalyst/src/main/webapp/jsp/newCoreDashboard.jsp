@@ -132,6 +132,7 @@
 		<li expand-icon="debates" right-nav="true">debates</li>
 		<li expand-icon="news" right-nav="true">News - Print Media</li>
 		<li expand-icon="electronic" right-nav="true">News - electronic media</li>
+		<li expand-icon="prajaSankaplaYatra" right-nav="true">Praja Sankapla Yatra</li>
 		<li expand-icon="tours" right-nav="true">Tours</li>
 		<li expand-icon="meetings" right-nav="true">meetings</li>
 		<li expand-icon="cadre" right-nav="true">membership</li>
@@ -3945,7 +3946,60 @@
             </div>
         </div>
 		<!--Cadre Registration ENd -->
-		
+		<div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
+				<div class="panel panel-default panelNewCustom panel2">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="prajaSankaplaYatra">
+								<h4 class="panel-title text-capital" style="width:440px;">    
+									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+									Praja Sankapla Yatra News 
+								</h4>  
+								
+							</div>
+							<div class="col-sm-3">
+								<span class="emnIconExpand pull-right" expand-icon="prajaSankaplaYatra">
+									<i class="prajaSankalpa"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-12">
+								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px">Print Media</span></h4>
+								<div class="row m_top10">
+									<div class="col-sm-5">
+										<h5>PRAJA SANKALPA YATRA</h5>
+									</div>
+									<div class="col-sm-7">
+										<h5>PRAJA SAMASYALA PARISHKARA CHATTAM</h5>
+									</div>
+								</div>
+								<div id="printMediaOverAllBlockId" class=""></div>
+								<div id="printMediaPartyBlockId" class="m_top10"></div>
+								<div id="printMediaPublicationBlockId" class="m_top10"></div>
+							</div>
+							<div class="col-sm-12 m_top10">
+								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px">Electronic Media</span></h4>
+								<div class="row m_top10">
+									<div class="col-sm-5">
+										<h5>PRAJA SANKALPA YATRA</h5>
+									</div>
+									<div class="col-sm-7">
+										<h5>PRAJA SAMASYALA PARISHKARA CHATTAM</h5>
+									</div>
+								</div>
+								<div id="electronicMediaOverAllBlockId" class=""></div>
+								<div id="electronicMediaPartyBlockId" class="m_top10"></div>
+								<div id="electronicMediaPublicationBlockId" class="m_top10"></div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- NEWS BLOCK END-->
 		</div>
 </div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
@@ -4824,6 +4878,7 @@
 <script src="newCoreDashBoard/js/cadreRegistration.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/electronicMedia.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/cadreInsurance.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/prajaSankaplaYatra.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting1.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
@@ -4930,6 +4985,14 @@ $("[expand-icon]").click(function(){
 		closeBlocks();
 		$("[expand-icon="+blockName+"]").removeClass("active");
 		$("[expand-icon-inner="+blockName+"],[expand-icon-inner]").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
+	}else if(iconClass == 'prajaSankalpa')
+	{
+		$("[right-nav]").removeClass("active");
+		$("[expand-icon="+blockName+"]").addClass("active");
+		$("[expand-block-right="+blockName+"]").show();
+		$('html, body').animate({
+			scrollTop: $('.prajaSankaplaYatraBlock').offset().top - 20
+		}, 'slow');
 	}
 });
 $(document).on("click","[expand-icon-inner]",function(){
@@ -4960,10 +5023,8 @@ $(document).on("click","[expand-icon-inner]",function(){
 		var expandName = $this.attr("expand_event_name");
 		if(blockName == 'events')
 		{
-			alert(1)
 			if(expandName == "events")
 			{
-				alert(2)
 				$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events");	
 				$("#eventsCmpBlckDivId").find("ul li:nth-child(2)").removeClass("active")	
 				$(".moreEventsBlocksIcon").removeClass("acitivitiesMoreExpand");
@@ -5380,6 +5441,7 @@ var globalImages;
 		getAttendanceOverViewForPartyOfficeWise();
 		getSettingActivities();
 		//getSettingEvents();
+		onloadPrajaSankaplaYatraCalls();
 		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		$("#attendanceId").html('TODAY ('+datStr+')');
 		
@@ -5491,6 +5553,7 @@ var globalImages;
 			getAttendanceOverViewForPartyOfficeWise();
 			getSettingActivities();
 			//getSettingEvents();
+			onloadPrajaSankaplaYatraCalls();
 			var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 			$("#attendanceId").html('TODAY ('+datStr+')');
 	  }

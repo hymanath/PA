@@ -2461,7 +2461,7 @@
 	}
 	
 	
-	getCommitteeDetailedReport();
+	//getCommitteeDetailedReport();
 	
 	function getCommitteeDetailedReport(){
 		
