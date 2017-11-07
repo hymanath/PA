@@ -5376,7 +5376,7 @@ var globalImages;
 	onLoadCalls()
 	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();
-		
+		onloadPrajaSankaplaYatraCalls();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');
@@ -5441,7 +5441,7 @@ var globalImages;
 		getAttendanceOverViewForPartyOfficeWise();
 		getSettingActivities();
 		//getSettingEvents();
-		onloadPrajaSankaplaYatraCalls();
+		//onloadPrajaSankaplaYatraCalls();
 		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		$("#attendanceId").html('TODAY ('+datStr+')');
 		
@@ -5553,7 +5553,7 @@ var globalImages;
 			getAttendanceOverViewForPartyOfficeWise();
 			getSettingActivities();
 			//getSettingEvents();
-			onloadPrajaSankaplaYatraCalls();
+			//onloadPrajaSankaplaYatraCalls();
 			var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 			$("#attendanceId").html('TODAY ('+datStr+')');
 	  }
