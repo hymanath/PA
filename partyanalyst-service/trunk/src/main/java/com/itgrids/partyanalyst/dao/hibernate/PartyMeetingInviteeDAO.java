@@ -2738,6 +2738,18 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 	       }
 	       return query.list();
 	     }
+	
+	public List<Object[]> getTdpCadreIdsByMeetingId(Long partyMeetingId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct pmi.tdp_cadre_id from party_meeting_invitee pmi where pmi.party_meeting_id =:partyMeetingId ");
+		
+		SQLQuery query = getSession().createSQLQuery(sb.toString());
+		
+		if(partyMeetingId != null && partyMeetingId.longValue() > 0l){
+	    	   query.setParameter("partyMeetingId", partyMeetingId);
+	       }
+		 return query.list();
+	}
 }
 
 
