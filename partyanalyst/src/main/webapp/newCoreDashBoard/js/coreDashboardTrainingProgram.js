@@ -13,12 +13,13 @@ $("#tdpTriningYearId").on('change', function() {
 	stateLevelCampDetails();
 	getTrainingCampBasicDetailsCntOverview();
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
-		var enrollmentYearId=$("#tdpTriningYearId").val();
-		if(enrollmentYearId == 4){
-			 $("#campWiseTrainingId").show();
-		}else{
-			$("#campWiseTrainingId").hide();
-		}
+	var enrollmentYearId=$("#tdpTriningYearId").val();
+	if(enrollmentYearId == 4){
+		$("#campWiseTrainingId").show();
+		getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();
+	}else{
+		  $("#campWiseTrainingId").hide(); 
+	}
 });
  function initialiseDatePickerForTrainingProgram(){
 		$("#dateRangeIdForTrainingCamp").daterangepicker({
@@ -79,6 +80,8 @@ var getDocumentWidth = $(document).width();
 		 if(result != null){
 			 buildTrainingProgramBasicDetails(result);
 			 buildSpecialProgramLeaderIdWiseDetails(result);
+
+			 
 		 }else{
 			$("#programsDtlsCntTableId").html("NO DATA AVAILABLE");
 			$("#villageWardTblId").html("NO DATA AVAILABLE");
@@ -3220,7 +3223,7 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 		{
 			str+='<div class="table-responsive">';
 		}
-		str+='<table class="table tableBatchWiseTraining bg_ED table-condensed">';     
+		str+='<table class="table tableTrainingBatch bg_ED table-condensed">';     
 			str+='<tbody>';
 				str+='<tr>';
 					str+='<td>';
@@ -3272,6 +3275,7 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
  }
   
  function buildSpecialProgramLeaderIdWiseDetails(result){ 
+     if(result.leaderTrainingList != null && result.leaderTrainingList.size > 0L){
 	var str='';
 		str+='<h4 class="text-capital"><span class="headingColor">Special Leader Programs</span></h4>';
 		str+='<div class="panel-group trainingCenterPanel m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
@@ -3345,5 +3349,6 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 		}
 	   str+='</div>';
 	  str+='</div>';	
-  $("#specialProgramLeaderId").html(str);        
- } 
+  $("#specialProgramLeaderId").html(str); 
+ }  
+} 
