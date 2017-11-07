@@ -93,4 +93,6 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
      public List<Object[]> getLocationWiseCommitteesCnt(String locationType,Long locationId, Long tdpCommitteeEnrollmentYearId);
   
      public List<Object[]> getCommitteeCandidatesByLevelWiseDetails(List<Long> roleIds,List<Long> committeeIds,Long basicCommoteeId,Long enrollmentId,List<Long> enrollmentYears);
+     public List<Object[]> getAvailableCommitteeDetails(String type , List<Long> enrollmentYearIdsList, Long committeeLevelId,List<Long> basicCommitteeTypeIdsList,List<Long> committeeTypeIdsList,Long locationScopeId,List<Long> locationValuesList);
+     public List<Object[]> getCommitteeMembersAddedStatusDetails(List<Long> enrollmentYearIdsList, Long committeeLevelId,List<Long> basicCommitteeTypeIdsList,List<Long> committeeTypeIdsList,Long locationScopeId,List<Long> locationValuesList);
 }
