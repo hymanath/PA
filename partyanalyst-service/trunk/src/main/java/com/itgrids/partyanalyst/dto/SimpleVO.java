@@ -698,7 +698,7 @@ public void setNonInvitee(boolean nonInvitee) {
 		this.endDateStr = endDateStr;
 	}
 	
-	@Override
+	/*@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -718,7 +718,7 @@ public void setNonInvitee(boolean nonInvitee) {
 		} else if (!campId.equals(other.campId))
 			return false;
 		return true;
-	}
+	}*/
 	@Override
 	public String toString() {
 		return "SimpleVO [id=" + id + ", name=" + name + ", membershipNo="
