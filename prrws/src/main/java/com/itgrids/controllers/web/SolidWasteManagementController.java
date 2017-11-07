@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.itgrids.dto.DrainsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.SolidWasteManagementVO;
 import com.itgrids.service.ISolidWasteManagementService;
@@ -29,7 +28,7 @@ public class SolidWasteManagementController {
 	   @Autowired
 	   private ISolidWasteManagementService solidWasteManagementService;
 	   
-	   @GetMapping("/solidWasteManagementDashboard")
+	   @GetMapping(value="/solidWasteManagementDashboard")
 	   public String solidWasteManagementDashboard() {
 		   return "solidWasteManagementDashBoard";
 	   }
@@ -47,5 +46,19 @@ public class SolidWasteManagementController {
 			return solidWasteManagementVO;
 		}
 	   
+	   
+	   @PostMapping("/getSolidWasteManagementOverAllCounts")
+		public @ResponseBody SolidWasteManagementVO getSolidWasteManagementOverAllCounts(@RequestBody InputVO inputVO)
+		{
+			
+		   SolidWasteManagementVO solidWasteManagementVO=null;
+			try {
+				solidWasteManagementVO = solidWasteManagementService.getSolidWasteManagementOverAllCounts(inputVO);
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at  getSolidWasteManagementOverAllCounts - SolidWasteManagementController controller", e);
+			}
+			return solidWasteManagementVO;
+		}
 	   
 }
