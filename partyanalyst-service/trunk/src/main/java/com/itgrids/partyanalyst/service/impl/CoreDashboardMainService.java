@@ -8135,18 +8135,68 @@ public void initializeTrainingCampMap(Map<Long,Map<Long,Set<String>>> campIdAndC
 	}
 }
 
-public List<Long> getTrainingCampPrograms(Long enrollmentIds){
-	List<Long> programIds = new ArrayList<Long>();
-	try{
-		
-		 programIds = trainingCampScheduleDAO.getTrainingCampProgramIds(enrollmentIds);
+	public List<Long> getTrainingCampPrograms(Long enrollmentIds){
+		List<Long> programIds = new ArrayList<Long>();
+		try{
 			
-	}catch(Exception e){
+			 programIds = trainingCampScheduleDAO.getTrainingCampProgramIds(enrollmentIds);
+				
+		}catch(Exception e){
+			LOG.error("Error occured at getTrainingCampProgramIds() in CoreDashboardMainService {}",e);
+		}
+		return programIds;
+	 }
 
-		LOG.error("Error occured at getTrainingCampProgramIds() in CoreDashboardMainService {}",e);
+	public List<CommitteeDataVO> getCommitteeDetailedReport(List<Long> enrollmentYearIdsList,Long committeeLevelId,String fromDate, String toDate, List<Long> basicCommitteeTypeIdsList, List<Long> committeeTypeIdsList,Long locationScopeId, List<Long> locationValuesList ){
+		List<CommitteeDataVO> returnList = new ArrayList<CommitteeDataVO>(0);
+		try {
+			Map<Long,CommitteeDataVO> locationMap = new HashMap<Long, CommitteeDataVO>(0);
+			List<Object[]> totalCommitteeDetailsList = tdpCommitteeDAO.getAvailableCommitteeDetails("",enrollmentYearIdsList,committeeLevelId,basicCommitteeTypeIdsList,committeeTypeIdsList,locationScopeId,locationValuesList);
+			if(commonMethodsUtilService.isListOrSetValid(totalCommitteeDetailsList)){
+				for (Object[] param : totalCommitteeDetailsList) {
+					Long locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					CommitteeDataVO locationVO = locationMap.get(locationId);
+					if(locationVO == null){
+						locationVO = new CommitteeDataVO();
+						locationMap.put(locationId, locationVO);
+					}
+					locationVO.setId(locationId);
+					locationVO.setName( commonMethodsUtilService.getStringValueForObject(param[1]));
+					
+					CommitteeDataVO commVO = new CommitteeDataVO();
+					commVO.setId(commonMethodsUtilService.getLongValueForObject(param[3]));
+					commVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					commVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+					if(!commonMethodsUtilService.isListOrSetValid(locationVO.getSubList()))
+						locationVO.setSubList(new ArrayList<CommitteeDataVO>());
+					locationVO.getSubList().add(commVO);
+				}
+			}
+			
+			List<Object[]> addedCommitteeDetailsList = tdpCommitteeDAO.getCommitteeMembersAddedStatusDetails(enrollmentYearIdsList,committeeLevelId,basicCommitteeTypeIdsList,committeeTypeIdsList,locationScopeId,locationValuesList);
+			if(commonMethodsUtilService.isListOrSetValid(addedCommitteeDetailsList)){
+				for (Object[] param : addedCommitteeDetailsList) {
+					Long locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Long committeeId = commonMethodsUtilService.getLongValueForObject(param[3]);
+					CommitteeDataVO locationVO = locationMap.get(locationId);
+					if(locationVO != null && commonMethodsUtilService.isListOrSetValid(locationVO.getSubList())){
+						for (CommitteeDataVO vo : locationVO.getSubList()) {
+							if(vo != null && vo.getId().longValue() == committeeId.longValue())
+								vo.setCompletedCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+						}
+					}
+				}
+			}
+			
+			if(commonMethodsUtilService.isMapValid(locationMap)){
+				returnList.addAll(locationMap.values());
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured at getCommitteeDetailedReport() in CoreDashboardMainService {}",e);
+		}
+		return returnList;
 	}
-	return programIds;
- }
 public List<CoreDebateVO> getPartyWiseCombineTwoStatesDebateDetails(String startDateStr,String endDateStr,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,List<CoreDebateVO> returnList){				
 	try{
 		Date startDate = null;
