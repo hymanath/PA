@@ -5389,6 +5389,7 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 		    		    			commaSeparatedNames+=partyName+", ";
 		    		    		}
 		    		    		groupIdAndName.add(commaSeparatedNames.substring(0, commaSeparatedNames.length()-2));
+		    		    		//groupIdAndName.add(partyIdsList.toString());
 		    		    		return groupIdAndName;
 		    		    	}
 		    		     }
@@ -6480,11 +6481,14 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 				Long electionId = commonMethodsUtilService.getLongValueForObject(objects[3]);
 				
 				List<String> alliancePartyIdNameList  = findMatchedPartyId(alliancedPartiesWithGroupIdMap,electionId,partyId);
+				//List<String> alincepartiIdsList= null;
 				if(commonMethodsUtilService.isListOrSetValid(alliancePartyIdNameList)){
 					partyId = Long.valueOf(alliancePartyIdNameList.get(0));
 					partyName = alliancePartyIdNameList.get(1);
 					String[] namesArr=alliancePartyIdNameList.get(2).split(",");
 					groupUIdAndPartyNamesMap.put(partyName.trim(),Arrays.asList(namesArr));
+					//String [] partyIdsArrr=alliancePartyIdNameList.get(3).replace("[", "").replace("[", "")split(",");
+					//alincepartiIdsList=Arrays.asList(partyIdsArrr);
 				}
 				
 				ElectionInformationVO locationVO = levelMap.get(commonMethodsUtilService.getLongValueForObject(objects[1]));
@@ -6527,6 +6531,8 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 					partyVO1.setElectionType(commonMethodsUtilService.getStringValueForObject(objects[4]));
 					partyVO1.setElectionYear(commonMethodsUtilService.getStringValueForObject(objects[5]));
 					partyVO1.setPartyId(partyId);
+					//partyVO1.getPartyNamesList().addAll(alincepartiIdsList);
+					//partyVO1.setPartyNamesList(alincepartiIdsList);
 					//partyVO1.setPartyName(commonMethodsUtilService.getStringValueForObject(objects[7]));
 					partyVO1.setPartyName(partyName);
 					partyVO1.setPartyFlag(partyFlagMap.get(partyVO1.getPartyId()));
@@ -6809,14 +6815,34 @@ public ElectionInformationVO getMatchedVOForPartyId(List<ElectionInformationVO> 
 	}
 	return null;
 }
-public List<CandidateDetailsForConstituencyTypesVO> getPartyWiseMPandMLACandidatesCountDetials(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue,Long partyId){
+public List<CandidateDetailsForConstituencyTypesVO> getPartyWiseMPandMLACandidatesCountDetials(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue,Long partyId,Long districtId,List<String> electionYears){
 	List<CandidateDetailsForConstituencyTypesVO> finalList= new ArrayList<CandidateDetailsForConstituencyTypesVO>();
+	List<Long> locationIdsList = new ArrayList<Long>();
+	List<CandidateDetailsForConstituencyTypesVO> newCandidateList = new ArrayList<CandidateDetailsForConstituencyTypesVO>();
 	try{
-		List<Object[]> mpPartyCountDetails = nominationDAO.partyWiseMemberOfParlimentsDetails(electionIds,electionScopeIds, loactionTypeId,loctionValue,partyId);
+		List<Object[]> mpPartyCountDetails = nominationDAO.partyWiseMemberOfParlimentsDetails(electionIds,electionScopeIds, loactionTypeId,loctionValue,partyId,electionYears);
 		settingPartyWiseCandidateDetails(mpPartyCountDetails,finalList);
-		List<Object[]> mlaPartyCountDetails=nominationDAO.partyWiseMemberOfAssemblyCandidateDetails(electionIds,electionScopeIds, loactionTypeId,loctionValue,partyId);
+		List<Object[]> mlaPartyCountDetails=nominationDAO.partyWiseMemberOfAssemblyCandidateDetails(electionIds,electionScopeIds, loactionTypeId,loctionValue,partyId,electionYears);
 		settingPartyWiseCandidateDetails(mlaPartyCountDetails,finalList);
 		
+		List<Object[]> objsList = constituencyDAO.getConstituenciesIdsListByDistrictIds(districtId);
+		if(objsList != null && objsList.size() >0){
+			for(Object[] objs : objsList){
+				Long constituencyId = commonMethodsUtilService.getLongValueForObject(objs[0]);
+				locationIdsList.add(constituencyId);
+			}
+			
+		}
+		
+		for(CandidateDetailsForConstituencyTypesVO mainVO : finalList){
+			if(locationIdsList.contains(mainVO.getConstituencyId())){
+				newCandidateList.add(mainVO);
+			}	
+	}
+		if(locationIdsList !=null && locationIdsList.size() >0){
+			finalList.clear();
+			finalList.addAll(newCandidateList);
+		}
 	}catch(Exception e){
 		Log.error("Exception raised in getPartyWiseMPandMLACandidatesCountDetials method of LocationDashboardService"+e);
 	}
@@ -8294,5 +8320,6 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		}
 		return null;
 	}
+	
 }
 
