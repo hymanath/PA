@@ -55,4 +55,5 @@ public interface ICoreDashboardMainService {
 	public List<BoothInchargesVO> getBoothCommitteeInchargesCount(Long activityMemId,List<Long> committeeEnrlmntYrIds,String dateStr,Long stateId);
 	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(Long userAccessLevelId, List<Long> userAccessLevelValues,Long stateId, String fromDate, String toDateStr, List<Long> enrollmentYearIds,List<Long> programIdList);
 	public List<Long> getTrainingCampPrograms(Long enrollmentId);
+	public List<CommitteeDataVO> getCommitteeDetailedReport(List<Long> enrollmentYearIdsList,Long committeeLevelId,String fromDate, String toDate, List<Long> basicCommitteeTypeIdsList, List<Long> committeeTypeIdsList,Long locationScopeId, List<Long> locationValuesList );
 }
