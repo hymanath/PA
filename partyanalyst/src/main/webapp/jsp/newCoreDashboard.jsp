@@ -3983,11 +3983,11 @@
 							<div class="col-sm-12">
 								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px">Print Media</span></h4>
 								<div class="row m_top10">
-									<div class="col-sm-5">
+									<div class="col-sm-6">
 										<h5>PRAJA SANKALPA YATRA</h5>
 									</div>
-									<div class="col-sm-7">
-										<h5>COUNTER ON PRAJA SANKALPA YATRA</h5>
+									<div class="col-sm-6">
+										<h5 style="font-size: 13px; text-align: center;">COUNTER ON PRAJA SANKALPA YATRA</h5>
 									</div>
 								</div>
 								<div id="printMediaOverAllBlockId" class=""></div>
@@ -3997,11 +3997,11 @@
 							<div class="col-sm-12 m_top10">
 								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px">Electronic Media</span></h4>
 								<div class="row m_top10">
-									<div class="col-sm-5">
+									<div class="col-sm-6">
 										<h5>PRAJA SANKALPA YATRA</h5>
 									</div>
-									<div class="col-sm-7">
-										<h5>COUNTER ON PRAJA SANKALPA YATRA</h5>
+									<div class="col-sm-6">
+										<h5 style="font-size: 13px; text-align: center;">COUNTER ON PRAJA SANKALPA YATRA</h5>
 									</div>
 								</div>
 								<div id="electronicMediaOverAllBlockId" class=""></div>
