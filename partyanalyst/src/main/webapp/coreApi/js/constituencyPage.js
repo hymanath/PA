@@ -29,7 +29,7 @@ var commitessArr=["mandalLevelGraph","villageLevelGraph","affMandalLevelGraph","
 var grivanceIdsArr=["grivanceId","trustId"];
 var grivanceColorObj={"APPROVED":"#2DCC70","COMPLETED":"#449C43","IN PROGRESS":"#FFB84F","NOT ELIGIBLE":"#C0392B","NOT POSSIBLE":"#EF8379","NOT VERIFIED":"#31708F"}
 var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In Party":"#449C43","Forwarded to Insurance":"#FFB84F","Closed at Insurance":"#8F43AF","Closed at Party":"#9B88B3","Approved - Compensated":"#2BCD72","Closed Letters":"#32708F","Account Rejected":"#65CBCC"}
-var globalColorPartyNames={"CPI":"#E05B5B","CPM":"#DD0000","INC":"#74C0F3","AIMIM":"#61C692","BJP":"#FA9F4B","TDP":"#FDD503","OTHERS":"#E5E5E5","YSRC":"#017e8e","TRS":"#FF5F12","Congress Kutami":"#0710ba","TDP & BJP":"#99ba06","MahaKutami":"#6C8CBD","PRP & ManaParty":"#F15C80","TDP + BJP":"#696969","PRP":"#009900","UPA":"#8085E9","TF":"#4584E9","NDA":"#8565E4"}
+var globalColorPartyNames={"CPI":"#E05B5B","CPM":"#DD0000","INC":"#74C0F3","AIMIM":"#61C692","BJP":"#FA9F4B","TDP":"#FDD503","OTHERS":"#d3d3d3","YSRC":"#017e8e","TRS":"#FF5F12","Congress Kutami":"#0710ba","TDP & BJP":"#99ba06","MahaKutami":"#6C8CBD","PRP & ManaParty":"#F15C80","TDP + BJP":"#696969","PRP":"#009900","UPA":"#8085E9","TF":"#4584E9","NDA":"#8565E4"}
 var electionTypeVal = [1,2,3,4];
 var defaultAlertCategoryIds=[1];
 var electionYrVal = [];
@@ -5713,17 +5713,17 @@ function buildElectionInformationLocationWise(result,type){
 					partiesName = result[i].partyName;
 					electionYearArr.push(result[i].list[j].electionYear+'  '+result[i].list[j].electionType);
 					if(type == "wonSeat"){
-						if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
+						//if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
 							wonSeatsCountArr.push(parseFloat(result[i].list[j].wonSeatsCount));
-						}else{
-							wonSeatsCountArr.push(parseFloat("Not Participated"));
-						}
+						//}/* else{
+							//wonSeatsCountArr.push(parseFloat("Not Participated"));
+						//} */
 					}else{
-						if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
+						//if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
 							wonSeatsCountArr.push(parseFloat(result[i].list[j].locationName));
-						}else{
-							wonSeatsCountArr.push(parseFloat("Not Participated"));
-						}
+						//}/* else{
+							//wonSeatsCountArr.push(parseFloat("Not Participated"));
+						//} */
 						
 					}
 					
@@ -5735,7 +5735,6 @@ function buildElectionInformationLocationWise(result,type){
 					}
 					mainDataArr.push(obj)
 			}
-		console.log(mainDataArr)	
 		$(".electionDetailsGraphHeight").css("height","500px !important;");
 		$('#electionDetailsGraphWiseId').highcharts({
 			chart: {
@@ -5755,9 +5754,16 @@ function buildElectionInformationLocationWise(result,type){
 				}
 			  },
 			  yAxis: {
-				title: {
-				  text: ''
-				}
+				labels: {
+					formatter: function() {
+						if(type == "wonSeat"){
+							return this.value;
+						}else{
+							return this.value+"%";
+						}
+					   
+					}
+				  },
 			  },
 			tooltip: {
 				formatter: function () {
@@ -5787,6 +5793,8 @@ function buildElectionInformationLocationWise(result,type){
 			plotOptions: {
 				column: {
 					stacking:"percent",
+					pointWidth: 30,
+					gridLineWidth: 25,
 					/* dataLabels: {
 						enabled: false,
 						align: 'left',
