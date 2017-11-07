@@ -2980,6 +2980,121 @@ public List<Object[]> getCommitteeCandidatesByLevelWiseDetails(List<Long> roleId
 
     return query.list();
 }
+
+public List<Object[]> getAvailableCommitteeDetails(String type , List<Long> enrollmentYearIdsList, Long committeeLevelId,List<Long> basicCommitteeTypeIdsList,List<Long> committeeTypeIdsList,Long locationScopeId,List<Long> locationValuesList)
+{
+	StringBuilder sb = new StringBuilder();
+	sb.append(" SELECT  ");
+	sb.append(" ua.district_id,d.district_name,tbc.name,tbc.tdp_basic_committee_id,sum(tcr.max_members)    ");
+	sb.append(" from   ");
+	sb.append(" tdp_committee tc,  ");
+	sb.append(" tdp_basic_committee tbc,  ");
+	sb.append(" tdp_committee_level tcl,  ");
+	sb.append(" user_address ua ,  ");
+	sb.append(" district d ,  ");
+	sb.append(" tdp_committee_role tcr  ");
+	sb.append(" where   ");
+	sb.append(" tc.address_id = ua.user_address_id and   ");
+	sb.append(" ua.district_id = d.district_id and   ");
+	sb.append(" tc.tdp_basic_committee_id = tbc.tdp_basic_committee_id and   ");
+	sb.append(" tcl.tdp_committee_level_id = tc.tdp_committee_level_id and   ");
+	sb.append(" tc.tdp_committee_id = tcr.tdp_committee_id ");
+	if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0)
+		sb.append(" and tbc.tdp_basic_committee_id in (:committeeTypeIdsList) ");
+	if(basicCommitteeTypeIdsList != null && basicCommitteeTypeIdsList.size()>0)
+		sb.append(" and tbc.tdp_committee_type_id in (:basicCommitteeTypeIdsList) ");
+	if(enrollmentYearIdsList != null && enrollmentYearIdsList.size()>0)
+		sb.append(" and tc.tdp_committee_enrollment_id in (:enrollmentYearIdsList)    ");
+	if(committeeLevelId != null && committeeLevelId.longValue()>0L)
+		sb.append(" and tc.tdp_committee_level_id = :committeeLevelId  ");
+	if(locationValuesList != null && locationValuesList.size()>0){
+		if(locationScopeId !=null && locationScopeId.longValue() ==2L)
+			sb.append(" and ua.state_id in (:locationValuesList) ");
+	}
+	if(type != null && type.trim().equalsIgnoreCase("completed")){
+		sb.append(" and tc.is_committee_confirmed ='Y' and and tc.started_date is not null and tc.completed_date is not null ");
+	}else if(type != null && type.trim().equalsIgnoreCase("started")){
+		sb.append(" and tc.is_committee_confirmed ='N' and and tc.started_date is not null and tc.completed_date is  null ");
+	}
+	sb.append(" GROUP BY  ");
+	sb.append(" ua.district_id,tbc.tdp_committee_type_id,tbc.tdp_basic_committee_id  ");
+	sb.append(" ORDER BY  ");
+	sb.append(" tbc.order_id  ");
+
+	Query query = getSession().createSQLQuery(sb.toString());
+	if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0)
+		query.setParameterList("committeeTypeIdsList", committeeTypeIdsList);
+	if(basicCommitteeTypeIdsList != null && basicCommitteeTypeIdsList.size()>0)
+		query.setParameterList("basicCommitteeTypeIdsList", basicCommitteeTypeIdsList);
+	if(enrollmentYearIdsList != null && enrollmentYearIdsList.size()>0)
+		query.setParameterList("enrollmentYearIdsList", enrollmentYearIdsList);
+	if(committeeLevelId != null && committeeLevelId.longValue()>0L)
+		query.setParameter("committeeLevelId", committeeLevelId);
+	if(locationValuesList != null && locationValuesList.size()>0)
+		query.setParameterList("locationValuesList", locationValuesList);
+	return query.list();
+}
+
+public List<Object[]> getCommitteeMembersAddedStatusDetails(List<Long> enrollmentYearIdsList, Long committeeLevelId,List<Long> basicCommitteeTypeIdsList,List<Long> committeeTypeIdsList,Long locationScopeId,List<Long> locationValuesList)
+{
+	StringBuilder sb = new StringBuilder();
+	sb.append(" SELECT  ");
+	sb.append(" ua.district_id,d.district_name,tbc.name,tbc.tdp_basic_committee_id,count(distinct tcm.tdp_cadre_id)    ");
+	sb.append(" from   ");
+	sb.append(" tdp_committee tc,  ");
+	sb.append(" tdp_committee_role tcr,  ");
+	sb.append(" tdp_committee_member tcm,  ");
+	sb.append(" tdp_cadre tc1,  ");
+	sb.append(" tdp_cadre_enrollment_year tcey,  ");
+	sb.append(" tdp_basic_committee tbc,  ");
+	sb.append(" tdp_committee_level tcl,  ");
+	sb.append(" user_address ua ,  ");
+	sb.append(" district d   ");
+	sb.append(" where   ");
+	sb.append(" tc.address_id = ua.user_address_id and   ");
+	sb.append(" ua.district_id = d.district_id and   ");
+	sb.append(" tc.tdp_basic_committee_id = tbc.tdp_basic_committee_id and   ");
+	sb.append(" tcl.tdp_committee_level_id = tc.tdp_committee_level_id and   ");
+	sb.append(" tc.tdp_committee_id = tcr.tdp_committee_id and   ");
+	sb.append(" tcr.tdp_committee_role_id = tcm.tdp_committee_role_id and   ");
+	sb.append(" tcm.is_active='Y' and   ");
+	sb.append(" tc1.tdp_cadre_id = tcm.tdp_cadre_id and   ");
+	sb.append(" tc1.tdp_cadre_id = tcey.tdp_cadre_id and   ");
+	sb.append(" tc1.is_deleted='N' and   ");
+	sb.append(" tcey.is_deleted='N'    ");
 	
+	if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0)
+		sb.append(" and tbc.tdp_basic_committee_id in (:committeeTypeIdsList) ");
+	if(basicCommitteeTypeIdsList != null && basicCommitteeTypeIdsList.size()>0)
+		sb.append(" and tbc.tdp_committee_type_id in (:basicCommitteeTypeIdsList) ");
+	if(enrollmentYearIdsList != null && enrollmentYearIdsList.size()>0)
+		sb.append(" and tc.tdp_committee_enrollment_id in (:enrollmentYearIdsList)    ");
+	if(committeeLevelId != null && committeeLevelId.longValue()>0L)
+		sb.append(" and tc.tdp_committee_level_id = :committeeLevelId  ");
+	if(locationValuesList != null && locationValuesList.size()>0){
+		if(locationScopeId !=null && locationScopeId.longValue() ==2L)
+			sb.append(" and ua.state_id in (:locationValuesList) ");
+	}
+	
+	sb.append(" and tc1.enrollment_year ='2014' ");
+	sb.append(" and tcey.tdp_cadre_id = tcm.tdp_cadre_id  ");
+	sb.append(" GROUP BY   ");
+	sb.append(" ua.district_id,tbc.tdp_committee_type_id,tbc.tdp_basic_committee_id  ");
+	sb.append(" ORDER BY   ");
+	sb.append(" tbc.order_id  ");
+
+	Query query = getSession().createSQLQuery(sb.toString());
+	if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0)
+		query.setParameterList("committeeTypeIdsList", committeeTypeIdsList);
+	if(basicCommitteeTypeIdsList != null && basicCommitteeTypeIdsList.size()>0)
+		query.setParameterList("basicCommitteeTypeIdsList", basicCommitteeTypeIdsList);
+	if(enrollmentYearIdsList != null && enrollmentYearIdsList.size()>0)
+		query.setParameterList("enrollmentYearIdsList", enrollmentYearIdsList);
+	if(committeeLevelId != null && committeeLevelId.longValue()>0L)
+		query.setParameter("committeeLevelId", committeeLevelId);
+	if(locationValuesList != null && locationValuesList.size()>0)
+		query.setParameterList("locationValuesList", locationValuesList);
+	return query.list();
+}
 	
 }

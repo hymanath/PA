@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
@@ -3479,35 +3481,83 @@ IUserVoterDetailsDAO{
 	@Override
 	public List<Object[]> getVotersCasteNAgeGroupWiseCounts(Long casteGroupId,Long casteId, Long reportLevelId,Long locationTypeId, List<Long> locationValues,Long publicationDateId) {
 		 StringBuilder sb = new StringBuilder();
-		 sb.append(" vai.age_range_id, vai.male_voters,vai.female_voters from voter_age_info vai ");
+		 //0 ageRangeId,1 gender,2 count
+		 sb.append(" select model.voter_age_range_id as ageRangeId, model.gender as gender,SUM(model.total_voters) as count from voter_caste_age_range_info model ");
 		 
-		 if(reportLevelId != null && reportLevelId.longValue() == 1l && locationValues !=null && locationValues.size()>0){
-			 sb.append(" join  constituency c on c.constituency_id=vai.report_level_value ");
-		
-			 if(locationTypeId == 2l){
-				 sb.append(" where vai.report_level_id =:reportLevelId and c.state_id in (:locationValues)");
-			 }else if(locationTypeId == 3l){
-				 sb.append(" where vai.report_level_id =:reportLevelId and c.state_id in (:locationValues)");
-			 }if(locationTypeId == 4l){
-				 sb.append(" where vai.report_level_id =:reportLevelId and c.constituency_id in (:locationValues)");
-			 }
+		// if(reportLevelId != null && reportLevelId.longValue() == 1l && locationValues !=null && locationValues.size()>0){
+		//	 sb.append(" join  constituency c on c.constituency_id = model.location_value ");
+		 if(locationTypeId == 2l){
+			 sb.append(" , state s ");
 		 }
+		 else if(locationTypeId == 3l){
+			 sb.append(" , district d ");
+		 }else  if(locationTypeId == 4l || locationTypeId == 10L){
+			 sb.append(" , constituency c ");
+		 }else   if(locationTypeId == 5l){
+			sb.append(" , tehsil t ");
+		 }
+	     else  if(locationTypeId == 6l){
+			sb.append(" , panchayat p ");
+		 }
+			 sb.append(" where ");
+			 
+			 if(locationTypeId == 2l){
+				 sb.append(" model.location_scope_id =:locationTypeId and s.state_id in (:locationValues)");
+			 }else if(locationTypeId == 3l){
+				 sb.append(" model.location_scope_id =:locationTypeId and d.district_id in (:locationValues)");
+			 }else if(locationTypeId == 4l || locationTypeId == 10L){
+				 sb.append(" model.location_scope_id =:locationTypeId and c.constituency_id in (:locationValues)");
+			 }
+		// }
 		 
-		 if(reportLevelId != null && reportLevelId.longValue() !=1l && locationValues !=null && locationValues.size()>0){
+		 
+		// if(reportLevelId != null && reportLevelId.longValue() !=1l && locationValues !=null && locationValues.size()>0){
 			
 			 if(locationTypeId == 5l){
-				 sb.append(" where vai.report_level_id =:reportLevelId and vai.report_level_value in (:locationValues)");
+				 sb.append(" model.location_scope_id =:locationTypeId and t.tehsil_id in (:locationValues)");
 			 }if(locationTypeId == 6l){
-				 sb.append(" where vai.report_level_id =:reportLevelId and vai.report_level_value in (:locationValues)");
-			 }if(locationTypeId == 7l){
-				 sb.append(" where vai.report_level_id =:reportLevelId and vai.report_level_value in (:locationValues)");
-			 }if(locationTypeId == 8l){
-				 sb.append(" where vai.report_level_id =:reportLevelId and vai.report_level_value in (:locationValues)");
+				 sb.append(" model.location_scope_id =:locationTypeId and p.panchayat_id in (:locationValues)");
 			 }
 			 
-		 }
+		 //}
+		 
 			 
-			 return null;
+			 if(locationTypeId == 2l){
+					sb.append(" and model.location_value = s.state_id ");
+			 }else if(locationTypeId == 3l){
+					sb.append(" and model.location_value = d.district_id ");
+			 }else if(locationTypeId == 4l || locationTypeId == 10L){
+					sb.append(" and model.location_value = c.constituency_id ");
+			 }else if(locationTypeId == 5l){
+					sb.append(" and model.location_value = t.tehsil_id ");
+			  }
+					//else if(locationTypeId == 4l){
+					//sb.append(" and model.location_scope_id = leb.local_election_body_id ");
+			 //}
+			  else if(locationTypeId == 6l){
+					sb.append(" and model.location_value = p.panchayat_id ");
+			 }
+		 sb.append(" and model.caste_state_id =:casteId ");
+		 
+		 sb.append(" group by model.voter_age_range_id, model.gender ");
+		 
+		 SQLQuery query = getSession().createSQLQuery(sb.toString())
+					.addScalar("ageRangeId",Hibernate.LONG)
+					.addScalar("gender",Hibernate.STRING)
+					.addScalar("count",Hibernate.LONG);
+					
+		
+		
+		if(casteId != null && casteId > 0l){
+	    	   query.setParameter("casteId", casteId);
+	    }
+		if(locationValues != null && locationValues.size() > 0l){
+	    	   query.setParameterList("locationValues", locationValues);
+	    }
+		if(locationTypeId != null && locationTypeId > 0l){
+	    	   query.setParameter("locationTypeId", locationTypeId);
+	    }
+		 return query.list();
 	}
 }
 

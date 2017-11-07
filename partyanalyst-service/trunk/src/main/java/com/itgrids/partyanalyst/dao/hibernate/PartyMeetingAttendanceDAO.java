@@ -8,6 +8,7 @@ import java.util.Set;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
@@ -1895,4 +1896,28 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	       }
 	       return query.list();
 	     }
+	
+	public List<Object[]> getNonInviteeAttendanceCountByMeetingId(List<Long> partyMeetingIds){
+		//0 partyMeetingId,1 sessionId,2 sessionMainId,3 sessionName,4 count
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("select pma.party_meeting_id as partyMeetingId,pma.party_meeting_session_id as sessionId,st.session_type_id as sessionMainId,");
+		sb.append("st.type as sessionName,count(pma.attendance_id) as count from party_meeting_attendance pma,");
+		sb.append("attendance a,party_meeting_session pms, session_type st  ");
+		sb.append("where pma.attendance_id = a.attendance_id  ");
+		sb.append("and	pma.party_meeting_session_id = pms.party_meeting_session_id ");
+		sb.append("and pms.session_type_id =st.session_type_id ");
+		sb.append("and pma.party_meeting_id in (:partyMeetingIds)  group by pms.party_meeting_session_id ");
+		SQLQuery query = getSession().createSQLQuery(sb.toString())
+				.addScalar("partyMeetingId",Hibernate.LONG)
+				.addScalar("sessionId",Hibernate.LONG)
+				.addScalar("sessionMainId",Hibernate.LONG)
+				.addScalar("sessionName",Hibernate.STRING)
+				.addScalar("count",Hibernate.LONG);
+		
+		if(partyMeetingIds != null && partyMeetingIds.size() > 0l){
+	    	   query.setParameterList("partyMeetingIds", partyMeetingIds);
+	       }
+		 return query.list();
+	}
 }
