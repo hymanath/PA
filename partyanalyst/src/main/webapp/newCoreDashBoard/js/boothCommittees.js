@@ -10,7 +10,7 @@
 		
 		//district level
 		var districtBasicCommitteeIds =[];
-		$(".districtCommitteecheckBoxClass").each(function(){
+		$(".districtBoothCommitteecheckBoxClass").each(function(){
 			if($(this).is(':checked')){
 				districtBasicCommitteeIds.push( $(this).val() );
 			}
@@ -35,7 +35,7 @@
 		
 		//village/ward level.
 		var villageBasicCommitteeIds =[];
-		$(".villageCommitteecheckBoxClass").each(function(){
+		$(".villageBoothCommitteecheckBoxClass").each(function(){
 			if($(this).is(':checked')){
 				villageBasicCommitteeIds.push( $(this).val() );
 			}
@@ -50,23 +50,23 @@
 	}
 	$(document).on("click","#checkAllBoothAffliatedVillagelevelId",function(){
 		if($(this).is(':checked')){
-		   $('.villageCommitteeAffliatedcheckBoxClass').prop('checked', true);
+		   $('.villageBoothCommitteeAffliatedcheckBoxClass').prop('checked', true);
 		}else{
-		   $('.villageCommitteeAffliatedcheckBoxClass').prop('checked', false);
+		   $('.villageBoothCommitteeAffliatedcheckBoxClass').prop('checked', false);
 		}
 	});
 	$(document).on("click","#checkAllBoothAffliatedMandallevelId",function(){
 		if($(this).is(':checked')){
-		   $('.mandalCommitteeAffliatedcheckBoxClass').prop('checked', true);
+		   $('.mandalBoothCommitteeAffliatedcheckBoxClass').prop('checked', true);
 		}else{
-		   $('.mandalCommitteeAffliatedcheckBoxClass').prop('checked', false);
+		   $('.mandalBoothCommitteeAffliatedcheckBoxClass').prop('checked', false);
 		}
 	});
 	$(document).on("click","#checkAllBoothAffliatedDistrictlevelId",function(){
 		if($(this).is(':checked')){
-		   $('.districtCommitteeAffliatedcheckBoxClass').prop('checked', true);
+		   $('.districtBoothCommitteeAffliatedcheckBoxClass').prop('checked', true);
 		}else{
-		   $('.districtCommitteeAffliatedcheckBoxClass').prop('checked', false);
+		   $('.districtBoothCommitteeAffliatedcheckBoxClass').prop('checked', false);
 		}
 	});
 	function getBoothCommitteesBasicCountReport(){
@@ -1848,30 +1848,30 @@
 	// clicked on '... dots' and 'detailed block' or 'click on slick' END
 	
 	//filtering in tdp committees start.
-	$(".basicCommittessDiv").click(function(event){
+	$(".basicBoothCommittessDiv").click(function(event){
 		
 		var allSelectedCommitteeIdsArray = [];
 		//district level
-		$(".districtCommitteecheckBoxClass").each(function(){
+		$(".districtBoothCommitteecheckBoxClass").each(function(){
 			if($(this).is(':checked')){
 				allSelectedCommitteeIdsArray.push( $(this).val() );
 			}
 		}); 
 		//mandal/town/division level.
-		$(".mandalCommitteecheckBoxClass").each(function(){
+		$(".mandalBoothCommitteecheckBoxClass").each(function(){
 			if($(this).is(':checked')){
 				allSelectedCommitteeIdsArray.push( $(this).val() );
 			}
 		}); 
 		//village/ward level.
-		$(".villageCommitteecheckBoxClass").each(function(){
+		$(".villageBoothCommitteecheckBoxClass").each(function(){
 			if($(this).is(':checked')){
 				allSelectedCommitteeIdsArray.push( $(this).val() );
 			}
 		}); 
 		
 		if(allSelectedCommitteeIdsArray!=null && allSelectedCommitteeIdsArray.length>0){
-			 $(".basicCommitteesBlockDropDown").hide();	
+			 $(".basicBoothCommitteesBlockDropDown").hide();	
 			 boothDefaultCommitteeCalls();
 		}else{
 			//show error msg
