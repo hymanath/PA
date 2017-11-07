@@ -5397,7 +5397,6 @@ var globalImages;
 	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();
 		onloadPrajaSankaplaYatraCalls();
-		//getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');
@@ -5422,9 +5421,11 @@ var globalImages;
 		stateLevelCampDetails();
 		stateLevelCampDetailsRepresentativeWise(programIdArr);
 		getStateLevelCampCount(programIdArr); */   
-		getTrainingCampBasicDetailsCntOverview();   
+				
 		//getTrainingCampProgramOverviewDtls();   
 		//Meeting
+		getTrainingCampBasicDetailsCntOverview(); 
+        getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();
 		getPartyMeetingTypeByPartyMeetingMainType();
 		getStateLevelMeetingsByMeetingType();
 		getSpecialMeetingsByMeetingType();
@@ -5537,7 +5538,8 @@ var globalImages;
 			stateLevelCampDetails();
 			stateLevelCampDetailsRepresentativeWise(programIdArr);
 			getStateLevelCampCount(programIdArr); */   
-			getTrainingCampBasicDetailsCntOverview();   
+			getTrainingCampBasicDetailsCntOverview();
+            getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();			
 			//getTrainingCampProgramOverviewDtls();   
 			//Meeting
 			getPartyMeetingTypeByPartyMeetingMainType();
