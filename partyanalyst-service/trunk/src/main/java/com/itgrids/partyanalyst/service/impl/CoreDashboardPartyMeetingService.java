@@ -2064,6 +2064,54 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 			 finalList.addAll(meetingTypeVOMap.values());
 			 //update final list here, 
 		 }
+		 List<Long> partymeetingIdsWithOutInvitess=new ArrayList<Long>();
+		 if(finalList != null && finalList.size() >0) {
+				for (PartyMeetingsDataVO mainVO : finalList) {
+					if(mainVO.getSubList1() !=null && mainVO.getSubList1().size() >0) {
+						for (PartyMeetingsDataVO subVO : mainVO.getSubList1()) {
+							Long partyMeetingId=subVO.getId();
+						    if(!partyMeetingInviteesMap.containsKey(partyMeetingId)){
+						    	partymeetingIdsWithOutInvitess.add(partyMeetingId);
+						    }
+						}
+					}
+				}
+			}
+		 
+		 Map<Long,Long> sessionWiseNonInviteedCountMap = new HashMap<Long, Long>();
+		 if(partymeetingIdsWithOutInvitess != null && partymeetingIdsWithOutInvitess.size() >0) {
+			 List<Object[]> nonInviteeAtendedCountObjList = partyMeetingAttendanceDAO.getNonInviteeAttendanceCountByMeetingId(partymeetingIdsWithOutInvitess);
+			 if(nonInviteeAtendedCountObjList !=null && nonInviteeAtendedCountObjList.size() >0) {
+					for (Object[] param : nonInviteeAtendedCountObjList) {	
+							Long nonInviteecount = sessionWiseNonInviteedCountMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));// sessionId
+							if(nonInviteecount == null){
+								//sessionId,count 
+								sessionWiseNonInviteedCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[4]));
+							}
+					}
+			 }
+			 
+			 if(finalList != null && finalList.size() >0) {
+					for (PartyMeetingsDataVO mainVO : finalList) {
+						if(mainVO.getSubList1() !=null && mainVO.getSubList1().size() >0) {
+							for (PartyMeetingsDataVO subVO : mainVO.getSubList1()) {
+								Long partyMeetingId = subVO.getId();
+								if(partymeetingIdsWithOutInvitess.contains(partyMeetingId)) {
+									  if(subVO.getSubList1() !=null && subVO.getSubList1().size() > 0){
+										  for(PartyMeetingsDataVO sessionVO:subVO.getSubList1()){
+											  if(sessionWiseNonInviteedCountMap.containsKey(sessionVO.getId())){
+												  sessionVO.setNonInviteeCount(sessionWiseNonInviteedCountMap.get(sessionVO.getId()));
+												  subVO.setNonInviteeCount(subVO.getNonInviteeCount()+sessionVO.getNonInviteeCount());
+											  }
+										  }
+									  }
+								}
+							}
+						}
+					}
+				}
+		 }
+		 
 	}catch(Exception e){
 		LOG.error("exception occurred in getPartyMeetingsMainTypeOverViewData()", e);
 	}
