@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.itgrids.dto.DrainsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.SolidWasteManagementVO;
 import com.itgrids.service.ISolidWasteManagementService;
@@ -74,5 +73,65 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	           			}
 	        		return  finalList;	
 	        	}
+	
+	/*
+	 * Date : 07/11/2017
+	 * Author :Hymavathi
+	 * @description : getSolidWasteManagementOverAllCounts
+	 */
+	@Override
+	public SolidWasteManagementVO getSolidWasteManagementOverAllCounts(InputVO inputVO) {
+		SolidWasteManagementVO solidWasteManagementVO= new SolidWasteManagementVO();
+		
+		try {
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=1");
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+		    
+	        if(response.getStatus() != 200){
+	        	throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	    }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				solidWasteManagementVO.setRfidTags(!jObj.getString("rfid_tags").equalsIgnoreCase("null") ? solidWasteManagementVO.getRfidTags()+jObj.getLong("rfid_tags") : solidWasteManagementVO.getRfidTags());
+	 	    				solidWasteManagementVO.setFarmers(!jObj.getString("farmers").equalsIgnoreCase("null") ? solidWasteManagementVO.getFarmers()+jObj.getLong("farmers") : solidWasteManagementVO.getFarmers());
+	 	    				solidWasteManagementVO.setHouseCollecion(!jObj.getString("houseCollecion").equalsIgnoreCase("null") ? solidWasteManagementVO.getHouseCollecion()+jObj.getLong("houseCollecion") : solidWasteManagementVO.getHouseCollecion());
+	 	    				solidWasteManagementVO.setFarmerCollection(!jObj.getString("farmerCollection").equalsIgnoreCase("null") ? solidWasteManagementVO.getFarmerCollection()+jObj.getLong("farmerCollection") : solidWasteManagementVO.getFarmerCollection());
+	 	    				solidWasteManagementVO.setSwmCollection(!jObj.getString("swmCollection").equalsIgnoreCase("null") ? solidWasteManagementVO.getSwmCollection()+jObj.getLong("swmCollection") : solidWasteManagementVO.getSwmCollection());
+	 	    				solidWasteManagementVO.setMgnres(!jObj.getString("mgnres").equalsIgnoreCase("null") ? solidWasteManagementVO.getMgnres()+jObj.getLong("mgnres") : solidWasteManagementVO.getMgnres());
+	 	    				solidWasteManagementVO.setPr(!jObj.getString("pr").equalsIgnoreCase("null") ? solidWasteManagementVO.getPr()+jObj.getLong("pr") : solidWasteManagementVO.getPr());
+	 	    				solidWasteManagementVO.setPublicType(!jObj.getString("public").equalsIgnoreCase("null") ? solidWasteManagementVO.getPublicType()+jObj.getLong("public") : solidWasteManagementVO.getPublicType());
+	 	    				solidWasteManagementVO.setOnekg(!jObj.getString("1kg").equalsIgnoreCase("null") ? solidWasteManagementVO.getOnekg()+jObj.getLong("1kg") : solidWasteManagementVO.getOnekg());
+	 	    				solidWasteManagementVO.setFivekg(!jObj.getString("5kg").equalsIgnoreCase("null") ? solidWasteManagementVO.getFivekg()+jObj.getLong("5kg") : solidWasteManagementVO.getFivekg());
+	 	    				solidWasteManagementVO.setTenkg(!jObj.getString("10kg").equalsIgnoreCase("null") ? solidWasteManagementVO.getTenkg()+jObj.getLong("10kg") : solidWasteManagementVO.getTenkg());
+	 	    				solidWasteManagementVO.setTwentyFivekg(!jObj.getString("25kg").equalsIgnoreCase("null") ? solidWasteManagementVO.getTwentyFivekg()+jObj.getLong("25kg") : solidWasteManagementVO.getTwentyFivekg());
+	 	    				solidWasteManagementVO.setFiftykg(!jObj.getString("50kg").equalsIgnoreCase("null") ? solidWasteManagementVO.getFiftykg()+jObj.getLong("50kg") : solidWasteManagementVO.getFiftykg());
+	 	    				solidWasteManagementVO.setTractor(!jObj.getString("tractor").equalsIgnoreCase("null") ? solidWasteManagementVO.getTractor()+jObj.getLong("tractor") : solidWasteManagementVO.getTractor());
+	 	    				solidWasteManagementVO.setAuto(!jObj.getString("auto").equalsIgnoreCase("null") ? solidWasteManagementVO.getAuto()+jObj.getLong("auto") : solidWasteManagementVO.getAuto());
+	 	    				solidWasteManagementVO.setTricycle(!jObj.getString("tricycle").equalsIgnoreCase("null") ? solidWasteManagementVO.getTricycle()+jObj.getLong("tricycle") : solidWasteManagementVO.getTricycle());
+	 	    				solidWasteManagementVO.setEvehicle(!jObj.getString("evehicle").equalsIgnoreCase("null") ? solidWasteManagementVO.getEvehicle()+jObj.getLong("evehicle") : solidWasteManagementVO.getEvehicle());
+	 	    				solidWasteManagementVO.setNadap(!jObj.getString("nadap").equalsIgnoreCase("null") ? solidWasteManagementVO.getNadap()+jObj.getLong("nadap") : solidWasteManagementVO.getNadap());
+	 	    				solidWasteManagementVO.setVermi(!jObj.getString("vermi").equalsIgnoreCase("null") ? solidWasteManagementVO.getVermi()+jObj.getLong("vermi") : solidWasteManagementVO.getVermi());
+	 	    				solidWasteManagementVO.setVermiStock(!jObj.getString("vermiStock").equalsIgnoreCase("null") ? solidWasteManagementVO.getVermiStock()+jObj.getLong("vermiStock") : solidWasteManagementVO.getVermiStock());
+	 	    				solidWasteManagementVO.setBlocks(!jObj.getString("blocks").equalsIgnoreCase("null") ? solidWasteManagementVO.getBlocks()+jObj.getLong("blocks") : solidWasteManagementVO.getBlocks());
+	 	    				solidWasteManagementVO.setRfidTracking(!jObj.getString("rfidTracking").equalsIgnoreCase("null") ? solidWasteManagementVO.getRfidTracking()+jObj.getLong("rfidTracking") : solidWasteManagementVO.getRfidTracking());
+	 	    				
+	 	    			}
+	 	    		}
+	 	    	 }
+	 	      }
+		}     		
+	 	    				
+	 	catch (Exception e) {
+			LOG.error("Exception raised at getDrainsInfobyLocation - DrainsService service", e);
+		}	
+		return solidWasteManagementVO;
+	}
+	
 	
 }
