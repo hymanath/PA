@@ -481,22 +481,28 @@ content:"\002b";
                             </div>
                         </section>
 						
-                        <section>
+                       <section>
                         	<div class="row">
 								<div class="col-md-12">
 								<div class="panel panel-default" id="heading6">
 										<div class="panel-heading bg_d">
 											<div class="row">
-												<div class="col-sm-12">
-													<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse6" aria-expanded="true" aria-controls="collapse6">
+												<div class="col-sm-8">
+													<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse6" aria-expanded="true" aria-controls="collapse6">
 														<h4 class="panel-title">
 															<b><span id="headingDiv">DISTRICT </span>WISE TOTAL MEMBERS PARTICIPATED</b>
-															<div class="pull-right">
-																<input type="radio" name="distConst" class="constDistRadio" checked value="dist"><label>District</label>
-																<input type="radio" name="distConst" class="constDistRadio" value="const"><label>Constituency</label>
-															</div>
 														</h4>
 													</a>
+												</div>
+												<div class="col-sm-3">
+													<div class="pull-right">
+														<input type="radio" name="distConst" class="constDistRadio" checked value="dist"><label>District</label>
+														<input type="radio" name="distConst" class="constDistRadio" value="const"><label>Constituency</label>
+													</div>
+												</div>
+												<div class="col-sm-1">
+														<div class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse6" aria-expanded="true" aria-controls="collapse6">
+														</div>
 												</div>
 											</div>
 										</div>
