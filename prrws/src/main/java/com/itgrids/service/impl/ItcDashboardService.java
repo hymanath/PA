@@ -412,7 +412,7 @@ public class ItcDashboardService implements IItcDashboardService {
 			 MOUTrackerIT[] dataArr = new TrackerITServiceSoapProxy().EODB_ABSTRACT_REPORT();
 			 Map<String,List<ItecCMeoDBDetailsVO>> deptNameAndVosMap = new HashMap<String,List<ItecCMeoDBDetailsVO>>();
 		     if(dataArr != null && dataArr.length > 0){
-		    	 for( int i = 0; i < dataArr.length-2 ; i++ ){
+		    	 for( int i = 0; i < dataArr.length-1 ; i++ ){
 		    		List<ItecCMeoDBDetailsVO> clearnceVosList= deptNameAndVosMap.get(dataArr[i].getDASH_BOARD_NAME().trim());
 		    		if( clearnceVosList == null ){
 		    			clearnceVosList = new ArrayList<ItecCMeoDBDetailsVO>();
