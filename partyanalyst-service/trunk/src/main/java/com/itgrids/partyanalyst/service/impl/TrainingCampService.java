@@ -6519,33 +6519,26 @@ class TrainingCampService implements ITrainingCampService{
 								SimpleVO existingProgramVo=finalResultMap.get(programId);
 								 List<SimpleVO> existingCampvoList=existingProgramVo.getCampDetails();
 								 
-								 SimpleVO tempCampVo=new SimpleVO();
-								 tempCampVo.setCampId(mainVo.getCampId());
-								 tempCampVo.setCampName(mainVo.getName());
-								 
-								 boolean foundCamp=false;
-								 if(existingCampvoList.contains(tempCampVo)){
-										int campFromFinalResultMapPosition=existingCampvoList.indexOf(tempCampVo);
-										SimpleVO existingCampVoFromMap=existingCampvoList.get(campFromFinalResultMapPosition);
-										//set complete batch details by calling setBatchDetailsToSimpleVO method
+								SimpleVO campVO=getMatchedCampVOFromList(existingCampvoList,mainVo.getCampId());
+								 if(campVO == null){
+										SimpleVO newCampVo=new SimpleVO();
+										newCampVo.setCampId(mainVo.getCampId());
+										newCampVo.setCampName(mainVo.getName());
+										
+										List<SimpleVO> batchList=new ArrayList<SimpleVO>();
+									//set complete batch details by calling setBatchDetailsToSimpleVO method
+										SimpleVO batchDetails=setBatchDetailsToSimpleVO(mainVo);
+										batchDetails.setBatchTypeId(matchedBatchVo.getBatchTypeId());
+										batchList.add(batchDetails);
+										newCampVo.setBatchDetails(batchList);
+										existingCampvoList.add(newCampVo);
+								 }else{
+									//set complete batch details by calling setBatchDetailsToSimpleVO method
 										SimpleVO newBatchDetails=setBatchDetailsToSimpleVO(mainVo);
 										newBatchDetails.setBatchTypeId(matchedBatchVo.getBatchTypeId());
-										List<SimpleVO> existingBatchList=existingCampVoFromMap.getBatchDetails();
+										List<SimpleVO> existingBatchList=campVO.getBatchDetails();
 										existingBatchList.add(newBatchDetails);
-										foundCamp=true;
-							        }else if(foundCamp == false){
-							        	SimpleVO newCampVo=new SimpleVO();
-							        	newCampVo.setCampId(mainVo.getCampId());
-							        	newCampVo.setCampName(mainVo.getName());
-							        	
-							        	List<SimpleVO> batchList=new ArrayList<SimpleVO>();
-							        	SimpleVO batchDetails=setBatchDetailsToSimpleVO(mainVo);
-							        	batchDetails.setBatchTypeId(matchedBatchVo.getBatchTypeId());
-										 batchList.add(batchDetails);
-										 newCampVo.setBatchDetails(batchList);
-										 existingCampvoList.add(newCampVo);
-										 
-							        }
+								 }
 							}else{
 								 SimpleVO programVo=new  SimpleVO();
 								 programVo.setProgramId(matchedBatchVo.getProgramId());
@@ -13514,4 +13507,18 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 	batchDetails.setTrainingCampBatchTypeId(mainVO.getTrainingCampBatchTypeId());
 	return batchDetails;
   }	
+	public SimpleVO getMatchedCampVOFromList(List<SimpleVO> voList,Long id){
+    	try{
+    		if(voList == null || voList.size() == 0)
+    			return null;
+    		for(SimpleVO vo:voList){   	
+    			if(vo.getCampId().equals(id))
+        		return vo;
+    		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
+	
 }
