@@ -6959,16 +6959,21 @@ function getLocationWiseMeetingsCountDetails(partyMeetingMainTypeId){
 }
 function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,electionId){
 	$("#openPostDetailsModalDivId").html(spinner);
+	var electionYearsArr =["2014"];
+	
 	var electionIds=[];
 	var electionScopeIds=[];
 	electionIds.push(electionId)
-	electionScopeIds.push(electionScopeId)
+	electionScopeIds.push(electionScopeId);
 	var jsObj={
        electionIds    		:electionIds,
        loctionValue   		:1,
        loactionTypeId   	:2,
        electionScopeIds 	:electionScopeIds,
-	   partyId :partyId
+	   partyId :partyId,
+	   districtId:0,
+	   electionYearsArr : electionYearsArr
+	   
     }
    $.ajax({
 		type : "POST",

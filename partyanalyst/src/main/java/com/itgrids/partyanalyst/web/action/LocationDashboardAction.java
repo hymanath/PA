@@ -1385,8 +1385,16 @@ public String getElectionInformationLocationWise(){
 			Long loactionTypeId = jObj.getLong("loactionTypeId");
 			Long loctionValue= jObj.getLong("loctionValue");
 			List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIds"));
-			Long partyId =jObj.getLong("partyId");
-			typeVoList =  locationDashboardService.getPartyWiseMPandMLACandidatesCountDetials(electionIdsList,electionScopeIds,loactionTypeId,loctionValue,partyId);
+			Long partyId = jObj.getLong("partyId");
+			Long districtId = jObj.getLong("districtId");
+			
+			JSONArray electionYearArray = jObj.getJSONArray("electionYearsArr");  
+			List<String> electionYearLst = new ArrayList<String>();
+				for (int i = 0; i < electionYearArray.length(); i++){
+					electionYearLst.add(electionYearArray.getString(i).toString());        
+				} 
+			
+			typeVoList =  locationDashboardService.getPartyWiseMPandMLACandidatesCountDetials(electionIdsList,electionScopeIds,loactionTypeId,loctionValue,partyId,districtId,electionYearLst);
 			
 		}catch(Exception e){
 			LOG.error("Entered into getPartyWiseMPandMLACandidatesCountDetials method of LocationDashboardAction Action",e);
