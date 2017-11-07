@@ -425,9 +425,9 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 					}
 				}
 			}
-			// 0-ageRangeId,1-ageRange,2-gender,3-votersCount
-			List<Object[]> votersObjList= null;
-		//	List<Object[]> votersObjList = userVoterDetailsDAO.getVotersCasteNAgeGroupWiseCounts(casteGroupId,casteId, reportLevelId,locationTypeId, constituencyIds,publicationDateId);
+			//0 ageRangeId,1 gender,2 count
+			//List<Object[]> votersObjList= null;
+		    List<Object[]> votersObjList = userVoterDetailsDAO.getVotersCasteNAgeGroupWiseCounts(casteGroupId,casteId, reportLevelId,locationTypeId, constituencyIds,publicationDateId);
 			//votersObjList = userVoterDetailsDAO.getVotersCasteNAgeGroupWiseCount(casteGroupId,casteId, constituencyIds,publicationDateId);
 
 			if (votersObjList != null && votersObjList.size() > 0) {
@@ -439,10 +439,10 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 						map.put(commonMethodsUtilService.getLongValueForObject(objects[0]), inVO);
 					}
 
-					if (objects[2].toString().equalsIgnoreCase("M")) {
-						map.get((Long) objects[0]).setMaleVoters((Long) objects[3]);
-					} else if (objects[2].toString().equalsIgnoreCase("F")) {
-						map.get((Long) objects[0]).setFemaleVoters((Long) objects[3]);
+					if (objects[1].toString().equalsIgnoreCase("M")) {
+						map.get((Long) objects[0]).setMaleVoters((Long) objects[2]);
+					} else if (objects[1].toString().equalsIgnoreCase("F")) {
+						map.get((Long) objects[0]).setFemaleVoters((Long) objects[2]);
 					}
 
 				}
