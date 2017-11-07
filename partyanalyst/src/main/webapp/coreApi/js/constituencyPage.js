@@ -5710,18 +5710,19 @@ function buildElectionInformationLocationWise(result,type){
 				var wonSeatsCountArr=[];
 				var partiesName='';
 				for(var j in result[i].list){
-					if((result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0) || (result[i].list[j].locationName !=null && result[i].list[j].locationName>0)){
-						partiesName = result[i].partyName;
-					}
-					
+					partiesName = result[i].partyName;
 					electionYearArr.push(result[i].list[j].electionYear+'  '+result[i].list[j].electionType);
 					if(type == "wonSeat"){
 						if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
 							wonSeatsCountArr.push(parseFloat(result[i].list[j].wonSeatsCount));
+						}else{
+							wonSeatsCountArr.push(parseFloat("Not Participated"));
 						}
 					}else{
 						if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
 							wonSeatsCountArr.push(parseFloat(result[i].list[j].locationName));
+						}else{
+							wonSeatsCountArr.push(parseFloat("Not Participated"));
 						}
 						
 					}
@@ -5734,7 +5735,7 @@ function buildElectionInformationLocationWise(result,type){
 					}
 					mainDataArr.push(obj)
 			}
-			
+		console.log(mainDataArr)	
 		$(".electionDetailsGraphHeight").css("height","500px !important;");
 		$('#electionDetailsGraphWiseId').highcharts({
 			chart: {
@@ -5785,7 +5786,19 @@ function buildElectionInformationLocationWise(result,type){
 			},
 			plotOptions: {
 				column: {
-					stacking:"percent"
+					stacking:"percent",
+					/* dataLabels: {
+						enabled: false,
+						align: 'left',
+						 formatter: function() {
+							if (this.y === 0) {
+								return null;
+							} else {
+								return (this.y); 
+							}
+						}
+					  
+					} */
 					/* marker: {
 						enabled: false,
 						symbol: 'circle',
