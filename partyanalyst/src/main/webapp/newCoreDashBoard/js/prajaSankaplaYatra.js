@@ -37,7 +37,7 @@ function buildOverAllCountDetails(result,divId,type){
 	prajaSankTotalCount=prajaSankTotalCount+result.psyPosCnt+result.psyNegCnt;
 	prajaSAMASYALATotalCount=prajaSAMASYALATotalCount+result.cpsyPosCnt+result.cpsyNegCnt;
 		str+='<div class="row">';
-		str+='<div class="col-sm-5 m_top10">';
+		str+='<div class="col-sm-6 m_top10">';
 			str+='<table class="table table-condensed tableNews bg_ED">';
 				str+='<tr>';
 					str+='<td>';
@@ -67,7 +67,7 @@ function buildOverAllCountDetails(result,divId,type){
 			str+='</table>';
 		str+='</div>';
 		
-		str+='<div class="col-sm-7 m_top10">';
+		str+='<div class="col-sm-6 m_top10">';
 			str+='<table class="table table-condensed tableNews bg_ED">';
 				str+='<tr>';
 					str+='<td>';
@@ -122,14 +122,14 @@ function buildPartyWiseDetails(result,divId,type){
 			str+='</div>';
 		
 		str+='<div id="collapse'+divId+''+type+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId+''+type+'">';
-			str+='<div class="panel-body">';
+			str+='<div class="panel-body" style="background-color: rgb(246, 246, 246);">';
 			for(var i in result){
 				str+='<div class="row">';
 				var toatlCountPrajaSank=0;
 				var toatlCountPrajaSam=0;
 				toatlCountPrajaSank = toatlCountPrajaSank+result[i].psyPosCnt+result[i].psyNegCnt;
 				toatlCountPrajaSam = toatlCountPrajaSam+result[i].cpsyPosCnt+result[i].cpsyNegCnt;
-				str+='<div class="col-sm-5">';
+				str+='<div class="col-sm-6">';
 					str+='<table class="table table-condensed tableNews bg_ED">';
 						str+='<tr>';
 							str+='<td>';
@@ -158,7 +158,7 @@ function buildPartyWiseDetails(result,divId,type){
 						str+='</tr>';
 					str+='</table>';
 				str+='</div>';
-				str+='<div class="col-sm-7">';
+				str+='<div class="col-sm-6">';
 					str+='<table class="table table-condensed tableNews bg_ED">';
 						str+='<tr>';
 							str+='<td>';
@@ -220,14 +220,14 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 				str+='</a>';
 			str+='</div>';
 		str+='<div id="collapse'+type+''+divId+'" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading'+type+''+divId+'">';
-		str+='<div class="panel-body">';
+		str+='<div class="panel-body" style="background-color: rgb(246, 246, 246);">';
 		for(var i in result){
 			str+='<div class="row">';
 			var toatlCountPrajaSank=0;
 			var toatlCountPrajaSam=0;
 			toatlCountPrajaSank = toatlCountPrajaSank+result[i].psyPosCnt+result[i].psyNegCnt;
 			toatlCountPrajaSam = toatlCountPrajaSam+result[i].cpsyPosCnt+result[i].cpsyNegCnt;
-			str+='<div class="col-sm-5">';
+			str+='<div class="col-sm-6">';
 				str+='<table class="table table-condensed tableNews bg_ED">';
 					str+='<tr>';
 						str+='<td>';
@@ -270,7 +270,7 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 					str+='</tr>';
 				str+='</table>';
 			str+='</div>';
-			str+='<div class="col-sm-7">';
+			str+='<div class="col-sm-6">';
 				str+='<table class="table table-condensed tableNews bg_ED">';
 					str+='<tr>';
 						str+='<td>';
