@@ -2613,7 +2613,7 @@ function buildCommitteeDetailedReport(result){
 	
 	var str='';
 	str+='<div class="table-responsive">';
-		str+='<table class="table table-condensed table_custom table-bordered" id="commiteeWiseDetailedReportDT">';
+		str+='<table class="table table-condensed table_custom table-bordered commiteeWiseDetailedReportDT">';
 			str+='<thead>';
 				str+='<tr>';
 					str+='<th rowspan="2">Location</th>';
@@ -2631,12 +2631,44 @@ function buildCommitteeDetailedReport(result){
 			str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
-						if(result[i].name !=null && result[i].name.length>10){
-							str+='<td><span class="tooltipCls" data-toogle="tooltip" data-placement="right" title="'+result[i].name+'"></span>'+result[i].name.substring(0,10)+'..</td>';
-						}else{
-							str+='<td>'+result[i].name+'</td>';
+						str+='<td>'+result[i].name+'</td>';
+						for(var j in result[i].subList){
+							if(result[i].subList[j].totalCount !=null && result[i].subList[j].totalCount>0){
+								str+='<td>'+result[i].subList[j].totalCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if(result[i].subList[j].completedCount !=null && result[i].subList[j].completedCount>0){
+								str+='<td>'+result[i].subList[j].completedCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							
 						}
-						
+					str+='</tr>';
+				}
+				
+			str+='</tbody>';
+			//Export Excel
+			str+='<table class="table table-condensed table_custom table-bordered" id="commiteeWiseDetailedReportExportExcel" style="display:none;">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th rowspan="2">Location</th>';
+					for(var i in result[0].subList){
+						str+='<th colspan="2">'+result[0].subList[i].name+'</th>';
+					}
+				str+='</tr>';
+				str+='<tr>';
+				for(var i in result[0].subList){
+					str+='<th>Vancancy</th>';
+					str+='<th>Filled</th>';
+				}
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].name+'</td>';
 						for(var j in result[i].subList){
 							if(result[i].subList[j].totalCount !=null && result[i].subList[j].totalCount>0){
 								str+='<td>'+result[i].subList[j].totalCount+'</td>';
@@ -2659,19 +2691,22 @@ function buildCommitteeDetailedReport(result){
 	
 	$("#commiteeWiseDetailedReportId").html(str);
 	$(".tooltipCls").tooltip();
-	$("#commiteeWiseDetailedReportDT").dataTable({
-			"iDisplayLength": 16,
-			"aaSorting": [],
-			"aLengthMenu": [[16, 20, -1], [16, 20, "All"]],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
-			"<'row'<'col-sm-12'tr>>" +
-			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			buttons: [
-				{
-					extend:    'csvHtml5',
-					text:      '<i class="fa fa-file-text-o"></i>',
-					titleAttr: 'CSV',
-				}
-			]
+	$(".commiteeWiseDetailedReportDT").dataTable({
+		"iDisplayLength": 16,
+		"aaSorting": [],
+		"aLengthMenu": [[16, 20, -1], [16, 20, "All"]],
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+			{
+				//extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o generateExcel"></i>',
+				//titleAttr: 'CSV',
+			}
+		]
 	});
 }
+$(document).on("click",".generateExcel",function(){
+	tableToExcel('commiteeWiseDetailedReportExportExcel', 'Commitee WiseDetailed Report');
+});

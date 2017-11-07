@@ -13,7 +13,7 @@
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
-<link href="dist/DataTable_NewVersion/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="coreApi/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="coreApi/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
@@ -2307,14 +2307,14 @@
 						<div class="row">
 							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
 							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
-								<li role="presentation" class="text-capital"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
-								<li role="presentation"   class="text-capital"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
-								<li role="presentation"  class="active text-capital"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>
+								<li role="presentation" class="text-capital"><a href="#homeComm" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
+								<li role="presentation"  class="text-capital"><a href="#profileComm" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
+								<li role="presentation"  class="active text-capital"><a href="#messagesComm" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>
 							  </ul>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
 							  <div class="tab-content navTabsSettingsContent">
-								<div role="tabpanel" class="tab-pane" id="home">
+								<div role="tabpanel" class="tab-pane" id="homeComm">
 									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
 									<hr style ="margin-bottom:0px;" />
 									<div class="basicCommitteeDetailsDiv">
@@ -2349,7 +2349,7 @@
 									</ul>
 									</div>
 								</div>
-								<div role="tabpanel" class="tab-pane" id="profile">
+								<div role="tabpanel" class="tab-pane" id="profileComm">
 									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
 									<hr style ="margin-bottom:0px;" />
 									<div class="basicCommitteeDetailsDiv">
@@ -2396,7 +2396,7 @@
 									</ul>
 									</div>
 								</div>
-								<div role="tabpanel" class="tab-pane active" id="messages">
+								<div role="tabpanel" class="tab-pane active" id="messagesComm">
 									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
 									<hr style ="margin-bottom:0px;" />
 									<div class="basicCommitteeDetailsDiv">
@@ -2413,7 +2413,7 @@
 									</c:forEach>
 										 <li>
 											<label class="checkbox-inline">
-											  <input type="checkbox"  id="checkAllAffliatedVillagelevelId"  >
+											  <input type="checkbox"  id="checkAllAffliatedVillagelevelId">
 											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
 										   </label>
 										</li>  
@@ -2525,7 +2525,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-									<div id="commiteeWiseDetailedReportId" ></div>
+									<div id="commiteeWiseDetailedReportId"></div>
 								</div>
                             </div>
                         </div>
@@ -4871,7 +4871,7 @@
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
-<script src="dist/DataTable_NewVersion/dataTable.js" type="text/javascript"></script>
+<script src="coreApi/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/DataTable/pdf.js" type="text/javascript"></script>
@@ -5668,5 +5668,18 @@ function refreshMeetingStatus(){
 	getinsertDataInToPartyMeetingStatus();
 }
 </script> 
+<script>
+  var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+</script>
 </body>
 </html>

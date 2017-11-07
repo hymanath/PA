@@ -3284,7 +3284,7 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 						str+='<a role="button" class="collapsed collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSpecialTrainingBatch'+i+'" aria-controls="collapseSpecialTrainingBatch'+i+'">';
 					}
 						str+='<h4 class="text-capital">'+result.leaderTrainingList[i].name+'';
-							str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"><span>Total Batch : <b>'+result.leaderTrainingList[i].totalBatch+'</b></span>&nbsp&nbsp&nbsp <span>Completed : <b>'+result.leaderTrainingList[i].completedBatch+'</b></span>&nbsp&nbsp&nbsp<span>Running : <b>'+result.leaderTrainingList[i].runningBatch+'</b></span>&nbsp&nbsp&nbsp<span>Upcomming : <b>'+result.leaderTrainingList[i].upcommintbatch+'</b></span></h5>';
+							str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"><span>Total Batches : <b>'+result.leaderTrainingList[i].completedBatch+'</b></span> </h5>';
 						str+='</h4>';
 					str+='</a>';
 				str+='</div>';
@@ -3304,7 +3304,7 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 					str+='<tr>';
 						str+='<td>';
 							str+='<p class="text-muted text-capitalize">Days</p>';
-							str+='<p class="responsiveFont">-</p>';
+							str+='<p class="responsiveFont">ALL</p>';
 							
 						str+='</td>';
 						str+='<td>';
