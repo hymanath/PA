@@ -2231,7 +2231,12 @@ function getCMEDOBReportStatusWise(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		buildCMEDOBReportStatusWise(result)
+		if (result != null && result.length > 0) {
+			buildCMEDOBReportStatusWise(result)	
+		} else {
+			$("#cmedobDivId").html("NO DATA AVAILABLE.");
+		}
+		
 	});
 		
 }
