@@ -2801,8 +2801,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	
 	public Double calculatePercantage(Long subCount,Long totalCount){
 		Double d=0.0d;
-		if(subCount.longValue()>0l && totalCount.longValue()==0l)
-			LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
+		//if(subCount.longValue()>0l && totalCount.longValue()==0l)
+		//	LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
 
 		if(totalCount.longValue() > 0l){
 			d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
@@ -6018,6 +6018,19 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 				alliancedPartiesWithGroupIdMap =locationWiseElectionInformationDetalsService.getSegregateAliancePartiesMap(subTypeList,year,electionScopeId);
 			if(!commonMethodsUtilService.isMapValid(alliancedPartiesWithGroupIdMap))
 				alliancedPartiesWithGroupIdMap = new HashMap<Long, Map<Long,ElectionInformationVO>>(0);
+
+			 if (lelevlId != null && lelevlId.longValue() == 10l) {
+					@SuppressWarnings("unchecked")
+					List<Object[]> findAssembliesConstituencies = (List<Object[]>) delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(levelValue.get(0));
+					if(commonMethodsUtilService.isListOrSetValid(findAssembliesConstituencies)){
+						levelValue.clear();
+						for (Object[] objects : findAssembliesConstituencies) {
+							if (objects != null) {
+								levelValue.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							}
+						}
+					}
+				  }
 			
 			Map<Long,ElectionInformationVO> vacancyMap= new HashMap<Long,ElectionInformationVO>();
 			Map<Long,List<ElectionInformationVO>> participantsMap= new HashMap<Long,List<ElectionInformationVO>>();
@@ -6037,12 +6050,19 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 			}
 			if(lelevlId != null && lelevlId.longValue() != 5l && lelevlId.longValue() != 7l && lelevlId.longValue() != 6l){
 		      participantsList= candidateDAO.getParticipatedPartyListforElection(year,lelevlId,levelValue,electionScopeId,subTypeList,null);
-			if(lelevlId.longValue() == 2l || lelevlId.longValue() == 3l || lelevlId.longValue() ==10l){
+				if(lelevlId.longValue() == 2l || lelevlId.longValue() == 3l || lelevlId.longValue() ==10l){
+					List<Object[]> parlimParticipantsList= candidateDAO.getParticipatedPartyListforElection(year,lelevlId,levelValue,electionScopeId,subTypeList,"parliament");
+					if(commonMethodsUtilService.isListOrSetValid(participantsList) && parlimParticipantsList != null && parlimParticipantsList.size()>0){
+						participantsList.addAll(parlimParticipantsList);
+					}
+				}
+			}else{
+				 participantsList= candidateDAO.getParticipatedPartyListforElection(year,lelevlId,levelValue,electionScopeId,subTypeList,null);
 				List<Object[]> parlimParticipantsList= candidateDAO.getParticipatedPartyListforElection(year,lelevlId,levelValue,electionScopeId,subTypeList,"parliament");
-				if(parlimParticipantsList != null && parlimParticipantsList.size()>0){
+				if(commonMethodsUtilService.isListOrSetValid(participantsList) &&  parlimParticipantsList != null && parlimParticipantsList.size()>0){
 					participantsList.addAll(parlimParticipantsList);
 				}
-			}
+					
 			}
 			List<Object[]> partyWonResultsList= candidateDAO.getParticipatedPartyListforElectionDetails(year,lelevlId,levelValue,electionScopeId,subTypeList,null,"WONRESULT");
 			List<Object[]> partyVoteShareResultsList= candidateDAO.getParticipatedPartyListforElectionDetails(year,lelevlId,levelValue,electionScopeId,subTypeList,null,null);
@@ -6071,7 +6091,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 				List<String> alliancePartyIdNameList  = findMatchedPartyId(alliancedPartiesWithGroupIdMap,electionId,partyId);
 				if(commonMethodsUtilService.isListOrSetValid(alliancePartyIdNameList)){
 					Long alliancePartyId = Long.valueOf(alliancePartyIdNameList.get(0));
-					String alliancePartyName = alliancePartyIdNameList.get(1);
+					//String alliancePartyName = alliancePartyIdNameList.get(1);
 					partyId = alliancePartyId;
 				}
 				
@@ -6289,7 +6309,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 					}
 					vacancyMap.put(vo.getElectionId(), vo);
 				}
-			}/*else if(commonMethodsUtilService.isListOrSetValid(partyWonResultsList)){
+			}else if(commonMethodsUtilService.isListOrSetValid(partyWonResultsList)){
 				//e.election_scope_id,e.election_id,et.election_type,e.election_scope_id,e.election_year,n.party_id,p.short_name,count(n.party_id),sum(cr.votes_earned)
 				for (Object[] param : partyWonResultsList) {
 					ElectionInformationVO vo = new ElectionInformationVO();
@@ -6314,7 +6334,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 					vacancyMap.put(vo.getElectionId(), vo);
 				}	
 			}
-			*/
+			
 			if(commonMethodsUtilService.isMapValid(vacancyMap)){
 				finalList.addAll(vacancyMap.values());
 				Collections.sort(finalList, new Comparator<ElectionInformationVO>() {
@@ -6327,7 +6347,7 @@ public List<GrivenceStatusVO> getConstituencyWiseInsuranceWiseIssueTypeCounts(St
 				for (ElectionInformationVO outerVO : finalList) {
 					List<ElectionInformationVO> partylist = outerVO.getList();
 					for (ElectionInformationVO electionInformationVO : partylist) {
-						if(electionInformationVO.getPartyId()==1887){
+						if(electionInformationVO.getPartyId().longValue()==1887L){
 							partylist.remove(electionInformationVO);
 							break;
 						}
