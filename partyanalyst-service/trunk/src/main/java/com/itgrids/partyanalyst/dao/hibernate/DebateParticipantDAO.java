@@ -551,7 +551,7 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 				" Debate model , DebateParticipant model1 ");
 		 str.append(" where  model.debateId = model1.debate.debateId and model.isDeleted = 'N' " +
 				" and model1.party.isNewsPortal = 'Y'" +
-				"  and  model1.candidate.isDebateCandidate ='Y' " +
+				//"  and  model1.candidate.isDebateCandidate ='Y' " +
 				" and  model1.candidate.isDebateCandidate ='Y' " );
 		 if(debateParticipantLocationIdList != null  && debateParticipantLocationIdList.size() >0){
 			 str.append(" and model1.candidate.state.stateId in (:debateParticipantLocationIdList) ");
@@ -700,8 +700,10 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		    }*/
 		str.append(" WHERE model.debateId = DS.debate.debateId  " +
 				" and model.debate.debateId = DOB.debate.debateId" +
-				" and model.debate.isDeleted = 'N' " +
-				" and model.candidate.isDebateCandidate = 'Y' ");
+				" and model.debate.isDeleted = 'N' " );
+		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){		
+		  str.append(" and model.candidate.isDebateCandidate = 'Y' ");
+		}
 		
 		if(candidateId != null && candidateId.longValue() >0){
 			str.append(" and model.candidate.candidateId =:candidateId " );
@@ -951,7 +953,10 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		
 		str.append(" WHERE model.debateId = DS.debate.debateId  " +
 				" and model.debate.debateId = DOB.debate.debateId" +
-				" and model.debate.isDeleted = 'N'  and model.candidate.isDebateCandidate = 'Y' ");
+				" and model.debate.isDeleted = 'N'  " );
+		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
+			str.append(" and model.candidate.isDebateCandidate = 'Y' ");
+		}
 		
 		if(candidateId != null && candidateId.longValue() >0){
 			str.append(" and model.candidate.candidateId =:candidateId " );
@@ -1287,8 +1292,8 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 			   str.append(" , Debate model3 ");
 		    }
 		str.append(" where model.debate.isDeleted = 'N' " +
-				" and model.party.isNewsPortal = 'Y' " +
-				" and  model.candidate.isDebateCandidate = 'Y' " );
+				" and model.party.isNewsPortal = 'Y' " );
+				//" and  model.candidate.isDebateCandidate = 'Y' " );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 			str.append(" and model.debateId = model3.debateId and model3.isDeleted = 'N' ");
 		    }
