@@ -2757,7 +2757,7 @@ String committeType){
 	* @param Long stateId
 	* @return  List<List<UserTypeVO>>
 	* @author Santosh 
-	* @Description :This Service Method is used to get top5 strong or top5 poor members attended and eligible count.. 
+	* @Description :This Service Method is used to get top5 strong or top5 poor members attended and eligible count..structure 
 	*  @since 11-NOV-2016
 	*/
 	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,List<Long> enrollmentYearIds,List<Long> programIdList){
