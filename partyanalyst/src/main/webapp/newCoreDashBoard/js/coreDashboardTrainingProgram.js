@@ -3275,7 +3275,7 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
  }
   
  function buildSpecialProgramLeaderIdWiseDetails(result){ 
-     if(result.leaderTrainingList != null && result.leaderTrainingList.size > 0L){
+     if(result.leaderTrainingList != null && result.leaderTrainingList.length >0){
 	var str='';
 		str+='<h4 class="text-capital"><span class="headingColor">Special Leader Programs</span></h4>';
 		str+='<div class="panel-group trainingCenterPanel m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
