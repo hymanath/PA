@@ -36,6 +36,7 @@ var getDocumentWidth = $(document).width();
 	function getTrainingCampBasicDetailsCntOverview()
 	{
 	 $("#programsDtlsCntTableId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	  $("#specialProgramLeaderId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 $("#villageWardTblId").html(' ');
 	 $("#mdlTwnDvsnTabId").html(' ');
 	 
@@ -3283,7 +3284,7 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 						str+='<a role="button" class="collapsed collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSpecialTrainingBatch'+i+'" aria-controls="collapseSpecialTrainingBatch'+i+'">';
 					}
 						str+='<h4 class="text-capital">'+result.leaderTrainingList[i].name+'';
-							str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"><span>Total Attended : <b>'+result.leaderTrainingList[i].totalAttenedCount+'</b></span> <span>Invitee Attended : <b>'+result.leaderTrainingList[i].inviteeAttended+'</b></span> <span>Non Invitee Attended : <b>'+result.leaderTrainingList[i].nonInviteeAttended+'</b></span></h5>';
+							str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"><span>Total Batch : <b>'+result.leaderTrainingList[i].totalBatch+'</b></span>&nbsp&nbsp&nbsp <span>Completed : <b>'+result.leaderTrainingList[i].completedBatch+'</b></span>&nbsp&nbsp&nbsp<span>Running : <b>'+result.leaderTrainingList[i].runningBatch+'</b></span>&nbsp&nbsp&nbsp<span>Upcomming : <b>'+result.leaderTrainingList[i].upcommintbatch+'</b></span></h5>';
 						str+='</h4>';
 					str+='</a>';
 				str+='</div>';
@@ -3303,21 +3304,21 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 					str+='<tr>';
 						str+='<td>';
 							str+='<p class="text-muted text-capitalize">Days</p>';
-							//str+='<p class="responsiveFont">-</p>';
+							str+='<p class="responsiveFont">-</p>';
 							
 						str+='</td>';
 						str+='<td>';
 						str+='<p class="text-muted text-capitalize">Total Attended</p>';
-						//str+='<p class="responsiveFont">'+result.leaderTrainingList[i].totalAttenedCount
+						str+='<p class="responsiveFont">'+result.leaderTrainingList[i].totalAttenedCount
 						str+='</td>';							
 						str+='<td>';
 							str+='<p class="text-muted text-capitalize" title="Invitee Attended">Invitee Attended</p>';
 							var totalpercentage = ((parseInt(result.leaderTrainingList[i].inviteeAttended)/parseInt(result.leaderTrainingList[i].totalAttenedCount))*100).toFixed(2);
-							//str+='<p class="responsiveFont">'+result.leaderTrainingList[i].inviteeAttended+'&nbsp;<span class="font-10 text-danger"> ('+totalpercentage+')%</span></p>';
+							str+='<p class="responsiveFont">'+result.leaderTrainingList[i].inviteeAttended+'&nbsp;<span class="font-10 text-danger"> ('+totalpercentage+')%</span></p>';
 				str+='</td>';
 				str+='<td>';
 							str+='<p class="text-muted text-capitalize" title="Non Invitee Attended">Non Invitee Attended</p>';
-							//str+='<p class="responsiveFont">'+result.leaderTrainingList[i].nonInviteeAttended+'</p>';
+							str+='<p class="responsiveFont">'+result.leaderTrainingList[i].nonInviteeAttended+'</p>';
 				str+='</td>';
 				str+='</tr>';
 				for(var j in result.leaderTrainingList[i].trainingProgramList)
