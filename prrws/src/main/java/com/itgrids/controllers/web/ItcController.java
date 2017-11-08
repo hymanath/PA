@@ -180,4 +180,10 @@ public class ItcController {
 		   List<ItecCMeoDBDetailsVO>  resultList = itcDashboardService.getCMeoDBStatusDetailsNew();
 		   return resultList;
 	   }
+	   
+	   @RequestMapping(value = "/getEofficeDesginationDetailsByDepartment", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecEOfficeVO>  getEofficeDesginationDetailsByDepartment(@RequestBody InputVO inputVO) {
+		   List<ItecEOfficeVO>  resultList = itcDashboardService.getEofficeDesginationDetailsByDepartment(inputVO);
+		   return resultList;
+	   }
 }

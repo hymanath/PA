@@ -55,7 +55,7 @@ public interface IConstants {
     public static final String ITC_WEB_SERVICE_USER_NAME = "MEESEVA";
     public static final String ITC__WEB_SERVICE_PASSWORD = "MEESEVA";
     public static final String ITC_WEB_SERVICE_NAME_SPACE = "http://AP.org/";
-    public static final Long[] ITEC_EOFFICE_DEPT_IDS = {15L,6567L,1260L,6575L,6581L,1257L,3688L};
+    public static final Long[] ITEC_EOFFICE_DEPT_IDS = {15L,6567L,1260L,6575L,6581L,1257L,3688L,5300L};
     
     public static final String DEFAULT_MAIL_SERVER = "server";
     public static final String EMAIL_USERNAME = "info@itgrids.com";
