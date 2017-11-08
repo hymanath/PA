@@ -1139,8 +1139,8 @@ var globaltype = "${param.type}";
 function getPrintMediaPSYOverAllArticles(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPSYOverAllArticles/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPSYOverAllArticles/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPSYOverAllArticles/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPSYOverAllArticles/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
@@ -1150,8 +1150,8 @@ function getPrintMediaPSYOverAllArticles(globalstartIndex){
 function getPrintMediaOrgWisePSYArticles(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOrgWisePSYArticles/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOrgWisePSYArticles/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOrgWisePSYArticles/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOrgWisePSYArticles/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
@@ -1162,8 +1162,8 @@ function getPrintMediaPublicationWisePSYArticles(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var globalpublicationId = globalorganizationId;
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYArticles/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYArticles/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYArticles/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYArticles/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
@@ -1174,8 +1174,8 @@ function getPrintMediaPublicationWisePSYArticles(globalstartIndex){
 function getElecMediaPSYOverAllBulletins(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getElecMediaPSYOverAllBulletins/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getElecMediaPSYOverAllBulletins/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: wurl+"/CommunityNewsPortal/webservice/getElecMediaPSYOverAllBulletins/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getElecMediaPSYOverAllBulletins/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
@@ -1185,8 +1185,8 @@ function getElecMediaPSYOverAllBulletins(globalstartIndex){
 function getEleMediaOrganizationWisePSYBulletins(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getEleMediaOrganizationWisePSYBulletins/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEleMediaOrganizationWisePSYBulletins/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: wurl+"/CommunityNewsPortal/webservice/getEleMediaOrganizationWisePSYBulletins/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEleMediaOrganizationWisePSYBulletins/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
@@ -1197,8 +1197,8 @@ function getEleMediaChannelWisePSYBulletins(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var globalpublicationId = globalorganizationId;
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getEleMediaChannelWisePSYBulletins/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEleMediaChannelWisePSYBulletins/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: wurl+"/CommunityNewsPortal/webservice/getEleMediaChannelWisePSYBulletins/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEleMediaChannelWisePSYBulletins/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
