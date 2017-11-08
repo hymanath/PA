@@ -3209,7 +3209,7 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 							}else{
 								str+='<a role="button" class="collapsed collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
 							}
-				str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<br/><small>[Total Batchs :'+result.trainingProgramList[i].totalBath+']</small></h4>';
+							str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<br/><span style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.trainingProgramList[i].description+'" >[Total Batchs :'+result.trainingProgramList[i].totalBath+']</span></h4>';
 							str+='</a>';
 						str+='</div>';
 						if(i == 0)
@@ -3247,7 +3247,7 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 			str+='</tr>';
 			for(var j in result.trainingProgramList[i].trainingProgramList)
 			 {
-	var percentage = ((parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited)/parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCount))*100).toFixed(2);
+				var percentage = ((parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited)/parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCount))*100).toFixed(2);
 			  str+='<tr>';
 				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].name+'</td>';
 				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCount+'</td>';
