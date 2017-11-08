@@ -3043,3 +3043,6 @@ color: rgb(51, 122, 183);
 	font-size:14px !important;
 	padding:5px !important
 }
+.newsArticlesDetailsCls{
+	cursor:pointer;
+}
