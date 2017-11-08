@@ -18,8 +18,8 @@ function onloadPrajaSankaplaYatraCalls(){
 function getPrintMediaOverAllPSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"
+		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"
 	}).then(function(result){
 		
 		if(result !=null){
@@ -30,7 +30,9 @@ function getPrintMediaOverAllPSYCounts(divId,type){
 	});
 }
 function buildOverAllCountDetails(result,divId,type){
-	
+	var categoryId = $(this).attr("attr_categoryId"); 	
+	var organizationId = $(this).attr("attr_organizationId"); 	
+	var benefitId = $(this).attr("attr_benefitId"); 	
 	var str='';
 	var prajaSankTotalCount=0;
 	var prajaSAMASYALATotalCount=0;
@@ -42,11 +44,11 @@ function buildOverAllCountDetails(result,divId,type){
 				str+='<tr>';
 					str+='<td>';
 						str+='<p class="text-capital responsiveFont">OverAll</p>';
-						str+='<p>'+prajaSankTotalCount+'</p>';
+						str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId = "0" attr_type="'+divId+''+type+'">'+prajaSankTotalCount+'</a></p>';
 					str+='</td>';
 					str+='<td>';
 						str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-						str+='<span>'+result.psyPosCnt+'</span>';
+						str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId = "1" attr_type="'+divId+''+type+'">'+result.psyPosCnt+'</a></span>';
 						if(prajaSankTotalCount > 0){
 							str+='<small id="" class="text-success"> '+((result.psyPosCnt*100)/(prajaSankTotalCount)).toFixed(2)+' %</small>';
 						}else{
@@ -55,7 +57,7 @@ function buildOverAllCountDetails(result,divId,type){
 					str+='</td>';
 					str+='<td>';
 						str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-						str+='<span>'+result.psyNegCnt+'</span>';
+						str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId = "2" attr_type="'+divId+''+type+'">'+result.psyNegCnt+'</a></span>';
 						if(prajaSankTotalCount > 0){
 							str+='<small id="" class="text-danger"> '+((result.psyNegCnt*100)/(prajaSankTotalCount)).toFixed(2)+' %</small>';
 						}else{
@@ -72,11 +74,11 @@ function buildOverAllCountDetails(result,divId,type){
 				str+='<tr>';
 					str+='<td>';
 						str+='<p class="text-capital responsiveFont">OverAll</p>';
-						str+='<p>'+prajaSAMASYALATotalCount+'</p>';
+						str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId = "0" attr_type="'+divId+''+type+'">'+prajaSAMASYALATotalCount+'</a></p>';
 					str+='</td>';
 					str+='<td>';
 						str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-						str+='<span>'+result.cpsyPosCnt+'</span>';
+						str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId = "1" attr_type="'+divId+''+type+'">'+result.cpsyPosCnt+'</a></span>';
 						if(prajaSAMASYALATotalCount > 0){
 							str+='<small id="" class="text-success"> '+((result.cpsyPosCnt*100)/(prajaSAMASYALATotalCount)).toFixed(2)+' %</small>';
 						}else{
@@ -85,7 +87,7 @@ function buildOverAllCountDetails(result,divId,type){
 					str+='</td>';
 					str+='<td>';
 						str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-						str+='<span>'+result.cpsyNegCnt+'</span>';
+						str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId = "2" attr_type="'+divId+''+type+'">'+result.cpsyNegCnt+'</a></span>';
 						if(prajaSAMASYALATotalCount > 0){
 							str+='<small id="" class="text-danger"> '+((result.cpsyNegCnt*100)/(prajaSAMASYALATotalCount)).toFixed(2)+' %</small>';
 						}else{
@@ -102,8 +104,8 @@ function buildOverAllCountDetails(result,divId,type){
 function getPrintMediaOrganizationWisePSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOrganizationWisePSYCounts/"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOrganizationWisePSYCounts/"
+		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOrganizationWisePSYCounts/"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOrganizationWisePSYCounts/"
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildPartyWiseDetails(result,divId,type);
@@ -134,11 +136,11 @@ function buildPartyWiseDetails(result,divId,type){
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital responsiveFont">'+result[i].name+'</p>';
-								str+='<p>'+toatlCountPrajaSank+'</p>';
+								str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId = "0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSank+'</a></p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-								str+='<span>'+result[i].psyPosCnt+'</span>';
+								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'">'+result[i].psyPosCnt+'</a></span>';
 								if(toatlCountPrajaSank > 0){
 									str+='<small id="" class="text-success"> '+((result[i].psyPosCnt*100)/((result[i].psyPosCnt)+(result[i].psyNegCnt))).toFixed(2)+' %</small>';
 								}else{
@@ -147,7 +149,7 @@ function buildPartyWiseDetails(result,divId,type){
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-								str+='<span>'+result[i].psyNegCnt+'</span>';
+								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'">'+result[i].psyNegCnt+'</a></span>';
 								if(toatlCountPrajaSank > 0){
 									str+='<small id="" class="text-danger"> '+((result[i].psyNegCnt*100)/((result[i].psyPosCnt)+(result[i].psyNegCnt))).toFixed(2)+' %</small>';
 								}else{
@@ -163,11 +165,11 @@ function buildPartyWiseDetails(result,divId,type){
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital responsiveFont">'+result[i].name+'</p>';
-								str+='<p>'+toatlCountPrajaSam+'</p>';
+								str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId ="0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSam+'</a></p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-								str+='<span>'+result[i].cpsyPosCnt+'</span>';
+								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'">'+result[i].cpsyPosCnt+'</a></span>';
 								if(toatlCountPrajaSam > 0){
 									str+='<small id="" class="text-success"> '+((result[i].cpsyPosCnt*100)/(toatlCountPrajaSam)).toFixed(2)+' %</small>';
 								}else{
@@ -176,7 +178,7 @@ function buildPartyWiseDetails(result,divId,type){
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-								str+='<span>'+result[i].cpsyNegCnt+'</span>';
+								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'">'+result[i].cpsyNegCnt+'</a></span>';
 								if(toatlCountPrajaSam > 0){
 									str+='<small id="" class="text-danger"> '+((result[i].cpsyNegCnt*100)/(toatlCountPrajaSam)).toFixed(2)+' %</small>';
 								}else{
@@ -196,8 +198,8 @@ function buildPartyWiseDetails(result,divId,type){
 function getPrintMediaPublicationWisePSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYCounts/"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYCounts/"
+		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYCounts/"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYCounts/"
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildpublicationAndChannelWiseDetails(result,divId,type);
@@ -246,12 +248,12 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 						}
 							
 							
-							str+='<p>'+toatlCountPrajaSank+'</p>';
+							str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId ="0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSank+'</a></p>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-							str+='<span>'+result[i].psyPosCnt+'</span>';
-							if(result[i].toatlCountPrajaSank > 0){
+							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'">'+result[i].psyPosCnt+'</a></span>';
+							if(toatlCountPrajaSank > 0){
 								str+='<small id="" class="text-success"> '+((result[i].psyPosCnt*100)/((result[i].psyPosCnt)+(result[i].psyNegCnt))).toFixed(2)+' %</small>';
 							}else{
 								str+='<small id="" class="text-success"> 0.0 %</small>';
@@ -259,7 +261,7 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-							str+='<span>'+result[i].psyNegCnt+'</span>';
+							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'">'+result[i].psyNegCnt+'</a></span>';
 							if(toatlCountPrajaSank > 0){
 								str+='<small id="" class="text-danger"> '+((result[i].psyNegCnt*100)/((result[i].psyPosCnt)+(result[i].psyNegCnt))).toFixed(2)+' %</small>';
 							}else{
@@ -287,11 +289,11 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 									str+='<p class="text-capital responsiveFont">'+result[i].name+'</p>';
 								}
 							}
-							str+='<p>'+toatlCountPrajaSam+'</p>';
+							str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId ="0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSam+'</a></p>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-							str+='<span>'+result[i].cpsyPosCnt+'</span>';
+							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'">'+result[i].cpsyPosCnt+'</a></span>';
 							if(toatlCountPrajaSam > 0){
 								str+='<small id="" class="text-success"> '+((result[i].cpsyPosCnt*100)/(toatlCountPrajaSam)).toFixed(2)+' %</small>';
 							}else{
@@ -300,7 +302,7 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-							str+='<span>'+result[i].cpsyNegCnt+'</span>';
+							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'">'+result[i].cpsyNegCnt+'</a></span>';
 							if(toatlCountPrajaSam > 0){
 								str+='<small id="" class="text-danger"> '+((result[i].cpsyNegCnt*100)/(toatlCountPrajaSam)).toFixed(2)+' %</small>';
 							}else{
@@ -322,8 +324,8 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 function getChannelWisePSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePSYCounts/"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePSYCounts/"
+		//url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePSYCounts/"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePSYCounts/"
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildpublicationAndChannelWiseDetails(result,divId,type);
@@ -335,8 +337,8 @@ function getChannelWisePSYCounts(divId,type){
 function getBulletinOrganizationWisePSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getBulletinOrganizationWisePSYCounts/"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getBulletinOrganizationWisePSYCounts/"
+		//url: wurl+"/CommunityNewsPortal/webservice/getBulletinOrganizationWisePSYCounts/"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getBulletinOrganizationWisePSYCounts/"
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildPartyWiseDetails(result,divId,type);
@@ -348,8 +350,8 @@ function getBulletinOrganizationWisePSYCounts(divId,type){
 function getBulletinPointOverAllPSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getBulletinPointOverAllPSYCounts/"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getBulletinPointOverAllPSYCounts/"
+		//url: wurl+"/CommunityNewsPortal/webservice/getBulletinPointOverAllPSYCounts/"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getBulletinPointOverAllPSYCounts/"
 	}).then(function(result){
 		if(result !=null){
 			buildOverAllCountDetails(result,divId,type);
@@ -358,3 +360,13 @@ function getBulletinPointOverAllPSYCounts(divId,type){
 		}
 	});
 }
+$(document).on("click",".newsArticlesDetailsCls",function(){
+		
+	var categoryId = $(this).attr("attr_categoryId"); 	
+	var organizationId = $(this).attr("attr_organizationId"); 	
+	var benefitId = $(this).attr("attr_benefitId"); 	
+	var type = $(this).attr("attr_type"); 	
+	
+	window.open('showArticlesAction.action?categoryId='+categoryId+'&organizationId='+organizationId+'&benefitId='+benefitId+'&type='+type+'&callFrom=prajaSankalpa&startIndex=0&endIndex=6','_blank');
+		
+	});

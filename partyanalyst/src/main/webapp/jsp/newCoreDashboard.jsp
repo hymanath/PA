@@ -3967,7 +3967,7 @@
 							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="prajaSankaplaYatra">
 								<h4 class="panel-title text-capital" style="width:440px;">    
 									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-									Praja Sankapla Yatra News 
+									Praja Sankalpam Yatra News 
 								</h4>  
 								
 							</div>
