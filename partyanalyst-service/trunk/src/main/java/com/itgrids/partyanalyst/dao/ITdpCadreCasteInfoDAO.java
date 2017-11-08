@@ -19,4 +19,5 @@ public interface ITdpCadreCasteInfoDAO extends GenericDao<TdpCadreCasteInfo, Lon
 	List<Object[]> getCasteWiseCadreCounts(Long locationTypeId,List<Long> locationValue, List<Long> enrollmentYearId);
 	public List<Object[]> enrollmentYearsBasedOnenrollmentYearIds(List<Long> enrollmentYearIds);
 	List<Object[]> getCategoryWiseGenderCount(Long locationScopeId,List<Long> locationValuesList,List<Long> enrollmentYearIdsList);
+	public List<Object[]> getLocationWiseCadreCounts(Long locationTypeId,List<Long> locationValues,Long casteId,Long enrollmentYearId);
 }
