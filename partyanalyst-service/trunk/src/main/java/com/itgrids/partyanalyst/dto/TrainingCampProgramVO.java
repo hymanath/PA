@@ -51,6 +51,16 @@ public class TrainingCampProgramVO {
 	private Long runningBatch = 0L;
 	private Long completedBatch = 0L;
 	private Long upcommintbatch = 0L;
+	private String description;
+	
+	
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Set<Long> getInviteesIds() {
 		return inviteesIds;
 	}
