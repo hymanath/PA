@@ -1125,14 +1125,14 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 						if(locationType == 'mandal' || locationType == 'panchayat'){
 							tableView+='<th rowspan="2">Total Amount Generated </th>';
 							tableView+='<th rowspan="2">Total Pending</th>';
-							tableView+='<th colspan="5">Details Of Pending Amount</th>';
-							//tableView+='<th rowspan="2">Pending at Bank</th>';
+							tableView+='<th colspan="4">Details Of Pending Amount</th>';
+							tableView+='<th rowspan="2">Pending at Bank</th>';
 							tableView+='<th rowspan="2">Regenerated out of rejected</th>';
 						}else{
 							tableView+='<th rowspan="2">Total Amount Generated (CR)</th>';
 							tableView+='<th rowspan="2">Total Pending(CR)</th>';
-							tableView+='<th colspan="5">Details Of Pending Amount</th>';
-							//tableView+='<th rowspan="2">Pending at Bank(CR)</th>';
+							tableView+='<th colspan="4">Details Of Pending Amount</th>';
+							tableView+='<th rowspan="2">Pending at Bank(CR)</th>';
 							tableView+='<th rowspan="2">Regenerated out of rejected (CR)</th>';
 						}
 						
@@ -1142,13 +1142,13 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 						tableView+='<th>FTO s not generated</th>';
 						tableView+='<th>FTO s not uploaded</th>';
 						tableView+='<th>Not sent to Bank</th>';
-						tableView+='<th>Pending at Bank</th>';
+						//tableView+='<th>Pending at Bank</th>';
 						tableView+='<th>Rejected</th>';
 					}else{
 						tableView+='<th>FTO s not generated(CR)</th>';
 						tableView+='<th>FTO s not uploaded(CR)</th>';
 						tableView+='<th>Not sent to Bank(CR)</th>';
-						tableView+='<th>Pending at Bank</th>';
+						//tableView+='<th>Pending at Bank</th>';
 						tableView+='<th>Rejected(CR)</th>';
 					}
 						
@@ -5831,9 +5831,9 @@ function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,m
 						str+='<td>'+ajaxresp[i].notSentBankWageAmount+'</td>';
 						//str+='<td>'+ajaxresp[i].sentBankWageAmount+'</td>';
 						//str+='<td>'+ajaxresp[i].completedWageAmount+'</td>';
-						//str+='<td>'+ajaxresp[i].rejectedWagesAmount+'</td>';
-						str+='<td>'+ajaxresp[i].pendingAtBankAmount+'</td>';
 						str+='<td>'+ajaxresp[i].rejectedWagesAmount+'</td>';
+						str+='<td>'+ajaxresp[i].pendingAtBankAmount+'</td>';
+						//str+='<td>'+ajaxresp[i].rejectedWagesAmount+'</td>';
 						//str+='<td>'+ajaxresp[i].responsePendingWageAmount+'</td>';
 						str+='<td>'+ajaxresp[i].reprocessPendingWageAmount+'</td>';
 					str+='</tr>';

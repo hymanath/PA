@@ -4762,23 +4762,23 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT"))
-	 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT"))//)));
+	 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
 	 	    				//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_WAGES_AMT"))-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")))));
-	 	    				+Double.valueOf(jsonObj.getString("RELEASE_PENDING_WAGES_AMT"))+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
+	 	    				//+Double.valueOf(jsonObj.getString("RELEASE_PENDING_WAGES_AMT"))+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
 	 	    				
 	 	    				paymentDtlsVO.setPendingWage(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))
-	 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))//)));
+	 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT")))));
 	 	    				//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_WAGES_AMT")))));
-	 	    				+Double.valueOf(jsonObj.getString("RELEASE_PENDING_WAGES_AMT")))));
+	 	    				//+Double.valueOf(jsonObj.getString("RELEASE_PENDING_WAGES_AMT")))));
 	 	    				
 	 	    				paymentDtlsVO.setPendingMaterial(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT"))
 	 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT"))
-	 	    				+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT"))//)));
+	 	    				+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
 	 	    				//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")))));
-	 	    				+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
+	 	    				//+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
 	 	    				  
 	 	    				resultList.add(paymentDtlsVO);
 	 	    				  
@@ -4868,9 +4868,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				//paymentDtlsVO.setTotalPendinAmount(String.valueOf(Long.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Long.valueOf(jsonObj.getString("COMPLETED_AMT"))));
 				paymentDtlsVO.setTotalPendinAmount(new BigDecimal(Double.valueOf(jsonObj.getString("NOT_GENERATED_AMT"))
 						+Double.valueOf(jsonObj.getString("NOT_UPLOADED_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_AMT"))
-						+Double.valueOf(jsonObj.getString("REJECT_AMT"))//).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+						+Double.valueOf(jsonObj.getString("REJECT_AMT"))).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
 						//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT"))));
-						+Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT"))).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+						//+Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT"))).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
 				
 				//new BigDecimal(Double.valueOf(value)/10000000.00d).setScale(2, BigDecimal.ROUND_HALF_UP).toString()
 				
@@ -4892,9 +4892,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				//paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Long.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Long.valueOf(jsonObj.getString("COMPLETED_AMT")))));
 				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCroresNew(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_AMT"))
 						+Double.valueOf(jsonObj.getString("NOT_UPLOADED_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_AMT"))
-						+Double.valueOf(jsonObj.getString("REJECT_AMT"))//)));
+						+Double.valueOf(jsonObj.getString("REJECT_AMT")))));
 						//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT")))));
-						+Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")))));
+						//+Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")))));
 				paymentDtlsVO.setPendingAtBankAmount(cnvrtRupeesIntoCroresNew(String.valueOf(Long.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Long.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT")))));
 				}
 		} catch (Exception e) {
