@@ -806,7 +806,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PLANT_PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}else if(divType != null && (divType.trim().toString().equalsIgnoreCase("Rock fill dams") || divType.trim().toString().equalsIgnoreCase("Raising and Maintenance of Nursery") ||
 								divType.trim().toString().equalsIgnoreCase("Desilting of Perculation Tanks and Check Dams") || divType.trim().toString().equalsIgnoreCase("Mini Percolation Tanks") ||
-								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams"))){
+								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams") || divType.trim().toString().equalsIgnoreCase("Avenue Plantation") 
+								|| divType.trim().toString().equalsIgnoreCase("Forest Others") || divType.trim().toString().equalsIgnoreCase("Scooping and Dibbling of seed"))){
 							percValue = new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						
 						}else{
@@ -937,7 +938,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CheckDamServiceNew/CheckDamDataNew";
 			else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Rock fill dams") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising and Maintenance of Nursery") ||
 					inputVO.getDivType().trim().toString().equalsIgnoreCase("Desilting of Perculation Tanks and Check Dams") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Mini Percolation Tanks") ||
-					inputVO.getDivType().trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Check Dams"))){
+					inputVO.getDivType().trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Check Dams") || 
+					inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue Plantation") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Forest Others") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Scooping and Dibbling of seed"))){
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/ForestService/ForestData";
 				inputVO.setCategory(inputVO.getDivType());
 			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("coffee"))
@@ -1278,7 +1280,8 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				
 			 	    			   if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Rock fill dams") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising and Maintenance of Nursery") ||
 			 	    				  inputVO.getDivType().trim().toString().equalsIgnoreCase("Desilting of Perculation Tanks and Check Dams") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Mini Percolation Tanks") ||
-			 	    				  inputVO.getDivType().trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Check Dams"))){
+			 	    				  inputVO.getDivType().trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Check Dams") ||
+			 	    				 inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue Plantation") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Forest Others") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Scooping and Dibbling of seed"))){
 			 	    				   	nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			 	    			   }else{
 			 	    				  nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -1639,7 +1642,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PLANT_PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}else if(divType != null && (divType.trim().toString().equalsIgnoreCase("Rock fill dams") || divType.trim().toString().equalsIgnoreCase("Raising and Maintenance of Nursery") ||
 								divType.trim().toString().equalsIgnoreCase("Desilting of Perculation Tanks and Check Dams") || divType.trim().toString().equalsIgnoreCase("Mini Percolation Tanks") ||
-								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams"))){
+								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams") || divType.trim().toString().equalsIgnoreCase("Avenue Plantation") 
+								|| divType.trim().toString().equalsIgnoreCase("Forest Others") || divType.trim().toString().equalsIgnoreCase("Scooping and Dibbling of seed"))){
 							percValue = new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						
 						}else{
@@ -1709,7 +1713,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PLANT_PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}else if(divType != null && (divType.trim().toString().equalsIgnoreCase("Rock fill dams") || divType.trim().toString().equalsIgnoreCase("Raising and Maintenance of Nursery") ||
 								divType.trim().toString().equalsIgnoreCase("Desilting of Perculation Tanks and Check Dams") || divType.trim().toString().equalsIgnoreCase("Mini Percolation Tanks") ||
-								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams"))){
+								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams") || divType.trim().toString().equalsIgnoreCase("Avenue Plantation") 
+								|| divType.trim().toString().equalsIgnoreCase("Forest Others") || divType.trim().toString().equalsIgnoreCase("Scooping and Dibbling of seed"))){
 							percValue = new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						
 						}else{
@@ -1945,7 +1950,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PLANT_PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}else if(divType != null && (divType.trim().toString().equalsIgnoreCase("Rock fill dams") || divType.trim().toString().equalsIgnoreCase("Raising and Maintenance of Nursery") ||
 								divType.trim().toString().equalsIgnoreCase("Desilting of Perculation Tanks and Check Dams") || divType.trim().toString().equalsIgnoreCase("Mini Percolation Tanks") ||
-								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams"))){
+								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams") || divType.trim().toString().equalsIgnoreCase("Avenue Plantation") 
+								|| divType.trim().toString().equalsIgnoreCase("Forest Others") || divType.trim().toString().equalsIgnoreCase("Scooping and Dibbling of seed"))){
 							percValue = new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						
 						}else{
@@ -2015,7 +2021,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PLANT_PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}else if(divType != null && (divType.trim().toString().equalsIgnoreCase("Rock fill dams") || divType.trim().toString().equalsIgnoreCase("Raising and Maintenance of Nursery") ||
 								divType.trim().toString().equalsIgnoreCase("Desilting of Perculation Tanks and Check Dams") || divType.trim().toString().equalsIgnoreCase("Mini Percolation Tanks") ||
-								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams"))){
+								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams") || divType.trim().toString().equalsIgnoreCase("Avenue Plantation") 
+								|| divType.trim().toString().equalsIgnoreCase("Forest Others") || divType.trim().toString().equalsIgnoreCase("Scooping and Dibbling of seed"))){
 							percValue = new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						
 						}else{
@@ -2082,7 +2089,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PLANT_PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}else if(divType != null && (divType.trim().toString().equalsIgnoreCase("Rock fill dams") || divType.trim().toString().equalsIgnoreCase("Raising and Maintenance of Nursery") ||
 								divType.trim().toString().equalsIgnoreCase("Desilting of Perculation Tanks and Check Dams") || divType.trim().toString().equalsIgnoreCase("Mini Percolation Tanks") ||
-								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams"))){
+								divType.trim().toString().equalsIgnoreCase("Continuous Contour Trenches") || divType.trim().toString().equalsIgnoreCase("Check Dams") || divType.trim().toString().equalsIgnoreCase("Avenue Plantation") 
+								|| divType.trim().toString().equalsIgnoreCase("Forest Others") || divType.trim().toString().equalsIgnoreCase("Scooping and Dibbling of seed"))){
 							percValue = new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						
 						}else{

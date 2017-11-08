@@ -3202,7 +3202,7 @@ $(document).on("click",".overviewPopupCls",function(){
 	if(globalDivName == 'Labour Budget')
 		getLabourBudgetClickingOverview(menuLocationType,menuLocationId);
 	else if(globalDivName == 'Rock Fill Dams' || globalDivName == 'Raising and Maintenance of Nursery' || globalDivName == 'Desilting of Perculation Tanks and Check Dams' || globalDivName == 'Mini Percolation Tanks' || globalDivName == 'Continuous Contour Trenches' || globalDivName == 'Check Dams' || globalDivName == 'Avenue Plantation' || globalDivName == 'Forest Others' || globalDivName == 'Scooping and Dibbling of seed')
-		getNregasForestOverview(globalDivName,menuLocationType,menuLocationId,'','')
+		getNregasForestPopUpOverview(menuLocationType,menuLocationId)
 	else
 		getNregasPopupOverview(menuLocationType,menuLocationId);
 	getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,menuLocationId);
@@ -6261,4 +6261,34 @@ function getNregaCovergancePROtherLevelData(divIdd,locationTypeNew,theadArr,menu
 			}
 		}
 	})
+}
+
+function getNregasForestPopUpOverview(menuLocationType,menuLocationId)
+{
+	var districtId = $("#selectedName").attr("attr_distId");
+	$("#nregsOverviewBodyId").html(spinner);
+	
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType : menuLocationType,
+		locationId : menuLocationId,
+		districtId:districtId,
+		category : globalDivName
+	}
+	
+	$.ajax({
+		url: 'getNregasForestOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildPopupOverviewBlock(ajaxresp,menuLocationType,menuLocationId);
+		}
+	});
 }
