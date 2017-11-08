@@ -16,9 +16,11 @@ $("#tdpTriningYearId").on('change', function() {
 	var enrollmentYearId=$("#tdpTriningYearId").val();
 	if(enrollmentYearId == 4){
 		$("#campWiseTrainingId").show();
+		$("#specialProgramLeaderId").show();
 		getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();
 	}else{
 		  $("#campWiseTrainingId").hide(); 
+		  $("#specialProgramLeaderId").hide();
 	}
 });
  function initialiseDatePickerForTrainingProgram(){
@@ -37,7 +39,7 @@ var getDocumentWidth = $(document).width();
 	function getTrainingCampBasicDetailsCntOverview()
 	{
 	 $("#programsDtlsCntTableId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	  $("#specialProgramLeaderId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 $("#specialProgramLeaderId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 	 $("#villageWardTblId").html(' ');
 	 $("#mdlTwnDvsnTabId").html(' ');
 	 
@@ -79,9 +81,9 @@ var getDocumentWidth = $(document).width();
 		  $("#programsDtlsCntTableId").html(' ');
 		 if(result != null){
 			 buildTrainingProgramBasicDetails(result);
-			 buildSpecialProgramLeaderIdWiseDetails(result);
-
-			 
+		    if(result.leaderTrainingList != null && result.leaderTrainingList.length > 0){
+			    buildSpecialProgramLeaderIdWiseDetails(result);
+			 }
 		 }else{
 			$("#programsDtlsCntTableId").html("NO DATA AVAILABLE");
 			$("#villageWardTblId").html("NO DATA AVAILABLE");
@@ -3273,10 +3275,10 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
  }
  } 
  function buildSpecialProgramLeaderIdWiseDetails(result){ 
-	 if(result.leaderTrainingList != null && result.leaderTrainingList.length > 0){
 	var str='';
 		str+='<h4 class="text-capital"><span class="headingColor">Special Leader Programs</span></h4>';
 		str+='<div class="panel-group trainingCenterPanel m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
+		
 		for(var i in result.leaderTrainingList){
 				str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingSpecialTrainingBatch'+i+'">';
@@ -3349,4 +3351,3 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 	  str+='</div>';	
   $("#specialProgramLeaderId").html(str); 
  }  
-} 
