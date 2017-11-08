@@ -5443,7 +5443,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AHOthersService/AHOthersData";
 			
 			if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Comprehensive Restoration of minor Irrigation Tank1"))
-				inputVO.setGroupName("Comprehensive Restoration of minor Irrigation Tank0");
+				inputVO.setGroupName("Comprehensive Restoration of minor Irrigation Tank");
 			String str = convertingInputVOToString(inputVO);
 			
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
