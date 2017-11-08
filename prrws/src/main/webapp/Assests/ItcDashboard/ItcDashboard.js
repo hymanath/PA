@@ -223,8 +223,22 @@ function departmentBlockWiseDetails(divId)
 							}
 							if(divId == 'eOffice')
 							{
-								collapse+='<div id="hieraricalViewErr"></div>';
-								collapse+='<div id="hieraricalView"></div>';
+								collapse+='<div class="row">';
+										collapse+='<div id="eOfficeDeparmentsOverViewBlock"></div>';
+								collapse+='</div>';
+								
+								collapse+='<div class="row m_top10">';
+									collapse+='<div class="col-sm-12">';
+										collapse+='<div id="hieraricalShowHideDiv"></div>';
+									collapse+='</div>';	
+								collapse+='</div>';
+								
+								collapse+='<div class="row m_top10">';
+									collapse+='<div class="col-sm-12">';
+										collapse+='<div id="hieraricalViewErr"></div>';
+										collapse+='<div id="hieraricalView"></div>';
+									collapse+='</div>';
+								collapse+='</div>';
 							}
 							if(divId == "promotions")
 							{
@@ -295,7 +309,7 @@ function departmentBlockWiseDetails(divId)
 					collapse+='</div>';
 				collapse+='</div>';
 			collapse+='</div>';
-			if(divId == 'eOffice')
+			/* if(divId == 'eOffice')
 			{
 				collapse+='<div class="panel-group" id="accordionEOffc" role="tablist" aria-multiselectable="true">';
 					collapse+='<div class="panel panel-default panel-black">';
@@ -311,7 +325,7 @@ function departmentBlockWiseDetails(divId)
 						collapse+='</div>';
 					collapse+='</div>';
 				collapse+='</div>';
-			}
+			} */
 			
 		}
 	$("#departmentBlockWiseDetailsId").html(collapse);
@@ -327,10 +341,8 @@ function departmentBlockWiseDetails(divId)
 			getCampusInnovationCentersDetailedData();
 		}else if(divId == 'eOffice')
 		{
-			//getEOfcDepartWiseOverviewDetails('overview');
-			getEofficeDesignationWisePendencyDetails();
-			getDepartmentWiseHierarchicalDetails();
-			
+			getEOfcDepartWiseOverviewDetails('overview');
+			//getEofficeDesignationWisePendencyDetails();
 		}else if(divId == 'meesevaKpi'){
 			getMeesavaKpiGraphBuild(divId,levelWiseBlockArr[i].id);
 		}else if(divId == 'cMeoDB'){
@@ -1339,6 +1351,8 @@ function getEOfcDepartWiseOverviewDetails(type){
 	if(type == 'onload')
 	{
 		$("#itcDeptWiseCount").html(spinner);
+	}else{
+		$("#eOfficeDeparmentsOverViewBlock").html(spinner);
 	}
 	var json = {
 		departmentid:"",		
@@ -1357,8 +1371,13 @@ function getEOfcDepartWiseOverviewDetails(type){
 		//getEofficeDesignationWiseDetails()
 		if(type == 'onload')
 		{
-			$("#itcDeptWiseCount").html(result[0].subList[0].totalCount+'/<small style="color:#fff;font-size:14px;top:0px;">'+result[0].subList[0].created+'</small>');
-		}		
+			for(var i in result){
+				if(result[i].departmentName != null && result[i].departmentName == "ITE & C")
+					$("#itcDeptWiseCount").html(result[i].totalCount+'/<small style="color:#fff;font-size:14px;top:0px;">'+result[i].created+'</small>');
+			}
+		}else{
+			buildEOfcDepartWiseOverviewDetails(result);
+		}
 	});		
 }
 function getEOfcDeptPendancyStatusWiseDetails(){
@@ -1863,6 +1882,10 @@ function getDepartmentWiseHierarchicalDetails(){
 		}
 	}).done(function(result){
 		$("#hieraricalViewErr").html(" ");
+		var str='';
+		str+='<button type="button" class="btn btn-default btn-sm hieraricalViewCls pull-right" attr_type="hide">Hide Graph View</button>';
+		$("#hieraricalShowHideDiv").html(str);
+		
 		var hodCount = 0;
 		var hodTotal = 0;
 		for(var i in result)
@@ -1910,6 +1933,9 @@ function getDepartmentWiseHierarchicalDetails(){
 					}else if(result[i].departmentName == 'ANDHRAPRADESH ELECTRONICS AND IT AGENCY')
 					{
 						dataArr.push({"id": k, "parentId": 5, "Name": result[i].departmentName, "title": result[i].departmentName, "postname": "K. BHASKAR REDDY", "count": result[i].totalCount+"/"+result[i].created});
+					}else if(result[i].departmentName == 'SOCIETY FOR ANDHRA PRADESH NETWORK')
+					{
+						dataArr.push({"id": k, "parentId": 5, "Name": result[i].departmentName, "title": result[i].departmentName, "postname": "SUNDAR B", "count": result[i].totalCount+"/"+result[i].created});
 					}
 					
 				}
@@ -1932,32 +1958,32 @@ function getDepartmentWiseHierarchicalDetails(){
 			}
 			for(var i in result[0].specialOfficerList)
 			{
-				dataArr.push({"id": k, "parentId": 13, "Name": result[0].specialOfficerList[i].employeeName, "title": result[0].specialOfficerList[i].employeeName, "postname": result[0].specialOfficerList[i].postName, "count": result[0].specialOfficerList[i].totalCount+"/"+result[0].specialOfficerList[i].created});
+				dataArr.push({"id": k, "parentId": 14, "Name": result[0].specialOfficerList[i].employeeName, "title": result[0].specialOfficerList[i].employeeName, "postname": result[0].specialOfficerList[i].postName, "count": result[0].specialOfficerList[i].totalCount+"/"+result[0].specialOfficerList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].aaoList)
 			{
-				dataArr.push({"id": k, "parentId": 13, "Name": result[0].aaoList[i].employeeName, "title": result[0].aaoList[i].employeeName, "postname": result[0].aaoList[i].postName,"count": result[0].aaoList[i].totalCount+"/"+result[0].aaoList[i].created});
+				dataArr.push({"id": k, "parentId": 14, "Name": result[0].aaoList[i].employeeName, "title": result[0].aaoList[i].employeeName, "postname": result[0].aaoList[i].postName,"count": result[0].aaoList[i].totalCount+"/"+result[0].aaoList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].pmList)
 			{
-				dataArr.push({"id": k, "parentId": 14, "Name": result[0].pmList[i].employeeName, "title": result[0].pmList[i].employeeName, "postname": result[0].pmList[i].postName,"count": result[0].pmList[i].totalCount+"/"+result[0].pmList[i].created});
+				dataArr.push({"id": k, "parentId": 15, "Name": result[0].pmList[i].employeeName, "title": result[0].pmList[i].employeeName, "postname": result[0].pmList[i].postName,"count": result[0].pmList[i].totalCount+"/"+result[0].pmList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].soList)
 			{
-				dataArr.push({"id": k, "parentId": 17, "Name": result[0].soList[i].employeeName, "title": result[0].soList[i].employeeName, "postname": result[0].soList[i].postName, "count": result[0].soList[i].totalCount+"/"+result[0].soList[i].created});
+				dataArr.push({"id": k, "parentId": 18, "Name": result[0].soList[i].employeeName, "title": result[0].soList[i].employeeName, "postname": result[0].soList[i].postName, "count": result[0].soList[i].totalCount+"/"+result[0].soList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].asoList)
 			{
-				dataArr.push({"id": k, "parentId": 26, "Name": result[0].asoList[i].employeeName, "title": result[0].asoList[i].employeeName, "postname": result[0].asoList[i].postName, "count": result[0].asoList[i].totalCount+"/"+result[0].asoList[i].created});
+				dataArr.push({"id": k, "parentId": 27, "Name": result[0].asoList[i].employeeName, "title": result[0].asoList[i].employeeName, "postname": result[0].asoList[i].postName, "count": result[0].asoList[i].totalCount+"/"+result[0].asoList[i].created});
 				k = k +1;
 			}
 			for(var i in result[0].otherList)
 			{
-				dataArr.push({"id": k, "parentId": 27, "Name": result[0].otherList[i].employeeName, "title": result[0].otherList[i].employeeName, "postname": result[0].otherList[i].postName, "count": result[0].otherList[i].totalCount+"/"+result[0].otherList[i].created});
+				dataArr.push({"id": k, "parentId": 28, "Name": result[0].otherList[i].employeeName, "title": result[0].otherList[i].employeeName, "postname": result[0].otherList[i].postName, "count": result[0].otherList[i].totalCount+"/"+result[0].otherList[i].created});
 				k = k +1;
 			}
 			for(var i in result)
@@ -1980,17 +2006,21 @@ function getDepartmentWiseHierarchicalDetails(){
 							{
 								dataArr.push({"id": k, "parentId": 9, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
 								k = k +1;
-							}else if(result[i].departmentName == "ANDHRAPRADESH INNOVATION SOCIETY")
+							}else if(result[i].departmentName == "SOCIETY FOR ANDHRA PRADESH NETWORK")
 							{
 								dataArr.push({"id": k, "parentId": 10, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
 								k = k +1;
-							}else if(result[i].departmentName == "ANDHRAPRADESH E PRAGATI AUTHORITY")
+							}else if(result[i].departmentName == "ANDHRAPRADESH INNOVATION SOCIETY")
 							{
 								dataArr.push({"id": k, "parentId": 11, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
 								k = k +1;
-							}else if(result[i].departmentName == "ANDHRAPRADESH ELECTRONICS AND IT AGENCY")
+							}else if(result[i].departmentName == "ANDHRAPRADESH E PRAGATI AUTHORITY")
 							{
 								dataArr.push({"id": k, "parentId": 12, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
+								k = k +1;
+							}else if(result[i].departmentName == "ANDHRAPRADESH ELECTRONICS AND IT AGENCY")
+							{
+								dataArr.push({"id": k, "parentId": 13, "Name": result[i].otherList[j].employeeName, "title": result[i].otherList[j].employeeName, "postname": result[i].otherList[j].postName, "count": result[i].otherList[j].totalCount+"/"+result[i].otherList[j].created});
 								k = k +1;
 							}
 						}
@@ -2279,3 +2309,173 @@ function buildCMEDOBReportStatusWise(result){
 		$("#cmedobDivId").html(str);
 		$("#cmedobTableId").dataTable();
 }
+
+function buildEOfcDepartWiseOverviewDetails(result){
+	var str = '';
+	str+='<div class="col-sm-12">';	
+		str+='<button type="button" class="btn btn-default btn-sm hieraricalViewCls pull-right hieraricalButtonShowCls" attr_type="show" >Show Graph View</button>';
+	str+='</div>';
+	for(var i in result){
+		if(result[i].departmentName == "ITE & C" || result[i].departmentName == "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
+			str+='<div class="col-sm-12 m_top20">';	
+				str+='<div class="table-responsive">';
+					str+='<table class="table table-bordered">';
+						
+							str+='<tr>';
+								if(result[i].departmentName == "ITE & C"){
+									str+='<th rowspan="2" style="vertical-align: middle; text-align: center;" >ITE & C</th>';
+								}else{
+									str+='<th rowspan="2" style="vertical-align: middle; text-align: center;cursor:pointer;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'">IT - SECRETARIAT</a></th>';
+								}
+								str+='<th style="background-color:#B2DFDB">Total</th>';
+								str+='<th style="background-color:#FBACAC">Total Pendency</th>';
+								str+='<th style="background-color:#FBACAC">%</th>';
+								str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
+								str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
+								str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
+								str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
+								str+='<th style="background-color:#FDCECE"> > 60 days</th>';
+							str+='</tr>';
+							str+='<tr>';
+								str+='<td>'+result[i].created+'</td>';
+								str+='<td>'+result[i].totalCount+'</td>';
+								str+='<td>'+result[i].percentage+'</td>';
+								str+='<td>'+result[i].zeroToSeven+'</td>';
+								str+='<td >'+result[i].eightToFifteen+'</td>';
+								str+='<td>'+result[i].sixteenToThirty+'</td>';
+								str+='<td >'+result[i].thirtyoneToSixty+'</td>';
+								str+='<td>'+result[i].aboveSixty+'</td>';
+						str+='</tr>';
+						
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+		}
+	}
+	
+	str+='<div class="col-sm-12 m_top20">';	
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered">';
+					str+='<tr>';
+						str+='<th>HODS</th>';
+						str+='<th style="background-color:#B2DFDB">Total</th>';
+						str+='<th style="background-color:#FBACAC">Total Pendency</th>';
+						str+='<th style="background-color:#FBACAC">%</th>';
+						str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
+						str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
+						str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
+						str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
+						str+='<th style="background-color:#FDCECE"> > 60 days</th>';
+					str+='</tr>';
+					for(var i in result){
+						if(result[i].departmentName != "ITE & C" && result[i].departmentName != "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
+							str+='<tr>';
+								str+='<td style="cursor:pointer;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'">'+result[i].departmentName+'</a></td>';
+								str+='<td>'+result[i].created+'</td>';
+								str+='<td>'+result[i].totalCount+'</td>';
+								str+='<td>'+result[i].percentage+'</td>';
+								str+='<td>'+result[i].zeroToSeven+'</td>';
+								str+='<td >'+result[i].eightToFifteen+'</td>';
+								str+='<td>'+result[i].sixteenToThirty+'</td>';
+								str+='<td >'+result[i].thirtyoneToSixty+'</td>';
+								str+='<td>'+result[i].aboveSixty+'</td>';
+							str+='</tr>';
+						}
+						
+					}
+			str+='</table>';
+		str+='</div>';
+	str+='</div>';
+$("#eOfficeDeparmentsOverViewBlock").html(str);
+}
+$(document).on("click",".departmentDetailsCls",function(){	
+	var departmentId =  $(this).attr("attr_department_id")
+	var departmentName =  $(this).attr("attr_department_name")
+	$("#departmentModalId").modal("show");
+	$("#headingTitle").html("<b>"+departmentName+ "  DETAILS</b>")
+	getEofficeDesginationDetailsByDepartment(departmentId,departmentName);
+});
+function getEofficeDesginationDetailsByDepartment(departmentId,departmentName){
+	$("#departmentDetailsDivId").html(spinner);
+	var json = {
+		departmentId:departmentId,		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getEofficeDesginationDetailsByDepartment',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildEofficeDesginationDetailsByDepartment(result)
+		}else{
+			$("#departmentDetailsDivId").html("No Data Available");
+		}
+	});		
+}
+function buildEofficeDesginationDetailsByDepartment(result){
+	var str='';
+			str+='<div class="table-responsive">';
+				str+='<table class="table table-bordered" id="dataTableDepartmentId">';
+						str+='<thead>';
+						str+='<tr>';
+							str+='<th class="text-center">POST NAME</th>';
+							str+='<th style="background-color:#B2DFDB">Total</th>';
+							str+='<th style="background-color:#FBACAC">Total Pendency</th>';
+							str+='<th style="background-color:#FBACAC">%</th>';
+							str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
+							str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
+							str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
+							str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
+							str+='<th style="background-color:#FDCECE"> > 60 days</th>';
+						str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var i in result){
+							str+='<tr>';
+								str+='<td>'+result[i].designation+' ('+result[i].ownerName+')</td>';
+								str+='<td>'+result[i].created+'</td>';
+								str+='<td>'+result[i].totalCount+'</td>';
+								str+='<td>'+result[i].percentage+'</td>';
+								str+='<td>'+result[i].zeroToSeven+'</td>';
+								str+='<td >'+result[i].eightToFifteen+'</td>';
+								str+='<td>'+result[i].sixteenToThirty+'</td>';
+								str+='<td >'+result[i].thirtyoneToSixty+'</td>';
+								str+='<td>'+result[i].aboveSixty+'</td>';
+							str+='</tr>';
+						}
+						str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		$("#departmentDetailsDivId").html(str);
+		$("#dataTableDepartmentId").dataTable({
+			"paging":   true,
+			"info":     false,
+			"searching": true,
+			"autoWidth": true,
+			"iDisplayLength": 13,
+			"aaSorting": [], 
+			"aLengthMenu": [[13, 15, 20, -1], [13, 15, 20, "All"]]
+		});
+}
+$(document).on("click",".hieraricalViewCls",function(){	
+	var type = $(this).attr("attr_type");
+	
+	if(type == "show"){
+		$(".hieraricalButtonShowCls").hide();
+		$("#hieraricalShowHideDiv").html('');
+		$("#hieraricalViewErr").html('');
+		$("#hieraricalView").html('');
+		getDepartmentWiseHierarchicalDetails();
+	}else{
+		$("#hieraricalShowHideDiv").html('');
+		$("#hieraricalViewErr").html('');
+		$("#hieraricalView").html('');
+		$("#hieraricalView").removeAttr('style');
+		$(".hieraricalButtonShowCls").show();
+	}
+});

@@ -253,7 +253,22 @@ var searchParams = new URLSearchParams(window.location.search);
 		</div>
 	</div>
 </div>
-
+<div class="modal fade" id="departmentModalId" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h5 class="modal-title" id="headingTitle"></h5>
+			</div>
+			<div class="modal-body">
+				<div id="departmentDetailsDivId"></div>
+			</div>
+			 <div class="modal-footer">     
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+		</div>
+	</div>
+</div>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
