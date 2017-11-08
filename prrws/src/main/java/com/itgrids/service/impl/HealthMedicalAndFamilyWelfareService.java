@@ -982,9 +982,9 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 				}
 				lvlIdStr = IConstants.VILLAGE_LEVEL_SCOPE_ID.toString();
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){//get constituencyIds
-				locationList = departmentDiseasesInfoDAO.getAllConstituencyByParliamentConstId(sDate,eDate,superLocationId,diseasesIdList,deptIdList);
+				locationList = departmentDiseasesInfoDAO.getAllConstituencyByParliamentConstId(sDate,eDate,superLocationId,diseasesIdList,deptIdList,type);
 				if(!(today.getTime() >= sDate.getTime() && today.getTime() <= eDate.getTime())){
-					locationListToday = departmentDiseasesInfoDAO.getAllConstituencyByParliamentConstId(today,today,superLocationId,diseasesIdList,deptIdList);
+					locationListToday = departmentDiseasesInfoDAO.getAllConstituencyByParliamentConstId(today,today,superLocationId,diseasesIdList,deptIdList,type);
 				}
 				lvlIdStr = IConstants.CONSTITUENCY_LEVEL_SCOPE_ID.toString();  
 			}	

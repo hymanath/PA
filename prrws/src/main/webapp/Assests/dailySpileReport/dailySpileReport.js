@@ -7,14 +7,17 @@ var glStartDate = moment().startOf('month').format("DD/MM/YYYY");
 var glEndDate = moment().format("DD/MM/YYYY");
 var selectedType = $("#spikeReportTypeId li.active").attr("attr_type");
 
-onLoadCalls();
-function onLoadCalls()
+onLoadCalls();              
+onLoadCallsForBlocks();
+function onLoadCallsForBlocks(){
+	collapseBlock();  
+}
+function onLoadCalls()   
 {
 	selectedType = $("#spikeReportTypeId li.active").attr("attr_type");
 	getSizeForRank(0,0,"",selectedType);
 	initializeGlobalIds();
-	onRequestCall();   
-	collapseBlock();   
+	onRequestCall();
 }
 $(document).on("click","#spikeReportTypeId li",function(){
 	//$("#tourSlider").rangeSlider("destroy");

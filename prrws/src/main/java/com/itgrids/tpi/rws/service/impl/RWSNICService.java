@@ -3154,7 +3154,7 @@ public class RWSNICService implements IRWSNICService{
  	      	}else{
  	      		String output = response.getEntity(String.class);
 				if(output != null && !output.isEmpty()){
- 	    			JSONArray finalArray = new JSONArray(output);
+ 	    			JSONArray finalArray = new JSONArray(output);//25848
 	 	    		if(finalArray!=null && finalArray.length()>0){
 	 	    			TressedHabitation tressedHab = null;
 	 	    			
