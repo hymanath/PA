@@ -3168,14 +3168,15 @@ function getTrainingRecentTime(){
   
 function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 		$("#campWiseTrainingId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+			 var enrollmentYrIds = [];
+         enrollmentYrIds.push($("#tdpTriningYearId").val());
 	var jsObj={  
 	userAccessLevelId :globalUserAccessLevelId,         
 	userAccessLevelValues : globalUserAccessLevelValues,        
 	stateId : globalStateId,
 	fromDate : '01/01/2017',
 	toDate : '30/12/2017',                              
-	enrollmentYearIds : [2],                   
-	programIds : [8,9]
+	enrollmentYearIds : enrollmentYrIds,                   
 	} 
 	$.ajax({            
 		type : 'POST',    
@@ -3183,16 +3184,13 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){
-		if(result != null && result.trainingProgramList!=null && result.trainingProgramList.length > 0){
+		
 			buildTrainingCampBatchCenterWiseDetails(result)
-		}else{
-			$("#campWiseTrainingId").html("No Data Available"); 
-		}
 	});
 }
 
  function buildTrainingCampBatchCenterWiseDetails(result){ 
- 	
+ 	if(result != null && result.trainingProgramList!=null && result.trainingProgramList.length > 0){
   var str='';
   str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
   str+='<h4 class="text-capital"><span class="headingColor">Training Center Wise Analysis</span></h4>';
@@ -3273,9 +3271,9 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
  
   $("#campWiseTrainingId").html(str);        
  }
-  
+ } 
  function buildSpecialProgramLeaderIdWiseDetails(result){ 
-     if(result.leaderTrainingList != null ){
+     if(result.leaderTrainingList != null result.leaderTrainingList.length > 0){
 	var str='';
 		str+='<h4 class="text-capital"><span class="headingColor">Special Leader Programs</span></h4>';
 		str+='<div class="panel-group trainingCenterPanel m_top10" id="accordion" role="tablist" aria-multiselectable="true">';

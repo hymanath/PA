@@ -4831,15 +4831,14 @@ public String getInsuraceStatusWiseComplaintsDetails()
 		}
 		return Action.SUCCESS;
 	}
-	public String getTrainingCampPrograms(){
+	public List<Long> getTrainingCampPrograms(Long enrollmentId){
+		List<Long> finalList = new ArrayList<Long>();
 		try {
-           jObj = new JSONObject(getTask());
-			Long enrollmentId = jObj.getLong("enrollmentYearId");
-			programIdsList = coreDashboardMainService.getTrainingCampPrograms(enrollmentId);
+			 finalList = coreDashboardMainService.getTrainingCampPrograms(enrollmentId);
 		}catch(Exception e) {
 			LOG.error("Exception raised at getTrainingCampProgramsAction() in CoreDashBoard Action class", e);
 		}
-		return Action.SUCCESS;
+		return finalList;
 	}
 	
 	public String getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise()
@@ -4869,14 +4868,14 @@ public String getInsuraceStatusWiseComplaintsDetails()
 					enrollmentYearIdList.add(Long.valueOf(enrollmentYearIdArr.getString(i))); 
 				}
 			}
-			
-			List<Long> programIdList=new ArrayList<Long>();
+			List<Long> programIdList =getTrainingCampPrograms(enrollmentYearIdList.get(0));
+			/*List<Long> programIdList=new ArrayList<Long>();
 			JSONArray programIdArr=jObj.getJSONArray("programIds");
 			if(programIdArr!=null &&  programIdArr.length()>0){
 				for( int i=0;i<programIdArr.length();i++){
 					programIdList.add(Long.valueOf(programIdArr.getString(i))); 
 				}
-			}
+			}*/
 			
 			
 			trainingCampProgramVO = coreDashboardMainService.getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(userAccessLevelId, userAccessLevelValueList, stateId, fromDateStr, toDateStr, enrollmentYearIdList, programIdList);
