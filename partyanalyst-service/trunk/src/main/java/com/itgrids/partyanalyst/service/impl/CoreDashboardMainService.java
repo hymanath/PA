@@ -7739,7 +7739,7 @@ public void addLeadershipSkillsForOtherLeader(Long userAccessLevelId, List<Long>
 		if(programIdAndCadreIdAndListOfAttendedDate != null && programIdAndCadreIdAndListOfAttendedDate.size() > 0){
 			for(Entry<Long,Map<Long,Set<String>>> param : programIdAndCadreIdAndListOfAttendedDate.entrySet()){
 				String programName = programIdAndNameMap.get(param.getKey());
-				initializeTotalAttendedVO(finalVO,param.getKey(),programName,param.getValue(),programIdAndTotalBatchList);
+				initializeTotalAttendedVO(finalVO,param.getKey(),programName,param.getValue(),programIdAndTotalBatchList,null);
 			}
 		}
 		
@@ -7979,9 +7979,11 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampC
 			campNameList = trainingCampDAO.getTrainingCamps(campIdAndTotalBatchList.keySet());
 		}
 		Map<Long,String> campIdAndNameMap = new HashMap<Long,String>();
+		Map<String,String> campNameAndDescription = new HashMap<String,String>();
 		if(campNameList != null && campNameList.size() > 0){
 			for(Object[] param : campNameList){
 				campIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				campNameAndDescription.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getStringValueForObject(param[2]));
 			}
 		}
 		
@@ -7991,7 +7993,8 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampC
 		if(campIdAndCadreIdAndListOfAttendedDate != null && campIdAndCadreIdAndListOfAttendedDate.size() > 0){
 			for(Entry<Long,Map<Long,Set<String>>> param : campIdAndCadreIdAndListOfAttendedDate.entrySet()){
 				String campName = campIdAndNameMap.get(param.getKey());
-				initializeTotalAttendedVO(finalVO,param.getKey(),campName,param.getValue(),campIdAndTotalBatchList);
+				String description =campNameAndDescription.get(campName);
+				initializeTotalAttendedVO(finalVO,param.getKey(),campName,param.getValue(),campIdAndTotalBatchList,description);
 			}
 		}
 		
@@ -8081,7 +8084,7 @@ public void initializeTotalInviteeAttendedVO(List<TrainingCampProgramVO> finalVO
 		LOG.error("Error occured at initializeTotalInviteeAttendedVO() in CoreDashboardMainService {}",e);
 	}
 }
-public void initializeTotalAttendedVO(List<TrainingCampProgramVO> finalVO,Long campId,String campName, Map<Long,Set<String>> cadreIdAndAttendedDatesList,Map<Long,Set<Long>> campIdAndTotalBatchList){
+public void initializeTotalAttendedVO(List<TrainingCampProgramVO> finalVO,Long campId,String campName,  Map<Long,Set<String>> cadreIdAndAttendedDatesList,Map<Long,Set<Long>> campIdAndTotalBatchList,String description){
 	try{
 		TrainingCampProgramVO trainingCampProgramVO = new TrainingCampProgramVO();
 		
@@ -8105,6 +8108,7 @@ public void initializeTotalAttendedVO(List<TrainingCampProgramVO> finalVO,Long c
 		
 		trainingCampProgramVO.setId(campId);
 		trainingCampProgramVO.setName(campName);//{1=[514], 2=[583], 3=[540], 4=[513], 7=[594]}
+		trainingCampProgramVO.setDescription(description);
 		trainingCampProgramVO.setTotalBath(Long.parseLong(String.valueOf(campIdAndTotalBatchList.get(campId).size())));
 		// for one day
 		TrainingCampProgramVO tempVO1 = new TrainingCampProgramVO();

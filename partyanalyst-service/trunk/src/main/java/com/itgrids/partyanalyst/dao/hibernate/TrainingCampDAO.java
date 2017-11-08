@@ -67,7 +67,7 @@ public class TrainingCampDAO extends GenericDaoHibernate<TrainingCamp, Long> imp
 	}
     public List<Object[]> getTrainingCamps(Set<Long> campIds){
     	StringBuilder sb = new StringBuilder();
-    	sb.append("select model.trainingCampId, model.campName from TrainingCamp model where model.trainingCampId in (:campIds) ");
+    	sb.append("select model.trainingCampId, model.campName, model.description  from TrainingCamp model where model.trainingCampId in (:campIds) ");
     	Query query = getSession().createQuery(sb.toString());
     	query.setParameterList("campIds", campIds);
     	return query.list();
