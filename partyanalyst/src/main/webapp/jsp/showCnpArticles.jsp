@@ -59,21 +59,43 @@ var globalNewsPaperIdsStr = "${param.npsStr}";
 var globalEdiDistIdsStr = "${param.ediDistIdsStr}";
 var globalPropIdsStr = "${param.propIdsStr}";
 
+var globalcategoryId = "${param.categoryId}";
+var globalorganizationId = "${param.organizationId}";
+var globalbenefitId = "${param.benefitId}";
+var globalstartIndex = "${param.startIndex}";
+var globalendIndex = "${param.endIndex}";
+var globaltype = "${param.type}";
 
 	$(document).ready(function(){
 		//Main header remove
 		$(".eventsheader").hide();
 		$('[data-toggle="tooltip"]').tooltip();
-		if(globalCallFrom == "fblk")
+		if(globalCallFrom == "fblk"){
 			getArticlesOfNewsBasicCounts(0);
-		else if(globalCallFrom == "dpdepok")
+		}else if(globalCallFrom == "dpdepok"){
 			getArticlesForPartyDetailedDistEdiPartiesOverView(0);
-		else if(globalCallFrom == "dpnta")
+		}else if(globalCallFrom == "dpnta"){
 			getArticlesForDetailedPartyNewsTypeAnalysisOverView(0);
-		else if(globalCallFrom == "govdepwisedistoverview")
+		}else if(globalCallFrom == "govdepwisedistoverview"){
 			getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(0);
-		else if(globalCallFrom == "detailgovtimmedproblems")
+		}else if(globalCallFrom == "detailgovtimmedproblems"){
 			getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles(0);
+		}else if(globalCallFrom == "prajaSankalpa"){
+			if(globaltype == "OverAllprintMedia"){
+				getPrintMediaPSYOverAllArticles(0)
+			}else if(globaltype == "PartyprintMedia"){
+				getPrintMediaOrgWisePSYArticles(0)
+			}else if(globaltype == "PublicationprintMedia"){
+				getPrintMediaPublicationWisePSYArticles(0)
+			}else if(globaltype == "OverAllelectronicMedia"){
+				getElecMediaPSYOverAllBulletins(0)
+			}else if(globaltype == "PartyelectronicMedia"){
+				getEleMediaOrganizationWisePSYBulletins(0)
+			}else if(globaltype == "PublicationelectronicMedia"){
+				getEleMediaChannelWisePSYBulletins(0)
+			}
+		}
+			
 	});
 	
 	var url = window.location.href;
@@ -571,6 +593,20 @@ var globalPropIdsStr = "${param.propIdsStr}";
 							getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(num);
 						}else if(globalCallFrom == "detailgovtimmedproblems"){
 							getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles(num);
+						}else if(globalCallFrom == "prajaSankalpa"){
+							if(globaltype == "OverAllprintMedia"){
+								getPrintMediaPSYOverAllArticles(num)
+							}else if(globaltype == "PartyprintMedia"){
+								getPrintMediaOrgWisePSYArticles(num)
+							}else if(globaltype == "PublicationprintMedia"){
+								getPrintMediaPublicationWisePSYArticles(num)
+							}else if(globaltype == "OverAllelectronicMedia"){
+								getElecMediaPSYOverAllBulletins(num)
+							}else if(globaltype == "PartyelectronicMedia"){
+								getEleMediaOrganizationWisePSYBulletins(num)
+							}else if(globaltype == "PublicationelectronicMedia"){
+								getEleMediaChannelWisePSYBulletins(num)
+							}
 						}
 							
 					}
@@ -1099,6 +1135,76 @@ var globalPropIdsStr = "${param.propIdsStr}";
 			buildArticlesByDateRangeWise(results,globalStIndex,countByDate)
 		});
 	}
+//Clicks Print Media
+function getPrintMediaPSYOverAllArticles(globalstartIndex){
+	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPSYOverAllArticles/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPSYOverAllArticles/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+	}).then(function(result){
+		$("#articlesDivId").html('');
+		var countByDate = 0;
+		buildArticlesByDateRangeWise(result,globalStIndex,countByDate)
+	});
+}
+function getPrintMediaOrgWisePSYArticles(globalstartIndex){
+	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOrgWisePSYArticles/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOrgWisePSYArticles/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+	}).then(function(result){
+		$("#articlesDivId").html('');
+		var countByDate = 0;
+		buildArticlesByDateRangeWise(result,globalStIndex,countByDate)
+	});
+}
+function getPrintMediaPublicationWisePSYArticles(globalstartIndex){
+	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var globalpublicationId = globalorganizationId;
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYArticles/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYArticles/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+	}).then(function(result){
+		$("#articlesDivId").html('');
+		var countByDate = 0;
+		buildArticlesByDateRangeWise(result,globalStIndex,countByDate)
+	});
+}
+//Clicks Electronic Media
+function getElecMediaPSYOverAllBulletins(globalstartIndex){
+	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getElecMediaPSYOverAllBulletins/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getElecMediaPSYOverAllBulletins/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+	}).then(function(result){
+		$("#articlesDivId").html('');
+		var countByDate = 0;
+		buildArticlesByDateRangeWise(result,globalStIndex,countByDate)
+	});
+}
+function getEleMediaOrganizationWisePSYBulletins(globalstartIndex){
+	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getEleMediaOrganizationWisePSYBulletins/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEleMediaOrganizationWisePSYBulletins/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+	}).then(function(result){
+		$("#articlesDivId").html('');
+		var countByDate = 0;
+		buildArticlesByDateRangeWise(result,globalStIndex,countByDate)
+	});
+}
+function getEleMediaChannelWisePSYBulletins(globalstartIndex){
+	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var globalpublicationId = globalorganizationId;
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getEleMediaChannelWisePSYBulletins/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEleMediaChannelWisePSYBulletins/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+	}).then(function(result){
+		$("#articlesDivId").html('');
+		var countByDate = 0;
+		buildArticlesByDateRangeWise(result,globalStIndex,countByDate)
+	});
+}
 </script> 
 </body>
 </html>
