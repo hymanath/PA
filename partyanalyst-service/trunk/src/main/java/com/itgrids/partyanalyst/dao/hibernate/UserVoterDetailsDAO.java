@@ -3559,5 +3559,76 @@ IUserVoterDetailsDAO{
 	    }
 		 return query.list();
 	}
+	
+public List<Object[]> getLocationWiseVoterCounts(Long locationTypeId,List<Long> locationValues,Long casteId,Long publicationDateId){
+		
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("SELECT ");
+		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
+			sb.append("d.district_id as locationId, d.district_name as locationName ");
+		} else if (locationTypeId != null && locationTypeId.longValue() == 3L) {
+			sb.append("c.constituency_id as locationId, c.name as locationName ");
+		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
+			sb.append("t.tehsil_id as locationId, t.tehsil_name as locationName ");
+		}else if (locationTypeId != null && locationTypeId.longValue() == 5L) {
+			sb.append("p.panchayat_id as locationId, p.panchayat_name as locationName ");
+		}
+
+		sb.append(",model.gender as gender,sum(model.total_voters) as count from voter_caste_age_range_info model ");
+
+		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
+			sb.append(" , district d ");
+		} else if (locationTypeId != null && locationTypeId.longValue() == 3L) {
+			sb.append(" , constituency c ");
+		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
+			sb.append(" , tehsil t , panchayat p ");
+		}else if (locationTypeId != null && locationTypeId.longValue() == 5L) {
+			sb.append(" , panchayat p ");
+		}
+
+		sb.append("where ");
+
+		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
+			sb.append(" model.location_scope_id =3 and model.location_value = d.district_id ");
+			sb.append(" and (d.district_id between 11 and 23) ");
+		} else if (locationTypeId != null && locationTypeId.longValue() == 3L) {
+			sb.append(" model.location_scope_id =4 and model.location_value = c.constituency_id ");
+		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
+			sb.append(" model.location_scope_id =5 and model.location_value = p.panchayat_id ");
+			sb.append(" and p.tehsil_id=t.tehsil_id ");
+		}else if (locationTypeId != null && locationTypeId.longValue() == 5L) {
+			sb.append(" model.location_scope_id =6 and model.location_value = p.panchayat_id ");
+		}
+
+		sb.append(" and model.publication_date_id =:publicationDateId and model.caste_state_id =:casteId ");
+
+		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
+			sb.append(" GROUP BY d.district_id ");
+		} else if (locationTypeId != null && locationTypeId.longValue() == 3L) {
+			sb.append(" GROUP BY c.constituency_id ");
+		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
+			sb.append(" GROUP BY p.tehsil_id ");
+		}
+		else if (locationTypeId != null && locationTypeId.longValue() == 5L) {
+			sb.append(" GROUP BY p.panchayat_id ");
+		}
+		
+		sb.append(" , model.gender ");
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("locationId", Hibernate.LONG)
+				.addScalar("locationName", Hibernate.STRING)
+				.addScalar("gender", Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG);
+       
+		if (casteId != null && casteId.longValue() > 0L) {
+			query.setParameter("casteId", casteId);
+		}
+		if (publicationDateId != null && publicationDateId.longValue() > 0L) {
+			query.setParameter("publicationDateId", publicationDateId);
+		}
+
+		return query.list();
+	}
 }
 
