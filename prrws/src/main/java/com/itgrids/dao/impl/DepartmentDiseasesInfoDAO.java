@@ -484,9 +484,9 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
 		}
 		if(type != null && type.trim().equalsIgnoreCase("Rural")){
-			sb.append(" and departmentDiseasesInfo.locationAddress.tehsil.tehsilId is not null");
+			sb.append(" and (departmentDiseasesInfo.locationAddress.constituency.areaType='RURAL' or departmentDiseasesInfo.locationAddress.constituency.areaType='RURAL-URBAN')");
 		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
-			sb.append(" and departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId is not null");
+			sb.append(" and (departmentDiseasesInfo.locationAddress.constituency.areaType='RURAL-URBAN' or departmentDiseasesInfo.locationAddress.constituency.areaType='URBAN') ");
 		}
 		sb.append(" order by departmentDiseasesInfo.locationAddress.constituency.name ");
 		Query query = getSession().createQuery(sb.toString());
@@ -572,7 +572,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		return query.list();
 	}
 	@Override
-	public List<Object[]> getAllConstituencyByParliamentConstId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList){
+	public List<Object[]> getAllConstituencyByParliamentConstId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList, String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct ");
 		sb.append(" departmentDiseasesInfo.locationAddress.constituency.constituencyId, "
@@ -581,6 +581,13 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 				+ " DepartmentDiseasesInfo departmentDiseasesInfo "
 				+ " where departmentDiseasesInfo.isDeleted = 'N'  "
 				+ " and departmentDiseasesInfo.locationAddress.parliament.constituencyId =:superLocationId ");
+		
+		if(type != null && type.trim().equalsIgnoreCase("Rural")){
+			sb.append(" and (departmentDiseasesInfo.locationAddress.constituency.areaType='RURAL' or departmentDiseasesInfo.locationAddress.constituency.areaType='RURAL-URBAN')");
+		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
+			sb.append(" and (departmentDiseasesInfo.locationAddress.constituency.areaType='RURAL-URBAN' or departmentDiseasesInfo.locationAddress.constituency.areaType='URBAN') ");
+		}
+		
 		if(startDate != null && endDate != null){
 			sb.append(" and date(departmentDiseasesInfo.reportedDate) between :startDate and :endDate ");
 		}
