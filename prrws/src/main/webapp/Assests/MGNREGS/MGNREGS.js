@@ -1244,7 +1244,7 @@ function buildNREGSProjectsOverview(result,blockName)
 					str+='<div class="row" collapse-overview-body="nonConvergence">';
 						str+='<div class="col-sm-12">';
 							str+='<div class="block-border">';
-								str+='<h5 class="text-danger">Labour Performance</h5>';
+								str+='<h5 class="text-danger">Labour Budget Performance</h5>';
 								str+='<div class="row">';	
 									for(var i in result)
 									{
