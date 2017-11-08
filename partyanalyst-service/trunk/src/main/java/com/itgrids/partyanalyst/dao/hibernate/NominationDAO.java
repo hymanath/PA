@@ -5506,7 +5506,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		
 	}
 	public List<Object[]> partyWiseMemberOfParlimentsDetails(List<Long> electionIds,
-			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue,Long partyId,List<String> electionYears) {
+			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue,List<Long> partyId,List<String> electionYears) {
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT distinct C.candidate_id," +
 				" C.lastname,c.constituency_id,c.name,p.party_id,p.short_name,"
@@ -5532,11 +5532,16 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		if (loactionTypeId != null && loactionTypeId.longValue() > 0l) {
 			queryStr.append(" and pc.state_id =:loctionValue ");
 		}
-		if(partyId != null && partyId.longValue()>0l){
-			queryStr.append(" and p.party_id =:partyId ");
+		if(partyId != null && partyId.size() > 0){
+			queryStr.append(" and p.party_id in(:partyId) ");
 		}else{
 			queryStr.append(" and p.party_id  not in(872,163,1117)");
 		}
+		/*if(partyId != null && partyId.longValue()>0l){
+			queryStr.append(" and p.party_id =:partyId ");
+		}else{
+			queryStr.append(" and p.party_id  not in(872,163,1117)");
+		}*/
 		queryStr.append(" and c.constituency_id in ("+IConstants.AP_PARLIAMENT_IDS_LIST_STR+")");
 		Query qurQuery = getSession().createSQLQuery(queryStr.toString());
 		if (electionIds != null && electionIds.size() > 0) {
@@ -5548,8 +5553,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		if (loactionTypeId != null && loactionTypeId.longValue() == 2l) {
 			qurQuery.setParameter("loctionValue", loctionValue);
 		}
-		if(partyId != null && partyId.longValue()>0l){
-			qurQuery.setParameter("partyId", partyId);
+		if(partyId != null && partyId.size() >0){
+			qurQuery.setParameterList("partyId", partyId);
 		}
 		if(electionYears != null && electionYears.size() >0){
 			qurQuery.setParameterList("electionYears", electionYears);
@@ -5558,7 +5563,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		
    }
 	public List<Object[]> partyWiseMemberOfAssemblyCandidateDetails(List<Long> electionIds,
-			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue,Long partyId,List<String> electionYears){
+			List<Long> electionScopeIds, Long loactionTypeId, Long loctionValue,List<Long> partyId,List<String> electionYears){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT distinct C.candidate_id,C.lastname,c.constituency_id," +
 				" c.name,p.party_id,p.short_name," +
@@ -5574,7 +5579,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		if(electionYears != null && electionYears.size() >0){
 			queryStr.append(" and e.election_year in (:electionYears)" );
 		}
-		//queryStr.append(" and e.election_year = '2014' " );
+		
 			if (electionScopeIds != null && electionScopeIds.size() > 0l) {
 				queryStr.append(" and e.election_scope_id in (:electionScopeIds) " );
 			}
@@ -5582,11 +5587,16 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			if (loactionTypeId != null && loactionTypeId.longValue() == 2l) {
 			queryStr.append("and (c.district_id BETWEEN 11 and 23 )");
 			}
-			if(partyId != null && partyId.longValue()>0l){
+			/*if(partyId != null && partyId.longValue()>0l){
 				queryStr.append(" and p.party_id =:partyId ");
 			}else{
 				queryStr.append(" and p.party_id not in(872,163,1117)");
-			}
+			}*/
+			if(partyId != null && partyId.size() >0){
+				queryStr.append(" and p.party_id in(:partyId) ");
+			}else{
+				queryStr.append(" and p.party_id not in(872,163,1117)");
+			}	
 		Query qurQuery = getSession().createSQLQuery(queryStr.toString());
 		if(electionIds != null && electionIds.size() > 0) {
 			qurQuery.setParameterList("electionIds", electionIds);
@@ -5594,8 +5604,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		if(electionScopeIds != null && electionScopeIds.size() > 0l) {
 			qurQuery.setParameterList("electionScopeIds", electionScopeIds);
 		}
-		if(partyId != null && partyId.longValue()>0l){
-			qurQuery.setParameter("partyId", partyId);
+		if(partyId != null && partyId.size() > 0){
+			qurQuery.setParameterList("partyId", partyId);
 		}
 		if(electionYears != null && electionYears.size() >0){
 			qurQuery.setParameterList("electionYears", electionYears);

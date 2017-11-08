@@ -75,7 +75,7 @@ public interface ILocationDashboardService {
 	public List<GrivenceStatusVO> getLevelWiseGrievanceCounts(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year);
 	public List<ElectionInformationVO> getLocationWiseElectionResults(List<Long> electionScopeId,List<String> subTypeList,Long lelevlId,List<Long> levelValue,List<Long> year,List<Long> partyIdsList,Long constituencyId,String withAllaince);
 	public  List<ElectionInformationVO>  getElectionDetailsData(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds,String withAllaince);
-	public List<CandidateDetailsForConstituencyTypesVO> getPartyWiseMPandMLACandidatesCountDetials(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue,Long partyId,Long districtId,List<String> electionYears);
+	public List<CandidateDetailsForConstituencyTypesVO> getPartyWiseMPandMLACandidatesCountDetials(List<Long> electionIds,List<Long> electionScopeIds,Long loactionTypeId,Long loctionValue,List<Long> partyId,Long districtId,List<String> electionYears);
 	public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(Long loactionTypeId,List<Long> locationValues);
 	public List<MeetingsVO> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues,String startDate,String endDate,Long meetingLevelId,Long meetingTypeId,Long meetingMainTypeId,String searchFor);
 	//Grievance
