@@ -2342,7 +2342,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		
 		//return query.list();
 	 
-	 	String  committeeEnrollmetYrId = "";
+	   String  committeeEnrollmetYrId = "";
 	   if(enrollmentYearIds.contains(4L) && enrollmentYearIds.contains(3L) ){
 		   committeeEnrollmetYrId="1,2";
 	   }else if(enrollmentYearIds.contains(3L)){
@@ -2424,7 +2424,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		 }
 		 return query.list();
 	 }
-	 public List<Object[]> getInviteAttendedCountForTrainingCamp(Long accessLevelValue, List<Long> userAccessLevelValues, Long enrollmentYearId,List<Long> programIdsList)
+	 public List<Object[]> getInviteAttendedCountForTrainingCamp(Long accessLevelValue, List<Long> userAccessLevelValues, List<Long> enrollmentYearIds,List<Long> programIdsList)
 	 { 
 		 StringBuilder program = new StringBuilder();
 		 if(programIdsList != null && programIdsList.size() > 0){
@@ -2441,6 +2441,14 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				 location.append(","+userAccessLevelValues.get(i));
 			 }
 		 }
+		 String  committeeEnrollmetYrId = "";
+		   if(enrollmentYearIds.contains(4L) && enrollmentYearIds.contains(3L) ){
+			   committeeEnrollmetYrId="1,2";
+		   }else if(enrollmentYearIds.contains(3L)){
+			   committeeEnrollmetYrId="1";
+		   }else if(enrollmentYearIds.contains(4L)){
+			   committeeEnrollmetYrId="2";
+		   }
 		 //get_training_camp_attendance_batch
 		 //Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8','2','1')")
 		 Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_batch(:programIds,'2012-01-01','2030-12-30',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8',:accessLevelValue,:userAccessLevelValues,null)")
@@ -2470,7 +2478,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			.addScalar("ward_id", Hibernate.LONG)
 			.addScalar("ward_name", Hibernate.STRING)
 			.addScalar("training_camp_id", Hibernate.LONG);   
-			query.setParameter("programIds", program.toString()).setParameter("enrollemntYrId", enrollmentYearId).setParameter("basicCommitteeId", 1L)
+			query.setParameter("programIds", program.toString()).setParameter("enrollemntYrId", committeeEnrollmetYrId).setParameter("basicCommitteeId", 1L)
 			.setParameter("accessLevelValue", accessLevelValue).setParameter("userAccessLevelValues", location.toString());
 			
 			return query.list();

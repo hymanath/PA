@@ -115,7 +115,7 @@ public class TrainingCampScheduleDAO extends GenericDaoHibernate<TrainingCampSch
 	@Override
 	public List<Long> getTrainingCampProgramIds(Long enrollmentYearId) {
 		
-	Query query = getSession().createQuery(" select distinct model.trainingCampProgramId from TrainingCampSchedule model, TrainingCampBatch model1 where model1.trainingCampScheduleId = model.trainingCampScheduleId and model1.attendeeTypeId :=attendeeTypeId and model.enrollmentYearId =:enrollmentYearId ");
+	Query query = getSession().createQuery(" select distinct model.trainingCampProgramId from TrainingCampSchedule model, TrainingCampBatch model1 where model1.trainingCampScheduleId = model.trainingCampScheduleId and model1.attendeeTypeId =:attendeeTypeId and model.enrollmentYearId =:enrollmentYearId ");
 			
 			query.setParameter("enrollmentYearId", enrollmentYearId);
 			query.setParameter("attendeeTypeId", IConstants.ATTENDEE_TYPE_ID);
