@@ -1125,13 +1125,13 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 						if(locationType == 'mandal' || locationType == 'panchayat'){
 							tableView+='<th rowspan="2">Total Amount Generated </th>';
 							tableView+='<th rowspan="2">Total Pending</th>';
-							tableView+='<th colspan="4">Details Of Pending Amount</th>';
+							tableView+='<th colspan="5">Details Of Pending Amount</th>';
 							//tableView+='<th rowspan="2">Pending at Bank</th>';
 							tableView+='<th rowspan="2">Regenerated out of rejected</th>';
 						}else{
 							tableView+='<th rowspan="2">Total Amount Generated (CR)</th>';
 							tableView+='<th rowspan="2">Total Pending(CR)</th>';
-							tableView+='<th colspan="4">Details Of Pending Amount</th>';
+							tableView+='<th colspan="5">Details Of Pending Amount</th>';
 							//tableView+='<th rowspan="2">Pending at Bank(CR)</th>';
 							tableView+='<th rowspan="2">Regenerated out of rejected (CR)</th>';
 						}
