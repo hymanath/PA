@@ -806,5 +806,114 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 		}
 		return null;
 	}
+
+	/**
+	 * @author  Sai Kumar  <href:saikumar.mandal@itgrids.com >
+	 * @Date 8th Nov,2017
+	 * @description to  get  Locationwise  Voters and Cadre details
+	 * @param locationScopeId,locationValues, casteId,enrollmentYearId,publicationDateId
+	 * @return List of LocationVotersVO 
+	*/
+	@Override
+	public List<LocationVotersVO> getLocationWiseVoterNCadreCounts(Long locationTypeId, List<Long> locationValues, Long casteId,Long enrollmentYearId,Long publicationDateId) {
+		//locationId,1 locationName,2 gender,3 count
+		List<LocationVotersVO> finalLsit = new ArrayList<LocationVotersVO>();
+		try{
+		Map<Long,LocationVotersVO> locationIdsMap = new HashMap<Long, LocationVotersVO>();
+		List<Object[]> locationWiseCadreList = tdpCadreCasteInfoDAO.getLocationWiseCadreCounts(locationTypeId, locationValues, casteId, enrollmentYearId);
+		
+		if(locationWiseCadreList !=null && locationWiseCadreList.size() >0) {
+			for(Object[] param : locationWiseCadreList){
+				Long locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				if(locationIdsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) == null) {
+					LocationVotersVO locationWiseVO = new LocationVotersVO();
+					locationWiseVO.setLocationId(locationId);
+					locationWiseVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					if(commonMethodsUtilService.getStringValueForObject(param[2]).equalsIgnoreCase("m")){
+						locationWiseVO.setMaleCadres(commonMethodsUtilService.getLongValueForObject(param[3]));
+					}else{
+						locationWiseVO.setFemaleCadres(commonMethodsUtilService.getLongValueForObject(param[3]));
+					}
+					locationWiseVO.setTotalCadres(locationWiseVO.getTotalCadres()+commonMethodsUtilService.getLongValueForObject(param[3]));
+					locationIdsMap.put(locationId, locationWiseVO);
+				}else{
+					LocationVotersVO locationWiseVO = locationIdsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(commonMethodsUtilService.getStringValueForObject(param[2]).equalsIgnoreCase("m")){
+						locationWiseVO.setMaleCadres(commonMethodsUtilService.getLongValueForObject(param[3]));
+					}else{
+						locationWiseVO.setFemaleCadres(commonMethodsUtilService.getLongValueForObject(param[3]));
+					}
+					locationWiseVO.setTotalCadres(locationWiseVO.getTotalCadres()+commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+		}
+
+		List<Object[]> locationWiseVoterList = userVoterDetailsDAO.getLocationWiseVoterCounts(locationTypeId, locationValues, casteId, publicationDateId);
+		
+		if(locationWiseVoterList !=null && locationWiseVoterList.size() >0) {
+			for(Object[] param : locationWiseVoterList){
+				Long locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				if(locationIdsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) == null) {
+					LocationVotersVO locationWiseVO = new LocationVotersVO();
+					locationWiseVO.setLocationId(locationId);
+					locationWiseVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					if(commonMethodsUtilService.getStringValueForObject(param[2]).equalsIgnoreCase("m")){
+						locationWiseVO.setMaleVoters(commonMethodsUtilService.getLongValueForObject(param[3]));
+					}else{
+						locationWiseVO.setFemaleVoters(commonMethodsUtilService.getLongValueForObject(param[3]));
+					}
+					locationWiseVO.setTotalVoters(locationWiseVO.getTotalVoters()+commonMethodsUtilService.getLongValueForObject(param[3]));
+					locationIdsMap.put(locationId, locationWiseVO);
+				}else{
+					LocationVotersVO locationWiseVO = locationIdsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(commonMethodsUtilService.getStringValueForObject(param[2]).equalsIgnoreCase("m")){
+						locationWiseVO.setMaleVoters(commonMethodsUtilService.getLongValueForObject(param[3]));
+					}else{
+						locationWiseVO.setFemaleVoters(commonMethodsUtilService.getLongValueForObject(param[3]));
+					}
+					locationWiseVO.setTotalVoters(locationWiseVO.getTotalVoters()+commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+		}
+		
+		
+		if (locationIdsMap != null && locationIdsMap.size() > 0) {
+			Long totalCadres = 0l, maleTotalCadres = 0l, femaleTotalCadres = 0l;
+			Long totalVoters= 0l, maleTotalVoters=0l,femaleTotalVoters=0l;
+			
+			for (Entry<Long, LocationVotersVO> entry : locationIdsMap.entrySet()) {
+				
+				totalCadres = totalCadres + entry.getValue().getMaleCadres() + entry.getValue().getFemaleCadres();
+				maleTotalCadres = maleTotalCadres + entry.getValue().getMaleCadres();
+				femaleTotalCadres = femaleTotalCadres + entry.getValue().getFemaleCadres();
+				
+				//voters
+				totalVoters = totalVoters + entry.getValue().getMaleVoters() + entry.getValue().getFemaleVoters();
+				maleTotalVoters = maleTotalVoters + entry.getValue().getMaleVoters();
+				femaleTotalVoters = femaleTotalVoters + entry.getValue().getFemaleVoters();
+			}
+
+			for (Entry<Long, LocationVotersVO> entry : locationIdsMap.entrySet()) {
+				if (totalCadres > 0l)
+					entry.getValue().setTotalCadrePerc(((entry.getValue().getTotalCadres() * 100) / totalCadres) + "%");
+				if (maleTotalCadres > 0l)
+					entry.getValue().setMaleCadrePerc(((entry.getValue().getMaleCadres() * 100) / maleTotalCadres) + "%");
+				if (femaleTotalCadres > 0l)
+					entry.getValue().setFemaleCadrePerc(((entry.getValue().getFemaleCadres() * 100) / femaleTotalCadres) + "%");
+
+				if (totalVoters > 0l)
+					entry.getValue().setTotalVotersPerc(((entry.getValue().getTotalVoters() * 100) / totalVoters) + "%");
+				if (maleTotalVoters > 0l)
+					entry.getValue().setMaleVotersPerc(((entry.getValue().getMaleVoters() * 100) / maleTotalVoters) + "%");
+				if (femaleTotalVoters > 0l)
+					entry.getValue().setFemaleVotersPerc(((entry.getValue().getFemaleVoters() * 100) / femaleTotalVoters) + "%");
+			}
+		}
+		finalLsit.addAll(locationIdsMap.values());
+		}catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseVoterNCadreCounts ", e);
+		}
+		return finalLsit;
+	}
 	
 }
