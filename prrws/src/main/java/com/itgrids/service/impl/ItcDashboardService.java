@@ -1052,11 +1052,11 @@ public class ItcDashboardService implements IItcDashboardService {
 									departVO.setSixteenToThirty(jObj.getLong("16-30"));
 									departVO.setThirtyoneToSixty(jObj.getLong("31-60"));
 									departVO.setAboveSixty(jObj.getLong(">60"));
-									/*if(departVO.getCreated() != null && departVO.getCreated().longValue() > 0L && departVO.getTotalCount() != null && departVO.getTotalCount().longValue() > 0L){
+									if(departVO.getCreated() != null && departVO.getCreated().longValue() > 0L && departVO.getTotalCount() != null && departVO.getTotalCount().longValue() > 0L){
 										departVO.setPercentage(new BigDecimal(departVO.getTotalCount()*100.00/departVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 									}else{
 										departVO.setPercentage("0.00");
-									}*/
+									}
 									returnList.add(departVO);
 								}
 							}
@@ -1076,8 +1076,20 @@ public class ItcDashboardService implements IItcDashboardService {
 					finalCountVO.setAboveSixty(finalCountVO.getAboveSixty()+vo.getAboveSixty());
 					finalCountVO.setDepartmentName("ITE & C");
 				}
+				if(finalCountVO.getCreated() != null && finalCountVO.getCreated().longValue() > 0L && finalCountVO.getTotalCount() != null && finalCountVO.getTotalCount().longValue() > 0L){
+					finalCountVO.setPercentage(new BigDecimal(finalCountVO.getTotalCount()*100.00/finalCountVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}else{
+					finalCountVO.setPercentage("0.00");
+				}
+				finalCountVO.setOrderNumber(1L);
 				returnList.add(finalCountVO);
 			}
+			
+			 Collections.sort(returnList, new Comparator<ItecEOfficeVO>() {
+	    	    public int compare(ItecEOfficeVO vo1, ItecEOfficeVO vo2) {
+	    	        return vo1.getOrderNumber().compareTo(vo2.getOrderNumber());
+	    	    }
+		    });
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured at getEOfcDepartWiseOverviewDetails() in  ItcDashboardService class",e);
