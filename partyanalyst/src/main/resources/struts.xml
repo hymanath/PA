@@ -18434,5 +18434,10 @@
 			<param name="root">committeeDataVOList</param>       
 		</result> 
 	</action>
+	<action name="getLocationWiseVoterNCadreCountsAction" class="locationDashboardAction"  method="getLocationWiseVoterNCadreCounts">
+		<result type="json" name="success">    
+			<param name="root">locationVotersVOList</param>       
+		</result>
+  	</action>
  </package>
 </struts>
