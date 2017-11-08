@@ -18,8 +18,8 @@ function onloadPrajaSankaplaYatraCalls(){
 function getPrintMediaOverAllPSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"
+		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"
 	}).then(function(result){
 		
 		if(result !=null){
@@ -104,8 +104,8 @@ function buildOverAllCountDetails(result,divId,type){
 function getPrintMediaOrganizationWisePSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOrganizationWisePSYCounts/"
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOrganizationWisePSYCounts/"
+		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOrganizationWisePSYCounts/"
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOrganizationWisePSYCounts/"
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildPartyWiseDetails(result,divId,type);
@@ -198,8 +198,8 @@ function buildPartyWiseDetails(result,divId,type){
 function getPrintMediaPublicationWisePSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYCounts/"
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYCounts/"
+		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYCounts/"
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYCounts/"
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildpublicationAndChannelWiseDetails(result,divId,type);
@@ -324,8 +324,8 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 function getChannelWisePSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePSYCounts/"
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePSYCounts/"
+		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePSYCounts/"
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePSYCounts/"
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildpublicationAndChannelWiseDetails(result,divId,type);
@@ -337,8 +337,8 @@ function getChannelWisePSYCounts(divId,type){
 function getBulletinOrganizationWisePSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getBulletinOrganizationWisePSYCounts/"
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getBulletinOrganizationWisePSYCounts/"
+		url: wurl+"/CommunityNewsPortal/webservice/getBulletinOrganizationWisePSYCounts/"
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getBulletinOrganizationWisePSYCounts/"
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildPartyWiseDetails(result,divId,type);
@@ -350,8 +350,8 @@ function getBulletinOrganizationWisePSYCounts(divId,type){
 function getBulletinPointOverAllPSYCounts(divId,type){
 		$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getBulletinPointOverAllPSYCounts/"
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getBulletinPointOverAllPSYCounts/"
+		url: wurl+"/CommunityNewsPortal/webservice/getBulletinPointOverAllPSYCounts/"
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getBulletinPointOverAllPSYCounts/"
 	}).then(function(result){
 		if(result !=null){
 			buildOverAllCountDetails(result,divId,type);
