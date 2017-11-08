@@ -1788,4 +1788,16 @@ public String getElectionInformationLocationWise(){
 		}
 		 return Action.SUCCESS;
 	 }
+  
+  public String getLocationWiseVoterNCadreCounts(){
+		 try {
+			 jObj = new JSONObject(getTask());
+			 List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr")); 
+			 locationVotersVOList = locationWiseCasteInfoService.getLocationWiseVoterNCadreCounts(jObj.getLong("locationTypeId"),locationValuesList,jObj.getLong("casteId")
+					 ,jObj.getLong("enrollmentYearId"),jObj.getLong("publicationDateId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCasteNAgeWiseVoterNCadreCounts", e);
+		}
+		 return Action.SUCCESS;
+	 }
 }
