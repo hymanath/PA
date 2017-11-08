@@ -102,6 +102,7 @@ public class InputVO implements Serializable {
 	private String clearence;
 	private String session;
 	private String groupName;
+	private Long departmentId;
 	
 	public String getPath() {
 		return path;
@@ -647,5 +648,11 @@ public class InputVO implements Serializable {
 	}
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
+	}
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
 	}
 }

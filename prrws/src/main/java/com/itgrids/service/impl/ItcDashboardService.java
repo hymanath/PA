@@ -1030,7 +1030,7 @@ public class ItcDashboardService implements IItcDashboardService {
 					deptIds.add(Long.valueOf(deptIdsArr[i].toString()));
 				}
 			}
-			
+			Map<String,ItecEOfficeVO> departMap = new HashMap<String,ItecEOfficeVO>(0);
 			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("https://demo.eoffice.ap.gov.in/TTReports/Apsectdeptwise.php");
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1042,16 +1042,21 @@ public class ItcDashboardService implements IItcDashboardService {
 						for (int i = 0; i < finalArray.length(); i++) {
 							JSONObject jObj = (JSONObject) finalArray.get(i);
 								if(Long.valueOf(jObj.getLong("departmentid")) != null && deptIds.contains(jObj.getLong("departmentid"))){
-									ItecEOfficeVO departVO = new ItecEOfficeVO();
+								 ItecEOfficeVO departVO = new ItecEOfficeVO();
 									departVO.setDepartmentId(jObj.getLong("departmentid"));
 									departVO.setDepartmentName(jObj.getString("departmentname"));
 									departVO.setCreated(jObj.getLong("created"));
 									departVO.setTotalCount(jObj.getLong("totalcount"));
-									if(departVO.getCreated() != null && departVO.getCreated().longValue() > 0L && departVO.getTotalCount() != null && departVO.getTotalCount().longValue() > 0L){
+									departVO.setZeroToSeven(jObj.getLong("0-7"));
+									departVO.setEightToFifteen(jObj.getLong("8-15"));
+									departVO.setSixteenToThirty(jObj.getLong("16-30"));
+									departVO.setThirtyoneToSixty(jObj.getLong("31-60"));
+									departVO.setAboveSixty(jObj.getLong(">60"));
+									/*if(departVO.getCreated() != null && departVO.getCreated().longValue() > 0L && departVO.getTotalCount() != null && departVO.getTotalCount().longValue() > 0L){
 										departVO.setPercentage(new BigDecimal(departVO.getTotalCount()*100.00/departVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 									}else{
 										departVO.setPercentage("0.00");
-									}
+									}*/
 									returnList.add(departVO);
 								}
 							}
@@ -1064,8 +1069,14 @@ public class ItcDashboardService implements IItcDashboardService {
 				for (ItecEOfficeVO vo : returnList) {
 					finalCountVO.setCreated(finalCountVO.getCreated()+vo.getCreated());
 					finalCountVO.setTotalCount(finalCountVO.getTotalCount()+vo.getTotalCount());
+					finalCountVO.setZeroToSeven(finalCountVO.getZeroToSeven()+vo.getZeroToSeven());
+					finalCountVO.setEightToFifteen(finalCountVO.getEightToFifteen()+vo.getEightToFifteen());
+					finalCountVO.setSixteenToThirty(finalCountVO.getSixteenToThirty()+vo.getSixteenToThirty());
+					finalCountVO.setThirtyoneToSixty(finalCountVO.getThirtyoneToSixty()+vo.getThirtyoneToSixty());
+					finalCountVO.setAboveSixty(finalCountVO.getAboveSixty()+vo.getAboveSixty());
+					finalCountVO.setDepartmentName("ITE & C");
 				}
-				returnList.get(0).getSubList().add(finalCountVO);
+				returnList.add(finalCountVO);
 			}
 			
 		} catch (Exception e) {
@@ -1801,6 +1812,205 @@ public class ItcDashboardService implements IItcDashboardService {
 		      
 		    } catch (Exception e) {
 		      LOG.error("Exception raised at getCMeoDBStatusDetailsNew - ItcDashboardService service",e);
+		    }
+		    return returnList;
+	}
+	
+	/**
+	 * @author Nandhini
+	 * @param InputVO inputVO
+	 * @description {This service is used to get E Office Designation Wise Deatails.}
+	 * @return List<ItecEOfficeVO>
+	 * @Date 11-08-2017
+	 */
+	
+	public List<ItecEOfficeVO> getEofficeDesginationDetailsByDepartment(InputVO inputVO){
+	    List<ItecEOfficeVO> returnList = new ArrayList<ItecEOfficeVO>(0);
+	    try {
+	    	
+            ClientResponse response = itcWebServiceUtilService.getWebServiceCall("https://demo.eoffice.ap.gov.in/TTReports/Apsectdesignationwise.php");
+		      if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		      } else {
+		        String output = response.getEntity(String.class);
+		        if (output != null && !output.isEmpty()) {
+		          JSONArray finalArray = new JSONArray(output);
+		          if (finalArray != null && finalArray.length() > 0) {
+		            for (int i = 0; i < finalArray.length(); i++) {
+		              JSONObject jObj = (JSONObject) finalArray.get(i);
+		              Long departmentId = jObj.getLong("departmentid");
+		              String postName = jObj.getString("postname");
+		              if(inputVO.getDepartmentId() != null && inputVO.getDepartmentId().longValue() == departmentId.longValue()){
+		            	  ItecEOfficeVO  designationVO = new ItecEOfficeVO();
+		            	  if(departmentId != null && departmentId.longValue() == 15L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("MINISTER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PRINCIPAL SECRETARY")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JOINT SECRETARY")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("DIRECTOR")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JOINT DIRECTOR")){
+		            			  designationVO.setOrderNumber(6L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SPECIAL OFFICER")){
+		            			  designationVO.setOrderNumber(7L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROJECT MANAGER")){
+		            			  designationVO.setOrderNumber(8L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SECTION OFFICER")){
+		            			  designationVO.setOrderNumber(9L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ASSISTANT SECTION OFFICER")){
+		            			  designationVO.setOrderNumber(10L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROJECT ENGINEER")){
+		            			  designationVO.setOrderNumber(11L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ADMIN ASSISTANT")){
+		            			  designationVO.setOrderNumber(12L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(13L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JUNIOR ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(14L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ASSISTANT ACCOUNT OFFICER")){
+		            			  designationVO.setOrderNumber(15L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(16L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 1260L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("Director")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Assistant Secetary")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Deputy Director")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SUPERINTENDENT")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SENIOR ASSISTANT")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("COMPUTER OPERATOR")){
+		            			  designationVO.setOrderNumber(6L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PERSONAL ASSISTANT")){
+		            			  designationVO.setOrderNumber(7L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(8L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 6567L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Joint Director")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JOINT SECRETARY")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Manager")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Executive Assistant")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(6L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 6581L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("VICE PRESIDENT")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(6L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 1257L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(3L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 3688L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SPECIAL OFFICER")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROJECT MANAGER")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROGRAMME MANAGER")){
+		            			  designationVO.setOrderNumber(6L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(7L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("IT ASSOCIATE")){
+		            			  designationVO.setOrderNumber(8L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("TEAM LEAD")){
+		            			  designationVO.setOrderNumber(9L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(10L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 5300L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(4L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 5300L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CEO EGOVERNANCE")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Joint Director")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ASSISTANT ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(6L);
+		            		  }
+		            	  }
+		            	  
+		            	 
+		            		  designationVO.setDesignation(jObj.getString("postname"));
+		            		  designationVO.setOwnerName(jObj.getString("ouname"));
+		            		  designationVO.setCreated(jObj.getLong("created"));
+		            		  designationVO.setTotalCount(jObj.getLong("totalcount"));
+		            		  designationVO.setEmployeeName(jObj.getString("employeename"));
+		            		  designationVO.setDepartmentId(jObj.getLong("departmentid"));
+		            		  designationVO.setDepartmentName(jObj.getString("departmentname"));
+		            		  designationVO.setZeroToSeven(jObj.getLong("0-7"));
+		            		  designationVO.setEightToFifteen(jObj.getLong("8-15"));
+		            		  designationVO.setSixteenToThirty(jObj.getLong("16-30"));
+		            		  designationVO.setThirtyoneToSixty(jObj.getLong("31-60"));
+		            		  designationVO.setAboveSixty(jObj.getLong(">60"));
+			            	  if(designationVO.getCreated() != null && designationVO.getCreated().longValue() > 0L && designationVO.getTotalCount() != null && designationVO.getTotalCount().longValue() > 0L){
+			            		designationVO.setPercentage(new BigDecimal(designationVO.getTotalCount()*100.00/designationVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							  }else{
+								designationVO.setPercentage("0.00");
+							  }
+			            	  returnList.add(designationVO);
+		              		}
+		            	  
+		              	  }
+		               }
+		             }
+		           }
+		      
+		      
+		      Collections.sort(returnList, new Comparator<ItecEOfficeVO>() {
+		    	    public int compare(ItecEOfficeVO vo1, ItecEOfficeVO vo2) {
+		    	        return vo1.getOrderNumber().compareTo(vo2.getOrderNumber());
+		    	    }
+		    	});
+		      
+		    } catch (Exception e) {
+		      LOG.error("Exception raised at getEofficeDesginationDetailsByDepartment - ItcDashboardService service",e);
 		    }
 		    return returnList;
 	}

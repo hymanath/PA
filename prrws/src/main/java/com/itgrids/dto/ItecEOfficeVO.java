@@ -37,6 +37,8 @@ public class ItecEOfficeVO {
 	private List<ItecEOfficeVO> otherList = new ArrayList<ItecEOfficeVO>(0);
 	private List<ItecEOfficeVO> ceoList = new ArrayList<ItecEOfficeVO>(0);
 	private List<ItecEOfficeVO> ministerList = new ArrayList<ItecEOfficeVO>(0);
+	private Long orderNumber = 0L;
+	private String ownerName;
 	
 	
 	public Long getId() {
@@ -212,5 +214,17 @@ public class ItecEOfficeVO {
 	}
 	public void setMinisterList(List<ItecEOfficeVO> ministerList) {
 		this.ministerList = ministerList;
+	}
+	public Long getOrderNumber() {
+		return orderNumber;
+	}
+	public void setOrderNumber(Long orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+	public String getOwnerName() {
+		return ownerName;
+	}
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
 	}
 }
