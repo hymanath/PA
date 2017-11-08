@@ -6961,16 +6961,24 @@ function getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyId,elec
 	$("#openPostDetailsModalDivId").html(spinner);
 	var electionYearsArr =["2014"];
 	
+	var partyIdArr = [];
 	var electionIds=[];
 	var electionScopeIds=[];
 	electionIds.push(electionId)
 	electionScopeIds.push(electionScopeId);
+	
+	if(partyId == 0){
+		partyIdArr = [];
+	}else if(partyId != null && partyId.length >0) {
+		partyIdArr.push(partyId);
+	}
+	
 	var jsObj={
        electionIds    		:electionIds,
        loctionValue   		:1,
        loactionTypeId   	:2,
        electionScopeIds 	:electionScopeIds,
-	   partyId :partyId,
+	   partyId :partyIdArr,
 	   districtId:0,
 	   electionYearsArr : electionYearsArr
 	   
