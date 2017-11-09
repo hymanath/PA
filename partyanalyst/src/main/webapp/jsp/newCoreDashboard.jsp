@@ -5366,7 +5366,7 @@ var globalImages;
 	  var loggedInUserActivityMemberId = '${requestScope.userDataVO.activityMemberId}';
 	  var loggedInUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
 	  var loggedInUserAccessLevelId  = '${requestScope.userDataVO.userAccessLevelId}';
-	  var globalDeptIdsArr = '${requestScope.userDataVO.deptIdList}';
+	  var globalDeptIdsArr = ${requestScope.userDataVO.deptIdList};
 	  var loggedInUserAccessLevelValues = getLoggedInUserAccessLevelValues();
 	  
 	  var globalActivityMemberId = loggedInUserActivityMemberId;
