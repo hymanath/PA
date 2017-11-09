@@ -5323,8 +5323,8 @@ public List<NominatedPostDetailsVO> getLocationWiseNominatedPostCandidateAgeRang
 				}
 			}
 			if(finalPartyList != null && partyIds != null && finalPartyList.size() ==2 && partyIds.size()==1 ){
-				for(int i=0; i<=finalPartyList.size() ; i++){
-					if(finalPartyList.get(i).getPartyId() == 1887){
+				for(int i=0; i<finalPartyList.size() ; i++){
+					if(finalPartyList.get(i) !=null && finalPartyList.get(i).getPartyId().longValue() == 1887L){
 						finalPartyList.remove(i);
 					}
 				}
