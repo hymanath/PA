@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WATER TANKS CLORINATION</title>
+<title>WATER TANKS CHLORINATION</title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
@@ -26,7 +26,7 @@
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
-					<p>WATER TANKS CLORINATION - Dashboard</p>
+					<p>WATER TANKS CHLORINATION - Dashboard</p>
 				</div>
 				
 				<div class="col-sm-3 col-xs-12 pull-right">

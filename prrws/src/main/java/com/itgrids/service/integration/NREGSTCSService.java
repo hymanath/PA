@@ -5245,6 +5245,7 @@ public class NREGSTCSService implements INREGSTCSService{
  	    					distvo.setChecked(jObj.getLong("wb_checked"));
  	    					distvo.setClorinated(jObj.getLong("wb_chlorinated"));
  	    					distvo.setNotClorinated(jObj.getLong("wb_nil_chlorine"));
+ 	    					distvo.setVisitDate(jObj.getString("visit_date"));
  	    					
  	    					returnList.add(distvo);
 	 	    			}
