@@ -434,7 +434,7 @@ public class ItcDashboardService implements IItcDashboardService {
 			SDP[] dataArr = new TrackerITServiceSoapProxy().get_SDP_Abstract_Details(inputVo.getSector(), fromDate, toDate);
 			 Map<String,List<ItecCMeoDBDetailsVO>> deptNameAndVosMap = new HashMap<String,List<ItecCMeoDBDetailsVO>>();
 		     if(dataArr != null && dataArr.length > 0){
-		    	 for( int i = 0; i < dataArr.length-2 ; i++ ){
+		    	 for( int i = 0; i < dataArr.length-1 ; i++ ){
 		    		List<ItecCMeoDBDetailsVO> clearnceVosList= deptNameAndVosMap.get(dataArr[i].getDepartment_Name().trim());
 		    		if( clearnceVosList == null ){
 		    			clearnceVosList = new ArrayList<ItecCMeoDBDetailsVO>();
@@ -1881,7 +1881,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		return resultVO;
 	}
 	public CmEoDBDtlsVO getDepartmentWiseApplicationDetails( SDP[] dataArr){
-		CmEoDBDtlsVO vo = new CmEoDBDtlsVO();
+		CmEoDBDtlsVO deptVO = new CmEoDBDtlsVO();
 		try{
 			if(dataArr != null && dataArr.length >0){
 				Long count = 0l;
@@ -1890,19 +1890,19 @@ public class ItcDashboardService implements IItcDashboardService {
 		    	   if (count == dataArr.length){//we are ignoring last object from array
 		    		   continue;
 		    	   }
-					vo.setTotal(vo.getTotal()+Long.valueOf(obj.getTotal_Applications()));
-					vo.setAprooved(vo.getAprooved()+Long.valueOf(obj.getTotal_Approved()));
-					vo.setRejected(vo.getRejected()+Long.valueOf(obj.getTotal_Rejected()));
-					vo.setReAprooved(vo.getReAprooved()+Long.valueOf(obj.getTotal_ReApproved()));
-					vo.setTotalPending(vo.getTotalPending()+Long.valueOf(obj.getTotal_Pending()));
-					vo.setPendingBeyondSLA(vo.getPendingBeyondSLA()+Long.valueOf(obj.getTotal_Pending_Beyond_SLA()));
-					vo.setPendingWithinSLA(vo.getPendingWithinSLA()+Long.valueOf(obj.getTotal_Pending_Within_SLA()));
+		    	   deptVO.setAprooved(deptVO.getAprooved()+Long.valueOf(obj.getTotal_Approved()));
+		    	   deptVO.setRejected(deptVO.getRejected()+Long.valueOf(obj.getTotal_Rejected()));
+		    	   deptVO.setReAprooved(deptVO.getReAprooved()+Long.valueOf(obj.getTotal_ReApproved()));
+				   deptVO.setTotalPending(deptVO.getTotalPending()+Long.valueOf(obj.getTotal_Pending()));
+				   deptVO.setPendingBeyondSLA(deptVO.getPendingBeyondSLA()+Long.valueOf(obj.getTotal_Pending_Beyond_SLA()));
+				   deptVO.setPendingWithinSLA(deptVO.getPendingWithinSLA()+Long.valueOf(obj.getTotal_Pending_Within_SLA()));
 				}
+				deptVO.setTotal(deptVO.getAprooved()+deptVO.getReAprooved()+deptVO.getRejected()+deptVO.getPendingBeyondSLA()+deptVO.getPendingWithinSLA());
 			}
 		}catch(Exception e){
 			 LOG.error("Exception raised at setStatusCountsOfSectors - ItcDashboardService service",e);
 		}
-		return vo;
+		return deptVO;
 	}
 	
 	/**
