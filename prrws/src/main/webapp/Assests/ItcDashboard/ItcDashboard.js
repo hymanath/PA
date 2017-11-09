@@ -2434,31 +2434,6 @@ function buildCMeoDBStatusCountDetails(result){
 	$("#emeodbApplicationDtlsDataTblId").dataTable();
 }
 
-
-getCMeoDBSectorWiseStatusDetais();
-function getCMeoDBSectorWiseStatusDetais(){
-
-	var json={
-		sector:"B",
-		fromDate:"2010-08-11",
-		toDate:"2016-08-11"
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getCMeoDBSectorWiseStatusDetais',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-
-		 console.log(result);
-		
-	});	
-}
-
 function buildEOfcDepartWiseOverviewDetails(result){
 	var str = '';
 	str+='<div class="col-sm-12">';	
@@ -2628,3 +2603,28 @@ $(document).on("click",".hieraricalViewCls",function(){
 		$(".hieraricalButtonShowCls").show();
 	}
 });
+
+
+getCMeoDBSectorWiseStatusDetais();
+function getCMeoDBSectorWiseStatusDetais(){
+
+	var json={
+		sector:"B",
+		fromDate:"2010-08-11",
+		toDate:"2016-08-11"
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getCMeoDBSectorWiseStatusDetais',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+
+		 console.log(result);
+		
+	});	
+}
