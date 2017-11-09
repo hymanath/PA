@@ -2067,7 +2067,6 @@ function getCMEDOBOverview(divId,blockId,type){
 		 sector:"B",
 		 fromDate:getDateInRequiredFormat(globalFromDate),
 		 toDate:getDateInRequiredFormat(globalToDate)
-		 
 	}
 	$.ajax({                
 		type:'POST',    
@@ -2411,8 +2410,8 @@ function buildCMeoDBStatusCountDetails(result){
 				for(var i in result){
 				str+='<tr>';
 							str+='<td >'+result[i].districtName+'</td>';
-							str+='<td title="'+result[i].sectorName+'" style="cursor:pointer;">'+result[i].sectorName.substr(0,9)+'</td>';
-							str+='<td title="'+result[i].activity+'" style="cursor:pointer;">'+result[i].activity.substr(0,9)+"..."+'</td>';
+							str+='<td class="tooltipCls" data-container="body"  title="'+result[i].sectorName+'" style="cursor:pointer;">'+result[i].sectorName.substr(0,9)+'...</td>';
+							str+='<td class="tooltipCls" data-container="body" title="'+result[i].activity+'" style="cursor:pointer;">'+result[i].activity.substr(0,9)+"..."+'</td>';
 							str+='<td >'+result[i].empolyeement+'</td>';
 							str+='<td >'+result[i].investmentAmount+'</td>';
 							str+='<td >'+result[i].appFilledDate+'</td>';
@@ -2421,41 +2420,16 @@ function buildCMeoDBStatusCountDetails(result){
 							str+='<td >'+result[i].approvalDate+'</td>';
 							str+='<td >'+result[i].slaDays+'</td>';
 							str+='<td >'+result[i].status+'</td>';
-							str+='<td title="'+result[i].address+'" style="cursor:pointer;">'+result[i].address.substr(0,9)+"..."+'</td>';
+							str+='<td class="tooltipCls" data-container="body" title="'+result[i].address+'" style="cursor:pointer;">'+result[i].address.substr(0,9)+"..."+'</td>';
 							str+='<td >'+result[i].approvalFileId+'</td>';
 							str+='</tr>';
-					
 				}
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
-
 	$("#emeodbApplicationDtlsDivId").html(str);
 	$("#emeodbApplicationDtlsDataTblId").dataTable();
-}
-
-
-getCMeoDBSectorWiseStatusDetais();//test
-function getCMeoDBSectorWiseStatusDetais(){
-	var json={
-		sector:"B",
-		fromDate:getDateInRequiredFormat(globalFromDate),
-		toDate:getDateInRequiredFormat(globalToDate)
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getCMeoDBSectorWiseStatusDetais',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-
-		 console.log(result);
-		
-	});	
+	$(".tooltipCls").tooltip();	
 }
 
 function buildEOfcDepartWiseOverviewDetails(result){
@@ -2628,13 +2602,24 @@ $(document).on("click",".hieraricalViewCls",function(){
 	}
 });
 
-getCMeoDBSectorWiseStatusDetais();
-function getCMeoDBSectorWiseStatusDetais(){
+$(document).on("click",".blockWiseDetails",function(){
+	$("#dateRAngeSectionHideId").hide();
+	var blockName=$(this).attr("main-block");
+	if( blockName == "cMeoDB" || blockName == "meesevaSla" ){
+	 //$("#dateRAngeSectionHideId").show();
+	}
+});
+function getDateInRequiredFormat(date) {
+	var dateArr = date.split("/");
+	return [dateArr[2],dateArr[1],dateArr[0]].join("-");
+}
 
+getCMeoDBSectorWiseStatusDetais();//test
+function getCMeoDBSectorWiseStatusDetais(){
 	var json={
 		sector:"B",
-		fromDate:"2010-08-11",
-		toDate:"2016-08-11"
+		fromDate:getDateInRequiredFormat(globalFromDate),
+		toDate:getDateInRequiredFormat(globalToDate)
 	}
 	$.ajax({                
 		type:'POST',    
@@ -2650,15 +2635,4 @@ function getCMeoDBSectorWiseStatusDetais(){
 		 console.log(result);
 		
 	});	
-}
-$(document).on("click",".blockWiseDetails",function(){
-	$("#dateRAngeSectionHideId").hide();
-	var blockName=$(this).attr("main-block");
-	if( blockName == "cMeoDB" || blockName == "meesevaSla" ){
-	 //$("#dateRAngeSectionHideId").show();
-	}
-});
-function getDateInRequiredFormat(date) {
-	var dateArr = date.split("/");
-	return [dateArr[2],dateArr[1],dateArr[0]].join("-");
 }
