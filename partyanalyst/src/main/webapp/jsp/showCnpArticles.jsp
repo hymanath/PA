@@ -1132,7 +1132,7 @@ function getPrintMediaPSYOverAllArticles(globalstartIndex){
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
-		buildArticlesByDateRangeWise(result,globalStIndex,countByDate)
+		buildArticlesByDateRangeWise(result,globalstartIndex,countByDate)
 	});
 }
 function getPrintMediaOrgWisePSYArticles(globalstartIndex){
@@ -1143,7 +1143,7 @@ function getPrintMediaOrgWisePSYArticles(globalstartIndex){
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
-		buildArticlesByDateRangeWise(result,globalStIndex,countByDate)
+		buildArticlesByDateRangeWise(result,globalstartIndex,countByDate)
 	});
 }
 function getPrintMediaPublicationWisePSYArticles(globalstartIndex){
@@ -1155,7 +1155,7 @@ function getPrintMediaPublicationWisePSYArticles(globalstartIndex){
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
-		buildArticlesByDateRangeWise(result,globalStIndex,countByDate)
+		buildArticlesByDateRangeWise(result,globalstartIndex,countByDate)
 	});
 }
 
