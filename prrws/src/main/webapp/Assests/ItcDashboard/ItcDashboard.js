@@ -2065,9 +2065,9 @@ function getCMEDOBOverview(divId,blockId,type){
 	}
 	var json = {
 		 sector:"B",
-		 fromDate:"2010-03-01",
-		 toDate:"2017-11-11",
-		
+		 fromDate:getDateInRequiredFormat(globalFromDate),
+		 toDate:getDateInRequiredFormat(globalToDate)
+		 
 	}
 	$.ajax({                
 		type:'POST',    
@@ -2257,8 +2257,8 @@ function getCMEDOBReportStatusWise(){
 
 	   var json = {
 		 sector:"B",
-		 fromDate:"2010-03-01",
-		 toDate:"2017-11-11",
+		 fromDate:getDateInRequiredFormat(globalFromDate),
+		 toDate:getDateInRequiredFormat(globalToDate)
 	     }
 	$.ajax({                
 		type:'POST',    
@@ -2305,38 +2305,38 @@ function buildCMEDOBReportStatusWise(result){
 								str+='<td >'+result[i].dashboardName+'</td>';
 								str+='<td id="'+result[i].subList[j].clearenceId+'">'+result[i].subList[j].clearenceName+'</td>';
 								if (result[i].subList[j].totalApplications > 0) {
-									str+='<td  style="cursor:pointer;" class="cmeodbStatusCls" attr_status_id = "0" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].totalApplications+'</td>';
+									str+='<td  style="cursor:pointer;color:rgb(51, 122, 183);" class="cmeodbStatusCls" attr_status_id = "0" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].totalApplications+'</td>';
 								} else {
 									str+='<td > - </td>';
 								}
 								if (result[i].subList[j].totalApproved > 0) {
-									str+='<td class="cmeodbStatusCls" style="cursor:pointer;" attr_status_id = "1" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].totalApproved+'</td>';
+									str+='<td class="cmeodbStatusCls" style="cursor:pointer;color:rgb(51, 122, 183);" attr_status_id = "1" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].totalApproved+'</td>';
 								} else {
 									str+='<td > - </td>';
 								}
 								if (result[i].subList[j].totalRejected > 0) {
-									str+='<td class="cmeodbStatusCls" style="cursor:pointer;" attr_status_id = "3" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].totalRejected+'</td>';
+									str+='<td class="cmeodbStatusCls" style="cursor:pointer;color:rgb(51, 122, 183);" attr_status_id = "3" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].totalRejected+'</td>';
 								} else {
 									str+='<td > - </td>';
 								}
 								if (result[i].subList[j].totalReApproved > 0) {
-									str+='<td class="cmeodbStatusCls" style="cursor:pointer;" attr_status_id = "2" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].totalReApproved+'</td>';
+									str+='<td class="cmeodbStatusCls" style="cursor:pointer;color:rgb(51, 122, 183);" attr_status_id = "2" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].totalReApproved+'</td>';
 								} else {
 									str+='<td > - </td>';
 								}
 								if (result[i].subList[j].totalPending > 0) {
-									str+='<td class="cmeodbStatusCls"  style="cursor:pointer;" attr_status_id = "4" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].totalPending+'</td>';
+									str+='<td class="cmeodbStatusCls"  style="cursor:pointer;color:rgb(51, 122, 183);" attr_status_id = "4" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].totalPending+'</td>';
 								} else {
 									str+='<td >- </td>';
 								}
 								
 								if (result[i].subList[j].pendingWithInSLA > 0) {
-									str+='<td class="cmeodbStatusCls" style="cursor:pointer;" attr_status_id = "5" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].pendingWithInSLA+'</td>';
+									str+='<td class="cmeodbStatusCls" style="cursor:pointer;color:rgb(51, 122, 183);" attr_status_id = "5" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].pendingWithInSLA+'</td>';
 								} else {
 									str+='<td >- </td>';
 								}
 								if (result[i].subList[j].pendingBeyondSLA > 0) {
-									str+='<td class="cmeodbStatusCls" style="cursor:pointer;" attr_status_id = "6" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].pendingBeyondSLA+'</td>';
+									str+='<td class="cmeodbStatusCls" style="cursor:pointer;color:rgb(51, 122, 183);" attr_status_id = "6" attr_clearncr_id ='+result[i].subList[j].clearenceId+' attr_dept_code = '+result[i].subList[j].dashBoardNO+'>'+result[i].subList[j].pendingBeyondSLA+'</td>';
 							
 								} else {
 									str+='<td >- </td>';
@@ -2361,8 +2361,8 @@ $(document).on("click",".cmeodbStatusCls",function(){
    var deptCode=$(this).attr("attr_dept_code");
 	var json = {
 		 sector:"B",
-		 fromDate:"2010-03-01",
-		 toDate:"2017-11-11",
+		 fromDate:getDateInRequiredFormat(globalFromDate),
+		 toDate:getDateInRequiredFormat(globalToDate),
 		 deptCode:deptCode,
 		 clearence:clearenceCode,
 		 status:statusId
@@ -2411,8 +2411,8 @@ function buildCMeoDBStatusCountDetails(result){
 				for(var i in result){
 				str+='<tr>';
 							str+='<td >'+result[i].districtName+'</td>';
-							str+='<td >'+result[i].sectorName+'</td>';
-							str+='<td >'+result[i].activity+'</td>';
+							str+='<td title="'+result[i].sectorName+'" style="cursor:pointer;">'+result[i].sectorName.substr(0,9)+'</td>';
+							str+='<td title="'+result[i].activity+'" style="cursor:pointer;">'+result[i].activity.substr(0,9)+"..."+'</td>';
 							str+='<td >'+result[i].empolyeement+'</td>';
 							str+='<td >'+result[i].investmentAmount+'</td>';
 							str+='<td >'+result[i].appFilledDate+'</td>';
@@ -2421,7 +2421,7 @@ function buildCMeoDBStatusCountDetails(result){
 							str+='<td >'+result[i].approvalDate+'</td>';
 							str+='<td >'+result[i].slaDays+'</td>';
 							str+='<td >'+result[i].status+'</td>';
-							str+='<td >'+result[i].address+'</td>';
+							str+='<td title="'+result[i].address+'" style="cursor:pointer;">'+result[i].address.substr(0,9)+"..."+'</td>';
 							str+='<td >'+result[i].approvalFileId+'</td>';
 							str+='</tr>';
 					
@@ -2432,6 +2432,30 @@ function buildCMeoDBStatusCountDetails(result){
 
 	$("#emeodbApplicationDtlsDivId").html(str);
 	$("#emeodbApplicationDtlsDataTblId").dataTable();
+}
+
+
+getCMeoDBSectorWiseStatusDetais();//test
+function getCMeoDBSectorWiseStatusDetais(){
+	var json={
+		sector:"B",
+		fromDate:getDateInRequiredFormat(globalFromDate),
+		toDate:getDateInRequiredFormat(globalToDate)
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getCMeoDBSectorWiseStatusDetais',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+
+		 console.log(result);
+		
+	});	
 }
 
 function buildEOfcDepartWiseOverviewDetails(result){
@@ -2604,7 +2628,6 @@ $(document).on("click",".hieraricalViewCls",function(){
 	}
 });
 
-
 getCMeoDBSectorWiseStatusDetais();
 function getCMeoDBSectorWiseStatusDetais(){
 
@@ -2627,4 +2650,15 @@ function getCMeoDBSectorWiseStatusDetais(){
 		 console.log(result);
 		
 	});	
+}
+$(document).on("click",".blockWiseDetails",function(){
+	$("#dateRAngeSectionHideId").hide();
+	var blockName=$(this).attr("main-block");
+	if( blockName == "cMeoDB" || blockName == "meesevaSla" ){
+	 //$("#dateRAngeSectionHideId").show();
+	}
+});
+function getDateInRequiredFormat(date) {
+	var dateArr = date.split("/");
+	return [dateArr[2],dateArr[1],dateArr[0]].join("-");
 }
