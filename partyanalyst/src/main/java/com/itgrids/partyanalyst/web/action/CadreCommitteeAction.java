@@ -2753,7 +2753,7 @@ public String updateCommitteeMemberDesignationByCadreId(){
 				}
 			}
 			
-			status = cadreCommitteeService.saveElectionBoothCommitteeDetails(userId,jObj.getLong("boothId"),jObj.getLong("tdpCadreId"),jObj.getLong("boothIncrgRoleId"),enrollmentYrIds);
+			status = cadreCommitteeService.saveElectionBoothCommitteeDetails(userId,jObj.getLong("boothId"),jObj.getLong("tdpCadreId"),jObj.getLong("boothIncrgRoleId"),enrollmentYrIds,jObj.getString("isOtherRange"));
 		}catch(Exception e){
 			LOG.error("Exception occured in saveElectionBoothCommitteeDetails() At CadreCommitteeAction",e);
 		}
