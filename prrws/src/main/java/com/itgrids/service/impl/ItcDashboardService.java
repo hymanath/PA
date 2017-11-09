@@ -1884,7 +1884,12 @@ public class ItcDashboardService implements IItcDashboardService {
 		CmEoDBDtlsVO vo = new CmEoDBDtlsVO();
 		try{
 			if(dataArr != null && dataArr.length >0){
+				Long count = 0l;
 				for(SDP  obj : dataArr){
+				   count++;
+		    	   if (count == dataArr.length){//we are ignoring last object from array
+		    		   continue;
+		    	   }
 					vo.setTotal(vo.getTotal()+Long.valueOf(obj.getTotal_Applications()));
 					vo.setAprooved(vo.getAprooved()+Long.valueOf(obj.getTotal_Approved()));
 					vo.setRejected(vo.getRejected()+Long.valueOf(obj.getTotal_Rejected()));
