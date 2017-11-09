@@ -3015,12 +3015,15 @@
 						<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;"><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></div>
 						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand" expand-block-inner="training">
 							<div class="row">
-							   <div id="programsDtlsCntTableId" class="m_top10"></div>
+							<!-- <div id="programsDtlsCntTableId" class="m_top10"></div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									 <div id="villageWardTblId"></div>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									 <div id="mdlTwnDvsnTabId"></div>
+								</div> -->
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									 <div id="programsDtlsCntTableId"></div>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									 <div id="specialProgramLeaderId"></div>
@@ -5386,7 +5389,7 @@ var globalImages;
 		//Main header remove
 		//$(".eventsheader").hide();
 		$('[data-toggle="tooltip"]').tooltip();
-		stateLevelCampDetails();
+		//stateLevelCampDetails();
 		getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();
 		getCadreEnrolmentYears();
 		getBoothCadreEnrolmentYears();
