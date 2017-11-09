@@ -2044,7 +2044,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		            		  }else{
 		            			  designationVO.setOrderNumber(4L);
 		            		  }
-		            	  }else if(departmentId != null && departmentId.longValue() == 5300L){
+		            	  }else if(departmentId != null && departmentId.longValue() == 6575L){
 		            		  if(postName != null && postName.trim().equalsIgnoreCase("CEO EGOVERNANCE")){
 		            			  designationVO.setOrderNumber(1L);
 		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Joint Director")){
