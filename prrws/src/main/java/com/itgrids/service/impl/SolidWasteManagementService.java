@@ -62,8 +62,23 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	        					solidWasteManagementVO.setSwmCollection(!jObj.getString("swmCollection").equalsIgnoreCase("null") ? jObj.getLong("swmCollection") : 0l);
 	        					solidWasteManagementVO.setNadap(!jObj.getString("nadap").equalsIgnoreCase("null") ? jObj.getLong("nadap") : 0l);
 	        					solidWasteManagementVO.setVermi(!jObj.getString("vermi").equalsIgnoreCase("null") ? jObj.getLong("vermi") : 0l);
-	        					solidWasteManagementVO.setVermiStock(!jObj.getString("vermiStock").equalsIgnoreCase("null") ? jObj.getLong("vermiStock") : 0l);
-	        					finalList.add(solidWasteManagementVO);
+	        					solidWasteManagementVO.setVermiStock(!jObj.getString("vermiStock").equalsIgnoreCase("null") ? jObj.getLong("vermiStock") : 0l);     					
+	        					solidWasteManagementVO.setHouseCollecion(!jObj.getString("houseCollecion").equalsIgnoreCase("null") ?jObj.getLong("houseCollecion") : 0l);  
+		 	    				solidWasteManagementVO.setFarmerCollection(!jObj.getString("farmerCollection").equalsIgnoreCase("null") ?jObj.getLong("farmerCollection") : 0l);
+		 	    				solidWasteManagementVO.setMgnres(!jObj.getString("mgnres").equalsIgnoreCase("null")  ?jObj.getLong("mgnres") : 0l);
+		 	    				solidWasteManagementVO.setPr(!jObj.getString("pr").equalsIgnoreCase("null") ?jObj.getLong("pr") : 0l);
+		 	    				solidWasteManagementVO.setPublicType(!jObj.getString("public").equalsIgnoreCase("null") ?jObj.getLong("public") : 0l);
+		 	    				solidWasteManagementVO.setOnekg(!jObj.getString("1kg").equalsIgnoreCase("null") ?jObj.getLong("1kg") : 0l);
+		 	    				solidWasteManagementVO.setFivekg(!jObj.getString("5kg").equalsIgnoreCase("null") ?jObj.getLong("5kg") : 0l);
+		 	    				solidWasteManagementVO.setTenkg(!jObj.getString("10kg").equalsIgnoreCase("null")?jObj.getLong("10kg") : 0l);
+		 	    				solidWasteManagementVO.setTwentyFivekg(!jObj.getString("25kg").equalsIgnoreCase("null") ?jObj.getLong("25kg") : 0l);
+		 	    				solidWasteManagementVO.setFiftykg(!jObj.getString("50kg").equalsIgnoreCase("null") ?jObj.getLong("50kg") : 0l);
+		 	    				solidWasteManagementVO.setTractor(!jObj.getString("tractor").equalsIgnoreCase("null") ?jObj.getLong("tractor") : 0l);
+		 	    				solidWasteManagementVO.setAuto(!jObj.getString("auto").equalsIgnoreCase("null") ?jObj.getLong("auto") : 0l);
+		 	    				solidWasteManagementVO.setTricycle(!jObj.getString("tricycle").equalsIgnoreCase("null") ?jObj.getLong("tricycle") : 0l);
+		 	    				solidWasteManagementVO.setEvehicle(!jObj.getString("evehicle").equalsIgnoreCase("null") ?jObj.getLong("evehicle") : 0l);
+		 	    				solidWasteManagementVO.setBlocks(!jObj.getString("blocks").equalsIgnoreCase("null") ?jObj.getLong("blocks") : 0l);
+		 	    				finalList.add(solidWasteManagementVO);
 	        				}
 	        			}
 	        			}
