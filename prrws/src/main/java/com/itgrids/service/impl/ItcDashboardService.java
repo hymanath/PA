@@ -1853,8 +1853,8 @@ public class ItcDashboardService implements IItcDashboardService {
 		    }
 		    return returnList;
 	}
-	public List<CmEoDBDtlsVO> getCMeoDBSectorWiseStatusDetais(InputVO inputVo){
-		List<CmEoDBDtlsVO> finalList = new ArrayList<CmEoDBDtlsVO>();
+	public CmEoDBDtlsVO getCMeoDBSectorWiseStatusDetais(InputVO inputVo){
+		CmEoDBDtlsVO resultVO = new CmEoDBDtlsVO();
 		String [] sectorsArr={"E","I"};
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1866,30 +1866,30 @@ public class ItcDashboardService implements IItcDashboardService {
 			 }
 			 for(String sector : sectorsArr){
 				 SDP[] dataArr = new TrackerITServiceSoapProxy().get_SDP_Abstract_Details(sector, fromDate, toDate);
-				 CmEoDBDtlsVO returnVo= getDepartmentWiseApplicationDetails(dataArr);
-				 finalList.add(returnVo);
+				 CmEoDBDtlsVO returnVo = getDepartmentWiseApplicationDetails(dataArr);
+				 if (sector.equalsIgnoreCase("E")) {
+					 resultVO.setElectronicsDtlsVO(returnVo);
+				 } else if(sector.equalsIgnoreCase("I")){
+					 resultVO.setItDtlsVO(returnVo);
+				 }
+				  
 			 }
 			
 	}catch(Exception e){
 		 LOG.error("Exception raised at getCMeoDBSectorWiseStatusDetais - ItcDashboardService service",e);
 	}
-		return finalList;
+		return resultVO;
 	}
 	public CmEoDBDtlsVO getDepartmentWiseApplicationDetails( SDP[] dataArr){
 		CmEoDBDtlsVO vo = new CmEoDBDtlsVO();
 		try{
 			if(dataArr != null && dataArr.length >0){
-				vo.setTotal(0L);
-				vo.setAprooved(0L);
-				vo.setRejected(0L);
-				vo.setReAprooved(0L);
-				vo.setPendingBeyondSLA(0L);
-				vo.setPendingWithinSLA(0L);
 				for(SDP  obj : dataArr){
 					vo.setTotal(vo.getTotal()+Long.valueOf(obj.getTotal_Applications()));
 					vo.setAprooved(vo.getAprooved()+Long.valueOf(obj.getTotal_Approved()));
 					vo.setRejected(vo.getRejected()+Long.valueOf(obj.getTotal_Rejected()));
 					vo.setReAprooved(vo.getReAprooved()+Long.valueOf(obj.getTotal_ReApproved()));
+					vo.setTotalPending(vo.getTotalPending()+Long.valueOf(obj.getTotal_Pending()));
 					vo.setPendingBeyondSLA(vo.getPendingBeyondSLA()+Long.valueOf(obj.getTotal_Pending_Beyond_SLA()));
 					vo.setPendingWithinSLA(vo.getPendingWithinSLA()+Long.valueOf(obj.getTotal_Pending_Within_SLA()));
 				}

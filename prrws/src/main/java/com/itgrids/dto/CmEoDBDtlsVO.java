@@ -7,10 +7,11 @@ public class CmEoDBDtlsVO {
 	private String idStr;
 	private String name;
 	private Long count;
-	private Long total;
+	private Long total = 0l;
 	private Long aprooved = 0l;
 	private Long rejected = 0l;
-	private Long reAprooved;
+	private Long reAprooved = 0l;
+	private Long totalPending = 0l;
 	private Long pendingWithinSLA = 0l;
 	private Long pendingBeyondSLA = 0l;
 	private Long highApprovalDepartmentCount;
@@ -27,6 +28,8 @@ public class CmEoDBDtlsVO {
 	private String lowPendingDepartmentName;
 	
 	private CmEoDBDtlsVO overviewDtls;
+	private CmEoDBDtlsVO itDtlsVO;
+	private CmEoDBDtlsVO electronicsDtlsVO;
 	
 	
 	public Long getTotal() {
@@ -160,6 +163,24 @@ public class CmEoDBDtlsVO {
 	}
 	public void setIdStr(String idStr) {
 		this.idStr = idStr;
+	}
+	public Long getTotalPending() {
+		return totalPending;
+	}
+	public void setTotalPending(Long totalPending) {
+		this.totalPending = totalPending;
+	}
+	public CmEoDBDtlsVO getItDtlsVO() {
+		return itDtlsVO;
+	}
+	public void setItDtlsVO(CmEoDBDtlsVO itDtlsVO) {
+		this.itDtlsVO = itDtlsVO;
+	}
+	public CmEoDBDtlsVO getElectronicsDtlsVO() {
+		return electronicsDtlsVO;
+	}
+	public void setElectronicsDtlsVO(CmEoDBDtlsVO electronicsDtlsVO) {
+		this.electronicsDtlsVO = electronicsDtlsVO;
 	}
 	
 

@@ -187,8 +187,8 @@ public class ItcController {
 		   return resultList;
 	   }
 	   @RequestMapping(value = "/getCMeoDBSectorWiseStatusDetais", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<CmEoDBDtlsVO>  getCMeoDBSectorWiseStatusDetais(@RequestBody InputVO inputVO) {
-		   List<CmEoDBDtlsVO>  resultList = itcDashboardService.getCMeoDBSectorWiseStatusDetais(inputVO);
-		   return resultList;
+	   public @ResponseBody  CmEoDBDtlsVO  getCMeoDBSectorWiseStatusDetais(@RequestBody InputVO inputVO) {
+		   CmEoDBDtlsVO  resultVO = itcDashboardService.getCMeoDBSectorWiseStatusDetais(inputVO);
+		   return resultVO;
 	   }
 }
