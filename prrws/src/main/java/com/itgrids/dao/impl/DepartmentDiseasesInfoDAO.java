@@ -120,10 +120,18 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
 		}
 		if(type != null && type.trim().equalsIgnoreCase("Rural")){
-			sb.append(" and tehsil.tehsilId is not null");
+			sb.append(" and (constituency.areaType='RURAL' or constituency.areaType='RURAL-URBAN')");
 		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
-			sb.append(" and localElectionBody.localElectionBodyId is not null");
+			sb.append(" and (constituency.areaType='RURAL-URBAN' or constituency.areaType='URBAN') ");
 		}
+		if((type != null && type.trim().equalsIgnoreCase("Rural") || type != null && type.trim().equalsIgnoreCase("Urban")) && (scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID || scopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_LEVEL_SCOPE_ID)){
+			if(type != null && type.trim().equalsIgnoreCase("Rural")){
+				sb.append(" and tehsil.tehsilId is not null and localElectionBody is null ");
+			}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
+				sb.append(" and localElectionBody.localElectionBodyId is not null and tehsil is null ");
+			}
+		}
+		
 		if(constituencyId != null && constituencyId.longValue() > 0L){
 			sb.append(" and constituency.constituencyId = :constituencyId");
 		}
@@ -645,7 +653,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 			query.setParameterList("deptIdList", deptIdList);
 		}
 		return query.list();
-	}
+	}//xyz
 	public List<Object[]> getCaseCountByLocationIds(List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId,Set<Long> locationIdList,String type,Long constituencyId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select ");      
@@ -676,12 +684,19 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		if(deptIdList != null && deptIdList.size() > 0){
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
 		}
-		if(type != null && type.trim().equalsIgnoreCase("Rural")){
-			sb.append(" and departmentDiseasesInfo.locationAddress.tehsil.tehsilId is not null");
-		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
-			sb.append(" and departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId is not null");
+		if((type != null && type.trim().equalsIgnoreCase("Rural") || type != null && type.trim().equalsIgnoreCase("Urban")) && (scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID || scopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_LEVEL_SCOPE_ID)){
+			if(type != null && type.trim().equalsIgnoreCase("Rural")){
+				sb.append(" and departmentDiseasesInfo.locationAddress.tehsil.tehsilId is not null and departmentDiseasesInfo.locationAddress.localElectionBody is null ");
+			}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
+				sb.append(" and departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId is not null and departmentDiseasesInfo.locationAddress.tehsil is null");
+			}
 		}
 		
+		if(type != null && type.trim().equalsIgnoreCase("Rural")){
+			sb.append(" and (departmentDiseasesInfo.locationAddress.constituency.areaType='RURAL' or departmentDiseasesInfo.locationAddress.constituency.areaType='RURAL-URBAN')");
+		}else if(type != null && type.trim().equalsIgnoreCase("Urban")){
+			sb.append(" and (departmentDiseasesInfo.locationAddress.constituency.areaType='RURAL-URBAN' or departmentDiseasesInfo.locationAddress.constituency.areaType='URBAN') ");
+		}
 		if(constituencyId != null && constituencyId.longValue() >0L){
 			sb.append(" and departmentDiseasesInfo.locationAddress.constituency.constituencyId = :constituencyId");
 		}
