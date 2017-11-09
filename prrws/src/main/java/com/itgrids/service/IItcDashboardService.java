@@ -17,7 +17,7 @@ public interface IItcDashboardService {
 
 	public List<MeesevaDtlsVO> getMeesevaSLAOverviewDtls(InputVO inputVO);
 	public List<MeesevaDtlsVO> getMeesevaSLAMonitoringDtlsDepartmentWise(InputVO inputVO);
-	public CmEoDBDtlsVO getCMEDOBOverview();
+	public CmEoDBDtlsVO getCMEDOBOverview(InputVO inputVO);
 	public List<ItecCMeoDBDetailsVO> getCMEDOBReportStatusWise(InputVO inputVO);
 	public ApInnovationSocietyOverviewVO getAPInnovationSocietyOverview(InputVO inputVO);
 	public List<ApInnovationCenterVO> getAPISXLR8APDetailedData(InputVO inputVO);
@@ -43,4 +43,5 @@ public interface IItcDashboardService {
 	public List<ItecEOfficeVO> getDepartmentWiseHierarchicalDetails();
 	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusDetailsNew();
 	public List<ItecEOfficeVO> getEofficeDesginationDetailsByDepartment(InputVO inputVO);
+	public List<CmEoDBDtlsVO> getCMeoDBSectorWiseStatusDetais(InputVO inputVO);
 }

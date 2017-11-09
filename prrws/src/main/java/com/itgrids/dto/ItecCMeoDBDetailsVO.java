@@ -40,8 +40,8 @@ public class ItecCMeoDBDetailsVO {
 	private String totalCost;
 	private String empolyeement;
 	private String appFilledDate;
-	private String corRecievedDate;
-	private String delayDays;
+	private String recievedDate;
+	private String slaDays;
 	private String permApprovalDate;
 	private String appRejDate;
 	private String approvalFileId;
@@ -50,6 +50,11 @@ public class ItecCMeoDBDetailsVO {
 	private List<ItecCMeoDBDetailsVO>  subList = new ArrayList<ItecCMeoDBDetailsVO>(0);
 	private Long deprtTotalApplications = 0L;
 	private Long deprtTotalApproval = 0L;
+	private String districtName;
+	private String approvalDate;
+	private String investmentAmount;
+	private String status;
+	
 	
 	public String getDashboardName() {
 		return dashboardName;
@@ -261,17 +266,18 @@ public class ItecCMeoDBDetailsVO {
 	public void setAppFilledDate(String appFilledDate) {
 		this.appFilledDate = appFilledDate;
 	}
-	public String getCorRecievedDate() {
-		return corRecievedDate;
+	
+	public String getRecievedDate() {
+		return recievedDate;
 	}
-	public void setCorRecievedDate(String corRecievedDate) {
-		this.corRecievedDate = corRecievedDate;
+	public void setRecievedDate(String recievedDate) {
+		this.recievedDate = recievedDate;
 	}
-	public String getDelayDays() {
-		return delayDays;
+	public String getSlaDays() {
+		return slaDays;
 	}
-	public void setDelayDays(String delayDays) {
-		this.delayDays = delayDays;
+	public void setSlaDays(String slaDays) {
+		this.slaDays = slaDays;
 	}
 	public String getPermApprovalDate() {
 		return permApprovalDate;
@@ -321,4 +327,30 @@ public class ItecCMeoDBDetailsVO {
 	public void setDeprtTotalApproval(Long deprtTotalApproval) {
 		this.deprtTotalApproval = deprtTotalApproval;
 	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getApprovalDate() {
+		return approvalDate;
+	}
+	public void setApprovalDate(String approvalDate) {
+		this.approvalDate = approvalDate;
+	}
+	public String getInvestmentAmount() {
+		return investmentAmount;
+	}
+	public void setInvestmentAmount(String investmentAmount) {
+		this.investmentAmount = investmentAmount;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
 }

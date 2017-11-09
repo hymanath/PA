@@ -100,6 +100,7 @@ public class InputVO implements Serializable {
 	private String program;
 	private String eoDBstatus;
 	private String clearence;
+	private String deptCode;
 	private String session;
 	private String groupName;
 	private Long departmentId;
@@ -655,4 +656,11 @@ public class InputVO implements Serializable {
 	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
 	}
+	public String getDeptCode() {
+		return deptCode;
+	}
+	public void setDeptCode(String deptCode) {
+		this.deptCode = deptCode;
+	}
+	
 }
