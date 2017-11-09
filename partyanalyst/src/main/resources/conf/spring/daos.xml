@@ -4195,4 +4195,35 @@
 	 <bean id="marginVotesRangeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MarginVotesRangeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 
+	 <bean id="jbCommitteeLocalBodyMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbCommitteeLocalBodyMemberDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="jbCommitteeMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbCommitteeMemberDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="jbCommitteeConfirmRuleConditionDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbCommitteeConfirmRuleConditionDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="jbCommitteeLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbCommitteeLevelDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="jbCommitteeConfirmRuleDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbCommitteeConfirmRuleDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="jbCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbCommitteeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	  <bean id="jbCommitteeEnrollmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbCommitteeEnrollmentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="jbCommitteeRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbCommitteeRoleDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="jbMemberTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbMemberTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="jbRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbRoleDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean> 
 </beans>		
