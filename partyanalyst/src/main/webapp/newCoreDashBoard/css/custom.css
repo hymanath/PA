@@ -3046,3 +3046,21 @@ color: rgb(51, 122, 183);
 .newsArticlesDetailsCls{
 	cursor:pointer;
 }
+.collapseTraingIcon, .collapseTraingIcon:active, .collapseTraingIcon:hover {
+    color: rgb(102, 102, 102) !important;
+}
+.collapseTraingIcon::before {
+    border: 1px solid rgb(75, 87, 99);
+    color: rgb(75, 87, 99);
+    content: "\2212";
+    float: right;
+    font-family: "Glyphicons Halflings";
+    font-size: 13px;
+    font-weight: 400 !important;
+    margin-left: -4px;
+    margin-top: -4px;
+    padding: 3px 5px;
+}
+.collapseTraingIcon.collapsed::before {
+    content: "\2b";
+}
