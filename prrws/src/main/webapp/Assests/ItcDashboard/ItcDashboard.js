@@ -2170,6 +2170,7 @@ function getCMEDOBOverview(divId,blockId,type){
 			if(type =="overview"){
 				buildgetCMEDOBOverview(result);
 			}else{
+				buildgetCMEDOBOverview(result);
 				buildgetCMEDOBDetailed(result,divId,blockId,type);
 			}
 		}else{
@@ -2185,7 +2186,7 @@ function getCMEDOBOverview(divId,blockId,type){
 }
 function buildgetCMEDOBOverview(result){
 	
-	if(result !=null){
+	if(result !=null && result.overviewDtls != null){
 		if(result.overviewDtls.total !=null && result.overviewDtls.total>0){
 			$("#cMeoDBTotalId").html(result.overviewDtls.total+ "/")
 		}else{
@@ -2206,6 +2207,7 @@ function buildgetCMEDOBDetailed(result,divId,blockId,type){
 	str+='<h4><b>IT & E&nbsp&nbspDepartment Status OverView</b></h4>';
 	str+='<div class="row m_top10">';
 	if ( result != null && result.overviewDtls != null) {
+	
 		
 		
 		for(var i in CMEDOBODetailedArr){
