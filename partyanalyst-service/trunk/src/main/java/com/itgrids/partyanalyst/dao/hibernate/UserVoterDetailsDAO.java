@@ -3560,14 +3560,14 @@ IUserVoterDetailsDAO{
 		 return query.list();
 	}
 	
-public List<Object[]> getLocationWiseVoterCounts(Long locationTypeId,List<Long> locationValues,Long casteId,Long publicationDateId){
+public List<Object[]> getLocationWiseVoterCounts(Long locationTypeId,List<Long> locationValue,Long casteId,Long publicationDateId){
 		
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("SELECT ");
 		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
 			sb.append("d.district_id as locationId, d.district_name as locationName ");
-		} else if (locationTypeId != null && locationTypeId.longValue() == 3L) {
+		} else if (locationTypeId != null && (locationTypeId.longValue() == 3L || locationTypeId.longValue() == 10L)) {
 			sb.append("c.constituency_id as locationId, c.name as locationName ");
 		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
 			sb.append("t.tehsil_id as locationId, t.tehsil_name as locationName ");
@@ -3579,7 +3579,7 @@ public List<Object[]> getLocationWiseVoterCounts(Long locationTypeId,List<Long> 
 
 		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
 			sb.append(" , district d ");
-		} else if (locationTypeId != null && locationTypeId.longValue() == 3L) {
+		} else if (locationTypeId != null && (locationTypeId.longValue() == 3L || locationTypeId.longValue() == 10L )) {
 			sb.append(" , constituency c ");
 		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
 			sb.append(" , tehsil t , panchayat p ");
@@ -3592,7 +3592,7 @@ public List<Object[]> getLocationWiseVoterCounts(Long locationTypeId,List<Long> 
 		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
 			sb.append(" model.location_scope_id =3 and model.location_value = d.district_id ");
 			sb.append(" and (d.district_id between 11 and 23) ");
-		} else if (locationTypeId != null && locationTypeId.longValue() == 3L) {
+		} else if (locationTypeId != null && (locationTypeId.longValue() == 3L || locationTypeId.longValue() == 10L)) {
 			sb.append(" model.location_scope_id =4 and model.location_value = c.constituency_id ");
 		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
 			sb.append(" model.location_scope_id =5 and model.location_value = p.panchayat_id ");
@@ -3603,9 +3603,13 @@ public List<Object[]> getLocationWiseVoterCounts(Long locationTypeId,List<Long> 
 
 		sb.append(" and model.publication_date_id =:publicationDateId and model.caste_state_id =:casteId ");
 
+		if (locationTypeId != null && locationTypeId.longValue() == 10L) {
+			sb.append(" and model.location_value in (:locationValue) ");
+		}
+		
 		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
 			sb.append(" GROUP BY d.district_id ");
-		} else if (locationTypeId != null && locationTypeId.longValue() == 3L) {
+		} else if (locationTypeId != null && (locationTypeId.longValue() == 3L || locationTypeId.longValue() == 10L)) {
 			sb.append(" GROUP BY c.constituency_id ");
 		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
 			sb.append(" GROUP BY p.tehsil_id ");
@@ -3621,6 +3625,9 @@ public List<Object[]> getLocationWiseVoterCounts(Long locationTypeId,List<Long> 
 				.addScalar("gender", Hibernate.STRING)
 				.addScalar("count", Hibernate.LONG);
        
+		if (locationTypeId != null && locationTypeId.longValue() == 10L) {
+			query.setParameterList("locationValue", locationValue);
+		}
 		if (casteId != null && casteId.longValue() > 0L) {
 			query.setParameter("casteId", casteId);
 		}
