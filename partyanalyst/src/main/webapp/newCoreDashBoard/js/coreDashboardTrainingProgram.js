@@ -5,12 +5,12 @@ var customStartDate1 = moment().format('DD/MM/YYYY');
  $('#dateRangeIdForTrainingCamp').on('apply.daterangepicker', function(ev, picker) {
 	customStartDate = picker.startDate.format('DD/MM/YYYY');
 	//$(".trainingDate").html("( "+customStartDate+" )");
-	stateLevelCampDetails();
+	//stateLevelCampDetails();
 	getTrainingCampBasicDetailsCntOverview();
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
 });
 $("#tdpTriningYearId").on('change', function() {
-	stateLevelCampDetails();
+	//stateLevelCampDetails();
 	getTrainingCampBasicDetailsCntOverview();
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
 	var enrollmentYearId=$("#tdpTriningYearId").val();
@@ -40,8 +40,7 @@ var getDocumentWidth = $(document).width();
 	{
 	 $("#programsDtlsCntTableId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 $("#specialProgramLeaderId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
-	 $("#villageWardTblId").html(' ');
-	 $("#mdlTwnDvsnTabId").html(' ');
+	 
 	 
 	 var programIdArr = [];//[6,7]
 	var enrollmentYrIds = [];
@@ -86,161 +85,146 @@ var getDocumentWidth = $(document).width();
 			 }
 		 }else{
 			$("#programsDtlsCntTableId").html("NO DATA AVAILABLE");
-			$("#villageWardTblId").html("NO DATA AVAILABLE");
-			$("#mdlTwnDvsnTabId").html("NO DATA AVAILABLE");
+			
 		 }
 		});
 	}
   function buildTrainingProgramBasicDetails(result){
 	  var str='';
-	  var programList = result.trainingProgramList;
-	  var lastUPdatedTime;
-	if(programList != null && programList.length > 0){
-		  for(var i in programList){
-			 lastUPdatedTime= programList[0].lastUpdatedTime;
-	       str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-		   str+='<div> <b>NOTE :</b> Same Cadre is attending for multiple batches. So, we are considering them individually in batch wise report and those cadres are unique in Camp wise/State wise report.</div><br>';
-			 str+='<h4 class="text-capital " attr_program_id='+programList[i].id+'><span class="bg_49 pad_custom">'+programList[i].name+'</span>';
-			 str+='<span class="programSkillsCls"  state-level="false" expand-icon-inner="training" style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to expand">';
-				str+='<i class="glyphicon glyphicon-fullscreen"></i>';
-			str+='</span></h4>';  
-			str+='<table class="table tableTraining bg_ED">';
-				str+='<tr>';
-					str+='<td>';
-						str+='<h4>'+programList[i].totalEligibleCount+'</h4>';
-						str+='<p class="text-muted text-capital">Total eligible</p>';
-					str+='</td>';
-					str+='<td>';
-						str+='<h4>'+programList[i].totalAttenedCount+'&nbsp;</h4>';
-						str+='<p class="text-muted text-capital">Total Attended </p>';
-					str+='</td>';
-					str+='<td>';
-						str+='<h4>'+programList[i].inviteeAttended+'&nbsp;<span class="font-10 text-danger"> '+programList[i].totalAttenedCountPer+'%</span></h4>';
-						str+='<p class="text-muted text-capital">Invitee Attended </p>';
-					str+='</td>';
-					str+='<td>';
-						str+='<h4>'+programList[i].nonInviteeAttended+'&nbsp;</h4>';
-						str+='<p class="text-muted text-capital">Non Invitee Attended </p>';
-					str+='</td>';
-					str+='<td>';
-						str+='<h4>'+programList[i].totalNotAttenedCount+'&nbsp;<span class="font-10 text-danger"> '+programList[i].totalNotAttenedCountPer+'%</span></h4>';
-						str+='<p class="text-muted text-capital">yet to train</p>';
-					str+='</td>';
+	  str+='<h4 class="text-capital"><span class="headingColor">Leadership Skills - 2016 - 18</span></h4>';
+		str+='<div class="panel-group leaderSkill m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
+		
+	  var stringArrType =['Over-All Levels','village / ward Level','mandal / town / division Level'];
+	  if(result.trainingProgramList != null && result.trainingProgramList.length > 0){
+		  for(var i in stringArrType){
+        
+		        str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingLeaderSkill'+i+'">';
+					if(i == 0){  
+						str+='<a role="button" class="collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseLeaderSkill'+i+'" aria-controls="collapseLeaderSkill'+i+'">';
+					}else{
+						str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseLeaderSkill'+i+'" aria-controls="collapseLeaderSkill'+i+'">';
+					}
+					   str+='<h4 class="text-capital">'+stringArrType[i]+'';
+				   if(stringArrType[i] == "Over-All Levels"){
+					   str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"> <span data-toggle="tooltip" data-placement="top" title="Total Eligible">[T.E: <b>'+result.trainingProgramList[0].totalEligibleCount+']</span> &nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Total Attended">[T.A:<b>'+result.trainingProgramList[0].totalAttenedCount+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Invitee Attended">[I.A:<b>'+result.trainingProgramList[0].inviteeAttended+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Non Invitee Attended">[N.I.A:<b>'+result.trainingProgramList[0].nonInviteeAttended+']</span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Yet To Train">[Y.T.T:<b>'+result.trainingProgramList[0].totalNotAttenedCount+'] </span> </h5>'
+					}
+				   if(stringArrType[i] == "village / ward Level"){
+					   str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"> <span data-toggle="tooltip" data-placement="top" title="Total Eligible">[T.E: <b>'+result.villageWardVO.totalEligibleCount+']</span> &nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Total Attended">[T.A:<b>'+result.villageWardVO.totalAttenedCount+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Invitee Attended">[I.A:<b>'+result.villageWardVO.inviteeAttended+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Non Invitee Attended">[N.I.A:<b>'+result.villageWardVO.nonInviteeAttended+']</span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Yet To Train">[Y.T.T:<b>'+result.villageWardVO.totalNotAttenedCount+'] </span> </h5>'
+				   }
+				   if(stringArrType[i] == "mandal / town / division Level"){
+					  str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"> <span data-toggle="tooltip" data-placement="top" title="Total Eligible">[T.E: <b>'+result.mandalTownDivisionVO.totalEligibleCount+']</span> &nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Total Attended">[T.A:<b>'+result.mandalTownDivisionVO.totalAttenedCount+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Invitee Attended">[I.A:<b>'+result.mandalTownDivisionVO.inviteeAttended+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Non Invitee Attended">[N.I.A:<b>'+result.mandalTownDivisionVO.nonInviteeAttended+']</span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Yet To Train">[Y.T.T:<b>'+result.mandalTownDivisionVO.totalNotAttenedCount+'] </span> </h5>'
+				   }
+						str+='</h4>';
+						str+='</a>';
+					    str+='</div>';
+					if(i == 0)
+					{
+					str+='<div id="collapseLeaderSkill'+i+'" class="panel-collapse collapse in" aria-labelledby="headingLeaderSkill'+i+'" style="position:relative">';
+					}else{
+					str+='<div id="collapseLeaderSkill'+i+'" class="panel-collapse collapse" aria-labelledby="headingLeaderSkill'+i+'" style="position:relative">';
+					}
+					 str+='<div class="panel-body bg_ED " style="margin-top:0px;">';  
+			if($(window).width() < 300)
+			{
+				str+='<div class="table-responsive">';
+			}
+		 str+='<table class="table tableTraining bg_ED table-condensed">';     
+				str+='<tbody>';
+					str+='<tr>';
+						str+='<td>';
+							str+='<p class="text-muted text-capitalize">Total eligible</p>';
+							
+						str+='</td>';
+						str+='<td>';
+						str+='<p class="text-muted text-capitalize">Total Attended </p>';
+						str+='</td>';							
+						str+='<td>';
+							str+='<p class="text-muted text-capitalize" title="Invitee Attended">Invitee Attended</p>';
+				str+='</td>';
+				str+='<td>';
+							str+='<p class="text-muted text-capitalize" title="Non Invitee Attended">Non Invitee Attended </p>';
+				str+='</td>';
+				str+='<td>';
+							str+='<p class="text-muted text-capitalize" title="Yet TO Train">Yet To Train </p>';
+				str+='</td>';
 				str+='</tr>';
-				for(var j in programList[i].locationList)
-         {
-          str+='<tr>';
-            str+='<td>'+programList[i].locationList[j].name+'</td>';
-            str+='<td>'+programList[i].locationList[j].totalAttenedCount+'</td>';
-            str+='<td>'+programList[i].locationList[j].inviteeAttended+'<span class="font-10 text-danger"> '+programList[i].locationList[j].totalAttenedCountPer+'%</span></td>';
-            str+='<td>'+programList[i].locationList[j].nonInviteeAttended+'</td>';
-            str+='<td>'+programList[i].totalNotAttenedCount+'</td>';
-          str+='</tr>';
-         }
-			str+='</table>';
-			str+='<hr class="m_0"/>';
-		 str+='</div>';	
+				if(stringArrType[i] == "Over-All Levels"){
+				     str+='<tr>';
+						str+='<td>'+result.trainingProgramList[0].totalEligibleCount+'</td>';
+						str+='<td>'+result.trainingProgramList[0].totalAttenedCount+'</td>';
+						str+='<td>'+result.trainingProgramList[0].inviteeAttended +'&nbsp;<span class="font-10 text-danger"> ('+result.trainingProgramList[0].totalAttenedCountPer+')%</span></td>';
+						str+='<td>'+result.trainingProgramList[0].nonInviteeAttended+'</td>';
+						str+='<td>'+result.trainingProgramList[0].totalNotAttenedCount+'&nbsp;<span class="font-10 text-danger"> ('+result.trainingProgramList[0].totalNotAttenedCountPer+')%</span></td>';
+				    str+='</tr>';
+					 str+='<tr>';
+						for(var j in result.trainingProgramList[0].locationList)
+						 {
+						  str+='<tr>';
+							str+='<td>'+result.trainingProgramList[0].locationList[j].name+'</td>';
+							str+='<td>'+result.trainingProgramList[0].locationList[j].totalAttenedCount+'</td>';
+							str+='<td>'+result.trainingProgramList[0].locationList[j].inviteeAttended+'<span class="font-10 text-danger"> ('+result.trainingProgramList[0].locationList[j].totalAttenedCountPer+'%)</span></td>';
+							str+='<td>'+result.trainingProgramList[0].locationList[j].nonInviteeAttended+'</td>';
+							str+='<td>'+result.trainingProgramList[0].totalNotAttenedCount+'</td>';
+						  str+='</tr>';
+						 }
+				    str+='</tr>';
+				}
+				if(stringArrType[i] == "village / ward Level"){
+				 str+='<tr>';
+						str+='<td>'+result.villageWardVO.totalEligibleCount+'</td>';
+						str+='<td>'+result.villageWardVO.totalAttenedCount+'</td>';
+						str+='<td>'+result.villageWardVO.inviteeAttended +'<span class="font-10 text-danger"> ('+result.trainingProgramList[0].totalAttenedCountPer+')%</span></td>';
+						str+='<td>'+result.villageWardVO.nonInviteeAttended+'</td>';
+						str+='<td>'+result.villageWardVO.totalNotAttenedCount+'&nbsp;<span class="font-10 text-danger"> ('+result.villageWardVO.totalNotAttenedCountPer+')%</span></td>';
+				    str+='</tr>';
+					 str+='<tr>';
+						for(var j in result.trainingProgramList[0].locationList)
+						 {
+						  str+='<tr>';
+							str+='<td>'+result.villageWardVO.locationList[j].name+'</td>';
+							str+='<td>'+result.villageWardVO.locationList[j].totalAttenedCount+'</td>';
+							str+='<td>'+result.villageWardVO.locationList[j].inviteeAttended+'<span class="font-10 text-danger"> ('+result.villageWardVO.locationList[j].totalAttenedCountPer+'%)</span></td>';
+							str+='<td>'+result.villageWardVO.locationList[j].nonInviteeAttended+'</td>';
+							str+='<td>'+result.villageWardVO.totalNotAttenedCount+'</td>';
+						  str+='</tr>';
+						 }
+				    str+='</tr>';
+				}
+				if(stringArrType[i] == "mandal / town / division Level"){
+					 str+='<tr>';
+						str+='<td>'+result.mandalTownDivisionVO.totalEligibleCount+'</td>';
+						str+='<td>'+result.mandalTownDivisionVO.totalAttenedCount+'</td>';
+						str+='<td>'+result.mandalTownDivisionVO.inviteeAttended +'&nbsp;<span class="font-10 text-danger"> ('+result.trainingProgramList[0].totalAttenedCountPer+')%</span></td>';
+						str+='<td>'+result.mandalTownDivisionVO.nonInviteeAttended+'</td>';
+						str+='<td>'+result.mandalTownDivisionVO.totalNotAttenedCount+'&nbsp;<span class="font-10 text-danger"> ('+result.mandalTownDivisionVO.totalNotAttenedCountPer+')%</span></td>';
+				    str+='</tr>';
+					 str+='<tr>';
+						for(var j in result.trainingProgramList[0].locationList)
+						 {
+						  str+='<tr>';
+							str+='<td>'+result.mandalTownDivisionVO.locationList[j].name+'</td>';
+							str+='<td>'+result.mandalTownDivisionVO.locationList[j].totalAttenedCount+'</td>';
+							str+='<td>'+result.mandalTownDivisionVO.locationList[j].inviteeAttended+'<span class="font-10 text-danger"> ('+result.mandalTownDivisionVO.locationList[j].totalAttenedCountPer+'%)</span></td>';
+							str+='<td>'+result.mandalTownDivisionVO.locationList[j].nonInviteeAttended+'</td>';
+							str+='<td>'+result.mandalTownDivisionVO.totalNotAttenedCount+'</td>';
+						  str+='</tr>';
+						 }
+				    str+='</tr>';
+				}
+		     	str+='</tbody>';
+			str+='</table>';  
+			if($(window).width() < 300)
+			 {
+				 str+='</div>';
+			 }
+			 str+='</div>';
+		 str+='</div>';
+		str+='</div>';
+		  }
 	  }
-	  //setLastUpdatedTimeForTrainingCamp(lastUPdatedTime);
-	}else{
-		str+='NO DATA AVAILABLE';
-	}
-	
-	 $("#programsDtlsCntTableId").html(str);
-	 
-	var villageWardRslt = result.villageWardVO;
- 	var str1='';
-	str1='<h4 class="text-capitalize m_top10">village / ward</h4>';
-	if(villageWardRslt != null){
-	if(villageWardRslt.totalEligibleCount !=0){
-	 str1+='<table class="table tableTraining bg_ED">';
-		str1+='<tr>';
-			str1+='<td>';
-				str1+='<p class="text-muted text-capitalize">total eligible</p>';
-				str1+='<h4>'+villageWardRslt.totalEligibleCount+'</h4>';
-			str1+='</td>';
-			str1+='<td>';
-				str1+='<p class="text-muted text-capitalize">Total Attended </p>';
-				str1+='<h4>'+villageWardRslt.totalAttenedCount+'&nbsp;</h4>'
-			str1+='</td>';
-			str1+='<td>';
-				str1+='<p class="text-muted text-capitalize">Invitee Attended</p>';
-				str1+='<h4>'+villageWardRslt.inviteeAttended+'&nbsp;<span class="font-10 text-danger"> '+programList[i].totalAttenedCountPer+'%</span></h4>'
-			str1+='</td>';
-			str1+='<td>';
-				str1+='<p class="text-muted text-capitalize">Non Invitee Attended</p>';
-				str1+='<h4>'+villageWardRslt.nonInviteeAttended+'&nbsp;</h4>'
-			str1+='</td>';
-			str1+='<td>';
-				str1+='<p class="text-muted text-capitalize">yet to train</p>';
-				str1+='<h4>'+villageWardRslt.totalNotAttenedCount+'&nbsp;<span class="font-10 text-danger"> '+villageWardRslt.totalNotAttenedCountPer+'%</span></h4>';
-			str1+='</td>';
-		str1+='</tr>';
-		for(var j in villageWardRslt.locationList)
-         {
-			str1+='<tr>';
-            str1+='<td>'+villageWardRslt.locationList[j].name+'</td>';
-            str1+='<td>'+villageWardRslt.locationList[j].totalAttenedCount+'</td>';
-            str1+='<td>'+villageWardRslt.locationList[j].inviteeAttended+'<span class="font-10 text-danger"> '+villageWardRslt.locationList[j].totalAttenedCountPer+'%</span></td>';
-            str1+='<td>'+villageWardRslt.locationList[j].nonInviteeAttended+'</td>';
-			str1+='<td>'+villageWardRslt.totalNotAttenedCount+'</td>';
-            str1+='</tr>';
-         }
-	str1+='</table>';		
-	}else{
-	str1+='NO DATA AVAILABLE';	
-	}	
-	}else{
-	str1+='NO DATA AVAILABLE';		
-	}
-	$("#villageWardTblId").html(str1); 
-	
-	var mandalTwnDivRslt = result.mandalTownDivisionVO; 
-    var str2='';
-	 str2+='<h4 class="text-capitalize m_top10">mandal / town / division</h4>';
-	if(mandalTwnDivRslt != null){
-	if(+mandalTwnDivRslt.totalEligibleCount !=0){
-	  str2+='<table class="table tableTraining bg_ED">';
-		str2+='<tr>';
-			str2+='<td>';
-				str2+='<p class="text-muted text-capitalize">total eligible</p>';
-				str2+='<h4>'+mandalTwnDivRslt.totalEligibleCount+'</h4>';
-			str2+='</td>';
-			str2+='<td>';
-				str2+='<p class="text-muted text-capitalize">Total Attended</p>';
-				str2+='<h4>'+mandalTwnDivRslt.totalAttenedCount+'</h4>'
-			str2+='</td>';
-			str2+='<td>';
-				str2+='<p class="text-muted text-capitalize">Invitee Attended</p>';
-				str2+='<h4>'+mandalTwnDivRslt.inviteeAttended+'&nbsp;<span class="font-10 text-danger"> '+programList[i].totalAttenedCountPer+'%</span> </h4>'
-			str2+='</td>';
-			str2+='<td>';
-				str2+='<p class="text-muted text-capitalize">Non Invitee Attended</p>';
-				str2+='<h4>'+mandalTwnDivRslt.nonInviteeAttended+'</h4>'
-			str2+='</td>';
-			str2+='<td>';
-				str2+='<p class="text-muted text-capitalize">yet to train</p>';
-				str2+='<h4>'+mandalTwnDivRslt.totalNotAttenedCount+' <span class="font-10 text-danger">'+mandalTwnDivRslt.totalNotAttenedCountPer+'%</span></h4>';
-			str2+='</td>';
-		str2+='</tr>';
-		for(var j in mandalTwnDivRslt.locationList)
-         {
-			str2+='<tr>';
-            str2+='<td>'+mandalTwnDivRslt.locationList[j].name+'</td>';
-            str2+='<td>'+mandalTwnDivRslt.locationList[j].totalAttenedCount+'</td>';
-            str2+='<td>'+mandalTwnDivRslt.locationList[j].inviteeAttended+'<span class="font-10 text-danger"> '+mandalTwnDivRslt.locationList[j].totalAttenedCountPer+'%</span></td>';
-            str2+='<td>'+mandalTwnDivRslt.locationList[j].nonInviteeAttended+'</td>';
-			str2+='<td>'+mandalTwnDivRslt.totalNotAttenedCount+'</td>';
-            str2+='</tr>';
-         }
-	 str2+='</table>';		
-	}else{
-	 str2+='NO DATA AVAILABLE';		
-	}
-	}else{
-	 str2+='NO DATA AVAILABLE';	
-	}
-    $("#mdlTwnDvsnTabId").html(str2);  
+	   str+='</div>';
+	  $("#programsDtlsCntTableId").html(str);
   }
  function getTrainingCampProgramsDetailsCntByUserType(){
 		$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -3205,11 +3189,12 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 						str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingTrainingBatch'+i+'">';
 						if(i == 0)  
 							{
-								str+='<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
+								str+='<a role="button" class="collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
 							}else{
-								str+='<a role="button" class="collapsed collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
+								str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
 							}
-							str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<br/><span style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.trainingProgramList[i].description+'" >[Total Batchs :'+result.trainingProgramList[i].totalBath+']</span></h4>';
+							var Average = (parseInt(result.trainingProgramList[i].totalAttenedCount)/parseInt(result.trainingProgramList[i].totalBath)).toFixed(2);
+							str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<br/><span style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.trainingProgramList[i].description+'" >[Total Batchs :'+result.trainingProgramList[i].totalBath+']&nbsp[Average Attended Per Batch:'+Average+']</span></h4>';
 							str+='</a>';
 						str+='</div>';
 						if(i == 0)
@@ -3245,9 +3230,10 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 						str+='<p class="responsiveFont">'+result.trainingProgramList[i].nonInviteeAttended+'</p>';
 			str+='</td>';
 			str+='</tr>';
+			var inviteeAttended = result.trainingProgramList[i].inviteeAttended
 			for(var j in result.trainingProgramList[i].trainingProgramList)
 			 {
-				var percentage = ((parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited)/parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCount))*100).toFixed(2);
+				var percentage = (parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited)/(parseInt(inviteeAttended))*100).toFixed(2);
 			  str+='<tr>';
 				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].name+'</td>';
 				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCount+'</td>';
@@ -3283,9 +3269,9 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 				str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingSpecialTrainingBatch'+i+'">';
 					if(i == 0){  
-						str+='<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSpecialTrainingBatch'+i+'" aria-controls="collapseSpecialTrainingBatch'+i+'">';
+						str+='<a role="button" class="collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSpecialTrainingBatch'+i+'" aria-controls="collapseSpecialTrainingBatch'+i+'">';
 					}else{
-						str+='<a role="button" class="collapsed collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSpecialTrainingBatch'+i+'" aria-controls="collapseSpecialTrainingBatch'+i+'">';
+						str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSpecialTrainingBatch'+i+'" aria-controls="collapseSpecialTrainingBatch'+i+'">';
 					}
 						str+='<h4 class="text-capital">'+result.leaderTrainingList[i].name+'';
 							str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"><span>Total Batches : <b>'+result.leaderTrainingList[i].completedBatch+'</b></span> </h5>';
