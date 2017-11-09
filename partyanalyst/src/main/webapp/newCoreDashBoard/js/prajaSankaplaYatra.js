@@ -136,7 +136,7 @@ function buildPartyWiseDetails(result,divId,type){
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital responsiveFont">'+result[i].name+'</p>';
-								str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId = "0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSank+'</a></p>';
+								str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId = "0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSank+'</a></p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
@@ -165,7 +165,7 @@ function buildPartyWiseDetails(result,divId,type){
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital responsiveFont">'+result[i].name+'</p>';
-								str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId ="0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSam+'</a></p>';
+								str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSam+'</a></p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
@@ -248,7 +248,7 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 						}
 							
 							
-							str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId ="0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSank+'</a></p>';
+							str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSank+'</a></p>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
@@ -289,7 +289,7 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 									str+='<p class="text-capital responsiveFont">'+result[i].name+'</p>';
 								}
 							}
-							str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId ="0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSam+'</a></p>';
+							str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="0" attr_type="'+divId+''+type+'">'+toatlCountPrajaSam+'</a></p>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
