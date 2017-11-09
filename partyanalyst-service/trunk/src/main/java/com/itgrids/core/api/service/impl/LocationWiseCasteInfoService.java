@@ -11,20 +11,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.record.formula.functions.Islogical;
-import org.jfree.util.HashNMap;
 import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.ILocationWiseCasteInfoService;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCasteInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
-import com.itgrids.partyanalyst.dto.CadreBasicVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -41,7 +39,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 	private IVoterAgeRangeDAO voterAgeRangeDAO;
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	private IVoterAgeInfoDAO voterAgeInfoDAO;
-	
+	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
@@ -118,6 +116,16 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 
 	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
 		this.voterAgeInfoDAO = voterAgeInfoDAO;
+	}
+
+	
+	public IParliamentAssemblyDAO getParliamentAssemblyDAO() {
+		return parliamentAssemblyDAO;
+	}
+
+	public void setParliamentAssemblyDAO(
+			IParliamentAssemblyDAO parliamentAssemblyDAO) {
+		this.parliamentAssemblyDAO = parliamentAssemblyDAO;
 	}
 
 	/**
@@ -815,13 +823,27 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 	 * @return List of LocationVotersVO 
 	*/
 	@Override
-	public List<LocationVotersVO> getLocationWiseVoterNCadreCounts(Long locationTypeId, List<Long> locationValues, Long casteId,Long enrollmentYearId,Long publicationDateId) {
+	public List<LocationVotersVO> getLocationWiseVoterNCadreCounts(Long locationTypeId,List<Long> locationValues, Long casteId,Long enrollmentYearId,Long publicationDateId) {
 		//locationId,1 locationName,2 gender,3 count
 		List<LocationVotersVO> finalLsit = new ArrayList<LocationVotersVO>();
 		try{
 		Map<Long,LocationVotersVO> locationIdsMap = new HashMap<Long, LocationVotersVO>();
-		List<Object[]> locationWiseCadreList = tdpCadreCasteInfoDAO.getLocationWiseCadreCounts(locationTypeId, locationValues, casteId, enrollmentYearId);
-		
+		List<Long> consIdsList=new ArrayList<Long>();
+		List<Object[]> locationWiseCadreList = null;
+		List<Object[]> locationWiseVoterList =null;
+		if(locationTypeId != null && locationTypeId.longValue() ==10l){
+			List<Object[]> consIdsObj = parliamentAssemblyDAO.getConsIdsByParliamntsIds(locationValues);
+			if(consIdsObj != null && consIdsObj.size() >0){
+				for(Object[] param:consIdsObj){
+					consIdsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+				}
+			}
+			  locationWiseCadreList = tdpCadreCasteInfoDAO.getLocationWiseCadreCounts(locationTypeId, consIdsList, casteId, enrollmentYearId);
+			  locationWiseVoterList = userVoterDetailsDAO.getLocationWiseVoterCounts(locationTypeId, consIdsList, casteId, publicationDateId);
+		}else{
+		      locationWiseCadreList = tdpCadreCasteInfoDAO.getLocationWiseCadreCounts(locationTypeId, locationValues, casteId, enrollmentYearId);
+		      locationWiseVoterList = userVoterDetailsDAO.getLocationWiseVoterCounts(locationTypeId, locationValues, casteId, publicationDateId);
+		}
 		if(locationWiseCadreList !=null && locationWiseCadreList.size() >0) {
 			for(Object[] param : locationWiseCadreList){
 				Long locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -848,7 +870,7 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 			}
 		}
 
-		List<Object[]> locationWiseVoterList = userVoterDetailsDAO.getLocationWiseVoterCounts(locationTypeId, locationValues, casteId, publicationDateId);
+		
 		
 		if(locationWiseVoterList !=null && locationWiseVoterList.size() >0) {
 			for(Object[] param : locationWiseVoterList){
@@ -895,18 +917,18 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 
 			for (Entry<Long, LocationVotersVO> entry : locationIdsMap.entrySet()) {
 				if (totalCadres > 0l)
-					entry.getValue().setTotalCadrePerc(((entry.getValue().getTotalCadres() * 100) / totalCadres) + "%");
+					entry.getValue().setTotalCadrePerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(Double.valueOf((((float)entry.getValue().getTotalCadres() * 100) / (float)totalCadres))) + "%");
 				if (maleTotalCadres > 0l)
-					entry.getValue().setMaleCadrePerc(((entry.getValue().getMaleCadres() * 100) / maleTotalCadres) + "%");
+					entry.getValue().setMaleCadrePerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(Double.valueOf((((float)entry.getValue().getMaleCadres() * 100) / (float)maleTotalCadres))) + "%");
 				if (femaleTotalCadres > 0l)
-					entry.getValue().setFemaleCadrePerc(((entry.getValue().getFemaleCadres() * 100) / femaleTotalCadres) + "%");
+					entry.getValue().setFemaleCadrePerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(Double.valueOf((((float)entry.getValue().getFemaleCadres() * 100) / (float)femaleTotalCadres))) + "%");
 
 				if (totalVoters > 0l)
-					entry.getValue().setTotalVotersPerc(((entry.getValue().getTotalVoters() * 100) / totalVoters) + "%");
+					entry.getValue().setTotalVotersPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(Double.valueOf((((float)entry.getValue().getTotalVoters() * 100) / (float)totalVoters))) + "%");
 				if (maleTotalVoters > 0l)
-					entry.getValue().setMaleVotersPerc(((entry.getValue().getMaleVoters() * 100) / maleTotalVoters) + "%");
+					entry.getValue().setMaleVotersPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(Double.valueOf((((float)entry.getValue().getMaleVoters() * 100) / (float)maleTotalVoters))) + "%");
 				if (femaleTotalVoters > 0l)
-					entry.getValue().setFemaleVotersPerc(((entry.getValue().getFemaleVoters() * 100) / femaleTotalVoters) + "%");
+					entry.getValue().setFemaleVotersPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(Double.valueOf((((float)entry.getValue().getFemaleVoters() * 100) / (float)femaleTotalVoters))) + "%");
 			}
 		}
 		finalLsit.addAll(locationIdsMap.values());
