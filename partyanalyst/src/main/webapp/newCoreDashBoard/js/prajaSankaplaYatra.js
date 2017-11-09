@@ -44,11 +44,21 @@ function buildOverAllCountDetails(result,divId,type){
 				str+='<tr>';
 					str+='<td>';
 						str+='<p class="text-capital responsiveFont">OverAll</p>';
-						str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId = "0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+prajaSankTotalCount+'</a></p>';
+						if(prajaSankTotalCount>0){
+							str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId = "0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+prajaSankTotalCount+'</a></p>';
+						}else{
+							str+='<p>'+prajaSankTotalCount+'</p>';
+						}
+						
 					str+='</td>';
 					str+='<td>';
 						str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-						str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId = "1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result.psyPosCnt+'</a></span>';
+						if(result.psyPosCnt !=null && result.psyPosCnt>0){
+							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId = "1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result.psyPosCnt+'</a></span>';
+						}else{
+							str+='<span>'+result.psyPosCnt+'</span>';
+						}
+						
 						if(prajaSankTotalCount > 0){
 							str+='<small id="" class="text-success"> '+((result.psyPosCnt*100)/(prajaSankTotalCount)).toFixed(2)+' %</small>';
 						}else{
@@ -57,7 +67,12 @@ function buildOverAllCountDetails(result,divId,type){
 					str+='</td>';
 					str+='<td>';
 						str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-						str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId = "2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result.psyNegCnt+'</a></span>';
+						if(result.psyNegCnt !=null && result.psyNegCnt>0){
+							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="0" attr_benefitId = "2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result.psyNegCnt+'</a></span>';
+						}else{
+							str+='<span>'+result.psyNegCnt+'</span>';
+						}
+						
 						if(prajaSankTotalCount > 0){
 							str+='<small id="" class="text-danger"> '+((result.psyNegCnt*100)/(prajaSankTotalCount)).toFixed(2)+' %</small>';
 						}else{
@@ -74,11 +89,21 @@ function buildOverAllCountDetails(result,divId,type){
 				str+='<tr>';
 					str+='<td>';
 						str+='<p class="text-capital responsiveFont">OverAll</p>';
-						str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId = "0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+prajaSAMASYALATotalCount+'</a></p>';
+						if(prajaSAMASYALATotalCount>0){
+							str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId = "0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+prajaSAMASYALATotalCount+'</a></p>';
+						}else{
+							str+='<p>'+prajaSAMASYALATotalCount+'</p>';
+						}
+						
 					str+='</td>';
 					str+='<td>';
 						str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-						str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId = "1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result.cpsyPosCnt+'</a></span>';
+						if(result.cpsyPosCnt !=null && result.cpsyPosCnt>0){
+							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId = "1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result.cpsyPosCnt+'</a></span>';
+						}else{
+							str+='<span>'+result.cpsyPosCnt+'</span>';
+						}
+						
 						if(prajaSAMASYALATotalCount > 0){
 							str+='<small id="" class="text-success"> '+((result.cpsyPosCnt*100)/(prajaSAMASYALATotalCount)).toFixed(2)+' %</small>';
 						}else{
@@ -87,7 +112,12 @@ function buildOverAllCountDetails(result,divId,type){
 					str+='</td>';
 					str+='<td>';
 						str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-						str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId = "2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result.cpsyNegCnt+'</a></span>';
+						if(result.cpsyNegCnt !=null && result.cpsyNegCnt>0){
+							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="0" attr_benefitId = "2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result.cpsyNegCnt+'</a></span>';
+						}else{
+							str+='<span>'+result.cpsyNegCnt+'</span>';
+						}
+						
 						if(prajaSAMASYALATotalCount > 0){
 							str+='<small id="" class="text-danger"> '+((result.cpsyNegCnt*100)/(prajaSAMASYALATotalCount)).toFixed(2)+' %</small>';
 						}else{
@@ -136,11 +166,21 @@ function buildPartyWiseDetails(result,divId,type){
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital responsiveFont">'+result[i].name+'</p>';
-								str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId = "0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+toatlCountPrajaSank+'</a></p>';
+								if(toatlCountPrajaSank>0){
+									str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId = "0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+toatlCountPrajaSank+'</a></p>';
+								}else{
+									str+='<p>'+toatlCountPrajaSank+'</p>';
+								}
+								
 							str+='</td>';
 							str+='<td>';
-								str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].psyPosCnt+'</a></span>';
+								str+='<p class="text-capital text-muted responsiveFont">Positive</p>';.
+								if(result[i].psyPosCnt !=null && result[i].psyPosCnt>0){
+									str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].psyPosCnt+'</a></span>';
+								}else{
+									str+='<span>'+result[i].psyPosCnt+'</span>';
+								}
+								
 								if(toatlCountPrajaSank > 0){
 									str+='<small id="" class="text-success"> '+((result[i].psyPosCnt*100)/((result[i].psyPosCnt)+(result[i].psyNegCnt))).toFixed(2)+' %</small>';
 								}else{
@@ -149,7 +189,12 @@ function buildPartyWiseDetails(result,divId,type){
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].psyNegCnt+'</a></span>';
+								if(result[i].psyNegCnt !=null && result[i].psyNegCnt>0){
+									str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].psyNegCnt+'</a></span>';
+								}else{
+									str+='<span>'+result[i].psyNegCnt+'</span>';
+								}
+								
 								if(toatlCountPrajaSank > 0){
 									str+='<small id="" class="text-danger"> '+((result[i].psyNegCnt*100)/((result[i].psyPosCnt)+(result[i].psyNegCnt))).toFixed(2)+' %</small>';
 								}else{
@@ -165,11 +210,21 @@ function buildPartyWiseDetails(result,divId,type){
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital responsiveFont">'+result[i].name+'</p>';
-								str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+toatlCountPrajaSam+'</a></p>';
+								if(toatlCountPrajaSam>0){
+									str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+toatlCountPrajaSam+'</a></p>';
+								}else{
+									str+='<p>'+toatlCountPrajaSam+'</p>';
+								}
+								
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].cpsyPosCnt+'</a></span>';
+								if(result[i].cpsyPosCnt !=null && result[i].cpsyPosCnt>0){
+									str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].cpsyPosCnt+'</a></span>';
+								}else{
+									str+='<span>'+result[i].cpsyPosCnt+'</span>';
+								}
+								
 								if(toatlCountPrajaSam > 0){
 									str+='<small id="" class="text-success"> '+((result[i].cpsyPosCnt*100)/(toatlCountPrajaSam)).toFixed(2)+' %</small>';
 								}else{
@@ -178,7 +233,12 @@ function buildPartyWiseDetails(result,divId,type){
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].cpsyNegCnt+'</a></span>';
+								if(result[i].cpsyNegCnt !=null && result[i].cpsyNegCnt>0){
+									str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].cpsyNegCnt+'</a></span>';
+								}else{
+									str+='<span>'+result[i].cpsyNegCnt+'</span>';
+								}
+								
 								if(toatlCountPrajaSam > 0){
 									str+='<small id="" class="text-danger"> '+((result[i].cpsyNegCnt*100)/(toatlCountPrajaSam)).toFixed(2)+' %</small>';
 								}else{
@@ -247,12 +307,21 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 							}
 						}
 							
+							if(toatlCountPrajaSank>0){
+								str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+toatlCountPrajaSank+'</a></p>';
+							}else{
+								str+='<p>'+toatlCountPrajaSank+'</p>';
+							}
 							
-							str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+toatlCountPrajaSank+'</a></p>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].psyPosCnt+'</a></span>';
+							if(result[i].psyPosCnt !=null && result[i].psyPosCnt>0){
+								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].psyPosCnt+'</a></span>';
+							}else{
+								str+='<span>'+result[i].psyPosCnt+'</span>';
+							}
+							
 							if(toatlCountPrajaSank > 0){
 								str+='<small id="" class="text-success"> '+((result[i].psyPosCnt*100)/((result[i].psyPosCnt)+(result[i].psyNegCnt))).toFixed(2)+' %</small>';
 							}else{
@@ -261,7 +330,12 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].psyNegCnt+'</a></span>';
+							if(result[i].psyNegCnt !=null && result[i].psyNegCnt>0){
+								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].psyNegCnt+'</a></span>';
+							}else{
+								str+='<span>'+result[i].psyNegCnt+'</span>';
+							}
+							
 							if(toatlCountPrajaSank > 0){
 								str+='<small id="" class="text-danger"> '+((result[i].psyNegCnt*100)/((result[i].psyPosCnt)+(result[i].psyNegCnt))).toFixed(2)+' %</small>';
 							}else{
@@ -289,11 +363,21 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 									str+='<p class="text-capital responsiveFont">'+result[i].name+'</p>';
 								}
 							}
-							str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+toatlCountPrajaSam+'</a></p>';
+							if(toatlCountPrajaSam>0){
+								str+='<p><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="0" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+toatlCountPrajaSam+'</a></p>';
+							}else{
+								str+='<p>'+toatlCountPrajaSam+'</p>';
+							}
+							
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].cpsyPosCnt+'</a></span>';
+							if(result[i].cpsyPosCnt !=null && result[i].cpsyPosCnt>0){
+								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].cpsyPosCnt+'</a></span>';
+							}else{
+								str+='<span>'+result[i].cpsyPosCnt+'</span>';
+							}
+							
 							if(toatlCountPrajaSam > 0){
 								str+='<small id="" class="text-success"> '+((result[i].cpsyPosCnt*100)/(toatlCountPrajaSam)).toFixed(2)+' %</small>';
 							}else{
@@ -302,7 +386,12 @@ function buildpublicationAndChannelWiseDetails(result,divId,type){
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-							str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].cpsyNegCnt+'</a></span>';
+							if(result[i].cpsyNegCnt !=null && result[i].cpsyNegCnt>0){
+								str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1050" attr_organizationId ="'+result[i].id+'" attr_benefitId ="2" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].cpsyNegCnt+'</a></span>';
+							}else{
+								str+='<span>'+result[i].cpsyNegCnt+'</span>';
+							}
+							
 							if(toatlCountPrajaSam > 0){
 								str+='<small id="" class="text-danger"> '+((result[i].cpsyNegCnt*100)/(toatlCountPrajaSam)).toFixed(2)+' %</small>';
 							}else{

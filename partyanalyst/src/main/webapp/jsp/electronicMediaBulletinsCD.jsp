@@ -736,35 +736,35 @@ $(document).ready(function(){
   function getElecMediaPSYOverAllBulletins(globalstartIndexP){
   	$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
   	$.ajax({
-  		url: wurl+"/CommunityNewsPortal/webservice/getElecMediaPSYOverAllBulletins/"+globalcategoryIdP+"/"+globalbenefitId+"/"+globalstartIndexP+"/"+globalendIndex
-  		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getElecMediaPSYOverAllBulletins/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+  		url: wurl+"/CommunityNewsPortal/webservice/getElecMediaPSYOverAllBulletins/"+globalcategoryIdP+"/"+globalbenefitId+"/"+globalstartIndexP+"/"+globalendIndexP
+  		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getElecMediaPSYOverAllBulletins/"+globalcategoryIdP+"/"+globalbenefitId+"/"+globalstartIndexP+"/"+globalendIndexP
   	}).then(function(result){
   		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('');
   		var countByDate = 0;
-  		buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate)
+  		buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalstartIndexP,countByDate)
   	});
   }
   function getEleMediaOrganizationWisePSYBulletins(globalstartIndexP){
   	$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
   	$.ajax({
-  		url: wurl+"/CommunityNewsPortal/webservice/getEleMediaOrganizationWisePSYBulletins/"+globalcategoryIdP+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndexP+"/"+globalendIndex
-  		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEleMediaOrganizationWisePSYBulletins/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+  		url: wurl+"/CommunityNewsPortal/webservice/getEleMediaOrganizationWisePSYBulletins/"+globalcategoryIdP+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndexP+"/"+globalendIndexP
+  		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEleMediaOrganizationWisePSYBulletins/"+globalcategoryIdP+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndexP+"/"+globalendIndexP
   	}).then(function(result){
   		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('');
   		var countByDate = 0;
-  		buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate)
+  		buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalstartIndexP,countByDate)
   	});
   }
   function getEleMediaChannelWisePSYBulletins(globalstartIndexP){
   	$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
   	var globalpublicationId = globalorganizationId;
   	$.ajax({
-  		url: wurl+"/CommunityNewsPortal/webservice/getEleMediaChannelWisePSYBulletins/"+globalcategoryIdP+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndexP+"/"+globalendIndex
-  		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEleMediaChannelWisePSYBulletins/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+  		url: wurl+"/CommunityNewsPortal/webservice/getEleMediaChannelWisePSYBulletins/"+globalcategoryIdP+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndexP+"/"+globalendIndexP
+  		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEleMediaChannelWisePSYBulletins/"+globalcategoryIdP+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndexP+"/"+globalendIndexP
   	}).then(function(result){
   		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('');
   		var countByDate = 0;
-  		buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate)
+  		buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalstartIndexP,countByDate)
   	});
   }
 </script>
