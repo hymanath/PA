@@ -3114,7 +3114,8 @@
    			<property name="boothInchargeDAO" ref="boothInchargeDAO" />
    			<property name="boothInchargeRoleConditionMappingDAO" ref="boothInchargeRoleConditionMappingDAO" />  
    			<property name="boothInchargeCommitteeDAO" ref="boothInchargeCommitteeDAO" />
-   			<property name="nominatedPostDAO" ref="nominatedPostDAO"/>  
+   			<property name="nominatedPostDAO" ref="nominatedPostDAO"/>
+   			<property name="boothInchargeConditionDAO" ref="boothInchargeConditionDAO"/>  
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
