@@ -1333,6 +1333,18 @@
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaResponderType</value>
 		      		   
 		      		   <value>com.itgrids.partyanalyst.model.MarginVotesRange</value>
+		      		   
+		      		    <!--  Janmabhoomi  module end-->
+						 <value>com.itgrids.partyanalyst.model.JbCommitteeLocalBodyMember</value>
+						 <value>com.itgrids.partyanalyst.model.JbCommitteeMember</value>
+						 <value>com.itgrids.partyanalyst.model.JbCommitteeConfirmRuleCondition</value>
+						 <value>com.itgrids.partyanalyst.model.JbCommitteeLevel</value>
+						 <value>com.itgrids.partyanalyst.model.JbCommitteeConfirmRule</value>
+						 <value>com.itgrids.partyanalyst.model.JbCommittee</value>
+						 <value>com.itgrids.partyanalyst.model.JbCommitteeEnrollment</value>
+						 <value>com.itgrids.partyanalyst.model.JbCommitteeRole</value>
+						 <value>com.itgrids.partyanalyst.model.JbMemberType</value>
+						 <value>com.itgrids.partyanalyst.model.JbRole</value>
 				  </list>
 			
 		</property>
