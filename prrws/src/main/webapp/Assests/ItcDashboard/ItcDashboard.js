@@ -3,32 +3,13 @@ var orgChart = '';
 //var departmentWiseArr=[{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'eProcurement',id:'5',color:'#F06C1F',image:'eProcurement',blockName:'eProcurement'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
 var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'e Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
+
+var globalFromDateSLA = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+var globalToDateSLA = moment().format("DD/MM/YYYY");
+
 var globalFromDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDate = moment().format("DD/MM/YYYY");
-$("#itcDateRangePickerId").daterangepicker({
-	opens: 'left',
-	startDate: globalFromDate,
-	endDate: globalToDate,
-	locale: {
-		format: 'DD/MM/YYYY'
-	},
-	ranges: {
-		'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().format("DD/MM/YYYY")],
-		'Today' : [moment(), moment()],
-		'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-		'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-		'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
-		'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
-		'This Month': [moment().startOf('month'), moment()],
-		'This Year': [moment().startOf('Year'), moment()]
-	}
-});
-$('#itcDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
-	globalFromDate = picker.startDate.format('DD/MM/YYYY');
-	globalToDate = picker.endDate.format('DD/MM/YYYY'); 
-    onloadCalls();
-});
+
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menu-data-cls").toggle();
@@ -287,6 +268,44 @@ function departmentBlockWiseDetails(divId)
 									collapse+='</div>';
 								collapse+='</div>';
 							}
+							if(divId == "cMeoDB")
+							{
+								collapse+='<div class="col-sm-12">';
+										collapse+='<ul class="list-inline pull-right">';
+											  collapse+='<div class="input-group">';
+												collapse+='<span class="input-group-addon">';
+													collapse+='<i class="glyphicon glyphicon-calendar"></i>';
+												collapse+='</span>';
+												collapse+=' <input type="text" class="form-control" id="itcDateRangePickerId" style="width: 200px;"/>';
+											collapse+=' </div>';
+										collapse+='</ul>';
+									collapse+='</div>';
+									
+								collapse+='<div class="col-sm-12 m_top10" style="margin-bottom: 20px; padding-left: 0px; padding-right: 0px;">';
+									collapse+='<div id="cmedobSectorWiseStatusId"></div>';
+								collapse+='</div>';
+								
+								collapse+='<div class="col-sm-12 m_top10" style="margin-bottom: 20px; padding-left: 0px; padding-right: 0px;">';
+									collapse+='<div id="cmedobBlockMainDivId"></div>';
+								collapse+='</div>';	
+								
+								collapse+='<div class="row m_top10">';
+									collapse+='<div id="cmedobDivId"></div>';
+								collapse+='</div>';
+							}
+							/* if(divId == "meesevaSla")
+							{
+								collapse+='<div class="col-sm-12">';
+										collapse+='<ul class="list-inline pull-right">';
+											  collapse+='<div class="input-group">';
+												collapse+='<span class="input-group-addon">';
+													collapse+='<i class="glyphicon glyphicon-calendar"></i>';
+												collapse+='</span>';
+												collapse+=' <input type="text" class="form-control" id="itcMessavaSlaDateRangePickerId" style="width: 200px;"/>';
+											collapse+=' </div>';
+										collapse+='</ul>';
+									collapse+='</div>';
+							} */
 							collapse+='<div id="'+divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id+'"></div>';
 							if(divId == 'apInnovationSociety')
 							{
@@ -295,14 +314,6 @@ function departmentBlockWiseDetails(divId)
 									collapse+='<div class="col-sm-4 m_top20" id="APISXLr8AP"></div>';
 									collapse+='<div class="col-sm-4 m_top20" id="Campaigns"></div>';
 									collapse+='<div class="col-sm-4 m_top20" id="CampusInnovationCenters"></div>';
-								collapse+='</div>';
-							}
-							if(divId == 'cMeoDB'){
-								collapse+='<div class="col-md-12 m_top10">';
-							    	collapse+='<h4><b>CM eoDB Status Report</b></h4>';
-								collapse+='</div>';
-								collapse+='<div class="row m_top10">';
-									collapse+='<div id="cmedobDivId"></div>';
 								collapse+='</div>';
 							}
 						collapse+='</div>';
@@ -329,6 +340,58 @@ function departmentBlockWiseDetails(divId)
 			
 		}
 	$("#departmentBlockWiseDetailsId").html(collapse);
+	//CMEDOB
+	$("#itcDateRangePickerId").daterangepicker({
+		opens: 'left',
+		startDate: globalFromDate,
+		endDate: globalToDate,
+		locale: {
+			format: 'DD/MM/YYYY'
+		},
+		ranges: {
+			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().format("DD/MM/YYYY")],
+			'Today' : [moment(), moment()],
+			'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+			'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
+			'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
+			'This Month': [moment().startOf('month'), moment()],
+			'This Year': [moment().startOf('Year'), moment()]
+		}
+	});
+	var dates= $("#itcDateRangePickerId").val();
+	var pickerDates = globalFromDate+' - '+globalToDate
+	if(dates == pickerDates)
+	{
+		$("#itcDateRangePickerId").val('All');
+	}
+	//MeesavaSLA
+	$("#itcMessavaSlaDateRangePickerId").daterangepicker({
+		opens: 'left',
+		startDate: globalFromDateSLA,
+		endDate: globalToDateSLA,
+		locale: {
+			format: 'DD/MM/YYYY'
+		},
+		ranges: {
+			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().format("DD/MM/YYYY")],
+			'Today' : [moment(), moment()],
+			'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+			'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
+			'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
+			'This Month': [moment().startOf('month'), moment()],
+			'This Year': [moment().startOf('Year'), moment()]
+		}
+	});
+	var dates= $("#itcMessavaSlaDateRangePickerId").val();
+	var pickerDates = globalFromDateSLA+' - '+globalToDateSLA
+	if(dates == pickerDates)
+	{
+		$("#itcMessavaSlaDateRangePickerId").val('All');
+	}
 	
 	for(var i in levelWiseBlockArr){
 		if(divId == "meesevaSla"){
@@ -348,6 +411,7 @@ function departmentBlockWiseDetails(divId)
 		}else if(divId == 'cMeoDB'){
 			getCMEDOBOverview(divId,levelWiseBlockArr[i].id,"Detailed");
 			getCMEDOBReportStatusWise();
+			getCMeoDBSectorWiseStatusDetais();
 		}
 	}
 	if(divId == 'promotions')
@@ -360,6 +424,31 @@ function departmentBlockWiseDetails(divId)
 		getITDistrictWiseDetails("Electronics","ALL",'body');
 		getITDistrictWiseDetails("Fintech","ALL",'body');
 	}
+	
+	$('#itcDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+		globalFromDate = picker.startDate.format('DD/MM/YYYY');
+		globalToDate = picker.endDate.format('DD/MM/YYYY'); 
+		if(picker.chosenLabel == 'All')
+		{
+			$("#itcDateRangePickerId").val('All');
+		}
+		$("#cmedobSectorWiseStatusId,#cmedobBlockMainDivId,#cmedobDivId").html('');
+		//$("#cmedobSectorWiseStatusId,#cmedobBlockMainDivId,#cmedobDivId").html(spinner);
+		getCMEDOBOverview("cMeoDB",5,"Detailed");
+		getCMEDOBReportStatusWise();
+		getCMeoDBSectorWiseStatusDetais();
+	});
+
+	/* $('#itcMessavaSlaDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+		
+		globalFromDateSLA = picker.startDate.format('DD/MM/YYYY');
+		globalToDateSLA = picker.endDate.format('DD/MM/YYYY'); 
+		if(picker.chosenLabel == 'All')
+		{
+			$("#itcMessavaSlaDateRangePickerId").val('All');
+		}
+			getMeesevaSLAOverviewDtls("meesevaSla",8);
+	}); */
 }
 
 /* function getOverAllDetils(divId,blockId){
@@ -393,8 +482,8 @@ function getMeesevaSLAOverviewDtls(divId,blockId){
 	$("#meesevaHeadingId").html(spinner);
 	$("#"+divId+"Block"+blockId).html(spinner);
 	var json = {
-	    fromDate:globalFromDate,
-		toDate:globalToDate,
+	    fromDate:globalFromDateSLA,
+		toDate:globalToDateSLA,
 		filterId:"2",//sending type in web service 2 means getting department wise data
 		year:""
 	}
@@ -2061,7 +2150,7 @@ function getCMEDOBOverview(divId,blockId,type){
 	if(type =="overview"){
 		$("#cMeoDBTotalId").html(spinner)
 	}else{
-		$("#"+divId+"Block"+blockId).html(spinner);
+		$("#cmedobBlockMainDivId").html(spinner);
 	}
 	var json = {
 		 sector:"B",
@@ -2115,7 +2204,8 @@ function buildgetCMEDOBDetailed(result,divId,blockId,type){
 	
 	var CMEDOBODetailedArr=[{name:'Total',color:'#D28000',image:'Group 2873.png'},{name:'Approved',color:'#007500',image:'Path -1.png'},{name:'Rejected',color:'#FF003C',image:'Group 2874.png'},{name:'Re-Approve',color:'#007500',image:'Path -1.png'},{name:'Pending',color:'#000',image:'Group 2875.png'}];
 	var str='';
-	str+='<div class="row">';
+	str+='<h4><b>IT & E Status OverView</b></h4>';
+	str+='<div class="row m_top10">';
 	for(var i in CMEDOBODetailedArr){
 		if(CMEDOBODetailedArr[i].name == "Total" || CMEDOBODetailedArr[i].name == "Approved" || CMEDOBODetailedArr[i].name == "Rejected"  || CMEDOBODetailedArr[i].name == "Re-Approve"){
 			str+='<div class="col-sm-2">';
@@ -2189,7 +2279,7 @@ function buildgetCMEDOBDetailed(result,divId,blockId,type){
 						str+='<p>';
 							str+='<h4 class="font_weight">High Approval Department</h4>';
 							str+='<p>'+result.highApprovalDepartmentName+'</p>';
-							str+='<h3 style="color:#007500;" class="font_weight">'+result.highApprovalDepartmentCount+'</h3>';
+							str+='<h3 style="color:#007500;" class="font_weight m_top10">'+result.highApprovalDepartmentCount+'</h3>';
 						str+='</p>';
 						str+='<p class="m_top10">';
 							str+='<h4 class="font_weight">Low Approval Department</h4>';
@@ -2212,7 +2302,7 @@ function buildgetCMEDOBDetailed(result,divId,blockId,type){
 						str+='<p>';
 							str+='<h4 class="font_weight">High Rejected Department</h4>';
 							str+='<p>'+result.highRejectedDepartmentName+'</p>';
-							str+='<h3 style="color:#FF003C;" class="font_weight">'+result.highRejectedDepartmentCount+'</h3>';
+							str+='<h3 style="color:#FF003C;" class="font_weight m_top10">'+result.highRejectedDepartmentCount+'</h3>';
 					str+='</p>';
 					str+='<p class="m_top10">';
 						str+='<h4 class="font_weight">Low Rejected Department</h4>';
@@ -2249,11 +2339,11 @@ function buildgetCMEDOBDetailed(result,divId,blockId,type){
 		str+='</div>';
 	str+='</div>';
 			
-	$("#"+divId+"Block"+blockId).html(str);
+	$("#cmedobBlockMainDivId").html(str);
 }
 
 function getCMEDOBReportStatusWise(){
-
+	$("#cmedobDivId").html(spinner);
 	   var json = {
 		 sector:"B",
 		 fromDate:getDateInRequiredFormat(globalFromDate),
@@ -2280,7 +2370,8 @@ function getCMEDOBReportStatusWise(){
 }
 function buildCMEDOBReportStatusWise(result){
 	var str='';
-		str+='<div class="col-sm-12  m_top20">';	
+		str+='<div class="col-sm-12  m_top20">';
+			str+='<h4><b>CM eoDB Status Report</b></h4>';
 			str+='<div class="table-responsive">';	
 				str+='<table  class="table table-bordered"  id="cmedobTableId">';
 					str+='<thead>';
@@ -2430,6 +2521,31 @@ function buildCMeoDBStatusCountDetails(result){
 	$("#emeodbApplicationDtlsDivId").html(str);
 	$("#emeodbApplicationDtlsDataTblId").dataTable();
 	$(".tooltipCls").tooltip();	
+}
+
+function getCMeoDBSectorWiseStatusDetais(){
+	$("#cmedobSectorWiseStatusId").html(spinner)
+	var json={
+		sector:"B",
+		fromDate:getDateInRequiredFormat(globalFromDate),
+		toDate:getDateInRequiredFormat(globalToDate)
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getCMeoDBSectorWiseStatusDetais',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			buildCMeoDBSectorWiseStatusDetais(result);
+		}else{
+			$("#cmedobSectorWiseStatusId").html("No Data Available")
+		}
+	});	
 }
 
 function buildEOfcDepartWiseOverviewDetails(result){
@@ -2613,26 +2729,140 @@ function getDateInRequiredFormat(date) {
 	var dateArr = date.split("/");
 	return [dateArr[2],dateArr[1],dateArr[0]].join("-");
 }
-
-getCMeoDBSectorWiseStatusDetais();//test
-function getCMeoDBSectorWiseStatusDetais(){
-	var json={
-		sector:"B",
-		fromDate:getDateInRequiredFormat(globalFromDate),
-		toDate:getDateInRequiredFormat(globalToDate)
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getCMeoDBSectorWiseStatusDetais',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-
-		 console.log(result);
-		
-	});	
+function buildCMeoDBSectorWiseStatusDetais(result){
+	var CMEDOBODetailedArr=[{name:'Total',color:'#D28000',image:'Group 2873.png'},{name:'Approved',color:'#007500',image:'Path -1.png'},{name:'Rejected',color:'#FF003C',image:'Group 2874.png'},{name:'Re-Approve',color:'#007500',image:'Path -1.png'},{name:'Pending',color:'#000',image:'Group 2875.png'}];
+	
+	var str='';
+	str+='<div class="col-sm-6" style="padding:10px;border:1px solid #000">';
+		str+='<h4><b>Information Technology Details</b></h4>';
+		str+='<div class="row">';
+			for(var i in CMEDOBODetailedArr){
+				if(CMEDOBODetailedArr[i].name == "Total" || CMEDOBODetailedArr[i].name == "Approved" || CMEDOBODetailedArr[i].name == "Rejected"){
+					str+='<div class="col-sm-4 m_top10">';
+				}else if(CMEDOBODetailedArr[i].name == "Pending" || CMEDOBODetailedArr[i].name == "Re-Approve"){
+					str+='<div class="col-sm-6 m_top10">';
+				}
+						str+='<div class="white_block pad_0">';
+							str+='<div class="media pad_10">';
+								str+='<div class="media-body">';
+									str+='<h4>'+CMEDOBODetailedArr[i].name+'</h4>';
+									if(CMEDOBODetailedArr[i].name == "Pending"){
+											str+='<div class="col-sm-6 m_top10" style="padding:0px 5px">';
+												str+='<h5 style="font-weight:600">Within SLA</h5>';
+												str+='<h5 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.pendingWithinSLA+'</h5>';
+											str+='</div>';
+											str+='<div class="col-sm-6 m_top10" style="padding:0px 1px">';
+												str+='<h5 style="font-weight:600">Beyond SLA</h5>';
+												str+='<h5 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.pendingBeyondSLA+'</h5>';
+											str+='</div>';
+									}else{
+										if(CMEDOBODetailedArr[i].name == "Total"){
+											if(result.itDtlsVO.total !=null && result.itDtlsVO.total>0){
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.total+'</h4>';
+											}else{
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
+											}
+											
+										}else if(CMEDOBODetailedArr[i].name == "Approved"){
+											if(result.itDtlsVO.aprooved !=null && result.itDtlsVO.aprooved>0){
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.aprooved+'</h4>';
+											}else{
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
+											}
+										}else if(CMEDOBODetailedArr[i].name == "Rejected"){
+											if(result.itDtlsVO.rejected !=null && result.itDtlsVO.rejected>0){
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.rejected+'</h4>';
+											}else{
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
+											}
+										}else if(CMEDOBODetailedArr[i].name == "Re-Approve"){
+											if(result.itDtlsVO.reAprooved !=null && result.itDtlsVO.reAprooved>0){
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.reAprooved+'</h4>';
+											}else{
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
+											}
+										}
+										
+									}
+									str+='</div>';
+									str+='<div class="media-right">';
+										str+='<img src="Assests/icons/ITC/'+CMEDOBODetailedArr[i].image+'" class="pull-right">';
+									str+='</div>';
+								
+							str+='</div>';
+							
+						str+='</div>';
+					str+='</div>';
+					
+				
+			}
+			str+='</div>';
+	str+='</div>';
+	str+='<div class="col-sm-6" style="padding:10px;border:1px solid #000;border-left:none;">';
+		str+='<h4><b>Electronic Details</b></h4>';
+		str+='<div class="row">';
+			for(var i in CMEDOBODetailedArr){
+				if(CMEDOBODetailedArr[i].name == "Total" || CMEDOBODetailedArr[i].name == "Approved" || CMEDOBODetailedArr[i].name == "Rejected"){
+					str+='<div class="col-sm-4 m_top10">';
+				}else if(CMEDOBODetailedArr[i].name == "Pending" || CMEDOBODetailedArr[i].name == "Re-Approve"){
+					str+='<div class="col-sm-6 m_top10">';
+				}
+						str+='<div class="white_block pad_0">';
+							str+='<div class="media pad_10">';
+								str+='<div class="media-body">';
+									str+='<h4>'+CMEDOBODetailedArr[i].name+'</h4>';
+									if(CMEDOBODetailedArr[i].name == "Pending"){
+											str+='<div class="col-sm-6 m_top10" style="padding:0px 5px">';
+												str+='<h5 style="font-weight:600">Within SLA</h5>';
+												str+='<h5 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.pendingWithinSLA+'</h5>';
+											str+='</div>';
+											str+='<div class="col-sm-6 m_top10" style="padding:0px 1px">';
+												str+='<h5 style="font-weight:600">Beyond SLA</h5>';
+												str+='<h5 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.pendingBeyondSLA+'</h5>';
+											str+='</div>';
+									}else{
+										if(CMEDOBODetailedArr[i].name == "Total"){
+											if(result.electronicsDtlsVO.total !=null && result.electronicsDtlsVO.total>0){
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.total+'</h4>';
+											}else{
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
+											}
+											
+										}else if(CMEDOBODetailedArr[i].name == "Approved"){
+											if(result.electronicsDtlsVO.aprooved !=null && result.electronicsDtlsVO.aprooved>0){
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.aprooved+'</h4>';
+											}else{
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
+											}
+										}else if(CMEDOBODetailedArr[i].name == "Rejected"){
+											if(result.electronicsDtlsVO.rejected !=null && result.electronicsDtlsVO.rejected>0){
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.rejected+'</h4>';
+											}else{
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
+											}
+										}else if(CMEDOBODetailedArr[i].name == "Re-Approve"){
+											if(result.electronicsDtlsVO.reAprooved !=null && result.electronicsDtlsVO.reAprooved>0){
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.reAprooved+'</h4>';
+											}else{
+												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
+											}
+										}
+										
+									}
+									str+='</div>';
+									str+='<div class="media-right">';
+										str+='<img src="Assests/icons/ITC/'+CMEDOBODetailedArr[i].image+'" class="pull-right">';
+									str+='</div>';
+								
+							str+='</div>';
+							
+						str+='</div>';
+					str+='</div>';
+					
+				
+			}
+			str+='</div>';
+	str+='</div>';
+	
+	$("#cmedobSectorWiseStatusId").html(str)
 }
