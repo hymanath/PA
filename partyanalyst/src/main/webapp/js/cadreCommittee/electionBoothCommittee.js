@@ -615,7 +615,7 @@ var spinner = '<div class="spinner"><div class="dot1"></div><div class="dot2"></
 					if(result[i].type == "Not Added" && (result[i].isDuplicate=="No" || result[i].isDuplicate==""))
 					{
 						str+='<div class="form-inline ">';
-						str+='<a onclick="javascript:{saveBoothDetails('+result[i].tdpCadreId+')}" class="btn btn-success btn-medium m_top5 addProfileCls" > ADD PROFILE</a><span id="errMsgId"></span>';
+						str+='<a onclick="javascript:{saveBoothDetails('+result[i].tdpCadreId+',\'\')}" class="btn btn-success btn-medium m_top5 addProfileCls" > ADD PROFILE</a><span id="errMsgId"></span>';
 						str+='</div>';	
 					}else if(result[i].isDuplicate=="Yes") {
 						str+='<div class="form-inline " style="color:red;" title="This cadre may or may not registered with Own voterId or Family Voter Id." > No access to add .  Because This Serial No already added as incharger.</div> ';	
@@ -1611,7 +1611,7 @@ function getCadreDetailsForBoothBySearchCriteria()
 			}); 
 	}
 
-function saveBoothDetails(tdpCadreId){
+function saveBoothDetails(tdpCadreId,isOtherRange){
 	$('#addProfileId').show();
 	$("#addProfileId").html('<img id="dataLoadingImg" src="images/icons/loading.gif" style="width:50px;height:40px;"/>');
 	var committeeLocationId =$("#committeeLocationId1").val();
@@ -1634,7 +1634,8 @@ function saveBoothDetails(tdpCadreId){
 			boothId : committeeLocationId,
 			tdpCadreId : tdpCadreId,
 			boothIncrgRoleId:boothIncrgRoleId,
-			enrollmentYrIds:enrollmentYrIds
+			enrollmentYrIds:enrollmentYrIds,
+			isOtherRange:isOtherRange
 		}
 		
 		$.ajax({
@@ -1926,6 +1927,7 @@ function buildBoothSearchDetails(result){
 	 var sublist = result.casteList;
 	 var subListLength=sublist.length;
 	 var countList=0;
+	
 	str+='<table class ="table table-bordered" id="bothWiseRangeId">';
 		str +='<thead>';
 		str +='</thead>';
@@ -1941,21 +1943,42 @@ function buildBoothSearchDetails(result){
 		 if(isAvailableOrNOt == "true"){
 			$('#committeeDesigDivId1').show();
 			for (var i in sublist){
+				var isPrevious = 'Yes';
+				var isNext = 'Yes' ;
+	 
+				if(parseInt(sublist[i].totalCount) == 0){
+					if(i==parseInt(sublist.length-1)){
+						 isNext = 'No';
+						 isPrevious = 'Yes';
+					}
+					if(i==0){
+						 isPrevious = 'No' ;
+						 isNext = 'Yes';
+					}
+				}
+				
+				
 				str +='<tr class="text-center">';
 				str +='<td class="text-center "><label id="rangeId'+i+'">'+sublist[i].finalRangeStr+'</label></td>';
 
 				if(parseInt(sublist[i].maleCount) >0){				
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="M"><u>'+sublist[i].maleCount+'</u></label></td>';
 				}else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="M">'+sublist[i].maleCount+'</label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="M"> - </label></td>';
 				}if(parseInt(sublist[i].femaleCount) >0){
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="F"><u>'+sublist[i].femaleCount+'</u></label></td>';
 				}else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="F">'+sublist[i].femaleCount+'</label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="F">  -  </label></td>';
 				}if(parseInt(sublist[i].totalCount) >0){					
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0"><u>'+sublist[i].totalCount+'</u></label></td>';
 				}else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0">'+sublist[i].totalCount+'</label></td>';
+					if(parseInt(sublist[i].addedCount) == 0){
+						str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0">  ';
+						str+='<button class="btn-min btn btn-success btn-xs" id="addMemberId" range="'+sublist[i].finalRangeStr+'" isPrevious="'+isPrevious+'", isNext="'+isNext+'" > ADD MEMEBER </button>';
+						str+='</label></td>';
+					}else{
+						str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0">  -  </label></td>';
+					}
 				}
 				 if(sublist[i].alreadyRegistered == null || sublist[i].alreadyRegistered.length == 0 ){
 					str +='<td class="text-center" style="color:red;"> NOT ADDED </td>';
@@ -1990,15 +2013,21 @@ function buildBoothSearchDetails(result){
 				if(parseInt(totalMale) >0){
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M"><u>'+totalMale+'</u></label></td>';
 				} else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M">'+totalMale+'</label></td>'; 	
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M"> - </label></td>'; 	
 				}if(parseInt(totalFemale) >0){
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F"><u>'+totalFemale+'</u></label></td>';
 				}else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F">'+totalFemale+'</label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F"> - </label></td>';
 				}if(parseInt(total) >0 ){
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalGenderId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="0"><u>'+total+'</u></label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalGenderId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="0"><u> '+total+' </u></label></td>';
 				} else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalGenderId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="0">'+total+'</label></td>';
+					if(parseInt(sublist[i].addedCount) == 0){
+						str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0">  ';
+						str+='<button class="btn-min btn btn-success btn-xs" id="addMemberId" range="'+sublist[i].finalRangeStr+'" isPrevious="'+isPrevious+'", isNext="'+isNext+'" > ADD MEMEBER </button>';
+						str+='</label></td>';
+					}else{
+						str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0">  -  </label></td>';
+					}
 				}
 				str +='</tr>';
 				
@@ -2011,15 +2040,15 @@ function buildBoothSearchDetails(result){
 				if(parseInt(sublist[i].maleCount) >0){				
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="M">'+sublist[i].maleCount+'</label></td>';
 				}else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="M">'+sublist[i].maleCount+'</label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="M"> - </label></td>';
 				}if(parseInt(sublist[i].femaleCount) >0){
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="F">'+sublist[i].femaleCount+'</label></td>';
 				}else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="F">'+sublist[i].femaleCount+'</label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="F"> - </label></td>';
 				}if(parseInt(sublist[i].totalCount) >0){					
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="0">'+sublist[i].totalCount+'</label></td>';
 				}else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="0">'+sublist[i].totalCount+'</label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="0"> - </label></td>';
 				}
 				 if(sublist[i].alreadyRegistered == null || sublist[i].alreadyRegistered.length == 0 ){
 					str +='<td class="text-center" style="color:red;"> NOT ADDED </td>';
@@ -2054,15 +2083,21 @@ function buildBoothSearchDetails(result){
 				if(parseInt(totalMale) >0){
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalMailId'+countList+'" attr_gender_id="M">'+totalMale+'</label></td>';
 				}else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M">'+totalMale+'</label></td>';	
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M"> - </label></td>';	
 				}if(parseInt(totalFemale) >0){
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalFmailId'+countList+'" attr_gender_id="F">'+totalFemale+'</label></td>';
 				}else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F">'+totalFemale+'</label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F"> - </label></td>';
 				}if(parseInt(total) >0 ){
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalGenderId'+countList+'" attr_gender_id="0">'+total+'</label></td>';
 				} else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalGenderId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="0">'+total+'</label></td>';
+					if(parseInt(sublist[i].addedCount) == 0){
+						str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0">  ';
+						str+='<button class="btn-min btn btn-success btn-xs" id="addMemberId" range="'+sublist[i].finalRangeStr+'" isPrevious="'+isPrevious+'", isNext="'+isNext+'" > ADD MEMEBER </button>';
+						str+='</label></td>';
+					}else{
+						str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0">  -  </label></td>';
+					}
 				}
 				str +='</tr>';
 			
@@ -2071,8 +2106,87 @@ function buildBoothSearchDetails(result){
 				 
 		str +='</tbody>';
 	str+='</table>';
+	str+='';
 	$("#cadreDetailsDiv1").html(str);
 } 
+
+function getRangeDetails(range,isPrevious,isNext){
+	var rangeArr = range.split("-");
+	var startRange=parseInt(rangeArr[0]);
+	var endRange=parseInt(rangeArr[1]);
+	if(isPrevious =='Yes'){		
+		if(isNext !='Yes'){//no 
+			startRange = endRange-200;
+		}else{
+			startRange = startRange-100;
+		}
+		if(startRange<0)
+			startRange=1;
+	}
+	if(isNext =='Yes'){		
+		endRange = parseInt(rangeArr[1])+100;
+		if(isPrevious =='Yes'){
+			startRange = endRange-300;
+		}
+	}
+	
+	return startRange+' - '+endRange;
+}
+
+$(document).on("click","#addMemberId",function(){
+	var addToRange = $(this).attr('range');
+	var range=$(this).attr('range');
+	var isPrevious=$(this).attr('isPrevious');
+	var isNext=$(this).attr('isNext');
+	
+	var finalRange = getRangeDetails(range,isPrevious,isNext);
+
+	$('#locationDivId').hide();
+	$('#userDetailsId').hide();
+	$("#searchcadrenewDiv").hide();
+	$("#cadreDetailsDiv").hide();
+	
+		var roleId = $('#committeeDesignationId').val();
+		if(parseInt(roleId) ==0){
+			alert("Please select Designation.");
+			return;
+		}
+		
+	
+	$('#committeeDesigDivId1').removeClass("designationHideCls");
+	$('#cadreAvailableDetailsDivId').html('');
+	$("#cadreAvailableDetailsDivId").html('<img id="dataLoadingImg" src="images/icons/loading.gif" style="width:50px;height:40px;"/>');
+	var mandalId=$('#panchayatWardByMandal').val();
+	var boothId=$('#committeeLocationId1').val();
+	//var range=$(this).closest('tr').find("td:first").find('label').text();
+	var gender=0;
+	var count='totalGenderId'+0;
+	
+	if(range == "TOTAL"){
+		range='0';
+	}
+	 var jsObj =
+		{			
+			mandalId:mandalId,
+			boothId:boothId,
+			range:finalRange	,
+			gender:gender
+		}
+	
+		$.ajax({
+				type : "POST",
+				url : "getSerialNoAvailbleCadreRangeWiseAction.action",
+				data : {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null){
+					//buildCadreDetails(result,0);
+					getAvailableCadreDetails(result,'other'+addToRange);
+				}else{
+					$('#cadreAvailableDetailsDivId').html('No Data Available....???');
+				}
+			}); 
+			
+});
 
 $(document).on("click",".totalClass",function(){
 	$('#locationDivId').hide();
@@ -2113,7 +2227,7 @@ $(document).on("click",".totalClass",function(){
 			}).done(function(result){
 				if(result != null){
 					//buildCadreDetails(result,0);
-					getAvailableCadreDetails(result);
+					getAvailableCadreDetails(result,range);
 				}else{
 					$('#cadreAvailableDetailsDivId').html('No Data Available....???');
 				}
@@ -2121,7 +2235,9 @@ $(document).on("click",".totalClass",function(){
 	
 });
 
-function getAvailableCadreDetails(result){
+
+
+function getAvailableCadreDetails(result,isOtherRange){
 $('#cadreAvailableDetailsDivId').show();
 		var str ='';
 		var committeeMngntTypeId = $('#committeeMngtType').val();
@@ -2178,7 +2294,7 @@ $('#cadreAvailableDetailsDivId').show();
 					if(sublist[i].type == "Not Added" && (sublist[i].isDuplicate=="No" || sublist[i].isDuplicate==""))
 					{
 						str+='<div class="form-inline ">';
-						str+='<a onclick="javascript:{saveBoothDetails('+sublist[i].tdpCadreId+')}" class="btn btn-success btn-medium m_top5 addProfileCls" > ADD PROFILE</a><img id="addProfileId"></img><span id="errMsgId"></span>';
+						str+='<a onclick="javascript:{saveBoothDetails('+sublist[i].tdpCadreId+',\''+isOtherRange+'\')}" class="btn btn-success btn-medium m_top5 addProfileCls" > ADD PROFILE</a><img id="addProfileId"></img><span id="errMsgId"></span>';
 						str+='</div>';
 						
 					}else if(sublist[i].isDuplicate=="Yes") {
