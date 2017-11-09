@@ -50,9 +50,9 @@ public class ItcController {
 		    List<MeesevaDtlsVO>  resultList = itcDashboardService.getMeesevaSLAMonitoringDtlsDepartmentWise(inputVO);
 		   return resultList;
 	   }
-	   @RequestMapping(value = "/getCMEDOBOverview", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  CmEoDBDtlsVO  getCMEDOBOverview() {
-		   CmEoDBDtlsVO  reusltVO = itcDashboardService.getCMEDOBOverview();
+	   @RequestMapping(value = "/getCMEDOBOverview", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  CmEoDBDtlsVO  getCMEDOBOverview(@RequestBody InputVO inputVo) {
+		   CmEoDBDtlsVO  reusltVO = itcDashboardService.getCMEDOBOverview(inputVo);
 		   return reusltVO;
 	   }
 	   @RequestMapping(value = "/getCMEDOBReportStatusWise", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -184,6 +184,11 @@ public class ItcController {
 	   @RequestMapping(value = "/getEofficeDesginationDetailsByDepartment", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	   public @ResponseBody  List<ItecEOfficeVO>  getEofficeDesginationDetailsByDepartment(@RequestBody InputVO inputVO) {
 		   List<ItecEOfficeVO>  resultList = itcDashboardService.getEofficeDesginationDetailsByDepartment(inputVO);
+		   return resultList;
+	   }
+	   @RequestMapping(value = "/getCMeoDBSectorWiseStatusDetais", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<CmEoDBDtlsVO>  getCMeoDBSectorWiseStatusDetais(@RequestBody InputVO inputVO) {
+		   List<CmEoDBDtlsVO>  resultList = itcDashboardService.getCMeoDBSectorWiseStatusDetais(inputVO);
 		   return resultList;
 	   }
 }

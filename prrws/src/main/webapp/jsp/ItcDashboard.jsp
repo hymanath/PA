@@ -269,6 +269,19 @@ var searchParams = new URLSearchParams(window.location.search);
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="emeodbStatusModalId" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width:80%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-capital" id="statusModalTitleId"><b>Application Status Details</b></h4>
+			</div>
+			<div class="modal-body">
+				<div id="emeodbApplicationDtlsDivId"></div>
+			</div>
+		</div>
+	</div>
+</div>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>

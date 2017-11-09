@@ -5,7 +5,9 @@ package com.itgrids.service.impl;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tempuri.MOUTrackerIT;
+import org.tempuri.SDP;
 import org.tempuri.TrackerITServiceSoapProxy;
 
 import com.google.gson.Gson;
@@ -268,10 +271,17 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return CmEoDBDtlsVO
 	 * @Date 21-09-2017
 	 */
-	public CmEoDBDtlsVO getCMEDOBOverview() {
+	public CmEoDBDtlsVO getCMEDOBOverview(InputVO inputVo) {
 		CmEoDBDtlsVO resultVO = new CmEoDBDtlsVO();
 		 try {
-			 MOUTrackerIT[] dataArr = new TrackerITServiceSoapProxy().EODB_ABSTRACT_REPORT();
+			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			 Calendar fromDate=Calendar.getInstance();
+			 Calendar toDate=Calendar.getInstance();
+			 if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
+				 fromDate.setTime(sdf.parse(inputVo.getFromDate()));
+				 toDate.setTime(sdf.parse(inputVo.getToDate()));
+			 }
+			 SDP[] dataArr = new TrackerITServiceSoapProxy().get_SDP_Abstract_Details(inputVo.getSector(), fromDate, toDate);
 			 if (dataArr != null && dataArr.length > 0 ) {
 				 CmEoDBDtlsVO overviewVO = getCmEodbStatusWiseOverviewDetails(dataArr);
 				 List<CmEoDBDtlsVO> deptList = getCmEoDbDepartmentList(dataArr);
@@ -317,43 +327,48 @@ public class ItcDashboardService implements IItcDashboardService {
 		}
 	}
 	
-	private List<CmEoDBDtlsVO> getCmEoDbDepartmentList(MOUTrackerIT[] dataArr) {
-		List<CmEoDBDtlsVO> deptList = new ArrayList<>(0);
-		Map<String,CmEoDBDtlsVO> deptMap = new HashMap<>();
-		 try {
-			 for (MOUTrackerIT moutrackerVO : dataArr) {
-				 if ( !moutrackerVO.getCLEARENCE_NAME().equalsIgnoreCase("Total")) {
-					 CmEoDBDtlsVO deptVO = deptMap.get(moutrackerVO.getDASH_BOARD_NAME());
-					   if (deptVO == null ) {
-						   	 deptVO = new CmEoDBDtlsVO();
-						     deptVO.setName(moutrackerVO.getDASH_BOARD_NAME());
-							 deptVO.setIdStr(moutrackerVO.getDASH_BOARD_NO()); 
-							 deptMap.put(deptVO.getName(), deptVO);
-					   } 
-					 deptVO.setAprooved(deptVO.getAprooved()+Long.valueOf(moutrackerVO.getTOTAL_APPROVED()));
-					 deptVO.setRejected(deptVO.getRejected()+Long.valueOf(moutrackerVO.getTOTAL_REJECTED()));
-					 deptVO.setPendingBeyondSLA(deptVO.getPendingBeyondSLA()+Long.valueOf(moutrackerVO.getTOTAL_PENDING()));	
+		private List<CmEoDBDtlsVO> getCmEoDbDepartmentList(SDP[] dataArr) {
+			List<CmEoDBDtlsVO> deptList = new ArrayList<>(0);
+			Map<String,CmEoDBDtlsVO> deptMap = new HashMap<>();
+			 try {
+				   Long count = 0l;
+				    for (SDP moutrackerVO : dataArr) {
+				    	   count++;
+				    	   if (count == dataArr.length){//we are ignoring last object from array
+				    		   continue;
+				    	   }
+				    	 
+						   CmEoDBDtlsVO deptVO = deptMap.get(moutrackerVO.getDepartment_Name());
+						   if (deptVO == null ) {
+							   	 deptVO = new CmEoDBDtlsVO();
+							     deptVO.setName(moutrackerVO.getDepartment_Name());
+								 deptVO.setIdStr(moutrackerVO.getDepartment_ID()); 
+								 deptMap.put(deptVO.getName(), deptVO);
+						   } 
+						 deptVO.setAprooved(deptVO.getAprooved()+Long.valueOf(moutrackerVO.getTotal_Approved()));
+						 deptVO.setRejected(deptVO.getRejected()+Long.valueOf(moutrackerVO.getTotal_Rejected()));
+						 deptVO.setPendingBeyondSLA(deptVO.getPendingBeyondSLA()+Long.valueOf(moutrackerVO.getTotal_Pending()));	
+					 }
+				 if (deptMap.size() > 0) {
+					 deptList.addAll(deptMap.values());
 				 }
+			 } catch (Exception e) {
+				 LOG.error("Exception occured at getCmEoDbDepartmentList() in  ItcDashboardService class",e);
 			 }
-			 if (deptMap.size() > 0) {
-				 deptList.addAll(deptMap.values());
-			 }
-		 } catch (Exception e) {
-			 LOG.error("Exception occured at getCmEoDbDepartmentList() in  ItcDashboardService class",e);
-		 }
-		 return deptList;
-	}
-	
-	private CmEoDBDtlsVO getCmEodbStatusWiseOverviewDetails( MOUTrackerIT[] dataArr) {
+			 return deptList;
+		}
+		
+	//kkb change new
+	private CmEoDBDtlsVO getCmEodbStatusWiseOverviewDetails( SDP[] dataArr) {
 		CmEoDBDtlsVO overStatusDltsVO = new CmEoDBDtlsVO();
 		 try {
-			 MOUTrackerIT overViewData = dataArr[dataArr.length-1];
-			 overStatusDltsVO.setName(overViewData.getCLEARENCE_NAME());
-			 overStatusDltsVO.setAprooved(Long.valueOf(overViewData.getTOTAL_APPROVED()));
-			 overStatusDltsVO.setRejected(Long.valueOf(overViewData.getTOTAL_REJECTED()));
-			 overStatusDltsVO.setReAprooved(Long.valueOf(overViewData.getTOTAL_REAPPROVED()));
-			 overStatusDltsVO.setPendingWithinSLA(Long.valueOf(overViewData.getPENDING_WITN_IN_SLA()));
-			 overStatusDltsVO.setPendingBeyondSLA(Long.valueOf(overViewData.getPENDING_BEYOND_SLA()));
+			 SDP overViewData = dataArr[dataArr.length-1];
+			 overStatusDltsVO.setName(overViewData.getClearance_Name());
+			 overStatusDltsVO.setAprooved(Long.valueOf(overViewData.getTotal_Approved()));
+			 overStatusDltsVO.setRejected(Long.valueOf(overViewData.getTotal_Rejected()));
+			 overStatusDltsVO.setReAprooved(Long.valueOf(overViewData.getTotal_ReApproved()));
+			 overStatusDltsVO.setPendingWithinSLA(Long.valueOf(overViewData.getTotal_Pending_Within_SLA()));
+			 overStatusDltsVO.setPendingBeyondSLA(Long.valueOf(overViewData.getTotal_Pending_Beyond_SLA()));
 			 overStatusDltsVO.setTotal(overStatusDltsVO.getAprooved()+overStatusDltsVO.getReAprooved()
 			 +overStatusDltsVO.getRejected()+overStatusDltsVO.getPendingBeyondSLA()+overStatusDltsVO.getPendingWithinSLA());
 			
@@ -406,29 +421,36 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @Date 21-09-2017
 	 */
 	//babu
-	public List<ItecCMeoDBDetailsVO> getCMEDOBReportStatusWise(InputVO inputVO) {
+	public List<ItecCMeoDBDetailsVO> getCMEDOBReportStatusWise(InputVO inputVo) {
 		List<ItecCMeoDBDetailsVO> resultList = new ArrayList<ItecCMeoDBDetailsVO>(0);
-		 try {
-			 MOUTrackerIT[] dataArr = new TrackerITServiceSoapProxy().EODB_ABSTRACT_REPORT();
+		try{
+			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			 Calendar fromDate=Calendar.getInstance();
+			 Calendar toDate=Calendar.getInstance();
+			 if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
+				 fromDate.setTime(sdf.parse(inputVo.getFromDate()));
+				 toDate.setTime(sdf.parse(inputVo.getToDate()));
+			 }
+			SDP[] dataArr = new TrackerITServiceSoapProxy().get_SDP_Abstract_Details(inputVo.getSector(), fromDate, toDate);
 			 Map<String,List<ItecCMeoDBDetailsVO>> deptNameAndVosMap = new HashMap<String,List<ItecCMeoDBDetailsVO>>();
 		     if(dataArr != null && dataArr.length > 0){
-		    	 for( int i = 0; i < dataArr.length-1 ; i++ ){
-		    		List<ItecCMeoDBDetailsVO> clearnceVosList= deptNameAndVosMap.get(dataArr[i].getDASH_BOARD_NAME().trim());
+		    	 for( int i = 0; i < dataArr.length-2 ; i++ ){
+		    		List<ItecCMeoDBDetailsVO> clearnceVosList= deptNameAndVosMap.get(dataArr[i].getDepartment_Name().trim());
 		    		if( clearnceVosList == null ){
 		    			clearnceVosList = new ArrayList<ItecCMeoDBDetailsVO>();
-		    			deptNameAndVosMap.put(dataArr[i].getDASH_BOARD_NAME().trim(),clearnceVosList);
+		    			deptNameAndVosMap.put(dataArr[i].getDepartment_Name().trim(),clearnceVosList);
 		    		}
 		    		ItecCMeoDBDetailsVO vo = new ItecCMeoDBDetailsVO();
-		    		vo.setClearenceName(dataArr[i].getCLEARENCE_NAME());
-		    		vo.setTotalApplications(dataArr[i].getTOTAL_APPLICATIONS());
-		    		vo.setTotalApproved(dataArr[i].getTOTAL_APPROVED());
-		    		vo.setTotalRejected(dataArr[i].getTOTAL_REJECTED());
-		    		vo.setTotalPending(dataArr[i].getTOTAL_PENDING());
-		    		vo.setPendingWithInSLA(dataArr[i].getPENDING_WITN_IN_SLA());
-		    		vo.setPendingBeyondSLA(dataArr[i].getPENDING_BEYOND_SLA());
-		    		vo.setTotalReApproved(dataArr[i].getTOTAL_REAPPROVED());
-		    		vo.setDashBoardNO(dataArr[i].getDASH_BOARD_NO());
-		    		vo.setClearenceId(dataArr[i].getCLEARANCE_ID());
+		    		vo.setClearenceName(dataArr[i].getClearance_Name());
+		    		vo.setTotalApplications(dataArr[i].getTotal_Applications());
+		    		vo.setTotalApproved(dataArr[i].getTotal_Approved());
+		    		vo.setTotalRejected(dataArr[i].getTotal_Rejected());
+		    		vo.setTotalPending(dataArr[i].getTotal_Pending());
+		    		vo.setPendingWithInSLA(dataArr[i].getTotal_Pending_Within_SLA());
+		    		vo.setPendingBeyondSLA(dataArr[i].getTotal_Pending_Beyond_SLA());
+		    		vo.setTotalReApproved(dataArr[i].getTotal_ReApproved());
+		    		vo.setDashBoardNO(dataArr[i].getDepartment_ID());
+		    		vo.setClearenceId(dataArr[i].getClearance_ID());
 		    		clearnceVosList.add(vo);
 		    	 }
 		    	 if(deptNameAndVosMap != null && deptNameAndVosMap.size() > 0){
@@ -1530,28 +1552,32 @@ public class ItcDashboardService implements IItcDashboardService {
 	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusCountDetails(InputVO inputVO){
 		List<ItecCMeoDBDetailsVO> returnList = new ArrayList<ItecCMeoDBDetailsVO>();
 		try {
-			MOUTrackerIT[] list = new TrackerITServiceSoapProxy().GET_SECTOR_WISE_DETAILS(inputVO.getEoDBstatus(),inputVO.getClearence(),null);
-			if(list != null && list.length > 0){
-				for (int i = 0; i < list.length; i++) {
-						ItecCMeoDBDetailsVO vo = new ItecCMeoDBDetailsVO();
-							vo.setCategory(list[i].getCATEGORY());
-							vo.setFinaYear(list[i].getFINYEAR());
-							vo.setSectorName(list[i].getSECTOR_NAME());
-							vo.setIndustryName(list[i].getINDUSTRY_NAME());
-							vo.setAddress(list[i].getADDRESS());
-							vo.setActivity(list[i].getACTIVITY());
-							vo.setTotalCost(list[i].getTOTAL_COST());
-							vo.setEmpolyeement(list[i].getEMPLOYEMENT());
-							vo.setAppFilledDate(list[i].getAPP_FILLED_DATE());
-							vo.setCorRecievedDate(list[i].getCOR_RECEIVED_DATE());
-							vo.setDelayDays(list[i].getDELAY_DAYS());
-							vo.setPermApprovalDate(list[i].getPERM_APPROVAL_DATE());
-							vo.setAppRejDate(list[i].getAPP_REJ_DATE());
-							vo.setApprovalFileId(list[i].getAPPROVALFILE_ID());
-							vo.setClearenceId(list[i].getCLEARANCE_ID());
-							vo.setApplicationId(list[i].getAPPLICATION_ID());
-							vo.setRegId(list[i].getREG_ID());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			 Calendar fromDate=Calendar.getInstance();
+			 Calendar toDate=Calendar.getInstance();
+			 if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				 fromDate.setTime(sdf.parse(inputVO.getFromDate()));
+				 toDate.setTime(sdf.parse(inputVO.getToDate()));
+			 }
+			 SDP[]  dataArr = new TrackerITServiceSoapProxy().get_SDP_Total_Details(inputVO.getSector(), inputVO.getDeptCode(),inputVO.getClearence() , inputVO.getStatus(), fromDate, toDate);
+			if(dataArr != null && dataArr.length > 0){
+				 for (SDP sdpObj:dataArr) {
 					
+						ItecCMeoDBDetailsVO vo = new ItecCMeoDBDetailsVO();
+						    vo.setDistrictName(sdpObj.getDistrict());
+						    vo.setAddress(sdpObj.getAddress());
+						    vo.setSectorName(sdpObj.getSector());
+						    vo.setActivity(sdpObj.getActivity());
+						    vo.setInvestmentAmount(sdpObj.getInvestment_Amount());
+						    vo.setEmpolyeement(sdpObj.getEmployment());
+						    vo.setAppFilledDate(sdpObj.getApplication_Filled_Date());
+						    vo.setRecievedDate(sdpObj.getReceived_Date());
+						    vo.setSlaDays(sdpObj.getSLA_Days());
+						    vo.setPermApprovalDate(sdpObj.getPermissable_Approval_Date());
+						    vo.setStatus(sdpObj.getStatus());
+						    vo.setApprovalDate(sdpObj.getApproval_Date());
+							vo.setApprovalFileId(sdpObj.getApproval_File_ID());	
+							
 						returnList.add(vo);
 				}
 			}
@@ -1826,6 +1852,52 @@ public class ItcDashboardService implements IItcDashboardService {
 		      LOG.error("Exception raised at getCMeoDBStatusDetailsNew - ItcDashboardService service",e);
 		    }
 		    return returnList;
+	}
+	public List<CmEoDBDtlsVO> getCMeoDBSectorWiseStatusDetais(InputVO inputVo){
+		List<CmEoDBDtlsVO> finalList = new ArrayList<CmEoDBDtlsVO>();
+		String [] sectorsArr={"E","I"};
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			 Calendar fromDate=Calendar.getInstance();
+			 Calendar toDate=Calendar.getInstance();
+			 if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
+				 fromDate.setTime(sdf.parse(inputVo.getFromDate()));
+				 toDate.setTime(sdf.parse(inputVo.getToDate()));
+			 }
+			 for(String sector : sectorsArr){
+				 SDP[] dataArr = new TrackerITServiceSoapProxy().get_SDP_Abstract_Details(sector, fromDate, toDate);
+				 CmEoDBDtlsVO returnVo= getDepartmentWiseApplicationDetails(dataArr);
+				 finalList.add(returnVo);
+			 }
+			
+	}catch(Exception e){
+		 LOG.error("Exception raised at getCMeoDBSectorWiseStatusDetais - ItcDashboardService service",e);
+	}
+		return finalList;
+	}
+	public CmEoDBDtlsVO getDepartmentWiseApplicationDetails( SDP[] dataArr){
+		CmEoDBDtlsVO vo = new CmEoDBDtlsVO();
+		try{
+			if(dataArr != null && dataArr.length >0){
+				vo.setTotal(0L);
+				vo.setAprooved(0L);
+				vo.setRejected(0L);
+				vo.setReAprooved(0L);
+				vo.setPendingBeyondSLA(0L);
+				vo.setPendingWithinSLA(0L);
+				for(SDP  obj : dataArr){
+					vo.setTotal(vo.getTotal()+Long.valueOf(obj.getTotal_Applications()));
+					vo.setAprooved(vo.getAprooved()+Long.valueOf(obj.getTotal_Approved()));
+					vo.setRejected(vo.getRejected()+Long.valueOf(obj.getTotal_Rejected()));
+					vo.setReAprooved(vo.getReAprooved()+Long.valueOf(obj.getTotal_ReApproved()));
+					vo.setPendingBeyondSLA(vo.getPendingBeyondSLA()+Long.valueOf(obj.getTotal_Pending_Beyond_SLA()));
+					vo.setPendingWithinSLA(vo.getPendingWithinSLA()+Long.valueOf(obj.getTotal_Pending_Within_SLA()));
+				}
+			}
+		}catch(Exception e){
+			 LOG.error("Exception raised at setStatusCountsOfSectors - ItcDashboardService service",e);
+		}
+		return vo;
 	}
 	
 	/**
