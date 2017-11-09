@@ -93,7 +93,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				" t.tehsilName, " +
 				" l.localElectionBodyId, " +
 				" l.name, model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName," +
-				" model.tdpCadre.voterId, model.tdpCadre.familyVoterId " +
+				" model.tdpCadre.voterId, model.tdpCadre.familyVoterId , model.addedBoothInhcargeConditionId " +
 				" from BoothIncharge model " +
 				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth b " +
 				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat p " +
@@ -1231,7 +1231,7 @@ public Long getBoothTotalAddedMember(Long boothId,Long boothInchargeEnrollmentId
 public List<Object[]> getActiveBoothMemeberDetails(Long boothId){
 	StringBuilder sb = new StringBuilder();
 	sb.append(" select distinct model.tdpCadre.voterId,model.tdpCadreId,model.tdpCadre.familyVoterId," +
-			" model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRoleId from BoothIncharge model " +
+			" model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRoleId , model.addedBoothInhcargeConditionId from BoothIncharge model " +
 			  " where model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId =:boothId" +
 			  " and model.tdpCadre.isDeleted ='N'" +
 			  " and model.isActive = 'Y' and model.isDeleted= 'N' ");
