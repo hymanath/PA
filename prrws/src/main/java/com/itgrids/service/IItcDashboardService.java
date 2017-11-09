@@ -43,5 +43,5 @@ public interface IItcDashboardService {
 	public List<ItecEOfficeVO> getDepartmentWiseHierarchicalDetails();
 	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusDetailsNew();
 	public List<ItecEOfficeVO> getEofficeDesginationDetailsByDepartment(InputVO inputVO);
-	public List<CmEoDBDtlsVO> getCMeoDBSectorWiseStatusDetais(InputVO inputVO);
+	public CmEoDBDtlsVO getCMeoDBSectorWiseStatusDetais(InputVO inputVO);
 }
