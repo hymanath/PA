@@ -22314,6 +22314,8 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					boothIncharge.setBoothInchargeRoleConditionMappingId(boothInchrgRoleId);
 					if(isOtherRange.trim().contains("other") && boothInchargeConditionId.longValue()>0L)
 						boothIncharge.setAddedBoothInhcargeConditionId(boothInchargeConditionId);
+					else
+						boothIncharge.setAddedBoothInhcargeConditionId(null);
 					boothIncharge.setUpdatedBy(userId);
 					boothIncharge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					boothIncharge.setIsActive("Y");
@@ -22332,7 +22334,8 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					boothInchrge.setBoothInchargeRoleConditionMappingId(boothInchrgRoleId);
 					if(isOtherRange.trim().contains("other") && boothInchargeConditionId.longValue()>0L)
 						boothInchrge.setAddedBoothInhcargeConditionId(boothInchargeConditionId);
-					
+					else
+						boothInchrge.setAddedBoothInhcargeConditionId(null);
 					boothInchrge.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					boothInchrge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					boothInchargeDAO.save(boothInchrge);
