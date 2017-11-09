@@ -36,12 +36,13 @@ public class BoothIncharge extends BaseModel implements Serializable{
 	private Date updatedTime;
 	private Long boothInchargeRoleConditionMappingId;
 	private Long boothInchargeSerialNoRangeId;
-	
+	private Long addedBoothInhcargeConditionId;
 	private TdpCadre tdpCadre;
 	private BoothInchargeEnrollment boothInchargeEnrollment;
 	private User user;
 	private BoothInchargeRoleConditionMapping boothInchargeRoleConditionMapping;
 	private BoothInchargeSerialNoRange boothInchargeSerialNoRange;
+	private BoothInchargeCondition addedBoothInchargeCondition;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -188,4 +189,26 @@ public class BoothIncharge extends BaseModel implements Serializable{
 			BoothInchargeSerialNoRange boothInchargeSerialNoRange) {
 		this.boothInchargeSerialNoRange = boothInchargeSerialNoRange;
 	}
+	
+	@Column(name="added_booth_incharge_condition_id")
+	public Long getAddedBoothInhcargeConditionId() {
+		return addedBoothInhcargeConditionId;
+	}
+	public void setAddedBoothInhcargeConditionId(Long addedBoothInhcargeConditionId) {
+		this.addedBoothInhcargeConditionId = addedBoothInhcargeConditionId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="added_booth_incharge_condition_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public BoothInchargeCondition getAddedBoothInchargeCondition() {
+		return addedBoothInchargeCondition;
+	}
+	public void setAddedBoothInchargeCondition(
+			BoothInchargeCondition addedBoothInchargeCondition) {
+		this.addedBoothInchargeCondition = addedBoothInchargeCondition;
+	}
+	
+	
 }

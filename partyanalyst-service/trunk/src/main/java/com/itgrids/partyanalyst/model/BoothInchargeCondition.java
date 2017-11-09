@@ -17,6 +17,8 @@ public class BoothInchargeCondition {
 
 	private Long boothInchargeConditionId;
 	private String conditionName;
+	private Long minValue;
+	private Long maxValue;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,5 +38,20 @@ public class BoothInchargeCondition {
 		this.conditionName = conditionName;
 	}
 	
+	@Column(name="min_value")
+	public Long getMinValue() {
+		return minValue;
+	}
+	public void setMinValue(Long minValue) {
+		this.minValue = minValue;
+	}
+	
+	@Column(name="max_value")
+	public Long getMaxValue() {
+		return maxValue;
+	}
+	public void setMaxValue(Long maxValue) {
+		this.maxValue = maxValue;
+	}
 	
 }
