@@ -1087,7 +1087,7 @@ public class ItcDashboardService implements IItcDashboardService {
 			
 			 Collections.sort(returnList, new Comparator<ItecEOfficeVO>() {
 	    	    public int compare(ItecEOfficeVO vo1, ItecEOfficeVO vo2) {
-	    	        return vo1.getOrderNumber().compareTo(vo2.getOrderNumber());
+	    	        return vo2.getOrderNumber().compareTo(vo1.getOrderNumber());
 	    	    }
 		    });
 			
