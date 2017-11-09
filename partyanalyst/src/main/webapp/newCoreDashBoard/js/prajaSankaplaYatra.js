@@ -174,7 +174,7 @@ function buildPartyWiseDetails(result,divId,type){
 								
 							str+='</td>';
 							str+='<td>';
-								str+='<p class="text-capital text-muted responsiveFont">Positive</p>';.
+								str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
 								if(result[i].psyPosCnt !=null && result[i].psyPosCnt>0){
 									str+='<span><a class="newsArticlesDetailsCls" attr_categoryId="1051" attr_organizationId ="'+result[i].id+'" attr_benefitId ="1" attr_type="'+divId+''+type+'" attr_newsType="'+type+'">'+result[i].psyPosCnt+'</a></span>';
 								}else{
