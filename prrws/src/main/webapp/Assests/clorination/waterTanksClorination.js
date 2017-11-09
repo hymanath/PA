@@ -296,6 +296,7 @@ function buildlevelWiseData(divId,sessionToken)
 						str+='<th>AREA&nbsp;NAME</th>';
 						str+='<th>SERVICE POINT</th>';
 						str+='<th>VAN NO</th>';
+						str+='<th>VISITED DATE</th>';
 						str+='<th>CHECKED</th>';
 						str+='<th>CHLORINATED</th>';
 						str+='<th>CHLORINATED&nbsp;%</th>';
@@ -308,12 +309,20 @@ function buildlevelWiseData(divId,sessionToken)
 				str+='<tbody>';
 					for(var i in result){
 						if(divId == "DISTRICT"){
-							var clorinatedVal=result[i].clorinated;
-							var notClorinatedVal=result[i].notClorinated;
-							var totalCount = result[i].checked;
+							var clorinatedVal = "0.00";
+							var notClorinatedVal = "0.00";
+							var totalCount = 0;
 							
-							var clorinatedDisPerc = (clorinatedVal/totalCount*100).toFixed(2);
-							var notClorinatedDisPerc = (notClorinatedVal/totalCount*100).toFixed(2);
+							clorinatedVal=result[i].clorinated;
+							 notClorinatedVal=result[i].notClorinated;
+							 totalCount = result[i].checked;
+							
+							if(clorinatedVal > 0 && totalCount >0){
+							   clorinatedDisPerc = (clorinatedVal/totalCount*100).toFixed(2);
+							 }
+							 if(notClorinatedVal > 0 && totalCount >0){
+								notClorinatedDisPerc = (notClorinatedVal/totalCount*100).toFixed(2);
+							 }
 							
 							str+='<tr>';
 								str+='<td>'+result[i].districtName+'</td>';
@@ -325,15 +334,20 @@ function buildlevelWiseData(divId,sessionToken)
 								str+='<td>'+notClorinatedDisPerc+'</td>';
 							str+='</tr>';
 						}else{
-							 
-							var clorinatedPerc = (result[i].clorinated/result[i].checked*100).toFixed(2);
-							var notClorinatedPerc = (result[i].notClorinated/result[i].checked*100).toFixed(2);
-							
+							var clorinatedPerc = "0.00";
+							var notClorinatedPerc = "0.00";
+							 if(result[i].clorinated > 0 && result[i].checked >0){
+							    clorinatedPerc = (result[i].clorinated/result[i].checked*100).toFixed(2);
+							 }
+							 if(result[i].notClorinated > 0 && result[i].checked >0){
+								notClorinatedPerc = (result[i].notClorinated/result[i].checked*100).toFixed(2);
+							 }
 							str+='<tr>';
 								str+='<td>'+result[i].districtName+'</td>';
 								str+='<td>'+result[i].areaName+'</td>';
 								str+='<td>'+result[i].servicePointName+'</td>';
 								str+='<td>'+result[i].vanNo+'</td>';
+								str+='<td>'+result[i].visitDate+'</td>';
 								str+='<td>'+result[i].checked+'</td>';
 								str+='<td>'+result[i].clorinated+'</td>';
 								str+='<td>'+clorinatedPerc+'</td>';
