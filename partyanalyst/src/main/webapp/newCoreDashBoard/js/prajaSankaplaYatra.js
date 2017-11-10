@@ -3,6 +3,21 @@ var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3)
 	wurl = url.substr(0,(url.indexOf(".in")+3));
 
+var currentFromDate = moment().format("DD/MM/YYYY");
+var currentToDate = moment().format("DD/MM/YYYY");
+$("#dateRangePrajaSankalpaId").daterangepicker({
+	opens: 'left',
+	startDate:currentFromDate,
+	endDate: currentToDate,
+	locale: {
+	  format: 'DD/MM/YYYY'
+	},
+});
+$('#dateRangePrajaSankalpaId').on('apply.daterangepicker', function(ev, picker) {
+  currentFromDate = picker.startDate.format('DD/MM/YYYY');
+  currentToDate = picker.endDate.format('DD/MM/YYYY');
+  onloadPrajaSankaplaYatraCalls();
+});
 function onloadPrajaSankaplaYatraCalls(){
 	
 	getPrintMediaOverAllPSYCounts("OverAll","printMedia")
