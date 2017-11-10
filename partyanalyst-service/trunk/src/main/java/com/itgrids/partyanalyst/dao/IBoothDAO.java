@@ -518,5 +518,5 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	 public List<Object[]> getMunciplaitiesByLeb(List<Long> lebIds,Long publicationDateId);
 	 public List<Object[]> getLocationWiseMandalAndConstituency(List<Long> boothIds,String searchType, boolean islocalBody);
 	 public List<Object[]> getLocationWiseMandalAndpanchayat(List<Long> panchayatIds,String searchType);
-	 
+	 public List<Long> getConstituencyIdsByLebId(Long lebId);
 }
