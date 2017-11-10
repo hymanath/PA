@@ -1650,6 +1650,11 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 		locatinValues = userAccessLevelValuesArray;
 	}
 	
+	if(parseInt(locationLevelId)==4  || parseInt(locationLevelId)==5 || parseInt(locationLevelId)==6 || parseInt(locationLevelId)==7)
+		$('#levelWiseCandidatesResultsDivId').hide();
+	else
+		$('#levelWiseCandidatesResultsDivId').show();
+		
 	jsObj={
 		electionYearArr		:electionYears,
 		parliamentIdsArr	:[],
@@ -1700,7 +1705,16 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 		table+='<table class="table table-bordered table_custom" id="dataTableCrossMainView">';
 			table+='<thead>';
 			table+='<tr>';
-				table+='<th>Parliament Name</th>';
+				if(parseInt(locationLevelId)==2 || parseInt(locationLevelId)==3 || parseInt(locationLevelId)==10)
+					table+='<th>Parliament Name</th>';
+				else if(parseInt(locationLevelId)==4)
+					table+='<th>Assembly Name</th>';
+				else if(parseInt(locationLevelId)==5)
+					table+='<th>Mandal Name</th>';
+				else if(parseInt(locationLevelId)==6)
+					table+='<th>Panchayat Name</th>';
+				else if(parseInt(locationLevelId)==7)
+					table+='<th>Munci/Corp/Greater City Name</th>';
 				table+='<th>PC Gained Votes </th>';
 				table+='<th>AC Gained Votes </th>';
 				table+='<th>Rank(PC)</th>';
@@ -1728,6 +1742,13 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 								table+='<tr>';
 							*/
 							table+='<tr>';
+							if(parseInt(locationLevelId)==5)
+								table+='<td>'+locationName+'</td>';
+							else if(parseInt(locationLevelId)==6)
+								table+='<td>'+locationName+'</td>';
+							else if(parseInt(locationLevelId)==7)
+								table+='<td>'+locationName+'</td>';
+							else 								
 								table+='<td class="votingDtsClickCls" attr_partcipation_id="votingDtsClickCls'+i+''+j+'" attr_type="crossVoting" attr_name="'+result[i].locationName+'" attr_parliamentId="'+result[i].locationId+'">'+result[i].locationName+'</td>';
 							if(result[i].subList1[j].mpCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mpCandidateEarnedVotes)>0){
 								table+='<td  id="votingDtsClickCls'+i+''+j+'" isParticipated="true" >'+result[i].subList1[j].mpCandidateEarnedVotes+'</td>';
@@ -1802,7 +1823,16 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 		table+='<table class="table table-bordered table_custom" id="dataTableCrossExpand">';
 			table+='<thead>';
 			table+='<tr>';
-				table+='<th>Assembly Name</th>';
+				if(parseInt(locationLevelId)==2 || parseInt(locationLevelId)==3 || parseInt(locationLevelId)==10)
+					table+='<th>Parliament Name</th>';
+				else if(parseInt(locationLevelId)==4)
+					table+='<th>Assembly Name</th>';
+				else if(parseInt(locationLevelId)==5)
+					table+='<th>Mandal Name</th>';
+				else if(parseInt(locationLevelId)==6)
+					table+='<th>Panchayat Name</th>';
+				else if(parseInt(locationLevelId)==7)
+					table+='<th>Munci/Corp/Greater City Name</th>';
 				table+='<th>PC Gained Votes </th>';
 				table+='<th>AC Gained Votes </th>';
 				table+='<th>Rank(PC)</th>';
@@ -1828,7 +1858,14 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 								table+='<tr>';
 							*/
 							table+='<tr>';
-								table+='<td>'+result[i].list[j].locationName+'</td>';
+								if(parseInt(locationLevelId)==5)
+									table+='<td>'+locationName+'</td>';
+								else if(parseInt(locationLevelId)==6)
+									table+='<td>'+locationName+'</td>';
+								else if(parseInt(locationLevelId)==7)
+									table+='<td>'+locationName+'</td>';
+								else 
+									table+='<td>'+result[i].list[j].locationName+'</td>';
 								if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0)
 								{
 									if(result[i].list[j].subList1[k].mpCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0){
@@ -1912,7 +1949,16 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 		table+='<table class="table table-bordered table_custom" id="dataTableCrossExpand">';
 			table+='<thead>';
 			table+='<tr>';
-				table+='<th>Assembly Name</th>';
+				if(parseInt(locationLevelId)==2 || parseInt(locationLevelId)==3 || parseInt(locationLevelId)==10)
+					table+='<th>Parliament Name</th>';
+				else if(parseInt(locationLevelId)==4)
+					table+='<th>Assembly Name</th>';
+				else if(parseInt(locationLevelId)==5)
+					table+='<th>Mandal Name</th>';
+				else if(parseInt(locationLevelId)==6)
+					table+='<th>Panchayat Name</th>';
+				else if(parseInt(locationLevelId)==7)
+					table+='<th>Munci/Corp/Greater City Name</th>';
 				table+='<th>PC Gained Votes </th>';
 				table+='<th>AC Gained Votes </th>';
 				table+='<th>Rank(PC)</th>';
@@ -1938,7 +1984,16 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 								table+='<tr>';
 							*/
 							table+='<tr>';
+							
+							if(parseInt(locationLevelId)==5)
+								table+='<td>'+locationName+'</td>';
+							else if(parseInt(locationLevelId)==6)
+								table+='<td>'+locationName+'</td>';
+							else if(parseInt(locationLevelId)==7)
+								table+='<td>'+locationName+'</td>';
+							else 
 								table+='<td>'+result[i].list[j].locationName+'</td>';
+								
 								if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0)
 								{
 									if(result[i].list[j].subList1[k].mpCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0){
