@@ -8,6 +8,7 @@ var currentToDate = moment().format("DD/MM/YYYY");
 $("#dateRangePrajaSankalpaId").daterangepicker({
 	opens: 'left',
 	startDate:currentFromDate,
+	minDate:"06/11/2017",
 	endDate: currentToDate,
 	locale: {
 	  format: 'DD/MM/YYYY'
