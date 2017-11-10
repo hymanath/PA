@@ -60,21 +60,5 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	{
 		return Action.SUCCESS;
 	} 
-	public String execute()
-	{
-		session = request.getSession();
-		final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-		if (registrationVO != null) 
-		{
-			if (!registrationVO.getIsAdmin().equals("true")){
-				  return ERROR;
-			}
-		} 
-		else{
-			return ERROR;
-		}
-		return Action.SUCCESS;
-		
-	}
 	
 }
