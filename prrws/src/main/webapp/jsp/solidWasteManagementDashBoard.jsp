@@ -17,6 +17,7 @@
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
  <link rel="stylesheet" type="text/css" href="Assests/SimplePagination/simplePagination.css"/>
+
 </head>
 <body>
 <header>
@@ -174,9 +175,269 @@
 		<section>
 			<div class="row">
 				<div class="col-sm-12">
+					<div class="row white_block_swm">
+						<div id="swmInfraustructure">
+							<div class="col-sm-6">
+									<div class="row" style="border: 1px solid lightgrey;padding:15px;margin:2px">
+									<h4 style="padding:10px"><img src="Assests/icons/swm/Group 2186.png" style=""><span>SWM-INFRASTRUCTURE OVERVIEW</span></h4>
+									<div class="col-sm-12 m_top_bottom p_top_bottom" style="border:1px solid lightgrey">
+										<div class="row">
+											<div class="col-sm-8">
+												<h5><b>RFID TAGGED HOUSES</b></h5>
+												<div class="media">
+													<div class="media-left">
+														<img src="Assests/icons/swm/Group 2188.png">
+													</div>
+													<div class="media-body">
+														<h5><b>RFID TAGGED HOUSES</b></h5>
+														<p>Solid Waste / Garbage</p>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<div class="well" style="margin-top:10px">
+													<h4 class="text-center"><b id="rfidTaggedHouses"></b></h4>
+												</div>
+											</div>
+										</div>
+										
+									</div>
+									<div class="col-sm-12 p_top_bottom m_top_bottom " style="border:1px solid lightgrey">
+										<div class="row">
+											<div class="col-sm-8">
+												<h5><b>REGISTRED FARMERS</b></h5>
+												<div class="media">
+													<div class="media-left">
+														<img src="Assests/icons/swm/Group 2193.png">
+													</div>
+													<div class="media-body">
+														<h5><b>FARMERS</b></h5>
+														<p>Cattle Dung</p>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<div class="well" style="margin-top:10px">
+													<h4 class="text-center"><b id="registeredFarmers"></b></h4>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-12 p_top_bottom  m_top_bottom" style="border:1px solid lightgrey">
+										<div class="row">
+											<div class="col-sm-8">
+												<h5><b>GREEN AMBASSADOR's <br/><span style="font-size:10px">MAN POWER</span></b></h5>
+												<table class="table" id="swgInfTable">
+													<tr style="padding:10px">
+														<td><img src="Assests/icons/swm/Group 2190.png"></td>
+														<td>MGNREGS</td>
+														<td id="mgnrgsId"></td>
+													</tr>
+													<tr style="padding:10px">
+														<td><img src="Assests/icons/swm/Group 2191.png"></td>
+														<td>PR</td>
+														<td id="prId"	></td>
+													</tr>
+													<tr style="padding:10px">
+														<td><img src="Assests/icons/swm/Group 2195.png"></td>
+														<td>PUBLIC</td>
+														<td id="publicId"></td>
+													</tr>
+												</table>
+											</div>
+											<div class="col-sm-4">
+												<div class="well text-center" style="margin-top:10px">
+													<h5>TOTAL MAN POWER</h5>
+													<h4><b id="totalManPower"></b></h4>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-12 p_top_bottom m_top_bottom" style="border:1px solid lightgrey">
+										<div class="row">
+											<div class="col-sm-8">
+												<h5><b>REGISTERED VEHICLES</b></h5>
+												<table class="table">
+													<tr>
+														<td><img src="Assests/icons/swm/tractor-front.png"></td>
+														<td><img src="Assests/icons/swm/auto-ricksaw.png"></td>
+														<td><img src="Assests/icons/swm/tricycle.png"></td>
+														<td><img src="Assests/icons/swm/Group 2194.png"></td>
+													</tr>
+													<tr>
+														<td id="tractorId"></td>
+														<td id="autoId"></td>
+														<td id="trycycleId"></td>
+														<td id="evehicleId"></td>
+													</tr>
+													
+												</table>
+											</div>
+											<div class="col-sm-4">
+												<div class="well text-center" style="margin-top:10px">
+													<h5>TOTAL VEHICLES</h5>
+													<h4><b id="totalRegVehicles"></b></h4>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-12 p_top_bottom m_top_bottom" style="border:1px solid lightgrey">
+										<div class="row">
+											<div class="col-sm-4">
+												<div class="well text-center" style="margin-top:10px">
+													<h4>GP</h4>
+													<h4><b id="gpId"></b></h4>
+												</div>
+											</div>
+											<div class="col-sm-4 text-center" style="padding:20px">
+												<img src="Assests/icons/swm/Group 2238.png">
+											</div>
+											<div class="col-sm-4 pull-right">
+												<div class="well text-center" style="margin-top:10px">
+													<h5>BLOCKS</h5>
+													<h4><b id="blocksId"></b></h4>
+												</div>
+											</div>
+											<div class="col-sm-12" style="">
+												<h4 style="padding:15px;color:#fff;background-color:#00A85A">RFID TRACKING<i class="glyphicon glyphicon-ok pull-right" style="color:#00A85A;background-color:#fff;padding:5px;border-radius:14px;margin-top:-5px;margin-left:5px"></i><span id="rfidTracking" class="pull-right">%</span></h4>
+											</div>
+										</div>
+										</div>
+									</div>
+							</div>
+							<div class="col-sm-6">
+								<div  class="row" style="border: 1px solid lightgrey;padding:15px">
+								<h4 style="padding:10px"><img src="Assests/icons/swm/Group 2187.png"><span>SWM-VERMI COMPOST (TROUGH-PIT)</span></h4>
+								<div class="col-sm-12 p_top_bottom m_top_bottom" style="border:1px solid lightgrey">
+									<h5><b>TOTAL SWM COLLECTION<br/><span style="font-size:10px">TON'S</span></b></h5>
+									<div class="col-sm-4">
+										<div class="media">
+											<div class="media-left">
+												<img src="Assests/icons/swm/Group 2188.png">
+											</div>
+											<div class="media-body">
+												<h5><b>HOUSES</b></h5>
+												<P>Solid Waste / Garbage</P>
+												<h4 style="m_top10"><b id="solidWasteId"></b></h4>
+												<span style="font-size:10px">TON's</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="media">
+											<div class="media-left">
+												<img src="Assests/icons/swm/Group 2193.png">
+											</div>
+											<div class="media-body">
+												<h5><b>FARMERS</b></h5>
+												<P>Cattle Dung</P>
+												<h4 style="m_top10"><b id="farmerCattleDung"></b></h4>
+												<span style="font-size:10px">TON's</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="well text-center">
+											<h4><b id="totSwmId"></b></h4>
+											<p>TON'S</p>
+										</div>
+									</div>
+								</div>
+								<h5>STAGE-I</h5>
+								<div class="col-sm-12  m_top_bottom" style="border:1px solid lightgrey">
+									<div class="row">
+										<div class="col-sm-8">
+											<p class="m_top20"><img src="Assests/icons/swm/Group 2338.png"><span style="padding-left:20px">NADAP - PITS</span></p>
+										</div>
+										<div class="col-sm-4">
+											<div class="well m_top5 text-center">
+												<h4><b id="stageOneId"></b></h4>
+												<p>TON'S</p>
+											</div>
+										</div>
+										</div>
+								</div>
+								<h5>STAGE-II</h5>
+								<div class="col-sm-12  m_top_bottom" style="border:1px solid lightgrey">
+									<div class="row">
+										<div class="col-sm-8">
+											<p class="m_top20"><img src="Assests/icons/swm/Group 2337.png"><span style="padding-left:20px">VERMI - PITS</span></p>
+										</div>
+										<div class="col-sm-4">
+											<div class="well m_top5 text-center">
+												<h4><b id="stageTwoId"></b></h4>
+												<p>TON'S</p>
+											</div>
+										</div>
+										</div>
+								</div>
+								<h5>STAGE-III</h5>
+								<div class="col-sm-12  m_top_bottom" style="border:1px solid lightgrey">
+									<div class="row">
+										<div class="col-sm-8">
+											<p class="m_top20"><img src="Assests/icons/swm/Group 2336.png"><span style="padding-left:20px">VERMI STOCK</span></p>
+										</div>
+										<div class="col-sm-4">
+											<div class="well m_top5 text-center">
+												<h4><b id="stageThreeId"></b></h4>
+												<p>TON'S</p>
+											</div>
+										</div>
+										</div>
+								</div>
+								<h5>PACKAGE STOCK DETAILS</h5>
+								<div class="col-sm-12  m_top_bottom" style="border:1px solid lightgrey">
+									<div class="row">
+											<table class="table">
+												<tr>
+													<th>1 KG<br/><span style="font-size:10px">BAGS</span></th>
+													<th>5 KG<br/><span style="font-size:10px">BAGS</span></th>
+													<th>10 KG<br/><span style="font-size:10px">BAGS</span></th>
+													<th>25 KG <br/><span style="font-size:10px">BAGS</span></th>
+													<th>50 KG <br/><span style="font-size:10px">BAGS</span></th>
+												</tr>
+												<tr>
+													<td id="onekgCount"></td>
+													<td id="fivekgCount"></td>
+													<td id="tenkgcount"></td>
+													<td id="twentyfivekgCount"></td>
+													<td id="fiftykgCount"></td>
+												</tr>
+											</table>
+									</div>
+								</div>
+							</div>
+							
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 m_top10">
 					<div id="levelWiseOverviewId"></div>
 				</div>
 			</div>
+			
+			<div class="modal fade" id="swmModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+			<h4 id="onclickDistName" style="display:inline-block"></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          
+        </div>
+        <div class="modal-body">
+			<div class="row">
+				<div id="swmModalContent"></div>
+			</div>
+          
+        </div>
+       
+      </div>
+      
+    </div>
+  </div>
 		</section>
 	</div>
 </main>

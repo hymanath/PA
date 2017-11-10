@@ -82,13 +82,14 @@ function levelWiseOverview()
 	$(".chosen-select").chosen({width :'100%'});
 	for(var i in levelWiseOverviewArr)
 	{
-		getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId');
+		getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0);
 	}
 	
 }
-function getSolidInfoLocationWise(blockid)
+function getSolidInfoLocationWise(blockid,distId)
 {
 	$("#"+blockid).html(spinner);
+	$("#swmModalContent").html(spinner);
 	var json ={
 		
 	}
@@ -102,9 +103,48 @@ function getSolidInfoLocationWise(blockid)
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		
 		if(result != null && result.length > 0)
 		{
-			buildTable(result,blockid);
+			if(distId ==0){
+				buildTable(result,blockid);
+			}else if(distId>0){
+				for(var i in result){
+					if(distId == result[i].id){
+					$("#onclickDistName").html(result[i].name);
+					$("#swmModalContent #rfidTaggedHouses").html(result[i].rfidTags);
+					$("#swmModalContent  #registeredFarmers").html(result[i].farmers);
+					$("#swmModalContent  #mgnrgsId").html(result[i].mgnres);
+					$("#swmModalContent  #prId").html(result[i].pr);
+					$("#swmModalContent  #publicId").html(result[i].publicType);
+					var totalmanPower = result[i].mgnres+result[i].pr+result[i].publicType;
+					$("#swmModalContent  #totalManPower").html(totalmanPower);
+					$("#swmModalContent  #tractorId").html(result[i].tractor);
+					$("#swmModalContent  #autoId").html(result[i].auto);
+					$("#swmModalContent  #trycycleId").html(result[i].tricycle);
+					$("#swmModalContent  #evehicleId").html(result[i].evehicle);
+					var totRegvehicles = result[i].tractor+result[i].auto+result[i].tricycle+result[i].evehicle;
+					$("#swmModalContent  #totalRegVehicles").html(totRegvehicles);
+					$("#swmModalContent  #gpId").html();
+					$("#swmModalContent  #blocksId").html(result[i].blocks);
+					$("#swmModalContent  #solidWasteId").html(result[i].houseCollecion);
+					$("#swmModalContent  #farmerCattleDung").html(result[i].farmerCollection);
+					$("#swmModalContent  #totSwmId").html(result[i].swmCollection);
+					$("#swmModalContent  #stageOneId").html(result[i].nadap);
+					$("#swmModalContent  #stageTwoId").html(result[i].vermi);
+					$("#swmModalContent  #stageThreeId").html(result[i].vermiStock);
+					$("#swmModalContent  #onekgCount").html(result[i].onekg);
+					$("#swmModalContent  #fivekgCount").html(result[i].fivekg);
+					$("#swmModalContent  #tenkgcount").html(result[i].tenkg);
+					$("#swmModalContent  #twentyfivekgCount").html(result[i].twentyFivekg);
+					$("#swmModalContent  #fiftykgCount").html(result[i].fiftykg);
+					$("#swmModalContent  #rfidTracking").html(result[i].rfidTracking);
+					}
+				} 
+				
+			}
+				
+			
 		}else{
 			$("#"+blockid).html("NO DATA AVAILABLE");
 		}
@@ -127,15 +167,16 @@ function getSolidInfoLocationWise(blockid)
 				table+='<tbody>';
 				for(var i in result)
 				{
-					table+='<tr>';
-						table+='<td>'+result[i].name+'</td>';
-						table+='<td>'+result[i].rfidTags+'</td>';
-						table+='<td>'+result[i].farmers+'</td>';
-						table+='<td>'+result[i].rfidTracking+'</td>';
-						table+='<td>'+result[i].swmCollection+'</td>';
-						table+='<td>'+result[i].nadap+'</td>';
-						table+='<td>'+result[i].vermi+'</td>';
-						table+='<td>'+result[i].vermiStock+'</td>';
+					
+					table+='<tr attr_onclick_distname="" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'">';
+						table+='<td attr_dist_name="'+result[i].name+'" attr_dist_id="'+result[i].id+'">'+result[i].name+'</td>';
+						table+='<td attr_dist_rfid="'+result[i].rfidTags+'">'+result[i].rfidTags+'</td>';
+						table+='<td attr_dist_farmer="'+result[i].farmers+'">'+result[i].farmers+'</td>';
+						table+='<td attr_dist_rfidTracking="'+result[i].rfidTracking+'">'+result[i].rfidTracking+'</td>';
+						table+='<td attr_dist_swmCollection="'+result[i].swmCollection+'">'+result[i].swmCollection+'</td>';
+						table+='<td attr_dist_nadap="'+result[i].nadap+'">'+result[i].nadap+'</td>';
+						table+='<td attr_dist_vermi="'+result[i].vermi+'">'+result[i].vermi+'</td>';
+						table+='<td attr_dist_vermiStock="'+result[i].vermiStock+'">'+result[i].vermiStock+'</td>';
 					table+='</tr>';
 				}
 				table+='</tbody>';
@@ -173,8 +214,68 @@ function getSolidInfoLocationWise(blockid)
 		});
 	}
 }
-function getSolidWasteManagementOverAllCounts(locId,locationType){
+$(document).on('click','[attr_onclick_distname]',function(){
+	var distId = $(this).attr('attr_dist_id');
 	
+	getSolidInfoLocationWise("",distId);
+	
+	var appendModal = $("#swmInfraustructure").html();
+	$("#swmModalContent").html(appendModal);
+	$("#onclickDistName").html(spinner);
+	$("#swmModalContent #rfidTaggedHouses").html(spinner);
+	$("#swmModalContent  #registeredFarmers").html(spinner);
+	$("#swmModalContent  #mgnrgsId").html(spinner);
+	$("#swmModalContent  #prId").html(spinner);
+	$("#swmModalContent  #publicId").html(spinner);
+	$("#swmModalContent  #totalManPower").html(spinner);
+	$("#swmModalContent  #tractorId").html(spinner);
+	$("#swmModalContent  #autoId").html(spinner);
+	$("#swmModalContent  #trycycleId").html(spinner);
+	$("#swmModalContent  #evehicleId").html(spinner);
+	$("#swmModalContent  #totalRegVehicles").html(spinner);
+	$("#swmModalContent  #gpId").html(spinner);
+	$("#swmModalContent  #blocksId").html(spinner);
+	$("#swmModalContent  #solidWasteId").html(spinner);
+	$("#swmModalContent  #farmerCattleDung").html(spinner);
+	$("#swmModalContent  #totSwmId").html(spinner);
+	$("#swmModalContent  #stageOneId").html(spinner);
+	$("#swmModalContent  #stageTwoId").html(spinner);
+	$("#swmModalContent  #stageThreeId").html(spinner);
+	$("#swmModalContent  #onekgCount").html(spinner);
+	$("#swmModalContent  #fivekgCount").html(spinner);
+	$("#swmModalContent  #tenkgcount").html(spinner);
+	$("#swmModalContent  #twentyfivekgCount").html(spinner);
+	$("#swmModalContent  #fiftykgCount").html(spinner);
+	$("#swmModalContent  #rfidTracking").html(spinner);
+}) 
+function getSolidWasteManagementOverAllCounts(locId,locationType){
+	$("#rfidTaggedHouses").html(spinner);
+	$("#registeredFarmers").html(spinner);
+			$("#mgnrgsId").html(spinner);
+			$("#prId").html(spinner);
+			$("#publicId").html(spinner);
+			
+			$("#totalManPower").html(spinner);
+			$("#tractorId").html(spinner);
+			$("#autoId").html(spinner);
+			$("#trycycleId").html(spinner);
+			$("#evehicleId").html(spinner);
+			
+			$("#totalRegVehicles").html(spinner);
+			$("#gpId").html(spinner);
+			$("#blocksId").html(spinner);
+			$("#solidWasteId").html(spinner);
+			$("#farmerCattleDung").html(spinner);
+			$("#totSwmId").html(spinner);
+			$("#stageOneId").html(spinner);
+			$("#stageTwoId").html(spinner);
+			$("#stageThreeId").html(spinner);
+			$("#onekgCount").html(spinner);
+			$("#fivekgCount").html(spinner);
+			$("#tenkgcount").html(spinner);
+			$("#twentyfivekgCount").html(spinner);
+			$("#fiftykgCount").html(spinner);
+			$("#rfidTracking").html(spinner);
 	var json = {
 		fromDate : "",
 		toDate : "",
@@ -191,8 +292,39 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		
 		if(result != null){
 			console.log(result);
+			//alert(result.rfidTags);
+			$("#rfidTaggedHouses").html(result.rfidTags);
+			$("#registeredFarmers").html(result.farmers);
+			$("#mgnrgsId").html(result.mgnres);
+			$("#prId").html(result.pr);
+			$("#publicId").html(result.publicType);
+			var totalmanPower = result.mgnres+result.pr+result.publicType;
+			$("#totalManPower").html(totalmanPower);
+			$("#tractorId").html(result.tractor);
+			$("#autoId").html(result.auto);
+			$("#trycycleId").html(result.tricycle);
+			$("#evehicleId").html(result.evehicle);
+			var totRegvehicles = result.tractor+result.auto+result.tricycle+result.evehicle;
+			$("#totalRegVehicles").html(totRegvehicles);
+			$("#gpId").html("<span>No data available</span>");
+			$("#blocksId").html(result.blocks);
+			$("#solidWasteId").html(result.houseCollecion);
+			$("#farmerCattleDung").html(result.farmerCollection);
+			$("#totSwmId").html(result.swmCollection);
+			$("#stageOneId").html(result.nadap);
+			$("#stageTwoId").html(result.vermi);
+			$("#stageThreeId").html(result.vermiStock);
+			$("#onekgCount").html(result.onekg);
+			$("#fivekgCount").html(result.fivekg);
+			$("#tenkgcount").html(result.tenkg);
+			$("#twentyfivekgCount").html(result.twentyFivekg);
+			$("#fiftykgCount").html(result.fiftykg);
+			$("#rfidTracking").html(result.rfidTracking);
+			
 		}
 	});
 }
+
