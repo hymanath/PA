@@ -7935,8 +7935,15 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampC
 			fromDate = sdf.parse(fromDateStr);
 			toDate = sdf.parse(toDateStr);
 		}
-		Long accessLevelValue = 0l;
-		accessLevelValue = userAccessLevelId;
+		  Long accessLevelValue = 0l;
+		  if(userAccessLevelId.longValue() == 4L){
+		   accessLevelValue = 5L;
+		  }else if(userAccessLevelId.longValue() == 5L){
+		   accessLevelValue = 4L;
+		  }else{
+			   accessLevelValue=userAccessLevelId;
+		  }
+		  
 		// take all attended cadre camp wise.
 		
 		//List<Object[]> attendedList = trainingCampAttendanceDAO.getAttendedCountForTrainingCamp(accessLevelValue, userAccessLevelValues,fromDate,toDate,enrollmentYearIds.get(0),programIdList);
