@@ -3964,6 +3964,7 @@
         </div>
 		<!--Cadre Registration ENd -->
 		<div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
+				
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
@@ -3982,6 +3983,14 @@
 						</div>
 					</div>
 					<div class="panel-body">
+						<!--<div class="row">
+							<span class="input-group pull-right dateRangePickerCls">
+								<input type="text" id="dateRangePrajaSankalpaId" class="form-control" style="width:180px"/>
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>	
+						</div>-->
 						<div class="row">
 							<div class="col-sm-12">
 								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px">Print Media</span></h4>
