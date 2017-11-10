@@ -443,6 +443,7 @@ function departmentBlockWiseDetails(divId)
 		{
 			$("#itcDateRangePickerId").val('All');
 		}
+		$("#sectorSelId").val("B");
 		$("#cmedobSectorWiseStatusId,#cmedobBlockMainDivId,#cmedobDivId").html('');
 		getCMEDOBOverview("cMeoDB",5,"Detailed");
 		getCMEDOBReportStatusWise("B");
