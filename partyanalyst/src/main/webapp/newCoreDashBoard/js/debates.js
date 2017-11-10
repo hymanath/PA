@@ -938,10 +938,10 @@ function getRolesPerformanceOfCandidate(roleId){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildRolesPerformanceOfCandidate(result,participantLocIdArry);			
+			buildRolesPerformanceOfCandidate(result,participantLocIdArry,roleId);			
 		});
 	}
-	function buildRolesPerformanceOfCandidate(result,participantLocIdArry){
+	function buildRolesPerformanceOfCandidate(result,participantLocIdArry,roleId){
 		var str='';
 		if(result !=null && result.length>0){
 			str+='<div class="table-responsive">';
@@ -955,7 +955,7 @@ function getRolesPerformanceOfCandidate(roleId){
 							str+='</td>';
 							str+='<td class="text-capital">';
 								str+='<p>debates</p>';
-								str+='<p class="text-muted"><span class="perforamnceDebateCls" attr_partyId='+result[i].candidateId+'  attr_type="debate" style="cursor:pointer;" attr_candidateId='+result[i].id+'><a>'+result[i].debateCount+'</a></span></p>';
+								str+='<p class="text-muted"><span class="perforamnceDebateCls" attr_partyId='+result[i].candidateId+'  attr_type="debate" style="cursor:pointer;" attr_candidateId='+result[i].id+' attr_performanceId='+roleId+'><a>'+result[i].debateCount+'</a></span></p>';
 							str+='</td>';
 							
 							//Digit Adding
@@ -1015,8 +1015,12 @@ function getRolesPerformanceOfCandidate(roleId){
 		}
 		
 	}
-	 $(document).on("click",".candidateRolesCls li",function(){		 
-		getRolesPerformanceOfCandidate($(this).attr('id')); 
+	 $(document).on("click",".candidateRolesCls li",function(){
+		/* if($(this).hasClass("active")){
+			$(".perforamnceDebateCls").attr("attr_performanceId",$(this).attr('id'));
+		}	 */
+		getRolesPerformanceOfCandidate($(this).attr('id'));
+			
 	 });
 	/*Notes Functionality*/
 	function displayDashboardCommentsForDebates(dashBoardComponentId){
@@ -1171,6 +1175,7 @@ function getCoreDebateBasicDetailsOfParty(partyId,type,popupLocationId){
 		}
         
       });
+	  var roleId = 0;
 	var jsObj={
 		partyId:partyId,
 		startDate:customStartDate,
@@ -1178,7 +1183,8 @@ function getCoreDebateBasicDetailsOfParty(partyId,type,popupLocationId){
 		searchType:type,
 		candidateId:0,
 		popupLocationIdArry:popupLocationId,
-		participantLocIdArry:participantLocIdArry
+		participantLocIdArry:participantLocIdArry,
+		roleId:roleId
 	}		
 	$.ajax({
 	 type: "POST",
@@ -1225,13 +1231,15 @@ function getCandidateWiseDebateDetailsOfCore(partyId,candidateId){
 		}
         
       });
+	  var roleId = 0;
 	var jsObj={
 		partyId:partyId,
 		startDate:customStartDate,
 		endDate:customEndDate,
 		candidateId:candidateId,
 		debateLocationIdArry:debateLocationIdArry,
-		participantLocIdArry:participantLocIdArry
+		participantLocIdArry:participantLocIdArry,
+		roleId:roleId
 	}		
 	$.ajax({
 	 type: "POST",
@@ -1364,6 +1372,7 @@ $(document).on("click",".perforamnceDebateCls",function(){
 	var partyId = $(this).attr("attr_partyId");
 	var type = $(this).attr("attr_type");
 	var candidateId = $(this).attr("attr_candidateId");
+	var roleId = $(this).attr("attr_performanceId");//srujana
 	$(".debateModelCls").html("");	
 	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  //var stateId =[];
@@ -1392,7 +1401,8 @@ $(document).on("click",".perforamnceDebateCls",function(){
 		searchType:type,
 		candidateId:candidateId,
 		popupLocationIdArry:debateLocationIdArry, 
-		participantLocIdArry:participantLocIdArry
+		participantLocIdArry:participantLocIdArry,
+		roleId:roleId
 	}		
 	$.ajax({
 	 type: "POST",
