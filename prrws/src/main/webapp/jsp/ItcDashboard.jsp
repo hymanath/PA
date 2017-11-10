@@ -270,7 +270,7 @@ var searchParams = new URLSearchParams(window.location.search);
 	</div>
 </div>
 <div class="modal fade" id="emeodbStatusModalId" tabindex="-1" role="dialog">
-	<div class="modal-dialog" role="document" style="width:80%;">
+	<div class="modal-dialog" role="document" style="width:99%;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
