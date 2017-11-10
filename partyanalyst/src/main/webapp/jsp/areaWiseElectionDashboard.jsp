@@ -224,7 +224,7 @@
 								</select>
 							</div>
 							<div class="col-sm-2 m_top20">
-								<input value ="true" style="display:none;" type="checkbox" name="allianceParty" id="croosVotingAllaincePartyFieldId" class="checkedMainByeType alliancePartyCls"  attr_type="cross"/><span class="f-12" style="display:none;" >WITH ALLAINCE</span>
+								<input value ="true" style="display:none;" type="checkbox" name="allianceParty" id="crroosVotingAllaincePartyFieldId" class="checkedMainByeType alliancePartyCls"  attr_type="cross"/><span class="f-12" style="display:none;" >WITH ALLAINCE</span>
 							</div>
 							<div class="col-sm-3 m_top20">
 								<button class="btn btn-success buttonClr getDetailsForCrossVotingCls">Submit</button>
