@@ -18443,5 +18443,10 @@
 		<result name="success">/jsp/janmabhoomiCommittee.jsp</result>
 		<result name="input">/jsp/loginForm.jsp?src="janmabhoomiCommitteeDashboardAction"</result>
   	</action>
+  	<action name="getDistrictWiseCommitteeDetailsAction" class="janmaBhoomiCommitteeAction"  method="getDistrictWiseCommitteeDetails">
+		<result type="json" name="success">    
+			<param name="root">janmabhoomiCommitteeVOList</param>       
+		</result>
+  	</action>
  </package>
 </struts>

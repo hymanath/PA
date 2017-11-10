@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -7,9 +9,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeVO;
 import com.itgrids.partyanalyst.service.IJanmabhoomiCommitteeService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -24,7 +25,16 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	private String task;
 	public  transient JSONObject jObj;
 	private IJanmabhoomiCommitteeService JanmabhoomiCommitteeService;
+	private List<JanmabhoomiCommitteeVO> janmabhoomiCommitteeVOList;
 	
+	
+	public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteeVOList() {
+		return janmabhoomiCommitteeVOList;
+	}
+	public void setJanmabhoomiCommitteeVOList(
+			List<JanmabhoomiCommitteeVO> janmabhoomiCommitteeVOList) {
+		this.janmabhoomiCommitteeVOList = janmabhoomiCommitteeVOList;
+	}
 	
 	public IJanmabhoomiCommitteeService getJanmabhoomiCommitteeService() {
 		return JanmabhoomiCommitteeService;
@@ -61,4 +71,16 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 		return Action.SUCCESS;
 	} 
 	
+	public String getDistrictWiseCommitteeDetails(){
+		try {
+			jObj=new JSONObject(getTask());
+			   String fromDate = jObj.getString("fromDate");
+			   String endDate = jObj.getString("endDate");
+			  janmabhoomiCommitteeVOList = JanmabhoomiCommitteeService.getDistrictWiseCommitteeDetails(fromDate,endDate);
+			  
+		} catch (Exception e) {
+			LOG.error("Excepting Occured in getDistrictWiseCommitteeDetails() of JanmaBhoomiCommitteeAction ", e);
+		}
+		return Action.SUCCESS;
+	}
 }
