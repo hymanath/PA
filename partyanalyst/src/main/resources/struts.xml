@@ -18439,5 +18439,9 @@
 			<param name="root">locationVotersVOList</param>       
 		</result>
   	</action>
+	<action name="janmabhoomiCommitteeDashboardAction" class="janmaBhoomiCommitteeAction"  method="janmabhoomiCommitteeDashboard">
+		<result name="success">/jsp/janmabhoomiCommittee.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src="janmabhoomiCommitteeDashboardAction"</result>
+  	</action>
  </package>
 </struts>

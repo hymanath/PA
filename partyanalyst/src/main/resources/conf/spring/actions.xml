@@ -1809,6 +1809,9 @@
 	</bean>	
 	<bean id="loactionDetailsDashBoardAction" class="com.itgrids.partyanalyst.web.action.LoactionDetailsDashBoardAction" singleton="false">
 			<property name="loactionDetailsDashBoardService" ref="loactionDetailsDashBoardService"/>
-	</bean>		
+	</bean>
+	<bean id="janmaBhoomiCommitteeAction" class="com.itgrids.partyanalyst.web.action.JanmaBhoomiCommitteeAction" singleton="false">
+			<property name="janmaBhoomiCommitteeAction" ref="janmaBhoomiCommitteeAction"/>
+	</bean>			
 </beans>	
 	

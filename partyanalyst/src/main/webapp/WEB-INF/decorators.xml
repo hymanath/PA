@@ -669,6 +669,7 @@
 	 <pattern>/updateActivityNewAction*</pattern>
 	 <pattern>/eventReportDashBoardAction*</pattern>
 	  <pattern>/applyQuickApprovalNominatedPostAction*</pattern>
+	  <pattern>/janmabhoomiCommittee*</pattern>
 	 
 	 <!-- debate start -->
 	 	<pattern>/debateAction*</pattern>
