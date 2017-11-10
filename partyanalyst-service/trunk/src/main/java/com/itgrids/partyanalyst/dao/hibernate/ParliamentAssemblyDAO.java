@@ -40,7 +40,7 @@ public class ParliamentAssemblyDAO extends GenericDaoHibernate<ParliamentAssembl
 	}
 	
 	public List<Object[]> getParliamentByAssemblyId(Long assemblyId){
-		Query query = getSession().createQuery(" SELECT model.parliamentAssembly.constituencyId,model.parliamentAssembly.name " +
+		Query query = getSession().createQuery(" SELECT distinct model.parliamentAssembly.constituencyId,model.parliamentAssembly.name " +
 				" FROM ParliamentAssembly model " +
 				" WHERE model.assembly.constituencyId = :assemblyId ");
 		
