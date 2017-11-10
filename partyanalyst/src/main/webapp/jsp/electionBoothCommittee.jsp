@@ -112,7 +112,7 @@
 									<div class="col-sm-4" style="margin-top:25px;margin-left:325px;">
 										<ul class="list-inline">
 											<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getBoothUserDetails();" value="VIEW" /></li>
-											<li><input type="button" id="addMembrsBtn" class="btn btn-success" style="display:none;" onclick="showSearchDiv();" value="ADD" /></li>
+											<li><input type="button" id="addMembrsBtn1" class="btn btn-success" style="display:none;" onclick="showSearchDiv();" value="ADD" /></li>
 										</ul>
 										<img id="viewDataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
 									</div>
