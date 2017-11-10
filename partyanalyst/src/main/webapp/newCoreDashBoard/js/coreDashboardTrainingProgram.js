@@ -80,13 +80,10 @@ var getDocumentWidth = $(document).width();
 		  $("#programsDtlsCntTableId").html(' ');
 		 if(result != null){
 			 buildTrainingProgramBasicDetails(result);
-		    if(result.leaderTrainingList != null && result.leaderTrainingList.length > 0){
-			    buildSpecialProgramLeaderIdWiseDetails(result);
+			 buildSpecialProgramLeaderIdWiseDetails(result);
+			 }else{
+				$("#programsDtlsCntTableId").html("NO DATA AVAILABLE");
 			 }
-		 }else{
-			$("#programsDtlsCntTableId").html("NO DATA AVAILABLE");
-			
-		 }
 		});
 	}
   function buildTrainingProgramBasicDetails(result){
@@ -3176,15 +3173,13 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 }
 
  function buildTrainingCampBatchCenterWiseDetails(result){ 
- 	if(result != null && result.trainingProgramList!=null && result.trainingProgramList.length > 0){
   var str='';
   str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
   str+='<h4 class="text-capital"><span class="headingColor">Training Center Wise Analysis</span></h4>';
   str+='<div class="panel-group trainingCenterPanel m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
-  for(var i in result.trainingProgramList)
+if(result.trainingProgramList != null && result.trainingProgramList.length> 0){		
+	for(var i in result.trainingProgramList)
 			{
-				if(result.trainingProgramList[i].totalBath != null && result.trainingProgramList[i].totalBath> 0)
-				{
 					str+='<div class="panel panel-default">';
 						str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingTrainingBatch'+i+'">';
 						if(i == 0)  
@@ -3248,23 +3243,24 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 		 {
 			 str+='</div>';
 		 }
-						str+='</div>';
-						str+='</div>';
-						str+='</div>';
+			str+='</div>';
+	        str+='</div>';
+			str+='</div>';
+	     }	
+		   str+='</div>';
+           str+='</div>';
+	}else{
+		str+="No Data Available"
+		$("#campWiseTrainingId").html(str)
 	}
-	}
- 
-   str+='</div>';
-  str+='</div>';
- 
-  $("#campWiseTrainingId").html(str);        
+   $("#campWiseTrainingId").html(str);        
  }
- } 
+ 
  function buildSpecialProgramLeaderIdWiseDetails(result){ 
 	var str='';
 		str+='<h4 class="text-capital"><span class="headingColor">Special Leader Programs</span></h4>';
 		str+='<div class="panel-group trainingCenterPanel m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
-		
+		if( result.leaderTrainingList != null && result.leaderTrainingList.length >0){
 		for(var i in result.leaderTrainingList){
 				str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingSpecialTrainingBatch'+i+'">';
@@ -3274,7 +3270,7 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 						str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSpecialTrainingBatch'+i+'" aria-controls="collapseSpecialTrainingBatch'+i+'">';
 					}
 						str+='<h4 class="text-capital">'+result.leaderTrainingList[i].name+'';
-							str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"><span>Total Batches : <b>'+result.leaderTrainingList[i].completedBatch+'</b></span> </h5>';
+							str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"><span>[Total Batches : <b>'+result.leaderTrainingList[i].completedBatch+']</b>&nbsp&nbsp&nbsp[Average Attended Per Batch : <b>'+parseInt(result.leaderTrainingList[i].totalAttenedCount)/parseInt(result.leaderTrainingList[i].completedBatch).toFixed(2)+']</b></span> </h5>';
 						str+='</h4>';
 					str+='</a>';
 				str+='</div>';
@@ -3332,6 +3328,10 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 			str+='</div>';
 			str+='</div>';
 		
+		}
+		}else{
+			str+="No Data Available"
+			$("#specialProgramLeaderId").html(str)
 		}
 	   str+='</div>';
 	  str+='</div>';	
