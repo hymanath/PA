@@ -7,6 +7,14 @@ var glStartDate = moment().startOf('month').format("DD/MM/YYYY");
 var glEndDate = moment().format("DD/MM/YYYY");
 var selectedType = $("#spikeReportTypeId li.active").attr("attr_type");
 
+
+var globalFilterType = 'Districts'; 
+var globalFilterTypeForDist = 'Districts'; 
+var globalFilterTypeForCon = 'Districts'; 
+var globalFilterTypeForMan = 'Districts'; 
+var globalBlockType = '';
+var clickCount = 0;
+
 onLoadCalls();              
 onLoadCallsForBlocks();
 function onLoadCallsForBlocks(){
@@ -174,6 +182,12 @@ function onRequestCall(){
 				filterType = $(this).attr("attr-active");
 			}
 		});
+		globalFilterType = 'Districts'; 
+		globalFilterTypeForDist = 'Districts'; 
+		globalFilterTypeForCon = 'Districts'; 
+		globalFilterTypeForMan = 'Districts'; 
+		globalBlockType = '';
+		clickCount = 0;
 		position = position + 1;
 		initializeDistrictAsDefaultFilter(filterType,position);
 	});
@@ -563,6 +577,7 @@ function collapseBlock(){
 	}
 }
 
+    
 function initializeClickEventOnTableDiv(){
 	$(".heagingForDISTRICT").addClass("collapsed");
 	$(".heagingForCONSTITUENCY").addClass("collapsed");
@@ -570,8 +585,8 @@ function initializeClickEventOnTableDiv(){
 	$("#collapseOneDISTRICT").removeClass("in");		
 	$("#collapseOneCONSTITUENCY").removeClass("in");		
 	$("#collapseOneMANDAL").removeClass("in");		
-	$(".chosenSelect").chosen();
-	
+	$(".chosenSelect").chosen();     
+	     
 	$(document).on("click",".tableMenu",function(){         
 		var blockLevel=$(this).attr("table-menu");
 		var filterType = '';
@@ -580,6 +595,71 @@ function initializeClickEventOnTableDiv(){
 				filterType = $(this).attr("attr-active");
 			}
 		});
+		
+		
+		
+		
+		clickCount=clickCount+1;
+		if(clickCount==1){
+			globalBlockType=blockLevel;
+			
+			if(blockLevel=='DISTRICT'){
+				globalFilterTypeForDist = filterType; 
+				globalFilterTypeForCon='Districts';
+				globalFilterTypeForMan='Districts';
+			}else if(blockLevel=='CONSTITUENCY'){
+				globalFilterTypeForCon = filterType; 
+				globalFilterTypeForDist = 'Districts';
+				globalFilterTypeForMan='Districts';
+			}else if(blockLevel=='MANDAL'){
+				globalFilterTypeForMan = filterType; 
+				globalFilterTypeForDist = 'Districts'; 
+				globalFilterTypeForCon='Districts';
+			}
+				
+		}else{
+			if(globalBlockType != blockLevel){
+				if(blockLevel=='DISTRICT'){
+					//alert(globalFilterTypeForDist);
+					globalFilterType = globalFilterTypeForDist;
+					globalFilterTypeForDist = filterType;
+				}else if(blockLevel=='CONSTITUENCY'){
+					//alert(globalFilterTypeForCon);
+					globalFilterType = globalFilterTypeForCon;
+					globalFilterTypeForCon = filterType;
+				}else if(blockLevel=='MANDAL'){
+					//alert(globalFilterTypeForMan);
+					globalFilterType = globalFilterTypeForMan;
+					globalFilterTypeForMan = filterType;
+				}
+				
+				globalBlockType=blockLevel;
+			}
+		}
+		
+		
+		var filterTypeTemp = '';
+		$(this).find("li").each(function(){
+			if($(this).hasClass("active")){
+				filterTypeTemp = $(this).attr("attr-active");
+			}
+		});
+		
+		if(blockLevel=='DISTRICT'){
+			globalFilterTypeForDist = filterTypeTemp; 
+		}else if(blockLevel=='CONSTITUENCY'){
+			globalFilterTypeForCon = filterType; 
+		}else if(blockLevel=='MANDAL'){
+			globalFilterTypeForMan = filterType; 
+		}
+		
+		
+		
+		if(filterType == globalFilterType){
+			return;         
+		}
+		globalFilterType=filterType;
+		
 		if(blockLevel == 'DISTRICT'){
 			if(filterType == "Districts"){
 				$("#distLevelDistrictNames").attr("attr_filter_type","Districts");
