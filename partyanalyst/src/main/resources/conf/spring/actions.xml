@@ -1811,7 +1811,7 @@
 			<property name="loactionDetailsDashBoardService" ref="loactionDetailsDashBoardService"/>
 	</bean>
 	<bean id="janmaBhoomiCommitteeAction" class="com.itgrids.partyanalyst.web.action.JanmaBhoomiCommitteeAction" singleton="false">
-			<property name="janmaBhoomiCommitteeAction" ref="janmaBhoomiCommitteeAction"/>
+			<property name="janmabhoomiCommitteeService" ref="janmabhoomiCommitteeService"/>
 	</bean>			
 </beans>	
 	
