@@ -3983,14 +3983,14 @@
 						</div>
 					</div>
 					<div class="panel-body">
-						<!--<div class="row">
+						<div class="row">
 							<span class="input-group pull-right dateRangePickerCls">
 								<input type="text" id="dateRangePrajaSankalpaId" class="form-control" style="width:180px"/>
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
 							</span>	
-						</div>-->
+						</div>
 						<div class="row">
 							<div class="col-sm-12">
 								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px">Print Media</span></h4>
