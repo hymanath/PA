@@ -1442,8 +1442,19 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(subTypeList != null && subTypeList.size()>0){
 			query.setParameterList("subTypeList", subTypeList);
 		}
-		if(constituencyId != null && constituencyId.longValue()>0l){
-			query.setParameter("constituencyId", constituencyId);
+		
+		if(lelevlId != null && lelevlId.longValue() ==5l){
+			if(constituencyId != null && constituencyId.longValue()>0l){
+				query.setParameter("constituencyId", constituencyId);
+			  }
+		}else if(lelevlId != null && lelevlId.longValue() ==6l){
+			if(constituencyId != null && constituencyId.longValue()>0l){
+				query.setParameter("constituencyId", constituencyId);
+			}
+		}else if(lelevlId != null &&  lelevlId.longValue() ==7l){
+			if(constituencyId != null && constituencyId.longValue()>0l){
+				query.setParameter("constituencyId", constituencyId);
+			  }
 		}
 		/*if(lelevlId != null && locationValue != null && locationValue.size()>0l && lelevlId.longValue()>0l){
 			query.setParameterList("locationValue", locationValue);
