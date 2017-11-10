@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -35,7 +34,7 @@ public class JbCommitteeRole extends BaseModel implements java.io.Serializable {
 	
 	private JbMemberType jbMemberType;
 	private JbRole jbRole;
-	private JbCommittee JbCommittee;
+	private JbCommittee jbCommittee;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -120,10 +119,10 @@ public class JbCommitteeRole extends BaseModel implements java.io.Serializable {
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public JbCommittee getJbCommittee() {
-		return JbCommittee;
+		return jbCommittee;
 	}
 	public void setJbCommittee(JbCommittee jbCommittee) {
-		JbCommittee = jbCommittee;
+		this.jbCommittee = jbCommittee;
 	}
 	
 	
