@@ -798,7 +798,8 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select model1.debateParticipant.party.partyId,model1.debateParticipant.party.shortName," +
-				"model1.debateRoles.debateRolesId,model1.debateRoles.aliasName,sum(model.scale),count(distinct model1.debateParticipant.debate.debateId) " +
+				"model1.debateRoles.debateRolesId,model1.debateRoles.aliasName,sum(model.scale),count(distinct model1.debateParticipant.debate.debateId), " +
+				" count(distinct model1.debateParticipant.candidate.candidateId) " +
 				"  from DebateParticipantCharcs model ,DebateParticipantRole model1 " );
 		   if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 			    str.append(" , Debate model3 ");
@@ -900,7 +901,7 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append(" select model.debateParticipant.candidate.candidateId,model.debateParticipant.candidate.lastname" +
+		str.append(" select distinct model.debateParticipant.candidate.candidateId,model.debateParticipant.candidate.lastname" +
 				",model.debateParticipant.party.partyId,model.debateParticipant.party.shortName,sum(model.scale)," +
 				" count(distinct model.debateParticipant.debate.debateId) " +
 				" from DebateParticipantCharcs model ,DebateParticipantRole model1 " );
@@ -910,7 +911,9 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		str.append(" where model.debateParticipant.debateParticipantId = model1.debateParticipant.debateParticipantId " +
 				" and model.characteristics.isDeleted = 'N' " +
 				" and model1.debateRoles.isDeleted ='N' " +
-				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+				" and model.debateParticipant.party.isNewsPortal = 'Y'" +
+				" and model.debateParticipant.candidate.isDebateCandidate = 'Y' " +
+				" and model.debateParticipant.debate.isDeleted = 'N' " );
 		 if(participantLocationIdList != null && participantLocationIdList.size() > 0){
 		      str.append(" and model.debateParticipant.debateParticipantId = model3.debateParticipantId  ");
 		    }
@@ -1041,7 +1044,8 @@ public List<Object[]> getRoleBasedOthersPerformanceCohort(Date startDate,Date en
 	StringBuilder str = new StringBuilder();
 	
 	str.append(" select model1.debateParticipant.party.partyId,model1.debateParticipant.party.shortName," +
-			"model1.debateRoles.debateRolesId,model1.debateRoles.aliasName,sum(model.scale),count(distinct model1.debateParticipant.debate.debateId) " +
+			"model1.debateRoles.debateRolesId,model1.debateRoles.aliasName,sum(model.scale),count(distinct model1.debateParticipant.debate.debateId)," +
+			" count(distinct model1.debateParticipant.candidate.candidateId) " +
 			"  from DebateParticipantCharcs model ,DebateParticipantRole model1 " );
 	   if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 		    str.append(" , Debate model3 ");
@@ -1091,7 +1095,8 @@ public List<Object[]> getScaleOfCandidateOthersNew(Date startDate,Date endDate,L
 	str.append(" where model.debateParticipant.debateParticipantId = model1.debateParticipant.debateParticipantId " +
 			" and model.characteristics.isDeleted = 'N' " +
 			" and model1.debateRoles.isDeleted ='N' " +
-			" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+			" and model.debateParticipant.party.isNewsPortal = 'Y'" +
+			" and model.debateParticipant.debate.isDeleted = 'N' " );
 	 if(participantLocationIdList != null && participantLocationIdList.size() > 0){
 	      str.append(" and model.debateParticipant.debateParticipantId = model3.debateParticipantId  ");
 	    }
@@ -1129,9 +1134,9 @@ public List<Object[]> getScaleOfCandidateOthersNew(Date startDate,Date endDate,L
 		if(participantLocationIdList != null && participantLocationIdList.size() > 0 ){
 			query.setParameterList("participantLocationIdList", participantLocationIdList);
 		}
-		if(debateLocationIdList != null && debateLocationIdList.size()>0){
+		/*if(debateLocationIdList != null && debateLocationIdList.size()>0){
 			query.setParameterList("debateLocationIdList", debateLocationIdList);
-		}
+		}*/
 		return query.list(); 		
 
 }
