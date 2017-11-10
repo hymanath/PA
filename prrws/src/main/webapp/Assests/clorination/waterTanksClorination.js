@@ -204,7 +204,7 @@ function buildlevelWiseData(divId,sessionToken)
 						str+='<div class="col-sm-4 border-right">';
 							str+='<h5 class="font_weight">Chlorinated</h5>';
 							if(result.clorinated !=null && result.clorinated>0){
-								str+='<h4  class="m_top10 font_weight">'+result.clorinated+' <small style="color:green;">'+clorinatedMainPerc+' %</small></h4>';
+								str+='<h4  class="m_top10 font_weight">'+result.clorinated+' <small style="color:red;">'+clorinatedMainPerc+' %</small></h4>';
 							}else{
 								str+='<h4  class="m_top10 font_weight">0</h4>';
 							}
@@ -212,7 +212,7 @@ function buildlevelWiseData(divId,sessionToken)
 						str+='<div class="col-sm-4">';
 							str+='<h5 class="font_weight">Not Chlorinated</h5>';
 							if(result.notClorinated !=null && result.notClorinated>0){
-								str+='<h4 class="m_top10 font_weight">'+result.notClorinated+' <small style="color:green;">'+notClorinatedMainPerc+' %</small></h4>';
+								str+='<h4 class="m_top10 font_weight">'+result.notClorinated+' <small style="color:red;">'+notClorinatedMainPerc+' %</small></h4>';
 							}else{
 								str+='<h4 class="m_top10 font_weight">0</h4>';
 							}

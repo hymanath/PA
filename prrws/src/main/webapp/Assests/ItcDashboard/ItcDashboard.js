@@ -2560,34 +2560,49 @@ function getCMeoDBSectorWiseStatusDetais(){
 
 function buildEOfcDepartWiseOverviewDetails(result){
 	var str = '';
+	str+='<div class="row">';	
+		str+='<div class="col-sm-10">';	
+			str+='<h4 class="text-capital font_weight text-center">Information TECHNOLOGY Electronics And Communication Department</h4>';
+		str+='</div>';
+		str+='<div class="col-sm-2">';	
+			str+='<button type="button" class="btn btn-default btn-sm hieraricalViewCls pull-right hieraricalButtonShowCls" attr_type="show" >Show Graph View</button>';
+		str+='</div>';
+	str+='</div>';
 	str+='<div class="col-sm-12">';	
-		str+='<button type="button" class="btn btn-default btn-sm hieraricalViewCls pull-right hieraricalButtonShowCls" attr_type="show" >Show Graph View</button>';
+			str+='<ul class="list-inline pull-right">';	
+				str+='<li><span class="roundCircleITC" style="background-color:#00af50"></span> 80% and above</li>';	
+				str+='<li><span class="roundCircleITC" style="background-color:#ffba00"></span> 50% - 79%</li>';	
+				str+='<li><span class="roundCircleITC" style="background-color:#ff0000"></span> 0% - 49%&nbsp;&nbsp;&nbsp;</li>';	
+			str+='</ul>  ';	
 	str+='</div>';
 	for(var i in result){
-		if(result[i].departmentName == "ITE & C" || result[i].departmentName == "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
+		if(result[i].departmentName == "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
 			str+='<div class="col-sm-12 m_top20">';	
 				str+='<div class="table-responsive">';
 					str+='<table class="table table-bordered">';
 						
 							str+='<tr>';
-								if(result[i].departmentName == "ITE & C"){
-									str+='<th rowspan="2" style="vertical-align: middle; text-align: center;" >ITE & C</th>';
-								}else{
-									str+='<th rowspan="2" style="vertical-align: middle; text-align: center;cursor:pointer;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'">IT - SECRETARIAT</a></th>';
-								}
+								str+='<th rowspan="2" style="vertical-align: middle; text-align: center;cursor:pointer;min-width:409px;background-color:#FFFFCC;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'" style="color:#A349A4">SECRETARIAT DEPARTMENT</a></th>';
+								
 								str+='<th style="background-color:#B2DFDB">Total</th>';
 								str+='<th style="background-color:#FBACAC">Total Pendency</th>';
 								str+='<th style="background-color:#FBACAC">%</th>';
-								str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
-								str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
-								str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
-								str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
-								str+='<th style="background-color:#FDCECE"> > 60 days</th>';
+								str+='<th style="background-color:#FFFFCC">0 - 7 days</th>';
+								str+='<th style="background-color:#FFFFCC">8 - 15 days</th>';
+								str+='<th style="background-color:#FFFFCC">16 - 30 days</th>';
+								str+='<th style="background-color:#FFFFCC">31 - 60 days</th>';
+								str+='<th style="background-color:#FFFFCC"> > 60 days</th>';
 							str+='</tr>';
 							str+='<tr>';
 								str+='<td>'+result[i].created+'</td>';
 								str+='<td>'+result[i].totalCount+'</td>';
-								str+='<td>'+result[i].percentage+'</td>';
+								if(result[i].percentage < 50){
+									str+='<td style="background-color:#FF0000;color:#fff">'+result[i].percentage+'</td>';
+								}else if(result[i].percentage >= 50 && result[i].percentage < 80){
+									str+='<td style="background-color:#FFBA00;color:#fff">'+result[i].percentage+'</td>';
+								}else if(result[i].percentage >= 80){
+									str+='<td style="background-color:#00AF50;color:#fff">'+result[i].percentage+'</td>';
+								}
 								str+='<td>'+result[i].zeroToSeven+'</td>';
 								str+='<td >'+result[i].eightToFifteen+'</td>';
 								str+='<td>'+result[i].sixteenToThirty+'</td>';
@@ -2603,33 +2618,53 @@ function buildEOfcDepartWiseOverviewDetails(result){
 	
 	str+='<div class="col-sm-12 m_top20">';	
 		str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered">';
+			str+='<table class="table table-bordered table_ITC">';
 					str+='<tr>';
-						str+='<th>HODS</th>';
+						str+='<th style="background-color:#FFFFCC;color:#A349A4;text-align:center">HODS</th>';
 						str+='<th style="background-color:#B2DFDB">Total</th>';
 						str+='<th style="background-color:#FBACAC">Total Pendency</th>';
 						str+='<th style="background-color:#FBACAC">%</th>';
-						str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
-						str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
-						str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
-						str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
-						str+='<th style="background-color:#FDCECE"> > 60 days</th>';
+						str+='<th style="background-color:#FFFFCC">0 - 7 days</th>';
+						str+='<th style="background-color:#FFFFCC">8 - 15 days</th>';
+						str+='<th style="background-color:#FFFFCC">16 - 30 days</th>';
+						str+='<th style="background-color:#FFFFCC">31 - 60 days</th>';
+						str+='<th style="background-color:#FFFFCC"> > 60 days</th>';
 					str+='</tr>';
 					for(var i in result){
 						if(result[i].departmentName != "ITE & C" && result[i].departmentName != "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
 							str+='<tr>';
-								str+='<td style="cursor:pointer;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'">'+result[i].departmentName+'</a></td>';
-								str+='<td>'+result[i].created+'</td>';
-								str+='<td>'+result[i].totalCount+'</td>';
-								str+='<td>'+result[i].percentage+'</td>';
-								str+='<td>'+result[i].zeroToSeven+'</td>';
+								str+='<td style="cursor:pointer;background-color:#f8edf8;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'">'+result[i].departmentName+'</a></td>';
+								str+='<td >'+result[i].created+'</td>';
+								str+='<td >'+result[i].totalCount+'</td>';
+								if(result[i].percentage < 50){
+									str+='<td style="background-color:#FF0000;color:#fff">'+result[i].percentage+'</td>';
+								}else if(result[i].percentage >= 50 && result[i].percentage < 80){
+									str+='<td style="background-color:#FFBA00;color:#fff">'+result[i].percentage+'</td>';
+								}else if(result[i].percentage >= 80){
+									str+='<td style="background-color:#00AF50;color:#fff">'+result[i].percentage+'</td>';
+								}
+								str+='<td >'+result[i].zeroToSeven+'</td>';
 								str+='<td >'+result[i].eightToFifteen+'</td>';
-								str+='<td>'+result[i].sixteenToThirty+'</td>';
+								str+='<td >'+result[i].sixteenToThirty+'</td>';
 								str+='<td >'+result[i].thirtyoneToSixty+'</td>';
-								str+='<td>'+result[i].aboveSixty+'</td>';
+								str+='<td >'+result[i].aboveSixty+'</td>';
 							str+='</tr>';
 						}
-						
+					}
+					for(var i in result){
+						if(result[i].departmentName == "ITE & C"){
+							str+='<tr>';
+								str+='<td style="text-align: right;" class="font_weight">GRAND TOTAL</td>';
+								str+='<td class="font_weight">'+result[i].created+'</td>';
+								str+='<td class="font_weight">'+result[i].totalCount+'</td>';
+								str+='<td class="font_weight">'+result[i].percentage+'</td>';
+								str+='<td class="font_weight">'+result[i].zeroToSeven+'</td>';
+								str+='<td class="font_weight">'+result[i].eightToFifteen+'</td>';
+								str+='<td class="font_weight">'+result[i].sixteenToThirty+'</td>';
+								str+='<td class="font_weight">'+result[i].thirtyoneToSixty+'</td>';
+								str+='<td class="font_weight">'+result[i].aboveSixty+'</td>';
+							str+='</tr>';
+						}
 					}
 			str+='</table>';
 		str+='</div>';
