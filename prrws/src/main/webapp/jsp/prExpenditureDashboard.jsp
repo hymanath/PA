@@ -366,10 +366,10 @@
 										<div ng-show="{{cntrl.ngTableHideShow[$index]}}">
 											<table ng-table="{{cntrl.ngTableArr[$index]}}" class="table table-condensed table-bordered table-striped" show-filter="false">
 												<tr ng-repeat="data in $data | filter:searchValue">   
-													<td title="'LocationName'" filter="{locationName}" sortable="'locationName'">{{data.locationName}}</td>   
-													<td title="'Grossamount'"  filter="{grossAmount}" sortable="'grossAmount'">{{data.grossAmount}}</td>
+													<td title="'Location Name'" filter="{locationName}" sortable="'locationName'">{{data.locationName}}</td>   
+													<td title="'Gross Amount'"  filter="{grossAmount}" sortable="'grossAmount'">{{data.grossAmount}}</td>
 													<td title="'Deductions'"   filter="{deductions}" sortable="'deductions'"> {{data.deductions}}</td>
-													<td title="'Netamount'"    filter="{netAmount}" sortable="'netAmount'"> {{data.netAmount}}</td>
+													<td title="'Net Amount'"    filter="{netAmount}" sortable="'netAmount'"> {{data.netAmount}}</td>
 													</tr>          
 												</table>     
 											</div>
