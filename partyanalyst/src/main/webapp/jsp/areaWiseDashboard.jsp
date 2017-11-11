@@ -41,7 +41,7 @@
 <div class="black-border">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-12">
+			<div class="col-sm-10">
 				<ol class="breadcrumb m_top10" id="getMenuLocations" menu-location-state="1" menu-location-district="" menu-location-constituency="" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="2" menu-location-parliament="" menu-location-levelName="state" menu-location-name="">
 					<li><i class="fa fa-align-left fa-1x " id="menuHeaderId"></i> <span menu-name="state" levelId="2" locationId="1" class="stateMenuName">Andhra Pradesh</span></li>
 					<li style="display:none"><span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capitalize"></span></li>
@@ -72,6 +72,11 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="col-sm-2">
+			<h5 style="text-align: right" class="m_top10">
+				<a href="newlogoutAction.action" style="color:#fff"><i class="fa fa-sign-out floatLeft"></i><span>&nbsp;&nbsp;Sign-out</span></a>
+			</h5>
 			</div>
 		</div>
 	</div>
