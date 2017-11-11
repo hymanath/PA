@@ -1641,7 +1641,7 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 	
 	var withAllance="false";
 	if($('#croosVotingAllaincePartyFieldId').is(':checked')){
-		//withAllance="true";
+		withAllance="true";
 	}
 	var locatinValues=[];
 	if(parliamentId > 0)
@@ -2076,7 +2076,7 @@ $(document).on("click",".votingDtsClickCls",function(){
 		var attr_partcipation_id = $(this).attr("attr_partcipation_id");
 		electionYrValForCross=[];
 		electionYrValForCross.push($("#electionYearForCrossId").val())
-		var partyIdForCross = $("#partyIdForStrongBlock").val();
+		var partyIdForCross = $("#partyIdForCrossBlock").val();
 		
 		var electionScopeVal=0;
 		 $('.electionTypeWiseCrossCls').each(function(){
