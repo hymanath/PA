@@ -2105,7 +2105,8 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 						assemblyVO.setLocationId(availableAssemblyIdsList.get(0));
 						if(parliamentDtlsMap.get(parliamentVO.getLocationId()) != null){
 							assemblyVO.setLocationName(parliamentDtlsMap.get(parliamentVO.getLocationId()).getPartyName());
-							assemblyVO.setLocationName( commonMethodsUtilService.getStringValueForObject(objects[3]) + " "+locationTypeStr+" ("+assemblyVO.getLocationName()+" Parliament)");
+							//assemblyVO.setLocationName( commonMethodsUtilService.getStringValueForObject(objects[3]) + " "+locationTypeStr+" ("+assemblyVO.getLocationName()+" Parliament)");
+							assemblyVO.setLocationName(assemblyVO.getLocationName()+" Parliament");
 						}
 						parliamentVO.setLocationId(availableAssemblyIdsList.get(0));//mandal/muncipality/panchayat
 						parliamentVO.getList().add(assemblyVO);
@@ -2177,12 +2178,30 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 					Long assembliId = commonMethodsUtilService.getLongValueForObject(param[1]);
 					Long partyId =commonMethodsUtilService.getLongValueForObject(param[6]);
 					String partyName = commonMethodsUtilService.getStringValueForObject(param[7]);
+					Long tempElectionId = commonMethodsUtilService.getLongValueForObject(param[3]);
 					
 					if(assembliId != null && assembliId.longValue()>0L){
 						Long earnedCount = partyAssemblyWiseParliamentEarnedVotesMap.get(assembliId);
 						if(earnedCount == null)
 							earnedCount=0L; 
 						if(commonMethodsUtilService.isMapValid(alliancedPartiesWithGroupIdMap)){
+							
+							List<String> alliancePartyIdNameList  = findMatchedPartyId(alliancedPartiesWithGroupIdMap,tempElectionId,partyId);
+							if(commonMethodsUtilService.isListOrSetValid(alliancePartyIdNameList)){
+								
+								partyId = Long.valueOf(alliancePartyIdNameList.get(0));
+								partyName = alliancePartyIdNameList.get(1);
+								
+								List<String> selectedAlliancePartyIdNameList  = findMatchedPartyId(alliancedPartiesWithGroupIdMap,tempElectionId,partyIdsList.get(0));
+								if(commonMethodsUtilService.isListOrSetValid(selectedAlliancePartyIdNameList)){
+									Long tempPartyId = Long.valueOf(selectedAlliancePartyIdNameList.get(0));
+									if(tempPartyId.longValue() == partyId.longValue()){
+										partyIdsList1.add(partyId);
+										partyNameStr = alliancePartyIdNameList.get(2);
+									}
+								}
+							}
+							
 							if(partyName != null && partyName.trim().length()>0 && partyNameStr.contains(partyName)){
 								partyAssemblyWiseParliamentEarnedVotesMap.put(assembliId, earnedCount.longValue()+commonMethodsUtilService.getLongValueForObject(param[9]));
 							}
@@ -2230,7 +2249,7 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 							partyName = partyIdNamesListMap.get(partyId);
 						
 						Long tempElectionId = commonMethodsUtilService.getLongValueForObject(param[3]);
-						if(selectedPartyId.longValue() == partyId.longValue()){
+						//if(selectedPartyId.longValue() == partyId.longValue()){
 							List<String> alliancePartyIdNameList  = findMatchedPartyId(alliancedPartiesWithGroupIdMap,tempElectionId,partyId);
 							if(commonMethodsUtilService.isListOrSetValid(alliancePartyIdNameList)){
 								
@@ -2246,7 +2265,7 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 									}
 								}
 							}
-						}
+						//}
 						
 						
 						ElectionInformationVO parliamentVO =parliamentMap.get(parliamntId);
@@ -2278,7 +2297,7 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 						String partyName = commonMethodsUtilService.getStringValueForObject(param[7]);
 						if(partyName != null && partyName.trim().length()==0)
 							partyName = partyIdNamesListMap.get(partyId);
-						if(selectedPartyId.longValue() == partyId.longValue()){
+						//if(selectedPartyId.longValue() == partyId.longValue()){
 							if(!commonMethodsUtilService.isListOrSetValid(locationValues) && locationValues.size()==1){
 								Long tempElectionId = commonMethodsUtilService.getLongValueForObject(param[3]);
 								List<String> alliancePartyIdNameList  = findMatchedPartyId(alliancedPartiesWithGroupIdMap,tempElectionId,partyId);
@@ -2327,7 +2346,7 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 									}
 								}
 							}
-						}
+						//}
 						
 						if(commonMethodsUtilService.isListOrSetValid(partyIdsList1)){
 							partyIdsList.clear();

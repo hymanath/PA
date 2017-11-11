@@ -909,6 +909,21 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		 if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.size()>0l && (locationTypeId.longValue() !=2L && locationTypeId != 10l)){
 	    	  query.setParameterList("locationValue", locationValue);
 	      }
+		 
+		 	if (locationTypeId.longValue() == 3l) {
+			  query.setParameterList("locationValue", locationValue);
+			} else if (locationTypeId.longValue() == 4l || locationTypeId.longValue() == 10l ) {
+				  query.setParameterList("locationValue", locationValue);
+			}else if (locationTypeId.longValue() == 5l ) {
+				  query.setParameterList("locationValue", locationValue);
+			}
+			else if (locationTypeId.longValue() == 6l ) {
+				  query.setParameterList("locationValue", locationValue);
+			}
+			else if (locationTypeId.longValue() == 7l ) {
+				  query.setParameterList("locationValue", locationValue);
+			}
+		 
 	      if(electionScopeIds != null && electionScopeIds.size()>0){
 	    	  query.setParameterList("electionScopeIds",electionScopeIds);
 	      }
