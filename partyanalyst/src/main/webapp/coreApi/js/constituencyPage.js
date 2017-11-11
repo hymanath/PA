@@ -273,7 +273,12 @@ function onLoadAjaxCalls()
 	getLocationWiseMeetingsCountDetails(1);
 	getLocationWiseMeetingsCountDetails(2);
 	//getLocationWiseMeetingsCountDetails(3);
-	getLocationWiseSpecialMeetingsMeetingsExpanction(3,0);
+	if(locationLevelId == "2" || locationLevelId == "3"){
+		getLocationWiseSpecialMeetingsMeetingsExpanction(3,0);
+	}else{
+		$("#specialMeetingsBlockId").html('');
+	}
+	
 	 //candidate Profiles 1st block
 	if(locationLevelId == "2"){
 		getPartyWiseMPandMLACandidatesCounts();
@@ -447,7 +452,9 @@ function onLoadClicks()
 		getLocationWiseMeetingsCountDetails(1);	
 		getLocationWiseMeetingsCountDetails(2);
 		//getLocationWiseMeetingsCountDetails(3);
-		getLocationWiseSpecialMeetingsMeetingsExpanction(3,0);
+		if(locationLevelId == "2" || locationLevelId == "3"){
+			getLocationWiseSpecialMeetingsMeetingsExpanction(3,0);
+		}
 	});
 	//Tours
 	$('#tourNewDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
@@ -640,7 +647,9 @@ function onLoadClicks()
 			getLocationWiseMeetingsCountDetails(1);
 			getLocationWiseMeetingsCountDetails(2);
 			//getLocationWiseMeetingsCountDetails(3);
-			getLocationWiseSpecialMeetingsMeetingsExpanction(3,0);
+			if(locationLevelId == "2" || locationLevelId == "3"){
+				getLocationWiseSpecialMeetingsMeetingsExpanction(3,0);
+			}
 		}else if(blockName == 'tours')
 		{
 			getLocationWiseTourMembersComplainceDtls();
@@ -6130,7 +6139,7 @@ function getLevelWisePostsOverView(){
 							str+='</tr>';
 							str+='<tr>';
 								str+='<td class="text-right">';
-									str+='<p class="f-12">G.O Issued</p>';
+									str+='<p class="f-12">Completed/G.O Issued</p>';
 								str+='</td>';
 								str+='<td>';
 									str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].goIssuedPer+' %">';
@@ -7792,16 +7801,20 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 		if(result !=null && result.levelList !=null && result.levelList.length>0 && partyMeetingTypeId > 0){
 			return buildLocationWiseSpecialMeetingsMeetingsExpanction(result,partyMeetingMainTypeId,partyMeetingTypeId)
 		}
-		if(partyMeetingTypeId == 0)
-		{
-			return buildData(result);
+		if(result !=null && result.levelList !=null && result.levelList.length>0){
+			if(partyMeetingTypeId == 0)
+			{
+				return buildData(result);
+			}
+		}else{
+			$("#specialMeetingsBlockId").html('');
 		}
 		
 	});
 	function buildData(result)
 	{
 		var str='';
-		str+='<div class="col-sm-12">';
+		str+='<div class="col-sm-12 specialMeetingClassHideShow">';
 			str+='<h3 class="theme-title-color">Special Meetings</h3>';
 			str+='<small>NOTE: Showing Information "Participantes" from this location Level Only</small>';
 			str+='<div class="scrollListMeeting">';
