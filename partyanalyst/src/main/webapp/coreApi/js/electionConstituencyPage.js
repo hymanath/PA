@@ -41,6 +41,7 @@ function onLoadCalls()
 {
 	$(".chosen-select").chosen();
 	$("#mianHeadingId").html('');
+	$(".rangeWiseTooltipCls").tooltip();
 	$("#mianHeadingId").html((locationName)+"  "+locationLevelName);
 	if(locationLevelId < "5"){
 		$(".searchLevelCls").show();
@@ -863,6 +864,9 @@ function getElectionYears(type,typeLoad){
 var searchParams = new URLSearchParams(window.location.search);
  searchParams = searchParams.get("constituencyId");
 function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,electionScopeValArr){
+	if(locationLevelId !="2" && locationLevelId !="3" && locationLevelId !="10"){
+		return;
+	}
 	
 	$("#levelWiseCandidatesResultsDivId").html(spinner);
 	
