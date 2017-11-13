@@ -108,15 +108,16 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	    			  }
 	    			  if(confirmed.equalsIgnoreCase("Y") && completedDate!=""){
 	    				  vo.setTotalApprovedCommitteeCnt(vo.getTotalApprovedCommitteeCnt()+1);
-	    			  }	 			  
-	    			  		  
-	    		      }
+	    			  }	 
+	    			  vo.setTotalCommitteeCnt(vo.getTotalCommitteeCnt()+1);
+	    			  }
 	    		  if(commonMethodsUtilService.isMapValid(locationDtlsMap)){
 	    			  for(Entry<Long,JanmabhoomiCommitteeVO> entry : locationDtlsMap.entrySet()){ 
 	    				  JanmabhoomiCommitteeVO returnVo=entry.getValue(); 
 	    				  mainVO.setTotalApprovedCommitteeCnt(mainVO.getTotalApprovedCommitteeCnt()+returnVo.getTotalApprovedCommitteeCnt());
 	    				  mainVO.setInprogressCommitteeCnt(mainVO.getInprogressCommitteeCnt()+returnVo.getInprogressCommitteeCnt());
 	    				  mainVO.setNotStartedCommitteeCnt(mainVO.getNotStartedCommitteeCnt()+returnVo.getNotStartedCommitteeCnt());
+	    				  mainVO.setTotalCommitteeCnt(mainVO.getTotalCommitteeCnt()+returnVo.getTotalCommitteeCnt());
 	    				  mainVO.getPositinsList().add(returnVo);
 	    			  }			  
 	    	   	      }
