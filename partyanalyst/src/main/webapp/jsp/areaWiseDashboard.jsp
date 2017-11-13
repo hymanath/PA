@@ -542,7 +542,8 @@
 					<div class="col-md-8">
 						<h4 class="modal-title text-capitalize" id="headingTitle">TITLE</h4>
 					</div>
-					<div class="col-sm-3 pull-right">
+					<div class="col-md-3" id="modalHeadingTitle"></div>
+					<div class="col-sm-1 pull-right">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</div>
 				</div>

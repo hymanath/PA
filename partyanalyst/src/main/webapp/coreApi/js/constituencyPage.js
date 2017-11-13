@@ -848,6 +848,15 @@ function onLoadClicks()
 		var casteName =  $(this).attr("attr_caste_name");
 		var enrollmentId =  $("#enrollmentCasteId").val();
 		var publicationId = $("#publicationCasteId").val();
+		if(locationLevelId ==6){
+		   $(".casteResultTypeCls").hide();
+		}else{
+			var str='<ul class="nav navbar-nav list_inline tableMenu casteResultTypeCls" style="padding:0px">';
+				str+='<li class="active casteResultMarginCls" attr_caste_group_id='+casteGroupId+' attr_caste_id='+casteId+' attr_enrollmentId='+enrollmentId+' attr_publication_id=22 attr_caste_name='+casteName+'  id=cadreNVoterAgeWiseId>Age Wise</li>';
+				str+='<li class="casteResultMarginCls" attr_caste_id='+casteId+' attr_enrollmentId='+enrollmentId+' attr_publication_id=22 id=cadreNVoterLocationWiseId attr_caste_name='+casteName+'>Location Wise</li></ul>';
+
+			$("#modalHeadingTitle").html(str);
+		}
 		getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,enrollmentId,22,casteName)
 	});
 	$(document).on("change","#enrollmentCadreId",function(){
@@ -8845,3 +8854,110 @@ function buildlevelWiseMeetingDetails(result,searchType,meeting_levelId,partyMee
 		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 	});
 }
+
+function getLocationWiseVoterNCadreCountsAction(casteId,enrollmentYearId,publicationDateId,casteName){
+	
+	  var locationValuesArr =[];
+	  locationValuesArr.push(locationLevelVal);
+	  var jsObj={
+		"locationTypeId"	:locationLevelId,
+		"locationValuesArr"	:locationValuesArr,
+		"casteId"			:casteId,
+		"enrollmentYearId"	:enrollmentYearId,
+		"publicationDateId"	:publicationDateId 
+	  }
+	   $.ajax({
+		  type : "POST",
+		  url : "getLocationWiseVoterNCadreCountsAction.action",
+		  dataType : 'json',
+		  data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){ 
+			buildLocationWiseVNCadreCountTable(casteName,result);
+		});
+}
+
+function buildLocationWiseVNCadreCountTable(casteName,result){
+	  if(result != null && result.length > 0){
+	  var str="";
+	  $("#headingTitle").html('<h4 class="panel-title" style="padding: 5px; font-weight: 600;"><span class="text-capital">'+casteName+' Caste</span> - <span class="text-capitalize">Location Wise voter and cadre information</span></h4>')
+		str+='<p class="text-muted text-right">';
+			str+='<span class="f-11"><i class="glyphicon glyphicon-info-sign"></i> _(C) = Cadres ; _(V) = Voter</span>';
+		str+='</p>';
+	    str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered table-condensed table-striped table-hover m_top10" id="dataTablecasteCategoryModal">';
+					str+='<thead>';
+						str+='<tr>';
+						    if(locationLevelId == 2){
+								str+='<th>District Name</th>';
+							}else if(locationLevelId == 3 || locationLevelId == 10){
+								str+='<th>Constituency Name</th>';
+							}else if(locationLevelId == 4){
+								str+='<th>Mandal Name</th>';
+							}else if(locationLevelId == 5){
+								str+='<th>Panchayat Name</th>';
+							}
+							str+='<th>Total Voters</th>';
+							str+='<th>%</th>';
+							str+='<th>Male(V)</th>';
+							str+='<th>%</th>';
+							str+='<th>FeMale(V)</th>';
+							str+='<th>%</th>';
+							str+='<th>Total Cadre</th>';
+							str+='<th>%</th>';
+							str+='<th>Male(C) </th>';
+							str+='<th>%</th>';
+							str+='<th>FeMale(C)</th>';
+							str+='<th>%</th>';
+						str+='</tr>';
+					str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].locationName+'</td>';
+						str+='<td>'+result[i].totalVoters+'</td>';
+						str+='<td class="text-success">'+result[i].totalVotersPerc+'</td>';
+						str+='<td>'+result[i].maleVoters+'</td>';
+						str+='<td class="text-success">'+result[i].maleVotersPerc+'</td>';
+						str+='<td>'+result[i].femaleVoters+'</td>';
+						str+='<td class="text-success">'+result[i].femaleVotersPerc+'</td>';
+						str+='<td>'+result[i].totalCadres+'</td>';
+						str+='<td class="text-success">'+result[i].totalCadrePerc+'</td>';
+						str+='<td>'+result[i].maleCadres+'</td>';
+						str+='<td class="text-success">'+result[i].maleCadrePerc+'</td>';
+						str+='<td>'+result[i].femaleCadres+'</td>';
+						str+='<td class="text-success">'+result[i].femaleCadrePerc+'</td>';
+					str+='</tr>';
+				}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+			$("#casteCategoryModalDivId").html(str);
+			$("#dataTablecasteCategoryModal").dataTable({
+				"iDisplayLength": 10,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			});
+	  }else{
+			$("#casteCategoryModalDivId").html("No Data Available.");
+		}
+}
+$(document).on('click','#cadreNVoterAgeWiseId',function(){ 
+      $(".casteResultTypeCls li").removeClass('active');
+		$(this).addClass('active');
+			var casteGroupId =  $(this).attr("attr_caste_group_id");
+			var casteId =  $(this).attr("attr_caste_id");
+			var casteName =  $(this).attr("attr_caste_name");
+			var enrollmentId =  $("#enrollmentCasteId").val();
+			var publicationId = $("#publicationCasteId").val();
+			getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,enrollmentId,22,casteName)
+});
+$(document).on('click','#cadreNVoterLocationWiseId',function(){ 
+      $("#casteCategoryModalDivId").html(spinner);
+		$(".casteResultTypeCls li").removeClass('active');
+		$(this).addClass('active');
+			var casteId =  $(this).attr("attr_caste_id");
+			var enrollmentId =  $("#enrollmentCasteId").val();
+			var publicationId = $("#publicationCasteId").val();
+			var casteName =  $(this).attr("attr_caste_name");
+			getLocationWiseVoterNCadreCountsAction(casteId,enrollmentId,22,casteName)
+});
