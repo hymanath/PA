@@ -18453,5 +18453,10 @@
 			<param name="root">janmabhoomiCommitteeVO</param>       
 		</result>
   	</action>
+  	<action name="getJanmabhoomiCommitteeOverviewAction" class="janmaBhoomiCommitteeAction"  method="getJanmabhoomiCommitteeOverview">
+		<result type="json" name="success">    
+			<param name="root">janmabhoomiCommitteeMemberVO</param>       
+		</result>
+  	</action>
  </package>
 </struts>
