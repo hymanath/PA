@@ -1743,16 +1743,16 @@
 									if(i == 0)
 									{
 										if(blocksArr[i].id == "jalavani"){
-											tabBlock+='<li class="active" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><span>'+blocksArr[i].name+'</span></a></li>';
+											tabBlock+='<li block-levels="'+blocksArr[i].id+'" class="active" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><span>'+blocksArr[i].name+'</span></a></li>';
 										}else{
-											tabBlock+='<li class="active" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+											tabBlock+='<li block-levels="'+blocksArr[i].id+'" class="active" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
 										}
 										
 									}else{
 										if(blocksArr[i].id == "jalavani"){
-											tabBlock+='<li tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><span>'+blocksArr[i].name+'</span></a></li>';
+											tabBlock+='<li block-levels="'+blocksArr[i].id+'" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><span>'+blocksArr[i].name+'</span></a></li>';
 										}else{
-											tabBlock+='<li tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+											tabBlock+='<li block-levels="'+blocksArr[i].id+'" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
 										}
 										
 									}
@@ -1789,20 +1789,20 @@
 						{
 							 if(blocksArr[i].id == "jalavani"){
 								 tabBlock+='<div >';
-									 tabBlock+='<div role="tabpanel" class="tab-pane active" id="alertStatus'+blockName+'"></div>';
-									 tabBlock+='<div role="tabpanel" class="tab-pane active" id="drinking'+blockName+'"></div>';
+									 tabBlock+='<div role="tabpanel" block-levels="'+blocksArr[i].id+'" class="tab-pane active" id="alertStatus'+blockName+'"></div>';
+									 tabBlock+='<div role="tabpanel" block-levels="'+blocksArr[i].id+'" class="tab-pane active" id="drinking'+blockName+'"></div>';
 								 tabBlock+='</div>';
 							 }else{
-								 tabBlock+='<div role="tabpanel" class="tab-pane active" id="'+blockId+''+blocksArr[i].id+'"></div>';
+								 tabBlock+='<div role="tabpanel" block-levels="'+blocksArr[i].id+'" class="tab-pane active" id="'+blockId+''+blocksArr[i].id+'"></div>';
 							 }
 						}else{
 							 if(blocksArr[i].id == "jalavani"){
 								tabBlock+='<div >';
-									tabBlock+='<div  role="tabpanel" class="tab-pane" id="alertStatus'+blockName+'"></div>';
-									tabBlock+='<div  role="tabpanel" class="tab-pane" id="drinking'+blockName+'"></div>';
+									tabBlock+='<div  role="tabpanel" block-levels="'+blocksArr[i].id+'" class="tab-pane" id="alertStatus'+blockName+'"></div>';
+									tabBlock+='<div  role="tabpanel" block-levels="'+blocksArr[i].id+'" class="tab-pane" id="drinking'+blockName+'"></div>';
 								tabBlock+='</div>';
 							}else{
-								tabBlock+='<div role="tabpanel" class="tab-pane" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
+								tabBlock+='<div role="tabpanel" block-levels="'+blocksArr[i].id+'" class="tab-pane" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
 							} 
 						}
 					}
@@ -2633,12 +2633,54 @@
 			}
 			
 		}
-		
 		$(document).on("click","[role='tablist'] li a",function(){
+			var activeBlock = $(this).closest("li").attr("block-levels");
+				$("[block-levels]").removeClass("active");
+				$("[block-levels="+activeBlock+"]").addClass("active");
 			var id = $(this).attr('tab_id');
 			var blockName = $(this).attr('attr_block_name');
 			var blockId = $(this).attr('attr_block_id');
-			if(blockName == "state"){
+			var locationArr = ['state','district','constituency','mandal']
+			for(var i in locationArr)
+			{
+				if(locationArr[i] == 'state')
+				{
+					emptyCheckState();
+				
+				}else if(locationArr[i] == 'district')
+				{
+					emptyCheckDistrict();
+				}else if(locationArr[i] == 'constituency')
+				{
+					emptyCheckConstituency();
+					getAllPrrwsDistricts("chosendistVal"+locationArr[i]+"BlockId");
+				}else if(locationArr[i] == 'mandal')
+				{
+					emptyCheckMandal();
+					getAllPrrwsDistricts("chosendistVal"+locationArr[i]+"BlockId");
+				}
+				if(activeBlock == 'habitation')
+				{
+					getHabitationCoverageByStatusByLocationType(locationArr[i],blocksArr,'table',"","","");
+				}else if(activeBlock == 'performance')
+				{
+					getKeyPerformanceIndicatorsInfo(locationArr[i],blocksArr,'table',"","","");
+				}else if(activeBlock == 'jalavani')
+				{
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,locationArr[i],"","",2);
+					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,locationArr[i],"","",2);
+				}else if(activeBlock == 'assestsId')
+				{
+					getAssetInfoBetweenDates('table',locationArr[i],blocksArr,"","","");
+				}else if(activeBlock == 'schemeId')
+				{
+					getSchemeWiseWorkDetails('table',locationArr[i],blocksArr,"","","");
+				}else if(activeBlock == 'waterSourceId')
+				{
+					getWaterSourceDeatils2(locationArr[i],blocksArr,"","","","table")
+				} 
+			}
+			/* if(blockName == "state"){
 				emptyCheckState();
 				if(id == "stateBlockIdhabitation"){
 					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
@@ -2724,7 +2766,7 @@
 					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 					getWaterSourceDeatils2('mandal',blocksArr,"","","","table")
 				}
-			}
+			} */
 		});
 		function emptyCheckState(){
 			$("#stateBlockIdhabitation").html('');
@@ -5845,4 +5887,3 @@ function getSwachhBharatMissionOverviewDtls(){
 		}
 	}
 }
-
