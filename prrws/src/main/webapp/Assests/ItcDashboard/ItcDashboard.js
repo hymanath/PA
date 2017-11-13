@@ -152,7 +152,7 @@ function departmentBlockWiseDetails(divId)
 		
 	}else if(divId == "eOffice"){
 		
-		levelWiseBlockArr=[{name:'E Office',id:'4'}];
+		levelWiseBlockArr=[{name:'e Office',id:'4'}];
 		
 	}else if(divId == "meesevaSla"){
 		
@@ -185,7 +185,7 @@ function departmentBlockWiseDetails(divId)
 						}else{
 							collapse+='<a role="button" class="panelCollapseIcon collapsed '+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'">';
 						}
-						collapse+='<h4 class="panel-title text-capital">'+levelWiseBlockArr[i].name+' overview</h4>';
+						collapse+='<h4 class="panel-title">'+levelWiseBlockArr[i].name+' overview</h4>';
 							
 						collapse+='</a>';
 					collapse+='</div>';
@@ -2595,16 +2595,16 @@ function buildEOfcDepartWiseOverviewDetails(result){
 					str+='<table class="table table-bordered">';
 						
 							str+='<tr>';
-								str+='<th rowspan="2" style="vertical-align: middle; text-align: center;cursor:pointer;min-width:409px;background-color:#FFFFCC;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'" style="color:#A349A4">SECRETARIAT DEPARTMENT</a></th>';
+								str+='<th rowspan="2" style="vertical-align: middle; text-align: center;cursor:pointer;min-width:409px;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'" style="color:#A349A4">SECRETARIAT DEPARTMENT</a></th>';
 								
 								str+='<th style="background-color:#B2DFDB">Total</th>';
 								str+='<th style="background-color:#FBACAC">Total Pendency</th>';
 								str+='<th style="background-color:#FBACAC">%</th>';
-								str+='<th style="background-color:#FFFFCC">0 - 7 days</th>';
-								str+='<th style="background-color:#FFFFCC">8 - 15 days</th>';
-								str+='<th style="background-color:#FFFFCC">16 - 30 days</th>';
-								str+='<th style="background-color:#FFFFCC">31 - 60 days</th>';
-								str+='<th style="background-color:#FFFFCC"> > 60 days</th>';
+								str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
+								str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
+								str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
+								str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
+								str+='<th style="background-color:#FDCECE"> > 60 days</th>';
 							str+='</tr>';
 							str+='<tr>';
 								str+='<td>'+result[i].created+'</td>';
@@ -2633,20 +2633,20 @@ function buildEOfcDepartWiseOverviewDetails(result){
 		str+='<div class="table-responsive">';
 			str+='<table class="table table-bordered table_ITC">';
 					str+='<tr>';
-						str+='<th style="background-color:#FFFFCC;color:#A349A4;text-align:center">HODS</th>';
+						str+='<th style="color:#A349A4;text-align:center">HODS</th>';
 						str+='<th style="background-color:#B2DFDB">Total</th>';
 						str+='<th style="background-color:#FBACAC">Total Pendency</th>';
 						str+='<th style="background-color:#FBACAC">%</th>';
-						str+='<th style="background-color:#FFFFCC">0 - 7 days</th>';
-						str+='<th style="background-color:#FFFFCC">8 - 15 days</th>';
-						str+='<th style="background-color:#FFFFCC">16 - 30 days</th>';
-						str+='<th style="background-color:#FFFFCC">31 - 60 days</th>';
-						str+='<th style="background-color:#FFFFCC"> > 60 days</th>';
+						str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
+						str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
+						str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
+						str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
+						str+='<th style="background-color:#FDCECE"> > 60 days</th>';
 					str+='</tr>';
 					for(var i in result){
 						if(result[i].departmentName != "ITE & C" && result[i].departmentName != "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
 							str+='<tr>';
-								str+='<td style="cursor:pointer;background-color:#f8edf8;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'">'+result[i].departmentName+'</a></td>';
+								str+='<td style="cursor:pointer;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'">'+result[i].departmentName+'</a></td>';
 								str+='<td >'+result[i].created+'</td>';
 								str+='<td >'+result[i].totalCount+'</td>';
 								if(result[i].percentage < 50){
@@ -2668,14 +2668,14 @@ function buildEOfcDepartWiseOverviewDetails(result){
 						if(result[i].departmentName == "ITE & C"){
 							str+='<tr>';
 								str+='<td style="text-align: right;" class="font_weight">GRAND TOTAL</td>';
-								str+='<td class="font_weight">'+result[i].created+'</td>';
-								str+='<td class="font_weight">'+result[i].totalCount+'</td>';
-								str+='<td class="font_weight">'+result[i].percentage+'</td>';
-								str+='<td class="font_weight">'+result[i].zeroToSeven+'</td>';
-								str+='<td class="font_weight">'+result[i].eightToFifteen+'</td>';
-								str+='<td class="font_weight">'+result[i].sixteenToThirty+'</td>';
-								str+='<td class="font_weight">'+result[i].thirtyoneToSixty+'</td>';
-								str+='<td class="font_weight">'+result[i].aboveSixty+'</td>';
+								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].created+'</td>';
+								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].totalCount+'</td>';
+								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].percentage+'</td>';
+								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].zeroToSeven+'</td>';
+								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].eightToFifteen+'</td>';
+								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].sixteenToThirty+'</td>';
+								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].thirtyoneToSixty+'</td>';
+								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].aboveSixty+'</td>';
 							str+='</tr>';
 						}
 					}
