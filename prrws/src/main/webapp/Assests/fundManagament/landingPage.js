@@ -333,6 +333,7 @@ function onloadCallToGetAllBlockAchievent () {
 	getITSectorWiseOverviewDetails();//itec promotions
 	getAPInnovationSocietyOverview();//itec ap innovation
 	getSessionToken();//Water Tank
+	getCMEDOBOverview()//Cmeodb
 	for(var i in globalComponentNameArr)
 	{
 		if(globalComponentNameArr[i] == 'NTR 90 Days' || globalComponentNameArr[i] == 'Production of Bricks' || globalComponentNameArr[i] == 'Cattle Drinking Water Troughs' || globalComponentNameArr[i] == 'Raising of Perinnial Fodders' || globalComponentNameArr[i] == 'Fish Ponds' || globalComponentNameArr[i] == 'Fish Drying Platforms' || globalComponentNameArr[i] == 'NTR Rural House' || globalComponentNameArr[i] == 'OPGK-Perinnials' || globalComponentNameArr[i] == 'OPGK-Annuals')
@@ -1228,7 +1229,15 @@ function getEOfcDepartWiseOverviewDetails(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$(".itecEOfficeAllCls").html(result[0].subList[0].totalCount+'/<small style="color:#333;font-size:14px;top:0px;">'+result[0].subList[0].created+'</small>');
+		if(result !=null && result.length>0){
+			for(var i in result){
+				if(result[i].departmentName != null && result[i].departmentName == "ITE & C")
+					$(".itecEOfficeAllCls").html(result[i].totalCount+'/<small style="font-size:14px;top:0px;">'+result[i].created+'</small>');
+			}
+		}else{
+			$(".itecEOfficeAllCls").html("0/<small style='color:#fff;font-size:14px;top:0px;'>0</small>");
+		}
+		
 	});		
 }
 function getAPInnovationSocietyOverview(){
@@ -1439,4 +1448,28 @@ function getNregaCovergancePROtherLevelData(type)
 			$("."+type.replace(/\s+/g, '')+"AllCls").html(ajaxresp[0].percentage+"%");
 		}
 	}); 
+}
+function getCMEDOBOverview(){
+	$(".cmeodbAllCls").html(spinner)
+	var json = {
+		 sector:"B",
+		 fromDate:moment().subtract(20, 'years').startOf('year').format("YYYY-MM-DD"),
+		 toDate:moment().format("YYYY-MM-DD")
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getCMEDOBOverview',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			$(".cmeodbAllCls").html(result.overviewDtls.total+ "/" +result.overviewDtls.aprooved)
+		}else{
+			$(".cmeodbAllCls").html("0 /0")
+		}
+	});		
 }

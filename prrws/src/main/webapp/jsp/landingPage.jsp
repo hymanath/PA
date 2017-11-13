@@ -476,7 +476,7 @@
 			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/eOffice.png" >
-					<h5 style="display: inline-block;">E OFFICE</h5>
+					<h5 style="display: inline-block;">e Office</h5>
 					<div class=" " style="text-align: right">
 						<h2 class="itecEOfficeAllCls" style="margin-top: 0px"></h2>
 						<p class="">Total Pendency</p>
@@ -526,6 +526,20 @@
 					<div class="block-footer">
 						<i class="fa fa-star MEESEVA&KPIColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="MEESEVA & KPI" attr_color_name="gray" aria-hidden="true" attr_block_name="MEESEVA&KPI"></i>
 						<a class="pull-right" href="itcDashboard?component=meesevaKpi" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/MeeSevaKPI.png" >
+					<h5 style="display: inline-block;">CM EODB</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="cmeodbAllCls" style="margin-top: 0px"></h2>
+						<p class="">Total/Approved</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star CMEODBColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="CM EODB" attr_color_name="gray" aria-hidden="true" attr_block_name="CMEODB"></i>
+						<a class="pull-right" href="itcDashboard?component=cMeoDB" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
