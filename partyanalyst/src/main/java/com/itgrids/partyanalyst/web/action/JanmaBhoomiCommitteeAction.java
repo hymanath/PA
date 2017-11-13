@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeVO;
+import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeMemberVO;
 import com.itgrids.partyanalyst.service.IJanmabhoomiCommitteeService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
