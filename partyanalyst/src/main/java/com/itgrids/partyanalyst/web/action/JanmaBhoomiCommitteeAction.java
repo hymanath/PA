@@ -24,7 +24,7 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	private HttpSession session;
 	private String task;
 	public  transient JSONObject jObj;
-	private IJanmabhoomiCommitteeService JanmabhoomiCommitteeService;
+	private IJanmabhoomiCommitteeService janmabhoomiCommitteeService;
 	private List<JanmabhoomiCommitteeVO> janmabhoomiCommitteeVOList;
 	
 	
@@ -37,11 +37,11 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	}
 	
 	public IJanmabhoomiCommitteeService getJanmabhoomiCommitteeService() {
-		return JanmabhoomiCommitteeService;
+		return janmabhoomiCommitteeService;
 	}
 	public void setJanmabhoomiCommitteeService(
 			IJanmabhoomiCommitteeService janmabhoomiCommitteeService) {
-		JanmabhoomiCommitteeService = janmabhoomiCommitteeService;
+		janmabhoomiCommitteeService = janmabhoomiCommitteeService;
 	}
 	public HttpServletRequest getRequest() {
 		return request;
@@ -76,7 +76,8 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 			jObj=new JSONObject(getTask());
 			   String fromDate = jObj.getString("fromDate");
 			   String endDate = jObj.getString("endDate");
-			  janmabhoomiCommitteeVOList = JanmabhoomiCommitteeService.getDistrictWiseCommitteeDetails(fromDate,endDate);
+			   String type = jObj.getString("type");
+			  janmabhoomiCommitteeVOList = janmabhoomiCommitteeService.getDistrictWiseCommitteeDetails(fromDate,endDate,type);
 			  
 		} catch (Exception e) {
 			LOG.error("Excepting Occured in getDistrictWiseCommitteeDetails() of JanmaBhoomiCommitteeAction ", e);
