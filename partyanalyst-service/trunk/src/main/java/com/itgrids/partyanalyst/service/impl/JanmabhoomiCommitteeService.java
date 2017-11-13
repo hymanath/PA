@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -102,7 +103,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		 List<JbCommitteeLevel> committeeLevels= jbCommitteeLevelDAO.getAll();
 		 if(commonMethodsUtilService.isListOrSetValid(committeeLevels)){
 			 for (JbCommitteeLevel jbCommitteeLevel : committeeLevels) {
-				 JanmabhoomiCommitteeVO vo=new JanmabhoomiCommitteeVO();
+				  JanmabhoomiCommitteeVO vo=new JanmabhoomiCommitteeVO();
 					 vo.setId(jbCommitteeLevel.getJbCommitteeLevelId());
 					 vo.setName(jbCommitteeLevel.getName());
 					 locationDtlsMap.put(vo.getId(),vo);
@@ -130,26 +131,51 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		    			  }
 		    			  if(confirmed.equalsIgnoreCase("Y") && completedDate!=""){
 		    				  vo.setTotalApprovedCommitteeCnt(vo.getTotalApprovedCommitteeCnt()+1);
-		    			  }	 			  
-		    			  		  
-		    		      }
+		    			  }	  
+		    				  vo.setTotalCommitteeCnt(vo.getTotalCommitteeCnt()+1);
+		    			  }
 		    		  if(commonMethodsUtilService.isMapValid(locationDtlsMap)){
 		    			  for(Entry<Long,JanmabhoomiCommitteeVO> entry : locationDtlsMap.entrySet()){ 
 		    				  JanmabhoomiCommitteeVO returnVo=entry.getValue(); 
 		    				  mainVO.setTotalApprovedCommitteeCnt(mainVO.getTotalApprovedCommitteeCnt()+returnVo.getTotalApprovedCommitteeCnt());
 		    				  mainVO.setInprogressCommitteeCnt(mainVO.getInprogressCommitteeCnt()+returnVo.getInprogressCommitteeCnt());
 		    				  mainVO.setNotStartedCommitteeCnt(mainVO.getNotStartedCommitteeCnt()+returnVo.getNotStartedCommitteeCnt());
+		    				  mainVO.setTotalCommitteeCnt(mainVO.getTotalCommitteeCnt()+returnVo.getTotalCommitteeCnt());
+		    				  returnVo.setInprogressCommitteePerc(calculatePercentage(mainVO.getTotalCommitteeCnt(),returnVo.getInprogressCommitteeCnt() ));
+		    				  returnVo.setNotStartedCommitteePerc(calculatePercentage(mainVO.getTotalCommitteeCnt(), returnVo.getNotStartedCommitteeCnt()));
+		    				  returnVo.setReadyForApprovelCommitteeperc(calculatePercentage(mainVO.getTotalCommitteeCnt(),returnVo.getReadyForApprovelCommitteeCnt()));
+		    				  returnVo.setTotalApprovedCommitteeperc(calculatePercentage(mainVO.getTotalCommitteeCnt(), returnVo.getTotalApprovedCommitteeCnt()));
+		    				  returnVo.setSubmitedCommitteesperc(calculatePercentage(mainVO.getTotalCommitteeCnt(),returnVo.getSubmitedCommittees()));
 		    				  mainVO.getPositinsList().add(returnVo);
 		    			  }			  
 		    	   	      }
 		                  }
-		 
-		
+		    mainVO.setInprogressCommitteePerc(calculatePercentage(mainVO.getTotalCommitteeCnt(),mainVO.getInprogressCommitteeCnt() ));
+		    mainVO.setNotStartedCommitteePerc(calculatePercentage(mainVO.getTotalCommitteeCnt(), mainVO.getNotStartedCommitteeCnt()));
+		    mainVO.setReadyForApprovelCommitteeperc(calculatePercentage(mainVO.getTotalCommitteeCnt(),mainVO.getReadyForApprovelCommitteeCnt()));
+		    mainVO.setTotalApprovedCommitteeperc(calculatePercentage(mainVO.getTotalCommitteeCnt(), mainVO.getTotalApprovedCommitteeCnt()));
+		    mainVO.setSubmitedCommitteesperc(calculatePercentage(mainVO.getTotalCommitteeCnt(),mainVO.getSubmitedCommittees()));
 		 }catch(Exception e){
 				Log.error("Exception raised in JanmabhoomiCommitteeService method of JanmabhoomiCommitteeService"+e);
+		}
+		return mainVO;
+		}
+
+	public String calculatePercentage(Long totalVoters,Long count)
+	{
+		try{
+			if(totalVoters != null && totalVoters.longValue() > 0l && count != null && count.longValue()>0L)
+			  return (new BigDecimal((count * 100.0)/totalVoters.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+			else{
+				return "0";
 			}
-			return mainVO;
-		 }
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in calculatePercentage() method, Exception - ",e);
+		}
+		return null;
+	}
+	
 	
 	@SuppressWarnings("unused")
 	@Override
@@ -297,7 +323,6 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		}
 		return returnMap;
 	}
-
-	
 }
+
 
