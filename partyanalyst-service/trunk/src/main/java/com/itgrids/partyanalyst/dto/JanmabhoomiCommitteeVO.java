@@ -13,7 +13,11 @@ public class JanmabhoomiCommitteeVO {
 	private Long  totalApprovedCommitteeCnt=0l;    
 	private Long  submitedCommittees=0l;
 	private List<JanmabhoomiCommitteeVO>  positinsList= new ArrayList<JanmabhoomiCommitteeVO>();
-	
+	private String notStartedCommitteePerc="0";
+	private String inprogressCommitteePerc="0";
+	private String readyForApprovelCommitteeperc="0";
+	private String totalApprovedCommitteeperc="0";
+	private String submitedCommitteesperc="0";
 	public Long getId() {
 		return id;
 	}
@@ -69,8 +73,35 @@ public class JanmabhoomiCommitteeVO {
 	public void setPositinsList(List<JanmabhoomiCommitteeVO> positinsList) {
 		this.positinsList = positinsList;
 	}
-	
-	
-	
-
-}
+	public String getNotStartedCommitteePerc() {
+		return notStartedCommitteePerc;
+	}
+	public void setNotStartedCommitteePerc(String notStartedCommitteePerc) {
+		this.notStartedCommitteePerc = notStartedCommitteePerc;
+	}
+	public String getInprogressCommitteePerc() {
+		return inprogressCommitteePerc;
+	}
+	public void setInprogressCommitteePerc(String inprogressCommitteePerc) {
+		this.inprogressCommitteePerc = inprogressCommitteePerc;
+	}
+	public String getReadyForApprovelCommitteeperc() {
+		return readyForApprovelCommitteeperc;
+	}
+	public void setReadyForApprovelCommitteeperc(
+			String readyForApprovelCommitteeperc) {
+		this.readyForApprovelCommitteeperc = readyForApprovelCommitteeperc;
+	}
+	public String getTotalApprovedCommitteeperc() {
+		return totalApprovedCommitteeperc;
+	}
+	public void setTotalApprovedCommitteeperc(String totalApprovedCommitteeperc) {
+		this.totalApprovedCommitteeperc = totalApprovedCommitteeperc;
+	}
+	public String getSubmitedCommitteesperc() {
+		return submitedCommitteesperc;
+	}
+	public void setSubmitedCommitteesperc(String submitedCommitteesperc) {
+		this.submitedCommitteesperc = submitedCommitteesperc;
+	}
+	}
