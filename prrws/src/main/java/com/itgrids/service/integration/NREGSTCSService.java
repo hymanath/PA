@@ -4943,6 +4943,27 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			String  webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/ForestAbstractService/ForestAbstractData";
 			
+			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 1"))
+				inputVO.setType("Construction of Checkdam across peeraiah vanka(Check Dam-1)");
+			else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 2"))
+				inputVO.setType("Construction of Checkdam across peeraiah vanka(Check Dam-2)");
+			else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 3"))
+				inputVO.setType("Construction of Checkdam across peeraiah vanka(Check Dam-3)");
+			else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 4"))
+				inputVO.setType("Construction of Checkdam across peeraiah vanka(Check Dam-4)");
+			else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 5"))
+				inputVO.setType("Construction of Checkdam across peeraiah vanka(Check Dam-5)");
+			else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Enrichment Plantation with 4 7 Bag seedlings or Eucalyptus Clones"))
+				inputVO.setType("Enrichment Plantation with 4x7 Bag seedlings or Eucalyptus Clones");
+			else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("HILL AFFORESTATION 3 3 Plantation"))
+				inputVO.setType("HILL AFFORESTATION 3x3 Plantation");
+			else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("SMM 3 2 Plantation"))
+				inputVO.setType("SMM 3x2 Plantation");
+			else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("SMM 3 3 Plantation"))
+				inputVO.setType("SMM 3X3 Plantation");
+			else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("SMM 5 5 Plantation"))
+				inputVO.setType("SMM 5X5 Plantation");
+			
 			String str = convertingInputVOToString(inputVO);
 			
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str); 
@@ -4985,6 +5006,27 @@ public class NREGSTCSService implements INREGSTCSService{
 		NregsOverviewVO finalVO = new NregsOverviewVO();
 		try {
 			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/ForestService/ForestOverview";
+			
+			if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 1"))
+				inputVO.setCategory("Construction of Checkdam across peeraiah vanka(Check Dam-1)");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 2"))
+				inputVO.setCategory("Construction of Checkdam across peeraiah vanka(Check Dam-2)");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 3"))
+				inputVO.setCategory("Construction of Checkdam across peeraiah vanka(Check Dam-3)");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 4"))
+				inputVO.setCategory("Construction of Checkdam across peeraiah vanka(Check Dam-4)");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 5"))
+				inputVO.setCategory("Construction of Checkdam across peeraiah vanka(Check Dam-5)");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Enrichment Plantation with 4 7 Bag seedlings or Eucalyptus Clones"))
+				inputVO.setCategory("Enrichment Plantation with 4x7 Bag seedlings or Eucalyptus Clones");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("HILL AFFORESTATION 3 3 Plantation"))
+				inputVO.setCategory("HILL AFFORESTATION 3x3 Plantation");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("SMM 3 2 Plantation"))
+				inputVO.setCategory("SMM 3x2 Plantation");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("SMM 3 3 Plantation"))
+				inputVO.setCategory("SMM 3X3 Plantation");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("SMM 5 5 Plantation"))
+				inputVO.setCategory("SMM 5X5 Plantation");
 			
 			String str = convertingInputVOToString(inputVO);
 			
@@ -5037,6 +5079,27 @@ public class NREGSTCSService implements INREGSTCSService{
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/ForestService/ForestData";
+			
+			if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 1"))
+				inputVO.setCategory("Construction of Checkdam across peeraiah vanka(Check Dam-1)");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 2"))
+				inputVO.setCategory("Construction of Checkdam across peeraiah vanka(Check Dam-2)");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 3"))
+				inputVO.setCategory("Construction of Checkdam across peeraiah vanka(Check Dam-3)");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 4"))
+				inputVO.setCategory("Construction of Checkdam across peeraiah vanka(Check Dam-4)");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Construction of Checkdam across peeraiah vanka Check Dam 5"))
+				inputVO.setCategory("Construction of Checkdam across peeraiah vanka(Check Dam-5)");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Enrichment Plantation with 4 7 Bag seedlings or Eucalyptus Clones"))
+				inputVO.setCategory("Enrichment Plantation with 4x7 Bag seedlings or Eucalyptus Clones");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("HILL AFFORESTATION 3 3 Plantation"))
+				inputVO.setCategory("HILL AFFORESTATION 3x3 Plantation");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("SMM 3 2 Plantation"))
+				inputVO.setCategory("SMM 3x2 Plantation");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("SMM 3 3 Plantation"))
+				inputVO.setCategory("SMM 3X3 Plantation");
+			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("SMM 5 5 Plantation"))
+				inputVO.setCategory("SMM 5X5 Plantation");
 			
 			String str = convertingInputVOToString(inputVO);
 			
@@ -5503,6 +5566,10 @@ public class NREGSTCSService implements INREGSTCSService{
 				inputVO.setGroupName("Renovation and Improvements to existing Percolation Tank / Mini Percolation tank");
 			else if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Construction of Crematoria Burial Grounds"))
 				inputVO.setGroupName("Construction of Crematoria/Burial Grounds");
+			else if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze"))
+				inputVO.setGroupName("Raising of Fodder Maize/Fodder Jowar/Nutrifeed/Sugargraze");
+			else if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Fodder trough for Cattle Cattle drinking water trough"))
+				inputVO.setGroupName("Fodder trough for Cattle/Cattle drinking water trough");
 			
 			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/DCCPRService/DCCPRData";
 			
