@@ -620,7 +620,7 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		}
 
 		sb.append(",model.gender as gender,sum(model.count) as count from tdp_cadre_caste_info model ");
-
+		sb.append(",caste_state cs ");
 		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
 			sb.append(" , district d ");
 		} else if (locationTypeId != null && (locationTypeId.longValue() == 3L || locationTypeId.longValue() == 10L)) {
@@ -632,22 +632,22 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		}
 
 		sb.append("where ");
-
+		sb.append(" model.caste_state_id=cs.caste_state_id and ");
 		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
 			sb.append(" model.location_type_id =3 and model.location_Id = d.district_id  ");
 			sb.append(" and (d.district_id between 11 and 23) ");
 		} else if (locationTypeId != null && (locationTypeId.longValue() == 3L || locationTypeId.longValue() == 10L )) {
-			sb.append(" model.location_type_id =4 and model.location_Id = c.constituency_id ");
+			sb.append(" model.location_type_id =3 and model.location_Id = c.constituency_id ");
 		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
-			sb.append(" model.location_type_id =5 and model.location_Id = p.panchayat_id ");
+			sb.append(" model.location_type_id =4 and model.location_Id = p.panchayat_id ");
 			sb.append(" and p.tehsil_id=t.tehsil_id ");
 		}else if (locationTypeId != null && locationTypeId.longValue() == 5L ) {
-			sb.append(" model.location_type_id =6 and model.location_Id = p.panchayat_id ");
+			sb.append(" model.location_type_id =5 and model.location_Id = p.panchayat_id ");
 		}
 
-		sb.append(" and model.tdp_cadre_enrollment_id =:enrollmentYearId and model.caste_state_id =:casteId ");
+		sb.append(" and model.tdp_cadre_enrollment_id =:enrollmentYearId and cs.caste_id =:casteId ");
 
-		if (locationTypeId != null && locationTypeId.longValue() == 10L) {
+		if (locationTypeId !=null && locationTypeId.longValue() >2l && locationValue != null && locationValue.size() >0) {
 			sb.append(" and model.location_Id in (:locationValue) ");
 		}
 		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
@@ -668,7 +668,7 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 				.addScalar("gender", Hibernate.STRING)
 				.addScalar("count", Hibernate.LONG);
 
-		if (locationTypeId != null && locationTypeId.longValue() == 10L) {
+		if (locationTypeId !=null && locationTypeId.longValue() >2l && locationValue != null && locationValue.size() >0) {
 			query.setParameterList("locationValue", locationValue);
 		}
 		if (casteId != null && casteId.longValue() > 0L) {
