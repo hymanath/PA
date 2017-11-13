@@ -4963,8 +4963,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				inputVO.setType("SMM 3X3 Plantation");
 			else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("SMM 5 5 Plantation"))
 				inputVO.setType("SMM 5X5 Plantation");
-			else if(inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Work Site Facilities1"))
-				inputVO.setCategory("Work Site Facilities");
+			else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Work Site Facilities1"))
+				inputVO.setType("Work Site Facilities");
 			
 			String str = convertingInputVOToString(inputVO);
 			
