@@ -24,25 +24,11 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	private HttpSession session;
 	private String task;
 	public  transient JSONObject jObj;
-	public IJanmabhoomiCommitteeService janmabhoomiCommitteeService;
+	private IJanmabhoomiCommitteeService janmabhoomiCommitteeService;
 	private List<JanmabhoomiCommitteeVO>  janmabhoomiCommitteeVOList;
-	private JanmabhoomiCommitteeVO  janmabhoomiCommitteeVO;
-	
-		
-	public IJanmabhoomiCommitteeService getJanmabhoomiCommitteeService() {
-		return janmabhoomiCommitteeService;
-	}
-	public void setJanmabhoomiCommitteeService(
-			IJanmabhoomiCommitteeService janmabhoomiCommitteeService) {
-		this.janmabhoomiCommitteeService = janmabhoomiCommitteeService;
-	}
-	public JanmabhoomiCommitteeVO getJanmabhoomiCommitteeVO() {
-		return janmabhoomiCommitteeVO;
-	}
-	public void setJanmabhoomiCommitteeVO(
-			JanmabhoomiCommitteeVO janmabhoomiCommitteeVO) {
-		this.janmabhoomiCommitteeVO = janmabhoomiCommitteeVO;
-	}
+	private JanmabhoomiCommitteeVO janmabhoomiCommitteeVO;
+	private JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO;
+
 	
 	public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteeVOList() {
 		return janmabhoomiCommitteeVOList;
@@ -50,6 +36,21 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	public void setJanmabhoomiCommitteeVOList(
 			List<JanmabhoomiCommitteeVO> janmabhoomiCommitteeVOList) {
 		this.janmabhoomiCommitteeVOList = janmabhoomiCommitteeVOList;
+	}
+	public JanmabhoomiCommitteeMemberVO getJanmabhoomiCommitteeMemberVO() {
+		return janmabhoomiCommitteeMemberVO;
+	}
+	public void setJanmabhoomiCommitteeMemberVO(
+			JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO) {
+		this.janmabhoomiCommitteeMemberVO = janmabhoomiCommitteeMemberVO;
+	}
+	public void setJanmabhoomiCommitteeService(
+			IJanmabhoomiCommitteeService janmabhoomiCommitteeService) {
+		this.janmabhoomiCommitteeService = janmabhoomiCommitteeService;
+	}
+	public void setJanmabhoomiCommitteeVO(
+			JanmabhoomiCommitteeVO janmabhoomiCommitteeVO) {
+		this.janmabhoomiCommitteeVO = janmabhoomiCommitteeVO;
 	}
 	
 	public HttpServletRequest getRequest() {
@@ -75,6 +76,20 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 		this.request = request;
 		
 	}
+	
+	public JSONObject getjObj() {
+		return jObj;
+	}
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+	public JanmabhoomiCommitteeVO getJanmabhoomiCommitteeVO() {
+		return janmabhoomiCommitteeVO;
+	}
+	public IJanmabhoomiCommitteeService getJanmabhoomiCommitteeService() {
+		return janmabhoomiCommitteeService;
+	}
+	
 	public String janmabhoomiCommitteeDashboard()
 	{
 		return Action.SUCCESS;
@@ -104,4 +119,13 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	 }
 	 
 	
+	public String getJanmabhoomiCommitteeOverview(){ 
+		  try{
+			  jObj=new JSONObject(getTask());
+			  janmabhoomiCommitteeMemberVO = janmabhoomiCommitteeService.getJanmabhoomiCommitteeOverview(jObj.getLong("committeId"),jObj.getString("fromDate"),jObj.getString("toDate"));			  
+		  }catch(Exception e){
+			  LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmaBhoomiCommitteeAction ",e);
+		  }
+		  return Action.SUCCESS;
+	  }
 }
