@@ -15,7 +15,23 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 	public JbCommitteeDAO() {
 		super(JbCommittee.class);
 	}
-
+ 
+	public List<Object[]> getJbCommitteeStatusCount(){
+			
+	 StringBuilder sb = new StringBuilder();
+	 sb.append(" select " +
+	 		   " jbCommittee.jbCommitteeId, " +
+	 		   " jbCommittee.isCommitteeConfirmed, " +
+	 		   " jbCommittee.startDate, " +
+	 		   " jbCommittee.completedDate, " +
+	 		   " jbCommittee.jbCommitteeLevel.jbCommitteeLevelId," +
+	 		   " jbCommittee.jbCommitteeLevel.name" +
+	 		   " from JbCommittee jbCommittee where " +
+			   " jbCommittee.userAddress.state.stateId = 1 " +
+			   " and jbCommittee.isDeleted = 'N' "); 	
+	 Query query = getSession().createQuery(sb.toString());
+	 return query.list();
+ }
 	public List<Object[]> getDistrictWiseCommitteeDetails(Date fromDate,Date endDate,String type){
 		StringBuilder sb = new StringBuilder();
 		
