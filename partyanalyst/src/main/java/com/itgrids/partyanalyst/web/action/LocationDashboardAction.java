@@ -1796,7 +1796,7 @@ public String getElectionInformationLocationWise(){
 			 locationVotersVOList = locationWiseCasteInfoService.getLocationWiseVoterNCadreCounts(jObj.getLong("locationTypeId"),locationValuesList,jObj.getLong("casteId")
 					 ,jObj.getLong("enrollmentYearId"),jObj.getLong("publicationDateId"));
 		} catch (Exception e) {
-			LOG.error("Exception raised at getLocationWiseVoterNCadreCounts", e);
+			LOG.error("Exception raised at getCasteNAgeWiseVoterNCadreCounts", e);
 		}
 		 return Action.SUCCESS;
 	 }
