@@ -1,14 +1,18 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class JanmabhoomiCommitteeVO {	
 	private Long id;
 	private String name;
-	private Long  totalCommitteeCnt;
-	private Long  notStartedCommitteeCnt;
-	private Long  inprogressCommitteeCnt;
-	private Long  readyForApprovelCommitteeCnt;
-	private Long  totalApprovedCommitteeCnt;    
-	private Long  submitedCommittees;
+	private Long  totalCommitteeCnt=0l;
+	private Long  notStartedCommitteeCnt=0l;
+	private Long  inprogressCommitteeCnt=0l;
+	private Long  readyForApprovelCommitteeCnt=0l;
+	private Long  totalApprovedCommitteeCnt=0l;    
+	private Long  submitedCommittees=0l;
+	private List<JanmabhoomiCommitteeVO>  positinsList= new ArrayList<JanmabhoomiCommitteeVO>();
 	
 	public Long getId() {
 		return id;
@@ -58,6 +62,12 @@ public class JanmabhoomiCommitteeVO {
 	}
 	public void setSubmitedCommittees(Long submitedCommittees) {
 		this.submitedCommittees = submitedCommittees;
+	}
+	public List<JanmabhoomiCommitteeVO> getPositinsList() {
+		return positinsList;
+	}
+	public void setPositinsList(List<JanmabhoomiCommitteeVO> positinsList) {
+		this.positinsList = positinsList;
 	}
 	
 	
