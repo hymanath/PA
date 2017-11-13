@@ -18448,5 +18448,10 @@
 			<param name="root">janmabhoomiCommitteeVOList</param>       
 		</result>
   	</action>
+  	<action name="getJbCommitteeStatusCountAction" class="janmaBhoomiCommitteeAction"  method="getJbCommitteeStatusCount">
+		<result type="json" name="success">    
+			<param name="root">janmabhoomiCommitteeVO</param>       
+		</result>
+  	</action>
  </package>
 </struts>

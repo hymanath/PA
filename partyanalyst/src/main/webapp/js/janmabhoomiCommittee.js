@@ -13,3 +13,19 @@ function getDistrictWiseCommitteeDetails(){
 			
  		});
   }
+//getJbCommitteeStatusCount();
+function getJbCommitteeStatusCount(){
+
+	var jsObj={
+		"fromDateStr"	:"",
+		"toDateStr"	    :""
+	}
+	   $.ajax({
+		  type : "POST",
+		  url : "janmabhoomiCommitteeAction.action",
+		  dataType : 'json',
+		  data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){ 
+			
+		});
+}
