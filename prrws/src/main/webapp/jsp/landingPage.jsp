@@ -374,7 +374,7 @@
 					<h5 style="display: inline-block;">JALAVANI</h5>
 					<div class=" " style="text-align: right">
 						<h2 class="JalavaniAllCls" style="margin-top: 0px"></h2>
-						<p class="">COMPLETED & CLOSED</p>
+						<p class="">NOTIFIED & IN PROGRESS</p>
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange JALAVANIColor" title="click to add as favourite component." attr_url="jalavaniDashBoard" attr_full_block_name="JALAVANI" attr_color_name="gray" attr_block_name="JALAVANI" aria-hidden="true"></i>
