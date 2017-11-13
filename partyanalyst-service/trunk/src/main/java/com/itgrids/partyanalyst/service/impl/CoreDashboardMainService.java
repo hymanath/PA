@@ -4172,11 +4172,14 @@ public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,Str
 	      List<Object[]> subDebateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate,state,debateLocationIdList);
 	      List<Object[]> subScaleCountObjList = debateParticipantCharcsDAO.getPartyWiseScalesOfEachCharecter(startDate,endDate,state,debateLocationIdList);
 	      
-	      if((debateCountObjList !=null && subDebateCountObjList !=null) || (scaleCountObjList !=null && subScaleCountObjList !=null) ){
+	      if(debateCountObjList !=null && subDebateCountObjList !=null){
 	    	  debateCountObjList.addAll(subDebateCountObjList);
-	    	  scaleCountObjList.addAll(subScaleCountObjList);
 	      }else{
 	    	  debateCountObjList = subDebateCountObjList;
+	      }
+	      if(scaleCountObjList !=null && subScaleCountObjList !=null ){
+	    	  scaleCountObjList.addAll(subScaleCountObjList);
+	      }else{
 	    	  scaleCountObjList = subScaleCountObjList;
 	      }
 	    }else if(debateLocationIdList !=null && debateLocationIdList.size() ==3l){

@@ -505,7 +505,7 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 	
 	public List<Object[]> getPartyWiseDebateDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList){		
 		StringBuilder str = new StringBuilder();		//0.partyId,1.shortName,2.debateCount,3.candidateCount
-		str.append(" select model.party.partyId,model.party.shortName,count(distinct model.debate.debateId),count(distinct model.candidate.candidateId)" +
+		str.append(" select model.party.partyId,model.party.shortName,count(distinct model.debate.debateId),count(model.candidate.candidateId)" +
 				" from DebateParticipant model" );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 			   str.append(" , Debate model3 ");
@@ -872,14 +872,14 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 }
    public List<Object[]> getPartyWiseDebateOtherDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList){		
 		StringBuilder str = new StringBuilder();		//0.partyId,1.shortName,2.debateCount,3.candidateCount
-		str.append(" select model.party.partyId,model.party.shortName,count(distinct model.debate.debateId),count(distinct model.candidate.candidateId)" +
+		str.append(" select model.party.partyId,model.party.shortName,count(distinct model.debate.debateId),count(model.candidate.candidateId) " +
 				" from DebateParticipant model" );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 			   str.append(" , Debate model3 ");
 		    }
 		str.append(" where model.debate.isDeleted = 'N' " +
-				" and model.party.isNewsPortal = 'Y' " +
-				" and model.candidate.isDebateCandidate = 'Y' " );
+				" and model.party.isNewsPortal = 'Y' " );
+				//" and model.candidate.isDebateCandidate = 'Y' " );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 			str.append(" and model.debateId = model3.debateId and model3.isDeleted = 'N' ");
 		    }
@@ -1043,7 +1043,7 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 	} 
    public List<Object[]> getPartyWiseDebateParticipantOtherDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList ){		
 		StringBuilder str = new StringBuilder();		//0.partyId,1.shortName,2.debateCount,3.candidateCount
-		str.append(" select model.party.partyId,model.party.shortName,count(distinct model.debate.debateId),count(distinct model.candidate.candidateId)" +
+		str.append(" select model.party.partyId,model.party.shortName,count(distinct model.debate.debateId),count(model.candidate.candidateId)" +
 				" from DebateParticipant model" );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 			   str.append(" , Debate model3 ");
