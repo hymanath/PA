@@ -334,6 +334,7 @@ function onloadCallToGetAllBlockAchievent () {
 	getAPInnovationSocietyOverview();//itec ap innovation
 	getSessionToken();//Water Tank
 	getCMEDOBOverview()//Cmeodb
+	getBioMetricDashboardOverViewDtls();//BioMetric
 	for(var i in globalComponentNameArr)
 	{
 		if(globalComponentNameArr[i] == 'NTR 90 Days' || globalComponentNameArr[i] == 'Production of Bricks' || globalComponentNameArr[i] == 'Cattle Drinking Water Troughs' || globalComponentNameArr[i] == 'Raising of Perinnial Fodders' || globalComponentNameArr[i] == 'Fish Ponds' || globalComponentNameArr[i] == 'Fish Drying Platforms' || globalComponentNameArr[i] == 'NTR Rural House' || globalComponentNameArr[i] == 'OPGK-Perinnials' || globalComponentNameArr[i] == 'OPGK-Annuals')
@@ -1472,4 +1473,27 @@ function getCMEDOBOverview(){
 			$(".cmeodbAllCls").html("0 /0")
 		}
 	});		
+}
+function getBioMetricDashboardOverViewDtls(){
+	$("#bioMetricTtlEmpHeadingId").html(spinner);
+	var json = {
+		deptCode:"27001701024"
+	 }
+	$.ajax({                
+		type:'POST',    
+		url: 'getBioMetricDashboardOverViewDtls',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			$("#bioMetricTtlEmpHeadingId").html(result.totalCount);
+		} else {
+			$("#bioMetricTtlEmpHeadingId").html(0);
+		}
+		
+	});	
 }
