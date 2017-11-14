@@ -1,9 +1,27 @@
-getDistrictWiseCommitteeDetails();
+
+getJbCommitteeStatusCount();//1st
+function getJbCommitteeStatusCount(){
+
+	var jsObj={
+		"fromDateStr"	:"",
+		"toDateStr"	    :""
+	}
+	   $.ajax({
+		  type : "POST",
+		  url : "getJbCommitteeStatusCountAction.action",
+		  dataType : 'json',
+		  data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){ 
+			
+		});
+}
+
+getDistrictWiseCommitteeDetails();//2nd
 function getDistrictWiseCommitteeDetails(){
 	var jsObj={
  		"fromDate"			:"",
  		"endDate"			:"",
-		type:"district"
+		type:"district"//constituency,parliament
  	}
  	   $.ajax({
  		  type : "POST",
@@ -14,19 +32,19 @@ function getDistrictWiseCommitteeDetails(){
 			
  		});
   }
-//getJbCommitteeStatusCount();
-function getJbCommitteeStatusCount(){
-
+getJanmabhoomiCommitteeOverview();//3rd
+function getJanmabhoomiCommitteeOverview(){
 	var jsObj={
-		"fromDateStr"	:"",
-		"toDateStr"	    :""
-	}
-	   $.ajax({
-		  type : "POST",
-		  url : "janmabhoomiCommitteeAction.action",
-		  dataType : 'json',
-		  data : {task :JSON.stringify(jsObj)}
-		}).done(function(result){ 
+ 		"fromDate"			:"",
+ 		"toDate"			:"",
+		committeId:1
+ 	}
+ 	   $.ajax({
+ 		  type : "POST",
+ 		  url : "getJanmabhoomiCommitteeOverviewAction.action",
+ 		  dataType : 'json',
+ 		  data : {task :JSON.stringify(jsObj)}
+ 		}).done(function(result){ 
 			
-		});
-}
+ 		});
+  }
