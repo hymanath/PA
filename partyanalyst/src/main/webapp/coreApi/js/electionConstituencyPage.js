@@ -1173,7 +1173,7 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 											if(result[i].subList1[j].subList1[k].earnedVote !=null && result[i].subList1[j].subList1[k].earnedVote>0){
 												str+='<td>'+result[i].subList1[j].subList1[k].earnedVote;
 												if(result[i].subList1[j].subList1[k].earnedVote !=null && result[i].subList1[j].subList1[k].wonSeatsCount>0){
-													str+='<span class = " popUpDetailsClickCls" attr_party_name='+result[i].subList1[j].subList1[k].partyName+' attr_type="MPMLA" attr_partyId="'+result[i].subList1[j].subList1[k].partyId+'" attr_electionId ="'+result[i].subList1[j].electionId+'" attr_election_scopeId="2" attr_dist_id ='+result[i].locationId+' attr_election_year ='+result[i].subList1[j].electionYear+' style="margin-left:5px;color:green;" alince_party_ids='+result[i].subList1[j].subList1[k].idsList+'>('+result[i].subList1[j].subList1[k].wonSeatsCount+')</span>';
+													str+='<span class = " popUpDetailsClickCls" attr_party_name='+result[i].subList1[j].subList1[k].partyName+' attr_type="MPMLA" attr_partyId="'+result[i].subList1[j].subList1[k].partyId+'" aliance_party_name_list = "'+result[i].subList1[j].subList1[k].partyNamesList+'" attr_electionId ="'+result[i].subList1[j].electionId+'" attr_election_scopeId="2" attr_dist_id ='+result[i].locationId+' attr_election_year ='+result[i].subList1[j].electionYear+' style="margin-left:5px;color:green;" alince_party_ids='+result[i].subList1[j].subList1[k].idsList+'>('+result[i].subList1[j].subList1[k].wonSeatsCount+')</span>';
 												}
 												str+='</td>';
 											}else{
@@ -2724,8 +2724,26 @@ $(document).on("click",".popUpDetailsClickCls",function(){
 			var electionId = $(this).attr("attr_electionId");
 			var distId = $(this).attr("attr_dist_id");
 			var electionYears = $(this).attr("attr_election_year");
-			var partyName = $(this).attr("attr_party_name");
 			
+			var aliancePartyNamesList = $(this).attr("aliance_party_name_list");
+			
+			if(aliancePartyNamesList != null && aliancePartyNamesList.length >0){
+				aliancePartyNamesList = $(this).attr("aliance_party_name_list");
+			}else{
+				var aliancePartyNamesList = $(this).attr("attr_party_name");
+			}
+			
+			//remove dupilicate party names list
+			var str1 = aliancePartyNamesList;
+				var partyNamesList = str1.split(",");
+				var kutamiPartyNames = [];
+				jQuery.each(partyNamesList, function(index, c) {
+				if (jQuery.inArray(c, kutamiPartyNames) > -1) {
+					} else {
+						kutamiPartyNames.push(c);
+					}
+				});
+
 			var partyId = $(this).attr("alince_party_ids");
 			if(partyId != null && partyId.length >0){
 				partyId=$(this).attr("alince_party_ids");
@@ -2757,7 +2775,7 @@ $(document).on("click",".popUpDetailsClickCls",function(){
 	
 	}
 	
-	$("#TitleId").html("District Wise"+" "+electionYears+ ' Assembly ' +" "+partyName+" "+designation+"  Candidates Details");
+	$("#TitleId").html("District Wise"+" "+electionYears+ ' Assembly ' +" "+kutamiPartyNames+" "+designation+"  Candidates Details");
 		
 }
 	getPartyWiseMPandMLACandidatesCountDetials(electionScopeId,partyIds,electionId,distId,electionYears);
