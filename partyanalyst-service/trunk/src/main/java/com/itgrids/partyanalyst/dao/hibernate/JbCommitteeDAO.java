@@ -36,7 +36,7 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select model.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommitteeLevel.name,model.isCommitteeConfirmed," +
-				"model.startDate,model.completedDate " );
+				"model.startDate,model.completedDate,model.jbCommitteeId " );
 		if(type != null && type.equalsIgnoreCase("district")){
 			sb.append(" ,district.districtId,district.districtName ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
@@ -56,14 +56,14 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		}
 		sb.append(" where model.isDeleted = 'N' ");
 		
-		sb.append(" group by model.jbCommitteeLevel.jbCommitteeLevelId ");
+		/*sb.append(" group by model.jbCommitteeLevel.jbCommitteeLevelId ");
 		if(type != null && type.equalsIgnoreCase("district")){
 			sb.append(" , district.districtId ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
 			sb.append(" ,constituency.constituencyId ");
 		}else if(type.equalsIgnoreCase("parliament")){
-			sb.append(" left join  model.userAddress.parliamentConstituency.constituencyId  ");
-		}
+			sb.append(" , model.userAddress.parliamentConstituency.constituencyId  ");
+		}*/
 		
 		Query query = getSession().createQuery(sb.toString());
 		return query.list();
