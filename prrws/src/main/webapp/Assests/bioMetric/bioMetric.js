@@ -13,6 +13,14 @@ $("#dateRangePopupId").val(moment().format("YYYY-MM"));
  
 var globalDatewiseEmployeeAttendanceArray ;
 var globalEmployeeId='';
+
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
  
 getBioMetricDashboardOverViewDtls();
 getEmployeeAttendenceTimePeriodWise();
@@ -96,33 +104,35 @@ function buildEmpOverView(result){
 					str+='<div class="media-left" >';
 						if(employeeAttendanceOverView[i].name == "TOTAL EMPLOYEES"){
 							if (result.totalCount > 0) {
-								str+='<h5 class="m_top5 nameAlignmentCss employeeTypeCls" attr_type = "totalEmployee" style="border-bottom: 1px solid '+employeeAttendanceOverView[i].color+';cursor:pointer;"><span>Information Technology</span><span class="pull-right">'+result.totalCount+'</span></h5>';
-								str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
+								str+='<h5 class="m_top25 nameAlignmentCss employeeTypeCls" attr_type = "totalEmployee" style="cursor:pointer;"><span>Information Technology</span>';
+								//str+='<span class="pull-right">'+result.totalCount+'</span>';
+								str+='</h5>';
+								//str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 							} else {
-									str+='<h5 class="m_top5 nameAlignmentCss" style="border-bottom: 1px solid '+employeeAttendanceOverView[i].color+';"><span>Information Technology</span><span class="pull-right">'+result.totalCount+'</span></h5>';
-								   str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
+									str+='<h5 class="m_top20 nameAlignmentCss" ><span>Information Technology</span></h5>';
+								  // str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 							}
 						}else if(employeeAttendanceOverView[i].name == "PRESENT"){
 							if (result.presentCount > 0) {
-								str+='<h5 class="m_top5 nameAlignmentCss employeeTypeCls" attr_type = "todayPresentEmployee" style="border-bottom: 1px solid '+employeeAttendanceOverView[i].color+';cursor:pointer;"><span>Information Technology</span><span class="pull-right">'+result.presentCount+'</span></h5>';
-							   str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
+								str+='<h5 class="m_top25 nameAlignmentCss employeeTypeCls" attr_type = "todayPresentEmployee" style="cursor:pointer;"><span>Information Technology</span></h5>';
+							   //str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 							} else {
-								str+='<h5 class="m_top5 nameAlignmentCss" style="border-bottom: 1px solid '+employeeAttendanceOverView[i].color+';"><span>Information Technology</span><span class="pull-right">'+result.presentCount+'</span></h5>';
-							     str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
+								str+='<h5 class="m_top25 nameAlignmentCss" ><span>Information Technology</span></h5>';
+							     //str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 							}
 							
 						}else if(employeeAttendanceOverView[i].name == "ABSENT"){
 							if (result.absentCount > 0) {
-									str+='<h5 class="m_top5 nameAlignmentCss employeeTypeCls" attr_type = "absentEmployee" style="border-bottom: 1px solid '+employeeAttendanceOverView[i].color+';cursor:pointer;"><span>Information Technology</span><span class="pull-right">'+result.absentCount+'</span></h5>';
-									str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
+									str+='<h5 class="m_top25 nameAlignmentCss employeeTypeCls" attr_type = "absentEmployee" style="cursor:pointer;"><span>Information Technology</span></h5>';
+									//str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 							} else {
-									str+='<h5 class="m_top5 nameAlignmentCss" style="border-bottom: 1px solid '+employeeAttendanceOverView[i].color+';"><span>Information Technology</span><span class="pull-right">'+result.absentCount+'</span></h5>';
-									str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
+									str+='<h5 class="m_top25 nameAlignmentCss" ><span>Information Technology</span></h5>';
+									//str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 					
 							}
 						}else if(employeeAttendanceOverView[i].name == "BIOMETRIC DEVICES"){
-							str+='<h5 class="m_top5 nameAlignmentCss" style="border-bottom: 1px solid '+employeeAttendanceOverView[i].color+';"><span>Information Technology</span><span class="pull-right">'+result.bioMetricDeviceCount+'</span></h5>';
-							str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
+							str+='<h5 class="m_top20 nameAlignmentCss" ><span>Information Technology</span></h5>';
+							//str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 						}
 						
 					str+='</div>';
