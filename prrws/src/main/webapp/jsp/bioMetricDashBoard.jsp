@@ -259,10 +259,13 @@
 									<h5 class="pull-right todayBio">Today</h5>
 								</div>
 							</div>
-							<div id="empOverViewBlockId"></div>
-						
-							<h5 class="font_weight m_top10" style="margin-left:15px">IN-TIME STATISTICS</h5>
-							<div id="inTimeStatisticsDivId" style="height:180px;" class="m_top10"></div>
+							<div class="row">
+								<div id="empOverViewBlockId"></div>
+							</div>
+							<div class="">
+								<h5 class="font_weight m_top10" style="margin-left:15px">IN-TIME STATISTICS</h5>
+								<div id="inTimeStatisticsDivId" style="height:180px;" class="m_top10"></div>
+							</div>
 					</div>
 				</div>
 			</div>

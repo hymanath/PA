@@ -2,14 +2,14 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 var orgChart = '';
 //var departmentWiseArr=[{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'eProcurement',id:'5',color:'#F06C1F',image:'eProcurement',blockName:'eProcurement'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
-var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'e Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva - SLA/KPI',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSlaKpi'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'CM EODB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
+var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'e Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva - SLA/KPI',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSlaKpi'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'CM EODB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'},{name:'Bio-Metric',id:'8',color:'#9B7A00',image:'BioMetric',blockName:'BioMetric'}];
 
 var globalFromDateSLA = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDateSLA = moment().format("DD/MM/YYYY");
 
 var globalFromDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDate = moment().format("DD/MM/YYYY");
-
+var globalDeptCode = "27001701024";
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menu-data-cls").toggle();
@@ -50,6 +50,7 @@ function onloadCalls(){
 	getAPInnovationSocietyOverview('onload','apInnovationSociety');
 	getEOfcDepartWiseOverviewDetails('onload');
 	getCMEDOBOverview("","","overview");
+	getBioMetricDashboardOverViewDtls();
 	
 }
 $(document).on("click",".cohortIdClick",function(){
@@ -60,78 +61,110 @@ $(document).on("click",".cohortIdClick",function(){
 function departmentWiseOverView(){
 	var block='';
 	for(var i in departmentWiseArr){
-		block+='<div class="col-sm-2 m_top10">';
-			if(searchParams == null)
-			{
-				if(i == 0)
-				{
-					block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="active block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
-				}else{
-					block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
-				}
-			}else{
-				if(searchParams == departmentWiseArr[i].blockName)
-				{
-					block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="active block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
-				}else{
-					block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
-				}
-			}
-			
-			
+		if(departmentWiseArr[i].id ==8){
+			block+='<div class="col-sm-2 m_top10 biometricTextAlign">';
+					if(searchParams == null)
+					{
+						block+='<a href="bioMetricDashBoard"  target="_blank"><div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer;color: #ffffff;padding: 10px;" class="" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+					}else{
+						if(searchParams == departmentWiseArr[i].blockName)
+						{
+							block+='<a href="bioMetricDashBoard"  target="_blank"><div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer;color: #ffffff;padding: 10px;" class="active " main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+						}else{
+							block+='<a href="bioMetricDashBoard"  target="_blank"><div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer;color: #ffffff;padding: 10px;" class="" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+						}
+					}
 					block+='<div class="media">';
 						block+='<div class="media-left">';
 							block+='<img src="Assests/icons/ITC/'+departmentWiseArr[i].image+'.png" class="media-object" style="height:20px;width:20px;">';
 						block+='</div>';
 						block+='<div class="media-body">';
-						block+='<h5><b>'+departmentWiseArr[i].name+'</b></h5>';
-						if(departmentWiseArr[i].id ==3){
-							//block+='<h6 style="font-size:8px;color:#d3d3d3;">Department & District Wise SLA Monitoring</h6>';
-						}else if(departmentWiseArr[i].id ==4){
-							block+='<h6 style="font-size:8px;color:#d3d3d3;">Highest Performance</h6>';
-						}
-					  block+='</div>';
+							block+='<h5><b>'+departmentWiseArr[i].name+'</b></h5>';
+						block+='</div>';
+					block+='</div>';	
+					
+					block+='<div class="m_top20">';
+						block+='<h3 id="bioMetricBlockId"></h3>';
+						block+='<h6 class="m_top10">TotalEmployee/Present</h6>';
 					block+='</div>';
-					if(departmentWiseArr[i].id ==1){
-						block+='<div class="m_top20">';
-							block+='<h3 id="promotionsHeadingId"></h3>';
-							block+='<h6>Committed Investment</h6>';
-						block+='<h6>(IT,E&F)</h6>';
-						block+='</div>';
-					}else if(departmentWiseArr[i].id ==2){
-						block+='<div class="m_top20">';
-							block+='<h3 id="itcDeptWiseCount"></h3>';
-							block+='<h6 class="m_top10">Total Pendency</h6>';
-						block+='</div>';
-					}else if(departmentWiseArr[i].id ==3){
-						block+='<div class="m_top20">';
-							block+='<h6 class="m_top10">Beyond SLA <span id="meesevaHeadingId" class="pull-right" style="font-size: 18px;"></span> </h6>';
-							block+='<h6 class="m_top20">eTaal - KPI <span class="pull-right" style="font-size: 18px;">3499</span> </h6>';
-						block+='</div>';
-					}else if(departmentWiseArr[i].id ==4){
-						block+='<div class="m_top20">';
-							block+='<h3>3499</h3>';
-							block+='<h6 class="m_top10">eTaal - KPI</h6>';
-						block+='</div>';
-					}else if(departmentWiseArr[i].id ==5){
-						block+='<div class="m_top20">';
-							block+='<h3>11,25.Cr</h3>';
-							block+='<h6 class="m_top10">IT&E Department Tenders</h6>';
-						block+='</div>';
-					}else if(departmentWiseArr[i].id ==6){
-						block+='<div class="m_top5">';
-							block+='<h4 id="cMeoDBTotalId"></h4>';
-							block+='<h3 id="cMeoDBApprovedId"></h3>';
-							block+='<h6 class="m_top10">Total / Approved</h6>';
-						block+='</div>';
-					}else if(departmentWiseArr[i].id ==7){
-						block+='<div class="m_top20">';
-							block+='<h3 id="apInnovationSociety"></h3>';
-							block+='<h6 class="m_top10">Startups</h6>';
-						block+='</div>';
-					}
+					
+				block+='</div></a>';
 			block+='</div>';
-		block+='</div>';
+		}else{
+			block+='<div class="col-sm-2 m_top10">';
+				if(searchParams == null)
+				{
+					if(i == 0)
+					{
+						block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="active block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+					}else{
+						block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+					}
+				}else{
+					if(searchParams == departmentWiseArr[i].blockName)
+					{
+						block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="active block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+					}else{
+						block+='<div style="background-color:'+departmentWiseArr[i].color+';cursor:pointer" class="block_style_ITC blockWiseDetails" main-block="'+departmentWiseArr[i].blockName+'" attr_block_name="'+departmentWiseArr[i].blockName+'">';
+					}
+				}
+				
+				
+						block+='<div class="media">';
+							block+='<div class="media-left">';
+								block+='<img src="Assests/icons/ITC/'+departmentWiseArr[i].image+'.png" class="media-object" style="height:20px;width:20px;">';
+							block+='</div>';
+							block+='<div class="media-body">';
+							block+='<h5><b>'+departmentWiseArr[i].name+'</b></h5>';
+							if(departmentWiseArr[i].id ==3){
+								//block+='<h6 style="font-size:8px;color:#d3d3d3;">Department & District Wise SLA Monitoring</h6>';
+							}else if(departmentWiseArr[i].id ==4){
+								block+='<h6 style="font-size:8px;color:#d3d3d3;">Highest Performance</h6>';
+							}
+						  block+='</div>';
+						block+='</div>';
+						if(departmentWiseArr[i].id ==1){
+							block+='<div class="m_top20">';
+								block+='<h3 id="promotionsHeadingId"></h3>';
+								block+='<h6>Committed Investment</h6>';
+							block+='<h6>(IT,E&F)</h6>';
+							block+='</div>';
+						}else if(departmentWiseArr[i].id ==2){
+							block+='<div class="m_top20">';
+								block+='<h3 id="itcDeptWiseCount"></h3>';
+								block+='<h6 class="m_top10">Total Pendency</h6>';
+							block+='</div>';
+						}else if(departmentWiseArr[i].id ==3){
+							block+='<div class="m_top20">';
+								block+='<h6 class="m_top10">Beyond SLA <span id="meesevaHeadingId" class="pull-right" style="font-size: 18px;"></span> </h6>';
+								block+='<h6 class="m_top20">eTaal - KPI <span class="pull-right" style="font-size: 18px;">3499</span> </h6>';
+							block+='</div>';
+						}else if(departmentWiseArr[i].id ==4){
+							block+='<div class="m_top20">';
+								block+='<h3>3499</h3>';
+								block+='<h6 class="m_top10">eTaal - KPI</h6>';
+							block+='</div>';
+						}else if(departmentWiseArr[i].id ==5){
+							block+='<div class="m_top20">';
+								block+='<h3>11,25.Cr</h3>';
+								block+='<h6 class="m_top10">IT&E Department Tenders</h6>';
+							block+='</div>';
+						}else if(departmentWiseArr[i].id ==6){
+							block+='<div class="m_top5">';
+								block+='<h4 id="cMeoDBTotalId"></h4>';
+								block+='<h3 id="cMeoDBApprovedId"></h3>';
+								block+='<h6 class="m_top10">Total / Approved</h6>';
+							block+='</div>';
+						}else if(departmentWiseArr[i].id ==7){
+							block+='<div class="m_top20">';
+								block+='<h3 id="apInnovationSociety"></h3>';
+								block+='<h6 class="m_top10">Startups</h6>';
+							block+='</div>';
+						}
+				block+='</div>';
+			block+='</div>';
+		}
+		
 	}
 	$("#departmentWiseDivId").html(block);
 	
@@ -2965,3 +2998,27 @@ $(document).on("click",".meesevaSlaKpiCls li",function(){
 		getMeesavaKpiGraphBuild("meesevaSlaKpi",5);
 	}
 });
+
+function getBioMetricDashboardOverViewDtls(){
+	$("#bioMetricBlockId").html(spinner);
+	var json = {
+		deptCode:globalDeptCode
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getBioMetricDashboardOverViewDtls',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			$("#bioMetricBlockId").html(result.totalCount+"/"+result.presentCount);
+		}else{
+			$("#bioMetricBlockId").html("0/0");
+		}
+		
+	});	
+}

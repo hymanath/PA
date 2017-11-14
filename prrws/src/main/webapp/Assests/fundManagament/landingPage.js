@@ -1490,9 +1490,9 @@ function getBioMetricDashboardOverViewDtls(){
 		}
 	}).done(function(result){
 		if(result !=null){
-			$("#bioMetricTtlEmpHeadingId").html(result.totalCount);
+			$("#bioMetricTtlEmpHeadingId").html(result.totalCount+"/"+result.presentCount);
 		} else {
-			$("#bioMetricTtlEmpHeadingId").html(0);
+			$("#bioMetricTtlEmpHeadingId").html("0/0");
 		}
 		
 	});	
