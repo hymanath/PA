@@ -18458,5 +18458,10 @@
 			<param name="root">janmabhoomiCommitteeMemberVO</param>       
 		</result>
   	</action>
+  	<action name="saveJanmabhoomiCommitteeMemberAction" class="janmaBhoomiCommitteeAction"  method="saveJanmabhoomiCommitteeMember">
+		<result type="json" name="success">    
+			<param name="root">resultStatus</param>       
+		</result>
+  	</action>
  </package>
 </struts>

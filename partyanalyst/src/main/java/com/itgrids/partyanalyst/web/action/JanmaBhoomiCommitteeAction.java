@@ -9,8 +9,9 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeVO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IJanmabhoomiCommitteeService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -29,8 +30,15 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	private List<JanmabhoomiCommitteeVO>  janmabhoomiCommitteeVOList;
 	private JanmabhoomiCommitteeVO janmabhoomiCommitteeVO;
 	private JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO;
-
+	private ResultStatus resultStatus;
 	
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 	public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteeVOList() {
 		return janmabhoomiCommitteeVOList;
 	}
@@ -48,10 +56,6 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	public void setJanmabhoomiCommitteeService(
 			IJanmabhoomiCommitteeService janmabhoomiCommitteeService) {
 		this.janmabhoomiCommitteeService = janmabhoomiCommitteeService;
-	}
-	public void setJanmabhoomiCommitteeVO(
-			JanmabhoomiCommitteeVO janmabhoomiCommitteeVO) {
-		this.janmabhoomiCommitteeVO = janmabhoomiCommitteeVO;
 	}
 	
 	public HttpServletRequest getRequest() {
@@ -124,6 +128,16 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 		  try{
 			  jObj=new JSONObject(getTask());
 			  janmabhoomiCommitteeMemberVO = janmabhoomiCommitteeService.getJanmabhoomiCommitteeOverview(jObj.getLong("committeId"),jObj.getString("fromDate"),jObj.getString("toDate"));			  
+		  }catch(Exception e){
+			  LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmaBhoomiCommitteeAction ",e);
+		  }
+		  return Action.SUCCESS;
+	  }
+	
+	public String saveJanmabhoomiCommitteeMember(){ 
+		  try{
+			  //jObj=new JSONObject(getTask());
+			  resultStatus = janmabhoomiCommitteeService.saveJanmabhoomiCommitteeMember(janmabhoomiCommitteeMemberVO);			  
 		  }catch(Exception e){
 			  LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmaBhoomiCommitteeAction ",e);
 		  }
