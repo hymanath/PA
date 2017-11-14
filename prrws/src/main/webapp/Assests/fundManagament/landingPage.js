@@ -608,7 +608,7 @@ function getHabitationCoverageByStatusByState()
 				}
 			}
 			totalTransaction = totalTransaction / 10000000.00;
-			$(".itecMeeSevaSlaAllCls").html(totalTransaction.toFixed(2)+" Cr");
+			$(".itecMeeSevaSlaAllCls").html(totalTransaction.toFixed(2)+" Cr / 3499");
 		}
 	});		
 } 

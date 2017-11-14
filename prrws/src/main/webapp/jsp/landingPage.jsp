@@ -490,14 +490,14 @@
 			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/meeSevaSla.png" >
-					<h5 style="display: inline-block;">MEESEVA - SLA</h5>
+					<h5 style="display: inline-block;">MEESEVA - SLA/KPI</h5>
 					<div class=" " style="text-align: right">
 						<h2 class="itecMeeSevaSlaAllCls" style="margin-top: 0px"></h2>
-						<p class="">Beyond SLA</p>
+						<p class="">Beyond SLA/etaal - KPI</p>
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star MEESEVA-SLAColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="MEESEVA - SLA" attr_color_name="gray" aria-hidden="true" attr_block_name="MEESEVA-SLA"></i>
-						<a class="pull-right" href="itcDashboard?component=meesevaSla" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+						<a class="pull-right" href="itcDashboard?component=meesevaSlaKpi" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
@@ -515,7 +515,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-4">
+			<!--<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/MeeSevaKPI.png" >
 					<h5 style="display: inline-block;">MEESEVA & KPI</h5>
@@ -528,7 +528,7 @@
 						<a class="pull-right" href="itcDashboard?component=meesevaKpi" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
-			</div>
+			</div>-->
 			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/MeeSevaKPI.png" >

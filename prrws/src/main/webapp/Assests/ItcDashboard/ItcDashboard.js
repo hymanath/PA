@@ -2,7 +2,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 var orgChart = '';
 //var departmentWiseArr=[{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'E Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva & SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'eProcurement',id:'5',color:'#F06C1F',image:'eProcurement',blockName:'eProcurement'},{name:'CM eoDB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
-var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'e Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva - SLA',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSla'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'Meeseva & KPI',id:'4',color:'#9B7A00',image:'meesevaHigh',blockName:'meesevaKpi'},{name:'CM EODB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
+var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promotions',blockName:'promotions'},{name:'e Office',id:'2',color:'#1394B9',image:'eOffice',blockName:'eOffice'},{name:'Meeseva - SLA/KPI',id:'3',color:'#638D00',image:'meeseva',blockName:'meesevaSlaKpi'},{name:'AP Innovation Society',id:'7',color:'#F06C1F',image:'apInnovationSociety',blockName:'apInnovationSociety'},{name:'CM EODB',id:'6',color:'#C02D1D',image:'cMeoDB',blockName:'cMeoDB'}];
 
 var globalFromDateSLA = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDateSLA = moment().format("DD/MM/YYYY");
@@ -105,8 +105,8 @@ function departmentWiseOverView(){
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==3){
 						block+='<div class="m_top20">';
-							block+='<h3 id="meesevaHeadingId"></h3>';
-							block+='<h6 class="m_top10">Beyond SLA</h6>';
+							block+='<h6 class="m_top10">Beyond SLA <span id="meesevaHeadingId" class="pull-right" style="font-size: 18px;"></span> </h6>';
+							block+='<h6 class="m_top20">eTaal - KPI <span class="pull-right" style="font-size: 18px;">3499</span> </h6>';
 						block+='</div>';
 					}else if(departmentWiseArr[i].id ==4){
 						block+='<div class="m_top20">';
@@ -154,9 +154,9 @@ function departmentBlockWiseDetails(divId)
 		
 		levelWiseBlockArr=[{name:'e Office',id:'4'}];
 		
-	}else if(divId == "meesevaSla"){
+	}else if(divId == "meesevaSlaKpi"){
 		
-		levelWiseBlockArr=[{name:'Meeseva-SLA',id:'5'}];
+		levelWiseBlockArr=[{name:'Meeseva-SLA/KPI',id:'5'}];//
 		
 	}else if(divId == "meesevaKpi"){
 		
@@ -304,19 +304,22 @@ function departmentBlockWiseDetails(divId)
 									collapse+='<div id="cmedobDivId"></div>';
 								collapse+='</div>';
 							}
-							/* if(divId == "meesevaSla")
-							{
-								collapse+='<div class="col-sm-12">';
-										collapse+='<ul class="list-inline pull-right">';
-											  collapse+='<div class="input-group">';
-												collapse+='<span class="input-group-addon">';
-													collapse+='<i class="glyphicon glyphicon-calendar"></i>';
-												collapse+='</span>';
-												collapse+=' <input type="text" class="form-control" id="itcMessavaSlaDateRangePickerId" style="width: 200px;"/>';
-											collapse+=' </div>';
-										collapse+='</ul>';
+							if(divId == "meesevaSlaKpi"){
+								collapse+='<div class="row">';
+									collapse+='<div class="col-sm-12">';
+										collapse+='<ul class="list-inline switch-btn pull-right meesevaSlaKpiCls">';
+											collapse+='<li class="active" attr_type="meesevaSla">Meeseva-SLA</li>';
+											collapse+='<li attr_type="meesevaKpi">Meeseva-KPI</li>';
+										collapse+='</ul>';		
 									collapse+='</div>';
-							} */
+								collapse+='</div>';
+								
+								collapse+='<div class="row m_top10">';
+									collapse+='<div class="col-sm-12">';
+										collapse+='<div id="meesevaSlaKpiDivId"></div>';
+									collapse+='</div>';
+								collapse+='</div>';
+							}
 							collapse+='<div id="'+divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id+'"></div>';
 							if(divId == 'apInnovationSociety')
 							{
@@ -405,7 +408,7 @@ function departmentBlockWiseDetails(divId)
 	}
 	
 	for(var i in levelWiseBlockArr){
-		if(divId == "meesevaSla"){
+		if(divId == "meesevaSlaKpi"){
 			getMeesevaSLAOverviewDtls(divId,levelWiseBlockArr[i].id);
 		}else if(divId == 'apInnovationSociety')
 		{
@@ -2928,4 +2931,14 @@ $(document).on("change","#sectorSelId",function(){
 var sectorVal=$("#sectorSelId").val();
 getCMEDOBReportStatusWise(sectorVal);
 });
-
+$(document).on("click",".meesevaSlaKpiCls li",function(){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+		
+	var blockType = $(this).attr("attr_type");
+	if(blockType == "meesevaSla"){
+		getMeesevaSLAOverviewDtls("meesevaSlaKpi",5);
+	}else{
+		getMeesavaKpiGraphBuild("meesevaSlaKpi",5);
+	}
+});
