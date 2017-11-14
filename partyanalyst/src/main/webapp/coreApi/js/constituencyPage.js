@@ -5666,10 +5666,10 @@ function buildElectionInformationLocationWise(result,type){
 		 var str='';
 		
 		//str+='<div class="col-sm-12">';
-		str+='<div class="table-responsive">';
+		str+='<div class="">';
 		//str+='<h5 style="color:#2B908F;" class="pull-right"><b>Vote Share %</b></h5>';	
 				str+='<table class="table table-condensed table-hover m_top10  table-bordered table-striped table_font" id="dataTableElecBlock">';
-					str+='<thead>';
+					str+='<thead style="background-color:#f2f2f2;">';
 						str+='<tr>';
 							str+='<th rowspan="2">Party</th>';
 								for(var j in result[0].list){
@@ -5694,9 +5694,9 @@ function buildElectionInformationLocationWise(result,type){
 							for(var i in result){
 								str+='<tr>';
 								if(result[i].name !=null && result[i].name.trim().length>0)
-									str+='<td title="'+result[i].name+'"> '+result[i].partyName+'</td>';
+									str+='<td><span data-toggle="tooltip" class="tooltipElecCls" title="'+result[i].name+'" data-placement="right">'+result[i].partyName+'</span></td>';
 								else									
-									str+='<td> '+result[i].partyName+'</td>';
+									str+='<td>'+result[i].partyName+'</td>';
 									for(var j in result[i].list){
 										if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
 											str+='<td>'+result[i].list[j].wonSeatsCount+'  </td>';
@@ -5716,10 +5716,16 @@ function buildElectionInformationLocationWise(result,type){
 			//str+='</div>';
 		str+='</div>';
 		$("#electionDetailsTableWiseId").html(str);
+		$(".tooltipElecCls").tooltip();
 		$("#dataTableElecBlock").dataTable({
 			"iDisplayLength": 20,
 			 "aaSorting": [[ 2, "desc" ]], 
-			"aLengthMenu": [[20, 30, 50, -1], [20, 30, 50, "All"]]
+			"aLengthMenu": [[20, 30, 50, -1], [20, 30, 50, "All"]],
+			"scrollX":        true,
+			"scrollCollapse": true,
+			"fixedColumns":   {
+				"leftColumns": 1,
+			}
 		});
 		var mainDataArr=[];
 		var electionYearArr = [];
