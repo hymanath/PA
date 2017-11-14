@@ -57,5 +57,7 @@ public interface IDebateParticipantDAO extends GenericDao<DebateParticipant, Lon
 	public List<Object[]> getTotalDabtesCountsForEachCandidateOthersNew(Date fromDate , Date toDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
 	public List<Object[]> getPartyWiseDebateParticipantStateOtherDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList );
 	public List<Object[]> getPartyWiseStateDebateParticipantDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
+	public List<Object[]> getPartyWiseDebateParticipantsOtherDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
+	public List<Object[]> getPartyWiseDebatePartipantDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
 
 }
