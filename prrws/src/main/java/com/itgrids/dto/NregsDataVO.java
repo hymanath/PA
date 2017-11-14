@@ -135,8 +135,15 @@ public class NregsDataVO implements Serializable{
 	private String egsExpenditure;
 	private String convergenceExpn;
 	private String icdsExpenditure;
+	private String workName;
 	
 	
+	public String getWorkName() {
+		return workName;
+	}
+	public void setWorkName(String workName) {
+		this.workName = workName;
+	}
 	public String getEgsExpenditure() {
 		return egsExpenditure;
 	}
