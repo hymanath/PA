@@ -274,7 +274,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					 levelVO = new JanmabhoomiCommitteeMemberVO();
 					levelVO.setId(levelId);
 					levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					commiteeMap.put(levelId, levelVO);
+					commiteeMap.put(commiteeId, levelVO);
 				}
 				levelVO.setTotalMemberCount(commonMethodsUtilService.getLongValueForObject(param[3]));
 				

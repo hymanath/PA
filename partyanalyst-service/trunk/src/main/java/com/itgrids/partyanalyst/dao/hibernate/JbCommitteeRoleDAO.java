@@ -31,6 +31,7 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
  }
  public  List<Object[]> getCommitteeWiseTotalMemberCount(){
 	 StringBuilder sb = new StringBuilder();
+	 //0 committeeLeveId,1 level name,2 committeeId,3 maxMemebers
       sb.append("select model.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommittee.jbCommitteeLevel.name,model.jbCommittee.jbCommitteeId,sum(model.maxMembers) ");
       sb.append(" from JbCommitteeRole model ");
       sb.append(" group by model.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommittee.jbCommitteeId ");
