@@ -1577,6 +1577,9 @@ public class ItcDashboardService implements IItcDashboardService {
 						    vo.setStatus(sdpObj.getStatus());
 						    vo.setApprovalDate(sdpObj.getApproval_Date());
 							vo.setApprovalFileId(sdpObj.getApproval_File_ID());	
+							vo.setIndustryName(sdpObj.getIndustryName());
+							vo.setCategory(sdpObj.getCategory());
+							vo.setURL(sdpObj.getApproval_Url());
 							
 						returnList.add(vo);
 				}
