@@ -23,6 +23,16 @@
 <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+<style>
+.DTFC_LeftBodyWrapper
+{
+	top:-13px !important;
+}
+.DTFC_LeftBodyWrapper tr td
+{
+	background-color:#fff;
+}
+</style>
 </head>
 <body>
 <div class="background-head"></div>
@@ -819,6 +829,7 @@
 <script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+<script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
 <script src="coreApi/js/tourConstituencyPage.js" type="text/javascript"></script>
 <script src="coreApi/js/alertPopupDetails.js" type="text/javascript"></script>
