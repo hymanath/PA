@@ -312,6 +312,12 @@
 		    <artifactId>prrws-soap</artifactId>
 		    <version>0.0.1-SNAPSHOT</version>
 		  </dependency>
+		  
+		  <dependency>
+		   	     <groupId>com.itgrids.prrws.biometricsoap</groupId>
+  					<artifactId>prrws-biometric-soap</artifactId>
+  				 <version>0.0.1-SNAPSHOT</version>
+		  </dependency>
 		  <!-- https://mvnrepository.com/artifact/javax.xml/jaxrpc -->
 <dependency>
     <groupId>javax.xml</groupId>
