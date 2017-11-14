@@ -140,7 +140,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		    @Override
 		    public JanmabhoomiCommitteeVO getJbCommitteeStatusCount(String fromDateStr, String toDateStr) {
 		      JanmabhoomiCommitteeVO  mainVO = new JanmabhoomiCommitteeVO();
-		      Map<Long, JanmabhoomiCommitteeMemberVO> levelWiseStatusMap=getLevelWiseCommiteeStatusCounts("");
+		      
 		     try{     
 		            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -154,14 +154,14 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		     Map<Long,JanmabhoomiCommitteeVO> locationDtlsMap =new HashMap<Long, JanmabhoomiCommitteeVO>(0);   
 		     List<Object[]> committeeList = jbCommitteeDAO.getJbCommitteeStatusCount();
 		     List<JbCommitteeLevel> committeeLevels= jbCommitteeLevelDAO.getAll();
-		     if(commonMethodsUtilService.isListOrSetValid(committeeLevels)){
+		    /* if(commonMethodsUtilService.isListOrSetValid(committeeLevels)){
 		       for (JbCommitteeLevel jbCommitteeLevel : committeeLevels) {
 		          JanmabhoomiCommitteeVO vo=new JanmabhoomiCommitteeVO();
 		           vo.setId(jbCommitteeLevel.getJbCommitteeLevelId());
 		           vo.setName(jbCommitteeLevel.getName());
 		           locationDtlsMap.put(vo.getId(),vo);
 		          }
-		     }       
+		     }      */ 
 		     if (committeeList!=null && committeeList.size()>0){
 		        for (Object[] objects : committeeList) {
 		         JanmabhoomiCommitteeVO vo=null;
@@ -172,43 +172,47 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		                vo.setName(commonMethodsUtilService.getStringValueForObject(objects[5]).toUpperCase());
 		                locationDtlsMap.put((Long)objects[4], vo);  
 		                  }
-		                String confirmed     =    commonMethodsUtilService.getStringValueForObject((String)objects[1]);
-		                String startdate     =    commonMethodsUtilService.getStringValueForObject((String)objects[2]);
-		                String completedDate =    commonMethodsUtilService.getStringValueForObject((String)objects[3]);
+		                String confirmed     =    commonMethodsUtilService.getStringValueForObject(objects[1]);
+		                String startdate     =    commonMethodsUtilService.getStringValueForObject(objects[2]);
+		                String completedDate =    commonMethodsUtilService.getStringValueForObject(objects[3]);
 		               
 		               /* if(confirmed=="N" && startdate!=null){
 		                  vo.setInprogressCommitteeCnt(vo.getInprogressCommitteeCnt()+1);
 		                }*/
 		                if(confirmed.equalsIgnoreCase("N") && startdate==""){
-		                  vo.setNotStartedCommitteeCnt(vo.getNotStartedCommitteeCnt()+1);
+		                  vo.setNotStartedCommitteeCnt(vo.getNotStartedCommitteeCnt().longValue()+1l);
+		                  vo.setTotalCommitteeCnt(vo.getTotalCommitteeCnt().longValue()+1l);
 		                }
 		                if(confirmed.equalsIgnoreCase("Y") && completedDate!=""){
-		                  vo.setTotalApprovedCommitteeCnt(vo.getTotalApprovedCommitteeCnt()+1);
+		                  vo.setTotalApprovedCommitteeCnt(vo.getTotalApprovedCommitteeCnt().longValue()+1l);
+		                  vo.setTotalCommitteeCnt(vo.getTotalCommitteeCnt().longValue()+1l);
 		                }    
-		                  vo.setTotalCommitteeCnt(vo.getTotalCommitteeCnt()+1);
+		                 
 		                }
-		              if(commonMethodsUtilService.isMapValid(locationDtlsMap)){
-		                for(Entry<Long,JanmabhoomiCommitteeVO> entry : locationDtlsMap.entrySet()){ 
-		                  JanmabhoomiCommitteeVO returnVo=entry.getValue(); 
-		                  JanmabhoomiCommitteeMemberVO levelVO = levelWiseStatusMap.get(returnVo.getId());
-		                  returnVo.setInprogressCommitteeCnt(levelVO.getRoleMemberCount());
-		                  returnVo.setReadyForApprovelCommitteeCnt(levelVO.getAddedMemberCount());
-		                  returnVo.setTotalCommitteeCnt(levelVO.getTotalMemberCount());
-		                  mainVO.setTotalApprovedCommitteeCnt(mainVO.getTotalApprovedCommitteeCnt()+returnVo.getTotalApprovedCommitteeCnt());
-		                  mainVO.setInprogressCommitteeCnt(mainVO.getInprogressCommitteeCnt()+returnVo.getInprogressCommitteeCnt());
-		                  mainVO.setNotStartedCommitteeCnt(mainVO.getNotStartedCommitteeCnt()+returnVo.getNotStartedCommitteeCnt());
-		                  mainVO.setTotalCommitteeCnt(mainVO.getTotalCommitteeCnt()+returnVo.getTotalCommitteeCnt());
+		              
+		            }
+		     Map<Long, JanmabhoomiCommitteeMemberVO> levelWiseStatusMap=getLevelWiseCommiteeStatusCounts("");
+		     if(commonMethodsUtilService.isMapValid(locationDtlsMap)){
+	                for(Entry<Long,JanmabhoomiCommitteeVO> entry : locationDtlsMap.entrySet()){ 
+	                  JanmabhoomiCommitteeVO returnVo=entry.getValue(); 
+	                  JanmabhoomiCommitteeMemberVO levelVO = levelWiseStatusMap.get(returnVo.getId());
+	                  returnVo.setInprogressCommitteeCnt(returnVo.getInprogressCommitteeCnt().longValue()+levelVO.getAddedMemberCount().longValue());
+	                  returnVo.setReadyForApprovelCommitteeCnt(returnVo.getReadyForApprovelCommitteeCnt().longValue()+levelVO.getRoleMemberCount().longValue());
+	                  returnVo.setTotalCommitteeCnt(returnVo.getTotalCommitteeCnt().longValue()+returnVo.getInprogressCommitteeCnt().longValue()+returnVo.getReadyForApprovelCommitteeCnt().longValue());
+	                  mainVO.setTotalApprovedCommitteeCnt(mainVO.getTotalApprovedCommitteeCnt().longValue()+returnVo.getTotalApprovedCommitteeCnt().longValue());
+	                  mainVO.setInprogressCommitteeCnt(mainVO.getInprogressCommitteeCnt().longValue()+returnVo.getInprogressCommitteeCnt().longValue());
+	                  mainVO.setReadyForApprovelCommitteeCnt(mainVO.getReadyForApprovelCommitteeCnt().longValue()+returnVo.getReadyForApprovelCommitteeCnt().longValue());
+	                  mainVO.setNotStartedCommitteeCnt(mainVO.getNotStartedCommitteeCnt().longValue()+returnVo.getNotStartedCommitteeCnt().longValue());
+	                  mainVO.setTotalCommitteeCnt(mainVO.getTotalCommitteeCnt().longValue()+returnVo.getTotalCommitteeCnt().longValue());
 
-
-		                  returnVo.setInprogressCommitteePerc(calculatePercentage(mainVO.getTotalCommitteeCnt(),returnVo.getInprogressCommitteeCnt() ));
-		                  returnVo.setNotStartedCommitteePerc(calculatePercentage(mainVO.getTotalCommitteeCnt(), returnVo.getNotStartedCommitteeCnt()));
-		                  returnVo.setReadyForApprovelCommitteeperc(calculatePercentage(mainVO.getTotalCommitteeCnt(),returnVo.getReadyForApprovelCommitteeCnt()));
-		                  returnVo.setTotalApprovedCommitteeperc(calculatePercentage(mainVO.getTotalCommitteeCnt(), returnVo.getTotalApprovedCommitteeCnt()));
-		                  returnVo.setSubmitedCommitteesperc(calculatePercentage(mainVO.getTotalCommitteeCnt(),returnVo.getSubmitedCommittees()));
-		                  mainVO.getPositinsList().add(returnVo);
-		                }        
-		                     }
-		                      }
+	                  returnVo.setInprogressCommitteePerc(calculatePercentage(returnVo.getTotalCommitteeCnt(),returnVo.getInprogressCommitteeCnt() ));
+	                  returnVo.setNotStartedCommitteePerc(calculatePercentage(returnVo.getTotalCommitteeCnt(), returnVo.getNotStartedCommitteeCnt()));
+	                  returnVo.setReadyForApprovelCommitteeperc(calculatePercentage(returnVo.getTotalCommitteeCnt(),returnVo.getReadyForApprovelCommitteeCnt()));
+	                  returnVo.setTotalApprovedCommitteeperc(calculatePercentage(returnVo.getTotalCommitteeCnt(), returnVo.getTotalApprovedCommitteeCnt()));
+	                  returnVo.setSubmitedCommitteesperc(calculatePercentage(returnVo.getTotalCommitteeCnt(),returnVo.getSubmitedCommittees()));
+	                  mainVO.getPositinsList().add(returnVo);
+	                }        
+	           }
 		        mainVO.setInprogressCommitteePerc(calculatePercentage(mainVO.getTotalCommitteeCnt(),mainVO.getInprogressCommitteeCnt() ));
 		        mainVO.setNotStartedCommitteePerc(calculatePercentage(mainVO.getTotalCommitteeCnt(), mainVO.getNotStartedCommitteeCnt()));
 		        mainVO.setReadyForApprovelCommitteeperc(calculatePercentage(mainVO.getTotalCommitteeCnt(),mainVO.getReadyForApprovelCommitteeCnt()));
@@ -237,29 +241,29 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	
 		
 		public JanmabhoomiCommitteeMemberVO createMemberVO(Object[] param,JanmabhoomiCommitteeMemberVO committeeVO){
-			JanmabhoomiCommitteeMemberVO memeberVO = new JanmabhoomiCommitteeMemberVO();
-			memeberVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-			memeberVO.setMemeberName(commonMethodsUtilService.getStringValueForObject(param[2]));
-			memeberVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(param[3]));
-			memeberVO.setVoterId(commonMethodsUtilService.getStringValueForObject(param[6]));
-			memeberVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[7]));
-			memeberVO.setCategoryName(commonMethodsUtilService.getStringValueForObject(param[8]));
-			memeberVO.setCasteId(commonMethodsUtilService.getLongValueForObject(param[9]));
-			memeberVO.setCasteName(commonMethodsUtilService.getStringValueForObject(param[10]));
-			//memeberVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[3]));
-			//memeberVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[0]));
-			if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("F")){
-				memeberVO.setStatus("Approved");
-				committeeVO.setAddedMemberCount(committeeVO.getAddedMemberCount()+1);
-			}
-			else if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("P")){
-				memeberVO.setStatus("Inprogress");
-				committeeVO.setNotAddedMemberCount(committeeVO.getNotAddedMemberCount()+1);
-			}else{
-				memeberVO.setStatus("Rejected");
-				committeeVO.setRejectedMemberCount(committeeVO.getRejectedMemberCount()+1);
-			}
-			return memeberVO;
+					JanmabhoomiCommitteeMemberVO memeberVO = new JanmabhoomiCommitteeMemberVO();
+					memeberVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					memeberVO.setMemeberName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					memeberVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(param[3]));
+					memeberVO.setVoterId(commonMethodsUtilService.getStringValueForObject(param[6]));
+					memeberVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[7]));
+					memeberVO.setCategoryName(commonMethodsUtilService.getStringValueForObject(param[8]));
+					memeberVO.setCasteId(commonMethodsUtilService.getLongValueForObject(param[9]));
+					memeberVO.setCasteName(commonMethodsUtilService.getStringValueForObject(param[10]));
+					//memeberVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[3]));
+					//memeberVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[0]));
+					if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("F")){
+						memeberVO.setStatus("Approved");
+						committeeVO.setAddedMemberCount(committeeVO.getAddedMemberCount()+1);
+					}
+					else if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("P")){
+						memeberVO.setStatus("Inprogress");
+						committeeVO.setNotAddedMemberCount(committeeVO.getNotAddedMemberCount()+1);
+					}else{
+						memeberVO.setStatus("Rejected");
+						committeeVO.setRejectedMemberCount(committeeVO.getRejectedMemberCount()+1);
+					}
+					return memeberVO;
 		}
 
 		public Map<Long, JanmabhoomiCommitteeMemberVO> getLevelWiseCommiteeStatusCounts(String type) {
@@ -318,9 +322,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						JanmabhoomiCommitteeMemberVO committeeVO = committee.getValue();
 						levelVO.setId(committeeVO.getId());
 						levelVO.setName(committeeVO.getName());
-						if(committeeVO.getStatus().equalsIgnoreCase("Ready for apply")){
+						if(committeeVO.getStatus() != null && committeeVO.getStatus().equalsIgnoreCase("Ready for apply")){
 							levelVO.setRoleMemberCount(levelVO.getRoleMemberCount()+1l);
-						}else if(committeeVO.getStatus().equalsIgnoreCase("InProgress")){
+						}else if(committeeVO.getStatus() != null &&  committeeVO.getStatus().equalsIgnoreCase("InProgress")){
 							levelVO.setAddedMemberCount(levelVO.getAddedMemberCount()+1l);
 						}
 					}
@@ -383,12 +387,19 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 				for (Entry<Long, JanmabhoomiCommitteeVO> entry:locationMapsWithLevel.entrySet()) {
 					Map<Long ,JanmabhoomiCommitteeMemberVO> levelMap = locLevelMap.get(entry.getKey());
 					JanmabhoomiCommitteeVO locVO = entry.getValue();
+					JanmabhoomiCommitteeMemberVO distLevlVO = levelMap.get(1l);
+					if(distLevlVO != null){
+						if(distLevlVO.getAddedMemberCount() != null && distLevlVO.getAddedMemberCount().longValue() >0l)
+							locVO.setStatusType("InProgress");
+						else if(distLevlVO.getRoleMemberCount() != null && distLevlVO.getRoleMemberCount().longValue() >0l)
+							locVO.setStatusType("Ready For Approval");
+					}
 					returnList.add(locVO);
 					for(JanmabhoomiCommitteeVO levelVO :locVO.getList()){
 						JanmabhoomiCommitteeMemberVO loclevelVO = levelMap.get(levelVO.getId());
 						if(loclevelVO != null){
-						levelVO.setInprogressCommitteeCnt(levelVO.getInprogressCommitteeCnt()+loclevelVO.getRoleMemberCount());
-						levelVO.setReadyForApprovelCommitteeCnt(levelVO.getReadyForApprovelCommitteeCnt()+loclevelVO.getAddedMemberCount());
+						levelVO.setInprogressCommitteeCnt(levelVO.getInprogressCommitteeCnt()+loclevelVO.getAddedMemberCount());
+						levelVO.setReadyForApprovelCommitteeCnt(levelVO.getReadyForApprovelCommitteeCnt()+loclevelVO.getRoleMemberCount());
 						}
 					}
 				}
@@ -557,7 +568,15 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		return resultStatus;
 		
 	}
+	/*public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteesByLocIdAndCommLvlId(Long locationId,Long locLvlId,Long committeeLvlId,String status){
 	
+	try {
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		LOG.error("Excepting Occured in saveJanmabhoomiCommitteeMember() of JanmabhoomiCommitteeService ", e);
+	}
+}*/
 	
 }
 
