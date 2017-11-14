@@ -2521,14 +2521,25 @@ function buildCMeoDBStatusCountDetails(result){
 						str+='<th>Status</th>';
 						str+='<th>Address</th>';
 						str+='<th>Approval File Id</th>';
+						str+='<th>Industry Name</th>';
+						str+='<th>Category Name</th>';
+						//str+='<th>Document URL</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
 				str+='<tr>';
 							str+='<td >'+result[i].districtName+'</td>';
-							str+='<td class="tooltipCls" data-container="body"  title="'+result[i].sectorName+'" style="cursor:pointer;">'+result[i].sectorName.substr(0,10)+'...</td>';
-							str+='<td class="tooltipCls" data-container="body" title="'+result[i].activity+'" style="cursor:pointer;">'+result[i].activity.substr(0,10)+"..."+'</td>';
+							if (result[i].sectorName != null && result[i].sectorName.length > 0) {
+									str+='<td class="tooltipCls" data-container="body"  title="'+result[i].sectorName+'" style="cursor:pointer;">'+result[i].sectorName.substr(0,10)+'...</td>';
+							} else {
+								str+='<td>-</td>';
+							}
+							if (result[i].activity != null && result[i].activity.length > 0) {
+							  str+='<td class="tooltipCls" data-container="body" title="'+result[i].activity+'" style="cursor:pointer;">'+result[i].activity.substr(0,10)+"..."+'</td>';	
+							} else {
+								 str+='<td>-</td>';
+							}
 							str+='<td >'+result[i].empolyeement+'</td>';
 							str+='<td >'+result[i].investmentAmount+'</td>';
 							str+='<td >'+result[i].appFilledDate+'</td>';
@@ -2539,7 +2550,19 @@ function buildCMeoDBStatusCountDetails(result){
 							str+='<td >'+result[i].status+'</td>';
 							str+='<td class="tooltipCls" data-container="body" title="'+result[i].address+'" style="cursor:pointer;">'+result[i].address.substr(0,10)+"..."+'</td>';
 							str+='<td >'+result[i].approvalFileId+'</td>';
-							str+='</tr>';
+							if (result[i].industryName != null ) {
+							str+='<td class="tooltipCls" data-container="body" title="'+result[i].industryName+'" style="cursor:pointer;">'+result[i].industryName.substr(0,10)+"..."+'</td>';	
+							} else {
+								str+='<td>-</td>';
+							}
+							str+='<td >'+result[i].category+'</td>';
+							/* if (result[i].url != null && result[i].url.length > 0) {
+								str+='<td><a href="'+result[i].url+'" target="_blank">View Document</a></td>';
+							} else {
+								str+='<td>-</td>';
+							} */
+							
+				str+='</tr>';
 				}
 				str+='</tbody>';
 			str+='</table>';

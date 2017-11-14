@@ -54,6 +54,7 @@ public class ItecCMeoDBDetailsVO {
 	private String approvalDate;
 	private String investmentAmount;
 	private String status;
+	private String URL;
 	
 	
 	public String getDashboardName() {
@@ -350,6 +351,12 @@ public class ItecCMeoDBDetailsVO {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getURL() {
+		return URL;
+	}
+	public void setURL(String uRL) {
+		URL = uRL;
 	}
 	
 	
