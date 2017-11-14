@@ -36,13 +36,13 @@ public interface IDebateParticipantCharcsDAO extends GenericDao<DebateParticipan
 	public List<Object[]> getPartyWiseScalesOfEachCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
 	public List<Object[]> getPartywiseCandidateScaling(Date startDate,Date endDate,String searchType,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
 	public List<Object[]> getPartywiseCandidateCharectersScaling(Date startDate,Date endDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
-	public List<Object[]> getChannelAndPartyWiseCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
-	public List<Object[]> getRoleBasedPerformanceCohort(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
+	public List<Object[]> getChannelAndPartyWiseCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocIdList);
+	public List<Object[]> getRoleBasedPerformanceCohort(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
 	public List<Object[]> getScaleOfCandidate(Date startDate,Date endDate,List<Long> roles,String state,List<Long> participantLocationIdList,List<Long> debateLocationIdList);
 	public List<Object[]> getScaleOfCandidateNew(Date startDate,Date endDate,List<Long> roles,String state,List<Long> participantLocationIdList,List<Long> debateLocationIdList);
-	public List<Object[]> getPartyWiseScalesOfOthersEachCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
-	public List<Object[]> getChannelAndPartyWiseOthersCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
-	public List<Object[]> getRoleBasedOthersPerformanceCohort(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
+	public List<Object[]> getPartyWiseScalesOfOthersEachCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
+	public List<Object[]> getChannelAndPartyWiseOthersCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocIdList);
+	public List<Object[]> getRoleBasedOthersPerformanceCohort(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
 	public List<Object[]> getScaleOfCandidateOthersNew(Date startDate,Date endDate,List<Long> roles,String state,List<Long> participantLocationIdList,List<Long> debateLocationIdList);
 	public List<Object[]> getScaleOfOthersCandidate(Date startDate,Date endDate,List<Long> roles,String state,List<Long> participantLocationIdList,List<Long> debateLocationIdList);
 	public List<Object[]> getPartywiseOthersCandidateCharectersScaling(Date startDate,Date endDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);

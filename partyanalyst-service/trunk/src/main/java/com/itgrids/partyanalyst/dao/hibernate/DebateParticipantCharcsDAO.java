@@ -749,7 +749,7 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		
 	}
 	
-	public List<Object[]> getChannelAndPartyWiseCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList){
+	public List<Object[]> getChannelAndPartyWiseCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocIdList){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -778,6 +778,9 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 		}
+		if(debateParticipantLocIdList != null && debateParticipantLocIdList.size()>0l){
+			str.append(" and model.debateParticipant.candidate.state.stateId in (:debateParticipantLocIdList) " );
+		}
 		str.append(" group by model.debateParticipant.debate.channel.channelId, model.debateParticipant.party.partyId " +
 				" order by model.debateParticipant.debate.channel.channelId,model.debateParticipant.party.newsOrderNo ");
 		
@@ -790,10 +793,13 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
 			 query.setParameterList("debateLocationIdList", debateLocationIdList);
 		 }
+       if(debateParticipantLocIdList != null && debateParticipantLocIdList.size()>0l){
+    	   query.setParameterList("debateParticipantLocIdList", debateParticipantLocIdList);
+		}
 		return query.list(); 
 	}
 	
-	public List<Object[]> getRoleBasedPerformanceCohort(Date startDate,Date endDate,String state,List<Long> debateLocationIdList){
+	public List<Object[]> getRoleBasedPerformanceCohort(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -824,6 +830,9 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 		}
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0l){
+			str.append(" and model.debateParticipant.candidate.state.stateId in(:debateParticipantLocationIdList)");
+		}
 		str.append(" group by model1.debateParticipant.party.partyId, model1.debateRoles.debateRolesId " +
 				" order by model.debateParticipant.party.newsOrderNo ");
 
@@ -835,6 +844,9 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		}	
 		if(debateLocationIdList != null  && debateLocationIdList.size() >0 ){
 			query.setParameterList("debateLocationIdList", debateLocationIdList);
+		}
+       if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0l){
+    	   query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
 		}
 		return query.list(); 		
 	}
@@ -957,7 +969,7 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 			return query.list(); 		
 
 	}
-public List<Object[]> getPartyWiseScalesOfOthersEachCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList){
+public List<Object[]> getPartyWiseScalesOfOthersEachCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList){
 		
 		StringBuilder str = new StringBuilder();		
 		str.append(" select model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
@@ -986,7 +998,9 @@ public List<Object[]> getPartyWiseScalesOfOthersEachCharecter(Date startDate,Dat
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 		}		
-		
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0l){
+			 str.append(" and model.debateParticipant.candidate.state.stateId in(:debateParticipantLocationIdList)");
+		}
 		str.append(" group by model.debateParticipant.party.partyId,model.characteristics.characteristicsId" +
 				" order by model.debateParticipant.party.newsOrderNo,model.characteristics.characteristicsId ");
 		
@@ -996,10 +1010,13 @@ public List<Object[]> getPartyWiseScalesOfOthersEachCharecter(Date startDate,Dat
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
 		}
+       if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0l){
+    	   query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+		}
 		return query.list(); 
 		
 	}
-public List<Object[]> getChannelAndPartyWiseOthersCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList){
+public List<Object[]> getChannelAndPartyWiseOthersCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocIdList){
 	
 	StringBuilder str = new StringBuilder();
 	
@@ -1028,6 +1045,9 @@ public List<Object[]> getChannelAndPartyWiseOthersCharecter(Date startDate,Date 
 	if(startDate !=null && endDate !=null){
 		str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 	}
+	if(debateParticipantLocIdList != null && debateParticipantLocIdList.size()>0l){
+		 str.append(" and model.debateParticipant.candidate.state.stateId in(:debateParticipantLocIdList) ");
+	}
 	str.append(" group by model.debateParticipant.debate.channel.channelId, model.debateParticipant.party.partyId " +
 			" order by model.debateParticipant.debate.channel.channelId,model.debateParticipant.party.newsOrderNo ");
 	
@@ -1037,9 +1057,12 @@ public List<Object[]> getChannelAndPartyWiseOthersCharecter(Date startDate,Date 
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
 	}	
+  if(debateParticipantLocIdList != null && debateParticipantLocIdList.size()>0l){
+	  query.setParameterList("debateParticipantLocIdList", debateParticipantLocIdList);
+	}
 	return query.list(); 
 }
-public List<Object[]> getRoleBasedOthersPerformanceCohort(Date startDate,Date endDate,String state,List<Long> debateLocationIdList){
+public List<Object[]> getRoleBasedOthersPerformanceCohort(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList){
 	
 	StringBuilder str = new StringBuilder();
 	
@@ -1070,6 +1093,9 @@ public List<Object[]> getRoleBasedOthersPerformanceCohort(Date startDate,Date en
 	if(startDate !=null && endDate !=null){
 		str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 	}
+	if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0l){
+		str.append(" and model.debateParticipant.candidate.state.stateId in(:debateParticipantLocationIdList) ");
+	}
 	str.append(" group by model1.debateParticipant.party.partyId, model1.debateRoles.debateRolesId " +
 			" order by model.debateParticipant.party.newsOrderNo ");
 
@@ -1079,6 +1105,9 @@ public List<Object[]> getRoleBasedOthersPerformanceCohort(Date startDate,Date en
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
 	}	
+   if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0l){
+	   query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+	}
 	return query.list(); 		
 }
 public List<Object[]> getScaleOfCandidateOthersNew(Date startDate,Date endDate,List<Long> roles,String state,List<Long> participantLocationIdList,List<Long> debateLocationIdList){

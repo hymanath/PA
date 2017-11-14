@@ -32,10 +32,10 @@ public interface ICoreDashboardMainService {
 	//Debate
 	public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,String endDateStr,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
 	public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String endDateStr,String searchType,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
-	public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,String endDateStr,String state,List<Long> debateLocationIdList);
+	public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,String endDateStr,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
 	public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateStr,String endDateStr,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
-	public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr,String state,List<Long> debateLocationIdList);
-	public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr,String state,List<Long> debateLocationIdList);
+	public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocIdList);
+	public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
 	public List<UserDataVO> getbasicCommitteeDetails();
 	public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,Long stateId,String dateStr,String option,List<Long> enrollYrIds);
 	public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> programIdList, Long stateId, String dateStr,List<Long> enrollYrIds);
