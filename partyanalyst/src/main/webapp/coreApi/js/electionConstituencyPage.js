@@ -338,6 +338,7 @@ $(document).on("click",".getDetailsForCrossVotingCls",function(){
 				}
 			 }
 		});
+		$("#totalGainedVotesCount").html('')
 		getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,partyIdForCross,electionScopeVal,"mainView",0,'')
 		
 	});
@@ -1829,6 +1830,26 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 				table+='</tr>';
 			table+='</thead>';
 			table+='<tbody>';
+				var totalPcGainedVotes=0;
+				var totalAcGainedVotes=0;
+				var crossVotingsCount =0;
+				
+			for(var i in result){
+				if(result[i].subList1 != null && parseInt(result[i].subList1.length)>0){
+					for(var j in result[i].subList1){
+						if(result[i].subList1[j].mpCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mpCandidateEarnedVotes)>0){
+							totalPcGainedVotes =totalPcGainedVotes+result[i].subList1[j].mpCandidateEarnedVotes;
+						}
+						if(result[i].subList1[j].mlaCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mlaCandidateEarnedVotes)>0){
+							totalAcGainedVotes = totalAcGainedVotes+result[i].subList1[j].mlaCandidateEarnedVotes;
+							
+						}
+						
+					} 					
+			}
+		}
+		crossVotingsCount=totalPcGainedVotes-totalAcGainedVotes;
+		
 			for(var i in result){
 				if(result[i].subList1 != null && parseInt(result[i].subList1.length)>0){
 					for(var j in result[i].subList1){						
@@ -1854,12 +1875,22 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 								table+='<td>'+locationName+'</td>';
 							else 								
 								table+='<td> <span class="votingDtsClickCls" attr_partcipation_id="votingDtsClickCls'+i+''+j+'" attr_type="crossVoting" attr_name="'+result[i].locationName+'" attr_parliamentId="'+result[i].locationId+'">'+result[i].locationName+'</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls pull-right"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+electionYears+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="text-decoration:none;">View Results</span></td>';
-							if(result[i].subList1[j].mpCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mpCandidateEarnedVotes)>0){
-								table+='<td  id="votingDtsClickCls'+i+''+j+'" isParticipated="true" >'+result[i].subList1[j].mpCandidateEarnedVotes+'</td>';
-								if(result[i].subList1[j].mlaCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mlaCandidateEarnedVotes)>0)
-									table+='<td>'+result[i].subList1[j].mlaCandidateEarnedVotes+'</td>';
-								else
+								if(result[i].subList1[j].mpCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mpCandidateEarnedVotes)>0){
+									
+									if(result[i].subList1[j].mlaCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mlaCandidateEarnedVotes)<parseInt(result[i].subList1[j].mpCandidateEarnedVotes) ){
+										table+='<td  id="votingDtsClickCls'+i+''+j+'" style="background-color:#17a589" isParticipated="true" >'+result[i].subList1[j].mpCandidateEarnedVotes+'</td>';
+									}else {
+										table+='<td  id="votingDtsClickCls'+i+''+j+'" style="background-color:#FF3E3E " isParticipated="true" >'+result[i].subList1[j].mpCandidateEarnedVotes+'</td>';
+									}
+								if(result[i].subList1[j].mlaCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mlaCandidateEarnedVotes)>0){
+									if(parseInt(result[i].subList1[j].mlaCandidateEarnedVotes)>parseInt(result[i].subList1[j].mpCandidateEarnedVotes))
+										table+='<td style="background-color:#17a589">'+result[i].subList1[j].mlaCandidateEarnedVotes+'</td>';
+									else 
+										table+='<td style="background-color:#FF3E3E ">'+result[i].subList1[j].mlaCandidateEarnedVotes+'</td>';
+								}
+								else{
 									table+='<td> - </td>';
+								}
 								
 								if(result[i].subList1[j].rank != null && parseInt(result[i].subList1[j].rank)>0)
 									table+='<td>'+result[i].subList1[j].rank+'</td>';
@@ -1910,6 +1941,16 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 		table+='</table>';
 		table+='</div>';
 		table+='</div>';
+		var str="";
+		str+="<div class='col-sm-6 m_top20 col-sm-offset-0'><table  class='table table-bordered'><tr><th>PC Gained Votes</th><th>AC Gained Votes </th><th>Cross Voteings </th></tr>";
+		if(totalPcGainedVotes > totalAcGainedVotes){
+		str+="<tr><td style='background-color:#17a589;'>"+totalPcGainedVotes+"</td><td style='background-color:#FF3E3E ;'>"+totalAcGainedVotes+"</td>";
+		}else{
+	    str+="<tr><td style='background-color:#FF3E3E ;'>"+totalPcGainedVotes+"</td><td style='background-color:#17a589;'>"+totalAcGainedVotes+"</td>"; 
+		}
+		str+="<td>"+crossVotingsCount+"</td></tr></table></div>";
+		$("#totalGainedVotesCount").html(str);
+		
 		$("#"+divId+"").html(table);
 		$("#dataTableCrossMainView").dataTable({
 			"iDisplayLength": 30,
@@ -1947,6 +1988,22 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 				table+='</tr>';
 			table+='</thead>';
 			table+='<tbody>';
+			var parliamentPCVoterGain=0;
+			var assemblyAcVoterGain =0;
+			for(var i in result){
+				//if(parliamentId == result[i].locationId){
+					for(var j in result[i].list){
+						for(var k in result[i].list[j].subList1){
+							if(result[i].list[j].subList1[k].mpCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0){
+								parliamentPCVoterGain = parliamentPCVoterGain+result[i].list[j].subList1[k].mpCandidateEarnedVotes ;
+							}
+							if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0){
+								parliamentPCVoterGain = parliamentPCVoterGain+result[i].list[j].subList1[k].mpCandidateEarnedVotes ;
+							}
+						}
+					}
+				}
+			
 			for(var i in result){
 				//if(parliamentId == result[i].locationId){
 					for(var j in result[i].list){
@@ -1970,10 +2027,11 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 									table+='<td>'+locationName+'</td>';
 								else 
 									table+='<td>'+result[i].list[j].locationName+' <span class="text-success text-capital viewPageCls popUpDetailsClickCls pull-right"  attr_type="electionResults" attr_constituencyId="'+result[i].list[j].locationId+'" attr_election_year="'+electionYears+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].list[j].locationName+'" style="text-decoration:none;">View Results</span></td>';
-								if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0)
+								if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0 && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0)
 								{
 									if(result[i].list[j].subList1[k].mpCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0){
-										table+='<td>'+result[i].list[j].subList1[k].mpCandidateEarnedVotes+'</td>';
+										
+										table+='<td >'+result[i].list[j].subList1[k].mpCandidateEarnedVotes+'</td>';
 										
 										if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0)
 											table+='<td>'+result[i].list[j].subList1[k].mlaCandidateEarnedVotes+'</td>';
@@ -2016,6 +2074,7 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 								}else{		
 									if(result[i].list[j].subList1[k].mpCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0)
 										table+='<td> '+result[i].list[j].subList1[k].mpCandidateEarnedVotes+'</td>';
+									
 									else
 										table+='<td style="color:red;"> Not Participated </td>';
 									table+='<td style="color:red;"> Not Participated </td>';
@@ -2053,16 +2112,18 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 		table+='<table class="table table-bordered table_custom" id="dataTableCrossExpand">';
 			table+='<thead>';
 			table+='<tr>';
-				if(parseInt(locationLevelId)==2 || parseInt(locationLevelId)==3 || parseInt(locationLevelId)==10)
+				/*if(parseInt(locationLevelId)==2 || parseInt(locationLevelId)==3 || parseInt(locationLevelId)==10)
 					table+='<th>Assembly Name</th>';
-				else if(parseInt(locationLevelId)==4)
-					table+='<th>Assembly Name</th>';
-				else if(parseInt(locationLevelId)==5)
+				else if(parseInt(locationLevelId)==4)*/
+					
+				 if(parseInt(locationLevelId)==5)
 					table+='<th>Mandal Name</th>';
 				else if(parseInt(locationLevelId)==6)
 					table+='<th>Panchayat Name</th>';
 				else if(parseInt(locationLevelId)==7)
 					table+='<th>Munci/Corp/Greater City Name</th>';
+				else 
+					table+='<th>Assembly Name</th>';
 				table+='<th>PC Gained Votes </th>';
 				table+='<th>AC Gained Votes </th>';
 				table+='<th>Rank(AC)</th>';
@@ -2101,10 +2162,18 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 								if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0)
 								{
 									if(result[i].list[j].subList1[k].mpCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0){
-										table+='<td>'+result[i].list[j].subList1[k].mpCandidateEarnedVotes+'</td>';
-										
+										if(result[i].list[j].subList1[k].mpCandidateEarnedVotes >result[i].list[j].subList1[k].mlaCandidateEarnedVotes){
+										table+='<td style="background-color:#17a589">'+result[i].list[j].subList1[k].mpCandidateEarnedVotes+'</td>';
+										}else{
+											table+='<td style="background-color:#FF3E3E ">'+result[i].list[j].subList1[k].mpCandidateEarnedVotes+'</td>';
+										}
 										if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0)
-											table+='<td>'+result[i].list[j].subList1[k].mlaCandidateEarnedVotes+'</td>';
+											if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes > result[i].list[j].subList1[k].mpCandidateEarnedVotes){
+												table+='<td style="background-color:#17a589">'+result[i].list[j].subList1[k].mlaCandidateEarnedVotes+'</td>';
+											}else{
+												table+='<td style="background-color:#FF3E3E;">'+result[i].list[j].subList1[k].mlaCandidateEarnedVotes+'</td>';
+											}
+											
 										else
 											table+='<td> - </td>';	
 										
@@ -2811,6 +2880,8 @@ $(document).on("click",".alliancePartyCls",function(){
 		$("#locationWiseStrongVsPoor").html('');
 	}else if(type == "cross"){
 		$("#crossVotingDetailsBlockId").html('');
+		$("#totalGainedVotesCount").html('');
+		
 	}
 });
 $(document).on("click",".popUpDetailsClickCls",function(){
