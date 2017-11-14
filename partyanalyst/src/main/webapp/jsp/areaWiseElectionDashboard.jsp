@@ -19,6 +19,16 @@
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+<style>
+.DTFC_LeftBodyWrapper
+{
+	top:-13px !important;
+}
+.DTFC_LeftBodyWrapper tr td
+{
+	background-color:#fff;
+}
+</style>
 </head>
 <body>
 <div class="background-head"></div>
@@ -50,7 +60,7 @@
 						</div>
 						
 						<div id="electionScopeDivIds" class="m_top10"></div>
-						<div class="row">
+						<div class="row levelAndLocationCandRstsCls">
 							<div class="col-sm-3 m_top10">
 								<label class="radio-inline">
 								  <input type="radio" id="mainId" value="MAIN" name="optionsRadios2" class="electionSubTypeCls" checked attr_type="partyTrends">Main Election
@@ -112,7 +122,7 @@
 								<label class="radio-inline text-capital f-13" for="electionPCId">
 								  <input type="radio" id="electionPCId" value="1" name="electionScope" class="electionTypeWiseStrongCls">Parliament
 								</label>
-								<label class="radio-inline text-capital f-13" for="electionACId">
+								<label class="radio-inline text-capital f-13 electionACClass" for="electionACId">
 								  <input type="radio" id="electionACId" value="2" name="electionScope"  class="electionTypeWiseStrongCls" checked>Assembly
 								</label>
 								<label class="radio-inline text-capital f-13" for="electionMPTCId">
@@ -338,14 +348,13 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="openModalDiv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
+<div class="modal fade" id="openModalElectionResultsDiv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
 	<div class="modal-dialog" role="document" style="width:95%">
 		<div class="modal-content">
 			<div class="modal-header" style="background-color:#CCCCCC">
 				<div class="row" >
 					<div class="col-md-8">
-						<h4 class="theme-title-color text-capital" id="TitleId" >Title</h4>
-						<p id="subTitleId"></p>
+						<h4 class="theme-title-color text-capital" id="TitleElectionResultsId" >Title</h4>
 					</div>
 					<div class="col-sm-3 pull-right">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -357,11 +366,6 @@
 					<div class="col-sm-12">
 						<div id="openPostDetailsModalDivId"></div>
 					</div>  
-				</div>
-				<div class="row paginationCls">
-					<div class="col-md-12 m_top20">
-						<div class="paginationId"></div>
-					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -380,13 +384,13 @@
 <script src="coreApi/Plugins/DataTable/pdf.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
-<script src="coreApi/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script type="text/javascript" src="coreApi/js/bootstrap-multiselect.js"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="coreApi/js/electionConstituencyPage.js" type="text/javascript"></script>
 <script type="text/javascript">
 var locationLevelId = "${param.locationLevelId}";
