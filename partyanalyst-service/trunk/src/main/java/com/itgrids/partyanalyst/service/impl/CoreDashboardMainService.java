@@ -3983,7 +3983,13 @@ public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String e
 		Map<Long,Map<Long,CoreDebateVO>> partyMap = new LinkedHashMap<Long, Map<Long,CoreDebateVO>>();
 		List<Object[]> candidateObjList =null;
 		List<Object[]> debateCountsList =null;
-		if(debateLocationIdList != null && debateLocationIdList.size() == 1 && debateLocationIdList.contains(2l)){
+
+		for(int i=0;i<debateLocationIdList.size();i++){
+			 if(debateLocationIdList.contains(0L)){
+				debateLocationIdList.remove(0L);
+			 }
+			}
+		if(debateLocationIdList != null && debateLocationIdList.size() == 1L && debateLocationIdList.contains(2l)){
 			candidateObjList = debateParticipantCharcsDAO.getPartywiseCandidateOthersScaling(startDate,endDate,searchType,state,debateParticipantLocationIdList,debateLocationIdList);
 			debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidateOthersNew(startDate, endDate,state,debateParticipantLocationIdList,debateLocationIdList);
 	    }else if((debateLocationIdList !=null && debateLocationIdList.size() > 1L && !debateLocationIdList.contains(2L)) || (debateLocationIdList !=null && debateLocationIdList.size() == 1L && !debateLocationIdList.contains(2L))){
@@ -4246,6 +4252,7 @@ public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,Str
 						}else if(partyVO.getDebateCount() !=null && partyVO.getDebateCount()>0l){
 							VO.setScalePerc(Double.parseDouble(new BigDecimal(VO.getScalePerc()+Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString())).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 						}
+						
 						
 						//VO.setScalePerc(Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 						//partyVO.setOverAllPerc(Double.parseDouble(new BigDecimal(partyVO.getOverAllPerc()+/*VO.getScalePerc()*/ 

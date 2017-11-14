@@ -1059,8 +1059,8 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 			   str.append(" , Debate model3 ");
 		    }
 		str.append(" where model.debate.isDeleted = 'N' " +
-				" and model.party.isNewsPortal = 'Y' " );
-				//" and model.candidate.isDebateCandidate = 'Y' " );
+				" and model.party.isNewsPortal = 'Y' " +
+				" and model.candidate.isDebateCandidate = 'Y' " );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 			str.append(" and model.debateId = model3.debateId and model3.isDeleted = 'N' ");
 		    }
