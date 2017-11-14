@@ -242,7 +242,9 @@
 						</div>
 						<div class="row">
 							<div class="col-sm-12">
-								<div id="crossVotingDetailsBlockId"></div>
+							  <div id="totalGainedVotesCount">
+							</div>
+							  <div id="crossVotingDetailsBlockId"></div>
 							</div>
 						</div>
 					</div>
