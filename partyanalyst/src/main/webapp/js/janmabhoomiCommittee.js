@@ -1,8 +1,9 @@
-//getDistrictWiseCommitteeDetails();
+getDistrictWiseCommitteeDetails();
 function getDistrictWiseCommitteeDetails(){
 	var jsObj={
  		"fromDate"			:"",
- 		"endDate"			:""
+ 		"endDate"			:"",
+		type:"district"
  	}
  	   $.ajax({
  		  type : "POST",

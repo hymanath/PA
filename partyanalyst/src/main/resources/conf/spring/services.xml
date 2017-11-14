@@ -4540,9 +4540,9 @@
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
     	</bean>
     	<bean name="janmabhoomiCommitteeService" class="com.itgrids.partyanalyst.service.impl.JanmabhoomiCommitteeService">
-    	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	<property name="jbCommitteeDAO" ref="jbCommitteeDAO" />
-    	<property name="jbCommitteeLevelDAO" ref="jbCommitteeLevelDAO" />    	
+    	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+    	<property name="jbCommitteeLevelDAO" ref="jbCommitteeLevelDAO" />
     	<property name="jbCommitteeRoleDAO" ref="jbCommitteeRoleDAO" /> 
     	<property name="jbCommitteeMemberDAO" ref="jbCommitteeMemberDAO" />
     	</bean>
