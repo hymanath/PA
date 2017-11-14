@@ -1920,7 +1920,14 @@ public String getScaleBasedPerformanceCohort(){
 				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
 			}  
 		}
-		codeDebateVoList = coreDashboardMainService.getScaleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList);
+		JSONArray debateParticipantLocationIdArray = jObj.getJSONArray("debateParticipantLocationIdArray");  
+		List<Long> debateParticipantLocationIdList = new ArrayList<Long>();
+		if(debateParticipantLocationIdArray != null && debateParticipantLocationIdArray.length() > 0){
+			for (int i = 0; i < debateParticipantLocationIdArray.length(); i++){
+				debateParticipantLocationIdList.add(Long.parseLong(debateParticipantLocationIdArray.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getScaleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList,debateParticipantLocationIdList);
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getScaleBasedPerformanceCohort() method of CoreDashBoardAction", e);
@@ -1966,7 +1973,15 @@ public String getChannelAndPartyWiseDetails(){
 				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
 			}  
 		}
-		codeDebateVoList = coreDashboardMainService.getChannelAndPartyWiseDetails(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList);
+		JSONArray debateParticipantLocIdArry = jObj.getJSONArray("debateParticipantLocIdArry");  
+		List<Long> debateParticipantLocIdList = new ArrayList<Long>();
+		if(debateParticipantLocIdArry != null && debateParticipantLocIdArry.length() > 0){
+			for (int i = 0; i < debateParticipantLocIdArry.length(); i++){
+				debateParticipantLocIdList.add(Long.parseLong(debateParticipantLocIdArry.getString(i)));          
+			}  
+		}
+		//debateParticipantLocIdArry
+		codeDebateVoList = coreDashboardMainService.getChannelAndPartyWiseDetails(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList,debateParticipantLocIdList);
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getChannelAndPartyWiseDetails() method of CoreDashBoardAction", e);
@@ -1985,7 +2000,14 @@ public String getRoleBasedPerformanceCohort(){
 				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
 			}  
 		}
-		codeDebateVoList = coreDashboardMainService.getRoleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList);
+		JSONArray debateParticipantLocationIdArray = jObj.getJSONArray("debateParticipantLocationIdArray");  
+		List<Long> debateParticipantLocationIdList = new ArrayList<Long>();
+		if(debateParticipantLocationIdArray != null && debateParticipantLocationIdArray.length() > 0){
+			for (int i = 0; i < debateParticipantLocationIdArray.length(); i++){
+				debateParticipantLocationIdList.add(Long.parseLong(debateParticipantLocationIdArray.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getRoleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList,debateParticipantLocationIdList);
 				
 	}catch (Exception e) {
 		LOG.error("Exception raised at getRoleBasedPerformanceCohort() method of CoreDashBoardAction", e);
