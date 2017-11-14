@@ -565,4 +565,16 @@ public class NregsDashboardController {
 		}
 		return locationVOList;
 	}
+	
+	@PostMapping("/getWorkWiseAbstractForMCCOthers")
+	public @ResponseBody List<NregsDataVO> getWorkWiseAbstractForMCCOthers(@RequestBody InputVO vo){
+		List<NregsDataVO> locationVOList = null;
+		try {
+			locationVOList = nregsTcsService.getWorkWiseAbstractForMCCOthers(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getWorkWiseAbstractForMCCOthers - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
 }

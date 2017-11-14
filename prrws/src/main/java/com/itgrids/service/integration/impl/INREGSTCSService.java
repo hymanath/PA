@@ -70,4 +70,5 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregaLevelsWiseDataFrCoffeePlantation(InputVO inputVO);
 	public List<NregsDataVO> getNregaMCCNewComponetsLevelData(InputVO inputVO);
 	public List<NregsDataVO> getNregaCovergancePROtherLevelData(InputVO inputVO);
+	public List<NregsDataVO> getWorkWiseAbstractForMCCOthers(InputVO inputVO);
 }

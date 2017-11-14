@@ -5617,4 +5617,64 @@ public class NREGSTCSService implements INREGSTCSService{
 		
 		return voList;
 	}
+	
+	/*
+	 * Date : 14/11/2017
+	 * Author :Sravanth
+	 * @description : getWorkWiseAbstractForMCCOthers
+	 */
+	public List<NregsDataVO> getWorkWiseAbstractForMCCOthers(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			
+			if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Greenary works Chettu"))
+				inputVO.setGroupName("Greenary works (Chettu)");
+			else if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Soil Moisture Conservation works Neeru"))
+				inputVO.setGroupName("Soil Moisture Conservation works (Neeru)");
+			else if(inputVO.getGroupName() != null && inputVO.getGroupName().trim().equalsIgnoreCase("Water Harvesting Structures Neeru"))
+				inputVO.setGroupName("Water Harvesting Structures (Neeru)");
+			
+			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MCCForestService/MCCForestAbstract";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUEID").toString().trim().length() > 0 ? jObj.getString("UNIQUEID") : "1").toString()));
+	 	    				vo.setWorkName(jObj.getString("WORK_NAME"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TARGET"));
+	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    			vo.setPercentage(jObj.getString("PERCENTAGE"));
+		 	    			vo.setParameter("");
+		 	    			voList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+	    } catch (Exception e) {
+			LOG.error("Exception raised at getWorkWiseAbstractForMCCOthers - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
 }
