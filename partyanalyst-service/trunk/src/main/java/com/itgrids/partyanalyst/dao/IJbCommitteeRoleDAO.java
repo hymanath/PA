@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.JbCommitteeRole;
 
    public interface IJbCommitteeRoleDAO extends GenericDao<JbCommitteeRole, Long> {
 	   public List<Object[]> getDesignationsIdsByCommitteeId(Long committeeId);
-	   public  List<Object[]> getCommitteeWiseTotalMemberCount();
+	   public  List<Object[]> getCommitteeWiseTotalMemberCount(String type);
 }

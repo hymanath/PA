@@ -18,18 +18,33 @@ import com.itgrids.partyanalyst.dao.IJbCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.JbCommitteeLevel;
+import com.itgrids.partyanalyst.model.JbCommitteeMember;
 import com.itgrids.partyanalyst.service.IJanmabhoomiCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService{
 
 	
 	private final static Logger LOG = Logger.getLogger(JanmabhoomiCommitteeService.class);
-	private CommonMethodsUtilService commonMethodsUtilService;
+	private IJbCommitteeDAO jbCommitteeDAO;
+	private CommonMethodsUtilService commonMethodsUtilService ;
+	private IJbCommitteeLevelDAO jbCommitteeLevelDAO ;
 	private IJbCommitteeRoleDAO jbCommitteeRoleDAO;
 	private IJbCommitteeMemberDAO jbCommitteeMemberDAO;
+	private DateUtilService dateUtilService;
 	
+	
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
 	public IJbCommitteeRoleDAO getJbCommitteeRoleDAO() {
 		return jbCommitteeRoleDAO;
 	}
@@ -46,50 +61,86 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	public void setJbCommitteeMemberDAO(IJbCommitteeMemberDAO jbCommitteeMemberDAO) {
 		this.jbCommitteeMemberDAO = jbCommitteeMemberDAO;
 	}
-	 private IJbCommitteeDAO  jbCommitteeDAO ;
-	    private IJbCommitteeLevelDAO jbCommitteeLevelDAO; 
-	    
-		public IJbCommitteeDAO getJbCommitteeDAO() {
-			return jbCommitteeDAO;
-		}
-		public void setJbCommitteeDAO(IJbCommitteeDAO jbCommitteeDAO) {
-			this.jbCommitteeDAO = jbCommitteeDAO;
-		}
-		
-		public CommonMethodsUtilService getCommonMethodsUtilService() {
-			return commonMethodsUtilService;
-		}
-		public void setCommonMethodsUtilService(
-				CommonMethodsUtilService commonMethodsUtilService) {
-			this.commonMethodsUtilService = commonMethodsUtilService;
-		}
-		
-		public IJbCommitteeLevelDAO getJbCommitteeLevelDAO() {
-			return jbCommitteeLevelDAO;
-		}
-		public void setJbCommitteeLevelDAO(IJbCommitteeLevelDAO jbCommitteeLevelDAO) {
-			this.jbCommitteeLevelDAO = jbCommitteeLevelDAO;
-		}
-		public static Logger getLog() {
-			return LOG;
-		}
-		public List<JanmabhoomiCommitteeVO> getDistrictWiseCommitteeDetails(String fromDate,String endDate,String type){
-			List<JanmabhoomiCommitteeVO> returnList = new ArrayList<JanmabhoomiCommitteeVO>(); 
-			try{
+	
+	public IJbCommitteeLevelDAO getJbCommitteeLevelDAO() {
+		return jbCommitteeLevelDAO;
+	}
+	public void setJbCommitteeLevelDAO(IJbCommitteeLevelDAO jbCommitteeLevelDAO) {
+		this.jbCommitteeLevelDAO = jbCommitteeLevelDAO;
+	}
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+	public IJbCommitteeDAO getJbCommitteeDAO() {
+		return jbCommitteeDAO;
+	}
+	public void setJbCommitteeDAO(IJbCommitteeDAO jbCommitteeDAO) {
+		this.jbCommitteeDAO = jbCommitteeDAO;
+	}
+
+	@SuppressWarnings("unused")
+		@Override
+		public JanmabhoomiCommitteeMemberVO getJanmabhoomiCommitteeOverview(Long committeId, String fromDateStr, String toDateStr) {
+			JanmabhoomiCommitteeMemberVO committeeVO = new JanmabhoomiCommitteeMemberVO();
+			Map<Long,JanmabhoomiCommitteeMemberVO> designationVOMap=new HashMap<Long, JanmabhoomiCommitteeMemberVO>();
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+				Date startDate = null;
+				Date endDate = null;
+				if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
+					startDate = sdf.parse(fromDateStr);
+					endDate = sdf.parse(toDateStr);
+				}
 				
-				//List<Object[]> list = jbCommitteeDAO.
-			}catch (Exception e) {
-				LOG.error("Excepting Occured in getDistrictWiseCommitteeDetails() of JanmabhoomiCommitteeService ", e);
+				
+				List<Object[]> designationsobjList = jbCommitteeRoleDAO.getDesignationsIdsByCommitteeId(committeId);
+				 //0 jbCommitteeRoleId,1 jbMemberTypeId,2 memberType, 3 maxMembers
+				
+	            List<Long> committeeRoleIdsList=new ArrayList<Long>();
+				if(designationsobjList!=null && designationsobjList.size() >0){
+					for(Object[] param:designationsobjList){
+						committeeRoleIdsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						Long designationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						JanmabhoomiCommitteeMemberVO designationVO = designationVOMap.get(designationId);
+						if(designationVO == null){
+							designationVO = new JanmabhoomiCommitteeMemberVO();
+							designationVO.setDesignationId(designationId);
+							designationVO.setRoleMemberCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+							designationVO.setDesignationName(commonMethodsUtilService.getStringValueForObject(param[2]));
+							designationVOMap.put(designationId, designationVO);
+						}
+					}
+				}
+				
+				List<Object[]> objList = jbCommitteeMemberDAO.getCommitteMemebersByRoleIds(committeeRoleIdsList, startDate, endDate);
+				//0 jbCommitteeMemberId,1 jbMemberTypeId,2 memberName, 3 mobileNo,4 isActive,5 status,6 voterIDCardNo
+				if(objList!=null && objList.size() >0){
+					for(Object[] param:objList){
+						Long designationId = commonMethodsUtilService.getLongValueForObject(param[1]);
+						JanmabhoomiCommitteeMemberVO designationVO = designationVOMap.get(designationId);
+						if(designationVO !=null){
+							designationVO.getDesinationMebersVOList().add(createMemberVO(param,committeeVO));
+							committeeVO.setTotalMemberCount(committeeVO.getTotalMemberCount()+1L);
+						}
+					}
+					committeeVO.getDesinationVOList().addAll(designationVOMap.values());
+				}
+			} catch (Exception e) {
+				LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmabhoomiCommitteeService ",e);
 			}
-			return returnList;
+			return committeeVO;
 		}
-		
 
 		// * @author Swapna
 		    @Override
 		    public JanmabhoomiCommitteeVO getJbCommitteeStatusCount(String fromDateStr, String toDateStr) {
 		      JanmabhoomiCommitteeVO  mainVO = new JanmabhoomiCommitteeVO();
-		      Map<Long, JanmabhoomiCommitteeMemberVO> levelWiseStatusMap=getLevelWiseCommiteeStatusCounts();
+		      Map<Long, JanmabhoomiCommitteeMemberVO> levelWiseStatusMap=getLevelWiseCommiteeStatusCounts("");
 		     try{     
 		            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -184,98 +235,207 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		return null;
 	}
 	
-	
-	@SuppressWarnings("unused")
-	@Override
-	public JanmabhoomiCommitteeMemberVO getJanmabhoomiCommitteeOverview(Long committeId, String fromDateStr, String toDateStr) {
-		JanmabhoomiCommitteeMemberVO committeeVO = new JanmabhoomiCommitteeMemberVO();
-		Map<Long,JanmabhoomiCommitteeMemberVO> designationVOMap=new HashMap<Long, JanmabhoomiCommitteeMemberVO>();
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		public JanmabhoomiCommitteeMemberVO createMemberVO(Object[] param,JanmabhoomiCommitteeMemberVO committeeVO){
+			JanmabhoomiCommitteeMemberVO memeberVO = new JanmabhoomiCommitteeMemberVO();
+			memeberVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+			memeberVO.setMemeberName(commonMethodsUtilService.getStringValueForObject(param[2]));
+			memeberVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(param[3]));
+			memeberVO.setVoterId(commonMethodsUtilService.getStringValueForObject(param[6]));
+			memeberVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[7]));
+			memeberVO.setCategoryName(commonMethodsUtilService.getStringValueForObject(param[8]));
+			memeberVO.setCasteId(commonMethodsUtilService.getLongValueForObject(param[9]));
+			memeberVO.setCasteName(commonMethodsUtilService.getStringValueForObject(param[10]));
+			//memeberVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[3]));
+			//memeberVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[0]));
+			if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("F")){
+				memeberVO.setStatus("Approved");
+				committeeVO.setAddedMemberCount(committeeVO.getAddedMemberCount()+1);
+			}
+			else if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("P")){
+				memeberVO.setStatus("Inprogress");
+				committeeVO.setNotAddedMemberCount(committeeVO.getNotAddedMemberCount()+1);
+			}else{
+				memeberVO.setStatus("Rejected");
+				committeeVO.setRejectedMemberCount(committeeVO.getRejectedMemberCount()+1);
+			}
+			return memeberVO;
+		}
 
-			Date startDate = null;
-			Date endDate = null;
-			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
-				startDate = sdf.parse(fromDateStr);
-				endDate = sdf.parse(toDateStr);
+		public Map<Long, JanmabhoomiCommitteeMemberVO> getLevelWiseCommiteeStatusCounts(String type) {
+			Map<Long,Map<Long,JanmabhoomiCommitteeMemberVO>> levelCommiteeCounts = new HashMap<Long, Map<Long,JanmabhoomiCommitteeMemberVO>>();
+			Map<Long,JanmabhoomiCommitteeMemberVO> returnMap = new HashMap<Long,JanmabhoomiCommitteeMemberVO>();
+			List<Object[]> committeeWiseTotalMemeberCountObjList = jbCommitteeRoleDAO.getCommitteeWiseTotalMemberCount(type);
+			if (committeeWiseTotalMemeberCountObjList != null && committeeWiseTotalMemeberCountObjList.size() > 0) {
+				for (Object[] param : committeeWiseTotalMemeberCountObjList) {
+					Long levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Long commiteeId = commonMethodsUtilService.getLongValueForObject(param[2]);
+					
+					Map<Long,JanmabhoomiCommitteeMemberVO> commiteeMap= levelCommiteeCounts.get(levelId);
+					if(commiteeMap == null){
+						 commiteeMap = new HashMap<Long, JanmabhoomiCommitteeMemberVO>();
+						levelCommiteeCounts.put(levelId, commiteeMap);
+					}
+					JanmabhoomiCommitteeMemberVO levelVO =commiteeMap.get(commiteeId);
+					if(levelVO == null){
+						 levelVO = new JanmabhoomiCommitteeMemberVO();
+						levelVO.setId(levelId);
+						levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						commiteeMap.put(levelId, levelVO);
+					}
+					levelVO.setTotalMemberCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+					
+				}
 			}
 			
-			
-			List<Object[]> designationsobjList = jbCommitteeRoleDAO.getDesignationsIdsByCommitteeId(committeId);
-			 //0 jbCommitteeRoleId,1 jbMemberTypeId,2 memberType, 3 maxMembers
-			
-            List<Long> committeeRoleIdsList=new ArrayList<Long>();
-			if(designationsobjList!=null && designationsobjList.size() >0){
-				for(Object[] param:designationsobjList){
-					committeeRoleIdsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-					Long designationId = commonMethodsUtilService.getLongValueForObject(param[1]);
-					JanmabhoomiCommitteeMemberVO designationVO = designationVOMap.get(designationId);
-					if(designationVO == null){
-						designationVO = new JanmabhoomiCommitteeMemberVO();
-						designationVO.setDesignationId(designationId);
-						designationVO.setRoleMemberCount(commonMethodsUtilService.getLongValueForObject(param[3]));
-						designationVO.setDesignationName(commonMethodsUtilService.getStringValueForObject(param[2]));
-						designationVOMap.put(designationId, designationVO);
+			List<Object[]> committeeWiseTotalMemeberAddedCountObjList = jbCommitteeMemberDAO.getCommitteeWiseTotalMemberAddedCount(type);
+			if (committeeWiseTotalMemeberAddedCountObjList != null && committeeWiseTotalMemeberAddedCountObjList.size() > 0) {
+				for (Object[] param : committeeWiseTotalMemeberAddedCountObjList) {
+					Long levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Long commiteeId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					Map<Long,JanmabhoomiCommitteeMemberVO> commiteeMap= levelCommiteeCounts.get(levelId);
+					if(commiteeMap != null){
+						JanmabhoomiCommitteeMemberVO committeeVO =commiteeMap.get(commiteeId);
+						if(committeeVO != null){
+							 Long addedMems = commonMethodsUtilService.getLongValueForObject(param[2]);
+							 Long maxMems = committeeVO.getTotalMemberCount();
+							 if(maxMems.longValue() == addedMems.longValue() && commonMethodsUtilService.getStringValueForObject(param[3]).equalsIgnoreCase("N") && commonMethodsUtilService.getStringValueForObject(param[5]) == null ){
+								 committeeVO.setStatus("Ready for apply");
+							 }else{
+								 committeeVO.setStatus("InProgress");
+							 }
+						}
 					}
 				}
 			}
 			
-			List<Object[]> objList = jbCommitteeMemberDAO.getCommitteMemebersByRoleIds(committeeRoleIdsList, startDate, endDate);
-			//0 jbCommitteeMemberId,1 jbMemberTypeId,2 memberName, 3 mobileNo,4 isActive,5 status,6 voterIDCardNo
-			if(objList!=null && objList.size() >0){
-				for(Object[] param:objList){
-					Long designationId = commonMethodsUtilService.getLongValueForObject(param[1]);
-					JanmabhoomiCommitteeMemberVO designationVO = designationVOMap.get(designationId);
-					if(designationVO !=null){
-						designationVO.getDesinationMebersVOList().add(createMemberVO(param,committeeVO));
-						committeeVO.setTotalMemberCount(committeeVO.getTotalMemberCount()+1L);
+			if(commonMethodsUtilService.isMapValid(levelCommiteeCounts)){
+				for (Entry<Long, Map<Long, JanmabhoomiCommitteeMemberVO>> entry : levelCommiteeCounts.entrySet()) {
+					JanmabhoomiCommitteeMemberVO  levelVO = new JanmabhoomiCommitteeMemberVO();
+					returnMap.put(entry.getKey(), levelVO);
+					Map<Long, JanmabhoomiCommitteeMemberVO> committeeMap = entry.getValue();
+					for (Entry<Long, JanmabhoomiCommitteeMemberVO> committee : committeeMap.entrySet()) {
+						JanmabhoomiCommitteeMemberVO committeeVO = committee.getValue();
+						levelVO.setId(committeeVO.getId());
+						levelVO.setName(committeeVO.getName());
+						if(committeeVO.getStatus().equalsIgnoreCase("Ready for apply")){
+							levelVO.setRoleMemberCount(levelVO.getRoleMemberCount()+1l);
+						}else if(committeeVO.getStatus().equalsIgnoreCase("InProgress")){
+							levelVO.setAddedMemberCount(levelVO.getAddedMemberCount()+1l);
+						}
+					}
+					levelVO.setTotalMemberCount(Long.valueOf(committeeMap.size()));
+					
+				}
+			}
+			return returnMap;
+		}
+
+	public List<JanmabhoomiCommitteeVO> getDistrictWiseCommitteeDetails(String fromDate,String endDate,String type){
+		List<JanmabhoomiCommitteeVO> returnList = new ArrayList<JanmabhoomiCommitteeVO>(); 
+		Map<Long,JanmabhoomiCommitteeVO> locationMapsWithLevel = new HashMap<Long,JanmabhoomiCommitteeVO>(); 
+		try{ 
+			
+			List<Object[]> list = jbCommitteeDAO.getDistrictWiseCommitteeDetails(null,null,type);
+			List<JbCommitteeLevel> committeeLvls = jbCommitteeLevelDAO.getAll();
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for(Object[] param :list){
+				JanmabhoomiCommitteeVO locVO = locationMapsWithLevel.get(commonMethodsUtilService.getLongValueForObject(param[6]));
+					if(locVO == null){
+						 locVO = new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[6]),commonMethodsUtilService.getStringValueForObject(param[7]));
+						 locVO.setList(setCommitteeLevels(committeeLvls));
+						locationMapsWithLevel.put(commonMethodsUtilService.getLongValueForObject(param[6]), locVO);
+					}
+					Long committeeLvlId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					String confirmedStatus = commonMethodsUtilService.getStringValueForObject(param[2]);
+					String startDate = commonMethodsUtilService.getStringValueForObject(param[3]);
+					String completedDate = commonMethodsUtilService.getStringValueForObject(param[4]);
+					String status = "";
+					
+					/*if(confirmedStatus == "N" && startDate != null){
+						status = "InProgress";
+					}else*/ if(confirmedStatus.equalsIgnoreCase("N") && startDate == ""){
+						status = "NotStarted";
+					}else if(confirmedStatus == "Y" && completedDate != ""){
+						status = "Approved";
+					}
+					if(committeeLvlId.longValue()==1l){
+						locVO.setStatusType(status);
+						locVO.setCommitteeId(commonMethodsUtilService.getLongValueForObject(param[5]));
+					}
+					for(JanmabhoomiCommitteeVO levelVO :locVO.getList()){
+						if(levelVO.equals(new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))){
+							if(status.equalsIgnoreCase("NotStarted")){
+								levelVO.setNotStartedCommitteeCnt(levelVO.getNotStartedCommitteeCnt()+1l);
+							}else if(status.equalsIgnoreCase("Approved")){
+								levelVO.setTotalApprovedCommitteeCnt(levelVO.getTotalApprovedCommitteeCnt()+1l);
+							}
+							levelVO.setTotalCommitteeCnt(levelVO.getTotalCommitteeCnt()+1l);
+						}
+					}
+					
+				}
+			}
+			
+			Map<Long, Map<Long ,JanmabhoomiCommitteeMemberVO>> locLevelMap =  getLocationLevelWiseCommiteeStatusCounts( type);
+			
+			if(commonMethodsUtilService.isMapValid(locationMapsWithLevel)){
+				for (Entry<Long, JanmabhoomiCommitteeVO> entry:locationMapsWithLevel.entrySet()) {
+					Map<Long ,JanmabhoomiCommitteeMemberVO> levelMap = locLevelMap.get(entry.getKey());
+					JanmabhoomiCommitteeVO locVO = entry.getValue();
+					returnList.add(locVO);
+					for(JanmabhoomiCommitteeVO levelVO :locVO.getList()){
+						JanmabhoomiCommitteeMemberVO loclevelVO = levelMap.get(levelVO.getId());
+						if(loclevelVO != null){
+						levelVO.setInprogressCommitteeCnt(levelVO.getInprogressCommitteeCnt()+loclevelVO.getRoleMemberCount());
+						levelVO.setReadyForApprovelCommitteeCnt(levelVO.getReadyForApprovelCommitteeCnt()+loclevelVO.getAddedMemberCount());
+						}
 					}
 				}
-				committeeVO.getDesinationVOList().addAll(designationVOMap.values());
+				
 			}
-		} catch (Exception e) {
-			LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmabhoomiCommitteeService ",e);
+		}catch (Exception e) {
+			LOG.error("Excepting Occured in getDistrictWiseCommitteeDetails() of JanmabhoomiCommitteeService ", e);
 		}
-		return committeeVO;
+		return returnList;
 	}
 	
-	
-	public JanmabhoomiCommitteeMemberVO createMemberVO(Object[] param,JanmabhoomiCommitteeMemberVO committeeVO){
-		JanmabhoomiCommitteeMemberVO memeberVO = new JanmabhoomiCommitteeMemberVO();
-		memeberVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-		memeberVO.setMemeberName(commonMethodsUtilService.getStringValueForObject(param[2]));
-		memeberVO.setMobileNumber(commonMethodsUtilService.getLongValueForObject(param[3]));
-		memeberVO.setVoterId(commonMethodsUtilService.getStringValueForObject(param[6]));
-		//memeberVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[3]));
-		//memeberVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[0]));
-		if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("F")){
-			memeberVO.setStatus("Approved");
-			committeeVO.setAddedMemberCount(committeeVO.getAddedMemberCount()+1);
+	public List<JanmabhoomiCommitteeVO> setCommitteeLevels(List<JbCommitteeLevel> committeeLvls){
+		List<JanmabhoomiCommitteeVO> returnList = new ArrayList<JanmabhoomiCommitteeVO>();
+		try{
+			if(commonMethodsUtilService.isListOrSetValid(committeeLvls)){
+				for(JbCommitteeLevel committeeLvl :committeeLvls){
+					if(committeeLvl.getJbCommitteeLevelId() != 1l && !returnList.contains(new JanmabhoomiCommitteeVO(committeeLvl.getJbCommitteeLevelId(),committeeLvl.getName()))){
+						returnList.add(new JanmabhoomiCommitteeVO(committeeLvl.getJbCommitteeLevelId(),committeeLvl.getName()));
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Excepting Occured in setCommitteeLevels() of JanmabhoomiCommitteeService ", e);
 		}
-		else if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("P")){
-			memeberVO.setStatus("Inprogress");
-			committeeVO.setNotAddedMemberCount(committeeVO.getNotAddedMemberCount()+1);
-		}else{
-			memeberVO.setStatus("Rejected");
-			committeeVO.setRejectedMemberCount(committeeVO.getRejectedMemberCount()+1);
-		}
-		return memeberVO;
+		return returnList;
 	}
-
-	@Override
-	public Map<Long, JanmabhoomiCommitteeMemberVO> getLevelWiseCommiteeStatusCounts() {
-		Map<Long,Map<Long,JanmabhoomiCommitteeMemberVO>> levelCommiteeCounts = new HashMap<Long, Map<Long,JanmabhoomiCommitteeMemberVO>>();
-		Map<Long,JanmabhoomiCommitteeMemberVO> returnMap = new HashMap<Long,JanmabhoomiCommitteeMemberVO>();
-		List<Object[]> committeeWiseTotalMemeberCountObjList = jbCommitteeRoleDAO.getCommitteeWiseTotalMemberCount();
+	public Map<Long, Map<Long ,JanmabhoomiCommitteeMemberVO>> getLocationLevelWiseCommiteeStatusCounts(String type) {
+		Map<Long,Map<Long,Map<Long,JanmabhoomiCommitteeMemberVO>>> levelCommiteeCounts = new HashMap<Long,Map<Long, Map<Long,JanmabhoomiCommitteeMemberVO>>>();
+		Map<Long, Map<Long ,JanmabhoomiCommitteeMemberVO>> returnMap = new HashMap<Long, Map<Long ,JanmabhoomiCommitteeMemberVO>>();
+		List<Object[]> committeeWiseTotalMemeberCountObjList = jbCommitteeRoleDAO.getCommitteeWiseTotalMemberCount(type);
 		if (committeeWiseTotalMemeberCountObjList != null && committeeWiseTotalMemeberCountObjList.size() > 0) {
 			for (Object[] param : committeeWiseTotalMemeberCountObjList) {
+				Long locId = commonMethodsUtilService.getLongValueForObject(param[4]);
 				Long levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				Long commiteeId = commonMethodsUtilService.getLongValueForObject(param[2]);
 				
-				Map<Long,JanmabhoomiCommitteeMemberVO> commiteeMap= levelCommiteeCounts.get(levelId);
+				Map<Long,Map<Long,JanmabhoomiCommitteeMemberVO>> locationMap= levelCommiteeCounts.get(locId);
+				if(locationMap == null){
+					locationMap = new HashMap<Long,Map<Long, JanmabhoomiCommitteeMemberVO>>();
+					levelCommiteeCounts.put(locId, locationMap);
+				}
+				Map<Long,JanmabhoomiCommitteeMemberVO> commiteeMap= locationMap.get(levelId);
 				if(commiteeMap == null){
 					 commiteeMap = new HashMap<Long, JanmabhoomiCommitteeMemberVO>();
-					levelCommiteeCounts.put(levelId, commiteeMap);
+					 locationMap.put(levelId, commiteeMap);
 				}
 				JanmabhoomiCommitteeMemberVO levelVO =commiteeMap.get(commiteeId);
 				if(levelVO == null){
@@ -289,12 +449,15 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			}
 		}
 		
-		List<Object[]> committeeWiseTotalMemeberAddedCountObjList = jbCommitteeMemberDAO.getCommitteeWiseTotalMemberAddedCount();
+		List<Object[]> committeeWiseTotalMemeberAddedCountObjList = jbCommitteeMemberDAO.getCommitteeWiseTotalMemberAddedCount(type);
 		if (committeeWiseTotalMemeberAddedCountObjList != null && committeeWiseTotalMemeberAddedCountObjList.size() > 0) {
 			for (Object[] param : committeeWiseTotalMemeberAddedCountObjList) {
+				Long locId = commonMethodsUtilService.getLongValueForObject(param[6]);
 				Long levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				Long commiteeId = commonMethodsUtilService.getLongValueForObject(param[1]);
-				Map<Long,JanmabhoomiCommitteeMemberVO> commiteeMap= levelCommiteeCounts.get(levelId);
+				Map<Long,Map<Long,JanmabhoomiCommitteeMemberVO>> locationMap= levelCommiteeCounts.get(locId);
+				if(locationMap != null){
+				Map<Long,JanmabhoomiCommitteeMemberVO> commiteeMap= locationMap.get(levelId);
 				if(commiteeMap != null){
 					JanmabhoomiCommitteeMemberVO committeeVO =commiteeMap.get(commiteeId);
 					if(committeeVO != null){
@@ -311,26 +474,92 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		}
 		
 		if(commonMethodsUtilService.isMapValid(levelCommiteeCounts)){
-			for (Entry<Long, Map<Long, JanmabhoomiCommitteeMemberVO>> entry : levelCommiteeCounts.entrySet()) {
-				JanmabhoomiCommitteeMemberVO  levelVO = new JanmabhoomiCommitteeMemberVO();
-				returnMap.put(entry.getKey(), levelVO);
-				Map<Long, JanmabhoomiCommitteeMemberVO> committeeMap = entry.getValue();
-				for (Entry<Long, JanmabhoomiCommitteeMemberVO> committee : committeeMap.entrySet()) {
-					JanmabhoomiCommitteeMemberVO committeeVO = committee.getValue();
-					levelVO.setId(committeeVO.getId());
-					levelVO.setName(committeeVO.getName());
-					if(committeeVO.getStatus().equalsIgnoreCase("Ready for apply")){
-						levelVO.setRoleMemberCount(levelVO.getRoleMemberCount()+1l);
-					}else if(committeeVO.getStatus().equalsIgnoreCase("InProgress")){
-						levelVO.setAddedMemberCount(levelVO.getAddedMemberCount()+1l);
+				for (Entry<Long, Map<Long,Map<Long, JanmabhoomiCommitteeMemberVO>>> entry : levelCommiteeCounts.entrySet()) {
+					Map<Long, JanmabhoomiCommitteeMemberVO> levelMap = new HashMap<Long, JanmabhoomiCommitteeMemberVO>();
+					returnMap.put(entry.getKey(), levelMap);
+					Map<Long,Map<Long, JanmabhoomiCommitteeMemberVO>> levelcommitteeMap = entry.getValue();
+					
+						for (Entry<Long, Map<Long,JanmabhoomiCommitteeMemberVO>> committee : levelcommitteeMap.entrySet()) {
+							JanmabhoomiCommitteeMemberVO  levelVO = new JanmabhoomiCommitteeMemberVO();
+							Map<Long, JanmabhoomiCommitteeMemberVO> committeeMap = committee.getValue();
+							levelMap.put(committee.getKey(), levelVO);
+							for (Entry<Long, JanmabhoomiCommitteeMemberVO> committeesVO : committeeMap.entrySet()) {
+								JanmabhoomiCommitteeMemberVO committeeVO = committeesVO.getValue();
+								levelVO.setId(committeeVO.getId());
+								levelVO.setName(committeeVO.getName());
+								levelVO.getCommitteeIds().add(committeeVO.getId());
+								if(committeeVO.getStatus() != null && committeeVO.getStatus().equalsIgnoreCase("Ready for apply")){
+									levelVO.setRoleMemberCount(levelVO.getRoleMemberCount()+1l);
+								}else if(committeeVO.getStatus() != null && committeeVO.getStatus().equalsIgnoreCase("InProgress")){
+									levelVO.setAddedMemberCount(levelVO.getAddedMemberCount()+1l);
+								}
+							}
+						//levelVO.setTotalMemberCount(Long.valueOf(committeeMap.size()));
+						
 					}
 				}
-				levelVO.setTotalMemberCount(Long.valueOf(committeeMap.size()));
-				
 			}
 		}
 		return returnMap;
 	}
+	
+	public ResultStatus saveJanmabhoomiCommitteeMember(final JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO){
+		ResultStatus resultStatus  = new ResultStatus();
+		try {
+			if(janmabhoomiCommitteeMemberVO != null){
+				JbCommitteeMember jbCommitteeMember = jbCommitteeMemberDAO.get(janmabhoomiCommitteeMemberVO.getId());
+				if(jbCommitteeMember == null){
+					jbCommitteeMember = new JbCommitteeMember();
+				}
+				String status =janmabhoomiCommitteeMemberVO.getStatus() ;
+				String statusType ="";
+				if(status.equalsIgnoreCase("approval")){
+					statusType = "F";
+				}else if(status.equalsIgnoreCase("reject")){
+					statusType = "R";
+				}else if(status.equalsIgnoreCase("proposal")){
+					statusType = "P";
+				}
+				if(status != null && (statusType.equalsIgnoreCase("P") || statusType.equalsIgnoreCase("R"))){
+					jbCommitteeMember.setStatus(statusType);
+					jbCommitteeMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					jbCommitteeMember.setUpdatedUserId(janmabhoomiCommitteeMemberVO.getUserId());
+					jbCommitteeMember.setEndDate(dateUtilService.getCurrentDateAndTime());
+				}else if(statusType.equalsIgnoreCase("P")){
+					jbCommitteeMember.setJbCommitteeRoleId(janmabhoomiCommitteeMemberVO.getDesignationId());
+					jbCommitteeMember.setMemberName(janmabhoomiCommitteeMemberVO.getMemeberName());
+					//jbCommitteeMember.setAge(null);
+					jbCommitteeMember.setCasteStateId(janmabhoomiCommitteeMemberVO.getCasteId());
+					jbCommitteeMember.setCasteCategoryId(janmabhoomiCommitteeMemberVO.getCategoryId());
+					jbCommitteeMember.setMobileNo(janmabhoomiCommitteeMemberVO.getMobileNumber());
+					//jbCommitteeMember.setDescripation(null);
+					jbCommitteeMember.setTdpCadreId(janmabhoomiCommitteeMemberVO.getTdpCadreId());
+					jbCommitteeMember.setStartDate(dateUtilService.getCurrentDateAndTime());
+					//jbCommitteeMember.setEndDate(dateUtilService.getCurrentDateAndTime());
+					jbCommitteeMember.setIsActive("Y");
+					jbCommitteeMember.setJbCommitteeEnrollmentId(janmabhoomiCommitteeMemberVO.getEnrollmentYrId());
+					jbCommitteeMember.setInsertedUserId(janmabhoomiCommitteeMemberVO.getUserId());
+					jbCommitteeMember.setUpdatedUserId(janmabhoomiCommitteeMemberVO.getUserId());
+					jbCommitteeMember.setStatus(statusType);
+					jbCommitteeMember.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					jbCommitteeMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					
+				}
+				
+				jbCommitteeMemberDAO.save(jbCommitteeMember);
+				resultStatus.setExceptionMsg("SUCCESS");
+			}
+		} catch (Exception e) {
+			resultStatus.setExceptionMsg("FAIL");
+			e.printStackTrace();
+			LOG.error("Excepting Occured in saveJanmabhoomiCommitteeMember() of JanmabhoomiCommitteeService ", e);
+		}
+		return resultStatus;
+		
+	}
+	
+	
 }
+
 
 

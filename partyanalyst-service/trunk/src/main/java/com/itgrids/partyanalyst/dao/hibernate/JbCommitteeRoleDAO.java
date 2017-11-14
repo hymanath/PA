@@ -29,12 +29,34 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 		
 		return query.list();
  }
- public  List<Object[]> getCommitteeWiseTotalMemberCount(){
+ public  List<Object[]> getCommitteeWiseTotalMemberCount(String type){
 	 StringBuilder sb = new StringBuilder();
 	 //0 committeeLeveId,1 level name,2 committeeId,3 maxMemebers
       sb.append("select model.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommittee.jbCommitteeLevel.name,model.jbCommittee.jbCommitteeId,sum(model.maxMembers) ");
+      if(type != null && type.equalsIgnoreCase("district")){
+			sb.append(" ,district.districtId,district.districtName ");
+		}else if(type != null && type.equalsIgnoreCase("constituency")){
+			sb.append(", constituency.constituencyId,constituency.name ");
+		}else if(type.equalsIgnoreCase("parliament")){
+			sb.append("  ,parliamentConstituency.constituencyId,parliamentConstituency.name ");
+		}
       sb.append(" from JbCommitteeRole model ");
+
+		if(type != null && type.equalsIgnoreCase("district")){
+			sb.append(" left join model.jbCommittee.userAddress.district district ");
+		}else if(type != null && type.equalsIgnoreCase("constituency")){
+			sb.append(" left join  model.jbCommittee.userAddress.constituency constituency ");
+		}else if(type.equalsIgnoreCase("parliament")){
+			sb.append(" left join  model.jbCommittee.userAddress.parliamentConstituency parliamentConstituency ");
+		}
       sb.append(" group by model.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommittee.jbCommitteeId ");
+      if(type != null && type.equalsIgnoreCase("district")){
+			sb.append(" , district.districtId ");
+		}else if(type != null && type.equalsIgnoreCase("constituency")){
+			sb.append(" ,constituency.constituencyId ");
+		}else if(type.equalsIgnoreCase("parliament")){
+			sb.append(" , model.userAddress.parliamentConstituency.constituencyId  ");
+		}
       Query query = getSession().createQuery(sb.toString());
       return query.list();
  }

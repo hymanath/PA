@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class JanmabhoomiCommitteeMemberVO {
 private Long id;
@@ -13,17 +15,80 @@ private Long RejectedMemberCount=0L;
 private String designationName;
 private Long roleMemberCount=0L;
 private String memeberName;
-private Long mobileNumber;
+private String mobileNumber;
 private String voterId;
 private String partyName;
 private String status;
 private Long partyId;
 private Long designationId;
-
+private Long casteId;
+private Long categoryId;
+private String categoryName;
+private String casteName;
+private String DOB;
+private Long tdpCadreId;
+private Long userId ;
+private Long enrollmentYrId ;
+private Set<Long> committeeIds = new TreeSet<Long>();
 private List<JanmabhoomiCommitteeMemberVO> desinationMebersVOList=new ArrayList<JanmabhoomiCommitteeMemberVO>();
 private List<JanmabhoomiCommitteeMemberVO> desinationVOList=new ArrayList<JanmabhoomiCommitteeMemberVO>();
 
 
+
+public Set<Long> getCommitteeIds() {
+	return committeeIds;
+}
+public void setCommitteeIds(Set<Long> committeeIds) {
+	this.committeeIds = committeeIds;
+}
+public String getCategoryName() {
+	return categoryName;
+}
+public void setCategoryName(String categoryName) {
+	this.categoryName = categoryName;
+}
+public String getCasteName() {
+	return casteName;
+}
+public void setCasteName(String casteName) {
+	this.casteName = casteName;
+}
+public String getDOB() {
+	return DOB;
+}
+public void setDOB(String dOB) {
+	DOB = dOB;
+}
+public Long getEnrollmentYrId() {
+	return enrollmentYrId;
+}
+public void setEnrollmentYrId(Long enrollmentYrId) {
+	this.enrollmentYrId = enrollmentYrId;
+}
+public Long getTdpCadreId() {
+	return tdpCadreId;
+}
+public void setTdpCadreId(Long tdpCadreId) {
+	this.tdpCadreId = tdpCadreId;
+}
+public Long getUserId() {
+	return userId;
+}
+public void setUserId(Long userId) {
+	this.userId = userId;
+}
+public Long getCasteId() {
+	return casteId;
+}
+public void setCasteId(Long casteId) {
+	this.casteId = casteId;
+}
+public Long getCategoryId() {
+	return categoryId;
+}
+public void setCategoryId(Long categoryId) {
+	this.categoryId = categoryId;
+}
 public String getName() {
 	return name;
 }
@@ -78,10 +143,10 @@ public String getMemeberName() {
 public void setMemeberName(String memeberName) {
 	this.memeberName = memeberName;
 }
-public Long getMobileNumber() {
+public String getMobileNumber() {
 	return mobileNumber;
 }
-public void setMobileNumber(Long mobileNumber) {
+public void setMobileNumber(String mobileNumber) {
 	this.mobileNumber = mobileNumber;
 }
 public String getVoterId() {
