@@ -21,15 +21,16 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 		 StringBuilder sb = new StringBuilder();
 		   //0 jbCommitteeMemberId,1 jbMemberTypeId,2 memberName, 3 mobileNo,4 isActive,5 status,6 voterIDCardNo
 			sb.append("SELECT model.jbCommitteeMemberId,model.jbCommitteeRole.jbCommitteeRoleId , ");
-			sb.append("model.memberName,model.mobileNo,mobileNo.isActive,model.status, ");
+			sb.append("model.memberName,model.mobileNo, model.isActive,model.status, ");
 			sb.append(" voter.voterIDCardNo,casteCategory.casteCategoryId,casteCategory.categoryName,casteState.casteStateId," +
-					" casteState.caste.casteName ");
+					" caste.casteName ");
 			
 			sb.append("from JbCommitteeMember model " +
 					" left join model.tdpCadre tdpCadre " +
 					" left join tdpCadre.voter  voter " +
 					" left join model.casteCategory casteCategory" +
-					" left join model.casteState casteState  ");
+					" left join model.casteState casteState " +
+					" left join casteState.caste caste  ");
 			sb.append("where ");
 			sb.append(" model.jbCommitteeRole.jbCommitteeRoleId in(:roleIdsList) ");
 			
@@ -68,7 +69,7 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 			}else if(type.equalsIgnoreCase("parliament")){
 				sb.append(" left join  model.jbCommitteeRole.jbCommittee.userAddress.parliamentConstituency parliamentConstituency ");
 			}
-		 sb.append(" where model.jbCommitteeRole.jbCommittee.isDeleted = 'N'  ");
+		 sb.append(" where model.jbCommitteeRole.jbCommittee.isDeleted = 'N' and model.isActive='Y' ");
 		 sb.append(" group by model.jbCommitteeRole.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommitteeRole.jbCommittee.jbCommitteeId ");
 		 if(type != null && type.equalsIgnoreCase("district")){
 				sb.append(" , district.districtId ");
