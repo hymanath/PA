@@ -17,28 +17,26 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
+.table-employeeAtten {
+	border:none;
+	border-spacing: 4px 0px;
+}
+.table-employeeAtten td,.table-employeeAtten th{
+	border:none;
+}
 .table-employeeAtten tr th:nth-child(1){
 	background-color:#FFFFFF;
-}
-.table-employeeAtten tr th:nth-child(2)
-{
-	border-collapse: collapse;
-	border-spacing:10px 0px;
 }
 .table-employeeAtten tr th:nth-child(n+2){
 	background-color:#00D1B5;
 	color:#FFFFFF;
 }
 .table-employeeAtten tr th:nth-child(n+6){
+	border-top:2px solid  #898989;
 	background-color:#EDEBEB;
 	color:#00BD13;
 }
 
-.table-employeeAtten tr th:nth-child(5),.table-employeeAtten tr td:nth-child(5)
-{
-	border-collapse: collapse;
-	border-spacing:10px 0px;
-}
 .table-employeeAtten tr th:nth-child(2){
 	border-top:2px solid #3FDCC7;
 	border-left:2px solid #3FDCC7;
@@ -63,11 +61,6 @@
 .table-employeeAtten tr td:nth-child(6){
 	border-left:2px solid #898989;
 }
-.table-employeeAtten tr th:nth-child(9),{
-	border-top:2px solid  #898989;
-	border-right:2px solid #898989;
-	border-top-right-radius:10px;
-}
 .table-employeeAtten tr td:nth-child(9){
 	border-right:2px solid #898989;
 }
@@ -75,6 +68,11 @@
 	border-bottom:2px solid  #898989;
 	border-right:2px solid #898989;
 	border-bottom-right-radius:10px;
+}
+.table-employeeAtten tr:last-child th:nth-child(9){
+	border-top:2px solid  #898989;
+	border-right:2px solid #898989;
+	border-top-right-radius:10px;
 }
 .table-employeeAtten tr:last-child td:nth-child(6){
 	border-bottom:2px solid  #898989;
@@ -87,7 +85,7 @@
 }
 .table-employeeAtten tr:last-child td:nth-child(n+6){
 	border-bottom:2px solid  #898989;
-	
+
 }
 .table-employeeAtten tr:last-child td:nth-child(2){
 	border-bottom-left-radius:10px;
