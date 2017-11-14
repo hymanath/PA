@@ -243,11 +243,22 @@ function getScaleBasedPerformanceCohort(){
 		}
         
       });
+	  var participantLocIdArry =[];
+     $(".radioStateCls1").each(function(){
+        if($(this).prop('checked')==true){
+               participantLocIdArry.push($(this).val());
+        }else{
+			participantLocIdArry.push(0);
+		}
+        
+      });
+	  
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
 			state:globalState,
-			debateLocationIdArry :debateLocationIdArry
+			debateLocationIdArry :debateLocationIdArry,
+			debateParticipantLocationIdArray :participantLocIdArry
 		}
 	    $.ajax({
 			type : 'POST',
@@ -487,11 +498,21 @@ function getChannelAndPartyWiseDetails(){
 		}
         
       });
+	  var debateParticipantLocIdArry =[];
+     $(".radioStateCls1").each(function(){
+        if($(this).prop('checked')==true){
+               debateParticipantLocIdArry.push($(this).val());
+        }else{
+			debateParticipantLocIdArry.push(0);
+		}
+        
+      });
 		var jsObj={
-			startDate: customStartDate ,
+			startDate: customStartDate,
 			endDate: customEndDate,
 			state:globalState,
-			debateLocationIdArry:debateLocationIdArry
+			debateLocationIdArry:debateLocationIdArry,
+			debateParticipantLocIdArry:debateParticipantLocIdArry
 		}
 	    $.ajax({
 			type : 'POST',
@@ -714,11 +735,21 @@ function getRoleBasedPerformanceCohort(){
 		}
         
       });
+	   var participantLocIdArry =[];
+     $(".radioStateCls1").each(function(){
+        if($(this).prop('checked')==true){
+               participantLocIdArry.push($(this).val());
+        }else{
+			participantLocIdArry.push(0);
+		}
+        
+      });
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
 			state:globalState,
-			debateLocationIdArry:debateLocationIdArry
+			debateLocationIdArry:debateLocationIdArry,
+			debateParticipantLocationIdArray:participantLocIdArry
 		}
 	    $.ajax({
 			type : 'POST',
