@@ -24,6 +24,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.mapping.Array;
 import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
@@ -6440,6 +6441,7 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 		Set<Long> electionIdsSet = new HashSet<Long>(0);
 		Map<String,List<String>> groupUIdAndPartyNamesMap=new HashMap<String, List<String>>();
 		Map<String,List<Long>> groupNameWithPartyIdsMAp=new HashMap<String, List<Long>>();
+		Map<String,List<String>> groupNameWithPartyNamesMap = new LinkedHashMap<String, List<String>>();
 		
 		if(totalCnt !=null && totalCnt.size()>0){
 			Set<Long> partyIdList = new HashSet<Long>(0);
@@ -6487,6 +6489,7 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 				
 				List<String> alliancePartyIdNameList  = findMatchedPartyId(alliancedPartiesWithGroupIdMap,electionId,partyId);
 				List<Long> alincepartiIdsList= new ArrayList<Long>();
+				List<String> aliancePartyWiseNamesList = new ArrayList<String>();
 				if(commonMethodsUtilService.isListOrSetValid(alliancePartyIdNameList)){
 					partyId = Long.valueOf(alliancePartyIdNameList.get(0));
 					partyName = alliancePartyIdNameList.get(1);
@@ -6497,6 +6500,11 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 						alincepartiIdsList.add(Long.valueOf(alliancedPartyId));
 					}
 					groupNameWithPartyIdsMAp.put(partyName,alincepartiIdsList);
+					
+					for(String groupPartyName : namesArr){
+						aliancePartyWiseNamesList.add(groupPartyName);
+					}
+					groupNameWithPartyNamesMap.put(partyName, aliancePartyWiseNamesList);
 				}
 				
 				ElectionInformationVO locationVO = levelMap.get(commonMethodsUtilService.getLongValueForObject(objects[1]));
@@ -6747,6 +6755,9 @@ public List<ElectionInformationVO> setElectionDetailsData( List<Object[]> totalC
 											
 											if(groupNameWithPartyIdsMAp.get(partVo.getPartyName().trim()) != null && groupNameWithPartyIdsMAp.get(partVo.getPartyName().trim()).size() >0)
 												partVo.getIdsList().addAll(groupNameWithPartyIdsMAp.get(partVo.getPartyName().trim()));
+											if(groupNameWithPartyNamesMap.get(partVo.getPartyName().trim()) != null && groupNameWithPartyNamesMap.get(partVo.getPartyName().trim()).size() >0)
+												partVo.getPartyNamesList().addAll(groupNameWithPartyNamesMap.get(partVo.getPartyName().trim()));
+											
 											
 										}
 											partVo.setWonSeatsCount(alliancePartyCount);
