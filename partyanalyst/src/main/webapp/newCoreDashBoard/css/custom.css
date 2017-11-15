@@ -602,7 +602,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     font-weight: bold;
     text-transform: uppercase;
 }
-.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand  , .tourExpand , .alertsIconExpand,.statelevelSessionMeeting,.refreshButtonUcon,.NewTourExpand , .alertsIconRefresh,.debatesRefresh,.newsRefresh,.emnRefresh,.toursRefresh,.meetingsRefresh,.mainMeetingsIcon,.alertSettingBlock, .multicLocationMeetingCls , .debatesSettingsIcon{
+.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .pressmeetIconExpand,.notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand  , .tourExpand , .alertsIconExpand,.statelevelSessionMeeting,.refreshButtonUcon,.NewTourExpand , .alertsIconRefresh,.debatesRefresh,.newsRefresh,.emnRefresh,.toursRefresh,.meetingsRefresh,.mainMeetingsIcon,.alertSettingBlock, .multicLocationMeetingCls , .debatesSettingsIcon{
     background-color: rgb(254, 203, 0);
     border: 1px solid rgb(153, 153, 153);
     border-radius: 5px;
@@ -613,10 +613,10 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     position: relative;
     top: -3px;
 }
-.iconExpand i, .notesIcon i, .settingsIcon i, .trainingIconExpand i, .meetingsIconExpand i , .alertsIconExpand i, .debatesIconExpand i, .stateLevelTraining i, .stateLevelTrainingInd i, .newsIconExpand i, .committeeMeetingsSettings i, .notesIconDebates i, .notesIconNews i, .stateLevelMeetingSeeting i, .specialMeetingSeeting i, .stateLevelMeetingsExpand i, .stateGeneralMeeting i, .specialMeetings i, .eventsIconExpand i, .notesIconEvents i, .eventsListExpandIcon i, .attendaceIconExpand i, .notesIconattendance i, .attendanceSetIcon i, .cadreExpand i, .cadreNotes i, .cadreSettings i, .emnSetIcon i, .notesIconEmn i, .emnIconExpand i  , .tourExpand ,.statelevelSessionMeeting,.refreshButtonUcon i , .NewTourExpand i , .alertsIconRefresh i,.debatesRefresh i,.newsRefresh i,.emnRefresh i,.toursRefresh i,.meetingsRefresh i,.mainMeetingsIcon i,.alertSettingBlock i, .multicLocationMeetingCls i, .debatesSettingsIcon i{
+.iconExpand i, .notesIcon i, .settingsIcon i, .trainingIconExpand i, .meetingsIconExpand i , .alertsIconExpand i, .debatesIconExpand i, .stateLevelTraining i, .stateLevelTrainingInd i, .newsIconExpand i, .committeeMeetingsSettings i, .notesIconDebates i, .notesIconNews i, .stateLevelMeetingSeeting i, .specialMeetingSeeting i, .stateLevelMeetingsExpand i, .stateGeneralMeeting i, .specialMeetings i, .eventsIconExpand i,.pressmeetIconExpand i .notesIconEvents i, .eventsListExpandIcon i, .attendaceIconExpand i, .notesIconattendance i, .attendanceSetIcon i, .cadreExpand i, .cadreNotes i, .cadreSettings i, .emnSetIcon i, .notesIconEmn i, .emnIconExpand i  , .tourExpand ,.statelevelSessionMeeting,.refreshButtonUcon i , .NewTourExpand i , .alertsIconRefresh i,.debatesRefresh i,.newsRefresh i,.emnRefresh i,.toursRefresh i,.meetingsRefresh i,.mainMeetingsIcon i,.alertSettingBlock i, .multicLocationMeetingCls i, .debatesSettingsIcon i{
     transition: all 0.2s ease-in-out 0s;
 }
-.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover, .trainingIconExpand i:hover, .alertsIconExpand i:hover ,  .meetingsIconExpand i:hover, .debatesIconExpand i:hover, .stateLevelTraining i:hover, .stateLevelTrainingInd i:hover, .newsIconExpand i:hover, .committeeMeetingsSettings i:hover, .notesIconDebates i:hover, .notesIconNews i:hover, .stateLevelMeetingSeeting i:hover, .specialMeetingSeeting i:hover, .stateLevelMeetingsExpand i:hover, .stateGeneralMeeting i:hover, .specialMeetings i:hover, .eventsIconExpand i:hover, .notesIconEvents i:hover, .eventsListExpandIcon i:hover, .attendaceIconExpand i:hover, .notesIconattendance i:hover, .attendanceSetIcon i:hover, .cadreExpand i:hover, .cadreNotes i:hover, .cadreSettings i:hover, .emnSetIcon i:hover, .notesIconEmn i:hover, .emnIconExpand i:hover , .tourExpand i:hover, .statelevelSessionMeeting i:hover, .refreshButtonUcon i:hover ,
+.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover, .trainingIconExpand i:hover, .alertsIconExpand i:hover ,  .meetingsIconExpand i:hover, .debatesIconExpand i:hover, .stateLevelTraining i:hover, .stateLevelTrainingInd i:hover, .newsIconExpand i:hover, .committeeMeetingsSettings i:hover, .notesIconDebates i:hover, .notesIconNews i:hover, .stateLevelMeetingSeeting i:hover, .specialMeetingSeeting i:hover, .stateLevelMeetingsExpand i:hover, .stateGeneralMeeting i:hover, .specialMeetings i:hover, .eventsIconExpand i:hover,.pressmeetIconExpand i:hover .notesIconEvents i:hover, .eventsListExpandIcon i:hover, .attendaceIconExpand i:hover, .notesIconattendance i:hover, .attendanceSetIcon i:hover, .cadreExpand i:hover, .cadreNotes i:hover, .cadreSettings i:hover, .emnSetIcon i:hover, .notesIconEmn i:hover, .emnIconExpand i:hover , .tourExpand i:hover, .statelevelSessionMeeting i:hover, .refreshButtonUcon i:hover ,
 .NewTourExpand i:hover,.alertsIconRefresh i:hover,.debatesRefresh i:hover,.newsRefresh i:hover,.emnRefresh i:hover,.toursRefresh i:hover,.meetingsRefresh i:hover,.mainMeetingsIcon i:hover,.alertSettingBlock i:hover, .multicLocationMeetingCls i:hover, .debatesSettingsIcon i:hover{
     transform: scale(1.4);
 }
@@ -658,7 +658,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .text-pink {
     color: rgb(194, 134, 188);
 }
-.committeesHiddenBlock, .moreBlocks, .moreBlocksIcon, .trainingsHiddenBlock, .moreTrainingBlocksIcon, .moreTrainingBlocks, .meetingsHiddenBlock, .moreMeetingsBlocksIcon, .moreMeetingsBlocks, .debatesHiddenBlock, .debatesMoreHiddenBlock, .newsHiddenBlock, .morenewsBlocksIcon, .newsHiddenMoreBlock, .eventsHiddenBlock, .moreEventsBlocks, .moreAttBlocksIcon, .attendanceBlockMore, .moreAttBlocks, .moreCadreBlock, .moreBlocksCadre, .moreBlocksCadreIcon, .moreBlockEMN, .moreEmnBlocks, .detailedPartyEmn, .detailedGovtEmn, .compGovtEmn, .compPartyEmn, .selectEmnCate , .toursHiddenBlock ,.moreMeetingsBlocksIconMulti , .moreCadreInsuranceIcon{
+.committeesHiddenBlock, .moreBlocks, .moreBlocksIcon, .trainingsHiddenBlock, .moreTrainingBlocksIcon, .moreTrainingBlocks, .meetingsHiddenBlock, .moreMeetingsBlocksIcon, .moreMeetingsBlocks, .debatesHiddenBlock, .debatesMoreHiddenBlock, .newsHiddenBlock, .morenewsBlocksIcon, .newsHiddenMoreBlock, .eventsHiddenBlock,.pressmeetHiddenBlock, .moreEventsBlocks, .moreAttBlocksIcon, .attendanceBlockMore, .moreAttBlocks, .moreCadreBlock, .moreBlocksCadre, .moreBlocksCadreIcon, .moreBlockEMN, .moreEmnBlocks, .detailedPartyEmn, .detailedGovtEmn, .compGovtEmn, .compPartyEmn, .selectEmnCate , .toursHiddenBlock ,.moreMeetingsBlocksIconMulti , .moreCadreInsuranceIcon{
     display: none;
 }
 .panelNewCustom .panel-heading {
@@ -1278,7 +1278,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .calenarUl li span {
     font-size: 12px;
 }
-.debatesPartyIcon, .newsIcon {
+.debatesPartyIcon, .newsIcon ,.PressmeetPartyIcon{
     height: 18px;
     margin-right: 5px;
     width: 20px;
@@ -1449,7 +1449,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     font-size: 14px;
     width: 90px !important;
 }
-.debateSpokesCls {
+.debateSpokesCls,.pressmeetSpokesCls{
     margin-top: -6px;
 }
 .newsComparisonHeading {
@@ -3063,4 +3063,74 @@ color: rgb(51, 122, 183);
 }
 .collapseTraingIcon.collapsed::before {
     content: "\2b";
+}
+.collapsepressmeetIcon, .collapsepressmeetIcon:active, .collapsepressmeetIcon:hover {
+    color: rgb(102, 102, 102) !important;
+}
+.collapsepressmeetIcon::before {
+    border: 1px solid rgb(75, 87, 99);
+    color: rgb(75, 87, 99);
+    content: "\2212";
+    float: right;
+    font-family: "Glyphicons Halflings";
+    font-size: 13px;
+    font-weight: 400 !important;
+    margin-left: -4px;
+    margin-top: -4px;
+    padding: 3px 5px;
+}
+.collapsepressmeetIcon.collapsed::before {
+    content: "\2b";
+}
+.tablePressmeetMain tr td:first-child {
+    font-size: 18px;
+    width: 90px !important;
+}
+.tablepressmeet {
+    margin-bottom: 10px !important;
+}
+.tablepressmeet tr td {
+    border: 0 none !important;
+}
+.tablepressmeet tr td:first-child {
+    -moz-border-bottom-colors: none !important;
+    -moz-border-left-colors: none !important;
+    -moz-border-right-colors: none !important;
+    -moz-border-top-colors: none !important;
+    border-color: -moz-use-text-color rgb(221, 221, 221) -moz-use-text-color -moz-use-text-color !important;
+    border-image: none !important;
+    border-style: none solid none none !important;
+    border-width: 0 1px 0 0 !important;
+    vertical-align: middle;
+    width: 100px !important;
+}
+.tablepressmeetMain tr td:first-child {
+    font-size: 18px;
+    width: 90px !important;
+}
+.tablepressmeetMainText tr td:first-child {
+    font-size: 14px;
+    width: 100px !important;
+}
+.tableTopPressmeet tr td {
+    border-bottom: 1px solid rgb(221, 221, 221) !important;
+    border-top: 0 none !important;
+    padding: 12px 5px;
+}
+.tableTopPressmeet tr:last-child td {
+    border-bottom: 0 none !important;
+    border-top: 0 none !important;
+}
+.tablePressmeetVs tr td:first-child {
+    text-align: center;
+}
+.tablePressmeetVs tr:first-child td {
+    border-top: 0 none;
+}
+.tablePressmeetVs tr:last-child td {
+    border-bottom: 0 none;
+}
+.publicationLogo {
+    height: 25px;
+    width: 25px;
 }

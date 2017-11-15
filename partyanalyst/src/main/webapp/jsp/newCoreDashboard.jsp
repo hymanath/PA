@@ -134,6 +134,7 @@
 		<li expand-icon="news" right-nav="true">News - Print Media</li>
 		<li expand-icon="electronic" right-nav="true">News - electronic media</li>
 		<li expand-icon="prajaSankaplaYatra" right-nav="true">Praja Sankapla Yatra</li>
+		<li expand-icon="pressmeet" right-nav="true">Press Meet</li>
 		<li expand-icon="tours" right-nav="true">Tours</li>
 		<li expand-icon="meetings" right-nav="true">meetings</li>
 		<li expand-icon="cadre" right-nav="true">membership</li>
@@ -704,17 +705,17 @@
 								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
 									<div class="panel panel-default panelNew">
 										<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
-											<!--<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#oneId1" aria-expanded="true" aria-controls="oneId1">-->
+											
 												<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
-											<!--</a>-->
+											
 										</div>
-										<!--<div id="oneId1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="oneId">-->
+									<!--<div id="oneId1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="oneId">-->
 											<div class="panel-body collapse in" id="collapseOneBodyId">
 												<div class="row">
 													<div id="scaleBasedPerformanceCohort"></div>
 												</div>
 											</div>
-										<!--</div>-->
+								     <!--</div>-->
 									</div>
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingTwo">
@@ -781,109 +782,6 @@
 								  </div>
 								</div>
 							</div>
-							
-						  <!--  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<h4><span class="headingColor">SMS Poll</span></h4>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<table class="table tableDebatesVs m_top10">
-												  <tbody>
-													<tr>
-														<td class="b_right1">
-															<img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
-														</td>
-														<td>
-															<p class="text-capital">total questions</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">yes %</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">no % </p>
-															<h4>100</h4>
-														</td>
-													</tr>
-													<tr>
-														<td class="b_right1">
-															<img src="newCoreDashBoard/img/studioNLogo.png" class="channelLogo" alt="Ntv Logo"/>Studio - N
-														</td>
-														<td>
-															<p class="text-capital">total questions</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">yes %</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">no % </p>
-															<h4>100</h4>
-														</td>
-													</tr>
-													<tr>
-														<td class="b_right1">
-															<img src="newCoreDashBoard/img/tv5Logo.png" class="channelLogo" alt="Ntv Logo"/>tv5
-														</td>
-														<td>
-															<p class="text-capital">total questions</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">yes %</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">no % </p>
-															<h4>100</h4>
-														</td>
-													</tr>
-													<tr>
-														<td class="b_right1">
-															<img src="newCoreDashBoard/img/tv9Logo.png" class="channelLogo" alt="Ntv Logo"/>tv9
-														</td>
-														<td>
-															<p class="text-capital">total questions</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">yes %</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">no % </p>
-															<h4>100</h4>
-														</td>
-													</tr>
-													<tr>
-														<td class="b_right1">
-															<img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
-														</td>
-														<td>
-															<p class="text-capital">total questions</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">yes %</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">no % </p>
-															<h4>100</h4>
-														</td>
-													</tr>
-												 </tbody>
-												</table>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>-->
 						</div>
 					</div>
 				</div>
@@ -4026,6 +3924,118 @@
 				</div>
 			</div>
 			<!-- NEWS BLOCK END-->
+			<!--Press Meet block Start-->
+			<!--<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
+			   <div class="panel panel-default panelNewCustom ">
+				  <div class="panel-heading">
+					 <div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="pressmeet">
+						   <h4 class="panel-title text-capital" style="width:440px;">    
+							  <img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+							  PRESS MEET 
+						   </h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="pressmeet">
+						   <span class="pressmeetIconExpand pull-right" expand-icon="pressmeet">
+						   <i class="glyphicon glyphicon-fullscreen"></i>
+						   </span>
+						</div>
+					 </div>
+				  </div>
+				  <div class="panel-body">
+					 <div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 pressmeetBlock" expand-block-inner="pressmeetBlock">
+						   <div class="row">
+							  <div id="partyWisePressMeetDetails"></div>
+						   </div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 pressmeetHiddenBlock" expand-block-right="pressmeet">
+						   <div class="row">
+							  <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+								 <h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
+							  </div>
+							  <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
+								 <ul class="activeUlCls list-inline pressmeetSpokesCls">
+									<li id="pressmeetTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;Top </li>
+									<li id="pressmeetLowId"><i class="fa fa-arrow-down"></i>&nbsp;Poor</li>
+								 </ul>
+							  </div>
+							  <div id="spokesPersonWisepressmeetDetailsId"></div>
+							  <!--<div class="col-xs-12 col-sm-12 col-md-12">
+								 <i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
+								 </div>	
+						   </div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<div class="panel-group" id="pressmeetCollapse" role="tablist" aria-multiselectable="true">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingone">
+										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseone" aria-expanded="true" aria-controls="collapseone">
+											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">scale based performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseone" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingone">
+										<div class="panel-body">
+										   <div class="row">
+											  <div id="scaleBasedPerformanceCohortId">
+											  </div>
+										   </div>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingtwo">
+										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo">
+											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapsetwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingtwo">
+										<div class="panel-body">
+										   <div class="row">
+											  <div id="candidateOverAllPerformanceCohortId" style="overflow:auto;">
+											  </div>
+										   </div>
+										</div>
+									</div>
+								</div>
+							  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingsthree">
+										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapsethree" aria-expanded="false" aria-controls="collapsethree">
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
+										</a>
+									</div>
+									<div id="collapsethree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsthree">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12" id="candidatePressMeetPerformanceId"></div>
+										</div>
+									  </div>
+									</div>
+								  </div> 
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingsFour">
+										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapsesFour" aria-expanded="false" aria-controls="collapsesFour">
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Publication VS Party</span></h4>
+										</a>
+									</div>
+									<div id="collapsesFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsFour">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="publicationAndPartyWiseDetailsId" style="overflow:auto;"></div>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+							</div>
+						</div>
+					 </div>
+				  </div>
+			   </div>
+			</div>-->
+
+
 		</div>
 </div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
@@ -4919,6 +4929,7 @@
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+<script src="newCoreDashBoard/js/pressmeet.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).on("click",".rightNavigationMenuRes",function(){
 	$(this).toggleClass("active");
@@ -5025,6 +5036,15 @@ $("[expand-icon]").click(function(){
 			scrollTop: $('.prajaSankaplaYatraBlock').offset().top - 20
 		}, 'slow');
 	}
+	/*else if(iconClass == 'pressmeet')
+	{
+		$("[right-nav]").removeClass("active");
+		$("[expand-icon="+blockName+"]").addClass("active");
+		$("[expand-block-right="+blockName+"]").show();
+		$('html, body').animate({
+			scrollTop: $('.pressmeetBlock').offset().top - 20
+		}, 'slow');
+	}*/
 });
 $(document).on("click","[expand-icon-inner]",function(){
 	var $this = $(this);
