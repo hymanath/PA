@@ -603,7 +603,7 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 				return query.list();	
 	}
 	
-	public List<Object[]> getLocationWiseCadreCounts(Long locationTypeId,List<Long> locationValue,Long casteId,Long enrollmentYearId){
+	public List<Object[]> getLocationWiseCadreCounts(Long locationTypeId,List<Long> locationValue,Long casteId,Long enrollmentYearId,String type){
 		
 		StringBuilder sb = new StringBuilder();
 
@@ -626,9 +626,9 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		} else if (locationTypeId != null && (locationTypeId.longValue() == 3L || locationTypeId.longValue() == 10L)) {
 			sb.append(" , constituency c ");
 		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
-			sb.append(" , tehsil t, panchayat p ");
+			sb.append(" , tehsil t ,booth b ");
 		}else if (locationTypeId != null && locationTypeId.longValue() == 5L ) {
-			sb.append(" , panchayat p ");
+			sb.append(" , panchayat p,booth b  ");
 		}
 
 		sb.append("where ");
@@ -637,28 +637,36 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			sb.append(" model.location_type_id =3 and model.location_Id = d.district_id  ");
 			sb.append(" and (d.district_id between 11 and 23) ");
 		} else if (locationTypeId != null && (locationTypeId.longValue() == 3L || locationTypeId.longValue() == 10L )) {
-			sb.append(" model.location_type_id =3 and model.location_Id = c.constituency_id ");
-		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
-			sb.append(" model.location_type_id =4 and model.location_Id = p.panchayat_id ");
-			sb.append(" and p.tehsil_id=t.tehsil_id ");
+			sb.append(" model.location_type_id =4 and model.location_Id = c.constituency_id ");
+		}else if (locationTypeId != null && locationTypeId.longValue() == 4L && type !=null && type.equalsIgnoreCase("rural")) {
+			sb.append(" b.tehsil_id = t.tehsil_id and model.location_type_id =5 and model.location_Id = t.tehsil_id and b.local_election_body_id is null ");
+		}else if (locationTypeId != null && locationTypeId.longValue() == 4L && type !=null && type.equalsIgnoreCase("urban")) {
+			sb.append(" b.tehsil_id = t.tehsil_id and model.location_type_id =5 and model.location_Id = t.tehsil_id and b.local_election_body_id is not null ");
 		}else if (locationTypeId != null && locationTypeId.longValue() == 5L ) {
-			sb.append(" model.location_type_id =5 and model.location_Id = p.panchayat_id ");
+			sb.append("  b.panchayat_id = p.panchayat_id and model.location_type_id =6 and model.location_Id = p.panchayat_id ");
 		}
 
 		sb.append(" and model.tdp_cadre_enrollment_id =:enrollmentYearId and cs.caste_id =:casteId ");
 
-		if (locationTypeId !=null && locationTypeId.longValue() >2l && locationValue != null && locationValue.size() >0) {
-			sb.append(" and model.location_Id in (:locationValue) ");
+		if (locationTypeId !=null && locationTypeId.longValue() == 10l && locationValue != null && locationValue.size() >0) {
+			sb.append(" and c.constituency_id in (:locationValue) ");
+		}else if (locationTypeId != null && (locationTypeId.longValue() == 3L)) {
+			sb.append(" and c.district_id in (:locationValue) ");
+		}else if (locationTypeId != null && locationTypeId.longValue() == 4L) {
+			sb.append(" and b.constituency_id in (:locationValue) ");
+		}else if (locationTypeId != null && locationTypeId.longValue() == 5L) {
+			sb.append(" and model.location_Id in (:locationValue)  ");
 		}
+		
 		if (locationTypeId != null && locationTypeId.longValue() == 2L) {
 			sb.append(" GROUP BY d.district_id ");
 		} else if (locationTypeId != null && (locationTypeId.longValue() == 3L || locationTypeId.longValue() == 10L)) {
 			sb.append(" GROUP BY c.constituency_id ");
 		} else if (locationTypeId != null &&  locationTypeId.longValue() == 4L) {
-			sb.append(" GROUP BY p.tehsil_id ");
+			sb.append(" GROUP BY t.tehsil_id ");
 		}
 		else if (locationTypeId != null && locationTypeId.longValue() == 5L) {
-			sb.append(" GROUP BY p.panchayat_id "); 
+			sb.append(" GROUP BY p.panchayat_id  "); 
 		}
 
 		sb.append(" , model.gender ");
