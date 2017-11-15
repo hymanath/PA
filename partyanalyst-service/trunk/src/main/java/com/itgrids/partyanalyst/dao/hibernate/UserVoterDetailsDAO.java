@@ -3505,6 +3505,7 @@ IUserVoterDetailsDAO{
 			 }else if(locationTypeId == 3l){
 				 sb.append(" model.location_scope_id =:locationTypeId and d.district_id in (:locationValues)");
 			 }else if(locationTypeId == 4l || locationTypeId == 10L){
+				 locationTypeId=4L;
 				 sb.append(" model.location_scope_id =:locationTypeId and c.constituency_id in (:locationValues)");
 			 }
 	
