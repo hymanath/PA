@@ -112,6 +112,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 							designationVO.setDesignationId(designationId);
 							designationVO.setRoleMemberCount(commonMethodsUtilService.getLongValueForObject(param[3]));
 							designationVO.setDesignationName(commonMethodsUtilService.getStringValueForObject(param[2]));
+							committeeVO.setRoleMemberCount(designationVO.getRoleMemberCount()+committeeVO.getRoleMemberCount());
 							designationVOMap.put(designationId, designationVO);
 						}
 					}
@@ -125,10 +126,24 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						JanmabhoomiCommitteeMemberVO designationVO = designationVOMap.get(designationId);
 						if(designationVO !=null){
 							designationVO.getDesinationMebersVOList().add(createMemberVO(param,committeeVO));
-							committeeVO.setTotalMemberCount(committeeVO.getTotalMemberCount()+1L);
+							//committeeVO.setTotalMemberCount(committeeVO.getTotalMemberCount()+1L);
 						}
 					}
 					committeeVO.getDesinationVOList().addAll(designationVOMap.values());
+					
+					if(committeeVO.getDesinationVOList() !=null && committeeVO.getDesinationVOList().size() >0){
+						for(JanmabhoomiCommitteeMemberVO designationVO:committeeVO.getDesinationVOList()){
+							Long designationId = designationVO.getDesignationId();
+							Long roleCount = designationVO.getRoleMemberCount();
+							if(roleCount >Long.valueOf(designationVO.getDesinationMebersVOList().size())){
+								Long memebersNotAddedCount = roleCount.longValue()-designationVO.getDesinationMebersVOList().size();
+								for(int i=0;i<memebersNotAddedCount;i++){
+									JanmabhoomiCommitteeMemberVO notAddedMemeberVO=new JanmabhoomiCommitteeMemberVO();
+									designationVO.getDesinationMebersVOList().add(notAddedMemeberVO);
+								}
+							}
+						}
+					}
 				}
 			} catch (Exception e) {
 				LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmabhoomiCommitteeService ",e);
@@ -243,6 +258,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		public JanmabhoomiCommitteeMemberVO createMemberVO(Object[] param,JanmabhoomiCommitteeMemberVO committeeVO){
 					JanmabhoomiCommitteeMemberVO memeberVO = new JanmabhoomiCommitteeMemberVO();
 					memeberVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					memeberVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[1]));
 					memeberVO.setMemeberName(commonMethodsUtilService.getStringValueForObject(param[2]));
 					memeberVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(param[3]));
 					memeberVO.setVoterId(commonMethodsUtilService.getStringValueForObject(param[6]));
@@ -255,10 +271,13 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("F")){
 						memeberVO.setStatus("Approved");
 						committeeVO.setAddedMemberCount(committeeVO.getAddedMemberCount()+1);
+						committeeVO.setNotAddedMemberCount(committeeVO.getRoleMemberCount()-committeeVO.getAddedMemberCount());
 					}
 					else if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("P")){
 						memeberVO.setStatus("Inprogress");
-						committeeVO.setNotAddedMemberCount(committeeVO.getNotAddedMemberCount()+1);
+						committeeVO.setAddedMemberCount(committeeVO.getAddedMemberCount()+1);
+						committeeVO.setNotAddedMemberCount(committeeVO.getRoleMemberCount()-committeeVO.getAddedMemberCount());
+						//committeeVO.setNotAddedMemberCount(committeeVO.getNotAddedMemberCount()+1);
 					}else{
 						memeberVO.setStatus("Rejected");
 						committeeVO.setRejectedMemberCount(committeeVO.getRejectedMemberCount()+1);
