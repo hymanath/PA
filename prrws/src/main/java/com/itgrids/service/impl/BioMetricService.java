@@ -1,5 +1,6 @@
 package com.itgrids.service.impl;
 
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,9 +99,9 @@ public class BioMetricService implements IBioMetricService {
 		 try {
 			 String[] tempArr = {"Before - 10:00","10:00 - 10:30","10:30 - 11:00","After - 11:00"};
 			 BioAuthSoapProxy bioAuthSoapObj = new BioAuthSoapProxy();
+			
 			 String jsonString = bioAuthSoapObj.employeeIntimeStatistics(todayDate);
 			 JSONObject jsonObject = filterRequiredObject(jsonString);
-			 
 				 for(String timePeriod:tempArr) {
 					 BioMetricDashBoardDtlsVO timePeriodVO = new BioMetricDashBoardDtlsVO();
 					 timePeriodVO.setName(timePeriod);
@@ -110,7 +111,25 @@ public class BioMetricService implements IBioMetricService {
 					 }
 					 resultList.add(timePeriodVO);
 				 }
-			 
+				 Format formatter = new SimpleDateFormat("hh:mm:ss a");
+				 SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss");
+				 if(jsonObject != null && jsonObject.length() > 0 && jsonObject.has("AVERAGEIN_TIME")){
+					 String dateStr=jsonObject.getString("AVERAGEIN_TIME");
+					 if(dateStr != null && dateStr.length() > 0){
+						  Date date = sdf1.parse(dateStr.trim());
+						  resultList.get(0).setInTime(formatter.format(date));
+					 }
+				 }
+				 String outTimeJsonString = bioAuthSoapObj.employeeOuttimeStatistics(todayDate);
+				 JSONObject outTimejsonObject = filterRequiredObject(outTimeJsonString);
+
+				 if(outTimejsonObject != null && outTimejsonObject.length() > 0 && outTimejsonObject.has("AVERAGEOUT_TIME")){
+					 String dateStr=outTimejsonObject.getString("AVERAGEOUT_TIME");
+					 if(dateStr != null && dateStr.length() > 0){
+						 Date date = sdf1.parse(dateStr.trim()); 
+						 resultList.get(0).setOutTime(formatter.format(date));
+					 }
+				 }
 		 } catch (Exception e) {
 			 LOG.error("Exception raised at getEmployeeAttendenceTimePeriodWise - BioMetricService service",e);
 		 }
