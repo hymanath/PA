@@ -829,8 +829,8 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 		try{
 		Map<Long,LocationVotersVO> locationIdsMap = new HashMap<Long, LocationVotersVO>();
 		List<Long> consIdsList=new ArrayList<Long>();
-		List<Object[]> locationWiseCadreList = null;
-		List<Object[]> locationWiseVoterList =null;
+		List<Object[]> locationWiseCadreList = new ArrayList<Object[]>();
+		List<Object[]> locationWiseVoterList =new ArrayList<Object[]>();
 		if(locationTypeId != null && locationTypeId.longValue() ==10l){
 			List<Object[]> consIdsObj = parliamentAssemblyDAO.getConsIdsByParliamntsIds(locationValues);
 			if(consIdsObj != null && consIdsObj.size() >0){
@@ -838,11 +838,18 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 					consIdsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
 				}
 			}
-			  locationWiseCadreList = tdpCadreCasteInfoDAO.getLocationWiseCadreCounts(locationTypeId, consIdsList, casteId, enrollmentYearId);
-			  locationWiseVoterList = userVoterDetailsDAO.getLocationWiseVoterCounts(locationTypeId, consIdsList, casteId, publicationDateId);
-		}else{
-		      locationWiseCadreList = tdpCadreCasteInfoDAO.getLocationWiseCadreCounts(locationTypeId, locationValues, casteId, enrollmentYearId);
-		      locationWiseVoterList = userVoterDetailsDAO.getLocationWiseVoterCounts(locationTypeId, locationValues, casteId, publicationDateId);
+			  locationWiseCadreList.addAll(tdpCadreCasteInfoDAO.getLocationWiseCadreCounts(locationTypeId, consIdsList, casteId, enrollmentYearId,null));
+			  locationWiseVoterList.addAll(userVoterDetailsDAO.getLocationWiseVoterCounts(locationTypeId, consIdsList, casteId, publicationDateId,null));
+		}else if(locationTypeId != null && locationTypeId.longValue() ==4l){
+				  locationWiseCadreList.addAll(tdpCadreCasteInfoDAO.getLocationWiseCadreCounts(locationTypeId, locationValues, casteId, enrollmentYearId,"rural"));
+			      locationWiseVoterList.addAll(userVoterDetailsDAO.getLocationWiseVoterCounts(locationTypeId, locationValues, casteId, publicationDateId,"rural"));
+			      
+			      locationWiseCadreList.addAll(tdpCadreCasteInfoDAO.getLocationWiseCadreCounts(locationTypeId, locationValues, casteId, enrollmentYearId,"urban"));
+			      locationWiseVoterList.addAll(userVoterDetailsDAO.getLocationWiseVoterCounts(locationTypeId, locationValues, casteId, publicationDateId,"urban"));
+		    }
+		else{
+		      locationWiseCadreList.addAll(tdpCadreCasteInfoDAO.getLocationWiseCadreCounts(locationTypeId, locationValues, casteId, enrollmentYearId,null));
+		      locationWiseVoterList.addAll(userVoterDetailsDAO.getLocationWiseVoterCounts(locationTypeId, locationValues, casteId, publicationDateId,null));
 		}
 		if(locationWiseCadreList !=null && locationWiseCadreList.size() >0) {
 			for(Object[] param : locationWiseCadreList){
