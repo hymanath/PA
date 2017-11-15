@@ -26,6 +26,8 @@ public class BioMetricDashBoardDtlsVO {
 	private String deptName;
 	private String date;
 	private String time;
+	private String inTime;
+	private String outTime;
 	
 	private List<BioMetricDashBoardDtlsVO> subList1;
 	private List<BioMetricDashBoardDtlsVO> subList2;
@@ -174,6 +176,18 @@ public class BioMetricDashBoardDtlsVO {
 	}
 	public void setTime(String time) {
 		this.time = time;
+	}
+	public String getInTime() {
+		return inTime;
+	}
+	public void setInTime(String inTime) {
+		this.inTime = inTime;
+	}
+	public String getOutTime() {
+		return outTime;
+	}
+	public void setOutTime(String outTime) {
+		this.outTime = outTime;
 	}
 	
 	
