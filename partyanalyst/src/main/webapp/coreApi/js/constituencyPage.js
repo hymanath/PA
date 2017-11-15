@@ -2528,9 +2528,9 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,enrollmentId,pub
 					str+='<th>%</th>';
 					str+='<th>Male(C) </th>';
 					str+='<th>%</th>';
-					str+='<th>FeMale(V)</th>';
+					str+='<th>Female(V)</th>';
 					str+='<th>%</th>';
-					str+='<th>FeMale(C)</th>';
+					str+='<th>Female(C)</th>';
 					str+='<th>%</th>';
 				str+='</thead>';
 			str+='<tbody>';
@@ -8906,13 +8906,13 @@ function buildLocationWiseVNCadreCountTable(casteName,result){
 							str+='<th>%</th>';
 							str+='<th>Male(V)</th>';
 							str+='<th>%</th>';
-							str+='<th>FeMale(V)</th>';
+							str+='<th>Female(V)</th>';
 							str+='<th>%</th>';
 							str+='<th>Total Cadre</th>';
 							str+='<th>%</th>';
 							str+='<th>Male(C) </th>';
 							str+='<th>%</th>';
-							str+='<th>FeMale(C)</th>';
+							str+='<th>Female(C)</th>';
 							str+='<th>%</th>';
 						str+='</tr>';
 					str+='</thead>';
