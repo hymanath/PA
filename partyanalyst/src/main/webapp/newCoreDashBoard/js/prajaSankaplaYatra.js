@@ -480,3 +480,27 @@
 		
 			
 		});
+	//getDistrictWisePartyOverView();
+	//getDistrictWiseOverView();
+	getPartywiseTopLeaders();
+	function getDistrictWiseOverView(){
+	$.ajax({	
+		//url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseOverView/"+currentFromDate+"/"+currentToDate
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseOverView/"+currentFromDate+"/"+currentToDate
+	}).then(function(result){
+	 });
+	}
+	function getDistrictWisePartyOverView(){
+	$.ajax({	
+		//url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDate+"/"+currentToDate
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDate+"/"+currentToDate
+	}).then(function(result){
+	});
+}
+function getPartywiseTopLeaders(){
+	$.ajax({	
+		//url: wurl+"/CommunityNewsPortal/webservice/getPartywiseTopLeaders/"+currentFromDate+"/"+currentToDate
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPartywiseTopLeaders/"+currentFromDate+"/"+currentToDate
+	}).then(function(result){
+	});
+}
