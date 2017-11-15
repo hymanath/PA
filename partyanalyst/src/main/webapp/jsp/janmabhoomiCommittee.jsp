@@ -9,20 +9,50 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Janmabhoomi Committee Dashboard</title>
-<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,700italic,900,900italic,400italic,500italic,300italic,300,100italic,100' rel='stylesheet' type='text/css'>
-
-<script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
-
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="D2D_Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
+<link href="D2D_Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+<link href="D2D_Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<script src="D2D_Assests/Plugins/Less/less.js"></script>
+<link href="D2D_Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
+<link href="D2D_Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<script src="https://use.fontawesome.com/e94c241642.js"></script>
+<style type="text/css">
+#menu_multilevelpushmenu{box-shadow:none;}
+</style>
 </head>
-<body class="bodycolr">
-
-				
-<script type="text/javascript" src="js/janmabhoomiCommittee.js"></script>
-
-<script type="text/javascript">
-</script>
-
-</body>
+<body>
+<section class="janmabhoomi">
+	<div class="container-fluid m_top10">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="white_block_JanB">
+					<div class="row">
+						<div class="col-sm-2">
+							<div id="committeeMainBlockGraphId" style="height:200px;"></div>
+						</div>
+						<div id="overAllCommitteeMainBlockId"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row m_top10">
+			<div class="col-sm-12">
+				<div id="committeeWiseDetailsDivId"></div>
+			</div>
+		</div>
+		<div class="row m_top10">
+			<div class="col-sm-12">
+				<div id="levelWisecommitteeDetailsDivId"></div>
+			</div>
+		</div>
+	</div>		
+</section>
+<script src="D2D_Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="D2D_Assests/js/bootstrap.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/janmabhoomiCommittee.js"></script></body>
 </html>
