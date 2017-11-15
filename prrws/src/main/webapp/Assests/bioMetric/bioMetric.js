@@ -172,6 +172,8 @@ function buildEmpOverView(result){
 
 function getEmployeeAttendenceTimePeriodWise(){
 	$("#inTimeStatisticsDivId").html(spinner);
+	$("#avgInTimeId").html(spinner);
+	$("#avgOutTimeId").html(spinner);
 	  var json = {
 			deptCode:globalDeptCode,
 			todayDate:todayDate
@@ -188,8 +190,12 @@ function getEmployeeAttendenceTimePeriodWise(){
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			buildEmployeeAttendenceTimePeriodWise(result);
+			$("#avgInTimeId").html(result[0].inTime);
+			$("#avgOutTimeId").html(result[0].outTime);  
 		} else {
 			$("#inTimeStatisticsDivId").html("NO DATA AVAILABLE.");
+			$("#avgInTimeId").html("-");
+			$("#avgOutTimeId").html("-");
 		}
 	});	
 }
