@@ -18,11 +18,7 @@
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
 .table-employeeAtten {
-	border:none;
 	border-spacing: 4px 0px;
-}
-.table-employeeAtten td,.table-employeeAtten th{
-	border:none;
 }
 .table-employeeAtten tr th:nth-child(1){
 	background-color:#FFFFFF;
@@ -262,9 +258,40 @@
 							<div class="row">
 								<div id="empOverViewBlockId"></div>
 							</div>
-							<div class="">
-								<h5 class="font_weight m_top10" style="margin-left:15px">IN-TIME STATISTICS</h5>
-								<div id="inTimeStatisticsDivId" style="height:180px;" class="m_top10"></div>
+							<div class="row m_top10">
+								<div class="col-sm-8" style="border-right:1px solid #ccc;">
+									<h5 class="font_weight m_top10" style="margin-left:15px">IN-TIME STATISTICS</h5>
+									<div id="inTimeStatisticsDivId" style="height:180px;" class="m_top10"></div>
+								</div>
+								<div class="col-sm-4">
+									<h5 class="font_weight m_top10" style="margin-left:15px">Information Technologies</h5>
+									<div class="m_top20" style="background-color:#F1F1F1;padding:10px;">
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="media">
+												<div class="media-left">
+													<img src="Assests/icons/bioMetric/login.png" class="media-object"  width="50px" height="60px" />
+												</div>
+												<div class="media-body">
+													<h4 class="media-heading" id="avgInTimeId" style="color:#FF851B;">-</h4>
+													<p>Average In-Time</p>
+												</div>
+											</div>  
+										</div>
+										<div class="col-sm-6">
+											<div class="media">
+												<div class="media-left">
+													<img src="Assests/icons/bioMetric/logout.png" class="media-object"  width="50px" height="60px" />
+												</div>
+												<div class="media-body">
+													<h4 class="media-heading" id="avgOutTimeId" style="color:#85134A;">-</h4>
+													<p>Average Out-Time</p>
+												</div>
+											</div>
+										</div>
+								   </div>
+								   </div>
+								</div>
 							</div>
 					</div>
 				</div>
