@@ -46,24 +46,78 @@ function onLoadCalls()
 			$("[collapse-overview-body="+type+"]").hide('slow');
 		}
 	});
-	$(document).on('click','[overview-block]', function(){
-		$("#consolidatedView").hide();
-		$("#projectOverviewBlock,#projectData").show();
-		$("[overview-state],[overview-district],.tableMenu li").removeClass("active");
-		var projectDivId = $(this).attr("overview-block");
+	$(document).on('click','[overview-popup-block]', function(){
+		var projectDivId = $(this).attr("overview-popup-block");
 		var levelId = $(this).attr("attr_levelId");
 		var locationId = $(this).attr("attr_locationId");
-		$("[overview-state='"+projectDivId+"'],[overview-district='"+projectDivId+"']").addClass("active");
-		globalDivName = projectDivId;
-		$(".overviewAllCls").hide(); 
-		if(globalDivName != 'Greenary works Chettu' && globalDivName != 'Agriculture Related Works' && globalDivName != 'Rural Sanitation Works' && globalDivName != 'Soil Moisture Conservation works Neeru' && globalDivName != 'Works in community lands' && globalDivName != 'OTHERS' && globalDivName != 'Institutional Development Works' && globalDivName != 'Road Works' && globalDivName != 'Water Harvesting Structures Neeru' && globalDivName != 'AH-Live Stock Related works' && globalDivName != 'coffee'&& globalDivName != 'Renovation and Improvements to existing Check Dams Check Wall'&& globalDivName != 'Road Formation Upto WBM GR II Including CD works'&& globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas'&& globalDivName !=  'Construction Of Animal Hostel'&& globalDivName != 'Roads for Unconnected Habitations 2011-12' && globalDivName != 'Construction of New Check Dam' && globalDivName !=  'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' && globalDivName !=  'Construction of Food Grains Storage Structures of 250MT' && globalDivName !=  'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' && globalDivName !=  'Construction of Village Haats Infrastructure fecilities' && globalDivName !=  'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' && globalDivName != 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' && globalDivName != 'Construction of Buildings for women self help group federation' && globalDivName != 'Work Site Facilities' && globalDivName != 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' && globalDivName != 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' && globalDivName != 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' && globalDivName != 'Production of Grafts in HNTC' && globalDivName != 'Improvements of RYTHU BAZAR' && globalDivName != 'Roads for Unconnected Habitations 2012-13 and afterwards' && globalDivName != 'HNTC Development' && globalDivName != 'New Open Well for Drinking water purpose' && globalDivName != 'Construction of Crematoria Burial Grounds' && globalDivName != 'Repairs to Existing Check Dam' && globalDivName != 'Formation of Road upto Gravel surface including CD works to agriculture fields' && globalDivName != 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' && globalDivName != 'Construction of Food Grains Storage Structures of 500MT' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' && globalDivName != 'Raising of Cashew bag seedlings for 2014-15' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas'  && globalDivName != 'Cattle Ponds' && globalDivName != 'Desilting of Drinking Water Tanks' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank1' && globalDivName != 'Animal Husbandry Others' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank' && overViewArr[i] != "Azolla Production Unit" && overViewArr[i] != "Construction of silopits of 3 MTs capacity" && overViewArr[i] != "Fodder trough for Cattle Cattle drinking water trough" && overViewArr[i] != "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" && overViewArr[i] != "Raising of Perinnial Fodder" && overViewArr[i] != "Raising of Silvipasture clubbed with subabul plantation" && overViewArr[i] != "Construction of Checkdam across peeraiah vanka Check Dam 1")
+		var levelType = 'state';
+		var locType = '';
+		var dataArr = '';
+		var districtId = $("#selectedName").attr("attr_distId");
+		if(levelId == 2)
 		{
-			overviewData(projectDivId,levelId,locationId);
+			locType = 'state';
+			dataArr = ['state','district','constituency','mandal','panchayat'];
+		}else if(levelId == 3)
+		{
+			locType = 'district';
+			dataArr = ['district','constituency','mandal','panchayat'];
+		}else if(levelId == 4)
+		{
+			locType = 'constituency'
+			dataArr = ['constituency','mandal','panchayat'];
 		}
+		var tableId = projectDivId.replace(/\s+/g, '')+''+levelType;
+		$("#nregsPanExpModalId").modal('hide');
+		$("#consolidatedView,#projectOverviewBlock").hide();
+		$("#projectData").show();
 		projectData(projectDivId,levelId,locationId);
 		$('html,body').animate({
 			scrollTop: $("#projectOverviewBlock").offset().top},
-        'slow');
+		'slow');
+		if(levelType == "constituency")
+			theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+		else if(levelType == "mandal")
+			theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+		else if(levelType == "panchayat")
+			theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+		else
+			theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+		for(var i in dataArr)
+		{
+			getNregaOtherMCCLevelData(tableId,dataArr[i],theadArr,locType,locationId,projectDivId,districtId,projectDivId,'overview',levelId);
+		}
+		
+	});
+	$(document).on('click','[overview-block]', function(){
+		var projectDivId = $(this).attr("overview-block");
+		var levelId = $(this).attr("attr_levelId");
+		var locationId = $(this).attr("attr_locationId");
+		
+		if(projectDivId == 'Greenary works Chettu' || projectDivId == 'Agriculture Related Works' || projectDivId == 'Rural Sanitation Works' || projectDivId == 'Soil Moisture Conservation works Neeru' || projectDivId == 'Works in community lands' || projectDivId == 'OTHERS' || projectDivId == 'Institutional Development Works' || projectDivId == 'Road Works' || projectDivId == 'Water Harvesting Structures Neeru' || projectDivId == 'AH-Live Stock Related works')
+		{
+			$("#nregsPanExpModalId").modal('show');
+			$("#larBudExpHeadingId").html(projectDivId);
+			getWorkWiseAbstractForMCCOthers(projectDivId,levelId,locationId)
+		}else{
+			globalDivName = projectDivId;
+			
+			$("#consolidatedView").hide();
+			$("#projectOverviewBlock,#projectData").show();
+			$("[overview-state],[overview-district],.tableMenu li").removeClass("active");		
+			$("[overview-state='"+projectDivId+"'],[overview-district='"+projectDivId+"']").addClass("active");
+			$(".overviewAllCls").hide(); 
+			projectData(projectDivId,levelId,locationId);
+			if(globalDivName != 'coffee'&& globalDivName != 'Renovation and Improvements to existing Check Dams Check Wall'&& globalDivName != 'Road Formation Upto WBM GR II Including CD works'&& globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas'&& globalDivName !=  'Construction Of Animal Hostel'&& globalDivName != 'Roads for Unconnected Habitations 2011-12' && globalDivName != 'Construction of New Check Dam' && globalDivName !=  'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' && globalDivName !=  'Construction of Food Grains Storage Structures of 250MT' && globalDivName !=  'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' && globalDivName !=  'Construction of Village Haats Infrastructure fecilities' && globalDivName !=  'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' && globalDivName != 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' && globalDivName != 'Construction of Buildings for women self help group federation' && globalDivName != 'Work Site Facilities' && globalDivName != 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' && globalDivName != 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' && globalDivName != 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' && globalDivName != 'Production of Grafts in HNTC' && globalDivName != 'Improvements of RYTHU BAZAR' && globalDivName != 'Roads for Unconnected Habitations 2012-13 and afterwards' && globalDivName != 'HNTC Development' && globalDivName != 'New Open Well for Drinking water purpose' && globalDivName != 'Construction of Crematoria Burial Grounds' && globalDivName != 'Repairs to Existing Check Dam' && globalDivName != 'Formation of Road upto Gravel surface including CD works to agriculture fields' && globalDivName != 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' && globalDivName != 'Construction of Food Grains Storage Structures of 500MT' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' && globalDivName != 'Raising of Cashew bag seedlings for 2014-15' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas'  && globalDivName != 'Cattle Ponds' && globalDivName != 'Desilting of Drinking Water Tanks' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank1' && globalDivName != 'Animal Husbandry Others' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank' && overViewArr[i] != "Azolla Production Unit" && overViewArr[i] != "Construction of silopits of 3 MTs capacity" && overViewArr[i] != "Fodder trough for Cattle Cattle drinking water trough" && overViewArr[i] != "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" && overViewArr[i] != "Raising of Perinnial Fodder" && overViewArr[i] != "Raising of Silvipasture clubbed with subabul plantation" && overViewArr[i] != "Construction of Checkdam across peeraiah vanka Check Dam 1")
+			{
+				overviewData(projectDivId,levelId,locationId);
+			}
+			
+			$('html,body').animate({
+				scrollTop: $("#projectOverviewBlock").offset().top},
+			'slow');
+		}
+		
 	});
 	$(document).on("click",".rightNavigationMenuRes",function(){
 		if($(this).hasClass("active")){
@@ -129,7 +183,7 @@ function onLoadCalls()
 			{
 				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
 			}
-			else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams' || overViewArr[i] == 'Avenue Plantation' || overViewArr[i] == 'Forest Others' || overViewArr[i] == 'Scooping and Dibbling of seed' || overViewArr[i] == "Aided Natural Regeneration"  || overViewArr[i] == "Bamboo Depot Works" || overViewArr[i] == "Bamboo Industrial Cuts" || overViewArr[i] == "Bio-Fencing to schools having no pacca compound wall" ||overViewArr[i] == "Casuarina Plantation" || overViewArr[i] == "Collection and Transportation of Seed to Seed store" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 1" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 2" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 3" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 4" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 5" || overViewArr[i] == "Decongestion of Bamboo" || overViewArr[i] == "Emergency watering for MGVN Nurseries" || overViewArr[i] == "Enrichment Plantation with 4 7 Bag seedlings or Eucalyptus Clones" || overViewArr[i] == "HILL AFFORESTATION 3 3 Plantation" || overViewArr[i] == "Improvements to existing Continuos Contour Trench" || overViewArr[i] == "Infrastructure works in MGVN nurseries" || overViewArr[i] == "Labour Intensive Plantation" || overViewArr[i] == "Loose Boulder Structure" || overViewArr[i] == "Percolation Tank" || overViewArr[i] == "Percolation Tank in GIZ Area" || overViewArr[i] == "Rejuvenation and Management of  Bamboo forests and plantations" || overViewArr[i] == "Removal of Obnoxious weed of Bamboo Plants" || overViewArr[i] == "Semi Lunar Trench" || overViewArr[i] == "Silviculture - Harvesting and Thinning in Teak Forests and Plantations" || overViewArr[i] == "SMM 3 2 Plantation" || overViewArr[i] == "SMM 3 3 Plantation" || overViewArr[i] == "SMM 5 5 Plantation" || overViewArr[i] == "Sunken Pit" || overViewArr[i] == "Tank Fore Shore Plantation" || overViewArr[i] == "Teak Plantation" || overViewArr[i] == "Transportation of leftover seedlings from one nursery to another nursery" || overViewArr[i] == "Work Site Facilities1")
+			else if(overViewArr[i] == 'Raising and Maintenance of Block Plantations' || overViewArr[i] == 'Raising and Maintenance of nurseries' || overViewArr[i] == 'Soil and Moisture Conservation Works' || overViewArr[i] == 'Raising and Maintenance of Avenue plantations')
 			{
 				getNREGSForestProjectsAbstract(overViewArr[i],'state',"0",'',2);
 			}else if(overViewArr[i] == 'Payments')
@@ -183,7 +237,7 @@ function onLoadCalls()
 			{
 				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
 			}
-			else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams' || overViewArr[i] == 'Avenue Plantation' || overViewArr[i] == 'Forest Others' || overViewArr[i] == 'Scooping and Dibbling of seed' || overViewArr[i] == "Aided Natural Regeneration"  || overViewArr[i] == "Bamboo Depot Works" || overViewArr[i] == "Bamboo Industrial Cuts" || overViewArr[i] == "Bio-Fencing to schools having no pacca compound wall" ||overViewArr[i] == "Casuarina Plantation" || overViewArr[i] == "Collection and Transportation of Seed to Seed store" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 1" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 2" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 3" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 4" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 5" || overViewArr[i] == "Decongestion of Bamboo" || overViewArr[i] == "Emergency watering for MGVN Nurseries" || overViewArr[i] == "Enrichment Plantation with 4 7 Bag seedlings or Eucalyptus Clones" || overViewArr[i] == "HILL AFFORESTATION 3 3 Plantation" || overViewArr[i] == "Improvements to existing Continuos Contour Trench" || overViewArr[i] == "Infrastructure works in MGVN nurseries" || overViewArr[i] == "Labour Intensive Plantation" || overViewArr[i] == "Loose Boulder Structure" || overViewArr[i] == "Percolation Tank" || overViewArr[i] == "Percolation Tank in GIZ Area" || overViewArr[i] == "Rejuvenation and Management of  Bamboo forests and plantations" || overViewArr[i] == "Removal of Obnoxious weed of Bamboo Plants" || overViewArr[i] == "Semi Lunar Trench" || overViewArr[i] == "Silviculture - Harvesting and Thinning in Teak Forests and Plantations" || overViewArr[i] == "SMM 3 2 Plantation" || overViewArr[i] == "SMM 3 3 Plantation" || overViewArr[i] == "SMM 5 5 Plantation" || overViewArr[i] == "Sunken Pit" || overViewArr[i] == "Tank Fore Shore Plantation" || overViewArr[i] == "Teak Plantation" || overViewArr[i] == "Transportation of leftover seedlings from one nursery to another nursery" || overViewArr[i] == "Work Site Facilities")
+			else  if(overViewArr[i] == 'Raising and Maintenance of Block Plantations' || overViewArr[i] == 'Raising and Maintenance of nurseries' || overViewArr[i] == 'Soil and Moisture Conservation Works' || overViewArr[i] == 'Raising and Maintenance of Avenue plantations')
 			{
 				getNREGSForestProjectsAbstract(overViewArr[i],'state',"0",'',2);
 			}else if(overViewArr[i] == 'Payments')
@@ -404,7 +458,7 @@ function onLoadCalls()
 					getNregaPaymentsDtlsLocationWise(tableId,levelType,menuLocationType,menuLocationId,'Wage',divId);
 				else if(divId == "FAperformance")
 					getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId,divId);
-				else if(divId == 'Rock Fill Dams' || divId == 'Raising and Maintenance of Nursery' || divId == 'Desilting of Perculation Tanks and Check Dams' || divId == 'Mini Percolation Tanks' || divId == 'Continuous Contour Trenches' || divId == 'Check Dams' || divId == 'Avenue Plantation' || divId == 'Forest Others' || divId == 'Scooping and Dibbling of seed' || divId == "Aided Natural Regeneration"  || divId == "Bamboo Depot Works" || divId == "Bamboo Industrial Cuts" || divId == "Bio-Fencing to schools having no pacca compound wall" || divId == "Casuarina Plantation" || divId == "Collection and Transportation of Seed to Seed store" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 1" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 2" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 3" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 4" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 5" || divId == "Decongestion of Bamboo" || divId == "Emergency watering for MGVN Nurseries" || divId == "Enrichment Plantation with 4 7 Bag seedlings or Eucalyptus Clones" || divId == "HILL AFFORESTATION 3 3 Plantation" || divId == "Improvements to existing Continuos Contour Trench" || divId == "Infrastructure works in MGVN nurseries" || divId == "Labour Intensive Plantation" || divId == "Loose Boulder Structure" || divId == "Percolation Tank" || divId == "Percolation Tank in GIZ Area" || divId == "Rejuvenation and Management of  Bamboo forests and plantations" || divId == "Removal of Obnoxious weed of Bamboo Plants" || divId == "Semi Lunar Trench" || divId == "Silviculture - Harvesting and Thinning in Teak Forests and Plantations" || divId == "SMM 3 2 Plantation" || divId == "SMM 3 3 Plantation" || divId == "SMM 5 5 Plantation" || divId == "Sunken Pit" || divId == "Tank Fore Shore Plantation" || divId == "Teak Plantation" || divId == "Transportation of leftover seedlings from one nursery to another nursery" || divId == "Work Site Facilities1")
+				else if(divId == 'Raising and Maintenance of Block Plantations' || divId == 'Raising and Maintenance of nurseries' || divId == 'Soil and Moisture Conservation Works' || divId == 'Raising and Maintenance of Avenue plantations')
 					getNregaForestLevelData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId);
 				else if(divId == 'Greenary works Chettu' || divId == 'Agriculture Related Works' || divId == 'Rural Sanitation Works' || divId == 'Soil Moisture Conservation works Neeru' || divId == 'Works in community lands' || divId == 'OTHERS' || divId == 'Institutional Development Works' || divId == 'Road Works' || divId == 'Water Harvesting Structures Neeru' || divId == 'AH-Live Stock Related works')
 					getNregaOtherMCCLevelData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
@@ -961,7 +1015,7 @@ function projectData(divId,levelId,locationId)
 			getNregaPaymentsDtlsLocationWise(tableId,dataArr[i],menuLocationType,menuLocationId,'Wage',divId);
 		else if(divId == "FAperformance")
 			getNregaLevelsWiseDataForFAPerformance(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
-		else if(divId == 'Rock Fill Dams' || divId == 'Raising and Maintenance of Nursery' || divId == 'Desilting of Perculation Tanks and Check Dams' || divId == 'Mini Percolation Tanks' || divId == 'Continuous Contour Trenches' || divId == 'Check Dams' || divId == 'Avenue Plantation' || divId == 'Forest Others' || divId == 'Scooping and Dibbling of seed' || divId == "Aided Natural Regeneration"  || divId == "Bamboo Depot Works" || divId == "Bamboo Industrial Cuts" || divId == "Bio-Fencing to schools having no pacca compound wall" || divId == "Casuarina Plantation" || divId == "Collection and Transportation of Seed to Seed store" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 1" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 2" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 3" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 4" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 5" || divId == "Decongestion of Bamboo" || divId == "Emergency watering for MGVN Nurseries" || divId == "Enrichment Plantation with 4 7 Bag seedlings or Eucalyptus Clones" || divId == "HILL AFFORESTATION 3 3 Plantation" || divId == "Improvements to existing Continuos Contour Trench" || divId == "Infrastructure works in MGVN nurseries" || divId == "Labour Intensive Plantation" || divId == "Loose Boulder Structure" || divId == "Percolation Tank" || divId == "Percolation Tank in GIZ Area" || divId == "Rejuvenation and Management of  Bamboo forests and plantations" || divId == "Removal of Obnoxious weed of Bamboo Plants" || divId == "Semi Lunar Trench" || divId == "Silviculture - Harvesting and Thinning in Teak Forests and Plantations" || divId == "SMM 3 2 Plantation" || divId == "SMM 3 3 Plantation" || divId == "SMM 5 5 Plantation" || divId == "Sunken Pit" || divId == "Tank Fore Shore Plantation" || divId == "Teak Plantation" || divId == "Transportation of leftover seedlings from one nursery to another nursery" || divId == "Work Site Facilities1")
+		else if(divId == 'Raising and Maintenance of Block Plantations' || divId == 'Raising and Maintenance of nurseries' || divId == 'Soil and Moisture Conservation Works' || divId == 'Raising and Maintenance of Avenue plantations')
 			getNregaForestLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId);
 		else if(divId == 'Greenary works Chettu' || divId == 'Agriculture Related Works' || divId == 'Rural Sanitation Works' || divId == 'Soil Moisture Conservation works Neeru' || divId == 'Works in community lands' || divId == 'OTHERS' || divId == 'Institutional Development Works' || divId == 'Road Works' || divId == 'Water Harvesting Structures Neeru' || divId == 'AH-Live Stock Related works')
 			getNregaOtherMCCLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
@@ -1088,7 +1142,7 @@ function overviewData(divId,levelId,locationId)
 		getNregaPaymentsAbsAndOverviewDtls(divId,menuLocationType,menuLocationId,2,'overview');
 	else if(divId == 'Timely Payment')
 		getNregasOverview(divId,menuLocationType,menuLocationId,districtId,'-1');
-	else if(divId == 'Rock Fill Dams' || divId == 'Raising and Maintenance of Nursery' || divId == 'Desilting of Perculation Tanks and Check Dams' || divId == 'Mini Percolation Tanks' || divId == 'Continuous Contour Trenches' || divId == 'Check Dams' || divId == 'Avenue Plantation' || divId == 'Forest Others' || divId == 'Scooping and Dibbling of seed' || divId == "Aided Natural Regeneration"  || divId == "Bamboo Depot Works" || divId == "Bamboo Industrial Cuts" || divId == "Bio-Fencing to schools having no pacca compound wall" || divId == "Casuarina Plantation" || divId == "Collection and Transportation of Seed to Seed store" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 1" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 2" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 3" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 4" || divId == "Construction of Checkdam across peeraiah vanka Check Dam 5" || divId == "Decongestion of Bamboo" || divId == "Emergency watering for MGVN Nurseries" || divId == "Enrichment Plantation with 4 7 Bag seedlings or Eucalyptus Clones" || divId == "HILL AFFORESTATION 3 3 Plantation" || divId == "Improvements to existing Continuos Contour Trench" || divId == "Infrastructure works in MGVN nurseries" || divId == "Labour Intensive Plantation" || divId == "Loose Boulder Structure" || divId == "Percolation Tank" || divId == "Percolation Tank in GIZ Area" || divId == "Rejuvenation and Management of  Bamboo forests and plantations" || divId == "Removal of Obnoxious weed of Bamboo Plants" || divId == "Semi Lunar Trench" || divId == "Silviculture - Harvesting and Thinning in Teak Forests and Plantations" || divId == "SMM 3 2 Plantation" || divId == "SMM 3 3 Plantation" || divId == "SMM 5 5 Plantation" || divId == "Sunken Pit" || divId == "Tank Fore Shore Plantation" || divId == "Teak Plantation" || divId == "Transportation of leftover seedlings from one nursery to another nursery" || divId == "Work Site Facilities1")
+	else if(divId == 'Raising and Maintenance of Block Plantations' || divId == 'Raising and Maintenance of nurseries' || divId == 'Soil and Moisture Conservation Works' || divId == 'Raising and Maintenance of Avenue plantations')
 		getNregasForestOverview(divId,menuLocationType,menuLocationId,districtId);
 	else
 		getNregasOverview(divId,menuLocationType,menuLocationId,districtId);
@@ -1518,10 +1572,10 @@ function buildNREGSProjectsOverview(result,blockName)
 					str+='<div class="col-sm-12">';
 						str+='<div class="block-border">';
 							str+='<h5 class="text-danger">Forest</h5>';
-							str+='<div class="row">';	
+							str+='<div class="row">';
 								for(var i in result)
 								{
-									if(result[i] == "Nurseries" || result[i] == "Check Dam" || result[i] == "Rock fill dams" || result[i] == 'Raising and Maintenance of Nursery' || result[i] == 'Desilting of Perculation Tanks and Check Dams' || result[i] == 'Mini Percolation Tanks' || result[i] == 'Continuous Contour Trenches' || result[i] == 'Check Dams' || result[i] == 'Avenue Plantation' || result[i] == 'Forest Others' || result[i] == 'Scooping and Dibbling of seed'){
+									if(result[i] == "Raising and Maintenance of Avenue plantations" || result[i] == "Raising and Maintenance of Block Plantations" || result[i] == "Raising and Maintenance of nurseries" || result[i] == 'Soil and Moisture Conservation Works'){
 										str+='<div class="col-sm-2 m_top10">';
 											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
 												if(result[i].length > 12)
@@ -1538,7 +1592,7 @@ function buildNREGSProjectsOverview(result,blockName)
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="row m_top20" collapse-overview-body="convergenceOthr" style="display:none;">';
+				/*str+='<div class="row m_top20" collapse-overview-body="convergenceOthr" style="display:none;">';
 					str+='<div class="col-sm-12">';
 						str+='<div class="block-border">';
 							str+='<h5 class="text-danger">Forest Others</h5>';
@@ -1562,7 +1616,7 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-				str+='</div>';
+				str+='</div>';*/
 				str+='<div class="row m_top20" collapse-overview-body="convergenceOthr" style="display:none;">';
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
@@ -3222,7 +3276,7 @@ $(document).on("click",".overviewPopupCls",function(){
 	var menuLocationId = $(this).attr("attr_menuLocationId");
 	if(globalDivName == 'Labour Budget')
 		getLabourBudgetClickingOverview(menuLocationType,menuLocationId);
-	else if(globalDivName == 'Rock Fill Dams' || globalDivName == 'Raising and Maintenance of Nursery' || globalDivName == 'Desilting of Perculation Tanks and Check Dams' || globalDivName == 'Mini Percolation Tanks' || globalDivName == 'Continuous Contour Trenches' || globalDivName == 'Check Dams' || globalDivName == 'Avenue Plantation' || globalDivName == 'Forest Others' || globalDivName == 'Scooping and Dibbling of seed' || globalDivName == "Aided Natural Regeneration"  || globalDivName == "Bamboo Depot Works" || globalDivName == "Bamboo Industrial Cuts" || globalDivName == "Bio-Fencing to schools having no pacca compound wall" || globalDivName == "Casuarina Plantation" || globalDivName == "Collection and Transportation of Seed to Seed store" || globalDivName == "Construction of Checkdam across peeraiah vanka Check Dam 1" || globalDivName == "Construction of Checkdam across peeraiah vanka Check Dam 2" || globalDivName == "Construction of Checkdam across peeraiah vanka Check Dam 3" || globalDivName == "Construction of Checkdam across peeraiah vanka Check Dam 4" || globalDivName == "Construction of Checkdam across peeraiah vanka Check Dam 5" || globalDivName == "Decongestion of Bamboo" || globalDivName == "Emergency watering for MGVN Nurseries" || globalDivName == "Enrichment Plantation with 4 7 Bag seedlings or Eucalyptus Clones" || globalDivName == "HILL AFFORESTATION 3 3 Plantation" || globalDivName == "Improvements to existing Continuos Contour Trench" || globalDivName == "Infrastructure works in MGVN nurseries" || globalDivName == "Labour Intensive Plantation" || globalDivName == "Loose Boulder Structure" || globalDivName == "Percolation Tank" || globalDivName == "Percolation Tank in GIZ Area" || globalDivName == "Rejuvenation and Management of  Bamboo forests and plantations" || globalDivName == "Removal of Obnoxious weed of Bamboo Plants" || globalDivName == "Semi Lunar Trench" || globalDivName == "Silviculture - Harvesting and Thinning in Teak Forests and Plantations" || globalDivName == "SMM 3 2 Plantation" || globalDivName == "SMM 3 3 Plantation" || globalDivName == "SMM 5 5 Plantation" || globalDivName == "Sunken Pit" || globalDivName == "Tank Fore Shore Plantation" || globalDivName == "Teak Plantation" || globalDivName == "Transportation of leftover seedlings from one nursery to another nursery" || globalDivName == "Work Site Facilities")
+	else if(globalDivName == 'Raising and Maintenance of Block Plantations' || globalDivName == 'Raising and Maintenance of nurseries' || globalDivName == 'Soil and Moisture Conservation Works' || globalDivName == 'Raising and Maintenance of Avenue plantations')
 		getNregasForestPopUpOverview(menuLocationType,menuLocationId)
 	else
 		getNregasPopupOverview(menuLocationType,menuLocationId);
@@ -4250,7 +4304,8 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 	});
 }
 
-var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','GH','Solid Waste Management','Burial Ground','Play fields','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','Payments','Agriculture Activities','Cattle Ponds','Desilting of Drinking Water Tanks','FAperformance','coffee','Comprehensive Restoration of minor Irrigation Tank1','Greenary works Chettu','Agriculture Related Works', 'Rural Sanitation Works','Soil Moisture Conservation works Neeru','Works in community lands','Institutional Development Works','Road Works','Water Harvesting Structures Neeru','AH-Live Stock Related works','Comprehensive Restoration of minor Irrigation Tank','CC Roads1','Anganwadi','GP Buildings1','Azolla Production Unit','Construction of silopits of 3 MTs capacity','Fodder trough for Cattle Cattle drinking water trough','Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze','Raising of Perinnial Fodder','Raising of Silvipasture clubbed with subabul plantation','Mandal buildings1','NTR 90 Days','Production of Bricks','NTR Rural House','Mulbery New','Silk worm New','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','OPGK-Perinnials','OPGK-Annuals','Animal Husbandry Others','UGDrainage','Rock Fill Dams','Raising and Maintenance of Nursery','Desilting of Perculation Tanks and Check Dams','Mini Percolation Tanks','Continuous Contour Trenches','Check Dams','Avenue Plantation','Scooping and Dibbling of seed','Aided Natural Regeneration','Bamboo Depot Works','Bamboo Industrial Cuts','Bio-Fencing to schools having no pacca compound wall','Casuarina Plantation','Collection and Transportation of Seed to Seed store','Construction of Checkdam across peeraiah vanka Check Dam 1','Construction of Checkdam across peeraiah vanka Check Dam 2','Construction of Checkdam across peeraiah vanka Check Dam 3','Construction of Checkdam across peeraiah vanka Check Dam 4','Construction of Checkdam across peeraiah vanka Check Dam 5','Decongestion of Bamboo','Emergency watering for MGVN Nurseries','Enrichment Plantation with 4 7 Bag seedlings or Eucalyptus Clones','HILL AFFORESTATION 3 3 Plantation','Improvements to existing Continuos Contour Trench','Infrastructure works in MGVN nurseries','Labour Intensive Plantation','Loose Boulder Structure','Percolation Tank','Percolation Tank in GIZ Area','Rejuvenation and Management of  Bamboo forests and plantations','Removal of Obnoxious weed of Bamboo Plants','Semi Lunar Trench','Silviculture - Harvesting and Thinning in Teak Forests and Plantations','SMM 3 2 Plantation','SMM 3 3 Plantation','SMM 5 5 Plantation','Sunken Pit','Tank Fore Shore Plantation','Teak Plantation','Transportation of leftover seedlings from one nursery to another nursery','Work Site Facilities1','Renovation and Improvements to existing Check Dams Check Wall','Road Formation Upto WBM GR II Including CD works','Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas','Construction Of Animal Hostel','Roads for Unconnected Habitations 2011-12','Construction of New Check Dam','Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality','Construction of Food Grains Storage Structures of 250MT','Formation of Road upto WBM Gr II surface including CD works in Tribal areas','Construction of Village Haats Infrastructure fecilities','Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham','Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT','Construction of Buildings for women self help group federation','Work Site Facilities','Renovation and Improvements to existing Percolation Tank Mini Percolation tank','GP level BNRGSK knowledge resource centre 2012-13 and afterwards','Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality','Production of Grafts in HNTC','Improvements of RYTHU BAZAR','Roads for Unconnected Habitations 2012-13 and afterwards','HNTC Development','New Open Well for Drinking water purpose','Construction of Crematoria Burial Grounds','Repairs to Existing Check Dam','Formation of Road upto Gravel surface including CD works to agriculture fields','Formation of Approach Road upto Gravel surface including CD works to Burial ground','Construction of Food Grains Storage Structures of 500MT','Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas','Raising of Cashew bag seedlings for 2014-15','Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas'];
+var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','GH','Solid Waste Management','Burial Ground','Play fields','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','Payments','Agriculture Activities','Cattle Ponds','Desilting of Drinking Water Tanks','FAperformance','coffee','Comprehensive Restoration of minor Irrigation Tank1','Greenary works Chettu','Agriculture Related Works', 'Rural Sanitation Works','Soil Moisture Conservation works Neeru','Works in community lands','Institutional Development Works','Road Works','Water Harvesting Structures Neeru','AH-Live Stock Related works','Comprehensive Restoration of minor Irrigation Tank','CC Roads1','Anganwadi','GP Buildings1','Azolla Production Unit','Construction of silopits of 3 MTs capacity','Fodder trough for Cattle Cattle drinking water trough','Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze','Raising of Perinnial Fodder','Raising of Silvipasture clubbed with subabul plantation','Mandal buildings1','NTR 90 Days','Production of Bricks','NTR Rural House','Mulbery New','Silk worm New','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','OPGK-Perinnials','OPGK-Annuals','Animal Husbandry Others','UGDrainage','Rock Fill Dams','Renovation and Improvements to existing Check Dams Check Wall','Road Formation Upto WBM GR II Including CD works','Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas','Construction Of Animal Hostel','Roads for Unconnected Habitations 2011-12','Construction of New Check Dam','Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality','Construction of Food Grains Storage Structures of 250MT','Formation of Road upto WBM Gr II surface including CD works in Tribal areas','Construction of Village Haats Infrastructure fecilities','Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham','Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT','Construction of Buildings for women self help group federation','Work Site Facilities','Renovation and Improvements to existing Percolation Tank Mini Percolation tank','GP level BNRGSK knowledge resource centre 2012-13 and afterwards','Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality','Production of Grafts in HNTC','Improvements of RYTHU BAZAR','Roads for Unconnected Habitations 2012-13 and afterwards','HNTC Development','New Open Well for Drinking water purpose','Construction of Crematoria Burial Grounds','Repairs to Existing Check Dam','Formation of Road upto Gravel surface including CD works to agriculture fields','Formation of Approach Road upto Gravel surface including CD works to Burial ground','Construction of Food Grains Storage Structures of 500MT','Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas','Raising of Cashew bag seedlings for 2014-15','Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas','Raising and Maintenance of Avenue plantations','Raising and Maintenance of Block Plantations','Raising and Maintenance of nurseries','Soil and Moisture Conservation Works']; 
+
 buildNREGSProjectsOverview(overViewArr,'')
 for(var i in overViewArr)
 {
@@ -4259,7 +4314,7 @@ for(var i in overViewArr)
 	{
 		getNREGSProjectsAbstractNew(overViewArr[i],'state',"0",'',2);
 	}
-	else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams' || overViewArr[i] == 'Avenue Plantation' || overViewArr[i] == 'Scooping and Dibbling of seed' || overViewArr[i] == "Aided Natural Regeneration"  || overViewArr[i] == "Bamboo Depot Works" || overViewArr[i] == "Bamboo Industrial Cuts" || overViewArr[i] == "Bio-Fencing to schools having no pacca compound wall" ||overViewArr[i] == "Casuarina Plantation" || overViewArr[i] == "Collection and Transportation of Seed to Seed store" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 1" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 2" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 3" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 4" || overViewArr[i] == "Construction of Checkdam across peeraiah vanka Check Dam 5" || overViewArr[i] == "Decongestion of Bamboo" || overViewArr[i] == "Emergency watering for MGVN Nurseries" || overViewArr[i] == "Enrichment Plantation with 4 7 Bag seedlings or Eucalyptus Clones" || overViewArr[i] == "HILL AFFORESTATION 3 3 Plantation" || overViewArr[i] == "Improvements to existing Continuos Contour Trench" || overViewArr[i] == "Infrastructure works in MGVN nurseries" || overViewArr[i] == "Labour Intensive Plantation" || overViewArr[i] == "Loose Boulder Structure" || overViewArr[i] == "Percolation Tank" || overViewArr[i] == "Percolation Tank in GIZ Area" || overViewArr[i] == "Rejuvenation and Management of  Bamboo forests and plantations" || overViewArr[i] == "Removal of Obnoxious weed of Bamboo Plants" || overViewArr[i] == "Semi Lunar Trench" || overViewArr[i] == "Silviculture - Harvesting and Thinning in Teak Forests and Plantations" || overViewArr[i] == "SMM 3 2 Plantation" || overViewArr[i] == "SMM 3 3 Plantation" || overViewArr[i] == "SMM 5 5 Plantation" || overViewArr[i] == "Sunken Pit" || overViewArr[i] == "Tank Fore Shore Plantation" || overViewArr[i] == "Teak Plantation" || overViewArr[i] == "Transportation of leftover seedlings from one nursery to another nursery" || overViewArr[i] == "Work Site Facilities1")
+	else if(overViewArr[i] == 'Raising and Maintenance of Block Plantations' || overViewArr[i] == 'Raising and Maintenance of nurseries' || overViewArr[i] == 'Soil and Moisture Conservation Works' || overViewArr[i] == 'Raising and Maintenance of Avenue plantations')
 	{
 		getNREGSForestProjectsAbstract(overViewArr[i],'state',"0",'',2);
 	}else if(overViewArr[i] == 'Payments')
@@ -5146,7 +5201,7 @@ $(document).on("click",".menuDataCollapse",function(){
 				{
 					getNREGSProjectsAbstractNew(overViewArr[i],'state',locId,blockName,levelId);
 				}
-				else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams' || overViewArr[i] == 'Avenue Plantation' || overViewArr[i] == 'Forest Others' || overViewArr[i] == 'Scooping and Dibbling of seed')
+				else  if(overViewArr[i] == 'Raising and Maintenance of Block Plantations' || overViewArr[i] == 'Raising and Maintenance of nurseries' || overViewArr[i] == 'Soil and Moisture Conservation Works' || overViewArr[i] == 'Raising and Maintenance of Avenue plantations')
 				{
 					getNREGSForestProjectsAbstract(overViewArr[i],'state',"0",'',2);
 				}else if(overViewArr[i] == 'Payments')
@@ -6308,6 +6363,123 @@ function getNregasForestPopUpOverview(menuLocationType,menuLocationId)
 		},
 		success: function(ajaxresp) {
 			buildPopupOverviewBlock(ajaxresp,menuLocationType,menuLocationId);
+		}
+	});
+}
+function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
+{
+	$("#LabBudgtPanExBodyOverviewId").html(spinner);
+	var districtId = $("#selectedName").attr("attr_distId");
+	$("#nregsOverviewBodyId").html(spinner);
+	var locType = '';
+	if(levelId == 2)
+	{
+		locType = 'state'
+	}else if(levelId == 3)
+	{
+		locType = 'district'
+	}else if(levelId == 4)
+	{
+		locType = 'constituency'
+	}
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		groupName : projectDivId,
+		locationType: locType,
+		sublocaType: locType,
+		locationId : menuLocationId
+	}
+	
+	$.ajax({
+		url: 'getWorkWiseAbstractForMCCOthers',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(result) {
+			var str='';
+			var targetCheck = 0;
+			str+='<div class="row">';
+				str+='<div class="col-sm-12">';
+					str+='<div style="background-color:#ccc;padding:15px;">';
+						str+='<h5 class="text-danger">Other MCC</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									str+='<div class="col-sm-2 m_top10">';
+										str+='<div class="panel-block-white text-center" overview-popup-block="'+result[i].workName+'" attr_levelId="'+levelId+'" attr_locationId="'+menuLocationId+'">';
+											if(result[i].percentage < 50)
+											{
+												str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+result[i].workName+'">';
+											}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+											{
+												str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+result[i].workName+'">';
+												
+											}else if(result[i].percentage >= 80)
+											{
+												str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+result[i].workName+'">';
+											}else
+											{
+												str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+result[i].workName+'">';
+											}
+												if(result[i].workName.length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i].workName+'">'+result[i].workName.substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i].workName+'">'+result[i].workName+'</h4>';
+												}
+												if(result[i].percentage != null && result[i].percentage.length > 0)
+												{
+													str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+												}else{
+													str+='<h1 class="text-center">0<small>%</small>';
+												}
+												if(result[i].percentage < 60)
+												{
+													str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+												}else if(result[i].percentage >= 60)
+												{
+													str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+												}else
+												{
+													str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+												}
+												str+='<div class="row">';
+													str+='<div class="col-sm-6 text-center">';
+														str+='<label>Sanctioned</label>';
+														if(result[i].target != null)
+														{
+															str+='<h4>'+result[i].target+'</h4>';
+															targetCheck = targetCheck + result[i].target
+														}else{
+															str+='<h4>0</h4>';
+														}
+													str+='</div>';
+													str+='<div class="col-sm-6 text-center">';
+														str+='<label>Completed</label>';
+														if(result[i].completed != null)
+														{
+															str+='<h4>'+result[i].completed+'</h4>';
+														}else{
+															str+='<h4>0</h4>';
+														}
+													str+='</div>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								}
+							str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			console.log(targetCheck);
+			$("#LabBudgtPanExBodyOverviewId").html(str);
 		}
 	});
 }
