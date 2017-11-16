@@ -171,7 +171,7 @@ public List<Object[]> getAllCasteInfoDetails(){
 	}
    public List<Object[]> getStatewiseCastNamesByCasteCategoryGroupId(List<Long> casteCategoryGroupId,Long stateId){
 	   StringBuilder str = new StringBuilder();
-	   str.append("select distinct model.casteStateId,model.caste.casteName from CasteState model where model.state.stateId = :stateId " );
+	   str.append("select distinct model.casteStateId,model.caste.casteName,model.caste.casteId from CasteState model where model.state.stateId = :stateId " );
 	   if(casteCategoryGroupId != null && casteCategoryGroupId.size()>0){
 		   str.append("and model.casteCategoryGroup.casteCategory.casteCategoryId in(:casteCategoryGroupId)");
 	   }
