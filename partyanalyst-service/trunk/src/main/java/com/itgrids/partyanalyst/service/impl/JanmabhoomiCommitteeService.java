@@ -16,11 +16,15 @@ import com.itgrids.partyanalyst.dao.IJbCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeRoleDAO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.model.JbCommitteeLevel;
 import com.itgrids.partyanalyst.model.JbCommitteeMember;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IJanmabhoomiCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -35,8 +39,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	private IJbCommitteeRoleDAO jbCommitteeRoleDAO;
 	private IJbCommitteeMemberDAO jbCommitteeMemberDAO;
 	private DateUtilService dateUtilService;
-	
-	
+	private ICadreCommitteeService cadreCommitteeService;
+	private ICadreRegistrationService cadreRegistrationService;
+	private List<VoterSearchVO> voterVoList = new ArrayList<VoterSearchVO>();
 	public DateUtilService getDateUtilService() {
 		return dateUtilService;
 	}
@@ -82,6 +87,21 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		this.jbCommitteeDAO = jbCommitteeDAO;
 	}
 
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+   
+	public List<VoterSearchVO> getVoterVoList() {
+		return voterVoList;
+	}
+	public void setVoterVoList(List<VoterSearchVO> voterVoList) {
+		this.voterVoList = voterVoList;
+	}
 	@SuppressWarnings("unused")
 		@Override
 		public JanmabhoomiCommitteeMemberVO getJanmabhoomiCommitteeOverview(Long committeId, String fromDateStr, String toDateStr) {
@@ -151,7 +171,16 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			return committeeVO;
 		}
 
-		// * @author Swapna
+		public ICadreRegistrationService getCadreRegistrationService() {
+		return cadreRegistrationService;
+	}
+
+	public void setCadreRegistrationService(
+			ICadreRegistrationService cadreRegistrationService) {
+		this.cadreRegistrationService = cadreRegistrationService;
+	}
+
+			// * @author Swapna
 		    @Override
 		    public JanmabhoomiCommitteeVO getJbCommitteeStatusCount(String fromDateStr, String toDateStr) {
 		      JanmabhoomiCommitteeVO  mainVO = new JanmabhoomiCommitteeVO();
@@ -537,7 +566,10 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		ResultStatus resultStatus  = new ResultStatus();
 		try {
 			if(janmabhoomiCommitteeMemberVO != null){
-				JbCommitteeMember jbCommitteeMember = jbCommitteeMemberDAO.get(janmabhoomiCommitteeMemberVO.getId());
+				JbCommitteeMember jbCommitteeMember = null;
+				if(janmabhoomiCommitteeMemberVO.getId() != null){
+				 jbCommitteeMember = jbCommitteeMemberDAO.get(janmabhoomiCommitteeMemberVO.getId());
+				}
 				if(jbCommitteeMember == null){
 					jbCommitteeMember = new JbCommitteeMember();
 				}
@@ -550,7 +582,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 				}else if(status.equalsIgnoreCase("proposal")){
 					statusType = "P";
 				}
-				if(status != null && (statusType.equalsIgnoreCase("P") || statusType.equalsIgnoreCase("R"))){
+				if(status != null && (statusType.equalsIgnoreCase("F") || statusType.equalsIgnoreCase("R"))){
 					jbCommitteeMember.setStatus(statusType);
 					jbCommitteeMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					jbCommitteeMember.setUpdatedUserId(janmabhoomiCommitteeMemberVO.getUserId());
@@ -659,6 +691,40 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		}
 	}
 	
+	public JanmabhoomiCommitteeMemberVO searchByMemberIdOrVoterId(Long locationLevel,Long locationValue,String memberShipCardNo,String voterCardNo){
+		JanmabhoomiCommitteeMemberVO mainVO=new JanmabhoomiCommitteeMemberVO();
+		try {
+			//searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,
+			//String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved,Long enrollmentId,String searchType)
+			CadreCommitteeVO cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationValue, "",memberShipCardNo, 
+					voterCardNo, "", "",0L,"",0L,0L,"","",0,50,false,0L,"NominatedPostSearch");
+		    if(cadreCommitteeVO !=null && cadreCommitteeVO.getPreviousElections() !=null && cadreCommitteeVO.getPreviousElections().size() ==0){
+				
+		    	//getOnliCadRegistrSearchVoteDetails(constencyId,mandalId,villageId,boothId,type,typeVal)
+		    	voterVoList=cadreRegistrationService.getOnliCadRegistrSearchVoteDetails(null,null,null,null,"voterId",voterCardNo);
+		    	if(voterVoList !=null && voterVoList.size() >0){
+		    		for(VoterSearchVO voterDetailsVO:voterVoList){
+		    			if(voterDetailsVO !=null){
+		    				mainVO.setName(voterDetailsVO.getName());
+							//mainVO.setMemberShipCardId(null); // memberShipCardId
+							mainVO.setMobileNumber(voterDetailsVO.getMobileNumber() == null?null:voterDetailsVO.getMobileNumber());
+							mainVO.setVoterId(voterDetailsVO.getVoterIDCardNo());
+		    			}
+		    		}
+		    	}
+			}else {
+				for(CadreCommitteeVO candidateDetailsVO:cadreCommitteeVO.getPreviousRoles()){
+					mainVO.setName(candidateDetailsVO.getCadreName());
+					mainVO.setMemberShipCardId(candidateDetailsVO.getMemberShipCardId()); // memberShipCardId
+					mainVO.setMobileNumber(candidateDetailsVO.getMobileNo());
+					mainVO.setVoterId(candidateDetailsVO.getVoterCardNo());
+				}
+			}
+	   } catch (Exception e) {
+			LOG.error("Excepting Occured in searchByMemberIdOrVoterId() of JanmabhoomiCommitteeService ", e);
+		}
+		return mainVO;
+	}
 }
 
 
