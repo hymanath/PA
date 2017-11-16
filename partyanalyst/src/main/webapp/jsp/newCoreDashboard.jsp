@@ -709,13 +709,13 @@
 												<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
 											
 										</div>
-									<!--<div id="oneId1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="oneId">-->
+									
 											<div class="panel-body collapse in" id="collapseOneBodyId">
 												<div class="row">
 													<div id="scaleBasedPerformanceCohort"></div>
 												</div>
 											</div>
-								     <!--</div>-->
+									
 									</div>
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingTwo">
@@ -3944,7 +3944,7 @@
 				  </div>
 				  <div class="panel-body">
 					 <div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 pressmeetBlock" expand-block-inner="pressmeetBlock">
+						<div class="col-md-12 col-xs-12 col-sm-12 pressmeetBlock" expand-block-inner="pressmeet">
 						   <div class="row">
 							  <div id="partyWisePressMeetDetails"></div>
 						   </div>
@@ -3961,9 +3961,7 @@
 								 </ul>
 							  </div>
 							  <div id="spokesPersonWisepressmeetDetailsId"></div>
-							  <!--<div class="col-xs-12 col-sm-12 col-md-12">
-								 <i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
-								 </div>	
+							 
 						   </div>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
