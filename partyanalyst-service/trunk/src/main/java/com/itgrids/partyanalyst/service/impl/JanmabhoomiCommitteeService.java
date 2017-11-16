@@ -746,11 +746,11 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			}else {
 				for(CadreCommitteeVO candidateDetailsVO:cadreCommitteeVO.getPreviousRoles()){
 					mainVO.setName(candidateDetailsVO.getCadreName());
-					mainVO.setMemberShipCardId(candidateDetailsVO.getMemberShipCardId()); // memberShipCardId
+					mainVO.setMemberShipCardId(candidateDetailsVO.getMemberShipCardId() == null?null:candidateDetailsVO.getMemberShipCardId()); // memberShipCardId
 					mainVO.setTdpCadreId(candidateDetailsVO.getTdpCadreId() == null?null:candidateDetailsVO.getTdpCadreId());
 					mainVO.setImageURL(candidateDetailsVO.getImageURL() == null?null:candidateDetailsVO.getImageURL());
-					mainVO.setMobileNumber(candidateDetailsVO.getMobileNo());
-					mainVO.setVoterId(candidateDetailsVO.getVoterCardNo());
+					mainVO.setMobileNumber(candidateDetailsVO.getMobileNo() == null?null:candidateDetailsVO.getMobileNo());
+					mainVO.setVoterId(candidateDetailsVO.getVoterCardNo() == null?null:candidateDetailsVO.getVoterCardNo());
 				}
 			}
 	   } catch (Exception e) {
