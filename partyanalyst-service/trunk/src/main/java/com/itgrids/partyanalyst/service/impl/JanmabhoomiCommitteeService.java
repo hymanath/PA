@@ -12,6 +12,8 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
+import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeMemberDAO;
@@ -42,6 +44,8 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	private ICadreCommitteeService cadreCommitteeService;
 	private ICadreRegistrationService cadreRegistrationService;
 	private List<VoterSearchVO> voterVoList = new ArrayList<VoterSearchVO>();
+	private ICasteStateDAO casteStateDAO;
+	private ICasteCategoryDAO casteCategoryDAO;
 	public DateUtilService getDateUtilService() {
 		return dateUtilService;
 	}
@@ -102,6 +106,24 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	public void setVoterVoList(List<VoterSearchVO> voterVoList) {
 		this.voterVoList = voterVoList;
 	}
+	
+	
+	public ICasteStateDAO getCasteStateDAO() {
+		return casteStateDAO;
+	}
+
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
+	}
+
+	public ICasteCategoryDAO getCasteCategoryDAO() {
+		return casteCategoryDAO;
+	}
+
+	public void setCasteCategoryDAO(ICasteCategoryDAO casteCategoryDAO) {
+		this.casteCategoryDAO = casteCategoryDAO;
+	}
+
 	@SuppressWarnings("unused")
 		@Override
 		public JanmabhoomiCommitteeMemberVO getJanmabhoomiCommitteeOverview(Long committeId, String fromDateStr, String toDateStr) {
@@ -704,16 +726,18 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		    if(cadreCommitteeVO !=null && cadreCommitteeVO.getPreviousElections() !=null && cadreCommitteeVO.getPreviousElections().size() ==0){
 				
 		    	//getOnliCadRegistrSearchVoteDetails(constencyId,mandalId,villageId,boothId,type,typeVal)
-		    	voterVoList=cadreRegistrationService.getOnliCadRegistrSearchVoteDetails(null,null,null,null,"voterId",voterCardNo);
-		    	if(voterVoList !=null && voterVoList.size() >0){
-		    		for(VoterSearchVO voterDetailsVO:voterVoList){
-		    			if(voterDetailsVO !=null){
-		    				mainVO.setName(voterDetailsVO.getName());
-							//mainVO.setMemberShipCardId(null); // memberShipCardId
-							mainVO.setMobileNumber(voterDetailsVO.getMobileNumber() == null?null:voterDetailsVO.getMobileNumber());
-							mainVO.setVoterId(voterDetailsVO.getVoterIDCardNo());
-		    			}
-		    		}
+		    	if(voterCardNo !=null && voterCardNo.length() >1){
+			    	voterVoList=cadreRegistrationService.getOnliCadRegistrSearchVoteDetails(null,null,null,null,"voterId",voterCardNo);
+			    	if(voterVoList !=null && voterVoList.size() >0){
+			    		for(VoterSearchVO voterDetailsVO:voterVoList){
+			    			if(voterDetailsVO !=null){
+			    				mainVO.setName(voterDetailsVO.getName());
+								//mainVO.setMemberShipCardId(null); // memberShipCardId
+								mainVO.setMobileNumber(voterDetailsVO.getMobileNumber() == null?null:voterDetailsVO.getMobileNumber());
+								mainVO.setVoterId(voterDetailsVO.getVoterIDCardNo());
+			    			}
+			    		}
+			    	}
 		    	}
 			}else {
 				for(CadreCommitteeVO candidateDetailsVO:cadreCommitteeVO.getPreviousRoles()){
@@ -727,6 +751,44 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			LOG.error("Excepting Occured in searchByMemberIdOrVoterId() of JanmabhoomiCommitteeService ", e);
 		}
 		return mainVO;
+	}
+
+	@Override
+	public List<JanmabhoomiCommitteeVO> getStatewiseCastNamesByCasteCategoryGroupId(List<Long> categoryGrouId) {
+		List<JanmabhoomiCommitteeVO> casteVOList =new ArrayList<JanmabhoomiCommitteeVO>();
+		List<Object[]> casteWiseObjList = casteStateDAO.getStatewiseCastNamesByCasteCategoryGroupId(categoryGrouId,1L);//state 1 as static
+		try{
+			if(casteWiseObjList !=null && casteWiseObjList.size() >0){
+				for(Object[] param:casteWiseObjList){
+					JanmabhoomiCommitteeVO casteVO = new JanmabhoomiCommitteeVO();
+					casteVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+					casteVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					casteVOList.add(casteVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Excepting Occured in getStatewiseCastNamesByCasteCategoryGroupId() of JanmabhoomiCommitteeService ", e);
+		}
+		return casteVOList;
+	}
+
+	@Override
+	public List<JanmabhoomiCommitteeVO> getCategories() {
+		List<JanmabhoomiCommitteeVO> categotiesVOList =new ArrayList<JanmabhoomiCommitteeVO>();
+		List<Object[]> categories = casteCategoryDAO.getAllCasteCategoryDetails();
+		try{
+			if(categories !=null && categories.size() >0){
+				for(Object[] param:categories){
+					JanmabhoomiCommitteeVO categotiesVO = new JanmabhoomiCommitteeVO();
+					categotiesVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					categotiesVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					categotiesVOList.add(categotiesVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Excepting Occured in getCategories() of JanmabhoomiCommitteeService ", e);
+		}
+		return categotiesVOList;
 	}
 }
 
