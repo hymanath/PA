@@ -143,4 +143,20 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 		  }
 		  return Action.SUCCESS;
 	  }
+	
+	public String getJanmabhoomiCommitteesByLocIdAndCommLvlId(){ 
+		  try{
+			  jObj=new JSONObject(getTask());
+			  String startDate = jObj.getString("fromDate"); 
+			  String endDate = jObj.getString("endDate"); 
+			  Long locationId = jObj.getLong("locationId"); 
+			  Long levelId = jObj.getLong("levelId");
+			  Long committeeLvlId = jObj.getLong("committeeLvlId"); 
+			  String status = jObj.getString("status"); 
+			  janmabhoomiCommitteeVOList = janmabhoomiCommitteeService.getJanmabhoomiCommitteesByLocIdAndCommLvlId(startDate,endDate,locationId,levelId,committeeLvlId,status);			  
+		  }catch(Exception e){
+			  LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmaBhoomiCommitteeAction ",e);
+		  }
+		  return Action.SUCCESS;
+	  }
 }
