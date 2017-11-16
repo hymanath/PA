@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -42,6 +41,7 @@ public class JbCommitteeMember extends BaseModel implements java.io.Serializable
 	private Long updatedUserId;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long partyId ;
 	
 	private  JbCommitteeRole jbCommitteeRole;
 	private CasteState casteState;
@@ -50,6 +50,7 @@ public class JbCommitteeMember extends BaseModel implements java.io.Serializable
 	private JbCommitteeEnrollment jbCommitteeEnrollment;
 	private User insertedUser;
 	private User updatedUser;
+	private Party party ;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -248,6 +249,25 @@ public class JbCommitteeMember extends BaseModel implements java.io.Serializable
 	}
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
+	}
+	
+	@Column(name="party_id")
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "party_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Party getParty() {
+		return party;
+	}
+	public void setParty(Party party) {
+		this.party = party;
 	}
 	
 	

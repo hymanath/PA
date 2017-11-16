@@ -23,14 +23,15 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 			sb.append("SELECT model.jbCommitteeMemberId,model.jbCommitteeRole.jbCommitteeRoleId , ");
 			sb.append("model.memberName,model.mobileNo, model.isActive,model.status, ");
 			sb.append(" voter.voterIDCardNo,casteCategory.casteCategoryId,casteCategory.categoryName,casteState.casteStateId," +
-					" caste.casteName ");
+					" caste.casteName,party.partyId ");
 			
 			sb.append("from JbCommitteeMember model " +
 					" left join model.tdpCadre tdpCadre " +
 					" left join tdpCadre.voter  voter " +
 					" left join model.casteCategory casteCategory" +
 					" left join model.casteState casteState " +
-					" left join casteState.caste caste  ");
+					" left join casteState.caste caste " +
+					"left join model.party party ");
 			sb.append("where ");
 			sb.append(" model.jbCommitteeRole.jbCommitteeRoleId in(:roleIdsList) ");
 			
