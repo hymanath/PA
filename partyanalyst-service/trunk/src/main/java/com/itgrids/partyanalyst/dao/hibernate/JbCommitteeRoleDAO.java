@@ -55,9 +55,50 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
 			sb.append(" ,constituency.constituencyId ");
 		}else if(type.equalsIgnoreCase("parliament")){
-			sb.append(" , model.userAddress.parliamentConstituency.constituencyId  ");
+			sb.append(" ,parliamentConstituency.constituencyId  ");
 		}
       Query query = getSession().createQuery(sb.toString());
+      return query.list();
+ }
+ public  List<Object[]> getCommitteeLvlWiseTotalMemberCountInLocation(Date fromDate,Date endDate  ,Long levelId,Long levelVal, Long committeeLvlId){
+	 StringBuilder sb = new StringBuilder();
+	 //0 committeeLeveId,1 level name,2 committeeId,3 maxMemebers
+      sb.append("select model.jbCommittee.jbCommitteeId,model.jbCommittee.committeeName,sum(model.maxMembers) ");
+      if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 3l){
+			sb.append(" left join model.userAddress.district district ");
+		}else if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 4l){
+			sb.append(" left join  model.userAddress.constituency constituency ");
+		}else if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 10l){
+			sb.append(" left join  model.userAddress.parliamentConstituency parliamentConstituency ");
+		}
+      sb.append(" from JbCommitteeRole model ");
+
+      if(levelId != null && levelId.longValue()  == 3l && levelVal != null && levelVal.longValue() >0l ){
+			sb.append(" and district.districtId = :levelVal ");
+		}else if(levelId != null && levelId.longValue()  == 4l && levelVal != null && levelVal.longValue() >0l){
+			sb.append(" and constituency.constituencyId = :levelVal ");
+		}else if(levelId != null && levelId.longValue()  == 10l && levelVal != null && levelVal.longValue() >0l){
+			sb.append("   and parliamentConstituency.constituencyId = :levelVal  ");
+		}
+      if(committeeLvlId != null && committeeLvlId.longValue() >0l ){
+			sb.append("   and model.jbCommitteeLevel.jbCommitteeLevelId = :committeeLvlId  ");
+		}
+      /*sb.append(" group by model.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommittee.jbCommitteeId ");
+      if(type != null && type.equalsIgnoreCase("district")){
+			sb.append(" , district.districtId ");
+		}else if(type != null && type.equalsIgnoreCase("constituency")){
+			sb.append(" ,constituency.constituencyId ");
+		}else if(type.equalsIgnoreCase("parliament")){
+			sb.append(" ,parliamentConstituency.constituencyId  ");
+		}*/
+      Query query = getSession().createQuery(sb.toString());
+      
+      if(levelVal != null && levelVal.longValue() >0l){
+			query.setParameter("levelVal", levelVal);
+		}
+		if(committeeLvlId != null && committeeLvlId.longValue() >0l ){
+			query.setParameter("committeeLvlId", committeeLvlId);
+		}
       return query.list();
  }
 }
