@@ -34,7 +34,13 @@ private List<JanmabhoomiCommitteeMemberVO> desinationMebersVOList=new ArrayList<
 private List<JanmabhoomiCommitteeMemberVO> desinationVOList=new ArrayList<JanmabhoomiCommitteeMemberVO>();
 
 private String memberShipCardId;
+private String imageURL;
 
+private String relationshipType;
+private String  relativeName;
+private String gender;
+private Long age;
+private String houseNo;
 
 public Set<Long> getCommitteeIds() {
 	return committeeIds;
@@ -198,6 +204,42 @@ public String getMemberShipCardId() {
 }
 public void setMemberShipCardId(String memberShipCardId) {
 	this.memberShipCardId = memberShipCardId;
+}
+public String getImageURL() {
+	return imageURL;
+}
+public void setImageURL(String imageURL) {
+	this.imageURL = imageURL;
+}
+public String getRelationshipType() {
+	return relationshipType;
+}
+public void setRelationshipType(String relationshipType) {
+	this.relationshipType = relationshipType;
+}
+public String getRelativeName() {
+	return relativeName;
+}
+public void setRelativeName(String relativeName) {
+	this.relativeName = relativeName;
+}
+public String getGender() {
+	return gender;
+}
+public void setGender(String gender) {
+	this.gender = gender;
+}
+public Long getAge() {
+	return age;
+}
+public void setAge(Long age) {
+	this.age = age;
+}
+public String getHouseNo() {
+	return houseNo;
+}
+public void setHouseNo(String houseNo) {
+	this.houseNo = houseNo;
 }
 
 }
