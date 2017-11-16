@@ -159,4 +159,14 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 		  }
 		  return Action.SUCCESS;
 	  }
+	
+	public String searchByMemberIdOrVoterId(){ 
+		  try{
+			  jObj=new JSONObject(getTask());
+			  janmabhoomiCommitteeMemberVO = janmabhoomiCommitteeService.searchByMemberIdOrVoterId(jObj.getLong("locationLevel"),jObj.getLong("locationValue"),jObj.getString("memberShipCardNo"),jObj.getString("voterCardNo"));			  
+		  }catch(Exception e){
+			  LOG.error("Entered into searchByMemberIdOrVoterId method in JanmaBhoomiCommitteeAction ",e);
+		  }
+		  return Action.SUCCESS;
+	  }
 }
