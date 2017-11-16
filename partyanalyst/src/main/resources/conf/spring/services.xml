@@ -4547,6 +4547,8 @@
     	<property name="jbCommitteeMemberDAO" ref="jbCommitteeMemberDAO" />
     	<property name="dateUtilService" ref="dateUtilService" />
     	<property name="cadreCommitteeService" ref="cadreCommitteeService" />
-    	<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+    	<property name="cadreRegistrationService" ref="cadreRegistrationService" /> 
+    	<property name="casteStateDAO" ref="casteStateDAO" /> 
+    	<property name="casteCategoryDAO" ref="casteCategoryDAO" /> 
     	</bean>
 </beans>			
