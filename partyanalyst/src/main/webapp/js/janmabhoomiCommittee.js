@@ -263,9 +263,9 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 					str+='<th rowspan="2">Location Name</th>';
 					if(blockType == "district"){
 						str+='<th rowspan="2">District Committee</th>';
-					}else{
+					}/* else{
 						str+='<th rowspan="2">Constituency Committee</th>';
-					}
+					} */
 					
 					for(var i in result[0].list){
 						var length = result[0].list.length;
@@ -288,7 +288,9 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 					var totalCount=0;
 					str+='<tr>';
 						str+='<td>'+result[i].name+'</td>';
-						str+='<td>'+result[i].statusType+'</td>';
+						if(blockType == "district"){
+							str+='<td>'+result[i].statusType+'</td>';
+						}
 						for(var j in result[i].list){
 							totalCount =result[i].list[j].notStartedCommitteeCnt+result[i].list[j].inprogressCommitteeCnt+result[i].list[j].readyForApprovelCommitteeCnt+result[i].list[j].totalApprovedCommitteeCnt+result[i].list[j].submitedCommittees
 							str+='<td>'+totalCount+'</td>';
@@ -324,3 +326,45 @@ function getJanmabhoomiCommitteeOverview(){
 			
  		});
   }
+  //getJanmabhoomiCommitteesByLocIdAndCommLvlId();
+  
+  function getJanmabhoomiCommitteesByLocIdAndCommLvlId(){
+	  alert(6)
+	var jsObj={
+		
+ 		"fromDate"			:"",
+ 		"endDate"			:"",
+		locationId:11,
+		levelId:3,
+		committeeLvlId:3,
+		status:"total"
+	}
+ 	   $.ajax({
+ 		  type : "POST",
+ 		  url : "getJanmabhoomiCommitteesByLocIdAndCommLvlIdAction.action",
+ 		  dataType : 'json',
+ 		  data : {task :JSON.stringify(jsObj)}
+ 		}).done(function(result){ 
+			
+ 		});
+  }
+  //getJanmabhoomiCommitteeOverviewAction1();
+function getJanmabhoomiCommitteeOverviewAction1(){  
+var locationLevel=null;
+var locationValue=null;
+var memberShipCardNo=null;
+    var jsObj={
+    "locationLevel"     :2,//4
+    "locationValue"     :36,//323
+    "memberShipCardNo" :"12345678",//12345678
+    "voterCardNo"      :""//zdr1655333,XFS0758567
+    }
+     $.ajax({
+      type : "POST",
+      url : "searchByMemberIdOrVoterIdAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){ 
+      console.log(result);
+    });
+}
