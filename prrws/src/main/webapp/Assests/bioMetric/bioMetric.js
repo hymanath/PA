@@ -532,7 +532,7 @@ $(document).on("click",".employeePopUpCls",function(){
 		var empName = $(this).attr("attr_empName");
 		 globalEmployeeId = empId;
 		$("#openModalDiv").modal("show");
-		$("#bioMetricTitleId").html("EMPLOYEE NAME <h4 class='m_top10'>"+empName+"</h4>");
+		$("#bioMetricTitleId").html("EMPLOYEE NAME - <span style='font-weight:normal;'>"+empName+"</span>");
 		$("#dateRangePopupId").val(globalFromDate.split("-")[0]+"-"+globalFromDate.split("-")[1]);
 		getIndividualEmployeeAttendenceDetails(empId,globalFromDate,globalToDate);
 });
