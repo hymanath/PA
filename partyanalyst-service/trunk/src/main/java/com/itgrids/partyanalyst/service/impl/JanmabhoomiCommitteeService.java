@@ -317,8 +317,8 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					memeberVO.setCategoryName(commonMethodsUtilService.getStringValueForObject(param[8]));
 					memeberVO.setCasteId(commonMethodsUtilService.getLongValueForObject(param[9]));
 					memeberVO.setCasteName(commonMethodsUtilService.getStringValueForObject(param[10]));
-					//memeberVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[3]));
-					//memeberVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[0]));
+					memeberVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[11]));
+					memeberVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[12]));
 					if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("F")){
 						memeberVO.setStatus("Approved");
 						committeeVO.setAddedMemberCount(committeeVO.getAddedMemberCount()+1);
