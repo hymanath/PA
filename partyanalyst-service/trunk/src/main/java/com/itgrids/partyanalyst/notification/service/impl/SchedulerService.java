@@ -1085,13 +1085,21 @@ public class SchedulerService implements ISchedulerService{
 			//Collection<List<Long>> listOflistOfDeptId = emailIdAndDeptIdListMap.values();
 			List<Long> deptList = emailIdAndDeptIdListMap.get(1l);    
 			Long officeId = 1l;
-			List<Object[]> specificOfficeTotalEmployeeList = employeeWorkLocationDAO.getSpecificOfficeTotalEmployeeListFilter(deptList,officeId);
-			List<Object[]> specificOfficeTotalAttendedEmployee = employeeWorkLocationDAO.getSpecificOfficeTotalAttendedEmployeeFilter(deptList, presentedCaderIdList, officeId);
-			List<Object[]> departmentWiseTotalEmployeeList1 = employeeDepartmentDAO.getDepartmentWiseTotalEmployeeListFilterForOffice(deptList, officeId);
-			List<Object[]> departmenWiseTotalAttendedEmployee1 = employeeDepartmentDAO.getDepartmentWiseTotalAttendedEmployeeFilterForOffice(deptList, presentedCaderIdList, officeId);
-			List<Object[]> departmentWiseThenOfficeWiseTotalAttendedEmployee1 = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilterForOffice(deptList, presentedCaderIdList, officeId);
-			List<Object[]> specificOfficeTotalNonAttendedEmployeeDetailsList = employeeWorkLocationDAO.getspecificOfficeTotalNonAttendedEmployeeDetailsFilter(deptList, presentedCaderIdList, officeId);
-			List<Object[]> specificOfficeTotalAttendedEmployeeDetailsList = employeeWorkLocationDAO.getSpecificOfficeTotalAttendedEmployeeDetailsFilter(fromDate, toDate, deptList, presentedCaderIdList, officeId);
+			List<Object[]> specificOfficeTotalEmployeeList = null;
+			List<Object[]> specificOfficeTotalAttendedEmployee = null;
+			List<Object[]> departmentWiseTotalEmployeeList1 = null;
+			List<Object[]> departmenWiseTotalAttendedEmployee1 = null;
+			List<Object[]> departmentWiseThenOfficeWiseTotalAttendedEmployee1 = null;
+			List<Object[]> specificOfficeTotalNonAttendedEmployeeDetailsList = null;
+			List<Object[]> specificOfficeTotalAttendedEmployeeDetailsList = null;
+			ResultStatus resultStatus1 = null;
+			specificOfficeTotalEmployeeList = employeeWorkLocationDAO.getSpecificOfficeTotalEmployeeListFilter(deptList,officeId);
+			specificOfficeTotalAttendedEmployee = employeeWorkLocationDAO.getSpecificOfficeTotalAttendedEmployeeFilter(deptList, presentedCaderIdList, officeId);
+			departmentWiseTotalEmployeeList1 = employeeDepartmentDAO.getDepartmentWiseTotalEmployeeListFilterForOffice(deptList, officeId);
+			departmenWiseTotalAttendedEmployee1 = employeeDepartmentDAO.getDepartmentWiseTotalAttendedEmployeeFilterForOffice(deptList, presentedCaderIdList, officeId);
+			departmentWiseThenOfficeWiseTotalAttendedEmployee1 = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilterForOffice(deptList, presentedCaderIdList, officeId);
+			specificOfficeTotalNonAttendedEmployeeDetailsList = employeeWorkLocationDAO.getspecificOfficeTotalNonAttendedEmployeeDetailsFilter(deptList, presentedCaderIdList, officeId);
+			specificOfficeTotalAttendedEmployeeDetailsList = employeeWorkLocationDAO.getSpecificOfficeTotalAttendedEmployeeDetailsFilter(fromDate, toDate, deptList, presentedCaderIdList, officeId);
 			
 			generatePdfReport("office", emailVo,	specificOfficeTotalEmployeeList, 
 												specificOfficeTotalAttendedEmployee, 
@@ -1100,8 +1108,30 @@ public class SchedulerService implements ISchedulerService{
 												departmentWiseThenOfficeWiseTotalAttendedEmployee1, 
 												specificOfficeTotalNonAttendedEmployeeDetailsList,   
 												specificOfficeTotalAttendedEmployeeDetailsList );  
-			@SuppressWarnings("unused")
-			ResultStatus resultStatus1 = sendEmailWithPdfAttachment("office", emailVo);        
+			
+			resultStatus1 = sendEmailWithPdfAttachment("office", emailVo,officeId); 
+			
+			//for Guntur party office
+			officeId = 2l;
+			specificOfficeTotalEmployeeList = employeeWorkLocationDAO.getSpecificOfficeTotalEmployeeListFilter(deptList,officeId);
+			specificOfficeTotalAttendedEmployee = employeeWorkLocationDAO.getSpecificOfficeTotalAttendedEmployeeFilter(deptList, presentedCaderIdList, officeId);
+			departmentWiseTotalEmployeeList1 = employeeDepartmentDAO.getDepartmentWiseTotalEmployeeListFilterForOffice(deptList, officeId);
+			departmenWiseTotalAttendedEmployee1 = employeeDepartmentDAO.getDepartmentWiseTotalAttendedEmployeeFilterForOffice(deptList, presentedCaderIdList, officeId);
+			departmentWiseThenOfficeWiseTotalAttendedEmployee1 = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilterForOffice(deptList, presentedCaderIdList, officeId);
+			specificOfficeTotalNonAttendedEmployeeDetailsList = employeeWorkLocationDAO.getspecificOfficeTotalNonAttendedEmployeeDetailsFilter(deptList, presentedCaderIdList, officeId);
+			specificOfficeTotalAttendedEmployeeDetailsList = employeeWorkLocationDAO.getSpecificOfficeTotalAttendedEmployeeDetailsFilter(fromDate, toDate, deptList, presentedCaderIdList, officeId);
+			
+			generatePdfReport("office", emailVo,	specificOfficeTotalEmployeeList, 
+												specificOfficeTotalAttendedEmployee, 
+												departmentWiseTotalEmployeeList1, 
+												departmenWiseTotalAttendedEmployee1, 
+												departmentWiseThenOfficeWiseTotalAttendedEmployee1, 
+												specificOfficeTotalNonAttendedEmployeeDetailsList,   
+												specificOfficeTotalAttendedEmployeeDetailsList ); 
+
+			resultStatus1 = sendEmailWithPdfAttachment("office", emailVo,officeId); 
+			
+			
 			for(Long userEmailId : emailIdList){    
 				emailVo.setEmailId(userEmailId);
 				deptList = emailIdAndDeptIdListMap.get(userEmailId);  
@@ -1131,8 +1161,7 @@ public class SchedulerService implements ISchedulerService{
 													departmentWiseThenOfficeWiseTotalAttendedEmployee, 
 													officeWiseTotalNonAttendedEmployeeDetailsList,   
 													officeWiseTotalAttendedEmployeeDetailsList );
-				@SuppressWarnings("unused")
-				ResultStatus resultStatus = sendEmailWithPdfAttachment(area, emailVo);      
+				ResultStatus resultStatus = sendEmailWithPdfAttachment(area, emailVo,null);      
 				System.out.println("Hi");       
 			}
 			
@@ -1723,7 +1752,7 @@ public class SchedulerService implements ISchedulerService{
 			e.printStackTrace();
 		}
 	}
-	public ResultStatus sendEmailWithPdfAttachment(String area, EmailAttributesVO emailAttributesVO){
+	public ResultStatus sendEmailWithPdfAttachment(String area, EmailAttributesVO emailAttributesVO,Long officeId){
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			DateUtilService dateUtilService = new DateUtilService();
@@ -1742,10 +1771,15 @@ public class SchedulerService implements ISchedulerService{
 			
 			message.setFrom(new InternetAddress(IConstants.EMAIL_USERNAME));  
 			if(area.equalsIgnoreCase("office")){
-				message.addRecipient(Message.RecipientType.TO, new InternetAddress("accounts@telugudesam.org")); 
-				message.addRecipient(Message.RecipientType.TO, new InternetAddress("a.dakavaram@itgrids.com"));  
-				message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhin.lenka@itgrids.com"));    
-	
+				if(officeId != null && officeId.longValue() == 1L){
+					message.addRecipient(Message.RecipientType.TO, new InternetAddress("accounts@telugudesam.org")); 
+					message.addRecipient(Message.RecipientType.TO, new InternetAddress("a.dakavaram@itgrids.com"));  
+					message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhin.lenka@itgrids.com"));    
+				}else{
+					message.addRecipient(Message.RecipientType.TO, new InternetAddress("ramana.ayala@gmail.com")); 
+					message.addRecipient(Message.RecipientType.TO, new InternetAddress("a.dakavaram@itgrids.com"));  
+					message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhin.lenka@itgrids.com"));    
+				}
 			}else if(area.equalsIgnoreCase("dept")){
 				List<Object[]> emailList = userEmailDAO.getEmailList(emailAttributesVO.getEmailId());
 				for(Object[] emailArr : emailList){ 
