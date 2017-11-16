@@ -1469,7 +1469,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 					}
 					 
 					 
-					 str+='<td>'+result[i].locationName+starMark'</td>';	
+					 str+='<td>'+result[i].locationName+starMark+'</td>';	
 					for(var j in result[i].list){
 						if(result[i].list[j].status == 'GOOD')
 						{
