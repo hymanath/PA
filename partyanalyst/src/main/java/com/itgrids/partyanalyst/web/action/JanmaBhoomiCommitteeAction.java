@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,12 +8,15 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IJanmabhoomiCommitteeService;
+import com.itgrids.partyanalyst.service.impl.LeaderCadreDashBoardService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -31,8 +35,7 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	private JanmabhoomiCommitteeVO janmabhoomiCommitteeVO;
 	private JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO;
 	private ResultStatus resultStatus;
-	
-	
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -166,6 +169,33 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 			  janmabhoomiCommitteeMemberVO = janmabhoomiCommitteeService.searchByMemberIdOrVoterId(jObj.getLong("locationLevel"),jObj.getLong("locationValue"),jObj.getString("memberShipCardNo"),jObj.getString("voterCardNo"));			  
 		  }catch(Exception e){
 			  LOG.error("Entered into searchByMemberIdOrVoterId method in JanmaBhoomiCommitteeAction ",e);
+		  }
+		  return Action.SUCCESS;
+	  }
+	
+	public String getAllCategories(){ 
+		  try{
+			  janmabhoomiCommitteeVOList = janmabhoomiCommitteeService.getCategories();
+		  }catch(Exception e){
+			  LOG.error("Entered into getAllCategories method in JanmaBhoomiCommitteeAction ",e);
+		  }
+		  return Action.SUCCESS;
+	  }
+	
+	public String getStatewiseCastNamesByCasteCategoryGroupId(){ 
+		  try{
+			  jObj=new JSONObject(getTask());
+			  List<Long> categoryGrouIdsList = new ArrayList<Long>(0); 
+		      JSONArray categoryGrouIdValues = jObj.getJSONArray("categoryGrouIdsList");
+		      
+		        if(categoryGrouIdValues != null && categoryGrouIdValues.length()> 0){
+		          for(int i = 0;i<categoryGrouIdValues.length();i++){
+		        	  categoryGrouIdsList.add(new Long(categoryGrouIdValues.getInt(i)));
+		          }
+		        }   
+			  janmabhoomiCommitteeVOList = janmabhoomiCommitteeService.getStatewiseCastNamesByCasteCategoryGroupId(categoryGrouIdsList);
+		  }catch(Exception e){
+			  LOG.error("Entered into getStatewiseCastNamesByCasteCategoryGroupId method in JanmaBhoomiCommitteeAction ",e);
 		  }
 		  return Action.SUCCESS;
 	  }

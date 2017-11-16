@@ -18468,9 +18468,19 @@
 			<param name="root">janmabhoomiCommitteeVOList</param>       
 		</result>
   	</action>
-  		<action name="searchByMemberIdOrVoterIdAction" class="janmaBhoomiCommitteeAction"  method="searchByMemberIdOrVoterId">
+  	<action name="searchByMemberIdOrVoterIdAction" class="janmaBhoomiCommitteeAction"  method="searchByMemberIdOrVoterId">
 		<result type="json" name="success">    
 			<param name="root">janmabhoomiCommitteeMemberVO</param>       
+		</result>
+  	</action>
+  	<action name="getAllMainCategoriesAction" class="janmaBhoomiCommitteeAction"  method="getAllCategories">
+		<result type="json" name="success">    
+			<param name="root">janmabhoomiCommitteeVOList</param>       
+		</result>
+  	</action>
+  	<action name="getStatewiseCastNamesByCasteCategoryGroupIdAction" class="janmaBhoomiCommitteeAction"  method="getStatewiseCastNamesByCasteCategoryGroupId">
+		<result type="json" name="success">    
+			<param name="root">janmabhoomiCommitteeVOList</param>       
 		</result>
   	</action>
  </package>
