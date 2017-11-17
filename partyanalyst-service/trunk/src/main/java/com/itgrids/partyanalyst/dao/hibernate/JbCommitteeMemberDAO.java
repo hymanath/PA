@@ -130,4 +130,16 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 			}
 		 return query.list();
 	 }
+	 
+	 public Long getMemberApprovedCountByCommitteId(Long committeeId){
+		 StringBuilder sb = new StringBuilder();
+			sb.append("SELECT count(model.jbCommitteeMemberId) ");
+			sb.append("from JbCommitteeMember model ");
+			sb.append("where model.jbCommitteeRole.jbCommittee.jbCommitteeId =:committeeId and model.jbCommitteeRole.jbCommittee.isDeleted ='N' ");
+			sb.append("and model.status ='F' ");
+			Query query = getSession().createQuery(sb.toString());
+			query.setParameter("committeeId", committeeId);
+			
+			return (Long)query.uniqueResult();
+	 }
 }
