@@ -11,26 +11,252 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
+<style>
+.white_block{
+	background-color: white;
+	padding: 20px 0px;
+	box-shadow:0px 0px 3px 3px rgba(0,0,0,0.4);
+}
+.conDetails-table th{
+	  border-top: none !important;
+}
+</style>
 </head>
 <body>
-	<main> 
-		 <div class="container">
-			<section>
-				<div class="row">
-					<div class="col-sm-3">
-						<div class="form-group">
+<header>
+	<nav>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-1 col-xs-3 pad_left0">
+					<img src="Assests/images/aplogo.png" class="logo"/>
+				</div>
+				<div class="col-sm-4 m_top10 col-xs-9">
+					<h4 class="text-capital">Panchayati Raj & RD & RWS</h4>
+					<p>Rural Water Supply - AP</p>
+				</div>
+				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
+					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
+					<div class="menu-data-cls">
+						<div class="arrow_box_top">
+							<div class="row">
+								<!--<div class="col-sm-12">
+									<div class="menu-block" style="background-color:#FFBA00">
+										<a href="newfundManagementDashboard">
+											<h3>FMS</h3>
+											<p>Fund Management System</p>
+										</a>
+									</div>
+								</div>  -->
+								<div class="col-sm-12">
+									<div class="menu-heading-block">
+										<h4 class="text-capital">Rural Water Supply</h4>
+										<div class="row">
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#56A3C5">
+													<a href="ruralWaterSupplyDashBoard">
+														<h3>RWS</h3>
+														<p>Rural Water Supply</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#1e92b2">
+													<a href="swachhBharatMissionIHHL">
+														<h3>IHHL</h3>
+														<p>Swatch Bharat Mission</p>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>PANCHAYATI RAJ</h4>
+										<div class="row">
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#0F685C">
+													<a href="prisDashBoard">
+														<h3>PRIS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#31B8B7">
+													<a href="drainDashBoard">
+														<h3>DRAINS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#2C546C">
+													<a href="#">
+														<h3>ENC</h3>
+														<p>Engineering Dept</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#512507">
+													<a href="getdailySpikeReport">
+														<h3>SA</h3>
+														<p>Spike Analysis</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#888420">
+													<a href="getlightsMonitoringDashboard">
+														<h3>LED</h3>
+														<p>Light Monitoring Dashboard</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#ff5e1c">
+													<a href="prExpenditureDashboard">
+														<h3>PR EXP</h3>
+														<p>Panchayat Raj <br/>Expenditure</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#1c94ef">
+													<a href="waterTanksClorinationDashBoard">
+														<h3>WTC</h3>
+														<p>Water Tank Clorination</p>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>RURAL DEVELOPMENT</h4>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#88186B">
+													<a href="MGNREGSDashboard">
+														<h3>MGNREGS</h3>
+														<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#ff1c5e">
+													<a href="RuralDevelopmentDashboard">
+														<h3>RD</h3>
+														<p>Rural Development Dashboard</p>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-block" style="background-color:#de4524 ">
+										<a href="itcDashboard">
+											<h3>IT E & C</h3>
+											<p>Dashboard</p>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</nav>
+	<section class="navbar-section">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-2 border_right">
+					
+				</div>
+				<div class="col-sm-3 border_right">
+					<div class="form-group">
 							<select id="districtSelId" class="form-control chosenSelect">
 								<option value="0"> SELECT DISTRICT</option>
 							</select>
 						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="form-group">
+				</div>
+				<!--<div class="col-sm-6">
+					<ul class="list-inline">
+						<li><span class="color-label color-label-success"></span> 80% and above</li>
+						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
+						<li><span class="color-label color-label-danger"></span> 0% - 49%</li>
+					</ul>
+				</div>-->
+				<div class="col-sm-3">
+					<div class="form-group">
 							<select id="constituencySelId" class="form-control chosenSelect">
 								<option value="0"> SELECT CONSTITUENCY</option>
 							</select>
 						</div>
-					</div>						
+				</div>
+			</div>
+		</div>
+	</section>
+</header>
+	<main> 
+		 <div class="container">
+			<section>
+			
+			
+				<div class="row m_top20">
+					<div class="col-sm-6 col-sm-offset-3">
+					<div class="white_block text-center">
+					<h2 class="">LEADER DETAILS</h2>
+								<div class="table-responsive m_top20">
+									<table class="table conDetails-table" style="font-family:sas-sarif;">
+										<tr>
+											<th>
+											<h4>NAME </h4>
+											</th>
+											<th>
+											<h4> :</h4>
+											</th>
+											<th>
+											<h5>VARAM</h5>
+											</th>
+										</tr>
+										<tr>
+											<th>
+											<h4>DISTRICT </h4>
+											</th>
+											<th>
+											<h4> :</h4>
+											</th>
+											<th>
+											<h5>VISAKHAPATNAM</h5>
+											</th>
+										</tr>
+										<tr>
+											<th>
+											<h4>CONSTITUENCY NAME </h4>
+											</th>
+											<th>
+											<h4> :</h4>
+											</th>
+											<th>
+											<h5>BHIMILI</h5>
+											</th>
+										</tr>
+									</table>
+								</div>
+							
+						</div>			  
+					</div>
+				</div>
+			</section>
+			<section>
+				<div class="row m_top20">
+					<div class="col-sm-12">
+						<div id="deptBlocks"></div>
+					</div>
 				</div>
 			</section>
 		</div>
