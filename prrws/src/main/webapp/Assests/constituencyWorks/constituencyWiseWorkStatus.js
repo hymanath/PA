@@ -47,6 +47,13 @@ function onloadCalls(){
 	getAllSubLocationsOnsuperLocation("21");
 	getAllFiniancialYears();
 	collapseBlock();
+	
+	buildWorkDeatilsLocation("ENC");
+	buildWorkDeatils("ENC");
+	buildWorkDeatilsLocation("RWS");
+	buildWorkDeatils("RWS");
+	buildWorkDeatilsLocation("MGNREGS");
+	buildWorkDeatils("MGNREGS");
 }
 /* 
 $("header").on("click",".menu-cls",function(e){
@@ -170,7 +177,8 @@ function collapseBlock(){
 	collapse+='<div class="row">';
 		collapse+='<div class="col-sm-12">'
 			for(var i in blockNames){
-			
+				collapse+='<div class="row m_top20"><div class="col-sm-1 col-sm-offset-11"><button class="btn btn-md btn-success">PRINT</button></div></div>';
+					
 				collapse+='<div class="panel-group " id="accordion'+blockNames[i]+'" role="tablist" aria-multiselectable="true">';
 				collapse+='<div class="panel panel-default panel-black m_top20">';
 					collapse+='<div class="panel-heading" role="tab" id="headingOne'+blockNames[i]+'">';
@@ -180,8 +188,16 @@ function collapseBlock(){
 					collapse+='</div>';
 					collapse+='<div id="collapseOne'+blockNames[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+blockNames[i]+'">';
 						collapse+='<div class="panel-body">';
-							collapse+='<div class="">';
+							collapse+='<div class="" >';
+								collapse+='<div class="row m_left20" style="background-color:lightgrey;">';
+									collapse+='<div class="col-sm-3 m_left20"><p>Total Govt Order:<span>3</span></p></div>';
+									collapse+='<div class="col-sm-3"><p>Total Work :30</p></div>';
+									collapse+='<div class="col-sm-3"><p>Total Amount :30000</p></div>';
+								collapse+='</div>';
 							collapse+='</div>';
+							collapse+='<div class="m_top20" id="'+blockNames[i]+'DivId">';
+							collapse+='</div>';
+							collapse+='<div class="m_top20" id="'+blockNames[i]+'TableDivId">';
 						collapse+='</div>';
 					collapse+='</div>';
 					collapse+='</div>';
@@ -191,10 +207,56 @@ function collapseBlock(){
 		collapse+='</div>'
 	collapse+='</div>';
 	}
-	collapse+='<div class="row m_top10">';
-		collapse+='<div class="col-sm-1 col-sm-offset-11">';
-			collapse+='<button class="btn btn-md btn-success">PRINT</button>';
-		collapse+='</div>';
-	collapse+='</div>';
 	$("#deptBlocks").html(collapse);
+}
+
+function buildWorkDeatils(divId){
+	var tab='';
+		tab+='<h3 class="panel-title m_left20" style="background-color:lightgrey;padding:5px;">Govt Order Wise Works Details</h3>';
+		tab+='<div class="table-responsive m_top20">';
+			tab+='<table class="table table-bordered">';
+				tab+='<tr>';
+					tab+='<th> Govt Order </th>';
+					tab+='<th> Total Works</th>';
+					tab+='<th> Issue Date</th>';
+					tab+='<th> Amount</th>';
+				tab+='</tr>';
+				tab+='<tr>';
+					tab+='<td> RWS</td>';
+					tab+='<td> 100</td>';
+					tab+='<td> 17/11/2017</td>';
+					tab+='<td> 1245151</td>';
+				tab+='</tr>';
+			tab+='</table>';
+		tab+='</div>';
+		$("#"+divId+"DivId").html(tab);
+}
+
+function buildWorkDeatilsLocation(divId){
+	var tab='';
+		tab+='<div class="row">';
+			tab+='<div class="col-sm-2 m_left20" style="background-color:lightgrey;padding:5px;>';
+				tab+='<h3 class="panel-title" > Works Details</h3>';
+			tab+='</div>';
+		tab+='</div>';
+		tab+='<div class="table-responsive m_top20">';
+			tab+='<table class="table table-bordered">';
+				tab+='<tr>';
+					tab+='<th> Work Details </th>';
+					tab+='<th> Constituency</th>';
+					tab+='<th> Mandal</th>';
+					tab+='<th> village</th>';
+					tab+='<th> Amount</th>';
+				tab+='</tr>';
+				tab+='<tr>';
+					tab+='<td> RWS</td>';
+					tab+='<td> Bhimili</td>';
+					tab+='<td> aAnandhpuram</td>';
+					tab+='<td>marikavalasa</td>';
+					tab+='<td>10000</td>';
+				tab+='</tr>';
+			tab+='</table>';
+		tab+='</div>';
+	
+		$("#"+divId+"TableDivId").html(tab);
 }
