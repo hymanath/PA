@@ -442,6 +442,8 @@ public class LightMonitoringService  implements ILightMonitoring{
 									if (wattageMap != null && wattageMap.get(locationVO.getLocationId()) != null) {
 										lightMonitoringVO.setWattageList(wattageMap.get(locationVO.getLocationId()).get(lightMonitoringVO.getLightVendorId()));
 										locationVO.getSubList().add(lightMonitoringVO);
+									} else {
+										locationVO.getSubList().add(lightMonitoringVO);
 									}
 								}
 							}

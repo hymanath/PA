@@ -203,7 +203,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				 + " left join locationAddress.constituency constituency "
 				 + " left join locationAddress.parliament parliament "
 				 + " left join locationAddress.tehsil  tehsil ");
-		if (type.equalsIgnoreCase("filter")){
+		if (locationType.equalsIgnoreCase("panchayat") || type.equalsIgnoreCase("filter")){
 			sb.append(",LightMonitoring lm where lm.isDeleted='N' and  lm.panchayatId=model.panchayatId and state.stateId =1");
 		}else{
 			sb.append(" where state.stateId = 1 ");	
