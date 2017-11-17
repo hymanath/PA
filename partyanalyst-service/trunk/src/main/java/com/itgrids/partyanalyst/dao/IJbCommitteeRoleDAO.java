@@ -12,4 +12,5 @@ import com.itgrids.partyanalyst.model.JbCommitteeRole;
 	   public List<Object[]> getDesignationsIdsByCommitteeId(Long committeeId);
 	   public  List<Object[]> getCommitteeWiseTotalMemberCount(String type,Set<Long> userAccessVals);
 	   public  List<Object[]> getCommitteeLvlWiseTotalMemberCountInLocation(Date fromDate,Date endDate  ,Long levelId,Long levelVal, Long committeeLvlId);
+	   public Long getTotalRoleMemberCountByCommitteId(Long committeeId);
 }
