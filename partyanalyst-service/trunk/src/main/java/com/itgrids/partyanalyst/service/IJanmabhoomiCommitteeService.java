@@ -17,4 +17,5 @@ public interface IJanmabhoomiCommitteeService
 	public JanmabhoomiCommitteeMemberVO searchByMemberIdOrVoterId(Long locationLevel,Long locationValue,String memberShipCardNo,String voterCardNo);
 	public List<JanmabhoomiCommitteeVO> getStatewiseCastNamesByCasteCategoryGroupId(List<Long> categoryGrouId);
 	public List<JanmabhoomiCommitteeVO>  getCategories();
+	public ResultStatus updateCommitteStatusByCommiteeId(Long committeeId);
 }
