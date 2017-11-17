@@ -104,6 +104,7 @@ public class InputVO implements Serializable {
 	private String session;
 	private String groupName;
 	private Long departmentId;
+	private List<Long> lightVendorIdList;
 	
 	public String getPath() {
 		return path;
@@ -662,5 +663,12 @@ public class InputVO implements Serializable {
 	public void setDeptCode(String deptCode) {
 		this.deptCode = deptCode;
 	}
+	public List<Long> getLightVendorIdList() {
+		return lightVendorIdList;
+	}
+	public void setLightVendorIdList(List<Long> lightVendorIdList) {
+		this.lightVendorIdList = lightVendorIdList;
+	}
+	
 	
 }

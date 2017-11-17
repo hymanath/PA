@@ -40,6 +40,7 @@ $(document).on("click",".menuDataCollapse",function(){
 function menuWiseDetails(){
 	if(globallevelId == 2 || globallevelId == 0){
 		projectData('',2);
+		showLightVendorSelectBox();
 		$("#consLvlLedDistrictSelectBoxId_chosen").show();
 		$("#mandalLvlLedDistrictSelectBoxId_chosen").show();
 		$("#mandalLvlLedConstituencySelectBoxId_chosen").show();
@@ -50,6 +51,7 @@ function menuWiseDetails(){
 		$(".tableMenu li:nth-child(2)").show();
 	}else if(globallevelId == 3){
 		projectData('',3)
+		hideLightVendorSelectBox();
 		$("#consLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedConstituencySelectBoxId_chosen").hide();
@@ -60,6 +62,7 @@ function menuWiseDetails(){
 		$(".tableMenu li:nth-child(2)").hide();
 	}else if(globallevelId == 4){
 		projectData('',4)
+		hideLightVendorSelectBox();
 		$("#consLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedConstituencySelectBoxId_chosen").hide();
@@ -70,6 +73,7 @@ function menuWiseDetails(){
 		$(".tableMenu li:nth-child(2)").hide();
 	}else if(globallevelId == 5){
 		projectData('',5)
+		hideLightVendorSelectBox();
 		$("#consLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedConstituencySelectBoxId_chosen").hide();
@@ -81,6 +85,18 @@ function menuWiseDetails(){
 		
 	}
 	
+}
+function hideLightVendorSelectBox() {
+	$("#districtLevelLightsVendorSelectBoxId_chosen").hide();
+	$("#constituencyLevelLightsVendorSelectBoxId_chosen").hide();
+	$("#mandalLvlLightsVendorSelectBoxId_chosen").hide();
+	$("#panchayatLvlLedLightsVendorSelectBoxId_chosen").hide();
+}
+function showLightVendorSelectBox() {
+	$("#districtLevelLightsVendorSelectBoxId_chosen").show();
+	$("#constituencyLevelLightsVendorSelectBoxId_chosen").show();
+	$("#mandalLvlLightsVendorSelectBoxId_chosen").show();
+	$("#panchayatLvlLedLightsVendorSelectBoxId_chosen").show();
 }
 $("#singleDateRangePicker").daterangepicker({
 		opens: 'left',
@@ -121,14 +137,14 @@ function getLedOverviewForStartedLocationsDetailsCounts(){
 		locationType = "mandal";
 		locationValue=globallocId;
 	}
-	
-	
+ 
 	
 	var json = {
 		fromDate:glStartDate,
 		toDate:glEndDate,
 		locationType:locationType,
-		locationValue:locationValue
+		locationValue:locationValue,
+		lightVendorIdList:[2,1]
 	}
 	$.ajax({                
 		type:'POST',    
@@ -141,8 +157,10 @@ function getLedOverviewForStartedLocationsDetailsCounts(){
 		}
 	}).done(function(result){
 		$("#ledOverViewDiv").html('');
-		if(result != null){
+		if(result != null && result.length > 0){
 			buildLedOverviewForStartedLocationsDetailsCounts(result);	
+		} else {
+		$("#ledOverViewDiv").html('NO DATA AVAILABLE.');	
 		}
 	});
 }
@@ -168,7 +186,8 @@ function getBasicLedOverviewDetails(){
 		fromDate:glStartDate,
 		toDate:glEndDate,
 		locationType:locationType,
-		locationValue:locationValue
+		locationValue:locationValue,
+		lightVendorIdList:[2,1]
 	}
 	$.ajax({                
 		type:'POST',    
@@ -179,9 +198,12 @@ function getBasicLedOverviewDetails(){
 			xhr.setRequestHeader("Accept", "application/json");
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
-	}).done(function(result){
-		if (result != null ) {
-		 buildBasicLedOverviewDetails(result);	
+	}).done(function(result){  
+	     $("#overviewBlockId").html(' ');
+		if (result != null && result.length > 0) {
+		   buildBasicLedOverviewDetails(result);	
+		} else {
+			$("#ledOverViewDiv").html("");
 		}
 		
 	});		
@@ -245,7 +267,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
    str+='</div>';
   $("#ledOverViewDiv").html(str);
 }
-function getAllLevelWiseDataOverView(locType,filterType,locId,divId){
+function getAllLevelWiseDataOverView(locType,filterType,locId,divId,lightVendorArr){
 	$("#"+divId+"TableId").html(spinner);
 		var locationId='';
 		var locationType='';
@@ -281,10 +303,11 @@ function getAllLevelWiseDataOverView(locType,filterType,locId,divId){
 			"filterType"  :filterTypeVal ,
 			"locationIds"  :locationIdArr,
 			"fromDate"	  :glStartDate,
-		    "toDate"	  :glEndDate
+		    "toDate"	  :glEndDate,
+			"lightVendorIdList":lightVendorArr
 		}
 	$.ajax({                
-		type:'POST',    
+		type:'POST',
 		url: 'getAllLevelWiseDataOverView',
 		dataType: 'json',
 		data : JSON.stringify(json),
@@ -472,42 +495,75 @@ function projectData(divId,levelId)
 												collapse+='<li class="ledResultTypeCls" attr_location_level='+dataArr[i]+' attr_tab_type="parliament">Parliament</li>';
 											collapse+='</ul>';
 										collapse+='</div>';
+										if(dataArr[i] == "district"){
+											collapse+='<div class="col-sm-3">';
+												collapse+='<select class="form-control chosen-select lightsVendorCls"  attr_location_level="district"  id="districtLevelLightsVendorSelectBoxId">';
+												collapse+='<option value="0">All</option>';
+												collapse+='<option value="1">EESL</option>';
+												collapse+='<option value="2">NREDCAP</option>';
+												collapse+='</select>';
+											collapse+='</div>';
+										}
 									if(dataArr[i] == "constituency"){
 										collapse+='<div class="col-sm-3">';
-											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="consLvlLedDistrictSelectBoxId" attr_location_level="constituency" attr_filter_type="district" attr_sub_location_type="" id="consLvlLedDistrictSelectBoxId">';
-											collapse+='<option>ALL DISTRICT</option>';
+											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="consLvlLedDistrictSelectBoxId" attr_location_level="constituency" attr_filter_type="district" attr_sub_location_type="" attr_light_vendor_id="constituencyLevelLightsVendorSelectBoxId"  id="consLvlLedDistrictSelectBoxId">';
+											collapse+='<option value="0">ALL DISTRICT</option>';
+											collapse+='</select>';
+										collapse+='</div>';
+										collapse+='<div class="col-sm-3">';
+											collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="constituency"  attr_district_filter_id="consLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="",attr_mandal_filter_id=""  id="constituencyLevelLightsVendorSelectBoxId">';
+											collapse+='<option value="0">All</option>';
+											collapse+='<option value="1">EESL</option>';
+											collapse+='<option value="2">NREDCAP</option>';
 											collapse+='</select>';
 										collapse+='</div>';
 										
 									}
 									if(dataArr[i] == "mandal"){
 										collapse+='<div class="col-sm-3">';
-											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="mandalLvlLedConstituencySelectBoxId" attr_child_div_id="mandalLvlLedConstituencySelectBoxId" attr_location_level="mandal" attr_filter_type="district" attr_sub_location_type="constituency" id="mandalLvlLedDistrictSelectBoxId">';
-											collapse+='<option>ALL DISTRICT</option>';
+											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="mandalLvlLedConstituencySelectBoxId" attr_child_div_id="mandalLvlLedConstituencySelectBoxId" attr_location_level="mandal" attr_light_vendor_id="mandalLvlLightsVendorSelectBoxId"  attr_filter_type="district" attr_sub_location_type="constituency" id="mandalLvlLedDistrictSelectBoxId">';
+											collapse+='<option value="0">ALL DISTRICT</option>';
 											collapse+='</select>';
 										collapse+='</div>';
 										collapse+='<div class="col-sm-3">';
-											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="mandalLvlLedDistrictSelectBoxId" attr_location_level="mandal" attr_filter_type="constituency" attr_sub_location_type="" id="mandalLvlLedConstituencySelectBoxId">';
-											collapse+='<option>SELECT CONSTITUENCY</option>';
+											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="mandalLvlLedDistrictSelectBoxId" attr_location_level="mandal" attr_filter_type="constituency" attr_sub_location_type="" attr_light_vendor_id="mandalLvlLightsVendorSelectBoxId"  id="mandalLvlLedConstituencySelectBoxId">';
+											collapse+='<option value="0">SELECT CONSTITUENCY</option>';
 											collapse+='</select>';
 										collapse+='</div>';
+										
+										collapse+='<div class="col-sm-3">';
+											collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="mandal"  attr_district_filter_id="mandalLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="mandalLvlLedConstituencySelectBoxId",attr_mandal_filter_id="" id="mandalLvlLightsVendorSelectBoxId">';
+											collapse+='<option value="0">All</option>';
+											collapse+='<option value="1">EESL</option>';
+											collapse+='<option value="2">NREDCAP</option>';
+											collapse+='</select>';
+										collapse+='</div>';
+										
 									}
 									if(dataArr[i] == "panchayat"){
 										collapse+='<div class="col-sm-3">';
-											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="panchayatLvlLedDistrictSelectBoxId" attr_child_div_id="panchayatLvlLedConstituencySelectBoxId" attr_location_level="panchayat" attr_filter_type="district" attr_sub_location_type="constituency" id="panchayatLvlLedDistrictSelectBoxId">';
-											collapse+='<option>ALL DISTRICT</option>';
+											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="panchayatLvlLedDistrictSelectBoxId" attr_child_div_id="panchayatLvlLedConstituencySelectBoxId" attr_location_level="panchayat" attr_filter_type="district" attr_light_vendor_id="panchayatLvlLedLightsVendorSelectBoxId" attr_sub_location_type="constituency" id="panchayatLvlLedDistrictSelectBoxId">';
+											collapse+='<option value="0">ALL DISTRICT</option>';
 											collapse+='</select>';
 										collapse+='</div>';
 										collapse+='<div class="col-sm-3">';
-											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="panchayatLvlLedDistrictSelectBoxId" attr_child_div_id="panchayatLvlLedMandalSelectBoxId" attr_location_level="panchayat" attr_filter_type="constituency" attr_sub_location_type="mandal" id="panchayatLvlLedConstituencySelectBoxId">';
-											collapse+='<option>SELECT CONSTITUENCY</option>';
+											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="panchayatLvlLedDistrictSelectBoxId" attr_child_div_id="panchayatLvlLedMandalSelectBoxId" attr_location_level="panchayat" attr_light_vendor_id="panchayatLvlLedLightsVendorSelectBoxId"  attr_filter_type="constituency" attr_sub_location_type="mandal" id="panchayatLvlLedConstituencySelectBoxId">';
+											collapse+='<option value="0">SELECT CONSTITUENCY</option>';
 											collapse+='</select>';
 										collapse+='</div>';
 										collapse+='<div class="col-sm-3">';
-											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="panchayatLvlLedConstituencySelectBoxId" attr_location_level="panchayat" attr_filter_type="mandal" attr_sub_location_type="" id="panchayatLvlLedMandalSelectBoxId">';
-											collapse+='<option>SELECT MANDAL</option>';
+											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="panchayatLvlLedConstituencySelectBoxId" attr_location_level="panchayat" attr_filter_type="mandal" attr_light_vendor_id="panchayatLvlLedLightsVendorSelectBoxId"  attr_sub_location_type="" id="panchayatLvlLedMandalSelectBoxId">';
+											collapse+='<option value="0">SELECT MANDAL</option>';
 											collapse+='</select>';
 										collapse+='</div>';
+										collapse+='<div class="col-sm-3">';
+								collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="panchayat" attr_filter_type="mandal" attr_district_filter_id="panchayatLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="panchayatLvlLedConstituencySelectBoxId" attr_mandal_filter_id="panchayatLvlLedMandalSelectBoxId" id="panchayatLvlLedLightsVendorSelectBoxId">';
+											collapse+='<option value="0">All</option>';
+											collapse+='<option value="1">EESL</option>';
+											collapse+='<option value="2">NREDCAP</option>';
+											collapse+='</select>';
+										collapse+='</div>';
+										
 									}
 									collapse+='</div>';
 									collapse+='</div>';
@@ -522,10 +578,11 @@ function projectData(divId,levelId)
 	collapse+='</section>';
 	$("#projectData").html(collapse);
 	$(".chosen-select").chosen();
+	var lightVendorArr = [1,2];
 	for(var i in dataArr)
 	{
 		$("#"+dataArr[i]+"TableId").html(spinner);
-		getAllLevelWiseDataOverView(dataArr[i],dataArr[i],"",dataArr[i]);
+		getAllLevelWiseDataOverView(dataArr[i],dataArr[i],"",dataArr[i],lightVendorArr);
 	}	
    getLocationBasedOnSelection("district","",0,"","otherLocationLevel");
    getLocationBasedOnSelection("district","",0,"","panchayat");
@@ -561,11 +618,10 @@ function tableView(result,divId,locType)
 	tableView+='<table class="table tableStyleLed" id="'+divId+'Table">';
 		tableView+='<thead>';
 			tableView+='<tr>';
+			tableView+='<th> </th>';
 				if(divId == 'district')
 				{
-					
 					if(viewTypeDist == "district"){
-						tableView+='<th> </th>';	
 						tableView+='<th class="text-center">DISTRICTS</th>';
 					}else{
 						tableView+='<th class="text-center">PARLIAMENTS</th>';
@@ -629,125 +685,130 @@ function tableView(result,divId,locType)
 		tableView+='<tbody>';
 			for(var i in result)
 			{
-				tableView+='<tr style="text-align:center;">';
-					if(divId == 'district')
-					{
-						if(viewTypeDist == "district"){
-							tableView+='<td>';
-							/*if(result[i].locationId == 17 || result[i].locationId == 18 || result[i].locationId == 19 || result[i].locationId == 20 || result[i].locationId == 22 || result[i].locationId == 23){
+			 if (result[i].subList != null && result[i].subList.length > 0) {
+				  for(var j in result[i].subList) {
+						 tableView+='<tr style="text-align:center;">';
+						  tableView+='<td>';
+							if (result[i].subList[j].lightVendorId != null && result[i].subList[j].lightVendorId == 1) {//essl
 								tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
-							}else if(result[i].locationId == 16 || result[i].locationId == 11 || result[i].locationId == 14 || result[i].locationId == 15 || 	result[i].locationId == 12 || result[i].locationId == 13 || result[i].locationId == 21){ */
-								tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';	
-							//}
+							} else { //nredp
+								tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
+							}
 							tableView+='</td>';
-							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
-						}else{
-							tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
+						if(divId == 'district')
+						{
+							if(viewTypeDist == "district"){
+							
+								tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+							}else{
+								tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
+							}
+							
+						}else if(divId == 'constituency')
+						{
+							if(viewTypeCons == "district"){
+								tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+								tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+							}else{
+								tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
+								tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+							}
+							
+							
+						}else if(divId == 'mandal')
+						{
+							if(viewTypeman == "district"){
+								tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+								tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+								tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
+							}else{
+								tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
+								tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+								tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
+							}
+							
+							
+						}else if(divId == 'panchayat')
+						{
+							if(viewTypePan == "district"){
+								tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+								tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+								tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
+								tableView+='<td>'+result[i].addressVO.panchayatName+'</td>';
+							}else{
+								tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
+								tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+								tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
+								tableView+='<td>'+result[i].addressVO.panchayatName+'</td>';
+							}
+							
+							
 						}
-						
-					}else if(divId == 'constituency')
-					{
-						if(viewTypeCons == "district"){
-							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
-							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
-						}else{
-							tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
-							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+						if(divId == 'district' || divId=="constituency"){
+						 tableView+='<td>'+result[i].totalMandals+'</td>';	
 						}
-						
-						
-					}else if(divId == 'mandal')
-					{
-						if(viewTypeman == "district"){
-							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
-							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
-							tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
-						}else{
-							tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
-							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
-							tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
+						if (divId!='panchayat') {
+							if(divId=="mandal"){
+								if (result[i].subList[j].surveyStartedtotalMandals > 0) {
+									tableView+='<td>Yes</td>';
+								} else {
+								   tableView+='<td>No</td>';	
+								}
+							}else{
+								tableView+='<td>'+result[i].subList[j].surveyStartedtotalMandals+'</td>';
+							}
+							
+							tableView+='<td>'+result[i].totalGps+'</td>';
 						}
-						
-						
-					}else if(divId == 'panchayat')
-					{
-						if(viewTypePan == "district"){
-							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
-							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
-							tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
-							tableView+='<td>'+result[i].addressVO.panchayatName+'</td>';
-						}else{
-							tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
-							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
-							tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
-							tableView+='<td>'+result[i].addressVO.panchayatName+'</td>';
-						}
-						
-						
-					}
-					if(divId == 'district' || divId=="constituency"){
-				     tableView+='<td>'+result[i].totalMandals+'</td>';	
-				    }
-					if (divId!='panchayat') {
-						if(divId=="mandal"){
-						    if (result[i].surveyStartedtotalMandals > 0) {
+						if(divId=="panchayat"){
+							if (result[i].subList[j].surveyStartedtotalGps > 0) {
 								tableView+='<td>Yes</td>';
 							} else {
 							   tableView+='<td>No</td>';	
 							}
 						}else{
-							tableView+='<td>'+result[i].surveyStartedtotalMandals+'</td>';
+							tableView+='<td>'+result[i].subList[j].surveyStartedtotalGps+'</td>';
 						}
-						
-						tableView+='<td>'+result[i].totalGps+'</td>';
-					}
-					if(divId=="panchayat"){
-						if (result[i].surveyStartedtotalGps > 0) {
-							tableView+='<td>Yes</td>';
-						} else {
-						   tableView+='<td>No</td>';	
-						}
-					}else{
-						tableView+='<td>'+result[i].surveyStartedtotalGps+'</td>';
-					}
-					//tableView+='<td>'+result[i].totalPoles+'</td>';
-					tableView+='<td>'+result[i].totalPanels+'</td>';
-					tableView+='<td>'+result[i].totalLedLIghtInstalledCount+'</td>';
-					tableView+='<td>'+result[i].notWorkingLights+'</td>';
-					tableView+='<td>'+result[i].workingLights+'</td>';
-					tableView+='<td>'+result[i].onLights+'</td>';
-					tableView+='<td>'+result[i].offLights+'</td>';
-					tableView+='<td>';
-					tableView+='<div class="dropup">';
-						tableView+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Wattage Details">&#9432;</span>';
-							if(result[i].wattageList.length >=4){
-								tableView+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar" aria-labelledby="dropdownMenu2" style="padding:10px;width:500px;">';
-							}else{
-								tableView+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar" aria-labelledby="dropdownMenu2" style="padding:10px;">';
-							}
-							
-							tableView+='<div class="poles_block">';
-							tableView+='<ul class="nav navbar-nav" style="float:none;">';
-								if(result[i].wattageList !=null && result[i].wattageList.length>0){
-									for(var l in result[i].wattageList){
-										if (result[i].wattageList[l].wattage !=0 && result[i].wattageList[l].lightCount!=0){
-											if(result[i].wattageList[l].wattage == 24 || result[i].wattageList[l].wattage == 32 || result[i].wattageList[l].wattage == 75){
-												tableView+='<li class="ledWattageColor"><b>'+result[i].wattageList[l].wattage+'W = '+result[i].wattageList[l].lightCount+'</b></li>';
-											}else{
-												tableView+='<li class=""><b>'+result[i].wattageList[l].wattage+'W = '+result[i].wattageList[l].lightCount+'</b></li>';
+						//tableView+='<td>'+result[i].subList[j].totalPoles+'</td>';
+						tableView+='<td>'+result[i].subList[j].totalPanels+'</td>';
+						tableView+='<td>'+result[i].subList[j].totalLedLIghtInstalledCount+'</td>';
+						tableView+='<td>'+result[i].subList[j].notWorkingLights+'</td>';
+						tableView+='<td>'+result[i].subList[j].workingLights+'</td>';
+						tableView+='<td>'+result[i].subList[j].onLights+'</td>';
+						tableView+='<td>'+result[i].subList[j].offLights+'</td>';
+						tableView+='<td>';
+						tableView+='<div class="dropup">';
+							tableView+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Wattage Details">&#9432;</span>';
+								if(result[i].subList[j].wattageList.length >=4){
+									tableView+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar" aria-labelledby="dropdownMenu2" style="padding:10px;width:500px;">';
+								}else{
+									tableView+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+								}
+								
+								tableView+='<div class="poles_block">';
+								tableView+='<ul class="nav navbar-nav" style="float:none;">';
+									if(result[i].subList[j].wattageList !=null && result[i].subList[j].wattageList.length>0){
+										for(var l in result[i].subList[j].wattageList){
+											if (result[i].subList[j].wattageList[l].wattage !=0 && result[i].subList[j].wattageList[l].lightCount!=0){
+												if(result[i].subList[j].wattageList[l].wattage == 24 || result[i].subList[j].wattageList[l].wattage == 32 || result[i].subList[j].wattageList[l].wattage == 75){
+													tableView+='<li class="ledWattageColor"><b>'+result[i].subList[j].wattageList[l].wattage+'W = '+result[i].subList[j].wattageList[l].lightCount+'</b></li>';
+												}else{
+													tableView+='<li class=""><b>'+result[i].subList[j].wattageList[l].wattage+'W = '+result[i].subList[j].wattageList[l].lightCount+'</b></li>';
+												}
 											}
 										}
+									}else{
+										tableView+='<li><b>0W = 0</b></li>';
 									}
-								}else{
-									tableView+='<li><b>0W = 0</b></li>';
-								}
-								tableView+='</ul>';
+									tableView+='</ul>';
+								tableView+='</div>';
+								tableView+='</div>';
 							tableView+='</div>';
-							tableView+='</div>';
-						tableView+='</div>';
-					tableView+='</td>';
-				tableView+='</tr>';
-			}
+						tableView+='</td>';
+				  tableView+='</tr>';
+				}
+			 }
+		 }
 		tableView+='</tbody>';
 	tableView+='</table>';
 	tableView+='</div>';
@@ -844,32 +905,48 @@ $(document).on("click",".ledResultTypeCls",function() {
 	var resultType = $(this).attr("attr_tab_type");
 	var filterType="";
 	var filterValue=0;
+	var lightVendorArr = [1,2];
 	if (locationLevel != null && locationLevel=="district") {
 		if (resultType != null && resultType=="district" || resultType=="parliament") {
-		  getAllLevelWiseDataOverView(resultType,filterType,filterValue,locationLevel);
+		  getAllLevelWiseDataOverView(resultType,filterType,filterValue,locationLevel,lightVendorArr);
 		  $(".districtLevelHeadingDivCls").html(resultType+" level overview");
+		  $("#districtLevelLightsVendorSelectBoxId").val(0);
+		  $("#districtLevelLightsVendorSelectBoxId").trigger("chosen:updated");
 		  $("#districtLelvdlDistrictHeadingId").html(resultType.toUpperCase());
+		  $("#districtLevelLightsVendorSelectBoxId").attr("attr_filter_type",resultType);
+		  $("#districtLevelLightsVendorSelectBoxId").attr("attr_location_level",resultType);
 		} 
 	}else if(locationLevel=="constituency" || locationLevel=="mandal" || locationLevel=='panchayat') {
 		var divId = '';
+		var lightVendorSelectBoxIdDivId = '';
 		 if(locationLevel=="constituency") {
 			 divId = "consLvlLedDistrictSelectBoxId";
+			 $("#constituencyLevelLightsVendorSelectBoxId").val(0);
+			 $("#constituencyLevelLightsVendorSelectBoxId").trigger("chosen:updated");
+			 lightVendorSelectBoxIdDivId = "constituencyLevelLightsVendorSelectBoxId";
 		 }else if (locationLevel=="mandal") {
 			 $("#mandalLvlLedConstituencySelectBoxId").html('');
 			 $("#mandalLvlLedConstituencySelectBoxId").append('<option value="0">SELECT CONSTITUENCY</option>');
-			 $("#mandalLvlLedConstituencySelectBoxId").trigger("chosen:updated")
+			 $("#mandalLvlLedConstituencySelectBoxId").trigger("chosen:updated");
+			 $("#mandalLvlLightsVendorSelectBoxId").val(0);
+			 $("#mandalLvlLightsVendorSelectBoxId").trigger("chosen:updated");
 			 divId = "mandalLvlLedDistrictSelectBoxId";
+			 lightVendorSelectBoxIdDivId = "mandalLvlLightsVendorSelectBoxId";
 		 }else if (locationLevel=="panchayat") {
 			 $("#panchayatLvlLedConstituencySelectBoxId").html('');
 			 $("#panchayatLvlLedMandalSelectBoxId").html('');
 			 $("#panchayatLvlLedConstituencySelectBoxId").append('<option value="0">SELECT CONSTITUENCY</option>');
 			 $("#panchayatLvlLedMandalSelectBoxId").append('<option value="0">SELECT MANDAL</option>');
-			 $("#panchayatLvlLedConstituencySelectBoxId,#panchayatLvlLedMandalSelectBoxId").trigger("chosen:updated")
+			 $("#panchayatLvlLedConstituencySelectBoxId,#panchayatLvlLedMandalSelectBoxId").trigger("chosen:updated");
+			 $("#panchayatLvlLedLightsVendorSelectBoxId").val(0);
+			 $("#panchayatLvlLedLightsVendorSelectBoxId").trigger("chosen:updated");
 			 divId = "panchayatLvlLedDistrictSelectBoxId";
+			 lightVendorSelectBoxIdDivId = "panchayatLvlLedLightsVendorSelectBoxId";
 		 }
 		$("#"+divId).attr("attr_filter_type",resultType);
+		$("#"+lightVendorSelectBoxIdDivId).attr("attr_filter_type",resultType);
 		getLocationBasedOnSelection(resultType,filterType,filterValue,divId,locationLevel);
-		getAllLevelWiseDataOverView(locationLevel,filterType,filterValue,locationLevel);
+		getAllLevelWiseDataOverView(locationLevel,filterType,filterValue,locationLevel,lightVendorArr);
 	}
 });
 
@@ -880,18 +957,69 @@ $(document).on("change",".lebSelectBoxCls",function(){
 	var childDivId=$(this).attr("attr_child_div_id");
 	var filterType = $(this).attr("attr_filter_type");
 	var subLevel = $(this).attr("attr_sub_location_type");
-	
+	var lightVendorSelectBoxId = $(this).attr("attr_light_vendor_id");
+	var lightVendorId = $("#"+lightVendorSelectBoxId).val();
 	if ((filterType=="constituency" || filterType=="mandal") && locationValue==0) {
 		filterType = $("#"+parentDivId).attr("attr_filter_type");
 		locationValue = $("#"+parentDivId).val();
 	}
+	 var lightVendorArr = [];
+	 if (lightVendorId != null && lightVendorId != undefined) {
+		 if (lightVendorId == 0) {
+		 lightVendorArr.push(1);
+		 lightVendorArr.push(2);
+		 } else {
+			 lightVendorArr.push(lightVendorId);
+		 }
+	 }
 	
 	if(subLevel!='') {
 		getLocationBasedOnSelection(subLevel,filterType,locationValue,childDivId,locationLevel);	
 	}
-	getAllLevelWiseDataOverView(locationLevel,filterType,locationValue,locationLevel);
+	getAllLevelWiseDataOverView(locationLevel,filterType,locationValue,locationLevel,lightVendorArr);
 });
-
+$(document).on("change",".lightsVendorCls",function(){
+	
+	 var lightVendorId = $(this).val();
+	 var locationLevel=$(this).attr("attr_location_level");
+	
+	 var districtParliamentId = $(this).attr("attr_district_filter_id");
+	 var constituencyId = $(this).attr("attr_constituency_filter_id");
+	 var mandalId = $(this).attr("attr_mandal_filter_id");
+	 var districtOrParliamentValue = $("#"+districtParliamentId).val();
+	 var constituencyValue = $("#"+constituencyId).val();
+	 var mandalValue = $("#"+mandalId).val();
+	 
+	 var lightVendorArr = [];
+	if (lightVendorId == 0) {
+		 lightVendorArr.push(1);
+		 lightVendorArr.push(2);
+	 } else {
+		 lightVendorArr.push(lightVendorId);
+	 }
+	 var filterTypes = $(this).attr("attr_filter_type");
+	 var filterType = "";
+	 var locationValue = 0;
+	 if (districtOrParliamentValue != undefined && districtOrParliamentValue > 0) {
+		  filterType = filterTypes;
+		  locationValue = districtOrParliamentValue;
+	  }
+	   if (constituencyValue != undefined && constituencyValue > 0) {
+		  filterType = "constituency";
+		  locationValue = constituencyValue;
+	  }
+	   if (mandalValue != undefined && mandalValue > 0) {
+		  filterType = "mandal";
+		  locationValue = mandalValue;
+	  }
+	 var divId = '';
+	  if (locationLevel == "parliament") {
+		  divId = "district";
+	  } else {
+		  divId = locationLevel;
+	  }
+	getAllLevelWiseDataOverView(locationLevel,filterType,locationValue,divId,lightVendorArr);
+});
 /* End */
 
 function getLocationBasedOnSelection(locationType,filterType,filterValue,divId,sublocaType){
@@ -903,7 +1031,10 @@ function getLocationBasedOnSelection(locationType,filterType,filterValue,divId,s
 			"locationType"  : locationType,
 			"filterType"    : filterType ,
 			"locationIds"    : locationIdArr,
-			"sublocaType"   : sublocaType
+			"sublocaType"   : sublocaType,
+			"fromDate"	  :glStartDate,
+		    "toDate"	  :glEndDate,
+			"lightVendorIdList":[1,2]
 		}
 	$.ajax({                
 		type:'POST',    
@@ -1013,11 +1144,12 @@ function getCompanyWiseLightMonitoringDtls(){
 		fromDate:glStartDate,
 		toDate:glEndDate,
 		locationType:locationType,
-		locationValues:array
+		locationValues:array,
+		lightVendorIdList:[1,2]
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getNredCapLightMonitoringLocationWise',
+		url: 'getCompanyWiseLightMonitoringDtls',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -1472,7 +1604,8 @@ $(document).on("click",".surveyStartedLocationCountCls",function (){
 		 if (locationId > 0) {
 			 locationIdArr.push(locationId);
 		 }
-	getSurveryStartedLocation(locationType,resultType,filterType,locationIdArr);
+	 var lightVendorIdList = [1,2];
+	getSurveryStartedLocation(locationType,resultType,filterType,locationIdArr,lightVendorIdList);
 });
 $(document).on("click",".companyTypeCls",function (){
 	var locationType = $(this).attr("attr_location_type");
@@ -1480,24 +1613,25 @@ $(document).on("click",".companyTypeCls",function (){
 	var companyType = $(this).attr("attr_company_type");
 	$("#surveryStartedLocHeadingId").html(''+companyType+' Survey Started Location Details');
 	// var nredcapArr = [11,12,13,14,15,16,21];
-	 var nredcapArr=[];
-     var eeslArr = [17,18,19,20,22,23];
-     var locationIdArr = [];
-	 var filterType='district';
-		if(globallevelId ==2 || globallevelId ==0){
-			if (companyType=="EESL") {
-				locationIdArr = eeslArr;
-			} else if (companyType == "NREDCAP") {
-				locationIdArr = nredcapArr;
-			}
-		}else if(globallevelId ==3){
+    // var eeslArr = [17,18,19,20,22,23];
+		 var locationIdArr = [];
+		if(globallevelId ==3){
 			locationIdArr.push(globallocId);
 		}
-	getSurveryStartedLocation(locationType,resultType,filterType,locationIdArr);
+    
+     var lightVendorIdList = [];
+	 var filterType='district';
+	   if (companyType=="EESL") {
+			lightVendorIdList.push(1);
+		} else if (companyType == "NREDCAP") {
+			lightVendorIdList.push(2);
+		}
+		
+	getSurveryStartedLocation(locationType,resultType,filterType,locationIdArr,lightVendorIdList);
 });
 
 
-function getSurveryStartedLocation(locType,resultType,filterType,locationIdArr){
+function getSurveryStartedLocation(locType,resultType,filterType,locationIdArr,lightVendorIdList){
 	 $("#surveryStartedLocationDtlsModelDivId").modal("show");
 	 $("#surveyStartedLocationDtlsDivId").html(spinner);
 	var json = {
@@ -1505,7 +1639,8 @@ function getSurveryStartedLocation(locType,resultType,filterType,locationIdArr){
 			"filterType"  :filterType ,
 			"locationIds"  :locationIdArr,
 			"fromDate"	  :glStartDate,
-		    "toDate"	  :glEndDate
+		    "toDate"	  :glEndDate,
+			"lightVendorIdList":lightVendorIdList
 		}
 	$.ajax({                
 		type:'POST',    
@@ -1532,8 +1667,8 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 	tableView+='<table class="table tableStyleLed" id="surveyStartedLocationDtlsDataTblId">';
 		tableView+='<thead>';
 			tableView+='<tr>';
+				tableView+='<th> </th>';	
 				if(divId == 'district'){
-						tableView+='<th> </th>';	
 						tableView+='<th>DISTRICTS</th>';
 				}else if(divId == 'constituency'){
 						tableView+='<th>DISTRICT</th>';
@@ -1570,67 +1705,72 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 		tableView+='</thead>';
 		tableView+='<tbody>';
 			for(var i in result){
-				if (result[i].surveyStartedtotalMandals > 0 ){
-					tableView+='<tr>';
-					if(divId == 'district'){
+				 if (result[i].subList != null && result[i].subList.length > 0) {
+					 for(var j in result[i].subList) {
+						if (result[i].subList[j].surveyStartedtotalMandals > 0 ){
+						tableView+='<tr>';
 							tableView+='<td>';
-							/*if(result[i].locationId == 17 || result[i].locationId == 18 || result[i].locationId == 19 || result[i].locationId == 20 || result[i].locationId == 22 || result[i].locationId == 23){
-								tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
-							}else if(result[i].locationId == 16 || result[i].locationId == 11 || result[i].locationId == 14 || result[i].locationId == 15 || 	result[i].locationId == 12 || result[i].locationId == 13 || result[i].locationId == 21){*/
-								tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';	
-							//}
-							tableView+='</td>';
-							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
-					}else if(divId == 'constituency'){
-							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
-							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
-					}else if(divId == 'mandal'){
-							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
-							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
-							tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
-					}else if(divId == 'panchayat'){
-							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
-							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
-							tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
-							tableView+='<td>'+result[i].addressVO.panchayatName+'</td>';
-					}
-					
-					if (resultType !="onOff") {
-						if(divId == 'district' || divId=="constituency"){
-						 tableView+='<td>'+result[i].totalMandals+'</td>';	
-						}
-						if (divId !='panchayat'){
-							if(divId=="mandal"){
-								if (result[i].surveyStartedtotalMandals > 0) {
-									tableView+='<td>Yes</td>';
-								} else {
-								   tableView+='<td>No</td>';	
+								if (result[i].subList[j].lightVendorId != null && result[i].subList[j].lightVendorId == 1) {//essl
+									tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
+								} else { //nredp
+									tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
 								}
-							}else{
-								tableView+='<td>'+result[i].surveyStartedtotalMandals+'</td>';
+							tableView+='</td>';
+						if(divId == 'district'){
+								tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+						}else if(divId == 'constituency'){
+								tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+								tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+						}else if(divId == 'mandal'){
+								tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+								tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+								tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
+						}else if(divId == 'panchayat'){
+								tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+								tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+								tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
+								tableView+='<td>'+result[i].addressVO.panchayatName+'</td>';
+						}
+						
+						if (resultType !="onOff") {
+							if(divId == 'district' || divId=="constituency"){
+							 tableView+='<td>'+result[i].totalMandals+'</td>';	
 							}
-							tableView+='<td>'+result[i].totalGps+'</td>';
+							if (divId !='panchayat'){
+								if(divId=="mandal"){
+									if (result[i].subList[j].surveyStartedtotalMandals > 0) {
+										tableView+='<td>Yes</td>';
+									} else {
+									   tableView+='<td>No</td>';	
+									}
+								}else{
+									tableView+='<td>'+result[i].subList[j].surveyStartedtotalMandals+'</td>';
+								}
+								tableView+='<td>'+result[i].totalGps+'</td>';
+							}
+							if (divId =='panchayat'){
+									if (result[i].subList[j].surveyStartedtotalGps > 0) {
+										tableView+='<td>Yes</td>';
+									} else {
+									   tableView+='<td>No</td>';	
+									}	
+							}else {
+								tableView+='<td>'+result[i].subList[j].surveyStartedtotalGps+'</td>';	
+							}
+							tableView+='<td>'+result[i].subList[j].totalPanels+'</td>';
+							tableView+='<td>'+result[i].subList[j].totalLedLIghtInstalledCount+'</td>';
+						} else {
+							tableView+='<td>'+result[i].subList[j].totalLedLIghtInstalledCount+'</td>';
+							tableView+='<td>'+result[i].subList[j].workingLights+'</td>';
+							tableView+='<td>'+result[i].subList[j].onLights+'</td>';
+							tableView+='<td>'+result[i].subList[j].offLights+'</td>';
+					
 						}
-						if (divId =='panchayat'){
-						        if (result[i].surveyStartedtotalGps > 0) {
-									tableView+='<td>Yes</td>';
-								} else {
-								   tableView+='<td>No</td>';	
-								}	
-						}else {
-						    tableView+='<td>'+result[i].surveyStartedtotalGps+'</td>';	
-						}
-						tableView+='<td>'+result[i].totalPanels+'</td>';
-						tableView+='<td>'+result[i].totalLedLIghtInstalledCount+'</td>';
-					} else {
-						tableView+='<td>'+result[i].totalLedLIghtInstalledCount+'</td>';
-						tableView+='<td>'+result[i].workingLights+'</td>';
-						tableView+='<td>'+result[i].onLights+'</td>';
-						tableView+='<td>'+result[i].offLights+'</td>';
-				
-					}
 				 tableView+='</tr>';
-				}
+				} 
+			 }
+			}
+				
 			}
 		tableView+='</tbody>';
 	tableView+='</table>';
@@ -1695,4 +1835,3 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 	}
 }
 /* End */
-

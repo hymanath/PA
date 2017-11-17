@@ -34,9 +34,10 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		return query.list();
 	}
 	@Override
-	public Integer updateLightMoitoringData(Date date) {
-		Query query = getSession().createQuery("update  LightMonitoring model set model.isDeleted='Y' where date(model.surveyDate) = :date and model.isDeleted ='N' ");
+	public Integer updateLightMoitoringData(Date date,Long lightVendorId) {
+		Query query = getSession().createQuery("update  LightMonitoring model set model.isDeleted='Y' where date(model.surveyDate) = :date and model.isDeleted ='N' and model.lightsVendorId=:lightVendorId ");
 		query.setDate("date", date);
+		query.setParameter("lightVendorId", lightVendorId);
 		return query.executeUpdate();
 	}
 	@Override
@@ -46,9 +47,10 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		return query.executeUpdate();
 	}
 	@Override
-	public List<Long> getLightMonitroingIds(Date date) {
-		Query query = getSession().createQuery("select distinct model.lightMonitoringId from  LightMonitoring model where date(model.surveyDate) = :date and model.isDeleted ='N' ");
+	public List<Long> getLightMonitroingIds(Date date,Long lightVendorId) {
+		Query query = getSession().createQuery("select distinct model.lightMonitoringId from  LightMonitoring model where date(model.surveyDate) = :date and model.isDeleted ='N' and model.lightsVendorId=:lightVendorId ");
 		query.setDate("date", date);
+		query.setParameter("lightVendorId", lightVendorId);
 		return query.list();
 	}
 
@@ -57,9 +59,10 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 	 */
 
 	@Override
-	public List<Object[]> getTotalVillagesDetails(Date fromDate, Date toDate, String locationType,List<Long> locationValues) {
+	public List<Object[]> getTotalVillagesDetails(Date fromDate, Date toDate, String locationType,List<Long> locationValues,List<Long> lightsVendorIds) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("select sum(model.totalLights),sum(model.totalPanels),sum(model.totalPoles),"
+		sb.append("select model.lightsVendor.lightsVendorId,model.lightsVendor.vendorName," +
+				" sum(model.totalLights),sum(model.totalPanels),sum(model.totalPoles),"
 				+ "sum(model.workingLights),sum(model.onLights),sum(model.offLights),sum(model.notWorkingLights) "
 				+ " from  LightMonitoring model where model.isDeleted ='N' and model.panchayat.locationAddress.state.stateId = 1 ");
 
@@ -74,9 +77,13 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				sb.append(" AND model.panchayat.locationAddress.tehsil.tehsilId in(:locationValues) ");
 			}
 		}
+		if (lightsVendorIds != null && lightsVendorIds.size() > 0) {
+			sb.append(" AND model.lightsVendor.lightsVendorId in (:lightsVendorIds)");
+		}
 		if (fromDate != null && toDate != null) {
 			sb.append(" and  date(model.surveyDate) between :fromDate and :toDate ");
 		}
+		sb.append(" group by model.lightsVendor.lightsVendorId");
 		Query query = getSession().createQuery(sb.toString());
 		if (fromDate != null && toDate != null) {
 			query.setDate("fromDate", fromDate);
@@ -84,6 +91,9 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		}
 		if(locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.size() > 0){
 			query.setParameterList("locationValues",locationValues);
+		}	
+		if(lightsVendorIds != null && lightsVendorIds.size() > 0){
+			query.setParameterList("lightsVendorIds",lightsVendorIds);
 		}	
 		return query.list();
 	}
@@ -93,12 +103,14 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object[]> getTotalSurveyDetails(Date startDate, Date toDate, String locationType,List<Long> locationValues) {
+	public List<Object[]> getTotalSurveyDetails(Date startDate, Date toDate, String locationType,List<Long> locationValues,List<Long> lightsVendorIds,String isGroupRequired) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbc = new StringBuilder();
 		StringBuilder sbg = new StringBuilder();
 		
-		sb.append("SELECT COUNT(DISTINCT LM.panchayat.locationAddress.district.districtId),"
+		sb.append(" SELECT " 
+				 + " LM.lightsVendor.lightsVendorId,LM.lightsVendor.vendorName," 
+				 + " COUNT(DISTINCT LM.panchayat.locationAddress.district.districtId),"
 				 + "COUNT(DISTINCT LM.panchayat.locationAddress.constituency.constituencyId),"
 				 + " COUNT(DISTINCT LM.panchayat.locationAddress.tehsil.tehsilId), "
 				 + "COUNT(DISTINCT LM.panchayat.panchayatId)  ");
@@ -115,14 +127,24 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				sbc.append(" AND LM.panchayat.locationAddress.tehsil.tehsilId in(:locationValues) ");
 			}
 		}
+		if (lightsVendorIds != null && lightsVendorIds.size() > 0) {
+			sb.append(" AND LM.lightsVendor.lightsVendorId in (:lightsVendorIds)");
+		}
 		if (startDate != null && toDate != null) {
 			sbc.append(" and date(LM.surveyDate) between :startDate and :toDate ");
 		}
+		if (isGroupRequired.equalsIgnoreCase("Yes")) {
+			sbg.append(" group by LM.lightsVendor.lightsVendorId ");	
+		}
+		
 		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
 		Query query = getSession().createQuery(queryStr);
 		if(locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.size() > 0){
 			query.setParameterList("locationValues",locationValues);
-		}		
+		}	
+		if(lightsVendorIds != null && lightsVendorIds.size() > 0){
+			query.setParameterList("lightsVendorIds",lightsVendorIds);
+		}
 		if (startDate != null && toDate != null) {
 			query.setDate("startDate", startDate);
 			query.setDate("toDate", toDate);
@@ -130,7 +152,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getLocationsForLEDDashboard(String locationType,String filterType,List<Long> locationIds,String subLocationType)
+	public List<Object[]> getLocationsForLEDDashboard(String locationType,String filterType,List<Long> locationIds,String type,Date fromDate,Date toDate,List<Long> lightsVendorIds)
 	{
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbc = new StringBuilder();
@@ -178,8 +200,8 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				 + " left join locationAddress.constituency constituency "
 				 + " left join locationAddress.parliament parliament "
 				 + " left join locationAddress.tehsil  tehsil ");
-		if (locationType.equalsIgnoreCase("panchayat") || subLocationType.equalsIgnoreCase("panchayat")){
-			sb.append(",LightMonitoring lm where lm.panchayatId=model.panchayatId and state.stateId =1");
+		if (type.equalsIgnoreCase("filter")){
+			sb.append(",LightMonitoring lm where lm.isDeleted='N' and  lm.panchayatId=model.panchayatId and state.stateId =1");
 		}else{
 			sb.append(" where state.stateId = 1 ");	
 		}
@@ -198,6 +220,12 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				sbc.append(" AND model.panchayatId in(:locationIds) ");
 			}
 		}
+		if (fromDate != null && toDate != null) {
+			 sbc.append(" and  date(lm.surveyDate) between :fromDate and :toDate ");
+		}
+		if (lightsVendorIds != null && lightsVendorIds.size() > 0) {
+			sb.append(" AND lm.lightsVendor.lightsVendorId in (:lightsVendorIds)");
+		}
 		
 		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
 		Query query = getSession().createQuery(queryStr);
@@ -206,11 +234,18 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		{
 			query.setParameterList("locationIds",locationIds);
 		}
+		if (fromDate != null && toDate != null) {
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(lightsVendorIds != null && lightsVendorIds.size() > 0){
+			query.setParameterList("lightsVendorIds",lightsVendorIds);
+		}
 		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getLocationWiseDataForLEDDashboard(String locationType,String filterType,List<Long> filterValues,Date fromDate,Date toDate)
+	public List<Object[]> getLocationWiseDataForLEDDashboard(String locationType,String filterType,List<Long> filterValues,Date fromDate,Date toDate,List<Long> lightsVendorIds)
 	{
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbc = new StringBuilder();
@@ -244,9 +279,9 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			sb.append(",LM.panchayat.panchayatId ");
 			sbg.append(" GROUP BY LM.panchayat.panchayatId ");
 		}
-
+		sbg.append(",LM.lightsVendor.lightsVendorId ");
 		
-		sb.append(" FROM LightMonitoring LM  WHERE LM.panchayat.locationAddress.state.stateId = 1 and LM.isDeleted='N' ");
+		sb.append(" ,LM.lightsVendor.lightsVendorId,LM.lightsVendor.vendorName FROM LightMonitoring LM  WHERE LM.panchayat.locationAddress.state.stateId = 1 and LM.isDeleted='N' ");
 		
 		if(filterType != null && filterType.trim().length() > 0 && filterValues != null && filterValues.size() > 0)
 		{
@@ -265,6 +300,9 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		if (fromDate != null && toDate != null) {
 			 sbc.append(" and  date(LM.surveyDate) between :fromDate and :toDate ");
 		}
+		if (lightsVendorIds != null && lightsVendorIds.size() > 0) {
+			sb.append(" AND LM.lightsVendor.lightsVendorId in (:lightsVendorIds)");
+		}
 		
 		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
 		Query query = getSession().createQuery(queryStr);
@@ -277,7 +315,9 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-	
+		if(lightsVendorIds != null && lightsVendorIds.size() > 0){
+			query.setParameterList("lightsVendorIds",lightsVendorIds);
+		}
 		
 		return query.list();
 	}
