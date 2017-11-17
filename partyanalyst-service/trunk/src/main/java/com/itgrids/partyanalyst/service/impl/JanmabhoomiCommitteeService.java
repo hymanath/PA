@@ -807,7 +807,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					mainVO.setName(candidateDetailsVO.getCadreName());
 					mainVO.setMemberShipCardId(candidateDetailsVO.getMemberShipCardId() == null?null:candidateDetailsVO.getMemberShipCardId()); // memberShipCardId
 					mainVO.setTdpCadreId(candidateDetailsVO.getTdpCadreId() == null?null:candidateDetailsVO.getTdpCadreId());
-					if(mainVO.getImageURL() !=null){
+					if(candidateDetailsVO.getImageURL() !=null){
 						mainVO.setImageURL("https://www.mytdp.com/images/cadre_images/"+candidateDetailsVO.getImageURL());
 					}else{
 						mainVO.setImageURL(candidateDetailsVO.getImageURL() == null?null:candidateDetailsVO.getImageURL());
