@@ -28,6 +28,15 @@
 {
 	background-color:#fff;
 }
+.DTFC_LeftBodyLiner{
+	overflow-y:hidden;
+}
+.table_election_scroll{
+	left: -12px !important;
+    overflow-y: hidden !important;
+    top: 4px !important;
+    width: 155px !important;
+}
 </style>
 </head>
 <body>

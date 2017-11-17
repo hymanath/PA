@@ -1205,15 +1205,16 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 		
 		$("#locationWiseCandidatesResultsDivId").html(str);
 		$("#dataTableElecTypeRsts").dataTable({
-			"iDisplayLength": 10,
+			"iDisplayLength": 13,
 			"aaSorting": [],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"aLengthMenu": [[13, 15, 20, -1], [13, 15, 20, "All"]],
 			"scrollX":        true,
 			"scrollCollapse": true,
 			"fixedColumns":   {
 				"leftColumns": 1,
 			},
 		});
+		
 	}
 }
 function getElectionInformationLocationWiseStatus(eletionSubType,electionYrValForStrong,partyIdForStrong,searchLevelVal,electionScopeVal,partyNameForStrong,electionScopetext,year){
@@ -1301,7 +1302,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 	str+='</div>'; */
 	
 	
-	str+='<div class="table-responsive m_top10">';
+	str+='<div class="m_top10">';
 	/*if(searchLevelVal == "constituency" || searchLevelVal == "mandal" || searchLevelVal == "panchayat"){
 		str+='<table class="table table-election1" id="electionResults">';
 	}else{
@@ -1312,79 +1313,79 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 				str+='<tr>';
 					if(locationLevelId == '2' || locationLevelId == 2){
 						if(electionScopetext == "Assembly" && searchLevelVal == "district"){
-							str+='<th>District</th>';
+							str+='<th style="background-color:#fff;">District</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "district"){
-							str+='<th>Parliament</th>';
+							str+='<th style="background-color:#fff;">Parliament</th>';
 						}else if(electionScopetext == "MPTC"){
-							str+='<th>Location</th>';
+							str+='<th style="background-color:#fff;">Location</th>';
 						}else if(electionScopetext == "ZPTC"){
-							str+='<th>Location</th>';
+							str+='<th style="background-color:#fff;">Location</th>';
 						}else if(electionScopetext == "Assembly" && searchLevelVal == "parliament"){
-							str+='<th>Parliament</th>';
+							str+='<th style="background-color:#fff;">Parliament</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "parliament"){
-							str+='<th>Parliament</th>';
+							str+='<th style="background-color:#fff;">Parliament</th>';
 						}else if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
 							//str+='<th>District</th>';
-							str+='<th>Constituency</th>';
+							str+='<th style="background-color:#fff;">Constituency</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
-							str+='<th>Parliament</th>';
+							str+='<th style="background-color:#fff;">Parliament</th>';
 						}else{
-							str+='<th>Location</th>';
+							str+='<th style="background-color:#fff;">Location</th>';
 						}
 						
 					}else if(locationLevelId == '3' || locationLevelId == 3){
 						if(electionScopetext == "Assembly" && (searchLevelVal == "mandal" || searchLevelVal == "Mandal")){
 							//str+='<th>Constituency</th>';
-							str+='<th>Mandal</th>';
+							str+='<th style="background-color:#fff;">Mandal</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "mandal"){
-							str+='<th>Location</th>';
+							str+='<th style="background-color:#fff;">Location</th>';
 						}else if(electionScopetext == "MPTC"){
-							str+='<th>Panchayat</th>';
+							str+='<th style="background-color:#fff;">Panchayat</th>';
 						}else if(electionScopetext == "ZPTC"){
-							str+='<th>Mandal</th>';
+							str+='<th style="background-color:#fff;">Mandal</th>';
 						}else if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
 							//str+='<th>District</th>';
-							str+='<th>Constituency</th>';
+							str+='<th style="background-color:#fff;">Constituency</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
-							str+='<th>Location</th>';
+							str+='<th style="background-color:#fff;">Location</th>';
 						}else{
-							str+='<th>Location</th>';
+							str+='<th style="background-color:#fff;">Location</th>';
 						}
 					}else if(locationLevelId == '4' || locationLevelId == 4){
 						if(electionScopetext == "Assembly" && (searchLevelVal == "mandal" || searchLevelVal == "Mandal")){
 							//str+='<th>Constituency</th>';
-							str+='<th>Mandal</th>';
+							str+='<th style="background-color:#fff;">Mandal</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "mandal"){
-							str+='<th>Mandal</th>';
+							str+='<th style="background-color:#fff;">Mandal</th>';
 						}else if(electionScopetext == "MPTC"){
-							str+='<th>Location</th>';
+							str+='<th style="background-color:#fff;">Location</th>';
 						}else if(electionScopetext == "ZPTC"){
-							str+='<th>Location</th>';
+							str+='<th style="background-color:#fff;">Location</th>';
 						}else if(electionScopetext == "Assembly" && (searchLevelVal == "Panchayat" || searchLevelVal == "panchayat")){
 							//str+='<th>Mandal</th>';
-							str+='<th>Panchayat</th>';
+							str+='<th style="background-color:#fff;">Panchayat</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "Panchayat"){
-							str+='<th>Mandal</th>';
+							str+='<th style="background-color:#fff;">Mandal</th>';
 						}else{
-							str+='<th>Mandal</th>';
+							str+='<th style="background-color:#fff;">Mandal</th>';
 						}
 					}else if(locationLevelId == '10' || locationLevelId == 10){
 						if(electionScopetext == "MPTC"){
-							str+='<th>Location</th>';
+							str+='<th style="background-color:#fff;">Location</th>';
 						}else if(electionScopetext == "ZPTC"){
-							str+='<th>Location</th>';
+							str+='<th style="background-color:#fff;">Location</th>';
 						}else if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
 							//str+='<th>District</th>';
-							str+='<th>Constituency</th>';
+							str+='<th style="background-color:#fff;">Constituency</th>';
 						}else if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
-							str+='<th>Constituency</th>';
+							str+='<th style="background-color:#fff;">Constituency</th>';
 						}else{
-							str+='<th>Constituency</th>';
+							str+='<th style="background-color:#fff;">Constituency</th>';
 						}
 					}else if(locationLevelId == '5' || locationLevelId == 5){
-						str+='<th>Mandal</th>';
+						str+='<th style="background-color:#fff;">Mandal</th>';
 					}else{
-						str+='<th>Location</th>';
+						str+='<th style="background-color:#fff;">Location</th>';
 					}
 					
 					if(result[0].list !=null && result[0].list.length>0){
@@ -1603,12 +1604,13 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 		"iDisplayLength": 15,
 		"aaSorting": [],
 		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-		/* "scrollX":        true,
+		"scrollX":        true,
 		"scrollCollapse": true,
 		"fixedColumns":   {
 			"leftColumns": 1,
-		}  */
+		}
 	});
+	$("#electionResults_wrapper").parent().find(".DTFC_LeftBodyLiner").addClass("table_election_scroll");
 }
 $(document).on("click",".statusClickCls",function(){
 	
