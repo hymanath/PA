@@ -213,8 +213,8 @@
 	</section>
 </div>
 </main>
-<div class="modal fade" id="modalMessageDivId" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document" >
+<div class="modal fade" id="modalMessageDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999">
+  <div class="modal-dialog" role="document" style="width:60%;">
     <div class="modal-content modal-custom">
       <div class="modal-body">
        <h4 id="statusHeadingId" style="text-align: center; color: green; font-weight: bold;">Building Live Panels & Lights Information Please Wait...</h4>
