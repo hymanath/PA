@@ -71,12 +71,12 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					locationVOForListForWork.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[3]));
 					locationVOForListForWork.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[5]));
 					locationVOForListForWork.setAmount(commonMethodsUtilService.getLongValueForObject(param[11]));
-					locationVOs.add(locationVOForListForWork);
+					locationVOs.add(locationVOForListForWork);   
 				}
-				List<LocationVO> locationVOListForGoNo = (List<LocationVO>) govtOrderMap.values();
+				List<LocationVO> locationVOListForGoNo = new ArrayList<LocationVO>(govtOrderMap.values());
 				locationVO.getLocationList1().addAll(locationVOListForGoNo);
 				locationVO.getLocationList2().addAll(locationVOs);
-			}
+			}	
 			return locationVO;
 		}catch(Exception e){
 			LOG.error(" Exception occured in FundManagementDashboardService ,getFundManagementSystemWorkDetails() ",e);
