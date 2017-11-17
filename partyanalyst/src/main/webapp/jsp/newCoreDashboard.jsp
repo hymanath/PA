@@ -4005,7 +4005,16 @@
 									<div id="collapsethree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsthree">
 									  <div class="panel-body">
 										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12" id="candidatePressMeetPerformanceId"></div>
+										
+										  <div class="col-md-12 col-xs-12 col-sm-12">
+										  <ul class=" activeUlCls edtionTypescls list-inline pull-right">
+										   <li class="active" id="0"> Both Edition </li>
+										   <li id="1" > Main Edition </li>
+										  <li id="2"> District Edtion</li>
+										 
+										  </ul>
+										  </div>
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="candidatePressMeetPerformanceId"></div>
 										</div>
 									  </div>
 									</div>
@@ -4020,6 +4029,13 @@
 									  <div class="panel-body">
 										<div class="row">
 											<div class="col-md-12 col-xs-12 col-sm-12">
+											 <ul class=" activeUlCls publicationAndEdtionTypescls list-inline pull-right">
+											   <li class="active" id="0"> Both Edition </li>
+											   <li id="1" > Main Edition </li>
+											  <li id="2"> District Edtion</li>
+											</ul>
+											 </div>
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 												<div id="publicationAndPartyWiseDetailsId" style="overflow:auto;"></div>
 											</div>
 										</div>
