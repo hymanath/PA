@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
+import com.itgrids.partyanalyst.model.JbCommittee;
 import com.itgrids.partyanalyst.model.JbCommitteeLevel;
 import com.itgrids.partyanalyst.model.JbCommitteeMember;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -785,8 +786,18 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			    				mainVO.setGender(voterDetailsVO.getGender() != null ? voterDetailsVO.getGender():null);
 			    				mainVO.setAge(voterDetailsVO.getAge() != null ? voterDetailsVO.getAge():null);
 			    				mainVO.setHouseNo(voterDetailsVO.getHouseNo() != null ? voterDetailsVO.getHouseNo():null);
-								mainVO.setMobileNumber(voterDetailsVO.getMobileNumber() != null?voterDetailsVO.getMobileNumber():null);
+								mainVO.setMobileNumber(voterDetailsVO.getActualMobiNumber() != null?voterDetailsVO.getActualMobiNumber():null);
 								mainVO.setVoterId(voterDetailsVO.getVoterIDCardNo()!= null ? voterDetailsVO.getVoterIDCardNo():null);
+								mainVO.setMemberShipCardId(voterDetailsVO.getMemberShipNo()!= null ? voterDetailsVO.getMemberShipNo():null);
+								mainVO.setTdpCadreId(voterDetailsVO.getTdpCadreId() == null?null:voterDetailsVO.getTdpCadreId());
+								if(mainVO.getMemberShipCardId() !=null){ //from tdpcadre table
+									if(voterDetailsVO.getTotalImagePathStr() !=null)
+									   mainVO.setImageURL("https://www.mytdp.com/images/cadre_images/"+voterDetailsVO.getTotalImagePathStr());
+								}else{ // from voter table
+									if(voterDetailsVO.getTotalImagePathStr() !=null)
+										   mainVO.setImageURL("https://mytdp.com/voter_images/"+voterDetailsVO.getTotalImagePathStr());
+								}
+								
 			    			}
 			    		}
 			    	}
@@ -843,6 +854,37 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			LOG.error("Excepting Occured in getCategories() of JanmabhoomiCommitteeService ", e);
 		}
 		return categotiesVOList;
+	}
+	
+	public ResultStatus updateCommitteStatusByCommiteeId(Long committeeId){
+		ResultStatus resultStatus  = new ResultStatus();
+		try {
+			Long totalRoleCount = jbCommitteeRoleDAO.getTotalRoleMemberCountByCommitteId(committeeId);
+			Long totalApprovedRoleCount = jbCommitteeMemberDAO.getMemberApprovedCountByCommitteId(committeeId);
+			if(totalRoleCount !=null && totalApprovedRoleCount !=null && totalRoleCount.longValue() == totalApprovedRoleCount.longValue()){
+				JbCommittee jbCommittee = jbCommitteeDAO.get(committeeId);
+				if(jbCommittee !=null){
+					if(jbCommittee.getIsDeleted().equalsIgnoreCase("N")){
+						jbCommittee.setIsCommitteeConfirmed("Y");
+						jbCommittee.setCompletedDate(dateUtilService.getCurrentDateAndTime());
+						
+						JbCommittee updatedJbCommittee = jbCommitteeDAO.save(jbCommittee);
+						if(updatedJbCommittee !=null){
+							resultStatus.setExceptionMsg("SUCCESS");
+						}
+					}else{
+						resultStatus.setExceptionMsg("FAIL");
+					}
+				}
+			}else{
+				resultStatus.setExceptionMsg("FAIL");
+			}
+		}catch (Exception e) {
+			resultStatus.setExceptionMsg("FAIL");
+			e.printStackTrace();
+			LOG.error("Excepting Occured in updateCommitteStatusByCommiteeId() of JanmabhoomiCommitteeService ", e);
+		}
+		return resultStatus;
 	}
 }
 
