@@ -14167,6 +14167,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					vo.setAge(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
 					vo.setVoterIDCardNo(obj[6] != null ? obj[6].toString():"");
 					vo.setHouseNo(obj[7] != null ? obj[7].toString():"");
+					vo.setTotalImagePathStr(obj[8] != null ? obj[8].toString():"");// newly added 
 					returnList.add(vo);
 					voterIds.add(voterId);
 				}
@@ -14198,6 +14199,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							vo.setMobileNumber(finalMblStr);
 							vo.setActualMobNumber(obj[3] != null ? obj[3].toString():"");
 							vo.setInviteeAttendeeCnt(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							vo.setImagePathStr(obj[5] != null ? obj[5].toString():""); // newly added 
 							voterCadreMap.put(vId,vo);
 						}
 						else{
