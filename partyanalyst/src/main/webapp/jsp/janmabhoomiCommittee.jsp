@@ -49,6 +49,38 @@
 		</div>
 	</div>		
 </section>
+<div class="modal fade janmabhoomi" tabindex="-1" id="committeeWiseModalOpen" role="dialog" style="z-index:9999;">
+ <div class="modal-dialog" role="document" style="width:85%;">   
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">District Committee Overview</h4>      
+		</div>
+		<div class="modal-body">   
+          <div id="committeeWisePopUpDetailsId"></div>
+       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!--   /.modal-content -->  
+  </div><!--  /.modal-dialog -->
+</div><!--   /.modal -->
+<div class="modal fade janmabhoomi" tabindex="-1" id="memberAddEditModalOpen" role="dialog" style="z-index:9999;">
+ <div class="modal-dialog" role="document" style="width:85%;">   
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">Add Memberes</h4>      
+		</div>
+		<div class="modal-body">   
+          <div id="memberAddEditPopUpDetailsId"></div>
+       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
+      </div>
+    </div><!--   /.modal-content -->  
+  </div><!--  /.modal-dialog -->
+</div><!--   /.modal -->
 <script src="D2D_Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="D2D_Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
