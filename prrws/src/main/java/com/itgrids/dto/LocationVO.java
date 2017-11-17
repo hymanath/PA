@@ -28,6 +28,7 @@ public class LocationVO implements Serializable {
 	private String goNumber;
 	private String issueDate;
 	private String filePath;
+	private String mlaName;
 	
 	
 	private Long streetHabitationCount;
@@ -35,6 +36,13 @@ public class LocationVO implements Serializable {
 	private List<StatusVO> statusList = new ArrayList<StatusVO>(0);
 	private AddressVO addressVO = new AddressVO();
 	
+	
+	public String getMlaName() {
+		return mlaName;
+	}
+	public void setMlaName(String mlaName) {
+		this.mlaName = mlaName;
+	}
 	public AddressVO getAddressVO() {
 		return addressVO;
 	}
