@@ -577,4 +577,16 @@ public class NregsDashboardController {
 		}
 		return locationVOList;
 	}
+	
+	@PostMapping("/getNregaOtherMCCAbstarctData")
+	public @ResponseBody List<NregsDataVO> getNregaOtherMCCAbstarctData(@RequestBody InputVO vo){
+		List<NregsDataVO> locationVOList = null;
+		try {
+			locationVOList = nregsTcsService.getNregaOtherMCCAbstarctData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaOtherMCCLevelData - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
 }

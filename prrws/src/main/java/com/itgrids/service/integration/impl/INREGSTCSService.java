@@ -71,4 +71,5 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregaMCCNewComponetsLevelData(InputVO inputVO);
 	public List<NregsDataVO> getNregaCovergancePROtherLevelData(InputVO inputVO);
 	public List<NregsDataVO> getWorkWiseAbstractForMCCOthers(InputVO inputVO);
+	public List<NregsDataVO> getNregaOtherMCCAbstarctData(InputVO inputVO);
 }
