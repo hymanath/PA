@@ -34,7 +34,10 @@ public class LightMonitoring {
 	public Date surveyDate;
 	public Date insertedTime;
 	public String isDeleted;
+	private Long lightsVendorId;
+	
 	public Panchayat panchayat;
+	private LightsVendor lightsVendor;
 	
 	@Id
 	@Column(name="light_monitoring_id")
@@ -151,6 +154,25 @@ public class LightMonitoring {
 	public void setPanchayat(Panchayat panchayat) {
 		this.panchayat = panchayat;
 	}
+	@Column(name="lights_vendor_id")
+	public Long getLightsVendorId() {
+		return lightsVendorId;
+	}
+	public void setLightsVendorId(Long lightsVendorId) {
+		this.lightsVendorId = lightsVendorId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "lights_vendor_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public LightsVendor getLightsVendor() {
+		return lightsVendor;
+	}
+	public void setLightsVendor(LightsVendor lightsVendor) {
+		this.lightsVendor = lightsVendor;
+	}
+	
+	
 	
 	
 }

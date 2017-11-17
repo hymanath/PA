@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -14,10 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.ILightMonitoringDAO;
 import com.itgrids.dao.ILightWattageDAO;
-import com.itgrids.dao.IWebserviceCallDetailsDAO;
+import com.itgrids.dao.ILightsVendorDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LedOverviewVo;
@@ -26,11 +26,11 @@ import com.itgrids.dto.LightWattageVO;
 import com.itgrids.dto.ResultVO;
 import com.itgrids.model.LightMonitoring;
 import com.itgrids.model.LightWattage;
+import com.itgrids.model.LightsVendor;
 import com.itgrids.service.ILightMonitoring;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
-import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 
 @Service
@@ -42,36 +42,70 @@ public class LightMonitoringService  implements ILightMonitoring{
 
 	@Autowired
 	private WebServiceUtilService webServiceUtilService;
-	@Autowired
-	private IWebserviceCallDetailsDAO webserviceCallDetailsDAO;
+
 	@Autowired
 	private CommonMethodsUtilService commonMethodsUtilService;
-	@Autowired
-	private IDistrictDAO districtDAO;
+	
 	@Autowired
 	private ILightWattageDAO lightWattageDAO; 
+	
 	@Autowired
 	private DateUtilService dateUtilService;
+	
 	@Autowired
 	private ILightMonitoringDAO lightMonitoringDAO;
+	
+	@Autowired 
+	private ILightsVendorDAO lightsVendorDAO;
 		   
+	public ResultVO saveRealtimeStatusByVillages() {
+		ResultVO stausVO = new ResultVO();
+		List<LightMonitoringVO> resultData = new ArrayList<LightMonitoringVO>(0);
+		try {
+			String URL = "http://greenlightt.monitormymeter.com/api/RestRealtimeAPI/GetRealtimeStatusByVillages";
+			String differenceVendorURL = "http://182.18.173.26:8080/apgovt/panchayatVillageData.php";
+			
+			resultData = getLightMonitoringDataInRequiredFormat("AP_GOVT",URL);
+			stausVO = saveLightsMonitoringData(resultData, 2l);
+			List<LightMonitoringVO> esslDataList = getLightMonitoringDataInRequiredFormat("AP_EESL",URL);
+			List<LightMonitoringVO> esslDiffVndrDataList = getLightMonitoringDataInRequiredFormat("differenceVendor",differenceVendorURL);
+			resultData.clear();
+			if (esslDataList != null) {
+				resultData.addAll(esslDataList);
+			}	
+			if (esslDiffVndrDataList != null) {
+				resultData.addAll(esslDiffVndrDataList);
+			}
+			stausVO = saveLightsMonitoringData(resultData, 1l);
+			
+		} catch (Exception e) {
+			stausVO.setStatusCode(1);
+			stausVO.setMessage("FALURE");
+ 			LOG.error("Exception raised at saveRealtimeStatusByVillages - LED service", e);
+		}
+		return stausVO;
+		
+	}
 	/*
 	 * Date : 02/08/2017
 	 * Author :Swapna
 	 */
-	public ResultVO saveRealtimeStatusByVillages() {
-		ResultVO status=new ResultVO();
+	public List<LightMonitoringVO> getLightMonitoringDataInRequiredFormat(String key,String URL) {
+		List<LightMonitoringVO> resultData = new ArrayList<LightMonitoringVO>(0);
 		try {			
 			   String inputStr = "";
-			   inputStr = "{";
-			   inputStr += "\"ClientId\" : \"AP_GOVT\"";
-			   inputStr += "}";
+			   if (!key .equalsIgnoreCase("differenceVendor") ) {
+				   inputStr = "{";
+				   inputStr += "\"ClientId\" : \""+key+"\"";
+				   inputStr += "}";
+			   } else {
+				   inputStr = null;
+			   }
 			   
-			ClientResponse response = webServiceUtilService.callWebService("http://greenlightt.monitormymeter.com/api/RestRealtimeAPI/GetRealtimeStatusByVillages",inputStr);
-			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+			ClientResponse response = webServiceUtilService.callWebService(URL,inputStr);
 	        if(response.getStatus() != 200)
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-	        else{
+	        else {
 	 	    	 String output = response.getEntity(String.class);
 	 	    	 JSONObject responseJsonObj = new JSONObject(output);
 	 	    	 JSONObject dataObj = responseJsonObj.getJSONObject("responseData");
@@ -81,74 +115,84 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    	 
 	 	    	 if(output != null && !output.isEmpty() && statusCode!= null && statusCode.longValue() ==0l && statusMessage != null && statusMessage.equalsIgnoreCase("Success"))
 	 	    	 {
-	 	    		List<LightMonitoringVO> resultData = processLightData(output);
-	 	    		 
-	 	    		if(resultData != null && resultData.size() > 0)
-	 	    		 {
-	 	    			   /*Update lightMonitoring Data */
-	 	    			    List<Long> lighMonitoringIds = lightMonitoringDAO.getLightMonitroingIds(dateUtilService.getCurrentDateAndTime());
-	    					int updatedCount = lightMonitoringDAO.updateLightMoitoringData(dateUtilService.getCurrentDateAndTime());
-	    					
-	    					if (lighMonitoringIds != null && lighMonitoringIds.size() > 0 ) {
-	    						int updatedLightWattageCount = lightMonitoringDAO.updateLightWattageMoitoringData(lighMonitoringIds);	
-	    					}	
-	    					
-	 	    			 for(LightMonitoringVO lightMonitoringVO : resultData)
-	 	    			 {
-	 	    				 try{
-	 	    					
-	 	    					LightMonitoring lightMonitoring = new LightMonitoring();
-		 	    				
-		 		 	    		lightMonitoring.setPanchayatId(lightMonitoringVO.getPanchayatId());
-		 		 	    		lightMonitoring.setTotalPanels(lightMonitoringVO.getTotalPanels());
-		 		 	    		lightMonitoring.setTotalPoles(lightMonitoringVO.getTotalPoles());
-		 		 	    		lightMonitoring.setTotalLights(lightMonitoringVO.getTotalLights());
-		 		 	    		lightMonitoring.setNotWorkingLights(lightMonitoringVO.getNotWorkingLights());
-		 		 	    		lightMonitoring.setWorkingLights(lightMonitoringVO.getWorkingLights());
-		 		 	    		lightMonitoring.setOnLights(lightMonitoringVO.getOnLights());
-		 		 	    		lightMonitoring.setOffLights(lightMonitoringVO.getOffLights());
-		 		 	    		lightMonitoring.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-		 		 	    		lightMonitoring.setSurveyDate(dateUtilService.getCurrentDateAndTime());
-		 		 	    		lightMonitoring.setIsDeleted("N");
-								lightMonitoring = lightMonitoringDAO.save(lightMonitoring);
-		 		 	    		 
-		 		 	    		List<LightWattageVO> wattageList =  lightMonitoringVO.getWattageList();
-		 		 	    		
-		 		 	    		if(wattageList != null && wattageList.size()>0)
-		 		 	    		{
-		 		 	    			for(LightWattageVO lightWattageVO : wattageList)
-		 		 	    			{
-										LightWattage wattage = new LightWattage();
-										wattage.setWattage(lightWattageVO.getWattage());
-		 		 	    				wattage.setLightCount(lightWattageVO.getLightCount());
-		 		 	    				wattage.setLightMonitoringId(lightMonitoring.getLightMonitoringId());
-		 		 	    				wattage.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-		 		 	    				wattage.setIsDeleted("N");
-		 		 	    				lightWattageDAO.save(wattage);	 		 		 	    		
-		 		 		 	    	}
-		 		 		 	    }	 		 	    				 	    				
-		 		 	    	}catch (Exception e) {
-	 	    				 LOG.error(e);
-	 	    			 }
-	 	    			 
-	 	    		}
-	 	    		   status.setStatusCode(0);
-	 		 		   status.setMessage("SUCCESS");
-	 	    		 }
-	 	    	 } else {
-	 	    		 status.setStatusCode(1);
-		 		 	 status.setMessage("FALURE");
-	 	    	 }
+	 	    		 resultData = processLightData(key,output);
+	 	    	 } 
 	 	       }	  
 	 	     } catch (Exception e) {
-				 status.setStatusCode(1);
-	 		 	 status.setMessage("FALURE");
-	 			LOG.error("Exception raised at saveRealtimeStatusByVillages - LED service", e);
+				
+	 			LOG.error("Exception raised at saveLightMonitoringData - LED service", e);
 	 		}
-		return status;    	
+		return resultData;    	
 	 }
-	
-	     public List<LightMonitoringVO> processLightData(String output)
+	   private ResultVO saveLightsMonitoringData(List<LightMonitoringVO> resultData,Long lightVendorId)  {
+			ResultVO statusVO = new ResultVO();
+		    try {
+		    	 
+ 	    		if(resultData != null && resultData.size() > 0)
+ 	    		 {
+ 	    			   /*Update lightMonitoring Data */
+ 	    			    List<Long> lighMonitoringIds = lightMonitoringDAO.getLightMonitroingIds(dateUtilService.getCurrentDateAndTime(),lightVendorId);
+    					int updatedCount = lightMonitoringDAO.updateLightMoitoringData(dateUtilService.getCurrentDateAndTime(),lightVendorId);
+    					
+    					if (lighMonitoringIds != null && lighMonitoringIds.size() > 0 ) {
+    						int updatedLightWattageCount = lightMonitoringDAO.updateLightWattageMoitoringData(lighMonitoringIds);	
+    					}	
+    					
+ 	    			 for(LightMonitoringVO lightMonitoringVO : resultData)
+ 	    			 {
+ 	    				 try{
+ 	    					
+ 	    					LightMonitoring lightMonitoring = new LightMonitoring();
+	 	    				
+	 		 	    		lightMonitoring.setPanchayatId(lightMonitoringVO.getPanchayatId());
+	 		 	    		lightMonitoring.setTotalPanels(lightMonitoringVO.getTotalPanels());
+	 		 	    		lightMonitoring.setTotalPoles(lightMonitoringVO.getTotalPoles());
+	 		 	    		lightMonitoring.setTotalLights(lightMonitoringVO.getTotalLights());
+	 		 	    		lightMonitoring.setNotWorkingLights(lightMonitoringVO.getNotWorkingLights());
+	 		 	    		lightMonitoring.setWorkingLights(lightMonitoringVO.getWorkingLights());
+	 		 	    		lightMonitoring.setOnLights(lightMonitoringVO.getOnLights());
+	 		 	    		lightMonitoring.setOffLights(lightMonitoringVO.getOffLights());
+	 		 	    		lightMonitoring.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+	 		 	    		lightMonitoring.setSurveyDate(dateUtilService.getCurrentDateAndTime());
+	 		 	    		lightMonitoring.setIsDeleted("N");
+	 		 	    		lightMonitoring.setLightsVendorId(lightVendorId);
+							lightMonitoring = lightMonitoringDAO.save(lightMonitoring);
+	 		 	    		 
+	 		 	    		List<LightWattageVO> wattageList =  lightMonitoringVO.getWattageList();
+	 		 	    		
+	 		 	    		if(wattageList != null && wattageList.size()>0)
+	 		 	    		{
+	 		 	    			for(LightWattageVO lightWattageVO : wattageList)
+	 		 	    			{
+									LightWattage wattage = new LightWattage();
+									wattage.setWattage(lightWattageVO.getWattage());
+	 		 	    				wattage.setLightCount(lightWattageVO.getLightCount());
+	 		 	    				wattage.setLightMonitoringId(lightMonitoring.getLightMonitoringId());
+	 		 	    				wattage.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+	 		 	    				wattage.setIsDeleted("N");
+	 		 	    				lightWattageDAO.save(wattage);	 		 		 	    		
+	 		 		 	    	}
+	 		 		 	    }	 		 	    				 	    				
+	 		 	    	}catch (Exception e) {
+	 		 	    		statusVO.setStatusCode(1);
+	 		 	    		statusVO.setMessage("FALURE");
+ 	    				    LOG.error(e);
+ 	    			 }
+ 	    			 
+ 	    		}
+ 	    			statusVO.setStatusCode(0);
+ 	    			statusVO.setMessage("SUCCESS");
+ 	    		 }
+		    	
+		    	
+		    } catch (Exception e) {
+		    	statusVO.setStatusCode(1);
+		    	statusVO.setMessage("FALURE");
+		    	e.printStackTrace();
+		    }
+		    return statusVO;
+	   }
+	     public List<LightMonitoringVO> processLightData(String key,String output)
 	     {
 	    	 List<LightMonitoringVO> resultData = null;
 	    	 try{
@@ -199,12 +243,19 @@ public class LightMonitoringService  implements ILightMonitoring{
 			 		 	    				if(jsonob != null)
 			 		 	    				{
 												lightWattageVO = new LightWattageVO();
-												lightWattageVO.setWattage(jsonob.has("Wattage") ? jsonob.getLong("Wattage"):0l);
-												lightWattageVO.setLightCount(jsonob.has("LightCount") ? jsonob.getLong("LightCount"):0l);
+												 if (key .equalsIgnoreCase("differenceVendor") ){
+														lightWattageVO.setWattage(jsonob.has("Wattage") ? Long.valueOf(jsonob.getString("Wattage").substring(1, jsonob.getString("Wattage").length())):0l);
+														lightWattageVO.setLightCount(jsonob.has("LightCount") ? jsonob.getLong("LightCount"):0l);
+											 
+												 } else {
+														lightWattageVO.setWattage(jsonob.has("Wattage") ? jsonob.getLong("Wattage"):0l);
+														lightWattageVO.setLightCount(jsonob.has("LightCount") ? jsonob.getLong("LightCount"):0l);
+										
+												 }
 												wattageList.add(lightWattageVO);
 			 		 	    				}
 			 		 	    			}catch (Exception e) {
-			 		 	    				LOG.error(e);
+			 		 	    				LOG.error("Exception occureat while preparing light wattage details in processLightData()",e);
 			 		 	    			}
 			 		 		 	     }
 			 		 	    			lightMonitoringVO.setWattageList(wattageList);
@@ -228,7 +279,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	 * Author :Swapna
 	 	 */
 	 @Override
-	public List<LightMonitoringVO> getBasicLedOverviewDetails(String startDate,String endDate, String locationType,final Long locationValue) {
+	public List<LightMonitoringVO> getBasicLedOverviewDetails(String startDate,String endDate, String locationType,final Long locationValue,List<Long> lightMonitoringIds) {
 		   List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
 		 
 		try{	
@@ -246,30 +297,28 @@ public class LightMonitoringService  implements ILightMonitoring{
 				fromDate = sdf.parse(startDate);
 				toDate = sdf.parse(endDate);
 			}
-		     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,loccationIds);
-		     if(lightMonitoringData!=null && lightMonitoringData.size()>0 && !lightMonitoringData.isEmpty()){
-		    	 LightMonitoringVO lightMonitoringVO= new LightMonitoringVO();
-			     for (Object[] objects : lightMonitoringData) {			
-			    	     lightMonitoringVO.setTotalLights(objects[0] !=null ? (Long)objects[0]:0l);
-			    	     lightMonitoringVO.setTotalPanels(objects[1] !=null ? (Long)objects[1]:0l);	
-					     lightMonitoringVO.setTotalPoles(objects[2] !=null ? (Long)objects[2]:0l);
-					     lightMonitoringVO.setWorkingLights(objects[3] !=null ? (Long)objects[3]:0l);
-					     lightMonitoringVO.setOnLights(objects[4] !=null ? (Long)objects[4]:0l);
-					     lightMonitoringVO.setOffLights(objects[5] !=null ?(Long)objects[5]:0l);
-				         lightMonitoringVO.setNotWorkingLights(objects[6] !=null ?(Long)objects[6]:0l);
-		
-				         List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,loccationIds);
-					       
-					       if(wattegeCount!=null && wattegeCount.size()>0 && !wattegeCount.isEmpty()){
-					    	   for (Object[] objects2 : wattegeCount) {	
-					    		   LightWattageVO wattagVO=new LightWattageVO();
-							    	wattagVO.setWattage(objects2[0]!=null?(Long)objects2[0]:0l);
-							    	wattagVO.setLightCount(objects2[1]!=null?(Long)objects2[1]:0l);		    	
-							       	lightMonitoringVO.getWattageList().add(wattagVO); 	
-							    }
-					        }
-		       list.add(lightMonitoringVO);
-		     }
+		     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,loccationIds,lightMonitoringIds);
+			     if(lightMonitoringData!=null && lightMonitoringData.size()>0 && !lightMonitoringData.isEmpty()){
+			    	 LightMonitoringVO lightMonitoringVO= new LightMonitoringVO();
+				     for (Object[] objects : lightMonitoringData) {			
+				    	     lightMonitoringVO.setTotalLights(lightMonitoringVO.getTotalLights()+commonMethodsUtilService.getLongValueForObject(objects[2]));
+				    	     lightMonitoringVO.setTotalPanels(lightMonitoringVO.getTotalPanels()+commonMethodsUtilService.getLongValueForObject(objects[3]));	
+						     lightMonitoringVO.setTotalPoles(lightMonitoringVO.getTotalPoles()+commonMethodsUtilService.getLongValueForObject(objects[4]));
+						     lightMonitoringVO.setWorkingLights(lightMonitoringVO.getWorkingLights()+commonMethodsUtilService.getLongValueForObject(objects[5]));
+						     lightMonitoringVO.setOnLights(lightMonitoringVO.getOnLights()+commonMethodsUtilService.getLongValueForObject(objects[6]));
+						     lightMonitoringVO.setOffLights(lightMonitoringVO.getOffLights()+commonMethodsUtilService.getLongValueForObject(objects[7]));
+					         lightMonitoringVO.setNotWorkingLights(lightMonitoringVO.getNotWorkingLights()+commonMethodsUtilService.getLongValueForObject(objects[8]));
+			        }
+			       List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,loccationIds,lightMonitoringIds);
+			       if(wattegeCount!=null && wattegeCount.size()>0 && !wattegeCount.isEmpty()){
+			    	   for (Object[] param : wattegeCount) {	
+			    		   LightWattageVO wattagVO = new LightWattageVO();
+					    	wattagVO.setWattage(commonMethodsUtilService.getLongValueForObject(param[2]));
+					    	wattagVO.setLightCount(commonMethodsUtilService.getLongValueForObject(param[3]));		    	
+					       	lightMonitoringVO.getWattageList().add(wattagVO); 	
+					    }
+			        }
+			       list.add(lightMonitoringVO);
 		  }
        }catch (Exception e) {
     	   LOG.error("Exception raised at getBasicLedOverviewDetails - LightMonitoringService service", e);
@@ -280,14 +329,13 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	 * Date : 03/08/2017
 	 	 * Author :Swapna
 	  	 */
-	public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate,String locationType, final Long locationValue){
-	  List<LedOverviewVo>listVO=new ArrayList<LedOverviewVo>(0);
-	  try
-	  {
-		    Date fromDate = null;
+	public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate, String endDate, String locationType,final Long locationValue, List<Long> lightVendorIdList) {
+		List<LedOverviewVo> listVO = new ArrayList<LedOverviewVo>(0);
+		try {
+			Date fromDate = null;
 			Date toDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+			if (startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0) {
 				fromDate = sdf.parse(startDate);
 				toDate = sdf.parse(endDate);
 			}
@@ -295,30 +343,29 @@ public class LightMonitoringService  implements ILightMonitoring{
 			if (locationValue != null && locationValue.longValue() > 0l) {
 				loccationIds.add(locationValue);
 			}
-		  List<Object[]> counts = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType,loccationIds);
-			  if (counts!=null && counts.size()>0 &&!counts.isEmpty())
-			  {				  
-				 for (Object[] objects : counts) {
-				  LedOverviewVo  resultVo = new LedOverviewVo();
-				  		resultVo.setTotalDistCnt(commonMethodsUtilService.getLongValueForObject(objects[0])!=null?(Long)objects[0]:0l);//No of districts 
-				  		resultVo.setTotalConstituencyCnt(commonMethodsUtilService.getLongValueForObject(objects[1])!=null?(Long)objects[1]:0l);//no of constituencies
-				  		resultVo.setTotalMandalCnt(commonMethodsUtilService.getLongValueForObject(objects[2])!=null?(Long)objects[2]:0l);// no of mandal	  					
-				  		resultVo.setTotalpanchayatCnt(commonMethodsUtilService.getLongValueForObject(objects[3])!=null?(Long)objects[3]:0l);//No of panchayats	  
-					  listVO.add(resultVo);
-				  }
-			  }
-		}catch (Exception e) {
-			LOG.error("Exception raised at getLedOverviewForStatedLocationsDetailsCounts - LightMonitoringService service", e);
+			List<Object[]> counts = lightMonitoringDAO.getTotalSurveyDetails(fromDate, toDate, locationType, loccationIds,lightVendorIdList,"No");
+			if (counts != null && counts.size() > 0 && !counts.isEmpty()) {
+				LedOverviewVo resultVo = new LedOverviewVo();
+				for (Object[] objects : counts) {
+					resultVo.setTotalDistCnt( resultVo.getTotalDistCnt() + commonMethodsUtilService.getLongValueForObject(objects[2]));// No of districts
+					resultVo.setTotalConstituencyCnt(resultVo.getTotalConstituencyCnt() + commonMethodsUtilService.getLongValueForObject(objects[3]));// no of constituencies
+					resultVo.setTotalMandalCnt(resultVo.getTotalMandalCnt() + commonMethodsUtilService.getLongValueForObject(objects[4]));// no of mandal
+					resultVo.setTotalpanchayatCnt(resultVo.getTotalpanchayatCnt() + commonMethodsUtilService.getLongValueForObject(objects[5]));// No of panchayats
+				}
+				listVO.add(resultVo);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLedOverviewForStatedLocationsDetailsCounts - LightMonitoringService service",e);
 		}
-	       return listVO;
-	  }
+		return listVO;
+	}
 	  
 	/*
  	 * Date : 11/08/2017
  	 * Author :Swapna
  	 */
 	@Override
-	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType,String filterType, List<Long> filterValues,String fromDateStr,String toDateStr) {
+	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType,String filterType, List<Long> filterValues,String fromDateStr,String toDateStr,List<Long> lightVendorIdList) {
 		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>();
 		try {
 				Date fromDate = null;
@@ -328,31 +375,14 @@ public class LightMonitoringService  implements ILightMonitoring{
 					fromDate = sdf.parse(fromDateStr);
 					toDate = sdf.parse(toDateStr);
 				}
-			      List<Object[]> totalLocObj =lightMonitoringDAO.getLocationsForLEDDashboard(locationType, filterType, filterValues," ");//getting location template
-			      List<Object[]> lightMonObjLst =   lightMonitoringDAO.getLocationWiseDataForLEDDashboard(locationType,filterType,filterValues,fromDate,toDate) ;//getting survey data	
-			      List<Object[]> lightWattageObjLst = lightWattageDAO.getLocationWiseLightWattageDtls(locationType, filterType, filterValues, fromDate, toDate);//getting location wise wattage details.
+			      List<Object[]> totalLocObj =lightMonitoringDAO.getLocationsForLEDDashboard(locationType, filterType, filterValues, "", null, null, null);//getting location template
+			      List<Object[]> lightMonObjLst =   lightMonitoringDAO.getLocationWiseDataForLEDDashboard(locationType,filterType,filterValues,fromDate,toDate,lightVendorIdList) ;//getting survey data	
+			      List<Object[]> lightWattageObjLst = lightWattageDAO.getLocationWiseLightWattageDtls(locationType, filterType, filterValues, fromDate, toDate,lightVendorIdList);//getting location wise wattage details.
 			      
-			      Map<Long,List<LightWattageVO>> lightWattageMap = getLightWattageDtls(lightWattageObjLst);
-			      Map<Long,LightMonitoringVO> locationMap = setStartedSurveryDataLocationWise(totalLocObj,lightWattageMap,locationType);
-			      
-			      if(lightMonObjLst!=null && lightMonObjLst.size()>0) {	 
-                	 for (Object[] param : lightMonObjLst) {
-                		    Long locationId = commonMethodsUtilService.getLongValueForObject(param[9]);
-                		    LightMonitoringVO locationVO = locationMap.get(locationId);
-                		      if (locationVO != null ){
-                		    	locationVO.setSurveyStartedtotalMandals(commonMethodsUtilService.getLongValueForObject(param[0]));
-                      		    locationVO.setSurveyStartedtotalGps(commonMethodsUtilService.getLongValueForObject(param[1]));  
-                      		    locationVO.setTotalPoles(commonMethodsUtilService.getLongValueForObject(param[2]));
-                      		    locationVO.setTotalPanels(commonMethodsUtilService.getLongValueForObject(param[3]));
-                      		    locationVO.setTotalLights(commonMethodsUtilService.getLongValueForObject(param[4]));
-                      		    locationVO.setWorkingLights(commonMethodsUtilService.getLongValueForObject(param[5]));
-                      		    locationVO.setOnLights(commonMethodsUtilService.getLongValueForObject(param[6]));	
-                      		    locationVO.setOffLights(commonMethodsUtilService.getLongValueForObject(param[7])); 
-                      		    locationVO.setNotWorkingLights(commonMethodsUtilService.getLongValueForObject(param[8]));
-                      		    locationVO.setTotalLedLIghtInstalledCount(locationVO.getOnLights()+locationVO.getOffLights());
-                		      }
-                    }                 
-                   } 	
+			      Map<Long,Map<Long,List<LightWattageVO>>> lightWattageMap = getLightWattageDtls(lightWattageObjLst);
+			      Map<Long,List<LightMonitoringVO>> lightVendorMap = getLightVendorWiseLightMonitroingDetails(lightMonObjLst);
+			      Map<Long,LightMonitoringVO> locationMap = setStartedSurveryDataLocationWise(totalLocObj,lightVendorMap,lightWattageMap,locationType);
+			     
 			    if (locationMap != null && locationMap.size() > 0 ) {
 			    	returnList.addAll(locationMap.values());
 			    }
@@ -361,7 +391,39 @@ public class LightMonitoringService  implements ILightMonitoring{
 		}
 		return returnList;
 	}
-	public Map<Long,LightMonitoringVO> setStartedSurveryDataLocationWise(List<Object[]> objList,Map<Long,List<LightWattageVO>> wattageMap,String locationType) {
+	private Map<Long,List<LightMonitoringVO>> getLightVendorWiseLightMonitroingDetails(List<Object[]> objList) {
+		Map<Long,List<LightMonitoringVO>> lightVendorMap = new HashMap<>();
+		 try {
+			  if (objList != null && objList.size() > 0) {
+				  for (Object[] param : objList) {
+					List<LightMonitoringVO> vendorTypeList = lightVendorMap.get(commonMethodsUtilService.getLongValueForObject(param[9]));//locationId
+					  if (vendorTypeList == null ) {
+						  vendorTypeList = new ArrayList<>(0);
+						  lightVendorMap.put(commonMethodsUtilService.getLongValueForObject(param[9]), vendorTypeList);
+					  }
+					  LightMonitoringVO lightDtlsVO = new LightMonitoringVO();
+					  lightDtlsVO.setSurveyStartedtotalMandals(commonMethodsUtilService.getLongValueForObject(param[0]));
+					  lightDtlsVO.setSurveyStartedtotalGps(commonMethodsUtilService.getLongValueForObject(param[1]));  
+					  lightDtlsVO.setTotalPoles(commonMethodsUtilService.getLongValueForObject(param[2]));
+					  lightDtlsVO.setTotalPanels(commonMethodsUtilService.getLongValueForObject(param[3]));
+					  lightDtlsVO.setTotalLights(commonMethodsUtilService.getLongValueForObject(param[4]));
+					  lightDtlsVO.setWorkingLights(commonMethodsUtilService.getLongValueForObject(param[5]));
+					  lightDtlsVO.setOnLights(commonMethodsUtilService.getLongValueForObject(param[6]));	
+					  lightDtlsVO.setOffLights(commonMethodsUtilService.getLongValueForObject(param[7])); 
+					  lightDtlsVO.setNotWorkingLights(commonMethodsUtilService.getLongValueForObject(param[8]));
+					  lightDtlsVO.setTotalLedLIghtInstalledCount(lightDtlsVO.getOnLights()+lightDtlsVO.getOffLights());
+					  lightDtlsVO.setLightVendorId(commonMethodsUtilService.getLongValueForObject(param[10]));
+					  lightDtlsVO.setLightVendorName(commonMethodsUtilService.getStringValueForObject(param[11]));
+					  vendorTypeList.add(lightDtlsVO);
+				}
+			  }
+			 
+		 } catch (Exception e) {
+			 LOG.error("Exception raised at getLightVendorWiseLightsDetails - LightMonitoringService service", e);
+		 }
+		 return lightVendorMap;
+	}
+	public Map<Long,LightMonitoringVO> setStartedSurveryDataLocationWise(List<Object[]> objList,Map<Long,List<LightMonitoringVO>> vendorTypeMap,Map<Long,Map<Long,List<LightWattageVO>>> wattageMap,String locationType) {
 		Map<Long,LightMonitoringVO> locationDtlsMap = new HashMap<>(0);
 		 try {
 			  if (objList != null && objList.size() > 0 ){
@@ -371,10 +433,19 @@ public class LightMonitoringService  implements ILightMonitoring{
 					   locationVO.setTotalGps(commonMethodsUtilService.getLongValueForObject(param[1]));//survey started village
 					   locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[2]));
 					   locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[3]));
-					   if (wattageMap.get(locationVO.getLocationId()) != null ){ //setting WATTAGE details based on location.
-						   locationVO.setWattageList(wattageMap.get(locationVO.getLocationId()));
-					   }
-					   
+					   locationVO.setSubList(new ArrayList<LightMonitoringVO>());
+					   /*Setting light vendor type and wattage list location wise */
+						if (vendorTypeMap != null) {
+							List<LightMonitoringVO> vendorTypeList = vendorTypeMap.get(locationVO.getLocationId());
+							if (vendorTypeList != null) {
+								for (LightMonitoringVO lightMonitoringVO : vendorTypeList) {
+									if (wattageMap != null && wattageMap.get(locationVO.getLocationId()) != null) {
+										lightMonitoringVO.setWattageList(wattageMap.get(locationVO.getLocationId()).get(lightMonitoringVO.getLightVendorId()));
+										locationVO.getSubList().add(lightMonitoringVO);
+									}
+								}
+							}
+						}
 					    AddressVO addressVO = new AddressVO();
 						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[4]));
 						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[5]));
@@ -394,23 +465,29 @@ public class LightMonitoringService  implements ILightMonitoring{
 					   
 					   locationDtlsMap.put(locationVO.getLocationId(), locationVO);
 				}
-			  }
+			 }
 		 } catch (Exception e ){
 			 LOG.error("Exception raised at setStartedSurveryDataLocationWise - LightMonitoringService service", e);
 		 }
 		 return locationDtlsMap;
 	 }
-	 public Map<Long,List<LightWattageVO>> getLightWattageDtls(List<Object[]> objList) {
-		 Map<Long,List<LightWattageVO>> lightWattageDtlsMap = new HashMap<>();
+	 private Map<Long,Map<Long,List<LightWattageVO>>> getLightWattageDtls(List<Object[]> objList) {
+		 Map<Long,Map<Long,List<LightWattageVO>>> lightWattageDtlsMap = new HashMap<>();
 		  try {
 			   if (objList != null && !objList.isEmpty() ) {
 				    for (Object[] param : objList) {
 						 Long locationId = commonMethodsUtilService.getLongValueForObject(param[2]);
-						 List<LightWattageVO> wattageList = lightWattageDtlsMap.get(locationId);
-						  if (wattageList == null ) {
-							  wattageList = new ArrayList<>();
-							  lightWattageDtlsMap.put(locationId, wattageList);
+						  Map<Long,List<LightWattageVO>> lightVendorMap = lightWattageDtlsMap.get(locationId);
+						  if (lightVendorMap == null ) {
+							  lightVendorMap = new HashMap<>();
+							  lightWattageDtlsMap.put(locationId, lightVendorMap);
 						  }
+						    Long lightVendorId = commonMethodsUtilService.getLongValueForObject(param[3]);
+						    List<LightWattageVO> wattageList = lightVendorMap.get(lightVendorId);
+						     if (wattageList == null ) {
+						    	 wattageList = new ArrayList<>();
+						    	 lightVendorMap.put(lightVendorId, wattageList);
+						     }
 						    LightWattageVO wattagVO = new LightWattageVO();
 							wattagVO.setWattage(commonMethodsUtilService.getLongValueForObject(param[0]));
 							wattagVO.setLightCount(commonMethodsUtilService.getLongValueForObject(param[1]));
@@ -427,10 +504,17 @@ public class LightMonitoringService  implements ILightMonitoring{
  	 * Author :Swapna
  	 */
 	@Override
-	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, List<Long> filterValues,String subLocationType) {
+	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, List<Long> filterValues,String subLocationType,String fromDateStr,String toDateStr,List<Long> lighsVendorIds) {
 		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>();
 		try{
-			 List<Object[]> totalFilterObj =lightMonitoringDAO.getLocationsForLEDDashboard(locationType, filterType, filterValues,subLocationType);
+			  Date fromDate = null;
+			  Date toDate = null;
+			  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			  if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+			 }
+			 List<Object[]> totalFilterObj =lightMonitoringDAO.getLocationsForLEDDashboard(locationType, filterType, filterValues,"filter",fromDate,toDate,lighsVendorIds);
 			if(totalFilterObj!=null && totalFilterObj.size()>0){
 		    for (Object[] objects : totalFilterObj) {
 		       LightMonitoringVO locationVO = new LightMonitoringVO();
@@ -445,85 +529,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 		return returnList;
 	}
 	
-    @Override
-	public LightMonitoringVO getCompanyWiseLightMonitoringDtls(String startDate,String endDate, String locationType,Long locationValue) {
-		 LightMonitoringVO finalVO = new LightMonitoringVO();
-		 List<Long> nredcapDistrictIdList = new ArrayList<Long>(){{add(11l);add(12l);add(13l);add(14l);add(15l);add(16l);add(21l);}};
-		 List<Long> eeslDistrictIdList = new ArrayList<Long>(){{add(17l);add(18l);add(19l);add(20l);add(22l);add(23l);}};
-		try{	
-			Date fromDate = null;
-			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
-				fromDate = sdf.parse(startDate);
-				toDate = sdf.parse(endDate);
-			}
-			 //Prepare Parameter
-			 if (locationValue != null && locationValue > 0l) {
-				 if (nredcapDistrictIdList.contains(locationValue)) {
-					 nredcapDistrictIdList.clear();
-					 nredcapDistrictIdList.add(locationValue);
-				 } else {
-					 nredcapDistrictIdList.clear();
-				 }
-                 if (eeslDistrictIdList.contains(locationValue)) {
-                	 eeslDistrictIdList.clear();
-                	 eeslDistrictIdList.add(locationValue);
-				 } else {
-					 eeslDistrictIdList.clear();
-				 }
-			 }
-			 if(locationType== null || locationType.trim().length()==0){
-				 locationType = "district";
-			 }
-			 
-			  if (nredcapDistrictIdList.size() > 0) {
-				     List<Object[]>  nredcaplightMonitoringObjLst  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,nredcapDistrictIdList);
-				     List<Object[]> nredcapwattegeObjList = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,nredcapDistrictIdList);
-				     List<Object[]> nredcapSurveryStaredLocObjLst = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType, nredcapDistrictIdList); 
-				    
-				     LightMonitoringVO nredDltsVO = getSurveyStartedLocation(nredcapSurveryStaredLocObjLst);
-				     nredDltsVO.setWattageList(getLightWattageList(nredcapwattegeObjList));
-				     setRequiredData(nredcaplightMonitoringObjLst,nredDltsVO);
-				     finalVO.setNredcapVO(nredDltsVO);
-			  }
-			  
-		      if (eeslDistrictIdList.size() > 0 ) {
-		    	     List<Object[]>  eesllightMonitoringObjLst  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,eeslDistrictIdList);
-				     List<Object[]> eeslwattegeObjList = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,eeslDistrictIdList);
-				     List<Object[]> eeslSurveryStaredLocObjLst = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType, eeslDistrictIdList); 
-				     
-				     LightMonitoringVO eeslDltsVO = getSurveyStartedLocation(eeslSurveryStaredLocObjLst);
-				     eeslDltsVO.setWattageList(getLightWattageList(eeslwattegeObjList));
-				     setRequiredData(eesllightMonitoringObjLst,eeslDltsVO);
-				     finalVO.setEeslVO(eeslDltsVO);
-		      }
-		      
-	   } catch (Exception e) {
-    	   LOG.error("Exception raised at getCompanyWiseLightMonitoringDtls - LightMonitoringService service", e);
-       }
-		return finalVO;
-   }
-
-	public void setRequiredData(List<Object[]> objList,LightMonitoringVO resultVO) {
-		try {
-			if (objList != null && objList.size() > 0) {
-				for (Object[] objects : objList) {
-					resultVO.setTotalLights(objects[0] != null ? (Long) objects[0] : 0l);
-					resultVO.setTotalPanels(objects[1] != null ? (Long) objects[1] : 0l);
-					resultVO.setTotalPoles(objects[2] != null ? (Long) objects[2]  : 0l);
-					resultVO.setWorkingLights(objects[3] != null ? (Long) objects[3]: 0l);
-					resultVO.setOnLights(objects[4] != null ? (Long) objects[4] : 0l);
-					resultVO.setOffLights(objects[5] != null ? (Long) objects[5] : 0l);
-					resultVO.setNotWorkingLights(objects[6] != null ? (Long) objects[6] : 0l);
-				}
-			}
-		} catch (Exception e) {
-			LOG.error("Exception raised at getBasicLedOverviewDetails - LightMonitoringService service",e);
-		}
-	}
-
-	public List<LightWattageVO> getLightWattageList(List<Object[]> objList) {
+ 	public List<LightWattageVO> getLightWattageList(List<Object[]> objList) {
 		List<LightWattageVO> lightWattageList = new ArrayList<>(0);
 		try {
 			if (objList != null && objList.size() > 0) {
@@ -540,22 +546,6 @@ public class LightMonitoringService  implements ILightMonitoring{
 		return lightWattageList;
 	}
 
-	public LightMonitoringVO getSurveyStartedLocation(List<Object[]> objList) {
-		LightMonitoringVO surveyStaredDtlsVO = new LightMonitoringVO();
-		try {
-			if (objList != null && objList.size() > 0) {
-				for (Object[] objects : objList) {
-					surveyStaredDtlsVO.setSurveyStartedtotalDistricts(commonMethodsUtilService.getLongValueForObject(objects[0]) != null ? (Long) objects[0]: 0l);// No of districts
-					surveyStaredDtlsVO.setSurveyStartedtotalConstituencys(commonMethodsUtilService.getLongValueForObject(objects[1]) != null ? (Long) objects[1]: 0l);// no of constituencies
-					surveyStaredDtlsVO.setSurveyStartedtotalMandals(commonMethodsUtilService.getLongValueForObject(objects[2]) != null ? (Long) objects[2]: 0l);// no of mandal
-					surveyStaredDtlsVO.setSurveyStartedtotalGps(commonMethodsUtilService.getLongValueForObject(objects[3]) != null ? (Long) objects[3]: 0l);// No of panchayats
-				}
-			}
-		} catch (Exception e) {
-			LOG.error("Exception raised at setSurveyStartedLocation - LightMonitoringService service",e);
-		}
-		return surveyStaredDtlsVO;
-	}
     public InputVO checkIdDataExist(String startDate,String endDate) {
     	InputVO statusVO = new InputVO();
     	 try {
@@ -577,30 +567,123 @@ public class LightMonitoringService  implements ILightMonitoring{
     	 }
     	 return statusVO;
     }
-    public LightMonitoringVO getNredCapLightMonitoringLocationWise(String startDate,String endDate,String locationType,List<Long> locationValues){
+    public LightMonitoringVO getCompanyWiseLightMonitoringDtls(String startDate,String endDate,String locationType,List<Long> locationValues,List<Long> lightVendorIds){
     	 LightMonitoringVO finalVO = new LightMonitoringVO();
 		 try{	
-			Date fromDate = null;
-			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
-				fromDate = sdf.parse(startDate);
-				toDate = sdf.parse(endDate);
-			}		
-				     List<Object[]>  nredcaplightMonitoringObjLst  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,locationValues);
-				     List<Object[]> nredcapwattegeObjList = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,locationValues);
-				     List<Object[]> nredcapSurveryStaredLocObjLst = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType, locationValues); 
+					 Date fromDate = null;
+					 Date toDate = null;
+					 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+					 if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+						fromDate = sdf.parse(startDate);
+						toDate = sdf.parse(endDate);
+					 }	
+					 
+				     List<Object[]>  lightDtlsObjList  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,locationValues,lightVendorIds);
+				     List<Object[]> wattgedtlsObjList = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,locationValues,lightVendorIds);
+				     List<Object[]> surveyStartedLctnDtlsObjList = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType, locationValues,lightVendorIds,"Yes"); 
 				    
-				     LightMonitoringVO nredDltsVO = getSurveyStartedLocation(nredcapSurveryStaredLocObjLst);
-				     nredDltsVO.setWattageList(getLightWattageList(nredcapwattegeObjList));
-				     setRequiredData(nredcaplightMonitoringObjLst,nredDltsVO);
-				     finalVO.setNredcapVO(nredDltsVO);
+				     Map<Long,LightMonitoringVO> lightsVendorWiseDtlsMap = getSurveyStartedLocation(surveyStartedLctnDtlsObjList);
+				     Map<Long,List<LightWattageVO>> wattageDtlsMap = getLightVendorWiseLightWattageDtls(wattgedtlsObjList);
+				     Map<Long,LightMonitoringVO> lightsDtlsMap = getLightVendorWiseLightsDetails(lightDtlsObjList);
+				     
+				     if (lightsVendorWiseDtlsMap != null && lightsVendorWiseDtlsMap.size() > 0) {
+				    	 for (Entry<Long, LightMonitoringVO> vendorTypeEntry : lightsVendorWiseDtlsMap.entrySet()) {
+				    		 vendorTypeEntry.getValue().setWattageList(wattageDtlsMap.get(vendorTypeEntry.getKey()));
+				    		 LightMonitoringVO lightDtlsVO = lightsDtlsMap.get(vendorTypeEntry.getKey());
+				    		  if (lightDtlsVO != null ) {
+				    			  vendorTypeEntry.getValue().setTotalLights(lightDtlsVO.getTotalLights());
+				    			  vendorTypeEntry.getValue().setTotalPanels(lightDtlsVO.getTotalPanels());
+				    			  vendorTypeEntry.getValue().setTotalPoles(lightDtlsVO.getTotalPoles());
+				    			  vendorTypeEntry.getValue().setWorkingLights(lightDtlsVO.getWorkingLights());
+				    			  vendorTypeEntry.getValue().setOnLights(lightDtlsVO.getOnLights());
+				    			  vendorTypeEntry.getValue().setOffLights(lightDtlsVO.getOffLights());
+				    			  vendorTypeEntry.getValue().setNotWorkingLights(lightDtlsVO.getNotWorkingLights());
+				    		  }
+							 if (vendorTypeEntry.getKey() == 1l) {
+								 finalVO.setEeslVO(vendorTypeEntry.getValue());
+							 } else if(vendorTypeEntry.getKey() == 2l){
+								 finalVO.setNredcapVO(vendorTypeEntry.getValue());
+							 }
+						}
+				     }
 		      
 	   } catch (Exception e) {
     	   LOG.error("Exception raised at getIndividualCompanyDetails - LightMonitoringService service", e);
        }
     	return finalVO;
     }
+    private Map<Long,LightMonitoringVO> getSurveyStartedLocation(List<Object[]> objList) {
+    	Map<Long,LightMonitoringVO> companyDtlsMap = new HashMap<Long,LightMonitoringVO>();
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+				     LightMonitoringVO lightsVendorDtlsVO = new LightMonitoringVO();
+				     lightsVendorDtlsVO.setSurveyStartedtotalDistricts(commonMethodsUtilService.getLongValueForObject(param[2]));// No of districts
+				     lightsVendorDtlsVO.setSurveyStartedtotalConstituencys(commonMethodsUtilService.getLongValueForObject(param[3]));// no of constituencies
+				     lightsVendorDtlsVO.setSurveyStartedtotalMandals(commonMethodsUtilService.getLongValueForObject(param[4]));// no of mandal
+				     lightsVendorDtlsVO.setSurveyStartedtotalGps(commonMethodsUtilService.getLongValueForObject(param[5]));// No of panchayats
+				     companyDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), lightsVendorDtlsVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSurveyStartedLocation - LightMonitoringService service",e);
+		}
+		return companyDtlsMap;
+	}
+    private Map<Long,List<LightWattageVO>> getLightVendorWiseLightWattageDtls(List<Object[]> objList) {
+    	Map<Long,List<LightWattageVO>> companyWiseLightWattageDtlsMap = new HashMap<>();
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+				      List<LightWattageVO> wattageList = companyWiseLightWattageDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				       if (wattageList == null ) {
+				    	   wattageList = new ArrayList<LightWattageVO>(0);
+				    	   companyWiseLightWattageDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), wattageList);
+				       }
+				    	LightWattageVO wattagVO = new LightWattageVO();
+						wattagVO.setWattage(commonMethodsUtilService.getLongValueForObject(param[2]));
+						wattagVO.setLightCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+						wattageList.add(wattagVO);
+				     
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLightVendorWiseLightWattageDtls - LightMonitoringService service",e);
+		}
+		return companyWiseLightWattageDtlsMap;
+	}
+    
+    private Map<Long,LightMonitoringVO> getLightVendorWiseLightsDetails(List<Object[]> objList) {
+    	Map<Long,LightMonitoringVO> companyDtlsMap = new HashMap<Long,LightMonitoringVO>();
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+				     LightMonitoringVO lightsVendorDtlsVO = new LightMonitoringVO();
+				     lightsVendorDtlsVO.setTotalLights(commonMethodsUtilService.getLongValueForObject(param[2]));
+				     lightsVendorDtlsVO.setTotalPanels(commonMethodsUtilService.getLongValueForObject(param[3]));
+				     lightsVendorDtlsVO.setTotalPoles(commonMethodsUtilService.getLongValueForObject(param[4]));
+				     lightsVendorDtlsVO.setWorkingLights(commonMethodsUtilService.getLongValueForObject(param[5]));
+				     lightsVendorDtlsVO.setOnLights(commonMethodsUtilService.getLongValueForObject(param[6]));
+				     lightsVendorDtlsVO.setOffLights(commonMethodsUtilService.getLongValueForObject(param[7]));
+				     lightsVendorDtlsVO.setNotWorkingLights(commonMethodsUtilService.getLongValueForObject(param[8]));
+				     companyDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), lightsVendorDtlsVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLightVendorWiseLightsDetails - LightMonitoringService service",e);
+		}
+		return companyDtlsMap;
+	}
+
+	public List<LightsVendor> getLightsVendorList() {
+		try {
+			return lightsVendorDAO.getAll();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLightsVendorList - LightMonitoringService service",e);
+		}
+		return null;
+	}
+ 
 }
 	
 	        	

@@ -42,6 +42,9 @@ public class LightMonitoringVO implements Serializable{
 	
 	private LightMonitoringVO nredcapVO;
 	private LightMonitoringVO eeslVO;
+	private Long lightVendorId;
+	private String lightVendorName;
+	private List<LightMonitoringVO> subList;
 	
 	
 	private List<LightWattageVO> WattageList = new ArrayList<LightWattageVO>(0);
@@ -260,5 +263,24 @@ public class LightMonitoringVO implements Serializable{
 	public void setEeslVO(LightMonitoringVO eeslVO) {
 		this.eeslVO = eeslVO;
 	}
+	public Long getLightVendorId() {
+		return lightVendorId;
+	}
+	public void setLightVendorId(Long lightVendorId) {
+		this.lightVendorId = lightVendorId;
+	}
+	public String getLightVendorName() {
+		return lightVendorName;
+	}
+	public void setLightVendorName(String lightVendorName) {
+		this.lightVendorName = lightVendorName;
+	}
+	public List<LightMonitoringVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<LightMonitoringVO> subList) {
+		this.subList = subList;
+	}
+	
 	
 }

@@ -24,10 +24,11 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 
 }
 	@Override
-	public List<Object[]> getTotalWattege(Date fromDate,Date toDate, String locationType,List<Long> locationValues) {
-		StringBuilder sb = new StringBuilder();
-		 sb.append("select model.wattage ,sum(model.lightCount) "
-				 +" from "
+	public List<Object[]> getTotalWattege(Date fromDate,Date toDate, String locationType,List<Long> locationValues,List<Long> lightsVendorIds) {
+		 StringBuilder sb = new StringBuilder();
+		 sb.append("select model.lightMonitoring.lightsVendor.lightsVendorId,model.lightMonitoring.lightsVendor.vendorName," +
+		 		 "  model.wattage ,sum(model.lightCount) "
+				+" from "
 				+ " LightWattage model  "
 		 		+ " where model.isDeleted = 'N' and model.lightMonitoring.isDeleted ='N' ");
 		 if( locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.size() > 0){
@@ -41,10 +42,13 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 					sb.append(" AND model.lightMonitoring.panchayat.locationAddress.tehsil.tehsilId in(:locationValues) ");
 				}
 			}
+		 if (lightsVendorIds != null && lightsVendorIds.size() > 0) {
+				sb.append(" AND model.lightMonitoring.lightsVendor.lightsVendorId in (:lightsVendorIds)");
+		 }
 		 if(fromDate != null && toDate != null){
 			 sb.append(" and date(model.lightMonitoring.surveyDate) between :fromDate and :toDate ");
 		 }
-		 sb.append(" group by model.wattage ");
+		 sb.append(" group by model.lightMonitoring.lightsVendor.lightsVendorId,model.wattage ");
 		 
 		 Query query = getSession().createQuery(sb.toString());
 		 if(fromDate != null && toDate != null){
@@ -52,8 +56,11 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 			 query.setDate("toDate", toDate);
 		 }
 		 if(locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.size() > 0){
-				query.setParameterList("locationValues",locationValues);
+			 query.setParameterList("locationValues",locationValues);
 		 }
+		 if(lightsVendorIds != null && lightsVendorIds.size() > 0){
+			 query.setParameterList("lightsVendorIds",lightsVendorIds);
+		 }	
 		return query.list();
 	}
 	@Override
@@ -64,7 +71,7 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 		return query.executeUpdate();	
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getLocationWiseLightWattageDtls(String locationType,String filterType,List<Long> filterValues,Date fromDate,Date toDate)
+	public List<Object[]> getLocationWiseLightWattageDtls(String locationType,String filterType,List<Long> filterValues,Date fromDate,Date toDate,List<Long> lightsVendorIds)
 	{
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbc = new StringBuilder();
@@ -95,9 +102,9 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 			sb.append(",LM.lightMonitoring.panchayat.panchayatId ");
 			sbg.append(" GROUP BY LM.lightMonitoring.panchayat.panchayatId ");
 		}
-		sbg.append(",LM.wattage");
+		sbg.append(",LM.lightMonitoring.lightsVendor.lightsVendorId,LM.wattage ");
 		
-		sb.append(" FROM LightWattage LM  WHERE LM.lightMonitoring.panchayat.locationAddress.state.stateId = 1 and LM.isDeleted='N' and LM.lightMonitoring.isDeleted='N' ");
+		sb.append(" ,LM.lightMonitoring.lightsVendor.lightsVendorId,LM.lightMonitoring.lightsVendor.vendorName FROM LightWattage LM  WHERE LM.lightMonitoring.panchayat.locationAddress.state.stateId = 1 and LM.isDeleted='N' and LM.lightMonitoring.isDeleted='N' ");
 		
 		if(filterType != null && filterType.trim().length() > 0 && filterValues != null && filterValues.size() > 0)
 		{
@@ -116,7 +123,10 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 		if (fromDate != null && toDate != null) {
 			 sbc.append(" and  date(LM.lightMonitoring.surveyDate) between :fromDate and :toDate ");
 		}
-		
+		if (lightsVendorIds != null && lightsVendorIds.size() > 0) {
+			sb.append(" AND LM.lightMonitoring.lightsVendor.lightsVendorId in (:lightsVendorIds)");
+			sbg.append(",LM.lightMonitoring.lightsVendor.lightsVendorId ");
+		}
 		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
 		Query query = getSession().createQuery(queryStr);
 		
@@ -128,6 +138,9 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		 if(lightsVendorIds != null && lightsVendorIds.size() > 0){
+				query.setParameterList("lightsVendorIds",lightsVendorIds);
+		 }	
 		return query.list();
 	}
 	

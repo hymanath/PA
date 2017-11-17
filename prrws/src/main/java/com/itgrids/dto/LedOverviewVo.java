@@ -4,8 +4,9 @@ public class LedOverviewVo {
 	
 	private Long totalDistCnt = 0l;
 	private Long totalConstituencyCnt = 0l;
-	private Long totalMandalCnt =0l;
-	private Long totalpanchayatCnt =0l;
+	private Long totalMandalCnt = 0l;
+	private Long totalpanchayatCnt = 0l;
+	
 	public Long getTotalDistCnt() {
 		return totalDistCnt;
 	}

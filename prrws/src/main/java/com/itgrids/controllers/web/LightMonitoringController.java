@@ -1,6 +1,5 @@
 package com.itgrids.controllers.web;
 
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +18,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LedOverviewVo;
 import com.itgrids.dto.LightMonitoringVO;
 import com.itgrids.dto.ResultVO;
+import com.itgrids.model.LightsVendor;
 import com.itgrids.service.ILightMonitoring;
 
 
@@ -29,8 +28,10 @@ import com.itgrids.service.ILightMonitoring;
 public class LightMonitoringController {
 
 	private static final Logger logger  =  LoggerFactory.getLogger(LightMonitoringController.class);	
+	
 	@Autowired
 	private ILightMonitoring  lightMonitoring;
+	
 	@RequestMapping(value ="/getlightsMonitoringDashboard", method = RequestMethod.GET)
     public String firstPage(ModelMap model) {
 		return "lightsMonitoringDashboard";
@@ -45,48 +46,47 @@ public class LightMonitoringController {
 
 	@RequestMapping(value = "/getBasicLedOverviewDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  List<LightMonitoringVO>  getBasicLedOverviewDetails(@RequestBody InputVO inputVO){
-		List<LightMonitoringVO>  voList = lightMonitoring.getBasicLedOverviewDetails(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue());
+		List<LightMonitoringVO>  voList = lightMonitoring.getBasicLedOverviewDetails(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue(),inputVO.getLightVendorIdList());
 		return voList;
 	}	
 	
 	@RequestMapping(value = "/getLedOverviewForStartedLocationsDetailsCounts", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  List<LedOverviewVo>  getLedOverviewForStartedLocationsDetailsCountsv(@RequestBody InputVO inputVO){
-		List<LedOverviewVo>  voList = lightMonitoring.getLedOverviewForStartedLocationsDetailsCounts(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue());
+		List<LedOverviewVo>  voList = lightMonitoring.getLedOverviewForStartedLocationsDetailsCounts(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue(),inputVO.getLightVendorIdList());
 		return voList;
 	}
 	
 	@RequestMapping(value = "/getAllLevelWiseDataOverView", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  List<LightMonitoringVO> getAllLevelWiseDataOverView(@RequestBody InputVO inputVO){
-		List<LightMonitoringVO>  voList = lightMonitoring.getAllLevelWiseDataOverView(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationIds(),inputVO.getFromDate(),inputVO.getToDate());
+		List<LightMonitoringVO>  voList = lightMonitoring.getAllLevelWiseDataOverView(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationIds(),inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLightVendorIdList());
 		return voList;
 	}
 	
    @RequestMapping(value = "/getLocationBasedOnSelection", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  List<LightMonitoringVO> getAllFilterWiseDataOverView(@RequestBody InputVO inputVO){
-    List<LightMonitoringVO>  voList = lightMonitoring.getLocationBasedOnSelection(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationIds(),inputVO.getSublocaType());
-    return voList;
+	   List<LightMonitoringVO>  voList = lightMonitoring.getLocationBasedOnSelection(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationIds(),inputVO.getSublocaType(),inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLightVendorIdList());
+	   return voList;
    }
    @RequestMapping(value = "/callWebService", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  ResultVO calllWebSerice(@RequestBody InputVO inputVO){
 	   ResultVO  statusVO = lightMonitoring.saveRealtimeStatusByVillages();
-    return statusVO;
+       return statusVO;
    }
-   @RequestMapping(value = "/getCompanyWiseLightMonitoringDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-   public @ResponseBody  LightMonitoringVO  getCompanyWiseLightMonitoringDtls(@RequestBody InputVO inputVO){
-		LightMonitoringVO  reusltVO = lightMonitoring.getCompanyWiseLightMonitoringDtls(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue());
-   return reusltVO;
- }	
-	
+ 	
    @RequestMapping(value = "/checkIsDataExist", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  InputVO  checkIsDataExist(@RequestBody InputVO inputVO){
 		InputVO  statusVO = lightMonitoring.checkIdDataExist(inputVO.getFromDate(),inputVO.getToDate());
-   return statusVO;
- }	
+       return statusVO;
+   }	
    
-   @RequestMapping(value = "/getNredCapLightMonitoringLocationWise", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+   @RequestMapping(value = "/getCompanyWiseLightMonitoringDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  LightMonitoringVO  getNredCapLightMonitoringLocationWise(@RequestBody InputVO inputVO){
-	   LightMonitoringVO  reusltVO=lightMonitoring.getNredCapLightMonitoringLocationWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValues());
-   return reusltVO;
- }	
+	   LightMonitoringVO  reusltVO=lightMonitoring.getCompanyWiseLightMonitoringDtls(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValues(),inputVO.getLightVendorIdList());
+       return reusltVO;
+ }
+   @RequestMapping(value ="/getLightsVendors", method = RequestMethod.GET)
+   public List<LightsVendor> getLightsVendors() {
+	return lightMonitoring.getLightsVendorList();
+   }
 }
 
