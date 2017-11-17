@@ -493,7 +493,7 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType,levelId,levelValu
 								if(result.desinationVOList[i].desinationMebersVOList[j].status == "Approved" || result.desinationVOList[i].desinationMebersVOList[j].status == "Inprogress"){
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit" attr_level_id="'+levelId+'" attr_location_value="'+levelValue+'">Edit</h5></td>';
 								}else if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="save" attr_level_id="'+levelId+'" attr_location_value="'+levelValue+'">Add Member</h5></td>';
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal" attr_level_id="'+levelId+'" attr_location_value="'+levelValue+'" attr_role_id="'+result.desinationVOList[i].designationId+'">Add Member</h5></td>';
 								}
 								
 							str+='</tr>';	
@@ -547,8 +547,9 @@ $(document).on("click",".memberAddEditDetailsCls",function(){
 	var type = $(this).attr("attr_type");
 	var levelId = $(this).attr("attr_level_id");
 	var levelValue = $(this).attr("attr_location_value");
+	var roleId = $(this).attr("attr_role_id");
 	$("#memberAddEditModalOpen").modal("show");
-	buildMemberAddEditDetailsBlock(type,levelId,levelValue);
+	buildMemberAddEditDetailsBlock(type,levelId,levelValue,roleId);
 });
 $(document).on("click",".closeShowPdfCls",function(){
 	setTimeout(function(){
@@ -556,14 +557,14 @@ $(document).on("click",".closeShowPdfCls",function(){
 	}, 500);                     
 });
 	
-function buildMemberAddEditDetailsBlock(type,levelId,levelValue){
+function buildMemberAddEditDetailsBlock(type,levelId,levelValue,roleId){
 	
 	$("#memberAddEditPopUpDetailsId").html(spinner);
 	if(type=="edit"){
 		$("#memberAddedPopUpDetailsId").html('');
 	}
 	var str='';
-	if(type == "save"){
+	if(type == "proposal"){
 		
 		
 		str+='<div class="row">';
@@ -616,7 +617,7 @@ function buildMemberAddEditDetailsBlock(type,levelId,levelValue){
 				str+='<input id="searchValue" class="form-control search-text border_radius_none height_41" type="text">';
 			str+='</div>';
 			str+='<div class="col-sm-2">';
-				str+='<button id="clickSearchbutton" class="btn btn-success border_radius_none height_41 text-bold" type="button" attr_level_id="'+levelId+'" attr_location_value="'+levelValue+'">SEARCH</button>';
+				str+='<button id="clickSearchbutton" class="btn btn-success border_radius_none height_41 text-bold" type="button" attr_level_id="'+levelId+'" attr_location_value="'+levelValue+'" attr_role_id="'+roleId+'" attr_status_type="'++type'">SEARCH</button>';
 			str+='</div>';
 		str+='</div>';
 	}else{
@@ -815,7 +816,7 @@ $(document).on("click","#clickSearchbutton",function(){
 	
 	var voterMembershipVal = $("#searchValue").val();
 	var searchType = $("#searchtypeVal").val();
-	
+	var statusType = $(this).attr("attr_status_type");
 	var stateId=$("#statesDivId").val();
 	var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
@@ -823,6 +824,7 @@ $(document).on("click","#clickSearchbutton",function(){
 	var panchayatId=$("#panchaytList").val();
 	var locationLevel = 0;
 	var locationValue = 0;
+	var roleId = $(this).attr("attr_role_id"):
 	
 	if(panchayatId !=0 && panchayatId>0)
 	{
@@ -867,10 +869,10 @@ $(document).on("click","#clickSearchbutton",function(){
 	8-Greater Cites
 	9-booth
 	10-parliament */
-	getJanmabhoomiCommitteeOverviewAction1(locationLevel,locationValue,voterMembershipVal,searchType);	
+	searchByMemberIdOrVoterId(locationLevel,locationValue,voterMembershipVal,searchType,roleId,statusType);	
 });	 
 
-function getJanmabhoomiCommitteeOverviewAction1(levelId,levelValue,voterMembershipVal,searchType){  
+function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchType,roleId,statusType){  
 	$("#memberAddedPopUpDetailsId").html(spinner)
 	var memberShipCardNo='';
 	var voterCardNo     ='';
@@ -895,12 +897,12 @@ function getJanmabhoomiCommitteeOverviewAction1(levelId,levelValue,voterMembersh
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){ 
       if(result !=null){
-		  builldLevelWiseMemberDetailsAppend(result);
+		  builldLevelWiseMemberDetailsAppend(result,roleId,statusType);
 	  }
     });
 }
   
-  function builldLevelWiseMemberDetailsAppend(result){
+  function builldLevelWiseMemberDetailsAppend(result,roleId,statusType){
 	  var str='';
 	  
 	  str+='<div class="row m_top20">';
@@ -923,7 +925,7 @@ function getJanmabhoomiCommitteeOverviewAction1(levelId,levelValue,voterMembersh
 								str+='</td>';
 								str+='<td class="line_heightCss">';
 								str+='<h5><span class="text-bold">Name : </span> <span>'+result.name+'</span></h5>';
-									str+='<h5><span class="text-bold">V.Id : </span> <span>'+result.voterId+'</span></h5>';
+									str+='<h5><span class="text-bold">V.Id : </span> <span>'+result.voterCardNo+'</span></h5>';
 									str+='<h5><span class="text-bold">M.Id : </span> <span>'+result.memberShipCardId+'</span></h5>';
 									str+='<h5><span class="text-bold">Mobile : </span> <span>'+result.mobileNumber+'</span></h5>';
 								str+='</td>';
@@ -943,63 +945,71 @@ function getJanmabhoomiCommitteeOverviewAction1(levelId,levelValue,voterMembersh
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
+		str+='<form name="addMember" id="addMember"  method="post" enctype="multipart/form-data">';
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-12">';
 			
 			str+='<div class="col-sm-2">';
 				str+='<label>';
-					str+='<input type="text" class="form-control" id="" placeholder="Enter Name">';
+					str+='<input type="text" class="form-control" id="" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.memberName" >';
 				str+='</label>';
 			str+='</div>';
 			
 			str+='<div class="col-sm-2">';
 				str+='<label>';
-					str+='<input type="text" class="form-control" id="" placeholder="Enter MobileNo">';
+					str+='<input type="text" class="form-control" id="" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber">';
 				str+='</label>';
 			str+='</div>';
-			
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.voterId" value="'+result.voterId+'"/>';
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+result.tdpCadreId+'"/>';
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';
 			str+='<div class="col-sm-2">';
-				str+='<select class="form-control chosen-select">';
+				str+='<select class="form-control chosen-select" id="casteCategoryId" name="janmabhoomiCommitteeMemberVO.categoryId">';
 					str+='<option value="0">Select Category</option>';
 				str+='</select>';
 			str+='</div>';
 			
 			str+='<div class="col-sm-2">';
-				str+='<select class="form-control chosen-select">';
+				str+='<select class="form-control chosen-select" id="casteId" name="janmabhoomiCommitteeMemberVO.casteId">';
 					str+='<option value="0">Select Caste</option>';
 				str+='</select>';
 			str+='</div>';
 			
 			str+='<div class="col-sm-2">';
-				str+='<select class="form-control chosen-select">';
+				str+='<select class="form-control chosen-select" id="partyId" name="janmabhoomiCommitteeMemberVO.partyId">';
 					str+='<option value="0">Select Party</option>';
+					str+='<option value="1117">YSRC</option>';
+					str+='<option value="872">TDP</option>';
+					str+='<option value="362">INC</option>';
 				str+='</select>';
 			str+='</div>';
 			
 			str+='</div>';
 		str+='</div>';	
-		
+		str+='</form>';
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-3">';
-				str+='<button id="clickSearchbutton" class="btn btn-success border_radius_none height_41 text-bold" type="button">Add Member</button>';
+				str+='<button id="clickSearchbutton" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication();">Add Member</button>';
 				
 			str+='</div>';
 		str+='</div>';
 	$("#memberAddedPopUpDetailsId").html(str);
+	 getAllCategoriesAction();
 	$(".chosen-select").chosen();
   }
 //getJanmabhoomiCommitteesByLocIdAndCommLvlId();
   
   function getJanmabhoomiCommitteesByLocIdAndCommLvlId(){
-	  alert(6)
-	var jsObj={
+	  var jsObj={
 		
  		"fromDate"			:"",
  		"endDate"			:"",
 		locationId:11,
 		levelId:3,
 		committeeLvlId:3,
-		status:"total"
+		status:"total"//NotStarted,Approved,Inprogress, readyforapproval
 	}
  	   $.ajax({
  		  type : "POST",
@@ -1010,3 +1020,65 @@ function getJanmabhoomiCommitteeOverviewAction1(levelId,levelValue,voterMembersh
 			
  		});
   }
+
+function getAllCategoriesAction(){  
+    
+     $.ajax({
+      type : "GET",
+      url : "getAllMainCategoriesAction.action",
+      dataType : 'json'
+    }).done(function(result){ 
+      if(result != null && result.length >0){
+		  for(var i in result){
+			  $("#casteCategoryId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
+		  }
+		  $("#casteCategoryId").trigger("chosen:updated");
+	  }
+    });
+}
+
+$(document).on("change","#casteCategoryId",function(){
+if($(this).val() != 0){
+		getStatewiseCastNamesByCasteCategoryGroupIdAction($(this).val());
+	}
+	
+}) ;
+
+//getStatewiseCastNamesByCasteCategoryGroupIdAction();
+function getStatewiseCastNamesByCasteCategoryGroupIdAction(casteCategoryId){  
+var categoryGrouIdsList=[];
+categoryGrouIdsList.push(casteCategoryId);
+    var jsObj={
+    "categoryGrouIdsList"  :categoryGrouIdsList
+    }
+     $.ajax({
+      type : "POST",
+      url : "getStatewiseCastNamesByCasteCategoryGroupIdAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){ 
+       if(result != null && result.length >0){
+		  for(var i in result){
+			  $("#casteId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
+		  }
+		  $("#casteId").trigger("chosen:updated");
+	  }
+    });
+}
+function savingApplication(){
+	
+			alert(5)
+			var uploadHandler = {
+				upload: function(o) {
+					$("#savingAjaxImg").css("display","none");
+					uploadResult = o.responseText;
+					//showSbmitStatus(uploadResult);
+				}
+			};
+	
+			YAHOO.util.Connect.setForm('addMemberSaving',true);
+			YAHOO.util.Connect.asyncRequest('POST','saveJanmabhoomiCommitteeMemberAction.action',uploadHandler);
+			
+	}
+		
+	}
