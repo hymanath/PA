@@ -59,7 +59,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 	 */
 
 	@Override
-	public List<Object[]> getTotalVillagesDetails(Date fromDate, Date toDate, String locationType,List<Long> locationValues,List<Long> lightsVendorIds) {
+	public List<Object[]> getTotalVillagesDetails(Date fromDate, Date toDate, String locationType,List<Long> locationValues,List<Long> lightsVendorIds,String isGroupRequired) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.lightsVendor.lightsVendorId,model.lightsVendor.vendorName," +
 				" sum(model.totalLights),sum(model.totalPanels),sum(model.totalPoles),"
@@ -83,7 +83,10 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		if (fromDate != null && toDate != null) {
 			sb.append(" and  date(model.surveyDate) between :fromDate and :toDate ");
 		}
-		sb.append(" group by model.lightsVendor.lightsVendorId");
+		if (isGroupRequired.equalsIgnoreCase("Yes")) {
+			sb.append(" group by model.lightsVendor.lightsVendorId");	
+		}
+		
 		Query query = getSession().createQuery(sb.toString());
 		if (fromDate != null && toDate != null) {
 			query.setDate("fromDate", fromDate);

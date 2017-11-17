@@ -10,7 +10,7 @@ import com.itgrids.model.LightMonitoring;
 
 
 public interface ILightMonitoringDAO extends GenericDao<LightMonitoring, Long > {
-	public List<Object[]> getTotalVillagesDetails(Date startDate,Date endDate,String locationType,List<Long> locationValues,List<Long> lightsVendorIds);
+	public List<Object[]> getTotalVillagesDetails(Date startDate,Date endDate,String locationType,List<Long> locationValues,List<Long> lightsVendorIds,String isGroupRequired);
 	public List<Object[]> getTotalSurveyDetails(Date startDate,Date endDate,String locationType,List<Long> locationValues,List<Long> lightsVendorIds,String isGroupRequired);
 	public List<LightMonitoring> getLiveDateForCurrentDateSelection(Date date);
   	public List<Object[]> getLocationsForLEDDashboard(String locationType,String filterType,List<Long> locationIds,String subLocationType,Date fromDate,Date toDate,List<Long> lightsVendorIds);
