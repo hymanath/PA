@@ -53,7 +53,7 @@
 									<div class="menu-heading-block">
 										<h4 class="text-capital">Rural Water Supply</h4>
 										<div class="row">
-											<div class="col-sm-6 m_top10">
+											<div class="col-sm-12 m_top10">
 												<div class="menu-block" style="background-color:#56A3C5">
 													<a href="ruralWaterSupplyDashBoard">
 														<h3>RWS</h3>
@@ -61,6 +61,8 @@
 													</a>
 												</div>
 											</div>
+										</div>
+										<div class="row">
 											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#1e92b2">
 													<a href="swachhBharatMissionIHHL">
@@ -69,9 +71,7 @@
 													</a>
 												</div>
 											</div>
-										</div>
-										<div class="row">
-											<div class="col-sm-12 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#1c94ef">
 													<a href="waterTanksClorinationDashBoard">
 														<h3>WTC</h3>
@@ -100,14 +100,14 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-6 m_top10">
+											<!-- <div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#2C546C">
 													<a href="#">
 														<h3>ENC</h3>
 														<p>Engineering Dept</p>
 													</a>
 												</div>
-											</div>
+											</div>-->
 											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#512507">
 													<a href="getdailySpikeReport">
@@ -120,11 +120,11 @@
 												<div class="menu-block" style="background-color:#888420">
 													<a href="getlightsMonitoringDashboard">
 														<h3>LED</h3>
-														<p>Light Monitoring Dashboard</p>
+														<p>Light Monitoring</p>
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-6 m_top10">
+											<!-- <div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#ff5e1c">
 													<a href="prExpenditureDashboard">
 														<h3>PR EXP</h3>
@@ -132,6 +132,14 @@
 													</a>
 												</div>
 											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#1c94ef">
+													<a href="waterTanksClorinationDashBoard">
+														<h3>WTC</h3>
+														<p>Water Tank Clorination</p>
+													</a>
+												</div>
+											</div>-->
 										</div>
 									</div>
 								</div>
