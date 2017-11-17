@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
@@ -471,7 +472,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					}else if(confirmedStatus == "Y" && completedDate != ""){
 						status = "Approved";
 					}
-					if(committeeLvlId.longValue()==1l){
+					if(committeeLvlId.longValue()==1l || commonMethodsUtilService.getLongValueForObject(param[6]) == 517l){
 						locVO.setStatusType(status);
 						locVO.setCommitteeId(commonMethodsUtilService.getLongValueForObject(param[5]));
 					}
@@ -521,6 +522,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	public void getUserAccessVals(List<Object[]> userLocaVals,Set<Long> userAccessLocVals){
 		try {
 			if(commonMethodsUtilService.isListOrSetValid(userLocaVals)){
+				userAccessLocVals = new TreeSet<Long>();
 				for (Object[] userAccessVal : userLocaVals) {
 					userAccessLocVals.add(commonMethodsUtilService.getLongValueForObject(userAccessVal[0]));
 				}
@@ -667,6 +669,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					jbCommitteeMember.setMobileNo(janmabhoomiCommitteeMemberVO.getMobileNumber());
 					//jbCommitteeMember.setDescripation(null);
 					jbCommitteeMember.setTdpCadreId(janmabhoomiCommitteeMemberVO.getTdpCadreId());
+					jbCommitteeMember.setPartyId(janmabhoomiCommitteeMemberVO.getPartyId());
 					jbCommitteeMember.setStartDate(dateUtilService.getCurrentDateAndTime());
 					//jbCommitteeMember.setEndDate(dateUtilService.getCurrentDateAndTime());
 					jbCommitteeMember.setIsActive("Y");
