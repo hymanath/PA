@@ -47,4 +47,6 @@ public interface IConstituencyDAO extends GenericDao<Constituency,Long>{
 	
 	public List<Object[]> getMgnregsConstituencyMappingCode(Long constituencyId);
 	public List<Object[]> getConstituencyDistrictId();
+	
+	public List<Object[]> getLocationsNamesBySubLocation(Long districtId);
 }
