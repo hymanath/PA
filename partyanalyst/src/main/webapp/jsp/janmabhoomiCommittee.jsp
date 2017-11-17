@@ -74,6 +74,7 @@
 		</div>
 		<div class="modal-body">   
           <div id="memberAddEditPopUpDetailsId"></div>
+          <div id="memberAddedPopUpDetailsId"></div>
        </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
