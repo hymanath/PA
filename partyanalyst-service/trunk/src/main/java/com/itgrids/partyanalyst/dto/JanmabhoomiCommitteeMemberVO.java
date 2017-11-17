@@ -42,6 +42,7 @@ private String gender;
 private Long age;
 private String houseNo;
 
+private String voterCardNo;
 public Set<Long> getCommitteeIds() {
 	return committeeIds;
 }
@@ -240,6 +241,12 @@ public String getHouseNo() {
 }
 public void setHouseNo(String houseNo) {
 	this.houseNo = houseNo;
+}
+public String getVoterCardNo() {
+	return voterCardNo;
+}
+public void setVoterCardNo(String voterCardNo) {
+	this.voterCardNo = voterCardNo;
 }
 
 }
