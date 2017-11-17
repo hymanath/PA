@@ -22,6 +22,9 @@
 .conDetails-table th{
 	  border-top: none !important;
 }
+.m_left20{
+margin-left:20px;
+}
 </style>
 </head>
 <body>
@@ -185,7 +188,7 @@
 					</div>
 				
 				</div>
-				<div class="col-sm-3 border_right">
+				<div class="col-sm-2 border_right">
 					<div class="form-group">
 							<select id="districtSelId" class="form-control chosenSelect">
 								<option value="0"> SELECT DISTRICT</option>
@@ -207,12 +210,15 @@
 						<input type="text" class="form-control" id="dateRangePickerAUM" style="width: 200px;"/>
 					</div>
 				</div>
-			</div>
+				<div class="col-sm-1">
+					<button class="btn btn-md btn-success">PRINT</button>
+				</div>
+		   </div>
 		</div>
 	</section>
 </header>
 	<main> 
-		 <div class="container">
+		 <div class="container-fluid">
 			<section>
 				<div class="row m_top20">
 					<div class="col-sm-6 col-sm-offset-3">
