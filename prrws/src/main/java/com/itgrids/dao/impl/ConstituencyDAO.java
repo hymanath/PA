@@ -475,4 +475,18 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 		Query query = getSession().createQuery(queryStr.toString());
 		return query.list();
 	}
+	public List<Object[]> getLocationsNamesBySubLocation(Long districtId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select distinct model.constituencyId,model.name from Constituency model ");
+		queryStr.append("where ((model.areaType like '%rural%') or (model.areaType like '%rural-urban%')) ");
+		if(districtId != null && districtId.longValue() >0){
+			queryStr.append("and model.districtId=:districtId ");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		if(districtId != null && districtId.longValue() >0){
+			query.setParameter("districtId", districtId);
+		}
+		return query.list();
+
+	}
 }
