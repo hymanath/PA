@@ -32,6 +32,9 @@
 {
 	background-color:#fff;
 }
+.DTFC_LeftBodyLiner{
+	overflow-y:hidden;
+}
 </style>
 </head>
 <body>
