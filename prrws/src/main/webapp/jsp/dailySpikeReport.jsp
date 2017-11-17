@@ -66,6 +66,16 @@
 												</div>
 											</div>
 										</div>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#1c94ef">
+													<a href="waterTanksClorinationDashBoard">
+														<h3>WTC</h3>
+														<p>Water Tank Clorination</p>
+													</a>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="col-sm-12 m_top10">
@@ -118,14 +128,7 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-12 m_top10">
-												<div class="menu-block" style="background-color:#1c94ef">
-													<a href="waterTanksClorinationDashBoard">
-														<h3>WTC</h3>
-														<p>Water Tank Clorination</p>
-													</a>
-												</div>
-											</div>
+											
 										</div>
 									</div>
 								</div>
