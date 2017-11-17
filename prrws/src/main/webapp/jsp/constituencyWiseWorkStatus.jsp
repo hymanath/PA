@@ -7,8 +7,10 @@
 <title>ConstituencyWiseWorkStatus</title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+<link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
+<link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <style>
@@ -166,15 +168,22 @@
 						</div>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 	</nav>
 	<section class="navbar-section">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-2 border_right">
-					
+				<div class="col-sm-3 border_right">
+					<div class="form-horizontal">
+						<div class="form-group form-group-sm">
+							<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
+							<div class="col-sm-8">
+								<select id="financialYearId" class="chosenSelect" multiple></select>
+							</div>
+						</div>
+					</div>
+				
 				</div>
 				<div class="col-sm-3 border_right">
 					<div class="form-group">
@@ -183,19 +192,20 @@
 							</select>
 						</div>
 				</div>
-				<!--<div class="col-sm-6">
-					<ul class="list-inline">
-						<li><span class="color-label color-label-success"></span> 80% and above</li>
-						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
-						<li><span class="color-label color-label-danger"></span> 0% - 49%</li>
-					</ul>
-				</div>-->
 				<div class="col-sm-3">
 					<div class="form-group">
 							<select id="constituencySelId" class="form-control chosenSelect">
 								<option value="0"> SELECT CONSTITUENCY</option>
 							</select>
 						</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</span>
+						<input type="text" class="form-control" id="dateRangePickerAUM" style="width: 200px;"/>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -204,50 +214,29 @@
 	<main> 
 		 <div class="container">
 			<section>
-			
-			
 				<div class="row m_top20">
 					<div class="col-sm-6 col-sm-offset-3">
-					<div class="white_block text-center">
-					<h2 class="">LEADER DETAILS</h2>
+						<div class="white_block text-center">
+							<h2 class="">LEADER DETAILS</h2>
 								<div class="table-responsive m_top20">
 									<table class="table conDetails-table" style="font-family:sas-sarif;">
 										<tr>
-											<th>
-											<h4>NAME </h4>
-											</th>
-											<th>
-											<h4> :</h4>
-											</th>
-											<th>
-											<h5>VARAM</h5>
-											</th>
+											<th><h4>NAME </h4></th>
+											<th><h4> :</h4></th>
+											<th><h5>VARAM</h5></th>
 										</tr>
 										<tr>
-											<th>
-											<h4>DISTRICT </h4>
-											</th>
-											<th>
-											<h4> :</h4>
-											</th>
-											<th>
-											<h5>VISAKHAPATNAM</h5>
-											</th>
+											<th><h4>DISTRICT </h4></th>
+											<th><h4> :</h4></th>
+											<th><h5>VISAKHAPATNAM</h5></th>
 										</tr>
 										<tr>
-											<th>
-											<h4>CONSTITUENCY NAME </h4>
-											</th>
-											<th>
-											<h4> :</h4>
-											</th>
-											<th>
-											<h5>BHIMILI</h5>
-											</th>
+											<th><h4>CONSTITUENCY NAME </h4></th>
+											<th><h4> :</h4></th>
+											<th><h5>BHIMILI</h5></th>
 										</tr>
 									</table>
 								</div>
-							
 						</div>			  
 					</div>
 				</div>
