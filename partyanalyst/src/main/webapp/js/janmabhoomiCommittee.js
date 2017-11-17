@@ -559,7 +559,9 @@ $(document).on("click",".closeShowPdfCls",function(){
 function buildMemberAddEditDetailsBlock(type,levelId,levelValue){
 	
 	$("#memberAddEditPopUpDetailsId").html(spinner);
-	
+	if(type=="edit"){
+		$("#memberAddedPopUpDetailsId").html('');
+	}
 	var str='';
 	if(type == "save"){
 		
@@ -617,6 +619,50 @@ function buildMemberAddEditDetailsBlock(type,levelId,levelValue){
 				str+='<button id="clickSearchbutton" class="btn btn-success border_radius_none height_41 text-bold" type="button" attr_level_id="'+levelId+'" attr_location_value="'+levelValue+'">SEARCH</button>';
 			str+='</div>';
 		str+='</div>';
+	}else{
+		str+='<div class="row m_top20">';
+		str+='<div class="col-sm-12">';
+			str+='<p>Edit Member Results</p>';
+			str+='<div class="row m_top10">';
+				str+='<div class="col-sm-4">';
+					str+='<table class="table table-bordered">';
+						str+='<tbody>';
+						
+						str+='<tr>';
+							str+='<td style="vertical-align: middle; text-align: center;">';
+							str+='<img src="images/User.png"/>';
+							str+='</td>';
+							str+='<td class="line_heightCss">';
+							str+='<h5><span class="text-bold">Name : </span> <span>Ramesh</span></h5>';
+								str+='<h5><span class="text-bold">V.Id : </span> <span>120563659</span></h5>';
+								str+='<h5><span class="text-bold">M.Id : </span> <span>AP012356985</span></h5>';
+								str+='<h5><span class="text-bold">Mobile : </span> <span>962365896</span></h5>';
+							str+='</td>';
+						str+='</tr>';
+						
+						str+='<tr>';
+							 str+='<td colspan="2">';
+							 str+='<select class="form-control chosen-select" id="memberStatusChangeId">';
+									str+='<option value="0">Select Status</option>';
+									str+='<option value="approve">Approve</option>';
+									str+='<option value="reject">Reject</option>';
+								str+='</select>';
+							
+							  str+='</td>';
+						str+='</tr>';
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	str+='<div class="row m_top20">';
+		str+='<div class="col-sm-3">';
+			str+='<button id="clickSearchbutton" class="btn btn-success border_radius_none height_41 text-bold" type="button">Update Member</button>';
+			
+		str+='</div>';
+	str+='</div>';
+	
 	}
 	$("#memberAddEditPopUpDetailsId").html(str);
 	$(".chosen-select").chosen();
@@ -759,15 +805,14 @@ function getDistrictsForStates(stateId){
 		$("#mandalListImg").hide();
 		if(result !=null && result.length>0){
 			for(var i in result){
-				 $("#panchaytList").append('<option value='+result[i].id+'>'+result[i].locationName+'</option>');
+				 $("#panchaytList").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 			 }
 			 $("#panchaytList").trigger("chosen:updated") 
 		}
 	});
   }
 $(document).on("click","#clickSearchbutton",function(){
-	var levelId = $(this).attr("attr_level_id");
-	var levelValue = $(this).attr("attr_location_value");
+	
 	var voterMembershipVal = $("#searchValue").val();
 	var searchType = $("#searchtypeVal").val();
 	
@@ -776,14 +821,57 @@ $(document).on("click","#clickSearchbutton",function(){
 	var constituencyId=$("#constituencyId").val();
 	var mandalId=$("#mandalList").val();
 	var panchayatId=$("#panchaytList").val();
-	if(stateId ==0 && districtId == null && constituencyId == null && mandalId == null && panchayatId == null){
-		
+	var locationLevel = 0;
+	var locationValue = 0;
+	
+	if(panchayatId !=0 && panchayatId>0)
+	{
+		if(panchayatId.substr(0,1) == 1){
+			  locationLevel = 6;
+		}
+		else if(panchayatId.substr(0,1) == 2){
+			 locationLevel = 8;
+			 
+		}								
+		locationValue = panchayatId.substr(1);
 	}
-	getJanmabhoomiCommitteeOverviewAction1(levelId,levelValue,voterMembershipVal,searchType);	
+	else if(mandalId !=0 && mandalId>0)
+	{
+		if(mandalId.substr(0,1) == 1){
+			 locationLevel = 7;
+		}
+		else if(mandalId.substr(0,1) == 2){
+			 locationLevel = 5;
+		}
+		else if(mandalId.substr(0,1) == 3){
+			 locationLevel = 8;
+		}
+		locationValue = mandalId.substr(1);
+	}
+	
+	else if(constituencyId != 0 && constituencyId>0)
+	{
+		locationValue = constituencyId;
+		locationLevel = 4;	
+	}
+	else if(districtId != 0 && districtId>0)
+	{
+		locationValue = districtId;
+		locationLevel = 3;
+	}
+	else if(stateId !=0 && stateId>0){
+		locationValue = stateId;
+		locationLevel = 2;
+	}
+	/* 7-localEle
+	8-Greater Cites
+	9-booth
+	10-parliament */
+	getJanmabhoomiCommitteeOverviewAction1(locationLevel,locationValue,voterMembershipVal,searchType);	
 });	 
 
 function getJanmabhoomiCommitteeOverviewAction1(levelId,levelValue,voterMembershipVal,searchType){  
-
+	$("#memberAddedPopUpDetailsId").html(spinner)
 	var memberShipCardNo='';
 	var voterCardNo     ='';
 	if(searchType == "voter"){
@@ -806,10 +894,100 @@ function getJanmabhoomiCommitteeOverviewAction1(levelId,levelValue,voterMembersh
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){ 
-      
+      if(result !=null){
+		  builldLevelWiseMemberDetailsAppend(result);
+	  }
     });
 }
   
+  function builldLevelWiseMemberDetailsAppend(result){
+	  var str='';
+	  
+	  str+='<div class="row m_top20">';
+			str+='<div class="col-sm-12">';
+				str+='<p>Search Results</p>';
+				str+='<div class="row m_top10">';
+					str+='<div class="col-sm-4">';
+						str+='<table class="table table-bordered">';
+							str+='<tbody>';
+							
+							str+='<tr>';
+								str+='<td style="vertical-align: middle; text-align: center;">';
+								if(result.imageURL !=null && result.imageURL.trim().length>0){
+									str+='<img src="'+result.imageURL+'"/>';
+								}else{
+									str+='<img src="images/User.png"/>';
+								}
+								
+									
+								str+='</td>';
+								str+='<td class="line_heightCss">';
+								str+='<h5><span class="text-bold">Name : </span> <span>'+result.name+'</span></h5>';
+									str+='<h5><span class="text-bold">V.Id : </span> <span>'+result.voterId+'</span></h5>';
+									str+='<h5><span class="text-bold">M.Id : </span> <span>'+result.memberShipCardId+'</span></h5>';
+									str+='<h5><span class="text-bold">Mobile : </span> <span>'+result.mobileNumber+'</span></h5>';
+								str+='</td>';
+							str+='</tr>';
+							
+							str+='<tr>';
+								 str+='<td colspan="2">';
+								 str+='<label class="checkbox-inline">';
+										str+='<input type="checkbox" value="">Select Member';
+									  str+='</label>';
+								
+								  str+='</td>';
+							str+='</tr>';
+							str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="row m_top20">';
+			str+='<div class="col-sm-12">';
+			
+			str+='<div class="col-sm-2">';
+				str+='<label>';
+					str+='<input type="text" class="form-control" id="" placeholder="Enter Name">';
+				str+='</label>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-2">';
+				str+='<label>';
+					str+='<input type="text" class="form-control" id="" placeholder="Enter MobileNo">';
+				str+='</label>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-2">';
+				str+='<select class="form-control chosen-select">';
+					str+='<option value="0">Select Category</option>';
+				str+='</select>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-2">';
+				str+='<select class="form-control chosen-select">';
+					str+='<option value="0">Select Caste</option>';
+				str+='</select>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-2">';
+				str+='<select class="form-control chosen-select">';
+					str+='<option value="0">Select Party</option>';
+				str+='</select>';
+			str+='</div>';
+			
+			str+='</div>';
+		str+='</div>';	
+		
+		str+='<div class="row m_top20">';
+			str+='<div class="col-sm-3">';
+				str+='<button id="clickSearchbutton" class="btn btn-success border_radius_none height_41 text-bold" type="button">Add Member</button>';
+				
+			str+='</div>';
+		str+='</div>';
+	$("#memberAddedPopUpDetailsId").html(str);
+	$(".chosen-select").chosen();
+  }
 //getJanmabhoomiCommitteesByLocIdAndCommLvlId();
   
   function getJanmabhoomiCommitteesByLocIdAndCommLvlId(){
