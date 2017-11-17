@@ -14,9 +14,11 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IJanmabhoomiCommitteeService;
 import com.itgrids.partyanalyst.service.impl.LeaderCadreDashBoardService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -104,11 +106,15 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	} 
 	public String getDistrictWiseCommitteeDetails(){
 		try {
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+			if(user==null)
+				return "input";
 			jObj=new JSONObject(getTask());
 			   String fromDate = jObj.getString("fromDate");
 			   String endDate = jObj.getString("endDate");
 			   String type = jObj.getString("type");
-			  janmabhoomiCommitteeVOList = janmabhoomiCommitteeService.getDistrictWiseCommitteeDetails(fromDate,endDate,type);
+			  janmabhoomiCommitteeVOList = janmabhoomiCommitteeService.getDistrictWiseCommitteeDetails(fromDate,endDate,type,user.getRegistrationID());
 			  
 		} catch (Exception e) {
 			LOG.error("Excepting Occured in getDistrictWiseCommitteeDetails() of JanmaBhoomiCommitteeAction ", e);

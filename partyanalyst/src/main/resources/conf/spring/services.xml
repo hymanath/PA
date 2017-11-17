@@ -4550,5 +4550,7 @@
     	<property name="cadreRegistrationService" ref="cadreRegistrationService" /> 
     	<property name="casteStateDAO" ref="casteStateDAO" /> 
     	<property name="casteCategoryDAO" ref="casteCategoryDAO" /> 
+    	<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" /> 
+    	<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" /> 
     	</bean>
 </beans>			
