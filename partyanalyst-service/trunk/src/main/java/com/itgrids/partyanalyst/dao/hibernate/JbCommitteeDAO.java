@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -32,7 +33,7 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 	 Query query = getSession().createQuery(sb.toString());
 	 return query.list();
  }
-	public List<Object[]> getDistrictWiseCommitteeDetails(Date fromDate,Date endDate,String type){
+	public List<Object[]> getDistrictWiseCommitteeDetails(Date fromDate,Date endDate,String type,Set<Long> userAccessVals){
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select model.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommitteeLevel.name,model.isCommitteeConfirmed," +
@@ -56,6 +57,12 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		}
 		sb.append(" where model.isDeleted = 'N' ");
 		
+		if(type != null && type.equalsIgnoreCase("district") && userAccessVals != null && userAccessVals.size() >0){
+			sb.append(" and district.districtId in (:userAccessVals)  ");
+		}else if(type != null && type.equalsIgnoreCase("constituency") && userAccessVals != null && userAccessVals.size() >0){
+			sb.append(" and constituency.constituencyId in (:userAccessVals) ");
+		}
+		
 		/*sb.append(" group by model.jbCommitteeLevel.jbCommitteeLevelId ");
 		if(type != null && type.equalsIgnoreCase("district")){
 			sb.append(" , district.districtId ");
@@ -66,6 +73,9 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		}*/
 		
 		Query query = getSession().createQuery(sb.toString());
+		if(userAccessVals != null && userAccessVals.size() >0){
+			query.setParameterList("userAccessVals", userAccessVals);
+		}
 		return query.list();
 		
 	}

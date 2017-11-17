@@ -9,7 +9,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 public interface IJanmabhoomiCommitteeService 
 {
 	public JanmabhoomiCommitteeMemberVO getJanmabhoomiCommitteeOverview(Long committeId,String fromDate,String toDate);
-	public List<JanmabhoomiCommitteeVO> getDistrictWiseCommitteeDetails(String fromDate,String endDate,String type);
+	public List<JanmabhoomiCommitteeVO> getDistrictWiseCommitteeDetails(String fromDate,String endDate,String type,Long userId);
 	public  JanmabhoomiCommitteeVO  getJbCommitteeStatusCount(String fromDateStr, String toDateStr);
 	//public Map<Long,JanmabhoomiCommitteeMemberVO> getLevelWiseCommiteeStatusCounts();
 	public ResultStatus saveJanmabhoomiCommitteeMember(final JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO);
