@@ -131,6 +131,39 @@ function getLocationsNamesBySubLocation(locationId){
 		$("#constituencySelId").trigger('chosen:updated');
     });
 }	
+$(document).on("change","#constituencySelId",function(){
+	  var constincyId=$(this).val();
+	  alert(constincyId);
+	  getDistrictNameAndLeaderName(constincyId);
+	});
+	function getDistrictNameAndLeaderName(locationId){  
+	   var json = {
+	         locationId:locationId
+	       }
+	   $.ajax({ 
+	     url: 'getDistrictNameAndMlaNameByConsitutency', 
+	     type:'POST',  
+	     data : JSON.stringify(json),
+	     dataTypa : 'json',   
+	     beforeSend: function(xhr) {
+	       xhr.setRequestHeader("Accept", "application/json");
+	       xhr.setRequestHeader("Content-Type", "application/json");
+	     },
+	           
+	   }).done(function(result){
+	     if(result!= null){
+	     
+	      $("#mlaName").append("<h5>"+result[0].mlaName+"</h5>");
+	     $("#districtName").append("<h5>"+result[0].locationName+"</h5>");
+	     $("#constituencyName").append("<h5 class='text-capitalize'>"+result[0].workName+"</h5>");
+	   }else{
+	      $("#districtName").html('District');
+	       $("#mlaName").html('MLA Name');
+	        $("#constituencyName").html('Constituency Name');
+	   }
+	   });
+	}
+
 function collapseBlock(){
 	var collapse='';
 	if(blockNames != null){
