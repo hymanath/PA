@@ -221,20 +221,20 @@
 								<div class="table-responsive m_top20">
 									<table class="table conDetails-table" style="font-family:sas-sarif;">
 										<tr>
-											<th><h4>NAME </h4></th>
-											<th><h4> :</h4></th>
-											<th><h5>VARAM</h5></th>
-										</tr>
-										<tr>
-											<th><h4>DISTRICT </h4></th>
-											<th><h4> :</h4></th>
-											<th><h5>VISAKHAPATNAM</h5></th>
-										</tr>
-										<tr>
-											<th><h4>CONSTITUENCY NAME </h4></th>
-											<th><h4> :</h4></th>
-											<th><h5>BHIMILI</h5></th>
-										</tr>
+								            <th><h4>NAME </h4></th>
+								            <th><h4> :</h4></th>
+								            <th><h5 id="mlaName"></h5></th>
+								         </tr>
+								          <tr>
+								            <th><h4>DISTRICT </h4></th>
+								            <th><h4> :</h4></th>
+								            <th><h5 id="districtName"></h5></th>
+								          </tr>
+								          <tr>
+								            <th><h4>CONSTITUENCY NAME </h4></th>
+								            <th><h4> :</h4></th>
+								            <th><h5 id="constituencyName"></h5></th>
+										  </tr>
 									</table>
 								</div>
 						</div>			  
