@@ -23,7 +23,7 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 	   //0 jbCommitteeRoleId,1 jbMemberTypeId,2 memberType, 3 maxMembers
 		sb.append("SELECT model.jbCommitteeRoleId,model.jbMemberType.jbMemberTypeId,model.jbMemberType.memberType,model.maxMembers ");
 		sb.append("from JbCommitteeRole model ");
-		sb.append("where model.jbCommittee.jbCommitteeId =:committeeId");
+		sb.append("where model.jbCommittee.jbCommitteeId =:committeeId and model.jbCommittee.jbCommitteeId.isDeleted ='N' ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("committeeId", committeeId);
@@ -111,5 +111,17 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 			query.setParameter("committeeLvlId", committeeLvlId);
 		}
       return query.list();
+ }
+ 
+ public Long getTotalRoleMemberCountByCommitteId(Long committeeId){
+	 StringBuilder sb = new StringBuilder();
+		sb.append("SELECT sum(model.maxMembers) ");
+		sb.append("from JbCommitteeRole model ");
+		sb.append("where model.jbCommittee.jbCommitteeId =:committeeId and model.jbCommittee.jbCommitteeId.isDeleted ='N' ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("committeeId", committeeId);
+		
+		return (Long)query.uniqueResult();
  }
 }

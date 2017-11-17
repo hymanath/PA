@@ -8556,7 +8556,8 @@ public List<Object[]> getOnliCadRegistrSearchVoteDetails(Long searchVal,String s
 						" model.voter.gender," +
 						" model.voter.age," +
 						" model.voter.voterIDCardNo," +
-						" model.voter.houseNo" +
+						" model.voter.houseNo," +
+						" model.voter.imagePath" +
 						" from BoothPublicationVoter model" +
 						" where model.booth.publicationDate.publicationDateId = 22");
 		
