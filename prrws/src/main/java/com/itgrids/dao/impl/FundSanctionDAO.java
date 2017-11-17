@@ -1816,7 +1816,6 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" FS.saction_amount as amount ");//11
 		sb.append(" from ");
 		sb.append(" fund_sanction FS, govt_order GO, fund_sanction_location FSL ");
-		sb.append(" fund_sanction FS, govt_order GO, fund_sanction_location FSL ");
 		sb.append(" left outer join location_address LA on FSL.address_id = LA.location_address_id ");
 		sb.append(" left outer join constituency CON on (LA.constituency_id = CON.constituency_id) ");
 		sb.append(" left outer join tehsil T on LA.tehsil_id = T.tehsil_id ");

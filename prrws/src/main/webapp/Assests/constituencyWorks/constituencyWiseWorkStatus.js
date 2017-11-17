@@ -2,8 +2,8 @@
 	//var globalDeptArr={"dept":"Panchayati Raj & RD & RWS","id";"panchayatiRaj"}
 	var glStartDate=moment().subtract(40,"years").startOf("year").format("DD/MM/YYYY");
 	var glEndDate=moment().add(10,"years").startOf("year").format("DD/MM/YYYY");
-	var blockNames = ['ENC','RWS','MGNREGS'];
-	
+	var blockNames = ['ENC','RWS'];
+	var deptIds = [1,2];
 	 $("#dateRangePickerAUM").daterangepicker({
       opens: 'left',
       startDate: glStartDate,
@@ -47,20 +47,35 @@ function onloadCalls(){
 	getAllSubLocationsOnsuperLocation("21");
 	getAllFiniancialYears();
 	collapseBlock();
+	for(var i in deptIds){
+		getFundManagementSystemWorkDetails(deptIds[i]);
+	}
 	
-	buildWorkDeatilsLocation("ENC");
-	buildWorkDeatils("ENC");
-	buildWorkDeatilsLocation("RWS");
-	buildWorkDeatils("RWS");
-	buildWorkDeatilsLocation("MGNREGS");
-	buildWorkDeatils("MGNREGS");
+	
+	
 }
-/* 
-$("header").on("click",".menu-cls",function(e){
-		e.stopPropagation();
-		$(".menu-data-cls").toggle();
-	});
-	 */
+function getFundManagementSystemWorkDetails(deptId){
+	var json = {
+			departmentId:deptId,
+			financialYrIdList:[1,2,3,4],
+			fromDateStr:'01/01/2010',
+			toDateStr:'12/31/2017'
+       }
+    $.ajax({ 
+		url: 'getFundManagementSystemWorkDetails', 
+		type:'POST',  
+		data : JSON.stringify(json),
+		dataTypa : 'json',   
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},   
+    }).done(function(result){
+		buildWorkDeatilsLocation(blockNames[deptId-1],result);   
+		buildWorkDeatils(blockNames[deptId-1],result);
+    });
+}
+
 function  getAllFiniancialYears(){
 	
 	 $.ajax({ 
@@ -159,13 +174,15 @@ $(document).on("change","#constituencySelId",function(){
 	           
 	   }).done(function(result){
 	     if(result!= null){
-	     
-	      $("#mlaName").append("<h5>"+result[0].mlaName+"</h5>");
-	     $("#districtName").append("<h5>"+result[0].locationName+"</h5>");
-	     $("#constituencyName").append("<h5 class='text-capitalize'>"+result[0].workName+"</h5>");
+			$("#mlaName").html(" ");
+			$("#districtName").html(" ");
+			$("#constituencyName").html(" ");
+			$("#mlaName").append("<h5>"+result[0].mlaName+"</h5>");
+			$("#districtName").append("<h5>"+result[0].locationName+"</h5>");
+			$("#constituencyName").append("<h5 class='text-capitalize'>"+result[0].workName+"</h5>");
 	   }else{
-	      $("#districtName").html('District');
-	       $("#mlaName").html('MLA Name');
+			$("#districtName").html('District');
+			$("#mlaName").html('MLA Name');
 	        $("#constituencyName").html('Constituency Name');
 	   }
 	   });
@@ -210,7 +227,8 @@ function collapseBlock(){
 	$("#deptBlocks").html(collapse);
 }
 
-function buildWorkDeatils(divId){
+function buildWorkDeatils(divId,result){
+	alert(divId);
 	var tab='';
 		tab+='<h3 class="panel-title m_left20" style="background-color:lightgrey;padding:5px;">Govt Order Wise Works Details</h3>';
 		tab+='<div class="table-responsive m_top20">';
@@ -221,42 +239,45 @@ function buildWorkDeatils(divId){
 					tab+='<th> Issue Date</th>';
 					tab+='<th> Amount</th>';
 				tab+='</tr>';
-				tab+='<tr>';
-					tab+='<td> RWS</td>';
-					tab+='<td> 100</td>';
-					tab+='<td> 17/11/2017</td>';
-					tab+='<td> 1245151</td>';
-				tab+='</tr>';
+				for(var i in result.locationList1){
+					tab+='<tr>';
+						tab+='<td>'+result.locationList1[i].goNoDate+'</td>';
+						tab+='<td>'+result.locationList1[i].workNumber+'</td>';
+						tab+='<td>'+result.locationList1[i].issueDate+'</td>';
+						tab+='<td>'+result.locationList1[i].amount+'</td>';
+					tab+='</tr>';
+				}
 			tab+='</table>';
 		tab+='</div>';
 		$("#"+divId+"DivId").html(tab);
 }
 
-function buildWorkDeatilsLocation(divId){
+function buildWorkDeatilsLocation(divId,result){
 	var tab='';
-		tab+='<div class="row">';
-			tab+='<div class="col-sm-2 m_left20" style="background-color:lightgrey;padding:5px;>';
-				tab+='<h3 class="panel-title" > Works Details</h3>';
-			tab+='</div>';
+		tab+='<div class="row">';    
+			tab+='<div class="col-sm-2 m_left20" style="background-color:lightgrey;padding:5px;margin-left:15px;">';
+				tab+='<h3 class="panel-title m_left20" style="background-color:lightgrey;"> Works Details</h3>';
+			tab+='</div>';         
 		tab+='</div>';
 		tab+='<div class="table-responsive m_top20">';
 			tab+='<table class="table table-bordered">';
 				tab+='<tr>';
-					tab+='<th> Work Details </th>';
-					tab+='<th> Constituency</th>';
+					tab+='<th> Govt Order </th>';
+					tab+='<th> Work Name</th>';
 					tab+='<th> Mandal</th>';
 					tab+='<th> village</th>';
 					tab+='<th> Amount</th>';
 				tab+='</tr>';
-				tab+='<tr>';
-					tab+='<td> RWS</td>';
-					tab+='<td> Bhimili</td>';
-					tab+='<td> aAnandhpuram</td>';
-					tab+='<td>marikavalasa</td>';
-					tab+='<td>10000</td>';
-				tab+='</tr>';
+				for(var i in result.locationList2){
+					tab+='<tr>';
+						tab+='<td>'+result.locationList2[i].goNoDate+'</td>';
+						tab+='<td>'+result.locationList2[i].workName+'</td>';
+						tab+='<td>'+result.locationList2[i].tehsilName+'</td>';
+						tab+='<td>'+result.locationList2[i].panchayatName+'</td>';
+						tab+='<td>'+result.locationList2[i].amount+'</td>';
+					tab+='</tr>';
+				}
 			tab+='</table>';
 		tab+='</div>';
-	
 		$("#"+divId+"TableDivId").html(tab);
 }
