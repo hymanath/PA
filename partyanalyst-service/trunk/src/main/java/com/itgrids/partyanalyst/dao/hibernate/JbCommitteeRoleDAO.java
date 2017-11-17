@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -29,7 +30,7 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 		
 		return query.list();
  }
- public  List<Object[]> getCommitteeWiseTotalMemberCount(String type){
+ public  List<Object[]> getCommitteeWiseTotalMemberCount(String type,Set<Long> userAccessVals){
 	 StringBuilder sb = new StringBuilder();
 	 //0 committeeLeveId,1 level name,2 committeeId,3 maxMemebers
       sb.append("select model.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommittee.jbCommitteeLevel.name,model.jbCommittee.jbCommitteeId,sum(model.maxMembers) ");
@@ -49,6 +50,13 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 		}else if(type.equalsIgnoreCase("parliament")){
 			sb.append(" left join  model.jbCommittee.userAddress.parliamentConstituency parliamentConstituency ");
 		}
+		
+		if(type != null && type.equalsIgnoreCase("district") && userAccessVals != null && userAccessVals.size() >0){
+			sb.append(" where  district.districtId in (:userAccessVals)  ");
+		}else if(type != null && type.equalsIgnoreCase("constituency") && userAccessVals != null && userAccessVals.size() >0){
+			sb.append(" where constituency.constituencyId in (:userAccessVals) ");
+		}
+		
       sb.append(" group by model.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommittee.jbCommitteeId ");
       if(type != null && type.equalsIgnoreCase("district")){
 			sb.append(" , district.districtId ");
@@ -58,6 +66,9 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 			sb.append(" ,parliamentConstituency.constituencyId  ");
 		}
       Query query = getSession().createQuery(sb.toString());
+      if(userAccessVals != null && userAccessVals.size() >0){
+			query.setParameterList("userAccessVals", userAccessVals);
+		}
       return query.list();
  }
  public  List<Object[]> getCommitteeLvlWiseTotalMemberCountInLocation(Date fromDate,Date endDate  ,Long levelId,Long levelVal, Long committeeLvlId){

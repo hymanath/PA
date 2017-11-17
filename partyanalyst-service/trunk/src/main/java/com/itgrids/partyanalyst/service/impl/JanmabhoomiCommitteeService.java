@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
@@ -18,6 +19,8 @@ import com.itgrids.partyanalyst.dao.IJbCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeRoleDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.JanmabhoomiCommitteeVO;
@@ -46,6 +49,28 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	private List<VoterSearchVO> voterVoList = new ArrayList<VoterSearchVO>();
 	private ICasteStateDAO casteStateDAO;
 	private ICasteCategoryDAO casteCategoryDAO;
+	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+	
+	
+	public IUserDistrictAccessInfoDAO getUserDistrictAccessInfoDAO() {
+		return userDistrictAccessInfoDAO;
+	}
+
+	public void setUserDistrictAccessInfoDAO(
+			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
+		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
+	}
+
+	public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
+		return userConstituencyAccessInfoDAO;
+	}
+
+	public void setUserConstituencyAccessInfoDAO(
+			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
+	}
+
 	public DateUtilService getDateUtilService() {
 		return dateUtilService;
 	}
@@ -339,7 +364,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		public Map<Long, JanmabhoomiCommitteeMemberVO> getLevelWiseCommiteeStatusCounts(String type) {
 			Map<Long,Map<Long,JanmabhoomiCommitteeMemberVO>> levelCommiteeCounts = new HashMap<Long, Map<Long,JanmabhoomiCommitteeMemberVO>>();
 			Map<Long,JanmabhoomiCommitteeMemberVO> returnMap = new HashMap<Long,JanmabhoomiCommitteeMemberVO>();
-			List<Object[]> committeeWiseTotalMemeberCountObjList = jbCommitteeRoleDAO.getCommitteeWiseTotalMemberCount(type);
+			List<Object[]> committeeWiseTotalMemeberCountObjList = jbCommitteeRoleDAO.getCommitteeWiseTotalMemberCount(type,null);
 			if (committeeWiseTotalMemeberCountObjList != null && committeeWiseTotalMemeberCountObjList.size() > 0) {
 				for (Object[] param : committeeWiseTotalMemeberCountObjList) {
 					Long levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -362,7 +387,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 				}
 			}
 			
-			List<Object[]> committeeWiseTotalMemeberAddedCountObjList = jbCommitteeMemberDAO.getCommitteeWiseTotalMemberAddedCount(type);
+			List<Object[]> committeeWiseTotalMemeberAddedCountObjList = jbCommitteeMemberDAO.getCommitteeWiseTotalMemberAddedCount(type,null);
 			if (committeeWiseTotalMemeberAddedCountObjList != null && committeeWiseTotalMemeberAddedCountObjList.size() > 0) {
 				for (Object[] param : committeeWiseTotalMemeberAddedCountObjList) {
 					Long levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -405,13 +430,25 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			return returnMap;
 		}
 
-	public List<JanmabhoomiCommitteeVO> getDistrictWiseCommitteeDetails(String fromDate,String endDate,String type){
+	public List<JanmabhoomiCommitteeVO> getDistrictWiseCommitteeDetails(String fromDate,String endDate,String type,Long userId){
 		List<JanmabhoomiCommitteeVO> returnList = new ArrayList<JanmabhoomiCommitteeVO>(); 
 		Map<Long,JanmabhoomiCommitteeVO> locationMapsWithLevel = new HashMap<Long,JanmabhoomiCommitteeVO>(); 
 		try{ 
 			
-			List<Object[]> list = jbCommitteeDAO.getDistrictWiseCommitteeDetails(null,null,type);
+			
 			List<JbCommitteeLevel> committeeLvls = jbCommitteeLevelDAO.getAll();
+			List<Object[]> userLocaVals = null;
+			Set<Long> userAccessLocVals = null;
+			if(type != null && type.equalsIgnoreCase("district")){
+				userLocaVals =userDistrictAccessInfoDAO.getLocationIdList(userId);
+				 getUserAccessVals(userLocaVals,userAccessLocVals);
+			}else if(type != null && type.equalsIgnoreCase("constituency")){
+				userLocaVals =userConstituencyAccessInfoDAO.findByUser(userId);
+				getUserAccessVals(userLocaVals,userAccessLocVals);
+			}/*else if(type.equalsIgnoreCase("parliament")){
+				
+			}*/
+			List<Object[]> list = jbCommitteeDAO.getDistrictWiseCommitteeDetails(null,null,type,userAccessLocVals);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for(Object[] param :list){
 				JanmabhoomiCommitteeVO locVO = locationMapsWithLevel.get(commonMethodsUtilService.getLongValueForObject(param[6]));
@@ -451,7 +488,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 				}
 			}
 			
-			Map<Long, Map<Long ,JanmabhoomiCommitteeMemberVO>> locLevelMap =  getLocationLevelWiseCommiteeStatusCounts( type);
+			Map<Long, Map<Long ,JanmabhoomiCommitteeMemberVO>> locLevelMap =  getLocationLevelWiseCommiteeStatusCounts( type,userAccessLocVals);
 			
 			if(commonMethodsUtilService.isMapValid(locationMapsWithLevel)){
 				for (Entry<Long, JanmabhoomiCommitteeVO> entry:locationMapsWithLevel.entrySet()) {
@@ -480,7 +517,18 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		}
 		return returnList;
 	}
-	
+	public void getUserAccessVals(List<Object[]> userLocaVals,Set<Long> userAccessLocVals){
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(userLocaVals)){
+				for (Object[] userAccessVal : userLocaVals) {
+					userAccessLocVals.add(commonMethodsUtilService.getLongValueForObject(userAccessVal[0]));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Excepting Occured in getUserAccessVals() of JanmabhoomiCommitteeService ", e);
+		}
+	}
 	public List<JanmabhoomiCommitteeVO> setCommitteeLevels(List<JbCommitteeLevel> committeeLvls){
 		List<JanmabhoomiCommitteeVO> returnList = new ArrayList<JanmabhoomiCommitteeVO>();
 		try{
@@ -498,10 +546,10 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		}
 		return returnList;
 	}
-	public Map<Long, Map<Long ,JanmabhoomiCommitteeMemberVO>> getLocationLevelWiseCommiteeStatusCounts(String type) {
+	public Map<Long, Map<Long ,JanmabhoomiCommitteeMemberVO>> getLocationLevelWiseCommiteeStatusCounts(String type,Set<Long> userAccessLocVals) {
 		Map<Long,Map<Long,Map<Long,JanmabhoomiCommitteeMemberVO>>> levelCommiteeCounts = new HashMap<Long,Map<Long, Map<Long,JanmabhoomiCommitteeMemberVO>>>();
 		Map<Long, Map<Long ,JanmabhoomiCommitteeMemberVO>> returnMap = new HashMap<Long, Map<Long ,JanmabhoomiCommitteeMemberVO>>();
-		List<Object[]> committeeWiseTotalMemeberCountObjList = jbCommitteeRoleDAO.getCommitteeWiseTotalMemberCount(type);
+		List<Object[]> committeeWiseTotalMemeberCountObjList = jbCommitteeRoleDAO.getCommitteeWiseTotalMemberCount(type,userAccessLocVals);
 		if (committeeWiseTotalMemeberCountObjList != null && committeeWiseTotalMemeberCountObjList.size() > 0) {
 			for (Object[] param : committeeWiseTotalMemeberCountObjList) {
 				Long locId = commonMethodsUtilService.getLongValueForObject(param[4]);
@@ -530,7 +578,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			}
 		}
 		
-		List<Object[]> committeeWiseTotalMemeberAddedCountObjList = jbCommitteeMemberDAO.getCommitteeWiseTotalMemberAddedCount(type);
+		List<Object[]> committeeWiseTotalMemeberAddedCountObjList = jbCommitteeMemberDAO.getCommitteeWiseTotalMemberAddedCount(type,userAccessLocVals);
 		if (committeeWiseTotalMemeberAddedCountObjList != null && committeeWiseTotalMemeberAddedCountObjList.size() > 0) {
 			for (Object[] param : committeeWiseTotalMemeberAddedCountObjList) {
 				Long locId = commonMethodsUtilService.getLongValueForObject(param[6]);
