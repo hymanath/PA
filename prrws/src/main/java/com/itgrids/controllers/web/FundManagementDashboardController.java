@@ -26,6 +26,7 @@ import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.NregsFmsWorksVO;
 import com.itgrids.dto.ResultVO;
+import com.itgrids.service.IConstituencyWiseWorkStatusService;
 import com.itgrids.service.IFundManagementDashboardService;
 import com.itgrids.service.IFundSanctionMatrixReportService;
 import com.itgrids.service.IUserService;
@@ -40,6 +41,8 @@ public class FundManagementDashboardController {
 	private IFundSanctionMatrixReportService fundSanctionMatrixReportService;
 	@Autowired 
 	private IUserService userServiceImpl;
+	@Autowired 
+	private IConstituencyWiseWorkStatusService constituencyWiseWorkStatusService;
 	
 	@RequestMapping(value ="/", method = RequestMethod.GET)
     public String indexPage(ModelMap model) {
@@ -321,4 +324,13 @@ public class FundManagementDashboardController {
 			ResultVO status = userServiceImpl.saveFavouriteComponentOrderDtls(inputVO);
 			return status;
 	    }
+		@RequestMapping(value ="/constituencyWiseWorkStatus", method = RequestMethod.GET)
+	    public String conStituencyWiseWorkStatus(ModelMap model) {
+			return "constituencyWiseWorkStatus";//constituencyWiseWorkStatus
+	    }	
+		@PostMapping("/getLocationsNamesBySubLocation")
+		public @ResponseBody List<LocationVO> getLocationsNamesBySubLocation(@RequestBody InputVO inputVO){
+			List<LocationVO> loctionsList = constituencyWiseWorkStatusService.getLocationsNamesBySubLocation(inputVO);
+			return loctionsList;
+		}
 }
