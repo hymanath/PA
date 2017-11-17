@@ -205,4 +205,15 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 		  }
 		  return Action.SUCCESS;
 	  }
+	
+	public String updateCommitteStatusByCommiteeId(){ 
+		  try{
+			  jObj=new JSONObject(getTask());
+			  resultStatus = janmabhoomiCommitteeService.updateCommitteStatusByCommiteeId(jObj.getLong("committeeId"));			  
+		  }catch(Exception e){
+			  LOG.error("Entered into updateCommitteStatusByCommiteeId method in JanmaBhoomiCommitteeAction ",e);
+		  }
+		  return Action.SUCCESS;
+	  }
+	
 }
