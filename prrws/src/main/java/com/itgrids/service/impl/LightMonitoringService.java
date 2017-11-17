@@ -297,7 +297,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 				fromDate = sdf.parse(startDate);
 				toDate = sdf.parse(endDate);
 			}
-		     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,loccationIds,lightMonitoringIds);
+		     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,loccationIds,lightMonitoringIds,"No");
 			     if(lightMonitoringData!=null && lightMonitoringData.size()>0 && !lightMonitoringData.isEmpty()){
 			    	 LightMonitoringVO lightMonitoringVO= new LightMonitoringVO();
 				     for (Object[] objects : lightMonitoringData) {			
@@ -578,7 +578,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 						toDate = sdf.parse(endDate);
 					 }	
 					 
-				     List<Object[]>  lightDtlsObjList  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,locationValues,lightVendorIds);
+				     List<Object[]>  lightDtlsObjList  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,locationValues,lightVendorIds,"Yes");
 				     List<Object[]> wattgedtlsObjList = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,locationValues,lightVendorIds);
 				     List<Object[]> surveyStartedLctnDtlsObjList = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType, locationValues,lightVendorIds,"Yes"); 
 				    
