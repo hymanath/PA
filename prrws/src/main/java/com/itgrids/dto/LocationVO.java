@@ -17,6 +17,7 @@ public class LocationVO implements Serializable {
 	private List<LocationVO> locationList2;
 	private String amunt = "0.0";
 	private String workName;
+	private Long workNumber = 0L;
 	private String departmentName;
 	private String schemeName;
 	private String goNoDate;
@@ -28,6 +29,8 @@ public class LocationVO implements Serializable {
 	private String goNumber;
 	private String issueDate;
 	private String filePath;
+	private String tehsilName;
+	private String panchayatName;
 	private String mlaName;
 	
 	
@@ -206,4 +209,24 @@ public class LocationVO implements Serializable {
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
+	public Long getWorkNumber() {
+		return workNumber;
+	}
+	public void setWorkNumber(Long workNumber) {
+		this.workNumber = workNumber;
+	}
+	public String getTehsilName() {
+		return tehsilName;
+	}
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	
+	
 }

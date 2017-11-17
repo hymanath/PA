@@ -40,4 +40,5 @@ public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 	public List<Object[]> getAllConstituencyByDistrictIds(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate,Long scopeId);
 	public List<Object[]> getAllConstituencyByParliamentConstId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate,Long scopeId,Long superLocationLevelId);
 	public List<Object[]> getAllParliamentByStateId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate,Long scopeId);
+	public List<Object[]> getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, Long departmentId, Date startDate,Date endDate);
 }

@@ -5,16 +5,18 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IFundSanctionDAO;
-import com.itgrids.dto.InputVO;
 import com.itgrids.model.FundSanction;
 import com.itgrids.model.FundSanctionLocation;
 import com.itgrids.utils.IConstants;
@@ -1795,6 +1797,54 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
 			query.setParameterList("financialYrIdList", financialYrIdList);
 		}
+		return query.list();
+	}
+	public List<Object[]> getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, Long departmentId, Date startDate,Date endDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select ");
+		sb.append(" CON.constituency_id as constituencyId, ");//0
+		sb.append(" CON.name as constituencyName, ");//1
+		sb.append(" T.tehsil_id as tehsilId, ");//2
+		sb.append(" T.tehsil_name as tehsilName, ");//3
+		sb.append(" P.panchayat_id as panchayatId, ");//4
+		sb.append(" P.panchayat_name as panchayatName, ");//5
+		sb.append(" FS.govt_order_id as govtOrderId, ");//6
+		sb.append(" FS.fund_sanction_id as fundSanctionId, ");//7
+		sb.append(" FS.work_name as workName, ");//8
+		sb.append(" FS.go_no_date as goNoDate, ");//9
+		sb.append(" date(GO.issue_date) as issueDate, ");//10
+		sb.append(" FS.saction_amount as amount ");//11
+		sb.append(" from ");
+		sb.append(" fund_sanction FS, govt_order GO, fund_sanction_location FSL ");
+		sb.append(" fund_sanction FS, govt_order GO, fund_sanction_location FSL ");
+		sb.append(" left outer join location_address LA on FSL.address_id = LA.location_address_id ");
+		sb.append(" left outer join constituency CON on (LA.constituency_id = CON.constituency_id) ");
+		sb.append(" left outer join tehsil T on LA.tehsil_id = T.tehsil_id ");
+		sb.append(" left outer join panchayat P on LA.panchayat_id = P.panchayat_id ");
+		sb.append(" where ");
+		sb.append(" FSL.fund_sanction_id = FS.fund_sanction_id and  ");
+		sb.append(" FS.govt_order_id=GO.govt_order_id and  ");
+		sb.append(" FS.department_id=:departmentId and ");
+		sb.append(" FS.financial_year_id in (:financialYearIdsList) and ");
+		sb.append(" (date(FS.inserted_time) between :startDate and :endDate) and ");
+		sb.append(" CON.constituency_id = 232 ");
+		SQLQuery query = getSession().createSQLQuery(sb.toString());
+		query.addScalar("constituencyId", StandardBasicTypes.LONG);//0
+		query.addScalar("constituencyName", StandardBasicTypes.STRING);//1
+		query.addScalar("tehsilId", StandardBasicTypes.LONG);//2
+		query.addScalar("tehsilName", StandardBasicTypes.STRING);//3
+		query.addScalar("panchayatId", StandardBasicTypes.LONG);//4
+		query.addScalar("panchayatName", StandardBasicTypes.STRING);//5
+		query.addScalar("govtOrderId", StandardBasicTypes.LONG);//6
+		query.addScalar("fundSanctionId", StandardBasicTypes.LONG);//7
+		query.addScalar("workName", StandardBasicTypes.STRING);//8
+		query.addScalar("goNoDate", StandardBasicTypes.STRING);//9
+		query.addScalar("issueDate", StandardBasicTypes.STRING);//10
+		query.addScalar("amount", StandardBasicTypes.LONG);//11
+		query.setParameter("departmentId", departmentId);
+		query.setParameterList("financialYearIdsList", financialYearIdsList);
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
 		return query.list();
 	}
 }

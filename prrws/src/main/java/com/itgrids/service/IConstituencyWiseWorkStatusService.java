@@ -8,5 +8,6 @@ import com.itgrids.dto.LocationVO;
 public interface IConstituencyWiseWorkStatusService {
 
 	public List<LocationVO> getLocationsNamesBySubLocation(InputVO inputVO);
+	public LocationVO getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, Long departmentId, String startDateStr,String endDateStr);
 	public List<LocationVO> getDistrictNameAndMlaNameByConsitutency(InputVO inputVO);
 }

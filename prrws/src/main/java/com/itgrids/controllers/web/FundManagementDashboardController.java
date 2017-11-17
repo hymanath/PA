@@ -333,6 +333,12 @@ public class FundManagementDashboardController {
 			List<LocationVO> loctionsList = constituencyWiseWorkStatusService.getLocationsNamesBySubLocation(inputVO);
 			return loctionsList;
 		}
+		@PostMapping("/getFundManagementSystemWorkDetails")
+		public @ResponseBody LocationVO getFundManagementSystemWorkDetails(@RequestBody InputVO inputVO){
+			LocationVO loctions = constituencyWiseWorkStatusService.getFundManagementSystemWorkDetails(inputVO.getFinancialYrIdList(),inputVO.getDepartmentId(),inputVO.getFromDateStr(),inputVO.getToDateStr());
+			return loctions;
+		}
+		
 		@PostMapping("/getDistrictNameAndMlaNameByConsitutency")
 		public @ResponseBody List<LocationVO> getDistrictNameAndMlaNameByConsitutency(@RequestBody InputVO inputVO){
 			List<LocationVO> loctionsList = constituencyWiseWorkStatusService.getDistrictNameAndMlaNameByConsitutency(inputVO);
