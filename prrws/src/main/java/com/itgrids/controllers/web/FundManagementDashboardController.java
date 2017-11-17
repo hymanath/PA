@@ -333,4 +333,9 @@ public class FundManagementDashboardController {
 			List<LocationVO> loctionsList = constituencyWiseWorkStatusService.getLocationsNamesBySubLocation(inputVO);
 			return loctionsList;
 		}
+		@PostMapping("/getDistrictNameAndMlaNameByConsitutency")
+		public @ResponseBody List<LocationVO> getDistrictNameAndMlaNameByConsitutency(@RequestBody InputVO inputVO){
+			List<LocationVO> loctionsList = constituencyWiseWorkStatusService.getDistrictNameAndMlaNameByConsitutency(inputVO);
+			return loctionsList;
+		}
 }
