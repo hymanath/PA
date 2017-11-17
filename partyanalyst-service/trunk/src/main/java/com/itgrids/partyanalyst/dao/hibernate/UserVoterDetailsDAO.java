@@ -3494,9 +3494,10 @@ IUserVoterDetailsDAO{
 			 sb.append(" , constituency c ");
 		 }else   if(locationTypeId == 5l){
 			sb.append(" , tehsil t ");
-		 }
-	     else  if(locationTypeId == 6l){
+		 } else  if(locationTypeId == 6l){
 			sb.append(" , panchayat p ");
+		 } else  if(locationTypeId == 7l){
+			 sb.append(" , local_election_body leb ");
 		 }
 			 sb.append(" where ");
 			 sb.append(" model.caste_state_id=cs.caste_state_id and ");
@@ -3510,10 +3511,12 @@ IUserVoterDetailsDAO{
 			 }
 	
 			
-			 if(locationTypeId == 5l){
+			 else if(locationTypeId == 5l){
 				 sb.append(" model.location_scope_id =:locationTypeId and t.tehsil_id in (:locationValues)");
-			 }if(locationTypeId == 6l){
+			 }else if(locationTypeId == 6l){
 				 sb.append(" model.location_scope_id =:locationTypeId and p.panchayat_id in (:locationValues)");
+			 }else if(locationTypeId == 7l){
+				 sb.append(" model.location_scope_id =:locationTypeId and leb.local_election_body_id in (:locationValues)");
 			 }
 			 
 		 
@@ -3529,6 +3532,8 @@ IUserVoterDetailsDAO{
 				
 			  else if(locationTypeId == 6l){
 					sb.append(" and model.location_value = p.panchayat_id ");
+			 }else if(locationTypeId == 7l){
+					sb.append(" and model.location_value = leb.local_election_body_id ");
 			 }
 		 sb.append(" and cs.caste_id =:casteId and model.publication_date_id =:publicationDateId ");
 		 

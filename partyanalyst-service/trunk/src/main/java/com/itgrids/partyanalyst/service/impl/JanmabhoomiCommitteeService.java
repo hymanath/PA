@@ -787,7 +787,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			    				mainVO.setAge(voterDetailsVO.getAge() != null ? voterDetailsVO.getAge():null);
 			    				mainVO.setHouseNo(voterDetailsVO.getHouseNo() != null ? voterDetailsVO.getHouseNo():null);
 								mainVO.setMobileNumber(voterDetailsVO.getActualMobiNumber() != null?voterDetailsVO.getActualMobiNumber():null);
-								mainVO.setVoterId(voterDetailsVO.getVoterIDCardNo()!= null ? voterDetailsVO.getVoterIDCardNo():null);
+								mainVO.setVoterCardNo(voterDetailsVO.getVoterIDCardNo()!= null ? voterDetailsVO.getVoterIDCardNo():null);
+								if(voterDetailsVO.getVoterId()!= null)
+								mainVO.setVoterId(voterDetailsVO.getVoterId().toString());
 								mainVO.setMemberShipCardId(voterDetailsVO.getMemberShipNo()!= null ? voterDetailsVO.getMemberShipNo():null);
 								mainVO.setTdpCadreId(voterDetailsVO.getTdpCadreId() == null?null:voterDetailsVO.getTdpCadreId());
 								if(mainVO.getMemberShipCardId() !=null){ //from tdpcadre table
@@ -813,7 +815,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						mainVO.setImageURL(candidateDetailsVO.getImageURL() == null?null:candidateDetailsVO.getImageURL());
 					}
 					mainVO.setMobileNumber(candidateDetailsVO.getMobileNo() == null?null:candidateDetailsVO.getMobileNo());
-					mainVO.setVoterId(candidateDetailsVO.getVoterCardNo() == null?null:candidateDetailsVO.getVoterCardNo());
+					mainVO.setVoterCardNo(candidateDetailsVO.getVoterCardNo() == null?null:candidateDetailsVO.getVoterCardNo());
+					if(candidateDetailsVO.getCadreVoterId() !=null)
+					mainVO.setVoterId(candidateDetailsVO.getCadreVoterId().toString());
 				}
 			}
 	   } catch (Exception e) {
