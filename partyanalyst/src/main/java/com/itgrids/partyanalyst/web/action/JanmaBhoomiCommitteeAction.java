@@ -146,6 +146,11 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	public String saveJanmabhoomiCommitteeMember(){ 
 		  try{
 			  //jObj=new JSONObject(getTask());
+			  session = request.getSession();
+				RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+				if(user==null)
+					return "input";
+				janmabhoomiCommitteeMemberVO.setUserId(user.getRegistrationID());
 			  resultStatus = janmabhoomiCommitteeService.saveJanmabhoomiCommitteeMember(janmabhoomiCommitteeMemberVO);			  
 		  }catch(Exception e){
 			  LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmaBhoomiCommitteeAction ",e);

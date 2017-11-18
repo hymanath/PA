@@ -273,10 +273,7 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 					str+='<th rowspan="2">Location Name</th>';
 					if(blockType == "district"){
 						str+='<th rowspan="2">District Committee</th>';
-					}else{
-						str+='<th rowspan="2">Committee</th>';
 					}
-					
 					for(var i in result[0].list){
 						var length = result[0].list.length;
 						str+='<th colspan="'+length+'">'+result[0].list[i].name+'</th>';
@@ -309,7 +306,9 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 					}else{
 						str+='<td>'+result[i].name+'</td>';
 					}
+					if(blockType == "district"){
 						str+='<td style="color:'+statusColorobj[result[i].statusType.trim()]+'">'+result[i].statusType+'</td>';
+					}
 						for(var j in result[i].list){
 							totalCount =result[i].list[j].notStartedCommitteeCnt+result[i].list[j].inprogressCommitteeCnt+result[i].list[j].readyForApprovelCommitteeCnt+result[i].list[j].totalApprovedCommitteeCnt+result[i].list[j].submitedCommittees
 							var levelId=0;
@@ -423,7 +422,7 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 				str+='<h4 class="m_top10">'+result.roleMemberCount+'</h4>';
 				str+='<ul class="list-inline checkConditionChangeStatusCls">';
 				var bcType=false;
-				var ocType=false;
+				//var ocType=false;
 				var stType=false;
 				var scType=false;
 					for(var i in result.desinationVOList){
@@ -431,9 +430,9 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 							if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "BC"){
 								bcType = true;
 							}
-							if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "OC"){
+							/* if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "OC"){
 								ocType = true;
-							}
+							} */
 							if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "SC"){
 								scType = true;
 							}
@@ -442,11 +441,11 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 							}
 						}
 					}
-					if(ocType === true){
+					/* if(ocType === true){
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss" style="background-color:#777;"></span> OC</li>';
 					}else{
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss"></span> OC</li>';
-					}
+					} */
 					if(bcType === true){
 						str+='<li style="margin-left:12px;" class="fillBg"><span class="rangeWiseCss" style="background-color:#777;"></span> BC</li>';
 					}else{
@@ -565,7 +564,7 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 								}
 								
 								if(result.desinationVOList[i].desinationMebersVOList[j].status == "Approved" || result.desinationVOList[i].desinationMebersVOList[j].status == "Inprogress"){
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit"  attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'" attr_committee_id="'+committeId+'" attr_status_type="'+statusType+'">Edit</h5></td>';
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit"  attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterCardNo+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'" attr_committee_id="'+committeId+'" attr_status_type="'+statusType+'">Edit</h5></td>';
 								}else if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'" attr_status_type="'+statusType+'">Add Member</h5></td>';
 								}
@@ -585,6 +584,8 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 				for(var j in result.desinationVOList[i].desinationMebersVOList){
 					if(result.desinationVOList[i].desinationMebersVOList[j].status == "Approved"){
 						approvedBooleanaVal = true;
+					}else{
+						approvedBooleanaVal = false;
 					}
 				}
 			}
@@ -603,7 +604,7 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 					str+='</div>';
 					
 					str+='<div class="col-sm-2">';
-						str+='<button type="button" class="btn btn-success btn-sm">Submit</button>';
+						str+='<button type="button" class="btn btn-success btn-sm" onclick="saveCommitteeStatus('+committeId+');">Submit</button>';
 					str+='</div>';
 					
 				str+='</div>';
@@ -1260,9 +1261,41 @@ function savingApplication(committeeId,statusType){
 		  }, 2000);
 		    
 			
+		}else if(result.indexOf("DUPLICATE") > -1){
+			setTimeout(function(){
+		  $("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>This person already added for this committee</span>");
+		  }, 1000);
 		}else {
 		  setTimeout(function(){
 		  $("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed. Please Try Again.</span>");
 		  }, 1000);
 		}
+	  }
+	  
+	  function saveCommitteeStatus(committeeId){
+		  var jsObj={
+    "committeeId"  :committeeId
+    }
+     $.ajax({
+      type : "POST",
+      url : "updateCommitteStatusByCommiteeIdAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){ 
+       if(result != null && result.length >0){
+		 if(result.indexOf("SUCCESS") > -1){
+			setTimeout(function(){
+		  $("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Committee Status Updated Successfully</span>");
+		  }, 1000); 
+		 }else if(result.indexOf("NotFilled") > -1){
+			 setTimeout(function(){
+		  $("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Total committee members are not added</span>");
+		  }, 1000);
+		 }else{
+			 setTimeout(function(){
+		  $("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Committee Status Updation Failed. Please Try Again.</span>");
+		  }, 1000); 
+		 }
+	  }
+    });
 	  }
