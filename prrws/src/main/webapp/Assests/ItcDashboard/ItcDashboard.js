@@ -318,10 +318,11 @@ function departmentBlockWiseDetails(divId)
 									collapse+='<div id="cmedobSectorWiseStatusId"></div>';
 								collapse+='</div>';
 								
-								collapse+='<div class="col-sm-12 m_top10" style="margin-bottom: 20px; padding-left: 0px; padding-right: 0px;">';
-									collapse+='<div id="cmedobBlockMainDivId"></div>';
-								collapse+='</div>';	
-								
+								collapse+='<div class="row" style="margin-bottom:50px;">';
+									collapse+='<div class="col-sm-12 m_top10" style="margin-bottom: 20px; padding-left: 0px; padding-right: 0px;">';
+										collapse+='<div id="cmedobBlockMainDivId"></div>';
+									collapse+='</div>';	
+								collapse+='</div>';
 								collapse+='<div class="row m_top20" style="margin-top:60px;">';
 									collapse+='<div class="col-sm-3">'
 										collapse+='<h4><b>IT & E &nbsp Sector Wise Status Report</b></h4>';
