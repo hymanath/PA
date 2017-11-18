@@ -15,9 +15,9 @@
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <style>
 .white_block{
-	background-color: white;
-	padding: 20px 0px;
-	box-shadow:0px 0px 3px 3px rgba(0,0,0,0.4);
+	background-color: lightblue;
+	padding: 5px 0px;
+	box-shadow:0px 0px 1px 1px rgba(0,0,0,0.4);
 }
 .conDetails-table th{
 	  border-top: none !important;
@@ -230,26 +230,26 @@ margin-left:20px;
 	<main> 
 		 <div class="container-fluid">
 			<section>
-				<div class="row m_top20">
-					<div class="col-sm-6 col-sm-offset-3">
-						<div class="white_block text-center">
+				<div class="row m_top20 " id="leaderNameId" style="display:none;">
+					<div class="col-sm-6 col-sm-offset-3 ">
+						<div class="white_block text-center" >
 							<h2 class="">LEADER DETAILS</h2>
 								<div class="table-responsive m_top20">
 									<table class="table conDetails-table" style="font-family:sas-sarif;">
 										<tr>
 								            <th><h4>NAME </h4></th>
 								            <th><h4> :</h4></th>
-								            <th><h5 id="mlaName"></h5></th>
+								            <th><h5 class="text-capitalize" id="mlaName"></h5></th>
 								         </tr>
 								          <tr>
 								            <th><h4>DISTRICT </h4></th>
 								            <th><h4> :</h4></th>
-								            <th><h5 id="districtName"></h5></th>
+								            <th><h5 class="text-capitalize" id="districtName"></h5></th>
 								          </tr>
 								          <tr>
 								            <th><h4>CONSTITUENCY NAME </h4></th>
 								            <th><h4> :</h4></th>
-								            <th><h5 id="constituencyName"></h5></th>
+								            <th><h5 class="text-capitalize" id="constituencyName"></h5></th>
 										  </tr>
 									</table>
 								</div>
