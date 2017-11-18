@@ -369,7 +369,7 @@ public class BioMetricService implements IBioMetricService {
 		return workingDaySet;
 	}
 	private Map<String,BioMetricDashBoardDtlsVO> getDateWiseEmployeeAttendanceDetails(String jsonString,String filterType,String empCode) {
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
 		Map<String,BioMetricDashBoardDtlsVO> empAttendanceMap = new HashMap<String,BioMetricDashBoardDtlsVO>(); 
 		try {
 			 if (jsonString != null && jsonString.trim().length() > 0) {
@@ -421,7 +421,7 @@ public class BioMetricService implements IBioMetricService {
 			Long inTimeInMilisecond = null;
 
 			if (inTime != null && inTime.trim().length() > 0) {
-				inTimeInMilisecond = sdf.parse(inTime.substring(0, 5)).getTime();
+				inTimeInMilisecond = sdf.parse(inTime.substring(0, inTime.length()-2)+" "+inTime.substring(inTime.length()-2, inTime.length())).getTime();
 			}
 			if (subList == null || subList.size() == 0)
 				return null;
@@ -870,15 +870,15 @@ public class BioMetricService implements IBioMetricService {
 		return dayOfWeek;
 	}
 	private Date[] getTimes(String timePeriod) {
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
 		Date[] dateArr = new Date[2];
 		try {
 		      String[] tempArr = timePeriod.split("-");
 			 if (tempArr[0].trim().equalsIgnoreCase("Before") ||tempArr[0].trim().equalsIgnoreCase("After") ) {
-				    dateArr[0] = sdf.parse(tempArr[1].trim());
+				    dateArr[0] = sdf.parse(tempArr[1].trim()+" AM");
 		     } else {
-				   dateArr[0] = sdf.parse(tempArr[0].trim());
-				   dateArr[1] = sdf.parse(tempArr[1].trim());
+				   dateArr[0] = sdf.parse(tempArr[0].trim()+" AM");
+				   dateArr[1] = sdf.parse(tempArr[1].trim()+" AM");
 				
 		     }
 		} catch (Exception e) {
