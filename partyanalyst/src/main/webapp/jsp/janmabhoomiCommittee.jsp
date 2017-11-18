@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="s" uri="/struts-tags"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -50,7 +48,7 @@
 	</div>		
 </section>
 <div class="modal fade janmabhoomi" tabindex="-1" id="committeeWiseModalOpen" role="dialog" style="z-index:9999;">
- <div class="modal-dialog" role="document" style="width:85%;">   
+ <div class="modal-dialog" role="document" style="width:90%;">   
     <div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -81,7 +79,7 @@
 			<h4 class="modal-title">Add Memberes</h4>      
 		</div>
 		<div class="modal-body">   
-          <div id="memberAddEditPopUpDetailsId"></div>
+          <div id="memberAddEditPopUpDetailsId" class="bg_class_Div"></div>
           <div id="memberAddedPopUpDetailsId"></div>
        </div>
       <div class="modal-footer">
@@ -95,5 +93,6 @@
 <script src="D2D_Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/janmabhoomiCommittee.js"></script></body>
+<script type="text/javascript" src="js/janmabhoomiCommittee.js"></script>
+</body>
 </html>
