@@ -346,6 +346,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					memeberVO.setCasteName(commonMethodsUtilService.getStringValueForObject(param[10]));
 					memeberVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[11]));
 					memeberVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[12]));
+					memeberVO.setMemberShipCardId(commonMethodsUtilService.getStringValueForObject(param[13]));
 					if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("F")){
 						memeberVO.setStatus("Approved");
 						committeeVO.setAddedMemberCount(committeeVO.getAddedMemberCount()+1);
@@ -638,6 +639,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	public ResultStatus saveJanmabhoomiCommitteeMember(final JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO){
 		ResultStatus resultStatus  = new ResultStatus();
 		try {
+			
 			if(janmabhoomiCommitteeMemberVO != null){
 				JbCommitteeMember jbCommitteeMember = null;
 				if(janmabhoomiCommitteeMemberVO.getId() != null){
@@ -693,6 +695,14 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		return resultStatus;
 		
 	}
+	
+	/*public String avoidingDuplicateMemberAdding(JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO){
+		try{
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+	}*/
 	public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteesByLocIdAndCommLvlId(String fromDate,String endDate,Long locationId,Long locLvlId,Long committeeLvlId,String status){
 		 List<JanmabhoomiCommitteeVO> returnList = new ArrayList<JanmabhoomiCommitteeVO>();
 	try {

@@ -32,7 +32,7 @@ private Long enrollmentYrId ;
 private Set<Long> committeeIds = new TreeSet<Long>();
 private List<JanmabhoomiCommitteeMemberVO> desinationMebersVOList=new ArrayList<JanmabhoomiCommitteeMemberVO>();
 private List<JanmabhoomiCommitteeMemberVO> desinationVOList=new ArrayList<JanmabhoomiCommitteeMemberVO>();
-
+private Long committeeId = 0l;
 private String memberShipCardId;
 private String imageURL;
 
@@ -248,5 +248,12 @@ public String getVoterCardNo() {
 public void setVoterCardNo(String voterCardNo) {
 	this.voterCardNo = voterCardNo;
 }
+public Long getCommitteeId() {
+	return committeeId;
+}
+public void setCommitteeId(Long committeeId) {
+	this.committeeId = committeeId;
+}
+
 
 }
