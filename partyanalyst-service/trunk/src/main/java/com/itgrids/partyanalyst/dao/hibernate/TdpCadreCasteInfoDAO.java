@@ -641,7 +641,7 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		}else if (locationTypeId != null && locationTypeId.longValue() == 4L && type !=null && type.equalsIgnoreCase("rural")) {
 			sb.append(" b.tehsil_id = t.tehsil_id and model.location_type_id =5 and model.location_Id = t.tehsil_id and b.local_election_body_id is null ");
 		}else if (locationTypeId != null && locationTypeId.longValue() == 4L && type !=null && type.equalsIgnoreCase("urban")) {
-			sb.append(" b.tehsil_id = t.tehsil_id and model.location_type_id =5 and model.location_Id = t.tehsil_id and b.local_election_body_id is not null ");
+			sb.append(" b.tehsil_id = t.tehsil_id and model.location_type_id =7 and model.location_Id = t.tehsil_id and b.local_election_body_id is not null ");
 		}else if (locationTypeId != null && locationTypeId.longValue() == 5L ) {
 			sb.append("  b.panchayat_id = p.panchayat_id and model.location_type_id =6 and model.location_Id = p.panchayat_id ");
 		}

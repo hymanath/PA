@@ -3517,6 +3517,8 @@ IUserVoterDetailsDAO{
 				 sb.append(" model.location_scope_id =:locationTypeId and p.panchayat_id in (:locationValues)");
 			 }else if(locationTypeId == 7l){
 				 sb.append(" model.location_scope_id =:locationTypeId and leb.local_election_body_id in (:locationValues)");
+			 }else if(locationTypeId == 8l){
+				 sb.append(" model.location_scope_id =:locationTypeId and model.location_value in (:locationValues)");
 			 }
 			 
 		 
@@ -3599,7 +3601,7 @@ public List<Object[]> getLocationWiseVoterCounts(Long locationTypeId,List<Long> 
 	}else if (locationTypeId != null && locationTypeId.longValue() == 4L && type !=null && type.equalsIgnoreCase("rural")) {
 		sb.append(" b.tehsil_id = t.tehsil_id and model.location_scope_id =5 and model.location_value = t.tehsil_id and b.local_election_body_id is null ");
 	}else if (locationTypeId != null && locationTypeId.longValue() == 4L && type !=null && type.equalsIgnoreCase("urban")) {
-		sb.append(" b.tehsil_id = t.tehsil_id and model.location_scope_id =5 and model.location_value = t.tehsil_id and b.local_election_body_id is not null ");
+		sb.append(" b.tehsil_id = t.tehsil_id and model.location_scope_id =7 and model.location_value = t.tehsil_id and b.local_election_body_id is not null ");
 	}else if (locationTypeId != null && locationTypeId.longValue() == 5L) {
 		sb.append("  b.panchayat_id = p.panchayat_id and model.location_scope_id =6 and model.location_value = p.panchayat_id ");
 	}
