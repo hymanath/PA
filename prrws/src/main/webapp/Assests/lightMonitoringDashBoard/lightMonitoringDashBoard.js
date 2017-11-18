@@ -7,7 +7,10 @@ var globalLocationName='';
 $("#selectedName").attr("attr_id","0");
 $("#selectedName").attr("attr_levelidvalue","2");
 //onLoadCalls();
-callWebService();
+setTimeout(function(){
+	callWebService();		
+}, 1000);
+
 function onLoadCalls()
 {
 	$("header").on("click",".menu-cls",function(e){
@@ -1090,6 +1093,7 @@ function callWebService(){
 	$("#modalMessageDivId").modal("show");
 	$("#processingImage").html(spinner);
 	var json = {
+		
 		}
 	$.ajax({                
 		type:'POST',    
@@ -1101,13 +1105,13 @@ function callWebService(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$("#modalMessageDivId").modal("hide");
-	    $("#processingImage").html('');
-		 if (result.statusCode==0 && result.message=="SUCCESS"){
+		 $("#modalMessageDivId").modal("hide");
+		 $("#processingImage").html('');
+		 if(result.statusCode==0 && result.message=="SUCCESS"){
 			  glStartDate = moment().format('DD-MM-YYYY');
 			  glEndDate = moment().format('DD-MM-YYYY');
 			  onLoadCalls();
-		 } else {
+		 }else{
 			    console.log("Exception Occured While Saving data into database.");
 			    alert("Exception Occured,Please try again.");
 		 }
