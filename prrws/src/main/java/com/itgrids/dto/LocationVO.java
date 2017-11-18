@@ -32,7 +32,8 @@ public class LocationVO implements Serializable {
 	private String tehsilName;
 	private String panchayatName;
 	private String mlaName;
-	
+	private Long govtOrderCount;
+	private String amountInDecimal;
 	
 	private Long streetHabitationCount;
 	private Long totalCount;
@@ -227,6 +228,17 @@ public class LocationVO implements Serializable {
 	public void setPanchayatName(String panchayatName) {
 		this.panchayatName = panchayatName;
 	}
-	
+	public Long getGovtOrderCount() {
+		return govtOrderCount;
+	}
+	public void setGovtOrderCount(Long govtOrderCount) {
+		this.govtOrderCount = govtOrderCount;
+	}
+	public String getAmountInDecimal() {
+		return amountInDecimal;
+	}
+	public void setAmountInDecimal(String amountInDecimal) {
+		this.amountInDecimal = amountInDecimal;
+	}
 	
 }

@@ -56,6 +56,7 @@ function onloadCalls(){
 }
 function getFundManagementSystemWorkDetails(deptId){
 	var json = {
+			locationId:4232,     
 			departmentId:deptId,
 			financialYrIdList:[1,2,3,4],
 			fromDateStr:'01/01/2010',
@@ -73,6 +74,7 @@ function getFundManagementSystemWorkDetails(deptId){
     }).done(function(result){
 		buildWorkDeatilsLocation(blockNames[deptId-1],result);   
 		buildWorkDeatils(blockNames[deptId-1],result);
+		buildOverAllDetails(blockNames[deptId-1],result);
     });
 }
 
@@ -214,9 +216,9 @@ function collapseBlock(){
 						collapse+='<div class="panel-body">';
 							collapse+='<div class="" >';
 								collapse+='<div class="row m_left20" style="background-color:lightgrey;">';
-									collapse+='<div class="col-sm-3 m_left20"><p>Total Govt Order:<span>3</span></p></div>';
-									collapse+='<div class="col-sm-3"><p>Total Work :30</p></div>';
-									collapse+='<div class="col-sm-3"><p>Total Amount :30000</p></div>';
+									collapse+='<div class="col-sm-3 m_left20"><p>Total Govt Order:<span id="overallGo'+blockNames[i]+'"></span></p></div>';
+									collapse+='<div class="col-sm-3"><p>Total Work :<span id="overallWork'+blockNames[i]+'"></span></p></div>';
+									collapse+='<div class="col-sm-3"><p>Total Amount :<span id="overallAmount'+blockNames[i]+'"></span></p></div>';
 								collapse+='</div>';
 							collapse+='</div>';
 							collapse+='<div class="m_top20" id="'+blockNames[i]+'DivId">';
@@ -251,7 +253,7 @@ function buildWorkDeatils(divId,result){
 						tab+='<td>'+result.locationList1[i].goNoDate+'</td>';
 						tab+='<td>'+result.locationList1[i].workNumber+'</td>';
 						tab+='<td>'+result.locationList1[i].issueDate+'</td>';
-						tab+='<td>'+result.locationList1[i].amount+'</td>';
+						tab+='<td>'+result.locationList1[i].amountInDecimal+'</td>';
 					tab+='</tr>';
 				}
 			tab+='</table>';
@@ -281,10 +283,15 @@ function buildWorkDeatilsLocation(divId,result){
 						tab+='<td>'+result.locationList2[i].workName+'</td>';
 						tab+='<td>'+result.locationList2[i].tehsilName+'</td>';
 						tab+='<td>'+result.locationList2[i].panchayatName+'</td>';
-						tab+='<td>'+result.locationList2[i].amount+'</td>';
+						tab+='<td>'+result.locationList2[i].amountInDecimal+'</td>';
 					tab+='</tr>';
 				}
 			tab+='</table>';
 		tab+='</div>';
 		$("#"+divId+"TableDivId").html(tab);
+}
+function buildOverAllDetails(divId,result){
+	$("#overallGo"+divId).html(result.govtOrderCount);
+	$("#overallWork"+divId).html(result.workNumber);
+	$("#overallAmount"+divId).html(result.amountInDecimal);
 }
