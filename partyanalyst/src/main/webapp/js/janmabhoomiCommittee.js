@@ -534,7 +534,11 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 								}else{
 									str+='<td> - </td>';
 								}
-								str+='<td>TDP</td>';
+								if(result.desinationVOList[i].desinationMebersVOList[j].partyName !=null && result.desinationVOList[i].desinationMebersVOList[j].partyName.trim().length>0){
+									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].partyName+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
 								
 								if(result.desinationVOList[i].desinationMebersVOList[j].status !=null && result.desinationVOList[i].desinationMebersVOList[j].status.trim().length>0){
 									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].status+'</td>';
@@ -543,9 +547,23 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 								}
 								
 								if(result.desinationVOList[i].desinationMebersVOList[j].status == "Approved" || result.desinationVOList[i].desinationMebersVOList[j].status == "Inprogress"){
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit" >Edit</h5></td>';
+									<c:choose>
+									<c:when test="${fn:contains(sessionScope.USER.entitlements,"JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT" )  || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT" ) || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT" ) }">
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit" attr_level_id="'+levelId+'" attr_location_value="'+levelValue+'" attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'">Edit</h5></td>';
+									</c:when>
+									<c:otherwise>
+									str+='<td>-</td>';
+									</c:otherwise>
+									</c:choose>
 								}else if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
+									<c:choose>
+									<c:when  test="${fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT" )  || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT" ) }">
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'">Add Member</h5></td>';
+									</c:choose>
+									<c:otherwise>
+									str+='<td>-</td>';
+									</c:otherwise>
+									</c:choose>
 								}
 								
 							str+='</tr>';	
@@ -600,7 +618,13 @@ $(document).on("click",".memberAddEditDetailsCls",function(){
 	
 	var roleId = $(this).attr("attr_role_id");
 	$("#memberAddEditModalOpen").modal("show");
-	buildMemberAddEditDetailsBlock(type,roleId);
+	var memberId = $(this).attr("attr_member_id");
+	var memberName = $(this).attr("attr_member_name");
+	var voterCardNo = $(this).attr("attr_voterCard_no");
+	var mobileNo = $(this).attr("attr_mobile_no");
+	var memberShipId = $(this).attr("attr_membership_no");
+	
+	buildMemberAddEditDetailsBlock(type,levelId,levelValue,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId);
 });
 $(document).on("click",".closeShowPdfCls",function(){
 	setTimeout(function(){
@@ -608,7 +632,7 @@ $(document).on("click",".closeShowPdfCls",function(){
 	}, 500);                     
 });
 	
-function buildMemberAddEditDetailsBlock(type,roleId){
+function buildMemberAddEditDetailsBlock(type,levelId,levelValue,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId){
 	
 	$("#memberAddEditPopUpDetailsId").html(spinner);
 	if(type=="edit"){
@@ -675,6 +699,7 @@ function buildMemberAddEditDetailsBlock(type,roleId){
 			str+='</div>';
 		str+='</div>';
 	}else{
+		str+='<form name="addMemberSaving" id="addMember"  method="post" enctype="multipart/form-data">';
 		str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
 			str+='<p>Edit Member Results</p>';
@@ -688,18 +713,18 @@ function buildMemberAddEditDetailsBlock(type,roleId){
 							str+='<img src="images/User.png"/>';
 							str+='</td>';
 							str+='<td class="line_heightCss">';
-							str+='<h5><span class="text-bold">Name : </span> <span>Ramesh</span></h5>';
-								str+='<h5><span class="text-bold">V.Id : </span> <span>120563659</span></h5>';
-								str+='<h5><span class="text-bold">M.Id : </span> <span>AP012356985</span></h5>';
-								str+='<h5><span class="text-bold">Mobile : </span> <span>962365896</span></h5>';
+							str+='<h5><span class="text-bold">Name : </span> <span>'+memberName+'</span></h5>';
+								str+='<h5><span class="text-bold">V.Id : </span> <span>'+voterCardNo+'</span></h5>';
+								str+='<h5><span class="text-bold">M.Id : </span> <span>'+memberShipId+'</span></h5>';
+								str+='<h5><span class="text-bold">Mobile : </span> <span>'+mobileNo+'</span></h5>';
 							str+='</td>';
 						str+='</tr>';
-						
+						str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
 						str+='<tr>';
 							 str+='<td colspan="2">';
-							 str+='<select class="form-control chosen-select" id="memberStatusChangeId">';
+							 str+='<select class="form-control chosen-select" id="memberStatusChangeId" name="janmabhoomiCommitteeMemberVO.status">';
 									str+='<option value="0">Select Status</option>';
-									str+='<option value="approve">Approve</option>';
+									str+='<option value="approval">Approve</option>';
 									str+='<option value="reject">Reject</option>';
 								str+='</select>';
 							
@@ -711,9 +736,10 @@ function buildMemberAddEditDetailsBlock(type,roleId){
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
+	str+='</form>';
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-3">';
-			str+='<button id="clickSearchbutton" class="btn btn-success border_radius_none height_41 text-bold" type="button">Update Member</button>';
+			str+='<button id="" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication();">Update Member</button>';
 			
 		str+='</div>';
 	str+='</div>';
@@ -1058,54 +1084,52 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 							str+='</table>';
 						str+='</div>';
 					str+='</div>';
-				
 			
 		
-		
-		str+='<form name="addMember" id="addMember"  method="post" enctype="multipart/form-data">';
-		
-			str+='<div class="row m_top10">';
-				
-				str+='<div class="col-sm-2">';
-					str+='<label>';
-						str+='<input type="text" class="form-control" id="" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.memberName" >';
-					str+='</label>';
-				str+='</div>';
-				str+='<div class="col-sm-2">';
-					str+='<label>';
-						str+='<input type="text" class="form-control" id="" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber">';
-					str+='</label>';
-				str+='</div>';
-					str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
-					str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.voterId" value="'+result.voterId+'"/>';
-					str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+result.tdpCadreId+'"/>';
-					str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
-					str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';
-				str+='<div class="col-sm-2">';
-					str+='<select class="form-control chosen-select" id="casteCategoryId" name="janmabhoomiCommitteeMemberVO.categoryId">';
-						str+='<option value="0">Select Category</option>';
-					str+='</select>';
-				str+='</div>';
+		str+='<form name="addMemberSaving" id="addMember"  method="post" enctype="multipart/form-data">';
+		str+='<div class="row m_top20">';
+			str+='<div class="col-sm-12">';
 			
-				str+='<div class="col-sm-2">';
-					str+='<select class="form-control chosen-select" id="casteId" name="janmabhoomiCommitteeMemberVO.casteId">';
-						str+='<option value="0">Select Caste</option>';
-					str+='</select>';
-				str+='</div>';
-			
-				str+='<div class="col-sm-2">';
-					str+='<select class="form-control chosen-select" id="partyId" name="janmabhoomiCommitteeMemberVO.partyId">';
-						str+='<option value="0">Select Party</option>';
-						str+='<option value="1117">YSRC</option>';
-						str+='<option value="872">TDP</option>';
-						str+='<option value="362">INC</option>';
-					str+='</select>';
-				str+='</div>';
+			str+='<div class="col-sm-2">';
+				str+='<label>';
+					str+='<input type="text" class="form-control" id="" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.name" >';
+				str+='</label>';
 			str+='</div>';
+			
+			str+='<div class="col-sm-2">';
+				str+='<label>';
+					str+='<input type="text" class="form-control" id="" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber">';
+				str+='</label>';
+			str+='</div>';
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.voterId" value="'+result.voterId+'"/>';
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+result.tdpCadreId+'"/>';
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';
+			str+='<div class="col-sm-2">';
+				str+='<select class="form-control chosen-select" id="casteCategoryId" name="janmabhoomiCommitteeMemberVO.categoryId">';
+					str+='<option value="0">Select Category</option>';
+				str+='</select>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-2">';
+				str+='<select class="form-control chosen-select" id="casteId" name="janmabhoomiCommitteeMemberVO.casteId">';
+					str+='<option value="0">Select Caste</option>';
+				str+='</select>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-2">';
+				str+='<select class="form-control chosen-select" id="partyId" name="janmabhoomiCommitteeMemberVO.partyId">';
+					str+='<option value="0">Select Party</option>';
+					str+='<option value="1117">YSRC</option>';
+					str+='<option value="872">TDP</option>';
+					str+='<option value="362">INC</option>';
+				str+='</select>';
+			str+='</div>';
+			str+='</div>';	
 		str+='</div>';
+			str+='</div>';
 		str+='</div>';	
-		str+='</div>';
-		
 		str+='</form>';
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-3">';
