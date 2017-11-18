@@ -402,14 +402,14 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){ 
 		if(result !=null){
-			buildJanmabhoomiCommitteeOverview(result,statusType);
+			buildJanmabhoomiCommitteeOverview(result,statusType,committeId);
 		}else{
 			$("#committeeWisePopUpDetailsId").html("No Data Available");
 		}
 	});
   }
 
-  function buildJanmabhoomiCommitteeOverview(result,statusType){
+  function buildJanmabhoomiCommitteeOverview(result,statusType,committeId){
 	  var str='';
 	
 	str+='<div class="row">';
@@ -547,23 +547,23 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 								}
 								
 								if(result.desinationVOList[i].desinationMebersVOList[j].status == "Approved" || result.desinationVOList[i].desinationMebersVOList[j].status == "Inprogress"){
-									<c:choose>
-									<c:when test="${fn:contains(sessionScope.USER.entitlements,"JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT" )  || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT" ) || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT" ) }">
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit" attr_level_id="'+levelId+'" attr_location_value="'+levelValue+'" attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'">Edit</h5></td>';
-									</c:when>
-									<c:otherwise>
+									str+='<c:choose>';
+									str+='<c:when test="${fn:contains(sessionScope.USER.entitlements,"JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT" )  || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT" ) || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT" ) }">';
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit"  attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'" attr_committee_id="'+committeId+'">Edit</h5></td>';
+									str+='</c:when>';
+									str+='<c:otherwise>';
 									str+='<td>-</td>';
-									</c:otherwise>
-									</c:choose>
+									str+='</c:otherwise>';
+									str+='</c:choose>';
 								}else if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
-									<c:choose>
-									<c:when  test="${fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT" )  || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT" ) }">
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'">Add Member</h5></td>';
-									</c:choose>
-									<c:otherwise>
+									str+='<c:choose>';
+									str+='<c:when  test="${fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT" )  || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT" ) }">';
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'">Add Member</h5></td>';
+									str+='</c:choose>';
+									str+='<c:otherwise>';
 									str+='<td>-</td>';
-									</c:otherwise>
-									</c:choose>
+									str+='</c:otherwise>';
+									str+='</c:choose>';
 								}
 								
 							str+='</tr>';	
@@ -615,7 +615,7 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
  
 $(document).on("click",".memberAddEditDetailsCls",function(){
 	var type = $(this).attr("attr_type");
-	
+	var committeeId = $(this).attr("attr_committee_id");
 	var roleId = $(this).attr("attr_role_id");
 	$("#memberAddEditModalOpen").modal("show");
 	var memberId = $(this).attr("attr_member_id");
@@ -624,7 +624,7 @@ $(document).on("click",".memberAddEditDetailsCls",function(){
 	var mobileNo = $(this).attr("attr_mobile_no");
 	var memberShipId = $(this).attr("attr_membership_no");
 	
-	buildMemberAddEditDetailsBlock(type,levelId,levelValue,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId);
+	buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId);
 });
 $(document).on("click",".closeShowPdfCls",function(){
 	setTimeout(function(){
@@ -632,7 +632,7 @@ $(document).on("click",".closeShowPdfCls",function(){
 	}, 500);                     
 });
 	
-function buildMemberAddEditDetailsBlock(type,levelId,levelValue,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId){
+function buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId){
 	
 	$("#memberAddEditPopUpDetailsId").html(spinner);
 	if(type=="edit"){
@@ -695,7 +695,7 @@ function buildMemberAddEditDetailsBlock(type,levelId,levelValue,roleId,memberId,
 				str+='<input id="searchValue" class="form-control search-text border_radius_none" type="text">';
 			str+='</div>';
 			str+='<div class="col-sm-2 m_top10">';
-				str+='<button id="clickSearchbutton" class="btn btn-success btn-block btnSearch border_radius_none" id="searchbtn"  attr_role_id="'+roleId+'" attr_status_type="'+type+'">SEARCH</button>';
+				str+='<button id="clickSearchbutton" class="btn btn-success btn-block btnSearch border_radius_none" id="searchbtn"  attr_role_id="'+roleId+'" attr_status_type="'+type+'" attr_committee_id="'+committeeId+'">SEARCH</button>';
 			str+='</div>';
 		str+='</div>';
 	}else{
@@ -948,7 +948,7 @@ $(document).on("click","#clickSearchbutton",function(){
 	var locationLevel = 0;
 	var locationValue = 0;
 	var roleId = $(this).attr("attr_role_id");
-	
+	var committeeId=$(this).attr("attr_committee_id");
 	if(panchayatId !=0 && panchayatId>0)
 	{
 		if(panchayatId.substr(0,1) == 1){
@@ -989,10 +989,10 @@ $(document).on("click","#clickSearchbutton",function(){
 		locationLevel = 2;
 	}
 	
-	searchByMemberIdOrVoterId(locationLevel,locationValue,voterMembershipVal,searchType,roleId,statusType);	
+	searchByMemberIdOrVoterId(locationLevel,locationValue,voterMembershipVal,searchType,roleId,statusType,committeeId);	
 });	 
 
-function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchType,roleId,statusType){  
+function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchType,roleId,statusType,committeeId){  
 	$("#memberAddedPopUpDetailsId").html(spinner)
 	var memberShipCardNo='';
 	var voterCardNo     ='';
@@ -1022,12 +1022,12 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){ 
       if(result !=null){
-		  builldLevelWiseMemberDetailsAppend(result,roleId,statusType);
+		  builldLevelWiseMemberDetailsAppend(result,roleId,statusType,committeeId);
 	  }
     });
 }
   
-  function builldLevelWiseMemberDetailsAppend(result,roleId,statusType){
+  function builldLevelWiseMemberDetailsAppend(result,roleId,statusType,committeeId){
 	  var str='';
 	 str+='<div class="row m_top20">';
 				str+='<div class="col-sm-12">';
@@ -1106,6 +1106,7 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+result.tdpCadreId+'"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.committeeId" value="'+committeeId+'"/>';
 			str+='<div class="col-sm-2">';
 				str+='<select class="form-control chosen-select" id="casteCategoryId" name="janmabhoomiCommitteeMemberVO.categoryId">';
 					str+='<option value="0">Select Category</option>';
@@ -1157,7 +1158,7 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
  		  dataType : 'json',
  		  data : {task :JSON.stringify(jsObj)}
  		}).done(function(result){ 
-			 $("#committesLevelValuesId").append('<option value="0">select Committee</option>')
+			 $("#committesLevelValuesId").append('<option value="0">Select Committee</option>')
 			 if(result !=null && result.length>0){
 				for(var i in result){
 					  $("#committesLevelValuesId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
