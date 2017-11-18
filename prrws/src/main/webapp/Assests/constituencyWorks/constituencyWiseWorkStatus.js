@@ -155,10 +155,17 @@ function getLocationsNamesBySubLocation(locationId){
 }	
 $(document).on("change","#constituencySelId",function(){
 	  var constincyId=$(this).val();
-	  alert(constincyId);
-	  getDistrictNameAndLeaderName(constincyId);
+	  if(constincyId != null && constincyId !=0 ){
+		  $("#leaderNameId").show();
+		  getDistrictNameAndLeaderName(constincyId);
+	   } else{
+		   $("#leaderNameId").hide();
+	   }
 	});
-	function getDistrictNameAndLeaderName(locationId){  
+	function getDistrictNameAndLeaderName(locationId){
+       $("#mlaName").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+      $("#districtName").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+      $("#constituencyName").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>'); 		
 	   var json = {
 	         locationId:locationId
 	       }
@@ -179,7 +186,7 @@ $(document).on("change","#constituencySelId",function(){
 			$("#constituencyName").html(" ");
 			$("#mlaName").append("<h5>"+result[0].mlaName+"</h5>");
 			$("#districtName").append("<h5>"+result[0].locationName+"</h5>");
-			$("#constituencyName").append("<h5 class='text-capitalize'>"+result[0].workName+"</h5>");
+			$("#constituencyName").append("<h5>"+result[0].workName+"</h5>");
 	   }else{
 			$("#districtName").html('District');
 			$("#mlaName").html('MLA Name');
@@ -228,7 +235,7 @@ function collapseBlock(){
 }
 
 function buildWorkDeatils(divId,result){
-	alert(divId);
+	
 	var tab='';
 		tab+='<h3 class="panel-title m_left20" style="background-color:lightgrey;padding:5px;">Govt Order Wise Works Details</h3>';
 		tab+='<div class="table-responsive m_top20">';
