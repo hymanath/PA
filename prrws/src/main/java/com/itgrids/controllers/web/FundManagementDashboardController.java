@@ -335,7 +335,7 @@ public class FundManagementDashboardController {
 		}
 		@PostMapping("/getFundManagementSystemWorkDetails")
 		public @ResponseBody LocationVO getFundManagementSystemWorkDetails(@RequestBody InputVO inputVO){
-			LocationVO loctions = constituencyWiseWorkStatusService.getFundManagementSystemWorkDetails(inputVO.getFinancialYrIdList(),inputVO.getDepartmentId(),inputVO.getFromDateStr(),inputVO.getToDateStr());
+			LocationVO loctions = constituencyWiseWorkStatusService.getFundManagementSystemWorkDetails(inputVO.getFinancialYrIdList(),inputVO.getDepartmentId(),inputVO.getFromDateStr(),inputVO.getToDateStr(),inputVO.getLocationId());
 			return loctions;
 		}
 		

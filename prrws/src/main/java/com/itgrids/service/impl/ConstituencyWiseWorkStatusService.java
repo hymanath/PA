@@ -1,5 +1,6 @@
 package com.itgrids.service.impl;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,14 +37,24 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	 * Swadhin K Lenka
 	 * @see com.itgrids.service.IConstituencyWiseWorkStatusService#getFundManagementSystemWorkDetails(java.util.List, java.lang.Long, java.lang.String, java.lang.String)
 	 */
-	public LocationVO getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, Long departmentId, String startDateStr,String endDateStr){
+	public LocationVO getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, Long departmentId, String startDateStr,String endDateStr,Long locationId){
 		try{
 			LocationVO locationVO = new LocationVO();
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd/MM/yyyy","");
 			Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd/MM/yyyy","");
 			financialYearIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(financialYearIdsList);
-			
-			List<Object[]> workList = fundSanctionDAO.getFundManagementSystemWorkDetails(financialYearIdsList,departmentId,startDate,endDate);
+			String type="";
+			Long superLocationId = null;
+			if(locationId.toString().trim().length() > 1){
+				Long firstDigit = Long.parseLong(locationId.toString().substring(0,1));
+				superLocationId = Long.parseLong(locationId.toString().substring(1));
+				if(firstDigit.longValue() == 3L){
+					type = "district";
+				}else if(firstDigit.longValue() == 4L){
+					type = "constituency";
+				}
+			}
+			List<Object[]> workList = fundSanctionDAO.getFundManagementSystemWorkDetails(financialYearIdsList,departmentId,startDate,endDate,superLocationId,type);
 			//create a map of govtOrderId and govtOrderDtlsVO map
 			Map<Long, LocationVO> govtOrderMap = new HashMap<Long,LocationVO>();
 			LocationVO  locationVOForMap = null;
@@ -51,7 +62,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			List<LocationVO> locationVOs = new ArrayList<LocationVO>();
 			LocationVO  locationVOForListForWork = null;
 			
-			
+			DecimalFormat df = new DecimalFormat("0.000");
 			if(workList != null && workList.size() > 0){
 				for(Object[] param : workList){
 					locationVOForMap = govtOrderMap.get(commonMethodsUtilService.getLongValueForObject(param[6]));
@@ -71,9 +82,22 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					locationVOForListForWork.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[3]));
 					locationVOForListForWork.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[5]));
 					locationVOForListForWork.setAmount(commonMethodsUtilService.getLongValueForObject(param[11]));
+					locationVOForListForWork.setAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(param[11])/100000D));
 					locationVOs.add(locationVOForListForWork);   
 				}
 				List<LocationVO> locationVOListForGoNo = new ArrayList<LocationVO>(govtOrderMap.values());
+				//calculate total no of go and total work and total amount
+				Long totalWork = 0L;
+				Long totalAmount = 0L;
+				for(LocationVO param : locationVOListForGoNo){
+					param.setAmountInDecimal(df.format(param.getAmount()/100000D));
+					totalWork = totalWork + param.getWorkNumber();
+					totalAmount = totalAmount + param.getAmount();
+				}
+				locationVO.setGovtOrderCount(Long.valueOf(locationVOListForGoNo.size()));
+				locationVO.setWorkNumber(totalWork);
+				locationVO.setAmount(totalAmount);
+				locationVO.setAmountInDecimal(df.format(totalAmount/100000D));
 				locationVO.getLocationList1().addAll(locationVOListForGoNo);
 				locationVO.getLocationList2().addAll(locationVOs);
 			}	
@@ -94,7 +118,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			if(objects != null && objects.size() > 0){
 				for(Object[] param : objects){
 					LocationVO vo = new LocationVO();
-					vo.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setLocationId(Long.parseLong("4"+commonMethodsUtilService.getStringValueForObject(param[0])));
 					vo.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					finalList.add(vo);
 				}
