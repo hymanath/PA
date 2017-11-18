@@ -3975,11 +3975,12 @@ public class RWSNICService implements IRWSNICService{
 										workDetailsVO.setDistrictCode(jObj.has("districtCode") ? jObj.getString("districtCode"): null);
 										workDetailsVO.setDistrictName(jObj.has("districtName") ? jObj.getString("districtName"): null);
 										workDetailsVO.setMandalName(jObj.has("mandalName") ? jObj.getString("mandalName") : null);
-										workDetailsVO.setSanctionAmount(jObj.has("sacntionedAmount") ? jObj.getLong("sacntionedAmount"): null);
 										if (workStatus.equalsIgnoreCase("ongoing")) {
+											workDetailsVO.setSanctionAmount(Long.valueOf(commonMethodsUtilService.getStringValueForObject(jObj.getString("sacntionedAmount"))));
 											workDetailsVO.setTargetDate( jObj.has("targetDate") ? jObj.getString("targetDate").substring(0, 10) : null);
 											workDetailsVO.setCompletionDate(currentDate);
 										} else if (workStatus.equalsIgnoreCase("completed")) {
+											workDetailsVO.setSanctionAmount(Long.valueOf(commonMethodsUtilService.getStringValueForObject(jObj.getString("assestType"))));
 											workDetailsVO.setCompletionDate(jObj.has("completionDate") ? jObj.getString("completionDate").substring(0, 10) : null);
 											
 											if (workTargetCompletedDateMap != null && workTargetCompletedDateMap.size() > 0) { //setting target date
