@@ -35,14 +35,20 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	 * Date : 7/11/2017
 	 * Author :Swapna
 	*/
-
 	@Override
 	public List<SolidWasteManagementVO> getSolidInfoLocationWise(InputVO inputVO) {
 		List<SolidWasteManagementVO> finalList = new ArrayList<SolidWasteManagementVO>(0);	
 		try {
 			WebResource webResource = null;
-				webResource = commonMethodsUtilService.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=1");
-			ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+				
+				if(inputVO.getSubFilterType() != null && !inputVO.getSubFilterType().trim().isEmpty())
+					webResource = commonMethodsUtilService.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&subFilterType="+inputVO.getSubFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+				else if(inputVO.getFilterType() != null && !inputVO.getFilterType().trim().isEmpty())
+					webResource = commonMethodsUtilService.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+				else	
+					webResource = commonMethodsUtilService.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+				
+			    ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 		    
 	        	if(response.getStatus() != 200){
 	        		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -79,7 +85,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		 	    				solidWasteManagementVO.setEvehicle(!jObj.getString("evehicle").equalsIgnoreCase("null") ?jObj.getLong("evehicle") : 0l);
 		 	    				solidWasteManagementVO.setBlocks(!jObj.getString("blocks").equalsIgnoreCase("null") ?jObj.getLong("blocks") : 0l);
 		 	    				finalList.add(solidWasteManagementVO);
-	        				}
+	        			}
 	        			}
 	        			}
 	        			}
