@@ -112,13 +112,13 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 								|| urlvo.getId().longValue() == 54l || urlvo.getId().longValue() == 55l || urlvo.getId().longValue() == 56l
 								|| urlvo.getId().longValue() == 57l || urlvo.getId().longValue() == 58l || urlvo.getId().longValue() == 59l
 								|| urlvo.getId().longValue() == 64l || urlvo.getId().longValue() == 65l || urlvo.getId().longValue() == 66l
-								|| urlvo.getId().longValue() == 67l)){
-							if(urlvo.getId().longValue() == 99l)
+								|| urlvo.getId().longValue() == 67l || urlvo.getId().longValue() == 106l)){
+							if(urlvo.getId().longValue() == 66l)
 								inputVO.setGroupName("Comprehensive Restoration of minor Irrigation Tank");
 							else
 								inputVO.setGroupName(urlvo.getComponentName());
 						}
-						else if(urlvo.getId() != null && urlvo.getId().longValue() >= 69l && urlvo.getId().longValue() <= 99l){
+						else if(urlvo.getId() != null && urlvo.getId().longValue() >= 69l && urlvo.getId().longValue() <= 105l){
 							inputVO.setGroupName(urlvo.getComponentName());
 						}
 						String str = convertingInputVOToString(inputVO);
@@ -143,7 +143,10 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 				if(responseList != null && !responseList.isEmpty()){
 					for (ClientResponse response : responseList) {
 						if(response == null || response.getStatus() != 200){
-							throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+							if(response != null){
+								System.out.println("Exception Occured in "+response.toString());
+								throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+							}
 						}else{
 							String output = response.getEntity(String.class);
 							String returnUrl = response.toString().split(" ")[1].toString().split("rest/")[1];
@@ -242,7 +245,7 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 									}
 								}
 							}
-							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("MCCOthersService/MCCOthersData")){
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("MCCOthersNewService/MCCOthersAbstract")){
 								if(output != null && !output.isEmpty()){
 									JSONArray finalArray = new JSONArray(output);
 									if(finalArray != null && finalArray.length() > 0){
@@ -261,7 +264,10 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 										//for(int i=0;i<finalArray.length();i++){
 											JSONObject jObj = (JSONObject) finalArray.get(0);
 											if(jObj != null && jObj.has("CAT_NAME"))
-												componentName = jObj.getString("CAT_NAME");
+												if(jObj.getString("CAT_NAME") != null && jObj.getString("CAT_NAME").trim().equalsIgnoreCase("Comprehensive Restoration of minor Irrigation Tank"))
+													componentName = "Comprehensive Restoration of minor Irrigation Tank1";
+												else
+													componentName = jObj.getString("CAT_NAME");
 										//}
 									}
 								}
