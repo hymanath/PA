@@ -7,19 +7,18 @@ var globalLocationName='';
 $("#selectedName").attr("attr_id","0");
 $("#selectedName").attr("attr_levelidvalue","2");
 //onLoadCalls();
-setTimeout(function(){
+ setTimeout(function(){
 	callWebService();		
 }, 1000);
-
-function onLoadCalls()
-{
-	$("header").on("click",".menu-cls",function(e){
+$("header").on("click",".menu-cls",function(e){
 		e.stopPropagation();
 		$(".menu-data-cls").toggle();
 	});
 	$(document).on("click",function(){
 		$(".menu-data-cls").hide();
 	});
+function onLoadCalls()
+{
 	$(".chosen-select").chosen();
 	getLedOverviewForStartedLocationsDetailsCounts();
 	getBasicLedOverviewDetails();
@@ -621,7 +620,7 @@ function tableView(result,divId,locType)
 	tableView+='<table class="table tableStyleLed" id="'+divId+'Table">';
 		tableView+='<thead>';
 			tableView+='<tr>';
-			tableView+='<th> </th>';
+			tableView+='<th>Vendor</th>';
 				if(divId == 'district')
 				{
 					if(viewTypeDist == "district"){
@@ -693,9 +692,9 @@ function tableView(result,divId,locType)
 						 tableView+='<tr style="text-align:center;">';
 						  tableView+='<td>';
 							if (result[i].subList[j].lightVendorId != null && result[i].subList[j].lightVendorId == 1) {//essl
-								tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
+								tableView+='<p>EESL</p><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
 							} else { //nredp
-								tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
+								tableView+='<p>NREDCAP</p><img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
 							}
 							tableView+='</td>';
 						if(divId == 'district')
@@ -1671,7 +1670,7 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 	tableView+='<table class="table tableStyleLed" id="surveyStartedLocationDtlsDataTblId">';
 		tableView+='<thead>';
 			tableView+='<tr>';
-				tableView+='<th> </th>';	
+				tableView+='<th>Vendor</th>';	
 				if(divId == 'district'){
 						tableView+='<th>DISTRICTS</th>';
 				}else if(divId == 'constituency'){
@@ -1715,9 +1714,9 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 						tableView+='<tr>';
 							tableView+='<td>';
 								if (result[i].subList[j].lightVendorId != null && result[i].subList[j].lightVendorId == 1) {//essl
-									tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
+									tableView+='<p>EESL</p><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
 								} else { //nredp
-									tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
+									tableView+='<p>NREDCAP</p><img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
 								}
 							tableView+='</td>';
 						if(divId == 'district'){

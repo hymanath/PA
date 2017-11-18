@@ -147,7 +147,7 @@
 												<div class="menu-block" style="background-color:#1c94ef">
 													<a href="waterTanksClorinationDashBoard">
 														<h3>WTC</h3>
-														<p>Water Tank Clorination</p>
+														<p>Water Tank chlorination</p>
 													</a>
 												</div>
 											</div>
