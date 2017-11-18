@@ -348,6 +348,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					memeberVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[11]));
 					memeberVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[12]));
 					memeberVO.setMemberShipCardId(commonMethodsUtilService.getStringValueForObject(param[13]));
+					memeberVO.setVoterId(commonMethodsUtilService.getLongValueForObject(param[14]));
 					if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("F")){
 						memeberVO.setStatus("Approved");
 						committeeVO.setAddedMemberCount(committeeVO.getAddedMemberCount()+1);
@@ -664,9 +665,16 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					jbCommitteeMember.setUpdatedUserId(janmabhoomiCommitteeMemberVO.getUserId());
 					jbCommitteeMember.setEndDate(dateUtilService.getCurrentDateAndTime());
 				}else if(statusType.equalsIgnoreCase("P")){
+					JbCommittee jbCommittee = jbCommitteeDAO.get(janmabhoomiCommitteeMemberVO.getCommitteeId());
+					if(jbCommittee != null){
+						if(jbCommittee.getStartDate() == null){
+							jbCommittee.setStartDate(dateUtilService.getCurrentDateAndTime());
+							jbCommitteeDAO.save(jbCommittee);
+						}
+					}
 					String saveStatus = avoidingDuplicateMemberAdding(janmabhoomiCommitteeMemberVO);
 					if(saveStatus.equalsIgnoreCase("duplicate")){
-						resultStatus.setExceptionMsg("FAIL");
+						resultStatus.setExceptionMsg("DUPLICATE");
 						return resultStatus;
 					}
 					jbCommitteeMember.setJbCommitteeRoleId(janmabhoomiCommitteeMemberVO.getDesignationId());
@@ -738,7 +746,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		 List<JanmabhoomiCommitteeVO> returnList = new ArrayList<JanmabhoomiCommitteeVO>();
 	try {
 		Map<Long,JanmabhoomiCommitteeVO> committeeMaps = null;
-		if(status != null && (status.equalsIgnoreCase("NotStarted") || status.equalsIgnoreCase("Approved") || status.equalsIgnoreCase("total"))){
+		if(status != null && (status.equalsIgnoreCase("Not Started") || status.equalsIgnoreCase("Approved") || status.equalsIgnoreCase("total"))){
 			List<Object[]> list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, locationId, committeeLvlId,status);
 			committeeMaps = new HashMap<Long,JanmabhoomiCommitteeVO>();
 			setCommitteesData(committeeMaps,list,status,"");
@@ -929,7 +937,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					}
 				}
 			}else{
-				resultStatus.setExceptionMsg("FAIL");
+				resultStatus.setExceptionMsg("NotFilled");
 			}
 		}catch (Exception e) {
 			resultStatus.setExceptionMsg("FAIL");
