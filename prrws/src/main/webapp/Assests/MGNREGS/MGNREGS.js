@@ -4782,19 +4782,23 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 					}
 				}else{
-					if(result[i].percentage < 50)
-					{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-					}else if(result[i].percentage >= 50 && result[i].percentage < 80)
-					{
-						str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
-						
-					}else if(result[i].percentage >= 80)
-					{
+					if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'IJP PROGRAM WORKS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Cattle Ponds' || type == 'Desilting of Drinking Water Tanks' || type == 'coffee' || type == 'Comprehensive Restoration of minor Irrigation Tank1' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == 'NTR 90 Days' || type == 'NTR Rural House' || type == 'Production of Bricks'){
 						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
-					}else
-					{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+					}else{
+						if(result[i].percentage < 50)
+						{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+						{
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+						
+						}else if(result[i].percentage >= 80)
+						{
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+						}else
+						{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						}
 					}
 				}
 				
