@@ -24,7 +24,7 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 			sb.append("SELECT model.jbCommitteeMemberId,model.jbCommitteeRole.jbCommitteeRoleId , ");
 			sb.append("model.memberName,model.mobileNo, model.isActive,model.status, ");
 			sb.append(" voter.voterIDCardNo,casteCategory.casteCategoryId,casteCategory.categoryName,casteState.casteStateId," +
-					" caste.casteName,party.partyId,party.shortName,tdpCadre.memberShipNo ");
+					" caste.casteName,party.partyId,party.shortName,tdpCadre.memberShipNo,voter.voterId ");
 			
 			sb.append("from JbCommitteeMember model " +
 					" left join model.tdpCadre tdpCadre " +
@@ -99,13 +99,17 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 		
 		 sb.append(" from JbCommitteeMember model ");
 		 if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 3l){
-				sb.append(" left join model.userAddress.district district ");
+				sb.append(" left join model.jbCommitteeRole.jbCommittee.userAddress.district district ");
 			}else if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 4l){
-				sb.append(" left join  model.userAddress.constituency constituency ");
+				sb.append(" left join  model.jbCommitteeRole.jbCommittee.userAddress.constituency constituency ");
 			}else if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 10l){
-				sb.append(" left join  model.userAddress.parliamentConstituency parliamentConstituency ");
+				sb.append(" left join  model.jbCommitteeRole.jbCommittee.userAddress.parliamentConstituency parliamentConstituency ");
 			}
+		 
 		 sb.append(" where model.jbCommitteeRole.jbCommittee.isDeleted = 'N' and model.isActive='Y' ");
+		 if(committeeLvlId != null && committeeLvlId.longValue() >0l ){
+			 sb.append(" and model.jbCommitteeRole.jbCommittee.jbCommitteeLevelId = :committeeLvlId "); 
+		 }
 		 if(levelId != null && levelId.longValue()  == 3l && levelVal != null && levelVal.longValue() >0l ){
 				sb.append(" and district.districtId = :levelVal ");
 			}else if(levelId != null && levelId.longValue()  == 4l && levelVal != null && levelVal.longValue() >0l){
@@ -146,13 +150,13 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 	 public List<Object[]> getCommitteeMembersByCommiteeId(Long committeeId){
 		 StringBuilder sb = new StringBuilder();
 		 //0 jbCommitteeMemberId,1 jbCommitteeRoleId,2 memberName,3 voterIDCardNo,4 tdpCadreId
-			 sb.append("SELECT model.jbCommitteeMemberId,model.jbCommitteeRole.jbCommitteeRoleId, ");
+			 sb.append(" SELECT model.jbCommitteeMemberId,model.jbCommitteeRole.jbCommitteeRoleId, ");
 			 sb.append("model.memberName, voter.voterIDCardNo,tdpCadre.tdpCadreId ");
 			 sb.append("from JbCommitteeMember model " +
 						" left join model.tdpCadre tdpCadre " +
 						" left join model.voter  voter " );
 			 sb.append("where ");
-			 sb.append(" model.jbCommitteeRole.jbCommittee.jbCommitteeId =: committeeId and model.jbCommitteeRole.jbCommittee.isDeleted ='N' ");
+			 sb.append(" model.jbCommitteeRole.jbCommittee.jbCommitteeId = :committeeId and model.jbCommitteeRole.jbCommittee.isDeleted ='N' ");
 			 
 			 Query query = getSession().createQuery(sb.toString());
 			 	query.setParameter("committeeId", committeeId);
