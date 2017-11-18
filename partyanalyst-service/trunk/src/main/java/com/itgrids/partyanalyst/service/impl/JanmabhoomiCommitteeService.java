@@ -187,6 +187,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					}
 				}
 				
+				
 				List<Object[]> objList = jbCommitteeMemberDAO.getCommitteMemebersByRoleIds(committeeRoleIdsList, startDate, endDate);
 				//0 jbCommitteeMemberId,1 jbMemberTypeId,2 memberName, 3 mobileNo,4 isActive,5 status,6 voterIDCardNo
 				if(objList!=null && objList.size() >0){
@@ -198,18 +199,18 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 							//committeeVO.setTotalMemberCount(committeeVO.getTotalMemberCount()+1L);
 						}
 					}
-					committeeVO.getDesinationVOList().addAll(designationVOMap.values());
-					
-					if(committeeVO.getDesinationVOList() !=null && committeeVO.getDesinationVOList().size() >0){
-						for(JanmabhoomiCommitteeMemberVO designationVO:committeeVO.getDesinationVOList()){
-							Long designationId = designationVO.getDesignationId();
-							Long roleCount = designationVO.getRoleMemberCount();
-							if(roleCount >Long.valueOf(designationVO.getDesinationMebersVOList().size())){
-								Long memebersNotAddedCount = roleCount.longValue()-designationVO.getDesinationMebersVOList().size();
-								for(int i=0;i<memebersNotAddedCount;i++){
-									JanmabhoomiCommitteeMemberVO notAddedMemeberVO=new JanmabhoomiCommitteeMemberVO();
-									designationVO.getDesinationMebersVOList().add(notAddedMemeberVO);
-								}
+				}
+				
+				committeeVO.getDesinationVOList().addAll(designationVOMap.values());
+				if(committeeVO.getDesinationVOList() !=null && committeeVO.getDesinationVOList().size() >0){
+					for(JanmabhoomiCommitteeMemberVO designationVO:committeeVO.getDesinationVOList()){
+						Long designationId = designationVO.getDesignationId();
+						Long roleCount = designationVO.getRoleMemberCount();
+						if(roleCount >Long.valueOf(designationVO.getDesinationMebersVOList().size())){
+							Long memebersNotAddedCount = roleCount.longValue()-designationVO.getDesinationMebersVOList().size();
+							for(int i=0;i<memebersNotAddedCount;i++){
+								JanmabhoomiCommitteeMemberVO notAddedMemeberVO=new JanmabhoomiCommitteeMemberVO();
+								designationVO.getDesinationMebersVOList().add(notAddedMemeberVO);
 							}
 						}
 					}
