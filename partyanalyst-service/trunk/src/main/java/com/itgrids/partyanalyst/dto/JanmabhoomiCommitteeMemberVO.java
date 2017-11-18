@@ -26,7 +26,7 @@ private Long categoryId;
 private String categoryName;
 private String casteName;
 private String DOB;
-private Long tdpCadreId;
+private Long tdpCadreId = 0l;
 private Long userId ;
 private Long enrollmentYrId ;
 private Set<Long> committeeIds = new TreeSet<Long>();
