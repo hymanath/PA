@@ -1566,12 +1566,14 @@ public class RWSNICService implements IRWSNICService{
 		 	    				subVo.setHabitationName(jobj.getString("habitationName"));
 		 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
 		 	    				if(jobj.has("completionDate")){
+		 	    					subVo.setSacntionedAmount(jobj.getString("assestType"));
 		 	    					subVo.setCompletionDate(jobj.getString("completionDate"));
 		 	    				}
 		 	    				if(jobj.has("targetDate")){
 		 	    					subVo.setCompletionDate(jobj.getString("targetDate"));
 		 	    				}
 		 	    				if(jobj.has("commssionedDate")){
+		 	    					subVo.setSacntionedAmount(jobj.getString("assestType"));
 		 	    					subVo.setCompletionDate(jobj.getString("commssionedDate"));
 		 	    				}
 		 	    				if(jobj.has("groundingDate")){
