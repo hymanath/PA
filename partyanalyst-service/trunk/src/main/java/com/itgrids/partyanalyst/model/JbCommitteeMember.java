@@ -42,6 +42,7 @@ public class JbCommitteeMember extends BaseModel implements java.io.Serializable
 	private Date insertedTime;
 	private Date updatedTime;
 	private Long partyId ;
+	private Long voterId ;
 	
 	private  JbCommitteeRole jbCommitteeRole;
 	private CasteState casteState;
@@ -51,6 +52,7 @@ public class JbCommitteeMember extends BaseModel implements java.io.Serializable
 	private User insertedUser;
 	private User updatedUser;
 	private Party party ;
+	private Voter voter ;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -268,6 +270,25 @@ public class JbCommitteeMember extends BaseModel implements java.io.Serializable
 	}
 	public void setParty(Party party) {
 		this.party = party;
+	}
+	
+	@Column(name="voter_id")
+	public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "voter_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Voter getVoter() {
+		return voter;
+	}
+	public void setVoter(Voter voter) {
+		this.voter = voter;
 	}
 	
 	
