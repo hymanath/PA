@@ -85,7 +85,7 @@ public class LightMonitoringController {
        return reusltVO;
  }
    @RequestMapping(value ="/getLightsVendors", method = RequestMethod.GET)
-   public List<LightsVendor> getLightsVendors() {
+   public  @ResponseBody List<LightsVendor> getLightsVendors() {
 	return lightMonitoring.getLightsVendorList();
    }
 }
