@@ -16,7 +16,7 @@ private String designationName;
 private Long roleMemberCount=0L;
 private String memeberName;
 private String mobileNumber;
-private String voterId;
+private Long voterId;
 private String partyName;
 private String status;
 private Long partyId;
@@ -157,10 +157,10 @@ public String getMobileNumber() {
 public void setMobileNumber(String mobileNumber) {
 	this.mobileNumber = mobileNumber;
 }
-public String getVoterId() {
+public Long getVoterId() {
 	return voterId;
 }
-public void setVoterId(String voterId) {
+public void setVoterId(Long voterId) {
 	this.voterId = voterId;
 }
 public String getPartyName() {

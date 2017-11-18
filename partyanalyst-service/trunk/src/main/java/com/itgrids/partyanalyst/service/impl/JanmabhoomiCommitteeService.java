@@ -340,7 +340,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					memeberVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[1]));
 					memeberVO.setMemeberName(commonMethodsUtilService.getStringValueForObject(param[2]));
 					memeberVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(param[3]));
-					memeberVO.setVoterId(commonMethodsUtilService.getStringValueForObject(param[6]));
+					memeberVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(param[6]));
 					memeberVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[7]));
 					memeberVO.setCategoryName(commonMethodsUtilService.getStringValueForObject(param[8]));
 					memeberVO.setCasteId(commonMethodsUtilService.getLongValueForObject(param[9]));
@@ -665,13 +665,14 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					jbCommitteeMember.setEndDate(dateUtilService.getCurrentDateAndTime());
 				}else if(statusType.equalsIgnoreCase("P")){
 					jbCommitteeMember.setJbCommitteeRoleId(janmabhoomiCommitteeMemberVO.getDesignationId());
-					jbCommitteeMember.setMemberName(janmabhoomiCommitteeMemberVO.getMemeberName());
+					jbCommitteeMember.setMemberName(janmabhoomiCommitteeMemberVO.getName());
 					//jbCommitteeMember.setAge(null);
 					jbCommitteeMember.setCasteStateId(janmabhoomiCommitteeMemberVO.getCasteId());
 					jbCommitteeMember.setCasteCategoryId(janmabhoomiCommitteeMemberVO.getCategoryId());
 					jbCommitteeMember.setMobileNo(janmabhoomiCommitteeMemberVO.getMobileNumber());
 					//jbCommitteeMember.setDescripation(null);
 					jbCommitteeMember.setTdpCadreId(janmabhoomiCommitteeMemberVO.getTdpCadreId());
+					jbCommitteeMember.setVoterId(janmabhoomiCommitteeMemberVO.getVoterId());
 					jbCommitteeMember.setPartyId(janmabhoomiCommitteeMemberVO.getPartyId());
 					jbCommitteeMember.setStartDate(dateUtilService.getCurrentDateAndTime());
 					//jbCommitteeMember.setEndDate(dateUtilService.getCurrentDateAndTime());
@@ -803,7 +804,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 								mainVO.setMobileNumber(voterDetailsVO.getActualMobiNumber() != null?voterDetailsVO.getActualMobiNumber():null);
 								mainVO.setVoterCardNo(voterDetailsVO.getVoterIDCardNo()!= null ? voterDetailsVO.getVoterIDCardNo():null);
 								if(voterDetailsVO.getVoterId()!= null)
-								mainVO.setVoterId(voterDetailsVO.getVoterId().toString());
+								mainVO.setVoterId(Long.valueOf(voterDetailsVO.getVoterId().toString()));
 								mainVO.setMemberShipCardId(voterDetailsVO.getMemberShipNo()!= null ? voterDetailsVO.getMemberShipNo():null);
 								mainVO.setTdpCadreId(voterDetailsVO.getTdpCadreId() == null?null:voterDetailsVO.getTdpCadreId());
 								if(mainVO.getMemberShipCardId() !=null){ //from tdpcadre table
@@ -831,7 +832,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					mainVO.setMobileNumber(candidateDetailsVO.getMobileNo() == null?null:candidateDetailsVO.getMobileNo());
 					mainVO.setVoterCardNo(candidateDetailsVO.getVoterCardNo() == null?null:candidateDetailsVO.getVoterCardNo());
 					if(candidateDetailsVO.getCadreVoterId() !=null)
-					mainVO.setVoterId(candidateDetailsVO.getCadreVoterId().toString());
+					mainVO.setVoterId(candidateDetailsVO.getCadreVoterId());
 				}
 			}
 	   } catch (Exception e) {
