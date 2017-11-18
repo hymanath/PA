@@ -200,7 +200,7 @@ function departmentBlockWiseDetails(divId)
 		
 	}else if(divId == "cMeoDB"){
 		
-		levelWiseBlockArr = [{name:'CM eoDB',id:'8'}];
+		levelWiseBlockArr = [{name:'CM EODB',id:'8'}];
 	}else if(divId == "apInnovationSociety"){
 		
 		levelWiseBlockArr = [{name:'AP Innovation Society',id:'9'}];
@@ -218,7 +218,7 @@ function departmentBlockWiseDetails(divId)
 						}else{
 							collapse+='<a role="button" class="panelCollapseIcon collapsed '+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseBlockArr[i].id+'">';
 						}
-						collapse+='<h4 class="panel-title">'+levelWiseBlockArr[i].name+' overview</h4>';
+						collapse+='<h4 class="panel-title">'+levelWiseBlockArr[i].name+' Overview</h4>';
 							
 						collapse+='</a>';
 					collapse+='</div>';
@@ -2544,6 +2544,8 @@ function buildCMeoDBStatusCountDetails(result){
 						str+='<th>District Name</th>';
 						str+='<th>Sector Name</th>';
 						str+='<th>Activity</th>';
+						str+='<th>Industry Name</th>';
+						str+='<th>Category Name</th>';
 						str+='<th>Employment</th>';
 						str+='<th>Investment Amount</th>';
 						str+='<th>Appication Filled Date</th>';
@@ -2554,8 +2556,6 @@ function buildCMeoDBStatusCountDetails(result){
 						str+='<th>Status</th>';
 						str+='<th>Address</th>';
 						str+='<th>Approval File Id</th>';
-						str+='<th>Industry Name</th>';
-						str+='<th>Category Name</th>';
 						//str+='<th>Document URL</th>';
 					str+='</tr>';
 				str+='</thead>';
@@ -2573,6 +2573,12 @@ function buildCMeoDBStatusCountDetails(result){
 							} else {
 								 str+='<td>-</td>';
 							}
+							if (result[i].industryName != null ) {
+							str+='<td class="tooltipCls" data-container="body" title="'+result[i].industryName+'" style="cursor:pointer;">'+result[i].industryName.substr(0,10)+"..."+'</td>';	
+							} else {
+								str+='<td>-</td>';
+							}
+							str+='<td >'+result[i].category+'</td>';
 							str+='<td >'+result[i].empolyeement+'</td>';
 							str+='<td >'+result[i].investmentAmount+'</td>';
 							str+='<td >'+result[i].appFilledDate+'</td>';
@@ -2583,12 +2589,6 @@ function buildCMeoDBStatusCountDetails(result){
 							str+='<td >'+result[i].status+'</td>';
 							str+='<td class="tooltipCls" data-container="body" title="'+result[i].address+'" style="cursor:pointer;">'+result[i].address.substr(0,10)+"..."+'</td>';
 							str+='<td >'+result[i].approvalFileId+'</td>';
-							if (result[i].industryName != null ) {
-							str+='<td class="tooltipCls" data-container="body" title="'+result[i].industryName+'" style="cursor:pointer;">'+result[i].industryName.substr(0,10)+"..."+'</td>';	
-							} else {
-								str+='<td>-</td>';
-							}
-							str+='<td >'+result[i].category+'</td>';
 							/* if (result[i].url != null && result[i].url.length > 0) {
 								str+='<td><a href="'+result[i].url+'" target="_blank">View Document</a></td>';
 							} else {
