@@ -501,8 +501,6 @@ function projectData(divId,levelId)
 											collapse+='<div class="col-sm-3">';
 												collapse+='<select class="form-control chosen-select lightsVendorCls"  attr_location_level="district"  id="districtLevelLightsVendorSelectBoxId">';
 												collapse+='<option value="0">All</option>';
-												collapse+='<option value="1">EESL</option>';
-												collapse+='<option value="2">NREDCAP</option>';
 												collapse+='</select>';
 											collapse+='</div>';
 										}
@@ -515,8 +513,6 @@ function projectData(divId,levelId)
 										collapse+='<div class="col-sm-3">';
 											collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="constituency"  attr_district_filter_id="consLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="",attr_mandal_filter_id=""  id="constituencyLevelLightsVendorSelectBoxId">';
 											collapse+='<option value="0">All</option>';
-											collapse+='<option value="1">EESL</option>';
-											collapse+='<option value="2">NREDCAP</option>';
 											collapse+='</select>';
 										collapse+='</div>';
 										
@@ -536,8 +532,6 @@ function projectData(divId,levelId)
 										collapse+='<div class="col-sm-3">';
 											collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="mandal"  attr_district_filter_id="mandalLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="mandalLvlLedConstituencySelectBoxId",attr_mandal_filter_id="" id="mandalLvlLightsVendorSelectBoxId">';
 											collapse+='<option value="0">All</option>';
-											collapse+='<option value="1">EESL</option>';
-											collapse+='<option value="2">NREDCAP</option>';
 											collapse+='</select>';
 										collapse+='</div>';
 										
@@ -561,8 +555,6 @@ function projectData(divId,levelId)
 										collapse+='<div class="col-sm-3">';
 								collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="panchayat" attr_filter_type="mandal" attr_district_filter_id="panchayatLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="panchayatLvlLedConstituencySelectBoxId" attr_mandal_filter_id="panchayatLvlLedMandalSelectBoxId" id="panchayatLvlLedLightsVendorSelectBoxId">';
 											collapse+='<option value="0">All</option>';
-											collapse+='<option value="1">EESL</option>';
-											collapse+='<option value="2">NREDCAP</option>';
 											collapse+='</select>';
 										collapse+='</div>';
 										
@@ -588,6 +580,8 @@ function projectData(divId,levelId)
 	}	
    getLocationBasedOnSelection("district","",0,"","otherLocationLevel");
    getLocationBasedOnSelection("district","",0,"","panchayat");
+   var venderSelBoxIds="#districtLevelLightsVendorSelectBoxId,#constituencyLevelLightsVendorSelectBoxId,#mandalLvlLightsVendorSelectBoxId,#panchayatLvlLedLightsVendorSelectBoxId"
+   	getLightsVendors(venderSelBoxIds);
 }
 function tableView(result,divId,locType)
 {
@@ -1836,5 +1830,27 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 		]
 	 });
 	}
+}
+function getLightsVendors(selIds){ 
+var json={}
+	$.ajax({                 
+		type:'GET',    
+		url: 'getLightsVendors',
+		dataType: 'json',
+		
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+			var str2='';
+			str2+='<option value="0">All</option>';
+		for(var i in result){
+			str2+='<option value="'+result[i].lightsVendorId+'">'+result[i].vendorName+'</option>';
+		}
+		$(selIds).html(str2);
+		 $(selIds).trigger("chosen:updated");
+	});
+
 }
 /* End */
