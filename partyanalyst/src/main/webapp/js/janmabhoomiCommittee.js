@@ -376,9 +376,11 @@ $(document).on("click",".committeeWiseDetailsClick",function(){
 	
 	if(type== "name"){
 		$(".committeeSelectBoxCls").hide();
+		$("#committeeWisePopUpDetailsId").html('');
 		getJanmabhoomiCommitteeOverview(committeId,statusType);
 	}else{
 		$(".committeeSelectBoxCls").show();
+		$("#committeeWisePopUpDetailsId").html('');
 		getJanmabhoomiCommitteesByLocIdAndCommLvlId(levelValue,levelId,committeId,statusType);
 	}
 	
@@ -386,6 +388,7 @@ $(document).on("click",".committeeWiseDetailsClick",function(){
 $(document).on("change","#committesLevelValuesId",function(){
 	var committeId = $(this).val();
 	var statusType = $(this).attr("attr_status_type")
+	$("#committeeWisePopUpDetailsId").html('');
 	getJanmabhoomiCommitteeOverview(committeId,statusType);
 });
 function getJanmabhoomiCommitteeOverview(committeId,statusType){
@@ -504,6 +507,8 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 						str+='<th>Member Added</th>';
 						str+='<th>Mobile Number</th>';
 						str+='<th>Voter ID</th>';
+						str+='<th>Caste Category</th>';
+						str+='<th>Caste</th>';
 						str+='<th>Party</th>';
 						str+='<th>Status</th>';
 						str+='<th>Add Member</th>';
@@ -529,11 +534,24 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 								}else{
 									str+='<td> - </td>';
 								}
+								
 								if(result.desinationVOList[i].desinationMebersVOList[j].voterCardNo !=null && result.desinationVOList[i].desinationMebersVOList[j].voterCardNo.trim().length>0){
 									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].voterCardNo+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
+								if(result.desinationVOList[i].desinationMebersVOList[j].categoryName !=null && result.desinationVOList[i].desinationMebersVOList[j].categoryName.trim().length>0){
+									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].categoryName+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(result.desinationVOList[i].desinationMebersVOList[j].casteName !=null && result.desinationVOList[i].desinationMebersVOList[j].casteName.trim().length>0){
+									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].casteName+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
 								if(result.desinationVOList[i].desinationMebersVOList[j].partyName !=null && result.desinationVOList[i].desinationMebersVOList[j].partyName.trim().length>0){
 									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].partyName+'</td>';
 								}else{
@@ -547,13 +565,9 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 								}
 								
 								if(result.desinationVOList[i].desinationMebersVOList[j].status == "Approved" || result.desinationVOList[i].desinationMebersVOList[j].status == "Inprogress"){
-									
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit"  attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'" attr_committee_id="'+committeId+'">Edit</h5></td>';
-									
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit"  attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'" attr_committee_id="'+committeId+'" attr_status_type="'+statusType+'">Edit</h5></td>';
 								}else if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
-									
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'">Add Member</h5></td>';
-									
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'" attr_status_type="'+statusType+'">Add Member</h5></td>';
 								}
 								
 							str+='</tr>';	
@@ -613,8 +627,11 @@ $(document).on("click",".memberAddEditDetailsCls",function(){
 	var voterCardNo = $(this).attr("attr_voterCard_no");
 	var mobileNo = $(this).attr("attr_mobile_no");
 	var memberShipId = $(this).attr("attr_membership_no");
+	var statusType = $(this).attr("attr_status_type");
 	
-	buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId);
+	$("#memberAddEditPopUpDetailsId").html('');
+	$("#memberAddedPopUpDetailsId").html('')
+	buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId,statusType);
 });
 $(document).on("click",".closeShowPdfCls",function(){
 	setTimeout(function(){
@@ -622,7 +639,7 @@ $(document).on("click",".closeShowPdfCls",function(){
 	}, 500);                     
 });
 	
-function buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId){
+function buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId,statusType){
 	
 	$("#memberAddEditPopUpDetailsId").html(spinner);
 	if(type=="edit"){
@@ -630,7 +647,6 @@ function buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCar
 	}
 	var str='';
 	if(type == "proposal"){
-		
 		
 		str+='<div class="row">';
 			 str+='<div class="col-sm-2 m_top10" id="statedisplaydivid">';
@@ -689,6 +705,7 @@ function buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCar
 			str+='</div>';
 		str+='</div>';
 	}else{
+		$("#memberAddEditPopUpDetailsId").removeClass("bg_class_Div")
 		str+='<form name="addMemberSaving" id="addMember"  method="post" enctype="multipart/form-data">';
 		str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
@@ -729,8 +746,10 @@ function buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCar
 	str+='</form>';
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-3">';
-			str+='<button id="" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication();">Update Member</button>';
-			
+	str+='<button id="" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication('+committeeId+',\''+statusType+'\');">Update Member </button> <span id="loadingImgId"><img src="images/search.gif" style="display:none;"/></span>';
+		str+='</div>';
+		str+='<div class="col-sm-6">';
+			str+='<div id="savingStatusDivId"></div>';
 		str+='</div>';
 	str+='</div>';
 	
@@ -1062,14 +1081,14 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 									str+='</td>';
 								str+='</tr>';
 								
-								str+='<tr>';
+								/* str+='<tr>';
 									 str+='<td colspan="2">';
 									 str+='<label class="checkbox-inline">';
 											str+='<input type="checkbox" value="">Select Member';
 										  str+='</label>';
 									
 									  str+='</td>';
-								str+='</tr>';
+								str+='</tr>'; */
 								str+='</tbody>';
 							str+='</table>';
 						str+='</div>';
@@ -1122,9 +1141,12 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 			str+='</div>';
 		str+='</div>';	
 		str+='</form>';
-		str+='<div class="row m_top20">';
+		str+='<div class="col-sm-12 m_top20">';
 			str+='<div class="col-sm-3">';
-				str+='<button id="" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication();">Add Member</button>';
+				str+='<button class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication('+committeeId+',\''+statusType+'\');">Add Member</button><span id="loadingImgId"><img src="images/search.gif" style="display:none;"/></span>';
+			str+='</div>';
+			str+='<div class="col-sm-6">';
+				str+='<div id="savingStatusDivId"></div>';
 			str+='</div>';
 		str+='</div>'; 
 	  
@@ -1133,6 +1155,8 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 	$(".chosen-select").chosen();
   }
   function getJanmabhoomiCommitteesByLocIdAndCommLvlId(levelValue,levelId,committeeLvlId,statusType){
+		$("#committesLevelValuesId").html('');
+		$("#committesLevelValuesId").trigger("chosen:updated");
 	  var jsObj={
 		
  		"fromDate"			:"",
@@ -1153,7 +1177,10 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 				for(var i in result){
 					  $("#committesLevelValuesId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
 				  }
+				  $("#committesLevelValuesId").chosen();
 				  $("#committesLevelValuesId").trigger("chosen:updated");
+			}else{
+				$("#committeeWisePopUpDetailsId").html('No Data Available');
 			}
 			$("#committesLevelValuesId").attr("attr_status_type",statusType)
 			
@@ -1204,18 +1231,38 @@ categoryGrouIdsList.push(casteCategoryId);
 	  }
     });
 }
-function savingApplication(){
-	
-			alert(5)
-			var uploadHandler = {
-				upload: function(o) {
-					$("#savingAjaxImg").css("display","none");
-					uploadResult = o.responseText;
-					//showSbmitStatus(uploadResult);
-				}
-			};
-	
-			YAHOO.util.Connect.setForm('addMemberSaving',true);
-			YAHOO.util.Connect.asyncRequest('POST','saveJanmabhoomiCommitteeMemberAction.action',uploadHandler);
+function savingApplication(committeeId,statusType){
+		var uploadHandler = {
+			upload: function(o) {
+				$("#loadingImgId").css("display","block");
+				uploadResult = o.responseText;
+				showSbmitStatus(uploadResult,committeeId,statusType);
+			}
+		};
+		YAHOO.util.Connect.setForm('addMemberSaving',true);
+		YAHOO.util.Connect.asyncRequest('POST','saveJanmabhoomiCommitteeMemberAction.action',uploadHandler);
 			
 	}
+	
+	function showSbmitStatus(result,committeeId,statusType){
+		$("#loadingImgId").css("display","none");
+		if(result.indexOf("SUCCESS") > -1){
+			
+		  $("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Received Successfully...</span>");
+		 
+		  setTimeout(function(){
+			 $("#memberAddEditModalOpen").modal("hide");
+			 
+		  }, 1000);
+		  setTimeout(function(){
+			$('body').addClass("modal-open");
+			getJanmabhoomiCommitteeOverview(committeeId,statusType)	
+		  }, 2000);
+		    
+			
+		}else {
+		  setTimeout(function(){
+		  $("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed. Please Try Again.</span>");
+		  }, 1000);
+		}
+	  }
