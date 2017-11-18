@@ -4,7 +4,7 @@ var levelWiseOverviewArr = ['district','constituency','mandal']
 onLoadCalls()
 function onLoadCalls()
 {
-	levelWiseOverview()
+	levelWiseOverview();
 	getSolidWasteManagementOverAllCounts(3,19);
 }
 $(document).keydown(function(event){
@@ -82,15 +82,46 @@ function levelWiseOverview()
 	$(".chosen-select").chosen({width :'100%'});
 	for(var i in levelWiseOverviewArr)
 	{
-		getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0);
+		if(levelWiseOverviewArr[i] == "district"){
+			
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"district","1-06-2017","30-07-2017",0,"",0,"");
+		}else if(levelWiseOverviewArr[i] == "constituency"){
+			getAllDistricts(levelWiseOverviewArr[i]+'SelectDist');
+			
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"assembly","1-06-2017","30-07-2017",0,"district",0,"");
+			
+		}else if(levelWiseOverviewArr[i] == "mandal"){
+			//SelectCons
+			getAllDistricts(levelWiseOverviewArr[i]+'SelectDist');
+			
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"mandal","1-06-2017","30-07-2017",0,"",0,"");
+		}
 	}
 	
 }
-function getSolidInfoLocationWise(blockid,distId)
-{
+
+function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDate,toDate,filterId,filterType,subFilterId,subFilterType)
+{	
 	$("#"+blockid).html(spinner);
 	$("#swmModalContent").html(spinner);
 	var json ={
+		locationId:locationId,
+		locationType:locationType,
+		fromDate:"1-06-2017",
+		toDate:"30-07-2017",
+		
+		filterId:filterId,
+		filterType:filterType,
+		
+		subFilterId:subFilterId,
+		subFilterType:subFilterType
+		
+		//locationId:"0",
+		//locationType:"assembly",
+		//filterId:"22",
+		//filterType:"district",
+		//fromDate:"1-06-2017",
+		//toDate:"30-07-2017"
 		
 	}
 	$.ajax({                
@@ -155,7 +186,14 @@ function getSolidInfoLocationWise(blockid,distId)
 		table+='<div class="table-responsive">';
 			table+='<table class="table table-bordered" id="'+blockid+'dataTableId">';
 				table+='<thead>';
-					table+='<th>District</th>';
+					if(blockid == 'districtBodyId'){
+						table+='<th>DISTRICTS</th>';
+					}else if(blockid == 'constituencyBodyId'){
+						table+='<th>CONSTITUENCY</th>';
+					}else if(blockid == 'mandalBodyId'){
+						table+='<th>MANDALS</th>';
+					}
+					//table+='<th>District</th>';
 					table+='<th>RFID TAGGED HOUSES</th>';
 					table+='<th>REGISTERED FARMERS</th>';
 					table+='<th>RFID TRACKING</th>';
@@ -167,8 +205,14 @@ function getSolidInfoLocationWise(blockid,distId)
 				table+='<tbody>';
 				for(var i in result)
 				{
+					if(blockid == 'districtBodyId'){
+						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'">';
+					}else if(blockid == 'constituencyBodyId'){
+						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'">';
+					}else if(blockid == 'mandalBodyId'){
+						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'">';
+					}
 					
-					table+='<tr attr_onclick_distname="" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'">';
 						table+='<td attr_dist_name="'+result[i].name+'" attr_dist_id="'+result[i].id+'">'+result[i].name+'</td>';
 						table+='<td attr_dist_rfid="'+result[i].rfidTags+'">'+result[i].rfidTags+'</td>';
 						table+='<td attr_dist_farmer="'+result[i].farmers+'">'+result[i].farmers+'</td>';
@@ -215,20 +259,29 @@ function getSolidInfoLocationWise(blockid,distId)
 	}
 }
 $(document).on('click','[attr_onclick_distname]',function(){
+	
 	var distId = $(this).attr('attr_dist_id');
-	
-	getSolidInfoLocationWise("",distId);
-	
+	var locIdClick = $(this).attr('attr_onclick_distname');
+	//"1-06-2017","30-07-2017"
+	if(locIdClick == 'districtBodyId'){
+			getSolidInfoLocationWise(0,distId,0,"district","1-06-2017","30-07-2017",0,"",0,"");
+		}else if(locIdClick == 'constituencyBodyId'){
+			getSolidInfoLocationWise(0,distId,0,"assembly","1-06-2017","30-07-2017",0,"",0,"");
+		}else if(locIdClick == 'mandalBodyId'){
+			getSolidInfoLocationWise(0,distId,0,"mandal","1-06-2017","30-07-2017",0,"",0,"");
+		}
+		
 	var appendModal = $("#swmInfraustructure").html();
 	$("#swmModalContent").html(appendModal);
 	$("#onclickDistName").html(spinner);
-	$("#swmModalContent #rfidTaggedHouses").html(spinner);
+	$("#swmModalContent  #rfidTaggedHouses").html(spinner);
 	$("#swmModalContent  #registeredFarmers").html(spinner);
 	$("#swmModalContent  #mgnrgsId").html(spinner);
 	$("#swmModalContent  #prId").html(spinner);
 	$("#swmModalContent  #publicId").html(spinner);
 	$("#swmModalContent  #totalManPower").html(spinner);
 	$("#swmModalContent  #tractorId").html(spinner);
+	
 	$("#swmModalContent  #autoId").html(spinner);
 	$("#swmModalContent  #trycycleId").html(spinner);
 	$("#swmModalContent  #evehicleId").html(spinner);
@@ -328,3 +381,82 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 	});
 }
 
+$(document).on('change','#constituencySelectDist',function(){
+	
+		var selconstId = $(this).val();
+		for(var i in levelWiseOverviewArr){
+			if(levelWiseOverviewArr[i] == 'constituency'){
+				getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"assembly","1-06-2017","30-07-2017",selconstId,"district",0,"");
+			}
+		}
+			
+})
+$(document).on('change','#mandalSelectDist',function(){
+	var selmandalId = $(this).val();
+	getAllConstituenciesForDistrict("mandalSelectCons",selmandalId);
+	for(var i in levelWiseOverviewArr){
+		if(levelWiseOverviewArr[i] == 'mandal'){
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"mandal","1-06-2017","30-07-2017",selmandalId,"district",0,"");
+		}
+	}
+})
+$(document).on('change','#mandalSelectCons',function(){
+	var selmandalId = $(this).val();
+	for(var i in levelWiseOverviewArr){
+		if(levelWiseOverviewArr[i] == 'mandal'){
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"mandal","1-06-2017","30-07-2017",0,"district",selmandalId,"assembly");
+		}
+	}
+})
+
+function getAllDistricts(divId){
+		$("#"+divId).html('');
+		
+		var json = {}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllDistricts',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+			if(result !=null && result.length>0){
+				 $("#"+divId).append('<option value="0">ALL</option>');
+					for(var i in result){
+						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					}
+			}
+			$("#"+divId).trigger('chosen:updated');
+		});
+	}
+	
+	function getAllConstituenciesForDistrict(divId,distId){
+		$("#"+divId).html("");
+		$("#"+divId).trigger('chosen:updated');
+		var json = {
+			districtId :distId,
+			type:"URBAN"
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllConstituenciesForDistrict',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				 $("#"+divId).append('<option value="0">ALL</option>');
+					for(var i in result){
+						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					}
+			}
+			$("#"+divId).trigger('chosen:updated');
+		});
+	}
