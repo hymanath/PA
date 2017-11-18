@@ -18,11 +18,14 @@ function getPartyWiseThenCandidateWisePerformance(){
   url: "http://localhost:8080/CommunityNewsPortal/webservice/getPartyWiseThenCandidateWisePerformance/01-11-2017/01-12-2017/1/"
  }).then(function(result){
      
-  if(result !=null){
+   if(result !=null){
 	  partywiseresult= result;
    buildSpokesPersonWisePressmeet(partywiseresult,"top");
-   buildCandidateOverAllPerformanceCohort(result);
-  }
+   buildCandidateOverAllPerformanceCohortPressmeet(result);
+  }else{
+      $("#spokesPersonWisepressmeetDetailsId").html('<h3>NO DATA AVAILABLE</h3>');
+	  $("#candidateOverAllPerformanceCohortId").html('<h3>NO DATA AVAILABLE</h3>');
+	}
  });   
 }
 $(document).on("click",".edtionTypescls li",function(){
@@ -47,8 +50,9 @@ function getTopFiveLeaders(edtionList){
  }).then(function(result){
      
   if(result !=null){
-		buildRolesPerformanceOfCandidate(result);
+	  buildRolesPerformanceOfCandidatePressmeet(result);
   }else{
+		$("#candidatePressMeetPerformanceId").html("<h3>NO DATA AVAILABLE</h3>");
   }
  });   
 }
@@ -75,7 +79,7 @@ function getPublicationVsPartiesPerformance(edtionList){
   if(result !=null){
 		buildPublicationAndPartyWiseDetails(result);
   }else{
-  
+     $("#publicationAndPartyWiseDetailsId").html("<h3>NO DATA AVAILABLE</h3>");
   }
  });   
 }
@@ -88,8 +92,10 @@ function getPrintMediaOverAllPartyWiseCounts(){
 	url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOverAllPartyWiseCounts/10-11-2016/13-11-2017"		}).then(function(result){
 			if(result !=null){
      		   bulidPressMeetPartyWiseDetails(result);
-			   buildScaleBasedPerformanceCohort(result)
-			} 			
+     		  buildScaleBasedPerformanceCohortPressMeet(result)
+			}else{
+				$("#partyWisePressMeetDetails").html("<h3>NO DATA AVAILABLE</h3>");
+			}
 		});
 
 	}
@@ -113,7 +119,7 @@ function getPrintMediaOverAllPartyWiseCounts(){
 				  str+='<tbody>';
 					str+='<tr>';
 						str+='<td style="vertical-align:middle;">';
-							str+='<img src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName.toLowerCase()+'Icon.png" alt="'+result.pressmeetList[i].partyName+' Icon" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
+							str+='<img src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+' Icon" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">Total press Meets</p>';
@@ -320,7 +326,7 @@ $(document).on("click","#pressmeetLowId",function(){
 	}
 
 
-function buildScaleBasedPerformanceCohort(result)
+function buildScaleBasedPerformanceCohortPressMeet(result)
 {
 	var str='';
 	if(result !=null){
@@ -368,7 +374,7 @@ function buildScaleBasedPerformanceCohort(result)
 	}
 }
 
-function buildCandidateOverAllPerformanceCohort(result)
+function buildCandidateOverAllPerformanceCohortPressmeet(result)
 {
 	
 	var str='';
@@ -452,7 +458,7 @@ function buildCandidateOverAllPerformanceCohort(result)
 	}
 }
 
-function buildRolesPerformanceOfCandidate(result){
+function buildRolesPerformanceOfCandidatePressmeet(result){
 	
 		var str='';
 		if(result.participantList !=null && result.participantList.length>0){
@@ -529,10 +535,3 @@ function buildRolesPerformanceOfCandidate(result){
 	}
 	
 }
- 
- 
- 
-	
-	
-	
-	
