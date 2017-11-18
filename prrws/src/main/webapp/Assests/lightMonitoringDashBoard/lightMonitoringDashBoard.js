@@ -614,7 +614,8 @@ function tableView(result,divId,locType)
 	tableView+='<table class="table tableStyleLed" id="'+divId+'Table">';
 		tableView+='<thead>';
 			tableView+='<tr>';
-			tableView+='<th>Vendor</th>';
+			tableView+='<th style="display:none;">Lights Vendor</th>';
+			tableView+='<th></th>';
 				if(divId == 'district')
 				{
 					if(viewTypeDist == "district"){
@@ -684,11 +685,18 @@ function tableView(result,divId,locType)
 			 if (result[i].subList != null && result[i].subList.length > 0) {
 				  for(var j in result[i].subList) {
 						 tableView+='<tr style="text-align:center;">';
+						
+						  if (result[i].subList[j].lightVendorName != null ) {
+								tableView+='<td style="display:none;">'+result[i].subList[j].lightVendorName+'</td>';	 
+						  } else {
+								 tableView+='<td style="display:none;">-</td>';
+						  }
+							 
 						  tableView+='<td>';
 							if (result[i].subList[j].lightVendorId != null && result[i].subList[j].lightVendorId == 1) {//essl
-								tableView+='<p>EESL</p><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
+								tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
 							} else { //nredp
-								tableView+='<p>NREDCAP</p><img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
+								tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
 							}
 							tableView+='</td>';
 						if(divId == 'district')
@@ -1664,7 +1672,8 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 	tableView+='<table class="table tableStyleLed" id="surveyStartedLocationDtlsDataTblId">';
 		tableView+='<thead>';
 			tableView+='<tr>';
-				tableView+='<th>Vendor</th>';	
+				tableView+='<th style="display:none;">Lights Vendor</th>';	
+				tableView+='<th></th>';	
 				if(divId == 'district'){
 						tableView+='<th>DISTRICTS</th>';
 				}else if(divId == 'constituency'){
@@ -1706,11 +1715,16 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 					 for(var j in result[i].subList) {
 						if (result[i].subList[j].surveyStartedtotalMandals > 0 ){
 						tableView+='<tr>';
+							  if (result[i].subList[j].lightVendorName != null ) {
+									tableView+='<td style="display:none;">'+result[i].subList[j].lightVendorName+'</td>';	 
+							  } else {
+									 tableView+='<td style="display:none;">-</td>';
+							  }
 							tableView+='<td>';
 								if (result[i].subList[j].lightVendorId != null && result[i].subList[j].lightVendorId == 1) {//essl
-									tableView+='<p>EESL</p><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
+									tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
 								} else { //nredp
-									tableView+='<p>NREDCAP</p><img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
+									tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
 								}
 							tableView+='</td>';
 						if(divId == 'district'){
