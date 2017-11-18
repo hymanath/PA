@@ -309,7 +309,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 						     lightMonitoringVO.setOffLights(lightMonitoringVO.getOffLights()+commonMethodsUtilService.getLongValueForObject(objects[7]));
 					         lightMonitoringVO.setNotWorkingLights(lightMonitoringVO.getNotWorkingLights()+commonMethodsUtilService.getLongValueForObject(objects[8]));
 			        }
-			       List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,loccationIds,lightMonitoringIds);
+			       List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,loccationIds,lightMonitoringIds,"No");
 			       if(wattegeCount!=null && wattegeCount.size()>0 && !wattegeCount.isEmpty()){
 			    	   for (Object[] param : wattegeCount) {	
 			    		   LightWattageVO wattagVO = new LightWattageVO();
@@ -581,7 +581,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 					 }	
 					 
 				     List<Object[]>  lightDtlsObjList  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,locationValues,lightVendorIds,"Yes");
-				     List<Object[]> wattgedtlsObjList = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,locationValues,lightVendorIds);
+				     List<Object[]> wattgedtlsObjList = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,locationValues,lightVendorIds,"Yes");
 				     List<Object[]> surveyStartedLctnDtlsObjList = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType, locationValues,lightVendorIds,"Yes"); 
 				    
 				     Map<Long,LightMonitoringVO> lightsVendorWiseDtlsMap = getSurveyStartedLocation(surveyStartedLctnDtlsObjList);

@@ -188,14 +188,14 @@ function getEmployeeAttendenceTimePeriodWise(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$("#avgOutTimeId").html("-");
+		$("#avgInTimeId").html("-");
 		if(result !=null && result.length>0){
 			buildEmployeeAttendenceTimePeriodWise(result);
 			$("#avgInTimeId").html(result[0].inTime);
 			$("#avgOutTimeId").html(result[0].outTime);  
 		} else {
 			$("#inTimeStatisticsDivId").html("NO DATA AVAILABLE.");
-			$("#avgInTimeId").html("-");
-			$("#avgOutTimeId").html("-");
 		}
 	});	
 }

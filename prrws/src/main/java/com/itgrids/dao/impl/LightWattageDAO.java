@@ -24,7 +24,7 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 
 }
 	@Override
-	public List<Object[]> getTotalWattege(Date fromDate,Date toDate, String locationType,List<Long> locationValues,List<Long> lightsVendorIds) {
+	public List<Object[]> getTotalWattege(Date fromDate,Date toDate, String locationType,List<Long> locationValues,List<Long> lightsVendorIds,String isLightVendorRequired) {
 		 StringBuilder sb = new StringBuilder();
 		 sb.append("select model.lightMonitoring.lightsVendor.lightsVendorId,model.lightMonitoring.lightsVendor.vendorName," +
 		 		 "  model.wattage ,sum(model.lightCount) "
@@ -48,7 +48,10 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 		 if(fromDate != null && toDate != null){
 			 sb.append(" and date(model.lightMonitoring.surveyDate) between :fromDate and :toDate ");
 		 }
-		 sb.append(" group by model.lightMonitoring.lightsVendor.lightsVendorId,model.wattage ");
+		 sb.append(" group by model.wattage ");
+		 if (isLightVendorRequired.equalsIgnoreCase("Yes")) {
+			 sb.append(",model.lightMonitoring.lightsVendor.lightsVendorId");
+		 }
 		 
 		 Query query = getSession().createQuery(sb.toString());
 		 if(fromDate != null && toDate != null){
