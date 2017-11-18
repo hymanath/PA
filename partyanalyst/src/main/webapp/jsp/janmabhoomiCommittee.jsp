@@ -54,7 +54,15 @@
     <div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title">District Committee Overview</h4>      
+			<div class="row">
+				<div class="col-sm-3">
+					<h4 class="modal-title">Memberes Details</h4>   
+				</div>
+				<div class="col-sm-3 pull-right committeeSelectBoxCls">
+					  <select class="form-control chosen-select" id="committesLevelValuesId">
+					  </select>
+				</div>
+			</div>   
 		</div>
 		<div class="modal-body">   
           <div id="committeeWisePopUpDetailsId"></div>

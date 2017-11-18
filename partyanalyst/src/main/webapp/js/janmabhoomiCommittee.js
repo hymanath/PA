@@ -299,11 +299,11 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 					str+='<tr>';
 					if(result[i].statusType !=null && result[i].statusType !=""){
 						if(blockType == "district"){
-							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="3" attr_location_value="'+result[i].id+'">'+result[i].name+'</span></td>';
+							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="3" attr_location_value="'+result[i].id+'" attr_type="name">'+result[i].name+'</span></td>';
 						}else if(blockType == "parliament"){
-							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="10" attr_location_value="'+result[i].id+'">'+result[i].name+'</span></td>';
+							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="10" attr_location_value="'+result[i].id+'" attr_type="name">'+result[i].name+'</span></td>';
 						}else if(blockType == "constituency"){
-							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="4" attr_location_value="'+result[i].id+'">'+result[i].name+'</span></td>';
+							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="4" attr_location_value="'+result[i].id+'" attr_type="name">'+result[i].name+'</span></td>';
 						}
 						
 					}else{
@@ -312,13 +312,51 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 						str+='<td style="color:'+statusColorobj[result[i].statusType.trim()]+'">'+result[i].statusType+'</td>';
 						for(var j in result[i].list){
 							totalCount =result[i].list[j].notStartedCommitteeCnt+result[i].list[j].inprogressCommitteeCnt+result[i].list[j].readyForApprovelCommitteeCnt+result[i].list[j].totalApprovedCommitteeCnt+result[i].list[j].submitedCommittees
-							str+='<td>'+totalCount+'</td>';
-							str+='<td>'+result[i].list[j].notStartedCommitteeCnt+'</td>';
-							str+='<td>'+result[i].list[j].inprogressCommitteeCnt+'</td>';
-							str+='<td>'+result[i].list[j].readyForApprovelCommitteeCnt+'</td>';
-							str+='<td>'+result[i].list[j].totalApprovedCommitteeCnt+'</td>';
-							str+='<td>'+result[i].list[j].submitedCommittees+'</td>';
-						}
+							var levelId=0;
+							if(blockType == "district"){
+								levelId = 3
+							}else if(blockType == "parliament"){
+								levelId = 10
+							}else if(blockType == "constituency"){
+								levelId = 4
+							}
+								
+								if(totalCount >0){
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="total" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+totalCount+'</span></td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(result[i].list[j].notStartedCommitteeCnt !=null && result[i].list[j].notStartedCommitteeCnt>0){
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Not Started" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+result[i].list[j].notStartedCommitteeCnt+'</span></td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(result[i].list[j].inprogressCommitteeCnt !=null && result[i].list[j].inprogressCommitteeCnt>0){
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Inprogress" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+result[i].list[j].inprogressCommitteeCnt+'</span></td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(result[i].list[j].readyForApprovelCommitteeCnt !=null && result[i].list[j].readyForApprovelCommitteeCnt>0){
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="readyforapproval" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+result[i].list[j].readyForApprovelCommitteeCnt+'</span></td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(result[i].list[j].totalApprovedCommitteeCnt !=null && result[i].list[j].totalApprovedCommitteeCnt>0){
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Approved" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+result[i].list[j].totalApprovedCommitteeCnt+'</span></td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(result[i].list[j].submitedCommittees !=null && result[i].list[j].submitedCommittees>0){
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+result[i].list[j].submitedCommittees+'</span></td>';
+								}else{
+									str+='<td> - </td>';
+								}
+							}
 						
 					str+='</tr>';
 				}
@@ -333,10 +371,24 @@ $(document).on("click",".committeeWiseDetailsClick",function(){
 	var statusType = $(this).attr("attr_status_type");
 	var levelId = $(this).attr("attr_level_id");
 	var levelValue = $(this).attr("attr_location_value");
+	var type = $(this).attr("attr_type");
 	$("#committeeWiseModalOpen").modal("show");
-	getJanmabhoomiCommitteeOverview(committeId,statusType,levelId,levelValue);
+	
+	if(type== "name"){
+		$(".committeeSelectBoxCls").hide();
+		getJanmabhoomiCommitteeOverview(committeId,statusType);
+	}else{
+		$(".committeeSelectBoxCls").show();
+		getJanmabhoomiCommitteesByLocIdAndCommLvlId(levelValue,levelId,committeId,statusType);
+	}
+	
 });
-function getJanmabhoomiCommitteeOverview(committeId,statusType,levelId,levelValue){
+$(document).on("change","#committesLevelValuesId",function(){
+	var committeId = $(this).val();
+	var statusType = $(this).attr("attr_status_type")
+	getJanmabhoomiCommitteeOverview(committeId,statusType);
+});
+function getJanmabhoomiCommitteeOverview(committeId,statusType){
 	$("#committeeWisePopUpDetailsId").html(spinner);
 	var jsObj={
  		"fromDate"			:"",
@@ -350,14 +402,14 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType,levelId,levelValu
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){ 
 		if(result !=null){
-			buildJanmabhoomiCommitteeOverview(result,statusType,levelId,levelValue);
+			buildJanmabhoomiCommitteeOverview(result,statusType);
 		}else{
 			$("#committeeWisePopUpDetailsId").html("No Data Available");
 		}
 	});
   }
 
-  function buildJanmabhoomiCommitteeOverview(result,statusType,levelId,levelValue){
+  function buildJanmabhoomiCommitteeOverview(result,statusType){
 	  var str='';
 	
 	str+='<div class="row">';
@@ -491,9 +543,9 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType,levelId,levelValu
 								}
 								
 								if(result.desinationVOList[i].desinationMebersVOList[j].status == "Approved" || result.desinationVOList[i].desinationMebersVOList[j].status == "Inprogress"){
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit" attr_level_id="'+levelId+'" attr_location_value="'+levelValue+'">Edit</h5></td>';
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit" >Edit</h5></td>';
 								}else if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal" attr_level_id="'+levelId+'" attr_location_value="'+levelValue+'" attr_role_id="'+result.desinationVOList[i].designationId+'">Add Member</h5></td>';
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'">Add Member</h5></td>';
 								}
 								
 							str+='</tr>';	
@@ -545,11 +597,10 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType,levelId,levelValu
  
 $(document).on("click",".memberAddEditDetailsCls",function(){
 	var type = $(this).attr("attr_type");
-	var levelId = $(this).attr("attr_level_id");
-	var levelValue = $(this).attr("attr_location_value");
+	
 	var roleId = $(this).attr("attr_role_id");
 	$("#memberAddEditModalOpen").modal("show");
-	buildMemberAddEditDetailsBlock(type,levelId,levelValue,roleId);
+	buildMemberAddEditDetailsBlock(type,roleId);
 });
 $(document).on("click",".closeShowPdfCls",function(){
 	setTimeout(function(){
@@ -557,7 +608,7 @@ $(document).on("click",".closeShowPdfCls",function(){
 	}, 500);                     
 });
 	
-function buildMemberAddEditDetailsBlock(type,levelId,levelValue,roleId){
+function buildMemberAddEditDetailsBlock(type,roleId){
 	
 	$("#memberAddEditPopUpDetailsId").html(spinner);
 	if(type=="edit"){
@@ -605,19 +656,22 @@ function buildMemberAddEditDetailsBlock(type,levelId,levelValue,roleId){
 			str+='</div>';
 		str+='</div>';
 		
+		
 		str+='<div class="row m_top10">';
-			str+='<div class="col-sm-3 searchTypeCss">';
-				str+='<select class="form-control" id="searchtypeVal">';
-					str+='<option value="0">Search By</option>';
-					str+='<option value="voter">Voter Id</option>';
-					str+='<option value="membership">Membership Id</option>';
-				str+='</select>';
+		
+			str+='<div class="col-sm-6 pad_right0">';
+				str+='<div class="pad_5 bg_ff" style="border:1px solid #ccc;padding:5px;">';
+					str+='<label class="radio-inline">';
+						str+='<input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls"  id="membershipId" value="1"/>Membership No';
+					str+='</label>';
+					str+='<label class="radio-inline">';
+					str+='<input type="radio" name="searchBasedOn" class="searchTypeCls border_radius_none" id="voterId"   value="2" />Voter ID';
+					str+='</label>';
+				str+='</div>';
+				str+='<input id="searchValue" class="form-control search-text border_radius_none" type="text">';
 			str+='</div>';
-			str+='<div class="col-sm-6">';
-				str+='<input id="searchValue" class="form-control search-text border_radius_none height_41" type="text">';
-			str+='</div>';
-			str+='<div class="col-sm-2">';
-				str+='<button id="clickSearchbutton" class="btn btn-success border_radius_none height_41 text-bold" type="button" attr_level_id="'+levelId+'" attr_location_value="'+levelValue+'" attr_role_id="'+roleId+'" attr_status_type="'+type+'">SEARCH</button>';
+			str+='<div class="col-sm-2 m_top10">';
+				str+='<button id="clickSearchbutton" class="btn btn-success btn-block btnSearch border_radius_none" id="searchbtn"  attr_role_id="'+roleId+'" attr_status_type="'+type+'">SEARCH</button>';
 			str+='</div>';
 		str+='</div>';
 	}else{
@@ -908,10 +962,7 @@ $(document).on("click","#clickSearchbutton",function(){
 		locationValue = stateId;
 		locationLevel = 2;
 	}
-	/* 7-localEle
-	8-Greater Cites
-	9-booth
-	10-parliament */
+	
 	searchByMemberIdOrVoterId(locationLevel,locationValue,voterMembershipVal,searchType,roleId,statusType);	
 });	 
 
@@ -919,14 +970,19 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 	$("#memberAddedPopUpDetailsId").html(spinner)
 	var memberShipCardNo='';
 	var voterCardNo     ='';
-	if(searchType == "voter"){
-		memberShipCardNo = '';
-		voterCardNo =voterMembershipVal;
-	}else if(searchType == "membership"){
+	var searchType=0;
+	$(".searchTypeCls").each(function(){
+		if($(this).is(':checked')){
+			searchType = $(this).val();
+		}
+	}); 
+	if(searchType == 1){
 		memberShipCardNo = voterMembershipVal;
 		voterCardNo ='';
+	}else{
+		memberShipCardNo = '';
+		voterCardNo =voterMembershipVal;
 	}
-	
     var jsObj={
     "locationLevel"     :parseInt(levelId),//4
     "locationValue"     :parseInt(levelValue),//323
@@ -947,112 +1003,129 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
   
   function builldLevelWiseMemberDetailsAppend(result,roleId,statusType){
 	  var str='';
-	  
-	  str+='<div class="row m_top20">';
-			str+='<div class="col-sm-12">';
-				str+='<p>Search Results</p>';
-				str+='<div class="row m_top10">';
-					str+='<div class="col-sm-4">';
-						str+='<table class="table table-bordered">';
-							str+='<tbody>';
-							
-							str+='<tr>';
-								str+='<td style="vertical-align: middle; text-align: center;">';
-								if(result.imageURL !=null && result.imageURL.trim().length>0){
-									str+='<img src="'+result.imageURL+'"/>';
-								}else{
-									str+='<img src="images/User.png"/>';
-								}
+	 str+='<div class="row m_top20">';
+				str+='<div class="col-sm-12">';
+					str+='<div style="padding:8px;border:1px solid #ddd;">';
+					str+='<p>Search Results</p>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';
+							str+='<table class="table table-bordered">';
+								str+='<tbody>';
 								
+								str+='<tr>';
+									str+='<td style="vertical-align: middle; text-align: center;">';
+									if(result.imageURL !=null && result.imageURL.trim().length>0){
+										str+='<img src="'+result.imageURL+'"/>';
+									}else{
+										str+='<img src="images/User.png"/>';
+									}
 									
-								str+='</td>';
-								str+='<td class="line_heightCss">';
-								str+='<h5><span class="text-bold">Name : </span> <span>'+result.name+'</span></h5>';
-									str+='<h5><span class="text-bold">V.Id : </span> <span>'+result.voterCardNo+'</span></h5>';
-									str+='<h5><span class="text-bold">M.Id : </span> <span>'+result.memberShipCardId+'</span></h5>';
-									str+='<h5><span class="text-bold">Mobile : </span> <span>'+result.mobileNumber+'</span></h5>';
-								str+='</td>';
-							str+='</tr>';
-							
-							str+='<tr>';
-								 str+='<td colspan="2">';
-								 str+='<label class="checkbox-inline">';
-										str+='<input type="checkbox" value="">Select Member';
-									  str+='</label>';
+										
+									str+='</td>';
+									str+='<td class="line_heightCss">';
+										if(result.name !=null && result.name.trim().length>0){
+											str+='<h5><span class="text-bold">Name : </span> <span>'+result.name+'</span></h5>';
+										}else{
+											str+='<h5><span class="text-bold">Name : </span> <span> - </span></h5>';
+										}
+										if(result.voterCardNo !=null && result.voterCardNo.trim().length>0){
+											str+='<h5><span class="text-bold">V.Id : </span> <span>'+result.voterCardNo+'</span></h5>';
+										}else{
+											str+='<h5><span class="text-bold">V.Id : </span> <span> - </span></h5>';
+										}
+										if(result.memberShipCardId !=null && result.memberShipCardId.trim().length>0){
+											str+='<h5><span class="text-bold">M.Id : </span> <span>'+result.memberShipCardId+'</span></h5>';
+										}else{
+											str+='<h5><span class="text-bold">M.Id : </span> <span> - </span></h5>';
+										}
+										if(result.mobileNumber !=null && result.mobileNumber.trim().length>0){
+											str+='<h5><span class="text-bold">Mobile : </span> <span>'+result.mobileNumber+'</span></h5>';
+										}else{
+											str+='<h5><span class="text-bold">Mobile : </span> <span> - </span></h5>';
+										}
+									str+='</td>';
+								str+='</tr>';
 								
-								  str+='</td>';
-							str+='</tr>';
-							str+='</tbody>';
-						str+='</table>';
+								str+='<tr>';
+									 str+='<td colspan="2">';
+									 str+='<label class="checkbox-inline">';
+											str+='<input type="checkbox" value="">Select Member';
+										  str+='</label>';
+									
+									  str+='</td>';
+								str+='</tr>';
+								str+='</tbody>';
+							str+='</table>';
+						str+='</div>';
 					str+='</div>';
+				
+			
+		
+		
+		str+='<form name="addMember" id="addMember"  method="post" enctype="multipart/form-data">';
+		
+			str+='<div class="row m_top10">';
+				
+				str+='<div class="col-sm-2">';
+					str+='<label>';
+						str+='<input type="text" class="form-control" id="" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.memberName" >';
+					str+='</label>';
+				str+='</div>';
+				str+='<div class="col-sm-2">';
+					str+='<label>';
+						str+='<input type="text" class="form-control" id="" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber">';
+					str+='</label>';
+				str+='</div>';
+					str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
+					str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.voterId" value="'+result.voterId+'"/>';
+					str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+result.tdpCadreId+'"/>';
+					str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
+					str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';
+				str+='<div class="col-sm-2">';
+					str+='<select class="form-control chosen-select" id="casteCategoryId" name="janmabhoomiCommitteeMemberVO.categoryId">';
+						str+='<option value="0">Select Category</option>';
+					str+='</select>';
+				str+='</div>';
+			
+				str+='<div class="col-sm-2">';
+					str+='<select class="form-control chosen-select" id="casteId" name="janmabhoomiCommitteeMemberVO.casteId">';
+						str+='<option value="0">Select Caste</option>';
+					str+='</select>';
+				str+='</div>';
+			
+				str+='<div class="col-sm-2">';
+					str+='<select class="form-control chosen-select" id="partyId" name="janmabhoomiCommitteeMemberVO.partyId">';
+						str+='<option value="0">Select Party</option>';
+						str+='<option value="1117">YSRC</option>';
+						str+='<option value="872">TDP</option>';
+						str+='<option value="362">INC</option>';
+					str+='</select>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
-		str+='<form name="addMember" id="addMember"  method="post" enctype="multipart/form-data">';
-		str+='<div class="row m_top20">';
-			str+='<div class="col-sm-12">';
-			
-			str+='<div class="col-sm-2">';
-				str+='<label>';
-					str+='<input type="text" class="form-control" id="" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.memberName" >';
-				str+='</label>';
-			str+='</div>';
-			
-			str+='<div class="col-sm-2">';
-				str+='<label>';
-					str+='<input type="text" class="form-control" id="" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber">';
-				str+='</label>';
-			str+='</div>';
-			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
-			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.voterId" value="'+result.voterId+'"/>';
-			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+result.tdpCadreId+'"/>';
-			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
-			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';
-			str+='<div class="col-sm-2">';
-				str+='<select class="form-control chosen-select" id="casteCategoryId" name="janmabhoomiCommitteeMemberVO.categoryId">';
-					str+='<option value="0">Select Category</option>';
-				str+='</select>';
-			str+='</div>';
-			
-			str+='<div class="col-sm-2">';
-				str+='<select class="form-control chosen-select" id="casteId" name="janmabhoomiCommitteeMemberVO.casteId">';
-					str+='<option value="0">Select Caste</option>';
-				str+='</select>';
-			str+='</div>';
-			
-			str+='<div class="col-sm-2">';
-				str+='<select class="form-control chosen-select" id="partyId" name="janmabhoomiCommitteeMemberVO.partyId">';
-					str+='<option value="0">Select Party</option>';
-					str+='<option value="1117">YSRC</option>';
-					str+='<option value="872">TDP</option>';
-					str+='<option value="362">INC</option>';
-				str+='</select>';
-			str+='</div>';
-			
-			str+='</div>';
 		str+='</div>';	
+		str+='</div>';
+		
 		str+='</form>';
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-3">';
 				str+='<button id="clickSearchbutton" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication();">Add Member</button>';
-				
 			str+='</div>';
-		str+='</div>';
+		str+='</div>'; 
+	  
 	$("#memberAddedPopUpDetailsId").html(str);
 	 getAllCategoriesAction();
 	$(".chosen-select").chosen();
   }
-//getJanmabhoomiCommitteesByLocIdAndCommLvlId();
-  
-  function getJanmabhoomiCommitteesByLocIdAndCommLvlId(){
+  function getJanmabhoomiCommitteesByLocIdAndCommLvlId(levelValue,levelId,committeeLvlId,statusType){
 	  var jsObj={
 		
  		"fromDate"			:"",
  		"endDate"			:"",
-		locationId:11,
-		levelId:3,
-		committeeLvlId:3,
-		status:"total"//NotStarted,Approved,Inprogress, readyforapproval
+		locationId:parseInt(levelValue),
+		levelId:parseInt(levelId),
+		committeeLvlId:committeeLvlId,
+		status:statusType//NotStarted,Approved,Inprogress, readyforapproval
 	}
  	   $.ajax({
  		  type : "POST",
@@ -1060,6 +1133,14 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
  		  dataType : 'json',
  		  data : {task :JSON.stringify(jsObj)}
  		}).done(function(result){ 
+			 $("#committesLevelValuesId").append('<option value="0">select Committee</option>')
+			 if(result !=null && result.length>0){
+				for(var i in result){
+					  $("#committesLevelValuesId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
+				  }
+				  $("#committesLevelValuesId").trigger("chosen:updated");
+			}
+			$("#committesLevelValuesId").attr("attr_status_type",statusType)
 			
  		});
   }
