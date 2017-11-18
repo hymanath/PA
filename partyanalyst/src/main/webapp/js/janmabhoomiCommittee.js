@@ -529,8 +529,8 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 								}else{
 									str+='<td> - </td>';
 								}
-								if(result.desinationVOList[i].desinationMebersVOList[j].voterId !=null && result.desinationVOList[i].desinationMebersVOList[j].voterId.trim().length>0){
-									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'</td>';
+								if(result.desinationVOList[i].desinationMebersVOList[j].voterCardNo !=null && result.desinationVOList[i].desinationMebersVOList[j].voterCardNo.trim().length>0){
+									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].voterCardNo+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
@@ -547,23 +547,13 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 								}
 								
 								if(result.desinationVOList[i].desinationMebersVOList[j].status == "Approved" || result.desinationVOList[i].desinationMebersVOList[j].status == "Inprogress"){
-									str+='<c:choose>';
-									str+='<c:when test="${fn:contains(sessionScope.USER.entitlements,"JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT" )  || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT" ) || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT" ) }">';
+									
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit"  attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'" attr_committee_id="'+committeId+'">Edit</h5></td>';
-									str+='</c:when>';
-									str+='<c:otherwise>';
-									str+='<td>-</td>';
-									str+='</c:otherwise>';
-									str+='</c:choose>';
+									
 								}else if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
-									str+='<c:choose>';
-									str+='<c:when  test="${fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT" )  || fn:contains(sessionScope.USER.entitlements, "JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT" ) }">';
+									
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'">Add Member</h5></td>';
-									str+='</c:choose>';
-									str+='<c:otherwise>';
-									str+='<td>-</td>';
-									str+='</c:otherwise>';
-									str+='</c:choose>';
+									
 								}
 								
 							str+='</tr>';	
@@ -1134,7 +1124,7 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 		str+='</form>';
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-3">';
-				str+='<button id="clickSearchbutton" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication();">Add Member</button>';
+				str+='<button id="" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication();">Add Member</button>';
 			str+='</div>';
 		str+='</div>'; 
 	  
