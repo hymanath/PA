@@ -321,10 +321,14 @@ function departmentBlockWiseDetails(divId)
 								collapse+='<div class="col-sm-12 m_top10" style="margin-bottom: 20px; padding-left: 0px; padding-right: 0px;">';
 									collapse+='<div id="cmedobBlockMainDivId"></div>';
 								collapse+='</div>';	
-								collapse+='<div class="row m_top10">';
-									collapse+='<div class="col-sm-4 col-sm-offset-9">'
+								
+								collapse+='<div class="row m_top20" style="margin-top:60px;">';
+									collapse+='<div class="col-sm-3">'
+										collapse+='<h4><b>IT & E &nbsp Sector Wise Status Report</b></h4>';
+									collapse+='</div>';
+									collapse+='<div class="col-sm-4">'
 										collapse+='<div class="form-group form-inline">';
-										collapse+='<label class="col-sm-2  control-label" for="Sector">Sector: </label>';
+										collapse+='<label class="col-sm-2  control-label" for="Sector" style="margin-top: 6px;">Sector: </label>';
 												collapse+='<select class="form-control chosenSelect" id="sectorSelId">';
 													collapse+='<option value="B">All</option>';
 													collapse+='<option value="E">Electronics</option>';
@@ -332,10 +336,13 @@ function departmentBlockWiseDetails(divId)
 												collapse+='</select>';
 										collapse+='</div>';
 									collapse+='</div>';
+									
 								collapse+='</div>';
+								
 								collapse+='<div class="row">';
 									collapse+='<div id="cmedobDivId"></div>';
 								collapse+='</div>';
+								
 							}
 							if(divId == "meesevaSlaKpi"){
 								collapse+='<div class="row">';
@@ -2429,7 +2436,6 @@ function getCMEDOBReportStatusWise(sectorType){
 function buildCMEDOBReportStatusWise(result,sectorType){
 	var str='';
 		str+='<div class="col-sm-12  m_top20">';
-			str+='<h4><b>IT & E &nbsp Sector Wise Status Report</b></h4>';
 			str+='<div class="table-responsive">';	
 				str+='<table  class="table table-bordered"  id="cmedobTableId">';
 					str+='<thead>';
@@ -2543,19 +2549,19 @@ function buildCMeoDBStatusCountDetails(result){
 					str+='<tr>';
 						str+='<th>District Name</th>';
 						str+='<th>Sector Name</th>';
-						str+='<th>Activity</th>';
 						str+='<th>Industry Name</th>';
 						str+='<th>Category Name</th>';
+						str+='<th>Activity</th>';
 						str+='<th>Employment</th>';
 						str+='<th>Investment Amount</th>';
+						str+='<th>Status</th>';
+						str+='<th>Approval File Id</th>';
+						str+='<th>Address</th>';
 						str+='<th>Appication Filled Date</th>';
 						str+='<th>Recieved Date</th>';
-						str+='<th>PermApproval Date</th>';
 						str+='<th>Approval Date</th>';
+						str+='<th>PermApproval Date</th>';
 						str+='<th>Sla Days </th>';
-						str+='<th>Status</th>';
-						str+='<th>Address</th>';
-						str+='<th>Approval File Id</th>';
 						//str+='<th>Document URL</th>';
 					str+='</tr>';
 				str+='</thead>';
@@ -2568,32 +2574,34 @@ function buildCMeoDBStatusCountDetails(result){
 							} else {
 								str+='<td>-</td>';
 							}
-							if (result[i].activity != null && result[i].activity.length > 0) {
-							  str+='<td class="tooltipCls" data-container="body" title="'+result[i].activity+'" style="cursor:pointer;">'+result[i].activity.substr(0,10)+"..."+'</td>';	
-							} else {
-								 str+='<td>-</td>';
-							}
 							if (result[i].industryName != null ) {
 							str+='<td class="tooltipCls" data-container="body" title="'+result[i].industryName+'" style="cursor:pointer;">'+result[i].industryName.substr(0,10)+"..."+'</td>';	
 							} else {
 								str+='<td>-</td>';
 							}
 							str+='<td >'+result[i].category+'</td>';
+							if (result[i].activity != null && result[i].activity.length > 0) {
+							  str+='<td class="tooltipCls" data-container="body" title="'+result[i].activity+'" style="cursor:pointer;">'+result[i].activity.substr(0,10)+"..."+'</td>';	
+							} else {
+								 str+='<td>-</td>';
+							}
 							str+='<td >'+result[i].empolyeement+'</td>';
 							str+='<td >'+result[i].investmentAmount+'</td>';
-							str+='<td >'+result[i].appFilledDate+'</td>';
-							str+='<td >'+result[i].recievedDate+'</td>';
-							str+='<td >'+result[i].permApprovalDate+'</td>';
-							str+='<td >'+result[i].approvalDate+'</td>';
-							str+='<td >'+result[i].slaDays+'</td>';
 							str+='<td >'+result[i].status+'</td>';
-							str+='<td class="tooltipCls" data-container="body" title="'+result[i].address+'" style="cursor:pointer;">'+result[i].address.substr(0,10)+"..."+'</td>';
-							str+='<td >'+result[i].approvalFileId+'</td>';
-							/* if (result[i].url != null && result[i].url.length > 0) {
-								str+='<td><a href="'+result[i].url+'" target="_blank">View Document</a></td>';
+							//str+='<td >'+result[i].approvalFileId+'</td>';
+							 if (result[i].url != null && result[i].url.length > 0) {
+								 var urlDtsArr = result[i].url.split("=");
+								str+='<td><a href="'+result[i].url+'" target="_blank">'+urlDtsArr[1]+'</a></td>';
 							} else {
 								str+='<td>-</td>';
-							} */
+							} 
+							str+='<td class="tooltipCls" data-container="body" title="'+result[i].address+'" style="cursor:pointer;">'+result[i].address.substr(0,10)+"..."+'</td>';
+							str+='<td >'+result[i].appFilledDate+'</td>';
+							str+='<td >'+result[i].recievedDate+'</td>';
+							str+='<td >'+result[i].approvalDate+'</td>';
+							str+='<td >'+result[i].permApprovalDate+'</td>';
+							str+='<td >'+result[i].slaDays+'</td>';
+							
 							
 				str+='</tr>';
 				}
