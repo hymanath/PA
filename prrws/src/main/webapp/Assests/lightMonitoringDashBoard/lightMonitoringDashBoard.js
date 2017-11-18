@@ -219,7 +219,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 					   str+=' <img src="Assests/icons/District_Survy_icon.png" alt="start_date">';
 				   str+=' </div>';
 					str+='<div class="media-body">';
-						str+='<h5>NO OF <span style="color:#827C13;"><b>DISTRICTS</b></span><br/>SURVEY SATRTED</h5>';
+						str+='<h5>NO OF <span style="color:#827C13;"><b>DISTRICTS</b></span><br/>SURVEY STARTED</h5>';
 						if(result[0].totalDistCnt !=null && result[0].totalDistCnt>0){
 							str+=' <h3 attr_location_type="district" attr_result_type="surveryStartedLocation" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].totalDistCnt+'</h3>';
 						}else{
@@ -246,7 +246,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 					   str+=' <img src="Assests/icons/Mandal_Survy_icon.png" alt="">';
 				   str+=' </div>';
 					str+='<div class="media-body">';
-						str+='<h5>NO OF <span style="color:#00BFE8;"><b>MANDALS</b></span><br/>SURVEY SATRTED</h5>';
+						str+='<h5>NO OF <span style="color:#00BFE8;"><b>MANDALS</b></span><br/>SURVEY STARTED</h5>';
 						if(result[0].totalMandalCnt !=null && result[0].totalMandalCnt>0){
 							str+=' <h3 attr_location_type="mandal" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" class="surveyStartedLocationCountCls">'+result[0].totalMandalCnt+'</h3>';
 						}else{
@@ -1281,19 +1281,19 @@ function buildCompanyWiseLightMonitoringDtls(result){
 					
 					str+='<div class="row m_top10" style="padding:10px;">';
 						str+='<div class="col-sm-3">';
-							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="district" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="EESL" class="companyTypeCls">'+result.eeslVO.surveyStartedtotalDistricts+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
-							str+='<h6><b>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h6><b>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="constituency" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="EESL" class="companyTypeCls">'+result.eeslVO.surveyStartedtotalConstituencys+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
-							str+='<h6><b>NO OF <span style="color:#00BFE8;">MANDALS</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h6><b>NO OF <span style="color:#00BFE8;">MANDALS</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="mandal" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="EESL" class="companyTypeCls">'+result.eeslVO.surveyStartedtotalMandals+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
-							str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="panchayat" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="EESL" class="companyTypeCls">'+result.eeslVO.surveyStartedtotalGps+'</h3>';
 						str+='</div>';
 					str+='</div>';
@@ -1419,19 +1419,19 @@ function buildCompanyWiseLightMonitoringDtls(result){
 					str+='</div>'; */
 					str+='<div class="row m_top10" style="padding:10px;">';
 						str+='<div class="col-sm-3">';
-							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="district" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="NREDCAP" class="companyTypeCls">'+result.nredcapVO.surveyStartedtotalDistricts+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
-							str+='<h6><b>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h6><b>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="constituency" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="NREDCAP" class="companyTypeCls">'+result.nredcapVO.surveyStartedtotalConstituencys+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
-							str+='<h6><b>NO OF <span style="color:#00BFE8;">MANDALS</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h6><b>NO OF <span style="color:#00BFE8;">MANDALS</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="mandal" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="NREDCAP" class="companyTypeCls">'+result.nredcapVO.surveyStartedtotalMandals+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
-							str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="panchayat" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="NREDCAP" class="companyTypeCls">'+result.nredcapVO.surveyStartedtotalGps+'</h3>';
 						str+='</div>';
 					str+='</div>';
@@ -1533,19 +1533,19 @@ function getRequiredTemplate(type){
 		str+='</div>'; */
 		str+='<div class="row m_top10" style="padding:10px;">';
 			str+='<div class="col-sm-3">';
-				str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY SATRTED</b></h6>';
+				str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY STARTED</b></h6>';
 				str+='<h3>0</h3>';
 			str+='</div>';
 			str+='<div class="col-sm-3">';
-				str+='<h6><b>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span><br/>SURVEY SATRTED</b></h6>';
+				str+='<h6><b>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span><br/>SURVEY STARTED</b></h6>';
 				str+='<h3>0</h3>';
 			str+='</div>';
 			str+='<div class="col-sm-3">';
-				str+='<h6><b>NO OF <span style="color:#00BFE8;">MANDALS</span><br/>SURVEY SATRTED</b></h6>';
+				str+='<h6><b>NO OF <span style="color:#00BFE8;">MANDALS</span><br/>SURVEY STARTED</b></h6>';
 				str+='<h3>0</h3>';
 			str+='</div>';
 			str+='<div class="col-sm-3">';
-				str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY SATRTED</b></h6>';
+				str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY STARTED</b></h6>';
 				str+='<h3>0</h3>';
 			str+='</div>';
 		str+='</div>';
