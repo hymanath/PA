@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -518,12 +519,16 @@ public class LightMonitoringService  implements ILightMonitoring{
 			 }
 			 List<Object[]> totalFilterObj =lightMonitoringDAO.getLocationsForLEDDashboard(locationType, filterType, filterValues,"filter",fromDate,toDate,lighsVendorIds);
 			if(totalFilterObj!=null && totalFilterObj.size()>0){
+				Map<String,LightMonitoringVO> locationMap = new TreeMap<String,LightMonitoringVO>();
 		    for (Object[] objects : totalFilterObj) {
 		       LightMonitoringVO locationVO = new LightMonitoringVO();
 		       locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[2]));
 		       locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[3]));
-		       returnList.add(locationVO);		    				
-			  }
+		       locationMap.put(locationVO.getLocationName(), locationVO);
+		    }
+		    if (locationMap.size() > 0) {
+		    	 returnList.addAll(locationMap.values());	
+		    }
 		 }		
 	         }catch (Exception e) {
 			LOG.error("Exception raised at getLocationBasedOnSelection - LightMonitoringService service", e);
