@@ -611,11 +611,11 @@ function tableView(result,divId,locType)
 				 }
 		});
 	tableView+='<div class="table-responsive m_top10">';	
-	tableView+='<table class="table tableStyleLed" id="'+divId+'Table">';
+	tableView+='<table class="table tableStyleLed" id="'+divId+'Table" style="width:100%">';
 		tableView+='<thead>';
 			tableView+='<tr>';
-			tableView+='<th style="display:none;">Lights Vendor</th>';
 			tableView+='<th></th>';
+			tableView+='<th style="display:none;">Lights Vendor</th>';
 				if(divId == 'district')
 				{
 					if(viewTypeDist == "district"){
@@ -685,13 +685,6 @@ function tableView(result,divId,locType)
 			 if (result[i].subList != null && result[i].subList.length > 0) {
 				  for(var j in result[i].subList) {
 						 tableView+='<tr style="text-align:center;">';
-						
-						  if (result[i].subList[j].lightVendorName != null ) {
-								tableView+='<td style="display:none;">'+result[i].subList[j].lightVendorName+'</td>';	 
-						  } else {
-								 tableView+='<td style="display:none;">-</td>';
-						  }
-							 
 						  tableView+='<td>';
 							if (result[i].subList[j].lightVendorId != null && result[i].subList[j].lightVendorId == 1) {//essl
 								tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
@@ -699,6 +692,11 @@ function tableView(result,divId,locType)
 								tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
 							}
 							tableView+='</td>';
+						  if (result[i].subList[j].lightVendorName != null ) {
+								tableView+='<td style="display:none;">'+result[i].subList[j].lightVendorName+'</td>';	 
+						  } else {
+									 tableView+='<td style="display:none;">-</td>';
+						  }
 						if(divId == 'district')
 						{
 							if(viewTypeDist == "district"){
@@ -1669,11 +1667,11 @@ function getSurveryStartedLocation(locType,resultType,filterType,locationIdArr,l
 function buildSurveryStartedLocationDtls(result,divId,resultType){
 	var tableView = '';
 	tableView+='<div class="table-responsive m_top10">';	
-	tableView+='<table class="table tableStyleLed" id="surveyStartedLocationDtlsDataTblId">';
+	tableView+='<table class="table tableStyleLed" style="width:100%" id="surveyStartedLocationDtlsDataTblId">';
 		tableView+='<thead>';
 			tableView+='<tr>';
-				tableView+='<th style="display:none;">Lights Vendor</th>';	
 				tableView+='<th></th>';	
+				tableView+='<th style="display:none;">Lights Vendor</th>';	
 				if(divId == 'district'){
 						tableView+='<th>DISTRICTS</th>';
 				}else if(divId == 'constituency'){
@@ -1715,11 +1713,6 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 					 for(var j in result[i].subList) {
 						if (result[i].subList[j].surveyStartedtotalMandals > 0 ){
 						tableView+='<tr>';
-							  if (result[i].subList[j].lightVendorName != null ) {
-									tableView+='<td style="display:none;">'+result[i].subList[j].lightVendorName+'</td>';	 
-							  } else {
-									 tableView+='<td style="display:none;">-</td>';
-							  }
 							tableView+='<td>';
 								if (result[i].subList[j].lightVendorId != null && result[i].subList[j].lightVendorId == 1) {//essl
 									tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
@@ -1727,6 +1720,11 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 									tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
 								}
 							tableView+='</td>';
+						  if (result[i].subList[j].lightVendorName != null ) {
+								tableView+='<td style="display:none;">'+result[i].subList[j].lightVendorName+'</td>';	 
+						  } else {
+								 tableView+='<td style="display:none;">-</td>';
+						  }
 						if(divId == 'district'){
 								tableView+='<td>'+result[i].addressVO.districtName+'</td>';
 						}else if(divId == 'constituency'){
