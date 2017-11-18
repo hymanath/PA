@@ -142,4 +142,21 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 			
 			return (Long)query.uniqueResult();
 	 }
+	 
+	 public List<Object[]> getCommitteeMembersByCommiteeId(Long committeeId){
+		 StringBuilder sb = new StringBuilder();
+		 //0 jbCommitteeMemberId,1 jbCommitteeRoleId,2 memberName,3 voterIDCardNo,4 tdpCadreId
+			 sb.append("SELECT model.jbCommitteeMemberId,model.jbCommitteeRole.jbCommitteeRoleId, ");
+			 sb.append("model.memberName, voter.voterIDCardNo,tdpCadre.tdpCadreId ");
+			 sb.append("from JbCommitteeMember model " +
+						" left join model.tdpCadre tdpCadre " +
+						" left join model.voter  voter " );
+			 sb.append("where ");
+			 sb.append(" model.jbCommitteeRole.jbCommittee.jbCommitteeId =: committeeId and model.jbCommitteeRole.jbCommittee.isDeleted ='N' ");
+			 
+			 Query query = getSession().createQuery(sb.toString());
+			 	query.setParameter("committeeId", committeeId);
+				
+			return query.list();
+	 }
 }

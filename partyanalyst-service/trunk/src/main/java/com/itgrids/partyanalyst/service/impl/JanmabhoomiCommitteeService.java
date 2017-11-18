@@ -664,6 +664,11 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					jbCommitteeMember.setUpdatedUserId(janmabhoomiCommitteeMemberVO.getUserId());
 					jbCommitteeMember.setEndDate(dateUtilService.getCurrentDateAndTime());
 				}else if(statusType.equalsIgnoreCase("P")){
+					String saveStatus = avoidingDuplicateMemberAdding(janmabhoomiCommitteeMemberVO);
+					if(saveStatus.equalsIgnoreCase("duplicate")){
+						resultStatus.setExceptionMsg("FAIL");
+						return resultStatus;
+					}
 					jbCommitteeMember.setJbCommitteeRoleId(janmabhoomiCommitteeMemberVO.getDesignationId());
 					jbCommitteeMember.setMemberName(janmabhoomiCommitteeMemberVO.getName());
 					//jbCommitteeMember.setAge(null);
@@ -698,13 +703,37 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		
 	}
 	
-	/*public String avoidingDuplicateMemberAdding(JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO){
+	public String avoidingDuplicateMemberAdding(JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO){
+		String status = "";
 		try{
+			Long commiteeId = janmabhoomiCommitteeMemberVO.getCommitteeId();
+			List<Long> tdpCadreIdsList = new ArrayList<Long>();
+			List<String> voterIdCardsList = new ArrayList<String>();
+			List<Object[]> commiteesMembersList = jbCommitteeMemberDAO.getCommitteeMembersByCommiteeId(commiteeId);
+			////0 jbCommitteeMemberId,1 jbCommitteeRoleId,2 memberName,3 voterIDCardNo,4 tdpCadreId
+			if(commiteesMembersList !=null && commiteesMembersList.size() >0) {
+				for(Object[] param: commiteesMembersList){
+					if(commonMethodsUtilService.getStringValueForObject(param[3]) !=null)
+					voterIdCardsList.add(commonMethodsUtilService.getStringValueForObject(param[3]));
+					if(commonMethodsUtilService.getStringValueForObject(param[4]) !=null)
+						tdpCadreIdsList.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			if(janmabhoomiCommitteeMemberVO.getTdpCadreId() !=null){
+				if(tdpCadreIdsList.contains(janmabhoomiCommitteeMemberVO.getTdpCadreId())){
+					status = "duplicate";
+				}
+			}else if(janmabhoomiCommitteeMemberVO.getVoterCardNo() !=null){
+				if(voterIdCardsList.contains(janmabhoomiCommitteeMemberVO.getVoterCardNo())){
+					status = "duplicate";
+				}
+			}
 			
 		}catch (Exception e) {
-			// TODO: handle exception
+			LOG.error("Excepting Occured in avoidingDuplicateMemberAdding() of JanmabhoomiCommitteeService ", e);
 		}
-	}*/
+		return status;
+	}
 	public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteesByLocIdAndCommLvlId(String fromDate,String endDate,Long locationId,Long locLvlId,Long committeeLvlId,String status){
 		 List<JanmabhoomiCommitteeVO> returnList = new ArrayList<JanmabhoomiCommitteeVO>();
 	try {

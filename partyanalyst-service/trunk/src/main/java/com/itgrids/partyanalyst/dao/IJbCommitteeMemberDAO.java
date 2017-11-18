@@ -13,4 +13,5 @@ import com.itgrids.partyanalyst.model.JbCommitteeMember;
 	  public List<Object[]> getCommitteeWiseTotalMemberAddedCount(String type,Set<Long> userAccessVals);
 	  public List<Object[]> getCommitteeWiseTotalMemberAddedCount(Date fromDate,Date endDate,Long levelId,Long levelVal,Long committeeLvlId);
 	  public Long getMemberApprovedCountByCommitteId(Long committeeId);
+	  public List<Object[]> getCommitteeMembersByCommiteeId(Long committeeId);
 }
