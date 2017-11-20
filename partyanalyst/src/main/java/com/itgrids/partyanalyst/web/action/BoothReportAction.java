@@ -36,8 +36,14 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 	private List<IdAndNameVO> idAndNameVOList;
 	private List<BoothInchargeDetailsVO> boothIncbhargeVOList;
 	private InputVO userVO;
+	private String status;
 	
-	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public List<IdAndNameVO> getIdAndNameVOList() {
 		return idAndNameVOList;
 	}
@@ -346,6 +352,63 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 			boothDtlsList = boothDataValidationService.getLocationWiseCadreDetails(inputVO);
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationWiseCadreDetails() method of BoothReportAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getUsersAccessLocatiosLIst(){
+		try {
+			HttpSession session = request.getSession();
+			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			 if(user == null)
+				 return Action.ERROR;
+			 
+			 boothInchargeDetailsList = boothDataValidationService.getUserAccessLocatiosLIst(user.getRegistrationID(),Long.valueOf(user.getAccessValue()),user.getAccessType());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getUserAccessLocatiosLIst() method of BoothReportAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCommitteeFinalizedBoothListforUnlock(){
+		try {
+			HttpSession session = request.getSession();
+			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			 if(user == null)
+				 return Action.ERROR;
+			 jObj = new JSONObject(getTask());
+			 List<Long> assemblyIdsList = new ArrayList<Long>(0);
+			 JSONArray assemblyIdsArr =jObj.getJSONArray("assemblyIdsArr");
+				if(assemblyIdsArr!=null &&  assemblyIdsArr.length()>0){
+					for( int i=0;i<assemblyIdsArr.length();i++){
+						assemblyIdsList.add(Long.valueOf(assemblyIdsArr.getString(i)));
+					}
+				}
+				
+			 boothInchargeDetailsList = boothDataValidationService.getCommitteeFinalizedBoothsListforUnlock(user.getRegistrationID(),assemblyIdsList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getUserAccessLocatiosLIst() method of BoothReportAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String unlockBoothCommitteesByCommitteeIdList(){
+		try {
+			HttpSession session = request.getSession();
+			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			 if(user == null)
+				 return Action.ERROR;
+			 List<Long> boothCommitteeIdsList = new ArrayList<Long>(0);
+			 jObj = new JSONObject(getTask());
+			 JSONArray boothCommitteeIdsArr =jObj.getJSONArray("boothCommitteeIdsArr");
+				if(boothCommitteeIdsArr!=null &&  boothCommitteeIdsArr.length()>0){
+					for( int i=0;i<boothCommitteeIdsArr.length();i++){
+						boothCommitteeIdsList.add(Long.valueOf(boothCommitteeIdsArr.getString(i)));
+					}
+				}
+			 status = boothDataValidationService.unlockBoothCommitteesByCommitteeIdsList(user.getRegistrationID(),boothCommitteeIdsList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getUserAccessLocatiosLIst() method of BoothReportAction", e);
 		}
 		return Action.SUCCESS;
 	}
