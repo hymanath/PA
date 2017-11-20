@@ -586,7 +586,9 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
 			
-			
+			if(entitlements.contains("CONSTITUENCY_PAGE_USER_ENTITLEMENT")){
+				return "constituencyPageAction";
+			}
 			if(entitlements.contains("GOVT_DEPARTMENT_ADMIN_ENTITLEMENT_NEW")){
 				return "alertManagementAction";
 			}
