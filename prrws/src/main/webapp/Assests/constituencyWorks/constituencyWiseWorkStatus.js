@@ -7,13 +7,15 @@
 	departmentArrGlob.push("0");
 	var departmentArrGlob1 =[];
 	departmentArrGlob1.push("3");
+	
 	$(".chosenSelect").chosen();
 	
-	onloadCalls();
+	getAllFiniancialYears();
+	
 	function onloadCalls(){
-		getAllSubLocationsOnsuperLocation("21");
-		getAllFiniancialYears();
-		getAllDepartmentsDetails();
+		buildOverAllDepartmentsDetails();
+		getFundManagementSystemWorkDetails(1)
+		getFundManagementSystemWorkDetails(2)
 	}
 	
 	 $("#dateRangePickerAUM").daterangepicker({
@@ -53,53 +55,45 @@
 		$("#financialYearId").val(0);
 		$("#financialYearId").trigger('chosen:updated');
 		
-		setTimeout(function(){  onloadCalls(); }, 1000);
+		$("#DepartmentsId").val(0);
+		$("#DepartmentsId").trigger('chosen:updated');
+		
+		setTimeout(function(){
+			onloadCalls(); 
+		}, 1000);
 	  });
 
 
-function  getAllDepartmentsDetails(){
-	
-	 $.ajax({ 
-      url: 'getDepartmentDetails', 
-      type:'POST',  
-      dataTypa : 'json',   
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-Type", "application/json");
-      },   
-    }).done(function(result){
-		var str='';
-		str+='<option value="0" selected>ALL DEPARTMENTS</option>';
-		for(var i in result){
-			str+='<option value="'+result[i].locationId+'">'+result[i].departmentName+'</option>'
-		}
-		$("#DepartmentsId").html(str);
-		$("#DepartmentsId").chosen();
-		$("#DepartmentsId").trigger('chosen:updated');
-    });
- }
 
 function  getAllFiniancialYears(){
 	
-	 $.ajax({ 
-      url: 'getAllFiniancialYears', 
-      type:'POST',  
-      dataTypa : 'json',   
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-Type", "application/json");
-      },   
-    }).done(function(result){
-		var str='';
-		str+='<option value="0" selected>ALL</option>';
-		for(var i in result){
-			str+='<option value="'+result[i].financialYearId+'">'+result[i].financialYear+'</option>'
-		}
-		$("#financialYearId").html(str);
-		$("#financialYearId").chosen();
-		$("#financialYearId").trigger('chosen:updated');
-    });
+		 $.ajax({ 
+		  url: 'getAllFiniancialYears', 
+		  type:'POST',  
+		  dataTypa : 'json',   
+		  beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		  },   
+		}).done(function(result){
+			var str='';
+			str+='<option value="0" selected>ALL</option>';
+			for(var i in result){
+				str+='<option value="'+result[i].financialYearId+'">'+result[i].financialYear+'</option>'
+			}
+			$("#financialYearId").html(str);
+			$("#financialYearId").chosen();
+			$("#financialYearId").trigger('chosen:updated');
+		});
+		getAllSubLocationsOnsuperLocation("21");
+		setTimeout(function(){
+			var constincyId=$("#districtSelId").val();
+			var conId=constincyId.substr(1,constincyId.length-1);
+			getLocationsNamesBySubLocation(conId);
+		}, 1500);
+		
  }
+ 
 	var financialArrGlob=[];
 	financialArrGlob.push("0");
 	$(document).on("change","#financialYearId",function(){//ara
@@ -130,6 +124,7 @@ function  getAllFiniancialYears(){
 			 onLoadInitialisations();
 		}console.log(financialArrGlob +" ---- "+ values);
 	});
+	
 function getAllSubLocationsOnsuperLocation(superLocationId){
 	 $("#constituencySelId").html("<option value='0'>SELECT CONSTITUENCY</option>");
 	 $("#constituencySelId").trigger('chosen:updated');
@@ -150,12 +145,19 @@ function getAllSubLocationsOnsuperLocation(superLocationId){
 		var str='';
 		str+='<option value="0">SELECT DISTRICT</option>';
 		for(var i in result){
-			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>'
+			if(i==0){
+				str+='<option value="'+result[i].id+'" selected>'+result[i].name+'</option>'
+			}else{
+				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>'
+			}
+			
 		}
      $("#districtSelId").html(str);
 	 $("#districtSelId").chosen();
 	 $("#districtSelId").trigger('chosen:updated');
     });
+	onloadCalls();
+	
 }
 $(document).on("change","#districtSelId",function(){
 	var constincyId=$(this).val();
@@ -233,7 +235,7 @@ function printDiv(divName) {
 	  }
 	});
 	}
-buildOverAllDepartmentsDetails();
+
 function buildOverAllDepartmentsDetails(){
 	
 	var departmentId = $("#DepartmentsId").val();
@@ -327,17 +329,54 @@ function buildOverAllDepartmentsDetails(){
 	
 	
 	$("#overAllDeparmentsDivId").html(str);
-	getFundManagementSystemWorkDetails();
-}
 	
-function getFundManagementSystemWorkDetails(){
+}
+$(document).on("click",".submitCls",function(){
+	var districtId = $("#districtSelId").val();
+	if(districtId == null || districtId == 0){
+		return;
+	}
+	var departmentId = $("#DepartmentsId").val();
+	buildOverAllDepartmentsDetails();
+	if(departmentId ==0 || departmentId == null){
+		getFundManagementSystemWorkDetails(1);
+		getFundManagementSystemWorkDetails(2);
+	}else{
+		if(departmentId == 1){
+			getFundManagementSystemWorkDetails(departmentId);
+		}else if(departmentId == 2){
+			getFundManagementSystemWorkDetails(departmentId);
+		}else if(departmentId == 3){
+			
+		}
+		
+	}
+	
+});
+	
+function getFundManagementSystemWorkDetails(departmentId){
 	var financialYrIdList = $('#financialYearId').val();
 	if(financialYrIdList == 0 || financialYrIdList == null){
 		financialYrIdList=[];
-	}	
+	}
+	var districtId = $("#districtSelId").val();
+	var constituencyId = $("#constituencySelId").val();
+	var locationId='';
+	if((districtId !=0 || districtId !=null) && (constituencyId == null || constituencyId == 0)){
+		
+		locationId =districtId;
+	}else if((districtId !=0 || districtId !=null) && (constituencyId != null || constituencyId != 0)){
+		
+		locationId =constituencyId;
+	}
+	
+	var deptIdsList=[];
+	deptIdsList.push(parseInt(departmentId))
+	
+	
 	var json = {
-			locationId:2, //districtId,cons    
-			departmentId:1, //ENC-1,Rws-2,M-3
+			locationId:locationId, //districtId,cons    
+			deptIdsList:deptIdsList, //ENC-1,Rws-2,M-3
 			financialYrIdList:financialYrIdList,
 			fromDateStr:glStartDate,
 			toDateStr:glEndDate

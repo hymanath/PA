@@ -294,7 +294,7 @@
 	  font-weight: 600 !important;
 	}
 	.container{
-		 width: 1000px;
+		 width: 100%;
 	}
 	.go-works{
 		padding: 10px 15px !important;
@@ -327,7 +327,7 @@
 	}
 	.main_level_css{
 		border: 3px solid rgb(209,171,102) !important;
-		padding: 5px 5px 5px !important;
+		padding: 10px 10px 10px !important;
 		border-radius: 5px !important;
 		background-color: rgb(251,247,240) !important;
 		-webkit-print-color-adjust:exact;
@@ -338,13 +338,17 @@
 	.border_cls_low_level{
 		background-color: rgb(251,247,240) !important;
 		border: 3px solid rgb(209,171,102) !important;
-		padding: 5px 5px !important;
+		padding: 10px 10px !important;
 		border-radius: 5px !important;
 		margin-top: 5px !important;
 		-webkit-print-color-adjust:exact;
 		color-adjust:exact;
 		-webkit-border-radius: 5px !important;
 		-moz-border-radius: 5px !important;
+		-webkit-padding-before:0px !important; /* top */
+		-webkit-padding-end:0px !important; /* right */	
+		-webkit-padding-after:5px !important; /* bootom */	
+		-webkit-padding-start:5px !important; /* left */
 	}
 	.border_cls_low_level h4{
 			padding-top: 5px !important;
@@ -354,12 +358,18 @@
 		background-color: #ffffff !important;
 		border: 1px solid #d1ab66 !important;
 		border-radius: 5px !important;
-		padding: 5px !important;
+		padding: 10px !important;
+		
+		-webkit-padding-before:2px !important; /* top */
+		-webkit-padding-end:2px !important; /* right */	
+		-webkit-padding-after:2px !important; /* bootom */	
+		-webkit-padding-start:2px !important; /* left */
+		
 		-webkit-print-color-adjust:exact;
 		color-adjust:exact;
 	}
 	.mainDivHeaderCls{
-		padding: 5px 5px 5px !important;
+		padding: 15px 15px 15px !important;
 	}
 	.to-date{
 		padding: 5px 5px 5px !important;
@@ -369,7 +379,7 @@
 	}
 	.mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 		font-family:'Ubuntu', sans-serif !important;
-		font-size:13px !important;
+		font-size:14px !important;
 	}
 	.page{
         page-break-after: always;
@@ -385,5 +395,9 @@
 		width:80px !important;
 		height:80px !important;
 	 }
-	@page { size: auto;  margin: 0mm; }
+	
+	 @page {
+        size: auto;
+        margin: 2.0cm;
+    }
 }
