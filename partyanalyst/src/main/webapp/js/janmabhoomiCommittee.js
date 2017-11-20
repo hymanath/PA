@@ -450,33 +450,35 @@ function buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCar
 				str+='<select id="statesDivId" class="chosen-select">';
 					str+='<option value="0">All</option>';
 					str+='<option value="1">Andhra Pradesh</option>';
+					str+='<option value="36">Telangana</option>';
 				str+='</select>';
 			str+='</div>';
 			str+='<div class="col-sm-2 m_top10" id="districtDiv">';
 				str+='<label>District</label>';
 				str+='<span id="districtIdImg"><img src="images/search.gif" style="display:none;"/></span>';
 				str+='<select id="districtId" class="chosen-select" >';
-				
+				str+='<option value="0">All</option>';
 				str+='</select>';
 			str+='</div>';
 			str+='<div class="col-sm-2 m_top10" id="constitunecyDiv">';
 				str+='<label>Constituency</label>';
 				str+='<span id="constituencyIdImg"><img src="images/search.gif" style="display:none;"/></span>';
 				str+='<select id="constituencyId"  class="chosen-select" >';
+				str+='<option value="0">All</option>';
 				str+='</select>';
 			str+='</div>';
 			str+='<div class="col-sm-3 m_top10" id="mandalDiv">';
 				str+='<label>Mandal/Muncipality/Corporation</label>';
 				str+='<span id="mandalListImg"><img src="images/search.gif" style="display:none;"/></span>';
 				str+='<select id="mandalList" class="chosen-select">';
-					
+					str+='<option value="0">All</option>';
 				str+='</select>';
 			str+='</div>';
 			str+='<div class="col-sm-3 m_top10" id="panchayatDiv">';
 				str+='<label>Panchayat/Ward/Division/City</label>';
 				str+='<span id="panchaytListImg"><img src="images/search.gif" style="display:none;"/></span>';
 				str+='<select id="panchaytList" class="chosen-select">';
-					
+					str+='<option value="0">All</option>';
 				str+='</select>';
 			str+='</div>';
 		str+='</div>';
@@ -583,10 +585,10 @@ function getDistrictsForStates(stateId,id){
 			$("#constituencyId").empty();
 			$("#mandalList").empty();
 			$("#panchaytList").empty();			
-			$("#districtId").append('<option value="0">Select District</option>');		
-			$("#constituencyId").append('<option value="0">Select Constituency</option>');		
-			$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');		
-			$("#panchaytList").append('<option value="0">Select Panchayat</option>');
+			$("#districtId").append('<option value="0">All</option>');		
+			$("#constituencyId").append('<option value="0">All</option>');		
+			$("#mandalList").append('<option value="0">All</option>');		
+			$("#panchaytList").append('<option value="0">All</option>');
 			
 			$("#districtId").trigger("chosen:updated");
 			$("#constituencyId").trigger("chosen:updated");
@@ -611,7 +613,7 @@ function getDistrictsForStates(stateId,id){
 		if(result !=null && result.length>0){
 			for(var i in result){
 				if(result[i].id == 0){
-					$("#districtId").append('<option value='+result[i].id+'>ALL</option>');
+					//$("#districtId").append('<option value='+result[i].id+'>ALL</option>');
 				}else{
 				   $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				}
@@ -630,9 +632,9 @@ function getDistrictsForStates(stateId,id){
 			$("#constituencyId").empty();
 			$("#mandalList").empty();
 			$("#panchaytList").empty();					
-			$("#constituencyId").append('<option value="0">Select Constituency</option>');		
-			$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');		
-			$("#panchaytList").append('<option value="0">Select Panchayat</option>');			
+			$("#constituencyId").append('<option value="0">All</option>');		
+			$("#mandalList").append('<option value="0">All</option>');		
+			$("#panchaytList").append('<option value="0">All/option>');			
 			$("#constituencyId").trigger("chosen:updated");
 			$("#mandalList").trigger("chosen:updated");
 			$("#panchaytList").trigger("chosen:updated");
@@ -656,7 +658,7 @@ function getDistrictsForStates(stateId,id){
 		if(result !=null && result.length>0){
 			for(var i in result){
 				if(result[i].id == 0){
-					$("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
+					//$("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
 				}else{
 				   $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				}
@@ -672,9 +674,9 @@ function getDistrictsForStates(stateId,id){
 		$("#mandalListImg").show();
 		constituencyId = $('#constituencyId').val();
 		$("#mandalList  option").remove();
-		$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
+		$("#mandalList").append('<option value="0">All</option>');
 		$("#panchaytList  option").remove();
-		$("#panchaytList").append('<option value="0">Select Panchayat</option>');
+		$("#panchaytList").append('<option value="0">All</option>');
 	}
 	
    var jsObj=
@@ -695,7 +697,7 @@ function getDistrictsForStates(stateId,id){
 			}
 			for(var i in result){
 				if(result[i].id == 0){
-					$("#mandalList").append('<option value='+result[i].locationId+'>ALL</option>');
+					//$("#mandalList").append('<option value='+result[i].locationId+'>ALL</option>');
 				}else{
 				   $("#mandalList").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 				}
@@ -713,7 +715,7 @@ function getDistrictsForStates(stateId,id){
 			mandalId=$("#mandalList").val();
 			constituencyId = $('#constituencyId').val();
 			$("#panchaytList  option").remove();
-			$("#panchaytList").append('<option value="0">Select Panchayat</option>');
+			$("#panchaytList").append('<option value="0">All</option>');
 	}
    var jsObj=
    {				
@@ -930,9 +932,10 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 			str+='<div class="col-sm-3">';
 				str+='<select class="form-control chosen-select" id="partyId" name="janmabhoomiCommitteeMemberVO.partyId">';
 					str+='<option value="0">Select Affiliated Party</option>';
-					str+='<option value="1117">YSRC</option>';
 					str+='<option value="872">TDP</option>';
 					str+='<option value="362">INC</option>';
+					str+='<option value="1117">YSRC</option>';
+					str+='<option value="163">BJP</option>';
 				str+='</select>';
 			str+='</div>';
 			str+='</div>';	
