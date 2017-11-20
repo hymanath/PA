@@ -18,7 +18,6 @@
 body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 	font-family:'Ubuntu', sans-serif !important;
 }
-@page { size: auto;  margin: 0mm; }
 </style>
 </head>
 <body>
@@ -209,7 +208,10 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 				<div class="col-sm-2 border_right">
 					<div class="form-group">
 							<select id="DepartmentsId" class="form-control chosenSelect">
-								<option value="0"> Select Department</option>
+								<option value="0" selected="">ALL DEPARTMENTS</option>
+								<option value="1">ENC</option>
+								<option value="3">MGNREGS</option>
+								<option value="2">RWS</option>
 								
 							</select>
 						</div>
@@ -222,21 +224,28 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 						<input type="text" class="form-control" id="dateRangePickerAUM" style="width: 200px;"/>
 					</div>
 				</div>
-				<div class="col-sm-1">
-					<input class="btn btn-md btn-success printViewCls" attr_divId="printableArea" value="print"/>
+				<div class="col-sm-2">
+					<button class="btn btn-md btn-success submitCls pull-right">submit</button>
 				</div>
 		   </div>
+		   
 		</div>
 	</section>
 </header>
 	<div class="container m_top20">
-		<div class="row pull-right">
-			<label class="radio-inline">
-			  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="withHeader" class="withAndOutHeaderCls">With Header
-			</label>
-			<label class="radio-inline">
-			  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="withOutHeader" checked class="withAndOutHeaderCls">With Out Header
-			</label>
+		<div class="row">
+			
+			<div class="col-sm-11">
+				<label class="radio-inline pull-right">
+					<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="withHeader" class="withAndOutHeaderCls">With Header
+				</label>
+				<label class="radio-inline pull-right" style="margin-right: 20px;">
+					<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="withOutHeader" checked class="withAndOutHeaderCls" >With Out Header
+				</label>
+			</div>
+			<div class="col-sm-1">
+				<button class="btn btn-md btn-success printViewCls pull-right" attr_divId="printableArea" >Print</button>
+			</div>
 		</div>
 	</div>
 	
