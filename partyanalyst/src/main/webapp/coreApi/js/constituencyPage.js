@@ -503,7 +503,7 @@ function onLoadClicks()
 		{
 			$("#totalCastesAndCadrePercBarGraph").html(spinner);
 			$("#totalCastesAndCadrePercBarGraph").closest(".scollerDiv").mCustomScrollbar("destroy");
-			getCasteGroupNAgeWiseVoterNCadreCounts(0,"sortingType","All",publicationId,enrollmentId,assendingType)			
+			getCasteGroupNAgeWiseVoterNCadreCounts(0,"sortingType","All",22,enrollmentId,assendingType)			
 		}
 	});
 	$(document).on("click",".alertCategoryWiseCls li",function(){
