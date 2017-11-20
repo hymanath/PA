@@ -241,6 +241,8 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 	var departmentId = $("#DepartmentsId").val();
 	var departmentArr=[];
 	var str='';
+	var totalWorks = 0;
+	var totalFunds = 0.00;
 	
 	if(departmentId == 0){
 		departmentArr=['Panchayati Raj Engineering Department','Rural Water Supply & Sanitation','Mahatma Gandhi National Rural Employment Gurantee Scheme']
@@ -252,48 +254,61 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 	}else if(departmentId == 3){
 		departmentArr=['Mahatma Gandhi National Rural Employment Gurantee Scheme']
 	}
+	if(result != null && result.locationList1 != null && result.locationList1.length > 0){
+		for(var i in result.locationList1){
+			totalWorks = totalWorks+result.locationList1[i].workNumber;
+			totalFunds = parseFloat(totalFunds)+parseFloat(result.locationList1[i].amountInDecimal);
+		}
+	}
 		str+='<div class="go-works">';
-			str+='<h4>G.O.Issued Works Summery</h4>';
+			str+='<h4>G.O.Issued Works Summary</h4>';
 				str+='<div class="main_level_css m_top10">';
 					str+='<div class="row">';
 						str+='<div class="col-sm-6">';
 							str+='<div class="border-cls">';
 								str+='<h4 class="font_weight">Total Works</h4>';
-								str+='<h3 class="font_weight">15,000</h3>';
+								str+='<h3 class="font_weight">'+totalWorks+'</h3>';
 							str+='</div>';
 						str+='</div>';
 						
 						str+='<div class="col-sm-6">';
 							str+='<div class="border-cls">';
-								str+='<h4 class="font_weight">Total Works</h4>';
-								str+='<h3 class="font_weight">15,000</h3>';
+								str+='<h4 class="font_weight">Total Funds</h4>';
+								str+='<h3 class="font_weight">'+totalFunds.toFixed(3)+'</h3>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
 					str+='<div class="">';
-					for(var i in departmentArr){
+					for(var i in result.locationList1){
 							str+='<div class="border_cls_low_level">';
-								str+='<h4 class="font_weight">'+departmentArr[i]+'</h4>';
+							if(result.locationList1[i].departmentName == 'ENC')
+								str+='<h4 class="font_weight">Panchayati Raj Engineering Department</h4>';
+							else if(result.locationList1[i].departmentName == 'RWS')
+								str+='<h4 class="font_weight">Rural Water Supply & Sanitation</h4>';
+							else if(result.locationList1[i].departmentName == 'Mahatma Gandhi National Rural Employment Gurantee Scheme')
+								str+='<h4 class="font_weight">Mahatma Gandhi National Rural Employment Gurantee Scheme</h4>';
 								str+='<div class="row m_top10">';
 									str+='<div class="col-sm-6">';
 										str+='<div class="department_wise_css">';
 											str+='<div class="row">';
 												str+='<div class="col-sm-3">';
 													str+='<h4 class="font_weight">Works</h4>';
-													str+='<h3 class="font_weight">1023130</h3>';
+													str+='<h3 class="font_weight">'+result.locationList1[i].workNumber+'</h3>';
 												str+='</div>';
-												str+='<div class="col-sm-3">';
-													str+='<h4 class="font_weight">PLANE</h4>';
-													str+='<h4 class="font_weight">1120</h4>';
-												str+='</div>';
-												str+='<div class="col-sm-3">';
-													str+='<h4 class="font_weight">SCP</h4>';
-													str+='<h4 class="font_weight">233</h4>';
-												str+='</div>';
-												str+='<div class="col-sm-3">';
-													str+='<h4 class="font_weight">TSP</h4>';
-													str+='<h4 class="font_weight">212</h4>';
-												str+='</div>';
+												if(result.locationList1[i].departmentName == 'ENC' || result.locationList1[i].departmentName == 'RWS'){
+													str+='<div class="col-sm-3">';
+														str+='<h4 class="font_weight">PLANE</h4>';
+														str+='<h4 class="font_weight">'+result.locationList1[i].plainWorkCount+'</h4>';
+													str+='</div>';
+													str+='<div class="col-sm-3">';
+														str+='<h4 class="font_weight">SCP</h4>';
+														str+='<h4 class="font_weight">'+result.locationList1[i].scpWorkCount+'</h4>';
+													str+='</div>';
+													str+='<div class="col-sm-3">';
+														str+='<h4 class="font_weight">TSP</h4>';
+														str+='<h4 class="font_weight">'+result.locationList1[i].scpWorkCount+'</h4>';
+													str+='</div>';
+												}
 											str+='</div>';
 										str+='</div>';
 									str+='</div>';
@@ -301,27 +316,28 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 										str+='<div class="department_wise_css">';
 											str+='<div class="row">';
 												str+='<div class="col-sm-3">';
-													str+='<h4 class="font_weight">Works</h4>';
-													str+='<h3 class="font_weight">1023130</h3>';
+													str+='<h4 class="font_weight">Funds</h4>';
+													str+='<h3 class="font_weight">'+result.locationList1[i].amountInDecimal+'</h3>';
 												str+='</div>';
-												str+='<div class="col-sm-3">';
-													str+='<h4 class="font_weight">PLANE</h4>';
-													str+='<h4 class="font_weight">1120</h4>';
-												str+='</div>';
-												str+='<div class="col-sm-3">';
-													str+='<h4 class="font_weight">SCP</h4>';
-													str+='<h4 class="font_weight">233</h4>';
-												str+='</div>';
-												str+='<div class="col-sm-3">';
-													str+='<h4 class="font_weight">TSP</h4>';
-													str+='<h4 class="font_weight">212</h4>';
-												str+='</div>';
+												if(result.locationList1[i].departmentName == 'ENC' || result.locationList1[i].departmentName == 'RWS'){
+													str+='<div class="col-sm-3">';
+														str+='<h4 class="font_weight">PLANE</h4>';
+														str+='<h4 class="font_weight">'+result.locationList1[i].plainAmountInDecimal+'</h4>';
+													str+='</div>';
+													str+='<div class="col-sm-3">';
+														str+='<h4 class="font_weight">SCP</h4>';
+														str+='<h4 class="font_weight">'+result.locationList1[i].scpAmountInDecimal+'</h4>';
+													str+='</div>';
+													str+='<div class="col-sm-3">';
+														str+='<h4 class="font_weight">TSP</h4>';
+														str+='<h4 class="font_weight">'+result.locationList1[i].tspAmountInDecimal+'</h4>';
+													str+='</div>';
+												}
 											str+='</div>';
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';	
 							str+='</div>';
-						
 						}
 					str+='</div>';
 				str+='</div>';
@@ -392,8 +408,10 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 		},   
     }).done(function(result){
 		if(result !=null){
-			buildOverAllDepartmentsDetails(result,departmentId,divId);
-			buildFundManagementSystemWorkDetails(result,divId);
+			if(departmentId == 0)
+				buildOverAllDepartmentsDetails(result,departmentId,divId);
+			else
+				buildFundManagementSystemWorkDetails(result,divId);
 		}
     });
 	
