@@ -565,6 +565,7 @@ var spinner = '<div class="spinner"><div class="dot1"></div><div class="dot2"></
 	{
 		var str ='';
 		var committeeMngntTypeId = $('#committeeMngtType').val();
+		var roleStr = $('#committeeDesignationId option:selected').text().trim();
 		var elegRolCnt=0;
 		var dtCnt = 0;
 		if(result != null)
@@ -611,14 +612,15 @@ var spinner = '<div class="spinner"><div class="dot1"></div><div class="dot2"></
 				else{
 					str+='</div>';
 					str+='</div>';
-					
-					if(result[i].type == "Not Added" && (result[i].isDuplicate=="No" || result[i].isDuplicate==""))
-					{
-						str+='<div class="form-inline ">';
-						str+='<a onclick="javascript:{saveBoothDetails('+result[i].tdpCadreId+',\'\')}" class="btn btn-success btn-medium m_top5 addProfileCls" > ADD PROFILE</a><span id="errMsgId"></span>';
-						str+='</div>';	
-					}else if(result[i].isDuplicate=="Yes") {
-						str+='<div class="form-inline " style="color:red;" title="This cadre may or may not registered with Own voterId or Family Voter Id." > No access to add .  Because This Serial No already added as incharger.</div> ';	
+					if(roleStr=="convenor" || roleStr=="Convenor"){
+						if(result[i].type == "Not Added" && (result[i].isDuplicate=="No" || result[i].isDuplicate==""))
+						{
+							str+='<div class="form-inline ">';
+							str+='<a onclick="javascript:{saveBoothDetails('+result[i].tdpCadreId+',\'\')}" class="btn btn-success btn-medium m_top5 addProfileCls" > ADD PROFILE</a><span id="errMsgId"></span>';
+							str+='</div>';	
+						}else if(result[i].isDuplicate=="Yes") {
+							str+='<div class="form-inline " style="color:red;" title="This cadre may or may not registered with Own voterId or Family Voter Id." > No access to add .  Because This Serial No already added as incharger.</div> ';	
+						}
 					}
 				}
 				elegRolCnt++;
@@ -1649,7 +1651,19 @@ function saveBoothDetails(tdpCadreId,isOtherRange){
 					 $('#boothInchargeRoleDivId1').html('');
 					/* $("#errMsgId").html("<span style='color:green;'>Member added successfully.....</span>"); */
 					setTimeout(function(){
-						gePanchayatOrBooth();
+						
+							$('#committeeDesigDivId1').show();
+							$("#cadreDetailsDiv1,#cadreSerialNoWiseId,#boothInchargeRoleDivId1").html('');
+							$("#cadreAvailableDetailsDivId").html('');
+							var num =$("#panchayatWardByMandal").val();
+							$('#userDetailsId,#locationDivId,#cadreDetailsDiv').html('');
+							$('#addMembrsBtn,#boothInchargeRoleDivId,#committeeDesigDivId,#searchcadrenewDiv,#cadreDetailsDiv').hide();							
+	
+						gePanchayatOrBooth(1);
+						populateDefaultValue(1);
+						getBoothInchargeRoles();
+						gettingBoothInchargeRoleDetails();
+						$('#committeeLocationId1').trigger('change');
 						updateRangeIdsOfBoothIncharge(committeeLocationId);
 					},1200);
 				}else if(result.resultCode == 2){
@@ -1684,7 +1698,11 @@ $(document).on("click",".remveMbrCls",function(){
 					alert("Member removed successfully.....");
 					$("#cadreDetailsDiv1,#cadreSerialNoWiseId").html('');
 					setTimeout(function(){
-						gePanchayatOrBooth();
+						gePanchayatOrBooth(1);
+						populateDefaultValue(1);
+						getBoothInchargeRoles();
+						gettingBoothInchargeRoleDetails();
+						$('#committeeLocationId1').trigger('change');
 						updateRangeIdsOfBoothIncharge(committeeLocationId);
 					},1200);
 				}else{
@@ -1875,7 +1893,10 @@ $(document).on("click","#deleteMembrsBtn",function(){
 					$('#boothInchargeRoleDivId1').html('');
 					gettingBoothInchargeRoleDetails();
 					getBoothUserDetails();
-					gePanchayatOrBooth();
+					gePanchayatOrBooth(1);
+						populateDefaultValue(1);
+						getBoothInchargeRoles();
+						$('#committeeLocationId1').trigger('change');
 					updateRangeIdsOfBoothIncharge(boothId);
 				}else{
 					alert(roleName+" deleted failed.Please try again.");
@@ -1962,15 +1983,15 @@ function buildBoothSearchDetails(result){
 				str +='<td class="text-center "><label id="rangeId'+i+'">'+sublist[i].finalRangeStr+'</label></td>';
 
 				if(parseInt(sublist[i].maleCount) >0){				
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="M"><u>'+sublist[i].maleCount+'</u></label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="M"   attr_add_for="member"><u>'+sublist[i].maleCount+'</u></label></td>';
 				}else{
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="M"> - </label></td>';
 				}if(parseInt(sublist[i].femaleCount) >0){
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="F"><u>'+sublist[i].femaleCount+'</u></label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="F"   attr_add_for="member"><u>'+sublist[i].femaleCount+'</u></label></td>';
 				}else{
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="F">  -  </label></td>';
 				}if(parseInt(sublist[i].totalCount) >0){					
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0"><u>'+sublist[i].totalCount+'</u></label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0"  attr_add_for="member" ><u>'+sublist[i].totalCount+'</u></label></td>';
 				}else{
 					if(parseInt(sublist[i].addedCount) == 0){
 						str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0">  ';
@@ -2011,15 +2032,15 @@ function buildBoothSearchDetails(result){
 			str +='<td class="text-center"><label class="totalClass" id="totalCountId'+0+'" attr_gender_id="0">'+'TOTAL'+'</label></td>';
 				
 				if(parseInt(totalMale) >0){
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M"><u>'+totalMale+'</u></label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M" attr_add_for="convener" ><u>'+totalMale+'</u></label></td>';
 				} else{
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M"> - </label></td>'; 	
 				}if(parseInt(totalFemale) >0){
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F"><u>'+totalFemale+'</u></label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F"  attr_add_for="convener" ><u>'+totalFemale+'</u></label></td>';
 				}else{
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F"> - </label></td>';
 				}if(parseInt(total) >0 ){
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalGenderId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="0"><u> '+total+' </u></label></td>';
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalGenderId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="0"  attr_add_for="convener" ><u> '+total+' </u></label></td>';
 				} else{
 					if(parseInt(sublist[i].addedCount) == 0){
 						str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0">  ';
@@ -2113,10 +2134,21 @@ function buildBoothSearchDetails(result){
 function getRangeDetails(range,isPrevious,isNext){
 	var rangeArr = range.split("-");
 	var startRange=parseInt(rangeArr[0]);
-	var endRange=parseInt(rangeArr[1]);
+	var endRange=rangeArr[1];
 	if(isPrevious =='Yes'){		
-		if(isNext !='Yes'){//no 
-			startRange = endRange-200;
+		if(isNext !='Yes'){//no  
+		
+		alert(endRange.length);		
+		alert( endRange.charAt(endRange.length -2));		
+		alert( endRange.charAt(endRange.length -1));
+		
+		
+			var tempNo = endRange.charAt(endRange.length -2)+endRange.charAt(endRange.length -1);//543
+			//var temp1 = tempNo-100; // 43-100 = 57
+			//endRange = parseInt(endRange)+temp1;
+			//alert(tempNo);
+			startRange = parseInt(endRange)-200;
+			startRange = startRange-parseInt(tempNo);
 		}else{
 			startRange = startRange-100;
 		}
@@ -2126,11 +2158,12 @@ function getRangeDetails(range,isPrevious,isNext){
 	if(isNext =='Yes'){		
 		endRange = parseInt(rangeArr[1])+100;
 		if(isPrevious =='Yes'){
-			startRange = endRange-300;
+			startRange = parseInt(endRange)-300;
 		}
 	}
-	
-	return startRange+' - '+endRange;
+	//alert(startRange+' - '+endRange);
+	//return;
+	return startRange+' - '+parseInt(endRange);
 }
 
 $(document).on("click","#addMemberId",function(){
@@ -2163,7 +2196,7 @@ $(document).on("click","#addMemberId",function(){
 	var count='totalGenderId'+0;
 	
 	if(range == "TOTAL"){
-		range='0';
+		range='0 - 100000 ';
 	}
 	 var jsObj =
 		{			
@@ -2180,7 +2213,7 @@ $(document).on("click","#addMemberId",function(){
 			}).done(function(result){
 				if(result != null){
 					//buildCadreDetails(result,0);
-					getAvailableCadreDetails(result,'other'+addToRange);
+					getAvailableCadreDetails(result,'other'+addToRange,"member");
 				}else{
 					$('#cadreAvailableDetailsDivId').html('No Data Available....???');
 				}
@@ -2200,6 +2233,14 @@ $(document).on("click",".totalClass",function(){
 			return;
 		}
 	
+	
+	var addFor=$(this).attr("attr_add_for");
+	/*
+	if(roleStr == 'Convener' &&  addFor.trim() != roleStr.trim()){
+		alert("Selected Cadre Count click for  "+addFor+" Designation .");
+		return;
+	}
+	*/
 	$('#committeeDesigDivId1').removeClass("designationHideCls");
 	$('#cadreAvailableDetailsDivId').html('');
 	$("#cadreAvailableDetailsDivId").html('<img id="dataLoadingImg" src="images/icons/loading.gif" style="width:50px;height:40px;"/>');
@@ -2209,8 +2250,10 @@ $(document).on("click",".totalClass",function(){
 	var gender=$(this).attr("attr_gender_id");
 	var count=$(this).attr("id");
 	
+	
+	
 	if(range == "TOTAL"){
-		range='0';
+		range='0 - 100000';
 	}
 	 var jsObj =
 		{			
@@ -2227,7 +2270,7 @@ $(document).on("click",".totalClass",function(){
 			}).done(function(result){
 				if(result != null){
 					//buildCadreDetails(result,0);
-					getAvailableCadreDetails(result,range);
+					getAvailableCadreDetails(result,range,addFor.trim());
 				}else{
 					$('#cadreAvailableDetailsDivId').html('No Data Available....???');
 				}
@@ -2237,13 +2280,15 @@ $(document).on("click",".totalClass",function(){
 
 
 
-function getAvailableCadreDetails(result,isOtherRange){
-$('#cadreAvailableDetailsDivId').show();
+function getAvailableCadreDetails(result,isOtherRange,addFor){
+		$('#cadreAvailableDetailsDivId').show();
+		var roleStr = $('#committeeDesignationId option:selected').text().trim();
 		var str ='';
 		var committeeMngntTypeId = $('#committeeMngtType').val();
 		var elegRolCnt=0;
 		var dtCnt = 0;
 		var sublist = result.casteList;
+		//alert(addFor+" - "+roleStr);
 		if(sublist != null)
 		{
 			str+='<div class="media"><h4 class="text-center">CADRE DETAILS</h4></div>';
@@ -2290,15 +2335,26 @@ $('#cadreAvailableDetailsDivId').show();
 				else{
 					str+='</div>';
 					str+='</div>';
-					
-					if(sublist[i].type == "Not Added" && (sublist[i].isDuplicate=="No" || sublist[i].isDuplicate==""))
-					{
-						str+='<div class="form-inline ">';
-						str+='<a onclick="javascript:{saveBoothDetails('+sublist[i].tdpCadreId+',\''+isOtherRange+'\')}" class="btn btn-success btn-medium m_top5 addProfileCls" > ADD PROFILE</a><img id="addProfileId"></img><span id="errMsgId"></span>';
-						str+='</div>';
-						
-					}else if(sublist[i].isDuplicate=="Yes") {
-						str+='<div class="form-inline " style="color:red;" title="This cadre may or may not registered with Own voterId or Family Voter Id." > No access to add .  Because This Serial No already added as incharger.</div> ';	
+					if(roleStr=="convenor" || roleStr=="Convenor"){
+						if(sublist[i].type == "Not Added" && (sublist[i].isDuplicate=="No" || sublist[i].isDuplicate==""))
+						{
+							str+='<div class="form-inline ">';
+							str+='<a onclick="javascript:{saveBoothDetails('+sublist[i].tdpCadreId+',\''+isOtherRange+'\')}" class="btn btn-success btn-medium m_top5 addProfileCls" > ADD PROFILE</a><img id="addProfileId"></img><span id="errMsgId"></span>';
+							str+='</div>';
+							
+						}else if(sublist[i].isDuplicate=="Yes") {
+							str+='<div class="form-inline " style="color:red;" title="This cadre may or may not registered with Own voterId or Family Voter Id." > No access to add .  Because This Serial No already added as incharger.</div> ';	
+						}
+					}else if((addFor.trim().toUpperCase() == roleStr.trim().toUpperCase())){
+						if(sublist[i].type == "Not Added" && (sublist[i].isDuplicate=="No" || sublist[i].isDuplicate==""))
+						{
+							str+='<div class="form-inline ">';
+							str+='<a onclick="javascript:{saveBoothDetails('+sublist[i].tdpCadreId+',\''+isOtherRange+'\')}" class="btn btn-success btn-medium m_top5 addProfileCls" > ADD PROFILE</a><img id="addProfileId"></img><span id="errMsgId"></span>';
+							str+='</div>';
+							
+						}else if(sublist[i].isDuplicate=="Yes") {
+							str+='<div class="form-inline " style="color:red;" title="This cadre may or may not registered with Own voterId or Family Voter Id." > No access to add .  Because This Serial No already added as incharger.</div> ';	
+						}
 					}
 				}
 				elegRolCnt++;
@@ -2309,3 +2365,70 @@ $('#cadreAvailableDetailsDivId').show();
 		$('#cadreAvailableDetailsDivId').html(str);
 }
 		
+		
+function getAccessLocationsForUser(){
+	$("#constituencyId  option").remove();
+	$("#constituencyId").append('<option value="0">Select Location</option>');
+	var jsObj={};
+	$.ajax({
+		type : "POST",
+		url : "getUsersAccessLocatiosLIstAction.action",
+		data : {task:JSON.stringify(jsObj)} 
+	}).done(function(result){	
+		if(result != null){
+			for(var i in result)
+			{
+				$('#constituencyId').append('<option value="'+result[i].locationId+'"> '+result[i].locationName+' </option>');
+			}	
+		}
+	});
+}
+
+
+function getCommitteeFinalizedBoothListforUnlock(id){
+	$("#committeeLocationIds1  option").remove();
+	$("#committeeLocationIds1").append('<option value="0">Select Location</option>');
+	if(parseInt(id) ==0){
+		alert("Please select Constituency.");
+		return;
+	}
+	var jsObj={
+		assemblyIdsArr:[id]
+	};
+	$.ajax({
+		type : "POST",
+		url : "getCommitteeFinalizedBoothListforUnlockAction.action",
+		data : {task:JSON.stringify(jsObj)} 
+	}).done(function(result){	
+		if(result != null && parseInt(id)>0){
+			for(var i in result)
+			{
+				$('#committeeLocationIds1').append('<option value="'+result[i].locationId+'"> BOOTH NO - '+result[i].locationName+' </option>');
+			}
+		}
+	});
+}
+
+function removeLock(){
+	var committeeId = $('#committeeLocationIds1').val();
+	var constituencyId = $('#constituencyId').val();
+	var jsObj={boothCommitteeIdsArr:[committeeId]};	
+	$.ajax({
+		type : "POST",
+		url : "unlockBoothCommitteesByCommitteeIdListAction.action",
+		data : {task:JSON.stringify(jsObj)} 
+	}).done(function(result){	
+		if(result != null){
+			if(result.trim().length =="success"){
+				alert("Successfully removed Lock.");
+				getCommitteeFinalizedBoothListforUnlock(constituencyId)
+			}else if(result.trim().length =="failure"){
+				alert("Unable to remove lock .Please try later.");
+			}else{
+				alert("Successfully removed Lock.");
+				getCommitteeFinalizedBoothListforUnlock(constituencyId)
+			}
+		}
+	});
+}
+getAccessLocationsForUser();

@@ -1,9 +1,21 @@
 
-<%@ page language="java" contentType="text/html; charset=utf-8"
-		pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.ResourceBundle;" %>
+
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<%@taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>
+<%@taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!doctype html>
 <html>
 <head>
@@ -31,8 +43,33 @@
 </style>
 </head>
 <body>
+
+<c:if test="${fn:contains(sessionScope.USER.entitlements, 'BOOTH_COMMITTEE_UNLOCK_USER_ENTITLEMENT' )}">
+	<div class="container-fluid">
+				<div class="panel-body" id="accessToUpdationDivId">
+					<div class="row" style="float:right;margin-right:15px;">
+						<button class="btn btn-success btn-min btn-xs" id="addMembersBtn"> DASHBOARD </button>
+						<button  class="btn btn-warning btn-min btn-xs" id="unlockBtn"> UNLOCK COMMITTEE </button>
+					</div>
+				</div>
+				<div class="panel-body" id="unlockCommitteeId" style="display:none;" >
+					<div class="row">
+						<div class="col-sm-4" id="mandalMainDivId">
+							<label for="">SELECT CONSTITUENCY <span style="color:red">*</span> </label>
+							<select onchange="getCommitteeFinalizedBoothListforUnlock(this.value)" class="form-control" id="constituencyId" ><option value="0">Select Constituency </option></select>
+						</div>								
+						<div class="col-sm-4">
+							<label for="committeeLocationIds1">SELECT BOOTH <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
+							<select onchange="populateDefaultValue(1);getBoothInchargeRoles();gettingBoothInchargeRoleDetails();" class="form-control" id="committeeLocationIds1" ><option value="0">Select Booth </option></select >
+						</div>	
+						
+						<button class="btn btn-danger btn-min btn-xs" onclick="removeLock()" style="margin-top:30px"> Remove Lock</button>
+					</div>
+			</div>
+		</div>
+	</c:if>	
+		<div class="panel-body" id="addMemebrsDiv" >
         <section class="m_top20">
-		  
             <div class="container-fluid">
 				<div class="row">
 				 <h4 class="text-center"><span style="border: 1px solid rgba(119, 119, 119, 0.467); border-radius: 20px; padding: 10px; background-color: rgb(255, 255, 255); font-weight: 600;">
@@ -253,7 +290,7 @@
 					</div>
 				</div>
 			</div>
-        </div>
+       
 	</section>
 	<section class="m_top20 boothBlckCls">
             <div class="conatiner-fluid">
@@ -317,6 +354,7 @@
 			</div>
         </div>
 	</section>
+	</div>
 	<!-- Model for Debate Start-->
 		<div class="modal" tabindex="-1" role="dialog" id="boothInchargeDataModalDivId">
 		  <div class="modal-dialog modal-lg" style="width:85%">
@@ -381,6 +419,17 @@ if(accessType2 == null || accessType2.length ==0){
 }else{
 	accessType = accessType2;
 }
+
+
+
+$(document).on("click","#addMembersBtn",function(){
+	$('#addMemebrsDiv').show();
+	$('#unlockCommitteeId').hide();
+});
+$(document).on("click","#unlockBtn",function(){
+	$('#addMemebrsDiv').hide();
+	$('#unlockCommitteeId').show();
+});
 
 <c:forEach items="${userVO.accessValues}" var="userAccessLevelValue">
 	accessValues.push( ${userAccessLevelValue} );        

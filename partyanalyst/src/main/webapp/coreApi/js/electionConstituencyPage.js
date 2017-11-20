@@ -110,7 +110,7 @@ function getElectionTypes(){
 				str+='<label class="text-capital m_left5" style="margin-right: 10px;">';
 					if(result[i].id != "5" && result[i].id != "6" && result[i].id != "7" && result[i].id != "8" && result[i].id != "9"){
 						if(result[i].id == "1" || result[i].id == "2"){
-							if(locationLevelId == 2){
+							if(locationLevelId == 2 || locationLevelId == 3 ){
 								str+='<input value ="'+result[i].id+'" type="checkbox" checked class="electionTypeWiseCls" /><span class="f-12">'+result[i].name+'</span>';
 							}else if(locationLevelId == 3 || locationLevelId == 10){
 								if(result[i].id != "1"){

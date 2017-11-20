@@ -17853,6 +17853,24 @@
 			<result name="success">/jsp/boothInchargeDashBoard.jsp</result>
 	</action> 
 	
+	<action name="getUsersAccessLocatiosLIstAction" class="boothReportAction" method="getUsersAccessLocatiosLIst">
+        <result type="json" name="success">
+         	<param name="root">boothInchargeDetailsList</param>
+       </result>
+   </action>
+   
+   <action name="getCommitteeFinalizedBoothListforUnlockAction" class="boothReportAction" method="getCommitteeFinalizedBoothListforUnlock">
+        <result type="json" name="success">
+         	<param name="root">boothInchargeDetailsList</param>
+       </result>
+   </action>
+   
+   <action name="unlockBoothCommitteesByCommitteeIdListAction" class="boothReportAction" method="unlockBoothCommitteesByCommitteeIdList">
+        <result type="json" name="success">
+         	<param name="root">status</param>
+       </result>
+   </action>
+   
 	<action name="getLocationLevelWiseBoothCountAction" class="boothReportAction" method="getLocationLevelWiseBoothCount">
         <result type="json" name="success">
          	<param name="root">boothInchargeDetailsList</param>

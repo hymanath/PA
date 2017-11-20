@@ -78,7 +78,28 @@
 						<div class="panel-heading">
 							<h4 class="panel-title text-center">${finalStatus} &nbsp;CONSTITUENCY	</h4> 
 						</div>
-						<div class="panel-body">
+						
+						<div class="panel-body" id="accessToUpdationDivId" style="display:none;">
+							<div class="row" style="float:right;margin-right:15px;">
+								<button class="btn btn-success btn-min btn-xs" id="addMembersBtn"> ADD MEMBERS </button>
+								<button  class="btn btn-warning btn-min btn-xs" id="unlockBtn"> UNLOCK COMMITTEE </button>
+							</div>
+						</div>
+						<div class="panel-body" id="unlockCommitteeId" style="display:none;" >
+							<div class="row">
+								<div class="col-sm-4" id="mandalMainDivId">
+									<label for="">SELECT CONSTITUENCY <span style="color:red">*</span> </label>
+									<select onchange="getCommitteeFinalizedBoothListforUnlock(this.value)" class="form-control" id="constituencyId" ><option value="0">Select Constituency </option></select>
+								</div>								
+								<div class="col-sm-4">
+									<label for="committeeLocationIds1">SELECT BOOTH <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
+									<select onchange="populateDefaultValue(1);getBoothInchargeRoles();gettingBoothInchargeRoleDetails();" class="form-control" id="committeeLocationIds1" ><option value="0">Select Booth </option></select >
+								</div>	
+								
+								<button class="btn btn-danger btn-min btn-xs" onclick="removeLock()" style="margin-top:30px"> Remove Lock</button>
+							</div>
+						</div>
+						<div class="panel-body" id="addMemebrsDiv">
 							<div class="row">
 								<div class="col-sm-4" id="mandalMainDivId">
 									<label for="">SELECT MANDAL/MUNCIPALITY/CORPORATION <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
@@ -108,15 +129,19 @@
 										</div>
 									</div>	
 								</div>
+								
 								<div class="row">
 									<div class="col-sm-4" style="margin-top:25px;margin-left:325px;">
 										<ul class="list-inline">
 											<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getBoothUserDetails();" value="VIEW" /></li>
-											<li><input type="button" id="addMembrsBtn1" class="btn btn-success" style="display:none;" onclick="showSearchDiv();" value="ADD" /></li>
+											<li><input type="button" id="addMembrsBtn" class="btn btn-success" style="display:none;" onclick="showSearchDiv();" value="FIND YOUR SERIAL NO " /></li>
 										</ul>
 										<img id="viewDataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
 									</div>
 								</div>
+									<div class="row" style="margin-left:10px;">
+										<h6 class=""><b >NOTE:</b> <br> 1)  To add <b style="red"> MEMBER </b> Position, we must and should select cadre from Serial No ranges. Other wise ADD PROFILE button will not visible to you. <br> 2) We can add <b style="red"> CONVENER </b> Position directly from any range.	</h6> 
+									</div>
 								<!--<div class="col-sm-4" id="committeeDesigDivId" style="display:none">
 									<label for="committeeDesigId">SELECT DESIGNATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
 									<select  class="form-control" id="committeeDesignationId">
@@ -1491,7 +1516,7 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 				if(result !=null){
 					if(num == 2)
 						<!--str+='<select id="panchayatWardByMandal" class="form-control" onChange="getTdpCommitteePanchayatWardByMandal()">';-->
-					    str+='<select id="panchayatWardByMandal" class="form-control" onChange="gePanchayatOrBooth()">';
+					    str+='<select id="panchayatWardByMandal" class="form-control" onChange="gePanchayatOrBooth(0)">';
 						str+='<option value="0">Select Mandal/Muncipality/Corporation</option>';
 						for(var i in result)
 						{
@@ -1516,7 +1541,7 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 			var enrllmentId=2;
 			if(parseInt(res) == 1){
 				$("#committeePanchayatId").hide();
-				gePanchayatOrBooth();
+				gePanchayatOrBooth(0);
 				enrllmentId = 0;
 				return;
 			}else{
@@ -1548,7 +1573,10 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 		});	
 			
 	}
-function gePanchayatOrBooth(){
+function gePanchayatOrBooth(type){
+	if(parseInt(type) >0)
+		return;
+	
 	$('#committeeDesigDivId1').show();
 	$("#cadreDetailsDiv1,#cadreSerialNoWiseId,#boothInchargeRoleDivId1").html('');
 	$("#cadreAvailableDetailsDivId").html('');
@@ -1598,6 +1626,15 @@ $(document).on("click","#committeeDesignationId",function(){
 	if(id>0){
 		//$('#searchcadrenewDiv').show();	
 	}
+});
+
+$(document).on("click","#addMembersBtn",function(){
+	$('#addMemebrsDiv').show();
+	$('#unlockCommitteeId').hide();
+});
+$(document).on("click","#unlockBtn",function(){
+	$('#addMemebrsDiv').hide();
+	$('#unlockCommitteeId').show();
 });
 
 function showSearchDiv(){
