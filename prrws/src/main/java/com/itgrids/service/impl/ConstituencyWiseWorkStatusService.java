@@ -49,12 +49,13 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	 * Swadhin K Lenka
 	 * @see com.itgrids.service.IConstituencyWiseWorkStatusService#getFundManagementSystemWorkDetails(java.util.List, java.lang.Long, java.lang.String, java.lang.String)
 	 */
-	public LocationVO getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, Long departmentId, String startDateStr,String endDateStr,Long locationId){
+	public LocationVO getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, List<Long> departmentIdList, String startDateStr,String endDateStr,Long locationId){
 		try{
 			LocationVO locationVO = new LocationVO();
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd/MM/yyyy","");
 			Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd/MM/yyyy","");
 			financialYearIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(financialYearIdsList);
+			departmentIdList = commonMethodsUtilService.makeEmptyListByZeroValue(departmentIdList);
 			String type="";
 			Long superLocationId = null;
 			if(locationId.toString().trim().length() > 1){
@@ -68,7 +69,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			}else{
 				superLocationId = 0L;
 			}
-			List<Object[]> workList = fundSanctionDAO.getFundManagementSystemWorkDetails(financialYearIdsList,departmentId,startDate,endDate,superLocationId,type);
+			List<Object[]> workList = fundSanctionDAO.getFundManagementSystemWorkDetails(financialYearIdsList,departmentIdList,startDate,endDate,superLocationId,type);
 			//create a map of govtOrderId and govtOrderDtlsVO map
 			Map<Long, LocationVO> govtOrderMap = new HashMap<Long,LocationVO>();
 			LocationVO  locationVOForMap = null;
