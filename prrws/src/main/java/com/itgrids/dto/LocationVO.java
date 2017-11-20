@@ -37,6 +37,7 @@ public class LocationVO implements Serializable {
 	private Long govtOrderCount;
 	private String amountInDecimal="";
 	private Long grantTypeId;
+	private String grantTypeName;
 	
 	private Long streetHabitationCount;
 	private Long totalCount;
@@ -60,6 +61,14 @@ public class LocationVO implements Serializable {
 	private List<StatusVO> statusList = new ArrayList<StatusVO>(0);
 	private AddressVO addressVO = new AddressVO();
 	
+	
+	
+	public String getGrantTypeName() {
+		return grantTypeName;
+	}
+	public void setGrantTypeName(String grantTypeName) {
+		this.grantTypeName = grantTypeName;
+	}
 	
 	public String getMlaName() {
 		return mlaName;
