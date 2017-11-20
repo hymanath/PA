@@ -909,7 +909,7 @@
 				</c:if>	
 				<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'KAIZALA_MESSAGES_ENTITLEMENT' )}">	
 					<li>
-						<a href="http://mydepartments.in/KAIZALA/kaizalaMessagesDashBoard?userId=${sessionScope.USER.registrationID}"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;KAIZALA DashBoard</span></a>
+						<a href="http://mytdp.com/KAIZALA/kaizalaMessagesDashBoard?userId=${sessionScope.USER.registrationID}"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;KAIZALA DashBoard</span></a>
 					</li>
 				</c:if>		
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CREATE_ALERT_ENTITLEMENT')
