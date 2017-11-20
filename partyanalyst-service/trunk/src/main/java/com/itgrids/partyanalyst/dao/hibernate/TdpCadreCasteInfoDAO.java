@@ -374,7 +374,8 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("select tcf.voter_age_range_id as voterAgeRangeid,var.age_range as ageRangename, tcf.gender as gender,tcf.count as count from tdp_cadre_caste_info tcf " +
-				" join voter_age_range var  on var.voter_age_range_id = tcf.voter_age_range_id  where  " +
+				" join voter_age_range var  on var.voter_age_range_id = tcf.voter_age_range_id  JOIN caste_state cs ON cs.caste_state_id = tcf.caste_state_id" +
+				" JOIN caste c ON c.caste_id = cs.caste_id where  " +
 				" location_type_id = :locationTypeId   ");
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
@@ -396,7 +397,7 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		}
 
 		if(casteId != null && casteId.longValue()>0l){
-			sb.append(" and tcf.caste_state_id=:casteId");
+			sb.append(" and c.caste_id=:casteId");
 		}
 		if(casteGroupId != null && casteGroupId.longValue()>0l){
 			sb.append(" and tcf.caste_category_id=:casteGroupId");
