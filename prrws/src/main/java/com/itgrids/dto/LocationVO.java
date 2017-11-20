@@ -35,7 +35,7 @@ public class LocationVO implements Serializable {
 	private String panchayatName;
 	private String mlaName;
 	private Long govtOrderCount;
-	private String amountInDecimal;
+	private String amountInDecimal="";
 	private Long grantTypeId;
 	
 	private Long streetHabitationCount;
@@ -53,9 +53,9 @@ public class LocationVO implements Serializable {
 	private Long scpAmount;
 	private Long tspAmount;
 	
-	private String plainAmountInDecimal;
-	private String scpAmountInDecimal;
-	private String tspAmountInDecimal;
+	private String plainAmountInDecimal="";
+	private String scpAmountInDecimal="";
+	private String tspAmountInDecimal="";
 	
 	private List<StatusVO> statusList = new ArrayList<StatusVO>(0);
 	private AddressVO addressVO = new AddressVO();
