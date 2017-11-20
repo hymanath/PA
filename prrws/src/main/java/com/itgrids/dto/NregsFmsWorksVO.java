@@ -38,6 +38,7 @@ public class NregsFmsWorksVO implements Serializable{
 	private Long locationsCount;
 	private Long finalWorks;
 	private String finalAmount;
+	private Long totalAmount;
 	
 	
 	public Long getFinalWorks() {
@@ -220,4 +221,11 @@ public class NregsFmsWorksVO implements Serializable{
 	public void setTotal(String total) {
 		this.total = total;
 	}
+	public Long getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(Long totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	
 }
