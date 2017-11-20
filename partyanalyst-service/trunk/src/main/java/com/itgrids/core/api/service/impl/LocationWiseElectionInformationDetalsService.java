@@ -229,6 +229,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			Map<Long,List<Long>> electionIdAndLocationIdListMap=new HashMap<Long, List<Long>>();
 			Map<Long,List<ElectionInformationVO>> yearMap = new HashMap<Long, List<ElectionInformationVO>>();
 			Map<Long,ElectionInformationVO> electionYeasrMap = new HashMap<Long, ElectionInformationVO>();
+			Map<Long,Map<String,Long>> locationIdAndStatusAndCountMap = new HashMap<Long, Map<String,Long>>();
 			if(electionYrs !=null && electionYrs.size()>0l){
 				for (Long year : electionYrs) {
 					List<ElectionInformationVO> listEvo =yearMap.get(year);
@@ -241,7 +242,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 					yearMap.put(year, listEvo);
 				}
 			}
-			
+			Map<Long,String> orderNoAndStatusmap = new LinkedHashMap<Long,String>();
 			Map<String,String> statusMap = new HashMap<String, String>();
 			Map<String,ElectionInformationVO> statusVOMap = new HashMap<String, ElectionInformationVO>();
 			List<Object[]> marginWiseStatusObjs = marginVotesRangeDAO.getMarginVotesAgeRangeDetails();
@@ -250,6 +251,7 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 					statusMap.put(commonMethodsUtilService.getStringValueForObject(objs[2])+" - "+commonMethodsUtilService.getStringValueForObject(objs[3]),commonMethodsUtilService.getStringValueForObject(objs[1]));
 					statusVOMap.put(commonMethodsUtilService.getStringValueForObject(objs[2])+" - "+commonMethodsUtilService.getStringValueForObject(objs[3]), new ElectionInformationVO(commonMethodsUtilService.getStringValueForObject(objs[1]),commonMethodsUtilService.getStringValueForObject(objs[0]),
 							commonMethodsUtilService.getLongValueForObject(objs[2]),commonMethodsUtilService.getLongValueForObject(objs[3]),commonMethodsUtilService.getLongValueForObject(objs[4])));
+					orderNoAndStatusmap.put(commonMethodsUtilService.getLongValueForObject(objs[4]), commonMethodsUtilService.getStringValueForObject(objs[1]));
 					}
 				}
 			
@@ -523,6 +525,30 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 					}else{
 						locationIdsListMuncipality.add(locationVO.getLocationId());
 					}
+					Map<String,Long> statusAndCountMap=locationIdAndStatusAndCountMap.get(locationVO.getLocationId());
+					if(!commonMethodsUtilService.isMapValid(statusAndCountMap))
+						statusAndCountMap = new HashMap<String, Long>();
+					
+					if(commonMethodsUtilService.isListOrSetValid(locationVO.getList())){
+						for(ElectionInformationVO yearVo : locationVO.getList()){
+							if(yearVo.getStatus() != null && yearVo.getStatus().trim().length() >0){
+								Long count=statusAndCountMap.get(yearVo.getStatus().trim());
+								if(count == null)
+									count=0L;
+									count=count+1L;
+									statusAndCountMap.put(yearVo.getStatus().trim(), count);
+							}
+							
+						}
+					}
+					locationIdAndStatusAndCountMap.put(locationVO.getLocationId(),statusAndCountMap);	
+					for(Entry<Long,String> status: orderNoAndStatusmap.entrySet()){
+						ElectionInformationVO statusVo = new ElectionInformationVO();
+						statusVo.setLocationId(locationVO.getLocationId());
+						statusVo.setStatus(status.getValue());
+						statusVo.setWonSeatsCount(0L);
+						locationVO.getSubList1().add(statusVo);
+					}
 				}
 				
 			List<Object[]> locationWiseObjsList = null;
@@ -553,6 +579,14 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 			if(commonMethodsUtilService.isListOrSetValid(finalPartyList)){
 				for(ElectionInformationVO locationVO : finalPartyList){
 					locationVO.setName(locationIdadsubLocationMap.get(locationVO.getLocationId()));
+					Map<String,Long> statusAndCountMap = locationIdAndStatusAndCountMap.get(locationVO.getLocationId());
+					if(commonMethodsUtilService.isMapValid(statusAndCountMap)){
+						for(ElectionInformationVO vo : locationVO.getSubList1()){
+							if(statusAndCountMap.get(vo.getStatus().trim()) != null && statusAndCountMap.get(vo.getStatus().trim()) > 0)
+							vo.setWonSeatsCount(statusAndCountMap.get(vo.getStatus().trim()));
+						}
+					
+					}
 					
 				}
 			}
