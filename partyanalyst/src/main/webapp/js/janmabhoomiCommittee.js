@@ -907,7 +907,11 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 			str+='</div>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.voterId" value="'+result.voterId+'"/>';
-			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+result.tdpCadreId+'"/>';
+			var tdpCadreId = 0;
+			if(result.tdpCadreId != null && result.tdpCadreId>0){
+				tdpCadreId = result.tdpCadreId;
+			}
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+tdpCadreId+'"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.committeeId" value="'+committeeId+'"/>';
@@ -1008,6 +1012,7 @@ if($(this).val() != 0){
 
 //getStatewiseCastNamesByCasteCategoryGroupIdAction();
 function getStatewiseCastNamesByCasteCategoryGroupIdAction(casteCategoryId){  
+$("#casteId").html("");
 var categoryGrouIdsList=[];
 categoryGrouIdsList.push(casteCategoryId);
     var jsObj={
