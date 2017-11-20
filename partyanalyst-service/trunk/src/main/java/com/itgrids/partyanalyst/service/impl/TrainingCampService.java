@@ -5464,7 +5464,11 @@ class TrainingCampService implements ITrainingCampService{
 		CadreDetailsVO vo=new CadreDetailsVO();
 		try{
 			
-			Object[] cadreInfo= trainingCampBatchAttendeeDAO.getCadreDetailsByCadreIdAndBatchId(tdpCadreId,batchId,enrollmentYearId);
+			Object[] cadreInfo= null;
+			List<Object[]> detailslist =  trainingCampBatchAttendeeDAO.getCadreDetailsByCadreIdAndBatchId(tdpCadreId,batchId,enrollmentYearId);
+			if(commonMethodsUtilService.isListOrSetValid(detailslist))
+				cadreInfo = detailslist.get(0);
+			
 			List<Object[]> designationDetailsList = tdpCommitteeMemberDAO.getPartyPositionBycadre(tdpCadreId);//tdpCommitteeLevel,role
 			String designation = "";
 			/*if(designationDetailsList != null && designationDetailsList.size() > 0){
@@ -6624,7 +6628,11 @@ public List<SimpleVO> getDayWiseCountsForRunningBatches_Test(List<Object[]> runn
 					}
 					
 					//Confirmed Count.
-					 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null,null,cadreIdsLsit,enrollmentYearIds,programYearIds);//srujana
+					 	Long confirmedCount=0L;
+						List<Long> detailslist =  trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null,null,cadreIdsLsit,enrollmentYearIds,programYearIds);//srujana
+						if(commonMethodsUtilService.isListOrSetValid(detailslist))
+							confirmedCount = detailslist.get(0);
+						
 					 //total count attended.
 					 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,null,null,enrollmentYearIds,programYearIds);
 					 String perc=null;
@@ -9449,7 +9457,11 @@ public List<SimpleVO> getDayWiseCountsForRunningBatches_Test(List<Object[]> runn
 						staffcadreIdsLsit.add(Long.valueOf(cadreId));
 					}
 				}
-				 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null,null,staffcadreIdsLsit,enrollmentYearIds,programYearIds);
+				 Long confirmedCount=0L;
+					List<Long> detailslist =  trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null,null,staffcadreIdsLsit,enrollmentYearIds,programYearIds);
+					if(commonMethodsUtilService.isListOrSetValid(detailslist))
+						confirmedCount = detailslist.get(0);
+					
 				 //total count attended.						
 				 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,null,null,enrollmentYearIds,programYearIds);
 				 String perc=null;
@@ -9704,7 +9716,10 @@ public List<SimpleVO> getDayWiseCountsForRunningBatches_Test(List<Object[]> runn
 							finalvo.addAll(mapvo.values());
 						}
 						
-						Long totalSpeakersCount =  trainingCampBatchAttendeeDAO.getTotalSpeakersCountDetails(cadreIdsLsit,fromDate, toDate,enrollmentYearIds,programYearIds);
+						Long totalSpeakersCount=0L;
+						List<Long> detailslist =  trainingCampBatchAttendeeDAO.getTotalSpeakersCountDetails(cadreIdsLsit,fromDate, toDate,enrollmentYearIds,programYearIds);
+						if(commonMethodsUtilService.isListOrSetValid(detailslist))
+							totalSpeakersCount = detailslist.get(0);
 						
 						if(finalvo != null && finalvo.size()>0)
 						{

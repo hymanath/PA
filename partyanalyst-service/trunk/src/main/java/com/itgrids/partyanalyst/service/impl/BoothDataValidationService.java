@@ -858,7 +858,8 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				Map<Long,Long> readyToFinalMap = new HashMap<Long, Long>(0);
 				if(commonMethodsUtilService.isListOrSetValid(requiredRolesCountList) && commonMethodsUtilService.isListOrSetValid(addedCountList)){
 					for (Object[] param : requiredRolesCountList) {
-						requiredRolesMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+						if(commonMethodsUtilService.getLongValueForObject(param[0]).longValue() == 1052031L)
+							requiredRolesMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
 					}
 				}
 				if(commonMethodsUtilService.isListOrSetValid(addedCountList)){
@@ -875,6 +876,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				
 				if(commonMethodsUtilService.isMapValid(readyToFinalMap)){
 					for (BoothAddressVO boothAddressVO : resultList) {
+							boothAddressVO.setTotalCount(requiredRolesMap.get(boothAddressVO.getBoothId()));
 						if(boothAddressVO.getBoothId() != null && boothAddressVO.getBoothId().longValue()>0L && readyToFinalMap.get(boothAddressVO.getBoothId()) != null){
 							boothAddressVO.setIsReadyToConfirm("yes");
 						}
@@ -1442,4 +1444,65 @@ public class BoothDataValidationService implements IBoothDataValidationService{
     	}
     	return returnList;
     }
+    
+    public List<BoothInchargeDetailsVO> getUserAccessLocatiosLIst(Long userId,Long accessLevelId, String accessLevelType){
+    	List<BoothInchargeDetailsVO>  returnList = new ArrayList<BoothInchargeDetailsVO>(0);
+    	try {
+    		List<Object[]> accessLocationsList = null;
+    		List<Long> locationIdsList = new ArrayList<Long>(0);
+    		if(accessLevelType != null && accessLevelType.equalsIgnoreCase("MP")){
+    			locationIdsList.add(accessLevelId);
+    			accessLocationsList = userConstituencyAccessInfoDAO.findAssembliesConstituenciesByParliaments(locationIdsList);
+    		}else if(accessLevelType != null && accessLevelType.equalsIgnoreCase("MLA")){
+    			accessLocationsList = boothDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType(accessLevelId);
+    		}else if(accessLevelType != null && accessLevelType.equalsIgnoreCase("STATE")){
+    			accessLocationsList = boothDAO.getAllAssemblyConstituenciesByStateTypeId(1L,1L,null);
+    		}else if(accessLevelType != null && accessLevelType.equalsIgnoreCase("DISTRICT")){
+    			accessLocationsList = boothDAO.getConstituenciesByDistrictId(accessLevelId);
+    		}
+			
+			List<Long> accessAssemblyIdsList = new ArrayList<Long>(0);
+			if(commonMethodsUtilService.isListOrSetValid(accessLocationsList)){
+				for (Object[] param : accessLocationsList) {
+					accessAssemblyIdsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					returnList.add(new BoothInchargeDetailsVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception Occured into getUserAccessLocatiosLIst of BoothDataValidationService class",e);
+		}
+    	return returnList;
+    }
+    
+    public List<BoothInchargeDetailsVO> getCommitteeFinalizedBoothsListforUnlock(Long userId,List<Long> locationIdsList){
+    	List<BoothInchargeDetailsVO>  returnList = new ArrayList<BoothInchargeDetailsVO>(0);
+    	try {
+			if(commonMethodsUtilService.isListOrSetValid(locationIdsList)){
+				List<Object[]> boothCommitteeList =boothInchargeCommitteeDAO.getCommitteeFinalizedBoothsListforUnlock(locationIdsList);
+				if(commonMethodsUtilService.isListOrSetValid(boothCommitteeList)){	
+					for (Object[] param : boothCommitteeList) {
+						returnList.add(new BoothInchargeDetailsVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+					}
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception Occured into getCommitteeFinalizedBoothsListforUnlock of BoothDataValidationService class",e);
+		}
+    	return returnList;
+    }
+    
+    
+    public String unlockBoothCommitteesByCommitteeIdsList(Long userId,List<Long> boothCommitteeIdsList){
+    	String  status ="success";
+    	try {
+    		int effectedCommitteesCount = boothInchargeCommitteeDAO.unLockTheBoothInchargeCommittee(userId,boothCommitteeIdsList);
+    		if(effectedCommitteesCount>0)
+    			status="Total "+effectedCommitteesCount+" Booth Committee(s) Unlocked Successfully...";
+    	} catch (Exception e) {
+			Log.error("Exception Occured into getCommitteeFinalizedBoothsListforUnlock of BoothDataValidationService class",e);
+			status ="failure";
+		}
+    	return status;
+    }
+    
 }

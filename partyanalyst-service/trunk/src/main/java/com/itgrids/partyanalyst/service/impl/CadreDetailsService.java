@@ -7100,7 +7100,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 			List<Long> pancCareIds = new ArrayList<Long>();
 			List<Long> panTotalCadrIds = new ArrayList<Long>();
 			if(panchayatId != null && panchayatId.longValue() > 0l){
-				panchayatInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(panchayatId, "panchayat");
+				List<Long> detailslist = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(panchayatId, "panchayat");
+				if(commonMethodsUtilService.isListOrSetValid(detailslist))
+					panchayatInvitedCount = detailslist.get(0);
 				pancCareIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(panchayatId, "panchayat");
 				panTotalCount = trainingCampAttendanceDAO.getAttendedCountByLocation(panchayatId, "panchayat");
 				panTotalCadrIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(panchayatId, "panchayat");
@@ -7133,7 +7135,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			List<Long> wardInvCadreIds = new ArrayList<Long>();
 			List<Long> wardTotalCadreIds = new ArrayList<Long>();
 			if(wardId != null && wardId.longValue() > 0l){
-				wardInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(wardId, "ward");
+				List<Long> detailslist = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(wardId, "ward");
+				if(commonMethodsUtilService.isListOrSetValid(detailslist))
+					wardInvitedCount = detailslist.get(0);
+				
 				wardInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(wardId, "ward");
 				wardTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(wardId, "ward");
 				wardTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(wardId, "ward");
@@ -7166,7 +7171,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			List<Long> mandalInvCadreIds = new ArrayList<Long>();
 			List<Long> mandalTotalCadreIds = new ArrayList<Long>();
 			if(mandalId != null && mandalId.longValue() > 0l){
-				mandalInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(mandalId, "mandal");
+				List<Long> detailslist = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(mandalId, "mandal");
+				if(commonMethodsUtilService.isListOrSetValid(detailslist))
+					mandalInvitedCount = detailslist.get(0);
+				
 				mandalInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(mandalId, "mandal");
 				mandalTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(mandalId, "mandal");
 				mandalTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(mandalId, "mandal");
@@ -7199,7 +7207,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 			List<Long> lebInvCadreIds = new ArrayList<Long>();
 			List<Long> lebTotalCadreIds = new ArrayList<Long>();
 			if(lebId != null && lebId.longValue() > 0l){
-				lebInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(lebId, "leb");
+				List<Long> detailslist = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(lebId, "leb");
+				if(commonMethodsUtilService.isListOrSetValid(detailslist))
+					lebInvitedCount = detailslist.get(0);
 				lebInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(lebId, "leb");
 				lebTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(lebId, "leb");
 				lebTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(lebId, "leb");
@@ -7232,7 +7242,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 			List<Long> constInvCadreIds = new ArrayList<Long>();
 			List<Long> constTotalCadreIds = new ArrayList<Long>();
 			if(constituencyId != null && constituencyId.longValue() > 0l){
-				constInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(constituencyId, "constituency");
+				List<Long> detailslist = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(constituencyId, "constituency");
+				if(commonMethodsUtilService.isListOrSetValid(detailslist))
+					constInvitedCount = detailslist.get(0);
 				constInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(constituencyId, "constituency");
 				constTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(constituencyId, "constituency");
 				constTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(constituencyId, "constituency");
@@ -7265,7 +7277,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			List<Long> parliInvCadreIds = new ArrayList<Long>();
 			List<Long> parliTotalCadreIds = new ArrayList<Long>();
 			if(parliamentId != null && parliamentId.longValue() > 0l){
-				parliInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(parliamentId, "parliament");
+				List<Long> detailslist =  trainingCampBatchAttendeeDAO.getInvitedCountByLocation(parliamentId, "parliament");
+				if(commonMethodsUtilService.isListOrSetValid(detailslist))
+					parliInvitedCount = detailslist.get(0);
+				
 				parliInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(parliamentId, "parliament");
 				parliTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(parliamentId, "parliament");
 				parliTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(parliamentId, "parliament");
@@ -7298,7 +7313,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 			List<Long> distInvCadreIds = new ArrayList<Long>();
 			List<Long> distTotalCadreIds = new ArrayList<Long>();
 			if(districtId != null && districtId.longValue() > 0l){
-				distInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(districtId, "district");
+				List<Long> detailslist = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(districtId, "district");
+				if(commonMethodsUtilService.isListOrSetValid(detailslist))
+					distInvitedCount = detailslist.get(0);
 				distInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(districtId, "district");
 				distTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(districtId, "district");
 				distTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(districtId, "district");
