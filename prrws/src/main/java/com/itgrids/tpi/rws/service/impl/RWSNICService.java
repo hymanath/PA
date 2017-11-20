@@ -3766,24 +3766,19 @@ public class RWSNICService implements IRWSNICService{
 			Map<String,IdNameVO> workDetailsMap = getWorkDetails();//getting work completed,dateofTarget date
 			
 			Map<String,ClientResponse> responseMap = new HashMap<>(0);
-			List<InputVO> parameterList = getRequiredParamer(inputVO);
+			List<String> statusList = inputVO.getStatusList();
 			String URL = IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getOnclickWorkDetails";
-			if (parameterList != null && parameterList.size() > 0) {
-				ExecutorService executor = Executors.newFixedThreadPool(5);
-				for (InputVO inptVO : parameterList) {
-					if (inptVO.getAssetTypeList() != null && inptVO.getAssetTypeList().size() > 0) {
-						for (String workStatus : inptVO.getAssetTypeList()) {
-							InputVO input = prepareRequiredInputDetails(workStatus,inptVO.getAssetType(), inputVO);
-							String resultType = input.getAssetType() + "-"+ input.getWorkStatus();
-							Runnable worker = new RWSThread(URL, responseMap, input, resultType);
-							executor.execute(worker);
-						}
-					}
-				}
-			    executor.shutdown();
-				while(!executor.isTerminated()) {}
-				System.out.println("All work has finished "+responseMap.values());
-			 }
+			ExecutorService executor = Executors.newFixedThreadPool(3);
+			if (statusList != null && statusList.size() > 0) {
+				for (String status : statusList) {
+						InputVO input = prepareRequiredInputDetails(status,inputVO);
+						Runnable worker = new RWSThread(URL, responseMap, input, input.getWorkStatus());
+						executor.execute(worker);
+				 }
+			}
+		    executor.shutdown();
+			while(!executor.isTerminated()) {}
+			System.out.println("All work has finished "+responseMap.values());
 			
 			Map<String,IdNameVO> allWorksDtlsMap = getAssetTypeWiseAllWorkDetails(responseMap,workDetailsMap);
 			Map<String,IdNameVO> resultMap = prepareWrokDtlsLocationWise (inputVO,allWorksDtlsMap);
@@ -3953,9 +3948,7 @@ public class RWSNICService implements IRWSNICService{
 						throw new RuntimeException("Failed : HTTP error code : " + responseEntry.getValue().getStatus());
 					} else {
 						String output = responseEntry.getValue().getEntity(String.class);
-						String[] assetTypeWrokStatusArr = responseEntry.getKey().split("-");
-						String assetType = (assetTypeWrokStatusArr != null && assetTypeWrokStatusArr.length > 0) ? assetTypeWrokStatusArr[0] : "";
-						String workStatus = (assetTypeWrokStatusArr != null && assetTypeWrokStatusArr.length > 1) ? assetTypeWrokStatusArr[1] : "";
+						String workStatus = responseEntry.getKey();
 						if (output != null && !output.isEmpty()) {
 							JSONObject jsonObj = new JSONObject(output);
 							String status = jsonObj.has("status") ? jsonObj.getString("status") : "";
@@ -3966,7 +3959,7 @@ public class RWSNICService implements IRWSNICService{
 
 										JSONObject jObj = (JSONObject) finalArray.get(i);
 										IdNameVO workDetailsVO = new IdNameVO();
-										workDetailsVO.setAssetType(assetType);
+										workDetailsVO.setAssetType(jObj.has("assestType") ? jObj.getString("assestType") : null);
 										workDetailsVO.setWorkStatus(workStatus);
 										workDetailsVO.setWrokIdStr(jObj.has("workId") ? jObj.getString("workId") : null);
 										workDetailsVO.setMandalCode(jObj.has("mandalCode") ? jObj.getString("mandalCode") : null);
@@ -4121,10 +4114,9 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return parameterList;
 	}
-	private InputVO prepareRequiredInputDetails(String workStatus,String assetType,InputVO inputVO){
+	private InputVO prepareRequiredInputDetails(String workStatus,InputVO inputVO){
 		InputVO input = new InputVO();
 		try {
-			input.setAssetType(assetType);
 			input.setDistrictValue(inputVO.getDistrictValue());
 			input.setFilterType(inputVO.getFilterType());
 			input.setFilterValue(inputVO.getFilterValue());
