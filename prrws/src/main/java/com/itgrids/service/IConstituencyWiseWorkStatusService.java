@@ -9,4 +9,5 @@ public interface IConstituencyWiseWorkStatusService {
 	public List<LocationVO> getLocationsNamesBySubLocation(InputVO inputVO);
 	public LocationVO getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, Long departmentId, String startDateStr,String endDateStr,Long locationId);
 	public List<LocationVO> getDistrictNameAndMlaNameByConsitutency(InputVO inputVO);
+	public List<LocationVO> getDepartmentNames();
 }
