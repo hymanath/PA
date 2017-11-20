@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingDataVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -109,6 +110,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private PartyBoothPerformanceVO boothResult;
 	private List<ElectionInformationVO> listElectionInformationVO;
 	private List<IdNameVO> IdNameVOList;
+	private EntitlementsHelper 					entitlementsHelper;
+	
+	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	
 	
 	public List<IdNameVO> getIdNameVOList() {
@@ -366,6 +376,25 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	
 	public String locationDashboard()
 	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("CONSTITUENCY_PAGE_ADMIN_ENTITLEMENT") || entitlements.contains("CONSTITUENCY_PAGE_USER_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+
+		}		
 		return Action.SUCCESS;
 	}
 	public String districtDashboard()
