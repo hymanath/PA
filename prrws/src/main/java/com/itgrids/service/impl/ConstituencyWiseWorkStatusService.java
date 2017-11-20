@@ -1,7 +1,10 @@
 package com.itgrids.service.impl;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,10 +20,13 @@ import com.itgrids.dao.IAssemblyMlaDAO;
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDepartmentDAO;
 import com.itgrids.dao.IFundSanctionDAO;
+import com.itgrids.dao.INregaWorkExpenditureLocationDAO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.NregsFmsWorksVO;
 import com.itgrids.service.IConstituencyWiseWorkStatusService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.IConstants;
 
 @Service
 @Transactional
@@ -34,6 +40,8 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	private CommonMethodsUtilService commonMethodsUtilService;
 	@Autowired
 	private IAssemblyMlaDAO assemblyMlaDAO;
+	@Autowired
+	private INregaWorkExpenditureLocationDAO nregaWorkExpenditureLocationDAO;
 	@Autowired
 	private IDepartmentDAO departmentDAO;
 	
@@ -240,6 +248,197 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				}
 		 return null;
 	    }
+	
+	public List<NregsFmsWorksVO> getProgramWiseWorksDetails(InputVO inputVO){
+		List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>(0);
+		try {
+			List<Long> financialYearIds = new ArrayList<Long>(0);
+			Long[] finanArr = IConstants.PRESENT_FINANCIAL_YEAR_IDS;
+			if(finanArr != null && finanArr.length > 0){
+				for (int i = 0; i < finanArr.length; i++) {
+					financialYearIds.add(finanArr[0]);
+				}
+			}
+			
+			List<Object[]> list = nregaWorkExpenditureLocationDAO.getProgramExpenditureDetailsInConstituency(inputVO.getConstituencyId(), financialYearIds);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					NregsFmsWorksVO vo = new NregsFmsWorksVO();
+					vo.setProgramId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setProgram(obj[1] != null ? obj[1].toString():"0");
+					vo.setNoOfWorks(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					vo.setLocationsCount(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+					vo.setWage(obj[4] != null ? obj[4].toString():"0");
+					vo.setMaterial(obj[5] != null ? obj[5].toString():"0");
+					vo.setTotal(obj[6] != null ? obj[6].toString():"0");
+					vo.setGrounded(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+					vo.setInProgress(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+					vo.setCompleted(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
+					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getProgramWiseWorksDetails in ConstituencyWiseWorkStatusService ",e);
+		}
+		return returnList;
+	}
+	
+	/*
+	 * Date : 18/11/2017
+	 * Author :Sravanth
+	 * @description : getConstituencyWiseNregsWorksOverview
+	 */
+	public NregsFmsWorksVO getConstituencyWiseNregsWorksOverview(InputVO inputVO){
+		NregsFmsWorksVO returnvo = new NregsFmsWorksVO();
+		try {
+			//financialYearIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList());
+			List<Long> financialYearIds = new ArrayList<Long>(0);
+			Long[] finanArr = IConstants.PRESENT_FINANCIAL_YEAR_IDS;
+			if(finanArr != null && finanArr.length > 0){
+				for (int i = 0; i < finanArr.length; i++) {
+					financialYearIds.add(finanArr[i]);
+				}
+			}
+			
+			List<Object[]> list = nregaWorkExpenditureLocationDAO.getWorkWiseExpenditureOverviewInConstituency(inputVO.getConstituencyId(), financialYearIds);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					returnvo.setFinalWorks(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+					returnvo.setFinalAmount(convertRupeesIntoCrores(obj[0] != null ? obj[0].toString():"0"));
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getConstituencyWiseNregsWorksDetails in ConstituencyWiseWorkStatusService ",e);
+		}
+		return returnvo;
+	}
+	
+	/*
+	 * Date : 18/11/2017
+	 * Author :Sravanth
+	 * @description : getConstituencyWiseNregsWorksDetails
+	 */
+	public List<NregsFmsWorksVO> getConstituencyWiseNregsWorksDetails(InputVO inputVO){
+		List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>(0);
+		try {
+			//financialYearIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList());
+			List<Long> financialYearIds = new ArrayList<Long>(0);
+			Long[] finanArr = IConstants.PRESENT_FINANCIAL_YEAR_IDS;
+			if(finanArr != null && finanArr.length > 0){
+				for (int i = 0; i < finanArr.length; i++) {
+					financialYearIds.add(finanArr[i]);
+				}
+			}
+			
+			Long totalWorks = 0L;
+			Long finalAmount = 0L;
+			List<Object[]> list = nregaWorkExpenditureLocationDAO.getWorkWiseExpenditureDetailsInConstituency(inputVO.getConstituencyId(), financialYearIds);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					Long totalAmount = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
+					String workName = obj[1] != null ? obj[1].toString():"0";
+					NregsFmsWorksVO vo = null;
+					if(totalAmount != null && totalAmount.longValue() >= 20000000L){
+						vo = new NregsFmsWorksVO();
+						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						vo.setWorkName(workName);
+						vo.setWage(obj[3] != null ? obj[3].toString():"0");
+						vo.setMaterial(obj[4] != null ? obj[4].toString():"0");
+						vo.setTotal(obj[5] != null ? obj[5].toString():"0");
+						vo.setGrounded(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
+						vo.setInProgress(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+						vo.setCompleted(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+						totalWorks = totalWorks+vo.getCompleted();
+						returnList.add(vo);
+					}else{
+						vo = getMatchedVO(returnList, "Other Works");
+						if(vo == null){
+							vo = new NregsFmsWorksVO();
+							vo.setId(999999L);
+							vo.setWorkName("Other Works");
+							vo.setWage(obj[3] != null ? obj[3].toString():"0");
+							vo.setMaterial(obj[4] != null ? obj[4].toString():"0");
+							vo.setTotal(obj[5] != null ? obj[5].toString():"0");
+							vo.setGrounded(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
+							vo.setInProgress(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+							vo.setCompleted(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+							totalWorks = totalWorks+vo.getCompleted();
+							returnList.add(vo);
+						}
+						else{
+							vo.setWage(String.valueOf(Long.valueOf(vo.getWage())+Long.valueOf(obj[3] != null ? obj[3].toString():"0")));
+							vo.setMaterial(String.valueOf(Long.valueOf(vo.getMaterial())+Long.valueOf(obj[4] != null ? obj[4].toString():"0")));
+							vo.setTotal(String.valueOf(Long.valueOf(vo.getTotal())+Long.valueOf(obj[5] != null ? obj[5].toString():"0")));
+							vo.setGrounded(vo.getGrounded()+Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
+							vo.setInProgress(vo.getInProgress()+Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+							vo.setCompleted(vo.getCompleted()+Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+							totalWorks = totalWorks+Long.valueOf(obj[8] != null ? obj[8].toString():"0");
+						}
+					}
+					finalAmount = finalAmount+totalAmount;
+				}
+			}
+			
+			Collections.sort(returnList, idWiseAscendingOrder);
+			
+			if(returnList != null && !returnList.isEmpty()){
+				returnList.get(0).setFinalWorks(totalWorks);
+				returnList.get(0).setFinalAmount(convertRupeesIntoCrores(finalAmount.toString()));
+				for (NregsFmsWorksVO nregsFmsWorksVO : returnList) {
+					nregsFmsWorksVO.setWage(convertRupeesIntoCrores(nregsFmsWorksVO.getWage()));
+					nregsFmsWorksVO.setMaterial(convertRupeesIntoCrores(nregsFmsWorksVO.getMaterial()));
+					nregsFmsWorksVO.setTotal(convertRupeesIntoCrores(nregsFmsWorksVO.getTotal()));
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getConstituencyWiseNregsWorksDetails in ConstituencyWiseWorkStatusService ",e);
+		}
+		return returnList;
+	}
+	
+	public static Comparator<NregsFmsWorksVO> idWiseAscendingOrder = new Comparator<NregsFmsWorksVO>() {
+		public int compare(NregsFmsWorksVO o1, NregsFmsWorksVO o2) {
+			if(o1.getId() != null && o2.getId() != null){
+				return o1.getId().compareTo(o2.getId());
+			}
+			return 0;
+		}
+	};
+	
+	/*
+	 * Date : 18/11/2017
+	 * Author :Sravanth
+	 * @description : getMatchedVO
+	 */
+	public NregsFmsWorksVO getMatchedVO(List<NregsFmsWorksVO> list,String workName){
+		try{
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (NregsFmsWorksVO nregsFmsWorksVO : list) {
+					if(nregsFmsWorksVO.getWorkName().trim().equalsIgnoreCase(workName)){
+						return nregsFmsWorksVO;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getMatchedVO - ConstituencyWiseWorkStatusService service", e);
+		}
+		return null;
+	}
+	
+	public String convertRupeesIntoCrores(String value){
+		String returnVal = null;
+		try {
+			if(value != null){
+				returnVal = new BigDecimal(Long.valueOf(value)/10000000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				returnVal = returnVal+" Cr";
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertRupeesIntoCrores - NREGSTCSService service", e);
+		}
+		return returnVal;
+	}
 	public List<LocationVO> getDepartmentNames(){
 		try{
 			List<LocationVO> finalList = new ArrayList<LocationVO>(0);
