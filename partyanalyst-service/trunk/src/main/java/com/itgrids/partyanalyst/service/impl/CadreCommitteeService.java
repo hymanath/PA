@@ -22813,7 +22813,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		
 		//cheking is extra member required or not
 		Object[] objArr = checkedIsExtraMeberRequiredOrNot(votersList);
-		if (objArr[0].toString().equalsIgnoreCase("YES")) {
+		if (objArr[0].toString().equalsIgnoreCase("YES") && (votersList.size()%100) !=0) {
 			rangeCount = rangeCount-1; 
 		}
 				for(Long i=1l ; i<= rangeCount ; i++){
