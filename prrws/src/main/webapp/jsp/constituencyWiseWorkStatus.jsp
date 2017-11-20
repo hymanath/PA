@@ -187,7 +187,7 @@ margin-left:20px;
 	<section class="navbar-section">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-3 border_right">
+				<div class="col-sm-2 border_right">
 					<div class="form-horizontal">
 						<div class="form-group form-group-sm">
 							<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
@@ -205,14 +205,21 @@ margin-left:20px;
 							</select>
 						</div>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-2 border_right">
 					<div class="form-group">
 							<select id="constituencySelId" class="form-control chosenSelect">
 								<option value="0"> SELECT CONSTITUENCY</option>
 							</select>
 						</div>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-2 border_right">
+					<div class="form-group">
+							<select id="departmentSelId" class="form-control chosenSelect">
+								<option value="0"> Select Department</option>
+							</select>
+						</div>
+				</div>
+				<div class="col-sm-2 border_right">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
@@ -230,40 +237,9 @@ margin-left:20px;
 	<main> 
 		 <div class="container-fluid">
 			<section>
-				<div class="row m_top20 " id="leaderNameId" style="display:none;">
-					<div class="col-sm-6 col-sm-offset-3 ">
-						<div class="white_block text-center" >
-							<h2 class="">LEADER DETAILS</h2>
-								<div class="table-responsive m_top20">
-									<table class="table conDetails-table" style="font-family:sas-sarif;">
-										<tr>
-								            <th><h4>NAME </h4></th>
-								            <th><h4> :</h4></th>
-								            <th><h5 class="text-capitalize" id="mlaName"></h5></th>
-								         </tr>
-								          <tr>
-								            <th><h4>DISTRICT </h4></th>
-								            <th><h4> :</h4></th>
-								            <th><h5 class="text-capitalize" id="districtName"></h5></th>
-								          </tr>
-								          <tr>
-								            <th><h4>CONSTITUENCY NAME </h4></th>
-								            <th><h4> :</h4></th>
-								            <th><h5 class="text-capitalize" id="constituencyName"></h5></th>
-										  </tr>
-									</table>
-								</div>
-						</div>			  
-					</div>
-				</div>
+				
 			</section>
-			<section>
-				<div class="row m_top20">
-					<div class="col-sm-12">
-						<div id="deptBlocks"></div>
-					</div>
-				</div>
-			</section>
+			
 		</div>
 	</main>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
