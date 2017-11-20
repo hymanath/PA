@@ -14,5 +14,6 @@ public interface IBoothInchargeCommitteeDAO extends GenericDao<BoothInchargeComm
 
 	public List<Object[]> getBoothInchargeCountDetails(Long locationId,Long locationValue, List<Long> committeeEnrlmntYrIds,
 			Date startDate, Date endDate);
-
+	public int unLockTheBoothInchargeCommittee(Long userId, List<Long> boothCommitteesIdsList);
+	public List<Object[]> getCommitteeFinalizedBoothsListforUnlock(List<Long> assemblyIdsList);
 }

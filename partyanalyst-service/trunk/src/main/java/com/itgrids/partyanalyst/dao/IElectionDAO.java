@@ -219,8 +219,8 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List findElectionYearsForElectionTypeAndStateId(Long electionType,Long stateId);
 	public List<String> getElectionTypeByElectionId(Long electionId);
 	public List<String> getElectionYears(List<String> electionSubTypes);
-	public List<Object[]> getElectionDetailsDistrictWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds);
-	public List<Object[]> getElectionDetailsConstituencyWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds);
+	public List<Object[]> getElectionDetailsDistrictWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds,String type);
+	public List<Object[]> getElectionDetailsConstituencyWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds,String type);
 	public List<Object[]> getElectionDetailsMandalWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds, boolean islocalBody);
 	public List<Object[]> getElectionDetailsMuncipalityWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds);
 	public List<Object[]> getElectionDetailsPanchayatWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds);
