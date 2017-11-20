@@ -34,4 +34,6 @@ public interface IUserConstituencyAccessInfoDAO extends GenericDao<UserConstitue
 	
 	public List<Object[]> getConstituencyByUserId(Long userId);
 
+	public List<Object[]> findAssembliesConstituenciesByParliaments(List<Long> parliamentConstituencyIds);
+	
 }

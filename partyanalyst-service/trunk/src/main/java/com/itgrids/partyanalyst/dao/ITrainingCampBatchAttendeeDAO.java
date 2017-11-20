@@ -15,12 +15,12 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
 	public List<Object[]> getAchievementsForCadreBySchedule(List<Long> schedulesList,Long batchId,Long enrollmentYearId);
 	public List<Object[]> getGoalsForCadreBySchedule(List<Long> schedulesList,Long batchId,Long enrollmentYearId);
 	
-	public Object[] getCadreDetailsByCadreIdAndBatchId(Long tdpCadreId,Long batchId,Long enrollmentYearId);
+	public  List<Object[]> getCadreDetailsByCadreIdAndBatchId(Long tdpCadreId,Long batchId,Long enrollmentYearId);
 	
 	public List<String> getAttendeesForATrainingCampBatch(Long trainingCampBatchId);
 	public List<Object[]> getRunningUpcomingCounts(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds);
     
-	public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> programYearIds,List<Long> enrollmentYearIds);
+	public List<Long> getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> programYearIds,List<Long> enrollmentYearIds);
 	public List<Object[]> getConfirmedCadreByBatch(Long batchId,Long enrollmentYearId);
 	public List<TrainingCampBatchAttendee> getAttendeeDetailsByInviteeId(Long inviteeId, Long batchId,Long scheduleId);
 	public List<Long> getRunningUpcomingAttendeeCounts(Long batchId,List<Long> programYearIds,List<Long> enrollmentYearIds);
@@ -33,9 +33,9 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
 	public List<Object[]> getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,Date fromDate,Date toDate);
 	public List<Object[]> getInvitedCountsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList,List<Long> enrollmentYearIds,List<Long> programYearIds);
-	public Long getTotalSpeakersCountDetails(List<Long> cadreIdList,Date fromDate,Date toDate,List<Long> enrollmentYearIds,List<Long> programYearIds);
+	public List<Long> getTotalSpeakersCountDetails(List<Long> cadreIdList,Date fromDate,Date toDate,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public List<Long> getTodaySpeakersDetails(Date todayDate,List<Long> enrollmentYearIds,List<Long> programYearIds);
-	public Long getInvitedCountByLocation(Long id,String searchType);
+	public List<Long> getInvitedCountByLocation(Long id,String searchType);
 	public List<Long> getInvitedCadreIdsByLocation(Long id,String searchType);
 	public List<Object[]> getTotalInvitedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds);
 	public List<Object[]> getStateDistrictTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds);  
