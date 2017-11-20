@@ -22924,7 +22924,9 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 	 Long minRange=0l;
 	 Long maxRange=0l;
 	 if(!range.equalsIgnoreCase("0")){
-		 String[] str=range.trim().split(" - ");
+		 range =  range.trim().replace(" ", "");
+		 range =  range.trim().replace(" ", "");
+		 String[] str=range.trim().split("-");
 		 minRange=Long.parseLong(str[0].toString());
 		 maxRange=Long.parseLong(str[1].toString());
 	 }

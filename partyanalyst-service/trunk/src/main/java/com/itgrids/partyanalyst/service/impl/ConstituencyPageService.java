@@ -549,7 +549,7 @@ public class ConstituencyPageService implements IConstituencyPageService{
 				 
 					 if(partiesList.isEmpty() || !partiesList.containsKey(candidateWon.getPartyId()))
 					 {
-						 if(!candidateWon.getPartyShortName().equalsIgnoreCase("IND"))
+						 if(candidateWon.getPartyShortName() != null && !candidateWon.getPartyShortName().equalsIgnoreCase("IND"))
 							 partiesList.put(candidateWon.getPartyId(), new SelectOptionVO(candidateWon.getPartyId(),candidateWon.getPartyShortName()));
 					 }
 				 
@@ -562,7 +562,7 @@ public class ConstituencyPageService implements IConstituencyPageService{
 							 candidateOppositionList.add(candidateOpposition);
 							 if(partiesList.isEmpty() || !partiesList.containsKey(candidateOpposition.getPartyId()))
 							 {
-								 if(!candidateOpposition.getPartyShortName().equalsIgnoreCase("IND"))
+								 if(candidateWon.getPartyShortName() != null && !candidateOpposition.getPartyShortName().equalsIgnoreCase("IND"))
 									 partiesList.put(candidateOpposition.getPartyId(), new SelectOptionVO(candidateOpposition.getPartyId(),candidateOpposition.getPartyShortName()));
 							 }
 						 }
