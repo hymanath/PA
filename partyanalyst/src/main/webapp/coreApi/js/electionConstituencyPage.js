@@ -2035,10 +2035,15 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 								{
 									if(result[i].list[j].subList1[k].mpCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0){
 										
-										table+='<td >'+result[i].list[j].subList1[k].mpCandidateEarnedVotes+'</td>';
-										
+										if(parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes) > parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes))
+											table+='<td style="background-color:#17a589">'+result[i].list[j].subList1[k].mpCandidateEarnedVotes+'</td>';
+										else
+											table+='<td style="background-color:#FF3E3E ">'+result[i].list[j].subList1[k].mpCandidateEarnedVotes+'</td>';
 										if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0)
-											table+='<td>'+result[i].list[j].subList1[k].mlaCandidateEarnedVotes+'</td>';
+											if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes > result[i].list[j].subList1[k].mpCandidateEarnedVotes)
+											table+='<td style="background-color:#17a589">'+result[i].list[j].subList1[k].mlaCandidateEarnedVotes+'</td>';
+										else
+											table+='<td style="background-color:#FF3E3E ">'+result[i].list[j].subList1[k].mlaCandidateEarnedVotes+'</td>';
 										else
 											table+='<td> - </td>';	
 										
