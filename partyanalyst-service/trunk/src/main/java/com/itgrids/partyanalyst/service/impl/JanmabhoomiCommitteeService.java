@@ -598,9 +598,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					if(committeeVO != null){
 						 Long addedMems = commonMethodsUtilService.getLongValueForObject(param[2]);
 						 Long maxMems = committeeVO.getTotalMemberCount();
-						 if(maxMems.longValue() == addedMems.longValue() && commonMethodsUtilService.getStringValueForObject(param[3]).equalsIgnoreCase("N") && commonMethodsUtilService.getStringValueForObject(param[5]) == null ){
+						 if(maxMems.longValue() == addedMems.longValue() && commonMethodsUtilService.getStringValueForObject(param[3]).equalsIgnoreCase("N") && commonMethodsUtilService.getStringValueForObject(param[5]) == "" ){
 							 committeeVO.setStatus("Ready for apply");
-						 }else{
+						 }else if(maxMems.longValue() > addedMems.longValue() && commonMethodsUtilService.getStringValueForObject(param[3]).equalsIgnoreCase("N") && commonMethodsUtilService.getStringValueForObject(param[5]) == "" ) {
 							 committeeVO.setStatus("InProgress");
 						 }
 					}
@@ -761,11 +761,11 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		if(commonMethodsUtilService.isMapValid(committeeMaps)){
 			for (Entry<Long,JanmabhoomiCommitteeVO> entry : committeeMaps.entrySet()) {
 				JanmabhoomiCommitteeVO committeeVO = entry.getValue();
-				if(status != null && status.equalsIgnoreCase("readyforapproval") && committeeVO.getTotalCommitteeCnt().longValue() == committeeVO.getNotStartedCommitteeCnt() && committeeVO.getInprogressCommitteePerc().equalsIgnoreCase("N") && committeeVO.getNotStartedCommitteePerc().equalsIgnoreCase("")){
+				if(status != null && status.equalsIgnoreCase("readyforapproval") && committeeVO.getTotalCommitteeCnt().longValue() == committeeVO.getNotStartedCommitteeCnt() && committeeVO.getInprogressCommitteePerc().equalsIgnoreCase("") && committeeVO.getNotStartedCommitteePerc().equalsIgnoreCase("N")){
 					returnList.add(committeeVO);
-				}else if(status != null && status.equalsIgnoreCase("Inprogress") && committeeVO.getTotalCommitteeCnt().longValue() > committeeVO.getNotStartedCommitteeCnt().longValue()){
+				}else if(status != null && status.equalsIgnoreCase("Inprogress") && committeeVO.getNotStartedCommitteeCnt().longValue() != 0l && committeeVO.getTotalCommitteeCnt().longValue() > committeeVO.getNotStartedCommitteeCnt().longValue()){
 					returnList.add(committeeVO);
-				}else{
+				}else if(status != null && (status.equalsIgnoreCase("total") || status.equalsIgnoreCase("Not Started") || status.equalsIgnoreCase("Approved"))){
 					returnList.add(committeeVO);
 				}
 			}
@@ -794,9 +794,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 							committeeVO.setTotalCommitteeCnt(commonMethodsUtilService.getLongValueForObject(param[2]));//maxMemCount
 						}
 						if(type != null && type.equalsIgnoreCase("addedMember")){
-							Long addedMem = commonMethodsUtilService.getLongValueForObject(param[1]);
-							String isConfirmed = commonMethodsUtilService.getStringValueForObject(param[2]);
-							String completedDate = commonMethodsUtilService.getStringValueForObject(param[4]);
+							Long addedMem = commonMethodsUtilService.getLongValueForObject(param[2]);
+							String isConfirmed = commonMethodsUtilService.getStringValueForObject(param[3]);
+							String completedDate = commonMethodsUtilService.getStringValueForObject(param[5]);
 							committeeVO.setInprogressCommitteePerc(completedDate);
 							committeeVO.setNotStartedCommitteePerc(isConfirmed);
 							committeeVO.setNotStartedCommitteeCnt(addedMem);

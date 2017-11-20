@@ -101,8 +101,8 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
       if(committeeLvlId != null && committeeLvlId.longValue() >0l ){
 			sb.append("   and model.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId = :committeeLvlId  ");
 		}
-      /*sb.append(" group by model.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommittee.jbCommitteeId ");
-      if(type != null && type.equalsIgnoreCase("district")){
+      sb.append(" group by model.jbCommittee.jbCommitteeId ");
+      /*if(type != null && type.equalsIgnoreCase("district")){
 			sb.append(" , district.districtId ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
 			sb.append(" ,constituency.constituencyId ");

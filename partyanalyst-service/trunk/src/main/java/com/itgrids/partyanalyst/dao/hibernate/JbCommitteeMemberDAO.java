@@ -94,7 +94,7 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 	 
 	 public List<Object[]> getCommitteeWiseTotalMemberAddedCount(Date fromDate,Date endDate,Long levelId,Long levelVal,Long committeeLvlId){
 		 StringBuilder sb = new StringBuilder();
-		 sb.append("select model.jbCommitteeRole.jbCommittee.jbCommitteeId,count(model.jbCommitteeMemberId),model.jbCommitteeRole.jbCommittee.isCommitteeConfirmed," +
+		 sb.append("select model.jbCommitteeRole.jbCommittee.jbCommitteeId,model.jbCommitteeRole.jbCommittee.committeeName,count(model.jbCommitteeMemberId),model.jbCommitteeRole.jbCommittee.isCommitteeConfirmed," +
 		 		"model.jbCommitteeRole.jbCommittee.startDate,model.jbCommitteeRole.jbCommittee.completedDate ");
 		
 		 sb.append(" from JbCommitteeMember model ");
@@ -117,8 +117,8 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 			}else if(levelId != null && levelId.longValue()  == 10l && levelVal != null && levelVal.longValue() >0l){
 				sb.append("   and parliamentConstituency.constituencyId = :levelVal  ");
 			}
-		/* sb.append(" group by model.jbCommitteeRole.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommitteeRole.jbCommittee.jbCommitteeId ");
-		 if(type != null && type.equalsIgnoreCase("district")){
+		sb.append(" group by model.jbCommitteeRole.jbCommittee.jbCommitteeId ");
+		/*  if(type != null && type.equalsIgnoreCase("district")){
 				sb.append(" , district.districtId ");
 			}else if(type != null && type.equalsIgnoreCase("constituency")){
 				sb.append(" ,constituency.constituencyId ");
