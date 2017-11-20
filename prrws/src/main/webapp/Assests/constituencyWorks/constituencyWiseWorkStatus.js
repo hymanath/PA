@@ -46,37 +46,29 @@ onloadCalls();
 function onloadCalls(){
 	getAllSubLocationsOnsuperLocation("21");
 	getAllFiniancialYears();
-	collapseBlock();
-	for(var i in deptIds){
-		getFundManagementSystemWorkDetails(deptIds[i]);
-	}
-	
-	
-	
+	getAllDepartmentsDetails();
 }
-function getFundManagementSystemWorkDetails(deptId){
-	var json = {
-			locationId:4232,     
-			departmentId:deptId,
-			financialYrIdList:[1,2,3,4],
-			fromDateStr:'01/01/2010',
-			toDateStr:'12/31/2017'
-       }
-    $.ajax({ 
-		url: 'getFundManagementSystemWorkDetails', 
-		type:'POST',  
-		data : JSON.stringify(json),
-		dataTypa : 'json',   
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},   
+function  getAllDepartmentsDetails(){
+	
+	 $.ajax({ 
+      url: 'getDepartmentDetails', 
+      type:'POST',  
+      dataTypa : 'json',   
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+      },   
     }).done(function(result){
-		buildWorkDeatilsLocation(blockNames[deptId-1],result);   
-		buildWorkDeatils(blockNames[deptId-1],result);
-		buildOverAllDetails(blockNames[deptId-1],result);
+		var str='';
+		str+='<option value="0" selected>ALL DEPARTMENTS</option>';
+		for(var i in result){
+			str+='<option value="'+result[i].locationId+'">'+result[i].departmentName+'</option>'
+		}
+		$("#departmentSelId").html(str);
+		$("#departmentSelId").chosen();
+		$("#departmentSelId").trigger('chosen:updated');
     });
-}
+ }
 
 function  getAllFiniancialYears(){
 	
@@ -155,143 +147,7 @@ function getLocationsNamesBySubLocation(locationId){
 		$("#constituencySelId").trigger('chosen:updated');
     });
 }	
-$(document).on("change","#constituencySelId",function(){
-	  var constincyId=$(this).val();
-	  if(constincyId != null && constincyId !=0 ){
-		  $("#leaderNameId").show();
-		  getDistrictNameAndLeaderName(constincyId);
-	   } else{
-		   $("#leaderNameId").hide();
-	   }
-	});
-	function getDistrictNameAndLeaderName(locationId){
-       $("#mlaName").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-      $("#districtName").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-      $("#constituencyName").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>'); 		
-	   var json = {
-	         locationId:locationId
-	       }
-	   $.ajax({ 
-	     url: 'getDistrictNameAndMlaNameByConsitutency', 
-	     type:'POST',  
-	     data : JSON.stringify(json),
-	     dataTypa : 'json',   
-	     beforeSend: function(xhr) {
-	       xhr.setRequestHeader("Accept", "application/json");
-	       xhr.setRequestHeader("Content-Type", "application/json");
-	     },
-	           
-	   }).done(function(result){
-	     if(result!= null){
-			$("#mlaName").html(" ");
-			$("#districtName").html(" ");
-			$("#constituencyName").html(" ");
-			$("#mlaName").append("<h5>"+result[0].mlaName+"</h5>");
-			$("#districtName").append("<h5>"+result[0].locationName+"</h5>");
-			$("#constituencyName").append("<h5>"+result[0].workName+"</h5>");
-	   }else{
-			$("#districtName").html('District');
-			$("#mlaName").html('MLA Name');
-	        $("#constituencyName").html('Constituency Name');
-	   }
-	   });
-	}
 
-function collapseBlock(){
-	var collapse='';
-	if(blockNames != null){
-	collapse+='<div class="row">';
-		collapse+='<div class="col-sm-12">'
-			for(var i in blockNames){
-				collapse+='<div class="row m_top20"><div class="col-sm-1 col-sm-offset-11"><button class="btn btn-md btn-success">PRINT</button></div></div>';
-					
-				collapse+='<div class="panel-group " id="accordion'+blockNames[i]+'" role="tablist" aria-multiselectable="true">';
-				collapse+='<div class="panel panel-default panel-black m_top20">';
-					collapse+='<div class="panel-heading" role="tab" id="headingOne'+blockNames[i]+'">';
-						collapse+='<a role="button" class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordion'+blockNames[i]+'" href="#collapseOne'+blockNames[i]+'" aria-expanded="true" aria-controls="collapseOne'+blockNames[i]+'">';
-							collapse+='<h4 class="panel-title">'+blockNames[i]+' DEPARTMENT - OVERVIEW</h4>';
-						collapse+='</a>';
-					collapse+='</div>';
-					collapse+='<div id="collapseOne'+blockNames[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+blockNames[i]+'">';
-						collapse+='<div class="panel-body">';
-							collapse+='<div class="" >';
-								collapse+='<div class="row m_left20" style="background-color:lightgrey;">';
-									collapse+='<div class="col-sm-3 m_left20"><p>Total Govt Order:<span id="overallGo'+blockNames[i]+'"></span></p></div>';
-									collapse+='<div class="col-sm-3"><p>Total Work :<span id="overallWork'+blockNames[i]+'"></span></p></div>';
-									collapse+='<div class="col-sm-3"><p>Total Amount :<span id="overallAmount'+blockNames[i]+'"></span></p></div>';
-								collapse+='</div>';
-							collapse+='</div>';
-							collapse+='<div class="m_top20" id="'+blockNames[i]+'DivId">';
-							collapse+='</div>';
-							collapse+='<div class="m_top20" id="'+blockNames[i]+'TableDivId">';
-						collapse+='</div>';
-					collapse+='</div>';
-					collapse+='</div>';
-			collapse+='</div>'
-				
-			}
-		collapse+='</div>'
-	collapse+='</div>';
-	}
-	$("#deptBlocks").html(collapse);
-}
 
-function buildWorkDeatils(divId,result){
-	
-	var tab='';
-		tab+='<h3 class="panel-title m_left20" style="background-color:lightgrey;padding:5px;">Govt Order Wise Works Details</h3>';
-		tab+='<div class="table-responsive m_top20">';
-			tab+='<table class="table table-bordered">';
-				tab+='<tr>';
-					tab+='<th> Govt Order </th>';
-					tab+='<th> Total Works</th>';
-					tab+='<th> Issue Date</th>';
-					tab+='<th> Amount</th>';
-				tab+='</tr>';
-				for(var i in result.locationList1){
-					tab+='<tr>';
-						tab+='<td>'+result.locationList1[i].goNoDate+'</td>';
-						tab+='<td>'+result.locationList1[i].workNumber+'</td>';
-						tab+='<td>'+result.locationList1[i].issueDate+'</td>';
-						tab+='<td>'+result.locationList1[i].amountInDecimal+'</td>';
-					tab+='</tr>';
-				}
-			tab+='</table>';
-		tab+='</div>';
-		$("#"+divId+"DivId").html(tab);
-}
 
-function buildWorkDeatilsLocation(divId,result){
-	var tab='';
-		tab+='<div class="row">';    
-			tab+='<div class="col-sm-2 m_left20" style="background-color:lightgrey;padding:5px;margin-left:15px;">';
-				tab+='<h3 class="panel-title m_left20" style="background-color:lightgrey;"> Works Details</h3>';
-			tab+='</div>';         
-		tab+='</div>';
-		tab+='<div class="table-responsive m_top20">';
-			tab+='<table class="table table-bordered">';
-				tab+='<tr>';
-					tab+='<th> Govt Order </th>';
-					tab+='<th> Work Name</th>';
-					tab+='<th> Mandal</th>';
-					tab+='<th> village</th>';
-					tab+='<th> Amount</th>';
-				tab+='</tr>';
-				for(var i in result.locationList2){
-					tab+='<tr>';
-						tab+='<td>'+result.locationList2[i].goNoDate+'</td>';
-						tab+='<td>'+result.locationList2[i].workName+'</td>';
-						tab+='<td>'+result.locationList2[i].tehsilName+'</td>';
-						tab+='<td>'+result.locationList2[i].panchayatName+'</td>';
-						tab+='<td>'+result.locationList2[i].amountInDecimal+'</td>';
-					tab+='</tr>';
-				}
-			tab+='</table>';
-		tab+='</div>';
-		$("#"+divId+"TableDivId").html(tab);
-}
-function buildOverAllDetails(divId,result){
-	$("#overallGo"+divId).html(result.govtOrderCount);
-	$("#overallWork"+divId).html(result.workNumber);
-	$("#overallAmount"+divId).html(result.amountInDecimal);
-}
+
