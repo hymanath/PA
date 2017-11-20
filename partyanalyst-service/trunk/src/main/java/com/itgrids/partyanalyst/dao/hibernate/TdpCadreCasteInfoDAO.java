@@ -280,9 +280,9 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		// o-castegrpId,1-castgrpname,2-casteId,4-castName, 5-gender,6-count
 		// o-castegrpId,1-casteId,3-gender,4-count
 
-		sb.append("select tcf.caste_category_id as casteCategoryId, cc.category_name as casteCategoryName,tcf.caste_state_id as casteId,c.caste_name as castname," +
-				" tcf.gender as gender, tcf.count as count from tdp_cadre_caste_info  tcf join caste c on c.caste_id=caste_state_id join " +
-				" caste_category cc on cc.caste_category_id= tcf.caste_category_id where ");
+		sb.append("select   tcf.caste_category_id as casteCategoryId,cc.category_name as casteCategoryName,c.caste_id as casteId, c.caste_name as castname,tcf.gender as gender,  tcf.count as count " +
+				" from tdp_cadre_caste_info tcf join caste_state cs on cs.caste_state_id=tcf.caste_state_id " +
+				" join caste c on cs.caste_id=c.caste_id  left join caste_category cc on cc.caste_category_id=tcf.caste_category_id  where ");
 		
 		if (locationTypeId.longValue() > 0l && locationTypeId != null) {
 			if (locationTypeId == 3l) {
