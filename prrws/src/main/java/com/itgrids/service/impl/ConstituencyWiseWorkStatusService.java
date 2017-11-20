@@ -51,6 +51,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	 */
 	public LocationVO getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, List<Long> departmentIdList, String startDateStr,String endDateStr,Long locationId){
 		try{
+			DecimalFormat df = new DecimalFormat("0.000");
 			LocationVO locationVO = new LocationVO();
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd/MM/yyyy","");
 			Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd/MM/yyyy","");
@@ -69,6 +70,50 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			}else{
 				superLocationId = 0L;
 			}
+			
+			if(departmentIdList.size() == 0){
+				List<LocationVO> overviewList = new ArrayList<LocationVO>();
+				LocationVO locationVO2 = null;
+				Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndWorkCount = new HashMap<Long,Map<Long,Long>>();
+				Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndAmount = new HashMap<Long,Map<Long,Long>>();
+				Map<Long,String> deptIdAndNameMap = new HashMap<Long,String>();
+				
+				List<Object[]> worksSummery = fundSanctionDAO.getFundSanstionLocationWise(financialYearIdsList,departmentIdList,startDate,endDate,superLocationId,type);
+				buildDeptWiseMap(worksSummery,deptIdAndGrandTypeIdAndWorkCount,deptIdAndGrandTypeIdAndAmount,deptIdAndNameMap);
+				for(Entry<Long,Map<Long,Long>> param : deptIdAndGrandTypeIdAndWorkCount.entrySet()){
+					locationVO2 = new LocationVO();
+					locationVO.setPlainWorkCount(0L);
+					locationVO.setScpWorkCount(0L);
+					locationVO.setTspWorkCount(0L);
+					
+					locationVO2.setDepartmentName(deptIdAndNameMap.get(param.getKey()));
+					locationVO2.setPlainWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(1L)));
+					locationVO2.setScpWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(2L)));
+					locationVO2.setTspWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(3L)));
+					locationVO2.setPlainAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L))/100000D));
+					locationVO2.setScpAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L))/100000D));
+					locationVO2.setTspAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L))/100000D));
+					locationVO2.setWorkNumber((locationVO2.getPlainWorkCount() + locationVO2.getScpWorkCount() + locationVO2.getTspWorkCount()));
+					locationVO2.setAmount(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L))+commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L))+commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L)));
+					locationVO2.setAmountInDecimal(df.format(locationVO2.getAmount()/100000D));
+					overviewList.add(locationVO2);
+					
+				}
+				//call one more service for mgnrgs
+				InputVO inputVO = new InputVO();
+				inputVO.setFinancialYrIdList(financialYearIdsList);
+				inputVO.setConstituencyId(inputVO.getLocationId());
+				NregsFmsWorksVO fmsWorksVO = getConstituencyWiseNregsWorksOverview(inputVO);
+				locationVO2 = new LocationVO();
+				locationVO2.setDepartmentName("Mahatma Gandhi National Rural Employment Gurantee Scheme");
+				locationVO2.setWorkNumber(fmsWorksVO.getFinalWorks());
+				locationVO2.setAmountInDecimal(df.format(fmsWorksVO.getTotalAmount()/100000D));
+				overviewList.add(locationVO2);
+				locationVO.getLocationList1().addAll(overviewList);
+				return locationVO;
+				
+			}else{
+			
 			List<Object[]> workList = fundSanctionDAO.getFundManagementSystemWorkDetails(financialYearIdsList,departmentIdList,startDate,endDate,superLocationId,type);
 			//create a map of govtOrderId and govtOrderDtlsVO map
 			Map<Long, LocationVO> govtOrderMap = new HashMap<Long,LocationVO>();
@@ -76,8 +121,6 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			//create a list of workDtlsVO
 			List<LocationVO> locationVOs = new ArrayList<LocationVO>();
 			LocationVO  locationVOForListForWork = null;
-			
-			DecimalFormat df = new DecimalFormat("0.000");
 			
 			locationVO.setPlainGoCount(0L);
 			locationVO.setScpGoCount(0L);
@@ -108,8 +151,6 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					locationVOForMap.setGrantTypeId(commonMethodsUtilService.getLongValueForObject(param[18]));
 					locationVOForMap.setWorkNumber(locationVOForMap.getWorkNumber() + 1L);
 					locationVOForMap.setAmount(locationVOForMap.getAmount() + commonMethodsUtilService.getLongValueForObject(param[11]));
-					
-					
 					
 					
 					locationVOForListForWork = new LocationVO();
@@ -185,6 +226,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				//locationVO.getLocationList2().addAll(locationVOs);
 			}	
 			return locationVO;
+			}
 		}catch(Exception e){
 			LOG.error(" Exception occured in FundManagementDashboardService ,getFundManagementSystemWorkDetails() ",e);
 		}
@@ -307,6 +349,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				for (Object[] obj : list) {
 					returnvo.setFinalWorks(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
 					returnvo.setFinalAmount(convertRupeesIntoCrores(obj[0] != null ? obj[0].toString():"0"));
+					returnvo.setTotalAmount(commonMethodsUtilService.getLongValueForObject(obj[0]));
 				}
 			}
 		} catch (Exception e) {
@@ -455,5 +498,35 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			   LOG.error(" Exception occured in FundManagementDashboardService ,getDepartmentNames() ",e);
 		    }
 		  return null;
-	     }
+	}
+	public void buildDeptWiseMap(List<Object[]> worksSummery,Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndWorkCount,Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndAmount,Map<Long,String> grantTypeAndNameMap){
+		try{
+			Map<Long,Long> grantTypeIdAndworkCountMap = null;
+			if(worksSummery != null && worksSummery.size() > 0){
+				for(Object[] param : worksSummery){
+					grantTypeIdAndworkCountMap = deptIdAndGrandTypeIdAndWorkCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(null == grantTypeIdAndworkCountMap){
+						grantTypeIdAndworkCountMap = new HashMap<Long,Long>();
+						grantTypeIdAndworkCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						deptIdAndGrandTypeIdAndWorkCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), grantTypeIdAndworkCountMap);
+					}else{
+						grantTypeIdAndworkCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+					}
+					
+					grantTypeIdAndworkCountMap = deptIdAndGrandTypeIdAndAmount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(null == grantTypeIdAndworkCountMap){
+						grantTypeIdAndworkCountMap = new HashMap<Long,Long>();
+						grantTypeIdAndworkCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[5]));
+						deptIdAndGrandTypeIdAndAmount.put(commonMethodsUtilService.getLongValueForObject(param[0]), grantTypeIdAndworkCountMap);
+					}else{
+						grantTypeIdAndworkCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[5]));
+					}
+					
+					grantTypeAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+		}catch(Exception e){
+			 LOG.error(" Exception occured in FundManagementDashboardService ,buildDeptWiseMap() ",e);
+		}
+	}
 }
