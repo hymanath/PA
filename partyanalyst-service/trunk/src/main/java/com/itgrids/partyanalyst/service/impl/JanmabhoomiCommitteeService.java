@@ -462,6 +462,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					if(locVO == null){
 						 locVO = new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[6]),commonMethodsUtilService.getStringValueForObject(param[7]));
 						 locVO.setList(setCommitteeLevels(committeeLvls));
+						 if(commonMethodsUtilService.getLongValueForObject(param[6]) >0l)
 						locationMapsWithLevel.put(commonMethodsUtilService.getLongValueForObject(param[6]), locVO);
 					}
 					Long committeeLvlId = commonMethodsUtilService.getLongValueForObject(param[0]);
