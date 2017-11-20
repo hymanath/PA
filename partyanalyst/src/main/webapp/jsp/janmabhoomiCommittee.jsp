@@ -259,7 +259,7 @@
 								}
 								</c:when>
 								<c:otherwise>
-								if(!(statusType === "Approved")
+								if(!(statusType === "Approved"))
 								str+='<td>-</td>';
 								</c:otherwise>
 									</c:choose>
