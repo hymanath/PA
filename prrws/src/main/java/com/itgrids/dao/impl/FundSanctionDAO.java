@@ -1799,7 +1799,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}
 		return query.list();
 	}
-	public List<Object[]> getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, Long departmentId, Date startDate,Date endDate,Long locationId,String type){
+	public List<Object[]> getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, List<Long> departmentIdList, Date startDate,Date endDate,Long locationId,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select ");
 		sb.append(" CON.constituency_id as constituencyId, ");//0
@@ -1837,8 +1837,11 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" FSL.fund_sanction_id = FS.fund_sanction_id and  ");
 		sb.append(" FS.govt_order_id=GO.govt_order_id and  ");
 		sb.append(" FS.department_id=DEPT.department_id and ");
-		sb.append(" FS.govt_scheme_id=GS.govt_scheme_id and ");		
-		sb.append(" DEPT.department_id=:departmentId and ");
+		sb.append(" FS.govt_scheme_id=GS.govt_scheme_id and ");
+		if(departmentIdList != null && departmentIdList.size() > 0){
+			sb.append(" DEPT.department_id in (:departmentIdList) and ");
+		}
+		
 		if(financialYearIdsList != null && financialYearIdsList.size() > 0){
 			sb.append(" FS.financial_year_id in (:financialYearIdsList) and ");
 		}
@@ -1870,8 +1873,10 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		query.addScalar("programName", StandardBasicTypes.STRING);//16
 		query.addScalar("filePath", StandardBasicTypes.STRING);//17
 		query.addScalar("grantTypeId", StandardBasicTypes.LONG);//18
+		if(departmentIdList != null && departmentIdList.size() > 0){
+			query.setParameterList("departmentIdList", departmentIdList);
+		}
 		
-		query.setParameter("departmentId", departmentId);
 		if(financialYearIdsList != null && financialYearIdsList.size() > 0){
 			query.setParameterList("financialYearIdsList", financialYearIdsList);
 		}
