@@ -24,6 +24,11 @@ public class BoothInchargeDetailsVO {
 	private List<BoothInchargeDetailsVO> subList;
 	private BoothAddressVO boothAddressVO;
 	
+	public BoothInchargeDetailsVO(){}
+	public BoothInchargeDetailsVO(Long locationId,String locationName){
+		this.locationId = locationId;
+		this.locationName = locationName;
+	}
 	public Long getLocationId() {
 		return locationId;
 	}

@@ -31,7 +31,14 @@ public class BoothAddressVO {
 	private String range;
 	private Long memberCount=0l;
 	private Long convenerCount=0l;
+	private Long totalCount =0L;
 	
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
 	public String getIsReadyToConfirm() {
 		return isReadyToConfirm;
 	}

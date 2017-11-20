@@ -32,6 +32,8 @@ public class BoothInchargeCommittee {
 	private Long boothInchargeEnrollmentId;
 	private String isDeleted;
 	private Long boothId;
+	private Long insertedUserId;
+	private Long updatedUserId;
 	
 	private UserAddress address;
 	private BoothInchargeEnrollment boothInchargeEnrollment;
@@ -136,4 +138,22 @@ public class BoothInchargeCommittee {
 	public void setBooth(Booth booth) {
 		this.booth = booth;
 	}
+	
+	@Column(name="inserted_by")
+	public Long getInsertedUserId() {
+		return insertedUserId;
+	}
+	public void setInsertedUserId(Long insertedUserId) {
+		this.insertedUserId = insertedUserId;
+	}
+	
+	@Column(name="updated_by")
+	public Long getUpdatedUserId() {
+		return updatedUserId;
+	}
+	public void setUpdatedUserId(Long updatedUserId) {
+		this.updatedUserId = updatedUserId;
+	}
+	
+	
 }
