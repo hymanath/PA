@@ -104,7 +104,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 						if(urlvo.getId() != null && (urlvo.getId().longValue() == 43l || urlvo.getId().longValue() == 44l 
 								|| urlvo.getId().longValue() == 45l || urlvo.getId().longValue() == 46l || urlvo.getId().longValue() == 47l 
 								|| urlvo.getId().longValue() == 48l || urlvo.getId().longValue() == 61l || urlvo.getId().longValue() == 62l
-								|| urlvo.getId().longValue() == 63l)){
+								|| urlvo.getId().longValue() == 63l || urlvo.getId().longValue() == 107l || urlvo.getId().longValue() == 108l
+   								|| urlvo.getId().longValue() == 109l)){
 							inputVO.setCategoryName(urlvo.getComponentName());
 						}
 						else if(urlvo.getId() != null && (urlvo.getId().longValue() == 49l || urlvo.getId().longValue() == 50l 
