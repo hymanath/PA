@@ -8,7 +8,7 @@ import com.itgrids.model.NregaWorkExpenditureLocation;
 
 public interface INregaWorkExpenditureLocationDAO extends GenericDao<NregaWorkExpenditureLocation, Long>{
 
-	public List<Object[]> getWorkWiseExpenditureOverviewInConstituency(Long constituencyId,List<Long> financialYearIds);
-	public List<Object[]> getWorkWiseExpenditureDetailsInConstituency(Long constituencyId,List<Long> financialYearIds);
+	public List<Object[]> getWorkWiseExpenditureOverviewInConstituency(Long constituencyId,List<Long> financialYearIds,String type);
+	public List<Object[]> getWorkWiseExpenditureDetailsInConstituency(Long constituencyId,List<Long> financialYearIds,String type);
 	public List<Object[]> getProgramExpenditureDetailsInConstituency(Long constituencyId,List<Long> financialYearIds);
 }

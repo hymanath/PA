@@ -17,7 +17,7 @@ public class NregaWorkExpenditureLocationDAO extends GenericDaoHibernate<NregaWo
 		
 	}
 
-	public List<Object[]> getWorkWiseExpenditureOverviewInConstituency(Long constituencyId,List<Long> financialYearIds){
+	public List<Object[]> getWorkWiseExpenditureOverviewInConstituency(Long constituencyId,List<Long> financialYearIds,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select sum(model.nregaWorkExpenditure.totalxpenditure),"
 					+ " sum(model.nregaWorkExpenditure.groundedWorks),"
@@ -26,7 +26,9 @@ public class NregaWorkExpenditureLocationDAO extends GenericDaoHibernate<NregaWo
 					+ " from NregaWorkExpenditureLocation model"
 					+ " where model.isDeleted = 'N' and model.nregaWorkExpenditure.isDeleted = 'N'");
 		
-		if(constituencyId != null && constituencyId.longValue() > 0L)
+		if(type != null && type.trim().equalsIgnoreCase("district") && constituencyId != null && constituencyId.longValue() > 0L)
+			sb.append(" and model.locationAddress.districtId = :constituencyId");
+		else if(type != null && type.trim().equalsIgnoreCase("constituency") && constituencyId != null && constituencyId.longValue() > 0L)
 			sb.append(" and model.locationAddress.constituencyId = :constituencyId");
 		if(financialYearIds != null && !financialYearIds.isEmpty())
 			sb.append(" and model.nregaWorkExpenditure.nregaFinancialYear.nregaFinancialYearId in (:financialYearIds)");
@@ -42,7 +44,7 @@ public class NregaWorkExpenditureLocationDAO extends GenericDaoHibernate<NregaWo
 		return query.list();
 	}
 	
-	public List<Object[]> getWorkWiseExpenditureDetailsInConstituency(Long constituencyId,List<Long> financialYearIds){
+	public List<Object[]> getWorkWiseExpenditureDetailsInConstituency(Long constituencyId,List<Long> financialYearIds,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.nregaWorkExpenditure.nregaWorkType.nregaWorkTypeId,"
 					+ " model.nregaWorkExpenditure.nregaWorkType.workType,"
@@ -56,7 +58,9 @@ public class NregaWorkExpenditureLocationDAO extends GenericDaoHibernate<NregaWo
 					+ " from NregaWorkExpenditureLocation model"
 					+ " where model.isDeleted = 'N' and model.nregaWorkExpenditure.isDeleted = 'N'");
 		
-		if(constituencyId != null && constituencyId.longValue() > 0L)
+		if(type != null && type.trim().equalsIgnoreCase("district") && constituencyId != null && constituencyId.longValue() > 0L)
+			sb.append(" and model.locationAddress.districtId = :constituencyId");
+		else if(type != null && type.trim().equalsIgnoreCase("constituency") && constituencyId != null && constituencyId.longValue() > 0L)
 			sb.append(" and model.locationAddress.constituencyId = :constituencyId");
 		if(financialYearIds != null && !financialYearIds.isEmpty())
 			sb.append(" and model.nregaWorkExpenditure.nregaFinancialYear.nregaFinancialYearId in (:financialYearIds)");

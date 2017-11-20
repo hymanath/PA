@@ -335,6 +335,19 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	public NregsFmsWorksVO getConstituencyWiseNregsWorksOverview(InputVO inputVO){
 		NregsFmsWorksVO returnvo = new NregsFmsWorksVO();
 		try {
+			String type="";
+			Long superLocationId = null;
+			if(inputVO.getLocationId().toString().trim().length() > 1){
+				Long firstDigit = Long.parseLong(inputVO.getLocationId().toString().substring(0,1));
+				superLocationId = Long.parseLong(inputVO.getLocationId().toString().substring(1));
+				if(firstDigit.longValue() == 3L){
+					type = "district";
+				}else if(firstDigit.longValue() == 4L){
+					type = "constituency";
+				}
+			}else{
+				superLocationId = 0L;
+			}
 			//financialYearIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList());
 			List<Long> financialYearIds = new ArrayList<Long>(0);
 			Long[] finanArr = IConstants.PRESENT_FINANCIAL_YEAR_IDS;
@@ -344,7 +357,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				}
 			}
 			
-			List<Object[]> list = nregaWorkExpenditureLocationDAO.getWorkWiseExpenditureOverviewInConstituency(inputVO.getConstituencyId(), financialYearIds);
+			List<Object[]> list = nregaWorkExpenditureLocationDAO.getWorkWiseExpenditureOverviewInConstituency(superLocationId, financialYearIds, type);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					returnvo.setFinalWorks(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
@@ -366,6 +379,19 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	public List<NregsFmsWorksVO> getConstituencyWiseNregsWorksDetails(InputVO inputVO){
 		List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>(0);
 		try {
+			String type="";
+			Long superLocationId = null;
+			if(inputVO.getLocationId().toString().trim().length() > 1){
+				Long firstDigit = Long.parseLong(inputVO.getLocationId().toString().substring(0,1));
+				superLocationId = Long.parseLong(inputVO.getLocationId().toString().substring(1));
+				if(firstDigit.longValue() == 3L){
+					type = "district";
+				}else if(firstDigit.longValue() == 4L){
+					type = "constituency";
+				}
+			}else{
+				superLocationId = 0L;
+			}
 			//financialYearIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList());
 			List<Long> financialYearIds = new ArrayList<Long>(0);
 			Long[] finanArr = IConstants.PRESENT_FINANCIAL_YEAR_IDS;
@@ -377,7 +403,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			
 			Long totalWorks = 0L;
 			Long finalAmount = 0L;
-			List<Object[]> list = nregaWorkExpenditureLocationDAO.getWorkWiseExpenditureDetailsInConstituency(inputVO.getConstituencyId(), financialYearIds);
+			List<Object[]> list = nregaWorkExpenditureLocationDAO.getWorkWiseExpenditureDetailsInConstituency(superLocationId, financialYearIds, type);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					Long totalAmount = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
