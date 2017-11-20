@@ -13,33 +13,12 @@
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
+<link href="Assests/css/print.css" rel="stylesheet" type="text/css"/>
 <style>
 body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 	font-family:'Ubuntu', sans-serif !important;
 }
-mainDivHeaderCls,.to-date{padding: 40px 30px 15px;}
-.dear-sir{padding-left: 30px;}
-mainDivHeaderCls h2{font-weight:bold;color:#ec2027;text-transform:uppercase;}
-
-@media print
-{
-	.container {
-		width: 990px;
-	}
-	.border-cls{
-		background-color:#ddd !important;
-		-webkit-print-color-adjust:exact;
-	}
-	.main_level_css{
-		background-color: #fbf7f0 !important;
-		-webkit-print-color-adjust:exact;
-	}
-	.printcontent { position: absolute; top: 40px; left: 30px; }
-}
-
 @page { size: auto;  margin: 0mm; }
-.footer{border-top:1px solid #333;padding-top:20px;}
-.footer p{text-align:center;}
 </style>
 </head>
 <body>
@@ -229,11 +208,9 @@ mainDivHeaderCls h2{font-weight:bold;color:#ec2027;text-transform:uppercase;}
 				</div>
 				<div class="col-sm-2 border_right">
 					<div class="form-group">
-							<select id="departmentSelId" class="form-control chosenSelect">
+							<select id="DepartmentsId" class="form-control chosenSelect">
 								<option value="0"> Select Department</option>
-								<option value="1">ENC</option>
-								<option value="2">RWS</option>
-								<option value="3">MGNREGS</option>
+								
 							</select>
 						</div>
 				</div>
@@ -246,55 +223,67 @@ mainDivHeaderCls h2{font-weight:bold;color:#ec2027;text-transform:uppercase;}
 					</div>
 				</div>
 				<div class="col-sm-1">
-					<button class="btn btn-md btn-success printViewCls" onclick="printDiv('printableArea')">PRINT</button>
+					<input class="btn btn-md btn-success printViewCls" attr_divId="printableArea" value="print"/>
 				</div>
 		   </div>
 		</div>
 	</section>
 </header>
-
-	<div class="mainDivHeaderCls m_top30 printcontent" id="printableArea">
+	<div class="container m_top20">
+		<div class="row pull-right">
+			<label class="radio-inline">
+			  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="withHeader" class="withAndOutHeaderCls">With Header
+			</label>
+			<label class="radio-inline">
+			  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="withOutHeader" checked class="withAndOutHeaderCls">With Out Header
+			</label>
+		</div>
+	</div>
+	
+	<div class="mainDivHeaderCls printcontent" id="printableArea">
 		<div class="container">
 			<div class="white_block" style="box-shadow:none;padding:20px;">
-				<div class="row">
-					<div class="col-md-4 col-sm-4 col-x-12 mobile-view">
-						<h2>Nara Lokesh</h2>
-						<p>
-							<span><strong>Minister for Information Technology</strong></span><br/>
-							<span><strong>Panchayathi Raj and Rural Development</strong></span><br/>
-							<span class="gov"><strong>Government of Andhra Pradesh</strong></span>
-						</p>
-					</div>
-					<div class="col-md-4 col-sm-4 col-x-12 text-center">
-						<img src="Assests/images/aplogo.png" width="150px" height="150px" alt="" />
-					</div>
-					<div class="col-md-4 col-sm-4 col-x-12 mar-top-20 text-right mobile-view">
-						<p>
-							<span>4th Block, 1st Floor, Room No:214,</span><br/>
-							<span>A.P Secretariat Office, Velagapudi,<br/></span>
-							<span>Amaravathi, Andhra Pradesh</span>
-						</p>
-					</div>
-				</div>
-				<div class="row">
-					<div class="to-date">
+					<div class="headingCssCls">
 						<div class="row">
-							<div class="col-md-6 col-sm-6 col-xs-6">
+							<div class="col-sm-4 mobile-view">
+								<h2 class="redColor">Nara Lokesh</h2>
 								<p>
-									<span><strong>To,</strong></span><br/>
-									<span><strong>K S Jawahar,</strong></span><br/>
-									<span><strong>Member of Legislative Assembly,</strong></span><br/>
-									<span><strong>Kovvur Constituency.</strong></span>
+									<span><strong>Minister for Information Technology</strong></span><br/>
+									<span><strong>Panchayathi Raj and Rural Development</strong></span><br/>
+									<span class="gov"><strong>Government of Andhra Pradesh</strong></span>
 								</p>
 							</div>
-							<div class="col-md-6 col-sm-6 col-xs-6 text-right">
+							<div class="col-sm-4 text-center">
+								<img src="Assests/images/aplogo.png"  alt="" class="imgWidthHeight"/>
+							</div>
+							<div class="col-sm-4 text-right mobile-view pull-right">
 								<p>
-									<span><strong>Date: 17th November, 2017</strong></span><br/>
+									<span>4th Block, 1st Floor, Room No:214,</span><br/>
+									<span>A.P Secretariat Office, Velagapudi,<br/></span>
+									<span>Amaravathi, Andhra Pradesh</span>
 								</p>
 							</div>
 						</div>
+						<div class="row">
+							<div class="to-date">
+								<div class="row">
+									<div class="col-sm-6">
+										<p>
+											<span><strong>To,</strong></span><br/>
+											<span><strong>K S Jawahar,</strong></span><br/>
+											<span><strong>Member of Legislative Assembly,</strong></span><br/>
+											<span><strong>Kovvur Constituency.</strong></span>
+										</p>
+									</div>
+									<div class="col-sm-6 text-right">
+										<p>
+											<span><strong>Date: 17th November, 2017</strong></span><br/>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
 				<div class="row">
 					<div class="dear-sir">
 						<div class="row">
@@ -306,7 +295,7 @@ mainDivHeaderCls h2{font-weight:bold;color:#ec2027;text-transform:uppercase;}
 					</div>
 				</div>
 				
-				<div id="overAllDeparmentsDivId"></div>
+				<div id="overAllDeparmentsDivId" ></div>
 			<!---->	
 			</div>
 		</div>
@@ -332,5 +321,8 @@ mainDivHeaderCls h2{font-weight:bold;color:#ec2027;text-transform:uppercase;}
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/constituencyWorks/constituencyWiseWorkStatus.js" type="text/javascript" ></script>
+<script>
+
+</script>
 </body>
 </html>

@@ -3,7 +3,12 @@
 	var glStartDate=moment().subtract(40,"years").startOf("year").format("DD/MM/YYYY");
 	var glEndDate=moment().add(10,"years").startOf("year").format("DD/MM/YYYY");
 	
+	var departmentArrGlob =[];
+	departmentArrGlob.push("0");
+	var departmentArrGlob1 =[];
+	departmentArrGlob1.push("3");
 	$(".chosenSelect").chosen();
+	
 	onloadCalls();
 	function onloadCalls(){
 		getAllSubLocationsOnsuperLocation("21");
@@ -68,9 +73,9 @@ function  getAllDepartmentsDetails(){
 		for(var i in result){
 			str+='<option value="'+result[i].locationId+'">'+result[i].departmentName+'</option>'
 		}
-		$("#departmentSelId").html(str);
-		$("#departmentSelId").chosen();
-		$("#departmentSelId").trigger('chosen:updated');
+		$("#DepartmentsId").html(str);
+		$("#DepartmentsId").chosen();
+		$("#DepartmentsId").trigger('chosen:updated');
     });
  }
 
@@ -95,6 +100,36 @@ function  getAllFiniancialYears(){
 		$("#financialYearId").trigger('chosen:updated');
     });
  }
+	var financialArrGlob=[];
+	financialArrGlob.push("0");
+	$(document).on("change","#financialYearId",function(){//ara
+		var values = $(this).val();//debugger;
+		if(values != null && values.length > 0){
+			for(var i=0; i<values.length; i++) {
+			//console.log(values[i]+" -- "+financialArrGlob+" -- "+$.inArray(values[i], financialArrGlob));
+				if($.inArray(values[i], financialArrGlob) == -1){
+					if(values[i] == 0){values=[];values.push("0");
+						$('#financialYearId').find($('option')).attr('selected',false)
+						$("#financialYearId").val(0);
+						$("#financialYearId").trigger('chosen:updated');
+						financialArrGlob = [];
+						financialArrGlob.push("0");
+					}else{
+						$('#financialYearId option:selected').each(function (index, option) { 
+							if($(this).val()==0){
+								$(option).attr('selected',false); 
+								$("#financialYearId").trigger('chosen:updated');
+							}
+							financialArrGlob=[];
+							financialArrGlob.push($(this).val());
+						});
+					}
+				}
+				
+			 }
+			 onLoadInitialisations();
+		}console.log(financialArrGlob +" ---- "+ values);
+	});
 function getAllSubLocationsOnsuperLocation(superLocationId){
 	 $("#constituencySelId").html("<option value='0'>SELECT CONSTITUENCY</option>");
 	 $("#constituencySelId").trigger('chosen:updated');
@@ -150,19 +185,58 @@ function getLocationsNamesBySubLocation(locationId){
 		$("#constituencySelId").chosen();
 		$("#constituencySelId").trigger('chosen:updated');
     });
-}	
+}
+
+$(document).on("click",".printViewCls",function(){
+	var divName = $(this).attr("attr_divId");
+	var headerVal ='';
+		$(".withAndOutHeaderCls").each(function(i, obj){
+			 if($(this).is(":checked")){
+				  headerVal = $(this).val();
+			 }
+		});
+		if(headerVal == "withOutHeader"){
+			$(".headingCssCls").removeClass("withHeaderCls")
+			$(".headingCssCls").addClass("withOutHeaderCls")
+			printDiv(divName)
+		}else{
+			$(".headingCssCls").removeClass("withOutHeaderCls")
+			$(".headingCssCls").addClass("withHeaderCls")
+			printDiv(divName)
+		}
+});
 function printDiv(divName) {
+	
      var printContents = document.getElementById(divName).innerHTML;
      var originalContents = document.body.innerHTML;
 	 document.title = "";
      document.body.innerHTML = printContents;
      window.print();
      document.body.innerHTML = originalContents;
+	window.location.reload(true);
 }
+	window.onload=function(e){
+	  //alert();
+	window.onafterprint = function() {
+		//window.location.reload(false);
+	   location.reload();
+	};
+	window.matchMedia('print').addListener(function (media) {
+	//do before-printing stuff
+	  if(media.matches){
+		
+	  }
+	  else{
+		  media.preventDefault();
+		  window.location.reload(true);
+		 //location.reload();
+	  }
+	});
+	}
 buildOverAllDepartmentsDetails();
 function buildOverAllDepartmentsDetails(){
 	
-	var departmentId = $("#departmentSelId").val();
+	var departmentId = $("#DepartmentsId").val();
 	var departmentArr=[];
 	var str='';
 	
@@ -253,5 +327,31 @@ function buildOverAllDepartmentsDetails(){
 	
 	
 	$("#overAllDeparmentsDivId").html(str);
+	getFundManagementSystemWorkDetails();
 }
-
+	
+function getFundManagementSystemWorkDetails(){
+	var financialYrIdList = $('#financialYearId').val();
+	if(financialYrIdList == 0 || financialYrIdList == null){
+		financialYrIdList=[];
+	}	
+	var json = {
+			locationId:2, //districtId,cons    
+			departmentId:1, //ENC-1,Rws-2,M-3
+			financialYrIdList:financialYrIdList,
+			fromDateStr:glStartDate,
+			toDateStr:glEndDate
+       }
+    $.ajax({ 
+		url: 'getFundManagementSystemWorkDetails',
+		type:'POST',  
+		data : JSON.stringify(json),
+		dataTypa : 'json',   
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},   
+    }).done(function(result){
+		
+    });
+}
