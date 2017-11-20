@@ -446,9 +446,11 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			Set<Long> userAccessLocVals = null;
 			if(type != null && type.equalsIgnoreCase("district")){
 				userLocaVals =userDistrictAccessInfoDAO.getLocationIdList(userId);
+				userAccessLocVals = new TreeSet<Long>();
 				 getUserAccessVals(userLocaVals,userAccessLocVals);
 			}else if(type != null && type.equalsIgnoreCase("constituency")){
 				userLocaVals =userConstituencyAccessInfoDAO.findByUser(userId);
+				userAccessLocVals = new TreeSet<Long>();
 				getUserAccessVals(userLocaVals,userAccessLocVals);
 			}/*else if(type.equalsIgnoreCase("parliament")){
 				
@@ -525,7 +527,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	public void getUserAccessVals(List<Object[]> userLocaVals,Set<Long> userAccessLocVals){
 		try {
 			if(commonMethodsUtilService.isListOrSetValid(userLocaVals)){
-				userAccessLocVals = new TreeSet<Long>();
+				
 				for (Object[] userAccessVal : userLocaVals) {
 					userAccessLocVals.add(commonMethodsUtilService.getLongValueForObject(userAccessVal[0]));
 				}
@@ -659,7 +661,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 				}else if(status.equalsIgnoreCase("proposal")){
 					statusType = "P";
 				}
-				if(status != null && (statusType.equalsIgnoreCase("F") || statusType.equalsIgnoreCase("R"))){
+				if(statusType != null && (statusType.equalsIgnoreCase("F") || statusType.equalsIgnoreCase("R"))){
 					jbCommitteeMember.setStatus(statusType);
 					jbCommitteeMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					jbCommitteeMember.setUpdatedUserId(janmabhoomiCommitteeMemberVO.getUserId());
@@ -684,9 +686,12 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					jbCommitteeMember.setCasteCategoryId(janmabhoomiCommitteeMemberVO.getCategoryId());
 					jbCommitteeMember.setMobileNo(janmabhoomiCommitteeMemberVO.getMobileNumber());
 					//jbCommitteeMember.setDescripation(null);
-					jbCommitteeMember.setTdpCadreId(janmabhoomiCommitteeMemberVO.getTdpCadreId());
-					jbCommitteeMember.setVoterId(janmabhoomiCommitteeMemberVO.getVoterId());
-					jbCommitteeMember.setPartyId(janmabhoomiCommitteeMemberVO.getPartyId());
+					if(janmabhoomiCommitteeMemberVO.getTdpCadreId() !=null && janmabhoomiCommitteeMemberVO.getTdpCadreId().longValue() >0L)
+						jbCommitteeMember.setTdpCadreId(janmabhoomiCommitteeMemberVO.getTdpCadreId());
+					if(janmabhoomiCommitteeMemberVO.getVoterId() !=null && janmabhoomiCommitteeMemberVO.getVoterId().longValue() >0L)
+						jbCommitteeMember.setVoterId(janmabhoomiCommitteeMemberVO.getVoterId());
+					if(janmabhoomiCommitteeMemberVO.getPartyId() !=null && janmabhoomiCommitteeMemberVO.getPartyId().longValue() >0L)
+						jbCommitteeMember.setPartyId(janmabhoomiCommitteeMemberVO.getPartyId());
 					jbCommitteeMember.setStartDate(dateUtilService.getCurrentDateAndTime());
 					//jbCommitteeMember.setEndDate(dateUtilService.getCurrentDateAndTime());
 					jbCommitteeMember.setIsActive("Y");
