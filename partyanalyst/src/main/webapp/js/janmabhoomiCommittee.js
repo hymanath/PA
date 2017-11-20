@@ -1129,9 +1129,9 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 				str+='</select>';
 			str+='</div>';
 			
-			str+='<div class="col-sm-2">';
+			str+='<div class="col-sm-3">';
 				str+='<select class="form-control chosen-select" id="partyId" name="janmabhoomiCommitteeMemberVO.partyId">';
-					str+='<option value="0">Select Party</option>';
+					str+='<option value="0">Select Affiliated Party</option>';
 					str+='<option value="1117">YSRC</option>';
 					str+='<option value="872">TDP</option>';
 					str+='<option value="362">INC</option>';
@@ -1179,7 +1179,8 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 					  $("#committesLevelValuesId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
 				  }
 				  $("#committesLevelValuesId").chosen();
-				  $("#committesLevelValuesId").trigger("chosen:updated");
+				  $("#committesLevelValuesId").val(result[0].id).trigger("chosen:updated");
+				  getJanmabhoomiCommitteeOverview(result[0].id,statusType);
 			}else{
 				$("#committeeWisePopUpDetailsId").html('No Data Available');
 			}
