@@ -1964,6 +1964,7 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 	function buildExpandSubTableData(result,type,parliamentId,attr_partcipation_id,divId)
 	{
 		var isParticipated=$('#'+attr_partcipation_id+'').attr('isParticipated');
+		var  electionYears = $('#electionYearForCrossId').val();
 		//alert(isParticipated);
 		var table='';
 		table+='<div class="table-responsive">';
