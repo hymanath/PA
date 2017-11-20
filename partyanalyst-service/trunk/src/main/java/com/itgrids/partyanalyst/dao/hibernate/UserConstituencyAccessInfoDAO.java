@@ -169,4 +169,17 @@ public class UserConstituencyAccessInfoDAO extends GenericDaoHibernate< UserCons
 		return query.list();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findAssembliesConstituenciesByParliaments(List<Long> parliamentConstituencyIds) 
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select distinct model.constituency.constituencyId,model.constituency.name from DelimitationConstituencyAssemblyDetails model where " +
+				"model.delimitationConstituency.constituency.constituencyId in (:parliamentConstituencyIds) and model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) order by model.constituency.name " );
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("parliamentConstituencyIds", parliamentConstituencyIds);
+		return queryObject.list();
+	}
+	
+	
 }

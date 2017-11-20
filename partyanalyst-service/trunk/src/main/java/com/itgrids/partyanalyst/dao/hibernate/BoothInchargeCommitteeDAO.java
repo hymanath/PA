@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothInchargeCommitteeDAO;
@@ -134,4 +135,30 @@ public class BoothInchargeCommitteeDAO extends GenericDaoHibernate<BoothIncharge
 		return qry.list();
 	}
 
+	public int unLockTheBoothInchargeCommittee(Long userId, List<Long> boothCommitteesIdsList){
+		Query query = getSession().createSQLQuery(" update booth_incharge_committee set is_confirmed='N' , completed_date = null , updated_by = :userId " +
+				" where booth_incharge_committee_id in (:boothCommitteesIdsList)");
+		query.setParameter("userId", userId);
+		query.setParameterList("boothCommitteesIdsList", boothCommitteesIdsList);
+		return query.executeUpdate();
+	}
+	
+	public List<Object[]> getCommitteeFinalizedBoothsListforUnlock(List<Long> assemblyIdsList){
+		StringBuilder sb = new StringBuilder();
+		sb.append("  SELECT  ");
+		sb.append("  c.booth_incharge_committee_id as committeeId ,b.part_no  as partNo");
+		sb.append("  from  ");
+		sb.append("  booth_incharge_committee c ");
+		sb.append("  LEFT OUTER JOIN   booth b on c.booth_id = b.booth_id ");
+		sb.append("  where  ");
+		sb.append("  c.is_confirmed='Y' and  ");
+		sb.append("  c.start_date is not null and  ");
+		sb.append("  c.completed_date is not null and  ");
+		sb.append("  b.constituency_id in (:assemblyIdsList) ");		
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("committeeId", Hibernate.LONG)
+				.addScalar("partNo", Hibernate.STRING);
+		query.setParameterList("assemblyIdsList", assemblyIdsList);
+		return query.list();
+	}
 }
