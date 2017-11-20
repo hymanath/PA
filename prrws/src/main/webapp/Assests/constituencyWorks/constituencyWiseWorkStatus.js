@@ -218,22 +218,22 @@ function printDiv(divName) {
 	window.location.reload(true);
 }
 	window.onload=function(e){
-	  //alert();
-	window.onafterprint = function() {
-		//window.location.reload(false);
-	   location.reload();
-	};
-	window.matchMedia('print').addListener(function (media) {
-	//do before-printing stuff
-	  if(media.matches){
-		
-	  }
-	  else{
-		  media.preventDefault();
-		  window.location.reload(true);
-		 //location.reload();
-	  }
-	});
+		  //alert();
+		window.onafterprint = function() {
+			//window.location.reload(false);
+		   location.reload();
+		};
+		window.matchMedia('print').addListener(function (media) {
+		//do before-printing stuff
+		  if(media.matches){
+			
+		  }
+		  else{
+			  media.preventDefault();
+			  window.location.reload(true);
+			 //location.reload();
+		  }
+		});
 	}
 
 function buildOverAllDepartmentsDetails(result,departmentId,divId){
@@ -425,46 +425,110 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 			}
 				str+='<div class="main_level_css m_top10">';
 					str+='<div class="row">';
+					
 						str+='<div class="col-sm-4">';
-							str+='<div class="border-cls">';
+							str+='<div class="border-cls padding_right_left">';
 								str+='<h4>Total Govt Order</h4>';
-								str+='<h3 class="font_weight">99</h3>';
+								str+='<h4 class="font_weight">'+result.govtOrderCount+'</h4>';
 								str+='<hr class="hrlineCss"/>';
 										str+='<div class="row">';
 											str+='<div class="col-sm-4">';
-												str+='<h4 >PLANE</h4>';
-												str+='<h4 class="font_weight">50</h4>';
+												str+='<h4>PLANE</h4>';
+												str+='<h5 class="font_weight">'+result.plainGoCount+'</h5>';
 											str+='</div>';
 											str+='<div class="col-sm-4">';
-												str+='<h4 >SCP</h4>';
-												str+='<h4 class="font_weight">50</h4>';
+												str+='<h4>SCP</h4>';
+												str+='<h5 class="font_weight">'+result.scpGoCount+'</h5>';
 											str+='</div>';
 											str+='<div class="col-sm-4">';
 												str+='<h4>TSP</h4>';
-												str+='<h4 class="font_weight">233</h4>';
+												str+='<h5 class="font_weight">'+result.tspGoCount+'</h5>';
 											str+='</div>';
 										str+='</div>';
 							str+='</div>';
 						str+='</div>';
 						
 						str+='<div class="col-sm-4">';
-							str+='<div class="border-cls">';
-								str+='<h4 class="font_weight">Total Govt Order</h4>';
-								str+='<h3 class="font_weight">99</h3>';
+							str+='<div class="border-cls padding_right_left">';
+								str+='<h4>Total Works</h4>';
+								str+='<h4 class="font_weight">'+result.workNumber+'</h4>';
 								str+='<hr class="hrlineCss"/>';
+										str+='<div class="row">';
+											str+='<div class="col-sm-4">';
+												str+='<h4>PLANE</h4>';
+												str+='<h5 class="font_weight">'+result.plainWorkCount+'</h5>';
+											str+='</div>';
+											str+='<div class="col-sm-4">';
+												str+='<h4 >SCP</h4>';
+												str+='<h5 class="font_weight">'+result.scpWorkCount+'</h5>';
+											str+='</div>';
+											str+='<div class="col-sm-4">';
+												str+='<h4>TSP</h4>';
+												str+='<h5 class="font_weight">'+result.tspWorkCount+'</h5>';
+											str+='</div>';
+										str+='</div>';
 							str+='</div>';
 						str+='</div>';
 						
 						str+='<div class="col-sm-4">';
-							str+='<div class="border-cls">';
-								str+='<h4 class="font_weight">Total Govt Order</h4>';
-								str+='<h3 class="font_weight">99</h3>';
+							str+='<div class="border-cls padding_right_left">';
+								str+='<h4>Total Funds</h4>';
+								str+='<h4 class="font_weight">'+result.amountInDecimal+' Cr</h4>';
 								str+='<hr class="hrlineCss"/>';
+									str+='<div class="row">';
+											str+='<div class="col-sm-4">';
+												str+='<h4>PLANE</h4>';
+												str+='<h5 class="font_weight">'+result.plainAmountInDecimal+'</h5>';
+											str+='</div>';
+											str+='<div class="col-sm-4">';
+												str+='<h4>SCP</h4>';
+												str+='<h5 class="font_weight">'+result.scpAmountInDecimal+'</h5>';
+											str+='</div>';
+											str+='<div class="col-sm-4">';
+												str+='<h4>TSP</h4>';
+												str+='<h5 class="font_weight">'+result.tspAmountInDecimal+'</h5>';
+											str+='</div>';
+										str+='</div>';
 							str+='</div>';
 						str+='</div>';
 						
-					str+='</div>';
+					str+='</div>'
 					
+						str+='<div class="table-responsive">';
+							str+='<table class="table details-overview">';
+								str+='<thead>';
+									str+='<tr>';
+										str+='<th>Program Name</th>';
+										str+='<th>Govt Order</th>';
+										str+='<th>Works Name</th>';
+										str+='<th>Total Works</th>';
+										str+='<th>Amount Cr</th>';
+									str+='</tr>';
+								str+='</thead>';
+								str+='<tbody>';
+								for(var i in result.locationList1){
+									for(var j in result.locationList1[i].locationList1){
+										str+='<tr>';
+											str+='<td>'+result.locationList1[i].programName+'</td>';
+											str+='<td>'+result.locationList1[i].locationList1[j].goNoDate+'</td>';
+											str+='<td>'+result.locationList1[i].locationList1[j].workName+'</td>';
+											str+='<td>'+result.locationList1[i].locationList1[j].workNumber+'</td>';
+											str+='<td>'+result.locationList1[i].locationList1[j].amountInDecimal+'</td>';
+										str+='</tr>';
+									}
+									
+								}
+								str+='<tr>';
+									str+='<th></th>';
+									str+='<th></th>';
+									str+='<th></th>';
+									str+='<th>'+result.workNumber+'</th>';
+									str+='<th>'+result.amountInDecimal+' Cr</th>';
+								str+='</tr>';
+								str+='</tbody>';
+							str+='</table>';
+						
+					str+='</div>';
 				str+='</div>';
 			str+='</div>';
 		$("#"+divId+"DetailsDivId").html(str);	

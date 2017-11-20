@@ -240,11 +240,11 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 					<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="withHeader" class="withAndOutHeaderCls">With Header
 				</label>
 				<label class="radio-inline pull-right" style="margin-right: 20px;">
-					<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="withOutHeader" checked class="withAndOutHeaderCls" >With Out Header
+					<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="withOutHeader" checked class="withAndOutHeaderCls">With Out Header
 				</label>
 			</div>
 			<div class="col-sm-1">
-				<button class="btn btn-md btn-success printViewCls pull-right" attr_divId="printableArea" >Print</button>
+				<button class="btn btn-md btn-success printViewCls pull-right" attr_divId="printableArea">Print</button>
 			</div>
 		</div>
 	</div>
@@ -304,9 +304,9 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 						</div>
 					</div>
 				
-				<div id="overAllDeparmentsDivId" ></div>
-				<div id="rwsDetailsDivId"></div>
-				<div id="encDetailsDivId"></div>
+				<div id="overAllDeparmentsDivId"></div>
+				<div id="rwsDetailsDivId" class="pagebreak"></div>
+				<div id="encDetailsDivId" class="pagebreak"></div>
 			</div>
 		</div>
 		<footer>
