@@ -4882,18 +4882,22 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
 						}
 					}else{
-						if(result[i].percentage < 50)
-						{
-							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
-						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
-						{
-							str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
-						}else if(result[i].percentage >= 80)
-						{
+						if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'IJP PROGRAM WORKS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Cattle Ponds' || type == 'Desilting of Drinking Water Tanks' || type == 'coffee' || type == 'Comprehensive Restoration of minor Irrigation Tank1' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == 'NTR 90 Days' || type == 'NTR Rural House' || type == 'Production of Bricks'){
 							str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
-						}else
-						{
-							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+						}else{
+							if(result[i].percentage < 50)
+							{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+							{
+								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+							}else if(result[i].percentage >= 80)
+							{
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else
+							{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}
 						}
 					}
 					
@@ -6449,7 +6453,9 @@ function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
 								{
 									str+='<div class="col-sm-2 m_top10">';
 										str+='<div class="panel-block-white text-center" overview-popup-block="'+result[i].workName+'" attr_levelId="'+levelId+'" attr_locationId="'+menuLocationId+'" attr_mcc_main_projectId="'+projectDivId+'">';
-											if(result[i].percentage < 50)
+										
+										str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+result[i].workName+'">';
+											/* if(result[i].percentage < 50)
 											{
 												str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+result[i].workName+'">';
 											}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -6460,9 +6466,9 @@ function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
 											{
 												str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+result[i].workName+'">';
 											}else
-											{
+											{ 
 												str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+result[i].workName+'">';
-											}
+											} */
 												if(result[i].workName.length > 12)
 												{
 													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i].workName+'">'+result[i].workName.substr(0,12)+'..</h4>';
@@ -6475,16 +6481,16 @@ function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
 												}else{
 													str+='<h1 class="text-center">0<small>%</small>';
 												}
-												if(result[i].percentage < 60)
+												/* if(result[i].percentage < 60)
 												{
 													str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
 												}else if(result[i].percentage >= 60)
-												{
+												{ */
 													str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
-												}else
-												{
-													str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
-												}
+												//}else
+												//{
+													//str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+												//}
 												str+='<div class="row">';
 													str+='<div class="col-sm-6 text-center">';
 														str+='<label>Sanctioned</label>';
