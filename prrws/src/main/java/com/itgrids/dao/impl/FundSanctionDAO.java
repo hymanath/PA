@@ -1887,4 +1887,63 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getFundSanstionLocationWise(List<Long> financialYearIdsList,List<Long> departmentIdList, Date startDate,Date endDate,Long locationId,String type){
+		
+		StringBuffer sb= new StringBuffer();
+		sb.append(" Select ");
+		sb.append(" DEPT.department_id as deptId, ");//0
+		sb.append(" DEPT.dept_name as deptName, ");//1
+		sb.append(" GT.grant_type_id as grantTypeId, ");//2
+		sb.append(" GT.grant_type as grantType, ");//3
+		sb.append(" count(FS.fund_sanction_id ) as fundSanctionCount, ");//4
+		sb.append(" sum(FS.saction_amount) as totalSanctionAmount ");//5	
+		
+		sb.append( " from fund_sanction FS,department DEPT,grant_type GT,fund_sanction_location FSL ");
+		sb.append(" left outer join location_address LA on FSL.address_id = LA.location_address_id ");
+		sb.append(" left outer join state S on LA.state_id = S.state_id ");
+		sb.append(" left outer join district D on LA.district_id = D.district_id ");
+		sb.append(" left outer join constituency CON on (LA.constituency_id = CON.constituency_id) ");
+		sb.append(" where ");
+		sb.append(" FSL.fund_sanction_id = FS.fund_sanction_id and  ");
+		sb.append(" FS.grant_type_id = GT.grant_type_id and ");
+		sb.append(" FS.department_id = DEPT.department_id and ");
+		if(financialYearIdsList != null && financialYearIdsList.size() > 0){
+			sb.append(" FS.financial_year_id in (:financialYearIdsList) and ");
+		}
+		if(startDate!= null && endDate!= null ){
+		sb.append(" date(FS.inserted_time) between :startDate and :endDate and ");
+		}
+		sb.append(" S.state_id = 1 ");
+		if(type.equalsIgnoreCase("district")){
+			sb.append(" and D.district_id = :locationId ");
+		}else if(type.equalsIgnoreCase("constituency") ){
+			sb.append(" and CON.constituency_id = :locationId ");
+		}
+		sb.append(" group by GT.grant_type_id, DEPT.department_id ");
+		SQLQuery query = getSession().createSQLQuery(sb.toString());
+		
+		query.addScalar("deptId", StandardBasicTypes.LONG);//0
+		query.addScalar("deptName", StandardBasicTypes.STRING);//1
+		query.addScalar("grantTypeId", StandardBasicTypes.LONG);//2
+		query.addScalar("grantType", StandardBasicTypes.STRING);//3
+		query.addScalar("fundSanctionCount", StandardBasicTypes.LONG);//4
+		query.addScalar("totalSanctionAmount", StandardBasicTypes.LONG);//5
+		
+		if(departmentIdList != null && departmentIdList.size() > 0){
+			query.setParameterList("departmentIdList", departmentIdList);
+		}
+		if(financialYearIdsList != null && financialYearIdsList.size() > 0){
+			query.setParameterList("financialYearIdsList", financialYearIdsList);
+		}
+		if(startDate!= null && endDate!= null ){
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		}
+		if(locationId != null && locationId.longValue() > 0){
+			query.setParameter("locationId", locationId);
+		}
+		return query.list();
+	}
+	
 }
