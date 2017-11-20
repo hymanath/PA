@@ -109,7 +109,7 @@
 				str+='<h4 class="m_top10">'+result.roleMemberCount+'</h4>';
 				str+='<ul class="list-inline checkConditionChangeStatusCls">';
 				var bcType=false;
-				var ocType=false;
+				//var ocType=false;
 				var stType=false;
 				var scType=false;
 					for(var i in result.desinationVOList){
@@ -117,9 +117,9 @@
 							if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "BC"){
 								bcType = true;
 							}
-							if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "OC"){
+							/* if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "OC"){
 								ocType = true;
-							}
+							} */
 							if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "SC"){
 								scType = true;
 							}
@@ -128,11 +128,11 @@
 							}
 						}
 					}
-					if(ocType === true){
+					/* if(ocType === true){
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss" style="background-color:#777;"></span> OC</li>';
 					}else{
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss"></span> OC</li>';
-					}
+					} */
 					if(bcType === true){
 						str+='<li style="margin-left:12px;" class="fillBg"><span class="rangeWiseCss" style="background-color:#777;"></span> BC</li>';
 					}else{
@@ -293,7 +293,6 @@
 						str+='<label>Change Committee Status</label>';
 						str+='<select class="form-control chosen-select" id="committeeStatusChangeId">';
 							str+='<option value="approve">Approved</option>';
-							str+='<option value="reject">Reject</option>';
 						str+='</select>';
 					str+='</div>';
 					
