@@ -293,19 +293,20 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 							</div>
 						</div>
 					</div>
-				<div class="row">
-					<div class="dear-sir">
-						<div class="row">
-							<div class="col-md-12 col-sm-12 col-xs-12">
-								<p>Dear Sir,</p>
-								<p>This is a Letter from Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</p>
+					<div class="row">
+						<div class="dear-sir">
+							<div class="row">
+								<div class="col-md-12 col-sm-12 col-xs-12">
+									<p>Dear Sir,</p>
+									<p>This is a Letter from Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</p>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 				
 				<div id="overAllDeparmentsDivId" ></div>
-			<!---->	
+				<div id="rwsDetailsDivId"></div>
+				<div id="encDetailsDivId"></div>
 			</div>
 		</div>
 		<footer>

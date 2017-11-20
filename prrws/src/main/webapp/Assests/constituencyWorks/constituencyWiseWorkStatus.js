@@ -13,9 +13,9 @@
 	getAllFiniancialYears();
 	
 	function onloadCalls(){
-		buildOverAllDepartmentsDetails();
-		getFundManagementSystemWorkDetails(1)
-		getFundManagementSystemWorkDetails(2)
+		getFundManagementSystemWorkDetails(0,"")
+		getFundManagementSystemWorkDetails(1,"enc")
+		getFundManagementSystemWorkDetails(2,"rws")
 	}
 	
 	 $("#dateRangePickerAUM").daterangepicker({
@@ -236,7 +236,7 @@ function printDiv(divName) {
 	});
 	}
 
-function buildOverAllDepartmentsDetails(){
+function buildOverAllDepartmentsDetails(result,departmentId,divId){
 	
 	var departmentId = $("#DepartmentsId").val();
 	var departmentArr=[];
@@ -337,15 +337,15 @@ $(document).on("click",".submitCls",function(){
 		return;
 	}
 	var departmentId = $("#DepartmentsId").val();
-	buildOverAllDepartmentsDetails();
 	if(departmentId ==0 || departmentId == null){
-		getFundManagementSystemWorkDetails(1);
-		getFundManagementSystemWorkDetails(2);
+		getFundManagementSystemWorkDetails(0,"");
+		getFundManagementSystemWorkDetails(1,"enc")
+		getFundManagementSystemWorkDetails(2,"rws")
 	}else{
 		if(departmentId == 1){
-			getFundManagementSystemWorkDetails(departmentId);
+			getFundManagementSystemWorkDetails(departmentId,"enc");
 		}else if(departmentId == 2){
-			getFundManagementSystemWorkDetails(departmentId);
+			getFundManagementSystemWorkDetails(departmentId,"rws");
 		}else if(departmentId == 3){
 			
 		}
@@ -354,7 +354,7 @@ $(document).on("click",".submitCls",function(){
 	
 });
 	
-function getFundManagementSystemWorkDetails(departmentId){
+function getFundManagementSystemWorkDetails(departmentId,divId){
 	var financialYrIdList = $('#financialYearId').val();
 	if(financialYrIdList == 0 || financialYrIdList == null){
 		financialYrIdList=[];
@@ -391,6 +391,64 @@ function getFundManagementSystemWorkDetails(departmentId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},   
     }).done(function(result){
-		
+		if(result !=null){
+			buildOverAllDepartmentsDetails(result,departmentId,divId);
+			buildFundManagementSystemWorkDetails(result,divId);
+		}
     });
+	
+	function buildFundManagementSystemWorkDetails(result,divId){
+		var str='';
+		str+='<div class="go-works">';
+			if(divId == "rws"){
+				str+='<h4>Rural Water Supply & Sanitation Overview</h4>';
+			}else{
+				str+='<h4>Panchayati Raj Engineering Department Overview</h4>';
+			}
+				str+='<div class="main_level_css m_top10">';
+					str+='<div class="row">';
+						str+='<div class="col-sm-4">';
+							str+='<div class="border-cls">';
+								str+='<h4>Total Govt Order</h4>';
+								str+='<h3 class="font_weight">99</h3>';
+								str+='<hr class="hrlineCss"/>';
+										str+='<div class="row">';
+											str+='<div class="col-sm-4">';
+												str+='<h4 >PLANE</h4>';
+												str+='<h4 class="font_weight">50</h4>';
+											str+='</div>';
+											str+='<div class="col-sm-4">';
+												str+='<h4 >SCP</h4>';
+												str+='<h4 class="font_weight">50</h4>';
+											str+='</div>';
+											str+='<div class="col-sm-4">';
+												str+='<h4>TSP</h4>';
+												str+='<h4 class="font_weight">233</h4>';
+											str+='</div>';
+										str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						
+						str+='<div class="col-sm-4">';
+							str+='<div class="border-cls">';
+								str+='<h4 class="font_weight">Total Govt Order</h4>';
+								str+='<h3 class="font_weight">99</h3>';
+								str+='<hr class="hrlineCss"/>';
+							str+='</div>';
+						str+='</div>';
+						
+						str+='<div class="col-sm-4">';
+							str+='<div class="border-cls">';
+								str+='<h4 class="font_weight">Total Govt Order</h4>';
+								str+='<h3 class="font_weight">99</h3>';
+								str+='<hr class="hrlineCss"/>';
+							str+='</div>';
+						str+='</div>';
+						
+					str+='</div>';
+					
+				str+='</div>';
+			str+='</div>';
+		$("#"+divId+"DetailsDivId").html(str);	
+	}
 }
