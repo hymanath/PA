@@ -35,7 +35,7 @@
 	left: -12px !important;
     overflow-y: hidden !important;
     top: 4px !important;
-    width: 155px !important;
+    width: 200px !important;
 }
 </style>
 </head>
