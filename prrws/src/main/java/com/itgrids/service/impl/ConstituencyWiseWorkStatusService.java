@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,8 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				}else if(firstDigit.longValue() == 4L){
 					type = "constituency";
 				}
+			}else{
+				superLocationId = 0L;
 			}
 			List<Object[]> workList = fundSanctionDAO.getFundManagementSystemWorkDetails(financialYearIdsList,departmentId,startDate,endDate,superLocationId,type);
 			//create a map of govtOrderId and govtOrderDtlsVO map
@@ -66,6 +69,19 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			LocationVO  locationVOForListForWork = null;
 			
 			DecimalFormat df = new DecimalFormat("0.000");
+			
+			locationVO.setPlainGoCount(0L);
+			locationVO.setScpGoCount(0L);
+			locationVO.setTspGoCount(0L);
+			
+			locationVO.setPlainWorkCount(0L);
+			locationVO.setScpWorkCount(0L);
+			locationVO.setTspWorkCount(0L);
+			
+			locationVO.setPlainAmount(0L);
+			locationVO.setScpAmount(0L);
+			locationVO.setTspAmount(0L);
+			
 			if(workList != null && workList.size() > 0){
 				for(Object[] param : workList){
 					locationVOForMap = govtOrderMap.get(commonMethodsUtilService.getLongValueForObject(param[6]));
@@ -76,8 +92,16 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					locationVOForMap.setGovtOrderId(commonMethodsUtilService.getLongValueForObject(param[6]));
 					locationVOForMap.setGoNoDate(commonMethodsUtilService.getStringValueForObject(param[9]));
 					locationVOForMap.setIssueDate(commonMethodsUtilService.getStringValueForObject(param[10]));
+					locationVOForMap.setWorkName(commonMethodsUtilService.getStringValueForObject(param[12]));
+					locationVOForMap.setProgramId(commonMethodsUtilService.getLongValueForObject(param[15]));
+					locationVOForMap.setProgramName(commonMethodsUtilService.getStringValueForObject(param[16]));
+					locationVOForMap.setFilePath(commonMethodsUtilService.getStringValueForObject(param[17]));
+					locationVOForMap.setGrantTypeId(commonMethodsUtilService.getLongValueForObject(param[18]));
 					locationVOForMap.setWorkNumber(locationVOForMap.getWorkNumber() + 1L);
 					locationVOForMap.setAmount(locationVOForMap.getAmount() + commonMethodsUtilService.getLongValueForObject(param[11]));
+					
+					
+					
 					
 					locationVOForListForWork = new LocationVO();
 					locationVOForListForWork.setGoNoDate(commonMethodsUtilService.getStringValueForObject(param[9]));
@@ -88,20 +112,66 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					locationVOForListForWork.setAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(param[11])/100000D));
 					locationVOs.add(locationVOForListForWork);   
 				}
+				
 				List<LocationVO> locationVOListForGoNo = new ArrayList<LocationVO>(govtOrderMap.values());
-				//calculate total no of go and total work and total amount
-				Long totalWork = 0L;
-				Long totalAmount = 0L;
-				for(LocationVO param : locationVOListForGoNo){
-					param.setAmountInDecimal(df.format(param.getAmount()/100000D));
-					totalWork = totalWork + param.getWorkNumber();
-					totalAmount = totalAmount + param.getAmount();
+				
+				if(locationVOListForGoNo != null && locationVOListForGoNo.size() > 0){
+					for(LocationVO param : locationVOListForGoNo){
+						if(param.getGrantTypeId().longValue() == 1L){
+							locationVO.setPlainGoCount(locationVO.getPlainGoCount()+1L);
+							locationVO.setPlainWorkCount(locationVO.getPlainWorkCount() + param.getWorkNumber());
+							locationVO.setPlainAmount(locationVO.getPlainAmount() + param.getAmount());
+						}else if(param.getGrantTypeId().longValue() == 2L){
+							locationVO.setScpGoCount(locationVO.getScpGoCount()+1L);
+							locationVO.setScpWorkCount(locationVO.getScpWorkCount() + param.getWorkNumber());
+							locationVO.setScpAmount(locationVO.getScpAmount() + param.getAmount());
+						}else if(param.getGrantTypeId().longValue() == 3L){
+							locationVO.setTspGoCount(locationVO.getTspGoCount()+1L);
+							locationVO.setTspWorkCount(locationVO.getTspWorkCount() + param.getWorkNumber());
+							locationVO.setTspAmount(locationVO.getTspAmount() + param.getAmount());
+						}
+					}
 				}
-				locationVO.setGovtOrderCount(Long.valueOf(locationVOListForGoNo.size()));
-				locationVO.setWorkNumber(totalWork);
-				locationVO.setAmount(totalAmount);
-				locationVO.setAmountInDecimal(df.format(totalAmount/100000D));
-				locationVO.getLocationList1().addAll(locationVOListForGoNo);
+				
+				//finally convert the amount into lakh
+				locationVO.setPlainAmountInDecimal(df.format(locationVO.getPlainAmount()/100000D));
+				locationVO.setScpAmountInDecimal(df.format(locationVO.getScpWorkCount()/100000D));
+				locationVO.setTspAmountInDecimal(df.format(locationVO.getTspAmount()/100000D));
+				
+				Map<Long,List<LocationVO>> programIdAndListOfGo = new HashMap<Long,List<LocationVO>>();
+				List<LocationVO> goOrderVoList = null;
+				if(locationVOListForGoNo != null && locationVOListForGoNo.size() > 0){
+					for(LocationVO param : locationVOListForGoNo){
+						goOrderVoList = programIdAndListOfGo.get(param.getProgramId());
+						if(null == goOrderVoList){
+							goOrderVoList = new ArrayList<LocationVO>();
+							programIdAndListOfGo.put(param.getProgramId(), goOrderVoList);
+						}
+						goOrderVoList.add(param);
+					}
+					
+				}
+				List<LocationVO> programWiseList = new ArrayList<LocationVO>();
+				LocationVO vo = null;
+				if(programIdAndListOfGo != null && programIdAndListOfGo.size() > 0 ){
+					for(Entry<Long,List<LocationVO>> param : programIdAndListOfGo.entrySet()){
+						vo = new LocationVO();
+						vo.setProgramId(param.getKey());
+						vo.setProgramName(param.getValue().get(0).getProgramName());
+						calculateProgramWiseDtls(vo,param.getValue());
+						vo.getLocationList1().addAll(param.getValue());
+						programWiseList.add(vo);
+					}
+				}
+				
+				//calculate total no of go and total work and total amount
+				
+				locationVO.setGovtOrderCount(locationVO.getPlainGoCount()+locationVO.getScpGoCount()+locationVO.getTspGoCount());
+				locationVO.setWorkNumber(locationVO.getPlainWorkCount()+locationVO.getScpWorkCount()+locationVO.getTspWorkCount());
+				locationVO.setAmount(locationVO.getPlainAmount()+locationVO.getScpAmount()+locationVO.getTspAmount());
+				locationVO.setAmountInDecimal(df.format(locationVO.getAmount()/100000D));
+				
+				locationVO.getLocationList1().addAll(programWiseList);
 				locationVO.getLocationList2().addAll(locationVOs);
 			}	
 			return locationVO;
@@ -110,6 +180,22 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 		}
 		return null;
 	}
+	public void calculateProgramWiseDtls(LocationVO vo,List<LocationVO> locationVOs){
+		DecimalFormat df = new DecimalFormat("0.000");
+		Long totalWork = 0L;
+		Long totalAmount = 0L;
+		if(locationVOs != null && locationVOs.size() > 0){
+			for(LocationVO param : locationVOs){
+				totalWork = totalWork + param.getWorkNumber();
+				totalAmount = totalAmount + param.getAmount();
+			}
+			vo.setWorkNumber(totalWork);
+			vo.setAmount(totalAmount);
+			vo.setAmountInDecimal(df.format(totalAmount/100000D));
+		}
+		
+	}
+	
 	/*
 	 * Babu
 	 * @see com.itgrids.service.IConstituencyWiseWorkStatusService#getLocationsNamesBySubLocation(com.itgrids.dto.InputVO)
@@ -135,7 +221,8 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	public List<LocationVO> getDistrictNameAndMlaNameByConsitutency( InputVO inputVO){
 		try{
 			List<LocationVO> finalList = new ArrayList<LocationVO>(0);
-			List<Object[]> objects=assemblyMlaDAO.getAllConstituencyDetails(inputVO.getLocationId());
+			
+			List<Object[]> objects=assemblyMlaDAO.getAllConstituencyDetails(Long.parseLong(inputVO.getLocationId().toString().substring(1)));
 			if(objects != null && objects.size() > 0){
 					for(Object[] param : objects){
 						LocationVO vo = new LocationVO();
