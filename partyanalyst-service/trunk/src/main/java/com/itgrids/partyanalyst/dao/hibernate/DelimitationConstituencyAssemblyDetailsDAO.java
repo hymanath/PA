@@ -630,7 +630,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	@Override
 	public List<Object[]> getAllParliamentConstituencyByStateId(List<Long> districtids) {
 		Query query = getSession().createQuery("select distinct model.delimitationConstituency.constituency.constituencyId," +
-				"model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year =2009 " +
+				"model.delimitationConstituency.constituency.name,  model.constituency.district.districtId, model.constituency.district.districtName from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year =2009 " +
 				" and model.constituency.district.districtId in(:districtIds)");
 		query.setParameterList("districtIds", districtids);
 		  return query.list();

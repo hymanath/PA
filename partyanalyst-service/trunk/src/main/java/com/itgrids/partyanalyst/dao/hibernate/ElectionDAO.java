@@ -976,7 +976,7 @@ IElectionDAO {
 		return query.list();
 	}
 
-	public List<Object[]> getElectionDetailsConstituencyWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds){
+	public List<Object[]> getElectionDetailsConstituencyWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds,String type){
 
 		StringBuilder sb = new StringBuilder();	
 		sb.append(" SELECT ");
@@ -986,9 +986,13 @@ IElectionDAO {
 		sb.append(" from  ");
 		sb.append(" nomination n , ");
 		sb.append(" constituency_election ce, ");
-		sb.append(" candidate_booth_result cbr, ");
-		sb.append(" booth_constituency_election bce , ");
-		sb.append(" booth b, ");
+		if(type == null)
+			sb.append(" candidate_result cbr, ");
+		else{
+			electionScopeIds.clear();
+			electionScopeIds.add(1L);
+			sb.append(" candidate_booth_result cbr,booth b, booth_constituency_election bce ,  ");
+		}
 		sb.append(" election e , ");
 		sb.append(" constituency c , ");
 		sb.append(" election_scope es ,  ");
@@ -996,14 +1000,17 @@ IElectionDAO {
 		sb.append(" where  ");
 		sb.append(" e.election_scope_id = es.election_scope_id and  ");
 		sb.append(" et.election_type_id = es.election_type_id and  ");
-		sb.append(" b.constituency_id = c.constituency_id and  ");
-		sb.append(" (c.district_id BETWEEN 11 and 23 ) and  ");
+		
+		if(type != null){
+			sb.append(" bce.consti_elec_id = ce.consti_elec_id and b.booth_id = bce.booth_id and cbr.booth_constituency_election_id = bce.booth_constituency_election_id and ");
+			sb.append(" (c.district_id BETWEEN 11 and 23 ) and  b.constituency_id = c.constituency_id and  ");
+		}else{
+			sb.append(" ce.constituency_id = c.constituency_id and  ");
+		}
+		
 		sb.append(" ce.election_id = e.election_id and  ");
 		sb.append(" n.nomination_id = cbr.nomination_id and "); 
-		sb.append(" cbr.booth_constituency_election_id = bce.booth_constituency_election_id and  ");
-		sb.append(" bce.booth_id = b.booth_id and  ");
 		sb.append(" n.consti_elec_id = ce.consti_elec_id and  ");
-		sb.append(" ce.consti_elec_id = bce.consti_elec_id and  ");
 		sb.append(" e.election_year in  (:electionYears) and  ");
 		sb.append(" e.sub_type in  (:subTypes) and  e.election_scope_id  in (:electionScopeIds)   ");
 		if(partyIds != null && partyIds.size() > 0)
@@ -1051,42 +1058,68 @@ IElectionDAO {
 
 	}
 
-	public List<Object[]> getElectionDetailsDistrictWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds){
+	@SuppressWarnings("unused")
+	public List<Object[]> getElectionDetailsDistrictWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds,String type){
 		StringBuilder sb = new StringBuilder();	
 		sb.append(" SELECT ");
-		sb.append(" e.election_scope_id as election_scope_id , c.district_id as locationId,  d.district_name as locationName,  e.election_id as election_id, ");
+		sb.append(" e.election_scope_id as election_scope_id , ");
+		if(type == null)
+			sb.append(" d.district_id as locationId, d.district_name as locationName,  e.election_id as election_id, ");
+		else if(type.trim().equalsIgnoreCase("parliament") || type.trim().equalsIgnoreCase("AC_WISE_PA_RESULTS") )
+			sb.append(" c.constituency_id as locationId,  c.name as locationName,  e.election_id as election_id, ");
 		sb.append(" et.election_type as election_type,   ");
 		sb.append(" e.election_year as election_year ,n.party_id as party_id, '' as short_name , sum(cbr.votes_earned)  as sumCount ");
 		sb.append(" from  ");
 		sb.append(" nomination n , ");
 		sb.append(" constituency_election ce, ");
-		sb.append(" candidate_booth_result cbr, ");
-		sb.append(" booth_constituency_election bce , ");
-		sb.append(" booth b, ");
+		
+		if(type != null && type.trim().equalsIgnoreCase("AC_WISE_PA_RESULTS")){
+			electionScopeIds.clear();
+			electionScopeIds.add(1L);
+			sb.append(" booth_constituency_election bce , ");
+			sb.append(" booth b, ");
+			sb.append(" candidate_booth_result cbr, ");
+			//return null;
+		}else{
+			sb.append(" candidate_result cbr, ");
+		}
+		
 		sb.append(" election e , ");
 		sb.append(" constituency c , ");
-		sb.append(" district d , ");
+		if(type == null)
+			sb.append(" district d , ");
+		
 		sb.append(" election_scope es ,  ");
 		sb.append(" election_type et ");
 		sb.append(" where  ");
 		sb.append(" e.election_scope_id = es.election_scope_id and  ");
 		sb.append(" et.election_type_id = es.election_type_id and  ");
-		sb.append(" c.district_id = d.district_id and  ");
-		sb.append(" b.constituency_id = c.constituency_id and  ");
-		sb.append(" (c.district_id BETWEEN 11 and 23 ) and  ");
+		if(type == null){
+			sb.append(" c.district_id = d.district_id and  ");
+			sb.append(" (c.district_id BETWEEN 11 and 23 ) and  ");
+			sb.append(" ce.constituency_id = c.constituency_id and  ");
+		}else if(type.trim().equalsIgnoreCase("parliament")){
+			
+			sb.append(" ce.constituency_id in ("+IConstants.AP_PARLIAMENT_IDS_LIST_STR+") and ");
+			sb.append(" ce.constituency_id = c.constituency_id and  ");
+			//return null;
+		}else if(type.trim().equalsIgnoreCase("AC_WISE_PA_RESULTS")){
+			sb.append(" bce.consti_elec_id = ce.consti_elec_id and b.booth_id = bce.booth_id and cbr.booth_constituency_election_id = bce.booth_constituency_election_id and ");
+			sb.append(" (c.district_id BETWEEN 11 and 23 ) and  b.constituency_id = c.constituency_id and  ");
+		}
+		
 		sb.append(" ce.election_id = e.election_id and  ");
 		sb.append(" n.nomination_id = cbr.nomination_id and "); 
-		sb.append(" cbr.booth_constituency_election_id = bce.booth_constituency_election_id and  ");
-		sb.append(" bce.booth_id = b.booth_id and  ");
 		sb.append(" n.consti_elec_id = ce.consti_elec_id and  ");
-		sb.append(" ce.consti_elec_id = bce.consti_elec_id and  ");
 		sb.append(" e.election_year in  (:electionYears) and  ");
 		sb.append(" e.sub_type in  (:subTypes) and  e.election_scope_id  in (:electionScopeIds) and  ");
 		sb.append(" c.state_id = :locationValues ");
+		
 		if(partyIds != null && partyIds.size() > 0)
-		sb.append(" and n.party_id in  (:partyIds) ");
+			sb.append(" and n.party_id in  (:partyIds) ");
+		
 		sb.append(" GROUP BY  ");
-		sb.append(" c.district_id,ce.election_id,n.party_id  ");
+		sb.append(" locationId,ce.election_id,n.party_id  ");
 
 		Query query = getSession().createSQLQuery((sb.toString()))
 				.addScalar("election_scope_id",Hibernate.LONG)
@@ -1301,7 +1334,7 @@ IElectionDAO {
 		sb.append(" election e , ");
 		sb.append(" constituency c , ");
 		sb.append(" election_scope es ,  ");
-		sb.append(" election_type et, local_election_body leb,election_type et  ");
+		sb.append(" election_type et, local_election_body leb,election_type et1  ");
 		sb.append(" where   leb.election_type_id  = et1.election_type_id and b.local_election_body_id = leb.local_election_body_id and b.local_election_body_id is not null AND ");
 		sb.append(" e.election_scope_id = es.election_scope_id and  ");
 		sb.append(" et.election_type_id = es.election_type_id and  ");
@@ -1352,7 +1385,7 @@ IElectionDAO {
 		if(electionScopeIds != null && electionScopeIds.size()>0){
         	query.setParameterList("electionScopeIds", electionScopeIds);
         }
-		return query.list();
+		return null;
 	}
 
 	@Override

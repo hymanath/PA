@@ -445,7 +445,7 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		queryStr.append(" left join model1.address.localElectionBody localElectionBody ");
 		queryStr.append(" left join model1.address.localElectionBody.electionType electionType ");
 		queryStr.append(" left join model1.address.panchayat panc ");
-		queryStr.append(" where model.isDeleted='N' and model1.isDeleted='N' and model1.isConfirmed='N' and model1.completedDate is null ");
+		queryStr.append(" where model.isDeleted='N' and model1.isDeleted='N' ");
 		
 		if(countType.trim().equalsIgnoreCase("addedCount")){
 			queryStr.append(" and model2.isDeleted='N' and model2.isActive='Y' ");
