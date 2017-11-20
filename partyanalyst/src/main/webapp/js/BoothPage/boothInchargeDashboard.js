@@ -749,9 +749,10 @@ function buildBoothDetails(result,locationLevel,filterLevel,filterValue){
 				    str+='<th>MANDAL</th>';
 				    str+='<th>VILLAGE/WARD</th>';
 				    str+='<th>Booth NO</th>';
-				    str+='<th>AddedMemberCount</th>';
-					str+='<th>Booth Status</th>';
-					str+='<th>Update Status</th>';
+				    str+='<th>FILLED</th>';
+				    str+='<th> VACANCY </th>';
+					str+='<th>BOOTH STATUS </th>';
+					str+='<th>UPDATE STATUS</th>';
 			str+='</thead>';
 			 str+='<tbody>';
 				for(var i in result){
@@ -786,9 +787,16 @@ function buildBoothDetails(result,locationLevel,filterLevel,filterValue){
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-						var addedCount = result[i].convenerCount+result[i].memberCount
+						var addedCount = result[i].convenerCount+result[i].memberCount;
+						var maxCount = result[i].totalCount;
+						var vacancyCount = parseInt(maxCount)-parseInt(addedCount);
 						if(addedCount > 0 ){
 						  str+='<td class="text-center cadreDetailsCls" style="cursor: pointer; font-size: 16px; margin-top: 10px;color: rgb(51, 122, 183);" attr_location_level='+locationLevel+' attr_serial_no="0" attr_filter_level="" attr_booth_name="'+result[i].boothName+'" attr_filter_value="0"  attr_booth_id="'+result[i].boothId+'">'+addedCount+'</td>';
+						}else {
+						  str+='<td class="text-center">-</td>';		
+						}
+						if(vacancyCount > 0 ){
+						  str+='<td class="text-center cadreDetailsCls" style="cursor: pointer; font-size: 16px; margin-top: 10px;color: rgb(51, 122, 183);" attr_location_level='+locationLevel+' attr_serial_no="0" attr_filter_level="" attr_booth_name="'+result[i].boothName+'" attr_filter_value="0"  attr_booth_id="'+result[i].boothId+'">'+vacancyCount+'</td>';
 						}else {
 						  str+='<td class="text-center">-</td>';		
 						}
@@ -799,7 +807,10 @@ function buildBoothDetails(result,locationLevel,filterLevel,filterValue){
 							str+='<td class="text-center;">-</td>';	
 						}
 						if(result[i].isReadyToConfirm == "yes"){
-							str+='<td> <button class="btn btn-xs btn-min btn-success" onclick="validateBoothToMakeConfirm('+result[i].boothId+',\''+result[i].boothName+'\',\''+filterLevel+'\',\''+filterValue+'\')"> Entry Finished </button></td>';
+							if(result[i].status != null && result[i].status=='Completed')
+								str+='<td class="text-center;">-</td>';
+							else
+								str+='<td> <button class="btn btn-xs btn-min btn-success" onclick="validateBoothToMakeConfirm('+result[i].boothId+',\''+result[i].boothName+'\',\''+filterLevel+'\',\''+filterValue+'\')"> Entry Finished </button></td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}	
@@ -1113,3 +1124,71 @@ function gettingBoothInchargeRoleDetails(boothId,locationValue,enrllmentId){
 	str +='</div>';
 	$("#boothInchargeRoleDivId").html(str);
 }
+
+
+function getAccessLocationsForUser(){
+	$("#constituencyId  option").remove();
+	$("#constituencyId").append('<option value="0">Select Location</option>');
+	var jsObj={};
+	$.ajax({
+		type : "POST",
+		url : "getUsersAccessLocatiosLIstAction.action",
+		data : {task:JSON.stringify(jsObj)} 
+	}).done(function(result){	
+		if(result != null){
+			for(var i in result)
+			{
+				$('#constituencyId').append('<option value="'+result[i].locationId+'"> '+result[i].locationName+' </option>');
+			}	
+		}
+	});
+}
+
+
+function getCommitteeFinalizedBoothListforUnlock(id){
+	$("#committeeLocationIds1  option").remove();
+	$("#committeeLocationIds1").append('<option value="0">Select Location</option>');
+	if(parseInt(id) ==0){
+		alert("Please select Constituency.");
+		return;
+	}
+	var jsObj={
+		assemblyIdsArr:[id]
+	};
+	$.ajax({
+		type : "POST",
+		url : "getCommitteeFinalizedBoothListforUnlockAction.action",
+		data : {task:JSON.stringify(jsObj)} 
+	}).done(function(result){	
+		if(result != null && parseInt(id)>0){
+			for(var i in result)
+			{
+				$('#committeeLocationIds1').append('<option value="'+result[i].locationId+'"> BOOTH NO - '+result[i].locationName+' </option>');
+			}
+		}
+	});
+}
+
+function removeLock(){
+	var committeeId = $('#committeeLocationIds1').val();
+	var constituencyId = $('#constituencyId').val();
+	var jsObj={boothCommitteeIdsArr:[committeeId]};	
+	$.ajax({
+		type : "POST",
+		url : "unlockBoothCommitteesByCommitteeIdListAction.action",
+		data : {task:JSON.stringify(jsObj)} 
+	}).done(function(result){	
+		if(result != null){
+			if(result.trim().length =="success"){
+				alert("Successfully removed Lock.");
+				getCommitteeFinalizedBoothListforUnlock(constituencyId)
+			}else if(result.trim().length =="failure"){
+				alert("Unable to remove lock .Please try later.");
+			}else{
+				alert("Successfully removed Lock.");
+				getCommitteeFinalizedBoothListforUnlock(constituencyId)
+			}
+		}
+	});
+}
+getAccessLocationsForUser();
