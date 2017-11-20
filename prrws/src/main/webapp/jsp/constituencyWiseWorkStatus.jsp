@@ -215,7 +215,6 @@ margin-left:20px;
 				<div class="col-sm-2 border_right">
 					<div class="form-group">
 							<select id="departmentSelId" class="form-control chosenSelect">
-								<option value="0"> Select Department</option>
 							</select>
 						</div>
 				</div>
