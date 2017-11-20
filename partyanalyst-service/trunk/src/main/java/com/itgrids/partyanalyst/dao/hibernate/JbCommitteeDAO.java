@@ -109,7 +109,7 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		if(status != null && status.equalsIgnoreCase("Not Started")){
 			sb.append("   and model.isCommitteeConfirmed = 'N' and model.startDate is null ");
 		}else if(status != null && status.equalsIgnoreCase("Approved")){
-			sb.append("   and model.isCommitteeConfirmed = 'Y' and model.completedDate is not nnull ");
+			sb.append("   and model.isCommitteeConfirmed = 'Y' and model.completedDate is not null ");
 		}
 		
 		/*sb.append(" group by model.jbCommitteeLevel.jbCommitteeLevelId ");

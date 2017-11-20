@@ -472,7 +472,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						status = "InProgress";
 					}else*/ if(confirmedStatus.equalsIgnoreCase("N") && startDate == ""){
 						status = "Not Started";
-					}else if(confirmedStatus == "Y" && completedDate != ""){
+					}else if(confirmedStatus.equalsIgnoreCase("Y")  && completedDate != ""){
 						status = "Approved";
 					}
 					if(committeeLvlId.longValue()==1l || commonMethodsUtilService.getLongValueForObject(param[6]) == 517l){
