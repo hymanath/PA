@@ -1470,7 +1470,8 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 					}
 					 
 					 
-					 str+='<td>'+result[i].locationName+starMark+'</td>';	
+					  str+='<td>'+result[i].locationName+starMark+'';
+					 str+='<span>'+buildStatusCounts(result[i])+'</span>';
 					for(var j in result[i].list){
 						if(result[i].list[j].status == 'GOOD')
 						{
@@ -3291,4 +3292,21 @@ function getDetailedElectionResults(constituencyId,electionYear,type,electionTyp
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		});
 	}
+}
+
+function buildStatusCounts(result){
+	var str='';
+	str+='<ul class="list-inline">'; 
+			for( var k in result.subList1){
+				
+				str+='<li>';
+				if(result.subList1[k].wonSeatsCount !=null && result.subList1[k].wonSeatsCount > 0){
+					str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result.subList1[k].status.trim()]+';color:#fff;cursor:pointer;text-decoration;none;"  status_attr="'+result.subList1[k].status+'"  title=" '+result.subList1[k].status+' locations details" locationids_attr="'+result.subList1[k].locationId+'" year_attr="">'+result.subList1[k].wonSeatsCount+'</span>';
+				}else{
+					str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result.subList1[k].status.trim()]+';color:#fff;text-d//ecoration:none;cursor: auto;">0</span>';
+				}
+				str+='</li>';
+			}
+	str+='</ul>';
+return str;
 }
