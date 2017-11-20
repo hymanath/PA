@@ -293,4 +293,97 @@
 	  color: #fff !important;
 	  font-weight: 600 !important;
 	}
+	.container{
+		 width: 1000px;
+	}
+	.go-works{
+		padding: 10px 15px !important;
+		border-radius: 5px !important;
+		-webkit-border-radius: 5px !important;
+		-moz-border-radius: 5px !important;
+	}
+	.redColor{
+		font-weight:bold !important;
+		color:#ec2027 !important;
+		text-transform:uppercase !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.border-cls{
+		border: 3px solid rgb(209,171,102) !important;
+		background-color:rgb(244,235,218) !important;
+		padding: 5px 10px !important;
+		border-radius: 5px !important;
+		margin-top: 5px !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+		-webkit-border-radius: 5px !important;
+		-moz-border-radius: 5px !important;
+		
+	}
+	.border-cls h4{
+		padding-top: 5px !important;
+		padding-bottom: 5px !important;
+	}
+	.main_level_css{
+		border: 3px solid rgb(209,171,102) !important;
+		padding: 5px 5px 5px !important;
+		border-radius: 5px !important;
+		background-color: rgb(251,247,240) !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+		-webkit-border-radius: 5px !important;
+		-moz-border-radius: 5px !important;
+	}
+	.border_cls_low_level{
+		background-color: rgb(251,247,240) !important;
+		border: 3px solid rgb(209,171,102) !important;
+		padding: 5px 5px !important;
+		border-radius: 5px !important;
+		margin-top: 5px !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+		-webkit-border-radius: 5px !important;
+		-moz-border-radius: 5px !important;
+	}
+	.border_cls_low_level h4{
+			padding-top: 5px !important;
+			padding-bottom: 5px !important;
+	}
+	.department_wise_css{
+		background-color: #ffffff !important;
+		border: 1px solid #d1ab66 !important;
+		border-radius: 5px !important;
+		padding: 5px !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.mainDivHeaderCls{
+		padding: 5px 5px 5px !important;
+	}
+	.to-date{
+		padding: 5px 5px 5px !important;
+	}
+	.dear-sir{
+		padding-left: 10px !important;
+	}
+	.mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
+		font-family:'Ubuntu', sans-serif !important;
+		font-size:13px !important;
+	}
+	.page{
+        page-break-after: always;
+        page-break-inside: avoid;
+     }
+	 .withHeaderCls{
+		display:block !important;
+	 }
+	 .withOutHeaderCls{
+		display:none !important;
+	 }
+	 .imgWidthHeight{
+		width:80px !important;
+		height:80px !important;
+	 }
+	@page { size: auto;  margin: 0mm; }
 }
