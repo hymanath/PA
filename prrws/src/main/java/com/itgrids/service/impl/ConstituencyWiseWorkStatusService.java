@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IAssemblyMlaDAO;
 import com.itgrids.dao.IConstituencyDAO;
+import com.itgrids.dao.IDepartmentDAO;
 import com.itgrids.dao.IFundSanctionDAO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
@@ -32,6 +33,8 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	private CommonMethodsUtilService commonMethodsUtilService;
 	@Autowired
 	private IAssemblyMlaDAO assemblyMlaDAO;
+	@Autowired
+	private IDepartmentDAO departmentDAO;
 	
 	/*
 	 * Swadhin K Lenka
@@ -149,4 +152,20 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				}
 		 return null;
 	    }
+	public List<LocationVO> getDepartmentNames(){
+		try{
+			List<LocationVO> finalList = new ArrayList<LocationVO>(0);
+			List<Object[]> objects=departmentDAO.getAllDepartments();
+			 for(Object[] param:objects){
+				LocationVO vo = new LocationVO();
+				vo.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setDepartmentName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				finalList.add(vo);
+			   }
+			 return finalList;
+		   }catch(Exception e){
+			   LOG.error(" Exception occured in FundManagementDashboardService ,getDepartmentNames() ",e);
+		    }
+		  return null;
+	     }
 }
