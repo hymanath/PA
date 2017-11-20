@@ -71,7 +71,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				superLocationId = 0L;
 			}
 			
-			if(departmentIdList.size() == 0){
+			if(departmentIdList.size() == 0 || departmentIdList.get(0) == 0){
 				List<LocationVO> overviewList = new ArrayList<LocationVO>();
 				LocationVO locationVO2 = null;
 				Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndWorkCount = new HashMap<Long,Map<Long,Long>>();
@@ -90,24 +90,24 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					locationVO2.setPlainWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(1L)));
 					locationVO2.setScpWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(2L)));
 					locationVO2.setTspWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(3L)));
-					locationVO2.setPlainAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L))/100000D));
-					locationVO2.setScpAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L))/100000D));
-					locationVO2.setTspAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L))/100000D));
+					locationVO2.setPlainAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L))/10000000D));
+					locationVO2.setScpAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L))/10000000D));
+					locationVO2.setTspAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L))/10000000D));
 					locationVO2.setWorkNumber((locationVO2.getPlainWorkCount() + locationVO2.getScpWorkCount() + locationVO2.getTspWorkCount()));
 					locationVO2.setAmount(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L))+commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L))+commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L)));
-					locationVO2.setAmountInDecimal(df.format(locationVO2.getAmount()/100000D));
+					locationVO2.setAmountInDecimal(df.format(locationVO2.getAmount()/10000000D));
 					overviewList.add(locationVO2);
 					
 				}
 				//call one more service for mgnrgs
 				InputVO inputVO = new InputVO();
 				inputVO.setFinancialYrIdList(financialYearIdsList);
-				inputVO.setConstituencyId(inputVO.getLocationId());
+				inputVO.setLocationId(locationId);
 				NregsFmsWorksVO fmsWorksVO = getConstituencyWiseNregsWorksOverview(inputVO);
 				locationVO2 = new LocationVO();
 				locationVO2.setDepartmentName("Mahatma Gandhi National Rural Employment Gurantee Scheme");
 				locationVO2.setWorkNumber(fmsWorksVO.getFinalWorks());
-				locationVO2.setAmountInDecimal(df.format(fmsWorksVO.getTotalAmount()/100000D));
+				locationVO2.setAmountInDecimal(fmsWorksVO.getFinalAmount());
 				overviewList.add(locationVO2);
 				locationVO.getLocationList1().addAll(overviewList);
 				return locationVO;
@@ -502,7 +502,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 		try {
 			if(value != null){
 				returnVal = new BigDecimal(Long.valueOf(value)/10000000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-				returnVal = returnVal+" Cr";
+				//returnVal = returnVal+" Cr";
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at convertRupeesIntoCrores - NREGSTCSService service", e);
