@@ -1813,9 +1813,20 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" FS.work_name as workName, ");//8
 		sb.append(" FS.go_no_date as goNoDate, ");//9
 		sb.append(" date(GO.issue_date) as issueDate, ");//10
-		sb.append(" FS.saction_amount as amount ");//11
+		sb.append(" FS.saction_amount as amount, ");//11
+		sb.append(" GO.work_name as uniqueWorkName, ");//12
+		
+		sb.append(" DEPT.department_id as deptId, ");//13
+		sb.append(" DEPT.dept_name as deptName, ");//14
+		
+		sb.append(" GS.govt_scheme_id as programId, ");//15
+		sb.append(" GS.scheme_name as programName, ");//16
+		
+		sb.append(" GO.file_path as filePath, ");//17
+		sb.append(" FS.grant_type_id as grantTypeId ");//18
+		
 		sb.append(" from ");
-		sb.append(" fund_sanction FS, govt_order GO, fund_sanction_location FSL ");
+		sb.append(" fund_sanction FS, govt_order GO, department DEPT, govt_scheme GS,fund_sanction_location FSL ");
 		sb.append(" left outer join location_address LA on FSL.address_id = LA.location_address_id ");
 		sb.append(" left outer join state S on LA.state_id = S.state_id ");
 		sb.append(" left outer join district D on LA.district_id = D.district_id ");
@@ -1825,14 +1836,18 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" where ");
 		sb.append(" FSL.fund_sanction_id = FS.fund_sanction_id and  ");
 		sb.append(" FS.govt_order_id=GO.govt_order_id and  ");
-		sb.append(" FS.department_id=:departmentId and ");
-		sb.append(" FS.financial_year_id in (:financialYearIdsList) and ");
-		sb.append(" (date(FS.inserted_time) between :startDate and :endDate) and ");
-		sb.append(" S.state_id = 1 and ");
+		sb.append(" FS.department_id=DEPT.department_id and ");
+		sb.append(" FS.govt_scheme_id=GS.govt_scheme_id and ");		
+		sb.append(" DEPT.department_id=:departmentId and ");
+		if(financialYearIdsList != null && financialYearIdsList.size() > 0){
+			sb.append(" FS.financial_year_id in (:financialYearIdsList) and ");
+		}
+		sb.append(" date(FS.inserted_time) between :startDate and :endDate and ");
+		sb.append(" S.state_id = 1 ");
 		if(type.equalsIgnoreCase("district")){
-			sb.append(" D.district_id = :locationId ");
-		}else if(type.equalsIgnoreCase("constituency")){
-			sb.append(" CON.constituency_id = :locationId ");
+			sb.append(" and D.district_id = :locationId ");
+		}else if(type.equalsIgnoreCase("constituency") ){
+			sb.append(" and CON.constituency_id = :locationId ");
 		}
 		
 		SQLQuery query = getSession().createSQLQuery(sb.toString());
@@ -1848,8 +1863,18 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		query.addScalar("goNoDate", StandardBasicTypes.STRING);//9
 		query.addScalar("issueDate", StandardBasicTypes.STRING);//10
 		query.addScalar("amount", StandardBasicTypes.LONG);//11
+		query.addScalar("uniqueWorkName", StandardBasicTypes.STRING);//12
+		query.addScalar("deptId", StandardBasicTypes.LONG);//13
+		query.addScalar("deptName", StandardBasicTypes.STRING);//14
+		query.addScalar("programId", StandardBasicTypes.LONG);//15
+		query.addScalar("programName", StandardBasicTypes.STRING);//16
+		query.addScalar("filePath", StandardBasicTypes.STRING);//17
+		query.addScalar("grantTypeId", StandardBasicTypes.LONG);//18
+		
 		query.setParameter("departmentId", departmentId);
-		query.setParameterList("financialYearIdsList", financialYearIdsList);
+		if(financialYearIdsList != null && financialYearIdsList.size() > 0){
+			query.setParameterList("financialYearIdsList", financialYearIdsList);
+		}
 		query.setDate("startDate", startDate);
 		query.setDate("endDate", endDate);
 		if(locationId != null && locationId.longValue() > 0){
