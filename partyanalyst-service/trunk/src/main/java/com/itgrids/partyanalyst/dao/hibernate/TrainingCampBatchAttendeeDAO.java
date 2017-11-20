@@ -167,7 +167,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 		return query.list();
 	}
    
-   public Object[] getCadreDetailsByCadreIdAndBatchId(Long tdpCadreId,Long batchId,Long enrollmentYearId){
+   public List<Object[]> getCadreDetailsByCadreIdAndBatchId(Long tdpCadreId,Long batchId,Long enrollmentYearId){
 	   StringBuilder queryStr = new StringBuilder();
 		queryStr.append("");
 		 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
@@ -185,7 +185,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   query.setParameter("batchId",batchId);
 	   if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
 		   query.setParameter("enrollmentYearId",enrollmentYearId);
-	   return (Object[])query.uniqueResult();
+	   return query.list();
    }
    
    @SuppressWarnings("unchecked")
@@ -248,7 +248,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   return (List<Object[]>)query.list();
    }
    
-   public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> enrollmentYearIds,List<Long> programYearIds){
+   public List<Long> getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> enrollmentYearIds,List<Long> programYearIds){
 	   
 	   StringBuilder sb=new StringBuilder();
 	   
@@ -294,7 +294,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   if(programYearIds != null && programYearIds.size()>0){
 		   query.setParameterList("programYearIds",programYearIds);
 	   }
-	   return (Long)query.uniqueResult();
+	   return query.list();
    }
    public List<Object[]> getConfirmedCadreByBatch(Long batchId,Long enrollmentYearId){
 	   StringBuilder queryStr = new StringBuilder();
@@ -574,7 +574,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   
    }
    
-   public Long getTotalSpeakersCountDetails(List<Long> cadreIdList,Date fromDate,Date toDate,List<Long> enrollmentYearIds,List<Long> programYearIds){
+   public List<Long> getTotalSpeakersCountDetails(List<Long> cadreIdList,Date fromDate,Date toDate,List<Long> enrollmentYearIds,List<Long> programYearIds){
 	   StringBuilder sb = new StringBuilder();
 	   
 	   sb.append(" select count(distinct model.tdpCadreId) from TrainingCampBatchAttendee model " +
@@ -602,7 +602,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
        if(programYearIds != null && programYearIds.size()>0){
     	   query.setParameterList("programYearIds", programYearIds); 
 	   }
-	   return (Long) query.uniqueResult();
+	   return query.list();
 	   
    }
    
@@ -626,7 +626,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   return query.list();
    }
    
-   public Long getInvitedCountByLocation(Long id,String searchType){
+   public List<Long> getInvitedCountByLocation(Long id,String searchType){
 	   
 	   StringBuilder str = new StringBuilder();
 	   str.append("select count(distinct model.tdpCadreId)" +
@@ -656,7 +656,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   if(searchType != null)
 		   query.setParameter("id", id);
 	   
-	   return (Long) query.uniqueResult();
+	   return query.list();
    }
    
    public List<Long> getInvitedCadreIdsByLocation(Long id,String searchType){
