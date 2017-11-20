@@ -9,6 +9,8 @@ public class LocationVO implements Serializable {
 	private Long locaitonLevelName;
 	private Long locationId;
 	private String locationName;
+	private Long programId;
+	private String programName;
 	private Long amount = 0L;
 	private Long count = 0L;
 	private Long financialYearId;
@@ -34,9 +36,27 @@ public class LocationVO implements Serializable {
 	private String mlaName;
 	private Long govtOrderCount;
 	private String amountInDecimal;
+	private Long grantTypeId;
 	
 	private Long streetHabitationCount;
 	private Long totalCount;
+	
+	private Long plainGoCount;
+	private Long scpGoCount;
+	private Long tspGoCount;
+	
+	private Long plainWorkCount;
+	private Long scpWorkCount;
+	private Long tspWorkCount;
+	
+	private Long plainAmount;
+	private Long scpAmount;
+	private Long tspAmount;
+	
+	private String plainAmountInDecimal;
+	private String scpAmountInDecimal;
+	private String tspAmountInDecimal;
+	
 	private List<StatusVO> statusList = new ArrayList<StatusVO>(0);
 	private AddressVO addressVO = new AddressVO();
 	
@@ -239,6 +259,97 @@ public class LocationVO implements Serializable {
 	}
 	public void setAmountInDecimal(String amountInDecimal) {
 		this.amountInDecimal = amountInDecimal;
+	}
+	public String getProgramName() {
+		return programName;
+	}
+	public void setProgramName(String programName) {
+		this.programName = programName;
+	}
+	public Long getProgramId() {
+		return programId;
+	}
+	public void setProgramId(Long programId) {
+		this.programId = programId;
+	}
+	public Long getPlainGoCount() {
+		return plainGoCount;
+	}
+	public void setPlainGoCount(Long plainGoCount) {
+		this.plainGoCount = plainGoCount;
+	}
+	public Long getScpGoCount() {
+		return scpGoCount;
+	}
+	public void setScpGoCount(Long scpGoCount) {
+		this.scpGoCount = scpGoCount;
+	}
+	public Long getTspGoCount() {
+		return tspGoCount;
+	}
+	public void setTspGoCount(Long tspGoCount) {
+		this.tspGoCount = tspGoCount;
+	}
+	public Long getPlainWorkCount() {
+		return plainWorkCount;
+	}
+	public void setPlainWorkCount(Long plainWorkCount) {
+		this.plainWorkCount = plainWorkCount;
+	}
+	public Long getScpWorkCount() {
+		return scpWorkCount;
+	}
+	public void setScpWorkCount(Long scpWorkCount) {
+		this.scpWorkCount = scpWorkCount;
+	}
+	public Long getTspWorkCount() {
+		return tspWorkCount;
+	}
+	public void setTspWorkCount(Long tspWorkCount) {
+		this.tspWorkCount = tspWorkCount;
+	}
+	public Long getPlainAmount() {
+		return plainAmount;
+	}
+	public void setPlainAmount(Long plainAmount) {
+		this.plainAmount = plainAmount;
+	}
+	public Long getScpAmount() {
+		return scpAmount;
+	}
+	public void setScpAmount(Long scpAmount) {
+		this.scpAmount = scpAmount;
+	}
+	
+	public Long getTspAmount() {
+		return tspAmount;
+	}
+	public void setTspAmount(Long tspAmount) {
+		this.tspAmount = tspAmount;
+	}
+	public String getPlainAmountInDecimal() {
+		return plainAmountInDecimal;
+	}
+	public void setPlainAmountInDecimal(String plainAmountInDecimal) {
+		this.plainAmountInDecimal = plainAmountInDecimal;
+	}
+	public String getScpAmountInDecimal() {
+		return scpAmountInDecimal;
+	}
+	public void setScpAmountInDecimal(String scpAmountInDecimal) {
+		this.scpAmountInDecimal = scpAmountInDecimal;
+	}
+	public String getTspAmountInDecimal() {
+		return tspAmountInDecimal;
+	}
+	public void setTspAmountInDecimal(String tspAmountInDecimal) {
+		this.tspAmountInDecimal = tspAmountInDecimal;
+	}
+	public Long getGrantTypeId() {
+		return grantTypeId;
+	}
+	public void setGrantTypeId(Long grantTypeId) {
+		this.grantTypeId = grantTypeId;
 	}
 	
 }
