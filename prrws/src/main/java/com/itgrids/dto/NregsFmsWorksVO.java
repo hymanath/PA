@@ -30,7 +30,64 @@ public class NregsFmsWorksVO implements Serializable{
 	private String totalManDays;
 	private String days;
 	
+	private Long grounded;
+	private Long inProgress;
+	private Long completed;
+	private Long programId;
+	private Long noOfWorks;
+	private Long locationsCount;
+	private Long finalWorks;
+	private String finalAmount;
 	
+	
+	public Long getFinalWorks() {
+		return finalWorks;
+	}
+	public void setFinalWorks(Long finalWorks) {
+		this.finalWorks = finalWorks;
+	}
+	public String getFinalAmount() {
+		return finalAmount;
+	}
+	public void setFinalAmount(String finalAmount) {
+		this.finalAmount = finalAmount;
+	}
+	public Long getLocationsCount() {
+		return locationsCount;
+	}
+	public void setLocationsCount(Long locationsCount) {
+		this.locationsCount = locationsCount;
+	}
+	public Long getNoOfWorks() {
+		return noOfWorks;
+	}
+	public void setNoOfWorks(Long noOfWorks) {
+		this.noOfWorks = noOfWorks;
+	}
+	public Long getProgramId() {
+		return programId;
+	}
+	public void setProgramId(Long programId) {
+		this.programId = programId;
+	}
+	public Long getGrounded() {
+		return grounded;
+	}
+	public void setGrounded(Long grounded) {
+		this.grounded = grounded;
+	}
+	public Long getInProgress() {
+		return inProgress;
+	}
+	public void setInProgress(Long inProgress) {
+		this.inProgress = inProgress;
+	}
+	public Long getCompleted() {
+		return completed;
+	}
+	public void setCompleted(Long completed) {
+		this.completed = completed;
+	}
 	public String getProgram() {
 		return program;
 	}
