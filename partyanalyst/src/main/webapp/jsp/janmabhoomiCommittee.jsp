@@ -221,8 +221,8 @@
 								}else{
 									str+='<td> - </td>';
 								}
-								if(result.desinationVOList[i].desinationMebersVOList[j].voterId !=null && result.desinationVOList[i].desinationMebersVOList[j].voterId.length>0){
-									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'</td>';
+								if(result.desinationVOList[i].desinationMebersVOList[j].voterCardNo !=null && result.desinationVOList[i].desinationMebersVOList[j].voterCardNo.length>0){
+									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].voterCardNo+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
