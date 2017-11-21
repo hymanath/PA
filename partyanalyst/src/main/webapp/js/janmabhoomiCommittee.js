@@ -1,5 +1,6 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 
+var blockLevel="";
 onLoadCalls();
 function onLoadCalls(){
 	getJbCommitteeStatusCount();	
@@ -321,37 +322,37 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 							}
 								
 								if(totalCount >0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="total" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+totalCount+'</span></td>';
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="total" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'">'+totalCount+'</span></td>';
 								}else{
 									str+='<td> - </td>';
 								}
 								
 								if(result[i].list[j].notStartedCommitteeCnt !=null && result[i].list[j].notStartedCommitteeCnt>0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Not Started" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+result[i].list[j].notStartedCommitteeCnt+'</span></td>';
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Not Started" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count block_level="'+blockType+'">'+result[i].list[j].notStartedCommitteeCnt+'</span></td>';
 								}else{
 									str+='<td> - </td>';
 								}
 								
 								if(result[i].list[j].inprogressCommitteeCnt !=null && result[i].list[j].inprogressCommitteeCnt>0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Inprogress" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+result[i].list[j].inprogressCommitteeCnt+'</span></td>';
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Inprogress" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'">'+result[i].list[j].inprogressCommitteeCnt+'</span></td>';
 								}else{
 									str+='<td> - </td>';
 								}
 								
 								if(result[i].list[j].readyForApprovelCommitteeCnt !=null && result[i].list[j].readyForApprovelCommitteeCnt>0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="readyforapproval" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+result[i].list[j].readyForApprovelCommitteeCnt+'</span></td>';
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="readyforapproval" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count block_level="'+blockType+'">'+result[i].list[j].readyForApprovelCommitteeCnt+'</span></td>';
 								}else{
 									str+='<td> - </td>';
 								}
 								
 								if(result[i].list[j].totalApprovedCommitteeCnt !=null && result[i].list[j].totalApprovedCommitteeCnt>0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Approved" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+result[i].list[j].totalApprovedCommitteeCnt+'</span></td>';
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Approved" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count block_level="'+blockType+'">'+result[i].list[j].totalApprovedCommitteeCnt+'</span></td>';
 								}else{
 									str+='<td> - </td>';
 								}
 								
 								if(result[i].list[j].submitedCommittees !=null && result[i].list[j].submitedCommittees>0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count">'+result[i].list[j].submitedCommittees+'</span></td>';
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count block_level="'+blockType+'">'+result[i].list[j].submitedCommittees+'</span></td>';
 								}else{
 									str+='<td> - </td>';
 								}
@@ -371,6 +372,7 @@ $(document).on("click",".committeeWiseDetailsClick",function(){
 	var levelId = $(this).attr("attr_level_id");
 	var levelValue = $(this).attr("attr_location_value");
 	var type = $(this).attr("attr_type");
+	blockLevel = $(this).attr("block_level");
 	$("#committeeWiseModalOpen").modal("show");
 	
 	if(type== "name"){
@@ -1061,6 +1063,7 @@ function savingApplication(committeeId,statusType){
 		  }, 1000);
 		  setTimeout(function(){
 			$('body').addClass("modal-open");
+			getDistrictWiseCommitteeDetails(blockLevel,"level")	
 			getJanmabhoomiCommitteeOverview(committeeId,statusType)	
 		  }, 2000);
 		    
