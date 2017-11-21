@@ -75,5 +75,5 @@ public interface ITdpCadreReportService {
      public List<BasicVO> getAllIVROptions(Long campaignId);
      
      public List<BasicVO> getAllCampaigns();
-     public List<BasicVO> getTdpCommitteeMandalByConstituency(Long constituencyId,Long enrollmentId);
+     public List<BasicVO> getTdpCommitteeMandalByConstituency(Long constituencyId,Long enrollmentId,String committeeType);
 }
