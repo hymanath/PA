@@ -331,7 +331,7 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 													str+='</div>';
 													str+='<div class="col-sm-3">';
 														str+='<h4 class="font_weight">TSP</h4>';
-														str+='<h4 class="font_weight">'+result.locationList1[i].scpWorkCount+'</h4>';
+														str+='<h4 class="font_weight">'+result.locationList1[i].tspWorkCount+'</h4>';
 													str+='</div>';
 												}
 											str+='</div>';
