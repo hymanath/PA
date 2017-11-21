@@ -305,64 +305,66 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 					str+='</div>';
 					str+='<div class="">';
 					for(var i in result.locationList1){
-							str+='<div class="border_cls_low_level">';
-							if(result.locationList1[i].departmentName == 'ENC')
-								str+='<h4 class="font_weight">Panchayati Raj Engineering Department</h4>';
-							else if(result.locationList1[i].departmentName == 'RWS')
-								str+='<h4 class="font_weight">Rural Water Supply & Sanitation</h4>';
-							else if(result.locationList1[i].departmentName == 'Mahatma Gandhi National Rural Employment Gurantee Scheme')
-								str+='<h4 class="font_weight">Mahatma Gandhi National Rural Employment Gurantee Scheme</h4>';
-								str+='<div class="row m_top10">';
-									str+='<div class="col-sm-6">';
-										str+='<div class="department_wise_css">';
-											str+='<div class="row">';
-												str+='<div class="col-sm-3">';
-													str+='<h4 class="font_weight">Works</h4>';
-													str+='<h3 class="font_weight">'+result.locationList1[i].workNumber+'</h3>';
+						if(result.locationList1[i].workNumber > 0){
+								str+='<div class="border_cls_low_level">';
+								if(result.locationList1[i].departmentName == 'ENC')
+									str+='<h4 class="font_weight">Panchayati Raj Engineering Department</h4>';
+								else if(result.locationList1[i].departmentName == 'RWS')
+									str+='<h4 class="font_weight">Rural Water Supply & Sanitation</h4>';
+								else if(result.locationList1[i].departmentName == 'Mahatma Gandhi National Rural Employment Gurantee Scheme')
+									str+='<h4 class="font_weight">Mahatma Gandhi National Rural Employment Gurantee Scheme</h4>';
+									str+='<div class="row m_top10">';
+										str+='<div class="col-sm-6">';
+											str+='<div class="department_wise_css">';
+												str+='<div class="row">';
+													str+='<div class="col-sm-3">';
+														str+='<h4 class="font_weight">Works</h4>';
+														str+='<h3 class="font_weight">'+result.locationList1[i].workNumber+'</h3>';
+													str+='</div>';
+													if(result.locationList1[i].departmentName == 'ENC' || result.locationList1[i].departmentName == 'RWS'){
+														str+='<div class="col-sm-3">';
+															str+='<h4 class="font_weight">PLANE</h4>';
+															str+='<h4 class="font_weight">'+result.locationList1[i].plainWorkCount+'</h4>';
+														str+='</div>';
+														str+='<div class="col-sm-3">';
+															str+='<h4 class="font_weight">SCP</h4>';
+															str+='<h4 class="font_weight">'+result.locationList1[i].scpWorkCount+'</h4>';
+														str+='</div>';
+														str+='<div class="col-sm-3">';
+															str+='<h4 class="font_weight">TSP</h4>';
+															str+='<h4 class="font_weight">'+result.locationList1[i].tspWorkCount+'</h4>';
+														str+='</div>';
+													}
 												str+='</div>';
-												if(result.locationList1[i].departmentName == 'ENC' || result.locationList1[i].departmentName == 'RWS'){
-													str+='<div class="col-sm-3">';
-														str+='<h4 class="font_weight">PLANE</h4>';
-														str+='<h4 class="font_weight">'+result.locationList1[i].plainWorkCount+'</h4>';
-													str+='</div>';
-													str+='<div class="col-sm-3">';
-														str+='<h4 class="font_weight">SCP</h4>';
-														str+='<h4 class="font_weight">'+result.locationList1[i].scpWorkCount+'</h4>';
-													str+='</div>';
-													str+='<div class="col-sm-3">';
-														str+='<h4 class="font_weight">TSP</h4>';
-														str+='<h4 class="font_weight">'+result.locationList1[i].tspWorkCount+'</h4>';
-													str+='</div>';
-												}
 											str+='</div>';
 										str+='</div>';
-									str+='</div>';
-									str+='<div class="col-sm-6">';
-										str+='<div class="department_wise_css">';
-											str+='<div class="row">';
-												str+='<div class="col-sm-3">';
-													str+='<h4 class="font_weight">Funds</h4>';
-													str+='<h3 class="font_weight">'+parseFloat(result.locationList1[i].amountInDecimal).toFixed(2)+' <span style="color: rgb(0, 0, 0); font-size: 14px ! important;font-weight:normal;">Cr</span></h3>';
+										str+='<div class="col-sm-6">';
+											str+='<div class="department_wise_css">';
+												str+='<div class="row">';
+													str+='<div class="col-sm-3">';
+														str+='<h4 class="font_weight">Funds</h4>';
+														str+='<h3 class="font_weight">'+parseFloat(result.locationList1[i].amountInDecimal).toFixed(2)+' <span style="color: rgb(0, 0, 0); font-size: 14px ! important;font-weight:normal;">Cr</span></h3>';
+													str+='</div>';
+													if(result.locationList1[i].departmentName == 'ENC' || result.locationList1[i].departmentName == 'RWS'){
+														str+='<div class="col-sm-3">';
+															str+='<h4 class="font_weight">PLANE</h4>';
+															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].plainAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
+														str+='</div>';
+														str+='<div class="col-sm-3">';
+															str+='<h4 class="font_weight">SCP</h4>';
+															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].scpAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
+														str+='</div>';
+														str+='<div class="col-sm-3">';
+															str+='<h4 class="font_weight">TSP</h4>';
+															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].tspAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
+														str+='</div>';
+													}
 												str+='</div>';
-												if(result.locationList1[i].departmentName == 'ENC' || result.locationList1[i].departmentName == 'RWS'){
-													str+='<div class="col-sm-3">';
-														str+='<h4 class="font_weight">PLANE</h4>';
-														str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].plainAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
-													str+='</div>';
-													str+='<div class="col-sm-3">';
-														str+='<h4 class="font_weight">SCP</h4>';
-														str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].scpAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
-													str+='</div>';
-													str+='<div class="col-sm-3">';
-														str+='<h4 class="font_weight">TSP</h4>';
-														str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].tspAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
-													str+='</div>';
-												}
 											str+='</div>';
 										str+='</div>';
-									str+='</div>';
-								str+='</div>';	
-							str+='</div>';
+									str+='</div>';	
+								str+='</div>';
+							}
 						}
 					str+='</div>';
 				str+='</div>';
@@ -494,202 +496,207 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
     });
 }	
 	function buildFundManagementSystemWorkDetails(result,divId){
-		var str='';
-		str+='<div class="go-works">';
-			if(divId == "rws"){
-				str+='<h4>Rural Water Supply & Sanitation Overview</h4>';
-			}else{
-				str+='<h4>Panchayati Raj Engineering Department Overview</h4>';
-			}
-				str+='<div class="main_level_css m_top10">';
-					str+='<div class="row">';
-					
-						str+='<div class="col-sm-4">';
-							str+='<div class="border-cls padding_right_left">';
-								str+='<h4>Total Govt Order</h4>';
-								if(result.govtOrderCount == 0 || typeof(result.govtOrderCount) === 'undefined' || typeof(result.govtOrderCount) === undefined){
-									str+='<h4 class="font_weight">0</h4>';
-								}else{
-									str+='<h4 class="font_weight">'+result.govtOrderCount+'</h4>';
-									
-								}
-								str+='<hr class="hrlineCss"/>';
-										str+='<div class="row">';
-											str+='<div class="col-sm-4">';
-												str+='<h4>PLANE</h4>';
-												if(result.plainGoCount == 0 || typeof(result.plainGoCount) === 'undefined' || typeof(result.plainGoCount) === undefined){
-													str+='<h5 class="font_weight">0</h5>';
-												}else{
-													str+='<h5 class="font_weight">'+result.plainGoCount+'</h5>';
-													
-												}
-												
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<h4>SCP</h4>';
-												if(result.scpGoCount == 0 || typeof(result.scpGoCount) === 'undefined' || typeof(result.scpGoCount) === undefined){
-													str+='<h5 class="font_weight">0</h5>';
-												}else{
-													str+='<h5 class="font_weight">'+result.scpGoCount+'</h5>';
-													
-												}
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<h4>TSP</h4>';
-												if(result.tspGoCount == 0 || typeof(result.tspGoCount) === 'undefined' || typeof(result.tspGoCount) === undefined){
-													str+='<h5 class="font_weight">0</h5>';
-												}else{
-													str+='<h5 class="font_weight">'+result.tspGoCount+'</h5>';
-													
-												}
-											str+='</div>';
-										str+='</div>';
-							str+='</div>';
-						str+='</div>';
+		if(result.workNumber > 0){
+			var str='';
+			str+='<div class="go-works">';
+				if(divId == "rws"){
+					str+='<h4>Rural Water Supply & Sanitation Overview</h4>';
+				}else{
+					str+='<h4>Panchayati Raj Engineering Department Overview</h4>';
+				}
+					str+='<div class="main_level_css m_top10">';
+						str+='<div class="row">';
 						
-						str+='<div class="col-sm-4">';
-							str+='<div class="border-cls padding_right_left">';
-								str+='<h4>Total Works</h4>';
-								if(result.workNumber == 0 || typeof(result.workNumber) === 'undefined' || typeof(result.workNumber) === undefined){
-									str+='<h4 class="font_weight">0</h4>';
-								}else{
-									str+='<h4 class="font_weight">'+result.workNumber+'</h4>';
-									
-								}
-								
-								str+='<hr class="hrlineCss"/>';
-										str+='<div class="row">';
-											str+='<div class="col-sm-4">';
-												str+='<h4>PLANE</h4>';
-												if(result.plainWorkCount == 0 || typeof(result.plainWorkCount) === 'undefined' || typeof(result.plainWorkCount) === undefined){
-													str+='<h5 class="font_weight">0</h5>';
-												}else{
-													str+='<h5 class="font_weight">'+result.plainWorkCount+'</h5>';
-													
-												}
-												
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<h4 >SCP</h4>';
-												if(result.scpWorkCount == 0 || typeof(result.scpWorkCount) === 'undefined' || typeof(result.scpWorkCount) === undefined){
-													str+='<h5 class="font_weight">0</h5>';
-												}else{
-													str+='<h5 class="font_weight">'+result.scpWorkCount+'</h5>';
-													
-												}
-												
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<h4>TSP</h4>';
-												if(result.tspWorkCount == 0 || typeof(result.tspWorkCount) === 'undefined' || typeof(result.tspWorkCount) === undefined){
-													str+='<h5 class="font_weight">0</h5>';
-												}else{
-													str+='<h5 class="font_weight">'+result.tspWorkCount+'</h5>';
-													
-												}
-												
-											str+='</div>';
-										str+='</div>';
-							str+='</div>';
-						str+='</div>';
-						
-						str+='<div class="col-sm-4">';
-							str+='<div class="border-cls padding_right_left">';
-								str+='<h4>Total Funds</h4>';
-								if(result.amountInDecimal == 0 || typeof(result.amountInDecimal) === 'undefined' || typeof(result.amountInDecimal) === undefined){
-									str+='<h4 class="font_weight">0</h4>';
-								}else{
-									str+='<h4 class="font_weight">'+result.amountInDecimal+' Cr</h4>';
-									
-								}
-								
-								str+='<hr class="hrlineCss"/>';
-									str+='<div class="row">';
-											str+='<div class="col-sm-4">';
-												str+='<h4>PLANE</h4>';
-												if(result.plainAmountInDecimal == 0 || typeof(result.plainAmountInDecimal) === 'undefined' || typeof(result.plainAmountInDecimal) === undefined){
-													str+='<h5 class="font_weight">0</h5>';
-												}else{
-													str+='<h5 class="font_weight">'+result.plainAmountInDecimal+'</h5>';
-													
-												}
-												
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<h4>SCP</h4>';
-												if(result.scpAmountInDecimal == 0 || typeof(result.scpAmountInDecimal) === 'undefined' || typeof(result.scpAmountInDecimal) === undefined){
-													str+='<h5 class="font_weight">0</h5>';
-												}else{
-													str+='<h5 class="font_weight">'+result.scpAmountInDecimal+'</h5>';
-													
-												}
-												
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<h4>TSP</h4>';
-												if(result.tspAmountInDecimal == 0 || typeof(result.tspAmountInDecimal) === 'undefined' || typeof(result.tspAmountInDecimal) === undefined){
-													str+='<h5 class="font_weight">0</h5>';
-												}else{
-													str+='<h5 class="font_weight">'+result.tspAmountInDecimal+'</h5>';
-													
-												}
-											str+='</div>';
-										str+='</div>';
-							str+='</div>';
-						str+='</div>';
-						
-					str+='</div>'
-					
-						str+='<div class="table-responsive">';
-							str+='<table class="table details-overview">';
-								str+='<thead>';
-									str+='<tr>';
-										str+='<th>Program&nbsp;Name</th>';
-										str+='<th>Govt&nbsp;Order</th>';
-										str+='<th>Works&nbsp;Name</th>';
-										str+='<th>Total&nbsp;Works</th>';
-										str+='<th>Amount&nbsp;Cr</th>';
-									str+='</tr>';
-								str+='</thead>';
-								str+='<tbody>';
-								if(result.locationList1 !=null && result.locationList1.length>0){
-									for(var i in result.locationList1){
-										for(var j in result.locationList1[i].locationList1){
-											str+='<tr>';
-												str+='<td>'+result.locationList1[i].programName+'</td>';
-												if(result.locationList1[i].locationList1[j].filePath != null && result.locationList1[i].locationList1[j].filePath.length > 1){
-													str+='<td><span filePath="'+result.locationList1[i].locationList1[j].filePath+'" style="cursor:pointer;" class="showPdfCls go_clickCr" >'+result.locationList1[i].locationList1[j].goNoDate+'</span></td>';
-												}else{
-													str+='<td>'+result.locationList1[i].locationList1[j].goNoDate+'</td>';
-												}
-												
-												str+='<td>'+result.locationList1[i].locationList1[j].workName+'</td>';
-												str+='<td>'+result.locationList1[i].locationList1[j].workNumber+'</td>';
-												str+='<td>'+result.locationList1[i].locationList1[j].amountInDecimal+'</td>';
-											str+='</tr>';
-										}
+							str+='<div class="col-sm-4">';
+								str+='<div class="border-cls padding_right_left">';
+									str+='<h4>Total Govt Order</h4>';
+									if(result.govtOrderCount == 0 || typeof(result.govtOrderCount) === 'undefined' || typeof(result.govtOrderCount) === undefined){
+										str+='<h4 class="font_weight">0</h4>';
+									}else{
+										str+='<h4 class="font_weight">'+result.govtOrderCount+'</h4>';
 										
 									}
-									str+='<tr>';
-										str+='<th></th>';
-										str+='<th></th>';
-										str+='<th></th>';
-										str+='<th>'+result.workNumber+'</th>';
-										str+='<th>'+result.amountInDecimal+'</th>';
-									str+='</tr>';
-								}else{
-									str+='<tr>';
-										str+='<th colspan="5">No Data Available</th>';
-									str+='</tr>';
-								}
-								
-								str+='</tbody>';
-							str+='</table>';
+									str+='<hr class="hrlineCss"/>';
+											str+='<div class="row">';
+												str+='<div class="col-sm-4">';
+													str+='<h4>PLANE</h4>';
+													if(result.plainGoCount == 0 || typeof(result.plainGoCount) === 'undefined' || typeof(result.plainGoCount) === undefined){
+														str+='<h5 class="font_weight">0</h5>';
+													}else{
+														str+='<h5 class="font_weight">'+result.plainGoCount+'</h5>';
+														
+													}
+													
+												str+='</div>';
+												str+='<div class="col-sm-4">';
+													str+='<h4>SCP</h4>';
+													if(result.scpGoCount == 0 || typeof(result.scpGoCount) === 'undefined' || typeof(result.scpGoCount) === undefined){
+														str+='<h5 class="font_weight">0</h5>';
+													}else{
+														str+='<h5 class="font_weight">'+result.scpGoCount+'</h5>';
+														
+													}
+												str+='</div>';
+												str+='<div class="col-sm-4">';
+													str+='<h4>TSP</h4>';
+													if(result.tspGoCount == 0 || typeof(result.tspGoCount) === 'undefined' || typeof(result.tspGoCount) === undefined){
+														str+='<h5 class="font_weight">0</h5>';
+													}else{
+														str+='<h5 class="font_weight">'+result.tspGoCount+'</h5>';
+														
+													}
+												str+='</div>';
+											str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							
+							str+='<div class="col-sm-4">';
+								str+='<div class="border-cls padding_right_left">';
+									str+='<h4>Total Works</h4>';
+									if(result.workNumber == 0 || typeof(result.workNumber) === 'undefined' || typeof(result.workNumber) === undefined){
+										str+='<h4 class="font_weight">0</h4>';
+									}else{
+										str+='<h4 class="font_weight">'+result.workNumber+'</h4>';
+										
+									}
+									
+									str+='<hr class="hrlineCss"/>';
+											str+='<div class="row">';
+												str+='<div class="col-sm-4">';
+													str+='<h4>PLANE</h4>';
+													if(result.plainWorkCount == 0 || typeof(result.plainWorkCount) === 'undefined' || typeof(result.plainWorkCount) === undefined){
+														str+='<h5 class="font_weight">0</h5>';
+													}else{
+														str+='<h5 class="font_weight">'+result.plainWorkCount+'</h5>';
+														
+													}
+													
+												str+='</div>';
+												str+='<div class="col-sm-4">';
+													str+='<h4 >SCP</h4>';
+													if(result.scpWorkCount == 0 || typeof(result.scpWorkCount) === 'undefined' || typeof(result.scpWorkCount) === undefined){
+														str+='<h5 class="font_weight">0</h5>';
+													}else{
+														str+='<h5 class="font_weight">'+result.scpWorkCount+'</h5>';
+														
+													}
+													
+												str+='</div>';
+												str+='<div class="col-sm-4">';
+													str+='<h4>TSP</h4>';
+													if(result.tspWorkCount == 0 || typeof(result.tspWorkCount) === 'undefined' || typeof(result.tspWorkCount) === undefined){
+														str+='<h5 class="font_weight">0</h5>';
+													}else{
+														str+='<h5 class="font_weight">'+result.tspWorkCount+'</h5>';
+														
+													}
+													
+												str+='</div>';
+											str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							
+							str+='<div class="col-sm-4">';
+								str+='<div class="border-cls padding_right_left">';
+									str+='<h4>Total Funds</h4>';
+									if(result.amountInDecimal == "0.00" || typeof(result.amountInDecimal) === 'undefined' || typeof(result.amountInDecimal) === undefined){
+										str+='<h4 class="font_weight">0</h4>';
+									}else{
+										str+='<h4 class="font_weight">'+result.amountInDecimal+' Cr</h4>';
+										
+									}
+									
+									str+='<hr class="hrlineCss"/>';
+										str+='<div class="row">';
+												str+='<div class="col-sm-4">';
+													str+='<h4>PLANE</h4>';
+													if(result.plainAmountInDecimal == "0.0" || typeof(result.plainAmountInDecimal) === 'undefined' || typeof(result.plainAmountInDecimal) === undefined){
+														str+='<h5 class="font_weight">0</h5>';
+													}else{
+														str+='<h5 class="font_weight">'+result.plainAmountInDecimal+'</h5>';
+														
+													}
+													
+												str+='</div>';
+												str+='<div class="col-sm-4">';
+													str+='<h4>SCP</h4>';
+													if(result.scpAmountInDecimal == "0.0" || typeof(result.scpAmountInDecimal) === 'undefined' || typeof(result.scpAmountInDecimal) === undefined){
+														str+='<h5 class="font_weight">0</h5>';
+													}else{
+														str+='<h5 class="font_weight">'+result.scpAmountInDecimal+'</h5>';
+														
+													}
+													
+												str+='</div>';
+												str+='<div class="col-sm-4">';
+													str+='<h4>TSP</h4>';
+													if(result.tspAmountInDecimal == "0.0" || typeof(result.tspAmountInDecimal) === 'undefined' || typeof(result.tspAmountInDecimal) === undefined){
+														str+='<h5 class="font_weight">0</h5>';
+													}else{
+														str+='<h5 class="font_weight">'+result.tspAmountInDecimal+'</h5>';
+														
+													}
+												str+='</div>';
+											str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							
+						str+='</div>'
 						
+							str+='<div class="table-responsive">';
+								str+='<table class="table details-overview">';
+									str+='<thead>';
+										str+='<tr>';
+											str+='<th>Program&nbsp;Name</th>';
+											str+='<th>Govt&nbsp;Order</th>';
+											str+='<th>Works&nbsp;Name</th>';
+											str+='<th>Total&nbsp;Works</th>';
+											str+='<th>Amount&nbsp;Cr</th>';
+										str+='</tr>';
+									str+='</thead>';
+									str+='<tbody>';
+									if(result.locationList1 !=null && result.locationList1.length>0){
+										for(var i in result.locationList1){
+											for(var j in result.locationList1[i].locationList1){
+												str+='<tr>';
+													str+='<td>'+result.locationList1[i].programName+'</td>';
+													if(result.locationList1[i].locationList1[j].filePath != null && result.locationList1[i].locationList1[j].filePath.length > 1){
+														str+='<td><span filePath="'+result.locationList1[i].locationList1[j].filePath+'" style="cursor:pointer;" class="showPdfCls go_clickCr" >'+result.locationList1[i].locationList1[j].goNoDate+'</span></td>';
+													}else{
+														str+='<td>'+result.locationList1[i].locationList1[j].goNoDate+'</td>';
+													}
+													
+													str+='<td>'+result.locationList1[i].locationList1[j].workName+'</td>';
+													str+='<td>'+result.locationList1[i].locationList1[j].workNumber+'</td>';
+													str+='<td>'+result.locationList1[i].locationList1[j].amountInDecimal+'</td>';
+												str+='</tr>';
+											}
+											
+										}
+										str+='<tr>';
+											str+='<th></th>';
+											str+='<th></th>';
+											str+='<th></th>';
+											str+='<th>'+result.workNumber+'</th>';
+											str+='<th>'+result.amountInDecimal+'</th>';
+										str+='</tr>';
+									}else{
+										str+='<tr>';
+											str+='<th colspan="5">No Data Available</th>';
+										str+='</tr>';
+									}
+									
+									str+='</tbody>';
+								str+='</table>';
+							
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-			str+='</div>';
-		$("#"+divId+"DetailsDivId").html(str);	
+			$("#"+divId+"DetailsDivId").html(str);
+		}
+		else{
+			$("#"+divId+"DetailsDivId").html("");
+		}
 	}
 
 function getConstituencyWiseNregsWorksDetails(departmentId,divId){
