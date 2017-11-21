@@ -1510,7 +1510,7 @@ IElectionDAO {
 			else if(locationTypeId.longValue() == 6l )
 				sb.append(" b.panchayat_id = c.panchayat_id and b.local_election_body_id is null and  ");
 			else if(locationTypeId.longValue() == 7l )
-				sb.append(" b.local_election_body_id = c.local_election_body_id and ");
+				sb.append(" b.local_election_body_id = c.local_election_body_id and b.local_election_body_id is not null and ");
 			
 			sb.append(" e.election_scope_id = es.election_scope_id AND et.election_type_id = es.election_type_id AND " +
 					"  ce.election_id = e.election_id" +
