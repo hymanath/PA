@@ -999,10 +999,12 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			  status = "Ready For Approval";
 			  committeeVO.setStatus(status);
 		     return committeeVO;
+		  }else if(committeeVO.getRoleMemberCount() != null && committeeVO.getRoleMemberCount().longValue() >0l && committeeVO.getAddedMemberCount().longValue() == 0L) {
+			   status = "Not Started";
+			  committeeVO.setStatus(status);
+		     return committeeVO;
 		  }
 		  return committeeVO;
-		 /* Long totalRoleCount = jbCommitteeRoleDAO.getTotalRoleMemberCountByCommitteId(commiteeId);
-		  Long totalMemberAddedCount = jbCommitteeMemberDAO.getMemberApprovedCountByCommitteId(commiteeId);*/
 	}
 }
 
