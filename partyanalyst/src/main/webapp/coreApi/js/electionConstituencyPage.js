@@ -1827,6 +1827,9 @@ function  getElectionInformationLocationWiseStatusAndYearWise(eletionSubType,ele
 	if($('#allainceStatusPartyFieldId').is(':checked')){
 		withAllance="true";
 	}
+	if(locationLevelId == 2 && (electionScopeVal == 4 || electionScopeVal == 3)){
+		searchLevelVal= "constituency"
+	}
 	
 	var jsObj={
 		locationTypeId 		:locationLevelId,
