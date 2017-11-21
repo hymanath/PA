@@ -879,6 +879,8 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
     }).done(function(result){ 
       if(result !=null){
 		  builldLevelWiseMemberDetailsAppend(result,roleId,statusType,committeeId);
+	  }else{
+		  $("#memberAddedPopUpDetailsId").html("No Data Available");
 	  }
     });
 }
