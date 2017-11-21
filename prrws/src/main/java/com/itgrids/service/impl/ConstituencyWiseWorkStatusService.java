@@ -97,16 +97,18 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					locationVO2.setPlainWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(1L)));
 					locationVO2.setScpWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(2L)));
 					locationVO2.setTspWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(3L)));
-					if(deptIdAndGrandTypeIdAndAmount.get(param.getKey()) != null){
-						locationVO2.setPlainAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L))/10000000D));
-						deptWiseTotalAmount = deptWiseTotalAmount + deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L);
-						locationVO2.setScpAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L))/10000000D));
-						deptWiseTotalAmount = deptWiseTotalAmount + deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L);
-						locationVO2.setTspAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L))/10000000D));
-						deptWiseTotalAmount = deptWiseTotalAmount + deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L);
-					}else{
-						locationVO2.setPlainAmountInDecimal("0.0");
-					}
+						if(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L)!= null){
+							locationVO2.setPlainAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L))/10000000D));
+							deptWiseTotalAmount = deptWiseTotalAmount + deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L);
+							}	
+							if(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L)!= null){
+							locationVO2.setScpAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L))/10000000D));	
+							deptWiseTotalAmount = deptWiseTotalAmount + deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L);
+							}
+							if(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L)!= null){
+							locationVO2.setTspAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L))/10000000D));
+							deptWiseTotalAmount = deptWiseTotalAmount + deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L);
+							}
 					locationVO2.setWorkNumber((locationVO2.getPlainWorkCount() + locationVO2.getScpWorkCount() + locationVO2.getTspWorkCount()));
 					locationVO2.setAmount(deptWiseTotalAmount);
 					locationVO2.setAmountInDecimal(df.format(locationVO2.getAmount()/10000000D));
