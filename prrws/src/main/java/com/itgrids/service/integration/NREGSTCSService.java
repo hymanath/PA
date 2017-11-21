@@ -5933,4 +5933,50 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return retrunList;
 	}
+	/*
+	 * Date : 21/11/2017
+	 * Author :Nandhini
+	 * @description : getManWorkDaysOfNrega
+	 */
+	public List<NregsDataVO> getManWorkDaysOfNrega(InputVO inputVO){
+		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
+		try{
+			
+			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APMandaysService/APMandaysAbstract";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUE_ID").toString().trim().length() > 0 ? jObj.getString("UNIQUE_ID") : "1").toString()));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setThisMonth(jObj.getString("THIS_MONTH"));
+	 	    				vo.setFinAsOfToday(jObj.getString("FIN_AS_OF_TODAY"));
+	 	    				vo.setLastFin(jObj.getString("LAST_FIN"));
+	 	    				vo.setLastFinSameDay(jObj.getString("LAST_FIN_SAMEDAY"));
+	 	    				vo.setFrom2014(jObj.getString("FROM_2014"));
+	 	    				returnList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+		}catch(Exception e){
+			LOG.error("Exception raised at getManWorkDaysOfNrega - NREGSTCSService service", e);
+		}
+		return returnList;
+	}
 }

@@ -589,4 +589,16 @@ public class NregsDashboardController {
 		}
 		return locationVOList;
 	}
+	
+	@PostMapping("/getManWorkDaysOfNrega")
+	public @ResponseBody List<NregsDataVO> getManWorkDaysOfNrega(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getManWorkDaysOfNrega(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getManWorkDaysOfNrega - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 }
