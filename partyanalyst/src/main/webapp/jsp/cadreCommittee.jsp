@@ -1602,6 +1602,7 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 		var jsObj = {
 			locationId :'${locationValue}',
 			enrollmentId : 2,
+			committeeType:"PartyCommittee",
 			task:""
 		}
 		 $.ajax({
