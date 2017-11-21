@@ -246,6 +246,7 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 			</div>
 			<div class="col-sm-1">
 				<button class="btn btn-md btn-success printViewCls pull-right" attr_divId="printableArea">Print</button>
+				<!--<button onclick="do_dl();">Test me!</button>-->
 			</div>
 		</div>
 		<div class="row">
@@ -256,8 +257,8 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 	<div class="mainDivHeaderCls" >
 		<div class="container">
 			<div class="white_block" style="box-shadow:none;padding:20px;">
-					<div class="headingCssCls">
-						<div class="row">
+					
+						<div class="row headingCssCls" style="display:none">
 							<div class="col-sm-4 mobile-view">
 								<h2 class="redColor">Nara Lokesh</h2>
 								<p>
@@ -277,39 +278,27 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 								</p>
 							</div>
 						</div>
-						<div class="row">
-							<div class="to-date">
-								<div class="row">
-									<div class="col-sm-6">
-										<div id="addressDivId"></div>
-									</div>
-									<div class="col-sm-6 text-right">
-										<p>
-											<!--<span><strong>Date: 17th November, 2017</strong></span><br/>-->
-										</p>
-									</div>
+						<div class="to-date">
+							<div class="row">
+								<div class="col-sm-6">
+									<div id="addressDivId"></div>
+								</div>
+								<div class="col-sm-6 text-right">
+									<p>
+										<!--<span><strong>Date: 17th November, 2017</strong></span><br/>-->
+									</p>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="dear-sir">
-							<div class="row">
-								<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="m_top20">
 									<p>Dear Sir,</p>
 									<p>This is a Letter from <span id="headingId"></span></p>
-								</div>
 							</div>
 						</div>
-					</div>
-					<!--<div class="go-works m_top10">
-						<h4  id="mainHeadingId"></h4>
-					</div>-->
-					<div id="overAllDeparmentsDivId" class="pagebreak"></div>
-					<div id="rwsDetailsDivId" class="pagebreak"></div>
-					<div id="encDetailsDivId" class="pagebreak"></div>
-					<div id="mgnrewsDetailsDivId" class="pagebreak"></div>
-					<div class="footer">
+					<div id="overAllDeparmentsDivId" class="pagebreak pageBreakAddRemove"></div>
+					<div id="rwsDetailsDivId" class=""></div>
+					<div id="encDetailsDivId" class=""></div>
+					<div id="mgnrewsDetailsDivId" class=""></div>
+					<div class="footer headingCssCls" style="display:none">
 						<p>
 							<span>4th Block, 1st Floor, Room No:214, A.P Secretariat Office, Velagapudi</span><br/>
 							<span>Amaravathi, Andhra Pradesh</span>

@@ -7,7 +7,7 @@
 	departmentArrGlob.push("0");
 	var departmentArrGlob1 =[];
 	departmentArrGlob1.push("3");
-	
+	var globalAllPdfFilesArr=[];
 	$(".chosenSelect").chosen();
 	
 	getAllFiniancialYears();
@@ -17,8 +17,8 @@
 		getFundManagementSystemWorkDetails(1,"enc")
 		getFundManagementSystemWorkDetails(2,"rws")
 		getConstituencyWiseNregsWorksDetails(3,"mgnrews")
-		$("#headingId").html("<b>Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</b>")
-		getDistrictNameAndMlaNameByConsitutency();
+		$("#headingId").html("<b class='font_size24'>Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</b>")
+		
 	}
 	
 	 $("#dateRangePickerAUM").daterangepicker({
@@ -213,10 +213,38 @@ function getLocationsNamesBySubLocation(locationId,type){
 	
 		
 }
+$(document).on("click",".withAndOutHeaderCls",function(){
+	var divName = $(this).val();
+		if(divName == "withOutHeader"){
+			$(".headingCssCls").removeClass("withHeaderCls")
+			$(".headingCssCls").addClass("withOutHeaderCls")
+			
+		}else{
+			$(".headingCssCls").removeClass("withOutHeaderCls")
+			$(".headingCssCls").addClass("withHeaderCls")
+			
+		}
+});
 
 $(document).on("click",".printViewCls",function(){
 	var divName = $(this).attr("attr_divId");
-	var headerVal ='';
+	var departmentId = $("#DepartmentsId").val();
+	
+	var totalWorks = 0;
+	var totalFunds = 0.00;
+	
+	if(departmentId == 0){
+		$(".pageBreakAddRemove").addClass("pagebreak")
+		
+	}else if(departmentId == 1){
+		$(".pageBreakAddRemove").removeClass("pagebreak")
+	}else if(departmentId == 2){
+		$(".pageBreakAddRemove").removeClass("pagebreak")
+	}else if(departmentId == 3){
+		$(".pageBreakAddRemove").removeClass("pagebreak")
+	}
+	printDiv(divName);
+	/* var headerVal ='';
 		$(".withAndOutHeaderCls").each(function(i, obj){
 			 if($(this).is(":checked")){
 				  headerVal = $(this).val();
@@ -230,18 +258,18 @@ $(document).on("click",".printViewCls",function(){
 			$(".headingCssCls").removeClass("withOutHeaderCls")
 			$(".headingCssCls").addClass("withHeaderCls")
 			printDiv(divName)
-		}
+		} */
 });
-function printDiv(divName) {
+ function printDiv(divName) {
 	
      var printContents = document.getElementById(divName).innerHTML;
      var originalContents = document.getElementById("printcontent").innerHTML;
 	 document.title = "";
      document.getElementById("printcontent").innerHTML = printContents;
-     window.print();
+	 window.print();
      document.getElementById("printcontent").innerHTML = originalContents;
 	//window.location.reload(true);
-}
+} 
 	/* window.onload=function(e){
 		  //alert();
 		window.onafterprint = function() {
@@ -266,6 +294,7 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 	var departmentId = $("#DepartmentsId").val();
 	var departmentArr=[];
 	var str='';
+	//var str1='';
 	var totalWorks = 0;
 	var totalFunds = 0.00;
 	
@@ -285,8 +314,31 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 			totalFunds = parseFloat(totalFunds)+parseFloat(result.locationList1[i].amountInDecimal);
 		}
 	}
+		/* str1+='<div class="to-date">';
+			str1+='<div class="row">';
+				str1+='<div class="col-sm-6">';
+					str1+='<div id="addressDivId"></div>';
+				str1+='</div>';
+				str1+='<div class="col-sm-6 text-right">';
+					str1+='<p>';
+						str1+='<!--<span><strong>Date: 17th November, 2017</strong></span><br/>-->';
+					str1+='</p>';
+				str1+='</div>';
+			str1+='</div>';
+			str+='<div class="m_top10">';
+					str+='<p>Dear Sir,</p>';
+					if(departmentId == 0){
+						str+='<p class="font_size24">This is a Letter from Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</p>';
+					}else if(departmentId == 2){
+						str+='<p class="font_size24">This is a Letter from Rural Water Supply & Sanitation.</p>';
+					}else if(departmentId == 3){
+						str+='<p class="font_size24">This is a Letter from Mahatma Gandhi National Rural Employment Gurantee Scheme.</p>';
+					}
+			str+='</div>';
+		str+='</div>'; */
+		
 		str+='<div class="go-works">';
-			str+='<h4>G.O.Issued Works Summary</h4>';
+			str+='<h3 class="font_size">G.O.Issued Works Summary</h3>';
 				str+='<div class="main_level_css m_top10">';
 					str+='<div class="row">';
 						str+='<div class="col-sm-6">';
@@ -372,6 +424,7 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 	
 	
 	$("#overAllDeparmentsDivId").html(str);
+	getDistrictNameAndMlaNameByConsitutency();
 	
 }
 $(document).on("click",".submitCls",function(){
@@ -379,7 +432,7 @@ $(document).on("click",".submitCls",function(){
 	var districtId = $("#districtSelId").val();
 	var constituencyId = $("#constituencySelId").val();
 	var departmentId = $("#DepartmentsId").val();
-	
+	getDistrictNameAndMlaNameByConsitutency();
 	if(districtId == null || districtId == 0){
 		alert("Please Select District")
 		return;
@@ -400,7 +453,7 @@ $(document).on("click",".submitCls",function(){
 	getDistrictNameAndMlaNameByConsitutency();
 	if(departmentId ==0 || departmentId == null){
 		$("#headingId").html("")
-		$("#headingId").html("<b>Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</b>")
+		$("#headingId").html("<b class='font_size24'>Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</b>")
 		getFundManagementSystemWorkDetails(0,"");
 		getFundManagementSystemWorkDetails(1,"enc")
 		getFundManagementSystemWorkDetails(2,"rws")
@@ -408,7 +461,7 @@ $(document).on("click",".submitCls",function(){
 	}else{
 		if(departmentId == 1){
 			$("#headingId").html("")
-			$("#headingId").html("<b>Information Technology.</b>")
+			$("#headingId").html("<b class='font_size24'>Information Technology.</b>")
 			$("#overAllDeparmentsDivId").html('');
 			$("#rwsDetailsDivId").html('');
 			$("#encDetailsDivId").html('');	
@@ -416,7 +469,7 @@ $(document).on("click",".submitCls",function(){
 			getFundManagementSystemWorkDetails(departmentId,"enc");
 		}else if(departmentId == 2){
 			$("#headingId").html("")
-			$("#headingId").html("<b>Rural Development.</b>")
+			$("#headingId").html("<b class='font_size24'>Rural Development.</b>")
 			$("#overAllDeparmentsDivId").html('');
 			$("#rwsDetailsDivId").html('');
 			$("#encDetailsDivId").html('');		
@@ -424,7 +477,7 @@ $(document).on("click",".submitCls",function(){
 			getFundManagementSystemWorkDetails(departmentId,"rws");
 		}else if(departmentId == 3){
 			$("#headingId").html("")
-			$("#headingId").html("<b>Minister for Panchayathi Raj.</b>")
+			$("#headingId").html("<b class='font_size24'>Minister for Panchayathi Raj.</b>")
 			$("#overAllDeparmentsDivId").html('');
 			$("#rwsDetailsDivId").html('');
 			$("#encDetailsDivId").html('');	
@@ -500,9 +553,9 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 			var str='';
 			str+='<div class="go-works">';
 				if(divId == "rws"){
-					str+='<h4>Rural Water Supply & Sanitation Overview</h4>';
+					str+='<h3 class="font_size">Rural Water Supply & Sanitation Overview</h3>';
 				}else{
-					str+='<h4>Panchayati Raj Engineering Department Overview</h4>';
+					str+='<h3 class="font_size">Panchayati Raj Engineering Department Overview</h3>';
 				}
 					str+='<div class="main_level_css m_top10">';
 						str+='<div class="row">';
@@ -661,6 +714,8 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 												str+='<tr>';
 													str+='<td>'+result.locationList1[i].programName+'</td>';
 													if(result.locationList1[i].locationList1[j].filePath != null && result.locationList1[i].locationList1[j].filePath.length > 1){
+													var obj={ download: "http://www.mydepartments.in/PRRWS/Govt_Orders/"+result.locationList1[i].locationList1[j].filePath+"", filename: ""+result.locationList1[i].locationList1[j].filePath+""}
+													globalAllPdfFilesArr.push(obj)
 														str+='<td><span filePath="'+result.locationList1[i].locationList1[j].filePath+'" style="cursor:pointer;" class="showPdfCls go_clickCr" >'+result.locationList1[i].locationList1[j].goNoDate+'</span></td>';
 													}else{
 														str+='<td>'+result.locationList1[i].locationList1[j].goNoDate+'</td>';
@@ -738,7 +793,7 @@ function getConstituencyWiseNregsWorksDetails(departmentId,divId){
 function buildConstituencyWiseNregsWorksDetails(result,divId){
 	var str='';
 	str+='<div class="go-works">';
-			str+='<h4>Mahatma Gandhi National Rural Employment Gurantee Scheme Overview</h4>';
+			str+='<h3 class="font_size">Mahatma Gandhi National Rural Employment Gurantee Scheme Overview</h3>';
 				str+='<div class="main_level_css m_top10">';
 					str+='<div class="row">';
 					
@@ -802,7 +857,7 @@ function buildConstituencyWiseNregsWorksDetails(result,divId){
 	$("#"+divId+"DetailsDivId").html(str);
 }
 function getDistrictNameAndMlaNameByConsitutency(){
-	$("#addressDivId").html('');	
+	$("#addressDivId").html(spinner);	
 	var districtId = $("#districtSelId").val();
 	var constituencyId = $("#constituencySelId").val();
 	var locationId='';
@@ -862,3 +917,37 @@ $(document).on('click','.showPdfCls',function(){
 	}
 	
 });
+function download_files(files) {
+  function download_next(i) {
+    if (i >= files.length) {
+      return;
+    }
+    var a = document.createElement('a');
+    a.href = files[i].download;
+    a.target = '_parent';
+    // Use a.download if available, it prevents plugins from opening.
+    if ('download' in a) {
+      a.download = files[i].filename;
+    }
+    // Add a to the doc for click to work.
+    (document.body || document.documentElement).appendChild(a);
+    if (a.click) {
+      a.click(); // The click method is supported by most browsers.
+    } else {
+      $(a).click(); // Backup using jquery
+    }
+    // Delete the temporary link.
+    a.parentNode.removeChild(a);
+    // Download the next file with a small timeout. The timeout is necessary
+    // for IE, which will otherwise only download the first file.
+    setTimeout(function() {
+      download_next(i + 1);
+    }, 500);
+  }
+  // Initiate the first download.
+  download_next(0);
+}
+ function do_dl() {
+	 
+    download_files(globalAllPdfFilesArr);
+  };
