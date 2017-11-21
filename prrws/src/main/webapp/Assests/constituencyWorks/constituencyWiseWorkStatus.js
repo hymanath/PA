@@ -657,7 +657,12 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 										for(var j in result.locationList1[i].locationList1){
 											str+='<tr>';
 												str+='<td>'+result.locationList1[i].programName+'</td>';
-												str+='<td>'+result.locationList1[i].locationList1[j].goNoDate+'</td>';
+												if(result[i].filePath != null && result[i].filePath.length > 1){
+													str+='<td><span filePath="'+result.locationList1[i].locationList1[j].filePath+'" style="cursor:pointer;" class="showPdfCls go_clickCr" >'+result.locationList1[i].locationList1[j].goNoDate+'</span></td>';
+												}else{
+													str+='<td>'+result.locationList1[i].locationList1[j].goNoDate+'</td>';
+												}
+												
 												str+='<td>'+result.locationList1[i].locationList1[j].workName+'</td>';
 												str+='<td>'+result.locationList1[i].locationList1[j].workNumber+'</td>';
 												str+='<td>'+result.locationList1[i].locationList1[j].amountInDecimal+'</td>';
@@ -827,3 +832,26 @@ function getDistrictNameAndMlaNameByConsitutency(){
 		}
     });
 }
+$(document).on('click','.showPdfCls',function(){
+	$("#pdfReportDetailsId").html('');
+	$("#pdfReportDetailsId").html(spinner);
+	var str = '';
+	var filePath = $(this).attr("filePath");
+	if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+		$("#pdfModelId").modal("hide");
+		window.open('http://www.mydepartments.in/PRRWS/Govt_Orders/'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+	
+		/*setTimeout(function(){
+		$(w.document).find('html').append('<head><title>your title</title></head>');}, 2000); */
+		//w.onload = function() { this.document.title = "your new title"; }
+		
+
+	}else{
+		
+		$("#pdfModelId").modal("show");
+		str+='<object data="http://www.mydepartments.in/PRRWS/Govt_Orders/'+filePath+'" type="application/pdf" width="100%" height="400px;" internalinstanceid="3" title=""></object>';
+		$("#pdfReportDetailsId").find(".modal-title").html(filePath+" PDF REPORT");
+		$("#pdfReportDetailsId").html(str);
+	}
+	
+});
