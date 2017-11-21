@@ -362,10 +362,12 @@ function buildlevelWiseData(divId,sessionToken)
 		str+='</div>';
 		
 		$("#WaterTank"+divId).html(str);
-		$("#dataTable"+divId).dataTable({
-			"iDisplayLength": 10,
-			"order": [ 1, 'desc' ],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			
-		});
+		if(divId != "DISTRICT"){
+			$("#dataTable"+divId).dataTable({
+				"iDisplayLength": 10,
+				"order": [ 1, 'desc' ],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+				
+			});
+		}
 	}
