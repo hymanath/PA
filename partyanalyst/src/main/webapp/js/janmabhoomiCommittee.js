@@ -500,7 +500,7 @@ function buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCar
 				str+='<input id="searchValue" class="form-control search-text border_radius_none" type="text">';
 			str+='</div>';
 			str+='<div class="col-sm-2 m_top10">';
-				str+='<button id="clickSearchbutton" class="btn btn-success btn-block btnSearch border_radius_none" id="searchbtn"  attr_role_id="'+roleId+'" attr_status_type="'+type+'" attr_committee_id="'+committeeId+'">SEARCH</button>';
+				str+='<button id="clickSearchbutton" class="btn btn-success btn-block btnSearch border_radius_none" id="searchbtn"  attr_role_id="'+roleId+'" attr_status_type="'+type+'" attr_committee_id="'+committeeId+'" attr_member_id="'+memberId+'">SEARCH</button>';
 			str+='</div>';
 		str+='</div>';
 	}else{
@@ -758,6 +758,7 @@ $(document).on("click","#clickSearchbutton",function(){
 	var locationValue = 0;
 	var roleId = $(this).attr("attr_role_id");
 	var committeeId=$(this).attr("attr_committee_id");
+	var memberId = $(this).attr("attr_member_id");
 	if(panchayatId !=0 && panchayatId>0)
 	{
 		if(panchayatId.substr(0,1) == 1){
@@ -798,10 +799,10 @@ $(document).on("click","#clickSearchbutton",function(){
 		locationLevel = 2;
 	}
 	
-	searchByMemberIdOrVoterId(locationLevel,locationValue,voterMembershipVal,searchType,roleId,statusType,committeeId);	
+	searchByMemberIdOrVoterId(locationLevel,locationValue,voterMembershipVal,searchType,roleId,statusType,committeeId,memberId);	
 });	 
 
-function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchType,roleId,statusType,committeeId){  
+function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchType,roleId,statusType,committeeId,memberId){  
 	$("#memberAddedPopUpDetailsId").html(spinner)
 	var memberShipCardNo='';
 	var voterCardNo     ='';
@@ -831,12 +832,12 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){ 
       if(result !=null){
-		  builldLevelWiseMemberDetailsAppend(result,roleId,statusType,committeeId);
+		  builldLevelWiseMemberDetailsAppend(result,roleId,statusType,committeeId,memberId);
 	  }
     });
 }
   
-  function builldLevelWiseMemberDetailsAppend(result,roleId,statusType,committeeId){
+  function builldLevelWiseMemberDetailsAppend(result,roleId,statusType,committeeId,memberId){
 	  var str='';
 	 str+='<div class="row m_top20">';
 				str+='<div class="col-sm-12">';
@@ -916,6 +917,7 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 			if(result.tdpCadreId != null && result.tdpCadreId>0){
 				tdpCadreId = result.tdpCadreId;
 			}
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+tdpCadreId+'"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';
