@@ -419,5 +419,9 @@
 	.headerDisPlayNone{
 		display:none !important;
 	}
+	.go_clickCr{
+		color: #000 !important;
+		text-decoration: none !important;
+	}
 	@page { size: auto;  margin: 2.2mm; }
 }
