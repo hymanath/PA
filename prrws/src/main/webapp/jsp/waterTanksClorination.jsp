@@ -183,8 +183,8 @@
 					<div class="col-sm-12">
 						<ul class="list-inline pull-right calendar_active_cls">
 							<li attr_val="Overall" ><img src="Assests/icons/Overall_icon.png"/>&nbsp;&nbsp;<b><span>Overall</span></b></li>
-							<li attr_val="Week"><img src="Assests/icons/Week_icon.png"/>&nbsp;&nbsp;<b><span> Week</span></b></li>
-							<li attr_val="Month" class="active"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Month</span></b></li>
+							<li attr_val="Last 7 Days" class="active"><img src="Assests/icons/Week_icon.png"/>&nbsp;&nbsp;<b><span> Last 7 Days</span></b></li>
+							<li attr_val="Last 30 Days"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Last 30 Days</span></b></li>
 							<li attr_val="3Months" ><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>3Months</span></b></li>
 							<li attr_val="6Months"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>6Months</span></b></li>
 							<li attr_val="Year"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Year</span></b></li>
