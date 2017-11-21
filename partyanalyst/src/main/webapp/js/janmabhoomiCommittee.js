@@ -523,6 +523,7 @@ function buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCar
 								str+='<h5><span class="text-bold">Mobile : </span> <span>'+mobileNo+'</span></h5>';
 							str+='</td>';
 						str+='</tr>';
+						str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.committeeId" value="'+committeeId+'"/>';
 						str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
 						str+='<tr>';
 							 str+='<td colspan="2">';
