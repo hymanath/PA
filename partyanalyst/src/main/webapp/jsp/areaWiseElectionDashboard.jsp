@@ -92,6 +92,7 @@
 									<option value="265" selected>CPI</option>
 									<option value="269" selected>CPM</option>
 									<option value="662" selected>PRP</option>
+									<option value="1887" selected>OTHERS</option>
 									<!--<option value="886">TRS</option>-->
 								</select>
 							</div>
