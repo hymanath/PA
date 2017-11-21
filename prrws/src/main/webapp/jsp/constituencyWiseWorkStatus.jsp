@@ -319,7 +319,7 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 		</div>
 		
 	</div>
-	</section>
+	
 	<div class="modal fade headerDisPlayNone" tabindex="-1" id="pdfModelId" role="dialog">  
 		<div class="modal-dialog" style="width:80%;">      
 			<div class="modal-content">
@@ -335,6 +335,7 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 			</div>
 		</div>
 	</div>
+</section>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
