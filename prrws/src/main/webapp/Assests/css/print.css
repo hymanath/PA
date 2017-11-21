@@ -411,5 +411,10 @@
 		-webkit-print-color-adjust:exact;
 		color-adjust:exact;
 	}
-	@page { size: auto;  margin: 0mm; }
+	.govt_color{
+		color:#D1AB66 !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	@page { size: auto;  margin: 2.2mm; }
 }
