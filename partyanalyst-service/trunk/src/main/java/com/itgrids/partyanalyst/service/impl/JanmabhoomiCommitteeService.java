@@ -215,6 +215,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						}
 					}
 				}
+				committeeVO = setStatusToVO(committeId,committeeVO);
 			} catch (Exception e) {
 				LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmabhoomiCommitteeService ",e);
 			}
@@ -951,6 +952,44 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			LOG.error("Excepting Occured in updateCommitteStatusByCommiteeId() of JanmabhoomiCommitteeService ", e);
 		}
 		return resultStatus;
+	}
+	
+	public JanmabhoomiCommitteeMemberVO setStatusToVO(Long commiteeId,JanmabhoomiCommitteeMemberVO committeeVO){
+		String status = "";
+		List<Object[]> commiteeStatusObjList = jbCommitteeDAO.getJbCommitteeStatusByCommiteeId(commiteeId);
+		//0 jbCommitteeId,1 committeeName,2 isCommitteeConfirmed,3 startDate,4 completedDate
+		  if(commiteeStatusObjList !=null && commiteeStatusObjList.size() >0){
+			  for(Object[] param:commiteeStatusObjList){
+				  	String confirmedStatus = commonMethodsUtilService.getStringValueForObject(param[2]);
+					String startDate = commonMethodsUtilService.getStringValueForObject(param[3]);
+					String completedDate = commonMethodsUtilService.getStringValueForObject(param[4]);
+					
+					if(confirmedStatus.equalsIgnoreCase("N") && startDate == ""){
+						status = "Not Started";
+						committeeVO.setStatus(status);
+						return committeeVO;
+					}else if(confirmedStatus.equalsIgnoreCase("Y")  && completedDate != ""){
+						status = "Approved";
+						committeeVO.setStatus(status);
+						return committeeVO;
+					}
+					
+			  }
+		  }
+		  
+		  if(committeeVO.getAddedMemberCount() != null && committeeVO.getAddedMemberCount().longValue() >0l && committeeVO.getAddedMemberCount().longValue() < committeeVO.getRoleMemberCount().longValue()) {
+			  status = "InProgress";
+			  committeeVO.setStatus(status);
+		     return committeeVO;
+		  }
+		  else if(committeeVO.getRoleMemberCount() != null && committeeVO.getRoleMemberCount().longValue() >0l && committeeVO.getAddedMemberCount().longValue() == committeeVO.getRoleMemberCount().longValue()) {
+			  status = "Ready For Approval";
+			  committeeVO.setStatus(status);
+		     return committeeVO;
+		  }
+		  return committeeVO;
+		 /* Long totalRoleCount = jbCommitteeRoleDAO.getTotalRoleMemberCountByCommitteId(commiteeId);
+		  Long totalMemberAddedCount = jbCommitteeMemberDAO.getMemberApprovedCountByCommitteId(commiteeId);*/
 	}
 }
 
