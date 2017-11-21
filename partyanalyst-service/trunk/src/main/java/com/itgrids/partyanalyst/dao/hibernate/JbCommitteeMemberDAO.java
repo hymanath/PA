@@ -140,7 +140,7 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 			sb.append("SELECT count(model.jbCommitteeMemberId) ");
 			sb.append("from JbCommitteeMember model ");
 			sb.append("where model.jbCommitteeRole.jbCommittee.jbCommitteeId =:committeeId and model.jbCommitteeRole.jbCommittee.isDeleted ='N' ");
-			sb.append("and model.status ='F' ");
+			sb.append("and model.status ='F' and model.isActive = 'Y' ");
 			Query query = getSession().createQuery(sb.toString());
 			query.setParameter("committeeId", committeeId);
 			
@@ -156,7 +156,8 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 						" left join model.tdpCadre tdpCadre " +
 						" left join model.voter  voter " );
 			 sb.append("where ");
-			 sb.append(" model.jbCommitteeRole.jbCommittee.jbCommitteeId = :committeeId and model.jbCommitteeRole.jbCommittee.isDeleted ='N' ");
+			 sb.append(" model.jbCommitteeRole.jbCommittee.jbCommitteeId = :committeeId and model.jbCommitteeRole.jbCommittee.isDeleted ='N'" +
+			 		" and model.isActive='Y' ");
 			 
 			 Query query = getSession().createQuery(sb.toString());
 			 	query.setParameter("committeeId", committeeId);
