@@ -75,12 +75,18 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				List<LocationVO> overviewList = new ArrayList<LocationVO>();
 				LocationVO locationVO2 = null;
 				Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndWorkCount = new HashMap<Long,Map<Long,Long>>();
+				deptIdAndGrandTypeIdAndWorkCount.put(1L, new HashMap<Long,Long>());
+				deptIdAndGrandTypeIdAndWorkCount.put(2L, new HashMap<Long,Long>());
 				Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndAmount = new HashMap<Long,Map<Long,Long>>();
 				Map<Long,String> deptIdAndNameMap = new HashMap<Long,String>();
-				
+				deptIdAndNameMap.put(1L, "Panchayati Raj Engineering Department");
+				deptIdAndNameMap.put(2L, "Rural Water Supply & Sanitation");
+				deptIdAndNameMap.put(3L, "Mahatma Gandhi National Rural Employment Gurantee Scheme");
 				List<Object[]> worksSummery = fundSanctionDAO.getFundSanstionLocationWise(financialYearIdsList,departmentIdList,startDate,endDate,superLocationId,type);
-				buildDeptWiseMap(worksSummery,deptIdAndGrandTypeIdAndWorkCount,deptIdAndGrandTypeIdAndAmount,deptIdAndNameMap);
+				buildDeptWiseMap(worksSummery,deptIdAndGrandTypeIdAndWorkCount,deptIdAndGrandTypeIdAndAmount);
+				Long deptWiseTotalAmount = null;
 				for(Entry<Long,Map<Long,Long>> param : deptIdAndGrandTypeIdAndWorkCount.entrySet()){
+					deptWiseTotalAmount = new Long(0L);
 					locationVO2 = new LocationVO();
 					locationVO.setPlainWorkCount(0L);
 					locationVO.setScpWorkCount(0L);
@@ -90,11 +96,18 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					locationVO2.setPlainWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(1L)));
 					locationVO2.setScpWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(2L)));
 					locationVO2.setTspWorkCount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(3L)));
-					locationVO2.setPlainAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L))/10000000D));
-					locationVO2.setScpAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L))/10000000D));
-					locationVO2.setTspAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L))/10000000D));
+					if(deptIdAndGrandTypeIdAndAmount.get(param.getKey()) != null){
+						locationVO2.setPlainAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L))/10000000D));
+						deptWiseTotalAmount = deptWiseTotalAmount + deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L);
+						locationVO2.setScpAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L))/10000000D));
+						deptWiseTotalAmount = deptWiseTotalAmount + deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L);
+						locationVO2.setTspAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L))/10000000D));
+						deptWiseTotalAmount = deptWiseTotalAmount + deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L);
+					}else{
+						locationVO2.setPlainAmountInDecimal("0.0");
+					}
 					locationVO2.setWorkNumber((locationVO2.getPlainWorkCount() + locationVO2.getScpWorkCount() + locationVO2.getTspWorkCount()));
-					locationVO2.setAmount(commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(1L))+commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(2L))+commonMethodsUtilService.getLongValueForObject(deptIdAndGrandTypeIdAndAmount.get(param.getKey()).get(3L)));
+					locationVO2.setAmount(deptWiseTotalAmount);
 					locationVO2.setAmountInDecimal(df.format(locationVO2.getAmount()/10000000D));
 					overviewList.add(locationVO2);
 					
@@ -525,7 +538,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 		    }
 		  return null;
 	}
-	public void buildDeptWiseMap(List<Object[]> worksSummery,Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndWorkCount,Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndAmount,Map<Long,String> grantTypeAndNameMap){
+	public void buildDeptWiseMap(List<Object[]> worksSummery,Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndWorkCount,Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndAmount){
 		try{
 			Map<Long,Long> grantTypeIdAndworkCountMap = null;
 			if(worksSummery != null && worksSummery.size() > 0){
@@ -548,7 +561,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 						grantTypeIdAndworkCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[5]));
 					}
 					
-					grantTypeAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					//grantTypeAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
 				}
 			}
 		}catch(Exception e){
