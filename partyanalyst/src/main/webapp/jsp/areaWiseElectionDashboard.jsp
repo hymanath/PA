@@ -349,6 +349,13 @@
 			<div class="modal-body">        
 				<div class="row">
 					<div class="col-sm-12">
+						<div id="totalGaineddVotessCount"></div>
+					</div>  
+				</div>
+			</div>
+			<div class="modal-body">        
+				<div class="row">
+					<div class="col-sm-12">
 						<div id="votingDetailsSubLevelBlockId"></div>
 					</div>  
 				</div>

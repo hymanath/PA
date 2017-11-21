@@ -4538,6 +4538,7 @@
     	<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+		<property name="panchayatDAO" ref="panchayatDAO" />
     	</bean>
     	<bean name="janmabhoomiCommitteeService" class="com.itgrids.partyanalyst.service.impl.JanmabhoomiCommitteeService">
     	<property name="jbCommitteeDAO" ref="jbCommitteeDAO" />
