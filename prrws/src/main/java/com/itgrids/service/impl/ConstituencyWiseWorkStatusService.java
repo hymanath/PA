@@ -79,8 +79,8 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				deptIdAndGrandTypeIdAndWorkCount.put(2L, new HashMap<Long,Long>());
 				Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndAmount = new HashMap<Long,Map<Long,Long>>();
 				Map<Long,String> deptIdAndNameMap = new HashMap<Long,String>();
-				deptIdAndNameMap.put(1L, "Panchayati Raj Engineering Department");
-				deptIdAndNameMap.put(2L, "Rural Water Supply & Sanitation");
+				deptIdAndNameMap.put(1L, "ENC");
+				deptIdAndNameMap.put(2L, "RWS");
 				deptIdAndNameMap.put(3L, "Mahatma Gandhi National Rural Employment Gurantee Scheme");
 				List<Object[]> worksSummery = fundSanctionDAO.getFundSanstionLocationWise(financialYearIdsList,departmentIdList,startDate,endDate,superLocationId,type);
 				buildDeptWiseMap(worksSummery,deptIdAndGrandTypeIdAndWorkCount,deptIdAndGrandTypeIdAndAmount);
