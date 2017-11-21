@@ -216,17 +216,18 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 							</select>
 						</div>
 				</div>
+				<div class="col-sm-1">
+					<button class="btn btn-md btn-success submitCls">Submit</button>
+				</div>
 				<div class="col-sm-2 border_right">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
-						<input type="text" class="form-control" id="dateRangePickerAUM" style="width: 200px;"/>
+						<input type="text" class="form-control" id="dateRangePickerAUM"/>
 					</div>
 				</div>
-				<div class="col-sm-2">
-					<button class="btn btn-md btn-success submitCls pull-right">submit</button>
-				</div>
+				
 		   </div>
 		   
 		</div>
@@ -234,7 +235,6 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 </header>
 	<div class="container m_top20">
 		<div class="row">
-			
 			<div class="col-sm-11">
 				<label class="radio-inline pull-right">
 					<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="withHeader" class="withAndOutHeaderCls">With Header
@@ -246,6 +246,9 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 			<div class="col-sm-1">
 				<button class="btn btn-md btn-success printViewCls pull-right" attr_divId="printableArea">Print</button>
 			</div>
+		</div>
+		<div class="row">
+			<p class="text-center waitingMsgCls">Please Wait Page is Loading...</p>
 		</div>
 	</div>
 	
@@ -259,7 +262,7 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 								<p>
 									<span><strong>Minister for Information Technology</strong></span><br/>
 									<span><strong>Panchayathi Raj and Rural Development</strong></span><br/>
-									<span class="gov"><strong>Government of Andhra Pradesh</strong></span>
+									<span class="govt_color"><strong>Government of Andhra Pradesh</strong></span>
 								</p>
 							</div>
 							<div class="col-sm-4 text-center">
@@ -277,16 +280,11 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 							<div class="to-date">
 								<div class="row">
 									<div class="col-sm-6">
-										<p>
-											<span><strong>To,</strong></span><br/>
-											<span><strong>K S Jawahar,</strong></span><br/>
-											<span><strong>Member of Legislative Assembly,</strong></span><br/>
-											<span><strong>Kovvur Constituency.</strong></span>
-										</p>
+										<div id="addressDivId"></div>
 									</div>
 									<div class="col-sm-6 text-right">
 										<p>
-											<span><strong>Date: 17th November, 2017</strong></span><br/>
+											<!--<span><strong>Date: 17th November, 2017</strong></span><br/>-->
 										</p>
 									</div>
 								</div>
@@ -298,31 +296,27 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 							<div class="row">
 								<div class="col-md-12 col-sm-12 col-xs-12">
 									<p>Dear Sir,</p>
-									<p>This is a Letter from Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</p>
+									<p>This is a Letter from <span id="headingId"></span></p>
 								</div>
 							</div>
 						</div>
 					</div>
-				
-				<div id="overAllDeparmentsDivId"></div>
-				<div id="rwsDetailsDivId" class="pagebreak"></div>
-				<div id="encDetailsDivId" class="pagebreak"></div>
+					<!--<div class="go-works m_top10">
+						<h4  id="mainHeadingId"></h4>
+					</div>-->
+					<div id="overAllDeparmentsDivId"></div>
+					<div id="rwsDetailsDivId" class="pagebreak"></div>
+					<div id="encDetailsDivId" class="pagebreak"></div>
+					<div id="mgnrewsDetailsDivId" class="pagebreak"></div>
+					<div class="footer">
+						<p>
+							<span>4th Block, 1st Floor, Room No:214, A.P Secretariat Office, Velagapudi</span><br/>
+							<span>Amaravathi, Andhra Pradesh</span>
+						</p>
+					</div>	
 			</div>
 		</div>
-		<footer>
-			<div class="container">
-				<div class="white_block" style="box-shadow:none;padding:20px;">
-					<div class="row">
-						<div class="footer">
-							<p>
-								<span>4th Block, 1st Floor, Room No:214, A.P Secretariat Office, Velagapudi</span><br/>
-								<span>Amaravathi, Andhra Pradesh</span>
-							</p>
-						</div>
-					</div>	
-				</div>
-			</div>
-		</footer>
+		
 	</div>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>

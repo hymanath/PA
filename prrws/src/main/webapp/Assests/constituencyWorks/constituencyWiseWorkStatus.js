@@ -16,6 +16,9 @@
 		getFundManagementSystemWorkDetails(0,"")
 		getFundManagementSystemWorkDetails(1,"enc")
 		getFundManagementSystemWorkDetails(2,"rws")
+		getConstituencyWiseNregsWorksDetails(3,"mgnrews")
+		$("#headingId").html("<b>Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</b>")
+		getDistrictNameAndMlaNameByConsitutency();
 	}
 	
 	 $("#dateRangePickerAUM").daterangepicker({
@@ -58,9 +61,11 @@
 		$("#DepartmentsId").val(0);
 		$("#DepartmentsId").trigger('chosen:updated');
 		
-		setTimeout(function(){
-			onloadCalls(); 
-		}, 1000);
+		var constincyId=$("#districtSelId").val();
+		var conId=constincyId.substr(1,constincyId.length-1);
+		getLocationsNamesBySubLocation(conId,"onload");
+		
+		
 	  });
 
 
@@ -86,11 +91,7 @@ function  getAllFiniancialYears(){
 			$("#financialYearId").trigger('chosen:updated');
 		});
 		getAllSubLocationsOnsuperLocation("21");
-		setTimeout(function(){
-			var constincyId=$("#districtSelId").val();
-			var conId=constincyId.substr(1,constincyId.length-1);
-			getLocationsNamesBySubLocation(conId);
-		}, 1500);
+		
 		
  }
  
@@ -142,29 +143,33 @@ function getAllSubLocationsOnsuperLocation(superLocationId){
       },
             
     }).done(function(result){
-		var str='';
-		str+='<option value="0">SELECT DISTRICT</option>';
-		for(var i in result){
-			if(i==0){
-				str+='<option value="'+result[i].id+'" selected>'+result[i].name+'</option>'
-			}else{
-				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>'
+			var str='';
+			str+='<option value="0">SELECT DISTRICT</option>';
+			for(var i in result){
+				if(i==0){
+					str+='<option value="'+result[i].id+'" selected>'+result[i].name+'</option>'
+				}else{
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>'
+				}
+				
 			}
-			
-		}
-     $("#districtSelId").html(str);
-	 $("#districtSelId").chosen();
-	 $("#districtSelId").trigger('chosen:updated');
-    });
-	onloadCalls();
+		 $("#districtSelId").html(str);
+		 $("#districtSelId").chosen();
+		 $("#districtSelId").trigger('chosen:updated');
+	});
+	setTimeout(function(){
+		var constincyId=$("#districtSelId").val();
+		var conId=constincyId.substr(1,constincyId.length-1);
+		getLocationsNamesBySubLocation(conId,"onload");
+	}, 1500);
 	
 }
 $(document).on("change","#districtSelId",function(){
 	var constincyId=$(this).val();
 	var conId=constincyId.substr(1,constincyId.length-1);
-	getLocationsNamesBySubLocation(conId);
+	getLocationsNamesBySubLocation(conId,"change");
 });
-function getLocationsNamesBySubLocation(locationId){  
+function getLocationsNamesBySubLocation(locationId,type){  
 	 var json = {
           locationId:locationId
         }
@@ -181,12 +186,28 @@ function getLocationsNamesBySubLocation(locationId){
 		var str='';
 		str+='<option value="0">SELECT CONSTITUENCY</option>';
 		for(var i in result){
-			str+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>'
+			if(i==0){
+				str+='<option value="'+result[i].locationId+'" selected>'+result[i].locationName+'</option>'
+			}else{
+				str+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>'
+			}
+			
 		}
 		 $("#constituencySelId").html(str);
 		$("#constituencySelId").chosen();
 		$("#constituencySelId").trigger('chosen:updated');
     });
+	
+	
+	if(type == "onload"){
+		 setTimeout(function(){
+			$("#mainHeadingId").html("District : "+ $("#districtSelId option:selected").text()+",Constituency : "+$("#constituencySelId option:selected").text()+"")
+			$(".waitingMsgCls").hide();
+			onloadCalls(); 
+		}, 3500);
+	}
+	
+		
 }
 
 $(document).on("click",".printViewCls",function(){
@@ -274,7 +295,7 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 						str+='<div class="col-sm-6">';
 							str+='<div class="border-cls">';
 								str+='<h4 class="font_weight">Total Funds</h4>';
-								str+='<h3 class="font_weight">'+totalFunds.toFixed(3)+'</h3>';
+								str+='<h3 class="font_weight">'+totalFunds.toFixed(3)+' Cr</h3>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -317,20 +338,20 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 											str+='<div class="row">';
 												str+='<div class="col-sm-3">';
 													str+='<h4 class="font_weight">Funds</h4>';
-													str+='<h3 class="font_weight">'+result.locationList1[i].amountInDecimal+'</h3>';
+													str+='<h3 class="font_weight">'+parseFloat(result.locationList1[i].amountInDecimal).toFixed(2)+' <span style="color: rgb(0, 0, 0); font-size: 14px ! important;font-weight:normal;">Cr</span></h3>';
 												str+='</div>';
 												if(result.locationList1[i].departmentName == 'ENC' || result.locationList1[i].departmentName == 'RWS'){
 													str+='<div class="col-sm-3">';
 														str+='<h4 class="font_weight">PLANE</h4>';
-														str+='<h4 class="font_weight">'+result.locationList1[i].plainAmountInDecimal+'</h4>';
+														str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].plainAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
 													str+='</div>';
 													str+='<div class="col-sm-3">';
 														str+='<h4 class="font_weight">SCP</h4>';
-														str+='<h4 class="font_weight">'+result.locationList1[i].scpAmountInDecimal+'</h4>';
+														str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].scpAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
 													str+='</div>';
 													str+='<div class="col-sm-3">';
 														str+='<h4 class="font_weight">TSP</h4>';
-														str+='<h4 class="font_weight">'+result.locationList1[i].tspAmountInDecimal+'</h4>';
+														str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].tspAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
 													str+='</div>';
 												}
 											str+='</div>';
@@ -348,22 +369,61 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 	
 }
 $(document).on("click",".submitCls",function(){
+	
 	var districtId = $("#districtSelId").val();
+	var constituencyId = $("#constituencySelId").val();
+	var departmentId = $("#DepartmentsId").val();
+	
 	if(districtId == null || districtId == 0){
+		alert("Please Select District")
 		return;
 	}
-	var departmentId = $("#DepartmentsId").val();
+	
+	if(constituencyId == null || constituencyId == 0){
+		alert("Please Select  Constituency")
+		return;
+	}
+	
+	if((districtId !=0 || districtId !=null) && (constituencyId == null || constituencyId == 0)){
+		$("#mainHeadingId").html("District : "+ $("#districtSelId option:selected").text()+"")
+		
+	}else if((districtId !=0 || districtId !=null) && (constituencyId != null || constituencyId != 0)){
+		$("#mainHeadingId").html("District : "+ $("#districtSelId option:selected").text()+",Constituency : "+$("#constituencySelId option:selected").text()+"")
+		
+	}
+	getDistrictNameAndMlaNameByConsitutency();
 	if(departmentId ==0 || departmentId == null){
+		$("#headingId").html("")
+		$("#headingId").html("<b>Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</b>")
 		getFundManagementSystemWorkDetails(0,"");
 		getFundManagementSystemWorkDetails(1,"enc")
 		getFundManagementSystemWorkDetails(2,"rws")
+		getConstituencyWiseNregsWorksDetails(3,"mgnrews")
 	}else{
 		if(departmentId == 1){
+			$("#headingId").html("")
+			$("#headingId").html("<b>Information Technology.</b>")
+			$("#overAllDeparmentsDivId").html('');
+			$("#rwsDetailsDivId").html('');
+			$("#encDetailsDivId").html('');	
+			$("#mgnrewsDetailsDivId").html('');	
 			getFundManagementSystemWorkDetails(departmentId,"enc");
 		}else if(departmentId == 2){
+			$("#headingId").html("")
+			$("#headingId").html("<b>Rural Development.</b>")
+			$("#overAllDeparmentsDivId").html('');
+			$("#rwsDetailsDivId").html('');
+			$("#encDetailsDivId").html('');		
+			$("#mgnrewsDetailsDivId").html('');		
 			getFundManagementSystemWorkDetails(departmentId,"rws");
 		}else if(departmentId == 3){
-			
+			$("#headingId").html("")
+			$("#headingId").html("<b>Minister for Panchayathi Raj.</b>")
+			$("#overAllDeparmentsDivId").html('');
+			$("#rwsDetailsDivId").html('');
+			$("#encDetailsDivId").html('');	
+			$("#mgnrewsDetailsDivId").html('');	
+			getConstituencyWiseNregsWorksDetails(3,"mgnrews")
 		}
 		
 	}
@@ -371,12 +431,19 @@ $(document).on("click",".submitCls",function(){
 });
 	
 function getFundManagementSystemWorkDetails(departmentId,divId){
+	
+	if(departmentId ==0 || departmentId == null){
+		$("#overAllDeparmentsDivId").html(spinner);
+	}
+	$("#"+divId+"DetailsDivId").html(spinner);
+	
 	var financialYrIdList = $('#financialYearId').val();
 	if(financialYrIdList == 0 || financialYrIdList == null){
 		financialYrIdList=[];
 	}
 	var districtId = $("#districtSelId").val();
 	var constituencyId = $("#constituencySelId").val();
+	
 	var locationId='';
 	if((districtId !=0 || districtId !=null) && (constituencyId == null || constituencyId == 0)){
 		
@@ -412,9 +479,16 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 				buildOverAllDepartmentsDetails(result,departmentId,divId);
 			else
 				buildFundManagementSystemWorkDetails(result,divId);
+		}else{
+			if(departmentId == 0){
+				$("#overAllDeparmentsDivId").html("No Data");
+			}
+			else{
+				$("#"+divId+"DetailsDivId").html("No Data");
+			}
 		}
     });
-	
+}	
 	function buildFundManagementSystemWorkDetails(result,divId){
 		var str='';
 		str+='<div class="go-works">';
@@ -498,11 +572,11 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 							str+='<table class="table details-overview">';
 								str+='<thead>';
 									str+='<tr>';
-										str+='<th>Program Name</th>';
-										str+='<th>Govt Order</th>';
-										str+='<th>Works Name</th>';
-										str+='<th>Total Works</th>';
-										str+='<th>Amount Cr</th>';
+										str+='<th>Program&nbsp;Name</th>';
+										str+='<th>Govt&nbsp;Order</th>';
+										str+='<th>Works&nbsp;Name</th>';
+										str+='<th>Total&nbsp;Works</th>';
+										str+='<th>Amount&nbsp;Cr</th>';
 									str+='</tr>';
 								str+='</thead>';
 								str+='<tbody>';
@@ -523,7 +597,7 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 									str+='<th></th>';
 									str+='<th></th>';
 									str+='<th>'+result.workNumber+'</th>';
-									str+='<th>'+result.amountInDecimal+' Cr</th>';
+									str+='<th>'+result.amountInDecimal+'</th>';
 								str+='</tr>';
 								str+='</tbody>';
 							str+='</table>';
@@ -533,4 +607,137 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 			str+='</div>';
 		$("#"+divId+"DetailsDivId").html(str);	
 	}
+
+function getConstituencyWiseNregsWorksDetails(departmentId,divId){
+	$("#"+divId+"DetailsDivId").html(spinner);
+	
+	var districtId = $("#districtSelId").val();
+	var constituencyId = $("#constituencySelId").val();
+	var locationId='';
+	if((districtId !=0 || districtId !=null) && (constituencyId == null || constituencyId == 0)){
+		
+		locationId =districtId;
+	}else if((districtId !=0 || districtId !=null) && (constituencyId != null || constituencyId != 0)){
+		
+		locationId =constituencyId;
+	}
+	
+	
+	var json = {
+			locationId:locationId
+	   }
+    $.ajax({ 
+		url: 'getConstituencyWiseNregsWorksDetails',
+		type:'POST',  
+		data : JSON.stringify(json),
+		dataTypa : 'json',   
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},   
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildConstituencyWiseNregsWorksDetails(result,divId);
+		}else{
+			$("#"+divId+"DetailsDivId").html("No Data");
+		}
+    });
+}
+
+function buildConstituencyWiseNregsWorksDetails(result,divId){
+	var str='';
+	str+='<div class="go-works">';
+			str+='<h4>Mahatma Gandhi National Rural Employment Gurantee Scheme Overview</h4>';
+				str+='<div class="main_level_css m_top10">';
+					str+='<div class="row">';
+					
+						str+='<div class="col-sm-6">';
+							str+='<div class="border-cls padding_right_left">';
+								str+='<h4>Total Works</h4>';
+								str+='<h4 class="font_weight">'+result[0].finalWorks+'</h4>';
+							str+='</div>';
+						str+='</div>';
+						
+						str+='<div class="col-sm-6">';
+							str+='<div class="border-cls padding_right_left">';
+								str+='<h4>Total Funds</h4>';
+								str+='<h4 class="font_weight">'+result[0].finalAmount+' Cr</h4>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>'
+						
+						str+='<h4 class="m_top20">Works Details</h4>';
+						str+='<div class="table-responsive">';
+							str+='<table class="table details-overview">';
+								str+='<thead>';
+									str+='<tr>';
+										str+='<th>Work&nbsp;Names</th>';
+										str+='<th>Works</th>';
+										str+='<th>Amount&nbsp;Cr</th>';
+									str+='</tr>';
+								str+='</thead>';
+								str+='<tbody>';
+								var completedWorks=0;
+								var totalFunds=0.00;
+								for(var i in result){
+									completedWorks=completedWorks+result[i].completed;
+									totalFunds = parseFloat(totalFunds)+parseFloat(result[i].total);
+									str+='<tr>';
+										str+='<td>'+result[i].workName+'</td>';
+										str+='<td>'+result[i].completed+'</td>';
+										str+='<td>'+result[i].total+'</td>';
+									str+='</tr>';
+									
+								}
+								str+='<tr>';
+									str+='<th></th>';
+									str+='<th>'+completedWorks+'</th>';
+									str+='<th>'+totalFunds+'</th>';
+								str+='</tr>';
+								str+='</tbody>';
+							str+='</table>';
+						
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+	
+	$("#"+divId+"DetailsDivId").html(str);
+}
+function getDistrictNameAndMlaNameByConsitutency(){
+	$("#addressDivId").html('');	
+	var districtId = $("#districtSelId").val();
+	var constituencyId = $("#constituencySelId").val();
+	var locationId='';
+	if((districtId !=0 || districtId !=null) && (constituencyId == null || constituencyId == 0)){
+		
+		locationId =districtId;
+	}else if((districtId !=0 || districtId !=null) && (constituencyId != null || constituencyId != 0)){
+		
+		locationId =constituencyId;
+	}
+	var json = {
+			locationId:locationId
+	   }
+    $.ajax({ 
+		url: 'getDistrictNameAndMlaNameByConsitutency',
+		type:'POST',  
+		data : JSON.stringify(json),
+		dataTypa : 'json',   
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},   
+    }).done(function(result){
+		if(result !=null && result.length>0){
+		var str='';
+			str+='<p>';
+				str+='<span><strong>To,</strong></span><br/>';
+				str+='<span><strong>'+result[0].mlaName+',</strong></span><br/>';
+				str+='<span><strong>Member of Legislative Assembly,</strong></span><br/>';
+				str+='<span><strong>'+result[0].workName+' Constituency.</strong></span>';
+			str+='</p>';
+			
+		$("#addressDivId").html(str);	
+		}
+    });
 }
