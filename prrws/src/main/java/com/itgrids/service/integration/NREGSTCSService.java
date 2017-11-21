@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.JsonArray;
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.IPrConstituencyDAO;
@@ -5228,47 +5229,87 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<WaterTanksClorinationVO> getDistrictWiseClorinationDetails(InputVO inputVO){
 		List<WaterTanksClorinationVO> returnList = new ArrayList<WaterTanksClorinationVO>(0);
 		try {
-			String url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")";
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject(url);
-			ClientResponse response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
-			
 			Map<Long,WaterTanksClorinationVO> districtMap = new LinkedHashMap<Long,WaterTanksClorinationVO>();
+			List<WaterTanksClorinationVO> fnalList = new ArrayList<WaterTanksClorinationVO>(0);
+			String url = null;
+			WebResource webResource = null;
+			ClientResponse response = null;
+			Long nextCount = 0L;
+			Long offsetValue =0L;
+						
+			url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")&limit=0&offset=0";
+			webResource = commonMethodsUtilService.getWebResourceObject(url);
+			response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
+			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
-	 	    	 
-	 	    	if(output != null && !output.isEmpty()){
-	 	    		JSONObject jsonObject = new JSONObject(output);
-	 	    		JSONArray finalArray = jsonObject.getJSONArray("resource");
-	 	    		if(finalArray!=null && finalArray.length()>0){
-	 	    			for(int i=0;i<finalArray.length();i++){
-	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-	 	    				
-	 	    				Long districtId = jObj.getLong("dist_id");
-	 	    				WaterTanksClorinationVO distvo = districtMap.get(districtId);
-	 	    				if(distvo == null){
-	 	    					distvo = new WaterTanksClorinationVO();
-	 	    					distvo.setDistrictId(districtId);
-	 	    					distvo.setDistrictName(jObj.getString("dist_name"));
-	 	    					distvo.setNoOfSPs(1L);
-	 	    					distvo.setChecked(jObj.getLong("wb_checked"));
-	 	    					distvo.setClorinated(jObj.getLong("wb_chlorinated"));
-	 	    					distvo.setNotClorinated(jObj.getLong("wb_nil_chlorine"));
-	 	    					
-	 	    					districtMap.put(districtId, distvo);
-	 	    				}else{
-	 	    					distvo.setNoOfSPs(distvo.getNoOfSPs()+1L);
-	 	    					distvo.setChecked(distvo.getChecked()+jObj.getLong("wb_checked"));
-	 	    					distvo.setClorinated(distvo.getClorinated()+jObj.getLong("wb_chlorinated"));
-	 	    					distvo.setNotClorinated(distvo.getNotClorinated()+jObj.getLong("wb_nil_chlorine"));
-	 	    				}
-	 	    			}
-	 	    		}
-	 	    	}
-	 	    	if(districtMap != null)
-	 	    		returnList = new ArrayList<WaterTanksClorinationVO>(districtMap.values());
-	 	      }
+	 	    }else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					JSONObject jsonObject = new JSONObject(output);
+					if(jsonObject.has("meta")){
+						JSONObject metaObject = jsonObject.getJSONObject("meta");
+						if(metaObject.has("next")){
+							nextCount = Long.valueOf(metaObject.getString("count"));
+							JSONArray finalArray = jsonObject.getJSONArray("resource");
+							List<WaterTanksClorinationVO> dataList = setDataToVO(finalArray);
+							fnalList.addAll(dataList);
+						}
+					}else{
+						JSONArray finalArray = jsonObject.getJSONArray("resource");
+						List<WaterTanksClorinationVO> dataList = setDataToVO(finalArray);
+						fnalList.addAll(dataList);
+					}
+				}	
+	 	    }
+			
+			if(nextCount != null && nextCount.longValue() >0L){			
+			  for(int i=1000;i<=nextCount;i=i+1000){
+				offsetValue = Long.valueOf(i);
+				url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")&limit=0&offset="+offsetValue+"";
+				webResource = commonMethodsUtilService.getWebResourceObject(url);
+				response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
+				
+				if(response.getStatus() != 200){
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	    }else{
+					String output = response.getEntity(String.class);
+					if(output != null && !output.isEmpty()){
+						JSONObject jsonObject = new JSONObject(output);
+						JSONArray finalArray = jsonObject.getJSONArray("resource");
+						List<WaterTanksClorinationVO> dataList = setDataToVO(finalArray);
+						fnalList.addAll(dataList);
+					}
+				}	
+		    }
+		}
+						
+			if(fnalList != null && !fnalList.isEmpty()){
+				for (WaterTanksClorinationVO dataVO : fnalList) {
+				Long districtId = dataVO.getDistrictId();
+				WaterTanksClorinationVO distvo = districtMap.get(districtId);
+				if(distvo == null){
+					distvo = new WaterTanksClorinationVO();
+					distvo.setDistrictId(districtId);
+					distvo.setDistrictName(dataVO.getDistrictName());
+					distvo.setNoOfSPs(1L);
+					distvo.setChecked(dataVO.getChecked());
+					distvo.setClorinated(dataVO.getClorinated());
+					distvo.setNotClorinated(dataVO.getNotClorinated());
+					
+					districtMap.put(districtId, distvo);
+				}else{
+					distvo.setNoOfSPs(distvo.getNoOfSPs()+1L);
+					distvo.setChecked(distvo.getChecked()+dataVO.getChecked());
+					distvo.setClorinated(distvo.getClorinated()+dataVO.getClorinated());
+					distvo.setNotClorinated(distvo.getNotClorinated()+dataVO.getNotClorinated());
+				}
+			}
+		}
+	 	    	
+    	if(districtMap != null)
+    		returnList = new ArrayList<WaterTanksClorinationVO>(districtMap.values());
+	 	    
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDistrictWiseClorinationDetails - NREGSTCSService service", e);
 		}
@@ -5284,43 +5325,81 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<WaterTanksClorinationVO> getLocationWiseClorinationDetails(InputVO inputVO){
 		List<WaterTanksClorinationVO> returnList = new ArrayList<WaterTanksClorinationVO>(0);
 		try {
-			String url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")";
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject(url);
-			ClientResponse response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
+			List<WaterTanksClorinationVO> fnalList = new ArrayList<WaterTanksClorinationVO>(0);
+			String url = null;
+			WebResource webResource = null;
+			ClientResponse response = null;
+			Long nextCount = 0L;
+			Long offsetValue =0L;
+						
+			url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")&limit=0&offset=0";
+			webResource = commonMethodsUtilService.getWebResourceObject(url);
+			response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
 			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
-	 	    	 
-	 	    	if(output != null && !output.isEmpty()){
-	 	    		JSONObject jsonObject = new JSONObject(output);
-	 	    		JSONArray finalArray = jsonObject.getJSONArray("resource");
-	 	    		if(finalArray!=null && finalArray.length()>0){
-	 	    			for(int i=0;i<finalArray.length();i++){
-	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-	 	    				
-	 	    				WaterTanksClorinationVO distvo = new WaterTanksClorinationVO();
-	 	    				distvo.setVisitDate(jObj.getString("visit_date"));
- 	    					distvo.setDistrictId(jObj.getLong("dist_id"));
- 	    					distvo.setDistrictName(jObj.getString("dist_name"));
- 	    					distvo.setAreaId(jObj.getLong("area_id"));
- 	    					distvo.setAreaName(jObj.getString("area_name"));
- 	    					distvo.setServicePointId(jObj.getLong("sp_id"));
- 	    					distvo.setServicePointName(jObj.getString("sp_name"));
- 	    					distvo.setVanId(jObj.getLong("van_id"));
- 	    					distvo.setVanNo(jObj.getString("van_no"));
- 	    					distvo.setNoOfSPs(1L);
- 	    					distvo.setChecked(jObj.getLong("wb_checked"));
- 	    					distvo.setClorinated(jObj.getLong("wb_chlorinated"));
- 	    					distvo.setNotClorinated(jObj.getLong("wb_nil_chlorine"));
- 	    					distvo.setVisitDate(jObj.getString("visit_date"));
- 	    					
- 	    					returnList.add(distvo);
-	 	    			}
-	 	    		}
-	 	    	}
-	 	      }
+	 	    }else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					JSONObject jsonObject = new JSONObject(output);
+					if(jsonObject.has("meta")){
+						JSONObject metaObject = jsonObject.getJSONObject("meta");
+						if(metaObject.has("next")){
+							nextCount = Long.valueOf(metaObject.getString("count"));
+							JSONArray finalArray = jsonObject.getJSONArray("resource");
+							List<WaterTanksClorinationVO> dataList = setDataToVO(finalArray);
+							fnalList.addAll(dataList);
+						}
+					}else{
+						JSONArray finalArray = jsonObject.getJSONArray("resource");
+						List<WaterTanksClorinationVO> dataList = setDataToVO(finalArray);
+						fnalList.addAll(dataList);
+					}
+				}	
+	 	    }
+			if(nextCount != null && nextCount.longValue() >0L){			
+			   for(int i=1000;i<=nextCount;i=i+1000){
+				offsetValue = Long.valueOf(i);
+				url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")&limit=0&offset="+offsetValue+"";
+				webResource = commonMethodsUtilService.getWebResourceObject(url);
+				response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
+				
+				if(response.getStatus() != 200){
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	    }else{
+					String output = response.getEntity(String.class);
+					if(output != null && !output.isEmpty()){
+						JSONObject jsonObject = new JSONObject(output);
+						JSONArray finalArray = jsonObject.getJSONArray("resource");
+						List<WaterTanksClorinationVO> dataList = setDataToVO(finalArray);
+						fnalList.addAll(dataList);
+					}
+				}	
+		    }
+		}
+	 	    		
+			if(fnalList != null && !fnalList.isEmpty()){
+    			for (WaterTanksClorinationVO dataVO : fnalList) {
+    				WaterTanksClorinationVO distvo = new WaterTanksClorinationVO();
+    				distvo.setVisitDate(dataVO.getVisitDate());
+					distvo.setDistrictId(dataVO.getDistrictId());
+					distvo.setDistrictName(dataVO.getDistrictName());
+					distvo.setAreaId(dataVO.getAreaId());
+					distvo.setAreaName(dataVO.getAreaName());
+					distvo.setServicePointId(dataVO.getServicePointId());
+					distvo.setServicePointName(dataVO.getServicePointName());
+					distvo.setVanId(dataVO.getVanId());
+					distvo.setVanNo(dataVO.getVanNo());
+					distvo.setNoOfSPs(1L);
+					distvo.setChecked(dataVO.getChecked());
+					distvo.setClorinated(dataVO.getClorinated());
+					distvo.setNotClorinated(dataVO.getNotClorinated());
+					//distvo.setVisitDate(jObj.getString("visit_date"));
+					
+					returnList.add(distvo);
+    			}
+    		}
+	 	    
 	 	 } catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseClorinationDetails - NREGSTCSService service", e);
 		}
@@ -5336,13 +5415,21 @@ public class NREGSTCSService implements INREGSTCSService{
 	public WaterTanksClorinationVO getWaterBodyCumulativeCounts(InputVO inputVO){
 		WaterTanksClorinationVO finaVO = new WaterTanksClorinationVO();
 		try {
+			List<WaterTanksClorinationVO> fnalList = new ArrayList<WaterTanksClorinationVO>(0);
 			Map<String,Long> districtCuntMap = new HashMap<String,Long>(0);
 			Map<String,Long> spsCuntMap = new HashMap<String,Long>(0);
 			Long noOfDistricts = 0L;
 			Long noOfSPs = 0L;
-			String url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")";
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject(url);
-			ClientResponse response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
+			JSONArray list = new JSONArray();
+			String url = null;
+			WebResource webResource = null;
+			ClientResponse response = null;
+			Long nextCount = 0L;
+			Long offsetValue =0L;
+			//JSONArray locationDtlsArr = null;
+			url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")&limit=0&offset=0";
+			webResource = commonMethodsUtilService.getWebResourceObject(url);
+			response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
 			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -5350,31 +5437,65 @@ public class NREGSTCSService implements INREGSTCSService{
 				String output = response.getEntity(String.class);
 				if(output != null && !output.isEmpty()){
 					JSONObject jsonObject = new JSONObject(output);
-	 	    		JSONArray locationDtlsArr = jsonObject.getJSONArray("resource");
-					if(locationDtlsArr!=null && locationDtlsArr.length()>0){
-	 	    			for(int i=0;i<locationDtlsArr.length();i++){
-	 	    				JSONObject jObj = (JSONObject) locationDtlsArr.get(i);
-	 	    				String districtName = jObj.getString("dist_name");//Districts Count
-	 	    				String spName = jObj.getString("sp_name");
-	 	    				Long distCunt = districtCuntMap.get(districtName);
-	 	    				if(distCunt == null){
-	 	    					noOfDistricts++;
-	 	    					districtCuntMap.put(districtName, noOfDistricts);
-	 	    				}
-	 	    				Long spCunt = spsCuntMap.get(spName);//SpS Count
-	 	    				if(spCunt == null){
-	 	    					noOfSPs++;
-	 	    					spsCuntMap.put(spName, noOfSPs);
-	 	    				}
-	 	    				finaVO.setChecked(finaVO.getChecked()+jObj.getLong("wb_checked"));
-	 	    				finaVO.setClorinated(finaVO.getClorinated()+jObj.getLong("wb_chlorinated"));
-	 	    				finaVO.setNotClorinated(finaVO.getNotClorinated()+jObj.getLong("wb_nil_chlorine"));
-	 	    			}
-	 	    		}
-				}
-				finaVO.setNoOfDistricts(noOfDistricts);
-				finaVO.setNoOfSPs(noOfSPs);
+					if(jsonObject.has("meta")){
+						JSONObject metaObject = jsonObject.getJSONObject("meta");
+						if(metaObject.has("next")){
+							nextCount = Long.valueOf(metaObject.getString("count"));
+							JSONArray finalArray = jsonObject.getJSONArray("resource");
+							List<WaterTanksClorinationVO> dataList = setDataToVO(finalArray);
+							fnalList.addAll(dataList);
+						}
+					}else{
+						JSONArray finalArray = jsonObject.getJSONArray("resource");
+						List<WaterTanksClorinationVO> dataList = setDataToVO(finalArray);
+						fnalList.addAll(dataList);
+					}
+				}	
 	 	    }
+			
+			if(nextCount != null && nextCount.longValue() >0L){
+			  for(int i=1000;i<=nextCount;i=i+1000){
+				offsetValue = Long.valueOf(i);
+				url = "http://115.112.122.116/api/v2/vhop_add_on/_table/waterbody?filter=(visit_date%20%3E%3D%20"+inputVO.getFromDateStr()+")%20AND%20(visit_date%20%3C%3D%20"+inputVO.getToDateStr()+")&limit=0&offset="+offsetValue+"";
+				webResource = commonMethodsUtilService.getWebResourceObject(url);
+				response = webResource.accept("application/json").type("application/json").header("X-DreamFactory-Api-Key","f13c6aa6edc82e5ad15f2c43de44294bc3ce3443af0fb320bba3898acede1a08").header("X-DreamFactory-Session-Token", inputVO.getSession()).get(ClientResponse.class);
+				
+				if(response.getStatus() != 200){
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	    }else{
+					String output = response.getEntity(String.class);
+					if(output != null && !output.isEmpty()){
+						JSONObject jsonObject = new JSONObject(output);
+						JSONArray finalArray = jsonObject.getJSONArray("resource");
+						List<WaterTanksClorinationVO> dataList = setDataToVO(finalArray);
+						fnalList.addAll(dataList);
+					}
+				}	
+		    }
+		}
+			
+			if(fnalList != null && !fnalList.isEmpty()){
+				for (WaterTanksClorinationVO dataVO : fnalList) {
+					String districtName = dataVO.getDistrictName();//Districts Count
+    				String spName = dataVO.getServicePointName();
+    				Long distCunt = districtCuntMap.get(districtName);
+    				if(distCunt == null){
+    					noOfDistricts++;
+    					districtCuntMap.put(districtName, noOfDistricts);
+    				}
+    				Long spCunt = spsCuntMap.get(spName);//SpS Count
+    				if(spCunt == null){
+    					noOfSPs++;
+    					spsCuntMap.put(spName, noOfSPs);
+    				}
+    				finaVO.setChecked(finaVO.getChecked()+dataVO.getChecked());
+    				finaVO.setClorinated(finaVO.getClorinated()+dataVO.getClorinated());
+    				finaVO.setNotClorinated(finaVO.getNotClorinated()+dataVO.getNotClorinated());
+				}
+			}
+		finaVO.setNoOfDistricts(noOfDistricts);
+		finaVO.setNoOfSPs(noOfSPs);
+	 	    
 		} catch (Exception e) {
 			LOG.error("Exception raised at getWaterBodyCumulativeCounts - NREGSTCSService service", e);
 		}
@@ -5735,5 +5856,53 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		
 		return voList;
+	}
+	public List<WaterTanksClorinationVO> setDataToVO(JSONArray finalArray){
+		List<WaterTanksClorinationVO> retrunList = new ArrayList<WaterTanksClorinationVO>(0);
+		try{
+			if(finalArray!=null && finalArray.length()>0){
+	    		for(int i=0;i<finalArray.length();i++){
+    				JSONObject jObj = (JSONObject) finalArray.get(i);
+    				WaterTanksClorinationVO vo = new WaterTanksClorinationVO();
+    				vo.setVisitDate(jObj.getString("visit_date"));
+    				vo.setDistrictId(jObj.getLong("dist_id"));
+    				vo.setDistrictName(jObj.getString("dist_name"));
+    				vo.setAreaId(jObj.getLong("area_id"));
+    				vo.setAreaName(jObj.getString("area_name"));
+    				vo.setServicePointId(jObj.getLong("sp_id"));
+ 					vo.setServicePointName(jObj.getString("sp_name"));
+ 					vo.setVanId(jObj.getLong("van_id"));
+ 					vo.setVanNo(jObj.getString("van_no"));
+ 					vo.setNoOfSPs(1L);
+ 					vo.setChecked(jObj.getLong("wb_checked"));
+ 					vo.setClorinated(jObj.getLong("wb_chlorinated"));
+ 					vo.setNotClorinated(jObj.getLong("wb_nil_chlorine"));
+ 					vo.setVisitDate(jObj.getString("visit_date"));
+ 					retrunList.add(vo);
+    				
+    				
+    				
+	    				/*String districtName = jObj.getString("dist_name");//Districts Count
+	    				String spName = jObj.getString("sp_name");
+	    				Long distCunt = districtCuntMap.get(districtName);
+	    				if(distCunt == null){
+	    					noOfDistricts++;
+	    					districtCuntMap.put(districtName, noOfDistricts);
+	    				}
+	    				Long spCunt = spsCuntMap.get(spName);//SpS Count
+	    				if(spCunt == null){
+	    					noOfSPs++;
+	    					spsCuntMap.put(spName, noOfSPs);
+	    				}*/
+    				//vo.setChecked(vo.getChecked()+jObj.getLong("wb_checked"));
+    				//vo.setClorinated(vo.getClorinated()+jObj.getLong("wb_chlorinated"));
+    				//vo.setNotClorinated(vo.getNotClorinated()+jObj.getLong("wb_nil_chlorine"));
+    				//retrunList.add(vo);
+	    		}
+	    	}
+		}catch (Exception e) {
+			LOG.error("Exception raised at setDataToVO - NREGSTCSService service", e);
+		}
+		return retrunList;
 	}
 }
