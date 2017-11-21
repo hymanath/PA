@@ -42,6 +42,7 @@ function onLoadCalls()
 	$(".chosen-select").chosen();
 	$("#mianHeadingId").html('');
 	$(".rangeWiseTooltipCls").tooltip();
+	$("#mianHeadingId").html('');
 	$("#mianHeadingId").html((locationName)+"  "+locationLevelName);
 	if(locationLevelId < "5"){
 		$(".searchLevelCls").show();
@@ -1133,7 +1134,7 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 								str+='<th rowspan="2">Mandal/Muncipality Name</th>';
 							}else if(locationLevelId == '5')
 							{
-								str+='<th rowspan="2">Mandal Name</th>';
+								str+='<th rowspan="2">Panchayat Name</th>';
 							}else if(locationLevelId == '6')
 							{
 								str+='<th rowspan="2">Panchayat Name</th>';
@@ -1383,7 +1384,7 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 							str+='<th style="background-color:#fff;">Constituency</th>';
 						}
 					}else if(locationLevelId == '5' || locationLevelId == 5){
-						str+='<th style="background-color:#fff;">Mandal</th>';
+						str+='<th style="background-color:#fff;">Panchayat</th>';
 					}else{
 						str+='<th style="background-color:#fff;">Location</th>';
 					}
@@ -1464,28 +1465,44 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 						if(result[i].list[j].status == null || result[i].list[j].status.length == 0 ){
 							if(starMark.length==0)
 								starMark+='<span style="color:red;font-size:14px;">*</span>';
-						}else{
-							starMark+='<span></span>';
 						}
 					}
 					 
 					 
 					  str+='<td>'+result[i].locationName+starMark+'';
-					 str+='<span>'+buildStatusCounts(result[i])+'</span>';
+					 str+='<span>'+buildStatusCounts(result[i])+'</span></td>';
+					
 					for(var j in result[i].list){
 						if(result[i].list[j].status == 'GOOD')
 						{
 							str+='<td style="background-color:#428AE9;color:#fff">';
 							str+='<h5 ><b>'+result[i].list[j].status+'</b></h5>';
-							if(locationLevelId == '3' || locationLevelId == 3){
+							if(locationLevelId == '2' || locationLevelId == 2){
 								if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
 									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else if(electionScopetext == "Assembly" && searchLevelVal == "parliament"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else if(electionScopetext == "Parliament" && searchLevelVal == "parliament"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}
+								else{
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+								}
+							}
+							else if(locationLevelId == '3' || locationLevelId == 3){
+								if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else{
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 								}
 							}else if(locationLevelId == '10' || locationLevelId == 10){
 								if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else{
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 								}
-							}else{
+							}
+							else{
 								str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 							}
 							
@@ -1498,10 +1515,26 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 								if(locationLevelId == '3' || locationLevelId == 3){
 									if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
 								}else if(locationLevelId == '10' || locationLevelId == 10){
 									if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+									}
+								}
+								else if(locationLevelId == '2' || locationLevelId == 2){
+									if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else if(electionScopetext == "Assembly" && searchLevelVal == "parliament"){
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else if(electionScopetext == "Parliament" && searchLevelVal == "parliament"){
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}
+									else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
 								}else{
 									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
@@ -1513,12 +1546,27 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 								if(locationLevelId == '3' || locationLevelId == 3){
 									if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
 								}else if(locationLevelId == '10' || locationLevelId == 10){
 									if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
-								}else{
+								}else if(locationLevelId == '2' || locationLevelId == 2){
+								if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else if(electionScopetext == "Assembly" && searchLevelVal == "parliament"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else if(electionScopetext == "Parliament" && searchLevelVal == "parliament"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}
+								else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+									}
+							}else{
 									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 								}
 						}else if(result[i].list[j].status == 'OK')
@@ -1528,12 +1576,27 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 								if(locationLevelId == '3' || locationLevelId == 3){
 									if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
 								}else if(locationLevelId == '10' || locationLevelId == 10){
 									if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
-								}else{
+								}else if(locationLevelId == '2' || locationLevelId == 2){
+								if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else if(electionScopetext == "Assembly" && searchLevelVal == "parliament"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else if(electionScopetext == "Parliament" && searchLevelVal == "parliament"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}
+								else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+									}
+							}else{
 									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 								}
 						}else if(result[i].list[j].status == 'POOR')
@@ -1543,12 +1606,27 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 								if(locationLevelId == '3' || locationLevelId == 3){
 									if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
 								}else if(locationLevelId == '10' || locationLevelId == 10){
 									if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
-								}else{
+								}else if(locationLevelId == '2' || locationLevelId == 2){
+								if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else if(electionScopetext == "Assembly" && searchLevelVal == "parliament"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else if(electionScopetext == "Parliament" && searchLevelVal == "parliament"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}
+								else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+									}
+							}else{
 									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 								}
 						}else if(result[i].list[j].status == 'VERY POOR')
@@ -1558,12 +1636,27 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 								if(locationLevelId == '3' || locationLevelId == 3){
 									if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
 								}else if(locationLevelId == '10' || locationLevelId == 10){
 									if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
-								}else{
+								}else if(locationLevelId == '2' || locationLevelId == 2){
+								if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else if(electionScopetext == "Assembly" && searchLevelVal == "parliament"){
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else if(electionScopetext == "Parliament" && searchLevelVal == "parliament"){
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}
+								else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+									}
+							}else{
 									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 								}
 						}else if(result[i].list[j].status == 'WORST')
@@ -1573,15 +1666,30 @@ function buildElectionInformationLocationWiseStatus(result,electionTypeVal,searc
 								if(locationLevelId == '3' || locationLevelId == 3){
 									if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
 								}else if(locationLevelId == '10' || locationLevelId == 10){
 									if(electionScopetext == "Parliament" && searchLevelVal == "constituency"){
 										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 									}
-								}else{
+								}else if(locationLevelId == '2' || locationLevelId == 2){
+								if(electionScopetext == "Assembly" && searchLevelVal == "constituency"){
+									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+								}else if(electionScopetext == "Assembly" && searchLevelVal == "parliament"){
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}else if(electionScopetext == "Parliament" && searchLevelVal == "parliament"){
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b> <span class="text-success text-capital pull-right popUpDetailsClickCls"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+result[i].list[j].electionYear+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="color: #fff; text-decoration: none; font-size: 10px;border: 1px solid #ffffff; padding: 2px;">View Results</span></h6>';
+									}
+								else{
+										str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
+									}
+							}else{
 									str+='<h6><b>Margin  Votes: '+result[i].list[j].marginVotes+' ('+result[i].list[j].perc+'%)</b></h6>';
 								}
-						}else  if(result[i].list[j].status == null || result[i].list[j].status.length == 0 ){
+						}else if(result[i].list[j].status == null || result[i].list[j].status.length == 0 ){
 							str+='<td class="text-center"  style="background-color:grey;" >';
 							str+='<h5 title="Removed after delimitation in 2009 "> NOT AVAILABLE </h5>';
 						}else {
@@ -1725,7 +1833,7 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 	}else{
 		$("#votingDetailsSubLevelBlockId").html(spinner);
 	}
-	
+	$("#totalGaineddVotessCount").html('');
 	var partyIdsList=[];
 	var electionScopeValArr=[];
 	var electionYears=[];
@@ -1816,9 +1924,9 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 				if(parseInt(locationLevelId)==2 || parseInt(locationLevelId)==3 || parseInt(locationLevelId)==10)
 					table+='<th>Parliament Name</th>';
 				else if(parseInt(locationLevelId)==4)
-					table+='<th>Assembly Name</th>';
+					table+='<th>Mandal/Munci/Corp/Greater City</th>';
 				else if(parseInt(locationLevelId)==5)
-					table+='<th>Mandal Name</th>';
+					table+='<th>Panchayat Name</th>';
 				else if(parseInt(locationLevelId)==6)
 					table+='<th>Panchayat Name</th>';
 				else if(parseInt(locationLevelId)==7)
@@ -1828,7 +1936,7 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 				table+='<th>Rank(PC)</th>';
 				table+='<th>Margin Votes(PC)</th>';
 				//table+='<th>Margin %(PC)</th>';
-				table+='<th>Cross Voting Votes</th>';
+				table+='<th>Cross Voting Votes <br> ( CROSS VOTING = PC-AC ) </th>';
 				table+='<th>Cross Voting %</th>';
 				table+='</tr>';
 			table+='</thead>';
@@ -1836,7 +1944,8 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 				var totalPcGainedVotes=0;
 				var totalAcGainedVotes=0;
 				var crossVotingsCount =0;
-				
+				var lossImpactSeatsArr=[];
+				var winImpactSeatsCountArr=[];
 			for(var i in result){
 				if(result[i].subList1 != null && parseInt(result[i].subList1.length)>0){
 					for(var j in result[i].subList1){
@@ -1845,9 +1954,18 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 						}
 						if(result[i].subList1[j].mlaCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mlaCandidateEarnedVotes)>0){
 							totalAcGainedVotes = totalAcGainedVotes+result[i].subList1[j].mlaCandidateEarnedVotes;
-							
 						}
-						
+						if(result[i].subList1[j].rank != null && parseInt(result[i].subList1[j].rank)==1){							
+							if(result[i].subList1[j].marginVotes != null && result[i].subList1[j].crossVotingCount != null && 
+							 parseInt(result[i].subList1[j].marginVotes) <= parseInt(result[i].subList1[j].crossVotingCount)){
+								 winImpactSeatsCountArr.push(parseInt(result[i].locationId));
+							 }
+						}else{
+							if(result[i].subList1[j].marginVotes != null && result[i].subList1[j].crossVotingCount != null && 
+							 parseInt(result[i].subList1[j].marginVotes) > parseInt(result[i].subList1[j].crossVotingCount)){
+								 lossImpactSeatsArr.push(parseInt(result[i].locationId));
+							 }
+						}
 					} 					
 			}
 		}
@@ -1856,28 +1974,12 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 			for(var i in result){
 				if(result[i].subList1 != null && parseInt(result[i].subList1.length)>0){
 					for(var j in result[i].subList1){						
-						//if(result[i].subList1[j].mpCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mpCandidateEarnedVotes)>parseInt(result[i].subList1[j].crossVotingCount)){
-							// if margin --> possitve, and AC-PC --> Negative  : Green 
-							// if margin --> Negative, and AC-PC --> Possitive : Red 
-							
-						/*	if(result[i].subList1[j].marginVotes != null && parseInt(result[i].subList1[j].marginVotes)>0 && 
-								result[i].subList1[j].crossVotingCount != null && parseInt(result[i].subList1[j].crossVotingCount)<0 && result[i].subList1[j].rank != null && parseInt(result[i].subList1[j].rank)==1)
-								table+='<tr style="background-color:lightgreen;">';
-							else if(result[i].subList1[j].marginVotes != null && parseInt(result[i].subList1[j].marginVotes)<0 && parseInt(result[i].subList1[j].marginVotes) < parseInt(result[i].subList1[j].crossVotingCount) && 
-								result[i].subList1[j].crossVotingCount != null && parseInt(result[i].subList1[j].crossVotingCount)>0 && result[i].subList1[j].rank != null && parseInt(result[i].subList1[j].rank)==1)
-								table+='<tr style="background-color:#ff6666;">';
-							else									
-								table+='<tr>';
-							*/
+						
 							table+='<tr>';
-							if(parseInt(locationLevelId)==5)
-								table+='<td>'+locationName+'</td>';
-							else if(parseInt(locationLevelId)==6)
-								table+='<td>'+locationName+'</td>';
-							else if(parseInt(locationLevelId)==7)
-								table+='<td>'+locationName+'</td>';
-							else 								
-								table+='<td> <span class="votingDtsClickCls" attr_partcipation_id="votingDtsClickCls'+i+''+j+'" attr_type="crossVoting" attr_name="'+result[i].locationName+'" attr_parliamentId="'+result[i].locationId+'">'+result[i].locationName+'</span> <span class="text-success text-capital viewPageCls popUpDetailsClickCls pull-right"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+electionYears+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="text-decoration:none;">View Results</span></td>';
+															
+								table+='<td> <span class="votingDtsClickCls" attr_partcipation_id="votingDtsClickCls'+i+''+j+'" attr_type="crossVoting" attr_name="'+result[i].locationName+'" attr_parliamentId="'+result[i].locationId+'">'+result[i].locationName+'</span>';
+								if(parseInt(locationLevelId) !=5 && parseInt(locationLevelId) !=6 && parseInt(locationLevelId) !=7 )
+									table+='<span class="text-success text-capital viewPageCls popUpDetailsClickCls pull-right"  attr_type="electionResults" attr_constituencyId="'+result[i].locationId+'" attr_election_year="'+electionYears+'" attr_election_type="Parliament" attr_election_typeId="1" attr_name="'+result[i].locationName+'" style="text-decoration:none;">View Results</span></td>';
 								if(result[i].subList1[j].mpCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mpCandidateEarnedVotes)>0){
 									
 									if(result[i].subList1[j].mlaCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mlaCandidateEarnedVotes)<parseInt(result[i].subList1[j].mpCandidateEarnedVotes) ){
@@ -1899,21 +2001,71 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 									table+='<td>'+result[i].subList1[j].rank+'</td>';
 								else
 									table+='<td> - </td>';
-								table+='<td>'+result[i].subList1[j].marginVotes+'</td>';
-								//table+='<td>'+result[i].subList1[j].perc+'</td>';
-								if(result[i].subList1[j].mlaCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mlaCandidateEarnedVotes)>0){
-									table+='<td>'+result[i].subList1[j].crossVotingCount+'</td>';
-									if(parseFloat(result[i].subList1[j].crossVotingPerc)>0){
-										table+='<td>'+parseFloat(result[i].subList1[j].crossVotingPerc).toFixed(2)+'';
-										table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
-									}else{
-										table+='<td>'+parseFloat(result[i].subList1[j].crossVotingPerc).toFixed(2)+'';
-										table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+								
+								var isImpacted=false;
+								if(winImpactSeatsCountArr != null && winImpactSeatsCountArr.length>0){
+									for(var s in winImpactSeatsCountArr){
+										if(parseInt(winImpactSeatsCountArr[s]) == parseInt(result[i].locationId)){
+											isImpacted = true;
+											table+='<td style="background-color:#17a589;" title="Won this seat by Cross Voting ">'+result[i].subList1[j].marginVotes+'</td>';
+											//table+='<td>'+result[i].subList1[j].perc+'</td>';
+											if(result[i].subList1[j].mlaCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mlaCandidateEarnedVotes)>0){
+												table+='<td>'+result[i].subList1[j].crossVotingCount+'</td>';
+												if(parseFloat(result[i].subList1[j].crossVotingPerc)>0){
+													table+='<td>'+parseFloat(result[i].subList1[j].crossVotingPerc).toFixed(2)+'';
+													table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+												}else{
+													table+='<td>'+parseFloat(result[i].subList1[j].crossVotingPerc).toFixed(2)+'';
+													table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+												}
+											}else{
+												table+='<td> - </td>';
+												table+='<td> - </td>';
+											}
+										}
 									}
-								}else{
-									table+='<td> - </td>';
-									table+='<td> - </td>';
-								}								
+								}
+								if(lossImpactSeatsArr != null && lossImpactSeatsArr.length>0){
+									for(var s in lossImpactSeatsArr){
+										if(parseInt(lossImpactSeatsArr[s]) == parseInt(result[i].locationId)){
+												isImpacted = true;
+												table+='<td  style="background-color:#FF3E3E;"  title="Loss this seat by Cross Voting ">'+result[i].subList1[j].marginVotes+'</td>';
+												//table+='<td>'+result[i].subList1[j].perc+'</td>';
+												if(result[i].subList1[j].mlaCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mlaCandidateEarnedVotes)>0){
+													table+='<td>'+result[i].subList1[j].crossVotingCount+'</td>';
+													if(parseFloat(result[i].subList1[j].crossVotingPerc)>0){
+														table+='<td>'+parseFloat(result[i].subList1[j].crossVotingPerc).toFixed(2)+'';
+														table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+													}else{
+														table+='<td>'+parseFloat(result[i].subList1[j].crossVotingPerc).toFixed(2)+'';
+														table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+													}
+												}else{
+													table+='<td> - </td>';
+													table+='<td> - </td>';
+												}
+											}
+									}
+								}
+								if(!isImpacted)	{
+										table+='<td background-color:red;>'+result[i].subList1[j].marginVotes+'</td>';
+										//table+='<td>'+result[i].subList1[j].perc+'</td>';
+										if(result[i].subList1[j].mlaCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mlaCandidateEarnedVotes)>0){
+											table+='<td>'+result[i].subList1[j].crossVotingCount+'</td>';
+											if(parseFloat(result[i].subList1[j].crossVotingPerc)>0){
+												table+='<td>'+parseFloat(result[i].subList1[j].crossVotingPerc).toFixed(2)+'';
+												table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+											}else{
+												table+='<td>'+parseFloat(result[i].subList1[j].crossVotingPerc).toFixed(2)+'';
+												table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+											}
+										}else{
+											table+='<td> - </td>';
+											table+='<td> - </td>';
+										}
+									}
+										
+																								
 							}else{
 								table+='<td style="color:red;" id="votingDtsClickCls'+i+''+j+'" isParticipated="false"> Not Participated </td>';
 								table+='<td>'+result[i].subList1[j].mlaCandidateEarnedVotes+'</td>';
@@ -1945,13 +2097,19 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 		table+='</div>';
 		table+='</div>';
 		var str="";
-		str+="<div class='col-sm-6 m_top20 col-sm-offset-0'><table  class='table table-bordered'><tr><th>PC Gained Votes</th><th>AC Gained Votes </th><th>Cross Voteings </th></tr>";
+		str+="<div class='col-sm-12 m_top20 col-sm-offset-0'>'";
+		str+="<table  class='table table-bordered'><tr><th style='background-color:lightgray'>PC Gained Votes</th><th  style='background-color:lightgray'>AC Gained Votes </th><th  style='background-color:lightgray'>Cross Votings </th><th  style='background-color:lightgray' >Won Impact Seats </th><th  style='background-color:lightgray' >Loss Impact Seats </th></tr>";
 		if(totalPcGainedVotes > totalAcGainedVotes){
-		str+="<tr><td style='background-color:#17a589;'>"+totalPcGainedVotes+"</td><td style='background-color:#FF3E3E ;'>"+totalAcGainedVotes+"</td>";
+			str+="<tr><td style='background-color:#17a589;'>"+totalPcGainedVotes+"</td><td style='background-color:#FF3E3E ;'>"+totalAcGainedVotes+"</td>";
 		}else{
-	    str+="<tr><td style='background-color:#FF3E3E ;'>"+totalPcGainedVotes+"</td><td style='background-color:#17a589;'>"+totalAcGainedVotes+"</td>"; 
+			str+="<tr><td style='background-color:#FF3E3E ;'>"+totalPcGainedVotes+"</td><td style='background-color:#17a589;'>"+totalAcGainedVotes+"</td>"; 
 		}
-		str+="<td>"+crossVotingsCount+"</td></tr></table></div>";
+		
+		str+="<td>"+crossVotingsCount+"</td>";
+		str+="<td>"+winImpactSeatsCountArr.length+"</td>";
+		str+="<td>"+lossImpactSeatsArr.length+"</td>";
+		
+		str+="</tr></table></div>";
 		$("#totalGainedVotesCount").html(str);
 		
 		$("#"+divId+"").html(table);
@@ -1975,9 +2133,9 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 				if(parseInt(locationLevelId)==2 || parseInt(locationLevelId)==3 || parseInt(locationLevelId)==10)
 					table+='<th>Assembly Name</th>';
 				else if(parseInt(locationLevelId)==4)
-					table+='<th>Assembly Name</th>';
+					table+='<th>Mandal/Munci/Corp/Greater City</th>';
 				else if(parseInt(locationLevelId)==5)
-					table+='<th>Mandal Name</th>';
+					table+='<th>Panchayat Name</th>';
 				else if(parseInt(locationLevelId)==6)
 					table+='<th>Panchayat Name</th>';
 				else if(parseInt(locationLevelId)==7)
@@ -1987,50 +2145,50 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 				table+='<th>Rank(AC)</th>';
 				table+='<th>Margin Votes(AC)</th>';
 				//table+='<th>Margin %(PC)</th>';
-				table+='<th>Cross Voting Votes</th>';
+				table+='<th>Cross Voting Votes  <br> ( CROSS VOTING = PC-AC )</th>';
 				table+='<th>Cross Voting %</th>';
 				table+='</tr>';
 			table+='</thead>';
 			table+='<tbody>';
 			var parliamentPCVoterGain=0;
 			var assemblyAcVoterGain =0;
+			var crossVotingsCount =0;
+			var lossImpactSeatsArr=[];
+			var winImpactSeatsCountArr=[];
 			for(var i in result){
-				//if(parliamentId == result[i].locationId){
-					for(var j in result[i].list){
-						for(var k in result[i].list[j].subList1){
-							if(result[i].list[j].subList1[k].mpCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0){
-								parliamentPCVoterGain = parliamentPCVoterGain+result[i].list[j].subList1[k].mpCandidateEarnedVotes ;
-							}
-							if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0){
-								parliamentPCVoterGain = parliamentPCVoterGain+result[i].list[j].subList1[k].mpCandidateEarnedVotes ;
-							}
+				if(result[i].subList1 != null && parseInt(result[i].subList1.length)>0){
+					for(var j in result[i].subList1){
+						if(result[i].subList1[j].mpCandidateEarnedVotes != null && parseInt(result[i].subList1[j].mpCandidateEarnedVotes)>0){
+								parliamentPCVoterGain = parliamentPCVoterGain+result[i].subList1[j].mpCandidateEarnedVotes ;
 						}
-					}
-				}
-			
+						if(result[i].subList1[j].mlaCandidateEarnedVotes != null && parseInt(result[j].subList1[j].mlaCandidateEarnedVotes)>0){
+							assemblyAcVoterGain = assemblyAcVoterGain+result[i].subList1[j].mlaCandidateEarnedVotes ;
+						}
+						if(result[i].subList1[j].rank != null && parseInt(result[i].subList1[j].rank)==1){							
+							if(result[i].subList1[j].marginVotes != null && result[i].subList1[j].crossVotingCount != null && 
+							 parseInt(result[i].subList1[j].marginVotes) <= parseInt(result[i].subList1[j].crossVotingCount)){
+								 winImpactSeatsCountArr.push(parseInt(result[i].locationId));
+							 }
+						}else{
+							if(result[i].subList1[j].marginVotes != null && result[i].subList1[j].crossVotingCount != null && 
+							 parseInt(result[i].subList1[j].marginVotes) > parseInt(result[i].subList1[j].crossVotingCount)){
+								 lossImpactSeatsArr.push(parseInt(result[i].locationId));
+							 }
+						}
+					} 					
+			}
+		}
+		crossVotingsCount=parliamentPCVoterGain-assemblyAcVoterGain;
 			for(var i in result){
 				//if(parliamentId == result[i].locationId){
 					for(var j in result[i].list){
 						for(var k in result[i].list[j].subList1){
-						/*	
-							if(result[i].list[j].subList1[k].marginVotes != null && parseInt(result[i].list[j].subList1[k].marginVotes)>0 && 
-								result[i].list[j].subList1[k].crossVotingCount != null && parseInt(result[i].list[j].subList1[k].crossVotingCount)<0 && result[i].list[j].subList1[k].rank != null && parseInt(result[i].list[j].subList1[k].rank)==1)
-								table+='<tr style="background-color:lightgreen;">';
-							else if(result[i].list[j].subList1[k].marginVotes != null && parseInt(result[i].list[j].subList1[k].marginVotes)<0 && parseInt(result[i].list[j].subList1[k].marginVotes) < parseInt(result[i].list[j].subList1[k].crossVotingCount) && 
-								result[i].list[j].subList1[k].crossVotingCount != null && parseInt(result[i].list[j].subList1[k].crossVotingCount)>0 && result[i].list[j].subList1[k].rank != null && parseInt(result[i].list[j].subList1[k].rank)==1)
-								table+='<tr style="background-color:#ff6666;">';
-							else									
-								table+='<tr>';
-							*/
+						
 							table+='<tr>';
-								if(parseInt(locationLevelId)==5)
-									table+='<td>'+locationName+'</td>';
-								else if(parseInt(locationLevelId)==6)
-									table+='<td>'+locationName+'</td>';
-								else if(parseInt(locationLevelId)==7)
-									table+='<td>'+locationName+'</td>';
-								else 
-									table+='<td>'+result[i].list[j].locationName+' <span class="text-success text-capital viewPageCls popUpDetailsClickCls pull-right"  attr_type="electionResults" attr_constituencyId="'+result[i].list[j].locationId+'" attr_election_year="'+electionYears+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].list[j].locationName+'" style="text-decoration:none;">View Results</span></td>';
+								table+='<td>'+result[i].list[j].locationName+'';
+									if(parseInt(locationLevelId) !=4 && parseInt(locationLevelId) !=5 && parseInt(locationLevelId) !=6 && parseInt(locationLevelId) !=7 )
+										table+='<span class="text-success text-capital viewPageCls popUpDetailsClickCls pull-right"  attr_type="electionResults" attr_constituencyId="'+result[i].list[j].locationId+'" attr_election_year="'+electionYears+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].list[j].locationName+'" style="text-decoration:none;">View Results</span></td>';
+									
 								if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0 && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0)
 								{
 									if(result[i].list[j].subList1[k].mpCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0){
@@ -2051,20 +2209,66 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 											table+='<td>'+result[i].list[j].subList1[k].rank+'</td>';
 										else
 											table+='<td> - </td>';
-										table+='<td>'+result[i].list[j].subList1[k].marginVotes+'</td>';
-										//table+='<td>'+result[i].list[j].subList1[k].perc+'</td>';										
-										if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0){
-											table+='<td>'+result[i].list[j].subList1[k].crossVotingCount+'</td>';
-											if(parseFloat(result[i].list[j].subList1[k].crossVotingPerc)>0){
-												table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
-												table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+										
+									var isImpacted=false;
+									if(winImpactSeatsCountArr != null && winImpactSeatsCountArr.length>0){
+										for(var s in winImpactSeatsCountArr){
+											if(parseInt(winImpactSeatsCountArr[s]) == parseInt(result[i].locationId)){
+												isImpacted = true;
+												table+='<td  style="background-color:#17a589;"  title="Loss this seat by Cross Voting ">'+result[i].list[j].subList1[k].marginVotes+'</td>';
+												//table+='<td>'+result[i].list[j].subList1[k].perc+'</td>';										
+												if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0){
+													table+='<td>'+result[i].list[j].subList1[k].crossVotingCount+'</td>';
+													if(parseFloat(result[i].list[j].subList1[k].crossVotingPerc)>0){
+														table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+														table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+													}else{
+														table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+														table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+													}	
+												}else{
+													
+												}
+											}
+										}
+									}
+									if(lossImpactSeatsArr != null && lossImpactSeatsArr.length>0){
+										for(var s in lossImpactSeatsArr){
+											if(parseInt(lossImpactSeatsArr[s]) == parseInt(result[i].locationId)){
+												isImpacted = true;
+												table+='<td  style="background-color:#FF3E3E;"  title="Loss this seat by Cross Voting ">'+result[i].list[j].subList1[k].marginVotes+'</td>';
+												//table+='<td>'+result[i].list[j].subList1[k].perc+'</td>';										
+												if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0){
+													table+='<td>'+result[i].list[j].subList1[k].crossVotingCount+'</td>';
+													if(parseFloat(result[i].list[j].subList1[k].crossVotingPerc)>0){
+														table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+														table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+													}else{
+														table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+														table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+													}	
+												}else{
+													
+												}
+											}
+										}
+									}
+									if(!isImpacted)	{
+											table+='<td>'+result[i].list[j].subList1[k].marginVotes+'</td>';
+											//table+='<td>'+result[i].list[j].subList1[k].perc+'</td>';										
+											if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0){
+												table+='<td>'+result[i].list[j].subList1[k].crossVotingCount+'</td>';
+												if(parseFloat(result[i].list[j].subList1[k].crossVotingPerc)>0){
+													table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+													table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+												}else{
+													table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+													table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+												}	
 											}else{
-												table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
-												table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+												
 											}	
-										}else{
-											
-										}								
+										}							
 									}
 									else{
 										if(isParticipated == 'true')										
@@ -2115,7 +2319,7 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 	function buildExpandTableData(result,type,parliamentId,attr_partcipation_id,divId,electionYears)
 	{
 		var isParticipated=$('#'+attr_partcipation_id+'').attr('isParticipated');
-		
+	
 		var table='';
 		table+='<div class="table-responsive">';
 		table+='<table class="table table-bordered table_custom" id="dataTableCrossExpand">';
@@ -2125,8 +2329,10 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 					table+='<th>Assembly Name</th>';
 				else if(parseInt(locationLevelId)==4)*/
 					
-				 if(parseInt(locationLevelId)==5)
-					table+='<th>Mandal Name</th>';
+				if(parseInt(locationLevelId)==4)
+					table+='<th>Mandal/Munci/Corp/Greater City</th>';
+				else if(parseInt(locationLevelId)==5)
+					table+='<th>Panchayat Name</th>';
 				else if(parseInt(locationLevelId)==6)
 					table+='<th>Panchayat Name</th>';
 				else if(parseInt(locationLevelId)==7)
@@ -2138,35 +2344,60 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 				table+='<th>Rank(AC)</th>';
 				table+='<th>Margin Votes(AC)</th>';
 				//table+='<th>Margin %(PC)</th>';
-				table+='<th>Cross Voting Votes</th>';
+				table+='<th>Cross Voting Votes  <br> ( CROSS VOTING = PC-AC )</th>';
 				table+='<th>Cross Voting %</th>';
 				table+='</tr>';
 			table+='</thead>';
 			table+='<tbody>';
+			var totalPcGainedVotes=0;
+			var totalAcGainedVotes=0;
+			var parliamentPCVoterGain=0;
+			var assemblyAcVoterGain =0;
+			var crossVotingsCount =0;
+			var lossImpactSeatsArr=[];
+			var winImpactSeatsCountArr=[];
+			for(var i in result){				
+				if(parliamentId == result[i].locationId){
+					for(var j in result[i].list){
+						for(var k in result[i].list[j].subList1){
+							
+							if(result[i].list[j].subList1[k].mpCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mpCandidateEarnedVotes)>0){
+								totalPcGainedVotes = totalPcGainedVotes+result[i].list[j].subList1[k].mpCandidateEarnedVotes ;
+							}
+							if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0){
+								totalAcGainedVotes = totalAcGainedVotes+result[i].list[j].subList1[k].mlaCandidateEarnedVotes ;
+							}
+							if(result[i].list[j].subList1[k].rank != null && parseInt(result[i].list[j].subList1[k].rank)==1){							
+								if(result[i].list[j].subList1[k].marginVotes != null && result[i].list[j].subList1[k].crossVotingCount != null && parseInt(result[i].list[j].subList1[k].crossVotingCount)>0 && 
+								 parseInt(result[i].list[j].subList1[k].marginVotes) <= parseInt(result[i].list[j].subList1[k].crossVotingCount)){
+									 winImpactSeatsCountArr.push(parseInt(result[i].list[j].locationId));
+								 }
+							}else{
+								if(result[i].list[j].subList1[k].marginVotes != null && result[i].list[j].subList1[k].crossVotingCount != null && parseInt(result[i].list[j].subList1[k].crossVotingCount)>0 && (parseInt(result[i].list[j].subList1[k].marginVotes) + parseInt(result[i].list[j].subList1[k].crossVotingCount))>0  && 
+								 parseInt(result[i].list[j].subList1[k].marginVotes) < parseInt(result[i].list[j].subList1[k].crossVotingCount)){
+									 lossImpactSeatsArr.push(parseInt(result[i].list[j].locationId));
+								 }
+							}
+							
+						}
+					}
+				}
+			}
+			
+		crossVotingsCount=totalPcGainedVotes-totalAcGainedVotes;
+		//console.log(winImpactSeatsCountArr);
+	//	console.log(lossImpactSeatsArr);
 			for(var i in result){
 				if(parliamentId == result[i].locationId){
 					for(var j in result[i].list){
 						for(var k in result[i].list[j].subList1){
-						/*	
-							if(result[i].list[j].subList1[k].marginVotes != null && parseInt(result[i].list[j].subList1[k].marginVotes)>0 && 
-								result[i].list[j].subList1[k].crossVotingCount != null && parseInt(result[i].list[j].subList1[k].crossVotingCount)<0 && result[i].list[j].subList1[k].rank != null && parseInt(result[i].list[j].subList1[k].rank)==1)
-								table+='<tr style="background-color:lightgreen;">';
-							else if(result[i].list[j].subList1[k].marginVotes != null && parseInt(result[i].list[j].subList1[k].marginVotes)<0 && parseInt(result[i].list[j].subList1[k].marginVotes) < parseInt(result[i].list[j].subList1[k].crossVotingCount) && 
-								result[i].list[j].subList1[k].crossVotingCount != null && parseInt(result[i].list[j].subList1[k].crossVotingCount)>0 && result[i].list[j].subList1[k].rank != null && parseInt(result[i].list[j].subList1[k].rank)==1)
-								table+='<tr style="background-color:#ff6666;">';
-							else									
-								table+='<tr>';
-							*/
+						
 							table+='<tr>';
 							
-							if(parseInt(locationLevelId)==5)
-								table+='<td>'+locationName+'</td>';
-							else if(parseInt(locationLevelId)==6)
-								table+='<td>'+locationName+'</td>';
-							else if(parseInt(locationLevelId)==7)
-								table+='<td>'+locationName+'</td>';
-							else 
-								table+='<td>'+result[i].list[j].locationName+' <span class="text-success text-capital viewPageCls popUpDetailsClickCls pull-right"  attr_type="electionResults" attr_constituencyId="'+result[i].list[j].locationId+'" attr_election_year="'+electionYears+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].list[j].locationName+'" style="text-decoration:none;">View Results</span></td>';
+							
+								table+='<td>'+result[i].list[j].locationName+' ';
+								if(parseInt(locationLevelId) !=5 && parseInt(locationLevelId) !=6 && parseInt(locationLevelId) !=7 )
+									table+='<span class="text-success text-capital viewPageCls popUpDetailsClickCls pull-right"  attr_type="electionResults" attr_constituencyId="'+result[i].list[j].locationId+'" attr_election_year="'+electionYears+'" attr_election_type="Assembly" attr_election_typeId="2" attr_name="'+result[i].list[j].locationName+'" style="text-decoration:none;">View Results</span></td>';
 								
 								if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0)
 								{
@@ -2190,20 +2421,62 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 											table+='<td>'+result[i].list[j].subList1[k].rank+'</td>';
 										else
 											table+='<td> - </td>';
-										table+='<td>'+result[i].list[j].subList1[k].marginVotes+'</td>';
-										//table+='<td>'+result[i].list[j].subList1[k].perc+'</td>';										
-										if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0){
-											table+='<td>'+result[i].list[j].subList1[k].crossVotingCount+'</td>';
-											if(parseFloat(result[i].list[j].subList1[k].crossVotingPerc)>0){
-												table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
-												table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+										
+										var isImpacted=false;
+										if(winImpactSeatsCountArr != null && winImpactSeatsCountArr.length>0){
+											for(var s in winImpactSeatsCountArr){
+												if(parseInt(winImpactSeatsCountArr[s]) == parseInt(result[i].list[j].locationId)){
+													isImpacted = true;
+													table+='<td  style="background-color:#17a589;"  title="Loss this seat by Cross Voting ">'+result[i].list[j].subList1[k].marginVotes+'</td>';
+													//table+='<td>'+result[i].list[j].subList1[k].perc+'</td>';										
+													if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0){
+														table+='<td>'+result[i].list[j].subList1[k].crossVotingCount+'</td>';
+														if(parseFloat(result[i].list[j].subList1[k].crossVotingPerc)>0){
+															table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+															table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+														}else{
+															table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+															table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+														}	
+													}
+												}
+											}
+										}
+										if(lossImpactSeatsArr != null && lossImpactSeatsArr.length>0){
+											for(var s in lossImpactSeatsArr){
+												if(parseInt(lossImpactSeatsArr[s]) == parseInt(result[i].list[j].locationId)){
+													isImpacted = true;
+													table+='<td  style="background-color:#FF3E3E;"  title="Loss this seat by Cross Voting ">'+result[i].list[j].subList1[k].marginVotes+'</td>';
+													//table+='<td>'+result[i].list[j].subList1[k].perc+'</td>';										
+													if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0){
+														table+='<td>'+result[i].list[j].subList1[k].crossVotingCount+'</td>';
+														if(parseFloat(result[i].list[j].subList1[k].crossVotingPerc)>0){
+															table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+															table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+														}else{
+															table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+															table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+														}	
+													}
+												}
+											}
+										}
+										if(!isImpacted)	{
+											table+='<td>'+result[i].list[j].subList1[k].marginVotes+'</td>';
+											//table+='<td>'+result[i].list[j].subList1[k].perc+'</td>';										
+											if(result[i].list[j].subList1[k].mlaCandidateEarnedVotes != null && parseInt(result[i].list[j].subList1[k].mlaCandidateEarnedVotes)>0){
+												table+='<td>'+result[i].list[j].subList1[k].crossVotingCount+'</td>';
+												if(parseFloat(result[i].list[j].subList1[k].crossVotingPerc)>0){
+													table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+													table+='<i class="fa fa-arrow-up" style="color:#3BB878 !important;"></i></td>';
+												}else{
+													table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
+													table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+												}	
 											}else{
-												table+='<td>'+parseFloat(result[i].list[j].subList1[k].crossVotingPerc).toFixed(2)+'';
-												table+='<i class="fa fa-arrow-down" style="color:#F56666 !important;"></i></td>';
+												
 											}	
-										}else{
-											
-										}								
+										}
 									}
 									else{
 										if(isParticipated == 'true')										
@@ -2242,12 +2515,31 @@ function getLocationWiseCrossVotingDetails(eletionSubType,electionYrValForCross,
 		table+='</div>';
 		
 		$("#"+divId+"").html(table);
+		
+		
+		
 		$("#dataTableCrossExpand").dataTable({
 			"iDisplayLength": 30,
 			 "aaSorting": [[ 1, "desc" ]], 
 			"aLengthMenu": [[30,  50, -1], [30,  50, "All"]]
 		});
 		
+		
+		var str="";
+		str+="<div class='col-sm-12 m_top20 col-sm-offset-0'>'";
+		str+="<table  class='table table-bordered'><tr><th style='background-color:lightgray'>PC Gained Votes</th><th  style='background-color:lightgray'>AC Gained Votes </th><th  style='background-color:lightgray'>Cross Votings </th><th  style='background-color:lightgray' >Won Impact Seats </th><th  style='background-color:lightgray' >Loss Impact Seats </th></tr>";
+		if(totalPcGainedVotes > totalAcGainedVotes){
+			str+="<tr><td style='background-color:#17a589;'>"+totalPcGainedVotes+"</td><td style='background-color:#FF3E3E ;'>"+totalAcGainedVotes+"</td>";
+		}else{
+			str+="<tr><td style='background-color:#FF3E3E ;'>"+totalPcGainedVotes+"</td><td style='background-color:#17a589;'>"+totalAcGainedVotes+"</td>"; 
+		}
+		
+		str+="<td>"+crossVotingsCount+"</td>";
+		str+="<td>"+winImpactSeatsCountArr.length+"</td>";
+		str+="<td>"+lossImpactSeatsArr.length+"</td>";
+		
+		str+="</tr></table></div>";
+		$("#totalGaineddVotessCount").html(str);
 	}
 	
 $(document).on("click",".votingDtsClickCls",function(){
@@ -3303,12 +3595,11 @@ function buildStatusCounts(result){
 	var str='';
 	str+='<ul class="list-inline">'; 
 			for( var k in result.subList1){
-				
 				str+='<li>';
 				if(result.subList1[k].wonSeatsCount !=null && result.subList1[k].wonSeatsCount > 0){
-					str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result.subList1[k].status.trim()]+';color:#fff;cursor:pointer;text-decoration;none;"  status_attr="'+result.subList1[k].status+'"  title=" '+result.subList1[k].status+' locations details" locationids_attr="'+result.subList1[k].locationId+'" year_attr="">'+result.subList1[k].wonSeatsCount+'</span>';
+					str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result.subList1[k].status.trim()]+';color:#fff;text-decoration;none;"  status_attr="'+result.subList1[k].status+'"  title=" '+result.subList1[k].status+' locations details" locationids_attr="'+result.subList1[k].locationId+'" year_attr="">'+result.subList1[k].wonSeatsCount+'</span>';
 				}else{
-					str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result.subList1[k].status.trim()]+';color:#fff;text-d//ecoration:none;cursor: auto;">0</span>';
+					str+='<span class="statusClr" style="background-color:'+globalStrongPoorColor[result.subList1[k].status.trim()]+';color:#fff;" >0</span>';
 				}
 				str+='</li>';
 			}
