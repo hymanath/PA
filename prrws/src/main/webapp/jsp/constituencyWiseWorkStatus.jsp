@@ -20,8 +20,8 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 }
 </style>
 </head>
-<body>
-<header>
+<body id="printableArea">
+<header class="headerDisPlayNone">
 	<nav>
 		<div class="container-fluid">
 			<div class="row">
@@ -233,7 +233,8 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 		</div>
 	</section>
 </header>
-	<div class="container m_top20">
+<section id="printcontent">
+	<div class="container m_top20 headerDisPlayNone">
 		<div class="row">
 			<div class="col-sm-11">
 				<label class="radio-inline pull-right">
@@ -252,7 +253,7 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 		</div>
 	</div>
 	
-	<div class="mainDivHeaderCls printcontent" id="printableArea">
+	<div class="mainDivHeaderCls" >
 		<div class="container">
 			<div class="white_block" style="box-shadow:none;padding:20px;">
 					<div class="headingCssCls">
@@ -304,7 +305,7 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 					<!--<div class="go-works m_top10">
 						<h4  id="mainHeadingId"></h4>
 					</div>-->
-					<div id="overAllDeparmentsDivId"></div>
+					<div id="overAllDeparmentsDivId" class="pagebreak"></div>
 					<div id="rwsDetailsDivId" class="pagebreak"></div>
 					<div id="encDetailsDivId" class="pagebreak"></div>
 					<div id="mgnrewsDetailsDivId" class="pagebreak"></div>
@@ -318,6 +319,7 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 		</div>
 		
 	</div>
+	</section>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>

@@ -231,14 +231,14 @@ $(document).on("click",".printViewCls",function(){
 function printDiv(divName) {
 	
      var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
+     var originalContents = document.getElementById("printcontent").innerHTML;
 	 document.title = "";
-     document.body.innerHTML = printContents;
+     document.getElementById("printcontent").innerHTML = printContents;
      window.print();
-     document.body.innerHTML = originalContents;
-	window.location.reload(true);
+     document.getElementById("printcontent").innerHTML = originalContents;
+	//window.location.reload(true);
 }
-	window.onload=function(e){
+	/* window.onload=function(e){
 		  //alert();
 		window.onafterprint = function() {
 			//window.location.reload(false);
@@ -255,7 +255,7 @@ function printDiv(divName) {
 			 //location.reload();
 		  }
 		});
-	}
+	} */
 
 function buildOverAllDepartmentsDetails(result,departmentId,divId){
 	

@@ -416,5 +416,8 @@
 		-webkit-print-color-adjust:exact;
 		color-adjust:exact;
 	}
+	.headerDisPlayNone{
+		display:none !important;
+	}
 	@page { size: auto;  margin: 2.2mm; }
 }
