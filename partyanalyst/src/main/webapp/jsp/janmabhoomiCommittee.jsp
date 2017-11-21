@@ -78,7 +78,7 @@
     <div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title">Add Memberes</h4>      
+			<h4 class="modal-title">Add Members</h4>      
 		</div>
 		<div class="modal-body">   
           <div id="memberAddEditPopUpDetailsId" class="bg_class_Div"></div>
@@ -193,6 +193,8 @@
 						str+='<th>Member Added</th>';
 						str+='<th>Mobile Number</th>';
 						str+='<th>Voter ID</th>';
+						str+='<th>CategoryName</th>';
+						str+='<th>CasteName</th>';
 						str+='<th>Party</th>';
 						str+='<th>Status</th>';
 						if(statusType != 'Approved' )
@@ -224,6 +226,16 @@
 								}else{
 									str+='<td> - </td>';
 								}
+								if(result.desinationVOList[i].desinationMebersVOList[j].categoryName !=null && result.desinationVOList[i].desinationMebersVOList[j].categoryName.length>0){
+									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].categoryName+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result.desinationVOList[i].desinationMebersVOList[j].casteName !=null && result.desinationVOList[i].desinationMebersVOList[j].casteName.length>0){
+									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].casteName+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
 								if(result.desinationVOList[i].desinationMebersVOList[j].partyName !=null && result.desinationVOList[i].desinationMebersVOList[j].partyName.trim().length>0){
 									str+='<td>'+result.desinationVOList[i].desinationMebersVOList[j].partyName+'</td>';
 								}else{
@@ -243,7 +255,7 @@
 									if(result.desinationVOList[i].desinationMebersVOList[j].status == "Approved" || result.desinationVOList[i].desinationMebersVOList[j].status == "Inprogress"){
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit"  attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'" attr_committee_id="'+committeId+'">Edit</h5></td>';
 									}else if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'">Add Member</h5></td>';
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'" attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'">Add Member</h5></td>';
 								}
 									
 									</c:when>
@@ -255,7 +267,7 @@
 									</c:when>
 									<c:when  test="${fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT' )  || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) }">
 								if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'">Add Member</h5></td>';
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'"attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'">Add Member</h5></td>';
 								}
 								</c:when>
 								<c:otherwise>
