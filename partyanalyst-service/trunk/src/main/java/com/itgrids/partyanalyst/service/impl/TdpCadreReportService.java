@@ -6098,12 +6098,12 @@ public class TdpCadreReportService implements ITdpCadreReportService{
     		}
     		return returnVO;
     	}
-    	public List<BasicVO> getTdpCommitteeMandalByConstituency(Long constituencyId,Long enrollmentId){
+    	public List<BasicVO> getTdpCommitteeMandalByConstituency(Long constituencyId,Long enrollmentId,String committeeType){
     		List<BasicVO> returnList = new ArrayList<BasicVO>();
     		BasicVO vo = null;
     		try{
-    		    List<Object[]> mandalList = tdpCommitteeDAO.getTdpCommitteeMandalByConstituency(constituencyId,enrollmentId);
-    		    List<Object[]> localBodiesList = tdpCommitteeDAO.getTdpCommitteeLocalBodiesByConstituency(constituencyId, enrollmentId);
+    		    List<Object[]> mandalList = tdpCommitteeDAO.getTdpCommitteeMandalByConstituency(constituencyId,enrollmentId,committeeType);
+    		    List<Object[]> localBodiesList = tdpCommitteeDAO.getTdpCommitteeLocalBodiesByConstituency(constituencyId, enrollmentId,committeeType);
     			if(mandalList != null && mandalList.size() > 0){
     				 for(Object[] obj:mandalList){
     	    				vo = new BasicVO();

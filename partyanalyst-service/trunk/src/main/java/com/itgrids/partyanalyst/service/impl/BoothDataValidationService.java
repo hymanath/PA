@@ -858,7 +858,6 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				Map<Long,Long> readyToFinalMap = new HashMap<Long, Long>(0);
 				if(commonMethodsUtilService.isListOrSetValid(requiredRolesCountList) && commonMethodsUtilService.isListOrSetValid(addedCountList)){
 					for (Object[] param : requiredRolesCountList) {
-						if(commonMethodsUtilService.getLongValueForObject(param[0]).longValue() == 1052031L)
 							requiredRolesMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
 					}
 				}
