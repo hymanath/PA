@@ -1503,7 +1503,8 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 	$("#dataLoadingImgForMandal").show();
 		var jsObj = {
 			locationId :'${locationValue}',
-			enrollmentId : 2,
+			enrollmentId : 1,
+			committeeType:"BoothCommittee",
 			task:""
 		}
 		 $.ajax({

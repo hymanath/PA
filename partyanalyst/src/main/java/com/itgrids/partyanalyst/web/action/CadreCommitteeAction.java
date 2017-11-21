@@ -2537,7 +2537,8 @@ public String getSummaryDetails(){
 			jObj = new JSONObject(getTask());
 			Long constituencyId = jObj.getLong("locationId");
 			Long enrollmentId = jObj.getLong("enrollmentId");
-				constituencies = tdpCadreReportService.getTdpCommitteeMandalByConstituency(constituencyId,enrollmentId);
+			String committeeType = jObj.getString("committeeType");
+				constituencies = tdpCadreReportService.getTdpCommitteeMandalByConstituency(constituencyId,enrollmentId,committeeType);
 		}catch(Exception e){
 			LOG.error("Exception occured in getTdpCommitteeMandalByConstituency() method ",e);
 		}
