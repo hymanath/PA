@@ -903,7 +903,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		}
 		
 		public List<Object[]> getBoothsByPanchayatIDConstiId(Long panchayatId,Long constituencyId,Long publicationId){
-			Query queryObj = getSession().createQuery("select model.boothId,model.partNo from Booth model where model.constituency.constituencyId = :constituencyId  " +
+			Query queryObj = getSession().createQuery("select model.boothId,model.partNo,model.panchayat.panchayatId, model.panchayat.panchayatName from Booth model where model.constituency.constituencyId = :constituencyId  " +
 					" and model.publicationDate.publicationDateId = :publicationDateId and model.panchayat.panchayatId = :panchayatId ");
 			
 			queryObj.setParameter("panchayatId", panchayatId);
@@ -912,6 +912,19 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 			return queryObj.list();
 		}
+		
+		
+		public List<Object[]> getBoothsByPanchayatIDsListConstiId(List<Long> panchayatIdsList,Long constituencyId,Long publicationId){
+			Query queryObj = getSession().createQuery("select model.boothId,model.partNo,model.panchayat.panchayatId, model.panchayat.panchayatName from Booth model where model.constituency.constituencyId = :constituencyId  " +
+					" and model.publicationDate.publicationDateId = :publicationDateId and model.panchayat.panchayatId in (:panchayatIdsList) ");
+			
+			queryObj.setParameterList("panchayatIdsList", panchayatIdsList);
+			queryObj.setParameter("publicationDateId", publicationId);
+			queryObj.setParameter("constituencyId", constituencyId);
+			
+			return queryObj.list();
+		}
+		
 		/**
 		 * This DAO is used for getting all booths in a selected level (Constituency ,Mandal , panchayat) 
 		 * @param Long id
@@ -2619,6 +2632,18 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		 query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		 return query.list();
 	 }
+	 
+	 public List<Long> getLocalElectionsBodyList(List<Long> tehsilIdsList){
+		 
+		 Query query=getSession().createQuery("select distinct localBody.localElectionBodyId from Booth model" +
+		 		" left join model.localBody localBody " +
+		 		" where model.tehsil.tehsilId in (:tehsilIdsList) and localBody.localElectionBodyId is not null and model.publicationDate.publicationDateId=:publicationDateId");
+		 
+		 query.setParameterList("tehsilIdsList", tehsilIdsList);
+		 query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		 return query.list();
+	 }
+ 
 	 /*select distinct local_election_body_id from booth where constituency_id = 244 and publication_date_id = 3 and local_election_body_id=155;*/
 	 public Long getLocalElectionBodyDetails(Long localElectionBody,Long constituencyId,Long publicationDateId){
 		 Query query=getSession().createQuery(" select distinct model.localBody.localElectionBodyId from Booth model " +

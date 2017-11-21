@@ -547,7 +547,7 @@ public class ConstituencyPageService implements IConstituencyPageService{
 					 List<Nomination> nominationsList = new ArrayList<Nomination>(result.getConstituencyElection().getNominations());
 					 CandidateWonVO candidateWon = getCandidateWon(nominationsList);
 				 
-					 if(partiesList.isEmpty() || !partiesList.containsKey(candidateWon.getPartyId()))
+					 if(candidateWon != null  && (partiesList.isEmpty() || !partiesList.containsKey(candidateWon.getPartyId())))
 					 {
 						 if(candidateWon.getPartyShortName() != null && !candidateWon.getPartyShortName().equalsIgnoreCase("IND"))
 							 partiesList.put(candidateWon.getPartyId(), new SelectOptionVO(candidateWon.getPartyId(),candidateWon.getPartyShortName()));

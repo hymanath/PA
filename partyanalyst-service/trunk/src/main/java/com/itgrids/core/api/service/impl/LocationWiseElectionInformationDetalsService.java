@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMarginVotesRangeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO;
@@ -67,12 +68,20 @@ public class LocationWiseElectionInformationDetalsService implements ILocationWi
 	private TehsilDAO tehsilDAO;
 	private IElectionAllianceDAO electionAllianceDAO;
 	private IBoothDAO boothDAO;
-	
+	private IPanchayatDAO panchayatDAO;
 	private SetterAndGetterUtilService setterAndGetterUtilService = new SetterAndGetterUtilService();
 
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	
 	
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+
 	public IParliamentAssemblyDAO getParliamentAssemblyDAO() {
 		return parliamentAssemblyDAO;
 	}
@@ -1996,6 +2005,21 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 }
 
 
+public ElectionInformationVO getMatchedBylocationIdLocationVO(List<ElectionInformationVO> list,Long locationId){
+	try {
+		if(commonMethodsUtilService.isListOrSetValid(list)){
+			for (ElectionInformationVO electionInformationVO : list) {
+				if(electionInformationVO.getLocationId().longValue() == locationId.longValue()){
+					return electionInformationVO;
+				}
+			}
+		}
+	} catch (Exception e) {
+		Log.error("Exception raised at getMatchedVO service"+e);
+	}
+	return null;
+}
+
 	public List<ElectionInformationVO> getLocationBasedCrossVotingReult(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIdsList,List<Long> electionScopeIds,String withAlliance){
 		List<ElectionInformationVO> finalList = new ArrayList<ElectionInformationVO>();
 		try{
@@ -2004,8 +2028,10 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 			Map<Long,ElectionInformationVO> parliamentDtlsMap = new HashMap<Long, ElectionInformationVO>(0);
 			Set<Long> partyIdsList1 = new HashSet<Long>(0);
 			List<Long> availableAssemblyIdsList = new ArrayList<Long>(0);
+			List<ElectionInformationVO> tehsilREsults = new ArrayList<ElectionInformationVO>(0);
 			Long selectedPartyId = partyIdsList.get(0);
 			Long glAssemblyId=0L;
+			Long glParliamentId=0L;
 			String locationTypeStr="Mandal";
 			if(!commonMethodsUtilService.isListOrSetValid(locationValues)){
 				String[] parliamentIdsArr = IConstants.AP_PARLIAMENT_IDS_LIST;
@@ -2053,46 +2079,41 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 					}
 				}
 			}else if(locationTypeId.longValue()==4L){
-				
-				availableAssemblyIdsList.add(locationValues.get(0));
-				List<Object[]> parliamentList = parliamentAssemblyDAO.getParliamentByAssemblyId(locationValues.get(0));
-				if(commonMethodsUtilService.isListOrSetValid(parliamentList)){
-					availableAssemblyIdsList.add(locationValues.get(0));
-					locationValues.clear();
-					for (Object[] param : parliamentList) {
-						locationValues.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-					}
-				}
+				List<Long> tehsilIdsList  = boothDAO.getTehsildByConstituency(locationValues.get(0), IConstants.VOTER_DATA_PUBLICATION_ID);
+				if(commonMethodsUtilService.isListOrSetValid(tehsilIdsList))					
+					return getLocationBasedCrossVotingReult(electionYears,5L,tehsilIdsList,electionId,subTypes,partyIdsList,electionScopeIds,withAlliance);
 			}else if(locationTypeId.longValue()==5L){
-				locationTypeStr="Mandal";
-				List<Long> assemblyIdsList = boothDAO.getConstituencyDetailsByTehsilId(locationValues.get(0));
-				if(commonMethodsUtilService.isListOrSetValid(assemblyIdsList)){
-					glAssemblyId=assemblyIdsList.get(0);
-					List<Object[]> parliamentList = parliamentAssemblyDAO.getParliamentByAssemblyId(assemblyIdsList.get(0));
-					if(commonMethodsUtilService.isListOrSetValid(parliamentList)){
-						availableAssemblyIdsList.add(locationValues.get(0));
+				if(locationValues.size()==1L){
+					List<Long> panchayatList  = boothDAO.getPanchayatsIdsListByTehsilId(locationValues, IConstants.VOTER_DATA_PUBLICATION_ID);
+					if(commonMethodsUtilService.isListOrSetValid(panchayatList))					
+						return getLocationBasedCrossVotingReult(electionYears,6L,panchayatList,electionId,subTypes,partyIdsList,electionScopeIds,withAlliance);
+				}
+				if(locationValues.size()>1){
+					locationTypeStr="Mandal";
+					List<Long> assemblyIdsList = boothDAO.getConstituencyDetailsByTehsilId(locationValues.get(0));
+					if(commonMethodsUtilService.isListOrSetValid(assemblyIdsList)){
+						glAssemblyId=assemblyIdsList.get(0);
+						availableAssemblyIdsList.addAll(locationValues);
 						locationValues.clear();
-						for (Object[] param : parliamentList) {
-							locationValues.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-							parliamentDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), new ElectionInformationVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+						for (Long id : availableAssemblyIdsList) {
+							parliamentDtlsMap.put(id, new ElectionInformationVO(id,tehsilDAO.get(id).getTehsilName()));
 						}
 					}
 				}
 			}else if(locationTypeId.longValue()==6L){
-				locationTypeStr="panchayat";
-				List<Long> assemblyIdsList = boothDAO.getConstituencyForPanchayat(locationValues.get(0));
-				if(commonMethodsUtilService.isListOrSetValid(assemblyIdsList)){
-					glAssemblyId=assemblyIdsList.get(0);
-					List<Object[]> parliamentList = parliamentAssemblyDAO.getParliamentByAssemblyId(assemblyIdsList.get(0));
-					if(commonMethodsUtilService.isListOrSetValid(parliamentList)){
-						availableAssemblyIdsList.add(locationValues.get(0));
+					locationTypeStr="panchayat";
+					List<Long> assemblyIdsList = boothDAO.getConstituencyForPanchayat(locationValues.get(0));
+					List<Object[]> list = boothDAO.getBoothsByPanchayatIDsListConstiId(locationValues,assemblyIdsList.get(0),IConstants.VOTER_DATA_PUBLICATION_ID);
+					if(commonMethodsUtilService.isListOrSetValid(assemblyIdsList)){
+						glAssemblyId=assemblyIdsList.get(0);
+						availableAssemblyIdsList.addAll(locationValues);
 						locationValues.clear();
-						for (Object[] param : parliamentList) {
-							locationValues.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-							parliamentDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), new ElectionInformationVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+						if(commonMethodsUtilService.isListOrSetValid(list)){
+							for (Object[] param : list) {
+								parliamentDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), new ElectionInformationVO(commonMethodsUtilService.getLongValueForObject(param[2]),commonMethodsUtilService.getStringValueForObject(param[3])));
+							}
 						}
 					}
-				}
 			}else if(locationTypeId.longValue()==7L){
 				locationTypeStr="Munci/Corp/Greater City";
 				List<Long> assemblyIdsList = boothDAO.getConstituencyIdsByLebId(locationValues.get(0).longValue());
@@ -2134,6 +2155,30 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 							parliamentMap.put(parliamentVO.getLocationId(), parliamentVO);
 							availableAssemblyIdsList.add(assemblyVO.getLocationId());
 						}
+					}else if (locationTypeId.longValue()==5L || locationTypeId.longValue()==6L  || locationTypeId.longValue()==7L){
+						
+						if(commonMethodsUtilService.isListOrSetValid(availableAssemblyIdsList)){
+							for (Long tehsilId :availableAssemblyIdsList) {
+								
+								 parliamentVO = new ElectionInformationVO();
+								 if(parliamentDtlsMap.get(tehsilId) != null){
+									 parliamentVO.setLocationId(tehsilId);
+									 parliamentVO.setLocationName(parliamentDtlsMap.get(parliamentVO.getLocationId()).getLocationName());
+									 
+									 assemblyVO = new ElectionInformationVO ();
+									 assemblyVO.setLocationId(tehsilId);
+									 assemblyVO.setLocationName(parliamentDtlsMap.get(parliamentVO.getLocationId()).getLocationName());
+									 
+									 if(parliamentVO.getLocationId().longValue() == tehsilId.longValue())
+											parliamentVO.getList().add(assemblyVO);
+								 }
+								
+								parliamentMap.put(parliamentVO.getLocationId(), parliamentVO);
+								assemblyParliamentMap.put(assemblyVO.getLocationId(), parliamentId);
+								glParliamentId = parliamentId;
+							}
+						}
+						break;
 					}else{
 						
 						assemblyVO.setLocationId(availableAssemblyIdsList.get(0));
@@ -2175,6 +2220,53 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 					locationValues.addAll(availableAssemblyIdsList);
 			}
 			 List<Object[]> assemblyResultList = electionDAO.getElectionDetailsForCrossVoting(electionYears,locationTypeId,locationValues, electionId, subTypes, null, scopeIdsList,"assembly");
+			 
+			 if (locationTypeId.longValue()==5L){
+				 List<Long> lebIdsList =  boothDAO.getLocalElectionsBodyList(locationValues);
+				 List<Object[]> lebPAResultsList = electionDAO.getElectionDetailsForCrossVoting(electionYears,7L,lebIdsList, electionId, subTypes, null, scopeIdsList,"parliament");
+				 List<Object[]> assemblyWiseLEBResultList = electionDAO.getElectionDetailsForCrossVoting(electionYears,7L,lebIdsList, electionId, subTypes, null, scopeIdsList,"assembly");
+				 
+				 scopeIdsList.clear();
+				 scopeIdsList.add(1L);
+				 
+				 List<Object[]> assemblyWiselebResultsList = electionDAO.getElectionDetailsForCrossVoting(electionYears,7L,lebIdsList, electionId, subTypes, null, scopeIdsList,"parliament");
+
+				 if(commonMethodsUtilService.isListOrSetValid(assemblyWiseLEBResultList)){
+					 if(!commonMethodsUtilService.isListOrSetValid(assemblyResultList))
+						 assemblyResultList = new ArrayList<Object[]>(0);
+						 
+					 assemblyResultList.addAll(assemblyWiseLEBResultList);
+				 }
+				 if(commonMethodsUtilService.isListOrSetValid(assemblyWiselebResultsList)){
+					 if(!commonMethodsUtilService.isListOrSetValid(assemblyWsieParliamentResultList))
+						 assemblyWsieParliamentResultList = new ArrayList<Object[]>(0);
+						 
+					 assemblyWsieParliamentResultList.addAll(assemblyWiselebResultsList);
+				 }if(commonMethodsUtilService.isListOrSetValid(lebPAResultsList)){
+					 if(!commonMethodsUtilService.isListOrSetValid(parliamentResultList))
+						 parliamentResultList = new ArrayList<Object[]>(0);
+						 
+					 parliamentResultList.addAll(lebPAResultsList);
+				 }
+				 
+				 if(commonMethodsUtilService.isListOrSetValid(lebIdsList)){
+					 for (Long lebId : lebIdsList) {
+						 ElectionInformationVO parliamentVO = new ElectionInformationVO();
+						 ElectionInformationVO  assemblyVO = new ElectionInformationVO ();
+						LocalElectionBody leb =  localElectionBodyDAO.get(lebId);
+						 parliamentVO.setLocationId(lebId);
+						 parliamentVO.setLocationName(leb.getName()+" "+leb.getElectionType().getElectionType());
+						
+						 assemblyVO.setLocationId(lebId);
+						 assemblyVO.setLocationName(leb.getName()+" "+leb.getElectionType().getElectionType());
+						 
+						parliamentVO.getList().add(assemblyVO);
+						
+						parliamentMap.put(parliamentVO.getLocationId(), parliamentVO);
+						assemblyParliamentMap.put(assemblyVO.getLocationId(), glParliamentId);
+					}
+				 }
+			 }
 			 
 			 Map<Long,Map<Long,ElectionInformationVO>> alliancedPartiesWithGroupIdMap = null;
 				if(withAlliance != null && withAlliance.trim().equalsIgnoreCase("true"))
@@ -2261,19 +2353,10 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 						Long assemblyId = commonMethodsUtilService.getLongValueForObject(param[1]);
 						assembliId = assemblyId;
 						parliamntId = assemblyParliamentMap.get(assemblyId);
-					}if(locationTypeId.longValue() == 2L && commonMethodsUtilService.isListOrSetValid(locationValues)){
-						//Long assemblyId = commonMethodsUtilService.getLongValueForObject(param[1]);
-						//assembliId = assemblyId;
-						//parliamntId = assemblyParliamentMap.get(assemblyId);
 					}else if(locationTypeId.longValue() == 10L){//parliamntId nothing but an assembly id here
 						parliamntId = commonMethodsUtilService.getLongValueForObject(param[1]);							
-					}else if(locationTypeId.longValue() == 3L){
-						/*Long assemblyId = commonMethodsUtilService.getLongValueForObject(param[1]);
-						assembliId = assemblyId;
-						parliamntId = assemblyParliamentMap.get(assemblyId);*/
-						parliamntId = commonMethodsUtilService.getLongValueForObject(param[1]);;
-						//if(!availableAssemblyIdsList.contains(assemblyId))
-							//parliamntId = null;
+					}else if(locationTypeId.longValue() == 3L){						
+						parliamntId = commonMethodsUtilService.getLongValueForObject(param[1]);
 					}
 					
 					if(parliamntId != null && parliamntId.longValue()>0L){
@@ -2305,6 +2388,15 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 						ElectionInformationVO parliamentVO =parliamentMap.get(parliamntId);
 						if(parliamentVO != null){
 							ElectionInformationVO parliamentPartyVO =  getMatchedVO(parliamentVO.getSubList2(), partyId);
+							if(locationTypeId.longValue() == 5L || locationTypeId.longValue() == 6L || locationTypeId.longValue() == 7L){
+								if(parliamentDtlsMap.get(parliamntId) != null)
+									parliamentVO.setLocationName(parliamentDtlsMap.get(parliamntId).getPartyName());
+								else if(locationTypeId.longValue() == 5L)
+									parliamentVO.setLocationName(tehsilDAO.get(parliamntId).getTehsilName());
+								else if(locationTypeId.longValue() == 6L && panchayatDAO.get(parliamntId) != null )
+									parliamentVO.setLocationName(panchayatDAO.get(parliamntId).getPanchayatName());
+									
+							}
 							if(parliamentPartyVO == null){
 								parliamentPartyVO = new ElectionInformationVO();
 								parliamentVO.getSubList2().add(parliamentPartyVO);
@@ -2388,6 +2480,14 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 						}
 					
 						for (ElectionInformationVO assemblyVO : parliamentVO.getList()) {
+							if(locationTypeId.longValue() == 5L || locationTypeId.longValue() == 6L || locationTypeId.longValue() == 7L){
+								if(parliamentDtlsMap.get(parliamntId) != null)
+									assemblyVO.setLocationName(parliamentDtlsMap.get(parliamntId).getPartyName());
+								else if(locationTypeId.longValue() == 5L)
+									assemblyVO.setLocationName(tehsilDAO.get(parliamntId).getTehsilName());
+								else if(locationTypeId.longValue() == 6L && panchayatDAO.get(parliamntId) != null )
+									assemblyVO.setLocationName(panchayatDAO.get(parliamntId).getPanchayatName());
+							}
 							if(assemblyVO.getLocationId().longValue() == assemblyId.longValue()){
 								ElectionInformationVO partyVO =  getMatchedVO(assemblyVO.getList(), partyId);
 								if(partyVO == null){
@@ -2528,13 +2628,15 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 													returnPartyVO.setRank(Long.valueOf(String.valueOf(ourPartyPositionNo+1)));
 											}
 										}
-										assemblyVO.getSubList1().add(returnPartyVO);
+										if(ourPartyPositionNo>=0)
+											assemblyVO.getSubList1().add(returnPartyVO);
 									}
 								}
 							}
 						}
 						
-						if(locationTypeId.longValue() == 10L || commonMethodsUtilService.isMapValid(partyAssemblyWiseParliamentEarnedVotesMap)){
+						if((locationTypeId.longValue() == 10L || commonMethodsUtilService.isMapValid(partyAssemblyWiseParliamentEarnedVotesMap) || (
+								locationTypeId.longValue() != 5L && locationTypeId.longValue() != 6L && locationTypeId.longValue() != 7L))){
 							if(parliamentVO != null && commonMethodsUtilService.isListOrSetValid(parliamentVO.getSubList2())){
 								if(parliamentVO != null && commonMethodsUtilService.isListOrSetValid(parliamentVO.getSubList2())){
 									Collections.sort(parliamentVO.getSubList2(), new Comparator<ElectionInformationVO>() {
@@ -2626,7 +2728,8 @@ public List<ElectionInformationVO> getElectionInformationLocationWiseStatusAndYe
 													returnPartyVO.setRank(Long.valueOf(String.valueOf(ourPartyPositionNo+1)));
 											}
 										}
-										parliamentVO.getSubList1().add(returnPartyVO);
+										if(ourPartyPositionNo>=0)
+											parliamentVO.getSubList1().add(returnPartyVO);
 									}
 								}
 							}
