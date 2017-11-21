@@ -246,7 +246,7 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 			</div>
 			<div class="col-sm-1">
 				<button class="btn btn-md btn-success printViewCls pull-right" attr_divId="printableArea">Print</button>
-				<!--<button onclick="do_dl();">Test me!</button>-->
+				<!-- <button class="btn btn-md btn-success exportToPdf" attr_id="mainDivHeaderId">Export PDF</button>-->
 			</div>
 		</div>
 		<div class="row">
@@ -254,11 +254,11 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 		</div>
 	</div>
 	
-	<div class="mainDivHeaderCls" >
+	<div class="mainDivHeaderCls" id="mainDivHeaderId">
 		<div class="container">
-			<div class="white_block" style="box-shadow:none;padding:20px;">
+			<div class="white_block" style="box-shadow:none;">
 					
-						<div class="row headingCssCls" style="display:none">
+						<div class="row headingCssCls withOutHeaderCls">
 							<div class="col-sm-4 mobile-view">
 								<h2 class="redColor">Nara Lokesh</h2>
 								<p>
@@ -278,27 +278,12 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 								</p>
 							</div>
 						</div>
-						<div class="to-date">
-							<div class="row">
-								<div class="col-sm-6">
-									<div id="addressDivId"></div>
-								</div>
-								<div class="col-sm-6 text-right">
-									<p>
-										<!--<span><strong>Date: 17th November, 2017</strong></span><br/>-->
-									</p>
-								</div>
-							</div>
-							<div class="m_top20">
-									<p>Dear Sir,</p>
-									<p>This is a Letter from <span id="headingId"></span></p>
-							</div>
-						</div>
-					<div id="overAllDeparmentsDivId" class="pagebreak pageBreakAddRemove"></div>
-					<div id="rwsDetailsDivId" class=""></div>
-					<div id="encDetailsDivId" class=""></div>
+						
+					<div id="overAllDeparmentsDivId" class="pageBreakAddRemove"></div>
+					<div id="rwsDetailsDivId" class="pagebreak"></div>
+					<div id="encDetailsDivId" class="pagebreak"></div>
 					<div id="mgnrewsDetailsDivId" class=""></div>
-					<div class="footer headingCssCls" style="display:none">
+					<div class="footer headingCssCls withOutHeaderCls">
 						<p>
 							<span>4th Block, 1st Floor, Room No:214, A.P Secretariat Office, Velagapudi</span><br/>
 							<span>Amaravathi, Andhra Pradesh</span>
@@ -331,6 +316,8 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min.js"></script>
+<script type="text/javascript" src="http://cdn.rawgit.com/MrRio/jsPDF/master/dist/jspdf.min.js"></script>
 <script src="Assests/constituencyWorks/constituencyWiseWorkStatus.js" type="text/javascript" ></script>
 <script>
 

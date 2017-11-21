@@ -234,14 +234,23 @@ $(document).on("click",".printViewCls",function(){
 	var totalFunds = 0.00;
 	
 	if(departmentId == 0){
-		$(".pageBreakAddRemove").addClass("pagebreak")
+		$("#overAllDeparmentsDivId").css("display","block");
 		
 	}else if(departmentId == 1){
-		$(".pageBreakAddRemove").removeClass("pagebreak")
+		$("#overAllDeparmentsDivId").css("display","none");
+		//$(".pageBreakAddRemove").addClass("pagebreak")
+		$("#rwsDetailsDivId").css("display","none");
+		$("#mgnrewsDetailsDivId").css("display","none");
 	}else if(departmentId == 2){
-		$(".pageBreakAddRemove").removeClass("pagebreak")
+		$("#overAllDeparmentsDivId").css("display","none");
+		//$(".pageBreakAddRemove").addClass("pagebreak")
+		$("#encDetailsDivId").css("display","none");
+		$("#mgnrewsDetailsDivId").css("display","none");
 	}else if(departmentId == 3){
-		$(".pageBreakAddRemove").removeClass("pagebreak")
+		$("#overAllDeparmentsDivId").css("display","none");
+		//$(".pageBreakAddRemove").addClass("pagebreak")
+		$("#encDetailsDivId").css("display","none");
+		$("#rwsDetailsDivId").css("display","none");
 	}
 	printDiv(divName);
 	/* var headerVal ='';
@@ -268,6 +277,7 @@ $(document).on("click",".printViewCls",function(){
      document.getElementById("printcontent").innerHTML = printContents;
 	 window.print();
      document.getElementById("printcontent").innerHTML = originalContents;
+	 $(".headingCssCls").addClass("withOutHeaderCls")
 	//window.location.reload(true);
 } 
 	/* window.onload=function(e){
@@ -292,6 +302,8 @@ $(document).on("click",".printViewCls",function(){
 function buildOverAllDepartmentsDetails(result,departmentId,divId){
 	
 	var departmentId = $("#DepartmentsId").val();
+	var districtId = $("#districtSelId").val();
+	var constituencyId = $("#constituencySelId").val();
 	var departmentArr=[];
 	var str='';
 	//var str1='';
@@ -314,31 +326,14 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 			totalFunds = parseFloat(totalFunds)+parseFloat(result.locationList1[i].amountInDecimal);
 		}
 	}
-		/* str1+='<div class="to-date">';
-			str1+='<div class="row">';
-				str1+='<div class="col-sm-6">';
-					str1+='<div id="addressDivId"></div>';
-				str1+='</div>';
-				str1+='<div class="col-sm-6 text-right">';
-					str1+='<p>';
-						str1+='<!--<span><strong>Date: 17th November, 2017</strong></span><br/>-->';
-					str1+='</p>';
-				str1+='</div>';
-			str1+='</div>';
-			str+='<div class="m_top10">';
-					str+='<p>Dear Sir,</p>';
-					if(departmentId == 0){
-						str+='<p class="font_size24">This is a Letter from Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</p>';
-					}else if(departmentId == 2){
-						str+='<p class="font_size24">This is a Letter from Rural Water Supply & Sanitation.</p>';
-					}else if(departmentId == 3){
-						str+='<p class="font_size24">This is a Letter from Mahatma Gandhi National Rural Employment Gurantee Scheme.</p>';
-					}
-			str+='</div>';
-		str+='</div>'; */
 		
-		str+='<div class="go-works">';
-			str+='<h3 class="font_size">G.O.Issued Works Summary</h3>';
+		
+		str+='<div class="go-works m_top20">';
+			if((districtId !=0 || districtId !=null) && (constituencyId == null || constituencyId == 0)){
+				str+='<h3 class="font_size">G.O.Issued Works Summary - <span class="f_16">District : <span class="font_weight text-capital">'+ $("#districtSelId option:selected").text()+'</span></span></h3>';
+			}else if((districtId !=0 || districtId !=null) && (constituencyId != null || constituencyId != 0)){
+				str+='<h3 class="font_size">G.O.Issued Works Summary - <span class="f_16">District : <span class="font_weight text-capital">'+ $("#districtSelId option:selected").text()+'</span> Constituency : <span class="font_weight text-capital">'+$("#constituencySelId option:selected").text()+'</span></span></h3>';
+			}
 				str+='<div class="main_level_css m_top10">';
 					str+='<div class="row">';
 						str+='<div class="col-sm-6">';
@@ -424,7 +419,7 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 	
 	
 	$("#overAllDeparmentsDivId").html(str);
-	getDistrictNameAndMlaNameByConsitutency();
+	//getDistrictNameAndMlaNameByConsitutency();
 	
 }
 $(document).on("click",".submitCls",function(){
@@ -432,7 +427,7 @@ $(document).on("click",".submitCls",function(){
 	var districtId = $("#districtSelId").val();
 	var constituencyId = $("#constituencySelId").val();
 	var departmentId = $("#DepartmentsId").val();
-	getDistrictNameAndMlaNameByConsitutency();
+	//getDistrictNameAndMlaNameByConsitutency();
 	if(districtId == null || districtId == 0){
 		alert("Please Select District")
 		return;
@@ -450,8 +445,50 @@ $(document).on("click",".submitCls",function(){
 		$("#mainHeadingId").html("District : "+ $("#districtSelId option:selected").text()+",Constituency : "+$("#constituencySelId option:selected").text()+"")
 		
 	}
-	getDistrictNameAndMlaNameByConsitutency();
+	//var headerType = ''; 
+	$(".headingCssCls").addClass("withOutHeaderCls")
+	/* $('.withAndOutHeaderCls').each(function(i, obj){
+		 if($(this).is(':checked')){
+		  headerType =  $(this).val();
+		 }
+	});
+	if(headerType == "withOutHeader"){
+		$(".headingCssCls").removeClass("withHeaderCls")
+		$(".headingCssCls").addClass("withOutHeaderCls")
+		
+	}else{
+		$(".headingCssCls").removeClass("withOutHeaderCls")
+		$(".headingCssCls").addClass("withHeaderCls")
+		
+	} */
+	if(departmentId == 3){
+		if($(".footer").hasClass("withOutHeaderCls")){
+			$("#mgnrewsDetailsDivId").removeClass("pagebreak")
+		}else{
+			$("#mgnrewsDetailsDivId").addClass("pagebreak")
+		}
+		
+	}else{
+		$("#mgnrewsDetailsDivId").removeClass("pagebreak")
+	}
+	//getDistrictNameAndMlaNameByConsitutency();
 	if(departmentId ==0 || departmentId == null){
+		$("#overAllDeparmentsDivId").css("display","block");
+		
+		$("#mgnrewsDetailsDivId").removeClass("pagebreak")
+		$("#rwsDetailsDivId").removeClass("pagebreak")
+		$("#encDetailsDivId").removeClass("pagebreak")
+		
+		$("#rwsDetailsDivId").addClass("pagebreak")
+		$("#encDetailsDivId").addClass("pagebreak")
+		
+		if($(".footer").hasClass("withOutHeaderCls")){
+			$("#mgnrewsDetailsDivId").removeClass("pagebreak")
+		}else{
+			$("#mgnrewsDetailsDivId").addClass("pagebreak")
+		}
+		
+		
 		$("#headingId").html("")
 		$("#headingId").html("<b class='font_size24'>Minister for Panchayathi Raj &amp; Rural Development, Information Technology.</b>")
 		getFundManagementSystemWorkDetails(0,"");
@@ -460,27 +497,54 @@ $(document).on("click",".submitCls",function(){
 		getConstituencyWiseNregsWorksDetails(3,"mgnrews")
 	}else{
 		if(departmentId == 1){
+			
+			$("#encDetailsDivId").removeClass("pagebreak")
 			$("#headingId").html("")
 			$("#headingId").html("<b class='font_size24'>Information Technology.</b>")
+			
 			$("#overAllDeparmentsDivId").html('');
+			$("#overAllDeparmentsDivId").css("display","none");
+			
 			$("#rwsDetailsDivId").html('');
+			$("#rwsDetailsDivId").css("display","none");
+			
 			$("#encDetailsDivId").html('');	
+			
 			$("#mgnrewsDetailsDivId").html('');	
+			$("#mgnrewsDetailsDivId").css("display","none");
+			
 			getFundManagementSystemWorkDetails(departmentId,"enc");
 		}else if(departmentId == 2){
+			
+			$("#rwsDetailsDivId").removeClass("pagebreak")
 			$("#headingId").html("")
 			$("#headingId").html("<b class='font_size24'>Rural Development.</b>")
 			$("#overAllDeparmentsDivId").html('');
+			$("#overAllDeparmentsDivId").css("display","none");
+			
 			$("#rwsDetailsDivId").html('');
+			
 			$("#encDetailsDivId").html('');		
-			$("#mgnrewsDetailsDivId").html('');		
+			$("#encDetailsDivId").css("display","none");
+			
+			$("#mgnrewsDetailsDivId").html('');
+			$("#mgnrewsDetailsDivId").css("display","none");
 			getFundManagementSystemWorkDetails(departmentId,"rws");
 		}else if(departmentId == 3){
+			
+			$("#mgnrewsDetailsDivId").removeClass("pagebreak")
 			$("#headingId").html("")
 			$("#headingId").html("<b class='font_size24'>Minister for Panchayathi Raj.</b>")
+			
 			$("#overAllDeparmentsDivId").html('');
+			$("#overAllDeparmentsDivId").css("display","none");
+			
 			$("#rwsDetailsDivId").html('');
+			$("#rwsDetailsDivId").css("display","none");
+			
 			$("#encDetailsDivId").html('');	
+			$("#encDetailsDivId").css("display","none");
+			
 			$("#mgnrewsDetailsDivId").html('');	
 			getConstituencyWiseNregsWorksDetails(3,"mgnrews")
 		}
@@ -490,10 +554,11 @@ $(document).on("click",".submitCls",function(){
 });
 	
 function getFundManagementSystemWorkDetails(departmentId,divId){
-	
+	$("#"+divId+"DetailsDivId").css("display","block");
 	if(departmentId ==0 || departmentId == null){
 		$("#overAllDeparmentsDivId").html(spinner);
 	}
+	
 	$("#"+divId+"DetailsDivId").html(spinner);
 	
 	var financialYrIdList = $('#financialYearId').val();
@@ -548,15 +613,46 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 		}
     });
 }	
-	function buildFundManagementSystemWorkDetails(result,divId){
+	function buildFundManagementSystemWorkDetails(result,divId,departmentId){
+		var districtId = $("#districtSelId").val();
+		var constituencyId = $("#constituencySelId").val();
+		var length = $("#DepartmentsId").val();
 		if(result.workNumber > 0){
 			var str='';
-			str+='<div class="go-works">';
-				if(divId == "rws"){
-					str+='<h3 class="font_size">Rural Water Supply & Sanitation Overview</h3>';
-				}else{
-					str+='<h3 class="font_size">Panchayati Raj Engineering Department Overview</h3>';
-				}
+			str+='<div class="go-works m_top20">';
+					if((districtId !=0 || districtId !=null) && (constituencyId == null || constituencyId == 0)){
+						if(divId == "rws"){
+							if(length == 2){
+								str+='<span class="f_16 m_top20">District : <span class="font_weight text-capital">'+ $("#districtSelId option:selected").text()+'</span></span>';
+							}
+							str+='<h3 class="font_size">Rural Water Supply & Sanitation Overview</h3>';
+							
+						}else{
+							if(length == 1){
+								str+='<span class="f_16 m_top10">District : <span class="font_weight text-capital">'+ $("#districtSelId option:selected").text()+'</span></span>';
+							}
+							
+							str+='<h3 class="font_size m_top20">Panchayati Raj Engineering Department Overview</h3>';
+							
+						}
+						
+					}else if((districtId !=0 || districtId !=null) && (constituencyId != null || constituencyId != 0)){
+						if(divId == "rws"){
+							if(length == 2){
+								str+='<span class="f_16 m_top20">District : <span class="font_weight text-capital">'+ $("#districtSelId option:selected").text()+'</span> Constituency : <span class="font_weight text-capital">'+$("#constituencySelId option:selected").text()+'</span></span>';
+							}
+							str+='<h3 class="font_size">Rural Water Supply & Sanitation Overview</h3>';
+							
+						}else{
+							if(length == 1){
+								str+='<span class="f_16 m_top20">District : <span class="font_weight text-capital">'+ $("#districtSelId option:selected").text()+'</span> Constituency : <span class="font_weight text-capital">'+$("#constituencySelId option:selected").text()+'</span></span>';
+							}
+							str+='<h3 class="font_size">Panchayati Raj Engineering Department Overview</h3>';
+							
+						}
+						
+					}
+				
 					str+='<div class="main_level_css m_top10">';
 						str+='<div class="row">';
 						
@@ -748,15 +844,21 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 					str+='</div>';
 				str+='</div>';
 			$("#"+divId+"DetailsDivId").html(str);
+			if(departmentId == 1){
+				$(".go-works").removeClass("m_top20")
+			}else if(departmentId == 2){
+				$(".go-works").removeClass("m_top20")
+			}
 		}
 		else{
 			$("#"+divId+"DetailsDivId").html("");
+			$("#"+divId+"DetailsDivId").css("display","none");
 		}
 	}
 
 function getConstituencyWiseNregsWorksDetails(departmentId,divId){
 	$("#"+divId+"DetailsDivId").html(spinner);
-	
+	$("#"+divId+"DetailsDivId").css("display","block");
 	var districtId = $("#districtSelId").val();
 	var constituencyId = $("#constituencySelId").val();
 	var locationId='';
@@ -783,17 +885,32 @@ function getConstituencyWiseNregsWorksDetails(departmentId,divId){
 		},   
     }).done(function(result){
 		if(result !=null && result.length>0){
-			buildConstituencyWiseNregsWorksDetails(result,divId);
+			buildConstituencyWiseNregsWorksDetails(result,divId,departmentId);
 		}else{
 			$("#"+divId+"DetailsDivId").html("No Data");
 		}
     });
 }
 
-function buildConstituencyWiseNregsWorksDetails(result,divId){
+function buildConstituencyWiseNregsWorksDetails(result,divId,departmentId){
 	var str='';
-	str+='<div class="go-works">';
-			str+='<h3 class="font_size">Mahatma Gandhi National Rural Employment Gurantee Scheme Overview</h3>';
+	var districtId = $("#districtSelId").val();
+	var constituencyId = $("#constituencySelId").val();
+	var length = $("#DepartmentsId").val();
+	str+='<div class="go-works m_top20">';
+				if((districtId !=0 || districtId !=null) && (constituencyId == null || constituencyId == 0)){
+					if(length == 3){
+						str+='<span class="f_16 m_top20">District : <span class="font_weight text-capital">'+ $("#districtSelId option:selected").text()+'</span></span>';
+					}
+					str+='<h3 class="font_size">Mahatma Gandhi National Rural Employment Gurantee Scheme Overview</h3>';
+					
+				}else if((districtId !=0 || districtId !=null) && (constituencyId != null || constituencyId != 0)){
+					if(length == 3){
+						str+='<span class="f_16 m_top20">District : <span class="font_weight text-capital">'+ $("#districtSelId option:selected").text()+'</span> Constituency : <span class="font_weight text-capital">'+$("#constituencySelId option:selected").text()+'</span></span>';
+					}
+					str+='<h3 class="font_size">Mahatma Gandhi National Rural Employment Gurantee Scheme Overview</h3>';
+						
+				}
 				str+='<div class="main_level_css m_top10">';
 					str+='<div class="row">';
 					
@@ -855,6 +972,10 @@ function buildConstituencyWiseNregsWorksDetails(result,divId){
 			str+='</div>';
 	
 	$("#"+divId+"DetailsDivId").html(str);
+	
+	if(length == 3){
+		$(".go-works").removeClass("m_top20")		
+	}
 }
 function getDistrictNameAndMlaNameByConsitutency(){
 	$("#addressDivId").html(spinner);	
@@ -951,3 +1072,43 @@ function download_files(files) {
 	 
     download_files(globalAllPdfFilesArr);
   };
+  
+ $(document).on("click",".exportToPdf",function(){
+	var id = $(this).attr("attr_id");
+	getPdf(id);
+});
+function getPdf(id)
+{
+	var 
+		form = $("#"+id),
+		cache_width = form.width(),
+		a1  = [ 90160  , 109933];  // for a4 size paper width and height
+	createPDF()
+	
+	//create pdf
+	function createPDF(){
+		getCanvas().then(function(canvas){
+			var 
+			img = canvas.toDataURL("image/png"),
+			doc = new jsPDF({
+				unit:'px', 
+				format:'a0'
+			});     
+			doc.addImage(img, 'JPEG', 05, 05);
+			doc.save(''+id+'.pdf');
+			form.width(cache_width);
+		});
+		$("#"+id).hide();
+	}
+
+	// create canvas object
+	function getCanvas(){
+		//form.width((a1[0]*1.33333) -80).css('max-width','none');
+		$("#"+id).show();
+		form.width(a1).css('max-width','none');
+		return html2canvas(form,{
+			imageTimeout:100,
+			removeContainer:true
+		});	
+	}	
+}

@@ -297,9 +297,8 @@
 		 width: 1000px;
 	}
 	.go-works{
-		padding: 0 15px 20px 25px !important;
+		padding:5px 15px 5px !important;
 		border-radius: 5px !important;
-		margin-top:30px !important;
 		-webkit-border-radius: 5px !important;
 		-moz-border-radius: 5px !important;
 	}
@@ -313,7 +312,7 @@
 	.border-cls{
 		border: 3px solid rgb(209,171,102) !important;
 		background-color:rgb(244,235,218) !important;
-		padding: 20px 28px !important;
+		padding:20px 30px !important;
 		border-radius: 5px !important;
 		margin-top:  20px !important;
 		-webkit-print-color-adjust:exact;
@@ -392,7 +391,7 @@
 		color-adjust:exact;
 	}
 	.details-overview thead tr th{
-		font-size:14px !important;
+		font-size:13px !important;
 		padding:20px 30px !important;
 		border-bottom:none !important;
 		font-weight:bold !important;
@@ -403,7 +402,7 @@
 	}
 	.details-overview tbody tr td{
 		font-size:12px !important;
-		padding:20px 30px !important;
+		padding:8px 30px !important;
 		border-top:none !important;
 		font-weight:bold !important;
 		-webkit-print-color-adjust:exact;
@@ -435,7 +434,7 @@
     box-sizing: border-box !important;
 	}
 	.m_top10 {
-		margin-top: 10px !important;
+		margin-top: 20px !important;
 	}
 	.row {
 		margin-left: -15px !important;
@@ -457,8 +456,16 @@
 		width: 100% !important;
 	}
 	.m_top20{
-		margin-top: 20px !important;
+		margin-top: 30px !important;
 	}
+	.white_block{
+		background-color: #fff;
+		padding-left: 0px !important;
+		padding-right: 10px !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	
 	@page { 
 		size: auto;  
 		margin: 3mm 0mm 0mm 0mm;  
