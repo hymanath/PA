@@ -159,7 +159,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					locationVOForListForWork.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[3]));
 					locationVOForListForWork.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[5]));
 					locationVOForListForWork.setAmount(commonMethodsUtilService.getLongValueForObject(param[11]));
-					locationVOForListForWork.setAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(param[11])/100000D));
+					locationVOForListForWork.setAmountInDecimal(df.format(commonMethodsUtilService.getLongValueForObject(param[11])/10000000D));
 					locationVOs.add(locationVOForListForWork);   
 				}
 				
@@ -184,15 +184,15 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				}
 				
 				//finally convert the amount into lakh
-				locationVO.setPlainAmountInDecimal(df.format(locationVO.getPlainAmount()/100000D));
-				locationVO.setScpAmountInDecimal(df.format(locationVO.getScpAmount()/100000D));
-				locationVO.setTspAmountInDecimal(df.format(locationVO.getTspAmount()/100000D));
+				locationVO.setPlainAmountInDecimal(df.format(locationVO.getPlainAmount()/10000000D));
+				locationVO.setScpAmountInDecimal(df.format(locationVO.getScpAmount()/10000000D));
+				locationVO.setTspAmountInDecimal(df.format(locationVO.getTspAmount()/10000000D));
 				
 				Map<Long,List<LocationVO>> programIdAndListOfGo = new HashMap<Long,List<LocationVO>>();
 				List<LocationVO> goOrderVoList = null;
 				if(locationVOListForGoNo != null && locationVOListForGoNo.size() > 0){
 					for(LocationVO param : locationVOListForGoNo){
-						param.setAmountInDecimal(df.format(param.getAmount()/100000D));
+						param.setAmountInDecimal(df.format(param.getAmount()/10000000D));
 						goOrderVoList = programIdAndListOfGo.get(param.getProgramId());
 						if(null == goOrderVoList){
 							goOrderVoList = new ArrayList<LocationVO>();
@@ -220,7 +220,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				locationVO.setGovtOrderCount(locationVO.getPlainGoCount()+locationVO.getScpGoCount()+locationVO.getTspGoCount());
 				locationVO.setWorkNumber(locationVO.getPlainWorkCount()+locationVO.getScpWorkCount()+locationVO.getTspWorkCount());
 				locationVO.setAmount(locationVO.getPlainAmount()+locationVO.getScpAmount()+locationVO.getTspAmount());
-				locationVO.setAmountInDecimal(df.format(locationVO.getAmount()/100000D));
+				locationVO.setAmountInDecimal(df.format(locationVO.getAmount()/10000000D));
 				
 				locationVO.getLocationList1().addAll(programWiseList);
 				//locationVO.getLocationList2().addAll(locationVOs);
