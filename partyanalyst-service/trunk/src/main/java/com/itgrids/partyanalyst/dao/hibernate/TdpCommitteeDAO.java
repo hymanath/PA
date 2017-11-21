@@ -2765,12 +2765,22 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return (Long)query.uniqueResult();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getTdpCommitteeMandalByConstituency(Long constituencyId,Long enrollmentId){
-		Query query = getSession().createQuery(" select  distinct model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName " +
-				" from TdpCommittee model " +
-				" where model.constituency.constituencyId = :constituencyId " +
-				" and model.tdpCommitteeEnrollmentId = :enrollmentId order by model.userAddress.tehsil.tehsilName ");
-	
+	public List<Object[]> getTdpCommitteeMandalByConstituency(Long constituencyId,Long enrollmentId,String committeeType){
+		Query query = null;
+		
+		if(committeeType.equalsIgnoreCase("BoothCommittee")){
+			query = getSession().createQuery(" select  distinct model.address.tehsil.tehsilId,model.address.tehsil.tehsilName " +
+					" from BoothInchargeCommittee model " +
+					" where model.address.constituency.constituencyId = :constituencyId " +
+					" and model.boothInchargeEnrollmentId = :enrollmentId order by model.address.tehsil.tehsilName ");
+		}
+		else if(committeeType.equalsIgnoreCase("PartyCommittee")){
+			query = getSession().createQuery(" select  distinct model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName " +
+					" from TdpCommittee model " +
+					" where model.constituency.constituencyId = :constituencyId " +
+					" and model.tdpCommitteeEnrollmentId = :enrollmentId order by model.userAddress.tehsil.tehsilName ");
+		}
+		
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("enrollmentId", enrollmentId);
 		return query.list();
@@ -2793,12 +2803,20 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getTdpCommitteeLocalBodiesByConstituency(Long constituencyId,Long enrollmentId){
-		Query query = getSession().createQuery(" select  distinct model.userAddress.localElectionBody.localElectionBodyId,model.userAddress.localElectionBody.name " +
-				" from TdpCommittee model " +
-				" where model.constituency.constituencyId = :constituencyId " +
-				" and model.tdpCommitteeEnrollmentId = :enrollmentId order by model.userAddress.localElectionBody.name ");
-	
+	public List<Object[]> getTdpCommitteeLocalBodiesByConstituency(Long constituencyId,Long enrollmentId,String committeeType){
+		Query query = null;
+		if(committeeType.equalsIgnoreCase("BoothCommittee")){
+			query = getSession().createQuery(" select  distinct model.address.localElectionBody.localElectionBodyId,model.address.localElectionBody.name " +
+					" from BoothInchargeCommittee model " +
+					" where model.address.constituency.constituencyId = :constituencyId " +
+					" and model.boothInchargeEnrollmentId = :enrollmentId order by model.address.localElectionBody.name ");
+		}
+		else if(committeeType.equalsIgnoreCase("PartyCommittee")){
+			query = getSession().createQuery(" select  distinct model.userAddress.localElectionBody.localElectionBodyId,model.userAddress.localElectionBody.name " +
+					" from TdpCommittee model " +
+					" where model.constituency.constituencyId = :constituencyId " +
+					" and model.tdpCommitteeEnrollmentId = :enrollmentId order by model.userAddress.localElectionBody.name ");
+		}
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("enrollmentId", enrollmentId);
 		return query.list();
