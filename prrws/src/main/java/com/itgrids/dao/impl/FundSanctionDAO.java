@@ -1838,6 +1838,9 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" FS.govt_order_id=GO.govt_order_id and  ");
 		sb.append(" FS.department_id=DEPT.department_id and ");
 		sb.append(" FS.govt_scheme_id=GS.govt_scheme_id and ");
+		sb.append(" FSL.is_deleted='N' and ");
+		sb.append(" FS.is_deleted='N' and ");
+		
 		if(departmentIdList != null && departmentIdList.size() > 0){
 			sb.append(" DEPT.department_id in (:departmentIdList) and ");
 		}
@@ -1898,7 +1901,6 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" GT.grant_type as grantType, ");//3
 		sb.append(" count(FS.fund_sanction_id ) as fundSanctionCount, ");//4
 		sb.append(" sum(FS.saction_amount) as totalSanctionAmount ");//5	
-		
 		sb.append( " from fund_sanction FS,department DEPT,grant_type GT,fund_sanction_location FSL ");
 		sb.append(" left outer join location_address LA on FSL.address_id = LA.location_address_id ");
 		sb.append(" left outer join state S on LA.state_id = S.state_id ");
@@ -1908,6 +1910,9 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" FSL.fund_sanction_id = FS.fund_sanction_id and  ");
 		sb.append(" FS.grant_type_id = GT.grant_type_id and ");
 		sb.append(" FS.department_id = DEPT.department_id and ");
+		sb.append(" FSL.is_deleted='N' and ");
+		sb.append(" FS.is_deleted='N' and ");
+		
 		if(departmentIdList != null && departmentIdList.size() > 0){
 			sb.append(" DEPT.department_id = :departmentId and ");
 		}
