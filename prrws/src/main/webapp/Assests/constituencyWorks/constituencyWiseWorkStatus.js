@@ -657,7 +657,7 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 										for(var j in result.locationList1[i].locationList1){
 											str+='<tr>';
 												str+='<td>'+result.locationList1[i].programName+'</td>';
-												if(result[i].filePath != null && result[i].filePath.length > 1){
+												if(result.locationList1[i].locationList1[j].filePath != null && result.locationList1[i].locationList1[j].filePath.length > 1){
 													str+='<td><span filePath="'+result.locationList1[i].locationList1[j].filePath+'" style="cursor:pointer;" class="showPdfCls go_clickCr" >'+result.locationList1[i].locationList1[j].goNoDate+'</span></td>';
 												}else{
 													str+='<td>'+result.locationList1[i].locationList1[j].goNoDate+'</td>';
