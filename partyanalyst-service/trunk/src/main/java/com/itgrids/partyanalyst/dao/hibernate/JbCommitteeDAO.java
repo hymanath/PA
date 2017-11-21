@@ -131,4 +131,19 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getJbCommitteeStatusByCommiteeId(Long committeeId){
+		StringBuilder sb = new StringBuilder();
+		    //0 jbCommitteeId,1 committeeName,2 isCommitteeConfirmed,3 startDate,4 completedDate
+			sb.append("select model.jbCommitteeId,model.committeeName," );
+			sb.append("model.isCommitteeConfirmed,model.startDate,model.completedDate ");
+			sb.append(" from JbCommittee model ");
+			sb.append("where model.jbCommitteeId = :committeeId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(committeeId != null && committeeId.longValue() >0l){
+			query.setParameter("committeeId", committeeId);
+		}
+		return query.list();
+	}
 }

@@ -13,4 +13,5 @@ import com.itgrids.partyanalyst.model.JbCommittee;
    public List<Object[]> getDistrictWiseCommitteeDetails(Date fromDate,Date endDate,String type,Set<Long> userAccessVals);
    public List<Object[]> getJbCommitteeStatusCount();
    public List<Object[]> getLocationWiseCommitteeDetailsForCommitteeLvl(Date fromDate,Date endDate,Long levelId,Long levelVal,Long committeeLvlId,String status);
+   public List<Object[]> getJbCommitteeStatusByCommiteeId(Long committeeId);
 }
