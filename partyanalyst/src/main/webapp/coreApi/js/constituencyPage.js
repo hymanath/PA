@@ -5557,6 +5557,7 @@ function getElectionTypes(type){
 									str+='<option value="'+result[0].selectedCasteDetails[i].id+'" selected>'+result[0].selectedCasteDetails[i].name+'</option>';
 								}
 							}
+							str+='<option value="1887" selected>OTHERS</option>';
 						str+='</select>';
 					str+='</div>';
 					str+='<div class="col-sm-2">';
@@ -5623,9 +5624,13 @@ function getElectionInformationLocationWise(electionVal,type,partyIds,electionSu
 			electionYrVal=[];
 		}
 	}
+	var partyId='';
 	for(var i in partyIds){
 		if(partyIds[i] == 0){
 			partyIds=[];
+		}else if(partyIds == 1887){
+			partyId=1887;
+			partyIds=[872,362,1117,72,269,265,163,1887];
 		}
 	}
 	
@@ -5652,7 +5657,7 @@ function getElectionInformationLocationWise(electionVal,type,partyIds,electionSu
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	if(result !=null && result.length>0){
-			buildElectionInformationLocationWise(result,type);
+			buildElectionInformationLocationWise(result,type,partyId);
 		}else{
 			$('#electionDetailsGraphWiseId').html(noData);
 			$('#electionDetailsTableWiseId').html(noData);
@@ -5660,8 +5665,7 @@ function getElectionInformationLocationWise(electionVal,type,partyIds,electionSu
 	});	
 }
 
-function buildElectionInformationLocationWise(result,type){
-	
+function buildElectionInformationLocationWise(result,type,partyId){
 	if(result !=null && result.length>0){
 		 var str='';
 		
@@ -5691,26 +5695,52 @@ function buildElectionInformationLocationWise(result,type){
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
+					if(partyId == 1887){
 							for(var i in result){
-								str+='<tr>';
-								if(result[i].name !=null && result[i].name.trim().length>0)
-									str+='<td><span data-toggle="tooltip" class="tooltipElecCls" title="'+result[i].name+'" data-placement="right">'+result[i].partyName+'</span></td>';
-								else									
-									str+='<td>'+result[i].partyName+'</td>';
-									for(var j in result[i].list){
-										if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
-											str+='<td>'+result[i].list[j].wonSeatsCount+'  </td>';
-										}else{
-											str+='<td> - </td>';
+								
+								if(result[i].partyId == 1887){
+									str+='<tr>';
+									if(result[i].name !=null && result[i].name.trim().length>0)
+										str+='<td><span data-toggle="tooltip" class="tooltipElecCls" title="'+result[i].name+'" data-placement="right">'+result[i].partyName+'</span></td>';
+									else									
+										str+='<td>'+result[i].partyName+'</td>';
+										for(var j in result[i].list){
+											if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
+												str+='<td>'+result[i].list[j].wonSeatsCount+'  </td>';
+											}else{
+												str+='<td> - </td>';
+											}
+											if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
+												str+='<td><small style="color:#2B908F;"><b>'+result[i].list[j].locationName+' %</b></small></td>';
+											}else{
+												str+='<td> - </td>';
+											}
 										}
-										if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
-											str+='<td><small style="color:#2B908F;"><b>'+result[i].list[j].locationName+' %</b></small></td>';
-										}else{
-											str+='<td> - </td>';
-										}
-									}
-								str+='</tr>';
+									str+='</tr>';
+								}
 							}
+					}else{
+						for(var i in result){
+							str+='<tr>';
+							if(result[i].name !=null && result[i].name.trim().length>0)
+								str+='<td><span data-toggle="tooltip" class="tooltipElecCls" title="'+result[i].name+'" data-placement="right">'+result[i].partyName+'</span></td>';
+							else									
+								str+='<td>'+result[i].partyName+'</td>';
+								for(var j in result[i].list){
+									if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
+										str+='<td>'+result[i].list[j].wonSeatsCount+'  </td>';
+									}else{
+										str+='<td> - </td>';
+									}
+									if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
+										str+='<td><small style="color:#2B908F;"><b>'+result[i].list[j].locationName+' %</b></small></td>';
+									}else{
+										str+='<td> - </td>';
+									}
+								}
+							str+='</tr>';
+						}
+					}
 					str+='</tbody>';
 				str+='</table>';
 			//str+='</div>';
@@ -5729,36 +5759,70 @@ function buildElectionInformationLocationWise(result,type){
 		});
 		var mainDataArr=[];
 		var electionYearArr = [];
-		
+		if(partyId == 1887){
+			for(var i in result){
+				var wonSeatsCountArr=[];
+				var partiesName='';
+				if(result[i].partyId == 1887){
+				for(var j in result[i].list){
+						partiesName = result[i].partyName;
+						electionYearArr.push(result[i].list[j].electionYear+'  '+result[i].list[j].electionType);
+						if(type == "wonSeat"){
+							//if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
+								wonSeatsCountArr.push(parseFloat(result[i].list[j].wonSeatsCount));
+							//}/* else{
+								//wonSeatsCountArr.push(parseFloat("Not Participated"));
+							//} */
+						}else{
+							//if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
+								wonSeatsCountArr.push(parseFloat(result[i].list[j].locationName));
+							//}/* else{
+								//wonSeatsCountArr.push(parseFloat("Not Participated"));
+							//} */
+							
+						}
+						
+					}
+					var obj ={
+							name: partiesName,
+							data: wonSeatsCountArr,
+							color:globalColorPartyNames[result[i].partyName.trim()]
+						}
+						mainDataArr.push(obj)
+				}
+			}
+		}else{
 			for(var i in result){
 				var wonSeatsCountArr=[];
 				var partiesName='';
 				for(var j in result[i].list){
-					partiesName = result[i].partyName;
-					electionYearArr.push(result[i].list[j].electionYear+'  '+result[i].list[j].electionType);
-					if(type == "wonSeat"){
-						//if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
-							wonSeatsCountArr.push(parseFloat(result[i].list[j].wonSeatsCount));
-						//}/* else{
-							//wonSeatsCountArr.push(parseFloat("Not Participated"));
-						//} */
-					}else{
-						//if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
-							wonSeatsCountArr.push(parseFloat(result[i].list[j].locationName));
-						//}/* else{
-							//wonSeatsCountArr.push(parseFloat("Not Participated"));
-						//} */
+						partiesName = result[i].partyName;
+						electionYearArr.push(result[i].list[j].electionYear+'  '+result[i].list[j].electionType);
+						if(type == "wonSeat"){
+							//if(result[i].list[j].wonSeatsCount !=null && result[i].list[j].wonSeatsCount>0){
+								wonSeatsCountArr.push(parseFloat(result[i].list[j].wonSeatsCount));
+							//}/* else{
+								//wonSeatsCountArr.push(parseFloat("Not Participated"));
+							//} */
+						}else{
+							//if(result[i].list[j].locationName !=null && result[i].list[j].locationName>0){
+								wonSeatsCountArr.push(parseFloat(result[i].list[j].locationName));
+							//}/* else{
+								//wonSeatsCountArr.push(parseFloat("Not Participated"));
+							//} */
+							
+						}
 						
 					}
-					
+					var obj ={
+							name: partiesName,
+							data: wonSeatsCountArr,
+							color:globalColorPartyNames[result[i].partyName.trim()]
+						}
+						mainDataArr.push(obj)
 				}
-				var obj ={
-						name: partiesName,
-						data: wonSeatsCountArr,
-						color:globalColorPartyNames[result[i].partyName.trim()]
-					}
-					mainDataArr.push(obj)
-			}
+		 }
+		
 		$(".electionDetailsGraphHeight").css("height","500px !important;");
 		$('#electionDetailsGraphWiseId').highcharts({
 			chart: {
