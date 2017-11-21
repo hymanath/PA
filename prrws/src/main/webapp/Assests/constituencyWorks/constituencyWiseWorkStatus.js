@@ -375,7 +375,7 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 													str+='</div>';
 													if(result.locationList1[i].departmentName == 'ENC' || result.locationList1[i].departmentName == 'RWS'){
 														str+='<div class="col-sm-3">';
-															str+='<h4 class="font_weight">PLANE</h4>';
+															str+='<h4 class="font_weight">PLAIN</h4>';
 															str+='<h4 class="font_weight">'+result.locationList1[i].plainWorkCount+'</h4>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
@@ -399,7 +399,7 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 													str+='</div>';
 													if(result.locationList1[i].departmentName == 'ENC' || result.locationList1[i].departmentName == 'RWS'){
 														str+='<div class="col-sm-3">';
-															str+='<h4 class="font_weight">PLANE</h4>';
+															str+='<h4 class="font_weight">PLAIN</h4>';
 															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].plainAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
@@ -572,7 +572,7 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 									str+='<hr class="hrlineCss"/>';
 											str+='<div class="row">';
 												str+='<div class="col-sm-4">';
-													str+='<h4>PLANE</h4>';
+													str+='<h4>PLAIN</h4>';
 													if(result.plainGoCount == 0 || typeof(result.plainGoCount) === 'undefined' || typeof(result.plainGoCount) === undefined){
 														str+='<h5 class="font_weight">0</h5>';
 													}else{
@@ -616,7 +616,7 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 									str+='<hr class="hrlineCss"/>';
 											str+='<div class="row">';
 												str+='<div class="col-sm-4">';
-													str+='<h4>PLANE</h4>';
+													str+='<h4>PLAIN</h4>';
 													if(result.plainWorkCount == 0 || typeof(result.plainWorkCount) === 'undefined' || typeof(result.plainWorkCount) === undefined){
 														str+='<h5 class="font_weight">0</h5>';
 													}else{
@@ -662,7 +662,7 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 									str+='<hr class="hrlineCss"/>';
 										str+='<div class="row">';
 												str+='<div class="col-sm-4">';
-													str+='<h4>PLANE</h4>';
+													str+='<h4>PLAIN</h4>';
 													if(result.plainAmountInDecimal == "0.0" || typeof(result.plainAmountInDecimal) === 'undefined' || typeof(result.plainAmountInDecimal) === undefined){
 														str+='<h5 class="font_weight">0</h5>';
 													}else{
