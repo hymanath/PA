@@ -1908,6 +1908,9 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" FSL.fund_sanction_id = FS.fund_sanction_id and  ");
 		sb.append(" FS.grant_type_id = GT.grant_type_id and ");
 		sb.append(" FS.department_id = DEPT.department_id and ");
+		if(departmentIdList != null && departmentIdList.size() > 0){
+			sb.append(" DEPT.department_id = :departmentId and ");
+		}
 		if(financialYearIdsList != null && financialYearIdsList.size() > 0){
 			sb.append(" FS.financial_year_id in (:financialYearIdsList) and ");
 		}
@@ -1931,7 +1934,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		query.addScalar("totalSanctionAmount", StandardBasicTypes.LONG);//5
 		
 		if(departmentIdList != null && departmentIdList.size() > 0){
-			query.setParameterList("departmentIdList", departmentIdList);
+			query.setParameter("departmentId", departmentIdList.get(0));
 		}
 		if(financialYearIdsList != null && financialYearIdsList.size() > 0){
 			query.setParameterList("financialYearIdsList", financialYearIdsList);
