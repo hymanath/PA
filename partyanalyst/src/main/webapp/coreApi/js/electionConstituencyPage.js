@@ -883,7 +883,7 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,ele
 	var yearsArr=[];
 	var constituencyId;
 	
-	if(partyId == 0){
+	if(partyId == 0 || partyId == 1887){
 		partyIdsArr = [872,362,1117,886,72,269,265,163];
 	}else{
 		partyIdsArr = partyId
@@ -921,73 +921,101 @@ function getLocationWiseElectionResults(electionYrVal,eletionSubType,partyId,ele
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
-			return buildLocationWiseElectionResults(result);
+			return buildLocationWiseElectionResults(result,partyId);
 		}else{
 			$("#levelWiseCandidatesResultsDivId").html("");
 		}
 	});
 	
-	function buildLocationWiseElectionResults(result){
+	function buildLocationWiseElectionResults(result,partyId){
 		
 		var str='';
 		str+='<h4 class="theme-title-color">'+locationLevelName+' level party wise election trends</h4>';
 		str+='<ul class="list-inline levelWiseCandiRstsCls m_top10">';
-		for(var i in result){
-			str+='<li style="margin-right:15px;margin-left:15px;">';
-				str+='<div class="block">';
-					str+='<h4>'+result[i].electionType+' Election Results</h4>';
-					str+='<p>'+result[i].electionYear+'</p>';
-					
-					str+='<div class="bg_ED" style="padding:10px;">';
-						str+='<div class="row">';
-							str+='<div class="col-sm-5">';
-								str+='<h6>Total Seats: '+result[i].totalSeatsCount+'</h6>';
-							str+='</div>';
-							str+='<div class="col-sm-7">';
-								str+='<h6>Participated Members: '+result[i].participatedSeatsCount+'</h6>';
+			for(var i in result){
+				str+='<li style="margin-right:15px;margin-left:15px;">';
+					str+='<div class="block">';
+						str+='<h4>'+result[i].electionType+' Election Results</h4>';
+						str+='<p>'+result[i].electionYear+'</p>';
+						
+						str+='<div class="bg_ED" style="padding:10px;">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-5">';
+									str+='<h6>Total Seats: '+result[i].totalSeatsCount+'</h6>';
+								str+='</div>';
+								str+='<div class="col-sm-7">';
+									str+='<h6>Participated Members: '+result[i].participatedSeatsCount+'</h6>';
+								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-					str+='</div>';
-					if(result[i].list.length > 4)
-					{
-						str+='<div class="table-scroll">';	
-					}
-					
-						str+='<table class="table table-condensed table_custom" id="dataTablelevelWiseBlock'+i+'">';
-							str+='<thead>';
-								str+='<tr>';
-									str+='<th>Party</th>';
-									str+='<th class="text-center">Seats(P)</th>';
-									str+='<th class="text-center">Won</th>';
-									str+='<th class="text-center">Voting%</th>';
-								str+='</tr>';
-							str+='</thead>';
-							str+='<tbody>';
-								for(var j in result[i].list){
+						if(result[i].list.length > 4 && partyId !=1887)
+						{
+							str+='<div class="table-scroll">';	
+						}
+						
+							str+='<table class="table table-condensed table_custom" id="dataTablelevelWiseBlock'+i+'">';
+								str+='<thead>';
 									str+='<tr>';
-										var specialCharacter = result[i].list[j].partyName;
-										if(result[i].list[j].partyName == "OTHERS"){
-											str+='<td>'+result[i].list[j].partyName+'</td>';
-										}else{
-											if(/^[a-zA-Z0-9- ]*$/.test(specialCharacter) == false) {
+										str+='<th>Party</th>';
+										str+='<th class="text-center">Seats(P)</th>';
+										str+='<th class="text-center">Won</th>';
+										str+='<th class="text-center">Voting%</th>';
+									str+='</tr>';
+								str+='</thead>';
+								str+='<tbody>';
+								if(partyId == 1887){
+									for(var j in result[i].list){
+										if(result[i].list[j].partyId == 1887){// 1887 is id of OTHERS
+											str+='<tr>';
+												var specialCharacter = result[i].list[j].partyName;
+												if(result[i].list[j].partyName == "OTHERS"){
+													str+='<td>'+result[i].list[j].partyName+'</td>';
+												}else{
+													if(/^[a-zA-Z0-9- ]*$/.test(specialCharacter) == false) {
+														str+='<td>'+result[i].list[j].partyName+'</td>';
+													}else{
+														if(result[i].list[j].partyName == "TDP" || result[i].list[j].partyName == "YSRC"){
+															str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'_01.PNG" alt="'+result[i].list[j].partyName+'" style="height:25px;width:25px;"></img>  '+result[i].list[j].partyName+'</p></td>';
+														}else{
+															str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'.png" alt="'+result[i].list[j].partyName+'" style="height:25px;width:25px;"></img>   '+result[i].list[j].partyName+'</p></td>';
+														}
+													}
+													
+												}
+												str+='<td class="text-center">'+result[i].list[j].participatedSeatsCount+'</td>';
+												str+='<td class="text-center">'+result[i].list[j].wonSeatsCount+'</td>';
+												str+='<td class="text-center">'+result[i].list[j].perc+' %</td>';
+											str+='</tr>';
+										}
+									}
+								}else{
+										for(var j in result[i].list){
+										str+='<tr>';
+											var specialCharacter = result[i].list[j].partyName;
+											if(result[i].list[j].partyName == "OTHERS"){
 												str+='<td>'+result[i].list[j].partyName+'</td>';
 											}else{
-												if(result[i].list[j].partyName == "TDP" || result[i].list[j].partyName == "YSRC"){
-													str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'_01.PNG" alt="'+result[i].list[j].partyName+'" style="height:25px;width:25px;"></img>  '+result[i].list[j].partyName+'</p></td>';
+												if(/^[a-zA-Z0-9- ]*$/.test(specialCharacter) == false) {
+													str+='<td>'+result[i].list[j].partyName+'</td>';
 												}else{
-													str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'.png" alt="'+result[i].list[j].partyName+'" style="height:25px;width:25px;"></img>   '+result[i].list[j].partyName+'</p></td>';
+													if(result[i].list[j].partyName == "TDP" || result[i].list[j].partyName == "YSRC"){
+														str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'_01.PNG" alt="'+result[i].list[j].partyName+'" style="height:25px;width:25px;"></img>  '+result[i].list[j].partyName+'</p></td>';
+													}else{
+														str+='<td><p><img class="" src="images/party_flags/'+result[i].list[j].partyName+'.png" alt="'+result[i].list[j].partyName+'" style="height:25px;width:25px;"></img>   '+result[i].list[j].partyName+'</p></td>';
+													}
 												}
+												
 											}
-											
-										}
-										str+='<td class="text-center">'+result[i].list[j].participatedSeatsCount+'</td>';
-										str+='<td class="text-center">'+result[i].list[j].wonSeatsCount+'</td>';
-										str+='<td class="text-center">'+result[i].list[j].perc+' %</td>';
-									str+='</tr>';
+											str+='<td class="text-center">'+result[i].list[j].participatedSeatsCount+'</td>';
+											str+='<td class="text-center">'+result[i].list[j].wonSeatsCount+'</td>';
+											str+='<td class="text-center">'+result[i].list[j].perc+' %</td>';
+										str+='</tr>';
+									}
 								}
+		
 							str+='</tbody>';
 						str+='</table>';
-					if(result[i].list.length > 6)
+					if(result[i].list.length > 6 && partyId !=1887)
 					{
 						str+='</div>';
 					}
