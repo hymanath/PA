@@ -896,6 +896,8 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	   } catch (Exception e) {
 			LOG.error("Excepting Occured in searchByMemberIdOrVoterId() of JanmabhoomiCommitteeService ", e);
 		}
+		if(mainVO.getName() == null && mainVO.getMemberShipCardId()==null && mainVO.getTdpCadreId() ==0 && mainVO.getVoterId() ==null)
+			mainVO = null;
 		return mainVO;
 	}
 
