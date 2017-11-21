@@ -136,6 +136,11 @@ public class NregsDataVO implements Serializable{
 	private String convergenceExpn;
 	private String icdsExpenditure;
 	private String workName;
+	private String thisMonth;
+	private String finAsOfToday;
+	private String lastFin;
+	private String lastFinSameDay;
+	private String from2014;
 	
 	
 	public String getWorkName() {
@@ -821,5 +826,35 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setPitingPerc(String pitingPerc) {
 		this.pitingPerc = pitingPerc;
+	}
+	public String getThisMonth() {
+		return thisMonth;
+	}
+	public void setThisMonth(String thisMonth) {
+		this.thisMonth = thisMonth;
+	}
+	public String getFinAsOfToday() {
+		return finAsOfToday;
+	}
+	public void setFinAsOfToday(String finAsOfToday) {
+		this.finAsOfToday = finAsOfToday;
+	}
+	public String getLastFin() {
+		return lastFin;
+	}
+	public void setLastFin(String lastFin) {
+		this.lastFin = lastFin;
+	}
+	public String getLastFinSameDay() {
+		return lastFinSameDay;
+	}
+	public void setLastFinSameDay(String lastFinSameDay) {
+		this.lastFinSameDay = lastFinSameDay;
+	}
+	public String getFrom2014() {
+		return from2014;
+	}
+	public void setFrom2014(String from2014) {
+		this.from2014 = from2014;
 	}
 }
