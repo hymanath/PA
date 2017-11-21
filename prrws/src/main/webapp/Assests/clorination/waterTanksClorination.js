@@ -1,5 +1,5 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var globalFromDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');    
+var globalFromDate = moment().subtract(6,'days').format('DD-MM-YYYY');    
 var globalToDate = moment().format('DD-MM-YYYY');
 
 var globalFromTodayDate = moment().format('DD-MM-YYYY');    
@@ -64,12 +64,12 @@ function onloadCalls(sessionToken){
 $(document).on('click','.calendar_active_cls li', function(){
 	var date = $(this).attr("attr_val");
 	
-	if(date == 'Week'){
-		globalFromDate = moment().subtract(1,'week').format('DD-MM-YYYY');
+	if(date == 'Last 7 Days'){
+		globalFromDate = moment().subtract(6,'days').format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
 		
-	}else if(date == 'Month'){
-		globalFromDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
+	}else if(date == 'Last 30 Days'){
+		globalFromDate = moment().subtract(29,'days').format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
 		
 	}else if(date == '3Months'){
@@ -186,7 +186,7 @@ function buildlevelWiseData(divId,sessionToken)
 		var notClorinatedMainPerc = (result.notClorinated/result.checked*100).toFixed(2); 
 		str+='<div class="col-sm-4">';
 				str+='<div class="block_styles" style="background-color:#fff">';
-					str+='<h3>'+type+' <span class="pull-right" style="margin-top: 10px; font-size: 14px;">(District - '+result.noOfDistricts+') (SP - '+result.noOfSPs+') </span> </h3>';
+					str+='<h3>'+type+' <span class="pull-right" style="margin-top: 10px; font-size: 14px;">( SP - '+result.noOfSPs+' )</span> </h3>';
 						if(result.checked !=null && result.checked>0){
 							str+='<h3 class="m_top10 font_weight">'+result.checked+'</h3>';
 						}else{
