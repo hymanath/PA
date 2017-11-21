@@ -127,8 +127,8 @@ function  getAllFiniancialYears(){
 	});
 	
 function getAllSubLocationsOnsuperLocation(superLocationId){
-	 $("#constituencySelId").html("<option value='0'>SELECT CONSTITUENCY</option>");
-	 $("#constituencySelId").trigger('chosen:updated');
+	 $("#districtSelId").html("");
+	 
 	 var json = {
           superLocationId:superLocationId
         }
@@ -158,10 +158,13 @@ function getAllSubLocationsOnsuperLocation(superLocationId){
 		 $("#districtSelId").trigger('chosen:updated');
 	});
 	setTimeout(function(){
-		var constincyId=$("#districtSelId").val();
+		getLocationsNamesBySubLocation(22,"onload");
+		/* var constincyId=$("#districtSelId").val();
+		alert(constincyId)
 		var conId=constincyId.substr(1,constincyId.length-1);
-		getLocationsNamesBySubLocation(conId,"onload");
-	}, 1500);
+		alert(conId)
+		getLocationsNamesBySubLocation(22,"onload"); */
+	}, 2000);
 	
 }
 $(document).on("change","#districtSelId",function(){
@@ -170,6 +173,7 @@ $(document).on("change","#districtSelId",function(){
 	getLocationsNamesBySubLocation(conId,"change");
 });
 function getLocationsNamesBySubLocation(locationId,type){  
+ $("#constituencySelId").html('');
 	 var json = {
           locationId:locationId
         }
@@ -503,20 +507,41 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 						str+='<div class="col-sm-4">';
 							str+='<div class="border-cls padding_right_left">';
 								str+='<h4>Total Govt Order</h4>';
-								str+='<h4 class="font_weight">'+result.govtOrderCount+'</h4>';
+								if(result.govtOrderCount == 0 || typeof(result.govtOrderCount) === 'undefined' || typeof(result.govtOrderCount) === undefined){
+									str+='<h4 class="font_weight">0</h4>';
+								}else{
+									str+='<h4 class="font_weight">'+result.govtOrderCount+'</h4>';
+									
+								}
 								str+='<hr class="hrlineCss"/>';
 										str+='<div class="row">';
 											str+='<div class="col-sm-4">';
 												str+='<h4>PLANE</h4>';
-												str+='<h5 class="font_weight">'+result.plainGoCount+'</h5>';
+												if(result.plainGoCount == 0 || typeof(result.plainGoCount) === 'undefined' || typeof(result.plainGoCount) === undefined){
+													str+='<h5 class="font_weight">0</h5>';
+												}else{
+													str+='<h5 class="font_weight">'+result.plainGoCount+'</h5>';
+													
+												}
+												
 											str+='</div>';
 											str+='<div class="col-sm-4">';
 												str+='<h4>SCP</h4>';
-												str+='<h5 class="font_weight">'+result.scpGoCount+'</h5>';
+												if(result.scpGoCount == 0 || typeof(result.scpGoCount) === 'undefined' || typeof(result.scpGoCount) === undefined){
+													str+='<h5 class="font_weight">0</h5>';
+												}else{
+													str+='<h5 class="font_weight">'+result.scpGoCount+'</h5>';
+													
+												}
 											str+='</div>';
 											str+='<div class="col-sm-4">';
 												str+='<h4>TSP</h4>';
-												str+='<h5 class="font_weight">'+result.tspGoCount+'</h5>';
+												if(result.tspGoCount == 0 || typeof(result.tspGoCount) === 'undefined' || typeof(result.tspGoCount) === undefined){
+													str+='<h5 class="font_weight">0</h5>';
+												}else{
+													str+='<h5 class="font_weight">'+result.tspGoCount+'</h5>';
+													
+												}
 											str+='</div>';
 										str+='</div>';
 							str+='</div>';
@@ -525,20 +550,44 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 						str+='<div class="col-sm-4">';
 							str+='<div class="border-cls padding_right_left">';
 								str+='<h4>Total Works</h4>';
-								str+='<h4 class="font_weight">'+result.workNumber+'</h4>';
+								if(result.workNumber == 0 || typeof(result.workNumber) === 'undefined' || typeof(result.workNumber) === undefined){
+									str+='<h4 class="font_weight">0</h4>';
+								}else{
+									str+='<h4 class="font_weight">'+result.workNumber+'</h4>';
+									
+								}
+								
 								str+='<hr class="hrlineCss"/>';
 										str+='<div class="row">';
 											str+='<div class="col-sm-4">';
 												str+='<h4>PLANE</h4>';
-												str+='<h5 class="font_weight">'+result.plainWorkCount+'</h5>';
+												if(result.plainWorkCount == 0 || typeof(result.plainWorkCount) === 'undefined' || typeof(result.plainWorkCount) === undefined){
+													str+='<h5 class="font_weight">0</h5>';
+												}else{
+													str+='<h5 class="font_weight">'+result.plainWorkCount+'</h5>';
+													
+												}
+												
 											str+='</div>';
 											str+='<div class="col-sm-4">';
 												str+='<h4 >SCP</h4>';
-												str+='<h5 class="font_weight">'+result.scpWorkCount+'</h5>';
+												if(result.scpWorkCount == 0 || typeof(result.scpWorkCount) === 'undefined' || typeof(result.scpWorkCount) === undefined){
+													str+='<h5 class="font_weight">0</h5>';
+												}else{
+													str+='<h5 class="font_weight">'+result.scpWorkCount+'</h5>';
+													
+												}
+												
 											str+='</div>';
 											str+='<div class="col-sm-4">';
 												str+='<h4>TSP</h4>';
-												str+='<h5 class="font_weight">'+result.tspWorkCount+'</h5>';
+												if(result.tspWorkCount == 0 || typeof(result.tspWorkCount) === 'undefined' || typeof(result.tspWorkCount) === undefined){
+													str+='<h5 class="font_weight">0</h5>';
+												}else{
+													str+='<h5 class="font_weight">'+result.tspWorkCount+'</h5>';
+													
+												}
+												
 											str+='</div>';
 										str+='</div>';
 							str+='</div>';
@@ -547,20 +596,43 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 						str+='<div class="col-sm-4">';
 							str+='<div class="border-cls padding_right_left">';
 								str+='<h4>Total Funds</h4>';
-								str+='<h4 class="font_weight">'+result.amountInDecimal+' Cr</h4>';
+								if(result.amountInDecimal == 0 || typeof(result.amountInDecimal) === 'undefined' || typeof(result.amountInDecimal) === undefined){
+									str+='<h4 class="font_weight">0</h4>';
+								}else{
+									str+='<h4 class="font_weight">'+result.amountInDecimal+' Cr</h4>';
+									
+								}
+								
 								str+='<hr class="hrlineCss"/>';
 									str+='<div class="row">';
 											str+='<div class="col-sm-4">';
 												str+='<h4>PLANE</h4>';
-												str+='<h5 class="font_weight">'+result.plainAmountInDecimal+'</h5>';
+												if(result.plainAmountInDecimal == 0 || typeof(result.plainAmountInDecimal) === 'undefined' || typeof(result.plainAmountInDecimal) === undefined){
+													str+='<h5 class="font_weight">0</h5>';
+												}else{
+													str+='<h5 class="font_weight">'+result.plainAmountInDecimal+'</h5>';
+													
+												}
+												
 											str+='</div>';
 											str+='<div class="col-sm-4">';
 												str+='<h4>SCP</h4>';
-												str+='<h5 class="font_weight">'+result.scpAmountInDecimal+'</h5>';
+												if(result.scpAmountInDecimal == 0 || typeof(result.scpAmountInDecimal) === 'undefined' || typeof(result.scpAmountInDecimal) === undefined){
+													str+='<h5 class="font_weight">0</h5>';
+												}else{
+													str+='<h5 class="font_weight">'+result.scpAmountInDecimal+'</h5>';
+													
+												}
+												
 											str+='</div>';
 											str+='<div class="col-sm-4">';
 												str+='<h4>TSP</h4>';
-												str+='<h5 class="font_weight">'+result.tspAmountInDecimal+'</h5>';
+												if(result.tspAmountInDecimal == 0 || typeof(result.tspAmountInDecimal) === 'undefined' || typeof(result.tspAmountInDecimal) === undefined){
+													str+='<h5 class="font_weight">0</h5>';
+												}else{
+													str+='<h5 class="font_weight">'+result.tspAmountInDecimal+'</h5>';
+													
+												}
 											str+='</div>';
 										str+='</div>';
 							str+='</div>';
@@ -580,25 +652,32 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 									str+='</tr>';
 								str+='</thead>';
 								str+='<tbody>';
-								for(var i in result.locationList1){
-									for(var j in result.locationList1[i].locationList1){
-										str+='<tr>';
-											str+='<td>'+result.locationList1[i].programName+'</td>';
-											str+='<td>'+result.locationList1[i].locationList1[j].goNoDate+'</td>';
-											str+='<td>'+result.locationList1[i].locationList1[j].workName+'</td>';
-											str+='<td>'+result.locationList1[i].locationList1[j].workNumber+'</td>';
-											str+='<td>'+result.locationList1[i].locationList1[j].amountInDecimal+'</td>';
-										str+='</tr>';
+								if(result.locationList1 !=null && result.locationList1.length>0){
+									for(var i in result.locationList1){
+										for(var j in result.locationList1[i].locationList1){
+											str+='<tr>';
+												str+='<td>'+result.locationList1[i].programName+'</td>';
+												str+='<td>'+result.locationList1[i].locationList1[j].goNoDate+'</td>';
+												str+='<td>'+result.locationList1[i].locationList1[j].workName+'</td>';
+												str+='<td>'+result.locationList1[i].locationList1[j].workNumber+'</td>';
+												str+='<td>'+result.locationList1[i].locationList1[j].amountInDecimal+'</td>';
+											str+='</tr>';
+										}
+										
 									}
-									
+									str+='<tr>';
+										str+='<th></th>';
+										str+='<th></th>';
+										str+='<th></th>';
+										str+='<th>'+result.workNumber+'</th>';
+										str+='<th>'+result.amountInDecimal+'</th>';
+									str+='</tr>';
+								}else{
+									str+='<tr>';
+										str+='<th colspan="5">No Data Available</th>';
+									str+='</tr>';
 								}
-								str+='<tr>';
-									str+='<th></th>';
-									str+='<th></th>';
-									str+='<th></th>';
-									str+='<th>'+result.workNumber+'</th>';
-									str+='<th>'+result.amountInDecimal+'</th>';
-								str+='</tr>';
+								
 								str+='</tbody>';
 							str+='</table>';
 						
@@ -679,21 +758,28 @@ function buildConstituencyWiseNregsWorksDetails(result,divId){
 								str+='<tbody>';
 								var completedWorks=0;
 								var totalFunds=0.00;
-								for(var i in result){
-									completedWorks=completedWorks+result[i].completed;
-									totalFunds = parseFloat(totalFunds)+parseFloat(result[i].total);
+								if(result !=null && result.length>0){
+									for(var i in result){
+										completedWorks=completedWorks+result[i].completed;
+										totalFunds = parseFloat(totalFunds)+parseFloat(result[i].total);
+										str+='<tr>';
+											str+='<td>'+result[i].workName+'</td>';
+											str+='<td>'+result[i].completed+'</td>';
+											str+='<td>'+result[i].total+'</td>';
+										str+='</tr>';
+										
+									}
 									str+='<tr>';
-										str+='<td>'+result[i].workName+'</td>';
-										str+='<td>'+result[i].completed+'</td>';
-										str+='<td>'+result[i].total+'</td>';
+										str+='<th></th>';
+										str+='<th>'+result[0].finalWorks+'</th>';
+										str+='<th>'+result[0].finalAmount+' Cr</th>';
 									str+='</tr>';
-									
+								}else{
+									str+='<tr>';
+										str+='<th colspan="5">No Data Available</th>';
+									str+='</tr>';
 								}
-								str+='<tr>';
-									str+='<th></th>';
-									str+='<th>'+completedWorks+'</th>';
-									str+='<th>'+totalFunds+'</th>';
-								str+='</tr>';
+								
 								str+='</tbody>';
 							str+='</table>';
 						
