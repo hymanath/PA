@@ -51,6 +51,14 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	 */
 	public LocationVO getFundManagementSystemWorkDetails(List<Long> financialYearIdsList, List<Long> departmentIdList, String startDateStr,String endDateStr,Long locationId){
 		try{
+			Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndWorkCount = new HashMap<Long,Map<Long,Long>>();
+			deptIdAndGrandTypeIdAndWorkCount.put(1L, new HashMap<Long,Long>());
+			deptIdAndGrandTypeIdAndWorkCount.put(2L, new HashMap<Long,Long>());
+			Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndAmount = new HashMap<Long,Map<Long,Long>>();
+			Map<Long,String> deptIdAndNameMap = new HashMap<Long,String>();
+			deptIdAndNameMap.put(1L, "ENC");
+			deptIdAndNameMap.put(2L, "RWS");
+			deptIdAndNameMap.put(3L, "Mahatma Gandhi National Rural Employment Gurantee Scheme");
 			DecimalFormat df = new DecimalFormat("0.000");
 			LocationVO locationVO = new LocationVO();
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd/MM/yyyy","");
@@ -74,14 +82,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			if(departmentIdList.size() == 0 || departmentIdList.get(0) == 0){
 				List<LocationVO> overviewList = new ArrayList<LocationVO>();
 				LocationVO locationVO2 = null;
-				Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndWorkCount = new HashMap<Long,Map<Long,Long>>();
-				deptIdAndGrandTypeIdAndWorkCount.put(1L, new HashMap<Long,Long>());
-				deptIdAndGrandTypeIdAndWorkCount.put(2L, new HashMap<Long,Long>());
-				Map<Long,Map<Long,Long>> deptIdAndGrandTypeIdAndAmount = new HashMap<Long,Map<Long,Long>>();
-				Map<Long,String> deptIdAndNameMap = new HashMap<Long,String>();
-				deptIdAndNameMap.put(1L, "ENC");
-				deptIdAndNameMap.put(2L, "RWS");
-				deptIdAndNameMap.put(3L, "Mahatma Gandhi National Rural Employment Gurantee Scheme");
+				
 				List<Object[]> worksSummery = fundSanctionDAO.getFundSanstionLocationWise(financialYearIdsList,departmentIdList,startDate,endDate,superLocationId,type);
 				buildDeptWiseMap(worksSummery,deptIdAndGrandTypeIdAndWorkCount,deptIdAndGrandTypeIdAndAmount);
 				Long deptWiseTotalAmount = null;
@@ -182,24 +183,24 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					for(LocationVO param : locationVOListForGoNo){
 						if(param.getGrantTypeId().longValue() == 1L){
 							locationVO.setPlainGoCount(locationVO.getPlainGoCount()+1L);
-							locationVO.setPlainWorkCount(locationVO.getPlainWorkCount() + param.getWorkNumber());
-							locationVO.setPlainAmount(locationVO.getPlainAmount() + param.getAmount());
+							//locationVO.setPlainWorkCount(locationVO.getPlainWorkCount() + param.getWorkNumber());
+							//locationVO.setPlainAmount(locationVO.getPlainAmount() + param.getAmount());
 						}else if(param.getGrantTypeId().longValue() == 2L){
 							locationVO.setScpGoCount(locationVO.getScpGoCount()+1L);
-							locationVO.setScpWorkCount(locationVO.getScpWorkCount() + param.getWorkNumber());
-							locationVO.setScpAmount(locationVO.getScpAmount() + param.getAmount());
+							//locationVO.setScpWorkCount(locationVO.getScpWorkCount() + param.getWorkNumber());
+							//locationVO.setScpAmount(locationVO.getScpAmount() + param.getAmount());
 						}else if(param.getGrantTypeId().longValue() == 3L){
 							locationVO.setTspGoCount(locationVO.getTspGoCount()+1L);
-							locationVO.setTspWorkCount(locationVO.getTspWorkCount() + param.getWorkNumber());
-							locationVO.setTspAmount(locationVO.getTspAmount() + param.getAmount());
+							//locationVO.setTspWorkCount(locationVO.getTspWorkCount() + param.getWorkNumber());
+							//locationVO.setTspAmount(locationVO.getTspAmount() + param.getAmount());
 						}
 					}
 				}
 				
 				//finally convert the amount into lakh
-				locationVO.setPlainAmountInDecimal(df.format(locationVO.getPlainAmount()/10000000D));
-				locationVO.setScpAmountInDecimal(df.format(locationVO.getScpAmount()/10000000D));
-				locationVO.setTspAmountInDecimal(df.format(locationVO.getTspAmount()/10000000D));
+				//locationVO.setPlainAmountInDecimal(df.format(locationVO.getPlainAmount()/10000000D));
+				//locationVO.setScpAmountInDecimal(df.format(locationVO.getScpAmount()/10000000D));
+				//locationVO.setTspAmountInDecimal(df.format(locationVO.getTspAmount()/10000000D));
 				
 				Map<Long,List<LocationVO>> programIdAndListOfGo = new HashMap<Long,List<LocationVO>>();
 				List<LocationVO> goOrderVoList = null;
@@ -230,14 +231,34 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				
 				//calculate total no of go and total work and total amount
 				
-				locationVO.setGovtOrderCount(locationVO.getPlainGoCount()+locationVO.getScpGoCount()+locationVO.getTspGoCount());
-				locationVO.setWorkNumber(locationVO.getPlainWorkCount()+locationVO.getScpWorkCount()+locationVO.getTspWorkCount());
-				locationVO.setAmount(locationVO.getPlainAmount()+locationVO.getScpAmount()+locationVO.getTspAmount());
-				locationVO.setAmountInDecimal(df.format(locationVO.getAmount()/10000000D));
+				
 				
 				locationVO.getLocationList1().addAll(programWiseList);
 				//locationVO.getLocationList2().addAll(locationVOs);
-			}	
+			}
+			List<Object[]> worksSummery = fundSanctionDAO.getFundSanstionLocationWise(financialYearIdsList,departmentIdList,startDate,endDate,superLocationId,type);
+			buildDeptWiseMap(worksSummery,deptIdAndGrandTypeIdAndWorkCount,deptIdAndGrandTypeIdAndAmount);
+			for(Entry<Long,Map<Long,Long>> outerParam : deptIdAndGrandTypeIdAndWorkCount.entrySet()){
+				for(Entry<Long,Long> innerParam : outerParam.getValue().entrySet()){
+					if(innerParam.getKey().longValue() == 1L){
+						locationVO.setPlainWorkCount(innerParam.getValue());
+						locationVO.setPlainAmount(deptIdAndGrandTypeIdAndAmount.get(outerParam.getKey()).get(innerParam.getKey()));
+						locationVO.setPlainAmountInDecimal(df.format(locationVO.getPlainAmount()/10000000D));
+					}else if(innerParam.getKey().longValue() == 2L){
+						locationVO.setScpWorkCount(innerParam.getValue());
+						locationVO.setScpAmount(deptIdAndGrandTypeIdAndAmount.get(outerParam.getKey()).get(innerParam.getKey()));
+						locationVO.setScpAmountInDecimal(df.format(locationVO.getScpAmount()/10000000D));
+					}else if(innerParam.getKey().longValue() == 3L){
+						locationVO.setTspWorkCount(innerParam.getValue());
+						locationVO.setTspAmount(deptIdAndGrandTypeIdAndAmount.get(outerParam.getKey()).get(innerParam.getKey()));
+						locationVO.setTspAmountInDecimal(df.format(locationVO.getTspAmount()/10000000D));
+					}
+				}
+			}
+			locationVO.setGovtOrderCount(locationVO.getPlainGoCount()+locationVO.getScpGoCount()+locationVO.getTspGoCount());
+			locationVO.setWorkNumber(locationVO.getPlainWorkCount()+locationVO.getScpWorkCount()+locationVO.getTspWorkCount());
+			locationVO.setAmount(locationVO.getPlainAmount()+locationVO.getScpAmount()+locationVO.getTspAmount());
+			locationVO.setAmountInDecimal(df.format(locationVO.getAmount()/10000000D));
 			return locationVO;
 			}
 		}catch(Exception e){
