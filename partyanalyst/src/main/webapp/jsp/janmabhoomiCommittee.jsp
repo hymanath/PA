@@ -177,7 +177,7 @@
 		str+='<div class="col-sm-2 border_left">';
 			str+='<div class="bordermemberes" style="border:1px solid #ddd;border-radius:10px;">';
 				str+='<h5 class="text-bold">Committee Status</h5>';
-				str+='<h4 class="m_top35">'+statusType+'</h4>';
+				str+='<h4 class="m_top35">'+result.status+'</h4>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
