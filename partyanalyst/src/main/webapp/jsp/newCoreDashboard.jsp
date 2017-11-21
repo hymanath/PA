@@ -1891,7 +1891,7 @@
 						<div class="col-md-7 col-sm-7 col-xs-12">  
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
-								Booth committees - <small class="text-muted committeesDate">OVERALL (TILL NOW)</small>
+								Booth committees - <small class="text-muted boothCommitteesDate">OVERALL (TILL NOW)</small>
 							</h4>
 						</div>
 						<div class="col-md-5 col-sm-5 col-xs-12">
@@ -2086,11 +2086,11 @@
                         <div class="col-md-6 col-xs-12 col-sm-6 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock" expand-block-right="boothCommittees">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
-                                	<ul class="activeUlCls list-inline pull-right">
+                                	<ul class="boothCommitteeTopPoorLiCls activeUlCls list-inline pull-right">
                                     	<!--<li class="active topFiveStrongResults">Top 5 Strong</li>
 										<li class="topFivePoorResults">Top 5 Poor</li>-->
-										<li class="liCls1 active addactive" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-										<li class="liCls1 removeactive" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+										<li class="boothCommitteeTopPoorCls active addactive" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+										<li class="boothCommitteeTopPoorCls removeactive" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
                                     </ul>
                                 </div>
                                 <div id="boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv"></div>

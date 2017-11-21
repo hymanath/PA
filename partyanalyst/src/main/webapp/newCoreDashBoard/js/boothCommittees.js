@@ -98,14 +98,17 @@
 			
 		});
 	}
-	var globalUserWiseMemberRslt;
+	var globalUserWiseMemberRslt; 
 	function getUserTypeWiseCommitteesCompletedCounts2(){
+		//active top5 block
+		$('ul.boothCommitteeTopPoorLiCls li').removeClass('active');
+		$('ul.boothCommitteeTopPoorLiCls li:first-child').addClass('active');
 		$("#boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   var state = globalState;
        var dateString = $("#dateRangeBoothId").val();
 	   var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	 
-	  // alert(1111);
+	 
 	   var committeeEnrollmentYearArray = new Array();
 	   if($("#tdpBoothCommitteeYearId").val() != null)
 		   committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
@@ -1175,7 +1178,7 @@
 				var candidateNameArray=[];
 				if(result[i] !=null && result[i].length>0){
 					for(var j in result[i]){
-							candidateNameArray.push(result[i][j].name)
+							candidateNameArray.push(result[i][j].name);
 							//console.log(result[i][j].name);
 						var obj1 = {
 								name: result[i][j].name,
@@ -1216,7 +1219,7 @@
 					
 					$(function () {
 						 $("#genSecBooth"+i).highcharts({
-							colors: ['#338ecf','#7DDF7D','#C53A36',],
+							colors: ['#338ecf','#7DDF7D','#C53A36'],
 							chart: {
 								type: 'column'
 							},
@@ -1343,7 +1346,7 @@
 							};
 						candidateNameStartedCountArray.push(obj2);
 						candidateNameNotStartedCountArray.push(obj3);
-						
+						candidateNameArray.push(result[i][j].name);
 						countVar =countVar+1;
 						if (countVar === 5) {
 							break;
@@ -1370,7 +1373,7 @@
 					$("#genSecBooth1"+i).width(getWidth);
 					$(function () {
 						 $("#genSecBooth1"+i).highcharts({
-							colors: ['#7DDF7D','#C53A36'],
+							colors: ['#338ecf','#7DDF7D','#C53A36'],
 							chart: {
 								type: 'column'
 							},
@@ -1464,7 +1467,7 @@
 		}
 		
 	}
-	$(document).on("click",".liCls1",function(){
+	$(document).on("click",".boothCommitteeTopPoorCls",function(){
 		var memberType=$(this).attr("attr_value");
 		 if(memberType != null && memberType == "strong"){
 			buildgetBoothUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(globalUserWiseMemberRslt); 
@@ -1786,7 +1789,7 @@
 	//... dots.
 	$(document).on("click",".moreBlocksIcons",function(){
 		$(this).addClass("unExpandBlocksBoothC");
-		
+		console.log("HI");
 		$(".moreBoothBlocks1").hide();
 		$(".committeeSeetingBlock").show();
 		$(".moreBoothBlocksDetailAndComp").show();
@@ -1886,7 +1889,7 @@
 		getUserTypeWiseBoothCommitteesInchargeDetails();
 		
 		if($(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".liCls1").each(function(){
+			$(".boothCommitteeTopPoorCls").each(function(){
 				var topvalue = $(this).attr("attr_value");
 				if(topvalue == "poor"){
 					$(".removeactive").removeClass("active");
@@ -1937,7 +1940,6 @@
 	$(document).on("click",".documentCloseClass",function(e){
 		e.stopPropagation();
 	});
-	//$(".committeesDate").html("up to date( "+customStartDatemMeetings+" )");
 	
 	$("#dateRangeBoothId").daterangepicker({
 		opens: 'left',
@@ -1959,10 +1961,12 @@
         }
 	})
 	 $('#dateRangeBoothId').on('apply.daterangepicker', function(ev, picker) {
-		customStartDatemMeetings = picker.startDate.format('DD/MM/YYYY');
+		var customStartDateBoothCommittee = picker.startDate.format('DD/MM/YYYY');
+		var customEndDateBoothCommittee = picker.endDate.format('DD/MM/YYYY');
+		var selectedDate = customStartDateBoothCommittee+ " - "+customEndDateBoothCommittee;
 			//do something, like clearing an input
 		boothDefaultCommitteeCalls();
-		$(".committeesDate").html("( "+customStartDatemMeetings+" )");
+		$(".boothCommitteesDate").html("( "+selectedDate+" )");
 	});
 	 		
 	function getBoothCadreEnrolmentYears(){
