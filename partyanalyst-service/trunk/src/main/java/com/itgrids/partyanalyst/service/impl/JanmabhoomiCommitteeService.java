@@ -668,6 +668,19 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					jbCommitteeMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					jbCommitteeMember.setUpdatedUserId(janmabhoomiCommitteeMemberVO.getUserId());
 					jbCommitteeMember.setEndDate(dateUtilService.getCurrentDateAndTime());
+					jbCommitteeMember.setIsActive("N");
+					if(statusType.equalsIgnoreCase("R")){
+						List<Object[]> commiteesMembersList = jbCommitteeMemberDAO.getCommitteeMembersByCommiteeId(janmabhoomiCommitteeMemberVO.getCommitteeId());
+						if(commiteesMembersList != null && commiteesMembersList.size() == 1){
+							JbCommittee jbCommittee = jbCommitteeDAO.get(janmabhoomiCommitteeMemberVO.getCommitteeId());
+							if(jbCommittee != null){
+								if(jbCommittee.getStartDate() != null){
+									jbCommittee.setStartDate(null);
+									jbCommitteeDAO.save(jbCommittee);
+								}
+							}
+						}
+					}
 				}else if(statusType.equalsIgnoreCase("P")){
 					JbCommittee jbCommittee = jbCommitteeDAO.get(janmabhoomiCommitteeMemberVO.getCommitteeId());
 					if(jbCommittee != null){
