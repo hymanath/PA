@@ -400,7 +400,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			List<Object[]> list = nregaWorkExpenditureLocationDAO.getWorkWiseExpenditureOverviewInConstituency(superLocationId, financialYearIds, type);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
-					returnvo.setFinalWorks(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+					returnvo.setFinalWorks(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
 					returnvo.setFinalAmount(convertRupeesIntoCrores(obj[0] != null ? obj[0].toString():"0"));
 					returnvo.setTotalAmount(commonMethodsUtilService.getLongValueForObject(obj[0]));
 				}
@@ -459,7 +459,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 						vo.setGrounded(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
 						vo.setInProgress(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
 						vo.setCompleted(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
-						totalWorks = totalWorks+vo.getCompleted();
+						totalWorks = totalWorks+vo.getGrounded();
 						returnList.add(vo);
 					}else{
 						vo = getMatchedVO(returnList, "Other Works");
@@ -473,7 +473,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 							vo.setGrounded(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
 							vo.setInProgress(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
 							vo.setCompleted(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
-							totalWorks = totalWorks+vo.getCompleted();
+							totalWorks = totalWorks+vo.getGrounded();
 							returnList.add(vo);
 						}
 						else{
@@ -483,7 +483,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 							vo.setGrounded(vo.getGrounded()+Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
 							vo.setInProgress(vo.getInProgress()+Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
 							vo.setCompleted(vo.getCompleted()+Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
-							totalWorks = totalWorks+Long.valueOf(obj[8] != null ? obj[8].toString():"0");
+							totalWorks = totalWorks+Long.valueOf(obj[6] != null ? obj[6].toString():"0");
 						}
 					}
 					finalAmount = finalAmount+totalAmount;
