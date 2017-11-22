@@ -2835,7 +2835,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		 else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID && userAccessLevelValues != null && !userAccessLevelValues.isEmpty())
 		    sb.append(" and d.district_id in (:userAccessLevelValues)");  
 		 else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID && userAccessLevelValues != null && !userAccessLevelValues.isEmpty())
-		    sb.append(" and pc.parliament_constituency_id in (:userAccessLevelValues)");  
+		    sb.append(" and pc.constituency_id in (:userAccessLevelValues)");  
 		 else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID && userAccessLevelValues != null && !userAccessLevelValues.isEmpty())
 		    sb.append(" and c.constituency_id in (:userAccessLevelValues)");  
 		 else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID && userAccessLevelValues != null && !userAccessLevelValues.isEmpty())
@@ -2852,7 +2852,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		 else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID)
 		    sb.append(" group by d.district_id");  
 		 else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID)
-		    sb.append(" group by pc.parliament_constituency_id");  
+		    sb.append(" group by pc.constituency_id");  
 		 else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID)
 		    sb.append(" group by c.constituency_id");  
 		 else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID)
