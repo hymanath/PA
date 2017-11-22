@@ -112,14 +112,14 @@
 				//var ocType=false;
 				var stType=false;
 				var scType=false;
-					for(var i in result.desinationVOList){
+					/*for(var i in result.desinationVOList){
 						for(var j in result.desinationVOList[i].desinationMebersVOList){
 							if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "BC"){
 								bcType = true;
 							}
-							/* if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "OC"){
-								ocType = true;
-							} */
+							// if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "OC"){
+								//ocType = true;
+							//} 
 							if(result.desinationVOList[i].desinationMebersVOList[j].categoryName == "SC"){
 								scType = true;
 							}
@@ -127,26 +127,31 @@
 								stType = true;
 							}
 						}
-					}
+					} */
 					/* if(ocType === true){
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss" style="background-color:#777;"></span> OC</li>';
 					}else{
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss"></span> OC</li>';
 					} */
-					if(bcType === true){
-						str+='<li style="margin-left:12px;" class="fillBg"><span class="rangeWiseCss" style="background-color:#777;"></span> BC</li>';
+					if(result.bcType !=null || result.scType!=null || result.stType!=null || result.ocType!=null){
+					if(result.bcType == 'contains'){
+						str+='<li style="margin-left:12px;" class="fillBg"><span class="rangeWiseCss" style="background-color:green;"></span> BC</li>';
+						bcType = true;
 					}else{
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss"></span> BC</li>';
 					}
-					if(scType === true){
-						str+='<li style="margin-left:12px;" class="fillBg"><span class="rangeWiseCss" style="background-color:#777;"></span> SC</li>';
+					if(result.scType == 'contains'){
+						str+='<li style="margin-left:12px;" class="fillBg"><span class="rangeWiseCss" style="background-color:green;"></span> SC</li>';
+						scType = true;
 					}else{
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss"></span> SC</li>';
 					}
-					if(stType === true){
-						str+='<li style="margin-left:12px;" class="fillBg"><span class="rangeWiseCss" style="background-color:#777;"></span> ST</li>';
+					if(result.stType == 'contains'){
+						str+='<li style="margin-left:12px;" class="fillBg"><span class="rangeWiseCss" style="background-color:green;"></span> ST</li>';
+						stType = true;
 					}else{
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss"></span> ST</li>';
+					}
 					}
 				str+='</ul>';
 				
@@ -298,23 +303,25 @@
 			}
 		}
 		
-		if(statusType != 'Approved' && bcType === true && scType === true && stType === true && approvedBooleanaVal === true){
-			str+='<div class="col-sm-12 m_top20">';
-				str+='<div class="row">';
-				
-					str+='<div class="col-sm-3">';
-						str+='<label>Change Committee Status</label>';
-						str+='<select class="form-control chosen-select" id="committeeStatusChangeId">';
-							str+='<option value="approve">Approved</option>';
-						str+='</select>';
-					str+='</div>';
+		if(bcType === true && scType === true && stType === true){
+			if(statusType != 'Approved' || approvedBooleanaVal === true){
+				str+='<div class="col-sm-12 m_top20">';
+					str+='<div class="row">';
 					
-					str+='<div class="col-sm-2">';
-						str+='<button type="button" class="btn btn-success btn-sm">Submit</button>';
+						str+='<div class="col-sm-3">';
+							str+='<label>Change Committee Status</label>';
+							str+='<select class="form-control chosen-select" id="committeeStatusChangeId">';
+								str+='<option value="approve">Approved</option>';
+							str+='</select>';
+						str+='</div>';
+						
+						str+='<div class="col-sm-2">';
+							str+='<button type="button" style="margin-top: 28px;" class="btn btn-success btn-sm">Submit</button>';
+						str+='</div>';
+						
 					str+='</div>';
-					
 				str+='</div>';
-			str+='</div>';
+			}
 		}
 		
 	str+='</div>';

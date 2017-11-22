@@ -1026,7 +1026,7 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
  		  dataType : 'json',
  		  data : {task :JSON.stringify(jsObj)}
  		}).done(function(result){ 
-			 $("#committesLevelValuesId").append('<option value="0">Select Committee</option>')
+			 //$("#committesLevelValuesId").append('<option value="0">Select Committee</option>')
 			 if(result !=null && result.length>0){
 				for(var i in result){
 					  $("#committesLevelValuesId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
@@ -1088,6 +1088,7 @@ categoryGrouIdsList.push(casteCategoryId);
     });
 }
 function savingApplication(committeeId,statusType){
+	$("#savingStatusDivId").html(spinner);
 		var uploadHandler = {
 			upload: function(o) {
 				$("#loadingImgId").css("display","block");
