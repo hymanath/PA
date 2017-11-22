@@ -3134,3 +3134,7 @@ color: rgb(51, 122, 183);
     height: 25px;
     width: 25px;
 }
+.tablepressmeetMain tbody tr td h5{
+	line-height:30px !important;
+	
+}
