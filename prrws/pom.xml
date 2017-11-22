@@ -147,6 +147,12 @@
 		<dependency>
 			<groupId>org.appfuse</groupId>
 			<artifactId>appfuse-hibernate</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>javassist</artifactId>
+					<groupId>javassist</groupId>
+				</exclusion>
+			</exclusions>
 			<version>2.2.1</version>
 		</dependency>
 
@@ -344,7 +350,13 @@
 	   
    <!-- Web serevices dependencies end -->
 
-
+	<!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
+		<dependency>
+		    <groupId>org.javassist</groupId>
+		    <artifactId>javassist</artifactId>
+		    <version>3.22.0-GA</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
