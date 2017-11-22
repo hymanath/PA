@@ -907,6 +907,12 @@
                         <a href="http://mytdp.com/debateAction.action"><img style="width:18px;float:left" src="img/cadre_debate.png"><span>&nbsp;&nbsp;Debate</span></a>
                     </li>
 				</c:if>	
+				<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'CONSTITUENCY_PAGE_USER_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'CONSTITUENCY_PAGE_ADMIN_ENTITLEMENT' ) }">	
+					<li>
+						<a target="_blank" href="areaWiseDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;Constituency Page Dashboard </span></a>
+					</li>
+				</c:if>	
+				
 				<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'KAIZALA_MESSAGES_ENTITLEMENT' )}">	
 					<li>
 						<a href="http://mytdp.com/KAIZALA/kaizalaMessagesDashBoard?userId=${sessionScope.USER.registrationID}"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;Kaizala Messages</span></a>
