@@ -41,8 +41,30 @@ private String  relativeName;
 private String gender;
 private Long age;
 private String houseNo;
-
+private String bcType;
+private String scType;
+private String stType;
 private String voterCardNo;
+
+
+public String getBcType() {
+	return bcType;
+}
+public void setBcType(String bcType) {
+	this.bcType = bcType;
+}
+public String getScType() {
+	return scType;
+}
+public void setScType(String scType) {
+	this.scType = scType;
+}
+public String getStType() {
+	return stType;
+}
+public void setStType(String stType) {
+	this.stType = stType;
+}
 public Set<Long> getCommitteeIds() {
 	return committeeIds;
 }

@@ -21,7 +21,8 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
  public List<Object[]> getDesignationsIdsByCommitteeId(Long committeeId){
 	 StringBuilder sb = new StringBuilder();
 	   //0 jbCommitteeRoleId,1 jbMemberTypeId,2 memberType, 3 maxMembers
-		sb.append("SELECT model.jbCommitteeRoleId,model.jbMemberType.jbMemberTypeId,model.jbMemberType.memberType,model.maxMembers ");
+		sb.append("SELECT model.jbCommitteeRoleId,model.jbMemberType.jbMemberTypeId,model.jbMemberType.memberType,model.maxMembers ," +
+				" model.jbCommittee.jbCommitteeConfirmRuleId ");
 		sb.append("from JbCommitteeRole model ");
 		sb.append("where model.jbCommittee.jbCommitteeId =:committeeId and model.jbCommittee.jbCommitteeId.isDeleted ='N' ");
 		
