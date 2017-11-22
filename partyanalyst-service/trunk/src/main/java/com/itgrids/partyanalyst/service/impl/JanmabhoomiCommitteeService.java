@@ -221,7 +221,13 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						JanmabhoomiCommitteeMemberVO designationVO = designationVOMap.get(designationId);
 						if(designationVO !=null){
 							designationVO.getDesinationMebersVOList().add(createMemberVO(param,committeeVO));
-							//Long memAddedCategory = addedMemCategory.get(key);
+							Long memAddedCategory = addedMemCategory.get(commonMethodsUtilService.getStringValueForObject(param[8]));
+							if(memAddedCategory == null){
+								addedMemCategory.put(commonMethodsUtilService.getStringValueForObject(param[8]), 1l);
+							}else if(memAddedCategory.longValue() > 0l){
+								addedMemCategory.put(commonMethodsUtilService.getStringValueForObject(param[8]), memAddedCategory.longValue()+1l);
+							}
+							
 							//committeeVO.setTotalMemberCount(committeeVO.getTotalMemberCount()+1L);
 						}
 					}
