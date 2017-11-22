@@ -1061,6 +1061,8 @@ IElectionDAO {
 	@SuppressWarnings("unused")
 	public List<Object[]> getElectionDetailsDistrictWise(List<Long> electionYears,Long locationTypeId,List<Long>locationValues,Long electionId,List<String> subTypes,List<Long> partyIds,List<Long> electionScopeIds,String type){
 		StringBuilder sb = new StringBuilder();	
+		List<Long> scopeIdsList = new ArrayList<Long>(0);
+		scopeIdsList.addAll(electionScopeIds);
 		sb.append(" SELECT ");
 		sb.append(" e.election_scope_id as election_scope_id , ");
 		if(type == null)
@@ -1074,8 +1076,8 @@ IElectionDAO {
 		sb.append(" constituency_election ce, ");
 		
 		if(type != null && type.trim().equalsIgnoreCase("AC_WISE_PA_RESULTS")){
-			electionScopeIds.clear();
-			electionScopeIds.add(1L);
+			scopeIdsList.clear();
+			scopeIdsList.add(1L);
 			sb.append(" booth_constituency_election bce , ");
 			sb.append(" booth b, ");
 			sb.append(" candidate_booth_result cbr, ");
@@ -1148,8 +1150,8 @@ IElectionDAO {
 		if(partyIds != null && partyIds.size() > 0){
 			query.setParameterList("partyIds", partyIds);
 		} 
-		if(electionScopeIds != null && electionScopeIds.size()>0){
-        	query.setParameterList("electionScopeIds", electionScopeIds);
+		if(scopeIdsList != null && scopeIdsList.size()>0){
+        	query.setParameterList("electionScopeIds", scopeIdsList);
         }
 		return query.list();
 
