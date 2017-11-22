@@ -112,7 +112,7 @@ function onLoadCalls()
 			$("[overview-state='"+projectDivId+"'],[overview-district='"+projectDivId+"']").addClass("active");
 			$(".overviewAllCls").hide(); 
 			projectData(projectDivId,levelId,locationId);
-			if(globalDivName != 'coffee'&& globalDivName != 'Renovation and Improvements to existing Check Dams Check Wall'&& globalDivName != 'Road Formation Upto WBM GR II Including CD works'&& globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas'&& globalDivName !=  'Construction Of Animal Hostel'&& globalDivName != 'Roads for Unconnected Habitations 2011-12' && globalDivName != 'Construction of New Check Dam' && globalDivName !=  'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' && globalDivName !=  'Construction of Food Grains Storage Structures of 250MT' && globalDivName !=  'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' && globalDivName !=  'Construction of Village Haats Infrastructure fecilities' && globalDivName !=  'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' && globalDivName != 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' && globalDivName != 'Construction of Buildings for women self help group federation' && globalDivName != 'Work Site Facilities' && globalDivName != 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' && globalDivName != 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' && globalDivName != 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' && globalDivName != 'Production of Grafts in HNTC' && globalDivName != 'Improvements of RYTHU BAZAR' && globalDivName != 'Roads for Unconnected Habitations 2012-13 and afterwards' && globalDivName != 'HNTC Development' && globalDivName != 'New Open Well for Drinking water purpose' && globalDivName != 'Construction of Crematoria Burial Grounds' && globalDivName != 'Repairs to Existing Check Dam' && globalDivName != 'Formation of Road upto Gravel surface including CD works to agriculture fields' && globalDivName != 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' && globalDivName != 'Construction of Food Grains Storage Structures of 500MT' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' && globalDivName != 'Raising of Cashew bag seedlings for 2014-15' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas'  && globalDivName != 'Cattle Ponds' && globalDivName != 'Desilting of Drinking Water Tanks' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank1' && globalDivName != 'Animal Husbandry Others' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank' && globalDivName != "Azolla Production Unit" && globalDivName != "Construction of silopits of 3 MTs capacity" && globalDivName != "Fodder trough for Cattle Cattle drinking water trough" && globalDivName != "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" && globalDivName != "Raising of Perinnial Fodder" && globalDivName != "Raising of Silvipasture clubbed with subabul plantation" && globalDivName != "Construction of Checkdam across peeraiah vanka Check Dam 1")
+			if(globalDivName != 'coffee'&& globalDivName != 'Renovation and Improvements to existing Check Dams Check Wall'&& globalDivName != 'Road Formation Upto WBM GR II Including CD works'&& globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas'&& globalDivName !=  'Construction Of Animal Hostel'&& globalDivName != 'Roads for Unconnected Habitations 2011-12' && globalDivName != 'Construction of New Check Dam' && globalDivName !=  'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' && globalDivName !=  'Construction of Food Grains Storage Structures of 250MT' && globalDivName !=  'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' && globalDivName !=  'Construction of Village Haats Infrastructure fecilities' && globalDivName !=  'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' && globalDivName != 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' && globalDivName != 'Construction of Buildings for women self help group federation' && globalDivName != 'Work Site Facilities' && globalDivName != 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' && globalDivName != 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' && globalDivName != 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' && globalDivName != 'Production of Grafts in HNTC' && globalDivName != 'Improvements of RYTHU BAZAR' && globalDivName != 'Roads for Unconnected Habitations 2012-13 and afterwards' && globalDivName != 'HNTC Development' && globalDivName != 'New Open Well for Drinking water purpose' && globalDivName != 'Construction of Crematoria Burial Grounds' && globalDivName != 'Repairs to Existing Check Dam' && globalDivName != 'Formation of Road upto Gravel surface including CD works to agriculture fields' && globalDivName != 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' && globalDivName != 'Construction of Food Grains Storage Structures of 500MT' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' && globalDivName != 'Raising of Cashew bag seedlings for 2014-15' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas'  && globalDivName != 'Cattle Ponds' && globalDivName != 'Desilting of Drinking Water Tanks' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank1' && globalDivName != 'Animal Husbandry Others' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank' && globalDivName != "Azolla Production Unit" && globalDivName != "Construction of silopits of 3 MTs capacity" && globalDivName != "Fodder trough for Cattle Cattle drinking water trough" && globalDivName != "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" && globalDivName != "Raising of Perinnial Fodder" && globalDivName != "Raising of Silvipasture clubbed with subabul plantation" && globalDivName != "Construction of Checkdam across peeraiah vanka Check Dam 1" && globalDivName != "ManDays")
 			{
 				overviewData(projectDivId,levelId,locationId);
 			}
@@ -439,6 +439,18 @@ function onLoadCalls()
 						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 				}
 				
+				if(globalDivName == 'ManDays')
+				{
+					if(levelType == "constituency")
+						theadArr = ["district",levelType,'This Month','Financial Year as of Today','Increment/Decrement (%)','Last Financial Year Same Day','Last Financial Year','From 2014'];
+					else if(levelType == "mandal")
+						theadArr = ["district","constituency",levelType,'This Month','Financial Year as of Today','Increment/Decrement (%)','Last Financial Year Same Day','Last Financial Year','From 2014'];
+					else if(levelType == "panchayat")
+						theadArr = ["district","constituency","mandal",levelType,'This Month','Financial Year as of Today','Increment/Decrement (%)','Last Financial Year Same Day','Last Financial Year','From 2014'];
+					else
+						theadArr = [levelType,'This Month','Financial Year as of Today','Increment/Decrement (%)','Last Financial Year Same Day','Last Financial Year','From 2014'];
+				}
+				
 				if(globalDivName == 'GP Buildings1' || globalDivName == 'Mandal buildings1')
 				{
 					if(levelType == "constituency")
@@ -468,6 +480,8 @@ function onLoadCalls()
 					getNregaLevelsWiseDataFrNewCalls(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == "Timely Payment")
 					getNregaLevelsWiseDataFrNewCalls(tableId,levelType,menuLocationType,menuLocationId,divId,'-1');
+				else if(divId == "ManDays")
+					getManWorkDaysOfNrega(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
 				else if(divId == "Horticulture")//
 					getNregaLevelsWiseDataFrHorticulture(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == "Avenue")//
@@ -840,6 +854,12 @@ function projectData(divId,levelId,locationId)
 									}else if(divId == 'NTR Rural House')
 									{
 										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - NTR IHHL</h4>';
+									}else if(divId == 'ManDays')
+									{
+										if(dataArr[i] == 'state' || dataArr[i] == 'district' || dataArr[i] == 'constituency')
+											collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - ManDays( All Counts Are in Lakhs)</h4>';
+										else
+											collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - ManDays</h4>';
 									}else{
 										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - '+divId+'</h4>';
 									}
@@ -1004,6 +1024,18 @@ function projectData(divId,levelId,locationId)
 					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 			}
 			
+			if(divId == 'ManDays')
+			{
+				if(dataArr[i] == "constituency")
+					theadArr = ["district",dataArr[i],'This Month','Financial Year as of Today','Increment/Decrement (%)','Last Financial Year Same Day','Last Financial Year','From 2014'];
+				else if(dataArr[i] == "mandal")
+					theadArr = ["district","constituency",dataArr[i],'This Month','Financial Year as of Today','Increment/Decrement (%)','Last Financial Year Same Day','Last Financial Year','From 2014'];
+				else if(dataArr[i] == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr[i],'This Month','Financial Year as of Today','Increment/Decrement (%)','Last Financial Year Same Day','Last Financial Year','From 2014'];
+				else
+					theadArr = [dataArr[i],'This Month','Financial Year as of Today','Increment/Decrement (%)','Last Financial Year Same Day','Last Financial Year','From 2014'];
+			}
+			
 			if(divId == 'GP Buildings1' || divId == 'Mandal buildings1')
 			{
 				if(dataArr[i] == "constituency")
@@ -1033,6 +1065,8 @@ function projectData(divId,levelId,locationId)
 			getNREGSLabBugdtLelwiseData(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
 		else if(divId == "Agriculture Activities")
 			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
+		else if(divId == "ManDays")
+			getManWorkDaysOfNrega(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
 		else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries")
 			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
 		else if(divId == "Timely Payment")
@@ -1334,7 +1368,7 @@ function buildNREGSProjectsOverview(result,blockName)
 								str+='<div class="row">';	
 									for(var i in result)
 									{
-										if(result[i] == "Labour Budget" || result[i] == "Average Wage" || result[i] == "Average Days of Employment" || result[i] == "HH Completed 100 Days" || result[i] == "Timely Payment" || result[i] == "Payments" || result[i] == "FAperformance" || result[i] == "Agriculture Activities")
+										if(result[i] == "Labour Budget" || result[i] == "Average Wage" || result[i] == "Average Days of Employment" || result[i] == "HH Completed 100 Days" || result[i] == "Timely Payment" || result[i] == "Payments" || result[i] == "FAperformance" || result[i] == "Agriculture Activities" || result[i] == "ManDays")
 										{
 											str+='<div class="col-sm-2 m_top10">';
 												str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
@@ -4336,7 +4370,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 	});
 }
 
-var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','GH','Solid Waste Management','Burial Ground','Play fields','SMC Trench','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','Payments','Agriculture Activities','Cattle Ponds','Desilting of Drinking Water Tanks','FAperformance','coffee','Comprehensive Restoration of minor Irrigation Tank1','Greenary works Chettu','Agriculture Related Works', 'Rural Sanitation Works','Soil Moisture Conservation works Neeru','Works in community lands','Institutional Development Works','Road Works','Water Harvesting Structures Neeru','IJP PROGRAM WORKS','AH-Live Stock Related works','Comprehensive Restoration of minor Irrigation Tank','CC Roads1','Anganwadi','GP Buildings1','Azolla Production Unit','Construction of silopits of 3 MTs capacity','Fodder trough for Cattle Cattle drinking water trough','Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze','Raising of Perinnial Fodder','Raising of Silvipasture clubbed with subabul plantation','Mandal buildings1','NTR 90 Days','Production of Bricks','NTR Rural House','Mulbery New','Silk worm New','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','OPGK-Perinnials','OPGK-Annuals','Animal Husbandry Others','UGDrainage','Rock Fill Dams','Renovation and Improvements to existing Check Dams Check Wall','Road Formation Upto WBM GR II Including CD works','Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas','Construction Of Animal Hostel','Roads for Unconnected Habitations 2011-12','Construction of New Check Dam','Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality','Construction of Food Grains Storage Structures of 250MT','Formation of Road upto WBM Gr II surface including CD works in Tribal areas','Construction of Village Haats Infrastructure fecilities','Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham','Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT','Construction of Buildings for women self help group federation','Work Site Facilities','Renovation and Improvements to existing Percolation Tank Mini Percolation tank','GP level BNRGSK knowledge resource centre 2012-13 and afterwards','Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality','Production of Grafts in HNTC','Improvements of RYTHU BAZAR','Roads for Unconnected Habitations 2012-13 and afterwards','HNTC Development','New Open Well for Drinking water purpose','Construction of Crematoria Burial Grounds','Repairs to Existing Check Dam','Formation of Road upto Gravel surface including CD works to agriculture fields','Formation of Approach Road upto Gravel surface including CD works to Burial ground','Construction of Food Grains Storage Structures of 500MT','Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas','Raising of Cashew bag seedlings for 2014-15','Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas','Raising and Maintenance of Avenue plantations','Raising and Maintenance of Block Plantations','Raising and Maintenance of nurseries','Soil and Moisture Conservation Works']; 
+var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','GH','Solid Waste Management','Burial Ground','Play fields','SMC Trench','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','Payments','Agriculture Activities','ManDays','Cattle Ponds','Desilting of Drinking Water Tanks','FAperformance','coffee','Comprehensive Restoration of minor Irrigation Tank1','Greenary works Chettu','Agriculture Related Works', 'Rural Sanitation Works','Soil Moisture Conservation works Neeru','Works in community lands','Institutional Development Works','Road Works','Water Harvesting Structures Neeru','IJP PROGRAM WORKS','AH-Live Stock Related works','Comprehensive Restoration of minor Irrigation Tank','CC Roads1','Anganwadi','GP Buildings1','Azolla Production Unit','Construction of silopits of 3 MTs capacity','Fodder trough for Cattle Cattle drinking water trough','Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze','Raising of Perinnial Fodder','Raising of Silvipasture clubbed with subabul plantation','Mandal buildings1','NTR 90 Days','Production of Bricks','NTR Rural House','Mulbery New','Silk worm New','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','OPGK-Perinnials','OPGK-Annuals','Animal Husbandry Others','UGDrainage','Rock Fill Dams','Renovation and Improvements to existing Check Dams Check Wall','Road Formation Upto WBM GR II Including CD works','Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas','Construction Of Animal Hostel','Roads for Unconnected Habitations 2011-12','Construction of New Check Dam','Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality','Construction of Food Grains Storage Structures of 250MT','Formation of Road upto WBM Gr II surface including CD works in Tribal areas','Construction of Village Haats Infrastructure fecilities','Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham','Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT','Construction of Buildings for women self help group federation','Work Site Facilities','Renovation and Improvements to existing Percolation Tank Mini Percolation tank','GP level BNRGSK knowledge resource centre 2012-13 and afterwards','Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality','Production of Grafts in HNTC','Improvements of RYTHU BAZAR','Roads for Unconnected Habitations 2012-13 and afterwards','HNTC Development','New Open Well for Drinking water purpose','Construction of Crematoria Burial Grounds','Repairs to Existing Check Dam','Formation of Road upto Gravel surface including CD works to agriculture fields','Formation of Approach Road upto Gravel surface including CD works to Burial ground','Construction of Food Grains Storage Structures of 500MT','Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas','Raising of Cashew bag seedlings for 2014-15','Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas','Raising and Maintenance of Avenue plantations','Raising and Maintenance of Block Plantations','Raising and Maintenance of nurseries','Soil and Moisture Conservation Works']; 
 
 buildNREGSProjectsOverview(overViewArr,'')
 for(var i in overViewArr)
@@ -4352,7 +4386,12 @@ for(var i in overViewArr)
 	}else if(overViewArr[i] == 'Payments')
 	{
 		getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'state',0,2,'abstract');
-	}else if(overViewArr[i] == 'Greenary works Chettu' || overViewArr[i] == 'Agriculture Related Works' || overViewArr[i] == 'Rural Sanitation Works' || overViewArr[i] == 'Soil Moisture Conservation works Neeru' || overViewArr[i] == 'Works in community lands' || overViewArr[i] == 'IJP PROGRAM WORKS' || overViewArr[i] == 'Institutional Development Works' || overViewArr[i] == 'Road Works' || overViewArr[i] == 'Water Harvesting Structures Neeru' || overViewArr[i] == 'AH-Live Stock Related works'){
+	}
+	else if(overViewArr[i] == 'ManDays')
+	{
+		getManWorkDaysOfNrega(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
+	}
+	else if(overViewArr[i] == 'Greenary works Chettu' || overViewArr[i] == 'Agriculture Related Works' || overViewArr[i] == 'Rural Sanitation Works' || overViewArr[i] == 'Soil Moisture Conservation works Neeru' || overViewArr[i] == 'Works in community lands' || overViewArr[i] == 'IJP PROGRAM WORKS' || overViewArr[i] == 'Institutional Development Works' || overViewArr[i] == 'Road Works' || overViewArr[i] == 'Water Harvesting Structures Neeru' || overViewArr[i] == 'AH-Live Stock Related works'){
 		getNregaOtherMCCAbstarctData(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
 	}else if(overViewArr[i] == 'Renovation and Improvements to existing Check Dams Check Wall' || overViewArr[i] == 'Road Formation Upto WBM GR II Including CD works' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || overViewArr[i] == 'Construction Of Animal Hostel' || overViewArr[i] == 'Roads for Unconnected Habitations 2011-12' || overViewArr[i] == 'Construction of New Check Dam' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 250MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || overViewArr[i] == 'Construction of Village Haats Infrastructure fecilities' || overViewArr[i] == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || overViewArr[i] == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || overViewArr[i] == 'Construction of Buildings for women self help group federation' || overViewArr[i] == 'Work Site Facilities' || overViewArr[i] == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || overViewArr[i] == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || overViewArr[i] == 'Production of Grafts in HNTC' || overViewArr[i] == 'Improvements of RYTHU BAZAR' || overViewArr[i] == 'Roads for Unconnected Habitations 2012-13 and afterwards' || overViewArr[i] == 'HNTC Development' || overViewArr[i] == 'New Open Well for Drinking water purpose' || overViewArr[i] == 'Construction of Crematoria Burial Grounds' || overViewArr[i] == 'Repairs to Existing Check Dam' || overViewArr[i] == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || overViewArr[i] == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 500MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || overViewArr[i] == 'Raising of Cashew bag seedlings for 2014-15' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || overViewArr[i] == 'Comprehensive Restoration of minor Irrigation Tank' || overViewArr[i] == "Azolla Production Unit" || overViewArr[i] == "Construction of silopits of 3 MTs capacity" || overViewArr[i] == "Fodder trough for Cattle Cattle drinking water trough" || overViewArr[i] == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || overViewArr[i] == "Raising of Perinnial Fodder" || overViewArr[i] == "Raising of Silvipasture clubbed with subabul plantation"){
 		getNregaCovergancePROtherLevelData(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
@@ -4547,6 +4586,104 @@ function getNREGSProjectsAbstractNew(type,locType,locId,blockName,levelId)
 		}
 	});
 }
+
+function getManWorkDaysOfNrega(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId,mccType,buildType,levelId)
+{
+	$("#"+divIdd).html(spinner);
+	
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locationTypeNew
+	}
+	
+	$.ajax({
+		url: 'getManWorkDaysOfNrega',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			if(buildType == 'Abstract')
+			{
+				buildNREGSAbstractDataByTypeNew(divIdd,ajaxresp,'',menuLocationId,menuLocationType,levelId);
+			}else{
+				var str = '';
+				if(ajaxresp != null && ajaxresp.length > 0){
+					for(var i in ajaxresp){
+						str+='<tr>';
+							if(locationTypeNew == "state"){
+								str+='<td class="text-capitalize">'+locationTypeNew+'</td>';
+							}
+							else if(locationTypeNew == "district"){
+								str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+							}
+							else if(locationTypeNew == "constituency"){
+								str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+								str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+							}
+							else if(locationTypeNew == "mandal"){
+								str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+								str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+								str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+							}
+							else if(locationTypeNew == "panchayat"){
+								str+='<td class="text-capitalize">'+ajaxresp[i].district+'</td>';
+								str+='<td class="text-capitalize">'+ajaxresp[i].constituency+'</td>';
+								str+='<td class="text-capitalize">'+ajaxresp[i].mandal+'</td>';
+								str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
+							}
+							
+							str+='<td>'+ajaxresp[i].thisMonth+'</td>';
+							str+='<td>'+ajaxresp[i].finAsOfToday+'</td>';
+							if(ajaxresp[i].percentage < 0){
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 0){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}
+							str+='<td>'+ajaxresp[i].lastFinSameDay+'</td>';
+							str+='<td>'+ajaxresp[i].lastFin+'</td>';
+							str+='<td>'+ajaxresp[i].from2014+'</td>';
+						str+='</tr>';
+					}
+				}
+				tableView(divIdd,theadArr,str,locationTypeNew,blockName);
+			}
+		}
+	})
+}
+
+/*function getManWorkDaysOfNrega(type,locType,locId,blockName,levelId)
+{
+	$("#nregsOverviewBodyId").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		type : type,
+		locationType: locType,
+		locationId : locId
+	}
+	$.ajax({
+		url: 'getManWorkDaysOfNrega',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId);
+		}
+	});
+}*/
 
 function getNREGSForestProjectsAbstract(type,locType,locId,blockName,levelId)
 {
@@ -4781,6 +4918,19 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					{
 						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 					}
+				}
+				else if(type == 'ManDays')
+				{
+					if(result[i].percentage < 0)
+					{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+					}else if(result[i].percentage >= 0)
+					{
+						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+					}else
+					{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+					}
 				}else{
 					/*if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'IJP PROGRAM WORKS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Cattle Ponds' || type == 'Desilting of Drinking Water Tanks' || type == 'coffee' || type == 'Comprehensive Restoration of minor Irrigation Tank1' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == 'NTR 90 Days' || type == 'NTR Rural House' || type == 'Production of Bricks'){
 						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
@@ -4860,6 +5010,8 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					
 					if(type == 'coffee')
 						str+='<small class="text-center">Planting (%)</small>';
+					else if(type == 'ManDays')
+						str+='<small class="text-center">Increment/Decrement(%)</small>';
 					else
 						str+='<small class="text-center">Achieved</small>';
 					
@@ -4875,6 +5027,19 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						{
 							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
 						}else if(result[i].percentage >= 60)
+						{
+							str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+						}else
+						{
+							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+						}
+					}
+					else if(type == 'ManDays')
+					{
+						if(result[i].percentage < 0)
+						{
+							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+						}else if(result[i].percentage >= 0)
 						{
 							str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
 						}else
@@ -4905,7 +5070,11 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						str+='<div class="col-sm-6 text-center">';
 						if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'IJP PROGRAM WORKS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Cattle Ponds' || type == 'Desilting of Drinking Water Tanks' || type == 'coffee' || type == 'Comprehensive Restoration of minor Irrigation Tank1' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == 'NTR 90 Days' || type == 'NTR Rural House' || type == 'Production of Bricks'){
 							str+='<label>Sanctioned</label>';
-						}else{
+						}
+						else if(type == 'ManDays'){
+							str+='<label>Last Fin Same Day</label>';
+						}
+						else{
 							str+='<label>Target</label>';
 						}
 							
@@ -4926,6 +5095,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}else if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'IJP PROGRAM WORKS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == "Azolla Production Unit" || type == "Construction of silopits of 3 MTs capacity" || type == "Fodder trough for Cattle Cattle drinking water trough" || type == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || type == "Raising of Perinnial Fodder" || type == "Raising of Silvipasture clubbed with subabul plantation")
 							{
 								str+='<h4>'+result[0].target+'</h4>';
+							}
+							else if(type == 'ManDays'){
+								str+='<h4>'+result[0].lastFinSameDay+'</h4>';
 							}else{
 								str+='<h4>0</h4>';
 							}
@@ -4938,6 +5110,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							else if(type == 'FAperformance')
 							{
 								str+='<label>Achieved</label>';
+							}else if(type == 'ManDays')
+							{
+								str+='<label>Fin As Of Today</label>';
 							}else{
 								str+='<label>Completed</label>';
 							}
@@ -4956,6 +5131,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}else if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'IJP PROGRAM WORKS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == "Azolla Production Unit" || type == "Construction of silopits of 3 MTs capacity" || type == "Fodder trough for Cattle Cattle drinking water trough" || type == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || type == "Raising of Perinnial Fodder" || type == "Raising of Silvipasture clubbed with subabul plantation")
 							{
 								str+='<h4>'+result[0].completed+'</h4>';
+							}
+							else if(type == 'ManDays'){
+								str+='<h4>'+result[0].finAsOfToday+'</h4>';
 							}else{
 								str+='<h4>0</h4>';
 							}

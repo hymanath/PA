@@ -5969,6 +5969,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setLastFin(jObj.getString("LAST_FIN"));
 	 	    				vo.setLastFinSameDay(jObj.getString("LAST_FIN_SAMEDAY"));
 	 	    				vo.setFrom2014(jObj.getString("FROM_2014"));
+	 	    				vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getFinAsOfToday())*100.00)/Double.valueOf(vo.getLastFinSameDay())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage())-Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				returnList.add(vo);
 	 	    			}
 	 	    		}
