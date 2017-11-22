@@ -3860,6 +3860,8 @@
                 </div>
             </div>
         </div>
+		</div>
+		<div class="row">
 		<!--Cadre Registration ENd -->
 		<div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
 				
@@ -3874,8 +3876,8 @@
 								
 							</div>
 							<div class="col-sm-3">
-								<span class="emnIconExpand pull-right" expand-icon="prajaSankaplaYatra">
-									<i class="prajaSankalpa"></i>
+								<span class="pull-right" expand-icon="prajaSankaplaYatra">
+									<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 								</span>
 							</div>
 						</div>
@@ -3925,7 +3927,7 @@
 			</div>
 			<!-- NEWS BLOCK END-->
 			<!--Press Meet block Start-->
-			<!--<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
+			<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
 			   <div class="panel panel-default panelNewCustom ">
 				  <div class="panel-heading">
 					 <div class="row">
@@ -3943,6 +3945,14 @@
 					 </div>
 				  </div>
 				  <div class="panel-body">
+					<div class="row">
+						<span class="input-group pull-right dateRangePickerCls">
+							<input type="text" id="dateRangePressmeetId" class="form-control" style="width:180px"/>
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</span>	
+					</div>	
 					 <div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 pressmeetBlock" expand-block-inner="pressmeet">
 						   <div class="row">
@@ -3960,9 +3970,9 @@
 									<li id="pressmeetLowId"><i class="fa fa-arrow-down"></i>&nbsp;Poor</li>
 								 </ul>
 							  </div>
-							  <div id="spokesPersonWisepressmeetDetailsId"></div>
-							 
-						   </div>
+							  <div id="spokesPersonWisepressmeetDetailsId" class="col-md-12 col-xs-12 col-sm-12">
+							  </div>
+						   </div>                  
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 							<div class="panel-group" id="pressmeetCollapse" role="tablist" aria-multiselectable="true">
@@ -4047,7 +4057,7 @@
 					 </div>
 				  </div>
 			   </div>
-			</div>-->
+			</div>
 
 
 		</div>
@@ -5043,7 +5053,7 @@ $("[expand-icon]").click(function(){
 		closeBlocks();
 		$("[expand-icon="+blockName+"]").removeClass("active");
 		$("[expand-icon-inner="+blockName+"],[expand-icon-inner]").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
-	}else if(iconClass == 'prajaSankalpa')
+	}/* else if(iconClass == 'prajaSankalpa')
 	{
 		$("[right-nav]").removeClass("active");
 		$("[expand-icon="+blockName+"]").addClass("active");
@@ -5051,16 +5061,8 @@ $("[expand-icon]").click(function(){
 		$('html, body').animate({
 			scrollTop: $('.prajaSankaplaYatraBlock').offset().top - 20
 		}, 'slow');
-	}
-	/*else if(iconClass == 'pressmeet')
-	{
-		$("[right-nav]").removeClass("active");
-		$("[expand-icon="+blockName+"]").addClass("active");
-		$("[expand-block-right="+blockName+"]").show();
-		$('html, body').animate({
-			scrollTop: $('.pressmeetBlock').offset().top - 20
-		}, 'slow');
-	}*/
+	} */
+	
 });
 $(document).on("click","[expand-icon-inner]",function(){
 	var $this = $(this);
@@ -5444,7 +5446,10 @@ var globalImages;
 	onLoadCalls()
 	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();
+		
 		onloadPrajaSankaplaYatraCalls();
+		//Preemeet
+		preemeeetOnloadCalls();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');
