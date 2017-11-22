@@ -34,8 +34,8 @@ $('#dateRangePressmeetId').on('apply.daterangepicker', function(ev, picker) {
 function preemeeetOnloadCalls(){
 		getPartyWiseThenCandidateWisePerformance();
 		getPrintMediaOverAllPartyWiseCounts();
-		getTopFiveLeaders("1,2,3,4");
-		getPublicationVsPartiesPerformance("1,2,3,4");
+		getTopFiveLeaders("1,2,3");
+		getPublicationVsPartiesPerformance("1,2,3");      
 }
 var partywiseresult='';
 $(document).on("click",".pressmeetIconExpand",function(){
@@ -51,7 +51,7 @@ function getPartyWiseThenCandidateWisePerformance(){
 	 $("#candidateOverAllPerformanceCohortId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
  $.ajax({
   url: wurl+"/CommunityNewsPortal/webservice/getPartyWiseThenCandidateWisePerformance/"+fromDate+"/"+toDate+"/1,2,3,4/"
-  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getPartyWiseThenCandidateWisePerformance/"+fromDate+"/"+toDate+"/1,2,3/"
+  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getPartyWiseThenCandidateWisePerformance/"+fromDate+"/"+toDate+"/1,2,3,4/"
  }).then(function(result){
      
    if(result !=null){
@@ -108,8 +108,8 @@ $(document).on("click",".publicationAndEdtionTypescls li",function(){
 function getPublicationVsPartiesPerformance(edtionList){
 	$("#publicationAndPartyWiseDetailsId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
  $.ajax({
-  url: wurl+"/CommunityNewsPortal/webservice/getPublicationVsPartiesPerformance/"+fromDate+"/"+toDate+"/1,2,3,4/"
-  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getPublicationVsPartiesPerformance/"+fromDate+"/"+toDate+"/1,2,3/"
+  url: wurl+"/CommunityNewsPortal/webservice/getPublicationVsPartiesPerformance/"+fromDate+"/"+toDate+"/"+edtionList+"/"
+  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getPublicationVsPartiesPerformance/"+fromDate+"/"+toDate+"/"+edtionList+"/"
  }).then(function(result){
      
   if(result !=null){
