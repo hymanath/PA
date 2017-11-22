@@ -4553,5 +4553,6 @@
     	<property name="casteCategoryDAO" ref="casteCategoryDAO" /> 
     	<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" /> 
     	<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" /> 
+    	<property name="jbCommitteeConfirmRuleConditionDAO" ref="jbCommitteeConfirmRuleConditionDAO" /> 
     	</bean>
 </beans>			
