@@ -524,6 +524,7 @@ public class BioMetricService implements IBioMetricService {
 					resultVO.setPresentCount(Long.valueOf(presentDaysSet.size()));
 					if (resultVO.getTotalWorkingDays() > resultVO.getPresentCount()) {
 						resultVO.setAbsentCount(resultVO.getTotalWorkingDays()- resultVO.getPresentCount());
+						resultVO.setAbsentCount(resultVO.getAbsentCount()- resultVO.getNonWorkingDayPresent());
 					}
 				}
 
