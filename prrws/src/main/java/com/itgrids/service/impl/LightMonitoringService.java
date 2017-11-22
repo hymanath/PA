@@ -2,6 +2,7 @@ package com.itgrids.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -280,7 +281,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	 * Author :Swapna
 	 	 */
 	 @Override
-	public List<LightMonitoringVO> getBasicLedOverviewDetails(String startDate,String endDate, String locationType,final Long locationValue,List<Long> lightMonitoringIds) {
+	 public List<LightMonitoringVO> getBasicLedOverviewDetails(String startDate,String endDate, String locationType,final Long locationValue,List<Long> lightMonitoringIds) {
 		   List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
 		 
 		try{	
@@ -690,6 +691,81 @@ public class LightMonitoringService  implements ILightMonitoring{
 		}
 		return null;
 	}
+	
+	
+	 public List<LightMonitoringVO> getTimePeriodWiseLightsDetaisl(String startDate,String endDate, String locationType,final Long locationValue,List<Long> lightMonitoringIds) {
+		   List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
+		   LightMonitoringVO  lightMonitoringToDayCountVO = new LightMonitoringVO();
+		try{	
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			DateUtilService dateUtilService = new DateUtilService();
+			Date today = dateUtilService.getCurrentDateAndTime();
+			Date lastThreeDaysDate = getDateBeforeNDays(3);
+			Date lastSevenDaysDate = getDateBeforeNDays(7);
+			Date lastThirtyDaysDate = getDateBeforeNDays(30);
+			//today date
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			
+			
+			List<Long> loccationIds = new ArrayList<Long>();
+			if (locationValue != null && locationValue.longValue() > 0l) {
+				loccationIds.add(locationValue);
+			}			
+			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+				fromDate = sdf.parse(startDate);
+				toDate = sdf.parse(endDate);
+			}
+			
+			 List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(today,today,locationType,loccationIds,lightMonitoringIds,"No");
+			 List<Object[]> list1  =  lightMonitoringDAO.getTotalVillagesDetails(lastThreeDaysDate,today,locationType,loccationIds,lightMonitoringIds,"No");
+			 List<Object[]> list2  =  lightMonitoringDAO.getTotalVillagesDetails(lastSevenDaysDate,today,locationType,loccationIds,lightMonitoringIds,"No");
+			 List<Object[]> list3  =  lightMonitoringDAO.getTotalVillagesDetails(lastThirtyDaysDate,today,locationType,loccationIds,lightMonitoringIds,"No");
+			 lightMonitoringToDayCountVO = setTimePeriodWiseLightsDetaisl(lightMonitoringData) ;  
+			 lightMonitoringToDayCountVO = setTimePeriodWiseLightsDetaisl(list1) ;
+			 lightMonitoringToDayCountVO = setTimePeriodWiseLightsDetaisl(list2) ;
+			 lightMonitoringToDayCountVO = setTimePeriodWiseLightsDetaisl(list3) ;
+			 list.add(lightMonitoringToDayCountVO);			
+			     
+      }catch (Exception e) {
+   	   LOG.error("Exception raised at getBasicLedOverviewDetails - LightMonitoringService service", e);
+      }
+		return list;
+      } 
+		
+	public LightMonitoringVO  setTimePeriodWiseLightsDetaisl(List<Object[]> lightMonitoringData){
+			 
+		     List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
+		     LightMonitoringVO  lightMonitoringToDaCountVO=new LightMonitoringVO();
+		     
+		    if(lightMonitoringData != null && lightMonitoringData.size() > 0){
+					for(Object[] param : lightMonitoringData){
+					
+						lightMonitoringToDaCountVO.setTodayLights(commonMethodsUtilService.getLongValueForObject(param[2]));
+						lightMonitoringToDaCountVO.setTodayPoles(commonMethodsUtilService.getLongValueForObject(param[4]));
+						
+					}
+		    }
+			return lightMonitoringToDaCountVO;	   	           	
+						
+		}		
+		public static Date getDateBeforeNDays(int noOfDays) {
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Calendar now = Calendar.getInstance();
+				now.add(Calendar.DATE, -noOfDays);
+				Date pastDate = now.getTime();
+				String dateStr = sdf.format(pastDate);
+				
+				return sdf.parse(dateStr);
+
+			} catch (Exception e) {
+				
+				return null;
+			}
+		}
  
 }
 	
