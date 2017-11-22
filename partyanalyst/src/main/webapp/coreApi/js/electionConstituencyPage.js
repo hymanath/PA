@@ -1210,7 +1210,7 @@ function getElectionDetailsData(electionYrVal,eletionSubType,partyId,electionSco
 											if(result[i].subList1[j].subList1[k].earnedVote !=null && result[i].subList1[j].subList1[k].earnedVote>0){
 												str+='<td>'+result[i].subList1[j].subList1[k].earnedVote;
 												if(result[i].subList1[j].subList1[k].earnedVote !=null && result[i].subList1[j].subList1[k].wonSeatsCount>0){
-													str+='<span class = "popUpDetailsClickCls" attr_party_name='+result[i].subList1[j].subList1[k].partyName+' attr_type="MPMLA" attr_partyId="'+result[i].subList1[j].subList1[k].partyId+'" aliance_party_name_list = "'+result[i].subList1[j].subList1[k].partyNamesList+'" attr_electionId ="'+result[i].subList1[j].electionId+'" attr_election_scopeId="2" attr_dist_id ='+result[i].locationId+' attr_election_year ='+result[i].subList1[j].electionYear+' style="margin-left:5px;color:green;" alince_party_ids='+result[i].subList1[j].subList1[k].idsList+'>('+result[i].subList1[j].subList1[k].wonSeatsCount+')</span>';
+													str+='<span class = "popUpDetailsClickCls" attr_party_name='+result[i].subList1[j].subList1[k].partyName+' attr_type="MPMLA" attr_partyId="'+result[i].subList1[j].subList1[k].partyId+'" aliance_party_name_list = "'+result[i].subList1[j].subList1[k].partyNamesList+'" attr_electionId ="'+result[i].subList1[j].electionId+'" attr_election_scopeId="2" attr_dist_id ='+result[i].locationId+' attr_election_year ='+result[i].subList1[j].electionYear+' style="margin-left:5px;color:green;" title="click here to view Assembly Information" alince_party_ids='+result[i].subList1[j].subList1[k].idsList+'>('+result[i].subList1[j].subList1[k].wonSeatsCount+')</span>';
 												}
 												str+='</td>';
 											}else{
