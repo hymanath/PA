@@ -21,6 +21,14 @@ public class JanmabhoomiCommitteeVO {
 	private String readyForApprovelCommitteeperc="0";
 	private String totalApprovedCommitteeperc="0";
 	private String submitedCommitteesperc="0";
+	private Long districtId;
+	private String districtName;
+	private Long constituencyId;
+	private String constituencyName;
+	private Long mandalId;
+	private String mandalName;
+	private Long panchayatId;
+	private String panchayatName;
 	
 	public Long getCommitteeId() {
 		return committeeId;
@@ -152,6 +160,54 @@ public class JanmabhoomiCommitteeVO {
 	}
 	public void setSubmitedCommitteesperc(String submitedCommitteesperc) {
 		this.submitedCommitteesperc = submitedCommitteesperc;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
 	}
 
 }

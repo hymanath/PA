@@ -44,6 +44,7 @@ private String houseNo;
 private String bcType;
 private String scType;
 private String stType;
+private String ocType;
 private String voterCardNo;
 
 
@@ -275,6 +276,12 @@ public Long getCommitteeId() {
 }
 public void setCommitteeId(Long committeeId) {
 	this.committeeId = committeeId;
+}
+public String getOcType() {
+	return ocType;
+}
+public void setOcType(String ocType) {
+	this.ocType = ocType;
 }
 
 
