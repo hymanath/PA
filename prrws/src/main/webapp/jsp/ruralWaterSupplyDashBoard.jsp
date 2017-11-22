@@ -288,19 +288,19 @@
 				<div class="row m_top10">
 					<div class="col-sm-3" >
 						<div class="white-block">
-							<h5 style="padding:5px;text-align:center;"><span class="chartTitleAlign overViewDtlsSwatchBharatCls" style="cursor:pointer;">Swatch Bharat - IHHL</span></h5>
+							<h5 style="padding:5px;text-align:center;"><span class="chartTitleAlign overViewDtlsSwatchBharatCls" style="cursor:pointer;"> MGNREGS IHHL</span></h5>
 							<div class="chart" id="swatchBharatDivId"></div>
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="white-block">
-							<h5 style="padding:5px;text-align:center;"><span class="chartTitleAlign overViewDtlsSwatchBharatPaymentCls" style="cursor:pointer;">Swatch Bharat - PAYMENTS</span></h5>
+							<h5 style="padding:5px;text-align:center;"><span class="chartTitleAlign overViewDtlsSwatchBharatPaymentCls" style="cursor:pointer;"> SWATCH BHARATH Payments</span></h5>
 							<div class="chart" id="swatchBharatPaymentsDivId"></div>
 						</div>
 					</div>
 					<div class="col-sm-3" >
 						<div class="white-block">
-							<h5 style="padding:5px;text-align:center;"><span class="chartTitleAlign overViewDtlsSwatchBharatMissionCls" style="cursor:pointer;">IHHL New Target</span></h5>
+							<h5 style="padding:5px;text-align:center;"><span class="chartTitleAlign overViewDtlsSwatchBharatMissionCls" style="cursor:pointer;">SWATCH BHARATH IHHL</span></h5>
 							<div class="chart" id="swatchBharatMissionDivId"></div>
 						</div>
 					</div>
