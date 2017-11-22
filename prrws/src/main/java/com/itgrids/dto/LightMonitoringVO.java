@@ -45,8 +45,68 @@ public class LightMonitoringVO implements Serializable{
 	private Long lightVendorId;
 	private String lightVendorName;
 	private List<LightMonitoringVO> subList;
+	private Long todayCount;
+	private Long todayLights = 0L;
+    private Long todayPanels = 0L;
+    private Long todayPoles = 0L ;
+    private  Long todayWorking = 0L;
+    private Long todayOn = 0L;
+    private Long todayOff = 0L;
+    private  Long todaynotWork= 0L;
+    
+    
+    public Long getTodayLights() {
+		return todayLights;
+	}
+	public void setTodayLights(Long todayLights) {
+		this.todayLights = todayLights;
+	}
+	public Long getTodayPanels() {
+		return todayPanels;
+	}
+	public void setTodayPanels(Long todayPanels) {
+		this.todayPanels = todayPanels;
+	}
+	public Long getTodayPoles() {
+		return todayPoles;
+	}
+	public void setTodayPoles(Long todayPoles) {
+		this.todayPoles = todayPoles;
+	}
+	public Long getTodayWorking() {
+		return todayWorking;
+	}
+	public void setTodayWorking(Long todayWorking) {
+		this.todayWorking = todayWorking;
+	}
+	public Long getTodayOn() {
+		return todayOn;
+	}
+	public void setTodayOn(Long todayOn) {
+		this.todayOn = todayOn;
+	}
+	public Long getTodayOff() {
+		return todayOff;
+	}
+	public void setTodayOff(Long todayOff) {
+		this.todayOff = todayOff;
+	}
+	public Long getTodaynotWork() {
+		return todaynotWork;
+	}
+	public void setTodaynotWork(Long todaynotWork) {
+		this.todaynotWork = todaynotWork;
+	}
 	
+     
+	                               
 	
+	public Long getTodayCount() {
+		return todayCount;
+	}
+	public void setTodayCount(Long todayCount) {
+		this.todayCount = todayCount;
+	}
 	private List<LightWattageVO> WattageList = new ArrayList<LightWattageVO>(0);
 
 	public List<LightWattageVO> getWattageList() {
@@ -281,6 +341,7 @@ public class LightMonitoringVO implements Serializable{
 	public void setSubList(List<LightMonitoringVO> subList) {
 		this.subList = subList;
 	}
+	
 	
 	
 }
