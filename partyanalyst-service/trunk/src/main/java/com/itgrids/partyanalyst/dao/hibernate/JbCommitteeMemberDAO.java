@@ -28,7 +28,7 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 			
 			sb.append("from JbCommitteeMember model " +
 					" left join model.tdpCadre tdpCadre " +
-					" left join tdpCadre.voter  voter " +
+					" left join model.voter  voter " +
 					" left join model.casteCategory casteCategory" +
 					" left join model.casteState casteState " +
 					" left join casteState.caste caste " +
