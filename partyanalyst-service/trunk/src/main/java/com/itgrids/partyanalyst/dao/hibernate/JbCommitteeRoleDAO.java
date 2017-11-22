@@ -36,20 +36,34 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 	 //0 committeeLeveId,1 level name,2 committeeId,3 maxMemebers
       sb.append("select model.jbCommittee.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommittee.jbCommitteeLevel.name,model.jbCommittee.jbCommitteeId,sum(model.maxMembers) ");
       if(type != null && type.equalsIgnoreCase("district")){
-			sb.append(" ,district.districtId,district.districtName ");
+			sb.append(" ,district.districtId,district.districtName,'','','','','','' ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
-			sb.append(", constituency.constituencyId,constituency.name ");
+			sb.append(", constituency.constituencyId,constituency.name,constituency.district.districtId,constituency.district.districtName,'','','','' ");
 		}else if(type.equalsIgnoreCase("parliament")){
-			sb.append("  ,parliamentConstituency.constituencyId,parliamentConstituency.name ");
-		}
+			sb.append("  ,parliamentConstituency.constituencyId,parliamentConstituency.name,'','','','','','' ");
+		}else if(type.equalsIgnoreCase("mandal")){
+			sb.append("  ,tehsil.tehsilId,tehsil.tehsilName,constituency.district.districtId,constituency.district.districtName, constituency.constituencyId,constituency.name,'','' ");
+		}else if(type.equalsIgnoreCase("panchayat")){
+			sb.append("  ,panchayat.panchayatId,panchayat.panchayatName,constituency.district.districtId,constituency.district.districtName, constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName ");
+		 }
       sb.append(" from JbCommitteeRole model ");
 
-		if(type != null && type.equalsIgnoreCase("district")){
+      if(type != null && type.equalsIgnoreCase("district")){
 			sb.append(" left join model.jbCommittee.userAddress.district district ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
 			sb.append(" left join  model.jbCommittee.userAddress.constituency constituency ");
-		}else if(type.equalsIgnoreCase("parliament")){
+		}else if(type != null && type.equalsIgnoreCase("parliament")){
 			sb.append(" left join  model.jbCommittee.userAddress.parliamentConstituency parliamentConstituency ");
+		}else if(type != null && type.equalsIgnoreCase("mandal")){
+			sb.append(" left join  model.jbCommittee.userAddress.tehsil tehsil ");
+			sb.append(" left join  model.jbCommittee.userAddress.constituency constituency ");
+		}else if(type != null && type.equalsIgnoreCase("panchayat")){
+			sb.append(" left join  model.jbCommittee.userAddress.tehsil tehsil ");
+			sb.append(" left join  model.jbCommittee.userAddress.panchayat panchayat ");
+			
+			sb.append(" left join  model.jbCommittee.userAddress.constituency constituency ");
+			
+			
 		}
 		
 		if(type != null && type.equalsIgnoreCase("district") && userAccessVals != null && userAccessVals.size() >0){
@@ -65,7 +79,11 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 			sb.append(" ,constituency.constituencyId ");
 		}else if(type.equalsIgnoreCase("parliament")){
 			sb.append(" ,parliamentConstituency.constituencyId  ");
-		}
+		}else if(type.equalsIgnoreCase("mandal")){
+			sb.append("  ,tehsil.tehsilId");
+		}else if(type.equalsIgnoreCase("panchayat")){
+			sb.append("  ,panchayat.panchayatId ");
+		 }
       Query query = getSession().createQuery(sb.toString());
       if(userAccessVals != null && userAccessVals.size() >0){
 			query.setParameterList("userAccessVals", userAccessVals);

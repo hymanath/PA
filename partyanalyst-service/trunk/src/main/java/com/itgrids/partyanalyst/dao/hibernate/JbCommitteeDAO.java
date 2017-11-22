@@ -39,12 +39,16 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		sb.append(" select model.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommitteeLevel.name,model.isCommitteeConfirmed," +
 				"model.startDate,model.completedDate,model.jbCommitteeId " );
 		if(type != null && type.equalsIgnoreCase("district")){
-			sb.append(" ,district.districtId,district.districtName ");
+			sb.append(" ,district.districtId,district.districtName,'','','','','','' ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
-			sb.append(", constituency.constituencyId,constituency.name ");
+			sb.append(", constituency.constituencyId,constituency.name,constituency.district.districtId,constituency.district.districtName,'','','','' ");
 		}else if(type.equalsIgnoreCase("parliament")){
-			sb.append("  ,parliamentConstituency.constituencyId,parliamentConstituency.name ");
-		}
+			sb.append("  ,parliamentConstituency.constituencyId,parliamentConstituency.name,'','','','','','' ");
+		}else if(type.equalsIgnoreCase("mandal")){
+			sb.append("  ,tehsil.tehsilId,tehsil.tehsilName,constituency.district.districtId,constituency.district.districtName, constituency.constituencyId,constituency.name,'','' ");
+		}else if(type.equalsIgnoreCase("panchayat")){
+			sb.append("  ,panchayat.panchayatId,panchayat.panchayatName,constituency.district.districtId,constituency.district.districtName, constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName ");
+		 }
 		
 		sb.append(" from  JbCommittee model   ");
 		
@@ -52,8 +56,18 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 			sb.append(" left join model.userAddress.district district ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
 			sb.append(" left join  model.userAddress.constituency constituency ");
-		}else if(type.equalsIgnoreCase("parliament")){
+		}else if(type != null && type.equalsIgnoreCase("parliament")){
 			sb.append(" left join  model.userAddress.parliamentConstituency parliamentConstituency ");
+		}else if(type != null && type.equalsIgnoreCase("mandal")){
+			sb.append(" left join  model.userAddress.tehsil tehsil ");
+			sb.append(" left join  model.userAddress.constituency constituency ");
+		}else if(type != null && type.equalsIgnoreCase("panchayat")){
+			sb.append(" left join  model.userAddress.tehsil tehsil ");
+			sb.append(" left join  model.userAddress.panchayat panchayat ");
+		
+			sb.append(" left join  model.userAddress.constituency constituency ");
+		
+			
 		}
 		sb.append(" where model.isDeleted = 'N' ");
 		
