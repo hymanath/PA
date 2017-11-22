@@ -1816,7 +1816,7 @@
 							<div class="col-md-6 col-xs-12 col-sm-12" expand-block-right="meetings" style="display:none">
 								<div class="row">
 									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-										<ul class="activeUlCls list-inline ">
+										<ul class="activeUlCls list-inline meetingFilterCls">
 											<li class="meetingLiCls active" attr_value="strong">top 5 strong</li>
 											<li class="meetingLiCls" attr_value="poor">last 5 poor</li>
 										</ul>
@@ -4999,6 +4999,8 @@ $("[expand-icon]").click(function(){
 			$(".stateLevelMeetingBlock").show();
 			$(".showMoreBlockCls").show();
 			$(".dateRangePickerClsForMeetings").removeClass("hide");
+			$(".meetingFilterCls li").removeClass("active");
+		    $(".meetingFilterCls li:first-child").addClass("active");
 			//$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
 			$(".meetingsRefresh").attr("attr_refresh_status","true");
 			$(".meetingsRefresh").attr("attr_meeting_type","committeeMeeting");
