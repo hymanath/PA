@@ -203,9 +203,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 				if(jbCommitteeConfirmRuleId != null && jbCommitteeConfirmRuleId.longValue() > 0l){
 					categories = jbCommitteeConfirmRuleConditionDAO.getCasteCategoryMinMembersForCommittee(jbCommitteeConfirmRuleId);
 				}
-				
+				Map<String,Long> ctegories = null;
 				if(commonMethodsUtilService.isListOrSetValid(categories)){
-					Map<String,Long> ctegories = new HashMap<String,Long>();
+					ctegories = new HashMap<String,Long>();
 					for (Object[] objects : categories) {
 						Long minMembrs = ctegories.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
 						if(minMembrs == null)
@@ -247,6 +247,20 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						}
 					}
 				}
+				
+				if(ctegories !=null && ctegories.size() >0){
+					for(Entry<String, Long>  entrySet : ctegories.entrySet()){
+						Long addedMemeCount = addedMemCategory.get(entrySet.getKey());
+						if(addedMemeCount != null && entrySet.getValue().longValue() <= addedMemeCount.longValue()){
+							setCasteStatusToVO(committeeVO,entrySet.getKey(),"contains");
+						}else{
+							setCasteStatusToVO(committeeVO,entrySet.getKey(),"notContains");
+						}
+					}
+				}
+				if(committeeVO.getNotAddedMemberCount().longValue() ==0l)
+					committeeVO.setNotAddedMemberCount(committeeVO.getRoleMemberCount());
+				
 				committeeVO = setStatusToVO(committeId,committeeVO);
 			} catch (Exception e) {
 				LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmabhoomiCommitteeService ",e);
@@ -254,6 +268,17 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			return committeeVO;
 		}
 
+	public void setCasteStatusToVO(JanmabhoomiCommitteeMemberVO committeeVO,String casteName,String status){
+		if(casteName.equalsIgnoreCase("OC")){
+			committeeVO.setOcType(status);
+		}else if(casteName.equalsIgnoreCase("BC")){
+			committeeVO.setBcType(status);
+		}else if(casteName.equalsIgnoreCase("SC")){
+			committeeVO.setScType(status);
+		}else if(casteName.equalsIgnoreCase("ST")){
+			committeeVO.setStType(status);
+		}
+	}
 		public ICadreRegistrationService getCadreRegistrationService() {
 		return cadreRegistrationService;
 	}
@@ -495,6 +520,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					if(locVO == null){
 						 locVO = new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[6]),commonMethodsUtilService.getStringValueForObject(param[7]));
 						 locVO.setList(setCommitteeLevels(committeeLvls));
+						 setlocationLevelsToVO(locVO,param,type);
 						 if(commonMethodsUtilService.getLongValueForObject(param[6]) >0l)
 						locationMapsWithLevel.put(commonMethodsUtilService.getLongValueForObject(param[6]), locVO);
 					}
@@ -548,7 +574,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						if(loclevelVO != null){
 						levelVO.setInprogressCommitteeCnt(levelVO.getInprogressCommitteeCnt()+loclevelVO.getAddedMemberCount());
 						levelVO.setReadyForApprovelCommitteeCnt(levelVO.getReadyForApprovelCommitteeCnt()+loclevelVO.getRoleMemberCount());
-						}
+					  }
 					}
 				}
 				
@@ -1039,6 +1065,42 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		     return committeeVO;
 		  }
 		  return committeeVO;
+	}
+	
+	public void setlocationLevelsToVO(JanmabhoomiCommitteeVO locVO,Object[] param,String type){
+		int i=8;
+		if(type != null && !type.equalsIgnoreCase("district") && !type.equalsIgnoreCase("parliament")){
+			if(param[i] !=null){
+				locVO.setDistrictId(!param[i].toString().isEmpty()?commonMethodsUtilService.getLongValueForObject(param[i]):null);
+				i++;
+				locVO.setDistrictName(!param[i].toString().isEmpty()?commonMethodsUtilService.getStringValueForObject(param[i]):null);
+				i++;
+			}
+		}
+		if(type != null && !type.equalsIgnoreCase("constituency")){
+			if(param[i] !=null){
+				locVO.setConstituencyId(!param[i].toString().isEmpty()?commonMethodsUtilService.getLongValueForObject(param[i]):null);
+				i++;
+				locVO.setConstituencyName(!param[i].toString().isEmpty()?commonMethodsUtilService.getStringValueForObject(param[i]):null);
+				i++;
+			}
+		}
+		if(type != null && !type.equalsIgnoreCase("mandal")){
+		 if(param[i] !=null){
+				locVO.setMandalId(!param[i].toString().isEmpty()?commonMethodsUtilService.getLongValueForObject(param[i]):null);
+				i++;
+				locVO.setMandalName(!param[i].toString().isEmpty()?commonMethodsUtilService.getStringValueForObject(param[i]):null);
+				i++;
+		  }
+		}
+		if(type != null && !type.equalsIgnoreCase("panchayat")){
+			if(param[i] !=null){
+				locVO.setPanchayatId(!param[i].toString().isEmpty()?commonMethodsUtilService.getLongValueForObject(param[i]):null);
+				i++;
+				locVO.setPanchayatName(!param[i].toString().isEmpty()?commonMethodsUtilService.getStringValueForObject(param[i]):null);
+				i++;
+			}
+		}
 	}
 }
 
