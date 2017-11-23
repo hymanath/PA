@@ -205,6 +205,21 @@ $(document).on("click",".electionTypeWiseStrongCls",function(){
 		$("#searchLevelId").addClass("addSearchValCls")
 		$(".searchLevelCls").show();
 	}
+	$(".electionTypeWiseStrongCls").each(function (){
+			if ($(this).is(':checked')){
+				var value=$(this).val();
+				if(value == 3 || value == 4){//kkb
+					$("#eleCompareByeRadioId").hide();
+					$("#eleCompareAlinceDivId").hide();
+					$("#allainceStatusPartyFieldId").prop("checked",false);
+				}else{
+					$("#eleCompareByeRadioId").show();
+					$("#eleCompareAlinceDivId").show();
+					$("#allainceStatusPartyFieldId").prop("checked",true);
+				}
+			}
+		
+	});;
 });
 $(document).on("click",".electionTypeWiseCrossCls",function(){
 	var value = $(this).val();
