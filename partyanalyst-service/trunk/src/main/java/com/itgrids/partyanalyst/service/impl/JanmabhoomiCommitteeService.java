@@ -183,6 +183,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 				 //0 jbCommitteeRoleId,1 jbMemberTypeId,2 memberType, 3 maxMembers,4 jbCommitteeConfirmRuleId
 				   //5 districtId,6 districtName,7 constituencyId,8 constituencyName,9 parliamentConstituencyId, 10 parliamentConstituencyName,
 				   //11 mandalId,12 mandalName,13 panchayatId,14 panchayatName,15 localElectionBodyId,16 localElectionBodyName,17 wardId,18 wardName
+				//19 publicRepresentativeTypeId,20 jbCommitteeLevelId,21 jbCommitteeLevelValue,22 stateId,23 stateName
 				Long jbCommitteeConfirmRuleId = 0l;
 	            List<Long> committeeRoleIdsList=new ArrayList<Long>();
 				if(designationsobjList!=null && designationsobjList.size() >0){
@@ -216,6 +217,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 							committeeVO.setLocalElectionBodyName(param[16]!=null ?commonMethodsUtilService.getStringValueForObject(param[16]):null);
 							committeeVO.setWardId(param[17]!=null?'2'+commonMethodsUtilService.getLongValueForObject(param[17]):null);
 							committeeVO.setWardName(param[18]!=null ?commonMethodsUtilService.getStringValueForObject(param[18]):null);
+							committeeVO.setStateId(param[22]!=null?commonMethodsUtilService.getLongValueForObject(param[22]):null);
+							committeeVO.setStateName(param[23]!=null ?commonMethodsUtilService.getStringValueForObject(param[23]):null);
+							
 						}
 					}
 					
