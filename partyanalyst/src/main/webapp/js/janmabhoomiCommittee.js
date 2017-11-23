@@ -1399,6 +1399,7 @@ function savingApplication(committeeId,statusType){
 				str+='</div>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.voterId" value="'+voterId+'"/>';
+				if(memberId != null && memberId>0)
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+tdpCadreId+'"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
