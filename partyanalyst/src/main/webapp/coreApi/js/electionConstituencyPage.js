@@ -65,7 +65,7 @@ function onLoadCalls()
 	}
 	if(locationLevelId == '3'){
 		$("#searchLevelId").html('');
-		$("#searchLevelId").append('<option value="constituency">Constituency</option>');
+		$("#searchLevelId").append('<option value="constituency">Assembly</option>');
 		$("#searchLevelId").append('<option value="mandal">Mandal</option>');
 		$("#searchLevelId").trigger("chosen:updated");
 	}else if(locationLevelId == '4'){
@@ -194,8 +194,7 @@ $(document).on("click",".electionTypeWiseStrongCls",function(){
 		}else{
 			$("#searchLevelId").html('');
 			$("#searchLevelId").append('<option value="district">District</option>');	
-			$("#searchLevelId").append('<option value="constituency">Constituency</option>');	
-			$("#searchLevelId").append('<option value="parliament">Parliament</option>');	
+			$("#searchLevelId").append('<option value="constituency">Assembly</option>');	
 			$("#searchLevelId").trigger("chosen:updated");
 		}
 	}
