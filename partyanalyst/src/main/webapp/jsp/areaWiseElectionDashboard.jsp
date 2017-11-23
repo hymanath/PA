@@ -148,7 +148,7 @@
 								<label class="radio-inline">
 								  <input type="radio" id="mainId1" value="MAIN" name="optionsRadios" class="electionSubTypeCls" checked attr_type="strong">Main Election
 								</label>
-								<label class="radio-inline">
+								<label class="radio-inline" id="eleCompareByeRadioId">
 								  <input type="radio" id="byeId1" value="BYE" name="optionsRadios"  class="electionSubTypeCls" attr_type="strong">By Election
 								</label>
 							</div>
@@ -178,7 +178,7 @@
 									<option value="constituency">Assembly</option>
 								</select>
 							</div>
-							<div class="col-sm-2 m_top20">
+							<div class="col-sm-2 m_top20" id="eleCompareAlinceDivId">
 								<input value ="true" type="checkbox" name="allianceParty" id="allainceStatusPartyFieldId" class="checkedMainByeType alliancePartyCls" checked  attr_type="strong" /><span class="f-12">WITH ALLAINCE</span>
 							</div>
 						</div>
