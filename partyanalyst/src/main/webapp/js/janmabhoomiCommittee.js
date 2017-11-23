@@ -478,7 +478,7 @@ mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,m
 				str+='<span id="statesDivIdImg"><img src="images/search.gif" style="display:none;"/></span>';
 				str+='<select id="statesDivId" class="chosen-select">';
 					str+='<option value="0">All</option>';
-					str+='<option value="1">Andhra Pradesh</option>';
+					str+='<option value="1" selected>Andhra Pradesh</option>';
 					//str+='<option value="36">Telangana</option>';
 				str+='</select>';
 			str+='</div>';
@@ -584,6 +584,9 @@ mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,m
 	}
 	$("#memberAddEditPopUpDetailsId").html(str);
 	$(".chosen-select").chosen();
+	if(type == "proposal"){
+		getDistrictsForStates(stateId,"statesDivId");
+	}
 	//$("#searchval").chosen();
 }
 
@@ -647,10 +650,11 @@ function getDistrictsForStates(stateId,id){
 				if(result[i].id == 0){
 					//$("#districtId").append('<option value='+result[i].id+'>ALL</option>');
 				}else{
-					if(committeeDist != null && committeeDist == result[i].id){
-				   $("#districtId").append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
-					}else {
-						 $("#districtId").append('<option value='+result[i].id+' >'+result[i].name+'</option>');
+					if(committeeDist == "null"){
+						$("#districtId").append('<option value='+result[i].id+' >'+result[i].name+'</option>');
+					}
+					else if(committeeDist == result[i].id){
+					    $("#districtId").append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
 					} 
 				}
 			 }
@@ -698,10 +702,11 @@ function getDistrictsForStates(stateId,id){
 				if(result[i].id == 0){
 					//$("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
 				}else{
-					if(committeeConst != null && committeeConst == result[i].id){
-				   $("#constituencyId").append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
-					} else {
+					if(committeeConst == "null"){
 						$("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					}
+					else if(committeeConst == result[i].id){
+					   $("#constituencyId").append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
 					} 
 				}
 			 }
@@ -743,10 +748,11 @@ function getDistrictsForStates(stateId,id){
 				if(result[i].id == 0){
 					//$("#mandalList").append('<option value='+result[i].locationId+'>ALL</option>');
 				}else{
-					if(committeeMandal !=null && committeeMandal == result[i].locationId){
-				   $("#mandalList").append('<option value='+result[i].locationId+' selected>'+result[i].locationName+'</option>');
-					} else{
-						 $("#mandalList").append('<option value='+result[i].locationId+' >'+result[i].locationName+'</option>');
+					if(committeeMandal == "null"){
+						$("#mandalList").append('<option value='+result[i].locationId+' >'+result[i].locationName+'</option>');
+					}
+					else if(committeeMandal == result[i].locationId){
+					   $("#mandalList").append('<option value='+result[i].locationId+' selected>'+result[i].locationName+'</option>');
 					} 
 				}
 			 }
@@ -785,17 +791,18 @@ function getDistrictsForStates(stateId,id){
 				$("#panchaytList").empty();
 			}
 			for(var i in result){
-				if(committeePanchayat != null && committeePanchayat == result[i].locationId){
-				 $("#panchaytList").append('<option value='+result[i].locationId+' selected>'+result[i].locationName+'</option>');
-				}else{
+				if(committeePanchayat == "null"){
 					$("#panchaytList").append('<option value='+result[i].locationId+' >'+result[i].locationName+'</option>');
+				}
+				else if(committeePanchayat == result[i].locationId){
+				  $("#panchaytList").append('<option value='+result[i].locationId+' selected>'+result[i].locationName+'</option>');
 				} 
 			 }
 			 $("#panchaytList").trigger("chosen:updated") 
 		}
 	});
   }
-  $(document).on("change",".searchTypeCls",function(){
+ /* $(document).on("change",".searchTypeCls",function(){
 	  $("#searchErrDiv").html('');
 	  $("#searchValue").val('');
 	  $("#statesDivId").val(0).trigger("chosen:updated");
@@ -811,7 +818,7 @@ function getDistrictsForStates(stateId,id){
 			$("#constituencyId").trigger("chosen:updated");
 			$("#mandalList").trigger("chosen:updated");
 			$("#panchaytList").trigger("chosen:updated");
-}) ;
+}) ;*/
 $(document).on("click","#clickSearchbutton",function(){
 	$("#searchErrDiv").html('');
 	var voterMembershipVal = $("#searchValue").val();
@@ -905,10 +912,11 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 		}if(mandalId ==null || mandalId.length ==0 ||mandalId =="undefined" || mandalId ==0){
 		$("#searchErrDiv").html("Please Select Mandal");
 		return;
-		}if(panchayatId ==null || panchayatId.length ==0 ||panchayatId =="undefined" || panchayatId ==0){
+		}
+		/*if(panchayatId ==null || panchayatId.length ==0 ||panchayatId =="undefined" || panchayatId ==0){
 		$("#searchErrDiv").html("Please Select Panchayat");
 		return;
-		}
+		}*/
 		if(voterCardNo ==null || voterCardNo.length ==0 ||voterCardNo =="undefined" || voterCardNo ==0){
 		$("#searchErrDiv").html("Please Enter Voter CardNo");
 		return;
