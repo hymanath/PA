@@ -50,6 +50,8 @@ private Long levelId;
 private Long levelValue;
 private Long publicRepresentativeTypeId;
 
+private Long stateId;
+private String stateName;
 private Long districtId;
 private String districtName;
 private Long constituencyId;
@@ -389,6 +391,18 @@ public String getWardName() {
 }
 public void setWardName(String wardName) {
 	this.wardName = wardName;
+}
+public Long getStateId() {
+	return stateId;
+}
+public void setStateId(Long stateId) {
+	this.stateId = stateId;
+}
+public String getStateName() {
+	return stateName;
+}
+public void setStateName(String stateName) {
+	this.stateName = stateName;
 }
 
 public Long getLevelId() {

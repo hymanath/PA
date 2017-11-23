@@ -23,6 +23,7 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 	   //0 jbCommitteeRoleId,1 jbMemberTypeId,2 memberType, 3 maxMembers,4 jbCommitteeConfirmRuleId
 	   //5 districtId,6 districtName,7 constituencyId,8 constituencyName,9 parliamentConstituencyId, 10 parliamentConstituencyName,
 	   //11 mandalId,12 mandalName,13 panchayatId,14 panchayatName,15 localElectionBodyId,16 localElectionBodyName,17 wardId,18 wardName
+	  //19 publicRepresentativeTypeId,20 jbCommitteeLevelId,21 jbCommitteeLevelValue,22 stateId,23 stateName
 		sb.append("SELECT model.jbCommitteeRoleId,model.jbMemberType.jbMemberTypeId,model.jbMemberType.memberType,model.maxMembers ," +
 				" model.jbCommittee.jbCommitteeConfirmRuleId ");
 		sb.append(" ,district.districtId,district.districtName, constituency.constituencyId,constituency.name ");
@@ -30,8 +31,9 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 		sb.append("  ,tehsil.tehsilId,tehsil.tehsilName ");
 		sb.append("  ,panchayat.panchayatId,panchayat.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name " +
 				",ward.constituencyId,ward.name ,publicRepresentativeType.publicRepresentativeTypeId" +
-				",model.jbCommittee.jbCommitteeLevelId,model.jbCommittee.jbCommitteeLevelValue ");
+				",model.jbCommittee.jbCommitteeLevelId,model.jbCommittee.jbCommitteeLevelValue,state.stateId,state.stateName  ");
 		sb.append(" from JbCommitteeRole model left join model.jbMemberType.publicRepresentativeType publicRepresentativeType ");
+		sb.append(" left join  model.jbCommittee.userAddress.state state ");
 		sb.append(" left join  model.jbCommittee.userAddress.district district ");
 		sb.append(" left join  model.jbCommittee.userAddress.constituency constituency ");
 		sb.append(" left join  model.jbCommittee.userAddress.parliamentConstituency parliamentConstituency ");
