@@ -53,7 +53,10 @@ public class LightMonitoringVO implements Serializable{
     private Long todayOn = 0L;
     private Long todayOff = 0L;
     private  Long todaynotWork= 0L;
-    
+    private Long nredcapTodayLights=0L;
+    private Long nredcapTodayPanels=0L;
+    private Long eeslTodayLights=0L;
+    private Long eeslTodayPanels=0L;
     
     public Long getTodayLights() {
 		return todayLights;
@@ -340,6 +343,30 @@ public class LightMonitoringVO implements Serializable{
 	}
 	public void setSubList(List<LightMonitoringVO> subList) {
 		this.subList = subList;
+	}
+	public Long getNredcapTodayLights() {
+		return nredcapTodayLights;
+	}
+	public void setNredcapTodayLights(Long nredcapTodayLights) {
+		this.nredcapTodayLights = nredcapTodayLights;
+	}
+	public Long getNredcapTodayPanels() {
+		return nredcapTodayPanels;
+	}
+	public void setNredcapTodayPanels(Long nredcapTodayPanels) {
+		this.nredcapTodayPanels = nredcapTodayPanels;
+	}
+	public Long getEeslTodayLights() {
+		return eeslTodayLights;
+	}
+	public void setEeslTodayLights(Long eeslTodayLights) {
+		this.eeslTodayLights = eeslTodayLights;
+	}
+	public Long getEeslTodayPanels() {
+		return eeslTodayPanels;
+	}
+	public void setEeslTodayPanels(Long eeslTodayPanels) {
+		this.eeslTodayPanels = eeslTodayPanels;
 	}
 	
 	
