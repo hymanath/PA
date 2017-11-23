@@ -46,6 +46,9 @@ private String scType;
 private String stType;
 private String ocType;
 private String voterCardNo;
+private Long levelId;
+private Long levelValue;
+private Long publicRepresentativeTypeId;
 
 private Long districtId;
 private String districtName;
@@ -61,6 +64,12 @@ private Long localElectionBodyId;
 private String localElectionBodyName;
 private Long wardId;
 private String wardName;
+public Long getPublicRepresentativeTypeId() {
+	return publicRepresentativeTypeId;
+}
+public void setPublicRepresentativeTypeId(Long publicRepresentativeTypeId) {
+	this.publicRepresentativeTypeId = publicRepresentativeTypeId;
+}
 public String getBcType() {
 	return bcType;
 }
@@ -296,6 +305,7 @@ public String getOcType() {
 public void setOcType(String ocType) {
 	this.ocType = ocType;
 }
+
 public Long getDistrictId() {
 	return districtId;
 }
@@ -379,6 +389,19 @@ public String getWardName() {
 }
 public void setWardName(String wardName) {
 	this.wardName = wardName;
+}
+
+public Long getLevelId() {
+	return levelId;
+}
+public void setLevelId(Long levelId) {
+	this.levelId = levelId;
+}
+public Long getLevelValue() {
+	return levelValue;
+}
+public void setLevelValue(Long levelValue) {
+	this.levelValue = levelValue;
 }
 
 

@@ -33,8 +33,8 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 					" left join model.casteState casteState " +
 					" left join casteState.caste caste " +
 					"left join model.party party ");
-			sb.append("where ");
-			sb.append(" model.jbCommitteeRole.jbCommitteeRoleId in(:roleIdsList) ");
+			if(roleIdsList != null && roleIdsList.size() >0)
+			sb.append(" where model.jbCommitteeRole.jbCommitteeRoleId in(:roleIdsList) ");
 			
 			if(fromDate !=null && toDate !=null){
 			sb.append("and (date(model.startDate) between :startDate and  :endDate ) ");
@@ -42,11 +42,12 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 			
 			Query query = getSession().createQuery(sb.toString());
 			
-			query.setParameterList("roleIdsList", roleIdsList);
 			if(fromDate !=null && toDate !=null){
 		   		query.setDate("startDate", fromDate);
 		   		query.setDate("endDate", toDate);
 		   	}
+			if(roleIdsList != null && roleIdsList.size() >0)
+				query.setParameterList("roleIdsList", roleIdsList);
 			return query.list();
 	 }
 	 

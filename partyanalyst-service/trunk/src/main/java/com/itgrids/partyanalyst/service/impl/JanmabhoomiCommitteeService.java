@@ -190,12 +190,15 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						jbCommitteeConfirmRuleId = commonMethodsUtilService.getLongValueForObject(param[4]);
 						committeeRoleIdsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
 						Long designationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						committeeVO.setLevelId(commonMethodsUtilService.getLongValueForObject(param[20]));
+						committeeVO.setLevelValue(commonMethodsUtilService.getLongValueForObject(param[21]));
 						JanmabhoomiCommitteeMemberVO designationVO = designationVOMap.get(designationId);
 						if(designationVO == null){
 							designationVO = new JanmabhoomiCommitteeMemberVO();
 							designationVO.setDesignationId(designationId);
 							designationVO.setRoleMemberCount(commonMethodsUtilService.getLongValueForObject(param[3]));
 							designationVO.setDesignationName(commonMethodsUtilService.getStringValueForObject(param[2]));
+							designationVO.setPublicRepresentativeTypeId(commonMethodsUtilService.getLongValueForObject(param[19]));
 							committeeVO.setRoleMemberCount(designationVO.getRoleMemberCount()+committeeVO.getRoleMemberCount());
 							designationVOMap.put(designationId, designationVO);
 							
@@ -581,6 +584,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			if(commonMethodsUtilService.isMapValid(locationMapsWithLevel) && commonMethodsUtilService.isMapValid(locLevelMap)){
 				for (Entry<Long, JanmabhoomiCommitteeVO> entry:locationMapsWithLevel.entrySet()) {
 					Map<Long ,JanmabhoomiCommitteeMemberVO> levelMap = locLevelMap.get(entry.getKey());
+					if(commonMethodsUtilService.isMapValid(levelMap)){
 					JanmabhoomiCommitteeVO locVO = entry.getValue();
 					JanmabhoomiCommitteeMemberVO distLevlVO = levelMap.get(1l);
 					if(distLevlVO != null){
@@ -596,6 +600,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						levelVO.setInprogressCommitteeCnt(levelVO.getInprogressCommitteeCnt()+loclevelVO.getAddedMemberCount());
 						levelVO.setReadyForApprovelCommitteeCnt(levelVO.getReadyForApprovelCommitteeCnt()+loclevelVO.getRoleMemberCount());
 					  }
+					}
 					}
 				}
 				
