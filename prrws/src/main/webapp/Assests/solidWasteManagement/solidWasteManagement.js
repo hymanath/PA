@@ -10,6 +10,13 @@ function onLoadCalls()
 	levelWiseOverview();
 	getSolidWasteManagementOverAllCounts(3,19);
 }
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
 $(document).keydown(function(event){
 	if(event.keyCode==123){
 		alert("Hoo no! don't try to expose me");
