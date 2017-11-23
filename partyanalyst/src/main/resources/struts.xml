@@ -13645,7 +13645,7 @@
    			<param name="root">codeDebateVoList</param>
    		</result>
 	</action>
-	
+
 	<action name="getSpokesPersonWiseDebateAction" class="coreDashboardAction" method="getSpokesPersonWiseDebate">
 		<result type="json" name="success">
    			<param name="root">codeDebateVoList</param>
@@ -18506,5 +18506,16 @@
 			<param name="root">resultStatus</param>       
 		</result>
   	</action>
+  	<action name="getDebateDesignationWiseTotalDebateDetailsAction" class="coreDashboardAction" method="getDebateDesignationWiseTotalDebateDetails">
+		<result type="json" name="success">
+   			<param name="root">codeDebateVoList</param>
+   		</result>
+	</action>
+	<action name="getDesignationWiseCandidateOverAllPerformanceCohortAction" class="coreDashboardAction" method="getDesignationWiseCandidateOverAllPerformanceCohort">
+		<result type="json" name="success">
+   			<param name="root">codeDebateVoList</param>
+   		</result>
+	</action>
+	
  </package>
 </struts>

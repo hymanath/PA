@@ -3853,7 +3853,7 @@
 	  	<property name="trainingCampBatchAttendeeDAO"  ref="trainingCampBatchAttendeeDAO"></property> 
 	  	<property name="publicRepresentativeTypeDAO"  ref="publicRepresentativeTypeDAO"></property>  
 	  	<property name="trainingCampScheduleDAO" ref="trainingCampScheduleDAO" /> 
-	  	   
+	  	<property name="publicRepresentativeDAO" ref="publicRepresentativeDAO" /> 
 	  <!-- Debate -->
 	  <property name="debateParticipantDAO"  ref="debateParticipantDAO"></property>
 	  <property name="debateParticipantCharcsDAO"  ref="debateParticipantCharcsDAO"></property>	  
