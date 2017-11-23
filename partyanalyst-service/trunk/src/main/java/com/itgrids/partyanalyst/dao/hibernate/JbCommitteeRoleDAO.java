@@ -20,10 +20,24 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 	
  public List<Object[]> getDesignationsIdsByCommitteeId(Long committeeId){
 	 StringBuilder sb = new StringBuilder();
-	   //0 jbCommitteeRoleId,1 jbMemberTypeId,2 memberType, 3 maxMembers
+	   //0 jbCommitteeRoleId,1 jbMemberTypeId,2 memberType, 3 maxMembers,4 jbCommitteeConfirmRuleId
+	   //5 districtId,6 districtName,7 constituencyId,8 constituencyName,9 parliamentConstituencyId, 10 parliamentConstituencyName,
+	   //11 mandalId,12 mandalName,13 panchayatId,14 panchayatName,15 localElectionBodyId,16 localElectionBodyName,17 wardId,18 wardName
 		sb.append("SELECT model.jbCommitteeRoleId,model.jbMemberType.jbMemberTypeId,model.jbMemberType.memberType,model.maxMembers ," +
 				" model.jbCommittee.jbCommitteeConfirmRuleId ");
+		sb.append(" ,district.districtId,district.districtName, constituency.constituencyId,constituency.name ");
+		sb.append("  ,parliamentConstituency.constituencyId,parliamentConstituency.name ");
+		sb.append("  ,tehsil.tehsilId,tehsil.tehsilName ");
+		sb.append("  ,panchayat.panchayatId,panchayat.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name " +
+				",ward.constituencyId,ward.name ");
 		sb.append("from JbCommitteeRole model ");
+		sb.append(" left join  model.jbCommittee.userAddress.district district ");
+		sb.append(" left join  model.jbCommittee.userAddress.constituency constituency ");
+		sb.append(" left join  model.jbCommittee.userAddress.parliamentConstituency parliamentConstituency ");
+		sb.append(" left join  model.jbCommittee.userAddress.localElectionBody localElectionBody ");
+		sb.append(" left join  model.jbCommittee.userAddress.tehsil tehsil ");
+		sb.append(" left join  model.jbCommittee.userAddress.panchayat panchayat ");
+		sb.append(" left join  model.jbCommittee.userAddress.ward ward ");
 		sb.append("where model.jbCommittee.jbCommitteeId =:committeeId and model.jbCommittee.jbCommitteeId.isDeleted ='N' ");
 		
 		Query query = getSession().createQuery(sb.toString());
