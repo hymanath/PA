@@ -43,21 +43,24 @@ public interface IDebateParticipantDAO extends GenericDao<DebateParticipant, Lon
 	public List<Object[]> getTotalDabtesCountsForEachCandidateNew(Date fromDate , Date toDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
 	public List<Object[]> getChannelWiseDebateDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
 	public List<Object[]> getDebatesCountOfCandidate(Date startDate,Date endDate,List<Long> roles,String state);
-	public List<Object[]> getPartyWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId);
+	public List<Object[]> getPartyWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId);
 	public Long getTotalAttendedDebatesOfCadreNew(Long tdpCadreId);
-	public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,List<Long> candidateIds,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId);
+	public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,List<Long> candidateIds,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId);
 	public List<Integer> getDebateParticipantId(Long debateId);
 	public List<Object[]> getPartyWiseDebateOtherDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
 	public List<Object[]> getChannelWiseOthersDebateDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
-	public List<Object[]> getPartyWiseOthersDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId);
+	public List<Object[]> getPartyWiseOthersDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId);
 	public List<Object[]> getPartyWiseDebateParticipantOtherDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList );
 	public List<Object[]> getPartyWiseDebateParticipantDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
-	public List<Object[]> getPartyAndCandidateWiseOthersDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,List<Long> candidateIds,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId);
+	public List<Object[]> getPartyAndCandidateWiseOthersDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,List<Long> candidateIds,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId);
 	public List<Object[]> getTotalDabtesCountsForEachOtherCandidateNew(Date fromDate , Date toDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
 	public List<Object[]> getTotalDabtesCountsForEachCandidateOthersNew(Date fromDate , Date toDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
 	public List<Object[]> getPartyWiseDebateParticipantStateOtherDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList );
 	public List<Object[]> getPartyWiseStateDebateParticipantDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
 	public List<Object[]> getPartyWiseDebateParticipantsOtherDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
 	public List<Object[]> getPartyWiseDebatePartipantDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
+	public List<Object[]> getDesignationWiseDebateDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList);
+	public List<Object[]> getDesignationWiseDebateParticipantDetails(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
+	public List<Object[]> getTotalDesignationsWiseDabtesCountsForEachCandidateNew(Date fromDate , Date toDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
 
 }

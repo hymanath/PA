@@ -19,4 +19,5 @@ public interface IPublicRepresentativeDAO extends GenericDao<PublicRepresentativ
 	public List<Object[]> getPartyLeadersDeatails(Long stateId, List<Long> enrollmentIdsList, Long levelId,List<Long> locationIdsList,List<Long> designationIdsList,int firstIndex,int maxIndex,String fetchTypeStr);
 	public List<Object[]> getLocationWiseCandidateDesignations(List<Long> condidateIds);
 	public List<Object[]> getStateWiseCandidateDesignations(Long locationValue,Long locationTypeId,List<Long> representativTypeIds);
+	public List<Object[]> getParticipantsCandidateDesgnination(List<Long> candidateIdsList);
 }
