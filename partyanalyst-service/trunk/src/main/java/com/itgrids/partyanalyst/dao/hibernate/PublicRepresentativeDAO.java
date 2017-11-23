@@ -501,4 +501,21 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getParticipantsCandidateDesgnination(List<Long> candidateIdsList)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.candidate.candidateId,model.publicRepresentativeType.publicRepresentativeTypeId,"+
+				" model.publicRepresentativeType.type,model.candidate.lastname ");
+		queryStr.append("  from PublicRepresentative model");
+		if(candidateIdsList != null && candidateIdsList.size()>0l){
+		queryStr.append(" where model.candidateId in (:candidateIdsList) ");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		if(candidateIdsList != null && candidateIdsList.size()>0l){
+		query.setParameterList("candidateIdsList", candidateIdsList);
+		}
+		
+		return query.list();
+	}
  }

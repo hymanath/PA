@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CoreDebateVO implements Serializable {
@@ -29,9 +28,12 @@ public class CoreDebateVO implements Serializable {
 	private String observerName;
 	private Long debateLocationId;
 	private String debateLocation;
-	private List<CoreDebateVO> coreDebateVOList ;
+	private List<CoreDebateVO> coreDebateVOList;
 	private Long debatesCount=0l;
-	private Double scalesCount=0.00;;
+	private Double scalesCount=0.00;
+	private String candidateDesignation;
+	private Long designationId;
+	private String partyName;
 	
 	public Long getId() {
 		return id;
@@ -177,8 +179,23 @@ public class CoreDebateVO implements Serializable {
 	public void setScalesCount(Double scalesCount) {
 		this.scalesCount = scalesCount;
 	}
-	
-	
-	
+	public String getCandidateDesignation() {
+		return candidateDesignation;
+	}
+	public void setCandidateDesignation(String candidateDesignation) {
+		this.candidateDesignation = candidateDesignation;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	public String getPartyName() {
+		return partyName;
+	}
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
 	
 }
