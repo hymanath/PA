@@ -178,15 +178,16 @@
 		<div class="container-fluid padding_10">
 				<div class="row">
                     <div class="col-sm-3">
-						<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
+						<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span><span class="" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-left: 10px" id="statePopupClick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="LED PROGRESS" attr_click="stateclick">&#9432;</span></h4>
 						<div class="multi-level-selection-menu arrow_box_top"></div>
 					</div>
 					<div class="col-sm-6">
-						<ul class="list-inline pull-right led-list">
+						<ul class="list-inline led-list pull-right">
 							<li><span class="ledColorView"></span>LED WATTAGE</li>
 							<li><span class="nonLedColorView"></span>NON-LED WATTAGE</li>
 						</ul>
 					</div>
+					
 					<div class="col-sm-3">
 					<!--<span style="color:green;display:none;font-size:16px;" id="webServiceMessageStatusId">Please wait data is being process from live server,Then page will refresh...</span>-->
                         <ul class="list-inline pull-right sub-menu">
@@ -238,18 +239,24 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	    <h4 class="modal-title text-capital" id="surveryStartedLocHeadingId" style="text-align: center; font-weight: bold;background-color:"></h4> 
+		<div class="col-sm-11">
+			<h4 class="modal-title text-capital" id="surveryStartedLocHeadingId" style="text-align:center;font-weight: bold"></h4> 
+		</div>
+		
+	    
+		 </div>
       <div class="modal-body">
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 			<div id="surveyStartedLocationDtlsDivId"></div> 
+			<div id="statewiseVendorDetails"></div> 
 			</div>
 		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default modalCloseCls" data-dismiss="modal">Close</button>
       </div>
-    </div>
+   
   </div>
 </div>
 </div>
