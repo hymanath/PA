@@ -13,17 +13,17 @@ public class SolidWasteManagementVO {
 	private Long evehicle=0L;
 	private Long rfidTags=0L;
 	private Long farmers=0L;
-	private Long nadap=0L;
-	private Long vermi=0L;
-	private Long onekg=0L;
-	private Long fivekg=0L;
-	private Long tenkg=0L;
-	private Long twentyFivekg=0L;
-	private Long fiftykg=0L;
-	private Long vermiStock=0L;
-	private Long farmerCollection=0L;
-	private Long houseCollecion=0L;
-	private Long swmCollection=0L;
+	private Double nadap=0.00;
+	private Double vermi=0.00;
+	private Double onekg=0.00;
+	private Double fivekg=0.00;
+	private Double tenkg=0.00;
+	private Double twentyFivekg=0.00;
+	private Double fiftykg=0.00;
+	private Double vermiStock=0.00;
+	private Double farmerCollection=0.00;
+	private Double houseCollecion=0.00;
+	private Double swmCollection=0.00;
 	private Long blocks=0L;
 	private Long rfidTracking=0L;
 	public String getId() {
@@ -92,70 +92,70 @@ public class SolidWasteManagementVO {
 	public void setFarmers(Long farmers) {
 		this.farmers = farmers;
 	}
-	public Long getNadap() {
+	public Double getNadap() {
 		return nadap;
 	}
-	public void setNadap(Long nadap) {
+	public void setNadap(Double nadap) {
 		this.nadap = nadap;
 	}
-	public Long getVermi() {
+	public Double getVermi() {
 		return vermi;
 	}
-	public void setVermi(Long vermi) {
+	public void setVermi(Double vermi) {
 		this.vermi = vermi;
 	}
-	public Long getOnekg() {
+	public Double getOnekg() {
 		return onekg;
 	}
-	public void setOnekg(Long onekg) {
+	public void setOnekg(Double onekg) {
 		this.onekg = onekg;
 	}
-	public Long getFivekg() {
+	public Double getFivekg() {
 		return fivekg;
 	}
-	public void setFivekg(Long fivekg) {
+	public void setFivekg(Double fivekg) {
 		this.fivekg = fivekg;
 	}
-	public Long getTenkg() {
+	public Double getTenkg() {
 		return tenkg;
 	}
-	public void setTenkg(Long tenkg) {
+	public void setTenkg(Double tenkg) {
 		this.tenkg = tenkg;
 	}
-	public Long getTwentyFivekg() {
+	public Double getTwentyFivekg() {
 		return twentyFivekg;
 	}
-	public void setTwentyFivekg(Long twentyFivekg) {
+	public void setTwentyFivekg(Double twentyFivekg) {
 		this.twentyFivekg = twentyFivekg;
 	}
-	public Long getFiftykg() {
+	public Double getFiftykg() {
 		return fiftykg;
 	}
-	public void setFiftykg(Long fiftykg) {
+	public void setFiftykg(Double fiftykg) {
 		this.fiftykg = fiftykg;
 	}
-	public Long getVermiStock() {
+	public Double getVermiStock() {
 		return vermiStock;
 	}
-	public void setVermiStock(Long vermiStock) {
+	public void setVermiStock(Double vermiStock) {
 		this.vermiStock = vermiStock;
 	}
-	public Long getFarmerCollection() {
+	public Double getFarmerCollection() {
 		return farmerCollection;
 	}
-	public void setFarmerCollection(Long farmerCollection) {
+	public void setFarmerCollection(Double farmerCollection) {
 		this.farmerCollection = farmerCollection;
 	}
-	public Long getHouseCollecion() {
+	public Double getHouseCollecion() {
 		return houseCollecion;
 	}
-	public void setHouseCollecion(Long houseCollecion) {
+	public void setHouseCollecion(Double houseCollecion) {
 		this.houseCollecion = houseCollecion;
 	}
-	public Long getSwmCollection() {
+	public Double getSwmCollection() {
 		return swmCollection;
 	}
-	public void setSwmCollection(Long swmCollection) {
+	public void setSwmCollection(Double swmCollection) {
 		this.swmCollection = swmCollection;
 	}
 	public Long getBlocks() {
@@ -171,8 +171,4 @@ public class SolidWasteManagementVO {
 		this.rfidTracking = rfidTracking;
 	}
 	
-	
-	
-	
-
 }
