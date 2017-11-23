@@ -1717,6 +1717,7 @@ public void setDataMembersForCadreRole(List<Object[]> membersList, List<Appointm
   		  vo.setVoterCardNo(obj[5]!=null?obj[5].toString():"");
   		  vo.setImageURL(obj[7]!=null?"images/cadre_images/"+obj[7].toString():null);
   		  vo.setDesignation(obj[6]!=null?obj[6].toString():"");
+  		  vo.setVoterId(obj[8]!=null?(Long)obj[8]:0l);
   		  finalList.add(vo);
   		  if(!tdpCadreIds.contains(vo.getId()))
   		  tdpCadreIds.add(vo.getId());

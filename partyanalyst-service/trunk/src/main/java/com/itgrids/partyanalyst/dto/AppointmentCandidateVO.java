@@ -26,10 +26,16 @@ public class AppointmentCandidateVO implements Serializable{
     private String enrollmentYears;
     private Long tdpCadreId;
     List<CadreCommitteeVO> previousElections = new ArrayList<CadreCommitteeVO>();
+    private Long voterId;
     
     
-    
-    public Long getTdpCadreId() {
+    public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
 	public void setTdpCadreId(Long tdpCadreId) {
