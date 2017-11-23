@@ -208,13 +208,13 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 							committeeVO.setConstituencyName(param[8]!=null ?commonMethodsUtilService.getStringValueForObject(param[8]):null);
 							committeeVO.setParliamentConstituencyId(param[9]!=null?commonMethodsUtilService.getLongValueForObject(param[9]):null);
 							committeeVO.setParliamentConstituencyName(param[10]!=null ?commonMethodsUtilService.getStringValueForObject(param[10]):null);
-							committeeVO.setMandalId(param[11]!=null?commonMethodsUtilService.getLongValueForObject(param[11]):null);
+							committeeVO.setMandalId(param[11]!=null?'2'+commonMethodsUtilService.getLongValueForObject(param[11]):null);
 							committeeVO.setMandalName(param[12]!=null ?commonMethodsUtilService.getStringValueForObject(param[12]):null);
-							committeeVO.setPanchayatId(param[13]!=null?commonMethodsUtilService.getLongValueForObject(param[13]):null);
+							committeeVO.setPanchayatId(param[13]!=null?'1'+commonMethodsUtilService.getLongValueForObject(param[13]):null);
 							committeeVO.setPanchayatName(param[14]!=null ?commonMethodsUtilService.getStringValueForObject(param[14]):null);
-							committeeVO.setLocalElectionBodyId(param[15]!=null?commonMethodsUtilService.getLongValueForObject(param[15]):null);
+							committeeVO.setLocalElectionBodyId(param[15]!=null?'1'+commonMethodsUtilService.getLongValueForObject(param[15]):null);
 							committeeVO.setLocalElectionBodyName(param[16]!=null ?commonMethodsUtilService.getStringValueForObject(param[16]):null);
-							committeeVO.setWardId(param[17]!=null?commonMethodsUtilService.getLongValueForObject(param[17]):null);
+							committeeVO.setWardId(param[17]!=null?'2'+commonMethodsUtilService.getLongValueForObject(param[17]):null);
 							committeeVO.setWardName(param[18]!=null ?commonMethodsUtilService.getStringValueForObject(param[18]):null);
 						}
 					}
