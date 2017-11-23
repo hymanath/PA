@@ -1719,17 +1719,19 @@ IElectionDAO {
 	
 	public  List<String> getElectionYearByScopeIds(List<Long> electionScopeIds,List<String> subTypeArr){//ara
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select distinct model.electionYear from Election model " +
-				         " where model.electionScope.electionScopeId in(:electionScopeIds)");
-		
+		sb.append(" select distinct distinct e.election_year from nomination n ,constituency_election ce , " +
+					"party p ,election e " +
+				    " where n.consti_elec_id = ce.consti_elec_id and " +
+				    "n.party_id = p.party_id and "  +
+				    "ce.election_id = e.election_id ");
+		if(electionScopeIds != null && electionScopeIds.size() >0){
+	    sb.append(" and e.election_scope_id in (:electionScopeIds) ");
+	    }
 		if(subTypeArr.size()>0l && subTypeArr !=null){
-			sb.append(" and model.elecSubtype in(:subTypeArr)");
+			sb.append(" and e.sub_type in (:subTypeArr) ");
 		}
-		sb.append(" and model.electionYear >1982 ");
-		sb.append(" order by model.electionYear desc ");
-		
-		Query qry = getSession().createQuery(sb.toString());
-				        
+		sb.append(" order by e.election_year desc ");
+		Query qry = getSession().createSQLQuery(sb.toString());   
 		if(electionScopeIds != null && electionScopeIds.size() >0){
 			qry.setParameterList("electionScopeIds", electionScopeIds);
 		}
