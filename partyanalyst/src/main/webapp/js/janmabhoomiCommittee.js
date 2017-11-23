@@ -448,12 +448,13 @@ $(document).on("click",".memberAddEditDetailsCls",function(){
 	}else if(committeeLvlId != null && (committeeLvlId ==6 || committeeLvlId ==7)){
 		panchayatId='1'+wardId;
 	}
-	//if(publicRepreTypeId != null && publicRepreTypeId >0){
-		//getAdvancedSearchDetails(publicRepreTypeId,committeeLvlId,committeeLvlVal);
-	//}else{
+	if(publicRepreTypeId != null && publicRepreTypeId >0){
+		getAdvancedSearchDetails(publicRepreTypeId,committeeLvlId,committeeLvlVal,committeeId,statusType,roleId,memberId,memberName,
+		voterCardNo,mobileNo,memberShipId);
+	}else{
 		buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,
 		voterCardNo,mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,mandalId,panchayatId);
-	//}
+	}
 });
 $(document).on("click",".closeShowPdfCls",function(){
 	setTimeout(function(){
@@ -573,10 +574,10 @@ mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,m
 	str+='</form>';
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-3">';
-	str+='<button id="" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication('+committeeId+',\''+statusType+'\');">Update Member </button> <span id="loadingImgId"><img src="images/search.gif" style="display:none;"/></span>';
+	str+='<button id="" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication('+committeeId+',\''+statusType+'\');">Update Member </button> <span class="loadingImgId"><img src="images/search.gif" style="display:none;"/></span>';
 		str+='</div>';
 		str+='<div class="col-sm-6">';
-			str+='<div id="savingStatusDivId"></div>';
+			str+='<div class="savingStatusDivId"></div>';
 		str+='</div>';
 	str+='</div>';
 	
@@ -1046,10 +1047,10 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 		str+='</form>';
 		str+='<div class="col-sm-12 m_top20">';
 			str+='<div class="col-sm-3">';
-				str+='<button class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication('+committeeId+',\''+statusType+'\');">Add Member</button><span id="loadingImgId"><img src="images/search.gif" style="display:none;"/></span>';
+				str+='<button class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication('+committeeId+',\''+statusType+'\');">Add Member</button><span class="loadingImgId"><img src="images/search.gif" style="display:none;"/></span>';
 			str+='</div>';
 			str+='<div class="col-sm-6">';
-				str+='<div id="savingStatusDivId"></div>';
+				str+='<div class="savingStatusDivId"></div>';
 			str+='</div>';
 		str+='</div>'; 
 	  
@@ -1101,13 +1102,15 @@ function getAllCategoriesAction(){
       if(result != null && result.length >0){
 		  for(var i in result){
 			  $("#casteCategoryId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
+			  $("#casteCategoryPubId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
 		  }
 		  $("#casteCategoryId").trigger("chosen:updated");
+		  $("#casteCategoryPubId").trigger("chosen:updated");
 	  }
     });
 }
 
-$(document).on("change","#casteCategoryId",function(){
+$(document).on("change","#casteCategoryId,#casteCategoryPubId",function(){
 if($(this).val() != 0){
 		getStatewiseCastNamesByCasteCategoryGroupIdAction($(this).val());
 	}
@@ -1117,6 +1120,7 @@ if($(this).val() != 0){
 //getStatewiseCastNamesByCasteCategoryGroupIdAction();
 function getStatewiseCastNamesByCasteCategoryGroupIdAction(casteCategoryId){  
 $("#casteId").html("");
+$("#castePubId").html("");
 var categoryGrouIdsList=[];
 categoryGrouIdsList.push(casteCategoryId);
     var jsObj={
@@ -1131,16 +1135,18 @@ categoryGrouIdsList.push(casteCategoryId);
        if(result != null && result.length >0){
 		  for(var i in result){
 			  $("#casteId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
+			  $("#castePubId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
 		  }
 		  $("#casteId").trigger("chosen:updated");
+		  $("#castePubId").trigger("chosen:updated");
 	  }
     });
 }
 function savingApplication(committeeId,statusType){
-	$("#savingStatusDivId").html(spinner);
+	$(".savingStatusDivId").html(spinner);
 		var uploadHandler = {
 			upload: function(o) {
-				$("#loadingImgId").css("display","block");
+				$(".loadingImgId").css("display","block");
 				uploadResult = o.responseText;
 				showSbmitStatus(uploadResult,committeeId,statusType);
 			}
@@ -1151,10 +1157,10 @@ function savingApplication(committeeId,statusType){
 	}
 	
 	function showSbmitStatus(result,committeeId,statusType){
-		$("#loadingImgId").css("display","none");
+		$(".loadingImgId").css("display","none");
 		if(result.indexOf("SUCCESS") > -1){
 			
-		  $("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Received Successfully...</span>");
+		  $(".savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Received Successfully...</span>");
 		 
 		  setTimeout(function(){
 			 $("#memberAddEditModalOpen").modal("hide");
@@ -1169,11 +1175,11 @@ function savingApplication(committeeId,statusType){
 			
 		}else if(result.indexOf("DUPLICATE") > -1){
 			setTimeout(function(){
-		  $("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>This person already added for this committee</span>");
+		  $(".savingStatusDivId").html("<span style='color: red;font-size:22px;'>This person already added for this committee</span>");
 		  }, 1000);
 		}else {
 		  setTimeout(function(){
-		  $("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed. Please Try Again.</span>");
+		  $(".savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed. Please Try Again.</span>");
 		  }, 1000);
 		}
 	  }
@@ -1191,29 +1197,31 @@ function savingApplication(committeeId,statusType){
        if(result != null && result.length >0){
 		 if(result.indexOf("SUCCESS") > -1){
 			setTimeout(function(){
-		  $("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Committee Status Updated Successfully</span>");
+		  $(".savingStatusDivId").html("<span style='color: green;font-size:22px;'>Committee Status Updated Successfully</span>");
 		  }, 1000); 
 		 }else if(result.indexOf("NotFilled") > -1){
 			 setTimeout(function(){
-		  $("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Total committee members are not added</span>");
+		  $(".savingStatusDivId").html("<span style='color: red;font-size:22px;'>Total committee members are not added</span>");
 		  }, 1000);
 		 }else{
 			 setTimeout(function(){
-		  $("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Committee Status Updation Failed. Please Try Again.</span>");
+		  $(".savingStatusDivId").html("<span style='color: red;font-size:22px;'>Committee Status Updation Failed. Please Try Again.</span>");
 		  }, 1000); 
 		 }
 	  }
     });
 	  }
-	  
-	  function getAdvancedSearchDetails(publicRepresentativeTypeId,levelId,levelVal){
-		$("#apptmemberDetailsDiv").html("");
+	  function setDefaultImage(img){
+			  img.src = "dist/Appointment/img/thumb.jpg";
+		}
+	  function getAdvancedSearchDetails(publicRepresentativeTypeId,levelId,levelVal,committeeId,statusType,roleId,memberId,memberName,
+		voterCardNo,mobileNo,memberShipId){
+		$("#memberAddEditPopUpDetailsId").html(spinner);
 		var statusArr=[publicRepresentativeTypeId];
 		var tdpCadreIds=[];
 		var level;
 		var levelValue;
 		var tehsilId = 0;
-		var committeeId = 0;
 		var referCommitteeId;
 		var levelStr = 'state';
 		$("#errorDivId").html('');
@@ -1252,7 +1260,7 @@ function savingApplication(committeeId,statusType){
 			searchType:searchType,
 			searchValue:searchValue,
 			designations:statusArr,
-			committeeId:committeeId, // "PR" -- if public representatives
+			committeeId:0, // "PR" -- if public representatives
 			levelId:alertLevelId,
 			districtId:districtId,
 			constituencyId:constituencyId,
@@ -1269,6 +1277,162 @@ function savingApplication(committeeId,statusType){
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				
+				if(result !=null && result.length>0){
+					buildAdvancedSearchDetails(result,committeeId,statusType,roleId,memberId);
+				}else{
+					buildMemberAddEditDetailsBlock("proposal",roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId,statusType)
+				}
 			}); 
 	}
+	
+	function buildAdvancedSearchDetails(result,committeeId,statusType,roleId,memberId){
+		$("#memberAddEditPopUpDetailsId").removeClass("bg_class_Div");
+		var str='';
+			str+='<table id="searchedMembersId">';
+			str+='<thead><th></th><th></th><th></th></thead>';
+			str+='<tbody>';
+			var xindex =0;
+			for(var i in result){
+					if( xindex == 0){
+						str+='<tr>';
+					}
+				str+='<td style="padding:0px !important;">';
+					str+='<div class="row">';
+						str+='<div class="col-sm-12">';
+							str+='<ul class="createAppointmentSearch">';
+						
+								str+='<li class="">';
+									str+='<div class="row">';
+											str+='<div class="col-sm-12">';
+												str+='<div class="media">';
+													str+='<div class="media-left">';
+														str+='<img class="media-object thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
+													str+='</div>';
+													str+='<div class="media-body namesalignmentCss">';
+														str+='<h5 style="color:#34A7C1;">Name : '+result[i].name+'</h5>';
+														str+='<h5 style="color:#34A7C1;">Membership No : '+result[i].memberShipId+'</h5>';
+														str+='<h5 style="color:#34A7C1;">Voter ID : '+result[i].voterCardNo+'</h5>';
+														str+='<h5><span><i class="fa fa-mobile" style="font-size:15px"></i> &nbsp; '+result[i].mobileNo+'</span></h5>';
+														str+='<h5 style="font-size:12px">Desg : '+result[i].designation+'</h5>';
+													str+='</div>';
+												str+='</div>';
+											str+='</div>';
+											
+											str+='<div class="btn btn-success btn-sm col-sm-6 col-md-offset-4 m_top10" style="border-radius:20px;">';
+												str+='<label style="margin-bottom: 0px; line-height: 10px;">';
+													str+='<input style="margin-left: 0px; margin-top: 0px;" type="radio" class="selectedMemberDetailsAppend" attr_name="'+result[i].name+'" attr_mobile_no="'+result[i].mobileNo+'" attr_tdp_cadreId="'+result[i].id+'" attr_commiteeId="'+committeeId+'" attr_status_type="'+statusType+'" attr_voter_Id="'+result[i].voterId+'" attr_roleId="'+roleId+'" attr_member_Id="'+memberId+'"> &nbsp;SELECT';
+												str+='</label>';
+											str+='</div>';
+									str+='</div>';
+								str+='</li>';
+							
+						
+							
+							str+='</ul>';
+						str+='</div>';
+				str+='</div>';
+				str+='</td>';
+				xindex++;
+				if(result.length-1 == i){
+					if(xindex % 4 == 3){
+						str+='<td></td>';
+						str+='</tr>';
+					}
+					if(xindex % 4 == 2){
+						str+='<td></td>';
+						str+='<td></td>';
+						str+='</tr>';
+					}
+				}
+				 if( xindex == 4){
+					str+='</tr>';
+					xindex = 0;
+				}
+		}
+		str+='</tbody>';
+		str+='</table>';
+		str+='<div id="selectedMemberDetailsId"></div>';
+		$("#memberAddEditPopUpDetailsId").html(str);
+		$('#searchedMembersId').DataTable({
+			
+		});
+	}
+	
+	$(document).on("click",".selectedMemberDetailsAppend",function(){
+		var name = $(this).attr("attr_name");
+		var mobileNo = $(this).attr("attr_mobile_no");
+		var tdpCadreId = $(this).attr("attr_tdp_cadreId");
+		var committeId = $(this).attr("attr_commiteeId");
+		var statusType = $(this).attr("attr_status_type");
+		var voterId = $(this).attr("attr_voter_Id");
+		var roleId = $(this).attr("attr_roleId");
+		var memberId = $(this).attr("attr_member_Id");
+		
+		buildSelectedMemberBlockDiv(name,mobileNo,tdpCadreId,committeId,statusType,voterId,roleId,memberId);
+		
+	});
+	
+	function buildSelectedMemberBlockDiv(name,mobileNo,tdpCadreId,committeId,statusType,voterId,roleId,memberId){
+		var str='';
+		str+='<form name="addMemberSaving" id="addMemberPub"  method="post" enctype="multipart/form-data">';
+			str+='<div class="row m_top20">';
+				str+='<div class="col-sm-12">';
+				
+				str+='<div class="col-sm-2">';
+					str+='<label>';
+						str+='<input type="text" class="form-control" id="" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.name" >';
+					str+='</label>';
+				str+='</div>';
+				
+				str+='<div class="col-sm-2">';
+					str+='<label>';
+						str+='<input type="text" class="form-control" id="" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber">';
+					str+='</label>';
+				str+='</div>';
+				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
+				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.voterId" value="'+voterId+'"/>';
+				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
+				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+tdpCadreId+'"/>';
+				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
+				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="proposal"/>';
+				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.committeeId" value="'+committeId+'"/>';
+				str+='<div class="col-sm-2">';
+					str+='<select class="form-control chosen-select" id="casteCategoryPubId" name="janmabhoomiCommitteeMemberVO.categoryId">';
+						str+='<option value="0">Select Category</option>';
+					str+='</select>';
+				str+='</div>';
+				
+				str+='<div class="col-sm-2">';
+					str+='<select class="form-control chosen-select" id="castePubId" name="janmabhoomiCommitteeMemberVO.casteId">';
+						str+='<option value="0">Select Caste</option>';
+					str+='</select>';
+				str+='</div>';
+				
+				str+='<div class="col-sm-3">';
+					str+='<select class="form-control chosen-select" id="partyPubId" name="janmabhoomiCommitteeMemberVO.partyId">';
+						str+='<option value="0">Select Affiliated Party</option>';
+						str+='<option value="872">TDP</option>';
+						str+='<option value="362">INC</option>';
+						str+='<option value="1117">YSRC</option>';
+						str+='<option value="163">BJP</option>';
+					str+='</select>';
+				str+='</div>';
+				str+='</div>';	
+			str+='</div>';
+				str+='</div>';
+			str+='</div>';	
+			str+='</form>';
+			str+='<div class="col-sm-12 m_top20">';
+				str+='<div class="col-sm-3">';
+					str+='<button class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication('+committeId+',\''+statusType+'\');">Add Member</button><span class="loadingImgId"><img src="images/search.gif" style="display:none;"/></span>';
+				str+='</div>';
+				str+='<div class="col-sm-6">';
+					str+='<div class="savingStatusDivId"></div>';
+				str+='</div>';
+			str+='</div>'; 
+		  
+		$("#selectedMemberDetailsId").html(str);
+		 getAllCategoriesAction();
+		$(".chosen-select").chosen();
+	}
+	

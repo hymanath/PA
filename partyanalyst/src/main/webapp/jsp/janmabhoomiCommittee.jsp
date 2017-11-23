@@ -74,7 +74,7 @@
   </div><!--  /.modal-dialog -->
 </div><!--   /.modal -->
 <div class="modal fade janmabhoomi" tabindex="-1" id="memberAddEditModalOpen" role="dialog" style="z-index:9999;">
- <div class="modal-dialog" role="document" style="width:85%;">   
+ <div class="modal-dialog" role="document" style="width:90%;">   
     <div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
