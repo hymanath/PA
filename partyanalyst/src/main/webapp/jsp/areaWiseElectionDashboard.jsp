@@ -149,7 +149,7 @@
 								  <input type="radio" id="mainId1" value="MAIN" name="optionsRadios" class="electionSubTypeCls" checked attr_type="strong">Main Election
 								</label>
 								<label class="radio-inline" id="eleCompareByeRadioId">
-								  <input type="radio" id="byeId1" value="BYE" name="optionsRadios"  class="electionSubTypeCls" attr_type="strong">By Election
+								  <input type="radio" id="byeId1" value="BYE" name="optionsRadios"  class="electionSubTypeCls" attr_type="strong">Bye Election
 								</label>
 							</div>
 							<div class="col-sm-2">
