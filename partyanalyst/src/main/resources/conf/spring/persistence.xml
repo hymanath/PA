@@ -1347,6 +1347,8 @@
 						 <value>com.itgrids.partyanalyst.model.JbRole</value>
 						 <value>com.itgrids.partyanalyst.model.DebateCandidateDesignation</value>
 						 <value>com.itgrids.partyanalyst.model.DebateRepresentativeType</value>
+						 <value>com.itgrids.partyanalyst.model.KaizalaInstallationTracking</value>
+						 
 				  </list>
 			
 		</property>

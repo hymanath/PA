@@ -4225,11 +4225,15 @@
 	 </bean>
 	 <bean id="jbRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbRoleDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
-	 </bean> 
-	 <bean id="debateCandidateDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateCandidateDesignationDAO">
+	 </bean>
+	  <bean id="debateCandidateDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateCandidateDesignationDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 <bean id="debateRepresentativeTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateRepresentativeTypeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="kaizalaInstallationTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaInstallationTrackingDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean> 
+	 
 </beans>		
