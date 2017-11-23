@@ -175,8 +175,7 @@
 								<label>Search Level</label>
 								<select class="form-control chosen-select addSearchValCls" id="searchLevelId">
 									<option value="district" selected>District</option>
-									<option value="constituency">Constituency</option>
-									<option value="parliament">Parliament</option>
+									<option value="constituency">Assembly</option>
 								</select>
 							</div>
 							<div class="col-sm-2 m_top20">
