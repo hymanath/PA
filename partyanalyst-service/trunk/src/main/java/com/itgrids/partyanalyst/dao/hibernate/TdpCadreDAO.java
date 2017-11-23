@@ -6682,7 +6682,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			else
 				str.append("model2.userAddress.constituency.name,");
 			
-			str.append(" model.memberShipNo,model.voter.voterIDCardNo,model2.publicRepresentativeType.type,model.image " +
+			str.append(" model.memberShipNo,model.voter.voterIDCardNo,model2.publicRepresentativeType.type,model.image,model.voter.voterId " +
 					"   from TdpCadre model,PublicRepresentative model2,TdpCadreCandidate model1 where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear"
 					+ " and model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadreId = model1.tdpCadre.tdpCadreId ");
 			
