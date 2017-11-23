@@ -133,7 +133,7 @@
 					}else{
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss"></span> OC</li>';
 					} */
-					if(result.bcType !=null || result.scType!=null || result.stType!=null || result.ocType!=null){
+					if(result.bcType !=null || result.scType!=null || result.stType!=null){// result.ocType!=null
 					if(result.bcType == 'contains'){
 						str+='<li style="margin-left:12px;" class="fillBg"><span class="rangeWiseCss" style="background-color:green;"></span> BC</li>';
 						bcType = true;
@@ -293,18 +293,27 @@
 		str+='</div>';
 		str+='</div>';
 		var approvedBooleanaVal=false;
+		var approvedMemebersCount = 0;
+		var requiredRoleCount = 0;
+	
 		for(var i in result.desinationVOList){
 			if(result.desinationVOList[i].desinationMebersVOList !=null && result.desinationVOList[i].desinationMebersVOList.length>0){
 				for(var j in result.desinationVOList[i].desinationMebersVOList){
-					if(result.desinationVOList[i].desinationMebersVOList[j].status == "Approved"){
-						approvedBooleanaVal = true;
+					if(result.desinationVOList[i].desinationMebersVOList[j].status === "Approved"){
+						//approvedBooleanaVal = true;
+						approvedMemebersCount = approvedMemebersCount+1;
 					}
 				}
 			}
+				requiredRoleCount = requiredRoleCount+result.desinationVOList[i].roleMemberCount;
 		}
 		
-		if(bcType === true && scType === true && stType === true){
-			if(statusType != 'Approved' || approvedBooleanaVal === true){
+		if(approvedMemebersCount === requiredRoleCount){
+			approvedBooleanaVal = true;
+		}
+		
+		if(bcType === true && scType === true && stType === true && approvedBooleanaVal === true){
+			if(statusType != 'Approved'){
 				str+='<div class="col-sm-12 m_top20">';
 					str+='<div class="row">';
 					
