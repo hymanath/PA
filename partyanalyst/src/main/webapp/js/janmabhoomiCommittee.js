@@ -1328,7 +1328,7 @@ function savingApplication(committeeId,statusType){
 											
 											str+='<div class="btn btn-success btn-sm col-sm-6 col-md-offset-4 m_top10" style="border-radius:20px;">';
 												str+='<label style="margin-bottom: 0px; line-height: 10px;">';
-													str+='<input style="margin-left: 0px; margin-top: 0px;" type="radio" class="selectedMemberDetailsAppend" attr_name="'+result[i].name+'" attr_mobile_no="'+result[i].mobileNo+'" attr_tdp_cadreId="'+result[i].id+'" attr_commiteeId="'+committeeId+'" attr_status_type="'+statusType+'" attr_voter_Id="'+result[i].voterId+'" attr_roleId="'+roleId+'" attr_member_Id="'+memberId+'"> &nbsp;SELECT';
+													str+='<input style="margin-left: 0px; margin-top: 0px;" type="radio" name="optionsRadios" class="selectedMemberDetailsAppend" attr_name="'+result[i].name+'" attr_mobile_no="'+result[i].mobileNo+'" attr_tdp_cadreId="'+result[i].id+'" attr_commiteeId="'+committeeId+'" attr_status_type="'+statusType+'" attr_voter_Id="'+result[i].voterId+'" attr_roleId="'+roleId+'" attr_member_Id="'+memberId+'"> &nbsp;SELECT';
 												str+='</label>';
 											str+='</div>';
 									str+='</div>';
