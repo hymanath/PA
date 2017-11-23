@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IKaizalaGroupDocumentTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupResponderRelationDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupsDAO;
+import com.itgrids.partyanalyst.dao.IKaizalaInstallationTrackingDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaJobResponseDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaOptionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaPropertiesDAO;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaTextMessageDAO;
+import com.itgrids.partyanalyst.dao.hibernate.KaizalaInstallationTrackingDAO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.model.KaizalaActions;
 import com.itgrids.partyanalyst.model.KaizalaAnswerInfo;
@@ -40,6 +42,7 @@ import com.itgrids.partyanalyst.model.KaizalaGroupDocument;
 import com.itgrids.partyanalyst.model.KaizalaGroupDocumentType;
 import com.itgrids.partyanalyst.model.KaizalaGroupResponderRelation;
 import com.itgrids.partyanalyst.model.KaizalaGroups;
+import com.itgrids.partyanalyst.model.KaizalaInstallationTracking;
 import com.itgrids.partyanalyst.model.KaizalaJobResponse;
 import com.itgrids.partyanalyst.model.KaizalaOptions;
 import com.itgrids.partyanalyst.model.KaizalaProperties;
@@ -74,8 +77,13 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private IKaizalaGroupDocumentDAO kaizalaGroupDocumentDAO;
 	private IKaizalaGroupDocumentTypeDAO kaizalaGroupDocumentTypeDAO;
 	private IKaizalaResponderTypeDAO kaizalaResponderTypeDAO;
-	
+	private IKaizalaInstallationTrackingDAO kaizalaInstallationTrackingDAO;
 
+
+	public void setKaizalaInstallationTrackingDAO(
+			IKaizalaInstallationTrackingDAO kaizalaInstallationTrackingDAO) {
+		this.kaizalaInstallationTrackingDAO = kaizalaInstallationTrackingDAO;
+	}
 	public IKaizalaResponderTypeDAO getKaizalaResponderTypeDAO() {
 		return kaizalaResponderTypeDAO;
 	}
@@ -424,10 +432,73 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		});
 		
 	}
+	
+	public void saveKaizalaInstallationTracking(JSONObject jobj){
+		try {
+			
+			KaizalaInstallationTracking tracking = new KaizalaInstallationTracking();
+			
+			tracking.setObjectId(jobj.getString("objectId"));
+			tracking.setObjectType(jobj.getString("objectType"));
+			tracking.setEventId(jobj.getString("eventId"));
+			tracking.setEventType(jobj.getString("eventType"));
+			
+			if(jobj !=null){
+				
+				JSONObject dataObj = jobj.getJSONObject("data");
+				if(dataObj !=null){
+					
+					tracking.setResponderName(dataObj.getString("responder"));
+					tracking.setResponderMobileNo(dataObj.getString("responderName"));
+					
+					JSONObject responseObj = dataObj.getJSONObject("responseDetails");
+					if(responseObj !=null){
+						JSONArray resonseArray  = responseObj.getJSONArray("responseWithQuestions");
+						if(resonseArray !=null && resonseArray.length()>0){
+							
+							JSONObject mobileObj = (JSONObject)resonseArray.get(1);							
+							if(mobileObj !=null)
+								tracking.setInstalledMobileNo(mobileObj.getString("answer"));
+							
+							JSONObject nameObj = (JSONObject)resonseArray.get(2);							
+							if(nameObj !=null)
+								tracking.setName(nameObj.getString("answer"));
+							
+							JSONObject urlObj = (JSONObject)resonseArray.get(3);							
+							if(urlObj !=null)
+								tracking.setUrl(urlObj.getString("answer"));
+							
+							JSONObject locationObj = (JSONObject)resonseArray.get(4);							
+							if(locationObj !=null){
+								JSONObject locationInnerObj  = locationObj.getJSONObject("answer");
+								tracking.setLocation(locationInnerObj.getString("n"));
+							}
+						}
+					}
+				}
+				
+				tracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+				kaizalaInstallationTrackingDAO.save(tracking);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveKaizalaInstallationTracking in KaizalaInfoService Class ", e);
+		}
+	}
+	
 	public void saveEventResponses(final String output){
 		try {
+			
 			if(output != null && !output.isEmpty()){
 				JSONObject jsonObj = new JSONObject(output);
+				
+				if(jsonObj.getString("objectType").equalsIgnoreCase("Group") 
+						&& jsonObj.getString("objectId").equalsIgnoreCase("034607bb-6d16-4819-8ac8-32f22043e4d5")){
+					saveKaizalaInstallationTracking(jsonObj);
+					return;
+				}
+				
+				
 				if(jsonObj.getString("eventType").equalsIgnoreCase("TextMessageCreated")){
 					saveTextMsgCreated(output);
 				}else if(jsonObj.getString("eventType").equalsIgnoreCase("JobCreated")){
