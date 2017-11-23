@@ -780,6 +780,25 @@
 									  </div>
 									</div>
 								  </div>
+								  <!--srujana-->
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingSix">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
+										   overall performance</span></h4>
+										</a>
+									</div>
+									<div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="designationWiseTotalDebateDetails" style="overflow:auto;"></div>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <!-- end-->
 								</div>
 							</div>
 						</div>
