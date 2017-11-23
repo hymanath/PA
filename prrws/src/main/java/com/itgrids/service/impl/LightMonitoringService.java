@@ -695,78 +695,74 @@ public class LightMonitoringService  implements ILightMonitoring{
 	
 	 public List<LightMonitoringVO> getTimePeriodWiseLightsDetaisl(String startDate,String endDate, String locationType,final Long locationValue,List<Long> lightMonitoringIds) {
 		   List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
-		   LightMonitoringVO  lightMonitoringToDayCountVO = new LightMonitoringVO();
 		try{	
-			Date fromDate = null;
-			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			
 			DateUtilService dateUtilService = new DateUtilService();
 			Date today = dateUtilService.getCurrentDateAndTime();
 			Date lastThreeDaysDate = getDateBeforeNDays(3);
 			Date lastSevenDaysDate = getDateBeforeNDays(7);
 			Date lastThirtyDaysDate = getDateBeforeNDays(30);
-			//today date
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(today);
-			
 			
 			List<Long> loccationIds = new ArrayList<Long>();
 			if (locationValue != null && locationValue.longValue() > 0l) {
 				loccationIds.add(locationValue);
 			}			
-			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
-				fromDate = sdf.parse(startDate);
-				toDate = sdf.parse(endDate);
-			}
 			
-			 List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(today,today,locationType,loccationIds,lightMonitoringIds,"No");
-			 List<Object[]> list1  =  lightMonitoringDAO.getTotalVillagesDetails(lastThreeDaysDate,today,locationType,loccationIds,lightMonitoringIds,"No");
-			 List<Object[]> list2  =  lightMonitoringDAO.getTotalVillagesDetails(lastSevenDaysDate,today,locationType,loccationIds,lightMonitoringIds,"No");
-			 List<Object[]> list3  =  lightMonitoringDAO.getTotalVillagesDetails(lastThirtyDaysDate,today,locationType,loccationIds,lightMonitoringIds,"No");
-			 lightMonitoringToDayCountVO = setTimePeriodWiseLightsDetaisl(lightMonitoringData) ;  
-			 lightMonitoringToDayCountVO = setTimePeriodWiseLightsDetaisl(list1) ;
-			 lightMonitoringToDayCountVO = setTimePeriodWiseLightsDetaisl(list2) ;
-			 lightMonitoringToDayCountVO = setTimePeriodWiseLightsDetaisl(list3) ;
-			 list.add(lightMonitoringToDayCountVO);			
+			 List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(today,today,locationType,loccationIds,lightMonitoringIds,"Yes");
+			 List<Object[]> list1  =  lightMonitoringDAO.getTotalVillagesDetails(lastThreeDaysDate,lastThreeDaysDate,locationType,loccationIds,lightMonitoringIds,"Yes");
+			 List<Object[]> list2  =  lightMonitoringDAO.getTotalVillagesDetails(lastSevenDaysDate,lastSevenDaysDate,locationType,loccationIds,lightMonitoringIds,"Yes");
+			 List<Object[]> list3  =  lightMonitoringDAO.getTotalVillagesDetails(lastThirtyDaysDate,lastThirtyDaysDate,locationType,loccationIds,lightMonitoringIds,"Yes");
+			 list.add(setTimePeriodWiseLightsDetaisl(lightMonitoringData,"Today"));
+			 list.add(setTimePeriodWiseLightsDetaisl(list1,"LastThreeDaysDate"));
+			 list.add(setTimePeriodWiseLightsDetaisl(list2,"lastSevenDaysDate"));
+			 list.add(setTimePeriodWiseLightsDetaisl(list3,"lastThirtyDaysDate"));
+			
 			     
       }catch (Exception e) {
-   	   LOG.error("Exception raised at getBasicLedOverviewDetails - LightMonitoringService service", e);
+   	   LOG.error("Exception raised at getTimePeriodWiseLightsDetaisl - LightMonitoringService service", e);
       }
 		return list;
       } 
 		
-	public LightMonitoringVO  setTimePeriodWiseLightsDetaisl(List<Object[]> lightMonitoringData){
-			 
-		     List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
-		     LightMonitoringVO  lightMonitoringToDaCountVO=new LightMonitoringVO();
-		     
-		    if(lightMonitoringData != null && lightMonitoringData.size() > 0){
-					for(Object[] param : lightMonitoringData){
-					
-						lightMonitoringToDaCountVO.setTodayLights(commonMethodsUtilService.getLongValueForObject(param[2]));
-						lightMonitoringToDaCountVO.setTodayPoles(commonMethodsUtilService.getLongValueForObject(param[4]));
-						
+	public LightMonitoringVO setTimePeriodWiseLightsDetaisl(List<Object[]> lightMonitoringData, String date) {
+		LightMonitoringVO lightMonitoringToDaCountVO = new LightMonitoringVO();
+		try {
+			if (lightMonitoringData != null && lightMonitoringData.size() > 0) {
+				for (Object[] param : lightMonitoringData) {
+
+					lightMonitoringToDaCountVO.setName(date);
+					if ((Long) param[0] == 1l) { // ESSL
+						lightMonitoringToDaCountVO.setNredcapTodayPanels(commonMethodsUtilService.getLongValueForObject(param[2]));
+						lightMonitoringToDaCountVO.setNredcapTodayLights(commonMethodsUtilService.getLongValueForObject(param[3]));
+					} else if ((Long) param[0] == 2l) { // NREDCAP
+						lightMonitoringToDaCountVO.setEeslTodayLights(commonMethodsUtilService.getLongValueForObject(param[2]));
+						lightMonitoringToDaCountVO.setEeslTodayPanels(commonMethodsUtilService.getLongValueForObject(param[3]));
 					}
-		    }
-			return lightMonitoringToDaCountVO;	   	           	
-						
-		}		
+					lightMonitoringToDaCountVO.setTodayLights(lightMonitoringToDaCountVO.getTodayLights()+ commonMethodsUtilService.getLongValueForObject(param[2]));
+					lightMonitoringToDaCountVO.setTodayPanels(lightMonitoringToDaCountVO.getTodayPanels()+ commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at setTimePeriodWiseLightsDetaisl - LightMonitoringService service", e);
+		}
+		return lightMonitoringToDaCountVO;
+	    }
+
 		public static Date getDateBeforeNDays(int noOfDays) {
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				Calendar now = Calendar.getInstance();
 				now.add(Calendar.DATE, -noOfDays);
 				Date pastDate = now.getTime();
-				String dateStr = sdf.format(pastDate);
-				
+				String dateStr = sdf.format(pastDate);			
 				return sdf.parse(dateStr);
 
 			} catch (Exception e) {
 				
 				return null;
 			}
+		} 
 		}
- 
-}
 	
 	        	
