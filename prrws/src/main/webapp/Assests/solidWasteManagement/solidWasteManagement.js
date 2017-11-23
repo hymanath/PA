@@ -1,6 +1,9 @@
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var levelWiseOverviewArr = ['district','constituency','mandal']
 
+var startDate = moment().subtract(1,"month").format("DD-MM-YYYY");
+var endDate = moment().format("DD-MM-YYYY");
+
 onLoadCalls()
 function onLoadCalls()
 {
@@ -21,6 +24,30 @@ $(document).on("contextmenu",function(){
 	alert("Sorry! We have prevented right click usage");
 	return false;
 }); 
+
+
+
+$("#dateRangePicker").daterangepicker({
+	opens:'left',
+	startDate: moment().subtract(1,"month"),
+	endDate: moment(),
+	locale: {
+        format: "DD-MM-YYYY",
+	},
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	}
+});
+$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+	startDate = picker.startDate.format("DD-MM-YYYY");
+	endDate = picker.endDate.format("DD-MM-YYYY");
+	//onLoadCalls();
+});
 
 function levelWiseOverview()
 {
@@ -107,8 +134,8 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 	var json ={
 		locationId:locationId,
 		locationType:locationType,
-		fromDate:"1-06-2017",
-		toDate:"30-07-2017",
+		fromDate:startDate,
+		toDate:endDate,
 		
 		filterId:filterId,
 		filterType:filterType,
@@ -206,11 +233,11 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 				for(var i in result)
 				{
 					if(blockid == 'districtBodyId'){
-						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'">';
+						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
 					}else if(blockid == 'constituencyBodyId'){
-						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'">';
+						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
 					}else if(blockid == 'mandalBodyId'){
-						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'">';
+						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
 					}
 					
 						table+='<td attr_dist_name="'+result[i].name+'" attr_dist_id="'+result[i].id+'">'+result[i].name+'</td>';
