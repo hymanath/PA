@@ -180,7 +180,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 				
 				
 				List<Object[]> designationsobjList = jbCommitteeRoleDAO.getDesignationsIdsByCommitteeId(committeId);
-				 //0 jbCommitteeRoleId,1 jbMemberTypeId,2 memberType, 3 maxMembers
+				 //0 jbCommitteeRoleId,1 jbMemberTypeId,2 memberType, 3 maxMembers,4 jbCommitteeConfirmRuleId
+				   //5 districtId,6 districtName,7 constituencyId,8 constituencyName,9 parliamentConstituencyId, 10 parliamentConstituencyName,
+				   //11 mandalId,12 mandalName,13 panchayatId,14 panchayatName,15 localElectionBodyId,16 localElectionBodyName,17 wardId,18 wardName
 				Long jbCommitteeConfirmRuleId = 0l;
 	            List<Long> committeeRoleIdsList=new ArrayList<Long>();
 				if(designationsobjList!=null && designationsobjList.size() >0){
@@ -196,8 +198,24 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 							designationVO.setDesignationName(commonMethodsUtilService.getStringValueForObject(param[2]));
 							committeeVO.setRoleMemberCount(designationVO.getRoleMemberCount()+committeeVO.getRoleMemberCount());
 							designationVOMap.put(designationId, designationVO);
+							
+							committeeVO.setDistrictId(param[5]!=null ?commonMethodsUtilService.getLongValueForObject(param[5]):null);
+							committeeVO.setDistrictName(param[6]!=null ?commonMethodsUtilService.getStringValueForObject(param[6]):null);
+							committeeVO.setConstituencyId(param[7]!=null?commonMethodsUtilService.getLongValueForObject(param[7]):null);
+							committeeVO.setConstituencyName(param[8]!=null ?commonMethodsUtilService.getStringValueForObject(param[8]):null);
+							committeeVO.setParliamentConstituencyId(param[9]!=null?commonMethodsUtilService.getLongValueForObject(param[9]):null);
+							committeeVO.setParliamentConstituencyName(param[10]!=null ?commonMethodsUtilService.getStringValueForObject(param[10]):null);
+							committeeVO.setMandalId(param[11]!=null?commonMethodsUtilService.getLongValueForObject(param[11]):null);
+							committeeVO.setMandalName(param[12]!=null ?commonMethodsUtilService.getStringValueForObject(param[12]):null);
+							committeeVO.setPanchayatId(param[13]!=null?commonMethodsUtilService.getLongValueForObject(param[13]):null);
+							committeeVO.setPanchayatName(param[14]!=null ?commonMethodsUtilService.getStringValueForObject(param[14]):null);
+							committeeVO.setLocalElectionBodyId(param[15]!=null?commonMethodsUtilService.getLongValueForObject(param[15]):null);
+							committeeVO.setLocalElectionBodyName(param[16]!=null ?commonMethodsUtilService.getStringValueForObject(param[16]):null);
+							committeeVO.setWardId(param[17]!=null?commonMethodsUtilService.getLongValueForObject(param[17]):null);
+							committeeVO.setWardName(param[18]!=null ?commonMethodsUtilService.getStringValueForObject(param[18]):null);
 						}
 					}
+					
 				}
 				List<Object[]> categories = null;
 				if(jbCommitteeConfirmRuleId != null && jbCommitteeConfirmRuleId.longValue() > 0l){
@@ -222,12 +240,14 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						if(designationVO !=null){
 							designationVO.getDesinationMebersVOList().add(createMemberVO(param,committeeVO));
 							Long memAddedCategory = addedMemCategory.get(commonMethodsUtilService.getStringValueForObject(param[8]));
-							if(memAddedCategory == null){
-								addedMemCategory.put(commonMethodsUtilService.getStringValueForObject(param[8]), 1l);
-							}else if(memAddedCategory.longValue() > 0l){
-								addedMemCategory.put(commonMethodsUtilService.getStringValueForObject(param[8]), memAddedCategory.longValue()+1l);
+							if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && (commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("F")
+									|| commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("P"))){
+								if(memAddedCategory == null){
+									addedMemCategory.put(commonMethodsUtilService.getStringValueForObject(param[8]), 1l);
+								}else if(memAddedCategory.longValue() > 0l){
+									addedMemCategory.put(commonMethodsUtilService.getStringValueForObject(param[8]), memAddedCategory.longValue()+1l);
+								}
 							}
-							
 							//committeeVO.setTotalMemberCount(committeeVO.getTotalMemberCount()+1L);
 						}
 					}
@@ -520,6 +540,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					if(locVO == null){
 						 locVO = new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[6]),commonMethodsUtilService.getStringValueForObject(param[7]));
 						 locVO.setList(setCommitteeLevels(committeeLvls));
+						 if(type !=null && !type.equalsIgnoreCase("parliament"))
 						 setlocationLevelsToVO(locVO,param,type);
 						 if(commonMethodsUtilService.getLongValueForObject(param[6]) >0l)
 						locationMapsWithLevel.put(commonMethodsUtilService.getLongValueForObject(param[6]), locVO);

@@ -47,7 +47,20 @@ private String stType;
 private String ocType;
 private String voterCardNo;
 
-
+private Long districtId;
+private String districtName;
+private Long constituencyId;
+private String constituencyName;
+private Long parliamentConstituencyId;
+private String parliamentConstituencyName;
+private Long mandalId;
+private String mandalName;
+private Long panchayatId;
+private String panchayatName;
+private Long localElectionBodyId;
+private String localElectionBodyName;
+private Long wardId;
+private String wardName;
 public String getBcType() {
 	return bcType;
 }
@@ -282,6 +295,90 @@ public String getOcType() {
 }
 public void setOcType(String ocType) {
 	this.ocType = ocType;
+}
+public Long getDistrictId() {
+	return districtId;
+}
+public void setDistrictId(Long districtId) {
+	this.districtId = districtId;
+}
+public String getDistrictName() {
+	return districtName;
+}
+public void setDistrictName(String districtName) {
+	this.districtName = districtName;
+}
+public Long getConstituencyId() {
+	return constituencyId;
+}
+public void setConstituencyId(Long constituencyId) {
+	this.constituencyId = constituencyId;
+}
+public String getConstituencyName() {
+	return constituencyName;
+}
+public void setConstituencyName(String constituencyName) {
+	this.constituencyName = constituencyName;
+}
+public Long getParliamentConstituencyId() {
+	return parliamentConstituencyId;
+}
+public void setParliamentConstituencyId(Long parliamentConstituencyId) {
+	this.parliamentConstituencyId = parliamentConstituencyId;
+}
+public String getParliamentConstituencyName() {
+	return parliamentConstituencyName;
+}
+public void setParliamentConstituencyName(String parliamentConstituencyName) {
+	this.parliamentConstituencyName = parliamentConstituencyName;
+}
+public Long getMandalId() {
+	return mandalId;
+}
+public void setMandalId(Long mandalId) {
+	this.mandalId = mandalId;
+}
+public String getMandalName() {
+	return mandalName;
+}
+public void setMandalName(String mandalName) {
+	this.mandalName = mandalName;
+}
+public Long getPanchayatId() {
+	return panchayatId;
+}
+public void setPanchayatId(Long panchayatId) {
+	this.panchayatId = panchayatId;
+}
+public String getPanchayatName() {
+	return panchayatName;
+}
+public void setPanchayatName(String panchayatName) {
+	this.panchayatName = panchayatName;
+}
+public Long getLocalElectionBodyId() {
+	return localElectionBodyId;
+}
+public void setLocalElectionBodyId(Long localElectionBodyId) {
+	this.localElectionBodyId = localElectionBodyId;
+}
+public String getLocalElectionBodyName() {
+	return localElectionBodyName;
+}
+public void setLocalElectionBodyName(String localElectionBodyName) {
+	this.localElectionBodyName = localElectionBodyName;
+}
+public Long getWardId() {
+	return wardId;
+}
+public void setWardId(Long wardId) {
+	this.wardId = wardId;
+}
+public String getWardName() {
+	return wardName;
+}
+public void setWardName(String wardName) {
+	this.wardName = wardName;
 }
 
 
