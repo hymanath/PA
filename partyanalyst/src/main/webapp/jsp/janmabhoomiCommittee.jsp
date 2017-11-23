@@ -157,7 +157,10 @@
 				
 			str+='</div>';
 		str+='</div>';
-		
+		var districtId = 11;
+		var constituencyId =109;
+		var mandalId = 2475;
+		var panchayatId = 16244;
 		str+='<div class="col-sm-2">';
 			str+='<div class="bordermemberes" style="border:1px solid #45BC7E;background-color:#D7F1E4">';
 				str+='<h5 class="text-bold">Added Members</h5>';
@@ -252,7 +255,16 @@
 								}else{
 									str+='<td> - </td>';
 								}
-								
+								var committeeLevlVal=0;
+										if(result.levelId != null && result.levelId ==2){
+											committeeLevlVal='2'+result.levelValue;
+										}else if(result.levelId != null && (result.levelId ==3 || result.levelId ==4)){
+											committeeLevlVal='1'+result.levelValue;
+										}else if(result.levelId != null && result.levelId ==5){
+											committeeLevlVal='2'+result.levelValue;
+										}else if(result.levelId != null && (result.levelId ==6 || result.levelId ==7)){
+											committeeLevlVal='1'+result.levelValue;
+										}
 								if(statusType != 'Approved' ){
 									<c:choose>
 									
@@ -260,7 +272,8 @@
 									if(result.desinationVOList[i].desinationMebersVOList[j].status == "Approved" || result.desinationVOList[i].desinationMebersVOList[j].status == "Inprogress"){
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit"  attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'" attr_committee_id="'+committeId+'">Edit</h5></td>';
 									}else if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'" attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'">Add Member</h5></td>';
+										
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'" attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_publicRepre_typeId="'+result.desinationVOList[i].publicRepresentativeTypeId+'" attr_committee_lvl_id="'+result.levelId+'" attr_committee_lvl_val="'+committeeLevlVal+'" attr_district_id="'+districtId+'" attr_constituency_id="'+constituencyId+'" attr_mandal_id="'+mandalId+'" attr_panchayat_id="'+panchayatId+'">Add Member</h5></td>';
 								}
 									
 									</c:when>
@@ -272,7 +285,7 @@
 									</c:when>
 									<c:when  test="${fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT' )  || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) }">
 								if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
-									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'"attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'">Add Member</h5></td>';
+									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'"attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_publicRepre_typeId="'+result.desinationVOList[i].publicRepresentativeTypeId+'" attr_committee_lvl_id="'+result.levelId+'" attr_committee_lvl_val="'+committeeLevlVal+'">Add Member</h5></td>';
 								}
 								</c:when>
 								<c:otherwise>
