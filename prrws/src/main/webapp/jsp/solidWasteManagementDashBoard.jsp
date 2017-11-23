@@ -179,6 +179,22 @@
 			</div>
 		</div>
 	</nav>	
+	<section>
+		<div class="" style="margin:0px;">
+				<div class="row" style="background-color:#fff;padding:5px;width:100%;padding:5px;">
+					<div class="col-sm-12">
+						<div class="col-sm-3 pull-right">
+							<div class="input-group pull-right">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+								<input class="form-control" type="text" id="dateRangePicker"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</section>
 </header>
 <main>
 	<div class="container">
@@ -454,6 +470,7 @@
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
