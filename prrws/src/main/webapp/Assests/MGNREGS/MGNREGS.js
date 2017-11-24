@@ -71,6 +71,8 @@ function onLoadCalls()
 			dataArr = ['constituency','mandal','panchayat'];
 		}
 		var tableId = projectDivId.replace(/\s+/g, '')+''+levelType;
+		console.log(projectDivId)
+		console.log(tableId)
 		$("#nregsPanExpModalId").modal('hide');
 		$("#consolidatedView,#projectOverviewBlock").hide();
 		$("#projectData").show();
@@ -466,6 +468,7 @@ function onLoadCalls()
 			
 			
 			var tableId = divId.replace(/\s+/g, '')+''+levelType;
+			
 			$("#"+tableId).html(spinner);
 			var districtId = $("#selectedName").attr("attr_distId");
 			//if(levelType == 'district' || levelType == 'constituency' || levelType == 'panchayat' || levelType == 'mandal')
@@ -570,29 +573,49 @@ function getNregaForestLevelData(divIdd,locationTypeNew,theadArr,menuLocationTyp
 						var groundedPerc = "0.00";
 						if(targetValue > 0 && groundValue > 0)
 							groundedPerc = ((groundValue*100)/targetValue).toFixed(2);
-						if(groundedPerc < 50){
-							str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
-						}else if(groundedPerc >= 50 && groundedPerc < 80){
-							str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
-						}else if(groundedPerc >= 80)
-						{
-							str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
-						}else{
-							str+='<td style="background-color:#FF0000;color:#fff">-</td>';
-						}
 						
-						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
-						str+='<td>'+ajaxresp[i].inProgress+'</td>';
-						str+='<td>'+ajaxresp[i].completed+'</td>';
-						
-						if(ajaxresp[i].percentage < 50){
-							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
-						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
-						}else if(ajaxresp[i].percentage >= 80){
-							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
-						}
-						
+							if(groundedPerc >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+groundedPerc+'</td>';
+							}else if(groundedPerc >= 90 && groundedPerc < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+							}else if(groundedPerc >= 60 && groundedPerc < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+							}
+							
+							/* if(groundedPerc < 50){
+								str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+							}else if(groundedPerc >= 50 && groundedPerc < 80){
+								str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+							}else if(groundedPerc >= 80)
+							{
+								str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">-</td>';
+							} */
+							
+							str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+							str+='<td>'+ajaxresp[i].inProgress+'</td>';
+							str+='<td>'+ajaxresp[i].completed+'</td>';
+							
+							if(ajaxresp[i].percentage >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}
+							
+							/* if(ajaxresp[i].percentage < 50){
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 80){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							} */
 					str+='</tr>';
 				}
 			}
@@ -789,14 +812,14 @@ function projectData(divId,levelId,locationId)
 						collapse+='<ul class="list-inline">';
 							collapse+='<li>Material Percentage Summary</li>';
 							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#00AF50;border-radius:50%;"></span> below 35%</li>';
-							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FFBA00;border-radius:50%;"></span> 35% to 40%</li>';
+							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#ff6600;border-radius:50%;"></span> 35% to 40%</li>';
 							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FF0000;border-radius:50%;"></span> Above 40%</li>';
 						collapse+='</ul>';
 					}else if(divId == 'Agriculture Activities' && i == 0)
 					{
 						collapse+='<ul class="list-inline">';
 							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#00AF50;border-radius:50%;"></span> Above 65%</li>';
-							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FFBA00;border-radius:50%;"></span> 60% to 65%</li>';
+							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#ff6600;border-radius:50%;"></span> 60% to 65%</li>';
 							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FF0000;border-radius:50%;"></span> Below 60%</li>';
 						collapse+='</ul>';
 					}
@@ -1890,16 +1913,25 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 							str+='<td>'+ajaxresp[i].generatedPersonDays+'</td>';
 						}
 						
-						if(ajaxresp[i].perAppLB < 50)
+						if(ajaxresp[i].perAppLB >= 100){
+							str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].perAppLB+'</td>';
+						}else if(ajaxresp[i].perAppLB >= 90 && ajaxresp[i].perAppLB < 100){
+							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].perAppLB+'</td>';
+						}else if(ajaxresp[i].perAppLB >= 60 && ajaxresp[i].perAppLB < 90){
+							str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].perAppLB+'</td>';
+						}else{
+							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].perAppLB+'</td>';
+						}
+						/* if(ajaxresp[i].perAppLB < 50)
 						{
 							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].perAppLB+'</td>';
 						}else if(ajaxresp[i].perAppLB >= 50 && ajaxresp[i].perAppLB < 80)
 						{
-							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].perAppLB+'</td>';
+							str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].perAppLB+'</td>';
 						}else if(ajaxresp[i].perAppLB >= 80)
 						{
 							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].perAppLB+'</td>';
-						}
+						} */
 						
 						str+='<td>'+ajaxresp[i].wageExpenditure+'</td>';
 						str+='<td>'+ajaxresp[i].materialExpenditure+'</td>';
@@ -1909,7 +1941,7 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].materialExpenditurePerc+'</td>';
 						}else if(ajaxresp[i].materialExpenditurePerc >= 35 && ajaxresp[i].materialExpenditurePerc < 40)
 						{
-							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].materialExpenditurePerc+'</td>';
+							str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].materialExpenditurePerc+'</td>';
 						}else if(ajaxresp[i].materialExpenditurePerc >= 40)
 						{
 							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].materialExpenditurePerc+'</td>';
@@ -2396,13 +2428,24 @@ function buildDistrictsPopupDetails(result,dataArr){
 										}
 										str+='<td>'+result.distList[i].target+'</td>';
 										str+='<td>'+result.distList[i].achivement+'</td>';
-										if(result.distList[i].percentage < 50){
+										
+											if(result.distList[i].percentage >= 100){
+												str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percentage+'</td>';
+											}else if(result.distList[i].percentage >= 90 && result.distList[i].percentage < 100){
+												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
+											}else if(result.distList[i].percentage >= 60 && result.distList[i].percentage < 90){
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
+											}else{
+												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
+											}
+											
+										/* if(result.distList[i].percentage < 50){
 											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
-											str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].percentage+'</td>';
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 80){
 											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
-										}
+										} */
 									str+='</tr>';
 									}else if(globalDivName == "Agriculture Activities"){
 										str+='<tr>';
@@ -2433,7 +2476,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].achivement+'</td>';
 										}else if(result.distList[i].achivement >= 60 && result.distList[i].achivement < 65)
 										{
-											str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].achivement+'</td>';
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].achivement+'</td>';
 										}
 									str+='</tr>';
 									}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds" || globalDivName == "Anganwadi" || globalDivName == "SMC Trench" || globalDivName == "Imp to CD" || globalDivName == "MPT_PT" || globalDivName == "GC Works" || globalDivName == "CD_CW"){
@@ -2464,37 +2507,67 @@ function buildDistrictsPopupDetails(result,dataArr){
 										var groundedPerc = '';
 											groundedPerc = (result.distList[i].grounded/result.distList[i].target*100).toFixed(2);
 										
-										if(groundedPerc < 50){
+										if(groundedPerc >= 100){
+											str+='<td style="background-color:#f7b519;color:#fff">'+groundedPerc+'</td>';
+										}else if(groundedPerc >= 90 && groundedPerc < 100){
+											str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+										}else if(groundedPerc >= 60 && groundedPerc < 90){
+											str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+										}else{
+											str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+										}
+										/* if(groundedPerc < 50){
 											str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 										}else if(groundedPerc >= 50 && groundedPerc < 80){
-											str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+											str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
 										}else if(groundedPerc >= 80)
 										{
 											str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
 										}else{
 											str+='<td style="background-color:#FF0000;color:#fff">-</td>';
 										}
+										 */
 										str+='<td>'+result.distList[i].notGrounded+'</td>';
 										str+='<td>'+result.distList[i].inProgress+'</td>';
 										str+='<td>'+result.distList[i].completed+'</td>';
 										
 										//str+='<td>'+result.distList[i].percentage+'</td>';
-										
-											if(result.distList[i].percentage < 50){
+											
+											if(result.distList[i].percentage >= 100){
+												str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percentage+'</td>';
+											}else if(result.distList[i].percentage >= 90 && result.distList[i].percentage < 100){
+												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
+											}else if(result.distList[i].percentage >= 60 && result.distList[i].percentage < 90){
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
+											}else{
+												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
+											}
+											
+											/* if(result.distList[i].percentage < 50){
 												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
 											}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
-												str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].percentage+'</td>';
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
 											}else if(result.distList[i].percentage >= 80){
 												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
-											}
+											} */
 										if(dataArr == "district" && globalDivName != "Anganwadi"){
+											if(result.distList[i].percSant >= 100){
+												str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percSant+'</td>';
+											}else if(result.distList[i].percSant >= 90 && result.distList[i].percSant < 100){
+												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percSant+'</td>';
+											}else if(result.distList[i].percSant >= 60 && result.distList[i].percSant < 90){
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percSant+'</td>';
+											}else{
+												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percSant+'</td>';
+											}
+											/* 
 											 if(result.distList[i].percSant < 50){
 												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percSant+'</td>';
 											}else if(result.distList[i].percSant >= 50 && result.distList[i].percSant < 80){
-												str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].percSant+'</td>';
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percSant+'</td>';
 											}else if(result.distList[i].percSant >= 80){
 												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percSant+'</td>';
-											}
+											} */
 										}
 										
 										if(globalDivName == "Anganwadi"){
@@ -2530,22 +2603,42 @@ function buildDistrictsPopupDetails(result,dataArr){
 										str+='<td>'+result.distList[i].expenditureAmount+'</td>';
 										str+='<td>'+result.distList[i].completedKMS+'</td>';
 										if(dataArr == "district"){
+											if(result.distList[i].percentage >= 100){
+												str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percentage+'</td>';
+											}else if(result.distList[i].percentage >= 90 && result.distList[i].percentage < 100){
+												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
+											}else if(result.distList[i].percentage >= 60 && result.distList[i].percentage < 90){
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
+											}else{
+												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
+											}
+											/* 
 											if(result.distList[i].percentage < 50){
 												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
 											}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
-												str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].percentage+'</td>';
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
 											}else if(result.distList[i].percentage >= 80){
 												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
-											}
+											} */
 										}
 										else{
+											if(result.distList[i].percSant >= 100){
+												str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percSant+'</td>';
+											}else if(result.distList[i].percSant >= 90 && result.distList[i].percSant < 100){
+												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percSant+'</td>';
+											}else if(result.distList[i].percSant >= 60 && result.distList[i].percSant < 90){
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percSant+'</td>';
+											}else{
+												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percSant+'</td>';
+											}
+											/* 
 											if(result.distList[i].percSant < 50){
 												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percSant+'</td>';
 											}else if(result.distList[i].percSant >= 50 && result.distList[i].percSant < 80){
-												str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].percSant+'</td>';
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percSant+'</td>';
 											}else if(result.distList[i].percSant >= 80){
 												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percSant+'</td>';
-											}
+											} */
 										}
 										//str+='<td>'+result.distList[i].percentage+'</td>';
 									str+='</tr>';
@@ -2574,22 +2667,42 @@ function buildDistrictsPopupDetails(result,dataArr){
 										str+='<td>'+result.distList[i].sanctionedACRES+'</td>';
 										str+='<td>'+result.distList[i].pittingArea+'</td>';
 										str+='<td>'+result.distList[i].plantingArea+'</td>';
-										
-											if(result.distList[i].targetPittingPerc < 50)
+											
+											if(result.distList[i].targetPittingPerc >= 100){
+												str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
+											}else if(result.distList[i].targetPittingPerc >= 90 && result.distList[i].targetPittingPerc < 100){
+												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
+											}else if(result.distList[i].targetPittingPerc >= 60 && result.distList[i].targetPittingPerc < 90){
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
+											}else{
+												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
+											}
+											
+											/* if(result.distList[i].targetPittingPerc < 50)
 												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
 											else if(result.distList[i].targetPittingPerc >= 50 && result.distList[i].targetPittingPerc < 80)
-												str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
 											else if(result.distList[i].targetPittingPerc >= 80)
-												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
-										
-											if(result.distList[i].targetPalnting < 50){
+												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].targetPittingPerc+'</td>'; */
+											
+											if(result.distList[i].targetPalnting >= 100){
+												str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].targetPalnting+'</td>';
+											}else if(result.distList[i].targetPalnting >= 90 && result.distList[i].targetPalnting < 100){
+												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].targetPalnting+'</td>';
+											}else if(result.distList[i].targetPalnting >= 60 && result.distList[i].targetPalnting < 90){
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].targetPalnting+'</td>';
+											}else{
+												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].targetPalnting+'</td>';
+											}
+											
+											/* if(result.distList[i].targetPalnting < 50){
 												str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].targetPalnting+'</td>';
 											}else if(result.distList[i].targetPalnting >= 50 && result.distList[i].targetPalnting < 80){
-												str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].targetPalnting+'</td>';
+												str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].targetPalnting+'</td>';
 											}else if(result.distList[i].targetPalnting >= 80)
 											{
 												str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].targetPalnting+'</td>';
-											}
+											} */
 										str+='</tr>';
 									}else if(globalDivName == "Avenue"){
 										str+='<tr>';
@@ -2618,21 +2731,41 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td>'+result.distList[i].pittingKMS+'</td>';
 											str+='<td>'+result.distList[i].plantingKMS+'</td>';
 											
-												if(result.distList[i].targetPittingPerc < 50){
+												if(result.distList[i].targetPittingPerc >= 100){
+													str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
+												}else if(result.distList[i].targetPittingPerc >= 90 && result.distList[i].targetPittingPerc < 100){
+													str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
+												}else if(result.distList[i].targetPittingPerc >= 60 && result.distList[i].targetPittingPerc < 90){
+													str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
+												}else{
+													str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
+												}
+												
+												/* if(result.distList[i].targetPittingPerc < 50){
 													str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
 												}else if(result.distList[i].targetPittingPerc >= 50 && result.distList[i].targetPittingPerc < 80){
-													str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
+													str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
 												}else if(result.distList[i].targetPittingPerc >= 80){
 													str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].targetPittingPerc+'</td>';
-												}
+												} */
 											
-												if(result.distList[i].sanctionedPerc < 50){
+												if(result.distList[i].sanctionedPerc >= 100){
+													str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].sanctionedPerc+'</td>';
+												}else if(result.distList[i].sanctionedPerc >= 90 && result.distList[i].sanctionedPerc < 100){
+													str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].sanctionedPerc+'</td>';
+												}else if(result.distList[i].sanctionedPerc >= 60 && result.distList[i].sanctionedPerc < 90){
+													str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].sanctionedPerc+'</td>';
+												}else{
+													str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].sanctionedPerc+'</td>';
+												}
+												
+												/* if(result.distList[i].sanctionedPerc < 50){
 													str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].sanctionedPerc+'</td>';
 												}else if(result.distList[i].sanctionedPerc >= 50 && result.distList[i].sanctionedPerc < 80){
-													str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].sanctionedPerc+'</td>';
+													str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].sanctionedPerc+'</td>';
 												}else if(result.distList[i].sanctionedPerc >= 80){
 													str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].sanctionedPerc+'</td>';
-												}
+												} */
 										str+='</tr>';
 									}else if(globalDivName == "Nurseries"){
 										str+='<tr>';
@@ -2656,14 +2789,25 @@ function buildDistrictsPopupDetails(result,dataArr){
 										}
 										str+='<td>'+result.distList[i].targetPersonDays+'</td>';
 										str+='<td>'+result.distList[i].completed+'</td>';
-										if(result.distList[i].percentage < 50){
+										
+										if(result.distList[i].percentage >= 100){
+											str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 90 && result.distList[i].percentage < 100){
+											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 60 && result.distList[i].percentage < 90){
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else{
+											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
+										}
+										
+										/* if(result.distList[i].percentage < 50){
 											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
-											str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].percentage+'</td>';
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 80)
 										{
 											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
-										}
+										} */
 										//str+='<td>'+result.distList[i].percentage+'</td>';
 									str+='</tr>';
 									}else if(globalDivName == "FAperformance"){
@@ -2694,14 +2838,24 @@ function buildDistrictsPopupDetails(result,dataArr){
 										str+='<td>'+result.distList[i].avgAvgWageMarks+'</td>';
 										str+='<td>'+result.distList[i].avgFlagshipMarks+'</td>';
 										
-										if(result.distList[i].percentage < 50){
+										if(result.distList[i].percentage >= 100){
+											str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 90 && result.distList[i].percentage < 100){
+											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 60 && result.distList[i].percentage < 90){
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else{
+											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
+										}
+										
+										/* if(result.distList[i].percentage < 50){
 											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
-											str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].percentage+'</td>';
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 80)
 										{
 											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
-										}
+										} */
 										
 									str+='</tr>';
 									}else if(globalDivName == "GH"){
@@ -2730,13 +2884,24 @@ function buildDistrictsPopupDetails(result,dataArr){
 										str+='<td>'+result.distList[i].pittingKMS+'</td>';
 										str+='<td>'+result.distList[i].plantingKMS+'</td>';
 										str+='<td>'+result.distList[i].totalExpenditure+'</td>';
-										if(result.distList[i].percentage < 50){
+										
+										if(result.distList[i].percentage >= 100){
+											str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 90 && result.distList[i].percentage < 100){
+											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 60 && result.distList[i].percentage < 90){
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else{
+											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
+										}
+										
+										/* if(result.distList[i].percentage < 50){
 											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
-											str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].percentage+'</td>';
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 80){
 											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
-										}
+										} */
 									str+='</tr>';
 									}/* else if(globalDivName == "coffee"){
 										str+='<td>'+result.distList[i].targetACRES+'</td>';
@@ -2749,14 +2914,14 @@ function buildDistrictsPopupDetails(result,dataArr){
 										if(result.distList[i].pitingPerc < 50)
 											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].pitingPerc+'</td>';
 										else if(result.distList[i].pitingPerc >= 50 && result.distList[i].pitingPerc < 80)
-											str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
+											str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
 										else if(result.distList[i].pitingPerc >= 80)
 											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].pitingPerc+'</td>';
 									
 										if(result.distList[i].pencentageOfPlanting < 50){
 											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].pencentageOfPlanting+'</td>';
 										}else if(result.distList[i].pencentageOfPlanting >= 50 && result.distList[i].pencentageOfPlanting < 80){
-											str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].pencentageOfPlanting+'</td>';
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].pencentageOfPlanting+'</td>';
 										}else if(result.distList[i].pencentageOfPlanting >= 80){
 											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].pencentageOfPlanting+'</td>';
 										}
@@ -2788,21 +2953,43 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td>'+result.distList[i].sanctionedPerventage+'</td>';
 										str+='<td>'+result.distList[i].expenditureAmount+'</td>';
 										str+='<td>'+result.distList[i].completedKMS+'</td>';
-										if(result.distList[i].percSant < 50){
+										
+										if(result.distList[i].percSant >= 100){
+											str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percSant+'</td>';
+										}else if(result.distList[i].percSant >= 90 && result.distList[i].percSant < 100){
+											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percSant+'</td>';
+										}else if(result.distList[i].percSant >= 60 && result.distList[i].percSant < 90){
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percSant+'</td>';
+										}else{
+											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percSant+'</td>';
+										}
+										
+										/* if(result.distList[i].percSant < 50){
 											str+='<td style="background-color:#FF0000">'+result.distList[i].percSant+'</td>';
 										}else if(result.distList[i].percSant >= 50 && result.distList[i].percSant < 80){
-											str+='<td style="background-color:#FFBA00">'+result.distList[i].percSant+'</td>';
+											str+='<td style="background-color:#ff6600">'+result.distList[i].percSant+'</td>';
 										}else if(result.distList[i].percSant >= 80){
 											str+='<td style="background-color:#00AF50">'+result.distList[i].percSant+'</td>';
+										} */
+										
+										if(result.distList[i].percentage >= 100){
+											str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 90 && result.distList[i].percentage < 100){
+											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 60 && result.distList[i].percentage < 90){
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else{
+											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
 										}
-										if(result.distList[i].percentage < 50){
+										
+										/* if(result.distList[i].percentage < 50){
 											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
-											str+='<td style="background-color:#FFBA00">'+result.distList[i].percentage+'</td>';
+											str+='<td style="background-color:#ff6600">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 80)
 										{
 											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
-										}
+										} */
 										str+='</tr>';
 									}else{
 										str+='<tr>';
@@ -2848,16 +3035,27 @@ function buildDistrictsPopupDetails(result,dataArr){
 												groundedPerc = ((result.distList[i].grounded*100)/result.distList[i].target).toFixed(2);
 											}
 										}
-										if(groundedPerc < 50){
+										
+										if(groundedPerc >= 100){
+											str+='<td style="background-color:#f7b519;color:#fff">'+groundedPerc+'</td>';
+										}else if(groundedPerc >= 90 && groundedPerc < 100){
+											str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+										}else if(groundedPerc >= 60 && groundedPerc < 90){
+											str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+										}else{
+											str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+										}
+										
+										/* if(groundedPerc < 50){
 											str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 										}else if(groundedPerc >= 50 && groundedPerc < 80){
-											str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+											str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
 										}else if(groundedPerc >= 80)
 										{
 											str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
 										}else{
 											str+='<td style="background-color:#FF0000;color:#fff">-</td>';
-										}
+										} */
 										str+='<td>'+result.distList[i].notGrounded+'</td>';
 										if(globalDivName == 'Mulbery New')
 											str+='<td>'+result.distList[i].mulbInprogress+'</td>';
@@ -2871,14 +3069,25 @@ function buildDistrictsPopupDetails(result,dataArr){
 										else
 											str+='<td>'+result.distList[i].completed+'</td>';
 										//str+='<td>'+result.distList[i].completed+'</td>';
-										if(result.distList[i].percentage < 50){
+										
+										if(result.distList[i].percentage >= 100){
+											str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 90 && result.distList[i].percentage < 100){
+											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 60 && result.distList[i].percentage < 90){
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
+										}else{
+											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
+										}
+										
+										/* if(result.distList[i].percentage < 50){
 											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
-											str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].percentage+'</td>';
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 80)
 										{
 											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].percentage+'</td>';
-										}
+										} */
 										if(globalDivName == "Farm Ponds" || globalDivName == "IHHL" || globalDivName == "Vermi Compost" || globalDivName == "Burial Ground" || globalDivName == "Solid Waste Management" || globalDivName == "Play fields" || globalDivName == "NTR 90 Days" || globalDivName == "Production of Bricks" || globalDivName == "Mulbery New" || globalDivName == "Silk worm New"){
 											str+='<td>'+result.distList[i].wageExpenditure+'</td>';
 											str+='<td>'+result.distList[i].materialExpenditure+'</td>';
@@ -2942,13 +3151,24 @@ function buildDistrictsPopupDetails(result,dataArr){
 								str+='<td>'+result.distList[i].targetPersonDays+'</td>';
 								str+='<td>'+result.distList[i].generatedPersonDays+'</td>';
 								//str+='<td>'+result.distList[i].perAppLB+'</td>';
-								if(result.distList[i].perAppLB < 50){
+								
+									if(result.distList[i].perAppLB >= 100){
+										str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].perAppLB+'</td>';
+									}else if(result.distList[i].perAppLB >= 90 && result.distList[i].perAppLB < 100){
+										str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].perAppLB+'</td>';
+									}else if(result.distList[i].perAppLB >= 60 && result.distList[i].perAppLB < 90){
+										str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].perAppLB+'</td>';
+									}else{
+										str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].perAppLB+'</td>';
+									}
+									
+								/* if(result.distList[i].perAppLB < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].perAppLB+'</td>';
 								}else if(result.distList[i].perAppLB >= 50 && result.distList[i].perAppLB < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+result.distList[i].perAppLB+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].perAppLB+'</td>';
 								}else if(result.distList[i].perAppLB >= 80){
 									str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].perAppLB+'</td>';
-								}
+								} */
 								str+='<td>'+result.distList[i].wageExpenditure+'</td>';
 								str+='<td>'+result.distList[i].materialExpenditure+'</td>';
 								str+='<td>'+result.distList[i].totalExpenditure+'</td>';
@@ -3566,13 +3786,24 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 						str+='<td>'+ajaxresp[i].avgAvgWageMarks+'</td>';
 						str+='<td>'+ajaxresp[i].avgFlagshipMarks+'</td>';
 						//str+='<td>'+ajaxresp[i].avgTotMarks+'</td>';
-						if(ajaxresp[i].avgTotMarks < 50){
+						
+						if(ajaxresp[i].avgTotMarks >= 100){
+							str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].avgTotMarks+'</td>';
+						}else if(ajaxresp[i].avgTotMarks >= 90 && ajaxresp[i].avgTotMarks < 100){
+							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].avgTotMarks+'</td>';
+						}else if(ajaxresp[i].avgTotMarks >= 60 && ajaxresp[i].avgTotMarks < 90){
+							str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].avgTotMarks+'</td>';
+						}else{
+							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].avgTotMarks+'</td>';
+						}
+						
+						/* if(ajaxresp[i].avgTotMarks < 50){
 							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].avgTotMarks+'</td>';
 						}else if(ajaxresp[i].avgTotMarks >= 50 && ajaxresp[i].avgTotMarks < 80){
-							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].avgTotMarks+'</td>';
+							str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].avgTotMarks+'</td>';
 						}else if(ajaxresp[i].avgTotMarks >= 80){
 							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].avgTotMarks+'</td>';
-						}
+						} */
 						
 					str+='</tr>';
 				}
@@ -3653,13 +3884,23 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td>'+ajaxresp[i].pittingKMS+'</td>';
 								str+='<td>'+ajaxresp[i].plantingKMS+'</td>';
 								
-								if(ajaxresp[i].percentage < 50){
+								if(ajaxresp[i].percentage >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								}
+								
+								/* if(ajaxresp[i].percentage < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
 								}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
 								}else if(ajaxresp[i].percentage >= 80){
 									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
-								}
+								} */
 								str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
 								//str+='<td>'+ajaxresp[i].percentage+'</td>';
 						}else{
@@ -3690,78 +3931,133 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								if(ajaxresp[i].target > 0 && ajaxresp[i].grounded > 0){
 									groundedPerc = ((ajaxresp[i].grounded*100)/ajaxresp[i].target).toFixed(2);
 								}
-								if(groundedPerc < 50){
+								
+								if(groundedPerc >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+groundedPerc+'</td>';
+								}else if(groundedPerc >= 90 && groundedPerc < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+								}else if(groundedPerc >= 60 && groundedPerc < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+								}
+								
+								/* if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 50 && groundedPerc < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 80)
 								{
 									str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
 								}else{
 									str+='<td style="background-color:#FF0000;color:#fff">-</td>';
-								}
+								} */
 							}else if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 								var groundedPerc = "0.00";
 								if(ajaxresp[i].target > 0 && ajaxresp[i].grounded > 0)
 									groundedPerc = ((ajaxresp[i].grounded*100)/ajaxresp[i].target).toFixed(2);
-								if(groundedPerc < 50){
+								
+								if(groundedPerc >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+groundedPerc+'</td>';
+								}else if(groundedPerc >= 90 && groundedPerc < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+								}else if(groundedPerc >= 60 && groundedPerc < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+								}
+								
+								/* if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 50 && groundedPerc < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 80)
 								{
 									str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
 								}else{
 									str+='<td style="background-color:#FF0000;color:#fff">-</td>';
-								}
+								} */
 							}else if(globalDivName == 'OPGK-Perinnials' || globalDivName == 'OPGK-Annuals'){
 								var groundValue = ajaxresp[i].grounded;
 								var targetValue = ajaxresp[i].opgkTarget;
 								var groundedPerc = "0.00";
 								if(targetValue > 0 && groundValue > 0)
 									groundedPerc = ((groundValue*100)/targetValue).toFixed(2);
-								if(groundedPerc < 50){
+								
+								if(groundedPerc >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+groundedPerc+'</td>';
+								}else if(groundedPerc >= 90 && groundedPerc < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+								}else if(groundedPerc >= 60 && groundedPerc < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+								}
+								
+								/* if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 50 && groundedPerc < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 80)
 								{
 									str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
 								}else{
 									str+='<td style="background-color:#FF0000;color:#fff">-</td>';
-								}
+								} */
 							}else if(globalDivName == 'Mulbery New'){
 								var groundValue = ajaxresp[i].grounded;
 								var targetValue = ajaxresp[i].mulbTarget;
 								var groundedPerc = "0.00";
 								if(targetValue > 0 && groundValue > 0)
 									groundedPerc = ((groundValue*100)/targetValue).toFixed(2);
-								if(groundedPerc < 50){
+								
+								if(groundedPerc >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+groundedPerc+'</td>';
+								}else if(groundedPerc >= 90 && groundedPerc < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+								}else if(groundedPerc >= 60 && groundedPerc < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+								}
+								
+								/* if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 50 && groundedPerc < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 80)
 								{
 									str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
 								}else{
 									str+='<td style="background-color:#FF0000;color:#fff">-</td>';
-								}
+								} */
 							}else{
 								var groundValue = ajaxresp[i].grounded;
 								var targetValue = ajaxresp[i].target;
 								var groundedPerc = "0.00";
 								if(targetValue > 0 && groundValue > 0)
 									groundedPerc = ((groundValue*100)/targetValue).toFixed(2);
-								if(groundedPerc < 50){
+								
+								if(groundedPerc >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+groundedPerc+'</td>';
+								}else if(groundedPerc >= 90 && groundedPerc < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+								}else if(groundedPerc >= 60 && groundedPerc < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+								}
+								
+								/* if(groundedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 50 && groundedPerc < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
 								}else if(groundedPerc >= 80)
 								{
 									str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
 								}else{
 									str+='<td style="background-color:#FF0000;color:#fff">-</td>';
-								}
+								} */
 							}
 							str+='<td>'+ajaxresp[i].notGrounded+'</td>';
 							if(globalDivName == 'Mulbery New')
@@ -3775,41 +4071,84 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							else
 								str+='<td>'+ajaxresp[i].completed+'</td>';
 							if((globalDivName == 'Mulbery New'  || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
-								if(ajaxresp[i].sanctionedPerc < 50){
+								
+								if(ajaxresp[i].sanctionedPerc >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
+								}else if(ajaxresp[i].sanctionedPerc >= 90 && ajaxresp[i].sanctionedPerc < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
+								}else if(ajaxresp[i].sanctionedPerc >= 60 && ajaxresp[i].sanctionedPerc < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
+								}
+								
+								/* if(ajaxresp[i].sanctionedPerc < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
 								}else if(ajaxresp[i].sanctionedPerc >= 50 && ajaxresp[i].sanctionedPerc < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
 								}else if(ajaxresp[i].sanctionedPerc >= 80){
 									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
-								}
+								} */
 							}
 							
-							if(ajaxresp[i].percentage < 50){
+							if(ajaxresp[i].percentage >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}
+							
+							/* if(ajaxresp[i].percentage < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
-							}
+							} */
 							
 							if((globalDivName == 'Silk worm New') && locationTypeNew == "state"){
-								if(ajaxresp[i].percSant < 50){
+								if(ajaxresp[i].percSant >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 90 && ajaxresp[i].percSant < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 60 && ajaxresp[i].percSant < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}
+								
+								/* if(ajaxresp[i].percSant < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percSant+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}else if(ajaxresp[i].percSant >= 80){
 									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
-								}
+								} */
 							}
 							
 							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
-								if(ajaxresp[i].percSant < 50){
+								
+								if(ajaxresp[i].percSant >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 90 && ajaxresp[i].percSant < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 60 && ajaxresp[i].percSant < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}
+								
+								
+								/* if(ajaxresp[i].percSant < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percSant+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}else if(ajaxresp[i].percSant >= 80){
 									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
-								}
+								} */
 							}
 							if(globalDivName == 'Farm Ponds' || globalDivName == 'IHHL' || globalDivName == 'Vermi Compost' || globalDivName == 'Burial Ground' || globalDivName == 'Solid Waste Management' || globalDivName == 'Play fields' || globalDivName == 'NTR 90 Days' || globalDivName == 'Production of Bricks' || globalDivName == 'Mulbery New' || globalDivName == 'Silk worm New')
 							{
@@ -4083,14 +4422,25 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 						else
 							str+='<td>'+ajaxresp[i].target+'</td>';
 						str+='<td>'+ajaxresp[i].achivement+'</td>';
-						if(ajaxresp[i].percentage < 50){
+						
+						if(ajaxresp[i].percentage >= 100){
+							str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+							str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}else{
+							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}
+						
+						/* if(ajaxresp[i].percentage < 50){
 							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
 						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
 						}else if(ajaxresp[i].percentage >= 80)
 						{
-							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
-						}
+							 str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}*/
 					str+='</tr>';
 				}
 			}
@@ -4166,7 +4516,7 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].achivement+'</td>';
 						}else if(ajaxresp[i].achivement >= 60 && ajaxresp[i].achivement < 65)
 						{
-							str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].achivement+'</td>';
+							str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].achivement+'</td>';
 						}
 					str+='</tr>';
 				}
@@ -4239,21 +4589,40 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 						str+='<td>'+ajaxresp[i].pittingArea+'</td>';
 						str+='<td>'+ajaxresp[i].plantingArea+'</td>';
 						
-							if(ajaxresp[i].targetPittingPerc < 50)
+							if(ajaxresp[i].targetPittingPerc >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
+							}else if(ajaxresp[i].targetPittingPerc >= 90 && ajaxresp[i].targetPittingPerc < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
+							}else if(ajaxresp[i].targetPittingPerc >= 60 && ajaxresp[i].targetPittingPerc < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
+							}
+							
+							/* if(ajaxresp[i].targetPittingPerc < 50)
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
 							else if(ajaxresp[i].targetPittingPerc >= 50 && ajaxresp[i].targetPittingPerc < 80)
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
 							else if(ajaxresp[i].targetPittingPerc >= 80)
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
-						
-							if(ajaxresp[i].targetPalnting < 50){
+						 */
+							if(ajaxresp[i].targetPalnting >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].targetPalnting+'</td>';
+							}else if(ajaxresp[i].targetPalnting >= 90 && ajaxresp[i].targetPalnting < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].targetPalnting+'</td>';
+							}else if(ajaxresp[i].targetPalnting >= 60 && ajaxresp[i].targetPalnting < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].targetPalnting+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].targetPalnting+'</td>';
+							}
+							/* if(ajaxresp[i].targetPalnting < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].targetPalnting+'</td>';
 							}else if(ajaxresp[i].targetPalnting >= 50 && ajaxresp[i].targetPalnting < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].targetPalnting+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].targetPalnting+'</td>';
 							}else if(ajaxresp[i].targetPalnting >= 80)
 							{
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].targetPalnting+'</td>';
-							}
+							} */
 					str+='</tr>';
 				}
 			}
@@ -4327,37 +4696,58 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 						str+='<td>'+ajaxresp[i].pittingKMS+'</td>';
 						str+='<td>'+ajaxresp[i].plantingKMS+'</td>';
 						//if(locationType == "state" || locationType == "district"){
-							if(ajaxresp[i].targetPittingPerc < 50){
+							
+							if(ajaxresp[i].targetPittingPerc >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
+							}else if(ajaxresp[i].targetPittingPerc >= 90 && ajaxresp[i].targetPittingPerc < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
+							}else if(ajaxresp[i].targetPittingPerc >= 60 && ajaxresp[i].targetPittingPerc < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
+							}
+							
+							/* if(ajaxresp[i].targetPittingPerc < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
 							}else if(ajaxresp[i].targetPittingPerc >= 50 && ajaxresp[i].targetPittingPerc < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
 							}else if(ajaxresp[i].targetPittingPerc >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].targetPittingPerc+'</td>';
-							}
+							} */
 						//}
 							/* else{
 							if(ajaxresp[i].sancTrgtPittingPerc < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].sancTrgtPittingPerc+'</td>';
 							}else if(ajaxresp[i].sancTrgtPittingPerc >= 50 && ajaxresp[i].sancTrgtPittingPerc < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].sancTrgtPittingPerc+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].sancTrgtPittingPerc+'</td>';
 							}else if(ajaxresp[i].sancTrgtPittingPerc >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].sancTrgtPittingPerc+'</td>';
 							}
 						} */
 						//if(locationType == "state" || locationType == "district"){
-							if(ajaxresp[i].sanctionedPerc < 50){
+							if(ajaxresp[i].sanctionedPerc >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
+							}else if(ajaxresp[i].sanctionedPerc >= 90 && ajaxresp[i].sanctionedPerc < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
+							}else if(ajaxresp[i].sanctionedPerc >= 60 && ajaxresp[i].sanctionedPerc < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
+							}
+							
+							/* if(ajaxresp[i].sanctionedPerc < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
 							}else if(ajaxresp[i].sanctionedPerc >= 50 && ajaxresp[i].sanctionedPerc < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
 							}else if(ajaxresp[i].sanctionedPerc >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
-							}
+							} */
 						//}
 						/* else{
 							if(ajaxresp[i].pencentageOfPlanting < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
 							}else if(ajaxresp[i].pencentageOfPlanting >= 50 && ajaxresp[i].pencentageOfPlanting < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
 							}else if(ajaxresp[i].pencentageOfPlanting >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
 							}
@@ -4478,21 +4868,43 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 								str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 							str+='<td>'+ajaxresp[i].expenditureAmount+'</td>';
 							str+='<td>'+ajaxresp[i].completedKMS+'</td>';
-							if(ajaxresp[i].percSant < 50){
+							
+							if(ajaxresp[i].percSant >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 90 && ajaxresp[i].percSant < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 60 && ajaxresp[i].percSant < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}
+							
+							
+							/* if(ajaxresp[i].percSant < 50){
 								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
 							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
-								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
+								str+='<td style="background-color:#ff6600">'+ajaxresp[i].percSant+'</td>';
 							}else if(ajaxresp[i].percSant >= 80){
 								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
+							} */
+							if(ajaxresp[i].percentage >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}
-							if(ajaxresp[i].percentage < 50){
+							
+							/* if(ajaxresp[i].percentage < 50){
 								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
+								str+='<td style="background-color:#ff6600">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 80)
 							{
 								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
-							}
+							} */
 						}
 						else if(blockName == "CC Roads1"){
 							if(locationType == "state" || locationType == "district")
@@ -4501,22 +4913,44 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 							str+='<td>'+ajaxresp[i].expenditureAmount+'</td>';
 							str+='<td>'+ajaxresp[i].completedKMS+'</td>';
 							if(locationType == "state" || locationType == "district"){
-								if(ajaxresp[i].percentage < 50){
+								
+								if(ajaxresp[i].percentage >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								}
+								
+								
+								/* if(ajaxresp[i].percentage < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
 								}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
 								}else if(ajaxresp[i].percentage >= 80){
 									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
-								}
+								} */
 							}
 							else{
-								if(ajaxresp[i].percSant < 50){
+								if(ajaxresp[i].percSant >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 90 && ajaxresp[i].percSant < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 60 && ajaxresp[i].percSant < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}
+								
+								/* if(ajaxresp[i].percSant < 50){
 									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percSant+'</td>';
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}else if(ajaxresp[i].percSant >= 80){
 									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
-								}
+								} */
 							}
 							
 							str+='<td>'+ajaxresp[i].egsExpenditure+'</td>';
@@ -4935,7 +5369,17 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					/*if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'IJP PROGRAM WORKS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Cattle Ponds' || type == 'Desilting of Drinking Water Tanks' || type == 'coffee' || type == 'Comprehensive Restoration of minor Irrigation Tank1' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == 'NTR 90 Days' || type == 'NTR Rural House' || type == 'Production of Bricks'){
 						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
 					}else{*/
-						if(result[i].percentage < 50)
+						if(result[i].percentage >= 100){
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+						}else{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						}
+						
+						/* if(result[i].percentage < 50)
 						{
 							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -4948,7 +5392,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						}else
 						{
 							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-						}
+						} */
 					//}
 				}
 				
@@ -5050,7 +5494,18 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						/*if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'IJP PROGRAM WORKS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Cattle Ponds' || type == 'Desilting of Drinking Water Tanks' || type == 'coffee' || type == 'Comprehensive Restoration of minor Irrigation Tank1' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == 'NTR 90 Days' || type == 'NTR Rural House' || type == 'Production of Bricks'){
 							str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
 						}else{*/
-							if(result[i].percentage < 50)
+							
+							if(result[i].percentage >= 100){
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+							}else{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}
+							
+							/* if(result[i].percentage < 50)
 							{
 								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
 							}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -5062,7 +5517,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}else
 							{
 								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
-							}
+							} */
 						//}
 					}
 					
@@ -5175,7 +5630,18 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				{
 					if(result[i] != null)
 					{
-						if(result[i].percentage < 50)
+						
+						if(result[i].percentage >= 100){
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+						}else{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						}
+						
+						/* if(result[i].percentage < 50)
 						{
 							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -5185,7 +5651,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						}else if(result[i].percentage >= 80)
 						{
 							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
-						}
+						} */
 							if(type == 'FAperformance')
 							{
 								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
@@ -5244,8 +5710,17 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}else{
 								str+='<h1 class="text-center">0<small>%</small>';
 							}
-								
-							if(result[i].percentage < 50)
+							
+							if(result[i].percentage >= 100){
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+							}else{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}	
+							/* if(result[i].percentage < 50)
 							{
 								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
 							}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -5257,7 +5732,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}else
 							{
 								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
-							}
+							} */
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
 									str+='<label>Target</label>';
@@ -5309,7 +5784,16 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				{
 					if(result[i] != null)
 					{
-						if(result[i].percentage < 50)
+						if(result[i].percentage >= 100){
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+						}else{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+						}	
+						/* if(result[i].percentage < 50)
 						{
 							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -5322,7 +5806,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						}else
 						{
 							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-						}
+						} */
+						
+						
 							str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
 							{
@@ -6199,28 +6685,48 @@ function getNregaOtherMCCLevelData(divIdd,locationTypeNew,theadArr,menuLocationT
 							var groundedPerc = "0.00";
 							if(targetValue > 0 && groundValue > 0)
 								groundedPerc = ((groundValue*100)/targetValue).toFixed(2);
-							if(groundedPerc < 50){
+							
+							if(groundedPerc >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+groundedPerc+'</td>';
+							}else if(groundedPerc >= 90 && groundedPerc < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+							}else if(groundedPerc >= 60 && groundedPerc < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+							}	
+							
+							/* if(groundedPerc < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 							}else if(groundedPerc >= 50 && groundedPerc < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
 							}else if(groundedPerc >= 80)
 							{
 								str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
 							}else{
 								str+='<td style="background-color:#FF0000;color:#fff">-</td>';
-							}
+							} */
 							
 							str+='<td>'+ajaxresp[i].notGrounded+'</td>';
 							str+='<td>'+ajaxresp[i].inProgress+'</td>';
 							str+='<td>'+ajaxresp[i].completed+'</td>';
 							
-							if(ajaxresp[i].percentage < 50){
+							if(ajaxresp[i].percentage >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}
+							/* if(ajaxresp[i].percentage < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
-							}
+							} */
 							
 						str+='</tr>';
 					}
@@ -6349,20 +6855,40 @@ function getNregaLevelsWiseDataFrCoffeePlantation(divIdd,locationType,theadArr,m
 							str+='<td>'+ajaxresp[i].plantingExp+'</td>';
 							str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
 							
-							if(ajaxresp[i].pitingPerc < 50)
+							if(ajaxresp[i].pitingPerc >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
+							}else if(ajaxresp[i].pitingPerc >= 90 && ajaxresp[i].pitingPerc < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
+							}else if(ajaxresp[i].pitingPerc >= 60 && ajaxresp[i].pitingPerc < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
+							}
+							
+							/* if(ajaxresp[i].pitingPerc < 50)
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
 							else if(ajaxresp[i].pitingPerc >= 50 && ajaxresp[i].pitingPerc < 80)
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
 							else if(ajaxresp[i].pitingPerc >= 80)
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].pitingPerc+'</td>';
-						
-							if(ajaxresp[i].pencentageOfPlanting < 50){
+						 */
+							if(ajaxresp[i].pencentageOfPlanting >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+							}else if(ajaxresp[i].pencentageOfPlanting >= 90 && ajaxresp[i].pencentageOfPlanting < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+							}else if(ajaxresp[i].pencentageOfPlanting >= 60 && ajaxresp[i].pencentageOfPlanting < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+							}
+							
+							/* if(ajaxresp[i].pencentageOfPlanting < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
 							}else if(ajaxresp[i].pencentageOfPlanting >= 50 && ajaxresp[i].pencentageOfPlanting < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
 							}else if(ajaxresp[i].pencentageOfPlanting >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].pencentageOfPlanting+'</td>';
-							}
+							} */
 					str+='</tr>';
 				}
 			}
@@ -6430,28 +6956,49 @@ function getNregaMCCNewComponetsLevelData(divIdd,locationTypeNew,theadArr,menuLo
 							var groundedPerc = "0.00";
 							if(targetValue > 0 && groundValue > 0)
 								groundedPerc = ((groundValue*100)/targetValue).toFixed(2);
-							if(groundedPerc < 50){
+							
+							if(groundedPerc >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+groundedPerc+'</td>';
+							}else if(groundedPerc >= 90 && groundedPerc < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+							}else if(groundedPerc >= 60 && groundedPerc < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+							}
+							
+							/* if(groundedPerc < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 							}else if(groundedPerc >= 50 && groundedPerc < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
 							}else if(groundedPerc >= 80)
 							{
 								str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
 							}else{
 								str+='<td style="background-color:#FF0000;color:#fff">-</td>';
-							}
+							} */
 							
 							str+='<td>'+ajaxresp[i].notGrounded+'</td>';
 							str+='<td>'+ajaxresp[i].inProgress+'</td>';
 							str+='<td>'+ajaxresp[i].completed+'</td>';
 							
-							if(ajaxresp[i].percentage < 50){
+							if(ajaxresp[i].percentage >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}
+							
+							/* if(ajaxresp[i].percentage < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
-							}
+							} */
 							
 						str+='</tr>';
 					}
@@ -6523,28 +7070,48 @@ function getNregaCovergancePROtherLevelData(divIdd,locationTypeNew,theadArr,menu
 							var groundedPerc = "0.00";
 							if(targetValue > 0 && groundValue > 0)
 								groundedPerc = ((groundValue*100)/targetValue).toFixed(2);
-							if(groundedPerc < 50){
+							if(groundedPerc >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+groundedPerc+'</td>';
+							}else if(groundedPerc >= 90 && groundedPerc < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
+							}else if(groundedPerc >= 60 && groundedPerc < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
+							}
+							
+							/* if(groundedPerc < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 							}else if(groundedPerc >= 50 && groundedPerc < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
 							}else if(groundedPerc >= 80)
 							{
 								str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
 							}else{
 								str+='<td style="background-color:#FF0000;color:#fff">-</td>';
-							}
+							} */
 							
 							str+='<td>'+ajaxresp[i].notGrounded+'</td>';
 							str+='<td>'+ajaxresp[i].inProgress+'</td>';
 							str+='<td>'+ajaxresp[i].completed+'</td>';
 							
-							if(ajaxresp[i].percentage < 50){
+							if(ajaxresp[i].percentage >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}
+							
+							/* if(ajaxresp[i].percentage < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
-							}
+							} */
 							
 						str+='</tr>';
 					}
@@ -6633,7 +7200,16 @@ function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
 										str+='<div class="panel-block-white text-center" overview-popup-block="'+result[i].workName+'" attr_levelId="'+levelId+'" attr_locationId="'+menuLocationId+'" attr_mcc_main_projectId="'+projectDivId+'">';
 										
 										//str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+result[i].workName+'">';
-											 if(result[i].percentage < 50)
+											if(result[i].percentage >= 100){
+												str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+result[i].workName+'">';
+											}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+												str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+result[i].workName+'">';
+											}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+												str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+result[i].workName+'">';
+											}else{
+												str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+result[i].workName+'">';
+											}
+											 /* if(result[i].percentage < 50)
 											{
 												str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+result[i].workName+'">';
 											}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -6646,7 +7222,7 @@ function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
 											}else
 											{ 
 												str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+result[i].workName+'">';
-											} 
+											}  */
 												if(result[i].workName.length > 12)
 												{
 													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i].workName+'">'+result[i].workName.substr(0,12)+'..</h4>';
@@ -6769,7 +7345,7 @@ function getNregaOtherMCCAbstarctData(divIdd,locationTypeNew,theadArr,menuLocati
 							if(groundedPerc < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+groundedPerc+'</td>';
 							}else if(groundedPerc >= 50 && groundedPerc < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+groundedPerc+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+groundedPerc+'</td>';
 							}else if(groundedPerc >= 80)
 							{
 								str+='<td style="background-color:#00AF50;color:#fff">'+groundedPerc+'</td>';
@@ -6784,7 +7360,7 @@ function getNregaOtherMCCAbstarctData(divIdd,locationTypeNew,theadArr,menuLocati
 							if(ajaxresp[i].percentage < 50){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-								str+='<td style="background-color:#FFBA00;color:#fff">'+ajaxresp[i].percentage+'</td>';
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 80){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}

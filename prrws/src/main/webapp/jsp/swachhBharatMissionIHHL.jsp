@@ -216,10 +216,10 @@
 				
 				<div class="col-sm-6">
 					<ul class="list-inline pull-right">
-						<li><span class="categoryRondedCss" style="background-color:#009587">A</span> >=&nbsp 80% </li>
-						<li><span class="categoryRondedCss" style="background-color:#99B95F">B</span>  60% TO <&nbsp80%</li>
-						<li><span class="categoryRondedCss" style="background-color:#E67401">C</span>  40% TO <&nbsp60%</li>
-						<li><span class="categoryRondedCss" style="background-color:#FD403A">D</span>&nbsp<&nbsp40%</li>
+						<li><span class="categoryRondedCss" style="background-color:#F7B519">A</span> 100% and above</li>
+						<li><span class="categoryRondedCss" style="background-color:#00AF50">B</span>  90% and above</li>
+						<li><span class="categoryRondedCss" style="background-color:#FF6600">C</span>  60% to Below 90%</li>
+						<li><span class="categoryRondedCss" style="background-color:#FF0000">D</span> less than 60% &nbsp;&nbsp;&nbsp;</li>
 					</ul>
 				</div>
 				<div class="col-sm-3">

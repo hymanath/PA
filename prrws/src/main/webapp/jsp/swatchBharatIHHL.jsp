@@ -741,13 +741,23 @@ function buildIHHLlocationLvlWiseData(ajaxresp,locationType){
 							//str+='<td class="text-capital">'+ajaxresp[i].completed+'</td>';										
 							str+='<td class="text-capital">'+ajaxresp[i].completed+'</td>';	
 							
+							if(ajaxresp[i].percentage >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}
+							/* 
 							if(ajaxresp[i].percentage >=80){
 								str+='<td class="text-capital" style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
 									str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage <50){
 								str+='<td class="text-capital" style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
-							}
+							} */
 						str+='</tr>';
 					}
 				str+='</tbody>';

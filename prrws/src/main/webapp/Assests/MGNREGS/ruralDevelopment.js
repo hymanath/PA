@@ -366,7 +366,18 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 		for(var i in result)
 		{
 			if(levelId == 2 || levelId == "2" || levelId == 4 || levelId == "4"){
-				if(result[i].percentage < 50)
+				
+				if(result[i].percentage >= 100){
+					str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'">';
+				}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+					str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+				}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+					str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+				}else{
+					str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+				}
+				
+				/* if(result[i].percentage < 50)
 				{
 					str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 				}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -376,7 +387,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				}else if(result[i].percentage >= 80)
 				{
 					str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
-				}
+				} */
 					if(type == 'SMC Trench')
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="SMC Trenches">SMC Trench..</h4>';
@@ -411,8 +422,17 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else{
 						str+='<h1 class="text-center">0<small>%</small>';
 					}
-						
-					if(result[i].percentage < 50)
+					
+					if(result[i].percentage >= 100){
+						str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+					}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+						str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+					}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+						str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+					}else{
+						str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+					}	
+					/* if(result[i].percentage < 50)
 					{
 						str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
 					}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -421,7 +441,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else if(result[i].percentage >= 80)
 					{
 						str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
-					}
+					} */
 					str+='<div class="row">';
 						str+='<div class="col-sm-6 text-center">';
 							str+='<label>Target</label>';
@@ -493,7 +513,17 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				{
 					if(result[i] != null)
 					{
-						if(result[i].percentage < 50)
+						if(result[i].percentage >= 100){
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+						}else{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						}
+						
+						/* if(result[i].percentage < 50)
 						{
 							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -503,7 +533,8 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						}else if(result[i].percentage >= 80)
 						{
 							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
-						}
+						} */
+						
 							if(type.length > 12)
 							{
 								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
@@ -517,8 +548,17 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}else{
 								str+='<h1 class="text-center">0<small>%</small>';
 							}
-								
-							if(result[i].percentage < 50)
+							
+							if(result[i].percentage >= 100){
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+							}else{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}	
+							/* if(result[i].percentage < 50)
 							{
 								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
 							}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -527,7 +567,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}else if(result[i].percentage >= 80)
 							{
 								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
-							}
+							} */
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
 									str+='<label>Target</label>';
@@ -579,7 +619,17 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				{
 					if(result[i] != null)
 					{
-						if(result[i].percentage < 50)
+						if(result[i].percentage >= 100){
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'" style="border-top:1px solid #333;">';
+						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="border-top:1px solid #333;">';
+						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'" style="border-top:1px solid #333;">';
+						}else{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="border-top:1px solid #333;">';
+						}
+						
+						/* if(result[i].percentage < 50)
 						{
 							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -589,7 +639,8 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						}else if(result[i].percentage >= 80)
 						{
 							str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-						}
+						} */
+						
 							str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
 							{
@@ -1361,31 +1412,63 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
 						str+='<td>'+ajaxresp[i].inProgress+'</td>';
 						str+='<td>'+ajaxresp[i].completed+'</td>';
-						if(ajaxresp[i].percentage < 50){
+						
+						if(ajaxresp[i].percentage >= 100){
+							str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+							str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+							str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}else{
+							str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+						}
+						
+						/* if(ajaxresp[i].percentage < 50){
 							str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
 						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
 							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
 						}else if(ajaxresp[i].percentage >= 80){
 							str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
-						}
+						} */
 						
 						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
-							if(ajaxresp[i].percSant < 50){
+							
+							if(ajaxresp[i].percSant >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 90 && ajaxresp[i].percSant < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 60 && ajaxresp[i].percSant < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}
+							
+							/* if(ajaxresp[i].percSant < 50){
 								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
 							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
 								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
 							}else if(ajaxresp[i].percSant >= 80){
 								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
-							}
+							} */
 						}
 						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
-							if(ajaxresp[i].percSant < 50){
+							if(ajaxresp[i].percSant >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 90 && ajaxresp[i].percSant < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 60 && ajaxresp[i].percSant < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
+							}
+							
+							/* if(ajaxresp[i].percSant < 50){
 								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
 							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
 								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
 							}else if(ajaxresp[i].percSant >= 80){
 								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
-							}
+							} */
 						}
 					str+='</tr>';
 				}
@@ -1531,7 +1614,18 @@ function getNtrJalaSiriLvlWiseData(divId,locationType,theadArr,menuLocationType,
 						str+='<td>'+result[i].beneficaryContribution+'</td>';
 						str+='<td>'+result[i].amountPaidTransco+'</td>';
 						str+='<td>'+result[i].borewellenergisation+'</td>';
-						if(result[i].percentage < 50)
+						
+						if(result[i].percentage >= 100){
+							str+='<td style="background-color:#f7b519">'+result[i].percentage+'</td>';
+						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+							str+='<td style="background-color:#00AF50">'+result[i].percentage+'</td>';
+						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+							str+='<td style="background-color:#FFBA00">'+result[i].percentage+'</td>';
+						}else{
+							str+='<td style="background-color:#FF0000">'+result[i].percentage+'</td>';
+						}
+						
+						/* if(result[i].percentage < 50)
 						{
 							str+='<td style="background-color:#FF0000">'+result[i].percentage+'</td>';
 						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -1540,7 +1634,7 @@ function getNtrJalaSiriLvlWiseData(divId,locationType,theadArr,menuLocationType,
 						}else if(result[i].percentage >= 80)
 						{
 							str+='<td style="background-color:#00AF50">'+result[i].percentage+'</td>';
-						}
+						} */
 					str+='</tr>';
 				}
 			}
@@ -1592,7 +1686,18 @@ function tableViewOld(blockId,theadArr,result,locationType)
 							tableView+='<td>'+result[i].beneficaryContribution+'</td>';
 							tableView+='<td>'+result[i].amountPaidTransco+'</td>';
 							tableView+='<td>'+result[i].borewellenergisation+'</td>';
-							if(result[i].percentage < 50)
+							
+							if(result[i].percentage >= 100){
+								tableView+='<td style="background-color:#f7b519">'+result[i].percentage+'</td>';
+							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+								tableView+='<td style="background-color:#00AF50">'+result[i].percentage+'</td>';
+							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+								tableView+='<td style="background-color:#FFBA00">'+result[i].percentage+'</td>';
+							}else{
+								tableView+='<td style="background-color:#FF0000">'+result[i].percentage+'</td>';
+							}
+							
+							/* if(result[i].percentage < 50)
 							{
 								tableView+='<td style="background-color:#FF0000">'+result[i].percentage+'</td>';
 							}else if(result[i].percentage >= 50 && result[i].percentage < 80)
@@ -1601,7 +1706,7 @@ function tableViewOld(blockId,theadArr,result,locationType)
 							}else if(result[i].percentage >= 80)
 							{
 								tableView+='<td style="background-color:#00AF50">'+result[i].percentage+'</td>';
-							}
+							} */
 						tableView+='</tr>';
 					}
 				}
@@ -1759,22 +1864,44 @@ function getRDLevelsWiseData(divId,subLocationType,theadArr,locationTypeNew,menu
 							str+='<td>'+ajaxresp[i].notGrounded+'</td>';
 							str+='<td>'+ajaxresp[i].inProgress+'</td>';
 							str+='<td>'+ajaxresp[i].completed+'</td>';
-							if(ajaxresp[i].percentage < 50){
+							
+							if(ajaxresp[i].percentage >= 100){
+								str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 90 && ajaxresp[i].percentage < 100){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 60 && ajaxresp[i].percentage < 90){
+								str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}
+							
+							/* if(ajaxresp[i].percentage < 50){
 							  str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
 							  str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
 							}else if(ajaxresp[i].percentage >= 80){
 							  str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
-							}
+							} */
 							
 							if(subLocationType == "state" || subLocationType == "district"){
-							  if(ajaxresp[i].percSant < 50){
+							
+								if(ajaxresp[i].percSant >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 90 && ajaxresp[i].percSant < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 60 && ajaxresp[i].percSant < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}
+								
+							  /* if(ajaxresp[i].percSant < 50){
 								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
 							  }else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
 								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
 							  }else if(ajaxresp[i].percSant >= 80){
 								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
-							  }
+							  } */
 							}
 						  }else if(globalDivName == "WaterBudget"){
 							  if(subLocationType == 'panchayat')
@@ -1792,13 +1919,23 @@ function getRDLevelsWiseData(divId,subLocationType,theadArr,locationTypeNew,menu
 							str+='<td>'+ajaxresp[i].stroageCap+'</td>';
 							str+='<td>'+ajaxresp[i].balanceRunOff+'</td>';
 							 if(subLocationType != 'panchayat'){
-								if(ajaxresp[i].percSant < 50){
+								 if(ajaxresp[i].percSant >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 90 && ajaxresp[i].percSant < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 60 && ajaxresp[i].percSant < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percSant+'</td>';
+								}
+								
+							/* 	if(ajaxresp[i].percSant < 50){
 									str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
 								  }else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
 									str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
 								  }else if(ajaxresp[i].percSant >= 80){
 									str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
-								  } 
+								  }  */
 							 }
 						  }else if(globalDivName == "GH"){
 								if(subLocationType == 'state' || subLocationType == 'district')
@@ -1810,13 +1947,23 @@ function getRDLevelsWiseData(divId,subLocationType,theadArr,locationTypeNew,menu
 								str+='<td>'+ajaxresp[i].plantingKMS+'</td>';
 								ghPercSant = (((ajaxresp[i].plantingKMS)*(100.00))/(ajaxresp[i].sanctionedTarget)).toFixed(2);
 								//str+='<td>'+(((ajaxresp[i].plantingKMS)*(100.00))/(ajaxresp[i].sanctionedTarget)).toFixed(2)+'</td>';
-								if(ghPercSant < 50){
+								 if(ghPercSant >= 100){
+									str+='<td style="background-color:#f7b519;color:#fff">'+ghPercSant+'</td>';
+								}else if(ghPercSant >= 90 && ghPercSant < 100){
+									str+='<td style="background-color:#00AF50;color:#fff">'+ghPercSant+'</td>';
+								}else if(ghPercSant >= 60 && ghPercSant < 90){
+									str+='<td style="background-color:#ff6600;color:#fff">'+ghPercSant+'</td>';
+								}else{
+									str+='<td style="background-color:#FF0000;color:#fff">'+ghPercSant+'</td>';
+								}
+								
+								/* if(ghPercSant < 50){
 									str+='<td style="background-color:#FF0000">'+ghPercSant+'</td>';
 								}else if(ghPercSant >= 50 && ghPercSant < 80){
 									str+='<td style="background-color:#FFBA00">'+ghPercSant+'</td>';
 								}else if(ghPercSant >= 80){
 									str+='<td style="background-color:#00AF50">'+ghPercSant+'</td>';
-								}
+								} */
 								str+='<td>'+ajaxresp[i].percentage+'</td>';
 							}
 									

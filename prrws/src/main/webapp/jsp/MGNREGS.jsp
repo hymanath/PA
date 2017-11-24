@@ -212,7 +212,7 @@ var searchParams = new URLSearchParams(window.location.search);
 					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_distId="" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
 					<div class="multi-level-selection-menu arrow_box_top"></div>
 				</div>
-				<div class="col-sm-3 border_right">
+				<div class="col-sm-2 border_right">
 					<div class="row">
 						<div class="col-sm-4 m_top5">
 							<label>FROM DATE</label>
@@ -227,7 +227,7 @@ var searchParams = new URLSearchParams(window.location.search);
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-3 border_right">
+				<div class="col-sm-2 border_right">
 					<div class="row">
 						<div class="col-sm-4 m_top5">
 							<label>TO DATE</label>
@@ -242,11 +242,12 @@ var searchParams = new URLSearchParams(window.location.search);
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-4 m_top5">
+				<div class="col-sm-6 m_top5">
 					<ul class="list-inline pull-left">
-						<li><span class="color-label color-label-success"></span> 80% and above</li>
-						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
-						<li><span class="color-label color-label-danger"></span> 0% - 49%&nbsp;&nbsp;&nbsp;</li>
+						<li><span class="color-label color-label-gold"></span> 100% and above</li>
+						<li><span class="color-label color-label-success"></span> 90% and above</li>
+						<li><span class="color-label color-label-default"></span> 60% to Below 90%</li>
+						<li><span class="color-label color-label-danger"></span> less than 60% &nbsp;&nbsp;&nbsp;</li>
 						<li><button type="button" class="btn btn-primary btn-xs" title="Webservice Details" id="getWebserviceDetailsId">WS</button> </li>
 					</ul>  
 					
