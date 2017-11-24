@@ -75,7 +75,7 @@
 	function getBoothUserTypeWiseCommitteesCompletedCounts(){
 		
 		var state = globalState;
-	    var dateString = $("#dateRangeBoothId").val();
+	    var dateString = "";//$("#dateRangeBoothId").val();
     
 		var jsObj ={  
 			          activityMemberId : globalActivityMemberId,
@@ -105,7 +105,7 @@
 		$('ul.boothCommitteeTopPoorLiCls li:first-child').addClass('active');
 		$("#boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   var state = globalState;
-       var dateString = $("#dateRangeBoothId").val();
+       var dateString = "";//$("#dateRangeBoothId").val();
 	   var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	 
 	 
@@ -143,7 +143,7 @@
 		$("#boothLevelWiseBasicCommittees").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var state = globalState;
 	   
-       var dateString = $("#dateRangeBoothId").val();
+       var dateString = "";//$("#dateRangeBoothId").val();
 	   var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	   // alert(222);
 	   var committeeEnrollmentYearArray = new Array();
@@ -166,7 +166,6 @@
 		}).done(function(result){
 			$("#boothLevelWiseBasicCommittees").html('');
 			buildgetBoothLevelWiseBasicCommitteesCountReport(result);
-			
 		});
 	}
 	function getBoothcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray){
@@ -179,7 +178,7 @@
 		var userLocationLevelValuesArray = globalUserAccessLevelValues;
 		
 		var committeeStatus = 'all';
-        var dateString = $("#dateRangeBoothId").val();
+        var dateString = "";//$("#dateRangeBoothId").val();
 		var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 		 //alert(333);
 		var committeeEnrollmentYearArray = new Array();
@@ -231,7 +230,7 @@
 	 
 	 var childUserTypeIdsArray = childUserTypeIdString.split(",");
 	 
-	 var date = $("#dateRangeBoothId").val();
+	 var date = "";// $("#dateRangeBoothId").val();
 	 var state = globalState;
   	 var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	 var committeeEnrollmentYearArray = new Array();
@@ -260,7 +259,7 @@
 	   $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state = globalState
 	   
-	   var dateString = $('#dateRangeBoothId').val();
+	   var dateString = "";//$('#dateRangeBoothId').val();
 	   var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	   var committeeEnrollmentYearArray = new Array();
 		   committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
@@ -288,7 +287,7 @@
 	   $("#boothTopPoorPerformanceDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state = globalState;
 	  
-	   var dateString = $('#dateRangeBoothId').val();
+	       var dateString = "";//$('#dateRangeBoothId').val();
 	   var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	   var committeeEnrollmentYearArray = new Array();
 		committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
@@ -318,7 +317,7 @@
 	   var state = globalState;
 	   //alert(boothcommiteType);
 	   //alert(top);
-	   var dateString = $('#dateRangeBoothId').val();
+	       var dateString = "";//$('#dateRangeBoothId').val();
 	   var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	    var committeeEnrollmentYearArray = new Array();
 		committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
@@ -726,7 +725,10 @@
 											
 										},
 									},
-									 series: [{
+									 series: [ {
+										name: 'Completed',
+										data: levelWiseBasicCompletedPercArray 
+									},{
 										name: 'Started',
 										data: levelWiseBasicStartedPercArray 
 									},{
@@ -1336,6 +1338,10 @@
 				var countVar = 0;
 				if(result[i] !=null && result[i].length  >0){
 					for(var j = result[i].length -1; j >= 0; j--){
+						var obj1 = {
+								name: result[i][j].name,
+								y: result[i][j].completedPerc
+							};
 						var obj2 = {
 								name: result[i][j].name,
 								y: result[i][j].startedPerc
@@ -1344,6 +1350,7 @@
 								name: result[i][j].name,
 								y: result[i][j].notStartedPerc
 							};
+						candidateNameAndCompletedCountArray.push(obj1);
 						candidateNameStartedCountArray.push(obj2);
 						candidateNameNotStartedCountArray.push(obj3);
 						candidateNameArray.push(result[i][j].name);
@@ -1445,6 +1452,9 @@
 									shared: true
 								},
 								series: [{
+									name: 'Completed',
+									data: candidateNameAndCompletedCountArray
+								},{
 									name: 'Started',
 									data: candidateNameStartedCountArray
 								},{
@@ -1789,7 +1799,6 @@
 	//... dots.
 	$(document).on("click",".moreBlocksIcons",function(){
 		$(this).addClass("unExpandBlocksBoothC");
-		console.log("HI");
 		$(".moreBoothBlocks1").hide();
 		$(".committeeSeetingBlock").show();
 		$(".moreBoothBlocksDetailAndComp").show();
@@ -2350,7 +2359,7 @@
    }else if(state == "TS"){
 	   state=36;
    } 
-   var dateString = $("#dateRangeBoothId").val();
+      var dateString = "";//$("#dateRangeBoothId").val();
     
      var committeeEnrollmentYearArray = new Array();
 	 if($("#tdpBoothCommitteeYearId").val() != null)
@@ -2406,10 +2415,10 @@
 				buildStr3=" Total added Members Female Count in "+boothInchargesAssnd+" Member(s) added booths ."
 			}
 				str+='<td>'+result[i].boothInchargesAssnd+'</td>';
-				if(result[i].boothIds.length > 0){
-					var assigdPer = ((result[i].boothIds.length*100.0)/totalBooths).toFixed(2);
+				if(parseInt(result[i].totalBooths) > 0){
+					var assigdPer = ((parseInt(result[i].totalBooths)*100.0)/totalBooths).toFixed(2);
 					
-					str+='<td> <span class="tooltipCls" title="'+buildStr+'">  '+result[i].boothIds.length+'&nbsp;&nbsp;<small class="text-danger responsiveFont "  >('+assigdPer+')%</small> </span></td>';
+					str+='<td> <span class="tooltipCls" title="'+buildStr+'">  '+parseInt(result[i].totalBooths)+'&nbsp;&nbsp;<small class="text-danger responsiveFont "  >('+assigdPer+')%</small> </span></td>';
 					
 				}else {
 					str+='<td>-</td>';
@@ -2444,7 +2453,7 @@
 
 	$("#boothBasicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var state = globalState;
-	var dateString = $("#dateRangeBoothId").val();
+	    var dateString = "";//$("#dateRangeBoothId").val();
 	var committeeEnrollmentYearArray = new Array();
 	if($("#tdpBoothCommitteeYearId").val() != null)
 	  committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
