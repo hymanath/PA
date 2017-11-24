@@ -1010,13 +1010,13 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 			str+='<div id="addMemberErrDiv" style="color:red;"></div>';
 			str+='<div class="col-sm-2">';
 				str+='<label>';
-					str+='<input type="text" class="form-control" id="memberNameId" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.name" >';
+					str+='<input type="text" class="form-control" id="memberNameId" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.name" value="'+result.name+'">';
 				str+='</label>';
 			str+='</div>';
 			
 			str+='<div class="col-sm-2">';
 				str+='<label>';
-					str+='<input type="text" class="form-control" id="memberMobileNoId" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber">';
+					str+='<input type="text" class="form-control" id="memberMobileNoId" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber" value="'+result.mobileNumber+'">';
 				str+='</label>';
 			str+='</div>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
@@ -1348,6 +1348,7 @@ saveCommitteeStatus(committeeId);
 	function buildAdvancedSearchDetails(result,committeeId,statusType,roleId,memberId){
 		$("#memberAddEditPopUpDetailsId").removeClass("bg_class_Div");
 		var str='';
+		str+='<div class="table-responsive">';
 			str+='<table id="searchedMembersId">';
 			str+='<thead><th></th><th></th><th></th></thead>';
 			str+='<tbody>';
@@ -1411,6 +1412,7 @@ saveCommitteeStatus(committeeId);
 		}
 		str+='</tbody>';
 		str+='</table>';
+		str+='</div>';
 		str+='<div id="selectedMemberDetailsId"></div>';
 		$("#memberAddEditPopUpDetailsId").html(str);
 		$('#searchedMembersId').DataTable({
@@ -1440,13 +1442,13 @@ saveCommitteeStatus(committeeId);
 				str+='<div id="addMemberErrDiv" style="color:red;"></div>';
 				str+='<div class="col-sm-2">';
 					str+='<label>';
-						str+='<input type="text" class="form-control" id="memberNameId" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.name" >';
+						str+='<input type="text" class="form-control" id="memberNameId" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.name" value="'+result.name+'">';
 					str+='</label>';
 				str+='</div>';
 				
 				str+='<div class="col-sm-2">';
 					str+='<label>';
-						str+='<input type="text" class="form-control" id="memberMobileNoId" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber">';
+						str+='<input type="text" class="form-control" id="memberMobileNoId" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber" value="'+result.mobileNumber+'">';
 					str+='</label>';
 				str+='</div>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
