@@ -287,6 +287,8 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 				}
 				if(committeeVO.getNotAddedMemberCount().longValue() ==0l)
 					committeeVO.setNotAddedMemberCount(committeeVO.getRoleMemberCount());
+				if(committeeVO.getAddedMemberCount().longValue() ==committeeVO.getRoleMemberCount().longValue())
+					committeeVO.setNotAddedMemberCount(0L);
 				
 				committeeVO = setStatusToVO(committeId,committeeVO);
 			} catch (Exception e) {
