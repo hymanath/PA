@@ -18526,5 +18526,15 @@
 			<param name="root">IdNameVOList</param>       
 		</result>
    </action>
+	<action name="getCandiateWiseTourSubmittedDetailsAction" class="coreDashboardAction"  method="getCandiateWiseTourSubmittedDetails">
+			<result type="json" name="success">
+			<param name="root">tourOverviewDtlsVO</param>
+		</result>
+	</action>
+		<action name="getCandaiteDetailsByTypeAction" class="coreDashboardAction"  method="getCandaiteDetailsByType">
+			<result type="json" name="success">
+			<param name="root">tourOverviewDtlsList</param>
+		</result>
+	</action>
  </package>
 </struts>

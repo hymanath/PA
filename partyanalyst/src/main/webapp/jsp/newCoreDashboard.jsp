@@ -1645,6 +1645,9 @@
 							<div class="panel-body">
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="tours">
+								    <div class="row">
+									  <div id="tourUniquememberSubmittedDltsDivId"></div>
+									</div>
 									<div class="row">
 										<div id="tourOverviewNewDivId"></div>
 									</div>
@@ -4913,6 +4916,34 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
+<!-- Tour Unique People Wise Report Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="tourUniqueMemberDetailsModalId">
+	  <div class="modal-dialog modal-lg" style="width:90%;">       
+		<div class="modal-content" style="border-radius:0px">
+		  <div class="modal-header" style="background-color:#CCC">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<!--<h4 class="modal-title" id="tourDetailsHeadingId"></h4>--> 
+			<div class="row">
+				<div class="col-md-9 col-xs-12 col-sm-9">
+					<h4 class="modal-title text-capital" id="tourUniqueMembersReportHeadingDtlsId">Candiate Detailed Report</h4>
+				</div>
+				
+			</div>
+		  </div>
+		  <div class="modal-body">
+			<div class="row">
+				<div class="col-md-12 col-xs-12 col-sm-12">
+				   <div id="tourMemberDetails"></div>
+				</div>
+			</div>
+		  </div>
+		  <div class="modal-footer">     
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
