@@ -693,63 +693,137 @@ public class LightMonitoringService  implements ILightMonitoring{
 	}
 	
 	
-	 public List<LightMonitoringVO> getTimePeriodWiseLightsDetaisl(String startDate,String endDate, String locationType,final Long locationValue,List<Long> lightMonitoringIds) {
+	 public List<LightMonitoringVO> getTimePeriodWiseLightsDetails(String startDate,String endDate, String locationType,final Long locationValue,List<Long> lightMonitoringIds) {
 		   List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
 		try{	
-			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			DateUtilService dateUtilService = new DateUtilService();
 			Date today = dateUtilService.getCurrentDateAndTime();
-			Date lastThreeDaysDate = getDateBeforeNDays(3);
-			Date lastSevenDaysDate = getDateBeforeNDays(7);
-			Date lastThirtyDaysDate = getDateBeforeNDays(30);
 			
-			List<Long> loccationIds = new ArrayList<Long>();
-			if (locationValue != null && locationValue.longValue() > 0l) {
-				loccationIds.add(locationValue);
-			}			
+			List<Object[]> lightMonitorindDtlsObjList = lightMonitoringDAO.getDateWiseLightMonitoringDtls(getRequiredDateByPassingDays(62),today);
+			List<LightsVendor> vendorList = lightsVendorDAO.getAll();
+			Map<String,LightMonitoringVO> dateWiseLightsDtlsMap = prepareDateWiseLightMonitoringDtls(lightMonitorindDtlsObjList,vendorList);
+			String[] templateArr = {"Today Total","Last 1 Day","Last 2 Day","Last 3 Day","Last 7 Day","Last 14 Day","Last 30 Day","Last 60 Day"};
+			  
+			 for (String string : templateArr) {
+				  String dateStr = sdf.format(getRequiredDateByPassingDays(getDayPassingTimePeriod(string)));
+				  LightMonitoringVO dateVO = dateWiseLightsDtlsMap.get(dateStr);
+				  if (dateVO != null )  {
+					  	dateVO.setTimePeriod(string);
+					  if (!string.equalsIgnoreCase("Today Total")) {
+						  dateVO.setPendingLightcount( list.get(0).getTotalLights()-dateVO.getTotalLights());
+					  }
+					  list.add(dateVO);	  
+				  }
+			}
 			
-			 List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(today,today,locationType,loccationIds,lightMonitoringIds,"Yes");
-			 List<Object[]> list1  =  lightMonitoringDAO.getTotalVillagesDetails(lastThreeDaysDate,lastThreeDaysDate,locationType,loccationIds,lightMonitoringIds,"Yes");
-			 List<Object[]> list2  =  lightMonitoringDAO.getTotalVillagesDetails(lastSevenDaysDate,lastSevenDaysDate,locationType,loccationIds,lightMonitoringIds,"Yes");
-			 List<Object[]> list3  =  lightMonitoringDAO.getTotalVillagesDetails(lastThirtyDaysDate,lastThirtyDaysDate,locationType,loccationIds,lightMonitoringIds,"Yes");
-			 list.add(setTimePeriodWiseLightsDetaisl(lightMonitoringData,"Today"));
-			 list.add(setTimePeriodWiseLightsDetaisl(list1,"LastThreeDaysDate"));
-			 list.add(setTimePeriodWiseLightsDetaisl(list2,"lastSevenDaysDate"));
-			 list.add(setTimePeriodWiseLightsDetaisl(list3,"lastThirtyDaysDate"));
-			
-			     
-      }catch (Exception e) {
-   	   LOG.error("Exception raised at getTimePeriodWiseLightsDetaisl - LightMonitoringService service", e);
+	  }catch (Exception e) {
+   	   LOG.error("Exception raised at getTimePeriodWiseLightsDetails - LightMonitoringService service", e);
       }
 		return list;
       } 
 		
-	public LightMonitoringVO setTimePeriodWiseLightsDetaisl(List<Object[]> lightMonitoringData, String date) {
-		LightMonitoringVO lightMonitoringToDaCountVO = new LightMonitoringVO();
+	 
+	private Map<String, LightMonitoringVO> prepareDateWiseLightMonitoringDtls(List<Object[]> objList,List<LightsVendor> lightsVendor) {
+		Map<String, LightMonitoringVO> dateWiseMap = new HashMap<String, LightMonitoringVO>();
 		try {
-			if (lightMonitoringData != null && lightMonitoringData.size() > 0) {
-				for (Object[] param : lightMonitoringData) {
-
-					lightMonitoringToDaCountVO.setName(date);
-					if ((Long) param[0] == 1l) { // ESSL
-						lightMonitoringToDaCountVO.setNredcapTodayPanels(commonMethodsUtilService.getLongValueForObject(param[2]));
-						lightMonitoringToDaCountVO.setNredcapTodayLights(commonMethodsUtilService.getLongValueForObject(param[3]));
-					} else if ((Long) param[0] == 2l) { // NREDCAP
-						lightMonitoringToDaCountVO.setEeslTodayLights(commonMethodsUtilService.getLongValueForObject(param[2]));
-						lightMonitoringToDaCountVO.setEeslTodayPanels(commonMethodsUtilService.getLongValueForObject(param[3]));
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					LightMonitoringVO dateVO = dateWiseMap.get(commonMethodsUtilService.getStringValueForObject(param[0]));
+					if (dateVO == null) {
+						dateVO = new LightMonitoringVO();
+						dateVO.setSubList(new ArrayList<LightMonitoringVO>());
+						dateVO.setSubList(getVendorTemplate(lightsVendor));
+						dateVO.setName(commonMethodsUtilService.getStringValueForObject(param[0]));
+						dateWiseMap.put(commonMethodsUtilService.getStringValueForObject(param[0]), dateVO);
 					}
-					lightMonitoringToDaCountVO.setTodayLights(lightMonitoringToDaCountVO.getTodayLights()+ commonMethodsUtilService.getLongValueForObject(param[2]));
-					lightMonitoringToDaCountVO.setTodayPanels(lightMonitoringToDaCountVO.getTodayPanels()+ commonMethodsUtilService.getLongValueForObject(param[3]));
+					Long vendorId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					LightMonitoringVO vendorVO = getMatchVO(dateVO.getSubList(), vendorId);
+					if (vendorVO != null ) {
+						vendorVO.setTotalLights(commonMethodsUtilService.getLongValueForObject(param[3]));
+						vendorVO.setTotalPanels(commonMethodsUtilService.getLongValueForObject(param[4]));
+						dateVO.setTotalLights(dateVO.getTotalLights()+ vendorVO.getTotalLights());
+						dateVO.setTotalPanels(dateVO.getTotalPanels()+ vendorVO.getTotalPanels());
+							
+					}
 				}
 			}
 
 		} catch (Exception e) {
-			LOG.error("Exception raised at setTimePeriodWiseLightsDetaisl - LightMonitoringService service", e);
+			LOG.error("Exception raised at prepareDateWiseLightMonitoringDtls - LightMonitoringService service",e);
 		}
-		return lightMonitoringToDaCountVO;
-	    }
+		return dateWiseMap;
+	}
 
-		public static Date getDateBeforeNDays(int noOfDays) {
+	private List<LightMonitoringVO> getVendorTemplate(List<LightsVendor> list) {
+		List<LightMonitoringVO> vendorList = new ArrayList<>();
+		try {
+			if (list != null && list.size() > 0) {
+				for (LightsVendor lightsVendorVO : list) {
+					vendorList.add(new LightMonitoringVO(lightsVendorVO.getLightsVendorId(), lightsVendorVO.getVendorName()));
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVendorTemplate - LightMonitoringService service",e);
+		}
+		return vendorList;
+	}
+	
+	private int getDayPassingTimePeriod(String timePeriod) {
+		int dayCount = 0;
+		try {
+			switch (timePeriod) {
+			case "Today Total":
+				dayCount = 0;
+				break;
+			case "Last 1 Day":
+				dayCount = 1;
+				break;
+			case "Last 2 Day":
+				dayCount = 2;
+				break;
+			case "Last 3 Day":
+				dayCount = 3;
+				break;
+			case "Last 7 Day":
+				dayCount = 7;
+				break;
+			case "Last 14 Day":
+				dayCount = 14;
+				break;
+			case "Last 30 Day":
+				dayCount = 30;
+				break;
+			case "Last 60 Day":
+				dayCount = 60;
+				break;
+			default:
+				dayCount = 0;
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDayPassingTimePeriod - BioMetricService service",e);
+		}
+		return dayCount;
+	}
+	private LightMonitoringVO getMatchVO(List<LightMonitoringVO> subList,Long vendorId) {
+		 try {
+			  if (subList == null || subList.size() == 0) {
+				  return null;
+			  }
+			  for (LightMonitoringVO lightMonitoringVO : subList) {
+				if (lightMonitoringVO.getLightVendorId() == vendorId) {
+					return lightMonitoringVO;
+				}
+			}
+			 
+			 
+		 } catch (Exception e) {
+			 LOG.error("Exception raised at getMatchVO - BioMetricService service",e);
+		 }
+		 return null;
+	}
+	private static Date getRequiredDateByPassingDays(int noOfDays) {
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				Calendar now = Calendar.getInstance();
@@ -759,10 +833,11 @@ public class LightMonitoringService  implements ILightMonitoring{
 				return sdf.parse(dateStr);
 
 			} catch (Exception e) {
+				LOG.error("Exception raised at getDateBeforeNDays - LightMonitoringService service",e);
 				
-				return null;
 			}
-		} 
+			return null;
+	} 
 		}
 	
 	        	
