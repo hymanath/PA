@@ -84,15 +84,16 @@
 							</div>
 							<div class="col-sm-2">
 								<select class="form-control" id="partyId" multiple>
-									<option value="872" selected>TDP</option>
+									<!-- <option value="872" selected>TDP</option>
 									<option value="1117" selected>YSRC</option>
 									<option value="163" selected>BJP</option>
 									<option value="362" selected>INC</option>
-									<!--<option value="72">AIMIM</option>-->
+									
 									<option value="265" selected>CPI</option>
 									<option value="269" selected>CPM</option>
-									<option value="662" selected>PRP</option>
-									<option value="1887" selected>OTHERS</option>
+									<option value="662" selected>PRP</option> 
+									<option value="1887" selected>OTHERS</option> -->
+									<!--<option value="72">AIMIM</option>-->
 									<!--<option value="886">TRS</option>-->
 								</select>
 							</div>

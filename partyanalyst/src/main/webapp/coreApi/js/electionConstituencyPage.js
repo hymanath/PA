@@ -3651,3 +3651,52 @@ function buildStatusCounts(result){
 	str+='</ul>';
 return str;
 }
+
+
+buildAllYearWisePartiesSelection(null);//onload select all parties
+
+var partyIdsList=[1117,1117,362,265,269,662];//886 TRS
+$(document).on("change","#electionYearId",function(){
+  var electionYearId = $(this).val();
+  buildAllYearWisePartiesSelection(electionYearId)
+});
+
+function buildAllYearWisePartiesSelection(electionYearId){
+	if(electionYearId ==null)
+		electionYearId=[];
+	var jsObj={
+		electionScopeIds:electionScopeValArr,
+		electionSubTypeArr:eletionSubType,
+		electionYearList : electionYearId
+	}
+    $.ajax({   
+      type:'POST',
+      url:'getElectionYearWisePartyListAction.action',  
+      dataType: 'json',
+      data: {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+		$('#partyId').multiselect('destroy');
+		 $('#partyId').find('option').remove();
+		if(result !=null){
+		       for(var i in result){
+				     var findPartyId = partyIdsList.indexOf(result[i].id);
+				     if(findPartyId !=-1){
+						 $("#partyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					 }	
+			   }
+			   $("#partyId").append('<option value="1887">OTHERS</option>');
+		}else{
+			$("#partyId").append('<option value="1887">OTHERS</option>');
+		}
+			$('#partyId').multiselect({
+					enableFiltering: true,
+					includeSelectAllOption: true,
+					selectAllText: 'All Parties',
+					maxHeight: 300,
+					buttonWidth: '100%',
+					dropDown: true,
+					selectAllNumber: true,
+			allSelectedText: 'All Parties'});
+			$("#partyId").multiselect('selectAll', false);	
+       }) 
+}
