@@ -271,17 +271,24 @@
 										
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'" attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_publicRepre_typeId="'+result.desinationVOList[i].publicRepresentativeTypeId+'" attr_committee_lvl_id="'+result.levelId+'" attr_committee_lvl_val="'+committeeLevlVal+'" attr_state_id="'+result.stateId+'" attr_district_id="'+result.districtId+'" attr_constituency_id="'+result.constituencyId+'" attr_mandal_id="'+result.mandalId+'" attr_panchayat_id="'+result.panchayatId+'" attr_local_election_body="'+result.localElectionBodyId+'" attr_ward_id="'+result.wardId+'">Add Member</h5></td>';
 								}
+								else{
+									str+='<td>-</td>';
+								}
 									
 									</c:when>
 									<c:when test="${fn:contains(sessionScope.USER.entitlements,'JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT' )  || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT' ) }">
 									if( result.desinationVOList[i].desinationMebersVOList[j].status == "Inprogress"){
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit"  attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'" attr_committee_id="'+committeId+'">Edit</h5></td>';
 									}
-									
+									else{
+									str+='<td>-</td>';
+								    }
 									</c:when>
 									<c:when  test="${fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT' )  || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) }">
 								if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="proposal"  attr_role_id="'+result.desinationVOList[i].designationId+'" attr_committee_id="'+committeId+'"attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_publicRepre_typeId="'+result.desinationVOList[i].publicRepresentativeTypeId+'" attr_committee_lvl_id="'+result.levelId+'" attr_committee_lvl_val="'+committeeLevlVal+'" attr_state_id="'+result.stateId+'"  attr_district_id="'+result.districtId+'" attr_constituency_id="'+result.constituencyId+'" attr_mandal_id="'+result.mandalId+'" attr_panchayat_id="'+result.panchayatId+'" attr_local_election_body="'+result.localElectionBodyId+'" attr_ward_id="'+result.wardId+'">Add Member</h5></td>';
+								}else{
+									str+='<td>-</td>';
 								}
 								</c:when>
 								<c:otherwise>
