@@ -22307,10 +22307,14 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		    Long boothAddedMemberCount = boothInchargeDAO.getRoleWiseTotalAddedMember(boothId, boothEnrollmentYrIds.get(0), boothInchargeRoleId);
 		    
 		    if (boothAddedMemberCount < maxBoothRoleCount) {/*Checking is required member added or not.if not then only user can add else we are sending resultCode by that we are showing message to end user.Now Vacany is not there. */
+		    	BoothIncharge boothIncharge = null;
+		    	List<BoothIncharge> boothInchargeList = boothInchargeDAO.getExistingMember(tdpCadreId,"addOption");
 		    	
-		    	BoothIncharge boothIncharge = boothInchargeDAO.getExistingMember(tdpCadreId,"addOption");
+		    	if(commonMethodsUtilService.isListOrSetValid(boothInchargeList))
+		    		boothIncharge = boothInchargeList.get(0);
+		    	
 				if(boothIncharge != null){
-					boothIncharge.setBoothInchargeSerialNoRangeId(1L);
+					boothIncharge.setBoothInchargeSerialNoRangeId(1L);//default 1 , it will update by scheduler call -- Hyma
 					boothIncharge.setBoothInchargeRoleConditionMappingId(boothInchrgRoleId);
 					if(isOtherRange.trim().contains("other") && boothInchargeConditionId.longValue()>0L)
 						boothIncharge.setAddedBoothInhcargeConditionId(boothInchargeConditionId);
@@ -22327,7 +22331,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					boothInchrge.setTdpCadreId(tdpCadreId);
 					boothInchrge.setIsActive("Y");
 					boothInchrge.setIsDeleted("N");
-					boothInchrge.setBoothInchargeSerialNoRangeId(1L);
+					boothInchrge.setBoothInchargeSerialNoRangeId(1L);//default 1 , it will update by scheduler call -- Hyma
 					boothInchrge.setBoothInchargeEnrollmentId(boothEnrollmentYrIds.get(0));
 					boothInchrge.setInsertedBy(userId);
 					boothInchrge.setUpdatedBy(userId);
@@ -22633,11 +22637,16 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
  public ResultStatus removeMbrFromCurentLocation(Long userId,Long tdpCadreId){
 	 ResultStatus status = new ResultStatus();
 	 try{
-		 BoothIncharge boothIncharge = boothInchargeDAO.getExistingMember(tdpCadreId,"removeOption");
+		 BoothIncharge boothIncharge = null;
+    	 List<BoothIncharge> boothInchargeList = boothInchargeDAO.getExistingMember(tdpCadreId,"removeOption");
+    	 if(commonMethodsUtilService.isListOrSetValid(boothInchargeList))
+    		boothIncharge = boothInchargeList.get(0);
+	    	
 		 if(boothIncharge != null){
 			 boothIncharge.setIsActive("N");
 			 boothIncharge.setUpdatedBy(userId);
 			 boothIncharge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			 boothIncharge.setIsDeleted("Y");
 			 boothInchargeDAO.save(boothIncharge);
 			 status.setResultCode(0);
 		  }
@@ -22816,6 +22825,10 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		if (objArr[0].toString().equalsIgnoreCase("YES") && (votersList.size()%100) !=0) {
 			rangeCount = rangeCount-1; 
 		}
+		if(commonMethodsUtilService.isListOrSetValid(votersList) && votersList.size()<100){
+			rangeCount = 1;//1-votersList.size()
+		}
+		
 				for(Long i=1l ; i<= rangeCount ; i++){
 					String startRange =i+"00";
 					Long maxRange=Long.parseLong(startRange);
@@ -22833,7 +22846,9 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					 }
 					
 					String finalRange=minRange+" - "+maxRange;
-					
+					 if(votersList.size()<100)
+						 finalRange=1+" - "+votersList.size();
+					 
 					CadreCommitteeVO cadreCommetteeVO=new CadreCommitteeVO();
 					cadreCommetteeVO.setMinRange(minRange);
 					cadreCommetteeVO.setMaxRange(maxRange);
