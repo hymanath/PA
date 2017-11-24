@@ -381,7 +381,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		if (fromDate != null && toDate != null) {
 			sb.append(" and  date(model.surveyDate) between :fromDate and :toDate ");
 		}
-		sb.append(" group by date(model.surveyDate) ");
+		sb.append(" group by date(model.surveyDate),model.lightsVendor.lightsVendorId ");
 
 		Query query = getSession().createQuery(sb.toString());
 		if (fromDate != null && toDate != null) {
