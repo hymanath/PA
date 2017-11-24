@@ -24,8 +24,8 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 function getJbCommitteeStatusCount(){
 	$("#overAllCommitteeMainBlockId, #committeeWiseDetailsDivId").html(spinner);
 	var jsObj={
-		"fromDateStr"	:"",
-		"toDateStr"	    :""
+		"fromDateStr"	:"24/11/2012",
+		"toDateStr"	    :"24/11/2012"
 	}
    $.ajax({
 	  type : "POST",
@@ -444,9 +444,11 @@ $(document).on("click",".memberAddEditDetailsCls",function(){
 	}else if(committeeLvlId != null && (committeeLvlId ==3 || committeeLvlId ==4 )){
 		mandalId = '1'+localElectionBodyId;
 	}else if(committeeLvlId != null && committeeLvlId ==5 ){
-		panchayatId = '2'+panchayatId;
+		mandalId = '2'+mandalId;
+		panchayatId = '1'+panchayatId;
 	}else if(committeeLvlId != null && (committeeLvlId ==6 || committeeLvlId ==7)){
-		panchayatId='1'+wardId;
+		mandalId = '2'+mandalId;
+		panchayatId='2'+wardId;
 	}
 	if(publicRepreTypeId != null && publicRepreTypeId >0){
 		getAdvancedSearchDetails(publicRepreTypeId,committeeLvlId,committeeLvlVal,committeeId,statusType,roleId,memberId,memberName,
@@ -763,8 +765,6 @@ function getDistrictsForStates(stateId,id){
   }
  function getPanchayatWardByMandalAction(constituencyId,mandalId,id){
 	$("#mandalListImg").show();
-	var mandalId=0;
-	var constituencyId = 0; //cadreSearchDtls
 	if(id == "mandalList"){	
 			$("#panchaytListImg").show();		
 			mandalId=$("#mandalList").val();
