@@ -1765,4 +1765,45 @@ IElectionDAO {
 			query.setParameterList("locationIds", locationIds);
 		return query.list();
 	}
+	
+	
+
+public List<Object[]> getElectionYearWisePartyList(List<Long> electionScopeIdsLst,List<String> subTypes,List<Long> yearList){
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" SELECT DISTINCT p.party_id, p.short_name " +
+                  " from  nomination n ,constituency_election ce ," +
+				  " party p ,election e " +
+                  " where n.consti_elec_id = ce.consti_elec_id and " +
+                  " n.party_id = p.party_id and " +
+                  " ce.election_id = e.election_id " );
+		
+		if(electionScopeIdsLst != null && electionScopeIdsLst.size() >0){
+			sb.append(" and e.election_scope_id in (:electionScopeIds) ");
+		}
+		 if(subTypes != null && subTypes.size() >0){
+			 sb.append(" and e.sub_type in (:subTypeArr ) ");
+		 }
+		 if(yearList != null && yearList.size() >0){
+			 sb.append(" and e.election_year in (:yearList) ");
+		 }
+
+        sb.append(" ORDER BY p.short_name");
+        
+        Query qry = getSession().createSQLQuery(sb.toString());
+        
+        if(electionScopeIdsLst != null && electionScopeIdsLst.size() >0){
+			qry.setParameterList("electionScopeIds", electionScopeIdsLst);
+		}
+		if(subTypes != null && subTypes.size() >0){
+			qry.setParameterList("subTypeArr", subTypes);
+		}
+		if(yearList != null && yearList.size() >0){
+			qry.setParameterList("yearList", yearList);
+		}
+		
+        return qry.list();
+
+	}
 }

@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
@@ -94,4 +95,5 @@ public interface ILocationDashboardService {
 	public List<ElectionInformationVO> getElectionYearWisePartyDetails(List<Long> electionScopeIdsLst,List<String> subTypes);
 	public List<KeyValueVO> getLocationWiseElectionDetails(String locationType);
 	public List<ConstituencyCadreVO> getCategoryWiseGenderCount(Long locationScopeId,List<Long> locationValuesList,List<Long> enrollmentYearIdsList);
+	public List<IdNameVO> getElectionYearWisePartyList(List<Long> electionScopeIdsLst,List<String> subTypes,List<Long> yearList);
 	}
