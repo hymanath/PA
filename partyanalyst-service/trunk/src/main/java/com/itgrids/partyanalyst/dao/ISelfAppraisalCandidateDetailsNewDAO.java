@@ -12,7 +12,7 @@ public interface ISelfAppraisalCandidateDetailsNewDAO extends GenericDao<SelfApp
  public List<Object[]> getCategoryWiseTourSubmittedLeader(String type,List<Long> monthYearIds,Set<Long> candiateIds);
  public List<Object[]> getToursSubmittedLeaderCntDesignationBy(List<Long> monthYearIds,Set<Long> candiateIds);
  public List<Object[]> getLeaderComplainceCntCategoryWise(List<Long> monthYearIds,String type,Long selfAppraisalCandiateId,Set<Long> candiateIds);
- public List<Object[]> getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,Long userTypeId,List<Long> monthYearIds,List<Long> designationIds);
+ public List<Object[]> getTourSubmitteedDtlsDesignationWise(Set<Long> candidateIdSet,List<Long> monthYearIds);
  public List<Object[]> getMonthWiseTourSubmittedDetails(List<Long> monthYearIds,Long candidateId);
  public List<Object[]> getSubmittedToursLeadersDetails(List<Long> desigIds,List<Long> monthyearIds);
  public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(String type,List<Long> monthyearIds,List<Long> designationIds,List<Long> candiateIds);
@@ -25,4 +25,5 @@ public interface ISelfAppraisalCandidateDetailsNewDAO extends GenericDao<SelfApp
  public List<Object[]> getToursOverviewByCadre(Long tdpCadreId, Long tourMonthId);
  public List<Object[]> getProgramVistedLeaderDetails(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,Long userTypeId,List<Long> monthYearIds,List<Long> designationIds);
  public List<Object[]> getCandiateComment(Long tdpCadreId);
+ public List<Object[]> getUniqueTourSubmittedCandiate(Set<Long> tdpCadreIdSet,List<Long> monthYearIds);
  }

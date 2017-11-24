@@ -21,4 +21,5 @@ public interface ISelfAppraisalCandidateDAO extends GenericDao<SelfAppraisalCand
 	public Long getTdpCadreId(Long selfAppraisalCandiateId);
 	public List<Long> getDesignationIdsList(Long tdpCadreId);
 	public List<Object[]> getCandidateInfoOfDesginations(Long tdpCadreId,Set<Long> designationIds);
+	public List<Object[]> getTourMemberDetails();
 }
