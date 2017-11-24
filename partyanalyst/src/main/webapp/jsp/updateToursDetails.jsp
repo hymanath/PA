@@ -730,17 +730,17 @@ if($(window).width() > 500)
 {
 	$(".table").wrap( "<div class='table-responsive'></div>" );
 }
-
- defaultDateRangePickerForAppendBlock();
- initializeMultiDateRanePicker();
- $("#designationSlctBxId").chosen();
- $("#memberSlctBxId").chosen();
- 
+	var customStartToursDate = moment().subtract(1,'month').startOf("month").format('DD/MM/YYYY')
+	var customEndToursDate = moment().subtract(1,'month').endOf("month").format('DD/MM/YYYY');
+	 defaultDateRangePickerForAppendBlock();
+	 initializeMultiDateRanePicker();
+	 $("#designationSlctBxId").chosen();
+	 $("#memberSlctBxId").chosen();
 	function initializeMultiDateRanePicker(){
 		$("#toursDateRangePickerNew").daterangepicker({
 			opens: 'left',
-			 startDate: moment(),
-			 endDate: moment(),
+			 startDate: customStartToursDate,
+			 endDate: customEndToursDate,
 			locale: {
 			  format: 'DD/MM/YYYY'
 			},
@@ -759,6 +759,8 @@ if($(window).width() > 500)
 			getToursDetailsOverview();
 		}); */
 	}
+	var designationIds = [];
+	getTourBasicOverviewDtlsDesignationWise(customStartToursDate,customEndToursDate,designationIds); //default call 
 	function getDay(){
 		var date = new Date();
 		var dd = date.getDate(); 

@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SessionVO;
 import com.itgrids.partyanalyst.dto.TabLoginAuthVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
+import com.itgrids.partyanalyst.dto.ToursOverviewDtlsvO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
@@ -191,6 +192,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private CoreDashboardInsuranceVO coreDashboardInsuranceVO;
 	private BoothInchargesVO boothInchargeVo;
 	private List<BoothInchargesVO> boothInchargesVOList;
+	private ToursOverviewDtlsvO tourOverviewDtlsVO;
+	private List<ToursOverviewDtlsvO> tourOverviewDtlsList;
 	
 	//setters And Getters
 	public List<Long> getProgramIdsList() {
@@ -942,6 +945,21 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setBoothInchargeVo(BoothInchargesVO boothInchargeVo) {
 		this.boothInchargeVo = boothInchargeVo;
+	}
+    public ToursOverviewDtlsvO getTourOverviewDtlsVO() {
+		return tourOverviewDtlsVO;
+	}
+
+	public void setTourOverviewDtlsVO(ToursOverviewDtlsvO tourOverviewDtlsVO) {
+		this.tourOverviewDtlsVO = tourOverviewDtlsVO;
+	}
+
+	public List<ToursOverviewDtlsvO> getTourOverviewDtlsList() {
+		return tourOverviewDtlsList;
+	}
+
+	public void setTourOverviewDtlsList(List<ToursOverviewDtlsvO> tourOverviewDtlsList) {
+		this.tourOverviewDtlsList = tourOverviewDtlsList;
 	}
 
 	//business methods
@@ -5011,6 +5029,37 @@ public String getInsuraceStatusWiseComplaintsDetails()
 			LOG.error("Exception raised at getDesignationWiseCandidateOverAllPerformanceCohort() method of CoreDashBoardAction", e);
 		}
 		
+		return Action.SUCCESS;
+	}
+	public String getCandiateWiseTourSubmittedDetails(){
+		try {
+			LOG.info("Entered into getToursBasicOverviewDtls()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long userTypeId = jObj.getLong("userTypeId");
+			tourOverviewDtlsVO = coreDashboardToursService.getCandiateWiseTourSubmittedDetails(stateId,fromDate,toDate,activityMemberId,userTypeId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCandiateWiseTourSubmittedDetails() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getCandaiteDetailsByType(){
+		try {
+			LOG.info("Entered into getToursBasicOverviewDtls()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long userTypeId = jObj.getLong("userTypeId");
+			String type = jObj.getString("type");
+			tourOverviewDtlsList = coreDashboardToursService.getCandaiteDetailsByType(stateId, fromDate, toDate,activityMemberId, userTypeId,type);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCandaiteDetailsByType() method of CoreDashBoard", e);
+		}
 		return Action.SUCCESS;
 	}
 }

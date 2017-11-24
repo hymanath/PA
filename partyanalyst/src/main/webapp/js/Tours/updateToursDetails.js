@@ -736,8 +736,6 @@ function getCandidateList(designationId){
 		 }
 		});
 	} */
-	var designationIds = [];
-	getTourBasicOverviewDtlsDesignationWise(fromDate,toDate,designationIds); //default call 
 	function getTourBasicOverviewDtlsDesignationWise(fromDate,toDate,designationIds){ 
 		$("#overAllLeaderDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var dates=$("#toursDateRangePickerNew").val();
@@ -2588,7 +2586,8 @@ $(document).on("click",".candiateCls",function(){
 	});
 	function updateApplication1(){//Teja
 	var flag = false;
-	var isDataEntered	= false;
+	
+	  /* var isDataEntered	= false;
 	  $(".toursDaysCls").each(function(){
 			var enteredValue = parseInt($(this).val());
 			if(enteredValue>0){
@@ -2607,7 +2606,7 @@ $(document).on("click",".candiateCls",function(){
 			return;
 		}else{
 			$("#errorDiv").html("");
-		}
+		} */
 		$("#hiddentdpCadreIdForModal").val($("#hiddentdpCadreIdForPopUp").val());
 		//$("#hiddentourMonthIdForModal").val($("#hiddentourMonthIdForPopUp").val());
 		$("#hiddentourMonthIdForModal").val($("#hiddentourMonthIdForPopUp").val());
