@@ -307,7 +307,12 @@ header
 		.color-label-default
 		{
 			.color-label;
-			background-color:@dark_yellow_color;
+			background-color:#ff6600;
+		}
+		.color-label-gold
+		{
+			.color-label;
+			background-color:#f7b519;
 		}
 		.navbar_section_whitebk{
 			background-color:@white_color;
@@ -1087,6 +1092,56 @@ header
 		top:5px;
 	}
 }
+.panel-block-white-gold
+{
+	.panel-block-white;
+	color:@black_color;
+	h1
+	{
+		color:#f7b519;
+		font-size:45px;
+	}
+	h2
+	{
+		color:#f7b519;
+		font-size:25px;
+	}
+	small
+	{
+		color:#f7b519;
+		font-size:13px;
+		vertical-align:top;
+		position:relative;
+		top:5px;
+	}
+}
+.panel-block-white-gold.active
+{
+	color:@white_color;
+	background: red; /* For browsers that do not support gradients */    
+    background: -webkit-linear-gradient(35deg, #E3BA64, #f7b519); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(35deg, #E3BA64, #f7b519); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(35deg, #E3BA64, #f7b519); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(35deg, #E3BA64, #f7b519); /* Standard syntax (must be last) */
+	h1
+	{
+		color:@white_color;
+		font-size:45px;
+	}
+	h2
+	{
+		color:@white_color;
+		font-size:25px;
+	}
+	small
+	{
+		color:@white_color;
+		font-size:13px;
+		vertical-align:top;
+		position:relative;
+		top:5px;
+	}
+}
 .panel-block-white-high
 {
 	.panel-block-white;
@@ -1116,17 +1171,17 @@ header
 	color:@black_color;
 	h1
 	{
-		color:@dark_yellow_color;
+		color:#ff6600;
 		font-size:45px;
 	}
 	h2
 	{
-		color:@dark_yellow_color;
+		color:#ff6600;
 		font-size:25px;
 	}
 	small
 	{
-		color:@dark_yellow_color;
+		color:#ff6600;
 		font-size:13px;
 		vertical-align:top;
 		position:relative;
@@ -2017,6 +2072,7 @@ header
 .color_low{background-color:#FF0000 !important;color:#fff;-webkit-print-color-adjust:exact;}
 .color_medium{background-color:#FFBA00 !important;color:#fff;-webkit-print-color-adjust:exact;}
 .color_high{background-color:#00AF50 !important;color:#fff;-webkit-print-color-adjust:exact;}
+.color_gold{background-color:#f7b519 !important;color:#fff;-webkit-print-color-adjust:exact;}
 table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_Blocker{background-color:white}div.DTFC_LeftWrapper table.dataTable,div.DTFC_RightWrapper table.dataTable{margin-bottom:0;z-index:2}div.DTFC_LeftWrapper table.dataTable.no-footer,div.DTFC_RightWrapper table.dataTable.no-footer{border-bottom:none}
 
 .block_style_ITC{
