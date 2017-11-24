@@ -1962,3 +1962,18 @@ font-size:12px !important;
     color: #FFF;
     border-radius: 18px;  
 }
+.strongPoorCss{
+	
+	background-color: #ff3e3e;
+    border-radius: 5px;
+    color: #fff;
+    display: block;
+    margin-right: 5px;
+    padding: 2px;
+    text-align: center;
+    width: 20px;
+}
+.tooltipPartyTrends{
+	cursor:pointer;
+	
+}
