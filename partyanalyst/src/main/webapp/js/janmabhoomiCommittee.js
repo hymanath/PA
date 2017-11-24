@@ -451,7 +451,7 @@ $(document).on("click",".memberAddEditDetailsCls",function(){
 		panchayatId='2'+wardId;
 	}
 	if(publicRepreTypeId != null && publicRepreTypeId >0){
-		getAdvancedSearchDetails(publicRepreTypeId,committeeLvlId,committeeLvlVal,committeeId,statusType,roleId,memberId,memberName,
+		getAdvancedSearchDetails(publicRepreTypeId,committeeLvlId,committeeLvlVal,committeeId,"proposal",roleId,memberId,memberName,
 		voterCardNo,mobileNo,memberShipId,stateId,districtId,constituencyId,mandalId,panchayatId);
 	}else{
 		buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,
@@ -555,6 +555,7 @@ mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,m
 							str+='</td>';
 						str+='</tr>';
 						str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.committeeId" value="'+committeeId+'"/>';
+						if(memberId != null && memberId>0)
 						str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
 						str+='<tr>';
 							 str+='<td colspan="2">';
@@ -1028,6 +1029,7 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.committeeId" value="'+committeeId+'"/>';
+			if(memberId != null && memberId>0)
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
 			str+='<div class="col-sm-2">';
 				str+='<select class="form-control chosen-select" id="casteCategoryId" name="janmabhoomiCommitteeMemberVO.categoryId">';
@@ -1112,15 +1114,15 @@ function getAllCategoriesAction(){
       if(result != null && result.length >0){
 		  for(var i in result){
 			  $("#casteCategoryId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
-			  $("#casteCategoryPubId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
+			  //$("#casteCategoryPubId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
 		  }
 		  $("#casteCategoryId").trigger("chosen:updated");
-		  $("#casteCategoryPubId").trigger("chosen:updated");
+		  //$("#casteCategoryPubId").trigger("chosen:updated");
 	  }
     });
 }
 
-$(document).on("change","#casteCategoryId,#casteCategoryPubId",function(){
+$(document).on("change","#casteCategoryId",function(){//#casteCategoryPubId
 if($(this).val() != 0){
 		getStatewiseCastNamesByCasteCategoryGroupIdAction($(this).val());
 	}
@@ -1145,14 +1147,15 @@ categoryGrouIdsList.push(casteCategoryId);
        if(result != null && result.length >0){
 		  for(var i in result){
 			  $("#casteId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
-			  $("#castePubId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
+			  //$("#castePubId").append('<option value='+result[i].id+'>'+result[i].name+'</option>')
 		  }
 		  $("#casteId").trigger("chosen:updated");
-		  $("#castePubId").trigger("chosen:updated");
+		  //$("#castePubId").trigger("chosen:updated");
 	  }
     });
 }
 function savingApplication(committeeId,statusType){
+	$("#addMemberErrDiv").html("");
 	if(statusType == "proposal"){
 		var memberNameId = $("#memberNameId").val();
 		var memberMobileNoId = $("#memberMobileNoId").val();
@@ -1433,16 +1436,16 @@ function savingApplication(committeeId,statusType){
 		str+='<form name="addMemberSaving" id="addMemberPub"  method="post" enctype="multipart/form-data">';
 			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-12">';
-				
+				str+='<div id="addMemberErrDiv" style="color:red;"></div>';
 				str+='<div class="col-sm-2">';
 					str+='<label>';
-						str+='<input type="text" class="form-control" id="" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.name" >';
+						str+='<input type="text" class="form-control" id="memberNameId" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.name" >';
 					str+='</label>';
 				str+='</div>';
 				
 				str+='<div class="col-sm-2">';
 					str+='<label>';
-						str+='<input type="text" class="form-control" id="" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber">';
+						str+='<input type="text" class="form-control" id="memberMobileNoId" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber">';
 					str+='</label>';
 				str+='</div>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
@@ -1454,19 +1457,19 @@ function savingApplication(committeeId,statusType){
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="proposal"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.committeeId" value="'+committeId+'"/>';
 				str+='<div class="col-sm-2">';
-					str+='<select class="form-control chosen-select" id="casteCategoryPubId" name="janmabhoomiCommitteeMemberVO.categoryId">';
+					str+='<select class="form-control chosen-select" id="casteCategoryId" name="janmabhoomiCommitteeMemberVO.categoryId">';
 						str+='<option value="0">Select Category</option>';
 					str+='</select>';
 				str+='</div>';
 				
 				str+='<div class="col-sm-2">';
-					str+='<select class="form-control chosen-select" id="castePubId" name="janmabhoomiCommitteeMemberVO.casteId">';
+					str+='<select class="form-control chosen-select" id="casteId" name="janmabhoomiCommitteeMemberVO.casteId">';
 						str+='<option value="0">Select Caste</option>';
 					str+='</select>';
 				str+='</div>';
 				
 				str+='<div class="col-sm-3">';
-					str+='<select class="form-control chosen-select" id="partyPubId" name="janmabhoomiCommitteeMemberVO.partyId">';
+					str+='<select class="form-control chosen-select" id="partyId" name="janmabhoomiCommitteeMemberVO.partyId">';
 						str+='<option value="0">Select Affiliated Party</option>';
 						str+='<option value="872">TDP</option>';
 						str+='<option value="362">INC</option>';
