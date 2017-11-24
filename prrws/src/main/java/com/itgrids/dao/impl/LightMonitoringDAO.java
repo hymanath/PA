@@ -367,4 +367,27 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
           sqlQuery.setDate("toDate", toDate);
           return sqlQuery.list();
    }
+
+	@Override
+	public List<Object[]> getDateWiseLightMonitoringDtls(Date fromDate,Date toDate) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select " +
+				 " date(model.surveyDate)," +
+				 " model.lightsVendor.lightsVendorId," +
+				 " model.lightsVendor.vendorName,"
+				+ " sum(model.totalLights),sum(model.totalPanels) "
+				+ " from  LightMonitoring model where model.isDeleted ='N' " +
+				" and model.panchayat.locationAddress.state.stateId = 1 ");
+		if (fromDate != null && toDate != null) {
+			sb.append(" and  date(model.surveyDate) between :fromDate and :toDate ");
+		}
+		sb.append(" group by date(model.surveyDate) ");
+
+		Query query = getSession().createQuery(sb.toString());
+		if (fromDate != null && toDate != null) {
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		return query.list();
+	}
 }

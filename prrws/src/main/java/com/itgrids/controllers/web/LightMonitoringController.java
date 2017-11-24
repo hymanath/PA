@@ -90,7 +90,7 @@ public class LightMonitoringController {
    }
    @RequestMapping(value = "/getTimePeriodWiseLightsDetaisl", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  List<LightMonitoringVO>  getTimePeriodWiseLightsDetaisl(@RequestBody InputVO inputVO){
-	   List<LightMonitoringVO>  voLists=lightMonitoring.getTimePeriodWiseLightsDetaisl(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue(),inputVO.getLightVendorIdList());
+	   List<LightMonitoringVO>  voLists=lightMonitoring.getTimePeriodWiseLightsDetails(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue(),inputVO.getLightVendorIdList());
        return voLists;
  }
 }

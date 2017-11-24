@@ -53,12 +53,17 @@ public class LightMonitoringVO implements Serializable{
     private Long todayOn = 0L;
     private Long todayOff = 0L;
     private  Long todaynotWork= 0L;
-    private Long nredcapTodayLights=0L;
-    private Long nredcapTodayPanels=0L;
-    private Long eeslTodayLights=0L;
-    private Long eeslTodayPanels=0L;
+    private Long pendingLightcount = 0l;
+    private String timePeriod;
     
-    public Long getTodayLights() {
+    public LightMonitoringVO() {
+		
+	}
+	public LightMonitoringVO(Long lightVendorId, String lightVendorName) {
+		this.lightVendorId = lightVendorId;
+		this.lightVendorName = lightVendorName;
+	}
+	public Long getTodayLights() {
 		return todayLights;
 	}
 	public void setTodayLights(Long todayLights) {
@@ -101,10 +106,7 @@ public class LightMonitoringVO implements Serializable{
 		this.todaynotWork = todaynotWork;
 	}
 	
-     
-	                               
-	
-	public Long getTodayCount() {
+    public Long getTodayCount() {
 		return todayCount;
 	}
 	public void setTodayCount(Long todayCount) {
@@ -344,29 +346,17 @@ public class LightMonitoringVO implements Serializable{
 	public void setSubList(List<LightMonitoringVO> subList) {
 		this.subList = subList;
 	}
-	public Long getNredcapTodayLights() {
-		return nredcapTodayLights;
+	public Long getPendingLightcount() {
+		return pendingLightcount;
 	}
-	public void setNredcapTodayLights(Long nredcapTodayLights) {
-		this.nredcapTodayLights = nredcapTodayLights;
+	public void setPendingLightcount(Long pendingLightcount) {
+		this.pendingLightcount = pendingLightcount;
 	}
-	public Long getNredcapTodayPanels() {
-		return nredcapTodayPanels;
+	public String getTimePeriod() {
+		return timePeriod;
 	}
-	public void setNredcapTodayPanels(Long nredcapTodayPanels) {
-		this.nredcapTodayPanels = nredcapTodayPanels;
-	}
-	public Long getEeslTodayLights() {
-		return eeslTodayLights;
-	}
-	public void setEeslTodayLights(Long eeslTodayLights) {
-		this.eeslTodayLights = eeslTodayLights;
-	}
-	public Long getEeslTodayPanels() {
-		return eeslTodayPanels;
-	}
-	public void setEeslTodayPanels(Long eeslTodayPanels) {
-		this.eeslTodayPanels = eeslTodayPanels;
+	public void setTimePeriod(String timePeriod) {
+		this.timePeriod = timePeriod;
 	}
 	
 	
