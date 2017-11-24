@@ -831,9 +831,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			////0 jbCommitteeMemberId,1 jbCommitteeRoleId,2 memberName,3 voterIDCardNo,4 tdpCadreId
 			if(commiteesMembersList !=null && commiteesMembersList.size() >0) {
 				for(Object[] param: commiteesMembersList){
-					if(commonMethodsUtilService.getStringValueForObject(param[3]) !=null)
+					if(commonMethodsUtilService.getStringValueForObject(param[3]) !="")
 					voterIdCardsList.add(commonMethodsUtilService.getStringValueForObject(param[3]));
-					if(commonMethodsUtilService.getStringValueForObject(param[4]) !=null)
+					if(commonMethodsUtilService.getStringValueForObject(param[4]) !="")
 						tdpCadreIdsList.add(commonMethodsUtilService.getLongValueForObject(param[4]));
 				}
 			}
