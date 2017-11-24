@@ -257,6 +257,7 @@
       		<result type="redirect" name="alertUserManagementAction">alertUserManagementAction.action</result>
       		<result type="redirect" name="alertDistManagement">alertDistManagement.action</result>
       		<result type="redirect" name="alertDistOfficeManagement">alertDistOfficeManagement.action</result>
+			<result type="redirect" name="constituencyPageAction">areaWiseDashboardAction.action</result>
 			
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
@@ -5727,6 +5728,7 @@
       <result type="redirect" name="departmentDetailsAction">departmentDetailsAction.action</result>
       
       <result type="redirect" name="alertManagementAction">alertManagementAction.action</result>
+      <result type="redirect" name="constituencyPageAction">areaWiseDashboardAction.action</result>
 	  <result type="redirect" name="alertUserManagementAction">alertUserManagementAction.action</result>
 	  <result type="redirect" name="alertDistManagement">alertDistManagement.action</result>
 	  <result type="redirect" name="alertDistOfficeManagement">alertDistOfficeManagement.action</result>
@@ -17509,7 +17511,9 @@
 	</action>
 	
 	<action name="areaWiseDashboardAction" class="locationDashboardAction" method="locationDashboard" >
-		<result name="success">/jsp/areaWiseDashboard.jsp</result>
+		<result name="success">/jsp/areaWiseDashboard.jsp</result>	  	
+		<result name="input">/jsp/loginForm.jsp?src=areaWiseDashboardAction</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
 	<action name="districtDashboardAction" class="locationDashboardAction" method="districtDashboard" >
