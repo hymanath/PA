@@ -14,6 +14,7 @@ public interface ISelfAppraisalCandidateLocationNewDAO extends GenericDao<SelfAp
  public List<Object[]> getLocationValuesOfCandidate(Long candidateId,Long categoryId);
  public List<Object[]> getLocationWiseCandidate(Long cadreId);
  public List<Object[]> getLocationValuesOfCandidate1(Long candidateId,Long categoryId,Long tourTypeId);
+ public List<Object[]> getUniqueCandiateBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long userTypeId);
  //constituency page
  public List<Object[]> getLocationWiseTourMemberDetails(Long locationTypeId,List<Long> locationValues,Long stateId);
  

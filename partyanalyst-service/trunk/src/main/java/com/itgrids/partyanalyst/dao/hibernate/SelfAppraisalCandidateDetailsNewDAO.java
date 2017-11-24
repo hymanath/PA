@@ -135,72 +135,36 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		   }
 		  return query.list();
   }
- public List<Object[]> getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,Long userTypeId,List<Long> monthYearIds,List<Long> designationIds){
+ public List<Object[]> getTourSubmitteedDtlsDesignationWise(Set<Long> candiateIdSet,List<Long> monthYearIds){
 		   StringBuilder queryStr = new StringBuilder();
 		   queryStr.append(" select  " +
-		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
-		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.designation," +//1
-		   				" SACL.selfAppraisalCandidate.selfAppraisalCandidateId," +//2
-		   				" SACL.selfAppraisalCandidate.tdpCadre.firstname " +//3 
+		   				" SACD.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
+		   				" SACD.selfAppraisalCandidate.selfAppraisalDesignation.designation," +//1
+		   				" SACD.selfAppraisalCandidate.selfAppraisalCandidateId," +//2
+		   				" SACD.selfAppraisalCandidate.tdpCadre.firstname " +//3 
 		   		   		" from " +
-				   		" SelfAppraisalCandidateLocationNew SACL,SelfAppraisalCandidateDetailsNew SACD " +
-				   		" where SACL.selfAppraisalCandidate.selfAppraisalCandidateId = SACD.selfAppraisalCandidate.selfAppraisalCandidateId and  " +
-				   		" SACL.selfAppraisalCandidate.isActive = 'Y' and " +  
-				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and SACD.isDeleted='N' and " +
-				   		" SACL.userAddress.state.stateId = :stateId ");
-		   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-			   queryStr.append(" and SACL.userAddress.state.stateId in (:userAccessLevelValues)");  
-		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-			   queryStr.append(" and SACL.userAddress.district.districtId in (:userAccessLevelValues)");  
-		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-			   queryStr.append(" and SACL.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
-		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-			   queryStr.append(" and SACL.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
-		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
-			   queryStr.append(" and SACL.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
-		   }
-		   if(userTypeId != IConstants.STATE_USER_TYPE_ID || designationIds != null && designationIds.size() > 0){
-				  queryStr.append(" and SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds) "); 
+				   		" SelfAppraisalCandidateDetailsNew SACD " +
+				   		" where " +
+				   		" SACD.selfAppraisalCandidate.isActive = 'Y' and " +  
+				   		" SACD.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and SACD.isDeleted='N'");
+		  
+		   if (candiateIdSet != null && candiateIdSet.size() > 0) {
+			   queryStr.append(" and SACD.selfAppraisalCandidate.selfAppraisalCandidateId in (:candiateIdSet)");
 		   }
 		   if(monthYearIds != null && monthYearIds.size() > 0 ){
                queryStr.append(" and SACD.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
-          }
-		   queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
-		   				   " SACL.selfAppraisalCandidate.selfAppraisalCandidateId");   
-		   queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
+           }
+		   queryStr.append(" group by SACD.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		   				   " SACD.selfAppraisalCandidate.selfAppraisalCandidateId");   
+		   queryStr.append(" order by SACD.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
 		   Query query = getSession().createQuery(queryStr.toString());	
 		   
-		   if(locationValueSet != null && locationValueSet.size() > 0){
-			   query.setParameterList("userAccessLevelValues", locationValueSet);
+		   if(candiateIdSet != null && candiateIdSet.size() > 0){
+			   query.setParameterList("candiateIdSet", candiateIdSet);
 		   }
 		   if(monthYearIds != null && monthYearIds.size() > 0 ){
 				query.setParameterList("monthYearIds", monthYearIds);
 		   }
-		   if(stateId != null && stateId.longValue() > 0){
-			   query.setParameter("stateId", stateId);
-		   }
-		   if(designationIds != null && designationIds.size() > 0){
-			   query.setParameterList("designationIds",designationIds);   
-		   }else{
-			 /*  if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
-			    	query.setParameterList("designationIds",Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS));
-		       }else*/ if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-		     		query.setParameterList("designationIds",Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS));
-		       }else if(userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
-		     		query.setParameterList("designationIds",Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS));
-		       }else if(userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID){
-		     		query.setParameterList("designationIds",Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS));
-		      }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
-		     		query.setParameterList("designationIds",Arrays.asList(IConstants.MP_SUB_LEVEL_DESIG_IDS));
-		      }else if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID){
-		     		query.setParameterList("designationIds",Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS));
-		      }else if(userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
-		     		query.setParameterList("designationIds",Arrays.asList(IConstants.INCHARGE_MINISTER_SUB_LEVEL_DESIG_IDS));	
-		      }else if(userTypeId.longValue() == IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
-		     		query.setParameterList("designationIds",Arrays.asList(IConstants.PARLIAMENT_INCHARGE_SUB_LEVEL_DESIG_IDS));	
-		      }     
-		   }
-		
 		   return query.list();  
 	   }
  public List<Object[]> getMonthWiseTourSubmittedDetails(List<Long> monthYearIds,Long candidateId){
@@ -640,4 +604,30 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 	}
+	public List<Object[]> getUniqueTourSubmittedCandiate(Set<Long> tdpCadreIdSet,List<Long> monthYearIds){
+		   StringBuilder queryStr = new StringBuilder();
+		   queryStr.append( " select distinct "+
+						    " SACD.tdpCadre.tdpCadreId," +
+			           		" SACD.tdpCadre.firstname," +
+			           		" SACD.tdpCadre.memberShipNo," +
+			           		" SACD.tdpCadre.mobileNo "+
+			   		   		" from " +
+					   		" SelfAppraisalCandidateDetailsNew SACD " +
+					   		" where SACD.isDeleted='N'  ");
+		   if(monthYearIds != null && monthYearIds.size() > 0 ){
+			   queryStr.append(" and SACD.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
+            }
+		   if(tdpCadreIdSet != null && tdpCadreIdSet.size() > 0 ){
+			   queryStr.append(" and SACD.tdpCadreId in(:tdpCadreIdSet) ");
+            }
+		   Query query = getSession().createQuery(queryStr.toString());	
+		   
+		   if(monthYearIds != null && monthYearIds.size() > 0 ){
+				query.setParameterList("monthYearIds", monthYearIds);
+		   }
+		   if(tdpCadreIdSet != null && tdpCadreIdSet.size() > 0 ){
+			   query.setParameterList("tdpCadreIdSet", tdpCadreIdSet);
+            }
+		   return query.list();  
+	   }
 }

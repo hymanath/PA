@@ -2755,13 +2755,12 @@ public class ToursService implements IToursService {
 							}
 						}
 						
-						
 					//	Category Wise Saving
 					if(toursVo !=null && toursVo.getToursVoListNew() !=null && toursVo.getToursVoListNew().size()>0){
 					
 						for (ToursNewVO innerTourVo : toursVo.getToursVoListNew()) {
 							
-							if(innerTourVo !=null && innerTourVo.getTourDays() !=null && innerTourVo.getTourDays()>0l){
+							//if(innerTourVo !=null && innerTourVo.getTourDays() !=null && innerTourVo.getTourDays()>0l){
 								
 								if(innerTourVo.getDetailsNewId()  !=null && innerTourVo.getDetailsNewId()>0l)//Update
 								{
@@ -2790,7 +2789,7 @@ public class ToursService implements IToursService {
 														selfAppraisalCandidateDetailsNew.setRemarks(innerTourVo.getDescription().toString());
 													}*/
 													
-													selfAppraisalCandidateDetailsNew.setTourDays(innerTourVo.getTourDays() !=null && innerTourVo.getTourDays()>0 ? innerTourVo.getTourDays():null );
+													selfAppraisalCandidateDetailsNew.setTourDays(innerTourVo.getTourDays() !=null && innerTourVo.getTourDays()>0 ? innerTourVo.getTourDays():0 );
 													
 													selfAppraisalCandidateDetailsNew.setIsDeleted("N");
 													
@@ -2806,7 +2805,7 @@ public class ToursService implements IToursService {
 													saveUserLocationsOfTour(innerTourVo.getCandidateId(),innerTourVo.getTourCategoryId(),selfAppraisalCandidateDetails.getSelfAppraisalCandidateDetailsNewId());									
 													
 												}
-									}
+									//}
 							}														
 								//Over All Toured Days Saving End
 						}
@@ -3140,7 +3139,7 @@ public class ToursService implements IToursService {
 								selfAppraisalCandidateDetailsNew.setRemarks(innerTourVo.getDescription().toString());
 							}
 							
-							selfAppraisalCandidateDetailsNew.setTourDays(innerTourVo.getTourDays() !=null && innerTourVo.getTourDays()>0 ? innerTourVo.getTourDays():null );
+							selfAppraisalCandidateDetailsNew.setTourDays(innerTourVo.getTourDays() !=null && innerTourVo.getTourDays()>0 ? innerTourVo.getTourDays():0 );
 							
 							selfAppraisalCandidateDetailsNew.setIsDeleted("N");
 							
