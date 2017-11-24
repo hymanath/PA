@@ -18520,6 +18520,11 @@
    			<param name="root">codeDebateVoList</param>
    		</result>
 	</action>
-	
+  	
+  	 <action name="getElectionYearWisePartyListAction" class="locationDashboardAction"  method="getElectionYearWisePartyList">
+		<result type="json" name="success">    
+			<param name="root">IdNameVOList</param>       
+		</result>
+   </action>
  </package>
 </struts>

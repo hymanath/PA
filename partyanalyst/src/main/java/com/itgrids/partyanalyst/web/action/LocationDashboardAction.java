@@ -1829,4 +1829,25 @@ public String getElectionInformationLocationWise(){
 		}
 		 return Action.SUCCESS;
 	 }
+  
+  public String getElectionYearWisePartyList(){
+	   try{
+		   LOG.info("Entered into getElectionYearWisePartyList of locationDashboardAction");
+		   jObj = new JSONObject(getTask());
+		   List<Long> electionScopeIdsList = convertJsonStringList(jObj.getJSONArray("electionScopeIds"));
+		   List<String> subTypeList = new ArrayList<String>();
+		   JSONArray jsonArray = jObj.getJSONArray("electionSubTypeArr");
+			if (jsonArray != null && jsonArray.length() > 0) {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					subTypeList.add(jsonArray.getString(i).toString());
+				}
+			}
+				List<Long> electionYearList = convertJsonStringList(jObj.getJSONArray("electionYearList")); 
+			//String electionYearValue = jObj.getString("electionYearList");
+			IdNameVOList = locationDashboardService.getElectionYearWisePartyList(electionScopeIdsList,subTypeList,electionYearList);
+	   }catch(Exception e){
+		   LOG.error("Exception occured in getElectionYearAndPartiesWiseDetails() method of locationDashboardAction ",e);
+	   }
+	   return Action.SUCCESS;
+ }
 }
