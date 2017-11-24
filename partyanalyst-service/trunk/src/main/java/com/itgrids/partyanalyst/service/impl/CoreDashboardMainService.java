@@ -1216,7 +1216,7 @@ public void setLocationWiseBoothCommiteesCount(List<Object[]> list,Map<Long,Comm
 	        }else if(status.equalsIgnoreCase("started")){
 	          locationVO.setStartedCount(locationVO.getStartedCount() + count);
 	        }else if(status.equalsIgnoreCase("notStarted")){
-	        	locationVO.setNotStartedCount((count - locationVO.getStartedCount()) + count);
+	        	locationVO.setNotStartedCount(count);
 	        }
 	      }else{
 	        locationVO.setTotalCount(locationVO.getTotalCount()+count);
@@ -6723,7 +6723,7 @@ public BoothInchargesVO  getUserTypeWiseBoothCommitteesInchargeDetails(Long acti
 		    		userLocationLevelValues.add(obj[2]!=null?(Long)obj[2]:0l);
 		    	}
 		    }
-		    Long stateId = coreDashboardGenericService.getStateIdByState(state);
+		    //Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		    if(dateString != null && !dateString.isEmpty()){
 		    	// committeeBO.setDate(sdf.parse(dateString));
 		    	 String DatesArr[] = dateString.split("-");
@@ -6817,6 +6817,31 @@ public List<BoothInchargesVO> getBoothCommitteeInchargesCount(Long activityMembe
 	    	}
 	    }
 	    
+	    if(commonMethodsUtilService.isListOrSetValid(returnList)){
+	    	for (BoothInchargesVO vo : returnList) {
+	    		if(commonMethodsUtilService.isListOrSetValid(vo.getBoothIds())){
+	    			if(commonMethodsUtilService.isListOrSetValid(vo.getBoothIds()))
+	    				vo.setTotalBooths(Long.valueOf(String.valueOf(vo.getBoothIds().size())));
+	    			if(commonMethodsUtilService.isListOrSetValid(vo.getTdpCadreIds()))
+	    				vo.setTdpCadreId(Long.valueOf(String.valueOf(vo.getTdpCadreIds().size())));
+	    			if(commonMethodsUtilService.isListOrSetValid(vo.getMaleTdpCadreIds()))
+	    				vo.setMaleCnt(Long.valueOf(String.valueOf(vo.getMaleTdpCadreIds().size())));
+	    			if(commonMethodsUtilService.isListOrSetValid(vo.getFemaleTdpCadreIds()))
+	    				vo.setFemaleCnt(Long.valueOf(String.valueOf(vo.getFemaleTdpCadreIds().size())));
+	    			if(commonMethodsUtilService.isListOrSetValid(vo.getOtherTdpCadreIds()))
+	    				vo.setOthersCnt(Long.valueOf(String.valueOf(vo.getOtherTdpCadreIds().size())));
+	    			
+	    			vo.getBoothIds().clear();
+	    			vo.getTdpCadreIds().clear();
+	    			vo.getMaleTdpCadreIds().clear();
+	    			vo.getFemaleTdpCadreIds().clear();
+	    			vo.getOtherTdpCadreIds().clear();
+	    			
+	    		}
+			}
+	    }
+	    
+	    
 	}catch(Exception e){
 		e.printStackTrace();
 		Log.error("Exception raised at getBoothCommitteeInchargesCount", e);
@@ -6853,29 +6878,41 @@ public void setCountForBoothCommitteeIncharges(List<BoothInchargesVO> returnList
 				 matchedVO  = getMatchVO(returnList,"4");
 			}else if(cnt != null && cnt >= 5l && cnt <= 10l){
 				 matchedVO  = getMatchVO(returnList,"5-10");
-			}else if(cnt != null && cnt >= 10l){
+			}else if(cnt != null && cnt > 10l){
 				 matchedVO  = getMatchVO(returnList,"10-Above");
 			}
 			 
 			 if(matchedVO != null){
 				 Long boothId = (Long)obj[0];
+				 Long tdpCadreId = (Long)obj[1];
 				 matchedVO.getBoothIds().add(boothId);//booths
+				 matchedVO.getTdpCadreIds().add(tdpCadreId);//added cadreIds
+				 /*
 				 if(matchedVO.getTdpCadreId() != null && matchedVO.getTdpCadreId().longValue() >0)
 					 matchedVO.setTdpCadreId(matchedVO.getTdpCadreId()+1l);//no of booth incharges
 				 else
 					 matchedVO.setTdpCadreId(1l);//no of booth incharges
+				  */	
 				 if(obj[2] != null){
 					 String gender = (String)obj[2];
 					 if(gender.equalsIgnoreCase("M")){
-						 if(matchedVO.getMaleCnt() != null && matchedVO.getMaleCnt().longValue() >0)
+						 matchedVO.getMaleTdpCadreIds().add(tdpCadreId);
+						 /*if(matchedVO.getMaleCnt() != null && matchedVO.getMaleCnt().longValue() >0)
 							 matchedVO.setMaleCnt(matchedVO.getMaleCnt()+1l);
 						 else
-							 matchedVO.setMaleCnt(1l);
+							 matchedVO.setMaleCnt(1l);*/
 					 }else if(gender.equalsIgnoreCase("F")){
-						 if(matchedVO.getFemaleCnt() != null && matchedVO.getFemaleCnt().longValue() >0)
+						 matchedVO.getFemaleTdpCadreIds().add(tdpCadreId);
+						/* if(matchedVO.getFemaleCnt() != null && matchedVO.getFemaleCnt().longValue() >0)
 							 matchedVO.setFemaleCnt(matchedVO.getFemaleCnt()+1l);
 						 else
-							 matchedVO.setFemaleCnt(1l);
+							 matchedVO.setFemaleCnt(1l);*/
+					 }else{
+						 matchedVO.getOtherTdpCadreIds().add(tdpCadreId);
+						/* if(matchedVO.getOthersCnt() != null && matchedVO.getOthersCnt().longValue() >0)
+							 matchedVO.setOthersCnt(matchedVO.getOthersCnt()+1l);
+						 else
+							 matchedVO.setOthersCnt(1l);*/
 					 }
 				 }
 			 }
