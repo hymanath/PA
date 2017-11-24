@@ -114,7 +114,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 			query.setParameter("roleId", roleId);
 		return query.list();
 	}
-	public BoothIncharge getExistingMember(Long tdpCadreId,String type){
+	public List<BoothIncharge> getExistingMember(Long tdpCadreId,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model" +
 				" from BoothIncharge model" );
@@ -132,7 +132,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		if(tdpCadreId != null && tdpCadreId.longValue() > 0l)
 			query.setParameter("tdpCadreId", tdpCadreId);
 		
-		return (BoothIncharge) query.uniqueResult();
+		return query.list();
 		
 	}
 	
@@ -308,9 +308,10 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		
 		StringBuilder queryStr = new StringBuilder();
 		
-		queryStr.append(" select model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.boothId,model.tdpCadre.tdpCadreId,model.tdpCadre.gender  from BoothIncharge model " +
+		queryStr.append(" select model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId,model.tdpCadreId,model.tdpCadre.gender  from BoothIncharge model " +
 				" where  model.isActive ='Y' and model.isDeleted='N' " +
-				" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.publicationDate.publicationDateId = :publicationDate "); 
+				" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.publicationDate.publicationDateId = :publicationDate and " +
+				" model.boothInchargeRoleConditionMapping.isDeleted ='N'  "); 
 	
 		
 		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -338,6 +339,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		if(startDate != null && endDate != null){
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		}
+		queryStr.append(" group by model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId,model.tdpCadreId ");
 		Query qry = getSession().createQuery(queryStr.toString());
 		
 		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){

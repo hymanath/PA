@@ -18,13 +18,49 @@ public class BoothInchargesVO implements Serializable {
 	private Long totalCount =0l;
 	private Long maleCnt =0l;
 	private Long femaleCnt=0l;
+	private Long othersCnt=0L;
 	private Long totalBooths=0l;
 	private String boothInchargesAssnd;
 	private Set<Long> boothIds = new HashSet<Long>();
+	private Set<Long> tdpCadreIds = new HashSet<Long>();
+	private Set<Long> maleTdpCadreIds = new HashSet<Long>();
+	private Set<Long> femaleTdpCadreIds = new HashSet<Long>();
+	private Set<Long> otherTdpCadreIds = new HashSet<Long>();
+	
 	private Long startedCount=0L;
 	private Long completedCount=0L;
 	private Long notStartedCount=0L;
 	
+	public Set<Long> getMaleTdpCadreIds() {
+		return maleTdpCadreIds;
+	}
+	public void setMaleTdpCadreIds(Set<Long> maleTdpCadreIds) {
+		this.maleTdpCadreIds = maleTdpCadreIds;
+	}
+	public Set<Long> getFemaleTdpCadreIds() {
+		return femaleTdpCadreIds;
+	}
+	public void setFemaleTdpCadreIds(Set<Long> femaleTdpCadreIds) {
+		this.femaleTdpCadreIds = femaleTdpCadreIds;
+	}
+	public Set<Long> getOtherTdpCadreIds() {
+		return otherTdpCadreIds;
+	}
+	public void setOtherTdpCadreIds(Set<Long> otherTdpCadreIds) {
+		this.otherTdpCadreIds = otherTdpCadreIds;
+	}
+	public Set<Long> getTdpCadreIds() {
+		return tdpCadreIds;
+	}
+	public void setTdpCadreIds(Set<Long> tdpCadreIds) {
+		this.tdpCadreIds = tdpCadreIds;
+	}
+	public Long getOthersCnt() {
+		return othersCnt;
+	}
+	public void setOthersCnt(Long othersCnt) {
+		this.othersCnt = othersCnt;
+	}
 	public Long getStartedCount() {
 		return startedCount;
 	}
