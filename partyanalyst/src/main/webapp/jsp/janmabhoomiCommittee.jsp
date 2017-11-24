@@ -56,7 +56,7 @@
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<div class="row">
 				<div class="col-sm-3">
-					<h4 class="modal-title">Memberes Details</h4>   
+					<h4 class="modal-title">Members Details</h4>   
 				</div>
 				<div class="col-sm-3 pull-right committeeSelectBoxCls">
 					  <select class="form-control chosen-select" id="committesLevelValuesId">
@@ -104,7 +104,7 @@
 	
 		str+='<div class="col-sm-3">';
 			str+='<div class="bordermemberes" style="border:1px solid #0E0E0E;background-color:#DCDCDC">';
-				str+='<h5 class="text-bold">Total Memberes</h5>';
+				str+='<h5 class="text-bold">Total Members</h5>';
 				str+='<h4 class="m_top10">'+result.roleMemberCount+'</h4>';
 				str+='<ul class="list-inline checkConditionChangeStatusCls">';
 				var bcType=false;

@@ -65,7 +65,7 @@ function buildJbCommitteeMainBlockStatusCount(result){
 			str+='<h4 class="pull-left barLengthCss" style="background-color:#20409A;"> </h4>';
 			str+='<h3 class="m_top20" style="margin-left: 15px;"><b>'+result.readyForApprovelCommitteeCnt+'</b></h3>';
 			str+='<h5 class="m_top20" style="margin-left: 15px;color:#12A89D;">'+result.readyForApprovelCommitteeperc+' %</h5>';
-			str+='<h5 class="m_top10" style="margin-left: 15px;line-height: 20px;""><b>Ready for<br>Approvel</b></h5>';
+			str+='<h5 class="m_top10" style="margin-left: 15px;line-height: 20px;""><b>Ready for<br>Approval</b></h5>';
 		str+='</div>';
 		str+='<div class="col-sm-2">';
 			str+='<h4 class="pull-left barLengthCss" style="background-color:#7E3D97;"> </h4>';
@@ -1027,7 +1027,7 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 			}
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+tdpCadreId+'"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
-			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';memberId
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.committeeId" value="'+committeeId+'"/>';
 			if(memberId != null && memberId>0)
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
@@ -1231,7 +1231,8 @@ function savingApplication(committeeId,statusType){
 	  }
 	  $(document).on("click","#committeeStatusChangeId",function(){
 		  var committeeId= $(this).attr("attr_committee_submit");
-		saveCommitteeStatus(committeeId);
+saveCommitteeStatus(committeeId);
+	
 }) ;
 	  function saveCommitteeStatus(committeeId){
 		  $(".committeeSavingStatusDivId").html(spinner);
