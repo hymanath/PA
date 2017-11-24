@@ -3039,9 +3039,9 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 				sbS.append(",model.address.district.districtId,model.address.district.districtName ");
 				sbE.append(" group by model.address.district.districtId ");
 			}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
-				sbS.append(",model.userAddress.parliamentConstituency.constituencyId,model.userAddress.parliamentConstituency.name ");
-				sbM.append(" and model.userAddress.parliamentConstituency.constituencyId in (:tdpCommitteeLevelValues) ");
-				sbE.append(" group by model.userAddress.parliamentConstituency.constituencyId ");
+				sbS.append(",model.address.parliamentConstituency.constituencyId,model.address.parliamentConstituency.name ");
+				sbM.append(" and model.address.parliamentConstituency.constituencyId in (:tdpCommitteeLevelValues) ");
+				sbE.append(" group by model.address.parliamentConstituency.constituencyId ");
 			}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
 				sbS.append(",model.address.constituency.constituencyId,model.address.constituency.name");
 				sbE.append(" group by model.address.constituency.constituencyId ");
@@ -3058,6 +3058,8 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 				query.setParameter("stateId",committeeBO.getStateId());
 			}
 			query.setParameter("publicationDateId",IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
+			if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0)
+				query.setParameterList("tdpCommitteeLevelValues",committeeBO.getParliamentConstIds());
 			return query.list();
 		}
 
