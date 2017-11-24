@@ -87,6 +87,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
@@ -8536,6 +8537,25 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public List<IdNameVO> getElectionYearWisePartyList(List<Long> electionScopeIdsLst,List<String> subTypes,List<Long> yearList){
+		 List<IdNameVO>  resultList = new ArrayList<IdNameVO>();
+		try{
+			
+			List<Object[]> partyObjsLst =  electionDAO.getElectionYearWisePartyList(electionScopeIdsLst,subTypes, yearList);
+			if(partyObjsLst != null && partyObjsLst.size() >0){
+				for(Object[] param : partyObjsLst){
+					IdNameVO idNameVO = new IdNameVO();
+					idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					resultList.add(idNameVO);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at LocationdashBoardService of getLocationWiseMemberDetails()",e);
+		}
+		return resultList;
 	}
 	
 }
