@@ -98,9 +98,8 @@
 <script type="text/javascript" src="js/janmabhoomiCommittee.js"></script>
 <script type="text/javascript">
 
- function buildJanmabhoomiCommitteeOverview(result,statusType,committeId){
+ function buildJanmabhoomiCommitteeOverview(result,committeId){
 	var str='';
-	
 	str+='<div class="row">';
 	
 		str+='<div class="col-sm-3">';
@@ -201,7 +200,7 @@
 						str+='<th>CasteName</th>';
 						str+='<th>Party</th>';
 						str+='<th>Status</th>';
-						if(statusType != 'Approved' )
+						if(result.status != 'Approved' && result.status != 'Ready For Approval')
 						str+='<th>Add Member</th>';
 					str+='</tr>';
 				str+='</thead>';
@@ -261,7 +260,7 @@
 										}else if(result.levelId != null && (result.levelId ==6 || result.levelId ==7)){
 											committeeLevlVal='1'+result.levelValue;
 										}
-								if(statusType != 'Approved' ){
+								if(result.status != 'Approved' && result.status != 'Ready For Approval'){
 									<c:choose>
 									
 									<c:when test="${fn:contains(sessionScope.USER.entitlements,'JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT' )  || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT' ) }">
@@ -329,7 +328,7 @@
 		}
 		
 		if(bcType === true && scType === true && stType === true && approvedBooleanaVal === true){
-			if(statusType != 'Approved'){
+			if(result.status != 'Approved' ){
 				str+='<div class="col-sm-12 m_top20">';
 					str+='<div class="row">';
 					
@@ -341,9 +340,12 @@
 						str+='</div>';
 						
 						str+='<div class="col-sm-2">';
-							str+='<button type="button" style="margin-top: 28px;" class="btn btn-success btn-sm">Submit</button>';
+							str+='<button id="committeeStatusChangeId" type="button" style="margin-top: 28px;" class="btn btn-success btn-sm" attr_committee_submit="'+committeId+'">Submit</button>';
+							str+='<span class="loadingImgId2"><img src="images/search.gif" style="display:none;"/></span>';
 						str+='</div>';
-						
+						str+='<div class="col-sm-6">';
+							str+='<div class="committeeSavingStatusDivId"></div>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
 			}

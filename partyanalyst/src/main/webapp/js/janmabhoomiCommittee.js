@@ -378,7 +378,7 @@ $(document).on("click",".committeeWiseDetailsClick",function(){
 	if(type== "name"){
 		$(".committeeSelectBoxCls").hide();
 		$("#committeeWisePopUpDetailsId").html('');
-		getJanmabhoomiCommitteeOverview(committeId,statusType);
+		getJanmabhoomiCommitteeOverview(committeId);
 	}else{
 		$(".committeeSelectBoxCls").show();
 		$("#committeeWisePopUpDetailsId").html('');
@@ -390,9 +390,9 @@ $(document).on("change","#committesLevelValuesId",function(){
 	var committeId = $(this).val();
 	var statusType = $(this).attr("attr_status_type")
 	$("#committeeWisePopUpDetailsId").html('');
-	getJanmabhoomiCommitteeOverview(committeId,statusType);
+	getJanmabhoomiCommitteeOverview(committeId);
 });
-function getJanmabhoomiCommitteeOverview(committeId,statusType){
+function getJanmabhoomiCommitteeOverview(committeId){
 	$("#committeeWisePopUpDetailsId").html(spinner);
 	var jsObj={
  		"fromDate"			:"",
@@ -406,7 +406,7 @@ function getJanmabhoomiCommitteeOverview(committeId,statusType){
 	  data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){ 
 		if(result !=null){
-			buildJanmabhoomiCommitteeOverview(result,statusType,committeId);
+			buildJanmabhoomiCommitteeOverview(result,committeId);
 		}else{
 			$("#committeeWisePopUpDetailsId").html("No Data Available");
 		}
@@ -1093,7 +1093,7 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 				  }
 				  $("#committesLevelValuesId").chosen();
 				  $("#committesLevelValuesId").val(result[0].id).trigger("chosen:updated");
-				  getJanmabhoomiCommitteeOverview(result[0].id,statusType);
+				  getJanmabhoomiCommitteeOverview(result[0].id);
 			}else{
 				$("#committeeWisePopUpDetailsId").html('No Data Available');
 			}
@@ -1212,7 +1212,7 @@ function savingApplication(committeeId,statusType){
 		  setTimeout(function(){
 			$('body').addClass("modal-open");
 			getDistrictWiseCommitteeDetails(blockLevel,"level");	
-			getJanmabhoomiCommitteeOverview(committeeId,statusType)	
+			getJanmabhoomiCommitteeOverview(committeeId)	
 		  }, 2000);
 		    
 			
@@ -1226,8 +1226,12 @@ function savingApplication(committeeId,statusType){
 		  }, 1000);
 		}
 	  }
-	  
+	  $(document).on("click","#committeeStatusChangeId",function(){
+		  var committeeId= $(this).attr("attr_committee_submit");
+		saveCommitteeStatus(committeeId);
+}) ;
 	  function saveCommitteeStatus(committeeId){
+		  $(".committeeSavingStatusDivId").html(spinner);
 		  var jsObj={
     "committeeId"  :committeeId
     }
@@ -1237,18 +1241,27 @@ function savingApplication(committeeId,statusType){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){ 
-       if(result != null && result.length >0){
-		 if(result.indexOf("SUCCESS") > -1){
+       if(result != null){
+		 if(result.exceptionMsg.indexOf("SUCCESS") > -1){
 			setTimeout(function(){
-		  $(".savingStatusDivId").html("<span style='color: green;font-size:22px;'>Committee Status Updated Successfully</span>");
+		  $(".committeeSavingStatusDivId").html("<span style='color: green;font-size:22px;'>Committee Status Updated Successfully</span>");
 		  }, 1000); 
-		 }else if(result.indexOf("NotFilled") > -1){
+		  setTimeout(function(){
+			 $("#memberAddEditModalOpen").modal("hide");
+			 
+		  }, 1000);
+		  setTimeout(function(){
+			$('body').addClass("modal-open");
+			getDistrictWiseCommitteeDetails(blockLevel,"level");	
+			getJanmabhoomiCommitteeOverview(committeeId)	
+		  }, 2000);
+		 }else if(result.exceptionMsg.indexOf("NotFilled") > -1){
 			 setTimeout(function(){
-		  $(".savingStatusDivId").html("<span style='color: red;font-size:22px;'>Total committee members are not added</span>");
+		  $(".committeeSavingStatusDivId").html("<span style='color: red;font-size:22px;'>Total committee members are not added</span>");
 		  }, 1000);
 		 }else{
 			 setTimeout(function(){
-		  $(".savingStatusDivId").html("<span style='color: red;font-size:22px;'>Committee Status Updation Failed. Please Try Again.</span>");
+		  $(".committeeSavingStatusDivId").html("<span style='color: red;font-size:22px;'>Committee Status Updation Failed. Please Try Again.</span>");
 		  }, 1000); 
 		 }
 	  }
