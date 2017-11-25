@@ -15,6 +15,9 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+<style>
+	
+</style>
 </head>
 <body>
    <header style = "box-shadow:none;background-color:#fff;">
@@ -188,7 +191,7 @@
 		<div class="container-fluid padding_10">
 				<div class="row">
                     <div class="col-sm-3">
-						<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span><span class="" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-left: 10px" id="statePopupClick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="LED PROGRESS" attr_click="stateclick">&#9432;</span></h4>
+						<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span><span class="tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-left: 10px" id="statePopupClick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="LED PROGRESS" attr_click="stateclick">&#9432;</span></h4>
 						<div class="multi-level-selection-menu arrow_box_top"></div>
 					</div>
 					<div class="col-sm-6">
@@ -215,21 +218,17 @@
 <main class="m_top5">
 <div class="container-fluid">
 	<section>
-		<div class="row m_top10">
-			<div class="col-sm-12">
+		<div class="white-block poles_block">
+			<div class="row m_top10">
 				<div id="overviewBlockId"></div>
-			</div>
-			<div class="col-sm-12">
 				<div id="ledOverViewDiv"></div>
 			</div>
 		</div>
 		<div class="row m_top10">
-				<div id="esslAndNredcapDivId"></div>
+			<div id="esslAndNredcapDivId"></div>
 		</div>
 		<div class="row m_top10">
-			<div class="col-sm-12">
-				<div id="projectData"></div>
-			</div>
+			<div id="projectData"></div>
 		</div>
 	</section>
 </div>
@@ -258,7 +257,8 @@
       <div class="modal-body">
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
-			<div id="surveyStartedLocationDtlsDivId"></div> 
+			<div id="surveyStartedLocationDtlsDivId"></div>
+			<div id="newAddedLightsSummary"></div> 	
 			<div id="statewiseVendorDetails"></div> 
 			</div>
 		</div>
