@@ -712,6 +712,14 @@ public class LightMonitoringService  implements ILightMonitoring{
 					  	dateVO.setTimePeriod(string);
 					  if (!string.equalsIgnoreCase("Today Total")) {
 						  dateVO.setPendingLightcount( list.get(0).getTotalLights()-dateVO.getTotalLights());
+						  if (dateVO.getSubList() != null && dateVO.getSubList().size() > 0) {
+							  for(LightMonitoringVO vo:dateVO.getSubList()) {
+								  LightMonitoringVO matchVO = getMatchVO(list.get(0).getSubList(), vo.getLightVendorId());
+								   if (matchVO != null ) {
+									   vo.setPendingLightcount(matchVO.getTotalLights()-vo.getTotalLights());
+								   }
+							  }
+						  }
 					  }
 					  list.add(dateVO);	  
 				  }
