@@ -1254,8 +1254,8 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL CCMS-BOX/ PANELS</h5>';
-										str+='<h3>'+result.eeslVO.totalPanels+'</h3>';
+										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL&nbsp;CCMS-BOX/ PANELS</h5>';
+										str+='<h4>'+result.eeslVO.totalPanels+'</h4>';
 									str+='</div>';
 								str+='</div>';
 								str+='<div class="col-sm-4 media m_top5">';
@@ -1264,7 +1264,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL POLES</h5>';
-										str+='<h3 class="m_top10">'+result.eeslVO.totalPoles+'</h3>';
+										str+='<h4 class="m_top10">'+result.eeslVO.totalPoles+'</h4>';
 									str+='</div>';
 								str+='</div>';
 								str+='<div class="col-sm-4 media m_top5">';
@@ -1273,7 +1273,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">ON/OFF LIGHTS</h5>';
-										str+='<h3  class="surveyStartedLocationCountCls m_top10" style="cursor:pointer;color:rgb(51, 122, 183)" attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="Essl" >'+result.eeslVO.onLights+"/"+result.eeslVO.offLights+'</h3>';
+										str+='<h4  class="surveyStartedLocationCountCls m_top10" style="cursor:pointer;color:rgb(51, 122, 183)" attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="Essl" >'+result.eeslVO.onLights+"/"+result.eeslVO.offLights+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -1408,8 +1408,8 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL CCMS-BOX/ PANELS</h5>';
-										str+='<h3 class="">'+result.nredcapVO.totalPanels+'</h3>';
+										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL&nbsp;CCMS-BOX/ PANELS</h5>';
+										str+='<h4 class="">'+result.nredcapVO.totalPanels+'</h4>';
 									str+='</div>';
 								str+='</div>';
 								str+='<div class="col-sm-4 media m_top5">';
@@ -1418,7 +1418,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL POLES</h5>';
-										str+='<h3 class="m_top10">'+result.nredcapVO.totalPoles+'</h3>';
+										str+='<h4 class="m_top10">'+result.nredcapVO.totalPoles+'</h4>';
 									str+='</div>';
 								str+='</div>';
 								str+='<div class="col-sm-4 media m_top5">';
@@ -1427,7 +1427,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">ON/OFF LIGHTS</h5>';
-										str+='<h3 class="surveyStartedLocationCountCls m_top10" style="cursor:pointer;color:rgb(51, 122, 183)" attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="NREDCAP">'+result.nredcapVO.onLights+"/"+result.nredcapVO.offLights+'</h3>';
+										str+='<h4 class="surveyStartedLocationCountCls m_top10" style="cursor:pointer;color:rgb(51, 122, 183)" attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="NREDCAP">'+result.nredcapVO.onLights+"/"+result.nredcapVO.offLights+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
