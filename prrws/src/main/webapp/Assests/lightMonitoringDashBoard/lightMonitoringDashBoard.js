@@ -4,13 +4,9 @@ var glEndDate = moment().format('DD-MM-YYYY');
 var globallocId = 0;
 var globallevelId = 0;
 var globalLocationName='';
-
-//var startDate = moment().subtract(1,"month").format("DD-MM-YYYY");
-//var endDate = moment().format("DD-MM-YYYY");
-
 $("#selectedName").attr("attr_id","0");
 $("#selectedName").attr("attr_levelidvalue","2");
-onLoadCalls();
+//onLoadCalls();
  setTimeout(function(){
 	callWebService();		
 }, 1000); 
@@ -25,67 +21,11 @@ function onLoadCalls()
 {
 	$(".chosen-select").chosen();
 	getLedOverviewForStartedLocationsDetailsCounts();
-	getBasicLedOverviewDetails('onload');
+	getBasicLedOverviewDetails();
 	getCompanyWiseLightMonitoringDtls();
 	menuWiseDetails();
 }
 
-
-$("#dateRangePicker").daterangepicker({
-	opens:'left',
-	glStartDate: moment().subtract(1,"month"),
-	glEndDate: moment(),
-	locale: {
-        format: "DD-MM-YYYY",
-	},
-	ranges: {
-	   'Today': [moment(), moment()],
-	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-	}
-});
-$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
-	glStartDate = picker.startDate.format("DD-MM-YYYY");
-	glEndDate = picker.endDate.format("DD-MM-YYYY");
-	
-	onLoadCalls();
-	//getBasicLedOverviewDetails('popup');
-});
-
-
-$(document).on('click','.calendar_active_cls li', function(){
-	var date = $(this).attr("attr_val");
-	if(date == 'Today')
-	{
-		glStartDate = moment().format('DD-MM-YYYY');
-		glEndDate = moment().format('DD-MM-YYYY');
-	}
-	if(date == '3days')
-	{
-		glStartDate = moment().subtract(3,'days').format('DD-MM-YYYY');
-		glEndDate = moment().format('DD-MM-YYYY');
-		
-	}else if(date == 'Week'){
-		glStartDate = moment().subtract(1,'week').format('DD-MM-YYYY');
-		glEndDate = moment().format('DD-MM-YYYY');
-		
-	}else if(date == 'Month'){
-		glStartDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
-		glEndDate = moment().format('DD-MM-YYYY');
-		
-	}
-		$(this).closest("ul").find("li").removeClass("active");
-		$(this).addClass("active");
-		if(date != "custom"){
-			onLoadCalls();
-		} 
-});
-
-	
-	
 $(document).on("click",".menuDataCollapse",function(){
 	globallocId = $(this).attr("attr_id");
 	globallevelId = $(this).attr("attr_levelidvalue");
@@ -95,7 +35,7 @@ $(document).on("click",".menuDataCollapse",function(){
 	$("#selectedName").attr("attr_levelidvalue",globallevelId);
 	$("#selectedName").attr("attr_name",globalLocationName);
 	getLedOverviewForStartedLocationsDetailsCounts();
-	getBasicLedOverviewDetails('onload');
+	getBasicLedOverviewDetails();
 	getCompanyWiseLightMonitoringDtls();
 	menuWiseDetails();
 });
@@ -226,14 +166,8 @@ function getLedOverviewForStartedLocationsDetailsCounts(){
 		}
 	});
 }
-function getBasicLedOverviewDetails(divType){
-	if(divType == 'onload')
-	{
-		$("#overviewBlockId").html(spinner);
-	}else if(divType == 'popup'){
-		$("#surveyStartedLocationDtlsDivId").html(spinner);
-	}
-	
+function getBasicLedOverviewDetails(){
+	$("#overviewBlockId").html(spinner);
 	var locationType="";
 	var locationValue=0;
 	if(globallevelId == 2 || globallevelId == 0){
@@ -269,10 +203,9 @@ function getBasicLedOverviewDetails(divType){
 	}).done(function(result){  
 	     $("#overviewBlockId").html(' ');
 		if (result != null && result.length > 0) {
-		   buildBasicLedOverviewDetails(result,divType);
-		   
+		   buildBasicLedOverviewDetails(result);	
 		} else {
-			$("#ledOverViewDiv").html(" ");
+			$("#ledOverViewDiv").html("");
 		}
 		
 	});		
@@ -287,7 +220,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 					str+='<div class="media-body">';
 						str+='<h5>NO OF <span style="color:#827C13;"><b>DISTRICTS</b></span><br/>SURVEY STARTED</h5>';
 						if(result[0].totalDistCnt !=null && result[0].totalDistCnt>0){
-							str+=' <h3 attr_location_type="district" attr_result_type="surveryStartedLocation" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].totalDistCnt+'</h3>';
+							str+=' <h3 attr_location_type="district" attr_vendor_type="All" attr_result_type="surveryStartedLocation" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].totalDistCnt+'</h3>';
 						}else{
 							str+=' <h3>0</h3>';
 						}
@@ -301,7 +234,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 				   str+=' <div class="media-body">';
 					   str+=' <h5>NO OF <span style="color:#02B0AC;"><b>CONSTITUENCIES</b></span><br/>SURVEY STARTED</h5>';
 					   if(result[0].totalConstituencyCnt !=null && result[0].totalConstituencyCnt>0){
-							str+=' <h3 attr_location_type="constituency" attr_result_type="surveryStartedLocation" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].totalConstituencyCnt+'</h3>';
+							str+=' <h3 attr_location_type="constituency" attr_vendor_type="All" attr_result_type="surveryStartedLocation" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].totalConstituencyCnt+'</h3>';
 						}else{
 							str+=' <h3>0</h3>';
 						}
@@ -314,7 +247,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 					str+='<div class="media-body">';
 						str+='<h5>NO OF <span style="color:#00BFE8;"><b>MANDALS</b></span><br/>SURVEY STARTED</h5>';
 						if(result[0].totalMandalCnt !=null && result[0].totalMandalCnt>0){
-							str+=' <h3 attr_location_type="mandal" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" class="surveyStartedLocationCountCls">'+result[0].totalMandalCnt+'</h3>';
+							str+=' <h3 attr_location_type="mandal" style="cursor:pointer;color:rgb(51, 122, 183)" attr_vendor_type="All" attr_result_type="surveryStartedLocation" class="surveyStartedLocationCountCls">'+result[0].totalMandalCnt+'</h3>';
 						}else{
 							str+=' <h3>0</h3>';
 						}
@@ -327,14 +260,13 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 					str+='<div class="media-body">';
 						str+='<h5>NO OF <span style="color:#F45CB5;"><b>GRAM PANCHAYAT</b></span><br/>SURVEY STARTED</h5>';
 						if(result[0].totalpanchayatCnt !=null && result[0].totalpanchayatCnt>0){
-							str+=' <h3 attr_location_type="panchayat" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" class="surveyStartedLocationCountCls">'+result[0].totalpanchayatCnt+'</h3>';
+							str+=' <h3 attr_location_type="panchayat" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_vendor_type="All" class="surveyStartedLocationCountCls">'+result[0].totalpanchayatCnt+'</h3>';
 						}else{
 							str+=' <h3>0</h3>';
 						}
 					str+='</div>';
 				str+='</div>';
    str+='</div>';
-   
   $("#ledOverViewDiv").html(str);
 }
 function getAllLevelWiseDataOverView(locType,filterType,locId,divId,lightVendorArr){
@@ -396,7 +328,7 @@ function getAllLevelWiseDataOverView(locType,filterType,locId,divId,lightVendorA
 	});
 }
 
-function buildBasicLedOverviewDetails(result,divType)
+function buildBasicLedOverviewDetails(result)
 {
 	var str='';
 	str+='<div class="col-sm-12 white-block poles_block"  style="border-bottom: 1px solid gray;">';
@@ -466,7 +398,7 @@ function buildBasicLedOverviewDetails(result,divType)
 			 if (result[0].onLights ==0 && result[0].offLights == 0) {
 				str+='<h4>0/0</h4>';
 			 } else {
-				 str+='<h4 attr_location_type="panchayat" attr_result_type="onOff" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].onLights+'/'+result[0].offLights+'</h4>';
+				 str+='<h4 attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="All" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].onLights+'/'+result[0].offLights+'</h4>';
 			 }
 		str+='</div>';
 	
@@ -485,7 +417,7 @@ function buildBasicLedOverviewDetails(result,divType)
 								}else{
 									str+='<li class=""><b>'+result[0].wattageList[i].wattage+'W = '+result[0].wattageList[i].lightCount+'</b></li>';
 								}
-								
+							
 							}
 						}
 					str+='</ul>';
@@ -509,14 +441,6 @@ function buildBasicLedOverviewDetails(result,divType)
 	str+='</div>';
 	//str+='</div>';
 	$("#overviewBlockId").html(str);
-	if(divType == 'onload')
-	{
-		$("#overviewBlockId").html(str);
-	}else if(divType == 'popup'){
-		$("#surveyStartedLocationDtlsDivId").html(str);
-	}
-	
-	//$("#surveryStartedLocHeadingId").html(str);
 }
 function projectData(divId,levelId)
 {
@@ -1258,7 +1182,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 						 str+='</div>';
 						  str+='<div class="media-body">';
 							str+='<div class="col-sm-12">';
-							 str+='<div class="col-sm-8 media m_top5">';
+							 str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
 									str+='</div>';
@@ -1274,6 +1198,15 @@ function buildCompanyWiseLightMonitoringDtls(result){
 									str+='<div class="media-body">';
 										str+='<h5 style="color:#669FF5;">TOTAL POLES</h5>';
 										str+='<h3>'+result.eeslVO.totalPoles+'</h3>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-sm-4 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/On_Off_light_icon.png" alt="poles_icon">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 style="color:#669FF5;">ON/OFF LIGHTS</h5>';
+										str+='<h3  class="surveyStartedLocationCountCls" style="cursor:pointer;color:rgb(51, 122, 183)" attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="Essl" >'+result.eeslVO.onLights+"/"+result.eeslVO.offLights+'</h3>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -1397,7 +1330,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 						 str+='</div>';
 						  str+='<div class="media-body">';
 							str+='<div class="col-sm-12">';
-							 str+='<div class="col-sm-8 media m_top5">';
+							 str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
 									str+='</div>';
@@ -1413,6 +1346,15 @@ function buildCompanyWiseLightMonitoringDtls(result){
 									str+='<div class="media-body">';
 										str+='<h5 style="color:#669FF5;">TOTAL POLES</h5>';
 										str+='<h3>'+result.nredcapVO.totalPoles+'</h3>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-sm-4 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/On_Off_light_icon.png" alt="poles_icon">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 style="color:#669FF5;">ON/OFF LIGHTS</h5>';
+										str+='<h3 class="surveyStartedLocationCountCls" style="cursor:pointer;color:rgb(51, 122, 183)" attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="NREDCAP">'+result.nredcapVO.onLights+"/"+result.nredcapVO.offLights+'</h3>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -1550,7 +1492,7 @@ function getRequiredTemplate(type){
 			 str+='</div>';
 			  str+='<div class="media-body">';
 				str+='<div class="col-sm-12">';
-				 str+='<div class="col-sm-8 media m_top5">';
+				 str+='<div class="col-sm-4 media m_top5">';
 						str+='<div class="media-left">';
 							str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
 						str+='</div>';
@@ -1566,6 +1508,15 @@ function getRequiredTemplate(type){
 						str+='<div class="media-body">';
 							str+='<h5 style="color:#669FF5;">TOTAL POLES</h5>';
 							str+='<h3>0</h3>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4 media m_top5">';
+						str+='<div class="media-left">';
+							str+='<img src="Assests/icons/On_Off_light_icon.png" alt="poles_icon">';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h5 style="color:#669FF5;">ON/OFF LIGHTS</h5>';
+							str+='<h3>0/0</h3>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -1659,6 +1610,7 @@ function checkIsDataExist(selectDate){
 $(document).on("click",".surveyStartedLocationCountCls",function (){
 	var locationType = $(this).attr("attr_location_type");
 	var resultType = $(this).attr("attr_result_type");
+	var vendorType = $(this).attr("attr_vendor_type");
 	if (resultType=="onOff") {
 		$("#surveryStartedLocHeadingId").html('PANCHAYAT WISE ON/OFF LIGHTS DETAILS')
 	} else {
@@ -1683,14 +1635,18 @@ $(document).on("click",".surveyStartedLocationCountCls",function (){
 		 if (locationId > 0) {
 			 locationIdArr.push(locationId);
 		 }
-	 var lightVendorIdList = [1,2];
+		  var lightVendorIdList = [];
+		if (vendorType == "All") {
+			lightVendorIdList.push(1);
+			lightVendorIdList.push(2);
+		} else if (vendorType == "Essl") {
+			lightVendorIdList.push(1);
+		} else if (vendorType == "NREDCAP") {
+			lightVendorIdList.push(2);
+		}
+	
 	getSurveryStartedLocation(locationType,resultType,filterType,locationIdArr,lightVendorIdList);
 });
-
-$(document).on("click","#surveryStartedLocationDtlsModelDivId .surveyStartedLocationCountCls",function (){
-	
-});
-//surveryStartedLocationDtlsModelDivId
 $(document).on("click",".companyTypeCls",function (){
 	var locationType = $(this).attr("attr_location_type");
 	var resultType = $(this).attr("attr_result_type");
@@ -1718,7 +1674,6 @@ $(document).on("click",".companyTypeCls",function (){
 function getSurveryStartedLocation(locType,resultType,filterType,locationIdArr,lightVendorIdList){
 	 $("#surveryStartedLocationDtlsModelDivId").modal("show");
 	 $("#surveyStartedLocationDtlsDivId").html(spinner);
-	 $("#statewiseVendorDetails").html('');
 	var json = {
 			"locationType":locType,
 			"filterType"  :filterType ,
@@ -1866,7 +1821,6 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 		tableView+='</tbody>';
 	tableView+='</table>';
 	tableView+='</div>';
-	
 	$("#surveyStartedLocationDtlsDivId").html(tableView);
 	if(divId == 'district'){
 		$("#surveyStartedLocationDtlsDataTblId").dataTable({
@@ -1949,171 +1903,3 @@ var json={}
 
 }
 /* End */
-$(document).on('click','#statePopupClick',function(){
-	var stateClick = $(this).attr("attr_click");
-	$("#surveryStartedLocationDtlsModelDivId").modal("show");
-	if(stateClick == 'stateclick'){
-		$("#surveryStartedLocHeadingId").html('LED PROGRESS');
-		$("#statewiseVendorDetails").css("display","block");
-	}
-	getTimePeriodWiseLightsDetaisl();
-	
-});
-
-
-function getTimePeriodWiseLightsDetaisl(){
-  $("#surveyStartedLocationDtlsDivId").html(spinner);
-  $("#statewiseVendorDetails").html(spinner);
-  var json = {
-    fromDate:glStartDate,
-    toDate:glEndDate,
-    locationType:"district",
-    locationValue:0,
-    lightVendorIdList:[2,1]
-  }
-  $.ajax({                
-    type:'POST',    
-    url: 'getTimePeriodWiseLightsDetaisl',
-    dataType: 'json',
-    data : JSON.stringify(json),
-    beforeSend :   function(xhr){
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Content-Type", "application/json");
-    }
-  }).done(function(result){  
-       
-    bulidStateWiseClickData(result);
-	buildStateWiseVendorTable(result);
-  });    
-}
-
-function bulidStateWiseClickData(result){
-	
-	var str= '';
-	str+='<table class="table table-bordered" id="stateOverallProgress">';
-		str+='<thead>';
-			str+='<tr>';
-				str+='<th colspan="2" style="text-align:center">TODAY</th>';
-				str+='<th colspan="2" style="text-align:center">BEFORE 3 DAYS</th>';
-				str+='<th colspan="2" style="text-align:center">BEFORE 7 DAYS</th>';
-				str+='<th colspan="" style="text-align:center">BEFORE 30 DAYS</th>';
-			str+='<tr>';
-			str+='<tr>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-			str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-			str+='<tr>';
-			for(var i in result){
-				if(result[i].name == 'Today'){
-					str+='<td>'+result[i].todayPanels+'</td>';
-					str+='<td>'+result[i].todayLights+'</td>';
-				}
-				if(result[i].name == 'LastThreeDaysDate'){
-					str+='<td>'+result[i].todayPanels+'</td>';
-					str+='<td>'+result[i].todayLights+'</td>';
-				}
-				if(result[i].name == 'lastSevenDaysDate'){
-					str+='<td>'+result[i].todayPanels+'</td>';
-					str+='<td>'+result[i].todayLights+'</td>';
-				}
-				if(result[i].name == 'lastThirtyDaysDate'){
-					str+='<td>'+result[i].todayPanels+'</td>';
-					str+='<td>'+result[i].todayLights+'</td>';
-				}
-				
-				
-			}
-				
-			str+='</tr>';
-		str+='</tbody>';
-	str+='</table>';
-	$("#surveyStartedLocationDtlsDivId").html(str);
-}
-function buildStateWiseVendorTable(result){
-	var str='';
-		str+='<h4 style="margin-top:10px;margin-bottom:10px"><b>VENDOR DETAILS</b></h4>';
-		str+='<table class="table table-bordered">';
-		str+='<thead>';
-			str+='<tr>';
-				str+='<th colspan="4" style="text-align:center">TODAY</th>';
-				str+='<th colspan="4" style="text-align:center">BEFORE 3 DAYS</th>';
-				str+='<th colspan="4" style="text-align:center">BEFORE 7 DAYS</th>';
-				str+='<th colspan="4" style="text-align:center">BEFORE 30 DAYS</th>';
-			str+='<tr>';
-			str+='<tr>';
-				str+='<th colspan="2" style="text-align:center"><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;margin-right:5px">EESL</th>';
-				str+='<th colspan="2" style="text-align:center"><img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;margin-right:5px">NREDCAP</th>';
-				str+='<th colspan="2" style="text-align:center"><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;margin-right:5px">EESL</th>';
-				str+='<th colspan="2" style="text-align:center"><img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;margin-right:5px">NREDCAP</th>';
-				str+='<th colspan="2" style="text-align:center"><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;margin-right:5px">EESL</th>';
-				str+='<th colspan="2" style="text-align:center"><img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;margin-right:5px">NREDCAP</th>';
-				str+='<th colspan="2" style="text-align:center"><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;margin-right:5px">EESL</th>';
-				str+='<th colspan="2" style="text-align:center"><img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;margin-right:5px">NREDCAP</th>';
-			str+='</tr>';
-			str+='<tr>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-				str+='<th>TOTAL PANELS</th>';
-				str+='<th>TOTAL LIGHTS</th>';
-			str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-			str+='<tr>';
-				for(var i in result){
-					if(result[i].name == "Today"){
-						str+='<td>'+result[i].nredcapTodayLights+'</td>';
-						str+='<td>'+result[i].nredcapTodayPanels+'</td>';
-						
-						str+='<td>'+result[i].eeslTodayPanels+'</td>';
-						str+='<td>'+result[i].eeslTodayLights+'</td>';
-					}
-					if(result[i].name == "LastThreeDaysDate"){
-						str+='<td>'+result[i].nredcapTodayLights+'</td>';
-						str+='<td>'+result[i].nredcapTodayPanels+'</td>';
-						
-						str+='<td>'+result[i].eeslTodayPanels+'</td>';
-						str+='<td>'+result[i].eeslTodayLights+'</td>';
-					}
-					if(result[i].name == "lastSevenDaysDate"){
-						str+='<td>'+result[i].nredcapTodayLights+'</td>';
-						str+='<td>'+result[i].nredcapTodayPanels+'</td>';
-						
-						str+='<td>'+result[i].eeslTodayPanels+'</td>';
-						str+='<td>'+result[i].eeslTodayLights+'</td>';
-					}
-					if(result[i].name == "lastThirtyDaysDate"){
-						str+='<td>'+result[i].nredcapTodayLights+'</td>';
-						str+='<td>'+result[i].nredcapTodayPanels+'</td>';
-						
-						str+='<td>'+result[i].eeslTodayPanels+'</td>';
-						str+='<td>'+result[i].eeslTodayLights+'</td>';
-					}
-					
-				}
-				
-			str+='</tr>';
-		str+='</tbody>';
-	str+='</table>';
-	$("#statewiseVendorDetails").html(str);
-		
-}
