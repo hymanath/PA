@@ -6,10 +6,11 @@ var globallevelId = 0;
 var globalLocationName='';
 $("#selectedName").attr("attr_id","0");
 $("#selectedName").attr("attr_levelidvalue","2");
+
 //onLoadCalls();
- setTimeout(function(){
+setTimeout(function(){
 	callWebService();		
-}, 1000); 
+}, 1000);
 $("header").on("click",".menu-cls",function(e){
 		e.stopPropagation();
 		$(".menu-data-cls").toggle();
@@ -20,6 +21,7 @@ $("header").on("click",".menu-cls",function(e){
 function onLoadCalls()
 {
 	$(".chosen-select").chosen();
+	  
 	getLedOverviewForStartedLocationsDetailsCounts();
 	getBasicLedOverviewDetails();
 	getCompanyWiseLightMonitoringDtls();
@@ -212,8 +214,13 @@ function getBasicLedOverviewDetails(){
 }
 function buildLedOverviewForStartedLocationsDetailsCounts(result){
 	var str='';
-	str+='<div class="col-sm-12 border_top padding_10" style="background-color:#F9F9F9;padding: 10px;">';
-				str+='<div class="col-sm-3">';
+	str+='<div class="col-sm-10 col-sm-offset-1">';
+				str+='<div class="dropdown">';
+			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-top:-27px;color: #8341D7;" id="surveyDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Survey Details Location Wise">&#9432;</span>';
+				str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar arrow_box_top_led" aria-labelledby="surveyDropdownMenu" style="margin-right: -10px">';
+				str+='<div class="poles_block">';
+					str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+					str+='<div class="col-sm-3 m_top20">';
 					str+='<div class="media-left">';
 					   str+=' <img src="Assests/icons/District_Survy_icon.png" alt="start_date">';
 				   str+=' </div>';
@@ -227,7 +234,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 					   
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-3">';
+				str+='<div class="col-sm-3 m_top20">';
 					str+='<div class="media-left">';
 						str+='<img src="Assests/icons/Constituency_Survy_icon.png" alt="start_date">';
 				   str+=' </div>';
@@ -240,7 +247,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 						}
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-3">';
+				str+='<div class="col-sm-3 m_top20">';
 					str+='<div class="media-left">';
 					   str+=' <img src="Assests/icons/Mandal_Survy_icon.png" alt="">';
 				   str+=' </div>';
@@ -260,13 +267,70 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 					str+='<div class="media-body">';
 						str+='<h5>NO OF <span style="color:#F45CB5;"><b>GRAM PANCHAYAT</b></span><br/>SURVEY STARTED</h5>';
 						if(result[0].totalpanchayatCnt !=null && result[0].totalpanchayatCnt>0){
-							str+=' <h3 attr_location_type="panchayat" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_vendor_type="All" class="surveyStartedLocationCountCls">'+result[0].totalpanchayatCnt+'</h3>';
+							str+=' <h3 attr_location_type="panchayat" attr_vendor_type="All" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" class="surveyStartedLocationCountCls">'+result[0].totalpanchayatCnt+'</h3>';
 						}else{
 							str+=' <h3>0</h3>';
 						}
 					str+='</div>';
 				str+='</div>';
+				str+='</div>';
+				str+='</div>';
+				str+='</div>';
+				/*str+='<div class="col-sm-3">';
+					str+='<div class="media-left">';
+					   str+=' <img src="Assests/icons/District_Survy_icon.png" alt="start_date">';
+				   str+=' </div>';
+					str+='<div class="media-body">';
+						str+='<h5>NO OF <span style="color:#827C13;"><b>DISTRICTS</b></span><br/>SURVEY STARTED</h5>';
+						if(result[0].totalDistCnt !=null && result[0].totalDistCnt>0){
+							str+=' <h3 attr_location_type="district" attr_result_type="surveryStartedLocation" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].totalDistCnt+'</h3>';
+						}else{
+							str+=' <h3>0</h3>';
+						}
+					   
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<div class="media-left">';
+						str+='<img src="Assests/icons/Constituency_Survy_icon.png" alt="start_date">';
+				   str+=' </div>';
+				   str+=' <div class="media-body">';
+					   str+=' <h5>NO OF <span style="color:#02B0AC;"><b>CONSTITUENCIES</b></span><br/>SURVEY STARTED</h5>';
+					   if(result[0].totalConstituencyCnt !=null && result[0].totalConstituencyCnt>0){
+							str+=' <h3 attr_location_type="constituency" attr_result_type="surveryStartedLocation" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].totalConstituencyCnt+'</h3>';
+						}else{
+							str+=' <h3>0</h3>';
+						}
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<div class="media-left">';
+					   str+=' <img src="Assests/icons/Mandal_Survy_icon.png" alt="">';
+				   str+=' </div>';
+					str+='<div class="media-body">';
+						str+='<h5>NO OF <span style="color:#00BFE8;"><b>MANDALS</b></span><br/>SURVEY STARTED</h5>';
+						if(result[0].totalMandalCnt !=null && result[0].totalMandalCnt>0){
+							str+=' <h3 attr_location_type="mandal" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" class="surveyStartedLocationCountCls">'+result[0].totalMandalCnt+'</h3>';
+						}else{
+							str+=' <h3>0</h3>';
+						}
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<div class="media-left">';
+						str+='<img src="Assests/icons/GPs_survey_icon.png" alt="start_date">';
+					str+='</div>';
+					str+='<div class="media-body">';
+						str+='<h5>NO OF <span style="color:#F45CB5;"><b>GRAM PANCHAYAT</b></span><br/>SURVEY STARTED</h5>';
+						if(result[0].totalpanchayatCnt !=null && result[0].totalpanchayatCnt>0){
+							str+=' <h3 attr_location_type="panchayat" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" class="surveyStartedLocationCountCls">'+result[0].totalpanchayatCnt+'</h3>';
+						}else{
+							str+=' <h3>0</h3>';
+						}
+					str+='</div>';
+				str+='</div>';*/
    str+='</div>';
+   
   $("#ledOverViewDiv").html(str);
 }
 function getAllLevelWiseDataOverView(locType,filterType,locId,divId,lightVendorArr){
@@ -331,80 +395,74 @@ function getAllLevelWiseDataOverView(locType,filterType,locId,divId,lightVendorA
 function buildBasicLedOverviewDetails(result)
 {
 	var str='';
-	str+='<div class="col-sm-12 white-block poles_block"  style="border-bottom: 1px solid gray;">';
 	
-	//str+='<div class="col-sm-10" >';
-	/* str+='<div class="col-sm-1 lightsBlock backgroundImgLED">';
-		str+='<img src="Assests/icons/On_Off_light_icon.png" style="height: 39px; width: 40px;margin-left: 19px;">';
-		str+='<p style="font-weight: 800; font-size: 10px;">ON/OFF LIGHTS</p>';
-		 if (result[0].onLights ==0 && result[0].offLights == 0) {
-			str+='<h4>0/0</h4>';
-		 } else {
-			 str+='<h4 attr_location_type="panchayat" attr_result_type="onOff" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].onLights+'/'+result[0].offLights+'</h4>';
-		 }
-	str+='</div>'; */
-		
-		str+='<div class="col-sm-3 media m_top5">';
-			str+='<div class="media-left">';
-				str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
-			str+='</div>';
-			str+='<div class="media-body">';
-				str+='<h5 style="color:#8E51Db">TOTAL CCMS-BOX/ PANELS</h5>';
-				str+='<h3>'+result[0].totalPanels+'</h3>';
-			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="col-sm-2 media m_top5">';
-			str+='<div class="media-left">';
-				str+='<img src="Assests/icons/Poles_icon.png" alt="poles_icon">';
-			str+='</div>';
-			str+='<div class="media-body">';
-				str+='<h5 style="color:#669FF5;">TOTAL POLES</h5>';
-				str+='<h3>'+result[0].totalPoles+'</h3>';
-			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="col-sm-2 media m_top5">';
-			str+='<div class="media-left">';
-				str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon">';
-			str+='</div>';
-			str+='<div class="media-body">';
-				str+='<h5 style="color:#827C13">TOTAL LIGHTS</h5>';
-				str+='<h3>'+result[0].totalLights+'</h3>';
-			str+='</div>';
-		str+='</div>';
-		str+='<div class="col-sm-2 media m_top5">';
-			str+='<div class="media-left">';
-				str+='<img src="Assests/icons/Non_Operational_LED_Light_Ico.png" alt="poles_icon">';
-			str+='</div>';
-			str+='<div class="media-body">';
-				str+='<h5 style="color:#FF3333;">NON-OPERATIONAL</h5>';
-				str+='<h3>'+result[0].notWorkingLights+'</h3>';
-			str+='</div>';
-		str+='</div>';
 	
-		str+='<div class="col-sm-2 media m_top5">';
-			str+='<div class="media-left">';
-				str+='<img src="Assests/icons/Operational_LED_Light_Icon.png" alt="poles_icon">';
+			str+='<div class="col-sm-12">';
+			
+				str+='<div class="col-sm-3 m_top5 addRemoveClass">';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+						str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
+					str+='</div>';
+					str+='<div class="media-body">';
+						str+='<h5 style="color:#8E51Db">TOTAL CCMS-BOX/ PANELS</h5>';
+						str+='<h3>'+result[0].totalPanels+'</h3>';
+					str+='</div>';
+				str+='</div>';
 			str+='</div>';
-			str+='<div class="media-body">';
-				str+='<h5 style="color:#339900;">OPERATIONAL</h5>';
-				str+='<h3>'+result[0].workingLights+'</h3>';
+			
+			str+='<div class="col-sm-2 m_top5">';
+					str+='<div class="media">';
+						str+='<div class="media-left">';
+							str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon">';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h5 style="color:#827C13">TOTAL LIGHTS</h5>';
+							str+='<h3>'+result[0].totalLights+'</h3>';
+						str+='</div>';
+					str+='</div>';
 			str+='</div>';
-		str+='</div>';
-		str+='<div class="col-sm-1 lightsBlock backgroundImgLED">';
-			str+='<img src="Assests/icons/On_Off_light_icon.png" style="height: 39px; width: 40px;margin-left: 19px;">';
-			str+='<p style="font-weight: 800; font-size: 10px;">ON/OFF LIGHTS</p>';
-			 if (result[0].onLights ==0 && result[0].offLights == 0) {
-				str+='<h4>0/0</h4>';
-			 } else {
-				 str+='<h4 attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="All" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].onLights+'/'+result[0].offLights+'</h4>';
-			 }
-		str+='</div>';
-	
-		str+='<div class="col-sm-12">';
+			
+			str+='<div class="col-sm-2 m_top5">';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+						str+='<img src="Assests/icons/Operational_LED_Light_Icon.png" alt="poles_icon">';
+					str+='</div>';
+					str+='<div class="media-body">';
+						str+='<h5 style="color:#339900;">OPERATIONAL</h5>';
+						str+='<h3>'+result[0].workingLights+'</h3>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-2 m_top5">';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+						str+='<img src="Assests/icons/Non_Operational_LED_Light_Ico.png" alt="poles_icon">';
+					str+='</div>';
+					str+='<div class="media-body">';
+						str+='<h5 style="color:#FF3333;">NON-OPERATIONAL</h5>';
+						str+='<h3>'+result[0].notWorkingLights+'</h3>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';	
+			
+			str+='<div class="col-sm-2">';
+					str+='<div class="lightsBlock backgroundImgLED">';
+						str+='<img src="Assests/icons/On_Off_light_icon.png" style="height: 39px; width: 40px;margin-left: 19px;">';
+						str+='<p style="font-weight: 800; font-size: 10px;">ON/OFF LIGHTS</p>';
+						 if (result[0].onLights ==0 && result[0].offLights == 0) {
+							str+='<h4>0/0</h4>';
+						 } else {
+							 str+='<h4 attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="All" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].onLights+'/'+result[0].offLights+'</h4>';
+						 }
+					str+='</div>';
+			str+='</div>';
+			
+		str+='</div>';	
+		str+='<div class="col-sm-10 col-sm-offset-2">';
 		str+='<div class="dropdown">';
-			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Wattage Details">&#9432;</span>';
+			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-right:60px;" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Wattage Details">&#9432;</span>';
 				str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar arrow_box_top_led" aria-labelledby="dropdownMenu" style="margin-top: 32px;">';
 				str+='<div class="poles_block">';
 				str+='<ul class="nav navbar-nav">';
@@ -439,8 +497,14 @@ function buildBasicLedOverviewDetails(result)
 			str+='</ul>';
 		str+='</div>'; */
 	str+='</div>';
-	//str+='</div>';
+	str+='</div>';
 	$("#overviewBlockId").html(str);
+	if($(window).width() < 500)
+	{
+		 $(".addRemoveClass").removeClass("m_left50")
+	}else{
+		$(".addRemoveClass").addClass("m_left50") 
+	}
 }
 function projectData(divId,levelId)
 {
@@ -460,7 +524,6 @@ function projectData(divId,levelId)
 		
 	}
 	collapse+='<section>';
-		collapse+='<div class="row">';
 			collapse+='<div class="col-sm-12">';
 				for(var i in dataArr)
 				{
@@ -568,7 +631,6 @@ function projectData(divId,levelId)
 					collapse+='</div>';
 				}
 			collapse+='</div>';
-		collapse+='</div>';
 	collapse+='</section>';
 	$("#projectData").html(collapse);
 	$(".chosen-select").chosen();
@@ -821,7 +883,7 @@ function tableView(result,divId,locType)
 		$("#"+divId+"Table").dataTable({
 			"paging":   false,
 			"info":     false,
-			"searching": true,
+			"searching": false,
 			"autoWidth": true,
 			"iDisplayLength": 10,
 			"aaSorting": [],
@@ -1170,24 +1232,29 @@ function getCompanyWiseLightMonitoringDtls(){
 function buildCompanyWiseLightMonitoringDtls(result){
 	var str='';
 	if(result !=null){
-			str+='<div class="col-sm-6">';
-			str+='<div class="white-block block_Led_styles blockHeights" style="height: 314px;">';
+			str+='<div class="col-sm-6 m_top10">';
+			str+='<div class="white-block block_Led_styles blockHeights">';
 			if(result.eeslVO !=null && result.eeslVO != 'undefined' && result.eeslVO.surveyStartedtotalDistricts !=0){
 				str+='<div class="row" style="padding: 10px;border-bottom:1px solid grey;">';
-					str+='<h3 style="margin-top:-15px;">EESL</h3>';
-					str+='<p>Energy Efficiency Services Limited</p>';
+					//str+='<h3 style="margin-top:-15px;">EESL</h3>';
+					//str+='<p>Energy Efficiency Services Limited</p>';
+					 str+='<div class="dropdown">';
+						//str+='<img class="" src="Assests/icons/Essl.jpg" alt="Essl" style="height:40px;width:40px">';
+						str+='<h3 style="margin-top:-15px;display: inline-block;padding-left: 10px;font-size: 20px">EESL</h3>';
+						str+='<span class="dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 22px;padding-left:10px" id="eesltitledropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Energy Efficiency Services Limited">&#9432;</span>';
+					str+='</div>';
 					str+='<div class="media">';
 						  str+='<div class="media-left img_middle">';
 							 str+='<img class="media-object" src="Assests/icons/Essl.jpg" alt="Essl">';
 						 str+='</div>';
 						  str+='<div class="media-body">';
-							str+='<div class="col-sm-12">';
+							str+='<div class="row">';
 							 str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 style="color:#669FF5;">TOTAL CCMS-BOX/ PANELS</h5>';
+										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL CCMS-BOX/ PANELS</h5>';
 										str+='<h3>'+result.eeslVO.totalPanels+'</h3>';
 									str+='</div>';
 								str+='</div>';
@@ -1196,8 +1263,8 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<img src="Assests/icons/Poles_icon.png" alt="poles_icon">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 style="color:#669FF5;">TOTAL POLES</h5>';
-										str+='<h3>'+result.eeslVO.totalPoles+'</h3>';
+										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL POLES</h5>';
+										str+='<h3 class="m_top10">'+result.eeslVO.totalPoles+'</h3>';
 									str+='</div>';
 								str+='</div>';
 								str+='<div class="col-sm-4 media m_top5">';
@@ -1205,12 +1272,13 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<img src="Assests/icons/On_Off_light_icon.png" alt="poles_icon">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 style="color:#669FF5;">ON/OFF LIGHTS</h5>';
-										str+='<h3  class="surveyStartedLocationCountCls" style="cursor:pointer;color:rgb(51, 122, 183)" attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="Essl" >'+result.eeslVO.onLights+"/"+result.eeslVO.offLights+'</h3>';
+										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">ON/OFF LIGHTS</h5>';
+										str+='<h3  class="surveyStartedLocationCountCls m_top10" style="cursor:pointer;color:rgb(51, 122, 183)" attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="Essl" >'+result.eeslVO.onLights+"/"+result.eeslVO.offLights+'</h3>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-12 m_top5">';
+							
+							str+='<div class="row m_top5">';
 								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon" style="width: 25px; height: 35px;">';
@@ -1318,25 +1386,30 @@ function buildCompanyWiseLightMonitoringDtls(result){
 			str+='</div>';
 			
 		str+='</div>';
-		str+='<div class="col-sm-6">';
-			str+='<div class="white-block block_Led_styles blockHeights" style="height: 314px;">';
+		str+='<div class="col-sm-6 m_top10">';
+			str+='<div class="white-block block_Led_styles blockHeights">';
 			if(result.nredcapVO !=null && result.nredcapVO != 'undefined' && result.nredcapVO.surveyStartedtotalDistricts !=0){
 				str+='<div class="row" style="padding: 10px;border-bottom:1px solid grey;">';
-					str+='<h3 style="margin-top:-15px;">NREDCAP</h3>';
-					str+='<p>New & Renewable Energy Development Corporation of Andhra Pradesh Ltd.</p>';
+					//str+='<h3 style="margin-top:-15px;">NREDCAP</h3>';
+					//str+='<p>New & Renewable Energy Development Corporation of Andhra Pradesh Ltd.</p>';
+					str+='<div class="dropdown">';
+						//str+='<img class="" src="Assests/icons/Nredp.jpg" alt="Nredp" style="height: 40px;width: 40px">';
+						str+='<h3 style="display: inline-block;">NREDCAP</h3>';
+						str+='<span class="dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 22px;padding-left:10px" id="nredcaptitledropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="New & Renewable Energy Development Corporation of Andhra Pradesh Ltd">&#9432;</span>';
+					str+='</div>';
 					str+='<div class="media">';
 						  str+='<div class="media-left img_middle">';
 							 str+='<img class="media-object" src="Assests/icons/Nredp.jpg" alt="Nredp">';
 						 str+='</div>';
 						  str+='<div class="media-body">';
-							str+='<div class="col-sm-12">';
+							str+='<div class="row">';
 							 str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 style="color:#669FF5;">TOTAL CCMS-BOX/ PANELS</h5>';
-										str+='<h3>'+result.nredcapVO.totalPanels+'</h3>';
+										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL CCMS-BOX/ PANELS</h5>';
+										str+='<h3 class="">'+result.nredcapVO.totalPanels+'</h3>';
 									str+='</div>';
 								str+='</div>';
 								str+='<div class="col-sm-4 media m_top5">';
@@ -1344,8 +1417,8 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<img src="Assests/icons/Poles_icon.png" alt="poles_icon">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 style="color:#669FF5;">TOTAL POLES</h5>';
-										str+='<h3>'+result.nredcapVO.totalPoles+'</h3>';
+										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL POLES</h5>';
+										str+='<h3 class="m_top10">'+result.nredcapVO.totalPoles+'</h3>';
 									str+='</div>';
 								str+='</div>';
 								str+='<div class="col-sm-4 media m_top5">';
@@ -1353,12 +1426,12 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<img src="Assests/icons/On_Off_light_icon.png" alt="poles_icon">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 style="color:#669FF5;">ON/OFF LIGHTS</h5>';
-										str+='<h3 class="surveyStartedLocationCountCls" style="cursor:pointer;color:rgb(51, 122, 183)" attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="NREDCAP">'+result.nredcapVO.onLights+"/"+result.nredcapVO.offLights+'</h3>';
+										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">ON/OFF LIGHTS</h5>';
+										str+='<h3 class="surveyStartedLocationCountCls m_top10" style="cursor:pointer;color:rgb(51, 122, 183)" attr_location_type="panchayat" attr_result_type="onOff" attr_vendor_type="NREDCAP">'+result.nredcapVO.onLights+"/"+result.nredcapVO.offLights+'</h3>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-12 m_top5">';
+							str+='<div class="row m_top5">';
 								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon" style="width: 25px; height: 35px;">';
@@ -1673,7 +1746,10 @@ $(document).on("click",".companyTypeCls",function (){
 
 function getSurveryStartedLocation(locType,resultType,filterType,locationIdArr,lightVendorIdList){
 	 $("#surveryStartedLocationDtlsModelDivId").modal("show");
+	 
 	 $("#surveyStartedLocationDtlsDivId").html(spinner);
+	  $("#statewiseVendorDetails").html("");
+      $("#newAddedLightsSummary").html("");
 	var json = {
 			"locationType":locType,
 			"filterType"  :filterType ,
@@ -1903,3 +1979,181 @@ var json={}
 
 }
 /* End */
+$(document).on('click','#statePopupClick',function(){
+	var stateClick = $(this).attr("attr_click");
+	$("#surveryStartedLocationDtlsModelDivId").modal("show");
+	if(stateClick == 'stateclick'){
+		$("#surveryStartedLocHeadingId").html('LED PROGRESS');
+		$("#statewiseVendorDetails").css("display","block");
+	}
+	getTimePeriodWiseLightsDetaisl();
+	
+});
+
+
+function getTimePeriodWiseLightsDetaisl(){
+  $("#surveyStartedLocationDtlsDivId").html(spinner);
+ // $("#statewiseVendorDetails").html(spinner);
+  $("#newAddedLightsSummary").html(spinner);
+  var json = {
+    fromDate:glStartDate,
+    toDate:glEndDate,
+    locationType:"district",
+    locationValue:0,
+    lightVendorIdList:[2,1]
+  }
+  $.ajax({                
+    type:'POST',    
+    url: 'getTimePeriodWiseLightsDetaisl',
+    dataType: 'json',
+    data : JSON.stringify(json),
+    beforeSend :   function(xhr){
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+  }).done(function(result){  
+      if(result !=null && result.length>0){
+		    bulidStateWiseClickData(result);
+			//buildStateWiseVendorTable(result);
+			buildnewAddedLightsDetails(result);
+	  }else{
+		  $("#surveyStartedLocationDtlsDivId").html("No Data Available")
+	  } 
+   
+  });    
+}
+
+function bulidStateWiseClickData(result){
+	
+	var str= '';
+	str+='<h4 style="margin-top:10px;margin-bottom:10px" class="text-capital"><b>OverAll DETAILS</b></h4>';
+	str+='<table class="table table-bordered table_custom" id="stateOverallProgress">';
+		str+='<thead>';
+			str+='<tr class="text-center">';
+			for(var i in result){
+				str+='<th colspan="2" class="text-capital">'+result[i].timePeriod+'</th>';
+			}
+			str+='</tr>';
+			str+='<tr>';
+			for(var i in result){
+				str+='<th class="text-center">TOTAL PANELS</th>';
+				str+='<th class="text-center">TOTAL LIGHTS</th>';
+			}	
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			str+='<tr class="text-center">';
+			for(var i in result){
+				str+='<td>'+result[i].totalPanels+'</td>';
+				str+='<td>'+result[i].totalLights+'</td>';
+			}
+				
+			str+='</tr>';
+		str+='</tbody>';
+	str+='</table>';
+	$("#surveyStartedLocationDtlsDivId").html(str);
+}
+/* function buildStateWiseVendorTable(result){
+	var str='';
+		str+='<h4 style="margin-top:10px;margin-bottom:10px"><b>VENDOR DETAILS</b></h4>';
+		str+='<div class="table-responsive">';
+		
+		str+='<table class="table table-bordered table_custom">';
+		str+='<thead>';
+		str+='<tr class="text-center">';
+			for(var i in result){
+				str+='<th colspan="4" class="text-capital">'+result[i].timePeriod+'</th>';
+			}
+			str+='</tr>';
+			str+='<tr>';
+			for(var i in result){
+				str+='<th class="text-center" colspan="2"><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;margin-right:5px"> EESL</th>';
+				str+='<th class="text-center" colspan="2"><img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;margin-right:5px"> NREDCAP</th>';
+			}
+			str+='</tr>';	
+			str+='<tr>';
+			for(var i in result){
+				str+='<th class="text-center">TOTAL PANELS</th>';
+				str+='<th class="text-center">TOTAL LIGHTS</th>';
+			}	
+			for(var i in result){
+				str+='<th class="text-center">TOTAL PANELS</th>';
+				str+='<th class="text-center">TOTAL LIGHTS</th>';
+			}
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			str+='<tr class="text-center">';
+				for(var i in result){
+					for(var j in result[i].subList){
+							str+='<td>'+result[i].subList[j].totalPanels+'</td>';
+							str+='<td>'+result[i].subList[j].totalLights+'</td>';
+					}
+				}
+			str+='</tr>';	
+		str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	$("#statewiseVendorDetails").html(str);
+		
+} */
+function buildnewAddedLightsDetails(result){
+	var str='';
+		str+='<h4 style="margin-top:10px;margin-bottom:10px" class="text-capital"><b>New Added Lights DETAILS</b></h4>';
+		str+='<div class="table-responsive">';
+		
+		str+='<table class="table table-bordered table_custom">';
+		str+='<thead>';
+			str+='<tr class="text-center">';
+				str+='<th></th>';
+				for(var i in result){
+				    if (result[i].timePeriod != "Today Total") {
+						str+='<th class="text-capital">'+result[i].timePeriod+'</th>';	
+					}
+				}
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			str+='<tr class="text-center">';
+				str+='<td class="text-capital">Total</td>';
+				
+				for(var i in result){
+					  if (result[i].timePeriod != "Today Total") {
+						str+='<td>'+result[i].pendingLightcount+'</td>';	
+					 }
+				}
+				str+='</tr>';
+				str+='<tr class="text-center">';
+				str+='<td class="text-center"><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;margin-right:5px"> EESL</td>';
+					for(var i in result){
+					  if (result[i].timePeriod != "Today Total") {
+						  for(var j in result[i].subList) {
+							if (result[i].subList[j].lightVendorId == 1) {
+								str+='<td class="text-capital">'+result[i].subList[j].pendingLightcount+'</td>';	
+							}
+						   
+						}
+						
+					 }
+				}
+				str+='</tr>';
+				str+='<tr class="text-center">';
+				str+='<td class="text-center"><img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;margin-right:5px"> NREDCAP</td>';
+					for(var i in result){
+					  if (result[i].timePeriod != "Today Total") {
+						if (result[i].subList != null ) {
+							for(var j in result[i].subList) {
+								if (result[i].subList[j].lightVendorId == 2) {
+									str+='<td class="text-capital">'+result[i].subList[j].pendingLightcount+'</td>';	
+								}
+							   
+					        }
+						}
+					 }
+				}
+				str+='</tr>';	
+		str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	$("#newAddedLightsSummary").html(str);
+}
