@@ -1904,7 +1904,7 @@ String committeType){
 			     committeeBO.setCommitteesQueryString(prepareQueryForCommitteeLevelBasedCommitteeIds(committeeLevelBasedCommitteeIdsMap,committeType));
 			     Long stateId = coreDashboardGenericService.getStateIdByState(state);
 			     committeeBO.setStateId(stateId);
-			     committeeBO.setCommitteType("committeType");
+			     committeeBO.setCommitteType(committeType);
 			     if(dateString != null && !dateString.isEmpty()){
 			    	 //committeeBO.setDate(sdf.parse(dateString));
 			    	 String DatesArr[] = dateString.split("-");
@@ -1967,12 +1967,11 @@ String committeType){
 				          committeeBO.setGroupingLocation(groupingLocation);
 				          				          
 				          List<Object[]>  totalList   = boothDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
-		    	    			 committeeBO.setStatus("completed");
-		    	    			 List<Object[]> completedList = boothInchargeDAO.getTopPoorCommitteeLocations(committeeBO);
-		    	    			 locationCommitteeCountSetting(completedList,finalMap,"completed",groupingLocation);
-				          
-				          locationCommitteeCountSetting(totalList,finalMap,"null",groupingLocation);
-				          
+		    	    	  committeeBO.setStatus("completed");
+		    	    	  List<Object[]> completedList = boothInchargeDAO.getTopPoorCommitteeLocations(committeeBO);
+		    	    	  
+		    	    	  locationCommitteeCountSetting(totalList,finalMap,null,groupingLocation); 
+		    	    	  locationCommitteeCountSetting(completedList,finalMap,"completed",groupingLocation);				          
 				        }
 				   }
 			     
