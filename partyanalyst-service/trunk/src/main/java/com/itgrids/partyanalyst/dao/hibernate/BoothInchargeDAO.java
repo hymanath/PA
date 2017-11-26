@@ -157,7 +157,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		return (Long) qry.uniqueResult();
 	}
    public Long getBoothAssignInchargeCount(String searchType , Long userAccessLevelId,Set<Long> userAccessLevelValues,Date startDate,Date endDate,List<Long> committeeEnrollmentYearsIdsLst,List<Long> bothIds){
-		
+		 
 		StringBuilder queryStr = new StringBuilder();
 		
 		queryStr.append(" select  count(distinct model.boothId) " +
@@ -169,21 +169,21 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
             queryStr.append(" and model.address.boothId in (:bothIds) ");
        }
 				if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-			         queryStr.append(" and model.address.state.stateId in (:userAccessLevelValues)");  
+			         queryStr.append(" and model.address.state.stateId in ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")");
 				}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-			         queryStr.append(" and model.address.district.districtId in (:userAccessLevelValues)");  
+			         queryStr.append(" and model.address.district.districtId in  ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")");
 				}/*else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
 		            queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
 		       	}*/else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-		    	   queryStr.append(" and model.address.constituency.constituencyId in (:userAccessLevelValues) ");  
+		    	   queryStr.append(" and model.address.constituency.constituencyId in  ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")");
 		       	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
-		       		queryStr.append(" and model.address.tehsil.tehsilId in (:userAccessLevelValues)");  
+		       		queryStr.append(" and model.address.tehsil.tehsilId in  ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")");
 		       	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
-		       		queryStr.append(" and model.address.localBody.localElectionBodyId in (:userAccessLevelValues)"); 
+		       		queryStr.append(" and model.address.localBody.localElectionBodyId in  ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")");
 		       	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
-		       		queryStr.append(" and model.address.panchayat.panchayatId in (:userAccessLevelValues)"); 
+		       		queryStr.append(" and model.address.panchayat.panchayatId in  ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")");
 		       	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
-		       		queryStr.append(" and model.address.ward.constituencyId in (:userAccessLevelValues)"); 
+		       		queryStr.append(" and model.address.ward.constituencyId in  ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")");
 		       	}
 				
 				if(searchType != null && searchType.trim().length()>0L){
@@ -208,7 +208,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		
 			qry.setParameter("publicationDate", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
 		if(userAccessLevelValues != null && userAccessLevelValues.size()>0){
-			qry.setParameterList("userAccessLevelValues", userAccessLevelValues);
+			//qry.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		}
 		if(searchType != null && searchType.trim().length()>0L && !searchType.trim().equalsIgnoreCase("total")){
 			if(startDate != null && endDate != null){
@@ -315,21 +315,21 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 	
 		
 		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-			   queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.state.stateId in (:userAccessLevelValues)");  
+			   queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.state.stateId in ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")");  
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-			   queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.district.districtId in (:userAccessLevelValues)");  
+			   queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.district.districtId in ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")"); 
 			 }/*else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
 		        queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
 			 }*/else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-		        queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId in (:userAccessLevelValues) ");  
+		        queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId in ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")"); 
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
-			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId in (:userAccessLevelValues)");  
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId in  ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")"); 
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
-			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId in  ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")"); 
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
-			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat.panchayatId in (:userAccessLevelValues)"); 
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat.panchayatId in ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")"); 
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
-			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.ward.constituencyId in (:userAccessLevelValues)"); 
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.ward.constituencyId in ("+userAccessLevelValues.toString().replace("[", "").replace("]", "")+")"); 
 			 }
 		
 		if(boothCommEnrollYrIds !=null && boothCommEnrollYrIds.size() > 0){
@@ -343,7 +343,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		Query qry = getSession().createQuery(queryStr.toString());
 		
 		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
-			qry.setParameterList("userAccessLevelValues", userAccessLevelValues);
+			//qry.setParameter("userAccessLevelValues", userAccessLevelValues.toString().replace("[", "").replace("]", ""));
 		 }
 		qry.setParameter("publicationDate", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
 		if(boothCommEnrollYrIds !=null && boothCommEnrollYrIds.size() > 0){
@@ -799,8 +799,10 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		sbM.append(" from  BoothInchargeCommittee  model where model.boothInchargeCommitteeId is not null ");
 		//locations related.
  		if(committeeBO.getQueryString() != null && committeeBO.getQueryString().length()>0){
- 			//StringBuilder quercomm =  committeeBO.getQueryString();
- 			sbM.append( "and model.address.booth.constituency.district.districtId in (:tdpCommitteeLevelValues) ");
+ 			StringBuilder quercomm =  committeeBO.getQueryString();
+ 			if(quercomm != null && !quercomm.toString().isEmpty()) 				
+ 				sbM.append(committeeBO.getQueryString());
+ 			//sbM.append( "and model.address.booth.constituency.district.districtId in (:tdpCommitteeLevelValues) ");
  		}
 
  		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
@@ -882,7 +884,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 			sbE.append(" model.address.district.districtId ");
 		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Parliament")){
 			sbS.append(" ,model.address.parliamentConstituency.constituencyId,model.address.parliamentConstituency.name ");//4
-			sbE.append(" ,model.address.parliamentConstituency.constituencyId ");
+			sbE.append(" model.address.parliamentConstituency.constituencyId ");
 		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Constituency")){
 			sbS.append(" ,model.address.constituency.constituencyId,model.address.constituency.name ");//4
 			sbE.append(" model.address.constituency.constituencyId ");
@@ -911,6 +913,11 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
 			sbS.append(",model.address.state.stateId,model.address.state.stateName ");
 			sbM.append(" and model.address.state.stateId in (:userAccessLocationValues) ");
+		}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
+			
+			sbS.append(" ,model.address.parliamentConstituency.constituencyId,model.address.parliamentConstituency.name "); 
+			sbM.append(" and model.address.parliamentConstituency.constituencyId in (:userAccessLocationValues) ");
+			
 		}
 		else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
 			
