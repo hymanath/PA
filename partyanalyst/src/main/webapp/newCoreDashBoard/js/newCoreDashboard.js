@@ -378,8 +378,8 @@ function MainPart(result){
 								for(var n in childChildMember){
 									 str+='<div class="panel panel-default panelProfileView">';
 									if(childChildMember[n].subList != null && childChildMember[n].subList.length > 0){
-										str+='<div class="panel-heading" style="height:30px" role="tab" id="organizerSecSubView'+i+''+j+''+k+''+l+''+m+''+n+'">';
-											str+='<a role="button" style="width:30px;" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordionThirdLevel" href="#collapseOragaizerSecSubView'+i+''+j+''+k+''+l+''+m+''+n+'" aria-expanded="true" aria-controls="collapseOragaizerSecSubView'+i+''+j+''+k+''+l+''+m+''+n+'">';
+										str+='<div class="panel-heading" style="height:30px" role="tab" id="organizerMlaSubView'+i+''+j+''+k+''+l+''+m+''+n+'">';
+											str+='<a role="button" style="width:30px;" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordionThirdLevel" href="#collapseMlaSubView'+i+''+j+''+k+''+l+''+m+''+n+'" aria-expanded="true" aria-controls="collapseMlaSubView'+i+''+j+''+k+''+l+''+m+''+n+'">';
 											str+='<span class="profileImageView">';
 											str+='<img src="dist/img/logo.png" />';
 											str+='</span>';
@@ -413,7 +413,66 @@ function MainPart(result){
 										str+='</ul>';
 										str+='</div>';
 									}
+								
+									////////////start
+									 str+='<div id="collapseMlaSubView'+i+''+j+''+k+''+l+''+m+''+n+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="organizerMlaSubView'+i+''+j+''+k+''+l+''+m+''+n+'">';
+									str+='<div class="panel-body">';
+									str+=' <div class="panel-group" id="accordionFourLevel" role="tablist" aria-multiselectable="true">';
+										if(childChildMember[n].subList != null && childChildMember[n].subList.length > 0){
+											childChildChildUserType = childChildMember[n].subList;
+											for(var o in childChildChildUserType){
+												if(childChildChildUserType[o].subList != null && childChildChildUserType[o].subList.length > 0){
+													 var childChildChildMember = childChildChildUserType[o].subList;
+													 for(var p in childChildChildMember){
+														  str+='<div class="panel panel-default panelProfileView">';
+															if(childChildChildMember[p].subList != null && childChildChildMember[p].subList.length > 0){
+																str+='<div class="panel-heading" style="height:30px" role="tab" id="organizerMlaSubSubView'+i+''+j+''+k+''+l+''+m+''+n+''+o+''+p+'">';
+																	str+='<a role="button" style="width:30px;" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordionFourLevel" href="#collapseMlaSubSubView'+i+''+j+''+k+''+l+''+m+''+n+''+o+''+p+'" aria-expanded="true" aria-controls="collapseMlaSubSubView'+i+''+j+''+k+''+l+''+m+''+n+''+o+''+p+'">';
+																	str+='<span class="profileImageView">';
+																	str+='<img src="dist/img/logo.png" />';
+																	str+='</span>';
+																	str+='</a>';
+																	str+='<ul class="radioStyling">';
+																		str+='<li>';
+																			str+='<input type="radio" id="'+i+''+j+''+k+''+l+''+m+''+n+''+o+''+p+'" name="selector">';
+																			var locationName = getMemberName(childChildChildMember[p].locationName,childChildChildMember[p].shortName);
+																			str+=' <label for="'+i+''+j+''+k+''+l+''+m+''+n+''+o+''+p+'"  class="userStructureClass" attr_userTypeId='+childChildChildMember[p].userTypeId+' attr_activityMemberId ='+childChildChildMember[p].activityMemberId+'  attr_userAccessLevelId='+childChildChildMember[p].locationLevelId+' attr_userAccessLevelValuesString='+childChildChildMember[p].locationValuesSet+' attr_selectedmembername="'+childChildChildMember[p].name+'"   attr_selectedusertype="'+childChildChildMember[p].userType+'" attr_id ="directChildActivityMemberDiv" ><span class="hideDropDownView">'+locationName+' - <i>'+childChildChildMember[p].name+'</i></span>';
+																			str+='<span class="profileImageView">';
+																			str+='<img src="https://mytdp.com/images/cadre_images/'+childChildChildMember[p].image+'" />';
+																			str+='</span>';
+																			str+='</label>';
+																			str+='<div class="check"></div>';
+																			str+='</li>';
+																	str+='</ul>';
+																str+='</div>';
+															}else{
+																str+='<div class="panel-body col-md-12 col-sm-12 col-xs-12" style="padding-top:0px;padding-bottom:0px;">';
+																str+='<ul class="radioStyling">';
+																	str+=' <li class=" dottedLine">';
+																		str+='<input type="radio" id="'+i+''+j+''+k+''+l+''+m+''+n+''+o+''+p+'" name="selector">';
+																		var locationName = getMemberName(childChildChildMember[p].locationName,childChildChildMember[p].shortName);
+																		str+=' <label for="'+i+''+j+''+k+''+l+''+m+''+n+''+o+''+p+'" class="userStructureClass" attr_userTypeId='+childChildChildMember[p].userTypeId+' attr_activityMemberId ='+childChildChildMember[p].activityMemberId+' attr_userAccessLevelId='+childChildChildMember[p].locationLevelId+' attr_userAccessLevelValuesString='+childChildChildMember[p].locationValuesSet+' attr_selectedmembername="'+childChildChildMember[p].name+'"   attr_selectedusertype="'+childChildChildMember[p].userType+'" attr_id ="directChildActivityMemberDiv" ><span class="hideDropDownView">'+locationName+' - <i>'+childChildChildMember[p].name+'</i></span>';
+																		str+='<span class="profileImageView">';
+																		str+='<img src="https://mytdp.com/images/cadre_images/'+childChildChildMember[p].image+'" />';
+																		str+='</span>';
+																		str+='</label>';
+																		str+='<div class="check"></div>';
+																	str+='</li>';
+																str+='</ul>';
+																str+='</div>';
+															}
+														  str+='</div>';
+													 }
+												}
+											}
+										}
+										
 									str+='</div>';
+									str+='</div>';
+									str+='</div>';
+										///////////////////end
+								str+='</div>';	
+									
 								}//for
 						
 					}//if
