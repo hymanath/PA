@@ -1,12 +1,17 @@
 package com.itgrids.prrws.notification.service.impl;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import com.itgrids.dto.InputVO;
 import com.itgrids.service.ILightMonitoring;
 import com.itgrids.tpi.rws.service.IRWSNICService;
+import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
 import com.itgrids.utils.IConstants;
 
 @Configuration
@@ -18,6 +23,8 @@ public class Scheduler {
 	private ILightMonitoring lightMonitoringService;
     @Autowired
     private IRWSNICService rWSNICService;
+    @Autowired
+	private IRwsWorksSchedulerService rwsWorksSchedulerService;
 	
 	@Scheduled(cron = "0 30 2,14 * * * ")
 	public void runTheSchedulerEveryDay()
@@ -40,6 +47,32 @@ public class Scheduler {
 		{	
 			LOG.error("Cron Job For webServiceHealth Started");
 			rWSNICService.getWebserviceDetails();
+			LOG.error("Cron Job For webServiceHealth Completed");
+		}
+		else 
+			return;
+	}
+	
+	@Scheduled(cron ="0 0 0/4 * * ?")
+	//@Scheduled(cron ="0 0/20 * * * ?")
+	public void runTheExceededWorksForEveryOneHour()
+	{
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{	
+			LOG.error("Cron Job For webServiceHealth Started");
+			
+			InputVO input= new InputVO();
+			List<String> statusList = new ArrayList<String>();
+			statusList.add("completed");
+			statusList.add("ongoing");
+			statusList.add("not grounded");
+			statusList.add("commissioned");
+			input.setFromDateStr("01-01-1977");
+			input.setToDateStr("31-12-2027");
+			input.setLocationType("state");
+			input.setStatusList(statusList);
+			
+			rwsWorksSchedulerService.getWorksDataInsertion(input);
 			LOG.error("Cron Job For webServiceHealth Completed");
 		}
 		else 

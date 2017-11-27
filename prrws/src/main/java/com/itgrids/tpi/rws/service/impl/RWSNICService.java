@@ -17,13 +17,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -45,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sun.misc.BASE64Encoder;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -64,6 +63,7 @@ import com.itgrids.dao.IHabitationDAO;
 import com.itgrids.dao.IRwsConstituencyDAO;
 import com.itgrids.dao.IRwsDistrictDAO;
 import com.itgrids.dao.IRwsTehsilDAO;
+import com.itgrids.dao.IRwsWorkDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dao.ITressedHabitationDAO;
 import com.itgrids.dao.IWebserviceCallDetailsDAO;
@@ -92,14 +92,10 @@ import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
-import com.itgrids.utils.NREGSCumulativeThread;
 import com.itgrids.utils.NREGSCumulativeThreadPerformance;
 import com.itgrids.utils.RWSThread;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-
-import sun.misc.BASE64Encoder;
-import sun.util.logging.resources.logging;
 
 @Service
 @Transactional
@@ -133,6 +129,9 @@ public class RWSNICService implements IRWSNICService{
 	
 	@Autowired
 	private ITressedHabitationDAO tressedHabitationDAO;
+
+	@Autowired
+	private IRwsWorkDAO rwsWorkDAO;
 	/*
 	 * Date : 15/06/2017
 	 * Author :Sandeep
@@ -3860,6 +3859,46 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return locationMap;
 	}
+	private Map<String, IdNameVO> prepareWrokDtlsLocationWise2(InputVO inputVO,Map<String, IdNameVO> workDtlsMap) {
+		Map<String, IdNameVO> locationMap = new HashMap<>();
+		try {
+			if (workDtlsMap != null && workDtlsMap.size() > 0) {
+				for (Entry<String, IdNameVO> entry : workDtlsMap.entrySet()) {
+					String locationIdStr = getLocationIdByLocationType(inputVO.getLocationType(), entry.getValue());
+					IdNameVO locationVO = locationMap.get(locationIdStr);// getting locationId based on location type
+					if (locationVO == null) {
+						locationVO = new IdNameVO();
+						locationVO.setLocationIdStr(locationIdStr);
+						locationVO.setName(getLocationNameByLocationType(inputVO.getLocationType(), entry.getValue()));// getting locationName based on location type
+						locationVO.setCount(0l);
+						locationVO.setSanctionAmount(0l);
+						locationVO.setSubList(getRequiredTemplate());// getting template
+						locationMap.put(locationVO.getLocationIdStr(),locationVO);
+					}
+					for (IdNameVO assetTypeVO : locationVO.getSubList()) {
+
+						for (IdNameVO workStatus : assetTypeVO.getSubList()) {
+							IdNameVO matchVO = getMatchedVO(entry.getValue(),workStatus.getName(),assetTypeVO.getAssetType());
+							if (matchVO != null) {
+									workStatus.setCount(workStatus.getCount() + 1);
+									
+									assetTypeVO.setCount(assetTypeVO.getCount() + 1);
+									locationVO.setCount(locationVO.getCount()+1);
+									locationVO.setSanctionedAmount(locationVO.getSanctionedAmount()+ matchVO.getSanctionedAmount());
+									workStatus.setSanctionedAmount(workStatus.getSanctionedAmount()+matchVO.getSanctionedAmount());
+									assetTypeVO.setSanctionedAmount(assetTypeVO.getSanctionedAmount()+ matchVO.getSanctionedAmount());
+							}
+
+						}
+					}
+
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in prepareWrokDtlsLocationWise() method, Exception - ",e);
+		}
+		return locationMap;
+	}
 	private IdNameVO getMatchedVO(IdNameVO vo,String name,String assetType){
 		try {
 			if(vo != null){
@@ -4004,8 +4043,8 @@ public class RWSNICService implements IRWSNICService{
 		String rangeLevelName="";
 		 try {
 			 if (daysDiff != null ) {
-				 if(daysDiff >= 0L && daysDiff <= 30L) {
-					 rangeLevelName = "0-30 Days";
+				 if(daysDiff >= 1L && daysDiff <= 30L) {
+					 rangeLevelName = "1-30 Days";
 				 }else if(daysDiff >= 31L && daysDiff <= 60L) {
 					 rangeLevelName = "31-60 Days";
 				 } else if( daysDiff >= 61L && daysDiff <= 90L) {
@@ -4062,7 +4101,7 @@ public class RWSNICService implements IRWSNICService{
 	
 	private List<IdNameVO> getRequiredTemplate() {
 		List<IdNameVO> resultList = new ArrayList<>(0);
-		String[] templateArr = {"0-30 Days","31-60 Days","61-90 Days","91-180 Days","181-365 Days","More Than 1 Year"};
+		String[] templateArr = {"1-30 Days","31-60 Days","61-90 Days","91-180 Days","181-365 Days","More Than 1 Year"};
 		try {
 			IdNameVO cpwsVO = new IdNameVO();
 			cpwsVO.setAssetType("CPWS");
@@ -4506,4 +4545,138 @@ public class RWSNICService implements IRWSNICService{
 		        return resultStatus;
 		      }
 	    }
+
+	@SuppressWarnings("static-access")
+	@Override
+	public List<IdNameVO> getExceededWorkDetailsLocationWise2(InputVO inputVO) {
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			Map<String, IdNameVO> workDetailsMap = new HashMap<String, IdNameVO>();
+			Date fromDate=null, toDate= null;
+			DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
+			if(inputVO.getFromDateStr()!= null && inputVO.getToDateStr()!=null && inputVO.getFromDateStr().length()>0 && inputVO.getToDateStr().length()>0){
+				fromDate = sdf.parse(inputVO.getFromDateStr());
+				toDate= sdf.parse(inputVO.getToDateStr());
+			}else{
+				Long toYear = Long.valueOf(inputVO.getYear());
+				fromDate = sdf.parse("01-04-"+inputVO.getYear());
+				fromDate = sdf.parse("01-04-"+toYear);
+			}
+			
+			List<Object[]> worksdata = rwsWorkDAO.getWorksData(fromDate,toDate,null,null,null);
+			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
+				for (Object[] param : worksdata) {
+					//0-workId,1-WorkName,2-status,3-assetType,4-adminDate,5-groundDate,6-targetrDate,7-completionDate
+					//8-dCode,9-dname,10-ccode ,11-Cname,12-mCode,13-mname ,14-habcode,15-habname
+					IdNameVO workDetailsVO = new IdNameVO();
+					workDetailsVO.setWrokIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+					workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					workDetailsVO.setWorkStatus(commonMethodsUtilService.getStringValueForObject(param[2]));
+					workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
+					workDetailsVO.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[6]));
+					workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[8]));
+					workDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[9]));
+					workDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[10]));
+					workDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[11]));
+					workDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[12]));
+					workDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[13]));
+					workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[16]));
+					
+					if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Grounded")) {
+						workDetailsVO.setCompletionDate(currentDate);
+					} else if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("completed")) {
+						workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[7]));
+						
+					}
+					// calculating noOfDays between two difference date
+					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus()));
+                    workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
+                    workDetailsMap.put(workDetailsVO.getWrokIdStr(),workDetailsVO);
+				
+				}
+			}
+			Map<String,IdNameVO> resultMap = prepareWrokDtlsLocationWise2(inputVO,workDetailsMap);
+			if (resultMap != null && resultMap.size() > 0 ) {
+				finalList.addAll(new ArrayList<>(resultMap.values()));
+				calculatingPercentage(finalList);
+			}
+		}catch(Exception e){
+			LOG.error("exception occured in getExceededWorkDetailsLocationWise2() method",e);	
+		}
+		return finalList;
+	}
+
+	@SuppressWarnings("static-access")
+	@Override
+	public List<IdNameVO> getOnClickExceedWorkDetails(InputVO inputVO) {
+		
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			Date fromDate=null, toDate= null;
+			DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
+			if(inputVO.getFromDateStr()!= null && inputVO.getToDateStr()!=null && inputVO.getFromDateStr().length()>0 && inputVO.getToDateStr().length()>0){
+				fromDate = sdf.parse(inputVO.getFromDateStr());
+				toDate= sdf.parse(inputVO.getToDateStr());
+			}else{
+				Long toYear = Long.valueOf(inputVO.getYear());
+				fromDate = sdf.parse("01-04-"+inputVO.getYear());
+				fromDate = sdf.parse("01-04-"+toYear);
+			}
+			
+			List<Object[]> worksdata = rwsWorkDAO.getWorksData(fromDate,toDate,inputVO.getAssetType(),inputVO.getLocationType(),inputVO.getLocationValue());
+			List<IdNameVO> workList = new ArrayList<IdNameVO>();
+			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
+				for (Object[] param : worksdata) {
+					//0-workId,1-WorkName,2-status,3-assetType,4-adminDate,5-groundDate,6-targetrDate,7-completionDate
+					//8-dCode,9-dname,10-ccode ,11-Cname,12-mCode,13-mname ,14-habcode,15-habname
+					IdNameVO workDetailsVO = new IdNameVO();
+					workDetailsVO.setWrokIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+					workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					workDetailsVO.setWorkStatus(commonMethodsUtilService.getStringValueForObject(param[2]));
+					workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
+					workDetailsVO.setAdminDate(commonMethodsUtilService.getStringValueForObject(param[4]));
+					workDetailsVO.setGroundedDate(commonMethodsUtilService.getStringValueForObject(param[5]));
+					workDetailsVO.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[6]));
+					workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[8]));
+					workDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[9]));
+					workDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[10]));
+					workDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[11]));
+					workDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[12]));
+					workDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[13]));
+					workDetailsVO.setHabitationCode(commonMethodsUtilService.getStringValueForObject(param[14]));
+					workDetailsVO.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[15]));
+					workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[16]));
+					
+					
+					if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Grounded")) {
+						workDetailsVO.setCompletionDate(currentDate);
+					} else if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("completed")) { //|| commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Commissioned")
+						workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[7]));
+						
+					}
+					// calculating noOfDays between two difference date
+					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus()));
+                    workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
+                    if(inputVO.getExceededDuration() == null && inputVO.getExceededDuration().length()>0){
+                    	finalList.add(workDetailsVO);
+                    }else{
+                    	workList.add(workDetailsVO);
+                    }
+				}
+			}
+			
+			if (commonMethodsUtilService.isListOrSetValid(workList)) {
+				for (IdNameVO VO : workList) {
+					if(VO.getName().equalsIgnoreCase(inputVO.getExceededDuration())){
+						finalList.add(VO);
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("exception occured in getExceededWorkDetailsLocationWise2() method",e);	
+		}
+		return finalList;
+	}
  }

@@ -18,6 +18,7 @@ public class IdNameVO implements Serializable{
 	private String minDate;
 	private String maxDate;
 	private List<String> componentNameList;
+	private Double sanctionedAmount =0.0;
 	
 	private String url;
 	private List<Long> componentIds = new ArrayList<Long>(0);
@@ -59,7 +60,14 @@ public class IdNameVO implements Serializable{
     private Long noOfDays;
     private String locationIdStr;
     private List<IdNameVO> subList;
+    public String programCode;
+    public String programName;
 
+	private String commissionnedDate;
+
+	private String wrokName;
+	private String habitationCode;
+	private String habitationName;
 	
 	
 	public IdNameVO() {
@@ -354,7 +362,51 @@ public class IdNameVO implements Serializable{
 	public void setSubList(List<IdNameVO> subList) {
 		this.subList = subList;
 	}
+	public void setCommissionnedDate(String commissionnedDate) {
+
+		this.commissionnedDate=commissionnedDate;
+	}
+	public String getProgramCode() {
+		return programCode;
+	}
+	public void setProgramCode(String programCode) {
+		this.programCode = programCode;
+	}
+	public String getProgramName() {
+		return programName;
+	}
+	public void setProgramName(String programName) {
+		this.programName = programName;
+	}
+	public String getCommissionnedDate() {
+		return commissionnedDate;
+	}
 	
+	public String getWrokName() {
+		return wrokName;
+	}
 	
+	public void setWrokName(String wrokName) {
+		this.wrokName=wrokName;
+		
+	}
+	public Double getSanctionedAmount() {
+		return sanctionedAmount;
+	}
+	public void setSanctionedAmount(Double sanctionedAmount) {
+		this.sanctionedAmount = sanctionedAmount;
+	}
+	public String getHabitationCode() {
+		return habitationCode;
+	}
+	public void setHabitationCode(String habitationCode) {
+		this.habitationCode = habitationCode;
+	}
+	public String getHabitationName() {
+		return habitationName;
+	}
+	public void setHabitationName(String habitationName) {
+		this.habitationName = habitationName;
+	}
 	
 }
