@@ -32,17 +32,14 @@ import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaTextMessageDAO;
-import com.itgrids.partyanalyst.dao.hibernate.KaizalaInstallationTrackingDAO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.model.KaizalaActions;
 import com.itgrids.partyanalyst.model.KaizalaAnswerInfo;
 import com.itgrids.partyanalyst.model.KaizalaAnswers;
 import com.itgrids.partyanalyst.model.KaizalaEventsResponse;
 import com.itgrids.partyanalyst.model.KaizalaGroupDocument;
-import com.itgrids.partyanalyst.model.KaizalaGroupDocumentType;
 import com.itgrids.partyanalyst.model.KaizalaGroupResponderRelation;
 import com.itgrids.partyanalyst.model.KaizalaGroups;
-import com.itgrids.partyanalyst.model.KaizalaInstallationTracking;
 import com.itgrids.partyanalyst.model.KaizalaJobResponse;
 import com.itgrids.partyanalyst.model.KaizalaOptions;
 import com.itgrids.partyanalyst.model.KaizalaProperties;
@@ -436,7 +433,29 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	public void saveKaizalaInstallationTracking(JSONObject jobj){
 		try {
 			
-			KaizalaInstallationTracking tracking = new KaizalaInstallationTracking();
+			if(jobj == null)
+				return;
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://www.mytdp.com/KAIZALA/saveKaizalaInstallationTracking");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/KAIZALA/saveKaizalaInstallationTracking");
+			
+			WebResource.Builder builder = webResource.getRequestBuilder();
+			
+			builder.accept("application/json");
+			builder.type("application/json");
+			
+			ClientResponse response = builder.post(ClientResponse.class,jobj.toString());
+			
+			if(response.getStatus() != 200){
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			}else{				
+				String output = response.getEntity(String.class);				
+				if(output !=null && !output.trim().isEmpty()){
+					System.out.println(" Kaizala Installation Tracking Saved Successfully.");
+				}				
+			}
+			
+			/*KaizalaInstallationTracking tracking = new KaizalaInstallationTracking();
 			
 			tracking.setObjectId(jobj.getString("objectId"));
 			tracking.setObjectType(jobj.getString("objectType"));
@@ -479,7 +498,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 				
 				tracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 				kaizalaInstallationTrackingDAO.save(tracking);
-			}
+			}*/
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at saveKaizalaInstallationTracking in KaizalaInfoService Class ", e);
