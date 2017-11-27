@@ -17,6 +17,7 @@ public class JbCommitteeStatus {
 
 	private Long jbCommitteeStatusId;
 	private String status;
+	private String colour;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,6 +36,15 @@ public class JbCommitteeStatus {
 	}
     public void setStatus(String status) {
 		this.status = status;
+	}
+
+    @Column(name = "colour")
+	public String getColour() {
+		return colour;
+	}
+
+	public void setColour(String colour) {
+		this.colour = colour;
 	}
     
 	
