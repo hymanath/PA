@@ -3906,6 +3906,10 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
+							<select class="categoryCls" id="categoryId">
+								<option value="1051">Praja sankalpa yatra</option>
+								<option value="1050">Counter on praja sankalpa yatra</option>
+							</select>
 							<span class="input-group pull-right dateRangePickerCls">
 								<input type="text" id="dateRangePrajaSankalpaId" class="form-control" style="width:180px"/>
 								<span class="input-group-addon">
