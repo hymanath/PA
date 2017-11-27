@@ -1,5 +1,5 @@
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var levelWiseOverviewArr = ['district','constituency','mandal']
+var levelWiseOverviewArr = ['state','district','constituency','mandal']
 
 var startDate = moment().subtract(1,"month").format("DD-MM-YYYY");
 var endDate = moment().format("DD-MM-YYYY");
@@ -116,8 +116,10 @@ function levelWiseOverview()
 	$(".chosen-select").chosen({width :'100%'});
 	for(var i in levelWiseOverviewArr)
 	{
-		if(levelWiseOverviewArr[i] == "district"){
-			
+		if(levelWiseOverviewArr[i] == "state"){
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"district","1-06-2017","30-07-2017",0,"",0,"");
+		}
+		else if(levelWiseOverviewArr[i] == "district"){
 			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"district","1-06-2017","30-07-2017",0,"",0,"");
 		}else if(levelWiseOverviewArr[i] == "constituency"){
 			getAllDistricts(levelWiseOverviewArr[i]+'SelectDist');
@@ -217,9 +219,17 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 	function buildTable(result,blockid)
 	{
 		var table = '';
+		var isState=false;
+		if (blockid.indexOf('state') > -1 ) {
+			 isState=true;
+		}
+		
 		table+='<div class="table-responsive">';
 			table+='<table class="table table-bordered" id="'+blockid+'dataTableId">';
 				table+='<thead>';
+					if(isState){
+						table+='<th>STATE</th>';
+					}
 					if(blockid == 'districtBodyId'){
 						table+='<th>DISTRICTS</th>';
 					}else if(blockid == 'constituencyBodyId'){
@@ -237,26 +247,60 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 					table+='<th>VERMI - STOCK (TONS)</th>';
 				table+='</thead>';
 				table+='<tbody>';
-				for(var i in result)
-				{
-					if(blockid == 'districtBodyId'){
-						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
-					}else if(blockid == 'constituencyBodyId'){
-						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
-					}else if(blockid == 'mandalBodyId'){
-						table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
-					}
 					
-						table+='<td attr_dist_name="'+result[i].name+'" attr_dist_id="'+result[i].id+'">'+result[i].name+'</td>';
-						table+='<td attr_dist_rfid="'+result[i].rfidTags+'">'+result[i].rfidTags+'</td>';
-						table+='<td attr_dist_farmer="'+result[i].farmers+'">'+result[i].farmers+'</td>';
-						table+='<td attr_dist_rfidTracking="'+result[i].rfidTracking+'">'+result[i].rfidTracking+'</td>';
-						table+='<td attr_dist_swmCollection="'+result[i].swmCollection+'">'+result[i].swmCollection+'</td>';
-						table+='<td attr_dist_nadap="'+result[i].nadap+'">'+result[i].nadap+'</td>';
-						table+='<td attr_dist_vermi="'+result[i].vermi+'">'+result[i].vermi+'</td>';
-						table+='<td attr_dist_vermiStock="'+result[i].vermiStock+'">'+result[i].vermiStock+'</td>';
-					table+='</tr>';
-				}
+				if(isState){	
+						var rfidTags = 0.0;
+						var farmers =  0.0;
+						var rfidTracking =  0.0;
+						var swmCollection =  0.0;
+						var nadap =  0.0;
+						var vermi =  0.0;
+						var vermiStock =  0.0;
+					
+						for(var i in result)
+						{
+							rfidTags = parseFloat(rfidTags)+parseFloat(result[i].rfidTags);
+							farmers = parseFloat(farmers)+parseFloat(result[i].farmers);
+							rfidTracking = parseFloat(rfidTracking)+parseFloat(result[i].rfidTracking);
+							swmCollection = parseFloat(swmCollection)+parseFloat(result[i].swmCollection);
+							nadap = parseFloat(nadap)+parseFloat(result[i].nadap);
+							vermi = parseFloat(vermi)+parseFloat(result[i].vermi);
+							vermiStock = parseFloat(rfidTags)+parseFloat(result[i].vermiStock);
+							isState=true;
+						}				
+				
+						table+='<tr>';
+							table+='<td>Andhra Pardesh</td>';
+							table+='<td>'+rfidTags+'</td>';
+							table+='<td>'+farmers+'</td>';
+							table+='<td>'+rfidTracking+'</td>';
+							table+='<td>'+swmCollection+'</td>';
+							table+='<td>'+nadap+'</td>';
+							table+='<td>'+vermi+'</td>';
+							table+='<td>'+vermiStock+'</td>';
+						table+='</tr>';
+				}else{
+					for(var i in result)
+					{					
+						if(blockid == 'districtBodyId'){
+							table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
+						}else if(blockid == 'constituencyBodyId'){
+							table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
+						}else if(blockid == 'mandalBodyId'){
+							table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
+						}
+							table+='<td attr_dist_name="'+result[i].name+'" attr_dist_id="'+result[i].id+'">'+result[i].name+'</td>';
+							table+='<td attr_dist_rfid="'+result[i].rfidTags+'">'+result[i].rfidTags+'</td>';
+							table+='<td attr_dist_farmer="'+result[i].farmers+'">'+result[i].farmers+'</td>';
+							table+='<td attr_dist_rfidTracking="'+result[i].rfidTracking+'">'+result[i].rfidTracking+'</td>';
+							table+='<td attr_dist_swmCollection="'+result[i].swmCollection+'">'+result[i].swmCollection+'</td>';
+							table+='<td attr_dist_nadap="'+result[i].nadap+'">'+result[i].nadap+'</td>';
+							table+='<td attr_dist_vermi="'+result[i].vermi+'">'+result[i].vermi+'</td>';
+							table+='<td attr_dist_vermiStock="'+result[i].vermiStock+'">'+result[i].vermiStock+'</td>';					
+						table+='</tr>';
+					}
+				}					
+				
 				table+='</tbody>';
 			table+='</table>';
 		table+='</div>';

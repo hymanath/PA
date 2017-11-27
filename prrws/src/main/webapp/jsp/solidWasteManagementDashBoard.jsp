@@ -213,6 +213,11 @@
 				<div class="col-sm-12">
 					<div class="row white_block_swm">
 						<div id="swmInfraustructure">
+							<div class="col-sm-12">
+								<div class="row" style="border: 1px solid lightgrey;padding:15px;margin:2px">
+									<h4 style="padding:10px;text-align:center;"><span>SOLID WASTE -INFRASTRUCTURE STACK MANAGEMENT </span></h4>
+								</div>
+							</div>
 							<div class="col-sm-6">
 									<div class="row" style="border: 1px solid lightgrey;padding:15px;margin:2px">
 									<h4 style="padding:10px"><img src="Assests/icons/swm/Group 2186.png" style=""><span>SWM-INFRASTRUCTURE OVERVIEW</span></h4>
