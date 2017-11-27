@@ -13,9 +13,9 @@ public interface IJanmabhoomiCommitteeService
 	public  JanmabhoomiCommitteeVO  getJbCommitteeStatusCount(String fromDateStr, String toDateStr);
 	//public Map<Long,JanmabhoomiCommitteeMemberVO> getLevelWiseCommiteeStatusCounts();
 	public ResultStatus saveJanmabhoomiCommitteeMember(final JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO);
-	public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteesByLocIdAndCommLvlId(String fromDate,String endDate,Long locationId,Long locLvlId,Long committeeLvlId,String status);
+	public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteesByLocIdAndCommLvlId(String fromDate,String endDate,Long locationId,Long locLvlId,Long committeeLvlId,Long status);
 	public JanmabhoomiCommitteeMemberVO searchByMemberIdOrVoterId(Long locationLevel,Long locationValue,String memberShipCardNo,String voterCardNo);
 	public List<JanmabhoomiCommitteeVO> getStatewiseCastNamesByCasteCategoryGroupId(List<Long> categoryGrouId);
 	public List<JanmabhoomiCommitteeVO>  getCategories();
-	public ResultStatus updateCommitteStatusByCommiteeId(Long committeeId);
+	public ResultStatus updateCommitteStatusByCommiteeId(Long committeeId,String status);
 }

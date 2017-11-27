@@ -183,4 +183,14 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 				
 			return query.list();
 	 }
+	 
+	 public Long updateMembersToRejectStatus(Long committeeId){
+		 StringBuilder sb = new StringBuilder();
+			sb.append(" update JbCommitteeMember model set model.status ='R' and model.isActive = 'N' "); 
+			sb.append("where model.jbCommitteeRole.jbCommittee.jbCommitteeId =:committeeId and model.jbCommitteeRole.jbCommittee.isDeleted ='N' ");
+			Query query = getSession().createQuery(sb.toString());
+			query.setParameter("committeeId", committeeId);
+			
+			return (Long)query.uniqueResult();
+	 }
 }

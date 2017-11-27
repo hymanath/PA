@@ -35,9 +35,9 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
  }
 	public List<Object[]> getDistrictWiseCommitteeDetails(Date fromDate,Date endDate,String type,Set<Long> userAccessVals){
 		StringBuilder sb = new StringBuilder();
-		
-		sb.append(" select model.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommitteeLevel.name,model.isCommitteeConfirmed," +
-				"model.startDate,model.completedDate,model.jbCommitteeId " );
+		// 0 levelId,1 levelName,2 count,3 statusId,4 status 
+		sb.append(" select model.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommitteeLevel.name,count(model.jbCommitteeId)" +
+				",model.jbCommitteeStatus.jbCommitteeStatusId,model.jbCommitteeStatus.status,model.jbCommitteeId " );
 		if(type != null && type.equalsIgnoreCase("district")){
 			sb.append(" ,district.districtId,district.districtName,'','','','','','' ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
@@ -50,7 +50,7 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 			sb.append("  ,panchayat.panchayatId,panchayat.panchayatName,constituency.district.districtId,constituency.district.districtName, constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName ");
 		 }
 		
-		sb.append(" from  JbCommittee model   ");
+		sb.append(" ,model.jbCommitteeStatus.colour from  JbCommittee model   ");
 		
 		if(type != null && type.equalsIgnoreCase("district")){
 			sb.append(" left join model.userAddress.district district ");
@@ -77,14 +77,14 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 			sb.append(" and constituency.constituencyId in (:userAccessVals) ");
 		}
 		
-		/*sb.append(" group by model.jbCommitteeLevel.jbCommitteeLevelId ");
+		sb.append(" group by model.jbCommitteeLevel.jbCommitteeLevelId,model.jbCommitteeStatus.jbCommitteeStatusId ");
 		if(type != null && type.equalsIgnoreCase("district")){
 			sb.append(" , district.districtId ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
 			sb.append(" ,constituency.constituencyId ");
 		}else if(type.equalsIgnoreCase("parliament")){
 			sb.append(" , model.userAddress.parliamentConstituency.constituencyId  ");
-		}*/
+		}
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(userAccessVals != null && userAccessVals.size() >0){
@@ -93,7 +93,7 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		return query.list();
 		
 	}
-	public List<Object[]> getLocationWiseCommitteeDetailsForCommitteeLvl(Date fromDate,Date endDate,Long levelId,Long levelVal,Long committeeLvlId,String status){
+	public List<Object[]> getLocationWiseCommitteeDetailsForCommitteeLvl(Date fromDate,Date endDate,Long levelId,Long levelVal,Long committeeLvlId,Long status){
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select model.jbCommitteeId,model.committeeName " );
@@ -120,12 +120,15 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		if(committeeLvlId != null && committeeLvlId.longValue() >0l ){
 			sb.append("   and model.jbCommitteeLevel.jbCommitteeLevelId = :committeeLvlId  ");
 		}
-		if(status != null && status.equalsIgnoreCase("Not Started")){
+		/*if(status != null && status.equalsIgnoreCase("Not Started")){
 			sb.append("   and model.isCommitteeConfirmed = 'N' and model.startDate is null ");
 		}else if(status != null && status.equalsIgnoreCase("Approved")){
 			sb.append("   and model.isCommitteeConfirmed = 'Y' and model.completedDate is not null ");
+		}*/
+		if(status != null && status.longValue() > 0l){
+			sb.append("   and model.jbCommitteeStatus.jbCommitteeStatusId = :status ");
 		}
-		
+			
 		/*sb.append(" group by model.jbCommitteeLevel.jbCommitteeLevelId ");
 		if(type != null && type.equalsIgnoreCase("district")){
 			sb.append(" , district.districtId ");
@@ -141,6 +144,10 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		}
 		if(committeeLvlId != null && committeeLvlId.longValue() >0l ){
 			query.setParameter("committeeLvlId", committeeLvlId);
+		}
+		
+		if(status != null && status.longValue() > 0l){
+			query.setParameter("status", status);
 		}
 		return query.list();
 		

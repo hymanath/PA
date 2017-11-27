@@ -14,6 +14,7 @@ public class JanmabhoomiCommitteeVO {
 	private Long  submitedCommittees=0l;
 	private List<JanmabhoomiCommitteeVO>  positinsList= new ArrayList<JanmabhoomiCommitteeVO>();
 	private String statusType ="";
+	private Long statusId;
 	private Long committeeId = 0l;
 	private List<JanmabhoomiCommitteeVO> list = new ArrayList<JanmabhoomiCommitteeVO>();
 	private String notStartedCommitteePerc="0";
@@ -29,7 +30,28 @@ public class JanmabhoomiCommitteeVO {
 	private String mandalName;
 	private Long panchayatId;
 	private String panchayatName;
+	private Long count =0l;
+	private String color;
 	
+	
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
 	public Long getCommitteeId() {
 		return committeeId;
 	}
