@@ -34,6 +34,7 @@ public class CoreDebateVO implements Serializable {
 	private String candidateDesignation;
 	private Long designationId;
 	private String partyName;
+	private Long debateBaseCandidateCount=0l;
 	
 	public Long getId() {
 		return id;
@@ -196,6 +197,12 @@ public class CoreDebateVO implements Serializable {
 	}
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
+	}
+	public Long getDebateBaseCandidateCount() {
+		return debateBaseCandidateCount;
+	}
+	public void setDebateBaseCandidateCount(Long debateBaseCandidateCount) {
+		this.debateBaseCandidateCount = debateBaseCandidateCount;
 	}
 	
 }
