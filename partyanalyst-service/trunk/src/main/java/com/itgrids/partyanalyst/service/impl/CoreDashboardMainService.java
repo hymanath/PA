@@ -3874,6 +3874,8 @@ public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,Str
 				}									
 				else if(objects.getCandidateCount() !=null && objects.getDebateCount() !=null && objects.getDebateCount() > objects.getCandidateCount() ){
 					objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScale())/objects.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+				}else if(objects.getDebateBaseCandidateCount() != null && objects.getCandidateCount() !=null && objects.getDebateCount() !=null && objects.getDebateCount() == objects.getCandidateCount()){
+					objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScale())/objects.getDebateBaseCandidateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 				}else if(objects.getDebateCount() !=null && objects.getDebateCount()>0l){
 					objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScale())/objects.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 				}
@@ -3894,6 +3896,7 @@ public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,Str
 	}
 	
 	return returnList;
+	
 	
 }
 
@@ -3939,8 +3942,10 @@ public Map<Long,CoreDebateVO> setDebateAndDebateParticipantValuesToMap(List<Obje
 				}			
 				if(type != null && type.equalsIgnoreCase("debates"))	
 				  coreDebateVO.setDebateCount(coreDebateVO.getDebateCount() + commonMethodsUtilService.getLongValueForObject(obj[2]));
-				if(type != null && type.equalsIgnoreCase("debatesParticipants"))
-				  coreDebateVO.setCandidateCount(coreDebateVO.getCandidateCount() + commonMethodsUtilService.getLongValueForObject(obj[3]));						
+				if(type != null && type.equalsIgnoreCase("debatesParticipants")){
+				  coreDebateVO.setCandidateCount(coreDebateVO.getCandidateCount() + commonMethodsUtilService.getLongValueForObject(obj[3]));
+				  coreDebateVO.setDebateBaseCandidateCount(coreDebateVO.getDebateBaseCandidateCount()+commonMethodsUtilService.getLongValueForObject(obj[4]));
+				}
 													
 			}
 		}
