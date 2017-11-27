@@ -3299,24 +3299,25 @@ if(result.trainingProgramList != null && result.trainingProgramList.length> 0){
 						str+='</td>';							
 						str+='<td>';
 							str+='<p class="text-muted text-capitalize" title="Invitee Attended">Invitee Attended</p>';
-							var totalpercentage = ((parseInt(result.leaderTrainingList[i].inviteeAttended)/parseInt(result.leaderTrainingList[i].totalAttenedCount))*100).toFixed(2);
-							str+='<p class="responsiveFont">'+result.leaderTrainingList[i].inviteeAttended+'&nbsp;<span class="font-10 text-danger"> ('+totalpercentage+')%</span></p>';
+							//var totalpercentage = ((parseInt(result.leaderTrainingList[i].inviteeAttended)/parseInt(result.leaderTrainingList[i].totalAttenedCount))*100).toFixed(2);
+							var totalpercentage = 100;
+							str+='<p class="responsiveFont">'+(parseInt(result.leaderTrainingList[i].inviteeAttended) + parseInt(result.leaderTrainingList[i].nonInviteeAttended))+'&nbsp;<span class="font-10 text-danger"> ('+totalpercentage+')%</span></p>';
 				str+='</td>';
 				str+='<td>';
 							str+='<p class="text-muted text-capitalize" title="Non Invitee Attended">Non Invitee Attended</p>';
-							str+='<p class="responsiveFont">'+result.leaderTrainingList[i].nonInviteeAttended+'</p>';
+							str+='<p class="responsiveFont">-</p>';
 				str+='</td>';
 				str+='</tr>';
 				for(var j in result.leaderTrainingList[i].trainingProgramList)
 				 {
-					var percentage = ((parseInt(result.leaderTrainingList[i].trainingProgramList[j].only1dayCountInvited)/parseInt(result.leaderTrainingList[i].trainingProgramList[j].only1dayCount))*100).toFixed(2);
+					var percentage = ((parseInt(parseInt(result.leaderTrainingList[i].trainingProgramList[j].only1dayCountInvited) + parseInt(result.leaderTrainingList[i].trainingProgramList[j].only1dayCountNonInvited))/parseInt(result.leaderTrainingList[i].totalAttenedCount))*100).toFixed(2);
 					str+='<tr>';
-						str+='<td>'+result.leaderTrainingList[i].trainingProgramList[j].name+'</td>';
+						str+='<td>'+result.leaderTrainingList[i].trainingProgramList[j].name+'</td>';     
 						str+='<td>'+result.leaderTrainingList[i].trainingProgramList[j].only1dayCount+'</td>';
-						str+='<td>'+result.leaderTrainingList[i].trainingProgramList[j].only1dayCountInvited +'&nbsp;<span class="font-10 text-danger"> ('+percentage+')%</span></td>';
-						str+='<td>'+result.leaderTrainingList[i].trainingProgramList[j].only1dayCountNonInvited+'</td>';
+						str+='<td>'+(parseInt(result.leaderTrainingList[i].trainingProgramList[j].only1dayCountInvited) + parseInt(result.leaderTrainingList[i].trainingProgramList[j].only1dayCountNonInvited))+'&nbsp;<span class="font-10 text-danger"> ('+percentage+')%</span></td>';
+						str+='<td>-</td>';
 					
-				  str+='</tr>';
+				  str+='</tr>';  
 				 }
 				str+='</tbody>';
 			str+='</table>';  
