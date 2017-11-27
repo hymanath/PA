@@ -34,8 +34,8 @@
 	function getPrintMediaOverAllPSYCounts(divId,type){
 			$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"+currentFromDate+"/"+currentToDate
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"+currentFromDate+"/"+currentToDate
+			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"+currentFromDate+"/"+currentToDate
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"+currentFromDate+"/"+currentToDate
 		}).then(function(result){
 			
 			if(result !=null){
@@ -485,22 +485,22 @@
 	//getPartywiseTopLeaders();
 	function getDistrictWiseOverView(){
 	$.ajax({	
-		//url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseOverView/"+currentFromDate+"/"+currentToDate
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseOverView/"+currentFromDate+"/"+currentToDate
+		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseOverView/"+currentFromDate+"/"+currentToDate
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseOverView/"+currentFromDate+"/"+currentToDate
 	}).then(function(result){
 	 });
 	}
 	function getDistrictWisePartyOverView(){
 	$.ajax({	
-		//url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDate+"/"+currentToDate
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDate+"/"+currentToDate
+		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDate+"/"+currentToDate
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDate+"/"+currentToDate
 	}).then(function(result){
 	});
 }
 function getPartywiseTopLeaders(){
 	$.ajax({	
-		//url: wurl+"/CommunityNewsPortal/webservice/getPartywiseTopLeaders/"+currentFromDate+"/"+currentToDate
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPartywiseTopLeaders/"+currentFromDate+"/"+currentToDate
+		url: wurl+"/CommunityNewsPortal/webservice/getPartywiseTopLeaders/"+currentFromDate+"/"+currentToDate
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPartywiseTopLeaders/"+currentFromDate+"/"+currentToDate
 	}).then(function(result){
 	
 });
@@ -510,22 +510,22 @@ function getPartywiseTopLeaders(){
 getDistrictWisePartyViewForElectrronicMediaInfo();
 function getPartyWiseTopLeadersForElectonicMediaInfo(){
 	$.ajax({	
-		//url: wurl+"/CommunityNewsPortal/webservice/getPartyWiseTopLeadersForElectonicMediaInfo/"+currentFromDate+"/"+currentToDate
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPartyWiseTopLeadersForElectonicMediaInfo/"+currentFromDate+"/"+currentToDate
+		url: wurl+"/CommunityNewsPortal/webservice/getPartyWiseTopLeadersForElectonicMediaInfo/"+currentFromDate+"/"+currentToDate
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPartyWiseTopLeadersForElectonicMediaInfo/"+currentFromDate+"/"+currentToDate
 	}).then(function(result){
 	});
 }
 function getDistrictWiseOverViewForElectronicMediaInfo(){
 	$.ajax({	
-		//url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseOverViewForElectronicMediaInfo/"+currentFromDate+"/"+currentToDate
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseOverViewForElectronicMediaInfo/"+currentFromDate+"/"+currentToDate
+		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseOverViewForElectronicMediaInfo/"+currentFromDate+"/"+currentToDate
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseOverViewForElectronicMediaInfo/"+currentFromDate+"/"+currentToDate
 	}).then(function(result){
 	});
 }
 function getDistrictWisePartyViewForElectrronicMediaInfo(){
 	$.ajax({	
-		//url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfo/"+currentFromDate+"/"+currentToDate
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfo/"+currentFromDate+"/"+currentToDate
+		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfo/"+currentFromDate+"/"+currentToDate
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfo/"+currentFromDate+"/"+currentToDate
 	}).then(function(result){
 	});
 }
