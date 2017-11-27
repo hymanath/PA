@@ -3885,7 +3885,7 @@
 		</div>
 		<div class="row">
 		<!--Cadre Registration ENd -->
-		<!-- <div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
+		<div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
 				
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
@@ -3946,7 +3946,7 @@
 						</div>
 					</div>
 				</div>
-			</div>-->
+			</div>
 			<!-- NEWS BLOCK END-->
 			<!--Press Meet block Start-->
 			<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
