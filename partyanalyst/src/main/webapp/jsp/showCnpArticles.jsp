@@ -1128,7 +1128,7 @@ function getPrintMediaPSYOverAllArticles(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPSYOverAllArticles/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPSYOverAllArticles/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPSYOverAllArticles/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex+"/"+globalStartDate+"/"+globalEndDate
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
