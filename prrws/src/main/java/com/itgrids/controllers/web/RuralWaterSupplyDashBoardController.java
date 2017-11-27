@@ -30,6 +30,7 @@ import com.itgrids.dto.StatusVO;
 import com.itgrids.dto.WaterSourceVO;
 import com.itgrids.service.IUserService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
+import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
 
 @EnableAutoConfiguration
 @Controller
@@ -40,6 +41,8 @@ public class RuralWaterSupplyDashBoardController {
 	private IRWSNICService rWSNICService;
 	@Autowired
 	private IUserService userServiceImpl;
+	@Autowired
+	private IRwsWorksSchedulerService rWSNICService2;
 	
 	@GetMapping("/ruralWaterSupplyDashBoard")
 	public String ruralWaterSupplyDashBoardPage(ModelMap model,HttpSession session){
@@ -506,4 +509,33 @@ public class RuralWaterSupplyDashBoardController {
 	 return null;
 	}
 	
+	@PostMapping("/getWorksDataInsertionService")
+	public @ResponseBody List<IdNameVO> getWorksDataInsertionService(@RequestBody InputVO inputVO) {
+	  try {
+			 return rWSNICService2.getWorksDataInsertion(inputVO);
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
+	  }
+	 return null;
+	}
+	
+	@PostMapping("/getExceedWorkDetailsLocationWise2")
+	public @ResponseBody List<IdNameVO> getExceededWorkDetailsLocationWise2(@RequestBody InputVO inputVO) {
+	  try {
+			 return rWSNICService.getExceededWorkDetailsLocationWise2(inputVO);
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
+	  }
+	 return null;
+	}
+	
+	@PostMapping("/getOnClickExceedWorkDetails")
+	public @ResponseBody List<IdNameVO> getOnClickExceedWorkDetails(@RequestBody InputVO inputVO) {
+	  try {
+			 return rWSNICService.getOnClickExceedWorkDetails(inputVO);
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
+	  }
+	 return null;
+	}
 }
