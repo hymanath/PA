@@ -1885,11 +1885,12 @@
 		tabBlock+='</div>';
 		$("#"+blockId).html(tabBlock);
 		$(".overViewCls").hide();
-		getSchemeWiseWorkDetails('table','state',blocksArr,"","","","completeOverview");
-		getSchemeWiseWorkDetails('table','district',blocksArr,"","","","completeOverview");
-		getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","","completeOverview");
-		getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","","completeOverview");
-		
+		for(var i in blocksArr)
+		{
+			if(blocksArr[i].id == "schemeId"){
+				getSchemeWiseWorkDetails('table',blockName,blocksArr,"","","","completeOverview");
+			}
+		}
 		if(blockId == 'constituencyBlockId'){
 				selectBox('distVal'+blockId+'')
 				selectBox('constVal'+blockId+'')
@@ -2502,15 +2503,43 @@
 												var pswsPerc=0;
 												if(GLtbodyArr[i].subList[j].assetType == "CPWS"){
 													cpwsPerc = (GLtbodyArr[i].subList[j].count/totalCPWSCount*100).toFixed(2);
-													tableView+='<td>'+GLtbodyArr[i].subList[j].count+'<br/> <small style="color:green;">'+cpwsPerc+' %</small></td>';
+													if(GLtbodyArr[i].subList[j].count !=null && GLtbodyArr[i].subList[j].count>0){
+														tableView+='<td><span  class="schemsClickView"  attr_status="CPWS" attr_location_type="'+locationType+'" attr_filter_value="" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].count+'" attr_type = "exccedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].count+'</span><br/> <small style="color:green;">'+cpwsPerc+' %</small></td>';
+													}else{
+														tableView+='<td> - </td>';
+													}
+													
 												}else{
+													
 													pswsPerc = (GLtbodyArr[i].subList[j].count/totalPWSCount*100).toFixed(2);
-													tableView+='<td>'+GLtbodyArr[i].subList[j].count+'<br/> <small style="color:green;">'+pswsPerc+' %</small></td>';
+													if(GLtbodyArr[i].subList[j].count !=null && GLtbodyArr[i].subList[j].count>0){
+														tableView+='<td><span  class="schemsClickView"  attr_status="PWS" attr_location_type="'+locationType+'" attr_filter_value="" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].count+'" attr_type = "exccedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].count+'</span><br/> <small style="color:green;">'+pswsPerc+' %</small></td>';
+													}else{
+														tableView+='<td> - </td>';
+													}
+													
 												}
-												tableView+='<td>'+GLtbodyArr[i].subList[j].sanctionAmount+'</td>';
+												if(GLtbodyArr[i].subList[j].sanctionAmount !=null && GLtbodyArr[i].subList[j].sanctionAmount>0){
+													tableView+='<td>'+GLtbodyArr[i].subList[j].sanctionAmount+'</td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
+												
+												
 												for(var k in GLtbodyArr[i].subList[j].subList){
-													tableView+='<td>'+GLtbodyArr[i].subList[j].subList[k].count+'<br/> <small style="color:green;">'+GLtbodyArr[i].subList[j].subList[k].percentage+' %</small></td>';
-													tableView+='<td>'+GLtbodyArr[i].subList[j].subList[k].sanctionAmount+'</td>';
+													
+													if(GLtbodyArr[i].subList[j].subList[k].count !=null && GLtbodyArr[i].subList[j].subList[k].count>0){
+														tableView+='<td><span  class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'" attr_location_type="'+locationType+'" attr_filter_value="'+GLtbodyArr[i].subList[j].subList[k].name+'" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].subList[k].count+'" attr_type = "exccedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].subList[k].count+'</span><br/> <small style="color:green;">'+GLtbodyArr[i].subList[j].subList[k].percentage+' %</small></td>';
+													}else{
+														tableView+='<td> - </td>';
+													}
+													
+													if(GLtbodyArr[i].subList[j].subList[k].sanctionAmount !=null && GLtbodyArr[i].subList[j].subList[k].sanctionAmount>0){
+														tableView+='<td>'+GLtbodyArr[i].subList[j].subList[k].sanctionAmount+'</td>';
+													}else{
+														tableView+='<td> - </td>';
+													}
+													
 												}
 											}
 										tableView+='</tr>';
@@ -4157,14 +4186,6 @@
 		
 	});
 	$(document).on("click",".schemsClickView",function(){
-		$("#modalHablitationTable").html('');
-		$("#modalAlertTable").html('');
-		$("#modalAssetsTable").html('');
-		$("#modalWaterSourceTable").html('');
-		$("#modalIvrStatusTable").html('');
-		$("#modalKpiTable").html('');
-		$("#modalSchemsTable").html('');
-		$(".paginationId").html("");
 		
 		var status = $(this).attr("attr_status");
 		var totalCount=$(this).attr("attr_total_count");
@@ -4173,11 +4194,20 @@
 		var locationType=$(this).attr("attr_location_type");
 		var districtVal=$(this).attr("attr_district_val");
 		var locationName=$(this).attr("attr_location_name");
-		$("#modalHablitationDivId").modal('show');
-		$("#modalHabliHeadingId").html("<h4 class='text-capital'>"+locationName+"&nbsp;&nbsp;"+locationType+"&nbsp;&nbsp;"+status+"&nbsp;"+"("+workStatus+")&nbsp;&nbsp;Overview</h4>");
-		var startIndex=0;
-		getOnclickWorkSchemsDetails(status,workStatus,totalCount,locationValue,locationType,
-		districtVal);
+		
+		if(workStatus == "exccedSchemes"){
+			$("#modalHablitationDivId").modal('show');
+			$("#modalSchemsTable").html('');
+			$("#modalHabliHeadingId").html("<h4 class='text-capital'>"+locationName+"&nbsp;&nbsp;"+locationType+"&nbsp;&nbsp;"+status+"&nbsp;"+"("+locationValue+")&nbsp;&nbsp;Overview</h4>");
+			getOnClickExceedWorkDetails(status,locationType,locationValue,districtVal);
+		}else{
+			$("#modalHablitationDivId").modal('show');
+			$("#modalSchemsExceedTable").html('');
+			$("#modalHabliHeadingId").html("<h4 class='text-capital'>"+locationName+"&nbsp;&nbsp;"+locationType+"&nbsp;&nbsp;"+status+"&nbsp;"+"("+workStatus+")&nbsp;&nbsp;Overview</h4>");
+			getOnclickWorkSchemsDetails(status,workStatus,totalCount,locationValue,locationType,
+			districtVal);
+		}
+		
 		
 		
 	});
@@ -4953,10 +4983,6 @@
 		tableView+='</table>';
 		$("#modalSchemsTable").html(tableView);
 		$("#dataTableSchems").dataTable({
-			"paging":   false,
-			"info":     false,
-			"searching": false,
-			"autoWidth": true,
 			"order": [ 0, 'desc' ],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
@@ -6091,7 +6117,7 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 		
 		$.ajax({                
 			type:'POST',    
-			url: 'getExceedWorkDetailsLocationWise2',
+			url: 'getExceedWorkDetailsLocationWise',
 			dataType: 'json',
 			data : JSON.stringify(json),
 			beforeSend :   function(xhr){
@@ -6112,5 +6138,105 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 					$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
 				}
 			}
+		});
+	}
+	function getOnClickExceedWorkDetails(assetType,locationType,exceededDuration,locationValue){
+		$("#modalSchemsExceedTable").html(spinner);
+	 	var json = {
+				"assetType":assetType,
+				"fromDateStr":glStartDate,
+				"toDateStr":glEndDate,
+				"locationType":locationType,
+				"exceededDuration":exceededDuration,
+				"locationValue":locationValue
+				}
+		
+		$.ajax({                
+			type:'POST',    
+			url: 'getOnClickExceedWorkDetails',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+		 	if(result !=null && result.length>0){
+				buildOnclickWorkSchemsExccedDetails(result);
+			}else{
+				
+				$("#modalSchemsExceedTable").html('No Data Available');
+			}
+		});
+	}
+	
+	function buildOnclickWorkSchemsExccedDetails(result){
+		var tableView='';
+		tableView+='<div class="table-responsive">';
+		tableView+='<table class="table table-bordered" id="dataTableSchems1">';
+			tableView+='<thead>';
+			tableView+='<tr>';
+					tableView+='<th>DISTRICT</th>';
+					tableView+='<th>CONSTITUENCY</th>';
+					tableView+='<th>MANDAL</th>';
+					tableView+='<th>SANCTIONED AMOUNT</th>';
+					tableView+='<th>COMPLETION DATE</th>';
+					tableView+='<th>HABITATIONS CODE</th>';
+					tableView+='<th class="text-capital">Work CODE</th>';
+					tableView+='<th class="text-capital">Exceeded Days</th>';
+					tableView+='<th class="text-capital">Work Status</th>';
+				tableView+='</tr>';
+				
+			tableView+='</thead>';
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+						tableView+='<td>'+result[i].districtName+'</td>';
+						tableView+='<td>'+result[i].constituencyName+'</td>';
+						tableView+='<td>'+result[i].mandalName+'</td>';
+						tableView+='<td>'+result[i].sanctionedAmount+'</td>';
+						tableView+='<td>'+result[i].completionDate+'</td>';
+						tableView+='<td>'+result[i].habitationCode+'</td>';
+						tableView+='<td>'+result[i].wrokIdStr+'</td>';
+						if(typeof result[i].noOfDays === undefined || typeof result[i].noOfDays == "undefined" || result[i].noOfDays == null || result[i].noOfDays == 0){
+							tableView+='<td> - </td>';
+						}else{
+							tableView+='<td>'+result[i].noOfDays+'</td>';
+						}
+						tableView+='<td>'+result[i].workStatus+'</td>';
+					tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		tableView+='</div>';
+		$("#modalSchemsExceedTable").html(tableView);
+		$("#dataTableSchems1").dataTable({
+			"order": [ 0, 'desc' ],
+			"iDisplayLength" : 10,
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
 		});
 	}

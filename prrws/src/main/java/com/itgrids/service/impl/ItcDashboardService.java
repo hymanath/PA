@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.AP.DEPARTMENTWISEDETAILS_CATA;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
@@ -2123,7 +2122,7 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @Date 21-09-2017
 	 */
 	
-	public List<MeesevaDtlsVO> getMeesevaSLADepartmentDetails() {
+	/*public List<MeesevaDtlsVO> getMeesevaSLADepartmentDetails() {
 		List<MeesevaDtlsVO> returnList = new ArrayList<MeesevaDtlsVO>(0);
 		try{
 			Map<String,MeesevaDtlsVO> deptNameAndVosMap = new HashMap<String,MeesevaDtlsVO>();
@@ -2175,7 +2174,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		       }*/
 			
 			
-			if(deptNameAndVosMap != null){
+			/*if(deptNameAndVosMap != null){
 				returnList = new ArrayList<MeesevaDtlsVO>(deptNameAndVosMap.values());
 			}
 			 
@@ -2183,7 +2182,7 @@ public class ItcDashboardService implements IItcDashboardService {
 			 LOG.error("Exception occured at getMeesevaSLADepartmentDetails() in  ItcDashboardService class",e);
 		 }
 		 return returnList;
-	}
+	}*/
 	
 	/**
 	 * @author Nandhini.k
