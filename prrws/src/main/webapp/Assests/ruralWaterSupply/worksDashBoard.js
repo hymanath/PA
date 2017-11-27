@@ -6091,7 +6091,7 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 		
 		$.ajax({                
 			type:'POST',    
-			url: 'getExceedWorkDetailsLocationWise',
+			url: 'getExceedWorkDetailsLocationWise2',
 			dataType: 'json',
 			data : JSON.stringify(json),
 			beforeSend :   function(xhr){
