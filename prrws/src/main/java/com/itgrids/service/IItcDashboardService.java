@@ -45,7 +45,7 @@ public interface IItcDashboardService {
 	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusDetailsNew();
 	public List<ItecEOfficeVO> getEofficeDesginationDetailsByDepartment(InputVO inputVO);
 	public CmEoDBDtlsVO getCMeoDBSectorWiseStatusDetais(InputVO inputVO);
-	public List<MeesevaDtlsVO> getMeesevaSLADepartmentDetails();
+	//public List<MeesevaDtlsVO> getMeesevaSLADepartmentDetails();
 	public MeesevaKPIDtlsVO getMeesevaKPIOverViewDetails();
 	public List<MeesevaKPIDtlsVO> getMeesevaKPITargetAchieveDetails();
 	public List<MeesevaKPIDtlsVO> getMeesevaKPILocationWiseDetails();

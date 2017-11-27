@@ -193,11 +193,11 @@ public class ItcController {
 		   return resultVO;
 	   }
 	   
-	   @RequestMapping(value = "/getMeesevaSLADepartmentDetails", method = RequestMethod.POST)
+	   /*@RequestMapping(value = "/getMeesevaSLADepartmentDetails", method = RequestMethod.POST)
 	   public @ResponseBody  List<MeesevaDtlsVO>  getMeesevaSLADepartmentDetails() {
 		   List<MeesevaDtlsVO>  resultList = itcDashboardService.getMeesevaSLADepartmentDetails();
 		   return resultList;
-	   }
+	   }*/
 	   
 	   @RequestMapping(value = "/getMeesevaKPIOverViewDetails", method = RequestMethod.POST)
 	   public @ResponseBody  MeesevaKPIDtlsVO  getMeesevaKPIOverViewDetails() {
