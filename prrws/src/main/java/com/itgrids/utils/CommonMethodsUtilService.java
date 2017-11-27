@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.zip.Adler32;
 
 import javax.imageio.ImageIO;
@@ -30,6 +31,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+
+import sun.misc.BASE64Encoder;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -1110,5 +1113,33 @@ public class CommonMethodsUtilService {
 				LOG.error("Error During Creating MimeMessage Object - Please Check Once, Exception is - "+e);
 				return null;
 			}
+		}
+		
+		public String getDateInStringFrormat(String dateInMilisecondeFormat) {
+			 try {
+				 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:MM:YY");
+				 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:MM:YY");
+				 sdf.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
+		         if (dateInMilisecondeFormat != null && dateInMilisecondeFormat.length() > 0 ) {
+		             Date date = new Date(Long.valueOf(dateInMilisecondeFormat));
+			         String formatted = sdf.format(date);
+			         Date dateFormat = sdf.parse(formatted);
+			         String returnDate = sdf1.format(dateFormat);
+			         return returnDate;     	 
+		         }
+		     } catch (Exception e) {
+				 LOG.error("Exception Occured in getDateInStringFrormat() method, Exception - ",e);
+			 }
+			return null;
+		}
+		public String getAuthenticationString(String name,String password){
+			try {			
+		        String authString = name + ":" + password;
+		        return new BASE64Encoder().encode(authString.getBytes());
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at getAuthenticationString - RWSNICService service", e);
+			}
+			return null;
 		}
 }
