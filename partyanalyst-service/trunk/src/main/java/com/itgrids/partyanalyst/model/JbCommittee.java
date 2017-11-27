@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,7 +17,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
-
 @Entity
 @Table(name = "jb_committee")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -36,11 +34,13 @@ public class JbCommittee extends BaseModel implements java.io.Serializable {
 	private Long jbCommitteeEnrollmentId;
 	private Long jbCommitteeConfirmRuleId;
 	private String isDeleted;
+	private Long jbCommitteeStatusId;
 	
 	private JbCommitteeLevel jbCommitteeLevel;
 	private JbCommitteeEnrollment jbCommitteeEnrollment;
 	private JbCommitteeConfirmRule jbCommitteeConfirmRule;
 	private UserAddress userAddress;
+	private JbCommitteeStatus jbCommitteeStatus;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -162,6 +162,25 @@ public class JbCommittee extends BaseModel implements java.io.Serializable {
 	}
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
+	}
+	
+	@Column(name="jb_committee_status_id")
+	public Long getJbCommitteeStatusId() {
+		return jbCommitteeStatusId;
+	}
+	public void setJbCommitteeStatusId(Long jbCommitteeStatusId) {
+		this.jbCommitteeStatusId = jbCommitteeStatusId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "jb_committee_status_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public JbCommitteeStatus getJbCommitteeStatus() {
+		return jbCommitteeStatus;
+	}
+	public void setJbCommitteeStatus(JbCommitteeStatus jbCommitteeStatus) {
+		this.jbCommitteeStatus = jbCommitteeStatus;
 	}
 	
 	
