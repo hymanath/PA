@@ -328,7 +328,7 @@
 		}
 		
 		if(bcType === true && scType === true && stType === true && approvedBooleanaVal === true){
-			if(result.status == 'InProgress' ){
+			if(result.status != 'Approved'){
 				
 				str+='<div class="col-sm-12 m_top20">';
 					str+='<div class="row">';
@@ -344,19 +344,22 @@
 						str+='</div>';
 						</c:when>
 						<c:when test="${fn:contains(sessionScope.USER.entitlements,'JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT' )  || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT' ) }">
+						if(result.status == 'INPROGRESS'){
 						str+='<div class="col-sm-3">';
 							str+='<label>Change Committee Status</label>';
 							str+='<select class="form-control chosen-select" id="committeeStatusChangeId" >';
 								str+='<option value="readyforapproval">Ready for approval</option>';
 							str+='</select>';
 						str+='</div>';
-						
+						}
 						</c:when>
 						</c:choose>
+						if(result.status == 'INPROGRESS' || result.status == 'READY FOR APPROVAL'){
 						str+='<div class="col-sm-2">';
 							str+='<button id="submitCommitteeStatusChangeId" type="button" style="margin-top: 28px;" class="btn btn-success btn-sm" attr_committee_submit="'+committeId+'">Submit</button>';
 							str+='<span class="loadingImgId2"><img src="images/search.gif" style="display:none;"/></span>';
 						str+='</div>';
+						}
 						str+='<div class="col-sm-6">';
 							str+='<div class="committeeSavingStatusDivId"></div>';
 						str+='</div>';
