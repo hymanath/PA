@@ -38,7 +38,7 @@ function getJbCommitteeStatusCount(){
 		}else{
 			$("#overAllCommitteeMainBlockId").html("No Data Available");
 		}
-		if(result !=null && result.positinsList !=null && result.positinsList.length>0){
+		if(result !=null && result.levelWisecommitteeStatusVOList !=null && result.levelWisecommitteeStatusVOList.length>0){
 			buildCommitteeWiseDetailsBlock(result);
 		}else{
 			$("#committeeWiseDetailsDivId").html("No Data Available");
@@ -47,45 +47,27 @@ function getJbCommitteeStatusCount(){
 }
 
 function buildJbCommitteeMainBlockStatusCount(result){
-	
+	var chartArr = [];
 	var str='';
-		str+='<div class="col-sm-2">';
-			str+='<h4 class="pull-left barLengthCss" style="background-color:#F7931D;"> </h4>';
-			str+='<h3 class="m_top20" style="margin-left: 15px;"><b>'+result.notStartedCommitteeCnt+'</b></h3>';
-			str+='<h5 class="m_top20" style="margin-left: 15px;color:#12A89D;">'+result.notStartedCommitteePerc+' %</h5>';
-			str+='<h5 class="m_top10" style="margin-left: 15px;line-height: 20px;""><b>Not-Started <br>Committess</b></h5>';
-		str+='</div>';
-		str+='<div class="col-sm-2">';
-			str+='<h4 class="pull-left barLengthCss" style="background-color:#12A89D;"> </h4>';
-			str+='<h3 class="m_top20" style="margin-left: 15px;"><b>'+result.inprogressCommitteeCnt+'</b></h3>';
-			str+='<h5 class="m_top20" style="margin-left: 15px;color:#12A89D;">'+result.inprogressCommitteePerc+' %</h5>';
-			str+='<h5 class="m_top10" style="margin-left: 15px;line-height: 20px;""><b> Inprogress/ <br/>Running <br> Committess</b></h5>';
-		str+='</div>';
-		str+='<div class="col-sm-2">';
-			str+='<h4 class="pull-left barLengthCss" style="background-color:#20409A;"> </h4>';
-			str+='<h3 class="m_top20" style="margin-left: 15px;"><b>'+result.readyForApprovelCommitteeCnt+'</b></h3>';
-			str+='<h5 class="m_top20" style="margin-left: 15px;color:#12A89D;">'+result.readyForApprovelCommitteeperc+' %</h5>';
-			str+='<h5 class="m_top10" style="margin-left: 15px;line-height: 20px;""><b>Ready for<br>Approval</b></h5>';
-		str+='</div>';
-		str+='<div class="col-sm-2">';
-			str+='<h4 class="pull-left barLengthCss" style="background-color:#7E3D97;"> </h4>';
-			str+='<h3 class="m_top20" style="margin-left: 15px;"><b>'+result.totalApprovedCommitteeCnt+'</b></h3>';
-			str+='<h5 class="m_top20" style="margin-left: 15px;color:#12A89D;">'+result.totalApprovedCommitteeperc+' %</h5>';
-			str+='<h5 class="m_top10" style="margin-left: 15px;line-height: 20px;""><b>Total Approved<br>Committess</b></h5>';
-		str+='</div>';
-		str+='<div class="col-sm-2">';
-			str+='<h4 class="pull-left barLengthCss" style="background-color:#00A651;"> </h4>';
-			str+='<h3 class="m_top20" style="margin-left: 15px;"><b>'+result.submitedCommittees+'</b></h3>';
-			str+='<h5 class="m_top20" style="margin-left: 15px;color:#12A89D;">'+result.submitedCommitteesperc+' %</h5>';
-			str+='<h5 class="m_top10" style="margin-left: 15px;line-height: 20px;""><b>Total District <br>Collector Approved & Letter Submited <br>Committees</b></h5>';
-		str+='</div>';
-	
-	
-	var notStartedCount	=parseFloat(result.notStartedCommitteePerc)
-	var inProgressCount	=parseFloat(result.inprogressCommitteePerc)
-	var readyApprovalCount	=parseFloat(result.readyForApprovelCommitteeperc)
-	var approvalCount	=parseFloat(result.totalApprovedCommitteeperc)
-	var collectorAppLettSub	=parseFloat(result.submitedCommitteesperc)
+	    for(var i in result.committeeStatusVOList){
+			str+='<div class="col-sm-2">';
+				str+='<h4 class="pull-left barLengthCss" style="background-color:'+result.committeeStatusVOList[i].color+';"> </h4>';
+				str+='<h3 class="m_top20" style="margin-left: 15px;"><b>'+result.committeeStatusVOList[i].statusCount+'</b></h3>';
+				str+='<h5 class="m_top20" style="margin-left: 15px;color:#12A89D;">'+result.committeeStatusVOList[i].statusPercentage+' %</h5>';
+				str+='<h5 class="m_top10" style="margin-left: 15px;line-height: 20px;""><b>'+result.committeeStatusVOList[i].status+
+				'<br>COMMITTEES</b></h5>';
+		    str+='</div>';
+			
+			var statusObj = {};
+				statusObj =
+				{
+					 "name"  : result.committeeStatusVOList[i].status,
+					 "y"     : parseFloat(result.committeeStatusVOList[i].statusPercentage),
+					 "color" :result.committeeStatusVOList[i].color
+				}
+			 
+			chartArr.push(statusObj)
+		}
 	
 	var id = 'committeeMainBlockGraphId';
 	var type = {
@@ -124,33 +106,7 @@ function buildJbCommitteeMainBlockStatusCount(result){
 	var legend={enabled: false};
 	var data = [{
 		name: '',
-		data: [
-			{
-			  name: 'Not-Started',
-			  y: notStartedCount,
-			  color:"#F7931D"
-			},
-			{
-			  name: 'Inprogress/Running',
-			  y: inProgressCount,
-			  color:"#4BBCB4"
-			},
-			{
-			  name: 'Ready for Approvel',
-			  y: readyApprovalCount,
-			  color:"#20409A"
-			},
-			{
-			  name: 'Approved',
-			  y: approvalCount,
-			  color:"#7E3D97"
-			},
-			{
-			  name: 'Collector Approved Letter Submited',
-			  y: collectorAppLettSub,
-			  color:"#00A651"
-			}
-		]
+		data: chartArr
 	}];
 		highcharts(id,type,data,plotOptions,title,tooltip,legend);
 	$("#overAllCommitteeMainBlockId").html(str);
@@ -177,22 +133,15 @@ function buildCommitteeWiseDetailsBlock(result){
 				str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
-				for(var i in result.positinsList){
+				for(var i in result.levelWisecommitteeStatusVOList){
 					str+='<tr>';
-						str+='<td>'+result.positinsList[i].name+'</td>';
-						str+='<td><h5 class="borderContCss" style="border:1px solid #000;font-weight:bold;">'+result.positinsList[i].totalCommitteeCnt+'</h5></td>';
-						str+='<td><h5 class="borderContCss" style="border:1px solid #F7931D"><span class="text_bold">'+result.positinsList[i].notStartedCommitteeCnt+'</span> <span class="pull-right">'+result.positinsList[i].notStartedCommitteePerc+' %</span></h5></td>';
-						
-						str+='<td><h5 class="borderContCss" style="border:1px solid #12A89D"><span class="text_bold">'+result.positinsList[i].inprogressCommitteeCnt+'</span> <span class="pull-right">'+result.positinsList[i].inprogressCommitteePerc+' %</span></h5></td>';
-						
-						str+='<td><h5 class="borderContCss" style="border:1px solid #20409A"><span class="text_bold">'+result.positinsList[i].readyForApprovelCommitteeCnt+'</span> <span class="pull-right">'+result.positinsList[i].readyForApprovelCommitteeperc+' %</span></h5></td>';
-						
-						str+='<td><h5 class="borderContCss" style="border:1px solid #7E3D97"><span class="text_bold">'+result.positinsList[i].totalApprovedCommitteeCnt+'</span> <span class="pull-right">'+result.positinsList[i].totalApprovedCommitteeperc+' %</span></h5></td>';
-						
-						str+='<td><h5 class="borderContCss" style="border:1px solid #00A651"><span class="text_bold">'+result.positinsList[i].submitedCommittees+'</span> <span class="pull-right">'+result.positinsList[i].submitedCommitteesperc+' %</span></h5></td>';
+						str+='<td>'+result.levelWisecommitteeStatusVOList[i].name+'</td>';
+							str+='<td><h5 class="borderContCss" style="border:1px solid #000;font-weight:bold;">'+result.levelWisecommitteeStatusVOList[i].totalCommitteeCnt+'</h5></td>';
+						for(var j in result.levelWisecommitteeStatusVOList[i].committeeStatusVOList){
+							str+='<td><h5 class="borderContCss" style="border:1px solid '+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].color+';"><span class="text_bold">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusCount+'</span> <span class="pull-right">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusPercentage+' %</span></h5></td>';
+						}
 					str+='</tr>';
-				}
-				
+				}		
 			str+='</tbody>';
 		str+='</table>';
 	  str+='</div>';
