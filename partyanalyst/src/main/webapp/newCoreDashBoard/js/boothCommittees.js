@@ -1796,19 +1796,29 @@
 	
 	// DETAILD BLOCK : clicked on '... dots' and 'detailed block' or 'click on slick' START
 	
-	//... dots.
+	//... dots.//moreBoothBlocksDetailAndComp //moreBlocksDistrictlevels // moreBoothBlocks1
+	var isCommitteeMoreBlockExpand = false;
+	var isCommitteeMoreBlockClosed= false;
 	$(document).on("click",".moreBlocksIcons",function(){
+		isCommitteeMoreBlockExpand = true;
+		isCommitteeMoreBlockClosed = false;
 		$(this).addClass("unExpandBlocksBoothC");
-		$(".moreBoothBlocks1").hide();
-		$(".committeeSeetingBlock").show();
 		$(".moreBoothBlocksDetailAndComp").show();
+		$(".moreBlocksDistrictlevels").show();
 		//customBuildGraph();
-		getBoothLevelWiseBasicCommitteesCountReport();
+		setTimeout(function(){ committeeDetailsBlockdefaultCall11(); }, 1000);
 		
 		
 	});
+	function committeeDetailsBlockdefaultCall11(){
+		if(isCommitteeMoreBlockExpand==true && isCommitteeMoreBlockClosed==false){
+			getBoothLevelWiseBasicCommitteesCountReport();
+		}	
+	}
+	
 	$(document).on("click",".unExpandBlocksBoothC",function(){
 		$(this).removeClass("unExpandBlocksBoothC");
+		isCommitteeMoreBlockClosed = true;
 		$(".moreBoothBlocks1").hide();
 		$(".moreBoothBlocksDetailAndComp").hide();
 		$(".moreBlocksDistrictlevels").hide();
