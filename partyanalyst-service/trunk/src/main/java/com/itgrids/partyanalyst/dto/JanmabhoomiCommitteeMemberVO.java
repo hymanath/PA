@@ -18,6 +18,7 @@ private String memeberName;
 private String mobileNumber;
 private Long voterId;
 private String partyName;
+private Long statusId;
 private String status;
 private Long partyId;
 private Long designationId;
@@ -416,6 +417,12 @@ public Long getLevelValue() {
 }
 public void setLevelValue(Long levelValue) {
 	this.levelValue = levelValue;
+}
+public Long getStatusId() {
+	return statusId;
+}
+public void setStatusId(Long statusId) {
+	this.statusId = statusId;
 }
 
 

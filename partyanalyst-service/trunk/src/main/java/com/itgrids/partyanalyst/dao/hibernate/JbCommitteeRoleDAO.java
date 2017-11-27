@@ -31,7 +31,7 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 		sb.append("  ,tehsil.tehsilId,tehsil.tehsilName ");
 		sb.append("  ,panchayat.panchayatId,panchayat.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name " +
 				",ward.constituencyId,ward.name ,publicRepresentativeType.publicRepresentativeTypeId" +
-				",model.jbCommittee.jbCommitteeLevelId,model.jbCommittee.jbCommitteeLevelValue,state.stateId,state.stateName  ");
+				",model.jbCommittee.jbCommitteeLevelId,model.jbCommittee.jbCommitteeLevelValue,state.stateId,state.stateName,model.jbCommittee.jbCommitteeStatus.jbCommitteeStatusId,model.jbCommittee.jbCommitteeStatus.status  ");
 		sb.append(" from JbCommitteeRole model left join model.jbMemberType.publicRepresentativeType publicRepresentativeType ");
 		sb.append(" left join  model.jbCommittee.userAddress.state state ");
 		sb.append(" left join  model.jbCommittee.userAddress.district district ");
