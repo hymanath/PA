@@ -12,6 +12,7 @@ import com.itgrids.dto.ItecCMeoDBDetailsVO;
 import com.itgrids.dto.ItecEOfficeVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
+import com.itgrids.dto.MeesevaKPIDtlsVO;
 
 public interface IItcDashboardService {
 
@@ -44,4 +45,8 @@ public interface IItcDashboardService {
 	public List<ItecCMeoDBDetailsVO> getCMeoDBStatusDetailsNew();
 	public List<ItecEOfficeVO> getEofficeDesginationDetailsByDepartment(InputVO inputVO);
 	public CmEoDBDtlsVO getCMeoDBSectorWiseStatusDetais(InputVO inputVO);
+	public List<MeesevaDtlsVO> getMeesevaSLADepartmentDetails();
+	public MeesevaKPIDtlsVO getMeesevaKPIOverViewDetails();
+	public List<MeesevaKPIDtlsVO> getMeesevaKPITargetAchieveDetails();
+	public List<MeesevaKPIDtlsVO> getMeesevaKPILocationWiseDetails();
 }

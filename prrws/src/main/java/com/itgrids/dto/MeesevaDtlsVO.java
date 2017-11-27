@@ -22,6 +22,17 @@ public class MeesevaDtlsVO implements Cloneable {
 	
 	private List<MeesevaDtlsVO> subList;
 	
+	private Long catgryAServicesCount = 0L;
+	private Long catgryBServicesCount = 0L;
+	private Long catgryATransCount = 0L;
+	private Long catgryBTransCount = 0L;
+	private Long catgryAWithInSLACount = 0L;
+	private Long catgryBWithInSLACount = 0L;
+	private Long catgryABeyondSLACount = 0L;
+	private Long catgryBBeyondSLACount = 0L;
+	
+	
+	
 	public String getId() {
 		return id;
 	}
@@ -121,6 +132,54 @@ public class MeesevaDtlsVO implements Cloneable {
 	}
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
+	}
+	public Long getCatgryAServicesCount() {
+		return catgryAServicesCount;
+	}
+	public void setCatgryAServicesCount(Long catgryAServicesCount) {
+		this.catgryAServicesCount = catgryAServicesCount;
+	}
+	public Long getCatgryBServicesCount() {
+		return catgryBServicesCount;
+	}
+	public void setCatgryBServicesCount(Long catgryBServicesCount) {
+		this.catgryBServicesCount = catgryBServicesCount;
+	}
+	public Long getCatgryATransCount() {
+		return catgryATransCount;
+	}
+	public void setCatgryATransCount(Long catgryATransCount) {
+		this.catgryATransCount = catgryATransCount;
+	}
+	public Long getCatgryBTransCount() {
+		return catgryBTransCount;
+	}
+	public void setCatgryBTransCount(Long catgryBTransCount) {
+		this.catgryBTransCount = catgryBTransCount;
+	}
+	public Long getCatgryAWithInSLACount() {
+		return catgryAWithInSLACount;
+	}
+	public void setCatgryAWithInSLACount(Long catgryAWithInSLACount) {
+		this.catgryAWithInSLACount = catgryAWithInSLACount;
+	}
+	public Long getCatgryBWithInSLACount() {
+		return catgryBWithInSLACount;
+	}
+	public void setCatgryBWithInSLACount(Long catgryBWithInSLACount) {
+		this.catgryBWithInSLACount = catgryBWithInSLACount;
+	}
+	public Long getCatgryABeyondSLACount() {
+		return catgryABeyondSLACount;
+	}
+	public void setCatgryABeyondSLACount(Long catgryABeyondSLACount) {
+		this.catgryABeyondSLACount = catgryABeyondSLACount;
+	}
+	public Long getCatgryBBeyondSLACount() {
+		return catgryBBeyondSLACount;
+	}
+	public void setCatgryBBeyondSLACount(Long catgryBBeyondSLACount) {
+		this.catgryBBeyondSLACount = catgryBBeyondSLACount;
 	}
 	
 }
