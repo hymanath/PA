@@ -59,8 +59,6 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	private IJbCommitteeConfirmRuleConditionDAO jbCommitteeConfirmRuleConditionDAO;
 	private JbCommitteeStatusDAO jbCommitteeStatusDAO;
 	
-	
-	
 	public JbCommitteeStatusDAO getJbCommitteeStatusDAO() {
 		return jbCommitteeStatusDAO;
 	}
@@ -173,6 +171,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	public void setCasteCategoryDAO(ICasteCategoryDAO casteCategoryDAO) {
 		this.casteCategoryDAO = casteCategoryDAO;
 	}
+
 
 	@SuppressWarnings("unused")
 		@Override
@@ -331,7 +330,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	}
 
 			// * @author Swapna
-		    @Override
+		  /*  @Override
 		    public JanmabhoomiCommitteeVO getJbCommitteeStatusCount(String fromDateStr, String toDateStr) {
 		      JanmabhoomiCommitteeVO  mainVO = new JanmabhoomiCommitteeVO();
 		      
@@ -348,14 +347,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		     Map<Long,JanmabhoomiCommitteeVO> locationDtlsMap =new HashMap<Long, JanmabhoomiCommitteeVO>(0);   
 		     List<Object[]> committeeList = jbCommitteeDAO.getJbCommitteeStatusCount();
 		     List<JbCommitteeLevel> committeeLevels= jbCommitteeLevelDAO.getAll();
-		    /* if(commonMethodsUtilService.isListOrSetValid(committeeLevels)){
-		       for (JbCommitteeLevel jbCommitteeLevel : committeeLevels) {
-		          JanmabhoomiCommitteeVO vo=new JanmabhoomiCommitteeVO();
-		           vo.setId(jbCommitteeLevel.getJbCommitteeLevelId());
-		           vo.setName(jbCommitteeLevel.getName());
-		           locationDtlsMap.put(vo.getId(),vo);
-		          }
-		     }      */ 
+		   
 		     if (committeeList!=null && committeeList.size()>0){
 		        for (Object[] objects : committeeList) {
 		         JanmabhoomiCommitteeVO vo=null;
@@ -370,9 +362,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		                String startdate     =    commonMethodsUtilService.getStringValueForObject(objects[2]);
 		                String completedDate =    commonMethodsUtilService.getStringValueForObject(objects[3]);
 		               
-		               /* if(confirmed=="N" && startdate!=null){
-		                  vo.setInprogressCommitteeCnt(vo.getInprogressCommitteeCnt()+1);
-		                }*/
+		                //if(confirmed=="N" && startdate!=null){
+		                  //vo.setInprogressCommitteeCnt(vo.getInprogressCommitteeCnt()+1);
+		                //}
 		                if(confirmed.equalsIgnoreCase("N") && startdate==""){
 		                  vo.setNotStartedCommitteeCnt(vo.getNotStartedCommitteeCnt().longValue()+1l);
 		                  vo.setTotalCommitteeCnt(vo.getTotalCommitteeCnt().longValue()+1l);
@@ -416,7 +408,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		        Log.error("Exception raised in JanmabhoomiCommitteeService method of JanmabhoomiCommitteeService"+e);
 		    }
 		    return mainVO;
-		    }
+		    } */
 
 	public String calculatePercentage(Long totalVoters,Long count)
 	{
@@ -1214,7 +1206,98 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			}
 		}
 	}
+
+
+public JanmabhoomiCommitteeVO getJbCommitteeStatusCount(String fromDateStr, String toDateStr) {
+    JanmabhoomiCommitteeVO  mainVO = new JanmabhoomiCommitteeVO();
+    
+   try{     
+          SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        Date startDate = null;
+        Date endDate = null;
+        if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
+          startDate = sdf.parse(fromDateStr);
+          endDate = sdf.parse(toDateStr);
+        } 
+     
+   List<JbCommitteeStatus> committeeStatusList= jbCommitteeStatusDAO.getAll();
+   mainVO.setCommitteeStatusVOList(getCommitteeStatusList(committeeStatusList));
+   
+   Map<Long,JanmabhoomiCommitteeVO> locationDtlsMap =new HashMap<Long, JanmabhoomiCommitteeVO>(0);   
+   List<JbCommitteeLevel> committeeLevels= jbCommitteeLevelDAO.getAll();
+   if(commonMethodsUtilService.isListOrSetValid(committeeLevels)){
+     for (JbCommitteeLevel jbCommitteeLevel : committeeLevels) {
+        JanmabhoomiCommitteeVO vo=new JanmabhoomiCommitteeVO();
+         vo.setId(jbCommitteeLevel.getJbCommitteeLevelId());
+         vo.setName(jbCommitteeLevel.getName());
+         vo.setCommitteeStatusVOList(getCommitteeStatusList(committeeStatusList));
+         locationDtlsMap.put(vo.getId(),vo);
+        }
+   }  
+   
+   List<Object[]> committeeList = jbCommitteeDAO.getJbCommitteeStatusCount();
+   	  //0 count(jbCommitteeId),1 isCommitteeConfirmed,2 startDate,3 completedDate,
+	 //4 jbCommitteeLevelId,5 name,6 jbCommitteeStatusId,7 status
+   if (committeeList!=null && committeeList.size()>0){
+      for (Object[] objects : committeeList) {
+       JanmabhoomiCommitteeVO vo = locationDtlsMap.get(commonMethodsUtilService.getLongValueForObject(objects[4]));
+            if(vo != null){
+            	JanmabhoomiCommitteeVO matchedStatusVoForCommiteeLevel = getMatchedStatusVO(vo.getCommitteeStatusVOList(),commonMethodsUtilService.getLongValueForObject(objects[6]));
+            	  if(matchedStatusVoForCommiteeLevel !=null){
+            		  matchedStatusVoForCommiteeLevel.setStatusCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+            		  vo.setTotalCommitteeCnt(vo.getTotalCommitteeCnt()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+            	  }
+                }
+            
+        	JanmabhoomiCommitteeVO matchedStatusVoForAllCommiteeLevels = getMatchedStatusVO(mainVO.getCommitteeStatusVOList(),commonMethodsUtilService.getLongValueForObject(objects[6]));
+            if(matchedStatusVoForAllCommiteeLevels !=null){
+            	matchedStatusVoForAllCommiteeLevels.setStatusCount(matchedStatusVoForAllCommiteeLevels.getStatusCount()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+            	mainVO.setTotalCommitteeCnt(mainVO.getTotalCommitteeCnt()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+            }
+           }
+          }
+      mainVO.getLevelWisecommitteeStatusVOList().addAll(locationDtlsMap.values());
+   
+       List<JanmabhoomiCommitteeVO> statusVo= mainVO.getCommitteeStatusVOList();
+	   for(JanmabhoomiCommitteeVO mainStatusVO:statusVo){
+		   mainStatusVO.setStatusPercentage(calculatePercentage(mainVO.getTotalCommitteeCnt(), mainStatusVO.getStatusCount()));
+		}
+	   
+	   List<JanmabhoomiCommitteeVO> levelstatusVo=  mainVO.getLevelWisecommitteeStatusVOList();;
+	   for(JanmabhoomiCommitteeVO levelWiseStatusVO:levelstatusVo){
+		   for(JanmabhoomiCommitteeVO innerlevelStatusVO:levelWiseStatusVO.getCommitteeStatusVOList()){
+			   innerlevelStatusVO.setStatusPercentage(calculatePercentage(levelWiseStatusVO.getTotalCommitteeCnt(), innerlevelStatusVO.getStatusCount()));
+		   }
+		}
+  
+   }catch(Exception e){
+      Log.error("Exception raised in JanmabhoomiCommitteeService method of JanmabhoomiCommitteeService"+e);
+  }
+  return mainVO;
+  }
+
+ public List<JanmabhoomiCommitteeVO> getCommitteeStatusList(List<JbCommitteeStatus> committeeStatusList){
+	List<JanmabhoomiCommitteeVO> statusTempList =new ArrayList<JanmabhoomiCommitteeVO>();
+	 if(committeeStatusList !=null && committeeStatusList.size() >0){
+		   for(JbCommitteeStatus commiteeStatus :committeeStatusList){
+			   JanmabhoomiCommitteeVO committeeStatusVO = new JanmabhoomiCommitteeVO();
+			   committeeStatusVO.setStatusId(commiteeStatus.getJbCommitteeStatusId());
+			   committeeStatusVO.setStatus(commiteeStatus.getStatus());
+			   committeeStatusVO.setColor(commiteeStatus.getColour());
+			   statusTempList.add(committeeStatusVO);
+		   }
+	   }
+	 return statusTempList;
+ }
+ 
+ public JanmabhoomiCommitteeVO getMatchedStatusVO(List<JanmabhoomiCommitteeVO> voList, Long id) {
+	    if (voList != null && voList.size() > 0 && id != null && id > 0l) {
+	      for (JanmabhoomiCommitteeVO statusVO : voList) {
+	        if (statusVO.getStatusId().equals(id))
+	          return statusVO;
+	      }
+	    }
+	    return null;
+	  }
 }
-
-
-

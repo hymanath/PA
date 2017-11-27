@@ -17,7 +17,7 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		super(JbCommittee.class);
 	}
  
-	public List<Object[]> getJbCommitteeStatusCount(){
+	/*public List<Object[]> getJbCommitteeStatusCount(){
 			
 	 StringBuilder sb = new StringBuilder();
 	 sb.append(" select " +
@@ -32,7 +32,29 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 			   " and jbCommittee.isDeleted = 'N' "); 	
 	 Query query = getSession().createQuery(sb.toString());
 	 return query.list();
- }
+ }*/
+	
+	public List<Object[]> getJbCommitteeStatusCount(){
+		//0 count(jbCommitteeId),1 isCommitteeConfirmed,2 startDate,3 completedDate,
+		//4 jbCommitteeLevelId,5 name,6 jbCommitteeStatusId,7 status
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select " +
+		 		   " count(jbCommittee.jbCommitteeId), " +
+		 		   " jbCommittee.isCommitteeConfirmed, " +
+		 		   " jbCommittee.startDate, " +
+		 		   " jbCommittee.completedDate, " +
+		 		   " jbCommittee.jbCommitteeLevel.jbCommitteeLevelId," +
+		 		   " jbCommittee.jbCommitteeLevel.name," +
+		 		   " jbCommittee.jbCommitteeStatus.jbCommitteeStatusId," +
+		 		   " jbCommittee.jbCommitteeStatus.status" +
+		 		   " from JbCommittee jbCommittee where " +
+				   " jbCommittee.userAddress.state.stateId = 1 " +
+				   " and jbCommittee.isDeleted = 'N' " +
+				   " group by jbCommittee.jbCommitteeLevel.jbCommitteeLevelId," +
+				   " jbCommittee.jbCommitteeStatus.jbCommitteeStatusId "); 	
+		 Query query = getSession().createQuery(sb.toString());
+		 return query.list();
+	 }
 	public List<Object[]> getDistrictWiseCommitteeDetails(Date fromDate,Date endDate,String type,Set<Long> userAccessVals){
 		StringBuilder sb = new StringBuilder();
 		// 0 levelId,1 levelName,2 count,3 statusId,4 status 
