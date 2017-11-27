@@ -281,13 +281,15 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 					}
 				str+='</tr>';
 				str+='<tr>';
+				
 				for(var i in result[0].list){
 					str+='<th style="vertical-align: middle;"><span style="background-color:#000;" class="squareColorCssView"></span>Total</th>';
-					str+='<th style="vertical-align: middle;"><span style="background-color:#F7931D;" class="squareColorCssView"></span>Not-started</th>';
-					str+='<th style="vertical-align: middle;"><span style="background-color:#12A89D;" class="squareColorCssView"></span>Inprogress/ Running</th>';
-					str+='<th style="vertical-align: middle;"><span style="background-color:#20409A;" class="squareColorCssView"></span>Ready&nbsp;for Approvel</th>';
-					str+='<th style="vertical-align: middle;"><span style="background-color:#7E3D97;" class="squareColorCssView"></span>Approved</th>';
-					str+='<th style="vertical-align: middle;"><span style="background-color:#00A651;" class="squareColorCssView"></span>Letter Submited</th>';
+					for(var j in result[0].list[i].positinsList){
+						if(result[0].list[i].positinsList[j] != null){
+						str+='<th style="vertical-align: middle;"><span style="background-color:'+result[0].list[i].positinsList[j].color+';" class="squareColorCssView"></span>'+result[0].list[i].positinsList[j].name+'</th>';
+						}
+					}
+					
 				}
 				str+='</tr>';
 			str+='</thead>';
@@ -297,21 +299,22 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 					str+='<tr>';
 					if(result[i].statusType !=null && result[i].statusType !=""){
 						if(blockType == "district"){
-							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="3" attr_location_value="'+result[i].id+'" attr_type="name">'+result[i].name+'</span></td>';
+							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="3" attr_location_value="'+result[i].id+'" attr_type="name" attr_commitee_lvl_id="0">'+result[i].name+'</span></td>';
 						}else if(blockType == "parliament"){
-							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="10" attr_location_value="'+result[i].id+'" attr_type="name">'+result[i].name+'</span></td>';
+							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="10" attr_location_value="'+result[i].id+'" attr_type="name" attr_commitee_lvl_id="0">'+result[i].name+'</span></td>';
 						}else if(blockType == "constituency"){
-							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="4" attr_location_value="'+result[i].id+'" attr_type="name">'+result[i].name+'</span></td>';
+							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="4" attr_location_value="'+result[i].id+'" attr_type="name" attr_commitee_lvl_id="0">'+result[i].name+'</span></td>';
 						}
 						
 					}else{
 						str+='<td>'+result[i].name+'</td>';
 					}
 					if(blockType == "district"){
-						str+='<td style="color:'+statusColorobj[result[i].statusType.trim()]+'">'+result[i].statusType+'</td>';
+						str+='<td style="color:'+result[i].statusType.trim()+'">'+result[i].statusType+'</td>';
 					}
 						for(var j in result[i].list){
-							totalCount =result[i].list[j].notStartedCommitteeCnt+result[i].list[j].inprogressCommitteeCnt+result[i].list[j].readyForApprovelCommitteeCnt+result[i].list[j].totalApprovedCommitteeCnt+result[i].list[j].submitedCommittees
+							//totalCount =result[i].list[j].notStartedCommitteeCnt+result[i].list[j].inprogressCommitteeCnt+result[i].list[j].readyForApprovelCommitteeCnt+result[i].list[j].totalApprovedCommitteeCnt+result[i].list[j].submitedCommittees
+							totalCount =result[i].list[j].count;
 							var levelId=0;
 							if(blockType == "district"){
 								levelId = 3
@@ -322,18 +325,20 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 							}
 								
 								if(totalCount >0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="total" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'">'+totalCount+'</span></td>';
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="0" attr_status_type="0" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'" attr_commitee_lvl_id="'+result[i].list[j].id+'">'+totalCount+'</span></td>';
 								}else{
 									str+='<td> - </td>';
 								}
-								
-								if(result[i].list[j].notStartedCommitteeCnt !=null && result[i].list[j].notStartedCommitteeCnt>0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Not Started" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'">'+result[i].list[j].notStartedCommitteeCnt+'</span></td>';
-								}else{
-									str+='<td> - </td>';
+								for(var k in result[i].list[j].positinsList){
+									if(result[i].list[j].positinsList[k] != null){
+										if(result[i].list[j].positinsList[k].count !=null && result[i].list[j].positinsList[k].count>0){
+											str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="0" attr_status_type="'+result[i].list[j].positinsList[k].id+'" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'" attr_commitee_lvl_id="'+result[i].list[j].id+'">'+result[i].list[j].positinsList[k].count+'</span></td>';
+										}else{
+											str+='<td> - </td>';
+										}
+									}
 								}
-								
-								if(result[i].list[j].inprogressCommitteeCnt !=null && result[i].list[j].inprogressCommitteeCnt>0){
+								/* if(result[i].list[j].inprogressCommitteeCnt !=null && result[i].list[j].inprogressCommitteeCnt>0){
 									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Inprogress" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'">'+result[i].list[j].inprogressCommitteeCnt+'</span></td>';
 								}else{
 									str+='<td> - </td>';
@@ -355,7 +360,7 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'">'+result[i].list[j].submitedCommittees+'</span></td>';
 								}else{
 									str+='<td> - </td>';
-								}
+								} */
 							}
 						
 					str+='</tr>';
@@ -372,6 +377,7 @@ $(document).on("click",".committeeWiseDetailsClick",function(){
 	var levelId = $(this).attr("attr_level_id");
 	var levelValue = $(this).attr("attr_location_value");
 	var type = $(this).attr("attr_type");
+	var committeeLvlId = $(this).attr("attr_commitee_lvl_id");
 	blockLevel = $(this).attr("block_level");
 	$("#committeeWiseModalOpen").modal("show");
 	
@@ -382,7 +388,7 @@ $(document).on("click",".committeeWiseDetailsClick",function(){
 	}else{
 		$(".committeeSelectBoxCls").show();
 		$("#committeeWisePopUpDetailsId").html('');
-		getJanmabhoomiCommitteesByLocIdAndCommLvlId(levelValue,levelId,committeId,statusType);
+		getJanmabhoomiCommitteesByLocIdAndCommLvlId(levelValue,levelId,committeeLvlId,statusType);
 	}
 	
 });
@@ -451,7 +457,7 @@ $(document).on("click",".memberAddEditDetailsCls",function(){
 		panchayatId='2'+wardId;
 	}
 	if(publicRepreTypeId != null && publicRepreTypeId >0){
-		getAdvancedSearchDetails(publicRepreTypeId,committeeLvlId,committeeLvlVal,committeeId,"proposal",roleId,memberId,memberName,
+		getAdvancedSearchDetails(publicRepreTypeId,committeeLvlId,committeeLvlVal,committeeId,"approval",roleId,memberId,memberName,
 		voterCardNo,mobileNo,memberShipId,stateId,districtId,constituencyId,mandalId,panchayatId);
 	}else{
 		buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,
@@ -471,7 +477,7 @@ mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,m
 		$("#memberAddedPopUpDetailsId").html('');
 	}
 	var str='';
-	if(type == "proposal"){
+	if(type == "approval"){
 		
 		str+='<div class="row">';
 			 str+='<div class="col-sm-2 m_top10" id="statedisplaydivid">';
@@ -561,7 +567,6 @@ mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,m
 							 str+='<td colspan="2">';
 							 str+='<select class="form-control chosen-select" id="memberStatusChangeId" name="janmabhoomiCommitteeMemberVO.status">';
 									str+='<option value="0">Select Status</option>';
-									str+='<option value="approval">Approve</option>';
 									str+='<option value="reject">Reject</option>';
 								str+='</select>';
 							
@@ -577,7 +582,7 @@ mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,m
 	str+='<div class="row m_top20">';
 		str+='<div id="addMemberErrDiv" style="color:red;"></div>';
 		str+='<div class="col-sm-3">';
-	str+='<button id="" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication('+committeeId+',\''+statusType+'\');">Update Member </button> <span class="loadingImgId"><img src="images/search.gif" style="display:none;"/></span>';
+	str+='<button id="" class="btn btn-success border_radius_none height_41 text-bold" type="button" onclick="savingApplication('+committeeId+',\''+statusType+'\');">Reject Member </button> <span class="loadingImgId"><img src="images/search.gif" style="display:none;"/></span>';
 		str+='</div>';
 		str+='<div class="col-sm-6">';
 			str+='<div class="savingStatusDivId"></div>';
@@ -587,7 +592,7 @@ mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,m
 	}
 	$("#memberAddEditPopUpDetailsId").html(str);
 	$(".chosen-select").chosen();
-	if(type == "proposal"){
+	if(type == "approval"){
 		getDistrictsForStates(stateId,"statesDivId");
 	}
 	//$("#searchval").chosen();
@@ -1160,7 +1165,7 @@ categoryGrouIdsList.push(casteCategoryId);
 }
 function savingApplication(committeeId,statusType){
 	$("#addMemberErrDiv").html("");
-	if(statusType == "proposal"){
+	if(statusType == "approval"){
 		var memberNameId = $("#memberNameId").val();
 		var memberMobileNoId = $("#memberMobileNoId").val();
 		var casteCategoryId = $("#casteCategoryId").val();
@@ -1344,7 +1349,7 @@ saveCommitteeStatus(committeeId);
 				if(result !=null && result.length>0){
 					buildAdvancedSearchDetails(result,committeeId,statusType,roleId,memberId);
 				}else{
-					buildMemberAddEditDetailsBlock("proposal",roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId,statusType,attrStateId,attrDistrictId,attrConstituencyId,attrMandalId,attrPanchayatId)
+					buildMemberAddEditDetailsBlock("approval",roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId,statusType,attrStateId,attrDistrictId,attrConstituencyId,attrMandalId,attrPanchayatId)
 				}
 			}); 
 	}
@@ -1465,7 +1470,7 @@ saveCommitteeStatus(committeeId);
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+tdpCadreId+'"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
-				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="proposal"/>';
+				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="approval"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.committeeId" value="'+committeId+'"/>';
 				str+='<div class="col-sm-2">';
 					str+='<select class="form-control chosen-select" id="casteCategoryId" name="janmabhoomiCommitteeMemberVO.categoryId">';

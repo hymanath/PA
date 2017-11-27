@@ -166,7 +166,7 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 			  Long locationId = jObj.getLong("locationId"); 
 			  Long levelId = jObj.getLong("levelId");
 			  Long committeeLvlId = jObj.getLong("committeeLvlId"); 
-			  String status = jObj.getString("status"); 
+			  Long status = jObj.getLong("status"); 
 			  janmabhoomiCommitteeVOList = janmabhoomiCommitteeService.getJanmabhoomiCommitteesByLocIdAndCommLvlId(startDate,endDate,locationId,levelId,committeeLvlId,status);			  
 		  }catch(Exception e){
 			  LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmaBhoomiCommitteeAction ",e);
@@ -214,7 +214,7 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	public String updateCommitteStatusByCommiteeId(){ 
 		  try{
 			  jObj=new JSONObject(getTask());
-			  resultStatus = janmabhoomiCommitteeService.updateCommitteStatusByCommiteeId(jObj.getLong("committeeId"));			  
+			  resultStatus = janmabhoomiCommitteeService.updateCommitteStatusByCommiteeId(jObj.getLong("committeeId"),jObj.getString("status"));			  
 		  }catch(Exception e){
 			  LOG.error("Entered into updateCommitteStatusByCommiteeId method in JanmaBhoomiCommitteeAction ",e);
 		  }
