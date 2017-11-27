@@ -1010,12 +1010,16 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 			str+='<div id="addMemberErrDiv" style="color:red;"></div>';
 			str+='<div class="col-sm-2">';
 				str+='<label>';
+				if(result.name == null)
+					result.name="";
 					str+='<input type="text" class="form-control" id="memberNameId" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.name" value="'+result.name+'">';
 				str+='</label>';
 			str+='</div>';
 			
 			str+='<div class="col-sm-2">';
 				str+='<label>';
+				if(result.mobileNumber == null)
+					result.mobileNumber="";
 					str+='<input type="text" class="form-control" id="memberMobileNoId" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber" value="'+result.mobileNumber+'">';
 				str+='</label>';
 			str+='</div>';
@@ -1442,12 +1446,16 @@ saveCommitteeStatus(committeeId);
 				str+='<div id="addMemberErrDiv" style="color:red;"></div>';
 				str+='<div class="col-sm-2">';
 					str+='<label>';
+					if(name == null)
+						name="";
 						str+='<input type="text" class="form-control" id="memberNameId" placeholder="Enter Name" name="janmabhoomiCommitteeMemberVO.name" value="'+name+'">';
 					str+='</label>';
 				str+='</div>';
 				
 				str+='<div class="col-sm-2">';
 					str+='<label>';
+					if(mobileNo == null)
+						mobileNo="";
 						str+='<input type="text" class="form-control" id="memberMobileNoId" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber" value="'+mobileNo+'">';
 					str+='</label>';
 				str+='</div>';
