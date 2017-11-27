@@ -72,40 +72,44 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 											JSONObject jObj = (JSONObject) finalArray.get(i);
 											
 											RwsWork work =rwsWorkDAO.getWorkdetailsByIds(jObj.getString("workId"));
-											if(work != null && (work.getGroundedDate() == null || work.getCompletedDate() == null ||work.getCommissionedDate() == null)){
-												if(work.getGroundedDate() == null && jObj.has("groundingDate") && !jObj.getString("groundingDate").equalsIgnoreCase("--")){
-													work.setGroundedDate(sdf.parse(jObj.has("groundingDate") ? jObj.getString("groundingDate") : null));
-												}
-												if(work.getCompletedDate() == null && jObj.has("completionDate")){
-													work.setCompletedDate(sdf.parse(jObj.has("completionDate") ? jObj.getString("completionDate") : null));
-												}
-												if(work.getCommissionedDate() == null && jObj.has("commssionedDate")){
-													work.setCommissionedDate(sdf.parse(jObj.has("commssionedDate") ? jObj.getString("commssionedDate") : null));
-												}
-												if(work.getCommissionedDate() == null && work.getCompletedDate() == null && work.getGroundedDate()!=null ){
-													work.setWorkStatus("Grounded");
-												}else if(work.getCommissionedDate() != null && work.getCompletedDate() == null && work.getGroundedDate()!= null ){
-													work.setWorkStatus("Commissioned");
-												}else if(work.getCommissionedDate() == null && work.getCompletedDate() != null && work.getGroundedDate()!= null ){
-													work.setWorkStatus("Completed");
-												}
-
-												rwsWorkDAO.save(work);
-												RwsWorkLocation workLocation =rwsWorkLocationDAO.getWorkdetailsByHabAndId(work.getRwsWorkId(),jObj.getString("habitationCode"));
-											
-												if(workLocation == null){
+											if(work != null){
+												if(work.getGroundedDate() == null || work.getCompletedDate() == null ||work.getCommissionedDate() == null){
+													if(work.getGroundedDate() == null && jObj.has("groundingDate") && !jObj.getString("groundingDate").equalsIgnoreCase("--")){
+														work.setGroundedDate(sdf.parse(jObj.has("groundingDate") ? jObj.getString("groundingDate") : null));
+													}
+													if(work.getCompletedDate() == null && jObj.has("completionDate")){
+														work.setCompletedDate(sdf.parse(jObj.has("completionDate") ? jObj.getString("completionDate") : null));
+													}
+													if(work.getCommissionedDate() == null && jObj.has("commssionedDate")){
+														work.setCommissionedDate(sdf.parse(jObj.has("commssionedDate") ? jObj.getString("commssionedDate") : null));
+													}
+													if(work.getCommissionedDate() == null && work.getCompletedDate() == null && work.getGroundedDate()!=null ){
+														work.setWorkStatus("Grounded");
+													}else if(work.getCommissionedDate() != null && work.getCompletedDate() == null && work.getGroundedDate()!= null ){
+														work.setWorkStatus("Commissioned");
+													}else if(work.getCommissionedDate() == null && work.getCompletedDate() != null && work.getGroundedDate()!= null ){
+														work.setWorkStatus("Completed");
+													}
 													
-													location.setRwsWorkId(work.getRwsWorkId());
-													location.setMandalCode(jObj.has("mandalCode") ? jObj.getString("mandalCode") : null);
-													location.setConstituencyCode(jObj.has("constituencyCode") ? jObj.getString("constituencyCode") : null);
-													location.setConstituencyName(jObj.has("constituencyName") ? jObj.getString("constituencyName") : null);
-													location.setDistrictCode(jObj.has("districtCode") ? jObj.getString("districtCode"): null);
-													location.setDistrictName(jObj.has("districtName") ? jObj.getString("districtName"): null);
-													location.setMandalName(jObj.has("mandalName") ? jObj.getString("mandalName") : null);
-													location.setHabitationCode(jObj.has("habitationCode") ? jObj.getString("habitationCode") : null);
-													location.setHabitationName(jObj.has("habitationName") ? jObj.getString("habitationName") : null);
-													rwsWorkLocationDAO.save(location);
+													rwsWorkDAO.save(work);
+													RwsWorkLocation workLocation =rwsWorkLocationDAO.getWorkdetailsByHabAndId(work.getRwsWorkId(),jObj.getString("habitationCode"));
+													
+													if(workLocation == null){
+														
+														location.setRwsWorkId(work.getRwsWorkId());
+														location.setMandalCode(jObj.has("mandalCode") ? jObj.getString("mandalCode") : null);
+														location.setConstituencyCode(jObj.has("constituencyCode") ? jObj.getString("constituencyCode") : null);
+														location.setConstituencyName(jObj.has("constituencyName") ? jObj.getString("constituencyName") : null);
+														location.setDistrictCode(jObj.has("districtCode") ? jObj.getString("districtCode"): null);
+														location.setDistrictName(jObj.has("districtName") ? jObj.getString("districtName"): null);
+														location.setMandalName(jObj.has("mandalName") ? jObj.getString("mandalName") : null);
+														location.setHabitationCode(jObj.has("habitationCode") ? jObj.getString("habitationCode") : null);
+														location.setHabitationName(jObj.has("habitationName") ? jObj.getString("habitationName") : null);
+														rwsWorkLocationDAO.save(location);
+													}
+													
 												}
+												
 											}
 										}
 									}
@@ -145,7 +149,6 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 		 	    				if(!workData.contains(jObj.getString("workId"))) {
 				 	    			works.setWorkId(jObj.getString("workId"));
 				 	    			String name =jObj.getString("workName").replace("\u0096", "");
-				 	    			LOG.error(jObj.getString("workName"));
 				 	    			works.setWorkName(name);
 				 	    			works.setWorkStatus("Not Grounded");
 				 	    			works.setProgramCode(jObj.getString("programCode"));
@@ -165,6 +168,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 				 	    			works.setCommissionedDate(null);
 				 	    			
 				 	    			works = rwsWorkDAO.save(works);
+				 	    			LOG.error(works.getRwsWorkId());
 		 	    				}
 		 	    			}
 		 	    		}
