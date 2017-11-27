@@ -33,6 +33,12 @@ public class JanmabhoomiCommitteeVO {
 	private Long count =0l;
 	private String color;
 	
+	private String status;
+	private Long statusCount =0L;
+	private String statusPercentage ="0";
+
+	private List<JanmabhoomiCommitteeVO> committeeStatusVOList = new ArrayList<JanmabhoomiCommitteeVO>();
+	private List<JanmabhoomiCommitteeVO> levelWisecommitteeStatusVOList = new ArrayList<JanmabhoomiCommitteeVO>();
 	
 	public String getColor() {
 		return color;
@@ -231,5 +237,39 @@ public class JanmabhoomiCommitteeVO {
 	public void setPanchayatName(String panchayatName) {
 		this.panchayatName = panchayatName;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public List<JanmabhoomiCommitteeVO> getCommitteeStatusVOList() {
+		return committeeStatusVOList;
+	}
+	public void setCommitteeStatusVOList(
+			List<JanmabhoomiCommitteeVO> committeeStatusVOList) {
+		this.committeeStatusVOList = committeeStatusVOList;
+	}
+	public List<JanmabhoomiCommitteeVO> getLevelWisecommitteeStatusVOList() {
+		return levelWisecommitteeStatusVOList;
+	}
+	public void setLevelWisecommitteeStatusVOList(
+			List<JanmabhoomiCommitteeVO> levelWisecommitteeStatusVOList) {
+		this.levelWisecommitteeStatusVOList = levelWisecommitteeStatusVOList;
+	}
+	public Long getStatusCount() {
+		return statusCount;
+	}
+	public void setStatusCount(Long statusCount) {
+		this.statusCount = statusCount;
+	}
+	public String getStatusPercentage() {
+		return statusPercentage;
+	}
+	public void setStatusPercentage(String statusPercentage) {
+		this.statusPercentage = statusPercentage;
+	}
+	
 
 }
