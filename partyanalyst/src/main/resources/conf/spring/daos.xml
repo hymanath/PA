@@ -4235,5 +4235,7 @@
 	 <bean id="kaizalaInstallationTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaInstallationTrackingDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean> 
-	 
+	 <bean id="jbCommitteeStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbCommitteeStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
