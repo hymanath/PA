@@ -4077,7 +4077,25 @@
 										</div>
 									  </div>
 									</div>
-								  </div>
+									<div class="panel panel-default panelNew">
+										 <div class="panel-heading" role="tab" id="headingfive">
+											 <a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseFives" aria-expanded="false" aria-controls="collapseFives">
+											 <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
+											 overall performance</span></h4>
+											 </a>
+										 </div>
+										 <div id="collapseFives" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfive">
+											 <div class="panel-body">
+												 <div class="row">
+													 <div class="col-md-12 col-xs-12 col-sm-12">
+														<div id="designationWiseTotalPressMeetDetails" style="overflow:auto;"></div>
+													 
+													 </div>
+												 </div>
+											 </div>
+										 </div>
+									 </div>
+								  </div>             
 							</div>
 						</div>
 					 </div>
@@ -4906,6 +4924,32 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
+
+<!-- Model for Pressmeet Start-->
+ <div class="modal" tabindex="-1" role="dialog" id="pressmeetModelDivId">
+ <div class="modal-dialog modal-lg" style="width:80%">
+ <div class="modal-content" style="border-radius:0px">
+ <div class="modal-header" style="background-color:#CCC">
+ <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+ <h4 class="modal-title" id="modalPressmeetHeadingId">Pressmeet Details</h4>
+ </div>
+ <div class="modal-body">
+ <div class="row">
+ <div class="col-md-12 col-xs-12 col-sm-12">
+ <div class=" pressmeetModelCls"></div>
+ </div>
+ </div> 
+ </div>
+ <div class="modal-footer">
+ <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+ </div>
+ </div><!--/.modal-content -->
+ </div><!-- /.modal-dialog -->
+ </div><!-- /.modal -->
+<!--end-->
+
+
+
 <div class="modal fade" id="customModalId" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document" style="width:60%">
     <div class="modal-content">
