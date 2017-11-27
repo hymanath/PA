@@ -328,13 +328,13 @@
 		}
 		
 		if(bcType === true && scType === true && stType === true && approvedBooleanaVal === true){
-			if(result.status != 'Approved' ){
+			if(result.status == 'InProgress' ){
 				
 				str+='<div class="col-sm-12 m_top20">';
 					str+='<div class="row">';
 					<c:choose>
 									
-						<c:when test="${fn:contains(sessionScope.USER.entitlements,'JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT' )  || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT' ) }">
+						<c:when test="${fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) && (fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements,'JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT' ))}">
 						str+='<div class="col-sm-3">';
 							str+='<label>Change Committee Status</label>';
 							str+='<select class="form-control chosen-select" id="committeeStatusChangeId">';
@@ -346,7 +346,7 @@
 						<c:when test="${fn:contains(sessionScope.USER.entitlements,'JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT' )  || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT' ) }">
 						str+='<div class="col-sm-3">';
 							str+='<label>Change Committee Status</label>';
-							str+='<select class="form-control chosen-select" id="committeeStatusChangeId">';
+							str+='<select class="form-control chosen-select" id="committeeStatusChangeId" >';
 								str+='<option value="readyforapproval">Ready for approval</option>';
 							str+='</select>';
 						str+='</div>';
@@ -354,7 +354,7 @@
 						</c:when>
 						</c:choose>
 						str+='<div class="col-sm-2">';
-							str+='<button id="committeeStatusChangeId" type="button" style="margin-top: 28px;" class="btn btn-success btn-sm" attr_committee_submit="'+committeId+'">Submit</button>';
+							str+='<button id="submitCommitteeStatusChangeId" type="button" style="margin-top: 28px;" class="btn btn-success btn-sm" attr_committee_submit="'+committeId+'">Submit</button>';
 							str+='<span class="loadingImgId2"><img src="images/search.gif" style="display:none;"/></span>';
 						str+='</div>';
 						str+='<div class="col-sm-6">';

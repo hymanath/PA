@@ -1238,15 +1238,17 @@ function savingApplication(committeeId,statusType){
 		  }, 1000);
 		}
 	  }
-	  $(document).on("click","#committeeStatusChangeId",function(){
+	  $(document).on("click","#submitCommitteeStatusChangeId",function(){
 		  var committeeId= $(this).attr("attr_committee_submit");
-saveCommitteeStatus(committeeId);
+		   var status= $("#committeeStatusChangeId").val();
+saveCommitteeStatus(committeeId,status);
 	
 }) ;
-	  function saveCommitteeStatus(committeeId){
+	  function saveCommitteeStatus(committeeId,status){
 		  $(".committeeSavingStatusDivId").html(spinner);
 		  var jsObj={
-    "committeeId"  :committeeId
+    "committeeId"  :committeeId,
+	status:status
     }
      $.ajax({
       type : "POST",
