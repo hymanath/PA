@@ -63,7 +63,7 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 			query.setParameter("assetType", assetType);
 		}
 		if(locationType!= null && locationType.length()>0 && locationValue !=null){
-			query.setParameter("locationValue", locationValue);
+			query.setParameter("locationValue", locationValue.toString());
 		}
 		return query.list();
 	}
