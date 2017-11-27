@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.AP.DEPARTMENTWISEDETAILS_CATA;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
@@ -32,6 +33,8 @@ import org.tempuri.TrackerITServiceSoapProxy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.itgrids.dao.ILocationWiseMeesevaCentersDAO;
+import com.itgrids.dao.IMeesevaCentersAchievementDAO;
 import com.itgrids.dto.ApInnovationCenterVO;
 import com.itgrids.dto.ApInnovationSocietyOverviewVO;
 import com.itgrids.dto.CmEoDBDtlsVO;
@@ -42,6 +45,7 @@ import com.itgrids.dto.ItecCMeoDBDetailsVO;
 import com.itgrids.dto.ItecEOfficeVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
+import com.itgrids.dto.MeesevaKPIDtlsVO;
 import com.itgrids.service.IItcDashboardService;
 import com.itgrids.service.integration.external.ItcWebServiceUtilService;
 import com.itgrids.utils.IConstants;
@@ -56,6 +60,10 @@ public class ItcDashboardService implements IItcDashboardService {
 	
 	@Autowired
 	private ItcWebServiceUtilService itcWebServiceUtilService;
+	@Autowired
+	private ILocationWiseMeesevaCentersDAO locationWiseMeesevaCentersDAO;
+	@Autowired
+	private IMeesevaCentersAchievementDAO meesevaCentersAchievementDAO;
 	
 	/**
 	 * @author Santosh Kumar Verma
@@ -2105,5 +2113,160 @@ public class ItcDashboardService implements IItcDashboardService {
 		      LOG.error("Exception raised at getEofficeDesginationDetailsByDepartment - ItcDashboardService service",e);
 		    }
 		    return returnList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @param InputVO inputVO
+	 * @description {This service is used to get Meeseva SLA Department Details.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 21-09-2017
+	 */
+	
+	public List<MeesevaDtlsVO> getMeesevaSLADepartmentDetails() {
+		List<MeesevaDtlsVO> returnList = new ArrayList<MeesevaDtlsVO>(0);
+		try{
+			Map<String,MeesevaDtlsVO> deptNameAndVosMap = new HashMap<String,MeesevaDtlsVO>();
+			//Object[] inputObj = {"USERID" , "MEESEVA","PASSWORD","MEESEVA"};
+			//Category - A
+			DEPARTMENTWISEDETAILS_CATA response = new DEPARTMENTWISEDETAILS_CATA("MEESEVA","MEESEVA");
+			/*if(list != null && list.length > 0){
+		    	 for( int i = 0; i < list.length ; i++ ){
+		    		MeesevaDtlsVO categoryVO = deptNameAndVosMap.get(list[i].getDepartment_Name().trim());
+		    		if( categoryVO == null ){
+		    			categoryVO = new MeesevaDtlsVO();
+		    			categoryVO.setName(name);
+		    			categoryVO.setCatgryAServicesCount(catgryAServicesCount);
+		    			categoryVO.setCatgryATransCount(catgryATransCount);
+		    			categoryVO.setCatgryAWithInSLACount(catgryAWithInSLACount);
+		    			categoryVO.setCatgryABeyondSLACount(catgryABeyondSLACount);
+		    			deptNameAndVosMap.put(categoryVO.getName(),categoryVO);
+		    		}else{
+		    			categoryVO.setCatgryAServicesCount(categoryVO.getCatgryAServicesCount()+);
+		    			categoryVO.setCatgryATransCount(categoryVO.getCatgryATransCount()+);
+		    			categoryVO.setCatgryAWithInSLACount(categoryVO.getCatgryAWithInSLACount()+);
+		    			categoryVO.setCatgryABeyondSLACount(categoryVO.getCatgryABeyondSLACount()+);
+		    			}	
+		    	 	}
+		       }*/
+			
+			//Category - B
+			/*SDP[] list = new TrackerITServiceSoapProxy().get_SDP_Abstract_Details(inputVo.getSector(), fromDate, toDate);
+			if(list != null && list.length > 0){
+		    	 for( int i = 0; i < list.length ; i++ ){
+		    		MeesevaDtlsVO categoryVO = deptNameAndVosMap.get(list[i].getDepartment_Name().trim());
+		    		if( categoryVO == null ){
+		    			categoryVO = new MeesevaDtlsVO();
+		    			categoryVO.setName(name);
+		    			categoryVO.setCatgryBServicesCount(catgryAServicesCount);
+		    			categoryVO.setCatgryBTransCount(catgryATransCount);
+		    			categoryVO.setCatgryBWithInSLACount(catgryAWithInSLACount);
+		    			categoryVO.setCatgryBBeyondSLACount(catgryABeyondSLACount);
+		    			deptNameAndVosMap.put(categoryVO.getName(),categoryVO);
+		    		}else{
+		    			categoryVO.setCatgryBServicesCount(categoryVO.getCatgryBServicesCount()+);
+		    			categoryVO.setCatgryBTransCount(categoryVO.getCatgryBTransCount()+);
+		    			categoryVO.setCatgryBWithInSLACount(categoryVO.getCatgryBWithInSLACount()+);
+		    			categoryVO.setCatgryBBeyondSLACount(categoryVO.getCatgryBBeyondSLACount()+);
+		    		}
+		    		
+		    	 }
+		    	 
+		       }*/
+			
+			
+			if(deptNameAndVosMap != null){
+				returnList = new ArrayList<MeesevaDtlsVO>(deptNameAndVosMap.values());
+			}
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaSLADepartmentDetails() in  ItcDashboardService class",e);
+		 }
+		 return returnList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @param InputVO inputVO
+	 * @description {This service is used to get Meeseva KPI Overview Details.}
+	 * @return MeesevaKPIDtlsVO
+	 * @Date 27-11-2017
+	 */
+	public MeesevaKPIDtlsVO getMeesevaKPIOverViewDetails() {
+		MeesevaKPIDtlsVO finalVO = new MeesevaKPIDtlsVO();
+		try{
+			List<Object[]> meesevaDetList = locationWiseMeesevaCentersDAO.getStateMeesevaCentres();
+			if(meesevaDetList != null && !meesevaDetList.isEmpty()){
+				for (Object[] param : meesevaDetList) {
+					finalVO.setTotalMeesevaCentres(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+					finalVO.setEstablishedFrom2014(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+					finalVO.setEstablishedLastYear(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+					finalVO.setEstablishedThisYear(Long.valueOf(param[3] != null ? param[3].toString():"0"));
+					finalVO.setEstablishedLastOneMonth(Long.valueOf(param[4] != null ? param[4].toString():"0"));
+				}
+			}
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaSLADepartmentDetails() in  ItcDashboardService class",e);
+		 }
+		 return finalVO;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @param InputVO inputVO
+	 * @description {This service is used to get Meeseva KPI Target Achived.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 27-11-2017
+	 */
+	public List<MeesevaKPIDtlsVO> getMeesevaKPITargetAchieveDetails() { 
+		List<MeesevaKPIDtlsVO> finalList = new ArrayList<MeesevaKPIDtlsVO>(0);
+		try{
+			List<Object[]> meesevaTarAchList = meesevaCentersAchievementDAO.getMeesevaTargetAchieveCounts();
+			if(meesevaTarAchList != null && !meesevaTarAchList.isEmpty()){
+				for (Object[] param : meesevaTarAchList) {
+					MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+					vo.setName(param[0] != null ? param[0].toString():"");
+					vo.setTarget(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+					vo.setAcheived(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+					finalList.add(vo);
+				}
+			}
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaSLADepartmentDetails() in  ItcDashboardService class",e);
+		 }
+		 return finalList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @param InputVO inputVO
+	 * @description {This service is used to get Meeseva KPI Location Wise Details.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 27-11-2017
+	 */
+	public List<MeesevaKPIDtlsVO> getMeesevaKPILocationWiseDetails() {
+		List<MeesevaKPIDtlsVO> finalList = new ArrayList<MeesevaKPIDtlsVO>();
+		try{
+			List<Object[]> meesevaDetList = locationWiseMeesevaCentersDAO.getLocationWiseMeesevaCentres();
+			if(meesevaDetList != null && !meesevaDetList.isEmpty()){
+				for (Object[] param : meesevaDetList) {
+					MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+					vo.setId(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+					vo.setName(param[1] != null ? param[1].toString():"");
+					vo.setTotalMeesevaCentres(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+					vo.setEstablishedFrom2014(Long.valueOf(param[3] != null ? param[3].toString():"0"));
+					vo.setEstablishedLastYear(Long.valueOf(param[4] != null ? param[4].toString():"0"));
+					vo.setEstablishedThisYear(Long.valueOf(param[5] != null ? param[5].toString():"0"));
+					vo.setEstablishedLastOneMonth(Long.valueOf(param[6] != null ? param[6].toString():"0"));
+					finalList.add(vo);
+				}
+			}
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaSLADepartmentDetails() in  ItcDashboardService class",e);
+		 }
+		 return finalList;
 	}
 }

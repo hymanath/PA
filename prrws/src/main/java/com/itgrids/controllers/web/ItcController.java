@@ -23,6 +23,7 @@ import com.itgrids.dto.ItecCMeoDBDetailsVO;
 import com.itgrids.dto.ItecEOfficeVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
+import com.itgrids.dto.MeesevaKPIDtlsVO;
 import com.itgrids.service.IItcDashboardService;
 
 @EnableAutoConfiguration
@@ -190,5 +191,29 @@ public class ItcController {
 	   public @ResponseBody  CmEoDBDtlsVO  getCMeoDBSectorWiseStatusDetais(@RequestBody InputVO inputVO) {
 		   CmEoDBDtlsVO  resultVO = itcDashboardService.getCMeoDBSectorWiseStatusDetais(inputVO);
 		   return resultVO;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaSLADepartmentDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<MeesevaDtlsVO>  getMeesevaSLADepartmentDetails() {
+		   List<MeesevaDtlsVO>  resultList = itcDashboardService.getMeesevaSLADepartmentDetails();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPIOverViewDetails", method = RequestMethod.POST)
+	   public @ResponseBody  MeesevaKPIDtlsVO  getMeesevaKPIOverViewDetails() {
+		   MeesevaKPIDtlsVO  resultVO = itcDashboardService.getMeesevaKPIOverViewDetails();
+		   return resultVO;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPITargetAchieveDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPITargetAchieveDetails() {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPITargetAchieveDetails();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPILocationWiseDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPILocationWiseDetails() {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPILocationWiseDetails();
+		   return resultList;
 	   }
 }

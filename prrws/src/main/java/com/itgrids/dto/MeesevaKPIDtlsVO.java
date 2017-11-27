@@ -18,6 +18,12 @@ public class MeesevaKPIDtlsVO {
 	private Long currentYearCumulativeCount;
 	private Double currentYearCumulativePer;
 	
+	private Long establishedFrom2014 = 0L;
+	private Long establishedLastYear = 0L;
+	private Long establishedThisYear = 0L;
+	private Long establishedLastOneMonth = 0L;
+	private Long totalMeesevaCentres = 0L;
+	
 	public Long getId() {
 		return id;
 	}
@@ -107,6 +113,36 @@ public class MeesevaKPIDtlsVO {
 	}
 	public void setCurrentYearCumulativePer(Double currentYearCumulativePer) {
 		this.currentYearCumulativePer = currentYearCumulativePer;
+	}
+	public Long getEstablishedFrom2014() {
+		return establishedFrom2014;
+	}
+	public void setEstablishedFrom2014(Long establishedFrom2014) {
+		this.establishedFrom2014 = establishedFrom2014;
+	}
+	public Long getEstablishedLastYear() {
+		return establishedLastYear;
+	}
+	public void setEstablishedLastYear(Long establishedLastYear) {
+		this.establishedLastYear = establishedLastYear;
+	}
+	public Long getEstablishedThisYear() {
+		return establishedThisYear;
+	}
+	public void setEstablishedThisYear(Long establishedThisYear) {
+		this.establishedThisYear = establishedThisYear;
+	}
+	public Long getEstablishedLastOneMonth() {
+		return establishedLastOneMonth;
+	}
+	public void setEstablishedLastOneMonth(Long establishedLastOneMonth) {
+		this.establishedLastOneMonth = establishedLastOneMonth;
+	}
+	public Long getTotalMeesevaCentres() {
+		return totalMeesevaCentres;
+	}
+	public void setTotalMeesevaCentres(Long totalMeesevaCentres) {
+		this.totalMeesevaCentres = totalMeesevaCentres;
 	}
 	
 }
