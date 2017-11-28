@@ -631,8 +631,6 @@ function buildPressmeetDesignationWiseTotalPressmeetDetails(result){
 		$("#designationWiseTotalPressMeetDetails").html('<h3>NO DATA AVAILABLE</h3>')
 	}
 }
- 
- 
 $(document).on("click",".designationWiseCandidatesPressmeetCls",function(){
 	var designation = $(this).attr("attr_designation");
 	var designationId = $(this).attr("attr_designation_id");
@@ -641,28 +639,22 @@ $(document).on("click",".designationWiseCandidatesPressmeetCls",function(){
 }); 
  
  
- function getCandidateWiseCandidateOverAllPerformancePressmeetCohort(designation,designationId){
-	  $("#pressmeetModelDivId").modal("show");
-	 $(".pressmeetModelCls").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-  $.ajax({
-   url: wurl+"/CommunityNewsPortal/webservice/getCandidateWisePerformance/"+fromDate+"/"+toDate+"/1,2,3,4/"+designationId+"/"
-   //url: "http://localhost:8080/CommunityNewsPortal/webservice/getCandidateWisePerformance/"+fromDate+"/"+toDate+"/1,2,3,4/"+designationId+"/"
-  }).then(function(result){                       
-   if(result !=null){ 
-		 buildCandidateWiseCandidateOverAllPerformancePressmeetCohort(result,designation);
-   }else{  
-    $(".pressmeetModelCls").html("<h3>NO DATA AVAILABLE</h3>");
-   }
-  });
-	}
- 
- 
- 
-
-
- function buildCandidateWiseCandidateOverAllPerformancePressmeetCohort(result,designation)
-{
-	$("#modalPressmeetHeadingId").html(designation);
+function getCandidateWiseCandidateOverAllPerformancePressmeetCohort(designation,designationId){
+	$("#pressmeetModelDivId").modal("show");
+	$("#modalPressmeetHeadingId").html(designation);   
+	$(".pressmeetModelCls").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$.ajax({
+		url: wurl+"/CommunityNewsPortal/webservice/getCandidateWisePerformance/"+fromDate+"/"+toDate+"/1,2,3,4/"+designationId+"/"
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getCandidateWisePerformance/"+fromDate+"/"+toDate+"/1,2,3,4/"+designationId+"/"
+	}).then(function(result){                       
+		if(result !=null){
+			buildCandidateWiseCandidateOverAllPerformancePressmeetCohort(result,designation);
+		}else{  
+			$(".pressmeetModelCls").html("<h3>NO DATA AVAILABLE</h3>");
+		}
+	});
+}
+function buildCandidateWiseCandidateOverAllPerformancePressmeetCohort(result,designation){
 	var str="";
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			str+='<div class="table-responsive">';
