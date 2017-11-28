@@ -181,7 +181,7 @@ public class BoothInchargeCommitteeDAO extends GenericDaoHibernate<BoothIncharge
 					" and bpv.voter_id = tc.voter_id and b.publication_date_id = 24 and b1.publication_date_id = 24 and bi.tdp_cadre_id = tc.tdp_cadre_id" +
 					" and tc.is_deleted='N' and tc.enrollment_year='2014' and c.booth_incharge_committee_id = m.booth_incharge_committee_id" +
 					" and m.booth_incharge_role_condition_id = rc.booth_incharge_role_condition_id and m.booth_incharge_role_condition_mapping_id = bi.booth_incharge_role_condition_mapping_id" +
-					" and c.is_deleted ='N' and bi.is_active='Y' and bi.is_deleted='N'");
+					" and c.is_deleted ='N' and bi.is_active='Y' and bi.is_deleted='N' and c.is_confirmed = 'Y'");
 		if(levelId != null && levelId.longValue() == 2L)
 			sb.append(" and ua.state_id in (:levelValues)");
 		else if(levelId != null && levelId.longValue() == 3L)
