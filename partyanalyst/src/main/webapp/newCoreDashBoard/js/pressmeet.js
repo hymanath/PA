@@ -57,8 +57,9 @@ function getPartyWiseThenCandidateWisePerformance(){
      
    if(result !=null){
 	  partywiseresult= result;
-   buildSpokesPersonWisePressmeet(partywiseresult,"top");
-   buildCandidateOverAllPerformanceCohortPressmeet(result);
+	  $("#spokesPersonWisepressmeetDetailsId").html(" ");
+	  buildSpokesPersonWisePressmeet(partywiseresult,"top");
+	  buildCandidateOverAllPerformanceCohortPressmeet(result);
   }else{
       $("#spokesPersonWisepressmeetDetailsId").html('<h3>NO DATA AVAILABLE</h3>');
 	  $("#candidateOverAllPerformanceCohortId").html('<h3>NO DATA AVAILABLE</h3>');
