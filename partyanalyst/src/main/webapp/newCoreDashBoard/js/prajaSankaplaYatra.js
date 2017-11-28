@@ -5,7 +5,7 @@
 
 	var currentFromDate = moment().format("DD-MM-YYYY");
 	var currentToDate = moment().format("DD-MM-YYYY");
-	var categoryId = $("#categoryId").val();
+	var categoryId = $("#categoryId").find("option:selected").val();
 	$("#dateRangePrajaSankalpaId").daterangepicker({
 		opens: 'left',
 		startDate:currentFromDate,
@@ -21,18 +21,21 @@
 	  onloadPrajaSankaplaYatraCalls();
 	});
 	function onloadPrajaSankaplaYatraCalls(){
+		getPrintMediaOverAllPSYCounts("OverAll","printMedia",categoryId)
+		getPrintMediaOrganizationWisePSYCounts("Party","printMedia",categoryId)
+		getPrintMediaPublicationWisePSYCounts("Publication","printMedia",categoryId)
 		
-		getPrintMediaOverAllPSYCounts("OverAll","printMedia")
-		getPrintMediaOrganizationWisePSYCounts("Party","printMedia")
-		getPrintMediaPublicationWisePSYCounts("Publication","printMedia")
-		
-		getBulletinPointOverAllPSYCounts("OverAll","electronicMedia")
-		getBulletinOrganizationWisePSYCounts("Party","electronicMedia")
-		getChannelWisePSYCounts("Publication","electronicMedia")
-		
-		
+		getBulletinPointOverAllPSYCounts("OverAll","electronicMedia",categoryId)
+		getBulletinOrganizationWisePSYCounts("Party","electronicMedia",categoryId)
+		getChannelWisePSYCounts("Publication","electronicMedia",categoryId)
+		getPartyWiseTopLeadersForElectonicMediaInfo(categoryId);
+		getDistrictWiseOverViewForElectronicMediaInfo(categoryId);
+		getDistrictWisePartyViewForElectrronicMediaInfo(categoryId);
+		getDistrictWisePartyOverView(categoryId);
+		getDistrictWiseOverView(categoryId);
+		getPartywiseTopLeaders(categoryId);	
 	}
-	function getPrintMediaOverAllPSYCounts(divId,type){
+	function getPrintMediaOverAllPSYCounts(divId,type,categoryId){
 			$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOverAllPSYCounts/"+currentFromDate+"/"+currentToDate+"/"+categoryId
@@ -148,7 +151,7 @@
 		str+='</div>';
 		$("#"+type+divId+"BlockId").html(str)
 	}
-	function getPrintMediaOrganizationWisePSYCounts(divId,type){
+	function getPrintMediaOrganizationWisePSYCounts(divId,type,categoryId){
 			$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOrganizationWisePSYCounts/"+currentFromDate+"/"+currentToDate+"/"+categoryId
@@ -272,7 +275,7 @@
 		str+='</div>';
 		$("#"+type+divId+"BlockId").html(str)	
 	}
-	function getPrintMediaPublicationWisePSYCounts(divId,type){
+	function getPrintMediaPublicationWisePSYCounts(divId,type,categoryId){
 			$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYCounts/"+currentFromDate+"/"+currentToDate+"/"+categoryId
@@ -427,7 +430,7 @@
 		$(".tooltipCls").tooltip();	
 		
 	}
-	function getChannelWisePSYCounts(divId,type){
+	function getChannelWisePSYCounts(divId,type,categoryId){
 			$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePSYCounts/"+currentFromDate+"/"+currentToDate+"/"+categoryId
@@ -440,7 +443,7 @@
 			}
 		});
 	}
-	function getBulletinOrganizationWisePSYCounts(divId,type){
+	function getBulletinOrganizationWisePSYCounts(divId,type,categoryId){
 			$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getBulletinOrganizationWisePSYCounts/"+currentFromDate+"/"+currentToDate+"/"+categoryId
@@ -453,7 +456,7 @@
 			}
 		});
 	}
-	function getBulletinPointOverAllPSYCounts(divId,type){
+	function getBulletinPointOverAllPSYCounts(divId,type,categoryId){
 			$("#"+type+divId+"BlockId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 		$.ajax({	
 			url: wurl+"/CommunityNewsPortal/webservice/getBulletinPointOverAllPSYCounts/"+currentFromDate+"/"+currentToDate+"/"+categoryId
@@ -481,24 +484,21 @@
 		
 			
 		});
-	getDistrictWisePartyOverView();
-	getDistrictWiseOverView();
-	getPartywiseTopLeaders();
-	function getDistrictWiseOverView(){
+	function getDistrictWiseOverView(categoryId){
 	$.ajax({	
 		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseOverView/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 	    //url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseOverView/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 	}).then(function(result){
 	 });
 	}
-	function getDistrictWisePartyOverView(){
+	function getDistrictWisePartyOverView(categoryId){
 	$.ajax({	
 		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 	}).then(function(result){
 	});
 }
-function getPartywiseTopLeaders(){
+function getPartywiseTopLeaders(categoryId){
 	$.ajax({	
 		url: wurl+"/CommunityNewsPortal/webservice/getPartywiseTopLeaders/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPartywiseTopLeaders/"+currentFromDate+"/"+currentToDate+"/"+categoryId
@@ -506,24 +506,21 @@ function getPartywiseTopLeaders(){
 	
 });
 }
-getPartyWiseTopLeadersForElectonicMediaInfo();
-getDistrictWiseOverViewForElectronicMediaInfo();
-getDistrictWisePartyViewForElectrronicMediaInfo();
-function getPartyWiseTopLeadersForElectonicMediaInfo(){
+function getPartyWiseTopLeadersForElectonicMediaInfo(categoryId){
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getPartyWiseTopLeadersForElectonicMediaInfo/"+currentFromDate+"/"+currentToDate"/"+categoryId
+		url: wurl+"/CommunityNewsPortal/webservice/getPartyWiseTopLeadersForElectonicMediaInfo/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPartyWiseTopLeadersForElectonicMediaInfo/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 	}).then(function(result){
 	});
 }
-function getDistrictWiseOverViewForElectronicMediaInfo(){
+function getDistrictWiseOverViewForElectronicMediaInfo(categoryId){
 	$.ajax({	
 		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseOverViewForElectronicMediaInfo/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseOverViewForElectronicMediaInfo/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 	}).then(function(result){
 	});
 }
-function getDistrictWisePartyViewForElectrronicMediaInfo(){
+function getDistrictWisePartyViewForElectrronicMediaInfo(categoryId){
 	$.ajax({	
 		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfo/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfo/"+currentFromDate+"/"+currentToDate+"/"+categoryId
