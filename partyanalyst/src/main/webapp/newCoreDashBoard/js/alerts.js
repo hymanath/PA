@@ -113,6 +113,7 @@
 			    $(".collapseHIghChartViewCls").addClass("active");
 	  		    $(".impactLevelCls").attr("attr_level","Overview");
 				getAlertOverviewDetails();
+				getAlertOverviewDetailsNextLevel();
 			if($(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 				$(".alertLocationDiv").show();
 				 $("#hiddenLevelTypeId").attr("attr_level_type","impactScopeWise");
@@ -129,6 +130,7 @@
 			$(".basicAlertBlockDropDown").hide(); 
 		}else if(type= "default"){
 		 getAlertOverviewDetails();	
+		 getAlertOverviewDetailsNextLevel();
 		}
 	 }
     /* End */
@@ -160,6 +162,7 @@
 		}
 		$("#dateRangeIdForAlert").val(customStartDateAlert+"-"+customEndDateAlert);
 		getAlertOverviewDetails();
+		getAlertOverviewDetailsNextLevel();
 		if($(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".alertLocationDiv").show();
 			defaultAlertCalls();
@@ -229,6 +232,7 @@
 		  $("#hiddenLevelTypeId").attr("attr_level_type","impactScopeWise");
 			
 		 getAlertOverviewDetails();
+		 getAlertOverviewDetailsNextLevel();
 		 getAlertCategoryDtlsLocationWise(0,0); 
 		 getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
 		 $(".impactLevelCls").attr("attr_level","Overview");
@@ -2954,7 +2958,7 @@ function getTotalArticledetails(articleId){
 	function getAlertOverviewDetails(){
 		$("#alertTypeHiddenId").attr("attr_alert_id",0);
 		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",0);        
- 		$("#alertOverview,#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+ 		$("#alertOverview").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var dates=$("#dateRangeIdForAlert").val();
 		
 		var alertTypeStr = 0;          
@@ -2980,9 +2984,44 @@ function getTotalArticledetails(articleId){
 		}).done(function(result){
 			if(result != null){
 			  buildAlertOverviewDetailsAction(result);
-			  buildAlertOverviewDetails(result,0,0)
+			  //buildAlertOverviewDetails(result,0,0)
 			}else{
-			  $("#alertOverview,#alertOverviewDetails").html("NO DATA AVAILABLE.");	
+			  $("#alertOverview").html("NO DATA AVAILABLE.");	
+			}
+      });	
+	}
+	function getAlertOverviewDetailsNextLevel(){
+		$("#alertTypeHiddenId").attr("attr_alert_id",0);
+		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",0);        
+ 		$("#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var dates=$("#dateRangeIdForAlert").val();
+		
+		var alertTypeStr = 1;          
+		var alertEdition = 0;  
+		var ImpactScopeArr = [];
+		var alertStatusArr = [];
+	 	var jsObj={
+			activityMemberId : 	globalActivityMemberId,      
+			stateId : 			globalStateId,           
+			fromDate:			customStartDateAlert,        
+			toDate :			customEndDateAlert,
+			alertType : 		alertTypeStr,
+			editionType:		alertEdition,
+			scopeIdsArr : globalImpactScopeArr,
+			alertStatusArr : globalAlertStatusArr
+			
+		};
+		$.ajax({
+			type : 'GET',
+			url : 'getAlertOverviewDetailsAction.action',
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)}          
+		}).done(function(result){
+			if(result != null){
+			 
+			  buildAlertOverviewDetails(result,0,1)
+			}else{
+			  $("#alertOverviewDetails").html("NO DATA AVAILABLE.");	
 			}
       });	
 	}

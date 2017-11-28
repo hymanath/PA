@@ -51,9 +51,38 @@ $(document).on("click",".debatesSettingsBody",function(e){
 $(document).on("click",function(){
 	$(".debatesSettingsBody").hide();
 });
-	$(document).on("click",".debatesRefresh,.radioStateCls,.radioStateCls1",function(){
-		globalDebateCalls('');
-	});
+$(document).on("click",".debatesRefresh",function(){
+	globalDebateCalls('');
+});
+$(document).on("click",".debateradioCls",function(){
+	
+		if($(this).is(':checked')){
+			var checkedVal = $(this).val();
+			if(checkedVal == 1){
+				$("#debatesAP").prop("checked",true);
+				$("#debatesParticipantAP").prop("checked",true);
+				
+			}else if(checkedVal == 36){
+				$("#debatesTS").prop("checked",true);
+				$("#debatesParticipantTS").prop("checked",true);
+				
+			}
+		}else{
+			var checkedVal = $(this).val();
+			if(checkedVal == 1){
+				$("#debatesAP").prop("checked",false);
+				$("#debatesParticipantAP").prop("checked",false);
+				
+			}else if(checkedVal == 36){
+				$("#debatesTS").prop("checked",false);
+				$("#debatesParticipantTS").prop("checked",false);
+				
+			}
+		}
+	
+	globalDebateCalls('');
+	
+});
 $(document).ready(function(){
 	
 	
@@ -133,6 +162,7 @@ $(document).ready(function(){
  function getPartyWiseTotalDebateDetails(){
 		
 		$("#partyWiseTotalDebateDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		
 		var debateLocationIdArry =[];
      $(".radioStateCls").each(function(){
         if($(this).prop('checked')==true){
