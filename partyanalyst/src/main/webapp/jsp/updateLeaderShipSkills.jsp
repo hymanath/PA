@@ -229,6 +229,7 @@ var leaderShipLevelArray = [];
 	
 var cadreId= '${param.cadreId}';
 var batchId = '${param.batchId}';
+var programId ='${param.programId}';
 function myDateFunction(){
    globalDateCount=globalDateCount+1;
    var str='';
@@ -838,7 +839,7 @@ str+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackD
 	str+='<span id="processingId" style="display:none" class="text-danger pull-left"><span><img id="ajaxImage1" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:15px;display:none;"/></span>Please Wait While Updating...</span>';
     str+='<div class="row">';
 	str+='<div class="col-md-12 m_top20">';
-	str+='<button style="margin-right:10px;" type="button" class="btn btn-primary pull-right" onclick="saveAllDetails('+tdpCadreId+','+batchId+');">Save</button>';
+	str+='<button style="margin-right:10px;" type="button" class="btn btn-primary pull-right" onclick="saveAllDetails('+tdpCadreId+','+batchId+','+programId+');">Save</button>';
 	str+='</div>';
 	str+='</div>';
 	str+='</div>';
@@ -874,7 +875,7 @@ str+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackD
 		  });
 	  }
 
-	     function saveAllDetails(tdpCadreId,batchId)
+	     function saveAllDetails(tdpCadreId,batchId,programId)
    {
 		$("#leadershipLvlErrDivId").html('');
 		$("#commSkillsErrDivId").html('');
@@ -999,6 +1000,7 @@ str+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackD
 	 formData.append('whatsappId',whatsappId);
 	 formData.append('whatsappShareId',whatsappShareId);
 	 formData.append('facebookId',facebookId);
+	  formData.append('programId',programId);
 	
 	  /* var jsObj=
 	   {	
