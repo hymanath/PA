@@ -135,7 +135,7 @@ public class JanmabhoomiCommitteeVO {
     	
     	
     }
-	@Override
+	/*@Override
 	public boolean equals(Object obj){
 		if(id==null)
 			id = -1L;
@@ -151,7 +151,7 @@ public class JanmabhoomiCommitteeVO {
 		if(id==null)
 			id = -1L;
 		return this.id.intValue();
-	}
+	}*/
 	public List<JanmabhoomiCommitteeVO> getPositinsList() {
 		return positinsList;
 	}

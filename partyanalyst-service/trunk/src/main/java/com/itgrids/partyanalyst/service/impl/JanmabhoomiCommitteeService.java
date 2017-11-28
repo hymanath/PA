@@ -581,22 +581,30 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						locVO.setColor(commonMethodsUtilService.getStringValueForObject(param[14]));
 						locVO.setCommitteeId(commonMethodsUtilService.getLongValueForObject(param[5]));
 					}
-					for(JanmabhoomiCommitteeVO levelVO :locVO.getList()){
-						if(levelVO.equals(new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])))){
-							/*if(status.equalsIgnoreCase("Not Started")){
+					JanmabhoomiCommitteeVO levelVO = getMatchedStatusOrLevelVO(locVO.getList(),commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(levelVO !=null){
+						JanmabhoomiCommitteeVO statusVO = getMatchedStatusOrLevelVO(levelVO.getPositinsList(),commonMethodsUtilService.getLongValueForObject(param[3]));
+						if(statusVO !=null){
+							statusVO.setCount(statusVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+						}
+						levelVO.setCount(levelVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+					/*for(JanmabhoomiCommitteeVO levelVO :locVO.getList()){
+						if(levelVO.equals(new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1]))) == true){
+							if(status.equalsIgnoreCase("Not Started")){
 								levelVO.setNotStartedCommitteeCnt(levelVO.getNotStartedCommitteeCnt()+1l);
 							}else if(status.equalsIgnoreCase("Approved")){
 								levelVO.setTotalApprovedCommitteeCnt(levelVO.getTotalApprovedCommitteeCnt()+1l);
 							}
-							levelVO.setTotalCommitteeCnt(levelVO.getTotalCommitteeCnt()+1l);*/
+							levelVO.setTotalCommitteeCnt(levelVO.getTotalCommitteeCnt()+1l);
 							for(JanmabhoomiCommitteeVO statusVO :levelVO.getPositinsList()){
-								if(statusVO.equals(new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[3]),commonMethodsUtilService.getStringValueForObject(param[4])))){
+								if(statusVO.equals(new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[3]),commonMethodsUtilService.getStringValueForObject(param[4]))) == true){
 									statusVO.setCount(statusVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
 									levelVO.setCount(levelVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
 								   }
 								}
 						}
-					}
+					}*/
 					
 				}
 			}
@@ -1295,6 +1303,16 @@ public JanmabhoomiCommitteeVO getJbCommitteeStatusCount(String fromDateStr, Stri
 	    if (voList != null && voList.size() > 0 && id != null && id > 0l) {
 	      for (JanmabhoomiCommitteeVO statusVO : voList) {
 	        if (statusVO.getStatusId().equals(id))
+	          return statusVO;
+	      }
+	    }
+	    return null;
+	  }
+ 
+ public JanmabhoomiCommitteeVO getMatchedStatusOrLevelVO(List<JanmabhoomiCommitteeVO> voList, Long id) {
+	    if (voList != null && voList.size() > 0 && id != null && id > 0l) {
+	      for (JanmabhoomiCommitteeVO statusVO : voList) {
+	        if (statusVO.getId().equals(id))
 	          return statusVO;
 	      }
 	    }
