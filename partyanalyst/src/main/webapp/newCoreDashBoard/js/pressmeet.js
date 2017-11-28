@@ -5,7 +5,7 @@ if(wurl.length == 3)
 wurl = url.substr(0,(url.indexOf(".in")+3));
 
 
-
+var performanceResult = '';
 var fromDate = moment().startOf('month').format("DD-MM-YYYY");
 var toDate = moment().endOf('month').format("DD-MM-YYYY");
 $("#dateRangePressmeetId").daterangepicker({
@@ -130,6 +130,7 @@ function getPrintMediaOverAllPartyWiseCounts(){
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOverAllPartyWiseCounts/"+fromDate+"/"+toDate
 	}).then(function(result){
 			if(result !=null){
+				performanceResult = result;
      		   bulidPressMeetPartyWiseDetails(result);
      		  buildScaleBasedPerformanceCohortPressMeet(result)
 			}else{
@@ -162,16 +163,16 @@ function getPrintMediaOverAllPartyWiseCounts(){
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">Total press Meets</p>';
-							str+='<h4><span style="cursor:pointer;color:#337ab7">'+result.pressmeetList[i].pressMeetCount+'</span></h4>';
+							str+='<h4><span class="partyWisePressMeetCls" style="cursor:pointer;color:#337ab7" attr_partyId = "'+result.pressmeetList[i].partyId+'" attr_type="party" ><a>'+result.pressmeetList[i].pressMeetCount+'</a></span></h4>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">total spokes persons</p>';
-							str+='<h4><span style="cursor:pointer;color:#337ab7">'+result.pressmeetList[i].candidateArticleCount+'</span></h4>';
+							str+='<h4><span class="partyWisePressMeetCls" style="cursor:pointer;color:#337ab7" attr_type="candidate" attr_partyId = "'+result.pressmeetList[i].partyId+'"><a>'+result.pressmeetList[i].candidateArticleCount+'</a></span></h4>';
 						str+='</td>';
 						str+='<td>';
 						  var rating =parseInt(result.pressmeetList[i].overAllPerfomance)/5;
 							str+='<p class="text-capital">performance</p>';
-							str+='<input class="performanceRating" value="'+rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+rating+'</span>';
+							str+='<input class="performanceRating" value="'+rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom overAllPerformanceCls " attr_partyId = "'+result.pressmeetList[i].partyId+'" style="cursor:pointer;"><a>'+rating+'</a></span>';
 						str+='</td>';
 					str+='</tr>';
 				 str+='</tbody>';
@@ -378,7 +379,7 @@ function buildScaleBasedPerformanceCohortPressMeet(result)
 						str+='<td>';
 							str+='<p class="text-capital">OverAll Press Meets</p>';
 							
-							  str+='<h4><span style="cursor:pointer;"><a>'+result.pressmeetList[i].pressMeetCount+'</a></span></h4>';
+							  str+='<h4><span style="cursor:pointer;" attr_partyId="'+result.pressmeetList[i].partyId+'" class="partyWisePressMeetCls" attr_type="party" ><a>'+result.pressmeetList[i].pressMeetCount+'</a></span></h4>';
 							
 						str+='</td>';
 						for(var j in result.pressmeetList[i].characterList){
@@ -447,7 +448,7 @@ function buildCandidateOverAllPerformanceCohortPressmeet(result)
 										str+='<tbody>';
 											for(var j in result.paliticalPartyList[i].participantList){
 												str+='<tr>';
-													str+='<td class="text-capitalize">'+result.paliticalPartyList[i].participantList[j].name.toUpperCase()+'<br><span>Total press Meet : '+result.paliticalPartyList[i].participantList[j].pressMeetCount+'</span></td>';
+													str+='<td class="text-capitalize">'+result.paliticalPartyList[i].participantList[j].name.toUpperCase()+'<br><span class="pressmeetIdCountCls" attr_partyId="'+result.paliticalPartyList[i].id+'" attr_candidateId="'+result.paliticalPartyList[i].participantList[j].id+'" style="cursor:pointer;">Total press Meet : <a>'+result.paliticalPartyList[i].participantList[j].pressMeetCount+'</a></span></td>';
 													str+='<td>';
 														str+='<input class="performanceRating" value="'+result.paliticalPartyList[i].participantList[j].totalCount+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+result.paliticalPartyList[i].participantList[j].totalCount.toFixed(2)+'</span>';
 													str+='</td>';
@@ -513,7 +514,7 @@ function buildRolesPerformanceOfCandidatePressmeet(result){
 							str+='</td>';
 							str+='<td class="text-capital">';
 								str+='<p>Press Meets</p>';
-								str+='<p class="text-muted"><span style="cursor:pointer;"><a>'+result.participantList[i].totalPressmeet+'</a></span></p>';
+								str+='<p class="text-muted"><span style="cursor:pointer;" class="performancePressMeetCls" attr_partyId="'+result.participantList[i].partyId+'" attr_candidateId="'+result.participantList[i].id+'"><a>'+result.participantList[i].totalPressmeet+'</a></span></p>';
 							str+='</td>';
 							str+='<td class="text-capital">';
 								str+='<p>performance</p>';
@@ -554,7 +555,7 @@ function buildRolesPerformanceOfCandidatePressmeet(result){
 									str+='<input class="performanceRating" value="'+result.articlesList[i].paliticalPartyList[j].rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+result.articlesList[i].paliticalPartyList[j].rating.toFixed(2)+'</span>';
 									
 									str+='<p>Press Meets</p>';
-									str+='<p class="text-muted"><span style="cursor:pointer;"><a>'+result.articlesList[i].paliticalPartyList[j].totalPressmeet+'</a></span></p>';
+									str+='<p class="text-muted"><span style="cursor:pointer;" class="pressmeetIdCountPublicationCls" attr_partyId="'+result.articlesList[i].paliticalPartyList[j].partyId+'" attr_articleId="'+result.articlesList[i].id+'"><a>'+result.articlesList[i].paliticalPartyList[j].totalPressmeet+'</a></span></p>';
 									str+='</td>';
 							}
 						str+='</tr>';
@@ -703,3 +704,190 @@ function buildCandidateWiseCandidateOverAllPerformancePressmeetCohort(result,des
 		});  
 		$(".dataTableSorting").dataTable();
  }
+
+$(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetCls
+	$("#pressmeetModelDivId").modal("show");
+	var partyId = $(this).attr("attr_partyId");
+	var type = $(this).attr("attr_type");
+	$(".pressmeetModelCls").html("");	
+	$(".pressmeetModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$.ajax({
+   url: wurl+"/CommunityNewsPortal/webservice/getPressMeetDetailsByPartyWise/"+fromDate+"/"+toDate+"/"+partyId+"/"+type+"/383"
+  // url: "http://localhost:8080/CommunityNewsPortal/webservice/getPressMeetDetailsByPartyWise/"+fromDate+"/"+toDate+"/"+partyId+"/"+type+"/383"
+	}).then(function(result){
+     
+   if(result !=null){
+		if( type == 'candidate'){
+		 buildCoreDebatesBasicDetailsOfCandidates(result);
+		}else if(type='party'){
+	      buildCoreDebatesBasicDetailsOfParty(result);
+	   }
+	  
+	}
+	});
+});
+ 
+ function buildCoreDebatesBasicDetailsOfCandidates(result){
+	var str = '';
+		if(result.pressmeetList !=null && result.pressmeetList.length>0){
+								
+			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
+		 
+			 	str+= '<div class="table-responsive">';
+				str+= '<table class="table table-bordered " id="dataTablePressMeetId">';
+				str+= '<thead style="background:#ccc">';
+				str+='<th>Candidate Name</th>';
+				str+='<th style="max-width:200px;">Designation</th>';
+				str+='<th>Party Name </th>'
+				str+='<th>Characterstic Wise Performance </th>'
+				str+= '</thead>';
+				str+= '<tbody>';					
+				for(var i in result.pressmeetList){
+				str+='<tr>';
+				str+='<td>'+result.pressmeetList[i].candidateName+'</td>';
+				str+='<td>'+result.pressmeetList[i].designation+'</td>';
+				str+='<td>'+result.pressmeetList[i].partyName+'</td>';
+				str+='<td>';
+					str+='<table class="table table-bordered m_top10">';
+					str+='<tbody>';
+					for(var j in result.pressmeetList[i].participantList){
+						str+='<tr>';
+						str+='<td>'+result.pressmeetList[i].participantList[j].characterstics+'</td>';
+						str+='<td>';
+						str+='<input class="performanceRating" value="'+result.pressmeetList[i].participantList[j].rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom"  data-readonly>'+result.pressmeetList[i].participantList[j].rating.toFixed(2)+'</span>';
+						str+='</td>';
+						str+='</tr>';
+					}
+					str+='</tbody>';	
+					str+='</table>';	
+				str+='</td>';
+				str+='</tr>';
+				}	
+				str+= '</tbody>';
+				str+= '</div>';
+				str+= '</div>';
+				
+			
+			$(".pressmeetModelCls").html(str);
+			$('#dataTablePressMeetId').dataTable({
+				"iDisplayLength": 5,
+				"aLengthMenu": [[5,10, 15, 20, -1], [5,10, 15, 20, "All"]]
+				
+			 });
+			 $(".performanceRating").rating({
+				showClear: false,
+				showCaption:false,
+				hoverOnClear: true,
+				animate:false
+			});
+			
+		}
+		
+}
+ 
+ function buildCoreDebatesBasicDetailsOfParty(result){
+	var str = '';
+		if(result.pressmeetList !=null && result.pressmeetList.length>0){
+								
+			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
+		 
+			 	str+= '<div class="table-responsive">';
+				str+= '<table class="table table-bordered" id="dataTablePressMeetPartyId">';
+				str+= '<thead style="background:#ccc">';
+				str+='<th style="max-width:300px;">Title</th>';                         
+				str+='<th>Conducted Date</th>';
+				str+='<th>Candidate Name/Party Name </th>'
+				str+= '</thead>';
+				str+= '<tbody>';					
+				for(var i in result.pressmeetList){
+				str+='<tr>';
+				str+='<td>'+result.pressmeetList[i].title+'</td>';
+				str+='<td>'+result.pressmeetList[i].conductedDate+'</td>';
+				str+='<td>';
+					str+='<table class="table table-bordered m_top10">';
+					str+='<tbody>';
+					for(var j in result.pressmeetList[i].participantList){
+						str+='<tr>';
+						str+='<td width="70%">'+result.pressmeetList[i].participantList[j].candidateName+'</td>';
+						str+='<td width="30%">'+result.pressmeetList[i].participantList[j].partyName+'</td>';
+						str+='</tr>';      
+					}
+					str+='</tbody>';	
+					str+='</table>';	
+				str+='</td>';
+				str+='</tr>';
+				}	
+				str+= '</tbody>';
+				str+= '</div>';
+				str+= '</div>';
+				
+			
+			$(".pressmeetModelCls").html(str);
+			$('#dataTablePressMeetPartyId').dataTable({
+				"iDisplayLength": 10,
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				
+			 });
+			
+		}
+		
+}
+ 
+  $(document).on("click",".overAllPerformanceCls",function(){
+	$("#pressmeetModelDivId").modal("show");
+	$(".pressmeetModelCls").html("");	
+	$(".pressmeetModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var performancePartyId = $(this).attr("attr_partyId");
+		 buildScaleBasedCohortPressMeetClickPerformance(performanceResult,performancePartyId);
+});
+ 
+ function buildScaleBasedCohortPressMeetClickPerformance(result,partyIds)
+{
+	var str='';
+	if(result !=null){
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<div class="table-responsive">';
+			for(var i in result.pressmeetList){
+			if(result.pressmeetList[i].partyId == partyIds){
+				str+='<table class="table table-bordered  m_top10">';
+				str+= '<thead style="background:#ccc">';
+				str+='<th>Party Name</th>';
+				str+='<th>PressMeet Count</th>';
+				str+='<th>Subject</th>';
+				str+='<th>Creativity / Counter</th>';
+				str+='<th>Timely / Out of time</th>';
+				str+='<th>Counter Attack(Scale)</th>';
+				str+='<th>Coverage</th>';
+				str+= '</thead>';
+				  str+='<tbody>';
+					str+='<tr>';
+						str+='<td>';
+							str+='<img  src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+'" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
+						str+='</td>';
+						str+='<td>';
+							  str+='<h4><span style="cursor:pointer;"><a>'+result.pressmeetList[i].pressMeetCount+'</a></span></h4>';
+							
+						str+='</td>';
+						for(var j in result.pressmeetList[i].characterList){
+						str+='<td>';
+							str+='<input class="performanceRating" value="'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><br/><h5 class="label label-default label-xs labelCustom pull-right"  data-readonly>'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'</h5>';
+						str+='</td>';
+						}
+					str+='</tr>';
+				 str+='</tbody>';
+				str+='</table>';
+			}
+			str+='</div>';
+		str+='</div>';
+		$(".pressmeetModelCls").html(str)
+		$(".performanceRating").rating({
+			showClear: false,
+			showCaption:false,
+			hoverOnClear: true,
+			animate:false
+		});
+	 }	
+	}else{
+		$(".pressmeetModelCls").html('<h3>NO DATA AVAILABLE</h3>')
+	}
+}
