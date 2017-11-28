@@ -70,7 +70,9 @@ function onLoadCalls()
 			locType = 'constituency'
 			dataArr = ['constituency','mandal','panchayat'];
 		}
-		var tableId = projectDivId.replace(/\s+/g, '')+''+levelType;
+		//var tableId = projectDivId.replace(/\s+/g, '')+''+levelType;
+		var tableId = projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '');
+		//console.log(outputString);
 		console.log(projectDivId)
 		console.log(tableId)
 		$("#nregsPanExpModalId").modal('hide');
@@ -99,13 +101,13 @@ function onLoadCalls()
 		var projectDivId = $(this).attr("overview-block");
 		var levelId = $(this).attr("attr_levelId");
 		var locationId = $(this).attr("attr_locationId");
-		
-		if(projectDivId == 'Greenary works Chettu' || projectDivId == 'Agriculture Related Works' || projectDivId == 'Rural Sanitation Works' || projectDivId == 'Soil Moisture Conservation works Neeru' || projectDivId == 'Works in community lands' || projectDivId == 'IJP PROGRAM WORKS' || projectDivId == 'Institutional Development Works' || projectDivId == 'Road Works' || projectDivId == 'Water Harvesting Structures Neeru' || projectDivId == 'AH-Live Stock Related works')
+		//globalMCCMainDivName = projectDivId;
+		/* if(projectDivId == 'Greenary works Chettu' || projectDivId == 'Agriculture Related Works' || projectDivId == 'Rural Sanitation Works' || projectDivId == 'Soil Moisture Conservation works Neeru' || projectDivId == 'Works in community lands' || projectDivId == 'IJP PROGRAM WORKS' || projectDivId == 'Institutional Development Works' || projectDivId == 'Road Works' || projectDivId == 'Water Harvesting Structures Neeru' || projectDivId == 'AH-Live Stock Related works')
 		{
 			$("#nregsPanExpModalId").modal('show');
 			$("#larBudExpHeadingId").html(projectDivId);
 			getWorkWiseAbstractForMCCOthers(projectDivId,levelId,locationId)
-		}else{
+		}else{ */
 			globalDivName = projectDivId;
 			
 			$("#consolidatedView").hide();
@@ -114,7 +116,7 @@ function onLoadCalls()
 			$("[overview-state='"+projectDivId+"'],[overview-district='"+projectDivId+"']").addClass("active");
 			$(".overviewAllCls").hide(); 
 			projectData(projectDivId,levelId,locationId);
-			if(globalDivName != 'coffee'&& globalDivName != 'Renovation and Improvements to existing Check Dams Check Wall'&& globalDivName != 'Road Formation Upto WBM GR II Including CD works'&& globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas'&& globalDivName !=  'Construction Of Animal Hostel'&& globalDivName != 'Roads for Unconnected Habitations 2011-12' && globalDivName != 'Construction of New Check Dam' && globalDivName !=  'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' && globalDivName !=  'Construction of Food Grains Storage Structures of 250MT' && globalDivName !=  'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' && globalDivName !=  'Construction of Village Haats Infrastructure fecilities' && globalDivName !=  'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' && globalDivName != 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' && globalDivName != 'Construction of Buildings for women self help group federation' && globalDivName != 'Work Site Facilities' && globalDivName != 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' && globalDivName != 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' && globalDivName != 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' && globalDivName != 'Production of Grafts in HNTC' && globalDivName != 'Improvements of RYTHU BAZAR' && globalDivName != 'Roads for Unconnected Habitations 2012-13 and afterwards' && globalDivName != 'HNTC Development' && globalDivName != 'New Open Well for Drinking water purpose' && globalDivName != 'Construction of Crematoria Burial Grounds' && globalDivName != 'Repairs to Existing Check Dam' && globalDivName != 'Formation of Road upto Gravel surface including CD works to agriculture fields' && globalDivName != 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' && globalDivName != 'Construction of Food Grains Storage Structures of 500MT' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' && globalDivName != 'Raising of Cashew bag seedlings for 2014-15' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas'  && globalDivName != 'Cattle Ponds' && globalDivName != 'Desilting of Drinking Water Tanks' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank1' && globalDivName != 'Animal Husbandry Others' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank' && globalDivName != "Azolla Production Unit" && globalDivName != "Construction of silopits of 3 MTs capacity" && globalDivName != "Fodder trough for Cattle Cattle drinking water trough" && globalDivName != "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" && globalDivName != "Raising of Perinnial Fodder" && globalDivName != "Raising of Silvipasture clubbed with subabul plantation" && globalDivName != "Construction of Checkdam across peeraiah vanka Check Dam 1" && globalDivName != "ManDays")
+			if(globalDivName != 'coffee'&& globalDivName != 'Renovation and Improvements to existing Check Dams Check Wall'&& globalDivName != 'Road Formation Upto WBM GR II Including CD works'&& globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas'&& globalDivName !=  'Construction Of Animal Hostel'&& globalDivName != 'Roads for Unconnected Habitations 2011-12' && globalDivName != 'Construction of New Check Dam' && globalDivName !=  'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' && globalDivName !=  'Construction of Food Grains Storage Structures of 250MT' && globalDivName !=  'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' && globalDivName !=  'Construction of Village Haats Infrastructure fecilities' && globalDivName !=  'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' && globalDivName != 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' && globalDivName != 'Construction of Buildings for women self help group federation' && globalDivName != 'Work Site Facilities' && globalDivName != 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' && globalDivName != 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' && globalDivName != 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' && globalDivName != 'Production of Grafts in HNTC' && globalDivName != 'Improvements of RYTHU BAZAR' && globalDivName != 'Roads for Unconnected Habitations 2012-13 and afterwards' && globalDivName != 'HNTC Development' && globalDivName != 'New Open Well for Drinking water purpose' && globalDivName != 'Construction of Crematoria Burial Grounds' && globalDivName != 'Repairs to Existing Check Dam' && globalDivName != 'Formation of Road upto Gravel surface including CD works to agriculture fields' && globalDivName != 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' && globalDivName != 'Construction of Food Grains Storage Structures of 500MT' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' && globalDivName != 'Raising of Cashew bag seedlings for 2014-15' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas'  && globalDivName != 'Cattle Ponds' && globalDivName != 'Desilting of Drinking Water Tanks' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank1' && globalDivName != 'Animal Husbandry Others' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank' && globalDivName != "Azolla Production Unit" && globalDivName != "Construction of silopits of 3 MTs capacity" && globalDivName != "Fodder trough for Cattle Cattle drinking water trough" && globalDivName != "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" && globalDivName != "Raising of Perinnial Fodder" && globalDivName != "Raising of Silvipasture clubbed with subabul plantation" && globalDivName != "Construction of Checkdam across peeraiah vanka Check Dam 1" && globalDivName != "ManDays" && globalDivName != 'Greenary works Chettu' && globalDivName != 'Agriculture Related Works' && globalDivName != 'Rural Sanitation Works' && globalDivName != 'Soil Moisture Conservation works Neeru' && globalDivName != 'Works in community lands' && globalDivName != 'IJP PROGRAM WORKS' && globalDivName != 'Institutional Development Works' && globalDivName != 'Road Works' && globalDivName != 'Water Harvesting Structures Neeru' && globalDivName != 'AH-Live Stock Related works' )
 			{
 				overviewData(projectDivId,levelId,locationId);
 			}
@@ -122,7 +124,7 @@ function onLoadCalls()
 			$('html,body').animate({
 				scrollTop: $("#projectOverviewBlock").offset().top},
 			'slow');
-		}
+		//}
 		
 	});
 	$(document).on("click",".rightNavigationMenuRes",function(){
@@ -464,10 +466,20 @@ function onLoadCalls()
 					else
 						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 				}
+				
+				if(globalDivName !='' && (globalDivName == 'Agriculture Related Works' || globalDivName == 'Greenary works Chettu' || globalDivName == 'Rural Sanitation Works' || globalDivName == 'IJP PROGRAM WORKS' || globalDivName == 'Works in community lands' || globalDivName == 'Soil Moisture Conservation works Neeru' || globalDivName == 'Institutional Development Works' || globalDivName == 'Road Works' || globalDivName == 'Water Harvesting Structures Neeru' || globalDivName == 'AH-Live Stock Related works')){
+				theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				if(levelType == "constituency")
+					theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(levelType == "mandal")
+					theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(levelType == "panchayat")
+					theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			}
 			}
 			
 			
-			var tableId = divId.replace(/\s+/g, '')+''+levelType;
+			var tableId = divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+levelType;
 			
 			$("#"+tableId).html(spinner);
 			var districtId = $("#selectedName").attr("attr_distId");
@@ -497,6 +509,10 @@ function onLoadCalls()
 					getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == 'Raising and Maintenance of Block Plantations' || divId == 'Raising and Maintenance of nurseries' || divId == 'Soil and Moisture Conservation Works' || divId == 'Raising and Maintenance of Avenue plantations')
 					getNregaForestLevelData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId);
+				else if(divId == 'Greenary works Chettu' || divId == 'Agriculture Related Works' || divId == 'Rural Sanitation Works' || 	divId == 'Soil Moisture Conservation works Neeru' || divId == 'Works in community lands' || divId == 'IJP PROGRAM WORKS' || divId == 'Institutional Development Works' || divId == 'Road Works' || divId == 'Water Harvesting Structures Neeru' || divId == 'AH-Live Stock Related works'){
+					getNregaOtherMCCAbstarctData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
+				}
+				
 				/* else if(divId == 'Greenary works Chettu' || divId == 'Agriculture Related Works' || divId == 'Rural Sanitation Works' || divId == 'Soil Moisture Conservation works Neeru' || divId == 'Works in community lands' || divId == 'IJP PROGRAM WORKS' || divId == 'Institutional Development Works' || divId == 'Road Works' || divId == 'Water Harvesting Structures Neeru' || divId == 'AH-Live Stock Related works')
 					getNregaOtherMCCLevelData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId); */
 				else if(divId == 'coffee')
@@ -823,14 +839,14 @@ function projectData(divId,levelId,locationId)
 							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FF0000;border-radius:50%;"></span> Below 60%</li>';
 						collapse+='</ul>';
 					}
-					collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
+					collapse+='<div class="panel-group" id="accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
 						collapse+='<div class="panel panel-default panel-black">';
-							collapse+='<div class="panel-heading" role="tab" id="heading'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
+							collapse+='<div class="panel-heading" role="tab" id="heading'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
 								if(i == 0)
 								{
-									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
+									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
 								}else{
-									collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
+									collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
 								}
 									if(divId == 'FAperformance')
 									{
@@ -890,9 +906,9 @@ function projectData(divId,levelId,locationId)
 							collapse+='</div>';
 							if(i == 0)
 							{
-								collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
+								collapse+='<div id="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
 							}else{
-								collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
+								collapse+='<div id="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
 							}
 							
 								collapse+='<div class="panel-body">';
@@ -900,35 +916,35 @@ function projectData(divId,levelId,locationId)
 								{
 									collapse+='';
 									collapse+='<label class="radio-inline">';
-										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Material"  type="radio" attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> Material';
+										collapse+='<input name="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Material"  type="radio" attr_radioBtn="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'"/> Material';
 									collapse+='</label>';
 									collapse+='<label class="radio-inline">';
-										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Wage" type="radio" checked attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> Wage';
+										collapse+='<input name="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Wage" type="radio" checked attr_radioBtn="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'"/> Wage';
 									collapse+='</label>';
 									collapse+='<label class="radio-inline">';
-										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Total" type="radio" attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> Total';
+										collapse+='<input name="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Total" type="radio" attr_radioBtn="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'"/> Total';
 									collapse+='</label>';
 									collapse+='<label class="radio-inline">';
-										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="All" type="radio" attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> All';
+										collapse+='<input name="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="All" type="radio" attr_radioBtn="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'"/> All';
 									collapse+='</label>';
 								}
 								if(divId == 'Timely Payment')
 								{
 									collapse+='<label class="radio-inline">';
-										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="-1" attr_id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" checked name="timelyPayment'+dataArr[i]+'"/>ALL';
+										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="-1" attr_id="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" checked name="timelyPayment'+dataArr[i]+'"/>ALL';
 									collapse+='</label>';
 									collapse+='<label class="radio-inline">';
-										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="MCC" attr_id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" name="timelyPayment'+dataArr[i]+'"/>MCC';
+										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="MCC" attr_id="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" name="timelyPayment'+dataArr[i]+'"/>MCC';
 									collapse+='</label>';
 									collapse+='<label class="radio-inline">';
-										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="WCC" attr_id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" name="timelyPayment'+dataArr[i]+'"/>WCC';
+										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="WCC" attr_id="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" name="timelyPayment'+dataArr[i]+'"/>WCC';
 									collapse+='</label>';
 									collapse+='<label class="radio-inline">';
-										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="DCC" attr_id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" name="timelyPayment'+dataArr[i]+'"/>DCC';
+										collapse+='<input type="radio" class="timelyPaymentRadioCls" attr_levelId="'+levelId+'"  overview-locationId="'+locationId+'" attr_locationType="'+dataArr[i]+'" attr_type="DCC" attr_id="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" name="timelyPayment'+dataArr[i]+'"/>DCC';
 									collapse+='</label>';
 								}
 								
-									collapse+='<div id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"></div>';
+									collapse+='<div id="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'"></div>';
 								collapse+='</div>';
 							collapse+='</div>';
 						collapse+='</div>';
@@ -1070,6 +1086,16 @@ function projectData(divId,levelId,locationId)
 				else
 					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 			}
+			if(divId !='' && (divId == 'Agriculture Related Works' || divId == 'Greenary works Chettu' || divId == 'Rural Sanitation Works' || divId == 'IJP PROGRAM WORKS' || divId == 'Works in community lands' || divId == 'Soil Moisture Conservation works Neeru' || divId == 'Institutional Development Works' || divId == 'Road Works' || divId == 'Water Harvesting Structures Neeru' || divId == 'AH-Live Stock Related works')){
+				theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				if(dataArr[i] == "constituency")
+					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(dataArr[i] == "mandal")
+					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(dataArr[i] == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			}
+			
 			if(globalMCCMainDivName !='' && (globalMCCMainDivName == 'Agriculture Related Works' || globalMCCMainDivName == 'Greenary works Chettu' || globalMCCMainDivName == 'Rural Sanitation Works' || globalMCCMainDivName == 'IJP PROGRAM WORKS' || globalMCCMainDivName == 'Works in community lands' || globalMCCMainDivName == 'Soil Moisture Conservation works Neeru' || globalMCCMainDivName == 'Institutional Development Works' || globalMCCMainDivName == 'Road Works' || globalMCCMainDivName == 'Water Harvesting Structures Neeru' || globalMCCMainDivName == 'AH-Live Stock Related works')){
 				theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				if(dataArr[i] == "constituency")
@@ -1081,7 +1107,7 @@ function projectData(divId,levelId,locationId)
 			}
 				
 		}
-		var tableId = divId.replace(/\s+/g, '')+''+dataArr[i];
+		var tableId = divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i];
 		$("#"+tableId).html(spinner);
 		var districtId = $("#selectedName").attr("attr_distId");
 		if(divId == 'Labour Budget')
@@ -1107,8 +1133,10 @@ function projectData(divId,levelId,locationId)
 		else if(divId == 'Raising and Maintenance of Block Plantations' || divId == 'Raising and Maintenance of nurseries' || divId == 'Soil and Moisture Conservation Works' || divId == 'Raising and Maintenance of Avenue plantations')
 			getNregaForestLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId);
 		 else if(globalMCCMainDivName == 'Greenary works Chettu' || globalMCCMainDivName == 'Agriculture Related Works' || globalMCCMainDivName == 'Rural Sanitation Works' || globalMCCMainDivName == 'Soil Moisture Conservation works Neeru' || globalMCCMainDivName == 'Works in community lands' || globalMCCMainDivName == 'IJP PROGRAM WORKS' || globalMCCMainDivName == 'Institutional Development Works' || globalMCCMainDivName == 'Road Works' || globalMCCMainDivName == 'Water Harvesting Structures Neeru' || globalMCCMainDivName == 'AH-Live Stock Related works')
-			getNregaOtherMCCLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId); 
-		else if(divId == 'coffee')
+			getNregaOtherMCCLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
+		else if(divId == 'Greenary works Chettu' || divId == 'Agriculture Related Works' || divId == 'Rural Sanitation Works' || divId == 'Soil Moisture Conservation works Neeru' || divId == 'Works in community lands' || divId == 'IJP PROGRAM WORKS' || divId == 'Institutional Development Works' || divId == 'Road Works' || divId == 'Water Harvesting Structures Neeru' || divId == 'AH-Live Stock Related works'){
+			getNregaOtherMCCAbstarctData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
+		}else if(divId == 'coffee')
 			getNregaLevelsWiseDataFrCoffeePlantation(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId);
 		else if(divId == 'Cattle Ponds' || divId == 'Desilting of Drinking Water Tanks' || divId == 'Comprehensive Restoration of minor Irrigation Tank1' || divId == 'Animal Husbandry Others')					
 			getNregaMCCNewComponetsLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
@@ -1124,10 +1152,10 @@ function overviewData(divId,levelId,locationId)
 	collapse+='<section>';
 		collapse+='<div class="row overviewAllCls">';
 			collapse+='<div class="col-sm-12">';
-				collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+'" role="tablist" aria-multiselectable="true">';
+				collapse+='<div class="panel-group" id="accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" role="tablist" aria-multiselectable="true">';
 					collapse+='<div class="panel panel-default panel-black">';
 						collapse+='<div class="panel-heading" role="tab" id="heading'+divId+'">';
-							collapse+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+'" href="#collapse'+divId.replace(/\s+/g, '')+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+'">';
+							collapse+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" href="#collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'">';
 							if(divId == 'FAperformance')
 							{
 								collapse+='<h4 class="panel-title text-capitalize">FA Performance overview</h4>';
@@ -1179,24 +1207,24 @@ function overviewData(divId,levelId,locationId)
 								
 							collapse+='</a>';
 						collapse+='</div>';
-						collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+'">';
+						collapse+='<div id="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'">';
 							collapse+='<div class="panel-body">';
 								if(divId == 'Timely Payment')
 								{
 									collapse+='<label class="radio-inline">';
-										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="-1" name="timelyPayment'+divId.replace(/\s+/g, '')+'Overview" checked/>ALL';
+										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="-1" name="timelyPayment'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'Overview" checked/>ALL';
 									collapse+='</label>';
 									collapse+='<label class="radio-inline">';
-										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="MCC" name="timelyPayment'+divId.replace(/\s+/g, '')+'Overview"/>MCC';
+										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="MCC" name="timelyPayment'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'Overview"/>MCC';
 									collapse+='</label>';
 									collapse+='<label class="radio-inline">';
-										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="WCC" name="timelyPayment'+divId.replace(/\s+/g, '')+'Overview"/>WCC';
+										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="WCC" name="timelyPayment'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'Overview"/>WCC';
 									collapse+='</label>';
 									collapse+='<label class="radio-inline">';
-										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="DCC" name="timelyPayment'+divId.replace(/\s+/g, '')+'Overview"/>DCC';
+										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="DCC" name="timelyPayment'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'Overview"/>DCC';
 									collapse+='</label>';
 								}
-								collapse+='<div id="projectOvervw'+divId.replace(/\s+/g, '')+'"></div>';
+								collapse+='<div id="projectOvervw'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'"></div>';
 							collapse+='</div>';
 						collapse+='</div>';
 					collapse+='</div>';
@@ -1502,6 +1530,7 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i]+'</h4>';
 												}
 											str+='</div>';
+											str+='<h4 style="background-color:#87ceeb;padding:5px;text-align:center;font-size:12px;cursor:pointer;color:white;text-weight:bold;" class="OtherMCCPopCls" attr_project_div_id ="'+result[i]+'">SUB WORKS</h4>';
 										str+='</div>';
 									}
 								}
@@ -1795,7 +1824,7 @@ function buildNREGSProjectsOverview(result,blockName)
 function getNREGSLabourBudgetOverview(projectDivId,menuLocationType,menuLocationId)
 {
 	var districtId = $("#selectedName").attr("attr_distid");
-	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
+	$("#projectOvervw"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
@@ -2176,7 +2205,7 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 			str1+='</tbody>';
 		str1+='</table>';
 	str1+='</div>';
-	str1+='<div id="projectExp'+projectDivId.replace(/\s+/g, '')+'" style="margin-top:10px;"></div>';
+	str1+='<div id="projectExp'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" style="margin-top:10px;"></div>';
 	/* if(result.targettedPersonDays != null)
 	{
 		str1+='<div id="projectExp'+projectDivId.replace(/\s+/g, '')+'" style="margin-top:10px;"></div>';
@@ -2207,7 +2236,7 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 	} */
 	if(projectDivId == 'Labour Budget')
 		getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId);
-	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str1);
+	$("#projectOvervw"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(str1);
 	
 }
 
@@ -2243,7 +2272,7 @@ function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocati
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
-	$("#projectExp"+projectDivId.replace(/\s+/g, '')).html(str);
+	$("#projectExp"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(str);
 }
 
 //DistrictConst Call -- Nandhini
@@ -4177,7 +4206,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 
 function getNregasOverview(projectDivId,menuLocationType,menuLocationId,districtId,programId)
 {
-	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
+	$("#projectOvervw"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(spinner);
 	if(projectDivId == 'FAperformance')
 	{
 		var json = {
@@ -4230,7 +4259,7 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId,district
 function getNregasForestOverview(projectDivId,menuLocationType,menuLocationId,districtId,programId)
 {
 	var districtId = $("#selectedName").attr("attr_distId");
-	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
+	$("#projectOvervw"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(spinner);
 	
 	var json = {
 		year : "2017",
@@ -5147,7 +5176,7 @@ function getNREGSForestProjectsAbstract(type,locType,locId,blockName,levelId)
 
 function getNregaPaymentsAbsAndOverview(type,locType,locId,levelId,buildType)
 {
-	$("#projectOvervw"+type.replace(/\s+/g, '')).html(spinner);
+	$("#projectOvervw"+type.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
@@ -5248,7 +5277,7 @@ function buildPaymentsOverviewData(result,projectDivId)
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
-	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str);
+	$("#projectOvervw"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(str);
 }
 
 function getNREGSAbstractDataByType(type,locType,locId,blockName,levelId,buildDateType)
@@ -5834,7 +5863,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	{
 		$("[overview-block='"+blockName+"']").trigger("click");
 	}
-	if(searchParams != null && type.replace(/\s+/g, '') == searchParams.replace(/\s+/g, ''))
+	if(searchParams != null && type.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '') == searchParams.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, ''))
 	{
 		$('[overview-block="'+searchParams+'"]').trigger('click');
 	}
@@ -6785,7 +6814,7 @@ $(document).on("change","[mcctype_click]",function(){
 			theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 		else if(dataArr[i] == "panchayat")
 			theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-		var tableId = blockName.replace(/\s+/g, '')+''+dataArr[i];
+		var tableId = blockName.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i];
 		getNregaOtherMCCLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,blockName,'overview',levelId)
 	}	
 });
@@ -7307,7 +7336,7 @@ function getNregaOtherMCCAbstarctData(divIdd,locationTypeNew,theadArr,menuLocati
 			if(buildType == 'Abstract')
 			{
 				buildNREGSAbstractDataByTypeNew(divIdd,ajaxresp,'',menuLocationId,menuLocationType,levelId);
-			}/* else{
+			} else{
 				var str = '';
 				if(ajaxresp != null && ajaxresp.length > 0){
 					for(var i in ajaxresp){
@@ -7369,8 +7398,18 @@ function getNregaOtherMCCAbstarctData(divIdd,locationTypeNew,theadArr,menuLocati
 					}
 				}
 				tableView(divIdd,theadArr,str,locationTypeNew,blockName);
-			} */
+			} 
 			
 		}
 	});
 }
+
+$(document).on("click",".OtherMCCPopCls",function(){
+	var projectDivId = $(this).attr("attr_project_div_id");
+	var levelId = $("[overview-block]").attr("attr_levelId");
+	var locationId = $("[overview-block]").attr("attr_locationId");
+	
+	$("#nregsPanExpModalId").modal('show');
+	$("#larBudExpHeadingId").html(projectDivId);
+	getWorkWiseAbstractForMCCOthers(projectDivId,levelId,locationId)
+});
