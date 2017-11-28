@@ -724,6 +724,29 @@ public class LightMonitoringService  implements ILightMonitoring{
 					  list.add(dateVO);	  
 				  }
 			}
+			 //checking is new lights has added on not.if new lights has not added in sequence of date then placing zero.
+			 if (list.size() > 0) {
+				 for(int i = list.size()-1; i>0; i--) {
+					 int j = i;
+					 LightMonitoringVO oldDateVO = list.get(i);
+					 LightMonitoringVO newDateVO = list.get(--j);
+					 Long totalLight =  oldDateVO.getTotalLights()- newDateVO.getTotalLights();
+					 if (totalLight == 0l) {
+						 newDateVO.setPendingLightcount(0l);
+					 }
+					  if (newDateVO.getSubList() != null && newDateVO.getSubList().size() > 0) {
+						  for(LightMonitoringVO vo:newDateVO.getSubList()) {
+							  LightMonitoringVO matchVO = getMatchVO(oldDateVO.getSubList(), vo.getLightVendorId());
+							   if (matchVO != null ) {
+								   Long totalLghts = matchVO.getTotalLights()-vo.getTotalLights();
+								    if (totalLghts == 0l) {
+								    	vo.setPendingLightcount(0l);
+								    }
+							   }
+						  }
+					  }
+				 }
+			 }
 			
 	  }catch (Exception e) {
    	   LOG.error("Exception raised at getTimePeriodWiseLightsDetails - LightMonitoringService service", e);
