@@ -5662,7 +5662,7 @@ class TrainingCampService implements ITrainingCampService{
 		return finalDocs;
 	}
 	
-	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments,final List<String> docs,final List<SimpleVO> feedBackCategories)
+	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments,final List<String> docs,final List<SimpleVO> feedBackCategories,final Long programId)
 	{
 		final CadreDetailsVO cadreDetailsVO = new CadreDetailsVO();
 		try{
@@ -5683,6 +5683,7 @@ class TrainingCampService implements ITrainingCampService{
 						feedBackDetails=new TrainingCampCadreFeedbackDetails();
 						feedBackDetails.setTdpCadreId(tdpCadreId);
 						feedBackDetails.setTrainingCampBatchId(batchId);
+						feedBackDetails.setTrainingCampProgramId(programId);
 					    feedBackDetails.setInsertedBy(userId);
 					    feedBackDetails.setUpdatedBy(userId);
 					    Date date=new DateUtilService().getCurrentDateAndTime();// smartPhoneId whatsappId  whatsappShareId facebookId 
