@@ -2167,10 +2167,11 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    		String whatsappId = request.getParameter("whatsappId");
    		String whatsappShareId = request.getParameter("whatsappShareId");
    		String facebookId = request.getParameter("facebookId");
+   		Long programId = Long.parseLong(request.getParameter("programId")); ;
    	
    		
    	 
-   		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId,filePaths,feedbackDocuments,feedbackCategories);
+   		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId,filePaths,feedbackDocuments,feedbackCategories,programId);
    		
    	
    	}	
