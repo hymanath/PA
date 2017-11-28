@@ -19,7 +19,7 @@ $(document).on("click",function(){
 });
 $(document).keydown(function(event){
 	if(event.keyCode==123){
-		alert("Hoo no! don't try to expose me");
+		alert("Hoo no! don't try to expose me");		
 		return false;
 	}
 	else if(event.ctrlKey && event.shiftKey && event.keyCode==73){        
@@ -178,7 +178,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 			}else if(distId>0){
 				for(var i in result){
 					if(distId == result[i].id){
-					$("#onclickDistName").html(result[i].name);
+					$("#onclickDistName").html(result[i].name+" OVERVIEW");
 					$("#swmModalContent #rfidTaggedHouses").html(result[i].rfidTags);
 					$("#swmModalContent  #registeredFarmers").html(result[i].farmers);
 					$("#swmModalContent  #mgnrgsId").html(result[i].mgnres);
@@ -192,7 +192,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 					$("#swmModalContent  #evehicleId").html(result[i].evehicle);
 					var totRegvehicles = result[i].tractor+result[i].auto+result[i].tricycle+result[i].evehicle;
 					$("#swmModalContent  #totalRegVehicles").html(totRegvehicles);
-					$("#swmModalContent  #gpId").html();
+					$("#swmModalContent  #gpId").html("<span style='font-size:12px'>NO DATA</span>");
 					$("#swmModalContent  #blocksId").html(result[i].blocks);
 					$("#swmModalContent  #solidWasteId").html(result[i].houseCollecion);
 					$("#swmModalContent  #farmerCattleDung").html(result[i].farmerCollection);
@@ -283,13 +283,13 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 					for(var i in result)
 					{					
 						if(blockid == 'districtBodyId'){
-							table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
+							table+='<tr attr_onclick_distname="'+blockid+'">';
 						}else if(blockid == 'constituencyBodyId'){
-							table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
+							table+='<tr attr_onclick_distname="'+blockid+'">';
 						}else if(blockid == 'mandalBodyId'){
-							table+='<tr attr_onclick_distname="'+blockid+'" data-toggle="modal" data-target="#swmModal" attr_dist_id="'+result[i].id+'" style="cursor:pointer">';
+							table+='<tr attr_onclick_distname="'+blockid+'">';
 						}
-							table+='<td attr_dist_name="'+result[i].name+'" attr_dist_id="'+result[i].id+'">'+result[i].name+'</td>';
+							table+='<td attr_dist_name="'+result[i].name+'" attr_dist_id="'+result[i].id+'" attr_onclick_distname="'+blockid+'" style="cursor: pointer" class="text-capital" data-toggle="modal" data-target="#swmModal">'+result[i].name+'<i class="fa fa-info-circle pull-right" aria-hidden="true" title="Click for '+result[i].name+' Details" attr_onclick_distname="'+blockid+'" attr_dist_id="'+result[i].id+'" style="cursor: pointer"></i></td>';
 							table+='<td attr_dist_rfid="'+result[i].rfidTags+'">'+result[i].rfidTags+'</td>';
 							table+='<td attr_dist_farmer="'+result[i].farmers+'">'+result[i].farmers+'</td>';
 							table+='<td attr_dist_rfidTracking="'+result[i].rfidTracking+'">'+result[i].rfidTracking+'</td>';
@@ -308,6 +308,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 		$("#"+blockid+"dataTableId").dataTable({
 			"iDisplayLength": 15,
 			"aaSorting": [],
+			"order": [ 0, 'asc' ],
 			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 			"<'row'<'col-sm-12'tr>>" +
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -317,17 +318,17 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 					extend		:'csvHtml5',
 					text		:'<i class="fa fa-file-text-o"></i>',
 					titleAttr	: 'CSV',
-					title		:  blockid,
+					title		:  "SOLID WASTE MANAGEMENT OVERVIEW",
 					filename	:  blockid+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				},
 				{
 					extend		:'pdfHtml5',
 					text		:'<i class="fa fa-file-pdf-o"></i>',
 					titleAttr	:'PDF',
-					title		: blockid,
+					title		: "SOLID WASTE MANAGEMENT OVERVIEW",
 					filename	: blockid+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 					orientation	: "landscape",
-					pageSize	: 'A4',
+					pageSize	: 'A3',
 					customize	: function (doc) {
 								doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
 								}
