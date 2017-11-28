@@ -18531,9 +18531,18 @@
 			<param name="root">tourOverviewDtlsVO</param>
 		</result>
 	</action>
-		<action name="getCandaiteDetailsByTypeAction" class="coreDashboardAction"  method="getCandaiteDetailsByType">
-			<result type="json" name="success">
+	<action name="getCandaiteDetailsByTypeAction" class="coreDashboardAction"  method="getCandaiteDetailsByType">
+		<result type="json" name="success">
 			<param name="root">tourOverviewDtlsList</param>
+		</result>
+	</action>
+	
+	<action name="boothCommitteeDetailsAction" class="boothReportAction"  method="boothCommitteeDetails">
+		<result name="success">/jsp/boothCommitteeDetails.jsp</result>
+	</action>
+	<action name="getBoothInchargeCommitteeDetailsByLocationAction" class="boothReportAction"  method="getBoothInchargeCommitteeDetailsByLocation">
+		<result type="json" name="success">
+			<param name="root">boothDtlsList</param>
 		</result>
 	</action>
  </package>

@@ -412,4 +412,25 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getBoothInchargeCommitteeDetailsByLocation(){
+		try {
+			/*HttpSession session = request.getSession();
+			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			 if(user == null)
+				 return Action.ERROR;*/
+			 //List<Long> boothCommitteeIdsList = new ArrayList<Long>(0);
+			 jObj = new JSONObject(getTask());
+			 Long levelId = jObj.getLong("levelId");
+			 Long levelValue = jObj.getLong("levelValue");
+			 boothDtlsList = boothDataValidationService.getBoothInchargeCommitteeDetailsByLocation(levelId, levelValue);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getBoothInchargeCommitteeDetailsByLocation() method of BoothReportAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String boothCommitteeDetails(){
+		return Action.SUCCESS;
+	}
 }
