@@ -1112,12 +1112,18 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 				JbCommittee jbCommittee = jbCommitteeDAO.get(committeeId);
 				if(jbCommittee !=null){
 					if(jbCommittee.getIsDeleted().equalsIgnoreCase("N")){
-						Long updateCnt = jbCommitteeMemberDAO.updateMembersToRejectStatus(committeeId);
+						List<JbCommitteeMember> members = jbCommitteeMemberDAO.updateMembersToRejectStatus(committeeId);
+						if(commonMethodsUtilService.isListOrSetValid(members)){
+							for (JbCommitteeMember jbCommitteeMember : members) {
+								jbCommitteeMember.setStatus("R");
+								jbCommitteeMember.setIsActive("N");
+								jbCommitteeMemberDAO.save(jbCommitteeMember);
+							}
+						}
 						jbCommittee.setJbCommitteeStatusId(2l);
 						JbCommittee updatedJbCommittee = jbCommitteeDAO.save(jbCommittee);
-						if(updatedJbCommittee !=null && updateCnt != null){
-							resultStatus.setExceptionMsg("SUCCESS");
-						}
+						resultStatus.setExceptionMsg("SUCCESS");
+						
 					}else{
 						resultStatus.setExceptionMsg("Committee Not in Active");
 					}
