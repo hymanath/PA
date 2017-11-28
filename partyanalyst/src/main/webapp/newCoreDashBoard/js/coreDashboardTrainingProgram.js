@@ -3172,89 +3172,121 @@ function getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(){
 	});
 }
 
- function buildTrainingCampBatchCenterWiseDetails(result){ 
-  var str='';
-  str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-  str+='<h4 class="text-capital"><span class="headingColor">Training Center Wise Analysis</span></h4>';
-  str+='<div class="panel-group trainingCenterPanel m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
-if(result.trainingProgramList != null && result.trainingProgramList.length> 0){		
-	for(var i in result.trainingProgramList)
-			{
-					str+='<div class="panel panel-default">';
-						str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingTrainingBatch'+i+'">';
-						if(i == 0)  
-							{
-								str+='<a role="button" class="collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
-							}else{
-								str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
-							}
-							var Average = (parseInt(result.trainingProgramList[i].totalAttenedCount)/parseInt(result.trainingProgramList[i].totalBath)).toFixed(2);
-							str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<br/><span style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.trainingProgramList[i].description+'" >[Total Batchs :'+result.trainingProgramList[i].totalBath+']&nbsp[Average Attended Per Batch:'+Average+']</span></h4>';
-							str+='</a>';
-						str+='</div>';
-						if(i == 0)
-						{
-							str+='<div id="collapseTrainingBatch'+i+'" class="panel-collapse collapse in" aria-labelledby="headingTrainingBatch'+i+'" style="position:relative">';
-						}else{
-							str+='<div id="collapseTrainingBatch'+i+'" class="panel-collapse collapse" aria-labelledby="headingTrainingBatch'+i+'" style="position:relative">';
+function buildTrainingCampBatchCenterWiseDetails(result){ 
+	var str='';
+	str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+	str+='<h4 class="text-capital"><span class="headingColor">Training Center Wise Analysis</span></h4>';
+	str+='<div class="panel-group trainingCenterPanel m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
+	if(result.trainingProgramList != null && result.trainingProgramList.length> 0){		
+		for(var i in result.trainingProgramList){
+			str+='<div class="panel panel-default">';
+			str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingTrainingBatch'+i+'">';
+			if(i == 0){
+				str+='<a role="button" class="collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
+			}else{
+				str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
+			}
+			var Average = (parseInt(result.trainingProgramList[i].totalAttenedCount)/parseInt(result.trainingProgramList[i].totalBath)).toFixed(2);
+			str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<br/><span style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.trainingProgramList[i].description+'" >[Total Batchs :'+result.trainingProgramList[i].totalBath+']&nbsp[Average Attended Per Batch:'+Average+']</span></h4>';
+			str+='</a>';
+			str+='</div>';
+			if(i == 0){
+				str+='<div id="collapseTrainingBatch'+i+'" class="panel-collapse collapse in" aria-labelledby="headingTrainingBatch'+i+'" style="position:relative">';
+			}else{
+				str+='<div id="collapseTrainingBatch'+i+'" class="panel-collapse collapse" aria-labelledby="headingTrainingBatch'+i+'" style="position:relative">';
+			}
+			str+='<div class="panel-body bg_ED " style="margin-top:0px;">';  
+			if($(window).width() < 300){
+				str+='<div class="table-responsive">';
+			}
+			str+='<table class="table tableTrainingBatch bg_ED table-condensed">';     
+				str+='<tbody>';
+				alert(result.trainingProgramList[i].name);
+				alert(result.trainingProgramList[i].name == "Leadership Excellence Mangalagiri");
+					if(result.trainingProgramList[i].name == "Leadership Excellence Mangalagiri"){
+						str+='<tr>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">Days</p>';
+								str+='<p class="responsiveFont">-</p>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">Total Attended</p>';
+								str+='<p class="responsiveFont">'+result.trainingProgramList[i].totalAttenedCount
+							str+='</td>';							
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize" title="Invitee Attended">Invitee Attended</p>';
+								//var totalpercentage = ((parseInt(result.trainingProgramList[i].inviteeAttended)/parseInt(result.trainingProgramList[i].totalAttenedCount))*100).toFixed(2);
+								str+='<p class="responsiveFont">'+(parseInt(result.trainingProgramList[i].inviteeAttended) + parseInt(result.trainingProgramList[i].nonInviteeAttended))+'&nbsp;<span class="font-10 text-danger"> ('+100+')%</span></p>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize" title="Non Invitee Attended">Non Invitee Attended</p>';
+								str+='<p class="responsiveFont">-</p>';
+							str+='</td>';
+						str+='</tr>';
+					}else{
+						str+='<tr>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">Days</p>';
+								str+='<p class="responsiveFont">-</p>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">Total Attended</p>';
+								str+='<p class="responsiveFont">'+result.trainingProgramList[i].totalAttenedCount
+							str+='</td>';							
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize" title="Invitee Attended">Invitee Attended</p>';
+								var totalpercentage = ((parseInt(result.trainingProgramList[i].inviteeAttended)/parseInt(result.trainingProgramList[i].totalAttenedCount))*100).toFixed(2);
+								str+='<p class="responsiveFont">'+result.trainingProgramList[i].inviteeAttended+'&nbsp;<span class="font-10 text-danger"> ('+totalpercentage+')%</span></p>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize" title="Non Invitee Attended">Non Invitee Attended</p>';
+								str+='<p class="responsiveFont">'+result.trainingProgramList[i].nonInviteeAttended+'</p>';
+							str+='</td>';
+						str+='</tr>';
+					}
+					
+					
+					var inviteeAttended = result.trainingProgramList[i].inviteeAttended
+					
+					if(result.trainingProgramList[i].name == "Leadership Excellence Mangalagiri"){
+						for(var j in result.trainingProgramList[i].trainingProgramList){
+							var percentage = ((parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited)+(parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountNonInvited)))/(parseInt(result.trainingProgramList[i].totalAttenedCount))*100).toFixed(2);
+							str+='<tr>';
+								str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].name+'</td>';
+								str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCount+'</td>';
+								str+='<td>'+(parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited) + parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountNonInvited))+'&nbsp;<span class="font-10 text-danger"> ('+percentage+')%</span></td>';
+								str+='<td>-</td>';
+							str+='</tr>';
+						}        
+					}else{   
+						for(var j in result.trainingProgramList[i].trainingProgramList){
+							var percentage = (parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited)/(parseInt(inviteeAttended))*100).toFixed(2);
+							str+='<tr>';
+								str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].name+'</td>';
+								str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCount+'</td>';
+								str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited +'&nbsp;<span class="font-10 text-danger"> ('+percentage+')%</span></td>';
+								str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCountNonInvited+'</td>';
+							str+='</tr>';
 						}
-							str+='<div class="panel-body bg_ED " style="margin-top:0px;">';  
-		if($(window).width() < 300)
-		{
-			str+='<div class="table-responsive">';
-		}
-		str+='<table class="table tableTrainingBatch bg_ED table-condensed">';     
-			str+='<tbody>';
-				str+='<tr>';
-					str+='<td>';
-						str+='<p class="text-muted text-capitalize">Days</p>';
-						str+='<p class="responsiveFont">-</p>';
-						
-					str+='</td>';
-					str+='<td>';
-					str+='<p class="text-muted text-capitalize">Total Attended</p>';
-					str+='<p class="responsiveFont">'+result.trainingProgramList[i].totalAttenedCount
-					str+='</td>';							
-					str+='<td>';
-						str+='<p class="text-muted text-capitalize" title="Invitee Attended">Invitee Attended</p>';
-						var totalpercentage = ((parseInt(result.trainingProgramList[i].inviteeAttended)/parseInt(result.trainingProgramList[i].totalAttenedCount))*100).toFixed(2);
-						str+='<p class="responsiveFont">'+result.trainingProgramList[i].inviteeAttended+'&nbsp;<span class="font-10 text-danger"> ('+totalpercentage+')%</span></p>';
-			str+='</td>';
-			str+='<td>';
-						str+='<p class="text-muted text-capitalize" title="Non Invitee Attended">Non Invitee Attended</p>';
-						str+='<p class="responsiveFont">'+result.trainingProgramList[i].nonInviteeAttended+'</p>';
-			str+='</td>';
-			str+='</tr>';
-			var inviteeAttended = result.trainingProgramList[i].inviteeAttended
-			for(var j in result.trainingProgramList[i].trainingProgramList)
-			 {
-				var percentage = (parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited)/(parseInt(inviteeAttended))*100).toFixed(2);
-			  str+='<tr>';
-				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].name+'</td>';
-				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCount+'</td>';
-				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited +'&nbsp;<span class="font-10 text-danger"> ('+percentage+')%</span></td>';
-				str+='<td>'+result.trainingProgramList[i].trainingProgramList[j].only1dayCountNonInvited+'</td>';
-				
-			  str+='</tr>';
-			 }
-			str+='</tbody>';
-		str+='</table>';  
-		if($(window).width() < 300)
-		 {
-			 str+='</div>';
-		 }
+					}
+					
+				str+='</tbody>';
+			str+='</table>';  
+			if($(window).width() < 300){
+				str+='</div>';
+			}
 			str+='</div>';
 	        str+='</div>';
 			str+='</div>';
-	     }	
-		   str+='</div>';
-           str+='</div>';
+		}	
+		str+='</div>';
+        str+='</div>';
 	}else{
 		str+="No Data Available"
 		$("#campWiseTrainingId").html(str)
 	}
-   $("#campWiseTrainingId").html(str);        
- }
+	$("#campWiseTrainingId").html(str);        
+}
  
  function buildSpecialProgramLeaderIdWiseDetails(result){ 
 	var str='';
