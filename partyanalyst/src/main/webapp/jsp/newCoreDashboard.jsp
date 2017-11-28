@@ -5041,6 +5041,7 @@
 <script src="newCoreDashBoard/js/cadreRegistration.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/electronicMedia.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/cadreInsurance.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/pressmeet.js" type="text/javascript"></script>        
 <script src="newCoreDashBoard/js/prajaSankaplaYatra.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting1.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
@@ -5051,7 +5052,6 @@
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
-<script src="newCoreDashBoard/js/pressmeet.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).on("click",".rightNavigationMenuRes",function(){
 	$(this).toggleClass("active");
@@ -5544,10 +5544,9 @@ var globalImages;
 	onLoadCalls()
 	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();
-		
-		onloadPrajaSankaplaYatraCalls();
 		//Preemeet
 		preemeeetOnloadCalls();
+		onloadPrajaSankaplaYatraCalls();                 
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');
