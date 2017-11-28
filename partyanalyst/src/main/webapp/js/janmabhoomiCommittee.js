@@ -291,29 +291,7 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 										}
 									}
 								}
-								/* if(result[i].list[j].inprogressCommitteeCnt !=null && result[i].list[j].inprogressCommitteeCnt>0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Inprogress" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'">'+result[i].list[j].inprogressCommitteeCnt+'</span></td>';
-								}else{
-									str+='<td> - </td>';
-								}
 								
-								if(result[i].list[j].readyForApprovelCommitteeCnt !=null && result[i].list[j].readyForApprovelCommitteeCnt>0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="readyforapproval" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'">'+result[i].list[j].readyForApprovelCommitteeCnt+'</span></td>';
-								}else{
-									str+='<td> - </td>';
-								}
-								
-								if(result[i].list[j].totalApprovedCommitteeCnt !=null && result[i].list[j].totalApprovedCommitteeCnt>0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="Approved" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'">'+result[i].list[j].totalApprovedCommitteeCnt+'</span></td>';
-								}else{
-									str+='<td> - </td>';
-								}
-								
-								if(result[i].list[j].submitedCommittees !=null && result[i].list[j].submitedCommittees>0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].list[j].id+'" attr_status_type="" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'">'+result[i].list[j].submitedCommittees+'</span></td>';
-								}else{
-									str+='<td> - </td>';
-								} */
 							}
 						
 					str+='</tr>';
