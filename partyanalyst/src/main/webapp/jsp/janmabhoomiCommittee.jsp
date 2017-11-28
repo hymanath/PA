@@ -55,7 +55,7 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<div class="row">
-				<div class="col-sm-5">
+				<div class="col-sm-6">
 					<h4 class="modal-title" id="committesLevelNameId"></h4>   
 				</div>
 				<div class="col-sm-3 pull-right committeeSelectBoxCls">
