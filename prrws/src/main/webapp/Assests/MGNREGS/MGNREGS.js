@@ -3904,7 +3904,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
 								//str+='<td>'+ajaxresp[i].percentage+'</td>';
 						}else{
-							if(globalDivName == 'Mulbery New')
+							if(globalDivName == 'Mulbery New' || globalDivName == 'Silk worm New')
 							{
 								str+='<td>'+ajaxresp[i].mulbTarget+'</td>';
 							}
@@ -4004,7 +4004,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								}else{
 									str+='<td style="background-color:#FF0000;color:#fff">-</td>';
 								} */
-							}else if(globalDivName == 'Mulbery New'){
+							}else if(globalDivName == 'Mulbery New' || globalDivName == 'Silk worm New'){
 								var groundValue = ajaxresp[i].grounded;
 								var targetValue = ajaxresp[i].mulbTarget;
 								var groundedPerc = "0.00";
@@ -4070,7 +4070,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td>'+ajaxresp[i].mulbCompleted+'</td>';
 							else
 								str+='<td>'+ajaxresp[i].completed+'</td>';
-							if((globalDivName == 'Mulbery New'  || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
+							if((globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
 								
 								if(ajaxresp[i].sanctionedPerc >= 100){
 									str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].sanctionedPerc+'</td>';
@@ -4109,7 +4109,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							} */
 							
-							if((globalDivName == 'Silk worm New') && locationTypeNew == "state"){
+							/* if((globalDivName == 'Silk worm New') && locationTypeNew == "state"){
 								if(ajaxresp[i].percSant >= 100){
 									str+='<td style="background-color:#f7b519;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}else if(ajaxresp[i].percSant >= 90 && ajaxresp[i].percSant < 100){
@@ -4126,8 +4126,8 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 									str+='<td style="background-color:#ff6600;color:#fff">'+ajaxresp[i].percSant+'</td>';
 								}else if(ajaxresp[i].percSant >= 80){
 									str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percSant+'</td>';
-								} */
-							}
+								} 
+							} */
 							
 							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 								
