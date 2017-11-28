@@ -125,11 +125,15 @@ function buildCommitteeWiseDetailsBlock(result){
 				str+='<tr>';
 					str+='<th>Committee Levels</th>';
 					str+='<th>Total</th>';
-					str+='<th class="text-center" style="color:#F7931D">Not Started</th>';
+				for(var i in result.committeeStatusVOList){
+					str+='<th class="text-center" style="color:'+result.committeeStatusVOList[i].color+';"">'+result.committeeStatusVOList[i].status+'</th>';
+				}
+					
+					/* str+='<th class="text-center" style="color:'+result.committeeStatusVOList[j].color+';"">'+result.committeeStatusVOList[i].status+'</th>';
 					str+='<th class="text-center" style="color:#12A89D">Inprogress/ <br/>Running</th>';
 					str+='<th class="text-center" style="color:#20409A">Ready for <br/>Approvel</th>';
 					str+='<th class="text-center" style="color:#7E3D97">Approved</th>';
-					str+='<th class="text-center" style="color:#00A651">Letter <br/>Submited</th>';
+					str+='<th class="text-center" style="color:#00A651">Letter <br/>Submited</th>'; */
 				str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -248,18 +252,18 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 					str+='<tr>';
 					if(result[i].statusType !=null && result[i].statusType !=""){
 						if(blockType == "district"){
-							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="3" attr_location_value="'+result[i].id+'" attr_type="name" attr_commitee_lvl_id="0">'+result[i].name+'</span></td>';
+							str+='<td><span attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="3" attr_location_value="'+result[i].id+'" attr_type="name" attr_commitee_lvl_id="0">'+result[i].name+'</span></td>';
 						}else if(blockType == "parliament"){
-							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="10" attr_location_value="'+result[i].id+'" attr_type="name" attr_commitee_lvl_id="0">'+result[i].name+'</span></td>';
+							str+='<td><span attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="10" attr_location_value="'+result[i].id+'" attr_type="name" attr_commitee_lvl_id="0">'+result[i].name+'</span></td>';
 						}else if(blockType == "constituency"){
-							str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="4" attr_location_value="'+result[i].id+'" attr_type="name" attr_commitee_lvl_id="0">'+result[i].name+'</span></td>';
+							str+='<td><span attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="4" attr_location_value="'+result[i].id+'" attr_type="name" attr_commitee_lvl_id="0">'+result[i].name+'</span></td>';
 						}
 						
 					}else{
 						str+='<td>'+result[i].name+'</td>';
 					}
 					if(blockType == "district"){
-						str+='<td style="color:'+result[i].statusType.trim()+'">'+result[i].statusType+'</td>';
+						str+='<td style="color:'+result[i].statusType.trim()+'"><span class="committeeWiseDetailsClick" attr_commiteeId="'+result[i].committeeId+'" attr_status_type="'+result[i].statusType+'" attr_level_id="4" attr_location_value="'+result[i].id+'" attr_type="name" attr_commitee_lvl_id="1" attr_level_name="'+result[i].name+'">'+result[i].statusType+'</span></td>';
 					}
 						for(var j in result[i].list){
 							//totalCount =result[i].list[j].notStartedCommitteeCnt+result[i].list[j].inprogressCommitteeCnt+result[i].list[j].readyForApprovelCommitteeCnt+result[i].list[j].totalApprovedCommitteeCnt+result[i].list[j].submitedCommittees
@@ -274,14 +278,14 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 							}
 								
 								if(totalCount >0){
-									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="0" attr_status_type="0" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'" attr_commitee_lvl_id="'+result[i].list[j].id+'">'+totalCount+'</span></td>';
+									str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="0" attr_status_type="0" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'" attr_commitee_lvl_id="'+result[i].list[j].id+'" attr_level_name="'+result[i].list[j].name+'">'+totalCount+'</span></td>';
 								}else{
 									str+='<td> - </td>';
 								}
 								for(var k in result[i].list[j].positinsList){
 									if(result[i].list[j].positinsList[k] != null){
 										if(result[i].list[j].positinsList[k].count !=null && result[i].list[j].positinsList[k].count>0){
-											str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="0" attr_status_type="'+result[i].list[j].positinsList[k].id+'" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'" attr_commitee_lvl_id="'+result[i].list[j].id+'">'+result[i].list[j].positinsList[k].count+'</span></td>';
+											str+='<td><span class="committeeWiseDetailsClick" attr_commiteeId="0" attr_status_type="'+result[i].list[j].positinsList[k].id+'" attr_level_id="'+levelId+'" attr_location_value="'+result[i].id+'" attr_type="count" block_level="'+blockType+'" attr_commitee_lvl_id="'+result[i].list[j].id+'" attr_level_name="'+result[i].list[j].name+'">'+result[i].list[j].positinsList[k].count+'</span></td>';
 										}else{
 											str+='<td> - </td>';
 										}
@@ -327,9 +331,12 @@ $(document).on("click",".committeeWiseDetailsClick",function(){
 	var levelValue = $(this).attr("attr_location_value");
 	var type = $(this).attr("attr_type");
 	var committeeLvlId = $(this).attr("attr_commitee_lvl_id");
+	var levelName = $(this).attr("attr_level_name");
 	blockLevel = $(this).attr("block_level");
 	$("#committeeWiseModalOpen").modal("show");
-	
+	if(committeeLvlId == 1){
+		$("#committesLevelNameId").html("District Level - "+levelName +" Committee Member Details");
+	}
 	if(type== "name"){
 		$(".committeeSelectBoxCls").hide();
 		$("#committeeWisePopUpDetailsId").html('');
@@ -337,13 +344,16 @@ $(document).on("click",".committeeWiseDetailsClick",function(){
 	}else{
 		$(".committeeSelectBoxCls").show();
 		$("#committeeWisePopUpDetailsId").html('');
-		getJanmabhoomiCommitteesByLocIdAndCommLvlId(levelValue,levelId,committeeLvlId,statusType);
+		getJanmabhoomiCommitteesByLocIdAndCommLvlId(levelValue,levelId,committeeLvlId,statusType,levelName);
 	}
 	
 });
 $(document).on("change","#committesLevelValuesId",function(){
 	var committeId = $(this).val();
 	var statusType = $(this).attr("attr_status_type")
+	var levelName = $(this).attr("attr_level_name")
+	var selectedOptionName = $(this).find('option:selected').text();
+	$("#committesLevelNameId").html(levelName+" Level - "+selectedOptionName+" Committee Member Details");
 	$("#committeeWisePopUpDetailsId").html('');
 	getJanmabhoomiCommitteeOverview(committeId);
 });
@@ -1028,7 +1038,7 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 	 getAllCategoriesAction();
 	$(".chosen-select").chosen();
   }
-  function getJanmabhoomiCommitteesByLocIdAndCommLvlId(levelValue,levelId,committeeLvlId,statusType){
+  function getJanmabhoomiCommitteesByLocIdAndCommLvlId(levelValue,levelId,committeeLvlId,statusType,levelName){
 		$("#committesLevelValuesId").html('');
 		$("#committesLevelValuesId").trigger("chosen:updated");
 	  var jsObj={
@@ -1053,11 +1063,15 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 				  }
 				  $("#committesLevelValuesId").chosen();
 				  $("#committesLevelValuesId").val(result[0].id).trigger("chosen:updated");
+
+	            $("#committesLevelNameId").html(levelName+" Level - "+result[0].name+" Committee Member Details");
+
 				  getJanmabhoomiCommitteeOverview(result[0].id);
 			}else{
 				$("#committeeWisePopUpDetailsId").html('No Data Available');
 			}
 			$("#committesLevelValuesId").attr("attr_status_type",statusType)
+			$("#committesLevelValuesId").attr("attr_level_name",levelName)
 			
  		});
   }
