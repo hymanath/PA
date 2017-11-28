@@ -202,12 +202,12 @@
 						str+='<th>Status</th>';
 						//if(result.status != 'Approved' && result.status != 'Ready For Approval')
 							<c:if  test="${fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT' )  && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) }">
-						if(result.status != 'APPROVED' &&  result.status != 'READY FOR APPROVAL'){
+						if(result.status != 'Approved' &&  result.status != 'Ready for Approval'){
 									str+='<th>Add Member</th>';
 								}
 								</c:if>
 								<c:if  test="${fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT' )  && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) }">
-								if(result.status != 'APPROVED' &&  result.status == 'READY FOR APPROVAL'){
+								if(result.status != 'Approved' &&  result.status == 'Ready for Approval'){
 						str+='<th>Add Member</th>';
 								}
 								</c:if>
@@ -269,11 +269,11 @@
 										}else if(result.levelId != null && (result.levelId ==6 || result.levelId ==7)){
 											committeeLevlVal='1'+result.levelValue;
 										}
-								if(result.status != 'APPROVED' ){
+								if(result.status != 'Approved' ){
 									
 									
-									<c:if test="${fn:contains(sessionScope.USER.entitlements,'JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT' )  && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT' ) && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT' ) }">
-									if( result.desinationVOList[i].desinationMebersVOList[j].status == "Approved"){
+									<c:if test="${fn:contains(sessionScope.USER.entitlements,'JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT' )  && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT' ) }">
+									if( result.desinationVOList[i].desinationMebersVOList[j].status == "Approved" && result.status != 'Approved' &&  result.status != 'Ready for Approval'){
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit"  attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'" attr_committee_id="'+committeId+'">Reject</h5></td>';
 									}/* else if(result.desinationVOList[i].desinationMebersVOList[j].status == "Rejected" || result.desinationVOList[i].desinationMebersVOList[j].status == "" || result.desinationVOList[i].desinationMebersVOList[j].status == null){
 										
@@ -283,7 +283,7 @@
 									
 									</c:if>
 									<c:if test="${fn:contains(sessionScope.USER.entitlements,'JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT' )  && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT' ) }">
-									if( result.desinationVOList[i].desinationMebersVOList[j].status == "Approved"){
+									if( result.desinationVOList[i].desinationMebersVOList[j].status == "Approved" && result.status != 'Approved' &&  result.status == 'Ready for Approval'){
 									str+='<td><h5 style="color:green;text-decoration:underline;" class="memberAddEditDetailsCls" attr_type="edit"  attr_member_id="'+result.desinationVOList[i].desinationMebersVOList[j].id+'" attr_member_name="'+result.desinationVOList[i].desinationMebersVOList[j].memeberName+'" attr_mobile_no="'+result.desinationVOList[i].desinationMebersVOList[j].mobileNumber+'" attr_voterCard_no="'+result.desinationVOList[i].desinationMebersVOList[j].voterId+'" attr_membership_no="'+result.desinationVOList[i].desinationMebersVOList[j].memberShipCardId+'" attr_committee_id="'+committeId+'">Reject</h5></td>';
 									}
 									
@@ -327,14 +327,14 @@
 		}
 		
 		if(bcType === true && scType === true && stType === true && approvedBooleanaVal === true){
-			if(result.status != 'APPROVED'){
+			if(result.status != 'Approved'){
 				
 				str+='<div class="col-sm-12 m_top20">';
 					str+='<div class="row">';
 					<c:choose>
 									
 						<c:when test="${fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_APPROVE_USER_ENTITLEMENT' ) && fn:contains(sessionScope.USER.entitlements,'JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT' )}">
-						if(result.status == 'READY FOR APPROVAL'){
+						if(result.status == 'Ready for Approval'){
 						str+='<div class="col-sm-3">';
 							str+='<label>Change Committee Status</label>';
 							str+='<select class="form-control chosen-select" id="committeeStatusChangeId">';
@@ -349,7 +349,7 @@
 						}
 						</c:when>
 						<c:when test="${fn:contains(sessionScope.USER.entitlements,'JANMABHOOM_COMMITTEE_EDIT_USER_ENTITLEMENT' )  && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_DASHBOARD_USER_ENTITLEMENT' ) && fn:contains(sessionScope.USER.entitlements, 'JANMABHOOM_COMMITTEE_ENTRY_USER_ENTITLEMENT' ) }">
-						if(result.status == 'INPROGRESS'){
+						if(result.status == 'In Progress'){
 						str+='<div class="col-sm-3">';
 							str+='<label>Change Committee Status</label>';
 							str+='<select class="form-control chosen-select" id="committeeStatusChangeId" >';
