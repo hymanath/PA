@@ -29,4 +29,6 @@ public interface IBoothDataValidationService {
 	public List<BoothInchargeDetailsVO> getCommitteeFinalizedBoothsListforUnlock(Long userId,List<Long> locationIdsList);
 	public List<BoothInchargeDetailsVO> getUserAccessLocatiosLIst(Long userId,Long accessLevelId, String accessLevelType);
     public String unlockBoothCommitteesByCommitteeIdsList(Long userId,List<Long> boothCommitteeIdsList);
+    
+    public List<BoothAddressVO> getBoothInchargeCommitteeDetailsByLocation(Long levelId,Long levelValue);
 }

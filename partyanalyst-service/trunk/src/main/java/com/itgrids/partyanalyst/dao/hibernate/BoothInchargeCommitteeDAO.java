@@ -161,4 +161,50 @@ public class BoothInchargeCommitteeDAO extends GenericDaoHibernate<BoothIncharge
 		query.setParameterList("assemblyIdsList", assemblyIdsList);
 		return query.list();
 	}
+	
+	public List<Object[]> getLocationWiseBoothCommitteeDetails(Long levelId,List<Long> levelValues){
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT" +
+					" d.district_name as disrictName,pa.name as parlName,a.name as assemName,t.tehsil_name as tehsilName,CONCAT(l.name,' ',et.election_type) as lebName," +
+					" p.panchayat_name as pancName,c.booth_id as incharge_booth_id,b1.part_no as incharge_booth_no,bpv.booth_id as own_booth_id,b.part_no as own_booth_no," +
+					" bi.tdp_cadre_id as cadreId,tc.image as image,tc.membership_id as membershipId,tc.first_name as firstName,tc.mobile_no as mobileNo," +
+					" r.booth_incharge_role_id as roleId,r.role_name as roleName" +
+					" from" +
+					" booth_incharge_committee c,booth_incharge_role_condition_mapping m,booth_incharge_role_condition rc," +
+					" booth_incharge_role r,booth_incharge bi,tdp_cadre tc,booth b,booth_publication_voter bpv,user_address ua" +
+					" LEFT JOIN district d on ua.district_id = d.district_id LEFT JOIN constituency a on ua.constituency_id = a.constituency_id" +
+					" LEFT JOIN constituency pa on ua.parliament_constituency_id = pa.constituency_id LEFT JOIN tehsil t on ua.tehsil_id = t.tehsil_id" +
+					" LEFT JOIN panchayat p on ua.panchayat_id = p.panchayat_id LEFT JOIN booth b1 on ua.booth_id = b1.booth_id" +
+					" LEFT JOIN local_election_body l on ua.local_election_body = l.local_election_body_id LEFT JOIN election_type et on l.election_type_id = et.election_type_id" +
+					" where" +
+					" rc.booth_incharge_role_id = r.booth_incharge_role_id and c.booth_id = b1.booth_id and c.address_id = ua.user_address_id and b.booth_id = bpv.booth_id" +
+					" and bpv.voter_id = tc.voter_id and b.publication_date_id = 24 and b1.publication_date_id = 24 and bi.tdp_cadre_id = tc.tdp_cadre_id" +
+					" and tc.is_deleted='N' and tc.enrollment_year='2014' and c.booth_incharge_committee_id = m.booth_incharge_committee_id" +
+					" and m.booth_incharge_role_condition_id = rc.booth_incharge_role_condition_id and m.booth_incharge_role_condition_mapping_id = bi.booth_incharge_role_condition_mapping_id" +
+					" and c.is_deleted ='N' and bi.is_active='Y' and bi.is_deleted='N'");
+		if(levelId != null && levelId.longValue() == 2L)
+			sb.append(" and ua.state_id in (:levelValues)");
+		else if(levelId != null && levelId.longValue() == 3L)
+			sb.append(" and ua.district_id in (:levelValues)");
+		else if(levelId != null && levelId.longValue() == 4L)
+			sb.append(" and ua.constituency_id in (:levelValues)");
+		else if(levelId != null && levelId.longValue() == 5L)
+			sb.append(" and ua.tehsil_id in (:levelValues)");
+		else if(levelId != null && levelId.longValue() == 7L)
+			sb.append(" and ua.local_election_body in (:levelValues)");
+		else if(levelId != null && levelId.longValue() == 6L)
+			sb.append(" and ua.panchayat_id in (:levelValues)");
+		else if(levelId != null && levelId.longValue() == 8L)
+			sb.append(" and ua.ward in (:levelValues)");
+		
+		Query query = getSession().createSQLQuery(sb.toString()).addScalar("disrictName", Hibernate.STRING).addScalar("parlName", Hibernate.STRING)
+				.addScalar("assemName", Hibernate.STRING).addScalar("tehsilName", Hibernate.STRING).addScalar("lebName", Hibernate.STRING).addScalar("pancName", Hibernate.STRING)
+				.addScalar("incharge_booth_id", Hibernate.LONG).addScalar("incharge_booth_no", Hibernate.STRING).addScalar("own_booth_id", Hibernate.LONG)
+				.addScalar("own_booth_no", Hibernate.STRING).addScalar("cadreId", Hibernate.LONG).addScalar("image", Hibernate.STRING).addScalar("membershipId", Hibernate.STRING)
+				.addScalar("firstName", Hibernate.STRING).addScalar("mobileNo", Hibernate.STRING).addScalar("roleId", Hibernate.LONG).addScalar("roleName", Hibernate.STRING);
+		if(levelId != null && levelId.longValue() > 0L && levelValues != null && !levelValues.isEmpty())
+			query.setParameterList("levelValues", levelValues);
+		
+		return query.list();
+	}
 }

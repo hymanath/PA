@@ -33,6 +33,36 @@ public class BoothAddressVO {
 	private Long convenerCount=0l;
 	private Long totalCount =0L;
 	
+	private String localElectionBody;
+	private String ward;
+	private Long ownBoothId;
+	private String ownBoothNo;
+	
+	
+	public Long getOwnBoothId() {
+		return ownBoothId;
+	}
+	public void setOwnBoothId(Long ownBoothId) {
+		this.ownBoothId = ownBoothId;
+	}
+	public String getOwnBoothNo() {
+		return ownBoothNo;
+	}
+	public void setOwnBoothNo(String ownBoothNo) {
+		this.ownBoothNo = ownBoothNo;
+	}
+	public String getLocalElectionBody() {
+		return localElectionBody;
+	}
+	public void setLocalElectionBody(String localElectionBody) {
+		this.localElectionBody = localElectionBody;
+	}
+	public String getWard() {
+		return ward;
+	}
+	public void setWard(String ward) {
+		this.ward = ward;
+	}
 	public Long getTotalCount() {
 		return totalCount;
 	}

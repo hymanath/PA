@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeRoleConditionMappingDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeSerialNoRangeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
@@ -75,7 +76,18 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	private IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO;
 	private TransactionTemplate transactionTemplate = null;
 	private ICadreCommitteeService cadreCommitteeService;
+	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	
+	
+	public IParliamentAssemblyDAO getParliamentAssemblyDAO() {
+		return parliamentAssemblyDAO;
+	}
+
+	public void setParliamentAssemblyDAO(
+			IParliamentAssemblyDAO parliamentAssemblyDAO) {
+		this.parliamentAssemblyDAO = parliamentAssemblyDAO;
+	}
+
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
 	}
@@ -1502,6 +1514,45 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			status ="failure";
 		}
     	return status;
+    }
+    
+    public List<BoothAddressVO> getBoothInchargeCommitteeDetailsByLocation(Long levelId,Long levelValue){
+    	List<BoothAddressVO> returnList = new ArrayList<BoothAddressVO>(0);
+    	try {
+			List<Long> levelValues = new ArrayList<Long>(0);
+			if(levelId != null && levelId.longValue() == 10L){
+				levelValues = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(levelValue);
+				levelId = 4L;
+			}else{
+				levelValues.add(levelValue);
+			}
+			List<Object[]> list = boothInchargeCommitteeDAO.getLocationWiseBoothCommitteeDetails(levelId, levelValues);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					BoothAddressVO vo = new BoothAddressVO();
+					vo.setDistrictName(obj[0] != null ? obj[0].toString():"");
+					vo.setParliamentConstituency(obj[1] != null ? obj[1].toString():"");
+					vo.setConstituencyName(obj[2] != null ? obj[2].toString():"");
+					vo.setTehsilName(obj[3] != null ? obj[3].toString():"");
+					vo.setLocalElectionBody(obj[4] != null ? obj[4].toString():"");
+					vo.setPanchayat(obj[5] != null ? obj[5].toString():"");
+					vo.setBoothId(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
+					vo.setBoothName(obj[7] != null ? "Booth No- "+obj[7].toString():"");
+					vo.setOwnBoothId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+					vo.setOwnBoothNo(obj[9] != null ? "Booth No- "+obj[9].toString():"");
+					vo.setTdpCadreId(Long.valueOf(obj[10] != null ? obj[10].toString():"0"));
+					vo.setImage(obj[11] != null ? obj[11].toString():"");
+					vo.setMemberShipNo(obj[12] != null ? obj[12].toString():"");
+					vo.setCadreName(obj[13] != null ? obj[13].toString():"");
+					vo.setMobileNo(obj[14] != null ? obj[14].toString():"");
+					vo.setRole(obj[16] != null ? obj[16].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception Occured into getBoothInchargeCommitteeDetailsByLocation of BoothDataValidationService class",e);
+		}
+    	return returnList;
     }
     
 }
