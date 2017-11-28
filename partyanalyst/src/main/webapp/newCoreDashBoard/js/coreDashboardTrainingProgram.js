@@ -3201,8 +3201,7 @@ function buildTrainingCampBatchCenterWiseDetails(result){
 			}
 			str+='<table class="table tableTrainingBatch bg_ED table-condensed">';     
 				str+='<tbody>';
-				alert(result.trainingProgramList[i].name);
-				alert(result.trainingProgramList[i].name == "Leadership Excellence Mangalagiri");
+				
 					if(result.trainingProgramList[i].name == "Leadership Excellence Mangalagiri"){
 						str+='<tr>';
 							str+='<td>';
