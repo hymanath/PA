@@ -3907,8 +3907,8 @@
 					<div class="panel-body">
 						<div class="row">
 							<select class="categoryCls" id="categoryId">
+								<option value="1050" selected="selected">Counter on praja sankalpa yatra</option>
 								<option value="1051">Praja sankalpa yatra</option>
-								<option value="1050">Counter on praja sankalpa yatra</option>
 							</select>
 							<span class="input-group pull-right dateRangePickerCls">
 								<input type="text" id="dateRangePrajaSankalpaId" class="form-control" style="width:180px"/>
@@ -5053,6 +5053,21 @@
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script type="text/javascript">
+$(document).on("change","#categoryId",function(){
+		getPrintMediaOverAllPSYCounts("OverAll","printMedia",$(this).val());
+		getPrintMediaOrganizationWisePSYCounts("Party","printMedia",$(this).val())
+		getPrintMediaPublicationWisePSYCounts("Publication","printMedia",$(this).val())
+		
+		getBulletinPointOverAllPSYCounts("OverAll","electronicMedia",$(this).val())
+		getBulletinOrganizationWisePSYCounts("Party","electronicMedia",$(this).val())
+		getChannelWisePSYCounts("Publication","electronicMedia",$(this).val())
+		getPartyWiseTopLeadersForElectonicMediaInfo($(this).val());
+		getDistrictWiseOverViewForElectronicMediaInfo($(this).val());
+		getDistrictWisePartyViewForElectrronicMediaInfo($(this).val());
+		getDistrictWisePartyOverView($(this).val());
+		getDistrictWiseOverView($(this).val());
+		getPartywiseTopLeaders($(this).val());	
+});
 $(document).on("click",".rightNavigationMenuRes",function(){
 	$(this).toggleClass("active");
 	$(".rightNavigationMenu ul,.backgroundBlock").toggleClass("hidden-xs");
