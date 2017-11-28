@@ -8,6 +8,7 @@
 	var departmentArrGlob1 =[];
 	departmentArrGlob1.push("3");
 	var globalAllPdfFilesArr=[];
+	var globalAllPdfFilesArr1=[];
 	$(".chosenSelect").chosen();
 	
 	getAllFiniancialYears();
@@ -445,6 +446,8 @@ $(document).on("click",".submitCls",function(){
 		$("#mainHeadingId").html("District : "+ $("#districtSelId option:selected").text()+",Constituency : "+$("#constituencySelId option:selected").text()+"")
 		
 	}
+	globalAllPdfFilesArr=[];
+	globalAllPdfFilesArr1=[];
 	//var headerType = ''; 
 	$(".headingCssCls").addClass("withOutHeaderCls")
 	/* $('.withAndOutHeaderCls').each(function(i, obj){
@@ -810,8 +813,13 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 												str+='<tr>';
 													str+='<td>'+result.locationList1[i].programName+'</td>';
 													if(result.locationList1[i].locationList1[j].filePath != null && result.locationList1[i].locationList1[j].filePath.length > 1){
-													var obj={ download: "http://www.mydepartments.in/PRRWS/Govt_Orders/"+result.locationList1[i].locationList1[j].filePath+"", filename: ""+result.locationList1[i].locationList1[j].filePath+""}
+														
+													var obj1={ download: "http://www.mydepartments.in/PRRWS/Govt_Orders/"+result.locationList1[i].locationList1[j].filePath+"", filename: ""+result.locationList1[i].locationList1[j].filePath+""}
+													
+													var obj="http://www.mydepartments.in/PRRWS/Govt_Orders/"+result.locationList1[i].locationList1[j].filePath
+													
 													globalAllPdfFilesArr.push(obj)
+													globalAllPdfFilesArr1.push(obj1)
 														str+='<td><span filePath="'+result.locationList1[i].locationList1[j].filePath+'" style="cursor:pointer;" class="showPdfCls go_clickCr" >'+result.locationList1[i].locationList1[j].goNoDate+'</span></td>';
 													}else{
 														str+='<td>'+result.locationList1[i].locationList1[j].goNoDate+'</td>';
@@ -1039,6 +1047,20 @@ $(document).on('click','.showPdfCls',function(){
 	
 });
 function download_files(files) {
+    $.each(files, function(key, value) {
+        $('<iframe></iframe>')
+            .hide()
+            .attr('src', value)
+            .appendTo($('body'))
+            .load(function() {
+                var that = this;
+                setTimeout(function() {
+                    $(that).remove();
+                }, 100);
+            });
+    });
+}
+function download_files1(files) {
   function download_next(i) {
     if (i >= files.length) {
       return;
@@ -1068,11 +1090,21 @@ function download_files(files) {
   // Initiate the first download.
   download_next(0);
 }
- function do_dl() {
-	 
-    download_files(globalAllPdfFilesArr);
-  };
-  
+ $(document).on("click",".exportToPdf1",function(){
+	 if(navigator.userAgent.indexOf("Chrome") !== -1){
+		 setTimeout(function(){
+			download_files1(globalAllPdfFilesArr1);
+		},1000);
+		
+	}else{ 
+		setTimeout(function(){
+			 download_files(globalAllPdfFilesArr);
+		},1000);
+		
+	}
+	
+});
+
  $(document).on("click",".exportToPdf",function(){
 	var id = $(this).attr("attr_id");
 	getPdf(id);
