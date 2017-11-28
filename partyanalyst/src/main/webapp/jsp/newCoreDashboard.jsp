@@ -296,7 +296,10 @@
 				    
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
-								<h6 id="lastAlertUpdatedTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
+							<h5 class="module_OwnerCss">Module Owner : Kumar Chowdary</h5>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<h6 id="lastAlertUpdatedTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 alertsBlock" expand-block-inner="alerts">
 							<h4><span class="headingColor text-capital">overall alerts</span></h4>
@@ -614,17 +617,17 @@
 													<ul class="debatesViewList">
 														<li>
 															<label class="checkbox-inline">
-																<input type="checkbox" class="radioStateCls" name="debatesRadio"  value="1" checked />AP
+																<input type="checkbox" id="debatesAP" class="radioStateCls debateradioCls" name="debatesRadio"  value="1" checked />AP
 															</label>
 														</li>
 														<li>
 															<label class="checkbox-inline">
-																<input type="checkbox"  class="radioStateCls" name="debatesRadio"  value="36" checked />TS
+																<input type="checkbox"  id="debatesTS" class="radioStateCls debateradioCls" name="debatesRadio"  value="36" checked />TS
 															</label>
 														</li>
 														<li>
 															<label class="checkbox-inline">
-																<input type="checkbox"  class="radioStateCls" name="debatesRadio" value="2" checked />Others
+																<input type="checkbox"  class="radioStateCls debateradioCls" name="debatesRadio" value="2" />Others
 															</label>
 														</li>
 													</ul>
@@ -633,12 +636,12 @@
 													<ul class="debatesViewList">
 														<li>
 															<label class="checkbox-inline">
-																<input type="checkbox"  class="radioStateCls1" name="debatesParticipantRadio" value="1" checked />AP
+																<input type="checkbox" id="debatesParticipantAP" class="radioStateCls1 debateradioCls" name="debatesParticipantRadio" value="1" checked />AP
 															</label>
 														</li>
 														<li>
 															<label class="checkbox-inline">
-																<input type="checkbox"  class="radioStateCls1" name="debatesParticipantRadio"  value="36" checked />TS
+																<input type="checkbox" id="debatesParticipantTS" class="radioStateCls1 debateradioCls" name="debatesParticipantRadio"  value="36" checked />TS
 															</label>
 														</li>
 														<!--<li>
@@ -672,6 +675,9 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : Anil</h5>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 								<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 debatesBlock" expand-block-inner="debates">
@@ -945,6 +951,10 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : Peddi Rama Rao</h5>
+							</div>
+							
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 								<h5 class="updatedDate pull-right" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" id="lastUpdatedId"></h5>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock" expand-block-inner="news">
@@ -1457,6 +1467,10 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : Peddi Rama Rao</h5>
+						</div>
+							
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 							<h6 id="lastUpdatedTimeElecId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 electronicMediaBlock" expand-block-inner="electronic">
@@ -1644,7 +1658,10 @@
 							</div>
 							<div class="panel-body">
 							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="tours">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+										<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock m_top20" expand-block-inner="tours">
 								    <div class="row">
 									  <div id="tourUniquememberSubmittedDltsDivId"></div>
 									</div>
@@ -1730,6 +1747,9 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12">
+										<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 								<h6 id="lastMeetingUpdatedIdTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12" expand-block-inner="meetings">
@@ -2098,10 +2118,13 @@
                 <div class="panel-body">  
 				
               		<div class="row">
-					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker" style="display:none;">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+					</div>	
+					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker m_top20" style="display:none;">
 						
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock" expand-block-inner="boothCommittees">
+					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock m_top20" expand-block-inner="boothCommittees">
 						<div id="boothBasicCommitteeCountsDiv"></div>
 						<div id="boothCommitteesAssdDiv"></div>
 					</div>
@@ -2383,10 +2406,13 @@
                 <div class="panel-body">  
 				
               		<div class="row">
-					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker" style="display:none;">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+					</div>	
+					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker m_top20" style="display:none;">
 						
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock" expand-block-inner="committees">
+					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock m_top20" expand-block-inner="committees">
 						<div id="basicCommitteeCountsDiv"></div>
 					</div>
                         <div class="col-md-6 col-xs-12 col-sm-6 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock" expand-block-right="committees">
@@ -2535,7 +2561,10 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock" expand-block-inner="events">
+							<!--<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+							</div>-->
+							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20" expand-block-inner="events">
 								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
 								<h4><span class="headingColor text-capital">events</span>
 								<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
@@ -2797,10 +2826,13 @@
                 </div>
                 <div class="panel-body">   
                     <div class="row">
+							<!--<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+							</div>-->	
 						<!--<div class="col-md-12 col-xs-12 col-sm-12">
 							<h5 id="lastUpdatedIdAtt" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right">Last updated : - </h5>
 						</div>-->  
-                        <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock" expand-block-inner="attendance">
+                        <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock m_top20" expand-block-inner="attendance">
 							<div id="officeAttendanceTdlsId">
 							</div>
 							<div id="officeAttendanceTdlsDeptWiseId"> 
@@ -2885,13 +2917,13 @@
 			<div class="panel panel-default panelNewCustom panel1">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-7 col-sm-9 col-xs-12" expand-block-heading="training">
+						<div class="col-md-7 col-sm-9 col-xs-12" >
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
 								training  <small class="text-muted trainingDate">- OVERALL (TILL NOW)</small>
 							</h4>
 						</div>
-						<div class="col-md-5 col-sm-3 col-xs-12" expand-block-heading1="training">
+						<div class="col-md-5 col-sm-3 col-xs-12">
 							<!--<span class="settingsIcon pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>-->
@@ -2901,16 +2933,17 @@
 							<span class="trainingIconExpand pull-right" expand-icon="training">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
-							<span><select id="tdpTriningYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;">
-							    <option value="4" selected="selected">2016-2018</option>
-                                <option value="3">2014-2016</option>
-							</select></span>
+							
 							<span class="input-group pull-right dateRangePickerClsForTraining hide" expand-block-date="training" style="display:none;">
 								<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
 							</span>
+							<span class="pull-right"><select id="tdpTriningYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -4px;margin-right:5px;">
+							    <option value="4" selected="selected">2016-2018</option>
+                                <option value="3">2014-2016</option>
+							</select></span>
 						</div>
 					</div>
 					
@@ -2932,7 +2965,11 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;"><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></div>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h5 class="module_OwnerCss">Module Owner : Peddi Rama Rao</h5>
+						</div>	
+					
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20" style="display:none;"><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></div>
 						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand" expand-block-inner="training">
 							<div class="row">
 							<!-- <div id="programsDtlsCntTableId" class="m_top10"></div>
@@ -3108,6 +3145,9 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : K Rajesh</h5>
+							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12" expand-block-inner="cadreInsurance">
 								<ul class="activeUlCls cadreInsuranceStateCls list-inline">
 								  <li class="active" attr_id="0"> ALL </li>
@@ -3565,7 +3605,9 @@
 				</div>    
                 <div class="panel-body">
 			    	<div class="row">
-						  
+						  <!--<div class="col-md-12 col-xs-12 col-sm-12">
+							<h5 class="module_OwnerCss">Module Owner : Peddi Rama Rao</h5>
+						</div>-->
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							   
 							<h6 id="lastUpdatedTimeCadreId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold">Last Updated : </h6>
@@ -3885,7 +3927,7 @@
 		</div>
 		<div class="row">
 		<!--Cadre Registration ENd -->
-		<div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
+		<!--<div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
 				
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
@@ -3898,18 +3940,23 @@
 								
 							</div>
 							<div class="col-sm-3">
-								<span class="pull-right" expand-icon="prajaSankaplaYatra">
-									<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-								</span>
+								 <span class="prajaSankaplaYatraIconExpand pull-right" expand-icon="prajaSankaplaYatra">
+								   <i class="glyphicon glyphicon-fullscreen"></i>
+								   </span>
 							</div>
 						</div>
 					</div>
 					<div class="panel-body">
 						<div class="row">
+							<!--<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : Peddi Rama Rao</h5>
+							</div>
+							<div class="m_top20">
 							<select class="categoryCls" id="categoryId">
 								<option value="1050" selected="selected">Counter on praja sankalpa yatra</option>
 								<option value="1051">Praja sankalpa yatra</option>
 							</select>
+							</div>
 							<span class="input-group pull-right dateRangePickerCls">
 								<input type="text" id="dateRangePrajaSankalpaId" class="form-control" style="width:180px"/>
 								<span class="input-group-addon">
@@ -3950,7 +3997,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 			<!-- NEWS BLOCK END-->
 			<!--Press Meet block Start-->
 			<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
@@ -3972,7 +4019,12 @@
 				  </div>
 				  <div class="panel-body">
 					<div class="row">
-						<span class="input-group pull-right dateRangePickerCls">
+						<div class="col-sm-12">
+							<h5 class="module_OwnerCss">Module Owner : Anil</h5>
+					</div>
+					</div>
+					<div class="row">
+						<span class="input-group pull-right dateRangePickerCls m_top20">
 							<input type="text" id="dateRangePressmeetId" class="form-control" style="width:180px"/>
 							<span class="input-group-addon">
 								<i class="glyphicon glyphicon-calendar"></i>
@@ -5367,8 +5419,11 @@ function datePickerAlignment(blockName)
 {
 	$("[expand-block-heading]").addClass("col-md-9 col-sm-9").removeClass("col-md-8 col-sm-8");
 	$("[expand-block-heading1]").addClass("col-md-3 col-sm-3").removeClass("col-md-4 col-sm-4");
+	
 	$("[expand-block-heading="+blockName+"]").removeClass("col-md-9 col-sm-9").addClass("col-md-8 col-sm-8");
 	$("[expand-block-heading1="+blockName+"]").removeClass("col-md-3 col-sm-3").addClass("col-md-4 col-sm-4");
+	
+	
 }
 function closeBlocks()
 {
