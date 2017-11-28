@@ -246,7 +246,7 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 <section id="printcontent">
 	<div class="container m_top20 headerDisPlayNone">
 		<div class="row">
-			<div class="col-sm-11">
+			<div class="col-sm-9">
 				<label class="radio-inline pull-right">
 					<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="withHeader" class="withAndOutHeaderCls">With Header
 				</label>
@@ -256,7 +256,10 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 			</div>
 			<div class="col-sm-1">
 				<button class="btn btn-md btn-success printViewCls pull-right" attr_divId="printableArea">Print</button>
-				<!-- <button class="btn btn-md btn-success exportToPdf" attr_id="mainDivHeaderId">Export PDF</button>-->
+			</div>
+			<div class="col-sm-2">
+				<button class="btn btn-md btn-success exportToPdf1">DownLoad All G.O PDF'S</button>
+				<!--<button class="btn btn-md btn-success exportToPdf" attr_id="mainDivHeaderId">Export PDF</button>-->
 			</div>
 		</div>
 		<div class="row">
