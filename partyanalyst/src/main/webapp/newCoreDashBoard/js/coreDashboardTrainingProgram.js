@@ -3201,8 +3201,7 @@ function buildTrainingCampBatchCenterWiseDetails(result){
 			}
 			str+='<table class="table tableTrainingBatch bg_ED table-condensed">';     
 				str+='<tbody>';
-				
-					if(result.trainingProgramList[i].name == "Leadership Excellence Mangalagiri"){
+					if(result.trainingProgramList[i].id == 7){
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-muted text-capitalize">Days</p>';
@@ -3247,7 +3246,7 @@ function buildTrainingCampBatchCenterWiseDetails(result){
 					
 					var inviteeAttended = result.trainingProgramList[i].inviteeAttended
 					
-					if(result.trainingProgramList[i].name == "Leadership Excellence Mangalagiri"){
+					if(result.trainingProgramList[i].id == 7){    
 						for(var j in result.trainingProgramList[i].trainingProgramList){
 							var percentage = ((parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountInvited)+(parseInt(result.trainingProgramList[i].trainingProgramList[j].only1dayCountNonInvited)))/(parseInt(result.trainingProgramList[i].totalAttenedCount))*100).toFixed(2);
 							str+='<tr>';
