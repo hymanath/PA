@@ -55,7 +55,7 @@ function buildJbCommitteeMainBlockStatusCount(result){
 				str+='<h3 class="m_top20" style="margin-left: 15px;"><b>'+result.committeeStatusVOList[i].statusCount+'</b></h3>';
 				str+='<h5 class="m_top20" style="margin-left: 15px;color:#12A89D;">'+result.committeeStatusVOList[i].statusPercentage+' %</h5>';
 				str+='<h5 class="m_top10" style="margin-left: 15px;line-height: 20px;""><b>'+result.committeeStatusVOList[i].status+
-				'<br>committees</b></h5>';
+				'<br>Committees</b></h5>';
 		    str+='</div>';
 			
 			var statusObj = {};
