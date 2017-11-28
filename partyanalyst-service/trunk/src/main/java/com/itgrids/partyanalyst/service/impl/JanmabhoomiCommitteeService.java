@@ -553,14 +553,16 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for(Object[] param :list){
 				JanmabhoomiCommitteeVO locVO = locationMapsWithLevel.get(commonMethodsUtilService.getLongValueForObject(param[6]));
-					if(locVO == null){
+					if(locVO == null ){
 						 locVO = new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[6]),commonMethodsUtilService.getStringValueForObject(param[7]));
 						 locVO.setList(setCommitteeLevels(committeeLvls));
 						 if(type !=null && !type.equalsIgnoreCase("parliament"))
 						 setlocationLevelsToVO(locVO,param,type);
-						 returnList.add(locVO);
-						 if(commonMethodsUtilService.getLongValueForObject(param[6]) >0l)
+						
+						 if(commonMethodsUtilService.getLongValueForObject(param[6]) >0l){
 						locationMapsWithLevel.put(commonMethodsUtilService.getLongValueForObject(param[6]), locVO);
+						 returnList.add(locVO);
+						 }
 					}
 					Long committeeLvlId = commonMethodsUtilService.getLongValueForObject(param[0]);
 					/*String confirmedStatus = commonMethodsUtilService.getStringValueForObject(param[2]);
