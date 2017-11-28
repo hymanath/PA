@@ -30,6 +30,7 @@
 				<div class="white_block_JanB">
 					<div class="row">
 						<div class="col-sm-2">
+						    <div id="committeeMainBlockDivId"></div>
 							<div id="committeeMainBlockGraphId" style="height:200px;"></div>
 						</div>
 						<div id="overAllCommitteeMainBlockId"></div>

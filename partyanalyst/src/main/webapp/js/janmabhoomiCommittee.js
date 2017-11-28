@@ -55,7 +55,7 @@ function buildJbCommitteeMainBlockStatusCount(result){
 				str+='<h3 class="m_top20" style="margin-left: 15px;"><b>'+result.committeeStatusVOList[i].statusCount+'</b></h3>';
 				str+='<h5 class="m_top20" style="margin-left: 15px;color:#12A89D;">'+result.committeeStatusVOList[i].statusPercentage+' %</h5>';
 				str+='<h5 class="m_top10" style="margin-left: 15px;line-height: 20px;""><b>'+result.committeeStatusVOList[i].status+
-				'<br>COMMITTEES</b></h5>';
+				'<br>committees</b></h5>';
 		    str+='</div>';
 			
 			var statusObj = {};
@@ -68,7 +68,6 @@ function buildJbCommitteeMainBlockStatusCount(result){
 			 
 			chartArr.push(statusObj)
 		}
-	
 	var id = 'committeeMainBlockGraphId';
 	var type = {
 		type: 'pie',
@@ -110,6 +109,7 @@ function buildJbCommitteeMainBlockStatusCount(result){
 	}];
 		highcharts(id,type,data,plotOptions,title,tooltip,legend);
 	$("#overAllCommitteeMainBlockId").html(str);
+	$("#committeeMainBlockDivId").html('<h5 class="font_weight" style="font-weight:bold;">Total Committees : <span class="">'+result.totalCommitteeCnt+'</span></h5>');
 }
 function buildCommitteeWiseDetailsBlock(result){
 	
@@ -120,6 +120,7 @@ function buildCommitteeWiseDetailsBlock(result){
 		str+='<h3 class="text_bold">Committee Overview</h3>';
 	  str+='</div>';
 	  str+='<div class="panel-body">';
+	  str+='<div class="table-responsive">';
 		str+='<table class="table table_custom_JB">';
 			str+='<thead>';
 				str+='<tr>';
@@ -139,15 +140,20 @@ function buildCommitteeWiseDetailsBlock(result){
 			str+='<tbody>';
 				for(var i in result.levelWisecommitteeStatusVOList){
 					str+='<tr>';
-						str+='<td>'+result.levelWisecommitteeStatusVOList[i].name+'</td>';
-							str+='<td><h5 class="borderContCss" style="border:1px solid #000;font-weight:bold;">'+result.levelWisecommitteeStatusVOList[i].totalCommitteeCnt+'</h5></td>';
+						str+='<td class="text-bold">'+result.levelWisecommitteeStatusVOList[i].name+'</td>';
+							str+='<td><h5 class="borderContCss committeeWiseDetailsClick" style="border:1px solid #000;font-weight:bold;" attr_commiteeId="0" attr_status_type="0" attr_level_id="0" attr_location_value="0" attr_type="count" attr_commitee_lvl_id="'+result.levelWisecommitteeStatusVOList[i].id+'" attr_level_name="'+result.levelWisecommitteeStatusVOList[i].name+'">'+result.levelWisecommitteeStatusVOList[i].totalCommitteeCnt+'</h5></td>';
 						for(var j in result.levelWisecommitteeStatusVOList[i].committeeStatusVOList){
-							str+='<td><h5 class="borderContCss" style="border:1px solid '+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].color+';"><span class="text_bold">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusCount+'</span> <span class="pull-right">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusPercentage+' %</span></h5></td>';
+							if(result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusCount == 0){
+							    str+='<td><h5 class="borderContCss" style="border:1px solid '+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].color+';"><span class="text_bold">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusCount+'</span> <span class="pull-right">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusPercentage+' %</span></h5></td>';
+							}else{
+								str+='<td><h5 class="borderContCss committeeWiseDetailsClick" style="border:1px solid '+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].color+';" attr_commiteeId="0" attr_status_type="'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusId+'" attr_level_id="0" attr_location_value="0" attr_type="count" attr_commitee_lvl_id="'+result.levelWisecommitteeStatusVOList[i].id+'" attr_level_name="'+result.levelWisecommitteeStatusVOList[i].name+'"><span class="text_bold">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusCount+'</span> <span class="pull-right">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusPercentage+' %</span></h5></td>';
+							}
 						}
 					str+='</tr>';
 				}		
 			str+='</tbody>';
 		str+='</table>';
+		str+='</div>';
 	  str+='</div>';
 	str+='</div>';
 
@@ -221,12 +227,17 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 	var statusColorobj={"Not Started":"#F7931D","Approved":"#7E3D97","InProgress":"#12A89D","Ready For Approval":"#20409A"}	
 	
 	str+='<div class="table-responsive">';
-		str+='<table class="table table-bordered table-condensed table_custom_level">';
+		str+='<table class="table table-bordered table-condensed table_custom_level" id="'+blockType+'tableId">';
 			str+='<thead style="background-color:#CED0D0;">';
 				str+='<tr>';
-					str+='<th rowspan="2">Location Name</th>';
 					if(blockType == "district"){
+						str+='<th rowspan="2">District Name</th>';
 						str+='<th rowspan="2">District Committee</th>';
+					}else if(blockType == "parliament"){
+						str+='<th rowspan="2">Parliament Name</th>';
+					}else if(blockType == "constituency"){
+						str+='<th rowspan="2">District Name</th>';
+						str+='<th rowspan="2">Constituency Name</th>';
 					}
 					for(var i in result[0].list){
 						var length = result[0].list.length;
@@ -260,6 +271,9 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 						}
 						
 					}else{
+						if(blockType == "constituency"){
+							str+='<td>'+result[i].districtName+'</td>';
+						}
 						str+='<td>'+result[i].name+'</td>';
 					}
 					if(blockType == "district"){
@@ -301,6 +315,9 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 	str+='</div>';
 	
 	$("#"+divId+blockType).html(str);
+	if(blockType != "district"){
+		$("#"+blockType+"tableId").dataTable();
+	}
 } 
 $(document).on("click",".committeeWiseDetailsClick",function(){
 	var committeId = $(this).attr("attr_commiteeId");
