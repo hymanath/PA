@@ -661,8 +661,8 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				}
 		 	    				
 		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm New")){
-		 	    					if(vo.getCompleted() != null && vo.getCompleted().longValue() > 0l && vo.getTarget() != null && Double.valueOf(vo.getTarget()) > 0)
-		 	    						vo.setPercentage(new BigDecimal(vo.getCompleted()*100.00/Double.valueOf(vo.getTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    					if(vo.getCompleted() != null && vo.getCompleted().longValue() > 0l && vo.getMulbTarget() != null && Double.valueOf(vo.getMulbTarget()) > 0)
+		 	    						vo.setPercentage(new BigDecimal(vo.getCompleted()*100.00/Double.valueOf(vo.getMulbTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    					else
 		 	    						vo.setPercentage("0.00");
 		 	    				}
