@@ -1822,7 +1822,7 @@ function buildDayWiseAttendnenceForBatch(result,center){
 						}
 					}
 					str+='</tr>';
-				
+				    
 				str+='</tbody>';
 				str+='</table>';
 				$("#dayWiseAttendDivId").html(str);
