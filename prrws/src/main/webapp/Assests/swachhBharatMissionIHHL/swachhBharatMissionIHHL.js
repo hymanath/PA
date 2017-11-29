@@ -509,7 +509,7 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 	function buildSwachhBharatMissionLocationWiseDetails(result,reportType,subLocation,displayType){
 		
 		var str='';
-		
+		var paginationStatus;
 		str+='<div class="table-responsive">';
 		if(reportType == "status"){
 			str+='<table class="table table-bordered table-condensed" id="dataTable'+subLocation+'" style="width:100%">';
@@ -791,8 +791,14 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 		str+='</div>';
 		
 		$("#IHHL"+subLocation).html(str);
-		if (subLocation !="state")
-		{
+		
+			if (subLocation=="state")
+			{
+				 paginationStatus=false;
+			}
+			else{
+				paginationStatus=true;
+			}
 			if (subLocation =="district") {
 				if(reportType == "status"){
 				$("#dataTable"+subLocation).dataTable({
@@ -813,18 +819,20 @@ function getSwachhBharatMissionLocationWiseDetails(subLocation,reportType,displa
 				$("#dataTable"+subLocation).dataTable({
 					"iDisplayLength": 10,
 					"aaSorting": [],
-					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+					"paging":paginationStatus
 				});
 			   }else if(reportType == "daily"){
 				$("#dataTableDaily"+subLocation).dataTable({
 					"iDisplayLength": 10,
 					"aaSorting": [],
-					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+					"paging":paginationStatus
 					
 				});
 			  }
 			}
-		}
+		
 	}
 }
 function levelWiseSBData(divId)
