@@ -1257,7 +1257,7 @@ function getCoreDebateBasicDetailsOfParty(designationId,partyId,type,popupLocati
 	 url: "getCoreDebateBasicDetailsOfPartyAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		buildCoreDebatesBasicDetailsOfParty(result,type);
+		buildCoreDebatesBasicDetailsOfPartyDebates(result,type);
 	});	
 }
 
@@ -1381,7 +1381,7 @@ function buildDebateModelDetails(result,type){
 		}
 		
 }
-function buildCoreDebatesBasicDetailsOfParty(result,type){
+function buildCoreDebatesBasicDetailsOfPartyDebates(result,type){
 	var str = '';
 		if(result !=null && result.length>0){
 								
@@ -1484,7 +1484,7 @@ $(document).on("click",".perforamnceDebateCls",function(){
 	 url: "getCoreDebateBasicDetailsOfPartyAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		buildCoreDebatesBasicDetailsOfParty(result,type);
+		buildCoreDebatesBasicDetailsOfPartyDebates(result,type);
 	});	
 });
 $(document).on("click",".debatesSettingsCloseBody",function(){
