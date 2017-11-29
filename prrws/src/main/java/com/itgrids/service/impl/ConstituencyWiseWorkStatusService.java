@@ -401,7 +401,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					returnvo.setFinalWorks(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
-					returnvo.setFinalAmount(convertRupeesIntoCrores(obj[0] != null ? obj[0].toString():"0"));
+					returnvo.setFinalAmount(convertRupeesIntoCrores(obj[4] != null ? obj[4].toString():"0"));
 					returnvo.setTotalAmount(commonMethodsUtilService.getLongValueForObject(obj[0]));
 				}
 			}
@@ -447,6 +447,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					Long totalAmount = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
+					Long materialAmount = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
 					String workName = obj[1] != null ? obj[1].toString():"0";
 					NregsFmsWorksVO vo = null;
 					if(totalAmount != null && totalAmount.longValue() >= 20000000L){
@@ -486,7 +487,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 							totalWorks = totalWorks+Long.valueOf(obj[6] != null ? obj[6].toString():"0");
 						}
 					}
-					finalAmount = finalAmount+totalAmount;
+					finalAmount = finalAmount+materialAmount;
 				}
 			}
 			
