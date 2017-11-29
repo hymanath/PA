@@ -30,8 +30,12 @@ public class MeesevaDtlsVO implements Cloneable {
 	private Long catgryBWithInSLACount = 0L;
 	private Long catgryABeyondSLACount = 0L;
 	private Long catgryBBeyondSLACount = 0L;
-	
-	
+	private Long  categoryACount = 0L;
+	private Long categoryBCount = 0L;
+	private String serviceName;
+	private Long approved = 0L;
+	private Long rejected = 0L;
+	private Long revoke = 0L;
 	
 	public String getId() {
 		return id;
@@ -180,6 +184,42 @@ public class MeesevaDtlsVO implements Cloneable {
 	}
 	public void setCatgryBBeyondSLACount(Long catgryBBeyondSLACount) {
 		this.catgryBBeyondSLACount = catgryBBeyondSLACount;
+	}
+	public Long getCategoryACount() {
+		return categoryACount;
+	}
+	public void setCategoryACount(Long categoryACount) {
+		this.categoryACount = categoryACount;
+	}
+	public Long getCategoryBCount() {
+		return categoryBCount;
+	}
+	public void setCategoryBCount(Long categoryBCount) {
+		this.categoryBCount = categoryBCount;
+	}
+	public String getServiceName() {
+		return serviceName;
+	}
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+	public Long getApproved() {
+		return approved;
+	}
+	public void setApproved(Long approved) {
+		this.approved = approved;
+	}
+	public Long getRejected() {
+		return rejected;
+	}
+	public void setRejected(Long rejected) {
+		this.rejected = rejected;
+	}
+	public Long getRevoke() {
+		return revoke;
+	}
+	public void setRevoke(Long revoke) {
+		this.revoke = revoke;
 	}
 	
 }
