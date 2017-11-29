@@ -718,7 +718,7 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
      
    if(result !=null){
 		if( type == 'candidate'){
-		 buildCoreDebatesBasicDetailsOfCandidates(result);
+		 buildCorePressmeetBasicDetailsOfCandidates(result);
 		}else if(type='party'){
 	      buildCorePressmeetBasicDetailsOfParty(result);
 	   }
@@ -727,7 +727,7 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 	});
 });
  
- function buildCoreDebatesBasicDetailsOfCandidates(result){
+ function buildCorePressmeetBasicDetailsOfCandidates(result){
 	var str = '';
 		if(result.pressmeetList !=null && result.pressmeetList.length>0){
 								
