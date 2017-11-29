@@ -1548,9 +1548,9 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 					vo.setLocalElectionBody(obj[4] != null ? obj[4].toString():"");
 					vo.setPanchayat(obj[5] != null ? obj[5].toString():"");
 					vo.setBoothId(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
-					vo.setBoothName(obj[7] != null ? "Booth No- "+obj[7].toString():"");
+					vo.setBoothName(obj[7] != null ? obj[7].toString():"");
 					vo.setOwnBoothId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
-					vo.setOwnBoothNo(obj[9] != null ? "Booth No- "+obj[9].toString():"");
+					vo.setOwnBoothNo(obj[9] != null ? obj[9].toString():"");
 					vo.setTdpCadreId(Long.valueOf(obj[10] != null ? obj[10].toString():"0"));
 					vo.setImage(obj[11] != null ? obj[11].toString():"");
 					
