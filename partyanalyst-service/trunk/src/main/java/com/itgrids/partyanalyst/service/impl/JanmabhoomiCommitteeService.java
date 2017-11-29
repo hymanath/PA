@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -177,7 +178,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		@Override
 		public JanmabhoomiCommitteeMemberVO getJanmabhoomiCommitteeOverview(Long committeId, String fromDateStr, String toDateStr) {
 			JanmabhoomiCommitteeMemberVO committeeVO = new JanmabhoomiCommitteeMemberVO();
-			Map<Long,JanmabhoomiCommitteeMemberVO> designationVOMap=new HashMap<Long, JanmabhoomiCommitteeMemberVO>();
+			Map<Long,JanmabhoomiCommitteeMemberVO> designationVOMap=new LinkedHashMap<Long, JanmabhoomiCommitteeMemberVO>();
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
