@@ -56,6 +56,7 @@ import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 
 public class BoothDataValidationService implements IBoothDataValidationService{
 
@@ -77,8 +78,18 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	private TransactionTemplate transactionTemplate = null;
 	private ICadreCommitteeService cadreCommitteeService;
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
+	private ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
 	
 	
+	public ImageAndStringConverter getImageAndStringConverter() {
+		return imageAndStringConverter;
+	}
+
+	public void setImageAndStringConverter(
+			ImageAndStringConverter imageAndStringConverter) {
+		this.imageAndStringConverter = imageAndStringConverter;
+	}
+
 	public IParliamentAssemblyDAO getParliamentAssemblyDAO() {
 		return parliamentAssemblyDAO;
 	}
@@ -1518,7 +1529,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
     
     public List<BoothAddressVO> getBoothInchargeCommitteeDetailsByLocation(Long levelId,Long levelValue){
     	List<BoothAddressVO> returnList = new ArrayList<BoothAddressVO>(0);
-    	try {
+    	try {  
 			List<Long> levelValues = new ArrayList<Long>(0);
 			if(levelId != null && levelId.longValue() == 10L){
 				levelValues = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(levelValue);
@@ -1542,6 +1553,11 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 					vo.setOwnBoothNo(obj[9] != null ? "Booth No- "+obj[9].toString():"");
 					vo.setTdpCadreId(Long.valueOf(obj[10] != null ? obj[10].toString():"0"));
 					vo.setImage(obj[11] != null ? obj[11].toString():"");
+					
+					String base64imageStr= imageAndStringConverter.convertImageToBase64String("http://www.mytdp.com/images/cadre_images/"+vo.getImage());
+					if(base64imageStr != null)
+						vo.setBase64imageStr(base64imageStr);
+					
 					vo.setMemberShipNo(obj[12] != null ? obj[12].toString():"");
 					vo.setCadreName(obj[13] != null ? obj[13].toString():"");
 					vo.setMobileNo(obj[14] != null ? obj[14].toString():"");
