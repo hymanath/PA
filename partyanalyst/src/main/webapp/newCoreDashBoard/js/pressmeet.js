@@ -172,7 +172,7 @@ function getPrintMediaOverAllPartyWiseCounts(){
 						str+='<td>';
 						  var rating =parseInt(result.pressmeetList[i].overAllPerfomance)/5;
 							str+='<p class="text-capital">performance</p>';
-							str+='<input class="performanceRating" value="'+rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom overAllPerformanceCls " attr_partyId = "'+result.pressmeetList[i].partyId+'" style="cursor:pointer;"><a>'+rating+'</a></span>';
+							str+='<input class="performanceRating" value="'+rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom overAllPerformanceCls " attr_partyId = "'+result.pressmeetList[i].partyId+'" style="cursor:pointer;">'+rating+'</span>';
 						str+='</td>';
 					str+='</tr>';
 				 str+='</tbody>';
