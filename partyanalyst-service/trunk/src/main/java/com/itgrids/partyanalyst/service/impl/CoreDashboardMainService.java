@@ -1987,7 +1987,13 @@ String committeType){
 							  }
 			    	 }
 			    	 //sorting 
-			    	 Collections.sort(finalList,BasicCommitteesCompletedCountPercASC);
+			    	 if(groupingLocationsList != null && groupingLocationsList.size() > 0 && committeType.trim().equalsIgnoreCase("boothCommittee")){ 
+			    		 Collections.sort(finalList,basicCommitteesCompletedCountASC);
+			    	 } else {
+			    		 Collections.sort(finalList,BasicCommitteesCompletedCountPercASC);
+			    	 }
+			    	 
+			    	 
 			    	 finalList.get(0).setRequiredName(returnLevelName);
 			     }
 			     
@@ -1996,7 +2002,15 @@ String committeType){
 		  }
 		   return finalList;
 	   }
-	  
+	 public static Comparator<CommitteeDataVO> basicCommitteesCompletedCountASC = new Comparator<CommitteeDataVO>() {
+	     public int compare(CommitteeDataVO member2, CommitteeDataVO member1) {
+	
+	        Long count2 = member2.getCompletedCount();
+	        Long count1 = member1.getCompletedCount();
+	        //ascending order of percantages.
+	         return count2.compareTo(count1);
+	    }
+	}; 
 	   public void locationCommitteeCountSetting(List<Object[]> list,Map<Long,CommitteeDataVO> finalMap,String status,String groupingLocation){
 		    
 		    if(list !=null && list.size() >0){
