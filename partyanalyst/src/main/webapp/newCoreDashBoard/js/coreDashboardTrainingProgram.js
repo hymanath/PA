@@ -98,26 +98,26 @@ var getDocumentWidth = $(document).width();
 		        str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingLeaderSkill'+i+'">';
 					if(i == 0){  
-						str+='<a role="button" class="collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseLeaderSkill'+i+'" aria-controls="collapseLeaderSkill'+i+'">';
+						str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseLeaderSkill'+i+'" aria-controls="collapseLeaderSkill'+i+'">';
 					}else{
 						str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseLeaderSkill'+i+'" aria-controls="collapseLeaderSkill'+i+'">';
 					}
-					   str+='<h4 class="text-capital">'+stringArrType[i]+'';
+					   str+='<h4 class="text-capital f_14 text_bold">'+stringArrType[i]+'';
 				   if(stringArrType[i] == "Over-All Levels"){
-					   str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"> <span data-toggle="tooltip" data-placement="top" title="Total Eligible">[T.E: <b>'+result.trainingProgramList[0].totalEligibleCount+']</span> &nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Total Attended">[T.A:<b>'+result.trainingProgramList[0].totalAttenedCount+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Invitee Attended">[I.A:<b>'+result.trainingProgramList[0].inviteeAttended+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Non Invitee Attended">[N.I.A:<b>'+result.trainingProgramList[0].nonInviteeAttended+']</span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Yet To Train">[Y.T.T:<b>'+result.trainingProgramList[0].totalNotAttenedCount+'] </span> </h5>'
+					   str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover f_12"> <span data-toggle="tooltip" data-placement="top" title="Total Eligible">[T.E: <b>'+result.trainingProgramList[0].totalEligibleCount+']</span> &nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Total Attended">[T.A:<b>'+result.trainingProgramList[0].totalAttenedCount+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Invitee Attended">[I.A:<b>'+result.trainingProgramList[0].inviteeAttended+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Non Invitee Attended">[N.I.A:<b>'+result.trainingProgramList[0].nonInviteeAttended+']</span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Yet To Train">[Y.T.T:<b>'+result.trainingProgramList[0].totalNotAttenedCount+'] </span> </h5>'
 					}
 				   if(stringArrType[i] == "village / ward Level"){
-					   str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"> <span data-toggle="tooltip" data-placement="top" title="Total Eligible">[T.E: <b>'+result.villageWardVO.totalEligibleCount+']</span> &nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Total Attended">[T.A:<b>'+result.villageWardVO.totalAttenedCount+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Invitee Attended">[I.A:<b>'+result.villageWardVO.inviteeAttended+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Non Invitee Attended">[N.I.A:<b>'+result.villageWardVO.nonInviteeAttended+']</span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Yet To Train">[Y.T.T:<b>'+result.villageWardVO.totalNotAttenedCount+'] </span> </h5>'
+					   str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover f_12"> <span data-toggle="tooltip" data-placement="top" title="Total Eligible">[T.E: <b>'+result.villageWardVO.totalEligibleCount+']</span> &nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Total Attended">[T.A:<b>'+result.villageWardVO.totalAttenedCount+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Invitee Attended">[I.A:<b>'+result.villageWardVO.inviteeAttended+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Non Invitee Attended">[N.I.A:<b>'+result.villageWardVO.nonInviteeAttended+']</span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Yet To Train">[Y.T.T:<b>'+result.villageWardVO.totalNotAttenedCount+'] </span> </h5>'
 				   }
 				   if(stringArrType[i] == "mandal / town / division Level"){
-					  str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"> <span data-toggle="tooltip" data-placement="top" title="Total Eligible">[T.E: <b>'+result.mandalTownDivisionVO.totalEligibleCount+']</span> &nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Total Attended">[T.A:<b>'+result.mandalTownDivisionVO.totalAttenedCount+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Invitee Attended">[I.A:<b>'+result.mandalTownDivisionVO.inviteeAttended+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Non Invitee Attended">[N.I.A:<b>'+result.mandalTownDivisionVO.nonInviteeAttended+']</span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Yet To Train">[Y.T.T:<b>'+result.mandalTownDivisionVO.totalNotAttenedCount+'] </span> </h5>'
+					  str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover f_12"> <span data-toggle="tooltip" data-placement="top" title="Total Eligible">[T.E: <b>'+result.mandalTownDivisionVO.totalEligibleCount+']</span> &nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Total Attended">[T.A:<b>'+result.mandalTownDivisionVO.totalAttenedCount+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Invitee Attended">[I.A:<b>'+result.mandalTownDivisionVO.inviteeAttended+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Non Invitee Attended">[N.I.A:<b>'+result.mandalTownDivisionVO.nonInviteeAttended+']</span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Yet To Train">[Y.T.T:<b>'+result.mandalTownDivisionVO.totalNotAttenedCount+'] </span> </h5>'
 				   }
 						str+='</h4>';
 						str+='</a>';
 					    str+='</div>';
 					if(i == 0)
 					{
-					str+='<div id="collapseLeaderSkill'+i+'" class="panel-collapse collapse in" aria-labelledby="headingLeaderSkill'+i+'" style="position:relative">';
+					str+='<div id="collapseLeaderSkill'+i+'" class="panel-collapse collapse" aria-labelledby="headingLeaderSkill'+i+'" style="position:relative">';
 					}else{
 					str+='<div id="collapseLeaderSkill'+i+'" class="panel-collapse collapse" aria-labelledby="headingLeaderSkill'+i+'" style="position:relative">';
 					}
@@ -3182,16 +3182,17 @@ function buildTrainingCampBatchCenterWiseDetails(result){
 			str+='<div class="panel panel-default">';
 			str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingTrainingBatch'+i+'">';
 			if(i == 0){
-				str+='<a role="button" class="collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
+				str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
 			}else{
 				str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseTrainingBatch'+i+'" aria-controls="collapseTrainingBatch'+i+'">';
 			}
 			var Average = (parseInt(result.trainingProgramList[i].totalAttenedCount)/parseInt(result.trainingProgramList[i].totalBath)).toFixed(2);
-			str+='<h4 class="text-capital">'+result.trainingProgramList[i].name+'&nbsp;<br/><span style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.trainingProgramList[i].description+'" >[Total Batchs :'+result.trainingProgramList[i].totalBath+']&nbsp[Average Attended Per Batch:'+Average+']</span></h4>';
+			str+='<h4 class="text-capital f_14 text_bold">'+result.trainingProgramList[i].name+'</h4>';
+			str+='<h5 class="m_top10 f_12" data-toggle="tooltip" data-placement="top" title="'+result.trainingProgramList[i].description+'" >[Total Batchs :'+result.trainingProgramList[i].totalBath+']&nbsp[Average Attended Per Batch:'+Average+']</h5>';
 			str+='</a>';
 			str+='</div>';
 			if(i == 0){
-				str+='<div id="collapseTrainingBatch'+i+'" class="panel-collapse collapse in" aria-labelledby="headingTrainingBatch'+i+'" style="position:relative">';
+				str+='<div id="collapseTrainingBatch'+i+'" class="panel-collapse collapse" aria-labelledby="headingTrainingBatch'+i+'" style="position:relative">';
 			}else{
 				str+='<div id="collapseTrainingBatch'+i+'" class="panel-collapse collapse" aria-labelledby="headingTrainingBatch'+i+'" style="position:relative">';
 			}
@@ -3295,18 +3296,18 @@ function buildTrainingCampBatchCenterWiseDetails(result){
 				str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingSpecialTrainingBatch'+i+'">';
 					if(i == 0){  
-						str+='<a role="button" class="collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSpecialTrainingBatch'+i+'" aria-controls="collapseSpecialTrainingBatch'+i+'">';
+						str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSpecialTrainingBatch'+i+'" aria-controls="collapseSpecialTrainingBatch'+i+'">';
 					}else{
 						str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSpecialTrainingBatch'+i+'" aria-controls="collapseSpecialTrainingBatch'+i+'">';
 					}
-						str+='<h4 class="text-capital">'+result.leaderTrainingList[i].name+'';
-							str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover"><span>[Total Batches : <b>'+result.leaderTrainingList[i].completedBatch+']</b>&nbsp&nbsp&nbsp[Average Attended Per Batch : <b>'+parseInt(result.leaderTrainingList[i].totalAttenedCount)/parseInt(result.leaderTrainingList[i].completedBatch).toFixed(2)+']</b></span> </h5>';
+						str+='<h4 class="text-capital text_bold f_14">'+result.leaderTrainingList[i].name+'';
+							str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover f_12"><span>[Total Batches : <b>'+result.leaderTrainingList[i].completedBatch+']</b>&nbsp&nbsp&nbsp[Average Attended Per Batch : <b>'+parseInt(result.leaderTrainingList[i].totalAttenedCount)/parseInt(result.leaderTrainingList[i].completedBatch).toFixed(2)+']</b></span> </h5>';
 						str+='</h4>';
 					str+='</a>';
 				str+='</div>';
 				if(i == 0)
 				{
-					str+='<div id="collapseSpecialTrainingBatch'+i+'" class="panel-collapse collapse in" aria-labelledby="headingSpecialTrainingBatch'+i+'" style="position:relative">';
+					str+='<div id="collapseSpecialTrainingBatch'+i+'" class="panel-collapse collapse" aria-labelledby="headingSpecialTrainingBatch'+i+'" style="position:relative">';
 				}else{
 					str+='<div id="collapseSpecialTrainingBatch'+i+'" class="panel-collapse collapse" aria-labelledby="headingSpecialTrainingBatch'+i+'" style="position:relative">';
 				}

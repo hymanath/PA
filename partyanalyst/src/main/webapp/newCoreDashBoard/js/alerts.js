@@ -3079,7 +3079,7 @@ function getTotalArticledetails(articleId){
 					str+='</div>';
 					str+='</td>';
 				}
-				if(!(result.overAllVO.govtAlertCnt == 0)){
+				/* if(!(result.overAllVO.govtAlertCnt == 0)){
 					var govtAlertPerc = ((parseInt(result.overAllVO.govtAlertCnt)*100)/parseInt(result.overAllVO.totalAlertCnt)).toFixed(2);
 					
 					str+='<td colspan="2" onclick ="getEditioDtls(2,0);arrowPositionMove(overAllgovtArrowPostion);" id="overAllgovtArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="2" attr_edition_type_id="0">';
@@ -3095,7 +3095,7 @@ function getTotalArticledetails(articleId){
 					
 					str+='<p>GOVT</p>';
 					str+='</div></td>';
-				}
+				} */
 				if(!(result.overAllVO.otherAlertCnt == 0)){
 					var otherAlertPerc = ((parseInt(result.overAllVO.otherAlertCnt)*100)/parseInt(result.overAllVO.totalAlertCnt)).toFixed(2);
 					
@@ -3187,7 +3187,7 @@ function getTotalArticledetails(articleId){
 					}
 					
 				}
-				if(!(result.overAllVO.govtAlertCnt == 0)){
+				/* if(!(result.overAllVO.govtAlertCnt == 0)){
 					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalgovtEdArrowPostion)" id="overAlltotalgovtEdArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted text-capital">'+result.totalGovtList[0].edition+''
 					if(result.totalGovtList[0].editionCnt > 0){
 						if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
@@ -3220,7 +3220,7 @@ function getTotalArticledetails(articleId){
 						str+='<p onclick ="getEditioDtls('+result.totalGovtList[1].alertTypeId+','+result.totalGovtList[1].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalGovtList[1].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[1].editionId+'"><span class="alertColorFont">'+result.totalGovtList[1].editionCnt+'</span></p></div></td>';
 					}
 					
-				}
+				} */
 				if(!(result.overAllVO.otherAlertCnt == 0)){
 					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalothersEd1ArrowPostion)" id="overAlltotalothersEd1ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted text-capital">'+result.totalOtherList[0].edition+''
 					if(result.totalOtherList[0].editionCnt > 0){
