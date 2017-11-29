@@ -15,12 +15,19 @@ public class DistrictConstituenciesDAO extends GenericDaoHibernate<DistrictConst
 		super(DistrictConstituencies.class);
 	}
 	
-	public List<Object[]> getConstituenciesOfDistrict(){
-		Query query = getSession().createQuery(" select model.district.districtId," +
+	public List<Object[]> getConstituenciesOfDistrict(Long districtId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.district.districtId," +
 				" model.district.districtName," +
 				" model.constituency.constituencyId," +
 				" model.constituency.name" +
-				" from DistrictConstituencies model order by model.constituency.name ");
+				" from DistrictConstituencies model ");
+		if(districtId != null && districtId.longValue()>0l)
+		sb.append(" where model.district.districtId = :districtId" );
+		sb.append(" order by model.constituency.name ");
+		Query query = getSession().createQuery(sb.toString());
+		if(districtId != null && districtId.longValue()>0l)
+			query.setParameter("districtId", districtId);
 		
 		return query.list();
 	}

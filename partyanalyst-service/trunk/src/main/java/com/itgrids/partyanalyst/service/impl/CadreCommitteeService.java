@@ -17335,7 +17335,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	
 	public List<LocationWiseBoothDetailsVO> getConstituencyOfDistrict(Long stateId, List<Long> districtIds){
 		List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtIds);
-		List<Object[]> rsltNew = districtConstituenciesDAO.getConstituenciesOfDistrict();
+		List<Object[]> rsltNew = districtConstituenciesDAO.getConstituenciesOfDistrict(null);
 		Map<Long,List<Long>> distMap = new HashMap<Long, List<Long>>();
 		Map<Long, Long> constisSplttdMap = new HashMap<Long, Long>();
 		Map<Long,String> constiNameMap = new HashMap<Long, String>();
