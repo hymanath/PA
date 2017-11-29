@@ -1955,6 +1955,7 @@
 										</div>
 									  </div>
 									</div>
+								 </div>
 									<div class="panel panel-default panelNew">
 										 <div class="panel-heading" role="tab" id="headingfive">
 											 <a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseFives" aria-expanded="false" aria-controls="collapseFives">
@@ -1972,8 +1973,7 @@
 												 </div>
 											 </div>
 										 </div>
-									 </div>
-								  </div>             
+									   </div>
 							</div>
 						</div>
 					 </div>
