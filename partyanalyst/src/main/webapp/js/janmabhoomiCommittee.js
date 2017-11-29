@@ -414,7 +414,11 @@ $(document).on("click",".memberAddEditDetailsCls",function(){
 		mandalId = '2'+mandalId;
 		panchayatId = '1'+panchayatId;
 	}else if(committeeLvlId != null && (committeeLvlId ==6 || committeeLvlId ==7)){
-		mandalId = '2'+mandalId;
+		if(mandalId != 'null'){
+			mandalId = '2'+mandalId;
+		}else {
+			mandalId = '1'+localElectionBodyId;
+		}
 		panchayatId='2'+wardId;
 	}
 	if(publicRepreTypeId != null && publicRepreTypeId >0){
