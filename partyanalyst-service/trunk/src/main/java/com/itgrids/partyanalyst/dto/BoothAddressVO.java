@@ -24,6 +24,7 @@ public class BoothAddressVO {
 	private String cadreName;
 	private Long serialNo;
 	private String image;
+	private String base64imageStr;
 	private String mobileNo;
 	private String role;
 	private String memberShipNo;
@@ -237,7 +238,12 @@ public class BoothAddressVO {
 	public void setConvenerCount(Long convenerCount) {
 		this.convenerCount = convenerCount;
 	}
-	
+	public String getBase64imageStr() {
+		return base64imageStr;
+	}
+	public void setBase64imageStr(String base64imageStr) {
+		this.base64imageStr = base64imageStr;
+	}
 	
 		
 }
