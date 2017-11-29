@@ -275,19 +275,23 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 							<div class="col-sm-4 mobile-view">
 								<h2 class="redColor">Nara Lokesh</h2>
 								<p>
-									<span><strong>Minister for Information Technology</strong></span><br/>
-									<span><strong>Panchayathi Raj and Rural Development</strong></span><br/>
+									<span><strong>Minister for Panchayathi Raj,</strong></span><br/>
+									<span><strong>Rural Development,</strong></span><br/>
+									<span><strong>Information Technology,</strong></span><br/>
+									<span><strong>Electronics and Communications,</strong></span><br/>
 									<span class="govt_color"><strong>Government of Andhra Pradesh</strong></span>
 								</p>
 							</div>
 							<div class="col-sm-4 text-center">
 								<img src="Assests/images/aplogo.png"  alt="" class="imgWidthHeight"/>
 							</div>
-							<div class="col-sm-4 text-right mobile-view pull-right">
-								<p>
-									<span>4th Block, 1st Floor, Room No:214,</span><br/>
-									<span>A.P Secretariat Office, Velagapudi,<br/></span>
-									<span>Amaravathi, Andhra Pradesh</span>
+							<div class="col-sm-4 mobile-view">
+								<p class="pull-right">
+									<span>Room No.188C,Ground Floor,</span><br/>
+									<span>Block No 5,A.P Secretariat,</span><br/>
+									<span>Amaravathi,Velagapudi,</span><br/>
+									<span>email:peshi-it-pr@ap.gov.in</span><br/>
+									<span>Phone:0863-2445993/2445991</span>
 								</p>
 							</div>
 						</div>
