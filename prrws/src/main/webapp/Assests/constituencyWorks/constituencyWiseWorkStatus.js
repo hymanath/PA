@@ -389,8 +389,14 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 										str+='<div class="col-sm-6">';
 											str+='<div class="department_wise_css">';
 												str+='<div class="row">';
-													str+='<div class="col-sm-3">';
-														str+='<h4 class="font_weight">Funds</h4>';
+														if(result.locationList1[i].departmentName == 'Mahatma Gandhi National Rural Employment Gurantee Scheme'){
+															str+='<div class="col-sm-12">';
+															str+='<h4 class="font_weight">Funds (Material Amount)</h4>';
+														}
+														else{
+															str+='<div class="col-sm-3">';
+															str+='<h4 class="font_weight">Funds</h4>';
+														}
 														str+='<h3 class="font_weight">'+parseFloat(result.locationList1[i].amountInDecimal).toFixed(2)+' <span style="color: rgb(0, 0, 0); font-size: 14px ! important;font-weight:normal;">Cr</span></h3>';
 													str+='</div>';
 													if(result.locationList1[i].departmentName == 'ENC' || result.locationList1[i].departmentName == 'RWS'){
@@ -931,7 +937,7 @@ function buildConstituencyWiseNregsWorksDetails(result,divId,departmentId){
 						
 						str+='<div class="col-sm-6">';
 							str+='<div class="border-cls padding_right_left">';
-								str+='<h4>Total Funds</h4>';
+								str+='<h4>Total Funds (Material Amount)</h4>';
 								str+='<h4 class="font_weight">'+result[0].finalAmount+' Cr</h4>';
 							str+='</div>';
 						str+='</div>';
@@ -953,11 +959,11 @@ function buildConstituencyWiseNregsWorksDetails(result,divId,departmentId){
 								if(result !=null && result.length>0){
 									for(var i in result){
 										completedWorks=completedWorks+result[i].completed;
-										totalFunds = parseFloat(totalFunds)+parseFloat(result[i].total);
+										totalFunds = parseFloat(totalFunds)+parseFloat(result[i].material);
 										str+='<tr>';
 											str+='<td>'+result[i].workName+'</td>';
 											str+='<td>'+result[i].completed+'</td>';
-											str+='<td>'+result[i].total+'</td>';
+											str+='<td>'+result[i].material+'</td>';
 										str+='</tr>';
 										
 									}
