@@ -257,13 +257,13 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		}
 		
 		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
-			sbS.append(",model.address.booth.constituency.state.stateId ");
-			sbE.append(" group by model.address.booth.constituency.state.stateId ");
+			sbS.append(",model.address.state.stateId ");
+			sbE.append(" group by model.address.state.stateId ");
 		}
 		else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
 			
-			sbS.append(",model.address.booth.constituency.district.districtId ");
-			sbE.append(" group by model.address.booth.constituency.district.districtId ");
+			sbS.append(",model.address.district.districtId ");
+			sbE.append(" group by model.address.district.districtId ");
 			
 		}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
 			
@@ -272,17 +272,17 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 			
 		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
 			
-			sbS.append(",model.address.booth.constituency.constituencyId");
-			sbE.append(" group by model.address.booth.constituency.constituencyId ");
+			sbS.append(",model.address.constituency.constituencyId");
+			sbE.append(" group by model.address.constituency.constituencyId ");
 			
 		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
 			
-			sbS.append(",model.address.booth.tehsil.tehsilId ");
-			sbE.append(" group by model.address.booth.tehsil.tehsilId ");
+			sbS.append(",model.address.tehsil.tehsilId ");
+			sbE.append(" group by model.address.tehsil.tehsilId ");
 		}
 		
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
-			sbM.append(" and model.address.booth.constituency.state.stateId = :stateId ");
+			sbM.append(" and model.address.state.stateId = :stateId ");
 		}
 		
 		StringBuilder sbf = new StringBuilder().append(sbS).append(sbM).append(sbE);
@@ -692,20 +692,20 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		
 		//locations
 		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
-			str.append(" and model.address.booth.constituency.state.stateId in (:tdpCommitteeLevelValues) ");
+			str.append(" and model.address.state.stateId in (:tdpCommitteeLevelValues) ");
 		}else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
-			str.append(" and model.address.booth.constituency.district.districtId in (:tdpCommitteeLevelValues) ");
+			str.append(" and model.address.district.districtId in (:tdpCommitteeLevelValues) ");
 		}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
 			//str.append(" and model.userAddress.parliamentConstituency.constituencyId in (:tdpCommitteeLevelValues) ");
 		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
-			str.append(" and model.address.booth.constituency.constituencyId in (:tdpCommitteeLevelValues) ");
+			str.append(" and model.address.constituency.constituencyId in (:tdpCommitteeLevelValues) ");
 		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
-			str.append(" and model.address.booth.tehsil.tehsilId in (:tdpCommitteeLevelValues) ");
+			str.append(" and model.address.tehsil.tehsilId in (:tdpCommitteeLevelValues) ");
 		}
 		
 			
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
-			str.append(" and model.address.booth.constituency.state.stateId = :stateId ");
+			str.append(" and model.address.state.stateId = :stateId ");
 		}
 		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size()>0){
 			str.append(" and model.boothInchargeEnrollmentId in (:tdpCommitteeEnrollmentId) ");
@@ -773,27 +773,27 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		sbS.append("select count(distinct model.address.booth.boothId)");//0
 		
 		if(committeeBO.getGroupingLocation().equalsIgnoreCase("State")){
-			sbS.append(" ,model.address.booth.constituency.state.stateId,model.address.booth.constituency.state.stateName ");//2
-			sbE.append("  group by model.address.booth.constituency.state.stateId ");
+			sbS.append(" ,model.address.state.stateId,model.address.state.stateName ");//2
+			sbE.append("  group by model.address.state.stateId ");
 		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("District")){
-			sbS.append(" ,model.address.booth.constituency.district.districtId,model.address.booth.constituency.district.districtName ");//2
-			sbE.append("  group by model.address.booth.constituency.district.districtId ");
+			sbS.append(" ,model.address.district.districtId,model.address.district.districtName ");//2
+			sbE.append("  group by model.address.district.districtId ");
 		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Constituency")){
-			sbS.append(" ,model.address.booth.constituency.constituencyId,model.address.booth.constituency.name ");//2
-			sbE.append("  group by model.address.booth.constituency.constituencyId ");
+			sbS.append(" ,model.address.constituency.constituencyId,model.address.constituency.name ");//2
+			sbE.append("  group by model.address.constituency.constituencyId ");
 		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Mandal")){
-			sbS.append(" ,model.address.booth.tehsil.tehsilId,model.address.booth.constituency.tehsil.tehsilName ");//2
-			sbE.append("  group by model.address.booth.tehsil.tehsilId ");
+			sbS.append(" ,model.address.tehsil.tehsilId,model.address.tehsil.tehsilName ");//2
+			sbE.append("  group by model.address.tehsil.tehsilId ");
 		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("localElectionBody")){
-			sbS.append(" ,model.address.booth.constituency.localElectionBody.localElectionBodyId,model.address.booth.constituency.localElectionBody.name " +//2
-					   " ,model.address.booth.constituency.localElectionBody.electionType.electionTypeId,model.address.booth.constituency.localElectionBody.electionType.electionType ");//4
-			sbE.append(" group by model.address.booth.constituency.localElectionBody.localElectionBodyId ");
+			sbS.append(" ,model.address.localElectionBody.localElectionBodyId,model.address.localElectionBody.name " +//2
+					   " ,model.address.localElectionBody.electionType.electionTypeId,model.address.localElectionBody.electionType.electionType ");//4
+			sbE.append(" group by model.address.localElectionBody.localElectionBodyId ");
 		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Village")){
-			sbS.append(" ,model.address.booth.constituency.panchayat.panchayatId,model.address.booth.constituency.panchayat.panchayatName ");//2
-			sbE.append(" group by model.address.booth.constituency.panchayat.panchayatId ");
+			sbS.append(" ,model.address.panchayat.panchayatId,model.address.panchayat.panchayatName ");//2
+			sbE.append(" group by model.address.panchayat.panchayatId ");
 		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Ward")){
-			sbS.append(" ,model.address.booth.constituency.ward.constituencyId,model.address.booth.constituency.ward.name ");//2
-			sbE.append(" group by model.address.booth.constituency.ward.constituencyId ");
+			sbS.append(" ,model.address.ward.constituencyId,model.address.ward.name ");//2
+			sbE.append(" group by model.address.ward.constituencyId ");
 		}
 		
 		sbM.append(" from  BoothInchargeCommittee  model where model.boothInchargeCommitteeId is not null ");
@@ -806,7 +806,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
  		}
 
  		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
-			sbM.append(" and model.address.booth.constituency.state.stateId = :stateId ");
+			sbM.append(" and model.address.state.stateId = :stateId ");
 		}
 		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size() > 0){
 			sbM.append(" and model.boothInchargeEnrollmentId in(:tdpCommitteeEnrollmentId) ");
