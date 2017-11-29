@@ -1187,6 +1187,12 @@
 									</li>										
 								</c:if>
 							</c:if>	
+							    <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TOURS_ADMIN_USER_ACCESS_ENTITLEMENT')}">
+									   <li>
+										 <a href="updateToursDetailsAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Tour </span></a>
+									  </li>										
+								</c:if>
+							
 								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ITDP_DOOR_TO_DOOR_DASHBOARD_USER_ENTITLEMENT')}">
 									<li>
 										<a href="doorToDoorCampaignDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Door To Door Dashboard </span></a>

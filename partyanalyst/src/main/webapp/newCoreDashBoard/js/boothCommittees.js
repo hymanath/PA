@@ -1451,16 +1451,19 @@
 									},
 									shared: true
 								},
-								series: [{
-									name: 'Completed',
-									data: candidateNameAndCompletedCountArray
-								},{
+								series: [
+								    {
 									name: 'Started',
 									data: candidateNameStartedCountArray
-								},{
+								    },
+									{
+									name: 'Completed',
+									data: candidateNameAndCompletedCountArray
+								   },
+								  {
 									name: 'Not Started',
 									data: candidateNameNotStartedCountArray
-								}],
+								  }],
 						 
 						});
 					});
