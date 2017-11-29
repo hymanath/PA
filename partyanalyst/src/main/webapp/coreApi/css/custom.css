@@ -1984,13 +1984,13 @@ font-size:12px !important;
 	
 }
 .table_alignment thead tr th{
-	font-size:14px !important;
-	padding:8px !important;
+	font-size:12px !important;
+	padding:5px !important;
 	font-weight:bold !important;
 }
 .table_alignment tbody tr td{
 	font-size:12px !important;
-	padding:8px !important;
+	padding:5px !important;
 	font-weight:bold !important;
 }
 .bg-D3{

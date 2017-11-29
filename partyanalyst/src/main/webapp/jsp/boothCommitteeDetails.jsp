@@ -17,17 +17,71 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
-
+@media print{
+	.white_block_css{
+		background-color:#fff !important;
+		padding:8px !important;
+		box-shadow:0px 4px 4px 4px rgba(0,0,0,0.3) !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+		
+	}
+	.table_alignment thead tr th{
+		font-size:12px !important !important;
+		padding:3px !important !important;
+		font-weight:bold !important !important;
+	}
+	.table_alignment tbody tr td{
+		font-size:12px !important !important;
+		padding:3px !important !important;
+		font-weight:bold !important !important;
+	}
+	.bg-D3{
+		background-color:#d3d3d3 !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.f_16{
+		font-size:16px !important;
+	}
+	.font_weight{
+		font-weight:bold !important;
+	}
+	.container{
+		 width: 1000px;
+	}
+	.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+		float: left !important;
+	}
+	*::before, *::after {
+    box-sizing: border-box !important;
+	}
+	.m_top10 {
+		margin-top: 20px !important;
+	}
+	.row {
+		margin-left: -15px !important;
+		margin-right: -15px !important;
+	}
+	* {
+		box-sizing: border-box !important;
+	}
+	@page { 
+		size: auto;  
+		margin: 3mm 0mm 0mm 0mm;  
+	}
+}
 </style>
 </head>
 <body>
-<div class="container-fluid" style="margin-top:50px;">
-		<div class="white_block_css">
-			<!--<div class="row">
+<div class="container" style="margin-top:50px;">
+		<div class="white_block_css" id="printcontent">
+			<div class="row">
 				<div class="col-sm-12">
-					<button class="btn btn-md btn-success exportToPdf pull-right" attr_id="boothWiseDetailsDivId">Export Pdf</button>
+					<!--<button class="btn btn-md btn-success exportToPdf pull-right" attr_id="boothWiseDetailsDivId">Export Pdf</button>-->
+					<button type="button" class="btn btn-md btn-success printViewCls pull-right" attr_divId="boothWiseDetailsDivId">Print</button>
 				</div>
-			</div>-->
+			</div>
 			<div class="row m_top20">
 				<div class="col-sm-12">
 					<div id="boothWiseDetailsDivId"></div>
@@ -108,27 +162,24 @@ function buildBoothInchargeCommitteeDetailsByLocation(result){
 				str+='<tr>';
 					if(globallevelId ==3){
 						str+='<th>Constituency Name</th>';
-						str+='<th>Mandal Name</th>';
-						str+='<th>Panchayat Name</th>';
-						str+='<th>Municipality Name</th>';
+						str+='<th>Mandal<br/>Municipality</th>';
+						str+='<th>Panchayat<br/>Name</th>';
 					}else if(globallevelId ==4){
-						str+='<th>Mandal Name</th>';
-						str+='<th>Panchayat Name</th>';
-						str+='<th>Municipality Name</th>';
+						str+='<th>Mandal<br/>Municipality</th>';
+						str+='<th>Panchayat<br/>Name</th>';
 					}else if(globallevelId ==2){
 						str+='<th>District Name</th>';
 						str+='<th>Constituency Name</th>';
-						str+='<th>Mandal Name</th>';
-						str+='<th>Panchayat Name</th>';
-						str+='<th>Municipality Name</th>';
+						str+='<th>Mandal<br/>Municipality</th>';
+						str+='<th>Panchayat<br/>Name</th>';
 					}
 					
 					
 					
 					
-					str+='<th>Incharge Booth</th>';
-					str+='<th>Own Booth No</th>';
-					str+='<th>Name</th>';
+					str+='<th>Incharge<br/>Booth</th>';
+					str+='<th>Own<br/>Booth</th>';
+					str+='<th style="max-width:100px !important;">Name</th>';
 					str+='<th>Membership No</th>';
 					str+='<th>MobileNo</th>';
 					str+='<th>Role</th>';
@@ -140,49 +191,49 @@ function buildBoothInchargeCommitteeDetailsByLocation(result){
 					str+='<tr>';
 					if(globallevelId ==3){
 						str+='<td>'+result[i].constituencyName+'</td>';
-						str+='<td>'+result[i].tehsilName+'</td>';
-						if(result[i].panchayat !=null && result[i].panchayat.trim().length>0){
-							str+='<td>'+result[i].panchayat+'</td>';
-						}else{
-							str+='<td> - </td>';
-						}
+						if((result[i].panchayat != null && $.trim(result[i].panchayat).length > 0)){
+								str+='<td>'+result[i].tehsilName+'</td>';
+								str+='<td>'+result[i].panchayat+'</td>';
+							}else{
+								var leb = result[i].localElectionBody .split(' ');
+								str+='<td>'+leb[0]+'<br/>'+leb[1]+'</td>';
+								str+='<td>-</td>';
+							}
 						
-						if(result[i].localElectionBody !=null && result[i].localElectionBody.trim().length>0){
-							str+='<td>'+result[i].localElectionBody+'</td>';
-						}else{
-							str+='<td> - </td>';
-						}
+						
+						
+						
 					}else if(globallevelId ==4){
-						str+='<td>'+result[i].tehsilName+'</td>';
-						if(result[i].panchayat !=null && result[i].panchayat.trim().length>0){
-							str+='<td>'+result[i].panchayat+'</td>';
-						}else{
-							str+='<td> - </td>';
-						}
-						if(result[i].localElectionBody !=null && result[i].localElectionBody.trim().length>0){
-							str+='<td>'+result[i].localElectionBody+'</td>';
-						}else{
-							str+='<td> - </td>';
-						}
+							if((result[i].panchayat != null && $.trim(result[i].panchayat).length > 0)){
+								str+='<td>'+result[i].tehsilName+'</td>';
+								str+='<td>'+result[i].panchayat+'</td>';
+							}else{
+								var leb = result[i].localElectionBody .split(' ');
+								str+='<td>'+leb[0]+'<br/>'+leb[1]+'</td>';
+								str+='<td>-</td>';
+							}
+						
+						
+						
+						
 					}else if(globallevelId ==2){
 						str+='<td>'+result[i].districtName+'</td>';
 						str+='<td>'+result[i].constituencyName+'</td>';
-						str+='<td>'+result[i].tehsilName+'</td>';
-							if(result[i].panchayat !=null && result[i].panchayat.trim().length>0){
+							if((result[i].panchayat != null && $.trim(result[i].panchayat).length > 0)){
+								str+='<td>'+result[i].tehsilName+'</td>';
 								str+='<td>'+result[i].panchayat+'</td>';
 							}else{
-								str+='<td> - </td>';
+								var leb = result[i].localElectionBody .split(' ');
+								str+='<td>'+leb[0]+'<br/>'+leb[1]+'</td>';
+								str+='<td>-</td>';
 							}
-							if(result[i].localElectionBody !=null && result[i].localElectionBody.trim().length>0){
-								str+='<td>'+result[i].localElectionBody+'</td>';
-							}else{
-								str+='<td> - </td>';
-							}
+							
+							
 						}
 					
 						str+='<td>'+result[i].boothName+'</td>';
 						str+='<td>'+result[i].ownBoothNo+'</td>';
-						str+='<td>'+result[i].cadreName+'</td>';
+						str+='<td style="max-width:100px !important;">'+result[i].cadreName+'</td>';
 						str+='<td>'+result[i].memberShipNo+'</td>';
 						str+='<td>'+result[i].mobileNo+'</td>';
 						str+='<td>'+result[i].role+'</td>';
@@ -205,6 +256,21 @@ function buildBoothInchargeCommitteeDetailsByLocation(result){
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		});
+}
+$(document).on("click",".printViewCls",function(){
+	var divName = $(this).attr("attr_divId");
+	
+	printDiv(divName);
+	
+});
+ function printDiv(divName) {
+	
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.getElementById("printcontent").innerHTML;
+	 document.title = "";
+     document.getElementById("printcontent").innerHTML = printContents;
+	 window.print();
+     document.getElementById("printcontent").innerHTML = originalContents;
 }
  $(document).on("click",".exportToPdf",function(){
 	var id = $(this).attr("attr_id");
