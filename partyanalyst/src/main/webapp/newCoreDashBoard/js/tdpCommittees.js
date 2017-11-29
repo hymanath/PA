@@ -175,7 +175,13 @@
 		});
 	}
 	function getLevelWiseBasicCommitteesCountReport(){
-		getCommitteeDetailedReport();
+		
+		$('#overviewReportDiv').hide();
+		if(globalUserAccessLevelId != null && parseInt(globalUserAccessLevelId) == 2){
+			getCommitteeDetailedReport();
+			$('#overviewReportDiv').show();
+		}
+		
 		$("#levelWiseBasicCommittees").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var state = globalState;
 	   
@@ -2585,7 +2591,7 @@
 		var jObj = {
 			
 			fromDate  : '12-12-2014',
-			toDate    : '12-12-2017',
+			toDate    : '12-12-2055',
 			basiccommitteeTypeIdsList : basiccommitteeTypeIds,
 			committeeTypeIdsList :committeeTypeIds,
 			committeeLevelId :"11",
