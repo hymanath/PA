@@ -1347,6 +1347,7 @@ saveCommitteeStatus(committeeId,status);
 														str+='<h5 style="color:#34A7C1;">Voter ID : '+result[i].voterCardNo+'</h5>';
 														str+='<h5><span><i class="fa fa-mobile" style="font-size:15px"></i> &nbsp; '+result[i].mobileNo+'</span></h5>';
 														str+='<h5 style="font-size:12px">Desg : '+result[i].designation+'</h5>';
+														str+='<h5 style="font-size:12px">Constituency : '+result[i].constituency+'</h5>';
 													str+='</div>';
 												str+='</div>';
 											str+='</div>';
