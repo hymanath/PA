@@ -1986,7 +1986,7 @@ getAllDepartments();
 							schmeIdstr = result[i].subList[j].subList[m].id;
 							
 						}
-					if((result[i].amount !=null && result[i].amount !="0.0") || (result[i].totalCount !=null && result[i].totalCount>0)){	
+					if((result[i].amount !=null && result[i].amount !="0.000") || (result[i].totalCount !=null && result[i].totalCount>0)){	
 						table+='<tr>';
 						var lvlVal = 0;
 						var locatioName='';

@@ -52,6 +52,7 @@ function onloadCalls(){
 	getCMEDOBOverview("","","overview");
 	getBioMetricDashboardOverViewDtls();
 	
+	
 }
 $(document).on("click",".cohortIdClick",function(){
 	$("#modalId").modal('show');
@@ -904,6 +905,7 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 			}
 		}
 	}
+	
 }
 function getITSectorLeadCategoryWiseDetails(type){
 	var json = {
@@ -1095,7 +1097,13 @@ function getITDistrictWiseDetails(type,category,divType){
 				str+='</thead>';
 				for(var i in result)
 				{
+					if(result[i].district == 'ZTotal')
+					{
+					str+='<tr style="background-color:#CCCCCC;font-weight:bold;">';
+					}
+					else {
 					str+='<tr>';
+					}	
 						str+='<td>'+result[i].district+'</td>';
 						if(result[i].district != null && result[i].district == 'ZTotal'){
 							str+='<td>'+result[i].noProjects+'</td>';
@@ -1189,7 +1197,7 @@ function getAPInnovationSocietyOverview(type,divId){
 						str+='<div class="panel-footer"><h4>'+result.incubators+'</h4></div>';
 					}else if(dataArr[i].name == 'mentors')
 					{
-						str+='<div class="panel-footer"><h3>'+result.mentors+'</h3></div>';
+						str+='<div class="panel-footer"><h4>'+result.mentors+'</h4></div>';
 					}
 				str+='</div>';
 			str+='</div>';
@@ -3031,3 +3039,4 @@ function getBioMetricDashboardOverViewDtls(){
 		
 	});	
 }
+

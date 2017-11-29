@@ -255,7 +255,7 @@ $(document).on('click','[overview-level]', function(){
 		
 	});
 
-var overViewArr = ['Ntr Jalasiri','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','WaterBudget','GH'];
+var overViewArr = ['Ntr Jalasiri','Imp to CD','MPT_PT','GC Works','CD_CW','WaterBudget','GH'];
 for(var i in overViewArr)
 {
 	$("[overview-block='"+overViewArr[i]+"']").append(spinner);
