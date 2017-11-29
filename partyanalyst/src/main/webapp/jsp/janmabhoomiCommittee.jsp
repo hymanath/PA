@@ -158,6 +158,10 @@
 					}else{
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss"></span> ST</li>';
 					}
+					}else{
+						bcType = true;
+						scType = true;
+						stType = true;
 					}
 				str+='</ul>';
 				
@@ -332,7 +336,6 @@
 		if(approvedMemebersCount === requiredRoleCount){
 			approvedBooleanaVal = true;
 		}
-		
 		if(bcType === true && scType === true && stType === true && approvedBooleanaVal === true){
 			if(result.status != 'Approved'){
 				
