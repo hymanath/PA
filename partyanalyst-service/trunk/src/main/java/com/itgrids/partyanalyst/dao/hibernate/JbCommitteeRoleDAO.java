@@ -41,7 +41,7 @@ public class JbCommitteeRoleDAO extends GenericDaoHibernate<JbCommitteeRole, Lon
 		sb.append(" left join  model.jbCommittee.userAddress.tehsil tehsil ");
 		sb.append(" left join  model.jbCommittee.userAddress.panchayat panchayat ");
 		sb.append(" left join  model.jbCommittee.userAddress.ward ward ");
-		sb.append("where model.jbCommittee.jbCommitteeId =:committeeId and model.jbCommittee.jbCommitteeId.isDeleted ='N' ");
+		sb.append("where model.jbCommittee.jbCommitteeId =:committeeId and model.jbCommittee.jbCommitteeId.isDeleted ='N' order by model.jbMemberType.orderNo asc ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("committeeId", committeeId);
