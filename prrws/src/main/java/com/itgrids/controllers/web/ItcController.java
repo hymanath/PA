@@ -193,11 +193,11 @@ public class ItcController {
 		   return resultVO;
 	   }
 	   
-	   /*@RequestMapping(value = "/getMeesevaSLADepartmentDetails", method = RequestMethod.POST)
+	   @RequestMapping(value = "/getMeesevaSLADepartmentDetails", method = RequestMethod.POST)
 	   public @ResponseBody  List<MeesevaDtlsVO>  getMeesevaSLADepartmentDetails() {
 		   List<MeesevaDtlsVO>  resultList = itcDashboardService.getMeesevaSLADepartmentDetails();
 		   return resultList;
-	   }*/
+	   }
 	   
 	   @RequestMapping(value = "/getMeesevaKPIOverViewDetails", method = RequestMethod.POST)
 	   public @ResponseBody  MeesevaKPIDtlsVO  getMeesevaKPIOverViewDetails() {
@@ -214,6 +214,18 @@ public class ItcController {
 	   @RequestMapping(value = "/getMeesevaKPILocationWiseDetails", method = RequestMethod.POST)
 	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPILocationWiseDetails() {
 		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPILocationWiseDetails();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaSLACatWiseAbstarctDetails", method = RequestMethod.POST)
+	   public @ResponseBody  MeesevaDtlsVO  getMeesevaSLACatWiseAbstarctDetails() {
+		   MeesevaDtlsVO  resultVO = itcDashboardService.getMeesevaSLACatWiseAbstarctDetails();
+		   return resultVO;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaSLAServiceWiseDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<MeesevaDtlsVO>  getMeesevaSLAServiceWiseDetails() {
+		   List<MeesevaDtlsVO>  resultList = itcDashboardService.getMeesevaSLAServiceWiseDetails();
 		   return resultList;
 	   }
 }

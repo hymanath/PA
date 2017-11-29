@@ -22,6 +22,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
+import org.json.XML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ import org.tempuri.TrackerITServiceSoapProxy;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.itgrids.dao.ILocationWiseMeesevaCentersDAO;
 import com.itgrids.dao.IMeesevaCentersAchievementDAO;
@@ -2116,77 +2118,107 @@ public class ItcDashboardService implements IItcDashboardService {
 	
 	/**
 	 * @author Nandhini.k
-	 * @param InputVO inputVO
 	 * @description {This service is used to get Meeseva SLA Department Details.}
 	 * @return List<MeesevaKPIDtlsVO>
-	 * @Date 21-09-2017
+	 * @Date 29-11-2017
 	 */
 	
-	/*public List<MeesevaDtlsVO> getMeesevaSLADepartmentDetails() {
+	public List<MeesevaDtlsVO> getMeesevaSLADepartmentDetails() {
 		List<MeesevaDtlsVO> returnList = new ArrayList<MeesevaDtlsVO>(0);
 		try{
 			Map<String,MeesevaDtlsVO> deptNameAndVosMap = new HashMap<String,MeesevaDtlsVO>();
-			//Object[] inputObj = {"USERID" , "MEESEVA","PASSWORD","MEESEVA"};
+			String URL = null;
+			ClientResponse response = null;
+			org.json.JSONObject list = null;
+			Object contentObj = null;
+			org.json.JSONObject list1 = null;
+			org.json.JSONObject objArr = null;
+			org.json.JSONArray dataArr = null;
+			String output = null;
+			
 			//Category - A
-			DEPARTMENTWISEDETAILS_CATA response = new DEPARTMENTWISEDETAILS_CATA("MEESEVA","MEESEVA");
-			/*if(list != null && list.length > 0){
-		    	 for( int i = 0; i < list.length ; i++ ){
-		    		MeesevaDtlsVO categoryVO = deptNameAndVosMap.get(list[i].getDepartment_Name().trim());
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/DEPARTMENTWISEDETAILS_CATA?USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+			 output = response.getEntity(String.class);
+			 list = XML.toJSONObject(output);
+			 contentObj = list.getJSONObject("string").get("content");
+			 list1 = XML.toJSONObject(contentObj.toString());
+			
+			 objArr = list1.getJSONObject("NewDataSet");
+	    	 dataArr = objArr.getJSONArray("Table1");
+			
+			if(dataArr != null && dataArr.length() > 0){
+		    	 for( int i = 0; i < dataArr.length() ; i++ ){
+		    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+		    		MeesevaDtlsVO categoryVO = deptNameAndVosMap.get(jObj.getString("Department"));
 		    		if( categoryVO == null ){
 		    			categoryVO = new MeesevaDtlsVO();
-		    			categoryVO.setName(name);
-		    			categoryVO.setCatgryAServicesCount(catgryAServicesCount);
-		    			categoryVO.setCatgryATransCount(catgryATransCount);
-		    			categoryVO.setCatgryAWithInSLACount(catgryAWithInSLACount);
-		    			categoryVO.setCatgryABeyondSLACount(catgryABeyondSLACount);
+		    			categoryVO.setName(jObj.getString("Department"));
+		    			categoryVO.setCatgryAServicesCount(jObj.getLong("No_x0020_of_x0020_Services"));
+		    			categoryVO.setCatgryATransCount(jObj.getLong("TOTALTRANS"));
+		    			categoryVO.setCatgryAWithInSLACount(jObj.getLong("PENWITHINSLA"));
+		    			categoryVO.setCatgryABeyondSLACount(jObj.getLong("PENBEYONDSLA"));
 		    			deptNameAndVosMap.put(categoryVO.getName(),categoryVO);
 		    		}else{
-		    			categoryVO.setCatgryAServicesCount(categoryVO.getCatgryAServicesCount()+);
-		    			categoryVO.setCatgryATransCount(categoryVO.getCatgryATransCount()+);
-		    			categoryVO.setCatgryAWithInSLACount(categoryVO.getCatgryAWithInSLACount()+);
-		    			categoryVO.setCatgryABeyondSLACount(categoryVO.getCatgryABeyondSLACount()+);
+		    			categoryVO.setCatgryAServicesCount(categoryVO.getCatgryAServicesCount()+jObj.getLong("No_x0020_of_x0020_Services"));
+		    			categoryVO.setCatgryATransCount(categoryVO.getCatgryATransCount()+jObj.getLong("TOTALTRANS"));
+		    			categoryVO.setCatgryAWithInSLACount(categoryVO.getCatgryAWithInSLACount()+jObj.getLong("PENWITHINSLA"));
+		    			categoryVO.setCatgryABeyondSLACount(categoryVO.getCatgryABeyondSLACount()+jObj.getLong("PENBEYONDSLA"));
 		    			}	
 		    	 	}
-		       }*/
-			
+		       }
+		    }
 			//Category - B
-			/*SDP[] list = new TrackerITServiceSoapProxy().get_SDP_Abstract_Details(inputVo.getSector(), fromDate, toDate);
-			if(list != null && list.length > 0){
-		    	 for( int i = 0; i < list.length ; i++ ){
-		    		MeesevaDtlsVO categoryVO = deptNameAndVosMap.get(list[i].getDepartment_Name().trim());
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/DEPARTMENTWISEDETAILS_CATB?USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+			 output = response.getEntity(String.class);
+			 list = XML.toJSONObject(output);
+			 contentObj = list.getJSONObject("string").get("content");
+			 list1 = XML.toJSONObject(contentObj.toString());
+			
+			 objArr = list1.getJSONObject("NewDataSet");
+	    	 dataArr = objArr.getJSONArray("Table1");
+			if(dataArr != null && dataArr.length() > 0){
+		    	 for( int i = 0; i < dataArr.length() ; i++ ){
+		    		 org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+		    		MeesevaDtlsVO categoryVO = deptNameAndVosMap.get(jObj.getString("Department"));
 		    		if( categoryVO == null ){
 		    			categoryVO = new MeesevaDtlsVO();
-		    			categoryVO.setName(name);
-		    			categoryVO.setCatgryBServicesCount(catgryAServicesCount);
-		    			categoryVO.setCatgryBTransCount(catgryATransCount);
-		    			categoryVO.setCatgryBWithInSLACount(catgryAWithInSLACount);
-		    			categoryVO.setCatgryBBeyondSLACount(catgryABeyondSLACount);
+		    			categoryVO.setName(jObj.getString("Department"));
+		    			categoryVO.setCatgryBServicesCount(jObj.getLong("No_x0020_of_x0020_Services"));
+		    			categoryVO.setCatgryBTransCount(jObj.getLong("TOTALTRANS"));
+		    			categoryVO.setCatgryBWithInSLACount(jObj.getLong("PENWITHINSLA"));
+		    			categoryVO.setCatgryBBeyondSLACount(jObj.getLong("PENBEYONDSLA"));
 		    			deptNameAndVosMap.put(categoryVO.getName(),categoryVO);
 		    		}else{
-		    			categoryVO.setCatgryBServicesCount(categoryVO.getCatgryBServicesCount()+);
-		    			categoryVO.setCatgryBTransCount(categoryVO.getCatgryBTransCount()+);
-		    			categoryVO.setCatgryBWithInSLACount(categoryVO.getCatgryBWithInSLACount()+);
-		    			categoryVO.setCatgryBBeyondSLACount(categoryVO.getCatgryBBeyondSLACount()+);
+		    			categoryVO.setCatgryBServicesCount(categoryVO.getCatgryBServicesCount()+jObj.getLong("No_x0020_of_x0020_Services"));
+		    			categoryVO.setCatgryBTransCount(categoryVO.getCatgryBTransCount()+jObj.getLong("TOTALTRANS"));
+		    			categoryVO.setCatgryBWithInSLACount(categoryVO.getCatgryBWithInSLACount()+jObj.getLong("PENWITHINSLA"));
+		    			categoryVO.setCatgryBBeyondSLACount(categoryVO.getCatgryBBeyondSLACount()+jObj.getLong("PENBEYONDSLA"));
 		    		}
 		    		
 		    	 }
 		    	 
-		       }*/
-			
-			
-			/*if(deptNameAndVosMap != null){
+		       }
+		    }
+			if(deptNameAndVosMap != null){
 				returnList = new ArrayList<MeesevaDtlsVO>(deptNameAndVosMap.values());
 			}
-			 
+		    
 		 }catch (Exception e) {
 			 LOG.error("Exception occured at getMeesevaSLADepartmentDetails() in  ItcDashboardService class",e);
 		 }
 		 return returnList;
-	}*/
+	}
 	
 	/**
 	 * @author Nandhini.k
-	 * @param InputVO inputVO
 	 * @description {This service is used to get Meeseva KPI Overview Details.}
 	 * @return MeesevaKPIDtlsVO
 	 * @Date 27-11-2017
@@ -2213,7 +2245,6 @@ public class ItcDashboardService implements IItcDashboardService {
 	
 	/**
 	 * @author Nandhini.k
-	 * @param InputVO inputVO
 	 * @description {This service is used to get Meeseva KPI Target Achived.}
 	 * @return List<MeesevaKPIDtlsVO>
 	 * @Date 27-11-2017
@@ -2240,7 +2271,6 @@ public class ItcDashboardService implements IItcDashboardService {
 	
 	/**
 	 * @author Nandhini.k
-	 * @param InputVO inputVO
 	 * @description {This service is used to get Meeseva KPI Location Wise Details.}
 	 * @return List<MeesevaKPIDtlsVO>
 	 * @Date 27-11-2017
@@ -2268,4 +2298,131 @@ public class ItcDashboardService implements IItcDashboardService {
 		 }
 		 return finalList;
 	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva SLA CategoryWise Abstarct Details.}
+	 * @return MeesevaKPIDtlsVO
+	 * @Date 29-11-2017
+	 */
+	
+	public MeesevaDtlsVO getMeesevaSLACatWiseAbstarctDetails() {
+		MeesevaDtlsVO finalVO = new MeesevaDtlsVO();
+		try{
+			String URL = null;
+			ClientResponse response = null;
+			org.json.JSONObject list = null;
+			Object contentObj = null;
+			org.json.JSONObject list1 = null;
+			org.json.JSONObject objArr = null;
+			org.json.JSONObject dataArr = null;
+			String output = null;
+			
+			//Category - A
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/MEESEVAABSTRACT_CATA?USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+			 output = response.getEntity(String.class);
+			 list = XML.toJSONObject(output);
+			 contentObj = list.getJSONObject("string").get("content");
+			 list1 = XML.toJSONObject(contentObj.toString());
+			
+			 objArr = list1.getJSONObject("NewDataSet");
+	    	 dataArr = objArr.getJSONObject("Table1");
+			
+			if(dataArr != null && dataArr.length() > 0){
+				finalVO.setCatgryAServicesCount(dataArr.getLong("No_x0020_of_x0020_Services"));
+    			finalVO.setCatgryATransCount(dataArr.getLong("TOTALTRANS"));
+    			finalVO.setCatgryAWithInSLACount(dataArr.getLong("PENWITHINSLA"));
+    			finalVO.setCatgryABeyondSLACount(dataArr.getLong("PENBEYONDSLA"));
+    			finalVO.setCategoryACount(dataArr.getLong("No_x0020_of_x0020_Department"));
+		    	}
+		    }
+			//Category - B
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/MEESEVAABSTRACT_CATB?USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+			 output = response.getEntity(String.class);
+			 list = XML.toJSONObject(output);
+			 contentObj = list.getJSONObject("string").get("content");
+			 list1 = XML.toJSONObject(contentObj.toString());
+			
+			 objArr = list1.getJSONObject("NewDataSet");
+	    	 dataArr = objArr.getJSONObject("Table1");
+			if(dataArr != null && dataArr.length() > 0){
+    			finalVO.setCatgryBServicesCount(dataArr.getLong("No_x0020_of_x0020_Services"));
+    			finalVO.setCatgryBTransCount(dataArr.getLong("TOTALTRANS"));
+    			finalVO.setCatgryBWithInSLACount(dataArr.getLong("PENWITHINSLA"));
+    			finalVO.setCatgryBBeyondSLACount(dataArr.getLong("PENBEYONDSLA"));
+    			finalVO.setCategoryBCount(dataArr.getLong("No_x0020_of_x0020_Department"));
+		    	}
+		    }
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaSLACatWiseAbstarctDetails() in  ItcDashboardService class",e);
+		 }
+		 return finalVO;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva SLA Service Wise Details.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 29-11-2017
+	 */
+	
+	public List<MeesevaDtlsVO> getMeesevaSLAServiceWiseDetails() {
+		List<MeesevaDtlsVO> returnList = new ArrayList<MeesevaDtlsVO>(0);
+		try{
+			Map<String,MeesevaDtlsVO> deptNameAndVosMap = new HashMap<String,MeesevaDtlsVO>();
+			String URL = null;
+			ClientResponse response = null;
+			org.json.JSONObject list = null;
+			Object contentObj = null;
+			org.json.JSONObject list1 = null;
+			org.json.JSONObject objArr = null;
+			org.json.JSONArray dataArr = null;
+			String output = null;
+			
+			//Category - A
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/SERVICEWISEDETAILS?USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+			 output = response.getEntity(String.class);
+			 list = XML.toJSONObject(output);
+			 contentObj = list.getJSONObject("string").get("content");
+			 list1 = XML.toJSONObject(contentObj.toString());
+			
+			 objArr = list1.getJSONObject("NewDataSet");
+	    	 dataArr = objArr.getJSONArray("Table1");
+			
+			if(dataArr != null && dataArr.length() > 0){
+		    	 for( int i = 0; i < dataArr.length() ; i++ ){
+		    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+		    		  MeesevaDtlsVO vo = new MeesevaDtlsVO();
+		    			vo.setName(jObj.getString("DEPARTMENT_DESCRIPTION"));
+		    			//vo.setId(jObj.getString("SERVICE_ID"));
+		    			vo.setServiceName(jObj.getString("SERVICE_NAME"));
+		    			vo.setCateoryA(jObj.getString("SERVICECATEGORY"));
+		    			vo.setTotalTransactionCount(jObj.getLong("TOTALTRANS"));
+		    			vo.setApproved(jObj.getLong("APPROVED"));
+		    			vo.setRejected(jObj.getLong("REJECTED"));
+		    			vo.setRevoke(jObj.getLong("REVOKETRANS"));
+		    			vo.setTotalWithInSlaCount(jObj.getLong("PENWITHINSLA"));
+		    			vo.setTotalBeyondSlaCount(jObj.getLong("PENBEYONDSLA"));
+		    			returnList.add(vo);
+		    		}	
+		    	 }
+		    }
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaSLAServiceWiseDetails() in  ItcDashboardService class",e);
+		 }
+		 return returnList;
+	}
+	
 }
