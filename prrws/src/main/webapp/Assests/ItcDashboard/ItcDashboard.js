@@ -844,19 +844,25 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 			{
 				if(type == "GREEN")
 				{
-					str+='<p>';
-						str+='<span style="padding:5px 10px;background-color:#058E46;color:#fff">Civil Works commencement and beyond</span>';
-					str+='</p>';
+					str+='<div class="white_block_ITC" style="padding:5px 10px;background-color:#058E46;color:#fff">';
+						str+='<p class="text-center">';
+							str+='<span>Civil Works commencement and beyond</span>';
+						str+='</p>';
+					str+='</div>';
 				}else if(type == "RED")
-				{
-					str+='<p>';
-						str+='<span style="padding:5px 10px;background-color:#F75C5D;color:#fff">Before Civil Works commencement</span>';
-					str+='</p>';
+				{	
+					str+='<div class="white_block_ITC" style="padding:5px 10px;background-color:#F75C5D;color:#fff">';
+						str+='<p class="text-center">';
+							str+='<span>Before Civil Works commencement</span>';
+						str+='</p>';
+					str+='</div>';
 				}else if(type == "DROPPED")
-				{
-					str+='<p>';
-						str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">Dropped</span>';
-					str+='</p>';
+				{	
+					str+='<div class="white_block_ITC" style="padding:5px 10px;background-color:#91CCC7;color:#fff">';
+						str+='<p class="text-center">';
+							str+='<span>Dropped</span>';
+						str+='</p>';
+					str+='</div>';
 				}
 					str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
 						if(type == "GREEN")
