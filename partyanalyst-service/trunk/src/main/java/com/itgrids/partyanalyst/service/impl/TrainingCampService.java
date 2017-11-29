@@ -4583,7 +4583,7 @@ class TrainingCampService implements ITrainingCampService{
 	
 	public void getDistsOfConstituencies(List<Long> constis, List<MeetingVO> meetingLevels){
 		
-		List<Object[]> rsltNew = districtConstituenciesDAO.getConstituenciesOfDistrict();
+		List<Object[]> rsltNew = districtConstituenciesDAO.getConstituenciesOfDistrict(null);
 		Map<Long,List<Long>> distMap = new HashMap<Long, List<Long>>();
 		Map<Long, Long> constisSplttdMap = new HashMap<Long, Long>();
 		

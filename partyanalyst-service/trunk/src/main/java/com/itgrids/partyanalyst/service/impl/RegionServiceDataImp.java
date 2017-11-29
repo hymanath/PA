@@ -1960,7 +1960,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<SelectOptionVO> returnList = null;
 		try {
 			Long tempDistrictId = districtID;
-			List<Object[]> constituences = districtConstituenciesDAO.getConstituenciesOfDistrict();
+			List<Object[]> constituences = districtConstituenciesDAO.getConstituenciesOfDistrict(districtID);
 			List<Long> existingAsemblyIdsList = new ArrayList<Long>(0);
 			if(constituences != null && constituences.size()>0)
 			{
@@ -1984,7 +1984,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					if(districtID.longValue() == 517L || districtID.longValue() == 13L){
 						if(districtID.longValue() == 517L  && existingAsemblyIdsList.contains(vo.getId())) // vishakapattanam-rural
 							returnList.add(vo);
-						else if(districtID.longValue() == 13L  && !existingAsemblyIdsList.contains(vo.getId())) // vishakapattanam
+						else if(districtID.longValue() == 13L  && existingAsemblyIdsList.contains(vo.getId())) // vishakapattanam
 							returnList.add(vo);
 					}
 					else
