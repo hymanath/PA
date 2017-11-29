@@ -65,7 +65,7 @@
 				</div>
 			</div>  
 			<div class="row">
-				<div class="col-sm-6" id="msgTemplateId" style="color:red;"></div>  
+				<div class="col-sm-6" id="msgTemplateId"></div>  
 			</div>  			
 		</div>
 		<div class="modal-body">   
@@ -166,7 +166,9 @@
 					
 					msgTemplate+=" Members to Approve";
 					if(result.bcType !=null || result.scType!=null || result.stType!=null){// result.ocType!=null
-					$("#msgTemplateId").html(msgTemplate);
+						if(result.status != 'Approved' && result.status != 'Letter Submitted'){
+							$("#msgTemplateId").html(msgTemplate);
+						}
 					if(result.bcType == 'contains'){
 						str+='<li style="margin-left:12px;" class="fillBg"><span class="rangeWiseCss" style="background-color:green;"></span> BC</li>';
 						bcType = true;
