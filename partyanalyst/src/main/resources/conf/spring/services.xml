@@ -630,6 +630,7 @@
 	    <property name="boothInchargeCommitteeDAO" ref="boothInchargeCommitteeDAO"></property>
 	    <property name="cadreCommitteeService" ref="cadreCommitteeService"></property>
 	    <property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
+	    <property name="imageAndStringConverter" ref="imageAndStringConverter"></property>
 	</bean>
 		
 	<bean name="problemUploadService" class="com.itgrids.partyanalyst.service.impl.ProblemUploadService" >	

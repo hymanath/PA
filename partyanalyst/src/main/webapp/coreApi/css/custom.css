@@ -1977,3 +1977,28 @@ font-size:12px !important;
 	cursor:pointer;
 	
 }
+.white_block_css{
+	background-color:#fff;
+	padding:10px;
+	box-shadow:0px 4px 4px 4px rgba(0,0,0,0.3);
+	
+}
+.table_alignment thead tr th{
+	font-size:14px !important;
+	padding:8px !important;
+	font-weight:bold !important;
+}
+.table_alignment tbody tr td{
+	font-size:12px !important;
+	padding:8px !important;
+	font-weight:bold !important;
+}
+.bg-D3{
+	background-color:#d3d3d3;
+}
+.f_16{
+	font-size:16px;
+}
+.font_weight{
+	font-weight:bold;
+}
