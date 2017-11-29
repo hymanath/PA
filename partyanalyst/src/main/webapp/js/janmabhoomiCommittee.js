@@ -317,6 +317,11 @@ function buildDistrictWiseCommitteeDetails(result,blockType,divId){
 	$("#"+divId+blockType).html(str);
 	if(blockType != "district"){
 		$("#"+blockType+"tableId").dataTable();
+	}else{
+		$("#"+blockType+"tableId").dataTable({
+			"paging": false,
+			 "info" : false
+		});
 	}
 } 
 $(document).on("click",".committeeWiseDetailsClick",function(){
@@ -1404,7 +1409,9 @@ saveCommitteeStatus(committeeId,status);
 		var memberId = $(this).attr("attr_member_Id");
 		
 		buildSelectedMemberBlockDiv(name,mobileNo,tdpCadreId,committeId,statusType,voterId,roleId,memberId);
-		
+		$("#memberAddEditModalOpen").animate({
+                    scrollTop: $("#selectedMemberDetailsId").offset().top
+                }, 1000);
 	});
 	
 	function buildSelectedMemberBlockDiv(name,mobileNo,tdpCadreId,committeId,statusType,voterId,roleId,memberId){
