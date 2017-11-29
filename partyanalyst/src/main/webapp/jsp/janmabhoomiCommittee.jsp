@@ -63,7 +63,10 @@
 					  <select class="form-control chosen-select" id="committesLevelValuesId">
 					  </select>
 				</div>
-			</div>   
+			</div>  
+			<div class="row">
+				<div class="col-sm-6" id="msgTemplateId" style="color:red;"></div>  
+			</div>  			
 		</div>
 		<div class="modal-body">   
           <div id="committeeWisePopUpDetailsId"></div>
@@ -106,6 +109,7 @@
 <script type="text/javascript">
 
  function buildJanmabhoomiCommitteeOverview(result,committeId){
+	 $("#msgTemplateId").html("");
 	var str='';
 	str+='<div class="row">';
 	
@@ -139,7 +143,30 @@
 					}else{
 						str+='<li style="margin-left:12px;"><span class="rangeWiseCss"></span> OC</li>';
 					} */
+					var msgTemplate = "* Committee Must Contain Minimum ";
+					var msgTemplateStatus =false;
+					if(result.bcType !=null){
+						msgTemplate+="(1)BC ";
+						msgTemplateStatus =true;
+					}
+					if(result.scType !=null){
+						if(msgTemplateStatus){
+							msgTemplate+="& (1)SC ";
+						}else{
+							msgTemplate+="(1)SC";
+						}
+					}
+					if(result.stType !=null){
+						if(msgTemplateStatus){
+							msgTemplate+="& (1)ST";
+						}else{
+							msgTemplate+="(1)ST";
+						}
+					}
+					
+					msgTemplate+=" Members to Approve";
 					if(result.bcType !=null || result.scType!=null || result.stType!=null){// result.ocType!=null
+					$("#msgTemplateId").html(msgTemplate);
 					if(result.bcType == 'contains'){
 						str+='<li style="margin-left:12px;" class="fillBg"><span class="rangeWiseCss" style="background-color:green;"></span> BC</li>';
 						bcType = true;
