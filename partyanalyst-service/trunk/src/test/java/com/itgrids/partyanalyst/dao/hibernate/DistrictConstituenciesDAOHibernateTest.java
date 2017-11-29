@@ -21,7 +21,7 @@ public class DistrictConstituenciesDAOHibernateTest extends BaseDaoTestCase{
 	
 	
 	public void test(){
-		List<Object[]> list = districtConstituenciesDAO.getConstituenciesOfDistrict();
+		List<Object[]> list = districtConstituenciesDAO.getConstituenciesOfDistrict(null);
 		System.out.println(list.size());
 	}
 
