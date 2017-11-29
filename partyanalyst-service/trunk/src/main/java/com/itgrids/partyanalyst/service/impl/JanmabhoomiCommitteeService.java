@@ -578,7 +578,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					}else if(confirmedStatus.equalsIgnoreCase("Y")  && completedDate != ""){
 						status = "Approved";
 					}*/
-					if(committeeLvlId.longValue()==1l || commonMethodsUtilService.getLongValueForObject(param[6]) == 517l){
+					if(committeeLvlId.longValue()==1l ){
 						locVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[4]));
 						locVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[3]));
 						locVO.setColor(commonMethodsUtilService.getStringValueForObject(param[14]));
