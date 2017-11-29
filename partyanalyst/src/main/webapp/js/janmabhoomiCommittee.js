@@ -379,6 +379,8 @@ $(document).on("click",".memberAddEditDetailsCls",function(){
 	var committeeId = $(this).attr("attr_committee_id");
 	var roleId = $(this).attr("attr_role_id");
 	$("#memberAddEditModalOpen").modal("show");
+	$("#searchMemberDetailsId").html("");
+		
 	var memberId = $(this).attr("attr_member_id");
 	var memberName = $(this).attr("attr_member_name");
 	var voterCardNo = $(this).attr("attr_voterCard_no");
@@ -1307,6 +1309,7 @@ saveCommitteeStatus(committeeId,status);
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 				if(result !=null && result.length>0){
+					 $("#searchMemberDetailsId").html('<button id="searchMemberBtnId" attr_status="approval" attr_role_id="'+roleId+'" attr_member_id="'+memberId+'" attr_member_name="'+memberName+'" attr_voter_card_no="'+voterCardNo+'" attr_mobile_no="'+mobileNo+'" attr_memberShip_id="'+memberShipId+'" attr_committee_id="'+committeeId+'" attr_status_type="'+statusType+'" attr_state_id="'+attrStateId+'" attr_district_id="'+attrDistrictId+'" attr_constituency_id="'+attrConstituencyId+'" attr_mandal_id="'+attrMandalId+'" attr_panchayat_id="'+attrPanchayatId+'"class="btn btn-success">Search Member</button>'); 
 					buildAdvancedSearchDetails(result,committeeId,statusType,roleId,memberId);
 				}else{
 					buildMemberAddEditDetailsBlock("approval",roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId,statusType,attrStateId,attrDistrictId,attrConstituencyId,attrMandalId,attrPanchayatId)
@@ -1472,3 +1475,22 @@ saveCommitteeStatus(committeeId,status);
 		$(".chosen-select").chosen();
 	}
 	
+	$(document).on("click","#searchMemberBtnId",function(){
+		var status = $(this).attr("attr_status");
+		var roleId = $(this).attr("attr_role_id");
+		var memberId = $(this).attr("attr_member_id");
+		var memberName = $(this).attr("attr_member_name");
+		var voterCardNo = $(this).attr("attr_voter_card_no");
+		var mobileNo = $(this).attr("attr_mobile_no");
+		var memberShipId = $(this).attr("attr_memberShip_id");
+		var committeeId = $(this).attr("attr_committee_id");
+		var statusType = $(this).attr("attr_status_type");
+		var attrStateId = $(this).attr("attr_state_id");
+		var attrDistrictId = $(this).attr("attr_district_id");
+		var attrConstituencyId = $(this).attr("attr_constituency_id");
+		var attrMandalId = $(this).attr("attr_mandal_id");
+		var attrPanchayatId = $(this).attr("attr_panchayat_id");
+		
+		buildMemberAddEditDetailsBlock(status,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId,statusType,attrStateId,attrDistrictId,attrConstituencyId,attrMandalId,attrPanchayatId)
+		
+	});
