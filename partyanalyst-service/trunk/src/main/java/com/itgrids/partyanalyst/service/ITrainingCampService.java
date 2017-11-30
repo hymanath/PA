@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
 import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
+import com.itgrids.partyanalyst.dto.TrainingCampFeedBackDetailsVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampSheduleDetailsVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
@@ -151,4 +152,6 @@ public interface ITrainingCampService {
 	public List<KeyValueVO> getTrainingCampDetailsByCampIds(List<Long> trainingCampIdsList);
 	public List<KeyValueVO> getTrainingProgramDetailsByProgramIds(List<Long> triningProgramIdsList);
 	public List<TrainingCampSheduleDetailsVO> getInviteeAndNonInviteeTrainingCampWiseDetails(String fromDateStr,String toDateStr,List<Long> enrollmentYearIds,List<Long> programmIds);
+
+	public List<TrainingCampFeedBackDetailsVO> getTrainingCampFeedBAckDeatilesByTdpCadreId(Long tdpCadreId);
 }
