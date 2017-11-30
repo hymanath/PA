@@ -3153,7 +3153,7 @@ public String getCoreDebateBasicDetailsOfParty(){
 				debateParticipantLocationIdList.add(Long.parseLong(debateParticipantLocIdArry.getString(i)));          
 			}  
 		}
-		codeDebateVoList = coreDashboardMainService.getCoreDebateBasicDetailsOfParty(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getLong("candidateId"),debateLocationIdList,debateParticipantLocationIdList,jObj.getLong("roleId"),jObj.getLong("designationId"));
+		codeDebateVoList = coreDashboardMainService.getCoreDebateBasicDetailsOfParty(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getLong("candidateId"),debateLocationIdList,debateParticipantLocationIdList,jObj.getLong("roleId"),jObj.getLong("designationId"),jObj.getString("type"));
 		
 	}catch(Exception e){
 		LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
@@ -5023,7 +5023,7 @@ public String getInsuraceStatusWiseComplaintsDetails()
 					debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
 				}  
 			}
-			codeDebateVoList = coreDashboardMainService.getDesignationWiseCandidateOverAllPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),participantLocationIdList,debateLocationIdList);
+			codeDebateVoList = coreDashboardMainService.getDesignationWiseCandidateOverAllPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),participantLocationIdList,debateLocationIdList,jObj.getString("type"));
 			
 		}catch (Exception e) {
 			LOG.error("Exception raised at getDesignationWiseCandidateOverAllPerformanceCohort() method of CoreDashBoardAction", e);
