@@ -440,6 +440,7 @@ function getElectionYears(type,typeLoad){
 				}
 				for(var i in result){
 					if(type == "cross" || type == "booth"){
+						if(result[i].electionYear >= "1982"){
 						if(result[i].electionYear == "2014" || result[i].electionYear == 2014){
 							str+='<option value="'+result[i].electionYear+'" selected>'+result[i].electionYear+'</option>';
 						}else{
@@ -450,10 +451,12 @@ function getElectionYears(type,typeLoad){
 							}
 							
 						}
+						}
 					}else{
+						if(result[i].electionYear >= "1982"){
 						str+='<option value="'+result[i].electionYear+'" selected>'+result[i].electionYear+'</option>';
+						}
 					}
-					
 				}
 				if(type == "strong"){
 					$('#electionYearForStrongId').html(str);

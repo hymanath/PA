@@ -1890,13 +1890,18 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 		<!-- Model for Report End-->  
 
 		<div class="modal fade" tabindex="-1" id="reportModelId1" role="dialog" >
-			<div class="modal-dialog modal-sm" style="width:50%;">
+			<div class="modal-dialog modal-sm" style="width:70%;">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4 class="modal-title">CADRE HEALTH REPORT DETAILS</h4>
 					</div>
-					<div class="modal-body" id="reportDetailsId1">
+					<div class="modal-body" >
+						<div id="reportDetailsId1"></div>
+						<div class ="">
+						<h4 class="modal-title m_top20">CADRE CANDIDATE HEALTH REPORT DETAILS</h4>
+						<div class="m_top20" id="healthWiseTableId"></div>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -3407,9 +3412,10 @@ function buildCadreHealthReport()
 	<c:if test="${fn:length(cadreReportHealthVOList) gt 0}">  
 	flag = true;
 	str +='<div class="row">';
-    str +='<div class="col-md-8 col-md-offset-2 col-xs-12 col-sm-10 col-sm-offset-0">';
+    str +='<div class="col-md-8 col-md-offset-2 col-xs-12 col-sm-10 col-sm-offset-0" style="width:80%; margin-left: 110px;">';
 	str +='<table id="reportHealthTableId" class="table table-bordered">';
 	str +='<thead>';
+	str +='<th>ENROLLMENT YEAR</th>';
 	str +='<th>SNO</th>';
 	str +='<th>REPORT DATE</th>';     
 	str +='</thead>';  
@@ -3417,6 +3423,7 @@ function buildCadreHealthReport()
 	str +='<tbody>';
 	<c:forEach items="${cadreReportHealthVOList}" var="cadreReportVO" varStatus="loop1">
 	str +='<tr>'; 
+	str +='<td>2014-2016</td>';
 	str +='<td>${cadreReportVO.sno}</td>';					
 	str +='<td><span filePath="${cadreReportVO.reportPath}" style="cursor:pointer;" id="showPdfId1" class="showPdfCls3">${cadreReportVO.reportDate}</span></td>';  
 	str +='</tr>';    

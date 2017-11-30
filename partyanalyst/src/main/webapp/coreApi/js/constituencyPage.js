@@ -6051,6 +6051,7 @@ function getElectionYears(type){
 		if(result !=null && result.length>0){
 				var str='';
 				for(var i in result){
+					if(result[i].electionYear >= "1982")
 					str+='<option value="'+result[i].electionYear+'" selected>'+result[i].electionYear+'</option>';
 				} 
 				$("#elctionYearsBlockId").multiselect("destroy");

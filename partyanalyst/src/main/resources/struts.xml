@@ -18555,5 +18555,10 @@
 				<param name="root"></param>
 			</result>
 	</action>
+	<action name="getTdpCadreByHealthCadreWiseDetailsAction" class="cadreDetailsAction"  method="getTdpCadreByHealthCadreWiseDetails">
+		<result type="json" name="success">    
+			<param name="root">cadreHealthDetailList</param>       
+		</result>
+   </action>
  </package>
 </struts>
