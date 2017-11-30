@@ -61,8 +61,22 @@ public class LocationVO implements Serializable {
 	private List<StatusVO> statusList = new ArrayList<StatusVO>(0);
 	private AddressVO addressVO = new AddressVO();
 	
+	private String wage;
+	private String material;
 	
 	
+	public String getWage() {
+		return wage;
+	}
+	public void setWage(String wage) {
+		this.wage = wage;
+	}
+	public String getMaterial() {
+		return material;
+	}
+	public void setMaterial(String material) {
+		this.material = material;
+	}
 	public String getGrantTypeName() {
 		return grantTypeName;
 	}

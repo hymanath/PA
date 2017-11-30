@@ -347,7 +347,7 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 						str+='<div class="col-sm-6">';
 							str+='<div class="border-cls">';
 								str+='<h4 class="font_weight">Total Funds</h4>';
-								str+='<h3 class="font_weight">'+totalFunds.toFixed(3)+' Cr</h3>';
+								str+='<h3 class="font_weight">'+totalFunds.toFixed(3)+' <span style="color: rgb(0, 0, 0); font-size: 14px ! important;font-weight:bold;"> (Cr)</span></h3>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -390,27 +390,36 @@ function buildOverAllDepartmentsDetails(result,departmentId,divId){
 											str+='<div class="department_wise_css">';
 												str+='<div class="row">';
 														if(result.locationList1[i].departmentName == 'Mahatma Gandhi National Rural Employment Gurantee Scheme'){
-															str+='<div class="col-sm-12">';
-															str+='<h4 class="font_weight">Funds (Material Amount)</h4>';
+															str+='<div class="col-sm-4">';
+															str+='<h4 class="font_weight">Total</h4>';
 														}
 														else{
 															str+='<div class="col-sm-3">';
 															str+='<h4 class="font_weight">Funds</h4>';
 														}
-														str+='<h3 class="font_weight">'+parseFloat(result.locationList1[i].amountInDecimal).toFixed(2)+' <span style="color: rgb(0, 0, 0); font-size: 14px ! important;font-weight:normal;">Cr</span></h3>';
+														str+='<h3 class="font_weight" style="font-size: 21px !important">'+parseFloat(result.locationList1[i].amountInDecimal).toFixed(2)+' <span style="color: rgb(0, 0, 0); font-size: 12px ! important;font-weight:bold;"> (Cr)</span></h3>';
 													str+='</div>';
 													if(result.locationList1[i].departmentName == 'ENC' || result.locationList1[i].departmentName == 'RWS'){
 														str+='<div class="col-sm-3">';
 															str+='<h4 class="font_weight">PLAIN</h4>';
-															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].plainAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
+															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].plainAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);font-size:12px;font-weight:bold;">(Cr)</small></h4>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
 															str+='<h4 class="font_weight">SCP</h4>';
-															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].scpAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
+															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].scpAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);font-size:12px;font-weight:bold;">(Cr)</small></h4>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
 															str+='<h4 class="font_weight">TSP</h4>';
-															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].tspAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);">Cr</small></h4>';
+															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].tspAmountInDecimal).toFixed(2)+' <small style="color: rgb(0, 0, 0);font-size:12px;font-weight:bold;">(Cr)</small></h4>';
+														str+='</div>';
+													}else if(result.locationList1[i].departmentName == 'Mahatma Gandhi National Rural Employment Gurantee Scheme'){
+														str+='<div class="col-sm-4">';
+															str+='<h4 class="font_weight">Wage</h4>';
+															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].wage).toFixed(2)+' <small style="color: rgb(0, 0, 0);font-size:12px;font-weight:bold;">(Cr)</small></h4>';
+														str+='</div>';
+														str+='<div class="col-sm-4">';
+															str+='<h4 class="font_weight">Material</h4>';
+															str+='<h4 class="font_weight">'+parseFloat(result.locationList1[i].material).toFixed(2)+' <small style="color: rgb(0, 0, 0);font-size:12px;font-weight:bold;">(Cr)</small></h4>';
 														str+='</div>';
 													}
 												str+='</div>';
@@ -760,7 +769,7 @@ function getFundManagementSystemWorkDetails(departmentId,divId){
 									if(result.amountInDecimal == "0.00" || typeof(result.amountInDecimal) === 'undefined' || typeof(result.amountInDecimal) === undefined){
 										str+='<h4 class="font_weight">0</h4>';
 									}else{
-										str+='<h4 class="font_weight">'+result.amountInDecimal+' Cr</h4>';
+										str+='<h4 class="font_weight">'+result.amountInDecimal+' <span style="font-size:12px;font-weight:bold;">(Cr)</span></h4>';
 										
 									}
 									
@@ -937,8 +946,21 @@ function buildConstituencyWiseNregsWorksDetails(result,divId,departmentId){
 						
 						str+='<div class="col-sm-6">';
 							str+='<div class="border-cls padding_right_left">';
-								str+='<h4>Total Funds (Material Amount)</h4>';
-								str+='<h4 class="font_weight">'+result[0].finalAmount+' Cr</h4>';
+								str+='<div class="row">';
+									str+='<div class="col-sm-4">';
+										str+='<h4>Total</h4>';
+										str+='<h4 class="font_weight">'+result[0].finalAmount+' <span style="font-size:12px;font-weight:bold;">(Cr)</span></h4>';
+									str+='</div>';
+									str+='<div class="col-sm-4">';
+										str+='<h4>Wage</h4>';
+										str+='<h4 class="font_weight">'+result[0].wageAmount+' <span style="font-size:12px;font-weight:bold;">(Cr)</span></h4>';
+									str+='</div>';
+									str+='<div class="col-sm-4">';
+										str+='<h4>Material</h4>';
+										str+='<h4 class="font_weight">'+result[0].materialAmount+' <span style="font-size:12px;font-weight:bold;">(Cr)</span></h4>';
+									str+='</div>';
+								str+='</div>';
+								
 							str+='</div>';
 						str+='</div>';
 					str+='</div>'
@@ -950,7 +972,9 @@ function buildConstituencyWiseNregsWorksDetails(result,divId,departmentId){
 									str+='<tr>';
 										str+='<th>Work&nbsp;Names</th>';
 										str+='<th>Works</th>';
-										str+='<th>Amount&nbsp;Cr</th>';
+										str+='<th>Wage&nbsp;<span style="font-size:12px;font-weight:bold;">(Cr)</span></th>';
+										str+='<th>Material&nbsp;<span style="font-size:12px;font-weight:bold;">(Cr)</span></th>';
+										str+='<th>Amount&nbsp;<span style="font-size:12px;font-weight:bold;">(Cr)</span></th>';
 									str+='</tr>';
 								str+='</thead>';
 								str+='<tbody>';
@@ -963,14 +987,18 @@ function buildConstituencyWiseNregsWorksDetails(result,divId,departmentId){
 										str+='<tr>';
 											str+='<td>'+result[i].workName+'</td>';
 											str+='<td>'+result[i].completed+'</td>';
+											str+='<td>'+result[i].wage+'</td>';
 											str+='<td>'+result[i].material+'</td>';
+											str+='<td>'+result[i].total+'</td>';
 										str+='</tr>';
 										
 									}
 									str+='<tr>';
 										str+='<th></th>';
 										str+='<th>'+result[0].finalWorks+'</th>';
-										str+='<th>'+result[0].finalAmount+' Cr</th>';
+										str+='<th>'+result[0].wageAmount+' (Cr)</th>';
+										str+='<th>'+result[0].materialAmount+' (Cr)</th>';
+										str+='<th>'+result[0].finalAmount+' (Cr)</th>';
 									str+='</tr>';
 								}else{
 									str+='<tr>';

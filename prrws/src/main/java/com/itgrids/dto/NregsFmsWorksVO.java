@@ -39,8 +39,29 @@ public class NregsFmsWorksVO implements Serializable{
 	private Long finalWorks;
 	private String finalAmount;
 	private Long totalAmount;
+	private String wageAmount;
+	private String materialAmount;
+	private Long totalLong = 0L;
 	
 	
+	public Long getTotalLong() {
+		return totalLong;
+	}
+	public void setTotalLong(Long totalLong) {
+		this.totalLong = totalLong;
+	}
+	public String getWageAmount() {
+		return wageAmount;
+	}
+	public void setWageAmount(String wageAmount) {
+		this.wageAmount = wageAmount;
+	}
+	public String getMaterialAmount() {
+		return materialAmount;
+	}
+	public void setMaterialAmount(String materialAmount) {
+		this.materialAmount = materialAmount;
+	}
 	public Long getFinalWorks() {
 		return finalWorks;
 	}
