@@ -1422,4 +1422,99 @@ public List<Object[]> getDesignationwiseCandidateCharectersScaling(Date startDat
 	return query.list(); 
 	
 }
+public List<Object[]> getOthersDesignationWisePerformance(List<Long> candidateIds,Date startDate,Date endDate,List<Long> debateLocationIds,List<Long> debateParticipantLocationIdList){
+	
+	StringBuilder str = new StringBuilder();		
+	str.append(" select " +
+			" count(distinct model.debateParticipant.debate.debateId), " +
+			" count(distinct model.debateParticipant.candidate.candidateId),sum(model.scale) " +
+			" from DebateParticipantCharcs model " );
+	
+	str.append(" where " +
+			"model.debateParticipant.debate.isDeleted = 'N' " +
+			" and model.characteristics.isDeleted ='N' " );
+			//" and model.debateParticipant.party.isNewsPortal = 'Y' " +
+			//" and model.debateParticipant.candidate.isDebateCandidate ='Y' " +
+			//"and DCD.isActive ='Y' and DCD.isDeleted = 'N' " );
+	if(candidateIds != null && candidateIds.size()>0l){
+		str.append(" and  model.debateParticipant.candidate.candidateId in(:candidateIds)");
+	}
+	if(startDate !=null && endDate !=null){
+		str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
+	}
+	if(debateLocationIds != null && debateLocationIds.size()>0l){
+		 str.append(" and model.debateParticipant.debate.addressId in (:debateLocationIds) ");
+	}
+	if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0l){
+	      str.append(" and model.debateParticipant.candidate.state.stateId in (:debateParticipantLocationIdList)");
+	    }
+	//str.append(" group by model.characteristics.characteristicsId" +
+			//" order by model.characteristics.characteristicsId ");
+	Query query = getSession().createQuery(str.toString());	
+	if(candidateIds != null && candidateIds.size()>0l){
+		query.setParameterList("candidateIds", candidateIds);
+	}
+	if(startDate !=null && endDate !=null){
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+	}
+	if(debateLocationIds != null && debateLocationIds.size()>0l){
+		query.setParameterList("debateLocationIds", debateLocationIds);
+	}
+	if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0l){
+		query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+	}
+	return query.list(); 
+	
+}
+public List<Object[]> getDesignationwiseOthersCandidateCharectersScaling(Date startDate,Date endDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList,List<Long> candidateIds){
+	
+	StringBuilder str = new StringBuilder();		
+	str.append(" select  "+
+			"  distinct model.debateParticipant.candidate.candidateId,model.debateParticipant.candidate.lastname," +
+			" model.characteristics.characteristicsId," +
+			" model.characteristics.name," +
+			" sum(model.scale), model.debateParticipant.party.partyId,model.debateParticipant.party.shortName " +
+			" from DebateParticipantCharcs model " );
+	str.append(" where " +
+			//"model.debateParticipant.candidateId=DCD.candidateId and" +
+			" model.debateParticipant.debate.isDeleted = 'N' " +
+			" and model.characteristics.isDeleted ='N' " +
+			//" and model.debateParticipant.party.isNewsPortal = 'Y' " +
+			" and  model.debateParticipant.candidate.isDebateCandidate ='Y' " );
+			//" and DCD.isActive ='Y' and DCD.isDeleted = 'N' " );
+	
+	   if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0 ){
+	      str.append(" and model.debateParticipant.candidate.state.stateId in (:debateParticipantLocationIdList)");
+	    }
+	if(startDate !=null && endDate !=null){
+		str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
+	}
+	if(debateLocationIdList != null && debateLocationIdList.size()>0){
+		 str.append(" and model.debateParticipant.debate.addressId in (:debateLocationIdList) ");
+	}
+	if(candidateIds != null && candidateIds.size()>0l ){
+		str.append(" and model.debateParticipant.candidate.candidateId in(:candidateIds) ");
+	}
+	str.append(" group by  model.debateParticipant.candidate.candidateId,model.characteristics.characteristicsId " +
+			" order by model.debateParticipant.candidate.candidateId,model.characteristics.characteristicsId ");
+	
+	Query query = getSession().createQuery(str.toString());	
+	
+	if(startDate !=null && endDate !=null){
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+	}
+	if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size() > 0 ){
+		query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+	}
+    if(debateLocationIdList != null && debateLocationIdList.size()>0){
+    	query.setParameterList("debateLocationIdList", debateLocationIdList);
+	}
+    if(candidateIds != null && candidateIds.size()>0l ){
+    	query.setParameterList("candidateIds", candidateIds);
+    }
+	return query.list(); 
+	
+}
 }

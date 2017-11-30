@@ -47,7 +47,7 @@ public interface ICoreDashboardMainService {
 	
 	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,Long userTypeId,Long activityMemberId,List<Long> enrollmentYearIds,List<Long> trainingCampProgramIds);
 	public String getLatestDebate();
-	public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId);
+	public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId,String type);
 	public List<IdNameVO> getTrainingProgramMemberDtlsStatusWise(List<Long> programIdList,Long stateId,String dateStr,String status,String designation,Long designationId);
 	public List<List<IdNameVO>> getStateLevelCampDetailsDayWise(List<Long> programIdList, Long stateId, String dateStr);
 	public List<CoreDebateVO> getCandidateWiseDebateDetailsOfCore(Long partyId,String startDateStr,String endDateStr,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId);
@@ -57,5 +57,5 @@ public interface ICoreDashboardMainService {
 	public List<Long> getTrainingCampPrograms(Long enrollmentId);
 	public List<CommitteeDataVO> getCommitteeDetailedReport(List<Long> enrollmentYearIdsList,Long committeeLevelId,String fromDate, String toDate, List<Long> basicCommitteeTypeIdsList, List<Long> committeeTypeIdsList,Long locationScopeId, List<Long> locationValuesList );
 	public List<CoreDebateVO> getDebateDesignationWiseTotalDebateDetails(String startDateStr,String endDateStr,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
-	public List<CoreDebateVO> getDesignationWiseCandidateOverAllPerformanceCohort(String startDateStr,String endDateStr,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
+	public List<CoreDebateVO> getDesignationWiseCandidateOverAllPerformanceCohort(String startDateStr,String endDateStr,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList,String type);
 }
