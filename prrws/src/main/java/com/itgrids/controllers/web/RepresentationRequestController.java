@@ -61,4 +61,12 @@ public class RepresentationRequestController {
     public @ResponseBody List<KeyValueVO> getPanchayatsByTehsilId(@RequestBody Map<String,String> inputMap ) {
     	 return locationDetailsService.getPanchayatsByTehsilId(Long.valueOf(inputMap.get("tehsilId")));
     }
+	@RequestMapping(value ="/getPetitionDepartmentList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPetitionDepartmentDetailsList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPetitionDepartmentList();
+    }
+	@RequestMapping(value ="/getPetitionDesignationList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPetitionDesignationList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPetitionDesignationList();
+    }
 }
