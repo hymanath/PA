@@ -693,16 +693,16 @@ public class LightMonitoringService  implements ILightMonitoring{
 	}
 	
 	
-	 public List<LightMonitoringVO> getTimePeriodWiseLightsDetails(String startDate,String endDate, String locationType,final Long locationValue,List<Long> lightMonitoringIds) {
+	 public List<LightMonitoringVO> getTimePeriodWiseLightsDetails(String startDate,String endDate, String locationType, List<Long> locationValues,List<Long> lightMonitoringIds) {
 		   List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
 		try{	
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			DateUtilService dateUtilService = new DateUtilService();
 			Date today = dateUtilService.getCurrentDateAndTime();
 			
-			List<Object[]> lightMonitorindDtlsObjList = lightMonitoringDAO.getDateWiseLightMonitoringDtls(getRequiredDateByPassingDays(62),today);
+			List<Object[]> lightMonitorindDtlsObjList = lightMonitoringDAO.getDateWiseLightMonitoringDtls(getRequiredDateByPassingDays(62),today,locationType,locationValues);
 			List<LightsVendor> vendorList = lightsVendorDAO.getAll();
-			Map<String,LightMonitoringVO> dateWiseLightsDtlsMap = prepareDateWiseLightMonitoringDtls(lightMonitorindDtlsObjList,vendorList);
+			Map<String,LightMonitoringVO>  dateWiseLightsDtlsMap = prepareDateWiseLightMonitoringDtls(lightMonitorindDtlsObjList,vendorList);
 			String[] templateArr = {"Today Total","Last 1 Day","Last 2 Day","Last 3 Day","Last 7 Day","Last 14 Day","Last 30 Day","Last 60 Day"};
 			  
 			 for (String string : templateArr) {
@@ -800,7 +800,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 		return vendorList;
 	}
 	
-	private int getDayPassingTimePeriod(String timePeriod) {
+    private int getDayPassingTimePeriod(String timePeriod) {
 		int dayCount = 0;
 		try {
 			switch (timePeriod) {
@@ -865,7 +865,6 @@ public class LightMonitoringService  implements ILightMonitoring{
 
 			} catch (Exception e) {
 				LOG.error("Exception raised at getDateBeforeNDays - LightMonitoringService service",e);
-				
 			}
 			return null;
 	} 

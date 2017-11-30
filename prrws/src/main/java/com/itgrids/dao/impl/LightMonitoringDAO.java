@@ -369,7 +369,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
    }
 
 	@Override
-	public List<Object[]> getDateWiseLightMonitoringDtls(Date fromDate,Date toDate) {
+	public List<Object[]> getDateWiseLightMonitoringDtls(Date fromDate,Date toDate,String locationType,List<Long> locationValues) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select " +
 				 " date(model.surveyDate)," +
@@ -378,6 +378,18 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				+ " sum(model.totalLights),sum(model.totalPanels) "
 				+ " from  LightMonitoring model where model.isDeleted ='N' " +
 				" and model.panchayat.locationAddress.state.stateId = 1 ");
+
+		if( locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.size() > 0){
+			if(locationType.equalsIgnoreCase("district")){
+				sb.append(" AND model.panchayat.locationAddress.district.districtId in(:locationValues) ");
+			}else if(locationType.equalsIgnoreCase("parliament")){
+				sb.append(" AND model.panchayat.locationAddress.parliament.constituencyId in(:locationValues) ");
+			}else if(locationType.equalsIgnoreCase("constituency")){
+				sb.append(" AND model.panchayat.locationAddress.constituency.constituencyId in(:locationValues) ");
+			}else if(locationType.equalsIgnoreCase("mandal")){
+				sb.append(" AND model.panchayat.locationAddress.tehsil.tehsilId in(:locationValues) ");
+			}
+		}
 		if (fromDate != null && toDate != null) {
 			sb.append(" and  date(model.surveyDate) between :fromDate and :toDate ");
 		}
@@ -388,6 +400,9 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		if(locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.size() > 0){
+			query.setParameterList("locationValues",locationValues);
+		}				
 		return query.list();
 	}
 }
