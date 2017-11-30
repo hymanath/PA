@@ -21,9 +21,10 @@ public class TdpCadreHealthDetailsDAO extends GenericDaoHibernate<TdpCadreHealth
 											" model.spot," +
 											" model.systolicBp,model.diastolicBp," +
 											" model.heartPulse,model.spiro," +
-											" model.testDate" +
+											" model.testDate," +
+											" model.tdpCadre.memberShipNo " +
 											" from TdpCadreHealthDetails model" +
-											" where model.tdpCadreId = :cadreId" +
+											" where model.tdpCadre.tdpCadreId = :cadreId" +
 											" and model.isDeleted = 'N'");
 		query.setParameter("cadreId", cadreId);
 		return query.list();

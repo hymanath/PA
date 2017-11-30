@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.BenefitVO;
 import com.itgrids.partyanalyst.dto.CadreBasicPerformaceVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreHealthDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
@@ -166,4 +167,5 @@ public interface ICadreDetailsService {
 	
 	public List<IdAndNameVO> getTdpCadreHealthDetailsByCadre(Long tdpCadreId);
 	public List<QuestionAnswerVO> getSurveyQuestionWithMarksDetailsByTDpCadreId(Long cadreId);
+	public List<CadreHealthDetailsVO> getTdpCadreHealthDetailsByCadreIds(Long tdpCadreId);
 }
