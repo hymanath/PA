@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.BenefitVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCountsVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreHealthDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -130,6 +131,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private ToursBasicVO tourDetailsVO;
 	private Long enrollmentYearId ;
 	private List<IdAndNameVO> idAndNameVoList;
+	private List<CadreHealthDetailsVO> cadreHealthDetailList;
 	
 	
 	public List<IdAndNameVO> getIdAndNameVoList() {
@@ -214,7 +216,13 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			List<GrievanceReportVO> grievanceReportVOList) {
 		this.grievanceReportVOList = grievanceReportVOList;
 	}
-    
+	public List<CadreHealthDetailsVO> getCadreHealthDetailList() {
+		return cadreHealthDetailList;
+	}
+	public void setCadreHealthDetailList(
+			List<CadreHealthDetailsVO> cadreHealthDetailList) {
+		this.cadreHealthDetailList = cadreHealthDetailList;
+	}
 	private List<GrievanceDetailsVO> grievanceDetailsVoList ;
 	private GrievanceDetailsVO gerGrievanceDetailsVO;
 	private GrievanceSimpleVO grievanceSampleVO;
@@ -2182,5 +2190,17 @@ public String getVolunteerCadreDetilasInformation(){
 			LOG.error("Exception raised in getSurveyQuestionWithMarksDetailsByTDpCadreId  method in CadreDetailsAction.",e);
 		}
 		return Action.SUCCESS;
+	}
+	public String getTdpCadreByHealthCadreWiseDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			cadreHealthDetailList = cadreDetailsService.getTdpCadreHealthDetailsByCadreIds(tdpCadreId);
+		}catch(Exception e){
+			 LOG.error("Exception occured in getTdpCadreByHealthCadreWiseDetails in CadreDetailsAction class  ",e);
+		}
+		
+		return "success";
 	}
 }
