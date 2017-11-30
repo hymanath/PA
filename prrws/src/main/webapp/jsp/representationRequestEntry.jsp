@@ -218,13 +218,13 @@
 												<div class="row m_top10">
 													<div class="col-sm-3">
 														<div class="borederCss">
-															<input type="radio" id="self" name="selector" checked>
+															<input type="radio" id="self" name="selector" class="selfRepresenceCls" attr_type="self" checked>
 															<label><h5>SELF</span></h5>
 														</div>
 													</div>
 													<div class="col-sm-6">
 														<div class="borederCss">
-															<input type="radio" id="Representee" name="selector">
+															<input type="radio" id="Representee" class="selfRepresenceCls" attr_type="represent" name="selector">
 															<label><h5 class="text-capital">Representee</h5></label>
 														</div>
 													</div>
@@ -233,76 +233,15 @@
 									</div>
 									<div class="row m_top20">
 										<div class="col-sm-12">
-											<h4 class="searchCss"><i class="fa fa-search" aria-hidden="true" style="font-size:20px;"></i> Click to Search Details to the Candidate</h4>
+											<div id="selfDetailsDivId"></div>
 										</div>
 									</div>
 									<div class="row m_top20">
 										<div class="col-sm-12">
-											<h3 class="panel-title f_22">REFERRAL LETTER</h3>
-											<input type="file" id="update_TourFileId2" multiple="multiple"  name="files[]" class="m_top20"/>
+											<div id="representDetailsDivId"></div>
 										</div>
 									</div>
-									<div class="row m_top20">
-										<div class="col-sm-12">
-											<h3 class="panel-title f_22">WORK TYPE DETAILS</h3>
-											<div class="row m_top20">
-												<div class="col-sm-6">
-													<label>Name of the Work</label>
-													 <input type="text" class="form-control m_top10 height45" id="nameofWork" placeholder="Enter Name Of Work">
-												</div>
-												<div class="col-sm-3">
-													<label>No of Works</label>
-													<input type="text" class="form-control m_top10 height45" id="noofWork" placeholder="Enter No Of Work">
-												</div>
-												<div class="col-sm-3">
-													<label>Work Cost (Est. Cost in Lakh)</label>
-													<input type="text" class="form-control m_top10 height45" id="workCost" placeholder="Enter Work Cost">
-												</div>
-											</div>
-											<div class="row m_top20">
-												<div class="col-sm-3">
-													<label>Subject</label>
-													<select class="form-control chosen-select m_top10" id="subjectId">
-														<option value="0">Select Subject</option>
-													</select>
-												</div>
-												<div class="col-sm-3">
-													<label>Department</label>
-													<select class="form-control chosen-select m_top10" id="departmentId">
-														<option value="0">Select Department</option>
-													</select>
-												</div>
-												<div class="col-sm-3">
-													<label>Previous Petition</label>
-													<select class="form-control chosen-select m_top10" id="previousPetitionId">
-														<option value="0">Select Previous Petition</option>
-													</select>
-												</div>
-												<div class="col-sm-3">
-													<label>Previous Petition No (Endt NO)</label>
-													<input type="text" class="form-control m_top10 height45" id="workCost" value="101/20/11/2017">
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-sm-6">
-													<h3 class="panel-title f_22">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>
-													<textarea class="form-control m_top20" rows="7"></textarea>
-												</div>
-												<div class="col-sm-6">
-													<h3 class="panel-title f_22">PROJCT DOCUMENTS UPLOAD</h3>
-													<input type="file" id="projectDocUpload" multiple="multiple"  name="files[]" class="m_top20"/>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-sm-12"><hr class="m_0" style="border: 3px solid rgb(221, 221, 221);"/></div>
-									</div>
-									<div class="row">
-										<div class="col-sm-12">
-											<div id="workDetailsDivId"></div>
-										</div>
-									</div>
+									
 								</div>
 							</div>
 						</div>
