@@ -28,10 +28,12 @@ public class PetitionReffererCandidate {
 	private Long updatedUserId;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long petitionDesignationId;
 	
 	private User insetrUser;
 	private User updateUser;
 	private LocationAddress locationAddress;
+	private PetitionDesignation petitionDesignation;
 	
 	
 	@Id
@@ -138,6 +140,21 @@ public class PetitionReffererCandidate {
 	}
 	public void setUpdateUser(User updateUser) {
 		this.updateUser = updateUser;
+	}
+	@Column(name="petition_designation_id")
+	public Long getPetitionDesignationId() {
+		return petitionDesignationId;
+	}
+	public void setPetitionDesignationId(Long petitionDesignationId) {
+		this.petitionDesignationId = petitionDesignationId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_designation_id", insertable = false, updatable = false)
+	public PetitionDesignation getPetitionDesignation() {
+		return petitionDesignation;
+	}
+	public void setPetitionDesignation(PetitionDesignation petitionDesignation) {
+		this.petitionDesignation = petitionDesignation;
 	}
 	
 
