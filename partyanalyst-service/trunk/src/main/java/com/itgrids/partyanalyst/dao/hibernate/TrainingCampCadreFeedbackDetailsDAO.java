@@ -200,4 +200,27 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
   		return query.list();
 	  
   	}
+  
+  public List<Object[]> getTrainingCampFeedBAckDeatilesByTdpCadreId(Long tdpCadreId){
+	  StringBuilder sb= new StringBuilder();
+	  sb.append("select  model.trainingCampCadreFeedbackDetailsId,model.tdpCadreId,");//00 feedback Id, 01 cadereId
+	  sb.append("model.trainingCampProgramId,model2.programName," );// 02 programId,03 programName
+	  sb.append("model.trainingCampBatchId,model.trainingCampBatch.trainingCampBatchName,");// 04 batchId, 05  batchName
+	  sb.append("model.cadreLeadershipLevel.cadreLeadershipLevelId,model.cadreLeadershipLevel.leadershipLevel,");//06 leadershiplevelId,07  leaderShiplevel
+	  sb.append("model.cadreComminicationSkillsStatus.cadreComminicationSkillsStatusId,model.cadreComminicationSkillsStatus.status," );// 08 communationSkillsId, 09 communicationSkillsStatus
+	  sb.append("model.cadreLeadershipSkillsStatus.cadreLeadershipSkillsStatusId,model.cadreLeadershipSkillsStatus.status," );//10 leaderShipSkillsId, 11 leaderShipSkillsStatus
+	  sb.append("model.cadreHealthStatus.cadreHealthStatusId,model.cadreHealthStatus.status,");	// 12 healthStatusId, 13 healthStatus
+	  sb.append("model.remarks,model.smartPhoneExist,model.watsappUsing,model.watsappShare,model.facebookUsing,");// 14 remarks, 15 smartPhoneExist, 16 watsappUsing 17 watsappShare, 18 facebookUsing
+	  sb.append("model.healthCardAttachment,");//19  healthCardAttachment
+	  sb.append("model.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId,model.trainingCampBatch.trainingCampSchedule.enrollmentYear.description, "); //20  yearId ,21 year
+	  sb.append("model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampBatch.trainingCampSchedule.trainingCamp.campName "); //22  campId ,23 campName
+	  sb.append("from TrainingCampCadreFeedbackDetails model,TrainingCampProgram model2  " );
+	  sb.append("where model.trainingCampProgramId=model2.trainingCampProgramId ");
+	  if(tdpCadreId != null && tdpCadreId.longValue() > 0)
+	  sb.append("and model.tdpCadreId = :tdpCadreId ");
+	  Query query = getSession().createQuery(sb.toString());
+	  if(tdpCadreId != null && tdpCadreId.longValue() > 0)
+	  query.setParameter("tdpCadreId", tdpCadreId);
+	  return query.list();
+  }
 }
