@@ -643,7 +643,7 @@ public class CommonMethodsUtilService {
 						 return "FAILED";
 					 }
 					 
-					 return "/"+yr+"/"+mnth;
+					 return "/"+mnthDir;
 					 
 				
 				} catch (Exception e) {
