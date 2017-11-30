@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dto.PeshiAppAppointmentVO;
 import com.itgrids.partyanalyst.dto.PeshiAppGrievanceVO;
 import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
+import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
@@ -278,4 +279,5 @@ public interface IWebServiceHandlerService {
     public Long getKaizalaAddressId(Long locationScopeId, Long locationValue);
     public Long kaizalaCommitteeLevelAddressSaving(Long locationScopeId, Long locationValue);
     public void saveEventResponses(String anserObjStr);
+    public List<QuestionAnswerVO> getSurveyQuestionWithMarksDetailsByTDpCadreId(Long tdpCadreId);
 }
