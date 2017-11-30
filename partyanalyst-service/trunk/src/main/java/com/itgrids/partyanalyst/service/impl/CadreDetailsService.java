@@ -13515,5 +13515,15 @@ public List<IdAndNameVO> getTdpCadreHealthDetailsByCadre(Long tdpCadreId){
 	}
 	return returnlist;
 }
-
+	public List<QuestionAnswerVO> getSurveyQuestionWithMarksDetailsByTDpCadreId(Long cadreId){
+		List<QuestionAnswerVO> queAnsVo = new ArrayList<QuestionAnswerVO>(0);
+		try{
+			queAnsVo = webServiceHandlerService.getSurveyQuestionWithMarksDetailsByTDpCadreId(cadreId);
+			return queAnsVo;
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getSurveyQuestionWithMarksDetailsByTDpCadreId service  method in CadreDetailsService.",e);
+		}
+		return queAnsVo;
+	}
 }
