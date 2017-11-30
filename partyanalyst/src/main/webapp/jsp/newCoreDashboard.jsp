@@ -4080,7 +4080,7 @@
 		<!---------Cadre Registration End--->
 	</div>
 	<div class="row">
-		<!--<div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
+		<div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
 				
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
@@ -4101,13 +4101,13 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<!--<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="col-md-12 col-xs-12 col-sm-12">
 								<h5 class="module_OwnerCss">Module Owner : Peddi Rama Rao</h5>
 							</div>
 							<div class="m_top20">
-							<select class="categoryCls" id="categoryId">
-								<option value="1050" selected="selected">Counter on praja sankalpa yatra</option>
-								<option value="1051">Praja sankalpa yatra</option>
+							<select class="categoryCls" id="categorySelId">
+								<option value="1051" selected="selected">Praja sankalpa yatra</option>
+								<option value="1050">Counter on praja sankalpa yatra</option>
 							</select>
 							</div>
 							<span class="input-group pull-right dateRangePickerCls">
@@ -4121,12 +4121,12 @@
 							<div class="col-sm-12">
 								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px">Print Media</span></h4>
 								<div class="row m_top10">
-									<div class="col-sm-6">
+									<!--<div class="col-sm-6">
 										<h5>PRAJA SANKALPA YATRA</h5>
 									</div>
 									<div class="col-sm-6">
 										<h5 style="font-size: 13px; text-align: center;">COUNTER ON PRAJA SANKALPA YATRA</h5>
-									</div>
+									</div>-->
 								</div>
 								<div id="printMediaOverAllBlockId" class=""></div>
 								<div id="printMediaPartyBlockId" class="m_top10"></div>
@@ -4135,12 +4135,12 @@
 							<div class="col-sm-12 m_top10">
 								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px">Electronic Media</span></h4>
 								<div class="row m_top10">
-									<div class="col-sm-6">
+									<!--<div class="col-sm-6">
 										<h5>PRAJA SANKALPA YATRA</h5>
 									</div>
 									<div class="col-sm-6">
 										<h5 style="font-size: 13px; text-align: center;">COUNTER ON PRAJA SANKALPA YATRA</h5>
-									</div>
+									</div>-->
 								</div>
 								<div id="electronicMediaOverAllBlockId" class=""></div>
 								<div id="electronicMediaPartyBlockId" class="m_top10"></div>
@@ -4150,7 +4150,7 @@
 						</div>
 					</div>
 				</div>
-			</div>-->
+			</div>
 	</div>
 </div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
@@ -5100,7 +5100,7 @@
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script type="text/javascript">
-$(document).on("change","#categoryId",function(){
+ $(document).on("change","#categorySelId",function(){
 		getPrintMediaOverAllPSYCounts("OverAll","printMedia",$(this).val());
 		getPrintMediaOrganizationWisePSYCounts("Party","printMedia",$(this).val())
 		getPrintMediaPublicationWisePSYCounts("Publication","printMedia",$(this).val())
