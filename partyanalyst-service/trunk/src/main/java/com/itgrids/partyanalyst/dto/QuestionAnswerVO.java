@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionAnswerVO implements Serializable {
@@ -37,8 +38,34 @@ public class QuestionAnswerVO implements Serializable {
 	private String startDate;
 	private String endDate;
 	private Long locationScopeId;
-
+	private Long surveyTypeId;
+	private Long marks=0l;
+	private List<QuestionAnswerVO> subList = new ArrayList<QuestionAnswerVO>(0);
 	
+	public List<QuestionAnswerVO> getSubList() {
+		return subList;
+	}
+
+	public void setSubList(List<QuestionAnswerVO> subList) {
+		this.subList = subList;
+	}
+
+	public Long getMarks() {
+		return marks;
+	}
+
+	public void setMarks(Long marks) {
+		this.marks = marks;
+	}
+
+	public Long getSurveyTypeId() {
+		return surveyTypeId;
+	}
+
+	public void setSurveyTypeId(Long surveyTypeId) {
+		this.surveyTypeId = surveyTypeId;
+	}
+
 	public Long getLocationScopeId() {
 		return locationScopeId;
 	}
