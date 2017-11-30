@@ -1250,7 +1250,8 @@ function getCoreDebateBasicDetailsOfParty(designationId,partyId,type,popupLocati
 		popupLocationIdArry:popupLocationId,
 		participantLocIdArry:participantLocIdArry,
 		roleId:roleId,
-		designationId:designationId
+		designationId:designationId,
+		type : " "
 	}		
 	$.ajax({
 	 type: "POST",
@@ -1278,7 +1279,7 @@ $(document).on("click",".debateDetailsCls",function(){
 	$(document).on("click",".overAllDesignationCandidateCls",function(){
 		$("#debateModelDivId").modal("show");
 		var partyId =0;
-		var designationId = $(this).attr("attr_party_id");		
+		var designationId = $(this).attr("attr_party_id");	
 		var candidateId = $(this).attr("attr_candidate_id");				
 		getCandidateWiseDebateDetailsOfCore(partyId,candidateId,designationId);		
 	});
@@ -1293,7 +1294,7 @@ function getCandidateWiseDebateDetailsOfCore(partyId,candidateId,designationId){
 			debateLocationIdArry.push(0);
 		}
         
-      }); 
+      }); 	
   var participantLocIdArry =[];
      $(".radioStateCls1").each(function(){
         if($(this).prop('checked')==true){
@@ -1304,6 +1305,11 @@ function getCandidateWiseDebateDetailsOfCore(partyId,candidateId,designationId){
         
       });
 	  var roleId = 0;
+	   if(designationId != null){
+		   var desiognationId =0;
+		}else{
+			var desiognationId=designationId;
+		}
 	var jsObj={
 		partyId:partyId,
 		startDate:customStartDate,
@@ -1312,7 +1318,7 @@ function getCandidateWiseDebateDetailsOfCore(partyId,candidateId,designationId){
 		debateLocationIdArry:debateLocationIdArry,
 		participantLocIdArry:participantLocIdArry,
 		roleId:roleId,
-		designationId:designationId
+		designationId:desiognationId
 	}		
 	$.ajax({
 	 type: "POST",
@@ -1477,7 +1483,8 @@ $(document).on("click",".perforamnceDebateCls",function(){
 		popupLocationIdArry:debateLocationIdArry, 
 		participantLocIdArry:participantLocIdArry,
 		roleId:roleId,
-		designationId:designationId
+		designationId:designationId,
+		type : " "//others
 	}		
 	$.ajax({
 	 type: "POST",
@@ -1516,7 +1523,8 @@ function getDesignationWiseCandidateOverAllPerformanceCohort(divId,id){
 		    endDate:customEndDate,
 			state:globalState,
 			participantLocIdArry:participantLocIdArry,
-			debateLocationIdArry:debateLocationIdArry
+			debateLocationIdArry:debateLocationIdArry,
+			type : " "
 		}
 	    $.ajax({
 			type : 'POST',
