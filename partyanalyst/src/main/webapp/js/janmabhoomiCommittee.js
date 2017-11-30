@@ -1193,7 +1193,8 @@ function savingApplication(committeeId,statusType){
 		  setTimeout(function(){
 			$('body').addClass("modal-open");
 			getDistrictWiseCommitteeDetails(blockLevel,"level");	
-			getJanmabhoomiCommitteeOverview(committeeId)	
+			getJanmabhoomiCommitteeOverview(committeeId);
+			getJbCommitteeStatusCount();
 		  }, 2000);
 		    
 			
@@ -1237,7 +1238,8 @@ saveCommitteeStatus(committeeId,status);
 		  setTimeout(function(){
 			$('body').addClass("modal-open");
 			getDistrictWiseCommitteeDetails(blockLevel,"level");	
-			getJanmabhoomiCommitteeOverview(committeeId)	
+			getJanmabhoomiCommitteeOverview(committeeId);
+			getJbCommitteeStatusCount();			
 		  }, 2000);
 		 }else if(result.exceptionMsg.indexOf("NotFilled") > -1){
 			 setTimeout(function(){
