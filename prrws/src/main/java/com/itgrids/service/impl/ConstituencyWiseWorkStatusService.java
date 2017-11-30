@@ -128,6 +128,8 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				locationVO2.setDepartmentName("Mahatma Gandhi National Rural Employment Gurantee Scheme");
 				locationVO2.setWorkNumber(fmsWorksVO.getFinalWorks());
 				locationVO2.setAmountInDecimal(fmsWorksVO.getFinalAmount());
+				locationVO2.setWage(fmsWorksVO.getWage());
+				locationVO2.setMaterial(fmsWorksVO.getMaterial());
 				overviewList.add(locationVO2);
 				locationVO.getLocationList1().addAll(overviewList);
 				return locationVO;
@@ -401,7 +403,9 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					returnvo.setFinalWorks(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
-					returnvo.setFinalAmount(convertRupeesIntoCrores(obj[4] != null ? obj[4].toString():"0"));
+					returnvo.setWage(convertRupeesIntoCrores(obj[5] != null ? obj[5].toString():"0"));
+					returnvo.setMaterial(convertRupeesIntoCrores(obj[4] != null ? obj[4].toString():"0"));
+					returnvo.setFinalAmount(convertRupeesIntoCrores(obj[0] != null ? obj[0].toString():"0"));
 					returnvo.setTotalAmount(commonMethodsUtilService.getLongValueForObject(obj[0]));
 				}
 			}
@@ -419,6 +423,17 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	public List<NregsFmsWorksVO> getConstituencyWiseNregsWorksDetails(InputVO inputVO){
 		List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>(0);
 		try {
+			NregsFmsWorksVO othervo = new NregsFmsWorksVO();
+			othervo.setId(999999L);
+			othervo.setWorkName("Other Works (Less than 50Lakhs)");
+			othervo.setWage("0");
+			othervo.setMaterial("0");
+			othervo.setTotal("0");
+			othervo.setGrounded(0L);
+			othervo.setInProgress(0L);
+			othervo.setCompleted(0L);
+			othervo.setTotalLong(0L);
+			
 			String type="";
 			Long superLocationId = null;
 			if(inputVO.getLocationId().toString().trim().length() > 1){
@@ -443,27 +458,31 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			
 			Long totalWorks = 0L;
 			Long finalAmount = 0L;
+			Long totalWageAmount = 0L;
+			Long totalMaterialAmount = 0L;
 			List<Object[]> list = nregaWorkExpenditureLocationDAO.getWorkWiseExpenditureDetailsInConstituency(superLocationId, financialYearIds, type);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					Long totalAmount = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
 					Long materialAmount = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
+					Long wageAmount = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
 					String workName = obj[1] != null ? obj[1].toString():"0";
 					NregsFmsWorksVO vo = null;
-					if(totalAmount != null && totalAmount.longValue() >= 20000000L){
+					if(totalAmount != null && totalAmount.longValue() >= 5000000L){
 						vo = new NregsFmsWorksVO();
 						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 						vo.setWorkName(workName);
 						vo.setWage(obj[3] != null ? obj[3].toString():"0");
 						vo.setMaterial(obj[4] != null ? obj[4].toString():"0");
 						vo.setTotal(obj[5] != null ? obj[5].toString():"0");
+						vo.setTotalLong(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
 						vo.setGrounded(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
 						vo.setInProgress(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
 						vo.setCompleted(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
 						totalWorks = totalWorks+vo.getGrounded();
 						returnList.add(vo);
 					}else{
-						vo = getMatchedVO(returnList, "Other Works");
+						/*vo = getMatchedVO(returnList, "Other Works");
 						if(vo == null){
 							vo = new NregsFmsWorksVO();
 							vo.setId(999999L);
@@ -477,25 +496,32 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 							totalWorks = totalWorks+vo.getGrounded();
 							returnList.add(vo);
 						}
-						else{
-							vo.setWage(String.valueOf(Long.valueOf(vo.getWage())+Long.valueOf(obj[3] != null ? obj[3].toString():"0")));
-							vo.setMaterial(String.valueOf(Long.valueOf(vo.getMaterial())+Long.valueOf(obj[4] != null ? obj[4].toString():"0")));
-							vo.setTotal(String.valueOf(Long.valueOf(vo.getTotal())+Long.valueOf(obj[5] != null ? obj[5].toString():"0")));
-							vo.setGrounded(vo.getGrounded()+Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
-							vo.setInProgress(vo.getInProgress()+Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
-							vo.setCompleted(vo.getCompleted()+Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+						else{*/
+							othervo.setWage(String.valueOf(Long.valueOf(othervo.getWage())+Long.valueOf(obj[3] != null ? obj[3].toString():"0")));
+							othervo.setMaterial(String.valueOf(Long.valueOf(othervo.getMaterial())+Long.valueOf(obj[4] != null ? obj[4].toString():"0")));
+							othervo.setTotal(String.valueOf(Long.valueOf(othervo.getTotal())+Long.valueOf(obj[5] != null ? obj[5].toString():"0")));
+							othervo.setTotalLong(othervo.getTotalLong()+Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+							othervo.setGrounded(othervo.getGrounded()+Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
+							othervo.setInProgress(othervo.getInProgress()+Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+							othervo.setCompleted(othervo.getCompleted()+Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
 							totalWorks = totalWorks+Long.valueOf(obj[6] != null ? obj[6].toString():"0");
-						}
+						//}
 					}
-					finalAmount = finalAmount+materialAmount;
+					finalAmount = finalAmount+totalAmount;
+					totalWageAmount = totalWageAmount+wageAmount;
+					totalMaterialAmount = totalMaterialAmount+materialAmount;
 				}
 			}
 			
-			Collections.sort(returnList, idWiseAscendingOrder);
+			Collections.sort(returnList, countWiseDescendingOrder);
+			
+			returnList.add(returnList.size(), othervo);
 			
 			if(returnList != null && !returnList.isEmpty()){
 				returnList.get(0).setFinalWorks(totalWorks);
 				returnList.get(0).setFinalAmount(convertRupeesIntoCrores(finalAmount.toString()));
+				returnList.get(0).setWageAmount(convertRupeesIntoCrores(totalWageAmount.toString()));
+				returnList.get(0).setMaterialAmount(convertRupeesIntoCrores(totalMaterialAmount.toString()));
 				for (NregsFmsWorksVO nregsFmsWorksVO : returnList) {
 					nregsFmsWorksVO.setWage(convertRupeesIntoCrores(nregsFmsWorksVO.getWage()));
 					nregsFmsWorksVO.setMaterial(convertRupeesIntoCrores(nregsFmsWorksVO.getMaterial()));
@@ -508,10 +534,10 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 		return returnList;
 	}
 	
-	public static Comparator<NregsFmsWorksVO> idWiseAscendingOrder = new Comparator<NregsFmsWorksVO>() {
+	public static Comparator<NregsFmsWorksVO> countWiseDescendingOrder = new Comparator<NregsFmsWorksVO>() {
 		public int compare(NregsFmsWorksVO o1, NregsFmsWorksVO o2) {
-			if(o1.getId() != null && o2.getId() != null){
-				return o1.getId().compareTo(o2.getId());
+			if(o1.getTotalLong() != null && o2.getTotalLong() != null){
+				return o2.getTotalLong().compareTo(o1.getTotalLong());
 			}
 			return 0;
 		}

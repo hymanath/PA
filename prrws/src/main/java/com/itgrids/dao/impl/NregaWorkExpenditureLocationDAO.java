@@ -23,7 +23,8 @@ public class NregaWorkExpenditureLocationDAO extends GenericDaoHibernate<NregaWo
 					+ " sum(model.nregaWorkExpenditure.groundedWorks),"
 					+ " sum(model.nregaWorkExpenditure.inprogressWorks),"
 					+ " sum(model.nregaWorkExpenditure.completedWorks),"
-					+ " sum(model.nregaWorkExpenditure.materialExpenditure)"
+					+ " sum(model.nregaWorkExpenditure.materialExpenditure),"
+					+ " sum(model.nregaWorkExpenditure.wageExpenditure)"
 					+ " from NregaWorkExpenditureLocation model"
 					+ " where model.isDeleted = 'N' and model.nregaWorkExpenditure.isDeleted = 'N'");
 		
