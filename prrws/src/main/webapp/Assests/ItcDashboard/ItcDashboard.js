@@ -1330,7 +1330,7 @@ function getCampaignsDetailedData(){
 			overview+='<h4 class="m_top10"><span  style="padding:5px 10px;background-color:#D78F1F">Campaigns</span></h4>';
 			overview+='<div style="padding:10px;">';
 				overview+='<div class="row">';
-					overview+='<div class="col-sm-12 m_top25" style="margin-bottom:30px;">';
+					overview+='<div class="col-sm-12 m_top25" style="margin-bottom:42px;">';
 						overview+='<h4>Batchs</h4>';
 						overview+='<h3>'+result.length+'</h3>';
 					overview+='</div>';
@@ -1400,7 +1400,7 @@ function getCampusInnovationCentersDetailedData(){
 			overview+='<h4 class="m_top10"><span  style="padding:5px 10px;background-color:#4C4C4C;color:#fff;">Campus Innovation Centers</span></h4>';
 			overview+='<div style="padding:10px;">';
 				overview+='<div class="row">';
-					overview+='<div class="col-sm-12 m_top25" style="margin-bottom:30px;">';
+					overview+='<div class="col-sm-12 m_top25" style="margin-bottom:42px;">';
 						overview+='<h4>No Of University / No Of  College</h4>';
 						overview+='<h3>'+result.length+'</h3>';
 					overview+='</div>';
