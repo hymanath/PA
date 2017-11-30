@@ -85,11 +85,9 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 					}
 				}
 				
-				
 			/** End Petition Member Details saving */
 			
 			/** Start Petition Referrer Details */
-				
 				
 				PetitionRefferer petitionRefferer = savePetitionReferralDetails(petitionMember.getPetitionMemberId(),dataVO.getReferrerCandidateId(),dataVO.getUserId());
 				if(dataVO.getFilesList() != null && dataVO.getFilesList().size()>0){
@@ -102,8 +100,12 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			/** Start Petition Referrer Details */
 			
 			PetitionWorkDetails petitionWorkDetails = savePetitionWorkDetails(petitionMember.getPetitionMemberId(),dataVO);
-			Document petitionWorkDocument = saveDocument(dataVO.getFile(),IConstants.STATIC_CONTENT_FOLDER_URL,dataVO.getUserId());
-			PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = savePetitionSubWorkDetails(petitionWorkDetails.getPetitionWorkDetailsId(),dataVO);
+			if(dataVO.getFilesList() != null && dataVO.getFilesList().size()>0){
+				for (MultipartFile file : dataVO.getFilesList()) {
+					Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,dataVO.getUserId());
+					PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = savePetitionSubWorkDetails(petitionWorkDetails.getPetitionWorkDetailsId(),dataVO);
+				}
+			}
 			
 			responseVO.setResponseCode("0");
 			responseVO.setMessage(IConstants.SUCCESS);
@@ -246,7 +248,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 				petitionReffererDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				petitionReffererDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				petitionReffererDocument.setInsertedUserId(userId);
-				petitionReffererDocument.setUpdatedUserId(userId);
+				petitionReffererDocument.setUpdatedUserId(userId);	petitionReffererDocument.setIsDeleted("N");
 				petitionReffererDocument = petitionReffererDocumentDAO.save(petitionReffererDocument);
 			}
 		} catch (Exception e) {
@@ -263,7 +265,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 				petitionRefferer.setPetitionMemberId(petitionMemeberId);
 				petitionRefferer.setPetitionReffererCandidateId(refferalCandidateId);
 				petitionRefferer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());petitionRefferer.setIsDeleted("N");
 				petitionRefferer.setInsertedUserId(userId);
 				petitionRefferer.setUpdatedUserId(userId);
 				petitionRefferer = petitionReffererDAO.save(petitionRefferer);
@@ -280,14 +282,14 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		try {
 			if(file != null){
 				String tempPath = commonMethodsUtilService.createInnerFolders(destinationPath);
-				String staticPath = commonMethodsUtilService.createInnerFolders(tempPath+"Petition_Documents//");
+				String staticPath = commonMethodsUtilService.createInnerFolders(destinationPath+"Petition_Documents");
 				String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
 				
 				document = new Document();
 				commonMethodsUtilService.copyFile(file.getOriginalFilename(),staticPath);
 				byte[] fileData = file.getBytes();
-				Files.write(fileData,new File(staticPath+datePath+".jpg"));
-				document.setDocumentPath(staticPath+datePath+".jpg");
+				Files.write(fileData,new File(staticPath+"//"+datePath+".jpg"));
+				document.setDocumentPath(staticPath+"//"+datePath+".jpg");
 				document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				document.setInsertedUserId(userId);
 				document = documentDAO.save(document);

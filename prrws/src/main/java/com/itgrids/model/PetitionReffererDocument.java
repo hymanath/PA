@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "petition_refferer_document")
+@Table(name = "petition_ref_document")
 public class PetitionReffererDocument {
 	 
 	
@@ -33,7 +33,7 @@ public class PetitionReffererDocument {
 	private User updatedUser;
 	
 	@Id
-	@Column(name="petition_refferer_document_id")
+	@Column(name="petition_ref_document_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	public Long getPetitionReffererDocumentId() {
 		return petitionReffererDocumentId;
