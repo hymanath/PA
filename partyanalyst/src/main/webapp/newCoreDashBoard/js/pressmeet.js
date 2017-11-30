@@ -691,7 +691,7 @@ function buildCandidateWiseCandidateOverAllPerformancePressmeetCohort(result,des
 						str+='<tr>';
 							str+='<td class="text-capitalize" style="min-width:150px;"">'+result.pressmeetList[i].candidateName+' ('+result.pressmeetList[i].partyName+')</td>';
 							str+='<td>';       
-							str+='<h5 ><a style="cursor:pointer;">'+result.pressmeetList[i].pressMeetCount+'</a></h5>';
+							str+='<h5 ><a style="cursor:pointer;" class="pressMeetsInnerCls" attr_designation_id="'+designationId+'" attr_candidateId="'+result.pressmeetList[i].candidateId+'">'+result.pressmeetList[i].pressMeetCount+'</a></h5>';
 							str+='</td>';     
 							str+='<td>';
 							str+='<input class="performanceRating" value="'+result.pressmeetList[i].percentage.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+result.pressmeetList[i].percentage.toFixed(2)+'</span>';
@@ -735,7 +735,7 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 	$(".pressmeetModelCls").html("");	
 	$(".pressmeetModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$.ajax({
-   url: wurl+"/CommunityNewsPortal/webservice/getPressMeetDetailsByPartyWise/"+fromDate+"/"+toDate+"/"+partyId+"/"+type+"
+   url: wurl+"/CommunityNewsPortal/webservice/getPressMeetDetailsByPartyWise/"+fromDate+"/"+toDate+"/"+partyId+"/"+type+"/"
   // url: "http://localhost:8080/CommunityNewsPortal/webservice/getPressMeetDetailsByPartyWise/"+fromDate+"/"+toDate+"/"+partyId+"/"+type+"/"
 	}).then(function(result){
      
@@ -919,7 +919,7 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 	$(".pressmeetModelCls").html("");	
 	$(".pressmeetModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$.ajax({
-	url: wurl+"/CommunityNewsPortal/webservice/getCandidatePerformanceInPressMeetByPartyWiseClick/"+fromDate+"/"+toDate+"/"+partyId+"/"+candidateId+"/"
+    url: wurl+"/CommunityNewsPortal/webservice/getCandidatePerformanceInPressMeetByPartyWiseClick/"+fromDate+"/"+toDate+"/"+partyId+"/"+candidateId+"/"
   //url: "http://localhost:8080/CommunityNewsPortal/webservice/getCandidatePerformanceInPressMeetByPartyWiseClick/"+fromDate+"/"+toDate+"/"+partyId+"/"+candidateId+"/"
 	}).then(function(result){
      
@@ -1009,7 +1009,7 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 	$(".pressmeetModelCls").html("");	
 	$(".pressmeetModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$.ajax({
-   url: wurl+"/CommunityNewsPortal/webservice/getparyOverallPressMeetByEditionIdsClick/"+fromDate+"/"+toDate+"/"+partyId+"/0/"+edtionList+"/"+articleId+"/"		
+   url: wurl+"/CommunityNewsPortal/webservice/getparyOverallPressMeetByEditionIdsClick/"+fromDate+"/"+toDate+"/"+partyId+"/0/"+edtionList+"/"+articleId+"/"			
  // url: "http://localhost:8080/CommunityNewsPortal/webservice/getparyOverallPressMeetByEditionIdsClick/"+fromDate+"/"+toDate+"/"+partyId+"/0/"+edtionList+"/"+articleId+"/"
 	}).then(function(result){
      
@@ -1084,3 +1084,5 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 		}
 	});
  });
+ 
+ 
