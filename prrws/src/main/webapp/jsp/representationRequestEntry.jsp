@@ -96,6 +96,10 @@ function saveRepresentRequestDetails(){
          }
      });	 
 }
-
+$(document).ready(function(){
+	alert("ready")
+	getPetitionDesignationList();
+	getPetitionDepartmentList();
+})
 </script>
 </html>

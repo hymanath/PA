@@ -13,6 +13,8 @@ import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.ILocalElectionBodyDAO;
 import com.itgrids.dao.IPanchayatDAO;
+import com.itgrids.dao.IPetitionDepartmentDAO;
+import com.itgrids.dao.IPetitionDesignationDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
@@ -38,7 +40,10 @@ public class LocationDetailsService implements ILocationDetailsService {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	@Autowired
 	private IPanchayatDAO panchayatDAO;
-	
+	@Autowired
+	private IPetitionDesignationDAO petitionDesignationDAO;
+	@Autowired
+	private IPetitionDepartmentDAO petitionDepartmentDAO;
 	 /**
 		 * Date : 30/11/2017
 		 * Author :babu kurakula <href:kondababu.kurakula@itgrids.com>
@@ -174,4 +179,52 @@ public class LocationDetailsService implements ILocationDetailsService {
 		return voList;
 	}
 	
+	/*
+     * Author : krishna
+     * Date : 01/12/2017
+     * Description : { Getting Department List }
+     */
+    public List<KeyValueVO> getPetitionDepartmentList(){
+    	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+    	try{
+    		LOG.info("Entered into FundManagementDashboardService of getPetitionDepartmentDetailsList ");
+    		List<Object[]> petitionDetailsObjsList = petitionDepartmentDAO.getAllPetitionList();
+    		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
+    			for(Object[] param: petitionDetailsObjsList){
+    				KeyValueVO vo = new KeyValueVO();
+    				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+    				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+    				resultList.add(vo);
+    			}
+    		}
+    	}catch(Exception e){
+    		LOG.error("Exception occured at getMgnregsFMSWorksDetailsByCategory() in FundManagementDashboardService class ", e);
+    	}
+    	return resultList;
+    	
+    }
+    /*
+    * Author : krishna
+     * Date : 01/12/2017
+     * Description : { Getting Designation List }
+     */
+    public List<KeyValueVO> getPetitionDesignationList(){
+    	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+    	try{
+    		LOG.info("Entered into FundManagementDashboardService of getPetitionDepartmentDetailsList ");
+    		List<Object[]> petitionDetailsObjsList = petitionDesignationDAO.getpetitionDesignationList();
+    		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
+    			for(Object[] param: petitionDetailsObjsList){
+    				KeyValueVO vo = new KeyValueVO();
+    				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+    				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+    				resultList.add(vo);
+    			}
+    		}
+    	}catch(Exception e){
+    		LOG.error("Exception occured at getMgnregsFMSWorksDetailsByCategory() in FundManagementDashboardService class ", e);
+    	}
+    	return resultList;
+    	
+    }	
 }
