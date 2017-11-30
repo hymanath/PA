@@ -19,5 +19,5 @@ public interface ILightMonitoring {
 	public InputVO checkIdDataExist(String startDate,String endDate);
 	public LightMonitoringVO getCompanyWiseLightMonitoringDtls(String fromDate,String toDate,String locationType,List<Long> locationValues,List<Long> lightVendorIds);
 	public List<LightsVendor> getLightsVendorList();
-	public List<LightMonitoringVO> getTimePeriodWiseLightsDetails(String startDate,String endDate, String locationType,final Long locationValue,List<Long> lightMonitoringIds);		
+	public List<LightMonitoringVO> getTimePeriodWiseLightsDetails(String startDate,String endDate, String locationType, List<Long> locationValues,List<Long> lightMonitoringIds);		
 }

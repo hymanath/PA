@@ -1379,7 +1379,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 				/* str+='<div class="row" style="padding: 10px;">';
 					str+='<h3>EESL</h3>';
 					str+='<p>Energy Efficiency Services Limited</p>';
-					str+='<div style="text-align:center"><img src="Assests/icons/NODATA.png" alt="NODATA"></div>';
+					str+='<div style="text-align:center"><img src="Assests/icons/NODATA.png" alt="NODzATA"></div>';
 				str+='</div>'; */
 			}
 				
@@ -1995,11 +1995,29 @@ function getTimePeriodWiseLightsDetaisl(){
   $("#surveyStartedLocationDtlsDivId").html(spinner);
  // $("#statewiseVendorDetails").html(spinner);
   $("#newAddedLightsSummary").html(spinner);
+  var locationType="";
+  var locationValuesArr=[];
+  locationValuesArr.push(globallocId);
+  if(globallevelId == 2 || globallevelId == 0){
+		locationType = "";
+		
+	}else if(globallevelId == 3){
+		locationType = "district";
+		
+	}else if(globallevelId == 4){
+		locationType = "constituency";
+		
+	}else if(globallevelId == 5){
+		locationType = "mandal";
+		
+	}
+	
+  
   var json = {
     fromDate:glStartDate,
     toDate:glEndDate,
-    locationType:"district",
-    locationValue:0,
+    locationType:locationType,
+    locationValues:locationValuesArr,
     lightVendorIdList:[2,1]
   }
   $.ajax({                
@@ -2017,7 +2035,8 @@ function getTimePeriodWiseLightsDetaisl(){
 			//buildStateWiseVendorTable(result);
 			buildnewAddedLightsDetails(result);
 	  }else{
-		  $("#surveyStartedLocationDtlsDivId").html("No Data Available")
+		  $("#surveyStartedLocationDtlsDivId").html("No Data Available");
+		  $("#newAddedLightsSummary").html("");
 	  } 
    
   });    
