@@ -2170,4 +2170,17 @@ public String getVolunteerCadreDetilasInformation(){
 		}
 		return "success";
 	}
+	public String getSurveyQuestionWithMarksDetailsByTDpCadreId(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long cadreId=jObj.getLong("cadreId");
+			
+			finalList = cadreDetailsService.getSurveyQuestionWithMarksDetailsByTDpCadreId(cadreId);
+		}catch(Exception e){
+			LOG.error("Exception raised in getSurveyQuestionWithMarksDetailsByTDpCadreId  method in CadreDetailsAction.",e);
+		}
+		return Action.SUCCESS;
+	}
 }

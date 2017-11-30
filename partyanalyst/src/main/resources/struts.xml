@@ -18550,5 +18550,10 @@
 			<param name="root">tainingCampFeedBackList</param>
 		</result>
 	</action>
+	<action name="getSurveyQuestionWithMarksDetailsByTDpCadreIdAction" class="cadreDetailsAction" method="getSurveyQuestionWithMarksDetailsByTDpCadreId" >
+			<result type="json" name="success">
+				<param name="root"></param>
+			</result>
+	</action>
  </package>
 </struts>
