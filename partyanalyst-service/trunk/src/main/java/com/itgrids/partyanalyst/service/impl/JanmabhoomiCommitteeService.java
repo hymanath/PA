@@ -698,7 +698,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	try {
 		Map<Long,JanmabhoomiCommitteeVO> committeeMaps = null;
 			List<Object[]> list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, locationId, committeeLvlId,status);
-			committeeMaps = new HashMap<Long,JanmabhoomiCommitteeVO>();
+			committeeMaps = new LinkedHashMap<Long,JanmabhoomiCommitteeVO>();
 			setCommitteesData(committeeMaps,list,status,"");
 		
 		if(commonMethodsUtilService.isMapValid(committeeMaps)){

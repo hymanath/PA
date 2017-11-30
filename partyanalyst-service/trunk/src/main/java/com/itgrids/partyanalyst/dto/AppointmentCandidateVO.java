@@ -28,7 +28,7 @@ public class AppointmentCandidateVO implements Serializable{
     List<CadreCommitteeVO> previousElections = new ArrayList<CadreCommitteeVO>();
     private Long voterId;
     
-    
+    private String districtName;
     public Long getVoterId() {
 		return voterId;
 	}
@@ -155,6 +155,12 @@ public class AppointmentCandidateVO implements Serializable{
 	}
 	public void setCandidateTypeId(Long candidateTypeId) {
 		this.candidateTypeId = candidateTypeId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
 	}
     
     
