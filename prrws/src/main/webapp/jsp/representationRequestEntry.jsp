@@ -1,6 +1,4 @@
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib uri="http://tiles.apache.org/tags-tiles-extras" prefix="tilesx" %>
-<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+
 <link href="static/css/common/Dropdown.css" rel="stylesheet" type="text/css">
 <html>
 <title> ABCD </title>
@@ -22,16 +20,64 @@
 	   </div>
 	</div>
 </section>
+
+<script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
+<script src="Assests/js/bootstrap.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
+
 <script>
 
 function saveRepresentRequestDetails(){
-	alert(12345);
 	 var formData = new FormData();
-	 formData.append("name",$('#name').val());
+	 formData.append("name","hyma");
 	 formData.append("memberType",2);
+	 formData.append("endorsmentDate","2017-12-01");
+	 formData.append("representationDate","2017-12-01");
+	 formData.append("mobileNo","9581434970");
+	 formData.append("emailId","srishailam@itgrids.com");
+	 formData.append("voterCardNo","WARDU765T");
+	 formData.append("referrerCandidateId",2);
 	 
+	 
+	 formData.append("workName",2);
+	 formData.append("noOfWorks",2);
+	 formData.append("estimationCost",2);
+	 formData.append("subject",2);
+	 formData.append("subjectId",2);
+	 formData.append("deptId",2);
+	 formData.append("isPreviousPetition",2);
+	 formData.append("previousPetitionRefNo",2);
+	 formData.append("projectDescription",2);
+	 
+	 formData.append("candidateAddressVO.stateId",2);
+	 formData.append("candidateAddressVO.districtId",2);
+	 formData.append("candidateAddressVO.parliamentId",2);
+	 formData.append("candidateAddressVO.assemblyId",2);
+	 formData.append("candidateAddressVO.localElectionBodyId",2);
+	 formData.append("candidateAddressVO.tehsilId",2);
+	 formData.append("candidateAddressVO.panchayatId",2);
+	 formData.append("candidateAddressVO.wardId",2);
+	 formData.append("candidateAddressVO.divisionId",2);
+	 
+	 
+	 formData.append("worksList[0].deptId",2);
+	 formData.append("worksList[0].locationLevelId",2);
+	 formData.append("worksList[0].locationValue",2);
+	 
+	 formData.append("worksList[0].candidateAddressVO.stateId",2);
+	 formData.append("worksList[0].candidateAddressVO.districtId",2);
+	 formData.append("worksList[0].candidateAddressVO.parliamentId",2);
+	 formData.append("worksList[0].candidateAddressVO.assemblyId",2);
+	 formData.append("worksList[0].candidateAddressVO.localElectionBodyId",2);
+	 formData.append("worksList[0].candidateAddressVO.tehsilId",2);
+	 formData.append("worksList[0].candidateAddressVO.panchayatId",2);
+	 formData.append("worksList[0].candidateAddressVO.wardId",2);
+	 formData.append("worksList[0].candidateAddressVO.divisionId",2);
+
 	  $.ajax({
-        url: $("#saveRepresentRequestDetails").attr("action"),
+        url: $("#adminProfileForm").attr("action"),
         data: formData,
         type: "POST",               
          processData: false,
@@ -42,7 +88,7 @@ function saveRepresentRequestDetails(){
         },
         error: function(request,error) { 
 			alert("error");
-			$.unblockUI();
+			
          }
      });	 
 }
