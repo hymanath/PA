@@ -18545,5 +18545,10 @@
 			<param name="root">boothDtlsList</param>
 		</result>
 	</action>
+	<action name="getTrainingCampFeedBAckDeatilesByTdpCadreIdAction" class="trainingCampAction"  method="getTrainingCampFeedBAckDeatilesByTdpCadreId">
+		<result type="json" name="success">
+			<param name="root">tainingCampFeedBackList</param>
+		</result>
+	</action>
  </package>
 </struts>
