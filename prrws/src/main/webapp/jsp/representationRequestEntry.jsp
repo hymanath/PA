@@ -26,6 +26,7 @@
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
+<script src="Assests/representationRequest/representationRequestEntry.js" type="text/javascript"></script>
 
 <script>
 
