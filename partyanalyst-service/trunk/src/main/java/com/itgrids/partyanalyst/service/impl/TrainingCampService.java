@@ -121,6 +121,7 @@ import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
 import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
+import com.itgrids.partyanalyst.dto.TrainingCampFeedBackDetailsVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampSheduleDetailsVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
@@ -13537,4 +13538,114 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
     	return null;
     }
 	
+	public List<TrainingCampFeedBackDetailsVO> getTrainingCampFeedBAckDeatilesByTdpCadreId(Long tdpCadreId){
+		List<TrainingCampFeedBackDetailsVO> returnList = new ArrayList<TrainingCampFeedBackDetailsVO>();
+		try{
+			Map<String,TrainingCampFeedBackDetailsVO> yearAndProgramVoMap = new HashMap<String, TrainingCampFeedBackDetailsVO>();
+			//00 feedback Id, 01 cadereId, 02 programId,03 programName, 04 batchId, 05  batchName,
+			//06 leadershiplevelId,07  leaderShiplevel, 08 communationSkillsId, 09 communicationSkillsStatus
+			//10 leaderShipSkillsId, 11 leaderShipSkillsStatus, 12 healthStatusId, 13 healthStatus
+			// 14 remarks, 15 smartPhoneExist, 16 watsappUsing 17 watsappShare, 18 facebookUsing,19  healthCardAttachment
+			//20  yearId ,21 year,22  campId ,23 campName
+			List<Object[]> progrmObj = trainingCampCadreFeedbackDetailsDAO.getTrainingCampFeedBAckDeatilesByTdpCadreId(tdpCadreId);
+			if(progrmObj != null && progrmObj.size() > 0){
+				for(Object[] param : progrmObj ){
+					String year = commonMethodsUtilService.getStringValueForObject(param[21]);
+					TrainingCampFeedBackDetailsVO yearVo = yearAndProgramVoMap.get(year.trim());
+					if(yearVo ==null){
+						yearVo = new TrainingCampFeedBackDetailsVO();
+						yearVo.setYear(year);
+						yearVo.setYearId(commonMethodsUtilService.getLongValueForObject(param[20]));
+						
+						TrainingCampFeedBackDetailsVO programVO = createProgramVO(param);
+						 yearVo.getSubList().add(programVO);
+						
+						 TrainingCampFeedBackDetailsVO campVo = createCampVO(param);
+						 programVO.getSubList().add(campVo);
+						  
+						 TrainingCampFeedBackDetailsVO batchVo = createBatchVO(param);
+						 setStatusToVO(batchVo,param);
+						 campVo.getSubList().add(batchVo);
+						 yearAndProgramVoMap.put(year, yearVo);
+					}else{
+						TrainingCampFeedBackDetailsVO matchedProgramVo = getMatchedVO(yearVo.getSubList(),commonMethodsUtilService.getLongValueForObject(param[2]));
+						if(matchedProgramVo != null){
+							TrainingCampFeedBackDetailsVO matchedCampVo = getMatchedVO(matchedProgramVo.getSubList(),commonMethodsUtilService.getLongValueForObject(param[22]));
+							if(matchedCampVo !=null){
+								//TrainingCampFeedBackDetailsVO matchedBatchVo = getMatchedVO(matchedCampVo.getSubList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+	                            	 matchedCampVo.getSubList().add(createBatchVO(param));
+	                            	 
+							}else{
+								 TrainingCampFeedBackDetailsVO campVo = createCampVO(param);
+								 TrainingCampFeedBackDetailsVO batchVo = createBatchVO(param);
+								 setStatusToVO(batchVo,param);
+								 campVo.getSubList().add(batchVo);
+								 matchedProgramVo.getSubList().add(campVo);
+							}
+						}else{
+							TrainingCampFeedBackDetailsVO programVO = createProgramVO(param);
+							 TrainingCampFeedBackDetailsVO campVo = createCampVO(param);
+							 TrainingCampFeedBackDetailsVO batchVo = createBatchVO(param);
+							 setStatusToVO(batchVo,param);
+							 
+							 campVo.getSubList().add(batchVo);
+							 programVO.getSubList().add(campVo);
+							 yearVo.getSubList().add(programVO);
+						}
+					}
+				}
+			}
+			returnList.addAll(yearAndProgramVoMap.values());
+		}catch(Exception e){
+			LOG.error("Exception occured in TrainingCampService of getTrainingCampFeedBAckDeatilesByTdpCadreId()",e);
+		}
+		return returnList ;
+	}
+	
+	public void setStatusToVO(TrainingCampFeedBackDetailsVO vo,Object[] param){
+		//vo.setId(commonMethodsUtilService.getLongValueForObject(param[4]));
+		//vo.setBatchName(commonMethodsUtilService.getStringValueForObject(param[5]));
+		vo.setLeadershiplevelId(commonMethodsUtilService.getLongValueForObject(param[6]));
+		vo.setLeadershiplevel(commonMethodsUtilService.getStringValueForObject(param[7]));
+		vo.setCommunicationSkillsId(commonMethodsUtilService.getLongValueForObject(param[8]));
+		vo.setCommunicationSkillsStatus(commonMethodsUtilService.getStringValueForObject(param[9]));
+		vo.setLeaderShipSkillsId(commonMethodsUtilService.getLongValueForObject(param[10]));
+		vo.setLeaderShipStatus(commonMethodsUtilService.getStringValueForObject(param[11]));
+		vo.setHealthStatus(commonMethodsUtilService.getStringValueForObject(param[13]));
+		vo.setRemarks(commonMethodsUtilService.getStringValueForObject(param[14]));
+		 vo.setSmartPhoneExist(commonMethodsUtilService.getStringValueForObject(param[15]));
+		 vo.setWatsappUsing(commonMethodsUtilService.getStringValueForObject(param[16]));
+		 vo.setWatsappShare(commonMethodsUtilService.getStringValueForObject(param[17]));
+		 vo.setFacebookUsing(commonMethodsUtilService.getStringValueForObject(param[18]));
+		 vo.setHealthCardAttachment(commonMethodsUtilService.getStringValueForObject(param[19]));
+	}
+	public TrainingCampFeedBackDetailsVO getMatchedVO(List<TrainingCampFeedBackDetailsVO> voList, Long id) {
+	  if (voList != null && voList.size() > 0 && id != null && id > 0l) {
+	        for (TrainingCampFeedBackDetailsVO vo : voList) {
+	          if (vo.getId().equals(id))
+	            return vo;
+	        }
+	  }
+	     return null;
+  }
+	public TrainingCampFeedBackDetailsVO createProgramVO(Object[] param){
+		TrainingCampFeedBackDetailsVO programVO = new TrainingCampFeedBackDetailsVO();
+		 programVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+		 programVO.setProgramName(commonMethodsUtilService.getStringValueForObject(param[3]));
+		 return programVO;
+	}
+	
+	public TrainingCampFeedBackDetailsVO createCampVO(Object[] param){
+		 TrainingCampFeedBackDetailsVO campVo = new TrainingCampFeedBackDetailsVO();
+		 campVo.setId(commonMethodsUtilService.getLongValueForObject(param[22]));
+		 campVo.setCampName(commonMethodsUtilService.getStringValueForObject(param[23]));
+		 return campVo;
+	}
+	
+	public TrainingCampFeedBackDetailsVO createBatchVO(Object[] param){
+		 TrainingCampFeedBackDetailsVO batchVo = new TrainingCampFeedBackDetailsVO();
+		 batchVo.setId(commonMethodsUtilService.getLongValueForObject(param[4]));
+		 batchVo.setBatchName(commonMethodsUtilService.getStringValueForObject(param[5]));
+		 return batchVo;
+	}
 }
