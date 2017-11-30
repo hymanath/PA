@@ -2,8 +2,7 @@ package com.itgrids.service.impl;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
 import javax.transaction.Transactional;
 
@@ -14,17 +13,28 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.io.Files;
 import com.itgrids.dao.IDocumentDAO;
+import com.itgrids.dao.ILocationAddressDAO;
 import com.itgrids.dao.IPetitionMemberDAO;
+import com.itgrids.dao.IPetitionReffererCandidateDAO;
+import com.itgrids.dao.IPetitionReffererDAO;
+import com.itgrids.dao.IPetitionReffererDocumentDAO;
+import com.itgrids.dao.IPetitionSubWorkLocationDetailsDAO;
+import com.itgrids.dao.IPetitionWorkDetailsDAO;
 import com.itgrids.dto.AddressVO;
-import com.itgrids.dto.PetitionMemberVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.ResponseVO;
 import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
 import com.itgrids.model.PetitionMember;
+import com.itgrids.model.PetitionRefferer;
+import com.itgrids.model.PetitionReffererCandidate;
+import com.itgrids.model.PetitionReffererDocument;
+import com.itgrids.model.PetitionSubWorkLocationDetails;
+import com.itgrids.model.PetitionWorkDetails;
 import com.itgrids.service.IRepresentationRequestService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
+import com.itgrids.utils.IConstants;
 
 @Service
 @Transactional
@@ -43,46 +53,111 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 	@Autowired
 	private IPetitionMemberDAO petitionMemberDAO;
 	
-	public ResponseVO saveRepresentRequestDetails(final RepresentationRequestVO dataVO){
+	@Autowired
+	private IPetitionReffererDAO petitionReffererDAO;
+	
+	@Autowired
+	private IPetitionReffererDocumentDAO petitionReffererDocumentDAO;
+	
+	@Autowired
+	private IPetitionWorkDetailsDAO petitionWorkDetailsDAO;
+	
+	@Autowired
+	private IPetitionSubWorkLocationDetailsDAO petitionSubWorkLocationDetailsDAO;
+	
+	@Autowired
+	private ILocationAddressDAO locationAddressDAO;
+	
+	public ResponseVO saveRepresentRequestDetails(RepresentationRequestVO dataVO){
 		ResponseVO responseVO = new ResponseVO();
 		try {
 			
-			// Petition Member Saving
-			PetitionMember petitionMember = savePetitionMember(dataVO);
-			LocationAddress address = saveLocationAddress(dataVO.getCandidateAddressVO());
-			// Document Saving
-			Document document = saveDocument(dataVO.getFile(),"","D:\\static_content\\voter_images\\",dataVO.getUserId());
+			/** Start Petition Member Details saving */
 			
+				LocationAddress petitionMemberAddress = null;
+				if(dataVO.getCandidateAddressVO() != null)
+					petitionMemberAddress = saveLocationAddress(dataVO.getCandidateAddressVO());
+				PetitionMember petitionMember = savePetitionMember(dataVO);
+				
+				if(dataVO.getPetitionMemberVO().getFilesList() != null && dataVO.getPetitionMemberVO().getFilesList().size()>0){
+					for (MultipartFile file : dataVO.getPetitionMemberVO().getFilesList()) {
+						Document petitionMemberDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,dataVO.getUserId());
+					}
+				}
+				
+				
+			/** End Petition Member Details saving */
 			
+			/** Start Petition Referrer Details */
+				
+				
+				PetitionRefferer petitionRefferer = savePetitionReferralDetails(petitionMember.getPetitionMemberId(),dataVO.getReferrerCandidateId(),dataVO.getUserId());
+				if(dataVO.getFilesList() != null && dataVO.getFilesList().size()>0){
+					for (MultipartFile file : dataVO.getFilesList()) {
+						Document petitionRefDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,dataVO.getUserId());
+						PetitionReffererDocument petitionReffererDocument = savePetitionReffererDocument(petitionRefferer.getPetitionReffererId(),petitionRefDocument.getDocumentId(),dataVO.getUserId());
+					}
+				}
+			
+			/** Start Petition Referrer Details */
+			
+			PetitionWorkDetails petitionWorkDetails = savePetitionWorkDetails(petitionMember.getPetitionMemberId(),dataVO);
+			Document petitionWorkDocument = saveDocument(dataVO.getFile(),IConstants.STATIC_CONTENT_FOLDER_URL,dataVO.getUserId());
+			PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = savePetitionSubWorkDetails(petitionWorkDetails.getPetitionWorkDetailsId(),dataVO);
+			
+			responseVO.setResponseCode("0");
+			responseVO.setMessage(IConstants.SUCCESS);
 		} catch (Exception e) {
 			responseVO.setResponseCode("1");
-			responseVO.setMessage("Problem Occured while updation Details.");
-			LOG.error("Exception Occured in RepresentationRequestService "+responseVO.getMessage());
+			responseVO.setMessage(IConstants.FAILURE);
+			LOG.error("Exception Occured in RepresentationRequestService "+e.getMessage());
 		}
 		return responseVO;
 	}
 	
-	public Document saveDocument(MultipartFile file,String sourcePath, String destinationPath,Long userId){
-		Document document = new Document();
+	public LocationAddress saveLocationAddress(AddressVO addressVO){
+		LocationAddress locationAddress = null;
 		try {
-			commonMethodsUtilService.copyFile(file.getOriginalFilename(),destinationPath);
-			byte[] fileData = file.getBytes();
-			Files.write(fileData,new File(destinationPath+"abc.jpg"));
-			document.setDocumentPath(destinationPath);
-			document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-			document.setInsertedUserId(userId);
-			documentDAO.save(document);
-			
+			if(addressVO != null){
+				locationAddress = new LocationAddress();
+				locationAddress.setStateId(addressVO.getStateId());
+				locationAddress.setDistrictId(addressVO.getDistrictId());
+				locationAddress.setParliamentId(addressVO.getParliamentId());
+				locationAddress.setConstituencyId(addressVO.getAssemblyId());
+				
+				if(addressVO.getTehsilId() != null && addressVO.getTehsilId().longValue()>0L){
+					String idStr = addressVO.getTehsilId().toString();
+					String firstChar = idStr.substring(0, 1);
+					if(firstChar != null && firstChar.equalsIgnoreCase("2"))
+						locationAddress.setTehsilId(Long.valueOf(addressVO.getTehsilId().toString().substring(1)));
+					else if(firstChar != null && firstChar.equalsIgnoreCase("1"))
+						locationAddress.setLocalElectionBodyId(Long.valueOf(addressVO.getTehsilId().toString().substring(1)));
+				}
+				if(addressVO.getPanchayatId() != null && addressVO.getPanchayatId().longValue()>0L){
+					String idStr = addressVO.getPanchayatId().toString();
+					String firstChar = idStr.substring(0, 1);
+					if(firstChar != null && firstChar.equalsIgnoreCase("2"))
+						locationAddress.setPanchayatId(Long.valueOf(addressVO.getPanchayatId().toString().substring(1)));
+					//else if(firstChar != null && firstChar.equalsIgnoreCase("1"))
+					//	locationAddress.setWardId(Long.valueOf(addressVO.getPanchayatId().toString().substring(1)));
+				}
+				
+				locationAddress = locationAddressDAO.save(locationAddress);
+			}
 		} catch (Exception e) {
-			LOG.error("Exception Occured in saveDocument "+e.getMessage());
+			LOG.error("Exception Occured in RepresentationRequestService @ saveLocationAddress() "+e.getMessage());
+			locationAddress = null;
 		}
-		return document;
+		return locationAddress;
 	}
+	
+	
 	public PetitionMember savePetitionMember(RepresentationRequestVO petitionMemberVO){
-		PetitionMember petitionMember = new PetitionMember();
+		PetitionMember petitionMember = null;
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			try {
 				if(petitionMemberVO != null){
+					 petitionMember = new PetitionMember();
 					petitionMember.setCandidateName(petitionMemberVO.getPetitionMemberVO().getName());
 					petitionMember.setRepresentationDate(format.parse(petitionMemberVO.getPetitionMemberVO().getRepresentationDate()));
 					petitionMember.setEndorsmentDate(format.parse(petitionMemberVO.getPetitionMemberVO().getEndorsmentDate()));
@@ -95,25 +170,132 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 					petitionMember.setUpdatedUserId(petitionMemberVO.getUserId());
 					petitionMember.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					petitionMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-					petitionMemberDAO.save(petitionMember);
+					petitionMember = petitionMemberDAO.save(petitionMember);
 				}
 			} catch (Exception e) {
-				LOG.error("Exception Occured in savePetitionMember "+e.getMessage());
-				petitionMember = null;
+				LOG.error("Exception Occured in RepresentationRequestService @ savePetitionMember() "+e.getMessage());
 			}
 		return petitionMember;
 	}
 	
-	public LocationAddress saveLocationAddress(AddressVO addressVO){
-		LocationAddress locationAddress = new LocationAddress();
+	
+	public PetitionSubWorkLocationDetails savePetitionSubWorkDetails(Long petitionWorkDetailsId,RepresentationRequestVO dataVO){
+		PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = null;
 		try {
-			
+			if(dataVO.getPetitionMemberVO() != null){
+				petitionSubWorkLocationDetails = new PetitionSubWorkLocationDetails();
+				petitionSubWorkLocationDetails.setPetitionWorkDetailsId(petitionWorkDetailsId);
+				petitionSubWorkLocationDetails.setPetitionDepartmentId(dataVO.getDeptId());
+				petitionSubWorkLocationDetails.setDescription(dataVO.getProjectDescription());
+				petitionSubWorkLocationDetails.setIsDeleted("N");
+				petitionSubWorkLocationDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				petitionSubWorkLocationDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				petitionSubWorkLocationDetails.setInsertedUserId(dataVO.getUserId());
+				petitionSubWorkLocationDetails.setUpdatedUserId(dataVO.getUserId());
+				
+				if(dataVO.getCandidateAddressVO() != null){
+					LocationAddress workLocatinAddress = saveLocationAddress(dataVO.getCandidateAddressVO());
+					petitionSubWorkLocationDetails.setAddressId(workLocatinAddress.getLocationAddressId());
+				}
+				
+				
+				petitionSubWorkLocationDetails = petitionSubWorkLocationDetailsDAO.save(petitionSubWorkLocationDetails);
+			}
 		} catch (Exception e) {
-			LOG.error("Exception Occured in savePetitionMember "+e.getMessage());
-			locationAddress = null;
+			LOG.error("Exception Occured in RepresentationRequestService @ savePetitionSubWorkDetails() "+e.getMessage());
 		}
-		return locationAddress;
+		return petitionSubWorkLocationDetails;
 	}
 	
+	
+	
+	public PetitionWorkDetails savePetitionWorkDetails(Long petitionMemberId,RepresentationRequestVO dataVO){
+		PetitionWorkDetails petitionWorkDetails = null;
+		try {
+			if(dataVO.getPetitionMemberVO() != null){
+				petitionWorkDetails = new PetitionWorkDetails();
+				petitionWorkDetails.setPetitionMemberId(petitionMemberId);
+				petitionWorkDetails.setWorkName(dataVO.getWorkName());
+				petitionWorkDetails.setNoOfWorks(dataVO.getNoOfWorks());
+				petitionWorkDetails.setSubject(dataVO.getSubject());
+				petitionWorkDetails.setPetitionDepartmentId(dataVO.getDeptId());
+				petitionWorkDetails.setIsPreviousPetition(dataVO.getIsPreviousPetition());
+				petitionWorkDetails.setPreviousPetitionRefNo(dataVO.getPreviousPetitionRefNo());
+				petitionWorkDetails.setProjectDescription(dataVO.getProjectDescription());
+				petitionWorkDetails.setIsDeleted("N");
+				petitionWorkDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				petitionWorkDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				petitionWorkDetails.setInsertedUserId(dataVO.getUserId());
+				petitionWorkDetails.setUpdatedUserId(dataVO.getUserId());
+				petitionWorkDetails = petitionWorkDetailsDAO.save(petitionWorkDetails);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in RepresentationRequestService @ savePetitionWorkDetails() "+e.getMessage());
+		}
+		return petitionWorkDetails;
+	}
+	
+	
+	public PetitionReffererDocument savePetitionReffererDocument(Long petitionReffererId,Long documentId,Long userId){
+		PetitionReffererDocument petitionReffererDocument = null;
+		try {
+			if(documentId != null && documentId.longValue()>0L){
+				petitionReffererDocument = new PetitionReffererDocument();
+				petitionReffererDocument.setDocumentId(documentId);
+				petitionReffererDocument.setPetitionReffererId(petitionReffererId);
+				petitionReffererDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				petitionReffererDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				petitionReffererDocument.setInsertedUserId(userId);
+				petitionReffererDocument.setUpdatedUserId(userId);
+				petitionReffererDocument = petitionReffererDocumentDAO.save(petitionReffererDocument);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in RepresentationRequestService @ savePetitionReffererDocument() "+e.getMessage());
+		}
+		return petitionReffererDocument;
+	}
+	
+	public PetitionRefferer savePetitionReferralDetails(Long petitionMemeberId,Long refferalCandidateId,Long userId){
+		PetitionRefferer petitionRefferer = null;
+		try {
+			if(petitionMemeberId != null && petitionMemeberId.longValue()>0L){
+				petitionRefferer = new PetitionRefferer();
+				petitionRefferer.setPetitionMemberId(petitionMemeberId);
+				petitionRefferer.setPetitionReffererCandidateId(refferalCandidateId);
+				petitionRefferer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				petitionRefferer.setInsertedUserId(userId);
+				petitionRefferer.setUpdatedUserId(userId);
+				petitionRefferer = petitionReffererDAO.save(petitionRefferer);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in RepresentationRequestService @ savePetitionReferralDetails() "+e.getMessage());
+		}
+		return petitionRefferer;
+	}
+	
+	
+	public Document saveDocument(MultipartFile file, String destinationPath,Long userId){
+		Document document = null;
+		try {
+			if(file != null){
+				String tempPath = commonMethodsUtilService.createInnerFolders(destinationPath);
+				String staticPath = commonMethodsUtilService.createInnerFolders(tempPath+"Petition_Documents//");
+				String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
+				
+				document = new Document();
+				commonMethodsUtilService.copyFile(file.getOriginalFilename(),staticPath);
+				byte[] fileData = file.getBytes();
+				Files.write(fileData,new File(staticPath+datePath+".jpg"));
+				document.setDocumentPath(staticPath+datePath+".jpg");
+				document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				document.setInsertedUserId(userId);
+				document = documentDAO.save(document);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in RepresentationRequestService @ saveDocument() "+e.getMessage());
+		}
+		return document;
+	}
 	
 }

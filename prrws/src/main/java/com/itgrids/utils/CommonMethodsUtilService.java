@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TimeZone;
@@ -1141,5 +1142,16 @@ public class CommonMethodsUtilService {
 				LOG.error("Exception raised at getAuthenticationString - RWSNICService service", e);
 			}
 			return null;
+		}
+		
+		public String generateImagePathWithDateTime(){
+			try {
+				Calendar cal = Calendar.getInstance();
+				return cal.getTime().getYear()+"_"+cal.getTime().getMonth()+"_"+cal.getTime().getDay()+"_"+cal.getTime().getHours()+"_"+cal.getTime().getMinutes()+"_"+cal.getTime().getSeconds();
+			} catch (Exception e) {
+				LOG.error("Exception raised at generateImagePathWithDateTime - CommonMethodsUtilService service", e);
+			}
+			return String.valueOf(Math.abs(new Random().nextInt()));
+			
 		}
 }

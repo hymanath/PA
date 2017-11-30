@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "petition_refferer_candidate")
+@Table(name = "petition_ref_candidate")
 public class PetitionReffererCandidate {
 
 	private Long petitionReffererCandidateId;
@@ -35,7 +35,7 @@ public class PetitionReffererCandidate {
 	
 	
 	@Id
-	@Column(name="petition_refferer_candidate_id")
+	@Column(name="petition_ref_candidate_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	public Long getPetitionReffererCandidateId() {
 		return petitionReffererCandidateId;

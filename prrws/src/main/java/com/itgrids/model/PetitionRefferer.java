@@ -40,7 +40,7 @@ public class PetitionRefferer {
 	public void setPetitionReffererId(Long petitionReffererId) {
 		this.petitionReffererId = petitionReffererId;
 	}
-	@Column(name="petition_refferer_candidate_id")
+	@Column(name="petition_ref_candidate_id")
 	public Long getPetitionReffererCandidateId() {
 		return petitionReffererCandidateId;
 	}
