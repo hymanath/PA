@@ -142,15 +142,11 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		if(committeeLvlId != null && committeeLvlId.longValue() >0l ){
 			sb.append("   and model.jbCommitteeLevel.jbCommitteeLevelId = :committeeLvlId  ");
 		}
-		/*if(status != null && status.equalsIgnoreCase("Not Started")){
-			sb.append("   and model.isCommitteeConfirmed = 'N' and model.startDate is null ");
-		}else if(status != null && status.equalsIgnoreCase("Approved")){
-			sb.append("   and model.isCommitteeConfirmed = 'Y' and model.completedDate is not null ");
-		}*/
+		
 		if(status != null && status.longValue() > 0l){
 			sb.append("   and model.jbCommitteeStatus.jbCommitteeStatusId = :status ");
 		}
-			
+		sb.append(" order by model.jbCommitteeId ");	
 		/*sb.append(" group by model.jbCommitteeLevel.jbCommitteeLevelId ");
 		if(type != null && type.equalsIgnoreCase("district")){
 			sb.append(" , district.districtId ");
