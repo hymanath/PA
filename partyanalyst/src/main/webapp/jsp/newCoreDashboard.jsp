@@ -1614,13 +1614,13 @@
 									<div class="row">
 										<div class="col-sm-12">
 										 <i class="glyphicon glyphicon-remove debatesSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;"></i>
-											<h4 class="panel-title text-center">Debate Location</h4>
+											<h4 class="panel-title text-center" id="headingId" >Debate Location</h4>
 										</div>
 										<div class="col-sm-6">
 											<!-- Nav tabs -->
 											<ul class="nav nav-tabs tabViewSelectionDebates" role="tablist">
-												<li class="active" role="presentation"><a href="#debatesTabViewDebate" aria-controls="debatesTabViewDebate" role="tab" data-toggle="tab">Debate</a></li>
-												<li role="presentation"><a href="#debatesTabViewParticipant" aria-controls="debatesTabViewParticipant" role="tab" data-toggle="tab">Debate Participant</a></li>
+												<li class="active" role="presentation" id="debatesTabViewDebateId"><a href="#debatesTabViewDebate" aria-controls="debatesTabViewDebate" role="tab" data-toggle="tab">Debate</a></li>
+												<li role="presentation" id="debatesTabViewParticipantId"><a href="#debatesTabViewParticipant" aria-controls="debatesTabViewParticipant" role="tab" data-toggle="tab">Debate Participant</a></li>
 											</ul>
 										</div>
 										<!-- Tab panes -->
