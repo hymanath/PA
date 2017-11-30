@@ -27,7 +27,8 @@ public class PetitionMember {
 	private Date dateOfBirth;//mobile_no
 	private String mobileNo;
 	private String emailId;
-	private Long voterId;
+	//private Long voterId;
+	private String voterCardNo;
 	private Long addressId;
 	private String isDeleted;
 	private String isExpired;
@@ -113,13 +114,15 @@ public class PetitionMember {
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-	@Column(name="voter_id")
+	
+	/*@Column(name="voter_id")
 	public Long getVoterId() {
 		return voterId;
 	}
 	public void setVoterId(Long voterId) {
 		this.voterId = voterId;
-	}
+	}*/
+	
 	@Column(name="address_id")
 	public Long getAddressId() {
 		return addressId;
@@ -196,7 +199,11 @@ public class PetitionMember {
 	}
 	
 	
-	
-	
-	
+	@Column(name="voter_id_card_no")
+	public String getVoterCardNo() {
+		return voterCardNo;
+	}
+	public void setVoterCardNo(String voterCardNo) {
+		this.voterCardNo = voterCardNo;
+	}
 }

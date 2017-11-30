@@ -42,6 +42,7 @@ public class RepresentationRequestController {
 	
 	@RequestMapping(value ="/saveRepresentRequestDetails",method = RequestMethod.POST)
     public @ResponseBody ResponseVO saveRepresentRequestDetails(@ModelAttribute  RepresentationRequestVO representationRequestVO) {
+				representationRequestVO.setUserId(1L);
     	 return representationRequestService.saveRepresentRequestDetails(representationRequestVO);
     }
 	@RequestMapping(value ="/getAllDistrictsInState",method = RequestMethod.POST)
