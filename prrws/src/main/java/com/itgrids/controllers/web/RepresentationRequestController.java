@@ -69,4 +69,8 @@ public class RepresentationRequestController {
     public @ResponseBody List<KeyValueVO> getPetitionDesignationList(@RequestBody Map<String,String> inputMap ) {
        return locationDetailsService.getPetitionDesignationList();
     }
+	@RequestMapping(value ="/getPetitionReferredMemberDetails",method = RequestMethod.POST)
+    public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ) {
+    	 return representationRequestService.getPetitionReferredMemberDetails(dataVo);
+    }
 }
