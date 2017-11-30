@@ -8796,13 +8796,14 @@ public List<CoreDebateVO> getDebateDesignationWiseTotalDebateDetails(String star
 				}	
 			
 		}
-		
+		if(designlessCandidateIds != null && designlessCandidateIds.size()>0){
 	    List<Object[]> designationLessCandidateList= debateParticipantCharcsDAO.getOthersDesignationWisePerformance(designlessCandidateIds,startDate,endDate,debateLocationIds,debateParticipantLocationIdList);
 	    if(designationLessCandidateList !=null && designationLessCandidateList.size()>0 ){
 			if(commonMethodsUtilService.isListOrSetValid(designationLessCandidateList)){
 				countMap = setDesignationLessValuesToMap(designationLessCandidateList,countMap);
 			}
 			}
+		}
 		}
 		if(countMap !=null && countMap.size()>0){				
 			returnList = new ArrayList<CoreDebateVO>(countMap.values());				

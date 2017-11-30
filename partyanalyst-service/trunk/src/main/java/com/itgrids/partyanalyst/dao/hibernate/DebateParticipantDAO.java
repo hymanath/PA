@@ -1660,6 +1660,7 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		if(candidateIds != null && candidateIds.size()>0l){
 			str.append(" where DP.candidate_id in (:candidateIds)");
 		}
+		str.append(" group by DP.candidate_id ");
 		 SQLQuery query = getSession().createSQLQuery(str.toString());
 			query.addScalar("candidateId",Hibernate.LONG);
 			query.addScalar("typeId",Hibernate.LONG);
