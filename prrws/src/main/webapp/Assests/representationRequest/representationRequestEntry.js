@@ -392,3 +392,25 @@ function getPanchayatsByTehsilId(tehsilId){
 	
 	});	
 }
+
+getPetitionReferredMemberDetails();
+function getPetitionReferredMemberDetails(){
+    
+	  var json = {
+		 deptId:1,
+		 locationLevelId:3,
+		 locationValue:11 
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionReferredMemberDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+	
+	});	
+}
