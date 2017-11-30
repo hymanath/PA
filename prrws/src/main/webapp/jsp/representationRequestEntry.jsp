@@ -1,105 +1,336 @@
-
-<link href="static/css/common/Dropdown.css" rel="stylesheet" type="text/css">
+<!doctype html>
 <html>
-<title> ABCD </title>
-<section>
-	<div class="container">
-		<div class="row bg_white content_shadow">
-			<div class="col-md-11 col-xs-10 col-sm-10">
-				<section class="pad_top10 pad_left10">
-					<div class="row bg-e3">
-					<form action="saveRepresentRequestDetails" id="adminProfileForm" name="adminProfileFormName" enctype="multipart/form-data" method="post">
-						Candidate Name : <input type="text" id="name" name="representationRequestVO.name" />
-						By Self : <input type="radio" value="1" id="selfRadio" name="representationRequestVO.memberType"/>
-						By Represent : <input type="radio" value="2" id="representRadio" name="representationRequestVO.memberType"/>
-						<input type="button" class="btn btn-success" value="Save Details" onclick="saveRepresentRequestDetails()"/>
-						
-						Upload File : <input type="file" id="fileId" name="representationRequestVO.file" />
-					</form>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Entry Form</title>
+<link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
+<link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+<!-- for file uploader -->
+<link href="Assests/Plugins/dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
+<link href="Assests/Plugins/dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />  
+<!-- for file uploader -->
+<link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
+<script src="Assests/Plugins/Less/less.js"></script>
+<link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<script src="https://use.fontawesome.com/e94c241642.js"></script>
+</head>
+<body>
+<header>
+	<nav>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-1 col-xs-3 pad_left0">
+					<img src="Assests/images/aplogo.png" class="logo"/>
+				</div>
+				<div class="col-sm-4 m_top10 col-xs-9">
+					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
+					<p>Swatch Bharat Mission IHHL</p>
+				</div>
+				
+				<div class="col-sm-3 col-xs-12 pull-right">
+					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
+					<div class="menu-data-cls">
+						<div class="arrow_box_top">
+							<div class="row">
+								<!--<div class="col-sm-12">
+									<div class="menu-block" style="background-color:#FFBA00">
+										<a href="newfundManagementDashboard">
+											<h3>FMS</h3>
+											<p>Fund Management System</p>
+										</a>
+									</div>
+								</div>  -->
+								<div class="col-sm-12">
+									<div class="menu-heading-block">
+										<h4 class="text-capital">Rural Water Supply</h4>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#56A3C5">
+													<a href="ruralWaterSupplyDashBoard">
+														<h3>RWS</h3>
+														<p>Rural Water Supply</p>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#1e92b2">
+													<a href="swachhBharatMissionIHHL">
+														<h3>IHHL</h3>
+														<p>Swatch Bharat Mission</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#1c94ef">
+													<a href="waterTanksClorinationDashBoard">
+														<h3>WTC</h3>
+														<p>Water Tank chlorination</p>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>PANCHAYATI RAJ</h4>
+										<div class="row">
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#0F685C">
+													<a href="prisDashBoard">
+														<h3>PRIS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#31B8B7">
+													<a href="drainDashBoard">
+														<h3>DRAINS</h3>
+													</a>
+												</div>
+											</div>
+											<!-- <div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#2C546C">
+													<a href="#">
+														<h3>ENC</h3>
+														<p>Engineering Dept</p>
+													</a>
+												</div>
+											</div>-->
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#512507">
+													<a href="getdailySpikeReport">
+														<h3>SA</h3>
+														<p>Spike Analysis</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#888420">
+													<a href="getlightsMonitoringDashboard">
+														<h3>LED</h3>
+														<p>Light Monitoring</p>
+													</a>
+												</div>
+											</div>
+											<!-- <div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#ff5e1c">
+													<a href="prExpenditureDashboard">
+														<h3>PR EXP</h3>
+														<p>Panchayat Raj <br/>Expenditure</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#1c94ef">
+													<a href="waterTanksClorinationDashBoard">
+														<h3>WTC</h3>
+														<p>Water Tank Clorination</p>
+													</a>
+												</div>
+											</div>-->
+										</div>
+										<div class="row">
+  											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#ff5e1c">
+													<a href="solidWasteManagementDashboard">
+														<h3>SWM</h3>
+                           								 <p>Solid Waste Management</p>
+													</a>
+												</div>
+											</div>
+ 										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>RURAL DEVELOPMENT</h4>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#88186B">
+													<a href="MGNREGSDashboard">
+														<h3>MGNREGS</h3>
+														<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#ff1c5e">
+													<a href="RuralDevelopmentDashboard">
+														<h3>RD</h3>
+														<p>Rural Development Dashboard</p>
+													</a>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-block" style="background-color:#de4524 ">
+										<a href="itcDashboard">
+											<h3>IT E & C</h3>
+											<p>Dashboard</p>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-				</section>
+				</div>
 			</div>
-	   </div>
+		</div>
+	</nav>
+</header>
+<main>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="panel-group">
+					<div class="panel panel-default panel-lightGreen">
+						<div class="panel-heading">
+							<h4 class="panel-title f_22" style="font-weight:normal !important;">REPRESENTATION REQUEST</h4>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-12">
+									<h3 class="panel-title f_22">REPRESENTEE DETAILS</h3>
+									<div class="row m_top20">
+										<div class="col-sm-2">
+											<h4>Representation Date</h4>
+											<div class="input-group inline-block m_top10">
+												<span class="input-group-addon">
+													<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+												</span>
+												<input type="text" class="form-control" id="dateRangePickerMGNF"/>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<h4>Representation By</h4>
+												<div class="row m_top10">
+													<div class="col-sm-3">
+														<div class="borederCss">
+															<input type="radio" id="self" name="selector" checked>
+															<label><h5>SELF</span></h5>
+														</div>
+													</div>
+													<div class="col-sm-6">
+														<div class="borederCss">
+															<input type="radio" id="Representee" name="selector">
+															<label><h5 class="text-capital">Representee</h5></label>
+														</div>
+													</div>
+												</div>
+										</div>
+									</div>
+									<div class="row m_top20">
+										<div class="col-sm-12">
+											<h4 class="searchCss"><i class="fa fa-search" aria-hidden="true" style="font-size:20px;"></i> Click to Search Details to the Candidate</h4>
+										</div>
+									</div>
+									<div class="row m_top20">
+										<div class="col-sm-12">
+											<h3 class="panel-title f_22">REFERRAL LETTER</h3>
+											<input type="file" id="update_TourFileId2" multiple="multiple"  name="files[]" class="m_top20"/>
+										</div>
+									</div>
+									<div class="row m_top20">
+										<div class="col-sm-12">
+											<h3 class="panel-title f_22">WORK TYPE DETAILS</h3>
+											<div class="row m_top20">
+												<div class="col-sm-6">
+													<label>Name of the Work</label>
+													 <input type="text" class="form-control m_top10 height45" id="nameofWork" placeholder="Enter Name Of Work">
+												</div>
+												<div class="col-sm-3">
+													<label>No of Works</label>
+													<input type="text" class="form-control m_top10 height45" id="noofWork" placeholder="Enter No Of Work">
+												</div>
+												<div class="col-sm-3">
+													<label>Work Cost (Est. Cost in Lakh)</label>
+													<input type="text" class="form-control m_top10 height45" id="workCost" placeholder="Enter Work Cost">
+												</div>
+											</div>
+											<div class="row m_top20">
+												<div class="col-sm-3">
+													<label>Subject</label>
+													<select class="form-control chosen-select m_top10" id="subjectId">
+														<option value="0">Select Subject</option>
+													</select>
+												</div>
+												<div class="col-sm-3">
+													<label>Department</label>
+													<select class="form-control chosen-select m_top10" id="departmentId">
+														<option value="0">Select Department</option>
+													</select>
+												</div>
+												<div class="col-sm-3">
+													<label>Previous Petition</label>
+													<select class="form-control chosen-select m_top10" id="previousPetitionId">
+														<option value="0">Select Previous Petition</option>
+													</select>
+												</div>
+												<div class="col-sm-3">
+													<label>Previous Petition No (Endt NO)</label>
+													<input type="text" class="form-control m_top10 height45" id="workCost" value="101/20/11/2017">
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-6">
+													<h3 class="panel-title f_22">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>
+													<textarea class="form-control m_top20" rows="7"></textarea>
+												</div>
+												<div class="col-sm-6">
+													<h3 class="panel-title f_22">PROJCT DOCUMENTS UPLOAD</h3>
+													<input type="file" id="projectDocUpload" multiple="multiple"  name="files[]" class="m_top20"/>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12"><hr class="m_0" style="border: 3px solid rgb(221, 221, 221);"/></div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12">
+											<div id="workDetailsDivId"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-</section>
-
-<script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
+</main>
+<script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/pdf.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
+<!-- for file uploader  -->              
+<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/jquery.filer.min.js"></script>
+<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script>                
+<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>                
+<!-- for file uploader -->
 <script src="Assests/representationRequest/representationRequestEntry.js" type="text/javascript"></script>
-
-<script>
-
-function saveRepresentRequestDetails(){
-	 var formData = new FormData();
-	 formData.append("name","hyma");
-	 formData.append("memberType",2);
-	 formData.append("endorsmentDate","2017-12-01");
-	 formData.append("representationDate","2017-12-01");
-	 formData.append("mobileNo","9581434970");
-	 formData.append("emailId","srishailam@itgrids.com");
-	 formData.append("voterCardNo","WARDU765T");
-	 formData.append("referrerCandidateId",2);
-	 formData.append("file",$('input[type=file]')[0].files[0]);
-	 
-	 
-	 formData.append("workName",2);
-	 formData.append("noOfWorks",2);
-	 formData.append("estimationCost",2);
-	 formData.append("subject",2);
-	 formData.append("subjectId",2);
-	 formData.append("deptId",2);
-	 formData.append("isPreviousPetition",2);
-	 formData.append("previousPetitionRefNo",2);
-	 formData.append("projectDescription",2);
-	 
-	 formData.append("candidateAddressVO.stateId",2);
-	 formData.append("candidateAddressVO.districtId",2);
-	 formData.append("candidateAddressVO.parliamentId",2);
-	 formData.append("candidateAddressVO.assemblyId",2);
-	 formData.append("candidateAddressVO.localElectionBodyId",2);
-	 formData.append("candidateAddressVO.tehsilId",2);
-	 formData.append("candidateAddressVO.panchayatId",2);
-	 formData.append("candidateAddressVO.wardId",2);
-	 formData.append("candidateAddressVO.divisionId",2);
-	 
-	 
-	 formData.append("worksList[0].deptId",2);
-	 formData.append("worksList[0].locationLevelId",2);
-	 formData.append("worksList[0].locationValue",2);
-	 
-	 formData.append("worksList[0].candidateAddressVO.stateId",2);
-	 formData.append("worksList[0].candidateAddressVO.districtId",2);
-	 formData.append("worksList[0].candidateAddressVO.parliamentId",2);
-	 formData.append("worksList[0].candidateAddressVO.assemblyId",2);
-	 formData.append("worksList[0].candidateAddressVO.localElectionBodyId",2);
-	 formData.append("worksList[0].candidateAddressVO.tehsilId",2);
-	 formData.append("worksList[0].candidateAddressVO.panchayatId",2);
-	 formData.append("worksList[0].candidateAddressVO.wardId",2);
-	 formData.append("worksList[0].candidateAddressVO.divisionId",2);
-
-	  $.ajax({
-        url: $("#adminProfileForm").attr("action"),
-        data: formData,
-        type: "POST",               
-         processData: false,
-         contentType: false,
-        success: function(ajaxresp) {
-			alert("success");
-			console.log(ajaxresp);
-        },
-        error: function(request,error) { 
-			alert("error");
-			
-         }
-     });	 
-}
-$(document).ready(function(){
-	alert("ready")
-	getPetitionDesignationList();
-	getPetitionDepartmentList();
-})
-</script>
+</body>
 </html>
