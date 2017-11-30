@@ -1659,7 +1659,7 @@ function getDesignationWiseCandidateOverAllPerformanceCohort(divId,id){
 						str+='<td style="cursor:pointer;color:#337ab7" class="designationWiseCandidatesCls designationCandidateCls" attr_divId="'+result[i].name.replace(/\s+/g, '')+'" attr_id="'+result[i].id+'">'+result[i].candidateCount+'</td>';
 						str+='<td>';
 						}else{
-						str+='<td style="color:#337ab7" class="designationWiseCandidatesCls designationCandidateCls" attr_divId="'+result[i].name.replace(/\s+/g, '')+'" attr_id="'+result[i].id+'">'+result[i].candidateCount+'</td>';
+						str+='<td style="color:#337ab7"  attr_divId="'+result[i].name.replace(/\s+/g, '')+'" attr_id="'+result[i].id+'">'+result[i].candidateCount+'</td>';
 						str+='<td>';
 						}
 						str+='<input class="performanceRating" value="'+result[i].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+result[i].scalePerc+'</span>';
@@ -1861,4 +1861,10 @@ $(document).on("click",".closeModalDeb",function(){
 	setTimeout(function(){
 		$('body').addClass("modal-open");
 	}, 400);                     
+});
+$(document).on("click","#debatesTabViewDebateId",function(){
+	 $("#headingId").html("Debate Location");                   
+});
+$(document).on("click","#debatesTabViewParticipantId",function(){
+	 $("#headingId").html("Participant Location");                   
 });
