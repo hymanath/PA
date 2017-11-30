@@ -2,6 +2,10 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 var globalWorkTypeCount=1;
 setTimeout(function(){ 
 	buildSelfAndRepresenteeDetails("self")
+	getAllDistrictsInState();
+	getConstituencyNamesByDistrictId("14");
+	getTehsilsAndLocalElectionBodyForConstituencyId("156");
+	getPanchayatsByTehsilId("588");
 }, 2000);
  
 $("#dateRangePickerMGNF").daterangepicker({
@@ -311,4 +315,80 @@ function clonedTemplate(blockId,type,counterId,typeVal){
 	
 	return clonedTemplate;
 	
+}
+function getAllDistrictsInState(){
+	
+	  var json = {
+		  stateId:"1"
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getAllDistrictsInState',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		
+	});	
+}
+
+function getConstituencyNamesByDistrictId(districtId){
+	  
+	  var json = {
+		  districtId:districtId
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getConstituencyNamesByDistrictId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+	
+	});	
+}
+
+function getTehsilsAndLocalElectionBodyForConstituencyId(constituencyId){
+	
+	  var json = {
+		  constituencyId:constituencyId
+		}        
+	$.ajax({                
+		type:'POST',    
+		url: 'getTehsilsAndLocalElectionBodyForConstituencyId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		
+	});	
+}
+  
+
+function getPanchayatsByTehsilId(tehsilId){
+	
+	  var json = {
+		  tehsilId:tehsilId
+		}        
+	$.ajax({                
+		type:'POST',    
+		url: 'getPanchayatsByTehsilId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+	
+	});	
 }
