@@ -49,4 +49,6 @@ public interface IDebateParticipantCharcsDAO extends GenericDao<DebateParticipan
 	public List<Object[]> getPartywiseCandidateOthersScaling(Date startDate,Date endDate,String searchType,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
 	public List<Object[]> getDesignationWiseScalesOfEachCharecter(Date startDate,Date endDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
 	public List<Object[]> getDesignationwiseCandidateCharectersScaling(Date startDate,Date endDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList);
+	public List<Object[]> getOthersDesignationWisePerformance(List<Long> candidateIds,Date startDate,Date endDate,List<Long> debateLocationIds,List<Long> debateParticipantLocationIdList);
+	public List<Object[]> getDesignationwiseOthersCandidateCharectersScaling(Date startDate,Date endDate,String state,List<Long> debateParticipantLocationIdList,List<Long> debateLocationIdList,List<Long> candidateIds);
 }
