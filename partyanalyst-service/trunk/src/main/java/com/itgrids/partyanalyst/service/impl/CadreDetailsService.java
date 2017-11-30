@@ -120,6 +120,7 @@ import com.itgrids.partyanalyst.dto.BenefitVO;
 import com.itgrids.partyanalyst.dto.CadreBasicPerformaceVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreHealthDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
@@ -13526,4 +13527,67 @@ public List<IdAndNameVO> getTdpCadreHealthDetailsByCadre(Long tdpCadreId){
 		}
 		return queAnsVo;
 	}
+/**
+ * @Date 30th nov,2017
+ * @author Ramakrishna madapati (ramakrishna.madapati@itgrids.com)
+ * @description  to get candidate wise health  detials 
+ * @return List<CadreHealthDetailsVO>  
+ * @param tdpCadreId
+ */
+public List<CadreHealthDetailsVO> getTdpCadreHealthDetailsByCadreIds(Long tdpCadreId){
+	List<CadreHealthDetailsVO> returnList = new ArrayList<CadreHealthDetailsVO>();
+	Map<Long,CadreHealthDetailsVO> caderHealthReportMap = new HashMap<Long,CadreHealthDetailsVO>();
+	try{
+		LOG.info("Enetred into cadreDetailsService of getTdpCadreHealthDetailsByCadreIds");
+		
+		List<Object[]> list = tdpCadreHealthDetailsDAO.getCadreHealthDetailsForCadre(tdpCadreId);
+		if(list != null && list.size() >0){
+			for(Object[] obj : list){
+				Long cadreId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+				CadreHealthDetailsVO cadreVO = caderHealthReportMap.get(cadreId);
+				if(cadreVO == null){
+					cadreVO = new CadreHealthDetailsVO();
+					cadreVO.setTdpcadreId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					cadreVO.setAge(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+					cadreVO.setGender(obj[2] != null ? obj[2].toString():"");
+					cadreVO.setHeight(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+					cadreVO.setWeight(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+					cadreVO.setSpot(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					cadreVO.setSystolicBp(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
+					cadreVO.setDiastolicBp(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+					cadreVO.setHeartPulse(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+					cadreVO.setSpiro(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
+					cadreVO.setStartTime(obj[10] != null ? obj[10].toString().substring(0,10):"");
+					cadreVO.setMembershipNo(obj[11] != null ? obj[11].toString():"");
+					caderHealthReportMap.put(cadreId, cadreVO);
+					
+				}
+			}
+		}
+		
+		List<Object[]> cadreHealthTstObjLst = tdpCadreHealthTestDAO.getCadreHealthTestsForCadre(tdpCadreId);
+		if(cadreHealthTstObjLst != null && cadreHealthTstObjLst.size() >0){
+			for(Object[] param : cadreHealthTstObjLst){
+				Long cadreIds = commonMethodsUtilService.getLongValueForObject(param[3]);
+				CadreHealthDetailsVO reportVO = caderHealthReportMap.get(cadreIds);
+				if(reportVO != null){
+					reportVO.setImagePathStr(commonMethodsUtilService.getStringValueForObject(param[1]));
+				}else{
+					CadreHealthDetailsVO reportVOId = new CadreHealthDetailsVO();
+					reportVOId.setTdpcadreId(cadreIds);
+					reportVOId.setImagePathStr(commonMethodsUtilService.getStringValueForObject(param[1]));
+					reportVOId.setMembershipNo(param[4] != null ? param[4].toString():"");
+					caderHealthReportMap.put(reportVOId.getTdpcadreId(), reportVOId);
+				}
+			}
+		}
+		 if(caderHealthReportMap != null && caderHealthReportMap.size() >0){
+			 returnList.addAll(caderHealthReportMap.values());
+		 }
+		
+	}catch(Exception e){
+		LOG.error("Exception raised into cadreDetailsService of getTdpCadreHealthDetailsByCadreIds",e);
+	}
+	return returnList;
+}
 }

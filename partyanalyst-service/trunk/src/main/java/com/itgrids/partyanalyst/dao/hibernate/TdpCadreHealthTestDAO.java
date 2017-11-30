@@ -17,9 +17,11 @@ public class TdpCadreHealthTestDAO extends GenericDaoHibernate<TdpCadreHealthTes
 	public List<Object[]> getCadreHealthTestsForCadre(Long tdpCadreId){
 		Query query = getSession().createQuery("select distinct model.healthTestId," +
 											" model.reportPath," +
-											" model.testDate" +
+											" model.testDate," +
+											" model.tdpCadreId," +
+											" model.tdpCadre.memberShipNo " +
 											" from TdpCadreHealthTest model" +
-											" where model.tdpCadreId = :tdpCadreId" +
+											" where model.tdpCadre.tdpCadreId = :tdpCadreId" +
 											" and model.isDeleted = 'N'");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
