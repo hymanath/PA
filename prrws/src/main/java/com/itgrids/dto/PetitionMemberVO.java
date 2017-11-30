@@ -1,5 +1,9 @@
 package com.itgrids.dto;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class PetitionMemberVO {
 	
 	private Long id;
@@ -11,6 +15,14 @@ public class PetitionMemberVO {
 	private String mobileNo;
 	private String emailId;
 	private String voterCardNo;
+	private List<MultipartFile> filesList ;
+	
+	public List<MultipartFile> getFilesList() {
+		return filesList;
+	}
+	public void setFilesList(List<MultipartFile> filesList) {
+		this.filesList = filesList;
+	}
 	public Long getId() {
 		return id;
 	}

@@ -19,6 +19,7 @@ public class PetitionWorkDetails {
 
 	private Long petitionWorkDetailsId;
 	private Long petitionMemberId ;
+	private String workName;
 	private Long noOfWorks;
 	private String subject;
 	private Long petitionDepartmentId;
@@ -161,6 +162,14 @@ public class PetitionWorkDetails {
 	}
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
+	}
+	
+	@Column(name="work_name")
+	public String getWorkName() {
+		return workName;
+	}
+	public void setWorkName(String workName) {
+		this.workName = workName;
 	}
 	
 	

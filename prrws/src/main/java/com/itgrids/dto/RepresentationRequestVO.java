@@ -31,8 +31,16 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private String projectDescription;
 	
 	private List<RepresentationRequestVO> worksList = new ArrayList<RepresentationRequestVO>(0);
-
+	private List<MultipartFile> filesList;
 	private MultipartFile file;
+
+	public List<MultipartFile> getFilesList() {
+		return filesList;
+	}
+
+	public void setFilesList(List<MultipartFile> filesList) {
+		this.filesList = filesList;
+	}
 
 	public MultipartFile getFile() {
 		return file;
