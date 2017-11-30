@@ -121,6 +121,7 @@ import com.itgrids.partyanalyst.dto.PeshiAppAppointmentVO;
 import com.itgrids.partyanalyst.dto.PeshiAppGrievanceVO;
 import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
+import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -5418,7 +5419,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	
 	public void saveEventResponses(String anserObjStr){
 		try {
-			kaizalaInfoService.saveEventResponses(anserObjStr);
+			String s = "{\"objectId\":\"838c1758-7526-42d4-8b6b-a935a1a11d1d\",\"objectType\":\"Group\",\"eventType\":\"SurveyCreated\",\"eventId\":\"af0d8763-0662-4d44-bec9-b936ebb9efe1\",\"data\":{\"actionId\":\"af0d8763-0662-4d44-bec9-b936ebb9efe1\",\"groupId\":\"838c1758-7526-42d4-8b6b-a935a1a11d1d\",\"validity\":1507632032613,\"title\":\"Web hook test survet2\",\"visibility\":\"All\",\"isResponseAppended\":true,\"questions\":[{\"title\":\"You can respond to this survey multiple times. To remember each response, you can give it any name or leave it as-is below.\",\"type\":\"Text\",\"options\":[]},{\"title\":\"Question1\",\"type\":\"MultiOption\",\"options\":[{\"title\":\"Option 1\"},{\"title\":\"Option 2\"},{\"title\":\"Option 3\"}]},{\"title\":\"Question 2\",\"type\":\"Text\",\"options\":[]},{\"title\":\"Question 3\",\"type\":\"Numeric\",\"options\":[]},{\"title\":\"Responder Location\",\"type\":\"Location\",\"options\":[]},{\"isInvisible\":true,\"title\":\"ResponseTime\",\"type\":\"DateTime\",\"options\":[]},{\"isInvisible\":true,\"title\":\"ResponseLocation\",\"type\":\"Location\",\"options\":[]}],\"properties\":[{\"name\":\"DateTime\",\"type\":\"Numeric\",\"value\":\"5\"},{\"name\":\"Location\",\"type\":\"Numeric\",\"value\":\"6\"},{\"name\":\"Description\",\"type\":\"Text\",\"value\":\"Test survey\"}]},\"fromUser\":\"+919866249700\",\"fromUserName\":\"Kota Sandeep\",\"fromUserProfilePic\":\"\"}";
+			kaizalaInfoService.saveEventResponses(s);
 		} catch (Exception e) {
 			 log.error("Exception raised at saveKaizalAnswerInfo", e);
 		}
@@ -5450,5 +5452,76 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		return null;
 	}
+	 public List<QuestionAnswerVO> getSurveyQuestionWithMarksDetailsByTDpCadreId(Long tdpCadreId){
+		 List<QuestionAnswerVO> finalList = new ArrayList<QuestionAnswerVO>(0);
+		  try {
+			  Client client = Client.create();
+			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
+			// WebResource webResource = client.resource("https://www.mytdp.com/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
+			   WebResource webResource = client.resource("http://192.168.11.173:8080/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
+			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+   	 	  if (response.getStatus() != 200) {
+   	 		finalList =null;
+   	 		//throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+   	 	 }else{
+ 	    	 String output = response.getEntity(String.class);
+ 	    	if(output != null && !output.isEmpty()){
+ 	    		JSONArray finalArray = new JSONArray(output);
+ 	    		if(finalArray!=null && finalArray.length()>0){
+ 	    			for(int i=0;i<finalArray.length();i++){
+ 	    				QuestionAnswerVO vo =  new QuestionAnswerVO();
+	   	 					JSONObject question = (JSONObject) finalArray.get(i);
+		   	 				
+	   	 				if(question.has("questionId"))
+   	 					{
+   	 						vo.setSurveyId(question.getLong("questionId"));
+   	 					}
+	   	 			    if(question.has("surveyName"))
+	 					{
+	 						vo.setSurveyName(question.getString("surveyName"));
+	 					}	
+	   	 			    if(question.has("surveyTypeId"))
+	 					{
+	 						vo.setSurveyTypeId(question.getLong("surveyTypeId"));
+	 					}	
+	   	 			JSONArray  questionsList = question.getJSONArray("subList");
+	   	 			if(questionsList != null && questionsList.length()>0)
+	   	 			{
+	   	 			List<QuestionAnswerVO> questionWiseList = new ArrayList<QuestionAnswerVO>(0);
+	   	 				for(int j=0;j<questionsList.length();j++)
+	   	 				{
+	   	 				JSONObject questionObj = (JSONObject) questionsList.get(j);
+	   	 					QuestionAnswerVO questionVO = new QuestionAnswerVO();
+		   	 				if(question.has("questionId"))
+	   	 					{
+		   	 					questionVO.setQuestionId(questionObj.getLong("questionId"));
+	   	 					}
 
+	   	 					if(question.has("question"))
+	   	 					{
+	   	 						questionVO.setQuestion(questionObj.getString("question"));
+	   	 					}
+		   	 				if(question.has("name"))
+	   	 					{
+		   	 					questionVO.setName(questionObj.getString("name"));
+	   	 					}
+			   	 			if(question.has("marks"))
+	   	 					{
+			   	 			questionVO.setMarks(questionObj.getLong("marks"));
+	   	 					}
+			   	 			questionWiseList.add(questionVO);
+	   	 				}
+	   	 			vo.setSubList(questionWiseList);
+	   	 			}
+			   	 		finalList.add(vo);
+ 	    			}
+ 	    		}
+ 	    	}
+   	 	 }
+		  return finalList;
+	  }catch(Exception e){
+		  log.error("Exception raised at getSurveyQuestionWithMarksDetailsByTDpCadreId method in WebServiceHandlerService Class", e);
+	  }
+		return finalList;
+	  }
 }
