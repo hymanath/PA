@@ -437,6 +437,7 @@ $(document).on("click",".closeShowPdfCls",function(){
 	
 function buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCardNo,
 mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,mandalId,panchayatId){
+	$("#searchMemberDetailsId").html("");
 	$("#memberAddEditPopUpDetailsId").html(spinner);
 	if(type=="edit"){
 		$("#memberAddedPopUpDetailsId").html('');
