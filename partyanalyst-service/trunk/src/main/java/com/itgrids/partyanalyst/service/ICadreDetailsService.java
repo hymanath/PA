@@ -165,4 +165,5 @@ public interface ICadreDetailsService {
 	public Long kaizalaCommitteeLevelAddressSaving(final Long locationScopeId, final Long locationValue);
 	
 	public List<IdAndNameVO> getTdpCadreHealthDetailsByCadre(Long tdpCadreId);
+	public List<QuestionAnswerVO> getSurveyQuestionWithMarksDetailsByTDpCadreId(Long cadreId);
 }
