@@ -691,7 +691,7 @@ function buildCandidateWiseCandidateOverAllPerformancePressmeetCohort(result,des
 						str+='<tr>';
 							str+='<td class="text-capitalize" style="min-width:150px;"">'+result.pressmeetList[i].candidateName+' ('+result.pressmeetList[i].partyName+')</td>';
 							str+='<td>';       
-							str+='<h5 ><a style="cursor:pointer;" class="pressMeetsInnerCls" attr_designation_id="'+designationId+'" attr_candidateId="'+result.pressmeetList[i].candidateId+'">'+result.pressmeetList[i].pressMeetCount+'</a></h5>';
+							str+='<h5 ><a style="cursor:pointer;" attr_candidateId="'+result.pressmeetList[i].candidateId+'">'+result.pressmeetList[i].pressMeetCount+'</a></h5>';
 							str+='</td>';     
 							str+='<td>';
 							str+='<input class="performanceRating" value="'+result.pressmeetList[i].percentage.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+result.pressmeetList[i].percentage.toFixed(2)+'</span>';
