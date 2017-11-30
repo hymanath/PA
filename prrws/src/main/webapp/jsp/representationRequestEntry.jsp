@@ -13,6 +13,8 @@
 						By Self : <input type="radio" value="1" id="selfRadio" name="representationRequestVO.memberType"/>
 						By Represent : <input type="radio" value="2" id="representRadio" name="representationRequestVO.memberType"/>
 						<input type="button" class="btn btn-success" value="Save Details" onclick="saveRepresentRequestDetails()"/>
+						
+						Upload File : <input type="file" id="fileId" name="representationRequestVO.file" />
 					</form>
 					</div>
 				</section>
@@ -40,6 +42,7 @@ function saveRepresentRequestDetails(){
 	 formData.append("emailId","srishailam@itgrids.com");
 	 formData.append("voterCardNo","WARDU765T");
 	 formData.append("referrerCandidateId",2);
+	 formData.append("file",$('input[type=file]')[0].files[0]);
 	 
 	 
 	 formData.append("workName",2);
