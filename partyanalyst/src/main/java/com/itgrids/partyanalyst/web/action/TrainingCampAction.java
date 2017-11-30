@@ -35,17 +35,18 @@ import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.SimpleDetailsVO;
+import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
 import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
+import com.itgrids.partyanalyst.dto.TrainingCampFeedBackDetailsVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
+import com.itgrids.partyanalyst.dto.TrainingCampSheduleDetailsVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
-import com.itgrids.partyanalyst.dto.TrainingCampSheduleDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -142,6 +143,8 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<TrainingCampSheduleDetailsVO> trainingCampVOList;
 	private List<SimpleDetailsVO> simpleDetailsVOList;
 	private SimpleDetailsVO simpleDetailsVO;
+
+	private List<TrainingCampFeedBackDetailsVO> tainingCampFeedBackList;
 
 	public List<TrainingCampSheduleDetailsVO> getTrainingCampVOList() {
 		return trainingCampVOList;
@@ -738,6 +741,15 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	public void setSimpleDetailsVO(SimpleDetailsVO simpleDetailsVO) {
 		this.simpleDetailsVO = simpleDetailsVO;
+	}
+
+	public List<TrainingCampFeedBackDetailsVO> getTainingCampFeedBackList() {
+		return tainingCampFeedBackList;
+	}
+
+	public void setTainingCampFeedBackList(
+			List<TrainingCampFeedBackDetailsVO> tainingCampFeedBackList) {
+		this.tainingCampFeedBackList = tainingCampFeedBackList;
 	}
 
 	public String callCenterTrainingAdmin()
@@ -3481,6 +3493,17 @@ public String getCommentsMeetingDetails(){
     		}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getInviteeAndNonInviteeTrainingList Action", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getTrainingCampFeedBAckDeatilesByTdpCadreId(){
+		try {
+			LOG.info("Entered into getTrainingCampFeedBAckDeatilesByTdpCadreId");
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId=jObj.getLong("cadreId");
+			tainingCampFeedBackList = trainingCampService.getTrainingCampFeedBAckDeatilesByTdpCadreId(tdpCadreId);
+		}catch(Exception e){
+			LOG.error("Exception raised at getTrainingCampFeedBAckDeatilesByTdpCadreId Action", e);
 		}
 		return Action.SUCCESS;
 	}
