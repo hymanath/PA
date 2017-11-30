@@ -936,9 +936,24 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 												
 											</tbody>
 										</table>
+										<div class="panel panel-default" id="trainingFeedBackDetailsMainDivId">
+											<div class="panel-heading" id="trainingCampFeedBackDetailsHeaderId">
+												<h4 class="panel-title text-bold pointer">TRAINING CAMP FEEDBACK DETAILS <span class="pull-right" id="trainingCampFeedBackDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampFeedBackDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+											<span>
+													
+												</span>
+												</h4>
+											</div>
+											
+											<center id="dataLoadingsImgForTrainingCampFeedBack"><img  src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
+											<div id="trainingCampFeedBackDetailsBodyId">
+												<div id="cadreTraingFeedBackDivId"></div>
+											</div>
+										</div>
 									  </div>
 									</div>
 								  </div>
+								 
 								  <div class="panel panel-default" id="partyMeetingDetailsShowHideDiv" style="display:none">
 									<div class="panel-heading" role="tab" id="headingThree">
 										<a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion2323" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -1058,7 +1073,6 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 						<div id="grievanceRequestsId"></div>
 					</div>
 				</div>
-				
 				<div class="panel panel-default" id="trainingCampdetailsDiv">
                 	<div class="panel-heading" id="trainingCampDetailsHeaderId">
                     	<h4 class="panel-title text-bold pointer"><img src="images/training.png" style="width:18px;height:17px;"/> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
@@ -1073,9 +1087,9 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 					<div id="trainingCampDetailsBodyId">
 						<div id="trainingCampParticipationDivId" class="table-responsive">
 						</div>
+
 					</div>
                 </div>
-				
                 <div class="panel panel-default">
                 	<div class="panel-heading">
 					<a id="" class="showbtnCls" title="Click here to Show Committee Details" href="javascript:{newsHideAndShow('newsMainDivId');}">
@@ -3690,6 +3704,166 @@ function getHealthDetails(cadreId){
 		
 	});
 }
+getTrainingCampFeedBAckDeatilesByTdpCadreId();
+function getTrainingCampFeedBAckDeatilesByTdpCadreId(){
+$("#dataLoadingsImgForTrainingCampFeedBack").html('<img  src="images/icons/loading.gif" style="width: 50px; height: 50px;">');
+	var jsObj={
+		cadreId :memberCadreId
+	}
+	$.ajax({
+		type:"POST",
+		url :"getTrainingCampFeedBAckDeatilesByTdpCadreIdAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		$("#dataLoadingsImgForTrainingCampFeedBack").hide('');
+		buildTrainingCampFeedBackDetails(result)
+	});
+}
+ //http://localhost:8080/PartyAnalyst/cadreDetailsAction.action?cadreId=7637453
+function buildTrainingCampFeedBackDetails(result){
+	var str='';
+	for(var i in result){
+		str+='<div class="panel-group" id="traingFeedBackMainPanelId'+i+'" role="tablist" aria-multiselectable="true">';
+		 str+='<div class="panel panel-default m_top20">';
+			 str+='<div class="panel-heading" role="tab" >';
+			 str+='<a role="button" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#traingFeedBackMainPanelId'+i+'" href="#collapseFeedBackBody'+i+'" aria-expanded="true" aria-controls="collapseFeedBackBody'+i+'"><h2 class="panel-title">'+result[i].year+ ' </h2></a>';         
+			 str+='</div>';
+			 str+='<div id="collapseFeedBackBody'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="traingFeedBackMainPanelId'+i+'">';
+			 str+='<div class="panel-body">';
+				 for(var j in result[i].subList){
+						for(var k in result[i].subList[j].subList){
+							for(var l in result[i].subList[j].subList[k].subList){
+								 str+='<div>';
+									str+='<table class="table table-bordered">';
+										str+='<thead>';
+											str+='<tr>';
+												str+='<th>PROGRAM NAME</th>';
+												str+='<th> CENTER NAME</th>';
+												str+='<th>BATCH NAME</th>';
+											str+='</tr>';
+										str+='</thead>';
+										str+='<tbody>';
+											str+='<tr>';
+												str+='<td>'+result[i].subList[j].programName +'</td>';
+												str+='<td>'+result[i].subList[j].subList[k].campName +'</td>';
+												str+='<td>'+result[i].subList[j].subList[k].subList[l].batchName +'</td>';
+											str+='</tr>';
+										str+='</tbody>';
+								 str+='</table>';
+							  str+='</div>';
+							   str+='<div>';
+								 str+='<table class="table table-bordered">';
+										str+='<thead>';
+											str+='<tr>';
+												str+='<th></th>';
+												str+='<th class="text-center" >SKILL STATUS</th>';
+													str+='<th class="text-center" >SKILL LEVEL</th>';
+											str+='</tr>';
+										str+='</thead>';
+										str+='<tbody class="text-center">';
+											str+='<tr>';
+												str+='<td>Leadership Skills</th>';
+												if(result[i].subList[j].subList[k].subList[l].leaderShipStatus != null && result[i].subList[j].subList[k].subList[l].leaderShipStatus.length >0){
+													str+='<td>'+result[i].subList[j].subList[k].subList[l].leaderShipStatus +'</td>';
+												}else{
+													str+='<td>-</td>';
+												}
+												if(result[i].subList[j].subList[k].subList[l].leadershiplevel != null && result[i].subList[j].subList[k].subList[l].leadershiplevel.length >0){
+													str+='<td>'+result[i].subList[j].subList[k].subList[l].leadershiplevel +'</td>';
+												}else{
+													str+='<td>-</td>';
+												}
+											str+='</tr>';
+											str+='<tr>';
+												str+='<td>Communication Skills</th>';
+												if(result[i].subList[j].subList[k].subList[l].communicationSkillsStatus != null && result[i].subList[j].subList[k].subList[l].communicationSkillsStatus.length >0){
+													str+='<td>'+result[i].subList[j].subList[k].subList[l].communicationSkillsStatus +'</td>';
+												}else{
+													str+='<td>-</td>';
+												}
+												str+='<td>-</td>';
+											str+='</tr>';
+											str+='<tr>';
+												str+='<td>Health</th>';
+												if(result[i].subList[j].subList[k].subList[l].healthStatus != null && result[i].subList[j].subList[k].subList[l].healthStatus.length >0){
+													str+='<td>'+result[i].subList[j].subList[k].subList[l].healthStatus +'</td>';
+												}else{
+													str+='<td>-</td>';
+												}
+												str+='<td>-</td>';
+											str+='</tr>';
+											str+='<tr>';
+												str+='<td> Is  Using Smart Phone ?</th>';
+												if(result[i].subList[j].subList[k].subList[l].smartPhoneExist != null && result[i].subList[j].subList[k].subList[l].smartPhoneExist.length >0){
+													if(result[i].subList[j].subList[k].subList[l].smartPhoneExist == 'Y'){
+														str+='<td>YES</td>';
+													}else if(result[i].subList[j].subList[k].subList[l].smartPhoneExist == 'N'){
+														str+='<td>NO</td>';
+													}
+												}else{
+													str+='<td>-</td>';
+												}
+												str+='<td>-</td>';
+											str+='</tr>';
+											str+='<tr>';
+												str+='<td> Is  Using Whats Up ?</th>';
+												if(result[i].subList[j].subList[k].subList[l].watsappShare != null && result[i].subList[j].subList[k].subList[l].watsappShare.length >0){
+													if(result[i].subList[j].subList[k].subList[l].watsappShare == 'Y'){
+														str+='<td>YES</td>';
+													}else if(result[i].subList[j].subList[k].subList[l].watsappShare == 'N'){
+														str+='<td>NO</td>';
+													}
+												}else{
+													str+='<td>-</td>';
+												}
+												str+='<td>-</td>';
+											str+='</tr>';
+											str+='<tr>';
+												str+='<td>Is  Using FaceBook ?</td>';
+												if(result[i].subList[j].subList[k].subList[l].facebookUsing != null && result[i].subList[j].subList[k].subList[l].facebookUsing.length >0){
+													if(result[i].subList[j].subList[k].subList[l].facebookUsing == 'Y'){
+														str+='<td>YES</td>';
+													}else if(result[i].subList[j].subList[k].subList[l].facebookUsing == 'N'){
+														str+='<td>NO</td>';
+													}
+												}else{
+													str+='<td>-</td>';
+												}
+												str+='<td>-</td>';
+											str+='</tr>';
+										str+='</tbody>';
+								 str+='</table>';
+								 if(result[i].subList[j].subList[k].subList[l].remarks != null && result[i].subList[j].subList[k].subList[l].remarks.length >0){
+								  str+='<div><h4 class="panel-title"><b>REMARKS : </b><span>'+result[i].subList[j].subList[k].subList[l].remarks +'</span></h4></div>';
+								 }else{
+									  str+='<div><h4 class="panel-title"><b>REMARKS : </b><span>No Remarks</span></h4></div>';
+
+								 }
+							  str+='</div>';
+							 
+						}
+					 }
+				 }
+			  str+='</div>';
+			  str+='</div>';
+		  str+='</div>';
+	}
+	$("#cadreTraingFeedBackDivId").html(str);
+} 
+$("#trainingCampFeedBackDetailsBodyId").collapse('hide');
+
+$(document).on("click","#trainingCampFeedBackDetailsHeaderId",function(){ 
+var isVisible = $("#trainingCampFeedBackDetailsHideId" ).is( ":visible" );
+if(isVisible==false){
+		 $( "#trainingCampFeedBackDetailsHideId" ).show();
+		 $( "#trainingCampFeedBackDetailsShowId" ).hide();
+	}else{
+		$( "#trainingCampFeedBackDetailsHideId" ).hide();
+		$( "#trainingCampFeedBackDetailsShowId" ).show();
+	}
+	$("#trainingCampFeedBackDetailsBodyId").collapse('toggle');
+});
 
 </script>
 </body>
