@@ -2,7 +2,8 @@ package com.itgrids.service.impl;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -21,13 +22,13 @@ import com.itgrids.dao.IPetitionReffererDocumentDAO;
 import com.itgrids.dao.IPetitionSubWorkLocationDetailsDAO;
 import com.itgrids.dao.IPetitionWorkDetailsDAO;
 import com.itgrids.dto.AddressVO;
+import com.itgrids.dto.PetitionMemberVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.ResponseVO;
 import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
 import com.itgrids.model.PetitionMember;
 import com.itgrids.model.PetitionRefferer;
-import com.itgrids.model.PetitionReffererCandidate;
 import com.itgrids.model.PetitionReffererDocument;
 import com.itgrids.model.PetitionSubWorkLocationDetails;
 import com.itgrids.model.PetitionWorkDetails;
@@ -52,6 +53,8 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 	
 	@Autowired
 	private IPetitionMemberDAO petitionMemberDAO;
+	@Autowired
+	private IPetitionReffererCandidateDAO petitionReffererCandidateDAO;
 	
 	@Autowired
 	private IPetitionReffererDAO petitionReffererDAO;
@@ -209,8 +212,6 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		return petitionSubWorkLocationDetails;
 	}
 	
-	
-	
 	public PetitionWorkDetails savePetitionWorkDetails(Long petitionMemberId,RepresentationRequestVO dataVO){
 		PetitionWorkDetails petitionWorkDetails = null;
 		try {
@@ -300,4 +301,49 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		return document;
 	}
 	
+	 /**
+		 * Date : 30/11/2017
+		 * Author :babu kurakula <href:kondababu.kurakula@itgrids.com>
+		 * @description : to get candidate detailse based on  desi Id and locationValue
+		 * @param : designationId,locationLevelId,locationValue
+		 * @return  List<LocationFundDetailsVO> 
+		 */
+		public List<RepresentationRequestVO> getPetitionReferredMemberDetails(RepresentationRequestVO dataVo){
+		    List<RepresentationRequestVO> returnList = new ArrayList<RepresentationRequestVO>();
+		    try {
+		    	//  0 petitonrefCndidateId ,1 name,2 designation ,3 stateId,4 stateName
+		    	// 5 districtId 6 district name 7 constincuyId,8 constincyName, 9 tehsilId,10 teshilName
+		    	// 11 panchayId,12 panchaytname,13 mobilNo,14 emailId,14 desigantionId
+		    	List<Object[]> referalObjs = petitionReffererCandidateDAO.getCandidatseDetailsByDesignationAndLocation(dataVo.getDeptId(),dataVo.getLocationLevelId(),dataVo.getLocationValue());
+		    	if(referalObjs != null && referalObjs.size() > 0){
+		    		for( Object[] param : referalObjs ){
+		    			RepresentationRequestVO mainV0 = new RepresentationRequestVO();
+		    			mainV0.setReferrerCandidateId(commonMethodsUtilService.getLongValueForObject(param[0]));
+		    			PetitionMemberVO petitionMemberVO = new PetitionMemberVO();
+		    			petitionMemberVO.setId(commonMethodsUtilService.getLongValueForObject(param[15]));//desigantionId
+		    			petitionMemberVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+		    			petitionMemberVO.setMemberType(commonMethodsUtilService.getStringValueForObject(param[2]));//designation
+		    			petitionMemberVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[13]));
+		    			petitionMemberVO.setEmailId(commonMethodsUtilService.getStringValueForObject(param[14]));
+		    			mainV0.setPetitionMemberVO(petitionMemberVO);
+		    			AddressVO addressVO= new AddressVO();
+		    			addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[3]));
+		    			addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[4]));
+		    			addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[5]));
+		    			addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[6]));
+		    			addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[7]));
+		    			addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[8]));
+		    			addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[9]));
+		    			addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[10]));
+		    			addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[11]));
+		    			addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[12]));
+		    			mainV0.setCandidateAddressVO(addressVO);
+		    			returnList.add(mainV0);
+		    		}
+		    	}
+		    } catch (Exception e) {
+		      LOG.error("Exception Occured in savePetitionMember "+e.getMessage());
+		    }
+		     return returnList;
+		  }
 }
