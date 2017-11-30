@@ -54,8 +54,11 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	public List<Long> getNominatedPostGovtOrderByPostId(Long postId){
 		StringBuilder queryStr = new StringBuilder();
 		
-		queryStr.append(" select model.nominatedPostGovtOrderId from  NominatedPostGovtOrder model where model.nominatedPost.nominatedPostId = :postId and " +
+		queryStr.append(" select model.nominatedPostGovtOrderId from  NominatedPostGovtOrder model where  " +
 				" model.isDeleted = 'N' and model.isExpired = 'N' ");
+		if(postId != null && postId.longValue() > 0l){
+			queryStr.append(" and  model.nominatedPost.nominatedPostId = :postId  ");
+		}
 		Query query = getSession().createQuery(queryStr.toString());
 		
 		if(postId != null && postId.longValue() > 0l){
