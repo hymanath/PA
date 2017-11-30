@@ -3580,3 +3580,92 @@ function getTotalArticledetails(articleId){
 		});    
 } 	
    /* Alert Description Details Block End  */
+
+getSurveyQuestionWithMarksDetailsByTDpCadreId();
+function getSurveyQuestionWithMarksDetailsByTDpCadreId(){
+
+	var jsObj={
+			tdpCadreId :"7174953"
+	}	
+	$.ajax({
+		 type: "POST",
+		 url: "getSurveyQuestionWithMarksDetailsByTDpCadreIdAction.action",
+		 data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length>0){
+				var str="";
+				var str1="";
+		//for(var i in result){
+			str+='<label>'+result[0].surveyName+' : </label>';
+		//}		
+		str+='<table class="table table-bordered table-condensed" id="normalSurveyTableId">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th>Question</th>';
+					str+='<th>Option</th>';
+					//str+='<th>Marks</th>';
+					str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';	
+					for(var j in result){
+							for(var i in result[j].subList){
+								if(result[j].surveyTypeId == 5){
+								str+='<tr>';
+										str+='<td>'+result[j].subList[i].question+'</td>';
+										if(result[j].subList[i].name != null && result[j].subList[i].name !=""){
+										str+='<td>'+result[j].subList[i].name+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+								str+='</tr>';				
+							  }
+						}
+					}			
+				
+		str+='</tbody>';
+		str+='</table>';
+		$("#normalSurveyDiv").html(str);/* 
+		$('#normalSurveyTableId').dataTable({
+		"aaSorting": [[ 0, "asc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]]
+		}); */
+		//for(var i in result){
+			str1+='<label>'+result[1].surveyName+' :</label>';
+		//}	
+			str1+='<table class="table table-bordered table-condensed" id="quizSurveyTableId">';
+			str1+='<thead>';
+				str1+='<tr>';
+					str1+='<th>Question</th>';
+					str1+='<th>Given Option</th>';
+					str1+='<th>Marks</th>';
+					str1+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var j in result){
+				for(var i in result[j].subList){
+						if(result[j].surveyTypeId ==7){
+						str1+='<tr>';
+								str1+='<td>'+result[j].subList[i].question+'</td>';
+									if(result[j].subList[i].name != null && result[j].subList[i].name !=""){
+										str1+='<td>'+result[j].subList[i].name+'</td>';
+									}else{
+										str1+='<td>-</td>';
+									}
+									str1+='<td>'+result[j].subList[i].marks+'</td>';
+						str1+='</tr>';	
+					}
+				}
+			}
+				
+		str1+='</tbody>';
+		str1+='</table>';
+			$("#quizSurveyDiv").html(str1);
+			/* $('#quizSurveyTableId').dataTable({
+		"aaSorting": [[ 0, "asc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]]
+		}); */
+		}	
+		});
+}		
