@@ -8,7 +8,7 @@ onLoadCalls()
 function onLoadCalls()
 {
 	levelWiseOverview();
-	getSolidWasteManagementOverAllCounts(3,19);
+	getSolidWasteManagementOverAllCounts(0,"district");
 }
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
@@ -277,7 +277,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							table+='<td>'+rfidTags+'</td>';
 							table+='<td>'+farmers+'</td>';
 							table+='<td>'+rfidTracking+'</td>';
-							table+='<td>'+swmCollection+'</td>';
+							table+='<td>'+swmCollection.toFixed(2)+'</td>';
 							table+='<td>'+nadap+'</td>';
 							table+='<td>'+vermi+'</td>';
 							table+='<td>'+vermiStock+'</td>';
@@ -296,7 +296,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							table+='<td attr_dist_rfid="'+result[i].rfidTags+'">'+result[i].rfidTags+'</td>';
 							table+='<td attr_dist_farmer="'+result[i].farmers+'">'+result[i].farmers+'</td>';
 							table+='<td attr_dist_rfidTracking="'+result[i].rfidTracking+'">'+result[i].rfidTracking+'</td>';
-							table+='<td attr_dist_swmCollection="'+result[i].swmCollection+'">'+result[i].swmCollection+'</td>';
+							table+='<td attr_dist_swmCollection="'+result[i].swmCollection+'">'+result[i].swmCollection.toFixed(2)+'</td>';
 							table+='<td attr_dist_nadap="'+result[i].nadap+'">'+result[i].nadap+'</td>';
 							table+='<td attr_dist_vermi="'+result[i].vermi+'">'+result[i].vermi+'</td>';
 							table+='<td attr_dist_vermiStock="'+result[i].vermiStock+'">'+result[i].vermiStock+'</td>';					
@@ -412,8 +412,8 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#fiftykgCount").html(spinner);
 			$("#rfidTracking").html(spinner);
 	var json = {
-		fromDate : "",
-		toDate : "",
+		fromDate : startDate,
+		toDate : endDate,
 		locationType :locationType ,
 		locationId:locId
 	}
@@ -448,7 +448,7 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#blocksId").html(result.blocks);
 			$("#solidWasteId").html(result.houseCollecion);
 			$("#farmerCattleDung").html(result.farmerCollection);
-			$("#totSwmId").html(result.swmCollection);
+			$("#totSwmId").html(result.swmCollection.toFixed(2));
 			$("#stageOneId").html(result.nadap);
 			$("#stageTwoId").html(result.vermi);
 			$("#stageThreeId").html(result.vermiStock);
