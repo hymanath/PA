@@ -18552,7 +18552,7 @@
 	</action>
 	<action name="getSurveyQuestionWithMarksDetailsByTDpCadreIdAction" class="cadreDetailsAction" method="getSurveyQuestionWithMarksDetailsByTDpCadreId" >
 			<result type="json" name="success">
-				<param name="root"></param>
+				<param name="root">finalList</param>
 			</result>
 	</action>
 	<action name="getTdpCadreByHealthCadreWiseDetailsAction" class="cadreDetailsAction"  method="getTdpCadreByHealthCadreWiseDetails">
