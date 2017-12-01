@@ -3,6 +3,7 @@ var globalWorkTypeCount=1;
 setTimeout(function(){ 
 	buildSelfAndRepresenteeDetails("self")
 	getAllDistrictsInState("self",1);
+	getPetitionDepartmentList("self")
 	
 }, 2000);
  
@@ -26,12 +27,14 @@ $(document).on("click",".selfRepresenceCls",function(){
 			globalWorkTypeCount=1;
 			buildSelfAndRepresenteeDetails(typeVal)
 			getAllDistrictsInState("self",1);
+			getPetitionDepartmentList(typeVal)
 		}else if(typeVal == "represent"){
 			$("#selfDetailsDivId").html('');
 			globalWorkTypeCount='';
 			globalWorkTypeCount=1;
 			buildSelfAndRepresenteeDetails(typeVal)
 			getAllDistrictsInState(typeVal,1);
+			getPetitionDepartmentList(typeVal)
 		}
 	}
 	
@@ -524,7 +527,7 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,type
 				$("#mandalrepresent").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		$("#mandalId").trigger('chosen:updated');
+		$("#mandalId"+typeVal+counterId).trigger('chosen:updated');
 		$("#mandalrepresent").trigger('chosen:updated');
 	});	
 }
@@ -558,7 +561,54 @@ function getPanchayatsByTehsilId(levelVal,counterId,typeVal){
 		$("#panchayatrepresent").trigger('chosen:updated');
 	});	
 }
+function getPetitionDepartmentList(typeVal){
+    $("#subjectId"+typeVal).html('');
+	$("#departmentId"+typeVal).html('');
+	  var json = {
+		
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionDepartmentList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#subjectId"+typeVal).append('<option value="0">Select Subject</option>');
+			 $("#departmentId"+typeVal).append('<option value="0">Select Department</option>');
+			for(var i in result){
+				$("#subjectId"+typeVal).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#departmentId"+typeVal).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#subjectId"+typeVal).trigger('chosen:updated');
+		$("#departmentId"+typeVal).trigger('chosen:updated');
+	});	
+}
 
+
+function getPetitionDesignationList(){
+    
+	  var json = {
+		 
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionDesignationList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		console.log(result);
+	});	
+}
 getPetitionReferredMemberDetails("1","3","11");
 function getPetitionReferredMemberDetails(desiganationId,locationLevelId,locationValue){
     
@@ -581,42 +631,5 @@ function getPetitionReferredMemberDetails(desiganationId,locationLevelId,locatio
 	});	
 }
 
-function getPetitionDesignationList(){
-    
-	  var json = {
-		
-		}           
-	$.ajax({              
-		type:'POST',    
-		url: 'getPetitionDepartmentList',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		console.log(result);
-	});	
-}
 
-
-function getPetitionDepartmentList(){
-    
-	  var json = {
-		 
-		}           
-	$.ajax({              
-		type:'POST',    
-		url: 'getPetitionDesignationList',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		console.log(result);
-	});	
-}
 
