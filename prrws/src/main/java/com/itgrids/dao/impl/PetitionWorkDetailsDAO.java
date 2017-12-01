@@ -1,6 +1,7 @@
 package com.itgrids.dao.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -22,12 +23,12 @@ public class PetitionWorkDetailsDAO extends GenericDaoHibernate<PetitionWorkDeta
 
 	}
 	
-	public List<Object[]> getWorkLocationDetailsByPetitionMemberId(List<Long> petitionMemberIds){
+	public List<Object[]> getWorkLocationDetailsByPetitionMemberId(Set<Long> petitionMemberIds){
 		
 		   StringBuilder sb = new StringBuilder();
 		   
 			sb.append(" select model.petitionMemberId,model.workName,model.noOfWorks," +
-					  " model.isPreviousPetition,model.previousPetitionRefNo,model.insertedTime " +
+					  " model.isPreviousPetition,model.previousPetitionRefNo,model.insertedTime,model.subject " +
 					  " from PetitionWorkDetails model  ");
 			sb.append(" where model.petitionMemberId in(:petitionMemberIdsLst) ");
 			

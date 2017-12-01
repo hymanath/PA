@@ -31,6 +31,7 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private List<MultipartFile> workFilesList;
 	private PetitionMemberVO petitionMemberVO;
 	private AddressVO candidateAddressVO;
+	private String refCode;
 	
 	public List<MultipartFile> getWorkFilesList() {
 		return workFilesList;
@@ -206,6 +207,14 @@ public class RepresentationRequestVO implements java.io.Serializable{
 
 	public void setAge(Long age) {
 		this.age = age;
+	}
+
+	public String getRefCode() {
+		return refCode;
+	}
+
+	public void setRefCode(String refCode) {
+		this.refCode = refCode;
 	}
 	
 	
