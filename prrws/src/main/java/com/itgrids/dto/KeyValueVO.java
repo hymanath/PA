@@ -3,6 +3,7 @@ package com.itgrids.dto;
 public class KeyValueVO {
 	private Long key;
 	private String value;
+	private String electionType;
 	
 	public Long getKey() {
 		return key;
@@ -16,6 +17,13 @@ public class KeyValueVO {
 	public void setValue(String value) {
 		this.value = value;
 	}
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+	
 	
 	
 }

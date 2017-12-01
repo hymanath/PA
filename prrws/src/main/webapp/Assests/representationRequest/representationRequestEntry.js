@@ -549,7 +549,12 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,type
 				var tehsilId = result[i].key;
 				var levelId = tehsilId.toString().substr(1, 4);
 				$("#mandalId"+typeVal+counterId).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
-				$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+' </option>');
+				if(result[i].electionType != null){
+					$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'-'+result[i].electionType+'</option>');
+				}else{
+					$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'- MANDAL</option>');
+				}
+				
 			}
 		}
 		$("#mandalId"+typeVal+counterId).trigger('chosen:updated');

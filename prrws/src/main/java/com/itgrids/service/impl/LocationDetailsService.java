@@ -1,6 +1,8 @@
 package com.itgrids.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,15 @@ public class LocationDetailsService implements ILocationDetailsService {
 						 voList.add(vo);
 					 }
 				 }
-			 }
+			  }
+
+			 Collections.sort(voList,new Comparator<LocationFundDetailsVO>() {
+					public int compare(LocationFundDetailsVO o1,
+							LocationFundDetailsVO o2) {
+						return o1.getName().compareTo(o2.getName());
+					}
+				});
+
 		 }catch(Exception e){
 			// e.printStackTrace();
 			LOG.error(" Exception raised at getdistrictidandname(); "); 
@@ -101,6 +111,13 @@ public class LocationDetailsService implements ILocationDetailsService {
 					finalList.add(vo);
 				}
 			}
+			Collections.sort(finalList,new Comparator<LocationVO>() {
+				public int compare(LocationVO o1,
+						LocationVO o2) {
+					return o1.getLocationName().compareTo(o2.getLocationName());
+				}
+			});
+			 
 			return finalList;
 		}catch(Exception e){
 			LOG.error(" Exception occured in FundManagementDashboardService ,getLocationsNamesBySubLocation() ",e);
@@ -133,6 +150,13 @@ public class LocationDetailsService implements ILocationDetailsService {
 					voList.addAll(localElectionBodyeList);
 				}
 			}
+			
+			Collections.sort(voList,new Comparator<KeyValueVO>() {
+				public int compare(KeyValueVO o1,KeyValueVO o2) {
+					return o1.getValue().compareTo(o2.getValue());
+				}
+			});
+			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getTehsilsForConstituency() method, Exception - ",e);
 		}
@@ -155,6 +179,7 @@ public class LocationDetailsService implements ILocationDetailsService {
 				String idStr= "1"+commonMethodsUtilService.getStringValueForObject(param[0]);
 				vo.setKey(commonMethodsUtilService.getLongValueForString(idStr));
 				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+				vo.setElectionType(commonMethodsUtilService.getStringValueForObject(param[2]));
 				voList.add(vo);
 			}
 		}
@@ -183,6 +208,11 @@ public class LocationDetailsService implements ILocationDetailsService {
 					voList.add(vo);
 				}
 			}
+			Collections.sort(voList,new Comparator<KeyValueVO>() {
+				public int compare(KeyValueVO o1,KeyValueVO o2) {
+					return o1.getValue().compareTo(o2.getValue());
+				}
+			});
 		}catch(Exception e){
 			LOG.error("Exception Occured in getLocalElectionBodysByTehsilIds() method, Exception - ",e);
 		}
