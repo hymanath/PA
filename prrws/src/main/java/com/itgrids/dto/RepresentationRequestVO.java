@@ -10,16 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class RepresentationRequestVO implements java.io.Serializable{
 
 	private Long userId;
-	
-	private PetitionMemberVO petitionMemberVO;
-
 	private Long locationLevelId;
 	private Long locationValue;
-	
-	private AddressVO candidateAddressVO;
-
-	private Long referrerCandidateId;
-	
+	private Long referrerCandidateId;	
 	private String workName;
 	private Long  noOfWorks;
 	private Long estimationCost;
@@ -29,10 +22,19 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private String isPreviousPetition;
 	private String previousPetitionRefNo;
 	private String projectDescription;
-	
 	private List<RepresentationRequestVO> worksList = new ArrayList<RepresentationRequestVO>(0);
 	private List<MultipartFile> filesList;
-	private MultipartFile file;
+	private List<MultipartFile> workFilesList;
+	private PetitionMemberVO petitionMemberVO;
+	private AddressVO candidateAddressVO;
+	
+	public List<MultipartFile> getWorkFilesList() {
+		return workFilesList;
+	}
+
+	public void setWorkFilesList(List<MultipartFile> workFilesList) {
+		this.workFilesList = workFilesList;
+	}
 
 	public List<MultipartFile> getFilesList() {
 		return filesList;
@@ -40,14 +42,6 @@ public class RepresentationRequestVO implements java.io.Serializable{
 
 	public void setFilesList(List<MultipartFile> filesList) {
 		this.filesList = filesList;
-	}
-
-	public MultipartFile getFile() {
-		return file;
-	}
-
-	public void setFile(MultipartFile file) {
-		this.file = file;
 	}
 
 	public AddressVO getCandidateAddressVO() {

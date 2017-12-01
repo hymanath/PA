@@ -82,11 +82,11 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 					petitionMemberAddress = saveLocationAddress(dataVO.getCandidateAddressVO());
 				PetitionMember petitionMember = savePetitionMember(dataVO);
 				
-				if(dataVO.getPetitionMemberVO().getFilesList() != null && dataVO.getPetitionMemberVO().getFilesList().size()>0){
+				/*if(dataVO.getPetitionMemberVO().getFilesList() != null && dataVO.getPetitionMemberVO().getFilesList().size()>0){
 					for (MultipartFile file : dataVO.getPetitionMemberVO().getFilesList()) {
 						Document petitionMemberDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,dataVO.getUserId());
 					}
-				}
+				}*/
 				
 			/** End Petition Member Details saving */
 			
