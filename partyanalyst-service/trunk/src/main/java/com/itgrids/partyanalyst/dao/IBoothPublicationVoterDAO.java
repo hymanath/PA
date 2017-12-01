@@ -756,4 +756,5 @@ public interface IBoothPublicationVoterDAO extends
 	  public Long getDivisionWiseVoters(Long locationId,Long levelId, Long publicationDateId);
 	  public Long getPublicationDateIdByVoterIDCardNo(String voterCardNo);
 	  public Long getPublicationDateIdByVoterID(Long voterId);
+	  public List<Object[]> getVoteDetailsByLocation(Long searchVal,Long locationLevel,String type,String typeVal);
 }

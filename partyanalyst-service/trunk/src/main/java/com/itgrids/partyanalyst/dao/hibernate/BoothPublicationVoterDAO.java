@@ -8914,4 +8914,41 @@ public Long getPublicationDateIdByVoterID(Long voterId){
 	return (Long)query.uniqueResult();
 }
 
+public List<Object[]> getVoteDetailsByLocation(Long searchVal,Long locationLevel,String type,String typeVal){
+	StringBuilder sb = new StringBuilder();
+	//0 voterId,1 name,2 relationshipType,3 relativeName,4gender,5 age,6 voterIDCardNo,7 houseNo,8 imagePath
+	sb.append("select model.voter.voterId," +
+					" model.voter.name," +
+					" model.voter.relationshipType," +
+					" model.voter.relativeName," +
+					" model.voter.gender," +
+					" model.voter.age," +
+					" model.voter.voterIDCardNo," +
+					" model.voter.houseNo," +
+					" model.voter.imagePath" +
+					" from BoothPublicationVoter model" +
+					" where model.booth.publicationDate.publicationDateId = 22");
+	
+	if(locationLevel != null && locationLevel.longValue() == 4l && searchVal != null && searchVal.longValue() > 0l)
+		sb.append(" and model.booth.constituency.constituencyId = :searchVal");
+	else if(locationLevel != null && locationLevel.longValue() == 5l && searchVal != null && searchVal.longValue() > 0l)
+		sb.append(" and model.booth.tehsil.tehsilId = :searchVal");
+	else if(locationLevel != null && locationLevel.longValue() == 7l && searchVal != null && searchVal.longValue() > 0l)
+		sb.append(" and model.booth.localBody.localElectionBodyId = :searchVal");
+	else if(locationLevel != null && locationLevel.longValue() == 6l && searchVal != null && searchVal.longValue() > 0l)
+		sb.append(" and model.booth.panchayat.panchayatId = :searchVal");
+	else if(locationLevel != null && locationLevel.longValue() == 8l  && searchVal != null && searchVal.longValue() > 0l)
+		sb.append(" and model.booth.localBodyWard.constituencyId = :searchVal");
+	
+	if(type != null && type.trim().equalsIgnoreCase("voterId"))
+		sb.append(" and model.voter.voterIDCardNo = :typeVal");
+	
+	Query query = getSession().createQuery(sb.toString());
+	if(searchVal != null && searchVal.longValue() > 0l)
+		query.setParameter("searchVal", searchVal);
+	if(typeVal != null && typeVal.length() >0)
+		query.setParameter("typeVal", typeVal);
+	
+	return query.list();
+}
 }
