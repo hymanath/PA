@@ -5440,29 +5440,29 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 				 for(var j in result.subList1[i].subList1){
 					 if(selectionType!= null && selectionType=="impactScopeWise"){
 						   if(result.subList1[i].subList1[j].id==3){
-							if(result.subList1[i].subList1[j].alertCount !=0){
+							if(result.subList1[i].subList1[j].alertCount >=0){
 							 constituencyImpactArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType}); 
 							}
 						  }else if(result.subList1[i].subList1[j].id==5){
-							  if(result.subList1[i].subList1[j].alertCount !=0){
+							  if(result.subList1[i].subList1[j].alertCount >=0){
 							  mndlMuncpltyImprArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
 							  }
 						  }else if(result.subList1[i].subList1[j].id==7){
-							if(result.subList1[i].subList1[j].alertCount !=0){
+							if(result.subList1[i].subList1[j].alertCount >=0){
 						  vllgWrdPnchytImpctArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
 							}					  
 						  }
 					 }else if(selectionType != null && selectionType=="locationWise"){
 						  if(result.subList1[i].subList1[j].id==4){
-							if(result.subList1[i].subList1[j].alertCount !=0){
+							if(result.subList1[i].subList1[j].alertCount >=0){
 							   constituencyImpactArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType}); 
 							}
 						  }else if(result.subList1[i].subList1[j].id==5){
-							  if(result.subList1[i].subList1[j].alertCount !=0){
+							  if(result.subList1[i].subList1[j].alertCount >=0){
 							    mndlMuncpltyImprArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
 							  }
 						  }else if(result.subList1[i].subList1[j].id==6){
-							if(result.subList1[i].subList1[j].alertCount !=0){
+							if(result.subList1[i].subList1[j].alertCount >=0){
 						      vllgWrdPnchytImpctArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
 							}					  
 						  }  
