@@ -39,7 +39,7 @@ public class QuestionAnswerVO implements Serializable {
 	private String endDate;
 	private Long locationScopeId;
 	private Long surveyTypeId;
-	private Long marks=0l;
+	private String marks;
 	private List<QuestionAnswerVO> subList = new ArrayList<QuestionAnswerVO>(0);
 	
 	public List<QuestionAnswerVO> getSubList() {
@@ -50,11 +50,11 @@ public class QuestionAnswerVO implements Serializable {
 		this.subList = subList;
 	}
 
-	public Long getMarks() {
+	public String getMarks() {
 		return marks;
 	}
 
-	public void setMarks(Long marks) {
+	public void setMarks(String marks) {
 		this.marks = marks;
 	}
 
