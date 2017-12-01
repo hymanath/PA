@@ -975,17 +975,17 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 				str+= '</div>';
 			
 			$(".pressmeetModelCls").html(str);
-			$('#dataTablePressmeetCandidateId').dataTable({
+			 $(".performanceRating").rating({
+				showClear: false,
+				showCaption:false,
+				hoverOnClear: true,
+				animate:false
+		  });
+		 $('#dataTablePressmeetCandidateId').dataTable({
 				"iDisplayLength": 10,
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 				
 			 });
-			 $(".performanceRating").rating({
-			showClear: false,
-			showCaption:false,
-			hoverOnClear: true,
-			animate:false
-		});
 			
 		}
 		
