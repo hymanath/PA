@@ -23,7 +23,7 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 	
 	public List<Object[]> getLocalElectionBodyByTehsilId(List<Long> tehsilIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.localElectionBodyId,model.name from LocalElectionBody model "
+		sb.append("select model.localElectionBodyId,model.name,model.electionType.electionType from LocalElectionBody model "
 				+ "where model.tehsilId in (:tehsilIds) order by model.name ");
 		Query query =getSession().createQuery(sb.toString());
 		query.setParameterList("tehsilIds", tehsilIds);
