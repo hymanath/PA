@@ -4559,5 +4559,6 @@
     	<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" /> 
     	<property name="jbCommitteeConfirmRuleConditionDAO" ref="jbCommitteeConfirmRuleConditionDAO" /> 
     	<property name="jbCommitteeStatusDAO" ref="jbCommitteeStatusDAO" />
+    	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
     	</bean>
 </beans>			
