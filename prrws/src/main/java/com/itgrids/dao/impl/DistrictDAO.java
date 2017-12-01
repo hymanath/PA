@@ -1,6 +1,5 @@
 package com.itgrids.dao.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.model.District;
-import com.itgrids.model.LightMonitoring;
 
 @Repository
 public class DistrictDAO extends GenericDaoHibernate<District, Long> implements IDistrictDAO {
@@ -28,7 +26,7 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 	public List<Object[]> getDistrictIdName(Long stateId){
 	    StringBuilder sb = new StringBuilder();
 	    sb.append(" select model.districtId,model.districtName from District model "+
-	               " where model.stateId=:stateId");
+	               " where model.stateId=:stateId order by model.districtName");
 	    Query query = getSession().createQuery(sb.toString());
 	    query.setParameter("stateId",stateId);
 	    return query.list();
