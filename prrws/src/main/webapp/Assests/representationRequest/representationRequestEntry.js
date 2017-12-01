@@ -47,43 +47,43 @@ function buildSelfAndRepresenteeDetails(typeVal){
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-3">';
 				str+='<label>Name</label>';
-				str+='<input type="text" class="form-control m_top10 height45" id="name'+typeVal+'" placeholder="Enter Name">';
+				str+='<input type="text"  name="petitionMemberVO.name"  class="form-control m_top10 height45" id="name'+typeVal+'" placeholder="Enter Name">';
 			str+='</div>';
 			str+='<div class="col-sm-3">';
 				str+='<label>Mobile Number</label>';
-				str+='<input type="text" class="form-control m_top10 height45" id="mobileNumber'+typeVal+'" placeholder="Enter Mobile Number">';
+				str+='<input type="text" name="petitionMemberVO.mobileNo" class="form-control m_top10 height45" id="mobileNumber'+typeVal+'" placeholder="Enter Mobile Number">';
 			str+='</div>';
 			str+='<div class="col-sm-3">';
 				str+='<label>E-mail ID</label>';
-				str+='<input type="text" class="form-control m_top10 height45" id="emailId'+typeVal+'" placeholder="Enter E-mail ID">';
+				str+='<input type="text" name="petitionMemberVO.emailId" class="form-control m_top10 height45" id="emailId'+typeVal+'" placeholder="Enter E-mail ID">';
 			str+='</div>';
 			str+='<div class="col-sm-3">';
 				str+='<label>Voter ID</label>';
-				str+='<input type="text" class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
+				str+='<input type="text"  name="petitionMemberVO.voterCardNo" class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-3">';	
 				str+='<label>District</label>';
-				str+='<select class="form-control chosen-select m_top10" id="district'+typeVal+'">';
+				str+='<select   name="candidateAddressVO.districtId" class="form-control chosen-select m_top10" id="district'+typeVal+'">';
 					str+='<option value="0">Select District</option>';
 				str+='</select>';
 			str+='</div>';
 			str+='<div class="col-sm-3">';	
 				str+='<label>Constituency</label>';
-				str+='<select class="form-control chosen-select m_top10" id="constituency'+typeVal+'">';
+				str+='<select  name="candidateAddressVO.assemblyId"   class="form-control chosen-select m_top10" id="constituency'+typeVal+'">';
 					str+='<option value="0">Select Constituency</option>';
 				str+='</select>';
 			str+='</div>';
 			str+='<div class="col-sm-3">';	
 				str+='<label>Mandal</label>';
-				str+='<select class="form-control chosen-select m_top10" id="mandal'+typeVal+'">';
+				str+='<select   name="candidateAddressVO.tehsilId"  class="form-control chosen-select m_top10" id="mandal'+typeVal+'">';
 					str+='<option value="0">Select Mandal</option>';
 				str+='</select>';
 			str+='</div>';
 			str+='<div class="col-sm-3">';	
 				str+='<label>Village</label>';
-				str+='<select class="form-control chosen-select m_top10" id="panchayat'+typeVal+'">';
+				str+='<select  name="candidateAddressVO.panchayatId"  class="form-control chosen-select m_top10" id="panchayat'+typeVal+'">';
 					str+='<option value="0">Select Panchayat</option>';
 				str+='</select>';
 			str+='</div>';
@@ -97,7 +97,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
 			str+='<h3 class="panel-title f_22">REFERRAL LETTER</h3>';
-			str+='<input type="file" id="update_TourFileId2'+typeVal+'" multiple="multiple"  name="files[]" class="m_top20"/>';
+			str+='<input type="file"   name="filesList[]"   id="update_TourFileId2'+typeVal+'" multiple="multiple" class="m_top20"/>';
 		str+='</div>';
 	str+='</div>';
 	str+='<div class="row m_top20">';
@@ -106,49 +106,49 @@ function buildSelfAndRepresenteeDetails(typeVal){
 			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-6">';
 					str+='<label>Name of the Work</label>';
-					str+='<input type="text" class="form-control m_top10 height45" id="nameofWork'+typeVal+'" placeholder="Enter Name Of Work">';
+					str+='<input  name="workName"  type="text" class="form-control m_top10 height45" id="nameofWork'+typeVal+'" placeholder="Enter Name Of Work">';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<label>No of Works</label>';
-					str+='<input type="text" class="form-control m_top10 height45" id="noofWork'+typeVal+'" placeholder="Enter No Of Work">';
+					str+='<input   name="noOfWorks"   type="text" class="form-control m_top10 height45" id="noofWork'+typeVal+'" placeholder="Enter No Of Work">';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<label>Work Cost (Est. Cost in Lakh)</label>';
-					str+='<input type="text" class="form-control m_top10 height45" id="workCost'+typeVal+'" placeholder="Enter Work Cost">';
+					str+='<input type="text"  name="estimationCost" class="form-control m_top10 height45" id="workCost'+typeVal+'" placeholder="Enter Work Cost">';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-3">';
 					str+='<label>Subject</label>';
-					str+='<select class="form-control chosen-select m_top10" id="subjectId'+typeVal+'">';
+					str+='<select  name="subjectId"  class="form-control chosen-select m_top10" id="subjectId'+typeVal+'">';
 						str+='<option value="0">Select Subject</option>';
 					str+='</select>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<label>Department</label>';
-					str+='<select class="form-control chosen-select m_top10" id="departmentId'+typeVal+'">';
+					str+='<select  name="deptId"  class="form-control chosen-select m_top10" id="departmentId'+typeVal+'">';
 						str+='<option value="0">Select Department</option>';
 					str+='</select>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<label>Previous Petition</label>';
-					str+='<select class="form-control chosen-select m_top10" id="previousPetitionId'+typeVal+'">';
+					str+='<select  name="isPreviousPetition"  class="form-control chosen-select m_top10" id="previousPetitionId'+typeVal+'">';
 						str+='<option value="0">Select Previous Petition</option>';
 					str+='</select>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<label>Previous Petition No (Endt NO)</label>';
-					str+='<input type="text" class="form-control m_top10 height45" id="workCost'+typeVal+'" value="101/20/11/2017">';
+					str+='<input  name="previousPetitionRefNo"  type="text" class="form-control m_top10 height45" id="workCost'+typeVal+'" value="101/20/11/2017">';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row">';
 				str+='<div class="col-sm-6">';
 					str+='<h3 class="panel-title f_22">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
-					str+='<textarea class="form-control m_top20" rows="7" id="textArea'+typeVal+'"></textarea>';
+					str+='<textarea name="projectDescription"  class="form-control m_top20" rows="7" id="textArea'+typeVal+'"></textarea>';
 				str+='</div>';
 				str+='<div class="col-sm-6">';
 					str+='<h3 class="panel-title f_22">PROJCT DOCUMENTS UPLOAD</h3>';
-					str+='<input type="file" id="projectDocUpload'+typeVal+'" multiple="multiple"  name="files[]" class="m_top20"/>';
+					str+='<input type="file"  name="workFiles[]"  id="projectDocUpload'+typeVal+'" multiple="multiple" class="m_top20"/>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -178,7 +178,7 @@ function buildTemplateWorkDetails(typeVal){
 			str+='<div class="row m_top10">';
 					str+='<div class="col-sm-3">';
 						str+='<label>Select Type</label>';
-						str+='<select class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+globalWorkTypeCount+'">';
+						str+='<select  name="worksList[0].deptId"  class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+globalWorkTypeCount+'">';
 							str+='<option value="0">Select Work Type</option>';
 						str+='</select>';
 					str+='</div>';
@@ -191,7 +191,7 @@ function buildTemplateWorkDetails(typeVal){
 				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-3">';
 						str+='<label>Location Level</label>';
-						str+='<select class="form-control chosen-select m_top10 locationLevelChange" id="locationLevelId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+						str+='<select  name="worksList[0].locationLevelId" class="form-control chosen-select m_top10 locationLevelChange" id="locationLevelId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
 							str+='<option value="0">Select Level</option>';
 							str+='<option value="3">District</option>';
 							str+='<option value="4">Constituency</option>';
@@ -201,25 +201,25 @@ function buildTemplateWorkDetails(typeVal){
 					str+='</div>';
 					str+='<div class="col-sm-2 districtCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
 						str+='<label>District</label>';
-						str+='<select class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+						str+='<select  name="worksList[0].candidateAddressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
 							str+='<option value="0">Select District</option>';
 						str+='</select>';
 					str+='</div>';
 					str+='<div class="col-sm-2 constituencyCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
 						str+='<label>Constituency</label>';
-						str+='<select class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+						str+='<select   name="worksList[0].candidateAddressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
 							str+='<option value="0">Select Constituency</option>';
 						str+='</select>';
 					str+='</div>';
 					str+='<div class="col-sm-2 mandalCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
 						str+='<label>Mandal</label>';
-						str+='<select class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+						str+='<select  name="worksList[0].candidateAddressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
 							str+='<option value="0">Select Mandal</option>';
 						str+='</select>';
 					str+='</div>';
 					str+='<div class="col-sm-2 panchayatCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
 						str+='<label>Panchayat</label>';
-						str+='<select class="form-control chosen-select m_top10 panchayatLevelChange" id="panchayatId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+						str+='<select  name="worksList[0].candidateAddressVO.panchayatId"  class="form-control chosen-select m_top10 panchayatLevelChange" id="panchayatId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
 							str+='<option value="0">Select Mandal</option>';
 						str+='</select>';
 					str+='</div>';
@@ -231,7 +231,7 @@ function buildTemplateWorkDetails(typeVal){
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-12">';
 				str+='<h3 class="panel-title f_22">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
-				str+='<textarea class="form-control m_top20" rows="4" id="textArea'+typeVal+'1"></textarea>';
+				str+='<textarea  name="worksList[0].projectDescription"  class="form-control m_top20" rows="4" id="textArea'+typeVal+'1"></textarea>';
 			str+='</div>';
 		str+='</div>';
 			
@@ -580,3 +580,43 @@ function getPetitionReferredMemberDetails(desiganationId,locationLevelId,locatio
 	
 	});	
 }
+
+function getPetitionDesignationList(){
+    
+	  var json = {
+		
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionDepartmentList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		console.log(result);
+	});	
+}
+
+
+function getPetitionDepartmentList(){
+    
+	  var json = {
+		 
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionDesignationList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		console.log(result);
+	});	
+}
+
