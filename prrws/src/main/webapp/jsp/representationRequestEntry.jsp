@@ -253,6 +253,45 @@
 		</div>
 	</div>
 </main>
+<div class="modal fade" id="candidateSearchModelDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document" style="width:90%;margin:auto">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" style="font-weight: bold">Candidate Search</h4> 
+			 </div>
+		  <div class="modal-body">
+			<div class="row">
+				<div class="col-sm-3">
+					<select class="form-control chosen-select" id="designationsId">
+						<option value="0">Select Designation</option>
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<select class="form-control chosen-select" id="districtCandId">
+						<option value="0">Select District</option>
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<select class="form-control chosen-select" id="constituencyCanId">
+						<option value="0">Select Constituency</option>
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<button type="button" class="btn btn-xs btn-success selectionSearchDetailsCls">Search</button>
+				</div>
+			</div>
+			<div class="row">
+				<div id="candidateDetailsDivId"></div>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default modalCloseCls" data-dismiss="modal">Close</button>
+		  </div>
+	  </div>
+	</div>
+</div>
+
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
