@@ -15,6 +15,7 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeConfirmRuleConditionDAO;
@@ -59,6 +60,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private IJbCommitteeConfirmRuleConditionDAO jbCommitteeConfirmRuleConditionDAO;
 	private JbCommitteeStatusDAO jbCommitteeStatusDAO;
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	
 	public JbCommitteeStatusDAO getJbCommitteeStatusDAO() {
 		return jbCommitteeStatusDAO;
@@ -173,6 +175,14 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		this.casteCategoryDAO = casteCategoryDAO;
 	}
 
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
 
 	@SuppressWarnings("unused")
 		@Override
@@ -758,8 +768,31 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 				
 		    	//getOnliCadRegistrSearchVoteDetails(constencyId,mandalId,villageId,boothId,type,typeVal)
 		    	if(voterCardNo !=null && voterCardNo.length() >1){
-			    	voterVoList=cadreRegistrationService.getOnliCadRegistrSearchVoteDetails(null,null,null,null,"voterId",voterCardNo);
-			    	if(voterVoList !=null && voterVoList.size() >0){
+		    		
+			    	//voterVoList=cadreRegistrationService.getOnliCadRegistrSearchVoteDetails(constencyId,mandalId,villageId,null,"voterId",voterCardNo);
+			    	List<Object[]> voterObjList = boothPublicationVoterDAO.getVoteDetailsByLocation(locationValue,locationLevel,"voterId",voterCardNo);
+			    	//0 voterId,1 name,2 relationshipType,3 relativeName,4gender,5 age,6 voterIDCardNo,7 houseNo,8 imagePath
+			    	if(voterObjList !=null && voterObjList.size() >0){
+			    		for(Object[] param:voterObjList){
+			    			mainVO.setName(param[1] !=null?commonMethodsUtilService.getStringValueForObject(param[1]):null);
+		    				mainVO.setRelationshipType(param[2] !=null?commonMethodsUtilService.getStringValueForObject(param[2]):null);
+		    				mainVO.setRelativeName(param[3] !=null?commonMethodsUtilService.getStringValueForObject(param[3]):null);
+		    				mainVO.setGender(param[4] !=null?commonMethodsUtilService.getStringValueForObject(param[4]):null);
+		    				mainVO.setAge(param[5] !=null?commonMethodsUtilService.getLongValueForObject(param[5]):null);
+		    				mainVO.setHouseNo(param[7] !=null?commonMethodsUtilService.getStringValueForObject(param[7]):null);
+							//mainVO.setMobileNumber(param[0] !=null?commonMethodsUtilService.getStringValueForObject(param[1]):null);
+							mainVO.setVoterCardNo(param[6] !=null?commonMethodsUtilService.getStringValueForObject(param[6]):null);
+							
+							mainVO.setVoterId(param[0] !=null?commonMethodsUtilService.getLongValueForObject(param[0]):null);
+							//mainVO.setMemberShipCardId(param[0] !=null?commonMethodsUtilService.getStringValueForObject(param[1]):null);
+							//mainVO.setTdpCadreId(param[0] !=null?commonMethodsUtilService.getLongValueForObject(param[1]):null);
+							
+							if((param[8]) !=null)
+							 mainVO.setImageURL("https://mytdp.com/voter_images/"+commonMethodsUtilService.getStringValueForObject(param[8]));
+							
+			    		 }
+			    	 }
+			    	/*if(voterVoList !=null && voterVoList.size() >0){
 			    		for(VoterSearchVO voterDetailsVO:voterVoList){
 			    			if(voterDetailsVO !=null){
 			    				mainVO.setName(voterDetailsVO.getName());
@@ -784,7 +817,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 								
 			    			}
 			    		}
-			    	}
+			    	}*/
 		    	}
 			}else {
 				for(CadreCommitteeVO candidateDetailsVO:cadreCommitteeVO.getPreviousRoles()){
