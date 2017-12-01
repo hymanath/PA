@@ -5457,8 +5457,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  try {
 			  Client client = Client.create();
 			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
-			// WebResource webResource = client.resource("https://www.mytdp.com/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
-			   WebResource webResource = client.resource("http://192.168.11.173:8080/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
+			  WebResource webResource = client.resource("https://www.mytdp.com/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
+			// WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
    	 	  if (response.getStatus() != 200) {
    	 		finalList =null;
@@ -5503,11 +5503,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	   	 					}
 		   	 				if(question.has("name"))
 	   	 					{
-		   	 					questionVO.setName(questionObj.getString("name"));
+		   	 					questionVO.setName(questionObj.getString("name"));//correct answer
 	   	 					}
 			   	 			if(question.has("marks"))
 	   	 					{
-			   	 			questionVO.setMarks(questionObj.getLong("marks"));
+			   	 				questionVO.setMarks(questionObj.getString("marks"));
+	   	 					}
+				   	 		if(question.has("voterName"))
+	   	 					{
+			   	 				questionVO.setCandidateName(questionObj.getString("voterName"));//Given option
 	   	 					}
 			   	 			questionWiseList.add(questionVO);
 	   	 				}
