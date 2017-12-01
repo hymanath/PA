@@ -1833,7 +1833,7 @@
 						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="pressmeet">
 						   <h4 class="panel-title text-capital" style="width:440px;">    
 							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
-							  PRESS MEET 
+							  PRESS MEET <small> - <span class="pressMeetMainHeadingCls"></span></small>
 						   </h4>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="pressmeet">
