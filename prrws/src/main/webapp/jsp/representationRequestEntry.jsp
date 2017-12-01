@@ -199,6 +199,7 @@
 						<div class="panel-heading">
 							<h4 class="panel-title f_22" style="font-weight:normal !important;">REPRESENTATION REQUEST</h4>
 						</div>
+						<form action="saveRepresentRequestDetails" id="adminProfileForm" name="adminProfileFormName" enctype="multipart/form-data" method="post">
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-sm-12">
@@ -210,7 +211,7 @@
 												<span class="input-group-addon">
 													<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 												</span>
-												<input type="text" class="form-control" id="dateRangePickerMGNF"/>
+												<input type="text" name="representationDate" class="form-control" id="dateRangePickerMGNF"/>
 											</div>
 										</div>
 										<div class="col-sm-3">
@@ -218,13 +219,13 @@
 												<div class="row m_top10">
 													<div class="col-sm-3">
 														<div class="borederCss">
-															<input type="radio" id="self" name="selector" class="selfRepresenceCls" attr_type="self" checked>
+															<input type="radio" id="self" value ="1" name="memberTypeRadio" attr_name="selfMemberType" class="selfRepresenceCls" attr_type="self" checked>
 															<label><h5>SELF</span></h5>
 														</div>
 													</div>
 													<div class="col-sm-6">
 														<div class="borederCss">
-															<input type="radio" id="Representee" class="selfRepresenceCls" attr_type="represent" name="selector">
+															<input type="radio" id="Representee" value ="2" class="selfRepresenceCls" attr_type="represent" attr_name="representMemberType" name="memberTypeRadio" >
 															<label><h5 class="text-capital">Representee</h5></label>
 														</div>
 													</div>
@@ -245,6 +246,7 @@
 								</div>
 							</div>
 						</div>
+						</form>
 					</div>
 				</div>
 			</div>
