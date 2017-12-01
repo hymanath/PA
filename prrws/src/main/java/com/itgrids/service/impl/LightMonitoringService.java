@@ -711,12 +711,13 @@ public class LightMonitoringService  implements ILightMonitoring{
 				  if (dateVO != null )  {
 					  	dateVO.setTimePeriod(string);
 					  if (!string.equalsIgnoreCase("Today Total")) {
-						  dateVO.setPendingLightcount( list.get(0).getTotalLights()-dateVO.getTotalLights());
+						 // dateVO.setPendingLightcount( list.get(0).getTotalLights()-dateVO.getTotalLights());
 						  if (dateVO.getSubList() != null && dateVO.getSubList().size() > 0) {
 							  for(LightMonitoringVO vo:dateVO.getSubList()) {
 								  LightMonitoringVO matchVO = getMatchVO(list.get(0).getSubList(), vo.getLightVendorId());
 								   if (matchVO != null ) {
 									   vo.setPendingLightcount(matchVO.getTotalLights()-vo.getTotalLights());
+									   dateVO.setPendingLightcount(dateVO.getPendingLightcount()+vo.getPendingLightcount());
 								   }
 							  }
 						  }
@@ -739,9 +740,11 @@ public class LightMonitoringService  implements ILightMonitoring{
 							  LightMonitoringVO matchVO = getMatchVO(oldDateVO.getSubList(), vo.getLightVendorId());
 							   if (matchVO != null ) {
 								   Long totalLghts = matchVO.getTotalLights()-vo.getTotalLights();
-								    if (totalLghts == 0l) {
-								    	vo.setPendingLightcount(0l);
-								    }
+								   if (totalLight == 0l) {
+									    if (totalLghts == 0l) {
+									    	vo.setPendingLightcount(0l);
+									    } 
+								   }
 							   }
 						  }
 					  }
