@@ -3,7 +3,9 @@ package com.itgrids.service.impl;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -22,6 +24,7 @@ import com.itgrids.dao.IPetitionReffererDocumentDAO;
 import com.itgrids.dao.IPetitionSubWorkLocationDetailsDAO;
 import com.itgrids.dao.IPetitionWorkDetailsDAO;
 import com.itgrids.dto.AddressVO;
+import com.itgrids.dto.InputVO;
 import com.itgrids.dto.PetitionMemberVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.ResponseVO;
@@ -346,4 +349,55 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		    }
 		     return returnList;
 		  }
+		
+		 public List<RepresentationRequestVO> getRepresentativeSearchWiseDetails(InputVO inputVO){
+		    	List<RepresentationRequestVO> resultList = new ArrayList<RepresentationRequestVO>();
+		    	Map<Long,RepresentationRequestVO> representWiseSearchMap = new HashMap<Long,RepresentationRequestVO>();
+		    	List<Long> memberidsLst = new ArrayList<Long>();
+		    	
+		    	try{
+		    		LOG.info("enterd into LocationDetailsService getRepresentativeSearchWiseDetails");
+		    		List<Object[]> representRefObjLst = petitionMemberDAO.getRepresentativeSearchDetailsBy(inputVO.getFilterType(),inputVO.getFilterValue());
+		    		if(representRefObjLst != null && representRefObjLst.size() >0){
+		    			for(Object[] objs : representRefObjLst){
+		    				Long petitinMembrId = commonMethodsUtilService.getLongValueForObject(objs[0]);
+		    				RepresentationRequestVO searchVO = representWiseSearchMap.get(petitinMembrId);
+		    				if(searchVO == null){
+		    					searchVO = new RepresentationRequestVO();
+		    					searchVO.setPetitionMemberId(petitinMembrId);
+		    					searchVO.setRefCode(commonMethodsUtilService.getStringValueForObject(objs[1]));
+		    					searchVO.setCandidateName(commonMethodsUtilService.getStringValueForObject(objs[2]));
+		    					searchVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(objs[3]));
+		    					searchVO.setAge(commonMethodsUtilService.getLongValueForObject(objs[4]));
+		    					memberidsLst.add(petitinMembrId);
+		    					representWiseSearchMap.put(searchVO.getPetitionMemberId(), searchVO);
+		    				}
+		    			}
+		    		}
+		    		
+		    		List<Object[]> workLocationObjLst = petitionWorkDetailsDAO.getWorkLocationDetailsByPetitionMemberId(representWiseSearchMap.keySet());
+		    		if(workLocationObjLst != null && workLocationObjLst.size() >0){
+		    			for(Object[] workObj : workLocationObjLst){
+		    				Long memberId = commonMethodsUtilService.getLongValueForObject(workObj[0]);
+		    				RepresentationRequestVO workVO = representWiseSearchMap.get(memberId);
+		    				if(workVO != null){
+		    					//workVO.setPetitionMemberId(commonMethodsUtilService.getLongValueForObject(workObj[0]));
+		    					workVO.setWorkName(commonMethodsUtilService.getStringValueForObject(workObj[1]));
+		    					workVO.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(workObj[2]));
+		    					workVO.setIsPreviousPetition(commonMethodsUtilService.getStringValueForObject(workObj[3]));
+		    					workVO.setPreviousPetitionRefNo(commonMethodsUtilService.getStringValueForObject(workObj[4]));
+		    					workVO.setSubject(commonMethodsUtilService.getStringValueForObject(workObj[5]));
+		    				}
+		    			}
+		    		}
+		    		
+		    		if(commonMethodsUtilService.isMapValid(representWiseSearchMap)){
+		    			resultList.addAll(representWiseSearchMap.values());
+		    		}
+		    		
+		    	}catch(Exception e){
+		    		LOG.error("Exception raised into LocationDetailsService of getRepresentativeSearchWiseDetails() ",e);
+		    	}
+		    	return resultList;
+		    }
 }

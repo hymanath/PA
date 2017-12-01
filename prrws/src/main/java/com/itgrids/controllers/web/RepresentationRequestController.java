@@ -75,6 +75,10 @@ public class RepresentationRequestController {
     }
 	@RequestMapping(value ="/getRepresentativeSearchWiseDetails",method = RequestMethod.POST)
     public @ResponseBody List<RepresentationRequestVO> getRepresentativeSearchWiseDetails(@RequestBody InputVO dataVo) {
-    	 return locationDetailsService.getRepresentativeSearchWiseDetails(dataVo);
+    	 return representationRequestService.getRepresentativeSearchWiseDetails(dataVo);
+    }
+	@RequestMapping(value ="/representationRequestEntryViewMembers", method = RequestMethod.GET)
+    public String representationRequestEntryMembers(ModelMap model) {
+		return "representationRequestEntryViewMembers";
     }
 }
