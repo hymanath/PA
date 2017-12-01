@@ -69,7 +69,7 @@ function buildMultiLocationWiseMeetingGroupsData(result)
 		str+='</div>';
 	str+='</div>';
 	$("#MultiLocationWiseMeetingGroupsData").html(str);
-	getPartyLevelIdWiseMeetingsCount(meetingGrpId,levelId,result.userAccessLevelList[i].userAccessLevelValuesList[j].count,locationName);
+	//getPartyLevelIdWiseMeetingsCount(meetingGrpId,levelId,result.userAccessLevelList[i].userAccessLevelValuesList[j].count,locationName);
 }
 $(document).on("click",".multiLocationWiseMeetingCount",function(){
 	$(".multiLocationWiseMeetingCount").removeClass("active").parent("td").removeClass("bg_E0");
