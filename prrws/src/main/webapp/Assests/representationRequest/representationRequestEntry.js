@@ -546,8 +546,10 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,type
 			 $("#mandalId"+typeVal+counterId).append('<option value="0">Select Mandal</option>');
 			 $("#mandalrepresent").append('<option value="0">Select Mandal</option>');
 			for(var i in result){
+				var tehsilId = result[i].key;
+				var levelId = tehsilId.toString().substr(1, 4);
 				$("#mandalId"+typeVal+counterId).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
-				$("#mandalrepresent").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+' </option>');
 			}
 		}
 		$("#mandalId"+typeVal+counterId).trigger('chosen:updated');
@@ -659,7 +661,7 @@ function getPanchayatsByTehsilId(levelVal,counterId,typeVal){
 			 $("#panchayatrepresent").append('<option value="0">Select Panchayat</option>');
 			for(var i in result){
 				$("#panchayatId"+typeVal+counterId).append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
-				$("#panchayatrepresent").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+				$("#panchayatrepresent").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
 		$("#panchayatId"+typeVal+counterId).trigger('chosen:updated');
