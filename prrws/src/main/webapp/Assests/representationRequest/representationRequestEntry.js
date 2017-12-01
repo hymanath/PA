@@ -2,10 +2,8 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 var globalWorkTypeCount=1;
 setTimeout(function(){ 
 	buildSelfAndRepresenteeDetails("self")
-	getAllDistrictsInState();
-	getConstituencyNamesByDistrictId("14");
-	getTehsilsAndLocalElectionBodyForConstituencyId("156");
-	getPanchayatsByTehsilId("588");
+	getAllDistrictsInState("self",1);
+	
 }, 2000);
  
 $("#dateRangePickerMGNF").daterangepicker({
@@ -27,11 +25,13 @@ $(document).on("click",".selfRepresenceCls",function(){
 			globalWorkTypeCount='';
 			globalWorkTypeCount=1;
 			buildSelfAndRepresenteeDetails(typeVal)
+			getAllDistrictsInState("self",1);
 		}else if(typeVal == "represent"){
 			$("#selfDetailsDivId").html('');
 			globalWorkTypeCount='';
 			globalWorkTypeCount=1;
 			buildSelfAndRepresenteeDetails(typeVal)
+			getAllDistrictsInState(typeVal,1);
 		}
 	}
 	
@@ -83,8 +83,8 @@ function buildSelfAndRepresenteeDetails(typeVal){
 			str+='</div>';
 			str+='<div class="col-sm-3">';	
 				str+='<label>Village</label>';
-				str+='<select class="form-control chosen-select m_top10" id="village'+typeVal+'">';
-					str+='<option value="0">Select Village</option>';
+				str+='<select class="form-control chosen-select m_top10" id="panchayat'+typeVal+'">';
+					str+='<option value="0">Select Panchayat</option>';
 				str+='</select>';
 			str+='</div>';
 		str+='</div>';
@@ -178,7 +178,7 @@ function buildTemplateWorkDetails(typeVal){
 			str+='<div class="row m_top10">';
 					str+='<div class="col-sm-3">';
 						str+='<label>Select Type</label>';
-						str+='<select class="form-control chosen-select m_top10" id="workTypeId'+typeVal+'1">';
+						str+='<select class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+globalWorkTypeCount+'">';
 							str+='<option value="0">Select Work Type</option>';
 						str+='</select>';
 					str+='</div>';
@@ -191,26 +191,36 @@ function buildTemplateWorkDetails(typeVal){
 				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-3">';
 						str+='<label>Location Level</label>';
-						str+='<select class="form-control chosen-select m_top10" id="locationLevelId'+typeVal+'1">';
-							str+='<option value="0">Select Subject</option>';
+						str+='<select class="form-control chosen-select m_top10 locationLevelChange" id="locationLevelId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+							str+='<option value="0">Select Level</option>';
+							str+='<option value="3">District</option>';
+							str+='<option value="4">Constituency</option>';
+							str+='<option value="5">Mandal</option>';
+							str+='<option value="6">Panchayat</option>';
 						str+='</select>';
 					str+='</div>';
-					str+='<div class="col-sm-3">';
+					str+='<div class="col-sm-2 districtCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
 						str+='<label>District</label>';
-						str+='<select class="form-control chosen-select m_top10" id="districtId'+typeVal+'1">';
-							str+='<option value="0">Select Department</option>';
+						str+='<select class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+							str+='<option value="0">Select District</option>';
 						str+='</select>';
 					str+='</div>';
-					str+='<div class="col-sm-3">';
+					str+='<div class="col-sm-2 constituencyCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
 						str+='<label>Constituency</label>';
-						str+='<select class="form-control chosen-select m_top10" id="constituencyId'+typeVal+'1">';
-							str+='<option value="0">Select Previous Petition</option>';
+						str+='<select class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+							str+='<option value="0">Select Constituency</option>';
 						str+='</select>';
 					str+='</div>';
-					str+='<div class="col-sm-3">';
+					str+='<div class="col-sm-2 mandalCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
 						str+='<label>Mandal</label>';
-						str+='<select class="form-control chosen-select m_top10" id="mandalId'+typeVal+'1">';
-							str+='<option value="0">Select Department</option>';
+						str+='<select class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+							str+='<option value="0">Select Mandal</option>';
+						str+='</select>';
+					str+='</div>';
+					str+='<div class="col-sm-2 panchayatCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
+						str+='<label>Panchayat</label>';
+						str+='<select class="form-control chosen-select m_top10 panchayatLevelChange" id="panchayatId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+							str+='<option value="0">Select Mandal</option>';
 						str+='</select>';
 					str+='</div>';
 				str+='</div>';
@@ -251,6 +261,7 @@ $(document).on("click",".cloned_Element",function(){
 	$("[cloned_block_"+typeVal+"="+blockId+"]").parent().find(".appendDiv"+typeVal+"").append(clonedTemplate(blockId,'clone',counterId,typeVal));
 	$(".chosen-select").chosen({width:'100%'});
 	$("[right-block-clone-"+typeVal+"="+blockId+"]").attr("right-block-clone-counter-"+typeVal+"",counterId);
+	getAllDistrictsInState(typeVal,counterId);
 });
 
 function clonedTemplate(blockId,type,counterId,typeVal){
@@ -276,28 +287,39 @@ function clonedTemplate(blockId,type,counterId,typeVal){
 			clonedTemplate+='<div class="row m_top10">';
 				clonedTemplate+='<div class="col-sm-3">';
 					clonedTemplate+='<label>Location Level</label>';
-					clonedTemplate+='<select class="form-control chosen-select m_top10" id="locationLevelId'+typeVal+''+counterId+'">';
-						clonedTemplate+='<option value="0">Select Subject</option>';
+					clonedTemplate+='<select class="form-control chosen-select m_top10 locationLevelChange" id="locationLevelId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'">';
+							clonedTemplate+='<option value="0">Select Level</option>';
+							clonedTemplate+='<option value="3">District</option>';
+							clonedTemplate+='<option value="4">Constituency</option>';
+							clonedTemplate+='<option value="5">Mandal</option>';
+							clonedTemplate+='<option value="6">Panchayat</option>';
 					clonedTemplate+='</select>';
 				clonedTemplate+='</div>';
-				clonedTemplate+='<div class="col-sm-3">';
+				clonedTemplate+='<div class="col-sm-2 districtCls'+typeVal+''+counterId+'" style="display:none">';
 					clonedTemplate+='<label>District</label>';
-					clonedTemplate+='<select class="form-control chosen-select m_top10" id="districtId'+typeVal+''+counterId+'">';
-						clonedTemplate+='<option value="0">Select Department</option>';
+					clonedTemplate+='<select class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
+						clonedTemplate+='<option value="0">Select District</option>';
 					clonedTemplate+='</select>';
 				clonedTemplate+='</div>';
-				clonedTemplate+='<div class="col-sm-3">';
+				clonedTemplate+='<div class="col-sm-2 constituencyCls'+typeVal+''+counterId+'" style="display:none">';
 					clonedTemplate+='<label>Constituency</label>';
-					clonedTemplate+='<select class="form-control chosen-select m_top10" id="constituencyId'+typeVal+''+counterId+'">';
-						clonedTemplate+='<option value="0">Select Previous Petition</option>';
+					clonedTemplate+='<select class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
+						clonedTemplate+='<option value="0">Select Constituency</option>';
 					clonedTemplate+='</select>';
 				clonedTemplate+='</div>';
-				clonedTemplate+='<div class="col-sm-3">';
+				clonedTemplate+='<div class="col-sm-2 mandalCls'+typeVal+''+counterId+'" style="display:none">';
 					clonedTemplate+='<label>Mandal</label>';
-					clonedTemplate+='<select class="form-control chosen-select m_top10" id="mandalId'+typeVal+''+counterId+'">';
-						clonedTemplate+='<option value="0">Select Department</option>';
+					clonedTemplate+='<select class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
+						clonedTemplate+='<option value="0">Select Mandal</option>';
 					clonedTemplate+='</select>';
 				clonedTemplate+='</div>';
+					clonedTemplate+='<div class="col-sm-2 panchayatCls'+typeVal+''+counterId+'" style="display:none">';
+						clonedTemplate+='<label>Panchayat</label>';
+						clonedTemplate+='<select class="form-control chosen-select m_top10 panchayatLevelChange" id="panchayatId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
+							clonedTemplate+='<option value="0">Select Panchayat</option>';
+						clonedTemplate+='</select>';
+					clonedTemplate+='</div>';
+					
 			clonedTemplate+='</div>';
 		clonedTemplate+='</div>';
 		
@@ -316,8 +338,113 @@ function clonedTemplate(blockId,type,counterId,typeVal){
 	return clonedTemplate;
 	
 }
-function getAllDistrictsInState(){
+
+$(document).on("change",".locationLevelChange",function(){
+	var levelVal = $(this).val();
+	var counterId = $(this).attr("attr_counterval");
+	var typeVal = $(this).attr("attr_type");
 	
+	if(levelVal == 3){
+		
+		$("#districtId"+typeVal+counterId).html('');
+		$("#districtId"+typeVal+counterId).trigger("chosen:updated");
+		getAllDistrictsInState(typeVal,counterId);
+		
+		$(".districtCls"+typeVal+counterId).show();
+		$(".constituencyCls"+typeVal+counterId).hide();
+		$(".mandalCls"+typeVal+counterId).hide();
+		$(".panchayatCls"+typeVal+counterId).hide();
+	}else if(levelVal == 4){
+		 $("#districtId"+typeVal+counterId).html('');
+		 $("#districtId"+typeVal+counterId).trigger("chosen:updated");
+		 getAllDistrictsInState(typeVal,counterId);
+		 $("#constituencyId"+typeVal+counterId).html('');
+		 $("#constituencyId"+typeVal+counterId).trigger("chosen:updated");
+		 
+		$(".districtCls"+typeVal+counterId).show();
+		$(".constituencyCls"+typeVal+counterId).show();
+		$(".mandalCls"+typeVal+counterId).hide();
+		$(".panchayatCls"+typeVal+counterId).hide();
+	}else if(levelVal == 5){
+		$("#districtId"+typeVal+counterId).html('');
+		$("#districtId"+typeVal+counterId).trigger("chosen:updated");
+		getAllDistrictsInState(typeVal,counterId);
+		$("#constituencyId"+typeVal+counterId).html('');
+		$("#constituencyId"+typeVal+counterId).trigger("chosen:updated");
+		$("#mandalId"+typeVal+counterId).html('');
+		$("#mandalId"+typeVal+counterId).trigger("chosen:updated");
+		
+		$(".districtCls"+typeVal+counterId).show();
+		$(".constituencyCls"+typeVal+counterId).show();
+		$(".mandalCls"+typeVal+counterId).show();
+		$(".panchayatCls"+typeVal+counterId).hide();
+	}else if(levelVal == 6){
+		$("#districtId"+typeVal+counterId).html('');
+		$("#districtId"+typeVal+counterId).trigger("chosen:updated");
+		getAllDistrictsInState(typeVal,counterId);
+		$("#constituencyId"+typeVal+counterId).html('');
+		$("#constituencyId"+typeVal+counterId).trigger("chosen:updated");
+		$("#mandalId"+typeVal+counterId).html('');
+		$("#mandalId"+typeVal+counterId).trigger("chosen:updated");
+		$("#panchayatId"+typeVal+counterId).html('');
+		$("#panchayatId"+typeVal+counterId).trigger("chosen:updated");
+		
+		$(".districtCls"+typeVal+counterId).show();
+		$(".constituencyCls"+typeVal+counterId).show();
+		$(".mandalCls"+typeVal+counterId).show();
+		$(".panchayatCls"+typeVal+counterId).show();
+	}else{
+		$(".districtCls"+typeVal+counterId).hide();
+		$(".constituencyCls"+typeVal+counterId).hide();
+		$(".mandalCls"+typeVal+counterId).hide();
+		$(".panchayatCls"+typeVal+counterId).hide();
+	}
+});
+
+$(document).on("change",".districtLevelChange",function(){
+	var levelVal = $(this).val();
+	var counterId = $(this).attr("attr_counterval");
+	var typeVal = $(this).attr("attr_type");
+	
+	getConstituencyNamesByDistrictId(levelVal,counterId,typeVal);
+	
+});
+$(document).on("change",".constituencyLevelChange",function(){
+	var levelVal = $(this).val();
+	var counterId = $(this).attr("attr_counterval");
+	var typeVal = $(this).attr("attr_type");
+	getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,typeVal);
+	
+});
+$(document).on("change",".mandalLevelChange",function(){
+	var levelVal = $(this).val();
+	var counterId = $(this).attr("attr_counterval");
+	var typeVal = $(this).attr("attr_type");
+	getPanchayatsByTehsilId(levelVal,counterId,typeVal);
+	
+});
+
+$(document).on("change","#districtrepresent",function(){
+	var levelVal = $(this).val();
+	var counterId = $(this).attr("attr_counterval");
+	getConstituencyNamesByDistrictId(levelVal,1,"represent");
+	
+});
+$(document).on("change","#constituencyrepresent",function(){
+	var levelVal = $(this).val();
+	var counterId = $(this).attr("attr_counterval");
+	getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,1,"represent");
+	
+});
+$(document).on("change","#mandalrepresent",function(){
+	var levelVal = $(this).val();
+	var counterId = $(this).attr("attr_counterval");
+	getPanchayatsByTehsilId(levelVal,1,"represent");
+	
+});
+function getAllDistrictsInState(typeVal,counterId){
+	$("#districtId"+typeVal+counterId).html('');
+	$("#districtrepresent").html('');
 	  var json = {
 		  stateId:"1"
 		}
@@ -331,14 +458,24 @@ function getAllDistrictsInState(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		
+		if(result !=null && result.length>0){
+			 $("#districtId"+typeVal+counterId).append('<option value="0">Select District</option>');
+			 $("#districtrepresent").append('<option value="0">Select District</option>');
+			for(var i in result){
+				$("#districtId"+typeVal+counterId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+				$("#districtrepresent").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+			}
+		}
+		$("#districtId"+typeVal+counterId).trigger('chosen:updated');
+		$("#districtrepresent").trigger('chosen:updated');
 	});	
 }
 
-function getConstituencyNamesByDistrictId(districtId){
-	  
+function getConstituencyNamesByDistrictId(levelVal,counterId,typeVal){
+	  $("#constituencyId"+typeVal+counterId).html('');
+	  $("#constituencyrepresent").html('');
 	  var json = {
-		  districtId:districtId
+		  districtId:levelVal
 		}
 	$.ajax({                
 		type:'POST',    
@@ -350,14 +487,24 @@ function getConstituencyNamesByDistrictId(districtId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-	
+		if(result !=null && result.length>0){
+			 $("#constituencyId"+typeVal+counterId).append('<option value="0">Select Constituency</option>');
+			 $("#constituencyrepresent").append('<option value="0">Select Constituency</option>');
+			for(var i in result){
+				$("#constituencyId"+typeVal+counterId).append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+				$("#constituencyrepresent").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+			}
+		}
+		$("#constituencyId"+typeVal+counterId).trigger('chosen:updated');
+		$("#constituencyrepresent").trigger('chosen:updated');
 	});	
 }
 
-function getTehsilsAndLocalElectionBodyForConstituencyId(constituencyId){
-	
+function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,typeVal){
+		$("#mandalId"+typeVal+counterId).html('');
+		$("#mandalrepresent").html('');
 	  var json = {
-		  constituencyId:constituencyId
+		  constituencyId:levelVal
 		}        
 	$.ajax({                
 		type:'POST',    
@@ -369,15 +516,25 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(constituencyId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		
+		if(result !=null && result.length>0){
+			 $("#mandalId"+typeVal+counterId).append('<option value="0">Select Mandal</option>');
+			 $("#mandalrepresent").append('<option value="0">Select Mandal</option>');
+			for(var i in result){
+				$("#mandalId"+typeVal+counterId).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#mandalrepresent").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#mandalId").trigger('chosen:updated');
+		$("#mandalrepresent").trigger('chosen:updated');
 	});	
 }
   
 
-function getPanchayatsByTehsilId(tehsilId){
-	
+function getPanchayatsByTehsilId(levelVal,counterId,typeVal){
+	$("#panchayatId"+typeVal+counterId).html('');
+	$("#panchayatrepresent").html('');
 	  var json = {
-		  tehsilId:tehsilId
+		  tehsilId:levelVal
 		}        
 	$.ajax({                
 		type:'POST',    
@@ -389,7 +546,16 @@ function getPanchayatsByTehsilId(tehsilId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-	
+		if(result !=null && result.length>0){
+			 $("#panchayatId"+typeVal+counterId).append('<option value="0">Select Panchayat</option>');
+			 $("#panchayatrepresent").append('<option value="0">Select Panchayat</option>');
+			for(var i in result){
+				$("#panchayatId"+typeVal+counterId).append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+				$("#panchayatrepresent").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+			}
+		}
+		$("#panchayatId"+typeVal+counterId).trigger('chosen:updated');
+		$("#panchayatrepresent").trigger('chosen:updated');
 	});	
 }
 
