@@ -22,6 +22,10 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private String isPreviousPetition;
 	private String previousPetitionRefNo;
 	private String projectDescription;
+	private Long petitionMemberId;
+	private String candidateName;
+	private String mobileNo;
+	private Long age;
 	private List<RepresentationRequestVO> worksList = new ArrayList<RepresentationRequestVO>(0);
 	private List<MultipartFile> filesList;
 	private List<MultipartFile> workFilesList;
@@ -171,5 +175,38 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	public void setPetitionMemberVO(PetitionMemberVO petitionMemberVO) {
 		this.petitionMemberVO = petitionMemberVO;
 	}
+
+	public Long getPetitionMemberId() {
+		return petitionMemberId;
+	}
+
+	public void setPetitionMemberId(Long petitionMemberId) {
+		this.petitionMemberId = petitionMemberId;
+	}
+
+	public String getCandidateName() {
+		return candidateName;
+	}
+
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
+
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
+	public Long getAge() {
+		return age;
+	}
+
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	
 	
 }

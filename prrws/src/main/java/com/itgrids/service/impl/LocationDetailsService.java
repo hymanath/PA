@@ -1,7 +1,9 @@
 package com.itgrids.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -15,10 +17,14 @@ import com.itgrids.dao.ILocalElectionBodyDAO;
 import com.itgrids.dao.IPanchayatDAO;
 import com.itgrids.dao.IPetitionDepartmentDAO;
 import com.itgrids.dao.IPetitionDesignationDAO;
+import com.itgrids.dao.IPetitionMemberDAO;
+import com.itgrids.dao.IPetitionWorkDetailsDAO;
 import com.itgrids.dao.ITehsilDAO;
+import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.service.ILocationDetailsService;
 import com.itgrids.utils.CommonMethodsUtilService;
 
@@ -44,6 +50,10 @@ public class LocationDetailsService implements ILocationDetailsService {
 	private IPetitionDesignationDAO petitionDesignationDAO;
 	@Autowired
 	private IPetitionDepartmentDAO petitionDepartmentDAO;
+	@Autowired
+	private IPetitionMemberDAO petitionMemberDAO;
+	@Autowired
+	private IPetitionWorkDetailsDAO petitionWorkDetailsDAO;
 	 /**
 		 * Date : 30/11/2017
 		 * Author :babu kurakula <href:kondababu.kurakula@itgrids.com>
@@ -187,7 +197,7 @@ public class LocationDetailsService implements ILocationDetailsService {
     public List<KeyValueVO> getPetitionDepartmentList(){
     	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
     	try{
-    		LOG.info("Entered into FundManagementDashboardService of getPetitionDepartmentDetailsList ");
+    		LOG.info("Entered into LocationDetailsService of getPetitionDepartmentDetailsList ");
     		List<Object[]> petitionDetailsObjsList = petitionDepartmentDAO.getAllPetitionList();
     		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
     			for(Object[] param: petitionDetailsObjsList){
@@ -198,7 +208,7 @@ public class LocationDetailsService implements ILocationDetailsService {
     			}
     		}
     	}catch(Exception e){
-    		LOG.error("Exception occured at getMgnregsFMSWorksDetailsByCategory() in FundManagementDashboardService class ", e);
+    		LOG.error("Exception occured at getMgnregsFMSWorksDetailsByCategory() in LocationDetailsService class ", e);
     	}
     	return resultList;
     	
@@ -211,7 +221,7 @@ public class LocationDetailsService implements ILocationDetailsService {
     public List<KeyValueVO> getPetitionDesignationList(){
     	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
     	try{
-    		LOG.info("Entered into FundManagementDashboardService of getPetitionDepartmentDetailsList ");
+    		LOG.info("Entered into LocationDetailsService of getPetitionDepartmentDetailsList ");
     		List<Object[]> petitionDetailsObjsList = petitionDesignationDAO.getpetitionDesignationList();
     		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
     			for(Object[] param: petitionDetailsObjsList){
@@ -222,9 +232,68 @@ public class LocationDetailsService implements ILocationDetailsService {
     			}
     		}
     	}catch(Exception e){
-    		LOG.error("Exception occured at getMgnregsFMSWorksDetailsByCategory() in FundManagementDashboardService class ", e);
+    		LOG.error("Exception occured at getMgnregsFMSWorksDetailsByCategory() in LocationDetailsService class ", e);
     	}
     	return resultList;
     	
-    }	
+    }
+    
+    public List<RepresentationRequestVO> getRepresentativeSearchWiseDetails(InputVO inputVO){
+    	List<RepresentationRequestVO> resultList = new ArrayList<RepresentationRequestVO>();
+    	Map<Long,RepresentationRequestVO> representWiseSearchMap = new HashMap<Long,RepresentationRequestVO>();
+    	List<Long> memberidsLst = new ArrayList<Long>();
+    	
+    	try{
+    		LOG.info("enterd into LocationDetailsService getRepresentativeSearchWiseDetails");
+    		List<Object[]> representRefObjLst = petitionMemberDAO.getRepresentativeSearchDetailsBy(inputVO.getFilterType(),inputVO.getFilterValue());
+    		if(representRefObjLst != null && representRefObjLst.size() >0){
+    			for(Object[] objs : representRefObjLst){
+    				Long petitinMembrId = commonMethodsUtilService.getLongValueForObject(objs[0]);
+    				RepresentationRequestVO searchVO = representWiseSearchMap.get(petitinMembrId);
+    				if(searchVO == null){
+    					searchVO = new RepresentationRequestVO();
+    					searchVO.setPetitionMemberId(petitinMembrId);
+    					searchVO.setCandidateName(commonMethodsUtilService.getStringValueForObject(objs[2]));
+    					searchVO.setReferrerCandidateId(commonMethodsUtilService.getLongValueForObject(objs[1]));
+    					searchVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(objs[3]));
+    					searchVO.setAge(commonMethodsUtilService.getLongValueForObject(objs[4]));
+    					memberidsLst.add(petitinMembrId);
+    					representWiseSearchMap.put(searchVO.getPetitionMemberId(), searchVO);
+    				}
+    			}
+    		}
+    		
+    		List<Object[]> workLocationObjLst = petitionWorkDetailsDAO.getWorkLocationDetailsByPetitionMemberId(memberidsLst);
+    		if(workLocationObjLst != null && workLocationObjLst.size() >0){
+    			for(Object[] workObj : workLocationObjLst){
+    				Long memberId = commonMethodsUtilService.getLongValueForObject(workObj[0]);
+    				RepresentationRequestVO workVO = representWiseSearchMap.get(memberId);
+    				if(workVO != null){
+    					workVO.setPetitionMemberId(commonMethodsUtilService.getLongValueForObject(workObj[0]));
+    					workVO.setWorkName(commonMethodsUtilService.getStringValueForObject(workObj[1]));
+    					workVO.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(workObj[2]));
+    					workVO.setIsPreviousPetition(commonMethodsUtilService.getStringValueForObject(workObj[3]));
+    					workVO.setPreviousPetitionRefNo(commonMethodsUtilService.getStringValueForObject(workObj[4]));
+    					
+    				}else{
+    					workVO = new RepresentationRequestVO();
+    					workVO.setPetitionMemberId(commonMethodsUtilService.getLongValueForObject(workObj[0]));
+    					workVO.setWorkName(commonMethodsUtilService.getStringValueForObject(workObj[1]));
+    					workVO.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(workObj[2]));
+    					workVO.setIsPreviousPetition(commonMethodsUtilService.getStringValueForObject(workObj[3]));
+    					workVO.setPreviousPetitionRefNo(commonMethodsUtilService.getStringValueForObject(workObj[4]));
+    					representWiseSearchMap.put(workVO.getPetitionMemberId(),workVO);
+    				}
+    			}
+    		}
+    		
+    		if(representWiseSearchMap != null && representWiseSearchMap.size() >0){
+    			resultList.addAll(representWiseSearchMap.values());
+    		}
+    		
+    	}catch(Exception e){
+    		LOG.error("Exception raised into LocationDetailsService of getRepresentativeSearchWiseDetails() ",e);
+    	}
+    	return resultList;
+    }
 }

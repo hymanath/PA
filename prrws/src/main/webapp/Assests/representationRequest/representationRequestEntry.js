@@ -832,5 +832,26 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 	
 	$("#candidateDetailsDivId").html(str);
 }
+getRepresentativeSearchWiseDetails();
+function getRepresentativeSearchWiseDetails(){
+ 
+  var searchValue = 9581434970
+    var json = {
+    filterType :"mobileNo",
+	filterValue:searchValue
+    }        
+  $.ajax({                
+    type:'POST',    
+    url: 'getRepresentativeSearchWiseDetails',
+    dataType: 'json',
+    data : JSON.stringify(json),
+    beforeSend :   function(xhr){
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+  }).done(function(result){
+  
+  }); 
+}  
 
 
