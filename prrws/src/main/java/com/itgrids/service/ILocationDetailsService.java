@@ -7,6 +7,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.RepresentationRequestVO;
 
 public interface ILocationDetailsService {
 	
@@ -16,5 +17,6 @@ public interface ILocationDetailsService {
 	public List<KeyValueVO> getPanchayatsByTehsilId(Long tehsilId);
 	public List<KeyValueVO> getPetitionDepartmentList();
 	public List<KeyValueVO> getPetitionDesignationList();
+	public List<RepresentationRequestVO> getRepresentativeSearchWiseDetails(InputVO inputVO);
 	
 }

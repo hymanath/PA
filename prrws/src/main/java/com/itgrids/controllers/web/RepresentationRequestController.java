@@ -73,4 +73,8 @@ public class RepresentationRequestController {
     public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ) {
     	 return representationRequestService.getPetitionReferredMemberDetails(dataVo);
     }
+	@RequestMapping(value ="/getRepresentativeSearchWiseDetails",method = RequestMethod.POST)
+    public @ResponseBody List<RepresentationRequestVO> getRepresentativeSearchWiseDetails(@RequestBody InputVO dataVo) {
+    	 return locationDetailsService.getRepresentativeSearchWiseDetails(dataVo);
+    }
 }
