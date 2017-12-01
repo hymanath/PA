@@ -448,7 +448,7 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		query.setParameter("tdpCadreId", tdpCadreId);*/
 		//srujana
 		StringBuilder sb =new StringBuilder();
-		  sb.append("select distinct model.debate.debateId,model1.candidate.candidateId " +
+		  sb.append("select distinct model.debate.debateId,model1.candidate.candidateId, " +
 		  		" model2.address.state.stateId " +
 				" from DebateParticipant model,TdpCadreCandidate model1,DebateParticipantLocation model2 " +
 				" where model.candidate.candidateId = model1.candidate.candidateId  and model.debateParticipantId =model2.debateParticipantId " );
