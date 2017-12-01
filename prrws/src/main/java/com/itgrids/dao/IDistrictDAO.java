@@ -1,12 +1,10 @@
 package com.itgrids.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.model.District;
-import com.itgrids.model.LightMonitoring;
 
 public interface IDistrictDAO extends GenericDao<District,Long>{
 	public List<Object[]> getDistrictIdName(Long stateId);
