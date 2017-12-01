@@ -19,7 +19,10 @@ $(document).on("click",function(){
 });
 $(document).keydown(function(event){
 	if(event.keyCode==123){
-		alert("Hoo no! don't try to expose me");		
+		alert("Hoo no! don't try to expose me");
+		
+		
+		
 		return false;
 	}
 	else if(event.ctrlKey && event.shiftKey && event.keyCode==73){        
@@ -265,12 +268,12 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							swmCollection = parseFloat(swmCollection)+parseFloat(result[i].swmCollection);
 							nadap = parseFloat(nadap)+parseFloat(result[i].nadap);
 							vermi = parseFloat(vermi)+parseFloat(result[i].vermi);
-							vermiStock = parseFloat(rfidTags)+parseFloat(result[i].vermiStock);
+							//vermiStock = parseFloat(rfidTags)+parseFloat(result[i].vermiStock);
+							vermiStock = parseFloat(vermiStock)+parseFloat(result[i].vermiStock);
 							isState=true;
 						}				
-				
 						table+='<tr>';
-							table+='<td>Andhra Pardesh</td>';
+							table+='<td class="text-capital">Andhra Pardesh</td>';
 							table+='<td>'+rfidTags+'</td>';
 							table+='<td>'+farmers+'</td>';
 							table+='<td>'+rfidTracking+'</td>';
