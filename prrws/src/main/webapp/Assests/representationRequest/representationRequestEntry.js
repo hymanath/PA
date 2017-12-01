@@ -151,7 +151,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='</div>';
 				str+='<div class="col-sm-6">';
 					str+='<h3 class="panel-title f_22">PROJCT DOCUMENTS UPLOAD</h3>';
-					str+='<input type="file"  name="workFiles[]"  id="projectDocUpload'+typeVal+'" multiple="multiple" class="m_top20"/>';
+					str+='<input type="file"  name="workFilesList[]"  id="projectDocUpload'+typeVal+'" multiple="multiple" class="m_top20"/>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -248,6 +248,10 @@ function buildTemplateWorkDetails(typeVal){
 	
 	str+='<div class="row">';
 		str+='<div class="col-sm-12"><span class="addLocationCss m_top10 pull-right cloned_Element" right-block-clone-counter-'+typeVal+'="'+globalWorkTypeCount+'" style="cursor:pointer;" right-block-clone-'+typeVal+'="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">ADD WORK LOCATION</span></div>';
+	str+='</div>';
+	
+	str+='<div class="row">';
+		str+='<div class="col-sm-12"><span class="addLocationCss m_top10 pull-right cloned_Element" style="cursor:pointer;" onclick="saveRepresentRequestDetails()"> UPDATE DETAILS </span></div>';
 	str+='</div>';
 	
 	$("#workDetailsDivId"+typeVal).html(str);
@@ -532,6 +536,88 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,type
 	});	
 }
   
+
+function saveRepresentRequestDetails(){
+	 var formData = new FormData();
+	
+	    $('#adminProfileForm input, #adminProfileForm select').each(
+		  function(index){  
+			var input = $(this);
+			var attr = input.attr('name');
+			try{    
+			   if (typeof attr !== typeof undefined && attr !== false) {
+				   if(input.attr('type') == "file") {  
+						formData.append(input.attr('name'), this.files[0]); 
+					}
+				   else{           
+						formData.append(input.attr('name'), input.val());
+					}
+			   }           
+			}catch(e) {
+			  console.log(e);
+			}
+		  });
+	
+	
+/*	formData.append("petitionMemberVO.name","CBN");
+	 formData.append("petitionMemberVO.memberType",2);
+	 formData.append("petitionMemberVO.endorsmentDate","2017-12-01");
+	 formData.append("petitionMemberVO.representationDate","2017-12-01");
+	 formData.append("petitionMemberVO.mobileNo","9581434970");
+	 formData.append("petitionMemberVO.emailId","srishailam@itgrids.com");
+	 formData.append("petitionMemberVO.voterCardNo","WARDU765T");	 
+	// formData.append("petitionMemberVO.filesList",$('input[type=file]'));
+	 
+	 formData.append("candidateAddressVO.stateId",2);
+	 formData.append("candidateAddressVO.districtId",19);
+	 formData.append("candidateAddressVO.parliamentId",495);
+	 formData.append("candidateAddressVO.assemblyId",232);
+	 formData.append("candidateAddressVO.tehsilId",2284);
+	 formData.append("candidateAddressVO.panchayatId",21);
+	 
+	 //formData.append("petitionMemberVO.file",$('input[type=file]')[0].files[0]);
+	 
+	 formData.append("referrerCandidateId",2);
+	 formData.append("filesList",$('input[type=file]')[0].files[0]); 
+	 
+	 formData.append("workName","test work details");
+	 formData.append("noOfWorks",2);
+	 formData.append("estimationCost",2000);
+	 formData.append("subject","test work details");
+	 formData.append("subjectId",2);
+	 formData.append("deptId",2);
+	 formData.append("isPreviousPetition","Y");
+	 formData.append("previousPetitionRefNo",2);
+	 formData.append("projectDescription",2);
+	 
+	 formData.append("worksList[0].deptId",2);
+	 formData.append("worksList[0].locationLevelId",2);
+	 formData.append("worksList[0].locationValue",2);
+	 
+	 formData.append("worksList[0].candidateAddressVO.stateId",2);
+	 formData.append("worksList[0].candidateAddressVO.districtId",19);
+	 formData.append("worksList[0].candidateAddressVO.parliamentId",495);
+	 formData.append("worksList[0].candidateAddressVO.assemblyId",232);
+	 formData.append("worksList[0].candidateAddressVO.tehsilId",183);
+	 formData.append("worksList[0].candidateAddressVO.panchayatId",11111);
+	 
+	 */
+	 console.log(formData);
+	  $.ajax({
+			url: $("#adminProfileForm").attr("action"),
+			data: formData,
+			type: "POST",               
+			processData: false,
+			contentType: false,
+			success: function(ajaxresp) {
+				alert("success");
+				console.log(ajaxresp);
+			},
+			error: function(request,error) { 
+				alert("error");				
+			}
+     });	 
+}
 
 function getPanchayatsByTehsilId(levelVal,counterId,typeVal){
 	$("#panchayatId"+typeVal+counterId).html('');
