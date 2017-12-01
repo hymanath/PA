@@ -94,7 +94,12 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	}
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
-			str+='<h4 class="searchCss"><i class="fa fa-search" aria-hidden="true" style="font-size:20px;"></i> Click to Search Details to the Candidate</h4>';
+			str+='<div id="candidateDetails'+typeVal+'DivId"></div>'
+		str+='</div>';
+	str+='</div>';
+	str+='<div class="row m_top20">';
+		str+='<div class="col-sm-12">';
+			str+='<h4 class="searchCss searchCandidateCls" attr_type="'+typeVal+'"><i class="fa fa-search" aria-hidden="true" style="font-size:20px;"></i> Click to Search Details to the Candidate</h4>';
 		str+='</div>';
 	str+='</div>';
 	str+='<div class="row m_top20">';
@@ -449,9 +454,16 @@ $(document).on("change","#mandalrepresent",function(){
 	getPanchayatsByTehsilId(levelVal,1,"represent");
 	
 });
+$(document).on("change","#districtCandId",function(){
+	var levelVal = $(this).val();
+	var counterId = $(this).attr("attr_counterval");
+	getConstituencyNamesByDistrictId(levelVal,"","");
+	
+});
 function getAllDistrictsInState(typeVal,counterId){
 	$("#districtId"+typeVal+counterId).html('');
 	$("#districtrepresent").html('');
+	$("#districtCandId").html('');
 	  var json = {
 		  stateId:"1"
 		}
@@ -468,19 +480,23 @@ function getAllDistrictsInState(typeVal,counterId){
 		if(result !=null && result.length>0){
 			 $("#districtId"+typeVal+counterId).append('<option value="0">Select District</option>');
 			 $("#districtrepresent").append('<option value="0">Select District</option>');
+			 $("#districtCandId").append('<option value="0">All</option>');
 			for(var i in result){
 				$("#districtId"+typeVal+counterId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				$("#districtrepresent").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+				$("#districtCandId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 			}
 		}
 		$("#districtId"+typeVal+counterId).trigger('chosen:updated');
 		$("#districtrepresent").trigger('chosen:updated');
+		$("#districtCandId").trigger('chosen:updated');
 	});	
 }
 
 function getConstituencyNamesByDistrictId(levelVal,counterId,typeVal){
 	  $("#constituencyId"+typeVal+counterId).html('');
 	  $("#constituencyrepresent").html('');
+	  $("#constituencyCanId").html('');
 	  var json = {
 		  districtId:levelVal
 		}
@@ -497,13 +513,16 @@ function getConstituencyNamesByDistrictId(levelVal,counterId,typeVal){
 		if(result !=null && result.length>0){
 			 $("#constituencyId"+typeVal+counterId).append('<option value="0">Select Constituency</option>');
 			 $("#constituencyrepresent").append('<option value="0">Select Constituency</option>');
+			 $("#constituencyCanId").append('<option value="0">All</option>');
 			for(var i in result){
 				$("#constituencyId"+typeVal+counterId).append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
 				$("#constituencyrepresent").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+				$("#constituencyCanId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
 			}
 		}
 		$("#constituencyId"+typeVal+counterId).trigger('chosen:updated');
 		$("#constituencyrepresent").trigger('chosen:updated');
+		$("#constituencyCanId").trigger('chosen:updated');
 	});	
 }
 
@@ -675,10 +694,8 @@ function getPetitionDepartmentList(typeVal){
 		$("#departmentId"+typeVal).trigger('chosen:updated');
 	});	
 }
-
-
 function getPetitionDesignationList(){
-    
+    $("#designationsId").html('');
 	  var json = {
 		 
 		}           
@@ -692,16 +709,62 @@ function getPetitionDesignationList(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
+		if(result !=null && result.length>0){
+			 $("#designationsId").append('<option value="0">Select Designation</option>');
+			for(var i in result){
+				$("#designationsId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#designationsId").trigger('chosen:updated');
 	});	
 }
-getPetitionReferredMemberDetails("1","3","11");
-function getPetitionReferredMemberDetails(desiganationId,locationLevelId,locationValue){
-    
+$(document).on("click",".searchCandidateCls",function(){
+	var typeVal = $(this).attr("attr_type");
+	$(".selectionSearchDetailsCls").attr("attr_type",typeVal);
+	if(typeVal == "self"){
+		$("#candidateDetailsDivId").html('');
+		$("#candidateSearchModelDivId").modal("show");
+		getPetitionDesignationList();
+		getAllDistrictsInState("","");
+	}else{
+		$("#candidateDetailsDivId").html('');
+		$("#candidateSearchModelDivId").modal("show");
+		getPetitionDesignationList();
+		getAllDistrictsInState("","");
+	}
+	
+});
+$(document).on("click",".selectionSearchDetailsCls",function(){
+	var desiganationId = $("#designationsId").val();
+	var districtCandId = $("#districtCandId").val();
+	var constituencyCanId = $("#constituencyCanId").val();
+	var typeVal = $(this).attr("attr_type");
+	getPetitionReferredMemberDetails(desiganationId,districtCandId,constituencyCanId,typeVal);
+	
+});
+$(document).on("click",".bgColorCandidates",function(){
+	
+	$(this).addClass("activeCandidate");
+	var typeVal = $(this).attr("attr_type");
+	if(typeVal == "self"){
+		//$("#candidateDetails"+typeVal+"DivId").html('');
+		$("#candidateDetails"+typeVal+"DivId").append($("#candidateDetailsDivId").html());
+		$("#candidateDetails"+typeVal+"DivId").parent().find(".bgColorCandidates").removeClass("activeCandidate")
+	}else{
+		//$("#candidateDetails"+typeVal+"DivId").html('');
+		$("#candidateDetails"+typeVal+"DivId").append($("#candidateDetailsDivId").html());
+		$("#candidateDetails"+typeVal+"DivId").parent().find(".bgColorCandidates").removeClass("activeCandidate")
+	}
+	
+	
+});
+
+function getPetitionReferredMemberDetails(desiganationId,districtCandId,constituencyCanId,typeVal){
+    $("#candidateDetailsDivId").html(spinner);
 	  var json = {
 		 deptId:desiganationId,
-		 locationLevelId:locationLevelId,
-		 locationValue:locationValue 
+		 locationLevelId:districtCandId,
+		 locationValue:constituencyCanId 
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -713,9 +776,61 @@ function getPetitionReferredMemberDetails(desiganationId,locationLevelId,locatio
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-	
+		if(result !=null && result.length>0){
+			buildPetitionReferredMemberDetails(result,typeVal);
+		}else{
+			$("#candidateDetailsDivId").html("No Data Available");
+		}
 	});	
 }
 
+function buildPetitionReferredMemberDetails(result,typeVal){
+	
+	var str='';
+	str+='<div class="col-sm-12">';
+		str+='<div class="bgColorCandidates" attr_type='+typeVal+'>';
+			str+='<div class="row">';
+			str+='<div class="col-sm-3">';
+					str+='<img src="Assests/images/NARA CHANDRABABU NAIDU.jpg" class="imageCss"></img>';
+					str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+			str+='</div>';
+			str+='<div class="col-sm-3">';
+				str+='<div class="nameAddressCss">';
+					str+='<h5 class="font_weight">Name:</h5>';
+					str+='<h5 class="m_top5">Gollapalli Surya Rao</h5>';
+					str+='<h5 class="m_top10 font_weight">Designation</h5>';
+					str+='<h5 class="text_bold m_top10">Member of Legislative Council (MLC),</h5>';
+					str+='<h5 class="m_top5">Guntur Local Authority Constituency,</h5>';
+					str+='<h5 class="m_top5">Guntur District.</h5>';
+				str+='</div>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-3">';
+				str+='<div class="nameAddressCss">';
+					str+='<h5 class="font_weight">Party:</h5>';
+					str+='<h5 class="m_top5">Telugu Desam Party</h5>';
+					str+='<h5 class="m_top10 font_weight">Contact Details</h5>';
+					str+='<h5 class="text_bold m_top10">Email-id:Surya .mlc@ap.gov.in</h5>';
+					str+='<h5 class="m_top5">Contact No : +91 99 99 455 445</h5>';
+					str+='<h5 class="m_top5">Guntur District.</h5>';
+				str+='</div>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-3">';
+				str+='<div class="nameAddressCss">';
+					str+='<h5 class="font_weight">Address:</h5>';
+					str+='<h5 class="m_top5">H No :</h5>';
+					str+='<h5 class="m_top10">14-48-20/58, Kothapet</h5>';
+					str+='<h5 class="text_bold m_top10">Sangadigunta, Kothapeta,</h5>';
+					str+='<h5 class="m_top5">Guntur,</h5>';
+					str+='<h5 class="m_top5">Andhra Pradesh 522001.</h5>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	$("#candidateDetailsDivId").html(str);
+}
 
 
