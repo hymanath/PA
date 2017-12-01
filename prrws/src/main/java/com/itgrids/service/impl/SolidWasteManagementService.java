@@ -106,7 +106,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true");
 	        
 	        ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 		    
