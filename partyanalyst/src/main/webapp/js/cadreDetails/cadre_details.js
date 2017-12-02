@@ -8294,7 +8294,7 @@ function getSurveyQuestionWithMarksDetailsByTDpCadreId(){
 	$("#normalSurveyDiv").html("");
 	$("#quizSurveyDiv").html("");
 	var jsObj={
-			cadreId :"7174953"
+			cadreId :globalCadreId
 		}	
 	$.ajax({
 		 type: "POST",
@@ -8307,7 +8307,6 @@ function getSurveyQuestionWithMarksDetailsByTDpCadreId(){
 				buildQuizSurveyDetails(result);
 			}else{
 				$("#normalSurveyDiv").html(" No data available...");
-				$("#quizSurveyDiv").html(" No data available...");
 			}	
 		});
 }
