@@ -292,7 +292,7 @@ function buildTemplateWorkDetails(typeVal){
 }
 $(document).on("click",".cloned_Element",function(){
 	var typeVal = $(this).attr("attr_type");
-	var workCount = $("#noofWorkself").val();
+	var workCount = $("#noofWork"+typeVal).val();
 	var counterId = $(this).attr("right-block-clone-counter-"+typeVal+"");
 		counterId = parseInt(counterId) + 1;
 		
@@ -607,7 +607,7 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,type
 				var levelId = tehsilId.toString().substr(1, 4);
 				$("#mandalId"+typeVal+counterId).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 				if(result[i].electionType != null){
-					$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'-'+result[i].electionType+'</option>');
+					$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
 				}else{
 					$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'</option>');
 				}
