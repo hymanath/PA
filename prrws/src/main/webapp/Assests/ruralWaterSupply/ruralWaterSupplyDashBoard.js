@@ -858,21 +858,21 @@
 						}
 					},
 					series: [{
+							name: 'Commissioned',
+							data: workComissionedArrPWS,
+							color:'#16af18'
+						},{
+							name: 'Completed',
+							data: workCompletedArrPWS,
+							color:'#3ae80f'
+						}, {
 							name: 'Ongoing',
-							data: workOngoingArr,
-							color:'#14BBAE'
+							data: workOngoingArrPWS,
+							color:'#EA8512'
 						}, {
 							name: 'Not Grounded',
-							data: workNotGroundedArr,
+							data: workNotGroundedArrPWS,
 							color:'#FC5E57'
-						}, {
-							name: 'Completed',
-							data: workCompletedArr,
-							color:'#FFBF14'
-						}, {
-							name: 'Commissioned',
-							data: workComissionedArr,
-							color:'#465556'
 						}]
 				});
 				
