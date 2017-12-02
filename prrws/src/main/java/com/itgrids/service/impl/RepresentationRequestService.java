@@ -386,7 +386,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		    					workVO.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(workObj[2]));
 		    					workVO.setIsPreviousPetition(commonMethodsUtilService.getStringValueForObject(workObj[3]));
 		    					workVO.setPreviousPetitionRefNo(commonMethodsUtilService.getStringValueForObject(workObj[4]));
-		    					workVO.setSubject(commonMethodsUtilService.getStringValueForObject(workObj[5]));
+		    					workVO.setSubject(commonMethodsUtilService.getStringValueForObject(workObj[6]));
 		    				}
 		    			}
 		    		}
