@@ -56,7 +56,7 @@ $("#dateRangePicker").daterangepicker({
 $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	startDate = picker.startDate.format("DD-MM-YYYY");
 	endDate = picker.endDate.format("DD-MM-YYYY");
-	//onLoadCalls();
+	onLoadCalls();
 });
 
 function levelWiseOverview()
@@ -344,13 +344,14 @@ $(document).on('click','[attr_onclick_distname]',function(){
 	
 	var distId = $(this).attr('attr_dist_id');
 	var locIdClick = $(this).attr('attr_onclick_distname');
+	var locationId = distId;
 	//"1-06-2017","30-07-2017"
 	if(locIdClick == 'districtBodyId'){
-			getSolidInfoLocationWise(0,distId,0,"district","1-06-2017","30-07-2017",0,"",0,"");
+			getSolidInfoLocationWise(0,distId,locationId,"district","1-06-2017","30-07-2017",0,"",0,"");
 		}else if(locIdClick == 'constituencyBodyId'){
-			getSolidInfoLocationWise(0,distId,0,"assembly","1-06-2017","30-07-2017",0,"",0,"");
+			getSolidInfoLocationWise(0,distId,locationId,"assembly","1-06-2017","30-07-2017",0,"",0,"");
 		}else if(locIdClick == 'mandalBodyId'){
-			getSolidInfoLocationWise(0,distId,0,"mandal","1-06-2017","30-07-2017",0,"",0,"");
+			getSolidInfoLocationWise(0,distId,locationId,"mandal","1-06-2017","30-07-2017",0,"",0,"");
 		}
 		
 	var appendModal = $("#swmInfraustructure").html();
@@ -446,8 +447,8 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#totalRegVehicles").html(totRegvehicles);
 			$("#gpId").html("<span>No data available</span>");
 			$("#blocksId").html(result.blocks);
-			$("#solidWasteId").html(result.houseCollecion);
-			$("#farmerCattleDung").html(result.farmerCollection);
+			$("#solidWasteId").html(result.houseCollecion.toFixed(2));
+			$("#farmerCattleDung").html(result.farmerCollection.toFixed(2));
 			$("#totSwmId").html(result.swmCollection.toFixed(2));
 			$("#stageOneId").html(result.nadap);
 			$("#stageTwoId").html(result.vermi);
