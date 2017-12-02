@@ -204,11 +204,23 @@
 								<div class="row m_top20">
 									<div class="col-sm-12">
 										<form>
-											<div class="input-group" style="box-shadow:0 0 3px 0 rgba(0, 0, 0, 0.2)">
-												<input type="text" class="form-control" placeholder="Search by name,mobile no, ednt no, email id, mobile no etc..." style="text-align:center;height:60px">
-												
-												<span class="input-group-addon" id="">ADVANCE SEARCH</span>
-												 
+											<label class="radio-inline ">
+												<input type="radio" name="optradio" value="name" checked>Name
+											</label>
+											<label class="radio-inline ">
+												<input type="radio" name="optradio" value="mobileNo">Mobileno
+											</label>
+											<label class="radio-inline ">
+												<input type="radio" name="optradio" value="refCode">Endt ID
+											</label>
+											<label class="radio-inline ">
+												<input type="radio" name="optradio" value="emailId">Email
+											</label>
+											<div class="input-group m_top20" style="box-shadow:0 0 3px 0 rgba(0, 0, 0, 0.2)">
+											<div id="errorId" style="color:red;">
+											</div>
+												<input type="text" class="form-control" placeholder="Search by name,mobile no, ednt no, email id, mobile no etc..." style="text-align:center;height:60px" id="advancedSearchVal">
+												<span class="input-group-addon" id="advancedSearchId">ADVANCE SEARCH</span>
 											</div>
 										</form>
 									</div>
@@ -250,6 +262,6 @@
 <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js" type="text/javascript"></script>
-<script src="Assests/representationRequestEntryViewMembers/representationRequestEntryViewMembers.js" type="text/javascript"></script>
+<script src="Assests/representationRequest/representationRequestEntryViewMembers.js" type="text/javascript"></script>
 </body>
 </html>

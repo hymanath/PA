@@ -32,6 +32,10 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private PetitionMemberVO petitionMemberVO;
 	private AddressVO candidateAddressVO;
 	private String refCode;
+	private String designation;
+	private Long designationId;
+	private Long reffererId;
+	private String reffererName;
 	
 	public List<MultipartFile> getWorkFilesList() {
 		return workFilesList;
@@ -215,6 +219,38 @@ public class RepresentationRequestVO implements java.io.Serializable{
 
 	public void setRefCode(String refCode) {
 		this.refCode = refCode;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public Long getDesignationId() {
+		return designationId;
+	}
+
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+
+	public Long getReffererId() {
+		return reffererId;
+	}
+
+	public void setReffererId(Long reffererId) {
+		this.reffererId = reffererId;
+	}
+
+	public String getReffererName() {
+		return reffererName;
+	}
+
+	public void setReffererName(String reffererName) {
+		this.reffererName = reffererName;
 	}
 	
 	

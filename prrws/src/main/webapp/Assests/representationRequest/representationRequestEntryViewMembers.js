@@ -1,10 +1,27 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-getRepresentativeSearchWiseDetails();
-function getRepresentativeSearchWiseDetails(){
+//getRepresentativeSearchWiseDetails(typeVal);
+function getRepresentativeSearchWiseDetails(typeVal){
+	$("#errorId").html("");
+	var searchValue = typeVal;
+	var radioValue = $("input[name='optradio']:checked"). val();
+	if(typeVal == ""){
+		if(radioValue =="name"){
+		$("#errorId").html("<h5>Please Enter Name</h5>");
+			return;
+		}else if(radioValue =="mobileNo"){
+		$("#errorId").html("<h5>Please Enter Mobileno</h5>");
+			return;
+		}else if(radioValue =="refCode"){
+		$("#errorId").html("<h5>Please Enter Refcode</h5>");
+			return;
+		}else if(radioValue =="emailId"){
+		$("#errorId").html("<h5>Please Enter EmailId</h5>");
+			return;
+		}
+	}
 	$("#representationRequestEntryTable").html(spinner);
-	var searchValue = 9581434970
     var json = {
-    filterType :"mobileNo",
+    filterType :radioValue,
 	filterValue:searchValue
     }        
   $.ajax({                
@@ -24,7 +41,10 @@ function getRepresentativeSearchWiseDetails(){
 		}
   }); 
 }
-
+$(document).on("click","#advancedSearchId",function(){
+	var typeVal = $("#advancedSearchVal").val();
+	getRepresentativeSearchWiseDetails(typeVal);
+});
 function representationRequestEntryTable(result){
 	var str='';
 	str+='<table class="table table-bordered">';
@@ -50,7 +70,7 @@ function representationRequestEntryTable(result){
 				str+='<td>'+result[i].workName+'</td>';
 				str+='<td>'+result[i].noOfWorks+'</td>';
 				str+='<td>'+result[i].subject+'</td>';
-				str+='<td>-</td>';
+				str+='<td><button type="button" class="btn">View/Edit</button></td>';
 			str+='</tr>';
 			}
 		str+='</tbody>';

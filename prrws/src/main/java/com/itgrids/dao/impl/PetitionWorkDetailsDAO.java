@@ -30,8 +30,10 @@ public class PetitionWorkDetailsDAO extends GenericDaoHibernate<PetitionWorkDeta
 			sb.append(" select model.petitionMemberId,model.workName,model.noOfWorks," +
 					  " model.isPreviousPetition,model.previousPetitionRefNo,model.insertedTime,model.subject " +
 					  " from PetitionWorkDetails model  ");
-			sb.append(" where model.petitionMemberId in(:petitionMemberIdsLst) ");
 			
+			if(petitionMemberIds != null && petitionMemberIds.size() >0){
+				sb.append(" where model.petitionMemberId in(:petitionMemberIdsLst) ");
+			}
 			   Query qry = getSession().createQuery(sb.toString());
 			   
 				if(petitionMemberIds != null && petitionMemberIds.size() >0){
