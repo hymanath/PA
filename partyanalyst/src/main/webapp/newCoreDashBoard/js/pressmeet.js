@@ -53,6 +53,8 @@ $(document).on("click",".pressmeetIconExpand",function(){
 		},1000);
 		  
 	}    
+	$(".pressmeetSpokesCls li").removeClass("active");
+	$(".pressmeetSpokesCls li:first-child").addClass("active");
 });
 function getPartyWiseThenCandidateWisePerformance(){
 	 $("#spokesPersonWisepressmeetDetailsId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
