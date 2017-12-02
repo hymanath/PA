@@ -63,7 +63,7 @@ function representationRequestEntryTable(result){
 		str+='<tbody>';
 			for(var i in result){
 			str+='<tr>';
-				str+='<td>'+result[i].userId+'</td>';
+				str+='<td>'+result[i].refCode+'</td>';
 				str+='<td>'+result[i].candidateName+'</td>';
 				str+='<td>-</td>';
 				str+='<td>'+result[i].mobileNo+'</td>';
