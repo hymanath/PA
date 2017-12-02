@@ -430,7 +430,7 @@
 					<h5 style="display: inline-block;">WORKS</h5>
 					<div class=" " style="text-align: right">
 						<h2 class="worksAllCls" style="margin-top: 0px"></h2>
-						<p class="">TOTAL</p>
+						<p class="">COMPLETED</p>
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange WORKSColor" title="click to add as favourite component." attr_url="worksDashBoard" attr_full_block_name="WORKS" attr_color_name="gray" attr_block_name="WORKS" aria-hidden="true"></i>
