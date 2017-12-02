@@ -220,7 +220,7 @@
 											<div id="errorId" style="color:red;">
 											</div>
 												<input type="text" class="form-control" placeholder="Search by name,mobile no, ednt no, email id, mobile no etc..." style="text-align:center;height:60px" id="advancedSearchVal">
-												<span class="input-group-addon" id="advancedSearchId">ADVANCE SEARCH</span>
+												<span class="input-group-addon" id="advancedSearchId" style="cursor:pointer;">ADVANCE SEARCH</span>
 											</div>
 										</form>
 									</div>
