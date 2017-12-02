@@ -850,21 +850,21 @@
 						}
 					},
 					series: [{
+							name: 'Commissioned',
+							data: workComissionedArrPWS,
+							color:'#16af18'
+						},{
+							name: 'Completed',
+							data: workCompletedArrPWS,
+							color:'#3ae80f'
+						}, {
 							name: 'Ongoing',
 							data: workOngoingArrPWS,
-							color:'#14BBAE'
+							color:'#EA8512'
 						}, {
 							name: 'Not Grounded',
 							data: workNotGroundedArrPWS,
 							color:'#FC5E57'
-						}, {
-							name: 'Completed',
-							data: workCompletedArrPWS,
-							color:'#FFBF14'
-						}, {
-							name: 'Commissioned',
-							data: workComissionedArrPWS,
-							color:'#1D9ED5'
 						}]
 				});
 				$("#habitationWorksCPWS").highcharts({
@@ -925,22 +925,22 @@
 							}
 						}
 					},
-					series: [{
+					series: [{name: 'Commissioned',
+							data: workComissionedArrCPWS,
+							color:'#16af18'
+							
+						}, {
+							name: 'Completed',
+							data: workCompletedArrCPWS,
+							color:'#3ae80f'
+						}, {
 							name: 'Ongoing',
 							data: workOngoingArrCPWS,
-							color:'#14BBAE'
+							color:'#EA8512'
 						}, {
 							name: 'Not Grounded',
 							data: workNotGroundedArrCPWS,
 							color:'#FC5E57'
-						}, {
-							name: 'Completed',
-							data: workCompletedArrCPWS,
-							color:'#FFBF14'
-						}, {
-							name: 'Commissioned',
-							data: workComissionedArrCPWS,
-							color:'#1D9ED5'
 						}]
 				});
 				
@@ -1836,6 +1836,11 @@
 					tabBlock+='<li class="active ActiveStateCls" attr_type="completeOverview">Complete Overview</li>';
 					tabBlock+='<li  attr_type="exceededOverview">Exceeded Target Works Details</li>';
 				tabBlock+='</ul>';
+				/* //if(attr_type=='exceededOverview'){
+					tabBlock+='<div class="col-sm-2" style="left: 80px; margin-left: 1000px; margin-right: -1500px;">';
+					tabBlock+='<input value="true" type="checkbox" name="allianceParty" id="allaincePartiFieldId" class="alliancePartyCls" attr_type="partyTrends"/><span class="f-12">WITH AMOUNT</span>';
+					tabBlock+='</div>';
+				}	 */		
 				tabBlock+='<select class="form-control" role="tabListMobile">';
 					for(var i in blocksArr)
 					{
