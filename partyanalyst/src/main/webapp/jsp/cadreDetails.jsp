@@ -194,7 +194,10 @@
 color: rgb(51, 122, 183);
 }
 .tableHeaderFontSize thead tr th{font-size:11px !important;background-color:#e9e9e9 !important;text-transform:uppercase !important;vertical-align:middle}
-
+.scrollit {
+    height:450px;
+    overflow-y:auto;
+}
 </style>
 <script>
 var globalCadreId = '${cadreId}';
