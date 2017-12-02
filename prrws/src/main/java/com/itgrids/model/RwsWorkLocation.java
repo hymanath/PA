@@ -1,10 +1,14 @@
 package com.itgrids.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,6 +26,8 @@ public class RwsWorkLocation {
 	private String mandalName;
 	private String habitationCode;
 	private String habitationName;
+	
+	private RwsWork rwsWork;
 	
 	@Id
 	@Column(name="rws_work_location_id")
@@ -106,8 +112,14 @@ public class RwsWorkLocation {
 		this.habitationName = habitationName;
 	}
 	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "rws_work_id", insertable = false, updatable = false)
+	public RwsWork getRwsWork() {
+		return rwsWork;
+	}
 	
-	
-	
+	public void setRwsWork(RwsWork rwsWork) {
+		this.rwsWork = rwsWork;
+	}
 	
 }

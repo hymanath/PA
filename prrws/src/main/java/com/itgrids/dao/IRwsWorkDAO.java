@@ -11,8 +11,10 @@ public interface IRwsWorkDAO extends GenericDao<RwsWork, Long>{
 
 	public  List<String> getWorkdetailsById();
 
-	public List<Object[]> getWorksData(Date fromDate,Date toDate,String assetType, String locationType,Long locationValue);
+	public List<Object[]> getWorksData(Date fromDate,Date toDate,String assetType, String locationType,String locationIdStr, String  districtId);
 	
 	public RwsWork getWorkdetailsByIds(String workId);
+
+	public List<Object[]> getWorksDataByDistrict(Date fromDate, Date toDate,String assetType, String locationType, Long locationValue,Long districtId);
 
 }
