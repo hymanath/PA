@@ -1559,8 +1559,10 @@ public class RWSNICService implements IRWSNICService{
 		 	    				subVo.setConstituencyName(jobj.getString("districtName"));
 		 	    				subVo.setDistrictCode(jobj.getString("districtCode"));
 		 	    				subVo.setDistrictName(jobj.getString("districtName"));
-		 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));		 	    				
-		 	    				subVo.setSacntionedAmount(jobj.getString("sacntionedAmount"));
+		 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));	
+		 	    				if(jobj.has("sacntionedAmount")){
+		 	    					subVo.setSacntionedAmount(jobj.getString("sacntionedAmount"));
+		 	    				}
 		 	    				subVo.setMandalCode(jobj.getString("mandalCode"));
 		 	    				subVo.setHabitationName(jobj.getString("habitationName"));
 		 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
@@ -4553,7 +4555,7 @@ public class RWSNICService implements IRWSNICService{
 		try{
 			Map<String, IdNameVO> workDetailsMap = new HashMap<String, IdNameVO>();
 			Date fromDate=null, toDate= null;
-			DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
 			if(inputVO.getFromDateStr()!= null && inputVO.getToDateStr()!=null && inputVO.getFromDateStr().length()>0 && inputVO.getToDateStr().length()>0){
 				fromDate = sdf.parse(inputVO.getFromDateStr());
@@ -4564,7 +4566,7 @@ public class RWSNICService implements IRWSNICService{
 				fromDate = sdf.parse("01-04-"+toYear);
 			}
 			
-			List<Object[]> worksdata = rwsWorkDAO.getWorksData(fromDate,toDate,null,null,null);
+			List<Object[]> worksdata = rwsWorkDAO.getWorksData(fromDate,toDate,null,null,null,null);
 			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
 				for (Object[] param : worksdata) {
 					//0-workId,1-WorkName,2-status,3-assetType,4-adminDate,5-groundDate,6-targetrDate,7-completionDate
@@ -4614,8 +4616,9 @@ public class RWSNICService implements IRWSNICService{
 		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
 		try{
 			Date fromDate=null, toDate= null;
-			DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
+			
 			if(inputVO.getFromDateStr()!= null && inputVO.getToDateStr()!=null && inputVO.getFromDateStr().length()>0 && inputVO.getToDateStr().length()>0){
 				fromDate = sdf.parse(inputVO.getFromDateStr());
 				toDate= sdf.parse(inputVO.getToDateStr());
@@ -4624,8 +4627,18 @@ public class RWSNICService implements IRWSNICService{
 				fromDate = sdf.parse("01-04-"+inputVO.getYear());
 				fromDate = sdf.parse("01-04-"+toYear);
 			}
+			if(inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("mandal")){
+				String formatted = String.format("%04d", inputVO.getLocationValue());
+				inputVO.setLocationIdStr(formatted.substring(2,4));
+				inputVO.setDistrictValue(formatted.substring(0,2));
+			}else if(inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("district")){
+				String formatted = String.format("%02d", inputVO.getLocationValue());
+				inputVO.setLocationIdStr(formatted);
+			}else{
+				inputVO.setLocationIdStr(inputVO.getLocationValue().toString());
+			}
+			List<Object[]> worksdata =  rwsWorkDAO.getWorksData(fromDate,toDate,inputVO.getAssetType(),inputVO.getLocationType(),inputVO.getLocationIdStr(),inputVO.getDistrictValue());
 			
-			List<Object[]> worksdata = rwsWorkDAO.getWorksData(fromDate,toDate,inputVO.getAssetType(),inputVO.getLocationType(),inputVO.getLocationValue());
 			List<IdNameVO> workList = new ArrayList<IdNameVO>();
 			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
 				for (Object[] param : worksdata) {
