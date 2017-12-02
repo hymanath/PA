@@ -2336,7 +2336,7 @@
 													tableView+='<td> - </td>';
 												}
 												if(GLtbodyArr[i].basicList[j].workNotGroundedCount !=null && GLtbodyArr[i].basicList[j].workNotGroundedCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "notgrounded" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workNotGroundedCount+'</td>';
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "not grounded" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workNotGroundedCount+'</td>';
 												}else{
 													tableView+='<td> - </td>';
 												}
@@ -4823,8 +4823,14 @@
 					tableView+='<th>DISTRICT</th>';
 					tableView+='<th>CONSTITUENCY</th>';
 					tableView+='<th>MANDAL</th>';
-					tableView+='<th>SANCTIONED AMOUNT</th>';
+					if(workStatus !="not grounded"){
+						tableView+='<th>SANCTIONED AMOUNT</th>';
+					}
+					if(workStatus =="onGoing" || workStatus !="not grounded"){
+						tableView+='<th>GROUNDING DATE</th>';
+					}else if(workStatus !="not grounded"){
 					tableView+='<th>COMPLETION DATE</th>';
+					}
 					//tableView+='<th>HABITATIONS NAME</th>';
 					//tableView+='<th>HABITATIONS CODE</th>';
 					tableView+='<th>Work CODE</th>';
@@ -4837,8 +4843,10 @@
 						tableView+='<td>'+result[i].districtName+'</td>';
 						tableView+='<td>'+result[i].constituencyName+'</td>';
 						tableView+='<td>'+result[i].mandalName+'</td>';
+						if(workStatus !="not grounded"){
 						tableView+='<td>'+result[i].sacntionedAmount+'</td>';
 						tableView+='<td>'+result[i].completionDate+'</td>';
+						}
 						//tableView+='<td>'+result[i].habitationName+'</td>';
 						//tableView+='<td>'+result[i].habitationCode+'</td>';
 						tableView+='<td>'+result[i].workId+'</td>';
