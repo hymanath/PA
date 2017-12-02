@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -5458,7 +5460,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  Client client = Client.create();
 			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
 			  WebResource webResource = client.resource("https://www.mytdp.com/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
-			// WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
+			//WebResource webResource = client.resource("http://192.168.11.173:8080/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
    	 	  if (response.getStatus() != 200) {
    	 		finalList =null;
@@ -5522,7 +5524,6 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
  	    		}
  	    	}
    	 	 }
-		  return finalList;
 	  }catch(Exception e){
 		  log.error("Exception raised at getSurveyQuestionWithMarksDetailsByTDpCadreId method in WebServiceHandlerService Class", e);
 	  }
