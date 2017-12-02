@@ -2261,8 +2261,8 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			</div>
 	</div>
 <div class="modal fade" id="surveyQuestionDetailsDivId"style="display:none">
-	<div class="modal-dialog" role="document">
-    <div class="modal-content" style="width:900px;">
+	<div class="modal-dialog" role="document" style="width:80%;">
+    <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalSurveyQueDetailsId"> SURVEY FEED BACK</h4>
@@ -2271,11 +2271,13 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 		  <center>
 			<img id="surveyQueDetailsIdImgId" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
 		  </center>
+		  <div class="row">
 			<div class="col-sm-12">
 				<div id="normalSurveyDiv"></div>
 			</div>
 			<div class="col-sm-12" style="margin-top:10px;">
 				<div id="quizSurveyDiv"></div>
+			</div>
 			</div>
       </div>
       <div class="modal-footer" style="margin-top:10px;">
