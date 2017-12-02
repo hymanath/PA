@@ -8313,8 +8313,8 @@ function getSurveyQuestionWithMarksDetailsByTDpCadreId(){
 function buildnormalSurveyDetails(result){
 	var str="";
 		//$("#trainingFeedBackId").html(result[0].surveyName);
-		str+='<label>'+result[0].surveyName+' :</label>';
-		str+='<div class="table-responsive scrollit">';
+		str+='<h4 class="panel-title">'+result[0].surveyName+' :</h4>';
+		str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered" id="normalSurveyTableId">';
 				str+='<thead>';
 					str+='<tr>';
@@ -8346,17 +8346,18 @@ function buildnormalSurveyDetails(result){
 		str+='</table>';
 		str+='</div>';
 		$("#normalSurveyDiv").html(str);
-		/*  $('#normalSurveyTableId').dataTable({
+		$('#normalSurveyTableId').dataTable({
 			"iDisplayLength": 10,
-			"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
+			"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]],
+			"aaSorting": []
 		});
-		$('#normalSurveyTableId').removeClass("dataTable"); */
+		$('#normalSurveyTableId').removeClass("dataTable");
 }
 function buildQuizSurveyDetails(result){
 	var str1='';
 		//$("#trainingQuizId").html(result[1].surveyName);
-		str1+='<label>'+result[1].surveyName+' :</label>';
-			str1+='<div class="table-responsive scrollit">';
+		str1+='<h4 class="panel-title">'+result[1].surveyName+' :</h4>';
+			str1+='<div class="table-responsive">';
 			str1+='<table class="table table-bordered" id="quizSurveyTableId">';
 				str1+='<thead>';
 					str1+='<tr>';
@@ -8403,10 +8404,11 @@ function buildQuizSurveyDetails(result){
 		str1+='</table>';
 		str1+='</div>';
 		$("#quizSurveyDiv").html(str1);
-		/* $('#quizSurveyTableId').dataTable({
+		$('#quizSurveyTableId').dataTable({
 			"iDisplayLength": 10,
+			"aaSorting": [],
 			"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 		});
-		 $('#quizSurveyTableId').removeClass("dataTable");  */
+		$('#quizSurveyTableId').removeClass("dataTable");
 			
 }
