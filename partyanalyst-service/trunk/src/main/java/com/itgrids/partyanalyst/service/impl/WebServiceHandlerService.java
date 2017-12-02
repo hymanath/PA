@@ -5421,8 +5421,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	
 	public void saveEventResponses(String anserObjStr){
 		try {
-			String s = "{\"objectId\":\"838c1758-7526-42d4-8b6b-a935a1a11d1d\",\"objectType\":\"Group\",\"eventType\":\"SurveyCreated\",\"eventId\":\"af0d8763-0662-4d44-bec9-b936ebb9efe1\",\"data\":{\"actionId\":\"af0d8763-0662-4d44-bec9-b936ebb9efe1\",\"groupId\":\"838c1758-7526-42d4-8b6b-a935a1a11d1d\",\"validity\":1507632032613,\"title\":\"Web hook test survet2\",\"visibility\":\"All\",\"isResponseAppended\":true,\"questions\":[{\"title\":\"You can respond to this survey multiple times. To remember each response, you can give it any name or leave it as-is below.\",\"type\":\"Text\",\"options\":[]},{\"title\":\"Question1\",\"type\":\"MultiOption\",\"options\":[{\"title\":\"Option 1\"},{\"title\":\"Option 2\"},{\"title\":\"Option 3\"}]},{\"title\":\"Question 2\",\"type\":\"Text\",\"options\":[]},{\"title\":\"Question 3\",\"type\":\"Numeric\",\"options\":[]},{\"title\":\"Responder Location\",\"type\":\"Location\",\"options\":[]},{\"isInvisible\":true,\"title\":\"ResponseTime\",\"type\":\"DateTime\",\"options\":[]},{\"isInvisible\":true,\"title\":\"ResponseLocation\",\"type\":\"Location\",\"options\":[]}],\"properties\":[{\"name\":\"DateTime\",\"type\":\"Numeric\",\"value\":\"5\"},{\"name\":\"Location\",\"type\":\"Numeric\",\"value\":\"6\"},{\"name\":\"Description\",\"type\":\"Text\",\"value\":\"Test survey\"}]},\"fromUser\":\"+919866249700\",\"fromUserName\":\"Kota Sandeep\",\"fromUserProfilePic\":\"\"}";
-			kaizalaInfoService.saveEventResponses(s);
+			log.error(" Entered into saveEventResponses method in WebServiceHandleService Class ");
+			kaizalaInfoService.saveEventResponses(anserObjStr);
 		} catch (Exception e) {
 			 log.error("Exception raised at saveKaizalAnswerInfo", e);
 		}

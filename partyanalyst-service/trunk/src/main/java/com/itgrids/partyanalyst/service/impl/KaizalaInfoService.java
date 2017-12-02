@@ -433,6 +433,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	public void saveKaizalaInstallationTracking(JSONObject jobj){
 		try {
 			
+			LOG.error(" Entered into saveKaizalaInstallationTracking method in KaizalaInfoService Class ");
+			
 			if(jobj == null)
 				return;
 			
@@ -446,6 +448,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			
 			ClientResponse response = builder.post(ClientResponse.class,jobj.toString());
 			
+			LOG.error(" Retrive Response Code in saveKaizalaInstallationTracking method in KaizalaInfoService Class From KAIZALA -- Status :"+response.getStatus()+"");
+			
 			if(response.getStatus() != 200){
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			}else{				
@@ -454,51 +458,6 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 					System.out.println(" Kaizala Installation Tracking Saved Successfully.");
 				}				
 			}
-			
-			/*KaizalaInstallationTracking tracking = new KaizalaInstallationTracking();
-			
-			tracking.setObjectId(jobj.getString("objectId"));
-			tracking.setObjectType(jobj.getString("objectType"));
-			tracking.setEventId(jobj.getString("eventId"));
-			tracking.setEventType(jobj.getString("eventType"));
-			
-			if(jobj !=null){
-				
-				JSONObject dataObj = jobj.getJSONObject("data");
-				if(dataObj !=null){
-					
-					tracking.setResponderName(dataObj.getString("responder"));
-					tracking.setResponderMobileNo(dataObj.getString("responderName"));
-					
-					JSONObject responseObj = dataObj.getJSONObject("responseDetails");
-					if(responseObj !=null){
-						JSONArray resonseArray  = responseObj.getJSONArray("responseWithQuestions");
-						if(resonseArray !=null && resonseArray.length()>0){
-							
-							JSONObject mobileObj = (JSONObject)resonseArray.get(1);							
-							if(mobileObj !=null)
-								tracking.setInstalledMobileNo(mobileObj.getString("answer"));
-							
-							JSONObject nameObj = (JSONObject)resonseArray.get(2);							
-							if(nameObj !=null)
-								tracking.setName(nameObj.getString("answer"));
-							
-							JSONObject urlObj = (JSONObject)resonseArray.get(3);							
-							if(urlObj !=null)
-								tracking.setUrl(urlObj.getString("answer"));
-							
-							JSONObject locationObj = (JSONObject)resonseArray.get(4);							
-							if(locationObj !=null){
-								JSONObject locationInnerObj  = locationObj.getJSONObject("answer");
-								tracking.setLocation(locationInnerObj.getString("n"));
-							}
-						}
-					}
-				}
-				
-				tracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-				kaizalaInstallationTrackingDAO.save(tracking);
-			}*/
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at saveKaizalaInstallationTracking in KaizalaInfoService Class ", e);
@@ -512,7 +471,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 				JSONObject jsonObj = new JSONObject(output);
 				
 				if(jsonObj.getString("objectType").equalsIgnoreCase("Group") 
-						&& jsonObj.getString("objectId").equalsIgnoreCase("034607bb-6d16-4819-8ac8-32f22043e4d5")){
+						&& jsonObj.getString("objectId").equalsIgnoreCase("034607bb-6d16-4819-8ac8-32f22043e4d5")){ // KaizalaInstallationTrack  Group(Public Group)
 					saveKaizalaInstallationTracking(jsonObj);
 					return;
 				}
