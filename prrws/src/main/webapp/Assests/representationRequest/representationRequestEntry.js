@@ -130,7 +130,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<label>No of Works</label>';
-					str+='<input   name="noOfWorks"   type="text" class="form-control m_top10 height45" id="noofWork'+typeVal+'" placeholder="Enter No Of Work">';
+					str+='<input   name="noOfWorks"   type="text" class="form-control m_top10 height45" id="noofWork'+typeVal+'" placeholder="Enter No Of Work" onkeyUp="enableWorks(this.value,\'workDetailsDivId'+typeVal+'\');">';
 					str+='<div id="noofWork'+typeVal+'Err"></div>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
@@ -156,14 +156,14 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<label>Previous Petition</label>';
-					str+='<select  name="isPreviousPetition"  class="form-control chosen-select m_top10" id="previousPetitionId'+typeVal+'">';
+					str+='<select  name="isPreviousPetition"  class="form-control chosen-select m_top10" id="previousPetitionId'+typeVal+'" onChange = getChangeValue(this.value)>';
 						str+='<option value="0">Select Previous Petition</option>';
 						str+='<option value="Y">YES</option>';
 						str+='<option value="N">No</option>';
 					str+='</select>';
 					str+='<div id="previousPetitionId'+typeVal+'Err"></div>';
 				str+='</div>';
-				str+='<div class="col-sm-3">';
+				str+='<div class="col-sm-3" style="display:none;" id = "previousPetitionRefId">';
 					str+='<label>Previous Petition No (Endt NO)</label>';
 					str+='<input  name="previousPetitionRefNo"  type="text" class="form-control m_top10 height45" id="workCost'+typeVal+'" placeholder="101/20/11/2017">';
 					str+='<div id="workCost'+typeVal+'Err"></div>';
@@ -187,7 +187,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	str+='</div>';
 	str+='<div class="row">';
 		str+='<div class="col-sm-12">';
-			str+='<div id="workDetailsDivId'+typeVal+'"></div>';
+			str+='<div id="workDetailsDivId'+typeVal+'"  style="display:none;"></div>';
 		str+='</div>';
 	str+='</div>';
 	
@@ -291,16 +291,18 @@ function buildTemplateWorkDetails(typeVal){
 	globalWorkTypeCount =globalWorkTypeCount+1;
 }
 $(document).on("click",".cloned_Element",function(){
-	var typeVal = $(this).attr("attr_type")
+	var typeVal = $(this).attr("attr_type");
+	var workCount = $("#noofWorkself").val();
 	var counterId = $(this).attr("right-block-clone-counter-"+typeVal+"");
 		counterId = parseInt(counterId) + 1;
 		
 	var blockId = $(this).attr("right-block-clone-"+typeVal+"");
-	
-	$("[cloned_block_"+typeVal+"="+blockId+"]").parent().find(".appendDiv"+typeVal+"").append(clonedTemplate(blockId,'clone',counterId,typeVal));
-	$(".chosen-select").chosen({width:'100%'});
-	$("[right-block-clone-"+typeVal+"="+blockId+"]").attr("right-block-clone-counter-"+typeVal+"",counterId);
-	getAllDistrictsInState(typeVal,counterId);
+	if(counterId <= parseInt(workCount)){
+		$("[cloned_block_"+typeVal+"="+blockId+"]").parent().find(".appendDiv"+typeVal+"").append(clonedTemplate(blockId,'clone',counterId,typeVal));
+		$(".chosen-select").chosen({width:'100%'});
+		$("[right-block-clone-"+typeVal+"="+blockId+"]").attr("right-block-clone-counter-"+typeVal+"",counterId);
+		getAllDistrictsInState(typeVal,counterId);
+	}
 });
 
 function clonedTemplate(blockId,type,counterId,typeVal){
@@ -586,7 +588,7 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,type
 				if(result[i].electionType != null){
 					$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'-'+result[i].electionType+'</option>');
 				}else{
-					$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'- MANDAL</option>');
+					$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'</option>');
 				}
 				
 			}
@@ -1002,7 +1004,20 @@ function getRepresentativeSearchWiseDetails(){
   
   }); 
 }  
-
+function  enableWorks(value,divId){	
+	$('#'+divId+'').hide();
+	if(parseInt(value)>0){
+		$('#'+divId+'').show();
+	}
+}
+function getChangeValue(keyValue){
+	var type = keyValue;
+	if(type =='Y' && type !=0) {
+		$("#previousPetitionRefId").show();
+	}else{
+		$("#previousPetitionRefId").hide();
+	}
+}
 $(document).on("click","#referelSubmitBtnId",function(){
 	var typeVal = $('input[name=memberTypeRadio]:checked').attr("attr_type");
 	
@@ -1158,4 +1173,5 @@ $(document).on("click","#referelSubmitBtnId",function(){
 		}
 	});
 
-});
+})
+
