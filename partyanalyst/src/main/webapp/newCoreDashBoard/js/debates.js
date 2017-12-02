@@ -1310,7 +1310,7 @@ $(document).on("click",".debateDetailsCls",function(){
 	});
 	
 	$(document).on("click",".overAllCandidateCls",function(){
-		$("#debateModelDivId").modal("show");
+		$("#debateParticipantModelDivId").modal("show");
 		var partyId = $(this).attr("attr_party_id");		
 		var candidateId = $(this).attr("attr_candidate_id");
         var designationId=0;		
