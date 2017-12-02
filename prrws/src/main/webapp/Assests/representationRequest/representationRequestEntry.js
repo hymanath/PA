@@ -2,7 +2,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 var globalWorkTypeCount=1;
 setTimeout(function(){ 
 	buildSelfAndRepresenteeDetails("self")
-	getAllDistrictsInState("self",1);
+	//getAllDistrictsInState("self",1);
 	getPetitionDepartmentList("self")
 	
 }, 2000);
@@ -26,14 +26,14 @@ $(document).on("click",".selfRepresenceCls",function(){
 			globalWorkTypeCount='';
 			globalWorkTypeCount=1;
 			buildSelfAndRepresenteeDetails(typeVal)
-			getAllDistrictsInState("self",1);
+			//getAllDistrictsInState(typeVal,1);
 			getPetitionDepartmentList(typeVal)
 		}else if(typeVal == "represent"){
 			$("#selfDetailsDivId").html('');
 			globalWorkTypeCount='';
 			globalWorkTypeCount=1;
 			buildSelfAndRepresenteeDetails(typeVal)
-			getAllDistrictsInState(typeVal,1);
+			getAllDistrictsInState(typeVal,"");
 			getPetitionDepartmentList(typeVal)
 		}
 	}
@@ -497,10 +497,16 @@ $(document).on("change","#districtCandId",function(){
 	
 });
 function getAllDistrictsInState(typeVal,counterId){
-	$("#districtId"+typeVal+counterId).html('');
-	$("#districtrepresent").html('');
-	$("#districtCandId").html('');
-	  var json = {
+	
+	if((counterId =="" || counterId.trim().length==0) && (counterId=="" || counterId.trim().length==0)){
+		$("#districtCandId").html('');
+	}else if(counterId == null || counterId ==""){
+		$("#district"+typeVal+counterId).html('');
+	}else if(counterId !="" && parseInt(counterId)>0){
+		$("#districtId"+typeVal+counterId).html('');
+	}
+	
+	var json = {
 		  stateId:"1"
 		}
 	$.ajax({                
@@ -513,19 +519,34 @@ function getAllDistrictsInState(typeVal,counterId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		if(result !=null && result.length>0){
+		if(result !=null && result.length>0){	
+			if((counterId =="" || counterId.trim().length==0) && (counterId=="" || counterId.trim().length==0)){
+				$("#districtCandId").append('<option value="0">All</option>');
+			}else if(counterId == null || counterId ==""){		
+				$("#district"+typeVal+counterId).append('<option value="0">Select District</option>');
+			}else if(counterId !="" && parseInt(counterId)>0){
 			 $("#districtId"+typeVal+counterId).append('<option value="0">Select District</option>');
-			 $("#districtrepresent").append('<option value="0">Select District</option>');
-			 $("#districtCandId").append('<option value="0">All</option>');
-			for(var i in result){
-				$("#districtId"+typeVal+counterId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
-				$("#districtrepresent").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
-				$("#districtCandId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+			}
+		 
+			for(var i in result){				
+				if((counterId =="" || counterId.trim().length==0) && (counterId=="" || counterId.trim().length==0)){
+					$("#districtCandId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+				}else if(counterId == null || counterId ==""){		
+					$("#district"+typeVal+counterId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+				}else  if(counterId !="" && parseInt(counterId)>0){
+					$("#districtId"+typeVal+counterId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+				}
 			}
 		}
-		$("#districtId"+typeVal+counterId).trigger('chosen:updated');
-		$("#districtrepresent").trigger('chosen:updated');
-		$("#districtCandId").trigger('chosen:updated');
+		if((counterId =="" || counterId.trim().length==0) && (counterId=="" || counterId.trim().length==0)){
+			$("#districtCandId").trigger('chosen:updated');
+		}
+		else if(counterId == null || counterId =="")		
+			$("#district"+typeVal+counterId).trigger('chosen:updated');
+		else if(counterId !="" && parseInt(counterId)>0)
+			$("#districtId"+typeVal+counterId).trigger('chosen:updated');
+				
+		//$("#districtCandId").trigger('chosen:updated');
 	});	
 }
 
@@ -621,13 +642,12 @@ function saveRepresentRequestDetails(){
 				}else if(text=='file'){
 					var name = $('#'+id+'').attr('name');
 					if(this.files !=null && this.files.length>0){
-						alert(name);
-						name = name.replace("[","");
-						name = name.replace("]","");
-						alert(name);
+						//alert(name);
+						//name = name.replace("[","");
+						//name = name.replace("]","");
+						//alert(name);
 						for(var i in this.files){
-							formData.append(name+"["+i+"]", this.files[i]);
-							//console.log(this.files[i]);
+							formData.append(name, this.files[i]);
 						}
 					}
 				}
@@ -852,19 +872,41 @@ function getPetitionDesignationList(){
 $(document).on("click",".searchCandidateCls",function(){
 	var typeVal = $(this).attr("attr_type");
 	$(".selectionSearchDetailsCls").attr("attr_type",typeVal);
+	//getAllDistrictsInState("","");
 	if(typeVal == "self"){
 		$("#candidateDetailsDivId").html('');
 		$("#candidateSearchModelDivId").modal("show");
 		getPetitionDesignationList();
-		getAllDistrictsInState("","");
+		//getAllDistrictsInState("","");
 	}else{
 		$("#candidateDetailsDivId").html('');
 		$("#candidateSearchModelDivId").modal("show");
 		getPetitionDesignationList();
-		getAllDistrictsInState("","");
+		//getAllDistrictsInState("","");
 	}
-	
 });
+
+$(document).on("change","#designationsId",function(){	
+	
+	var value = $(this).val();
+	if(parseInt(value)>0){
+		var typeVal = $(this).attr("attr_type");
+		$(".selectionSearchDetailsCls").attr("attr_type",typeVal);
+		getAllDistrictsInState("","");
+		if(typeVal == "self"){
+			$("#candidateDetailsDivId").html('');
+			//$("#candidateSearchModelDivId").modal("show");
+			//getPetitionDesignationList();
+			//getAllDistrictsInState("","");
+		}else{
+			$("#candidateDetailsDivId").html('');
+			//$("#candidateSearchModelDivId").modal("show");
+			//getPetitionDesignationList();
+			//getAllDistrictsInState("","");
+		}
+	}
+});
+
 $(document).on("click",".selectionSearchDetailsCls",function(){
 	var locationValue=0;
 	var locationLevelId=0;
