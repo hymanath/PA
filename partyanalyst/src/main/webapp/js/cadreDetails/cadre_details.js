@@ -8315,10 +8315,11 @@ function buildnormalSurveyDetails(result){
 	var str="";
 		//$("#trainingFeedBackId").html(result[0].surveyName);
 		str+='<label>'+result[0].surveyName+' :</label>';
-		str+='<div class="table-responsive">';
+		str+='<div class="table-responsive scrollit">';
 		str+='<table class="table table-bordered" id="normalSurveyTableId">';
 				str+='<thead>';
 					str+='<tr>';
+						str+='<th>S.No</th>';
 						str+='<th>Question</th>';
 						str+='<th>Option</th>';
 						str+='</tr>';
@@ -8328,7 +8329,10 @@ function buildnormalSurveyDetails(result){
 						for(var i in result[j].subList){
 							if(result[j].surveyTypeId == 5){
 							str+='<tr>';
-									str+='<td>'+result[j].subList[i].question+'</td>';
+							var question = result[j].subList[i].question.split(")");
+									str+='<td>'+question[0]+'</td>';
+									str+='<td>'+question[1]+'</td>';
+									
 									if(result[j].subList[i].name != null && result[j].subList[i].name !="" && result[j].subList[i].name != "null"){
 									str+='<td>'+result[j].subList[i].name+'</td>';
 									}else{
@@ -8343,20 +8347,21 @@ function buildnormalSurveyDetails(result){
 		str+='</table>';
 		str+='</div>';
 		$("#normalSurveyDiv").html(str);
-		$('#normalSurveyTableId').dataTable({
+		/*  $('#normalSurveyTableId').dataTable({
 			"iDisplayLength": 10,
 			"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 		});
-		$('#normalSurveyTableId').removeClass("dataTable");
+		$('#normalSurveyTableId').removeClass("dataTable"); */
 }
 function buildQuizSurveyDetails(result){
 	var str1='';
 		//$("#trainingQuizId").html(result[1].surveyName);
 		str1+='<label>'+result[1].surveyName+' :</label>';
-			str1+='<div class="table-responsive">';
+			str1+='<div class="table-responsive scrollit">';
 			str1+='<table class="table table-bordered" id="quizSurveyTableId">';
 				str1+='<thead>';
 					str1+='<tr>';
+						str1+='<th>S.No</th>';
 						str1+='<th>Question</th>';
 						str1+='<th>Given Option</th>';
 						str1+='<th>Answer</th>';
@@ -8368,7 +8373,9 @@ function buildQuizSurveyDetails(result){
 						for(var i in result[j].subList){
 								if(result[j].surveyTypeId ==7){
 								str1+='<tr>';
-										str1+='<td>'+result[j].subList[i].question+'</td>';
+										var question = result[j].subList[i].question.split(")");
+										str1+='<td>'+question[0]+'</td>';
+										str1+='<td>'+question[1]+'</td>';
 										if(result[j].subList[i].candidateName != null && result[j].subList[i].candidateName !="" &&
 											result[j].subList[i].candidateName != "null"){
 												str1+='<td>'+result[j].subList[i].candidateName+'</td>';
@@ -8397,10 +8404,10 @@ function buildQuizSurveyDetails(result){
 		str1+='</table>';
 		str1+='</div>';
 		$("#quizSurveyDiv").html(str1);
-		$('#quizSurveyTableId').dataTable({
+		/* $('#quizSurveyTableId').dataTable({
 			"iDisplayLength": 10,
 			"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 		});
-		 $('#quizSurveyTableId').removeClass("dataTable");
+		 $('#quizSurveyTableId').removeClass("dataTable");  */
 			
 }
