@@ -279,7 +279,7 @@
 					</select>
 				</div>
 				<div class="col-sm-3">
-					<button type="button" class="btn btn-xs btn-success selectionSearchDetailsCls">Search</button>
+					<button type="button" class="btn btn-xs btn-success selectionSearchDetailsCls" style="border-radius: 0px; font-weight: bold;">Search</button>
 				</div>
 			</div>
 			<div class="row">
