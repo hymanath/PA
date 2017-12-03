@@ -29,6 +29,8 @@ public class PetitionReffererCandidate {
 	private Date insertedTime;
 	private Date updatedTime;
 	private Long petitionDesignationId;
+	private Long partyId;
+	private String partyName;
 	
 	private User insetrUser;
 	private User updateUser;
@@ -155,6 +157,22 @@ public class PetitionReffererCandidate {
 	}
 	public void setPetitionDesignation(PetitionDesignation petitionDesignation) {
 		this.petitionDesignation = petitionDesignation;
+	}
+	
+	@Column(name="party_id")
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	
+	@Column(name="party_name")
+	public String getPartyName() {
+		return partyName;
+	}
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
 	}
 	
 

@@ -90,7 +90,7 @@ public class PetitionRefferer {
 		this.updatedTime = updatedTime;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "petition_refferer_candidate_id", insertable = false, updatable = false)
+	@JoinColumn(name = "petition_ref_candidate_id", insertable = false, updatable = false)
 	public PetitionReffererCandidate getPetitionReffererCandidate() {
 		return petitionReffererCandidate;
 	}

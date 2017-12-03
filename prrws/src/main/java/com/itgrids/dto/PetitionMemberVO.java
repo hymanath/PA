@@ -16,7 +16,28 @@ public class PetitionMemberVO {
 	private String emailId;
 	private String voterCardNo;
 	private List<MultipartFile> filesList ;
+	private List<Long> referrerCandidateIdsList;
+	private AddressVO addressVO;
+	private IdNameVO idNameVO;
 	
+	public IdNameVO getIdNameVO() {
+		return idNameVO;
+	}
+	public void setIdNameVO(IdNameVO idNameVO) {
+		this.idNameVO = idNameVO;
+	}
+	public AddressVO getAddressVO() {
+		return addressVO;
+	}
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
+	}
+	public List<Long> getReferrerCandidateIdsList() {
+		return referrerCandidateIdsList;
+	}
+	public void setReferrerCandidateIdsList(List<Long> referrerCandidateIdsList) {
+		this.referrerCandidateIdsList = referrerCandidateIdsList;
+	}
 	public List<MultipartFile> getFilesList() {
 		return filesList;
 	}

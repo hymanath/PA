@@ -13,6 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * @author sys
+ *
+ */
 @Entity
 @Table(name = "petition_member")
 public class PetitionMember {
@@ -37,7 +41,9 @@ public class PetitionMember {
 	private Date insertedTime;
 	private Date updatedTime;
 	private String memberType;
+	private Long petitionReffererCandidateId;
 	
+	private PetitionReffererCandidate petitionReffererCandidate;
 	private User insetrUser;
 	private User updateUser;
 	
@@ -214,6 +220,26 @@ public class PetitionMember {
 	}
 	public void setMemberType(String memberType) {
 		this.memberType = memberType;
+	}
+	
+	
+	@Column(name="petition_ref_candidate_id")
+	public Long getPetitionReffererCandidateId() {
+		return petitionReffererCandidateId;
+	}
+	public void setPetitionReffererCandidateId(Long petitionReffererCandidateId) {
+		this.petitionReffererCandidateId = petitionReffererCandidateId;
+	}
+	
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_ref_candidate_id", insertable = false, updatable = false)
+	public PetitionReffererCandidate getPetitionReffererCandidate() {
+		return petitionReffererCandidate;
+	}
+	public void setPetitionReffererCandidate(
+			PetitionReffererCandidate petitionReffererCandidate) {
+		this.petitionReffererCandidate = petitionReffererCandidate;
 	}
 	
 	
