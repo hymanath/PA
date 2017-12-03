@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -30,7 +29,6 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.transaction.TransactionStatus;
@@ -4191,7 +4189,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return null;
 	}
-	
+	/*
+	 * Swadhin1
+	 * @see com.itgrids.partyanalyst.service.IAlertService#getTotalAlertGroupByLocationThenStatus(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.lang.Long, java.lang.String, java.lang.Long, java.lang.Long, java.lang.String, java.lang.Long, java.util.List, java.lang.String, java.lang.Long)
+	 */
 	public List<AlertOverviewVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId,Long editionId,String filterType,Long locationValue,List<Long> alertStatusIds,String sortingType,Long disctrictId){
 		LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 		try{  
@@ -4240,12 +4241,44 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				userAccessLevelValues.clear();
 				userAccessLevelValues.addAll(parliamentAssemlyIds);      
 			}
-			    
+			//String filterType,Long locationValue
+			String blockType="";
+			List<Long> locationValues = null;
+			if(filterType != null && filterType.trim().equalsIgnoreCase("Parliament") && locationValue != null && locationValue.longValue() > 0){
+				if(locationValue != null && locationValue.longValue() > 0L){
+					locationValues = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(locationValue);
+					locationValue = null;
+				}
+				blockType = filterType;
+			}
+			if(filterType != null && filterType.trim().equalsIgnoreCase("Parliament")){
+				blockType = filterType;
+				filterType = "Constituency";
+			}
 			//get alert status count and and create a map of LocationId and its corresponding  alert count
-			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, "One", userAccessLevelId, userAccessLevelValues,alertTypeList,editionList,filterType,locationValue,disctrictId,alertStatusIds);
+			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, "One", userAccessLevelId, userAccessLevelValues,alertTypeList,editionList,filterType,locationValue,disctrictId,alertStatusIds,locationValues);
+			
+			List<Object[]> parliamentList=null;
+			if(blockType != null && blockType.trim().equalsIgnoreCase("Parliament")){
+				List<Long> constituencyIds = new ArrayList<Long>();
+				if(alertCountList != null && alertCountList.size() > 0){
+					for(Object[] param : alertCountList){
+						if(param[0] != null){
+							constituencyIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						}
+					}
+					parliamentList = parliamentAssemblyDAO.getParliamntIdByConsIds(constituencyIds);
+				}
+			}
+			
+			
+			if(blockType != null && blockType.trim().equalsIgnoreCase("Parliament")){
+				convertConstituencyDateIntoParliamentDateForToralAlert(alertCountList,parliamentList);
+			}
+			
 			if(alertCountList != null && alertCountList.size() > 0){
 				for(Object[] param : alertCountList){
-					if(param[0] != null)
+					if(param[0] != null)//{207=1, 203=1, 277=1, 282=1, 286=1, 285=1, 327=1, 155=1, 257=1, 157=1, 218=3, 334=1, 146=1, 215=1, 149=2, 305=1, 238=1, 306=1, 232=1, 163=1, 352=3, 353=1, 294=1, 178=1, 179=1, 298=2}
 						locationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
 				}
 			}  
@@ -4253,7 +4286,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
 			Map<Long,Long> statusIdAndCountMap = null;//new HashMap<Long, Long>();  
 			Map<Long,Map<Long,Long>> locationIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
-			List<Object[]> alertCountGrpByLocList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, "two", userAccessLevelId, userAccessLevelValues,alertTypeList,editionList,filterType,locationValue,disctrictId,alertStatusIds);    
+			List<Object[]> alertCountGrpByLocList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, "two", userAccessLevelId, userAccessLevelValues,alertTypeList,editionList,filterType,locationValue,disctrictId,alertStatusIds,locationValues);    
+			
+			if(blockType != null && blockType.trim().equalsIgnoreCase("Parliament")){
+				convertConstituencyDateIntoParliamentDate(alertCountGrpByLocList,parliamentList,"status");
+			}  
+			
 			if(alertCountGrpByLocList != null && alertCountGrpByLocList.size() > 0){
 				for(Object[] param : alertCountGrpByLocList){  
 					if(param[0] != null){
@@ -4317,6 +4355,80 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			LOG.error("Error occured getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 		}
 		return null;
+	}
+	public void convertConstituencyDateIntoParliamentDateForToralAlert(List<Object[]> alertCountList,List<Object[]> parliamentList){
+		try{
+			//create a map for parliamentId and listOfConstituencyId
+ 			Map<Long,List<Long>> parliamentIdAndListConstituency = new HashMap<Long,List<Long>>();
+ 			//create a map for parliamentIdAndName
+ 			Map<Long,String> parliamentIdAndNameMap = new HashMap<Long,String>();
+ 			List<Long> constituencyIdList = null;
+ 			if(parliamentList != null && parliamentList.size() > 0){
+ 				for(Object[] param : parliamentList){
+ 					parliamentIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1]));
+ 					constituencyIdList = parliamentIdAndListConstituency.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+ 					if(constituencyIdList == null){
+ 						constituencyIdList = new ArrayList<Long>();
+ 						parliamentIdAndListConstituency.put(commonMethodsUtilService.getLongValueForObject(param[0]), constituencyIdList);
+ 					}
+ 					constituencyIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+ 				}
+ 			}
+ 			//create a map for constituencyId and constituency dtls
+ 			Map<Long,List<Object[]>> constituencyIdAndListOfThatConstituencyDtls = new HashMap<Long,List<Object[]>>();
+ 			List<Object[]> listOfThatConstituencyDtls = null;
+ 			if(alertCountList != null && alertCountList.size() > 0){
+ 				for(Object[] param : alertCountList){
+ 					if(param[0] != null){
+ 						listOfThatConstituencyDtls = constituencyIdAndListOfThatConstituencyDtls.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+ 						if(null == listOfThatConstituencyDtls){
+ 							listOfThatConstituencyDtls = new ArrayList<Object[]>();
+ 							constituencyIdAndListOfThatConstituencyDtls.put(commonMethodsUtilService.getLongValueForObject(param[0]), listOfThatConstituencyDtls);
+ 						}
+ 						listOfThatConstituencyDtls.add(param);
+ 					}
+ 				}
+ 			}
+ 			
+ 			// create a map for parliamentId and listOfObjectArr for constituency
+ 			Map<Long,List<Object[]>> parliamentIdAndListOfObjectArr = new HashMap<Long,List<Object[]>>();
+ 			List<Object[]> listOfConArr = null;
+ 			if(parliamentIdAndListConstituency != null && parliamentIdAndListConstituency.size() > 0){
+ 				for(Entry<Long,List<Long>> innerParam : parliamentIdAndListConstituency.entrySet()){
+ 					listOfConArr = new ArrayList<Object[]>();
+ 					for(Long conId : innerParam.getValue()){
+ 						listOfConArr.addAll(constituencyIdAndListOfThatConstituencyDtls.get(conId));
+ 					}
+ 					parliamentIdAndListOfObjectArr.put(innerParam.getKey(), listOfConArr);
+ 				}
+ 			}
+ 			//create map for parliamentId and count map
+ 			Map<Long,Long> parliamentIdAndCountMap = new HashMap<Long,Long>();
+ 			Long count=null;
+ 			if(parliamentIdAndListOfObjectArr != null && parliamentIdAndListOfObjectArr.size() > 0){
+ 				for(Entry<Long,List<Object[]>> innerParam : parliamentIdAndListOfObjectArr.entrySet()){
+ 					count = new Long(0L);
+ 					for(Object[] param : innerParam.getValue()){
+ 						count = count + commonMethodsUtilService.getLongValueForObject(param[2]);
+ 					}
+ 					parliamentIdAndCountMap.put(innerParam.getKey(), count);
+ 				}
+ 			}
+ 			// now create list of object[]
+ 			alertCountList.clear();
+ 			Object[] arr = null;
+ 			if(parliamentIdAndCountMap != null && parliamentIdAndCountMap.size() > 0){
+ 				for(Entry<Long,Long> param : parliamentIdAndCountMap.entrySet()){
+					arr = new Object[3];
+					arr[0] = param.getKey();
+					arr[1] = parliamentIdAndNameMap.get(param.getKey());
+					arr[2] = param.getValue();
+					alertCountList.add(arr);
+ 				}
+ 			}
+		}catch(Exception e){
+			LOG.error("Error occured convertConstituencyDateIntoParliamentDateForToralAlert() method of AlertService{}");
+		}
 	}
 	public List<AlertCoreDashBoardVO> getOverAllAlertDetailsForCoreDashBoard(String startDate,String endDate,Long locationLevelId,
 			List<Long> levelValues,List<Long> impactScopeIds){
@@ -6236,7 +6348,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	}
 //swadhin
   public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,
-		  List<Long> districtIdList,Long catId,Long alertTypeId, Long editionId,Long constituencyId,List<Long> alertStatusIds,String locationLevel,String isPublication,String publicationIdStr,Long localElectionBodyId,String type){
+		  List<Long> districtIdList,Long catId,Long alertTypeId, Long editionId,Long constituencyId,List<Long> alertStatusIds,String locationLevel,String isPublication,String publicationIdStr,Long localElectionBodyId,String type,Long parliamentId){
 		LOG.info("Entered in getDistrictAndStateImpactLevelWiseAlertDtls() method of AlertService{}");
 		try{  
 			Date fromDate = null;          
@@ -6293,15 +6405,22 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						publicationId = Long.valueOf(publicationIdStr.substring(1));
 						publicationType="NewsPaper";
 					}else{//d
-						List<Object[]> tvChannelAlertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,"TvChannel",publicationId,localElectionBodyId,locationLevel,type);
+						List<Object[]> tvChannelAlertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,"TvChannel",publicationId,localElectionBodyId,locationLevel,type,null);
 						setAlertDtls(alertCoreDashBoardVOs, tvChannelAlertList);	
-						List<Object[]> newsPaperAelrtList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,"NewsPaper",publicationId,localElectionBodyId,locationLevel,type);
+						List<Object[]> newsPaperAelrtList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,"NewsPaper",publicationId,localElectionBodyId,locationLevel,type,null);
 						setAlertDtls(alertCoreDashBoardVOs, newsPaperAelrtList);	
 						return alertCoreDashBoardVOs;
 					}
 				}
-			}//d
-			List<Object[]> alertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,publicationType,publicationId,localElectionBodyId,locationLevel,type);
+			}
+			
+			List<Long> constituencyList = null;
+			if(parliamentId != null && parliamentId.longValue() > 0L){
+				constituencyList = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(parliamentId);
+				districtIdList = null;
+				constituencyId = null;
+			}
+			List<Object[]> alertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,publicationType,publicationId,localElectionBodyId,locationLevel,type,constituencyList);
 			setAlertDtls(alertCoreDashBoardVOs, alertList);
 			return alertCoreDashBoardVOs;
 			}catch(Exception e){  
@@ -8740,7 +8859,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
    	  }
     }
      /*
-	 * Author :Santosh
+	 * Author :Santosh,Swadhin
 	 * Date : 16-03-2017
 	 * @Description : This service is used to get district or constituency impact and its sub level alert count;
 	 */
@@ -8764,34 +8883,49 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				inputVO.setStateId(stateId);
 				inputVO.setFromDate(fromDate);
 				inputVO.setToDate(toDate);
-				inputVO.setType(selectionType);
- 				inputVO.setImpactLevelIds(new ArrayList<Long>(impactLevelIds));
+				inputVO.setType(selectionType);//impactScopeWise
+ 				inputVO.setImpactLevelIds(new ArrayList<Long>(impactLevelIds));//[2, 3, 8, 5, 12, 7, 9, 6]
  				inputVO.setEditionList(getEditionList(editionId));
- 				inputVO.setAlertStatusIds(alertStatusIds);
+ 				inputVO.setAlertStatusIds(alertStatusIds);//[2, 3, 8, 5, 12, 7, 9, 6]
 				inputVO.setAlertTypeId(alertTypeId);
 				inputVO.setDistrictId(disctrictId);
+				List<Long> constituencyList = null;
+				List<Object[]> parliamentList = null;
+				String blockType = "";
 				if(resultType != null && resultType.equalsIgnoreCase("District")){
 					resultVO.setName("DISTRICT OVERVIEW - IMPACT ALERTS");
 					inputVO.setDistrictId(locationValue);	
 				}else if(resultType.equalsIgnoreCase("Constituency")){
 					resultVO.setName("CONSTITUENCY OVERVIEW - IMPACT ALERTS");
 					inputVO.setConstituencyId(locationValue);
-				}
-				List<Object[]> rtrnObjLst = alertDAO.getImpactLevelByAlertCount(inputVO,resultType,"");
-				setLocationLevelWiseData(rtrnObjLst,locationMap,impactLevelIds,selectionType);
+				}else if(resultType.equalsIgnoreCase("Parliament")){
+					resultVO.setName("PARLIAMENT OVERVIEW - IMPACT ALERTS");
 					
-				
-				/*if(resultType != null && resultType.equalsIgnoreCase("District")){
-					if(isGhmcImpactLeve){
-						List<Long> impactLevelIdList = new ArrayList<Long>(0);
-						impactLevelIdList.addAll(impactLevelIds);
-						inputVO.getImpactLevelIds().clear();
-						inputVO.getImpactLevelIds().add(8l);
-						List<Object[]> ghmcData = alertDAO.getImpactLevelByAlertCount(inputVO,resultType,"GHMC");
-						impactLevelIdList.add(8l);
-						setLocationLevelWiseData(ghmcData,locationMap,impactLevelIdList);
+					if(locationValue != null && locationValue.longValue() > 0L){
+						constituencyList = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(locationValue);
 					}
-				}*/
+					inputVO.setConstituencyIds(constituencyList);
+					blockType = resultType;
+					resultType="Constituency";
+				}
+				
+				List<Object[]> rtrnObjLst = alertDAO.getImpactLevelByAlertCount(inputVO,resultType,"");
+				
+				if(blockType != null && blockType.trim().equalsIgnoreCase("Parliament")){
+					List<Long> constituencyIds = new ArrayList<Long>();
+					if(rtrnObjLst != null && rtrnObjLst.size() > 0){
+						for(Object[] param : rtrnObjLst){
+							if(param[0] != null){
+								constituencyIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+							}
+						}
+						parliamentList = parliamentAssemblyDAO.getParliamntIdByConsIds(constituencyIds);
+						convertConstituencyDateIntoParliamentDate(rtrnObjLst,parliamentList,"overview");
+					}
+				}
+				
+				
+				setLocationLevelWiseData(rtrnObjLst,locationMap,impactLevelIds,selectionType);
 				
 				if(locationMap != null && locationMap.size() > 0){
 					 resultVO.setSubList1(new ArrayList<AlertOverviewVO>(locationMap.values()));
@@ -8807,6 +8941,118 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		 }
 		 return resultVO;
 	 }
+ 	public void convertConstituencyDateIntoParliamentDate(List<Object[]> rtrnObjLst,List<Object[]> parliamentList,String detailsType){
+ 		try{
+ 			Map<Long,String> statusIdAndStatus = new HashMap<Long,String>();
+ 			int dataPosition=0;
+ 			if(detailsType != null && detailsType.trim().equalsIgnoreCase("overview")){
+ 				dataPosition = 3;
+ 			}else if(detailsType != null && detailsType.trim().equalsIgnoreCase("status")){
+ 				dataPosition = 4;
+ 				if(rtrnObjLst != null && rtrnObjLst.size() > 0){
+					for(Object[] param : rtrnObjLst){
+						statusIdAndStatus.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[3]));
+					}
+				}
+ 			}
+ 			
+ 			//create a map for parliamentId and listOfConstituencyId
+ 			Map<Long,List<Long>> parliamentIdAndListConstituency = new HashMap<Long,List<Long>>();
+ 			//create a map for parliamentIdAndName
+ 			Map<Long,String> parliamentIdAndNameMap = new HashMap<Long,String>();
+ 			List<Long> constituencyIdList = null;
+ 			if(parliamentList != null && parliamentList.size() > 0){
+ 				for(Object[] param : parliamentList){
+ 					parliamentIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1]));
+ 					constituencyIdList = parliamentIdAndListConstituency.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+ 					if(constituencyIdList == null){
+ 						constituencyIdList = new ArrayList<Long>();
+ 						parliamentIdAndListConstituency.put(commonMethodsUtilService.getLongValueForObject(param[0]), constituencyIdList);
+ 					}
+ 					constituencyIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+ 				}
+ 			}
+ 			//create a map for constituencyId and constituency dtls
+ 			Map<Long,List<Object[]>> constituencyIdAndListOfThatConstituencyDtls = new HashMap<Long,List<Object[]>>();
+ 			List<Object[]> listOfThatConstituencyDtls = null;
+ 			if(rtrnObjLst != null && rtrnObjLst.size() > 0){
+ 				for(Object[] param : rtrnObjLst){
+ 					if(param[0] != null){
+ 						listOfThatConstituencyDtls = constituencyIdAndListOfThatConstituencyDtls.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+ 						if(null == listOfThatConstituencyDtls){
+ 							listOfThatConstituencyDtls = new ArrayList<Object[]>();
+ 							constituencyIdAndListOfThatConstituencyDtls.put(commonMethodsUtilService.getLongValueForObject(param[0]), listOfThatConstituencyDtls);
+ 						}
+ 						listOfThatConstituencyDtls.add(param);
+ 					}
+ 				}
+ 			}
+ 			
+ 			// create a map for parliamentId and listOfObjectArr for constituency
+ 			Map<Long,List<Object[]>> parliamentIdAndListOfObjectArr = new HashMap<Long,List<Object[]>>();
+ 			List<Object[]> listOfConArr = null;
+ 			if(parliamentIdAndListConstituency != null && parliamentIdAndListConstituency.size() > 0){
+ 				for(Entry<Long,List<Long>> innerParam : parliamentIdAndListConstituency.entrySet()){
+ 					listOfConArr = new ArrayList<Object[]>();
+ 					for(Long conId : innerParam.getValue()){
+ 						listOfConArr.addAll(constituencyIdAndListOfThatConstituencyDtls.get(conId));
+ 					}
+ 					parliamentIdAndListOfObjectArr.put(innerParam.getKey(), listOfConArr);
+ 				}
+ 			}
+ 			//create map for parliamentId and statusId and count map
+ 			Map<Long,Map<Long,Long>> parliamentIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
+ 			Map<Long,Long> statusIdAndCountMap = null;
+ 			if(parliamentIdAndListOfObjectArr != null && parliamentIdAndListOfObjectArr.size() > 0){
+ 				for(Entry<Long,List<Object[]>> innerParam : parliamentIdAndListOfObjectArr.entrySet()){
+ 					statusIdAndCountMap = new HashMap<Long,Long>();
+ 					for(Object[] param : innerParam.getValue()){
+ 						if(statusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[2])) != null){
+ 							statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), statusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[2])) + commonMethodsUtilService.getLongValueForObject(param[dataPosition]));
+ 						}else{
+ 							statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[dataPosition]));
+ 						}
+ 					}
+ 					parliamentIdAndStatusIdAndCountMap.put(innerParam.getKey(), statusIdAndCountMap);
+ 				}
+ 			}
+ 			// now create list of object[]
+ 			 			
+ 			rtrnObjLst.clear();
+ 			Object[] arr = null;
+ 			if(detailsType != null && detailsType.trim().equalsIgnoreCase("overview")){
+ 				if(parliamentIdAndStatusIdAndCountMap != null && parliamentIdAndStatusIdAndCountMap.size() > 0){
+ 	 				for(Entry<Long,Map<Long,Long>> outerParam : parliamentIdAndStatusIdAndCountMap.entrySet()){
+ 	 					for(Entry<Long,Long> innerParam : outerParam.getValue().entrySet()){
+ 	 						arr = new Object[4];
+ 	 						arr[0] = outerParam.getKey();
+ 	 						arr[1] = parliamentIdAndNameMap.get(outerParam.getKey());
+ 	 						arr[2] = innerParam.getKey();
+ 	 						arr[3] = innerParam.getValue();
+ 	 						rtrnObjLst.add(arr);
+ 	 					}
+ 	 				}
+ 	 			}
+ 			}else if(detailsType != null && detailsType.trim().equalsIgnoreCase("status")){
+ 				if(parliamentIdAndStatusIdAndCountMap != null && parliamentIdAndStatusIdAndCountMap.size() > 0){
+ 	 				for(Entry<Long,Map<Long,Long>> outerParam : parliamentIdAndStatusIdAndCountMap.entrySet()){
+ 	 					for(Entry<Long,Long> innerParam : outerParam.getValue().entrySet()){
+ 	 						arr = new Object[5];
+ 	 						arr[0] = outerParam.getKey();
+ 	 						arr[1] = parliamentIdAndNameMap.get(outerParam.getKey());
+ 	 						arr[2] = innerParam.getKey();
+ 	 						arr[3] = statusIdAndStatus.get(innerParam.getKey());
+ 	 						arr[4] = innerParam.getValue();
+ 	 						rtrnObjLst.add(arr);
+ 	 					}
+ 	 				}
+ 	 			}
+ 			}
+ 			
+ 		}catch(Exception e){
+ 			LOG.error("Exception occured  in convertConstituencyDateIntoParliamentDate() in AlertService class ",e); 
+ 		}
+ 	}
  	 public void sortListByRequiredType(List<AlertOverviewVO> resultList,String sortingType){
  		 try{
  			if(sortingType != null && sortingType.equalsIgnoreCase("Decending")){
