@@ -1374,5 +1374,24 @@ $(document).on("click","#referelSubmitBtnId",function(){
 		}
 	});
 
-})
+});
 
+getRepresentationRequestDetailsByRepresentationRequestId(680);
+function getRepresentationRequestDetailsByRepresentationRequestId(representationMemberId){	
+	$("#districtrepresent").html('');
+	var json = {
+		  representationMemberId:representationMemberId
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getRepresentationRequestDetailsByRepresentationRequestId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		console.log(result);
+	});	
+}
