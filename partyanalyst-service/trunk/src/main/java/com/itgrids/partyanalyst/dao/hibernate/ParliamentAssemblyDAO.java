@@ -98,4 +98,19 @@ public class ParliamentAssemblyDAO extends GenericDaoHibernate<ParliamentAssembl
 		
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getParliamntIdByConsIds(List<Long> constituencyIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct  model.parliamentAssembly.constituencyId,model.parliamentAssembly.name,model.assembly.constituencyId " +
+	 				" from ParliamentAssembly model  ");
+		if(constituencyIds != null && constituencyIds.size()>0){
+			sb.append(" where model.assembly.constituencyId in (:constituencyIds)");
+		}
+			
+		Query query = getSession().createQuery(sb.toString());
+		if(constituencyIds != null && constituencyIds.size()>0)
+			query.setParameterList("constituencyIds", constituencyIds);
+		
+		return query.list();
+	}
 }
