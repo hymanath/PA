@@ -374,7 +374,7 @@
 	$(document).on("click",".alertSettingCloseCls",function(){      
 		$(".specialAlertDropDown").toggle();                    
 	});
-	
+	//publication
 	function getAlertDetails(optionId)
 	{
 		var scopeIdsArr = [];
@@ -3908,7 +3908,7 @@ function getTotalArticledetails(articleId){
 		}else{
 		 impactLevel = impactLevelObj[impactLevelId]+" Impact Alerts";	
 		}
-		
+		      
 		getLcatnWiseAlertDtls(locationLevel,impactLevel.toUpperCase(),districtIdArr,totalAlertCnt,constituencyId,impactScopArr,locationElectionBodyId,selectionType,parliamentId);
 	}
 
@@ -4586,6 +4586,7 @@ function getTotalArticledetails(articleId){
 		   if(status =="Search"){
 			 getTotalAlertGroupByLocationThenStatus(type,districtId); 
 			 getGhmcImpactLevelAlertStatusWise(districtId);
+			 getTotalAlertGroupByLocationThenStatusForParliament(type,0,districtId);
 			 getConstituencyAlertStatusWise(type,0,districtId);
 			 getAssignGroupTypeAlertDtlsByImpactLevelWise(districtId);
 		  }else{
