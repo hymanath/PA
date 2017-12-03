@@ -5608,7 +5608,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return (Object[])query.uniqueResult();
 	}
 	
-	public List<Object[]> getPublicationWiseAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String publicationType, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> alertTypeList, List<Long> editionList,String filterType,Long locationValue,List<Long> alertStatusIds,Long disctrictId){
+	public List<Object[]> getPublicationWiseAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String publicationType, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> alertTypeList, List<Long> editionList,String filterType,Long locationValue,List<Long> alertStatusIds,Long disctrictId,List<Long> constituencyList){
 		
 		StringBuilder queryStr = new StringBuilder();
 		
@@ -5666,6 +5666,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				queryStr.append(" and model.userAddress.constituency.constituencyId=:locationValue"); 
 			}
 		}
+		if(constituencyList != null && constituencyList.size() > 0){
+			queryStr.append(" and model.userAddress.constituency.constituencyId in (:constituencyList) "); 
+		}
 		if(disctrictId != null && disctrictId.longValue() > 0){
 			queryStr.append(" and model.userAddress.district.districtId =:disctrictId");
 		}
@@ -5717,6 +5720,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		if(disctrictId != null && disctrictId.longValue() > 0){
 			query.setParameter("disctrictId", disctrictId);	
+		}
+		if(constituencyList != null && constituencyList.size() > 0){
+			query.setParameterList("constituencyList", constituencyList);
 		}
 		return query.list();   
 	}
