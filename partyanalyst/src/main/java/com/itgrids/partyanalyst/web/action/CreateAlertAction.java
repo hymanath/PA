@@ -1338,6 +1338,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String isPublication = jObj.getString("isPublication");
 			String publicationIdStr = jObj.getString("publicationId");
 			Long localElectionBodyId = jObj.getLong("locationElectionBodyId");
+			Long parliamentId = jObj.getLong("parliamentId");
 			List<Long> alertStatusIds = new ArrayList<Long>();
 			JSONArray statusArray = jObj.getJSONArray("alertStatusArr"); 
 			for (int i = 0; i < statusArray.length(); i++){
@@ -1345,7 +1346,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}
 			 
 			String type = jObj.getString("type");
-			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtIds,catId,alertTypeId,editionId,constituencyId,alertStatusIds,locationLevel,isPublication,publicationIdStr,localElectionBodyId,type);   
+			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtIds,catId,alertTypeId,editionId,constituencyId,alertStatusIds,locationLevel,isPublication,publicationIdStr,localElectionBodyId,type,parliamentId);   
 		}catch(Exception e) {    
 			LOG.error("Exception occured in getDistrictAndStateImpactLevelWiseAlertDtls() of CreateAlertAction",e);
 		}

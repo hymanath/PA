@@ -240,6 +240,12 @@
 													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">District</h5></div>
 												</label>
 											</li>
+											<li>
+												<label class="checkbox-inline">
+													<input type="checkbox" attr_scope_type="Parliament" class="alertImpactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Paliament</h5></div>
+												</label>
+											</li>
 											<li>												
 												<label class="checkbox-inline">
 													<input type="checkbox" attr_scope_type="Constituency" class="alertImpactCheckCls" checked>
@@ -338,7 +344,7 @@
 								
 								<div class="panel-body alertImpctLevelBlcock">  
 								   <div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12 stateImpactLevelBlockCls">
+										<div class="col-md-12 col-xs-12 col-sm-12 stateImpactLevelBlockCls">
 										   <div class="panel panel-default panelNew">
 											<div class="panel-heading">
 												<h4 class="panel-title"><span class="headingColor" id="stateOverviewHeadingId">state overview - impact alerts</span></h4>
@@ -368,155 +374,218 @@
 													</div>
 												</div>
 											</div>
-									</div>
-								     <div class="col-md-12 col-xs-12 col-sm-12 districtImpactLevelBlockCls">
-										   <div class="panel panel-default panelNew">
-											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor" id="districtOverviewHeadingId">District overview - impact alerts</span></h4>
-											</div>
-											<div class="panel-body">
-												<div class="row" >
-													<div class="col-md-8 col-xs-12 col-sm-8">
-														<ul class="list-inline activeUlCls districtUl">
-															<li class="descendingConstituencyCls active" onClick="getSortedDistrictInRequiredFormat('Decending')">
-																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-															</li>
-															<li class="ascendingConstituencyCls" onClick="getSortedDistrictInRequiredFormat('Ascending')">
-																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-															</li>
-															<li class="atozDistrictSortingCls" onClick="getSortedDistrictInRequiredFormat('AlphabeticalAscending')">
-																A-Z
-															</li>
-															<li class="ztoaDistrictSortingCls" onClick="getSortedDistrictInRequiredFormat('AlphabeticalDescending')">
-																Z-A
-															</li>
-															<li>
-																<select class="form-control" id="districtSelectBoxId" onChange="getSortedDistrictInRequiredFormat('Search')">
-																 <option value="0">Select District </option>
-																</select>
-															</li>
-														</ul>
-													</div>
-													<div class="col-md-4 col-xs-12 col-sm-4">
-														  <!-- Nav tabs -->
-														  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
-															<li role="presentation" onClick="districtLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls districtCollapseHIghChartViewCls"><a href="#districtOvervwGraph" aria-controls="districtOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
-															<li role="presentation" onClick="districtLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls districtCollapseTblViewCls"><a href="#districtOvervwTable" aria-controls="districtOvervwTable" role="tab" data-toggle="tab">
-																<i class="fa fa-table"></i>
-															</a></li>
-														  </ul>
-													</div>
+										</div>
+										
+										
+										
+										<div class="col-md-12 col-xs-12 col-sm-12 districtImpactLevelBlockCls">
+											<div class="panel panel-default panelNew">
+												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor" id="districtOverviewHeadingId">District overview - impact alerts</span></h4>
+												</div>
+												<div class="panel-body">
+													<div class="row" >
+														<div class="col-md-8 col-xs-12 col-sm-8">
+															<ul class="list-inline activeUlCls districtUl">
+																<li class="descendingConstituencyCls active" onClick="getSortedDistrictInRequiredFormat('Decending')">
+																	<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+																</li>
+																<li class="ascendingConstituencyCls" onClick="getSortedDistrictInRequiredFormat('Ascending')">
+																	<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+																</li>
+																<li class="atozDistrictSortingCls" onClick="getSortedDistrictInRequiredFormat('AlphabeticalAscending')">
+																	A-Z
+																</li>
+																<li class="ztoaDistrictSortingCls" onClick="getSortedDistrictInRequiredFormat('AlphabeticalDescending')">
+																	Z-A
+																</li>
+																<li>
+																	<select class="form-control" id="districtSelectBoxId" onChange="getSortedDistrictInRequiredFormat('Search')">
+																	 <option value="0">Select District </option>
+																	</select>
+																</li>
+															</ul>
+														</div>
+														<div class="col-md-4 col-xs-12 col-sm-4">
+															<!-- Nav tabs -->
+															<ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+																<li role="presentation" onClick="districtLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls districtCollapseHIghChartViewCls"><a href="#districtOvervwGraph" aria-controls="districtOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+																<li role="presentation" onClick="districtLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls districtCollapseTblViewCls">
+																	<a href="#districtOvervwTable" aria-controls="districtOvervwTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a>
+																</li>
+															</ul>
+														</div>
 														<div class="col-md-12 col-xs-12 col-sm-12">
-														  <!-- Tab panes -->
-														  <div class="tab-content">
-														 <div role="tabpanel" class="tab-pane active collapseHIghChartViewCls districtCollapseHIghChartViewCls" id="districtOvervwGraph">
-																<div id="districtImpactLevelHighChartDivId" style="height:650px;"></div>
-														</div>
-														<div role="tabpanel" class="tab-pane collapseTblViewCls districtCollapseTblViewCls" id="districtOvervwTable">
-															<div id="districtImpactLevelTblDivId"></div>
-														</div>
-														  </div>
+															<!-- Tab panes -->
+															<div class="tab-content">
+																<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls districtCollapseHIghChartViewCls" id="districtOvervwGraph">
+																	<div id="districtImpactLevelHighChartDivId" style="height:650px;"></div>
+																</div>
+																<div role="tabpanel" class="tab-pane collapseTblViewCls districtCollapseTblViewCls" id="districtOvervwTable">
+																	<div id="districtImpactLevelTblDivId"></div>
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 gmcImpactLevelBlockCls">
-										   <div class="panel panel-default panelNew">
-											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor" id="corpOverviewHeadingId">CORP-GMC overview - impact alerts</span></h4>
-											</div>
-											<div class="panel-body">
-												<div class="row">
-													<div class="col-md-12 col-xs-12 col-sm-12">
-														  <!-- Nav tabs -->
-														  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
-															<li role="presentation" onClick="gmcLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls"><a href="#corpGmcOvervwGraph" aria-controls="corpGmcOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
-															<li role="presentation" onClick="gmcLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls"><a href="#corpGmcOvervwTable" aria-controls="corpGmcOvervwTable" role="tab" data-toggle="tab">
-																<i class="fa fa-table"></i>
-															</a></li>
-														  </ul>
-													</div>
+										
+										<!--swadhin-->
+										
+										<div class="col-md-12 col-xs-12 col-sm-12 parliamentImpactLevelBlockCls">
+											<div class="panel panel-default panelNew">
+												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor" id="parliamentOverviewHeadingId">Parliament overview - impact alerts</span></h4>
+												</div>
+												<div class="panel-body">
+													<div class="row" >
+														<div class="col-md-8 col-xs-12 col-sm-8">
+															<ul class="list-inline activeUlCls parliamentUl">
+																<li class="descendingConstituencyCls active" onClick="getSortedParliamentInRequiredFormat('Decending')">
+																	<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+																</li>
+																<li class="ascendingConstituencyCls" onClick="getSortedParliamentInRequiredFormat('Ascending')">
+																	<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+																</li>
+																<li class="atozParliamentSortingCls" onClick="getSortedParliamentInRequiredFormat('AlphabeticalAscending')">
+																	A-Z
+																</li>
+																<li class="ztoaParliamentSortingCls" onClick="getSortedParliamentInRequiredFormat('AlphabeticalDescending')">
+																	Z-A
+																</li>
+																<li>
+																	<select class="form-control" id="parliamentSelectBoxId" onChange="getSortedParliamentInRequiredFormat('Search')">
+																		<option value="0">Select Parliament </option>
+																	</select>
+																</li>
+															</ul>
+														</div>
+														<div class="col-md-4 col-xs-12 col-sm-4">
+															<!-- Nav tabs -->
+															<ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+																<li role="presentation" onClick="parliamentLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls parliamentCollapseHIghChartViewCls"><a href="#parliamentOvervwGraph" aria-controls="parliamentOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+																<li role="presentation" onClick="parliamentLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls parliamentCollapseTblViewCls">
+																	<a href="#parliamentOvervwTable" aria-controls="parliamentOvervwTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a>
+																</li>
+															</ul>
+														</div>
 														<div class="col-md-12 col-xs-12 col-sm-12">
-														  <!-- Tab panes -->
-														  <div class="tab-content">
-														 <div role="tabpanel" class="tab-pane active collapseHIghChartViewCls" id="corpGmcOvervwGraph">
-															<div id="gmcImpactLevelHighChartDivId" style="height:250px;"></div>
+															<!-- Tab panes -->
+															<div class="tab-content">
+																<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls parliamentCollapseHIghChartViewCls" id="parliamentOvervwGraph">
+																	<div id="parliamentImpactLevelHighChartDivId" style="height:650px;"></div>
+																</div>
+																<div role="tabpanel" class="tab-pane collapseTblViewCls parliamentCollapseTblViewCls" id="parliamentOvervwTable">
+																	<div id="parliamentImpactLevelTblDivId"></div>
+																</div>
+															</div>
 														</div>
-														<div role="tabpanel" class="tab-pane collapseTblViewCls" id="corpGmcOvervwTable">
-															 <div id="gmcImpactLevelTblDivId"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										
+										
+										
+										<div class="col-md-12 col-xs-12 col-sm-12 gmcImpactLevelBlockCls">
+											<div class="panel panel-default panelNew">
+												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor" id="corpOverviewHeadingId">CORP-GMC overview - impact alerts</span></h4>
+												</div>
+												<div class="panel-body">
+													<div class="row">
+														<div class="col-md-12 col-xs-12 col-sm-12">
+															  <!-- Nav tabs -->
+															  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+																<li role="presentation" onClick="gmcLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls"><a href="#corpGmcOvervwGraph" aria-controls="corpGmcOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+																<li role="presentation" onClick="gmcLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls"><a href="#corpGmcOvervwTable" aria-controls="corpGmcOvervwTable" role="tab" data-toggle="tab">
+																	<i class="fa fa-table"></i>
+																</a></li>
+															  </ul>
 														</div>
-														  </div>
+														<div class="col-md-12 col-xs-12 col-sm-12">
+															<!-- Tab panes -->
+															<div class="tab-content">
+																<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls" id="corpGmcOvervwGraph">
+																	<div id="gmcImpactLevelHighChartDivId" style="height:250px;"></div>
+																</div>
+																<div role="tabpanel" class="tab-pane collapseTblViewCls" id="corpGmcOvervwTable">
+																	<div id="gmcImpactLevelTblDivId"></div>
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 										<div class="col-md-12 col-xs-12 col-sm-12 constituencyImpactLevelBlockCls">
-										   <div class="panel panel-default panelNew">
-											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor" id="constituencyOverviewHeadingId">Constituency overview - impact alerts</span></h4>
-											</div>
-											<div class="panel-body">
-												<div class="row">
-													<div class="col-md-8 col-xs-12 col-sm-8">
-														<ul class="list-inline activeUlCls  constituencyUl">
-																<li class="descendingConstituencyCls active" onClick="getSortedConstituencyInRequiredFormat('Decending')">
-																	<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-																</li >
-																<li class="ascendingConstituencyCls" onClick="getSortedConstituencyInRequiredFormat('Ascending')">
-																	<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-																</li>
-																<li class="atozConstituecySortingCls" onClick="getSortedConstituencyInRequiredFormat('AlphabeticalAscending')">
-																	A-Z
-																</li>
-																<li class="ztozConstituecySortingCls" onClick="getSortedConstituencyInRequiredFormat('AlphabeticalDescending')">
-																	Z-A
-																</li>
-																<li class="ascendingSortingByConstituencyIdCls" onClick="getSortedConstituencyInRequiredFormat('locationIdAscendingOrder')">
-																	constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
-																</li>
-																<li class="ascendingSortingByConstituencyIdCls" onClick="getSortedConstituencyInRequiredFormat('locationIdDescendingOrder')">
-																	constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
-																</li>
-																<li>
-																<select class="form-control" id="constituencySeletBoxId" onChange="getSortedConstituencyInRequiredFormat('Search')">
-																    <option value="0">Select Constitency </option>
-																</select>
-															    </li>
-															</ul>
+											<div class="panel panel-default panelNew">
+													<div class="panel-heading">
+														<h4 class="panel-title"><span class="headingColor" id="constituencyOverviewHeadingId">Constituency overview - impact alerts</span></h4>
 													</div>
-													<div class="col-md-4 col-xs-12 col-sm-4">
-														  <!-- Nav tabs -->
-														  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
-															<li role="presentation" onClick="constituencyLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls constituencyHighChartViewCls"><a href="#constituencyOvervwGraph" aria-controls="constituencyOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
-															<li role="presentation" onClick="constituencyTblBuildingFunction();" class="impactLevelCls collapseTblViewCls constituencyCollapseTblViewCls"><a href="#constituencyOvervwTable" aria-controls="constituencyOvervwTable" role="tab" data-toggle="tab">
-																<i class="fa fa-table"></i>
-															</a></li>
-														  </ul>
-													</div>
+												<div class="panel-body">
+													<div class="row">
+														<div class="col-md-8 col-xs-12 col-sm-8">
+															<ul class="list-inline activeUlCls  constituencyUl">
+																	<li class="descendingConstituencyCls active" onClick="getSortedConstituencyInRequiredFormat('Decending')">
+																		<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+																	</li >
+																	<li class="ascendingConstituencyCls" onClick="getSortedConstituencyInRequiredFormat('Ascending')">
+																		<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+																	</li>
+																	<li class="atozConstituecySortingCls" onClick="getSortedConstituencyInRequiredFormat('AlphabeticalAscending')">
+																		A-Z
+																	</li>
+																	<li class="ztozConstituecySortingCls" onClick="getSortedConstituencyInRequiredFormat('AlphabeticalDescending')">
+																		Z-A
+																	</li>
+																	<li class="ascendingSortingByConstituencyIdCls" onClick="getSortedConstituencyInRequiredFormat('locationIdAscendingOrder')">
+																		constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
+																	</li>
+																	<li class="ascendingSortingByConstituencyIdCls" onClick="getSortedConstituencyInRequiredFormat('locationIdDescendingOrder')">
+																		constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
+																	</li>
+																	<li>
+																	<select class="form-control" id="constituencySeletBoxId" onChange="getSortedConstituencyInRequiredFormat('Search')">
+																		<option value="0">Select Constitency </option>
+																	</select>
+																	</li>
+																</ul>
+														</div>
+														<div class="col-md-4 col-xs-12 col-sm-4">
+															  <!-- Nav tabs -->
+															  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+																<li role="presentation" onClick="constituencyLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls constituencyHighChartViewCls"><a href="#constituencyOvervwGraph" aria-controls="constituencyOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+																<li role="presentation" onClick="constituencyTblBuildingFunction();" class="impactLevelCls collapseTblViewCls constituencyCollapseTblViewCls"><a href="#constituencyOvervwTable" aria-controls="constituencyOvervwTable" role="tab" data-toggle="tab">
+																	<i class="fa fa-table"></i>
+																</a></li>
+															  </ul>
+														</div>
 														<div class="col-md-12 col-xs-12 col-sm-12">
-														  <!-- Tab panes -->
-													<div class="tab-content">
-														 <div role="tabpanel" class="tab-pane active collapseHIghChartViewCls constituencyHighChartViewCls" id="constituencyOvervwGraph">
-															<div id="constituencyLevelHighChartDivId" style="height:450px;"></div>
-														</div>
-														<div role="tabpanel" class="tab-pane collapseTblViewCls constituencyCollapseTblViewCls" id="constituencyOvervwTable">
-															 <div id="constituencyLevelTblDivId"></div>
-														</div>
-													</div>
+															  <!-- Tab panes -->
+															<div class="tab-content">
+																<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls constituencyHighChartViewCls" id="constituencyOvervwGraph">
+																	<div id="constituencyLevelHighChartDivId" style="height:450px;"></div>
+																</div>
+																<div role="tabpanel" class="tab-pane collapseTblViewCls constituencyCollapseTblViewCls" id="constituencyOvervwTable">
+																	<div id="constituencyLevelTblDivId"></div>
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-									<div class="row m_top20">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<h4 class="panel-title groupAssignCls"><span class="headingColor text-capital">Alert Assigned Group Members - Status</span></h4>
-											<div id="groupAssignAlertDlsDivId" class="row m_top20"></div>     
+										
+										<div class="row m_top20">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<h4 class="panel-title groupAssignCls"><span class="headingColor text-capital">Alert Assigned Group Members - Status</span></h4>
+												<div id="groupAssignAlertDlsDivId" class="row m_top20"></div>     
+											</div>
 										</div>
 									</div>
-								</div>
 								</div>
 							</div>
 						</div> 
@@ -1833,7 +1902,7 @@
 						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="pressmeet">
 						   <h4 class="panel-title text-capital" style="width:440px;">    
 							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
-							  PRESS MEET <small> - <span class="pressMeetMainHeadingCls"></span></small>
+							  PRESS MEET 
 						   </h4>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="pressmeet">
@@ -5910,6 +5979,7 @@ function refreshMeetingStatus(){
 }
 </script> 
 <script>
+
   var tableToExcel = (function() {
   var uri = 'data:application/vnd.ms-excel;base64,'
     , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
