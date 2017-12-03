@@ -416,6 +416,7 @@
 			$(".impactLevelCls").attr("attr_level","Publication");
 			getStateImpcatLevelAlertCntPublicationWise();
 			getDistrictWisePublicationAlert("Decending","0");
+			getParliamentWisePublicationAlert("Decending",0,0);
 			getCorpGHMCImpcatLevelAlertCntPublicationWise("0");
 			getConstituencyWisePublicationAlert("Decending","0","0");
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
@@ -3606,7 +3607,7 @@ function getTotalArticledetails(articleId){
 				getDistrictWisePublicationAlert("Decending","0");
 				getConstituencyWisePublicationAlert("Decending","0","0");
 				getAssignGroupTypeAlertDtlsByImpactLevelWise(districtId);
-			}else if(locVal == "4") {
+			}else if(locVal == "4") {    
 				  $("#alertChildActivityMemberDivId").html('');
 				  $("#childUserTypeDetailsDivForAlerts").html('');
 				  $("#candidateLocationAlertDtlsStatusWiseDivId").html('');
@@ -3824,7 +3825,7 @@ function getTotalArticledetails(articleId){
 		
 		var locationLevel = locationLevel;
 		var districtIdArr =[];
-		var constituencyId = 0;
+		var constituencyId = 0;    
 		 if(loctionType=="Constituency"){
 			constituencyId = locationIdStr;  
 		}else if(loctionType=="District"){
@@ -4172,6 +4173,9 @@ function getTotalArticledetails(articleId){
 			}
 		});  
 	}
+	
+	
+	
 	 function buildDistrictOrConstituencyImpactLevelHighChartRsltPublicationWise(result,divId,locationValue,locationType){
 		   
 		if(result != null && result.length > 10){
@@ -4200,9 +4204,12 @@ function getTotalArticledetails(articleId){
 				  if(divId=="districtImpactLevelHighChartDivId"){
 					  $("#districtSelectBoxId").val(' ');
 					  $("#districtSelectBoxId").html(str);
-				  }else{
+				  }else if(divId=="constituencyLevelHighChartDivId"){
 					  $("#constituencySeletBoxId").val(' ');
 					  $("#constituencySeletBoxId").html(str);  
+				  }else{
+					  $("#parliamentSelectBoxId").val(' ');
+					  $("#parliamentSelectBoxId").html(str); 
 				  }
 			    }
              	var andhraBhoomiAlertArr = []; //Appending value 2
@@ -4462,7 +4469,7 @@ function getTotalArticledetails(articleId){
 				$("#constituencyOvervwGraph").css("height","auto");
 			 } 
 		 }
-	}  
+	}     
 	
   function buildDistrictOrConstituencyImpactLevelTabularRsltPublicationWise(result,divId,locationType){
 	 var str='';
@@ -4471,6 +4478,8 @@ function getTotalArticledetails(articleId){
 		  str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="cnsttncyWsPublctnAlrtCntSmmryDataTblId">'; 
 	 }else if(divId=="districtImpactLevelTblDivId"){
 		   str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="dstrctWsPublctnAlrtCntSmmryDataTblId">';
+	 }else{
+		 str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="parliamentWsPublctnAlrtCntSmmryDataTblId">';
 	 }
 	 
 		 str+='<thead>';
@@ -4478,6 +4487,8 @@ function getTotalArticledetails(articleId){
 				str+='<th>Constituency</th>';
 		 }else if(divId=="districtImpactLevelTblDivId"){
 			  str+='<th>District</th>';
+		 }else{
+			str+='<th>Parliament</th>';
 		 }
 		      
 			   str+='<th>Total</th>';
@@ -4488,7 +4499,7 @@ function getTotalArticledetails(articleId){
 						 }
 					}
 			   }
-	   str+='</thead>';
+		str+='</thead>';
 		 str+='<tbody>';
 		  for(var i in result){
 				str+='<tr>';
@@ -4513,21 +4524,27 @@ function getTotalArticledetails(articleId){
 			 str+='</table>';
 	      $("#"+divId).html(str);
 		  str+='</div>';
-		   if(divId=="constituencyLevelTblDivId"){
-			 $("#cnsttncyWsPublctnAlrtCntSmmryDataTblId").dataTable({
-			"aaSorting": [],
-			"iDisplayLength" : 15,
-			"aLengthMenu": [[10,15,20,30,50, 100, -1], [10,15,20,30,50, 100, "All"]]			
-		   });   	
-		   }else if(divId == "districtImpactLevelTblDivId"){
-			 $("#dstrctWsPublctnAlrtCntSmmryDataTblId").dataTable({
-			"aaSorting": [],
-			"iDisplayLength" : 15,
-			"aLengthMenu": [[10,15,20,30,50, 100, -1], [10,15,20,30,50, 100, "All"]]
-		   });   	
-		   }
+			if(divId=="constituencyLevelTblDivId"){
+				$("#cnsttncyWsPublctnAlrtCntSmmryDataTblId").dataTable({
+					"aaSorting": [],
+					"iDisplayLength" : 15,
+					"aLengthMenu": [[10,15,20,30,50, 100, -1], [10,15,20,30,50, 100, "All"]]			
+				});   	
+			}else if(divId == "districtImpactLevelTblDivId"){
+				$("#dstrctWsPublctnAlrtCntSmmryDataTblId").dataTable({
+					"aaSorting": [],
+					"iDisplayLength" : 15,
+					"aLengthMenu": [[10,15,20,30,50, 100, -1], [10,15,20,30,50, 100, "All"]]
+				});   	
+			}else{
+				$("#parliamentWsPublctnAlrtCntSmmryDataTblId").dataTable({
+					"aaSorting": [],
+					"iDisplayLength" : 15,
+					"aLengthMenu": [[10,15,20,30,50, 100, -1], [10,15,20,30,50, 100, "All"]]
+				});
+			}
 		}
-		//santosh
+		
 	function getAlertPublicationDetails(publicationId,locationIdStr,totalAlertCnt,loctionType,locationLevel){
 		
 		var locationIdStr = locationIdStr
@@ -4538,6 +4555,8 @@ function getTotalArticledetails(articleId){
 			constituencyId = locationIdStr;  
 		}else if(loctionType=="District"){
 			 districtIdArr = locationIdStr.split(",");	
+		}else if(loctionType=="Parliament"){
+			constituencyId = locationIdStr;
 		}
 		var alertStatusId = 0;
 		var isPublication = "true";
@@ -4595,7 +4614,8 @@ function getTotalArticledetails(articleId){
 		
 	  }else if(selectedLevel == "Publication"){
 		   if(status =="Search"){
-			    getDistrictWisePublicationAlert(type,districtId); 
+			    getDistrictWisePublicationAlert(type,districtId);
+				getParliamentWisePublicationAlert(type,0,districtId);				
 				getCorpGHMCImpcatLevelAlertCntPublicationWise(districtId);
 				getConstituencyWisePublicationAlert(type,0,districtId);
 				getAssignGroupTypeAlertDtlsByImpactLevelWise(districtId); 
@@ -4606,8 +4626,8 @@ function getTotalArticledetails(articleId){
  }
 
 function getSortedParliamentInRequiredFormat(type){
-	$(".parliamentCollapseTblViewCls").removeClass("active");//parliamentCollapseTblViewCls
-	$(".parliamentCollapseHIghChartViewCls").addClass("active");//parliamentCollapseHIghChartViewCls
+	$(".parliamentCollapseTblViewCls").removeClass("active");
+	$(".parliamentCollapseHIghChartViewCls").addClass("active");
 	var selectedLevel = $(".impactLevelCls").attr("attr_level");
 	var parliamentId = $("#parliamentSelectBoxId").val();
 	var districtId = $("#districtSelectBoxId").val();;
@@ -4624,7 +4644,7 @@ function getSortedParliamentInRequiredFormat(type){
 	}else if(selectedLevel == "Status"){             
 		getTotalAlertGroupByLocationThenStatusForParliament(type,parliamentId,districtId)
 	}else if(selectedLevel == "Publication"){
-		//getConstituencyWisePublicationAlert(type,parliamentId,districtId);  
+		getParliamentWisePublicationAlert(type,parliamentId,districtId)  
 	} 
 }
  
@@ -7141,7 +7161,7 @@ function parliamentLevelHighchartBuildingFunction(){
 	}else if(selectedLevel == "Status"){
 		buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWise(globalParliamentLevelRlst,"parliamentImpactLevelHighChartDivId",parliamentId,"Parliament"); 
 	}else if(selectedLevel == "Publication"){
-		//buildDistrictOrConstituencyImpactLevelHighChartRsltPublicationWise(globalConstituencyLevelRlst,"constituencyLevelHighChartDivId",constituencyId,"Constituency");  
+		buildDistrictOrConstituencyImpactLevelHighChartRsltPublicationWise(globalParliamentLevelRlst,"parliamentImpactLevelHighChartDivId",parliamentId,"Parliament");
 	}
 }
 function parliamentLevelTblBuildingFunction(){
@@ -7152,7 +7172,7 @@ function parliamentLevelTblBuildingFunction(){
 	}else if(selectedLevel == "Status"){        
 		buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWise(globalParliamentLevelRlst,"Parliament","parliamentImpactLevelTblDivId"); 
 	}else if(selectedLevel == "Publication"){  
-		//buildDistrictOrConstituencyImpactLevelTabularRsltPublicationWise(globalConstituencyLevelRlst,"constituencyLevelTblDivId","Constituency");  
+		buildDistrictOrConstituencyImpactLevelTabularRsltPublicationWise(globalParliamentLevelRlst,"parliamentImpactLevelTblDivId","Parliament");  
 	}
 }
 function getTotalAlertGroupByLocationThenStatusForParliament(sortingType,parliamentId,districtId){
@@ -7201,3 +7221,51 @@ function getTotalAlertGroupByLocationThenStatusForParliament(sortingType,parliam
 		}
 	});  
 }
+
+function getParliamentWisePublicationAlert(sortingType,parliamentId,districtId){
+	$(".parliamentImpactLevelBlockCls").show();	
+	if(globalPaliamentImpactLevelScopeArr == null || globalPaliamentImpactLevelScopeArr.length == 0){
+		$(".parliamentImpactLevelBlockCls").hide();
+		return;
+	}
+	$("#parliamentOverviewHeadingId").html("Parliament overview - impact alerts");
+	$("#parliamentImpactLevelHighChartDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+    var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+	if(alertId == undefined){
+		alertId = 0;
+	}
+	var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+	if(editionId == undefined){
+		editionId = 0;
+	}
+	var districtArr=[];
+	var jsObj = { 
+		stateId : 			globalStateId,             
+		fromDate : 			customStartDateAlert,      
+		toDate : 			customEndDateAlert,  
+		scopeIdsArr : 		globalPaliamentImpactLevelScopeArr,              
+		activityMemberId : 	globalActivityMemberId,       
+		alertIds : 			alertId,
+		editionIds : 		editionId,     
+		filterType : 	"Parliament",
+		locationValue : parliamentId,
+		alertStatusId : 0,
+		alertStatusArr : globalAlertStatusArr,
+		sortingType : sortingType,
+		disctrictId : districtId   
+	}                  
+	$.ajax({
+		type : 'POST',        
+		url : 'getPublicationWiseAlertAction.action',
+		dataType : 'json',      
+		data : {task:JSON.stringify(jsObj)}    
+	}).done(function(result){
+		globalParliamentLevelRlst = result;
+		//$("#constituencyLevelHighChartDivId").html('');
+		if(result != null && result.length > 0){
+		   buildDistrictOrConstituencyImpactLevelHighChartRsltPublicationWise(result,"parliamentImpactLevelHighChartDivId",parliamentId,"Parliament");	
+		}else{  
+		   $(".parliamentImpactLevelBlockCls").hide();   
+		}
+	});  
+}    
