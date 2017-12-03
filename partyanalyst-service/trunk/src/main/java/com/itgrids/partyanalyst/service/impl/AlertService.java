@@ -6348,7 +6348,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	}
 //swadhin
   public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,
-		  List<Long> districtIdList,Long catId,Long alertTypeId, Long editionId,Long constituencyId,List<Long> alertStatusIds,String locationLevel,String isPublication,String publicationIdStr,Long localElectionBodyId,String type,Long parliamentId){
+		List<Long> districtIdList,Long catId,Long alertTypeId, Long editionId,Long constituencyId,List<Long> alertStatusIds,String locationLevel,String isPublication,String publicationIdStr,Long localElectionBodyId,String type,Long parliamentId){
 		LOG.info("Entered in getDistrictAndStateImpactLevelWiseAlertDtls() method of AlertService{}");
 		try{  
 			Date fromDate = null;          
@@ -6392,6 +6392,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				userAccessLevelValues.clear();          
 				userAccessLevelValues.addAll(parliamentAssemlyIds);      
 			}
+			
+			List<Long> constituencyList = null;
+			if(parliamentId != null && parliamentId.longValue() > 0L){
+				constituencyList = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(parliamentId);
+				districtIdList = null;
+				constituencyId = null;
+			}
+			
+			
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
 			String publicationType="";
 			Long publicationId = 0l;
@@ -6405,21 +6414,16 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						publicationId = Long.valueOf(publicationIdStr.substring(1));
 						publicationType="NewsPaper";
 					}else{//d
-						List<Object[]> tvChannelAlertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,"TvChannel",publicationId,localElectionBodyId,locationLevel,type,null);
+						List<Object[]> tvChannelAlertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,"TvChannel",publicationId,localElectionBodyId,locationLevel,type,constituencyList);
 						setAlertDtls(alertCoreDashBoardVOs, tvChannelAlertList);	
-						List<Object[]> newsPaperAelrtList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,"NewsPaper",publicationId,localElectionBodyId,locationLevel,type,null);
+						List<Object[]> newsPaperAelrtList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,"NewsPaper",publicationId,localElectionBodyId,locationLevel,type,constituencyList);
 						setAlertDtls(alertCoreDashBoardVOs, newsPaperAelrtList);	
 						return alertCoreDashBoardVOs;
 					}
 				}
 			}
 			
-			List<Long> constituencyList = null;
-			if(parliamentId != null && parliamentId.longValue() > 0L){
-				constituencyList = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(parliamentId);
-				districtIdList = null;
-				constituencyId = null;
-			}
+			
 			List<Object[]> alertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,publicationType,publicationId,localElectionBodyId,locationLevel,type,constituencyList);
 			setAlertDtls(alertCoreDashBoardVOs, alertList);
 			return alertCoreDashBoardVOs;
@@ -8622,7 +8626,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  		}
  	}
      /*
-	 * Author :Santosh
+	 * Author :Santosh,swadhin
 	 * Date : 22-02-2017
 	 * @Description : This service is used to get publication wise alert count;
 	 */
@@ -8675,13 +8679,61 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 			//Preparing Template
 			List<AlertOverviewVO> publicationList = new ArrayList<AlertOverviewVO>(0);
-			List<Object[]> rtrnNewsPaperObjList = newsPaperDAO.getNewPaperList();
-			List<Object[]> rtrnTvChannelObjLst = tvNewsChannelDAO.getChannelList();
+			List<Object[]> rtrnNewsPaperObjList = newsPaperDAO.getNewPaperList();//[1, AndhraBhoomi]
+			List<Object[]> rtrnTvChannelObjLst = tvNewsChannelDAO.getChannelList();//[5, ABN]
 			preparePublicationTemplate(rtrnTvChannelObjLst,publicationList,"TvChannel");
 			preparePublicationTemplate(rtrnNewsPaperObjList,publicationList,"NewsPaper");
+			
+			//in case parliament wise alert
+			String blockType = " ";
+			List<Long> constituencyList = new ArrayList<Long>();
+			if(filterType != null && filterType.trim().equalsIgnoreCase("Parliament") && locationValue != null && locationValue.longValue() > 0){
+				if(locationValue != null && locationValue.longValue() > 0L){
+					constituencyList = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(locationValue);
+				}
+				locationValue = null;
+				blockType = filterType;
+				filterType="Constituency";
+			}
+			if(filterType != null && filterType.trim().equalsIgnoreCase("Parliament")){
+				blockType = filterType;
+				filterType="Constituency";
+			}
+			
 			//Dao calls
-			List<Object[]> rtrnTvChannelArtcntObjLst = alertDAO.getPublicationWiseAlertCnt(fromDate, toDate, stateId, scopeIdList, "TvChannel", userAccessLevelId, userAccessLevelValues, alertTypeList, editionList, filterType, locationValue,alertStatusIds,disctrictId);
-			List<Object[]> rtrnTvNwsPprArtcntObjLst = alertDAO.getPublicationWiseAlertCnt(fromDate, toDate, stateId, scopeIdList, "NewsPaper", userAccessLevelId, userAccessLevelValues, alertTypeList, editionList, filterType, locationValue,alertStatusIds,disctrictId);
+			List<Object[]> rtrnTvChannelArtcntObjLst = alertDAO.getPublicationWiseAlertCnt(fromDate, toDate, stateId, scopeIdList, "TvChannel", userAccessLevelId, userAccessLevelValues, alertTypeList, editionList, filterType, locationValue,alertStatusIds,disctrictId,constituencyList);
+			List<Object[]> rtrnTvNwsPprArtcntObjLst = alertDAO.getPublicationWiseAlertCnt(fromDate, toDate, stateId, scopeIdList, "NewsPaper", userAccessLevelId, userAccessLevelValues, alertTypeList, editionList, filterType, locationValue,alertStatusIds,disctrictId,constituencyList);
+			
+			//convert constituency to parliament for TvChannel
+			List<Object[]> parliamentListForTvChannel = null;
+			if(blockType != null && blockType.trim().equalsIgnoreCase("Parliament")){
+				List<Long> constituencyIds = new ArrayList<Long>();
+				if(rtrnTvChannelArtcntObjLst != null && rtrnTvChannelArtcntObjLst.size() > 0){
+					for(Object[] param : rtrnTvChannelArtcntObjLst){
+						if(param[0] != null){
+							constituencyIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						}
+					}
+					parliamentListForTvChannel = parliamentAssemblyDAO.getParliamntIdByConsIds(constituencyIds);
+					convertConstituencyDateIntoParliamentDate(rtrnTvChannelArtcntObjLst,parliamentListForTvChannel,"overview");
+				}
+			}
+			
+			//convert constituency to parliament for TvNews
+			List<Object[]> parliamentListForTvNews = null;
+			if(blockType != null && blockType.trim().equalsIgnoreCase("Parliament")){
+				List<Long> constituencyIds = new ArrayList<Long>();
+				if(rtrnTvNwsPprArtcntObjLst != null && rtrnTvNwsPprArtcntObjLst.size() > 0){
+					for(Object[] param : rtrnTvNwsPprArtcntObjLst){
+						if(param[0] != null){
+							constituencyIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						}
+					}
+					parliamentListForTvNews = parliamentAssemblyDAO.getParliamntIdByConsIds(constituencyIds);
+					convertConstituencyDateIntoParliamentDate(rtrnTvNwsPprArtcntObjLst,parliamentListForTvNews,"overview");
+				}
+			}
+			
 			setPublicationWiseAlertCnt(rtrnTvChannelArtcntObjLst,locationWisAlertCntMap,publicationList,"TvChannel");
 			setPublicationWiseAlertCnt(rtrnTvNwsPprArtcntObjLst,locationWisAlertCntMap,publicationList,"NewsPaper");
 			
@@ -8892,13 +8944,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				List<Long> constituencyList = null;
 				List<Object[]> parliamentList = null;
 				String blockType = "";
-				if(resultType != null && resultType.equalsIgnoreCase("District")){
+				if(resultType != null && resultType.trim().equalsIgnoreCase("District")){
 					resultVO.setName("DISTRICT OVERVIEW - IMPACT ALERTS");
 					inputVO.setDistrictId(locationValue);	
-				}else if(resultType.equalsIgnoreCase("Constituency")){
+				}else if(resultType != null && resultType.trim().equalsIgnoreCase("Constituency")){
 					resultVO.setName("CONSTITUENCY OVERVIEW - IMPACT ALERTS");
 					inputVO.setConstituencyId(locationValue);
-				}else if(resultType.equalsIgnoreCase("Parliament")){
+				}else if(resultType != null && resultType.trim().equalsIgnoreCase("Parliament")){
 					resultVO.setName("PARLIAMENT OVERVIEW - IMPACT ALERTS");
 					
 					if(locationValue != null && locationValue.longValue() > 0L){
