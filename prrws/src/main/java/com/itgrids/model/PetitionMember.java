@@ -36,6 +36,7 @@ public class PetitionMember {
 	private Long updatedUserId;
 	private Date insertedTime;
 	private Date updatedTime;
+	private String memberType;
 	
 	private User insetrUser;
 	private User updateUser;
@@ -206,4 +207,14 @@ public class PetitionMember {
 	public void setVoterCardNo(String voterCardNo) {
 		this.voterCardNo = voterCardNo;
 	}
+	
+	@Column(name="member_type")
+	public String getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(String memberType) {
+		this.memberType = memberType;
+	}
+	
+	
 }

@@ -24,23 +24,18 @@ public class PetitionWorkDetailsDAO extends GenericDaoHibernate<PetitionWorkDeta
 	}
 	
 	public List<Object[]> getWorkLocationDetailsByPetitionMemberId(Set<Long> petitionMemberIds){
-		
-		   StringBuilder sb = new StringBuilder();
-		   
-			sb.append(" select model.petitionMemberId,model.workName,model.noOfWorks," +
-					  " model.isPreviousPetition,model.previousPetitionRefNo,model.insertedTime,model.subject " +
-					  " from PetitionWorkDetails model  ");
-			
-			if(petitionMemberIds != null && petitionMemberIds.size() >0){
+		if(petitionMemberIds != null && petitionMemberIds.size()>0){
+			   StringBuilder sb = new StringBuilder();
+				sb.append(" select model.petitionMemberId,model.workName,model.noOfWorks," +
+						  " model.isPreviousPetition,model.previousPetitionRefNo,model.insertedTime,model.subject " +
+						  " from PetitionWorkDetails model  ");
 				sb.append(" where model.petitionMemberId in(:petitionMemberIdsLst) ");
-			}
 			   Query qry = getSession().createQuery(sb.toString());
-			   
 				if(petitionMemberIds != null && petitionMemberIds.size() >0){
 					qry.setParameterList("petitionMemberIdsLst", petitionMemberIds);
 				}
-		
-		return qry.list();
-		
+				return qry.list();
+		}
+		return null;
 	}
 }
