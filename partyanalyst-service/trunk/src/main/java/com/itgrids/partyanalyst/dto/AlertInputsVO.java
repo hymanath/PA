@@ -17,6 +17,8 @@ public class AlertInputsVO {
 	   private List<Long> alertStatusIds;
 	   private Long districtId;
 	   private Long constituencyId;
+	   private List<Long> constituencyIds;
+	   private Long parliamentId;
 	   private Long activityMemerId;
 	   private String type;
 	   
@@ -103,6 +105,18 @@ public class AlertInputsVO {
 		}
 		public void setType(String type) {
 			this.type = type;
+		}
+		public Long getParliamentId() {
+			return parliamentId;
+		}
+		public void setParliamentId(Long parliamentId) {
+			this.parliamentId = parliamentId;
+		}
+		public List<Long> getConstituencyIds() {
+			return constituencyIds;
+		}
+		public void setConstituencyIds(List<Long> constituencyIds) {
+			this.constituencyIds = constituencyIds;
 		}
 		
         		 

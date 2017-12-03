@@ -1252,7 +1252,7 @@ public interface IConstants {
 	public static final Long CNP_MANCHERIAL_DISTRICT_ID=344L;  
 	public static final String ALERT_PARTY_AND_OTHERS_TYPE_IDS="1,2";
 	public static final String ALERT_PENDING_STATUS_IDS="1";
-	public static final String ALERT_IMPACT_SCOPE_IDS="4,10,11";
+	public static final String ALERT_IMPACT_SCOPE_IDS="10,11";
 	public static final String ALERT_EDITION_TYPE_IDS="1,2,3"; 
 	
 	public static final Integer[] specialCharsUnicodeIgnoreList = {8204,8205};
