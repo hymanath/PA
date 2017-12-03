@@ -42,7 +42,8 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	}
 
 	public void setWorkFilesList(List<MultipartFile> workFilesList) {
-		this.workFilesList = workFilesList;
+		if(workFilesList != null && workFilesList.size()>0)
+			this.workFilesList = workFilesList;
 	}
 
 	public List<MultipartFile> getFilesList() {
@@ -50,7 +51,8 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	}
 
 	public void setFilesList(List<MultipartFile> filesList) {
-		this.filesList = filesList;
+		if(filesList != null && filesList.size()>0)
+			this.filesList = filesList;
 	}
 
 	public AddressVO getCandidateAddressVO() {

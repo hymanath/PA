@@ -1147,11 +1147,34 @@ public class CommonMethodsUtilService {
 		public String generateImagePathWithDateTime(){
 			try {
 				Calendar cal = Calendar.getInstance();
-				return cal.getTime().getYear()+"_"+cal.getTime().getMonth()+"_"+cal.getTime().getDay()+"_"+cal.getTime().getHours()+"_"+cal.getTime().getMinutes()+"_"+cal.getTime().getSeconds();
+				return cal.get(Calendar.YEAR)+"_"+cal.get(Calendar.MONTH)+"_"+cal.get(Calendar.DAY_OF_MONTH)+"_"+cal.get(Calendar.HOUR)+"_"+cal.get(Calendar.MINUTE)+"_"+cal.get(Calendar.SECOND);
 			} catch (Exception e) {
 				LOG.error("Exception raised at generateImagePathWithDateTime - CommonMethodsUtilService service", e);
 			}
 			return String.valueOf(Math.abs(new Random().nextInt()));
-			
 		}
+		
+		public String generateRandomSeries(Long digitsCount){
+			try {
+				if(digitsCount !=null && digitsCount.longValue() >0){
+				      Random randomGenerator = new Random();
+				      Calendar cal = Calendar.getInstance();
+				      int year = cal.get(Calendar.YEAR);
+				      String randomValue = "";
+				      for (int i = 0; i < digitsCount; i++) {
+				        int generatedNo = randomGenerator.nextInt(10);
+				        randomValue += String.valueOf(generatedNo);
+				      }
+				      String randomGeneratedValue = String.valueOf(year) + "_" + randomValue;
+				      return randomGeneratedValue;
+				    }else{
+				      return null;
+				    }
+			} catch (Exception e) {
+				LOG.error("Exception raised at generateRandomSeries - CommonMethodsUtilService service", e);
+			}
+		     return null;
+		    
+		  }
+		
 }

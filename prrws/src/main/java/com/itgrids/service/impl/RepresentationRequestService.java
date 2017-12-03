@@ -32,6 +32,7 @@ import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
 import com.itgrids.model.PetitionMember;
 import com.itgrids.model.PetitionRefferer;
+import com.itgrids.model.PetitionReffererCandidate;
 import com.itgrids.model.PetitionReffererDocument;
 import com.itgrids.model.PetitionSubWorkLocationDetails;
 import com.itgrids.model.PetitionWorkDetails;
@@ -106,10 +107,10 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			/** Start Petition Referrer Details */
 			
 			PetitionWorkDetails petitionWorkDetails = savePetitionWorkDetails(petitionMember.getPetitionMemberId(),dataVO);
+			PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = savePetitionSubWorkDetails(petitionWorkDetails.getPetitionWorkDetailsId(),dataVO);
 			if(dataVO.getFilesList() != null && dataVO.getFilesList().size()>0){
 				for (MultipartFile file : dataVO.getFilesList()) {
 					Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,dataVO.getUserId());
-					PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = savePetitionSubWorkDetails(petitionWorkDetails.getPetitionWorkDetailsId(),dataVO);
 				}
 			}
 			
@@ -164,22 +165,42 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		PetitionMember petitionMember = null;
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			try {
-				if(petitionMemberVO != null){
-					 petitionMember = new PetitionMember();
-					petitionMember.setCandidateName(petitionMemberVO.getPetitionMemberVO().getName());
-					petitionMember.setRepresentationDate(format.parse(petitionMemberVO.getPetitionMemberVO().getRepresentationDate()));
-					petitionMember.setEndorsmentDate(format.parse(petitionMemberVO.getPetitionMemberVO().getEndorsmentDate()));
-					petitionMember.setMobileNo(petitionMemberVO.getPetitionMemberVO().getMobileNo());
-					petitionMember.setEmailId(petitionMemberVO.getPetitionMemberVO().getEmailId());
-					petitionMember.setVoterCardNo(petitionMemberVO.getPetitionMemberVO().getVoterCardNo());
-					petitionMember.setIsDeleted("N");
-					petitionMember.setIsExpired("N");
-					petitionMember.setInsertedUserId(petitionMemberVO.getUserId());
-					petitionMember.setUpdatedUserId(petitionMemberVO.getUserId());
-					petitionMember.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-					petitionMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-					petitionMember = petitionMemberDAO.save(petitionMember);
+				
+				if(petitionMemberVO.getPetitionMemberVO() != null && petitionMemberVO.getPetitionMemberVO().getMemberType() != null && petitionMemberVO.getPetitionMemberVO().getMemberType().equalsIgnoreCase("SELF")){
+					
+				}else if(petitionMemberVO.getPetitionMemberVO() != null && petitionMemberVO.getPetitionMemberVO().getMemberType() != null && petitionMemberVO.getPetitionMemberVO().getMemberType().equalsIgnoreCase("REPRESENT")){
+					
 				}
+				
+					if(petitionMemberVO != null && petitionMemberVO.getReferrerCandidateId() != null && petitionMemberVO.getReferrerCandidateId().longValue()>0L){
+							PetitionReffererCandidate refCandidate = petitionReffererCandidateDAO.get(petitionMemberVO.getReferrerCandidateId());
+							if(refCandidate != null){
+								petitionMemberVO.getPetitionMemberVO().setName(refCandidate.getName());
+								petitionMemberVO.getPetitionMemberVO().setMobileNo(refCandidate.getMobileNo());
+								petitionMemberVO.getPetitionMemberVO().setEmailId(refCandidate.getEmailId());
+							}
+					}
+						
+					if(petitionMemberVO != null && petitionMemberVO.getPetitionMemberVO() != null){
+							petitionMember = new PetitionMember();
+							petitionMember.setCandidateName(petitionMemberVO.getPetitionMemberVO().getName());
+							
+							if(petitionMemberVO.getPetitionMemberVO().getRepresentationDate() != null && petitionMemberVO.getPetitionMemberVO().getRepresentationDate().length()>=10)
+								petitionMember.setRepresentationDate(format.parse(petitionMemberVO.getPetitionMemberVO().getRepresentationDate()));
+							if(petitionMemberVO.getPetitionMemberVO().getEndorsmentDate() != null && petitionMemberVO.getPetitionMemberVO().getEndorsmentDate().length()>=10)
+								petitionMember.setEndorsmentDate(format.parse(petitionMemberVO.getPetitionMemberVO().getEndorsmentDate()));
+							petitionMember.setMemberType(petitionMemberVO.getPetitionMemberVO().getMemberType());
+							petitionMember.setMobileNo(petitionMemberVO.getPetitionMemberVO().getMobileNo());
+							petitionMember.setEmailId(petitionMemberVO.getPetitionMemberVO().getEmailId());
+							petitionMember.setVoterCardNo(petitionMemberVO.getPetitionMemberVO().getVoterCardNo());
+							petitionMember.setIsDeleted("N");
+							petitionMember.setIsExpired("N");
+							petitionMember.setInsertedUserId(petitionMemberVO.getUserId());
+							petitionMember.setUpdatedUserId(petitionMemberVO.getUserId());
+							petitionMember.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							petitionMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							petitionMember = petitionMemberDAO.save(petitionMember);
+						}
 			} catch (Exception e) {
 				LOG.error("Exception Occured in RepresentationRequestService @ savePetitionMember() "+e.getMessage());
 			}
@@ -302,6 +323,74 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			LOG.error("Exception Occured in RepresentationRequestService @ saveDocument() "+e.getMessage());
 		}
 		return document;
+	}
+	
+	
+	public RepresentationRequestVO getRepresentationRequestDetailsByRepresentationRequestId(Long representationMemberId){
+		RepresentationRequestVO representationRequestVO = null;
+		try {
+			PetitionMember petitionMember = petitionMemberDAO.get(representationMemberId);
+			Long petitionMemberId = null;
+			if(petitionMember != null){
+				representationRequestVO = setMemberDataToResultView(petitionMember);
+				petitionMemberId = representationRequestVO.getPetitionMemberVO().getId();
+			}
+			
+		} catch (Exception e) {
+			  LOG.error("Exception Occured in getRepresentationRequestDetailsByRepresentationRequestId "+e.getMessage());
+		}
+		return representationRequestVO;
+	}
+	
+	public RepresentationRequestVO setMemberDataToResultView(PetitionMember resultPetitionMember){
+		RepresentationRequestVO representationRequestVO = null;
+		try {
+			SimpleDateFormat format  = new SimpleDateFormat("dd-MM-yyyy");
+			if(resultPetitionMember != null){
+				representationRequestVO = new RepresentationRequestVO();
+				
+				PetitionMemberVO petiMemberVO = new PetitionMemberVO();
+				petiMemberVO.setId(resultPetitionMember.getPetitionMemberId());
+				petiMemberVO.setName(resultPetitionMember.getCandidateName());
+				petiMemberVO.setMemberType(resultPetitionMember.getMemberType());
+				petiMemberVO.setMobileNo(resultPetitionMember.getMobileNo());
+				petiMemberVO.setEmailId(resultPetitionMember.getEmailId());
+				petiMemberVO.setVoterCardNo(resultPetitionMember.getVoterCardNo());
+				
+				if(resultPetitionMember.getRepresentationDate() != null)
+					petiMemberVO.setRepresentationDate(format.format(resultPetitionMember.getRepresentationDate()));
+				if(resultPetitionMember.getRepresentationDate() != null) 
+					petiMemberVO.setEndorsmentDate(format.format(resultPetitionMember.getEndorsmentDate()));
+				
+				AddressVO addressVO = setAddressDetailsToResultView(resultPetitionMember.getLocationAddress());
+				if(addressVO != null)
+					representationRequestVO.setCandidateAddressVO(addressVO);
+				if(petiMemberVO != null)
+					representationRequestVO.setPetitionMemberVO(petiMemberVO);
+			}
+		} catch (Exception e) {
+			 LOG.error("Exception Occured in setMemberDataToResultView "+e.getMessage());
+			 representationRequestVO = null;
+		}
+		return representationRequestVO;
+	}
+	
+	
+	public AddressVO setAddressDetailsToResultView(LocationAddress address){
+		AddressVO addressVO = null;
+		try {
+			if(address != null){
+				addressVO = new AddressVO();
+				addressVO.setDistrictId(address.getDistrictId());
+				addressVO.setAssemblyId(address.getConstituencyId());
+				addressVO.setTehsilId(address.getTehsilId());
+				addressVO.setPanchayatId(address.getPanchayatId());
+			}
+		} catch (Exception e) {
+			 LOG.error("Exception Occured in setMemberDataToResultView "+e.getMessage());
+			 addressVO = null;
+		}
+		return addressVO;
 	}
 	
 	 /**
