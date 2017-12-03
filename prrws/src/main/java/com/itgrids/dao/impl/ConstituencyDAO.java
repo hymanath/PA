@@ -433,7 +433,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	 */
 	public List<Object[]> getENSLocationIdfromENSLocationId(String searchLevelValue){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.districtId from District model where model.districtId = :searchLevelValue");
+		queryStr.append(" select distinct model.districtId from District model where model.districtId = :searchLevelValue ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("searchLevelValue", searchLevelValue);
 		return query.list();
@@ -441,7 +441,6 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getConstituencyListByDistrictId(Long districtId,String type){
 		StringBuilder sb = new StringBuilder();
-		
 		sb.append(" select model.constituencyId,model.name " +
 				  " from Constituency model " +
 				  " where model.electionScope.electionScopeId = 2 and model.district.districtId = :districtId ");
@@ -459,7 +458,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	  }
 	public List<Object[]> getMgnregsConstituencyMappingCode(Long constituencyId){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.constituencyId,model.prConstituency.constituencyCode from Constituency model");
+		queryStr.append(" select distinct model.constituencyId,model.prConstituency.constituencyCode from Constituency model ");
 		if (constituencyId != null && constituencyId.longValue() > 0) {
 			queryStr.append(" where model.constituencyId =:constituencyId");
 		}
@@ -471,7 +470,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	}
 	public List<Object[]> getConstituencyDistrictId(){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.constituencyId,model.districtId from Constituency model");
+		queryStr.append(" select distinct model.constituencyId,model.districtId from Constituency model ");
 		Query query = getSession().createQuery(queryStr.toString());
 		return query.list();
 	}
@@ -491,9 +490,10 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	}
 	public List<Object[]> getConstituencyNamesByDistrictId(Long districtId){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select distinct model.constituencyId,model.name from Constituency model ");
+		queryStr.append("select distinct model.constituencyId,model.name from Constituency model where " +
+				" ( model.districtId between 11 and 23 ) ");
 		if(districtId != null && districtId.longValue() >0){
-			queryStr.append("where  model.districtId=:districtId ");
+			queryStr.append(" and   model.districtId=:districtId ");
 		}
 		Query query = getSession().createQuery(queryStr.toString());
 		if(districtId != null && districtId.longValue() >0){
