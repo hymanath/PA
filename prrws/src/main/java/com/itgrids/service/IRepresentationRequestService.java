@@ -11,4 +11,5 @@ public interface IRepresentationRequestService {
 	public ResponseVO saveRepresentRequestDetails(RepresentationRequestVO dataVO);
 	public List<RepresentationRequestVO> getPetitionReferredMemberDetails(RepresentationRequestVO dataVo );
 	public List<RepresentationRequestVO> getRepresentativeSearchWiseDetails(InputVO inputVO);
+	public RepresentationRequestVO getRepresentationRequestDetailsByRepresentationRequestId(Long representationMemberId);
 }

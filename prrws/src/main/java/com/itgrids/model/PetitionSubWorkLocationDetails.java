@@ -13,12 +13,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * @author sys
+ *
+ */
 @Entity
 @Table(name = "petition_sub_work_location_details")
 public class PetitionSubWorkLocationDetails {
 
 	private Long petitionSubWorkLocationDetailsId;
 	private Long petitionWorkDetailsId ;
+	private Long petitionSubjectId;
+	private Long costEstimation;
 	private Long petitionDepartmentId;
 	private String description;
 	private Long addressId ;
@@ -27,8 +33,11 @@ public class PetitionSubWorkLocationDetails {
 	private Long updatedUserId;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long locationScopeId;
+	private Long locationScopeValue;
 	
-
+	private LocationScope locationScope;
+	private PetitionSubject petitionSubject;
 	private PetitionWorkDetails petitionWorkDetails;
 	private PetitionDepartment petitionDepartment;
 	private LocationAddress locationAddress;
@@ -148,6 +157,55 @@ public class PetitionSubWorkLocationDetails {
 	}
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
+	}
+	@Column(name="cost_estimation")
+	public Long getCostEstimation() {
+		return costEstimation;
+	}
+	public void setCostEstimation(Long costEstimation) {
+		this.costEstimation = costEstimation;
+	}
+	
+	@Column(name="petition_subject_id")
+	public Long getPetitionSubjectId() {
+		return petitionSubjectId;
+	}
+	public void setPetitionSubjectId(Long petitionSubjectId) {
+		this.petitionSubjectId = petitionSubjectId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_subject_id", insertable = false, updatable = false)
+	public PetitionSubject getPetitionSubject() {
+		return petitionSubject;
+	}
+	public void setPetitionSubject(PetitionSubject petitionSubject) {
+		this.petitionSubject = petitionSubject;
+	}
+	
+	@Column(name="location_scope_id")
+	public Long getLocationScopeId() {
+		return locationScopeId;
+	}
+	public void setLocationScopeId(Long locationScopeId) {
+		this.locationScopeId = locationScopeId;
+	}
+	
+	@Column(name="location_scope_value")
+	public Long getLocationScopeValue() {
+		return locationScopeValue;
+	}
+	public void setLocationScopeValue(Long locationScopeValue) {
+		this.locationScopeValue = locationScopeValue;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "location_scope_id", insertable = false, updatable = false)
+	public LocationScope getLocationScope() {
+		return locationScope;
+	}
+	public void setLocationScope(LocationScope locationScope) {
+		this.locationScope = locationScope;
 	}
 	
 }

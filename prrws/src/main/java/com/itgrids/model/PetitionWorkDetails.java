@@ -21,7 +21,9 @@ public class PetitionWorkDetails {
 	private Long petitionMemberId ;
 	private String workName;
 	private Long noOfWorks;
+	private Long costEstimation;
 	private String subject;
+	private Long petitionSubjectId;
 	private Long petitionDepartmentId;
 	private String isPreviousPetition;
 	private String previousPetitionRefNo;
@@ -32,6 +34,7 @@ public class PetitionWorkDetails {
 	private Date insertedTime;
 	private Date updatedTime;
 	
+	private PetitionSubject petitionSubject;
 	private PetitionMember petitionMember;
 	private PetitionDepartment petitionDepartment;
 	private User insertedUser;
@@ -172,5 +175,29 @@ public class PetitionWorkDetails {
 		this.workName = workName;
 	}
 	
+	@Column(name="petition_subject_id")
+	public Long getPetitionSubjectId() {
+		return petitionSubjectId;
+	}
+	public void setPetitionSubjectId(Long petitionSubjectId) {
+		this.petitionSubjectId = petitionSubjectId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_subject_id", insertable = false, updatable = false)
+	public PetitionSubject getPetitionSubject() {
+		return petitionSubject;
+	}
+	public void setPetitionSubject(PetitionSubject petitionSubject) {
+		this.petitionSubject = petitionSubject;
+	}
+	
+	@Column(name="cost_estimation")
+	public Long getCostEstimation() {
+		return costEstimation;
+	}
+	public void setCostEstimation(Long costEstimation) {
+		this.costEstimation = costEstimation;
+	}
 	
 }

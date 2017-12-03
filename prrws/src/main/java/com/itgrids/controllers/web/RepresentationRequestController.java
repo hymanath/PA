@@ -81,4 +81,11 @@ public class RepresentationRequestController {
     public String representationRequestEntryMembers(ModelMap model) {
 		return "representationRequestEntryViewMembers";
     }
+	
+	
+	@RequestMapping(value ="/getRepresentationRequestDetailsByRepresentationRequestId",method = RequestMethod.POST)
+    public @ResponseBody RepresentationRequestVO getRepresentationRequestDetailsByRepresentationRequestId(@RequestBody Map<String,String> inputMap ) {
+    	 return representationRequestService.getRepresentationRequestDetailsByRepresentationRequestId(Long.valueOf(inputMap.get("representationMemberId")));
+    }
+	
 }

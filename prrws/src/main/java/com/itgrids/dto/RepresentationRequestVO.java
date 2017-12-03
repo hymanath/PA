@@ -9,10 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 @SuppressWarnings({ "serial", "serial" })
 public class RepresentationRequestVO implements java.io.Serializable{
 
+	private Long id;
 	private Long userId;
 	private Long locationLevelId;
 	private Long locationValue;
-	private Long referrerCandidateId;	
 	private String workName;
 	private Long  noOfWorks;
 	private Long estimationCost;
@@ -30,13 +30,39 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private List<MultipartFile> filesList;
 	private List<MultipartFile> workFilesList;
 	private PetitionMemberVO petitionMemberVO;
+	private PetitionMemberVO petitionRefCandidateVO;
 	private AddressVO candidateAddressVO;
 	private String refCode;
 	private String designation;
 	private Long designationId;
 	private Long reffererId;
 	private String reffererName;
+	private Long referrerCandidateId;
 	
+	public PetitionMemberVO getPetitionRefCandidateVO() {
+		return petitionRefCandidateVO;
+	}
+
+	public void setPetitionRefCandidateVO(PetitionMemberVO petitionRefCandidateVO) {
+		this.petitionRefCandidateVO = petitionRefCandidateVO;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getReferrerCandidateId() {
+		return referrerCandidateId;
+	}
+
+	public void setReferrerCandidateId(Long referrerCandidateId) {
+		this.referrerCandidateId = referrerCandidateId;
+	}
+
 	public List<MultipartFile> getWorkFilesList() {
 		return workFilesList;
 	}
@@ -61,14 +87,6 @@ public class RepresentationRequestVO implements java.io.Serializable{
 
 	public void setCandidateAddressVO(AddressVO candidateAddressVO) {
 		this.candidateAddressVO = candidateAddressVO;
-	}
-
-	public Long getReferrerCandidateId() {
-		return referrerCandidateId;
-	}
-
-	public void setReferrerCandidateId(Long referrerCandidateId) {
-		this.referrerCandidateId = referrerCandidateId;
 	}
 
 	public String getWorkName() {
