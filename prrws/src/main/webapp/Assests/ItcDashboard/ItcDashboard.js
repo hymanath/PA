@@ -44,7 +44,9 @@ function onloadCalls(){
 	
 	departmentWiseOverView();
 	getITSectorWiseOverviewDetails();
-	getMeesevaSLAOverviewDtls("meesevaSla",5);
+	//getMeesevaSLAOverviewDtls("meesevaSla",5);
+	getMeesevaSLACatWiseAbstarctDetails("meesevaSla",5)
+	getMeesevaKPIOverViewDetails("onload","","");
 	
 	//AP Innovation Society Ajax Call Start
 	getAPInnovationSocietyOverview('onload','apInnovationSociety');
@@ -138,7 +140,7 @@ function departmentWiseOverView(){
 						}else if(departmentWiseArr[i].id ==3){
 							block+='<div class="m_top20">';
 								block+='<h6 class="m_top10">Beyond SLA <span id="meesevaHeadingId" class="pull-right" style="font-size: 18px;"></span> </h6>';
-								block+='<h6 class="m_top20">eTaal - KPI <span class="pull-right" style="font-size: 18px;">3499</span> </h6>';
+								block+='<h6 class="m_top20">eTaal - KPI <span id="meesevaKPIHeadingId" class="pull-right" style="font-size: 18px;"></span> </h6>';
 							block+='</div>';
 						}else if(departmentWiseArr[i].id ==4){
 							block+='<div class="m_top20">';
@@ -355,12 +357,6 @@ function departmentBlockWiseDetails(divId)
 										collapse+='</ul>';		
 									collapse+='</div>';
 								collapse+='</div>';
-								
-								collapse+='<div class="row m_top10">';
-									collapse+='<div class="col-sm-12">';
-										collapse+='<div id="meesevaSlaKpiDivId"></div>';
-									collapse+='</div>';
-								collapse+='</div>';
 							}
 							collapse+='<div id="'+divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id+'"></div>';
 							if(divId == 'apInnovationSociety')
@@ -451,7 +447,8 @@ function departmentBlockWiseDetails(divId)
 	
 	for(var i in levelWiseBlockArr){
 		if(divId == "meesevaSlaKpi"){
-			getMeesevaSLAOverviewDtls(divId,levelWiseBlockArr[i].id);
+			//getMeesevaSLAOverviewDtls(divId,levelWiseBlockArr[i].id);
+			getMeesevaSLACatWiseAbstarctDetails(divId,levelWiseBlockArr[i].id)
 		}else if(divId == 'apInnovationSociety')
 		{
 			getAPInnovationSocietyOverview('overview',divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id);
@@ -3016,9 +3013,11 @@ $(document).on("click",".meesevaSlaKpiCls li",function(){
 		
 	var blockType = $(this).attr("attr_type");
 	if(blockType == "meesevaSla"){
-		getMeesevaSLAOverviewDtls("meesevaSlaKpi",5);
+		//getMeesevaSLAOverviewDtls("meesevaSlaKpi",5);
+		getMeesevaSLACatWiseAbstarctDetails("meesevaSlaKpi",5);
 	}else{
-		getMeesavaKpiGraphBuild("meesevaSlaKpi",5);
+		getMeesevaKPIOverViewDetails("change","meesevaSlaKpi",5);
+		//getMeesavaKpiGraphBuild("meesevaSlaKpi",5);
 	}
 });
 
@@ -3046,3 +3045,590 @@ function getBioMetricDashboardOverViewDtls(){
 	});	
 }
 
+function getMeesevaSLACatWiseAbstarctDetails(divId,blockId){
+	$("#meesevaHeadingId").html(spinner);
+	$("#"+divId+"Block"+blockId).html(spinner);
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaSLACatWiseAbstarctDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		$("#meesevaHeadingId").html('');
+	    $("#"+divId+"Block"+blockId).html('');
+		if(result !=null){
+			var totalBeyondSlaCount = result.catgryABeyondSLACount+result.catgryBBeyondSLACount;
+			$("#meesevaHeadingId").html(totalBeyondSlaCount)
+			buildMeesevaSLACatWiseAbstarctDetails(result,divId,blockId);
+		}else {
+			$("#"+divId+"Block"+blockId).html('NO DATA AVAILABLE.');
+		}
+		getMeesevaSLADepartmentDetails(divId,blockId);
+		getMeesevaSLAServiceWiseDetails(divId,blockId);
+		
+	});	
+}
+function buildMeesevaSLACatWiseAbstarctDetails(result,divId,blockId){
+	var str='';
+	str+='<div class="row m_top10">';
+		str+='<div class="col-sm-12">';
+			str+='<div class="col-sm-6">';
+				str+='<div class="white_block_ITC border_right">';
+					str+='<h4 class="panel-title f_18 font_weight">CATEGORY - A</h4>';
+						str+='<div class="row border_top m_top10">';
+							str+='<div class="col-sm-3 border_right m_top10">';
+								str+='<h4 class="font_weight f_18">Total<br/>Departments</h4>';
+								str+='<h4 class="font_weight m_top30">'+result.categoryACount+'</h4>';
+							str+='</div>';
+							str+='<div class="col-sm-3 border_right m_top10">';
+								str+='<h4 class="font_weight f_18">Total<br/>Services</h4>';
+								str+='<h4 class="font_weight m_top30">'+result.catgryAServicesCount+'</h4>';
+							str+='</div>';
+							str+='<div class="col-sm-6 m_top10">';
+								str+='<h4 class="font_weight f_18 text-center">Total Transactions</h4>';
+								str+='<h4 class="font_weight text-center">'+result.catgryATransCount+'</h4>';
+									str+='<div class="border_top m_top5">';
+										str+='<div class="row m_top5">';
+											str+='<div class="col-sm-6">';
+												str+='<h4 class="font_weight f_18">With In SLA</h4>';
+												str+='<h4 class="font_weight m_top5">'+result.catgryAWithInSLACount+'</h4>';
+											str+='</div>';
+											str+='<div class="col-sm-6">';
+												str+='<h4 class="font_weight f_18">Beyond SLA</h4>';
+												str+='<h4 class="font_weight m_top5">'+result.catgryABeyondSLACount+'</h4>';
+											str+='</div>';
+										str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-6">';
+				str+='<div class="white_block_ITC border_left">';
+					str+='<h4 class="panel-title f_18 font_weight">CATEGORY - B</h4>';
+						str+='<div class="row border_top m_top10">';
+							str+='<div class="col-sm-3 border_right m_top10">';
+								str+='<h4 class="font_weight f_18">Total<br/>Departments</h4>';
+								str+='<h4 class="font_weight m_top30">'+result.categoryBCount+'</h4>';
+							str+='</div>';
+							str+='<div class="col-sm-3 border_right m_top10">';
+								str+='<h4 class="font_weight f_18">Total<br/>Services</h4>';
+								str+='<h4 class="font_weight m_top30">'+result.catgryBServicesCount+'</h4>';
+							str+='</div>';
+							str+='<div class="col-sm-6 m_top10">';
+								str+='<h4 class="font_weight f_18 text-center">Total Transactions</h4>';
+								str+='<h4 class="font_weight text-center">'+result.catgryBTransCount+'</h4>';
+									str+='<div class="m_top5">';
+									str+='<div class="border_top">';
+										str+='<div class="col-sm-6">';
+											str+='<h4 class="font_weight f_18  m_top5">With In SLA</h4>';
+											str+='<h4 class="font_weight m_top5">'+result.catgryBWithInSLACount+'</h4>';
+										str+='</div>';
+										str+='<div class="col-sm-6">';
+											str+='<h4 class="font_weight f_18  m_top5">Beyond SLA</h4>';
+											str+='<h4 class="font_weight m_top5">'+result.catgryBBeyondSLACount+'</h4>';
+										str+='</div>';
+									str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			
+		str+='</div>';
+	str+='</div>';
+	
+	str+='<div class="m_top10">';
+		str+='<div class="col-sm-12">';
+			str+='<div id="meesevaSlaDepartmentWise'+divId+''+blockId+'"></div>';
+		str+='</div>';
+	str+='</div>';
+	
+	str+='<div class="m_top10">';
+		str+='<div class="col-sm-12">';
+			str+='<div id="meesevaSlaServiceWise'+divId+''+blockId+'"></div>';
+		str+='</div>';
+	str+='</div>';
+	
+	$("#"+divId+"Block"+blockId).html(str);					
+}
+function getMeesevaSLADepartmentDetails(divId,blockId){
+	$("#meesevaSlaDepartmentWise"+divId+blockId).html(spinner);
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaSLADepartmentDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildMeesevaSLADepartmentDetails(result,divId,blockId);
+		}else{
+			$("#meesevaSlaDepartmentWise"+divId+blockId).html("No Data Available");
+		}
+		
+	});	
+}
+function buildMeesevaSLADepartmentDetails(result,divId,blockId){
+	var str='';
+	str+='<div class="panel-group" id="accordionDeptSLA" role="tablist" aria-multiselectable="true">';
+			str+='<div class="panel panel-default panel-black">';
+				str+='<div class="panel-heading" role="tab" id="headingDeptSLA">';
+					str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionDeptSLA" href="#collapseDeptSLA" aria-expanded="true" aria-controls="collapseDeptSLA">';
+						str+='<h4 class="panel-title">DEPARTMENTS WISE</h4>';
+					str+='</a>';
+				str+='</div>';
+			str+='<div id="collapseDeptSLA" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDeptSLA">';
+				str+='<div class="panel-body">';
+					str+='<div class="table-responsive">';
+						str+='<table class="table table_customP" id="departmentWiseMeesavaSla" style="width:100%">';
+							str+='<thead>';
+								str+='<tr>';
+									str+='<th rowspan="2">Department</th>';
+									str+='<th colspan="4" class="text-center" style="border-left:1px solid #ccc;">Category - A</th>';
+									str+='<th colspan="4" class="text-center" style="border-left:1px solid #ccc;">Category - B</th>';
+								str+='</tr>';
+								str+='<tr>';
+									str+='<th style="background-color: #FDF1F1 !important;">Services</th>';
+									str+='<th>Transactions</th>';
+									str+='<th>With in SLA</th>';
+									str+='<th>Beyond SLA</th>';
+									str+='<th style="border-left:1px solid #ccc;">Services</th>';
+									str+='<th>Transactions</th>';
+									str+='<th>With in SLA</th>';
+									str+='<th>Beyond SLA</th>';
+								str+='</tr>';
+							str+='</thead>';
+							str+='<tbody>';
+								for(var i in result){
+									str+='<tr>';
+										str+='<td style="border-right:1px solid #ccc">'+result[i].name+'</td>';
+										if(result[i].catgryAServicesCount !=null && result[i].catgryAServicesCount>0){
+											str+='<td>'+result[i].catgryAServicesCount+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										
+										if(result[i].catgryATransCount !=null && result[i].catgryATransCount>0){
+											str+='<td>'+result[i].catgryATransCount+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										
+										if(result[i].catgryAWithInSLACount !=null && result[i].catgryAWithInSLACount>0){
+											str+='<td>'+result[i].catgryAWithInSLACount+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										
+										if(result[i].catgryABeyondSLACount !=null && result[i].catgryABeyondSLACount>0){
+											str+='<td>'+result[i].catgryABeyondSLACount+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										
+										if(result[i].catgryBServicesCount !=null && result[i].catgryBServicesCount>0){
+											str+='<td>'+result[i].catgryBServicesCount+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].catgryBTransCount !=null && result[i].catgryBTransCount>0){
+											str+='<td>'+result[i].catgryBTransCount+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].catgryBWithInSLACount !=null && result[i].catgryBWithInSLACount>0){
+											str+='<td>'+result[i].catgryBWithInSLACount+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].catgryBBeyondSLACount !=null && result[i].catgryBBeyondSLACount>0){
+											str+='<td>'+result[i].catgryBBeyondSLACount+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										
+									str+='</tr>';
+								}
+							str+='<tbody>';
+						str+='</table>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	$("#meesevaSlaDepartmentWise"+divId+blockId).html(str);
+	$("#departmentWiseMeesavaSla").dataTable();
+}
+function getMeesevaSLAServiceWiseDetails(divId,blockId){
+	$("#meesevaSlaServiceWise"+divId+blockId).html(spinner);
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaSLAServiceWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildMeesevaSLAServiceWiseDetails(result,divId,blockId);
+		}else{
+			$("#meesevaSlaServiceWise"+divId+blockId).html("No Data Available");
+		}
+		
+	});	
+}
+function buildMeesevaSLAServiceWiseDetails(result,divId,blockId){
+	var str='';
+	str+='<div class="panel-group" id="accordionServSLA" role="tablist" aria-multiselectable="true">';
+			str+='<div class="panel panel-default panel-black">';
+				str+='<div class="panel-heading" role="tab" id="headingServSLA">';
+					str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionDeptSLA" href="#collapseServSLA" aria-expanded="true" aria-controls="collapseServSLA">';
+						str+='<h4 class="panel-title">SERVICE WISE</h4>';
+					str+='</a>';
+				str+='</div>';
+			str+='<div id="collapseServSLA" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingServSLA">';
+				str+='<div class="panel-body">';
+					str+='<div class="table-responsive">';
+						str+='<table class="table table_customPS" id="serviceWiseMeesavaSla">';
+							str+='<thead>';
+								str+='<tr>';
+									str+='<th>Department</th>';
+									str+='<th>Service name</th>';
+									str+='<th>Category A/B</th>';
+									str+='<th>Transactions</th>';
+									str+='<th>Approve</th>';
+									str+='<th>Rejected</th>';
+									str+='<th>Revoked</th>';
+									//str+='<th>With in SLA</th>';
+									//str+='<th>Beyond SLA</th>';
+									
+								str+='</tr>';
+							str+='</thead>';
+							str+='<tbody>';
+								for(var i in result){
+									str+='<tr>';
+										str+='<td>'+result[i].name+'</td>';
+										str+='<td>'+result[i].serviceName+'</td>';
+										str+='<td>'+result[i].cateoryA+'</td>';
+										if(result[i].totalTransactionCount !=null && result[i].totalTransactionCount>0){
+											str+='<td>'+result[i].totalTransactionCount+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].approved !=null && result[i].approved>0){
+											str+='<td>'+result[i].approved+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].rejected !=null && result[i].rejected>0){
+											str+='<td>'+result[i].rejected+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].revoke !=null && result[i].revoke>0){
+											str+='<td>'+result[i].revoke+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										//str+='<td>'+result[i].catgryBWithInSLACount+'</td>';
+										//str+='<td>'+result[i].catgryBBeyondSLACount+'</td>';
+										
+									str+='</tr>';
+								}
+							str+='<tbody>';
+						str+='</table>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	$("#meesevaSlaServiceWise"+divId+blockId).html(str);
+	$("#serviceWiseMeesavaSla").dataTable();
+}
+
+function getMeesevaKPIOverViewDetails(type,divId,blockId){
+	$("#"+divId+"Block"+blockId).html(spinner);
+	
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPIOverViewDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			if(type == "onload"){
+				if(result.totalMeesevaCentres !=null && result.totalMeesevaCentres>0){
+					$("#meesevaKPIHeadingId").html(result.totalMeesevaCentres)
+				}else{
+					$("#meesevaKPIHeadingId").html("0")
+				}
+				
+			}
+			buildMeesevaKPIOverViewDetails(result,divId,blockId);
+		}else{
+			$("#"+divId+"Block"+blockId).html("No Data Available");
+		}
+		getMeesevaKPITargetAchieveDetails(divId,blockId);
+		getMeesevaKPILocationWiseDetails(divId,blockId);
+	});	
+}
+function buildMeesevaKPIOverViewDetails(result,divId,blockId){
+	var str='';
+	str+='<div class="row">';
+		str+='<div class="col-sm-12">';
+			str+='<h3 class="font_weight">MEESEVA CETERES</h3>';
+		str+='</div>';
+	str+='</div>';
+	str+='<div class="row">';
+		str+='<div class="col-sm-2  m_top10">';
+			str+='<div class="white_block_ITC">';
+				str+='<h4 class=""><b>Total<br/> Meeseva Centers</b></h4>';
+				str+='<h4 class="m_top10"><b>'+result.totalMeesevaCentres+'</b></h4>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="col-sm-2  m_top10">';
+			str+='<div class="white_block_ITC">';
+				str+='<h4 class=""><b>Established<br/> From 2014</b></h4>';
+				str+='<h4 class="m_top10"><b>'+result.establishedFrom2014+'</b></h4>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="col-sm-2  m_top10">';
+			str+='<div class="white_block_ITC">';
+				str+='<h4 class=""><b>Last Year<br/> Established</b></h4>';
+				str+='<h4 class="m_top10"><b>'+result.establishedLastYear+'</b></h4>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="col-sm-2  m_top10">';
+			str+='<div class="white_block_ITC">';
+				str+='<h4 class=""><b>This Year<br/> Established</b></h4>';
+				str+='<h4 class="m_top10"><b>'+result.establishedThisYear+'</b></h4>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="col-sm-2  m_top10">';
+			str+='<div class="white_block_ITC">';
+				str+='<h4 class=""><b>Last 1 Month<br/> Established</b></h4>';
+				str+='<h4 class="m_top10"><b>'+result.establishedLastOneMonth+'</b></h4>';
+			str+='</div>';
+		str+='</div>';
+		
+	str+='</div>';
+	
+	str+='<div class="row m_top10">';
+		str+='<div class="col-sm-12">';
+		
+			str+='<div class="panel-group" id="accordionMonthKPI" role="tablist" aria-multiselectable="true">';
+				str+='<div class="panel panel-default panel-black">';
+						str+='<div class="panel-heading" role="tab" id="headingMonthKPI">';
+							str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordionMonthKPI" href="#collapseMonthKPI" aria-expanded="true" aria-controls="collapseMonthKPI">';
+								str+='<h4 class="panel-title">TARGET ACHIVED</h4>';
+							str+='</a>';
+						str+='</div>';
+					str+='<div id="collapseMonthKPI" class="panel-collapse collapse in " role="tabpanel" aria-labelledby="headingMonthKPI">';
+						str+='<div class="panel-body">';
+							str+='<div id="monthWiseMeesavaKPIGraph" style="height:300px;"></div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			
+			
+		str+='</div>';
+	str+='</div>';
+	
+	str+='<div class="row m_top10">';
+		str+='<div class="col-sm-12">';
+		
+			str+='<div class="panel-group" id="accordionlocationKPI" role="tablist" aria-multiselectable="true">';
+				str+='<div class="panel panel-default panel-black">';
+						str+='<div class="panel-heading" role="tab" id="headinglocationKPI">';
+							str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionlocationKPI" href="#collapselocationKPI" aria-expanded="true" aria-controls="collapselocationKPI">';
+								str+='<h4 class="panel-title">LOCATION WISE MEESEVA CENTERS</h4>';
+							str+='</a>';
+						str+='</div>';
+					str+='<div id="collapselocationKPI" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headinglocationKPI">';
+						str+='<div class="panel-body">';
+							str+='<div id="locationWiseMeesavaCentres"></div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			
+			
+		str+='</div>';
+	str+='</div>';
+	
+	$("#"+divId+"Block"+blockId).html(str);
+}
+function getMeesevaKPITargetAchieveDetails(divId,blockId){
+	$("#monthWiseMeesavaKPIGraph").html(spinner)
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPITargetAchieveDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			var targetArr=[];
+			var achievedArr=[];
+			var monthArr=[];
+			for(var i in result){
+					targetArr.push(result[i].target)
+					achievedArr.push(result[i].acheived)
+					monthArr.push(result[i].name)
+				}
+					$("#monthWiseMeesavaKPIGraph").highcharts({
+						chart: {
+							type: 'column'
+						},
+
+						title: {
+							text: ''
+						},
+						xAxis: {
+							 min: 0,
+							 gridLineWidth: 0,
+							 minorGridLineWidth: 0,	
+							 categories:monthArr
+						},
+						yAxis: {
+							 min: 0,
+							 gridLineWidth: 0,
+							 minorGridLineWidth: 0,
+							title: {
+								text: ''
+							},
+						},
+						legend: {
+							enabled: true
+						},
+						tooltip: {
+							formatter: function () {
+								return '<b>' + this.x + '</b><br/>' +
+									this.series.name + ': ' + this.y
+							}
+						},
+
+						plotOptions: {
+							column: {
+								pointWidth: 30,
+								gridLineWidth: 15,
+							   // stacking: 'normal',
+								  dataLabels: {
+									enabled: true,
+									color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'gray',
+									formatter: function() {
+										return (this.y);
+									},
+								},
+							}
+						},
+
+						series: [{
+								name: 'Target',
+								data: targetArr,
+								color:"#12A89D"
+
+							},{
+								name: 'Achieved',
+								data: achievedArr,
+								color:"#9C6BAF"
+
+							}]
+					});
+			}else{
+				$("#monthWiseMeesavaKPIGraph").html("No Data Available")
+			}
+		});	
+	}
+
+function getMeesevaKPILocationWiseDetails(divId,blockId){
+	$("#locationWiseMeesavaCentres").html(spinner);
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPILocationWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildMeesevaKPILocationWiseDetails(result);
+		}else{
+			$("#locationWiseMeesavaCentres").html("No Data Available")
+		}
+	});	
+}
+function buildMeesevaKPILocationWiseDetails(result){
+	var str='';
+	str+='<table class="table table_customPS" id="locationWiseMeesavaKPI">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th>Location</th>';
+					str+='<th>Total Center</th>';
+					str+='<th>Est from 2014</th>';
+					str+='<th>Last Year Est</th>';
+					str+='<th>This Year Est</th>';
+					str+='<th>This Month Est</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].name+'</td>';
+						str+='<td>'+result[i].totalMeesevaCentres+'</td>';
+						str+='<td>'+result[i].establishedFrom2014+'</td>';
+						str+='<td>'+result[i].establishedLastYear+'</td>';
+						str+='<td>'+result[i].establishedThisYear+'</td>';
+						str+='<td>'+result[i].establishedLastOneMonth+'</td>';
+					str+='</tr>';
+				}
+			str+='<tbody>';
+		str+='</table>';
+		$("#locationWiseMeesavaCentres").html(str);
+		$("#locationWiseMeesavaKPI").dataTable();
+}
