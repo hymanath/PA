@@ -23,6 +23,7 @@ $(document).on("click",".selfRepresenceCls",function(){
 		var typeVal =  $(this).attr("attr_type")
 		if(typeVal == "self"){
 			$("#representDetailsDivId").html('');
+			alreadyCandidateId='';
 			globalWorkTypeCount='';
 			globalWorkTypeCount=1;
 			buildSelfAndRepresenteeDetails(typeVal)
@@ -30,6 +31,7 @@ $(document).on("click",".selfRepresenceCls",function(){
 			getPetitionDepartmentList(typeVal)
 		}else if(typeVal == "represent"){
 			$("#selfDetailsDivId").html('');
+			alreadyCandidateId='';
 			globalWorkTypeCount='';
 			globalWorkTypeCount=1;
 			buildSelfAndRepresenteeDetails(typeVal)
@@ -47,6 +49,12 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	
 	var str='';
 	if(typeVal == "represent"){
+		str+='<div class="row m_top20">';
+			str+='<div class="col-sm-12">';
+				str+='<h3 class="font_weight text-capital f_22">Representee Details:</h3>';
+			str+='</div>';
+		str+='</div>';
+		
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-3">';
 				str+='<label>Name</label>';//$("#name"+typeVal+"Err").html("<h5>Please Enter Name</h5>");
@@ -102,43 +110,37 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	}else{
 		
 	}
+	str+='<div class="row m_top20">';
+		str+='<div class="col-sm-12">';
+			str+='<h3 class="font_weight text-capital f_22">Selt Details:</h3>';
+		str+='</div>';
+	str+='</div>';
 	
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
-			str+='<div id="candidateDetails'+typeVal+'DivId"></div>'
+			str+='<span class="pull-right showRemoveIcon" attr_type="'+typeVal+'" style="background-color: rgb(221, 221, 221); top: 8px; border-radius: 50%; border: 1px solid rgb(0, 0, 0); padding: 3px; position: relative; cursor: pointer;display:none;z-index:999;"><i class="glyphicon glyphicon-remove"></i></span>';
+				str+='<div id="candidateDetails'+typeVal+'DivId"></div>';
 		str+='</div>';
 	str+='</div>';
+	
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
 			str+='<h4 class="searchCss searchCandidateCls" attr_type="'+typeVal+'"><i class="fa fa-search" aria-hidden="true" style="font-size:20px;"></i> Click to Search Details to the Candidate</h4>';
 		str+='</div>';
 	str+='</div>';
+	
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
-			str+='<h3 class="panel-title f_22">REFERRAL LETTER</h3>';
+			str+='<h4 class="f_18">REFERRAL LETTER</h4>';
 			str+='<input type="file"   name="filesList"   id="update_TourFileId2'+typeVal+'" multiple="multiple" class="m_top20"/>';
 		str+='</div>';
 	str+='</div>';
+	
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
-			str+='<h3 class="panel-title f_22">WORK TYPE DETAILS</h3>';
-			str+='<div class="row m_top20">';
-				str+='<div class="col-sm-6">';
-					str+='<label>Name of the Work</label>';
-					str+='<input  name="workName"  type="text" class="form-control m_top10 height45" id="nameofWork'+typeVal+'" placeholder="Enter Name Of Work">';
-					str+='<div id="nameofWork'+typeVal+'Err"></div>';
-				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<label>No of Works</label>';
-					str+='<input   name="noOfWorks"   type="text" class="form-control m_top10 height45" id="noofWork'+typeVal+'" placeholder="Enter No Of Work" onkeyUp="enableWorks(this.value,\'workDetailsDivId'+typeVal+'\');">';
-					str+='<div id="noofWork'+typeVal+'Err"></div>';
-				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<label>Work Cost (Est. Cost in Lakh)</label>';
-					str+='<input type="text"  name="estimationCost" class="form-control m_top10 height45" id="workCost'+typeVal+'" placeholder="Enter Work Cost">';
-					str+='<div id="workCost'+typeVal+'Err"></div>';
-				str+='</div>';
-			str+='</div>';
+			str+='<h3 class="panel-title f_18">WORK TYPE DETAILS</h3>';
+			
+			
 			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-3">';
 					str+='<label>Subject</label>';
@@ -169,14 +171,32 @@ function buildSelfAndRepresenteeDetails(typeVal){
 					str+='<div id="workCost'+typeVal+'Err"></div>';
 				str+='</div>';
 			str+='</div>';
-			str+='<div class="row">';
+			
+			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-6">';
-					str+='<h3 class="panel-title f_22">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
+					str+='<label>Name of the Work</label>';
+					str+='<input  name="workName"  type="text" class="form-control m_top10 height45" id="nameofWork'+typeVal+'" placeholder="Enter Name Of Work">';
+					str+='<div id="nameofWork'+typeVal+'Err"></div>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<label>No of Works</label>';
+					str+='<input   name="noOfWorks"   type="text" class="form-control m_top10 height45" id="noofWork'+typeVal+'" placeholder="Enter No Of Work" onkeyUp="enableWorks(this.value,\'workDetailsDivId'+typeVal+'\');">';
+					str+='<div id="noofWork'+typeVal+'Err"></div>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<label>Work Cost (Est. Cost in Lakh)</label>';
+					str+='<input type="text"  name="estimationCost" class="form-control m_top10 height45" id="workCost'+typeVal+'" placeholder="Enter Work Cost">';
+					str+='<div id="workCost'+typeVal+'Err"></div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="row m_top20">';
+				str+='<div class="col-sm-6">';
+					str+='<h3 class="panel-title f_18 text-capital">grievance DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
 					str+='<textarea name="projectDescription"  class="form-control m_top20" rows="7" id="textArea'+typeVal+'"></textarea>';
 					str+='<div id="textArea'+typeVal+'Err"></div>';
 				str+='</div>';
 				str+='<div class="col-sm-6">';
-					str+='<h3 class="panel-title f_22">PROJCT DOCUMENTS UPLOAD</h3>';
+					str+='<h3 class="panel-title f_18">PROJCT DOCUMENTS UPLOAD</h3>';
 					str+='<input type="file"  name="workFilesList"  id="projectDocUpload'+typeVal+'" multiple="multiple" class="m_top20"/>';
 				str+='</div>';
 			str+='</div>';
@@ -187,7 +207,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	str+='</div>';
 	str+='<div class="row">';
 		str+='<div class="col-sm-12">';
-			str+='<div id="workDetailsDivId'+typeVal+'"  style="display:none;"></div>';
+				str+='<div id="workDetailsDivId'+typeVal+'"  style="display:none;"></div>';
 		str+='</div>';
 	str+='</div>';
 	
@@ -217,7 +237,6 @@ function buildTemplateWorkDetails(typeVal){
 	
 	
 		str+='<div class="m_top10">';
-			str+='<h3 class="panel-title f_22">LOCATION</h3>';
 				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-3">';
 						str+='<label>Location Level</label>';
@@ -261,7 +280,7 @@ function buildTemplateWorkDetails(typeVal){
 		
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-12">';
-				str+='<h3 class="panel-title f_22">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
+				str+='<h3 class="panel-title f_18">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
 				str+='<textarea  name="worksList[0].projectDescription"  class="form-control m_top20 workNoTextAreaValidCls'+typeVal+'" rows="4" id="textArea'+typeVal+'1"></textarea>';
 				str+='<div class="m_top10"  id="textArea'+typeVal+'1Err"></div>';
 			str+='</div>';
@@ -280,7 +299,7 @@ function buildTemplateWorkDetails(typeVal){
 	str+='</div>';
 	
 	str+='<div class="row">';
-		str+='<div class="col-sm-12"><span class="addLocationCss m_top10 pull-right cloned_Element" style="cursor:pointer;" onclick="saveRepresentRequestDetails()"> UPDATE DETAILS </span></div>';
+		str+='<div class="col-sm-12"><span class="addLocationCss m_top10 cloned_Element" style="cursor:pointer;background-color:green;" onclick="saveRepresentRequestDetails()"> SAVE DETAILS</span></div>';
 	str+='</div>';
 /*	str+='<div class="row">';//cloned_Element
 		str+='<div class="col-sm-12"><span id="referelSubmitBtnId" class="btn btn-success btn-md m_top10 " style="cursor:pointer;" > Submit</span></div>';
@@ -326,7 +345,7 @@ function clonedTemplate(blockId,type,counterId,typeVal){
 	
 	
 		clonedTemplate+='<div class="m_top10">';
-		clonedTemplate+='<h3 class="panel-title f_22">LOCATION</h3>';
+		
 			clonedTemplate+='<div class="row m_top10">';
 				clonedTemplate+='<div class="col-sm-3">';
 					clonedTemplate+='<label>Location Level</label>';
@@ -371,7 +390,7 @@ function clonedTemplate(blockId,type,counterId,typeVal){
 		
 			clonedTemplate+='<div class="row m_top20">';
 				clonedTemplate+='<div class="col-sm-12">';
-					clonedTemplate+='<h3 class="panel-title f_22">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
+					clonedTemplate+='<h3 class="panel-title f_18">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
 					clonedTemplate+='<textarea   name="worksList[0].projectDescription" class="form-control m_top20 workNoTextAreaValidCls'+typeVal+'" rows="4" id="textArea'+typeVal+''+counterId+'"></textarea>';
 					clonedTemplate+='<div class="m_top10"  id="textArea'+typeVal+''+counterId+'Err"></div>';
 					//clonedTemplate+='<textarea   name="worksList[0].projectDescription" class="form-control m_top20" rows="4" id="textArea'+typeVal+''+counterId+'"></textarea>';
@@ -952,22 +971,7 @@ $(document).on("click",".selectionSearchDetailsCls",function(){
 	getPetitionReferredMemberDetails(desiganationId,locationLevelId,locationValue,typeVal);
 	
 });
-$(document).on("click",".bgColorCandidates",function(){
-	
-	$(this).addClass("activeCandidate");
-	var typeVal = $(this).attr("attr_type");
-	if(typeVal == "self"){
-		//$("#candidateDetails"+typeVal+"DivId").html('');
-		$("#candidateDetails"+typeVal+"DivId").append($("#candidateDetailsDivId").html());
-		$("#candidateDetails"+typeVal+"DivId").parent().find(".bgColorCandidates").removeClass("activeCandidate")
-	}else{
-		//$("#candidateDetails"+typeVal+"DivId").html('');
-		$("#candidateDetails"+typeVal+"DivId").append($("#candidateDetailsDivId").html());
-		$("#candidateDetails"+typeVal+"DivId").parent().find(".bgColorCandidates").removeClass("activeCandidate")
-	}
-	
-	
-});
+
 
 function getPetitionReferredMemberDetails(desiganationId,locationLevelId,locationValue,typeVal){
     $("#candidateDetailsDivId").html(spinner);
@@ -993,64 +997,192 @@ function getPetitionReferredMemberDetails(desiganationId,locationLevelId,locatio
 		}
 	});	
 }
+var alreadyCandidateId='';
+$(document).on("click",".candidateAddedView",function(){
+	
+	var typeVal = $(this).attr("attr_type");
+	
+	if($("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").hasClass("memberAdded")){
+		alert("Already Member Added")
+	}else{
+		$("#candidateDetails"+typeVal+"DivId").html('');
+		$(".representation-selected").removeClass("display_block");
+		var candidateId = $(this).attr("attr_candidateId");
+		alreadyCandidateId = candidateId;
+		
+		$("#candidateDetails"+typeVal+"DivId").html($("#bgColorCandidates"+candidateId).html());
+		$("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").addClass("memberAdded")
+		$(this).parent().find(".representation-selected").addClass("display_block");
+		$(this).removeClass("candidateAddedView");
+		$(".showRemoveIcon").show();
+	}
+	
+});
+$(document).on("click",".representation-remove",function(){
+	var typeVal = $(this).attr("attr_type");
+	var candidateId = $(this).attr("attr_candidateId");
+	$("#bgColorCandidates"+candidateId).find(".representation-selected").removeClass("display_block");
+	setTimeout(function(){ 
+		$("#bgColorCandidates"+candidateId).find(".bgColorCandidatesView").addClass("candidateAddedView")
+		$("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").removeClass("memberAdded")
+	}, 1500);
+	
+	return;
+})
+$(document).on("click",".showRemoveIcon",function(){
+	var typeVal = $(this).attr("attr_type");
+	$("#candidateDetails"+typeVal+"DivId").html('');
+	alreadyCandidateId='';
+})
 
 function buildPetitionReferredMemberDetails(result,typeVal){
-		var str='';
+	var str='';
+	
+	str+='<div class="col-sm-12">';	
+	str+='<table style="width:100%" id="dataTableCandidateId">';
+	str+='<thead>';
+		str+='<tr>';
+			str+='<th></th>';
+		str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
 	for(var i in result){
-	str+='<div class="col-sm-12">';
-		str+='<div class="bgColorCandidates" attr_type='+typeVal+'>';
-			str+='<div class="row">';
-			str+='<div class="col-sm-3">';
-					str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
-					str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
-			str+='</div>';
-			str+='<div class="col-sm-3">';
-				str+='<div class="nameAddressCss">';
-					str+='<h5 class="font_weight">Name:</h5>';
-					str+='<h5 class="m_top5">'+result[i].petitionMemberVO.name+'</h5>';
-					str+='<h5 class="m_top10 font_weight">Designation</h5>';
-					str+='<h5 class="text_bold m_top10">'+result[i].petitionMemberVO.memberType+',</h5>';
-					str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'">'+result[i].candidateAddressVO.assemblyName+'  Constituency,</h5>';
-					str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">'+result[i].candidateAddressVO.districtName+'  District,</h5>';
+		str+='<tr>';
+		str+='<td>';
+		str+='<div id="bgColorCandidates'+result[i].referrerCandidateId+'" style="position:relative;">';
+		if(alreadyCandidateId == result[i].referrerCandidateId){
+			str+='<div class="bgColorCandidatesView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+'>';
+				//str+='<span class="pull-right"><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove" style="background-color: rgba(0, 0, 0, 0.4); border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;" ></i></span>';
+				str+='<div class="row">';
+					str+='<div class="representation-selected display_block" id="candidateRemove'+result[i].referrerCandidateId+'">Already Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove" style="background-color: rgba(0, 0, 0, 0.4); border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;" ></i></span></div>';
+					str+='<div class="col-sm-3">';
+							str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+					str+='</div>';
+					str+='<div class="col-sm-3">';
+						str+='<div class="nameAddressCss">';
+							str+='<h5 class="font_weight">Name:</h5>';
+							str+='<h5 class="m_top5">'+result[i].petitionMemberVO.name+'</h5>';
+							str+='<h5 class="m_top10 font_weight">Designation</h5>';
+							str+='<h5 class="text_bold m_top10">'+result[i].petitionMemberVO.memberType+',</h5>';
+							str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'">'+result[i].candidateAddressVO.assemblyName+'  Constituency,</h5>';
+							str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">'+result[i].candidateAddressVO.districtName+'  District,</h5>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-3">';
+						str+='<div class="nameAddressCss">';
+							str+='<h5 class="font_weight">Party:</h5>';
+							str+='<h5 class="m_top5">Telugu Desam Party</h5>';
+							str+='<h5 class="m_top10 font_weight">Contact Details</h5>';
+							if(result[i].petitionMemberVO.emailId != null && result[i].petitionMemberVO.emailId.length > 0){
+								str+='<h5 class="text_bold m_top10" >Email-id:  '+result[i].petitionMemberVO.emailId+'</h5>';
+							}else{
+								str+='<h5 class="text_bold m_top10">Email-id: -</h5>';
+							}
+							if(result[i].petitionMemberVO.mobileNo != null && result[i].petitionMemberVO.mobileNo.length > 0){
+								str+='<h5 class="m_top5">Contact No : '+result[i].petitionMemberVO.mobileNo+'</h5>';
+							}else{
+								str+='<h5 class="m_top5">Contact No : -</h5>';
+							}
+							str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-3">';
+						str+='<div class="nameAddressCss">';
+							str+='<h5 class="font_weight">Address:</h5>';
+					/*		str+='<h5 class="m_top5">H No :</h5>';
+							str+='<h5 class="m_top10">14-48-20/58, Kothapet</h5>';
+							str+='<h5 class="text_bold m_top10">Sangadigunta, Kothapeta,</h5>';
+							str+='<h5 class="m_top5">Guntur,</h5>';
+							str+='<h5 class="m_top5">Andhra Pradesh 522001.</h5>';
+							*/
+							str+='<h5 class="m_top5">Not Available</h5>';
+						str+='</div>';
+					str+='</div>';
+					str+='</div>';
+					
 				str+='</div>';
-			str+='</div>';
-			
-			str+='<div class="col-sm-3">';
-				str+='<div class="nameAddressCss">';
-					str+='<h5 class="font_weight">Party:</h5>';
-					str+='<h5 class="m_top5">Telugu Desam Party</h5>';
-					str+='<h5 class="m_top10 font_weight">Contact Details</h5>';
-					if(result[i].petitionMemberVO.emailId != null && result[i].petitionMemberVO.emailId.length > 0){
-						str+='<h5 class="text_bold m_top10" >Email-id:  '+result[i].petitionMemberVO.emailId+'</h5>';
-					}else{
-						str+='<h5 class="text_bold m_top10">Email-id: -</h5>';
-					}
-					if(result[i].petitionMemberVO.mobileNo != null && result[i].petitionMemberVO.mobileNo.length > 0){
-						str+='<h5 class="m_top5">Contact No : '+result[i].petitionMemberVO.mobileNo+'</h5>';
-					}else{
-						str+='<h5 class="m_top5">Contact No : -</h5>';
-					}
-					str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
+		}else{
+			str+='<div class="bgColorCandidatesView candidateAddedView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+'>';
+				//str+='<span class="pull-right"><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove" style="background-color: rgba(0, 0, 0, 0.4); border-radius: 50%; cursor: pointer; font-size: 12px; padding: 3px;top:-7px;" ></i></span>';
+				str+='<div class="row">';
+				str+='<div class="representation-selected" id="candidateRemove'+result[i].referrerCandidateId+'">Already Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove" style="background-color: rgba(0, 0, 0, 0.4); border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;" ></i></span></div>';
+				str+='<div class="col-sm-3">';
+						str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+						str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
 				str+='</div>';
-			str+='</div>';
-			
-			str+='<div class="col-sm-3">';
-				str+='<div class="nameAddressCss">';
-					str+='<h5 class="font_weight">Address:</h5>';
-			/*		str+='<h5 class="m_top5">H No :</h5>';
-					str+='<h5 class="m_top10">14-48-20/58, Kothapet</h5>';
-					str+='<h5 class="text_bold m_top10">Sangadigunta, Kothapeta,</h5>';
-					str+='<h5 class="m_top5">Guntur,</h5>';
-					str+='<h5 class="m_top5">Andhra Pradesh 522001.</h5>';
-					*/
-					str+='<h5 class="m_top5">Not Available</h5>';
+				str+='<div class="col-sm-3">';
+					str+='<div class="nameAddressCss">';
+						str+='<h5 class="font_weight">Name:</h5>';
+						str+='<h5 class="m_top5">'+result[i].petitionMemberVO.name+'</h5>';
+						str+='<h5 class="m_top10 font_weight">Designation</h5>';
+						str+='<h5 class="text_bold m_top10">'+result[i].petitionMemberVO.memberType+',</h5>';
+						str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'">'+result[i].candidateAddressVO.assemblyName+'  Constituency,</h5>';
+						str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">'+result[i].candidateAddressVO.districtName+'  District,</h5>';
+					str+='</div>';
 				str+='</div>';
+				
+				str+='<div class="col-sm-3">';
+					str+='<div class="nameAddressCss">';
+						str+='<h5 class="font_weight">Party:</h5>';
+						str+='<h5 class="m_top5">Telugu Desam Party</h5>';
+						str+='<h5 class="m_top10 font_weight">Contact Details</h5>';
+						if(result[i].petitionMemberVO.emailId != null && result[i].petitionMemberVO.emailId.length > 0){
+							str+='<h5 class="text_bold m_top10" >Email-id:  '+result[i].petitionMemberVO.emailId+'</h5>';
+						}else{
+							str+='<h5 class="text_bold m_top10">Email-id: -</h5>';
+						}
+						if(result[i].petitionMemberVO.mobileNo != null && result[i].petitionMemberVO.mobileNo.length > 0){
+							str+='<h5 class="m_top5">Contact No : '+result[i].petitionMemberVO.mobileNo+'</h5>';
+						}else{
+							str+='<h5 class="m_top5">Contact No : -</h5>';
+						}
+						str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
+					str+='</div>';
+				str+='</div>';
+				
+				str+='<div class="col-sm-3">';
+					str+='<div class="nameAddressCss">';
+						str+='<h5 class="font_weight">Address:</h5>';
+				/*		str+='<h5 class="m_top5">H No :</h5>';
+						str+='<h5 class="m_top10">14-48-20/58, Kothapet</h5>';
+						str+='<h5 class="text_bold m_top10">Sangadigunta, Kothapeta,</h5>';
+						str+='<h5 class="m_top5">Guntur,</h5>';
+						str+='<h5 class="m_top5">Andhra Pradesh 522001.</h5>';
+						*/
+						str+='<h5 class="m_top5">Not Available</h5>';
+					str+='</div>';
+				str+='</div>';
+				str+='</div>';
+				
 			str+='</div>';
+		}
+		
+		
+		
 		str+='</div>';
-		str+='</div>';
-	str+='</div>';
+		str+='</td>';
+		str+='</tr>';
 	}
+	str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	
 	$("#candidateDetailsDivId").html(str);
+	$("#dataTableCandidateId").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	});
+	$("#dataTableCandidateId").removeClass("dataTable");
+	$("#dataTableCandidateId_wrapper").css("margin-top","20px")
 }
 getRepresentativeSearchWiseDetails();
 function getRepresentativeSearchWiseDetails(){
