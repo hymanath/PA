@@ -565,8 +565,11 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		    	List<Long> memberidsLst = new ArrayList<Long>();
 		    	
 		    	try{
+		    		Long searchLevelId=inputVO.getSearchLevelId();
+		    		Long searchLevelValue=inputVO.getSearchLevelValue();
+		    		
 		    		LOG.info("enterd into LocationDetailsService getRepresentativeSearchWiseDetails");
-		    		List<Object[]> representRefObjLst = petitionMemberDAO.getRepresentativeSearchDetailsBy(inputVO.getFilterType(),inputVO.getFilterValue());
+		    		List<Object[]> representRefObjLst = petitionMemberDAO.getRepresentativeSearchDetailsBy(inputVO.getFilterType(),inputVO.getFilterValue(),searchLevelId,searchLevelValue);
 		    		if(representRefObjLst != null && representRefObjLst.size() >0){
 		    			for(Object[] objs : representRefObjLst){
 		    				Long petitinMembrId = commonMethodsUtilService.getLongValueForObject(objs[0]);

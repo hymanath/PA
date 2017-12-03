@@ -25,7 +25,7 @@ public class PetitionDesignationDAO extends GenericDaoHibernate<PetitionDesignat
 	public List<Object[]> getpetitionDesignationList(){
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.petitionDesignationId,model.designationName from PetitionDesignation model ");
+		sb.append("select model.petitionDesignationId,model.designationName from PetitionDesignation model order by model.designationName asc ");
 		Query qry = getSession().createQuery(sb.toString());
 		return qry.list();
 	}
