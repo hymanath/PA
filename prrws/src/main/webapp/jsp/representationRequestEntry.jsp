@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Data Entry Form</title>
+<title> REPRESENTATION REQUEST ENTRY FORM </title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <!-- for file uploader -->
@@ -200,6 +200,7 @@
 							<h4 class="panel-title f_22" style="font-weight:normal !important;">REPRESENTATION REQUEST</h4>
 						</div>
 						<form action="saveRepresentRequestDetails" id="adminProfileForm" name="adminProfileFormName" enctype="multipart/form-data" method="post">
+						<input type="hidden"  name="petitionMemberVO.id"  value="100" class="form-control m_top10 height45" id="reffererCandidate0">
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-sm-12">
@@ -211,7 +212,7 @@
 												<span class="input-group-addon">
 													<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 												</span>
-												<input type="text" name="representationDate" class="form-control" id="dateRangePickerMGNF"/>
+												<input type="text" name="petitionMemberVO.representationDate" class="form-control" id="dateRangePickerMGNF"/>
 											</div>
 										</div>
 										<div class="col-sm-3">
@@ -219,13 +220,13 @@
 												<div class="row m_top10">
 													<div class="col-sm-3">
 														<div class="borederCss">
-															<input type="radio" id="self" value ="1" name="memberTypeRadio" attr_name="selfMemberType" class="selfRepresenceCls" attr_type="self" checked>
+															<input type="radio" name="petitionMemberVO.memberType" value="SELF" id="self" attr_name="selfMemberType" class="selfRepresenceCls" attr_type="self" checked>
 															<label><h5>SELF</span></h5>
 														</div>
 													</div>
 													<div class="col-sm-6">
 														<div class="borederCss">
-															<input type="radio" id="Representee" value ="2" class="selfRepresenceCls" attr_type="represent" attr_name="representMemberType" name="memberTypeRadio" >
+															<input type="radio" name="petitionMemberVO.memberType"  value="REPRESENT"  id="Representee"  class="selfRepresenceCls" attr_type="represent" attr_name="representMemberType"  >
 															<label><h5 class="text-capital">Representee</h5></label>
 														</div>
 													</div>

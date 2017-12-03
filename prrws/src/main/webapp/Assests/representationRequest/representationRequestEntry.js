@@ -2,7 +2,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 var globalWorkTypeCount=1;
 setTimeout(function(){ 
 	buildSelfAndRepresenteeDetails("self")
-	//getAllDistrictsInState("self",1);
+	getAllDistrictsInState("represent","");
 	getPetitionDepartmentList("self")
 	
 }, 2000);
@@ -33,7 +33,7 @@ $(document).on("click",".selfRepresenceCls",function(){
 			globalWorkTypeCount='';
 			globalWorkTypeCount=1;
 			buildSelfAndRepresenteeDetails(typeVal)
-			getAllDistrictsInState(typeVal,"");
+			getAllDistrictsListInState(typeVal,"");
 			getPetitionDepartmentList(typeVal)
 		}
 	}
@@ -226,7 +226,7 @@ function buildTemplateWorkDetails(typeVal){
 							str+='<option value="3">District</option>';
 							str+='<option value="4">Constituency</option>';
 							str+='<option value="5">Mandal</option>';
-							str+='<option value="6">Panchayat</option>';
+							//str+='<option value="6">Panchayat</option>';
 						str+='</select>';
 						str+='<div class="m_top10"  id="locationLevelId'+typeVal+''+globalWorkTypeCount+'Err"></div>';
 					str+='</div>';
@@ -297,12 +297,12 @@ $(document).on("click",".cloned_Element",function(){
 		counterId = parseInt(counterId) + 1;
 		
 	var blockId = $(this).attr("right-block-clone-"+typeVal+"");
-	if(counterId <= parseInt(workCount)){
+	//if(counterId <= parseInt(workCount)){
 		$("[cloned_block_"+typeVal+"="+blockId+"]").parent().find(".appendDiv"+typeVal+"").append(clonedTemplate(blockId,'clone',counterId,typeVal));
 		$(".chosen-select").chosen({width:'100%'});
 		$("[right-block-clone-"+typeVal+"="+blockId+"]").attr("right-block-clone-counter-"+typeVal+"",counterId);
 		getAllDistrictsInState(typeVal,counterId);
-	}
+	//}
 });
 
 function clonedTemplate(blockId,type,counterId,typeVal){
@@ -336,7 +336,7 @@ function clonedTemplate(blockId,type,counterId,typeVal){
 							clonedTemplate+='<option value="3">District</option>';
 							clonedTemplate+='<option value="4">Constituency</option>';
 							clonedTemplate+='<option value="5">Mandal</option>';
-							clonedTemplate+='<option value="6">Panchayat</option>';
+							//clonedTemplate+='<option value="6">Panchayat</option>';
 					clonedTemplate+='</select>';
 					clonedTemplate+='<div class="m_top10"  id="locationLevelId'+typeVal+''+counterId+'Err"></div>';
 				clonedTemplate+='</div>';
@@ -496,6 +496,33 @@ $(document).on("change","#districtCandId",function(){
 	getConstituencyNamesByDistrictId(levelVal,"","");
 	
 });
+
+function getAllDistrictsListInState(typeVal,counterId){	
+	$("#districtrepresent").html('');
+	var json = {
+		  stateId:"1"
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getAllDistrictsInState',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#districtrepresent").append('<option value="0">Select District</option>');
+				for(var i in result){				
+					$("#districtrepresent").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+				}
+			}
+			$("#districtrepresent").trigger('chosen:updated');
+	});	
+}
+
+
 function getAllDistrictsInState(typeVal,counterId){
 	
 	if((counterId =="" || counterId.trim().length==0) && (counterId=="" || counterId.trim().length==0)){
@@ -1199,9 +1226,9 @@ $(document).on("click","#referelSubmitBtnId",function(){
 			return;
 		}else{
 			var errDivId2=$(this).attr("id");
-			alert(errDivId2);
+			//alert(errDivId2);
 		var districtVal=$("#"+errDivId2).closest('.districtLevelChange').val();
-			alert(districtVal);
+			//alert(districtVal);
 		}
 	});
 	$(".workNoTextAreaValidCls"+typeVal).each(function(){//locationLevelValidCls  workNoTextAreaValidCls
