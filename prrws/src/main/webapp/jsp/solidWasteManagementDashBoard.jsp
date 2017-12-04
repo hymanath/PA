@@ -361,7 +361,7 @@
 									</div>
 									<div class="col-sm-12 p_top_bottom m_top_bottom" style="border:1px solid lightgrey">
 										<div class="row">
-											<h5 style="padding: 15px"><b>BLOCKED GP'S</b></h5>
+											<!--<h5 style="padding: 15px"><b>BLOCKED GP'S</b></h5>
 											<div class="col-sm-4 gp_block">
 												<div class="well well_block" style="margin-top:10px">
 													<h5><b>GP</b></h5>
@@ -376,7 +376,7 @@
 													<h5><b>BLOCKS</b></h5>
 													<h4><b id="blocksId"></b></h4>
 												</div>
-											</div>
+											</div>-->
 											<div class="col-sm-12" style="">
 												<h4 style="padding:15px;color:#fff;background-color:#00A85A">RFID TRACKING<i class="glyphicon glyphicon-ok pull-right" style="color:#00A85A;background-color:#fff;padding:5px;border-radius:14px;margin-top:-5px;margin-left:5px"></i><span class="pull-right">%</span><span id="rfidTracking" class="pull-right"></span></h4>
 											</div>
