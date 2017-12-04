@@ -74,10 +74,8 @@
 					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
 					<p>SOLID WASTE MANAGEMENT - AP</p>
 				</div>
-				<div class="col-sm-2 col-xs-12 col-sm-offset-3">
-					<img src="Assests/images/NREGS-LOGO.png" class="m_top5"/>
-				</div>
-				<div class="col-sm-1 col-xs-12">
+				
+				<div class="col-sm-3 col-xs-12 pull-right">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
@@ -182,9 +180,7 @@
 												</div>
 											</div>-->
 										</div>
-									</div>
-								</div>
-								<div class="row">
+										<div class="row">
   											<div class="col-sm-12 m_top10">
 												<div class="menu-block" style="background-color:#ff5e1c">
 													<a href="solidWasteManagementDashboard">
@@ -216,6 +212,7 @@
 													</a>
 												</div>
 											</div>
+											
 										</div>
 									</div>
 								</div>
@@ -233,7 +230,7 @@
 				</div>
 			</div>
 		</div>
-	</nav>	
+	</nav>
 	<section>
 		<div class="" style="margin:0px;">
 				<div class="row" style="background-color:#fff;padding:5px;width:100%;padding:5px;">
