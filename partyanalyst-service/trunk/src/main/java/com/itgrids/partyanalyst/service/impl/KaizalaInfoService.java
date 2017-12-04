@@ -467,6 +467,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	public void saveEventResponses(final String output){
 		try {
 			
+			LOG.error("Entered into saveEventResponses method in KaizalaInfoService Class ");
+			
 			if(output != null && !output.isEmpty()){
 				JSONObject jsonObj = new JSONObject(output);
 				
@@ -500,7 +502,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 				}
 			}
 		}catch (Exception e) {
-			LOG.error("Exception raised at saveEventResponses", e);
+			LOG.error("Exception raised at saveEventResponses in KaizalaInfoService Class", e);
 		}
 	}
 	
