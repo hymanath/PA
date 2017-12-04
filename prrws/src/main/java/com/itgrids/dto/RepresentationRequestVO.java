@@ -39,7 +39,62 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private Long reffererId;
 	private String reffererName;
 	private Long referrerCandidateId;
+	private String departrment;
+	private Long departrmentId;
+	private String district;
+	private Long districtId;
+	private String constituency;
+	private Long constituencyId;
 	
+	
+	public String getDepartrment() {
+		return departrment;
+	}
+
+	public void setDepartrment(String departrment) {
+		this.departrment = departrment;
+	}
+
+	public Long getDepartrmentId() {
+		return departrmentId;
+	}
+
+	public void setDepartrmentId(Long departrmentId) {
+		this.departrmentId = departrmentId;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public String getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
 	public PetitionMemberVO getPetitionRefCandidateVO() {
 		return petitionRefCandidateVO;
 	}
