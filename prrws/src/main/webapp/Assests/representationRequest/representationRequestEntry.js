@@ -1480,7 +1480,7 @@ function getPetitionSubjectList(divId,typeVal,counterId){
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			
-			 $("#"+divId+""+typeVal+""+counterId+"").append('<option value="0">All</option>');
+			 $("#"+divId+""+typeVal+""+counterId+"").html('<option value="0">All</option>');
 			for(var i in result){
 				$("#"+divId+""+typeVal+""+counterId+"").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
