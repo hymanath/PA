@@ -3,6 +3,7 @@ package com.itgrids.service.impl;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -565,11 +566,21 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		    	List<Long> memberidsLst = new ArrayList<Long>();
 		    	
 		    	try{
+		    		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		    		Long searchLevelId=inputVO.getSearchLevelId();
 		    		Long searchLevelValue=inputVO.getSearchLevelValue();
+		    		Date startDate = null;
+		    		Date endDate = null;
+		    		
+		    		if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().equalsIgnoreCase("") && 
+		    				inputVO.getToDate() != null && !inputVO.getToDate().toString().equalsIgnoreCase("") ){
+		    			startDate = format.parse(inputVO.getFromDate());
+		    			endDate = format.parse(inputVO.getToDate());
+		    		}
 		    		
 		    		LOG.info("enterd into LocationDetailsService getRepresentativeSearchWiseDetails");
-		    		List<Object[]> representRefObjLst = petitionMemberDAO.getRepresentativeSearchDetailsBy(inputVO.getFilterType(),inputVO.getFilterValue(),searchLevelId,searchLevelValue);
+		    		List<Object[]> representRefObjLst = petitionMemberDAO.getRepresentativeSearchDetailsBy(inputVO.getFilterType(),inputVO.getFilterValue(),searchLevelId,searchLevelValue,
+		    				startDate,endDate);
 		    		if(representRefObjLst != null && representRefObjLst.size() >0){
 		    			for(Object[] objs : representRefObjLst){
 		    				Long petitinMembrId = commonMethodsUtilService.getLongValueForObject(objs[0]);
@@ -581,6 +592,19 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		    					searchVO.setCandidateName(commonMethodsUtilService.getStringValueForObject(objs[2]));
 		    					searchVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(objs[3]));
 		    					searchVO.setAge(commonMethodsUtilService.getLongValueForObject(objs[4]));
+		    					searchVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(objs[5]));
+		    					searchVO.setDesignation(commonMethodsUtilService.getStringValueForObject(objs[6]));
+		    					if(commonMethodsUtilService.getStringValueForObject(objs[7]).equalsIgnoreCase("REPRESENT")){
+		    						searchVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(objs[8]));
+			    					searchVO.setDistrict(commonMethodsUtilService.getStringValueForObject(objs[9]));
+			    					searchVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objs[10]));
+			    					searchVO.setConstituency(commonMethodsUtilService.getStringValueForObject(objs[11]));
+		    					}else if(commonMethodsUtilService.getStringValueForObject(objs[7]).equalsIgnoreCase("SELF")){
+		    						searchVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(objs[12]));
+			    					searchVO.setDistrict(commonMethodsUtilService.getStringValueForObject(objs[13]));
+			    					searchVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objs[14]));
+			    					searchVO.setConstituency(commonMethodsUtilService.getStringValueForObject(objs[15]));
+		    					}
 		    					memberidsLst.add(petitinMembrId);
 		    					representWiseSearchMap.put(searchVO.getPetitionMemberId(), searchVO);
 		    				}
@@ -599,6 +623,8 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		    					workVO.setIsPreviousPetition(commonMethodsUtilService.getStringValueForObject(workObj[3]));
 		    					workVO.setPreviousPetitionRefNo(commonMethodsUtilService.getStringValueForObject(workObj[4]));
 		    					workVO.setSubject(commonMethodsUtilService.getStringValueForObject(workObj[6]));
+		    					workVO.setDepartrmentId(commonMethodsUtilService.getLongValueForObject(workObj[7]));
+		    					workVO.setDepartrment(commonMethodsUtilService.getStringValueForObject(workObj[8]));
 		    				}
 		    			}
 		    		}

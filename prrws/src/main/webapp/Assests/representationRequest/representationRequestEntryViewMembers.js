@@ -97,7 +97,11 @@ function getRepresentativeSearchWiseDetails(searchVal){
 	$("#representationRequestEntryTable").html(spinner);
     var json = {
     filterType :radioValue,
-	filterValue:searchVal
+	filterValue:searchVal,
+	searchLevelId:2,
+	searchLevelValue:1,
+	fromDate:"01-01-2010",
+	toDate:"01-01-2018"
     }        
   $.ajax({                
     type:'POST',    
@@ -118,7 +122,7 @@ function getRepresentativeSearchWiseDetails(searchVal){
 }
 
 //Normal Search Call
-function getRepresentativeSearchDetails(searchVal,locationScopeId,lcoationId){
+function getRepresentativeSearchDetails(typeVal,locationScopeId,lcoationId){
 	$("#errorId").html("");
 	var radioValue = $("input[name='optradio']:checked"). val();
 	$("#representationRequestEntryTable").html(spinner);
@@ -126,7 +130,9 @@ function getRepresentativeSearchDetails(searchVal,locationScopeId,lcoationId){
 		filterType :radioValue,
 		filterValue:searchVal,
 		searchLevelId:locationScopeId,
-		searchLevelValue:lcoationId
+		searchLevelValue:lcoationId,
+		fromDate:"01-01-2010",
+		toDate:"01-01-2018"
     }        
   $.ajax({                
     type:'POST',    
@@ -177,8 +183,6 @@ function representationRequestEntryTable(result){
 	str+='</table>';
 	$("#representationRequestEntryTable").html(str);
 }
-
-
 function getPetitionDepartmentList(){
     $("#departmentId").html('');
 	  var json = {
