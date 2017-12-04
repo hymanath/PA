@@ -28,6 +28,8 @@ public class TrainingCampEligbleDesignation {
 	private Long tdpCommitteeLevelId;
 	private Long tdpRolesId;
 	private String gender;
+	private Long tdpCommitteeEnrollmentId;
+	private TdpCommitteeEnrollment tdpCommitteeEnrollment;
 	private TrainingCampProgram trainingCampProgram;
 	private TdpBasicCommittee tdpBasicCommittee;
 	private TdpCommitteeLevel tdpCommitteeLevel;
@@ -117,6 +119,27 @@ public class TrainingCampEligbleDesignation {
 	}
 	public void setTdpRoles(TdpRoles tdpRoles) {
 		this.tdpRoles = tdpRoles;
+	}
+	@Column(name = "tdp_committee_enrollment_id")
+	public Long getTdpCommitteeEnrollmentId() {
+		return tdpCommitteeEnrollmentId;
+	}
+	
+	public void setTdpCommitteeEnrollmentId(Long tdpCommitteeEnrollmentId) {
+		this.tdpCommitteeEnrollmentId = tdpCommitteeEnrollmentId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tdp_committee_enrollment_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCommitteeEnrollment getTdpCommitteeEnrollment() {
+		return tdpCommitteeEnrollment;
+	}
+	
+	public void setTdpCommitteeEnrollment(
+			TdpCommitteeEnrollment tdpCommitteeEnrollment) {
+		this.tdpCommitteeEnrollment = tdpCommitteeEnrollment;
 	}
 	
 }
