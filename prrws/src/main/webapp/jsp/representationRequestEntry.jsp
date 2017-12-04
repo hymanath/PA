@@ -19,6 +19,11 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+<style>
+.error_colorCls{
+   color: red;
+}
+</style>
 </head>
 <body>
 <header>
@@ -267,6 +272,7 @@
 					<select class="form-control chosen-select" id="designationsId">
 						<option value="0">Select Designation</option>
 					</select>
+					 <div class="m_top10 error_colorCls" id="desiganationIErrDivd"></div>
 				</div>
 				<div class="col-sm-3">
 					<select class="form-control chosen-select" id="districtCandId">
