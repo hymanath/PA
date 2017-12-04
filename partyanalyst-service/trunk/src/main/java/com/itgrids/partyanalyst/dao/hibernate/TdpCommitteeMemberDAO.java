@@ -2698,7 +2698,12 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 			" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=TCED.tdpCommitteeLevel.tdpCommitteeLevelId and " +
 			" TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=TCED.tdpRoles.tdpRolesId and " +
 			" TCM.isActive='Y' and TCM.tdpCadre.isDeleted='N' " +
-			" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 and TCM.tdpCadre.gender=TCED.gender ");
+			" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and " +
+			" TCM.tdpCadre.enrollmentYear=2014 and TCM.tdpCadre.gender=TCED.gender and " +
+			" TCM.tdpCommitteeEnrollmentId = 2 and " +
+			" TCED.tdpCommitteeEnrollmentId = 2 and " +
+			" TCM.tdpCommitteeRole.tdpCommitteeEnrollmentId = 2 and " +
+			" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId = 2 ");
 	  if(stateId != null && stateId.longValue() > 0){
 		  queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId "); 
 	  }

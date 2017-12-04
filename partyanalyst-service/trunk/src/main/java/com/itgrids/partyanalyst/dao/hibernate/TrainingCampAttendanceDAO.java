@@ -1900,7 +1900,11 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			              " model2.tdpCommitteeLevel.tdpCommitteeLevelId = model3.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId and " +
 			              " model2.tdpRoles.tdpRolesId = model3.tdpCommitteeRole.tdpRoles.tdpRolesId and" +
 			              " model.attendance.tdpCadre.isDeleted='N' and model.attendance.tdpCadre.enrollmentYear=2014 and model3.isActive='Y'" +
-			              " and model3.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and model3.tdpCadre.gender=model2.gender ");
+			              " and model3.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and model3.tdpCadre.gender=model2.gender and " +
+			              " model3.tdpCommitteeEnrollmentId = 2 and " +
+			              " model2.tdpCommitteeEnrollmentId = 2 and " +
+			              " model3.tdpCommitteeRole.tdpCommitteeEnrollmentId = 2 and " +
+			              " model3.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId = 2 ");
 		  if(stateId != null && stateId.longValue() > 0){
 				 queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId");
 		  }
