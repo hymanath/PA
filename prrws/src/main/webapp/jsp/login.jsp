@@ -22,9 +22,9 @@
 							<div class="login-block-inner">
 								<!--<h2>Login</h2>-->
 								<label class="login-field-icon fui-user m_top20" for="login-name">USERNAME</label><br/>
-								<input type="text" class="form-control" value="" placeholder="" id="loginNameId">	
+								<input type="text" class="form-control" value="" placeholder="User Name" id="loginNameId">	
 								<label class="login-field-icon fui-lock m_top20" for="login-pass">PASSWORD</label><br/>
-								<input type="password" class="form-control" value="" placeholder="" id="passwordId" onkeypress="searchKeyPress(event);">
+								<input type="password" class="form-control" value="" placeholder="Password" id="passwordId" onkeypress="searchKeyPress(event);">
 								<p id="statusMessage"></p>
 								<a class="btn btn-primary btn-large btn-block btnSearch m_top20" style="display:inline-block" onClick="userLogin();" id="signinId" style="cursor:pointer;">SIGN IN</a>
 								<img src="Assests/images/spinner.gif" style="width:40px;height:40px;margin-left:10px;margin-top:10px;display:none;" id="spinnerImg"/>
