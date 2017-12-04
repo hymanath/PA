@@ -937,22 +937,29 @@ $(document).on("click",".searchCandidateCls",function(){
 });
 
 $(document).on("change","#designationsId",function(){	
-	
+	$("#districtCandDivId").show();
 	var value = $(this).val();
 	if(parseInt(value)>0){
-		var typeVal = $(this).attr("attr_type");
-		$(".selectionSearchDetailsCls").attr("attr_type",typeVal);
-		getAllDistrictsInState("popup","");
-		if(typeVal == "self"){
+		if(value == 4){
+			$("#constituencyCanId").html("");
 			$("#candidateDetailsDivId").html('');
-			//$("#candidateSearchModelDivId").modal("show");
-			//getPetitionDesignationList();
-			//getAllDistrictsInState("","");
+			getParliamentIdsByConstituencyList();
+			$("#districtCandDivId").hide();
 		}else{
-			$("#candidateDetailsDivId").html('');
-			//$("#candidateSearchModelDivId").modal("show");
-			//getPetitionDesignationList();
-			//getAllDistrictsInState("","");
+			var typeVal = $(this).attr("attr_type");
+			$(".selectionSearchDetailsCls").attr("attr_type",typeVal);
+			getAllDistrictsInState("popup","");
+			if(typeVal == "self"){
+				$("#candidateDetailsDivId").html('');
+				//$("#candidateSearchModelDivId").modal("show");
+				//getPetitionDesignationList();
+				//getAllDistrictsInState("","");
+			}else{
+				$("#candidateDetailsDivId").html('');
+				//$("#candidateSearchModelDivId").modal("show");
+				//getPetitionDesignationList();
+				//getAllDistrictsInState("","");
+			}
 		}
 	}
 });
@@ -1403,5 +1410,26 @@ function getRepresentationRequestDetailsByRepresentationRequestId(representation
 		}
 	}).done(function(result){
 		console.log(result);
+	});	
+}
+function getParliamentIdsByConstituencyList(){
+	var json = {};
+	$.ajax({              
+		type:'POST',    
+		url: 'getParliamentIdsByConstituencyList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#constituencyCanId").append('<option value="0">All</option>');
+			for(var i in result){
+				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#constituencyCanId").trigger('chosen:updated');
 	});	
 }

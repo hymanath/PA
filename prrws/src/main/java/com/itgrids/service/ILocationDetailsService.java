@@ -17,5 +17,6 @@ public interface ILocationDetailsService {
 	public List<KeyValueVO> getPanchayatsByTehsilId(Long tehsilId);
 	public List<KeyValueVO> getPetitionDepartmentList();
 	public List<KeyValueVO> getPetitionDesignationList();
+	public List<KeyValueVO>  getParliamentIdsByConstituencyList();
 	
 }

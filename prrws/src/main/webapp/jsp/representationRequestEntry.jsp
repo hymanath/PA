@@ -274,7 +274,7 @@
 					</select>
 					 <div class="m_top10 error_colorCls" id="desiganationIErrDivd"></div>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-3" id="districtCandDivId">
 					<select class="form-control chosen-select" id="districtCandId">
 						<option value="0">Select District</option>
 					</select>
