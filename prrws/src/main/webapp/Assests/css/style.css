@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,300,300i,400,400i,500,500i,600,600i');
+
+* {
+	box-sizing: border-box;
+}
+*:focus {
+	outline: none;
+}
+body {
+	font-family: 'Montserrat', sans-serif;
+	background-image: url(../images/cream_pixels_@2X.png);
+}
+.login {
+	margin: 20px auto;
+	width: 700px;
+}
+.login-block
+{
+	background-image: url(../images/bg.png);
+	background-repeat:no-repeat;
+	background-size:100% 100%;
+	box-shadow: 1px 1px 30px #ABABAB;
+	margin-top:20px;
+	padding:2rem;
+	background-color:#fff;
+}
+.login-block-Kaizala
+{
+	background-image: url(../images/bg1.png);
+	background-repeat:no-repeat;
+	background-size:100% 100%;
+	box-shadow: 1px 1px 30px #ABABAB;
+	margin-top:20px;
+	padding:2rem;
+	background-color:#fff;
+}
+h2
+{
+	margin-top:10px;
+}
+.form-control
+{
+	border-radius:0px;
+	background-color:#EDF0F6;
+	box-shadow:none;
+	font-weight:500
+}
+.login-block-inner
+{
+	padding:2.6rem;
+	margin-top:1rem;
+}
+.m_top20
+{
+	margin-top:20px;
+}
+.login-screen {
+	background-image: url(../images/bg.png);
+	background-repeat:no-repeat;
+	background-size:100% 100% center;
+	padding: 20px;
+	box-shadow: 1px 1px 30px #ABABAB;
+}
+.app-title {
+	text-align: left;
+	color: #777;
+}
+.login-form {
+	text-align: left;
+	margin-top: 100px;
+	margin-left: 25px
+}
+.control-group {
+	margin-bottom: 15px;
+}
+input {
+	text-align: left;
+	background-color: #EDF0F6;
+	border: 2px solid transparent;
+	border-radius: 3px;
+	font-size: 16px;
+	font-weight: 200;
+	padding: 10px 0;
+	width: 250px;
+	transition: border .5s;
+}
+input:focus {
+	border: 2px solid #E1E7E7;
+	box-shadow: 1px 1px 10px #C7C3C3;
+	background-color: #FCFCFC;
+}
+.btn {
+	border: 2px solid transparent;
+	background: #08B908;
+	color: #ffffff;
+	font-size: 14px;
+	line-height: 22px;
+	padding: 10px 0;
+	text-decoration: none;
+	text-shadow: none;
+	border-radius: 3px;
+	box-shadow: none;
+	transition: 0.25s;
+	display: block;
+	width: 100px;
+	text-align: center;
+	
+}
+.btn:hover {
+	background-color: #0FCC0F;
+}
+.login-link {
+	font-size: 12px;
+	color: #444;
+	display: block;
+	margin-top: 12px;
+}
+label {
+	font-size: 0.8em;
+	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
+}	
+footer 
+{
+	position:absolute;
+	right: 0;
+	left: 0;
+	padding: 2rem;
+}

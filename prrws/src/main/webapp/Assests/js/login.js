@@ -1,8 +1,9 @@
 function userLogin()
 	{    
+	$("#statusMessage").html("");;
 	var json = {
-		username:$("#unameId").val(),
-		passwordHashText:$("#pwdId").val()
+		username:$("#loginNameId").val(),
+		passwordHashText:$("#passwordId").val()
 		};
 	
    $.ajax({
@@ -15,15 +16,15 @@ function userLogin()
     xhr.setRequestHeader("Content-Type", "application/json");
     },
      success: function(ajaxresp) {
-		  if(ajaxresp.responceCode==0){
-			 $("#errorMsgId").html("<span style='color:red'> UserName or Password Invalid</span>");
+		  if(ajaxresp.responceCode == 0){
+			 $("#statusMessage").html("<span style='color:red'> UserName or Password Invalid</span>");
 		  }else{
-			  $("#errorMsgId").html("<span style='color:green'>Login Successfull</span>");
+			  $("#statusMessage").html("<span style='color:green'>Login Successfull</span>");
+			  var redirectWindow=window.open(ajaxresp.url,'_self');
 		  }
      },
    error: function(request,error) { 
-   //alert(request.responseText);
-   //alert(error);
+   
     }
       });
 	
