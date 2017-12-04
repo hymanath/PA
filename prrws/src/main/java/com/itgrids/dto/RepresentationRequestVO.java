@@ -13,6 +13,7 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private Long userId;
 	private Long locationLevelId;
 	private Long locationValue;
+	private String representeeType;
 	private String workName;
 	private Long  noOfWorks;
 	private Long estimationCost;
@@ -272,6 +273,13 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	public void setReffererName(String reffererName) {
 		this.reffererName = reffererName;
 	}
-	
+
+	public String getRepresenteeType() {
+		return representeeType;
+	}
+
+	public void setRepresenteeType(String representeeType) {
+		this.representeeType = representeeType;
+	}
 	
 }
