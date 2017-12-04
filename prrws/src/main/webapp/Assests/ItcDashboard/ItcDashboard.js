@@ -352,8 +352,8 @@ function departmentBlockWiseDetails(divId)
 								collapse+='<div class="row">';
 									collapse+='<div class="col-sm-12">';
 										collapse+='<ul class="list-inline switch-btn pull-right meesevaSlaKpiCls">';
-											collapse+='<li class="active" attr_type="meesevaSla">Meeseva-SLA</li>';
-											collapse+='<li attr_type="meesevaKpi">Meeseva-KPI</li>';
+											collapse+='<li class="active" attr_type="meesevaSla">SLA</li>';
+											collapse+='<li attr_type="meesevaKpi">KPI</li>';
 										collapse+='</ul>';		
 									collapse+='</div>';
 								collapse+='</div>';
@@ -3320,8 +3320,8 @@ function buildMeesevaSLAServiceWiseDetails(result,divId,blockId){
 									str+='<th>Approve</th>';
 									str+='<th>Rejected</th>';
 									str+='<th>Revoked</th>';
-									//str+='<th>With in SLA</th>';
-									//str+='<th>Beyond SLA</th>';
+									str+='<th>With in SLA</th>';
+									str+='<th>Beyond SLA</th>';
 									
 								str+='</tr>';
 							str+='</thead>';
@@ -3351,8 +3351,8 @@ function buildMeesevaSLAServiceWiseDetails(result,divId,blockId){
 										}else{
 											str+='<td>-</td>';
 										}
-										//str+='<td>'+result[i].catgryBWithInSLACount+'</td>';
-										//str+='<td>'+result[i].catgryBBeyondSLACount+'</td>';
+										str+='<td>'+result[i].totalWithInSlaCount+'</td>';
+										str+='<td>'+result[i].totalBeyondSlaCount+'</td>';
 										
 									str+='</tr>';
 								}

@@ -504,13 +504,13 @@
 			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/meeSevaSla.png" >
-					<h5 style="display: inline-block;">MEESEVA - SLA/KPI</h5>
+					<h5 style="display: inline-block;">MEESEVA-SLA KPI</h5>
 					<div class=" " style="text-align: right">
-						<h2 class="itecMeeSevaSlaAllCls" style="margin-top: 0px"></h2>
+						<h2 class="itecMeeSevaSlaKpiAllCls" style="margin-top: 0px"></h2>
 						<p class="">Beyond SLA/etaal - KPI</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star MEESEVA-SLAColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="MEESEVA - SLA" attr_color_name="gray" aria-hidden="true" attr_block_name="MEESEVA-SLA"></i>
+						<i class="fa fa-star MEESEVA-SLAKPIColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="MEESEVA-SLA KPI" attr_color_name="gray" aria-hidden="true" attr_block_name="MEESEVA-SLAKPI"></i>
 						<a class="pull-right" href="itcDashboard?component=meesevaSlaKpi" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
