@@ -504,7 +504,7 @@
 		 }else{
 			alertStatusArr.push(alertStatusId);
 		 }
-		 
+		
 		var jsObj = { 
 			alertTypeId : alertTypeId,    
 			alertStatusArr : alertStatusArr,
@@ -3077,7 +3077,7 @@ function getTotalArticledetails(articleId){
 		
 		str+='<tbody>';
 			str+='<tr>';
-			   if(result.overAllVO.totalAlertCnt > 0){
+			   /* if(result.overAllVO.totalAlertCnt > 0){
 				   //typeId,count,type
 				str+='<td colspan="2" onclick ="getEditioDtls(0,0);arrowPositionMove(overAllArrowPostion);" id="overAllArrowPostion" class=" alertOverViewDetailsCls" attr_alert_type_id="0" attr_edition_type_id="0">';
 				str+='<div class=" alertInnerArrow" >';
@@ -3097,7 +3097,7 @@ function getTotalArticledetails(articleId){
 				str+='</td>';
 			   }else{
 				str+='<td colspan="2"><div class="alertsArrow alertInnerArrow"><h3 class="alertColorFont">'+result.overAllVO.totalAlertCnt+'</h3><p>TOTAL ALERTS</p></div></td>';   
-			   }
+			   } */
 				
 				if(!(result.overAllVO.partyAlertCnt == 0)){
 					var partyAlertPerc = ((parseInt(result.overAllVO.partyAlertCnt)*100)/parseInt(result.overAllVO.totalAlertCnt)).toFixed(2);
@@ -3153,7 +3153,7 @@ function getTotalArticledetails(articleId){
 				}
 			str+='</tr>';
 			str+='<tr>';
-			   if(totalMainCount > 0){
+			 /*   if(totalMainCount > 0){
 				str+='<td onclick ="arrowPositionMove1(overAllArrowPostionLow);" id="overAllArrowPostionLow"  class="alertOverViewDetailsLowCls" >';
 				str+='<div class="alertInnerArrowLow">';
 				if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
@@ -3187,7 +3187,7 @@ function getTotalArticledetails(articleId){
 				}else{
 				str+='<td class="alertOverViewDetailsLowCls" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted text-capital">District</p>';
 				str+='<p style="font-size:13px;"><span class="alertColorFont">0</span></p></div></td>';
-				}
+				} */
 				
 				if(!(result.overAllVO.partyAlertCnt == 0)){
 					
@@ -3468,7 +3468,7 @@ function getTotalArticledetails(articleId){
 					{
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-								str+='<h4 class="panel-title text-capital " style="cursor:pointer;" attr_edition_id="'+alertEdition+'" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_count="'+result.categoryList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'">'+result.categoryList[i].statusType+' - <span class="alertColorFont alertDtlsCls">'+result.categoryList[i].statusCnt+'</span><span class="pull-right" alert_overview_col="alertOverview'+result.categoryList[i].statusTypeId+'" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span></h4>';
+								str+='<h4 class="panel-title text-capital " style="cursor:pointer;">'+result.categoryList[i].statusType+' - <span class="alertColorFont alertDtlsCls" attr_edition_id="'+alertEdition+'" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_count="'+result.categoryList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'">'+result.categoryList[i].statusCnt+'</span><span class="pull-right" alert_overview_col="alertOverview'+result.categoryList[i].statusTypeId+'" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span></h4>';
 							str+='</div>';
 							if(alertEdition == 0 && result.categoryList[i].statusTypeId == 2){//printmedia      
 								str+='<div class="col-md-12 col-xs-12 col-sm-12" style="display:none" alert_overview_col_body="alertOverview'+result.categoryList[i].statusTypeId+'">';

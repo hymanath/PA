@@ -462,7 +462,7 @@
 				totalHospital = result[i].hospitalizationCount + totalHospital;
 			}
 			totalCount = totalDeath + totalHospital
-			str+='<table class="table table-bordered bg_ED m_top10">';
+			str+='<table class="table table-bordered bg_ED m_top10 table_padding">';
 				str+='<tr>';
 					str+='<td rowspan="2" style="vertical-align:middle;width:50%;"><h3>'+totalCount+'</h3><p class="text-capital text-muted">total claims submitted</p></td>';
 					str+='<td><h3><span class="insuraceStatusWiseComplaints" attr_status="" attr_issueType="Hospitalization" attr_companyId="0">'+totalHospital+'</span></h3><p class="text-capital text-muted">total hospital</p></td>';
@@ -482,17 +482,17 @@
 						str+='<div class="panel-heading bg_ED" role="tab" id="headingInsurance'+i+'">';
 							if(i == 0)
 							{
-								str+='<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseInsurance'+i+'" aria-controls="collapseInsurance'+i+'">';
+								str+='<a role="button" class="collapseDebatesIcon collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseInsurance'+i+'" aria-controls="collapseInsurance'+i+'">';
 							}else{
 								str+='<a role="button" class="collapsed collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseInsurance'+i+'" aria-controls="collapseInsurance'+i+'">';
 							}
-								str+='<h5>'+result[i].totalCount+' <small class="text-success">'+result[i].percentage+'%</small></h5>';
-								str+='<small class="text-capital">'+result[i].name+'</small>';
+								str+='<h4 class="text-capital f_16 text_bold">'+result[i].name+' &nbsp; <span class="m_top5 f_14">[Total count :'+result[i].totalCount+' &nbsp; <span style="color:green">'+result[i].percentage+'%</span>]</span></h4>';
+								//str+='<h5 class="m_top5 f_14">[Total count :'+result[i].totalCount+' &nbsp; <span style="color:green">'+result[i].percentage+'%</span>]</h5>';
 							str+='</a>';
 						str+='</div>';
 						if(i == 0)
 						{
-							str+='<div id="collapseInsurance'+i+'" class="panel-collapse collapse in" aria-labelledby="headingInsurance'+i+'">';
+							str+='<div id="collapseInsurance'+i+'" class="panel-collapse collapse" aria-labelledby="headingInsurance'+i+'">';
 						}else{
 							str+='<div id="collapseInsurance'+i+'" class="panel-collapse collapse" aria-labelledby="headingInsurance'+i+'">';
 						}
