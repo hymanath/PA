@@ -44,7 +44,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 	public List<IdNameVO> getWorksDataInsertion(InputVO inputVO) {
 		List<IdNameVO> resultList = new ArrayList<>(0);
 		try {
-			DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			SimpleDateFormat sf = new SimpleDateFormat("dd-mm-yyyy");
 			boolean insertionFlag = getWorkDetails();// getting work completed,dateofTarget date
 			if (insertionFlag) {
@@ -128,7 +128,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 
 	private boolean getWorkDetails() {
 		 try {
-			 	DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			 	DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			 	Calendar calendar = Calendar.getInstance();
 			    WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getAllWorkAdminDetails");	        
 				String authStringEnc = commonMethodsUtilService.getAuthenticationString("itgrids","Itgrids@123");	        
@@ -168,7 +168,6 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 				 	    			works.setCommissionedDate(null);
 				 	    			
 				 	    			works = rwsWorkDAO.save(works);
-				 	    			LOG.error(works.getRwsWorkId());
 		 	    				}
 		 	    			}
 		 	    		}
