@@ -22,8 +22,10 @@ import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.IPetitionDepartmentDAO;
 import com.itgrids.dao.IPetitionDesignationDAO;
 import com.itgrids.dao.IPetitionMemberDAO;
+import com.itgrids.dao.IPetitionSubjectDAO;
 import com.itgrids.dao.IPetitionWorkDetailsDAO;
 import com.itgrids.dao.ITehsilDAO;
+import com.itgrids.dao.impl.PetitionSubjectDAO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
@@ -59,6 +61,8 @@ public class LocationDetailsService implements ILocationDetailsService {
 	private IPetitionWorkDetailsDAO petitionWorkDetailsDAO;
 	@Autowired
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
+	@Autowired
+	private IPetitionSubjectDAO petitionSubjectDAO;
 	 /**
 		 * Date : 30/11/2017
 		 * Author :babu kurakula <href:kondababu.kurakula@itgrids.com>
@@ -291,4 +295,42 @@ public class LocationDetailsService implements ILocationDetailsService {
     	}
     	return resultList;
     }
+    
+public List<KeyValueVO>  getPetitionSubjectList(){
+    	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+    	    try{
+    		LOG.info("Entered into LocationDetailsService of getPetitionSubjectList ");
+    		List<Object[]> petitionDetailsObjsList = petitionSubjectDAO.getPetitionSubjectList();
+    		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
+    			for(Object[] param: petitionDetailsObjsList){
+    				KeyValueVO vo = new KeyValueVO();
+    				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+    				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+    				resultList.add(vo);
+    			}
+    		}
+    	}catch(Exception e){
+    		LOG.error("Exception occured at getPetitionSubjectList() in LocationDetailsService class ", e);
+    	}
+    	return resultList;
+    }
+
+public List<KeyValueVO>  getPetitionSubSubjectList(Long subjectId){
+	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+	    try{
+		LOG.info("Entered into LocationDetailsService of getPetitionSubSubjectList ");
+		List<Object[]> petitionDetailsObjsList = petitionSubjectDAO.getPetitionSubSubjectList(subjectId);
+		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
+			for(Object[] param: petitionDetailsObjsList){
+				KeyValueVO vo = new KeyValueVO();
+				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+				resultList.add(vo);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception occured at getPetitionSubSubjectList() in LocationDetailsService class ", e);
+	}
+	return resultList;
+}
 }

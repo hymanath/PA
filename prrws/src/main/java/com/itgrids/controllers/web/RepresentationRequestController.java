@@ -93,5 +93,12 @@ public class RepresentationRequestController {
     public String representationRequestEdit(ModelMap model) {
 		return "representationRequestEdit";
     }
-	
+	@RequestMapping(value ="/getPetitionSubjectList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPetitionSubjectList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPetitionSubjectList();
+    }
+	@RequestMapping(value ="/getPetitionSubSubjectList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPetitionSubSubjectList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPetitionSubSubjectList(Long.valueOf(inputMap.get("subjectId")));
+    }
 }
