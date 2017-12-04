@@ -20,5 +20,9 @@ public interface ILocationDetailsService {
 	public List<KeyValueVO>  getParliamentIdsByConstituencyList();
 	public List<KeyValueVO>  getPetitionSubjectList();
 	public List<KeyValueVO>  getPetitionSubSubjectList(Long subjectId);
+	public List<KeyValueVO>  getPetitionLeadDetailsList();
+	public List<KeyValueVO>  getPetitionBriefLeadList();
+	public List<KeyValueVO>  getPetitionGrantList();
+	public List<KeyValueVO>  getPetitionStatusList();
 	
 }

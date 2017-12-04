@@ -101,4 +101,20 @@ public class RepresentationRequestController {
     public @ResponseBody List<KeyValueVO> getPetitionSubSubjectList(@RequestBody Map<String,String> inputMap ) {
        return locationDetailsService.getPetitionSubSubjectList(Long.valueOf(inputMap.get("subjectId")));
     }
+	@RequestMapping(value ="/getPetitionLeadDetailsList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPetitionLeadDetailsList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPetitionLeadDetailsList();
+    }
+	@RequestMapping(value ="/getPetitionBriefLeadList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPetitionBriefLeadList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPetitionBriefLeadList();
+    }
+	@RequestMapping(value ="/getPetitionGrantList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPetitionGrantList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPetitionGrantList();
+    }
+	@RequestMapping(value ="/getPetitionStatusList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> petitionStatusDAO(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPetitionStatusList();
+    }
 }
