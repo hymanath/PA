@@ -197,6 +197,8 @@ public class BoothInchargeCommitteeDAO extends GenericDaoHibernate<BoothIncharge
 		else if(levelId != null && levelId.longValue() == 8L)
 			sb.append(" and ua.ward in (:levelValues)");
 		
+		sb.append(" order by b.booth_id,r.booth_incharge_role_id ");
+		
 		Query query = getSession().createSQLQuery(sb.toString()).addScalar("disrictName", Hibernate.STRING).addScalar("parlName", Hibernate.STRING)
 				.addScalar("assemName", Hibernate.STRING).addScalar("tehsilName", Hibernate.STRING).addScalar("lebName", Hibernate.STRING).addScalar("pancName", Hibernate.STRING)
 				.addScalar("incharge_booth_id", Hibernate.LONG).addScalar("incharge_booth_no", Hibernate.STRING).addScalar("own_booth_id", Hibernate.LONG)
