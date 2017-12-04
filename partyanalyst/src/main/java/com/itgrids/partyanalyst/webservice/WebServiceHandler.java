@@ -3311,8 +3311,10 @@ public class WebServiceHandler {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response  getKaizalaAlertInfo(JSONObject obj) {
 		try {
-			System.out.println("Kaizala Info : " +obj + "\n New Kaizala Info " + obj.toString());
+			LOG.error(" Enetered into getKaizalaAlertInfo : Kaizala Info  for Test: " +obj + "\n New Kaizala Info " + obj.toString());
+			
 			webServiceHandlerService.saveEventResponses(obj.toString());
+			
 			LOG.error("Kaizala Info : " +obj + "\n New Kaizala Info " + obj.toString());
 			if(obj !=null)
 				return Response.status(200).entity(obj).build();//set Response 200
