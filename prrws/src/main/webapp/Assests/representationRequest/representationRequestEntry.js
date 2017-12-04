@@ -954,9 +954,14 @@ $(document).on("change","#designationsId",function(){
 });
 
 $(document).on("click",".selectionSearchDetailsCls",function(){
+	 $("#desiganationIErrDivd").html("");
 	var locationValue=0;
 	var locationLevelId=0;
 	var desiganationId = $("#designationsId").val();
+	if(desiganationId == null || desiganationId ==0){
+		$("#desiganationIErrDivd").html("<h5>Please select desiganation</h5>");
+		return;
+	}
 	var districtCandId = $("#districtCandId").val();
 	locationValue=districtCandId;
 		if(districtCandId !=null && districtCandId > 0){
