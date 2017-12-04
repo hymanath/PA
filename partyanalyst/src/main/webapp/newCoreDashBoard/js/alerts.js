@@ -115,7 +115,7 @@
 				 $(".districtUl li").removeClass("active");
 				 $(".districtUl li:first-child").addClass("active");
 				 
-		        $("#alertTypeHiddenId").attr("attr_alert_id",0);
+		        $("#alertTypeHiddenId").attr("attr_alert_id",1);
 		        $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",0);  
 				$(".alertComparisonblock").hide();
 			    $(".alertImpctLevelBlcock").show();	
@@ -153,7 +153,7 @@
 	
 	function globalAlertsCalls(type)
 	{
-		$("#alertTypeHiddenId").attr("attr_alert_id","0");
+		$("#alertTypeHiddenId").attr("attr_alert_id","1");
 		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id","0");
 		if(type == "default"){
 			$('#dateRangeIdForAlert').data('daterangepicker').setStartDate(moment());
@@ -233,7 +233,7 @@
 		  $(".collapseTblViewCls").removeClass("active");
 		  $(".collapseHIghChartViewCls").addClass("active");
 	  
-		 $("#alertTypeHiddenId").attr("attr_alert_id",0);
+		 $("#alertTypeHiddenId").attr("attr_alert_id",1);
 		 $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",0);  
 		 
 		 $(".constituencyUl li").removeClass("active");
@@ -2994,7 +2994,7 @@ function getTotalArticledetails(articleId){
 	 $("#lastAlertUpdatedTimeId").html(" Last Updated : "+lastUpdatedTime+"");
 	}
 	function getAlertOverviewDetails(){
-		$("#alertTypeHiddenId").attr("attr_alert_id",0);
+		$("#alertTypeHiddenId").attr("attr_alert_id",1);
 		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",0);        
  		$("#alertOverview").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var dates=$("#dateRangeIdForAlert").val();
@@ -3029,7 +3029,7 @@ function getTotalArticledetails(articleId){
       });	
 	}
 	function getAlertOverviewDetailsNextLevel(){
-		$("#alertTypeHiddenId").attr("attr_alert_id",0);
+		$("#alertTypeHiddenId").attr("attr_alert_id",1);
 		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",0);        
  		$("#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var dates=$("#dateRangeIdForAlert").val();
