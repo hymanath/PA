@@ -4,6 +4,7 @@ setTimeout(function(){
 	buildSelfAndRepresenteeDetails("self")
 	getAllDistrictsInState("represent","");
 	getPetitionDepartmentList("self")
+	getPetitionSubjectList("subjectId","self","")
 	
 }, 2000);
  
@@ -29,6 +30,7 @@ $(document).on("click",".selfRepresenceCls",function(){
 			buildSelfAndRepresenteeDetails(typeVal)
 			//getAllDistrictsInState(typeVal,1);
 			getPetitionDepartmentList(typeVal)
+			getPetitionSubjectList("subjectId",typeVal,"")
 		}else if(typeVal == "represent"){
 			$("#selfDetailsDivId").html('');
 			alreadyCandidateId='';
@@ -37,6 +39,7 @@ $(document).on("click",".selfRepresenceCls",function(){
 			buildSelfAndRepresenteeDetails(typeVal)
 			getAllDistrictsListInState(typeVal,"");
 			getPetitionDepartmentList(typeVal)
+			getPetitionSubjectList("subjectId",typeVal,"")
 		}
 	}
 	
@@ -144,10 +147,17 @@ function buildSelfAndRepresenteeDetails(typeVal){
 			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-3">';
 					str+='<label>Subject</label>';
-					str+='<select  name="subjectId"  class="form-control chosen-select m_top10" id="subjectId'+typeVal+'">';
+					str+='<select  name="subjectId"  class="form-control chosen-select m_top10 subjecOnchngeCls" id="subjectId'+typeVal+'">';
 						str+='<option value="0">Select Subject</option>';
 					str+='</select>';
 					str+='<div id="subjectId'+typeVal+'Err"></div>';
+				str+='</div>';
+					str+='<div class="col-sm-3">';
+					str+='<label>Sub Subject</label>';
+					str+='<select  name="subSubjectId"  class="form-control chosen-select m_top10" id="subSubjectId'+typeVal+'">';
+						str+='<option value="0">Select Sub Subject</option>';
+					str+='</select>';
+					str+='<div id="subSubjectId'+typeVal+'Err"></div>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<label>Department</label>';
@@ -226,10 +236,17 @@ function buildTemplateWorkDetails(typeVal){
 						str+='<div class="row m_top10">';
 								str+='<div class="col-sm-3">';
 									str+='<label>Select Subject</label>';
-									str+='<select  name="worksList[0].deptId"  class="form-control chosen-select m_top10 workTypeCls'+typeVal+'" id="workTypeId'+typeVal+''+globalWorkTypeCount+'">';
+									str+='<select  name="worksList[0].deptId"  class="form-control chosen-select m_top10 workTypeCls'+typeVal+'" id="workTypeId'+typeVal+''+globalWorkTypeCount+'" onChange=getPetitionSubSubjectList(this.value,"subWorkTypeId'+typeVal+''+globalWorkTypeCount+'")>';
 										str+='<option value="0">Select Subject</option>';
 									str+='</select>';
 									str+='<div class="m_top10"  id="workTypeId'+typeVal+''+globalWorkTypeCount+'Err"></div>';
+								str+='</div>';
+								str+='<div class="col-sm-3">';
+									str+='<label>Select Sub Subject</label>';//kkll2
+									str+='<select  name="worksList[0].deptId"  class="form-control chosen-select m_top10 subWorkTypeCls'+typeVal+'" id="subWorkTypeId'+typeVal+''+globalWorkTypeCount+'">';
+										str+='<option value="0">Select Sub Subject</option>';
+									str+='</select>';
+									str+='<div class="m_top10"  id="subWorkTypeId'+typeVal+''+globalWorkTypeCount+'Err"></div>';
 								str+='</div>';
 							str+='</div>';
 					str+='</div>';
@@ -305,6 +322,8 @@ function buildTemplateWorkDetails(typeVal){
 	$("#workDetailsDivId"+typeVal).html(str);
 	$(".chosen-select").chosen();
 	globalWorkTypeCount =globalWorkTypeCount+1;
+	getPetitionSubjectList("workTypeId",typeVal,'1');
+	
 }
 $(document).on("click",".cloned_Element",function(){
 	var typeVal = $(this).attr("attr_type");
@@ -340,13 +359,23 @@ function clonedTemplate(blockId,type,counterId,typeVal){
 					clonedTemplate+='<div class="row m_top10">';
 						clonedTemplate+='<div class="col-sm-3">';
 							clonedTemplate+='<label>Select Subject</label>';
-							clonedTemplate+='<select name="worksList['+counterId+'].deptId"  class="form-control chosen-select m_top10 workTypeCls'+typeVal+'" id="workTypeId'+typeVal+''+counterId+'">';
+							clonedTemplate+='<select name="worksList['+counterId+'].deptId"  class="form-control chosen-select m_top10 workTypeCls'+typeVal+'" id="workTypeId'+typeVal+''+counterId+'" onChange=getPetitionSubSubjectList(this.value,"subWorkTypeId'+typeVal+''+counterId+'")>';//kkl
 							//clonedTemplate+='<select   class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+counterId+'">';
 								clonedTemplate+='<option value="0">Select Subject</option>';
 							clonedTemplate+='</select>';
 							clonedTemplate+='<div class="m_top10"  id="workTypeId'+typeVal+''+counterId+'Err"></div>';
 						clonedTemplate+='</div>';
+						
+						clonedTemplate+='<div class="col-sm-3">';
+							clonedTemplate+='<label>Select Sub Subject</label>';
+							clonedTemplate+='<select name="worksList['+counterId+'].deptId"  class="form-control chosen-select m_top10 subWorkTypeCls'+typeVal+'" id="subWorkTypeId'+typeVal+''+counterId+'">';
+							//clonedTemplate+='<select   class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+counterId+'">';
+								clonedTemplate+='<option value="0">Select Subject</option>';
+							clonedTemplate+='</select>';
+							clonedTemplate+='<div class="m_top10"  id="subWorkTypeId'+typeVal+''+counterId+'Err"></div>';
+						clonedTemplate+='</div>';
 					clonedTemplate+='</div>';
+					
 				clonedTemplate+='</div>';
 				
 				
@@ -404,8 +433,9 @@ function clonedTemplate(blockId,type,counterId,typeVal){
 						clonedTemplate+='</div>';
 		clonedTemplate+='</div>';
 	clonedTemplate+='</div>';
-	
-	getSubjectPetitionsDepartmentList(typeVal,counterId);
+	//kkb214  getPetitionSubjectList(divId,typeVal,counterId)
+	getPetitionSubjectList("workTypeId",typeVal,counterId);
+	//getSubjectPetitionsDepartmentList(typeVal,counterId);
 	return clonedTemplate;
 	
 }
@@ -857,19 +887,19 @@ function getPetitionDepartmentList(typeVal){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#subjectId"+typeVal).append('<option value="0">Select Subject</option>');
+			// $("#subjectId"+typeVal).append('<option value="0">Select Subject</option>');
 			 $("#departmentId"+typeVal).append('<option value="0">Select Department</option>');
-			 $("#workTypeId"+typeVal+"1").append('<option value="0">Select Subject</option>');
+			// $("#workTypeId"+typeVal+"1").append('<option value="0">Select Subject</option>');
 			 
 			for(var i in result){
-				$("#subjectId"+typeVal).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				//$("#subjectId"+typeVal).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 				$("#departmentId"+typeVal).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 				$("#workTypeId"+typeVal+"1").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		$("#subjectId"+typeVal).trigger('chosen:updated');
+		//$("#subjectId"+typeVal).trigger('chosen:updated');
 		$("#departmentId"+typeVal).trigger('chosen:updated');
-		$("#workTypeId"+typeVal+"1").trigger('chosen:updated');
+		//$("#workTypeId"+typeVal+"1").trigger('chosen:updated');
 	});	
 }
 
@@ -1434,8 +1464,9 @@ function getParliamentIdsByConstituencyList(){
 	});	
 }
 
-getPetitionSubjectList();
-function getPetitionSubjectList(){
+//getPetitionSubjectList();
+function getPetitionSubjectList(divId,typeVal,counterId){
+	
 	var json = {};
 	$.ajax({              
 		type:'POST',    
@@ -1448,19 +1479,21 @@ function getPetitionSubjectList(){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#constituencyCanId").append('<option value="0">All</option>');
+			
+			 $("#"+divId+""+typeVal+""+counterId+"").append('<option value="0">All</option>');
 			for(var i in result){
-				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#"+divId+""+typeVal+""+counterId+"").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		$("#constituencyCanId").trigger('chosen:updated');
+		$("#"+divId+""+typeVal+""+counterId+"").trigger('chosen:updated');
 	});	
 }
 
-getPetitionSubSubjectList();
-function getPetitionSubSubjectList(){
+
+function getPetitionSubSubjectList(subjectId,divId){
+$("#"+divId).html('');
 	var json = {
-		subjectId : 3
+		subjectId : subjectId
 	};
 	$.ajax({              
 		type:'POST',    
@@ -1473,12 +1506,12 @@ function getPetitionSubSubjectList(){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#constituencyCanId").append('<option value="0">All</option>');
+			 $("#"+divId).append('<option value="0">All</option>');
 			for(var i in result){
-				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#"+divId).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		$("#constituencyCanId").trigger('chosen:updated');
+		$("#"+divId).trigger('chosen:updated');
 	});	
 }
 getPetitionLeadDetailsList();
@@ -1578,3 +1611,14 @@ function getPetitionStatusList(){
 		$("#constituencyCanId").trigger('chosen:updated');
 	});	
 }
+$(document).on("change",".subjecOnchngeCls",function(){
+	var typeVal='';
+	if($("#self").is(':checked')){
+		typeVal=$("#self").attr('attr_type');
+	}else if($("#Representee").is(':checked')){
+		typeVal=$("#Representee").attr('attr_type');
+	}
+	var subjectId=$("#subjectId"+typeVal).val();
+	var divId='subSubjectId'+typeVal;
+	getPetitionSubSubjectList(subjectId,divId);
+});
