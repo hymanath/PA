@@ -3589,6 +3589,7 @@ function getTotalArticledetails(articleId){
                 $("#hiddenLevelTypeId").attr("attr_level_type","impactScopeWise");				
 				getStateImpactandItsSubLevelAlert("impactScopeWise");
 				getDistrictImpactandItsSubLevelAlert("Decending","0","impactScopeWise");
+				getParliamentImpactandItsSubLevelAlert("Decending","0","0","impactScopeWise");
 				getCorpGMCAlert("0","impactScopeWise");
 				//alert(5);
 				getConstituencyImpactandItsSubLevelAlert("Decending","0","0","impactScopeWise");
@@ -3597,12 +3598,14 @@ function getTotalArticledetails(articleId){
 				 $(".impactLevelCls").attr("attr_level","Status");
 				 getStateImpactLevelAlertStatusWise();
 				 getTotalAlertGroupByLocationThenStatus("Decending","0");
+				 getTotalAlertGroupByLocationThenStatusForParliament("Decending","0","0");
 				 getGhmcImpactLevelAlertStatusWise("0");
 				 getConstituencyAlertStatusWise("Decending","0","0");
 				 getAssignGroupTypeAlertDtlsByImpactLevelWise(districtId);
 			}else if(locVal == "3"){
 				$(".impactLevelCls").attr("attr_level","Publication");
 				getStateImpcatLevelAlertCntPublicationWise();
+				getParliamentWisePublicationAlert("Decending",0,0);
 				getCorpGHMCImpcatLevelAlertCntPublicationWise("0");
 				getDistrictWisePublicationAlert("Decending","0");
 				getConstituencyWisePublicationAlert("Decending","0","0");
