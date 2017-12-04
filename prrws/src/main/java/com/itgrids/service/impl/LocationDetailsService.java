@@ -19,9 +19,13 @@ import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.ILocalElectionBodyDAO;
 import com.itgrids.dao.IPanchayatDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
+import com.itgrids.dao.IPetitionBriefLeadDAO;
 import com.itgrids.dao.IPetitionDepartmentDAO;
 import com.itgrids.dao.IPetitionDesignationDAO;
+import com.itgrids.dao.IPetitionGrantDAO;
+import com.itgrids.dao.IPetitionLeadDAO;
 import com.itgrids.dao.IPetitionMemberDAO;
+import com.itgrids.dao.IPetitionStatusDAO;
 import com.itgrids.dao.IPetitionSubjectDAO;
 import com.itgrids.dao.IPetitionWorkDetailsDAO;
 import com.itgrids.dao.ITehsilDAO;
@@ -63,6 +67,14 @@ public class LocationDetailsService implements ILocationDetailsService {
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	@Autowired
 	private IPetitionSubjectDAO petitionSubjectDAO;
+	@Autowired
+	private IPetitionLeadDAO petitionLeadDAO;
+	@Autowired
+	private IPetitionBriefLeadDAO petitionBriefLeadDAO;
+	@Autowired 
+	private IPetitionGrantDAO petitionGrantDAO;
+	@Autowired 
+	private IPetitionStatusDAO petitionStatusDAO;
 	 /**
 		 * Date : 30/11/2017
 		 * Author :babu kurakula <href:kondababu.kurakula@itgrids.com>
@@ -330,6 +342,100 @@ public List<KeyValueVO>  getPetitionSubSubjectList(Long subjectId){
 		}
 	}catch(Exception e){
 		LOG.error("Exception occured at getPetitionSubSubjectList() in LocationDetailsService class ", e);
+	}
+	return resultList;
+}
+
+/*
+ * Author : krishna
+  * Date : 04/12/2017
+  * Description : { Getting Petition Lead Details List }
+  */
+public List<KeyValueVO>  getPetitionLeadDetailsList(){
+	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+	    try{
+		LOG.info("Entered into LocationDetailsService of getPetitionLeadDetailsList ");
+		List<Object[]> petitionDetailsObjsList = petitionLeadDAO.getPetitionLeadDetailsList();
+		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
+			for(Object[] param: petitionDetailsObjsList){
+				KeyValueVO vo = new KeyValueVO();
+				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+				resultList.add(vo);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception occured at getPetitionLeadDetailsList() in LocationDetailsService class ", e);
+	}
+	return resultList;
+}
+/*
+ * Author : krishna
+  * Date : 04/12/2017
+  * Description : { Getting Petition Brief Lead Details List }
+  */
+public List<KeyValueVO>  getPetitionBriefLeadList(){
+	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+	    try{
+		LOG.info("Entered into LocationDetailsService of getPetitionBriefLeadList ");
+		List<Object[]> petitionDetailsObjsList = petitionBriefLeadDAO.gePetitionBriefLeadDetailsList();
+		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
+			for(Object[] param: petitionDetailsObjsList){
+				KeyValueVO vo = new KeyValueVO();
+				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+				resultList.add(vo);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception occured at getPetitionBriefLeadList() in LocationDetailsService class ", e);
+	}
+	return resultList;
+}
+
+/*
+ * Author : krishna
+  * Date : 04/12/2017
+  * Description : { Getting Petition Grant List Details }
+  */
+public List<KeyValueVO>  getPetitionGrantList(){
+	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+	    try{
+		LOG.info("Entered into LocationDetailsService of getPetitionGrantList ");
+		List<Object[]> petitionDetailsObjsList = petitionGrantDAO.getPetitionGrantList();
+		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
+			for(Object[] param: petitionDetailsObjsList){
+				KeyValueVO vo = new KeyValueVO();
+				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+				resultList.add(vo);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception occured at getPetitionGrantList() in LocationDetailsService class ", e);
+	}
+	return resultList;
+}
+/*
+ * Author : krishna
+  * Date : 04/12/2017
+  * Description : { Getting Petition Status List Details }
+  */
+public List<KeyValueVO>  getPetitionStatusList(){
+	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+	    try{
+		LOG.info("Entered into LocationDetailsService of getPetitionStatusList ");
+		List<Object[]> petitionDetailsObjsList = petitionStatusDAO.getPetitionStatusList();
+		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
+			for(Object[] param: petitionDetailsObjsList){
+				KeyValueVO vo = new KeyValueVO();
+				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+				resultList.add(vo);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception occured at getPetitionStatusList() in LocationDetailsService class ", e);
 	}
 	return resultList;
 }

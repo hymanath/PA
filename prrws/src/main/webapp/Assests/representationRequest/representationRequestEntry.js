@@ -1481,3 +1481,100 @@ function getPetitionSubSubjectList(){
 		$("#constituencyCanId").trigger('chosen:updated');
 	});	
 }
+getPetitionLeadDetailsList();
+function getPetitionLeadDetailsList(){
+	var json = {
+		
+	};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionLeadDetailsList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#constituencyCanId").append('<option value="0">All</option>');
+			for(var i in result){
+				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#constituencyCanId").trigger('chosen:updated');
+	});	
+}
+getPetitionBriefLeadList();
+function getPetitionBriefLeadList(){
+			var json = {
+				
+			};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionBriefLeadList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :  function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#constituencyCanId").append('<option value="0">All</option>');
+			for(var i in result){
+				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#constituencyCanId").trigger('chosen:updated');
+	});	
+}
+
+getPetitionGrantList();
+function getPetitionGrantList(){
+	var json = {
+		
+	};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionGrantList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#constituencyCanId").append('<option value="0">All</option>');
+			for(var i in result){
+				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#constituencyCanId").trigger('chosen:updated');
+	});	
+}
+getPetitionStatusList();
+function getPetitionStatusList(){
+	var json = {
+		
+	};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionStatusList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#constituencyCanId").append('<option value="0">All</option>');
+			for(var i in result){
+				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#constituencyCanId").trigger('chosen:updated');
+	});	
+}
