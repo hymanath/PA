@@ -81,11 +81,12 @@ public class RepresentationRequestController {
     public String representationRequestEntryMembers(ModelMap model) {
 		return "representationRequestEntryViewMembers";
     }
-	
-	
 	@RequestMapping(value ="/getRepresentationRequestDetailsByRepresentationRequestId",method = RequestMethod.POST)
     public @ResponseBody RepresentationRequestVO getRepresentationRequestDetailsByRepresentationRequestId(@RequestBody Map<String,String> inputMap ) {
     	 return representationRequestService.getRepresentationRequestDetailsByRepresentationRequestId(Long.valueOf(inputMap.get("representationMemberId")));
     }
-	
+	@RequestMapping(value ="/getParliamentIdsByConstituencyList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getParliamentByDistricList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getParliamentIdsByConstituencyList();
+    }
 }

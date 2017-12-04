@@ -1,6 +1,7 @@
 package com.itgrids.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -17,18 +18,18 @@ import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.ILocalElectionBodyDAO;
 import com.itgrids.dao.IPanchayatDAO;
+import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.IPetitionDepartmentDAO;
 import com.itgrids.dao.IPetitionDesignationDAO;
 import com.itgrids.dao.IPetitionMemberDAO;
 import com.itgrids.dao.IPetitionWorkDetailsDAO;
 import com.itgrids.dao.ITehsilDAO;
-import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
-import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.service.ILocationDetailsService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.IConstants;
 
 @Service
 @Transactional
@@ -56,6 +57,8 @@ public class LocationDetailsService implements ILocationDetailsService {
 	private IPetitionMemberDAO petitionMemberDAO;
 	@Autowired
 	private IPetitionWorkDetailsDAO petitionWorkDetailsDAO;
+	@Autowired
+	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	 /**
 		 * Date : 30/11/2017
 		 * Author :babu kurakula <href:kondababu.kurakula@itgrids.com>
@@ -238,7 +241,7 @@ public class LocationDetailsService implements ILocationDetailsService {
     			}
     		}
     	}catch(Exception e){
-    		LOG.error("Exception occured at getMgnregsFMSWorksDetailsByCategory() in LocationDetailsService class ", e);
+    		LOG.error("Exception occured at getPetitionDepartmentList() in LocationDetailsService class ", e);
     	}
     	return resultList;
     	
@@ -262,11 +265,30 @@ public class LocationDetailsService implements ILocationDetailsService {
     			}
     		}
     	}catch(Exception e){
-    		LOG.error("Exception occured at getMgnregsFMSWorksDetailsByCategory() in LocationDetailsService class ", e);
+    		LOG.error("Exception occured at getPetitionDepartmentDetailsList() in LocationDetailsService class ", e);
     	}
     	return resultList;
     	
     }
     
-   
+    public List<KeyValueVO>  getParliamentIdsByConstituencyList(){
+    	
+    	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+    	List<Long> parliamentIdsLst = Arrays.asList(IConstants.AP_PARLIAMENT_IDS_LIST);
+    	try{
+    		LOG.info("Entered into LocationDetailsService of getParliamentByDistricList ");
+    		List<Object[]> petitionDetailsObjsList = parliamentAssemblyDAO.getParliamentIdsByConstituencyList(parliamentIdsLst);
+    		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
+    			for(Object[] param: petitionDetailsObjsList){
+    				KeyValueVO vo = new KeyValueVO();
+    				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+    				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+    				resultList.add(vo);
+    			}
+    		}
+    	}catch(Exception e){
+    		LOG.error("Exception occured at getParliamentByDistricList() in LocationDetailsService class ", e);
+    	}
+    	return resultList;
+    }
 }
