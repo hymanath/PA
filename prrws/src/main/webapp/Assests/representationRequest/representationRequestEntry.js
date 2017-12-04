@@ -180,7 +180,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<label>No of Works</label>';
-					str+='<input   name="noOfWorks"   type="text" class="form-control m_top10 height45" id="noofWork'+typeVal+'" placeholder="Enter No Of Work" onkeyUp="enableWorks(this.value,\'workDetailsDivId'+typeVal+'\');">';
+					str+='<input   name="noOfWorks"   type="text" class="form-control m_top10 height45" id="noofWork'+typeVal+'" placeholder="Enter No Of Work" onkeyUp="enableWorks(this.value,\'workDetailsDivId'+typeVal+'\',\''+typeVal+'\');">';
 					str+='<div id="noofWork'+typeVal+'Err"></div>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
@@ -191,7 +191,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 			str+='</div>';
 			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-6">';
-					str+='<h3 class="panel-title f_18 text-capital">grievance DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
+					str+='<h3 class="panel-title f_18 text-capital">grievance DISCRIPTION</h3>';
 					str+='<textarea name="projectDescription"  class="form-control m_top20" rows="7" id="textArea'+typeVal+'"></textarea>';
 					str+='<div id="textArea'+typeVal+'Err"></div>';
 				str+='</div>';
@@ -206,9 +206,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 		str+='<div class="col-sm-12"><hr class="m_0" style="border: 3px solid rgb(221, 221, 221);"/></div>';
 	str+='</div>';
 	str+='<div class="row">';
-		str+='<div class="col-sm-12">';
-				str+='<div id="workDetailsDivId'+typeVal+'"  style="display:none;"></div>';
-		str+='</div>';
+		str+='<div id="workDetailsDivId'+typeVal+'"  style="display:none;"></div>';
 	str+='</div>';
 	
 	$("#"+typeVal+"DetailsDivId").html(str);
@@ -220,87 +218,86 @@ function buildSelfAndRepresenteeDetails(typeVal){
 
 function buildTemplateWorkDetails(typeVal){
 	var str='';
-	str+='<div  cloned_block_'+typeVal+'='+globalWorkTypeCount+'>';
-	
-		str+='<div class="m_top10">';
-			str+='<h3 class="panel-title f_22">WORK No 1</h3>';
-			str+='<div class="row m_top10">';
-					str+='<div class="col-sm-3">';
-						str+='<label>Select Type</label>';
-						str+='<select  name="worksList[0].deptId"  class="form-control chosen-select m_top10 workTypeCls'+typeVal+'" id="workTypeId'+typeVal+''+globalWorkTypeCount+'">';
-							str+='<option value="0">Select Work Type</option>';
-						str+='</select>';
-						str+='<div class="m_top10"  id="workTypeId'+typeVal+''+globalWorkTypeCount+'Err"></div>';
+	str+='<div class="col-sm-12">';
+		str+='<div style="border:3px solid #dddddd;padding:10px;">';
+				str+='<div  cloned_block_'+typeVal+'='+globalWorkTypeCount+'>';
+					str+='<div class="m_top10">';
+						str+='<h3 class="panel-title f_22">WORK No 1</h3>';
+						str+='<div class="row m_top10">';
+								str+='<div class="col-sm-3">';
+									str+='<label>Select Subject</label>';
+									str+='<select  name="worksList[0].deptId"  class="form-control chosen-select m_top10 workTypeCls'+typeVal+'" id="workTypeId'+typeVal+''+globalWorkTypeCount+'">';
+										str+='<option value="0">Select Subject</option>';
+									str+='</select>';
+									str+='<div class="m_top10"  id="workTypeId'+typeVal+''+globalWorkTypeCount+'Err"></div>';
+								str+='</div>';
+							str+='</div>';
+					str+='</div>';
+				
+				
+					str+='<div class="m_top10">';
+							str+='<div class="row m_top10">';
+								str+='<div class="col-sm-3">';
+									str+='<label>Location Level</label>';
+									str+='<select  name="worksList[0].locationLevelId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+'" id="locationLevelId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+										str+='<option value="0">Select Level</option>';
+										str+='<option value="3">District</option>';
+										str+='<option value="4">Constituency</option>';
+										str+='<option value="5">Mandal</option>';
+										//str+='<option value="6">Panchayat</option>';
+									str+='</select>';
+									str+='<div class="m_top10"  id="locationLevelId'+typeVal+''+globalWorkTypeCount+'Err"></div>';
+								str+='</div>';
+								str+='<div class="col-sm-2 districtCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
+									str+='<label>District</label>';
+									str+='<select  name="worksList[0].candidateAddressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+										str+='<option value="0">Select District</option>';
+									str+='</select>';
+								str+='</div>';
+								str+='<div class="col-sm-2 constituencyCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
+									str+='<label>Constituency</label>';
+									str+='<select   name="worksList[0].candidateAddressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+										str+='<option value="0">Select Constituency</option>';
+									str+='</select>';
+								str+='</div>';
+								str+='<div class="col-sm-2 mandalCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
+									str+='<label>Mandal</label>';
+									str+='<select  name="worksList[0].candidateAddressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+										str+='<option value="0">Select Mandal</option>';
+									str+='</select>';
+								str+='</div>';
+								/*str+='<div class="col-sm-2 panchayatCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
+									str+='<label>Panchayat</label>';
+									str+='<select  name="worksList[0].candidateAddressVO.panchayatId"  class="form-control chosen-select m_top10 panchayatLevelChange" id="panchayatId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
+										str+='<option value="0">Select Panchayat</option>';
+									str+='</select>';
+								str+='</div>';*/
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					
+					
+					str+='<div class="row m_top20">';
+						str+='<div class="col-sm-12">';
+							str+='<h3 class="panel-title f_18">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
+							str+='<textarea  name="worksList[0].projectDescription"  class="form-control m_top20 workNoTextAreaValidCls'+typeVal+'" rows="4" id="textArea'+typeVal+'1"></textarea>';
+							str+='<div class="m_top10"  id="textArea'+typeVal+'1Err"></div>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-		str+='</div>';
-	
-	
-		str+='<div class="m_top10">';
-				str+='<div class="row m_top10">';
-					str+='<div class="col-sm-3">';
-						str+='<label>Location Level</label>';
-						str+='<select  name="worksList[0].locationLevelId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+'" id="locationLevelId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
-							str+='<option value="0">Select Level</option>';
-							str+='<option value="3">District</option>';
-							str+='<option value="4">Constituency</option>';
-							str+='<option value="5">Mandal</option>';
-							//str+='<option value="6">Panchayat</option>';
-						str+='</select>';
-						str+='<div class="m_top10"  id="locationLevelId'+typeVal+''+globalWorkTypeCount+'Err"></div>';
-					str+='</div>';
-					str+='<div class="col-sm-2 districtCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
-						str+='<label>District</label>';
-						str+='<select  name="worksList[0].candidateAddressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
-							str+='<option value="0">Select District</option>';
-						str+='</select>';
-					str+='</div>';
-					str+='<div class="col-sm-2 constituencyCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
-						str+='<label>Constituency</label>';
-						str+='<select   name="worksList[0].candidateAddressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
-							str+='<option value="0">Select Constituency</option>';
-						str+='</select>';
-					str+='</div>';
-					str+='<div class="col-sm-2 mandalCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
-						str+='<label>Mandal</label>';
-						str+='<select  name="worksList[0].candidateAddressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
-							str+='<option value="0">Select Mandal</option>';
-						str+='</select>';
-					str+='</div>';
-					/*str+='<div class="col-sm-2 panchayatCls'+typeVal+''+globalWorkTypeCount+'" style="display:none">';
-						str+='<label>Panchayat</label>';
-						str+='<select  name="worksList[0].candidateAddressVO.panchayatId"  class="form-control chosen-select m_top10 panchayatLevelChange" id="panchayatId'+typeVal+''+globalWorkTypeCount+'" attr_counterval="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">';
-							str+='<option value="0">Select Panchayat</option>';
-						str+='</select>';
-					str+='</div>';*/
+				
+				str+='<div class="row m_top20">';
+					str+='<div class="appendDiv'+typeVal+'"></div>';
 				str+='</div>';
-			str+='</div>';
+				str+='<div class="row">';
+					str+='<div class="col-sm-12"><span class="addLocationCss m_top10 pull-right cloned_Element" right-block-clone-counter-'+typeVal+'="'+globalWorkTypeCount+'" style="cursor:pointer;" right-block-clone-'+typeVal+'="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">ADD WORK LOCATION</span></div>';
+				str+='</div>';	
 		str+='</div>';
-		
-		
-		str+='<div class="row m_top20">';
-			str+='<div class="col-sm-12">';
-				str+='<h3 class="panel-title f_18">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
-				str+='<textarea  name="worksList[0].projectDescription"  class="form-control m_top20 workNoTextAreaValidCls'+typeVal+'" rows="4" id="textArea'+typeVal+'1"></textarea>';
-				str+='<div class="m_top10"  id="textArea'+typeVal+'1Err"></div>';
-			str+='</div>';
-		str+='</div>';
-			
-		str+='<div class="row">';
-			str+='<div class="col-sm-12"><hr class="m_0" style="border: 3px solid rgb(221, 221, 221);"/></div>';
-		str+='</div>';
-		
 	str+='</div>';
 	
-	str+='<div class="appendDiv'+typeVal+'"></div>';
+	str+='<div class="col-sm-12"><span class="addLocationCss m_top10 cloned_Element" style="cursor:pointer;background-color:green;" onclick="saveRepresentRequestDetails()"> SAVE DETAILS</span></div>';
 	
-	str+='<div class="row">';
-		str+='<div class="col-sm-12"><span class="addLocationCss m_top10 pull-right cloned_Element" right-block-clone-counter-'+typeVal+'="'+globalWorkTypeCount+'" style="cursor:pointer;" right-block-clone-'+typeVal+'="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">ADD WORK LOCATION</span></div>';
-	str+='</div>';
 	
-	str+='<div class="row">';
-		str+='<div class="col-sm-12"><span class="addLocationCss m_top10 cloned_Element" style="cursor:pointer;background-color:green;" onclick="saveRepresentRequestDetails()"> SAVE DETAILS</span></div>';
-	str+='</div>';
 /*	str+='<div class="row">';//cloned_Element
 		str+='<div class="col-sm-12"><span id="referelSubmitBtnId" class="btn btn-success btn-md m_top10 " style="cursor:pointer;" > Submit</span></div>';
 	str+='</div>';  */
@@ -317,90 +314,97 @@ $(document).on("click",".cloned_Element",function(){
 		
 	var blockId = $(this).attr("right-block-clone-"+typeVal+"");
 	//if(counterId <= parseInt(workCount)){
-		$("[cloned_block_"+typeVal+"="+blockId+"]").parent().find(".appendDiv"+typeVal+"").append(clonedTemplate(blockId,'clone',counterId,typeVal));
+		$("[cloned_block_"+typeVal+"="+blockId+"]").parent().parent().find(".appendDiv"+typeVal+"").append(clonedTemplate(blockId,'clone',counterId,typeVal));
 		$(".chosen-select").chosen({width:'100%'});
 		$("[right-block-clone-"+typeVal+"="+blockId+"]").attr("right-block-clone-counter-"+typeVal+"",counterId);
 		getAllDistrictsInState(typeVal,counterId);
 	//}
 });
-
+$(document).on("click","[remove-clone]",function(){
+	var id = $(this).attr("remove-clone");
+	var typeVal = $(this).attr("attr_type");
+	$("[cloned_block_"+typeVal+"="+id+"]").remove();
+});
 function clonedTemplate(blockId,type,counterId,typeVal){
 	
 	var clonedTemplate='';
-	clonedTemplate+='<div cloned_block_'+typeVal+'='+counterId+'>';
-	
-	clonedTemplate+='<div class="m_top10">';
-	clonedTemplate+='<h3 class="panel-title f_22">WORK No '+counterId+'</h3>';
-		clonedTemplate+='<div class="row m_top10">';
-			clonedTemplate+='<div class="col-sm-4">';
-				clonedTemplate+='<label>Select Type</label>';
-				clonedTemplate+='<select name="worksList['+counterId+'].deptId"  class="form-control chosen-select m_top10 workTypeCls'+typeVal+'" id="workTypeId'+typeVal+''+counterId+'">';
-				//clonedTemplate+='<select   class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+counterId+'">';
-					clonedTemplate+='<option value="0">Select Work Type</option>';
-				clonedTemplate+='</select>';
-				clonedTemplate+='<div class="m_top10"  id="workTypeId'+typeVal+''+counterId+'Err"></div>';
-			clonedTemplate+='</div>';
-		clonedTemplate+='</div>';
-	clonedTemplate+='</div>';
-	
-	
-		clonedTemplate+='<div class="m_top10">';
-		
-			clonedTemplate+='<div class="row m_top10">';
-				clonedTemplate+='<div class="col-sm-3">';
-					clonedTemplate+='<label>Location Level</label>';
-					clonedTemplate+='<select name="worksList['+counterId+'].locationLevelId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+'" id="locationLevelId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'">';
-//					clonedTemplate+='<select  name="worksList['+counterId+'].locationLevelId" class="form-control chosen-select m_top10 locationLevelChange" id="locationLevelId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'">';
-							clonedTemplate+='<option value="0">Select Level</option>';
-							clonedTemplate+='<option value="3">District</option>';
-							clonedTemplate+='<option value="4">Constituency</option>';
-							clonedTemplate+='<option value="5">Mandal</option>';
-							//clonedTemplate+='<option value="6">Panchayat</option>';
-					clonedTemplate+='</select>';
-					clonedTemplate+='<div class="m_top10"  id="locationLevelId'+typeVal+''+counterId+'Err"></div>';
-				clonedTemplate+='</div>';
-				clonedTemplate+='<div class="col-sm-2 districtCls'+typeVal+''+counterId+'" style="display:none">';
-					clonedTemplate+='<label>District</label>';
-					clonedTemplate+='<select  name="worksList['+counterId+'].candidateAddressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
-						clonedTemplate+='<option value="0">Select District</option>';
-					clonedTemplate+='</select>';
-					clonedTemplate+='<div class="m_top10"  id="districtId'+typeVal+''+counterId+'Err"></div>';
-				clonedTemplate+='</div>';
-				clonedTemplate+='<div class="col-sm-2 constituencyCls'+typeVal+''+counterId+'" style="display:none">';
-					clonedTemplate+='<label>Constituency</label>';
-					clonedTemplate+='<select  name="worksList['+counterId+'].candidateAddressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
-						clonedTemplate+='<option value="0">Select Constituency</option>';
-					clonedTemplate+='</select>';
-				clonedTemplate+='</div>';
-				clonedTemplate+='<div class="col-sm-2 mandalCls'+typeVal+''+counterId+'" style="display:none">';
-					clonedTemplate+='<label>Mandal</label>';
-					clonedTemplate+='<select   name="worksList['+counterId+'].candidateAddressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
-						clonedTemplate+='<option value="0">Select Mandal</option>';
-					clonedTemplate+='</select>';
-				clonedTemplate+='</div>';
-					/*clonedTemplate+='<div class="col-sm-2 panchayatCls'+typeVal+''+counterId+'" style="display:none">';
-						clonedTemplate+='<label>Panchayat</label>';
-						clonedTemplate+='<select  name="worksList['+counterId+'].candidateAddressVO.panchayatId"   class="form-control chosen-select m_top10 panchayatLevelChange" id="panchayatId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
-							clonedTemplate+='<option value="0">Select Panchayat</option>';
-						clonedTemplate+='</select>';
+	clonedTemplate+='<div class="col-sm-12" cloned_block_'+typeVal+'='+counterId+'>';
+		clonedTemplate+='<div style="border:3px solid #dddddd;padding:10px;">';
+				clonedTemplate+='<div class="m_top10">';
+				if(type == 'clone'){
+					clonedTemplate+='<h3 class="panel-title f_22">WORK No '+counterId+' <i title="close" class="glyphicon glyphicon-remove remove-icon pull-right" remove-clone="'+counterId+'" attr_type="'+typeVal+'"></i></h3>';
+				}else{
+					clonedTemplate+='<h3 class="panel-title f_22">WORK No '+counterId+'</h3>';
+				}
+				
+					clonedTemplate+='<div class="row m_top10">';
+						clonedTemplate+='<div class="col-sm-3">';
+							clonedTemplate+='<label>Select Subject</label>';
+							clonedTemplate+='<select name="worksList['+counterId+'].deptId"  class="form-control chosen-select m_top10 workTypeCls'+typeVal+'" id="workTypeId'+typeVal+''+counterId+'">';
+							//clonedTemplate+='<select   class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+counterId+'">';
+								clonedTemplate+='<option value="0">Select Subject</option>';
+							clonedTemplate+='</select>';
+							clonedTemplate+='<div class="m_top10"  id="workTypeId'+typeVal+''+counterId+'Err"></div>';
+						clonedTemplate+='</div>';
 					clonedTemplate+='</div>';
-					*/
-			clonedTemplate+='</div>';
-		clonedTemplate+='</div>';
-		
-			clonedTemplate+='<div class="row m_top20">';
-				clonedTemplate+='<div class="col-sm-12">';
-					clonedTemplate+='<h3 class="panel-title f_18">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
-					clonedTemplate+='<textarea   name="worksList[0].projectDescription" class="form-control m_top20 workNoTextAreaValidCls'+typeVal+'" rows="4" id="textArea'+typeVal+''+counterId+'"></textarea>';
-					clonedTemplate+='<div class="m_top10"  id="textArea'+typeVal+''+counterId+'Err"></div>';
-					//clonedTemplate+='<textarea   name="worksList[0].projectDescription" class="form-control m_top20" rows="4" id="textArea'+typeVal+''+counterId+'"></textarea>';
 				clonedTemplate+='</div>';
-			clonedTemplate+='</div>';
-			
-		clonedTemplate+='<div class="row">';
-			clonedTemplate+='<div class="col-sm-12"><hr class="m_0" style="border: 3px solid rgb(221, 221, 221);"/></div>';
+				
+				
+					clonedTemplate+='<div class="m_top10">';
+					
+						clonedTemplate+='<div class="row m_top10">';
+							clonedTemplate+='<div class="col-sm-3">';
+								clonedTemplate+='<label>Location Level</label>';
+								clonedTemplate+='<select name="worksList['+counterId+'].locationLevelId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+'" id="locationLevelId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'">';
+			//					clonedTemplate+='<select  name="worksList['+counterId+'].locationLevelId" class="form-control chosen-select m_top10 locationLevelChange" id="locationLevelId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'">';
+										clonedTemplate+='<option value="0">Select Level</option>';
+										clonedTemplate+='<option value="3">District</option>';
+										clonedTemplate+='<option value="4">Constituency</option>';
+										clonedTemplate+='<option value="5">Mandal</option>';
+										//clonedTemplate+='<option value="6">Panchayat</option>';
+								clonedTemplate+='</select>';
+								clonedTemplate+='<div class="m_top10"  id="locationLevelId'+typeVal+''+counterId+'Err"></div>';
+							clonedTemplate+='</div>';
+							clonedTemplate+='<div class="col-sm-2 districtCls'+typeVal+''+counterId+'" style="display:none">';
+								clonedTemplate+='<label>District</label>';
+								clonedTemplate+='<select  name="worksList['+counterId+'].candidateAddressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
+									clonedTemplate+='<option value="0">Select District</option>';
+								clonedTemplate+='</select>';
+								clonedTemplate+='<div class="m_top10"  id="districtId'+typeVal+''+counterId+'Err"></div>';
+							clonedTemplate+='</div>';
+							clonedTemplate+='<div class="col-sm-2 constituencyCls'+typeVal+''+counterId+'" style="display:none">';
+								clonedTemplate+='<label>Constituency</label>';
+								clonedTemplate+='<select  name="worksList['+counterId+'].candidateAddressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
+									clonedTemplate+='<option value="0">Select Constituency</option>';
+								clonedTemplate+='</select>';
+							clonedTemplate+='</div>';
+							clonedTemplate+='<div class="col-sm-2 mandalCls'+typeVal+''+counterId+'" style="display:none">';
+								clonedTemplate+='<label>Mandal</label>';
+								clonedTemplate+='<select   name="worksList['+counterId+'].candidateAddressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
+									clonedTemplate+='<option value="0">Select Mandal</option>';
+								clonedTemplate+='</select>';
+							clonedTemplate+='</div>';
+								/*clonedTemplate+='<div class="col-sm-2 panchayatCls'+typeVal+''+counterId+'" style="display:none">';
+									clonedTemplate+='<label>Panchayat</label>';
+									clonedTemplate+='<select  name="worksList['+counterId+'].candidateAddressVO.panchayatId"   class="form-control chosen-select m_top10 panchayatLevelChange" id="panchayatId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" style="display:none;">';
+										clonedTemplate+='<option value="0">Select Panchayat</option>';
+									clonedTemplate+='</select>';
+								clonedTemplate+='</div>';
+								*/
+						clonedTemplate+='</div>';
+					clonedTemplate+='</div>';
+					
+						clonedTemplate+='<div class="row m_top20">';
+							clonedTemplate+='<div class="col-sm-12">';
+								clonedTemplate+='<h3 class="panel-title f_18 text-capital">grievance DISCRIPTION</h3>';
+								clonedTemplate+='<textarea   name="worksList[0].projectDescription" class="form-control m_top20 workNoTextAreaValidCls'+typeVal+'" rows="4" id="textArea'+typeVal+''+counterId+'"></textarea>';
+								clonedTemplate+='<div class="m_top10"  id="textArea'+typeVal+''+counterId+'Err"></div>';
+								//clonedTemplate+='<textarea   name="worksList[0].projectDescription" class="form-control m_top20" rows="4" id="textArea'+typeVal+''+counterId+'"></textarea>';
+							clonedTemplate+='</div>';
+						clonedTemplate+='</div>';
 		clonedTemplate+='</div>';
 	clonedTemplate+='</div>';
+	
 	getSubjectPetitionsDepartmentList(typeVal,counterId);
 	return clonedTemplate;
 	
@@ -544,7 +548,7 @@ function getAllDistrictsListInState(typeVal,counterId){
 
 function getAllDistrictsInState(typeVal,counterId){
 	
-	if((counterId =="" || counterId.trim().length==0) && (counterId=="" || counterId.trim().length==0)){
+	if(typeVal=="popup"){
 		$("#districtCandId").html('');
 	}else if(counterId == null || counterId ==""){
 		$("#district"+typeVal+counterId).html('');
@@ -566,7 +570,7 @@ function getAllDistrictsInState(typeVal,counterId){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){	
-			if((counterId =="" || counterId.trim().length==0) && (counterId=="" || counterId.trim().length==0)){
+			if(typeVal=="popup"){
 				$("#districtCandId").append('<option value="0">All</option>');
 			}else if(counterId == null || counterId ==""){		
 				$("#district"+typeVal+counterId).append('<option value="0">Select District</option>');
@@ -575,7 +579,7 @@ function getAllDistrictsInState(typeVal,counterId){
 			}
 		 
 			for(var i in result){				
-				if((counterId =="" || counterId.trim().length==0) && (counterId=="" || counterId.trim().length==0)){
+				if(typeVal=="popup"){
 					$("#districtCandId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}else if(counterId == null || counterId ==""){		
 					$("#district"+typeVal+counterId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
@@ -584,7 +588,7 @@ function getAllDistrictsInState(typeVal,counterId){
 				}
 			}
 		}
-		if((counterId =="" || counterId.trim().length==0) && (counterId=="" || counterId.trim().length==0)){
+		if(typeVal=="popup"){
 			$("#districtCandId").trigger('chosen:updated');
 		}
 		else if(counterId == null || counterId =="")		
@@ -938,7 +942,7 @@ $(document).on("change","#designationsId",function(){
 	if(parseInt(value)>0){
 		var typeVal = $(this).attr("attr_type");
 		$(".selectionSearchDetailsCls").attr("attr_type",typeVal);
-		getAllDistrictsInState("","");
+		getAllDistrictsInState("popup","");
 		if(typeVal == "self"){
 			$("#candidateDetailsDivId").html('');
 			//$("#candidateSearchModelDivId").modal("show");
@@ -1210,8 +1214,9 @@ function getRepresentativeSearchWiseDetails(){
   
   }); 
 }  
-function  enableWorks(value,divId){	
-	$('#'+divId+'').hide();
+function  enableWorks(value,divId,typeVal){
+	$(".appendDiv"+typeVal).html('');	
+	$('#'+divId+'').hide()
 	if(parseInt(value)>0){
 		$('#'+divId+'').show();
 	}
