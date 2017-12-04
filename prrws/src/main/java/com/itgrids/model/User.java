@@ -1,10 +1,14 @@
 package com.itgrids.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +25,10 @@ public class User{
 	private String hashKey;
 	private String isEnabled;
 	private String isDeleted;
+	
+	private String password;
+	private Long redirectUrlId;
+	private RedirectUrl redirectUrl;
 
 	@Id
 	@Column(name="user_id")
@@ -79,7 +87,6 @@ public class User{
 	public void setIsEnabled(String isEnabled) {
 		this.isEnabled = isEnabled;
 	}
-
 	@Column(name="is_deleted")
 	public String getIsDeleted() {
 		return isDeleted;
@@ -87,7 +94,27 @@ public class User{
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-
-	
+	@Column(name="redirect_url_id")
+	public Long getRedirectUrlId() {
+		return redirectUrlId;
+	}
+	public void setRedirectUrlId(Long redirectUrlId) {
+		this.redirectUrlId = redirectUrlId;
+	}
+	@Column(name="password")
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "redirect_url_id", insertable = false, updatable = false)
+	public RedirectUrl getRedirectUrl() {
+		return redirectUrl;
+	}
+	public void setRedirectUrl(RedirectUrl redirectUrl) {
+		this.redirectUrl = redirectUrl;
+	}
 	
 }
