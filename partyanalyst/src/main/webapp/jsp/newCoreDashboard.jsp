@@ -690,9 +690,9 @@
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									 <div id="programsDtlsCntTableId"></div>
 								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+								<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									 <div id="specialProgramLeaderId"></div>
-								</div>
+								</div>-->
 								<div id="stateLevelCampId" class="m_top10"></div>
 								<!--<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
 									 <div id="districtTblId"></div>
@@ -2348,295 +2348,7 @@
 			<!--Meetings End-->
 		</div>	
 		<div class="row">
-		<!-- Booth Committees Start-->
-		<div class="col-md-6 col-xs-12 col-sm-12 boothCommitteesBlock" expand-block="boothCommittees">
-        	<div class="panel panel-default panelNewCustom panel1">
-            	<div class="panel-heading">
-                	<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-12">  
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
-								Booth committees - <small class="text-muted boothCommitteesDate">OVERALL (TILL NOW)</small>
-							</h4>
-						</div>
-						<div class="col-md-4 col-sm-4 col-xs-12">
-							<!--<span class="basicBoothCommitteesBlockDiv pull-right">
-								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>
-							<span class="notesIcon pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
-							</span>-->
-							<span class="iconExpand pull-right" expand-icon="boothCommittees">
-								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span>
-							<span class="cadreSettings pull-right refreshCadreCls" onClick="getBoothCommitteesBasicCountReport();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span> 
-							<span style="display:none;" ><select id="tdpBoothCommitteeYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;"></select></span>
-							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" expand-block-date="boothCommittees" style="display: none;">
-								<input type="text" id="dateRangeBoothId"	class="form-control" style="width:180px;display: none;"/>
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</span>						
-						</div>
-					</div>
-					
-					<!-- committees tabs for tdpcommittee ids -->	
-					<div class="basicCommitteesBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;" >
-						<div class="row">
-							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
-							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
-								<li role="presentation" class="text-capital"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
-								<!--<li role="presentation"   class="text-capital"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
-								<li role="presentation"  class="active text-capital"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>-->
-							  </ul>
-							</div>
-							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
-							  <div class="tab-content navTabsSettingsContent">
-								<div role="tabpanel" class="tab-pane" id="home">
-									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
-									<hr style ="margin-bottom:0px;" />
-									<div class="basicBoothCommitteeDetailsDiv">
-									<ul class="settingsUl">
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-									   <c:if test="${basicCommittee.id == 1}">
-										<li>
-											<label class="checkbox-inline">
-												<input type="checkbox"  class="districtBoothCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
-												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-										   </label>
-										</li>	
-									 </c:if>										
-									</c:forEach>
-									   <li>
-											<label class="checkbox-inline">
-											  <input type="checkbox"  id="checkAllBoothAffliatedDistrictlevelId">
-											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
-										   </label><!--checked-->
-										</li> 
-										<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-											<c:if test="${basicCommittee.id != 1}">
-											<li>
-											  <label class="checkbox-inline">
-												 <input type="checkbox"  class="districtBoothCommitteecheckBoxClass districtBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}"><!--checked-->
-												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-											   </label>
-											</li>   
-											</c:if>
-									  </c:forEach>
-										
-									</ul>
-									</div>
-								</div>
-								<div role="tabpanel" class="tab-pane" id="profile">
-									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
-									<hr style ="margin-bottom:0px;" />
-									<div class="basicBoothCommitteeDetailsDiv">
-									<ul class="settingsUl">
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-									   <c:if test="${basicCommittee.id == 1}">
-										 <li>
-										   <label class="checkbox-inline">
-											 <input type="checkbox"  class="checkedBasicComm mandalBoothCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
-											 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-										   </label>
-										 </li>
-									   </c:if>
-									</c:forEach>
-										<li>
-											<label class="checkbox-inline">
-											  <input type="checkbox"  id="checkAllBoothAffliatedMandallevelId"  >
-											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
-										   </label>
-										</li>  
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-											<c:if test="${basicCommittee.id != 1}">
-											 <c:choose>
-											   <c:when test="${basicCommittee.id == 10 || basicCommittee.id == 16}">
-												 <li>
-												  <label class="checkbox-inline">
-													 <input type="checkbox"  class="mandalBoothCommitteecheckBoxClass mandalBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
-													 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-												  </label>
-												 </li> 
-											   </c:when>
-												<c:otherwise>
-													<li>
-													  <label class="checkbox-inline">
-														 <input type="checkbox"  class="mandalBoothCommitteecheckBoxClass mandalBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" ><!--checked-->
-														 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-													   </label>
-													 </li> 
-												</c:otherwise>
-										   </c:choose>
-										  </c:if>
-									</c:forEach>
-									
-									</ul>
-									</div>
-								</div>
-								<div role="tabpanel" class="tab-pane active" id="boothMessages">
-									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
-									<hr style ="margin-bottom:0px;" />
-									<div class="basicBoothCommitteeDetailsDiv">
-									<ul class="settingsUl">
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-										   <c:if test="${basicCommittee.id == 1}">
-											 <li>
-											   <label class="checkbox-inline">
-												 <input type="checkbox"  class="villageBoothCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
-												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-											   </label>
-											 </li>
-										   </c:if>
-									</c:forEach>
-										 <li>
-											<label class="checkbox-inline">
-											  <input type="checkbox"  id="checkAllBoothAffliatedVillagelevelId"  >
-											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
-										   </label>
-										</li>  
-									
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-											<c:if test="${basicCommittee.id != 1}">
-											<li>
-											  <label class="checkbox-inline">
-												 <input type="checkbox"  class="villageBoothCommitteecheckBoxClass villageBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
-												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-											   </label>
-											</li>   
-											</c:if>
-									</c:forEach>
-									</ul>
-									</div>
-								</div>
-							  </div>
-							  <button type="button" class="btn btn-success basicBoothCommittessDiv">Get Details</button>
-							</div>
-						
-						</div>
-						
-						
-					</div>
-					<div class="notesDropDown notesArrow documentCloseClass">
-                    	<h4 class="text-capital">notes
-                        	<span class="pull-right">
-                            	<i class="glyphicon glyphicon-list-alt"></i>
-                            </span>
-                        </h4>
-						<div id="boothNotesId"></div>
-                    	<!--<ul class="notesUl m_top20">
-                        	<li>
-                            	<!--<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
-                            	<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i>
-                                <i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>
-                            </li>
-                        </ul>-->
-                        <hr/>  
-                          <div id="id7" style="color:red;"></div>						
-                        <label>Create Notes</label>
-                        <textarea class="form-control notesArea"></textarea>
-                        <button class="btn btn-default btnCustomCreate btn-sm" onClick="savingDashboardComment(1);">create</button>
-                    </div>  
-                </div>
-                <div class="panel-body">  
-				
-              		<div class="row">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-						<h5 class="module_OwnerCss">Module Owner : K.Rajesh</h5>
-					</div>	
-					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker m_top20" style="display:none;">
-						
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock m_top20" expand-block-inner="boothCommittees">
-						<div id="boothBasicCommitteeCountsDiv"></div>
-						<div id="boothCommitteesAssdDiv"></div>
-					</div>
-                        <div class="col-md-6 col-xs-12 col-sm-6 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock" expand-block-right="boothCommittees">
-                        	<div class="row">
-                            	<div class="col-md-12 col-xs-12 col-sm-12">
-                                	<ul class="boothCommitteeTopPoorLiCls activeUlCls list-inline pull-right">
-                                    	<!--<li class="active topFiveStrongResults">Top 5 Strong</li>
-										<li class="topFivePoorResults">Top 5 Poor</li>-->
-										<li class="boothCommitteeTopPoorCls active addactive" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-										<li class="boothCommitteeTopPoorCls removeactive" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
-                                    </ul>
-                                </div>
-                                <div id="boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv"></div>
-                               <!-- <div id="userTypeWiseCommitteesForTopFivePoorDiv" style ="display:none"></div>-->
-						    </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12" expand-block-right="boothCommittees">
-                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcons" expand-block-right="boothCommittees" data-toggle="tooltip" data-placement="top" title="Click here for more" style="cursor:pointer;display:none"></i>
-                        </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBoothBlocksDetailAndComp" style="display:none;" expand-block-more="boothCommittees">
-                        	
-							<ul class="list-inline pull-right activeUlCls">
-                            	<li class="active detailedBlocks">Detailed</li>
-                                <li class="comparisionBlocks">Comparison</li>
-                            </ul>
-					    </div>
-                       <!-- <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreboothBlocks" expand-block-more="boothCommittees">
-                        	<div class="panel panel-default m_top10">
-                            	<div class="panel-body ">
-									<div id="boothLevelWiseBasicCommittees"></div>
-                                </div>
-                            </div>
-                        </div> -->
-                       
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20 moreBlocksDistrictlevels" style="display:none" expand-block-more="boothCommittees">
-                        	<div class="panel panel-default panelNew">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-md-8 col-xs-12 col-sm-12">
-                                            <span class="headingColor text-capitalize">all committees performance cohort</span>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                <div class="panel-body verticalScrollBar">
-									<div id="boothDistrictWiseCommitteesReport" ></div>
-								</div>
-                            </div>
-						</div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBoothBlocks1" style="display:none;"  expand-block-more="boothCommittees">
-                            <!--<p><i>Selected:</i> <b>Main Committee</b></p>-->
-                            <div class="panel panel-default panelNew">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-md-12">
-                                           <div id="boothChildUserTypeDetailsDiv"></div>
-                                        </div>
-                                       
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                           <div id="boothSelectedUserTypeDetailsDiv"></div>
-                                        </div>
-                                        <div class="col-md-12 col-xs-12 col-sm-12" style="diaplay:none;">
-                                            <div class="bg_ED pad_15 m_top20 showChildBlockAndTopPoorBlockForBoothC">
-                                                <div id="boothDirectChildActivityMemberDiv" class="table-responsive"></div><!--sruj-->
-                                                <div class="row m_top20">
-                                                    <div class="col-md-8 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
-														<div id="boothTopPoorPerformanceDiv" style="display:none;"></div>
-                                                    </div>
-                                                    <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">
-                                                        <div id="boothTopPoorLocationsDiv"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>                       	
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-		<!-- Booth Committees End-->
-			<!-- Committees Start-->
+		<!-- Committees Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock" expand-block="committees">
         	<div class="panel panel-default panelNewCustom panel1">
             	<div class="panel-heading">
@@ -2936,401 +2648,297 @@
             </div>
         </div>
 		<!-- Committees End-->
-	</div>	
-	<div class="row">
-		<!--Events Start -->
-			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock" expand-block="events">
-				<div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="events">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
-									events and activities <small class="text-muted"><span id="dateEventsHeadingId">  - OVERALL (TILL NOW) </span></small>
-								</h4>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="events">
-								<span class="notesIconEvents pull-right">
-									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
-								</span>
-								<span class="eventsIconExpand pull-right" expand-icon="events">
-									<i class="glyphicon glyphicon-fullscreen"></i>
-								</span>
-							<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshEventsActivities();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
-								<span class="input-group pull-right dateRangePickerClsForEvents hide" expand-block-date="events" style="width:200px;">
-									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-								</span>
-							</div>
-						</div>
-						<div class="notesDropDown notesArrow" >
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
-								</span>
-							</h4>
-							<div id="notesEventsId"></div>
-							<hr/>
-							<div id="eventsUpId" style="color:red;"></div>
-							<label>Create Notes</label>
-							<textarea class="form-control notesAreaEvents"></textarea>
-							<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
-						</div>
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							<!--<div class="col-md-12 col-xs-12 col-sm-12">
-								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-							</div>-->
-							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20" expand-block-inner="events">
-								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
-								<h4><span class="headingColor text-capital">events</span>
-								<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
-								<div id="mainEventsList" class="m_top20"></div>
-								<h4 style="margin-top:20px !important;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span>
-									<span class="pull-right activitiesCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
-								</h4>
-									<div id="activityEventsListNew" class="activitiesCollapseBody" style="display:none"></div>
-				
-								<!--<div style="border : 1px solid #333; padding : 5px">-->
-									<!--<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>-->
-									<!--<div id="activityEventsListNew" class="m_top20"></div>-->
-								<!--</div>-->
-							</div>
-							<!--Acivites Block
-							
-							
-							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20">
-							<div style="border : 1px solid #333; padding : 5px">
-								<h4><span class="headingColor text-capital">activities</span></h4>
-								<div id="activityEventsListNew" class="m_top20"></div>
-							<!--</div>
-							</div>-->
-							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock" expand-block-right="events">
-								<h4><span class="headingColor eventAndActivityCls text-capital">events</span></h4>
-								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
-										<ul class="activeUlCls list-inline hideCls">
-											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 </li>
-											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;poor 5</li>
-										</ul>
-								</div> 
-								<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" expand-block-right="events" style="display: none;">
-								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
-							</div>
-							<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId" expand-block-more="events">
-								
-								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
-									<li class="text-capital activeLICls" attr_typeId="1">Detailed </li>
-									<li class="text-capital activeLICls" attr_typeId="2">Comparison</li>
-								</ul>
-							</div>
-							<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks" expand-block-more="events">
-							
-								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
-									<li class="text-capital settingsIconAct">
-										<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-									</li>
-								</ul>
-								<div class="actBlockDropDown notesArrow documentCloseClass" style="z-index:999;top: 10px;width:450px;" >
-									<i class="glyphicon glyphicon-remove actSetClose pull-right"></i>
-									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
-										  <ul class="nav nav-tabs navTabsSettings" role="tablist">
-											<li role="presentation" class="active text-capital"><a href="#eventsSettings" aria-controls="eventsSettings" role="tab" data-toggle="tab">Events</a></li>
-											<li role="presentation" class="text-capital"><a href="#actSettings" aria-controls="actSettings" role="tab" data-toggle="tab">Activities</a></li>
-										  </ul>
-										</div>
-										<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
-										  <div class="tab-content navTabsSettingsContent">
-											<div role="tabpanel" class="tab-pane active" id="eventsSettings">
-												<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS  </h4>
-												<hr style ="margin-bottom:0px;margin-top:0px;" />
-												<div class="">
-													<ul class="evntsSettingsUl">
-														<!--<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>-->
-													</ul>
-												</div>
-											</div>
-											<div role="tabpanel" class="tab-pane" id="actSettings">
-												<h4 class="text-capital pad_5" style="color:#99A0A5;"> ACTIVITIES DETAILS  </h4>
-												<hr style ="margin-bottom:0px;" />
-												<div class="">
-													<ul class="activitySettingsUl">
-														<!-- <li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li> -->
-													</ul>
-												</div>
-											</div>
-										  </div>
-										  
-										</div>
-										<!--<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
-											<button type="button" class="btn btn-success">Get Details</button>
-										</div>-->
-									</div>
-									
-									
-								</div>
-							</div>
-							<!--<div class="col-md-12 col-xs-12 col-sm-12 moreActivitiesBlocks" style="display:none;" id="activitesCmpBlockDivId">
-								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
-									<li class="text-capital detailedEvent">Detailed</li>
-									<li class="text-capital comparisonActivity">Comparison</li>
-								</ul>
-							</div> -->
-							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10" expand-block-more="events">
-								<div class="panel panel-default panelNew">
-									<div class="panel-body">
-										<div id="eventsGraphBlock"></div>
-										<div id="eventsGraphBlock1"></div>
-									</div>
-								</div>
-								<div class="panel panel-default panelNew m_top20">
-									<div class="panel-heading">
-										<h4 class="panel-title">
-											<span class="headingColor text-capitalize activitiesH4"> Cohort</span>
-										</h4>
-									</div>
-									<div class="panel-body">
-										<div id="eventsDistWiseCohort"></div>
-										 <div id="eventsDistWiseCohort1"></div>
-										<div id="eventsDistWiseCohort2"></div>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" expand-block-more="events" style="display:none" id="evntCmpBLockId">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-12">
-											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												 <div id="childEvnetMemberDivId"> </div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20">
-												   <div id="directChildMemberForEventDivId"></div>
-												   <div class="row">
-														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-															<div class="row m_top20">
-															 <div id="topPoorLocationsEventDivId"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" expand-block-more="events" style="display:none" id="activtyBlckDivId">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-12">
-											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForActivity"></div>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												 <div id="childActivityMemberDivId"> </div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20">
-												   <div id="directChildMemberForActivityDivId"></div>
-												   <div class="row">
-														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-															<div class="row m_top20">
-															 <div id="topPoorLocationsActivityDivId"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>	
-	
-		<!--Events End -->
-		<!-- Attendance Start-->
-		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock" expand-block="attendance">
-            <div class="panel panel-default panelNewCustom">
-                <div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="attendance">
+		
+		<!-- Booth Committees Start-->
+		<div class="col-md-6 col-xs-12 col-sm-12 boothCommitteesBlock" expand-block="boothCommittees">
+        	<div class="panel panel-default panelNewCustom panel1">
+            	<div class="panel-heading">
+                	<div class="row">
+						<div class="col-md-8 col-sm-8 col-xs-12">  
 							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
-								emp attendance - <small id="attendanceId" class="text-muted"></small>
+								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
+								Booth committees - <small class="text-muted boothCommitteesDate">OVERALL (TILL NOW)</small>
 							</h4>
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="attendance">
-							<span class="attendanceSetIcon pull-right">
+						<div class="col-md-4 col-sm-4 col-xs-12">
+							<!--<span class="basicBoothCommitteesBlockDiv pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
-							<span class="notesIconattendance pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForAttendance(7);"></i>
+							<span class="notesIcon pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
+							</span>-->
+							<span class="iconExpand pull-right" expand-icon="boothCommittees">
+								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span>
-							<span class="attendaceIconExpand pull-right mainExpandCls" expand-icon="attendance">
-								<i class="glyphicon glyphicon-fullscreen"></i>
-							</span>
-							<span class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:110px;">
-								<input type="text" id="dateRangeIdForAttendance" style="width:90px" class="form-control" />
+							<span class="cadreSettings pull-right refreshCadreCls" onClick="getBoothCommitteesBasicCountReport();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span> 
+							<span style="display:none;" ><select id="tdpBoothCommitteeYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;"></select></span>
+							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" expand-block-date="boothCommittees" style="display: none;">
+								<input type="text" id="dateRangeBoothId"	class="form-control" style="width:180px;display: none;"/>
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
-							</span>
+							</span>						
 						</div>
 					</div>
-					<div class="notesDropDown notesArrow">
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
-								</span>
-							</h4>
-							<div id="notesAttendanceId"></div>
-							<hr/>
-							<div id="attendanceId" style="color:red;"></div>
-							<label>Create Notes</label>
-							<textarea class="form-control notesAreaAttendance"></textarea>
-							<button class="btn btn-default btnCustomCreateAttendance btn-sm "  onClick="savingDashboardCommentForAttendance(7);">create</button>
+					
+					<!-- committees tabs for tdpcommittee ids -->	
+					<div class="basicCommitteesBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;" >
+						<div class="row">
+							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
+							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
+								<li role="presentation" class="text-capital"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
+								<!--<li role="presentation"   class="text-capital"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
+								<li role="presentation"  class="active text-capital"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>-->
+							  </ul>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
+							  <div class="tab-content navTabsSettingsContent">
+								<div role="tabpanel" class="tab-pane" id="home">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicBoothCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+									   <c:if test="${basicCommittee.id == 1}">
+										<li>
+											<label class="checkbox-inline">
+												<input type="checkbox"  class="districtBoothCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
+												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+										   </label>
+										</li>	
+									 </c:if>										
+									</c:forEach>
+									   <li>
+											<label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllBoothAffliatedDistrictlevelId">
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
+										   </label><!--checked-->
+										</li> 
+										<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+											<c:if test="${basicCommittee.id != 1}">
+											<li>
+											  <label class="checkbox-inline">
+												 <input type="checkbox"  class="districtBoothCommitteecheckBoxClass districtBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}"><!--checked-->
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											</li>   
+											</c:if>
+									  </c:forEach>
+										
+									</ul>
+									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane" id="profile">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicBoothCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+									   <c:if test="${basicCommittee.id == 1}">
+										 <li>
+										   <label class="checkbox-inline">
+											 <input type="checkbox"  class="checkedBasicComm mandalBoothCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
+											 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+										   </label>
+										 </li>
+									   </c:if>
+									</c:forEach>
+										<li>
+											<label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllBoothAffliatedMandallevelId"  >
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
+										   </label>
+										</li>  
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+											<c:if test="${basicCommittee.id != 1}">
+											 <c:choose>
+											   <c:when test="${basicCommittee.id == 10 || basicCommittee.id == 16}">
+												 <li>
+												  <label class="checkbox-inline">
+													 <input type="checkbox"  class="mandalBoothCommitteecheckBoxClass mandalBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
+													 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+												  </label>
+												 </li> 
+											   </c:when>
+												<c:otherwise>
+													<li>
+													  <label class="checkbox-inline">
+														 <input type="checkbox"  class="mandalBoothCommitteecheckBoxClass mandalBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" ><!--checked-->
+														 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+													   </label>
+													 </li> 
+												</c:otherwise>
+										   </c:choose>
+										  </c:if>
+									</c:forEach>
+									
+									</ul>
+									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane active" id="boothMessages">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicBoothCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+										   <c:if test="${basicCommittee.id == 1}">
+											 <li>
+											   <label class="checkbox-inline">
+												 <input type="checkbox"  class="villageBoothCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											 </li>
+										   </c:if>
+									</c:forEach>
+										 <li>
+											<label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllBoothAffliatedVillagelevelId"  >
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
+										   </label>
+										</li>  
+									
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+											<c:if test="${basicCommittee.id != 1}">
+											<li>
+											  <label class="checkbox-inline">
+												 <input type="checkbox"  class="villageBoothCommitteecheckBoxClass villageBoothCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											</li>   
+											</c:if>
+									</c:forEach>
+									</ul>
+									</div>
+								</div>
+							  </div>
+							  <button type="button" class="btn btn-success basicBoothCommittessDiv">Get Details</button>
+							</div>
+						
 						</div>
+						
+						
+					</div>
+					<div class="notesDropDown notesArrow documentCloseClass">
+                    	<h4 class="text-capital">notes
+                        	<span class="pull-right">
+                            	<i class="glyphicon glyphicon-list-alt"></i>
+                            </span>
+                        </h4>
+						<div id="boothNotesId"></div>
+                    	<!--<ul class="notesUl m_top20">
+                        	<li>
+                            	<!--<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
+                            	<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i>
+                                <i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>
+                            </li>
+                        </ul>-->
+                        <hr/>  
+                          <div id="id7" style="color:red;"></div>						
+                        <label>Create Notes</label>
+                        <textarea class="form-control notesArea"></textarea>
+                        <button class="btn btn-default btnCustomCreate btn-sm" onClick="savingDashboardComment(1);">create</button>
+                    </div>  
                 </div>
-                <div class="panel-body">   
-                    <div class="row">
-							<!--<div class="col-md-12 col-xs-12 col-sm-12">
-								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-							</div>-->	
-						<!--<div class="col-md-12 col-xs-12 col-sm-12">
-							<h5 id="lastUpdatedIdAtt" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right">Last updated : - </h5>
-						</div>-->  
-                        <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock m_top20" expand-block-inner="attendance">
-							<div id="officeAttendanceTdlsId">
-							</div>
-							<div id="officeAttendanceTdlsDeptWiseId"> 
-							</div>
-                            <!-- <h4 class="m_top20"><span class="headingColor text-capital">month wise total employees</span></h4>
-                            <div id="attendance" style="height:150px;"></div>-->
-                        </div>
-                        <div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore" expand-block-right="attendance">
-							<div id="deptWiseAttendanceDtlsId">
-							</div>
-                        </div>
-						<div class="col-xs-12 col-sm-12 col-md-12">
-                        	<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon"  expand-block-right="attendance" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
-                        </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" expand-block-more="attendance">
-                        	<div class="panel panel-default panelNew">
-                            	<div class="panel-heading">
-                                	  
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-md-6 col-xs-12 col-sm-8">
-											<h4><span class="headingColor">Hyderabad Party Office</span></h4>
-											</div>
-											<div class="col-md-6 col-xs-12 col-sm-4">
-												<div class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:210px;">
-													<input type="text" id="dateRangeIdForAttendance1" style="width:180px" class="form-control" />
-													<span class="input-group-addon">
-														<i class="glyphicon glyphicon-calendar"></i>
-													</span>  
-												</div>
-											</div>
-										</div>
-									</div>
+                <div class="panel-body">  
+				
+              		<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<h5 class="module_OwnerCss">Module Owner : K.Rajesh</h5>
+					</div>	
+					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker m_top20" style="display:none;">
+						
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock m_top20" expand-block-inner="boothCommittees">
+						<div id="boothBasicCommitteeCountsDiv"></div>
+						<div id="boothCommitteesAssdDiv"></div>
+					</div>
+                        <div class="col-md-6 col-xs-12 col-sm-6 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock" expand-block-right="boothCommittees">
+                        	<div class="row">
+                            	<div class="col-md-12 col-xs-12 col-sm-12">
+                                	<ul class="boothCommitteeTopPoorLiCls activeUlCls list-inline pull-right">
+                                    	<!--<li class="active topFiveStrongResults">Top 5 Strong</li>
+										<li class="topFivePoorResults">Top 5 Poor</li>-->
+										<li class="boothCommitteeTopPoorCls active addactive" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+										<li class="boothCommitteeTopPoorCls removeactive" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+                                    </ul>
                                 </div>
-                                <div class="panel-body" id="hydDtlsId">
-                                	
-                                </div>  
-                            </div>
+                                <div id="boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv"></div>
+                               <!-- <div id="userTypeWiseCommitteesForTopFivePoorDiv" style ="display:none"></div>-->
+						    </div>
                         </div>
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="hydTopId"  expand-block-more="attendance">
-							
-						</div> 
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks"  expand-block-more="attendance">
-                        	<div class="panel panel-default panelNew">
-                            	<div class="panel-heading">
-                                	  
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-md-6 col-xs-12 col-sm-8">
-											<h4><span class="headingColor">Guntur Party Office</span></h4>
-											</div>
-											<div class="col-md-6 col-xs-12 col-sm-4">
-												<div class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:210px;">
-													<input type="text" id="dateRangeIdForAttendance2" style="width:180px" class="form-control" />
-													<span class="input-group-addon">
-														<i class="glyphicon glyphicon-calendar"></i>
-													</span>  
-												</div>
-											</div>
-										</div>
-									</div>
+                        <div class="col-xs-12 col-sm-12 col-md-12" expand-block-right="boothCommittees">
+                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcons" expand-block-right="boothCommittees" data-toggle="tooltip" data-placement="top" title="Click here for more" style="cursor:pointer;display:none"></i>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBoothBlocksDetailAndComp" style="display:none;" expand-block-more="boothCommittees">
+                        	
+							<ul class="list-inline pull-right activeUlCls">
+                            	<li class="active detailedBlocks">Detailed</li>
+                                <li class="comparisionBlocks">Comparison</li>
+                            </ul>
+					    </div>
+                       <!-- <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreboothBlocks" expand-block-more="boothCommittees">
+                        	<div class="panel panel-default m_top10">
+                            	<div class="panel-body ">
+									<div id="boothLevelWiseBasicCommittees"></div>
                                 </div>
-                                <div class="panel-body" id="gunDtlsId">
-                                	
-                                </div>  
                             </div>
-                        </div>
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="gunTopId"  expand-block-more="attendance">
-							
+                        </div> -->
+                       
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20 moreBlocksDistrictlevels" style="display:none" expand-block-more="boothCommittees">
+                        	<div class="panel panel-default panelNew">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-12 col-sm-12">
+                                            <span class="headingColor text-capitalize">all committees performance cohort</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="panel-body verticalScrollBar">
+									<div id="boothDistrictWiseCommitteesReport" ></div>
+								</div>
+                            </div>
 						</div>
-						
-						
+                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBoothBlocks1" style="display:none;"  expand-block-more="boothCommittees">
+                            <!--<p><i>Selected:</i> <b>Main Committee</b></p>-->
+                            <div class="panel panel-default panelNew">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                           <div id="boothChildUserTypeDetailsDiv"></div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-12 col-sm-12">
+                                           <div id="boothSelectedUserTypeDetailsDiv"></div>
+                                        </div>
+                                        <div class="col-md-12 col-xs-12 col-sm-12" style="diaplay:none;">
+                                            <div class="bg_ED pad_15 m_top20 showChildBlockAndTopPoorBlockForBoothC">
+                                                <div id="boothDirectChildActivityMemberDiv" class="table-responsive"></div><!--sruj-->
+                                                <div class="row m_top20">
+                                                    <div class="col-md-8 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
+														<div id="boothTopPoorPerformanceDiv" style="display:none;"></div>
+                                                    </div>
+                                                    <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">
+                                                        <div id="boothTopPoorLocationsDiv"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                       	
+                        </div>
                     </div>
                 </div>
             </div>
-       </div>
-		<!-- Attendance End-->
-	</div>
+        </div>
+		<!-- Booth Committees End-->
+			
+	</div>	
 	<div class="row">
 		<!-- Cadre Insurance Start-->
 			<div class="col-md-6 col-xs-12 col-sm-6 cadreInsuranceBlock" expand-block="cadreInsurance">
@@ -3370,14 +2978,15 @@
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<h5 class="module_OwnerCss">Module Owner : K Rajesh</h5>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12" expand-block-inner="cadreInsurance">
-								<ul class="activeUlCls cadreInsuranceStateCls list-inline">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+								<ul class="activeUlCls cadreInsuranceStateCls list-inline pull-right">
 								  <li class="active" attr_id="0"> ALL </li>
 								  <li  attr_id="1">AP</li>
 								  <li  attr_id="2">TS</li>
 								</ul>
-							
-								<ul class="activeUlCls list-inline cadreInsuranceCDate m_top20">
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<ul class="activeUlCls list-inline cadreInsuranceCDate m_top10">
 									<li>Today</li>
 									<li>Week</li>
 									<li>Months</li>
@@ -3386,8 +2995,9 @@
 									<li>9 Months</li>
 									<li class="active">All Time</li>
 								</ul>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12" expand-block-inner="cadreInsurance">
 								<div id="insuraceCompanyAndTypeOfIssueWiseComplaintsDetails" class="m_top20"></div>
-								
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-6" expand-block-right="cadreInsurance" style="display:none">
 								<ul class="list-inline activeUlCls pull-right">
@@ -3783,6 +3393,402 @@
 			</div>
 			<!-- Cadre Insurance End-->
 			
+		<!--Events Start -->
+			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock" expand-block="events">
+				<div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="events">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
+									events and activities <small class="text-muted"><span id="dateEventsHeadingId">  - OVERALL (TILL NOW) </span></small>
+								</h4>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="events">
+								<span class="notesIconEvents pull-right">
+									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
+								</span>
+								<span class="eventsIconExpand pull-right" expand-icon="events">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+							<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshEventsActivities();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
+								<span class="input-group pull-right dateRangePickerClsForEvents hide" expand-block-date="events" style="width:200px;">
+									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							</div>
+						</div>
+						<div class="notesDropDown notesArrow" >
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesEventsId"></div>
+							<hr/>
+							<div id="eventsUpId" style="color:red;"></div>
+							<label>Create Notes</label>
+							<textarea class="form-control notesAreaEvents"></textarea>
+							<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<!--<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+							</div>-->
+							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20" expand-block-inner="events">
+								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
+								<h4><span class="headingColor text-capital">events</span>
+								<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
+								<div id="mainEventsList" class="m_top20"></div>
+								<h4 style="margin-top:20px !important;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span>
+									<span class="pull-right activitiesCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
+								</h4>
+									<div id="activityEventsListNew" class="activitiesCollapseBody" style="display:none"></div>
+				
+								<!--<div style="border : 1px solid #333; padding : 5px">-->
+									<!--<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>-->
+									<!--<div id="activityEventsListNew" class="m_top20"></div>-->
+								<!--</div>-->
+							</div>
+							<!--Acivites Block
+							
+							
+							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20">
+							<div style="border : 1px solid #333; padding : 5px">
+								<h4><span class="headingColor text-capital">activities</span></h4>
+								<div id="activityEventsListNew" class="m_top20"></div>
+							<!--</div>
+							</div>-->
+							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock" expand-block-right="events">
+								<h4><span class="headingColor eventAndActivityCls text-capital">events</span></h4>
+								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
+										<ul class="activeUlCls list-inline hideCls">
+											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 </li>
+											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;poor 5</li>
+										</ul>
+								</div> 
+								<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" expand-block-right="events" style="display: none;">
+								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
+							</div>
+							<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId" expand-block-more="events">
+								
+								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
+									<li class="text-capital activeLICls" attr_typeId="1">Detailed </li>
+									<li class="text-capital activeLICls" attr_typeId="2">Comparison</li>
+								</ul>
+							</div>
+							<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks" expand-block-more="events">
+							
+								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
+									<li class="text-capital settingsIconAct">
+										<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+									</li>
+								</ul>
+								<div class="actBlockDropDown notesArrow documentCloseClass" style="z-index:999;top: 10px;width:450px;" >
+									<i class="glyphicon glyphicon-remove actSetClose pull-right"></i>
+									<div class="row">
+										<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
+										  <ul class="nav nav-tabs navTabsSettings" role="tablist">
+											<li role="presentation" class="active text-capital"><a href="#eventsSettings" aria-controls="eventsSettings" role="tab" data-toggle="tab">Events</a></li>
+											<li role="presentation" class="text-capital"><a href="#actSettings" aria-controls="actSettings" role="tab" data-toggle="tab">Activities</a></li>
+										  </ul>
+										</div>
+										<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+										  <div class="tab-content navTabsSettingsContent">
+											<div role="tabpanel" class="tab-pane active" id="eventsSettings">
+												<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS  </h4>
+												<hr style ="margin-bottom:0px;margin-top:0px;" />
+												<div class="">
+													<ul class="evntsSettingsUl">
+														<!--<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>-->
+													</ul>
+												</div>
+											</div>
+											<div role="tabpanel" class="tab-pane" id="actSettings">
+												<h4 class="text-capital pad_5" style="color:#99A0A5;"> ACTIVITIES DETAILS  </h4>
+												<hr style ="margin-bottom:0px;" />
+												<div class="">
+													<ul class="activitySettingsUl">
+														<!-- <li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li> -->
+													</ul>
+												</div>
+											</div>
+										  </div>
+										  
+										</div>
+										<!--<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
+											<button type="button" class="btn btn-success">Get Details</button>
+										</div>-->
+									</div>
+									
+									
+								</div>
+							</div>
+							<!--<div class="col-md-12 col-xs-12 col-sm-12 moreActivitiesBlocks" style="display:none;" id="activitesCmpBlockDivId">
+								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
+									<li class="text-capital detailedEvent">Detailed</li>
+									<li class="text-capital comparisonActivity">Comparison</li>
+								</ul>
+							</div> -->
+							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10" expand-block-more="events">
+								<div class="panel panel-default panelNew">
+									<div class="panel-body">
+										<div id="eventsGraphBlock"></div>
+										<div id="eventsGraphBlock1"></div>
+									</div>
+								</div>
+								<div class="panel panel-default panelNew m_top20">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<span class="headingColor text-capitalize activitiesH4"> Cohort</span>
+										</h4>
+									</div>
+									<div class="panel-body">
+										<div id="eventsDistWiseCohort"></div>
+										 <div id="eventsDistWiseCohort1"></div>
+										<div id="eventsDistWiseCohort2"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" expand-block-more="events" style="display:none" id="evntCmpBLockId">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-12 col-sm-12 col-md-12">
+											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												 <div id="childEvnetMemberDivId"> </div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20">
+												   <div id="directChildMemberForEventDivId"></div>
+												   <div class="row">
+														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+															<div class="row m_top20">
+															 <div id="topPoorLocationsEventDivId"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" expand-block-more="events" style="display:none" id="activtyBlckDivId">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-12 col-sm-12 col-md-12">
+											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForActivity"></div>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												 <div id="childActivityMemberDivId"> </div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20">
+												   <div id="directChildMemberForActivityDivId"></div>
+												   <div class="row">
+														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+															<div class="row m_top20">
+															 <div id="topPoorLocationsActivityDivId"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+	
+		<!--Events End -->
+		
+	</div>
+	<div class="row">
+	<!-- Attendance Start-->
+		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock" expand-block="attendance">
+            <div class="panel panel-default panelNewCustom">
+                <div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="attendance">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
+								emp attendance - <small id="attendanceId" class="text-muted"></small>
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="attendance">
+							<span class="attendanceSetIcon pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="notesIconattendance pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForAttendance(7);"></i>
+							</span>
+							<span class="attendaceIconExpand pull-right mainExpandCls" expand-icon="attendance">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:110px;">
+								<input type="text" id="dateRangeIdForAttendance" style="width:90px" class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+					</div>
+					<div class="notesDropDown notesArrow">
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesAttendanceId"></div>
+							<hr/>
+							<div id="attendanceId" style="color:red;"></div>
+							<label>Create Notes</label>
+							<textarea class="form-control notesAreaAttendance"></textarea>
+							<button class="btn btn-default btnCustomCreateAttendance btn-sm "  onClick="savingDashboardCommentForAttendance(7);">create</button>
+						</div>
+                </div>
+                <div class="panel-body">   
+                    <div class="row">
+							<!--<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+							</div>-->	
+						<!--<div class="col-md-12 col-xs-12 col-sm-12">
+							<h5 id="lastUpdatedIdAtt" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right">Last updated : - </h5>
+						</div>-->  
+                        <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock m_top20" expand-block-inner="attendance">
+							<div id="officeAttendanceTdlsId">
+							</div>
+							<div id="officeAttendanceTdlsDeptWiseId"> 
+							</div>
+                            <!-- <h4 class="m_top20"><span class="headingColor text-capital">month wise total employees</span></h4>
+                            <div id="attendance" style="height:150px;"></div>-->
+                        </div>
+                        <div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore" expand-block-right="attendance">
+							<div id="deptWiseAttendanceDtlsId">
+							</div>
+                        </div>
+						<div class="col-xs-12 col-sm-12 col-md-12">
+                        	<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon"  expand-block-right="attendance" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" expand-block-more="attendance">
+                        	<div class="panel panel-default panelNew">
+                            	<div class="panel-heading">
+                                	  
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-6 col-xs-12 col-sm-8">
+											<h4><span class="headingColor">Hyderabad Party Office</span></h4>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-4">
+												<div class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:210px;">
+													<input type="text" id="dateRangeIdForAttendance1" style="width:180px" class="form-control" />
+													<span class="input-group-addon">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</span>  
+												</div>
+											</div>
+										</div>
+									</div>
+                                </div>
+                                <div class="panel-body" id="hydDtlsId">
+                                	
+                                </div>  
+                            </div>
+                        </div>
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="hydTopId"  expand-block-more="attendance">
+							
+						</div> 
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks"  expand-block-more="attendance">
+                        	<div class="panel panel-default panelNew">
+                            	<div class="panel-heading">
+                                	  
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-6 col-xs-12 col-sm-8">
+											<h4><span class="headingColor">Guntur Party Office</span></h4>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-4">
+												<div class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:210px;">
+													<input type="text" id="dateRangeIdForAttendance2" style="width:180px" class="form-control" />
+													<span class="input-group-addon">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</span>  
+												</div>
+											</div>
+										</div>
+									</div>
+                                </div>
+                                <div class="panel-body" id="gunDtlsId">
+                                	
+                                </div>  
+                            </div>
+                        </div>
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="gunTopId"  expand-block-more="attendance">
+							
+						</div>
+						
+						
+                    </div>
+                </div>
+            </div>
+       </div>
+		<!-- Attendance End-->
+			
 			<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock" expand-block="cadre">  
         	<div class="panel panel-default panelNewCustom">
             	<div class="panel-heading">
@@ -4148,7 +4154,7 @@
         </div>
 		<!---------Cadre Registration End--->
 	</div>
-	<div class="row">
+	<!--<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
 				
 				<div class="panel panel-default panelNewCustom panel2">
@@ -4195,7 +4201,7 @@
 									</div>
 									<div class="col-sm-6">
 										<h5 style="font-size: 13px; text-align: center;">COUNTER ON PRAJA SANKALPA YATRA</h5>
-									</div>-->
+									</div>
 								</div>
 								<div id="printMediaOverAllBlockId" class=""></div>
 								<div id="printMediaPartyBlockId" class="m_top10"></div>
@@ -4209,7 +4215,7 @@
 									</div>
 									<div class="col-sm-6">
 										<h5 style="font-size: 13px; text-align: center;">COUNTER ON PRAJA SANKALPA YATRA</h5>
-									</div>-->
+									</div>
 								</div>
 								<div id="electronicMediaOverAllBlockId" class=""></div>
 								<div id="electronicMediaPartyBlockId" class="m_top10"></div>
@@ -4220,7 +4226,7 @@
 					</div>
 				</div>
 			</div>
-	</div>
+	</div>-->
 </div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
 <input type="hidden" id="alertEditionTypeHiddenId"></input>  
@@ -5697,7 +5703,6 @@ var globalImages;
 		getBoothCadreEnrolmentYears();
 	});
 	getLoggedInUserStructure();
-	
 	onLoadCalls()
 	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();

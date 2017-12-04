@@ -3149,3 +3149,6 @@ color: rgb(51, 122, 183);
 .f_12{
 	font-size:12px;
 }
+.table_padding tbody tr td{
+	padding:3px !important;
+}
