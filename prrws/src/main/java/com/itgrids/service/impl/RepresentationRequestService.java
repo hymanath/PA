@@ -470,7 +470,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 				PetitionMemberVO petiMemberVO = new PetitionMemberVO();
 				petiMemberVO.setId(resultPetitionMember.getPetitionMemberId());
 				petiMemberVO.setName(resultPetitionMember.getCandidateName());
-				petiMemberVO.setMemberType(resultPetitionMember.getMemberType());
+				representationRequestVO.setRepresenteeType(resultPetitionMember.getMemberType());
 				petiMemberVO.setMobileNo(resultPetitionMember.getMobileNo());
 				petiMemberVO.setEmailId(resultPetitionMember.getEmailId());
 				petiMemberVO.setVoterCardNo(resultPetitionMember.getVoterCardNo());

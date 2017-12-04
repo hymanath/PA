@@ -89,4 +89,9 @@ public class RepresentationRequestController {
     public @ResponseBody List<KeyValueVO> getParliamentByDistricList(@RequestBody Map<String,String> inputMap ) {
        return locationDetailsService.getParliamentIdsByConstituencyList();
     }
+	@RequestMapping(value ="/representationRequestEdit", method = RequestMethod.GET)
+    public String representationRequestEdit(ModelMap model) {
+		return "representationRequestEdit";
+    }
+	
 }

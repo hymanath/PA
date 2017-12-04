@@ -1070,7 +1070,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 			str+='<div class="bgColorCandidatesView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+'>';
 				//str+='<span class="pull-right"><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove" style="background-color: rgba(0, 0, 0, 0.4); border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;" ></i></span>';
 				str+='<div class="row">';
-					str+='<div class="representation-selected display_block" id="candidateRemove'+result[i].referrerCandidateId+'">Already Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove" style="background-color: rgba(0, 0, 0, 0.4); border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;" ></i></span></div>';
+					str+='<div class="representation-selected display_block" id="candidateRemove'+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove" style="background-color: rgba(0, 0, 0, 0.4); border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;" ></i></span></div>';
 					str+='<div class="col-sm-3">';
 							str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
 							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
@@ -1124,7 +1124,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 			str+='<div class="bgColorCandidatesView candidateAddedView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+'>';
 				//str+='<span class="pull-right"><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove" style="background-color: rgba(0, 0, 0, 0.4); border-radius: 50%; cursor: pointer; font-size: 12px; padding: 3px;top:-7px;" ></i></span>';
 				str+='<div class="row">';
-				str+='<div class="representation-selected" id="candidateRemove'+result[i].referrerCandidateId+'">Already Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove" style="background-color: rgba(0, 0, 0, 0.4); border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;" ></i></span></div>';
+				str+='<div class="representation-selected" id="candidateRemove'+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove" style="background-color: rgba(0, 0, 0, 0.4); border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;" ></i></span></div>';
 				str+='<div class="col-sm-3">';
 						str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
 						str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';

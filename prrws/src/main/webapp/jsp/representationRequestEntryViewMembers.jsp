@@ -199,48 +199,27 @@
 							<div class="panel-heading">
 								<h4 class="panel-title f_22" style="font-weight:normal !important;">SEARCH REPRESENTEE DETAILS <a class="btn btn-success btn-xs  btn-xs pull-right" target="_blank" href="representationRequestEntry"> ADD NEW PETITION </a></h4>
 							</div>
-							<div class="panel-body">								
-								<div class="row m_top20">
-									<div class="col-sm-12">	
-										<label class="radio-inline ">
-											<input  class="searchCls" type="radio" name="optradio" value="designation" checked>DESIGNATION WISE
-										</label>											
-										<label class="radio-inline">
-											<input  class="searchCls" type="radio" name="optradio" value="department" >DEPARTMENT WISE
-										</label>
-										<label class="radio-inline ">
-											<input class="searchCls" type="radio" name="optradio" value="refLocation" >REFFERRE LOCATION WISE
-										</label>
-										<label class="radio-inline ">
-											<input class="searchCls"  type="radio" name="optradio" value="workLocation" >WORK LOCATION WISE
-										</label>
-										<button class="btn btn-success btn-xs btn-min"  type="button" id="advanceBtnId" style="margin-left: 20px"> ADVANCED SEARCH </button>
+								<div class="panel-body">								
+									<div class="row m_top20">
+										<div class="col-sm-12">	
+											<label class="radio-inline ">
+												<input  class="searchCls m_top0" type="radio" name="optradio" value="designation" checked>DESIGNATION WISE
+											</label>											
+											<label class="radio-inline">
+												<input  class="searchCls m_top0" type="radio" name="optradio" value="department" >DEPARTMENT WISE
+											</label>
+											<label class="radio-inline ">
+												<input class="searchCls m_top0" type="radio" name="optradio" value="refLocation" >REFFERRE LOCATION WISE
+											</label>
+											<label class="radio-inline ">
+												<input class="searchCls m_top0"  type="radio" name="optradio" value="workLocation" >WORK LOCATION WISE
+											</label>
+											<label class="radio-inline ">
+												<input class="searchCls m_top0"  type="radio" name="optradio" value="advanceBtnId" >ADVANCED SEARCH 
+											</label>
+										</div>
 									</div>
-								</div>
-								
-								<div class="row m_top20" id="advancedSearchDivId" style="display:none;">
-									<div class="col-sm-12">										
-											<label class="radio-inline ">
-												<input type="radio"  class="searchCls"  name="optradio" value="name" > NAME
-											</label>
-											<label class="radio-inline ">
-												<input type="radio" class="searchCls"  name="optradio" value="mobileNo"> MOBILE NO
-											</label>
-											<label class="radio-inline ">
-												<input type="radio" class="searchCls"  name="optradio" value="refCode"> ENDORSMENT ID
-											</label>
-											<label class="radio-inline ">
-												<input type="radio" class="searchCls"  name="optradio" value="emailId"> EMAIL-ID
-											</label>
-											<div class="input-group m_top20" style="box-shadow:0 0 3px 0 rgba(0, 0, 0, 0.2)">											
-												<input type="text" class="form-control" style="text-align:center;height:35px" id="advancedSearchVal">
-												<span class="input-group-addon" id="advancedSearchId" style="cursor:pointer;">SEARCH</span>
-											</div>
-									</div>
-								</div>
-								
-								 <div class="modal-body">
-									<div class="row">
+									<div class="row m_top20" id="normalSearchDivId">
 										<div class="col-sm-3" id="designationDiv">
 											<select class="form-control chosen-select" id="designationsId">
 												<option value="0">Select Designation</option>
@@ -251,31 +230,55 @@
 												<option value="0">Select Department</option>
 											</select>
 										</div>	
-
-										<div id="locationsDivId">
-											<div class="col-sm-3">
-												<select class="form-control chosen-select" id="districtCandId" onchange="getConstituencyNamesByDistrictId(this.value);">
-													<option value="0">Select District</option>
-												</select>
-											</div>
-											<div class="col-sm-3">
-												<select class="form-control chosen-select" id="constituencyCanId">
-													<option value="0">Select Constituency</option>
-												</select>
-											</div>
-											<div class="col-sm-3">						
-												<span class="btn btn-success" id="advanceSearchId" style="cursor:pointer;">SEARCH</span>
-											</div>
+										<div class="col-sm-3" id="districtCandDiv">
+											<select class="form-control chosen-select" id="districtCandId" onchange="getConstituencyNamesByDistrictId(this.value);">
+												<option value="0">Select District</option>
+											</select>
+										</div>
+										<div class="col-sm-3" id="constituencyCanDiv">
+											<select class="form-control chosen-select" id="constituencyCanId">
+												<option value="0">Select Constituency</option>
+											</select>
+										</div>
+										
+									</div>
+									<div class="row m_top20" id="advancedSearchDivId" style="display:none;">
+										<div class="col-sm-6">	
+											<div style="border:1px solid #ddd;padding:10px;box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);">
+												<h4 class="font_weight f_18">ADVANCED SEARCH WISE : </h4>
+												<div class="m_top10">
+													<label class="radio-inline m_top5">
+														<input type="radio"  class="advancedSrchCls"  name="optradio1" value="name" checked> NAME
+													</label>
+													<label class="radio-inline m_top5">
+														<input type="radio" class="advancedSrchCls"  name="optradio1" value="mobileNo"> MOBILE NO
+													</label>
+													<label class="radio-inline m_top5">
+														<input type="radio" class="advancedSrchCls"  name="optradio1" value="refCode"> ENDORSMENT ID
+													</label>
+													<label class="radio-inline m_top5">
+														<input type="radio" class="advancedSrchCls"  name="optradio1" value="emailId"> EMAIL-ID
+													</label>
+												</div>
+												<div class="row m_top10">
+													<div class="col-sm-12">
+														<input type="text" class="form-control" style="text-align:center;height:55px" id="advancedSearchVal">
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
-								  </div>
-								  
-								<div class="row m_top20">
-									<div class="col-sm-12">
-										<div id="representationRequestEntryTable"></div>
+									<div class="row m_top10">
+										<div class="col-sm-12">						
+											<button type ="button" class="btn btn-lg btn-success" id="advanceSearchId" style="cursor: pointer; font-weight: bold; border-radius: 0px;">SEARCH</button>
+										</div> 
 									</div>
-								</div>
+									<div class="row m_top10">
+										<div class="col-sm-12">
+											<div id="representationRequestEntryTable"></div>
+										</div>
+									</div>
+								</div>	
 							</div>
 						</div>
 					</div>
@@ -283,8 +286,6 @@
 			</div>
 		</div>
 	</section>
-	
-	
 </main>
 
 
