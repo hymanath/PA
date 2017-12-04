@@ -20,7 +20,6 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.ResultVO;
 import com.itgrids.dto.UserVO;
 import com.itgrids.model.FavouriteComponent;
-import com.itgrids.model.User;
 import com.itgrids.service.IUserService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -52,20 +51,14 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserVO userAuthentication(String userName, String password) {
 		UserVO userVO = new UserVO();
-		if (userName != null) {
-			User user = userDAO.loginAuthentication(userName, password);
-
-			if (user != null) {
-				userVO.setUserId(user.getUserId());
-				userVO.setUserName(user.getUsername());
-				userVO.setEmail(user.getEmail());
-				userVO.setPhoneNo(user.getMobileNoo());
-				userVO.setResponceCode(1l);
-			}else {
-				userVO.setResponceCode(0l);
-			}
-
-		} 
+		//User user = userDAO.loginAuthentication(userName, password);
+		String url = userDAO.getUrlForMatchedCredentials(userName, password);
+		if (url != null) {
+			userVO.setUrl(url);
+			userVO.setResponceCode(1l);
+		}else {
+			userVO.setResponceCode(0l);
+		}
 		return userVO;
 	}
 	
