@@ -15,6 +15,7 @@ public class UserVO {
 	private String userName;
 	private String phoneNo;
 	private Long responceCode;
+	private String url;
 	public Long getUserId() {
 		return userId;
 	}
@@ -49,6 +50,12 @@ public class UserVO {
 	public String toString() {
 		return "UserVO [userId=" + userId + ", email=" + email + ", userName=" + userName + ", phoneNo=" + phoneNo
 				+ ", responceCode=" + responceCode + "]";
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 }

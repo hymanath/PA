@@ -27,5 +27,15 @@ public class UserDAO extends GenericDaoHibernate<User, Long> implements IUserDAO
 		query.setParameter("password", password);
 		return (User) query.uniqueResult();
 	}
-
+	@Override
+	public String getUrlForMatchedCredentials(String userName, String password) {
+		StringBuilder sb = new StringBuilder();
+			sb.append("select model.redirectUrl.url from User model ");
+			sb.append(" where model.username =:userName and  model.password =:password ");
+			sb.append(" and model.redirectUrl.isDeleted ='N' and model.isDeleted ='N' ");
+		Query query  = getSession().createQuery(sb.toString());
+			query.setParameter("userName", userName);
+			query.setParameter("password", password);
+		return (String) query.uniqueResult();
+	}
 }
