@@ -859,19 +859,19 @@
 					},
 					series: [{
 							name: 'Commissioned',
-							data: workComissionedArrPWS,
+							data: workComissionedArr,
 							color:'#16af18'
 						},{
 							name: 'Completed',
-							data: workCompletedArrPWS,
+							data: workCompletedArr,
 							color:'#3ae80f'
 						}, {
 							name: 'Ongoing',
-							data: workOngoingArrPWS,
+							data: workOngoingArr,
 							color:'#EA8512'
 						}, {
 							name: 'Not Grounded',
-							data: workNotGroundedArrPWS,
+							data: workNotGroundedArr,
 							color:'#FC5E57'
 						}]
 				});

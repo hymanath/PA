@@ -1901,9 +1901,16 @@ function getExceededTargetWorksDetails(){
 		var pwsArr = [];
 		var cpwsArr = [];
 		var totalWorksPWS = 0;
+		var OnGoingExceededWorks =[];
+		var CompletedExceededWorks =[];
+		var CommissionedExceededWorks =[];
 		var totalWorksCPWS = 0;
 		var totalAmountPWS = 0;
 		var totalAmountCPWS = 0;
+		
+		var OnGoingExceededWorks='';
+		var CompletedExceededWorks='';
+		var CommissionedExceededWorks='';
 		
 		for(var i in result[0].subList)
 		{
@@ -1916,62 +1923,23 @@ function getExceededTargetWorksDetails(){
 			//totalAmountCPWS = totalAmountCPWS + result.completedList[i].cpwsAmount;
 			
 			if(result[0].subList[i].assetType == 'PWS'){
-				totalWorksPWS = totalWorksPWS + result[0].subList[i].count;
+				//totalWorksPWS = totalWorksPWS + result[0].subList[i].count;
+				
 			}else if(result[0].subList[i].assetType == 'CPWS'){
-				totalWorksCPWS = totalWorksCPWS + result[0].subList[i].count;
+				//totalWorksCPWS = totalWorksCPWS + result[0].subList[i].count;
+				
 			}
+			
 			for( var j in result[0].subList[i].subList){
 				cateArr.push(result[0].subList[i].subList[j].name);
 				if(result[0].subList[i].assetType == 'PWS'){
-					pwsArr.push(result[0].subList[i].subList[j].count);
+					pwsArr.push({"y":result[0].subList[i].subList[j].count,"extra":""+result[0].subList[i].subList[j].groundedPWSExceededCount+"-"+result[0].subList[i].subList[j].completedPWSExceededCount+"-"+result[0].subList[i].subList[j].commissionedPWSExceededCount});
 				}else if(result[0].subList[i].assetType == 'CPWS'){
-					cpwsArr.push(result[0].subList[i].subList[j].count);
+					cpwsArr.push({"y":result[0].subList[i].subList[j].count,"extra":""+result[0].subList[i].subList[j].groundedPWSExceededCount+"-"+result[0].subList[i].subList[j].completedPWSExceededCount+"-"+result[0].subList[i].subList[j].commissionedPWSExceededCount});
 				}
 			}
 		}
-		/* 
-		Highcharts.chart('ExceededTargetDetailsTotal', {
-			chart: {
-				type: 'column'
-				
-			},
-			title: {
-				text: null
-			},
-			xAxis: {
-				categories:["Total"]
-			},
-			yAxis: {
-				allowDecimals: false,
-				min: 0,
-				title: {
-					text: null
-				}
-			},
-			tooltip: {
-				formatter: function () {
-					return '<b>' + this.x + '</b><br/>' +
-						this.series.name + ': ' + this.y + '<br/>'
-						//+'Total: ' + this.point.stackTotal;
-				}
-			},
-			plotOptions: {
-				column: {
-					stacking: 'normal'
-				}
-			},
-			series: [{
-				name: 'PWS',
-				data: [totalWorksPWS],
-				stack: 'PWS',
-				color:'#EE6CA9'
-			}, {
-				name: 'CPWS',
-				data: [totalWorksCPWS],
-				stack: 'CPWS',
-				color:'#C61379'
-			}]
-		}); */
+		alert(OnGoingExceededWorks)
 		$("#ExceededTargetDetails").highcharts({
 			chart: {
 				type: 'column'
@@ -1991,9 +1959,14 @@ function getExceededTargetWorksDetails(){
 			},
 			tooltip: {
 				formatter: function () {
+					var value = (this.point.extra).split("-");
 					return '<b>' + this.x + '</b><br/>' +
 						this.series.name + ': ' + this.y + '<br/>' +
-						'Total: ' + this.point.stackTotal;
+						//'Total: ' + this.point.stackTotal + '<br/>' +
+						
+						'OnGoingExceededWorks :' +value[0]+ '<br/>' +
+						'CompletedExceededWorks :' +value[1]+ '<br/>' +
+						'CommissionedExceededWorks :' +value[2]+ '';
 				}
 			},
 			plotOptions: {
@@ -2078,12 +2051,7 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 		if(financialVal != 0){
 			 yearVal=financialVal;
 		}
-		var statusTypeArr=[];
-		if(statusType == ""){
-			statusTypeArr=[];
-		}else{
-			statusTypeArr.push(statusType)
-		}
+				
 	 	var json = {
 				year:yearVal,
 				fromDateStr:glStartDate,
@@ -2093,7 +2061,7 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 				filterValue:"",
 				locationType:locationType, 
 				assetTypeList:['CPWS','PWS'],
-				statusList : statusTypeArr,
+				"status" : statusType,
 				}
 		
 		$.ajax({                
@@ -2121,8 +2089,13 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 			}
 		});
 	}
-	function getOnClickExceedWorkDetails(assetType,locationType,exceededDuration,locationValue){
+	function getOnClickExceedWorkDetails(assetType,locationType,exceededDuration,locationValue,statusType){
 		$("#modalSchemsExceedTable").html(spinner);
+		$('.exceedWorkTypeCls').each(function(i, obj){
+			 if($(this).is(':checked')){
+				statusType = $(this).val();
+			 }
+		});
 	 	var json = {
 				"assetType":assetType,
 				"fromDateStr":glStartDate,
@@ -2130,7 +2103,7 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 				"locationType":locationType,
 				"exceededDuration":exceededDuration,
 				"locationValue":locationValue,
-				 "status" : "ongoing",
+				 "status" : statusType,
 				}
 		
 		$.ajax({                
