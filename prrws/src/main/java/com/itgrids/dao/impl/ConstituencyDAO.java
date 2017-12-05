@@ -505,7 +505,14 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	
 	public List<Object[]> getPetitionsConstituencyList(Long districtId,String searchType,Long searchId){
 		StringBuilder sb = new StringBuilder();
-		   if(searchType != null && !searchType.equalsIgnoreCase("refLocation") ){
+		if(searchType != null && searchType.equalsIgnoreCase("refCandidate") ){
+			   sb.append(" select distinct model.locationAddress.constituency.constituencyId,model.locationAddress.constituency.name from " +
+				 		" PetitionReffererCandidate model where model.isDeleted='N'  ");
+				if(districtId !=null && districtId.longValue()>0){
+					sb.append("  and model.locationAddress.district.districtId=:districtId ");
+				}
+		   }
+		else if(searchType != null && !searchType.equalsIgnoreCase("refLocation") ){
 				 sb.append(" select distinct model.locationAddress.constituency.constituencyId,model.locationAddress.constituency.name from " +
 				 		" PetitionSubWorkLocationDetails model where model.isDeleted='N'  ");
 				if(districtId !=null && districtId.longValue()>0){
@@ -529,7 +536,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 		if(districtId !=null && districtId.longValue()>0){
 		    query.setParameter("districtId", districtId);
 		}
-		 if(searchType != null && (searchType.equalsIgnoreCase("designation") || searchType.equalsIgnoreCase("dept")) )
+		 if(searchType != null && (searchType.equalsIgnoreCase("designation") || searchType.equalsIgnoreCase("dept") ) )
 		    	query.setParameter("searchId",searchId);
 		return query.list(); 
 	}
