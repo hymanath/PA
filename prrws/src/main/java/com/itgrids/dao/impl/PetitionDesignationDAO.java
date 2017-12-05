@@ -25,7 +25,7 @@ public class PetitionDesignationDAO extends GenericDaoHibernate<PetitionDesignat
 	public List<Object[]> getAllpetitionDesignationList(){
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.petitionDesignationId,model.designationName from PetitionDesignation model order by model.designationName asc ");
+		sb.append("select model.petitionDesignationId,model.designationName from PetitionDesignation model where model.isDeleted='N'   order by model.designationName asc ");
 		Query qry = getSession().createQuery(sb.toString());
 		return qry.list();
 	}
@@ -34,7 +34,7 @@ public class PetitionDesignationDAO extends GenericDaoHibernate<PetitionDesignat
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select distinct  model.petitionDesignation.petitionDesignationId, " +
-					" model.petitionDesignation.designationName from PetitionReffererCandidate model " +
+					" model.petitionDesignation.designationName from PetitionReffererCandidate model where model.petitionDesignation.isDeleted='N' " +
 					" order by model.petitionDesignation.designationName asc ");
 			Query qry = getSession().createQuery(sb.toString());
 			return qry.list();
@@ -44,7 +44,7 @@ public class PetitionDesignationDAO extends GenericDaoHibernate<PetitionDesignat
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct  model.petitionReffererCandidate.petitionDesignation.petitionDesignationId, " +
-				" model.petitionReffererCandidate.petitionDesignation.designationName from PetitionRefferer model " +
+				" model.petitionReffererCandidate.petitionDesignation.designationName from PetitionRefferer model where model.petitionReffererCandidate.petitionDesignation.isDeleted='N' " +
 				" order by model.petitionReffererCandidate.petitionDesignation.designationName asc ");
 		Query qry = getSession().createQuery(sb.toString());
 		return qry.list();
