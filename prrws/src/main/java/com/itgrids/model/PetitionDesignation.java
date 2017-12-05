@@ -14,6 +14,7 @@ public class PetitionDesignation {
 	
 	private Long petitionDesignationId;
 	private String designationName;
+	private String isDeleted;
 	
 	@Id
 	@Column(name="petition_designation_id")
@@ -30,5 +31,13 @@ public class PetitionDesignation {
 	}
 	public void setDesignationName(String designationName) {
 		this.designationName = designationName;
+	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}	
+	
 }
