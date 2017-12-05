@@ -241,15 +241,30 @@
 				</div>
 				<div class="col-sm-12 m_top20">
 					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
-						<h4>Exceeded Target Works Details</h4>
+						<div class="row">
+							<div class="col-sm-3">
+								<h4>Exceeded Target Works Details</h4>
+							</div>
+							<div class="col-sm-9">
+								<div class="pull-right">
+									<label class="radio-inline m_top5">
+										<input type="radio"  class="exceedWorkTypeCls"  name="optradio1" value="" checked> All Exceeded Works
+									</label>
+									<label class="radio-inline m_top5">
+										<input type="radio" class="exceedWorkTypeCls"  name="optradio1" value="ongoing"> OnGoing Exceeded Works
+									</label>
+								</div>
+							</div>
+						</div>
+						
 					</div>
 					<div class="white-block" style="padding:10px;">
 						
 						<div class="row">
-							<div class="col-sm-3">
+							<!--<div class="col-sm-3">
 								<div id="ExceededTargetDetailsTotal"></div>
-							</div>
-							<div class="col-sm-9">
+							</div>-->
+							<div class="col-sm-12">
 								<div id="ExceededTargetDetails"></div>
 							</div>
 						</div>
