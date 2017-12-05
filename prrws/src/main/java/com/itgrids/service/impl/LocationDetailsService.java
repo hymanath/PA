@@ -306,13 +306,14 @@ public class LocationDetailsService implements ILocationDetailsService {
     				petitionDetailsObjsList = petitionDesignationDAO.getAllpetitionDesignationList();
     			else if(searchType.trim().equalsIgnoreCase("refCandidateDesignations"))
     				petitionDetailsObjsList = petitionDesignationDAO.getAllReferredCandidateDesignationList();
-    			else if(searchType.trim().equalsIgnoreCase("petitionGivenRefCandidateDesignations"))
+    			else if(searchType.trim().equalsIgnoreCase("petitionGivenRefCandidateDesignations")){
     				petitionDetailsObjsList = petitionDesignationDAO.getGivenPetitionCandidateDesignationList();
     				List<Object[]> petitionReprDesignationsList = petitionDesignationDAO.getGivenpetitionReprDesignationsList();
     				if(!commonMethodsUtilService.isListOrSetValid(petitionDetailsObjsList))
     					petitionDetailsObjsList =new ArrayList<Object[]>();
     				if(commonMethodsUtilService.isListOrSetValid(petitionReprDesignationsList))
     					petitionDetailsObjsList.addAll(petitionReprDesignationsList);
+    			}
     				
     		}
     		 
