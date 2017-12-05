@@ -136,7 +136,7 @@ body
 var linkResult = [];
 var groupResult = [];
 var artclesRsltPar = [];
-var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
+var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","CORP-GMC","Ward","NATIONAL","INTERNATIONAL","MUNICIPALITY"];
 
 
 
