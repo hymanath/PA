@@ -280,4 +280,5 @@ public interface IWebServiceHandlerService {
     public Long kaizalaCommitteeLevelAddressSaving(Long locationScopeId, Long locationValue);
     public void saveEventResponses(String anserObjStr);
     public List<QuestionAnswerVO> getSurveyQuestionWithMarksDetailsByTDpCadreId(Long tdpCadreId);
+    public List<QuestionAnswerVO> getSurveyQuestionDetails(Long tdpCadreId);
 }
