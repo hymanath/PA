@@ -519,10 +519,12 @@ public class RWSNICService implements IRWSNICService{
 								finalVo.setGroundedPWSExceededCount(groundedPWSExceededCount);
 								finalVo.setCompletedPWSExceededCount(completedPWSExceededCount);
 								finalVo.setCommissionedPWSExceededCount(commissionedPWSExceededCount);
+								finalVo.setPhysicalTestCount(groundedPWSExceededCount+completedPWSExceededCount+commissionedPWSExceededCount);
 							}else if(finalVo.getAssetType() !=null && finalVo.getAssetType().trim().equalsIgnoreCase("CPWS")){
-								finalVo.setGroundedCPWSExceededCount(groundedCPWSExceededCount);
-								finalVo.setCompletedCPWSExceededCount(completedCPWSExceededCount);
-								finalVo.setCommissionedCPWSExceededCount(commissionedCPWSExceededCount);
+								finalVo.setGroundedPWSExceededCount(groundedCPWSExceededCount);
+								finalVo.setCompletedPWSExceededCount(completedCPWSExceededCount);
+								finalVo.setCommissionedPWSExceededCount(commissionedCPWSExceededCount);
+								finalVo.setPhysicalTestCount(groundedPWSExceededCount+completedPWSExceededCount+commissionedPWSExceededCount);
 						}
 					}
 				}
@@ -3936,13 +3938,10 @@ public class RWSNICService implements IRWSNICService{
 									
 			                    	if(matchVO.getWorkStatus().trim().equalsIgnoreCase("Grounded")){
 			                    		workStatus.setGroundedPWSExceededCount(workStatus.getGroundedPWSExceededCount()+1);
-			                    		assetTypeVO.setGroundedPWSExceededCount(assetTypeVO.getGroundedPWSExceededCount()+matchVO.getGroundedPWSExceededCount());
 			                    	}else if (matchVO.getWorkStatus().trim().trim().equalsIgnoreCase("completed")){
 			                    		workStatus.setCompletedPWSExceededCount(workStatus.getCompletedPWSExceededCount()+1);
-			                    		assetTypeVO.setGroundedPWSExceededCount(assetTypeVO.getGroundedPWSExceededCount()+matchVO.getGroundedPWSExceededCount());
 			                    	}else if (matchVO.getWorkStatus().trim().trim().equalsIgnoreCase("Commissioned")){
 			                    		workStatus.setCommissionedPWSExceededCount(workStatus.getCommissionedPWSExceededCount()+1);
-			                    		assetTypeVO.setGroundedPWSExceededCount(assetTypeVO.getGroundedPWSExceededCount()+matchVO.getGroundedPWSExceededCount());
 			                    	}
 							}
 
