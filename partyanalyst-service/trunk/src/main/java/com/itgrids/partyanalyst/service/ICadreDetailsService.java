@@ -168,4 +168,5 @@ public interface ICadreDetailsService {
 	public List<IdAndNameVO> getTdpCadreHealthDetailsByCadre(Long tdpCadreId);
 	public List<QuestionAnswerVO> getSurveyQuestionWithMarksDetailsByTDpCadreId(Long cadreId);
 	public List<CadreHealthDetailsVO> getTdpCadreHealthDetailsByCadreIds(Long tdpCadreId);
+	public List<QuestionAnswerVO> getSurveyQuestionDetails(Long cadreId);
 }

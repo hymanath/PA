@@ -3,8 +3,6 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -5460,7 +5458,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  Client client = Client.create();
 			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
 			  WebResource webResource = client.resource("https://www.mytdp.com/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
-			//WebResource webResource = client.resource("http://192.168.11.173:8080/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
+				//WebResource webResource = client.resource("http://192.168.11.173:8080/Survey/WebService/getSurveyQuestionWithMarksDetailsByTDpCadreId/"+tdpCadreId);
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
    	 	  if (response.getStatus() != 200) {
    	 		finalList =null;
@@ -5485,6 +5483,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	   	 			    if(question.has("surveyTypeId"))
 	 					{
 	 						vo.setSurveyTypeId(question.getLong("surveyTypeId"));
+	 					}	
+		   	 			if(question.has("designation"))
+	 					{
+	 						vo.setPercentage(question.getString("designation"));
 	 					}	
 	   	 			JSONArray  questionsList = question.getJSONArray("subList");
 	   	 			if(questionsList != null && questionsList.length()>0)
@@ -5526,6 +5528,70 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
    	 	 }
 	  }catch(Exception e){
 		  log.error("Exception raised at getSurveyQuestionWithMarksDetailsByTDpCadreId method in WebServiceHandlerService Class", e);
+	  }
+		return finalList;
+	  }
+  public List<QuestionAnswerVO> getSurveyQuestionDetails(Long tdpCadreId){
+			 List<QuestionAnswerVO> finalList = new ArrayList<QuestionAnswerVO>(0);
+		  try {
+			  Client client = Client.create();
+			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
+			  WebResource webResource = client.resource("https://www.mytdp.com/Survey/WebService/getSurveyQuestionsDetails/"+tdpCadreId);
+			  //WebResource webResource = client.resource("http://192.168.11.173:8080/Survey/WebService/getSurveyQuestionsDetails/"+tdpCadreId);
+			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+   	 	  if (response.getStatus() != 200) {
+   	 		   finalList =null;
+   	 		//throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+   	 	 }else{
+
+ 	    	 String output = response.getEntity(String.class);
+ 	    	if(output != null && !output.isEmpty()){
+ 	    		JSONArray finalArray = new JSONArray(output);
+ 	    		if(finalArray!=null && finalArray.length()>0){
+ 	    			for(int i=0;i<finalArray.length();i++){
+ 	    				QuestionAnswerVO vo =  new QuestionAnswerVO();
+	   	 					JSONObject question = (JSONObject) finalArray.get(i);
+	   	 			    if(question.has("surveyName"))
+	 					{
+	 						vo.setSurveyName(question.getString("surveyName"));
+	 					}	
+	   	 			    if(question.has("surveyTypeId"))
+	 					{
+	 						vo.setSurveyTypeId(question.getLong("surveyTypeId"));
+	 					}	
+	   	 			    if(question.has("questionId"))
+	 					{
+	 						vo.setQuestionId(question.getLong("questionId"));
+	 					}
+	   	 			    if(question.has("question"))
+	 					{
+	 						vo.setQuestion(question.getString("question"));
+	 					}
+	   	 			    if(question.has("id"))
+	 					{
+	 						vo.setId(question.getLong("id"));//givedOptionId
+	 					}
+	   	 			    if(question.has("name"))
+	 					{
+	 						vo.setName(question.getString("name"));
+	 					}
+		   	 			if(question.has("cadreId"))
+	 					{
+	 						vo.setUserId(question.getLong("cadreId"));//actual optionId
+	 					}
+			   	 		if(question.has("voterName"))
+	 					{
+	 						vo.setCandidateName(question.getString("voterName"));
+	 					}
+			   	 		finalList.add(vo);
+ 	    			}
+ 	    		}
+ 	    	}
+   	 	 
+   	 		 
+   	 	 }
+	  }catch(Exception e){
+		  log.error("Exception raised at getSurveyQuestionDetails method in WebServiceHandlerService Class", e);
 	  }
 		return finalList;
 	  }
