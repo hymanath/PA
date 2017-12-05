@@ -622,7 +622,8 @@ function getAllDistrictsListInState(typeVal,counterId){
 	$("#districtrepresent").html('');
 	var json = {
 		  stateId:"1",
-		  searchType:"all"
+		  searchType:"all",
+		  searchId:0
 		}
 	$.ajax({                
 		type:'POST',    
@@ -646,18 +647,19 @@ function getAllDistrictsListInState(typeVal,counterId){
 
 
 function getAllDistrictsInState(typeVal,counterId){
-	
+	var searchType="all";
 	if(typeVal=="popup"){
 		$("#districtCandId").html('');
+		searchType = "refCandidate";
 	}else if(counterId == null || counterId ==""){
 		$("#district"+typeVal+counterId).html('');
 	}else if(counterId !="" && parseInt(counterId)>0){
 		$("#districtId"+typeVal+counterId).html('');
 	}
-	
 	var json = {
 		  stateId:"1",
-		  searchType:"all"
+		  searchType:searchType,
+		  searchId:0
 		}
 	$.ajax({                
 		type:'POST',    
@@ -706,7 +708,8 @@ function getConstituencyNamesByDistrictId(levelVal,counterId,typeVal){
 	  $("#constituencyCanId").html('');
 	  var json = {
 		  districtId:levelVal,
-		  searchType:"all"
+		  searchType:"all",
+		  searchId:0
 		}
 	$.ajax({                
 		type:'POST',    

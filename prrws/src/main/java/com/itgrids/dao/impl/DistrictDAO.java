@@ -436,6 +436,9 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 	    }else if(searchType != null && searchType.equalsIgnoreCase("refLocation") ){
 	    	sb.append(" select distinct model.petitionReffererCandidate.locationAddress.district.districtId,model.petitionReffererCandidate.locationAddress.district.districtName from PetitionRefferer model "+
 		               " where model.petitionReffererCandidate.locationAddress.state.stateId=:stateId  ");
+	    }else if(searchType != null && searchType.equalsIgnoreCase("refCandidate") ){
+	    	sb.append(" select distinct model.locationAddress.district.districtId,model.locationAddress.district.districtName from PetitionReffererCandidate model "+
+		               " where model.locationAddress.state.stateId=:stateId  ");
 	    }
 	    Query query = getSession().createQuery(sb.toString());
 	    query.setParameter("stateId",stateId);
