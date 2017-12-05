@@ -614,7 +614,7 @@ $(document).on("change","#mandalrepresent",function(){
 $(document).on("change","#districtCandId",function(){
 	var levelVal = $(this).val();
 	var counterId = $(this).attr("attr_counterval");
-	getConstituencyNamesByDistrictId(levelVal,"","");
+	getConstituencyNamesByDistrictId(levelVal,"","refCandidate"); 
 	
 });
 
@@ -703,12 +703,17 @@ function getAllDistrictsInState(typeVal,counterId){
 }
 
 function getConstituencyNamesByDistrictId(levelVal,counterId,typeVal){
-	  $("#constituencyId"+typeVal+counterId).html('');
-	  $("#constituencyrepresent").html('');
-	  $("#constituencyCanId").html('');
+	 $("#constituencyCanId").html('');
+	if(typeVal =="refCandidate"){
+		typeVal =="refCandidate"
+	}else{
+		$("#constituencyId"+typeVal+counterId).html('');
+		$("#constituencyrepresent").html('');
+		typeVal ="all";
+	}	  
 	  var json = {
 		  districtId:levelVal,
-		  searchType:"all",
+		  searchType:typeVal,
 		  searchId:0
 		}
 	$.ajax({                
