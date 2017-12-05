@@ -473,7 +473,6 @@ public class RWSNICService implements IRWSNICService{
 									}
 		 	   					}
 		 	   					finalList.add(mainVO);
-		 	   					
 		 	   				}
 	 	    			}
 	 	    			
@@ -481,7 +480,52 @@ public class RWSNICService implements IRWSNICService{
 	 	    	}
 	 	    	
 	 	    }
-			
+	    	Long groundedPWSExceededCount =0l,completedPWSExceededCount=0l,commissionedPWSExceededCount=0l;
+				Long groundedCPWSExceededCount =0l,completedCPWSExceededCount=0l,commissionedCPWSExceededCount=0l;
+				List<IdNameVO> exceedeData =null;
+				if(VO.getLocationType().trim().equalsIgnoreCase("state") && VO.getType().trim().equalsIgnoreCase("graph")){
+					VO.setLocationValue(1l);
+					VO.setExceededDuration("");
+					exceedeData =getOnClickExceedWorkDetails(VO);
+				}
+				if(commonMethodsUtilService.isListOrSetValid(exceedeData)){
+					for (IdNameVO idNameVO : exceedeData) {
+						if(idNameVO.getWorkStatus().trim().equalsIgnoreCase("Completed")){
+							if(idNameVO.getAssetType().equalsIgnoreCase("CPWS")){
+								completedCPWSExceededCount=completedCPWSExceededCount+1;
+							}else if(idNameVO.getAssetType().equalsIgnoreCase("PWS")){
+								completedPWSExceededCount=completedPWSExceededCount+1;
+							}
+							
+						}else if(idNameVO.getWorkStatus().trim().equalsIgnoreCase("Grounded")){
+							if(idNameVO.getAssetType().equalsIgnoreCase("CPWS")){
+								groundedCPWSExceededCount=groundedCPWSExceededCount+1;
+							}else if(idNameVO.getAssetType().equalsIgnoreCase("PWS")){
+								groundedPWSExceededCount=groundedPWSExceededCount+1;
+							}
+							
+						}else if(idNameVO.getWorkStatus().trim().equalsIgnoreCase("Commissioned")){
+							if(idNameVO.getAssetType().equalsIgnoreCase("CPWS")){
+								commissionedCPWSExceededCount=commissionedCPWSExceededCount+1;
+							}else if(idNameVO.getAssetType().equalsIgnoreCase("PWS")){
+								commissionedPWSExceededCount=commissionedPWSExceededCount+1;
+							}
+						}
+					}
+				}
+				if(!finalList.isEmpty() && finalList.size()>0){
+					for (BasicVO finalVo : finalList) {
+						if(finalVo.getAssetType() !=null && finalVo.getAssetType().trim().equalsIgnoreCase("PWS")){
+								finalVo.setGroundedPWSExceededCount(groundedPWSExceededCount);
+								finalVo.setCompletedPWSExceededCount(completedPWSExceededCount);
+								finalVo.setCommissionedPWSExceededCount(commissionedPWSExceededCount);
+							}else if(finalVo.getAssetType() !=null && finalVo.getAssetType().trim().equalsIgnoreCase("CPWS")){
+								finalVo.setGroundedCPWSExceededCount(groundedCPWSExceededCount);
+								finalVo.setCompletedCPWSExceededCount(completedCPWSExceededCount);
+								finalVo.setCommissionedCPWSExceededCount(commissionedCPWSExceededCount);
+						}
+					}
+				}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getSchemeWiseWorkDetails - RuralWaterSupplyDashBoardService service", e);
 		}
@@ -3889,6 +3933,17 @@ public class RWSNICService implements IRWSNICService{
 									locationVO.setSanctionedAmount(locationVO.getSanctionedAmount()+ matchVO.getSanctionedAmount());
 									workStatus.setSanctionedAmount(workStatus.getSanctionedAmount()+matchVO.getSanctionedAmount());
 									assetTypeVO.setSanctionedAmount(assetTypeVO.getSanctionedAmount()+ matchVO.getSanctionedAmount());
+									
+			                    	if(matchVO.getWorkStatus().trim().equalsIgnoreCase("Grounded")){
+			                    		workStatus.setGroundedPWSExceededCount(workStatus.getGroundedPWSExceededCount()+1);
+			                    		assetTypeVO.setGroundedPWSExceededCount(assetTypeVO.getGroundedPWSExceededCount()+matchVO.getGroundedPWSExceededCount());
+			                    	}else if (matchVO.getWorkStatus().trim().trim().equalsIgnoreCase("completed")){
+			                    		workStatus.setCompletedPWSExceededCount(workStatus.getCompletedPWSExceededCount()+1);
+			                    		assetTypeVO.setGroundedPWSExceededCount(assetTypeVO.getGroundedPWSExceededCount()+matchVO.getGroundedPWSExceededCount());
+			                    	}else if (matchVO.getWorkStatus().trim().trim().equalsIgnoreCase("Commissioned")){
+			                    		workStatus.setCommissionedPWSExceededCount(workStatus.getCommissionedPWSExceededCount()+1);
+			                    		assetTypeVO.setGroundedPWSExceededCount(assetTypeVO.getGroundedPWSExceededCount()+matchVO.getGroundedPWSExceededCount());
+			                    	}
 							}
 
 						}
@@ -4116,6 +4171,9 @@ public class RWSNICService implements IRWSNICService{
 				vo.setName(templateArr[i]);
 				vo.setCount(0l);
 				vo.setSanctionAmount(0l);
+				vo.setGroundedPWSExceededCount(0l);
+				vo.setCompletedPWSExceededCount(0l);
+				vo.setCommissionedPWSExceededCount(0l);
 				cpwsVO.getSubList().add(vo);
 		   }
 			
@@ -4130,6 +4188,9 @@ public class RWSNICService implements IRWSNICService{
 				vo.setName(templateArr[i]);
 				vo.setCount(0l);
 				vo.setSanctionAmount(0l);
+				vo.setGroundedPWSExceededCount(0l);
+				vo.setCompletedPWSExceededCount(0l);
+				vo.setCommissionedPWSExceededCount(0l);
 				pwsVO.getSubList().add(vo);
 		   }
 			resultList.add(cpwsVO);
@@ -4587,9 +4648,10 @@ public class RWSNICService implements IRWSNICService{
 					
 					if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Grounded")) {
 						workDetailsVO.setCompletionDate(currentDate);
-					} else if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("completed")) {
-						workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
+					} else if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("completed") || commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Commissioned")) {
+						if(commonMethodsUtilService.getStringValueForObject(param[7]) !=null && commonMethodsUtilService.getStringValueForObject(param[7]).length() > 0){
+							workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[7]));
+						}
 					}
 					// calculating noOfDays between two difference date
 					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus()));
@@ -4617,6 +4679,7 @@ public class RWSNICService implements IRWSNICService{
 		try{
 			Date fromDate=null, toDate= null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 			String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
 			
 			if(inputVO.getFromDateStr()!= null && inputVO.getToDateStr()!=null && inputVO.getFromDateStr().length()>0 && inputVO.getToDateStr().length()>0){
@@ -4649,9 +4712,9 @@ public class RWSNICService implements IRWSNICService{
 					workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					workDetailsVO.setWorkStatus(commonMethodsUtilService.getStringValueForObject(param[2]));
 					workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
-					workDetailsVO.setAdminDate(commonMethodsUtilService.getStringValueForObject(param[4]));
-					workDetailsVO.setGroundedDate(commonMethodsUtilService.getStringValueForObject(param[5]));
-					workDetailsVO.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[6]));
+					workDetailsVO.setAdminDate(sdf1.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[4]))));
+					workDetailsVO.setGroundedDate(sdf1.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[5]))));
+					workDetailsVO.setTargetDate(sdf1.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[6]))));
 					workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[8]));
 					workDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[9]));
 					workDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[10]));
@@ -4664,16 +4727,20 @@ public class RWSNICService implements IRWSNICService{
 					
 					
 					if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Grounded")) {
-						workDetailsVO.setCompletionDate(currentDate);
-					} else if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("completed")) { //|| commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Commissioned")
-						workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[7]));
+						workDetailsVO.setCompletionDate(sdf1.format(sdf1.parse(currentDate)));
+					} else if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("completed") || commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Commissioned")) { //|| commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Commissioned")
+						if(commonMethodsUtilService.getStringValueForObject(param[7]) !=null && commonMethodsUtilService.getStringValueForObject(param[7]).length() > 0){
+							workDetailsVO.setCompletionDate(sdf1.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[7]))));
+						}
 						
 					}
 					// calculating noOfDays between two difference date
 					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus()));
                     workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
-                    if(inputVO.getExceededDuration() == null && inputVO.getExceededDuration().length()>0){
-                    	finalList.add(workDetailsVO);
+                    if(inputVO.getExceededDuration().isEmpty() || inputVO.getExceededDuration().length() <= 0){
+                    	if(workDetailsVO.getName()!=null && !workDetailsVO.getName().isEmpty() && workDetailsVO.getName().length()>0){
+                    		finalList.add(workDetailsVO);
+                    	}
                     }else{
                     	workList.add(workDetailsVO);
                     }

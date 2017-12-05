@@ -85,7 +85,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 													}
 													if(work.getCommissionedDate() == null && work.getCompletedDate() == null && work.getGroundedDate()!=null ){
 														work.setWorkStatus("Grounded");
-													}else if(work.getCommissionedDate() != null && work.getCompletedDate() == null && work.getGroundedDate()!= null ){
+													}else if(work.getCommissionedDate() != null && work.getCompletedDate() != null && work.getGroundedDate()!= null ){
 														work.setWorkStatus("Commissioned");
 													}else if(work.getCommissionedDate() == null && work.getCompletedDate() != null && work.getGroundedDate()!= null ){
 														work.setWorkStatus("Completed");

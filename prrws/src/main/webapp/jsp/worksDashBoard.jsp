@@ -223,23 +223,28 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-12">
-					<div class="white-block" style="padding:10px;">
+					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
 						<h4>Works -  STATE LEVEL OVERVIEW</h4>
+					</div>
+					<div class="white-block" style="padding:10px;">	
 						<div class="row">
 							<div class="col-sm-6">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Works</span></h5>
+								<h5 style="padding:5px"><span class="chartTitleAlign">Works&nbsp;&nbsp;-&nbsp;&nbsp;PWS</span></h5>
 								<div class="chart2" id="habitationWorksPWS" style="height:315px;"></div>
 							</div>
 							<div class="col-sm-6">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Works</span></h5>
+								<h5 style="padding:5px"><span class="chartTitleAlign">Works&nbsp;&nbsp;-&nbsp;&nbsp;CPWS</span></h5>
 								<div class="chart2" id="habitationWorksCPWS" style="height:315px;"></div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-12 m_top20">
-					<div class="white-block" style="padding:10px;">
+					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
 						<h4>Exceeded Target Works Details</h4>
+					</div>
+					<div class="white-block" style="padding:10px;">
+						
 						<div class="row">
 							<div class="col-sm-3">
 								<div id="ExceededTargetDetailsTotal"></div>
