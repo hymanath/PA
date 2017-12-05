@@ -2272,11 +2272,11 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			<img id="surveyQueDetailsIdImgId" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
 		  </center>
 		  <div class="row">
-			<div class="col-sm-12">
-				<div id="normalSurveyDiv"></div>
-			</div>
 			<div class="col-sm-12" style="margin-top:10px;">
 				<div id="quizSurveyDiv"></div>
+			</div>
+			<div class="col-sm-12">
+				<div id="normalSurveyDiv"></div>
 			</div>
 			</div>
       </div>
@@ -3729,6 +3729,7 @@ function getHealthDetails(cadreId){
 $(document).on("click",".surveyQuestionsCls",function(){
 	$("#surveyQuestionDetailsDivId").modal('show');
 	getSurveyQuestionWithMarksDetailsByTDpCadreId();
+	getSurveyQuestionDetails();
 });
 
 </script>
