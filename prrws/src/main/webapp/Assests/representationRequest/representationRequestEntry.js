@@ -3,8 +3,13 @@ var globalWorkTypeCount=1;
 setTimeout(function(){ 
 	buildSelfAndRepresenteeDetails("self")
 	getAllDistrictsInState("represent","");
-	getPetitionDepartmentList("self")
-	getPetitionSubjectList("subjectId","self","")
+	getPetitionDepartmentList("self");
+	getPetitionSubjectList("subjectId","self","");
+	getPetitionLeadDetailsList("self");
+	getPetitionBriefLeadList("self");
+	getPetitionGrantList("self");
+	getPetitionStatusList("self");
+
 	
 }, 2000);
  
@@ -30,7 +35,12 @@ $(document).on("click",".selfRepresenceCls",function(){
 			buildSelfAndRepresenteeDetails(typeVal)
 			//getAllDistrictsInState(typeVal,1);
 			getPetitionDepartmentList(typeVal)
-			getPetitionSubjectList("subjectId",typeVal,"")
+			getPetitionSubjectList("subjectId",typeVal,"");
+			getPetitionLeadDetailsList(typeVal);
+	        getPetitionBriefLeadList(typeVal);
+			getPetitionGrantList(typeVal);
+	        getPetitionStatusList(typeVal);
+			
 		}else if(typeVal == "represent"){
 			$("#selfDetailsDivId").html('');
 			alreadyCandidateId='';
@@ -40,6 +50,10 @@ $(document).on("click",".selfRepresenceCls",function(){
 			getAllDistrictsListInState(typeVal,"");
 			getPetitionDepartmentList(typeVal)
 			getPetitionSubjectList("subjectId",typeVal,"")
+			getPetitionLeadDetailsList(typeVal);
+	        getPetitionBriefLeadList(typeVal);
+			getPetitionGrantList(typeVal);
+	        getPetitionStatusList(typeVal);
 		}
 	}
 	
@@ -309,10 +323,52 @@ function buildTemplateWorkDetails(typeVal){
 				str+='<div class="row">';
 					str+='<div class="col-sm-12"><span class="addLocationCss m_top10 pull-right cloned_Element" right-block-clone-counter-'+typeVal+'="'+globalWorkTypeCount+'" style="cursor:pointer;" right-block-clone-'+typeVal+'="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">ADD WORK LOCATION</span></div>';
 				str+='</div>';	
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-3">';
+					str+='<label>Lead</label>';
+					str+='<select class="form-control chosen-select m_top10""  id="petitionLead'+typeVal+'" >';
+					//str+='<option value="0">Select Petition Lead</option>';
+					str+='</select>';
+					str+='<div class="m_top10"  id="petitionLead'+typeVal+'Err"></div>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-3">';
+					str+='<label>Brief Lead</label>';
+					str+='<select class="form-control chosen-select m_top10"  id="petitionBriefLeadId">';
+					//str+='<option value="0">Select Petition Brief Lead</option>';
+					str+='</select>';
+					str+='<div class="m_top10"  id="petitionBriefLeadId'+typeVal+'Err"></div>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-3">';
+					str+='<label>Petition Grant</label>';
+					str+='<select class="form-control chosen-select m_top10"  id="petitionGrantId">';
+					//str+='<option value="0">Select Petition Grant</option>';
+					str+='</select>';
+					str+='<div class="m_top10"  id="petitionGrantId'+typeVal+'Err"></div>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-3">';
+					str+='<label>Petition Status </label>';
+					str+='<select class="form-control chosen-select m_top10"  id="petitionStatusId">';
+					//str+='<option value="0">Select Petition Status</option>';
+					str+='</select>';
+					str+='<div class="m_top10"  id="petitionStatusId'+typeVal+'Err"></div>';
+					str+='</div>';
+					
+					str+='</div>';
+					//hhhh
+					str+='<div class="row m_top20">';
+						str+='<div class="col-sm-6">';
+							str+='<h3 class="panel-title f_18">REMARKS <span class="f_12"></span></h3>';
+							str+='<textarea  class="form-control m_top20 workNoTextAreaValidCls'+typeVal+'" rows="4" id="textArea'+typeVal+'1"></textarea>';
+							str+='<div class="m_top10"  id="textArea'+typeVal+'1Err"></div>';
+						str+='</div>';
+					str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	
-	str+='<div class="col-sm-12"><span class="addLocationCss m_top10 cloned_Element" style="cursor:pointer;background-color:green;" onclick="saveRepresentRequestDetails()"> SAVE DETAILS</span></div>';
+	str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 cloned_Element" style="cursor:pointer;background-color:green;" onclick="saveRepresentRequestDetails()"> SAVE DETAILS</span></div>';
 	
 	
 /*	str+='<div class="row">';//cloned_Element
@@ -1514,8 +1570,8 @@ $("#"+divId).html('');
 		$("#"+divId).trigger('chosen:updated');
 	});	
 }
-getPetitionLeadDetailsList();
-function getPetitionLeadDetailsList(){
+//getPetitionLeadDetailsList();
+function getPetitionLeadDetailsList(typeVal){
 	var json = {
 		
 	};
@@ -1530,16 +1586,15 @@ function getPetitionLeadDetailsList(){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#constituencyCanId").append('<option value="0">All</option>');
+			 $("#petitionLead"+typeVal).append('<option value="0">All</option>');
 			for(var i in result){
-				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#petitionLead"+typeVal).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		$("#constituencyCanId").trigger('chosen:updated');
+		$("#petitionLead"+typeVal).trigger('chosen:updated');
 	});	
 }
-getPetitionBriefLeadList();
-function getPetitionBriefLeadList(){
+function getPetitionBriefLeadList(typeVal){
 			var json = {
 				
 			};
@@ -1554,16 +1609,14 @@ function getPetitionBriefLeadList(){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#constituencyCanId").append('<option value="0">All</option>');
+			 $("#petitionBriefLeadId").append('<option value="0">All</option>');
 			for(var i in result){
-				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#petitionBriefLeadId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		$("#constituencyCanId").trigger('chosen:updated');
+		$("#petitionBriefLeadId").trigger('chosen:updated');
 	});	
 }
-
-getPetitionGrantList();
 function getPetitionGrantList(){
 	var json = {
 		
@@ -1579,15 +1632,15 @@ function getPetitionGrantList(){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#constituencyCanId").append('<option value="0">All</option>');
+			 $("#petitionGrantId").append('<option value="0">All</option>');
 			for(var i in result){
-				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#petitionGrantId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		$("#constituencyCanId").trigger('chosen:updated');
+		$("#petitionGrantId").trigger('chosen:updated');
 	});	
 }
-getPetitionStatusList();
+
 function getPetitionStatusList(){
 	var json = {
 		
@@ -1603,12 +1656,12 @@ function getPetitionStatusList(){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#constituencyCanId").append('<option value="0">All</option>');
+			 $("#petitionStatusId").append('<option value="0">All</option>');
 			for(var i in result){
-				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#petitionStatusId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		$("#constituencyCanId").trigger('chosen:updated');
+		$("#petitionStatusId").trigger('chosen:updated');
 	});	
 }
 $(document).on("change",".subjecOnchngeCls",function(){

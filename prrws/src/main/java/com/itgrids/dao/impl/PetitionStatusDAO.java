@@ -21,7 +21,7 @@ public class PetitionStatusDAO extends GenericDaoHibernate<PetitionStatus,Long> 
 	}
 	
 	public List<Object[]> getPetitionStatusList(){
-		Query qry = getSession().createQuery(" select model.petitionStatusId,model.description from PetitionStatus model ");
+		Query qry = getSession().createQuery(" select model.petitionStatusId,model.description from PetitionStatus model where model.isDeleted = 'N' order by model.orderNo ");
 		return qry.list();
 	}
 }

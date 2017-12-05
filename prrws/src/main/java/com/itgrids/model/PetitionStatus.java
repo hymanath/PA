@@ -13,7 +13,8 @@ public class PetitionStatus {
 
 	private Long petitionStatusId;
 	private String description;
-	
+	private Long orderNo;
+	private String isDeleted ;
 	@Id
 	@Column(name="petition_status_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
@@ -30,6 +31,19 @@ public class PetitionStatus {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+	@Column(name="order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 }
