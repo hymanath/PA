@@ -562,7 +562,7 @@
 					<img src="Assests/img/BioMetricL.png" >
 					<h5 style="display: inline-block;">BIOMETRIC  DASHBOARD</h5>
 					<div class=" " style="text-align: right">
-						<h2 style="margin-top: 0px" id ="bioMetricTtlEmpHeadingId">0</h2>
+						<h2 style="margin-top: 0px" class="bioMetricDashBoardAllCls">0</h2>
 						<p class="">Total Employee/Present</p>
 					</div>
 					<div class="block-footer">
