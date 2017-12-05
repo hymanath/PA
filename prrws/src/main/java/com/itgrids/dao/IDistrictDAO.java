@@ -46,4 +46,5 @@ public interface IDistrictDAO extends GenericDao<District,Long>{
 	public List<Object[]> getENSLocationIdfromENSLocationId(String searchLocationValue);
 	
 	public List<Object[]> getMgnregsDistrictMappingCode(Long districtId);
+	public List<Object[]> getPetitionsDistrictsList(Long stateId);
 }

@@ -173,6 +173,8 @@ function buildSelfAndRepresenteeDetails(typeVal){
 					str+='</select>';
 					str+='<div id="subSubjectId'+typeVal+'Err"></div>';
 				str+='</div>';
+			str+='</div>';			
+			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-3">';
 					str+='<label>Department</label>';
 					str+='<select  name="deptId"  class="form-control chosen-select m_top10" id="departmentId'+typeVal+'">';
@@ -190,7 +192,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 					str+='<div id="previousPetitionId'+typeVal+'Err"></div>';
 				str+='</div>';
 				str+='<div class="col-sm-3" style="display:none;" id = "previousPetitionRefId">';
-					str+='<label>Previous Petition No (Endt NO)</label>';
+					str+='<label>Previous Petition No (Endorsement NO)</label>';
 					str+='<input  name="previousPetitionRefNo"  type="text" class="form-control m_top10 height45" id="workCost'+typeVal+'" placeholder="101/20/11/2017">';
 					str+='<div id="workCost'+typeVal+'Err"></div>';
 				str+='</div>';
@@ -261,6 +263,11 @@ function buildTemplateWorkDetails(typeVal){
 										str+='<option value="0">Select Sub Subject</option>';
 									str+='</select>';
 									str+='<div class="m_top10"  id="subWorkTypeId'+typeVal+''+globalWorkTypeCount+'Err"></div>';
+								str+='</div>';
+								str+='<div class="col-sm-3">';
+									str+='<label>Work Cost (Est. Cost in Lakh)</label>';
+									str+='<input type="text"  name="worksList[0].estimationCost" class="form-control m_top10 height45" id="workCost'+typeVal+'" placeholder="Enter Work Cost">';
+									str+='<div id="workCost'+typeVal+'Err"></div>';
 								str+='</div>';
 							str+='</div>';
 					str+='</div>';
@@ -430,6 +437,11 @@ function clonedTemplate(blockId,type,counterId,typeVal){
 							clonedTemplate+='</select>';
 							clonedTemplate+='<div class="m_top10"  id="subWorkTypeId'+typeVal+''+counterId+'Err"></div>';
 						clonedTemplate+='</div>';
+						clonedTemplate+='<div class="col-sm-3">';
+									clonedTemplate+='<label>Work Cost (Est. Cost in Lakh)</label>';
+									clonedTemplate+='<input type="text"  name="worksList['+counterId+'].estimationCost" class="form-control m_top10 height45" id="workCost'+typeVal+'" placeholder="Enter Work Cost">';
+									clonedTemplate+='<div id="workCost'+typeVal+''+counterId+'Err"></div>';
+								clonedTemplate+='</div>';
 					clonedTemplate+='</div>';
 					
 				clonedTemplate+='</div>';
@@ -609,7 +621,8 @@ $(document).on("change","#districtCandId",function(){
 function getAllDistrictsListInState(typeVal,counterId){	
 	$("#districtrepresent").html('');
 	var json = {
-		  stateId:"1"
+		  stateId:"1",
+		  searchType:"all"
 		}
 	$.ajax({                
 		type:'POST',    
@@ -643,7 +656,8 @@ function getAllDistrictsInState(typeVal,counterId){
 	}
 	
 	var json = {
-		  stateId:"1"
+		  stateId:"1",
+		  searchType:"all"
 		}
 	$.ajax({                
 		type:'POST',    
@@ -691,7 +705,8 @@ function getConstituencyNamesByDistrictId(levelVal,counterId,typeVal){
 	  $("#constituencyrepresent").html('');
 	  $("#constituencyCanId").html('');
 	  var json = {
-		  districtId:levelVal
+		  districtId:levelVal,
+		  searchType:"all"
 		}
 	$.ajax({                
 		type:'POST',    
@@ -723,7 +738,8 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,type
 		$("#mandalId"+typeVal+counterId).html('');
 		$("#mandalrepresent").html('');
 	  var json = {
-		  constituencyId:levelVal
+		  constituencyId:levelVal,
+		  searchType:"all"
 		}        
 	$.ajax({                
 		type:'POST',    
@@ -930,7 +946,7 @@ function getPetitionDepartmentList(typeVal){
 	$("#departmentId"+typeVal).html('');
 	$("#workTypeId"+typeVal+"1").html('');
 	  var json = {
-		
+		  searchType:"all" // all/petitionGivenDepts
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -962,7 +978,9 @@ function getPetitionDepartmentList(typeVal){
 
 function getSubjectPetitionsDepartmentList(typeVal,count){
 	 $("#workTypeId"+typeVal+""+count+"").html('');
-	  var json = {}           
+	   var json = { 
+		  searchType:"all" // all/petitionGivenDepts
+	  };     
 	$.ajax({              
 		type:'POST',    
 		url: 'getPetitionDepartmentList',
@@ -985,7 +1003,9 @@ function getSubjectPetitionsDepartmentList(typeVal,count){
 
 function getPetitionDesignationList(){
     $("#designationsId").html('');
-	  var json = {};
+	  var json = {
+		   searchType:"refCandidateDesignations"// all/refCandidateDesignations/petitionGivenRefCandidateDesignations
+	  };
 	$.ajax({              
 		type:'POST',    
 		url: 'getPetitionDesignationList',
@@ -1286,6 +1306,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 	$("#dataTableCandidateId").removeClass("dataTable");
 	$("#dataTableCandidateId_wrapper").css("margin-top","20px")
 }
+/*
 getRepresentativeSearchWiseDetails();
 function getRepresentativeSearchWiseDetails(){
  
@@ -1306,7 +1327,7 @@ function getRepresentativeSearchWiseDetails(){
   }).done(function(result){
   
   }); 
-}  
+}  */
 function  enableWorks(value,divId,typeVal){
 	$(".appendDiv"+typeVal).html('');	
 	$('#'+divId+'').hide()

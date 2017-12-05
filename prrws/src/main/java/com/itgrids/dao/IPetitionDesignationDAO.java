@@ -10,5 +10,5 @@ public interface IPetitionDesignationDAO extends GenericDao<PetitionDesignation,
 	public List<Object[]> getAllpetitionDesignationList();
 	public List<Object[]> getAllReferredCandidateDesignationList();;
 	public List<Object[]> getGivenPetitionCandidateDesignationList();
-
+	public List<Object[]> getGivenpetitionReprDesignationsList();
 }
