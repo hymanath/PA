@@ -28,7 +28,7 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 	}
 
 	@Override
-	public List<Object[]> getWorksData(Date fromDate,Date toDate,String assetType, String locationType,String locationValue,String districtId) {
+	public List<Object[]> getWorksData(Date fromDate,Date toDate,String status,String assetType, String locationType,String locationValue,String districtId) {
 		
 		StringBuilder sb = new StringBuilder();
 		//0-workId,1-WorkName,2-status,3-assetType,4-adminDate,5-groundDate,6-targetrDate,7-completionDate
@@ -36,10 +36,7 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		sb.append("select model.rwsWork.workId,model.rwsWork.workName,model.rwsWork.workStatus,model.rwsWork.assetType,model.rwsWork.adminDate,model.rwsWork.groundedDate,model.rwsWork.targetDate,model.rwsWork.completedDate," +
 				" model.districtCode,model.districtName, model.constituencyCode,model.constituencyName,model.mandalCode,model.mandalName,model.habitationCode," +
 				"model.habitationName,model.rwsWork.sanctionedAmount, 01, 'AndraPradesh' from RwsWorkLocation model where model.rwsWork.workStatus != 'Not grounded' ");
-		/*if(fromDate!= null && toDate!=null && (locationType == null || !locationType.equalsIgnoreCase("district"))){
-			sb.append(" and model.adminDate between DATE_FORMAT(:fromDate,'%y-%m-%d') and DATE_FORMAT(:toDate,'%y-%m-%d')");
-		}
-		else*/ if(fromDate!= null && toDate!=null){
+		if(fromDate!= null && toDate!=null){
 			sb.append(" and model.rwsWork.adminDate between :fromDate and :toDate ");
 		}
 		if(assetType!= null && assetType.length()>0){
@@ -47,6 +44,9 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		}
 		if(districtId!=null && districtId.length()>0){
 			sb.append(" and model.districtCode =:districtId");
+		}
+		if(status != null && status.length()>0){
+			sb.append(" and model.rwsWork.workStatus =:status ");
 		}
 		if(locationType!= null && locationType.length()>0 ){
 			if(locationType.equalsIgnoreCase("district")){
@@ -68,6 +68,12 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		}
 		if(locationType!= null && locationType.length()>0 && locationValue !=null && locationValue.length()>0 && !locationType.equalsIgnoreCase("state")){
 			query.setParameter("locationValue", locationValue.toString());
+		}
+		if(status != null && status.length()>0){
+			if(status.equalsIgnoreCase("onGoing")){
+				status="Grounded";
+			}
+			query.setParameter("status",status);
 		}
 		if(districtId!=null && districtId.length()>0){
 			query.setParameter("districtId",districtId.toString());

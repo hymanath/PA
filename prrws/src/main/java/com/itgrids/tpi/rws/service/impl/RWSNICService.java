@@ -4626,7 +4626,7 @@ public class RWSNICService implements IRWSNICService{
 				fromDate = sdf.parse("01-04-"+toYear);
 			}
 			
-			List<Object[]> worksdata = rwsWorkDAO.getWorksData(fromDate,toDate,null,null,null,null);
+			List<Object[]> worksdata = rwsWorkDAO.getWorksData(fromDate,toDate,inputVO.getStatus(),null,null,null,null);
 			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
 				for (Object[] param : worksdata) {
 					//0-workId,1-WorkName,2-status,3-assetType,4-adminDate,5-groundDate,6-targetrDate,7-completionDate
@@ -4645,14 +4645,20 @@ public class RWSNICService implements IRWSNICService{
 					workDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[13]));
 					workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[16]));
 					
-					if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Grounded")) {
-						workDetailsVO.setCompletionDate(currentDate);
-					} else if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("completed") || commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Commissioned")) {
-						if(commonMethodsUtilService.getStringValueForObject(param[7]) !=null && commonMethodsUtilService.getStringValueForObject(param[7]).length() > 0){
-							workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[7]));
+					// calculating noOfDays between two difference date
+					if(inputVO.getStatus() !=null && inputVO.getStatus().trim().equalsIgnoreCase("ongoing")){
+						if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Grounded")) {
+							workDetailsVO.setCompletionDate(currentDate);
+						}
+					}else{
+						if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Grounded")) {
+							workDetailsVO.setCompletionDate(currentDate);
+						} else if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("completed") || commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Commissioned")) {
+							if(commonMethodsUtilService.getStringValueForObject(param[7]) !=null && commonMethodsUtilService.getStringValueForObject(param[7]).length() > 0){
+								workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[7]));
+							}
 						}
 					}
-					// calculating noOfDays between two difference date
 					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus()));
                     workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
                     workDetailsMap.put(workDetailsVO.getWrokIdStr(),workDetailsVO);
@@ -4699,7 +4705,7 @@ public class RWSNICService implements IRWSNICService{
 			}else{
 				inputVO.setLocationIdStr(inputVO.getLocationValue().toString());
 			}
-			List<Object[]> worksdata =  rwsWorkDAO.getWorksData(fromDate,toDate,inputVO.getAssetType(),inputVO.getLocationType(),inputVO.getLocationIdStr(),inputVO.getDistrictValue());
+			List<Object[]> worksdata =  rwsWorkDAO.getWorksData(fromDate,toDate,inputVO.getStatus(),inputVO.getAssetType(),inputVO.getLocationType(),inputVO.getLocationIdStr(),inputVO.getDistrictValue());
 			
 			List<IdNameVO> workList = new ArrayList<IdNameVO>();
 			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
