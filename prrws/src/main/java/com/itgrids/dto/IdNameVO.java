@@ -69,6 +69,9 @@ public class IdNameVO implements Serializable{
 	private String habitationCode;
 	private String habitationName;
 	
+	private Long groundedPWSExceededCount =0l;
+	 private Long completedPWSExceededCount=0l;
+	 private Long commissionedPWSExceededCount=0l;
 	
 	public IdNameVO() {
 		super();
@@ -407,6 +410,24 @@ public class IdNameVO implements Serializable{
 	}
 	public void setHabitationName(String habitationName) {
 		this.habitationName = habitationName;
+	}
+	public Long getGroundedPWSExceededCount() {
+		return groundedPWSExceededCount;
+	}
+	public void setGroundedPWSExceededCount(Long groundedPWSExceededCount) {
+		this.groundedPWSExceededCount = groundedPWSExceededCount;
+	}
+	public Long getCompletedPWSExceededCount() {
+		return completedPWSExceededCount;
+	}
+	public void setCompletedPWSExceededCount(Long completedPWSExceededCount) {
+		this.completedPWSExceededCount = completedPWSExceededCount;
+	}
+	public Long getCommissionedPWSExceededCount() {
+		return commissionedPWSExceededCount;
+	}
+	public void setCommissionedPWSExceededCount(Long commissionedPWSExceededCount) {
+		this.commissionedPWSExceededCount = commissionedPWSExceededCount;
 	}
 	
 }

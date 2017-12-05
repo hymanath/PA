@@ -16,6 +16,13 @@ public class BasicVO {
 	 private Long workCompletedCount=0l;
 	 private Long workNotGroundedCount=0l;
 	 
+	 private Long groundedPWSExceededCount =0l;
+	 private Long completedPWSExceededCount=0l;
+	 private Long commissionedPWSExceededCount=0l;
+	 private Long groundedCPWSExceededCount =0l;
+	 private Long completedCPWSExceededCount=0l;
+	 private Long commissionedCPWSExceededCount=0l;
+	 
 	 private Long total=0l;
 	 private Double percentage=0.0d;	 
 	 private Double percentageOne = 0.0d,percentageTwo = 0.0d,percentageThree = 0.0d,percentageFour = 0.0d;
@@ -199,6 +206,42 @@ public class BasicVO {
 	}
 	public void setLocationName(String locationName) {
 		this.locationName = locationName;
+	}
+	public Long getGroundedPWSExceededCount() {
+		return groundedPWSExceededCount;
+	}
+	public void setGroundedPWSExceededCount(Long groundedPWSExceededCount) {
+		this.groundedPWSExceededCount = groundedPWSExceededCount;
+	}
+	public Long getCompletedPWSExceededCount() {
+		return completedPWSExceededCount;
+	}
+	public void setCompletedPWSExceededCount(Long completedPWSExceededCount) {
+		this.completedPWSExceededCount = completedPWSExceededCount;
+	}
+	public Long getCommissionedPWSExceededCount() {
+		return commissionedPWSExceededCount;
+	}
+	public void setCommissionedPWSExceededCount(Long commissionedPWSExceededCount) {
+		this.commissionedPWSExceededCount = commissionedPWSExceededCount;
+	}
+	public Long getGroundedCPWSExceededCount() {
+		return groundedCPWSExceededCount;
+	}
+	public void setGroundedCPWSExceededCount(Long groundedCPWSExceededCount) {
+		this.groundedCPWSExceededCount = groundedCPWSExceededCount;
+	}
+	public Long getCompletedCPWSExceededCount() {
+		return completedCPWSExceededCount;
+	}
+	public void setCompletedCPWSExceededCount(Long completedCPWSExceededCount) {
+		this.completedCPWSExceededCount = completedCPWSExceededCount;
+	}
+	public Long getCommissionedCPWSExceededCount() {
+		return commissionedCPWSExceededCount;
+	}
+	public void setCommissionedCPWSExceededCount(Long commissionedCPWSExceededCount) {
+		this.commissionedCPWSExceededCount = commissionedCPWSExceededCount;
 	}
 	
 
