@@ -115,7 +115,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	}
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
-			str+='<h3 class="font_weight text-capital f_22">Selt Details:</h3>';
+			str+='<h3 class="font_weight text-capital f_22">Self Candidate  Details:</h3>';
 		str+='</div>';
 	str+='</div>';
 	
@@ -128,14 +128,14 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
-			str+='<h4 class="searchCss searchCandidateCls" attr_type="'+typeVal+'"><i class="fa fa-search" aria-hidden="true" style="font-size:20px;"></i> Click to Search Details to the Candidate</h4>';
+			str+='<h4 class="searchCss searchCandidateCls" attr_type="'+typeVal+'"><i class="fa fa-search" aria-hidden="true" style="font-size:20px;"></i> Click here to Search Candidate details </h4>';
 		str+='</div>';
 	str+='</div>';
 	
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
-			str+='<h4 class="f_18">REFERRAL LETTER</h4>';
-			str+='<input type="file"   name="filesList"   id="update_TourFileId2'+typeVal+'" multiple="multiple" class="m_top20"/>';
+			//str+='<h4 class="f_18">REFERRAL LETTER</h4>';
+			//str+='<input type="file"   name="filesList"   id="update_TourFileId2'+typeVal+'" multiple="multiple" class="m_top20"/>';
 		str+='</div>';
 	str+='</div>';
 	
@@ -206,8 +206,8 @@ function buildSelfAndRepresenteeDetails(typeVal){
 					str+='<div id="textArea'+typeVal+'Err"></div>';
 				str+='</div>';
 				str+='<div class="col-sm-6">';
-					str+='<h3 class="panel-title f_18">PROJCT DOCUMENTS UPLOAD</h3>';
-					str+='<input type="file"  name="workFilesList"  id="projectDocUpload'+typeVal+'" multiple="multiple" class="m_top20"/>';
+					//str+='<h3 class="panel-title f_18">PROJCT DOCUMENTS UPLOAD</h3>';
+					//str+='<input type="file"  name="workFilesList"  id="projectDocUpload'+typeVal+'" multiple="multiple" class="m_top20"/>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -332,12 +332,12 @@ $(document).on("click",".cloned_Element",function(){
 		counterId = parseInt(counterId) + 1;
 		
 	var blockId = $(this).attr("right-block-clone-"+typeVal+"");
-	//if(counterId <= parseInt(workCount)){
+	if(counterId <= parseInt(workCount)){
 		$("[cloned_block_"+typeVal+"="+blockId+"]").parent().parent().find(".appendDiv"+typeVal+"").append(clonedTemplate(blockId,'clone',counterId,typeVal));
 		$(".chosen-select").chosen({width:'100%'});
 		$("[right-block-clone-"+typeVal+"="+blockId+"]").attr("right-block-clone-counter-"+typeVal+"",counterId);
 		getAllDistrictsInState(typeVal,counterId);
-	//}
+	}
 });
 $(document).on("click","[remove-clone]",function(){
 	var id = $(this).attr("remove-clone");

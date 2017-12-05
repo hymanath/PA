@@ -24,21 +24,33 @@ public class PetitionWorkDetails {
 	private Long costEstimation;
 	private String subject;
 	private Long petitionSubjectId;
+	private Long petitionSubSubjectId;
 	private Long petitionDepartmentId;
+	private Long petitionLeadId;
+	private Long petitionBriefLeadId;
+	private Long petitionGrantId;
 	private String isPreviousPetition;
 	private String previousPetitionRefNo;
 	private String projectDescription;
+	private String remarks;
+	private Long petitionStatusId;
 	private String isDeleted;
 	private Long insertedUserId;
 	private Long updatedUserId;
 	private Date insertedTime;
 	private Date updatedTime;
 	
+	private PetitionStatus petitionStatus;
+	private PetitionGrant petitionGrant;
 	private PetitionSubject petitionSubject;
+	private PetitionSubject petitionSubSubject;
 	private PetitionMember petitionMember;
 	private PetitionDepartment petitionDepartment;
 	private User insertedUser;
 	private User updatedUser;
+	
+	private PetitionLead petitionLead;
+	private PetitionBriefLead petitionBriefLead;
 	
 	@Id
 	@Column(name="petition_work_details_id")
@@ -200,4 +212,97 @@ public class PetitionWorkDetails {
 		this.costEstimation = costEstimation;
 	}
 	
+	@Column(name="petition_sub_subject_id")
+	public Long getPetitionSubSubjectId() {
+		return petitionSubSubjectId;
+	}
+	public void setPetitionSubSubjectId(Long petitionSubSubjectId) {
+		this.petitionSubSubjectId = petitionSubSubjectId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_sub_subject_id", insertable = false, updatable = false)
+	public PetitionSubject getPetitionSubSubject() {
+		return petitionSubSubject;
+	}
+	public void setPetitionSubSubject(PetitionSubject petitionSubSubject) {
+		this.petitionSubSubject = petitionSubSubject;
+	}
+	
+	@Column(name="petition_lead_id")
+	public Long getPetitionLeadId() {
+		return petitionLeadId;
+	}
+	public void setPetitionLeadId(Long petitionLeadId) {
+		this.petitionLeadId = petitionLeadId;
+	}
+	
+	@Column(name="petition_brief_lead_id")
+	public Long getPetitionBriefLeadId() {
+		return petitionBriefLeadId;
+	}
+	public void setPetitionBriefLeadId(Long petitionBriefLeadId) {
+		this.petitionBriefLeadId = petitionBriefLeadId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_lead_id", insertable = false, updatable = false)
+	public PetitionLead getPetitionLead() {
+		return petitionLead;
+	}
+	public void setPetitionLead(PetitionLead petitionLead) {
+		this.petitionLead = petitionLead;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_brief_lead_id", insertable = false, updatable = false)
+	public PetitionBriefLead getPetitionBriefLead() {
+		return petitionBriefLead;
+	}
+	public void setPetitionBriefLead(PetitionBriefLead petitionBriefLead) {
+		this.petitionBriefLead = petitionBriefLead;
+	}
+	
+	
+	@Column(name="petition_grant_id")
+	public Long getPetitionGrantId() {
+		return petitionGrantId;
+	}
+	public void setPetitionGrantId(Long petitionGrantId) {
+		this.petitionGrantId = petitionGrantId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_grant_id", insertable = false, updatable = false)
+	public PetitionGrant getPetitionGrant() {
+		return petitionGrant;
+	}
+	public void setPetitionGrant(PetitionGrant petitionGrant) {
+		this.petitionGrant = petitionGrant;
+	}
+	
+	@Column(name="remarks")
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_status_id", insertable = false, updatable = false)
+	public PetitionStatus getPetitionStatus() {
+		return petitionStatus;
+	}
+	public void setPetitionStatus(PetitionStatus petitionStatus) {
+		this.petitionStatus = petitionStatus;
+	}
+	
+	@Column(name="petition_status_id")
+	public Long getPetitionStatusId() {
+		return petitionStatusId;
+	}
+	public void setPetitionStatusId(Long petitionStatusId) {
+		this.petitionStatusId = petitionStatusId;
+	}
 }
