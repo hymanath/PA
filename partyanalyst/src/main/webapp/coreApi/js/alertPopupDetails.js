@@ -479,7 +479,7 @@ function getTotalArticledetails(articleId){
 		  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""     
 	}).then(function(results){
 			$("#myModalShowNewId").html('');
-			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
+			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","CORP-GMC","Ward","NATIONAL","INTERNATIONAL","MUNICIPALITY"];
 				var result = results[0];
 				var str = '';
 					str+='<div class="modal-header">';
