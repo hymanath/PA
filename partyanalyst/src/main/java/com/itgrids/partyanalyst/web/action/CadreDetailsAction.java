@@ -2203,4 +2203,17 @@ public String getVolunteerCadreDetilasInformation(){
 		
 		return "success";
 	}
+public String getSurveyQuestionDetails(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long cadreId=jObj.getLong("cadreId");
+			
+			finalList = cadreDetailsService.getSurveyQuestionDetails(cadreId);
+		}catch(Exception e){
+			LOG.error("Exception raised in  getSurveyQuestionDetails method in CadreDetailsAction.",e);
+		}
+		return Action.SUCCESS;
+	}
 }
