@@ -2058,7 +2058,7 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 				filterValue:"",
 				locationType:locationType, 
 				assetTypeList:['CPWS','PWS'],
-				statusList : ['completed','ongoing'],
+				status : "ongoing",
 				}
 		
 		$.ajax({                
@@ -2094,7 +2094,8 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 				"toDateStr":glEndDate,
 				"locationType":locationType,
 				"exceededDuration":exceededDuration,
-				"locationValue":locationValue
+				"locationValue":locationValue,
+				 "status" : "ongoing",
 				}
 		
 		$.ajax({                
