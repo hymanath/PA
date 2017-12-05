@@ -205,7 +205,7 @@
 							<h4 class="panel-title f_22" style="font-weight:normal !important;">REPRESENTATION REQUEST</h4>
 						</div>
 						<form action="saveRepresentRequestDetails" id="adminProfileForm" name="adminProfileFormName" enctype="multipart/form-data" method="post">
-						<input type="hidden"  name="petitionMemberVO.id"  value="100" class="form-control m_top10 height45" id="reffererCandidate0">
+						<input type="hidden"  name="petitionMemberVO.referrerCandidateIdsList[0] "  value="100" class="form-control m_top10 height45" id="reffererCandidate0">
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-sm-12">

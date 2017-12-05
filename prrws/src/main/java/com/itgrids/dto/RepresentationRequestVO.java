@@ -47,7 +47,11 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private Long districtId;
 	private String constituency;
 	private Long constituencyId;
-	
+	private Long petitionLeadId;
+	private Long briefLeadId;
+	private Long petitionGrantId;
+	private Long petitionStatusId;
+	private String remarks;
 	
 	public String getDepartrment() {
 		return departrment;
@@ -362,4 +366,44 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	public void setStatusId(Long statusId) {
 		this.statusId = statusId;
 	}
+	public Long getPetitionLeadId() {
+		return petitionLeadId;
+	}
+
+	public void setPetitionLeadId(Long petitionLeadId) {
+		this.petitionLeadId = petitionLeadId;
+	}
+
+	public Long getBriefLeadId() {
+		return briefLeadId;
+	}
+
+	public void setBriefLeadId(Long briefLeadId) {
+		this.briefLeadId = briefLeadId;
+	}
+
+	public Long getPetitionGrantId() {
+		return petitionGrantId;
+	}
+
+	public void setPetitionGrantId(Long petitionGrantId) {
+		this.petitionGrantId = petitionGrantId;
+	}
+
+	public Long getPetitionStatusId() {
+		return petitionStatusId;
+	}
+
+	public void setPetitionStatusId(Long petitionStatusId) {
+		this.petitionStatusId = petitionStatusId;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	
 }

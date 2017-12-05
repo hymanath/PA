@@ -26,6 +26,8 @@ import com.itgrids.dao.IPetitionReffererDAO;
 import com.itgrids.dao.IPetitionReffererDocumentDAO;
 import com.itgrids.dao.IPetitionSubWorkLocationDetailsDAO;
 import com.itgrids.dao.IPetitionWorkDetailsDAO;
+import com.itgrids.dao.IPetitionWorkDocumentDAO;
+import com.itgrids.dao.impl.PetitionWorkDocumentDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
@@ -40,6 +42,7 @@ import com.itgrids.model.PetitionReffererCandidate;
 import com.itgrids.model.PetitionReffererDocument;
 import com.itgrids.model.PetitionSubWorkLocationDetails;
 import com.itgrids.model.PetitionWorkDetails;
+import com.itgrids.model.PetitionWorkDocument;
 import com.itgrids.service.IRepresentationRequestService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -79,6 +82,9 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 	@Autowired
 	private ILocationAddressDAO locationAddressDAO;
 	
+	@Autowired
+	private IPetitionWorkDocumentDAO petitionWorkDocumentDAO;
+	
 	public ResponseVO saveRepresentRequestDetails(RepresentationRequestVO dataVO){
 		ResponseVO responseVO = new ResponseVO();
 		try {
@@ -117,6 +123,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 					if(dataVO.getWorkFilesList() != null && dataVO.getWorkFilesList().size()>0){
 						for (MultipartFile file : dataVO.getWorkFilesList()) {
 							Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,dataVO.getUserId());
+							savePetitionWorkDocument(petitionWorkDetails.getPetitionWorkDetailsId(),petitionWorkDocument.getDocumentId(),dataVO.getUserId());
 						}
 					}
 				}
@@ -128,6 +135,27 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			LOG.error("Exception Occured in RepresentationRequestService "+e.getMessage());
 		}
 		return responseVO;
+	}
+	
+	public PetitionWorkDocument savePetitionWorkDocument(Long petitionWorkDetailsId,Long documentId,Long userId){
+		PetitionWorkDocument petitionWorkDocument = null;
+		try {
+			if(documentId != null && documentId.longValue()>0L){
+				petitionWorkDocument = new PetitionWorkDocument();
+				petitionWorkDocument.setDocumentId(documentId);
+				petitionWorkDocument.setPetitionWorkDetailsId(petitionWorkDetailsId);
+				petitionWorkDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				petitionWorkDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				petitionWorkDocument.setInsertedUserId(userId);
+				petitionWorkDocument.setUpdatedUserId(userId);	
+				petitionWorkDocument.setIsDeleted("N");
+				petitionWorkDocument = petitionWorkDocumentDAO.save(petitionWorkDocument);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in RepresentationRequestService @ savePetitionReffererDocument() "+e.getMessage());
+			petitionWorkDocument = null;
+		}
+		return petitionWorkDocument;
 	}
 	
 	public LocationAddress saveLocationAddress(AddressVO addressVO){
@@ -172,7 +200,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			try {
 				if(petitionMemberVO.getPetitionMemberVO() != null && petitionMemberVO.getPetitionMemberVO().getMemberType() != null && 
-						 petitionMemberVO.getPetitionMemberVO().getMemberType().equalsIgnoreCase("REPRESENT")){
+						 petitionMemberVO.getPetitionMemberVO().getMemberType().equalsIgnoreCase("SELF")){
 					if(petitionMemberVO != null && petitionMemberVO.getPetitionMemberVO() != null){
 						petitionMember = new PetitionMember();
 						petitionMember.setCandidateName(petitionMemberVO.getPetitionMemberVO().getName());
@@ -194,7 +222,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 						petitionMember = petitionMemberDAO.save(petitionMember);
 					}
 				}else if(petitionMemberVO.getPetitionMemberVO() != null && petitionMemberVO.getPetitionMemberVO().getMemberType() != null &&
-						 petitionMemberVO.getPetitionMemberVO().getMemberType().equalsIgnoreCase("SELF")){
+						 petitionMemberVO.getPetitionMemberVO().getMemberType().equalsIgnoreCase("REPRESENT")){
 					if(petitionMemberVO.getPetitionMemberVO().getReferrerCandidateIdsList() != null && petitionMemberVO.getPetitionMemberVO().getReferrerCandidateIdsList().size()>0){
 						for (Long  referrerCandidateId: petitionMemberVO.getPetitionMemberVO().getReferrerCandidateIdsList()) {
 							if(petitionMemberVO != null && petitionMemberVO.getPetitionMemberVO() != null){
@@ -287,6 +315,11 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 				petitionWorkDetails.setPreviousPetitionRefNo(dataVO.getPreviousPetitionRefNo());
 				petitionWorkDetails.setProjectDescription(dataVO.getProjectDescription());
 				petitionWorkDetails.setIsDeleted("N");
+				petitionWorkDetails.setPetitionLeadId(dataVO.getPetitionLeadId());
+				petitionWorkDetails.setPetitionBriefLeadId(dataVO.getBriefLeadId());
+				petitionWorkDetails.setPetitionGrantId(dataVO.getPetitionGrantId());
+				petitionWorkDetails.setPetitionStatusId(dataVO.getPetitionStatusId());
+				petitionWorkDetails.setRemarks(dataVO.getRemarks());
 				petitionWorkDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				petitionWorkDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				petitionWorkDetails.setInsertedUserId(dataVO.getUserId());
