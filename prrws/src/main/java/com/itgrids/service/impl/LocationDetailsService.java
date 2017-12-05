@@ -337,6 +337,12 @@ public List<KeyValueVO>  getPetitionSubjectList(){
     				resultList.add(vo);
     			}
     		}
+    		 Collections.sort(resultList,new Comparator<KeyValueVO>() {
+ 				public int compare(KeyValueVO o1,
+ 						KeyValueVO o2) {
+ 					return o1.getValue().compareTo(o2.getValue());
+ 				}
+ 			});
     	}catch(Exception e){
     		LOG.error("Exception occured at getPetitionSubjectList() in LocationDetailsService class ", e);
     	}
@@ -356,6 +362,12 @@ public List<KeyValueVO>  getPetitionSubSubjectList(Long subjectId){
 				resultList.add(vo);
 			}
 		}
+		 Collections.sort(resultList,new Comparator<KeyValueVO>() {
+				public int compare(KeyValueVO o1,
+						KeyValueVO o2) {
+					return o1.getValue().compareTo(o2.getValue());
+				}
+			});
 	}catch(Exception e){
 		LOG.error("Exception occured at getPetitionSubSubjectList() in LocationDetailsService class ", e);
 	}
@@ -380,6 +392,12 @@ public List<KeyValueVO>  getPetitionLeadDetailsList(){
 				resultList.add(vo);
 			}
 		}
+		 Collections.sort(resultList,new Comparator<KeyValueVO>() {
+				public int compare(KeyValueVO o1,
+						KeyValueVO o2) {
+					return o1.getValue().compareTo(o2.getValue());
+				}
+			});
 	}catch(Exception e){
 		LOG.error("Exception occured at getPetitionLeadDetailsList() in LocationDetailsService class ", e);
 	}
@@ -403,6 +421,12 @@ public List<KeyValueVO>  getPetitionBriefLeadList(){
 				resultList.add(vo);
 			}
 		}
+		 Collections.sort(resultList,new Comparator<KeyValueVO>() {
+				public int compare(KeyValueVO o1,
+						KeyValueVO o2) {
+					return o1.getValue().compareTo(o2.getValue());
+				}
+			});
 	}catch(Exception e){
 		LOG.error("Exception occured at getPetitionBriefLeadList() in LocationDetailsService class ", e);
 	}
@@ -427,6 +451,12 @@ public List<KeyValueVO>  getPetitionGrantList(){
 				resultList.add(vo);
 			}
 		}
+		 Collections.sort(resultList,new Comparator<KeyValueVO>() {
+				public int compare(KeyValueVO o1,
+						KeyValueVO o2) {
+					return o1.getValue().compareTo(o2.getValue());
+				}
+			});
 	}catch(Exception e){
 		LOG.error("Exception occured at getPetitionGrantList() in LocationDetailsService class ", e);
 	}
