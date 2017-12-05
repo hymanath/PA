@@ -422,13 +422,27 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		 return query.list();
 	}
 	
-	public List<Object[]> getPetitionsDistrictsList(Long stateId){ 
+	public List<Object[]> getPetitionsDistrictsList(Long stateId,String searchType,Long searchId){ 
 	    StringBuilder sb = new StringBuilder();
-	    sb.append(" select distinct model.locationAddress.district.districtId,model.locationAddress.district.districtName from PetitionSubWorkLocationDetails model "+
-	               " where model.locationAddress.state.stateId=:stateId order by model.locationAddress.district.districtName ");
+	    if(searchType != null && !searchType.equalsIgnoreCase("refLocation") ){
+		    sb.append(" select distinct model.locationAddress.district.districtId,model.locationAddress.district.districtName from PetitionSubWorkLocationDetails model "+
+		               " where model.locationAddress.state.stateId=:stateId  ");
+		    if(searchType != null){
+		    	if(searchType.equalsIgnoreCase("designation"))
+		    		 sb.append(" and model.petitionWorkDetails.petitionMember.petitionDesignationId=:searchId ");
+		    	else if(searchType.equalsIgnoreCase("dept"))
+		    		 sb.append(" and model.petitionWorkDetails.petitionDepartmentId=:searchId ");
+		    }
+	    }else if(searchType != null && searchType.equalsIgnoreCase("refLocation") ){
+	    	sb.append(" select distinct model.petitionReffererCandidate.locationAddress.district.districtId,model.petitionReffererCandidate.locationAddress.district.districtName from PetitionRefferer model "+
+		               " where model.petitionReffererCandidate.locationAddress.state.stateId=:stateId  ");
+	    }
 	    Query query = getSession().createQuery(sb.toString());
 	    query.setParameter("stateId",stateId);
+	    if(searchType != null && (searchType.equalsIgnoreCase("designation") || searchType.equalsIgnoreCase("dept")) )
+	    	query.setParameter("searchId",searchId);
 	    return query.list();
 	}
+	
 	
 }

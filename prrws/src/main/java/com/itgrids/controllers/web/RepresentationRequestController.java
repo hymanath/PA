@@ -47,15 +47,15 @@ public class RepresentationRequestController {
     }
 	@RequestMapping(value ="/getAllDistrictsInState",method = RequestMethod.POST)
     public @ResponseBody List<LocationFundDetailsVO> getAllDistrictsInState(@RequestBody Map<String,String> inputMap ) {
-    	 return locationDetailsService.getAllDistrictsInState(Long.valueOf(inputMap.get("stateId")),String.valueOf(inputMap.get("searchType"))); 
+    	 return locationDetailsService.getAllDistrictsInState(Long.valueOf(inputMap.get("stateId")),String.valueOf(inputMap.get("searchType")),Long.valueOf(inputMap.get("searchId"))); 
     }
 	@RequestMapping(value ="/getConstituencyNamesByDistrictId",method = RequestMethod.POST)
     public @ResponseBody List<LocationVO> getConstituencyNamesByDistrictId(@RequestBody Map<String,String> inputMap ) {
-    	 return locationDetailsService.getConstituencyNamesByDistrictId(Long.valueOf(inputMap.get("districtId")),String.valueOf(inputMap.get("searchType")));
+    	 return locationDetailsService.getConstituencyNamesByDistrictId(Long.valueOf(inputMap.get("districtId")),String.valueOf(inputMap.get("searchType")),Long.valueOf(inputMap.get("searchId")));
     }
 	@RequestMapping(value ="/getTehsilsAndLocalElectionBodyForConstituencyId",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getTehsilsAndLocalElectionBodyForConstituencyId(@RequestBody Map<String,String> inputMap ) {
-    	 return locationDetailsService.getTehsilsAndLocalElectionBodyForConstituencyId(Long.valueOf(inputMap.get("constituencyId")));
+    	 return locationDetailsService.getTehsilsAndLocalElectionBodyForConstituencyId(Long.valueOf(inputMap.get("constituencyId")),String.valueOf(inputMap.get("searchType")),Long.valueOf(inputMap.get("searchId")));
     }
 	@RequestMapping(value ="/getPanchayatsByTehsilId",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getPanchayatsByTehsilId(@RequestBody Map<String,String> inputMap ) {

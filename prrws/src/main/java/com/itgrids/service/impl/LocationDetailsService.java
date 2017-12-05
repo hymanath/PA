@@ -82,7 +82,7 @@ public class LocationDetailsService implements ILocationDetailsService {
 		 * @param : state Id
 		 * @return  List<LocationFundDetailsVO> 
 		 */
-	public List<LocationFundDetailsVO> getAllDistrictsInState(Long stateId,String searchType){
+	public List<LocationFundDetailsVO> getAllDistrictsInState(Long stateId,String searchType,Long searchId){
 		 List<LocationFundDetailsVO> voList = null;
 		 try{
 			 if(stateId != null){
@@ -91,7 +91,12 @@ public class LocationDetailsService implements ILocationDetailsService {
 					 if(searchType.equalsIgnoreCase("all")){
 						 objList = districtDAO.getDistrictIdName(stateId);
 					 } else if(searchType.trim().equalsIgnoreCase("petitionsData")){
-						 objList = districtDAO.getPetitionsDistrictsList(stateId);
+						 objList = districtDAO.getPetitionsDistrictsList(stateId,null,null);
+					 } else if(searchType.trim().equalsIgnoreCase("designation")){
+						 objList = districtDAO.getPetitionsDistrictsList(stateId,searchType,searchId);
+						 //List<Object[]> refLocationsList = districtDAO.getPetitionsDistrictsList(stateId,"refferer",searchId);
+					 }else{
+						 objList = districtDAO.getPetitionsDistrictsList(stateId,searchType,searchId);
 					 }
 				 }
 				 
@@ -126,15 +131,17 @@ public class LocationDetailsService implements ILocationDetailsService {
 	 * @param : districtId Id
 	 * @return  List<LocationVO> 
 	 */
-	public List<LocationVO> getConstituencyNamesByDistrictId( Long districtId,String searchType){
+	public List<LocationVO> getConstituencyNamesByDistrictId( Long districtId,String searchType,Long searchId){
 		try{
 			List<LocationVO> finalList = new ArrayList<LocationVO>(0);
 			List<Object[]> objects = null;
 			 if(searchType != null){
 				 if(searchType.equalsIgnoreCase("all")){
 					 objects = constituencyDAO.getConstituencyNamesByDistrictId(districtId);
-				 } else if(searchType.trim().equalsIgnoreCase("petitionsData")){
-					 objects = constituencyDAO.getPetitionsConstituencyList(districtId);
+				 }else if(searchType.trim().equalsIgnoreCase("petitionsData")){
+					 objects = constituencyDAO.getPetitionsConstituencyList(districtId,null,null);
+				 }else{
+					 objects = constituencyDAO.getPetitionsConstituencyList(districtId,searchType,searchId);
 				 }
 			 }
 			 
@@ -165,7 +172,7 @@ public class LocationDetailsService implements ILocationDetailsService {
 	 * @param : constituency Id
 	 * @return  List<KeyValueVO> 
 	 */
-	public List<KeyValueVO> getTehsilsAndLocalElectionBodyForConstituencyId(Long constituencyId){
+	public List<KeyValueVO> getTehsilsAndLocalElectionBodyForConstituencyId(Long constituencyId,String searchType,Long searchId){
 		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
 		try {
 			List<Long> tehsilIdsList = new ArrayList<Long>();
