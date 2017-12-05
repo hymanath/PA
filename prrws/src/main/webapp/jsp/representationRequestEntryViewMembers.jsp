@@ -203,7 +203,7 @@
 									<div class="row m_top20">
 										<div class="col-sm-12">	
 											<label class="radio-inline ">
-												<input  class="searchCls m_top0" type="radio" name="optradio" value="designation" checked>DESIGNATION WISE
+												<input  class="searchCls m_top0" type="radio" name="optradio" value="designation" checked> <span title="Refferer / Representee Designation wise"> REF./REPR. DESIGNATION WISE</span>
 											</label>											
 											<label class="radio-inline">
 												<input  class="searchCls m_top0" type="radio" name="optradio" value="department" >DEPARTMENT WISE

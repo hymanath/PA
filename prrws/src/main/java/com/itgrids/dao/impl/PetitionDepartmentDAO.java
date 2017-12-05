@@ -32,7 +32,7 @@ public class PetitionDepartmentDAO extends GenericDaoHibernate<PetitionDepartmen
 	
 	public List<Object[]> getGivenPetitionDepartmentsList(){
 		StringBuilder sb = new StringBuilder();
-			sb.append("select model.petitionDepartment.petitionDepartmentId,model.petitionDepartment.departmentName from PetitionWorkDetails model " +
+			sb.append("select distinct model.petitionDepartment.petitionDepartmentId,model.petitionDepartment.departmentName from PetitionWorkDetails model " +
 					" where model.isDeleted ='N' order by model.petitionDepartment.departmentName asc ");
 			Query qry = getSession().createQuery(sb.toString());
 			return qry.list();

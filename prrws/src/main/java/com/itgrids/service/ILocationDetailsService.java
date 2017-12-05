@@ -11,9 +11,9 @@ import com.itgrids.dto.RepresentationRequestVO;
 
 public interface ILocationDetailsService {
 	
-	public List<LocationFundDetailsVO> getAllDistrictsInState(Long stateId,String searchType);
-	public List<LocationVO> getConstituencyNamesByDistrictId( Long districtId,String searchType);
-	public List<KeyValueVO> getTehsilsAndLocalElectionBodyForConstituencyId(Long constituencyId);
+	public List<LocationFundDetailsVO> getAllDistrictsInState(Long stateId,String searchType,Long searchId);
+	public List<LocationVO> getConstituencyNamesByDistrictId( Long districtId,String searchType,Long searchId);
+	public List<KeyValueVO> getTehsilsAndLocalElectionBodyForConstituencyId(Long constituencyId,String searchType,Long searchId);
 	public List<KeyValueVO> getPanchayatsByTehsilId(Long tehsilId);
 	public List<KeyValueVO> getPetitionDepartmentList(String searchType);
 	public List<KeyValueVO> getPetitionDesignationList(String searchType);

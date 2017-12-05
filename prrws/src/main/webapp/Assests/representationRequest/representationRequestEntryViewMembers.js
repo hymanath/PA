@@ -1,8 +1,8 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 //getRepresentativeSearchWiseDetails(typeVal);
 $(".chosen-select").chosen();
-getAllDistrictsInState();
-getPetitionDepartmentList()
+//
+//getPetitionDepartmentList()
 getPetitionDesignationList();
 
 $(document).on("click",".searchCls",function(){
@@ -11,11 +11,13 @@ $(document).on("click",".searchCls",function(){
 		$("#normalSearchDivId").show();
 		$('#designationDiv').show();
 		$('#departMentsDiv').hide();
-		getPetitionDepartmentList();
+		getPetitionDesignationList();
+		//getAllDistrictsInState('all');		
 		$("#advancedSearchDivId").hide();
 	}else if(value =="department"){
 		$("#normalSearchDivId").show();
-		getPetitionDesignationList();
+		getPetitionDepartmentList();
+		//getAllDistrictsInState('all');
 		$('#designationDiv').hide();
 		$('#departMentsDiv').show();
 		$("#advancedSearchDivId").hide();
@@ -24,6 +26,7 @@ $(document).on("click",".searchCls",function(){
 		$('#designationDiv').hide();
 		$('#departMentsDiv').hide();
 		$("#advancedSearchDivId").hide();
+		getAllDistrictsInState(value,0);
 	}else if(value =="advanceBtnId"){
 		$('#advancedSearchDivId').show();
 		$("#normalSearchDivId").hide();
@@ -49,13 +52,8 @@ $(document).on("click","#advanceSearchId",function(){
 		var locationScopeId=4;
 		var lcoationId=0;
 		
-		$('.searchCls').each(function(){
-			if($(this).is(':checked')) {
-				searchVal = $(this).val();
-			}		
-		});
 		var districtId = $('#districtCandId').val();
-		var constituencyId = $('#districtCandId').val();
+		var constituencyId = $('#constituencyCanId').val();
 		if(parseInt(districtId)==0){
 			locationScopeId = 2;
 			lcoationId=1;
@@ -66,13 +64,22 @@ $(document).on("click","#advanceSearchId",function(){
 			locationScopeId = 4;
 			lcoationId=constituencyId;
 		}
-		if(searchVal=="designation"){
+		if(searchType=="designation"){
 			searchVal = $('#designationsId').val();
-		}else if(searchVal=="departmentId"){
-			searchVal = $('#designationsId').val();
+		}else if(searchType=="departmentId"){
+			searchVal = $('#departmentId').val();
 		}
 		getRepresentativeSearchDetails(searchVal,locationScopeId,lcoationId);
 	}
+});
+
+$(document).on("change","#designationsId",function(){
+	var designatinId = $(this).val();	
+	getAllDistrictsInState('designation',designatinId);
+});
+$(document).on("change","#departmentId",function(){
+	var departId = $(this).val();	
+	getAllDistrictsInState('dept',departId);
 });
 
 //Advanced Search Call
@@ -122,18 +129,28 @@ function getRepresentativeSearchWiseDetails(searchVal){
 }
 
 //Normal Search Call
-function getRepresentativeSearchDetails(typeVal,locationScopeId,lcoationId){
+function getRepresentativeSearchDetails(searchVal,locationScopeId,lcoationId){
 	$("#errorId").html("");
 	var radioValue = $("input[name='optradio']:checked"). val();
 	$("#representationRequestEntryTable").html(spinner);
+	
+	$(".searchCls").each(function(){
+		if($(this).is(":checked")){
+			searchType = $(this).val();
+		}
+	});
+	if(searchType == "advanceBtnId"){
+		var searchVal = $("#advancedSearchVal").val(); 
+	}
     var json = {
 		filterType :radioValue,
 		filterValue:searchVal,
 		searchLevelId:locationScopeId,
 		searchLevelValue:lcoationId,
 		fromDate:"01-01-2010",
-		toDate:"01-01-2018"
-    }        
+		toDate:"01-01-2055"
+    }
+	
   $.ajax({                
     type:'POST',    
     url: 'getRepresentativeSearchWiseDetails',
@@ -153,10 +170,10 @@ function getRepresentativeSearchDetails(typeVal,locationScopeId,lcoationId){
 }
 function representationRequestEntryTable(result){
 	var str='';
-	str+='<table class="table table_customRep table-bordered">';
+	str+='<table class="table table_customRep table-bordered" id="workDetailsTab">';
 		str+='<thead>';
 			str+='<tr>';
-				str+='<th>ENDT&nbsp;ID</th>';
+				str+='<th>ENDORSEMENT ID</th>';
 				str+='<th>REPRESENTEE NAME</th>';
 				str+='<th>REPRESENTEE DESIGNATION</th>';
 				str+='<th>REPRESENTEE MOBILE&nbsp;NO</th>';
@@ -182,12 +199,25 @@ function representationRequestEntryTable(result){
 		str+='</tbody>';
 	str+='</table>';
 	$("#representationRequestEntryTable").html(str);
+	
+	$("#workDetailsTab").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": 20,
+		"aaSorting": [],
+		"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+	});
 }
 function getPetitionDepartmentList(){
     $("#departmentId").html('');
-	  var json = {
-		
-		}           
+	$("#departmentId").append('<option value="0">All Departments</option>');
+	$("#departmentId").trigger('chosen:updated');
+	  var json = { 
+		  searchType:"petitionGivenDepts" // all/petitionGivenDepts
+	  };          
 	$.ajax({              
 		type:'POST',    
 		url: 'getPetitionDepartmentList',
@@ -199,8 +229,6 @@ function getPetitionDepartmentList(){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			  $("#departmentId").append('<option value="0">All Departments</option>');
-			 
 			for(var i in result){
 				 $("#departmentId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
@@ -211,7 +239,11 @@ function getPetitionDepartmentList(){
 
 function getPetitionDesignationList(){
     $("#designationsId").html('');
-	  var json = {};
+	$("#designationsId").append('<option value="0">All Designations </option>');
+	$("#designationsId").trigger('chosen:updated');
+	  var json = { 
+		  searchType:"petitionGivenRefCandidateDesignations" // all/refCandidateDesignations/petitionGivenRefCandidateDesignations
+	  };
 	$.ajax({              
 		type:'POST',    
 		url: 'getPetitionDesignationList',
@@ -222,8 +254,7 @@ function getPetitionDesignationList(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		if(result !=null && result.length>0){
-			 $("#designationsId").append('<option value="0">All Designations </option>');
+		if(result !=null && result.length>0){			 
 			for(var i in result){
 				$("#designationsId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
@@ -233,10 +264,14 @@ function getPetitionDesignationList(){
 }
 
 
-function getAllDistrictsInState(){
+function getAllDistrictsInState(type,id){
 	$("#districtCandId").html('');
+	$("#districtCandId").append('<option value="0">All</option>');
+	$("#districtCandId").trigger('chosen:updated');
 	var json = {
-		  stateId:"1"
+		  stateId:"1",
+		  searchType:type,
+		  searchId:id
 		}
 	$.ajax({                
 		type:'POST',    
@@ -248,8 +283,7 @@ function getAllDistrictsInState(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		if(result !=null && result.length>0){	
-			$("#districtCandId").append('<option value="0">All</option>');
+		if(result !=null && result.length>0){			
 			for(var i in result){				
 				$("#districtCandId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 			}
@@ -258,10 +292,27 @@ function getAllDistrictsInState(){
 	});	
 }
 
-function getConstituencyNamesByDistrictId(levelVa){
+function getConstituencyNamesByDistrictId(levelVal){
 	  $("#constituencyCanId").html('');
+	   $("#constituencyCanId").append('<option value="0">All</option>');
+	  var searchVal = 0;
+		var searchType='';
+		$(".searchCls").each(function(){
+			if($(this).is(":checked")){
+				searchType = $(this).val();
+			}
+		});
+		if(searchType=="designation"){
+			searchVal = $('#designationsId').val();
+		}else if(searchType=="department"){
+			searchVal = $('#departmentId').val();
+			searchType="dept";
+		}
+		
 	  var json = {
-		  districtId:levelVa
+		  districtId:levelVal,
+		  searchType:searchType,
+		  searchId:searchVal
 		}
 	$.ajax({                
 		type:'POST',    
@@ -274,7 +325,6 @@ function getConstituencyNamesByDistrictId(levelVa){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#constituencyCanId").append('<option value="0">All</option>');
 			for(var i in result){
 				$("#constituencyCanId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
 			}
@@ -285,6 +335,8 @@ function getConstituencyNamesByDistrictId(levelVa){
 
 function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal){
 		$("#mandalrepresent").html('');
+		 $("#mandalrepresent").append('<option value="0">Select Mandal</option>');
+		 $("#mandalrepresent").trigger('chosen:updated');
 	  var json = {
 		  constituencyId:levelVal
 		}        
@@ -299,7 +351,6 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#mandalrepresent").append('<option value="0">Select Mandal</option>');
 			for(var i in result){
 				$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'</option>');
 			}
