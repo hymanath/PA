@@ -830,7 +830,7 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 				str+='<td>'+result.pressmeetList[i].title+'</td>';
 				str+='<td>'+result.pressmeetList[i].conductedDate+'</td>';
 				str+='<td>';
-					str+='<table class="table table-bordered m_top10">';
+					str+='<table class="table table-bordered m_top10" style="background-color:#D3D3D3" >';
 					str+='<tbody>';
 					for(var j in result.pressmeetList[i].participantList){
 						str+='<tr>';
