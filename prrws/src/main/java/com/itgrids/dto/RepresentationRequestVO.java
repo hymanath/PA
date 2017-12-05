@@ -1,6 +1,5 @@
 package com.itgrids.dto;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +18,9 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private Long estimationCost;
 	private String subject;
 	private Long subjectId;
+	private Long subSubjectId;
+	private Long grantId;
+	private Long statusId;
 	private Long deptId;
 	private String isPreviousPetition;
 	private String previousPetitionRefNo;
@@ -336,5 +338,28 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	public void setRepresenteeType(String representeeType) {
 		this.representeeType = representeeType;
 	}
-	
+
+	public Long getSubSubjectId() {
+		return subSubjectId;
+	}
+
+	public void setSubSubjectId(Long subSubjectId) {
+		this.subSubjectId = subSubjectId;
+	}
+
+	public Long getGrantId() {
+		return grantId;
+	}
+
+	public void setGrantId(Long grantId) {
+		this.grantId = grantId;
+	}
+
+	public Long getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
 }
