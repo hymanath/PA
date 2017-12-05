@@ -333,34 +333,34 @@ function buildTemplateWorkDetails(typeVal){
 				str+='<div class="row m_top20">';
 					str+='<div class="col-sm-3">';
 					str+='<label>Lead</label>';
-					str+='<select class="form-control chosen-select m_top10""  id="petitionLead'+typeVal+'" >';
+					str+='<select class="form-control chosen-select m_top10""  id="petitionLead" name="petitionLeadId">';
 					//str+='<option value="0">Select Petition Lead</option>';
 					str+='</select>';
-					str+='<div class="m_top10"  id="petitionLead'+typeVal+'Err"></div>';
+					str+='<div class="m_top10"  id="petitionLead'+typeVal+''+globalWorkTypeCount+'Err"></div>';
 					str+='</div>';
 					
 					str+='<div class="col-sm-3">';
 					str+='<label>Brief Lead</label>';
-					str+='<select class="form-control chosen-select m_top10"  id="petitionBriefLeadId">';
+					str+='<select name="briefLeadId" class="form-control chosen-select m_top10"  id="petitionBriefLeadId">';
 					//str+='<option value="0">Select Petition Brief Lead</option>';
 					str+='</select>';
-					str+='<div class="m_top10"  id="petitionBriefLeadId'+typeVal+'Err"></div>';
+					str+='<div class="m_top10"  id="petitionBriefLeadId'+typeVal+''+globalWorkTypeCount+'Err"></div>';
 					str+='</div>';
 					
 					str+='<div class="col-sm-3">';
 					str+='<label>Petition Grant</label>';
-					str+='<select class="form-control chosen-select m_top10"  id="petitionGrantId">';
+					str+='<select name="petitionGrantId" class="form-control chosen-select m_top10"  id="petitionGrantId">';
 					//str+='<option value="0">Select Petition Grant</option>';
 					str+='</select>';
-					str+='<div class="m_top10"  id="petitionGrantId'+typeVal+'Err"></div>';
+					str+='<div class="m_top10"  id="petitionGrantId'+typeVal+''+globalWorkTypeCount+'Err" ></div>';
 					str+='</div>';
 					
 					str+='<div class="col-sm-3">';
 					str+='<label>Petition Status </label>';
-					str+='<select class="form-control chosen-select m_top10"  id="petitionStatusId">';
+					str+='<select name="petitionStatusId"  class="form-control chosen-select m_top10"  id="petitionStatusId">';
 					//str+='<option value="0">Select Petition Status</option>';
 					str+='</select>';
-					str+='<div class="m_top10"  id="petitionStatusId'+typeVal+'Err"></div>';
+					str+='<div class="m_top10"  id="petitionStatusId'+typeVal+''+globalWorkTypeCount+'Err" ></div>';
 					str+='</div>';
 					
 					str+='</div>';
@@ -368,7 +368,7 @@ function buildTemplateWorkDetails(typeVal){
 					str+='<div class="row m_top20">';
 						str+='<div class="col-sm-6">';
 							str+='<h3 class="panel-title f_18">REMARKS <span class="f_12"></span></h3>';
-							str+='<textarea  class="form-control m_top20 workNoTextAreaValidCls'+typeVal+'" rows="4" id="textArea'+typeVal+'1"></textarea>';
+							str+='<textarea  name="remarks" class="form-control m_top20 workNoTextAreaValidCls'+typeVal+'" rows="4" id="textArea'+typeVal+'1"></textarea>';
 							str+='<div class="m_top10"  id="textArea'+typeVal+'1Err"></div>';
 						str+='</div>';
 					str+='</div>';
@@ -1611,12 +1611,12 @@ function getPetitionLeadDetailsList(typeVal){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#petitionLead"+typeVal).append('<option value="0">All</option>');
+			 $("#petitionLead").append('<option value="0">All</option>');
 			for(var i in result){
-				$("#petitionLead"+typeVal).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#petitionLead").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		$("#petitionLead"+typeVal).trigger('chosen:updated');
+		$("#petitionLead").trigger('chosen:updated');
 	});	
 }
 function getPetitionBriefLeadList(typeVal){
