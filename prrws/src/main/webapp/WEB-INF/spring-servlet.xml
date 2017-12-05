@@ -16,7 +16,9 @@
 
  
 	<context:component-scan base-package="com.itgrids"/>
- 
+   <bean id="multipartResolver"    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="maxUploadSize" value="-1" />
+	</bean>
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"/>
        
  	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -30,9 +32,5 @@
       	</property>
  	</bean>
  	
-  <bean id="multipartResolver"    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-     <!— setting maximum upload size —>
-    <property name="maxUploadSize" value="-1" />
 
-  </bean>
 </beans>
