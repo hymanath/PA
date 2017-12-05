@@ -15,8 +15,8 @@ public interface ILocationDetailsService {
 	public List<LocationVO> getConstituencyNamesByDistrictId( Long  districtId);
 	public List<KeyValueVO> getTehsilsAndLocalElectionBodyForConstituencyId(Long constituencyId);
 	public List<KeyValueVO> getPanchayatsByTehsilId(Long tehsilId);
-	public List<KeyValueVO> getPetitionDepartmentList();
-	public List<KeyValueVO> getPetitionDesignationList();
+	public List<KeyValueVO> getPetitionDepartmentList(String searchType);
+	public List<KeyValueVO> getPetitionDesignationList(String searchType);
 	public List<KeyValueVO>  getParliamentIdsByConstituencyList();
 	public List<KeyValueVO>  getPetitionSubjectList();
 	public List<KeyValueVO>  getPetitionSubSubjectList(Long subjectId);

@@ -7,6 +7,6 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.model.PetitionDepartment;
 
 public interface IPetitionDepartmentDAO extends GenericDao<PetitionDepartment, Long> {
-	public List<Object[]> getAllPetitionList();
-
+	public List<Object[]> getAllPetitionDepartmentsList();
+	public List<Object[]> getGivenPetitionDepartmentsList();
 }

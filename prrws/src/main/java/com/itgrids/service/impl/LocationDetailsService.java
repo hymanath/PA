@@ -243,11 +243,18 @@ public class LocationDetailsService implements ILocationDetailsService {
      * Date : 01/12/2017
      * Description : { Getting Department List }
      */
-    public List<KeyValueVO> getPetitionDepartmentList(){
+    public List<KeyValueVO> getPetitionDepartmentList(String searchType){
     	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
     	try{
     		LOG.info("Entered into LocationDetailsService of getPetitionDepartmentDetailsList ");
-    		List<Object[]> petitionDetailsObjsList = petitionDepartmentDAO.getAllPetitionList();
+    		List<Object[]> petitionDetailsObjsList = null; 
+    		if(searchType != null){
+    			if(searchType.trim().equalsIgnoreCase("all"))
+    				petitionDetailsObjsList = petitionDepartmentDAO.getAllPetitionDepartmentsList();
+    			else if(searchType.trim().equalsIgnoreCase("petitionGivenDepts"))
+    				petitionDetailsObjsList = petitionDepartmentDAO.getGivenPetitionDepartmentsList();
+    		}
+    		
     		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
     			for(Object[] param: petitionDetailsObjsList){
     				KeyValueVO vo = new KeyValueVO();
@@ -267,11 +274,20 @@ public class LocationDetailsService implements ILocationDetailsService {
      * Date : 01/12/2017
      * Description : { Getting Designation List }
      */
-    public List<KeyValueVO> getPetitionDesignationList(){
+    public List<KeyValueVO> getPetitionDesignationList(String searchType){
     	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
     	try{
     		LOG.info("Entered into LocationDetailsService of getPetitionDepartmentDetailsList ");
-    		List<Object[]> petitionDetailsObjsList = petitionDesignationDAO.getpetitionDesignationList();
+    		List<Object[]> petitionDetailsObjsList = null;
+    		if(searchType != null){
+    			if(searchType.trim().equalsIgnoreCase("all"))
+    				petitionDetailsObjsList = petitionDesignationDAO.getAllpetitionDesignationList();
+    			else if(searchType.trim().equalsIgnoreCase("refCandidateDesignations"))
+    				petitionDetailsObjsList = petitionDesignationDAO.getAllReferredCandidateDesignationList();
+    			else if(searchType.trim().equalsIgnoreCase("petitionGivenRefCandidateDesignations"))
+    				petitionDetailsObjsList = petitionDesignationDAO.getGivenPetitionCandidateDesignationList();
+    		}
+    		 
     		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
     			for(Object[] param: petitionDetailsObjsList){
     				KeyValueVO vo = new KeyValueVO();
