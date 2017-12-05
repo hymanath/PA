@@ -243,7 +243,7 @@
 											<li>
 												<label class="checkbox-inline">
 													<input type="checkbox" attr_scope_type="Parliament" class="alertImpactCheckCls" checked>
-													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Paliament</h5></div>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Parliament</h5></div>
 												</label>
 											</li>
 											<li>												
