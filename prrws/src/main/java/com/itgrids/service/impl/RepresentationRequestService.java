@@ -100,6 +100,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			
 			/** Start Petition Referrer Details */
 				
+				if(petitionMember != null){
 				PetitionRefferer petitionRefferer = savePetitionReferralDetails(petitionMember.getPetitionMemberId(),dataVO.getPetitionMemberVO().getReferrerCandidateIdsList(),dataVO.getUserId());
 				if(dataVO.getFilesList() != null && dataVO.getFilesList().size()>0){
 					for (MultipartFile file : dataVO.getFilesList()) {
@@ -107,16 +108,18 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 						PetitionReffererDocument petitionReffererDocument = savePetitionReffererDocument(petitionRefferer.getPetitionReffererId(),petitionRefDocument.getDocumentId(),dataVO.getUserId());
 					}
 				}
+				}
 			
 			/** Start Petition Referrer Details */
-			
-			PetitionWorkDetails petitionWorkDetails = savePetitionWorkDetails(petitionMember.getPetitionMemberId(),dataVO);
-			PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = savePetitionSubWorkDetails(petitionWorkDetails.getPetitionWorkDetailsId(),dataVO);
-			if(dataVO.getFilesList() != null && dataVO.getFilesList().size()>0){
-				for (MultipartFile file : dataVO.getFilesList()) {
-					Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,dataVO.getUserId());
+				if(petitionMember != null){
+					PetitionWorkDetails petitionWorkDetails = savePetitionWorkDetails(petitionMember.getPetitionMemberId(),dataVO);
+					PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = savePetitionSubWorkDetails(petitionWorkDetails.getPetitionWorkDetailsId(),dataVO);
+					if(dataVO.getWorkFilesList() != null && dataVO.getWorkFilesList().size()>0){
+						for (MultipartFile file : dataVO.getWorkFilesList()) {
+							Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,dataVO.getUserId());
+						}
+					}
 				}
-			}
 			responseVO.setResponseCode("0");
 			responseVO.setMessage(IConstants.SUCCESS);
 		} catch (Exception e) {

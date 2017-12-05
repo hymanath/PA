@@ -30,8 +30,8 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private String mobileNo;
 	private Long age;
 	private List<RepresentationRequestVO> worksList = new ArrayList<RepresentationRequestVO>(0);
-	private List<MultipartFile> filesList;
-	private List<MultipartFile> workFilesList;
+	private List<MultipartFile> filesList  = new ArrayList<MultipartFile>();
+	private List<MultipartFile> workFilesList =new ArrayList<MultipartFile>();
 	private PetitionMemberVO petitionMemberVO;
 	private PetitionMemberVO petitionRefCandidateVO;
 	private AddressVO candidateAddressVO;

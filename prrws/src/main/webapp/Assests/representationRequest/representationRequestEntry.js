@@ -148,8 +148,8 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
-			//str+='<h4 class="f_18">REFERRAL LETTER</h4>';
-			//str+='<input type="file"   name="filesList"   id="update_TourFileId2'+typeVal+'" multiple="multiple" class="m_top20"/>';
+			str+='<h4 class="f_18">REFERRAL LETTER</h4>';
+			str+='<input type="file"   name="filesList[]" attr_image_tyep="refImage"  id="update_TourFileId2'+typeVal+'" multiple="multiple" class="m_top20"/>';
 		str+='</div>';
 	str+='</div>';
 	
@@ -222,8 +222,8 @@ function buildSelfAndRepresenteeDetails(typeVal){
 					str+='<div id="textArea'+typeVal+'Err"></div>';
 				str+='</div>';
 				str+='<div class="col-sm-6">';
-					//str+='<h3 class="panel-title f_18">PROJCT DOCUMENTS UPLOAD</h3>';
-					//str+='<input type="file"  name="workFilesList"  id="projectDocUpload'+typeVal+'" multiple="multiple" class="m_top20"/>';
+					str+='<h3 class="panel-title f_18">PROJCT DOCUMENTS UPLOAD</h3>';
+					str+='<input type="file"  name="workFilesList[]" attr_image_tyep="projImage"  id="projectDocUpload'+typeVal+'" multiple="multiple" class="m_top20"/>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -780,7 +780,6 @@ function saveRepresentRequestDetails(){
 			var input = $(this);
 			var text =input.attr('type');
 			var id = input.attr('id');
-			
 			if (typeof id !== typeof undefined && id !== false) {
 				if(text=='text' || text=='hidden'){
 					var name = $('#'+id+'').attr('name');
@@ -792,14 +791,19 @@ function saveRepresentRequestDetails(){
 						formData.append(name, $('#'+id+'').val());
 					}
 				}else if(text=='file'){
-					var name = $('#'+id+'').attr('name');
+					//var name = $('#'+id+'').attr('name');attr_image_tyep="refImage" 
+					var imageType = $('#'+id+'').attr('attr_image_tyep');
 					if(this.files !=null && this.files.length>0){
-						//alert(name);
-						//name = name.replace("[","");
-						//name = name.replace("]","");
-						//alert(name);
-						for(var i in this.files){
-							formData.append(name, this.files[i]);
+						
+							for(var i = 0; i < this.files.length; i++){
+							//alert(i)
+							//console.log(this.files[i]);
+							if(imageType == 'refImage'){
+								formData.append("filesList["+i+"]", this.files[i]);
+							}else if(imageType == 'projImage'){
+								formData.append("workFilesList["+i+"]", this.files[i]);
+							}
+							
 						}
 					}
 				}
@@ -896,7 +900,7 @@ function saveRepresentRequestDetails(){
 	 
 	 */
 	// return;
-	 console.log(formData);
+	 //console.log(formData);
 	  $.ajax({
 			url: $("#adminProfileForm").attr("action"),
 			data: formData,
