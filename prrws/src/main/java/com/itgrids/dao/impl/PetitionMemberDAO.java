@@ -52,7 +52,7 @@ public class PetitionMemberDAO extends GenericDaoHibernate<PetitionMember, Long>
 			if(searchType.equalsIgnoreCase("name") && searchValue != null && !searchValue.isEmpty()){
 				sb.append(" model.candidateName like '%"+searchValue+"%' and ");
 			}else if(searchType.equalsIgnoreCase("mobileNo") && searchValue != null && !searchValue.isEmpty()){
-				sb.append(" model.mobileNo =:searchValue and  ");
+				sb.append(" model.mobileNo ="+searchValue+" and  ");
 			}else if(searchType.equalsIgnoreCase("emailId") && searchValue != null && !searchValue.isEmpty()){
 				sb.append(" model.emailId like '%"+searchValue+"%'  and ");
 			}else if(searchType.equalsIgnoreCase("refCode") && searchValue != null && !searchValue.isEmpty()){
@@ -242,7 +242,7 @@ public class PetitionMemberDAO extends GenericDaoHibernate<PetitionMember, Long>
 			}
 		
 		qry = getSession().createQuery(sb.toString());			
-		if(searchValue != null && !searchValue.isEmpty() && (searchType.equalsIgnoreCase("name") || searchType.equalsIgnoreCase("emailId"))){
+		if(searchValue != null && !searchValue.isEmpty() && (searchType.equalsIgnoreCase("name") || searchType.equalsIgnoreCase("emailId") || searchType.equalsIgnoreCase("mobileNo"))){
 			//qry.setParameter("searchValue", searchValue);
 		}else if(searchValue != null && !searchValue.isEmpty() && Long.valueOf(searchValue).longValue() >0l ){
 			qry.setParameter("searchValue", Long.valueOf(searchValue));

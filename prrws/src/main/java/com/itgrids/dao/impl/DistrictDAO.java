@@ -421,4 +421,14 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		 }
 		 return query.list();
 	}
+	
+	public List<Object[]> getPetitionsDistrictsList(Long stateId){ 
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(" select distinct model.locationAddress.district.districtId,model.locationAddress.district.districtName from PetitionSubWorkLocationDetails model "+
+	               " where model.locationAddress.state.stateId=:stateId order by model.locationAddress.district.districtName ");
+	    Query query = getSession().createQuery(sb.toString());
+	    query.setParameter("stateId",stateId);
+	    return query.list();
+	}
+	
 }

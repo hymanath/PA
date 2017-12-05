@@ -82,11 +82,19 @@ public class LocationDetailsService implements ILocationDetailsService {
 		 * @param : state Id
 		 * @return  List<LocationFundDetailsVO> 
 		 */
-	public List<LocationFundDetailsVO> getAllDistrictsInState(Long stateId){
+	public List<LocationFundDetailsVO> getAllDistrictsInState(Long stateId,String searchType){
 		 List<LocationFundDetailsVO> voList = null;
 		 try{
 			 if(stateId != null){
-				 List<Object[]> objList = districtDAO.getDistrictIdName(stateId);
+				 List<Object[]> objList = null;
+				 if(searchType != null){
+					 if(searchType.equalsIgnoreCase("all")){
+						 objList = districtDAO.getDistrictIdName(stateId);
+					 } else if(searchType.trim().equalsIgnoreCase("petitionsData")){
+						 objList = districtDAO.getPetitionsDistrictsList(stateId);
+					 }
+				 }
+				 
 				 if(objList != null && objList.size() > 0){
 					 voList = new ArrayList<LocationFundDetailsVO>();
 					 for (Object[] objects : objList) {
@@ -118,10 +126,18 @@ public class LocationDetailsService implements ILocationDetailsService {
 	 * @param : districtId Id
 	 * @return  List<LocationVO> 
 	 */
-	public List<LocationVO> getConstituencyNamesByDistrictId( Long districtId){
+	public List<LocationVO> getConstituencyNamesByDistrictId( Long districtId,String searchType){
 		try{
 			List<LocationVO> finalList = new ArrayList<LocationVO>(0);
-			List<Object[]> objects=constituencyDAO.getConstituencyNamesByDistrictId(districtId);
+			List<Object[]> objects = null;
+			 if(searchType != null){
+				 if(searchType.equalsIgnoreCase("all")){
+					 objects = constituencyDAO.getConstituencyNamesByDistrictId(districtId);
+				 } else if(searchType.trim().equalsIgnoreCase("petitionsData")){
+					 objects = constituencyDAO.getPetitionsConstituencyList(districtId);
+				 }
+			 }
+			 
 			if(objects != null && objects.size() > 0){
 				for(Object[] param : objects){
 					LocationVO vo = new LocationVO();
@@ -131,8 +147,7 @@ public class LocationDetailsService implements ILocationDetailsService {
 				}
 			}
 			Collections.sort(finalList,new Comparator<LocationVO>() {
-				public int compare(LocationVO o1,
-						LocationVO o2) {
+				public int compare(LocationVO o1,LocationVO o2) {
 					return o1.getLocationName().compareTo(o2.getLocationName());
 				}
 			});
@@ -286,15 +301,31 @@ public class LocationDetailsService implements ILocationDetailsService {
     				petitionDetailsObjsList = petitionDesignationDAO.getAllReferredCandidateDesignationList();
     			else if(searchType.trim().equalsIgnoreCase("petitionGivenRefCandidateDesignations"))
     				petitionDetailsObjsList = petitionDesignationDAO.getGivenPetitionCandidateDesignationList();
+    				List<Object[]> petitionReprDesignationsList = petitionDesignationDAO.getGivenpetitionReprDesignationsList();
+    				if(!commonMethodsUtilService.isListOrSetValid(petitionDetailsObjsList))
+    					petitionDetailsObjsList =new ArrayList<Object[]>();
+    				if(commonMethodsUtilService.isListOrSetValid(petitionReprDesignationsList))
+    					petitionDetailsObjsList.addAll(petitionReprDesignationsList);
+    				
     		}
     		 
     		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
+    			List<Long> addedDesignationsList = new ArrayList<Long>();
     			for(Object[] param: petitionDetailsObjsList){
-    				KeyValueVO vo = new KeyValueVO();
-    				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
-    				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
-    				resultList.add(vo);
+    				if(!addedDesignationsList.contains(commonMethodsUtilService.getLongValueForObject(param[0]))){
+    					KeyValueVO vo = new KeyValueVO();
+        				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+        				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+        				resultList.add(vo);
+        				addedDesignationsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+    				}
     			}
+    			
+    			Collections.sort(resultList,new Comparator<KeyValueVO>() {
+    				public int compare(KeyValueVO o1,KeyValueVO o2) {
+    					return o1.getValue().compareTo(o2.getValue());
+    				}
+    			});
     		}
     	}catch(Exception e){
     		LOG.error("Exception occured at getPetitionDepartmentDetailsList() in LocationDetailsService class ", e);

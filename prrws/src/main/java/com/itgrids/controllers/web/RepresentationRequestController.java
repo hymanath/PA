@@ -47,11 +47,11 @@ public class RepresentationRequestController {
     }
 	@RequestMapping(value ="/getAllDistrictsInState",method = RequestMethod.POST)
     public @ResponseBody List<LocationFundDetailsVO> getAllDistrictsInState(@RequestBody Map<String,String> inputMap ) {
-    	 return locationDetailsService.getAllDistrictsInState(Long.valueOf(inputMap.get("stateId")));
+    	 return locationDetailsService.getAllDistrictsInState(Long.valueOf(inputMap.get("stateId")),String.valueOf(inputMap.get("searchType"))); 
     }
 	@RequestMapping(value ="/getConstituencyNamesByDistrictId",method = RequestMethod.POST)
     public @ResponseBody List<LocationVO> getConstituencyNamesByDistrictId(@RequestBody Map<String,String> inputMap ) {
-    	 return locationDetailsService.getConstituencyNamesByDistrictId(Long.valueOf(inputMap.get("districtId")));
+    	 return locationDetailsService.getConstituencyNamesByDistrictId(Long.valueOf(inputMap.get("districtId")),String.valueOf(inputMap.get("searchType")));
     }
 	@RequestMapping(value ="/getTehsilsAndLocalElectionBodyForConstituencyId",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getTehsilsAndLocalElectionBodyForConstituencyId(@RequestBody Map<String,String> inputMap ) {

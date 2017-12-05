@@ -49,5 +49,15 @@ public class PetitionDesignationDAO extends GenericDaoHibernate<PetitionDesignat
 		Query qry = getSession().createQuery(sb.toString());
 		return qry.list();
 	}
+	
+	public List<Object[]> getGivenpetitionReprDesignationsList(){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct  model.petitionDesignation.petitionDesignationId, " +
+				" model.petitionDesignation.designationName from PetitionMember model where model.petitionDesignation.isDeleted='N' " +
+				" order by model.petitionDesignation.designationName asc ");
+		Query qry = getSession().createQuery(sb.toString());
+		return qry.list();
+	}
 
 }

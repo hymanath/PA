@@ -50,4 +50,5 @@ public interface IConstituencyDAO extends GenericDao<Constituency,Long>{
 	
 	public List<Object[]> getLocationsNamesBySubLocation(Long districtId);
 	public List<Object[]> getConstituencyNamesByDistrictId(Long districtId);
+	public List<Object[]> getPetitionsConstituencyList(Long districtId);
 }
