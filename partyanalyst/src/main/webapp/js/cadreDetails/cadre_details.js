@@ -8292,7 +8292,6 @@ function getConstituencyDtls(distId,idx1,idx2){
 function getSurveyQuestionWithMarksDetailsByTDpCadreId(){
 	$("#surveyQueDetailsIdImgId").show();
 	$("#normalSurveyDiv").html("");
-	$("#quizSurveyDiv").html("");
 	var jsObj={
 			cadreId :globalCadreId
 		}	
@@ -8304,111 +8303,182 @@ function getSurveyQuestionWithMarksDetailsByTDpCadreId(){
 			$("#surveyQueDetailsIdImgId").hide();
 			if(result != null && result.length>0){
 				buildnormalSurveyDetails(result);
-				buildQuizSurveyDetails(result);
 			}else{
 				$("#normalSurveyDiv").html(" No data available...");
 			}	
 		});
 }
+function getSurveyQuestionDetails(){
+	$("#surveyQueDetailsIdImgId").show();
+	$("#quizSurveyDiv").html("");
+	var jsObj={
+			cadreId :globalCadreId
+		}	
+	$.ajax({
+		 type: "POST",
+		 url: "getSurveyQuestionDetailsAction.action",
+		 data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#surveyQueDetailsIdImgId").hide();
+			if(result != null && result.length>0){
+			    buildQuizSurveyDetails(result);
+			}else{
+				$("#quizSurveyDiv").html(" No data available...");
+			}	
+		});
+}
+$("#normalSurveyBodyId").collapse('hide');
+$("#quizSurveyBodyId").collapse('hide');
+$(document).on("click","#normalSurveyHeaderId1",function(){
+	var isVisible = $( "#normalSurveyHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#normalSurveyHideId" ).show();
+		 $( "#normalSurveyShowId" ).hide();
+	}else{
+		$( "#normalSurveyHideId" ).hide();
+		$( "#normalSurveyShowId" ).show();
+	}
+	$("#normalSurveyBodyId").collapse('toggle');
+});
+$(document).on("click","#quizSurveyHeaderId1",function(){
+	var isVisible = $( "#quizSurveyHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#quizSurveyHideId" ).show();
+		 $( "#quizSurveyShowId" ).hide();
+	}else{
+		$( "#quizSurveyHideId" ).hide();
+		$( "#quizSurveyShowId" ).show();
+	}
+	$("#quizSurveyBodyId").collapse('toggle');
+});
 function buildnormalSurveyDetails(result){
 	var str="";
-		//$("#trainingFeedBackId").html(result[0].surveyName);
-		str+='<h4 class="panel-title">'+result[0].surveyName+' :</h4>';
-		str+='<div class="table-responsive">';
-		str+='<table class="table table-bordered" id="normalSurveyTableId">';
-				str+='<thead>';
-					str+='<tr>';
-						str+='<th>S.No</th>';
-						str+='<th>Question</th>';
-						str+='<th>Option</th>';
-						str+='</tr>';
-				str+='</thead>';
-				str+='<tbody>';	
-					for(var j in result){
-						for(var i in result[j].subList){
-							if(result[j].surveyTypeId == 5){
-							str+='<tr>';
-							var question = result[j].subList[i].question.split(")");
-									str+='<td>'+question[0]+'</td>';
-									str+='<td>'+question[1]+'</td>';
-									
-									if(result[j].subList[i].name != null && result[j].subList[i].name !="" && result[j].subList[i].name != "null"){
-									str+='<td>'+result[j].subList[i].name+'</td>';
-									}else{
-										str+='<td>-</td>';
-									}
-							str+='</tr>';				
-						  }
-					}
-				}			
-					
-			str+='</tbody>';
-		str+='</table>';
+		str+='<div class="panel panel-default">';
+			str+='<div class="panel-heading bg_white" id="normalSurveyHeaderId1" style="background-color:#ccc !important;">';
+				str+='<h4 class="panel-title text-bold pointer">'+result[0].surveyName+'';
+				
+					str+='<span class="pull-right" id="normalSurveyShowId"><i class="glyphicon glyphicon-chevron-up"></i>';
+					str+='</span><span class="pull-right" id="normalSurveyHideId" style="display:none;">';
+					str+='<i class="glyphicon glyphicon-chevron-down"></i></span>';
+				str+='</h4>';
+			str+='</div>';
+			str+='<div class="panel-body collapse" id="normalSurveyBodyId" style="padding:0px 15px;">';
+				str+='<div class="table-responsive m_top10">';
+					str+='<table class="table table-bordered" id="normalSurveyTableId">';
+							str+='<thead>';
+								str+='<tr>';
+									str+='<th>S.No</th>';
+									str+='<th>Question</th>';
+									str+='<th>Option</th>';
+									str+='</tr>';
+							str+='</thead>';
+							str+='<tbody>';	
+								for(var j in result){
+									for(var i in result[j].subList){
+										if(result[j].surveyTypeId == 5){
+										str+='<tr>';
+										var question = result[j].subList[i].question.split(")");
+												str+='<td>'+question[0]+'</td>';
+												str+='<td>'+question[1]+'</td>';
+												
+												if(result[j].subList[i].name != null && result[j].subList[i].name !="" && result[j].subList[i].name != "null"){
+												str+='<td>'+result[j].subList[i].name+'</td>';
+												}else{
+													str+='<td>-</td>';
+												}
+										str+='</tr>';				
+									  }
+								}
+							}			
+								
+						str+='</tbody>';
+					str+='</table>';
+					str+='</div>';
+			str+='</div>';
 		str+='</div>';
+		
 		$("#normalSurveyDiv").html(str);
-		$('#normalSurveyTableId').dataTable({
+		/* $('#normalSurveyTableId').dataTable({
 			"iDisplayLength": 10,
 			"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]],
 			"aaSorting": []
-		});
-		$('#normalSurveyTableId').removeClass("dataTable");
+		}); */
+		//$('#normalSurveyTableId').removeClass("dataTable");
 }
 function buildQuizSurveyDetails(result){
 	var str1='';
-		//$("#trainingQuizId").html(result[1].surveyName);
-		str1+='<h4 class="panel-title">'+result[1].surveyName+' :</h4>';
-			str1+='<div class="table-responsive">';
+	var totalMarks=0;
+	for(var i in result){
+		if(result[i].surveyTypeId ==7){
+				if(result[i].id == result[i].userId){
+					totalMarks = totalMarks+1;
+			}
+		}
+	}
+		str1+='<div class="panel panel-default">';
+			str1+='<div class="panel-heading bg_white" id="quizSurveyHeaderId1" style="background-color:#ccc !important;">';
+				str1+='<h4 class="panel-title text-bold pointer">'+result[0].surveyName+': (Total Marks :'+totalMarks+' )';
+				
+					str1+='<span class="pull-right" id="quizSurveyShowId"><i class="glyphicon glyphicon-chevron-up"></i>';
+					str1+='</span><span class="pull-right" id="quizSurveyHideId" style="display:none;">';
+					str1+='<i class="glyphicon glyphicon-chevron-down"></i></span>';
+				str1+='</h4>';
+			str1+='</div>';
+			str1+='<div class="panel-body collapse" id="quizSurveyBodyId" style="padding:0px 15px;">';
+					str1+='<div class="table-responsive m_top10">';
 			str1+='<table class="table table-bordered" id="quizSurveyTableId">';
 				str1+='<thead>';
 					str1+='<tr>';
 						str1+='<th>S.No</th>';
 						str1+='<th>Question</th>';
-						str1+='<th>Given Option</th>';
+						str1+='<th>Given Answer</th>';
 						str1+='<th>Answer</th>';
 						str1+='<th>Marks</th>';
 					str1+='</tr>';
 				str1+='</thead>';
 				str1+='<tbody>';
-					for(var j in result){
-						for(var i in result[j].subList){
-								if(result[j].surveyTypeId ==7){
+					for(var i in result){
+								if(result[i].surveyTypeId ==7){
 								str1+='<tr>';
-										var question = result[j].subList[i].question.split(")");
+										var question = result[i].question.split(")");
 										str1+='<td>'+question[0]+'</td>';
 										str1+='<td>'+question[1]+'</td>';
-										if(result[j].subList[i].candidateName != null && result[j].subList[i].candidateName !="" &&
-											result[j].subList[i].candidateName != "null"){
-												str1+='<td>'+result[j].subList[i].candidateName+'</td>';
+											if(result[i].name != null && result[i].name !="" &&
+											result[i].name != "null"){
+												str1+='<td>'+result[i].name+'</td>';
 											}else{
 												str1+='<td>-</td>';
 											}
-											if(result[j].subList[i].name != null && result[j].subList[i].name !="" &&
-											result[j].subList[i].name != "null"){
-												str1+='<td>'+result[j].subList[i].name+'</td>';
+											if(result[i].candidateName != null && result[i].candidateName !="" &&
+											result[i].candidateName != "null"){
+												str1+='<td>'+result[i].candidateName+'</td>';
 											}else{
 												str1+='<td>-</td>';
 											}
-											if(result[j].subList[i].marks != null && result[j].subList[i].marks !="" &&
-											result[j].subList[i].marks !="null"){
-												str1+='<td>'+result[j].subList[i].marks+'</td>';
+											if(result[i].id == result[i].userId){
+													str1+='<td>Yes</td>';
 											}else{
-												str1+='<td>-</td>';
+												str1+='<td>No</td>';
 											}
 											
 								str1+='</tr>';	
-							}
+					      }
 						}
-					}
-				
 			str1+='</tbody>';
 		str1+='</table>';
 		str1+='</div>';
+			str1+='</div>';
+		str1+='</div>';
+		
+		
+		
+			
 		$("#quizSurveyDiv").html(str1);
-		$('#quizSurveyTableId').dataTable({
+		/* $('#quizSurveyTableId').dataTable({
 			"iDisplayLength": 10,
 			"aaSorting": [],
 			"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
-		});
-		$('#quizSurveyTableId').removeClass("dataTable");
+		}); */
+		//$('#quizSurveyTableId').removeClass("dataTable");
 			
 }
