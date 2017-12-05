@@ -18560,5 +18560,10 @@
 			<param name="root">cadreHealthDetailList</param>       
 		</result>
    </action>
+  	<action name="getSurveyQuestionDetailsAction" class="cadreDetailsAction" method="getSurveyQuestionDetails" >
+			<result type="json" name="success">
+				<param name="root">finalList</param>
+			</result>
+	</action>
  </package>
 </struts>
