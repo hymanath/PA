@@ -132,7 +132,7 @@
 				 $("#locationAlertsId").prop("checked",false);
                  $("#impactAlertsId").prop("checked",true);
 				 $(".locImptLevelDivCls").show();
-				getAlertCategoryDtlsLocationWise(0,0);
+				getAlertCategoryDtlsLocationWise(1,0);
 				getStateImpactandItsSubLevelAlert("impactScopeWise");
 				//alert(1);
 				getDistrictImpactandItsSubLevelAlert("Decending","0","impactScopeWise");
@@ -252,7 +252,7 @@
 			
 		 getAlertOverviewDetails();
 		 getAlertOverviewDetailsNextLevel();
-		 getAlertCategoryDtlsLocationWise(0,0); 
+		 getAlertCategoryDtlsLocationWise(1,0); 
 		 getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
 		 $(".impactLevelCls").attr("attr_level","Overview");
 		 getStateImpactandItsSubLevelAlert("impactScopeWise");
