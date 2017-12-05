@@ -279,7 +279,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							table+='<td>'+rfidTracking+'</td>';
 							table+='<td>'+swmCollection.toFixed(2)+'</td>';
 							table+='<td>'+nadap+'</td>';
-							table+='<td>'+vermi+'</td>';
+							table+='<td>'+vermi.toFixed(2)+'</td>';
 							table+='<td>'+vermiStock+'</td>';
 						table+='</tr>';
 				}else{
@@ -451,7 +451,7 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#farmerCattleDung").html(result.farmerCollection.toFixed(2));
 			$("#totSwmId").html(result.swmCollection.toFixed(2));
 			$("#stageOneId").html(result.nadap);
-			$("#stageTwoId").html(result.vermi);
+			$("#stageTwoId").html(result.vermi.toFixed(2));
 			$("#stageThreeId").html(result.vermiStock);
 			$("#onekgCount").html(result.onekg);
 			$("#fivekgCount").html(result.fivekg);
