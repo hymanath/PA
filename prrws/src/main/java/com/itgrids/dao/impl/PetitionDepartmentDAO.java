@@ -21,10 +21,19 @@ public class PetitionDepartmentDAO extends GenericDaoHibernate<PetitionDepartmen
 		super(PetitionDepartment.class);
 	}
 	
-	public List<Object[]> getAllPetitionList(){
+	public List<Object[]> getAllPetitionDepartmentsList(){
 		
 		StringBuilder sb = new StringBuilder();
 			sb.append("select model.petitionDepartmentId,model.departmentName from PetitionDepartment model where model.isDeleted ='N' order by model.departmentName asc ");
+			Query qry = getSession().createQuery(sb.toString());
+			return qry.list();
+		 
+	}
+	
+	public List<Object[]> getGivenPetitionDepartmentsList(){
+		StringBuilder sb = new StringBuilder();
+			sb.append("select model.petitionDepartment.petitionDepartmentId,model.petitionDepartment.departmentName from PetitionWorkDetails model " +
+					" where model.isDeleted ='N' order by model.petitionDepartment.departmentName asc ");
 			Query qry = getSession().createQuery(sb.toString());
 			return qry.list();
 		 

@@ -63,11 +63,11 @@ public class RepresentationRequestController {
     }
 	@RequestMapping(value ="/getPetitionDepartmentList",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getPetitionDepartmentDetailsList(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPetitionDepartmentList();
+       return locationDetailsService.getPetitionDepartmentList(String.valueOf(inputMap.get("searchType")));
     }
 	@RequestMapping(value ="/getPetitionDesignationList",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getPetitionDesignationList(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPetitionDesignationList();
+       return locationDetailsService.getPetitionDesignationList(String.valueOf(inputMap.get("searchType")));
     }
 	@RequestMapping(value ="/getPetitionReferredMemberDetails",method = RequestMethod.POST)
     public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ) {
