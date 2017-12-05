@@ -416,13 +416,13 @@
 							tabBlock+='<li  attr_type="exceededOverview">Exceeded Target Works Details - <span class="headingExceedId"></span></li>';
 						tabBlock+='</ul>';
 					tabBlock+='</div>';
-					/* tabBlock+='<div class="col-sm-4">';
+					tabBlock+='<div class="col-sm-4">';
 						tabBlock+='<div class="pull-right">';
 							tabBlock+='<label class="checkbox-inline">';
-								tabBlock+='<input type="checkbox"  class="checkboxTypeCls"  name="option" value="amount" checked>with Amount';
+								tabBlock+='<input type="checkbox"  class="checkboxTypeCls" attr_block_name="'+blockName+'" id="checkboxType'+blockName+'Id" name="option" value="amount" checked>with Amount';
 							tabBlock+='</label>';
 						tabBlock+='</div>';
-					tabBlock+='</div>'; */
+					tabBlock+='</div>';
 				tabBlock+='</div>';
 				
 				
@@ -595,35 +595,77 @@
 										tableView+='<th rowspan="3">'+locationType+'</th>';
 										for(var i in GLtbodyArr[0].subList){
 											if(GLtbodyArr[0].subList[i].assetType == "CPWS"){
-												tableView+='<th colspan="'+length+'">'+GLtbodyArr[0].subList[i].assetType+' - '+totalCPWSCount+' (Works)</th>';
+												//tableView+='<th colspan="7" class="colspanLen" style="display:none">'+GLtbodyArr[0].subList[i].assetType+' - '+totalCPWSCount+' (Works)</th>';
+												tableView+='<th colspan="'+length+'" class="" >'+GLtbodyArr[0].subList[i].assetType+' - '+totalCPWSCount+' (Works)</th>';
 											}else{
-												tableView+='<th colspan="'+length+'">'+GLtbodyArr[0].subList[i].assetType+' - '+totalPWSCount+' (Works)</th>';
+												//tableView+='<th colspan="7" class="colspanLen" style="display:none">'+GLtbodyArr[0].subList[i].assetType+' - '+totalPWSCount+' (Works)</th>';
+												tableView+='<th colspan="'+length+'" class="" >'+GLtbodyArr[0].subList[i].assetType+' - '+totalPWSCount+' (Works)</th>';
+												
+												
 											}
 											
 										}
 									tableView+='</tr>'
 									tableView+='<tr>';
-										tableView+='<th colspan="2">TOTAL WORKS</th>';
+										
+										//tableView+='<th class="colspanLen" style="display:none">TOTAL WORKS</th>';
+										tableView+='<th colspan="2" class="">TOTAL WORKS</th>';
+										
 										for(var i in GLtbodyArr[0].subList[0].subList){
-											tableView+='<th colspan="2">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+											//tableView+='<th class="colspanLen" style="display:none">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+											tableView+='<th colspan="2" class="">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+											
 										}
-										tableView+='<th colspan="2">TOTAL WORKS</th>';
+										//tableView+='<th class="colspanLen" style="display:none">TOTAL WORKS</th>';
+										tableView+='<th colspan="2" class="">TOTAL WORKS</th>';
+										
 										for(var i in GLtbodyArr[0].subList[0].subList){
-											tableView+='<th colspan="2">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+											//tableView+='<th class="colspanLen" style="display:none">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+											tableView+='<th colspan="2" class="">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
 										}		
 									tableView+='</tr>'
 									tableView+='<tr>';
-										tableView+='<th>Works</th>';
-										tableView+='<th><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+									
+										//tableView+='<th class="colspanLen" style="display:none">Works</th>';
+										
+										tableView+='<th class="">Works</th>';
+										
+										tableView+='<th><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
+										tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
+													
+										//tableView+='<th class=""><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+										
 										for(var i in GLtbodyArr[0].subList[0].subList){
-											tableView+='<th>Works</th>';
-											tableView+='<th><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+											//tableView+='<th class="colspanLen" style="display:none">Works</th>';
+											
+											tableView+='<th class="">Works</th>';
+											
+											tableView+='<th><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
+											tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
+										
+											//tableView+='<th class=""><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+											
+											
 										}
-										tableView+='<th>Works</th>';
-										tableView+='<th><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+										//tableView+='<th class="colspanLen" style="display:none">Works</th>';
+										
+										tableView+='<th class="">Works</th>';
+										
+										tableView+='<th><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
+										tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
+											
+										//tableView+='<th class=""><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+										
 										for(var i in GLtbodyArr[0].subList[0].subList){
-											tableView+='<th>Works</th>';
-											tableView+='<th><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+											//tableView+='<th class="colspanLen" style="display:none">Works</th>';
+											
+											tableView+='<th class="">Works</th>';
+											
+											tableView+='<th><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
+											tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
+										
+											//tableView+='<th class=""><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
+											
 										}
 									tableView+='</tr>'
 								}
@@ -735,14 +777,14 @@
 													}
 													
 												}
-												 if(GLtbodyArr[i].subList[j].sanctionedAmount !=null && GLtbodyArr[i].subList[j].sanctionedAmount>0){
-													tableView+='<td>'+GLtbodyArr[i].subList[j].sanctionedAmount+'</td>';
+												if(GLtbodyArr[i].subList[j].sanctionedAmount !=null && GLtbodyArr[i].subList[j].sanctionedAmount>0){
+													tableView+='<td><span class="colspanLenInc'+locationType+'">'+GLtbodyArr[i].subList[j].sanctionedAmount+'<span>';
+													tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></td>';
 
 												}else{
-													tableView+='<td> - </td>';
+													tableView+='<td><span class="colspanLenInc'+locationType+'"></span> - <span class="colspanLen" style="display:none"> - </span></td>';
 												}
-												
-												
+											
 												for(var k in GLtbodyArr[i].subList[j].subList){
 													
 													if(GLtbodyArr[i].subList[j].subList[k].count !=null && GLtbodyArr[i].subList[j].subList[k].count>0){
@@ -752,10 +794,12 @@
 													}
 													
 													if(GLtbodyArr[i].subList[j].subList[k].sanctionedAmount !=null && GLtbodyArr[i].subList[j].subList[k].sanctionedAmount>0){
-														tableView+='<td>'+GLtbodyArr[i].subList[j].subList[k].sanctionedAmount+'</td>';
+														tableView+='<td><span class="colspanLenInc'+locationType+'">'+GLtbodyArr[i].subList[j].subList[k].sanctionedAmount+'';
+														tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </td>';
 													}else{
-														tableView+='<td> - </td>';
+														tableView+='<td><span class="colspanLenInc'+locationType+'"> - </span><span class="colspanLen" style="display:none"> - </span> - </td>';
 													}
+													
 													
 												}
 											}
@@ -1939,7 +1983,6 @@ function getExceededTargetWorksDetails(){
 				}
 			}
 		}
-		alert(OnGoingExceededWorks)
 		$("#ExceededTargetDetails").highcharts({
 			chart: {
 				type: 'column'
@@ -2211,5 +2254,32 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 			$(".headingExceedId").html("OnGoing Exceeded Works")
 		}	
 		getExceedWorkDetailsLocationWise("",'state',"","","","","",statusType);
+	});
+	$(document).on("click",".checkboxTypeCls",function(e){
+		
+		if($(this).is(":checked")){
+			var blockType = $(this).attr("attr_block_name")
+				if(blockType == "state"){
+					$(".colspanLenInc"+blockType).css("display","block")
+					$(".colspanLen"+blockType).css("display","none")
+				}else if(blockType == "district"){
+					$(".colspanLenInc"+blockType).css("display","block")
+					$(".colspanLen"+blockType).css("display","none")
+				}
+			
+			
+		}else{
+			var blockType = $(this).attr("attr_block_name")
+			
+			if(blockType == "state"){
+				$(".colspanLenInc"+blockType).css("display","none")
+				$(".colspanLen"+blockType).css("display","block")
+			}else if(blockType == "district"){
+				$(".colspanLenInc"+blockType).css("display","none")
+				$(".colspanLen"+blockType).css("display","block")
+			}
+		}
+		
+		
 	});
 	
