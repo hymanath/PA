@@ -28,6 +28,7 @@ import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.dto.WaterSourceVO;
+import com.itgrids.dto.WorksVO;
 import com.itgrids.service.IUserService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
@@ -537,5 +538,17 @@ public class RuralWaterSupplyDashBoardController {
 			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
 	  }
 	 return null;
+	}
+	
+	@PostMapping("/getSchemeWiseWorkDetails2")
+	public @ResponseBody List<WorksVO> getSchemeWiseWorkDetails2(@RequestBody InputVO inputVO) {
+		try {
+			return rWSNICService.getSchemeWiseWorkDetails2(inputVO);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSchemeWiseWorkDetails - RuralWaterSupplyDashBoardController controller",
+					e);
+		}
+		return null;
 	}
 }

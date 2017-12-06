@@ -20,7 +20,7 @@ public class RwsClickVO implements Serializable{
 	private String constituencyCode;
 	private String mandalCode;
 	private String habitationName;
-	private String completionDate;
+	private String completionDate="";
 	private String habitationCode;
 	private Long panchayatId;
 	private String panchayat;
@@ -36,10 +36,10 @@ public class RwsClickVO implements Serializable{
 	private String assestName;
 	private String assestCost;
 	
-	private String commssionedDate;
-	private String targetDate;
-	private String groundingDate;
-	
+	private String commssionedDate ="";
+	private String targetDate="";
+	private String groundingDate="";
+	private String adminDate="";
 	
 	public Long getPanchayatId() {
 		return panchayatId;
@@ -230,8 +230,12 @@ public class RwsClickVO implements Serializable{
 	public void setGroundingDate(String groundingDate) {
 		this.groundingDate = groundingDate;
 	}
-	
-	
+	public String getAdminDate() {
+		return adminDate;
+	}
+	public void setAdminDate(String adminDate) {
+		this.adminDate = adminDate;
+	}
 	
 	
 }

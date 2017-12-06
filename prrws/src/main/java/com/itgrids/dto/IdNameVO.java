@@ -59,7 +59,7 @@ public class IdNameVO implements Serializable{
     private String workStatus;
     private Long noOfDays;
     private String locationIdStr;
-    private List<IdNameVO> subList;
+    private List<IdNameVO> subList = new ArrayList<IdNameVO>();
     public String programCode;
     public String programName;
 
@@ -69,9 +69,21 @@ public class IdNameVO implements Serializable{
 	private String habitationCode;
 	private String habitationName;
 	
-	private Long groundedPWSExceededCount =0l;
+	private Long ongoingPWSExceededCount =0l;
 	 private Long completedPWSExceededCount=0l;
 	 private Long commissionedPWSExceededCount=0l;
+	 private Long workOngoingCount=0l;
+	 private Long workComissionedCount=0l ;
+	 private Long workCompletedCount=0l;
+	 private Long workNotGroundedCount=0l;
+
+	private Long workOngoingPWsCount;
+	 private Double percentageOne = 0.0d,percentageTwo = 0.0d,percentageThree = 0.0d,percentageFour = 0.0d;
+
+	private String goNumber;
+
+	private String locationName;
+	 
 	
 	public IdNameVO() {
 		super();
@@ -411,11 +423,12 @@ public class IdNameVO implements Serializable{
 	public void setHabitationName(String habitationName) {
 		this.habitationName = habitationName;
 	}
-	public Long getGroundedPWSExceededCount() {
-		return groundedPWSExceededCount;
+	
+	public Long getOngoingPWSExceededCount() {
+		return ongoingPWSExceededCount;
 	}
-	public void setGroundedPWSExceededCount(Long groundedPWSExceededCount) {
-		this.groundedPWSExceededCount = groundedPWSExceededCount;
+	public void setOngoingPWSExceededCount(Long ongoingPWSExceededCount) {
+		this.ongoingPWSExceededCount = ongoingPWSExceededCount;
 	}
 	public Long getCompletedPWSExceededCount() {
 		return completedPWSExceededCount;
@@ -428,6 +441,74 @@ public class IdNameVO implements Serializable{
 	}
 	public void setCommissionedPWSExceededCount(Long commissionedPWSExceededCount) {
 		this.commissionedPWSExceededCount = commissionedPWSExceededCount;
+	}
+	public Long getWorkOngoingCount() {
+		return workOngoingCount;
+	}
+	public void setWorkOngoingCount(Long workOngoingCount) {
+		this.workOngoingCount = workOngoingCount;
+	}
+	public Long getWorkComissionedCount() {
+		return workComissionedCount;
+	}
+	public void setWorkComissionedCount(Long workComissionedCount) {
+		this.workComissionedCount = workComissionedCount;
+	}
+	public Long getWorkCompletedCount() {
+		return workCompletedCount;
+	}
+	public void setWorkCompletedCount(Long workCompletedCount) {
+		this.workCompletedCount = workCompletedCount;
+	}
+	public Long getWorkNotGroundedCount() {
+		return workNotGroundedCount;
+	}
+	public void setWorkNotGroundedCount(Long workNotGroundedCount) {
+		this.workNotGroundedCount = workNotGroundedCount;
+	}
+	public void setWorkOngoingPWsCount(Long workOngoingPWsCount) {
+		this.workOngoingPWsCount=workOngoingPWsCount;
+		
+	}
+	public Long getWorkOngoingPWsCount() {
+		return workOngoingPWsCount;
+	}
+	public Double getPercentageOne() {
+		return percentageOne;
+	}
+	public void setPercentageOne(Double percentageOne) {
+		this.percentageOne = percentageOne;
+	}
+	public Double getPercentageTwo() {
+		return percentageTwo;
+	}
+	public void setPercentageTwo(Double percentageTwo) {
+		this.percentageTwo = percentageTwo;
+	}
+	public Double getPercentageThree() {
+		return percentageThree;
+	}
+	public void setPercentageThree(Double percentageThree) {
+		this.percentageThree = percentageThree;
+	}
+	public Double getPercentageFour() {
+		return percentageFour;
+	}
+	public void setPercentageFour(Double percentageFour) {
+		this.percentageFour = percentageFour;
+	}
+	public void setGoNumber(String goNumber) {
+		this.goNumber=goNumber;
+		
+	}
+	public void setLocationName(String locationName) {
+			this.locationName=locationName;		
+	}
+	public String getGoNumber() {
+		return goNumber;
+	}
+	public String getLocationName() {
+		return locationName;
 	}
 	
 }
