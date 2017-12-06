@@ -114,7 +114,7 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 			   String fromDate = jObj.getString("fromDate");
 			   String endDate = jObj.getString("endDate");
 			   String type = jObj.getString("type");
-			  janmabhoomiCommitteeVOList = janmabhoomiCommitteeService.getDistrictWiseCommitteeDetails(fromDate,endDate,type,user.getRegistrationID());
+			   janmabhoomiCommitteeVO = janmabhoomiCommitteeService.getDistrictWiseCommitteeDetails(fromDate,endDate,type,user.getRegistrationID());
 			  
 		} catch (Exception e) {
 			LOG.error("Excepting Occured in getDistrictWiseCommitteeDetails() of JanmaBhoomiCommitteeAction ", e);
@@ -124,8 +124,12 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	 
 	 public String getJbCommitteeStatusCount(){
 		 try {
+			 session = request.getSession();
+			 RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+			 if(user==null)
+				return "input";
 			 jObj = new JSONObject(getTask());
-			 janmabhoomiCommitteeVO  =  janmabhoomiCommitteeService.getJbCommitteeStatusCount(jObj.getString("fromDateStr"),jObj.getString("toDateStr"));
+			 janmabhoomiCommitteeVO  =  janmabhoomiCommitteeService.getJbCommitteeStatusCount(jObj.getString("fromDateStr"),jObj.getString("toDateStr"),user.getRegistrationID());
 		} catch (Exception e) {
 			LOG.error("Exception raised at getJbCommitteeStatusCount", e);
 		}
@@ -160,6 +164,10 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 	
 	public String getJanmabhoomiCommitteesByLocIdAndCommLvlId(){ 
 		  try{
+			  session = request.getSession();
+				 RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+				 if(user==null)
+					return "input";
 			  jObj=new JSONObject(getTask());
 			  String startDate = jObj.getString("fromDate"); 
 			  String endDate = jObj.getString("endDate"); 
@@ -167,7 +175,7 @@ public class JanmaBhoomiCommitteeAction  extends ActionSupport implements Servle
 			  Long levelId = jObj.getLong("levelId");
 			  Long committeeLvlId = jObj.getLong("committeeLvlId"); 
 			  Long status = jObj.getLong("status"); 
-			  janmabhoomiCommitteeVOList = janmabhoomiCommitteeService.getJanmabhoomiCommitteesByLocIdAndCommLvlId(startDate,endDate,locationId,levelId,committeeLvlId,status);			  
+			  janmabhoomiCommitteeVOList = janmabhoomiCommitteeService.getJanmabhoomiCommitteesByLocIdAndCommLvlId(startDate,endDate,locationId,levelId,committeeLvlId,status,user.getRegistrationID());			  
 		  }catch(Exception e){
 			  LOG.error("Entered into getJanmabhoomiCommitteeOverview method in JanmaBhoomiCommitteeAction ",e);
 		  }
