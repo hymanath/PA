@@ -3320,7 +3320,7 @@
 					$("#financialYearId").append("<option value="+value[1]+">"+result[i].financialYear+"</option>");
 					
 				}
-				$("#financialYearId").val('2017');
+				$("#financialYearId").val('2018');
 			}
 			
 			$("#financialYearId").chosen();
