@@ -516,10 +516,11 @@
 		function buildHabitationSupplyDetails(result){
 				var groundArr=[];
 				var surfaceArr=[];
+					
 					groundArr.push(result.groundWaterSafeMLD)
-					groundArr.push(result.groundWaterUnSafeMLD)
+					surfaceArr.push(result.groundWaterUnSafeMLD)
 					surfaceArr.push(result.surfaceWaterSafeMLD)
-					surfaceArr.push(result.surfaceWaterUnSafeMLD)
+					groundArr.push(result.surfaceWaterUnSafeMLD)
 				
 				//$("#levelSupplyTtlValues").html("TOTAL:"+totalCount)
 				$("#levelOfSupply1").highcharts({
