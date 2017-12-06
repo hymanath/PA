@@ -67,6 +67,8 @@ private Long localElectionBodyId;
 private String localElectionBodyName;
 private Long wardId;
 private String wardName;
+private String comment;
+private String imageUrl;
 public Long getPublicRepresentativeTypeId() {
 	return publicRepresentativeTypeId;
 }
@@ -424,6 +426,16 @@ public Long getStatusId() {
 public void setStatusId(Long statusId) {
 	this.statusId = statusId;
 }
-
-
+public String getComment() {
+	return comment;
+}
+public void setComment(String comment) {
+	this.comment = comment;
+}
+public String getImageUrl() {
+	return imageUrl;
+}
+public void setImageUrl(String imageUrl) {
+	this.imageUrl = imageUrl;
+}
 }

@@ -40,6 +40,10 @@ public class JanmabhoomiCommitteeVO {
 	private List<JanmabhoomiCommitteeVO> committeeStatusVOList = new ArrayList<JanmabhoomiCommitteeVO>();
 	private List<JanmabhoomiCommitteeVO> levelWisecommitteeStatusVOList = new ArrayList<JanmabhoomiCommitteeVO>();
 	
+	private List<JanmabhoomiCommitteeVO> districtsList = new ArrayList<JanmabhoomiCommitteeVO>();
+	private List<JanmabhoomiCommitteeVO> constsList = new ArrayList<JanmabhoomiCommitteeVO>();
+	private List<JanmabhoomiCommitteeVO> parliamentsList = new ArrayList<JanmabhoomiCommitteeVO>();
+	
 	public String getColor() {
 		return color;
 	}
@@ -270,6 +274,23 @@ public class JanmabhoomiCommitteeVO {
 	public void setStatusPercentage(String statusPercentage) {
 		this.statusPercentage = statusPercentage;
 	}
-	
+	public List<JanmabhoomiCommitteeVO> getDistrictsList() {
+		return districtsList;
+	}
+	public void setDistrictsList(List<JanmabhoomiCommitteeVO> districtsList) {
+		this.districtsList = districtsList;
+	}
+	public List<JanmabhoomiCommitteeVO> getConstsList() {
+		return constsList;
+	}
+	public void setConstsList(List<JanmabhoomiCommitteeVO> constsList) {
+		this.constsList = constsList;
+	}
+	public List<JanmabhoomiCommitteeVO> getParliamentsList() {
+		return parliamentsList;
+	}
+	public void setParliamentsList(List<JanmabhoomiCommitteeVO> parliamentsList) {
+		this.parliamentsList = parliamentsList;
+	}
 
 }
