@@ -1266,7 +1266,7 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#financialYearId").append("<option value="0">All Financial Years</option>");
+			$("#financialYearId").append("<option value='0'>All Financial Years</option>");
 			if(result != null && result.length >0){
 				for(var i in result){
 					var value = result[i].financialYear.split('-');
