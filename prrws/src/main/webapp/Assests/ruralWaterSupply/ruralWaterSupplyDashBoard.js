@@ -4820,36 +4820,68 @@
 		tableView+='<table class="table table-bordered" id="dataTableSchems">';
 			tableView+='<thead>';
 			tableView+='<tr>';
+					tableView+='<th>Work CODE</th>';
 					tableView+='<th>DISTRICT</th>';
 					tableView+='<th>CONSTITUENCY</th>';
 					tableView+='<th>MANDAL</th>';
+					tableView+='<th>HABITATIONS NAME</th>';
+					tableView+='<th>SANCTIONED AMOUNT</th>';
 					if(workStatus !="not grounded"){
-						tableView+='<th>SANCTIONED AMOUNT</th>';
+						tableView+='<th>TARGET DATE</th>';
+						tableView+='<th>GROUNDED DATE</th>';
+						tableView+='<th>COMPLETION DATE</th>';
+					}else{
+						tableView+='<th>ADMIN DATE</th>';
+						tableView+='<th>TARGET DATE</th>';
 					}
-					if(workStatus =="onGoing" || workStatus !="not grounded"){
-						tableView+='<th>GROUNDING DATE</th>';
-					}else if(workStatus !="not grounded"){
-					tableView+='<th>COMPLETION DATE</th>';
-					}
-					//tableView+='<th>HABITATIONS NAME</th>';
-					//tableView+='<th>HABITATIONS CODE</th>';
-					tableView+='<th>Work CODE</th>';
 				tableView+='</tr>';
 				
 			tableView+='</thead>';
 			tableView+='<tbody>';
 			for(var i in result){
 				tableView+='<tr>';
+						tableView+='<td>'+result[i].workId+'</td>';
 						tableView+='<td>'+result[i].districtName+'</td>';
 						tableView+='<td>'+result[i].constituencyName+'</td>';
 						tableView+='<td>'+result[i].mandalName+'</td>';
-						if(workStatus !="not grounded"){
-						tableView+='<td>'+result[i].sacntionedAmount+'</td>';
-						tableView+='<td>'+result[i].completionDate+'</td>';
+						tableView+='<td>'+result[i].habitationName+'</td>';
+						if(typeof result[i].sacntionedAmount === undefined ||typeof result[i].sacntionedAmount =="undefined" || result[i].sacntionedAmount =='' ){
+							tableView+='<td>-</td>';
+						}else{
+							tableView+='<td>'+result[i].sacntionedAmount+'</td>';
 						}
-						//tableView+='<td>'+result[i].habitationName+'</td>';
+						if(workStatus !="not grounded"){
+							if(typeof result[i].targetDate === undefined ||typeof result[i].targetDate =="undefined" || result[i].targetDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].targetDate+'</td>';
+							}if(typeof result[i].groundingDate === undefined ||typeof result[i].groundingDate =="undefined" || result[i].groundingDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].groundingDate+'</td>';
+							}if(typeof result[i].completionDate === undefined ||typeof result[i].completionDate =="undefined" || result[i].completionDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].completionDate+'</td>';
+							}
+							
+						}else{
+							if(typeof result[i].adminDate === undefined ||typeof result[i].adminDate =="undefined" || result[i].adminDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].adminDate+'</td>';
+							}
+							if(typeof result[i].targetDate === undefined ||typeof result[i].targetDate =="undefined" || result[i].targetDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+							tableView+='<td>'+result[i].targetDate+'</td>';
+							}
+						}
+						
+						
+						//
 						//tableView+='<td>'+result[i].habitationCode+'</td>';
-						tableView+='<td>'+result[i].workId+'</td>';
+						
 					tableView+='</tr>';
 			}
 			tableView+='</tbody>';
