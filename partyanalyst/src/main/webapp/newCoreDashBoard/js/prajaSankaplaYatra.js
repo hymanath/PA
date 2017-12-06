@@ -113,7 +113,7 @@ function getEditionTypeWisePartiesAnalysis(categoryId){
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 	}).then(function(result){
 		if(result !=null){
-			mainNewsBlock(result);
+			mainNewsBlockPraja(result);
 		}else{
 			$("#overAllPrintMediaNewsDivId").html("No Data Available");
 		}
@@ -127,13 +127,13 @@ function getChannelWisePartiesAnalysis(categoryId){
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 	}).then(function(result){
 		if(result !=null){
-			getpartyWiseChannelCounts(result)
+			getpartyWiseChannelCountsPraja(result)
 		}else{
 			$("#overAllElectronicMediaNewsDivId").html("No Data Available");
 		}
 	});
 }
-function getpartyWiseChannelCounts(result){
+function getpartyWiseChannelCountsPraja(result){
 	var str='';
 	var totalCount=0;
 	var newsBulletinCount=0;
@@ -271,7 +271,7 @@ function getpartyWiseChannelCounts(result){
 	$("#overAllElectronicMediaNewsDivId").html(str);
 }
 
-function mainNewsBlock(result){
+function mainNewsBlockPraja(result){
 		var str='';
 		str+='';
 		str+='<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/YSRC.png" alt="tdp icon" class="newsIcon"/>YSRC Party</span></h4>';
