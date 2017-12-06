@@ -3,11 +3,34 @@ var wurl = url.substr(0,(url.indexOf(".com")+4));
 
 if(wurl.length == 3)
 wurl = url.substr(0,(url.indexOf(".in")+3));
-
-
 var performanceResult = '';
-var fromDate = moment().startOf('month').format("DD-MM-YYYY");
-var toDate = moment().endOf('month').format("DD-MM-YYYY");
+var fromDate =  moment().startOf('month').format("DD-MM-YYYY");
+var	toDate = moment().endOf('month').format("DD-MM-YYYY");
+
+function globalPressmeetCalls(type){
+
+	if(type == "default"){
+		$('#dateRangePressmeetId').data('daterangepicker').setStartDate(moment().startOf("month"));
+		$('#dateRangePressmeetId').data('daterangepicker').setEndDate(moment().endOf("month"));
+		fromDate =  moment().startOf('month').format("DD-MM-YYYY");
+		toDate = moment().endOf('month').format("DD-MM-YYYY");
+		$(".pressMeetMainHeadingCls").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD-MM-YYYY")+" - "+moment().endOf("month").format("DD-MM-YYYY")+" )");
+	}else if(type == "currentMonth"){
+		$('#dateRangePressmeetId').data('daterangepicker').setStartDate(moment().startOf("month"));
+		$('#dateRangePressmeetId').data('daterangepicker').setEndDate(moment().endOf("month"));
+		fromDate = moment().startOf("month").format("DD-MM-YYYY");
+		toDate = moment().endOf("month").format("DD-MM-YYYY");
+		$(".pressMeetMainHeadingCls").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD-MM-YYYY")+" - "+moment().endOf("month").format("DD-MM-YYYY")+" )");
+	}else if(type == "lastMonth"){
+		$('#dateRangePressmeetId').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
+		$('#dateRangePressmeetId').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
+		fromDate = moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY");
+		toDate = moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY");
+		$(".pressMeetMainHeadingCls").html("LAST MONTH"+" ( "+moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")+" - "+moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")+" )");
+	}
+	$("#dateRangePressmeetId").val(fromDate+" - "+toDate);
+	preemeeetOnloadCalls();
+}
 $("#dateRangePressmeetId").daterangepicker({
 	opens: 'left',
 	startDate:fromDate,
@@ -28,7 +51,7 @@ $("#dateRangePressmeetId").daterangepicker({
 }, function(start, end, chosenLabel) {
 	 var headingStartDate = moment(start).format('DD-MM-YYYY');
      var headingendDate=moment(end).format('DD-MM-YYYY');
-	$(".pressMeetMainHeadingCls").html("  "+chosenLabel+" (  "+ headingStartDate +" / "+ headingendDate +" ) ");	
+	$(".pressMeetMainHeadingCls").html("  "+chosenLabel+" (  "+ headingStartDate +" - "+ headingendDate +" ) ");	
 });
  var dates= $("#dateRangePressmeetId").val();
 $(".pressMeetMainHeadingCls").html("THIS MONTH"+"( "+dates+" )");
@@ -965,7 +988,7 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 				str+='<td>'+result.pressmeetList[i].partyName+'</td>';
 					for(var j in result.pressmeetList[i].participantList){
 						str+='<td>';
-						str+='<input class="performanceRating" value="'+result.pressmeetList[i].participantList[j].rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom"  data-readonly>'+result.pressmeetList[i].participantList[j].rating.toFixed(2)+'</span>';
+						str+='<input class="performanceRating" value="'+result.pressmeetList[i].participantList[j].rating.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="badge" style="font-weight: bold"  data-readonly>'+result.pressmeetList[i].participantList[j].rating.toFixed(2)+'</span>';
 						str+='</td>';
 					}	
 				str+='</tr>';
@@ -1094,19 +1117,74 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 	 });
  
   $(document).on("click",".pressMeetsInnerCls",function(){
-		$("#pressmeetModelDivId").modal("show");
-		$("#modalPressmeetHeadingId").html("Pressmeet Details"); 
+		//$("#pressmeetModelDivId").modal("show");
+		$("#pressmeetInnerModelDivId").modal("show");
+		//$("#modalPressmeetHeadingId").html("Pressmeet Details"); 
+		$("#modalInnerPressmeetHeadingId").html("Pressmeet Details"); 
 		var designationId = $(this).attr("attr_designationId");
 		var candidateId =$(this).attr("attr_candidateId");
-		$(".pressmeetModelCls").html("");	
-		$(".pressmeetModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$(".pressmeetInnerModelCls").html("");	
+		$(".pressmeetInnerModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$.ajax({
 	  url: wurl+"/CommunityNewsPortal/webservice/getDesignationWiseOverAllPerformanceClick/"+fromDate+"/"+toDate+"/"+designationId+"/"+candidateId+"/"
 	 // url: "http://localhost:8080/CommunityNewsPortal/webservice/getDesignationWiseOverAllPerformanceClick/"+fromDate+"/"+toDate+"/"+designationId+"/"+candidateId+"/"
 		}).then(function(result){
 	     
 	   if(result !=null){
-		 buildCorePressmeetBasicDetailsOfPartyClick(result); 
+		 buildCoreInnerPressmeetBasicDetailsOfPartyClick(result); 
 			}
 		});
 	 });
+	 
+	function buildCoreInnerPressmeetBasicDetailsOfPartyClick(result){
+	var str = '';
+		if(result.pressmeetList !=null && result.pressmeetList.length>0){
+								
+			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
+		 
+			 	str+= '<div class="table-responsive">';
+				str+= '<table class="table table-bordered" id="dataTablePressMeetPartyId">';
+				str+= '<thead style="background:#ccc">';
+				str+='<th style="max-width:300px;">Title</th>';                         
+				str+='<th>Conducted Date</th>';
+				str+='<th>Candidate Name/Party Name </th>'
+				str+= '</thead>';
+				str+= '<tbody>';					
+				for(var i in result.pressmeetList){
+				str+='<tr>';
+				str+='<td>'+result.pressmeetList[i].title+'</td>';
+				str+='<td>'+result.pressmeetList[i].conductedDate+'</td>';
+				str+='<td>';
+					str+='<table class="table table-bordered m_top10" style="background-color:#D3D3D3">';
+					str+='<tbody>';
+					for(var j in result.pressmeetList[i].participantList){
+						str+='<tr>';
+						str+='<td width="70%">'+result.pressmeetList[i].participantList[j].candidateName+'</td>';
+						str+='<td width="30%">'+result.pressmeetList[i].participantList[j].partyName+'</td>';
+						str+='</tr>';      
+					}
+					str+='</tbody>';	
+					str+='</table>';	
+				str+='</td>';
+				str+='</tr>';
+				}	
+				str+= '</tbody>';
+				str+= '</div>';
+				str+= '</div>';
+				
+			
+			$(".pressmeetInnerModelCls").html(str);
+			$('#dataTablePressMeetPartyId').dataTable({
+				"iDisplayLength": 10,
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				
+			 });
+			
+		}
+		
+}
+$(document).on("click",".closeModalpress",function(){
+	setTimeout(function(){
+		$('body').addClass("modal-open");
+	}, 400);                     
+});
