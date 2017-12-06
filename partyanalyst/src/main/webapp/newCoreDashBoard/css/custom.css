@@ -831,7 +831,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin: auto;
     width: 100%;
 }
-.moreBlocksIcon, .moreTrainingBlocksIcon, .moreMeetingsBlocksIcon, .moreDebatesBlocksIcon, .morenewsBlocksIcon, .moreTrainingCampBlocksIcon, .moreEventsBlocksIcon, .moreAttBlocksIcon, .moreBlocksCadreIcon, .moreEmnBlocksIcon ,.moreToursBlocksIcon ,.moreNewToursBlocksIcon,.moreMeetingsBlocksIconMulti,.moreCadreInsuranceIcon{
+.moreBlocksIcon, .moreTrainingBlocksIcon, .moreMeetingsBlocksIcon, .moreDebatesBlocksIcon, .morenewsBlocksIcon, .moreTrainingCampBlocksIcon, .moreEventsBlocksIcon, .moreAttBlocksIcon, .moreBlocksCadreIcon, .moreEmnBlocksIcon ,.moreToursBlocksIcon ,.moreNewToursBlocksIcon,.moreMeetingsBlocksIconMulti,.moreCadreInsuranceIcon,.moreNewsPrajaSankalpaBlocksIcon{
     cursor: pointer;
     font-size: 22px;
 }
@@ -3151,4 +3151,7 @@ color: rgb(51, 122, 183);
 }
 .table_padding tbody tr td{
 	padding:3px !important;
+}
+.table_custom_praja thead tr th,.table_custom_praja tbody tr td{
+	border:1px solid #d3d3d3 !important;
 }

@@ -18,6 +18,7 @@
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
+<link href="D2D_Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
 <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
@@ -1362,7 +1363,7 @@
 						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="electronic">
 							<h4 class="panel-title text-capital" style="width: 470px;">
 								<img src="newCoreDashBoard/img/electronicMediaIcon.png" class="iconClass">
-								electronic media news-<small id="emnHeadDate" class="text-muted">TODAY (28-10-2016)</small>
+								electronic media news <br/><small id="emnHeadDate" class="text-muted" style="margin-left:40px;">TODAY (28-10-2016)</small>
 							</h4>    
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12 m_XsTop10" expand-block-heading1="electronic">
@@ -1902,7 +1903,7 @@
 						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="pressmeet">
 						   <h4 class="panel-title text-capital" style="width:440px;">    
 							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
-							  PRESS MEET <small> - <span class="pressMeetMainHeadingCls"></span></small> </h4>
+							  PRESS MEET - <small id="pressMeetHeadDate" class="text-muted"></small>
 						   </h4>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="pressmeet">
@@ -2134,7 +2135,7 @@
 							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="meetings">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
-									meetings - <small class="text-muted" id="dateMeetingHeadingId"> last month</small>
+									meetings - <small class="text-muted" id="dateMeetingHeadingId">Last Month</small>
 								</h4>
 							</div>
 							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="meetings">
@@ -4154,79 +4155,123 @@
         </div>
 		<!---------Cadre Registration End--->
 	</div>
-	<!--<div class="row">
-		<div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
-				
-				<div class="panel panel-default panelNewCustom panel2">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="prajaSankaplaYatra">
-								<h4 class="panel-title text-capital" style="width:440px;">    
-									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-									Praja Sankalpam Yatra News 
-								</h4>  
-								
-							</div>
-							<div class="col-sm-3">
-								 <span class="prajaSankaplaYatraIconExpand pull-right" expand-icon="prajaSankaplaYatra">
-								   <i class="glyphicon glyphicon-fullscreen"></i>
-								   </span>
-							</div>
+	<div class="row">
+	<!-- Praja Sankalpam Yatra News  Start --> 
+		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="prajaSankaplaYatra">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="prajaSankaplaYatra">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+									Praja Sankalpam Yatra News <small id="prajaHeadDate" class="text-muted"></small>
+							</h4>
 						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="prajaSankaplaYatra">
+							<span class="prajaSankaplaYatraIconExpand pull-right" expand-icon="prajaSankaplaYatra">
+								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerCls hide" expand-block-date="prajaSankaplaYatra" style="width:200px;">
+									<input type="text" id="dateRangePrajaSankalpaId" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+							</span>
+						</div>     
 					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<h5 class="module_OwnerCss">Module Owner : Peddi Rama Rao</h5>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock m_top20" expand-block-inner="prajaSankaplaYatra">
+							<div class="row">
+								<div class="col-sm-12">
+									<h4 style="font-weight:bold" id="categoryName"></h4>
+								</div>
 							</div>
-							<div class="m_top20">
-							<select class="categoryCls" id="categorySelId">
-								<option value="1051" selected="selected">Praja sankalpa yatra</option>
-								<option value="1050">Counter on praja sankalpa yatra</option>
-							</select>
+							<div class="row">
+								<div class="col-sm-6">
+									<label>Category Name</label>
+									<select class="form-control chosen-select" id="categoryId">
+										<option value="0">Select Category</option>
+										<option value="1051" selected="selected">Praja sankalpa yatra</option>
+										<option value="1050">Counter on praja sankalpa yatra</option>
+										<option value="710">GADAPA GADAPAKU YSRCP - 2016</option>
+										<option value="691">JANA CHAITANYA YATRA</option>
+										<option value="943">NANDYALA BYE ELECTION</option>
+										<option value="695">JANMABOOMI - MAA URU</option>
+										<option value="721">VANAM-MANAM 2016</option>
+										<option value="1030">YSR KUTUMBAM</option>
+										<option value="925">NAVA NIRMANA DEEKSHA</option>
+										<option value="688">NEERU - CHETTU </option>
+										<option value="472">AGAINST TDP</option>
+										<option value="483">TDP PROGRAMMES</option>
+										<option value="493">YS JAGAN</option>
+										<option value="494">ANTI JAGAN</option>
+										<option value="672">CHANDRANNA RAITHU YATRA</option>
+										<option value="689">MANA MATTI - MANA NEERU</option>
+										<option value="762">CHANDRANNA BHEEMA</option>
+										<option value="772">NTR AROGYA SREE</option>
+										<option value="773">NTR SRUJALA</option>
+										<option value="774">NTR JALASIRI</option>
+										<option value="787">CHANDRANNA DALITABATA</option>
+										<option value="788">MANA URU MANA MLA</option>
+										<option value="825">YUVA YATRA</option>
+										<option value="872">PRAJA CHAITANYA YATRA</option>
+										<option value="888">NEERU - PRAGATHI</option>
+										<option value="936">ERUVAKA PROGRAMME</option>
+										<option value="948">INTINTIKI TDP</option>
+										<option value="950">VANAM - MANAM - 2017</option>
+										<option value="971">ANNA CANTEENS</option>
+										<option value="1008">JAGAN PADAYATRA</option>
+										<option value="1039">MEE INTIKI MEE MLA</option>
+										<option value="1063">KAPU RESERVATIONS</option>
+									</select>
+								</div>
 							</div>
-							<span class="input-group pull-right dateRangePickerCls">
-								<input type="text" id="dateRangePrajaSankalpaId" class="form-control" style="width:180px"/>
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</span>	
+							<div class="row m_top10">
+								<div class="col-sm-12">
+									<div id="overAllPrintMediaNewsDivId"></div>
+								</div>
+							</div>
 						</div>
-						<div class="row">
-							<div class="col-sm-12">
-								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px">Print Media</span></h4>
-								<div class="row m_top10">
-									<!--<div class="col-sm-6">
-										<h5>PRAJA SANKALPA YATRA</h5>
-									</div>
-									<div class="col-sm-6">
-										<h5 style="font-size: 13px; text-align: center;">COUNTER ON PRAJA SANKALPA YATRA</h5>
-									</div>
-								</div>
-								<div id="printMediaOverAllBlockId" class=""></div>
-								<div id="printMediaPartyBlockId" class="m_top10"></div>
-								<div id="printMediaPublicationBlockId" class="m_top10"></div>
+						<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="prajaSankaplaYatra" style="display:none;" >
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="overAllElectronicMediaNewsDivId"></div>
+								 </div>
 							</div>
-							<div class="col-sm-12 m_top10">
-								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px">Electronic Media</span></h4>
-								<div class="row m_top10">
-									<!--<div class="col-sm-6">
-										<h5>PRAJA SANKALPA YATRA</h5>
-									</div>
-									<div class="col-sm-6">
-										<h5 style="font-size: 13px; text-align: center;">COUNTER ON PRAJA SANKALPA YATRA</h5>
-									</div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="prajaSankaplaYatra" style="display: none;">
+							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreNewsPrajaSankalpaBlocksIcon" title="Click here for more"></i>
+						</div>	
+						<div class="col-md-12 col-xs-12 col-sm-12 moreNewsprajaSankaplaBlocksDetailed m_top10"  expand-block-more="prajaSankaplaYatra" style="display:none;">
+							<div class="row">
+								<div class="col-sm-12">
+									<ul class="activeUlCls list-inline pull-right" role='tabCummulative'>
+										<li class="removeActiveP active" attr_value="print">Print Media</li>
+										<li class="removeActiveP" attr_value="electronic">Electronic Media</li>
+									</ul>
 								</div>
-								<div id="electronicMediaOverAllBlockId" class=""></div>
-								<div id="electronicMediaPartyBlockId" class="m_top10"></div>
-								<div id="electronicMediaPublicationBlockId" class="m_top10"></div>
-							</div>
-							
+								<div class="col-sm-12 publicationWisePartiesCls">
+									<div id="publicationWisePartiesDivId"></div>
+								</div>
+								<div class="col-sm-12 districtWisePartiesCls">
+									<div id="districtWisePartiesDivId"></div>
+								</div>
+								<div class="col-sm-12 ChannelWisePartyCls" style="display:none;">
+									<div id="ChannelWisePartyDivId"></div>
+								</div>
+								<div class="col-sm-12 districtWiseChannelCls" style="display:none;">
+									<div id="districtWiseChannelDivId"></div>
+								</div>
+							</div> 
 						</div>
 					</div>
 				</div>
 			</div>
-	</div>-->
+		</div>
+<!-- Praja Sankalpam Yatra News  END --> 
+	</div>
 </div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
 <input type="hidden" id="alertEditionTypeHiddenId"></input>  
@@ -5193,6 +5238,7 @@
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Rating/bootstrap-rating.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
@@ -5590,21 +5636,26 @@ $(document).on("click",".globalDateChange",function(){
 	 var URLArray = windowUrl.split('/');
 	 var fnlURL = URLArray[parseInt(URLArray.length) - 1].replace('.action','');
 	 if(fnlURL =="partyAndLeaderActivitiesAndPerformanceTracking"){
-	 	  globalPrintMediaCalls(type);
+		  globalPrintMediaCalls(type);
 		  globalToursCalls(type);
-		  globalMeetingsCalls(type);  
+		  globalPressMeetMediaCalls(type);
+		  globalPrajaSankalpaYatraCalls(type)
+		  globalMeetingsCalls(type);
 	  }else if(fnlURL =="partyLeadersDashboardAction"){
 		  globalPrintMediaCalls(type);
 		  globalToursCalls(type);
-		  globalMeetingsCalls(type);  
+		  globalPressMeetMediaCalls(type);
+		  globalPrajaSankalpaYatraCalls(type)
+		  globalMeetingsCalls(type);
 	  }else{
 		globalAlertsCalls(type);
-		globalPressmeetCalls(type);
 		globalDebateCalls(type);
 		globalPrintMediaCalls(type);
 		globalElectronicMediaCalls(type);
 		globalToursCalls(type);
-		globalMeetingsCalls(type);  
+		globalPressMeetMediaCalls(type);
+		globalPrajaSankalpaYatraCalls(type)
+		globalMeetingsCalls(type);
 	  }
 });
 /* GLobal Navbar Date Change End*/
