@@ -84,7 +84,9 @@ import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.dto.WaterSourceVO;
 import com.itgrids.dto.WebserviceHealthVO;
+import com.itgrids.dto.WorksVO;
 import com.itgrids.model.Habitation;
+import com.itgrids.model.RwsWork;
 import com.itgrids.model.TressedHabitation;
 import com.itgrids.model.WebserviceCallDetails;
 import com.itgrids.service.integration.external.WebServiceUtilService;
@@ -478,56 +480,7 @@ public class RWSNICService implements IRWSNICService{
 	 	    			
 	 	    		}	
 	 	    	}
-	 	    	
 	 	    }
-	    	Long groundedPWSExceededCount =0l,completedPWSExceededCount=0l,commissionedPWSExceededCount=0l;
-				Long groundedCPWSExceededCount =0l,completedCPWSExceededCount=0l,commissionedCPWSExceededCount=0l;
-				List<IdNameVO> exceedeData =null;
-				if(VO.getLocationType().trim().equalsIgnoreCase("state") && VO.getType().trim().equalsIgnoreCase("graph")){
-					VO.setLocationValue(1l);
-					VO.setExceededDuration("");
-					exceedeData =getOnClickExceedWorkDetails(VO);
-				}
-				if(commonMethodsUtilService.isListOrSetValid(exceedeData)){
-					for (IdNameVO idNameVO : exceedeData) {
-						if(idNameVO.getWorkStatus().trim().equalsIgnoreCase("Completed")){
-							if(idNameVO.getAssetType().equalsIgnoreCase("CPWS")){
-								completedCPWSExceededCount=completedCPWSExceededCount+1;
-							}else if(idNameVO.getAssetType().equalsIgnoreCase("PWS")){
-								completedPWSExceededCount=completedPWSExceededCount+1;
-							}
-							
-						}else if(idNameVO.getWorkStatus().trim().equalsIgnoreCase("Grounded")){
-							if(idNameVO.getAssetType().equalsIgnoreCase("CPWS")){
-								groundedCPWSExceededCount=groundedCPWSExceededCount+1;
-							}else if(idNameVO.getAssetType().equalsIgnoreCase("PWS")){
-								groundedPWSExceededCount=groundedPWSExceededCount+1;
-							}
-							
-						}else if(idNameVO.getWorkStatus().trim().equalsIgnoreCase("Commissioned")){
-							if(idNameVO.getAssetType().equalsIgnoreCase("CPWS")){
-								commissionedCPWSExceededCount=commissionedCPWSExceededCount+1;
-							}else if(idNameVO.getAssetType().equalsIgnoreCase("PWS")){
-								commissionedPWSExceededCount=commissionedPWSExceededCount+1;
-							}
-						}
-					}
-				}
-				if(!finalList.isEmpty() && finalList.size()>0){
-					for (BasicVO finalVo : finalList) {
-						if(finalVo.getAssetType() !=null && finalVo.getAssetType().trim().equalsIgnoreCase("PWS")){
-								finalVo.setGroundedPWSExceededCount(groundedPWSExceededCount);
-								finalVo.setCompletedPWSExceededCount(completedPWSExceededCount);
-								finalVo.setCommissionedPWSExceededCount(commissionedPWSExceededCount);
-								finalVo.setPhysicalTestCount(groundedPWSExceededCount+completedPWSExceededCount+commissionedPWSExceededCount);
-							}else if(finalVo.getAssetType() !=null && finalVo.getAssetType().trim().equalsIgnoreCase("CPWS")){
-								finalVo.setGroundedPWSExceededCount(groundedCPWSExceededCount);
-								finalVo.setCompletedPWSExceededCount(completedCPWSExceededCount);
-								finalVo.setCommissionedPWSExceededCount(commissionedCPWSExceededCount);
-								finalVo.setPhysicalTestCount(groundedPWSExceededCount+completedPWSExceededCount+commissionedPWSExceededCount);
-						}
-					}
-				}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getSchemeWiseWorkDetails - RuralWaterSupplyDashBoardService service", e);
 		}
@@ -1575,7 +1528,9 @@ public class RWSNICService implements IRWSNICService{
 	public List<RwsClickVO> getOnclickWorkDetails(InputVO vo){
 		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
 		try {
-			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+			List<String> workIds = new ArrayList<String>();
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getOnclickWorkDetails");
 			String authStringEnc = getAuthenticationString("admin","admin@123");
         	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
@@ -1613,21 +1568,21 @@ public class RWSNICService implements IRWSNICService{
 		 	    				subVo.setHabitationName(jobj.getString("habitationName"));
 		 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
 		 	    				if(jobj.has("completionDate")){
-		 	    					subVo.setCompletionDate(jobj.getString("completionDate"));
+		 	    					subVo.setCompletionDate(sdf.format(sdf.parse(jobj.getString("completionDate"))));
 		 	    				}
 		 	    				if(jobj.has("targetDate")){
-		 	    					subVo.setCompletionDate(jobj.getString("targetDate"));
+		 	    					subVo.setCompletionDate(sdf.format(sdf.parse(jobj.getString("targetDate"))));
 		 	    				}
 		 	    				if(jobj.has("commssionedDate")){
-		 	    					subVo.setCompletionDate(jobj.getString("commssionedDate"));
+		 	    					subVo.setCompletionDate(sdf.format(sdf.parse(jobj.getString("commssionedDate"))));
 		 	    				}
-		 	    				if(jobj.has("groundingDate")){
-		 	    					subVo.setGroundingDate(jobj.getString("groundingDate"));
+		 	    				if(jobj.has("groundingDate") && jobj.getString("groundingDate")!=null && !jobj.getString("groundingDate").equalsIgnoreCase("--")){
+		 	    					subVo.setGroundingDate(sdf.format(sdf1.parse(jobj.getString("groundingDate"))));
 		 	    				}
 		 	    				subVo.setWorkName(jobj.getString("workName"));		 	    				
 		 	    				subVo.setWorkId(jobj.getString("workId"));
+		 	    				workIds.add(jobj.getString("workId"));
 		 	    				//subVo.setSourceCount(jobj.getString("sourceCount"));
-		 	    				
 		 	    				
 		 	    				finalList.add(subVo);
 		 	    			}
@@ -1637,7 +1592,32 @@ public class RWSNICService implements IRWSNICService{
 				}
 				
  	      	}
-			
+			List<RwsWork> reslutData = rwsWorkDAO.getWorksbyWorkIdList(workIds);
+			for (RwsWork rwsWork : reslutData) {
+				for (RwsClickVO finalVo : finalList) {
+					if(finalVo.getWorkId().trim().equalsIgnoreCase(rwsWork.getWorkId())){
+						if(rwsWork.getTargetDate()!= null &&  finalVo.getTargetDate().isEmpty()){
+							finalVo.setTargetDate(sdf.format(rwsWork.getTargetDate()));
+						}
+						if(rwsWork.getCompletedDate()!=null && finalVo.getCompletionDate().isEmpty() ){
+							finalVo.setCompletionDate(sdf.format(rwsWork.getCompletedDate()));
+						}
+						if(rwsWork.getCommissionedDate()!=null && finalVo.getCommssionedDate().isEmpty()){
+							finalVo.setCommssionedDate(sdf.format(rwsWork.getCommissionedDate()));
+						}
+						if(rwsWork.getGroundedDate()!=null && finalVo.getGroundingDate().isEmpty()){
+							finalVo.setGroundingDate(sdf.format(rwsWork.getGroundedDate()));
+						}
+						if(rwsWork.getAdminDate()!= null && finalVo.getAdminDate().isEmpty()){
+							finalVo.setAdminDate(sdf.format(rwsWork.getAdminDate()));
+						}
+						if(vo.getWorkStatus().equalsIgnoreCase("not grounded")){
+							finalVo.setSacntionedAmount(Double.toString(rwsWork.getSanctionedAmount()));
+						}
+					}
+				}
+				
+			}
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getOnclickWorkDetails() method, Exception - ",e);
 		}
@@ -3937,7 +3917,7 @@ public class RWSNICService implements IRWSNICService{
 									assetTypeVO.setSanctionedAmount(assetTypeVO.getSanctionedAmount()+ matchVO.getSanctionedAmount());
 									
 			                    	if(matchVO.getWorkStatus().trim().equalsIgnoreCase("Grounded")){
-			                    		workStatus.setGroundedPWSExceededCount(workStatus.getGroundedPWSExceededCount()+1);
+			                    		workStatus.setOngoingPWSExceededCount(workStatus.getOngoingPWSExceededCount()+1);
 			                    	}else if (matchVO.getWorkStatus().trim().trim().equalsIgnoreCase("completed")){
 			                    		workStatus.setCompletedPWSExceededCount(workStatus.getCompletedPWSExceededCount()+1);
 			                    	}else if (matchVO.getWorkStatus().trim().trim().equalsIgnoreCase("Commissioned")){
@@ -4170,7 +4150,7 @@ public class RWSNICService implements IRWSNICService{
 				vo.setName(templateArr[i]);
 				vo.setCount(0l);
 				vo.setSanctionAmount(0l);
-				vo.setGroundedPWSExceededCount(0l);
+				vo.setOngoingPWSExceededCount(0l);
 				vo.setCompletedPWSExceededCount(0l);
 				vo.setCommissionedPWSExceededCount(0l);
 				cpwsVO.getSubList().add(vo);
@@ -4187,7 +4167,7 @@ public class RWSNICService implements IRWSNICService{
 				vo.setName(templateArr[i]);
 				vo.setCount(0l);
 				vo.setSanctionAmount(0l);
-				vo.setGroundedPWSExceededCount(0l);
+				vo.setOngoingPWSExceededCount(0l);
 				vo.setCompletedPWSExceededCount(0l);
 				vo.setCommissionedPWSExceededCount(0l);
 				pwsVO.getSubList().add(vo);
@@ -4764,4 +4744,134 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return finalList;
 	}
+
+	@Override
+	public List<WorksVO> getSchemeWiseWorkDetails2(InputVO VO) {
+		List<WorksVO> finalList = new ArrayList<WorksVO>();
+		try {
+			if (VO != null) {
+				VO = setFilterVal(VO);
+			}
+
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getSchemeWiseWorkDetails");
+			String authStringEnc = getAuthenticationString("admin", "admin@123");
+			ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, VO);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+
+			if (output != null && !output.isEmpty()) {
+					JSONArray jsonArrayMain = new JSONArray(output);
+					if (jsonArrayMain != null && jsonArrayMain.length() > 0) {
+					for (int j = 0; j < jsonArrayMain.length(); j++) {
+						JSONObject jObjMain = (JSONObject) jsonArrayMain.get(j);
+						JSONArray jsonArray = jObjMain.getJSONArray("subList");// type
+
+						if (jsonArray != null && jsonArray.length() > 0) {
+							for (int i = 0; i < jsonArray.length(); i++) {
+								JSONObject jObj = (JSONObject) jsonArray.get(i);
+								WorksVO Vo = new WorksVO();
+								Vo.setAssetType(jObj.getString("assetType"));
+								if (jObj.has("workOngoingCount")) {
+									WorksVO Vo1 = new WorksVO();
+									Vo1.setWorkStatus("onGoing");
+									Vo1.setWorkOngoingCount(jObj.getLong("workOngoingCount"));
+									Vo.getSubList().add(Vo1);
+								}
+								if (jObj.has("workComissionedCount")) {
+									WorksVO Vo1 = new WorksVO();
+									Vo1.setWorkStatus("Commissioned");
+									Vo1.setWorkOngoingCount(jObj.getLong("workComissionedCount"));
+									Vo.getSubList().add(Vo1);
+								}
+								if (jObj.has("workCompletedCount")) {
+									WorksVO Vo1 = new WorksVO();
+									Vo1.setWorkStatus("Completed");
+									Vo1.setWorkOngoingCount(jObj.getLong("workCompletedCount"));
+									Vo.getSubList().add(Vo1);
+								}
+								if (jObj.has("workNotGroundedCount")) {
+									WorksVO Vo1 = new WorksVO();
+									Vo1.setWorkStatus("notGrounded");
+									Vo1.setWorkOngoingCount(jObj.getLong("workNotGroundedCount"));
+									Vo.getSubList().add(Vo1);
+								}
+
+									Vo.setCount(jObj.getLong("workOngoingCount")+ jObj.getLong("workComissionedCount")+ jObj.getLong("workCompletedCount")+ jObj.getLong("workNotGroundedCount"));
+									finalList.add(Vo);
+								}
+							}
+
+						}
+					}
+
+				}
+
+			}
+			Long groundedPWSExceededCount = 0l, completedPWSExceededCount = 0l, commissionedPWSExceededCount = 0l;
+			Long groundedCPWSExceededCount = 0l, completedCPWSExceededCount = 0l, commissionedCPWSExceededCount = 0l;
+			List<IdNameVO> exceedeData = null;
+				VO.setLocationValue(1l);
+				VO.setExceededDuration("");
+				exceedeData = getOnClickExceedWorkDetails(VO);
+			
+			if (commonMethodsUtilService.isListOrSetValid(exceedeData)) {
+				for (IdNameVO idNameVO : exceedeData) {
+					if (idNameVO.getWorkStatus().trim().equalsIgnoreCase("Completed")) {
+						if (idNameVO.getAssetType().equalsIgnoreCase("CPWS")) {
+							completedCPWSExceededCount = completedCPWSExceededCount + 1;
+						} else if (idNameVO.getAssetType().equalsIgnoreCase("PWS")) {
+							completedPWSExceededCount = completedPWSExceededCount + 1;
+						}
+
+					} else if (idNameVO.getWorkStatus().trim().equalsIgnoreCase("Grounded")) {
+						if (idNameVO.getAssetType().equalsIgnoreCase("CPWS")) {
+							groundedCPWSExceededCount = groundedCPWSExceededCount + 1;
+						} else if (idNameVO.getAssetType().equalsIgnoreCase("PWS")) {
+							groundedPWSExceededCount = groundedPWSExceededCount + 1;
+						}
+
+					} else if (idNameVO.getWorkStatus().trim().equalsIgnoreCase("Commissioned")) {
+						if (idNameVO.getAssetType().equalsIgnoreCase("CPWS")) {
+							commissionedCPWSExceededCount = commissionedCPWSExceededCount + 1;
+						} else if (idNameVO.getAssetType().equalsIgnoreCase("PWS")) {
+							commissionedPWSExceededCount = commissionedPWSExceededCount + 1;
+						}
+					}
+				}
+			}
+			if (!finalList.isEmpty() && finalList.size() > 0) {
+				for (WorksVO finalVo : finalList) {
+					if (finalVo.getAssetType() != null && finalVo.getAssetType().trim().equalsIgnoreCase("PWS")) {
+						for (WorksVO innerVO : finalVo.getSubList()) {
+							if (innerVO.getWorkStatus().trim().equalsIgnoreCase("Completed")) {
+								innerVO.setOngoingPWSExceededCount(completedPWSExceededCount);
+							}else if (innerVO.getWorkStatus().trim().equalsIgnoreCase("OnGoing")) {
+								innerVO.setOngoingPWSExceededCount(groundedPWSExceededCount);
+							} else if (innerVO.getWorkStatus().trim().equalsIgnoreCase("Commissioned")) {
+								innerVO.setOngoingPWSExceededCount(commissionedPWSExceededCount);
+							}
+						}
+					} else if (finalVo.getAssetType() != null && finalVo.getAssetType().trim().equalsIgnoreCase("CPWS")) {
+						for (WorksVO innerVO : finalVo.getSubList()) {
+							if (innerVO.getWorkStatus().trim().equalsIgnoreCase("Completed")) {
+								innerVO.setOngoingPWSExceededCount(completedCPWSExceededCount);
+							}else if (innerVO.getWorkStatus().trim().equalsIgnoreCase("OnGoing")) {
+								innerVO.setOngoingPWSExceededCount(groundedCPWSExceededCount);
+							} else if (innerVO.getWorkStatus().trim().equalsIgnoreCase("Commissioned")) {
+								innerVO.setOngoingPWSExceededCount(commissionedCPWSExceededCount);
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSchemeWiseWorkDetails - RuralWaterSupplyDashBoardService service",e);
+		}
+
+		return finalList;
+	}
+
  }

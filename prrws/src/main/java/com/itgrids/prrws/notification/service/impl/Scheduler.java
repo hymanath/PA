@@ -57,9 +57,7 @@ public class Scheduler {
 	//@Scheduled(cron ="0 0/20 * * * ?")
 	public void runTheExceededWorksForEveryOneHour()
 	{
-		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
-		{	
-			LOG.error("Cron Job For webServiceHealth Started");
+			LOG.error("Cron Job For worksInsertion Started");
 			
 			InputVO input= new InputVO();
 			List<String> statusList = new ArrayList<String>();
@@ -73,10 +71,7 @@ public class Scheduler {
 			input.setStatusList(statusList);
 			
 			rwsWorksSchedulerService.getWorksDataInsertion(input);
-			LOG.error("Cron Job For webServiceHealth Completed");
-		}
-		else 
-			return;
+			LOG.error("Cron Job For worksInsertion Completed");
 	}
 	
 }

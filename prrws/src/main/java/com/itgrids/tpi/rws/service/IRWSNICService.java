@@ -15,6 +15,7 @@ import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.dto.WaterSourceVO;
+import com.itgrids.dto.WorksVO;
 
 public interface IRWSNICService {
 	
@@ -64,4 +65,5 @@ public interface IRWSNICService {
 	public List<IdNameVO> getExceededWorkDetailsLocationWise(InputVO inputVO);
 	public List<IdNameVO> getExceededWorkDetailsLocationWise2(InputVO inputVO);
 	public List<IdNameVO> getOnClickExceedWorkDetails(InputVO inputVO);
+	public List<WorksVO> getSchemeWiseWorkDetails2(InputVO VO);
 }
