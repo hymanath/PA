@@ -127,39 +127,149 @@
 				  filterValue:filterValue,
 				  districtValue:districtValue
 			  }
-			$.ajax({
-				url: 'getSchemeWiseWorkDetails',
-				data: JSON.stringify(json),
-				type: "POST",
-				dataType: 'json', 
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader("Accept", "application/json");
-					xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success: function(ajaxresp){
-					if(ajaxresp !=null && ajaxresp.length>0){
-						if(type == "graph"){
-							buildSchemeWiseWorkDetails(ajaxresp);
-						}else{
-							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',"completeOverview");
-						}
-						
-					}else{
-						if(type == "graph"){
-							$("#habitationWorks").html("No Data Available");
-							$("#habitationWorksPWS,#habitationWorksCPWS").html("No Data Available");
-						}else{
-							for(var k in divId){
-								$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
+				  var url ='';
+				  if(type == "graph"){
+					  url='getSchemeWiseWorkDetails2';
+				  }else{
+					   url='getSchemeWiseWorkDetails';
+				  }
+				$.ajax({
+					url: url,
+					data: JSON.stringify(json),
+					type: "POST",
+					dataType: 'json', 
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("Content-Type", "application/json");
+					},
+					success: function(ajaxresp){
+						if(ajaxresp !=null && ajaxresp.length>0){
+							if(type == "graph"){
+								buildSchemeWiseWorkDetails(ajaxresp);
+							}else{
+								buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',"completeOverview");
 							}
+							
+						}else{
+							if(type == "graph"){
+								$("#habitationWorks").html("No Data Available");
+								$("#habitationWorksPWS,#habitationWorksCPWS").html("No Data Available");
+							}else{
+								for(var k in divId){
+									$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
+								}
+							}
+							
 						}
-						
 					}
-				}
-			});
-			
-		}
-		function buildSchemeWiseWorkDetails(result){
+				});
+			  }
+			  function buildSchemeWiseWorkDetails(result){
+				  var str='';
+				   var str1='';
+					str+='<table id="datatable">';
+						str+='<thead>';
+							str+='<tr>';
+								str+='<th></th>';
+								str+='<th>OverAll Works</th>';
+								str+='<th>Exceed Works</th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var i in result){
+							if(result[i].assetType == "PWS"){
+								for(var j in result[i].subList){
+									str+='<tr>';
+										str+='<th>'+result[i].subList[j].workStatus+'</th>';
+										str+='<td>'+result[i].subList[j].workOngoingCount+'</td>';
+										str+='<td>'+result[i].subList[j].ongoingPWSExceededCount+'</td>';
+									str+='</tr>';
+								}
+							}
+							
+							
+						}
+							
+						str+='</tbody>';
+					str+='</table>';
+					str+='<table id="datatable1">';
+						str+='<thead>';
+							str+='<tr>';
+								str+='<th></th>';
+								str+='<th>OverAll Works</th>';
+								str+='<th>Exceed Works</th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var i in result){
+							if(result[i].assetType == "CPWS"){
+								for(var j in result[i].subList){
+									str+='<tr>';
+										str+='<th>'+result[i].subList[j].workStatus+'</th>';
+										str+='<td>'+result[i].subList[j].workOngoingCount+'</td>';
+										str+='<td>'+result[i].subList[j].ongoingPWSExceededCount+'</td>';
+									str+='</tr>';
+								}
+							}
+							
+							
+						}
+							
+						str+='</tbody>';
+					str+='</table>';
+				$("#graphTable").html(str);	
+				$("#habitationWorksPWS").highcharts({
+					colors:['#16af18','red'],
+					data: {
+						table: 'datatable'
+					},
+					chart: {
+						type: 'column'
+					},
+					title: {
+						text: ''
+					},
+					yAxis: {
+						allowDecimals: false,
+						title: {
+							text: 'Units'
+						}
+					},
+					tooltip: {
+						formatter: function () {
+							return '<b>' + this.series.name + '</b><br/>' +
+								this.point.y + '';
+						}
+					}
+				});
+				$("#habitationWorksCPWS").highcharts({
+					colors:['#16af18','red'],
+					data: {
+						table: 'datatable1'
+					},
+					chart: {
+						type: 'column'
+					},
+					title: {
+						text: ''
+					},
+					yAxis: {
+						allowDecimals: false,
+						title: {
+							text: 'Units'
+						}
+					},
+					tooltip: {
+						formatter: function () {
+							return '<b>' + this.series.name + '</b><br/>' +
+								this.point.y + '';
+						}
+					}
+				});
+        
+			  }
+			  
+		/* function buildSchemeWiseWorkDetails(result){
 			var dataArr = [];
 			var assetTypeArrPWS = [];
 			var assetTypeArrCPWS = [];
@@ -342,7 +452,7 @@
 						}]
 				});
 				
-		}
+		} */
 	function tabBlocks(blockId,blockName){
 		var tabBlock = '';
 		var tableId = '';
@@ -1722,36 +1832,66 @@
 		tableView+='<table class="table table-bordered" id="dataTableSchems">';
 			tableView+='<thead>';
 			tableView+='<tr>';
+					tableView+='<th>Work CODE</th>';
 					tableView+='<th>DISTRICT</th>';
 					tableView+='<th>CONSTITUENCY</th>';
 					tableView+='<th>MANDAL</th>';
+					tableView+='<th>HABITATIONS NAME</th>';
+					tableView+='<th>SANCTIONED AMOUNT</th>';
 					if(workStatus !="not grounded"){
-						tableView+='<th>SANCTIONED AMOUNT</th>';
-					}
-					if(workStatus =="onGoing" || workStatus !="not grounded"){
-						tableView+='<th>GROUNDING DATE</th>';
-					}else if(workStatus !="not grounded"){
+					tableView+='<th>TARGET DATE</th>';
+					tableView+='<th>GROUNDED DATE</th>';
 					tableView+='<th>COMPLETION DATE</th>';
+					}else{
+						tableView+='<th>ADMIN DATE</th>';
+						tableView+='<th>TARGET DATE</th>';
 					}
-					//tableView+='<th>HABITATIONS NAME</th>';
-					//tableView+='<th>HABITATIONS CODE</th>';
-					tableView+='<th>Work CODE</th>';
+					
 				tableView+='</tr>';
 				
 			tableView+='</thead>';
 			tableView+='<tbody>';
 			for(var i in result){
 				tableView+='<tr>';
+						tableView+='<td>'+result[i].workId+'</td>';
 						tableView+='<td>'+result[i].districtName+'</td>';
 						tableView+='<td>'+result[i].constituencyName+'</td>';
 						tableView+='<td>'+result[i].mandalName+'</td>';
-						if(workStatus !="not grounded"){
-						tableView+='<td>'+result[i].sacntionedAmount+'</td>';
-						tableView+='<td>'+result[i].completionDate+'</td>';
+						tableView+='<td>'+result[i].habitationName+'</td>';
+						if(typeof result[i].sacntionedAmount === undefined ||typeof result[i].sacntionedAmount =="undefined" || result[i].sacntionedAmount =='' ){
+							tableView+='<td>-</td>';
+						}else{
+							tableView+='<td>'+result[i].sacntionedAmount+'</td>';
 						}
-						//tableView+='<td>'+result[i].habitationName+'</td>';
-						//tableView+='<td>'+result[i].habitationCode+'</td>';
-						tableView+='<td>'+result[i].workId+'</td>';
+						if(workStatus !="not grounded"){
+							if(typeof result[i].targetDate === undefined ||typeof result[i].targetDate =="undefined" || result[i].targetDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].targetDate+'</td>';
+							}if(typeof result[i].groundingDate === undefined ||typeof result[i].groundingDate =="undefined" || result[i].groundingDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].groundingDate+'</td>';
+							}if(typeof result[i].completionDate === undefined ||typeof result[i].completionDate =="undefined" || result[i].completionDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].completionDate+'</td>';
+							}
+							
+						}else{
+							if(typeof result[i].adminDate === undefined ||typeof result[i].adminDate =="undefined" || result[i].adminDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].adminDate+'</td>';
+							}
+							if(typeof result[i].targetDate === undefined ||typeof result[i].targetDate =="undefined" || result[i].targetDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+							tableView+='<td>'+result[i].targetDate+'</td>';
+							}
+						}
+						
+						
 					tableView+='</tr>';
 			}
 			tableView+='</tbody>';
@@ -1760,7 +1900,7 @@
 		$("#dataTableSchems").dataTable({
 			"order": [ 0, 'desc' ],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
@@ -1982,9 +2122,9 @@ function getExceededTargetWorksDetails(){
 			for( var j in result[0].subList[i].subList){
 				cateArr.push(result[0].subList[i].subList[j].name);
 				if(result[0].subList[i].assetType == 'PWS'){
-					pwsArr.push({"y":result[0].subList[i].subList[j].count,"extra":""+result[0].subList[i].subList[j].groundedPWSExceededCount+"-"+result[0].subList[i].subList[j].completedPWSExceededCount+"-"+result[0].subList[i].subList[j].commissionedPWSExceededCount});
+					pwsArr.push({"y":result[0].subList[i].subList[j].count,"extra":""+result[0].subList[i].subList[j].ongoingPWSExceededCount+"-"+result[0].subList[i].subList[j].completedPWSExceededCount+"-"+result[0].subList[i].subList[j].commissionedPWSExceededCount});
 				}else if(result[0].subList[i].assetType == 'CPWS'){
-					cpwsArr.push({"y":result[0].subList[i].subList[j].count,"extra":""+result[0].subList[i].subList[j].groundedPWSExceededCount+"-"+result[0].subList[i].subList[j].completedPWSExceededCount+"-"+result[0].subList[i].subList[j].commissionedPWSExceededCount});
+					cpwsArr.push({"y":result[0].subList[i].subList[j].count,"extra":""+result[0].subList[i].subList[j].ongoingPWSExceededCount+"-"+result[0].subList[i].subList[j].completedPWSExceededCount+"-"+result[0].subList[i].subList[j].commissionedPWSExceededCount});
 				}
 			}
 		}
