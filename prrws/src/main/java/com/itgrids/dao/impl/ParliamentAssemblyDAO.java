@@ -429,9 +429,9 @@ public class ParliamentAssemblyDAO extends GenericDaoHibernate<ParliamentAssembl
 	}
 	public List<Object[]> getParliamentIdsByConstituencyList(List<Long> parliamentIdsList){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select model.locationAddress.parliament.parliamentId, model.locationAddress.parliament.name from PetitionReffererCandidate model ");
+		sb.append(" select distinct model.locationAddress.parliament.constituencyId, model.locationAddress.parliament.name from PetitionReffererCandidate model ");
 		if (parliamentIdsList != null && parliamentIdsList.size() > 0 ){
-		  sb.append(" where model.locationAddress.parliamentId in (:parliamentIdsList) ");
+		  sb.append(" where model.locationAddress.parliament.constituencyId in (:parliamentIdsList) ");
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if (parliamentIdsList != null && parliamentIdsList.size() > 0 ){
