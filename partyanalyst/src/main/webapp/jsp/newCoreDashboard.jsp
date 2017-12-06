@@ -1902,7 +1902,7 @@
 						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="pressmeet">
 						   <h4 class="panel-title text-capital" style="width:440px;">    
 							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
-							  PRESS MEET 
+							  PRESS MEET <small> - <span class="pressMeetMainHeadingCls"></span></small> </h4>
 						   </h4>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="pressmeet">
@@ -5093,6 +5093,28 @@
  </div><!-- /.modal -->
 <!--end-->
 
+<!-- 2nd small inner Model for Pressmeet Start-->
+ <div class="modal" tabindex="-1" role="dialog" id="pressmeetInnerModelDivId">
+ <div class="modal-dialog modal-lg" style="width:75%">
+ <div class="modal-content" style="border-radius:0px">
+ <div class="modal-header" style="background-color:#CCC">
+ <button type="button" class="close closeModalpress" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+ <h4 class="modal-title" id="modalInnerPressmeetHeadingId">Pressmeet Details 
+ </div>
+ <div class="modal-body">
+ <div class="row">
+ <div class="col-md-12 col-xs-12 col-sm-12">
+ <div class=" pressmeetInnerModelCls"></div>
+ </div>
+ </div> 
+ </div>
+ <div class="modal-footer">
+ <button type="button" class="btn btn-default closeModalpress" data-dismiss="modal">Close</button>
+ </div>
+ </div><!--/.modal-content -->
+ </div><!-- /.modal-dialog -->
+ </div><!-- /.modal -->
+<!--end-->
 
 
 <div class="modal fade" id="customModalId" tabindex="-1" role="dialog">
@@ -5577,6 +5599,7 @@ $(document).on("click",".globalDateChange",function(){
 		  globalMeetingsCalls(type);  
 	  }else{
 		globalAlertsCalls(type);
+		globalPressmeetCalls(type);
 		globalDebateCalls(type);
 		globalPrintMediaCalls(type);
 		globalElectronicMediaCalls(type);
