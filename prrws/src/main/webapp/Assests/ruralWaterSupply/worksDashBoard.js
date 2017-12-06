@@ -1266,7 +1266,7 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#financialYearId").append("<option value='0'>Select Financial Year</option>");
+			$("#financialYearId").append("<option value="0">All Financial Years</option>");
 			if(result != null && result.length >0){
 				for(var i in result){
 					var value = result[i].financialYear.split('-');
@@ -1422,8 +1422,13 @@
 		}
 	});
 	$(document).on("change","#financialYearId",function(){
+		var yearId = $(this).val();
 		glStartDate="";
 		glEndDate="";
+		if(yearId == 0){
+			glStartDate="01-01-1900";
+			glEndDate="01-01-2050";
+		}
 		onloadCalls();
 	});
 	$(document).on("click",".getDetailsCls",function(){
