@@ -45,14 +45,14 @@
 		  format: 'DD-MM-YYYY'
 		},
 		ranges: {
-		    'Today': [moment(), moment()],
+			'Today': [moment(), moment()],
 		   'This Month': [moment().startOf("month").format("DD-MM-YYYY"), moment().endOf('month').format("DD-MM-YYYY")],
 		   'Last Month': [moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY"),moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")],
 		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
 		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-           'This Year': [moment().startOf('Year'), moment()]
+		   'This Year': [moment().startOf('Year'), moment()]
 		}
 	});
 	$('#dateRangePrajaSankalpaId').on('apply.daterangepicker', function(ev, picker) {
