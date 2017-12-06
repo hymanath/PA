@@ -252,14 +252,14 @@ function buildTemplateWorkDetails(typeVal){
 						str+='<div class="row m_top10">';
 								str+='<div class="col-sm-3">';
 									str+='<label>Select Subject</label>';
-									str+='<select  name="worksList[0].deptId"  class="form-control chosen-select m_top10 workTypeCls'+typeVal+'" id="workTypeId'+typeVal+''+globalWorkTypeCount+'" onChange=getPetitionSubSubjectList(this.value,"subWorkTypeId'+typeVal+''+globalWorkTypeCount+'")>';
+									str+='<select  name="worksList[0].subjectId"  class="form-control chosen-select m_top10 workTypeCls'+typeVal+'" id="workTypeId'+typeVal+''+globalWorkTypeCount+'" onChange=getPetitionSubSubjectList(this.value,"subWorkTypeId'+typeVal+''+globalWorkTypeCount+'")>';
 										str+='<option value="0">Select Subject</option>';
 									str+='</select>';
 									str+='<div class="m_top10"  id="workTypeId'+typeVal+''+globalWorkTypeCount+'Err"></div>';
 								str+='</div>';
 								str+='<div class="col-sm-3">';
 									str+='<label>Select Sub Subject</label>';//kkll2
-									str+='<select  name="worksList[0].deptId"  class="form-control chosen-select m_top10 subWorkTypeCls'+typeVal+'" id="subWorkTypeId'+typeVal+''+globalWorkTypeCount+'">';
+									str+='<select  name="worksList[0].subSubjectId"  class="form-control chosen-select m_top10 subWorkTypeCls'+typeVal+'" id="subWorkTypeId'+typeVal+''+globalWorkTypeCount+'">';
 										str+='<option value="0">Select Sub Subject</option>';
 									str+='</select>';
 									str+='<div class="m_top10"  id="subWorkTypeId'+typeVal+''+globalWorkTypeCount+'Err"></div>';
@@ -317,7 +317,7 @@ function buildTemplateWorkDetails(typeVal){
 					
 					str+='<div class="row m_top20">';
 						str+='<div class="col-sm-12">';
-							str+='<h3 class="panel-title f_18">PROJECT DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
+							str+='<h3 class="panel-title f_18"> GRIEVANCE DISCRIPTION <span class="f_12">(Work Details)</span></h3>';
 							str+='<textarea  name="worksList[0].projectDescription"  class="form-control m_top20 workNoTextAreaValidCls'+typeVal+'" rows="4" id="textArea'+typeVal+'1"></textarea>';
 							str+='<div class="m_top10"  id="textArea'+typeVal+'1Err"></div>';
 						str+='</div>';
@@ -1143,7 +1143,7 @@ $(document).on("click",".candidateAddedView",function(){
 		$(".representation-selected").removeClass("display_block");
 		var candidateId = $(this).attr("attr_candidateId");
 		alreadyCandidateId = candidateId;
-		
+		$('#reffererCandidate0').val(candidateId);
 		$("#candidateDetails"+typeVal+"DivId").html($("#bgColorCandidates"+candidateId).html());
 		$("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").addClass("memberAdded")
 		$(this).parent().find(".representation-selected").addClass("display_block");

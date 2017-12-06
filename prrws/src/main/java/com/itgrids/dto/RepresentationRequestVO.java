@@ -5,6 +5,10 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * @author sys
+ *
+ */
 @SuppressWarnings({ "serial", "serial" })
 public class RepresentationRequestVO implements java.io.Serializable{
 
@@ -16,7 +20,13 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private String workName;
 	private Long  noOfWorks;
 	private Long estimationCost;
+	private String date;
 	private String subject;
+	private String subSubject;	
+	private String lead;
+	private String briefLead;
+	private String grant;
+	private String status;
 	private Long subjectId;
 	private Long subSubjectId;
 	private Long grantId;
@@ -39,6 +49,8 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private String designation;
 	private Long designationId;
 	private Long reffererId;
+	private String refDesignation;
+	private String reprType;
 	private String reffererName;
 	private Long referrerCandidateId;
 	private String departrment;
@@ -53,6 +65,22 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private Long petitionStatusId;
 	private String remarks;
 	
+	public String getReprType() {
+		return reprType;
+	}
+
+	public void setReprType(String reprType) {
+		this.reprType = reprType;
+	}
+
+	public String getRefDesignation() {
+		return refDesignation;
+	}
+
+	public void setRefDesignation(String refDesignation) {
+		this.refDesignation = refDesignation;
+	}
+
 	public String getDepartrment() {
 		return departrment;
 	}
@@ -341,6 +369,54 @@ public class RepresentationRequestVO implements java.io.Serializable{
 
 	public void setRepresenteeType(String representeeType) {
 		this.representeeType = representeeType;
+	}
+
+	public String getSubSubject() {
+		return subSubject;
+	}
+
+	public void setSubSubject(String subSubject) {
+		this.subSubject = subSubject;
+	}
+
+	public String getLead() {
+		return lead;
+	}
+
+	public void setLead(String lead) {
+		this.lead = lead;
+	}
+
+	public String getBriefLead() {
+		return briefLead;
+	}
+
+	public void setBriefLead(String briefLead) {
+		this.briefLead = briefLead;
+	}
+
+	public String getGrant() {
+		return grant;
+	}
+
+	public void setGrant(String grant) {
+		this.grant = grant;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public Long getSubSubjectId() {

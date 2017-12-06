@@ -66,7 +66,7 @@ $(document).on("click","#advanceSearchId",function(){
 		}
 		if(searchType=="designation"){
 			searchVal = $('#designationsId').val();
-		}else if(searchType=="departmentId"){
+		}else if(searchType=="department"){
 			searchVal = $('#departmentId').val();
 		}
 		getRepresentativeSearchDetails(searchVal,locationScopeId,lcoationId);
@@ -142,6 +142,8 @@ function getRepresentativeSearchDetails(searchVal,locationScopeId,lcoationId){
 	if(searchType == "advanceBtnId"){
 		var searchVal = $("#advancedSearchVal").val(); 
 	}
+	
+	
     var json = {
 		filterType :radioValue,
 		filterValue:searchVal,
@@ -170,35 +172,151 @@ function getRepresentativeSearchDetails(searchVal,locationScopeId,lcoationId){
 }
 function representationRequestEntryTable(result){
 	var str='';
+	str+='<div class="table-responsive">';
 	str+='<table class="table table_customRep table-bordered" id="workDetailsTab">';
 		str+='<thead>';
 			str+='<tr>';
-				str+='<th>ENDORSEMENT ID</th>';
-				str+='<th>REPRESENTEE NAME</th>';
-				str+='<th>REPRESENTEE DESIGNATION</th>';
-				str+='<th>REPRESENTEE MOBILE&nbsp;NO</th>';
-				str+='<th>WORK NAME</th>';
+				str+='<th>ENDORSEMENT&nbsp;ID</th>';
+				str+='<th>MEMBER&nbsp;TYPE</th>';
+				str+='<th>DISTRICT</th>';
+				str+='<th>CONSTITUENCY</th>';
+				str+='<th>RAISED&nbsp;DATE</th>';
+				str+='<th>REF. DESIGNATION</th>';				
+				str+='<th style="min-width:180px !important;">REPR. NAME</th>';
+				str+='<th>REPR. DESIGNATION</th>';
+				str+='<th>REPR. MOBILE&nbsp;NO</th>';
+				str+='<th style="min-width:200px !important;">WORK NAME</th>';
 				str+='<th>NO OF WORKS</th>';
+				str+='<th>DEPT</th>';
 				str+='<th>SUBJECT</th>';
+				
+				str+='<th>SUB SUBJECT</th>';
+				str+='<th style="min-width:100px !important;">LEAD</th>';
+				str+='<th style="min-width:100px !important;">BRIEF LEAD</th>';
+				str+='<th>GRANT</th>';
+				str+='<th>STATUS</th>';
+				str+='<th style="min-width:100px !important;">REMARKS</th>';
+				
 				str+='<th>ACTION</th>';
 			str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
 			for(var i in result){
 			str+='<tr>';
-				str+='<td>'+result[i].refCode+'</td>';
-				str+='<td>'+result[i].candidateName+'</td>';
-				str+='<td>-</td>';
-				str+='<td>'+result[i].mobileNo+'</td>';
-				str+='<td>'+result[i].workName+'</td>';
-				str+='<td>'+result[i].noOfWorks+'</td>';
-				str+='<td>'+result[i].subject+'</td>';
-				str+='<td><button type="button" class="btn viewEditCss">View/Edit</button></td>';
+				if (result[i].refCode != null && typeof(result[i].refCode) != "undefined")
+					str+='<td>'+result[i].refCode+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].representeeType != null && typeof(result[i].representeeType) != "undefined")
+					str+='<td>'+result[i].representeeType+'</td>';
+				else
+					str+='<td> - </td>';
+				
+				if (result[i].district != null && typeof(result[i].district) != "undefined")
+					str+='<td>'+result[i].district+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].constituency != null && typeof(result[i].constituency) != "undefined")
+					str+='<td>'+result[i].constituency+'</td>';
+				else
+					str+='<td> - </td>';
+				
+				if (result[i].date != null && typeof(result[i].date) != "undefined")
+					str+='<td>'+result[i].date+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].designation != null && typeof(result[i].designation) != "undefined")
+					str+='<td>'+result[i].designation+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].candidateName != null && typeof(result[i].candidateName) != "undefined")
+					str+='<td>'+result[i].candidateName+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].designation != null && typeof(result[i].designation) != "undefined")
+					str+='<td>'+result[i].designation+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].mobileNo != null && typeof(result[i].mobileNo) != "undefined")
+					str+='<td>'+result[i].mobileNo+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].workName != null && typeof(result[i].workName) != "undefined"){
+					if(result[i].workName !=null && result[i].workName.length>25){
+						str+='<td><span class="tooltipCls" data-toogle="tooltip" data-placement="right" title="'+result[i].workName+'">'+result[i].workName.substring(0,25)+'...</span></td>';
+					}else{
+						str+='<td>'+result[i].workName+'</td>';
+					}
+					
+				}else{
+					str+='<td> - </td>';
+				}
+					
+				
+				if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined")
+					str+='<td>'+result[i].noOfWorks+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].departrment != null && typeof(result[i].departrment) != "undefined")
+					str+='<td>'+result[i].departrment+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].subject != null && typeof(result[i].subject) != "undefined")
+					str+='<td>'+result[i].subject+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].subSubject != null && typeof(result[i].subSubject) != "undefined")
+					str+='<td>'+result[i].subSubject+'</td>';	
+				else
+					str+='<td> - </td>';			
+				if (result[i].lead != null && typeof(result[i].lead) != "undefined"){
+					if(result[i].lead !=null && result[i].lead.length>10){
+						str+='<td><span class="tooltipCls" data-toogle="tooltip" data-placement="right" title="'+result[i].lead+'">'+result[i].lead.substring(0,10)+'...</span></td>';
+					}else{
+						str+='<td>'+result[i].lead+'</td>';
+					}
+					
+				}else{
+					str+='<td> - </td>';
+				}
+				
+				if (result[i].briefLead != null && typeof(result[i].briefLead) != "undefined"){
+					if(result[i].briefLead !=null && result[i].briefLead.length>10){
+						str+='<td><span class="tooltipCls" data-toogle="tooltip" data-placement="right" title="'+result[i].briefLead+'">'+result[i].briefLead.substring(0,10)+'...</span></td>';
+					}else{
+						str+='<td>'+result[i].briefLead+'</td>';	
+					}
+					
+				}else{
+					str+='<td> - </td>';
+				}
+				
+				if (result[i].grant != null && typeof(result[i].grant) != "undefined")
+					str+='<td>'+result[i].grant+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].status != null && typeof(result[i].status) != "undefined")
+					str+='<td>'+result[i].status+'</td>';
+				else
+					str+='<td> - </td>';
+				if (result[i].remarks != null && typeof(result[i].remarks) != "undefined"){
+					if(result[i].remarks !=null && result[i].remarks.length>10){
+						str+='<td><span class="tooltipCls" data-toogle="tooltip" data-placement="right" title="'+result[i].remarks+'">'+result[i].remarks.substring(0,10)+'</span></td>';	
+					}else{
+						str+='<td>'+result[i].remarks+'</td>';	
+					}
+					
+				}else{
+					str+='<td> - </td>';
+				}
+				str+='<td><a href="/representationRequestEntry" target="_blank" class="btn btn-xs viewEditCss"> View/Edit </a></td>';
 			str+='</tr>';
 			}
 		str+='</tbody>';
 	str+='</table>';
+	str+='</div>';
 	$("#representationRequestEntryTable").html(str);
+	$(".tooltipCls").tooltip();
 	
 	$("#workDetailsTab").dataTable({
 		"paging":   true,
@@ -206,9 +324,9 @@ function representationRequestEntryTable(result){
 		"searching": true,
 		"autoWidth": true,
 		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-		"iDisplayLength": 20,
+		"iDisplayLength": 10,
 		"aaSorting": [],
-		"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 	});
 }
 function getPetitionDepartmentList(){

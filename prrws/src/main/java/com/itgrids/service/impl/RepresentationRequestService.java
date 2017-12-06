@@ -219,7 +219,20 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 						petitionMember.setUpdatedUserId(petitionMemberVO.getUserId());
 						petitionMember.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 						petitionMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						
+						
+						PetitionReffererCandidate petitionReffererCandidate = petitionReffererCandidateDAO.get(petitionMemberVO.getPetitionMemberVO().getReferrerCandidateIdsList().get(0));
+						if(petitionReffererCandidate != null){
+							petitionMember.setCandidateName(petitionReffererCandidate.getName());
+							petitionMember.setAddressId(petitionReffererCandidate.getAddressId());
+							petitionMember.setMobileNo(petitionReffererCandidate.getMobileNo());
+							petitionMember.setEmailId(petitionReffererCandidate.getEmailId());
+							petitionMember.setPetitionReffererCandidateId(petitionMemberVO.getPetitionMemberVO().getReferrerCandidateIdsList().get(0));
+							petitionMember.setPetitionDesignationId(petitionReffererCandidate.getPetitionDesignationId());
+						}
+						
 						petitionMember = petitionMemberDAO.save(petitionMember);
+						petitionMemberVO.getPetitionMemberVO().getReferrerCandidateIdsList().clear();// no refferer candidate for PetitionRefferrrer
 					}
 				}else if(petitionMemberVO.getPetitionMemberVO() != null && petitionMemberVO.getPetitionMemberVO().getMemberType() != null &&
 						 petitionMemberVO.getPetitionMemberVO().getMemberType().equalsIgnoreCase("REPRESENT")){
@@ -235,13 +248,14 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 								if(petitionMemberVO.getPetitionMemberVO().getEndorsmentDate() != null && petitionMemberVO.getPetitionMemberVO().getEndorsmentDate().length()>=10)
 									petitionMember.setEndorsmentDate(format.parse(petitionMemberVO.getPetitionMemberVO().getEndorsmentDate()));
 								
-								PetitionReffererCandidate petitionReffererCandidate = petitionReffererCandidateDAO.get(referrerCandidateId);
+								/*PetitionReffererCandidate petitionReffererCandidate = petitionReffererCandidateDAO.get(referrerCandidateId);
 								if(petitionReffererCandidate != null){
 									petitionMember.setCandidateName(petitionReffererCandidate.getName());
 									petitionMember.setAddressId(petitionReffererCandidate.getAddressId());
 									petitionMember.setMobileNo(petitionReffererCandidate.getMobileNo());
 									petitionMember.setEmailId(petitionReffererCandidate.getEmailId());
 								}
+								*/
 								
 								petitionMember.setPetitionReffererCandidateId(referrerCandidateId);
 								petitionMember.setMemberType(petitionMemberVO.getPetitionMemberVO().getMemberType());
@@ -265,29 +279,32 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 	}
 	
 	
-	public PetitionSubWorkLocationDetails savePetitionSubWorkDetails(Long petitionWorkDetailsId,RepresentationRequestVO dataVO){
+	public PetitionSubWorkLocationDetails savePetitionSubWorkDetails(Long petitionWorkDetailsId,RepresentationRequestVO tempDataVO){
 		PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = null;
 		try {
-			if(dataVO.getPetitionMemberVO() != null){
-				petitionSubWorkLocationDetails = new PetitionSubWorkLocationDetails();
-				petitionSubWorkLocationDetails.setPetitionWorkDetailsId(petitionWorkDetailsId);
-				petitionSubWorkLocationDetails.setPetitionDepartmentId(dataVO.getDeptId());
-				petitionSubWorkLocationDetails.setDescription(dataVO.getProjectDescription());
-				petitionSubWorkLocationDetails.setCostEstimation(dataVO.getEstimationCost());
-				petitionSubWorkLocationDetails.setPetitionSubjectId(dataVO.getSubjectId());
-				
-				petitionSubWorkLocationDetails.setIsDeleted("N");
-				petitionSubWorkLocationDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				petitionSubWorkLocationDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-				petitionSubWorkLocationDetails.setInsertedUserId(dataVO.getUserId());
-				petitionSubWorkLocationDetails.setUpdatedUserId(dataVO.getUserId());
-				
-				if(dataVO.getCandidateAddressVO() != null){
-					LocationAddress workLocatinAddress = saveLocationAddress(dataVO.getCandidateAddressVO());
-					petitionSubWorkLocationDetails.setAddressId(workLocatinAddress.getLocationAddressId());
+			if(tempDataVO.getPetitionMemberVO() != null){
+				if(commonMethodsUtilService.isListOrSetValid(tempDataVO.getWorksList())){
+					for (RepresentationRequestVO dataVO : tempDataVO.getWorksList()) {
+						petitionSubWorkLocationDetails = new PetitionSubWorkLocationDetails();
+						petitionSubWorkLocationDetails.setPetitionWorkDetailsId(petitionWorkDetailsId);
+						petitionSubWorkLocationDetails.setPetitionDepartmentId(dataVO.getDeptId());
+						petitionSubWorkLocationDetails.setDescription(dataVO.getProjectDescription());
+						petitionSubWorkLocationDetails.setCostEstimation(dataVO.getEstimationCost());
+						petitionSubWorkLocationDetails.setPetitionSubjectId(dataVO.getSubjectId());
+						
+						petitionSubWorkLocationDetails.setIsDeleted("N");
+						petitionSubWorkLocationDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						petitionSubWorkLocationDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						petitionSubWorkLocationDetails.setInsertedUserId(dataVO.getUserId());
+						petitionSubWorkLocationDetails.setUpdatedUserId(dataVO.getUserId());
+						
+						if(dataVO.getCandidateAddressVO() != null){
+							LocationAddress workLocatinAddress = saveLocationAddress(dataVO.getCandidateAddressVO());
+							petitionSubWorkLocationDetails.setAddressId(workLocatinAddress.getLocationAddressId());
+						}
+						petitionSubWorkLocationDetails = petitionSubWorkLocationDetailsDAO.save(petitionSubWorkLocationDetails);
+					}
 				}
-				
-				petitionSubWorkLocationDetails = petitionSubWorkLocationDetailsDAO.save(petitionSubWorkLocationDetails);
 			}
 		} catch (Exception e) {
 			LOG.error("Exception Occured in RepresentationRequestService @ savePetitionSubWorkDetails() "+e.getMessage());
@@ -368,6 +385,15 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 					petitionRefferer.setUpdatedUserId(userId);
 					petitionRefferer = petitionReffererDAO.save(petitionRefferer);
 				}
+			}else{// self candidates no reffere candidate id
+				petitionRefferer = new PetitionRefferer(); 
+				petitionRefferer.setPetitionMemberId(petitionMemeberId);
+				//petitionRefferer.setPetitionReffererCandidateId(refferalCandidateId);
+				petitionRefferer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());petitionRefferer.setIsDeleted("N");
+				petitionRefferer.setInsertedUserId(userId);
+				petitionRefferer.setUpdatedUserId(userId);
+				petitionRefferer = petitionReffererDAO.save(petitionRefferer);
 			}
 		} catch (Exception e) {
 			LOG.error("Exception Occured in RepresentationRequestService @ savePetitionReferralDetails() "+e.getMessage());
@@ -642,19 +668,25 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		    					searchVO.setCandidateName(commonMethodsUtilService.getStringValueForObject(objs[2]));
 		    					searchVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(objs[3]));
 		    					searchVO.setAge(commonMethodsUtilService.getLongValueForObject(objs[4]));
-		    					searchVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(objs[5]));
-		    					searchVO.setDesignation(commonMethodsUtilService.getStringValueForObject(objs[6]));
+		    					
+		    					searchVO.setRepresenteeType(commonMethodsUtilService.getStringValueForObject(objs[7]));
+		    					
 		    					if(commonMethodsUtilService.getStringValueForObject(objs[7]).equalsIgnoreCase("REPRESENT")){
+		    						searchVO.setRefDesignation(commonMethodsUtilService.getStringValueForObject(objs[16]));
 		    						searchVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(objs[8]));
 			    					searchVO.setDistrict(commonMethodsUtilService.getStringValueForObject(objs[9]));
 			    					searchVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objs[10]));
 			    					searchVO.setConstituency(commonMethodsUtilService.getStringValueForObject(objs[11]));
 		    					}else if(commonMethodsUtilService.getStringValueForObject(objs[7]).equalsIgnoreCase("SELF")){
+		    						searchVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(objs[5]));
+			    					searchVO.setDesignation(commonMethodsUtilService.getStringValueForObject(objs[6]));
+			    					
 		    						searchVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(objs[12]));
 			    					searchVO.setDistrict(commonMethodsUtilService.getStringValueForObject(objs[13]));
 			    					searchVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objs[14]));
 			    					searchVO.setConstituency(commonMethodsUtilService.getStringValueForObject(objs[15]));
 		    					}
+		    					
 		    					memberidsLst.add(petitinMembrId);
 		    					representWiseSearchMap.put(searchVO.getPetitionMemberId(), searchVO);
 		    				}
@@ -672,9 +704,19 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		    					workVO.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(workObj[2]));
 		    					workVO.setIsPreviousPetition(commonMethodsUtilService.getStringValueForObject(workObj[3]));
 		    					workVO.setPreviousPetitionRefNo(commonMethodsUtilService.getStringValueForObject(workObj[4]));
+		    					workVO.setDate(commonMethodsUtilService.getStringValueForObject(workObj[5]));
 		    					workVO.setSubject(commonMethodsUtilService.getStringValueForObject(workObj[6]));
 		    					workVO.setDepartrmentId(commonMethodsUtilService.getLongValueForObject(workObj[7]));
 		    					workVO.setDepartrment(commonMethodsUtilService.getStringValueForObject(workObj[8]));
+		    					if(workVO.getDate() != null && !workVO.getDate().isEmpty() && workVO.getDate().trim().length()>10)
+		    						workVO.setDate(workVO.getDate().substring(0, 11));
+		    					workVO.setSubject(commonMethodsUtilService.getStringValueForObject(workObj[10]));
+		    					workVO.setSubSubject(commonMethodsUtilService.getStringValueForObject(workObj[15]));
+		    					workVO.setLead(commonMethodsUtilService.getStringValueForObject(workObj[16]));
+		    					workVO.setBriefLead(commonMethodsUtilService.getStringValueForObject(workObj[17]));
+		    					workVO.setGrant(commonMethodsUtilService.getStringValueForObject(workObj[19]));
+		    					workVO.setStatus(commonMethodsUtilService.getStringValueForObject(workObj[18]));
+		    					workVO.setRemarks(commonMethodsUtilService.getStringValueForObject(workObj[20]));
 		    				}
 		    			}
 		    		}
@@ -682,7 +724,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		    		if(commonMethodsUtilService.isMapValid(representWiseSearchMap)){
 		    			resultList.addAll(representWiseSearchMap.values());
 		    		}
-		    		
+		    		 
 		    	}catch(Exception e){
 		    		LOG.error("Exception raised into LocationDetailsService of getRepresentativeSearchWiseDetails() ",e);
 		    	}
