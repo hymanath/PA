@@ -237,6 +237,8 @@
 								<div class="chart2" id="habitationWorksCPWS" style="height:315px;"></div>
 							</div>
 						</div>
+						<div id="graphTable" style="display:none;"></div>
+						<div id="graphTable2" style="display:none;"></div>
 					</div>
 				</div>
 				<div class="col-sm-12 m_top20">
@@ -324,6 +326,7 @@
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
