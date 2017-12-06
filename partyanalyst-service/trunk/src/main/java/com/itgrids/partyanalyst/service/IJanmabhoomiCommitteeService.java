@@ -9,11 +9,11 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 public interface IJanmabhoomiCommitteeService 
 {
 	public JanmabhoomiCommitteeMemberVO getJanmabhoomiCommitteeOverview(Long committeId,String fromDate,String toDate);
-	public List<JanmabhoomiCommitteeVO> getDistrictWiseCommitteeDetails(String fromDate,String endDate,String type,Long userId);
-	public  JanmabhoomiCommitteeVO  getJbCommitteeStatusCount(String fromDateStr, String toDateStr);
+	public JanmabhoomiCommitteeVO getDistrictWiseCommitteeDetails(String fromDate,String endDate,String type,Long userId);
+	public  JanmabhoomiCommitteeVO  getJbCommitteeStatusCount(String fromDateStr, String toDateStr,Long userId);
 	//public Map<Long,JanmabhoomiCommitteeMemberVO> getLevelWiseCommiteeStatusCounts();
 	public ResultStatus saveJanmabhoomiCommitteeMember(final JanmabhoomiCommitteeMemberVO janmabhoomiCommitteeMemberVO);
-	public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteesByLocIdAndCommLvlId(String fromDate,String endDate,Long locationId,Long locLvlId,Long committeeLvlId,Long status);
+	public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteesByLocIdAndCommLvlId(String fromDate,String endDate,Long locationId,Long locLvlId,Long committeeLvlId,Long status,Long userId);
 	public JanmabhoomiCommitteeMemberVO searchByMemberIdOrVoterId(Long locationLevel,Long locationValue,String memberShipCardNo,String voterCardNo);
 	public List<JanmabhoomiCommitteeVO> getStatewiseCastNamesByCasteCategoryGroupId(List<Long> categoryGrouId);
 	public List<JanmabhoomiCommitteeVO>  getCategories();

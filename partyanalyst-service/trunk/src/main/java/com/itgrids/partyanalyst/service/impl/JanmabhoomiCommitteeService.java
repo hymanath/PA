@@ -18,11 +18,13 @@ import org.jfree.util.Log;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeConfirmRuleConditionDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeRoleDAO;
+import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.JbCommitteeStatusDAO;
@@ -61,7 +63,8 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	private IJbCommitteeConfirmRuleConditionDAO jbCommitteeConfirmRuleConditionDAO;
 	private JbCommitteeStatusDAO jbCommitteeStatusDAO;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
-	
+	private IConstituencyDAO constituencyDAO;
+	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	public JbCommitteeStatusDAO getJbCommitteeStatusDAO() {
 		return jbCommitteeStatusDAO;
 	}
@@ -182,6 +185,23 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	public void setBoothPublicationVoterDAO(
 			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public IParliamentAssemblyDAO getParliamentAssemblyDAO() {
+		return parliamentAssemblyDAO;
+	}
+
+	public void setParliamentAssemblyDAO(
+			IParliamentAssemblyDAO parliamentAssemblyDAO) {
+		this.parliamentAssemblyDAO = parliamentAssemblyDAO;
 	}
 
 	@SuppressWarnings("unused")
@@ -388,66 +408,109 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					return memeberVO;
 		}
 
-	public List<JanmabhoomiCommitteeVO> getDistrictWiseCommitteeDetails(String fromDate,String endDate,String type,Long userId){
-		List<JanmabhoomiCommitteeVO> returnList = new ArrayList<JanmabhoomiCommitteeVO>(); 
-		Map<Long,JanmabhoomiCommitteeVO> locationMapsWithLevel = new HashMap<Long,JanmabhoomiCommitteeVO>(); 
+	public JanmabhoomiCommitteeVO getDistrictWiseCommitteeDetails(String fromDate,String endDate,String type,Long userId){
+		//List<JanmabhoomiCommitteeVO> returnList = new ArrayList<JanmabhoomiCommitteeVO>(); 
+		JanmabhoomiCommitteeVO mainVO = new JanmabhoomiCommitteeVO();
+		Map<Long,JanmabhoomiCommitteeVO> locationMapsWithLevel = null;
 		try{ 
 			
 			
 			List<JbCommitteeLevel> committeeLvls = jbCommitteeLevelDAO.getAll();
 			
-			List<Object[]> userLocaVals = null;
+			List<Object[]> districtUserLocaVals = null;
 			Set<Long> userAccessLocVals = null;
-			if(type != null && type.equalsIgnoreCase("district")){
-				userLocaVals =userDistrictAccessInfoDAO.getLocationIdList(userId);
-				userAccessLocVals = new TreeSet<Long>();
-				 getUserAccessVals(userLocaVals,userAccessLocVals);
-			}else if(type != null && type.equalsIgnoreCase("constituency")){
-				userLocaVals =userConstituencyAccessInfoDAO.findByUser(userId);
-				userAccessLocVals = new TreeSet<Long>();
-				getUserAccessVals(userLocaVals,userAccessLocVals);
-			}/*else if(type.equalsIgnoreCase("parliament")){
+			districtUserLocaVals =userDistrictAccessInfoDAO.getLocationIdList(userId);
+			if(districtUserLocaVals !=null && districtUserLocaVals.size() >0){
+					userAccessLocVals = new TreeSet<Long>();
+					getUserAccessVals(districtUserLocaVals,userAccessLocVals);// set districtIds
+					type="district";
+					List<Object[]> list = jbCommitteeDAO.getDistrictWiseCommitteeDetails(null,null,type,userAccessLocVals,null);
+					// 0 levelId,1 levelName,2 count,3 statusId,4 status ,5 ''
+					locationMapsWithLevel = new HashMap<Long,JanmabhoomiCommitteeVO>();
+					setLocationDataToList(mainVO.getDistrictsList(),list,locationMapsWithLevel,committeeLvls,type);
 				
-			}*/
-			List<Object[]> list = jbCommitteeDAO.getDistrictWiseCommitteeDetails(null,null,type,userAccessLocVals);
-			// 0 levelId,1 levelName,2 count,3 statusId,4 status ,5 ''
-			if(commonMethodsUtilService.isListOrSetValid(list)){
-				for(Object[] param :list){
-				JanmabhoomiCommitteeVO locVO = locationMapsWithLevel.get(commonMethodsUtilService.getLongValueForObject(param[6]));
-					if(locVO == null ){
-						 locVO = new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[6]),commonMethodsUtilService.getStringValueForObject(param[7]));
-						 locVO.setList(setCommitteeLevels(committeeLvls));
-						 if(type !=null && !type.equalsIgnoreCase("parliament"))
-						 setlocationLevelsToVO(locVO,param,type);
-						
-						 if(commonMethodsUtilService.getLongValueForObject(param[6]) >0l){
-						locationMapsWithLevel.put(commonMethodsUtilService.getLongValueForObject(param[6]), locVO);
-						 returnList.add(locVO);
-						 }
-					}
-					Long committeeLvlId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				List<Object[]> constituencyUserLocaVals = constituencyDAO.getConstituencysByDistrictId(new ArrayList<Long>(userAccessLocVals));
+					userAccessLocVals = new TreeSet<Long>();
+					Set<Long> allconstIds = new TreeSet<Long>();// store constituencyds for bringing commitess count of that parliaments
+					getUserAccessVals(constituencyUserLocaVals,userAccessLocVals);// set constituencyIds
+					getUserAccessVals(constituencyUserLocaVals,allconstIds);// set constituencyIds
+					type="constituency";
+					List<Object[]> constList = jbCommitteeDAO.getDistrictWiseCommitteeDetails(null,null,type,userAccessLocVals,null);
+					locationMapsWithLevel = new HashMap<Long,JanmabhoomiCommitteeVO>();
+					setLocationDataToList(mainVO.getConstsList(),constList,locationMapsWithLevel,committeeLvls,type);
 					
-					if(committeeLvlId.longValue()==1l ){
-						locVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[4]));
-						locVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[3]));
-						locVO.setColor(commonMethodsUtilService.getStringValueForObject(param[14]));
-						locVO.setCommitteeId(commonMethodsUtilService.getLongValueForObject(param[5]));
-					}
-					JanmabhoomiCommitteeVO levelVO = getMatchedStatusOrLevelVO(locVO.getList(),commonMethodsUtilService.getLongValueForObject(param[0]));
-					if(levelVO !=null){
-						JanmabhoomiCommitteeVO statusVO = getMatchedStatusOrLevelVO(levelVO.getPositinsList(),commonMethodsUtilService.getLongValueForObject(param[3]));
-						if(statusVO !=null){
-							statusVO.setCount(statusVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
-						}
-						levelVO.setCount(levelVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
-					}
+			   List<Object[]> parliamentConstIds = parliamentAssemblyDAO.getParliamntIdByConsIds(new ArrayList<Long>(userAccessLocVals));
+				   userAccessLocVals = new TreeSet<Long>();
+				   getUserAccessVals(parliamentConstIds,userAccessLocVals);// set parliamentConstIds
+				   type="parliament";
+				   List<Object[]> parliamentList = jbCommitteeDAO.getDistrictWiseCommitteeDetails(null,null,type,userAccessLocVals,allconstIds);
+				   locationMapsWithLevel = new HashMap<Long,JanmabhoomiCommitteeVO>();
+				   setLocationDataToList(mainVO.getParliamentsList(),parliamentList,locationMapsWithLevel,committeeLvls,type);
+			}else{
+				List<Object[]> constituencyUserLocaVals = userConstituencyAccessInfoDAO.findByUser(userId);
+				if(constituencyUserLocaVals !=null && constituencyUserLocaVals.size() >0){
+					userAccessLocVals = new TreeSet<Long>();
+					getUserAccessVals(constituencyUserLocaVals,userAccessLocVals);// set constituencyIds
+					type="constituency";
+					List<Object[]> constList = jbCommitteeDAO.getDistrictWiseCommitteeDetails(null,null,type,userAccessLocVals,null);
+					locationMapsWithLevel = new HashMap<Long,JanmabhoomiCommitteeVO>();
+					setLocationDataToList(mainVO.getConstsList(),constList,locationMapsWithLevel,committeeLvls,type);
+				}else{
+					type="district";
+					List<Object[]> list = jbCommitteeDAO.getDistrictWiseCommitteeDetails(null,null,type,null,null);
+					// 0 levelId,1 levelName,2 count,3 statusId,4 status ,5 ''
+					locationMapsWithLevel = new HashMap<Long,JanmabhoomiCommitteeVO>();
+					setLocationDataToList(mainVO.getDistrictsList(),list,locationMapsWithLevel,committeeLvls,type);
+					
+					type="constituency";
+					List<Object[]> constList = jbCommitteeDAO.getDistrictWiseCommitteeDetails(null,null,type,null,null);
+					locationMapsWithLevel = new HashMap<Long,JanmabhoomiCommitteeVO>();
+					setLocationDataToList(mainVO.getConstsList(),constList,locationMapsWithLevel,committeeLvls,type);
+					
+					type="parliament";
+					List<Object[]> parlmntList = jbCommitteeDAO.getDistrictWiseCommitteeDetails(null,null,type,null,null);
+					locationMapsWithLevel = new HashMap<Long,JanmabhoomiCommitteeVO>();
+					setLocationDataToList(mainVO.getParliamentsList(),parlmntList,locationMapsWithLevel,committeeLvls,type);
 				}
 			}
-			
 		}catch (Exception e) {
 			LOG.error("Excepting Occured in getDistrictWiseCommitteeDetails() of JanmabhoomiCommitteeService ", e);
 		}
-		return returnList;
+		return mainVO;
+	}
+	public void setLocationDataToList(List<JanmabhoomiCommitteeVO> locationList,List<Object[]> list,Map<Long,JanmabhoomiCommitteeVO> locationMapsWithLevel,List<JbCommitteeLevel> committeeLvls,String type){
+		if(commonMethodsUtilService.isListOrSetValid(list)){
+			for(Object[] param :list){
+			JanmabhoomiCommitteeVO locVO = locationMapsWithLevel.get(commonMethodsUtilService.getLongValueForObject(param[6]));
+				if(locVO == null ){
+					 locVO = new JanmabhoomiCommitteeVO(commonMethodsUtilService.getLongValueForObject(param[6]),commonMethodsUtilService.getStringValueForObject(param[7]));
+					 locVO.setList(setCommitteeLevels(committeeLvls));
+					 if(type !=null && !type.equalsIgnoreCase("parliament"))
+					 setlocationLevelsToVO(locVO,param,type);
+					
+					 if(commonMethodsUtilService.getLongValueForObject(param[6]) >0l){
+					locationMapsWithLevel.put(commonMethodsUtilService.getLongValueForObject(param[6]), locVO);
+					locationList.add(locVO);
+					 }
+				}
+				Long committeeLvlId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				
+				if(committeeLvlId.longValue()==1l ){
+					locVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[4]));
+					locVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[3]));
+					locVO.setColor(commonMethodsUtilService.getStringValueForObject(param[14]));
+					locVO.setCommitteeId(commonMethodsUtilService.getLongValueForObject(param[5]));
+				}
+				JanmabhoomiCommitteeVO levelVO = getMatchedStatusOrLevelVO(locVO.getList(),commonMethodsUtilService.getLongValueForObject(param[0]));
+				if(levelVO !=null){
+					JanmabhoomiCommitteeVO statusVO = getMatchedStatusOrLevelVO(levelVO.getPositinsList(),commonMethodsUtilService.getLongValueForObject(param[3]));
+					if(statusVO !=null){
+						statusVO.setCount(statusVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+					levelVO.setCount(levelVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+		}
 	}
 	public void getUserAccessVals(List<Object[]> userLocaVals,Set<Long> userAccessLocVals){
 		try {
@@ -615,6 +678,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					jbCommitteeMember.setUpdatedUserId(janmabhoomiCommitteeMemberVO.getUserId());
 					jbCommitteeMember.setEndDate(dateUtilService.getCurrentDateAndTime());
 					jbCommitteeMember.setIsActive("N");
+					jbCommitteeMember.setComment(janmabhoomiCommitteeMemberVO.getComment());
 					JbCommittee jbCommittee = jbCommitteeDAO.get(janmabhoomiCommitteeMemberVO.getCommitteeId());
 					if(jbCommittee != null){
 							jbCommittee.setJbCommitteeStatusId(2l);
@@ -703,11 +767,31 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 		}
 		return status;
 	}
-	public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteesByLocIdAndCommLvlId(String fromDate,String endDate,Long locationId,Long locLvlId,Long committeeLvlId,Long status){
+	public List<JanmabhoomiCommitteeVO> getJanmabhoomiCommitteesByLocIdAndCommLvlId(String fromDate,String endDate,Long locationId,Long locLvlId,Long committeeLvlId,Long status,Long userId){
 		 List<JanmabhoomiCommitteeVO> returnList = new ArrayList<JanmabhoomiCommitteeVO>();
 	try {
+		List<Long> matchedConstIds = new ArrayList<Long>();
 		Map<Long,JanmabhoomiCommitteeVO> committeeMaps = null;
-			List<Object[]> list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, locationId, committeeLvlId,status);
+			if (locLvlId != null && locLvlId.longValue() == 10l) {
+				List<Object[]> districtUserLocaVals = districtUserLocaVals = userDistrictAccessInfoDAO.getLocationIdList(userId);
+				if (districtUserLocaVals != null && districtUserLocaVals.size() > 0) {
+					Set<Long> userDistrictAccessLocVals = new TreeSet<Long>();
+					getUserAccessVals(districtUserLocaVals,userDistrictAccessLocVals);// set districtIds
+
+					List<Object[]> constituencyUserLocaVals = constituencyDAO.getConstituencysByDistrictId(new ArrayList<Long>(userDistrictAccessLocVals));
+
+					Set<Long> userConstAccessLocVals = new TreeSet<Long>();
+					getUserAccessVals(constituencyUserLocaVals,userConstAccessLocVals);// set constituencyIds
+					List<Long> constIds = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(locationId);
+					if (constituencyUserLocaVals != null && constituencyUserLocaVals.size() > 0) {
+						for (Long userConstIds : userConstAccessLocVals) {
+							if (constIds.contains(userConstIds))
+								matchedConstIds.add(userConstIds);
+						}
+					}
+				}
+			}
+			List<Object[]> list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, locationId, committeeLvlId,status,matchedConstIds);
 			committeeMaps = new LinkedHashMap<Long,JanmabhoomiCommitteeVO>();
 			setCommitteesData(committeeMaps,list,status,"");
 		
@@ -1025,9 +1109,26 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	}
 
 
-public JanmabhoomiCommitteeVO getJbCommitteeStatusCount(String fromDateStr, String toDateStr) {
+public JanmabhoomiCommitteeVO getJbCommitteeStatusCount(String fromDateStr, String toDateStr,Long userId) {
     JanmabhoomiCommitteeVO  mainVO = new JanmabhoomiCommitteeVO();
-    
+    boolean districtStatus = false;
+    boolean constituencyStatus = false;
+    String type = null;
+    List<Object[]> districtUserLocaVals = districtUserLocaVals = userDistrictAccessInfoDAO.getLocationIdList(userId);
+    List<Object[]> constituencyUserLocaVals = userConstituencyAccessInfoDAO.findByUser(userId);
+	Set<Long> userAccessLocVals = null;
+	
+	if(districtUserLocaVals != null && districtUserLocaVals.size() >0) {
+		districtStatus = true;
+		type = "district";
+		userAccessLocVals = new TreeSet<Long>();
+		getUserAccessVals(districtUserLocaVals,userAccessLocVals);// set districtIds
+	}else if(constituencyUserLocaVals != null && constituencyUserLocaVals.size() >0) {
+		constituencyStatus = true;
+		type = "constituency";
+		userAccessLocVals = new TreeSet<Long>();
+		getUserAccessVals(constituencyUserLocaVals,userAccessLocVals);// set constituencyIds
+	}
    try{     
           SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -1041,6 +1142,7 @@ public JanmabhoomiCommitteeVO getJbCommitteeStatusCount(String fromDateStr, Stri
    List<JbCommitteeStatus> committeeStatusList= jbCommitteeStatusDAO.getAll();
    mainVO.setCommitteeStatusVOList(getCommitteeStatusList(committeeStatusList));
    
+   Long districtKey = null;
    Map<Long,JanmabhoomiCommitteeVO> locationDtlsMap =new HashMap<Long, JanmabhoomiCommitteeVO>(0);   
    List<JbCommitteeLevel> committeeLevels= jbCommitteeLevelDAO.getAll();
    if(commonMethodsUtilService.isListOrSetValid(committeeLevels)){
@@ -1048,14 +1150,25 @@ public JanmabhoomiCommitteeVO getJbCommitteeStatusCount(String fromDateStr, Stri
         JanmabhoomiCommitteeVO vo=new JanmabhoomiCommitteeVO();
          vo.setId(jbCommitteeLevel.getJbCommitteeLevelId());
          vo.setName(jbCommitteeLevel.getName());
+         if(jbCommitteeLevel.getName().equalsIgnoreCase("District"))
+        	 districtKey = jbCommitteeLevel.getJbCommitteeLevelId();
          vo.setCommitteeStatusVOList(getCommitteeStatusList(committeeStatusList));
          locationDtlsMap.put(vo.getId(),vo);
         }
    }  
    
-   List<Object[]> committeeList = jbCommitteeDAO.getJbCommitteeStatusCount();
+   if(constituencyStatus == true){
+	   locationDtlsMap.remove(districtKey);
+   }
+   
+   List<Object[]> committeeList = null;
+   if(districtStatus == true || constituencyStatus == true){
+	   committeeList = jbCommitteeDAO.getJbCommitteeStatusCount(type,userAccessLocVals);
    	  //0 count(jbCommitteeId),1 isCommitteeConfirmed,2 startDate,3 completedDate,
 	 //4 jbCommitteeLevelId,5 name,6 jbCommitteeStatusId,7 status
+   }else{
+	   committeeList = jbCommitteeDAO.getJbCommitteeStatusCount(null,null);// get all level data
+   }
    if (committeeList!=null && committeeList.size()>0){
       for (Object[] objects : committeeList) {
        JanmabhoomiCommitteeVO vo = locationDtlsMap.get(commonMethodsUtilService.getLongValueForObject(objects[4]));

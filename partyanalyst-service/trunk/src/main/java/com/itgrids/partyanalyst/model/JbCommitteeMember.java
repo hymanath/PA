@@ -53,6 +53,8 @@ public class JbCommitteeMember extends BaseModel implements java.io.Serializable
 	private User updatedUser;
 	private Party party ;
 	private Voter voter ;
+	private String comment;
+	private String imagePath;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -290,10 +292,18 @@ public class JbCommitteeMember extends BaseModel implements java.io.Serializable
 	public void setVoter(Voter voter) {
 		this.voter = voter;
 	}
-	
-	
-	
-	
-	
-
+	@Column(name="comment")
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	@Column(name="image_path")
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
 }
