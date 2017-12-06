@@ -22,7 +22,7 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 	
 	public List<String> getWorkdetailsById() {
 		
-		Query query= getSession().createQuery("select model.workId from RwsWork model");
+		Query query= getSession().createQuery("select distinct model.workId from RwsWork model");
 		
 		return query.list();
 	}
@@ -87,6 +87,13 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		query.setParameter("workId", workId);
 		RwsWork work = (RwsWork) query.uniqueResult();
 		return work;
+	}
+
+	@Override
+	public List<RwsWork> getWorksbyWorkIdList(List<String> workIds) {
+		Query query= getSession().createQuery("from RwsWork where workId in(:workId)");
+		query.setParameterList("workId", workIds);
+		return query.list();
 	}
 
 }
