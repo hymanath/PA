@@ -142,6 +142,7 @@ public class RWSNICService implements IRWSNICService{
 	public List<LocationVO> getHabitationCoverageByStatusByLocationType(InputVO inputVO){
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
+				inputVO.setYear(String.valueOf(Long.valueOf(inputVO.getYear())-1l));
 			if(inputVO!= null){
 				inputVO = setFilterVal(inputVO);
 			}
@@ -288,7 +289,7 @@ public class RWSNICService implements IRWSNICService{
 	public BasicVO getLabTestDetails(InputVO inputVO){
 		BasicVO basicVO = null;
 		try {
-
+			inputVO.setYear(String.valueOf(Long.valueOf(inputVO.getYear())-1l));
 	        WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getLabTestDetails");	        
 	        String authStringEnc = getAuthenticationString("admin","admin@123");	        
 	        ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
@@ -328,6 +329,7 @@ public class RWSNICService implements IRWSNICService{
 	public BasicVO getHabitationSupplyDetails(InputVO VO){
 		BasicVO finalVO = new BasicVO();
 		try {
+			VO.setYear(String.valueOf(Long.valueOf(VO.getYear())-1l));
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/gethabitationWatersupplyDetails");
 			    String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		        ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, VO);
@@ -1576,9 +1578,14 @@ public class RWSNICService implements IRWSNICService{
 		 	    				if(jobj.has("commssionedDate")){
 		 	    					subVo.setCompletionDate(sdf.format(sdf.parse(jobj.getString("commssionedDate"))));
 		 	    				}
-		 	    				if(jobj.has("groundingDate") && jobj.getString("groundingDate")!=null && !jobj.getString("groundingDate").equalsIgnoreCase("--")){
-		 	    					subVo.setGroundingDate(sdf.format(sdf1.parse(jobj.getString("groundingDate"))));
+		 	    				if(vo.getWorkStatus().trim().equalsIgnoreCase("ongoing")){
+		 	    					if(jobj.has("groundingDate") && jobj.getString("groundingDate")!=null && !jobj.getString("groundingDate").equalsIgnoreCase("--")){
+			 	    					subVo.setGroundingDate(sdf.format(sdf1.parse(jobj.getString("groundingDate"))));
+			 	    				}
+		 	    				}else{
+		 	    					subVo.setCompletionDate(sdf.format(sdf.parse(jobj.getString("groundingDate"))));
 		 	    				}
+		 	    				
 		 	    				subVo.setWorkName(jobj.getString("workName"));		 	    				
 		 	    				subVo.setWorkId(jobj.getString("workId"));
 		 	    				workIds.add(jobj.getString("workId"));
