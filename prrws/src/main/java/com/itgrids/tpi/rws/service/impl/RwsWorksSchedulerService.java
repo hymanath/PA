@@ -142,12 +142,16 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 		 	    		JSONArray finalArray = new JSONArray(output);
 		 	    		RwsWork works = null;
 		 	    		List<String> workData= rwsWorkDAO.getWorkdetailsById();
+		 	    		
 		 	    		for(int i=0;i<finalArray.length();i++){
 		 	    			works = new RwsWork();
 		 	    			JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    			
 		 	    			if(jObj.getString("typeOfAssestName").equalsIgnoreCase("PWS") || jObj.getString("typeOfAssestName").equalsIgnoreCase("CPWS")){
+		 	    				
 		 	    				if(!workData.contains(jObj.getString("workId"))) {
-				 	    			works.setWorkId(jObj.getString("workId"));
+				 	    			
+		 	    					works.setWorkId(jObj.getString("workId"));
 				 	    			String name =jObj.getString("workName").replace("\u0096", "");
 				 	    			works.setWorkName(name);
 				 	    			works.setWorkStatus("Not Grounded");
