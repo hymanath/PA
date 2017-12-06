@@ -61,13 +61,7 @@ public class PetitionReffererCandidate {
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
-	@Column(name="designation")
-	public String getDesignation() {
-		return designation;
-	}
-	public void setDesignation(String designation) {
-		this.designation = designation;
-	}
+	
 	@Column(name="email_id")
 	public String getEmailId() {
 		return emailId;

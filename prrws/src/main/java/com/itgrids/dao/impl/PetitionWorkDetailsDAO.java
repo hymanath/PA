@@ -29,10 +29,18 @@ public class PetitionWorkDetailsDAO extends GenericDaoHibernate<PetitionWorkDeta
 				sb.append(" select model.petitionMemberId,model.workName,model.noOfWorks," +
 						  " model.isPreviousPetition,model.previousPetitionRefNo,model.insertedTime,model.subject," +
 						  " petitionDepartment.petitionDepartmentId,petitionDepartment.departmentName ,petitionSubject.petitionSubjectId,petitionSubject.subject,");
-				sb.append(" model.costEstimation,model.projectDescription,model.petitionWorkDetailsId");
+				sb.append(" model.costEstimation,model.projectDescription,model.petitionWorkDetailsId,petitionSubSubject.petitionSubjectId,petitionSubSubject.subject, " +//15
+						" petitionLead.lead, petitionBriefLead.breifLead,petitionStatus.description,petitionGrant.grantUnder," +
+						" model.remarks");//20
 				sb.append(" from PetitionWorkDetails model " );
 				sb.append(" left join model.petitionDepartment petitionDepartment  ");
 				sb.append(" left join model.petitionSubject petitionSubject  ");
+				sb.append(" left join model.petitionSubSubject petitionSubSubject  ");
+				sb.append(" left join model.petitionLead petitionLead  ");
+				sb.append(" left join model.petitionBriefLead petitionBriefLead  ");
+				sb.append(" left join model.petitionStatus petitionStatus  ");
+				sb.append(" left join model.petitionGrant petitionGrant  ");
+				
 				sb.append(" where model.petitionMemberId in(:petitionMemberIdsLst) ");
 			   Query qry = getSession().createQuery(sb.toString());
 				if(petitionMemberIds != null && petitionMemberIds.size() >0){

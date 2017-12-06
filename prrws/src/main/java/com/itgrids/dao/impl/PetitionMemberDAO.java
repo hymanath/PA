@@ -29,12 +29,16 @@ public class PetitionMemberDAO extends GenericDaoHibernate<PetitionMember, Long>
 		Query qry = null;
 		if(searchType != null && (searchType.equalsIgnoreCase("name") || searchType.equalsIgnoreCase("mobileNo") || searchType.equalsIgnoreCase("emailId")
 				 || searchType.equalsIgnoreCase("refCode") || searchType.equalsIgnoreCase("designation"))){
-			sb.append(" select model.petitionMemberId,model.petitionMemberId,model.candidateName,model.mobileNo,model.age,petitionDesignation.petitionDesignationId" +
-					",petitionDesignation.designationName,model.memberType,district.districtId,district.districtName," +
+			sb.append(" select model.petitionWorkDetails.petitionMember.petitionMemberId,model.petitionWorkDetails.petitionMember.refCode," +
+					" model.petitionWorkDetails.petitionMember.candidateName,model.petitionWorkDetails.petitionMember.mobileNo,model.petitionWorkDetails.petitionMember.age," +
+					" petitionDesignation.petitionDesignationId" +
+					",petitionDesignation.designationName,model.petitionWorkDetails.petitionMember.memberType,district.districtId,district.districtName," +
 					" constituency.constituencyId,constituency.name," +
 					" refdistrict.districtId,refdistrict.districtName," +
-					" refconstituency.constituencyId,refconstituency.name " +
-					" from PetitionMember model " +
+					" refconstituency.constituencyId,refconstituency.name, " +
+					" petitionDesignation1.designationName " +
+					" from PetitionSubWorkLocationDetails model " +
+					" left join model.petitionWorkDetails.petitionMember.petitionDesignation petitionDesignation1 " +
 					" left join model.locationAddress locationAddress " +
 					" left join locationAddress.state state " +
 					" left join locationAddress.district district " +
@@ -42,7 +46,7 @@ public class PetitionMemberDAO extends GenericDaoHibernate<PetitionMember, Long>
 					" left join locationAddress.tehsil tehsil " +
 					" left join locationAddress.localElectionBody localElectionBody " +
 					" left join locationAddress.panchayat panchayat " +
-					" left join model.petitionReffererCandidate petitionReffererCandidate " +
+					" left join model.petitionWorkDetails.petitionMember.petitionReffererCandidate petitionReffererCandidate " +
 					" left join petitionReffererCandidate.petitionDesignation petitionDesignation " +
 					" left join petitionReffererCandidate.locationAddress reflocationAddress1 " +
 					" left join reflocationAddress1.district refdistrict " +
@@ -50,30 +54,33 @@ public class PetitionMemberDAO extends GenericDaoHibernate<PetitionMember, Long>
 			sb.append(" where ");
 			
 			if(searchType.equalsIgnoreCase("name") && searchValue != null && !searchValue.isEmpty()){
-				sb.append(" model.candidateName like '%"+searchValue+"%' and ");
+				sb.append(" model.petitionWorkDetails.petitionMember.candidateName like '%"+searchValue+"%' and ");
 			}else if(searchType.equalsIgnoreCase("mobileNo") && searchValue != null && !searchValue.isEmpty()){
-				sb.append(" model.mobileNo ="+searchValue+" and  ");
+				sb.append(" model.petitionWorkDetails.petitionMember.mobileNo ='"+searchValue+"' and  ");
 			}else if(searchType.equalsIgnoreCase("emailId") && searchValue != null && !searchValue.isEmpty()){
-				sb.append(" model.emailId like '%"+searchValue+"%'  and ");
+				sb.append(" model.petitionWorkDetails.petitionMember.emailId like '%"+searchValue+"%'  and ");
 			}else if(searchType.equalsIgnoreCase("refCode") && searchValue != null && !searchValue.isEmpty()){
-				sb.append(" model.petitionMemberId =:searchValue   and ");
-			}else if(searchType.equalsIgnoreCase("designation") &&searchValue != null && !searchValue.isEmpty()){
-				sb.append(" petitionReffererCandidate.petitionDesignationId =:searchValue  and ");
+				sb.append(" model.petitionWorkDetails.petitionMember.refCode = '"+searchValue+"'   and ");
+			}else if(searchType.equalsIgnoreCase("designation") &&searchValue != null && !searchValue.isEmpty() && Long.valueOf(searchValue)>0L){
+				sb.append(" ( petitionReffererCandidate.petitionDesignationId =:searchValue OR model.petitionWorkDetails.petitionMember.petitionDesignationId =:searchValue) and ");
 			}
-			sb.append("  model.isDeleted ='N'  and  model.isExpired = 'N'  ");
+			sb.append("  model.petitionWorkDetails.petitionMember.isDeleted ='N'  and  model.petitionWorkDetails.petitionMember.isExpired = 'N'  ");
 			//sb.append(" and petitionReffererCandidate.isDeleted='N' ");
 			if(startDate != null && endDate != null){
-				sb.append(" and  date(model.insertedTime) between :startDate and :endDate "); 
+				sb.append(" and  date(model.petitionWorkDetails.petitionMember.insertedTime) between :startDate and :endDate "); 
 			}
 			
 		}else if(searchType.equalsIgnoreCase("department")){
-			sb.append(" select model.petitionWorkDetails.petitionMemberId,model.petitionWorkDetails.petitionMember.petitionMemberId," +
+			sb.append(" select model.petitionWorkDetails.petitionMemberId,model.petitionWorkDetails.petitionMember.refCode," +
 					" model.petitionWorkDetails.petitionMember.candidateName,model.petitionWorkDetails.petitionMember.mobileNo," +
 					" model.petitionWorkDetails.petitionMember.age,petitionDesignation.petitionDesignationId" +
 					",petitionDesignation.designationName,model.petitionWorkDetails.petitionMember.memberType,district.districtId,district.districtName," +
 					" constituency.constituencyId,constituency.name," +
 					" refdistrict.districtId,refdistrict.districtName," +
-					" refconstituency.constituencyId,refconstituency.name  from PetitionSubWorkLocationDetails model " +
+					" refconstituency.constituencyId,refconstituency.name, "+
+					" petitionDesignation1.designationName " +//16
+					" from PetitionSubWorkLocationDetails model " +
+					" left join model.petitionWorkDetails.petitionMember.petitionDesignation petitionDesignation1 " +
 					" left join model.petitionWorkDetails.petitionMember.locationAddress locationAddress " +
 					" left join model.locationAddress locationAddress " +
 					" left join locationAddress.state state " +
@@ -120,26 +127,29 @@ public class PetitionMemberDAO extends GenericDaoHibernate<PetitionMember, Long>
 			}
 			
 		}else if(searchType.equalsIgnoreCase("refLocation")){
-			sb.append(" select model.petitionMemberId,model.petitionMember.petitionMemberId," +
+			sb.append(" select model.petitionMemberId,model.petitionMember.refCode," +
 					" model.petitionMember.candidateName,model.petitionMember.mobileNo," +
 					" model.petitionMember.age,petitionDesignation.petitionDesignationId" +
 					",petitionDesignation.designationName,model.petitionMember.memberType,district.districtId,district.districtName," +
 					" constituency.constituencyId,constituency.name," +
 					" refdistrict.districtId,refdistrict.districtName," +
-					" refconstituency.constituencyId,refconstituency.name  from PetitionRefferer model " +
-					" left join model.petitionMember.locationAddress locationAddress " +
+					" refconstituency.constituencyId,refconstituency.name, " +
+					" petitionDesignation1.designationName " +
+					" from PetitionRefferer model , PetitionSubWorkLocationDetails model1 " +
+					" left join model.petitionMember.petitionDesignation petitionDesignation1 " +
+					" left join model1.locationAddress locationAddress " +
 					" left join locationAddress.state state " +
 					" left join locationAddress.district district " +
 					" left join locationAddress.constituency constituency " +
 					" left join locationAddress.tehsil tehsil " +
 					" left join locationAddress.localElectionBody localElectionBody " +
 					" left join locationAddress.panchayat panchayat " +
-					" left join model.petitionMember.petitionReffererCandidate petitionReffererCandidate " +
+					" left join model.petitionReffererCandidate petitionReffererCandidate " +
 					" left join petitionReffererCandidate.petitionDesignation petitionDesignation " +
 					" left join petitionReffererCandidate.locationAddress reflocationAddress1 " +
 					" left join reflocationAddress1.district refdistrict " +
 					" left join reflocationAddress1.constituency refconstituency ");
-			sb.append(" where ");
+			sb.append(" where model.petitionMemberId = model1.petitionWorkDetails.petitionMemberId and ");
 			sb.append("  model.petitionMember.isDeleted ='N'  and model.petitionMember.isExpired = 'N' " );
 			//sb.append(" and petitionReffererCandidate.isDeleted='N' ");		
 			if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValue != null && searchLevelValue.longValue()>0l){
@@ -167,14 +177,17 @@ public class PetitionMemberDAO extends GenericDaoHibernate<PetitionMember, Long>
 				sb.append(" and date(model.insertedTime) between :startDate and :endDate "); 
 			}
 		}else if(searchType.equalsIgnoreCase("workLocation")){
-			sb.append(" select model.petitionWorkDetails.petitionMemberId,model.petitionWorkDetails.petitionMember.petitionMemberId," +
+			sb.append(" select model.petitionWorkDetails.petitionMemberId,model.petitionWorkDetails.petitionMember.refCode," +
 					" model.petitionWorkDetails.petitionMember.candidateName,model.petitionWorkDetails.petitionMember.mobileNo," +
 					" model.petitionWorkDetails.petitionMember.age,petitionDesignation.petitionDesignationId" +
 					",petitionDesignation.designationName,model.petitionWorkDetails.petitionMember.memberType,district.districtId,district.districtName," +
 					" constituency.constituencyId,constituency.name," +
 					" refdistrict.districtId,refdistrict.districtName," +
-					" refconstituency.constituencyId,refconstituency.name  from PetitionSubWorkLocationDetails model " +
-					" left join model.petitionWorkDetails.petitionMember.locationAddress locationAddress " +
+					" refconstituency.constituencyId,refconstituency.name, " +
+					" petitionDesignation1.designationName " +
+					" from PetitionSubWorkLocationDetails model " +
+					" left join model.petitionWorkDetails.petitionMember.petitionDesignation petitionDesignation1 " +
+					" left join model.locationAddress locationAddress " +
 					" left join locationAddress.state state " +
 					" left join locationAddress.district district " +
 					" left join locationAddress.constituency constituency " +
@@ -242,9 +255,10 @@ public class PetitionMemberDAO extends GenericDaoHibernate<PetitionMember, Long>
 			}
 		
 		qry = getSession().createQuery(sb.toString());			
-		if(searchValue != null && !searchValue.isEmpty() && (searchType.equalsIgnoreCase("name") || searchType.equalsIgnoreCase("emailId") || searchType.equalsIgnoreCase("mobileNo"))){
+		if(searchValue != null && !searchValue.isEmpty() && (searchType.equalsIgnoreCase("name") || searchType.equalsIgnoreCase("emailId") 
+				 || searchType.equalsIgnoreCase("mobileNo")  || searchType.equalsIgnoreCase("refCode") )){
 			//qry.setParameter("searchValue", searchValue);
-		}else if(searchValue != null && !searchValue.isEmpty() && Long.valueOf(searchValue).longValue() >0l ){
+		}else if(searchValue != null && !searchValue.isEmpty()  && Long.valueOf(searchValue)>0L){
 			qry.setParameter("searchValue", Long.valueOf(searchValue));
 		}
 		if(startDate != null && endDate != null){
