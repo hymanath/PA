@@ -278,42 +278,43 @@ nav
 		margin-left: -16px;
 	}
 }
+.color-label
+	{
+		padding:4px;
+		height:15px;
+		width:15px;
+		display:inline-block;
+		border-radius:50%;
+		margin-right:5px;
+		position:relative;
+		top:3px;
+	}
+	.color-label-success
+	{
+		.color-label;
+		background-color:@green_color !important;
+	}
+	.color-label-danger
+	{
+		.color-label;
+		background-color:@red_color !important;
+	}
+	.color-label-default
+	{
+		.color-label;
+		background-color:#ff6600;
+	}
+	.color-label-gold
+	{
+		.color-label;
+		background-color:#f7b519;
+	}
 header
 {
 	section.navbar-section
 	{
 		padding:12px 10px;
-		.color-label
-		{
-			padding:4px;
-			height:15px;
-			width:15px;
-			display:inline-block;
-			border-radius:50%;
-			margin-right:5px;
-			position:relative;
-			top:3px;
-		}
-		.color-label-success
-		{
-			.color-label;
-			background-color:@green_color !important;
-		}
-		.color-label-danger
-		{
-			.color-label;
-			background-color:@red_color !important;
-		}
-		.color-label-default
-		{
-			.color-label;
-			background-color:#ff6600;
-		}
-		.color-label-gold
-		{
-			.color-label;
-			background-color:#f7b519;
-		}
+		
 		.navbar_section_whitebk{
 			background-color:@white_color;
 			padding:10px;
