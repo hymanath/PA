@@ -137,7 +137,7 @@ function getpartyWiseChannelCountsPraja(result){
 	var str='';
 	var totalCount=0;
 	var newsBulletinCount=0;
-		str+='<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/YSRC.png" alt="tdp icon" class="newsIcon"/>YSRC Party</span></h4>';
+		str+='<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>TDP Party</span></h4>';
 		
 		str+='<div class="table-responsive m_XsTop10">';
 		str+='<table class="table tableEMN m_top10">';
@@ -274,7 +274,7 @@ function getpartyWiseChannelCountsPraja(result){
 function mainNewsBlockPraja(result){
 		var str='';
 		str+='';
-		str+='<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/YSRC.png" alt="tdp icon" class="newsIcon"/>YSRC Party</span></h4>';
+		str+='<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>TDP Party</span></h4>';
 		str+='<div class="row">';
 			str+='<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">';
 				str+='<table class="table table-condensed tableNews bg_ED">';
