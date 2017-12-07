@@ -1700,50 +1700,6 @@
 		});
 	}
 	
-	
-	function getWaterSourceDeatils2(locationType,divId,filterType,filterValue,districtValue,type){//araV
-		
-		if(type == "graph"){
-			$("#waterSources").html(spinner);
-		}else{
-			for(var k in divId){
-				$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
-			}
-		}
-		
-		var json = {
-			year:"2017",
-			locationType:locationType,
-			fromDateStr:glStartDate,
-			toDateStr:glEndDate,
-			filterType:filterType,
-			filterValue:filterValue,
-			districtValue:districtValue
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getWaterSourceDeatils2',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(ajaxresp){
-				if(ajaxresp !=null && ajaxresp.length>0){
-					if(type == "graph"){
-						buildWaterSourceStateLevelGraphView(ajaxresp);
-					}
-					buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations');
-				}else{
-					
-					for(var k in divId){
-						$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
-					}
-					
-				}
-		});
-	}
 	$(document).on("click",".schemsClickView",function(){
 		
 		var status = $(this).attr("attr_status");
@@ -2064,7 +2020,7 @@ function builOverViewBlock(result,divId){
 	}
 }
 
-function getExceededTargetWorksDetails(){
+/* function getExceededTargetWorksDetails(){
 	$("#ExceededTargetDetails,#ExceededTargetDetailsTotal").html(spinner);
 	var json = {
 		
@@ -2082,7 +2038,7 @@ function getExceededTargetWorksDetails(){
 		console.log(result);
 		//return buildGraph(result);
 	});
-}
+} */
 	function buildGraph(result)
 	{
 		var colorsArr=['#EE6CA9','#C61379'];
@@ -2103,19 +2059,19 @@ function getExceededTargetWorksDetails(){
 		
 		for(var i in result[0].subList)
 		{
-			//cateArr.push(result.subList[i].name)
-			//pwsArr.push(result.subList[i].count)
-			//cpwsArr.push(result.completedList[i].cpwsCount)
-			//totalWorksPWS = totalWorksPWS + result.subList[i].count;
-			//totalWorksCPWS = totalWorksCPWS + result.subList[i].count;
-			//totalAmountPWS = totalAmountPWS + result.completedList[i].pwsAmount;
-			//totalAmountCPWS = totalAmountCPWS + result.completedList[i].cpwsAmount;
+			/* cateArr.push(result[0].subList[i].assetType)
+			pwsArr.push(result.subList[i].count)
+			cpwsArr.push(result.completedList[i].cpwsCount) 
+			totalWorksPWS = totalWorksPWS + result.subList[i].count;
+			totalWorksCPWS = totalWorksCPWS + result.subList[i].count;
+			totalAmountPWS = totalAmountPWS + result.completedList[i].pwsAmount;
+			totalAmountCPWS = totalAmountCPWS + result.completedList[i].cpwsAmount;*/
 			
 			if(result[0].subList[i].assetType == 'PWS'){
-				//totalWorksPWS = totalWorksPWS + result[0].subList[i].count;
+				totalWorksPWS = totalWorksPWS + result[0].subList[i].count;
 				
 			}else if(result[0].subList[i].assetType == 'CPWS'){
-				//totalWorksCPWS = totalWorksCPWS + result[0].subList[i].count;
+				totalWorksCPWS = totalWorksCPWS + result[0].subList[i].count;
 				
 			}
 			
@@ -2128,6 +2084,48 @@ function getExceededTargetWorksDetails(){
 				}
 			}
 		}
+		$("#ExceededTargetDetailsTotal").highcharts({
+			chart: {
+				type: 'column'
+				
+			},
+			title: {
+				text: null
+			},
+			xAxis: {
+				categories:["Total"]
+			},
+			yAxis: {
+				allowDecimals: false,
+				min: 0,
+				title: {
+					text: null
+				}
+			},
+			tooltip: {
+				formatter: function () {
+					return '<b>' + this.x + '</b><br/>' +
+						this.series.name + ': ' + this.y + '<br/>'
+						//+'Total: ' + this.point.stackTotal;
+				}
+			},
+			plotOptions: {
+				column: {
+					stacking: 'normal'
+				}
+			},
+			series: [{
+				name: 'PWS',
+				data: [totalWorksPWS],
+				stack: 'PWS',
+				color:'#EE6CA9'
+			}, {
+				name: 'CPWS',
+				data: [totalWorksCPWS],
+				stack: 'CPWS',
+				color:'#C61379'
+			}]
+		});
 		$("#ExceededTargetDetails").highcharts({
 			chart: {
 				type: 'column'
