@@ -422,6 +422,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					memeberVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[12]));
 					memeberVO.setMemberShipCardId(commonMethodsUtilService.getStringValueForObject(param[13]));
 					memeberVO.setVoterId(commonMethodsUtilService.getLongValueForObject(param[14]));
+					memeberVO.setImageUrl(param[15] !=null ?commonMethodsUtilService.getStringValueForObject(param[15]):null);
 					if(commonMethodsUtilService.getStringValueForObject(param[4]).equalsIgnoreCase("Y") && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("F")){
 						memeberVO.setStatus("Approved");
 						committeeVO.setAddedMemberCount(committeeVO.getAddedMemberCount()+1);
@@ -745,7 +746,8 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 						jbCommitteeMember.setPartyId(janmabhoomiCommitteeMemberVO.getPartyId());
 					jbCommitteeMember.setStartDate(dateUtilService.getCurrentDateAndTime());
 					//jbCommitteeMember.setEndDate(dateUtilService.getCurrentDateAndTime());
-					jbCommitteeMember.setIsActive("Y");
+					jbCommitteeMember.setIsActive("Y");;
+					jbCommitteeMember.setImagePath(janmabhoomiCommitteeMemberVO.getImageUrl() !=null?janmabhoomiCommitteeMemberVO.getImageUrl():null);
 					jbCommitteeMember.setJbCommitteeEnrollmentId(janmabhoomiCommitteeMemberVO.getEnrollmentYrId());
 					jbCommitteeMember.setInsertedUserId(janmabhoomiCommitteeMemberVO.getUserId());
 					jbCommitteeMember.setUpdatedUserId(janmabhoomiCommitteeMemberVO.getUserId());

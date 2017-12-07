@@ -24,7 +24,7 @@ public class JbCommitteeMemberDAO extends GenericDaoHibernate<JbCommitteeMember,
 			sb.append("SELECT model.jbCommitteeMemberId,model.jbCommitteeRole.jbCommitteeRoleId , ");
 			sb.append("model.memberName,model.mobileNo, model.isActive,model.status, ");
 			sb.append(" voter.voterIDCardNo,casteCategory.casteCategoryId,casteCategory.categoryName,casteState.casteStateId," +
-					" caste.casteName,party.partyId,party.shortName,tdpCadre.memberShipNo,voter.voterId ");
+					" caste.casteName,party.partyId,party.shortName,tdpCadre.memberShipNo,voter.voterId,model.imagePath ");
 			
 			sb.append("from JbCommitteeMember model " +
 					" left join model.tdpCadre tdpCadre " +
