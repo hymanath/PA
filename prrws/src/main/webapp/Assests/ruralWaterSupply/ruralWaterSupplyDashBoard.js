@@ -519,8 +519,8 @@
 					
 					groundArr.push(result.groundWaterSafeMLD)
 					surfaceArr.push(result.groundWaterUnSafeMLD)
-					surfaceArr.push(result.surfaceWaterSafeMLD)
-					groundArr.push(result.surfaceWaterUnSafeMLD)
+					surfaceArr.push(result.surfaceWaterUnSafeMLD)
+					groundArr.push(result.surfaceWaterSafeMLD)
 				
 				//$("#levelSupplyTtlValues").html("TOTAL:"+totalCount)
 				$("#levelOfSupply1").highcharts({
