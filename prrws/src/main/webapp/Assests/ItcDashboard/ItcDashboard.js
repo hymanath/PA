@@ -1502,7 +1502,7 @@ function getCohortDetailsByCohortId(id){
 }
 
 var eOfcDeptResult = '';
-function getEOfcDepartWiseOverviewDetails(type){
+/* function getEOfcDepartWiseOverviewDetails(type){
 	if(type == 'onload')
 	{
 		$("#itcDeptWiseCount").html(spinner);
@@ -1515,6 +1515,41 @@ function getEOfcDepartWiseOverviewDetails(type){
 	$.ajax({                
 		type:'POST',    
 		url: 'getEOfcDepartWiseOverviewDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		eOfcDeptResult = result;
+		//getEofficeDesignationWiseDetails()
+		if(type == 'onload')
+		{
+			for(var i in result){
+				if(result[i].departmentName != null && result[i].departmentName == "ITE & C")
+					$("#itcDeptWiseCount").html(result[i].totalCount+'/<small style="color:#fff;font-size:14px;top:0px;">'+result[i].created+'</small>');
+			}
+		}else{
+			buildEOfcDepartWiseOverviewDetails(result);
+		}
+	});		
+} */
+//getEOfcDepartOverviewDetails
+function getEOfcDepartWiseOverviewDetails(type){
+	if(type == 'onload')
+	{
+		$("#itcDeptWiseCount").html(spinner);
+	}else{
+		$("#eOfficeDeparmentsOverViewBlock").html(spinner);
+	}
+	var json = {
+		fromDate:"2017-11-01",	
+		toDate:"2017-12-31"	
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getEOfcDepartOverviewDetails',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -2662,11 +2697,11 @@ function buildEOfcDepartWiseOverviewDetails(result){
 	str+='</div>';
 	str+='<div class="col-sm-12">';	
 			str+='<ul class="list-inline pull-right">';	
-				str+='<li><span class="roundCircleITC" style="background-color:#00af50"></span> 80% and above</li>';	
-				str+='<li><span class="roundCircleITC" style="background-color:#ffba00"></span> 50% - 79%</li>';	
-				str+='<li><span class="roundCircleITC" style="background-color:#ff0000"></span> 0% - 49%&nbsp;&nbsp;&nbsp;</li>';	
+				str+='<li><span class="roundCircleITC" style="background-color:#00af50"></span> 0% - 10%</li>';	
+				str+='<li><span class="roundCircleITC" style="background-color:#ffba00"></span> 10% - 20%</li>';	
+				str+='<li><span class="roundCircleITC" style="background-color:#ff0000"></span> 20% and above&nbsp;&nbsp;&nbsp;</li>';	
 			str+='</ul>  ';	
-	str+='</div>';
+	str+='</div>'; 
 	for(var i in result){
 		if(result[i].departmentName == "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
 			str+='<div class="col-sm-12 m_top20">';	
@@ -2677,6 +2712,7 @@ function buildEOfcDepartWiseOverviewDetails(result){
 								str+='<th rowspan="2" style="vertical-align: middle; text-align: center;cursor:pointer;min-width:409px;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'" style="color:#A349A4">SECRETARIAT DEPARTMENT</a></th>';
 								
 								str+='<th style="background-color:#B2DFDB">Total</th>';
+								str+='<th style="background-color:#FBACAC">Action</th>';
 								str+='<th style="background-color:#FBACAC">Total Pendency</th>';
 								str+='<th style="background-color:#FBACAC">%</th>';
 								str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
@@ -2687,13 +2723,14 @@ function buildEOfcDepartWiseOverviewDetails(result){
 							str+='</tr>';
 							str+='<tr>';
 								str+='<td>'+result[i].created+'</td>';
+								str+='<td>'+result[i].actionFiles+'</td>';
 								str+='<td>'+result[i].totalCount+'</td>';
-								if(result[i].percentage < 50){
-									str+='<td style="background-color:#FF0000;color:#fff">'+result[i].percentage+'</td>';
-								}else if(result[i].percentage >= 50 && result[i].percentage < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+result[i].percentage+'</td>';
-								}else if(result[i].percentage >= 80){
+								if(result[i].percentage < 10){
 									str+='<td style="background-color:#00AF50;color:#fff">'+result[i].percentage+'</td>';
+								}else if(result[i].percentage >= 10 && result[i].percentage < 20){
+									str+='<td style="background-color:#FFBA00;color:#fff">'+result[i].percentage+'</td>';
+								}else if(result[i].percentage >= 20){
+									str+='<td style="background-color:#ff0000;color:#fff">'+result[i].percentage+'</td>';
 								}
 								str+='<td>'+result[i].zeroToSeven+'</td>';
 								str+='<td >'+result[i].eightToFifteen+'</td>';
@@ -2710,10 +2747,11 @@ function buildEOfcDepartWiseOverviewDetails(result){
 	
 	str+='<div class="col-sm-12 m_top20">';	
 		str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered table_ITC">';
+			str+='<table class="table table-bordered table_ITC" id="dataTableITCDepartment">';
 					str+='<tr>';
-						str+='<th style="color:#A349A4;text-align:center">HODS</th>';
+						str+='<th style="color:#A349A4;text-align:center">Departments</th>';
 						str+='<th style="background-color:#B2DFDB">Total</th>';
+						str+='<th style="background-color:#FBACAC">Action</th>';
 						str+='<th style="background-color:#FBACAC">Total Pendency</th>';
 						str+='<th style="background-color:#FBACAC">%</th>';
 						str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
@@ -2727,13 +2765,14 @@ function buildEOfcDepartWiseOverviewDetails(result){
 							str+='<tr>';
 								str+='<td style="cursor:pointer;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'">'+result[i].departmentName+'</a></td>';
 								str+='<td >'+result[i].created+'</td>';
+								str+='<td >'+result[i].actionFiles+'</td>';
 								str+='<td >'+result[i].totalCount+'</td>';
-								if(result[i].percentage < 50){
-									str+='<td style="background-color:#FF0000;color:#fff">'+result[i].percentage+'</td>';
-								}else if(result[i].percentage >= 50 && result[i].percentage < 80){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+result[i].percentage+'</td>';
-								}else if(result[i].percentage >= 80){
+								if(result[i].percentage < 10){
 									str+='<td style="background-color:#00AF50;color:#fff">'+result[i].percentage+'</td>';
+								}else if(result[i].percentage >= 10 && result[i].percentage < 20){
+									str+='<td style="background-color:#FFBA00;color:#fff">'+result[i].percentage+'</td>';
+								}else if(result[i].percentage >= 20){
+									str+='<td style="background-color:#ff0000;color:#fff">'+result[i].percentage+'</td>';
 								}
 								str+='<td >'+result[i].zeroToSeven+'</td>';
 								str+='<td >'+result[i].eightToFifteen+'</td>';
@@ -2748,6 +2787,7 @@ function buildEOfcDepartWiseOverviewDetails(result){
 							str+='<tr>';
 								str+='<td style="text-align: right;" class="font_weight">GRAND TOTAL</td>';
 								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].created+'</td>';
+								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].actionFiles+'</td>';
 								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].totalCount+'</td>';
 								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].percentage+'</td>';
 								str+='<td class="font_weight" style="background-color:#e7e7e7;">'+result[i].zeroToSeven+'</td>';
@@ -2761,6 +2801,55 @@ function buildEOfcDepartWiseOverviewDetails(result){
 			str+='</table>';
 		str+='</div>';
 	str+='</div>';
+	
+	str+='<div class="col-sm-12 m_top20">';	
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered">';
+				str+='<thead>';
+					str+='<tr>';
+						//str+='<th style="color:#A349A4;text-align:center">HODS</th>';
+						str+='<th>HODS</th>';
+						str+='<th>Department</th>';
+						str+='<th style="background-color:#B2DFDB">Total</th>';
+						str+='<th style="background-color:#FBACAC">Action</th>';
+						str+='<th style="background-color:#FBACAC">Total Pendency</th>';
+						str+='<th style="background-color:#FBACAC">%</th>';
+						str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
+						str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
+						str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
+						str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
+						str+='<th style="background-color:#FDCECE"> > 60 days</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result[0].subList){
+						if(result[0].subList[i] != null){
+							str+='<tr>';
+								str+='<td>'+result[0].subList[i].postName+'</td>';
+								str+='<td>'+result[0].subList[i].departmentName+'</a></td>';
+								str+='<td>'+result[0].subList[i].created+'</td>';
+								str+='<td>'+result[0].subList[i].actionFiles+'</td>';
+								str+='<td>'+result[0].subList[i].totalCount+'</td>';
+								if(result[0].subList[i].percentage < 10){
+									str+='<td style="background-color:#00AF50;color:#fff">'+result[0].subList[i].percentage+'</td>';
+								}else if(result[0].subList[i].percentage >= 10 && result[0].subList[i].percentage < 20){
+									str+='<td style="background-color:#FFBA00;color:#fff">'+result[0].subList[i].percentage+'</td>';
+								}else if(result[0].subList[i].percentage >= 20){
+									str+='<td style="background-color:#FF0000;color:#fff">'+result[0].subList[i].percentage+'</td>';
+								}
+								str+='<td >'+result[0].subList[i].zeroToSeven+'</td>';
+								str+='<td >'+result[0].subList[i].eightToFifteen+'</td>';
+								str+='<td >'+result[0].subList[i].sixteenToThirty+'</td>';
+								str+='<td >'+result[0].subList[i].thirtyoneToSixty+'</td>';
+								str+='<td >'+result[0].subList[i].aboveSixty+'</td>';
+							str+='</tr>';
+						}
+					}
+					str+='<tbody>';
+			str+='</table>';
+		str+='</div>';
+	str+='</div>';
+	
 $("#eOfficeDeparmentsOverViewBlock").html(str);
 }
 $(document).on("click",".departmentDetailsCls",function(){	
@@ -2768,16 +2857,18 @@ $(document).on("click",".departmentDetailsCls",function(){
 	var departmentName =  $(this).attr("attr_department_name")
 	$("#departmentModalId").modal("show");
 	$("#headingTitle").html("<b>"+departmentName+ "  DETAILS</b>")
-	getEofficeDesginationDetailsByDepartment(departmentId,departmentName);
+	getEofficeDesginationDetailsByDepartment(departmentId);
 });
-function getEofficeDesginationDetailsByDepartment(departmentId,departmentName){
+function getEofficeDesginationDetailsByDepartment(departmentId){
 	$("#departmentDetailsDivId").html(spinner);
 	var json = {
-		departmentId:departmentId,		
+		departmentId:departmentId,	
+		fromDate:"2017-11-01",	
+		toDate:"2017-12-31"		
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getEofficeDesginationDetailsByDepartment',
+		url: 'getEofficeDesginationWiseDetailsFrDepartment',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -2799,7 +2890,9 @@ function buildEofficeDesginationDetailsByDepartment(result){
 						str+='<thead>';
 						str+='<tr>';
 							str+='<th class="text-center">POST NAME</th>';
+							str+='<th class="text-center">EMPLOYEE</th>';
 							str+='<th style="background-color:#B2DFDB">Total</th>';
+							str+='<th style="background-color:#FBACAC">Action</th>';
 							str+='<th style="background-color:#FBACAC">Total Pendency</th>';
 							str+='<th style="background-color:#FBACAC">%</th>';
 							str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
@@ -2812,10 +2905,19 @@ function buildEofficeDesginationDetailsByDepartment(result){
 						str+='<tbody>';
 						for(var i in result){
 							str+='<tr>';
-								str+='<td>'+result[i].designation+' ('+result[i].ownerName+')</td>';
+								str+='<td>'+result[i].designation+'</td>';
+								str+='<td>'+result[i].employeeName+'</td>';
 								str+='<td>'+result[i].created+'</td>';
+								str+='<td>'+result[i].actionFiles+'</td>';
 								str+='<td>'+result[i].totalCount+'</td>';
-								str+='<td>'+result[i].percentage+'</td>';
+								if(result[i].percentage < 10){
+									str+='<td style="background-color:#00AF50;color:#fff">'+result[i].percentage+'</td>';
+								}else if(result[i].percentage>= 10 && result[i].percentage < 20){
+									str+='<td style="background-color:#FFBA00;color:#fff">'+result[i].percentage+'</td>';
+								}else if(result[i].percentage >= 20){
+									str+='<td style="background-color:#FF0000;color:#fff">'+result[i].percentage+'</td>';
+								}
+								//str+='<td>'+result[i].percentage+'</td>';
 								str+='<td>'+result[i].zeroToSeven+'</td>';
 								str+='<td >'+result[i].eightToFifteen+'</td>';
 								str+='<td>'+result[i].sixteenToThirty+'</td>';
@@ -3083,19 +3185,19 @@ function buildMeesevaSLACatWiseAbstarctDetails(result,divId,blockId){
 				str+='<div class="white_block_ITC border_right">';
 					str+='<h4 class="panel-title f_18 font_weight">CATEGORY - A</h4>';
 						str+='<div class="row border_top m_top10">';
-							str+='<div class="col-sm-3 border_right m_top10">';
+							str+='<div class="col-sm-4 border_right m_top10">';
 								str+='<h4 class="font_weight f_18">Total<br/>Departments</h4>';
 								str+='<h4 class="font_weight m_top30">'+result.categoryACount+'</h4>';
 							str+='</div>';
-							str+='<div class="col-sm-3 border_right m_top10">';
+							str+='<div class="col-sm-4 border_right m_top10">';
 								str+='<h4 class="font_weight f_18">Total<br/>Services</h4>';
 								str+='<h4 class="font_weight m_top30">'+result.catgryAServicesCount+'</h4>';
 							str+='</div>';
-							str+='<div class="col-sm-6 m_top10">';
-								str+='<h4 class="font_weight f_18 text-center">Total Transactions</h4>';
-								str+='<h4 class="font_weight text-center">'+result.catgryATransCount+'</h4>';
-									str+='<div class="border_top m_top5">';
-										str+='<div class="row m_top5">';
+							str+='<div class="col-sm-4 m_top10">';
+								str+='<h4 class="font_weight f_18">Total<br/>Transactions</h4>';
+								str+='<h4 class="font_weight m_top30">'+result.catgryATransCount+'</h4>';
+									//str+='<div class="border_top m_top5">';
+										/* str+='<div class="row m_top5">';
 											str+='<div class="col-sm-6">';
 												str+='<h4 class="font_weight f_18">With In SLA</h4>';
 												str+='<h4 class="font_weight m_top5">'+result.catgryAWithInSLACount+'</h4>';
@@ -3104,8 +3206,8 @@ function buildMeesevaSLACatWiseAbstarctDetails(result,divId,blockId){
 												str+='<h4 class="font_weight f_18">Beyond SLA</h4>';
 												str+='<h4 class="font_weight m_top5">'+result.catgryABeyondSLACount+'</h4>';
 											str+='</div>';
-										str+='</div>';
-							str+='</div>';
+										str+='</div>'; */
+							//str+='</div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -3119,22 +3221,26 @@ function buildMeesevaSLACatWiseAbstarctDetails(result,divId,blockId){
 								str+='<h4 class="font_weight f_18">Total<br/>Departments</h4>';
 								str+='<h4 class="font_weight m_top30">'+result.categoryBCount+'</h4>';
 							str+='</div>';
-							str+='<div class="col-sm-3 border_right m_top10">';
+							str+='<div class="col-sm-2 border_right m_top10">';
 								str+='<h4 class="font_weight f_18">Total<br/>Services</h4>';
 								str+='<h4 class="font_weight m_top30">'+result.catgryBServicesCount+'</h4>';
 							str+='</div>';
-							str+='<div class="col-sm-6 m_top10">';
+							str+='<div class="col-sm-7 m_top10">';
 								str+='<h4 class="font_weight f_18 text-center">Total Transactions</h4>';
 								str+='<h4 class="font_weight text-center">'+result.catgryBTransCount+'</h4>';
 									str+='<div class="m_top5">';
 									str+='<div class="border_top">';
-										str+='<div class="col-sm-6">';
-											str+='<h4 class="font_weight f_18  m_top5">With In SLA</h4>';
-											str+='<h4 class="font_weight m_top5">'+result.catgryBWithInSLACount+'</h4>';
+										str+='<div class="col-sm-4">';
+											str+='<h5 class="font_weight m_top5">Total SLA&apos;S</h5>';
+											str+='<h5 class="font_weight m_top5">'+result.catBTotalSlaCunt+'</h5>';
 										str+='</div>';
-										str+='<div class="col-sm-6">';
-											str+='<h4 class="font_weight f_18  m_top5">Beyond SLA</h4>';
-											str+='<h4 class="font_weight m_top5">'+result.catgryBBeyondSLACount+'</h4>';
+										str+='<div class="col-sm-4">';
+											str+='<h5 class="font_weight  m_top5">With&nbsp;In&nbsp;SLA</h5>';
+											str+='<h5 class="font_weight m_top5">'+result.catgryBWithInSLACount+'<span class="meesavaKpiPerc">('+result.withInSLAPerc+'&nbsp;%)</span></h4>';
+										str+='</div>';
+										str+='<div class="col-sm-4">';
+											str+='<h5 class="font_weight   m_top5">Beyond&nbsp;SLA</h5>';
+											str+='<h5 class="font_weight m_top5">'+result.catgryBBeyondSLACount+'<span class="meesavaKpiPerc">('+result.beyondSLAPerc+'&nbsp;%)</span></h5>';
 										str+='</div>';
 									str+='</div>';
 							str+='</div>';
@@ -3199,22 +3305,34 @@ function buildMeesevaSLADepartmentDetails(result,divId,blockId){
 							str+='<thead>';
 								str+='<tr>';
 									str+='<th rowspan="2">Department</th>';
-									str+='<th colspan="4" class="text-center" style="border-left:1px solid #ccc;">Category - A</th>';
-									str+='<th colspan="4" class="text-center" style="border-left:1px solid #ccc;">Category - B</th>';
+									str+='<th colspan="2" class="text-center" style="border-left:1px solid #ccc;">Category - A</th>';
+									str+='<th colspan="7" class="text-center" style="border-left:1px solid #ccc;">Category - B</th>';
 								str+='</tr>';
 								str+='<tr>';
 									str+='<th style="background-color: #FDF1F1 !important;">Services</th>';
 									str+='<th>Transactions</th>';
-									str+='<th>With in SLA</th>';
-									str+='<th>Beyond SLA</th>';
+									//str+='<th>With in SLA</th>';
+									//str+='<th>Beyond SLA</th>';
 									str+='<th style="border-left:1px solid #ccc;">Services</th>';
+									str+='<th>Total SLA Transactions</th>';
 									str+='<th>Transactions</th>';
 									str+='<th>With in SLA</th>';
+									str+='<th>%</th>';
 									str+='<th>Beyond SLA</th>';
+									str+='<th>%</th>';
 								str+='</tr>';
 							str+='</thead>';
 							str+='<tbody>';
 								for(var i in result){
+									var catBWithSLAValue = result[i].catgryBWithInSLACount;
+									var catBBeyondSLAValue = result[i].catgryBBeyondSLACount;
+									var catBTotalSLATrans = catBWithSLAValue+catBBeyondSLAValue;
+									var catBWithSLAPerc = "0.00";
+									var catBBeyondSLAPerc = "0.00";
+									if(catBWithSLAValue > 0 && catBTotalSLATrans > 0)
+										catBWithSLAPerc = ((catBWithSLAValue*100)/catBTotalSLATrans).toFixed(2);
+									if(catBBeyondSLAValue > 0 && catBTotalSLATrans > 0)
+										catBBeyondSLAPerc = ((catBBeyondSLAValue*100)/catBTotalSLATrans).toFixed(2);
 									str+='<tr>';
 										str+='<td style="border-right:1px solid #ccc">'+result[i].name+'</td>';
 										if(result[i].catgryAServicesCount !=null && result[i].catgryAServicesCount>0){
@@ -3229,7 +3347,7 @@ function buildMeesevaSLADepartmentDetails(result,divId,blockId){
 											str+='<td>-</td>';
 										}
 										
-										if(result[i].catgryAWithInSLACount !=null && result[i].catgryAWithInSLACount>0){
+										/* if(result[i].catgryAWithInSLACount !=null && result[i].catgryAWithInSLACount>0){
 											str+='<td>'+result[i].catgryAWithInSLACount+'</td>';
 										}else{
 											str+='<td>-</td>';
@@ -3239,13 +3357,14 @@ function buildMeesevaSLADepartmentDetails(result,divId,blockId){
 											str+='<td>'+result[i].catgryABeyondSLACount+'</td>';
 										}else{
 											str+='<td>-</td>';
-										}
+										} */
 										
 										if(result[i].catgryBServicesCount !=null && result[i].catgryBServicesCount>0){
 											str+='<td>'+result[i].catgryBServicesCount+'</td>';
 										}else{
 											str+='<td>-</td>';
 										}
+										str+='<td>'+catBTotalSLATrans+'</td>';
 										if(result[i].catgryBTransCount !=null && result[i].catgryBTransCount>0){
 											str+='<td>'+result[i].catgryBTransCount+'</td>';
 										}else{
@@ -3256,12 +3375,13 @@ function buildMeesevaSLADepartmentDetails(result,divId,blockId){
 										}else{
 											str+='<td>-</td>';
 										}
+										str+='<td>'+catBWithSLAPerc+'</td>';
 										if(result[i].catgryBBeyondSLACount !=null && result[i].catgryBBeyondSLACount>0){
 											str+='<td>'+result[i].catgryBBeyondSLACount+'</td>';
 										}else{
 											str+='<td>-</td>';
 										}
-										
+										str+='<td>'+catBBeyondSLAPerc+'</td>';
 									str+='</tr>';
 								}
 							str+='<tbody>';
@@ -3454,13 +3574,11 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 	str+='<div class="row">';
 		str+='<div class="col-sm-6  m_top10">';
 			str+='<div class="white_block_ITC">';
-				str+='<h4 class="text-center"><b style="font-size: 20px !important;">Online Services</b></h4>';
 				str+='<div id="onlineSerOvrCuntCls"></div>';
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="col-sm-6  m_top10">';
 			str+='<div class="white_block_ITC">';
-					str+='<h4 class="text-center"><b style="font-size: 20px !important;">Mobile App Services</b></h4>';
 					str+='<div id="mobileAppSerOvrCuntCls"></div>';
 			str+='</div>';
 		str+='</div>';
@@ -3510,17 +3628,17 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 		str+='</div>';
 	str+='</div>';
 	
-	str+='<div class="row m_top10">';
+	str+='<div class="row m_top10 OnlinServiceKPIOpen">';
 		str+='<div class="col-sm-6">';
 			str+='<div class="panel-group" id="accordionOnlinServiceKPI" role="tablist" aria-multiselectable="true">';
 				str+='<div class="panel panel-default panel-black">';
 						str+='<div class="panel-heading" role="tab" id="headingOnlinServiceKPI">';
-							str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionOnlinServiceKPI" href="#collapseOnlinServiceKPI" aria-expanded="true" aria-controls="collapseOnlinServiceKPI">';
+							str+='<a role="button" class="panelCollapseIcon OnlinServiceKPICollapsed collapsed"  data-toggle="collapse" data-parent="#accordionOnlinServiceKPI" href="#collapseOnlinServiceKPI" aria-expanded="true" aria-controls="collapseOnlinServiceKPI">';
 								str+='<h4 class="panel-title">ONLINE SERVICES</h4>';
 							str+='</a>';
 						str+='</div>';
-					str+='<div id="collapseOnlinServiceKPI" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOnlinServiceKPI">';
-						str+='<div class="panel-body">';
+					str+='<div id="collapseOnlinServiceKPI" class="panel-collapse collapse OnlinServiceKPICollapsedIN" role="tabpanel" aria-labelledby="headingOnlinServiceKPI">';
+						str+='<div class="panel-body borderColorCSSBlack">';
 							str+='<div id="onlineServicesDiv"></div>';
 						str+='</div>';
 					str+='</div>';
@@ -3532,12 +3650,12 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 			str+='<div class="panel-group" id="accordionMobileAppServiceKPI" role="tablist" aria-multiselectable="true">';
 				str+='<div class="panel panel-default panel-black">';
 						str+='<div class="panel-heading" role="tab" id="headingMobileAppServiceKPI">';
-							str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionMobileAppServiceKPI" href="#collapseMobileAppServiceKPI" aria-expanded="true" aria-controls="collapseMobileAppServiceKPI">';
+							str+='<a role="button" class="panelCollapseIcon mobileKPICollapsed collapsed"  data-toggle="collapse" data-parent="#accordionMobileAppServiceKPI" href="#collapseMobileAppServiceKPI" aria-expanded="true" aria-controls="collapseMobileAppServiceKPI">';
 								str+='<h4 class="panel-title">MOBILE APP SERVICES</h4>';
 							str+='</a>';
 						str+='</div>';
-					str+='<div id="collapseMobileAppServiceKPI" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingMobileAppServiceKPI">';
-						str+='<div class="panel-body">';
+					str+='<div id="collapseMobileAppServiceKPI" class="panel-collapse collapse mobileKPICollapsedIN" role="tabpanel" aria-labelledby="headingMobileAppServiceKPI">';
+						str+='<div class="panel-body borderColorCSSBlack">';
 							str+='<div id="mobileAppServicesDiv"></div>';
 						str+='</div>';
 					str+='</div>';
@@ -3953,29 +4071,30 @@ function getMeesevaKPIOnlineServiceOverviewCount(){
 }
 function buildMeesevaKPIOnlineServiceOverviewCount(result){
 	var str='';
+		str+='<h4 class="text-center"><b style="font-size: 20px !important;">Online Services - '+result.onLineServicesCount+'</b></h4>';
 		str+='<div class="row m_top10">';
 			str+='<div class="col-sm-3 m_top10">';
 				str+='<div style="border-right:1px solid #000;text-align:center;">';
 					str+='<h4><b>2014</b></h4>';
-					str+='<h5 class="m_top10">'+result.onLineServices2014+'</h5>';
+					str+='<h5 class="m_top10 onlinePanelBlock">'+result.onLineServices2014+'</h5>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="col-sm-3 m_top10">';
 				str+='<div style="border-right:1px solid #000;text-align:center;">';
 					str+='<h4><b>2015</b></h4>';
-					str+='<h5 class="m_top10">'+result.onLineServices2015+'</h5>';
+					str+='<h5 class="m_top10 onlinePanelBlock">'+result.onLineServices2015+'</h5>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="col-sm-3 m_top10">';
 				str+='<div style="border-right:1px solid #000;text-align:center;">';
 					str+='<h4><b>2016</b></h4>';
-					str+='<h5 class="m_top10">'+result.onLineServices2016+'</h5>';
+					str+='<h5 class="m_top10 onlinePanelBlock">'+result.onLineServices2016+'</h5>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="col-sm-3 m_top10">';
 				str+='<div style="text-align:center;">';
 					str+='<h4><b>2017</b></h4>';
-					str+='<h5 class="m_top10">'+result.onLineServices2017+'</h5>';
+					str+='<h5 class="m_top10 onlinePanelBlock">'+result.onLineServices2017+'</h5>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -4005,31 +4124,62 @@ function getMeesevaKPIMobileAppServiceOverviewCount(){
 }
 function buildMeesevaKPIMobileAppServiceOverviewCount(result){
 	var str='';
+		str+='<h4 class="text-center"><b style="font-size: 20px !important;">Mobile App Services - '+result.totalMobileAppServices+'</b></h4>';
 		str+='<div class="row m_top10">';
 			str+='<div class="col-sm-3 m_top10">';
 				str+='<div style="border-right:1px solid #000;text-align:center;">';
 					str+='<h4><b>2014</b></h4>';
-					str+='<h5 class="m_top10">'+result.mobileAppServices2014+'</h5>';
+					str+='<h5 class="m_top10 mobilePanelBlock">'+result.mobileAppServices2014+'</h5>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="col-sm-3 m_top10">';
 				str+='<div style="border-right:1px solid #000;text-align:center;">';
 					str+='<h4><b>2015</b></h4>';
-					str+='<h5 class="m_top10">'+result.mobileAppServices2015+'</h5>';
+					str+='<h5 class="m_top10 mobilePanelBlock">'+result.mobileAppServices2015+'</h5>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="col-sm-3 m_top10">';
 				str+='<div style="border-right:1px solid #000;text-align:center;">';
 					str+='<h4><b>2016</b></h4>';
-					str+='<h5 class="m_top10">'+result.mobileAppServices2016+'</h5>';
+					str+='<h5 class="m_top10 mobilePanelBlock">'+result.mobileAppServices2016+'</h5>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="col-sm-3 m_top10">';
 				str+='<div style="text-align:center;">';
 					str+='<h4><b>2017</b></h4>';
-					str+='<h5 class="m_top10">'+result.mobileAppServices2017+'</h5>';
+					str+='<h5 class="m_top10 mobilePanelBlock">'+result.mobileAppServices2017+'</h5>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	$("#mobileAppSerOvrCuntCls").html(str);
 }
+$(document).on("click",".onlinePanelBlock",function(){	
+	if(!$(".OnlinServiceKPICollapsedIN").hasClass("in")){
+		$(".OnlinServiceKPICollapsed").removeClass("collapsed")
+		$(".OnlinServiceKPICollapsedIN").addClass("in")
+		$('html,body').animate({
+			scrollTop: $(".OnlinServiceKPIOpen").offset().top},
+		'slow');
+		$(".borderColorCSSBlack").addClass("border_black")
+	}else{
+		$('html,body').animate({
+			scrollTop: $(".OnlinServiceKPIOpen").offset().top},
+		'slow');
+		$(".borderColorCSSBlack").addClass("border_black")
+	}
+});
+$(document).on("click",".mobilePanelBlock",function(){	
+	if(!$(".mobileKPICollapsedIN").hasClass("in")){
+		$(".mobileKPICollapsed").removeClass("collapsed")
+		$(".mobileKPICollapsedIN").addClass("in")
+		$('html,body').animate({
+			scrollTop: $(".OnlinServiceKPIOpen").offset().top},
+		'slow');
+		$(".borderColorCSSBlack").addClass("border_black")
+	}else{
+		$('html,body').animate({
+			scrollTop: $(".OnlinServiceKPIOpen").offset().top},
+		'slow');
+		$(".borderColorCSSBlack").addClass("border_black")
+	}
+});

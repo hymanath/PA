@@ -45,6 +45,7 @@ public class ItecEOfficeVO {
 	private Long closedFiles = 0L;
 	private Long parkedFiles = 0L;
 	private Long receiptCreated = 0L;
+	private Long actionFiles = 0L;
 	
 	
 	public Long getId() {
@@ -268,5 +269,11 @@ public class ItecEOfficeVO {
 	}
 	public void setReceiptCreated(Long receiptCreated) {
 		this.receiptCreated = receiptCreated;
+	}
+	public Long getActionFiles() {
+		return actionFiles;
+	}
+	public void setActionFiles(Long actionFiles) {
+		this.actionFiles = actionFiles;
 	}
 }
