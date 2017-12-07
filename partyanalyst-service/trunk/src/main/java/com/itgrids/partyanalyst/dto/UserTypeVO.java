@@ -92,6 +92,50 @@ public class UserTypeVO implements Serializable{
 	private Double imagesCvredCountPerc = 0.0d;
 	private List<TrainingCampProgramVO> daysList = new ArrayList<TrainingCampProgramVO>(0);
 	
+	private Long installed = 0L;
+	private Long pending = 0L;
+	private Long notSmartPhone = 0L;
+	private String installedPerc;
+	private String pendingPerc;
+	private List<UserTypeVO> subList1 = new ArrayList<UserTypeVO>(0);
+	
+	
+	public List<UserTypeVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<UserTypeVO> subList1) {
+		this.subList1 = subList1;
+	}
+	public Long getInstalled() {
+		return installed;
+	}
+	public void setInstalled(Long installed) {
+		this.installed = installed;
+	}
+	public Long getPending() {
+		return pending;
+	}
+	public void setPending(Long pending) {
+		this.pending = pending;
+	}
+	public Long getNotSmartPhone() {
+		return notSmartPhone;
+	}
+	public void setNotSmartPhone(Long notSmartPhone) {
+		this.notSmartPhone = notSmartPhone;
+	}
+	public String getInstalledPerc() {
+		return installedPerc;
+	}
+	public void setInstalledPerc(String installedPerc) {
+		this.installedPerc = installedPerc;
+	}
+	public String getPendingPerc() {
+		return pendingPerc;
+	}
+	public void setPendingPerc(String pendingPerc) {
+		this.pendingPerc = pendingPerc;
+	}
 	public Long getId() {
 		return id;
 	}
