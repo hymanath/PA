@@ -4561,6 +4561,9 @@
     	<property name="jbCommitteeStatusDAO" ref="jbCommitteeStatusDAO" />
     	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" /> 
     	<property name="constituencyDAO" ref="constituencyDAO" />
-    	<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO" />
+    	<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO" /> 
+    	<property name="tehsilConstituencyDAO" ref="tehsilConstituencyDAO" /> 
+    	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" /> 
+    	<property name="panchayatDAO" ref="panchayatDAO" />
     	</bean>
 </beans>			

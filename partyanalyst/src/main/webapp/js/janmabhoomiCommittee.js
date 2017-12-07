@@ -141,10 +141,14 @@ function buildCommitteeWiseDetailsBlock(result){
 				for(var i in result.levelWisecommitteeStatusVOList){
 					str+='<tr>';
 						str+='<td class="text-bold">'+result.levelWisecommitteeStatusVOList[i].name+'</td>';
+						if(result.levelWisecommitteeStatusVOList[i].totalCommitteeCnt == 0){
+							str+='<td><h5 class="borderContCss" style="border:1px solid #000;font-weight:bold;">0</h5></td>';
+						}else{
 							str+='<td><h5 class="borderContCss committeeWiseDetailsClick" style="border:1px solid #000;font-weight:bold;" attr_commiteeId="0" attr_status_type="0" attr_level_id="0" attr_location_value="0" attr_type="count" attr_commitee_lvl_id="'+result.levelWisecommitteeStatusVOList[i].id+'" attr_level_name="'+result.levelWisecommitteeStatusVOList[i].name+'">'+result.levelWisecommitteeStatusVOList[i].totalCommitteeCnt+'</h5></td>';
+						}							
 						for(var j in result.levelWisecommitteeStatusVOList[i].committeeStatusVOList){
 							if(result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusCount == 0){
-							    str+='<td><h5 class="borderContCss committeeWiseDetailsClick" style="border:1px solid '+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].color+';"><span class="text_bold">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusCount+'</span> <span class="pull-right">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusPercentage+' %</span></h5></td>';
+							    str+='<td><h5 class="borderContCss" style="border:1px solid '+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].color+';"><span class="text_bold">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusCount+'</span> <span class="pull-right">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusPercentage+' %</span></h5></td>';
 							}else{
 								str+='<td><h5 class="borderContCss committeeWiseDetailsClick" style="border:1px solid '+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].color+';" attr_commiteeId="0" attr_status_type="'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusId+'" attr_level_id="0" attr_location_value="0" attr_type="count" attr_commitee_lvl_id="'+result.levelWisecommitteeStatusVOList[i].id+'" attr_level_name="'+result.levelWisecommitteeStatusVOList[i].name+'"><span class="text_bold">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusCount+'</span> <span class="pull-right">'+result.levelWisecommitteeStatusVOList[i].committeeStatusVOList[j].statusPercentage+' %</span></h5></td>';
 							}
