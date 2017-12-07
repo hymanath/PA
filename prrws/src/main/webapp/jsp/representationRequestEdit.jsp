@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> REPRESENTATION REQUEST ENTRY FORM </title>
+<title> REPRESENTATION REQUEST EDIT FORM </title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <!-- for file uploader -->
@@ -191,8 +191,55 @@
 	</nav>
 </header>
 <main>
-
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12">
+			<div id="memberDetailsDivId">
+			
+				</div>
+			</div>
+		</div>
+	</div>
 </main>
+<div class="modal fade" id="candidateSearchModelDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document" style="width:90%;margin:auto">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" style="font-weight: bold">Candidate Search</h4> 
+			 </div>
+		  <div class="modal-body">
+			<div class="row">
+				<div class="col-sm-3">
+					<select class="form-control chosen-select" id="designationsId">
+						<option value="0">Select Designation</option>
+					</select>
+					 <div class="m_top10 error_colorCls" id="desiganationIErrDivd"></div>
+				</div>
+				<div class="col-sm-3" id="districtCandDivId">
+					<select class="form-control chosen-select" id="districtCandId">
+						<option value="0">Select District</option>
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<select class="form-control chosen-select" id="constituencyCanId">
+						<option value="0">Select Constituency</option>
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<button type="button" class="btn btn-xs btn-success selectionSearchDetailsCls" style="border-radius: 0px; font-weight: bold;">Search</button>
+				</div>
+			</div>
+			<div class="row">
+				<div id="candidateDetailsDivId"></div>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default modalCloseCls" data-dismiss="modal">Close</button>
+		  </div>
+	  </div>
+	</div>
+</div>
 
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
@@ -213,27 +260,7 @@
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script>                
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>                
 <!-- for file uploader -->
+<script src="Assests/representationRequest/representationRequestEdit.js" type="text/javascript"></script>
 
-<script>
-	getRepresentationRequestDetailsByRepresentationRequestId(680);
-function getRepresentationRequestDetailsByRepresentationRequestId(representationMemberId){  
-  $("#districtrepresent").html('');
-  var json = {
-      representationMemberId:representationMemberId
-    }
-  $.ajax({                
-    type:'POST',    
-    url: 'getRepresentationRequestDetailsByRepresentationRequestId',
-    dataType: 'json',
-    data : JSON.stringify(json),
-    beforeSend :   function(xhr){
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Content-Type", "application/json");
-    }
-  }).done(function(result){
-    console.log(result);
-  });  
-}
-</script>
 </body>
 </html>
