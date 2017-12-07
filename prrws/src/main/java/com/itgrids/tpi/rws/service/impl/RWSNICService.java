@@ -1582,7 +1582,7 @@ public class RWSNICService implements IRWSNICService{
 		 	    					if(jobj.has("groundingDate") && jobj.getString("groundingDate")!=null && !jobj.getString("groundingDate").equalsIgnoreCase("--")){
 			 	    					subVo.setGroundingDate(sdf.format(sdf1.parse(jobj.getString("groundingDate"))));
 			 	    				}
-		 	    				}else{
+		 	    				}else if(!vo.getWorkStatus().trim().equalsIgnoreCase("not grounded")){
 		 	    					subVo.setCompletionDate(sdf.format(sdf.parse(jobj.getString("groundingDate"))));
 		 	    				}
 		 	    				
