@@ -26,7 +26,15 @@ public class InputVO {
 	private Long accessLevelId;
 	private Long activityMemberId;
 	private Long userId;
+	private String name;
 	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getLocationLevel() {
 		return locationLevel;
 	}

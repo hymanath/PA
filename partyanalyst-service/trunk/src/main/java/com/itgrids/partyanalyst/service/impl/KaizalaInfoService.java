@@ -1,10 +1,17 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -32,7 +39,13 @@ import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaTextMessageDAO;
+import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.CoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.InputVO;
+import com.itgrids.partyanalyst.dto.KaizalaDashboardVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
+import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.KaizalaActions;
 import com.itgrids.partyanalyst.model.KaizalaAnswerInfo;
 import com.itgrids.partyanalyst.model.KaizalaAnswers;
@@ -46,6 +59,7 @@ import com.itgrids.partyanalyst.model.KaizalaProperties;
 import com.itgrids.partyanalyst.model.KaizalaQuestions;
 import com.itgrids.partyanalyst.model.KaizalaResponderInfo;
 import com.itgrids.partyanalyst.model.KaizalaTextMessage;
+import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.IKaizalaInfoService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -75,8 +89,16 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private IKaizalaGroupDocumentTypeDAO kaizalaGroupDocumentTypeDAO;
 	private IKaizalaResponderTypeDAO kaizalaResponderTypeDAO;
 	private IKaizalaInstallationTrackingDAO kaizalaInstallationTrackingDAO;
+	private ICoreDashboardGenericService coreDashboardGenericService;
 
 
+	public ICoreDashboardGenericService getCoreDashboardGenericService() {
+		return coreDashboardGenericService;
+	}
+	public void setCoreDashboardGenericService(
+			ICoreDashboardGenericService coreDashboardGenericService) {
+		this.coreDashboardGenericService = coreDashboardGenericService;
+	}
 	public void setKaizalaInstallationTrackingDAO(
 			IKaizalaInstallationTrackingDAO kaizalaInstallationTrackingDAO) {
 		this.kaizalaInstallationTrackingDAO = kaizalaInstallationTrackingDAO;
@@ -1198,4 +1220,374 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			}
 		});
 	}
+	
+	public List<KaizalaDashboardVO> getLocationWiseCommitteeMemberDetails(InputVO inputvo){
+		List<KaizalaDashboardVO> returnList = new ArrayList<KaizalaDashboardVO>(0);
+		try {
+			
+			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.194:8080/KAIZALA/getLocationWiseCommitteeMemberDetails");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/KAIZALA/saveKaizalaInstallationTracking");
+			
+			WebResource.Builder builder = webResource.getRequestBuilder();
+			
+			builder.accept("application/json");
+			builder.type("application/json");
+			
+			ClientResponse response = builder.post(ClientResponse.class,inputvo);
+			
+			if(response.getStatus() != 200){
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			}else{				
+				String output = response.getEntity(String.class);				
+				if(output !=null && !output.trim().isEmpty()){
+					JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    		 for(int i=0;i<finalArray.length();i++){
+		 	    			KaizalaDashboardVO vo = new KaizalaDashboardVO();
+		 	    			JSONObject obj = (JSONObject) finalArray.get(i);
+		 	    			vo.setId(obj.getLong("id"));
+		 	    			vo.setName(obj.getString("name"));
+		 	    			JSONArray subArr = obj.getJSONArray("subList");
+		 	    			if(subArr!=null && subArr.length()>0){
+				 	    		 for(int j=0;j<subArr.length();j++){
+				 	    			KaizalaDashboardVO subvo = new KaizalaDashboardVO();
+				 	    			JSONObject subobj = (JSONObject) subArr.get(i);
+				 	    			subvo.setId(subobj.getLong("id"));
+				 	    			subvo.setName(subobj.getString("name"));
+				 	    			subvo.setTotalCount(subobj.getLong("totalCount"));
+				 	    			subvo.setInstalled(subobj.getLong("installed"));
+				 	    			subvo.setPending(subobj.getLong("pending"));
+				 	    			subvo.setNotHavingSmartPhone(subobj.getLong("notHavingSmartPhone"));
+				 	    			subvo.setInstalledPerc(subobj.getString("installedPerc"));
+				 	    			subvo.setPendingPerc(subobj.getString("pendingPerc"));
+				 	    			vo.getSubList().add(subvo);
+				 	    		 }
+		 	    			}
+		 	    			returnList.add(vo);
+		 	    		 }
+	 	    		}
+				}				
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseCommitteeMemberDetails in KaizalaInfoService Class ", e);
+		}
+		return returnList;
+	}
+	public List<KaizalaDashboardVO> getOverAllCommitteeWiseMembersCounts(InputVO inputvo){
+		List<KaizalaDashboardVO> returnList = new ArrayList<KaizalaDashboardVO>(0);
+		try {
+			
+			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.194:8080/KAIZALA/getOverAllCommitteeWiseMembersCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/KAIZALA/saveKaizalaInstallationTracking");
+			
+			WebResource.Builder builder = webResource.getRequestBuilder();
+			
+			builder.accept("application/json");
+			builder.type("application/json");
+			
+			ClientResponse response = builder.post(ClientResponse.class,inputvo);
+			
+			if(response.getStatus() != 200){
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			}else{				
+				String output = response.getEntity(String.class);				
+				if(output !=null && !output.trim().isEmpty()){
+					JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    		 for(int i=0;i<finalArray.length();i++){
+		 	    			KaizalaDashboardVO vo = new KaizalaDashboardVO();
+		 	    			JSONObject obj = (JSONObject) finalArray.get(i);
+		 	    			vo.setId(obj.getLong("id"));
+		 	    			vo.setName(obj.getString("name"));
+		 	    			vo.setTotalCount(obj.getLong("totalCount"));
+		 	    			vo.setInstalled(obj.getLong("installed"));
+		 	    			vo.setPending(obj.getLong("pending"));
+		 	    			vo.setNotHavingSmartPhone(obj.getLong("notHavingSmartPhone"));
+		 	    			vo.setInstalledPerc(obj.getString("installedPerc"));
+		 	    			vo.setPendingPerc(obj.getString("pendingPerc"));
+		 	    			returnList.add(vo);
+		 	    		 }
+	 	    		}
+				}				
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOverAllCommitteeWiseMembersCounts in KaizalaInfoService Class ", e);
+		}
+		return returnList;
+	}
+	
+	public List<KaizalaDashboardVO> getLevelLocationWiseCounts(InputVO inputvo){
+		List<KaizalaDashboardVO> returnList = new ArrayList<KaizalaDashboardVO>(0);
+		try {
+			
+			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.194:8080/KAIZALA/getLevelLocationWiseCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/KAIZALA/saveKaizalaInstallationTracking");
+			
+			WebResource.Builder builder = webResource.getRequestBuilder();
+			
+			builder.accept("application/json");
+			builder.type("application/json");
+			
+			ClientResponse response = builder.post(ClientResponse.class,inputvo);
+			
+			if(response.getStatus() != 200){
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			}else{				
+				String output = response.getEntity(String.class);				
+				if(output !=null && !output.trim().isEmpty()){
+					JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    		 for(int i=0;i<finalArray.length();i++){
+		 	    			KaizalaDashboardVO vo = new KaizalaDashboardVO();
+		 	    			JSONObject obj = (JSONObject) finalArray.get(i);
+		 	    			vo.setId(obj.getLong("id"));
+		 	    			vo.setName(obj.getString("name"));
+		 	    			vo.setKey(obj.getString("key"));
+		 	    			JSONArray subArr = obj.getJSONArray("subList");
+		 	    			if(subArr!=null && subArr.length()>0){
+				 	    		 for(int j=0;j<subArr.length();j++){
+				 	    			KaizalaDashboardVO subvo = new KaizalaDashboardVO();
+				 	    			JSONObject subobj = (JSONObject) subArr.get(j);
+				 	    			subvo.setId(subobj.getLong("id"));
+				 	    			subvo.setName(subobj.getString("name"));
+				 	    			subvo.setTotalCount(subobj.getLong("totalCount"));
+				 	    			subvo.setInstalled(subobj.getLong("installed"));
+				 	    			subvo.setPending(subobj.getLong("pending"));
+				 	    			subvo.setNotHavingSmartPhone(subobj.getLong("notHavingSmartPhone"));
+				 	    			//subvo.setInstalledPerc(subobj.getString("installedPerc"));
+				 	    			//subvo.setPendingPerc(subobj.getString("pendingPerc"));
+				 	    			vo.getSubList().add(subvo);
+				 	    		 }
+		 	    			}
+		 	    			returnList.add(vo);
+		 	    		 }
+	 	    		}
+				}				
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOverAllCommitteeWiseMembersCounts in KaizalaInfoService Class ", e);
+		}
+		return returnList;
+	}
+	
+	public List<List<UserTypeVO>> getUserTypeWiseKaizalaCommitteeMemberDetailsCnt(Long userId,Long userTypeId,Long activityMemberId,Long stateId){
+		
+	    List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>(0);
+	    
+	    //Map<String,PartyMeetingsVO> meetingCntDtlsMap = new HashMap<String, PartyMeetingsVO>(0);
+	    Map<Long,Set<Long>> locationLevelMap = null;
+		Map<Long,Map<Long,UserTypeVO>> userTypeMapDtls = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date toDate=null;
+		Date fromDate=null;
+	  try{
+			/*if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 toDate = sdf.parse(toDateStr);
+				 fromDate = sdf.parse(fromDateStr);
+			 }*/
+		     ActivityMemberVO activityMemberVO = new ActivityMemberVO();
+		     activityMemberVO.setUserId(userId);
+		     activityMemberVO.setActivityMemberId(activityMemberId);
+		     activityMemberVO.setUserTypeId(userTypeId);
+		     activityMemberVO = coreDashboardGenericService.getChildActivityMembersAndLocationsNew(activityMemberVO);//calling generic method.
+		     userTypeMapDtls = activityMemberVO.getUserTypesMap();
+		     locationLevelMap = activityMemberVO.getLocationLevelIdsMap();
+		     
+		     /*if(locationLevelMap != null && locationLevelMap.size() > 0){
+		    	 
+		    	 for (Entry<Long, Set<Long>> entry : locationLevelMap.entrySet()) {
+		    		 
+                   List<Object[]> returnOverAllObjList = partyMeetingDAO.getPartyMeetingOverAllCountLocationWiseByUserAccessLevel(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);
+                  
+                   if(returnOverAllObjList!=null && returnOverAllObjList.size()>0){
+                	   for(Object[] obj : returnOverAllObjList){
+                		   Long userAccessLevelId = entry.getKey();
+                		   Long locationLevelValue = (Long)obj[0];
+                		   String key = userAccessLevelId+"-"+locationLevelValue;
+                		   
+                		   PartyMeetingsVO locationVO = null;
+                		   locationVO = meetingCntDtlsMap.get(key);
+                		   if(locationVO==null){
+                			   locationVO = new PartyMeetingsVO();
+                			   locationVO.setTotalMeetingCnt(obj[1]!=null?(Long)obj[1]:0l);
+                			   meetingCntDtlsMap.put(key, locationVO);
+                		   }
+                	   }
+                   }
+				}
+		     }
+		     
+		    if(locationLevelMap != null && locationLevelMap.size() > 0){
+		    	for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
+		    		List<Object[]> returnList = partyMeetingStatusDAO.getPartyMeetingCountLocationWiseByUserAccess(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);
+		    		calculateMeetingStatusWiseDetailsCnt(entry.getKey(),returnList,meetingCntDtlsMap);
+		    	}
+		    }*/
+		    
+		     List<KaizalaDashboardVO> kaizalaList = getLevelLocationWiseCounts(new InputVO());
+		    
+		    if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+		    	
+				  for (Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()) {
+					  
+				      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+				      
+				      for(UserTypeVO vo:userTypeMap.values()){
+				    	  
+				    	  for(Long locationValueId:vo.getLocationValuesSet()){
+				    		  
+				    		  String key = vo.getLocationLevelId()+"-"+locationValueId;
+				    		  
+				    		  KaizalaDashboardVO kaizalaDashboardVO = getMatchedVOByString(kaizalaList, key);
+				    		  
+				    		  if(kaizalaDashboardVO != null){
+				    			  if(kaizalaDashboardVO.getSubList() != null && !kaizalaDashboardVO.getSubList().isEmpty()){
+				    				  for (KaizalaDashboardVO subvo : kaizalaDashboardVO.getSubList()) {
+										UserTypeVO subuservo = getMatchedVO(vo.getSubList1(), subvo.getId());
+										if(subuservo == null){
+											subuservo = new UserTypeVO();
+											subuservo.setId(subvo.getId());
+											subuservo.setName(subvo.getName());
+											subuservo.setTotalCount(subvo.getTotalCount());
+											subuservo.setInstalled(subvo.getInstalled());
+											subuservo.setPending(subvo.getPending());
+											subuservo.setNotSmartPhone(subvo.getNotHavingSmartPhone());
+											
+											vo.setTotalCount(subvo.getTotalCount());
+											vo.setInstalled(subvo.getInstalled());
+											vo.setPending(subvo.getPending());
+											vo.setNotSmartPhone(subvo.getNotHavingSmartPhone());
+											vo.getSubList1().add(subuservo);
+										}else{
+											subuservo.setTotalCount(subuservo.getTotalCount()+subvo.getTotalCount());
+											subuservo.setInstalled(subuservo.getInstalled()+subvo.getInstalled());
+											subuservo.setPending(subuservo.getPending()+subvo.getPending());
+											subuservo.setNotSmartPhone(subuservo.getNotSmartPhone()+subvo.getNotHavingSmartPhone());
+											
+											vo.setTotalCount(vo.getTotalCount()+subvo.getTotalCount());
+											vo.setInstalled(vo.getInstalled()+subvo.getInstalled());
+											vo.setPending(vo.getPending()+subvo.getPending());
+											vo.setNotSmartPhone(vo.getNotSmartPhone()+subvo.getNotHavingSmartPhone());
+										}
+									}
+				    			  }
+				    		  }
+				    		  
+				    		}
+				      }
+			}  
+			} 
+		    
+		    //Calculate Percentage
+		   if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+				  for (Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()) {
+				      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+				      for(UserTypeVO vo:userTypeMap.values()){
+				    	  Long totalMembers = vo.getTotalCount();
+				    	  if(totalMembers != null){
+				    		  vo.setInstalledPerc(calculatePercantage(vo.getInstalled(), totalMembers).toString());
+				    		  vo.setPendingPerc(calculatePercantage(vo.getPending(), totalMembers).toString());
+				    	  }
+				    	if(vo.getSubList1() != null && !vo.getSubList1().isEmpty()){
+				    		for (UserTypeVO subvo : vo.getSubList1()) {
+								Long subTotal = subvo.getTotalCount();
+								if(subTotal != null){
+									subvo.setInstalledPerc(calculatePercantage(subvo.getInstalled(), subTotal).toString());
+									subvo.setPendingPerc(calculatePercantage(subvo.getPending(), subTotal).toString());
+								}
+							}
+				    	}
+					}
+				}
+			}
+		    
+		    //merging secreteries and general secrerteries.
+		    if(userTypeMapDtls!=null && userTypeMapDtls.size()>0){
+		        Map<Long,UserTypeVO> orgSecAndSecMap = new LinkedHashMap<Long,UserTypeVO>();
+		        Map<Long,UserTypeVO>  secreteriesMap = null;
+		        if(userTypeMapDtls.containsKey(11l)){
+		          secreteriesMap = userTypeMapDtls.get(11l);
+		          orgSecAndSecMap.putAll(secreteriesMap);
+		          //remove secreteries from Map
+		          userTypeMapDtls.remove(11l); 
+		        }
+		        
+		        Map<Long,UserTypeVO>  organizingSecreteriesMap = null;
+		        if(userTypeMapDtls.containsKey(4l)){
+		          organizingSecreteriesMap = userTypeMapDtls.get(4l);
+		          orgSecAndSecMap.putAll(organizingSecreteriesMap);
+		        }
+		       
+		        if(organizingSecreteriesMap!=null && organizingSecreteriesMap.size()>0){
+		        	userTypeMapDtls.put(4l, orgSecAndSecMap); 
+		        }
+		      }
+		    
+		    
+			if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+				  for(Entry<Long, Map<Long, UserTypeVO>> entry:userTypeMapDtls.entrySet()){
+				   Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+				   resultList.add(new ArrayList<UserTypeVO>(userTypeMap.values()));
+			      }
+			}
+		 	if(resultList != null && resultList.size() > 0){
+				for(List<UserTypeVO> memberList:resultList){
+					Collections.sort(memberList, installedCountDesc);
+				}
+			}
+	 }catch(Exception e) {
+	  LOG.error("Exception raised at getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt() method of CoreDashboardPartyMeetingService", e);
+	}
+	return resultList; 
+ }
+	
+	public Double calculatePercantage(Long subCount,Long totalCount){
+		Double d=0.0d;
+		if(subCount.longValue()>0l && totalCount.longValue()==0l)
+		LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
+
+		if(totalCount.longValue() > 0l){
+			 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
+		}
+		return d;
+	} 
+	
+	public UserTypeVO getMatchedVO(List<UserTypeVO> voList ,Long id){
+		if(voList != null && voList.size() > 0){
+			for (UserTypeVO userTypeVO : voList) {
+				if(userTypeVO.getId().equals(id))
+					return userTypeVO;
+			}
+		}
+		return null;
+	}
+	
+	public KaizalaDashboardVO getMatchedVOByString(List<KaizalaDashboardVO> voList ,String key){
+		if(voList != null && voList.size() > 0){
+			for (KaizalaDashboardVO kaizalaDashboardVO : voList) {
+				if(kaizalaDashboardVO.getKey().equalsIgnoreCase(key))
+					return kaizalaDashboardVO;
+			}
+		}
+		return null;
+	}
+	
+	public static Comparator<UserTypeVO> installedCountDesc = new Comparator<UserTypeVO>() {
+		public int compare(UserTypeVO member2, UserTypeVO member1) {
+
+		Long perc2 = member2.getInstalled();
+		Long perc1 = member1.getInstalled();
+		//descending order of percantages.
+		 return perc1.compareTo(perc2);
+		}
+	}; 
 }
