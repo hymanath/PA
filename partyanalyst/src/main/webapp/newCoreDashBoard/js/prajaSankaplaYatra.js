@@ -391,8 +391,8 @@ function mainNewsBlockPraja(result){
 											str+='<small class="text-success"> '+result.coreDashBoardVOList1[i].positivePerc+' %</small>';
 										str+='</td>';
 										str+='<td>';
-											str+='<span><a class="" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList1[i].negativePerc+'</a></span>';
-											str+='<small class="text-danger" id=""> '+result.coreDashBoardVOList1[i].negativCountMain+' %</small>';
+											str+='<span><a class="" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList1[i].negativCountMain+'</a></span>';
+											str+='<small class="text-danger" id=""> '+result.coreDashBoardVOList1[i].negativePerc+' %</small>';
 										str+='</td>';
 									str+='</tr>';
 								}
@@ -438,8 +438,8 @@ function mainNewsBlockPraja(result){
 											str+='<small class="text-success"> '+result.coreDashBoardVOList1[i].positiveDistPerc+' %</small>';
 										str+='</td>';
 										str+='<td>';
-											str+='<span><a class="" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList1[i].negativeDistPerc+'</a></span>';
-											str+='<small class="text-danger" id=""> '+result.coreDashBoardVOList1[i].negativCountDist+' %</small>';
+											str+='<span><a class="" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList1[i].negativCountDist+'</a></span>';
+											str+='<small class="text-danger" id=""> '+result.coreDashBoardVOList1[i].negativeDistPerc+' %</small>';
 										str+='</td>';
 									str+='</tr>';
 								}
