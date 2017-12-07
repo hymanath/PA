@@ -1,6 +1,6 @@
  //Angular Start  getAlertsOfCategoryByStatusWise()
-		var glStartDate = moment().subtract(40, 'years').startOf('year').format("DD-MM-YYYY");
-		var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
+		var glStartDate = "01-04-"+moment().format("YYYY");
+		var glEndDate = "01-04-"+moment().add(1, 'years').format("YYYY");
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
 		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049",
 		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","PARTIALLY SATISFIED":"#FFBA00","NOT SATISFIED":"#FF0909","TARGET":"#FC5049","COMPLETED":"#14BAAD"}
@@ -26,7 +26,7 @@
 			tabBlocks('mandalBlockId','mandal');
 			responsiveTabs();
 			//getExceededTargetWorksDetails();
-			getExceedWorkDetailsLocationWise("",'state',"","","","","","");
+			getExceedWorkDetailsLocationWise("",'state',"","","","","","onGoing");
 		}
 		function getSelectedType(){
 			for(var i in levelNamesArr){
@@ -1380,10 +1380,10 @@
 			if(result != null && result.length >0){
 				for(var i in result){
 					var value = result[i].financialYear.split('-');
-					$("#financialYearId").append("<option value="+value[1]+">"+result[i].financialYear+"</option>");
+					$("#financialYearId").append("<option value="+value[0]+">"+result[i].financialYear+"</option>");
 					
 				}
-				$("#financialYearId").val('2018');
+				$("#financialYearId").val('2017');
 			}
 			
 			$("#financialYearId").chosen();

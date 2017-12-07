@@ -1,6 +1,6 @@
  //Angular Start  getAlertsOfCategoryByStatusWise()
-		var glStartDate = moment().subtract(40, 'years').startOf('year').format("DD-MM-YYYY");
-		var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
+		var glStartDate = "01-04-"+moment().format("YYYY");
+		var glEndDate = "01-04-"+moment().add(1, 'years').format("YYYY");
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
 		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049",
 		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","PARTIALLY SATISFIED":"#FFBA00","NOT SATISFIED":"#FF0909","TARGET":"#FC5049","COMPLETED":"#14BAAD"}
@@ -2007,7 +2007,7 @@
 				$("#alertStatus"+locationType).html(tableView);
 				if(locationType !="state" || locationType !="district"){
 					$(".dataTableAlert"+locationType).dataTable({
-						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+						"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 							"<'row'<'col-sm-12'tr>>" +
 							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 						buttons: [
@@ -2096,7 +2096,7 @@
 				$("#drinking"+locationType).html(tableView);
 				if(locationType !="state" || locationType !="district"){
 					$(".dataTableDrinking"+locationType).dataTable({
-						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+						"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 							"<'row'<'col-sm-12'tr>>" +
 							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 						buttons: [
@@ -2453,7 +2453,7 @@
 									"info":     false,
 									"searching": false,
 									"autoWidth": true,
-									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+									"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 										"<'row'<'col-sm-12'tr>>" +
 										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 									buttons: [
@@ -2481,7 +2481,7 @@
 							}else{
 								if(locationType != 'state'){
 									$("#dataTable1"+locationType+divId[k].id).dataTable({
-									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+									"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 										"<'row'<'col-sm-12'tr>>" +
 										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 									buttons: [
@@ -2512,7 +2512,7 @@
 						}else if(divId[k].id=="performance"){
 							if(locationType !="state" && locationType !="district"){
 								$("#dataTable"+locationType+divId[k].id).dataTable({
-									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+									"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 										"<'row'<'col-sm-12'tr>>" +
 										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 									buttons: [
@@ -2541,7 +2541,7 @@
 						}else if(divId[k].id=="schemeId"){
 							if(locationType !="state" && locationType !="district"){
 								$("#dataTable3"+locationType+divId[k].id).dataTable({
-									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+									"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 										"<'row'<'col-sm-12'tr>>" +
 										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 									buttons: [
@@ -2570,7 +2570,7 @@
 						}else if(divId[k].id=="assestsId"){
 							if(locationType !="state" && locationType !="district"){
 								$("#dataTable2"+locationType+divId[k].id).dataTable({
-									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+									"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 										"<'row'<'col-sm-12'tr>>" +
 										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 									buttons: [
@@ -2599,7 +2599,7 @@
 						}else if(divId[k].id=="waterSourceId"){
 							if(locationType !="state" && locationType !="district"){
 								$("#dataTable4"+locationType+divId[k].id).dataTable({
-									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+									"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 										"<'row'<'col-sm-12'tr>>" +
 										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 									buttons: [
@@ -3313,14 +3313,14 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#financialYearId").append("<option value='0'>Select Financial Year</option>");
+			$("#financialYearId").append("<option value='0'>All Financial Years</option>");
 			if(result != null && result.length >0){
 				for(var i in result){
 					var value = result[i].financialYear.split('-');
-					$("#financialYearId").append("<option value="+value[1]+">"+result[i].financialYear+"</option>");
+					$("#financialYearId").append("<option value="+value[0]+">"+result[i].financialYear+"</option>");
 					
 				}
-				$("#financialYearId").val('2018');
+				$("#financialYearId").val('2017');
 			}
 			
 			$("#financialYearId").chosen();
@@ -3656,8 +3656,13 @@
 		}
 	});
 	$(document).on("change","#financialYearId",function(){
+		var yearId = $(this).val();
 		glStartDate="";
 		glEndDate="";
+		if(yearId == 0){
+			glStartDate="01-01-1977";
+			glEndDate="01-01-2027";
+		}
 		onloadCalls();
 	});
 	$(document).on("click",".getDetailsCls",function(){
@@ -4547,7 +4552,7 @@
 			"autoWidth": true,			
 			"order": [ 0, 'desc' ],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
@@ -4621,7 +4626,7 @@
 			"autoWidth": true,
 			"order": [ 0, 'desc' ],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
@@ -4701,7 +4706,7 @@
 			"searching": false,
 			"autoWidth": true,
 			"order": [ 0, 'desc' ],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
@@ -4775,7 +4780,7 @@
 			"searching": false,
 			"autoWidth": true,
 			"order": [ 0, 'desc' ],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
@@ -4895,7 +4900,7 @@
 			"autoWidth": true,
 			"order": [ 0, 'desc' ],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
@@ -4958,7 +4963,7 @@
 			"autoWidth": true,
 			"order": [ 0, 'desc' ],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
@@ -5019,7 +5024,7 @@
 			"autoWidth": true,
 			"order": [ 0, 'desc' ],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
@@ -5550,7 +5555,7 @@ function getIHHLlocationLvlWiseData(locationType){
 							"iDisplayLength": 20,
 							"aaSorting": [],
 							"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-							"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+							"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 								"<'row'<'col-sm-12'tr>>" +
 								"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 							buttons: [
@@ -5798,7 +5803,7 @@ function getSBPaymentsAbstract(){
 							"iDisplayLength": 20,
 							"aaSorting": [],
 							"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-							"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+							"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 								"<'row'<'col-sm-12'tr>>" +
 								"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 							buttons: [
