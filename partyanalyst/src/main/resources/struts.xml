@@ -18565,5 +18565,22 @@
 				<param name="root">finalList</param>
 			</result>
 	</action>
+	<action name="getLocationWiseCommitteeMemberDetailsAction" class="coreDashboardAction"  method="getLocationWiseCommitteeMemberDetails">
+		<result type="json" name="success">
+			<param name="root">kaizalaDashboardList</param>
+		</result>
+	</action>
+
+	<action name="getOverAllCommitteeWiseMembersCountsAction" class="coreDashboardAction"  method="getOverAllCommitteeWiseMembersCounts">
+		<result type="json" name="success">
+			<param name="root">kaizalaDashboardList</param>
+		</result>
+	</action>
+	
+	<action name="getUserTypeWiseKaizalaCommitteeMemberDetailsCntAction" class="coreDashboardAction"  method="getUserTypeWiseKaizalaCommitteeMemberDetailsCnt">
+		<result type="json" name="success">
+			<param name="root">userTypeVOList</param>
+		</result>
+	</action>
  </package>
 </struts>

@@ -39,8 +39,10 @@ import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.HolidayListVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.dto.InsuranceLagDaysVO;
 import com.itgrids.partyanalyst.dto.InsuranceSimpleVO;
+import com.itgrids.partyanalyst.dto.KaizalaDashboardVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
@@ -69,6 +71,7 @@ import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
 import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
+import com.itgrids.partyanalyst.service.IKaizalaInfoService;
 import com.itgrids.partyanalyst.service.INewsCoreDashBoardService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -114,6 +117,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ICoreDashboardToursService coreDashboardToursService;
 	private IAlertService alertService;
 	private ICoreDashboardInsuranceService coreDashboardInsuranceService;
+	private IKaizalaInfoService kaizalaInfoService;
 	
 	private List<CoreDebateVO> codeDebateVoList;
 	private INewsCoreDashBoardService newsCoreDashBoardService;
@@ -194,6 +198,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<BoothInchargesVO> boothInchargesVOList;
 	private ToursOverviewDtlsvO tourOverviewDtlsVO;
 	private List<ToursOverviewDtlsvO> tourOverviewDtlsList;
+	private List<KaizalaDashboardVO> kaizalaDashboardList;
 	
 	//setters And Getters
 	public List<Long> getProgramIdsList() {
@@ -961,6 +966,24 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setTourOverviewDtlsList(List<ToursOverviewDtlsvO> tourOverviewDtlsList) {
 		this.tourOverviewDtlsList = tourOverviewDtlsList;
 	}
+
+	public IKaizalaInfoService getKaizalaInfoService() {
+		return kaizalaInfoService;
+	}
+
+	public void setKaizalaInfoService(IKaizalaInfoService kaizalaInfoService) {
+		this.kaizalaInfoService = kaizalaInfoService;
+	}
+
+	public List<KaizalaDashboardVO> getKaizalaDashboardList() {
+		return kaizalaDashboardList;
+	}
+
+	public void setKaizalaDashboardList(
+			List<KaizalaDashboardVO> kaizalaDashboardList) {
+		this.kaizalaDashboardList = kaizalaDashboardList;
+	}
+
 
 	//business methods
 	public String execute(){
@@ -5059,6 +5082,49 @@ public String getInsuraceStatusWiseComplaintsDetails()
 			tourOverviewDtlsList = coreDashboardToursService.getCandaiteDetailsByType(stateId, fromDate, toDate,activityMemberId, userTypeId,type);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCandaiteDetailsByType() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationWiseCommitteeMemberDetails(){
+		try {
+			LOG.info("Entered into getToursBasicOverviewDtls()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			
+			String name = jObj.getString("name");
+			InputVO vo = new InputVO();
+			vo.setName(name);
+			kaizalaDashboardList = kaizalaInfoService.getLocationWiseCommitteeMemberDetails(vo);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseCommitteeMemberDetails() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getOverAllCommitteeWiseMembersCounts(){
+		try {
+			LOG.info("Entered into getOverAllCommitteeWiseMembersCounts()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			
+			InputVO vo = new InputVO();
+			kaizalaDashboardList = kaizalaInfoService.getOverAllCommitteeWiseMembersCounts(vo);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOverAllCommitteeWiseMembersCounts() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getUserTypeWiseKaizalaCommitteeMemberDetailsCnt(){
+		try {
+			LOG.info("Entered into getUserTypeWiseKaizalaCommitteeMemberDetailsCnt()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			Long userId = 1L;
+			Long userTypeId = jObj.getLong("userTypeId");
+			
+			userTypeVOList = kaizalaInfoService.getUserTypeWiseKaizalaCommitteeMemberDetailsCnt(userId, userTypeId, activityMemberId, stateId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getUserTypeWiseKaizalaCommitteeMemberDetailsCnt() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}
