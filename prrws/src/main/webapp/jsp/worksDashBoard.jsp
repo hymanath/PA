@@ -196,11 +196,11 @@
 				<div class="col-sm-2 border_right">
 					Note: All Amount in Lakhs
 				</div>
-				<div class="col-sm-3 border_right">
+				<div class="col-sm-4 col-md-3 border_right">
 					<div class="form-horizontal">
 						<div class="form-group form-group-sm">
-							<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
-							<div class="col-sm-8">
+							<label class="col-sm-5 col-md-5 control-label" for="formGroupInputLarge">Financial Year: </label>
+							<div class="col-sm-6  col-md-6">
 								<select id="financialYearId" class="chosenSelect"></select>
 							</div>
 						</div>
@@ -250,11 +250,12 @@
 							<div class="col-sm-9">
 								<div class="pull-right">
 									<label class="radio-inline m_top5">
-										<input type="radio"  class="exceedWorkTypeCls"  name="optradio1" value="" checked> All Exceeded Works
+										<input type="radio" class="exceedWorkTypeCls"  name="optradio1" value="ongoing"checked> OnGoing Exceeded Works
 									</label>
 									<label class="radio-inline m_top5">
-										<input type="radio" class="exceedWorkTypeCls"  name="optradio1" value="ongoing"> OnGoing Exceeded Works
+										<input type="radio"  class="exceedWorkTypeCls"  name="optradio1" value="" > All Exceeded Works
 									</label>
+																	
 								</div>
 							</div>
 						</div>
