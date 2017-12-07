@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.dao;
 
-public interface ITehsilConstituencyDAO {
+import java.util.List;
 
+public interface ITehsilConstituencyDAO {
+	public List<Long> getTehsilIdsByConstituencyId(List<Long> constituencyIds);
 }
