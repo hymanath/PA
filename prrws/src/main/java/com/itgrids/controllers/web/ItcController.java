@@ -199,9 +199,9 @@ public class ItcController {
 		   return resultList;
 	   }
 	   
-	   @RequestMapping(value = "/getMeesevaKPIOverViewDetails", method = RequestMethod.POST)
-	   public @ResponseBody  MeesevaKPIDtlsVO  getMeesevaKPIOverViewDetails() {
-		   MeesevaKPIDtlsVO  resultVO = itcDashboardService.getMeesevaKPIOverViewDetails();
+	   @RequestMapping(value = "/getMeesevaKPIOverViewDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  MeesevaKPIDtlsVO  getMeesevaKPIOverViewDetails(@RequestBody InputVO inputVO) {
+		   MeesevaKPIDtlsVO  resultVO = itcDashboardService.getMeesevaKPIOverViewDetails(inputVO);
 		   return resultVO;
 	   }
 	   
@@ -226,6 +226,66 @@ public class ItcController {
 	   @RequestMapping(value = "/getMeesevaSLAServiceWiseDetails", method = RequestMethod.POST)
 	   public @ResponseBody  List<MeesevaDtlsVO>  getMeesevaSLAServiceWiseDetails() {
 		   List<MeesevaDtlsVO>  resultList = itcDashboardService.getMeesevaSLAServiceWiseDetails();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getEOfcDepartOverviewDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecEOfficeVO>  getEOfcDepartOverviewDetails(@RequestBody InputVO inputVO) {
+		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEOfcDepartOverviewDetails(inputVO);
+		   return returnList;
+	   }
+	   
+	   @RequestMapping(value = "/getEofficeDesginationWiseDetailsFrDepartment", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecEOfficeVO>  getEofficeDesginationWiseDetailsFrDepartment(@RequestBody InputVO inputVO) {
+		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEofficeDesginationWiseDetailsFrDepartment(inputVO);
+		   return returnList;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPIOnlineServiceDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPIOnlineServiceDetails(@RequestBody InputVO inputVO) {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPIOnlineServiceDetails(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPIOnlineDeptWiseCuntDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPIOnlineDeptWiseCuntDetails(@RequestBody InputVO inputVO) {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPIOnlineDeptWiseCuntDetails(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPIMobileSevicesDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPIMobileSevicesDetails(@RequestBody InputVO inputVO) {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPIMobileSevicesDetails(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPIMobileDeptSevicesDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPIMobileDeptSevicesDetails(@RequestBody InputVO inputVO) {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPIMobileDeptSevicesDetails(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPIOnlineServiceOverviewCount", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  MeesevaKPIDtlsVO  getMeesevaKPIOnlineServiceOverviewCount(@RequestBody InputVO inputVO) {
+		   MeesevaKPIDtlsVO  resultVO = itcDashboardService.getMeesevaKPIOnlineServiceOverviewCount(inputVO);
+		   return resultVO;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPIMobileAppServiceOverviewCount", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  MeesevaKPIDtlsVO  getMeesevaKPIMobileAppServiceOverviewCount(@RequestBody InputVO inputVO) {
+		   MeesevaKPIDtlsVO  resultVO = itcDashboardService.getMeesevaKPIMobileAppServiceOverviewCount(inputVO);
+		   return resultVO;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPIOnlineServiceYearWiseDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPIOnlineServiceYearWiseDetails(@RequestBody InputVO inputVO) {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPIOnlineServiceYearWiseDetails(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPIMobileSevicesYearWiseDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPIMobileSevicesYearWiseDetails(@RequestBody InputVO inputVO) {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPIMobileSevicesYearWiseDetails(inputVO);
 		   return resultList;
 	   }
 }
