@@ -264,10 +264,10 @@
 					<div class="white-block" style="padding:10px;">
 						
 						<div class="row">
-							<!--<div class="col-sm-3">
+							<div class="col-sm-3">
 								<div id="ExceededTargetDetailsTotal"></div>
-							</div>-->
-							<div class="col-sm-12">
+							</div>
+							<div class="col-sm-9">
 								<div id="ExceededTargetDetails"></div>
 							</div>
 						</div>
