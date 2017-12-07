@@ -55,9 +55,6 @@ $("#dateRangePressmeetId").daterangepicker({
 		}
 	})
 	
-	var dates= $("#dateRangePressmeetId").val();
-	
-
 
 $('#dateRangePressmeetId').on('apply.daterangepicker', function(ev, picker) {
   fromDate = picker.startDate.format('DD-MM-YYYY');
@@ -811,7 +808,7 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 				str+='<td>'+result.pressmeetList[i].partyName+'</td>';
 					for(var j in result.pressmeetList[i].participantList){
 						str+='<td>';
-						str+='<input class="performanceRating" value="'+result.pressmeetList[i].participantList[j].rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom"  data-readonly>'+result.pressmeetList[i].participantList[j].rating.toFixed(2)+'</span>';
+						str+='<input class="performanceRating" value="'+result.pressmeetList[i].participantList[j].rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class=class="badge" style="font-weight:bold"  data-readonly>'+result.pressmeetList[i].participantList[j].rating.toFixed(2)+'</span>';
 						str+='</td>';
 					}	
 				str+='</tr>';
