@@ -24,7 +24,10 @@ import com.itgrids.partyanalyst.dao.IJbCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IJbCommitteeRoleDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
+import com.itgrids.partyanalyst.dao.ITehsilConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.JbCommitteeStatusDAO;
@@ -65,6 +68,9 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
+	private ITehsilConstituencyDAO tehsilConstituencyDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IPanchayatDAO panchayatDAO;
 	public JbCommitteeStatusDAO getJbCommitteeStatusDAO() {
 		return jbCommitteeStatusDAO;
 	}
@@ -202,6 +208,31 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	public void setParliamentAssemblyDAO(
 			IParliamentAssemblyDAO parliamentAssemblyDAO) {
 		this.parliamentAssemblyDAO = parliamentAssemblyDAO;
+	}
+
+	public ITehsilConstituencyDAO getTehsilConstituencyDAO() {
+		return tehsilConstituencyDAO;
+	}
+
+	public void setTehsilConstituencyDAO(
+			ITehsilConstituencyDAO tehsilConstituencyDAO) {
+		this.tehsilConstituencyDAO = tehsilConstituencyDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
 	}
 
 	@SuppressWarnings("unused")
@@ -772,9 +803,13 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 	try {
 		List<Long> matchedConstIds = new ArrayList<Long>();
 		Map<Long,JanmabhoomiCommitteeVO> committeeMaps = null;
-			if (locLvlId != null && locLvlId.longValue() == 10l) {
+		List<Object[]> list = null;
+		if (locLvlId != null && locLvlId.longValue() >0l && locationId != null && locationId.longValue() >0) { // location wise 
+           List<Long> locationIdList = new ArrayList<Long>();
+           locationIdList.add(locationId);
+			if (locLvlId != null && locLvlId.longValue() == 10l) { 
 				List<Object[]> districtUserLocaVals = districtUserLocaVals = userDistrictAccessInfoDAO.getLocationIdList(userId);
-				if (districtUserLocaVals != null && districtUserLocaVals.size() > 0) {
+				if (districtUserLocaVals != null && districtUserLocaVals.size() > 0) { // district user
 					Set<Long> userDistrictAccessLocVals = new TreeSet<Long>();
 					getUserAccessVals(districtUserLocaVals,userDistrictAccessLocVals);// set districtIds
 
@@ -782,7 +817,7 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 
 					Set<Long> userConstAccessLocVals = new TreeSet<Long>();
 					getUserAccessVals(constituencyUserLocaVals,userConstAccessLocVals);// set constituencyIds
-					List<Long> constIds = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(locationId);
+					List<Long> constIds = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(locationId); // constituencyIds based on district user parliament constituencies
 					if (constituencyUserLocaVals != null && constituencyUserLocaVals.size() > 0) {
 						for (Long userConstIds : userConstAccessLocVals) {
 							if (constIds.contains(userConstIds))
@@ -791,7 +826,104 @@ public class JanmabhoomiCommitteeService implements IJanmabhoomiCommitteeService
 					}
 				}
 			}
-			List<Object[]> list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, locationId, committeeLvlId,status,matchedConstIds);
+			list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, locationIdList, committeeLvlId,status,matchedConstIds);
+		}else{// dashboard block (committee level wise)
+			boolean districtUserStatus = false;  
+			boolean districtUserConstStatus = false; 
+			boolean constUserStatus = false;
+			
+			
+			List<Object[]> districtUserLocaVals = districtUserLocaVals = userDistrictAccessInfoDAO.getLocationIdList(userId);
+			Set<Long> userDistrictAccessLocVals = new TreeSet<Long>(); // districtids of districtUser
+			
+			Set<Long> ditrictUserConstIdsAccessLocVals = new TreeSet<Long>(); // constIds of districtUser
+			
+			
+			List<Object[]> constituencyUserLocaVals = userConstituencyAccessInfoDAO.findByUser(userId);
+			Set<Long> userConstAccessLocVals = new TreeSet<Long>(); // constIds of constUser
+			
+			if(districtUserLocaVals !=null && districtUserLocaVals.size() >0){
+				districtUserStatus = true;
+				getUserAccessVals(districtUserLocaVals,userDistrictAccessLocVals);// set districtIds
+				
+				List<Object[]> ditrictUserConstIdsLsit = constituencyDAO.getConstituencysByDistrictId(new ArrayList<Long>(userDistrictAccessLocVals));
+				getUserAccessVals(ditrictUserConstIdsLsit,ditrictUserConstIdsAccessLocVals);// set constituencyIds
+				
+				if(districtUserLocaVals !=null && districtUserLocaVals.size() >0){
+					districtUserConstStatus = true;
+				}
+			}
+			if(constituencyUserLocaVals !=null && constituencyUserLocaVals.size() >0){
+				constUserStatus = true;
+				getUserAccessVals(constituencyUserLocaVals,userConstAccessLocVals);// set districtIds
+			}
+			
+			if(committeeLvlId == 1l){
+				if(districtUserStatus){ // district user
+					locLvlId =3l;
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, new ArrayList<Long>(userDistrictAccessLocVals), committeeLvlId,status,matchedConstIds);
+				}else{// for any user
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, null, committeeLvlId,status,matchedConstIds);					
+				}
+			}else if(committeeLvlId == 2l){
+				if(districtUserStatus){ // district user
+					List<Long> teshilIdsList = tehsilConstituencyDAO.getTehsilIdsByConstituencyId(new ArrayList<Long>(ditrictUserConstIdsAccessLocVals));
+					locLvlId =5l;
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, teshilIdsList, committeeLvlId,status,matchedConstIds);					
+				}else if(constUserStatus){//constituency user
+					List<Long> teshilIdsList = tehsilConstituencyDAO.getTehsilIdsByConstituencyId(new ArrayList<Long>(userConstAccessLocVals));
+					locLvlId =5l;
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, teshilIdsList, committeeLvlId,status,matchedConstIds);					
+				}else{ // for any user
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, null, committeeLvlId,status,matchedConstIds);					
+
+				}
+			}else if(committeeLvlId == 3l || committeeLvlId == 4l){
+				if(districtUserStatus){// district user
+					List<Long> localElectionIdsList = localElectionBodyDAO.getLocalElectionBodyIdsByDistrictIdsList(new ArrayList<Long>(userDistrictAccessLocVals));
+					locLvlId =7l;
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, localElectionIdsList, committeeLvlId,status,matchedConstIds);					
+				}else if(constUserStatus){//constituency user
+					List<Long> teshilIdsList = tehsilConstituencyDAO.getTehsilIdsByConstituencyId(new ArrayList<Long>(userConstAccessLocVals));
+					List<Long> localElectionIdsList = localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(teshilIdsList);
+					locLvlId =7l;
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, localElectionIdsList, committeeLvlId,status,matchedConstIds);					
+				}else{ // for any user
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, null, committeeLvlId,status,matchedConstIds);					
+
+				}
+			}else if(committeeLvlId == 5l){
+				if(districtUserStatus){// district user
+					if(districtUserConstStatus){
+						List<Long> teshilIdsList = tehsilConstituencyDAO.getTehsilIdsByConstituencyId(new ArrayList<Long>(ditrictUserConstIdsAccessLocVals));
+						List<Long> panchayatIdsList = panchayatDAO.getPanchayatIdsBytehsilIdsList(teshilIdsList);
+						locLvlId =6l;
+						list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, panchayatIdsList, committeeLvlId,status,matchedConstIds);					
+					}
+				}else if(constUserStatus){//constituency user
+					List<Long> teshilIdsList = tehsilConstituencyDAO.getTehsilIdsByConstituencyId(new ArrayList<Long>(userConstAccessLocVals));
+					List<Long> panchayatIdsList = panchayatDAO.getPanchayatIdsBytehsilIdsList(teshilIdsList);
+					locLvlId =6l;
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, panchayatIdsList, committeeLvlId,status,matchedConstIds);		
+				}else{ // for any user
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, null, committeeLvlId,status,matchedConstIds);					
+
+				}
+			}else if(committeeLvlId == 6l || committeeLvlId == 7l){
+				if(districtUserStatus){// district user
+					if(districtUserConstStatus){
+						locLvlId =8l;
+						list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, new ArrayList<Long>(ditrictUserConstIdsAccessLocVals), committeeLvlId,status,matchedConstIds);					
+					}
+				}else if(constUserStatus){//constituency user
+					locLvlId =8l;
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, new ArrayList<Long>(userConstAccessLocVals), committeeLvlId,status,matchedConstIds);		
+				}else{ // for any user
+					list = jbCommitteeDAO.getLocationWiseCommitteeDetailsForCommitteeLvl(null,null , locLvlId, null, committeeLvlId,status,matchedConstIds);					
+				}
+			}
+		}
+		
 			committeeMaps = new LinkedHashMap<Long,JanmabhoomiCommitteeVO>();
 			setCommitteesData(committeeMaps,list,status,"");
 		

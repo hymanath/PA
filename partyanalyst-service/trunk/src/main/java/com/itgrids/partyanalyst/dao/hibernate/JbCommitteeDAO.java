@@ -140,7 +140,7 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		return query.list();
 		
 	}
-	public List<Object[]> getLocationWiseCommitteeDetailsForCommitteeLvl(Date fromDate,Date endDate,Long levelId,Long levelVal,Long committeeLvlId,Long status,List<Long> matchedConstIdsForUserId){
+	public List<Object[]> getLocationWiseCommitteeDetailsForCommitteeLvl(Date fromDate,Date endDate,Long levelId,List<Long> levelVal,Long committeeLvlId,Long status,List<Long> matchedConstIdsForUserId){
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select model.jbCommitteeId,model.committeeName " );
@@ -152,20 +152,36 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 			sb.append(" left join model.userAddress.district district ");
 		}else if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 4l){
 			sb.append(" left join  model.userAddress.constituency constituency ");
+		}else if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 5l){
+			sb.append(" left join  model.userAddress.tehsil tehsil ");
+		}else if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 6l){
+			sb.append(" left join  model.userAddress.panchayat panchayat ");
+		}else if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 7l){
+			sb.append(" left join  model.userAddress.localElectionBody localElectionBody ");
+		}else if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 8l){
+			sb.append(" left join  model.userAddress.constituency constituency ");
 		}else if(levelId != null && levelId.longValue() > 0l && levelId.longValue() == 10l){
 			sb.append(" left join  model.userAddress.parliamentConstituency parliamentConstituency ");
 			if(matchedConstIdsForUserId !=null && matchedConstIdsForUserId.size() >0)
 				sb.append(" left join  model.userAddress.constituency constituency ");
 		}
 		sb.append(" where model.isDeleted = 'N' ");
-		if(levelId != null && levelId.longValue()  == 3l && levelVal != null && levelVal.longValue() >0l ){
-			sb.append(" and district.districtId = :levelVal ");
-		}else if(levelId != null && levelId.longValue()  == 4l && levelVal != null && levelVal.longValue() >0l){
-			sb.append(" and constituency.constituencyId = :levelVal ");
-		}else if(levelId != null && levelId.longValue()  == 10l && levelVal != null && levelVal.longValue() >0l){
-			sb.append("   and parliamentConstituency.constituencyId = :levelVal  ");
+		if(levelId != null && levelId.longValue()  == 3l && levelVal != null && levelVal.size() >0l ){
+			sb.append(" and district.districtId  in (:levelVal) ");
+		}else if(levelId != null && levelId.longValue()  == 4l && levelVal != null && levelVal.size() >0l){
+			sb.append(" and constituency.constituencyId in (:levelVal)");
+		}else if(levelId != null && levelId.longValue()  == 5l && levelVal != null && levelVal.size() >0l){
+			sb.append(" and tehsil.tehsilId in (:levelVal) ");
+		}else if(levelId != null && levelId.longValue()  == 6l && levelVal != null && levelVal.size() >0l){
+			sb.append(" and panchayat.panchayatId in (:levelVal) ");
+		}else if(levelId != null && levelId.longValue()  == 7l && levelVal != null && levelVal.size() >0l){
+			sb.append(" and localElectionBody.localElectionBodyId in (:levelVal) ");
+		}else if(levelId != null && levelId.longValue()  == 8l && levelVal != null && levelVal.size() >0l){
+			sb.append(" and constituency.constituencyId in (:levelVal) ");
+		}else if(levelId != null && levelId.longValue()  == 10l && levelVal != null && levelVal.size() >0l){
+			sb.append("   and parliamentConstituency.constituencyId in (:levelVal)  ");
 			if(matchedConstIdsForUserId !=null && matchedConstIdsForUserId.size() >0)
-				sb.append(" and constituency.constituencyId in(:matchedConstIdsForUserId) ");
+				sb.append(" and constituency.constituencyId in (:matchedConstIdsForUserId) ");
 		}
 		
 		if(committeeLvlId != null && committeeLvlId.longValue() >0l ){
@@ -186,8 +202,8 @@ public class JbCommitteeDAO extends GenericDaoHibernate<JbCommittee, Long> imple
 		}*/
 		
 		Query query = getSession().createQuery(sb.toString());
-		if(levelVal != null && levelVal.longValue() >0l){
-			query.setParameter("levelVal", levelVal);
+		if(levelVal != null && levelVal.size() >0l){
+			query.setParameterList("levelVal", levelVal);
 		}
 		if(committeeLvlId != null && committeeLvlId.longValue() >0l ){
 			query.setParameter("committeeLvlId", committeeLvlId);

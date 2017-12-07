@@ -269,4 +269,14 @@ public String getLocalElectionBodyName(Long localElectionBodyId){
 									" order by model.name"); 
 		return query.list();  
 	}
+  
+  public List<Long> getLocalElectionBodyIdsByDistrictIdsList(List<Long> districtIdsList){
+		Query query = getSession().createQuery("select distinct model.localElectionBodyId " +
+									" from LocalElectionBody model" +
+									" where model.district.districtId in (:districtIdsList) "); 
+		if(districtIdsList != null && districtIdsList.size() >0){
+			query.setParameterList("districtIdsList", districtIdsList);
+		}
+		return query.list();  
+	}
 }
