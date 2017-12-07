@@ -473,12 +473,15 @@ $(document).on("click",".memberAddEditDetailsCls",function(){
 		}
 		panchayatId='2'+wardId;
 	}
+	if(type=="edit"){
+		var imageUrlForRejectMemeber = $(this).attr("attr_reject_user_image");
+	}
 	if(publicRepreTypeId != null && publicRepreTypeId >0){
 		getAdvancedSearchDetails(publicRepreTypeId,committeeLvlId,committeeLvlVal,committeeId,"approval",roleId,memberId,memberName,
 		voterCardNo,mobileNo,memberShipId,stateId,districtId,constituencyId,mandalId,panchayatId);
 	}else{
 		buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,
-		voterCardNo,mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,mandalId,panchayatId);
+		voterCardNo,mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,mandalId,panchayatId,imageUrlForRejectMemeber);
 	}
 });
 $(document).on("click",".closeShowPdfCls",function(){
@@ -488,7 +491,7 @@ $(document).on("click",".closeShowPdfCls",function(){
 });
 	
 function buildMemberAddEditDetailsBlock(type,roleId,memberId,memberName,voterCardNo,
-mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,mandalId,panchayatId){
+mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,mandalId,panchayatId,imageUrlForRejectMemeber){
 	$("#searchMemberDetailsId").html("");
 	$("#memberAddEditPopUpDetailsId").html(spinner);
 	if(type=="edit"){
@@ -569,7 +572,12 @@ mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,m
 						
 						str+='<tr>';
 							str+='<td style="vertical-align: middle; text-align: center;">';
-							str+='<img src="images/User.png"/>';
+							if(imageUrlForRejectMemeber != null){
+							str+='<img src="http://mytdp.com/'+imageUrlForRejectMemeber+'"/>';
+							}else{
+								str+='<img src="images/User.png"/>';
+							}
+							
 							str+='</td>';
 							str+='<td class="line_heightCss">';
 							str+='<h5><span class="text-bold">Name : </span> <span>'+memberName+'</span></h5>';
@@ -991,8 +999,6 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 									}else{
 										str+='<img src="images/User.png"/>';
 									}
-									
-										
 									str+='</td>';
 									str+='<td class="line_heightCss">';
 										if(result.name !=null && result.name.trim().length>0){
@@ -1058,6 +1064,11 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 				tdpCadreId = result.tdpCadreId;
 			}
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+tdpCadreId+'"/>';
+			if(result.imageURL !=null && result.imageURL.trim().length>0){
+				var splitImg = result.imageURL.split(".com/");
+				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.imageUrl" value="'+splitImg[1]+'"/>';
+			}
+			
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';memberId
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.committeeId" value="'+committeeId+'"/>';
@@ -1388,7 +1399,7 @@ function savingApplication(committeeId,statusType){
 					 $("#searchMemberDetailsId").html('<button id="searchMemberBtnId" attr_status="approval" attr_role_id="'+roleId+'" attr_member_id="'+memberId+'" attr_member_name="'+memberName+'" attr_voter_card_no="'+voterCardNo+'" attr_mobile_no="'+mobileNo+'" attr_memberShip_id="'+memberShipId+'" attr_committee_id="'+committeeId+'" attr_status_type="'+statusType+'" attr_state_id="'+attrStateId+'" attr_district_id="'+attrDistrictId+'" attr_constituency_id="'+attrConstituencyId+'" attr_mandal_id="'+attrMandalId+'" attr_panchayat_id="'+attrPanchayatId+'"class="btn btn-success">Search Member</button>'); 
 					buildAdvancedSearchDetails(result,committeeId,statusType,roleId,memberId,searchValue);
 				}else{
-					buildMemberAddEditDetailsBlock("approval",roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId,statusType,attrStateId,attrDistrictId,attrConstituencyId,attrMandalId,attrPanchayatId)
+					buildMemberAddEditDetailsBlock("approval",roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId,statusType,attrStateId,attrDistrictId,attrConstituencyId,attrMandalId,attrPanchayatId,null)//null no imageurl
 				}
 			}); 
 	}
@@ -1415,7 +1426,7 @@ function savingApplication(committeeId,statusType){
 											str+='<div class="col-sm-12">';
 												str+='<div class="media">';
 													str+='<div class="media-left">';
-														str+='<img class="media-object thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
+														str+='<img class="media-object thumbnail" src="http://mytdp.com/'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
 													str+='</div>';
 													str+='<div class="media-body namesalignmentCss">';
 														str+='<h5 style="color:#34A7C1;">Name : '+result[i].name+'</h5>';
@@ -1431,7 +1442,6 @@ function savingApplication(committeeId,statusType){
 													str+='</div>';
 												str+='</div>';
 											str+='</div>';
-											
 											str+='<div class="btn btn-success btn-sm col-sm-6 col-md-offset-4 m_top10" style="border-radius:20px;">';
 												str+='<label style="margin-bottom: 0px; line-height: 10px;">';
 													str+='<input style="margin-left: 0px; margin-top: 0px;" type="radio" name="optionsRadios" class="selectedMemberDetailsAppend" attr_name="'+result[i].name+'" attr_mobile_no="'+result[i].mobileNo+'" attr_tdp_cadreId="'+result[i].id+'" attr_commiteeId="'+committeeId+'" attr_status_type="'+statusType+'" attr_voter_Id="'+result[i].voterId+'" attr_roleId="'+roleId+'" attr_member_Id="'+memberId+'" attr_img_url="'+result[i].imageURL+'"> &nbsp;SELECT';
@@ -1483,14 +1493,13 @@ function savingApplication(committeeId,statusType){
 		var roleId = $(this).attr("attr_roleId");
 		var memberId = $(this).attr("attr_member_Id");
 		var imageUrl = $(this).attr("attr_img_url");
-		
-		buildSelectedMemberBlockDiv(name,mobileNo,tdpCadreId,committeId,statusType,voterId,roleId,memberId);
+		buildSelectedMemberBlockDiv(name,mobileNo,tdpCadreId,committeId,statusType,voterId,roleId,memberId,imageUrl);
 		$("#memberAddEditModalOpen").animate({
                     scrollTop: $("#selectedMemberDetailsId").offset().top
                 }, 1000);
 	});
 	
-	function buildSelectedMemberBlockDiv(name,mobileNo,tdpCadreId,committeId,statusType,voterId,roleId,memberId){
+	function buildSelectedMemberBlockDiv(name,mobileNo,tdpCadreId,committeId,statusType,voterId,roleId,memberId,imageUrl){
 		var str='';
 		str+='<form name="addMemberSaving" id="addMemberPub"  method="post" enctype="multipart/form-data">';
 			str+='<div class="row m_top20">';
@@ -1511,7 +1520,7 @@ function savingApplication(committeeId,statusType){
 						str+='<input type="text" class="form-control" id="memberMobileNoId" placeholder="Enter MobileNo" name="janmabhoomiCommitteeMemberVO.mobileNumber" value="'+mobileNo+'">';
 					str+='</label>';
 				str+='</div>';
-				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.imageUrl" value="'+roleId+'"/>';
+				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.imageUrl" value="'+imageUrl+'"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.voterId" value="'+voterId+'"/>';
 				//if(memberId != null && memberId>0)
@@ -1576,6 +1585,6 @@ function savingApplication(committeeId,statusType){
 		var attrMandalId = $(this).attr("attr_mandal_id");
 		var attrPanchayatId = $(this).attr("attr_panchayat_id");
 		
-		buildMemberAddEditDetailsBlock(status,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId,statusType,attrStateId,attrDistrictId,attrConstituencyId,attrMandalId,attrPanchayatId)
+		buildMemberAddEditDetailsBlock(status,roleId,memberId,memberName,voterCardNo,mobileNo,memberShipId,committeeId,statusType,attrStateId,attrDistrictId,attrConstituencyId,attrMandalId,attrPanchayatId,null)//null no imageurl
 		 
 	});
