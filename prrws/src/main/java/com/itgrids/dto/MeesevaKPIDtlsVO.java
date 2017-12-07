@@ -33,6 +33,7 @@ public class MeesevaKPIDtlsVO {
 	private Long mobileAppServices2015 = 0L;
 	private Long mobileAppServices2016 = 0L;
 	private Long mobileAppServices2017 = 0L;
+	private Long totalMobileAppServices = 0L;
 	
 	public Long getId() {
 		return id;
@@ -213,6 +214,12 @@ public class MeesevaKPIDtlsVO {
 	}
 	public void setMobileAppServices2017(Long mobileAppServices2017) {
 		this.mobileAppServices2017 = mobileAppServices2017;
+	}
+	public Long getTotalMobileAppServices() {
+		return totalMobileAppServices;
+	}
+	public void setTotalMobileAppServices(Long totalMobileAppServices) {
+		this.totalMobileAppServices = totalMobileAppServices;
 	} 
 	
 }

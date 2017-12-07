@@ -36,6 +36,9 @@ public class MeesevaDtlsVO implements Cloneable {
 	private Long approved = 0L;
 	private Long rejected = 0L;
 	private Long revoke = 0L;
+	private Long catBTotalSlaCunt = 0L;
+	private String withInSLAPerc;
+	private String beyondSLAPerc;
 	
 	public String getId() {
 		return id;
@@ -220,6 +223,24 @@ public class MeesevaDtlsVO implements Cloneable {
 	}
 	public void setRevoke(Long revoke) {
 		this.revoke = revoke;
+	}
+	public Long getCatBTotalSlaCunt() {
+		return catBTotalSlaCunt;
+	}
+	public void setCatBTotalSlaCunt(Long catBTotalSlaCunt) {
+		this.catBTotalSlaCunt = catBTotalSlaCunt;
+	}
+	public String getWithInSLAPerc() {
+		return withInSLAPerc;
+	}
+	public void setWithInSLAPerc(String withInSLAPerc) {
+		this.withInSLAPerc = withInSLAPerc;
+	}
+	public String getBeyondSLAPerc() {
+		return beyondSLAPerc;
+	}
+	public void setBeyondSLAPerc(String beyondSLAPerc) {
+		this.beyondSLAPerc = beyondSLAPerc;
 	}
 	
 }
