@@ -142,7 +142,7 @@ public class RWSNICService implements IRWSNICService{
 	public List<LocationVO> getHabitationCoverageByStatusByLocationType(InputVO inputVO){
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
-				inputVO.setYear(String.valueOf(Long.valueOf(inputVO.getYear())-1l));
+				
 			if(inputVO!= null){
 				inputVO = setFilterVal(inputVO);
 			}
@@ -289,7 +289,7 @@ public class RWSNICService implements IRWSNICService{
 	public BasicVO getLabTestDetails(InputVO inputVO){
 		BasicVO basicVO = null;
 		try {
-			inputVO.setYear(String.valueOf(Long.valueOf(inputVO.getYear())-1l));
+		
 	        WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getLabTestDetails");	        
 	        String authStringEnc = getAuthenticationString("admin","admin@123");	        
 	        ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
@@ -329,7 +329,7 @@ public class RWSNICService implements IRWSNICService{
 	public BasicVO getHabitationSupplyDetails(InputVO VO){
 		BasicVO finalVO = new BasicVO();
 		try {
-			VO.setYear(String.valueOf(Long.valueOf(VO.getYear())-1l));
+		
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/gethabitationWatersupplyDetails");
 			    String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		        ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, VO);
