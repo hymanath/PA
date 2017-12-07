@@ -2748,6 +2748,7 @@ function buildEOfcDepartWiseOverviewDetails(result){
 	str+='<div class="col-sm-12 m_top20">';	
 		str+='<div class="table-responsive">';
 			str+='<table class="table table-bordered table_ITC" id="dataTableITCDepartment">';
+				str+='<thead>';
 					str+='<tr>';
 						str+='<th style="color:#A349A4;text-align:center">Departments</th>';
 						str+='<th style="background-color:#B2DFDB">Total</th>';
@@ -2760,6 +2761,8 @@ function buildEOfcDepartWiseOverviewDetails(result){
 						str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
 						str+='<th style="background-color:#FDCECE"> > 60 days</th>';
 					str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
 					for(var i in result){
 						if(result[i].departmentName != "ITE & C" && result[i].departmentName != "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
 							str+='<tr>';
@@ -2782,6 +2785,7 @@ function buildEOfcDepartWiseOverviewDetails(result){
 							str+='</tr>';
 						}
 					}
+					str+='</tbody>';
 					for(var i in result){
 						if(result[i].departmentName == "ITE & C"){
 							str+='<tr>';
@@ -2798,13 +2802,14 @@ function buildEOfcDepartWiseOverviewDetails(result){
 							str+='</tr>';
 						}
 					}
+					
 			str+='</table>';
 		str+='</div>';
 	str+='</div>';
 	
 	str+='<div class="col-sm-12 m_top20">';	
 		str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered">';
+			str+='<table class="table table-bordered" id="dataTableITCHODS">';
 				str+='<thead>';
 					str+='<tr>';
 						//str+='<th style="color:#A349A4;text-align:center">HODS</th>';
@@ -2851,6 +2856,18 @@ function buildEOfcDepartWiseOverviewDetails(result){
 	str+='</div>';
 	
 $("#eOfficeDeparmentsOverViewBlock").html(str);
+$("#dataTableITCDepartment").dataTable({
+		"paging":   false,
+		"info":     false,
+		"searching": false,
+		"autoWidth": true
+});
+$("#dataTableITCHODS").dataTable({
+	"paging":   false,
+	"info":     false,
+	"searching": false,
+	"autoWidth": true
+});
 }
 $(document).on("click",".departmentDetailsCls",function(){	
 	var departmentId =  $(this).attr("attr_department_id")
