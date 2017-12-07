@@ -3372,7 +3372,7 @@ function getMeesevaKPIOverViewDetails(type,divId,blockId){
 	$("#"+divId+"Block"+blockId).html(spinner);
 	
 	var json = {
-		
+		year : "2017"
 	}
 	$.ajax({                
 		type:'POST',    
@@ -3399,6 +3399,12 @@ function getMeesevaKPIOverViewDetails(type,divId,blockId){
 		}
 		getMeesevaKPITargetAchieveDetails(divId,blockId);
 		getMeesevaKPILocationWiseDetails(divId,blockId);
+		//getMeesevaKPIOnlineServiceDetails();Old Call FR Online Services
+		//getMeesevaKPIMobileSevicesDetails();Old Call FR Mobile App Services
+		getMeesevaKPIOnlineServiceOverviewCount();
+		getMeesevaKPIMobileAppServiceOverviewCount();
+		getMeesevaKPIOnlineServiceYearWiseDetails();//New Call FR Online Services
+		getMeesevaKPIMobileSevicesYearWiseDetails();//New Call FR Mobile App Services
 	});	
 }
 function buildMeesevaKPIOverViewDetails(result,divId,blockId){
@@ -3445,6 +3451,20 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 		str+='</div>';
 		
 	str+='</div>';
+	str+='<div class="row">';
+		str+='<div class="col-sm-6  m_top10">';
+			str+='<div class="white_block_ITC">';
+				str+='<h4 class="text-center"><b style="font-size: 20px !important;">Online Services</b></h4>';
+				str+='<div id="onlineSerOvrCuntCls"></div>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-6  m_top10">';
+			str+='<div class="white_block_ITC">';
+					str+='<h4 class="text-center"><b style="font-size: 20px !important;">Mobile App Services</b></h4>';
+					str+='<div id="mobileAppSerOvrCuntCls"></div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
 	
 	str+='<div class="row m_top10">';
 		str+='<div class="col-sm-12">';
@@ -3487,6 +3507,42 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 			str+='</div>';
 			
 			
+		str+='</div>';
+	str+='</div>';
+	
+	str+='<div class="row m_top10">';
+		str+='<div class="col-sm-6">';
+			str+='<div class="panel-group" id="accordionOnlinServiceKPI" role="tablist" aria-multiselectable="true">';
+				str+='<div class="panel panel-default panel-black">';
+						str+='<div class="panel-heading" role="tab" id="headingOnlinServiceKPI">';
+							str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionOnlinServiceKPI" href="#collapseOnlinServiceKPI" aria-expanded="true" aria-controls="collapseOnlinServiceKPI">';
+								str+='<h4 class="panel-title">ONLINE SERVICES</h4>';
+							str+='</a>';
+						str+='</div>';
+					str+='<div id="collapseOnlinServiceKPI" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOnlinServiceKPI">';
+						str+='<div class="panel-body">';
+							str+='<div id="onlineServicesDiv"></div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		//Mobile App Services
+		str+='<div class="col-sm-6">';
+			str+='<div class="panel-group" id="accordionMobileAppServiceKPI" role="tablist" aria-multiselectable="true">';
+				str+='<div class="panel panel-default panel-black">';
+						str+='<div class="panel-heading" role="tab" id="headingMobileAppServiceKPI">';
+							str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionMobileAppServiceKPI" href="#collapseMobileAppServiceKPI" aria-expanded="true" aria-controls="collapseMobileAppServiceKPI">';
+								str+='<h4 class="panel-title">MOBILE APP SERVICES</h4>';
+							str+='</a>';
+						str+='</div>';
+					str+='<div id="collapseMobileAppServiceKPI" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingMobileAppServiceKPI">';
+						str+='<div class="panel-body">';
+							str+='<div id="mobileAppServicesDiv"></div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	
@@ -3631,4 +3687,349 @@ function buildMeesevaKPILocationWiseDetails(result){
 		str+='</table>';
 		$("#locationWiseMeesavaCentres").html(str);
 		$("#locationWiseMeesavaKPI").dataTable();
+}
+function getMeesevaKPIOnlineDeptWiseDetails(departmentId,year){
+	$("#kpiOnlineDeptDivId").html(spinner);
+	var json = {
+		year : year,
+		deptId : departmentId
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPIOnlineDeptWiseCuntDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildMeesevaKPIOnlineDeptWiseDetails(result);
+		}else{
+			$("#kpiOnlineDeptDivId").html("No Data Available")
+		}
+	});	
+}
+
+function getMeesevaKPIOnlineServiceYearWiseDetails(){
+	$("#onlineServicesDiv").html(spinner);
+	var json = {
+		year : "2014"
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPIOnlineServiceYearWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildMeesevaKPIOnlineServiceDetails(result);
+		}else{
+			$("#onlineServicesDiv").html("No Data Available")
+		}
+	});	
+}
+
+function buildMeesevaKPIOnlineServiceDetails(result){
+	var str='';
+	str+='<table class="table" id="onlineServicesTableId">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th>Department</th>';
+					str+='<th>2014</th>';
+					str+='<th>2015</th>';
+					str+='<th>2016</th>';
+					str+='<th>2017</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].name+'</td>';
+						if(result[i].onLineServices2014 != null && result[i].onLineServices2014 != 0){
+							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2014"><u>'+result[i].onLineServices2014+'</u></td>';
+						}else{
+							str+='<td>0</td>';
+						}
+						if(result[i].onLineServices2015 != null && result[i].onLineServices2015 != 0){
+							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2015"><u>'+result[i].onLineServices2015+'</u></td>';
+						}else{
+							str+='<td>0</td>';
+						}
+						if(result[i].onLineServices2016 != null && result[i].onLineServices2016 != 0){
+							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2016"><u>'+result[i].onLineServices2016+'</u></td>';
+						}else{
+							str+='<td>0</td>';
+						}
+						if(result[i].onLineServices2017 != null && result[i].onLineServices2017 != 0){
+							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2017"><u>'+result[i].onLineServices2017+'</u></td>';
+						}else{
+							str+='<td>0</td>';
+						}
+						
+						//str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'"><u>'+result[i].onLineServicesCount+'</u></td>';
+					str+='</tr>';
+				}
+			str+='<tbody>';
+		str+='</table>';
+		$("#onlineServicesDiv").html(str);
+		$("#onlineServicesTableId").dataTable();
+}
+$(document).on("click",".dptSrvCuntCls",function(){
+	$("#kpiOnlineDeptModalId").modal("show");
+	var deptName =  $(this).attr("attr_dept_name");
+	var year =  $(this).attr("attr_year");
+	$("#deptServiceHeadingId").html(deptName +" Department "+year+" Services");
+	getMeesevaKPIOnlineDeptWiseDetails($(this).attr("attr_dept_id"),year);
+});
+function buildMeesevaKPIOnlineDeptWiseDetails(result){
+	var str='';
+	str+='<table class="table" id="kpiOnlineDeptTableId">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th>Service Name</th>';
+				str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td>'+result[i].serviceName+'</td>';
+				str+='</tr>';
+			}
+		str+='<tbody>';
+	str+='</table>';
+	$("#kpiOnlineDeptDivId").html(str);
+	$("#kpiOnlineDeptTableId").dataTable();
+}
+
+function getMeesevaKPIMobileSevicesYearWiseDetails(){
+	$("#mobileAppServicesDiv").html(spinner);
+	var json = {
+		year : "2014"
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPIMobileSevicesYearWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildMeesevaKPIMobileSevicesDetails(result);
+		}else{
+			$("#mobileAppServicesDiv").html("No Data Available")
+		}
+	});	
+}
+
+function buildMeesevaKPIMobileSevicesDetails(result){
+	var str='';
+	str+='<table class="table" id="mobileAppServicesTableId">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th>Department</th>';
+				str+='<th>2014</th>';
+				str+='<th>2015</th>';
+				str+='<th>2016</th>';
+				str+='<th>2017</th>';
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td>'+result[i].name+'</td>';
+					if(result[i].mobileAppServices2014 != null && result[i].mobileAppServices2014 != 0){
+							str+='<td class="dptMbleSrvCuntCls" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2014"><u>'+result[i].mobileAppServices2014+'</u></td>';
+						}else{
+							str+='<td>0</td>';
+						}
+						if(result[i].mobileAppServices2015 != null && result[i].mobileAppServices2015 != 0){
+							str+='<td class="dptMbleSrvCuntCls" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2015"><u>'+result[i].mobileAppServices2015+'</u></td>';
+						}else{
+							str+='<td>0</td>';
+						}
+						if(result[i].mobileAppServices2016 != null && result[i].mobileAppServices2016 != 0){
+							str+='<td class="dptMbleSrvCuntCls" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2016"><u>'+result[i].mobileAppServices2016+'</u></td>';
+						}else{
+							str+='<td>0</td>';
+						}
+						if(result[i].mobileAppServices2017 != null && result[i].mobileAppServices2017 != 0){
+							str+='<td class="dptMbleSrvCuntCls" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2017"><u>'+result[i].mobileAppServices2017+'</u></td>';
+						}else{
+							str+='<td>0</td>';
+						}
+
+					//str+='<td class="dptMbleSrvCuntCls" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2017"><u>'+result[i].currentYearAchievement+'</u></td>';
+					//str+='<td class="dptMbleSrvCuntCls" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="'+year+'"><u>'+result[i].previousYearAchievementCount+'</u></td>';
+				str+='</tr>';
+			}
+		str+='<tbody>';
+	str+='</table>';
+	$("#mobileAppServicesDiv").html(str);
+	$("#mobileAppServicesTableId").dataTable();
+}
+
+$(document).on("click",".dptMbleSrvCuntCls",function(){
+	$("#kpiMobileAppDeptModalId").modal("show");
+	var deptName =  $(this).attr("attr_dept_name");
+	var year =  $(this).attr("attr_year");
+	$("#mobileAppHeadingId").html(deptName +" Department "+year+" Mobile App Services");
+	getMeesevaKPIMobileDeptSevicesDetails(deptName,year);
+});
+
+function getMeesevaKPIMobileDeptSevicesDetails(department,year){
+	$("#kpiMobileAppDeptDivId").html(spinner);
+	var json = {
+		year : year,
+		groupName : department  //DepartmentName
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPIMobileDeptSevicesDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildMeesevaKPIMobileDeptSevicesDetails(result);
+		}else{
+			$("#kpiMobileAppDeptDivId").html("No Data Available")
+		}
+	});	
+}
+
+function buildMeesevaKPIMobileDeptSevicesDetails(result){
+	var str='';
+	str+='<table class="table" id="kpiMobileAppDeptTableId">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th>Name</th>';
+				str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td>'+result[i].serviceName+'</td>';
+				str+='</tr>';
+			}
+		str+='<tbody>';
+	str+='</table>';
+	$("#kpiMobileAppDeptDivId").html(str);
+	$("#kpiMobileAppDeptTableId").dataTable();
+}
+
+function getMeesevaKPIOnlineServiceOverviewCount(){
+	$("#onlineSerOvrCuntCls").html(spinner);
+	var json = {
+		year : "2014"
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPIOnlineServiceOverviewCount',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			buildMeesevaKPIOnlineServiceOverviewCount(result);
+		}else{
+			$("#onlineSerOvrCuntCls").html("No Data Available")
+		}
+	});	
+}
+function buildMeesevaKPIOnlineServiceOverviewCount(result){
+	var str='';
+		str+='<div class="row m_top10">';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="border-right:1px solid #000;text-align:center;">';
+					str+='<h4><b>2014</b></h4>';
+					str+='<h5 class="m_top10">'+result.onLineServices2014+'</h5>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="border-right:1px solid #000;text-align:center;">';
+					str+='<h4><b>2015</b></h4>';
+					str+='<h5 class="m_top10">'+result.onLineServices2015+'</h5>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="border-right:1px solid #000;text-align:center;">';
+					str+='<h4><b>2016</b></h4>';
+					str+='<h5 class="m_top10">'+result.onLineServices2016+'</h5>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="text-align:center;">';
+					str+='<h4><b>2017</b></h4>';
+					str+='<h5 class="m_top10">'+result.onLineServices2017+'</h5>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	$("#onlineSerOvrCuntCls").html(str);
+}
+function getMeesevaKPIMobileAppServiceOverviewCount(){
+	$("#mobileAppSerOvrCuntCls").html(spinner);
+	var json = {
+		year : "2014"
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPIMobileAppServiceOverviewCount',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			buildMeesevaKPIMobileAppServiceOverviewCount(result);
+		}else{
+			$("#mobileAppSerOvrCuntCls").html("No Data Available")
+		}
+	});	
+}
+function buildMeesevaKPIMobileAppServiceOverviewCount(result){
+	var str='';
+		str+='<div class="row m_top10">';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="border-right:1px solid #000;text-align:center;">';
+					str+='<h4><b>2014</b></h4>';
+					str+='<h5 class="m_top10">'+result.mobileAppServices2014+'</h5>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="border-right:1px solid #000;text-align:center;">';
+					str+='<h4><b>2015</b></h4>';
+					str+='<h5 class="m_top10">'+result.mobileAppServices2015+'</h5>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="border-right:1px solid #000;text-align:center;">';
+					str+='<h4><b>2016</b></h4>';
+					str+='<h5 class="m_top10">'+result.mobileAppServices2016+'</h5>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="text-align:center;">';
+					str+='<h4><b>2017</b></h4>';
+					str+='<h5 class="m_top10">'+result.mobileAppServices2017+'</h5>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	$("#mobileAppSerOvrCuntCls").html(str);
 }

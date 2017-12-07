@@ -26,13 +26,15 @@ import org.json.XML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.tempuri.GetMeeSevaAppDeptWiseServiceAbstractResponseGetMeeSevaAppDeptWiseServiceAbstractResult;
+import org.tempuri.GetMeeSevaAppDeptWiseServiceDetailsResponseGetMeeSevaAppDeptWiseServiceDetailsResult;
 import org.tempuri.MOUTrackerIT;
+import org.tempuri.MeeSevaAppWebServiceSoapProxy;
 import org.tempuri.SDP;
 import org.tempuri.TrackerITServiceSoapProxy;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.itgrids.dao.ILocationWiseMeesevaCentersDAO;
 import com.itgrids.dao.IMeesevaCentersAchievementDAO;
@@ -2223,9 +2225,20 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return MeesevaKPIDtlsVO
 	 * @Date 27-11-2017
 	 */
-	public MeesevaKPIDtlsVO getMeesevaKPIOverViewDetails() {
+	public MeesevaKPIDtlsVO getMeesevaKPIOverViewDetails(InputVO inputVO) {
 		MeesevaKPIDtlsVO finalVO = new MeesevaKPIDtlsVO();
 		try{
+			
+			String URL = null;
+			ClientResponse response = null;
+			org.json.JSONObject list = null;
+			Object contentObj = null;
+			org.json.JSONObject list1 = null;
+			org.json.JSONObject objArr = null;
+			org.json.JSONArray dataArr = null;
+			String output = null;
+			
+			
 			List<Object[]> meesevaDetList = locationWiseMeesevaCentersDAO.getStateMeesevaCentres();
 			if(meesevaDetList != null && !meesevaDetList.isEmpty()){
 				for (Object[] param : meesevaDetList) {
@@ -2236,6 +2249,47 @@ public class ItcDashboardService implements IItcDashboardService {
 					finalVO.setEstablishedLastOneMonth(Long.valueOf(param[4] != null ? param[4].toString():"0"));
 				}
 			}
+			
+			/*//OnLineService Count
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_DEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		  finalVO.setOnLineServicesCount(finalVO.getOnLineServicesCount()+jObj.getLong("NOFOSERVICES"));
+			    		}	
+			    	}
+		    	}
+			
+			//Mobile App Count
+			GetMeeSevaAppDeptWiseServiceAbstractResponseGetMeeSevaAppDeptWiseServiceAbstractResult  mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
+			 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
+			 if(list != null){
+				 Object object = list.getJSONObject("NewDataSet").get("Table");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+				    	for(int i= 0;i < list.getJSONObject("NewDataSet").getJSONArray("Table").length();i++){
+							 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").getJSONArray("Table").get(i);
+							 finalVO.setCurrentYearAchievement(finalVO.getCurrentYearAchievement()+jObj.getLong("CURYRCNT"));
+							 finalVO.setPreviousYearAchievementCount(finalVO.getPreviousYearAchievementCount()+jObj.getLong("SERCNT"));
+						}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").get("Table");
+						 finalVO.setCurrentYearAchievement(jObj.getLong("CURYRCNT"));
+						 finalVO.setPreviousYearAchievementCount(jObj.getLong("SERCNT"));
+				    }
+			 }*/
 			 
 		 }catch (Exception e) {
 			 LOG.error("Exception occured at getMeesevaSLADepartmentDetails() in  ItcDashboardService class",e);
@@ -2425,4 +2479,1056 @@ public class ItcDashboardService implements IItcDashboardService {
 		 return returnList;
 	}
 	
+	/**
+	 * @author Nandhini
+	 * @param inputVO {@link InputVO}
+	 * @description {This service is used to get getEOfcDepartOverviewDetails.}
+	 * @return List<ItecEOfficeVO>
+	 * @Date 29-11-2017
+	 */
+	public List<ItecEOfficeVO> getEOfcDepartOverviewDetails(InputVO inputVO) {
+		List<ItecEOfficeVO> returnList = new ArrayList<ItecEOfficeVO>(0);
+		try {
+			List<ItecEOfficeVO> hodList = new ArrayList<ItecEOfficeVO>(0);
+			Long[] deptIdsArr = IConstants.ITEC_EOFFICE_DEPT_IDS;
+			List<Long> deptIds = new ArrayList<Long>(0);
+			if(deptIdsArr != null && deptIdsArr.length > 0){
+				for (int i = 0; i < deptIdsArr.length; i++) {
+					deptIds.add(Long.valueOf(deptIdsArr[i].toString()));
+				}
+			}
+			Map<String,ItecEOfficeVO> departMap = new HashMap<String,ItecEOfficeVO>(0);
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("https://demo.eoffice.ap.gov.in/TTReports/Filesumm.php?strFromDate="+inputVO.getFromDate()+"&strToDate="+inputVO.getToDate()+"");
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				if (output != null && !output.isEmpty()) {
+					JSONArray finalArray = new JSONArray(output);
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							ItecEOfficeVO hodVO = new ItecEOfficeVO();
+							JSONObject hodObj = null;
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+								if(Long.valueOf(jObj.getLong("departmentid")) != null && deptIds.contains(jObj.getLong("departmentid"))){
+									ItecEOfficeVO departVO = departMap.get(jObj.getString("departmentname"));
+								 if(departVO == null){
+									departVO = new ItecEOfficeVO();
+									departVO.setDepartmentId(jObj.getLong("departmentid"));
+									departVO.setDepartmentName(jObj.getString("departmentname"));
+									//departVO.setReceiptCreated(jObj.getLong("receiptcreated"));
+									departVO.setCreated(jObj.getLong("filescreated"));//created
+									departVO.setTotalCount(jObj.getLong("totalcount"));
+									departVO.setZeroToSeven(jObj.getLong("firstcount"));
+									departVO.setEightToFifteen(jObj.getLong("secondcount"));
+									departVO.setSixteenToThirty(jObj.getLong("thirdcount"));
+									departVO.setThirtyoneToSixty(jObj.getLong("fourthcount"));
+									departVO.setAboveSixty(jObj.getLong("fifthcount"));
+									departVO.setOpenBal(jObj.getLong("opbalancecount"));
+									departVO.setRecievedFiles(jObj.getLong("file_received"));
+									departVO.setClosedFiles(jObj.getLong("files_closed"));
+									departVO.setForwaredFiles(jObj.getLong("files_forwarded"));
+									departVO.setParkedFiles(jObj.getLong("files_parked"));
+									departMap.put(departVO.getDepartmentName(), departVO);
+								 }else{
+									// departVO.setReceiptCreated(departVO.getReceiptCreated()+jObj.getLong("receiptcreated"));
+									departVO.setCreated(departVO.getCreated()+jObj.getLong("filescreated"));//created
+									departVO.setTotalCount(departVO.getTotalCount()+jObj.getLong("totalcount"));
+									departVO.setZeroToSeven(departVO.getZeroToSeven()+jObj.getLong("firstcount"));
+									departVO.setEightToFifteen(departVO.getEightToFifteen()+jObj.getLong("secondcount"));
+									departVO.setSixteenToThirty(departVO.getSixteenToThirty()+jObj.getLong("thirdcount"));
+									departVO.setThirtyoneToSixty(departVO.getThirtyoneToSixty()+jObj.getLong("fourthcount"));
+									departVO.setAboveSixty(departVO.getAboveSixty()+jObj.getLong("fifthcount"));
+									departVO.setOpenBal(departVO.getOpenBal()+jObj.getLong("opbalancecount"));
+									departVO.setRecievedFiles(departVO.getRecievedFiles()+jObj.getLong("file_received"));
+									departVO.setClosedFiles(departVO.getClosedFiles()+jObj.getLong("files_closed"));
+									departVO.setForwaredFiles(departVO.getForwaredFiles()+jObj.getLong("files_forwarded"));
+									departVO.setParkedFiles(departVO.getParkedFiles()+jObj.getLong("files_parked"));
+								 }
+								 if(departVO.getCreated() != null && departVO.getCreated().longValue() > 0L && departVO.getTotalCount() != null && departVO.getTotalCount().longValue() > 0L){
+										departVO.setPercentage(new BigDecimal(departVO.getTotalCount()*100.00/departVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								 }else{
+									departVO.setPercentage("0.00");
+									}
+								}
+								Long departmentId =  jObj.getLong("departmentid");
+								String hodName = jObj.getString("employeename");
+								if(departmentId != null && departmentId.longValue() == 6581L && hodName.trim().equalsIgnoreCase("K. BHASKAR REDDY")){
+									hodObj =  jObj;
+								}else if(departmentId != null && departmentId.longValue() == 1257L && hodName.trim().equalsIgnoreCase("VALETI PREMCHAND")){
+									hodObj =  jObj;
+								}else if(departmentId != null && departmentId.longValue() == 1260L && hodName.trim().equalsIgnoreCase("SUNDAR B")){
+									hodObj =  jObj;
+								}else if(departmentId != null && departmentId.longValue() == 3688L && hodName.trim().equalsIgnoreCase("SUNDAR B")){
+									hodObj =  jObj;
+								}else if(departmentId != null && departmentId.longValue() == 6575L && hodName.trim().equalsIgnoreCase("N.BALASUBRAMANYAM.IPS")){
+									hodObj =  jObj;
+								}else if(departmentId != null && departmentId.longValue() == 5300L && hodName.trim().equalsIgnoreCase("SUNDAR B")){
+									hodObj =  jObj;
+								}else if(departmentId != null && departmentId.longValue() == 6567L && hodName.trim().equalsIgnoreCase("VALLI KUMARI VATSAVAYI")){
+									hodObj =  jObj;
+								}
+								if(hodObj != null){
+									hodVO.setDepartmentId(hodObj.getLong("departmentid"));
+									hodVO.setDepartmentName(hodObj.getString("departmentname"));
+									//hodVO.setReceiptCreated(hodObj.getLong("receiptcreated"));
+									hodVO.setCreated(hodObj.getLong("filescreated"));//created
+									hodVO.setTotalCount(hodObj.getLong("totalcount"));
+									hodVO.setZeroToSeven(hodObj.getLong("firstcount"));
+									hodVO.setEightToFifteen(hodObj.getLong("secondcount"));
+									hodVO.setSixteenToThirty(hodObj.getLong("thirdcount"));
+									hodVO.setThirtyoneToSixty(hodObj.getLong("fourthcount"));
+									hodVO.setAboveSixty(hodObj.getLong("fifthcount"));
+									hodVO.setOpenBal(hodObj.getLong("opbalancecount"));
+									hodVO.setRecievedFiles(hodObj.getLong("file_received"));
+									hodVO.setClosedFiles(hodObj.getLong("files_closed"));
+									hodVO.setForwaredFiles(hodObj.getLong("files_forwarded"));
+									hodVO.setParkedFiles(hodObj.getLong("files_parked"));
+									hodVO.setEmployeeName(hodObj.getString("employeename"));
+									hodVO.setPostName(hodObj.getString("postname"));
+									hodList.add(hodVO);
+								}
+							}
+						}
+					}
+				}
+			
+			if(departMap != null){
+				returnList = new ArrayList<ItecEOfficeVO>(departMap.values());
+			}
+			
+			
+			if(returnList != null && !returnList.isEmpty()){
+				ItecEOfficeVO finalCountVO = new ItecEOfficeVO();
+				for (ItecEOfficeVO vo : returnList) {
+					//finalCountVO.setReceiptCreated(finalCountVO.getReceiptCreated()+vo.getReceiptCreated());
+					finalCountVO.setCreated(finalCountVO.getCreated()+vo.getCreated());
+					finalCountVO.setTotalCount(finalCountVO.getTotalCount()+vo.getTotalCount());
+					finalCountVO.setZeroToSeven(finalCountVO.getZeroToSeven()+vo.getZeroToSeven());
+					finalCountVO.setEightToFifteen(finalCountVO.getEightToFifteen()+vo.getEightToFifteen());
+					finalCountVO.setSixteenToThirty(finalCountVO.getSixteenToThirty()+vo.getSixteenToThirty());
+					finalCountVO.setThirtyoneToSixty(finalCountVO.getThirtyoneToSixty()+vo.getThirtyoneToSixty());
+					finalCountVO.setAboveSixty(finalCountVO.getAboveSixty()+vo.getAboveSixty());
+					finalCountVO.setOpenBal(finalCountVO.getOpenBal()+vo.getOpenBal());
+					finalCountVO.setRecievedFiles(finalCountVO.getRecievedFiles()+vo.getRecievedFiles());
+					finalCountVO.setClosedFiles(finalCountVO.getClosedFiles()+vo.getClosedFiles());
+					finalCountVO.setForwaredFiles(finalCountVO.getForwaredFiles()+vo.getForwaredFiles());
+					finalCountVO.setParkedFiles(finalCountVO.getParkedFiles()+vo.getParkedFiles());
+					finalCountVO.setDepartmentName("ITE & C");
+				}
+				if(finalCountVO.getCreated() != null && finalCountVO.getCreated().longValue() > 0L && finalCountVO.getTotalCount() != null && finalCountVO.getTotalCount().longValue() > 0L){
+					finalCountVO.setPercentage(new BigDecimal(finalCountVO.getTotalCount()*100.00/finalCountVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}else{
+					finalCountVO.setPercentage("0.00");
+				}
+				finalCountVO.setOrderNumber(1L);
+				returnList.add(finalCountVO);
+			}
+			 Collections.sort(returnList, new Comparator<ItecEOfficeVO>() {
+	    	    public int compare(ItecEOfficeVO vo1, ItecEOfficeVO vo2) {
+	    	        return vo2.getOrderNumber().compareTo(vo1.getOrderNumber());
+	    	    }
+		    });
+			 returnList.get(0).getSubList().addAll(hodList);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured at getEOfcDepartWiseOverviewDetails() in  ItcDashboardService class",e);
+		}
+		return returnList;
+	}
+	
+	/**
+	 * @author Nandhini
+	 * @param InputVO inputVO {fromDate,toDate,DepartmentId}
+	 * @description {This service is used to get E Office Designation Wise Deatails.}
+	 * @return List<ItecEOfficeVO>
+	 * @Date 30-11-2017
+	 */
+	
+	public List<ItecEOfficeVO> getEofficeDesginationWiseDetailsFrDepartment(InputVO inputVO){
+	    List<ItecEOfficeVO> returnList = new ArrayList<ItecEOfficeVO>(0);
+	    try {
+	    	
+            ClientResponse response = itcWebServiceUtilService.getWebServiceCall("https://demo.eoffice.ap.gov.in/TTReports/Filesumm.php?strFromDate="+inputVO.getFromDate()+"&strToDate="+inputVO.getToDate()+"");
+		      if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		      } else {
+		        String output = response.getEntity(String.class);
+		        if (output != null && !output.isEmpty()) {
+		          JSONArray finalArray = new JSONArray(output);
+		          if (finalArray != null && finalArray.length() > 0) {
+		            for (int i = 0; i < finalArray.length(); i++) {
+		              JSONObject jObj = (JSONObject) finalArray.get(i);
+		              Long departmentId = jObj.getLong("departmentid");
+		              String postName = jObj.getString("postname");
+		              if(inputVO.getDepartmentId() != null && inputVO.getDepartmentId().longValue() == departmentId.longValue()){
+		            	  ItecEOfficeVO  designationVO = new ItecEOfficeVO();
+		            	  if(departmentId != null && departmentId.longValue() == 15L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("MINISTER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PRINCIPAL SECRETARY")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JOINT SECRETARY")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("DIRECTOR")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JOINT DIRECTOR")){
+		            			  designationVO.setOrderNumber(6L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SPECIAL OFFICER")){
+		            			  designationVO.setOrderNumber(7L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROJECT MANAGER")){
+		            			  designationVO.setOrderNumber(8L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SECTION OFFICER")){
+		            			  designationVO.setOrderNumber(9L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ASSISTANT SECTION OFFICER")){
+		            			  designationVO.setOrderNumber(10L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROJECT ENGINEER")){
+		            			  designationVO.setOrderNumber(11L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ADMIN ASSISTANT")){
+		            			  designationVO.setOrderNumber(12L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(13L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JUNIOR ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(14L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ASSISTANT ACCOUNT OFFICER")){
+		            			  designationVO.setOrderNumber(15L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(16L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 1260L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("Director")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Assistant Secetary")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Deputy Director")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SUPERINTENDENT")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SENIOR ASSISTANT")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("COMPUTER OPERATOR")){
+		            			  designationVO.setOrderNumber(6L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PERSONAL ASSISTANT")){
+		            			  designationVO.setOrderNumber(7L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(8L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 6567L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Joint Director")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JOINT SECRETARY")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Manager")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Executive Assistant")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(6L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 6581L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("VICE PRESIDENT")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(6L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 1257L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(3L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 3688L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SPECIAL OFFICER")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROJECT MANAGER")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROGRAMME MANAGER")){
+		            			  designationVO.setOrderNumber(6L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(7L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("IT ASSOCIATE")){
+		            			  designationVO.setOrderNumber(8L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("TEAM LEAD")){
+		            			  designationVO.setOrderNumber(9L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(10L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 5300L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(4L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 6575L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CEO EGOVERNANCE")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Joint Director")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ASSISTANT ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(6L);
+		            		  }
+		            	  }
+		            	  
+		            	 
+		            		  designationVO.setDesignation(jObj.getString("postname"));
+		            		 // designationVO.setOwnerName(jObj.getString("ouname"));
+		            		  designationVO.setCreated(jObj.getLong("filescreated"));
+		            		  designationVO.setTotalCount(jObj.getLong("totalcount"));
+		            		  designationVO.setEmployeeName(jObj.getString("employeename"));
+		            		  designationVO.setDepartmentId(jObj.getLong("departmentid"));
+		            		  designationVO.setDepartmentName(jObj.getString("departmentname"));
+		            		  designationVO.setZeroToSeven(jObj.getLong("firstcount"));
+		            		  designationVO.setEightToFifteen(jObj.getLong("secondcount"));
+		            		  designationVO.setSixteenToThirty(jObj.getLong("thirdcount"));
+		            		  designationVO.setThirtyoneToSixty(jObj.getLong("fourthcount"));
+		            		  designationVO.setAboveSixty(jObj.getLong("fifthcount"));
+		            		  //designationVO.setReceiptCreated(jObj.getLong("receiptcreated"));
+		            		  designationVO.setOpenBal(jObj.getLong("opbalancecount"));
+		            		  designationVO.setRecievedFiles(jObj.getLong("file_received"));
+		            		  designationVO.setClosedFiles(jObj.getLong("files_closed"));
+		            		  designationVO.setForwaredFiles(jObj.getLong("files_forwarded"));
+		            		  designationVO.setParkedFiles(jObj.getLong("files_parked"));
+			            	  if(designationVO.getCreated() != null && designationVO.getCreated().longValue() > 0L && designationVO.getTotalCount() != null && designationVO.getTotalCount().longValue() > 0L){
+			            		designationVO.setPercentage(new BigDecimal(designationVO.getTotalCount()*100.00/designationVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							  }else{
+								designationVO.setPercentage("0.00");
+							  }
+			            	  returnList.add(designationVO);
+		              		}
+		            	  
+		              	  }
+		               }
+		             }
+		           }
+		      
+		      
+		      Collections.sort(returnList, new Comparator<ItecEOfficeVO>() {
+		    	    public int compare(ItecEOfficeVO vo1, ItecEOfficeVO vo2) {
+		    	        return vo1.getOrderNumber().compareTo(vo2.getOrderNumber());
+		    	    }
+		    	});
+		      
+		    } catch (Exception e) {
+		      LOG.error("Exception raised at getEofficeDesginationWiseDetailsFrDepartment - ItcDashboardService service",e);
+		    }
+		    return returnList;
+		}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva KPI OnLine Service Details.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 05-12-2017
+	 */
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIOnlineServiceDetails(InputVO inputVO) {//Old Call
+		List<MeesevaKPIDtlsVO> returnList = new ArrayList<MeesevaKPIDtlsVO>(0);
+		try{
+			
+			String URL = null;
+			ClientResponse response = null;
+			org.json.JSONObject list = null;
+			Object contentObj = null;
+			org.json.JSONObject list1 = null;
+			org.json.JSONObject objArr = null;
+			org.json.JSONArray dataArr = null;
+			String output = null;
+			
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_DEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+			    		 vo.setId(jObj.getLong("department_id"));
+			    		 vo.setName(jObj.getString("DEPARTMENTNAME"));
+			    		 vo.setOnLineServicesCount(jObj.getLong("NOFOSERVICES"));
+			    		 returnList.add(vo);
+			    		}	
+			    	}
+		    	}
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaKPIOnlineServiceDetails() in  ItcDashboardService class",e);
+		 }
+		 return returnList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva KPI OnLine Dept Wise Details.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 05-12-2017
+	 */
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIOnlineDeptWiseCuntDetails(InputVO inputVO) {
+		List<MeesevaKPIDtlsVO> returnList = new ArrayList<MeesevaKPIDtlsVO>(0);
+		try{
+			
+			String URL = null;
+			ClientResponse response = null;
+			org.json.JSONObject list = null;
+			Object contentObj = null;
+			org.json.JSONObject list1 = null;
+			org.json.JSONObject objArr = null;
+			org.json.JSONArray dataArr = null;
+			String output = null;
+			
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_DEPARTMENTWISEDETAILS?YEAR="+inputVO.getYear()+"&DEPTID="+inputVO.getDeptId().toString()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 //objArr = list1.getJSONObject("NewDataSet");
+				 Object object = list1.getJSONObject("NewDataSet").get("Table1");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+					 objArr = list1.getJSONObject("NewDataSet");
+					 dataArr = objArr.getJSONArray("Table1");
+					 if(dataArr != null && dataArr.length() > 0){
+				    	 for( int i = 0; i < dataArr.length() ; i++ ){
+				    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+				    		MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+				    		 vo.setName(jObj.getString("DEPARTMENTNAME"));
+				    		 vo.setServiceName(jObj.getString("SERVICENAME"));
+				    		 returnList.add(vo);
+				    		}	
+				    	}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list1.getJSONObject("NewDataSet").get("Table1");
+				    	 MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+				    	 vo.setName(jObj.getString("DEPARTMENTNAME"));
+						vo.setServiceName(jObj.getString("SERVICENAME"));
+						 returnList.add(vo);
+				    }
+		    }
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaKPIOnlineDeptWiseCuntDetails() in  ItcDashboardService class",e);
+		 }
+		 return returnList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva KPI MobileServices Details.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 06-12-2017
+	 */
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIMobileSevicesDetails(InputVO inputVO) {//Old Call
+		List<MeesevaKPIDtlsVO> returnList = new ArrayList<MeesevaKPIDtlsVO>(0);
+		try{
+			
+			GetMeeSevaAppDeptWiseServiceAbstractResponseGetMeeSevaAppDeptWiseServiceAbstractResult  mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
+			org.json.JSONObject list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
+			 if(list != null){
+				 Object object = list.getJSONObject("NewDataSet").get("Table");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+				    	for(int i= 0;i < list.getJSONObject("NewDataSet").getJSONArray("Table").length();i++){
+							 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").getJSONArray("Table").get(i);
+							 MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+							 vo.setName(jObj.getString("DEPT"));
+							 vo.setCurrentYearAchievement(jObj.getLong("CURYRCNT"));
+							 vo.setPreviousYearAchievementCount(jObj.getLong("SERCNT"));
+							 returnList.add(vo);
+						}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").get("Table");
+				    	 MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+				    	 vo.setName(jObj.getString("DEPT"));
+						 vo.setCurrentYearAchievement(jObj.getLong("CURYRCNT"));
+						 vo.setPreviousYearAchievementCount(jObj.getLong("SERCNT"));
+						 returnList.add(vo);
+				    }
+			 }
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaKPIMobileSevicesDetails() in  ItcDashboardService class",e);
+		 }
+		 return returnList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva KPI Mobile Dept Services Details.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 06-12-2017
+	 */
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIMobileDeptSevicesDetails(InputVO inputVO) {
+		List<MeesevaKPIDtlsVO> returnList = new ArrayList<MeesevaKPIDtlsVO>(0);
+		try{
+			
+			GetMeeSevaAppDeptWiseServiceDetailsResponseGetMeeSevaAppDeptWiseServiceDetailsResult  mobileAppDeptList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceDetails(inputVO.getGroupName(),Integer.valueOf(inputVO.getYear()));
+			org.json.JSONObject list = XML.toJSONObject(String.valueOf(mobileAppDeptList.get_any()[1].getChildren().get(0)));
+			 if(list != null){
+				 Object object = list.getJSONObject("NewDataSet").get("Table");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+				    	for(int i= 0;i < list.getJSONObject("NewDataSet").getJSONArray("Table").length();i++){
+							 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").getJSONArray("Table").get(i);
+							 MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+							 vo.setName(jObj.getString("Department"));
+							 vo.setServiceName(jObj.getString("ServiceName"));
+							 returnList.add(vo);
+						}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").get("Table");
+				    	 MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+				    	 vo.setName(jObj.getString("Department"));
+						 vo.setServiceName(jObj.getString("ServiceName"));
+						 returnList.add(vo);
+				    }
+			 }
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaKPIMobileDeptSevicesDetails() in  ItcDashboardService class",e);
+		 }
+		 return returnList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva KPI Overview Details.}
+	 * @return MeesevaKPIDtlsVO
+	 * @Date 06-12-2017
+	 */
+	public MeesevaKPIDtlsVO getMeesevaKPIOnlineServiceOverviewCount(InputVO inputVO) {
+		MeesevaKPIDtlsVO finalVO = new MeesevaKPIDtlsVO();
+		try{
+			
+			String URL = null;
+			ClientResponse response = null;
+			org.json.JSONObject list = null;
+			Object contentObj = null;
+			org.json.JSONObject list1 = null;
+			org.json.JSONObject objArr = null;
+			org.json.JSONArray dataArr = null;
+			String output = null;
+			
+			//2014
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_DEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		  finalVO.setOnLineServices2014(finalVO.getOnLineServices2014()+jObj.getLong("NOFOSERVICES"));
+			    		}	
+			    	}
+		    	}
+			
+			//2015
+			inputVO.setYear("2015");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_DEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		  finalVO.setOnLineServices2015(finalVO.getOnLineServices2015()+jObj.getLong("NOFOSERVICES"));
+			    		}	
+			    	}
+		    	}
+			
+			//2016
+			inputVO.setYear("2016");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_DEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		  finalVO.setOnLineServices2016(finalVO.getOnLineServices2016()+jObj.getLong("NOFOSERVICES"));
+			    		}	
+			    	}
+		    	}
+			
+			//2017
+			inputVO.setYear("2017");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_DEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		  finalVO.setOnLineServices2017(finalVO.getOnLineServices2017()+jObj.getLong("NOFOSERVICES"));
+			    		}	
+			    	}
+		    	}
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaSLADepartmentDetails() in  ItcDashboardService class",e);
+		 }
+		 return finalVO;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva KPI Overview Details.}
+	 * @return MeesevaKPIDtlsVO
+	 * @Date 06-12-2017
+	 */
+	public MeesevaKPIDtlsVO getMeesevaKPIMobileAppServiceOverviewCount(InputVO inputVO) {
+		MeesevaKPIDtlsVO finalVO = new MeesevaKPIDtlsVO();
+		try{
+			
+			 org.json.JSONObject list = null;
+			 GetMeeSevaAppDeptWiseServiceAbstractResponseGetMeeSevaAppDeptWiseServiceAbstractResult  mobileAppList = null;
+
+			 //2014
+			 mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
+			 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
+			 if(list != null){
+				 Object object = list.getJSONObject("NewDataSet").get("Table");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+				    	for(int i= 0;i < list.getJSONObject("NewDataSet").getJSONArray("Table").length();i++){
+							 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").getJSONArray("Table").get(i);
+							 finalVO.setMobileAppServices2014(finalVO.getMobileAppServices2014()+jObj.getLong("SERCNT"));
+						}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").get("Table");
+				    	 finalVO.setMobileAppServices2014(jObj.getLong("SERCNT"));
+				    }
+			 }
+			 
+			 //2015
+			 inputVO.setYear("2015");
+			 mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
+			 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
+			 if(list != null){
+				 Object object = list.getJSONObject("NewDataSet").get("Table");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+				    	for(int i= 0;i < list.getJSONObject("NewDataSet").getJSONArray("Table").length();i++){
+							 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").getJSONArray("Table").get(i);
+							 finalVO.setMobileAppServices2015(finalVO.getMobileAppServices2015()+jObj.getLong("SERCNT"));
+						}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").get("Table");
+				    	 finalVO.setMobileAppServices2015(jObj.getLong("SERCNT"));
+				    }
+			 }
+			 
+			//2016
+			 inputVO.setYear("2016");
+			 mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
+			 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
+			 if(list != null){
+				 Object object = list.getJSONObject("NewDataSet").get("Table");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+				    	for(int i= 0;i < list.getJSONObject("NewDataSet").getJSONArray("Table").length();i++){
+							 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").getJSONArray("Table").get(i);
+							 finalVO.setMobileAppServices2016(finalVO.getMobileAppServices2016()+jObj.getLong("SERCNT"));
+						}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").get("Table");
+				    	 finalVO.setMobileAppServices2016(jObj.getLong("SERCNT"));
+				    }
+			 }
+			 
+			//2017
+			 inputVO.setYear("2017");
+			 mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
+			 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
+			 if(list != null){
+				 Object object = list.getJSONObject("NewDataSet").get("Table");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+				    	for(int i= 0;i < list.getJSONObject("NewDataSet").getJSONArray("Table").length();i++){
+							 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").getJSONArray("Table").get(i);
+							 finalVO.setMobileAppServices2017(finalVO.getMobileAppServices2017()+jObj.getLong("SERCNT"));
+						}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").get("Table");
+				    	 finalVO.setMobileAppServices2017(jObj.getLong("SERCNT"));
+				    }
+			 }
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaKPIMobileAppServiceOverviewCount() in  ItcDashboardService class",e);
+		 }
+		 return finalVO;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva KPI OnLine Service Details.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 06-12-2017
+	 */
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIOnlineServiceYearWiseDetails(InputVO inputVO) {
+		List<MeesevaKPIDtlsVO> returnList = new ArrayList<MeesevaKPIDtlsVO>(0);
+		try{
+			
+			String URL = null;
+			ClientResponse response = null;
+			org.json.JSONObject list = null;
+			Object contentObj = null;
+			org.json.JSONObject list1 = null;
+			org.json.JSONObject objArr = null;
+			org.json.JSONArray dataArr = null;
+			String output = null;
+			Map<Long,MeesevaKPIDtlsVO> deptMap = new HashMap<Long,MeesevaKPIDtlsVO>();
+			
+			//2014
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_DEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+			    		 vo.setId(jObj.getLong("department_id"));
+			    		 vo.setName(jObj.getString("DEPARTMENTNAME"));
+			    		 vo.setOnLineServices2014(jObj.getLong("NOFOSERVICES"));
+			    		 deptMap.put(vo.getId(), vo);
+			    		}	
+			    	}
+		    	}
+			
+			//2015
+			inputVO.setYear("2015");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_DEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getLong("department_id"));
+			    		if(deptVO != null){
+			    			deptVO.setOnLineServices2015(jObj.getLong("NOFOSERVICES"));
+			    		}else{
+			    			deptVO = new MeesevaKPIDtlsVO();
+			    			deptVO.setId(jObj.getLong("department_id"));
+			    			deptVO.setName(jObj.getString("DEPARTMENTNAME"));
+			    			deptVO.setOnLineServices2015(jObj.getLong("NOFOSERVICES"));
+				    		deptMap.put(deptVO.getId(), deptVO);
+			    		}
+			    	}	
+			    }
+		    }
+			
+			//2016
+			inputVO.setYear("2016");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_DEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getLong("department_id"));
+			    		if(deptVO != null){
+			    			deptVO.setOnLineServices2016(jObj.getLong("NOFOSERVICES"));
+			    		}else{
+			    			deptVO = new MeesevaKPIDtlsVO();
+			    			deptVO.setId(jObj.getLong("department_id"));
+			    			deptVO.setName(jObj.getString("DEPARTMENTNAME"));
+			    			deptVO.setOnLineServices2016(jObj.getLong("NOFOSERVICES"));
+				    		deptMap.put(deptVO.getId(), deptVO);
+			    		}
+			    	}	
+			    }
+		    }
+			
+			//2017
+			inputVO.setYear("2017");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_DEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getLong("department_id"));
+			    		if(deptVO != null){
+			    			deptVO.setOnLineServices2017(jObj.getLong("NOFOSERVICES"));
+			    			}else{
+				    			deptVO = new MeesevaKPIDtlsVO();
+				    			deptVO.setId(jObj.getLong("department_id"));
+				    			deptVO.setName(jObj.getString("DEPARTMENTNAME"));
+				    			deptVO.setOnLineServices2017(jObj.getLong("NOFOSERVICES"));
+					    		deptMap.put(deptVO.getId(), deptVO);
+				    		}
+			    		}	
+			    	}
+		    	}
+			
+			if(deptMap != null){
+				returnList = new ArrayList<MeesevaKPIDtlsVO>(deptMap.values());
+			}
+			
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaKPIOnlineServiceYearWiseDetails() in  ItcDashboardService class",e);
+		 }
+		 return returnList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva KPI Mobile Services Year Wise Details.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 06-12-2017
+	 */
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIMobileSevicesYearWiseDetails(InputVO inputVO) {
+		List<MeesevaKPIDtlsVO> returnList = new ArrayList<MeesevaKPIDtlsVO>(0);
+		try{
+			GetMeeSevaAppDeptWiseServiceAbstractResponseGetMeeSevaAppDeptWiseServiceAbstractResult  mobileAppList = null;
+			org.json.JSONObject list = null;
+			Map<String,MeesevaKPIDtlsVO> deptMap = new HashMap<String,MeesevaKPIDtlsVO>();
+			
+			//2014
+			mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
+			list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
+			 if(list != null){
+				 Object object = list.getJSONObject("NewDataSet").get("Table");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+				    	for(int i= 0;i < list.getJSONObject("NewDataSet").getJSONArray("Table").length();i++){
+							 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").getJSONArray("Table").get(i);
+							 MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+							 vo.setName(jObj.getString("DEPT"));
+							 vo.setMobileAppServices2014(jObj.getLong("SERCNT"));
+							 deptMap.put(vo.getName(), vo);
+						}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").get("Table");
+				    	 MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+				    	 vo.setName(jObj.getString("DEPT"));
+						 vo.setMobileAppServices2014(jObj.getLong("SERCNT"));
+						 deptMap.put(vo.getName(), vo);
+				    }
+			 }
+			 
+			//2015
+			inputVO.setYear("2015");
+			mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
+			list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
+			 if(list != null){
+				 Object object = list.getJSONObject("NewDataSet").get("Table");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+				    	for(int i= 0;i < list.getJSONObject("NewDataSet").getJSONArray("Table").length();i++){
+							 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").getJSONArray("Table").get(i);
+							 MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getString("DEPT"));
+							 if(deptVO != null){
+								 deptVO.setMobileAppServices2015(jObj.getLong("SERCNT"));
+							}else{
+								deptVO = new MeesevaKPIDtlsVO();
+								deptVO.setName(jObj.getString("DEPT"));
+								deptVO.setMobileAppServices2015(jObj.getLong("SERCNT"));
+								deptMap.put(deptVO.getName(), deptVO);
+							}
+						}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").get("Table");
+				    	 MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getString("DEPT"));
+				    	 if(deptVO != null){
+							 deptVO.setMobileAppServices2015(jObj.getLong("SERCNT"));
+						}else{
+							deptVO = new MeesevaKPIDtlsVO();
+							deptVO.setName(jObj.getString("DEPT"));
+							deptVO.setMobileAppServices2015(jObj.getLong("SERCNT"));
+							deptMap.put(deptVO.getName(), deptVO);
+						}
+				   }
+			 }
+			 
+			 //2016
+			inputVO.setYear("2016");
+			mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
+			list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
+			 if(list != null){
+				 Object object = list.getJSONObject("NewDataSet").get("Table");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+				    	for(int i= 0;i < list.getJSONObject("NewDataSet").getJSONArray("Table").length();i++){
+							 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").getJSONArray("Table").get(i);
+							 MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getString("DEPT"));
+							 if(deptVO != null){
+								 deptVO.setMobileAppServices2016(jObj.getLong("SERCNT"));
+							}else{
+								deptVO = new MeesevaKPIDtlsVO();
+								deptVO.setName(jObj.getString("DEPT"));
+								deptVO.setMobileAppServices2016(jObj.getLong("SERCNT"));
+								deptMap.put(deptVO.getName(), deptVO);
+							}
+						}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").get("Table");
+				    	 MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getString("DEPT"));
+				    	 if(deptVO != null){
+							 deptVO.setMobileAppServices2016(jObj.getLong("SERCNT"));
+						}else{
+							deptVO = new MeesevaKPIDtlsVO();
+							deptVO.setName(jObj.getString("DEPT"));
+							deptVO.setMobileAppServices2016(jObj.getLong("SERCNT"));
+							deptMap.put(deptVO.getName(), deptVO);
+						}
+				   }
+			 }
+			 
+			 //2017
+			inputVO.setYear("2017");
+			mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
+			list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
+			 if(list != null){
+				 Object object = list.getJSONObject("NewDataSet").get("Table");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+				    	for(int i= 0;i < list.getJSONObject("NewDataSet").getJSONArray("Table").length();i++){
+							 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").getJSONArray("Table").get(i);
+							 MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getString("DEPT"));
+							 if(deptVO != null){
+								 deptVO.setMobileAppServices2017(jObj.getLong("SERCNT"));
+							}else{
+								deptVO = new MeesevaKPIDtlsVO();
+								deptVO.setName(jObj.getString("DEPT"));
+								deptVO.setMobileAppServices2017(jObj.getLong("SERCNT"));
+								deptMap.put(deptVO.getName(), deptVO);
+							}
+						}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list.getJSONObject("NewDataSet").get("Table");
+				    	 MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getString("DEPT"));
+				    	 if(deptVO != null){
+							 deptVO.setMobileAppServices2017(jObj.getLong("SERCNT"));
+						}else{
+							deptVO = new MeesevaKPIDtlsVO();
+							deptVO.setName(jObj.getString("DEPT"));
+							deptVO.setMobileAppServices2017(jObj.getLong("SERCNT"));
+							deptMap.put(deptVO.getName(), deptVO);
+						}
+				   }
+			 }
+			 
+			 if(deptMap != null){
+				 returnList = new ArrayList<MeesevaKPIDtlsVO>(deptMap.values());
+			 }
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaKPIMobileSevicesYearWiseDetails() in  ItcDashboardService class",e);
+		 }
+		 return returnList;
+	}
 }

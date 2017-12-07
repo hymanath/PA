@@ -46,9 +46,19 @@ public interface IItcDashboardService {
 	public List<ItecEOfficeVO> getEofficeDesginationDetailsByDepartment(InputVO inputVO);
 	public CmEoDBDtlsVO getCMeoDBSectorWiseStatusDetais(InputVO inputVO);
 	public List<MeesevaDtlsVO> getMeesevaSLADepartmentDetails();
-	public MeesevaKPIDtlsVO getMeesevaKPIOverViewDetails();
+	public MeesevaKPIDtlsVO getMeesevaKPIOverViewDetails(InputVO inputVO);
 	public List<MeesevaKPIDtlsVO> getMeesevaKPITargetAchieveDetails();
 	public List<MeesevaKPIDtlsVO> getMeesevaKPILocationWiseDetails();
 	public MeesevaDtlsVO getMeesevaSLACatWiseAbstarctDetails();
 	public List<MeesevaDtlsVO> getMeesevaSLAServiceWiseDetails();
+	public List<ItecEOfficeVO> getEOfcDepartOverviewDetails(InputVO inputVO);
+	public List<ItecEOfficeVO> getEofficeDesginationWiseDetailsFrDepartment(InputVO inputVO);
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIOnlineServiceDetails(InputVO inputVO);//Old Call
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIOnlineDeptWiseCuntDetails(InputVO inputVO);
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIMobileSevicesDetails(InputVO inputVO);
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIMobileDeptSevicesDetails(InputVO inputVO);
+	public MeesevaKPIDtlsVO getMeesevaKPIOnlineServiceOverviewCount(InputVO inputVO);
+	public MeesevaKPIDtlsVO getMeesevaKPIMobileAppServiceOverviewCount(InputVO inputVO);
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIOnlineServiceYearWiseDetails(InputVO inputVO);
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIMobileSevicesYearWiseDetails(InputVO inputVO);
 }

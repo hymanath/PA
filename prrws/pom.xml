@@ -324,7 +324,11 @@
   					<artifactId>prrws-biometric-soap</artifactId>
   				 <version>0.0.1-SNAPSHOT</version>
 		  </dependency>
-		  
+		   <dependency>
+		   	     <groupId>com.itgrids.prrws</groupId>
+  					<artifactId>prrws_meeseva_app_soap</artifactId>
+  				 <version>0.0.1-SNAPSHOT</version>
+		  </dependency>
 		  <!-- <dependency>
 		   	     <groupId>com.itgrids.prrws</groupId>
   					<artifactId>Prrws_Meeseva_Soap</artifactId>

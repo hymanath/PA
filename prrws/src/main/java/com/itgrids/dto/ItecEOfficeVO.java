@@ -39,6 +39,12 @@ public class ItecEOfficeVO {
 	private List<ItecEOfficeVO> ministerList = new ArrayList<ItecEOfficeVO>(0);
 	private Long orderNumber = 0L;
 	private String ownerName;
+	private Long openBal = 0L;
+	private Long recievedFiles = 0L;
+	private Long forwaredFiles = 0L;
+	private Long closedFiles = 0L;
+	private Long parkedFiles = 0L;
+	private Long receiptCreated = 0L;
 	
 	
 	public Long getId() {
@@ -226,5 +232,41 @@ public class ItecEOfficeVO {
 	}
 	public void setOwnerName(String ownerName) {
 		this.ownerName = ownerName;
+	}
+	public Long getOpenBal() {
+		return openBal;
+	}
+	public void setOpenBal(Long openBal) {
+		this.openBal = openBal;
+	}
+	public Long getRecievedFiles() {
+		return recievedFiles;
+	}
+	public void setRecievedFiles(Long recievedFiles) {
+		this.recievedFiles = recievedFiles;
+	}
+	public Long getForwaredFiles() {
+		return forwaredFiles;
+	}
+	public void setForwaredFiles(Long forwaredFiles) {
+		this.forwaredFiles = forwaredFiles;
+	}
+	public Long getClosedFiles() {
+		return closedFiles;
+	}
+	public void setClosedFiles(Long closedFiles) {
+		this.closedFiles = closedFiles;
+	}
+	public Long getParkedFiles() {
+		return parkedFiles;
+	}
+	public void setParkedFiles(Long parkedFiles) {
+		this.parkedFiles = parkedFiles;
+	}
+	public Long getReceiptCreated() {
+		return receiptCreated;
+	}
+	public void setReceiptCreated(Long receiptCreated) {
+		this.receiptCreated = receiptCreated;
 	}
 }
