@@ -1713,6 +1713,7 @@
 	    <property name="coreDashboardToursService" ref="coreDashboardToursService" />
 	    <property name="alertService" ref="alertService" /> 
 	    <property name="coreDashboardInsuranceService" ref="coreDashboardInsuranceService"></property>
+	    <property name="kaizalaInfoService" ref="kaizalaInfoService"></property>
 	</bean>
 	
 	<bean id="leadersBirthdayAction" class="com.itgrids.partyanalyst.web.action.LeadersBirthdayAction" singleton="false">

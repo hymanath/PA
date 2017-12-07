@@ -7196,3 +7196,19 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	
 		
 	});
+	//getOverAllCommitteeWiseMembersCounts();
+	function getOverAllCommitteeWiseMembersCounts(){
+		
+		var jsObj={
+			activityMemberId : 44 ,
+				userTypeId : 2,
+				stateId:1
+		}	
+		$.ajax({
+		 type: "POST",
+		 url: "getUserTypeWiseKaizalaCommitteeMemberDetailsCntAction.action",
+		 data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	}
