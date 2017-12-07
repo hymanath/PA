@@ -6053,7 +6053,7 @@ $(".multi-level-selection-menu").hide();
 $(document).on("click",function(){
 	$(".multi-level-selection-menu").hide();
 });
-$(document).on("click","#selectedName",function(e){
+$(document).on("click","#selectedName,#selectedName1",function(e){
 	e.stopPropagation();
 	$(".multi-level-selection-menu").show();
 });
@@ -6304,7 +6304,7 @@ function buildLabourBudgetPanExpData(result,viewType,range){
 	
 }
 
-$(document).on("click","#selectedName",function(){
+$(document).on("click","#selectedName,#selectedName1",function(){
 	$(".arrowIconChanged").parent().find('i.fa').removeClass("fa-chevron-down");
 	$(".arrowIconChanged").parent().find('i.fa').addClass("fa-chevron-up");
 });

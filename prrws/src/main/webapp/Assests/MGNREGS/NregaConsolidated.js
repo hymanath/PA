@@ -86,7 +86,7 @@ $(document).on("click","[collapse-click-consolidated]",function(){
 		if(divId != "state")
 		{
 			var tableId = 'ConsolidatedView'+divId
-			getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,tableId,districtId,'grounded');
+			getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,tableId,districtId,'completed');
 		}
 	}	
 });
@@ -375,8 +375,8 @@ function projectDataConsolidated(levelId,locId,districtId)
 							}
 							
 								collapse+='<div class="panel-body">';
-									collapse+='<label class="radio-inline"><input type="radio" divId="ConsolidatedView'+dataArr[i]+'" level-id="'+levelId+'" name="collapseConsolidatedViewRadio'+dataArr[i]+'" overview-level="'+dataArr[i]+'"  checked consolidated-view="grounded"/> Grounded</label>';
-									collapse+='<label class="radio-inline"><input type="radio" overview-level="'+dataArr[i]+'"  divId="ConsolidatedView'+dataArr[i]+'" level-id="'+levelId+'" name="collapseConsolidatedViewRadio'+dataArr[i]+'" consolidated-view="completed"/> Completed</label>';
+									collapse+='<label class="radio-inline"><input type="radio" divId="ConsolidatedView'+dataArr[i]+'" level-id="'+levelId+'" name="collapseConsolidatedViewRadio'+dataArr[i]+'" overview-level="'+dataArr[i]+'" consolidated-view="grounded"/> Grounded</label>';
+									collapse+='<label class="radio-inline"><input type="radio" overview-level="'+dataArr[i]+'"  divId="ConsolidatedView'+dataArr[i]+'" level-id="'+levelId+'" name="collapseConsolidatedViewRadio'+dataArr[i]+'" checked consolidated-view="completed"/> Completed</label>';
 									collapse+='<div class="m_top20" id="collapseConsolidatedView'+dataArr[i]+'"></div>';
 								collapse+='</div>';
 							collapse+='</div>';
@@ -407,7 +407,7 @@ function projectDataConsolidated(levelId,locId,districtId)
 		divId = 'ConsolidatedViewconstituency';
 		districtId = $("#selectedName").attr("attr_distId");
 	}
-	getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,divId,districtId,'grounded');
+	getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,divId,districtId,'completed');
 	
 }
 $(document).on("click","[consolidated-view]",function(){
