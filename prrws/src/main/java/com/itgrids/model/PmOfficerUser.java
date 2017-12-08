@@ -1,10 +1,14 @@
 package com.itgrids.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +19,8 @@ public class PmOfficerUser {
 	private Long pmDepartmentDesignationId;
 	private Long userId;
 	private String isActive;
+	private PmDepartmentDesignation pmDepartmentDesignation;
+	private User insertedUser;
 	
 	@Id
 	@Column(name="pm_officer_user_id")
@@ -45,6 +51,22 @@ public class PmOfficerUser {
 	}
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_department_designation_id", insertable = false, updatable = false)
+	public PmDepartmentDesignation getPmDepartmentDesignation() {
+		return pmDepartmentDesignation;
+	}
+	public void setPmDepartmentDesignation(PmDepartmentDesignation pmDepartmentDesignation) {
+		this.pmDepartmentDesignation = pmDepartmentDesignation;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
+	public User getInsertedUser() {
+		return insertedUser;
+	}
+	public void setInsertedUser(User insertedUser) {
+		this.insertedUser = insertedUser;
 	}
 	
 	
