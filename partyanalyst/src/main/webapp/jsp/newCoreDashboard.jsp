@@ -145,6 +145,7 @@
 		<li expand-icon="attendance" right-nav="true">emp attendance</li>
 		<li expand-icon="training" right-nav="true">training</li>
 		<li expand-icon="cadreInsurance" right-nav="true">Insurance</li>
+		<li expand-icon="kaizala" right-nav="true">kaizala</li>
 	</ul>
 	<button class="rightNavigationMenuRes visible-xs">
 		<span class="icon-bar"></span>
@@ -4185,7 +4186,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock m_top20" expand-block-inner="prajaSankaplaYatra">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="prajaSankaplaYatra">
 							<div class="row">
 								<div class="col-sm-12">
 									<h4 style="font-weight:bold" id="categoryName"></h4>
@@ -4274,6 +4275,66 @@
 			</div>
 		</div>
 <!-- Praja Sankalpam Yatra News  END --> 
+<!-- Kaizala  Start --> 
+		<!--<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="kaizala">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="kaizala">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/logoKaizala.png" class="iconClass" style="background-color:none;"/>
+									Kaizala
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="kaizala">
+							<span class="kaizalaIconExpand pull-right" expand-icon="kaizala">
+								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+							</span>
+							
+						</div>     
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="kaizala">
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="overAllKaizalaBlockId"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="kaizala" style="display:none;" >
+							<div class="row">
+                            	<div class="col-sm-12">
+                                	<ul class="activeUlCls list-inline pull-right kaizalaLicls">
+                                    	<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+										<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+                                    </ul>
+                                </div>
+							 </div>
+							 <div class="row">
+								<div class="col-sm-12">
+									<div class="verticalScrollBarKaizala">
+										<div id="userTypeWiseKaizalaDiv"></div>
+									</div>
+								</div>
+							 </div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="kaizala" style="display: none;">
+							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morekaizalaBlocksIcon" title="Click here for more"></i>
+						</div>	
+						<div class="col-md-12 col-xs-12 col-sm-12 morekaizalaBlocksDetailed m_top10"  expand-block-more="kaizala" style="display:none;">
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="levelWiseDetailsDivId"></div>
+								</div>
+							 </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>-->
+<!-- Kaizala  END --> 
 	</div>
 </div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
@@ -5259,6 +5320,7 @@
 <script src="newCoreDashBoard/js/cadreInsurance.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/pressmeet.js" type="text/javascript"></script>        
 <script src="newCoreDashBoard/js/prajaSankaplaYatra.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/kaizala.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting1.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
@@ -5785,7 +5847,8 @@ var globalImages;
 		getUserTypeWiseBoothCommitteesInchargeDetails();
 		//Preemeet
 		preemeeetOnloadCalls();
-		onloadPrajaSankaplaYatraCalls();                 
+		onloadPrajaSankaplaYatraCalls();
+		//onloadKaizalaCalls();	
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');
