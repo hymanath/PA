@@ -1,8 +1,10 @@
 package com.itgrids.dto;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author sanjeev
@@ -21,7 +23,7 @@ public class PmRequestVO {
 	private String representationdate;
 	private AddressVO address;
 	private List<PmRequestVO> referList= new ArrayList<PmRequestVO>();
-	private List<File> fileList = new ArrayList<File>();
+	private List<MultipartFile> fileList = new ArrayList<MultipartFile>();
 	
 	public Long getRepresentationId() {
 		return representationId;
@@ -89,10 +91,10 @@ public class PmRequestVO {
 	public void setReferList(List<PmRequestVO> referList) {
 		this.referList = referList;
 	}
-	public List<File> getFileList() {
+	public List<MultipartFile> getFileList() {
 		return fileList;
 	}
-	public void setFileList(List<File> fileList) {
+	public void setFileList(List<MultipartFile> fileList) {
 		this.fileList = fileList;
 	}
 
