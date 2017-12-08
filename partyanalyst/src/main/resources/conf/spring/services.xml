@@ -4472,7 +4472,7 @@
 		 <property name="kaizalaGroupDocumentTypeDAO" ref="kaizalaGroupDocumentTypeDAO" />
 		 <property name="kaizalaResponderTypeDAO" ref="kaizalaResponderTypeDAO" />
 		 <property name="kaizalaInstallationTrackingDAO" ref="kaizalaInstallationTrackingDAO" />
-		 <property name="coreDashboardGenericService" ref="coreDashboardGenericService" />
+		 
     </bean> 
     <bean name="doorToDoorCampaignDashboardService" class="com.itgrids.partyanalyst.service.impl.DoorToDoorCampaignDashboardService" >
     </bean>
@@ -4565,5 +4565,8 @@
     	<property name="tehsilConstituencyDAO" ref="tehsilConstituencyDAO" /> 
     	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" /> 
     	<property name="panchayatDAO" ref="panchayatDAO" />
+    	</bean>
+    	<bean name="coreDashboardCoreService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardCoreService" >
+    	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	</bean>
 </beans>			

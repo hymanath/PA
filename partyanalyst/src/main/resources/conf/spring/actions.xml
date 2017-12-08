@@ -1712,6 +1712,7 @@
 	    <property name="cadreRegistrationService" ref="cadreRegistrationService" />
 	    <property name="coreDashboardToursService" ref="coreDashboardToursService" />
 	    <property name="alertService" ref="alertService" /> 
+	     <property name="coreDashboardCoreService" ref="coreDashboardCoreService" /> 
 	    <property name="coreDashboardInsuranceService" ref="coreDashboardInsuranceService"></property>
 	    <property name="kaizalaInfoService" ref="kaizalaInfoService"></property>
 	</bean>
