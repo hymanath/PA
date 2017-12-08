@@ -57,12 +57,14 @@ import com.itgrids.partyanalyst.dto.TabLoginAuthVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursOverviewDtlsvO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
+import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAttendanceCoreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
+import com.itgrids.partyanalyst.service.ICoreDashboardCoreService;
 import com.itgrids.partyanalyst.service.ICoreDashboardEventsActivitiesService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService;
@@ -97,6 +99,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private CommitteeDataVO committeeDataVO;
 	private List<List<UserTypeVO>> userTypeVOList;
 	private TrainingCampProgramVO trainingCampProgramVO;
+	private TrainingCampVO trainingCampVO;
 	private List<TrainingCampProgramVO> trainingCampProgramVOList;
 	private List<UserTypeVO> activityMembersList;
 	private PartyMeetingsVO partyMeetingsVO;
@@ -119,6 +122,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ICoreDashboardInsuranceService coreDashboardInsuranceService;
 	private IKaizalaInfoService kaizalaInfoService;
 	
+	private ICoreDashboardCoreService coreDashboardCoreService;
 	private List<CoreDebateVO> codeDebateVoList;
 	private INewsCoreDashBoardService newsCoreDashBoardService;
 	private IdNameVO idNameVO; 
@@ -208,7 +212,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setProgramIdsList(List<Long> programIdsList) {
 		this.programIdsList = programIdsList;
 	}
+	public ICoreDashboardCoreService getCoreDashboardCoreService() {
+		return coreDashboardCoreService;
+	}
 
+	public void setCoreDashboardCoreService(
+			ICoreDashboardCoreService coreDashboardCoreService) {
+		this.coreDashboardCoreService = coreDashboardCoreService;
+	}
 	public List<List<ToursBasicVO>> getMemberList() {
 		return memberList;
 	}
