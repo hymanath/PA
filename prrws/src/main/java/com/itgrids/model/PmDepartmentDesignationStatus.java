@@ -1,10 +1,14 @@
 package com.itgrids.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,6 +18,8 @@ public class PmDepartmentDesignationStatus {
 	private Long pmDepartmentDesignationStatusId;
 	private Long pmDepartmentDesignationId;
 	private Long pmStatusId;
+	private PmDepartmentDesignation pmDepartmentDesignation;
+	private PmStatus  pmStatus;
 	
 	
 	@Id
@@ -39,4 +45,21 @@ public class PmDepartmentDesignationStatus {
 	public void setPmStatusId(Long pmStatusId) {
 		this.pmStatusId = pmStatusId;
 	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_department_designation_id", insertable = false, updatable = false)
+	public PmDepartmentDesignation getPmDepartmentDesignation() {
+		return pmDepartmentDesignation;
+	}
+	public void setPmDepartmentDesignation(PmDepartmentDesignation pmDepartmentDesignation) {
+		this.pmDepartmentDesignation = pmDepartmentDesignation;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_status_id", insertable = false, updatable = false)
+	public PmStatus getPmStatus() {
+		return pmStatus;
+	}
+	public void setPmStatus(PmStatus pmStatus) {
+		this.pmStatus = pmStatus;
+	}
+	
 }

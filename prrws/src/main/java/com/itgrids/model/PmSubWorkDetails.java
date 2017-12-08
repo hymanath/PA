@@ -1,10 +1,14 @@
 package com.itgrids.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,12 +25,20 @@ public class PmSubWorkDetails {
 	private Long locationValue;
 	private String grievanceDescrption;
 	private Long addressId;
-	private  String isDeleted;
+	private String isDeleted;
 	private Long pmLeadId;
 	private Long pmBriefLeadId;
 	private Long pmGrantId;
-	private  Long pmStatusId;
+	private Long pmStatusId;
 	private String coveringLetterPath;
+	
+	private Petition petition;
+	private PmDepartment pmDepartment;
+	private PmSubject pmSubject;
+	private PmLead pmLead;
+	private PmBriefLead pmBriefLead;
+	private PmGrant pmGrant;
+	private PmStatus pmStatus;
 	
 	@Id
 	@Column(name="pm_sub_work_details_id")
@@ -142,5 +154,60 @@ public class PmSubWorkDetails {
 	public void setCoveringLetterPath(String coveringLetterPath) {
 		this.coveringLetterPath = coveringLetterPath;
 	}
-	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_id", insertable = false, updatable = false)
+	public Petition getPetition() {
+		return petition;
+	}
+	public void setPetition(Petition petition) {
+		this.petition = petition;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_department_id", insertable = false, updatable = false)
+	public PmDepartment getPmDepartment() {
+		return pmDepartment;
+	}
+	public void setPmDepartment(PmDepartment pmDepartment) {
+		this.pmDepartment = pmDepartment;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_subject_id", insertable = false, updatable = false)
+	public PmSubject getPmSubject() {
+		return pmSubject;
+	}
+	public void setPmSubject(PmSubject pmSubject) {
+		this.pmSubject = pmSubject;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_lead_id", insertable = false, updatable = false)
+	public PmLead getPmLead() {
+		return pmLead;
+	}
+	public void setPmLead(PmLead pmLead) {
+		this.pmLead = pmLead;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_brief_lead_id", insertable = false, updatable = false)
+	public PmBriefLead getPmBriefLead() {
+		return pmBriefLead;
+	}
+	public void setPmBriefLead(PmBriefLead pmBriefLead) {
+		this.pmBriefLead = pmBriefLead;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_grant_id", insertable = false, updatable = false)
+	public PmGrant getPmGrant() {
+		return pmGrant;
+	}
+	public void setPmGrant(PmGrant pmGrant) {
+		this.pmGrant = pmGrant;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_status_id", insertable = false, updatable = false)
+	public PmStatus getPmStatus() {
+		return pmStatus;
+	}
+	public void setPmStatus(PmStatus pmStatus) {
+		this.pmStatus = pmStatus;
+	}	
 }

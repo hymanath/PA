@@ -12,40 +12,39 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "pm_designation_heirarchy")
-public class PmDesignationHeirarchy {
+@Table(name = "pm_department_designation_officer")
+public class PmDepartmentDesignationOfficer {
 	
-	private Long pmDesignationHeirarchyId;
-	private Long pmDepartmentDesignationId;
-	private Long subPmDepartmentDesignationId;
+	private Long pmDepartmentDesignationOfficerId;
+	private Long  pmDepartmentDesignationId;
+	private Long pmOfficerId;
 	private String isActive;
-	private Long orderNo;
 	
 	private PmDepartmentDesignation pmDepartmentDesignation;
-	
+	private PmOfficer pmOfficer;
 	
 	@Id
-	@Column(name="pm_designation_heirarchy_id")
+	@Column(name="Pm_department_designation_officer_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	public Long getPmDesignationHeirarchyId() {
-		return pmDesignationHeirarchyId;
+	public Long getPmDepartmentDesignationOfficerId() {
+		return pmDepartmentDesignationOfficerId;
 	}
-	public void setPmDesignationHeirarchyId(Long pmDesignationHeirarchyId) {
-		this.pmDesignationHeirarchyId = pmDesignationHeirarchyId;
+	public void setPmDepartmentDesignationOfficerId(Long pmDepartmentDesignationOfficerId) {
+		this.pmDepartmentDesignationOfficerId = pmDepartmentDesignationOfficerId;
 	}
-	@Column(name="pm_dept_designation_id")
+	@Column(name="pm_department_designation_id")
 	public Long getPmDepartmentDesignationId() {
 		return pmDepartmentDesignationId;
 	}
 	public void setPmDepartmentDesignationId(Long pmDepartmentDesignationId) {
 		this.pmDepartmentDesignationId = pmDepartmentDesignationId;
 	}
-	@Column(name="sub_pm_dept_designation_id")
-	public Long getSubPmDepartmentDesignationId() {
-		return subPmDepartmentDesignationId;
+	@Column(name="pm_Officer_Id")
+	public Long getPmOfficerId() {
+		return pmOfficerId;
 	}
-	public void setSubPmDepartmentDesignationId(Long subPmDepartmentDesignationId) {
-		this.subPmDepartmentDesignationId = subPmDepartmentDesignationId;
+	public void setPmOfficerId(Long pmOfficerId) {
+		this.pmOfficerId = pmOfficerId;
 	}
 	@Column(name="is_active")
 	public String getIsActive() {
@@ -53,13 +52,6 @@ public class PmDesignationHeirarchy {
 	}
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
-	}
-	@Column(name="order_no")
-	public Long getOrderNo() {
-		return orderNo;
-	}
-	public void setOrderNo(Long orderNo) {
-		this.orderNo = orderNo;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pm_department_designation_id", insertable = false, updatable = false)
@@ -69,6 +61,12 @@ public class PmDesignationHeirarchy {
 	public void setPmDepartmentDesignation(PmDepartmentDesignation pmDepartmentDesignation) {
 		this.pmDepartmentDesignation = pmDepartmentDesignation;
 	}
-	
-	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_officer_id", insertable = false, updatable = false)
+	public PmOfficer getPmOfficer() {
+		return pmOfficer;
+	}
+	public void setPmOfficer(PmOfficer pmOfficer) {
+		this.pmOfficer = pmOfficer;
+	}
 }

@@ -1,10 +1,14 @@
 package com.itgrids.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,10 +17,12 @@ public class PmDepartmentDesignation {
 
 	private Long pmDepartmentDesignationId;
 	private Long pmDepartmentId;
-	private Long pmSubWorkDetailsId;
 	private Long pmDesignationId;
 	private String isDeleted;
 	
+	private PmDepartment pmDepartment;
+	private PmSubWorkDetails pmSubWorkDetails;
+	private PmDesignation pmDesignation;
 	
 	@Id
 	@Column(name="pm_dept_designation_id")
@@ -34,13 +40,6 @@ public class PmDepartmentDesignation {
 	public void setPmDepartmentId(Long pmDepartmentId) {
 		this.pmDepartmentId = pmDepartmentId;
 	}
-	@Column(name="pm_sub_work_details_id")
-	public Long getPmSubWorkDetailsId() {
-		return pmSubWorkDetailsId;
-	}
-	public void setPmSubWorkDetailsId(Long pmSubWorkDetailsId) {
-		this.pmSubWorkDetailsId = pmSubWorkDetailsId;
-	}
 	@Column(name="pm_designation_id")
 	public Long getPmDesignationId() {
 		return pmDesignationId;
@@ -55,6 +54,28 @@ public class PmDepartmentDesignation {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	
-	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_department_id", insertable = false, updatable = false)
+	public PmDepartment getPmDepartment() {
+		return pmDepartment;
+	}
+	public void setPmDepartment(PmDepartment pmDepartment) {
+		this.pmDepartment = pmDepartment;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_sub_work_details_id", insertable = false, updatable = false)
+	public PmSubWorkDetails getPmSubWorkDetails() {
+		return pmSubWorkDetails;
+	}
+	public void setPmSubWorkDetails(PmSubWorkDetails pmSubWorkDetails) {
+		this.pmSubWorkDetails = pmSubWorkDetails;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_designation_id", insertable = false, updatable = false)
+	public PmDesignation getPmDesignation() {
+		return pmDesignation;
+	}
+	public void setPmDesignation(PmDesignation pmDesignation) {
+		this.pmDesignation = pmDesignation;
+	}
 }

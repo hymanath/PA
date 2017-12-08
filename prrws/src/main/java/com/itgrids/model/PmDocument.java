@@ -1,10 +1,15 @@
+
 package com.itgrids.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +20,9 @@ public class PmDocument {
 	private Long petitionId;
 	private Long documentId;
 	private Long orderNo;
+	
+	private Petition petition;
+	private Document document;
 	
 
 	@Id
@@ -47,6 +55,20 @@ public class PmDocument {
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
 	}
-	
-	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_id", insertable = false, updatable = false)
+	public Petition getPetition() {
+		return petition;
+	}
+	public void setPetition(Petition petition) {
+		this.petition = petition;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "document_id", insertable = false, updatable = false)
+	public Document getDocument() {
+		return document;
+	}
+	public void setDocument(Document document) {
+		this.document = document;
+	}
 }

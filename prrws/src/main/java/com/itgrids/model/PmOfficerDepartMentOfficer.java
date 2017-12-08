@@ -1,10 +1,14 @@
 package com.itgrids.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +19,8 @@ public class PmOfficerDepartMentOfficer {
 	private Long pmOfficerDepartMentOfficerId;
 	private Long pmDepartmentId;
 	private Long pmOfficerId;
+	private PmDepartment pmDepartment;
+	private PmOfficer pmOfficer;
 	
 	@Id
 	@Column(name="pm_officer_dept_officer_id")
@@ -39,6 +45,20 @@ public class PmOfficerDepartMentOfficer {
 	public void setPmOfficerId(Long pmOfficerId) {
 		this.pmOfficerId = pmOfficerId;
 	}
-	
-	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_department_id", insertable = false, updatable = false)
+	public PmDepartment getPmDepartment() {
+		return pmDepartment;
+	}
+	public void setPmDepartment(PmDepartment pmDepartment) {
+		this.pmDepartment = pmDepartment;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_officer_id", insertable = false, updatable = false)
+	public PmOfficer getPmOfficer() {
+		return pmOfficer;
+	}
+	public void setPmOfficer(PmOfficer pmOfficer) {
+		this.pmOfficer = pmOfficer;
+	}	
 }
