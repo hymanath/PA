@@ -15,6 +15,8 @@ public class PetitionsWorksVO {
 	private Double estimateCost;
 	private Long eOfficeId;
 	private List<PetitionsWorksVO> subWorksList = new ArrayList<PetitionsWorksVO>();
+	
+	
 	public Long getWorkId() {
 		return workId;
 	}

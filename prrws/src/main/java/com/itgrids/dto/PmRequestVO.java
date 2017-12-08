@@ -2,7 +2,12 @@ package com.itgrids.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
 
+/**
+ * @author sanjeev
+ *
+ */
 public class PmRequestVO {
 	
 	private Long representationId;
@@ -16,6 +21,8 @@ public class PmRequestVO {
 	private String representationdate;
 	private AddressVO address;
 	private List<PmRequestVO> referList= new ArrayList<PmRequestVO>();
+	private List<File> fileList = new ArrayList<File>();
+	
 	public Long getRepresentationId() {
 		return representationId;
 	}
@@ -81,6 +88,12 @@ public class PmRequestVO {
 	}
 	public void setReferList(List<PmRequestVO> referList) {
 		this.referList = referList;
+	}
+	public List<File> getFileList() {
+		return fileList;
+	}
+	public void setFileList(List<File> fileList) {
+		this.fileList = fileList;
 	}
 
 	
