@@ -284,7 +284,7 @@ function mainNewsBlockPraja(result){
 							str+='<td>';
 								str+='<p class="text-capital responsiveFont">Main&nbsp;Edition</p>';
 								if(result.coreDashBoardVOList[i].count !=null && result.coreDashBoardVOList[i].count>0){
-									str+='<p><a class="" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList[i].count+'</a></p>';
+									str+='<p><a class="" attr_editiontype="1" attr_benefitid ="0" attr_partyids="872" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList[i].count+'</a></p>';
 								}else{
 									str+='<p> - </p>';
 								}
@@ -293,7 +293,7 @@ function mainNewsBlockPraja(result){
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
 								if(result.coreDashBoardVOList[i].positivePerc !=null && result.coreDashBoardVOList[i].positivePerc>0){
-									str+='<span><a class="" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList[i].positiveCountMain+'</a></span>';
+									str+='<span><a class="" attr_editiontype="1" attr_benefitid ="1" attr_partyids="872" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList[i].positiveCountMain+'</a></span>';
 									str+='<small id="" class="text-success"> '+result.coreDashBoardVOList[i].positivePerc+' %</small>';
 								}else{
 									str+='<span> - </span>';
@@ -303,7 +303,7 @@ function mainNewsBlockPraja(result){
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
 								if(result.coreDashBoardVOList[i].negativePerc !=null && result.coreDashBoardVOList[i].negativePerc>0){
-									str+='<span><a class="" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList[i].negativCountMain+'</a></span>';
+									str+='<span><a class="" attr_editiontype="1" attr_benefitid ="2" attr_partyids="872" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList[i].negativCountMain+'</a></span>';
 									str+='<small id="" class="text-danger"> '+result.coreDashBoardVOList[i].negativePerc+' %</small>';
 								}else{
 									str+='<span> - </span>';
@@ -329,16 +329,16 @@ function mainNewsBlockPraja(result){
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital">Dist&nbsp;edition</p>';
-								str+='<p><a class="" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList[i].totalCount+'</a></p>';
+								str+='<p><a class="" attr_editiontype="2" attr_benefitid ="0" attr_benefitid ="0" attr_partyids="872" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList[i].totalCount+'</a></p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Positive</p>';
-								str+='<span><a class="" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList[i].positiveCountDist+'</a></span>';
+								str+='<span><a class="" attr_editiontype="2" attr_benefitid ="1" attr_partyids="872" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList[i].positiveCountDist+'</a></span>';
 								str+='<small class="text-success" id=""> '+result.coreDashBoardVOList[i].positiveDistPerc+' %</small>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Negative</p>';
-								str+='<span><a class="" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList[i].negativCountDist+'</a></span>';
+								str+='<span><a class="" attr_editiontype="2" attr_benefitid ="2" attr_partyids="872" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList[i].negativCountDist+'</a></span>';
 								str+='<small class="text-danger" id=""> '+result.coreDashBoardVOList[i].negativeDistPerc+' %</small>';
 							str+='</td>';
 						str+='</tr>';
@@ -384,14 +384,14 @@ function mainNewsBlockPraja(result){
 								for(var i in result.coreDashBoardVOList1){
 									str+='<tr>';
 										str+='<td>';
-											str+='<img src="newCoreDashBoard/img/'+result.coreDashBoardVOList1[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList1[i].count+'</a></span>';
+											str+='<img src="newCoreDashBoard/img/'+result.coreDashBoardVOList1[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="" attr_editiontype="1" attr_benefitid ="0" attr_partyids="'+result.coreDashBoardVOList1[i].organizationId+'" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList1[i].count+'</a></span>';
 										str+='</td>';
 										str+='<td>';
-											str+='<span><a class="" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList1[i].positiveCountMain+'</a></span>';
+											str+='<span><a class="" attr_editiontype="1"  attr_benefitid ="1" attr_partyids="'+result.coreDashBoardVOList1[i].organizationId+'" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList1[i].positiveCountMain+'</a></span>';
 											str+='<small class="text-success"> '+result.coreDashBoardVOList1[i].positivePerc+' %</small>';
 										str+='</td>';
 										str+='<td>';
-											str+='<span><a class="" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList1[i].negativCountMain+'</a></span>';
+											str+='<span><a class="" attr_editiontype="1" attr_benefitid ="1" attr_partyids="'+result.coreDashBoardVOList1[i].organizationId+'" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList1[i].negativCountMain+'</a></span>';
 											str+='<small class="text-danger" id=""> '+result.coreDashBoardVOList1[i].negativePerc+' %</small>';
 										str+='</td>';
 									str+='</tr>';
@@ -431,14 +431,14 @@ function mainNewsBlockPraja(result){
 								for(var i in result.coreDashBoardVOList1){
 									str+='<tr>';
 										str+='<td>';
-											str+='<img src="newCoreDashBoard/img/'+result.coreDashBoardVOList1[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList1[i].totalCount+'</a></span>';
+											str+='<img src="newCoreDashBoard/img/'+result.coreDashBoardVOList1[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="" attr_editiontype="2"  attr_benefitid ="0" attr_partyids="'+result.coreDashBoardVOList1[i].organizationId+'" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList1[i].totalCount+'</a></span>';
 										str+='</td>';
 										str+='<td>';
-											str+='<span><a class="" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList1[i].positiveCountDist+'</a></span>';
+											str+='<span><a class="" attr_editiontype="2"  attr_benefitid ="1" attr_partyids="'+result.coreDashBoardVOList1[i].organizationId+'" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList1[i].positiveCountDist+'</a></span>';
 											str+='<small class="text-success"> '+result.coreDashBoardVOList1[i].positiveDistPerc+' %</small>';
 										str+='</td>';
 										str+='<td>';
-											str+='<span><a class="" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="">'+result.coreDashBoardVOList1[i].negativCountDist+'</a></span>';
+											str+='<span><a class="" attr_editiontype="2"  attr_benefitid ="2" attr_partyids="'+result.coreDashBoardVOList1[i].organizationId+'" attr_categoryId="'+globalcategoryId+'">'+result.coreDashBoardVOList1[i].negativCountDist+'</a></span>';
 											str+='<small class="text-danger" id=""> '+result.coreDashBoardVOList1[i].negativeDistPerc+' %</small>';
 										str+='</td>';
 									str+='</tr>';
