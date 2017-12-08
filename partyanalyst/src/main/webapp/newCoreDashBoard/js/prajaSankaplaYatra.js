@@ -524,13 +524,15 @@ function buildPublicationWisePartiesAnalysis(result){
 				str+='<tr>';
 					str+='<th rowspan="2">Publication</th>';
 					for(var i in result[0].coreDashBoardVOList){
-						str+='<th colspan="2">'+result[0].coreDashBoardVOList[i].organization+'</th>';
+						str+='<th colspan="4">'+result[0].coreDashBoardVOList[i].organization+'</th>';
 					}
 				str+='</tr>';
 				str+='<tr>';
 					for(var i in result[0].coreDashBoardVOList){
 						str+='<th>+ve </th>';
+						str+='<th>%</th>';
 						str+='<th>-ve </th>';
+						str+='<th>%</th>';
 					}
 				str+='</tr>';
 			str+='</thead>';
@@ -541,13 +543,17 @@ function buildPublicationWisePartiesAnalysis(result){
 							str+='<td>'+result[i].organization+'</td>';
 							for(var j in result[i].coreDashBoardVOList){
 								if(result[i].coreDashBoardVOList[j].positivePerc !=null && result[i].coreDashBoardVOList[j].positivePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+' <small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' %</small></td>';
+									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>';
+									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' </small></td>';
 								}else{
+									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								if(result[i].coreDashBoardVOList[j].negativePerc !=null && result[i].coreDashBoardVOList[j].negativePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+' <small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' %</small></td>';
+									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>'; 
+									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' </small></td>';
 								}else{
+									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								
@@ -575,13 +581,15 @@ function buildChannelWisePartiesAnalysisInfo(result){
 				str+='<tr>';
 					str+='<th rowspan="2">Channel</th>';
 					for(var i in result[0].coreDashBoardVOList){
-						str+='<th colspan="2">'+result[0].coreDashBoardVOList[i].organization+'</th>';
+						str+='<th colspan="4">'+result[0].coreDashBoardVOList[i].organization+'</th>';
 					}
 				str+='</tr>';
 				str+='<tr>';
 					for(var i in result[0].coreDashBoardVOList){
 						str+='<th>+ve </th>';
-						str+='<th>-ve </th>';
+						str+='<th>%</th>';
+						str+='<th>-ve</th>';
+						str+='<th>%</th>';
 					}
 				str+='</tr>';
 			str+='</thead>';
@@ -592,13 +600,17 @@ function buildChannelWisePartiesAnalysisInfo(result){
 							str+='<td>'+result[i].organization+'</td>';
 							for(var j in result[i].coreDashBoardVOList){
 								if(result[i].coreDashBoardVOList[j].positivePerc !=null && result[i].coreDashBoardVOList[j].positivePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+' <small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' %</small></td>';
+									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>'; 
+									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' </small></td>';
 								}else{
+									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								if(result[i].coreDashBoardVOList[j].negativePerc !=null && result[i].coreDashBoardVOList[j].negativePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+' <small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' %</small></td>';
+									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>';
+									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' </small></td>';
 								}else{
+									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								
@@ -626,13 +638,15 @@ function buildDistrictWisePartyOverView(result){
 				str+='<tr>';
 					str+='<th rowspan="2">District</th>';
 					for(var i in result[0].coreDashBoardVOList){
-						str+='<th colspan="2">'+result[0].coreDashBoardVOList[i].organization+'</th>';
+						str+='<th colspan="4">'+result[0].coreDashBoardVOList[i].organization+'</th>';
 					}
 				str+='</tr>';
 				str+='<tr>';
 					for(var i in result[0].coreDashBoardVOList){
 						str+='<th>+ve </th>';
+						str+='<th>% </th>';
 						str+='<th>-ve </th>';
+						str+='<th>% </th>';
 					}
 				str+='</tr>';
 			str+='</thead>';
@@ -643,13 +657,17 @@ function buildDistrictWisePartyOverView(result){
 							str+='<td>'+result[i].organization+'</td>';
 							for(var j in result[i].coreDashBoardVOList){
 								if(result[i].coreDashBoardVOList[j].positivePerc !=null && result[i].coreDashBoardVOList[j].positivePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+' <small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' %</small></td>';
+									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>'; 
+									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' </small></td>';
 								}else{
+									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								if(result[i].coreDashBoardVOList[j].negativePerc !=null && result[i].coreDashBoardVOList[j].negativePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+' <small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' %</small></td>';
+									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>'; 
+									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' </small></td>';
 								}else{
+									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								
@@ -677,13 +695,15 @@ function buildDistrictWisePartyViewForElectrronicMediaInfo(result){
 				str+='<tr>';
 					str+='<th rowspan="2">District</th>';
 					for(var i in result[0].coreDashBoardVOList){
-						str+='<th colspan="2">'+result[0].coreDashBoardVOList[i].organization+'</th>';
+						str+='<th colspan="4">'+result[0].coreDashBoardVOList[i].organization+'</th>';
 					}
 				str+='</tr>';
 				str+='<tr>';
 					for(var i in result[0].coreDashBoardVOList){
 						str+='<th>+ve </th>';
+						str+='<th>% </th>';
 						str+='<th>-ve </th>';
+						str+='<th>% </th>';
 					}
 				str+='</tr>';
 			str+='</thead>';
@@ -694,13 +714,17 @@ function buildDistrictWisePartyViewForElectrronicMediaInfo(result){
 							str+='<td>'+result[i].organization+'</td>';
 							for(var j in result[i].coreDashBoardVOList){
 								if(result[i].coreDashBoardVOList[j].positivePerc !=null && result[i].coreDashBoardVOList[j].positivePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+' <small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' %</small></td>';
+									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>'; 
+									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' </small></td>';
 								}else{
+									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								if(result[i].coreDashBoardVOList[j].negativePerc !=null && result[i].coreDashBoardVOList[j].negativePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+' <small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' %</small></td>';
+									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>'; 
+									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' </small></td>';
 								}else{
+									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								
@@ -748,7 +772,15 @@ $(document).on("click","[role='tabCummulative'] li",function(){
 	
 });
 $(document).on("change","#categoryId",function(){
+	var categoryName=$(this).find('option:selected').text();
+	if(categoryName=='KAPU RESERVATIONS')
+	{
+		$('#prajaSankalpaYatraDivId').html(categoryName+"-<span style='color:green;'>5%</span>");
+	}
+	else{
+	$('#prajaSankalpaYatraDivId').html(categoryName+"-");
+	}	
 	globalcategoryId = $(this).val();
-	 onloadPrajaSankaplaYatraCalls();
+	onloadPrajaSankaplaYatraCalls();
 	
 });
