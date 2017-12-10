@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "pm_ref_candidate_designation")
+@Table(name = "pm_ref_cand_designation")
 public class PmRefCandidateDesignation {
 	
 
@@ -31,7 +31,7 @@ public class PmRefCandidateDesignation {
 	
 	
 	@Id
-	@Column(name="pm_ref_candidate_designation_id")
+	@Column(name="pm_ref_cand_designation_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	public Long getPmRefCandidateDesignationId() {
 		return pmRefCandidateDesignationId;
@@ -46,7 +46,7 @@ public class PmRefCandidateDesignation {
 	public void setPmRefCandidateId(Long pmRefCandidateId) {
 		this.pmRefCandidateId = pmRefCandidateId;
 	}
-	@Column(name="pm_Desgination_id")
+	@Column(name="pm_desgination_id")
 	public Long getPmDesginationId() {
 		return pmDesginationId;
 	}
@@ -83,7 +83,7 @@ public class PmRefCandidateDesignation {
 		this.pmRefCandidate = pmRefCandidate;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "pm_Desgination_id", insertable = false, updatable = false)
+	@JoinColumn(name = "pm_desgination_id", insertable = false, updatable = false)
 	public PmDesignation getPmDesgination() {
 		return pmDesgination;
 	}

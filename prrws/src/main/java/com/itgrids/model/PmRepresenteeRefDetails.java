@@ -17,6 +17,7 @@ public class PmRepresenteeRefDetails {
 	private Long pmRepresenteeRefDetailsId;
 	private Long petitionId;
 	private Long pmRepresenteeId;
+	private Long pmRepresenteeDesignationId;
 	private Long pmRefCandidateId;
 	private Long pmRefCandidateDesignationId;
 	private String isDeleted;
@@ -27,6 +28,7 @@ public class PmRepresenteeRefDetails {
 	private PmRepresentee pmRepresentee;
 	private PmRefCandidate pmRefCandidate; 
 	private PmRefCandidateDesignation pmRefCandidateDesignation;
+	private PmRepresenteeDesignation pmRepresenteeDesignation;
 	
 	@Id
 	@Column(name="pm_representee_ref_details_id")
@@ -58,7 +60,7 @@ public class PmRepresenteeRefDetails {
 	public void setPmRefCandidateId(Long pmRefCandidateId) {
 		this.pmRefCandidateId = pmRefCandidateId;
 	}
-	@Column(name="pm_ref_candidate_designation_id")
+	@Column(name="pm_ref_cand_designation_id")
 	public Long getPmRefCandidateDesignationId() {
 		return pmRefCandidateDesignationId;
 	}
@@ -104,12 +106,31 @@ public class PmRepresenteeRefDetails {
 		this.pmRefCandidate = pmRefCandidate;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "pm_ref_candidate_designation_id", insertable = false, updatable = false)
+	@JoinColumn(name = "pm_ref_cand_designation_id", insertable = false, updatable = false)
 	public PmRefCandidateDesignation getPmRefCandidateDesignation() {
 		return pmRefCandidateDesignation;
 	}
 	public void setPmRefCandidateDesignation(PmRefCandidateDesignation pmRefCandidateDesignation) {
 		this.pmRefCandidateDesignation = pmRefCandidateDesignation;
 	}
+	
+	@Column(name="pm_representtee_designation_id")
+	public Long getPmRepresenteeDesignationId() {
+		return pmRepresenteeDesignationId;
+	}
+	public void setPmRepresenteeDesignationId(Long pmRepresenteeDesignationId) {
+		this.pmRepresenteeDesignationId = pmRepresenteeDesignationId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_representtee_designation_id", insertable = false, updatable = false)
+	public PmRepresenteeDesignation getPmRepresenteeDesignation() {
+		return pmRepresenteeDesignation;
+	}
+	public void setPmRepresenteeDesignation(
+			PmRepresenteeDesignation pmRepresenteeDesignation) {
+		this.pmRepresenteeDesignation = pmRepresenteeDesignation;
+	}
 
+	
 }

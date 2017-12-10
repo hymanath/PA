@@ -91,7 +91,7 @@ public class PmSubWorkDetails {
 	public void setLocationScopeId(Long locationScopeId) {
 		this.locationScopeId = locationScopeId;
 	}
-	@Column(name="location_value")
+	@Column(name="location_scope_value")
 	public Long getLocationValue() {
 		return locationValue;
 	}

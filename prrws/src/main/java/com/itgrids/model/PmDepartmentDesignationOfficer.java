@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "pm_department_designation_officer")
+@Table(name = "pm_dept_designation_officer")
 public class PmDepartmentDesignationOfficer {
 	
 	private Long pmDepartmentDesignationOfficerId;
@@ -24,7 +24,7 @@ public class PmDepartmentDesignationOfficer {
 	private PmOfficer pmOfficer;
 	
 	@Id
-	@Column(name="Pm_department_designation_officer_id")
+	@Column(name="pm_dept_designation_officer_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	public Long getPmDepartmentDesignationOfficerId() {
 		return pmDepartmentDesignationOfficerId;
@@ -32,7 +32,7 @@ public class PmDepartmentDesignationOfficer {
 	public void setPmDepartmentDesignationOfficerId(Long pmDepartmentDesignationOfficerId) {
 		this.pmDepartmentDesignationOfficerId = pmDepartmentDesignationOfficerId;
 	}
-	@Column(name="pm_department_designation_id")
+	@Column(name="pm_dept_designation_id")
 	public Long getPmDepartmentDesignationId() {
 		return pmDepartmentDesignationId;
 	}
@@ -54,7 +54,7 @@ public class PmDepartmentDesignationOfficer {
 		this.isActive = isActive;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "pm_department_designation_id", insertable = false, updatable = false)
+	@JoinColumn(name = "pm_dept_designation_id", insertable = false, updatable = false)
 	public PmDepartmentDesignation getPmDepartmentDesignation() {
 		return pmDepartmentDesignation;
 	}
