@@ -1,9 +1,10 @@
 /*swadhin*/
-function initializeFile(typeVal) {
+function initializeFileUploadMainBlock(typeVal,candidateId) {
+	alert(candidateId)
 	var itemStr = '';
 	var itemAppendStr = '';
 	itemStr+='<li class="jFiler-item">';
-                    itemStr+='<div class="jFiler-item-container">';
+                    itemStr+='<div class="jFiler-item-container" style="margin:10px 20px 30px 0">';
                         itemStr+='<div class="jFiler-item-inner">';
                            itemStr+='<div class="jFiler-item-thumb">';
                                 itemStr+='<div class="jFiler-item-status"></div>';
@@ -49,8 +50,8 @@ function initializeFile(typeVal) {
 			itemAppendStr+='</div>';
 		itemAppendStr+='</li>';  
 				
-	$('#update_TourFileId2'+typeVal).filer({      
-    changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-folder"></i></div><div class="jFiler-input-text"><h3>Click on this box</h3> <span style="display:inline-block; margin: 15px 0">or</span></div><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',
+	$('#mainBlockFileUpload'+candidateId+typeVal).filer({      
+    changeInput: '<div class="jFiler-input-dragDrop" style="margin:0px;padding:10px;"><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',
     showThumbs: true,
     theme: "dragdropbox",
     templates: {  

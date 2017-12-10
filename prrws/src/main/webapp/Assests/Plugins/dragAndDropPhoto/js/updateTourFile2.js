@@ -50,7 +50,7 @@ function initializeFileProjDoc(typeVal) {
 		itemAppendStr+='</li>';  
 				
 	$('#projectDocUpload'+typeVal).filer({      
-    changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-folder"></i></div><div class="jFiler-input-text"><h3>Click on this box</h3> <span style="display:inline-block; margin: 15px 0">or</span></div><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',
+    changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon" style="padding:20px;"></div><div class="jFiler-input-text"><h3>Drag & Drop File Here or Click to Browse</h3> </div><a class="jFiler-input-choose-btn blue" style="margin-top:20px;">Browse Files</a></div></div>',
     showThumbs: true,
     theme: "dragdropbox",
     templates: {  
