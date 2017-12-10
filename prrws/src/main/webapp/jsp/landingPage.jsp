@@ -9,6 +9,7 @@
 <link href="Assests/MaterialKit/css/landingPage.css" rel="stylesheet"/>-->
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less">
+<link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -44,10 +45,10 @@
 <header>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-sm-1">
+			<div class="col-sm-1 col-xs-3">
 				<img src="Assests/img/aplogo.png" class="logoCls" alt="logo">
 			</div>
-			<div class="col-sm-11">
+			<div class="col-sm-11 col-xs-9">
 				<h5 style="margin-bottom: 0px;margin-top: 10px;color: #EC2027"><b>MINISTER <span style="font-size: 10px;">DASHBOARD</span></b></h5>
 				<p style="font-size: 10px;color : #22A67E"><b>Information Technology, Panchayathi Raj & <br/>
 				Rural Development</b></p>
