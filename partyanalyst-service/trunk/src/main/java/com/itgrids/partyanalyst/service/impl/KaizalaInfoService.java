@@ -1227,7 +1227,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			
 			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.194:8080/KAIZALA/getLocationWiseCommitteeMemberDetails");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://mydepartments.in/KAIZALA/getLocationWiseCommitteeMemberDetails");
 			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/KAIZALA/saveKaizalaInstallationTracking");
 			
 			WebResource.Builder builder = webResource.getRequestBuilder();
@@ -1253,7 +1253,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		 	    			if(subArr!=null && subArr.length()>0){
 				 	    		 for(int j=0;j<subArr.length();j++){
 				 	    			KaizalaDashboardVO subvo = new KaizalaDashboardVO();
-				 	    			JSONObject subobj = (JSONObject) subArr.get(i);
+				 	    			JSONObject subobj = (JSONObject) subArr.get(j);
 				 	    			subvo.setId(subobj.getLong("id"));
 				 	    			subvo.setName(subobj.getString("name"));
 				 	    			subvo.setTotalCount(subobj.getLong("totalCount"));
@@ -1282,7 +1282,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			
 			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.194:8080/KAIZALA/getOverAllCommitteeWiseMembersCounts");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://mydepartments.in/KAIZALA/getOverAllCommitteeWiseMembersCounts");
 			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/KAIZALA/saveKaizalaInstallationTracking");
 			
 			WebResource.Builder builder = webResource.getRequestBuilder();
@@ -1328,7 +1328,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			
 			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.194:8080/KAIZALA/getLevelLocationWiseCounts");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://mydepartments.in/KAIZALA/getLevelLocationWiseCounts");
 			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/KAIZALA/saveKaizalaInstallationTracking");
 			
 			WebResource.Builder builder = webResource.getRequestBuilder();
