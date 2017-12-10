@@ -2700,10 +2700,10 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 			" TCM.isActive='Y' and TCM.tdpCadre.isDeleted='N' " +
 			" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and " +
 			" TCM.tdpCadre.enrollmentYear=2014 and TCM.tdpCadre.gender=TCED.gender and " +
-			" TCM.tdpCommitteeEnrollmentId = 2 and " +
-			" TCED.tdpCommitteeEnrollmentId = 2 and " +
-			" TCM.tdpCommitteeRole.tdpCommitteeEnrollmentId = 2 and " +
-			" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId = 2 ");
+			" TCM.tdpCommitteeEnrollmentId = "+IConstants.TDP_COMMITTEE_ENROLLMENT_ID_16_18+" and " +
+			" TCED.tdpCommitteeEnrollmentId = "+IConstants.TDP_COMMITTEE_ENROLLMENT_ID_16_18+" and " +
+			" TCM.tdpCommitteeRole.tdpCommitteeEnrollmentId = "+IConstants.TDP_COMMITTEE_ENROLLMENT_ID_16_18+" and " +
+			" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId = "+IConstants.TDP_COMMITTEE_ENROLLMENT_ID_16_18 );
 	  if(stateId != null && stateId.longValue() > 0){
 		  queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId "); 
 	  }
@@ -3177,7 +3177,7 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 											" and model.tdpCadre.tdpCadreId = :tdpCadreId" +
 											" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
 											" and model1.isDeleted = 'N' and model1.enrollmentYear.enrollmentYearId = 4" +
-											" and model.isActive = 'Y' and model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId = 2");
+											" and model.isActive = 'Y' and model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId ="+IConstants.TDP_COMMITTEE_ENROLLMENT_ID_16_18 );
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 		
