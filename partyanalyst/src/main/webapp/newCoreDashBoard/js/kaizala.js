@@ -480,7 +480,7 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 									
 								}
 								else if(locationType == "constituency"){
-									str+='<th class="text-capital" rowspan="3">District</th>';
+									str+='<th class="text-capital" rowspan="3">Constituency</th>';
 									
 								}
 							str+='</tr>';
@@ -488,10 +488,10 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 								for(var i in result[0].subList){
 									if(locationType != "district"){
 										if(result[0].subList[i].name !="DISTRICT"){
-											str+='<th colspan="3">'+result[0].subList[i].name+'</th>';
+											str+='<th colspan="4">'+result[0].subList[i].name+'</th>';
 										}
 									}else{
-										str+='<th colspan="3">'+result[0].subList[i].name+'</th>';
+										str+='<th colspan="4">'+result[0].subList[i].name+'</th>';
 									}
 									
 								}
@@ -500,14 +500,16 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 								for(var i in result[0].subList){
 									if(locationType != "district"){
 										if(result[0].subList[i].name !="DISTRICT"){
+											str+='<th>Total</th>';
 											str+='<th>Installed</th>';
 											str+='<th>Pending</th>';
-											str+='<th>Not Having Smart Phone</th>';
+											str+='<th>No Smart Phone</th>';
 										}
 									}else{
+										str+='<th>Total</th>';
 										str+='<th>Installed</th>';
 										str+='<th>Pending</th>';
-										str+='<th>Not Having Smart Phone</th>';
+										str+='<th>No Smart Phone</th>';
 									}
 								}
 							str+='</tr>';
@@ -520,6 +522,11 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 									for(var j in result[i].subList){
 										if(locationType != "district"){
 											if(result[i].subList[j].name !="DISTRICT"){
+												if(result[i].subList[j].totalCount == null || result[i].subList[j].totalCount == 0){
+													str+='<td> - </td>';
+												}else{
+													str+='<td>'+result[i].subList[j].totalCount+' </td>';
+												}
 												if(result[i].subList[j].installedPerc == null || result[i].subList[j].installedPerc == 0){
 													str+='<td> - </td>';
 												}else{
@@ -538,6 +545,11 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 												}
 											}
 										}else{
+											if(result[i].subList[j].totalCount == null || result[i].subList[j].totalCount == 0){
+												str+='<td> - </td>';
+											}else{
+												str+='<td>'+result[i].subList[j].totalCount+' </td>';
+											}
 											if(result[i].subList[j].installedPerc == null || result[i].subList[j].installedPerc == 0){
 												str+='<td> - </td>';
 											}else{
