@@ -8184,7 +8184,7 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampC
 			toDate = sdf.parse(toDateStr);
 		}
 		  Long accessLevelValue = 0l;
-		  if(userAccessLevelId.longValue() == 4L){
+		  if(userAccessLevelId.longValue() == 4L){//in procedure Madhavi is using in reverse order.
 		   accessLevelValue = 5L;
 		  }else if(userAccessLevelId.longValue() == 5L){
 		   accessLevelValue = 4L;
