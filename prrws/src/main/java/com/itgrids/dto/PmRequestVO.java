@@ -17,14 +17,35 @@ public class PmRequestVO {
 	private String mobileNO;
 	private String email;
 	private String voterCardNo;
-	private Long AadharNo;
+	private String adharCardNo;
+	private Long AadharCardNo;
+	private Long tdpCadreId;
 	private Long designationId;
 	private String representationType;
 	private String representationdate;
-	private AddressVO address;
-	private List<PmRequestVO> referList= new ArrayList<PmRequestVO>();
-	private List<MultipartFile> fileList = new ArrayList<MultipartFile>();
+	private Long representeeDesignationId;
+	private AddressVO addressVO;
+	private List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>(0);
+	private List<PmRequestVO> referList= new ArrayList<PmRequestVO>(0);
+	private List<MultipartFile> fileList = new ArrayList<MultipartFile>(0);
 	
+	private Long refCandidateId;
+	private String startDate;
+	private String endDate;
+	private Long userId;
+	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public List<PetitionsWorksVO> getWorksList() {
+		return worksList;
+	}
+	public void setWorksList(List<PetitionsWorksVO> worksList) {
+		this.worksList = worksList;
+	}
 	public Long getRepresentationId() {
 		return representationId;
 	}
@@ -55,11 +76,12 @@ public class PmRequestVO {
 	public void setVoterCardNo(String voterCardNo) {
 		this.voterCardNo = voterCardNo;
 	}
-	public Long getAadharNo() {
-		return AadharNo;
+	
+	public Long getAadharCardNo() {
+		return AadharCardNo;
 	}
-	public void setAadharNo(Long aadharNo) {
-		AadharNo = aadharNo;
+	public void setAadharCardNo(Long aadharCardNo) {
+		AadharCardNo = aadharCardNo;
 	}
 	public Long getDesignationId() {
 		return designationId;
@@ -79,11 +101,11 @@ public class PmRequestVO {
 	public void setRepresentationdate(String representationdate) {
 		this.representationdate = representationdate;
 	}
-	public AddressVO getAddress() {
-		return address;
+	public AddressVO getAddressVO() {
+		return addressVO;
 	}
-	public void setAddress(AddressVO address) {
-		this.address = address;
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
 	}
 	public List<PmRequestVO> getReferList() {
 		return referList;
@@ -97,7 +119,40 @@ public class PmRequestVO {
 	public void setFileList(List<MultipartFile> fileList) {
 		this.fileList = fileList;
 	}
-
-	
-
+	public String getAdharCardNo() {
+		return adharCardNo;
+	}
+	public void setAdharCardNo(String adharCardNo) {
+		this.adharCardNo = adharCardNo;
+	}
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	public Long getRepresenteeDesignationId() {
+		return representeeDesignationId;
+	}
+	public void setRepresenteeDesignationId(Long representeeDesignationId) {
+		this.representeeDesignationId = representeeDesignationId;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public Long getRefCandidateId() {
+		return refCandidateId;
+	}
+	public void setRefCandidateId(Long refCandidateId) {
+		this.refCandidateId = refCandidateId;
+	}
 }
