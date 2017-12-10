@@ -36,6 +36,9 @@ $(document).on("click","#spikeReportTypeId li",function(){
 	$("#defaultButtonId").addClass("active");
 	onLoadCalls();
 });
+$(document).on('cut copy paste', function (e) {
+	e.preventDefault();
+});
 function getSizeForRank(min,max,status,selectedType){  
 	var diseasesIdArr=[];       
 	diseasesIdArr.push(1);

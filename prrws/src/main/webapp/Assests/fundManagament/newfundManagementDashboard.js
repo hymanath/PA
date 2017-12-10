@@ -15,6 +15,9 @@ var consNameForMenu ='';
 $("#selectedName").attr("attr_levelidvalue",0)
 $("#selectedName").attr("attr_id",0)
 $("#selectedName").attr("attr_levelid",0)
+$(document).on('cut copy paste', function (e) {
+	e.preventDefault();
+});
 getAllFiniancialYears();
 getAllDepartments();
 	function onLoadInitialisations(){

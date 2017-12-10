@@ -26,6 +26,9 @@
 			tabBlocks('mandalBlockId','mandal');
 			responsiveTabs();
 		}
+		$(document).on('cut copy paste', function (e) {
+			e.preventDefault();
+		});
 		function getSelectedType(){
 			for(var i in levelNamesArr){
 				if(levelNamesArr[i].name == "constituency"){

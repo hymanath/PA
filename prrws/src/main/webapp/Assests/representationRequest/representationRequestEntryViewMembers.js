@@ -4,7 +4,9 @@ $(".chosen-select").chosen();
 //
 //getPetitionDepartmentList()
 getPetitionDesignationList();
-
+$(document).on('cut copy paste', function (e) {
+	e.preventDefault();
+});
 $(document).on("click",".searchCls",function(){
 	var value=$(this).val();
 	if(value =="designation"){

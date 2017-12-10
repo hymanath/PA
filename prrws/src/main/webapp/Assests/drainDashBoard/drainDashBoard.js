@@ -111,6 +111,9 @@ function onloadCalls(){
 	$(document).on("click",function(){
 		$(".menu-data-cls").hide();
 	});
+	$(document).on('cut copy paste', function (e) {
+		e.preventDefault();
+	});
 	$(document).on("change","#ivrQuestionsSelect",function(){
 		$("#selectedQuestion").html($("#ivrQuestionsSelect").html());
 	});
