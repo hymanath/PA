@@ -79,26 +79,6 @@
 				
 			} 
 		}
-		function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title)
-		{
-			
-			'use strict';
-			$('#'+id).highcharts({
-				 colors: colors,
-				chart: type,
-				title: title,
-				subtitle: {
-					text: null
-				},
-				xAxis: xAxis,
-				yAxis: yAxis,
-				tooltip: tooltip,
-				plotOptions: plotOptions,
-				legend: legend,
-				series: data
-			});
-		}
-		
 		function getSchemeWiseWorkDetails(type,locationType,divId,filterType,filterValue,districtValue){
 			//$("#habitationWorksPWS,#habitationWorksCPWS").html(spinner);
 			var typeVal="";
@@ -229,7 +209,15 @@
 					title: {
 						text: ''
 					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0
+					},
 					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
 						allowDecimals: false,
 						title: {
 							text: 'Units'
@@ -253,7 +241,15 @@
 					title: {
 						text: ''
 					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0
+					},
 					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
 						allowDecimals: false,
 						title: {
 							text: 'Units'
@@ -522,14 +518,14 @@
 				tabBlock+='<div class="row">';
 					tabBlock+='<div class="col-sm-8">';
 						tabBlock+='<ul class="switch-btn-New" role="tabCummulative" attr_level_type="'+blockName+'">';
-							tabBlock+='<li class="active ActiveStateCls" attr_type="completeOverview">Complete Overview</li>';
-							tabBlock+='<li  attr_type="exceededOverview">Exceeded Target Works Details - <span class="headingExceedId"></span></li>';
+							tabBlock+='<li attr_type="completeOverview">Complete Overview</li>';
+							tabBlock+='<li class="active ActiveStateCls" attr_type="exceededOverview">Exceeded Target Works Details - <span class="headingExceedId"></span></li>';
 						tabBlock+='</ul>';
 					tabBlock+='</div>';
 					tabBlock+='<div class="col-sm-4">';
 						tabBlock+='<div class="pull-right">';
 							tabBlock+='<label class="checkbox-inline">';
-								tabBlock+='<input type="checkbox"  class="checkboxTypeCls" attr_block_name="'+blockName+'" id="checkboxType'+blockName+'Id" name="option" value="amount" checked>with Amount';
+								tabBlock+='<input type="checkbox"  class="checkboxTypeCls" attr_block_name="'+blockName+'" id="checkboxType'+blockName+'Id" name="option" value="amount">With Amount';
 							tabBlock+='</label>';
 						tabBlock+='</div>';
 					tabBlock+='</div>';
@@ -593,18 +589,20 @@
 		for(var i in blocksArr)
 		{
 			if(blocksArr[i].id == "schemeId"){
-				getSchemeWiseWorkDetails('table',blockName,blocksArr,"","","","completeOverview");
+				//getSchemeWiseWorkDetails('table',blockName,blocksArr,"","","","completeOverview");
+				getExceedWorkDetailsLocationWise('table',blockName,blocksArr,"","","","exceededOverview","")
+				$("#stateBlockIdschemeId").html(spinner);
 			}
 		}
 		if(blockId == 'constituencyBlockId'){
-				selectBox('distVal'+blockId+'')
-				selectBox('constVal'+blockId+'')
+			selectBox('distVal'+blockId+'');
+			selectBox('constVal'+blockId+'');
 		}else if(blockId == 'mandalBlockId'){
-			selectBox('distVal'+blockId+'')
-			selectBox('constVal'+blockId+'')
-			selectBox('mandalVal'+blockId+'')
+			selectBox('distVal'+blockId+'');
+			selectBox('constVal'+blockId+'');
+			selectBox('mandalVal'+blockId+'');
 		}
-			
+		$("[role='tabCummulative'] li:nth-child(2)").trigger("click");
 	}
 	function selectBox(id){
 		var id = id;
@@ -2093,9 +2091,15 @@ function builOverViewBlock(result,divId){
 				text: null
 			},
 			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
 				categories:["Total"]
 			},
 			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
 				allowDecimals: false,
 				min: 0,
 				title: {
@@ -2260,6 +2264,7 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(ajaxresp){
+			$("[attr_level_type='state'][role='tabCummulative'] li:nth-child(2)").trigger("click");
 		 	if(ajaxresp !=null && ajaxresp.length>0){
 				if(locationType == 'state'){
 					globalStateLevelExceededTargetWorks=ajaxresp;
@@ -2399,30 +2404,21 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 		getExceedWorkDetailsLocationWise("",'state',"","","","","",statusType);
 	});
 	$(document).on("click",".checkboxTypeCls",function(e){
-		
+		var blocksArr = ['state','district','constituency','mandal']
 		if($(this).is(":checked")){
-			var blockType = $(this).attr("attr_block_name")
-				if(blockType == "state"){
-					$(".colspanLenInc"+blockType).css("display","block")
-					$(".colspanLen"+blockType).css("display","none")
-				}else if(blockType == "district"){
-					$(".colspanLenInc"+blockType).css("display","block")
-					$(".colspanLen"+blockType).css("display","none")
-				}
-			
-			
+			$(".checkboxTypeCls").prop("checked",true);
+			for(var i in blocksArr)
+			{
+				$(".colspanLenInc"+blocksArr[i]).css("display","block")
+				$(".colspanLen"+blocksArr[i]).css("display","none")				
+			}
 		}else{
-			var blockType = $(this).attr("attr_block_name")
-			
-			if(blockType == "state"){
-				$(".colspanLenInc"+blockType).css("display","none")
-				$(".colspanLen"+blockType).css("display","block")
-			}else if(blockType == "district"){
-				$(".colspanLenInc"+blockType).css("display","none")
-				$(".colspanLen"+blockType).css("display","block")
+			$(".checkboxTypeCls").prop("checked",false);
+			for(var i in blocksArr)
+			{
+				$(".colspanLenInc"+blocksArr[i]).css("display","none")
+				$(".colspanLen"+blocksArr[i]).css("display","block")
 			}
 		}
-		
-		
 	});
 	
