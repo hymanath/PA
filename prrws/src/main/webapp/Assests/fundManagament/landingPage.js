@@ -1284,11 +1284,12 @@ function getSchemeWiseWorkDetails()
 function getEOfcDepartWiseOverviewDetails(){
 	$(".itecEOfficeAllCls").html(spinner);
 	var json = {
-		departmentid:"",		
+		fromDate:"2017-11-01",	
+		toDate:"2017-12-31"			
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getEOfcDepartWiseOverviewDetails',
+		url: 'getEOfcDepartOverviewDetails',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
