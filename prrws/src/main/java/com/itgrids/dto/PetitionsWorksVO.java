@@ -14,13 +14,70 @@ public class PetitionsWorksVO {
 	private Long deptId;
 	private Long subjectId;
 	private Long subSubjectId;
+	private Long leadId;
+	private Long briefLeadId;
+	private Long grantId;
 	private Double estimateCost;
 	private Long eOfficeId;
 	private String remarks;
+	private String isPreviousPetition;
+	private String previousPetitionNo;
 	private List<PetitionsWorksVO> subWorksList = new ArrayList<PetitionsWorksVO>();
 	private List<MultipartFile> fileList = new ArrayList<MultipartFile>();
 	private Long workTypeId;
 	
+	private AddressVO addressVO;
+	private Long locationScopeId;
+	private Long locationValue;
+	
+	public AddressVO getAddressVO() {
+		return addressVO;
+	}
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
+	}
+	public Long getLocationScopeId() {
+		return locationScopeId;
+	}
+	public void setLocationScopeId(Long locationScopeId) {
+		this.locationScopeId = locationScopeId;
+	}
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+	public Long getLeadId() {
+		return leadId;
+	}
+	public void setLeadId(Long leadId) {
+		this.leadId = leadId;
+	}
+	public Long getBriefLeadId() {
+		return briefLeadId;
+	}
+	public void setBriefLeadId(Long briefLeadId) {
+		this.briefLeadId = briefLeadId;
+	}
+	public Long getGrantId() {
+		return grantId;
+	}
+	public void setGrantId(Long grantId) {
+		this.grantId = grantId;
+	}
+	public String getIsPreviousPetition() {
+		return isPreviousPetition;
+	}
+	public void setIsPreviousPetition(String isPreviousPetition) {
+		this.isPreviousPetition = isPreviousPetition;
+	}
+	public String getPreviousPetitionNo() {
+		return previousPetitionNo;
+	}
+	public void setPreviousPetitionNo(String previousPetitionNo) {
+		this.previousPetitionNo = previousPetitionNo;
+	}
 	public Long getWorkId() {
 		return workId;
 	}

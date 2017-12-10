@@ -1,10 +1,9 @@
 package com.itgrids.dao.impl;
 
 import java.util.List;
-import java.util.Map;
 
-import org.appfuse.dao.SearchException;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,6 +20,30 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		
 	}
 
-	
+	public List<Long> getExistingPetitionRepresenteeDetailsById(String voterCardNo,String adharCardNo){
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.pmRepresenteeId from PmRepresentee model where model.isDeleted ='N' ");
+		if(voterCardNo != null && voterCardNo.trim().length()>0){
+			str.append(" and ( model.voterCardNo = '"+voterCardNo+"' ");
+			if(adharCardNo != null && adharCardNo.trim().length()>0)
+				str.append(" OR model.adharCardNo = '"+adharCardNo+"'");
+			str.append(" )");
+		}
+		else if(adharCardNo != null && adharCardNo.trim().length()>0)
+			str.append(" and  model.adharCardNo = '"+adharCardNo+"' ");
+		
+		Query query = getSession().createQuery(str.toString());
+		return query.list();
+	}
 
+	public List<Long> getExistingPetitionRepresenteeDetailsByRefId(Long refCandidateId){
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.pmRepresenteeId from PmRepresentee model where model.isDeleted ='N' ");
+		if(refCandidateId != null && refCandidateId.longValue()>0L)
+			str.append(" and model.pmRefCandidateId = :refCandidateId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("refCandidateId", refCandidateId);
+		return query.list();
+	}
+	
 }
