@@ -23,8 +23,11 @@ public class PmRepresentee {
 	private Long addressId;
 	private Long tdpCadreId;
 	private String voterCardNo;
+	private String adharCardNo;
 	private String isDeleted;
+	private Long pmRefCandidateId;
 	
+	private PmRefCandidate pmRefCandidate;
 	private LocationAddress userAddress;
 	
 	@Id
@@ -93,4 +96,31 @@ public class PmRepresentee {
 	public void setUserAddress(LocationAddress userAddress) {
 		this.userAddress = userAddress;
 	}
+	
+	
+	@Column(name="adhar_card_no")
+	public String getAdharCardNo() {
+		return adharCardNo;
+	}
+	public void setAdharCardNo(String adharCardNo) {
+		this.adharCardNo = adharCardNo;
+	}
+	
+	@Column(name="pm_ref_candidate_id")
+	public Long getPmRefCandidateId() {
+		return pmRefCandidateId;
+	}
+	public void setPmRefCandidateId(Long pmRefCandidateId) {
+		this.pmRefCandidateId = pmRefCandidateId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_ref_candidate_id", insertable = false, updatable = false)
+	public PmRefCandidate getPmRefCandidate() {
+		return pmRefCandidate;
+	}
+	public void setPmRefCandidate(PmRefCandidate pmRefCandidate) {
+		this.pmRefCandidate = pmRefCandidate;
+	}
+	
 }

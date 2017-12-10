@@ -12,11 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "petition_ref_candidate")
+@Table(name = "pm_ref_candidate")
 public class PmRefCandidate {
 	
 	
-	private Long petitionRefCandidateId;
+	private Long pmRefCandidateId;
+	private String name;
 	private String relativeName;
 	private String mobileNo;
 	private String email;
@@ -33,14 +34,15 @@ public class PmRefCandidate {
 	private LocationAddress address;
 	
 	@Id
-	@Column(name="petition_ref_candidate_id")
+	@Column(name="pm_ref_candidate_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	public Long getPetitionRefCandidateId() {
-		return petitionRefCandidateId;
+	public Long getPmRefCandidateId() {
+		return pmRefCandidateId;
 	}
-	public void setPetitionRefCandidateId(Long petitionRefCandidateId) {
-		this.petitionRefCandidateId = petitionRefCandidateId;
+	public void setPmRefCandidateId(Long pmRefCandidateId) {
+		this.pmRefCandidateId = pmRefCandidateId;
 	}
+	
 	@Column(name="relative_name")
 	public String getRelativeName() {
 		return relativeName;
@@ -118,5 +120,15 @@ public class PmRefCandidate {
 	}
 	public void setPartyId(Long partyId) {
 		this.partyId = partyId;
+	}
+	
+	@Column(name="name")
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}	
+	
+	
 }

@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "pm_designation_heirarchy")
+@Table(name = "pm_designatoin_hierarchy")
 public class PmDesignationHeirarchy {
 	
 	private Long pmDesignationHeirarchyId;
@@ -25,7 +25,7 @@ public class PmDesignationHeirarchy {
 	
 	
 	@Id
-	@Column(name="pm_designation_heirarchy_id")
+	@Column(name="pm_designatoin_hierarchy_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	public Long getPmDesignationHeirarchyId() {
 		return pmDesignationHeirarchyId;

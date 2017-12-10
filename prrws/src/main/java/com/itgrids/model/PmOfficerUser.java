@@ -53,7 +53,7 @@ public class PmOfficerUser {
 		this.isActive = isActive;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "pm_department_designation_id", insertable = false, updatable = false)
+	@JoinColumn(name = "pm_dept_designation_id", insertable = false, updatable = false)
 	public PmDepartmentDesignation getPmDepartmentDesignation() {
 		return pmDepartmentDesignation;
 	}
