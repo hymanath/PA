@@ -74,7 +74,7 @@
 		z-index:99;
 	}
 	.footerCls{
-		position:relative !important;
+		display:none;
 	}
 	div[landing-link]
 	{
@@ -84,7 +84,7 @@
 @media (min-width: 500px) and (max-width:767px) 
 {
 	.footerCls{
-		position:relative !important;
+		display:none;
 	}
 	.table-overview tr td
 	{
