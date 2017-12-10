@@ -1344,4 +1344,7 @@ public interface IConstants {
 	
 	public static final String[] AP_PARLIAMENT_IDS_LIST = {"504","509","466","508","464","463","500","479","494","473","483","507","493","474","467","497","495","506","478","501","482","491","476","465","472"};
 	public static final String AP_PARLIAMENT_IDS_LIST_STR = "504, 509, 466, 508, 464, 463, 500, 479, 494, 473, 483, 507, 493, 474, 467, 497, 495, 506, 478, 501, 482, 491, 476, 465, 472";
+	
+	public static final Long TDP_COMMITTEE_ENROLLMENT_ID_16_18 = 2l;
+	public static final Long TDP_COMMITTEE_ENROLLMENT_ID_14_16 = 1l;
 }
