@@ -2670,9 +2670,9 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 	font-weight:bold;
 }
 .searchCss{
-	border: 1px solid #dddddd;
+	background-color: #ffffff;
+    border: 1px solid #dddddd;
     border-radius: 5px;
-    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
     cursor: pointer;
     padding: 20px;
     text-align: center;
@@ -2836,8 +2836,8 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 	text-align: center; 
 	color: rgb(51, 51, 51); 
 	font-weight: bold; 
-	background-color: rgba(255, 255, 255, 0.5); 
-	top: 21px; 
+	background-color: rgba(191, 233, 210, 0.4);
+	top: 8px; 
 	padding: 28px 30px; 
 	font-size: 28px; 
 	cursor: default;
@@ -2900,4 +2900,38 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 }
 .onlinePanelBlock{
 	cursor:pointer;
+}
+.bg_color{
+	background-color:#F0F0F0;
+	padding:15px;
+}
+.showRemoveIcon{
+	background-color: rgb(221, 221, 221); 
+	top: -20px; 
+	border-radius: 50%; 
+	border: 1px solid rgb(0, 0, 0); 
+	padding: 3px; 
+	position: relative; 
+	cursor: pointer;
+	z-index:999;
+}
+.button_gray{
+	background-color: #455862;
+    border: 1px solid #455862;
+    border-radius: 0;
+    font-weight: bold;
+	&:hover
+		{
+			background-color: #455862;
+			border: 1px solid #455862;
+		}
+		&:focus
+		{
+			background-color: #455862;
+			border: 1px solid #455862;
+		}
+}
+.bg_color_view{
+	background-color: #e2e2e2;
+    padding: 15px;
 }
