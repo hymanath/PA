@@ -5848,7 +5848,7 @@ var globalImages;
 		//Preemeet
 		preemeeetOnloadCalls();
 		onloadPrajaSankaplaYatraCalls();
-		//onloadKaizalaCalls();	
+		//onloadKaizalaCalls1();	
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');
