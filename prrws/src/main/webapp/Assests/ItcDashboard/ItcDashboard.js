@@ -45,7 +45,7 @@ function onloadCalls(){
 	departmentWiseOverView();
 	getITSectorWiseOverviewDetails();
 	//getMeesevaSLAOverviewDtls("meesevaSla",5);
-	getMeesevaSLACatWiseAbstarctDetails("meesevaSla",5)
+	getMeesevaSLACatWiseAbstarctDetails("meesevaSla",5,"onload")
 	getMeesevaKPIOverViewDetails("onload","","");
 	
 	//AP Innovation Society Ajax Call Start
@@ -448,7 +448,7 @@ function departmentBlockWiseDetails(divId)
 	for(var i in levelWiseBlockArr){
 		if(divId == "meesevaSlaKpi"){
 			//getMeesevaSLAOverviewDtls(divId,levelWiseBlockArr[i].id);
-			getMeesevaSLACatWiseAbstarctDetails(divId,levelWiseBlockArr[i].id)
+			getMeesevaSLACatWiseAbstarctDetails(divId,levelWiseBlockArr[i].id,"change")
 		}else if(divId == 'apInnovationSociety')
 		{
 			getAPInnovationSocietyOverview('overview',divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id);
@@ -738,7 +738,7 @@ function getITSectorWiseOverviewDetails(){
 						str1+='</div>';
 					str1+='</div>';
 				str1+='</div>';
-				str1+='<ul class="list-inline m_top10">';
+				/* str1+='<ul class="list-inline m_top10">';
 					str1+='<li>';
 						str1+='<span class="roundCircle" style="background-color:#058E46;color:#fff">G1</span>Gone into Production';
 					str1+='</li>';
@@ -770,7 +770,7 @@ function getITSectorWiseOverviewDetails(){
 					str1+='<li>';
 						str1+='<span class="roundCircle" style="background-color:#91CCC7;color:#fff">D</span>Dropped';
 					str1+='</li>';
-				str1+='</ul>';
+				str1+='</ul>'; */
 				$("#promotionsTotalBlockId").html(str1);
 			}
 		}
@@ -940,17 +940,17 @@ function getITSectorLeadCategoryWiseDetails(type){
 				if(type == "GREEN")
 				{
 					str+='<p>';
-						str+='<span style="padding:5px 10px;background-color:#058E46;color:#fff">'+result[i].category+'</span>';
+						str+='<span style="padding:5px 10px;background-color:#058E46;color:#fff">'+result[i].category+' <span style="font-size:12px;">( '+result[i].name+' )</span> </span>';
 					str+='</p>';
 				}else if(type == "RED")
 				{
 					str+='<p>';
-						str+='<span style="padding:5px 10px;background-color:#F75C5D;color:#fff">'+result[i].category+'</span>';
+						str+='<span style="padding:5px 10px;background-color:#F75C5D;color:#fff">'+result[i].category+' <span style="font-size:12px;">( '+result[i].name+' )</span> </span>';
 					str+='</p>';
 				}else if(type == "DROPPED")
 				{
 					str+='<p>';
-						str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">'+result[i].category+'</span>';
+						str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">'+result[i].category+' <span style="font-size:12px;">( '+result[i].name+' )</span> </span>';
 					str+='</p>';
 				}
 				str+='<div class="row m_top20">';
@@ -1100,13 +1100,10 @@ function getITDistrictWiseDetails(type,category,divType){
 				str+='</thead>';
 				for(var i in result)
 				{
-					if(result[i].district == 'ZTotal')
+					if(result[i].district != 'ZTotal')
 					{
-					str+='<tr style="background-color:#CCCCCC;font-weight:bold;">';
-					}
-					else {
-					str+='<tr>';
-					}	
+						str+='<tr>';
+						
 						str+='<td>'+result[i].district+'</td>';
 						if(result[i].district != null && result[i].district == 'ZTotal'){
 							str+='<td>'+result[i].noProjects+'</td>';
@@ -1138,7 +1135,51 @@ function getITDistrictWiseDetails(type,category,divType){
 							}
 						}
 					str+='</tr>';
+					}
 				}
+				for(var i in result)
+				{
+					if(result[i].district == 'ZTotal')
+					{
+						str+='<tfoot>';
+							str+='<tr style="background-color:#ddd;">';
+						
+								str+='<td>Total</td>';
+								if(result[i].district != null && result[i].district == 'ZTotal'){
+									str+='<td>'+result[i].noProjects+'</td>';
+								}else{
+									str+='<td class="sectorWiseCuntCls" attr_block_name="'+type+'" attr_category="'+category+'" attr_district="'+result[i].district+'" style="cursor:pointer;">'+result[i].noProjects+'</td>';
+								}
+								
+								str+='<td>'+result[i].investment+'</td>';
+								str+='<td>'+result[i].employment+'</td>';
+								for(var j in result[i].subList)
+								{
+									if(result[i].subList[j].noProjects == 'undefined' || result[i].subList[j].noProjects === undefined)
+									{
+										str+='<td>-</td>';
+									}else{
+										str+='<td>'+result[i].subList[j].noProjects+'</td>';
+									}
+									if(result[i].subList[j].investment == 'undefined' || result[i].subList[j].investment === undefined)
+									{
+										str+='<td>-</td>';
+									}else{
+										str+='<td>'+result[i].subList[j].investment+'</td>';
+									}
+									if(result[i].subList[j].employment == 'undefined' || result[i].subList[j].employment === undefined)
+									{
+										str+='<td>-</td>';
+									}else{
+										str+='<td>'+result[i].subList[j].employment+'</td>';
+									}
+								}
+							str+='</tr>';
+						str+='</tfoot>';
+					}
+				}
+				
+				
 				
 			str+='</table>';
 		str+='</div>';
@@ -3133,7 +3174,7 @@ $(document).on("click",".meesevaSlaKpiCls li",function(){
 	var blockType = $(this).attr("attr_type");
 	if(blockType == "meesevaSla"){
 		//getMeesevaSLAOverviewDtls("meesevaSlaKpi",5);
-		getMeesevaSLACatWiseAbstarctDetails("meesevaSlaKpi",5);
+		getMeesevaSLACatWiseAbstarctDetails("meesevaSlaKpi",5,"change");
 	}else{
 		getMeesevaKPIOverViewDetails("change","meesevaSlaKpi",5);
 		//getMeesavaKpiGraphBuild("meesevaSlaKpi",5);
@@ -3164,8 +3205,10 @@ function getBioMetricDashboardOverViewDtls(){
 	});	
 }
 
-function getMeesevaSLACatWiseAbstarctDetails(divId,blockId){
-	$("#meesevaHeadingId").html(spinner);
+function getMeesevaSLACatWiseAbstarctDetails(divId,blockId,type){
+	if(type == "onload"){
+		$("#meesevaHeadingId").html(spinner);
+	}
 	$("#"+divId+"Block"+blockId).html(spinner);
 	var json = {
 		
@@ -3180,11 +3223,16 @@ function getMeesevaSLACatWiseAbstarctDetails(divId,blockId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$("#meesevaHeadingId").html('');
+		if(type == "onload"){
+			$("#meesevaHeadingId").html('');
+		}
+		
 	    $("#"+divId+"Block"+blockId).html('');
 		if(result !=null){
 			var totalBeyondSlaCount = result.catgryABeyondSLACount+result.catgryBBeyondSLACount;
-			$("#meesevaHeadingId").html(totalBeyondSlaCount)
+			if(type == "onload"){
+				$("#meesevaHeadingId").html(totalBeyondSlaCount)
+			}
 			buildMeesevaSLACatWiseAbstarctDetails(result,divId,blockId);
 		}else {
 			$("#"+divId+"Block"+blockId).html('NO DATA AVAILABLE.');

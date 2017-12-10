@@ -16,7 +16,7 @@ var blockClassObject = {
 }
 
 var blockHeadingObject = {
-"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"TOTAL LIGHTS","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"TOTAL CASES","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'GH':"ACHIEVED",'Check Dams':"ACHIEVED",'Rock Fill Dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery New':"ACHIEVED",'Silk worm New':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"NOTIFIED & IN PROGRESS",'ASSETS':"COMPLETED & CLOSED","WATER SOURCE":"TOTAL","WORKS":"COMPLETED","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA-SLA KPI":"Beyond SLA/etaal - KPI","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CHLORINATION":"chlorinated","coffee":"COFFEE","Raising and Maintenance of Nursery":"Raising and Maintenance of Nursery","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and CheckDams","Mini Percolation Tanks":"Mini Percolation Tanks","Continuous Contour Trenches":"Continuous Contour Trenches","Greenary works Chettu":"Greenary works Chettu","Agriculture Related Works":"Agriculture Related Works","Rural Sanitation Works":"Rural Sanitation Works","Soil Moisture Conservation works Neeru":"Soil Moisture Conservation works Neeru","Works in community lands":"Works in community lands","OTHERS":"OTHERS","Institutional Development Works":"Institutional Development Works","Road Works":"Road Works","Water Harvesting Structures Neeru":"Water Harvesting Structures Neeru","Fisheries work":"Fisheries work","AH-Live Stock Related works":"AH-Live Stock Related works",
+"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"TOTAL CASES","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'GH':"ACHIEVED",'Check Dams':"ACHIEVED",'Rock Fill Dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery New':"ACHIEVED",'Silk worm New':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"NOTIFIED & IN PROGRESS",'ASSETS':"COMPLETED & CLOSED","WATER SOURCE":"TOTAL","WORKS":"COMPLETED","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA-SLA KPI":"Beyond SLA/etaal - KPI","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CHLORINATION":"chlorinated","coffee":"COFFEE","Raising and Maintenance of Nursery":"Raising and Maintenance of Nursery","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and CheckDams","Mini Percolation Tanks":"Mini Percolation Tanks","Continuous Contour Trenches":"Continuous Contour Trenches","Greenary works Chettu":"Greenary works Chettu","Agriculture Related Works":"Agriculture Related Works","Rural Sanitation Works":"Rural Sanitation Works","Soil Moisture Conservation works Neeru":"Soil Moisture Conservation works Neeru","Works in community lands":"Works in community lands","OTHERS":"OTHERS","Institutional Development Works":"Institutional Development Works","Road Works":"Road Works","Water Harvesting Structures Neeru":"Water Harvesting Structures Neeru","Fisheries work":"Fisheries work","AH-Live Stock Related works":"AH-Live Stock Related works",
 "Renovation and Improvements to existing Check Dams Check Wall":"ACHIEVED","Road Formation Upto WBM GR II Including CD works":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas":"ACHIEVED","Construction Of Animal Hostel":"ACHIEVED","Roads for Unconnected Habitations 2011-12":"ACHIEVED","Construction of New Check Dam":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality":"ACHIEVED","Construction of Food Grains Storage Structures of 250MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works in Tribal areas":"ACHIEVED","Construction of Village Haats Infrastructure fecilities":"ACHIEVED","Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham":"ACHIEVED","Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank":"ACHIEVED","Construction of Buildings for women self help group federation":"ACHIEVED","Work Site Facilities":"ACHIEVED","Renovation and Improvements to existing Percolation Tank  Mini Percolation tank":"ACHIEVED","GP level BNRGSK knowledge resource centre 2012-13 and afterwards":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality":"ACHIEVED","Production of Grafts in HNTC":"ACHIEVED","Improvements of RYTHU BAZAR":"ACHIEVED","Roads for Unconnected Habitations 2012-13 and afterwards":"ACHIEVED","HNTC Development":"ACHIEVED","New Open Well for Drinking water purpose":"ACHIEVED","Construction of Crematoria Burial Grounds":"ACHIEVED","Repairs to Existing Check Dam":"ACHIEVED","Formation of Road upto Gravel surface including CD works to agriculture fields":"ACHIEVED","Formation of Approach Road upto Gravel surface including CD works to Burial ground":"ACHIEVED","Construction of Food Grains Storage Structures of 500MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas":"ACHIEVED","Raising of Cashew bag seedlings for 2014-15":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas":"ACHIEVED","NTR Rural House":"NTR Rural House","Cattle Ponds":"Cattle Ponds","Desilting of Drinking Water Tanks":"Desilting of Drinking Water Tanks","Animal Husbandry Others":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank1":"ACHIEVED","Avenue Plantation":"ACHIEVED","Forest Others":"ACHIEVED","Scooping and Dibbling of seed":"ACHIEVED","IJP PROGRAM WORKS":"ACHIEVED",
 "Azolla Production Unit":"ACHIEVED","Construction of silopits of 3 MTs capacity":"ACHIEVED","Fodder trough for Cattle Cattle drinking water trough":"ACHIEVED","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"ACHIEVED","Raising of Perinnial Fodder":"ACHIEVED","Raising of Silvipasture clubbed with subabul plantation":"ACHIEVED","Raising and Maintenance of Avenue plantations":"ACHIEVED","Raising and Maintenance of Block Plantations":"ACHIEVED","Raising and Maintenance of nurseries":"ACHIEVED","Soil and Moisture Conservation Works":"ACHIEVED","CM EODB":"Total/Approved","bioMetricDashBoard":"TotalEmployeement/Present"
 }
@@ -60,13 +60,13 @@ function getFavouriteComponents(){
 }
 function buildFavouriteComponentsResult(result) {
 	   var str = '';
-		str +='<div class="col-sm-12 text-right m_top10">';
-			//str +='<i class="fa fa-refresh" title="Refresh" id="refreshList" style="cursor:pointer;font-size:18px;"></i>';
-			str +='<i class="fa fa-edit" title="edit priorities" id="editList" style="cursor:pointer;font-size:18px;"></i>';
-			str +='<i class="fa fa-save" title="save priorities" id="saveList" style="display:none;cursor:pointer;font-size:18px;"></i>';
-			str +='<span id="errorDivId"></span>';
-		str +='</div>';
-		str +='<div id="sortableList">';
+		str+='<div class="col-sm-12 text-right m_top10">';
+			//str+='<i class="fa fa-refresh" title="Refresh" id="refreshList" style="cursor:pointer;font-size:18px;"></i>';
+			str+='<i class="fa fa-edit" title="edit priorities" id="editList" style="cursor:pointer;font-size:18px;"></i>';
+			str+='<i class="fa fa-save" title="save priorities" id="saveList" style="display:none;cursor:pointer;font-size:18px;"></i>';
+			str+='<span id="errorDivId"></span>';
+		str+='</div>';
+		str+='<div id="sortableList">';
 		for (var i in result) {
 			var compnentName = result[i].name.trim();
 			if (result[i].name == "IT E & C") {
@@ -90,36 +90,44 @@ function buildFavouriteComponentsResult(result) {
 			
 			
 			var componentNameWithoutSpace = compnentName.replace(/[\(\)\-\s]+/g, '');
-			str +='<div class="col-sm-4 draggable-element" order-by="'+result[i].id+'">'
-				str +='<div class="whiteBlock">';
-					str +='<img src="Assests/img/'+imagesObj[compnentName]+'" >';
-					if(result[i].name !=null && result[i].name.length>15){
-						str +='<h5 class="tooltipCls" style="display: inline-block;text-transform:uppercase;cursor:pointer;" data-toogle="tooltip" title="'+result[i].name+'">'+result[i].name.substring(0, 15)+'...</h5>';
-						
-					}else{
-						str +='<h5 style="display: inline-block;text-transform:uppercase;">'+result[i].name+'</h5>';
-					}
-					
-					str +='<div class=" " style="text-align: right">';
-						str +='<h2 class="'+blockClassObject[compnentName]+'" style="margin-top: 0px"></h2>';
-						if(result[i].name == 'ENGINEERING DEPARTMENT')
-						{
-							str +='<p class="" style="text-align: right;height: 53px;">'+blockHeadingObject[compnentName]+'</p>';
+			
+				str+='<div class="col-sm-4 draggable-element" order-by="'+result[i].id+'">'
+					str+='<div class="whiteBlock">';
+						str+='<img src="Assests/img/'+imagesObj[compnentName]+'" >';
+						if(result[i].name !=null && result[i].name.length>15){
+							str+='<h5 class="tooltipCls" style="display: inline-block;text-transform:uppercase;cursor:pointer;" data-toogle="tooltip" title="'+result[i].name+'">'+result[i].name.substring(0, 15)+'...</h5>';
+							
 						}else{
-							str +='<p class="">'+blockHeadingObject[compnentName]+'</p>';
+							str+='<h5 style="display: inline-block;text-transform:uppercase;">'+result[i].name+'</h5>';
 						}
-						
-					str +='</div>';
-					str +='<div class="block-footer" style="border-top: 1px solid lightgrey;padding-top: 5px">';
-						str +='<i class="fa fa-star starcolorChange '+componentNameWithoutSpace+'Color" attr_url="'+result[i].url
-						+'" attr_full_block_name="'+compnentName+'" attr_color_name="green" attr_block_name="'+componentNameWithoutSpace+'" aria-hidden="true"></i>';
-						str +='<a class="pull-right" href="'+result[i].url+'" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>';
-					str +='</div>';
-				str +='</div>';
-			str +='</div>';
+						if(result[i].name == 'LED MONITORING' || result[i].name == 'Led Monitoring')
+						{
+							str+='<div class="ledOverAchvmntAllCls"></div>';
+						}else{
+							str+='<div class=" " style="text-align: right">';
+								str+='<h2 class="'+blockClassObject[compnentName]+'" style="margin-top: 0px"></h2>';
+								if(result[i].name == 'ENGINEERING DEPARTMENT')
+								{
+									str+='<p class="" style="text-align: right;height: 53px;">'+blockHeadingObject[compnentName]+'</p>';
+								}else{
+									str+='<p class="">'+blockHeadingObject[compnentName]+'</p>';
+								}
+								
+							str+='</div>';
+						}
+						str+='<div class="block-footer" style="border-top: 1px solid lightgrey;padding-top: 5px">';
+							str+='<i class="fa fa-star starcolorChange '+componentNameWithoutSpace+'Color" attr_url="'+result[i].url
+							+'" attr_full_block_name="'+compnentName+'" attr_color_name="green" attr_block_name="'+componentNameWithoutSpace+'" aria-hidden="true"></i>';
+							str+='<a class="pull-right" href="'+result[i].url+'" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			
+			
 		}
 		console.log(globalComponentNameArr);
-		str +='</div>';
+		str+='</div>';
+		console.log(str);
 	$("#favouriteComponentDivId").html(str);
 	$(".tooltipCls").tooltip();
 	/*adding required filed dynamically*/
@@ -203,24 +211,25 @@ $(document).on('click','.starcolorChange',function(){
    var fullBlockName = $(this).attr("attr_full_block_name");
    var blockId = $(this).attr("attr_block_id");
    var url = $(this).attr("attr_url");
+   var pageId = $(this).attr("attr_page_id");
   
   
 	if(colorName == "gray"){
 		$("."+blockName+"Color").removeClass("removeFav");
-		addRemoveComponentToFavourite('Add',blockName,fullBlockName,url,blockId);
+		addRemoveComponentToFavourite('Add',blockName,fullBlockName,url,blockId,pageId);
 	}else{
 		$("."+blockName+"Color").addClass("removeFav");
-		addRemoveComponentToFavourite('Remove',blockName,fullBlockName,url,blockId);
+		addRemoveComponentToFavourite('Remove',blockName,fullBlockName,url,blockId,pageId);
 	}
 })
 
 var saveFlag = true;
 var deleteFlag = true;
-function addRemoveComponentToFavourite(actionType,blockName,fullBlockName,url,blockId){
+function addRemoveComponentToFavourite(actionType,blockName,fullBlockName,url,blockId,pageId){
 	if (actionType == "Add") {
 		if (saveFlag == true) {
 			saveFlag = false;
-		    saveFavouriteComponentDtls(url,blockName,fullBlockName);	
+		    saveFavouriteComponentDtls(url,blockName,fullBlockName,pageId);	
 		}
 		
 	} else if (actionType == "Remove") {
@@ -233,12 +242,14 @@ function addRemoveComponentToFavourite(actionType,blockName,fullBlockName,url,bl
 	
 }
 
-function saveFavouriteComponentDtls(url,blockName,fullBlockName){
+function saveFavouriteComponentDtls(url,blockName,fullBlockName,pageId){
 	  $("#blockOperationStatusHeadingId").html(spinner);
 	  $("#blockModalMessageDivId").modal("show");
+	  alert(pageId)
 	var json = {
 		  url:url, 
-		  name:fullBlockName
+		  name:fullBlockName,
+		  id : pageId
 		}
 	$.ajax({                
 		type:'POST',    
@@ -498,7 +509,12 @@ function getBasicLedOverviewDetails(){
 	}).done(function(result){
 		 $(".ledOverAchvmntAllCls").html(0);
 		if (result != null ) {
-		  $(".ledOverAchvmntAllCls").html(result[0].totalLights);
+			var onLights = result[0].onLights;
+			var offLights = result[0].offLights;
+			var totalLights = result[0].totalLights;
+			//$("#ledMonitoring").html(ledMonitoringData('15/20','10'))
+			$(".ledOverAchvmntAllCls").html(ledMonitoringData(''+onLights+'/'+offLights+'',''+totalLights+'',''));
+		 // $(".ledOverAchvmntAllCls").html(result[0].onLights+"/"+result[0].offLights+"/"+result[0].totalLights);
 		}
 	});		
 }
@@ -856,48 +872,51 @@ function buildComponentByConvergType(result,divId,convergenceId)
 			selectionMenu+='<li>';
 				if(result[i].name == "CC Roads")
 				{
-					selectionMenu+='<label><i class="fa fa-star starcolorChange CCRoads1Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=CC Roads1" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="CC Roads1" aria-hidden="true"></i> CC Roads</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange CCRoads1Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=CC Roads1" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="CC Roads1" aria-hidden="true" attr_page_id="4"></i> CC Roads</label>';
 				}else if(result[i].name == "Anganwadi Buildings")
 				{
-					selectionMenu+='<label><i class="fa fa-star starcolorChange AnganwadiColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Anganwadi" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="Anganwadi" aria-hidden="true"></i> Anganwadi Buildings</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange AnganwadiColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Anganwadi" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="Anganwadi" aria-hidden="true" attr_page_id="4"></i> Anganwadi Buildings</label>';
 				}else if(result[i].name == "GP Buildings1")
 				{
-					selectionMenu+='<label><i class="fa fa-star starcolorChange GPBuildings1Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=GP Buildings1" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="GP Buildings1" aria-hidden="true"></i> GP Buildings</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange GPBuildings1Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=GP Buildings1" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="GP Buildings1" aria-hidden="true" attr_page_id="4"></i> GP Buildings</label>';
 				}else if (result[i].name == "Mandal Buildings") {
-					selectionMenu+='<label><i class="fa fa-star starcolorChange Mandalbuildings1Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Mandal buildings1" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="Mandal buildings1" aria-hidden="true"></i> Mandal Buildings</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange Mandalbuildings1Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Mandal buildings1" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="Mandal buildings1" aria-hidden="true" attr_page_id="4"></i> Mandal Buildings</label>';
 					
 				}else if(result[i].name == "Greenary works (Chettu)"){
 					
-					selectionMenu+='<label><i class="fa fa-star starcolorChange GreenaryworksChettuColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Greenary works Chettu" attr_full_block_name="Greenary works Chettu" style="margin-right:5px;" attr_color_name="gray" attr_block_name="GreenaryworksChettu" aria-hidden="true"></i>Greenary works Chettu</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange GreenaryworksChettuColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Greenary works Chettu" attr_full_block_name="Greenary works Chettu" style="margin-right:5px;" attr_color_name="gray" attr_block_name="GreenaryworksChettu" aria-hidden="true" attr_page_id="4"></i>Greenary works Chettu</label>';
 				}else if(result[i].name == "Soil Moisture Conservation works (Neeru)"){
 					
-					selectionMenu+='<label><i class="fa fa-star starcolorChange SoilMoistureConservationworksNeeruColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Soil Moisture Conservation works Neeru" attr_full_block_name="Soil Moisture Conservation works Neeru" style="margin-right:5px;" attr_color_name="gray" attr_block_name="SoilMoistureConservationworksNeeru" aria-hidden="true"></i>Soil Moisture Conservation works Neeru</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange SoilMoistureConservationworksNeeruColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Soil Moisture Conservation works Neeru" attr_full_block_name="Soil Moisture Conservation works Neeru" style="margin-right:5px;" attr_color_name="gray" attr_block_name="SoilMoistureConservationworksNeeru" aria-hidden="true" attr_page_id="4"></i>Soil Moisture Conservation works Neeru</label>';
 				}else if(result[i].name == "Water Harvesting Structures (Neeru)"){
 					
-					selectionMenu+='<label><i class="fa fa-star starcolorChange WaterHarvestingStructuresNeeruColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Water Harvesting Structures Neeru" attr_full_block_name="Water Harvesting Structures Neeru" style="margin-right:5px;" attr_color_name="gray" attr_block_name="WaterHarvestingStructuresNeeru" aria-hidden="true"></i>Water Harvesting Structures Neeru</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange WaterHarvestingStructuresNeeruColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Water Harvesting Structures Neeru" attr_full_block_name="Water Harvesting Structures Neeru" style="margin-right:5px;" attr_color_name="gray" attr_block_name="WaterHarvestingStructuresNeeru" aria-hidden="true" attr_page_id="4"></i>Water Harvesting Structures Neeru</label>';
 				}else if(result[i].name == "Renovation and Improvements to existing Check Dams / Check Wall"){
 					
-					selectionMenu+='<label><i class="fa fa-star starcolorChange RenovationandImprovementstoexistingCheckDamsCheckWallColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Renovation and Improvements to existing Check Dams Check Wall" attr_full_block_name="Renovation and Improvements to existing Check Dams Check Wall" style="margin-right:5px;" attr_color_name="gray" attr_block_name="RenovationandImprovementstoexistingCheckDamsCheckWall" aria-hidden="true"></i>Renovation and Improvements to existing Check Dams Check Wall</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange RenovationandImprovementstoexistingCheckDamsCheckWallColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Renovation and Improvements to existing Check Dams Check Wall" attr_full_block_name="Renovation and Improvements to existing Check Dams Check Wall" style="margin-right:5px;" attr_color_name="gray" attr_block_name="RenovationandImprovementstoexistingCheckDamsCheckWall" aria-hidden="true" attr_page_id="4"></i>Renovation and Improvements to existing Check Dams Check Wall</label>';
 				}else if(result[i].name == "Construction of Post Harvest facilities (Drying Platform) including Pucca storage facilities of 100MT"){
 					
-					selectionMenu+='<label><i class="fa fa-star starcolorChange ConstructionofPostHarvestfacilitiesDryingPlatformincludingPuccastoragefacilitiesof100MTColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT" attr_full_block_name="Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT" style="margin-right:5px;" attr_color_name="gray" attr_block_name="ConstructionofPostHarvestfacilitiesDryingPlatformincludingPuccastoragefacilitiesof100MT" aria-hidden="true"></i>Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange ConstructionofPostHarvestfacilitiesDryingPlatformincludingPuccastoragefacilitiesof100MTColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT" attr_full_block_name="Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT" style="margin-right:5px;" attr_color_name="gray" attr_block_name="ConstructionofPostHarvestfacilitiesDryingPlatformincludingPuccastoragefacilitiesof100MT" aria-hidden="true" attr_page_id="4"></i>Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT</label>';
 				}else if(result[i].name == "Renovation and Improvements to existing Percolation Tank / Mini Percolation tank"){
 					
-					selectionMenu+='<label><i class="fa fa-star starcolorChange RenovationandImprovementstoexistingPercolationTankMiniPercolationtankColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Renovation and Improvements to existing Percolation Tank Mini Percolation tank" attr_full_block_name="Renovation and Improvements to existing Percolation Tank Mini Percolation tank" style="margin-right:5px;" attr_color_name="gray" attr_block_name="RenovationandImprovementstoexistingPercolationTankMiniPercolationtank" aria-hidden="true"></i>Renovation and Improvements to existing Percolation Tank Mini Percolation tank</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange RenovationandImprovementstoexistingPercolationTankMiniPercolationtankColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Renovation and Improvements to existing Percolation Tank Mini Percolation tank" attr_full_block_name="Renovation and Improvements to existing Percolation Tank Mini Percolation tank" style="margin-right:5px;" attr_color_name="gray" attr_block_name="RenovationandImprovementstoexistingPercolationTankMiniPercolationtank" aria-hidden="true" attr_page_id="4"></i>Renovation and Improvements to existing Percolation Tank Mini Percolation tank</label>';
 				}else if(result[i].name == "Construction of Crematoria/Burial Grounds"){
 					
-					selectionMenu+='<label><i class="fa fa-star starcolorChange ConstructionofCrematoriaBurialGroundsColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Construction of Crematoria Burial Grounds" attr_full_block_name="Construction of Crematoria Burial Grounds" style="margin-right:5px;" attr_color_name="gray" attr_block_name="ConstructionofCrematoriaBurialGrounds" aria-hidden="true"></i>Construction of Crematoria Burial Grounds</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange ConstructionofCrematoriaBurialGroundsColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Construction of Crematoria Burial Grounds" attr_full_block_name="Construction of Crematoria Burial Grounds" style="margin-right:5px;" attr_color_name="gray" attr_block_name="ConstructionofCrematoriaBurialGrounds" aria-hidden="true" attr_page_id="4"></i>Construction of Crematoria Burial Grounds</label>';
 				}
 				else if(result[i].name == "Mulbery"){
 					
-					selectionMenu+='<label><i class="fa fa-star starcolorChange MulberyNewColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Mulbery New" attr_full_block_name="Mulbery New" style="margin-right:5px;" attr_color_name="gray" attr_block_name="MulberyNew" aria-hidden="true"></i>Mulbery</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange MulberyNewColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Mulbery New" attr_full_block_name="Mulbery New" style="margin-right:5px;" attr_color_name="gray" attr_block_name="MulberyNew" aria-hidden="true" attr_page_id="4"></i>Mulbery</label>';
 				}
 				else if(result[i].name == "Silk Worms"){
 					
-					selectionMenu+='<label><i class="fa fa-star starcolorChange SilkwormNewColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Silk worm New" attr_full_block_name="Silk warm New" style="margin-right:5px;" attr_color_name="gray" attr_block_name="SilkwormNew" aria-hidden="true"></i>Silk Worms</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange SilkwormNewColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Silk worm New" attr_full_block_name="Silk warm New" style="margin-right:5px;" attr_color_name="gray" attr_block_name="SilkwormNew" aria-hidden="true" attr_page_id="4"></i>Silk Worms</label>';
+				}else if(result[i].name == "Play Fields"){
+					
+					selectionMenu+='<label><i class="fa fa-star starcolorChange PlayfieldsColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Play fields" attr_full_block_name="Play fields" style="margin-right:5px;" attr_color_name="gray" attr_block_name="Playfields" aria-hidden="true" attr_page_id="4"></i>Play fields</label>';
 				}
 				else{
-					selectionMenu+='<label><i class="fa fa-star starcolorChange '+result[i].name.replace(/\s+/g, '')+'Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component='+result[i].name+'" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="'+result[i].name.replace(/\s+/g, '')+'" aria-hidden="true"></i>'+result[i].name+'</label>';
+					selectionMenu+='<label><i class="fa fa-star starcolorChange '+result[i].name.replace(/\s+/g, '')+'Color" title="click to add as favourite component." attr_url="MGNREGSDashboard?component='+result[i].name+'" attr_full_block_name="'+result[i].name+'" style="margin-right:5px;" attr_color_name="gray" attr_block_name="'+result[i].name.replace(/\s+/g, '')+'" aria-hidden="true" attr_page_id="4"></i>'+result[i].name+'</label>';
 				}
 				
 			selectionMenu+='</li>';
@@ -908,7 +927,7 @@ function buildComponentByConvergType(result,divId,convergenceId)
 				selectionMenu+='<label><i class="fa fa-star starcolorChange OthersMCCColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Others MCC" attr_full_block_name="Others MCC" style="margin-right:5px;" attr_color_name="gray" attr_block_name="OthersMCC" aria-hidden="true"></i>Others MCC</label>';
 			selectionMenu+='</li>'; */
 			selectionMenu+='<li>';
-				selectionMenu+='<label><i class="fa fa-star starcolorChange PaymentsColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Payments" attr_full_block_name="Payments" style="margin-right:5px;" attr_color_name="gray" attr_block_name="Payments" aria-hidden="true"></i> Payments</label>';
+				selectionMenu+='<label><i class="fa fa-star starcolorChange PaymentsColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Payments" attr_full_block_name="Payments" style="margin-right:5px;" attr_color_name="gray" attr_block_name="Payments" aria-hidden="true" attr_page_id="4"></i> Payments</label>';
 			selectionMenu+='</li>';
 		}
 	selectionMenu+='</ul>';
@@ -1542,4 +1561,23 @@ function getBioMetricDashboardOverViewDtls(){
 		}
 		
 	});	
+}
+//$("#ledMonitoring").html(ledMonitoringData('15/20','10'));
+function ledMonitoringData(onOffVal,totalLightsVal)
+{
+	var str='';
+	str+='<div class="row" >';
+		str+='<div class="col-sm-6 text-right">';
+			str+='<h2 style="margin-top: 0px">'+onOffVal+'</h2>';
+			str+='<p class="">ON/OFF Lights</p>';
+		str+='</div>';
+		str+='<div class="col-sm-1 text-right">';
+			str+='<h2 style="font-size:45px;">/</h2>';
+		str+='</div>';
+		str+='<div class="col-sm-5 text-right">';
+			str+='<h2 class="" style="margin-top: 0px">'+totalLightsVal+'</h2>';
+			str+='<p class="">TOTAL LIGHTS</p>';
+		str+='</div>';
+	str+='</div>';				
+	return str;
 }
